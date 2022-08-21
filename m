@@ -2,55 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66867599B2A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Aug 2022 13:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 509BD59B324
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 21 Aug 2022 12:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347719AbiHSLfS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Aug 2022 07:35:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41300 "EHLO
+        id S229795AbiHUKdI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 21 Aug 2022 06:33:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348355AbiHSLfR (ORCPT
+        with ESMTP id S229508AbiHUKdI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Aug 2022 07:35:17 -0400
+        Sun, 21 Aug 2022 06:33:08 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD8D4E1AA4;
-        Fri, 19 Aug 2022 04:35:15 -0700 (PDT)
-Date:   Fri, 19 Aug 2022 11:35:13 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD936555;
+        Sun, 21 Aug 2022 03:33:07 -0700 (PDT)
+Date:   Sun, 21 Aug 2022 10:33:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1660908914;
+        s=2020; t=1661077984;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=e2d1x1wXW94BN9CUt81tokZU3wlmpSZRCpLk5ROItVE=;
-        b=Wuf5+csFybaAt9Lg98c4gd0/5WcJfJyGDYRL8PnERgWz2ijOgDoSnVadZLB498snqK5XrX
-        +vs18JMZU8cvfihbfqJbdeKdXGOrI2HcG9KoEOZSEhdZ13hpdX53YMUkbEIClD5JsaJ4pP
-        gJKfIUuehI5GjlD+PIolDxtjDRd9Nsq2Jp7geQOV1PhCAvF0iu7dtE/7sYd8kfjtyO4WsK
-        RqCsOVaIs7VtIXqUE2ivK5UyXSsT2dEheGqne/T4NWPG50wWXo6ieojBWniwBXKDp8Iq2i
-        6TeHnjFPCsVWvLFhQh0zGCLIJE3NmeJ0RxfOe6gxALhSHRgdlImyZwPfTcKxew==
+        bh=AkL+xh74pmzfFytjn67BBr102XsZF2Xfe6HRVXtM7so=;
+        b=S3+AqkFsSz9JiuyMZnqyj0O02pAN9aFw7VNWtvICbxelndRaaAzbKau73xlkmRfagORR78
+        QLTFWsjMOAl0hjHlBI+MXEM3JoFI2UETkIVEPH4nvsT1b18ZN63d6Jaub13rsCksL6DEDi
+        XzfMOCQb9UHC0HNJ2lSkmOhc3e342neMV1Dm3sr/rGHoUZpNQ4tGoGKrCj16a0ncXqHpJd
+        Tm1rokMwBrTVqTiaYr/AaSV3GAn6YmaujiRh9vvysBTy8KuuU8zVIg7fNOLZL6uv2FzkiZ
+        d1n0C8K3izB/vM2ekA+w7EME5nwCCYf4t8zAI2SbdyOOq+/rZI04xGMIDeHtCg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1660908914;
+        s=2020e; t=1661077984;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=e2d1x1wXW94BN9CUt81tokZU3wlmpSZRCpLk5ROItVE=;
-        b=YinbB1i+KGrejAgn2vkyeo1yLV7F8EpiZq1qHpAT9qv3VUvZMe149Ciy0vA+Na2P8bcZcg
-        bmtDcSaEWBkDmjAQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=AkL+xh74pmzfFytjn67BBr102XsZF2Xfe6HRVXtM7so=;
+        b=e3knuuocJacqoYUGNiIfZUa1eySg5TzieEZzQh9ETHOcWtxGaBIxudQ6338oQKoSheCNY7
+        FRMD5GHAfqU3xyBg==
+From:   "tip-bot2 for Chen Zhongjin" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/nospec: Unwreck the RSB stuffing
-Cc:     stable@vger.kernel.org,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/unwind/orc: Unwind ftrace trampolines with
+ correct ORC entry
+Cc:     Chen Zhongjin <chenzhongjin@huawei.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        <stable@vger.kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <YvuNdDWoUZSBjYcm@worktop.programming.kicks-ass.net>
-References: <YvuNdDWoUZSBjYcm@worktop.programming.kicks-ass.net>
+In-Reply-To: <20220819084334.244016-1-chenzhongjin@huawei.com>
+References: <20220819084334.244016-1-chenzhongjin@huawei.com>
 MIME-Version: 1.0
-Message-ID: <166090891305.401.3919810455794070606.tip-bot2@tip-bot2>
+Message-ID: <166107798320.401.17179497604353962909.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,132 +70,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     4e3aa9238277597c6c7624f302d81a7b568b6f2d
-Gitweb:        https://git.kernel.org/tip/4e3aa9238277597c6c7624f302d81a7b568b6f2d
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 16 Aug 2022 14:28:36 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 19 Aug 2022 13:24:32 +02:00
+Commit-ID:     fc2e426b1161761561624ebd43ce8c8d2fa058da
+Gitweb:        https://git.kernel.org/tip/fc2e426b1161761561624ebd43ce8c8d2fa058da
+Author:        Chen Zhongjin <chenzhongjin@huawei.com>
+AuthorDate:    Fri, 19 Aug 2022 16:43:34 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 21 Aug 2022 12:19:32 +02:00
 
-x86/nospec: Unwreck the RSB stuffing
+x86/unwind/orc: Unwind ftrace trampolines with correct ORC entry
 
-Commit 2b1299322016 ("x86/speculation: Add RSB VM Exit protections")
-made a right mess of the RSB stuffing, rewrite the whole thing to not
-suck.
+When meeting ftrace trampolines in ORC unwinding, unwinder uses address
+of ftrace_{regs_}call address to find the ORC entry, which gets next frame at
+sp+176.
 
-Thanks to Andrew for the enlightening comment about Post-Barrier RSB
-things so we can make this code less magical.
+If there is an IRQ hitting at sub $0xa8,%rsp, the next frame should be
+sp+8 instead of 176. It makes unwinder skip correct frame and throw
+warnings such as "wrong direction" or "can't access registers", etc,
+depending on the content of the incorrect frame address.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/YvuNdDWoUZSBjYcm@worktop.programming.kicks-ass.net
+By adding the base address ftrace_{regs_}caller with the offset
+*ip - ops->trampoline*, we can get the correct address to find the ORC entry.
+
+Also change "caller" to "tramp_addr" to make variable name conform to
+its content.
+
+[ mingo: Clarified the changelog a bit. ]
+
+Fixes: 6be7fa3c74d1 ("ftrace, orc, x86: Handle ftrace dynamically allocated trampolines")
+Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20220819084334.244016-1-chenzhongjin@huawei.com
 ---
- arch/x86/include/asm/nospec-branch.h | 80 +++++++++++++--------------
- 1 file changed, 39 insertions(+), 41 deletions(-)
+ arch/x86/kernel/unwind_orc.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index e64fd20..10731cc 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -35,33 +35,44 @@
- #define RSB_CLEAR_LOOPS		32	/* To forcibly overwrite all entries */
+diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
+index 38185ae..0ea57da 100644
+--- a/arch/x86/kernel/unwind_orc.c
++++ b/arch/x86/kernel/unwind_orc.c
+@@ -93,22 +93,27 @@ static struct orc_entry *orc_find(unsigned long ip);
+ static struct orc_entry *orc_ftrace_find(unsigned long ip)
+ {
+ 	struct ftrace_ops *ops;
+-	unsigned long caller;
++	unsigned long tramp_addr, offset;
  
- /*
-+ * Common helper for __FILL_RETURN_BUFFER and __FILL_ONE_RETURN.
-+ */
-+#define __FILL_RETURN_SLOT			\
-+	ANNOTATE_INTRA_FUNCTION_CALL;		\
-+	call	772f;				\
-+	int3;					\
-+772:
+ 	ops = ftrace_ops_trampoline(ip);
+ 	if (!ops)
+ 		return NULL;
+ 
++	/* Set tramp_addr to the start of the code copied by the trampoline */
+ 	if (ops->flags & FTRACE_OPS_FL_SAVE_REGS)
+-		caller = (unsigned long)ftrace_regs_call;
++		tramp_addr = (unsigned long)ftrace_regs_caller;
+ 	else
+-		caller = (unsigned long)ftrace_call;
++		tramp_addr = (unsigned long)ftrace_caller;
 +
-+/*
-+ * Stuff the entire RSB.
-+ *
-  * Google experimented with loop-unrolling and this turned out to be
-  * the optimal version - two calls, each with their own speculation
-  * trap should their return address end up getting used, in a loop.
-  */
--#define __FILL_RETURN_BUFFER(reg, nr, sp)	\
--	mov	$(nr/2), reg;			\
--771:						\
--	ANNOTATE_INTRA_FUNCTION_CALL;		\
--	call	772f;				\
--773:	/* speculation trap */			\
--	UNWIND_HINT_EMPTY;			\
--	pause;					\
--	lfence;					\
--	jmp	773b;				\
--772:						\
--	ANNOTATE_INTRA_FUNCTION_CALL;		\
--	call	774f;				\
--775:	/* speculation trap */			\
--	UNWIND_HINT_EMPTY;			\
--	pause;					\
--	lfence;					\
--	jmp	775b;				\
--774:						\
--	add	$(BITS_PER_LONG/8) * 2, sp;	\
--	dec	reg;				\
--	jnz	771b;				\
--	/* barrier for jnz misprediction */	\
-+#define __FILL_RETURN_BUFFER(reg, nr)			\
-+	mov	$(nr/2), reg;				\
-+771:							\
-+	__FILL_RETURN_SLOT				\
-+	__FILL_RETURN_SLOT				\
-+	add	$(BITS_PER_LONG/8) * 2, %_ASM_SP;	\
-+	dec	reg;					\
-+	jnz	771b;					\
-+	/* barrier for jnz misprediction */		\
-+	lfence;
-+
-+/*
-+ * Stuff a single RSB slot.
-+ *
-+ * To mitigate Post-Barrier RSB speculation, one CALL instruction must be
-+ * forced to retire before letting a RET instruction execute.
-+ *
-+ * On PBRSB-vulnerable CPUs, it is not safe for a RET to be executed
-+ * before this point.
-+ */
-+#define __FILL_ONE_RETURN				\
-+	__FILL_RETURN_SLOT				\
-+	add	$(BITS_PER_LONG/8), %_ASM_SP;		\
- 	lfence;
++	/* Now place tramp_addr to the location within the trampoline ip is at */
++	offset = ip - ops->trampoline;
++	tramp_addr += offset;
  
- #ifdef __ASSEMBLY__
-@@ -132,28 +143,15 @@
- #endif
- .endm
+ 	/* Prevent unlikely recursion */
+-	if (ip == caller)
++	if (ip == tramp_addr)
+ 		return NULL;
  
--.macro ISSUE_UNBALANCED_RET_GUARD
--	ANNOTATE_INTRA_FUNCTION_CALL
--	call .Lunbalanced_ret_guard_\@
--	int3
--.Lunbalanced_ret_guard_\@:
--	add $(BITS_PER_LONG/8), %_ASM_SP
--	lfence
--.endm
--
-  /*
-   * A simpler FILL_RETURN_BUFFER macro. Don't make people use the CPP
-   * monstrosity above, manually.
-   */
--.macro FILL_RETURN_BUFFER reg:req nr:req ftr:req ftr2
--.ifb \ftr2
--	ALTERNATIVE "jmp .Lskip_rsb_\@", "", \ftr
--.else
--	ALTERNATIVE_2 "jmp .Lskip_rsb_\@", "", \ftr, "jmp .Lunbalanced_\@", \ftr2
--.endif
--	__FILL_RETURN_BUFFER(\reg,\nr,%_ASM_SP)
--.Lunbalanced_\@:
--	ISSUE_UNBALANCED_RET_GUARD
-+.macro FILL_RETURN_BUFFER reg:req nr:req ftr:req ftr2=ALT_NOT(X86_FEATURE_ALWAYS)
-+	ALTERNATIVE_2 "jmp .Lskip_rsb_\@", \
-+		__stringify(__FILL_RETURN_BUFFER(\reg,\nr)), \ftr, \
-+		__stringify(__FILL_ONE_RETURN), \ftr2
-+
- .Lskip_rsb_\@:
- .endm
- 
+-	return orc_find(caller);
++	return orc_find(tramp_addr);
+ }
+ #else
+ static struct orc_entry *orc_ftrace_find(unsigned long ip)
