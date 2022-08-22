@@ -2,58 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B7BE59BC2E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 Aug 2022 11:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B31B859BC49
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 Aug 2022 11:08:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234081AbiHVJBY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 22 Aug 2022 05:01:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44664 "EHLO
+        id S233062AbiHVJIj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 22 Aug 2022 05:08:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232041AbiHVJA5 (ORCPT
+        with ESMTP id S233218AbiHVJIh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 22 Aug 2022 05:00:57 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14EDE2E9EE;
-        Mon, 22 Aug 2022 02:00:56 -0700 (PDT)
-Date:   Mon, 22 Aug 2022 09:00:52 -0000
+        Mon, 22 Aug 2022 05:08:37 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC40C120A7;
+        Mon, 22 Aug 2022 02:08:35 -0700 (PDT)
+Date:   Mon, 22 Aug 2022 09:08:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1661158854;
+        s=2020; t=1661159314;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dM3ojszo3Veb8HoUmWERKHR8FJOVeplfXo3T1F8LY58=;
-        b=gj7pKeIaBS2ImOOqOgKXS9jcGggbX1n0/F+0+34kqcOkTkaGMNZKhWQRWsvjD3mMX1PkHI
-        XbDhhV0Ealw1qqu1h+Rysm3fviIkPKVKutCziLNWQnXk04ZhQsPXkYRHsshiqTCtWQ9JOQ
-        kyUy5Uvjqr12KLiJ1bOMlH64VrJStGe2vrKi3uRupIU0t1MYSo7C3Bv+DvFhvkavPv0YJj
-        ktgRrELclzmlSKDyz6ZQg0bgpPY00ZkkjTnEb3MKFE9kOPQsWcag6mysA8Jg6yrC41whoX
-        /jXWu3Yd2A8DZigmyOCeaONKijTb9eOXAHcB/vnDZ7FrqVokCTRMYjaS7toa3A==
+        bh=1LjJUmQhs8JWWfXs/XFLie47/93a2JV46oxDFL6VxnU=;
+        b=n5kwvX6gwsRKoxFv8mKYG66190dsLW5G0mbPkDXBW19XAMzndFcE3SnP+piIaP/kf64y/M
+        cgIL0sUhzDI77Ao+4zDQ1lUXHCDmEUQby4ZnM9vDe/5qyOMd9PvULQ2C37EVcL/wbiTr40
+        uhB2GEtZ5MJ3zYOViGeL+Cxqc6SCPiOLZCZep2AhS8cDlrJcE5zfuKUlgK1V2WaYOEnO0t
+        wKlmFq4ReelY2bOaTzZQTpPwk4jxx3MeKJPm3gXNRzO9JgUuQaC9MzMwSH3mwX82uShDbB
+        EqSafbBP/BVXKyXxwi19PnePxKIktSSGuGxyriTS0ehbzrdcwy9/luV5xWSWvQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1661158854;
+        s=2020e; t=1661159314;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dM3ojszo3Veb8HoUmWERKHR8FJOVeplfXo3T1F8LY58=;
-        b=j34P7dibyDnyYA3Xyjlxq2hCc3/JTKJ2n7RxH2UgnSpB3GLctBP1Uwu4Zy89lDxnljQfqf
-        CSwhcVh1E7qt0vDw==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=1LjJUmQhs8JWWfXs/XFLie47/93a2JV46oxDFL6VxnU=;
+        b=D2K7eURP+A0a0Q3o8guFviXj6LdgFfGMt+StguwZOuhDkCsYHg3n/vHyRIKmPOivlm9kFO
+        lWn5Ym/Lff2upVBQ==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/lbr: Enable the branch type for the Arch
- LBR by default
-Cc:     Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: objtool/core] objtool: Remove "ANNOTATE_NOENDBR on ENDBR" warning
+Cc:     kernel test robot <lkp@intel.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220816125612.2042397-1-kan.liang@linux.intel.com>
-References: <20220816125612.2042397-1-kan.liang@linux.intel.com>
+In-Reply-To: <142341a5dafdfc788e4c95b9e226a6eefc9b626e.1660839773.git.jpoimboe@kernel.org>
+References: <142341a5dafdfc788e4c95b9e226a6eefc9b626e.1660839773.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <166115885282.401.13470060231625531121.tip-bot2@tip-bot2>
+Message-ID: <166115931303.401.10570900112002921632.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,66 +66,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     32ba156df1b1c8804a4e5be5339616945eafea22
-Gitweb:        https://git.kernel.org/tip/32ba156df1b1c8804a4e5be5339616945eafea22
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Tue, 16 Aug 2022 05:56:11 -07:00
+Commit-ID:     3c6f3900808c483b0bbb2c351f995c7b880dae14
+Gitweb:        https://git.kernel.org/tip/3c6f3900808c483b0bbb2c351f995c7b880dae14
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Thu, 18 Aug 2022 09:26:57 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 19 Aug 2022 19:47:30 +02:00
+CommitterDate: Fri, 19 Aug 2022 19:47:57 +02:00
 
-perf/x86/lbr: Enable the branch type for the Arch LBR by default
+objtool: Remove "ANNOTATE_NOENDBR on ENDBR" warning
 
-On the platform with Arch LBR, the HW raw branch type encoding may leak
-to the perf tool when the SAVE_TYPE option is not set.
+This warning isn't very useful: why would you put ANNOTATE_NOENDBR on
+ENDBR, and if you did, what's the harm?
 
-In the intel_pmu_store_lbr(), the HW raw branch type is stored in
-lbr_entries[].type. If the SAVE_TYPE option is set, the
-lbr_entries[].type will be converted into the generic PERF_BR_* type
-in the intel_pmu_lbr_filter() and exposed to the user tools.
-But if the SAVE_TYPE option is NOT set by the user, the current perf
-kernel doesn't clear the field. The HW raw branch type leaks.
+And thus far it's only found one non-bug, where the
+'__end_entry_SYSENTER_compat' label happens to land on the ENDBR from
+entry_SYSCALL_compat:
 
-There are two solutions to fix the issue for the Arch LBR.
-One is to clear the field if the SAVE_TYPE option is NOT set.
-The other solution is to unconditionally convert the branch type and
-expose the generic type to the user tools.
+  vmlinux.o: warning: objtool: entry_SYSCALL_compat+0x0: ANNOTATE_NOENDBR on ENDBR
 
-The latter is implemented here, because
-- The branch type is valuable information. I don't see a case where
-  you would not benefit from the branch type. (Stephane Eranian)
-- Not having the branch type DOES NOT save any space in the
-  branch record (Stephane Eranian)
-- The Arch LBR HW can retrieve the common branch types from the
-  LBR_INFO. It doesn't require the high overhead SW disassemble.
+.. which is fine.  Just remove the warning.
 
-Fixes: 47125db27e47 ("perf/x86/intel/lbr: Support Architectural LBR")
-Reported-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20220816125612.2042397-1-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/142341a5dafdfc788e4c95b9e226a6eefc9b626e.1660839773.git.jpoimboe@kernel.org
 ---
- arch/x86/events/intel/lbr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/objtool/check.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index 4f70fb6..47fca6a 100644
---- a/arch/x86/events/intel/lbr.c
-+++ b/arch/x86/events/intel/lbr.c
-@@ -1097,6 +1097,14 @@ static int intel_pmu_setup_hw_lbr_filter(struct perf_event *event)
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index b012d98..8b8c8f7 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2102,9 +2102,6 @@ static int read_noendbr_hints(struct objtool_file *file)
+ 			return -1;
+ 		}
  
- 	if (static_cpu_has(X86_FEATURE_ARCH_LBR)) {
- 		reg->config = mask;
-+
-+		/*
-+		 * The Arch LBR HW can retrieve the common branch types
-+		 * from the LBR_INFO. It doesn't require the high overhead
-+		 * SW disassemble.
-+		 * Enable the branch type by default for the Arch LBR.
-+		 */
-+		reg->reg |= X86_BR_TYPE_SAVE;
- 		return 0;
+-		if (insn->type == INSN_ENDBR)
+-			WARN_FUNC("ANNOTATE_NOENDBR on ENDBR", insn->sec, insn->offset);
+-
+ 		insn->noendbr = 1;
  	}
  
