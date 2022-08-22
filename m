@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09B6759BC4A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 Aug 2022 11:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 066D159BCC1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 Aug 2022 11:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233088AbiHVJIl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 22 Aug 2022 05:08:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55052 "EHLO
+        id S234194AbiHVJXC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 22 Aug 2022 05:23:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233301AbiHVJIh (ORCPT
+        with ESMTP id S234363AbiHVJWd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 22 Aug 2022 05:08:37 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEDAC13DC8;
-        Mon, 22 Aug 2022 02:08:36 -0700 (PDT)
-Date:   Mon, 22 Aug 2022 09:08:34 -0000
+        Mon, 22 Aug 2022 05:22:33 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FAB3103B;
+        Mon, 22 Aug 2022 02:22:13 -0700 (PDT)
+Date:   Mon, 22 Aug 2022 09:22:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1661159315;
+        s=2020; t=1661160131;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ma56cxir0v02N0F6KOviPaOZXGv046jNuSJ4KvoXwgg=;
-        b=AGk3VI8jVcWEnQlBJVojNR1W3GQew5r0XOE4pmXdZZLioqBBSwy3DIWD6ugslvHNqBmGGr
-        KNEOWYBjz6zDu2RL7LGc+C8G/JgQ8pBawYEHGoWU9gPHWRsT9l9eOWfx+tBxpWeyWrz+PP
-        DUVnaDmv1+rGBq2sZKAYuaGK+XilEYeOF4HjhwW2BNee3Fozqo6wjWNVoYtRo1sbq+MmPQ
-        XX7kq5BwLE7oecRmvmtLsUJ3d0xpPKJahjnMWe1cxVxXoO05y1urRQFKvGX59bPANZ07WA
-        j3jhCWNK1nYbz6A0wYRp/zAVrQW34FZtN4ErKx9tpeSNbEqW1wg8MSJivnABpA==
+        bh=WqD4dwkcta/FIB4mvo8R8Bl3bXln57ojkCv8je5A1Xo=;
+        b=b3koV1ZL/Y+u6wqLAxXqWJkDvTiX9Mw9Qw7P+uAp4nBHbGviRfDLlspjxVumZOB4s1OTl7
+        /t7+FRnNSsTm2Np9oAL081PLknCHxeWp+Iufc2wd7ZtNBVYe4Z5Ju7Ho8a3a1FcnschPR/
+        onlgEFfNYqMtdWd1iMNM1D7dMyfqlNuQAVhhXB1h2k7MynTGh1Szmz5JfvO02ZJYzJDxvR
+        vnuGBMjadtZE6cN97EoXFbhSJB/oCtselE8nsTvrVrNsR+xXlkKQ8xkykfBMIgmHFGjjHE
+        JnB9VMzkDWuRmlsJXs2f+fXItFnCug6Gf92AtJp8EGiQ6a61y3aWYuS1unpLpw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1661159315;
+        s=2020e; t=1661160131;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ma56cxir0v02N0F6KOviPaOZXGv046jNuSJ4KvoXwgg=;
-        b=G4zwX+wGTo8fVZU0t5X+8K9pdlxtXqo8CdUeqLN8dScYPs3IvTYlnl3Ms3pHwrrFqrh1IG
-        TVJQEFV3XjV/ZNDg==
-From:   "tip-bot2 for Chen Zhongjin" <tip-bot2@linutronix.de>
+        bh=WqD4dwkcta/FIB4mvo8R8Bl3bXln57ojkCv8je5A1Xo=;
+        b=G0+0/Hzyl9yY7K/BAoosChrGo/02K9cD2nuftLQ77aJWrSGpI/r+Q8i/F9s4v25Eob35ez
+        MYVBNDkzNCsKBwAA==
+From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Use arch_jump_destination() in
- read_intra_function_calls()
-Cc:     Chen Zhongjin <chenzhongjin@huawei.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/core] locking: Add __lockfunc to slow path functions
+Cc:     Namhyung Kim <namhyung@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Waiman Long <longman@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220818014553.220261-1-chenzhongjin@huawei.com>
-References: <20220818014553.220261-1-chenzhongjin@huawei.com>
+In-Reply-To: <20220810220346.1919485-1-namhyung@kernel.org>
+References: <20220810220346.1919485-1-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <166115931419.401.6469534927439670416.tip-bot2@tip-bot2>
+Message-ID: <166116013010.401.3026894317996177541.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,39 +66,131 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     7b3e31869081771c63c3d006347ad06738f843b5
-Gitweb:        https://git.kernel.org/tip/7b3e31869081771c63c3d006347ad06738f843b5
-Author:        Chen Zhongjin <chenzhongjin@huawei.com>
-AuthorDate:    Thu, 18 Aug 2022 09:45:53 +08:00
+Commit-ID:     501f7f69bca195da266de83eb2c26c30813fba97
+Gitweb:        https://git.kernel.org/tip/501f7f69bca195da266de83eb2c26c30813fba97
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Wed, 10 Aug 2022 15:03:46 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 19 Aug 2022 19:47:56 +02:00
+CommitterDate: Fri, 19 Aug 2022 19:47:51 +02:00
 
-objtool: Use arch_jump_destination() in read_intra_function_calls()
+locking: Add __lockfunc to slow path functions
 
-Use arch_jump_destiation() instead of the open-coded 'offset + len +
-immediate' that is x86 specific.
+So that we can skip the functions in the perf lock contention and other
+places like /proc/PID/wchan.
 
-Avoids future trouble with other architectures.
-
-Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20220818014553.220261-1-chenzhongjin@huawei.com
+Acked-by: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/r/20220810220346.1919485-1-namhyung@kernel.org
 ---
- tools/objtool/check.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/qspinlock_paravirt.h | 13 +++++++------
+ kernel/locking/qrwlock.c                  |  4 ++--
+ kernel/locking/qspinlock.c                |  2 +-
+ kernel/locking/qspinlock_paravirt.h       |  4 ++--
+ 4 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 0cec74d..b012d98 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2233,7 +2233,7 @@ static int read_intra_function_calls(struct objtool_file *file)
- 		 */
- 		insn->type = INSN_JUMP_UNCONDITIONAL;
+diff --git a/arch/x86/include/asm/qspinlock_paravirt.h b/arch/x86/include/asm/qspinlock_paravirt.h
+index 892fd8c..60ece59 100644
+--- a/arch/x86/include/asm/qspinlock_paravirt.h
++++ b/arch/x86/include/asm/qspinlock_paravirt.h
+@@ -12,7 +12,7 @@
+  */
+ #ifdef CONFIG_64BIT
  
--		dest_off = insn->offset + insn->len + insn->immediate;
-+		dest_off = arch_jump_destination(insn);
- 		insn->jump_dest = find_insn(file, insn->sec, dest_off);
- 		if (!insn->jump_dest) {
- 			WARN_FUNC("can't find call dest at %s+0x%lx",
+-PV_CALLEE_SAVE_REGS_THUNK(__pv_queued_spin_unlock_slowpath);
++__PV_CALLEE_SAVE_REGS_THUNK(__pv_queued_spin_unlock_slowpath, ".spinlock.text");
+ #define __pv_queued_spin_unlock	__pv_queued_spin_unlock
+ #define PV_UNLOCK		"__raw_callee_save___pv_queued_spin_unlock"
+ #define PV_UNLOCK_SLOWPATH	"__raw_callee_save___pv_queued_spin_unlock_slowpath"
+@@ -20,9 +20,10 @@ PV_CALLEE_SAVE_REGS_THUNK(__pv_queued_spin_unlock_slowpath);
+ /*
+  * Optimized assembly version of __raw_callee_save___pv_queued_spin_unlock
+  * which combines the registers saving trunk and the body of the following
+- * C code:
++ * C code.  Note that it puts the code in the .spinlock.text section which
++ * is equivalent to adding __lockfunc in the C code:
+  *
+- * void __pv_queued_spin_unlock(struct qspinlock *lock)
++ * void __lockfunc __pv_queued_spin_unlock(struct qspinlock *lock)
+  * {
+  *	u8 lockval = cmpxchg(&lock->locked, _Q_LOCKED_VAL, 0);
+  *
+@@ -36,7 +37,7 @@ PV_CALLEE_SAVE_REGS_THUNK(__pv_queued_spin_unlock_slowpath);
+  *   rsi = lockval           (second argument)
+  *   rdx = internal variable (set to 0)
+  */
+-asm    (".pushsection .text;"
++asm    (".pushsection .spinlock.text;"
+ 	".globl " PV_UNLOCK ";"
+ 	".type " PV_UNLOCK ", @function;"
+ 	".align 4,0x90;"
+@@ -65,8 +66,8 @@ asm    (".pushsection .text;"
+ 
+ #else /* CONFIG_64BIT */
+ 
+-extern void __pv_queued_spin_unlock(struct qspinlock *lock);
+-PV_CALLEE_SAVE_REGS_THUNK(__pv_queued_spin_unlock);
++extern void __lockfunc __pv_queued_spin_unlock(struct qspinlock *lock);
++__PV_CALLEE_SAVE_REGS_THUNK(__pv_queued_spin_unlock, ".spinlock.text");
+ 
+ #endif /* CONFIG_64BIT */
+ #endif
+diff --git a/kernel/locking/qrwlock.c b/kernel/locking/qrwlock.c
+index 2e16009..d2ef312 100644
+--- a/kernel/locking/qrwlock.c
++++ b/kernel/locking/qrwlock.c
+@@ -18,7 +18,7 @@
+  * queued_read_lock_slowpath - acquire read lock of a queued rwlock
+  * @lock: Pointer to queued rwlock structure
+  */
+-void queued_read_lock_slowpath(struct qrwlock *lock)
++void __lockfunc queued_read_lock_slowpath(struct qrwlock *lock)
+ {
+ 	/*
+ 	 * Readers come here when they cannot get the lock without waiting
+@@ -63,7 +63,7 @@ EXPORT_SYMBOL(queued_read_lock_slowpath);
+  * queued_write_lock_slowpath - acquire write lock of a queued rwlock
+  * @lock : Pointer to queued rwlock structure
+  */
+-void queued_write_lock_slowpath(struct qrwlock *lock)
++void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock)
+ {
+ 	int cnts;
+ 
+diff --git a/kernel/locking/qspinlock.c b/kernel/locking/qspinlock.c
+index 65a9a10..2b23378 100644
+--- a/kernel/locking/qspinlock.c
++++ b/kernel/locking/qspinlock.c
+@@ -313,7 +313,7 @@ static __always_inline u32  __pv_wait_head_or_lock(struct qspinlock *lock,
+  * contended             :    (*,x,y) +--> (*,0,0) ---> (*,0,1) -'  :
+  *   queue               :         ^--'                             :
+  */
+-void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
++void __lockfunc queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
+ {
+ 	struct mcs_spinlock *prev, *next, *node;
+ 	u32 old, tail;
+diff --git a/kernel/locking/qspinlock_paravirt.h b/kernel/locking/qspinlock_paravirt.h
+index e84d21a..6afc249 100644
+--- a/kernel/locking/qspinlock_paravirt.h
++++ b/kernel/locking/qspinlock_paravirt.h
+@@ -489,7 +489,7 @@ gotlock:
+  * PV versions of the unlock fastpath and slowpath functions to be used
+  * instead of queued_spin_unlock().
+  */
+-__visible void
++__visible __lockfunc void
+ __pv_queued_spin_unlock_slowpath(struct qspinlock *lock, u8 locked)
+ {
+ 	struct pv_node *node;
+@@ -544,7 +544,7 @@ __pv_queued_spin_unlock_slowpath(struct qspinlock *lock, u8 locked)
+ #include <asm/qspinlock_paravirt.h>
+ 
+ #ifndef __pv_queued_spin_unlock
+-__visible void __pv_queued_spin_unlock(struct qspinlock *lock)
++__visible __lockfunc void __pv_queued_spin_unlock(struct qspinlock *lock)
+ {
+ 	u8 locked;
+ 
