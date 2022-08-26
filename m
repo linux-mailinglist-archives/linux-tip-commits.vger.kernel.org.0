@@ -2,179 +2,159 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAD225A12DC
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Aug 2022 16:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A6785A257B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Aug 2022 12:09:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241339AbiHYOBe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 25 Aug 2022 10:01:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34302 "EHLO
+        id S230052AbiHZKHD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 26 Aug 2022 06:07:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbiHYOBc (ORCPT
+        with ESMTP id S1343491AbiHZKGh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 25 Aug 2022 10:01:32 -0400
+        Fri, 26 Aug 2022 06:06:37 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCE6B19033;
-        Thu, 25 Aug 2022 07:01:29 -0700 (PDT)
-Date:   Thu, 25 Aug 2022 14:01:26 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5BB4D5DCB;
+        Fri, 26 Aug 2022 03:05:19 -0700 (PDT)
+Date:   Fri, 26 Aug 2022 10:05:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1661436087;
+        s=2020; t=1661508318;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eovjzwcvdUvFZ3zDujG/9uL0DmNL5HqE1TDIBYenQdA=;
-        b=LNNve4U0Ylh8kd8hsdJ8UfhoXgqZYq4VJ5PgovVWZKPiLgQsGJo1Raabp+6vtJSqd2CPNB
-        ShP1HznAt+ycn9rYg8jnuOjiutw3OTbhMURbAImKtAD3KOyZ8X/uNFFm2NeuUaq7MDBBxl
-        JGeEN7DKaYsg2yS90fDhZvx+pneuCZSagsfzBgNlQk9cEeZvtvOZ70EhpeoH6vSGDPi86Z
-        wbBay1RsbTLCLex8FrLTw4coYTjj2SykQ6/gbVWRX3otkU50oXKLv4mxLh0Bu7aot1XEMu
-        U5x5yZSxHdEk6j0Bz/4cjtohKKT+mQxrda6v5ms1n5zt5QivIfLCM6YkAOTdug==
+        bh=8Vkeal0AztGkEtbXmbLzaghy0nAXJByD5CEpU8ihtJ4=;
+        b=qDToFtGfrV8hGKn+rPvW46yzDCBp/UIG4Sfn9CB3wTr04CDOPK/Cptb7OS12pVLbmse951
+        I7iVfHCsabc2Dpv4Q+LM+dSEi+NR9HL80HkB12e7cRf0qVP7wO3xevzLC5nSfjU5CMz934
+        LldgKD9Z/jC57BluDRRmtuRYVkTFtiTVSs4FuFh8JjhPlyeJzHla4vEY73aCEL+PMNQbTs
+        tm478/grsHV3bk7pBRaYba5ZKkK3vloT3GdQivD9k7eNPwvObTsYC64Ie+wqyDoF9qkqWk
+        9Ty3JnxULZZ7lZ0pyte9MNcqNIsYvNLJK4F/Fgg7Hx5Ci9QDB6hO8pQIgCEPYg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1661436087;
+        s=2020e; t=1661508318;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eovjzwcvdUvFZ3zDujG/9uL0DmNL5HqE1TDIBYenQdA=;
-        b=PT0M1NE5IC+pQixFBlfhfVwordgcmk0EswHyKHTMrcVs0Zzyzt/Be321INYKwY2iN/x6KE
-        hCsLH+R54/zEq4BA==
+        bh=8Vkeal0AztGkEtbXmbLzaghy0nAXJByD5CEpU8ihtJ4=;
+        b=GiZk9SLqbMVE7CYdUn6FDdfknqsba/kC6BqI89ixbgY6J2DWiJxCz2RL0WlBGzrbVAP6M8
+        GggUugkaQNGs/TBg==
 From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev: Mark snp_abort() noreturn
-Cc:     Michael Matz <matz@suse.de>, Borislav Petkov <bp@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/microcode] x86/microcode: Remove ->request_microcode_user()
+Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220824152420.20547-1-bp@alien8.de>
-References: <20220824152420.20547-1-bp@alien8.de>
+In-Reply-To: <20220825075445.28171-1-bp@alien8.de>
+References: <20220825075445.28171-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <166143608669.401.14403984449767044288.tip-bot2@tip-bot2>
+Message-ID: <166150831648.401.9089001181596106367.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     c93c296fff6b369a7115916145047c8a3db6e27f
-Gitweb:        https://git.kernel.org/tip/c93c296fff6b369a7115916145047c8a3db6e27f
+Commit-ID:     8c61eafd22d7207039bff85c6e1d386f15abd17e
+Gitweb:        https://git.kernel.org/tip/8c61eafd22d7207039bff85c6e1d386f15abd17e
 Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Wed, 24 Aug 2022 17:13:26 +02:00
+AuthorDate:    Thu, 25 Aug 2022 09:51:57 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 25 Aug 2022 15:54:03 +02:00
+CommitterDate: Fri, 26 Aug 2022 11:56:08 +02:00
 
-x86/sev: Mark snp_abort() noreturn
+x86/microcode: Remove ->request_microcode_user()
 
-Mark both the function prototype and definition as noreturn in order to
-prevent the compiler from doing transformations which confuse objtool
-like so:
+  181b6f40e9ea ("x86/microcode: Rip out the OLD_INTERFACE")
 
-  vmlinux.o: warning: objtool: sme_enable+0x71: unreachable instruction
+removed the old microcode loading interface but forgot to remove the
+related ->request_microcode_user() functionality which it uses.
 
-This triggers with gcc-12.
+Rip it out now too.
 
-Add it and sev_es_terminate() to the objtool noreturn tracking array
-too. Sort it while at it.
-
-Suggested-by: Michael Matz <matz@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220824152420.20547-1-bp@alien8.de
+Link: https://lore.kernel.org/r/20220825075445.28171-1-bp@alien8.de
 ---
- arch/x86/include/asm/sev.h |  2 +-
- arch/x86/kernel/sev.c      |  2 +-
- tools/objtool/check.c      | 34 ++++++++++++++++++----------------
- 3 files changed, 20 insertions(+), 18 deletions(-)
+ arch/x86/include/asm/microcode.h      |  3 ---
+ arch/x86/kernel/cpu/microcode/amd.c   |  7 -------
+ arch/x86/kernel/cpu/microcode/intel.c | 17 -----------------
+ 3 files changed, 27 deletions(-)
 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 4a23e52..ebc271b 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -195,7 +195,7 @@ void snp_set_memory_shared(unsigned long vaddr, unsigned int npages);
- void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
- void snp_set_wakeup_secondary_cpu(void);
- bool snp_init(struct boot_params *bp);
--void snp_abort(void);
-+void __init __noreturn snp_abort(void);
- int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned long *fw_err);
- #else
- static inline void sev_es_ist_enter(struct pt_regs *regs) { }
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 4f84c3f..a428c62 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -2112,7 +2112,7 @@ bool __init snp_init(struct boot_params *bp)
- 	return true;
+diff --git a/arch/x86/include/asm/microcode.h b/arch/x86/include/asm/microcode.h
+index 0c3d344..7f7800e 100644
+--- a/arch/x86/include/asm/microcode.h
++++ b/arch/x86/include/asm/microcode.h
+@@ -32,9 +32,6 @@ enum ucode_state {
+ };
+ 
+ struct microcode_ops {
+-	enum ucode_state (*request_microcode_user) (int cpu,
+-				const void __user *buf, size_t size);
+-
+ 	enum ucode_state (*request_microcode_fw) (int cpu, struct device *,
+ 						  bool refresh_fw);
+ 
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index 8b2fcdf..5f38dd7 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -924,12 +924,6 @@ static enum ucode_state request_microcode_amd(int cpu, struct device *device,
+ 	return ret;
  }
  
--void __init snp_abort(void)
-+void __init __noreturn snp_abort(void)
+-static enum ucode_state
+-request_microcode_user(int cpu, const void __user *buf, size_t size)
+-{
+-	return UCODE_ERROR;
+-}
+-
+ static void microcode_fini_cpu_amd(int cpu)
  {
- 	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+ 	struct ucode_cpu_info *uci = ucode_cpu_info + cpu;
+@@ -938,7 +932,6 @@ static void microcode_fini_cpu_amd(int cpu)
  }
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 0cec74d..ad51689 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -162,32 +162,34 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
  
- 	/*
- 	 * Unfortunately these have to be hard coded because the noreturn
--	 * attribute isn't provided in ELF data.
-+	 * attribute isn't provided in ELF data. Keep 'em sorted.
- 	 */
- 	static const char * const global_noreturns[] = {
-+		"__invalid_creds",
-+		"__module_put_and_kthread_exit",
-+		"__reiserfs_panic",
- 		"__stack_chk_fail",
--		"panic",
-+		"__ubsan_handle_builtin_unreachable",
-+		"cpu_bringup_and_idle",
-+		"cpu_startup_entry",
- 		"do_exit",
-+		"do_group_exit",
- 		"do_task_dead",
--		"kthread_exit",
--		"make_task_dead",
--		"__module_put_and_kthread_exit",
-+		"ex_handler_msr_mce",
-+		"fortify_panic",
- 		"kthread_complete_and_exit",
--		"__reiserfs_panic",
-+		"kthread_exit",
-+		"kunit_try_catch_throw",
- 		"lbug_with_loc",
--		"fortify_panic",
--		"usercopy_abort",
- 		"machine_real_restart",
-+		"make_task_dead",
-+		"panic",
- 		"rewind_stack_and_make_dead",
--		"kunit_try_catch_throw",
--		"xen_start_kernel",
--		"cpu_bringup_and_idle",
--		"do_group_exit",
-+		"sev_es_terminate",
-+		"snp_abort",
- 		"stop_this_cpu",
--		"__invalid_creds",
--		"cpu_startup_entry",
--		"__ubsan_handle_builtin_unreachable",
--		"ex_handler_msr_mce",
-+		"usercopy_abort",
-+		"xen_start_kernel",
- 	};
+ static struct microcode_ops microcode_amd_ops = {
+-	.request_microcode_user           = request_microcode_user,
+ 	.request_microcode_fw             = request_microcode_amd,
+ 	.collect_cpu_info                 = collect_cpu_info_amd,
+ 	.apply_microcode                  = apply_microcode_amd,
+diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+index 025c8f0..1fcbd67 100644
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -916,24 +916,7 @@ static enum ucode_state request_microcode_fw(int cpu, struct device *device,
+ 	return ret;
+ }
  
- 	if (!func)
+-static enum ucode_state
+-request_microcode_user(int cpu, const void __user *buf, size_t size)
+-{
+-	struct iov_iter iter;
+-	struct iovec iov;
+-
+-	if (is_blacklisted(cpu))
+-		return UCODE_NFOUND;
+-
+-	iov.iov_base = (void __user *)buf;
+-	iov.iov_len = size;
+-	iov_iter_init(&iter, WRITE, &iov, 1, size);
+-
+-	return generic_load_microcode(cpu, &iter);
+-}
+-
+ static struct microcode_ops microcode_intel_ops = {
+-	.request_microcode_user		  = request_microcode_user,
+ 	.request_microcode_fw             = request_microcode_fw,
+ 	.collect_cpu_info                 = collect_cpu_info,
+ 	.apply_microcode                  = apply_microcode_intel,
