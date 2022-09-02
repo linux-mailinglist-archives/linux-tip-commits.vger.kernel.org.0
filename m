@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E6F35A9ECA
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Sep 2022 20:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B43E5AA7E8
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Sep 2022 08:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233934AbiIASRN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 1 Sep 2022 14:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41640 "EHLO
+        id S233121AbiIBGQX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Sep 2022 02:16:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234131AbiIASRJ (ORCPT
+        with ESMTP id S235465AbiIBGQV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 1 Sep 2022 14:17:09 -0400
+        Fri, 2 Sep 2022 02:16:21 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21CDD7A755;
-        Thu,  1 Sep 2022 11:17:07 -0700 (PDT)
-Date:   Thu, 01 Sep 2022 18:17:03 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A888E0CE;
+        Thu,  1 Sep 2022 23:16:20 -0700 (PDT)
+Date:   Fri, 02 Sep 2022 06:16:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1662056225;
+        s=2020; t=1662099378;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Y9GQDEkFf5qaOjyHLJiXUYg9GaIW5Sg6K87UHYjPCYo=;
-        b=dU7MnFyPjGmuH8zo3HO4uLOjZpg5QHuPgGQeO+TjYgu/NPvQepxw5SywqtmGHDyIN+SmIT
-        G6i2QMV7nCoh4MBgWb4QMQQwD4gsnDdh7LNpHt1yPhbk5/RVvxfNpg6G6QZEruYtIoKsC4
-        TpkF5waVFVAH8chrE/WulUjaFdqSsD3weKmVGtyC06MVXMfvWlpJ38tDgb2xjHeiovX473
-        k1LWykNKkMUwnVYvUkUGLGvPEB3EwdL9Quv8NIl1YyPydg7BPKZTgYwrVuXxQL5jW5Sbb0
-        35Gcc+G5JhZWHcbVLJ+d79ReFzKk5PHyr6zY730X15F9QImGtgtvhQOY/jQyKA==
+        bh=Yh5nbofxKXDkqZCw/xR+TdYjF6z3LSisPjX1xlymmF0=;
+        b=yr/ratrtsf8EDswM9qS0PGolYp4Atn2sNTcTcpCobWNqtBUE74pQ4skmoBvjD/YYCrlARL
+        ej7QSgq6waWLrStYBCxpSH4nXSbZj1phr0tXItN+uu5uCMCk6sXLRgUA+iP120WiFa4Nzp
+        XF++HVx74UI5wQ5NUdruzJBxcd8Nv1/ayNoAejxPaVpZsZgj/fAT9Sd+WPThU5xoLX/yRp
+        Se4HEy0nokcjVFgucCGcMmgrpSExZcDlD+ZEBGUl+U3Ej9kfv9mx4XAzb8VRe7mDMlhcHb
+        IyqeZ6oUnZNVgTPhMNO0YwCDaoz1MdXT1aujOpB9CY7w18vgDrM1GCKbYjgNjA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1662056225;
+        s=2020e; t=1662099378;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Y9GQDEkFf5qaOjyHLJiXUYg9GaIW5Sg6K87UHYjPCYo=;
-        b=3mF8+8JENQFaB6yxPlV94/J/n7fhTNj5SKVcOnznecH4Fd8Slk6T6bdwuZ9Y7IvdoS2OA/
-        mMaCtVHtRs33NzAw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=Yh5nbofxKXDkqZCw/xR+TdYjF6z3LSisPjX1xlymmF0=;
+        b=hi5+w0JHOCaR643UN4rj1mc44DFnesXEUZ1Ugwl1ibW45EHcEcpkkfZVO1ZrRyTROdW/Ey
+        ePKUBfqdg0PDbRCw==
+From:   "tip-bot2 for Ashok Raj" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Refuse W^X violations
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Subject: [tip: x86/microcode] x86/microcode: Print previous version of
+ microcode after reload
+Cc:     Ashok Raj <ashok.raj@intel.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <YwySW3ROc21hN7g9@hirez.programming.kicks-ass.net>
-References: <YwySW3ROc21hN7g9@hirez.programming.kicks-ass.net>
+In-Reply-To: <20220829181030.722891-1-ashok.raj@intel.com>
+References: <20220829181030.722891-1-ashok.raj@intel.com>
 MIME-Version: 1.0
-Message-ID: <166205622353.401.14415663682148720649.tip-bot2@tip-bot2>
+Message-ID: <166209937647.401.14402365682473849794.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,89 +66,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     652c5bf380ad018e15006a7f8349800245ddbbad
-Gitweb:        https://git.kernel.org/tip/652c5bf380ad018e15006a7f8349800245ddbbad
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 29 Aug 2022 12:18:03 +02:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 01 Sep 2022 11:10:19 -07:00
+Commit-ID:     7fce8d6eccbc31a561d07c79f359ad09f0424347
+Gitweb:        https://git.kernel.org/tip/7fce8d6eccbc31a561d07c79f359ad09f0424347
+Author:        Ashok Raj <ashok.raj@intel.com>
+AuthorDate:    Mon, 29 Aug 2022 18:10:30 
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 02 Sep 2022 08:01:58 +02:00
 
-x86/mm: Refuse W^X violations
+x86/microcode: Print previous version of microcode after reload
 
-x86 has STRICT_*_RWX, but not even a warning when someone violates it.
+Print both old and new versions of microcode after a reload is complete
+because knowing the previous microcode version is sometimes important
+from a debugging perspective.
 
-Add this warning and fully refuse the transition.
+  [ bp: Massage commit message. ]
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/YwySW3ROc21hN7g9@hirez.programming.kicks-ass.net
+Signed-off-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/20220829181030.722891-1-ashok.raj@intel.com
 ---
- arch/x86/mm/pat/set_memory.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ arch/x86/kernel/cpu/microcode/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 6a9043b..1a2d637 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -580,6 +580,33 @@ static inline pgprot_t static_protections(pgprot_t prot, unsigned long start,
- }
- 
- /*
-+ * Validate and enforce strict W^X semantics.
-+ */
-+static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long start,
-+				  unsigned long pfn, unsigned long npg)
-+{
-+	unsigned long end;
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_NX))
-+		return new;
-+
-+	if (!((pgprot_val(old) ^ pgprot_val(new)) & (_PAGE_RW | _PAGE_NX)))
-+		return new;
-+
-+	if ((pgprot_val(new) & (_PAGE_RW | _PAGE_NX)) != _PAGE_RW)
-+		return new;
-+
-+	end = start + npg * PAGE_SIZE - 1;
-+	WARN_ONCE(1, "CPA refuse W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
-+		  (unsigned long long)pgprot_val(old),
-+		  (unsigned long long)pgprot_val(new),
-+		  start, end, pfn);
-+
-+	/* refuse the transition into WX */
-+	return old;
-+}
-+
-+/*
-  * Lookup the page table entry for a virtual address in a specific pgd.
-  * Return a pointer to the entry and the level of the mapping.
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index ad57e0e..6a41cee 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -491,7 +491,7 @@ wait_for_siblings:
   */
-@@ -885,6 +912,8 @@ static int __should_split_large_page(pte_t *kpte, unsigned long address,
- 	new_prot = static_protections(req_prot, lpaddr, old_pfn, numpages,
- 				      psize, CPA_DETECT);
+ static int microcode_reload_late(void)
+ {
+-	int ret;
++	int old = boot_cpu_data.microcode, ret;
  
-+	new_prot = verify_rwx(old_prot, new_prot, lpaddr, old_pfn, numpages);
-+
- 	/*
- 	 * If there is a conflict, split the large page.
- 	 *
-@@ -1525,6 +1554,7 @@ repeat:
+ 	pr_err("Attempting late microcode loading - it is dangerous and taints the kernel.\n");
+ 	pr_err("You should switch to early loading, if possible.\n");
+@@ -503,7 +503,8 @@ static int microcode_reload_late(void)
+ 	if (ret == 0)
+ 		microcode_check();
  
- 	if (level == PG_LEVEL_4K) {
- 		pte_t new_pte;
-+		pgprot_t old_prot = pte_pgprot(old_pte);
- 		pgprot_t new_prot = pte_pgprot(old_pte);
- 		unsigned long pfn = pte_pfn(old_pte);
+-	pr_info("Reload completed, microcode revision: 0x%x\n", boot_cpu_data.microcode);
++	pr_info("Reload completed, microcode revision: 0x%x -> 0x%x\n",
++		old, boot_cpu_data.microcode);
  
-@@ -1536,6 +1566,8 @@ repeat:
- 		new_prot = static_protections(new_prot, address, pfn, 1, 0,
- 					      CPA_PROTECT);
- 
-+		new_prot = verify_rwx(old_prot, new_prot, address, pfn, 1);
-+
- 		new_prot = pgprot_clear_protnone_bits(new_prot);
- 
- 		/*
+ 	return ret;
+ }
