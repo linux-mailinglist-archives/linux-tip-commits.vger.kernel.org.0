@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A15665AB784
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Sep 2022 19:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87D1B5AB787
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Sep 2022 19:28:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236362AbiIBR2e (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 2 Sep 2022 13:28:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49046 "EHLO
+        id S236250AbiIBR2k (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Sep 2022 13:28:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235939AbiIBR2d (ORCPT
+        with ESMTP id S236339AbiIBR2d (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 2 Sep 2022 13:28:33 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EA9A7C52E;
-        Fri,  2 Sep 2022 10:28:31 -0700 (PDT)
-Date:   Fri, 02 Sep 2022 17:28:28 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D240D346B;
+        Fri,  2 Sep 2022 10:28:32 -0700 (PDT)
+Date:   Fri, 02 Sep 2022 17:28:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1662139709;
+        s=2020; t=1662139710;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xx3OODAoe2L1pyBT+Z+A148H3M3nkVkXaFC95mRcN+w=;
-        b=d4akwdQdU6qq8/VX6jpnY4MNdYdMvg86Zl1o3KxVD3JkPv2QsYMopZcS3VOkJTAEDBcaPS
-        RjfMljR1RhW8tLyg+J6lyEp6uHDyvz36tUk+rardABDyTi0Dz88+cGiSsYeWBRdCxRLhiJ
-        /QYrtDY6lhDH1Q/R5FlBazrdC0kwAfA77k+oFe451J/cd7U25nGKn8D+dnd/dAznOyOrG8
-        w9OA8GH51SAkIGxZddT2Ouf4i9DUyhUPB9+r8um7MlEPiKz78E7fQWF9P7HGTK/kxH54gk
-        N5rE5Jc0bljCK+/2P36LUyIsRXdnfl4ZXrBgVs7GGoYbN7ujwBBjlI87dNjctw==
+        bh=cgRoNYONY177gv/d1dFqiMdDLkHqPWmXgx++I7ksaVI=;
+        b=a54CLRW3eFQr8Mmbg7xRkGDr0TfSmmb5t0TQbAruEubgSWJfVBUOC5ZXmDx4fM/IXytV4x
+        Vu9gEt7mpKQzQ0bdya5hr8LhJrZ0mLGMDkn34eUE58SOuMSR4ccDRm/l2gv2UliuI9515I
+        VnKsUToFnu228NkjnoRmCwT3OvbhHovwbzEVvH7pvwjEXTOp6deND5bwxNBGtYO/H7J6J5
+        eeq5hWiPd6zZJ2gE+3K2HBWawZTo+WEg4bf0YDZ7ghV/onKpWJ9MnHXf8i98mShwx9WXIZ
+        et5ERqwYKre+cFKfZJyxWDMbfJXNHKup8Ol80WR5k8P/Ne02HIZS8yX9LMdPFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1662139709;
+        s=2020e; t=1662139710;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xx3OODAoe2L1pyBT+Z+A148H3M3nkVkXaFC95mRcN+w=;
-        b=TiNR/o10XeABPafHAFqHjCp0uyJOObixQRtzFQ2Vc5c44hFlIKSZkCN2J2Z28T4BH9cvcf
-        ngTST7plMSGxYVCQ==
+        bh=cgRoNYONY177gv/d1dFqiMdDLkHqPWmXgx++I7ksaVI=;
+        b=4k7iOzmIz6u7FuzrjgLFW/xQGr6muoOSSIJj7vsCeuHpoTTovNrUAj8sKxTWaQ1Z24TeXR
+        o85xfmdg49A6rNAA==
 From:   "tip-bot2 for Shang XiaoJing" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/deadline: Move __dl_clear_params out of dl_bw lock
+Subject: [tip: sched/core] sched/deadline: Add replenish_dl_new_period helper
 Cc:     Shang XiaoJing <shangxiaojing@huawei.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Daniel Bristot de Oliveira <bristot@kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220827020911.30641-1-shangxiaojing@huawei.com>
-References: <20220827020911.30641-1-shangxiaojing@huawei.com>
+In-Reply-To: <20220826100037.12146-1-shangxiaojing@huawei.com>
+References: <20220826100037.12146-1-shangxiaojing@huawei.com>
 MIME-Version: 1.0
-Message-ID: <166213970802.401.13891317892278711135.tip-bot2@tip-bot2>
+Message-ID: <166213970919.401.16005611865289043769.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,37 +68,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     33f93525799fa3c841b2ba93a56b2bb32ab11dc9
-Gitweb:        https://git.kernel.org/tip/33f93525799fa3c841b2ba93a56b2bb32ab11dc9
+Commit-ID:     96458e7f7dc5ad14bd7577cbf1638e1504ad79dd
+Gitweb:        https://git.kernel.org/tip/96458e7f7dc5ad14bd7577cbf1638e1504ad79dd
 Author:        Shang XiaoJing <shangxiaojing@huawei.com>
-AuthorDate:    Sat, 27 Aug 2022 10:09:11 +08:00
+AuthorDate:    Fri, 26 Aug 2022 18:00:37 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 01 Sep 2022 11:19:55 +02:00
+CommitterDate: Thu, 01 Sep 2022 11:19:54 +02:00
 
-sched/deadline: Move __dl_clear_params out of dl_bw lock
+sched/deadline: Add replenish_dl_new_period helper
 
-As members in sched_dl_entity are independent with dl_bw, move
-__dl_clear_params out of dl_bw lock.
+Wrap repeated code in helper function replenish_dl_new_period, which set
+the deadline and runtime of input dl_se based on pi_of(dl_se). Note that
+setup_new_dl_entity originally set the deadline and runtime base on
+dl_se, which should equals to pi_of(dl_se) for non-boosted task.
 
 Signed-off-by: Shang XiaoJing <shangxiaojing@huawei.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Link: https://lore.kernel.org/r/20220827020911.30641-1-shangxiaojing@huawei.com
+Link: https://lore.kernel.org/r/20220826100037.12146-1-shangxiaojing@huawei.com
 ---
- kernel/sched/deadline.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/deadline.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
 diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 3bf4b12..d0fe6a2 100644
+index 34271af..3bf4b12 100644
 --- a/kernel/sched/deadline.c
 +++ b/kernel/sched/deadline.c
-@@ -431,8 +431,8 @@ static void task_non_contending(struct task_struct *p)
- 				sub_rq_bw(&p->dl, &rq->dl);
- 			raw_spin_lock(&dl_b->lock);
- 			__dl_sub(dl_b, p->dl.dl_bw, dl_bw_cpus(task_cpu(p)));
--			__dl_clear_params(p);
- 			raw_spin_unlock(&dl_b->lock);
-+			__dl_clear_params(p);
+@@ -770,6 +770,14 @@ static void enqueue_task_dl(struct rq *rq, struct task_struct *p, int flags);
+ static void __dequeue_task_dl(struct rq *rq, struct task_struct *p, int flags);
+ static void check_preempt_curr_dl(struct rq *rq, struct task_struct *p, int flags);
+ 
++static inline void replenish_dl_new_period(struct sched_dl_entity *dl_se,
++					    struct rq *rq)
++{
++	/* for non-boosted task, pi_of(dl_se) == dl_se */
++	dl_se->deadline = rq_clock(rq) + pi_of(dl_se)->dl_deadline;
++	dl_se->runtime = pi_of(dl_se)->dl_runtime;
++}
++
+ /*
+  * We are being explicitly informed that a new instance is starting,
+  * and this means that:
+@@ -803,8 +811,7 @@ static inline void setup_new_dl_entity(struct sched_dl_entity *dl_se)
+ 	 * future; in fact, we must consider execution overheads (time
+ 	 * spent on hardirq context, etc.).
+ 	 */
+-	dl_se->deadline = rq_clock(rq) + dl_se->dl_deadline;
+-	dl_se->runtime = dl_se->dl_runtime;
++	replenish_dl_new_period(dl_se, rq);
+ }
+ 
+ /*
+@@ -836,10 +843,8 @@ static void replenish_dl_entity(struct sched_dl_entity *dl_se)
+ 	 * This could be the case for a !-dl task that is boosted.
+ 	 * Just go with full inherited parameters.
+ 	 */
+-	if (dl_se->dl_deadline == 0) {
+-		dl_se->deadline = rq_clock(rq) + pi_of(dl_se)->dl_deadline;
+-		dl_se->runtime = pi_of(dl_se)->dl_runtime;
+-	}
++	if (dl_se->dl_deadline == 0)
++		replenish_dl_new_period(dl_se, rq);
+ 
+ 	if (dl_se->dl_yielded && dl_se->runtime > 0)
+ 		dl_se->runtime = 0;
+@@ -866,8 +871,7 @@ static void replenish_dl_entity(struct sched_dl_entity *dl_se)
+ 	 */
+ 	if (dl_time_before(dl_se->deadline, rq_clock(rq))) {
+ 		printk_deferred_once("sched: DL replenish lagged too much\n");
+-		dl_se->deadline = rq_clock(rq) + pi_of(dl_se)->dl_deadline;
+-		dl_se->runtime = pi_of(dl_se)->dl_runtime;
++		replenish_dl_new_period(dl_se, rq);
+ 	}
+ 
+ 	if (dl_se->dl_yielded)
+@@ -1024,8 +1028,7 @@ static void update_dl_entity(struct sched_dl_entity *dl_se)
+ 			return;
  		}
  
- 		return;
+-		dl_se->deadline = rq_clock(rq) + pi_of(dl_se)->dl_deadline;
+-		dl_se->runtime = pi_of(dl_se)->dl_runtime;
++		replenish_dl_new_period(dl_se, rq);
+ 	}
+ }
+ 
