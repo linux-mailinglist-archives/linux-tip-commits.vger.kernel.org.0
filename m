@@ -2,162 +2,94 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A7F5B3C09
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Sep 2022 17:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 950A95B3E92
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Sep 2022 20:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231924AbiIIPdq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Sep 2022 11:33:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39808 "EHLO
+        id S230436AbiIISIq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Sep 2022 14:08:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232375AbiIIPdF (ORCPT
+        with ESMTP id S231358AbiIISIp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Sep 2022 11:33:05 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26428103065;
-        Fri,  9 Sep 2022 08:32:47 -0700 (PDT)
-Date:   Fri, 09 Sep 2022 15:31:18 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1662737479;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=k9FDm3Ib1dQyrhUGRzp0xqUKNj7z1QvqPgHlgBP29rA=;
-        b=m6HD0wjw6zgEALpojXyv9ZtWUmLrkdKSVJMz6a01Nafm+QRfheuaTqWRy+vkO9fJT63JRx
-        DbtWzJtV3fU/uz74hy2Qx24qQuAVfd4+y7RF2tCDHyuqiIOQffscoMNawQT0iqCKPb2Y6i
-        YyxwNKy/gVTPcjWIP+W3AVJMzu4c88lrlnl7R19mFgEC98WD9zp3GbhBRDvlaRAmg62mOM
-        AekcC2ejHvj5vT7RUGB2bgwdMI99H6bXt83TEPCYISiAtGWXv3RicEHNq4JYWg/acjFatO
-        O+n7PapzTI4HUyZlzfYrbEshpV5CTvf4YSdAmwqCeMKdZk5/NgTHfGM8L1wMpg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1662737479;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=k9FDm3Ib1dQyrhUGRzp0xqUKNj7z1QvqPgHlgBP29rA=;
-        b=th3aBRkJ0iv8aqqv8loZwL69ruUc9pIBypLX7ODyccQJgdQG3E+EG4XgZc6sjUkVKlLxxh
-        JkD+ZFtbATANxCAg==
-From:   "tip-bot2 for Jarkko Sakkinen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sgx: Do not fail on incomplete sanitization on
- premature stop of ksgxd
-Cc:     Paul Menzel <pmenzel@molgen.mpg.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220906000221.34286-2-jarkko@kernel.org>
-References: <20220906000221.34286-2-jarkko@kernel.org>
+        Fri, 9 Sep 2022 14:08:45 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FF39B0892;
+        Fri,  9 Sep 2022 11:08:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B96C8B82346;
+        Fri,  9 Sep 2022 18:08:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E65FC433D6;
+        Fri,  9 Sep 2022 18:08:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1662746922;
+        bh=UqFrMUS7uVyZgt5ZJ3WvaAiqSxliO2m0t8Iqh7aq+Do=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wUbs+oYDKtHXOLJvcVeMB32yxacBCpjnvG86SCQJcUaaZWESt4OEcAFvilvH0GH99
+         bUx2/EmhdIPCK2tVzwmuKFyp9+t6c6G0VJGZn1ztwJACo/MAEaxHAjQdn3S7BLjnsC
+         jNdbl84a1zMOBZjdf1Yw3G8EaA+szIVNb5gizDlE=
+Date:   Fri, 9 Sep 2022 20:08:40 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Yang Yingliang <yangyingliang@huawei.com>, x86@kernel.org
+Subject: Re: [tip: sched/psi] class: use IS_ERR_OR_NULL() helper in
+ class_unregister()
+Message-ID: <YxuBKKe1CVw7RWlc@kroah.com>
+References: <20220822061922.3884113-1-yangyingliang@huawei.com>
+ <166273202287.401.13504362798914698931.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <166273747840.401.14241387909242643974.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <166273202287.401.13504362798914698931.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Fri, Sep 09, 2022 at 02:00:22PM -0000, tip-bot2 for Yang Yingliang wrote:
+> The following commit has been merged into the sched/psi branch of tip:
+> 
+> Commit-ID:     e9628e015fe205f10766f031f17e217f85650570
+> Gitweb:        https://git.kernel.org/tip/e9628e015fe205f10766f031f17e217f85650570
+> Author:        Yang Yingliang <yangyingliang@huawei.com>
+> AuthorDate:    Mon, 22 Aug 2022 14:19:22 +08:00
+> Committer:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> CommitterDate: Thu, 01 Sep 2022 18:15:40 +02:00
+> 
+> class: use IS_ERR_OR_NULL() helper in class_unregister()
+> 
+> Use IS_ERR_OR_NULL() helper in class_unregister() to simplify code.
+> 
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+> Link: https://lore.kernel.org/r/20220822061922.3884113-1-yangyingliang@huawei.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/base/class.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/base/class.c b/drivers/base/class.c
+> index 8feb85e..64f7b9a 100644
+> --- a/drivers/base/class.c
+> +++ b/drivers/base/class.c
+> @@ -260,7 +260,7 @@ EXPORT_SYMBOL_GPL(__class_create);
+>   */
+>  void class_destroy(struct class *cls)
+>  {
+> -	if ((cls == NULL) || (IS_ERR(cls)))
+> +	if (IS_ERR_OR_NULL(cls))
+>  		return;
+>  
+>  	class_unregister(cls);
 
-Commit-ID:     133e049a3f8c91b175029fb6a59b6039d5e79cba
-Gitweb:        https://git.kernel.org/tip/133e049a3f8c91b175029fb6a59b6039d5e79cba
-Author:        Jarkko Sakkinen <jarkko@kernel.org>
-AuthorDate:    Tue, 06 Sep 2022 03:02:20 +03:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 08 Sep 2022 13:27:44 -07:00
+Any specific reason you pulled in my driver-core branch into tip?
 
-x86/sgx: Do not fail on incomplete sanitization on premature stop of ksgxd
+confused,
 
-Unsanitized pages trigger WARN_ON() unconditionally, which can panic the
-whole computer, if /proc/sys/kernel/panic_on_warn is set.
-
-In sgx_init(), if misc_register() fails or misc_register() succeeds but
-neither sgx_drv_init() nor sgx_vepc_init() succeeds, then ksgxd will be
-prematurely stopped. This may leave unsanitized pages, which will result a
-false warning.
-
-Refine __sgx_sanitize_pages() to return:
-
-1. Zero when the sanitization process is complete or ksgxd has been
-   requested to stop.
-2. The number of unsanitized pages otherwise.
-
-Fixes: 51ab30eb2ad4 ("x86/sgx: Replace section->init_laundry_list with sgx_dirty_page_list")
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-sgx/20220825051827.246698-1-jarkko@kernel.org/T/#u
-Link: https://lkml.kernel.org/r/20220906000221.34286-2-jarkko@kernel.org
----
- arch/x86/kernel/cpu/sgx/main.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
-index 515e2a5..0aad028 100644
---- a/arch/x86/kernel/cpu/sgx/main.c
-+++ b/arch/x86/kernel/cpu/sgx/main.c
-@@ -49,9 +49,13 @@ static LIST_HEAD(sgx_dirty_page_list);
-  * Reset post-kexec EPC pages to the uninitialized state. The pages are removed
-  * from the input list, and made available for the page allocator. SECS pages
-  * prepending their children in the input list are left intact.
-+ *
-+ * Return 0 when sanitization was successful or kthread was stopped, and the
-+ * number of unsanitized pages otherwise.
-  */
--static void __sgx_sanitize_pages(struct list_head *dirty_page_list)
-+static unsigned long __sgx_sanitize_pages(struct list_head *dirty_page_list)
- {
-+	unsigned long left_dirty = 0;
- 	struct sgx_epc_page *page;
- 	LIST_HEAD(dirty);
- 	int ret;
-@@ -59,7 +63,7 @@ static void __sgx_sanitize_pages(struct list_head *dirty_page_list)
- 	/* dirty_page_list is thread-local, no need for a lock: */
- 	while (!list_empty(dirty_page_list)) {
- 		if (kthread_should_stop())
--			return;
-+			return 0;
- 
- 		page = list_first_entry(dirty_page_list, struct sgx_epc_page, list);
- 
-@@ -92,12 +96,14 @@ static void __sgx_sanitize_pages(struct list_head *dirty_page_list)
- 		} else {
- 			/* The page is not yet clean - move to the dirty list. */
- 			list_move_tail(&page->list, &dirty);
-+			left_dirty++;
- 		}
- 
- 		cond_resched();
- 	}
- 
- 	list_splice(&dirty, dirty_page_list);
-+	return left_dirty;
- }
- 
- static bool sgx_reclaimer_age(struct sgx_epc_page *epc_page)
-@@ -395,10 +401,7 @@ static int ksgxd(void *p)
- 	 * required for SECS pages, whose child pages blocked EREMOVE.
- 	 */
- 	__sgx_sanitize_pages(&sgx_dirty_page_list);
--	__sgx_sanitize_pages(&sgx_dirty_page_list);
--
--	/* sanity check: */
--	WARN_ON(!list_empty(&sgx_dirty_page_list));
-+	WARN_ON(__sgx_sanitize_pages(&sgx_dirty_page_list));
- 
- 	while (!kthread_should_stop()) {
- 		if (try_to_freeze())
+greg k-h
