@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D9635B324F
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Sep 2022 10:53:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F5B85B3291
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Sep 2022 11:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231784AbiIIIwz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Sep 2022 04:52:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56108 "EHLO
+        id S230443AbiIIJA5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Sep 2022 05:00:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231159AbiIIIwv (ORCPT
+        with ESMTP id S231484AbiIIJAh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Sep 2022 04:52:51 -0400
+        Fri, 9 Sep 2022 05:00:37 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85D9212D183;
-        Fri,  9 Sep 2022 01:52:50 -0700 (PDT)
-Date:   Fri, 09 Sep 2022 08:52:48 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F2154673;
+        Fri,  9 Sep 2022 02:00:18 -0700 (PDT)
+Date:   Fri, 09 Sep 2022 09:00:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1662713569;
+        s=2020; t=1662714017;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=065r4MhIxz/sd8UoQWaUsckT8IQ9RQduR6TtsDljM9E=;
-        b=Ty8ycG2uZvOtBeUKzsIWFk0ADGKfxsblphCeGp+msAeX17WVKXWNUvyItnfU5TDe4l7MB+
-        ajRIUZdKkbxZ2IXwYpLmKqQSZC2oiU5zbN1n8nmewYqxWJgrtpCZFi56MkriUkD9uiy03K
-        ofZL/VhGRYfMqSL2M2OJ6amjrfdne7+YsdMMsP8H5X5E8LAAdcMHjR5ISuYSj5zFcAWzpX
-        AJrNZn+7p0DaEKs3QsYMNNptmzdKprXtOpqbwAFA3chMKG7eXIshgQ9043zC4jY4QoKqOF
-        pwyK70oEVvR9mUNaxj7YCuvSvhhLlknzDsP3l2ZBEciX94c5a9f4Na0ftON9Yg==
+        bh=za5Ye11Srx+C4dsuaoqgcQVtLwRXeAjNo3NbNXMfiyo=;
+        b=sVPNyOUFIjEw4KBxPJtZJ1osIpZ2a//JShp2UNAlhxtXYewsEZ3UFSCSWoJsnBAAXJJjMN
+        yU0YtAFGxy76zbUAs/YSvROqjkQMm8Olellsk1vAdWnTopiiKEwemolQIZw772QE4qITLT
+        tcDLyTRCz27B16aNVS8hT4lKN6cXBnXwJbTjk5P8O4XKfIx2THQv1u5Y++/VM39+U4MHOi
+        pZtTyzkfbVbJyBvCIisyE01HnK77VJRZr3Ok8vJC49tCvzigCxtP6CUP24ZsMJN+oDjwbz
+        JAW0yTPbnjy3PV/bUKVIfpNf9lqfeDi6x8YfQZcB0F75PBUrqYyzxNkODXAemg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1662713569;
+        s=2020e; t=1662714017;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=065r4MhIxz/sd8UoQWaUsckT8IQ9RQduR6TtsDljM9E=;
-        b=zJgWMd5ApgN2n5FWrJekJtjnEV4UXT6NciuzpWfAWsOiEwUklghym1LpAYc1IZJkONHfeq
-        pnkPRFld2c83hLCw==
-From:   "tip-bot2 for Anshuman Khandual" <tip-bot2@linutronix.de>
+        bh=za5Ye11Srx+C4dsuaoqgcQVtLwRXeAjNo3NbNXMfiyo=;
+        b=xMA0RtBlhJPNPgN7gelX9+C/5J++7D1fK2pJ/nsy0ZGPq5auniB/Haec+XVyo1QSmMfq+z
+        cz32IAs+sSbTysDQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Consolidate branch sample filter helpers
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
+Subject: [tip: sched/core] sched: Show PF_flag holes
+Cc:     Ingo Molnar <mingo@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220906084414.396220-1-anshuman.khandual@arm.com>
-References: <20220906084414.396220-1-anshuman.khandual@arm.com>
+In-Reply-To: <YxctoffFFPXONESt@hirez.programming.kicks-ass.net>
+References: <YxctoffFFPXONESt@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <166271356806.401.340422939895391322.tip-bot2@tip-bot2>
+Message-ID: <166271401564.401.13463209336005229265.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,99 +65,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     03b02db93be407103c385814033633364674a6f6
-Gitweb:        https://git.kernel.org/tip/03b02db93be407103c385814033633364674a6f6
-Author:        Anshuman Khandual <anshuman.khandual@arm.com>
-AuthorDate:    Tue, 06 Sep 2022 14:14:14 +05:30
+Commit-ID:     fb04563d1cae6f361892b4a339ad92100b1eb0d0
+Gitweb:        https://git.kernel.org/tip/fb04563d1cae6f361892b4a339ad92100b1eb0d0
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 06 Sep 2022 13:27:32 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 07 Sep 2022 21:54:00 +02:00
+CommitterDate: Wed, 07 Sep 2022 21:53:51 +02:00
 
-perf: Consolidate branch sample filter helpers
+sched: Show PF_flag holes
 
-Besides the branch type filtering requests, 'event.attr.branch_sample_type'
-also contains various flags indicating which additional information should
-be captured, along with the base branch record. These flags help configure
-the underlying hardware, and capture the branch records appropriately when
-required e.g after PMU interrupt. But first, this moves an existing helper
-perf_sample_save_hw_index() into the header before adding some more helpers
-for other branch sample filter flags.
+Put placeholders in PF_flag so we can see how holey it is.
 
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Suggested-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20220906084414.396220-1-anshuman.khandual@arm.com
+Reviewed-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/YxctoffFFPXONESt@hirez.programming.kicks-ass.net
 ---
- include/linux/perf_event.h | 26 ++++++++++++++++++++++++++
- kernel/events/core.c       |  9 ++-------
- 2 files changed, 28 insertions(+), 7 deletions(-)
+ include/linux/sched.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 581880d..a627528 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1685,4 +1685,30 @@ static inline void perf_lopwr_cb(bool mode)
- }
- #endif
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 4c91efd..15e3bd9 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1722,7 +1722,9 @@ extern struct pid *cad_pid;
+ #define PF_MEMALLOC		0x00000800	/* Allocating memory */
+ #define PF_NPROC_EXCEEDED	0x00001000	/* set_user() noticed that RLIMIT_NPROC was exceeded */
+ #define PF_USED_MATH		0x00002000	/* If unset the fpu must be initialized before use */
++#define PF__HOLE__00004000	0x00004000
+ #define PF_NOFREEZE		0x00008000	/* This thread should not be frozen */
++#define PF__HOLE__00010000	0x00010000
+ #define PF_KSWAPD		0x00020000	/* I am kswapd */
+ #define PF_MEMALLOC_NOFS	0x00040000	/* All allocation requests will inherit GFP_NOFS */
+ #define PF_MEMALLOC_NOIO	0x00080000	/* All allocation requests will inherit GFP_NOIO */
+@@ -1730,9 +1732,14 @@ extern struct pid *cad_pid;
+ 						 * I am cleaning dirty pages from some other bdi. */
+ #define PF_KTHREAD		0x00200000	/* I am a kernel thread */
+ #define PF_RANDOMIZE		0x00400000	/* Randomize virtual address space */
++#define PF__HOLE__00800000	0x00800000
++#define PF__HOLE__01000000	0x01000000
++#define PF__HOLE__02000000	0x02000000
+ #define PF_NO_SETAFFINITY	0x04000000	/* Userland is not allowed to meddle with cpus_mask */
+ #define PF_MCE_EARLY		0x08000000      /* Early kill for mce process policy */
+ #define PF_MEMALLOC_PIN		0x10000000	/* Allocation context constrained to zones which allow long term pinning. */
++#define PF__HOLE__20000000	0x20000000
++#define PF__HOLE__40000000	0x40000000
+ #define PF_SUSPEND_TASK		0x80000000      /* This thread called freeze_processes() and should not be frozen */
  
-+#ifdef CONFIG_PERF_EVENTS
-+static inline bool branch_sample_no_flags(const struct perf_event *event)
-+{
-+	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_NO_FLAGS;
-+}
-+
-+static inline bool branch_sample_no_cycles(const struct perf_event *event)
-+{
-+	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_NO_CYCLES;
-+}
-+
-+static inline bool branch_sample_type(const struct perf_event *event)
-+{
-+	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_TYPE_SAVE;
-+}
-+
-+static inline bool branch_sample_hw_index(const struct perf_event *event)
-+{
-+	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_HW_INDEX;
-+}
-+
-+static inline bool branch_sample_priv(const struct perf_event *event)
-+{
-+	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_PRIV_SAVE;
-+}
-+#endif /* CONFIG_PERF_EVENTS */
- #endif /* _LINUX_PERF_EVENT_H */
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 15d27b1..00389d5 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6966,11 +6966,6 @@ static void perf_output_read(struct perf_output_handle *handle,
- 		perf_output_read_one(handle, event, enabled, running);
- }
- 
--static inline bool perf_sample_save_hw_index(struct perf_event *event)
--{
--	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_HW_INDEX;
--}
--
- void perf_output_sample(struct perf_output_handle *handle,
- 			struct perf_event_header *header,
- 			struct perf_sample_data *data,
-@@ -7059,7 +7054,7 @@ void perf_output_sample(struct perf_output_handle *handle,
- 			     * sizeof(struct perf_branch_entry);
- 
- 			perf_output_put(handle, data->br_stack->nr);
--			if (perf_sample_save_hw_index(event))
-+			if (branch_sample_hw_index(event))
- 				perf_output_put(handle, data->br_stack->hw_idx);
- 			perf_output_copy(handle, data->br_stack->entries, size);
- 		} else {
-@@ -7359,7 +7354,7 @@ void perf_prepare_sample(struct perf_event_header *header,
- 	if (sample_type & PERF_SAMPLE_BRANCH_STACK) {
- 		int size = sizeof(u64); /* nr */
- 		if (data->sample_flags & PERF_SAMPLE_BRANCH_STACK) {
--			if (perf_sample_save_hw_index(event))
-+			if (branch_sample_hw_index(event))
- 				size += sizeof(u64);
- 
- 			size += data->br_stack->nr
+ /*
