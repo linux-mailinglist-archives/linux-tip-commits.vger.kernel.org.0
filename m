@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F111B5B3A14
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Sep 2022 16:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DC545B3A49
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Sep 2022 16:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231703AbiIIOAw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Sep 2022 10:00:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59204 "EHLO
+        id S232192AbiIIOBb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Sep 2022 10:01:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231942AbiIIOAe (ORCPT
+        with ESMTP id S232078AbiIIOAt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Sep 2022 10:00:34 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC058895C6;
-        Fri,  9 Sep 2022 07:00:31 -0700 (PDT)
-Date:   Fri, 09 Sep 2022 14:00:28 -0000
+        Fri, 9 Sep 2022 10:00:49 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30997F13B;
+        Fri,  9 Sep 2022 07:00:32 -0700 (PDT)
+Date:   Fri, 09 Sep 2022 14:00:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1662732029;
+        s=2020; t=1662732031;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gcWh1TCgrHt56LhGM5/FqvCB9ztWauERAJTs/QzpBcc=;
-        b=YwoI0Y/4CzLalDEi4qpQaKoUb1mOVGGPbQrfdUwfBy/OuP5VpWJv14i/wtSt3n2rRAxKQ3
-        QJGoWZcnv9SPjxB+polKjgOnFmkTZ3ORRCISl0m5sZqUW6Pmegp0XGWQIJE6Opb9w87gwK
-        Lr6oqRUy0rLqTIfyU+7ubiGrm1ynyPJaqVseS1rxHsCwhipILClDE+HqJ4qmLMggO0x9ct
-        KOijXhGHAFnagquBnE8nUkQmY4cMQlodVccGZumMBGWXaKc47bwKwlggzHGjwtJrAU5MNI
-        j+EqM5k8NSF9JXYch5mIhBsXh2ZpS13wLL+EjYcwDEfn5Si7jnpYEC4jW18mRA==
+        bh=ZAvy1zrYwy9XTqh4ODG8ma1JhILysPikvRzldVe3EIw=;
+        b=yj53lHF4ifqca4ewyc7V72N9qYpXrk7wGlYVr5ACnQRpE7imjnLV7rNiwPQzyZzsnfDNsl
+        CDa5+dVaflJnmCWGUnoYYgzzdOqINPzmkkJ/XRT8UcS6Wlxc0ExJq5QtQNYAINsSI7+Xwc
+        2peo9VP6ubXLheppAJejyKwvU/CgwRhXE7eBeN3gL5M8zj6D2kzIy+A9hPMeRzXDaj1y4o
+        0i4/vfOVdJHZbCj/eq6gZ8is3FxG/9VMPTaiuo1FljblVl7GfeZnnGARVGbexbOnM9WpMU
+        ivDSpX4LiyU3NORs9XDB9vyxyRKuUoW+4ZyGLJT4x/IuSY6C4kb/zlUqba03PQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1662732029;
+        s=2020e; t=1662732031;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gcWh1TCgrHt56LhGM5/FqvCB9ztWauERAJTs/QzpBcc=;
-        b=ARgeA3irjXUkC8yHlZLGMl6gIE7ruCiWL4P7e91DILDzGZmKL0Btyk4uaSq7miSFHKPXJ3
-        2MGgf772bCJEfOCA==
+        bh=ZAvy1zrYwy9XTqh4ODG8ma1JhILysPikvRzldVe3EIw=;
+        b=FWmgdlcyvjfvFjzRj2ePr1x0lQgBIPvX2AaVAY82sXG1WB28XP7eQvlZs9oWaFvEBi0qEi
+        n9cPA9S9zFBnLdAA==
 From:   "tip-bot2 for Tejun Heo" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/psi] kernfs: Add KERNFS_REMOVING flags
+Subject: [tip: sched/psi] kernfs: Improve kernfs_drain() and always call on removal
 Cc:     Chengming Zhou <zhouchengming@bytedance.com>,
         Tejun Heo <tj@kernel.org>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220828050440.734579-7-tj@kernel.org>
-References: <20220828050440.734579-7-tj@kernel.org>
+In-Reply-To: <20220828050440.734579-6-tj@kernel.org>
+References: <20220828050440.734579-6-tj@kernel.org>
 MIME-Version: 1.0
-Message-ID: <166273202866.401.12020095971904286257.tip-bot2@tip-bot2>
+Message-ID: <166273202980.401.2949316254189258021.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,111 +68,93 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/psi branch of tip:
 
-Commit-ID:     c25491747b21536bd56dccb82a109754bbc8d52c
-Gitweb:        https://git.kernel.org/tip/c25491747b21536bd56dccb82a109754bbc8d52c
+Commit-ID:     2d7f9f8c1815707e9ddb454648a523efc67a04d3
+Gitweb:        https://git.kernel.org/tip/2d7f9f8c1815707e9ddb454648a523efc67a04d3
 Author:        Tejun Heo <tj@kernel.org>
-AuthorDate:    Sat, 27 Aug 2022 19:04:37 -10:00
+AuthorDate:    Sat, 27 Aug 2022 19:04:36 -10:00
 Committer:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 CommitterDate: Thu, 01 Sep 2022 18:08:44 +02:00
 
-kernfs: Add KERNFS_REMOVING flags
+kernfs: Improve kernfs_drain() and always call on removal
 
-KERNFS_ACTIVATED tracks whether a given node has ever been activated. As a
-node was only deactivated on removal, this was used for
+__kernfs_remove() was skipping draining based on KERNFS_ACTIVATED - whether
+the node has ever been activated since creation. Instead, update it to
+always call kernfs_drain() which now drains or skips based on the precise
+drain conditions. This ensures that the nodes will be deactivated and
+drained regardless of their states.
 
- 1. Drain optimization (removed by the previous patch).
- 2. To hide !activated nodes
- 3. To avoid double activations
- 4. Reject adding children to a node being removed
- 5. Skip activaing a node which is being removed.
+This doesn't make meaningful difference now but will enable deactivating and
+draining nodes dynamically by making removals safe when racing those
+operations.
 
-We want to decouple deactivation from removal so that nodes can be
-deactivated and hidden dynamically, which makes KERNFS_ACTIVATED useless for
-all of the above purposes.
+While at it, drop / update comments.
 
-#1 is already gone. #2 and #3 can instead test whether the node is currently
-active. A new flag KERNFS_REMOVING is added to explicitly mark nodes which
-are being removed for #4 and #5.
-
-While this leaves KERNFS_ACTIVATED with no users, leave it be as it will be
-used in a following patch.
+v2: Fix the inverted test on kernfs_should_drain_open_files() noted by
+    Chengming. This was fixed by the next unrelated patch in the previous
+    posting.
 
 Cc: Chengming Zhou <zhouchengming@bytedance.com>
 Tested-by: Chengming Zhou <zhouchengming@bytedance.com>
 Reviewed-by: Chengming Zhou <zhouchengming@bytedance.com>
 Signed-off-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20220828050440.734579-7-tj@kernel.org
+Link: https://lore.kernel.org/r/20220828050440.734579-6-tj@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/kernfs/dir.c        | 21 +++++++--------------
- include/linux/kernfs.h |  1 +
- 2 files changed, 8 insertions(+), 14 deletions(-)
+ fs/kernfs/dir.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
-index b3d2018..f8cbd05 100644
+index 8ae44db..b3d2018 100644
 --- a/fs/kernfs/dir.c
 +++ b/fs/kernfs/dir.c
-@@ -705,13 +705,7 @@ struct kernfs_node *kernfs_find_and_get_node_by_id(struct kernfs_root *root,
- 			goto err_unlock;
+@@ -472,6 +472,16 @@ static void kernfs_drain(struct kernfs_node *kn)
+ 	lockdep_assert_held_write(&root->kernfs_rwsem);
+ 	WARN_ON_ONCE(kernfs_active(kn));
+ 
++	/*
++	 * Skip draining if already fully drained. This avoids draining and its
++	 * lockdep annotations for nodes which have never been activated
++	 * allowing embedding kernfs_remove() in create error paths without
++	 * worrying about draining.
++	 */
++	if (atomic_read(&kn->active) == KN_DEACTIVATED_BIAS &&
++	    !kernfs_should_drain_open_files(kn))
++		return;
++
+ 	up_write(&root->kernfs_rwsem);
+ 
+ 	if (kernfs_lockdep(kn)) {
+@@ -480,7 +490,6 @@ static void kernfs_drain(struct kernfs_node *kn)
+ 			lock_contended(&kn->dep_map, _RET_IP_);
  	}
  
--	/*
--	 * ACTIVATED is protected with kernfs_mutex but it was clear when
--	 * @kn was added to idr and we just wanna see it set.  No need to
--	 * grab kernfs_mutex.
--	 */
--	if (unlikely(!(kn->flags & KERNFS_ACTIVATED) ||
--		     !atomic_inc_not_zero(&kn->count)))
-+	if (unlikely(!kernfs_active(kn) || !atomic_inc_not_zero(&kn->count)))
- 		goto err_unlock;
+-	/* but everyone should wait for draining */
+ 	wait_event(root->deactivate_waitq,
+ 		   atomic_read(&kn->active) == KN_DEACTIVATED_BIAS);
  
- 	spin_unlock(&kernfs_idr_lock);
-@@ -753,10 +747,7 @@ int kernfs_add_one(struct kernfs_node *kn)
- 		goto out_unlock;
+@@ -1370,23 +1379,14 @@ static void __kernfs_remove(struct kernfs_node *kn)
+ 		pos = kernfs_leftmost_descendant(kn);
  
- 	ret = -ENOENT;
--	if (parent->flags & KERNFS_EMPTY_DIR)
--		goto out_unlock;
--
--	if ((parent->flags & KERNFS_ACTIVATED) && !kernfs_active(parent))
-+	if (parent->flags & (KERNFS_REMOVING | KERNFS_EMPTY_DIR))
- 		goto out_unlock;
+ 		/*
+-		 * kernfs_drain() drops kernfs_rwsem temporarily and @pos's
++		 * kernfs_drain() may drop kernfs_rwsem temporarily and @pos's
+ 		 * base ref could have been put by someone else by the time
+ 		 * the function returns.  Make sure it doesn't go away
+ 		 * underneath us.
+ 		 */
+ 		kernfs_get(pos);
  
- 	kn->hash = kernfs_name_hash(kn->name, kn->ns);
-@@ -1336,7 +1327,7 @@ void kernfs_activate(struct kernfs_node *kn)
+-		/*
+-		 * Drain iff @kn was activated.  This avoids draining and
+-		 * its lockdep annotations for nodes which have never been
+-		 * activated and allows embedding kernfs_remove() in create
+-		 * error paths without worrying about draining.
+-		 */
+-		if (kn->flags & KERNFS_ACTIVATED)
+-			kernfs_drain(pos);
+-		else
+-			WARN_ON_ONCE(atomic_read(&kn->active) != KN_DEACTIVATED_BIAS);
++		kernfs_drain(pos);
  
- 	pos = NULL;
- 	while ((pos = kernfs_next_descendant_post(pos, kn))) {
--		if (pos->flags & KERNFS_ACTIVATED)
-+		if (kernfs_active(pos) || (pos->flags & KERNFS_REMOVING))
- 			continue;
- 
- 		WARN_ON_ONCE(pos->parent && RB_EMPTY_NODE(&pos->rb));
-@@ -1368,11 +1359,13 @@ static void __kernfs_remove(struct kernfs_node *kn)
- 
- 	pr_debug("kernfs %s: removing\n", kn->name);
- 
--	/* prevent any new usage under @kn by deactivating all nodes */
-+	/* prevent new usage by marking all nodes removing and deactivating */
- 	pos = NULL;
--	while ((pos = kernfs_next_descendant_post(pos, kn)))
-+	while ((pos = kernfs_next_descendant_post(pos, kn))) {
-+		pos->flags |= KERNFS_REMOVING;
- 		if (kernfs_active(pos))
- 			atomic_add(KN_DEACTIVATED_BIAS, &pos->active);
-+	}
- 
- 	/* deactivate and unlink the subtree node-by-node */
- 	do {
-diff --git a/include/linux/kernfs.h b/include/linux/kernfs.h
-index 367044d..b77d257 100644
---- a/include/linux/kernfs.h
-+++ b/include/linux/kernfs.h
-@@ -112,6 +112,7 @@ enum kernfs_node_flag {
- 	KERNFS_SUICIDED		= 0x0800,
- 	KERNFS_EMPTY_DIR	= 0x1000,
- 	KERNFS_HAS_RELEASE	= 0x2000,
-+	KERNFS_REMOVING		= 0x4000,
- };
- 
- /* @flags for kernfs_create_root() */
+ 		/*
+ 		 * kernfs_unlink_sibling() succeeds once per node.  Use it
