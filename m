@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A1F5B9CBD
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Sep 2022 16:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09E8B5B9CF6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Sep 2022 16:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229977AbiIOOQo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Sep 2022 10:16:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48382 "EHLO
+        id S230109AbiIOOXs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Sep 2022 10:23:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229964AbiIOOQn (ORCPT
+        with ESMTP id S229999AbiIOOXp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Sep 2022 10:16:43 -0400
+        Thu, 15 Sep 2022 10:23:45 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7669F87698;
-        Thu, 15 Sep 2022 07:16:42 -0700 (PDT)
-Date:   Thu, 15 Sep 2022 14:16:39 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44CA02F001;
+        Thu, 15 Sep 2022 07:23:44 -0700 (PDT)
+Date:   Thu, 15 Sep 2022 14:23:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1663251400;
+        s=2020; t=1663251822;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Jhzu1+v7uFVsKXwmhR6tjPzO3KtJ3NcI1K7SlbCVxsA=;
-        b=LV539zP4+IjA0y/AHME63ScYMfhQ0jpF02FFeNyCQuh9HIccThLjAHjuz/Ck7KwqitKjwK
-        T+2JPtgc3/UNmnkc3JCGXzQ1Aig0wkjEypa6UKUuQzbU75g18F9hqekhypdgvy3TGqD7qC
-        Dfdki14LAY75EvoVlJaFIAaPTViX9UpaeZoyeOIZPLwplC8T63jzUIyNStpsp4uX05P45O
-        rotcvWa7jVRfsSr0BkUTaH8dh4Hv/CCyak8J3Qih544aZUMyzhiym8amZeELQX/bVFvM9e
-        Y8y7dOoOMsbTYNG9f7uiiaLwKsbZpnrJC+fKWK93CwfTjZ/K0mIDeD+wFVh14Q==
+        bh=BwlUJp0ha5hGvi4OuVHKyiA3BjHfx9/RXMl32q15g0Y=;
+        b=jkG0cgBqHPyDV3nA9i+Zwll6End0qxGYo286+O7qtretIinsge5B8/oWVvRNHA5tc4Ie2O
+        ADNOvqJuTVYOvY+DL7u5ovNIpn8KY9RGyRqOXp011EFJC47xo0JA70NA60IruV8OJMsi6t
+        ZF6AFR8DeVRhZkg4MdZ5RS8cAWFf340O0M45xMBm4BvInbXFJEMUN8K9IQX9lXy/KTTcf9
+        mKk40nKYiZfjmZ/f/V8IetmuDJBzfVe+IkgAH1pra990j44JmkgNaFdaRBArY4Iidq8PRF
+        dWLQpgvM/qhbcAyipIuxRhNGFqODyrbOQflSs/GP9QJkKMGNJPsWFwXVLncJeQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1663251400;
+        s=2020e; t=1663251822;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Jhzu1+v7uFVsKXwmhR6tjPzO3KtJ3NcI1K7SlbCVxsA=;
-        b=KO7XcvONVteC9DLws+HzN2mRr7Fq6JULRFse/RfrfVvHVjw8Xn9JsIho4rxTjFovBHBGga
-        +KIqt4DnOmLmwvBw==
+        bh=BwlUJp0ha5hGvi4OuVHKyiA3BjHfx9/RXMl32q15g0Y=;
+        b=pOVCeMnIH1ZSzj/TJ6oaTWD7FlfTyXLUTWaFqf2Aja2a19eiK5US2sD3JySGYSQ8eCziH5
+        k4joppKih5jd78Dg==
 From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Use sample_flags for callchain
+Subject: [tip: locking/core] locking: Add __sched to semaphore functions
 Cc:     Namhyung Kim <namhyung@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220908214104.3851807-1-namhyung@kernel.org>
-References: <20220908214104.3851807-1-namhyung@kernel.org>
+In-Reply-To: <20220909000803.4181857-1-namhyung@kernel.org>
+References: <20220909000803.4181857-1-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <166325139947.401.10004497239790476169.tip-bot2@tip-bot2>
+Message-ID: <166325182156.401.3796755990517584127.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,84 +64,82 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     3749d33e510c3dc695b3a5886b706310890d7ebd
-Gitweb:        https://git.kernel.org/tip/3749d33e510c3dc695b3a5886b706310890d7ebd
+Commit-ID:     0d97db026509c1a13f732b22670ab1f0ac9d8d87
+Gitweb:        https://git.kernel.org/tip/0d97db026509c1a13f732b22670ab1f0ac9d8d87
 Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Thu, 08 Sep 2022 14:41:02 -07:00
+AuthorDate:    Thu, 08 Sep 2022 17:08:03 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 13 Sep 2022 15:03:22 +02:00
+CommitterDate: Thu, 15 Sep 2022 16:14:03 +02:00
 
-perf: Use sample_flags for callchain
+locking: Add __sched to semaphore functions
 
-So that it can call perf_callchain() only if needed.  Historically it used
-__PERF_SAMPLE_CALLCHAIN_EARLY but we can do that with sample_flags in the
-struct perf_sample_data.
+The internal functions are marked with __sched already, let's do the same
+for external functions too so that we can skip them in the stack trace.
 
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220908214104.3851807-1-namhyung@kernel.org
+Link: https://lkml.kernel.org/r/20220909000803.4181857-1-namhyung@kernel.org
 ---
- arch/x86/events/amd/ibs.c  | 4 +++-
- arch/x86/events/intel/ds.c | 8 ++++++--
- kernel/events/core.c       | 2 +-
- 3 files changed, 10 insertions(+), 4 deletions(-)
+ kernel/locking/semaphore.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index c251bc4..dab0941 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -798,8 +798,10 @@ fail:
- 	 * recorded as part of interrupt regs. Thus we need to use rip from
- 	 * interrupt regs while unwinding call stack.
- 	 */
--	if (event->attr.sample_type & PERF_SAMPLE_CALLCHAIN)
-+	if (event->attr.sample_type & PERF_SAMPLE_CALLCHAIN) {
- 		data.callchain = perf_callchain(event, iregs);
-+		data.sample_flags |= PERF_SAMPLE_CALLCHAIN;
-+	}
+diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
+index f2654d2..34bfae7 100644
+--- a/kernel/locking/semaphore.c
++++ b/kernel/locking/semaphore.c
+@@ -51,7 +51,7 @@ static noinline void __up(struct semaphore *sem);
+  * Use of this function is deprecated, please use down_interruptible() or
+  * down_killable() instead.
+  */
+-void down(struct semaphore *sem)
++void __sched down(struct semaphore *sem)
+ {
+ 	unsigned long flags;
  
- 	throttle = perf_event_overflow(event, &data, &regs);
- out:
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index a5275c2..4ba6ab6 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -1546,8 +1546,10 @@ static void setup_pebs_fixed_sample_data(struct perf_event *event,
- 	 * previous PMI context or an (I)RET happened between the record and
- 	 * PMI.
- 	 */
--	if (sample_type & PERF_SAMPLE_CALLCHAIN)
-+	if (sample_type & PERF_SAMPLE_CALLCHAIN) {
- 		data->callchain = perf_callchain(event, iregs);
-+		data->sample_flags |= PERF_SAMPLE_CALLCHAIN;
-+	}
+@@ -74,7 +74,7 @@ EXPORT_SYMBOL(down);
+  * If the sleep is interrupted by a signal, this function will return -EINTR.
+  * If the semaphore is successfully acquired, this function returns 0.
+  */
+-int down_interruptible(struct semaphore *sem)
++int __sched down_interruptible(struct semaphore *sem)
+ {
+ 	unsigned long flags;
+ 	int result = 0;
+@@ -101,7 +101,7 @@ EXPORT_SYMBOL(down_interruptible);
+  * -EINTR.  If the semaphore is successfully acquired, this function returns
+  * 0.
+  */
+-int down_killable(struct semaphore *sem)
++int __sched down_killable(struct semaphore *sem)
+ {
+ 	unsigned long flags;
+ 	int result = 0;
+@@ -131,7 +131,7 @@ EXPORT_SYMBOL(down_killable);
+  * Unlike mutex_trylock, this function can be used from interrupt context,
+  * and the semaphore can be released by any task or interrupt.
+  */
+-int down_trylock(struct semaphore *sem)
++int __sched down_trylock(struct semaphore *sem)
+ {
+ 	unsigned long flags;
+ 	int count;
+@@ -156,7 +156,7 @@ EXPORT_SYMBOL(down_trylock);
+  * If the semaphore is not released within the specified number of jiffies,
+  * this function returns -ETIME.  It returns 0 if the semaphore was acquired.
+  */
+-int down_timeout(struct semaphore *sem, long timeout)
++int __sched down_timeout(struct semaphore *sem, long timeout)
+ {
+ 	unsigned long flags;
+ 	int result = 0;
+@@ -180,7 +180,7 @@ EXPORT_SYMBOL(down_timeout);
+  * Release the semaphore.  Unlike mutexes, up() may be called from any
+  * context and even by tasks which have never called down().
+  */
+-void up(struct semaphore *sem)
++void __sched up(struct semaphore *sem)
+ {
+ 	unsigned long flags;
  
- 	/*
- 	 * We use the interrupt regs as a base because the PEBS record does not
-@@ -1719,8 +1721,10 @@ static void setup_pebs_adaptive_sample_data(struct perf_event *event,
- 	 * previous PMI context or an (I)RET happened between the record and
- 	 * PMI.
- 	 */
--	if (sample_type & PERF_SAMPLE_CALLCHAIN)
-+	if (sample_type & PERF_SAMPLE_CALLCHAIN) {
- 		data->callchain = perf_callchain(event, iregs);
-+		data->sample_flags |= PERF_SAMPLE_CALLCHAIN;
-+	}
- 
- 	*regs = *iregs;
- 	/* The ip in basic is EventingIP */
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 3e90e45..c98ecf3 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7320,7 +7320,7 @@ void perf_prepare_sample(struct perf_event_header *header,
- 	if (sample_type & PERF_SAMPLE_CALLCHAIN) {
- 		int size = 1;
- 
--		if (!(sample_type & __PERF_SAMPLE_CALLCHAIN_EARLY))
-+		if (filtered_sample_type & PERF_SAMPLE_CALLCHAIN)
- 			data->callchain = perf_callchain(event, regs);
- 
- 		size += data->callchain->nr;
