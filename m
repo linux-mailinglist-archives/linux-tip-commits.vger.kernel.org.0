@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 571745BCBEE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Sep 2022 14:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E32BC5BCD18
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Sep 2022 15:26:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230009AbiISMiG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Sep 2022 08:38:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42762 "EHLO
+        id S230509AbiISN0N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Sep 2022 09:26:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbiISMiC (ORCPT
+        with ESMTP id S230510AbiISN0F (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Sep 2022 08:38:02 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 941EC2DABE;
-        Mon, 19 Sep 2022 05:38:01 -0700 (PDT)
-Date:   Mon, 19 Sep 2022 12:37:58 -0000
+        Mon, 19 Sep 2022 09:26:05 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B58132E6A0;
+        Mon, 19 Sep 2022 06:25:51 -0700 (PDT)
+Date:   Mon, 19 Sep 2022 13:25:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1663591080;
+        s=2020; t=1663593949;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=s9+DmRLo6FQ1BHsjnz0nCbP6aY7Xhz8oqe7ztOlilD0=;
-        b=OSWbFZDP1GZzOSnJk9PmLtwRiv5ByticHwI0keCZZpx6IGCGYJjBkpigfu7uduLjUv2klf
-        m6IRxZML76uD/EJZl/DjdM+dxHFOSHnLmfDWFCtVKaCC4U/jikrcST2JKbRuXzh7n7qb6y
-        LeHXRoY1A83AsGumy/Wv3u5cbNL+W5bfDHi6b/OqTuJFmNb8NgJRcwau/6j/kmXxkUzutj
-        x6F8kGqYMjvyVoGqxTa7pbQDtwZ10QxPJBlnmcJGQ6Jq2TOZPjLO0qBjUEz8I/mCTw6eSZ
-        Hg31PH7ClbTm/H5vFAUwd6YqEsbAE0ztGeHnWopuL+WcIu0WKzv7G60k3l441g==
+        bh=TI62/gxswWvoqRf/CjBCtWirkvO0DCMeR9WFLDT87aE=;
+        b=1bfEQk3ey1J+XOJwWrSBx+tJEKZ8BDtXOaRvn6kWDNm87MJi078m3+RTF/ShX8K8m0LmPb
+        YgTf5xxWihhBVN4aCle2cldvA8nlFvHLyq5po4dUZ9QALPqmEHut2WB1Iak/j6bkGbFnG7
+        7NKOXz0cf8PKr0DsyKS5V1/EnVRjq+w0oTRA40VgSuQnG8Y0nxeBCUjYxwfc/sYGjhBqMy
+        RG4tP4jvUaFY1M1my0JcK/83fEFegEI7QnTIalxIPfcg0lCy3VWyUaZH2E0fyeBBANkcEJ
+        jWTwnvjt9IhBdTfDM6Zvu3Y66fJkfA0LTEVp7dcbUpS+DhGfXHoS0bZOcGfhfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1663591080;
+        s=2020e; t=1663593949;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=s9+DmRLo6FQ1BHsjnz0nCbP6aY7Xhz8oqe7ztOlilD0=;
-        b=a38A3lvkPOfjweAax/dyMD3ynQ8cGIYK/5iHAxPm4cJ0bWS2UYtI/mkd1iY4YugZQ4lBN4
-        J+y85T27mWmmoADQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=TI62/gxswWvoqRf/CjBCtWirkvO0DCMeR9WFLDT87aE=;
+        b=4C2RBBIW2is3dr1tpAgf3vekCOxkr7476TvzB/G94otjwQVA09IWenKcL9nQo9/EoA98/u
+        f+PT3V08yzlj3YAw==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/rt] preempt: Provide preempt_[dis|en]able_nested()
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220825164131.402717-2-bigeasy@linutronix.de>
-References: <20220825164131.402717-2-bigeasy@linutronix.de>
+Subject: [tip: irq/core] bcma: gpio: Use generic_handle_irq_safe()
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <YnkfWFzvusFFktSt@linutronix.de>
+References: <YnkfWFzvusFFktSt@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <166359107896.401.2211439257484206458.tip-bot2@tip-bot2>
+Message-ID: <166359394784.401.3409947686571906652.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,88 +64,44 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/rt branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     555bb4ccd1dd78d0263eae31629fe1fdd65c1fb5
-Gitweb:        https://git.kernel.org/tip/555bb4ccd1dd78d0263eae31629fe1fdd65c1fb5
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 25 Aug 2022 18:41:24 +02:00
+Commit-ID:     94ec234a16cf3acdb319f05917b1efec9642222e
+Gitweb:        https://git.kernel.org/tip/94ec234a16cf3acdb319f05917b1efec9642222e
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Mon, 19 Sep 2022 14:46:16 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 19 Sep 2022 14:35:07 +02:00
+CommitterDate: Mon, 19 Sep 2022 15:08:39 +02:00
 
-preempt: Provide preempt_[dis|en]able_nested()
+bcma: gpio: Use generic_handle_irq_safe()
 
-On PREEMPT_RT enabled kernels, spinlocks and rwlocks are neither disabling
-preemption nor interrupts. Though there are a few places which depend on
-the implicit preemption/interrupt disable of those locks, e.g. seqcount
-write sections, per CPU statistics updates etc.
+On PREEMPT_RT enabled kernels the demultiplex interrupt handler is force
+threaded and runs with interrupts enabled. The invocation of
+generic_handle_irq() with interrupts enabled triggers a lockdep warning due
+to a non-irq safe lock acquisition.
 
-To avoid sprinkling CONFIG_PREEMPT_RT conditionals all over the place, add
-preempt_disable_nested() and preempt_enable_nested() which should be
-descriptive enough.
+Instead of disabling interrupts on the driver level, use
+generic_handle_domain_irq_safe().
 
-Add a lockdep assertion for the !PREEMPT_RT case to catch callers which
-do not have preemption disabled.
+[ tglx: Split out from combo patch ]
 
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220825164131.402717-2-bigeasy@linutronix.de
-
+Link: https://lore.kernel.org/r/YnkfWFzvusFFktSt@linutronix.de
 ---
- include/linux/preempt.h | 42 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+)
+ drivers/bcma/driver_gpio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-index b4381f2..0df425b 100644
---- a/include/linux/preempt.h
-+++ b/include/linux/preempt.h
-@@ -421,4 +421,46 @@ static inline void migrate_enable(void) { }
+diff --git a/drivers/bcma/driver_gpio.c b/drivers/bcma/driver_gpio.c
+index fac8ff9..65fb9ba 100644
+--- a/drivers/bcma/driver_gpio.c
++++ b/drivers/bcma/driver_gpio.c
+@@ -115,7 +115,7 @@ static irqreturn_t bcma_gpio_irq_handler(int irq, void *dev_id)
+ 		return IRQ_NONE;
  
- #endif /* CONFIG_SMP */
+ 	for_each_set_bit(gpio, &irqs, gc->ngpio)
+-		generic_handle_irq(irq_find_mapping(gc->irq.domain, gpio));
++		generic_handle_domain_irq_safe(gc->irq.domain, gpio);
+ 	bcma_chipco_gpio_polarity(cc, irqs, val & irqs);
  
-+/**
-+ * preempt_disable_nested - Disable preemption inside a normally preempt disabled section
-+ *
-+ * Use for code which requires preemption protection inside a critical
-+ * section which has preemption disabled implicitly on non-PREEMPT_RT
-+ * enabled kernels, by e.g.:
-+ *  - holding a spinlock/rwlock
-+ *  - soft interrupt context
-+ *  - regular interrupt handlers
-+ *
-+ * On PREEMPT_RT enabled kernels spinlock/rwlock held sections, soft
-+ * interrupt context and regular interrupt handlers are preemptible and
-+ * only prevent migration. preempt_disable_nested() ensures that preemption
-+ * is disabled for cases which require CPU local serialization even on
-+ * PREEMPT_RT. For non-PREEMPT_RT kernels this is a NOP.
-+ *
-+ * The use cases are code sequences which are not serialized by a
-+ * particular lock instance, e.g.:
-+ *  - seqcount write side critical sections where the seqcount is not
-+ *    associated to a particular lock and therefore the automatic
-+ *    protection mechanism does not work. This prevents a live lock
-+ *    against a preempting high priority reader.
-+ *  - RMW per CPU variable updates like vmstat.
-+ */
-+/* Macro to avoid header recursion hell vs. lockdep */
-+#define preempt_disable_nested()				\
-+do {								\
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT))			\
-+		preempt_disable();				\
-+	else							\
-+		lockdep_assert_preemption_disabled();		\
-+} while (0)
-+
-+/**
-+ * preempt_enable_nested - Undo the effect of preempt_disable_nested()
-+ */
-+static __always_inline void preempt_enable_nested(void)
-+{
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-+		preempt_enable();
-+}
-+
- #endif /* __LINUX_PREEMPT_H */
+ 	return IRQ_HANDLED;
