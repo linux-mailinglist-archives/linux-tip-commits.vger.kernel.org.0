@@ -2,144 +2,132 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4CB25BFC8C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Sep 2022 12:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4412B5BFCC2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Sep 2022 13:08:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229498AbiIUKoo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 21 Sep 2022 06:44:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53178 "EHLO
+        id S229572AbiIULIt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 21 Sep 2022 07:08:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbiIUKon (ORCPT
+        with ESMTP id S229519AbiIULIs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 21 Sep 2022 06:44:43 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F0C1A39A;
-        Wed, 21 Sep 2022 03:44:39 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id lc7so12809971ejb.0;
-        Wed, 21 Sep 2022 03:44:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date;
-        bh=w7PGwburogAz+tHaI9/Ru4EmAnC85TTzky0ZESiUE0w=;
-        b=Lpcq+E1YhVeP1MqV3JpUJZERvU+wWHpYRa2MbIkg5jy9N4Om2K5Hewc68RgeFX+7Ma
-         oBl2s0W4pfKYN/ipe1vafUPn+NEVKwwnGk1Gu5PYLNEFyerEt44A2pqlcQQpMNGbunQ7
-         t8zBcei/9Y7gDKC560vbAkC2fBW2fVhDb859Y2LbcQloGkLv8e6jKCfjy28Z7rYu4oj/
-         1bM6ZTDcQKwcOviZn3PqgpJAGvVfRJvwRWnldYTgWcbe9+osWe0k8fQNe04P/XJfacbz
-         AlCEfOnXjkc7xRaxtmoYUetgJzGUQ5EZgA1vgUn9mvGRwYssZ9QO4qGwY8OWsOVCwDjA
-         4qBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=w7PGwburogAz+tHaI9/Ru4EmAnC85TTzky0ZESiUE0w=;
-        b=GQdVyjMuX+qXn00Vn+LvMV8BXmqIjk+FE7gKh7WqX6e6Y56CPc/8ad7us/LoWG+ff/
-         3Ba3OduOmjM7pTvSZqm145LIF/KChkzzu8mZqrf6FcrzFSV6J52wzjtrvTRaJ93bQDne
-         uVDx5OX9fGD0XxgsHGLyooALBBLvEWmBIz7o9JySpG7JI0nYEEwCtvO4HELjkRc+QEK6
-         O4dfTh8FmuhiSfqVCtxMH5e/FS6uWd6CZCu1MV/w3vIG2jsUscTjddF3iQuPeZalphxW
-         RK17QGMXF82qJA+35vLFuhL5yi6C9ennVg1NTjH7mGC8TaXFMjN28kuY9+yLwl3mDw5x
-         mz9Q==
-X-Gm-Message-State: ACrzQf1e9XnAL4EIaEPEZGnuYMrkEm08IQhM8PIopLgKm56w84n8XRsC
-        1D09l4oxvGfLSKe4sJjHVTM=
-X-Google-Smtp-Source: AMsMyM5CVTm4fuPMNeJiR110kEjHNzaklBpIGZlULXsVe9PwIEcKWLn2gtZ8j2hJcVcrPw3G0VotWw==
-X-Received: by 2002:a17:907:7f02:b0:73d:dffa:57b3 with SMTP id qf2-20020a1709077f0200b0073ddffa57b3mr21316561ejc.19.1663757078052;
-        Wed, 21 Sep 2022 03:44:38 -0700 (PDT)
-Received: from gmail.com (1F2EF035.nat.pool.telekom.hu. [31.46.240.53])
-        by smtp.gmail.com with ESMTPSA id 16-20020a170906309000b0073d70df6e56sm1106402ejv.138.2022.09.21.03.44.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Sep 2022 03:44:37 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Wed, 21 Sep 2022 12:44:35 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Jules Irenge <jbi.octave@gmail.com>, x86@kernel.org
-Subject: Re: [tip: perf/core] perf/core: Convert snprintf() to scnprintf()
-Message-ID: <YyrrE8vpFSR+kdHQ@gmail.com>
-References: <166374773592.401.16831946846027095231.tip-bot2@tip-bot2>
- <YyrMmyUPk+4t6OLm@hirez.programming.kicks-ass.net>
+        Wed, 21 Sep 2022 07:08:48 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25699883FA;
+        Wed, 21 Sep 2022 04:08:47 -0700 (PDT)
+Date:   Wed, 21 Sep 2022 11:08:44 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1663758525;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=R6IdUAA72JC+9QspugHblhVYOSavYtHKl6EUF8PcDRA=;
+        b=vMC3w7M3b4Ux2k5MObbwT8dQjZC/Qsit6sM1sC6LMhUC6aUZiiCSViHsxx6YvOfNry6tqP
+        h7kCloQ/9yQc5ZW47wsExZfGIgjh0TTCeS4j760d/dZ73bHFQsRpVvSrozgFLwrsoy4spM
+        gL8mevH/xHIuGy45kOZXRkTqFZfjBT33b9/2aLchcBYGBCtmvsTvQufHx/oW3D670nJy7c
+        +6Hw0pXwdjhekV7JJqmK0+R8VEcGNwUv7JWnsTxTYx/Tu8cl7G5ToqMbRP9nMUSh1NFYda
+        c6kUDz6mvMsQ+aE9g7PYZc51DRT1JCkNS1U9p8xuEqq2uJ10gaRoXCba52CfeQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1663758525;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=R6IdUAA72JC+9QspugHblhVYOSavYtHKl6EUF8PcDRA=;
+        b=Ptexk5Huf90i4Nb2m8z+bxmk5a6KRkm/+2beKQhaZIiw7ldCWVoDUKDT3VM9yQHxwK5SgZ
+        KQLs/B+Ft3GVUjCA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/paravirt] x86/paravirt: Ensure proper alignment
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Borislav Petkov <bp@suse.de>, Juergen Gross <jgross@suse.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220915111142.992398801@infradead.org>
+References: <20220915111142.992398801@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YyrMmyUPk+4t6OLm@hirez.programming.kicks-ass.net>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Message-ID: <166375852413.401.16417392487442437882.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the x86/paravirt branch of tip:
 
-* Peter Zijlstra <peterz@infradead.org> wrote:
+Commit-ID:     f92ff8f5dca2acfa475842c71212657b0703c3be
+Gitweb:        https://git.kernel.org/tip/f92ff8f5dca2acfa475842c71212657b0703c3be
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 15 Sep 2022 13:10:40 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 21 Sep 2022 12:30:16 +02:00
 
-> On Wed, Sep 21, 2022 at 08:08:55AM -0000, tip-bot2 for Jules Irenge wrote:
-> > The following commit has been merged into the perf/core branch of tip:
-> > 
-> > Commit-ID:     678739d622ae7b75b62d550858b6bf104c43e2df
-> > Gitweb:        https://git.kernel.org/tip/678739d622ae7b75b62d550858b6bf104c43e2df
-> > Author:        Jules Irenge <jbi.octave@gmail.com>
-> > AuthorDate:    Sun, 18 Sep 2022 00:41:08 +01:00
-> > Committer:     Ingo Molnar <mingo@kernel.org>
-> > CommitterDate: Wed, 21 Sep 2022 10:01:20 +02:00
-> > 
-> > perf/core: Convert snprintf() to scnprintf()
-> > 
-> > Coccinelle reports a warning:
-> > 
-> >     WARNING: use scnprintf or sprintf
-> > 
-> > Adding to that, there has also been some slow migration from snprintf to scnprintf.
-> > 
-> > This LWN article explains the rationale for this change:
-> > 
-> >     https: //lwn.net/Articles/69419/
-> > 
-> > No change in behavior.
-> > 
-> > [ mingo: Improved the changelog. ]
-> 
-> And yet, at this point I still have no clue what's wrong with
-> snprintf(). So not much improvement :/
+x86/paravirt: Ensure proper alignment
 
-I've added this to the changelog:
+The entries in the .parainstructions sections are 8 byte aligned and the
+corresponding C struct paravirt_patch_site makes the array offset 16
+bytes.
 
-    perf/core: Convert snprintf() to scnprintf()
-    
-    Coccinelle reports a warning:
-    
-        WARNING: use scnprintf or sprintf
-    
-    This LWN article explains the rationale for this change:
-    
-        https: //lwn.net/Articles/69419/
-    
-    Ie. snprintf() returns what *would* be the resulting length,
-    while scnprintf() returns the actual length.
-    
-    Adding to that, there has also been some slow migration from snprintf to scnprintf,
-    here's the shift in usage in the past 3.5 years, in all fs/ files:
-    
-                             v5.0    v6.0-rc6
-       --------------------------------------
-       snprintf() uses:        63         213
-       scnprintf() uses:      374         186
-    
-    No intended change in behavior.
+Though the pushed entries are only using 12 bytes, __parainstructions_end
+is therefore 4 bytes short.
 
-I also reviewed the usage sites - this patch could in fact be a bugfix as 
-we are passing back these lengths to the VFS, which lengths are arguably 
-bogus in the snprintf() case, should we ever get close to the buffer limits 
-to trigger output truncation - which with PAGE_SIZE-1 is very unlikely.
+That works by chance because it's only used in a loop:
 
-[ Anyway, the shift in interface usage for FS code makes it pretty clear 
-  that when in doubt we should use scnprintf() for FS code. snprintf() is 
-  arguably actively dangerous whenever it works differently from sprintf() 
-  ... ]
+     for (p = start; p < end; p++)
 
-Thanks,
+But this falls flat when calculating the number of elements:
 
-	Ingo
+    n = end - start
+
+That's obviously off by one.
+
+Ensure that the gap is filled and the last entry is occupying 16 bytes.
+
+  [ bp: Add the proper struct and section names. ]
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20220915111142.992398801@infradead.org
+---
+ arch/x86/include/asm/paravirt.h       | 1 +
+ arch/x86/include/asm/paravirt_types.h | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+index 964442b..2a0b8dd 100644
+--- a/arch/x86/include/asm/paravirt.h
++++ b/arch/x86/include/asm/paravirt.h
+@@ -743,6 +743,7 @@ extern void default_banner(void);
+ 	 word 771b;				\
+ 	 .byte ptype;				\
+ 	 .byte 772b-771b;			\
++	 _ASM_ALIGN;				\
+ 	.popsection
+ 
+ 
+diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
+index 89df6c6..27b036a 100644
+--- a/arch/x86/include/asm/paravirt_types.h
++++ b/arch/x86/include/asm/paravirt_types.h
+@@ -294,6 +294,7 @@ extern struct paravirt_patch_template pv_ops;
+ 	"  .byte " type "\n"				\
+ 	"  .byte 772b-771b\n"				\
+ 	"  .short " clobber "\n"			\
++	_ASM_ALIGN "\n"					\
+ 	".popsection\n"
+ 
+ /* Generate patchable code, with the default asm parameters. */
