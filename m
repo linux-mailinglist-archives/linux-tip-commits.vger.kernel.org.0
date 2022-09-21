@@ -2,50 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36A505BF7F6
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Sep 2022 09:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31D985BF887
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Sep 2022 10:02:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229979AbiIUHlq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 21 Sep 2022 03:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33770 "EHLO
+        id S231338AbiIUIBz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 21 Sep 2022 04:01:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230352AbiIUHla (ORCPT
+        with ESMTP id S229677AbiIUIBd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 21 Sep 2022 03:41:30 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B673C38465;
-        Wed, 21 Sep 2022 00:41:28 -0700 (PDT)
-Date:   Wed, 21 Sep 2022 07:41:25 -0000
+        Wed, 21 Sep 2022 04:01:33 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CF3B868BB;
+        Wed, 21 Sep 2022 01:01:30 -0700 (PDT)
+Date:   Wed, 21 Sep 2022 08:01:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1663746087;
+        s=2020; t=1663747288;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=wu+BruCALwUpD2lDrO0YO7yShipqAZGwJY0ERPsOUY4=;
-        b=t8cD8SuSvSXXGZnw9H+BILREcgc+qggDovQeBCXDLqsPgVTJqu1g4ahLfz02dnJQHKRtgs
-        KIB4TkkrJTl8LHf0kgXKQQ+MLtIhgjFhNsHGvivuZu+/jVuHFQCBXW0xhr8yjSHwWs4dV0
-        2gURhneRzXx3BerMcKlBZxEkvJgS9qEhfmdosr+BH33scnrmUxf5O7J0lDcYfvEpNrt18f
-        I+umE5orI/u5YRXNpvlBUGExREbdjI3OCByNRyIKaZObxxvjMoETv0JpfIfFZ+Ea4quAru
-        8Y5rEOmJJy13jO3lgiPBJ3x9bkYTVS7SJIMLHvDI67sBBenpnrsFAJ4TO0BJiw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=os0yK4GP2z/n8Z71HCh3AJyvHSnUpgK6AB5SIry3Q40=;
+        b=UP2pdNFZagRUG7lM93JW6L9RqLj5vTTLp2XxM9BeAwnNJIJqjvgt0Cz9Vk7Eqkj6oT33Mt
+        bYUeYyGmR/Fv5g3OgO38E9g06dMzqnasFRQhHtnXvO36IIqZVMxbnXWz/HM8tHAW66cqYu
+        Fe3Bdmf89XB3zlAVX6vzWjQr/ox8BQYKyRRS5AHzmBlt9fPFoUu3VsVgJsQwHhgIKKYoca
+        9fMzqOSjYiw0CNgq9eyVVKdv8xSHw7CzhLeTzmKvLvliQycBK/DHwbWmZG3rgxkKr1pM1l
+        DM00T447YSiCUIsYBbhDUhV6ogc7PhxHqLOwY5S8m55/IUb0MYXNZTsFbkWNSA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1663746087;
+        s=2020e; t=1663747288;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=wu+BruCALwUpD2lDrO0YO7yShipqAZGwJY0ERPsOUY4=;
-        b=F/FK704gs6pyI0QchpM2MS3c2umoQwZ5K/EnbUHkXcub3JL/TQyp/SFasNPXmaMNfWSyeI
-        f6dt44qItdxtHTDg==
-From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=os0yK4GP2z/n8Z71HCh3AJyvHSnUpgK6AB5SIry3Q40=;
+        b=nseuQzJ0orOwMM1kun0gI1y4e3d28pSzCr+O4OaKNy8NnOvClkdcQ+MGM2heF79Iqmu3lY
+        cX3V8eUMJyUsm4DA==
+From:   "tip-bot2 for Tetsuo Handa" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm/32: Fix W^X detection when page tables do not support NX
-Cc:     kernel test robot <yujie.liu@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
+Subject: [tip: locking/core] locking/lockdep: Print more debug information -
+ report name and key when look_up_lock_class() got confused
+Cc:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <bd99391e-f787-efe9-5ec6-3c6dc4c587b0@I-love.SAKURA.ne.jp>
+References: <bd99391e-f787-efe9-5ec6-3c6dc4c587b0@I-love.SAKURA.ne.jp>
 MIME-Version: 1.0
-Message-ID: <166374608563.401.6842745762071109491.tip-bot2@tip-bot2>
+Message-ID: <166374728690.401.4563412884155961056.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,57 +65,48 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     9377ad7b61bff3abfb375d307770d6aa454bc516
-Gitweb:        https://git.kernel.org/tip/9377ad7b61bff3abfb375d307770d6aa454bc516
-Author:        Dave Hansen <dave.hansen@intel.com>
-AuthorDate:    Tue, 20 Sep 2022 11:54:54 -07:00
+Commit-ID:     76e64c73db9542ff4bae8a60f4f32e38f3799b95
+Gitweb:        https://git.kernel.org/tip/76e64c73db9542ff4bae8a60f4f32e38f3799b95
+Author:        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+AuthorDate:    Mon, 19 Sep 2022 09:52:13 +09:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 21 Sep 2022 09:32:55 +02:00
+CommitterDate: Wed, 21 Sep 2022 09:58:21 +02:00
 
-x86/mm/32: Fix W^X detection when page tables do not support NX
+locking/lockdep: Print more debug information - report name and key when look_up_lock_class() got confused
 
-The x86 MM code now actively refuses to create writable+executable mappings,
-and warns when there is an attempt to create one.
+Printing this information will be helpful:
 
-The 0day test robot ran across a warning triggered by module unloading on
-32-bit kernels.  This was only seen on CPUs with NX support, but where a
-32-bit kernel was built without PAE support.
+  ------------[ cut here ]------------
+  Looking for class "l2tp_sock" with key l2tp_socket_class, but found a different class "slock-AF_INET6" with the same key
+  WARNING: CPU: 1 PID: 14195 at kernel/locking/lockdep.c:940 look_up_lock_class+0xcc/0x140
+  Modules linked in:
+  CPU: 1 PID: 14195 Comm: a.out Not tainted 6.0.0-rc6-dirty #863
+  Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+  RIP: 0010:look_up_lock_class+0xcc/0x140
 
-On those systems, there is no room for the NX bit in the page
-tables and _PAGE_NX is #defined to 0, breaking some of the W^X
-detection logic in verify_rwx().  The X86_FEATURE_NX check in
-there does not do any good here because the CPU itself supports
-NX.
-
-Fix it by checking for _PAGE_NX support directly instead of
-checking CPU support for NX.
-
-Note that since _PAGE_NX is actually defined to be 0 at
-compile-time this fix should also end up letting the compiler
-optimize away most of verify_rwx() on non-PAE kernels.
-
-Fixes: 652c5bf380ad ("x86/mm: Refuse W^X violations")
-Reported-by: kernel test robot <yujie.liu@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/all/fcf89147-440b-e478-40c9-228c9fe56691@intel.com/
+Link: https://lore.kernel.org/r/bd99391e-f787-efe9-5ec6-3c6dc4c587b0@I-love.SAKURA.ne.jp
 ---
- arch/x86/mm/pat/set_memory.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/locking/lockdep.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 1a2d637..20b1e24 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -587,7 +587,8 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
- {
- 	unsigned long end;
- 
--	if (!cpu_feature_enabled(X86_FEATURE_NX))
-+	/* Only enforce when NX is supported: */
-+	if (!(__supported_pte_mask & _PAGE_NX))
- 		return new;
- 
- 	if (!((pgprot_val(old) ^ pgprot_val(new)) & (_PAGE_RW | _PAGE_NX)))
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 64a13eb..e3375bc 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -934,8 +934,10 @@ look_up_lock_class(const struct lockdep_map *lock, unsigned int subclass)
+ 			 * Huh! same key, different name? Did someone trample
+ 			 * on some memory? We're most confused.
+ 			 */
+-			WARN_ON_ONCE(class->name != lock->name &&
+-				     lock->key != &__lockdep_no_validate__);
++			WARN_ONCE(class->name != lock->name &&
++				  lock->key != &__lockdep_no_validate__,
++				  "Looking for class \"%s\" with key %ps, but found a different class \"%s\" with the same key\n",
++				  lock->name, lock->key, class->name);
+ 			return class;
+ 		}
+ 	}
