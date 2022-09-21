@@ -2,56 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31D985BF887
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Sep 2022 10:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F242B5BF89E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Sep 2022 10:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231338AbiIUIBz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 21 Sep 2022 04:01:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40518 "EHLO
+        id S229970AbiIUIJA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 21 Sep 2022 04:09:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229677AbiIUIBd (ORCPT
+        with ESMTP id S229918AbiIUII7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 21 Sep 2022 04:01:33 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CF3B868BB;
-        Wed, 21 Sep 2022 01:01:30 -0700 (PDT)
-Date:   Wed, 21 Sep 2022 08:01:26 -0000
+        Wed, 21 Sep 2022 04:08:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9A1B80EA3;
+        Wed, 21 Sep 2022 01:08:58 -0700 (PDT)
+Date:   Wed, 21 Sep 2022 08:08:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1663747288;
+        s=2020; t=1663747737;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=os0yK4GP2z/n8Z71HCh3AJyvHSnUpgK6AB5SIry3Q40=;
-        b=UP2pdNFZagRUG7lM93JW6L9RqLj5vTTLp2XxM9BeAwnNJIJqjvgt0Cz9Vk7Eqkj6oT33Mt
-        bYUeYyGmR/Fv5g3OgO38E9g06dMzqnasFRQhHtnXvO36IIqZVMxbnXWz/HM8tHAW66cqYu
-        Fe3Bdmf89XB3zlAVX6vzWjQr/ox8BQYKyRRS5AHzmBlt9fPFoUu3VsVgJsQwHhgIKKYoca
-        9fMzqOSjYiw0CNgq9eyVVKdv8xSHw7CzhLeTzmKvLvliQycBK/DHwbWmZG3rgxkKr1pM1l
-        DM00T447YSiCUIsYBbhDUhV6ogc7PhxHqLOwY5S8m55/IUb0MYXNZTsFbkWNSA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=zPza9GfvfCzuDa1HTfIXTm9tWsA3CcYZ82dbV7tKWcg=;
+        b=1NJ1AVQcZNVQd2+Kk+92P/AiFXqq+LfXiCbDgRU6xRDygNhy0Tvl4l54e++P6Glg+ba6W1
+        FMb8qklPaWXLtTm1+GXbpqJlwok3/mpuAKjcgw+Z/JmqtJniVwLF2l7G+cHNNptoqgboiR
+        ghpRcpDJjPAV51ILeQbaS3onVtTSVvyAt5Yd9FTXEHa+SU5IeouP00e7cNoeLfQWIcJ+Ma
+        fUDpa7DoSMLkl/tOaYuebywuU3Z6xfqIBc7Tu1kQiTSh9fkTsjrEdH0gYNbnrahtQbaTa+
+        TMCnTbOY+jl71AiYmnlWOiAtMI0opGtG7A7ss85mDd04nndqyrI+AcMNGgi8dw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1663747288;
+        s=2020e; t=1663747737;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=os0yK4GP2z/n8Z71HCh3AJyvHSnUpgK6AB5SIry3Q40=;
-        b=nseuQzJ0orOwMM1kun0gI1y4e3d28pSzCr+O4OaKNy8NnOvClkdcQ+MGM2heF79Iqmu3lY
-        cX3V8eUMJyUsm4DA==
-From:   "tip-bot2 for Tetsuo Handa" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=zPza9GfvfCzuDa1HTfIXTm9tWsA3CcYZ82dbV7tKWcg=;
+        b=2whLIOsFLsxkUsWwJIR6CzYh1mid1NLsDhBofl1QBizqs/+tH5/L8z/DZyGsH9ZQC46Qi6
+        zYfLoUSyMHDhkLDw==
+From:   "tip-bot2 for Jules Irenge" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/lockdep: Print more debug information -
- report name and key when look_up_lock_class() got confused
-Cc:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+Subject: [tip: perf/core] perf/core: Convert snprintf() to scnprintf()
+Cc:     Jules Irenge <jbi.octave@gmail.com>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <bd99391e-f787-efe9-5ec6-3c6dc4c587b0@I-love.SAKURA.ne.jp>
-References: <bd99391e-f787-efe9-5ec6-3c6dc4c587b0@I-love.SAKURA.ne.jp>
 MIME-Version: 1.0
-Message-ID: <166374728690.401.4563412884155961056.tip-bot2@tip-bot2>
+Message-ID: <166374773592.401.16831946846027095231.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,48 +58,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     76e64c73db9542ff4bae8a60f4f32e38f3799b95
-Gitweb:        https://git.kernel.org/tip/76e64c73db9542ff4bae8a60f4f32e38f3799b95
-Author:        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-AuthorDate:    Mon, 19 Sep 2022 09:52:13 +09:00
+Commit-ID:     678739d622ae7b75b62d550858b6bf104c43e2df
+Gitweb:        https://git.kernel.org/tip/678739d622ae7b75b62d550858b6bf104c43e2df
+Author:        Jules Irenge <jbi.octave@gmail.com>
+AuthorDate:    Sun, 18 Sep 2022 00:41:08 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 21 Sep 2022 09:58:21 +02:00
+CommitterDate: Wed, 21 Sep 2022 10:01:20 +02:00
 
-locking/lockdep: Print more debug information - report name and key when look_up_lock_class() got confused
+perf/core: Convert snprintf() to scnprintf()
 
-Printing this information will be helpful:
+Coccinelle reports a warning:
 
-  ------------[ cut here ]------------
-  Looking for class "l2tp_sock" with key l2tp_socket_class, but found a different class "slock-AF_INET6" with the same key
-  WARNING: CPU: 1 PID: 14195 at kernel/locking/lockdep.c:940 look_up_lock_class+0xcc/0x140
-  Modules linked in:
-  CPU: 1 PID: 14195 Comm: a.out Not tainted 6.0.0-rc6-dirty #863
-  Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
-  RIP: 0010:look_up_lock_class+0xcc/0x140
+    WARNING: use scnprintf or sprintf
 
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Adding to that, there has also been some slow migration from snprintf to scnprintf.
+
+This LWN article explains the rationale for this change:
+
+    https: //lwn.net/Articles/69419/
+
+No change in behavior.
+
+[ mingo: Improved the changelog. ]
+
+Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/bd99391e-f787-efe9-5ec6-3c6dc4c587b0@I-love.SAKURA.ne.jp
 ---
- kernel/locking/lockdep.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/events/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 64a13eb..e3375bc 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -934,8 +934,10 @@ look_up_lock_class(const struct lockdep_map *lock, unsigned int subclass)
- 			 * Huh! same key, different name? Did someone trample
- 			 * on some memory? We're most confused.
- 			 */
--			WARN_ON_ONCE(class->name != lock->name &&
--				     lock->key != &__lockdep_no_validate__);
-+			WARN_ONCE(class->name != lock->name &&
-+				  lock->key != &__lockdep_no_validate__,
-+				  "Looking for class \"%s\" with key %ps, but found a different class \"%s\" with the same key\n",
-+				  lock->name, lock->key, class->name);
- 			return class;
- 		}
- 	}
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 7da5515..c07e9a3 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -10952,7 +10952,7 @@ static ssize_t nr_addr_filters_show(struct device *dev,
+ {
+ 	struct pmu *pmu = dev_get_drvdata(dev);
+ 
+-	return snprintf(page, PAGE_SIZE - 1, "%d\n", pmu->nr_addr_filters);
++	return scnprintf(page, PAGE_SIZE - 1, "%d\n", pmu->nr_addr_filters);
+ }
+ DEVICE_ATTR_RO(nr_addr_filters);
+ 
+@@ -10963,7 +10963,7 @@ type_show(struct device *dev, struct device_attribute *attr, char *page)
+ {
+ 	struct pmu *pmu = dev_get_drvdata(dev);
+ 
+-	return snprintf(page, PAGE_SIZE-1, "%d\n", pmu->type);
++	return scnprintf(page, PAGE_SIZE - 1, "%d\n", pmu->type);
+ }
+ static DEVICE_ATTR_RO(type);
+ 
+@@ -10974,7 +10974,7 @@ perf_event_mux_interval_ms_show(struct device *dev,
+ {
+ 	struct pmu *pmu = dev_get_drvdata(dev);
+ 
+-	return snprintf(page, PAGE_SIZE-1, "%d\n", pmu->hrtimer_interval_ms);
++	return scnprintf(page, PAGE_SIZE - 1, "%d\n", pmu->hrtimer_interval_ms);
+ }
+ 
+ static DEFINE_MUTEX(mux_interval_mutex);
