@@ -2,89 +2,130 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CAEF5BF958
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Sep 2022 10:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F4855BFC80
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Sep 2022 12:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230197AbiIUIel (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 21 Sep 2022 04:34:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38808 "EHLO
+        id S229626AbiIUKkX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 21 Sep 2022 06:40:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230160AbiIUIej (ORCPT
+        with ESMTP id S230051AbiIUKkG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 21 Sep 2022 04:34:39 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FD7712AE7;
-        Wed, 21 Sep 2022 01:34:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=fdbjL5VhQ34WmhthZwfzbvkNiKnHHQVvVpAEIOCaE0c=; b=Bz5Bc3iZpOcDIEriFASnnm/18e
-        Uez4uEacjiUb0oCtG8nyBbZc/dPOgv1xkWuPCUdpY9Gk5OmVFJK7T3WYJK+gBzHGkulu7u8k5QTa+
-        5X2m64ee2IAzxkVmVi+tQKBestAQDCPmyW4zBVELdOpnPtUPEEGSVzHEIGRJv6VaZG6K35xKMOh1V
-        9QPTpRw3pyMLK3N/DYR5RTs+3fHUAQP4HqesLS7btQN8eLH6z8ZkJRLEKxNyRYE8jmGpEtCD2AU0A
-        PEL/2Otkxyih/8WtjIBM2UPF1ZFk5kvI7k9yGjvMuvIHwKWKyWS5ZHRw5SI+a58QYCx2y+PVdm8/w
-        qD/YCYwQ==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oavBm-0069lq-2i; Wed, 21 Sep 2022 08:34:38 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 2B214300074;
-        Wed, 21 Sep 2022 10:34:35 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 1A2222BB0BFFC; Wed, 21 Sep 2022 10:34:35 +0200 (CEST)
-Date:   Wed, 21 Sep 2022 10:34:35 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        Jules Irenge <jbi.octave@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org
-Subject: Re: [tip: perf/core] perf/core: Convert snprintf() to scnprintf()
-Message-ID: <YyrMmyUPk+4t6OLm@hirez.programming.kicks-ass.net>
-References: <166374773592.401.16831946846027095231.tip-bot2@tip-bot2>
+        Wed, 21 Sep 2022 06:40:06 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F824959F;
+        Wed, 21 Sep 2022 03:40:05 -0700 (PDT)
+Date:   Wed, 21 Sep 2022 10:40:01 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1663756802;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=w6aECWMoXmEq55sE/192A+mgoWXBLb2lLtjEAkHdJl0=;
+        b=roUsfikotArZtMtsvMcSNK5oDUjCgWi2UzWFKk6Td5HCL17xxc+KPmpNKUkBuKgKGY3Y1l
+        c5AaaQ42f1CgcqsuWfWwqDbCDEJT6FEihX5KmbzFggGf3i/L4zDdMkgq7BpCPJru6j/n6B
+        9s1x244hPz3XiyFh9YMZmUL4k2T8Ya+Mp/fI4xilHFa1ajR9NrVH11/YQntngwyoREfMSh
+        /6apJse3cej+Bv4tVjIxNEOoo1To4T87Om/SuhQ/aCO2n4VYBEOD3HXDGe52K5BnrMJU0q
+        lnzAekkVciFduLSZxduatfgYA9ktV0HrOnInzmqe5xU3VTmKyNHKSCLg4IvE1w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1663756802;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=w6aECWMoXmEq55sE/192A+mgoWXBLb2lLtjEAkHdJl0=;
+        b=s1BFbDJTpMvu3czgY0lrAyt/UH+CzcXzzXi5KDq/GEKHx8K76rs57tdnWBBBnU3AXeUpdp
+        +F+9ovq1MJi8jcBw==
+From:   "tip-bot2 for Jules Irenge" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/core] perf/core: Convert snprintf() to scnprintf()
+Cc:     Jules Irenge <jbi.octave@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <166374773592.401.16831946846027095231.tip-bot2@tip-bot2>
+Message-ID: <166375680133.401.18293100258967657530.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Sep 21, 2022 at 08:08:55AM -0000, tip-bot2 for Jules Irenge wrote:
-> The following commit has been merged into the perf/core branch of tip:
-> 
-> Commit-ID:     678739d622ae7b75b62d550858b6bf104c43e2df
-> Gitweb:        https://git.kernel.org/tip/678739d622ae7b75b62d550858b6bf104c43e2df
-> Author:        Jules Irenge <jbi.octave@gmail.com>
-> AuthorDate:    Sun, 18 Sep 2022 00:41:08 +01:00
-> Committer:     Ingo Molnar <mingo@kernel.org>
-> CommitterDate: Wed, 21 Sep 2022 10:01:20 +02:00
-> 
-> perf/core: Convert snprintf() to scnprintf()
-> 
-> Coccinelle reports a warning:
-> 
->     WARNING: use scnprintf or sprintf
-> 
-> Adding to that, there has also been some slow migration from snprintf to scnprintf.
-> 
-> This LWN article explains the rationale for this change:
-> 
->     https: //lwn.net/Articles/69419/
-> 
-> No change in behavior.
-> 
-> [ mingo: Improved the changelog. ]
+The following commit has been merged into the perf/core branch of tip:
 
-And yet, at this point I still have no clue what's wrong with
-snprintf(). So not much improvement :/
+Commit-ID:     dca6344d7a77dd0501a73745f4a9fb1ee2bc9d7c
+Gitweb:        https://git.kernel.org/tip/dca6344d7a77dd0501a73745f4a9fb1ee2bc9d7c
+Author:        Jules Irenge <jbi.octave@gmail.com>
+AuthorDate:    Sun, 18 Sep 2022 00:41:08 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 21 Sep 2022 12:34:36 +02:00
 
-As such I'm still very much against this patch.
+perf/core: Convert snprintf() to scnprintf()
+
+Coccinelle reports a warning:
+
+    WARNING: use scnprintf or sprintf
+
+This LWN article explains the rationale for this change:
+
+    https: //lwn.net/Articles/69419/
+
+Ie. snprintf() returns what *would* be the resulting length,
+while scnprintf() returns the actual length.
+
+Adding to that, there has also been some slow migration from snprintf to scnprintf,
+here's the shift in usage in the past 3.5 years, in all fs/ files:
+
+                         v5.0    v6.0-rc6
+   --------------------------------------
+   snprintf() uses:        63         213
+   scnprintf() uses:      374         186
+
+No intended change in behavior.
+
+[ mingo: Improved the changelog & reviewed the usage sites. ]
+
+Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+---
+ kernel/events/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 7da5515..c07e9a3 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -10952,7 +10952,7 @@ static ssize_t nr_addr_filters_show(struct device *dev,
+ {
+ 	struct pmu *pmu = dev_get_drvdata(dev);
+ 
+-	return snprintf(page, PAGE_SIZE - 1, "%d\n", pmu->nr_addr_filters);
++	return scnprintf(page, PAGE_SIZE - 1, "%d\n", pmu->nr_addr_filters);
+ }
+ DEVICE_ATTR_RO(nr_addr_filters);
+ 
+@@ -10963,7 +10963,7 @@ type_show(struct device *dev, struct device_attribute *attr, char *page)
+ {
+ 	struct pmu *pmu = dev_get_drvdata(dev);
+ 
+-	return snprintf(page, PAGE_SIZE-1, "%d\n", pmu->type);
++	return scnprintf(page, PAGE_SIZE - 1, "%d\n", pmu->type);
+ }
+ static DEVICE_ATTR_RO(type);
+ 
+@@ -10974,7 +10974,7 @@ perf_event_mux_interval_ms_show(struct device *dev,
+ {
+ 	struct pmu *pmu = dev_get_drvdata(dev);
+ 
+-	return snprintf(page, PAGE_SIZE-1, "%d\n", pmu->hrtimer_interval_ms);
++	return scnprintf(page, PAGE_SIZE - 1, "%d\n", pmu->hrtimer_interval_ms);
+ }
+ 
+ static DEFINE_MUTEX(mux_interval_mutex);
