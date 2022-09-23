@@ -2,119 +2,123 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED3545BFE8A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Sep 2022 15:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A228F5E7A0E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Sep 2022 13:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbiIUNBN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 21 Sep 2022 09:01:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46674 "EHLO
+        id S232010AbiIWL6M (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 23 Sep 2022 07:58:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229771AbiIUNBL (ORCPT
+        with ESMTP id S231816AbiIWL6K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 21 Sep 2022 09:01:11 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF9C229C96;
-        Wed, 21 Sep 2022 06:01:08 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 6B4F61F88F;
-        Wed, 21 Sep 2022 13:01:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1663765267;
-        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-         cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=SNOx7u/YQMIaTFhVzek1ee94itBFfBqVi5hVjzogOrM=;
-        b=w96BX+RZ4LI2I1gSSCNz1WzUxOSmT/ftdP87PZsC/lhCyeX+JSmn5MNEKJCk6rxCZaZJ5i
-        q4qup0ww94M49Z18AIlv9NnY3fKzaQbk9R4ra4EbELxgDy2tfUTO/faed177fpkYWa+at3
-        1GUaKRbgLJn21ONDnXP5UmldQRL8dbQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1663765267;
-        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-         cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=SNOx7u/YQMIaTFhVzek1ee94itBFfBqVi5hVjzogOrM=;
-        b=/bDdRRT7yb0B3YNd+chIJllTtWIpxxXPvL9XfsQSP49oD5NrC+KdNEvE/CGcRivMRsMFLK
-        ECPigt2cFFDZJeAw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3ECF613A89;
-        Wed, 21 Sep 2022 13:01:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id bCdrDhMLK2PYLwAAMHmgww
-        (envelope-from <dsterba@suse.cz>); Wed, 21 Sep 2022 13:01:07 +0000
-Date:   Wed, 21 Sep 2022 14:55:35 +0200
-From:   David Sterba <dsterba@suse.cz>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Jules Irenge <jbi.octave@gmail.com>, x86@kernel.org
-Subject: Re: [tip: perf/core] perf/core: Convert snprintf() to scnprintf()
-Message-ID: <20220921125535.GF32411@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <166374773592.401.16831946846027095231.tip-bot2@tip-bot2>
- <YyrMmyUPk+4t6OLm@hirez.programming.kicks-ass.net>
- <YyrrE8vpFSR+kdHQ@gmail.com>
+        Fri, 23 Sep 2022 07:58:10 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C3AEE1D;
+        Fri, 23 Sep 2022 04:58:09 -0700 (PDT)
+Date:   Fri, 23 Sep 2022 11:58:05 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1663934287;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=i03ueGjuv9MXq9D254vKOx55F55SuESMpzw6hrHEEi0=;
+        b=rppYjrSk7/wgCe2lu4BqRuaTxn2l1tme1m+87lVna4P8r3zz2JnhR4OtnkqKcfsMCW25OM
+        0jkqnUQghaY/UA3q0HE8nIBkAinmIrE+XBuIx6UVkS+o4fs2WVfVkR3kKVC+jsViAmQL5R
+        mrZw2ChXLkuWOr2FsccZIw3k/WBdwJVq7QS5+fV95934JxhpxKJVopS1vACvpa7nE5Llvj
+        1+cpIcju1yQU887hghmFfUgNivgLjej9ia1vAO25d9ymro2NcRgYu54DrSL31bAOadL2bN
+        B8o9imF9hlkCHBDF2lGQ0UWzrmIdhwZAH30VtbE5uDkPXgONW0L3nmkD1fdFiA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1663934287;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=i03ueGjuv9MXq9D254vKOx55F55SuESMpzw6hrHEEi0=;
+        b=iyX/i3nWH8cO7WxOMKGgW5HayOY6sNuh73cHg6qPNkHNnMzNk7S9bQRjMQpf09UveyQqjw
+        oOOtLGKp6bP+tEBw==
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/microcode] x86/microcode/AMD: Track patch allocation size
+ explicitly
+Cc:     Daniel Micay <danielmicay@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YyrrE8vpFSR+kdHQ@gmail.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
-        version=3.4.6
+Message-ID: <166393428565.401.8875317837868783254.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Sep 21, 2022 at 12:44:35PM +0200, Ingo Molnar wrote:
-> 
-> * Peter Zijlstra <peterz@infradead.org> wrote:
-> 
-> > On Wed, Sep 21, 2022 at 08:08:55AM -0000, tip-bot2 for Jules Irenge wrote:
-> > > The following commit has been merged into the perf/core branch of tip:
-> > > 
-> > > Commit-ID:     678739d622ae7b75b62d550858b6bf104c43e2df
-> > > Gitweb:        https://git.kernel.org/tip/678739d622ae7b75b62d550858b6bf104c43e2df
-> > > Author:        Jules Irenge <jbi.octave@gmail.com>
-> > > AuthorDate:    Sun, 18 Sep 2022 00:41:08 +01:00
-> > > Committer:     Ingo Molnar <mingo@kernel.org>
-> > > CommitterDate: Wed, 21 Sep 2022 10:01:20 +02:00
-> > > 
-> > > perf/core: Convert snprintf() to scnprintf()
-> > > 
-> > > Coccinelle reports a warning:
-> > > 
-> > >     WARNING: use scnprintf or sprintf
-> > > 
-> > > Adding to that, there has also been some slow migration from snprintf to scnprintf.
-> > > 
-> > > This LWN article explains the rationale for this change:
-> > > 
-> > >     https: //lwn.net/Articles/69419/
-> > > 
-> > > No change in behavior.
-> > > 
-> > > [ mingo: Improved the changelog. ]
-> > 
-> > And yet, at this point I still have no clue what's wrong with
-> > snprintf(). So not much improvement :/
-> 
-> I've added this to the changelog:
-> 
->     perf/core: Convert snprintf() to scnprintf()
+The following commit has been merged into the x86/microcode branch of tip:
 
-I'm not sure if it would apply in this case as it's for a device
-attribute, but there's another helper sysfs_emit that does the safe
-print to string and one does not have to care which flavor of s*printf
-it is. We had patches in btrfs converting from snprintf to scnprintf and
-the latest one is sysfs_emit which is convenient to use but assumes the
-PAGE_SIZE of the buffer.
+Commit-ID:     712f210a457d9c32414df246a72781550bc23ef6
+Gitweb:        https://git.kernel.org/tip/712f210a457d9c32414df246a72781550bc23ef6
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Wed, 21 Sep 2022 20:10:10 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 23 Sep 2022 13:46:26 +02:00
+
+x86/microcode/AMD: Track patch allocation size explicitly
+
+In preparation for reducing the use of ksize(), record the actual
+allocation size for later memcpy(). This avoids copying extra
+(uninitialized!) bytes into the patch buffer when the requested
+allocation size isn't exactly the size of a kmalloc bucket.
+Additionally, fix potential future issues where runtime bounds checking
+will notice that the buffer was allocated to a smaller value than
+returned by ksize().
+
+Fixes: 757885e94a22 ("x86, microcode, amd: Early microcode patch loading support for AMD")
+Suggested-by: Daniel Micay <danielmicay@gmail.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/lkml/CA+DvKQ+bp7Y7gmaVhacjv9uF6Ar-o4tet872h4Q8RPYPJjcJQA@mail.gmail.com/
+---
+ arch/x86/include/asm/microcode.h    | 1 +
+ arch/x86/kernel/cpu/microcode/amd.c | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/microcode.h b/arch/x86/include/asm/microcode.h
+index 7f7800e..74ecc2b 100644
+--- a/arch/x86/include/asm/microcode.h
++++ b/arch/x86/include/asm/microcode.h
+@@ -9,6 +9,7 @@
+ struct ucode_patch {
+ 	struct list_head plist;
+ 	void *data;		/* Intel uses only this one */
++	unsigned int size;
+ 	u32 patch_id;
+ 	u16 equiv_cpu;
+ };
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index 5f38dd7..e7410e9 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -788,6 +788,7 @@ static int verify_and_add_patch(u8 family, u8 *fw, unsigned int leftover,
+ 		kfree(patch);
+ 		return -EINVAL;
+ 	}
++	patch->size = *patch_size;
+ 
+ 	mc_hdr      = (struct microcode_header_amd *)(fw + SECTION_HDR_SIZE);
+ 	proc_id     = mc_hdr->processor_rev_id;
+@@ -869,7 +870,7 @@ load_microcode_amd(bool save, u8 family, const u8 *data, size_t size)
+ 		return ret;
+ 
+ 	memset(amd_ucode_patch, 0, PATCH_MAX_SIZE);
+-	memcpy(amd_ucode_patch, p->data, min_t(u32, ksize(p->data), PATCH_MAX_SIZE));
++	memcpy(amd_ucode_patch, p->data, min_t(u32, p->size, PATCH_MAX_SIZE));
+ 
+ 	return ret;
+ }
