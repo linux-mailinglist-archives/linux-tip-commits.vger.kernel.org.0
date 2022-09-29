@@ -2,55 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D7C25EF134
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Sep 2022 11:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE6835EFB3D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Sep 2022 18:47:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235085AbiI2JEQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 29 Sep 2022 05:04:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41330 "EHLO
+        id S235678AbiI2Qrf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 29 Sep 2022 12:47:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235062AbiI2JEP (ORCPT
+        with ESMTP id S235638AbiI2Qrf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 29 Sep 2022 05:04:15 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A0F138F08;
-        Thu, 29 Sep 2022 02:04:13 -0700 (PDT)
-Date:   Thu, 29 Sep 2022 09:04:09 -0000
+        Thu, 29 Sep 2022 12:47:35 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C5E1C6A43;
+        Thu, 29 Sep 2022 09:47:34 -0700 (PDT)
+Date:   Thu, 29 Sep 2022 16:47:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1664442250;
+        s=2020; t=1664470052;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=W4VtPc3IUbEA1iZLSCZHOROAem8/WmUPd60NhJr4UTI=;
-        b=STyWG2ig2DPzX1N9FbbKqnbso4i7Zm4gjooKPt7iOUWb7eJY7b1yw/aDioyr2oKnCdGKmM
-        rzAf3dJX5pHw/iYNnn4nNeYwrgR0Jl6KZiyUflS8j2sh8Q2UysBgVw0IstIgWGFgxpWPi6
-        UOXfmG9fOPshspSz88NmaJHzxgURnxcledH/CvII+He4BOtweAG1Ei5qQYy30MzfwJ4xnf
-        Ay2AQokbMCmeb5FIQzcpO0I7TSIVY96FvYjQKlL71d9F6R8R3jKHMQjN3UehpoujYrQnHy
-        x1+DwXs0s6I1GlOIwQFWfUAKi5yJC0wsToa5enXUo2Spq5ljUrxl2nnizzNx3w==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=VeXdpqz/lh/+Kphnno09Gfa6VE0YUSzpiNwMegRtrO8=;
+        b=mqKcZk9qf1uGFr0Oq7qMh0YE7zK2lqJE04qop0WSq+mSI8khYo5tCN70AFzkFG12QsfD5Y
+        1E6mAduqVNpnPVWNgzetveRaoK3nXJP+VPVkF3Aj+OXVYKDQDumQcEHd7teC2uJ8cLn42Q
+        15FcgqPjvvsbx8YMPkLZRfwuuu4YbxrcYYHsvAToHrC73jTxiKoAJ/DYFx4Ilyn79tdOyX
+        +KA+IQioDPNxNKjKw330NJNaZJWY0YDvqjIgSL5d9REWYEvpOI6Og6JjLcK3iOTF3tVqLo
+        t2utZKh80x9JWluKHOa0We6sRe72UEu8VX/ptcdY64bbyEIj+wsDFNDgI9KfrQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1664442250;
+        s=2020e; t=1664470052;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=W4VtPc3IUbEA1iZLSCZHOROAem8/WmUPd60NhJr4UTI=;
-        b=xycAQUARueWj7+9o4Ud0ooklqmXvWqgoupJJfqC2sr/4XgyAKrEmPvXCkWMNjojCDBEA7t
-        g1r7c1K5AZAlRSAA==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=VeXdpqz/lh/+Kphnno09Gfa6VE0YUSzpiNwMegRtrO8=;
+        b=86g0y6FbLXjMRgt46IYxSrwrFLQW3hLGeQlUljEnIPgz36w+SNnGXKO7+mDpRUAJ3B/jj0
+        /QHP95LUy3RfdmBw==
+From:   "tip-bot2 for Linus Torvalds" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cacheinfo: Add a cpu_llc_shared_mask() UP variant
-Cc:     Saurabh Sengar <ssengar@linux.microsoft.com>,
-        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <1660148115-302-1-git-send-email-ssengar@linux.microsoft.com>
-References: <1660148115-302-1-git-send-email-ssengar@linux.microsoft.com>
+Subject: [tip: x86/mm] x86/mm: Add prot_sethuge() helper to abstract out
+ _PAGE_PSE handling
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <166444224911.401.15542526000823963244.tip-bot2@tip-bot2>
+Message-ID: <166447005137.401.6681051003676535352.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,82 +60,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     df5b035b5683d6a25f077af889fb88e09827f8bc
-Gitweb:        https://git.kernel.org/tip/df5b035b5683d6a25f077af889fb88e09827f8bc
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Fri, 19 Aug 2022 19:47:44 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 28 Sep 2022 18:35:37 +02:00
+Commit-ID:     334b2cea811944df99ae2172bcc0effcdfdbe862
+Gitweb:        https://git.kernel.org/tip/334b2cea811944df99ae2172bcc0effcdfdbe862
+Author:        Linus Torvalds <torvalds@linux-foundation.org>
+AuthorDate:    Wed, 28 Sep 2022 09:30:31 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 29 Sep 2022 18:01:40 +02:00
 
-x86/cacheinfo: Add a cpu_llc_shared_mask() UP variant
+x86/mm: Add prot_sethuge() helper to abstract out _PAGE_PSE handling
 
-On a CONFIG_SMP=n kernel, the LLC shared mask is 0, which prevents
-__cache_amd_cpumap_setup() from doing the L3 masks setup, and more
-specifically from setting up the shared_cpu_map and shared_cpu_list
-files in sysfs, leading to lscpu from util-linux getting confused and
-segfaulting.
+We still have some historic cases of direct fiddling of page
+attributes with (dangerous & fragile) type casting and address shifting.
 
-Add a cpu_llc_shared_mask() UP variant which returns a mask with a
-single bit set, i.e., for CPU0.
+Add the prot_sethuge() helper instead that gets the types right and
+doesn't have to transform addresses.
 
-Fixes: 2b83809a5e6d ("x86/cpu/amd: Derive L3 shared_cpu_map from cpu_llc_shared_mask")
-Reported-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/1660148115-302-1-git-send-email-ssengar@linux.microsoft.com
+( Also add a debug check to make sure this doesn't get applied
+  to _PAGE_BIT_PAT/_PAGE_BIT_PAT_LARGE pages. )
+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Dave Hansen <dave.hansen@intel.com>
 ---
- arch/x86/include/asm/smp.h | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ arch/x86/mm/init_64.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-index 81a0211..a73bced 100644
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -21,16 +21,6 @@ DECLARE_PER_CPU_READ_MOSTLY(u16, cpu_llc_id);
- DECLARE_PER_CPU_READ_MOSTLY(u16, cpu_l2c_id);
- DECLARE_PER_CPU_READ_MOSTLY(int, cpu_number);
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index 0fe690e..7ea7d47 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -90,6 +90,12 @@ DEFINE_ENTRY(pud, pud, init)
+ DEFINE_ENTRY(pmd, pmd, init)
+ DEFINE_ENTRY(pte, pte, init)
  
--static inline struct cpumask *cpu_llc_shared_mask(int cpu)
--{
--	return per_cpu(cpu_llc_shared_map, cpu);
--}
++static inline pgprot_t prot_sethuge(pgprot_t prot)
++{
++	WARN_ON_ONCE(pgprot_val(prot) & _PAGE_PAT);
++
++	return __pgprot(pgprot_val(prot) | _PAGE_PSE);
++}
+ 
+ /*
+  * NOTE: pagetable_init alloc all the fixmap pagetables contiguous on the
+@@ -557,9 +563,8 @@ phys_pmd_init(pmd_t *pmd_page, unsigned long paddr, unsigned long paddr_end,
+ 		if (page_size_mask & (1<<PG_LEVEL_2M)) {
+ 			pages++;
+ 			spin_lock(&init_mm.page_table_lock);
+-			set_pte_init((pte_t *)pmd,
+-				     pfn_pte((paddr & PMD_MASK) >> PAGE_SHIFT,
+-					     __pgprot(pgprot_val(prot) | _PAGE_PSE)),
++			set_pmd_init(pmd,
++				     pfn_pmd(paddr >> PAGE_SHIFT, prot_sethuge(prot)),
+ 				     init);
+ 			spin_unlock(&init_mm.page_table_lock);
+ 			paddr_last = paddr_next;
+@@ -644,12 +649,8 @@ phys_pud_init(pud_t *pud_page, unsigned long paddr, unsigned long paddr_end,
+ 		if (page_size_mask & (1<<PG_LEVEL_1G)) {
+ 			pages++;
+ 			spin_lock(&init_mm.page_table_lock);
 -
--static inline struct cpumask *cpu_l2c_shared_mask(int cpu)
--{
--	return per_cpu(cpu_l2c_shared_map, cpu);
--}
+-			prot = __pgprot(pgprot_val(prot) | _PAGE_PSE);
 -
- DECLARE_EARLY_PER_CPU_READ_MOSTLY(u16, x86_cpu_to_apicid);
- DECLARE_EARLY_PER_CPU_READ_MOSTLY(u32, x86_cpu_to_acpiid);
- DECLARE_EARLY_PER_CPU_READ_MOSTLY(u16, x86_bios_cpu_apicid);
-@@ -172,6 +162,16 @@ extern int safe_smp_processor_id(void);
- # define safe_smp_processor_id()	smp_processor_id()
- #endif
- 
-+static inline struct cpumask *cpu_llc_shared_mask(int cpu)
-+{
-+	return per_cpu(cpu_llc_shared_map, cpu);
-+}
-+
-+static inline struct cpumask *cpu_l2c_shared_mask(int cpu)
-+{
-+	return per_cpu(cpu_l2c_shared_map, cpu);
-+}
-+
- #else /* !CONFIG_SMP */
- #define wbinvd_on_cpu(cpu)     wbinvd()
- static inline int wbinvd_on_all_cpus(void)
-@@ -179,6 +179,11 @@ static inline int wbinvd_on_all_cpus(void)
- 	wbinvd();
- 	return 0;
- }
-+
-+static inline struct cpumask *cpu_llc_shared_mask(int cpu)
-+{
-+	return (struct cpumask *)cpumask_of(0);
-+}
- #endif /* CONFIG_SMP */
- 
- extern unsigned disabled_cpus;
+-			set_pte_init((pte_t *)pud,
+-				     pfn_pte((paddr & PUD_MASK) >> PAGE_SHIFT,
+-					     prot),
++			set_pud_init(pud,
++				     pfn_pud(paddr >> PAGE_SHIFT, prot_sethuge(prot)),
+ 				     init);
+ 			spin_unlock(&init_mm.page_table_lock);
+ 			paddr_last = paddr_next;
