@@ -2,49 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E43605ED718
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Sep 2022 10:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D7C25EF134
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Sep 2022 11:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233817AbiI1IG5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Sep 2022 04:06:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56706 "EHLO
+        id S235085AbiI2JEQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 29 Sep 2022 05:04:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233521AbiI1IGz (ORCPT
+        with ESMTP id S235062AbiI2JEP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Sep 2022 04:06:55 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EA37A1D69;
-        Wed, 28 Sep 2022 01:06:54 -0700 (PDT)
-Date:   Wed, 28 Sep 2022 08:06:50 -0000
+        Thu, 29 Sep 2022 05:04:15 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A0F138F08;
+        Thu, 29 Sep 2022 02:04:13 -0700 (PDT)
+Date:   Thu, 29 Sep 2022 09:04:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1664352412;
+        s=2020; t=1664442250;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=LhtL89DRlTurUMZxa9IsHASMoyqZvNkFZYmuL+2iZ3E=;
-        b=Q/kC2IZKITe7XYFfIPKcVXjMAJGIYZ321RdbxekJQW84jU4dAlwOZaJ7xyZ3psjYcsOXxI
-        alPbPwl097OhS70bsl+ENGCW2gNEeM3OYGzjQatGvrzCDxHG5uDgN++btk/M/Tt2xsmybK
-        +GvC/0oLUIVywxiDFOVeQCq+NnlEbnPrKWSjoA8bDIywAf2pMcRGSUtVdQ0iX07nKWmeXJ
-        jAz4KvobIgtjriafg0zMf5dXeo8FNo0nzLlDkGZ4wMUDhCVh6WTzNyR9/F40AeNlOSNE6J
-        ZG6a9+h+rhqbL+V29p5dgDq98Tz4xDCI0NJ5Qg66T0UpBsz6ANxGXUriLHjEVQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=W4VtPc3IUbEA1iZLSCZHOROAem8/WmUPd60NhJr4UTI=;
+        b=STyWG2ig2DPzX1N9FbbKqnbso4i7Zm4gjooKPt7iOUWb7eJY7b1yw/aDioyr2oKnCdGKmM
+        rzAf3dJX5pHw/iYNnn4nNeYwrgR0Jl6KZiyUflS8j2sh8Q2UysBgVw0IstIgWGFgxpWPi6
+        UOXfmG9fOPshspSz88NmaJHzxgURnxcledH/CvII+He4BOtweAG1Ei5qQYy30MzfwJ4xnf
+        Ay2AQokbMCmeb5FIQzcpO0I7TSIVY96FvYjQKlL71d9F6R8R3jKHMQjN3UehpoujYrQnHy
+        x1+DwXs0s6I1GlOIwQFWfUAKi5yJC0wsToa5enXUo2Spq5ljUrxl2nnizzNx3w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1664352412;
+        s=2020e; t=1664442250;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=LhtL89DRlTurUMZxa9IsHASMoyqZvNkFZYmuL+2iZ3E=;
-        b=Ym4HRb2rIJ1ywBuxLw7p9ksrCnWbalT229Ye1lQYSyLvXanb3yw/nDCAl2WuD4wJWtLD52
-        bzlzAhlQvC1lqeBw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=W4VtPc3IUbEA1iZLSCZHOROAem8/WmUPd60NhJr4UTI=;
+        b=xycAQUARueWj7+9o4Ud0ooklqmXvWqgoupJJfqC2sr/4XgyAKrEmPvXCkWMNjojCDBEA7t
+        g1r7c1K5AZAlRSAA==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Fix TASK_state comparisons
-Cc:     Christian Borntraeger <borntraeger@linux.ibm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: x86/urgent] x86/cacheinfo: Add a cpu_llc_shared_mask() UP variant
+Cc:     Saurabh Sengar <ssengar@linux.microsoft.com>,
+        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1660148115-302-1-git-send-email-ssengar@linux.microsoft.com>
+References: <1660148115-302-1-git-send-email-ssengar@linux.microsoft.com>
 MIME-Version: 1.0
-Message-ID: <166435241084.401.18105248631464873710.tip-bot2@tip-bot2>
+Message-ID: <166444224911.401.15542526000823963244.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,88 +64,82 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     5aec788aeb8eb74282b75ac1b317beb0fbb69a42
-Gitweb:        https://git.kernel.org/tip/5aec788aeb8eb74282b75ac1b317beb0fbb69a42
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 27 Sep 2022 21:02:34 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 28 Sep 2022 10:00:16 +02:00
+Commit-ID:     df5b035b5683d6a25f077af889fb88e09827f8bc
+Gitweb:        https://git.kernel.org/tip/df5b035b5683d6a25f077af889fb88e09827f8bc
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Fri, 19 Aug 2022 19:47:44 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 28 Sep 2022 18:35:37 +02:00
 
-sched: Fix TASK_state comparisons
+x86/cacheinfo: Add a cpu_llc_shared_mask() UP variant
 
-Task state is fundamentally a bitmask; direct comparisons are probably
-not working as intended. Specifically the normal wait-state have
-a number of possible modifiers:
+On a CONFIG_SMP=n kernel, the LLC shared mask is 0, which prevents
+__cache_amd_cpumap_setup() from doing the L3 masks setup, and more
+specifically from setting up the shared_cpu_map and shared_cpu_list
+files in sysfs, leading to lscpu from util-linux getting confused and
+segfaulting.
 
-  TASK_UNINTERRUPTIBLE:	TASK_WAKEKILL, TASK_NOLOAD, TASK_FREEZABLE
-  TASK_INTERRUPTIBLE:   TASK_FREEZABLE
+Add a cpu_llc_shared_mask() UP variant which returns a mask with a
+single bit set, i.e., for CPU0.
 
-Specifically, the addition of TASK_FREEZABLE wrecked
-__wait_is_interruptible(). This however led to an audit of direct
-comparisons yielding the rest of the changes.
-
-Fixes: f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
-Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Debugged-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Fixes: 2b83809a5e6d ("x86/cpu/amd: Derive L3 shared_cpu_map from cpu_llc_shared_mask")
+Reported-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/1660148115-302-1-git-send-email-ssengar@linux.microsoft.com
 ---
- include/linux/wait.h | 2 +-
- kernel/hung_task.c   | 8 ++++++--
- kernel/sched/core.c  | 2 +-
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/smp.h | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/wait.h b/include/linux/wait.h
-index 14ad8a0..7f5a51a 100644
---- a/include/linux/wait.h
-+++ b/include/linux/wait.h
-@@ -281,7 +281,7 @@ static inline void wake_up_pollfree(struct wait_queue_head *wq_head)
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index 81a0211..a73bced 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -21,16 +21,6 @@ DECLARE_PER_CPU_READ_MOSTLY(u16, cpu_llc_id);
+ DECLARE_PER_CPU_READ_MOSTLY(u16, cpu_l2c_id);
+ DECLARE_PER_CPU_READ_MOSTLY(int, cpu_number);
  
- #define ___wait_is_interruptible(state)						\
- 	(!__builtin_constant_p(state) ||					\
--		state == TASK_INTERRUPTIBLE || state == TASK_KILLABLE)		\
-+	 (state & (TASK_INTERRUPTIBLE | TASK_WAKEKILL)))
+-static inline struct cpumask *cpu_llc_shared_mask(int cpu)
+-{
+-	return per_cpu(cpu_llc_shared_map, cpu);
+-}
+-
+-static inline struct cpumask *cpu_l2c_shared_mask(int cpu)
+-{
+-	return per_cpu(cpu_l2c_shared_map, cpu);
+-}
+-
+ DECLARE_EARLY_PER_CPU_READ_MOSTLY(u16, x86_cpu_to_apicid);
+ DECLARE_EARLY_PER_CPU_READ_MOSTLY(u32, x86_cpu_to_acpiid);
+ DECLARE_EARLY_PER_CPU_READ_MOSTLY(u16, x86_bios_cpu_apicid);
+@@ -172,6 +162,16 @@ extern int safe_smp_processor_id(void);
+ # define safe_smp_processor_id()	smp_processor_id()
+ #endif
  
- extern void init_wait_entry(struct wait_queue_entry *wq_entry, int flags);
- 
-diff --git a/kernel/hung_task.c b/kernel/hung_task.c
-index f1321c0..3a15169 100644
---- a/kernel/hung_task.c
-+++ b/kernel/hung_task.c
-@@ -191,6 +191,8 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
- 	hung_task_show_lock = false;
- 	rcu_read_lock();
- 	for_each_process_thread(g, t) {
-+		unsigned int state;
++static inline struct cpumask *cpu_llc_shared_mask(int cpu)
++{
++	return per_cpu(cpu_llc_shared_map, cpu);
++}
 +
- 		if (!max_count--)
- 			goto unlock;
- 		if (time_after(jiffies, last_break + HUNG_TASK_LOCK_BREAK)) {
-@@ -198,8 +200,10 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
- 				goto unlock;
- 			last_break = jiffies;
- 		}
--		/* use "==" to skip the TASK_KILLABLE tasks waiting on NFS */
--		if (READ_ONCE(t->__state) == TASK_UNINTERRUPTIBLE)
-+		/* skip the TASK_KILLABLE tasks -- these can be killed */
-+		state = READ_ONCE(t->__state);
-+		if ((state & TASK_UNINTERRUPTIBLE) &&
-+		    !(state & TASK_WAKEKILL))
- 			check_hung_task(t, timeout);
- 	}
-  unlock:
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 4fa4a3d..02dc1b8 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -8884,7 +8884,7 @@ state_filter_match(unsigned long state_filter, struct task_struct *p)
- 	 * When looking for TASK_UNINTERRUPTIBLE skip TASK_IDLE (allows
- 	 * TASK_KILLABLE).
- 	 */
--	if (state_filter == TASK_UNINTERRUPTIBLE && state == TASK_IDLE)
-+	if (state_filter == TASK_UNINTERRUPTIBLE && (state & TASK_NOLOAD))
- 		return false;
++static inline struct cpumask *cpu_l2c_shared_mask(int cpu)
++{
++	return per_cpu(cpu_l2c_shared_map, cpu);
++}
++
+ #else /* !CONFIG_SMP */
+ #define wbinvd_on_cpu(cpu)     wbinvd()
+ static inline int wbinvd_on_all_cpus(void)
+@@ -179,6 +179,11 @@ static inline int wbinvd_on_all_cpus(void)
+ 	wbinvd();
+ 	return 0;
+ }
++
++static inline struct cpumask *cpu_llc_shared_mask(int cpu)
++{
++	return (struct cpumask *)cpumask_of(0);
++}
+ #endif /* CONFIG_SMP */
  
- 	return true;
+ extern unsigned disabled_cpus;
