@@ -2,51 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE6835EFB3D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Sep 2022 18:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FB705F079A
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 30 Sep 2022 11:31:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235678AbiI2Qrf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 29 Sep 2022 12:47:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36654 "EHLO
+        id S231415AbiI3JbZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 30 Sep 2022 05:31:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235638AbiI2Qrf (ORCPT
+        with ESMTP id S231424AbiI3JbI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 29 Sep 2022 12:47:35 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C5E1C6A43;
-        Thu, 29 Sep 2022 09:47:34 -0700 (PDT)
-Date:   Thu, 29 Sep 2022 16:47:31 -0000
+        Fri, 30 Sep 2022 05:31:08 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2593C9029;
+        Fri, 30 Sep 2022 02:31:04 -0700 (PDT)
+Date:   Fri, 30 Sep 2022 09:31:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1664470052;
+        s=2020; t=1664530261;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=VeXdpqz/lh/+Kphnno09Gfa6VE0YUSzpiNwMegRtrO8=;
-        b=mqKcZk9qf1uGFr0Oq7qMh0YE7zK2lqJE04qop0WSq+mSI8khYo5tCN70AFzkFG12QsfD5Y
-        1E6mAduqVNpnPVWNgzetveRaoK3nXJP+VPVkF3Aj+OXVYKDQDumQcEHd7teC2uJ8cLn42Q
-        15FcgqPjvvsbx8YMPkLZRfwuuu4YbxrcYYHsvAToHrC73jTxiKoAJ/DYFx4Ilyn79tdOyX
-        +KA+IQioDPNxNKjKw330NJNaZJWY0YDvqjIgSL5d9REWYEvpOI6Og6JjLcK3iOTF3tVqLo
-        t2utZKh80x9JWluKHOa0We6sRe72UEu8VX/ptcdY64bbyEIj+wsDFNDgI9KfrQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=V0RBOS3LPNPYjkJcDgSN1iH8TSNOzEVheKPACTKqzPk=;
+        b=RID6fCDhtR7DRXiK91CzpWv0VO1/f+GqoDA0RWI6N6Gurl61/lT3kphW7cdjguF78gBH1P
+        YLWhsFFwSU3EK3tGEL7NIa5OgYRNtO6TGHP4OzBsL8xYClo27VboNWeTlomjV+0uCxzCYW
+        gYxI7lgSbrOjyKZbDTRUQW0qE6YPgZ8MgKMPzPAiHm1lrk0D0SUyHnGi4h1tmNxN9bjTYu
+        fGVMXVdI6QUS0ssxq6KxqwwWn6LlaFrCv9QkL8RB8oE9/yZKZNadP1o4quFOpJW+O/RCsz
+        QSxSdcDOBIxybnOnXgLVYtgaMMQcZR6D9LqsLKpLBv6kSDCh6kscKB2+JbPJLA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1664470052;
+        s=2020e; t=1664530261;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=VeXdpqz/lh/+Kphnno09Gfa6VE0YUSzpiNwMegRtrO8=;
-        b=86g0y6FbLXjMRgt46IYxSrwrFLQW3hLGeQlUljEnIPgz36w+SNnGXKO7+mDpRUAJ3B/jj0
-        /QHP95LUy3RfdmBw==
-From:   "tip-bot2 for Linus Torvalds" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=V0RBOS3LPNPYjkJcDgSN1iH8TSNOzEVheKPACTKqzPk=;
+        b=FKYmAf4b+BBKzhtHEbuo/uuhDIXaZ6Z9jo/q+RWpCy6zr55ChqsHDuZmEKPGFCWfvMs3b+
+        7Tuj7JL70qqCGzDw==
+From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Add prot_sethuge() helper to abstract out
- _PAGE_PSE handling
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/amd/lbr: Adjust LBR regardless of filtering
+Cc:     Stephane Eranian <eranian@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Sandipan Das <sandipan.das@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20220928184043.408364-3-eranian@google.com>
+References: <20220928184043.408364-3-eranian@google.com>
 MIME-Version: 1.0
-Message-ID: <166447005137.401.6681051003676535352.tip-bot2@tip-bot2>
+Message-ID: <166453026009.401.14008407416230539420.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,74 +65,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     334b2cea811944df99ae2172bcc0effcdfdbe862
-Gitweb:        https://git.kernel.org/tip/334b2cea811944df99ae2172bcc0effcdfdbe862
-Author:        Linus Torvalds <torvalds@linux-foundation.org>
-AuthorDate:    Wed, 28 Sep 2022 09:30:31 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 29 Sep 2022 18:01:40 +02:00
+Commit-ID:     3f9a1b3591003b122a6ea2d69f89a0fd96ec58b9
+Gitweb:        https://git.kernel.org/tip/3f9a1b3591003b122a6ea2d69f89a0fd96ec58b9
+Author:        Stephane Eranian <eranian@google.com>
+AuthorDate:    Wed, 28 Sep 2022 11:40:43 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 29 Sep 2022 12:20:57 +02:00
 
-x86/mm: Add prot_sethuge() helper to abstract out _PAGE_PSE handling
+perf/x86/amd/lbr: Adjust LBR regardless of filtering
 
-We still have some historic cases of direct fiddling of page
-attributes with (dangerous & fragile) type casting and address shifting.
+In case of fused compare and taken branch instructions, the AMD LBR points to
+the compare instruction instead of the branch. Users of LBR usually expects
+the from address to point to a branch instruction. The kernel has code to
+adjust the from address via get_branch_type_fused(). However this correction
+is only applied when a branch filter is applied. That means that if no
+filter is present, the quality of the data is lower.
 
-Add the prot_sethuge() helper instead that gets the types right and
-doesn't have to transform addresses.
+Fix the problem by applying the adjustment regardless of the filter setting,
+bringing the AMD LBR to the same level as other LBR implementations.
 
-( Also add a debug check to make sure this doesn't get applied
-  to _PAGE_BIT_PAT/_PAGE_BIT_PAT_LARGE pages. )
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Dave Hansen <dave.hansen@intel.com>
+Fixes: 245268c19f70 ("perf/x86/amd/lbr: Use fusion-aware branch classifier")
+Signed-off-by: Stephane Eranian <eranian@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Sandipan Das <sandipan.das@amd.com>
+Link: https://lore.kernel.org/r/20220928184043.408364-3-eranian@google.com
 ---
- arch/x86/mm/init_64.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ arch/x86/events/amd/lbr.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 0fe690e..7ea7d47 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -90,6 +90,12 @@ DEFINE_ENTRY(pud, pud, init)
- DEFINE_ENTRY(pmd, pmd, init)
- DEFINE_ENTRY(pte, pte, init)
+diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
+index 2e1c157..38a7521 100644
+--- a/arch/x86/events/amd/lbr.c
++++ b/arch/x86/events/amd/lbr.c
+@@ -99,12 +99,13 @@ static void amd_pmu_lbr_filter(void)
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 	int br_sel = cpuc->br_sel, offset, type, i, j;
+ 	bool compress = false;
++	bool fused_only = false;
+ 	u64 from, to;
  
-+static inline pgprot_t prot_sethuge(pgprot_t prot)
-+{
-+	WARN_ON_ONCE(pgprot_val(prot) & _PAGE_PAT);
-+
-+	return __pgprot(pgprot_val(prot) | _PAGE_PSE);
-+}
+ 	/* If sampling all branches, there is nothing to filter */
+ 	if (((br_sel & X86_BR_ALL) == X86_BR_ALL) &&
+ 	    ((br_sel & X86_BR_TYPE_SAVE) != X86_BR_TYPE_SAVE))
+-		return;
++		fused_only = true;
  
- /*
-  * NOTE: pagetable_init alloc all the fixmap pagetables contiguous on the
-@@ -557,9 +563,8 @@ phys_pmd_init(pmd_t *pmd_page, unsigned long paddr, unsigned long paddr_end,
- 		if (page_size_mask & (1<<PG_LEVEL_2M)) {
- 			pages++;
- 			spin_lock(&init_mm.page_table_lock);
--			set_pte_init((pte_t *)pmd,
--				     pfn_pte((paddr & PMD_MASK) >> PAGE_SHIFT,
--					     __pgprot(pgprot_val(prot) | _PAGE_PSE)),
-+			set_pmd_init(pmd,
-+				     pfn_pmd(paddr >> PAGE_SHIFT, prot_sethuge(prot)),
- 				     init);
- 			spin_unlock(&init_mm.page_table_lock);
- 			paddr_last = paddr_next;
-@@ -644,12 +649,8 @@ phys_pud_init(pud_t *pud_page, unsigned long paddr, unsigned long paddr_end,
- 		if (page_size_mask & (1<<PG_LEVEL_1G)) {
- 			pages++;
- 			spin_lock(&init_mm.page_table_lock);
--
--			prot = __pgprot(pgprot_val(prot) | _PAGE_PSE);
--
--			set_pte_init((pte_t *)pud,
--				     pfn_pte((paddr & PUD_MASK) >> PAGE_SHIFT,
--					     prot),
-+			set_pud_init(pud,
-+				     pfn_pud(paddr >> PAGE_SHIFT, prot_sethuge(prot)),
- 				     init);
- 			spin_unlock(&init_mm.page_table_lock);
- 			paddr_last = paddr_next;
+ 	for (i = 0; i < cpuc->lbr_stack.nr; i++) {
+ 		from = cpuc->lbr_entries[i].from;
+@@ -116,8 +117,11 @@ static void amd_pmu_lbr_filter(void)
+ 		 * fusion where it points to an instruction preceding the
+ 		 * actual branch
+ 		 */
+-		if (offset)
++		if (offset) {
+ 			cpuc->lbr_entries[i].from += offset;
++			if (fused_only)
++				continue;
++		}
+ 
+ 		/* If type does not correspond, then discard */
+ 		if (type == X86_BR_NONE || (br_sel & type) != type) {
