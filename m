@@ -2,82 +2,96 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 117775F6C97
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Oct 2022 19:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 001F05F6DC8
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Oct 2022 20:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231825AbiJFRN0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Oct 2022 13:13:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49416 "EHLO
+        id S232043AbiJFS7H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Oct 2022 14:59:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231829AbiJFRNI (ORCPT
+        with ESMTP id S232003AbiJFS7A (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 Oct 2022 13:13:08 -0400
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68908BBE12;
-        Thu,  6 Oct 2022 10:12:50 -0700 (PDT)
-Received: by mail-oo1-f51.google.com with SMTP id q70-20020a4a3349000000b0047f9951ad3aso1314922ooq.7;
-        Thu, 06 Oct 2022 10:12:50 -0700 (PDT)
+        Thu, 6 Oct 2022 14:59:00 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F88AC7054;
+        Thu,  6 Oct 2022 11:58:59 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id a13so4195320edj.0;
+        Thu, 06 Oct 2022 11:58:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nb/bk8BNpi2tKTbf7/cObESzZiIZJYv/Q4YOIC+HPd0=;
+        b=YYuG6HxYgeBzNGd94W7hp26h+G0406sfTbHxlXnUyMGJIEZDeSyp10hzk1a7KP9eLF
+         /JyU1RgF2kMjLV9EQ15q4YTo7akAEfAQeHPBDERIHCpwnW6x98CnKZy2DD5f+VM4kaIN
+         QKarG47tPXX1YVbmsDSQIJn0+kXxSjG7HqQwIeRb6ZKzw1IM+qXnHxYVo3jKIqq6k73h
+         rf8NLKQDFpOYbMYRw2CMV4O/qRQWZyaZAWL4C71mUluvvE+wEy7X0sOM2onHvZEsefvT
+         fPo0MixAS8uHtDN6V/4D1cR7flVf1j14ZGYp9LV4sLu9HJ8GgixnQzHcaL5UWQ6us66S
+         fiHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HtuVKtBzoKt+jjbMVURehUv1VCPg1XF6D/AE8RGN56s=;
-        b=LqNjXvS8jqmHA1KhM7v3sX2YNUvNNsUWLvJMigBpbVkVKRHWewXWsdk3LSKh+QdCL9
-         fEpvq9DF6paP7FlIwMoyzsVCm4sXEiWRq2PEEbRjQe3Q1LcdzD/y7Zqtk0NbkGWLAv9Y
-         bZxuogNajNnMh7Awq91ab8D0F8PJ+C9kor3JUs3Apx+cHx0LQvO205N7sV7ob6uUkg+1
-         HFIq7i4KcgBFWWFjE9lAocSgSDBGx0lPEtxjZv8PLj15uKD348Dl3cLlLc7/xPnCVtiX
-         dOstUM/4xY56J2hM0/D6JR7l4DpgHbDQgA7+VUdJOQLjZ7fW0PYWF3kxbVsPF+wwHRdS
-         t0ig==
-X-Gm-Message-State: ACrzQf163HOeVONRNG91L+1WLghWezPZbwkP5icZouonBG6AT3BrAouB
-        YrUy71nw2Hth3NIHskdFxEyayHnxS/0elWWKKyA=
-X-Google-Smtp-Source: AMsMyM5wuCJUzTKp9TI/kiM8x8/PMnUws2JzhLIGBD920S8QVuI8y+eWoXERHiNlnjNIOLS2FOM7R6e7vTyAXKLJIRY=
-X-Received: by 2002:a05:6830:621a:b0:660:dd14:c2f4 with SMTP id
- cd26-20020a056830621a00b00660dd14c2f4mr408265otb.190.1665076370095; Thu, 06
- Oct 2022 10:12:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <166434824149.401.4361243714612738808.tip-bot2@tip-bot2> <20221006160044.3397237-1-sumanthk@linux.ibm.com>
-In-Reply-To: <20221006160044.3397237-1-sumanthk@linux.ibm.com>
-From:   Namhyung Kim <namhyung@kernel.org>
-Date:   Thu, 6 Oct 2022 10:12:37 -0700
-Message-ID: <CAM9d7ciTeePbQokkn_OAhwpa3cPfun-VacQRP4eOMmRzOkd6=w@mail.gmail.com>
-Subject: Re: [PATCH] Re: [tip: perf/core] perf: Use sample_flags for raw_data
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nb/bk8BNpi2tKTbf7/cObESzZiIZJYv/Q4YOIC+HPd0=;
+        b=p3gaq5gjX/DWt+gOLhhSP3hGPz0yxcPa3qRo1KGNN/sV+9lck6ZkL47hGIsFavPvww
+         VZt3mOU0Ob/RKFp2D710CN85/tyYv9CVegKlHtKjLRh5+KdvEYhcGhEujRg9huuGa7mm
+         SFydHOW9pW8y1Occ6vElYdJ0A2I+0eiYhwAwTPnXXuvB+DkVf9nqZgvGuOhDH021U1Du
+         Pl4WoyoB8+Yd+u6HTrZVgiCuT1RKhY+ajR+8JY24ZCmWrSKyWJSNu7DngpG6PKTMIRpX
+         zrUr4qkRKJgmVUj2zbHHyNJjISxLR8ysrI2MpavV/LlLzxYz3jKEgzyf42QXb4HXZlA0
+         wTCg==
+X-Gm-Message-State: ACrzQf3RQiObcFTn4aCwL7lAn11oiTxM6zJdp0un75wTlCcohUxE8wt5
+        gg/50mFVCx0sSxeSGEBfUZM=
+X-Google-Smtp-Source: AMsMyM7EPjvFFVwiB7qUDbwpU2mC3BFf/NBxSjoYwuLpamqsH7Rl8o6eK+Bysi8cX3UmUJYYOuSf5A==
+X-Received: by 2002:aa7:c78e:0:b0:456:c524:90ec with SMTP id n14-20020aa7c78e000000b00456c52490ecmr1191935eds.192.1665082737280;
+        Thu, 06 Oct 2022 11:58:57 -0700 (PDT)
+Received: from krava ([83.240.62.156])
+        by smtp.gmail.com with ESMTPSA id c2-20020a17090618a200b00772061034dbsm50947ejf.182.2022.10.06.11.58.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Oct 2022 11:58:56 -0700 (PDT)
+From:   Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date:   Thu, 6 Oct 2022 20:58:54 +0200
 To:     Sumanth Korikkar <sumanthk@linux.ibm.com>
 Cc:     tip-bot2@linutronix.de, linux-kernel@vger.kernel.org,
-        linux-tip-commits@vger.kernel.org, peterz@infradead.org,
-        x86@kernel.org, iii@linux.ibm.com, gor@linux.ibm.com,
-        hca@linux.ibm.com, svens@linux.ibm.com, tmricht@linux.ibm.com,
-        bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        linux-tip-commits@vger.kernel.org, namhyung@kernel.org,
+        peterz@infradead.org, x86@kernel.org, iii@linux.ibm.com,
+        gor@linux.ibm.com, hca@linux.ibm.com, svens@linux.ibm.com,
+        tmricht@linux.ibm.com, bpf@vger.kernel.org
+Subject: Re: [PATCH] Re: [tip: perf/core] perf: Use sample_flags for raw_data
+Message-ID: <Yz8lbkx3HYQpnvIB@krava>
+References: <166434824149.401.4361243714612738808.tip-bot2@tip-bot2>
+ <20221006160044.3397237-1-sumanthk@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221006160044.3397237-1-sumanthk@linux.ibm.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hello,
-
-On Thu, Oct 6, 2022 at 9:01 AM Sumanth Korikkar <sumanthk@linux.ibm.com> wrote:
->
+On Thu, Oct 06, 2022 at 06:00:44PM +0200, Sumanth Korikkar wrote:
 > Hi,
->
+> 
 > This causes segfaults.
->
+> 
 > Steps to recreate:
 > *  Run ./samples/bpf/trace_output
 > BUG pid 9 cookie 1001000000004 sized 4
 > BUG pid 9 cookie 1001000000004 sized 4
 > BUG pid 9 cookie 1001000000004 sized 4
 > Segmentation fault (core dumped)
->
+> 
 > Problem:
 > * The following commit sets data->raw to NULL, when the raw data is not filled
 > by PMU driver. This leads to stale data.
->
+>    
 > * raw data could also be filled by bpf_perf_event_output(), bpf_event_output()
 > ...
 >  686         perf_sample_data_init(sd, 0, 0);
@@ -85,41 +99,38 @@ On Thu, Oct 6, 2022 at 9:01 AM Sumanth Korikkar <sumanthk@linux.ibm.com> wrote:
 >  688
 >  689         err = __bpf_perf_event_output(regs, map, flags, sd);
 > ...
->
+> 
 > * The below patch eliminates segfaults. However, contradicts with
 > the description mentioned in this commit (Filled by only PMU driver).
 
-Thank you for the fix.  Don't worry about the description - it said
-it's usually filled by PMU drivers and it should be fine as long as
-you set the sample flags after filling the raw data.
+hi,
+could you please resend the patch with formal changelog and Fixes tag?
 
-Acked-by: Namhyung Kim <namhyung@kernel.org>
+thanks,
+jirka
 
-Thanks,
-Namhyung
-
->
+>   
 > diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
 > index 49fb9ec8366d..1ed08967fb97 100644
 > --- a/kernel/trace/bpf_trace.c
 > +++ b/kernel/trace/bpf_trace.c
 > @@ -687,6 +687,7 @@ BPF_CALL_5(bpf_perf_event_output, struct pt_regs *, regs, struct bpf_map *, map,
->
+>  
 >         perf_sample_data_init(sd, 0, 0);
 >         sd->raw = &raw;
 > +       sd->sample_flags |= PERF_SAMPLE_RAW;
->
+>  
 >         err = __bpf_perf_event_output(regs, map, flags, sd);
->
+>  
 > @@ -745,6 +746,7 @@ u64 bpf_event_output(struct bpf_map *map, u64 flags, void *meta, u64 meta_size,
 >         perf_fetch_caller_regs(regs);
 >         perf_sample_data_init(sd, 0, 0);
 >         sd->raw = &raw;
 > +       sd->sample_flags |= PERF_SAMPLE_RAW;
->
+>  
 >         ret = __bpf_perf_event_output(regs, map, flags, sd);
 >  out:
->
+>   
 > --
 > Thanks,
 > Sumanth
