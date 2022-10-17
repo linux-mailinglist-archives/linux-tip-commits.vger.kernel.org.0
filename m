@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B3A86010C5
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Oct 2022 16:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AD3A601129
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Oct 2022 16:31:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230177AbiJQOJN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Oct 2022 10:09:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35756 "EHLO
+        id S230400AbiJQObJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Oct 2022 10:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbiJQOJL (ORCPT
+        with ESMTP id S229960AbiJQObI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Oct 2022 10:09:11 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D33665249;
-        Mon, 17 Oct 2022 07:09:10 -0700 (PDT)
-Date:   Mon, 17 Oct 2022 14:09:07 -0000
+        Mon, 17 Oct 2022 10:31:08 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15EAE659DE;
+        Mon, 17 Oct 2022 07:31:05 -0700 (PDT)
+Date:   Mon, 17 Oct 2022 14:31:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1666015749;
+        s=2020; t=1666017063;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RCx8kEGVPlTMh63B682V/Mb9Zb7eNpGcPYD2Rcy41og=;
-        b=Xmv1DjyPgcCHsMfy+Ked89Yb/bQs7HpXwXwZLeDHB0TFPV+YAc/0E2ThLsriKhtP+qGUrn
-        l9p4E3/bvO+tM7Gai7Bc/a+kMXf8zlARDr1ZoOYGhq7x63UqVfCNdKTOtuReShrHvE4g8O
-        vdKT1xpUmS8wjQ6Cf0bthZAMPPkiQAZwjw4otxSY9hxBzLENHRyH1aPF/Mq2TmVP62RFtJ
-        k/iMLDQ0F5fKRwsQvJmKXX5hJZqr2YYbYNUYWskxYph4+nUJ8TuaYYREPd0v6VKiQIxdP0
-        eo0AMITShn1J80oc7W8xNBwEMF6Ds5o+SWx+6JZJUZZFyTFH4yD3rggU3ld8pg==
+        bh=o1vuoWLh9v44oGvxqgENx+Nmjiw2B1fjs3Rt8xCgrIk=;
+        b=E4NRedXH2wU2cPOWvvx26if+JOXY4JfPjL2zaLtOnQRvWEGrEpKfm7XfD1UR+pugpY1oQR
+        7s0IeJ8cyVAauBzlzQ7FF59GBQbFQyhExjJRI6m0QfEgXpXTRlc+pY6THUIOiN4K8Zm9mJ
+        0VI1OFnzExj/tc4EKzytdruLM4L3w2ZL2/0QrBqbuAQb2MrSzW08Jbg6inHMcMkErJVJVA
+        WiLlP8F1XQQODpWMOU3ZzzdOcMaeFmR4ndypMiOStV3xO1r/MPFT4FlCVbW4WFqb32794U
+        bOo/4DTXozHR0o1ULg1JcET41rAOIkawCzDVdNnxOvwrSjLEB08otU8TkK3KXw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1666015749;
+        s=2020e; t=1666017063;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RCx8kEGVPlTMh63B682V/Mb9Zb7eNpGcPYD2Rcy41og=;
-        b=cYzGgM/iFbfTBotS5N8mck5H6/yvq2MwOp87Lsx7VxwX+UMJ9LLZwKa4hI6yByEG1EYOrv
-        gfOm6Rh+8hnh7pAQ==
-From:   "tip-bot2 for ye xingchen" <tip-bot2@linutronix.de>
+        bh=o1vuoWLh9v44oGvxqgENx+Nmjiw2B1fjs3Rt8xCgrIk=;
+        b=HJURYBK9KeHmrK+iWmO9FZdiBDeH/NiHRH0aSE3ri9WSRPYf9GTY+kgukKxrP6FA9fWPkz
+        mhRVQogSpufMLuDQ==
+From:   "tip-bot2 for Chen Lifu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timers: Replace in_irq() with in_hardirq()
-Cc:     ye xingchen <ye.xingchen@zte.com.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        John Stultz <jstultz@google.com>, x86@kernel.org,
+Subject: [tip: x86/cleanups] x86/tsc: Make art_related_clocksource static
+Cc:     Chen Lifu <chenlifu@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221012012629.334966-1-ye.xingchen@zte.com.cn>
-References: <20221012012629.334966-1-ye.xingchen@zte.com.cn>
+In-Reply-To: <20220823021821.3052159-1-chenlifu@huawei.com>
+References: <20220823021821.3052159-1-chenlifu@huawei.com>
 MIME-Version: 1.0
-Message-ID: <166601574750.401.8980983182110986351.tip-bot2@tip-bot2>
+Message-ID: <166601706216.401.10492698208850639850.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,39 +64,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     8be3f96ceddb911539a53d87a66da84a04502366
-Gitweb:        https://git.kernel.org/tip/8be3f96ceddb911539a53d87a66da84a04502366
-Author:        ye xingchen <ye.xingchen@zte.com.cn>
-AuthorDate:    Wed, 12 Oct 2022 01:26:29 
+Commit-ID:     3548eda8ae284d6d412d59f11cd20fc7df05362b
+Gitweb:        https://git.kernel.org/tip/3548eda8ae284d6d412d59f11cd20fc7df05362b
+Author:        Chen Lifu <chenlifu@huawei.com>
+AuthorDate:    Tue, 23 Aug 2022 10:18:21 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 17 Oct 2022 16:00:04 +02:00
+CommitterDate: Mon, 17 Oct 2022 16:20:48 +02:00
 
-timers: Replace in_irq() with in_hardirq()
+x86/tsc: Make art_related_clocksource static
 
-Replace the obsolete and ambiguous macro in_irq() with new
-macro in_hardirq().
+The symbol is not used outside of the file, so mark it static.
 
-Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+Fixes the following warning:
+
+arch/x86/kernel/tsc.c:53:20: warning:
+	symbol 'art_related_clocksource' was not declared. Should it be static?
+
+Signed-off-by: Chen Lifu <chenlifu@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/r/20221012012629.334966-1-ye.xingchen@zte.com.cn
+Link: https://lore.kernel.org/r/20220823021821.3052159-1-chenlifu@huawei.com
 
 ---
- kernel/time/timer.c | 2 +-
+ arch/x86/kernel/tsc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 717fcb9..f40c88c 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1422,7 +1422,7 @@ int del_timer_sync(struct timer_list *timer)
- 	 * don't use it in hardirq context, because it
- 	 * could lead to deadlock.
- 	 */
--	WARN_ON(in_irq() && !(timer->flags & TIMER_IRQSAFE));
-+	WARN_ON(in_hardirq() && !(timer->flags & TIMER_IRQSAFE));
+diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+index cafacb2..a78e73d 100644
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -51,7 +51,7 @@ int tsc_clocksource_reliable;
+ static u32 art_to_tsc_numerator;
+ static u32 art_to_tsc_denominator;
+ static u64 art_to_tsc_offset;
+-struct clocksource *art_related_clocksource;
++static struct clocksource *art_related_clocksource;
  
- 	/*
- 	 * Must be able to sleep on PREEMPT_RT because of the slowpath in
+ struct cyc2ns {
+ 	struct cyc2ns_data data[2];	/*  0 + 2*16 = 32 */
