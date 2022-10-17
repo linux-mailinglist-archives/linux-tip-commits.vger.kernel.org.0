@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AD3A601129
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Oct 2022 16:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 814EF601160
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Oct 2022 16:45:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230400AbiJQObJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Oct 2022 10:31:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34316 "EHLO
+        id S230227AbiJQOpf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Oct 2022 10:45:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229960AbiJQObI (ORCPT
+        with ESMTP id S230520AbiJQOpc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Oct 2022 10:31:08 -0400
+        Mon, 17 Oct 2022 10:45:32 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15EAE659DE;
-        Mon, 17 Oct 2022 07:31:05 -0700 (PDT)
-Date:   Mon, 17 Oct 2022 14:31:02 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F3A42F65E;
+        Mon, 17 Oct 2022 07:45:30 -0700 (PDT)
+Date:   Mon, 17 Oct 2022 14:45:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1666017063;
+        s=2020; t=1666017929;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=o1vuoWLh9v44oGvxqgENx+Nmjiw2B1fjs3Rt8xCgrIk=;
-        b=E4NRedXH2wU2cPOWvvx26if+JOXY4JfPjL2zaLtOnQRvWEGrEpKfm7XfD1UR+pugpY1oQR
-        7s0IeJ8cyVAauBzlzQ7FF59GBQbFQyhExjJRI6m0QfEgXpXTRlc+pY6THUIOiN4K8Zm9mJ
-        0VI1OFnzExj/tc4EKzytdruLM4L3w2ZL2/0QrBqbuAQb2MrSzW08Jbg6inHMcMkErJVJVA
-        WiLlP8F1XQQODpWMOU3ZzzdOcMaeFmR4ndypMiOStV3xO1r/MPFT4FlCVbW4WFqb32794U
-        bOo/4DTXozHR0o1ULg1JcET41rAOIkawCzDVdNnxOvwrSjLEB08otU8TkK3KXw==
+        bh=F9QpAqs6GyUJEi3LXVbk4btEPF2HufReWPHZpghC9FY=;
+        b=WCxycd4DgNHnbQFpQWAhIxkbwZsNCWJ/C29nq17PHPxihtOAREqI28Uij/A13ypQnMjQjz
+        PjC/hcrNFuSl07WqiG7kMjgSLU2q0rxRhfdRSu/uYj7csk+uJaRO5/8KBC+NQ2P3n10gUZ
+        gjKaSlBnxB47JDXnObnKC1eueZzSMaVNJftXV9gtxX2DT/SX/IStKSQK+s2KD8lJvnZLED
+        l4pUW+Pqwmua0M/JvImxuZnqvviaR0pRXBi+OnNnUeoFTivMl4Y3Ea/vssbzqFyrgRygWU
+        ZJ3Nk4gDV2GMc8HxGzOOyoWqMzqeh/vv0Jr28KB3ZcGoZ+RRJ20X4H42bHzi9Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1666017063;
+        s=2020e; t=1666017929;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=o1vuoWLh9v44oGvxqgENx+Nmjiw2B1fjs3Rt8xCgrIk=;
-        b=HJURYBK9KeHmrK+iWmO9FZdiBDeH/NiHRH0aSE3ri9WSRPYf9GTY+kgukKxrP6FA9fWPkz
-        mhRVQogSpufMLuDQ==
-From:   "tip-bot2 for Chen Lifu" <tip-bot2@linutronix.de>
+        bh=F9QpAqs6GyUJEi3LXVbk4btEPF2HufReWPHZpghC9FY=;
+        b=YNc+pHLGOPHw6egVEbDMffAEHjmNuIc75GsP74HsaSvqE9eMspoy+1MIlDZp39zSDwObiO
+        0LFHrC+wlgMC+xBw==
+From:   "tip-bot2 for Sumanth Korikkar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/tsc: Make art_related_clocksource static
-Cc:     Chen Lifu <chenlifu@huawei.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: perf/urgent] bpf: Fix sample_flags for bpf_perf_event_output
+Cc:     Sumanth Korikkar <sumanthk@linux.ibm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Namhyung Kim <namhyung@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220823021821.3052159-1-chenlifu@huawei.com>
-References: <20220823021821.3052159-1-chenlifu@huawei.com>
+In-Reply-To: <20221007081327.1047552-1-sumanthk@linux.ibm.com>
+References: <20221007081327.1047552-1-sumanthk@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <166601706216.401.10492698208850639850.tip-bot2@tip-bot2>
+Message-ID: <166601792750.401.18306154915385335790.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,42 +65,52 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     3548eda8ae284d6d412d59f11cd20fc7df05362b
-Gitweb:        https://git.kernel.org/tip/3548eda8ae284d6d412d59f11cd20fc7df05362b
-Author:        Chen Lifu <chenlifu@huawei.com>
-AuthorDate:    Tue, 23 Aug 2022 10:18:21 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 17 Oct 2022 16:20:48 +02:00
+Commit-ID:     21da7472a040420f2dc624ffec70291a72c5d6a6
+Gitweb:        https://git.kernel.org/tip/21da7472a040420f2dc624ffec70291a72c5d6a6
+Author:        Sumanth Korikkar <sumanthk@linux.ibm.com>
+AuthorDate:    Fri, 07 Oct 2022 10:13:27 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 17 Oct 2022 16:32:06 +02:00
 
-x86/tsc: Make art_related_clocksource static
+bpf: Fix sample_flags for bpf_perf_event_output
 
-The symbol is not used outside of the file, so mark it static.
+* Raw data is also filled by bpf_perf_event_output.
+* Add sample_flags to indicate raw data.
+* This eliminates the segfaults as shown below:
+  Run ./samples/bpf/trace_output
+  BUG pid 9 cookie 1001000000004 sized 4
+  BUG pid 9 cookie 1001000000004 sized 4
+  BUG pid 9 cookie 1001000000004 sized 4
+  Segmentation fault (core dumped)
 
-Fixes the following warning:
-
-arch/x86/kernel/tsc.c:53:20: warning:
-	symbol 'art_related_clocksource' was not declared. Should it be static?
-
-Signed-off-by: Chen Lifu <chenlifu@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220823021821.3052159-1-chenlifu@huawei.com
-
+Fixes: 838d9bb62d13 ("perf: Use sample_flags for raw_data")
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/r/20221007081327.1047552-1-sumanthk@linux.ibm.com
 ---
- arch/x86/kernel/tsc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/bpf_trace.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index cafacb2..a78e73d 100644
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -51,7 +51,7 @@ int tsc_clocksource_reliable;
- static u32 art_to_tsc_numerator;
- static u32 art_to_tsc_denominator;
- static u64 art_to_tsc_offset;
--struct clocksource *art_related_clocksource;
-+static struct clocksource *art_related_clocksource;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 49fb9ec..1ed0896 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -687,6 +687,7 @@ BPF_CALL_5(bpf_perf_event_output, struct pt_regs *, regs, struct bpf_map *, map,
  
- struct cyc2ns {
- 	struct cyc2ns_data data[2];	/*  0 + 2*16 = 32 */
+ 	perf_sample_data_init(sd, 0, 0);
+ 	sd->raw = &raw;
++	sd->sample_flags |= PERF_SAMPLE_RAW;
+ 
+ 	err = __bpf_perf_event_output(regs, map, flags, sd);
+ 
+@@ -745,6 +746,7 @@ u64 bpf_event_output(struct bpf_map *map, u64 flags, void *meta, u64 meta_size,
+ 	perf_fetch_caller_regs(regs);
+ 	perf_sample_data_init(sd, 0, 0);
+ 	sd->raw = &raw;
++	sd->sample_flags |= PERF_SAMPLE_RAW;
+ 
+ 	ret = __bpf_perf_event_output(regs, map, flags, sd);
+ out:
