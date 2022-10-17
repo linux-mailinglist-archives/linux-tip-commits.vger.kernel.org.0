@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66DFF600C38
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Oct 2022 12:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4823F601070
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Oct 2022 15:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229452AbiJQKVi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Oct 2022 06:21:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39818 "EHLO
+        id S229974AbiJQNrh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Oct 2022 09:47:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229949AbiJQKVO (ORCPT
+        with ESMTP id S229894AbiJQNrf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Oct 2022 06:21:14 -0400
+        Mon, 17 Oct 2022 09:47:35 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FF11264A9;
-        Mon, 17 Oct 2022 03:21:10 -0700 (PDT)
-Date:   Mon, 17 Oct 2022 10:21:06 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3415952825;
+        Mon, 17 Oct 2022 06:47:34 -0700 (PDT)
+Date:   Mon, 17 Oct 2022 13:47:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1666002068;
+        s=2020; t=1666014451;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7OFnb1CwwUjR9LEhTh6LTg09oHuQexdHt875Ki4GkPY=;
-        b=gvzSBLK8U9QLxl6UDIqJTPDdVWDxT/D/fcYRTy5s0qtomIoN1U+AvOhmHQQOwqTSHsLizz
-        woR+pqnofWq05Io/IZqQEdTauS4VAviLF+A1aqX/o1Y4ffeDRWPQccjWCDb2dDfvqkZBEH
-        FLiMmLbNhuXpToX0ZiB5KZDzsvEwqCCxhPgs4qvHNVPwbUDo+Gm60MK1GyCWK5M+JbKhj/
-        y0vTuEpaTxGO+YBm26VbdWGLAVQ6oKzIloJjNz6Jzo+S5isiL7V6itIAXle9nPRCyhJf7x
-        up6Vfgr65VB0B6NLuaJnkr3imb+FFEKnVzSDDA5NuY5vykOBIcl54CUxPQ07jw==
+        bh=tqBa9Ui0a5BzY8tHtFFmljjsK0hmX5eiFPxQJ7f2bbc=;
+        b=LRNjp5ifONGe7zYMKC/22iEY1mmXz8lpRQbCXrx4lfR8KxaG/O71MzNH7kSDFTU874lx9n
+        LnKPROcNMoOCBjcnyCxhdePwiEInAp2kpyUbGrxI3y8lmyrEBAOkNCLkBSIzGoGJTSGky4
+        zDUMPeFuVnwwPxan8cPq3FSdZu15K+9anxZhvx2oR1PME2/kaIouepOlHcLdvkU1xBA25f
+        cW/wExufSMJWqYPQXMFhdulPJgPGr+ja/jPUe5BRzgRjxxdw5XuXkeB9fhT/r5c1PMQ8xF
+        0+uQPro8dMJRnlanetOo8x5H4tFosf2wBlbSrI5YHA7OQew87yH2tdOkkD+cAw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1666002068;
+        s=2020e; t=1666014451;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7OFnb1CwwUjR9LEhTh6LTg09oHuQexdHt875Ki4GkPY=;
-        b=CbLfT8i/MjaiO0SDqMw4lTJWjQSrnoBCvz+e6aWpZdT4CEcGPk0mbHz8EozA1EsVU+j13o
-        oq/TOG+6V4KvLABw==
-From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+        bh=tqBa9Ui0a5BzY8tHtFFmljjsK0hmX5eiFPxQJ7f2bbc=;
+        b=kJ2iDCSuCKuNl1CPwReaMyDg8XpthNf9ioNYKP7udbZaVZZRD7d4AEGrYAuPEqOCr12f2M
+        ZsjaqO3c99ji2XBw==
+From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/paravirt] x86/paravirt: Remove clobber bitmask from
- .parainstructions
-Cc:     Kees Cook <keescook@chromium.org>, Borislav Petkov <bp@suse.de>,
-        Juergen Gross <jgross@suse.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/fpu: Exclude dynamic states from init_fpstate
+Cc:     Lin X Wang <lin.x.wang@intel.com>,
+        "Chang S. Bae" <chang.seok.bae@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220903073706.3193746-1-keescook@chromium.org>
-References: <20220903073706.3193746-1-keescook@chromium.org>
+In-Reply-To: <20220824191223.1248-4-chang.seok.bae@intel.com>
+References: <20220824191223.1248-4-chang.seok.bae@intel.com>
 MIME-Version: 1.0
-Message-ID: <166600206681.401.11468161497507618727.tip-bot2@tip-bot2>
+Message-ID: <166601445015.401.6980293789787013355.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,177 +65,83 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/paravirt branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     00e8f7153bcdecc5c31e307c7c17fecf42308fc4
-Gitweb:        https://git.kernel.org/tip/00e8f7153bcdecc5c31e307c7c17fecf42308fc4
-Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Sat, 03 Sep 2022 00:37:06 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 17 Oct 2022 10:44:30 +02:00
+Commit-ID:     a401f45e38754953c9d402f8b3bc965707eecc91
+Gitweb:        https://git.kernel.org/tip/a401f45e38754953c9d402f8b3bc965707eecc91
+Author:        Chang S. Bae <chang.seok.bae@intel.com>
+AuthorDate:    Wed, 24 Aug 2022 12:12:23 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 17 Oct 2022 15:44:25 +02:00
 
-x86/paravirt: Remove clobber bitmask from .parainstructions
+x86/fpu: Exclude dynamic states from init_fpstate
 
-The u16 "clobber" value is not used in .parainstructions since commit
-27876f3882fd ("x86/paravirt: Remove clobbers from struct paravirt_patch_site")
+== Background ==
 
-Remove the u16 from the section macro, the argument from all macros, and
-all now-unused CLBR_* macros.
+The XSTATE init code initializes all enabled and supported components.
+Then, the init states are saved in the init_fpstate buffer that is
+statically allocated in about one page.
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20220903073706.3193746-1-keescook@chromium.org
+The AMX TILE_DATA state is large (8KB) but its init state is zero. And the
+feature comes only with the compacted format with these established
+dependencies: AMX->XFD->XSAVES. So this state is excludable from
+init_fpstate.
+
+== Problem ==
+
+But the buffer is formatted to include that large state. Then, this can be
+the cause of a noisy splat like the below.
+
+This came from XRSTORS for the task with init_fpstate in its XSAVE buffer.
+It is reproducible on AMX systems when the running kernel is built with
+CONFIG_DEBUG_PAGEALLOC=y and CONFIG_DEBUG_PAGEALLOC_ENABLE_DEFAULT=y:
+
+ Bad FPU state detected at restore_fpregs_from_fpstate+0x57/0xd0, reinitializing FPU registers.
+ ...
+ RIP: 0010:restore_fpregs_from_fpstate+0x57/0xd0
+  ? restore_fpregs_from_fpstate+0x45/0xd0
+  switch_fpu_return+0x4e/0xe0
+  exit_to_user_mode_prepare+0x17b/0x1b0
+  syscall_exit_to_user_mode+0x29/0x40
+  do_syscall_64+0x67/0x80
+  ? do_syscall_64+0x67/0x80
+  ? exc_page_fault+0x86/0x180
+  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+== Solution ==
+
+Adjust init_fpstate to exclude dynamic states. XRSTORS from init_fpstate
+still initializes those states when their bits are set in the
+requested-feature bitmap.
+
+Fixes: 2308ee57d93d ("x86/fpu/amx: Enable the AMX feature in 64-bit mode")
+Reported-by: Lin X Wang <lin.x.wang@intel.com>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Lin X Wang <lin.x.wang@intel.com>
+Link: https://lore.kernel.org/r/20220824191223.1248-4-chang.seok.bae@intel.com
+
 ---
- arch/x86/include/asm/paravirt_types.h | 61 +++++---------------------
- 1 file changed, 12 insertions(+), 49 deletions(-)
+ arch/x86/kernel/fpu/xstate.c |  9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index f3d6015..f72bf0f 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -2,37 +2,6 @@
- #ifndef _ASM_X86_PARAVIRT_TYPES_H
- #define _ASM_X86_PARAVIRT_TYPES_H
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index f5ef786..e77cabf 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -857,9 +857,12 @@ void __init fpu__init_system_xstate(unsigned int legacy_size)
+ 	update_regset_xstate_info(fpu_user_cfg.max_size,
+ 				  fpu_user_cfg.max_features);
  
--/* Bitmask of what can be clobbered: usually at least eax. */
--#define CLBR_EAX  (1 << 0)
--#define CLBR_ECX  (1 << 1)
--#define CLBR_EDX  (1 << 2)
--#define CLBR_EDI  (1 << 3)
--
--#ifdef CONFIG_X86_32
--/* CLBR_ANY should match all regs platform has. For i386, that's just it */
--#define CLBR_ANY  ((1 << 4) - 1)
--
--#define CLBR_ARG_REGS	(CLBR_EAX | CLBR_EDX | CLBR_ECX)
--#define CLBR_RET_REG	(CLBR_EAX | CLBR_EDX)
--#else
--#define CLBR_RAX  CLBR_EAX
--#define CLBR_RCX  CLBR_ECX
--#define CLBR_RDX  CLBR_EDX
--#define CLBR_RDI  CLBR_EDI
--#define CLBR_RSI  (1 << 4)
--#define CLBR_R8   (1 << 5)
--#define CLBR_R9   (1 << 6)
--#define CLBR_R10  (1 << 7)
--#define CLBR_R11  (1 << 8)
--
--#define CLBR_ANY  ((1 << 9) - 1)
--
--#define CLBR_ARG_REGS	(CLBR_RDI | CLBR_RSI | CLBR_RDX | \
--			 CLBR_RCX | CLBR_R8 | CLBR_R9)
--#define CLBR_RET_REG	(CLBR_RAX)
--
--#endif /* X86_64 */
--
- #ifndef __ASSEMBLY__
+-	/* Bring init_fpstate size and features up to date */
+-	init_fpstate.size		= fpu_kernel_cfg.max_size;
+-	init_fpstate.xfeatures		= fpu_kernel_cfg.max_features;
++	/*
++	 * init_fpstate excludes dynamic states as they are large but init
++	 * state is zero.
++	 */
++	init_fpstate.size		= fpu_kernel_cfg.default_size;
++	init_fpstate.xfeatures		= fpu_kernel_cfg.default_features;
  
- #include <asm/desc_defs.h>
-@@ -279,27 +248,23 @@ extern struct paravirt_patch_template pv_ops;
- #define paravirt_type(op)				\
- 	[paravirt_typenum] "i" (PARAVIRT_PATCH(op)),	\
- 	[paravirt_opptr] "m" (pv_ops.op)
--#define paravirt_clobber(clobber)		\
--	[paravirt_clobber] "i" (clobber)
--
- /*
-  * Generate some code, and mark it as patchable by the
-  * apply_paravirt() alternate instruction patcher.
-  */
--#define _paravirt_alt(insn_string, type, clobber)	\
-+#define _paravirt_alt(insn_string, type)		\
- 	"771:\n\t" insn_string "\n" "772:\n"		\
- 	".pushsection .parainstructions,\"a\"\n"	\
- 	_ASM_ALIGN "\n"					\
- 	_ASM_PTR " 771b\n"				\
- 	"  .byte " type "\n"				\
- 	"  .byte 772b-771b\n"				\
--	"  .short " clobber "\n"			\
- 	_ASM_ALIGN "\n"					\
- 	".popsection\n"
- 
- /* Generate patchable code, with the default asm parameters. */
- #define paravirt_alt(insn_string)					\
--	_paravirt_alt(insn_string, "%c[paravirt_typenum]", "%c[paravirt_clobber]")
-+	_paravirt_alt(insn_string, "%c[paravirt_typenum]")
- 
- /* Simple instruction patching code. */
- #define NATIVE_LABEL(a,x,b) "\n\t.globl " a #x "_" #b "\n" a #x "_" #b ":\n\t"
-@@ -451,20 +416,19 @@ int paravirt_disable_iospace(void);
- 	})
- 
- 
--#define ____PVOP_CALL(ret, op, clbr, call_clbr, extra_clbr, ...)	\
-+#define ____PVOP_CALL(ret, op, call_clbr, extra_clbr, ...)	\
- 	({								\
- 		PVOP_CALL_ARGS;						\
- 		PVOP_TEST_NULL(op);					\
- 		asm volatile(paravirt_alt(PARAVIRT_CALL)		\
- 			     : call_clbr, ASM_CALL_CONSTRAINT		\
- 			     : paravirt_type(op),			\
--			       paravirt_clobber(clbr),			\
- 			       ##__VA_ARGS__				\
- 			     : "memory", "cc" extra_clbr);		\
- 		ret;							\
- 	})
- 
--#define ____PVOP_ALT_CALL(ret, op, alt, cond, clbr, call_clbr,		\
-+#define ____PVOP_ALT_CALL(ret, op, alt, cond, call_clbr,		\
- 			  extra_clbr, ...)				\
- 	({								\
- 		PVOP_CALL_ARGS;						\
-@@ -473,45 +437,44 @@ int paravirt_disable_iospace(void);
- 					 alt, cond)			\
- 			     : call_clbr, ASM_CALL_CONSTRAINT		\
- 			     : paravirt_type(op),			\
--			       paravirt_clobber(clbr),			\
- 			       ##__VA_ARGS__				\
- 			     : "memory", "cc" extra_clbr);		\
- 		ret;							\
- 	})
- 
- #define __PVOP_CALL(rettype, op, ...)					\
--	____PVOP_CALL(PVOP_RETVAL(rettype), op, CLBR_ANY,		\
-+	____PVOP_CALL(PVOP_RETVAL(rettype), op,				\
- 		      PVOP_CALL_CLOBBERS, EXTRA_CLOBBERS, ##__VA_ARGS__)
- 
- #define __PVOP_ALT_CALL(rettype, op, alt, cond, ...)			\
--	____PVOP_ALT_CALL(PVOP_RETVAL(rettype), op, alt, cond, CLBR_ANY,\
-+	____PVOP_ALT_CALL(PVOP_RETVAL(rettype), op, alt, cond,		\
- 			  PVOP_CALL_CLOBBERS, EXTRA_CLOBBERS,		\
- 			  ##__VA_ARGS__)
- 
- #define __PVOP_CALLEESAVE(rettype, op, ...)				\
--	____PVOP_CALL(PVOP_RETVAL(rettype), op.func, CLBR_RET_REG,	\
-+	____PVOP_CALL(PVOP_RETVAL(rettype), op.func,			\
- 		      PVOP_CALLEE_CLOBBERS, , ##__VA_ARGS__)
- 
- #define __PVOP_ALT_CALLEESAVE(rettype, op, alt, cond, ...)		\
- 	____PVOP_ALT_CALL(PVOP_RETVAL(rettype), op.func, alt, cond,	\
--			  CLBR_RET_REG, PVOP_CALLEE_CLOBBERS, , ##__VA_ARGS__)
-+			  PVOP_CALLEE_CLOBBERS, , ##__VA_ARGS__)
- 
- 
- #define __PVOP_VCALL(op, ...)						\
--	(void)____PVOP_CALL(, op, CLBR_ANY, PVOP_VCALL_CLOBBERS,	\
-+	(void)____PVOP_CALL(, op, PVOP_VCALL_CLOBBERS,			\
- 		       VEXTRA_CLOBBERS, ##__VA_ARGS__)
- 
- #define __PVOP_ALT_VCALL(op, alt, cond, ...)				\
--	(void)____PVOP_ALT_CALL(, op, alt, cond, CLBR_ANY,		\
-+	(void)____PVOP_ALT_CALL(, op, alt, cond,			\
- 				PVOP_VCALL_CLOBBERS, VEXTRA_CLOBBERS,	\
- 				##__VA_ARGS__)
- 
- #define __PVOP_VCALLEESAVE(op, ...)					\
--	(void)____PVOP_CALL(, op.func, CLBR_RET_REG,			\
-+	(void)____PVOP_CALL(, op.func,					\
- 			    PVOP_VCALLEE_CLOBBERS, , ##__VA_ARGS__)
- 
- #define __PVOP_ALT_VCALLEESAVE(op, alt, cond, ...)			\
--	(void)____PVOP_ALT_CALL(, op.func, alt, cond, CLBR_RET_REG,	\
-+	(void)____PVOP_ALT_CALL(, op.func, alt, cond,			\
- 				PVOP_VCALLEE_CLOBBERS, , ##__VA_ARGS__)
- 
- 
+ 	if (init_fpstate.size > sizeof(init_fpstate.regs)) {
+ 		pr_warn("x86/fpu: init_fpstate buffer too small (%zu < %d), disabling XSAVE\n",
