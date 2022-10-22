@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 643E2608175
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Oct 2022 00:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 540E9608300
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Oct 2022 02:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229930AbiJUW0C (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 21 Oct 2022 18:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55626 "EHLO
+        id S229717AbiJVA42 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 21 Oct 2022 20:56:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229838AbiJUWZw (ORCPT
+        with ESMTP id S229871AbiJVA41 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 21 Oct 2022 18:25:52 -0400
+        Fri, 21 Oct 2022 20:56:27 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA08C18E2B6;
-        Fri, 21 Oct 2022 15:25:50 -0700 (PDT)
-Date:   Fri, 21 Oct 2022 22:25:45 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C0582ADD23;
+        Fri, 21 Oct 2022 17:56:25 -0700 (PDT)
+Date:   Sat, 22 Oct 2022 00:56:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1666391147;
+        s=2020; t=1666400183;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=WWVRtK1oSdCMD8tZ02jUK7li0uyMogbugXnIeZb0lpI=;
-        b=MOXaMPagHMJyaT7UFqU6r5YeyKdgx/3/fTdRwcfJgOK3OY865Gz8aoka70HiYpKGu0d/P1
-        B3LW5JPT2xKddtUMT8R9Ro4VjBuWpRVJYwXwyfS7yjsL7QrOC2vzK5ggjBcIFWRpAJO1LE
-        hnuRODhRrwIFNQtA9AUqqweo0nYY8nANvIT53NazAf7r3ACutC+H4BqffrkQ3L4wgqwGGO
-        nQIrqYi1vF0Le8a08NTGpPRT2WtxBOAUKGN0UYMS3f1fERsz3Bgxela1o645LfX1Qq0end
-        ESC1KR2P9REUDeZ20+NBIhcEzIl9Ac+PFNmbE5X3KLgEfKKKkFDnTv8Htm44hA==
+        bh=dtbNVOzozDoLxz7Ta5CNEey8ofBIvBtFEI42oz4UfjA=;
+        b=ady2zyN+Ald7cQ3/Fnt1ENKuudY9z+2KklIYbf1mDOtPhSmUfsDvak0SDku6ZcPU2234dv
+        dFbCDTKRUYfaVxtShoGNyq2/vGQkgMrgM/hED42enrGw+GlyvBzvBVS5ufblaqi57vrbw+
+        iPYSH3/MOeg6Xk7HLUaWtQ6BqjujmGgtPQ5z4yAr/Ll177fjZSwiyPReaW63xmne1/8a8R
+        TwLpM6wyjIQ/qyTZQk45Nc9bFwX2aghoCk3tK5ngwszEjiwaIX5N7Qp7z3OPdoDYQPSjiq
+        9HCTGphHxftCssnh8RRpqWUMnur/Nu5TbQ4n/FQWtCWi6VvXm1J6cJV+WBN2cQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1666391147;
+        s=2020e; t=1666400183;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=WWVRtK1oSdCMD8tZ02jUK7li0uyMogbugXnIeZb0lpI=;
-        b=xV5NvZMPujhZ7Bix4/2jqP1TNwg0tQvyn+Ugx933Iut6LwL1ZLcQi6yvNOb4w+e8192Zpq
-        zHaZtm/lWjV6fUBw==
+        bh=dtbNVOzozDoLxz7Ta5CNEey8ofBIvBtFEI42oz4UfjA=;
+        b=m8d6r+Pd3yp0NiPnAu77OC8GmEN28iBCshBq4itktaYlKrIFITsI3t4ik+PtvbBPGC/zI/
+        uRuhWPoJVM7hmZDw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -46,14 +46,14 @@ Cc:     Seth Jenkins <sethjenkins@google.com>,
         Kees Cook <keescook@chromium.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <166639114548.401.707105259028399157.tip-bot2@tip-bot2>
+Message-ID: <166640018118.401.11959688821203132730.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -62,12 +62,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     11a4f78908cb8a6cccbb49dd7d0455a94741e959
-Gitweb:        https://git.kernel.org/tip/11a4f78908cb8a6cccbb49dd7d0455a94741e959
+Commit-ID:     1248fb6a8201ddac1c86a202f05a0a1765efbfce
+Gitweb:        https://git.kernel.org/tip/1248fb6a8201ddac1c86a202f05a0a1765efbfce
 Author:        Peter Zijlstra <peterz@infradead.org>
 AuthorDate:    Fri, 07 Oct 2022 10:42:36 +02:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 21 Oct 2022 09:48:58 -07:00
+CommitterDate: Fri, 21 Oct 2022 17:53:05 -07:00
 
 x86/mm: Randomize per-cpu entry area
 
@@ -85,7 +85,8 @@ duplicates to spread the existing CPUs over the available space.
 This makes it harder to find the addresses of important structures in
 the cpu entry areas like the entry stacks.
 
-[ dhansen: add minor comment in "sodding terrible" loop ]
+[ dhansen: add minor comment in "sodding terrible" loop,
+	   fix 32-bit compile issue ]
 
 Reported-by: Seth Jenkins <sethjenkins@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
@@ -114,7 +115,7 @@ index 75efc4c..462fc34 100644
  DECLARE_PER_CPU(struct cpu_entry_area *, cpu_entry_area);
  DECLARE_PER_CPU(struct cea_exception_stacks *, cea_exception_stacks);
 diff --git a/arch/x86/include/asm/pgtable_areas.h b/arch/x86/include/asm/pgtable_areas.h
-index d34cce1..62e5ede 100644
+index d34cce1..4f056fb 100644
 --- a/arch/x86/include/asm/pgtable_areas.h
 +++ b/arch/x86/include/asm/pgtable_areas.h
 @@ -11,6 +11,12 @@
@@ -125,7 +126,7 @@ index d34cce1..62e5ede 100644
 +#ifdef CONFIG_X86_32
 +#define CPU_ENTRY_AREA_MAP_SIZE		(CPU_ENTRY_AREA_PER_CPU +		\
 +					 (CPU_ENTRY_AREA_SIZE * NR_CPUS) -	\
-+					 CPU_ENTRY_AREA_BASE
++					 CPU_ENTRY_AREA_BASE)
 +#else
 +#define CPU_ENTRY_AREA_MAP_SIZE		P4D_SIZE
 +#endif
