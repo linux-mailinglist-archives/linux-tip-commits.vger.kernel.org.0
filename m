@@ -2,225 +2,99 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 540E9608300
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Oct 2022 02:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A2D4608507
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Oct 2022 08:23:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229717AbiJVA42 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 21 Oct 2022 20:56:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58222 "EHLO
+        id S229962AbiJVGXM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 22 Oct 2022 02:23:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229871AbiJVA41 (ORCPT
+        with ESMTP id S229960AbiJVGXM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 21 Oct 2022 20:56:27 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C0582ADD23;
-        Fri, 21 Oct 2022 17:56:25 -0700 (PDT)
-Date:   Sat, 22 Oct 2022 00:56:21 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1666400183;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=dtbNVOzozDoLxz7Ta5CNEey8ofBIvBtFEI42oz4UfjA=;
-        b=ady2zyN+Ald7cQ3/Fnt1ENKuudY9z+2KklIYbf1mDOtPhSmUfsDvak0SDku6ZcPU2234dv
-        dFbCDTKRUYfaVxtShoGNyq2/vGQkgMrgM/hED42enrGw+GlyvBzvBVS5ufblaqi57vrbw+
-        iPYSH3/MOeg6Xk7HLUaWtQ6BqjujmGgtPQ5z4yAr/Ll177fjZSwiyPReaW63xmne1/8a8R
-        TwLpM6wyjIQ/qyTZQk45Nc9bFwX2aghoCk3tK5ngwszEjiwaIX5N7Qp7z3OPdoDYQPSjiq
-        9HCTGphHxftCssnh8RRpqWUMnur/Nu5TbQ4n/FQWtCWi6VvXm1J6cJV+WBN2cQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1666400183;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=dtbNVOzozDoLxz7Ta5CNEey8ofBIvBtFEI42oz4UfjA=;
-        b=m8d6r+Pd3yp0NiPnAu77OC8GmEN28iBCshBq4itktaYlKrIFITsI3t4ik+PtvbBPGC/zI/
-        uRuhWPoJVM7hmZDw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Randomize per-cpu entry area
-Cc:     Seth Jenkins <sethjenkins@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Kees Cook <keescook@chromium.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Sat, 22 Oct 2022 02:23:12 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E45D924471B;
+        Fri, 21 Oct 2022 23:23:10 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id a67so13251968edf.12;
+        Fri, 21 Oct 2022 23:23:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Kok/Ux5+rEDlXMBd84wchGv4GoNr9xODr30MDalxF54=;
+        b=BmIxsFLz1o38iqVCPe15V6QzdxASVWLlPnGIFPg3ksvcpe3PP8IkXUVtEVkQEhjs1b
+         Q8TeniK56qBaCoPxOb0G4I55FJwK2NafG6TV8gFfhhO5X8CSZx3LVyQvz20C3IA/nimc
+         y/fQqRFX0fUL5kIa/WZL+9gdgE4vq38j8hoTNgyz73tX3SxOXzZO/avi2PQnYenax8Me
+         96oGHwEJ7kPwzG7NRR55AtYgHV4VT8mnHN6uK5VyDJ7PSNon4eHy+9TLi7w93dDUDiGR
+         DMFHCREubTYccVADRYCk3yspeUgtilZlodnp7yMSmrFXHHcBzZqugpsnvMk94WYg5W0t
+         WsPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Kok/Ux5+rEDlXMBd84wchGv4GoNr9xODr30MDalxF54=;
+        b=ocTnjC4dXQ/VzIZ1tF6oO9KgN4vy7oo5MDb14B5jQh8wF2uWTPaA8LZ6fJaFZda30g
+         ox0OhM7YbolRWtHJSrxaQ5Vxuw8CGjBQjIqocXgAWD3Dz5cdpxaYJWcLB27Fps5NgSPN
+         Z0N7dGAUaMjUQ+zJUB0W15MSM+b/YmH4iSarPwYCAxwHXbaGhM0FChDpc0J7bXGDMCnW
+         Pm5ZmxCXbXgMDQEGzjKHT5RBbKDAQjh4eBwa5R21Rhx+KYdxn34q++0Vp3iSyAJ822s2
+         wmhzV8X4I6fGjOY3SO2pG80NwGGyGpmIzf4WOsGJoz9e+0C9XwE+WFPXsddORjqFi4yM
+         nIzQ==
+X-Gm-Message-State: ACrzQf1rIDFPYVjnewetasl/04hl+eFQPfbi7lA4J+tvnMfD+8+QFsUW
+        hpaL2O5r7jGPjCjRZTT1WZ0uUU9UkGY=
+X-Google-Smtp-Source: AMsMyM5R/vZJ8staClALQmMuYQAiHqoUtWGu7El7foI5U930SWjH9vVV3rPT+XRiHjh9dsUAkUUt4w==
+X-Received: by 2002:aa7:cad5:0:b0:454:88dc:2c22 with SMTP id l21-20020aa7cad5000000b0045488dc2c22mr21024495edt.352.1666419788845;
+        Fri, 21 Oct 2022 23:23:08 -0700 (PDT)
+Received: from gmail.com (1F2EF769.nat.pool.telekom.hu. [31.46.247.105])
+        by smtp.gmail.com with ESMTPSA id m11-20020aa7d34b000000b0046182b3ad46sm233044edr.20.2022.10.21.23.23.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Oct 2022 23:23:07 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Sat, 22 Oct 2022 08:23:04 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, Yuan Yao <yuan.yao@intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        "Chang S. Bae" <chang.seok.bae@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/fpu: Fix copy_xstate_to_uabi() to copy
+ init states correctly
+Message-ID: <Y1OMSAmyUg99iorm@gmail.com>
+References: <20221021185844.13472-1-chang.seok.bae@intel.com>
+ <166639111821.401.9381657733834636095.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <166640018118.401.11959688821203132730.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <166639111821.401.9381657733834636095.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     1248fb6a8201ddac1c86a202f05a0a1765efbfce
-Gitweb:        https://git.kernel.org/tip/1248fb6a8201ddac1c86a202f05a0a1765efbfce
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 07 Oct 2022 10:42:36 +02:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 21 Oct 2022 17:53:05 -07:00
+* tip-bot2 for Chang S. Bae <tip-bot2@linutronix.de> wrote:
 
-x86/mm: Randomize per-cpu entry area
+> The following commit has been merged into the x86/urgent branch of tip:
+> 
+> Commit-ID:     471f0aa7fa64e23766a1473b32d9ec3f0718895a
+> Gitweb:        https://git.kernel.org/tip/471f0aa7fa64e23766a1473b32d9ec3f0718895a
+> Author:        Chang S. Bae <chang.seok.bae@intel.com>
+> AuthorDate:    Fri, 21 Oct 2022 11:58:44 -07:00
+> Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+> CommitterDate: Fri, 21 Oct 2022 15:22:09 -07:00
+> 
+> x86/fpu: Fix copy_xstate_to_uabi() to copy init states correctly
 
-Seth found that the CPU-entry-area; the piece of per-cpu data that is
-mapped into the userspace page-tables for kPTI is not subject to any
-randomization -- irrespective of kASLR settings.
+> +		mask &= (header.xfeatures | xinit->header.xcomp_bv);
 
-On x86_64 a whole P4D (512 GB) of virtual address space is reserved for
-this structure, which is plenty large enough to randomize things a
-little.
+Nit: those parentheses are not needed.
 
-As such, use a straightforward randomization scheme that avoids
-duplicates to spread the existing CPUs over the available space.
+Thanks,
 
-This makes it harder to find the addresses of important structures in
-the cpu entry areas like the entry stacks.
-
-[ dhansen: add minor comment in "sodding terrible" loop,
-	   fix 32-bit compile issue ]
-
-Reported-by: Seth Jenkins <sethjenkins@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
----
- arch/x86/include/asm/cpu_entry_area.h |  4 +--
- arch/x86/include/asm/pgtable_areas.h  |  8 +++-
- arch/x86/kernel/hw_breakpoint.c       |  2 +-
- arch/x86/mm/cpu_entry_area.c          | 47 +++++++++++++++++++++++---
- 4 files changed, 51 insertions(+), 10 deletions(-)
-
-diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
-index 75efc4c..462fc34 100644
---- a/arch/x86/include/asm/cpu_entry_area.h
-+++ b/arch/x86/include/asm/cpu_entry_area.h
-@@ -130,10 +130,6 @@ struct cpu_entry_area {
- };
- 
- #define CPU_ENTRY_AREA_SIZE		(sizeof(struct cpu_entry_area))
--#define CPU_ENTRY_AREA_ARRAY_SIZE	(CPU_ENTRY_AREA_SIZE * NR_CPUS)
--
--/* Total size includes the readonly IDT mapping page as well: */
--#define CPU_ENTRY_AREA_TOTAL_SIZE	(CPU_ENTRY_AREA_ARRAY_SIZE + PAGE_SIZE)
- 
- DECLARE_PER_CPU(struct cpu_entry_area *, cpu_entry_area);
- DECLARE_PER_CPU(struct cea_exception_stacks *, cea_exception_stacks);
-diff --git a/arch/x86/include/asm/pgtable_areas.h b/arch/x86/include/asm/pgtable_areas.h
-index d34cce1..4f056fb 100644
---- a/arch/x86/include/asm/pgtable_areas.h
-+++ b/arch/x86/include/asm/pgtable_areas.h
-@@ -11,6 +11,12 @@
- 
- #define CPU_ENTRY_AREA_RO_IDT_VADDR	((void *)CPU_ENTRY_AREA_RO_IDT)
- 
--#define CPU_ENTRY_AREA_MAP_SIZE		(CPU_ENTRY_AREA_PER_CPU + CPU_ENTRY_AREA_ARRAY_SIZE - CPU_ENTRY_AREA_BASE)
-+#ifdef CONFIG_X86_32
-+#define CPU_ENTRY_AREA_MAP_SIZE		(CPU_ENTRY_AREA_PER_CPU +		\
-+					 (CPU_ENTRY_AREA_SIZE * NR_CPUS) -	\
-+					 CPU_ENTRY_AREA_BASE)
-+#else
-+#define CPU_ENTRY_AREA_MAP_SIZE		P4D_SIZE
-+#endif
- 
- #endif /* _ASM_X86_PGTABLE_AREAS_H */
-diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-index 668a4a6..bbb0f73 100644
---- a/arch/x86/kernel/hw_breakpoint.c
-+++ b/arch/x86/kernel/hw_breakpoint.c
-@@ -266,7 +266,7 @@ static inline bool within_cpu_entry(unsigned long addr, unsigned long end)
- 
- 	/* CPU entry erea is always used for CPU entry */
- 	if (within_area(addr, end, CPU_ENTRY_AREA_BASE,
--			CPU_ENTRY_AREA_TOTAL_SIZE))
-+			CPU_ENTRY_AREA_MAP_SIZE))
- 		return true;
- 
- 	/*
-diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
-index 6c2f1b7..ad1f750 100644
---- a/arch/x86/mm/cpu_entry_area.c
-+++ b/arch/x86/mm/cpu_entry_area.c
-@@ -15,16 +15,54 @@ static DEFINE_PER_CPU_PAGE_ALIGNED(struct entry_stack_page, entry_stack_storage)
- #ifdef CONFIG_X86_64
- static DEFINE_PER_CPU_PAGE_ALIGNED(struct exception_stacks, exception_stacks);
- DEFINE_PER_CPU(struct cea_exception_stacks*, cea_exception_stacks);
--#endif
- 
--#ifdef CONFIG_X86_32
-+static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, _cea_offset);
-+
-+static inline unsigned int cea_offset(unsigned int cpu)
-+{
-+	return per_cpu(_cea_offset, cpu);
-+}
-+
-+static __init void init_cea_offsets(void)
-+{
-+	unsigned int max_cea;
-+	unsigned int i, j;
-+
-+	max_cea = (CPU_ENTRY_AREA_MAP_SIZE - PAGE_SIZE) / CPU_ENTRY_AREA_SIZE;
-+
-+	/* O(sodding terrible) */
-+	for_each_possible_cpu(i) {
-+		unsigned int cea;
-+
-+again:
-+		cea = prandom_u32_max(max_cea);
-+
-+		/* Make sure that no previous CPU shares the offset: */
-+		for_each_possible_cpu(j) {
-+			if (cea_offset(j) == cea)
-+				goto again;
-+
-+			if (i == j)
-+				break;
-+		}
-+
-+		per_cpu(_cea_offset, i) = cea;
-+	}
-+}
-+#else /* !X86_64 */
- DECLARE_PER_CPU_PAGE_ALIGNED(struct doublefault_stack, doublefault_stack);
-+
-+static inline unsigned int cea_offset(unsigned int cpu)
-+{
-+	return cpu;
-+}
-+static inline void init_cea_offsets(void) { }
- #endif
- 
- /* Is called from entry code, so must be noinstr */
- noinstr struct cpu_entry_area *get_cpu_entry_area(int cpu)
- {
--	unsigned long va = CPU_ENTRY_AREA_PER_CPU + cpu * CPU_ENTRY_AREA_SIZE;
-+	unsigned long va = CPU_ENTRY_AREA_PER_CPU + cea_offset(cpu) * CPU_ENTRY_AREA_SIZE;
- 	BUILD_BUG_ON(sizeof(struct cpu_entry_area) % PAGE_SIZE != 0);
- 
- 	return (struct cpu_entry_area *) va;
-@@ -205,7 +243,6 @@ static __init void setup_cpu_entry_area_ptes(void)
- 
- 	/* The +1 is for the readonly IDT: */
- 	BUILD_BUG_ON((CPU_ENTRY_AREA_PAGES+1)*PAGE_SIZE != CPU_ENTRY_AREA_MAP_SIZE);
--	BUILD_BUG_ON(CPU_ENTRY_AREA_TOTAL_SIZE != CPU_ENTRY_AREA_MAP_SIZE);
- 	BUG_ON(CPU_ENTRY_AREA_BASE & ~PMD_MASK);
- 
- 	start = CPU_ENTRY_AREA_BASE;
-@@ -221,6 +258,8 @@ void __init setup_cpu_entry_areas(void)
- {
- 	unsigned int cpu;
- 
-+	init_cea_offsets();
-+
- 	setup_cpu_entry_area_ptes();
- 
- 	for_each_possible_cpu(cpu)
+	Ingo
