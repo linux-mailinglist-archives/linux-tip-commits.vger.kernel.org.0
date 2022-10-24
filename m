@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BC90609D2A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Oct 2022 10:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECADB60B5C2
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Oct 2022 20:39:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230013AbiJXIwl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 24 Oct 2022 04:52:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46340 "EHLO
+        id S230273AbiJXSjn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 24 Oct 2022 14:39:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229720AbiJXIwk (ORCPT
+        with ESMTP id S232580AbiJXSjJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 24 Oct 2022 04:52:40 -0400
+        Mon, 24 Oct 2022 14:39:09 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81CF26744D;
-        Mon, 24 Oct 2022 01:52:38 -0700 (PDT)
-Date:   Mon, 24 Oct 2022 08:52:33 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52007B7ECA;
+        Mon, 24 Oct 2022 10:21:26 -0700 (PDT)
+Date:   Mon, 24 Oct 2022 17:10:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1666601555;
+        s=2020; t=1666631457;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fe5cUYaOyO4LInB2yVSxDGWGWGSQEQAqVZoCd+lv1ck=;
-        b=LolFnQFULv1Fw63R4S38bY84k68Fc5cR1/22CXCKBZdOohfKm+Sd5w8T+WtcOxuAR8M8hZ
-        9GxUOIhio6g0CSpYIuN6xBnu4DFLDJuw/aAaA4MF/II3BNQrRtVK/UElCrMnJ8yZ0+/Hh8
-        djq2c1IWuFmc7ZkgJGU7SiBTATJP9as+4ewRlHjmh+GjhVlFDI2oanmld6LQHkwXZe4dmz
-        NOXrA68IiS8LeNZ5LBfi8DgYL5ThwJHUjdlteHxhWORcrEC3wv8DZg72MroWTNaNFSwnrN
-        Skrv01/vjW1aiQOMU/Dr+3rLiHodrVWvQ3bvTzZ0qOtMedf/9GWqxbFo+TBZIg==
+        bh=xGfm3vLqdme7A5E0vyS+E4k+G5iTckWHeneSgjrt6Us=;
+        b=UKmarg7xrPzCAcoEp+bwHWS888Y2NGkmsLTIhizgYRqQ3yZPiiHF8I1CuMmQvXF0uPtkkU
+        cLbUlYmJRN+oM4HWNXq3i0+CZB0h74B3bk48gsry6InceAr69b6cgPCIKSiBb/w+S3kTub
+        /28XeC6D14gmQjexuCu3LZ86rnBfCCVBj8nblKU0OFrH15+oIeqsOgqzu2R6Z2+R5fBRyE
+        FUxM3te0nwG3ZYLh7TkNtrWimUZmbwqFKmTQpIGsQGWLpqBaYa6Ms906yCltFUdqzMAZUi
+        GpCXv8u0grRWg+2QYvlUPWD52JluOi8XUtvjcSN5z8vhUujPdXSgQR6XbhZf8g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1666601555;
+        s=2020e; t=1666631457;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fe5cUYaOyO4LInB2yVSxDGWGWGSQEQAqVZoCd+lv1ck=;
-        b=f61ehkCpqmMwSZ3HulY48DC//dtlwp5xpmO8LseA3vZyAYcX/qB/vIW9yqCC/JpYFj/5UU
-        qoDdCzvlO37EVrCw==
-From:   "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
+        bh=xGfm3vLqdme7A5E0vyS+E4k+G5iTckWHeneSgjrt6Us=;
+        b=xtGsC+xq2tYNrwJEDZZ2euO/az4mPKT84I09CS6MNlNNkVmsn4eiB/REMA3+NP4GKNSYdE
+        ghzTm+JYB3uScYBQ==
+From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Remove arch_has_empty_bitmaps
-Cc:     Reinette Chatre <reinette.chatre@intel.com>,
-        Babu Moger <babu.moger@amd.com>, Borislav Petkov <bp@suse.de>,
-        Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <166430979654.372014.615622285687642644.stgit@bmoger-ubuntu>
-References: <166430979654.372014.615622285687642644.stgit@bmoger-ubuntu>
+Subject: [tip: x86/urgent] x86/syscall: Include asm/ptrace.h in syscall_wrapper header
+Cc:     Akihiro HARAI <jharai0815@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Andrii Nakryiko <andrii@kernel.org>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20221018122708.823792-1-jolsa@kernel.org>
+References: <20221018122708.823792-1-jolsa@kernel.org>
 MIME-Version: 1.0
-Message-ID: <166660155398.401.9624938541778955549.tip-bot2@tip-bot2>
+Message-ID: <166663145589.401.720002161640534427.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,91 +65,70 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cache branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     2d4daa549c17b6ba4845a751c7a78d3b2419d78f
-Gitweb:        https://git.kernel.org/tip/2d4daa549c17b6ba4845a751c7a78d3b2419d78f
-Author:        Babu Moger <babu.moger@amd.com>
-AuthorDate:    Tue, 27 Sep 2022 15:16:36 -05:00
+Commit-ID:     9440c42941606af4c379afa3cf8624f0dc43a629
+Gitweb:        https://git.kernel.org/tip/9440c42941606af4c379afa3cf8624f0dc43a629
+Author:        Jiri Olsa <olsajiri@gmail.com>
+AuthorDate:    Tue, 18 Oct 2022 14:27:08 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 24 Oct 2022 10:30:29 +02:00
+CommitterDate: Mon, 24 Oct 2022 17:57:28 +02:00
 
-x86/resctrl: Remove arch_has_empty_bitmaps
+x86/syscall: Include asm/ptrace.h in syscall_wrapper header
 
-The field arch_has_empty_bitmaps is not required anymore. The field
-min_cbm_bits is enough to validate the CBM (capacity bit mask) if the
-architecture can support the zero CBM or not.
+With just the forward declaration of the 'struct pt_regs' in
+syscall_wrapper.h, the syscall stub functions:
 
-Suggested-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Babu Moger <babu.moger@amd.com>
+  __[x64|ia32]_sys_*(struct pt_regs *regs)
+
+will have different definition of 'regs' argument in BTF data
+based on which object file they are defined in.
+
+If the syscall's object includes 'struct pt_regs' definition,
+the BTF argument data will point to a 'struct pt_regs' record,
+like:
+
+  [226] STRUCT 'pt_regs' size=168 vlen=21
+         'r15' type_id=1 bits_offset=0
+         'r14' type_id=1 bits_offset=64
+         'r13' type_id=1 bits_offset=128
+  ...
+
+If not, it will point to a fwd declaration record:
+
+  [15439] FWD 'pt_regs' fwd_kind=struct
+
+and make bpf tracing program hooking on those functions unable
+to access fields from 'struct pt_regs'.
+
+Include asm/ptrace.h directly in syscall_wrapper.h to make sure all
+syscalls see 'struct pt_regs' definition. This then results in BTF for
+'__*_sys_*(struct pt_regs *regs)' functions to point to the actual
+struct, not just the forward declaration.
+
+  [ bp: No Fixes tag as this is not really a bug fix but "adjustment" so
+    that BTF is happy. ]
+
+Reported-by: Akihiro HARAI <jharai0815@gmail.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
-Link: https://lore.kernel.org/r/166430979654.372014.615622285687642644.stgit@bmoger-ubuntu
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Cc: <stable@vger.kernel.org> # this is needed only for BTF so kernels >= 5.15
+Link: https://lore.kernel.org/r/20221018122708.823792-1-jolsa@kernel.org
 ---
- arch/x86/kernel/cpu/resctrl/core.c        | 2 --
- arch/x86/kernel/cpu/resctrl/ctrlmondata.c | 3 +--
- include/linux/resctrl.h                   | 6 +++---
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/syscall_wrapper.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 3266ea3..03cfbf0 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -828,7 +828,6 @@ static __init void rdt_init_res_defs_intel(void)
- 		if (r->rid == RDT_RESOURCE_L3 ||
- 		    r->rid == RDT_RESOURCE_L2) {
- 			r->cache.arch_has_sparse_bitmaps = false;
--			r->cache.arch_has_empty_bitmaps = false;
- 			r->cache.arch_has_per_cpu_cfg = false;
- 			r->cache.min_cbm_bits = 1;
- 		} else if (r->rid == RDT_RESOURCE_MBA) {
-@@ -849,7 +848,6 @@ static __init void rdt_init_res_defs_amd(void)
- 		if (r->rid == RDT_RESOURCE_L3 ||
- 		    r->rid == RDT_RESOURCE_L2) {
- 			r->cache.arch_has_sparse_bitmaps = true;
--			r->cache.arch_has_empty_bitmaps = true;
- 			r->cache.arch_has_per_cpu_cfg = true;
- 			r->cache.min_cbm_bits = 0;
- 		} else if (r->rid == RDT_RESOURCE_MBA) {
-diff --git a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-index 1dafbdc..1df0e32 100644
---- a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-+++ b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-@@ -105,8 +105,7 @@ static bool cbm_validate(char *buf, u32 *data, struct rdt_resource *r)
- 		return false;
- 	}
+diff --git a/arch/x86/include/asm/syscall_wrapper.h b/arch/x86/include/asm/syscall_wrapper.h
+index 59358d1..fd2669b 100644
+--- a/arch/x86/include/asm/syscall_wrapper.h
++++ b/arch/x86/include/asm/syscall_wrapper.h
+@@ -6,7 +6,7 @@
+ #ifndef _ASM_X86_SYSCALL_WRAPPER_H
+ #define _ASM_X86_SYSCALL_WRAPPER_H
  
--	if ((!r->cache.arch_has_empty_bitmaps && val == 0) ||
--	    val > r->default_ctrl) {
-+	if ((r->cache.min_cbm_bits > 0 && val == 0) || val > r->default_ctrl) {
- 		rdt_last_cmd_puts("Mask out of range\n");
- 		return false;
- 	}
-diff --git a/include/linux/resctrl.h b/include/linux/resctrl.h
-index 0cf5b20..0cee154 100644
---- a/include/linux/resctrl.h
-+++ b/include/linux/resctrl.h
-@@ -89,11 +89,12 @@ struct rdt_domain {
- /**
-  * struct resctrl_cache - Cache allocation related data
-  * @cbm_len:		Length of the cache bit mask
-- * @min_cbm_bits:	Minimum number of consecutive bits to be set
-+ * @min_cbm_bits:	Minimum number of consecutive bits to be set.
-+ *			The value 0 means the architecture can support
-+ *			zero CBM.
-  * @shareable_bits:	Bitmask of shareable resource with other
-  *			executing entities
-  * @arch_has_sparse_bitmaps:	True if a bitmap like f00f is valid.
-- * @arch_has_empty_bitmaps:	True if the '0' bitmap is valid.
-  * @arch_has_per_cpu_cfg:	True if QOS_CFG register for this cache
-  *				level has CPU scope.
-  */
-@@ -102,7 +103,6 @@ struct resctrl_cache {
- 	unsigned int	min_cbm_bits;
- 	unsigned int	shareable_bits;
- 	bool		arch_has_sparse_bitmaps;
--	bool		arch_has_empty_bitmaps;
- 	bool		arch_has_per_cpu_cfg;
- };
+-struct pt_regs;
++#include <asm/ptrace.h>
  
+ extern long __x64_sys_ni_syscall(const struct pt_regs *regs);
+ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
