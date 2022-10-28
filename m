@@ -2,105 +2,173 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77695610AAB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Oct 2022 08:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5792610ABA
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Oct 2022 08:51:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230029AbiJ1GrA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 28 Oct 2022 02:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40088 "EHLO
+        id S229506AbiJ1Gvo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 28 Oct 2022 02:51:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229956AbiJ1GqY (ORCPT
+        with ESMTP id S229955AbiJ1Gv0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 28 Oct 2022 02:46:24 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57BC21BE932;
-        Thu, 27 Oct 2022 23:43:14 -0700 (PDT)
-Date:   Fri, 28 Oct 2022 06:43:07 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1666939389;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/AwNFqOWTlu3ckteTP0xnDuHtpt1peKf1P8IqbpEvhA=;
-        b=LVmjIJk69zkJDINXCqRe04IiDcmRR+CVI++soorbt7Qpi+ZDnWORdM+jNXhrzPIoi5Opxe
-        vrvO2pjrCV6kiyLNw7xHuoPk8V8wS5C5eXFZeo18LrHOJ6xacUmAuuQ0qentcS/3OLgU/G
-        PKlt5RAP2w7aVbSiVG/jrFXhI0qyoOD35Qc/tXbp9Ql/srHcblGi2EfWpqHbu1IZAoYhrc
-        jnCJSS878I92JYy66+2QO2rdVxsPmTP/JmmrHV1M57iIiS4MbIXLgYB427Cy0Qq8Yv/a5G
-        XLloNSzBAWlPGGKXU0SyoBKBBMMk2nIYK0YmqnydU9Sg2xFR1gWNXnl+DmexRg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1666939389;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/AwNFqOWTlu3ckteTP0xnDuHtpt1peKf1P8IqbpEvhA=;
-        b=QJmvcukZvE83K7C4w+8fXiJI3LqunT8Kwr6TNd+8eP28znf/xgeB7U8pia0CiWcPSZeZdA
-        OjxF0b4uxAgfGuDg==
-From:   "tip-bot2 for Rafael Mendonca" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] virt/sev-guest: Remove unnecessary free in init_crypto()
-Cc:     Rafael Mendonca <rafaelmendsr@gmail.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20221018015425.887891-1-rafaelmendsr@gmail.com>
-References: <20221018015425.887891-1-rafaelmendsr@gmail.com>
+        Fri, 28 Oct 2022 02:51:26 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A353D50FA6
+        for <linux-tip-commits@vger.kernel.org>; Thu, 27 Oct 2022 23:50:15 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id e129so4045243pgc.9
+        for <linux-tip-commits@vger.kernel.org>; Thu, 27 Oct 2022 23:50:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SgH/phpYbE84Z31EwtYw+gNYZq/SDuJAWaCdxWL+Xmw=;
+        b=r/zAD2DEhYd+s/ZWlXm/42+TSMDwZSg3vJkrGRLR4rpN+T0aWLvs/FoRKcdTm3jsAi
+         UoFiYjtp/oSGan2UH0wr5wyML5FX/O4PdiaCNtn+E7vUsN0jtk5Cny5bdH3WxOVEtfcz
+         WwJkJ9ufQ2NudD1uv2Ms0gN68W0TBZ/Q2LUfv+kVlTLHHJgFQhSp/W4vYCxRDrPiPIA9
+         f38ZCpYdTrILH9xQRa+BWo0l8dNk4cwU17T/tAsFsevn7jupzP4YcR3N8uz5kIQJ2Crz
+         igkiq9JSoRuf/XU7laROxCrFubEwcKwtbRfirRSJ1zZI2oG/T64grGo9OWqZFKH9ze35
+         E9Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SgH/phpYbE84Z31EwtYw+gNYZq/SDuJAWaCdxWL+Xmw=;
+        b=jTJTPZGqPOJAZBnszo9cccKvIAvKetY6LLPDufSL+NYW65w8l1DP8np4K4+8MmcddT
+         2PDoRl6/TtW4Omyuo16I1OT/yvZA7rr6FLpPi5qjnANUtVQCgFsYSk/PZmdnTTNuy+cA
+         slvWNTthM+CxIf/rC0PAMOWX2ALJXKkb+cEMqJ6p3sYmGx5moqLS+qgVCgL6GkgqDOQV
+         uZVq+FUoUQatR4ByFwlTNbomkv3HktdJG54bhJNNk4nJa3UMNKahWY8STSRtqOnc9NnB
+         7TicicWSE3UU/vt+YONfgmo2nNUi/ifZLFSLqld7Lt4vBa+j8bSV3hb6jXDT0Y5ruFvm
+         1kAg==
+X-Gm-Message-State: ACrzQf3fRY9kQ7D34PK9op55ryqowAVJss//+4SV2CjLJavsXtpYoxAn
+        PSdClPtsRKA6ySw3h/a1h9isS7BRxq/sJg==
+X-Google-Smtp-Source: AMsMyM7RDKIaig7rU8rqo+RBaVgYeSZrcn/SGodM3rheo4DCvMQswWRTyVB4zvss9b5sJA/9rjheJg==
+X-Received: by 2002:a63:4042:0:b0:43b:ddc8:235 with SMTP id n63-20020a634042000000b0043bddc80235mr45898425pga.498.1666939814863;
+        Thu, 27 Oct 2022 23:50:14 -0700 (PDT)
+Received: from [10.255.236.92] ([139.177.225.252])
+        by smtp.gmail.com with ESMTPSA id x7-20020a1709027c0700b00172fad607b3sm2232443pll.207.2022.10.27.23.50.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Oct 2022 23:50:14 -0700 (PDT)
+Message-ID: <f990a324-e28e-6de1-acb0-ba764808a56a@bytedance.com>
+Date:   Fri, 28 Oct 2022 14:50:09 +0800
 MIME-Version: 1.0
-Message-ID: <166693938775.29415.2368858785626989918.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.4.0
+Subject: Re: [External] [tip: sched/core] sched/psi: Fix avgs_work re-arm in
+ psi_avgs_work()
+Content-Language: en-US
+To:     linux-tip-commits@vger.kernel.org,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Cc:     Pavan Kondeti <quic_pkondeti@quicinc.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+        "surenb@google.com" <surenb@google.com>
+References: <20221010104206.12184-1-zhouchengming@bytedance.com>
+ <166693932887.29415.17016910542871419770.tip-bot2@tip-bot2>
+From:   Chengming Zhou <zhouchengming@bytedance.com>
+In-Reply-To: <166693932887.29415.17016910542871419770.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sev branch of tip:
+Hello,
 
-Commit-ID:     c6fbb759d68898aad40e57d09ed18df6094a1874
-Gitweb:        https://git.kernel.org/tip/c6fbb759d68898aad40e57d09ed18df6094a1874
-Author:        Rafael Mendonca <rafaelmendsr@gmail.com>
-AuthorDate:    Mon, 17 Oct 2022 22:54:25 -03:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 27 Oct 2022 14:24:18 +02:00
+Thanks for picking this up. There is a newer version which has been acked:
+https://lore.kernel.org/all/20221014110551.22695-1-zhouchengming@bytedance.com/
 
-virt/sev-guest: Remove unnecessary free in init_crypto()
+As well another PSI patch that has been acked by Johannes:
+https://lore.kernel.org/all/20220926081931.45420-1-zhouchengming@bytedance.com/
 
-If the memory allocation for the auth tag fails, then there is no need
-to free it.
+Thanks!
 
-Fixes: fce96cf04430 ("virt: Add SEV-SNP guest driver")
-Signed-off-by: Rafael Mendonca <rafaelmendsr@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221018015425.887891-1-rafaelmendsr@gmail.com
----
- drivers/virt/coco/sev-guest/sev-guest.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index f422f9c..e9704ae 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -152,12 +152,10 @@ static struct snp_guest_crypto *init_crypto(struct snp_guest_dev *snp_dev, u8 *k
- 	crypto->a_len = crypto_aead_authsize(crypto->tfm);
- 	crypto->authtag = kmalloc(crypto->a_len, GFP_KERNEL_ACCOUNT);
- 	if (!crypto->authtag)
--		goto e_free_auth;
-+		goto e_free_iv;
- 
- 	return crypto;
- 
--e_free_auth:
--	kfree(crypto->authtag);
- e_free_iv:
- 	kfree(crypto->iv);
- e_free_crypto:
+On 2022/10/28 14:42, tip-bot2 for Chengming Zhou wrote:
+> The following commit has been merged into the sched/core branch of tip:
+> 
+> Commit-ID:     7d89d7bb921c5ae5a428df282e64ee5692e26fe0
+> Gitweb:        https://git.kernel.org/tip/7d89d7bb921c5ae5a428df282e64ee5692e26fe0
+> Author:        Chengming Zhou <zhouchengming@bytedance.com>
+> AuthorDate:    Mon, 10 Oct 2022 18:42:06 +08:00
+> Committer:     Peter Zijlstra <peterz@infradead.org>
+> CommitterDate: Thu, 27 Oct 2022 11:01:23 +02:00
+> 
+> sched/psi: Fix avgs_work re-arm in psi_avgs_work()
+> 
+> Pavan reported a problem that PSI avgs_work idle shutoff is not
+> working at all. Because PSI_NONIDLE condition would be observed in
+> psi_avgs_work()->collect_percpu_times()->get_recent_times() even if
+> only the kworker running avgs_work on the CPU.
+> 
+> Although commit 1b69ac6b40eb ("psi: fix aggregation idle shut-off")
+> avoided the ping-pong wake problem when the worker sleep, psi_avgs_work()
+> still will always re-arm the avgs_work, so shutoff is not working.
+> 
+> This patch changes to consider current CPU groupc as IDLE if the
+> kworker running avgs_work is the only task running and no IOWAIT
+> or MEMSTALL sleep tasks, in which case we will shut off the avgs_work
+> if other CPUs' groupc are also IDLE.
+> 
+> One potential problem is that the brief period of non-idle time
+> incurred between the aggregation run and the kworker's dequeue will
+> be stranded in the per-cpu buckets until avgs_work run next time.
+> The buckets can hold 4s worth of time, and future activity will wake
+> the avgs_work with a 2s delay, giving us 2s worth of data we can leave
+> behind when shut off the avgs_work. If the kworker run other works after
+> avgs_work shut off and doesn't have any scheduler activities for 2s,
+> this maybe a problem.
+> 
+> Reported-by: Pavan Kondeti <quic_pkondeti@quicinc.com>
+> Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Link: https://lore.kernel.org/r/20221010104206.12184-1-zhouchengming@bytedance.com
+> ---
+>  kernel/sched/psi.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+> index ee2ecc0..f4cdf6f 100644
+> --- a/kernel/sched/psi.c
+> +++ b/kernel/sched/psi.c
+> @@ -242,6 +242,8 @@ static void get_recent_times(struct psi_group *group, int cpu,
+>  			     u32 *pchanged_states)
+>  {
+>  	struct psi_group_cpu *groupc = per_cpu_ptr(group->pcpu, cpu);
+> +	int current_cpu = raw_smp_processor_id();
+> +	bool only_avgs_work = false;
+>  	u64 now, state_start;
+>  	enum psi_states s;
+>  	unsigned int seq;
+> @@ -256,6 +258,15 @@ static void get_recent_times(struct psi_group *group, int cpu,
+>  		memcpy(times, groupc->times, sizeof(groupc->times));
+>  		state_mask = groupc->state_mask;
+>  		state_start = groupc->state_start;
+> +		/*
+> +		 * This CPU has only avgs_work kworker running, snapshot the
+> +		 * newest times then don't need to re-arm for this groupc.
+> +		 * Normally this kworker will sleep soon and won't wake
+> +		 * avgs_work back up in psi_group_change().
+> +		 */
+> +		if (current_cpu == cpu && groupc->tasks[NR_RUNNING] == 1 &&
+> +		    !groupc->tasks[NR_IOWAIT] && !groupc->tasks[NR_MEMSTALL])
+> +			only_avgs_work = true;
+>  	} while (read_seqcount_retry(&groupc->seq, seq));
+>  
+>  	/* Calculate state time deltas against the previous snapshot */
+> @@ -280,6 +291,10 @@ static void get_recent_times(struct psi_group *group, int cpu,
+>  		if (delta)
+>  			*pchanged_states |= (1 << s);
+>  	}
+> +
+> +	/* Clear PSI_NONIDLE so avgs_work won't be re-armed for this groupc */
+> +	if (only_avgs_work)
+> +		*pchanged_states &= ~(1 << PSI_NONIDLE);
+>  }
+>  
+>  static void calc_avgs(unsigned long avg[3], int missed_periods,
