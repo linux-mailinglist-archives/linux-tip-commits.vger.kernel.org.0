@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECADB60B5C2
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Oct 2022 20:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F265F610A65
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Oct 2022 08:42:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230273AbiJXSjn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 24 Oct 2022 14:39:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43372 "EHLO
+        id S229535AbiJ1GmB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 28 Oct 2022 02:42:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232580AbiJXSjJ (ORCPT
+        with ESMTP id S229665AbiJ1Glc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 24 Oct 2022 14:39:09 -0400
+        Fri, 28 Oct 2022 02:41:32 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52007B7ECA;
-        Mon, 24 Oct 2022 10:21:26 -0700 (PDT)
-Date:   Mon, 24 Oct 2022 17:10:55 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75E476B8F2;
+        Thu, 27 Oct 2022 23:41:21 -0700 (PDT)
+Date:   Fri, 28 Oct 2022 06:41:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1666631457;
+        s=2020; t=1666939279;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xGfm3vLqdme7A5E0vyS+E4k+G5iTckWHeneSgjrt6Us=;
-        b=UKmarg7xrPzCAcoEp+bwHWS888Y2NGkmsLTIhizgYRqQ3yZPiiHF8I1CuMmQvXF0uPtkkU
-        cLbUlYmJRN+oM4HWNXq3i0+CZB0h74B3bk48gsry6InceAr69b6cgPCIKSiBb/w+S3kTub
-        /28XeC6D14gmQjexuCu3LZ86rnBfCCVBj8nblKU0OFrH15+oIeqsOgqzu2R6Z2+R5fBRyE
-        FUxM3te0nwG3ZYLh7TkNtrWimUZmbwqFKmTQpIGsQGWLpqBaYa6Ms906yCltFUdqzMAZUi
-        GpCXv8u0grRWg+2QYvlUPWD52JluOi8XUtvjcSN5z8vhUujPdXSgQR6XbhZf8g==
+        bh=G66XG9gLBxL7ayzwcWq/23hJvItsciCHWB9RfR+j2i4=;
+        b=FUMEyRbm3jWkbleEcg+oEr0KhLAOceC3tjtjDDflRHBN07EOkWNt72NQaCjynARJ283r/O
+        6KC5UtXMHwOYWKL8Eggfp1Wv4bwDIwjk735nHVCeUDKihTQFNt6MeEsge5DGZZZSmeCHky
+        Mq0nxvOgp3QiFAz73tOY/gcSPtgCzGIkT3rXye5NNv8xlZiCTpR8e72XdphaePz32W6/+m
+        roDARgsgNBmRn1A21Rzp5M2jzRpXz9E6pC6t/vUMQitV66r6OdUnmo1wzlQnilA7quvuMQ
+        UbDmHQPho6Y2wTKa6fsFSUJyAlZyUdOZmPFJ2kzmKhzCm81zQqmPWTWUX5ePZw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1666631457;
+        s=2020e; t=1666939279;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xGfm3vLqdme7A5E0vyS+E4k+G5iTckWHeneSgjrt6Us=;
-        b=xtGsC+xq2tYNrwJEDZZ2euO/az4mPKT84I09CS6MNlNNkVmsn4eiB/REMA3+NP4GKNSYdE
-        ghzTm+JYB3uScYBQ==
-From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+        bh=G66XG9gLBxL7ayzwcWq/23hJvItsciCHWB9RfR+j2i4=;
+        b=1gTDZ4GRJ0JhSKHFD0FQSMDNLWhbcNJSpGGuqTPm5vbGITbgfI33lyNWPWV+ZT0yjL8GaI
+        RqMsv0aOJDDzgLBA==
+From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/syscall: Include asm/ptrace.h in syscall_wrapper header
-Cc:     Akihiro HARAI <jharai0815@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Andrii Nakryiko <andrii@kernel.org>, <stable@vger.kernel.org>,
+Subject: [tip: ras/core] x86/MCE/AMD: Clear DFR errors found in THR handler
+Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
+        Borislav Petkov <bp@suse.de>, stable@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20221018122708.823792-1-jolsa@kernel.org>
-References: <20221018122708.823792-1-jolsa@kernel.org>
+In-Reply-To: <20220621155943.33623-1-yazen.ghannam@amd.com>
+References: <20220621155943.33623-1-yazen.ghannam@amd.com>
 MIME-Version: 1.0
-Message-ID: <166663145589.401.720002161640534427.tip-bot2@tip-bot2>
+Message-ID: <166693927682.29415.17717990197566504986.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,70 +64,102 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     9440c42941606af4c379afa3cf8624f0dc43a629
-Gitweb:        https://git.kernel.org/tip/9440c42941606af4c379afa3cf8624f0dc43a629
-Author:        Jiri Olsa <olsajiri@gmail.com>
-AuthorDate:    Tue, 18 Oct 2022 14:27:08 +02:00
+Commit-ID:     bc1b705b0eee4c645ad8b3bbff3c8a66e9688362
+Gitweb:        https://git.kernel.org/tip/bc1b705b0eee4c645ad8b3bbff3c8a66e9688362
+Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+AuthorDate:    Tue, 21 Jun 2022 15:59:43 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 24 Oct 2022 17:57:28 +02:00
+CommitterDate: Thu, 27 Oct 2022 17:01:25 +02:00
 
-x86/syscall: Include asm/ptrace.h in syscall_wrapper header
+x86/MCE/AMD: Clear DFR errors found in THR handler
 
-With just the forward declaration of the 'struct pt_regs' in
-syscall_wrapper.h, the syscall stub functions:
+AMD's MCA Thresholding feature counts errors of all severity levels, not
+just correctable errors. If a deferred error causes the threshold limit
+to be reached (it was the error that caused the overflow), then both a
+deferred error interrupt and a thresholding interrupt will be triggered.
 
-  __[x64|ia32]_sys_*(struct pt_regs *regs)
+The order of the interrupts is not guaranteed. If the threshold
+interrupt handler is executed first, then it will clear MCA_STATUS for
+the error. It will not check or clear MCA_DESTAT which also holds a copy
+of the deferred error. When the deferred error interrupt handler runs it
+will not find an error in MCA_STATUS, but it will find the error in
+MCA_DESTAT. This will cause two errors to be logged.
 
-will have different definition of 'regs' argument in BTF data
-based on which object file they are defined in.
+Check for deferred errors when handling a threshold interrupt. If a bank
+contains a deferred error, then clear the bank's MCA_DESTAT register.
 
-If the syscall's object includes 'struct pt_regs' definition,
-the BTF argument data will point to a 'struct pt_regs' record,
-like:
+Define a new helper function to do the deferred error check and clearing
+of MCA_DESTAT.
 
-  [226] STRUCT 'pt_regs' size=168 vlen=21
-         'r15' type_id=1 bits_offset=0
-         'r14' type_id=1 bits_offset=64
-         'r13' type_id=1 bits_offset=128
-  ...
+  [ bp: Simplify, convert comment to passive voice. ]
 
-If not, it will point to a fwd declaration record:
-
-  [15439] FWD 'pt_regs' fwd_kind=struct
-
-and make bpf tracing program hooking on those functions unable
-to access fields from 'struct pt_regs'.
-
-Include asm/ptrace.h directly in syscall_wrapper.h to make sure all
-syscalls see 'struct pt_regs' definition. This then results in BTF for
-'__*_sys_*(struct pt_regs *regs)' functions to point to the actual
-struct, not just the forward declaration.
-
-  [ bp: No Fixes tag as this is not really a bug fix but "adjustment" so
-    that BTF is happy. ]
-
-Reported-by: Akihiro HARAI <jharai0815@gmail.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Fixes: 37d43acfd79f ("x86/mce/AMD: Redo error logging from APIC LVT interrupt handlers")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Cc: <stable@vger.kernel.org> # this is needed only for BTF so kernels >= 5.15
-Link: https://lore.kernel.org/r/20221018122708.823792-1-jolsa@kernel.org
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20220621155943.33623-1-yazen.ghannam@amd.com
 ---
- arch/x86/include/asm/syscall_wrapper.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/amd.c | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/include/asm/syscall_wrapper.h b/arch/x86/include/asm/syscall_wrapper.h
-index 59358d1..fd2669b 100644
---- a/arch/x86/include/asm/syscall_wrapper.h
-+++ b/arch/x86/include/asm/syscall_wrapper.h
-@@ -6,7 +6,7 @@
- #ifndef _ASM_X86_SYSCALL_WRAPPER_H
- #define _ASM_X86_SYSCALL_WRAPPER_H
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index 1c87501..10fb5b5 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -788,6 +788,24 @@ _log_error_bank(unsigned int bank, u32 msr_stat, u32 msr_addr, u64 misc)
+ 	return status & MCI_STATUS_DEFERRED;
+ }
  
--struct pt_regs;
-+#include <asm/ptrace.h>
++static bool _log_error_deferred(unsigned int bank, u32 misc)
++{
++	if (!_log_error_bank(bank, mca_msr_reg(bank, MCA_STATUS),
++			     mca_msr_reg(bank, MCA_ADDR), misc))
++		return false;
++
++	/*
++	 * Non-SMCA systems don't have MCA_DESTAT/MCA_DEADDR registers.
++	 * Return true here to avoid accessing these registers.
++	 */
++	if (!mce_flags.smca)
++		return true;
++
++	/* Clear MCA_DESTAT if the deferred error was logged from MCA_STATUS. */
++	wrmsrl(MSR_AMD64_SMCA_MCx_DESTAT(bank), 0);
++	return true;
++}
++
+ /*
+  * We have three scenarios for checking for Deferred errors:
+  *
+@@ -799,19 +817,8 @@ _log_error_bank(unsigned int bank, u32 msr_stat, u32 msr_addr, u64 misc)
+  */
+ static void log_error_deferred(unsigned int bank)
+ {
+-	bool defrd;
+-
+-	defrd = _log_error_bank(bank, mca_msr_reg(bank, MCA_STATUS),
+-				mca_msr_reg(bank, MCA_ADDR), 0);
+-
+-	if (!mce_flags.smca)
+-		return;
+-
+-	/* Clear MCA_DESTAT if we logged the deferred error from MCA_STATUS. */
+-	if (defrd) {
+-		wrmsrl(MSR_AMD64_SMCA_MCx_DESTAT(bank), 0);
++	if (_log_error_deferred(bank, 0))
+ 		return;
+-	}
  
- extern long __x64_sys_ni_syscall(const struct pt_regs *regs);
- extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
+ 	/*
+ 	 * Only deferred errors are logged in MCA_DE{STAT,ADDR} so just check
+@@ -832,7 +839,7 @@ static void amd_deferred_error_interrupt(void)
+ 
+ static void log_error_thresholding(unsigned int bank, u64 misc)
+ {
+-	_log_error_bank(bank, mca_msr_reg(bank, MCA_STATUS), mca_msr_reg(bank, MCA_ADDR), misc);
++	_log_error_deferred(bank, misc);
+ }
+ 
+ static void log_and_reset_block(struct threshold_block *block)
