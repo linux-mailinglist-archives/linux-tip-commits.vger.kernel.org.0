@@ -2,198 +2,222 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 391056116FA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Oct 2022 18:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B541611969
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Oct 2022 19:39:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230285AbiJ1QHO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 28 Oct 2022 12:07:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34642 "EHLO
+        id S229648AbiJ1Rj4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 28 Oct 2022 13:39:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230516AbiJ1QGr (ORCPT
+        with ESMTP id S229652AbiJ1Rjz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 28 Oct 2022 12:06:47 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20E7F51A01
-        for <linux-tip-commits@vger.kernel.org>; Fri, 28 Oct 2022 09:05:58 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id c15-20020a17090a1d0f00b0021365864446so4882385pjd.4
-        for <linux-tip-commits@vger.kernel.org>; Fri, 28 Oct 2022 09:05:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EQFKKJky+N1plXno9hbO2oEYT5lLXu/VFJ3x4Aul2Ws=;
-        b=ZR0AZcoySFhkbkUQ1HWpORzpwtd9l/ET+o99cG5Ak9FxzufWBAJbOG887WJigUL5Ud
-         dxBB4K+Um5UnHXVFPedZg10zdApGdCUOVh2KH1Lf9A2C9eL5ykTO1v1oGlKR0cdxe3gI
-         UfF30seGb97ikUS6bG4PENYAd7Wv9PmFkLm05BIAiSLUwjw4h0eH/z1dfxg5t1AUQSFe
-         dhgDhP0lisI0Qh681t4L9DvfG8KbpiLU04+Q6v2x6sGjdB8M9/9gxO6kSlXG6cVASUr1
-         hvKf9bnOZ9eAfi2To491HCl9963eFkZukLG0buXQPRot+Mio/jMCiRsi35QKmz6Aqi2R
-         k3uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EQFKKJky+N1plXno9hbO2oEYT5lLXu/VFJ3x4Aul2Ws=;
-        b=ZsUUvchhEcS1gMIPgrIuqsDhZJELB1nOGMhjL6j2aqs4JdMFXKFNNrKxxMT2sdfdhD
-         Z+JvCIe8oViGwXpGlli5sue9j1tdTZpzhYsa1cD9uPrcCkJICWcavxiD7J+nLV1KWvYI
-         1afnJ8Bs3M9qJGzm0VC95QdmguaGCraYNV2LGW3MMC0kbjtZ/jRgA4/ff9JS9OLYwPob
-         4TDOq0a1A8vGKvZmIbe4JVI+zEjmFGbJX8WJ0gbeXGnEwuYXkIHuerzpKrRGKUfGKvVt
-         q2KfOa5iYQxIP22GXtsOnJk2EDr6Vd50Z0VMPAqo2Hx9y9DPeRVu1dOXHYYEHjgNIp7T
-         H5lg==
-X-Gm-Message-State: ACrzQf19AqSj4uD1ep3rK13EbxjnYLggDuRjpbAf0giqILC28pZCTKED
-        /GYKZjZ19iGa7iy8PE0pTFQ8QQ==
-X-Google-Smtp-Source: AMsMyM4Uhibi3i+OHMN1Av9XnFViCoSEqCe4P0RKfzsr3KCS0LXL/8nZ5Ha0NMzve/KVFn0SrNJM3A==
-X-Received: by 2002:a17:902:ce0d:b0:178:bd1e:e8da with SMTP id k13-20020a170902ce0d00b00178bd1ee8damr32317plg.103.1666973157591;
-        Fri, 28 Oct 2022 09:05:57 -0700 (PDT)
-Received: from ?IPV6:2409:8a28:e6f:c800:a0f0:67:1b61:938a? ([2409:8a28:e6f:c800:a0f0:67:1b61:938a])
-        by smtp.gmail.com with ESMTPSA id u15-20020a170903124f00b00186b69157ecsm3255315plh.202.2022.10.28.09.05.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Oct 2022 09:05:57 -0700 (PDT)
-Message-ID: <148c15f7-5f33-b9c1-dca5-73087f078ba5@bytedance.com>
-Date:   Sat, 29 Oct 2022 00:05:45 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.4.0
-Subject: Re: [tip: sched/core] sched/psi: Fix avgs_work re-arm in
- psi_avgs_work()
-Content-Language: en-US
-To:     Suren Baghdasaryan <surenb@google.com>
-Cc:     linux-tip-commits@vger.kernel.org,
+        Fri, 28 Oct 2022 13:39:55 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 813021DF14;
+        Fri, 28 Oct 2022 10:39:52 -0700 (PDT)
+Date:   Fri, 28 Oct 2022 17:39:48 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1666978790;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=UiPdG5k8gJvNWDbDE/9f5VP8P+b9HkftTWXtU7KSg3s=;
+        b=hm9ODeEsrzVsqdGIGL+j3sQ1ebeyBRRWau5QpI5Kz4JDhfrktOfrJYxHdFj7cLe8L8BIyW
+        TAyIlFyfqsWt6JEVm/0ha+YmWlvqhGRz2DFsqp5etY47DWSJ6EXL5FelL1E2UxENZNWajv
+        czlGVE761TO3AKKbiiMyuL6fV2CtigCYxGzltNAzpr+DpCiBYER2+4jP3ONQEiTBRItwK6
+        0A1Ga2db3oi7LUkLT262uW7kPQIaBhce0SB8S+u9uRUo/1rVDQep//2Hex8/EIqXWrIL5r
+        D173uRN5KxDz6Ykb4bQMnykrM11OEuVY0+dIvTxw0A3wbcH13Oa6tcMnZhGIWg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1666978790;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=UiPdG5k8gJvNWDbDE/9f5VP8P+b9HkftTWXtU7KSg3s=;
+        b=xUjRY5USReptemfXlJQfw1+TKFKgAftWNKBla51hpB+H0JfCcNEXouesn2h1PkF6CDSVz+
+        nDd4RAhlXLRktfBQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/mm] x86/mm: Randomize per-cpu entry area
+Cc:     Seth Jenkins <sethjenkins@google.com>,
+        Kees Cook <keescook@chromium.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Pavan Kondeti <quic_pkondeti@quicinc.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>
-References: <20221010104206.12184-1-zhouchengming@bytedance.com>
- <166693932887.29415.17016910542871419770.tip-bot2@tip-bot2>
- <f990a324-e28e-6de1-acb0-ba764808a56a@bytedance.com>
- <CAJuCfpHOt1Vfc=ZtAYt_2QamOujfuFtNHAdJe7iBMmDgTLGtyw@mail.gmail.com>
-From:   Chengming Zhou <zhouchengming@bytedance.com>
-In-Reply-To: <CAJuCfpHOt1Vfc=ZtAYt_2QamOujfuFtNHAdJe7iBMmDgTLGtyw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+Message-ID: <166697878870.7716.9070036132564599807.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 2022/10/28 23:58, Suren Baghdasaryan wrote:
-> On Thu, Oct 27, 2022 at 11:50 PM Chengming Zhou
-> <zhouchengming@bytedance.com> wrote:
->>
->> Hello,
->>
->> Thanks for picking this up. There is a newer version which has been acked:
->> https://lore.kernel.org/all/20221014110551.22695-1-zhouchengming@bytedance.com/
-> 
-> Hmm. Indeed this seems to be an older version and not the one I asked
-> Peter to pick up in
-> https://lore.kernel.org/all/CAJuCfpHeJuZBbv-q+WXjgNHwt_caMomFPL3L9rxosXOrZz3fBw@mail.gmail.com/.
-> Not sure what went wrong. Peter, could you please replace this one
-> with https://lore.kernel.org/all/20221014110551.22695-1-zhouchengming@bytedance.com/?
+The following commit has been merged into the x86/mm branch of tip:
 
-Oh, I didn't notice that email.
+Commit-ID:     8844b5452d14ffd6c9d259d419842039ed656b7d
+Gitweb:        https://git.kernel.org/tip/8844b5452d14ffd6c9d259d419842039ed656b7d
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Thu, 27 Oct 2022 14:54:41 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 28 Oct 2022 19:29:35 +02:00
 
-> 
-> Chengming, please do not top-post next time. Would be better if you
-> posted your note under the "Link:" field in this email.
+x86/mm: Randomize per-cpu entry area
 
-Got it, I will do next time.
+Seth found that the CPU-entry-area; the piece of per-cpu data that is
+mapped into the userspace page-tables for kPTI is not subject to any
+randomization -- irrespective of kASLR settings.
 
-Thanks!
+On x86_64 a whole P4D (512 GB) of virtual address space is reserved for
+this structure, which is plenty large enough to randomize things a
+little.
 
-> Thanks!
-> 
->>
->> As well another PSI patch that has been acked by Johannes:
->> https://lore.kernel.org/all/20220926081931.45420-1-zhouchengming@bytedance.com/
->>
->> Thanks!
->>
->>
->> On 2022/10/28 14:42, tip-bot2 for Chengming Zhou wrote:
->>> The following commit has been merged into the sched/core branch of tip:
->>>
->>> Commit-ID:     7d89d7bb921c5ae5a428df282e64ee5692e26fe0
->>> Gitweb:        https://git.kernel.org/tip/7d89d7bb921c5ae5a428df282e64ee5692e26fe0
->>> Author:        Chengming Zhou <zhouchengming@bytedance.com>
->>> AuthorDate:    Mon, 10 Oct 2022 18:42:06 +08:00
->>> Committer:     Peter Zijlstra <peterz@infradead.org>
->>> CommitterDate: Thu, 27 Oct 2022 11:01:23 +02:00
->>>
->>> sched/psi: Fix avgs_work re-arm in psi_avgs_work()
->>>
->>> Pavan reported a problem that PSI avgs_work idle shutoff is not
->>> working at all. Because PSI_NONIDLE condition would be observed in
->>> psi_avgs_work()->collect_percpu_times()->get_recent_times() even if
->>> only the kworker running avgs_work on the CPU.
->>>
->>> Although commit 1b69ac6b40eb ("psi: fix aggregation idle shut-off")
->>> avoided the ping-pong wake problem when the worker sleep, psi_avgs_work()
->>> still will always re-arm the avgs_work, so shutoff is not working.
->>>
->>> This patch changes to consider current CPU groupc as IDLE if the
->>> kworker running avgs_work is the only task running and no IOWAIT
->>> or MEMSTALL sleep tasks, in which case we will shut off the avgs_work
->>> if other CPUs' groupc are also IDLE.
->>>
->>> One potential problem is that the brief period of non-idle time
->>> incurred between the aggregation run and the kworker's dequeue will
->>> be stranded in the per-cpu buckets until avgs_work run next time.
->>> The buckets can hold 4s worth of time, and future activity will wake
->>> the avgs_work with a 2s delay, giving us 2s worth of data we can leave
->>> behind when shut off the avgs_work. If the kworker run other works after
->>> avgs_work shut off and doesn't have any scheduler activities for 2s,
->>> this maybe a problem.
->>>
->>> Reported-by: Pavan Kondeti <quic_pkondeti@quicinc.com>
->>> Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
->>> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->>> Link: https://lore.kernel.org/r/20221010104206.12184-1-zhouchengming@bytedance.com
->>> ---
->>>  kernel/sched/psi.c | 15 +++++++++++++++
->>>  1 file changed, 15 insertions(+)
->>>
->>> diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
->>> index ee2ecc0..f4cdf6f 100644
->>> --- a/kernel/sched/psi.c
->>> +++ b/kernel/sched/psi.c
->>> @@ -242,6 +242,8 @@ static void get_recent_times(struct psi_group *group, int cpu,
->>>                            u32 *pchanged_states)
->>>  {
->>>       struct psi_group_cpu *groupc = per_cpu_ptr(group->pcpu, cpu);
->>> +     int current_cpu = raw_smp_processor_id();
->>> +     bool only_avgs_work = false;
->>>       u64 now, state_start;
->>>       enum psi_states s;
->>>       unsigned int seq;
->>> @@ -256,6 +258,15 @@ static void get_recent_times(struct psi_group *group, int cpu,
->>>               memcpy(times, groupc->times, sizeof(groupc->times));
->>>               state_mask = groupc->state_mask;
->>>               state_start = groupc->state_start;
->>> +             /*
->>> +              * This CPU has only avgs_work kworker running, snapshot the
->>> +              * newest times then don't need to re-arm for this groupc.
->>> +              * Normally this kworker will sleep soon and won't wake
->>> +              * avgs_work back up in psi_group_change().
->>> +              */
->>> +             if (current_cpu == cpu && groupc->tasks[NR_RUNNING] == 1 &&
->>> +                 !groupc->tasks[NR_IOWAIT] && !groupc->tasks[NR_MEMSTALL])
->>> +                     only_avgs_work = true;
->>>       } while (read_seqcount_retry(&groupc->seq, seq));
->>>
->>>       /* Calculate state time deltas against the previous snapshot */
->>> @@ -280,6 +291,10 @@ static void get_recent_times(struct psi_group *group, int cpu,
->>>               if (delta)
->>>                       *pchanged_states |= (1 << s);
->>>       }
->>> +
->>> +     /* Clear PSI_NONIDLE so avgs_work won't be re-armed for this groupc */
->>> +     if (only_avgs_work)
->>> +             *pchanged_states &= ~(1 << PSI_NONIDLE);
->>>  }
->>>
->>>  static void calc_avgs(unsigned long avg[3], int missed_periods,
+As such, use a straight forward randomization scheme that avoids
+duplicates to spread the existing CPUs over the available space.
+
+  [ bp: Fix le build. ]
+
+Reported-by: Seth Jenkins <sethjenkins@google.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+---
+ arch/x86/include/asm/cpu_entry_area.h |  4 +--
+ arch/x86/include/asm/pgtable_areas.h  |  8 ++++-
+ arch/x86/kernel/hw_breakpoint.c       |  2 +-
+ arch/x86/mm/cpu_entry_area.c          | 46 +++++++++++++++++++++++---
+ 4 files changed, 50 insertions(+), 10 deletions(-)
+
+diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
+index 75efc4c..462fc34 100644
+--- a/arch/x86/include/asm/cpu_entry_area.h
++++ b/arch/x86/include/asm/cpu_entry_area.h
+@@ -130,10 +130,6 @@ struct cpu_entry_area {
+ };
+ 
+ #define CPU_ENTRY_AREA_SIZE		(sizeof(struct cpu_entry_area))
+-#define CPU_ENTRY_AREA_ARRAY_SIZE	(CPU_ENTRY_AREA_SIZE * NR_CPUS)
+-
+-/* Total size includes the readonly IDT mapping page as well: */
+-#define CPU_ENTRY_AREA_TOTAL_SIZE	(CPU_ENTRY_AREA_ARRAY_SIZE + PAGE_SIZE)
+ 
+ DECLARE_PER_CPU(struct cpu_entry_area *, cpu_entry_area);
+ DECLARE_PER_CPU(struct cea_exception_stacks *, cea_exception_stacks);
+diff --git a/arch/x86/include/asm/pgtable_areas.h b/arch/x86/include/asm/pgtable_areas.h
+index d34cce1..4f056fb 100644
+--- a/arch/x86/include/asm/pgtable_areas.h
++++ b/arch/x86/include/asm/pgtable_areas.h
+@@ -11,6 +11,12 @@
+ 
+ #define CPU_ENTRY_AREA_RO_IDT_VADDR	((void *)CPU_ENTRY_AREA_RO_IDT)
+ 
+-#define CPU_ENTRY_AREA_MAP_SIZE		(CPU_ENTRY_AREA_PER_CPU + CPU_ENTRY_AREA_ARRAY_SIZE - CPU_ENTRY_AREA_BASE)
++#ifdef CONFIG_X86_32
++#define CPU_ENTRY_AREA_MAP_SIZE		(CPU_ENTRY_AREA_PER_CPU +		\
++					 (CPU_ENTRY_AREA_SIZE * NR_CPUS) -	\
++					 CPU_ENTRY_AREA_BASE)
++#else
++#define CPU_ENTRY_AREA_MAP_SIZE		P4D_SIZE
++#endif
+ 
+ #endif /* _ASM_X86_PGTABLE_AREAS_H */
+diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
+index 668a4a6..bbb0f73 100644
+--- a/arch/x86/kernel/hw_breakpoint.c
++++ b/arch/x86/kernel/hw_breakpoint.c
+@@ -266,7 +266,7 @@ static inline bool within_cpu_entry(unsigned long addr, unsigned long end)
+ 
+ 	/* CPU entry erea is always used for CPU entry */
+ 	if (within_area(addr, end, CPU_ENTRY_AREA_BASE,
+-			CPU_ENTRY_AREA_TOTAL_SIZE))
++			CPU_ENTRY_AREA_MAP_SIZE))
+ 		return true;
+ 
+ 	/*
+diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
+index d7081b1..dff9001 100644
+--- a/arch/x86/mm/cpu_entry_area.c
++++ b/arch/x86/mm/cpu_entry_area.c
+@@ -16,16 +16,53 @@ static DEFINE_PER_CPU_PAGE_ALIGNED(struct entry_stack_page, entry_stack_storage)
+ #ifdef CONFIG_X86_64
+ static DEFINE_PER_CPU_PAGE_ALIGNED(struct exception_stacks, exception_stacks);
+ DEFINE_PER_CPU(struct cea_exception_stacks*, cea_exception_stacks);
+-#endif
+ 
+-#ifdef CONFIG_X86_32
++static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, _cea_offset);
++
++static __always_inline unsigned int cea_offset(unsigned int cpu)
++{
++	return per_cpu(_cea_offset, cpu);
++}
++
++static __init void init_cea_offsets(void)
++{
++	unsigned int max_cea;
++	unsigned int i, j;
++
++	max_cea = (CPU_ENTRY_AREA_MAP_SIZE - PAGE_SIZE) / CPU_ENTRY_AREA_SIZE;
++
++	/* O(sodding terrible) */
++	for_each_possible_cpu(i) {
++		unsigned int cea;
++
++again:
++		cea = prandom_u32_max(max_cea);
++
++		for_each_possible_cpu(j) {
++			if (cea_offset(j) == cea)
++				goto again;
++
++			if (i == j)
++				break;
++		}
++
++		per_cpu(_cea_offset, i) = cea;
++	}
++}
++#else /* !X86_64 */
+ DECLARE_PER_CPU_PAGE_ALIGNED(struct doublefault_stack, doublefault_stack);
++
++static __always_inline unsigned int cea_offset(unsigned int cpu)
++{
++	return cpu;
++}
++static inline void init_cea_offsets(void) { }
+ #endif
+ 
+ /* Is called from entry code, so must be noinstr */
+ noinstr struct cpu_entry_area *get_cpu_entry_area(int cpu)
+ {
+-	unsigned long va = CPU_ENTRY_AREA_PER_CPU + cpu * CPU_ENTRY_AREA_SIZE;
++	unsigned long va = CPU_ENTRY_AREA_PER_CPU + cea_offset(cpu) * CPU_ENTRY_AREA_SIZE;
+ 	BUILD_BUG_ON(sizeof(struct cpu_entry_area) % PAGE_SIZE != 0);
+ 
+ 	return (struct cpu_entry_area *) va;
+@@ -211,7 +248,6 @@ static __init void setup_cpu_entry_area_ptes(void)
+ 
+ 	/* The +1 is for the readonly IDT: */
+ 	BUILD_BUG_ON((CPU_ENTRY_AREA_PAGES+1)*PAGE_SIZE != CPU_ENTRY_AREA_MAP_SIZE);
+-	BUILD_BUG_ON(CPU_ENTRY_AREA_TOTAL_SIZE != CPU_ENTRY_AREA_MAP_SIZE);
+ 	BUG_ON(CPU_ENTRY_AREA_BASE & ~PMD_MASK);
+ 
+ 	start = CPU_ENTRY_AREA_BASE;
+@@ -227,6 +263,8 @@ void __init setup_cpu_entry_areas(void)
+ {
+ 	unsigned int cpu;
+ 
++	init_cea_offsets();
++
+ 	setup_cpu_entry_area_ptes();
+ 
+ 	for_each_possible_cpu(cpu)
