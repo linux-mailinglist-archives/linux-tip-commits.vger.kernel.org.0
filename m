@@ -2,56 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0199610A68
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Oct 2022 08:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5319610A6F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Oct 2022 08:42:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229665AbiJ1GmF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 28 Oct 2022 02:42:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51980 "EHLO
+        id S229810AbiJ1GmY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 28 Oct 2022 02:42:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229755AbiJ1Glj (ORCPT
+        with ESMTP id S229832AbiJ1Gl4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 28 Oct 2022 02:41:39 -0400
+        Fri, 28 Oct 2022 02:41:56 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70D8DB1DCD;
-        Thu, 27 Oct 2022 23:41:35 -0700 (PDT)
-Date:   Fri, 28 Oct 2022 06:41:32 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B333D54C9C;
+        Thu, 27 Oct 2022 23:41:54 -0700 (PDT)
+Date:   Fri, 28 Oct 2022 06:41:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1666939293;
+        s=2020; t=1666939313;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=418PeG1m3KiESUjrABGHYXcYvntC5lkqgItingIMeP8=;
-        b=m4blkYTVRISE9h01oLV9GZUua+GHJSmoj6X8r/1p1W+1fbMc9IKf3uAtgW3I4Bno4/kJNS
-        MV/vaB2Cc/6LU+6/q/+Nn7am/k6Sz/du4Y8Le+i9t8dr9vwueyRPYkf5pgnvABnYfPGXYy
-        x8fo+Jpo6xNUtJJhwqgxF8WS+mwJ2Plb0Hq8o1lfijpRXqJ0TpIgD4ypqtqxQJ7HJfhcQn
-        xlTK8sFn/uZqStU01ycqfdmgzTSJ/Pp3+YTDYg9Z5iacuNLGrC8UbaUNK2/IrULUcEXHDd
-        6RQ8tEAIkkPHCh0X7g1lmqeG5sdOy4BggHNNZEnImM+ZMo94xvknM9aY3KDrlw==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=b2E5M+sgM0Kbu4YgEFm8ONBFN7/B3Kqd34YndSvKUIg=;
+        b=kK7Ia7ntz8ZgxPOf0i+Ixd6Ezik7S02LHSxvCd7FMT0Od0jYxxQC1OOnu57fhwOeSDNF3H
+        6JZyIF5tezjeR2mHNGnCrd1/ylmAZir5UNBmYuebLm1PMR/vqn9ewOQ37f+IJTjY7RIXmZ
+        /pzJs5TGEtZjrpBsWm4VJ02AO6jy+TVjoWpJKi7LOklHpeV1+C/RZiclBgS+PlXw86or0p
+        44gzeNA2bsA4O9/qCOOWM1HC/H7BQ6wOX7RUyfnMz6MjJqj6atRSXoimWOKcIcU4elwJiK
+        4fvOpq/IfylbkoR7ucZlL3MzDRlFk1szTBYQa+t4cU2EiV231jWA/UKK/mNJVQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1666939293;
+        s=2020e; t=1666939313;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=418PeG1m3KiESUjrABGHYXcYvntC5lkqgItingIMeP8=;
-        b=QIBf+Z9PgrlliPNlwsv+LK5jWP/olRmOyprkpIRaJhXg9HRsgMmmS2/b82RNhds8adi44m
-        nn3I74QEhvCXm8Dw==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=b2E5M+sgM0Kbu4YgEFm8ONBFN7/B3Kqd34YndSvKUIg=;
+        b=xdg3WG+loDl9lp83xYcq9XE2qiZ3SctVb6IBkqixRqygnDTrE2IWgsE9FyeW9UlwgKzTCc
+        8PKUyJNPGIwZmCDw==
+From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] jump_label: Use atomic_try_cmpxchg() in
- static_key_slow_inc_cpuslocked()
-Cc:     Uros Bizjak <ubizjak@gmail.com>,
+Subject: [tip: perf/core] perf: Optimize perf_tp_event()
+Cc:     Ravi Bangoria <ravi.bangoria@amd.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221019140850.3395-1-ubizjak@gmail.com>
-References: <20221019140850.3395-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <166693929232.29415.8209039784382977219.tip-bot2@tip-bot2>
+Message-ID: <166693931196.29415.10760252115710736746.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,58 +58,194 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d0c006402e7941558e5283ae434e2847c7999378
-Gitweb:        https://git.kernel.org/tip/d0c006402e7941558e5283ae434e2847c7999378
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Wed, 19 Oct 2022 16:08:50 +02:00
+Commit-ID:     571f97f7d51fa81e6cc0e00f0f6314792ce533a3
+Gitweb:        https://git.kernel.org/tip/571f97f7d51fa81e6cc0e00f0f6314792ce533a3
+Author:        Ravi Bangoria <ravi.bangoria@amd.com>
+AuthorDate:    Mon, 10 Oct 2022 12:17:50 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 27 Oct 2022 10:35:41 +02:00
+CommitterDate: Thu, 27 Oct 2022 20:12:17 +02:00
 
-jump_label: Use atomic_try_cmpxchg() in static_key_slow_inc_cpuslocked()
+perf: Optimize perf_tp_event()
 
-Use atomic_try_cmpxchg() instead of atomic_cmpxchg (*ptr, old, new) ==
-old in static_key_slow_inc_cpuslocked().  x86 CMPXCHG instruction
-returns success in ZF flag, so this change saves a compare after
-cmpxchg (and related move instruction in front of cmpxchg).
+Use the event group trees to iterate only perf_tracepoint events.
 
-Also, atomic_try_cmpxchg() implicitly assigns old *ptr value to "old" when
-cmpxchg fails, enabling further code simplifications.
-
-No functional change intended.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221019140850.3395-1-ubizjak@gmail.com
 ---
- kernel/jump_label.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ kernel/events/core.c | 134 ++++++++++++++++++++++++------------------
+ 1 file changed, 79 insertions(+), 55 deletions(-)
 
-diff --git a/kernel/jump_label.c b/kernel/jump_label.c
-index 714ac4c..4d6c6f5 100644
---- a/kernel/jump_label.c
-+++ b/kernel/jump_label.c
-@@ -115,8 +115,6 @@ EXPORT_SYMBOL_GPL(static_key_count);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 640f0a5..ec2abc5 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9944,6 +9944,44 @@ static struct pmu perf_swevent = {
  
- void static_key_slow_inc_cpuslocked(struct static_key *key)
+ #ifdef CONFIG_EVENT_TRACING
+ 
++static void tp_perf_event_destroy(struct perf_event *event)
++{
++	perf_trace_destroy(event);
++}
++
++static int perf_tp_event_init(struct perf_event *event)
++{
++	int err;
++
++	if (event->attr.type != PERF_TYPE_TRACEPOINT)
++		return -ENOENT;
++
++	/*
++	 * no branch sampling for tracepoint events
++	 */
++	if (has_branch_stack(event))
++		return -EOPNOTSUPP;
++
++	err = perf_trace_init(event);
++	if (err)
++		return err;
++
++	event->destroy = tp_perf_event_destroy;
++
++	return 0;
++}
++
++static struct pmu perf_tracepoint = {
++	.task_ctx_nr	= perf_sw_context,
++
++	.event_init	= perf_tp_event_init,
++	.add		= perf_trace_add,
++	.del		= perf_trace_del,
++	.start		= perf_swevent_start,
++	.stop		= perf_swevent_stop,
++	.read		= perf_swevent_read,
++};
++
+ static int perf_tp_filter_match(struct perf_event *event,
+ 				struct perf_sample_data *data)
  {
--	int v, v1;
--
- 	STATIC_KEY_CHECK_USE(key);
- 	lockdep_assert_cpus_held();
+@@ -9993,6 +10031,44 @@ void perf_trace_run_bpf_submit(void *raw_data, int size, int rctx,
+ }
+ EXPORT_SYMBOL_GPL(perf_trace_run_bpf_submit);
  
-@@ -132,11 +130,9 @@ void static_key_slow_inc_cpuslocked(struct static_key *key)
- 	 * so it counts as "enabled" in jump_label_update().  Note that
- 	 * atomic_inc_unless_negative() checks >= 0, so roll our own.
++static void __perf_tp_event_target_task(u64 count, void *record,
++					struct pt_regs *regs,
++					struct perf_sample_data *data,
++					struct perf_event *event)
++{
++	struct trace_entry *entry = record;
++
++	if (event->attr.config != entry->type)
++		return;
++	/* Cannot deliver synchronous signal to other task. */
++	if (event->attr.sigtrap)
++		return;
++	if (perf_tp_event_match(event, data, regs))
++		perf_swevent_event(event, count, data, regs);
++}
++
++static void perf_tp_event_target_task(u64 count, void *record,
++				      struct pt_regs *regs,
++				      struct perf_sample_data *data,
++				      struct perf_event_context *ctx)
++{
++	unsigned int cpu = smp_processor_id();
++	struct pmu *pmu = &perf_tracepoint;
++	struct perf_event *event, *sibling;
++
++	perf_event_groups_for_cpu_pmu(event, &ctx->pinned_groups, cpu, pmu) {
++		__perf_tp_event_target_task(count, record, regs, data, event);
++		for_each_sibling_event(sibling, event)
++			__perf_tp_event_target_task(count, record, regs, data, sibling);
++	}
++
++	perf_event_groups_for_cpu_pmu(event, &ctx->flexible_groups, cpu, pmu) {
++		__perf_tp_event_target_task(count, record, regs, data, event);
++		for_each_sibling_event(sibling, event)
++			__perf_tp_event_target_task(count, record, regs, data, sibling);
++	}
++}
++
+ void perf_tp_event(u16 event_type, u64 count, void *record, int entry_size,
+ 		   struct pt_regs *regs, struct hlist_head *head, int rctx,
+ 		   struct task_struct *task)
+@@ -10023,29 +10099,15 @@ void perf_tp_event(u16 event_type, u64 count, void *record, int entry_size,
  	 */
--	for (v = atomic_read(&key->enabled); v > 0; v = v1) {
--		v1 = atomic_cmpxchg(&key->enabled, v, v + 1);
--		if (likely(v1 == v))
-+	for (int v = atomic_read(&key->enabled); v > 0; )
-+		if (likely(atomic_try_cmpxchg(&key->enabled, &v, v + 1)))
- 			return;
--	}
+ 	if (task && task != current) {
+ 		struct perf_event_context *ctx;
+-		struct trace_entry *entry = record;
  
- 	jump_label_lock();
- 	if (atomic_read(&key->enabled) == 0) {
+ 		rcu_read_lock();
+ 		ctx = rcu_dereference(task->perf_event_ctxp);
+ 		if (!ctx)
+ 			goto unlock;
+ 
+-		// XXX iterate groups instead, we should be able to
+-		// find the subtree for the perf_tracepoint pmu and CPU.
+-
+-		list_for_each_entry_rcu(event, &ctx->event_list, event_entry) {
+-			if (event->cpu != smp_processor_id())
+-				continue;
+-			if (event->attr.type != PERF_TYPE_TRACEPOINT)
+-				continue;
+-			if (event->attr.config != entry->type)
+-				continue;
+-			/* Cannot deliver synchronous signal to other task. */
+-			if (event->attr.sigtrap)
+-				continue;
+-			if (perf_tp_event_match(event, &data, regs))
+-				perf_swevent_event(event, count, &data, regs);
+-		}
++		raw_spin_lock(&ctx->lock);
++		perf_tp_event_target_task(count, record, regs, &data, ctx);
++		raw_spin_unlock(&ctx->lock);
+ unlock:
+ 		rcu_read_unlock();
+ 	}
+@@ -10054,44 +10116,6 @@ unlock:
+ }
+ EXPORT_SYMBOL_GPL(perf_tp_event);
+ 
+-static void tp_perf_event_destroy(struct perf_event *event)
+-{
+-	perf_trace_destroy(event);
+-}
+-
+-static int perf_tp_event_init(struct perf_event *event)
+-{
+-	int err;
+-
+-	if (event->attr.type != PERF_TYPE_TRACEPOINT)
+-		return -ENOENT;
+-
+-	/*
+-	 * no branch sampling for tracepoint events
+-	 */
+-	if (has_branch_stack(event))
+-		return -EOPNOTSUPP;
+-
+-	err = perf_trace_init(event);
+-	if (err)
+-		return err;
+-
+-	event->destroy = tp_perf_event_destroy;
+-
+-	return 0;
+-}
+-
+-static struct pmu perf_tracepoint = {
+-	.task_ctx_nr	= perf_sw_context,
+-
+-	.event_init	= perf_tp_event_init,
+-	.add		= perf_trace_add,
+-	.del		= perf_trace_del,
+-	.start		= perf_swevent_start,
+-	.stop		= perf_swevent_stop,
+-	.read		= perf_swevent_read,
+-};
+-
+ #if defined(CONFIG_KPROBE_EVENTS) || defined(CONFIG_UPROBE_EVENTS)
+ /*
+  * Flags in config, used by dynamic PMU kprobe and uprobe
