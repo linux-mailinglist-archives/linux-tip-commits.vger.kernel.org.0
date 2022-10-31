@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F35613402
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 Oct 2022 11:54:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60FCF613B0D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 Oct 2022 17:16:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbiJaKyG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 31 Oct 2022 06:54:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46426 "EHLO
+        id S231356AbiJaQP7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 31 Oct 2022 12:15:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230206AbiJaKyD (ORCPT
+        with ESMTP id S229875AbiJaQP6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 31 Oct 2022 06:54:03 -0400
+        Mon, 31 Oct 2022 12:15:58 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A9A1B1E;
-        Mon, 31 Oct 2022 03:54:02 -0700 (PDT)
-Date:   Mon, 31 Oct 2022 10:54:00 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60C8711158;
+        Mon, 31 Oct 2022 09:15:57 -0700 (PDT)
+Date:   Mon, 31 Oct 2022 16:15:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667213641;
+        s=2020; t=1667232956;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Hov2Y61IE84s9ZxCrB09rbK/g7ijp4Z6517H7xL3HbM=;
-        b=iQL1H0lSl+AewlbcpUgIKu++1odlbofZJjOAICS7cdO6Mynd7pHN+gVM2bfSlL6/+QZIee
-        1ju0rexJqeTtG+RLn1obcqsIOxinqGnB0Z+7ZwwvdlDRBvpxdMdmnzXa10CbOkumggvkG9
-        i/WZRG5ubu4TVWIFKl2UPHFLtoHPKJdI+UQUSTQod3cMMafjDvVYnXCYrUojMW6YbxZ4QB
-        LeBx9F41+19TCRTEB4qZL+9MjpM8vxv7IPg5bVhC9motuI52xS8Ai5d7PR7CfjGxdZLMwU
-        bZZE00W15h/XKTi5TwCP1MUBi3pVqGnRsy25CkcgnIzXPxR7kBKWe1VDQ78N3g==
+        bh=zA73xcDWFZhtNZg9/6CkneYyLOUaAXtkq8I2ETRFB48=;
+        b=rCwNiCcyv8gApg8QGfVc1O12RctcIthU7YxM0qtrNCdzeqX94+mTWyK8fXAnfHh1vdi2YB
+        xeL1qnG/cdyEXT0UypjJmft0afn3Fel3l/cm+Clh3WFwqSc2FMaN1JH2GAbDpSZc7p7D+x
+        s7syW4S7x5opoWIN6R5NZX6MDZ4NE5pf4BzjN7bOvzaYPeXnl2KNuNJ1MCnD1kGdszc5ZT
+        ehO6kpcTqvDANyz4vrid1YJmDPXbI23nKCSHR+rtKL3PCy9gVt8fVUYwdRsTMk2rJu9WmE
+        4XIPGPKtIkN1DXaMRNILoXQxlxTcdPC1vgktRwZdYXfkca4nt+nMbIe87cMN1A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667213641;
+        s=2020e; t=1667232956;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Hov2Y61IE84s9ZxCrB09rbK/g7ijp4Z6517H7xL3HbM=;
-        b=BfZxjJPD7dyF1Ys8Rg2+EO86EsPbi0jAiGDcdtmgcUR/Ecwr6ItAH45wigF9wzQ6E4xYG+
-        fYhdpmo1/qPv1WCA==
-From:   "tip-bot2 for Hao Lee" <tip-bot2@linutronix.de>
+        bh=zA73xcDWFZhtNZg9/6CkneYyLOUaAXtkq8I2ETRFB48=;
+        b=O1CT8q2gtpZL33dORPyLThN62+03VrPo6boVDn7Y5mGE9e3lDYMn216VJndUs/HjZriRHv
+        5RoDgSOB7hColGBw==
+From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/psi: Fix possible missing or delayed pending event
-Cc:     Hao Lee <haolee.swjtu@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Suren Baghdasaryan <surenb@google.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220919072356.GA29069@haolee.io>
-References: <20220919072356.GA29069@haolee.io>
+Subject: [tip: ras/core] x86/mce: Use severity table to handle uncorrected
+ errors in kernel
+Cc:     Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220922195136.54575-2-tony.luck@intel.com>
+References: <20220922195136.54575-2-tony.luck@intel.com>
 MIME-Version: 1.0
-Message-ID: <166721364005.7716.252588638039192570.tip-bot2@tip-bot2>
+Message-ID: <166723295340.7716.5561469678054696498.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,50 +64,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     e38f89af6a13e895805febd3a329a13ab7e66fa4
-Gitweb:        https://git.kernel.org/tip/e38f89af6a13e895805febd3a329a13ab7e66fa4
-Author:        Hao Lee <haolee.swjtu@gmail.com>
-AuthorDate:    Mon, 19 Sep 2022 07:23:56 
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sun, 30 Oct 2022 10:12:13 +01:00
+Commit-ID:     a51cbd0d86d3fa9ecc6ddf186dd1cb66a4fefa87
+Gitweb:        https://git.kernel.org/tip/a51cbd0d86d3fa9ecc6ddf186dd1cb66a4fefa87
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Thu, 22 Sep 2022 12:51:35 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 31 Oct 2022 17:01:19 +01:00
 
-sched/psi: Fix possible missing or delayed pending event
+x86/mce: Use severity table to handle uncorrected errors in kernel
 
-When a pending event exists and growth is less than the threshold, the
-current logic is to skip this trigger without generating event. However,
-from e6df4ead85d9 ("psi: fix possible trigger missing in the window"),
-our purpose is to generate event as long as pending event exists and the
-rate meets the limit, no matter what growth is.
-This patch handles this case properly.
+mce_severity_intel() has a special case to promote UC and AR errors
+in kernel context to PANIC severity.
 
-Fixes: e6df4ead85d9 ("psi: fix possible trigger missing in the window")
-Signed-off-by: Hao Lee <haolee.swjtu@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Link: https://lore.kernel.org/r/20220919072356.GA29069@haolee.io
+The "AR" case is already handled with separate entries in the severity
+table for all instruction fetch errors, and those data fetch errors that
+are not in a recoverable area of the kernel (i.e. have an extable fixup
+entry).
+
+Add an entry to the severity table for UC errors in kernel context that
+reports severity = PANIC. Delete the special case code from
+mce_severity_intel().
+
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220922195136.54575-2-tony.luck@intel.com
 ---
- kernel/sched/psi.c | 8 +++++---
+ arch/x86/kernel/cpu/mce/severity.c | 8 +++++---
  1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index ee2ecc0..7f40d87 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -539,10 +539,12 @@ static u64 update_triggers(struct psi_group *group, u64 now)
+diff --git a/arch/x86/kernel/cpu/mce/severity.c b/arch/x86/kernel/cpu/mce/severity.c
+index 00483d1..c447716 100644
+--- a/arch/x86/kernel/cpu/mce/severity.c
++++ b/arch/x86/kernel/cpu/mce/severity.c
+@@ -203,6 +203,11 @@ static struct severity {
+ 		BITSET(MCI_STATUS_OVER|MCI_STATUS_UC)
+ 		),
+ 	MCESEV(
++		PANIC, "Uncorrected in kernel",
++		BITSET(MCI_STATUS_UC),
++		KERNEL
++		),
++	MCESEV(
+ 		UC, "Uncorrected",
+ 		BITSET(MCI_STATUS_UC)
+ 		),
+@@ -391,9 +396,6 @@ static noinstr int mce_severity_intel(struct mce *m, struct pt_regs *regs, char 
+ 			*msg = s->msg;
+ 		s->covered = 1;
  
- 			/* Calculate growth since last update */
- 			growth = window_update(&t->win, now, total[t->state]);
--			if (growth < t->threshold)
--				continue;
-+			if (!t->pending_event) {
-+				if (growth < t->threshold)
-+					continue;
- 
--			t->pending_event = true;
-+				t->pending_event = true;
-+			}
- 		}
- 		/* Limit event signaling to once per window */
- 		if (now < t->last_event_time + t->win.size)
+-		if (s->sev >= MCE_UC_SEVERITY && ctx == IN_KERNEL)
+-			return MCE_PANIC_SEVERITY;
+-
+ 		return s->sev;
+ 	}
+ }
