@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60FCF613B0D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 Oct 2022 17:16:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7267A613D2C
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 Oct 2022 19:15:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231356AbiJaQP7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 31 Oct 2022 12:15:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40846 "EHLO
+        id S229827AbiJaSPM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 31 Oct 2022 14:15:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229875AbiJaQP6 (ORCPT
+        with ESMTP id S229645AbiJaSPM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 31 Oct 2022 12:15:58 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60C8711158;
-        Mon, 31 Oct 2022 09:15:57 -0700 (PDT)
-Date:   Mon, 31 Oct 2022 16:15:53 -0000
+        Mon, 31 Oct 2022 14:15:12 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 813EB65C6;
+        Mon, 31 Oct 2022 11:15:11 -0700 (PDT)
+Date:   Mon, 31 Oct 2022 18:15:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667232956;
+        s=2020; t=1667240109;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zA73xcDWFZhtNZg9/6CkneYyLOUaAXtkq8I2ETRFB48=;
-        b=rCwNiCcyv8gApg8QGfVc1O12RctcIthU7YxM0qtrNCdzeqX94+mTWyK8fXAnfHh1vdi2YB
-        xeL1qnG/cdyEXT0UypjJmft0afn3Fel3l/cm+Clh3WFwqSc2FMaN1JH2GAbDpSZc7p7D+x
-        s7syW4S7x5opoWIN6R5NZX6MDZ4NE5pf4BzjN7bOvzaYPeXnl2KNuNJ1MCnD1kGdszc5ZT
-        ehO6kpcTqvDANyz4vrid1YJmDPXbI23nKCSHR+rtKL3PCy9gVt8fVUYwdRsTMk2rJu9WmE
-        4XIPGPKtIkN1DXaMRNILoXQxlxTcdPC1vgktRwZdYXfkca4nt+nMbIe87cMN1A==
+        bh=lwgO5XEJCp0Zffmg4gdserNs+oDiJwvtqN0WugL8MiM=;
+        b=m8Lf4rvCdtKN7G7frjl9AmkOws+ZjWwUeRtw5JAcUw7bapDcKan/rLGsSlJ3URyfanbg8+
+        +VijeDyiphBCtNXdsrkwHkPlH0uxd/KB1bP4yEqukdL1VV9iW/wGdwwYQCU6MRaIa5W0uK
+        fYPMarEB3FYknitjhcrnejRMwdJ+IulBTMAKCuizZrl5/M/3BdehadSqCF0eq4E8B5+3iV
+        SnHrSlBv5zGBq2HaqilWYQHeaWuT9QBqrTQIRdRg4DeSrbezzQZw6qaugKZ3WQw5wEwTDI
+        CXoVOFUvwC7i9wykL7Lrn20qslBT1SV4ZgCNM7a/iLK2Yzb0SdThnNGXdk+Ycg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667232956;
+        s=2020e; t=1667240109;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zA73xcDWFZhtNZg9/6CkneYyLOUaAXtkq8I2ETRFB48=;
-        b=O1CT8q2gtpZL33dORPyLThN62+03VrPo6boVDn7Y5mGE9e3lDYMn216VJndUs/HjZriRHv
-        5RoDgSOB7hColGBw==
+        bh=lwgO5XEJCp0Zffmg4gdserNs+oDiJwvtqN0WugL8MiM=;
+        b=1AXIBTck4nhnv6YivWHCyMwKkiU7guMhDHlQPzdMeIJ8YcP/MzLw5D63udjV3G3y0QbwOj
+        BhHOn+7USsCPU/AQ==
 From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Use severity table to handle uncorrected
- errors in kernel
+Subject: [tip: ras/core] RAS: Fix return value from show_trace()
 Cc:     Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220922195136.54575-2-tony.luck@intel.com>
-References: <20220922195136.54575-2-tony.luck@intel.com>
+In-Reply-To: <20221018165900.109029-1-tony.luck@intel.com>
+References: <20221018165900.109029-1-tony.luck@intel.com>
 MIME-Version: 1.0
-Message-ID: <166723295340.7716.5561469678054696498.tip-bot2@tip-bot2>
+Message-ID: <166724010782.7716.13211418678900484853.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,57 +65,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     a51cbd0d86d3fa9ecc6ddf186dd1cb66a4fefa87
-Gitweb:        https://git.kernel.org/tip/a51cbd0d86d3fa9ecc6ddf186dd1cb66a4fefa87
+Commit-ID:     50865c14f34edbd03f8113147fac069b39f4e390
+Gitweb:        https://git.kernel.org/tip/50865c14f34edbd03f8113147fac069b39f4e390
 Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Thu, 22 Sep 2022 12:51:35 -07:00
+AuthorDate:    Tue, 18 Oct 2022 09:59:00 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 31 Oct 2022 17:01:19 +01:00
+CommitterDate: Mon, 31 Oct 2022 18:55:18 +01:00
 
-x86/mce: Use severity table to handle uncorrected errors in kernel
+RAS: Fix return value from show_trace()
 
-mce_severity_intel() has a special case to promote UC and AR errors
-in kernel context to PANIC severity.
+Documentation/filesystems/seq_file.rst describes the possible return
+values from a "show()" function used by single_open().
 
-The "AR" case is already handled with separate entries in the severity
-table for all instruction fetch errors, and those data fetch errors that
-are not in a recoverable area of the kernel (i.e. have an extable fixup
-entry).
+show_trace() returns the value of "trace_count". This could be
+interpreted as "SEQ_SKIP", or just confuse the calling function.
 
-Add an entry to the severity table for UC errors in kernel context that
-reports severity = PANIC. Delete the special case code from
-mce_severity_intel().
+Change to just return "0" to avoid confusing anyone reading this code
+and possibly using as a template. Reading "daemon_active" was never
+an intended use case.
 
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220922195136.54575-2-tony.luck@intel.com
+Link: https://lore.kernel.org/r/20221018165900.109029-1-tony.luck@intel.com
 ---
- arch/x86/kernel/cpu/mce/severity.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/ras/debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/severity.c b/arch/x86/kernel/cpu/mce/severity.c
-index 00483d1..c447716 100644
---- a/arch/x86/kernel/cpu/mce/severity.c
-+++ b/arch/x86/kernel/cpu/mce/severity.c
-@@ -203,6 +203,11 @@ static struct severity {
- 		BITSET(MCI_STATUS_OVER|MCI_STATUS_UC)
- 		),
- 	MCESEV(
-+		PANIC, "Uncorrected in kernel",
-+		BITSET(MCI_STATUS_UC),
-+		KERNEL
-+		),
-+	MCESEV(
- 		UC, "Uncorrected",
- 		BITSET(MCI_STATUS_UC)
- 		),
-@@ -391,9 +396,6 @@ static noinstr int mce_severity_intel(struct mce *m, struct pt_regs *regs, char 
- 			*msg = s->msg;
- 		s->covered = 1;
+diff --git a/drivers/ras/debugfs.c b/drivers/ras/debugfs.c
+index 0d4f985..f0a6391 100644
+--- a/drivers/ras/debugfs.c
++++ b/drivers/ras/debugfs.c
+@@ -15,7 +15,7 @@ EXPORT_SYMBOL_GPL(ras_userspace_consumers);
  
--		if (s->sev >= MCE_UC_SEVERITY && ctx == IN_KERNEL)
--			return MCE_PANIC_SEVERITY;
--
- 		return s->sev;
- 	}
+ static int trace_show(struct seq_file *m, void *v)
+ {
+-	return atomic_read(&trace_count);
++	return 0;
  }
+ 
+ static int trace_open(struct inode *inode, struct file *file)
