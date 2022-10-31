@@ -2,102 +2,97 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84D016124EE
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Oct 2022 20:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 372806132B8
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 Oct 2022 10:29:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbiJ2SqW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 29 Oct 2022 14:46:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46126 "EHLO
+        id S229670AbiJaJ3z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 31 Oct 2022 05:29:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbiJ2SqV (ORCPT
+        with ESMTP id S229798AbiJaJ3y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 29 Oct 2022 14:46:21 -0400
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09DDD45224
-        for <linux-tip-commits@vger.kernel.org>; Sat, 29 Oct 2022 11:46:20 -0700 (PDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-369c2f83697so74978087b3.3
-        for <linux-tip-commits@vger.kernel.org>; Sat, 29 Oct 2022 11:46:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=I5M42xH956VA0eEVqAgck6Km6Zbq9KHp3UzoX8yEhtk=;
-        b=OCdmA01964Z5GWe0fQVjPd9Km6OgUshXB5kpYJnoMvRAWYSF8nI0hFhx8UltF3Pdlj
-         +DSchlPvrlVUlhE8dEMx/AoU6Q18t8VY+9cMuxR39s+k4f8jyFFIW4kVgJHvDdoelFFQ
-         Ihfl6cz9rQKMU9Ca8h86iRkQvs4rQZ1A8aye7KQyhu0SNiOvJkscskueLU5v6xKsHzkP
-         GF63bTfHQ880Ttfm6TpW+bZf769CHVau8dPuuOi7IBk+oOM6oH1QTCX6zAoRJZG37YPh
-         qN6nSq208OE7eYBLn+908Nizlx31qyjVJbIQbLyd8dgWx3CSBFxBrieYSgOz9DKj9zig
-         eQ0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I5M42xH956VA0eEVqAgck6Km6Zbq9KHp3UzoX8yEhtk=;
-        b=x1kRO8WztgFz9EE1qbFPvSkNuyxl4nlqBiLu/0Od4YWPMI4yKzAMh81TVf3edYSFYo
-         dR4FzjhoO2Gn396oycONMn6NHvFDW1bTkne3N+miVSJGhFiHRhBK/V7A+pR7XW9oDbnw
-         wotzdEm8QNw+7Pw9LTct4JfhqZHpk12wy0MS57+o4MTj1OglXZsRco3vB/XEygCFbBkv
-         vwN6vVp7HK5gRhZiI8aEI0kh63aCQBlskooHG/s5XTjMWJ0nBcU5OQWjrdbOQb00ZR4f
-         EQCGP10nVfIi4RCYHGSMgB0SgksK+eryWEOSe2SE7fUsolo7ZHnAmA3fvVB4NhCPmmQK
-         bgRw==
-X-Gm-Message-State: ACrzQf10cN/fRdpS1sL3xWQXEkN8PEGz1VQf4BTP1tKyYLtMDVZDdk3e
-        7swj/+Vf3tq8uhLtqyUynbwfG71w8/sRDLY9oJ+3uQ==
-X-Google-Smtp-Source: AMsMyM6fOyIsTHK/Hv2UW8rwWkFw0UyWwfCclzmg/qL4gE8hPYBxuKlINVwu/nxq3NBo5gtt8TEOZeqCEtcI5HNMKjw=
-X-Received: by 2002:a81:8a81:0:b0:36a:4785:ab9f with SMTP id
- a123-20020a818a81000000b0036a4785ab9fmr5206758ywg.218.1667069179033; Sat, 29
- Oct 2022 11:46:19 -0700 (PDT)
+        Mon, 31 Oct 2022 05:29:54 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD56DEB2;
+        Mon, 31 Oct 2022 02:29:53 -0700 (PDT)
+Date:   Mon, 31 Oct 2022 09:29:49 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1667208591;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7JoBSIhXypW7Gy7Obhvf5aa/rV/BTWBY+BBqZAjQMbg=;
+        b=kHIix0t4TWaMAEx0Sb2Nnl8P8w+D+kkx3wBg6mKBF343Zmj3qAgwjPalHzlqK85eZIT37i
+        XCV84jcvqMTHIySq5HQCt4nXxpZ5Qln5ZTzq8/7mWN0213XDbX+WZR2h50niKp4vReHxnS
+        lgSLYSp4zAQJ9u9BjsJwqlajDJdDjPJ0X0+xvpBte+kRhUb8QgEZcgB2EYx62vVMAZDls9
+        26mytd6ymr+7LJRR/aGHZqt9GFX/pELHpnO9x94gU6Juv2gYjlh06SixNFkPhouIZt0Saj
+        SvVV9cfkkY5PQloaA74xjstu6Uqf6rjrtuS729bHiljIMiYD+6pjJy70w10L5g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1667208591;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7JoBSIhXypW7Gy7Obhvf5aa/rV/BTWBY+BBqZAjQMbg=;
+        b=Bb7KrgNjPgTBspLcPQZFBmcNwrbRkU+0vfzAoNN14az92Fi3jT836oQdQ5R5xAIEH+QPHh
+        dDu9ouqzJ4thtKDA==
+From:   "tip-bot2 for Chen Lifu" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/i8259: Make default_legacy_pic static
+Cc:     Chen Lifu <chenlifu@huawei.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220823021958.3052493-1-chenlifu@huawei.com>
+References: <20220823021958.3052493-1-chenlifu@huawei.com>
 MIME-Version: 1.0
-References: <20221010104206.12184-1-zhouchengming@bytedance.com>
- <166693932887.29415.17016910542871419770.tip-bot2@tip-bot2>
- <f990a324-e28e-6de1-acb0-ba764808a56a@bytedance.com> <CAJuCfpHOt1Vfc=ZtAYt_2QamOujfuFtNHAdJe7iBMmDgTLGtyw@mail.gmail.com>
- <Y1wzVeCYDFSO0KYe@hirez.programming.kicks-ass.net> <Y10UpNIGtffsZHXr@hirez.programming.kicks-ass.net>
- <6ea3a2ca-85d7-b338-f516-c91ec5e7a128@bytedance.com>
-In-Reply-To: <6ea3a2ca-85d7-b338-f516-c91ec5e7a128@bytedance.com>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Sat, 29 Oct 2022 11:46:07 -0700
-Message-ID: <CAJuCfpHrm-BtpLyS-b-PQbnMiSpuLfVjtzwWxWDbFz__1Jb8Mg@mail.gmail.com>
-Subject: Re: [tip: sched/core] sched/psi: Fix avgs_work re-arm in psi_avgs_work()
-To:     Chengming Zhou <zhouchengming@bytedance.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        linux-tip-commits@vger.kernel.org,
-        Pavan Kondeti <quic_pkondeti@quicinc.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <166720858963.7716.9924110502009264129.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sat, Oct 29, 2022 at 5:42 AM Chengming Zhou
-<zhouchengming@bytedance.com> wrote:
->
-> On 2022/10/29 19:55, Peter Zijlstra wrote:
-> > On Fri, Oct 28, 2022 at 09:53:57PM +0200, Peter Zijlstra wrote:
-> >> On Fri, Oct 28, 2022 at 08:58:03AM -0700, Suren Baghdasaryan wrote:
-> >>
-> >>> Not sure what went wrong. Peter, could you please replace this one
-> >>
-> >> Probably me being an idiot and searching on subject instead of msgid :/
-> >>
-> >> I'll go fix up -- tomorrow though, it's late and I'm likely to mess it
-> >> up again.
-> >
-> > Can you please check queue.git/sched/core ; did I get it right this
-> > time?
->
-> I just checked that three patches, LGTM.
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Yep, all three patches are correct. Thanks!
+Commit-ID:     c9053e1c5a6fca221946f95d1fe6e47f69fb303a
+Gitweb:        https://git.kernel.org/tip/c9053e1c5a6fca221946f95d1fe6e47f69fb303a
+Author:        Chen Lifu <chenlifu@huawei.com>
+AuthorDate:    Tue, 23 Aug 2022 10:19:58 +08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 31 Oct 2022 10:20:32 +01:00
 
->
-> And would you mind picking up this, by the way?
->
-> https://lore.kernel.org/all/20220926081931.45420-1-zhouchengming@bytedance.com/
->
-> Thanks!
+x86/i8259: Make default_legacy_pic static
+
+The symbol is not used outside of the file, so mark it static.
+
+Signed-off-by: Chen Lifu <chenlifu@huawei.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220823021958.3052493-1-chenlifu@huawei.com
+---
+ arch/x86/kernel/i8259.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/i8259.c b/arch/x86/kernel/i8259.c
+index 15aefa3..3aa5304 100644
+--- a/arch/x86/kernel/i8259.c
++++ b/arch/x86/kernel/i8259.c
+@@ -407,7 +407,7 @@ struct legacy_pic null_legacy_pic = {
+ 	.make_irq = legacy_pic_uint_noop,
+ };
+ 
+-struct legacy_pic default_legacy_pic = {
++static struct legacy_pic default_legacy_pic = {
+ 	.nr_legacy_irqs = NR_IRQS_LEGACY,
+ 	.chip  = &i8259A_chip,
+ 	.mask = mask_8259A_irq,
