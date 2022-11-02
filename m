@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3340D615F53
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Nov 2022 10:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77A25615F6F
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Nov 2022 10:21:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231579AbiKBJPA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 2 Nov 2022 05:15:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43622 "EHLO
+        id S231137AbiKBJVg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 2 Nov 2022 05:21:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231341AbiKBJNu (ORCPT
+        with ESMTP id S230519AbiKBJVR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 2 Nov 2022 05:13:50 -0400
+        Wed, 2 Nov 2022 05:21:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772EE29364;
-        Wed,  2 Nov 2022 02:12:56 -0700 (PDT)
-Date:   Wed, 02 Nov 2022 09:12:53 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04D2E647F;
+        Wed,  2 Nov 2022 02:20:01 -0700 (PDT)
+Date:   Wed, 02 Nov 2022 09:19:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667380375;
+        s=2020; t=1667380799;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oMREbSjW1m1DQRIRobOJxb5WF+kSzXiQo4pLiuFB+9U=;
-        b=H/8/yUcd8R/Of3fTGJL6zoT8ERF7Jc/zIW1itBszOao4E+qWJJmvnXakiOYnfTZ2grepIA
-        fr4Fp+y+gJL9nQLDwYl7tuuGozlXy5is1rmgmRl+ih2nENufb3LGDUljvX/KZJmnOsz2nD
-        V0P29xM/z+0vh7Vi3yXM8Rx9SHlnq6MEHDeT6n+SAUVD4XFtxZ5+zrI9+tc4c9KUhFTt7a
-        JvYBIMPz1N8DiDJlDgoXyWddBh/uQnw58nnYNQCbGEwUMnGMhuqVIkJbQwqorzxP1P0FeT
-        I5euODlWio0QsyVrZAkdGMXYkDEXjw1ZKXtLn8Wm+t1fkwPT+Y9WeQ9Yjw4UBg==
+        bh=VbDQoEBEQalCcwDd/vLZU9zQRL0nPpNFi0s6qMisUj8=;
+        b=fkLJBbOiGINc6f9ul8djcHRy9BA4lVKem1UKYqMBlQ3ZMRPVgoxfk68h9BV2rbFw3uMz30
+        58evs+3WmwE18Eu0LiM9L2UohCE9zeHfPEPo32vbCaHmi5rwcWBR4xr7DiYzT3mgR7CuVP
+        DqBh5uGOSqMIEjRYsf4NOnQt40ry+EQUAyLfdLgx0Ja5hGBWMtjI83zIconaGTovA530z5
+        72QJRY9HjmukgUJoLntgV9P2oPmRnpyGAsH6agz/upEjEBTGBGODwfzthdc6jKBTW4S9mg
+        PT6HskhRfHD+HkNhEiSLsD/f/aH/WClCAkPZTCqIl7MZP7VVPMJVcK3hkpQiiw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667380375;
+        s=2020e; t=1667380799;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oMREbSjW1m1DQRIRobOJxb5WF+kSzXiQo4pLiuFB+9U=;
-        b=9QUDXiZeBBe6Lzl1bfCFhYiXnCF/oaqw2pZbMemy/gQSw/95y7oLEIv3kJ2MpX/y7p1Y+Q
-        wvxUcXjFRU5y6BDQ==
+        bh=VbDQoEBEQalCcwDd/vLZU9zQRL0nPpNFi0s6qMisUj8=;
+        b=GmFA558kIoO3Zl1nJhEI9lcVkd8Eve38ajir3KA6jYPehCnCe3XHCg0eiBEPs1tUPQBUfX
+        ytcjuB4STz1vaBBA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] mm: Move mm_cachep initialization to mm_init()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/core] x86/cfi: Add boot time hash randomization
+Cc:     Kees Cook <keescook@chromium.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221025201057.751153381@infradead.org>
-References: <20221025201057.751153381@infradead.org>
+In-Reply-To: <20221027092842.765195516@infradead.org>
+References: <20221027092842.765195516@infradead.org>
 MIME-Version: 1.0
-Message-ID: <166738037356.7716.15264994823926137234.tip-bot2@tip-bot2>
+Message-ID: <166738079813.7716.11159577231772690253.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,102 +64,202 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     a2e87952bf54b99e8d560c095a2c75ebc676e1fb
-Gitweb:        https://git.kernel.org/tip/a2e87952bf54b99e8d560c095a2c75ebc676e1fb
+Commit-ID:     0c3e806ec0f9771fa1f34c60499097d9260a8bb7
+Gitweb:        https://git.kernel.org/tip/0c3e806ec0f9771fa1f34c60499097d9260a8bb7
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 25 Oct 2022 21:38:18 +02:00
+AuthorDate:    Thu, 27 Oct 2022 11:28:16 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 01 Nov 2022 13:43:56 +01:00
+CommitterDate: Tue, 01 Nov 2022 13:44:11 +01:00
 
-mm: Move mm_cachep initialization to mm_init()
+x86/cfi: Add boot time hash randomization
 
-In order to allow using mm_alloc() much earlier, move initializing
-mm_cachep into mm_init().
+In order to avoid known hashes (from knowing the boot image),
+randomize the CFI hashes with a per-boot random seed.
 
+Suggested-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221025201057.751153381@infradead.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20221027092842.765195516@infradead.org
 ---
- include/linux/sched/task.h |  1 +
- init/main.c                |  1 +
- kernel/fork.c              | 32 ++++++++++++++++++--------------
- 3 files changed, 20 insertions(+), 14 deletions(-)
+ arch/x86/kernel/alternative.c | 120 +++++++++++++++++++++++++++++----
+ 1 file changed, 108 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index d6c4816..8431558 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -65,6 +65,7 @@ extern void sched_dead(struct task_struct *p);
- void __noreturn do_task_dead(void);
- void __noreturn make_task_dead(int signr);
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 9d3b587..aa7f791 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -711,6 +711,24 @@ enum cfi_mode {
+ };
  
-+extern void mm_cache_init(void);
- extern void proc_caches_init(void);
- 
- extern void fork_init(void);
-diff --git a/init/main.c b/init/main.c
-index aa21add..f1d1a54 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -860,6 +860,7 @@ static void __init mm_init(void)
- 	/* Should be run after espfix64 is set up. */
- 	pti_init();
- 	kmsan_init_runtime();
-+	mm_cache_init();
- }
- 
- #ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 08969f5..451ce80 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -3015,10 +3015,27 @@ static void sighand_ctor(void *data)
- 	init_waitqueue_head(&sighand->signalfd_wqh);
- }
- 
--void __init proc_caches_init(void)
-+void __init mm_cache_init(void)
- {
- 	unsigned int mm_size;
- 
-+	/*
-+	 * The mm_cpumask is located at the end of mm_struct, and is
-+	 * dynamically sized based on the maximum CPU number this system
-+	 * can have, taking hotplug into account (nr_cpu_ids).
-+	 */
-+	mm_size = sizeof(struct mm_struct) + cpumask_size();
+ static enum cfi_mode cfi_mode __ro_after_init = CFI_DEFAULT;
++static bool cfi_rand __ro_after_init = true;
++static u32  cfi_seed __ro_after_init;
 +
-+	mm_cachep = kmem_cache_create_usercopy("mm_struct",
-+			mm_size, ARCH_MIN_MMSTRUCT_ALIGN,
-+			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
-+			offsetof(struct mm_struct, saved_auxv),
-+			sizeof_field(struct mm_struct, saved_auxv),
-+			NULL);
++/*
++ * Re-hash the CFI hash with a boot-time seed while making sure the result is
++ * not a valid ENDBR instruction.
++ */
++static u32 cfi_rehash(u32 hash)
++{
++	hash ^= cfi_seed;
++	while (unlikely(is_endbr(hash) || is_endbr(-hash))) {
++		bool lsb = hash & 1;
++		hash >>= 1;
++		if (lsb)
++			hash ^= 0x80200003;
++	}
++	return hash;
++}
+ 
+ static __init int cfi_parse_cmdline(char *str)
+ {
+@@ -728,10 +746,13 @@ static __init int cfi_parse_cmdline(char *str)
+ 			cfi_mode = CFI_DEFAULT;
+ 		} else if (!strcmp(str, "off")) {
+ 			cfi_mode = CFI_OFF;
++			cfi_rand = false;
+ 		} else if (!strcmp(str, "kcfi")) {
+ 			cfi_mode = CFI_KCFI;
+ 		} else if (!strcmp(str, "fineibt")) {
+ 			cfi_mode = CFI_FINEIBT;
++		} else if (!strcmp(str, "norand")) {
++			cfi_rand = false;
+ 		} else {
+ 			pr_err("Ignoring unknown cfi option (%s).", str);
+ 		}
+@@ -856,7 +877,50 @@ static int cfi_disable_callers(s32 *start, s32 *end)
+ 	return 0;
+ }
+ 
++static int cfi_enable_callers(s32 *start, s32 *end)
++{
++	/*
++	 * Re-enable kCFI, undo what cfi_disable_callers() did.
++	 */
++	const u8 mov[] = { 0x41, 0xba };
++	s32 *s;
++
++	for (s = start; s < end; s++) {
++		void *addr = (void *)s + *s;
++		u32 hash;
++
++		addr -= fineibt_caller_size;
++		hash = decode_caller_hash(addr);
++		if (!hash) /* nocfi callers */
++			continue;
++
++		text_poke_early(addr, mov, 2);
++	}
++
++	return 0;
 +}
 +
-+void __init proc_caches_init(void)
+ /* .cfi_sites */
++static int cfi_rand_preamble(s32 *start, s32 *end)
 +{
- 	sighand_cachep = kmem_cache_create("sighand_cache",
- 			sizeof(struct sighand_struct), 0,
- 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_TYPESAFE_BY_RCU|
-@@ -3036,19 +3053,6 @@ void __init proc_caches_init(void)
- 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
- 			NULL);
++	s32 *s;
++
++	for (s = start; s < end; s++) {
++		void *addr = (void *)s + *s;
++		u32 hash;
++
++		hash = decode_preamble_hash(addr);
++		if (WARN(!hash, "no CFI hash found at: %pS %px %*ph\n",
++			 addr, addr, 5, addr))
++			return -EINVAL;
++
++		hash = cfi_rehash(hash);
++		text_poke_early(addr + 1, &hash, 4);
++	}
++
++	return 0;
++}
++
+ static int cfi_rewrite_preamble(s32 *start, s32 *end)
+ {
+ 	s32 *s;
+@@ -879,6 +943,25 @@ static int cfi_rewrite_preamble(s32 *start, s32 *end)
+ }
  
--	/*
--	 * The mm_cpumask is located at the end of mm_struct, and is
--	 * dynamically sized based on the maximum CPU number this system
--	 * can have, taking hotplug into account (nr_cpu_ids).
--	 */
--	mm_size = sizeof(struct mm_struct) + cpumask_size();
+ /* .retpoline_sites */
++static int cfi_rand_callers(s32 *start, s32 *end)
++{
++	s32 *s;
++
++	for (s = start; s < end; s++) {
++		void *addr = (void *)s + *s;
++		u32 hash;
++
++		addr -= fineibt_caller_size;
++		hash = decode_caller_hash(addr);
++		if (hash) {
++			hash = -cfi_rehash(hash);
++			text_poke_early(addr + 2, &hash, 4);
++		}
++	}
++
++	return 0;
++}
++
+ static int cfi_rewrite_callers(s32 *start, s32 *end)
+ {
+ 	s32 *s;
+@@ -915,31 +998,44 @@ static void __apply_fineibt(s32 *start_retpoline, s32 *end_retpoline,
+ 			cfi_mode = CFI_FINEIBT;
+ 	}
+ 
+-	switch (cfi_mode) {
+-	case CFI_OFF:
+-		ret = cfi_disable_callers(start_retpoline, end_retpoline);
++	/*
++	 * Rewrite the callers to not use the __cfi_ stubs, such that we might
++	 * rewrite them. This disables all CFI. If this succeeds but any of the
++	 * later stages fails, we're without CFI.
++	 */
++	ret = cfi_disable_callers(start_retpoline, end_retpoline);
++	if (ret)
++		goto err;
++
++	if (cfi_rand) {
++		if (builtin)
++			cfi_seed = get_random_u32();
++
++		ret = cfi_rand_preamble(start_cfi, end_cfi);
+ 		if (ret)
+ 			goto err;
+ 
++		ret = cfi_rand_callers(start_retpoline, end_retpoline);
++		if (ret)
++			goto err;
++	}
++
++	switch (cfi_mode) {
++	case CFI_OFF:
+ 		if (builtin)
+ 			pr_info("Disabling CFI\n");
+ 		return;
+ 
+ 	case CFI_KCFI:
++		ret = cfi_enable_callers(start_retpoline, end_retpoline);
++		if (ret)
++			goto err;
++
+ 		if (builtin)
+ 			pr_info("Using kCFI\n");
+ 		return;
+ 
+ 	case CFI_FINEIBT:
+-		/*
+-		 * Rewrite the callers to not use the __cfi_ stubs, such that we might
+-		 * rewrite them. This disables all CFI. If this succeeds but any of the
+-		 * later stages fails, we're without CFI.
+-		 */
+-		ret = cfi_disable_callers(start_retpoline, end_retpoline);
+-		if (ret)
+-			goto err;
 -
--	mm_cachep = kmem_cache_create_usercopy("mm_struct",
--			mm_size, ARCH_MIN_MMSTRUCT_ALIGN,
--			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
--			offsetof(struct mm_struct, saved_auxv),
--			sizeof_field(struct mm_struct, saved_auxv),
--			NULL);
- 	vm_area_cachep = KMEM_CACHE(vm_area_struct, SLAB_PANIC|SLAB_ACCOUNT);
- 	mmap_init();
- 	nsproxy_cache_init();
+ 		ret = cfi_rewrite_preamble(start_cfi, end_cfi);
+ 		if (ret)
+ 			goto err;
