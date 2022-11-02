@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB8F9615FAE
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Nov 2022 10:28:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BA7A61671F
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Nov 2022 17:09:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbiKBJ2P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 2 Nov 2022 05:28:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38696 "EHLO
+        id S230434AbiKBQJB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 2 Nov 2022 12:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230381AbiKBJ1j (ORCPT
+        with ESMTP id S231124AbiKBQJA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 2 Nov 2022 05:27:39 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46B3AE12;
-        Wed,  2 Nov 2022 02:27:36 -0700 (PDT)
-Date:   Wed, 02 Nov 2022 09:27:33 -0000
+        Wed, 2 Nov 2022 12:09:00 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30272B1A5;
+        Wed,  2 Nov 2022 09:08:59 -0700 (PDT)
+Date:   Wed, 02 Nov 2022 16:08:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667381254;
+        s=2020; t=1667405337;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QwHtpybh8uWFCp4slmM5agXbdIBRLz4PaWVEeRw61p0=;
-        b=iw5sdEGqwTVUxG+i2IXxe5fj5Kmxyfm6Ykb6l0YWsKnnnlHb00FqkKTQ7+afx6fpCl/GEP
-        znDd53DKEs81+duQ336DMfwKm7difvItY/o8MMOv4NBdLYWHv7pVGQ3xzg+vbhQPalLM9c
-        EcrvgdxC0x2rSw3GXRbYq72sAftnd4YCSmdKa7qReL7tSfosCbn4A99+917mdH3YbS4uDd
-        lTT7XU8D2DF0T2G1F5z/ve/OWaQTylA7VE99nNd5K9XvemiRmBG28s67oFfFaB0+fgt/b1
-        +brseP3nwIYIyEDHsw8DQU9zpYrun/iVPhGwCDRjOWS5dnX4UbPVRpAaRQsJsg==
+        bh=409bMVTBRdKa8UrKbFq/pmwOU0N/BaKvfsRkl1vzBsg=;
+        b=ZVhab/tXD9XYm93nhavxM2XwjRVRRlLyQ4PurB4njZ4E+GxaSv/fPOH6r6ke4vwTRZYxT/
+        9AHTCHD1FBkrPiLTY2Itx8COmgDk7UBcrkida2M2tm9wLvOpZATNM8qn34uNhU/oREr0Jm
+        XBdlT+cbfMX0+nBvh/rdC3vPUTyrmVGIawCCqeHaI8AygKlA/CLpOlnuY8NfGmvbRP3GfX
+        KHhoOz6g0nfLMV7KiygyddnGsgRw367puCiFLnRF4VDOWAifTunx7xz64ZNn1VxfUU1iqU
+        idNzXyV4bPCRRUNqcmcNIjv3rHLWAXdBsY6b+meNNg6AW2RP7MaGqgpmbS5MLw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667381254;
+        s=2020e; t=1667405337;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QwHtpybh8uWFCp4slmM5agXbdIBRLz4PaWVEeRw61p0=;
-        b=ByfRd5Nj7z73Vgwk4FDSy7g/uoZSy7jOYJRyjpvIAjHOSMn8tdSNUcQwnwDQyY+bTvPR9Z
-        68Xs+QUUU3btIKCg==
-From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
+        bh=409bMVTBRdKa8UrKbFq/pmwOU0N/BaKvfsRkl1vzBsg=;
+        b=PYW5/+4huF+SC7HV+QqyWwUQWNS6Kh1xDCcrYa8PzrHi6OCkkI/HJcl+uidNncKocBwsg2
+        NVyluJ2+r1TUAeCQ==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/boot: Repair kernel-doc for boot_kstrtoul()
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20221031094835.15923-1-lukas.bulwahn@gmail.com>
-References: <20221031094835.15923-1-lukas.bulwahn@gmail.com>
+Subject: [tip: x86/microcode] x86/microcode: Drop struct ucode_cpu_info.valid
+Cc:     Borislav Petkov <bp@suse.de>, Ashok Raj <ashok.raj@intel.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20221028142638.28498-6-bp@alien8.de>
+References: <20221028142638.28498-6-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <166738125354.7716.16790203039429417490.tip-bot2@tip-bot2>
+Message-ID: <166740533523.6127.10746142712096251030.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,39 +63,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     d632bf6ff1f6f733e1de9c5331fd643f4ecbe483
-Gitweb:        https://git.kernel.org/tip/d632bf6ff1f6f733e1de9c5331fd643f4ecbe483
-Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-AuthorDate:    Mon, 31 Oct 2022 10:48:35 +01:00
+Commit-ID:     254ed7cf4dd79a18bbc496ab53f6c82d45431c78
+Gitweb:        https://git.kernel.org/tip/254ed7cf4dd79a18bbc496ab53f6c82d45431c78
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Wed, 19 Oct 2022 19:25:27 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 02 Nov 2022 10:20:02 +01:00
+CommitterDate: Wed, 02 Nov 2022 16:45:46 +01:00
 
-x86/boot: Repair kernel-doc for boot_kstrtoul()
+x86/microcode: Drop struct ucode_cpu_info.valid
 
-Adjust the kernel-doc comment to have the proper function name:
-boot_kstrtoul().
+It is not needed anymore.
 
-  [ bp: Massage commit message. ]
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221031094835.15923-1-lukas.bulwahn@gmail.com
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
+Link: https://lore.kernel.org/r/20221028142638.28498-6-bp@alien8.de
 ---
- arch/x86/boot/string.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/microcode.h     | 1 -
+ arch/x86/kernel/cpu/intel.c          | 1 -
+ arch/x86/kernel/cpu/microcode/core.c | 4 ++--
+ 3 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/boot/string.c b/arch/x86/boot/string.c
-index 8a3fff9..1c8541a 100644
---- a/arch/x86/boot/string.c
-+++ b/arch/x86/boot/string.c
-@@ -350,7 +350,7 @@ static int _kstrtoul(const char *s, unsigned int base, unsigned long *res)
+diff --git a/arch/x86/include/asm/microcode.h b/arch/x86/include/asm/microcode.h
+index d4c36fb..d5a58bd 100644
+--- a/arch/x86/include/asm/microcode.h
++++ b/arch/x86/include/asm/microcode.h
+@@ -49,7 +49,6 @@ struct microcode_ops {
+ 
+ struct ucode_cpu_info {
+ 	struct cpu_signature	cpu_sig;
+-	int			valid;
+ 	void			*mc;
+ };
+ extern struct ucode_cpu_info ucode_cpu_info[];
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 2d7ea54..beb8ca5 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -210,7 +210,6 @@ int intel_cpu_collect_info(struct ucode_cpu_info *uci)
+ 	csig.rev = intel_get_microcode_revision();
+ 
+ 	uci->cpu_sig = csig;
+-	uci->valid = 1;
+ 
+ 	return 0;
+ }
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index ffb249c..712aaff 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -554,9 +554,9 @@ void microcode_bsp_resume(void)
+ 	int cpu = smp_processor_id();
+ 	struct ucode_cpu_info *uci = ucode_cpu_info + cpu;
+ 
+-	if (uci->valid && uci->mc)
++	if (uci->mc)
+ 		microcode_ops->apply_microcode(cpu);
+-	else if (!uci->mc)
++	else
+ 		reload_early_microcode();
  }
  
- /**
-- * kstrtoul - convert a string to an unsigned long
-+ * boot_kstrtoul - convert a string to an unsigned long
-  * @s: The start of the string. The string must be null-terminated, and may also
-  *  include a single newline before its terminating null. The first character
-  *  may also be a plus sign, but not a minus sign.
