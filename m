@@ -2,50 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93C856187C4
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Nov 2022 19:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0257618A5D
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Nov 2022 22:15:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229882AbiKCSkE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Nov 2022 14:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37392 "EHLO
+        id S230183AbiKCVPu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Nov 2022 17:15:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231169AbiKCSkC (ORCPT
+        with ESMTP id S229935AbiKCVPt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Nov 2022 14:40:02 -0400
+        Thu, 3 Nov 2022 17:15:49 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A6BB15A0D;
-        Thu,  3 Nov 2022 11:39:59 -0700 (PDT)
-Date:   Thu, 03 Nov 2022 18:39:55 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 243D712AB2;
+        Thu,  3 Nov 2022 14:15:47 -0700 (PDT)
+Date:   Thu, 03 Nov 2022 21:15:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667500797;
+        s=2020; t=1667510145;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=xENVDoPXxUqY8rf5BH/AhX7AJMk3dm0UMy+Fi6xNzJw=;
-        b=FMU6XkoLNq36jrlL+JnSKfF5HydpY5pGkwd1zHifIRKA3a9sxapGi9XLA/AUqEvU2W3B4y
-        zzKf7hZZt+jvUufyVFUwawPenAr6aQLM2fTFh9xMQ2qq+tGad5XjRwmT+Ewftj/vI2ssWi
-        CitH/WMtk6knJSm+ZOP4eU5KfjPVPKuD9MLYPPtz11Vo223LWzRepnpkx85MvGWl7rFHRd
-        X/8NN/PYAMEUwNTvLPdb45EFb1jWZSACMqZN5UzmUtCjfmyv2tyKsmjh/q0ccRIbUT+VPh
-        /gWy+ud4c4cv874EeZYiMNq0N7WU0iGsn8sg6GB0qsEEyb3AR+Au7LYTaM0rGA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hnBqM0hHO13kceo1Zil340S6guxw3qweJaVBaRBfiMg=;
+        b=wEVSlIC4w5GF4uElz8Y+rqA43DK8rvm/MNgCckJxRNvmPqEFEoBICcl5p9RhFdaXwDKAMH
+        wQKneM6T1ky46Z89TP1UqxT55MeHKFjqnOg01XSZNNaNnHRn2RBA7yrr7bebx9KasgA51B
+        5f2Aa3MnC8tYxlhIT6CAk37bcb1X+z/9EFj9Il84OmM2TnPcsOvtnbl4pC2/krRqTePYc0
+        Serkib/YTRSqlUJ/A2jzWLkoj0TkJU4GbZyy6ZAVNi80qYOF0xKsLvpOAndSTLbhnK6X4c
+        gdqEEgUhC+GcStoW+it+XRPRkOJbsEcAC/ga3yoMxxL81iG+TfLQvHiN37modw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667500797;
+        s=2020e; t=1667510145;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=xENVDoPXxUqY8rf5BH/AhX7AJMk3dm0UMy+Fi6xNzJw=;
-        b=2/HKk9xTh3gSXwEzG/ZcI5NzRsYznG0lj6x2Gp2dERJecnfNiDCbxpclvyNcr5wMme1zc0
-        q2ReUF4a8M442TCQ==
-From:   "tip-bot2 for Srinivas Pandruvada" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hnBqM0hHO13kceo1Zil340S6guxw3qweJaVBaRBfiMg=;
+        b=Li2vS8Jwxmawtss+dI5OVpdL1xlxh2u8qaJsAtv7eU5V54+gruY6L8i2vvyavia6VhpnZX
+        WE+lAK9XPIuMouDA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/intel_epb: Set Alder Lake N and Raptor Lake P normal EPB
-Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
+Subject: [tip: x86/mm] mm: Convert __HAVE_ARCH_P..P_GET to the new style
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <Y2EUEBlQXNgaJgoI@hirez.programming.kicks-ass.net>
+References: <Y2EUEBlQXNgaJgoI@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <166750079535.6127.17977189495133076329.tip-bot2@tip-bot2>
+Message-ID: <166751014320.6127.9197829586904529035.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,110 +64,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     7420ae3bb977b46eab082f4964641f3ddc98ebaf
-Gitweb:        https://git.kernel.org/tip/7420ae3bb977b46eab082f4964641f3ddc98ebaf
-Author:        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-AuthorDate:    Thu, 27 Oct 2022 15:00:56 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 03 Nov 2022 11:31:01 -07:00
+Commit-ID:     3301badde43dee7c2a013fbd6479c258366519da
+Gitweb:        https://git.kernel.org/tip/3301badde43dee7c2a013fbd6479c258366519da
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 01 Nov 2022 12:53:18 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 03 Nov 2022 22:04:29 +01:00
 
-x86/intel_epb: Set Alder Lake N and Raptor Lake P normal EPB
+mm: Convert __HAVE_ARCH_P..P_GET to the new style
 
-Intel processors support additional software hint called EPB ("Energy
-Performance Bias") to guide the hardware heuristic of power management
-features to favor increasing dynamic performance or conserve energy
-consumption.
+Since __HAVE_ARCH_* style guards have been depricated in favour of
+defining the function name onto itself, convert pxxp_get().
 
-Since this EPB hint is processor specific, the same value of hint can
-result in different behavior across generations of processors.
-
-commit 4ecc933b7d1f ("x86: intel_epb: Allow model specific normal EPB
-value")' introduced capability to update the default power up EPB
-based on the CPU model and updated the default EPB to 7 for Alder Lake
-mobile CPUs.
-
-The same change is required for other Alder Lake-N and Raptor Lake-P
-mobile CPUs as the current default of 6 results in higher uncore power
-consumption. This increase in power is related to memory clock
-frequency setting based on the EPB value.
-
-Depending on the EPB the minimum memory frequency is set by the
-firmware. At EPB = 7, the minimum memory frequency is 1/4th compared to
-EPB = 6. This results in significant power saving for idle and
-semi-idle workload on a Chrome platform.
-
-For example Change in power and performance from EPB change from 6 to 7
-on Alder Lake-N:
-
-Workload    Performance diff (%)    power diff
-----------------------------------------------------
-VP9 FHD30	0 (FPS)		-218 mw
-Google meet	0 (FPS)		-385 mw
-
-This 200+ mw power saving is very significant for mobile platform for
-battery life and thermal reasons.
-
-But as the workload demands more memory bandwidth, the memory frequency
-will be increased very fast. There is no power savings for such busy
-workloads.
-
-For example:
-
-Workload		Performance diff (%) from EPB 6 to 7
--------------------------------------------------------
-Speedometer 2.0		-0.8
-WebGL Aquarium 10K
-Fish    		-0.5
-Unity 3D 2018		0.2
-WebXPRT3		-0.5
-
-There are run to run variations for performance scores for
-such busy workloads. So the difference is not significant.
-
-Add a new define ENERGY_PERF_BIAS_NORMAL_POWERSAVE for EPB 7
-and use it for Alder Lake-N and Raptor Lake-P mobile CPUs.
-
-This modification is done originally by
-Jeremy Compostella <jeremy.compostella@intel.com>.
-
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/all/20221027220056.1534264-1-srinivas.pandruvada%40linux.intel.com
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/Y2EUEBlQXNgaJgoI@hirez.programming.kicks-ass.net
 ---
- arch/x86/include/asm/msr-index.h | 1 +
- arch/x86/kernel/cpu/intel_epb.c  | 7 ++++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/nohash/32/pgtable.h | 2 +-
+ include/linux/pgtable.h                      | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 10ac527..a3eb4d3 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -796,6 +796,7 @@
- #define ENERGY_PERF_BIAS_PERFORMANCE		0
- #define ENERGY_PERF_BIAS_BALANCE_PERFORMANCE	4
- #define ENERGY_PERF_BIAS_NORMAL			6
-+#define ENERGY_PERF_BIAS_NORMAL_POWERSAVE	7
- #define ENERGY_PERF_BIAS_BALANCE_POWERSAVE	8
- #define ENERGY_PERF_BIAS_POWERSAVE		15
- 
-diff --git a/arch/x86/kernel/cpu/intel_epb.c b/arch/x86/kernel/cpu/intel_epb.c
-index fbaf12e..3b84761 100644
---- a/arch/x86/kernel/cpu/intel_epb.c
-+++ b/arch/x86/kernel/cpu/intel_epb.c
-@@ -204,7 +204,12 @@ static int intel_epb_offline(unsigned int cpu)
+diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
+index 0d40b33..cb1ac02 100644
+--- a/arch/powerpc/include/asm/nohash/32/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+@@ -263,7 +263,7 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
  }
  
- static const struct x86_cpu_id intel_epb_normal[] = {
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L, 7),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,
-+				   ENERGY_PERF_BIAS_NORMAL_POWERSAVE),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,
-+				   ENERGY_PERF_BIAS_NORMAL_POWERSAVE),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,
-+				   ENERGY_PERF_BIAS_NORMAL_POWERSAVE),
- 	{}
- };
+ #ifdef CONFIG_PPC_16K_PAGES
+-#define __HAVE_ARCH_PTEP_GET
++#define ptep_get ptep_get
+ static inline pte_t ptep_get(pte_t *ptep)
+ {
+ 	pte_basic_t val = READ_ONCE(ptep->pte);
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 2334852..70e2a7e 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -291,14 +291,14 @@ static inline void ptep_clear(struct mm_struct *mm, unsigned long addr,
+ 	ptep_get_and_clear(mm, addr, ptep);
+ }
  
+-#ifndef __HAVE_ARCH_PTEP_GET
++#ifndef ptep_get
+ static inline pte_t ptep_get(pte_t *ptep)
+ {
+ 	return READ_ONCE(*ptep);
+ }
+ #endif
+ 
+-#ifndef __HAVE_ARCH_PMDP_GET
++#ifndef pmdp_get
+ static inline pmd_t pmdp_get(pmd_t *pmdp)
+ {
+ 	return READ_ONCE(*pmdp);
