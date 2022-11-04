@@ -2,48 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46328618A60
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Nov 2022 22:15:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB00B61A212
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Nov 2022 21:22:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230504AbiKCVPw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Nov 2022 17:15:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38328 "EHLO
+        id S230015AbiKDUWF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 4 Nov 2022 16:22:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230370AbiKCVPu (ORCPT
+        with ESMTP id S229956AbiKDUWA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Nov 2022 17:15:50 -0400
+        Fri, 4 Nov 2022 16:22:00 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1880812AB2;
-        Thu,  3 Nov 2022 14:15:50 -0700 (PDT)
-Date:   Thu, 03 Nov 2022 21:15:47 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E58F24C242;
+        Fri,  4 Nov 2022 13:21:59 -0700 (PDT)
+Date:   Fri, 04 Nov 2022 20:21:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667510148;
+        s=2020; t=1667593317;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Ydd6tSAOcaMMkvF7w+hf2zH3SLaJ0ROCiNVI4cS3CsQ=;
-        b=lehQpgCC3OTO/H1lALypYRO3DALESVDm7NiackjaIUEpc5Io4ZfQL27dv6CrmJjeku+smM
-        Vh5OCysi3DQzB4jdskJ+kJEH/QgGS7/qpdNfR6TXLU8sdH+X4unUtwWlIG2bzrbtDAypE2
-        PZ+/C0jCqzdJ/h2GdgQGT+bE9Z6H5HD2jfLPCtPqi3IE1583n6PquK08wwRgnEYbbW1ylZ
-        fHqNsmw1cJld9/5/4o57esqNfZxH268ssOpY037WOzqsa0cAKV/CiSR+l0FAGQvBS/w8SR
-        FCxleA6QTOhzNGumuggB9OgD1VLJyMTPeCj9qfNB95dnWb/N/ycXBdRU+8W6bA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=J/89bIBY0RSkqVteTwXt3Qyj4gljpdxQaHrKe/YxAtM=;
+        b=GsOA/jHiSfPieVYVijcuWeIcw1tIIg9ZC1J+1lXFmgPuIwJI30aYc4FjcHgA0OqpLqnmMp
+        EEufuUBxJAkOkLMw/l9YTotVEpqRVfPBnHrEl702dlZ3Hyo0RKxfEnFKRK+91koNkrtw23
+        1O1ZHtXSEfjJB0jW5S1z4Pfyff57rOaaBEI6h2UrkE62+UtC2+4Hz3l1nMHwoILS+GYFwt
+        /PU/u0ELnq6+o+62z3mz+hkAnGbGh6uFfdep4B2xZI5lnzH/MHI43idUv3Wt8moJ0+w0On
+        NP3IBNkhsVACfR/x6utsFRmVWh5wKKHaUeO3i9fdtIfox2/1VQ9rwdrPXJmw0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667510148;
+        s=2020e; t=1667593317;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Ydd6tSAOcaMMkvF7w+hf2zH3SLaJ0ROCiNVI4cS3CsQ=;
-        b=AVNPMXk4T3fn1v5LZe3g+W7jdJNNQqYQvQdbVzfbqN6OEHb4MqyVxJk3ruRsU6BFLdIyVQ
-        8d+VqAptpIVmFuCw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=J/89bIBY0RSkqVteTwXt3Qyj4gljpdxQaHrKe/YxAtM=;
+        b=8vP1PVeXPNzJuLILWKcR4yJ1j+JGwpNYRj0oR7b/wWvy3bJR09bTyjgWaHv+j6gCvJO4Ih
+        El+Dttsw09KVKyBw==
+From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86_64: Remove pointless set_64bit() usage
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/cpu: Add several Intel server CPU model numbers
+Cc:     Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20221103203310.5058-1-tony.luck@intel.com>
+References: <20221103203310.5058-1-tony.luck@intel.com>
 MIME-Version: 1.0
-Message-ID: <166751014712.6127.16001540619046695046.tip-bot2@tip-bot2>
+Message-ID: <166759331563.4906.3844769797250286252.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,108 +64,62 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     19404aeebbc18cc15ef440b4c17f9cc9f3005329
-Gitweb:        https://git.kernel.org/tip/19404aeebbc18cc15ef440b4c17f9cc9f3005329
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 21 Oct 2022 14:11:38 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 03 Nov 2022 22:04:28 +01:00
+Commit-ID:     7beade0dd41d42d797ccb7791b134a77fcebf35b
+Gitweb:        https://git.kernel.org/tip/7beade0dd41d42d797ccb7791b134a77fcebf35b
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Thu, 03 Nov 2022 13:33:10 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 04 Nov 2022 21:12:22 +01:00
 
-x86_64: Remove pointless set_64bit() usage
+x86/cpu: Add several Intel server CPU model numbers
 
-The use of set_64bit() in X86_64 only code is pretty pointless, seeing
-how it's a direct assignment. Remove all this nonsense.
+These servers are all on the public versions of the roadmap. The model
+numbers for Grand Ridge, Granite Rapids, and Sierra Forest were included
+in the September 2022 edition of the Instruction Set Extensions document.
 
-[nathanchance: unbreak irte]
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221022114425.168036718%40infradead.org
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/r/20221103203310.5058-1-tony.luck@intel.com
 ---
- arch/um/include/asm/pgtable-3level.h |  8 --------
- arch/x86/include/asm/cmpxchg_64.h    |  5 -----
- drivers/iommu/intel/irq_remapping.c  | 13 +++++--------
- 3 files changed, 5 insertions(+), 21 deletions(-)
+ arch/x86/include/asm/intel-family.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/um/include/asm/pgtable-3level.h b/arch/um/include/asm/pgtable-3level.h
-index cb896e6..8a5032e 100644
---- a/arch/um/include/asm/pgtable-3level.h
-+++ b/arch/um/include/asm/pgtable-3level.h
-@@ -58,11 +58,7 @@
- #define pud_populate(mm, pud, pmd) \
- 	set_pud(pud, __pud(_PAGE_TABLE + __pa(pmd)))
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index 5d75fe2..347707d 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -107,6 +107,11 @@
  
--#ifdef CONFIG_64BIT
--#define set_pud(pudptr, pudval) set_64bit((u64 *) (pudptr), pud_val(pudval))
--#else
- #define set_pud(pudptr, pudval) (*(pudptr) = (pudval))
--#endif
+ #define INTEL_FAM6_SAPPHIRERAPIDS_X	0x8F	/* Golden Cove */
  
- static inline int pgd_newpage(pgd_t pgd)
- {
-@@ -71,11 +67,7 @@ static inline int pgd_newpage(pgd_t pgd)
++#define INTEL_FAM6_EMERALDRAPIDS_X	0xCF
++
++#define INTEL_FAM6_GRANITERAPIDS_X	0xAD
++#define INTEL_FAM6_GRANITERAPIDS_D	0xAE
++
+ #define INTEL_FAM6_ALDERLAKE		0x97	/* Golden Cove / Gracemont */
+ #define INTEL_FAM6_ALDERLAKE_L		0x9A	/* Golden Cove / Gracemont */
+ #define INTEL_FAM6_ALDERLAKE_N		0xBE
+@@ -118,7 +123,7 @@
+ #define INTEL_FAM6_METEORLAKE		0xAC
+ #define INTEL_FAM6_METEORLAKE_L		0xAA
  
- static inline void pgd_mkuptodate(pgd_t pgd) { pgd_val(pgd) &= ~_PAGE_NEWPAGE; }
+-/* "Small Core" Processors (Atom) */
++/* "Small Core" Processors (Atom/E-Core) */
  
--#ifdef CONFIG_64BIT
--#define set_pmd(pmdptr, pmdval) set_64bit((u64 *) (pmdptr), pmd_val(pmdval))
--#else
- #define set_pmd(pmdptr, pmdval) (*(pmdptr) = (pmdval))
--#endif
+ #define INTEL_FAM6_ATOM_BONNELL		0x1C /* Diamondville, Pineview */
+ #define INTEL_FAM6_ATOM_BONNELL_MID	0x26 /* Silverthorne, Lincroft */
+@@ -145,6 +150,10 @@
+ #define INTEL_FAM6_ATOM_TREMONT		0x96 /* Elkhart Lake */
+ #define INTEL_FAM6_ATOM_TREMONT_L	0x9C /* Jasper Lake */
  
- static inline void pud_clear (pud_t *pud)
- {
-diff --git a/arch/x86/include/asm/cmpxchg_64.h b/arch/x86/include/asm/cmpxchg_64.h
-index 250187a..0d3beb2 100644
---- a/arch/x86/include/asm/cmpxchg_64.h
-+++ b/arch/x86/include/asm/cmpxchg_64.h
-@@ -2,11 +2,6 @@
- #ifndef _ASM_X86_CMPXCHG_64_H
- #define _ASM_X86_CMPXCHG_64_H
++#define INTEL_FAM6_SIERRAFOREST_X	0xAF
++
++#define INTEL_FAM6_GRANDRIDGE		0xB6
++
+ /* Xeon Phi */
  
--static inline void set_64bit(volatile u64 *ptr, u64 val)
--{
--	*ptr = val;
--}
--
- #define arch_cmpxchg64(ptr, o, n)					\
- ({									\
- 	BUILD_BUG_ON(sizeof(*(ptr)) != 8);				\
-diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_remapping.c
-index 5962bb5..5d17616 100644
---- a/drivers/iommu/intel/irq_remapping.c
-+++ b/drivers/iommu/intel/irq_remapping.c
-@@ -173,7 +173,6 @@ static int modify_irte(struct irq_2_iommu *irq_iommu,
- 	index = irq_iommu->irte_index + irq_iommu->sub_handle;
- 	irte = &iommu->ir_table->base[index];
- 
--#if defined(CONFIG_HAVE_CMPXCHG_DOUBLE)
- 	if ((irte->pst == 1) || (irte_modified->pst == 1)) {
- 		bool ret;
- 
-@@ -187,11 +186,9 @@ static int modify_irte(struct irq_2_iommu *irq_iommu,
- 		 * same as the old value.
- 		 */
- 		WARN_ON(!ret);
--	} else
--#endif
--	{
--		set_64bit(&irte->low, irte_modified->low);
--		set_64bit(&irte->high, irte_modified->high);
-+	} else {
-+		WRITE_ONCE(irte->low, irte_modified->low);
-+		WRITE_ONCE(irte->high, irte_modified->high);
- 	}
- 	__iommu_flush_cache(iommu, irte, sizeof(*irte));
- 
-@@ -249,8 +246,8 @@ static int clear_entries(struct irq_2_iommu *irq_iommu)
- 	end = start + (1 << irq_iommu->irte_mask);
- 
- 	for (entry = start; entry < end; entry++) {
--		set_64bit(&entry->low, 0);
--		set_64bit(&entry->high, 0);
-+		WRITE_ONCE(entry->low, 0);
-+		WRITE_ONCE(entry->high, 0);
- 	}
- 	bitmap_release_region(iommu->ir_table->bitmap, index,
- 			      irq_iommu->irte_mask);
+ #define INTEL_FAM6_XEON_PHI_KNL		0x57 /* Knights Landing */
