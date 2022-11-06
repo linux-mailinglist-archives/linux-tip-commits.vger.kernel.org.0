@@ -2,108 +2,119 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1DC361E124
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Nov 2022 10:05:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5769F61E222
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Nov 2022 13:45:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbiKFJFM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 6 Nov 2022 04:05:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43066 "EHLO
+        id S229845AbiKFMpk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 6 Nov 2022 07:45:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229609AbiKFJFL (ORCPT
+        with ESMTP id S229763AbiKFMpj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 6 Nov 2022 04:05:11 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1A6355B0;
-        Sun,  6 Nov 2022 01:05:10 -0800 (PST)
-Date:   Sun, 06 Nov 2022 09:05:06 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667725508;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=89gCVDJVAOWy3TSZEo3iFfGJsyh+x/Z/Kw/KHr7+1G4=;
-        b=K0Z7rtmpD1pSUjLm7CbE8heLq7Vnpq4ww8AwA/7Z1euaOKZr9xO6mhNP2ILcOoCKELb1VM
-        sXWQbaftIxGmqv+3fkIm1o44Fn8WXWXe0cX8byoakqbWaaeA73NZpfAGmHBHifIRenPr9Y
-        yJ1NSQVwdBSvirl4niZg2ZZHCOkzVFU+KX5OLCcCd4h4333brHzJCQymKXxG82ufHWPy03
-        x8qBJ0P/SVCirrpa/iSQZb1LnTxHFDRlfhWsPSEybvRyYnejvlc9l94CHJIpaxRlxtW8v+
-        xZlDtOjTJjAZFhHt0waBgLCQcyDx0KCdmTan8sVE4Miq6701CXBsV4wriJDXnA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667725508;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=89gCVDJVAOWy3TSZEo3iFfGJsyh+x/Z/Kw/KHr7+1G4=;
-        b=EBX8rKjEXGPoJqRNsDF8f07P7YU2voxjRGh7vU0vuZQ7sn+s5aPLkVnHY+yeIJuQDRo/+3
-        1TbiaLSWIEwYiUCQ==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/cpufeatures: Move X86_FEATURE_CALL_DEPTH from bit
- 18 to bit 19 of word 11, to leave space for WIP X86_FEATURE_SGX_EDECCSSA bit
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
+        Sun, 6 Nov 2022 07:45:39 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A436634B;
+        Sun,  6 Nov 2022 04:45:38 -0800 (PST)
+Received: from zn.tnic (p200300ea9733e7a5329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7a5:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B70C11EC050B;
+        Sun,  6 Nov 2022 13:45:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1667738736;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=O3Plcr3YOvWsF84KnFw9R0UX3XtJkwUwzUnXUCUaHoY=;
+        b=lO2T1ERQfqMhcp3K2rEZugUHLYpePRXjgR42fDDzpDUcpsfsQ/PRrawsdC7z7MAE/qjMZ9
+        VTaRC8HJt7BFvpMyiz08w851BVWx9bFpFPh2/dFxtOJW1Mb+SYUEiMaNkkEiN1wfnm9RvO
+        fii72rKb9IjCWouDXfCI1qqHsvUUPDg=
+Date:   Sun, 6 Nov 2022 13:45:16 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Dave Hansen <dave.hansen@linux.intel.com>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/tdx: Prepare for using "INFO" call for a
+ second purpose
+Message-ID: <Y2esXPWwulendusf@zn.tnic>
+References: <166734513630.7716.12952231613533508782.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <166772550650.4906.6007680313066821301.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <166734513630.7716.12952231613533508782.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+On Tue, Nov 01, 2022 at 11:25:36PM -0000, tip-bot2 for Dave Hansen wrote:
+> @@ -121,7 +121,7 @@ static u64 get_cc_mask(void)
+>  	 * The highest bit of a guest physical address is the "sharing" bit.
+>  	 * Set it for shared pages and clear it for private pages.
+>  	 */
+> -	return BIT_ULL(gpa_width - 1);
+> +	*cc_mask = BIT_ULL(gpa_width - 1);
+>  }
 
-Commit-ID:     b1599915f09157e98f59556e1b2eafe473603347
-Gitweb:        https://git.kernel.org/tip/b1599915f09157e98f59556e1b2eafe473603347
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Sun, 06 Nov 2022 09:55:56 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 06 Nov 2022 09:58:36 +01:00
+I'm looking at the next patch too and I still don't see what the point
+is of making it a void?
 
-x86/cpufeatures: Move X86_FEATURE_CALL_DEPTH from bit 18 to bit 19 of word 11, to leave space for WIP X86_FEATURE_SGX_EDECCSSA bit
+IOW, what's wrong with doing this?
 
-Reallocate a soft-cpufeatures bit allocated for call-depth tracking
-code, which clashes with this recent KVM/SGX patch being worked on:
-
-        KVM/VMX: Allow exposing EDECCSSA user leaf function to KVM guest
-
-Instead of reallocating cpufeatures bits in evil merges, make the
-allocation explicit.
-
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: x86@kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/cpufeatures.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index aefd081..864c9b0 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -304,7 +304,8 @@
- #define X86_FEATURE_UNRET		(11*32+15) /* "" AMD BTB untrain return */
- #define X86_FEATURE_USE_IBPB_FW		(11*32+16) /* "" Use IBPB during runtime firmware calls */
- #define X86_FEATURE_RSB_VMEXIT_LITE	(11*32+17) /* "" Fill RSB on VM exit when EIBRS is enabled */
--#define X86_FEATURE_CALL_DEPTH		(11*32+18) /* "" Call depth tracking for RSB stuffing */
-+						   /* Hole left for X86_FEATURE_SGX_EDECCSSA */
-+#define X86_FEATURE_CALL_DEPTH		(11*32+19) /* "" Call depth tracking for RSB stuffing */
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index b8998cf0508a..0421cb7f3b86 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -100,11 +100,11 @@ static inline void tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
+ 		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
+ }
  
- /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
- #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* AVX VNNI instructions */
+-static void tdx_parse_tdinfo(u64 *cc_mask)
++static u64 tdx_parse_tdinfo(void)
+ {
+ 	struct tdx_module_output out;
+ 	unsigned int gpa_width;
+-	u64 td_attr;
++	u64 td_attr, ret;
+ 
+ 	/*
+ 	 * TDINFO TDX module call is used to get the TD execution environment
+@@ -123,7 +123,7 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
+ 	 * can not meaningfully run without it.
+ 	 */
+ 	gpa_width = out.rcx & GENMASK(5, 0);
+-	*cc_mask = BIT_ULL(gpa_width - 1);
++	ret = BIT_ULL(gpa_width - 1);
+ 
+ 	/*
+ 	 * The kernel can not handle #VE's when accessing normal kernel
+@@ -133,6 +133,8 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
+ 	td_attr = out.rdx;
+ 	if (!(td_attr & ATTR_SEPT_VE_DISABLE))
+ 		panic("TD misconfiguration: SEPT_VE_DISABLE attibute must be set.\n");
++
++	return ret;
+ }
+ 
+ /*
+@@ -769,7 +771,7 @@ void __init tdx_early_init(void)
+ 	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
+ 
+ 	cc_set_vendor(CC_VENDOR_INTEL);
+-	tdx_parse_tdinfo(&cc_mask);
++	cc_mask = tdx_parse_tdinfo();
+ 	cc_set_mask(cc_mask);
+ 
+ 	/*
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
