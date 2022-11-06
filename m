@@ -2,91 +2,76 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 642C961E397
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Nov 2022 18:02:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80B9061E5B8
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Nov 2022 20:50:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229899AbiKFRCa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 6 Nov 2022 12:02:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36780 "EHLO
+        id S230228AbiKFTu1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 6 Nov 2022 14:50:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229952AbiKFRCa (ORCPT
+        with ESMTP id S229991AbiKFTu0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 6 Nov 2022 12:02:30 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B1F5DEBF;
-        Sun,  6 Nov 2022 09:02:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667754149; x=1699290149;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=tVXlcBE2aFKbiiRITzLn6WZi+rbe15vkZSuzbS4Aw1k=;
-  b=auI+t/yGq0NPI+LR+u+mO2/nJRc9LQ0oZb2EcAvc4gLxDOFYAnFkKMkr
-   AKP0PZGqgwzgpjufE9wwO3U+4hqMv2EQpd6SqBm+oKx0WiobxXxvQyVw8
-   u3H3OcFFvJ+jbppyd/vJttpsX0t4C7Vfs3GF5eRz028n+5TY+5Sr7x9BN
-   Wi3IL8dBpyntn1tm5dRR4qF5Uy++l2Dg40FDBOH0COIzaaj1tJM9zYEtN
-   Sb9MkQgXgRxz4OTxJbE8jTwFNze96qbp0bKoLTPkln7nnU1AyG0fHcYFv
-   fl5FGDrZY9/+jCNBMck+oOBd6oVN9GuLXcPtwvTLDLFms/9PMkR83Nxed
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10523"; a="289995254"
-X-IronPort-AV: E=Sophos;i="5.96,142,1665471600"; 
-   d="scan'208";a="289995254"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2022 09:02:29 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10523"; a="638123578"
-X-IronPort-AV: E=Sophos;i="5.96,142,1665471600"; 
-   d="scan'208";a="638123578"
-Received: from edegrijs-mobl.amr.corp.intel.com (HELO [10.209.44.139]) ([10.209.44.139])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2022 09:02:28 -0800
-Message-ID: <d4614b70-b37b-44b8-6a9c-54d59a6f9fec@intel.com>
-Date:   Sun, 6 Nov 2022 09:02:27 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [tip: x86/urgent] x86/tdx: Prepare for using "INFO" call for a
- second purpose
-Content-Language: en-US
-To:     Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Sun, 6 Nov 2022 14:50:26 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485151057A;
+        Sun,  6 Nov 2022 11:50:22 -0800 (PST)
+Received: from zn.tnic (p200300ea9733e7a5329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7a5:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9DE4E1EC042F;
+        Sun,  6 Nov 2022 20:50:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1667764220;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=HkiLqOglx1HtZ009J9iwZELgVsDoHi4C6AUa2XEVz/8=;
+        b=Eto7gtgiUEE0J6Zo+lWaWF/t2VSh2RKRZSnXHRnwSdDkEX+UEOIDf/ffI+Nm/O+20VbTc7
+        aCcfsOte1J66cftBRWBUWXeT83PsMXZQy1cIaMFIHTMrzs4+JhhT7pYmg1uSxlmJima+zq
+        jNMR/sxEabFRKQakEsnLPidkeI0hW6o=
+Date:   Sun, 6 Nov 2022 20:50:16 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/tdx: Prepare for using "INFO" call for a
+ second purpose
+Message-ID: <Y2gP+AT1XdapImV4@zn.tnic>
 References: <166734513630.7716.12952231613533508782.tip-bot2@tip-bot2>
  <Y2esXPWwulendusf@zn.tnic>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <Y2esXPWwulendusf@zn.tnic>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+ <d4614b70-b37b-44b8-6a9c-54d59a6f9fec@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d4614b70-b37b-44b8-6a9c-54d59a6f9fec@intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 11/6/22 04:45, Borislav Petkov wrote:
-> On Tue, Nov 01, 2022 at 11:25:36PM -0000, tip-bot2 for Dave Hansen wrote:
->> @@ -121,7 +121,7 @@ static u64 get_cc_mask(void)
->>  	 * The highest bit of a guest physical address is the "sharing" bit.
->>  	 * Set it for shared pages and clear it for private pages.
->>  	 */
->> -	return BIT_ULL(gpa_width - 1);
->> +	*cc_mask = BIT_ULL(gpa_width - 1);
->>  }
-> I'm looking at the next patch too and I still don't see what the point
-> is of making it a void?
+On Sun, Nov 06, 2022 at 09:02:27AM -0800, Dave Hansen wrote:
+> It's fine for now, except that the naming on this:
 > 
-> IOW, what's wrong with doing this?
+> -	tdx_parse_tdinfo(&cc_mask);
+> +	cc_mask = tdx_parse_tdinfo();
+> 
+> is a bit funky since tdx_parse_tdinfo() is doing a couple of things
 
-It's fine for now, except that the naming on this:
+Yeah, that was the next thing that was bothering me.
 
--	tdx_parse_tdinfo(&cc_mask);
-+	cc_mask = tdx_parse_tdinfo();
+> and will need to return a second item shortly.
 
-is a bit funky since tdx_parse_tdinfo() is doing a couple of things and
-will need to return a second item shortly.
+Well, then rename this one back to get_cc_mask() and have a new function
+return the second item?
 
-But, zero objections if you want to make it that way for now.
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
