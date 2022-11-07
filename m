@@ -2,284 +2,140 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D53D261F14D
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Nov 2022 11:57:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A59D61F444
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Nov 2022 14:26:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231688AbiKGK5f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Nov 2022 05:57:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55592 "EHLO
+        id S230363AbiKGN0b (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Nov 2022 08:26:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231965AbiKGK5V (ORCPT
+        with ESMTP id S229638AbiKGN0a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Nov 2022 05:57:21 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26198F9;
-        Mon,  7 Nov 2022 02:57:20 -0800 (PST)
-Date:   Mon, 07 Nov 2022 10:57:16 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667818638;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ojyhmC5nSs/8l/PRtjCUnjDv76wFPTRobpfNj/XTuzw=;
-        b=03r8jzbsG0SG+kevuAOQxZ7eoqlsPgTuErn/4HRahrWhBcQgI/JA+gC1RW2J5EtuRLiTHw
-        IpUy/IPVKT1pB8+xUr95Ho2tdF4c69ddppAHbrUsR1nmlGb8kbINzUcDJWNk5C1GNtwEZl
-        0KgqETgCjjuTpVXYZlXHQ53g9jXafMNLbsNCrmCV8JeWksdbuZF0cTu4HNaG2g2UlL5UtM
-        eGjQ5bkSnYWycbf4BImmLeZsDR2UyTkmawmS6Wt+OdWwvTc4rpiSMYh7JT7seQWqHy5ovM
-        7iu4cyTT4bx5P4uBJT65kVX5+kKEq0D86y+262bIcWRYqHw+apsmIwG4vaHv9w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667818638;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ojyhmC5nSs/8l/PRtjCUnjDv76wFPTRobpfNj/XTuzw=;
-        b=7aiCwWb+a72m28WoEgDSE+OchdR5NMbyaTl3+fhQ7mNSe08AiQtuhU62Gu1iwTB3HDlNd+
-        KqlLcFQ/QJXAfuAA==
-From:   "tip-bot2 for Pasha Tatashin" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Remove P*D_PAGE_MASK and P*D_PAGE_SIZE macros
-Cc:     Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Borislav Petkov <bp@suse.de>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Mike Rapoport <rppt@linux.ibm.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220516185202.604654-1-tatashin@google.com>
-References: <20220516185202.604654-1-tatashin@google.com>
+        Mon, 7 Nov 2022 08:26:30 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D401A113C;
+        Mon,  7 Nov 2022 05:26:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667827589; x=1699363589;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to;
+  bh=T37NvVQSSi6fmx6V8MNm8ZCL2U1fmLhLWZmgtaotvMY=;
+  b=QiDUMJKZM9GTqZvOoo8vUZlmJyNi7vUTzyJuoBwHZnlwrQjPVn3SR2SB
+   bKILCfiCCkYk4KrS81Ox3ADCqY4LieOMmzLMssRQk7CD5pPg+H3Cgx+K3
+   +eg/JAZwierzD2WKh3Rx3Ujn2mwdryT5sthLCDVv77agTH+RM6q+3SGP4
+   MsZrB2nQ7jc6jeeEIus3q0XiJsARXx3KTgN9AF40wpa8dSzf9QiGa7I9k
+   vx0xekUwpeUFQojnoXsXJoR57e0K6eN7kFzv1r48Pq0raU1oiBaznpPlw
+   cotm0kE4G+w6Cy3bdOri9Xlqyw7f8RV4TUF4dJUkQbFbryP60Sum1/fJZ
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10523"; a="310408781"
+X-IronPort-AV: E=Sophos;i="5.96,145,1665471600"; 
+   d="scan'208";a="310408781"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2022 05:26:29 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10523"; a="761093360"
+X-IronPort-AV: E=Sophos;i="5.96,145,1665471600"; 
+   d="scan'208";a="761093360"
+Received: from dkthrons-mobl2.amr.corp.intel.com (HELO [10.209.29.113]) ([10.209.29.113])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2022 05:26:28 -0800
+Content-Type: multipart/mixed; boundary="------------od00T7gMHW05lOLhDuaXZoAP"
+Message-ID: <2145ca92-66f2-4411-7847-618a885c203b@intel.com>
+Date:   Mon, 7 Nov 2022 05:26:27 -0800
 MIME-Version: 1.0
-Message-ID: <166781863693.4906.7439885617350806494.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [tip: x86/urgent] x86/tdx: Prepare for using "INFO" call for a
+ second purpose
+Content-Language: en-US
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        x86@kernel.org
+References: <166734513630.7716.12952231613533508782.tip-bot2@tip-bot2>
+ <Y2esXPWwulendusf@zn.tnic> <d4614b70-b37b-44b8-6a9c-54d59a6f9fec@intel.com>
+ <Y2gP+AT1XdapImV4@zn.tnic>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <Y2gP+AT1XdapImV4@zn.tnic>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+This is a multi-part message in MIME format.
+--------------od00T7gMHW05lOLhDuaXZoAP
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Commit-ID:     0008712a508f72242d185142cfdbd0646a661a18
-Gitweb:        https://git.kernel.org/tip/0008712a508f72242d185142cfdbd0646a661a18
-Author:        Pasha Tatashin <pasha.tatashin@soleen.com>
-AuthorDate:    Mon, 16 May 2022 18:52:02 
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 07 Nov 2022 11:11:27 +01:00
+On 11/6/22 11:50, Borislav Petkov wrote:
+> On Sun, Nov 06, 2022 at 09:02:27AM -0800, Dave Hansen wrote:
+>> It's fine for now, except that the naming on this:
+>>
+>> -	tdx_parse_tdinfo(&cc_mask);
+>> +	cc_mask = tdx_parse_tdinfo();
+>>
+>> is a bit funky since tdx_parse_tdinfo() is doing a couple of things
+> Yeah, that was the next thing that was bothering me.
+> 
+>> and will need to return a second item shortly.
+> Well, then rename this one back to get_cc_mask() and have a new function
+> return the second item?
 
-x86/mm: Remove P*D_PAGE_MASK and P*D_PAGE_SIZE macros
+That's doable.  It would look something like what I've attached for now.
+ The only downside to this is making two tdx_module_call(TDX_GET_INFO...)
+calls.  That seems a bit wasteful, but it's not the end of the world.
+It would look something like the attached patch.
 
-Other architectures and the common mm/ use P*D_MASK, and P*D_SIZE.
-Remove the duplicated P*D_PAGE_MASK and P*D_PAGE_SIZE which are only
-used in x86/*.
+I kinda like the idea of making one tdx_module_call() and parsing it all
+in one place.  The calls are kinda slow, but two of them versus one
+isn't going to hurt anybody.
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-Link: https://lore.kernel.org/r/20220516185202.604654-1-tatashin@google.com
----
- arch/x86/include/asm/page_types.h  | 12 +++---------
- arch/x86/kernel/amd_gart_64.c      |  2 +-
- arch/x86/kernel/head64.c           |  2 +-
- arch/x86/mm/mem_encrypt_boot.S     |  4 ++--
- arch/x86/mm/mem_encrypt_identity.c | 18 +++++++++---------
- arch/x86/mm/pat/set_memory.c       |  6 +++---
- arch/x86/mm/pti.c                  |  2 +-
- 7 files changed, 20 insertions(+), 26 deletions(-)
+The other thing I considered was keeping a temporary 'struct
+tdx_guest_info' structure or something, filling it one, and parsing it
+in get_cc_mask() and attribute checking functions.  But, that seemed
+like overkill.
+--------------od00T7gMHW05lOLhDuaXZoAP
+Content-Type: text/x-patch; charset=UTF-8; name="tdinfo.patch"
+Content-Disposition: attachment; filename="tdinfo.patch"
+Content-Transfer-Encoding: base64
 
-diff --git a/arch/x86/include/asm/page_types.h b/arch/x86/include/asm/page_types.h
-index a506a41..86bd431 100644
---- a/arch/x86/include/asm/page_types.h
-+++ b/arch/x86/include/asm/page_types.h
-@@ -11,20 +11,14 @@
- #define PAGE_SIZE		(_AC(1,UL) << PAGE_SHIFT)
- #define PAGE_MASK		(~(PAGE_SIZE-1))
- 
--#define PMD_PAGE_SIZE		(_AC(1, UL) << PMD_SHIFT)
--#define PMD_PAGE_MASK		(~(PMD_PAGE_SIZE-1))
--
--#define PUD_PAGE_SIZE		(_AC(1, UL) << PUD_SHIFT)
--#define PUD_PAGE_MASK		(~(PUD_PAGE_SIZE-1))
--
- #define __VIRTUAL_MASK		((1UL << __VIRTUAL_MASK_SHIFT) - 1)
- 
--/* Cast *PAGE_MASK to a signed type so that it is sign-extended if
-+/* Cast P*D_MASK to a signed type so that it is sign-extended if
-    virtual addresses are 32-bits but physical addresses are larger
-    (ie, 32-bit PAE). */
- #define PHYSICAL_PAGE_MASK	(((signed long)PAGE_MASK) & __PHYSICAL_MASK)
--#define PHYSICAL_PMD_PAGE_MASK	(((signed long)PMD_PAGE_MASK) & __PHYSICAL_MASK)
--#define PHYSICAL_PUD_PAGE_MASK	(((signed long)PUD_PAGE_MASK) & __PHYSICAL_MASK)
-+#define PHYSICAL_PMD_PAGE_MASK	(((signed long)PMD_MASK) & __PHYSICAL_MASK)
-+#define PHYSICAL_PUD_PAGE_MASK	(((signed long)PUD_MASK) & __PHYSICAL_MASK)
- 
- #define HPAGE_SHIFT		PMD_SHIFT
- #define HPAGE_SIZE		(_AC(1,UL) << HPAGE_SHIFT)
-diff --git a/arch/x86/kernel/amd_gart_64.c b/arch/x86/kernel/amd_gart_64.c
-index 19a0207..56a917d 100644
---- a/arch/x86/kernel/amd_gart_64.c
-+++ b/arch/x86/kernel/amd_gart_64.c
-@@ -504,7 +504,7 @@ static __init unsigned long check_iommu_size(unsigned long aper, u64 aper_size)
- 	}
- 
- 	a = aper + iommu_size;
--	iommu_size -= round_up(a, PMD_PAGE_SIZE) - a;
-+	iommu_size -= round_up(a, PMD_SIZE) - a;
- 
- 	if (iommu_size < 64*1024*1024) {
- 		pr_warn("PCI-DMA: Warning: Small IOMMU %luMB."
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index 6a3cfaf..387e4b1 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -203,7 +203,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	load_delta = physaddr - (unsigned long)(_text - __START_KERNEL_map);
- 
- 	/* Is the address not 2M aligned? */
--	if (load_delta & ~PMD_PAGE_MASK)
-+	if (load_delta & ~PMD_MASK)
- 		for (;;);
- 
- 	/* Include the SME encryption mask in the fixup value */
-diff --git a/arch/x86/mm/mem_encrypt_boot.S b/arch/x86/mm/mem_encrypt_boot.S
-index 9de3d90..e25288e 100644
---- a/arch/x86/mm/mem_encrypt_boot.S
-+++ b/arch/x86/mm/mem_encrypt_boot.S
-@@ -26,7 +26,7 @@ SYM_FUNC_START(sme_encrypt_execute)
- 	 *   RCX - virtual address of the encryption workarea, including:
- 	 *     - stack page (PAGE_SIZE)
- 	 *     - encryption routine page (PAGE_SIZE)
--	 *     - intermediate copy buffer (PMD_PAGE_SIZE)
-+	 *     - intermediate copy buffer (PMD_SIZE)
- 	 *    R8 - physical address of the pagetables to use for encryption
- 	 */
- 
-@@ -123,7 +123,7 @@ SYM_FUNC_START(__enc_copy)
- 	wbinvd				/* Invalidate any cache entries */
- 
- 	/* Copy/encrypt up to 2MB at a time */
--	movq	$PMD_PAGE_SIZE, %r12
-+	movq	$PMD_SIZE, %r12
- 1:
- 	cmpq	%r12, %r9
- 	jnb	2f
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index f415498..88cccd6 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -93,7 +93,7 @@ struct sme_populate_pgd_data {
-  * section is 2MB aligned to allow for simple pagetable setup using only
-  * PMD entries (see vmlinux.lds.S).
-  */
--static char sme_workarea[2 * PMD_PAGE_SIZE] __section(".init.scratch");
-+static char sme_workarea[2 * PMD_SIZE] __section(".init.scratch");
- 
- static char sme_cmdline_arg[] __initdata = "mem_encrypt";
- static char sme_cmdline_on[]  __initdata = "on";
-@@ -198,8 +198,8 @@ static void __init __sme_map_range_pmd(struct sme_populate_pgd_data *ppd)
- 	while (ppd->vaddr < ppd->vaddr_end) {
- 		sme_populate_pgd_large(ppd);
- 
--		ppd->vaddr += PMD_PAGE_SIZE;
--		ppd->paddr += PMD_PAGE_SIZE;
-+		ppd->vaddr += PMD_SIZE;
-+		ppd->paddr += PMD_SIZE;
- 	}
- }
- 
-@@ -225,11 +225,11 @@ static void __init __sme_map_range(struct sme_populate_pgd_data *ppd,
- 	vaddr_end = ppd->vaddr_end;
- 
- 	/* If start is not 2MB aligned, create PTE entries */
--	ppd->vaddr_end = ALIGN(ppd->vaddr, PMD_PAGE_SIZE);
-+	ppd->vaddr_end = ALIGN(ppd->vaddr, PMD_SIZE);
- 	__sme_map_range_pte(ppd);
- 
- 	/* Create PMD entries */
--	ppd->vaddr_end = vaddr_end & PMD_PAGE_MASK;
-+	ppd->vaddr_end = vaddr_end & PMD_MASK;
- 	__sme_map_range_pmd(ppd);
- 
- 	/* If end is not 2MB aligned, create PTE entries */
-@@ -325,7 +325,7 @@ void __init sme_encrypt_kernel(struct boot_params *bp)
- 
- 	/* Physical addresses gives us the identity mapped virtual addresses */
- 	kernel_start = __pa_symbol(_text);
--	kernel_end = ALIGN(__pa_symbol(_end), PMD_PAGE_SIZE);
-+	kernel_end = ALIGN(__pa_symbol(_end), PMD_SIZE);
- 	kernel_len = kernel_end - kernel_start;
- 
- 	initrd_start = 0;
-@@ -355,12 +355,12 @@ void __init sme_encrypt_kernel(struct boot_params *bp)
- 	 *   executable encryption area size:
- 	 *     stack page (PAGE_SIZE)
- 	 *     encryption routine page (PAGE_SIZE)
--	 *     intermediate copy buffer (PMD_PAGE_SIZE)
-+	 *     intermediate copy buffer (PMD_SIZE)
- 	 *   pagetable structures for the encryption of the kernel
- 	 *   pagetable structures for workarea (in case not currently mapped)
- 	 */
- 	execute_start = workarea_start;
--	execute_end = execute_start + (PAGE_SIZE * 2) + PMD_PAGE_SIZE;
-+	execute_end = execute_start + (PAGE_SIZE * 2) + PMD_SIZE;
- 	execute_len = execute_end - execute_start;
- 
- 	/*
-@@ -383,7 +383,7 @@ void __init sme_encrypt_kernel(struct boot_params *bp)
- 	 * before it is mapped.
- 	 */
- 	workarea_len = execute_len + pgtable_area_len;
--	workarea_end = ALIGN(workarea_start + workarea_len, PMD_PAGE_SIZE);
-+	workarea_end = ALIGN(workarea_start + workarea_len, PMD_SIZE);
- 
- 	/*
- 	 * Set the address to the start of where newly created pagetable
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index f275605..06eb891 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -743,11 +743,11 @@ phys_addr_t slow_virt_to_phys(void *__virt_addr)
- 	switch (level) {
- 	case PG_LEVEL_1G:
- 		phys_addr = (phys_addr_t)pud_pfn(*(pud_t *)pte) << PAGE_SHIFT;
--		offset = virt_addr & ~PUD_PAGE_MASK;
-+		offset = virt_addr & ~PUD_MASK;
- 		break;
- 	case PG_LEVEL_2M:
- 		phys_addr = (phys_addr_t)pmd_pfn(*(pmd_t *)pte) << PAGE_SHIFT;
--		offset = virt_addr & ~PMD_PAGE_MASK;
-+		offset = virt_addr & ~PMD_MASK;
- 		break;
- 	default:
- 		phys_addr = (phys_addr_t)pte_pfn(*pte) << PAGE_SHIFT;
-@@ -1037,7 +1037,7 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
- 	case PG_LEVEL_1G:
- 		ref_prot = pud_pgprot(*(pud_t *)kpte);
- 		ref_pfn = pud_pfn(*(pud_t *)kpte);
--		pfninc = PMD_PAGE_SIZE >> PAGE_SHIFT;
-+		pfninc = PMD_SIZE >> PAGE_SHIFT;
- 		lpaddr = address & PUD_MASK;
- 		lpinc = PMD_SIZE;
- 		/*
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index ffe3b3a..78414c6 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -592,7 +592,7 @@ static void pti_set_kernel_image_nonglobal(void)
- 	 * of the image.
- 	 */
- 	unsigned long start = PFN_ALIGN(_text);
--	unsigned long end = ALIGN((unsigned long)_end, PMD_PAGE_SIZE);
-+	unsigned long end = ALIGN((unsigned long)_end, PMD_SIZE);
- 
- 	/*
- 	 * This clears _PAGE_GLOBAL from the entire kernel image.
+ZGlmZiAtLWdpdCBhL2FyY2gveDg2L2NvY28vdGR4L3RkeC5jIGIvYXJjaC94ODYvY29jby90
+ZHgvdGR4LmMKaW5kZXggYjg5OThjZjA1MDhhLi5hNGJmMmI2N2QzZDcgMTAwNjQ0Ci0tLSBh
+L2FyY2gveDg2L2NvY28vdGR4L3RkeC5jCisrKyBiL2FyY2gveDg2L2NvY28vdGR4L3RkeC5j
+CkBAIC0xMyw3ICsxMyw3IEBACiAjaW5jbHVkZSA8YXNtL3BndGFibGUuaD4KIAogLyogVERY
+IG1vZHVsZSBDYWxsIExlYWYgSURzICovCi0jZGVmaW5lIFREWF9HRVRfSU5GTwkJCTEKKyNk
+ZWZpbmUgVERYX0dFVF9JTkZPCQkJMSAvKiBUREcuVlAuSU5GTyAqLwogI2RlZmluZSBURFhf
+R0VUX1ZFSU5GTwkJCTMKICNkZWZpbmUgVERYX0FDQ0VQVF9QQUdFCQkJNgogCkBAIC0xMDAs
+MTkgKzEwMCwxMCBAQCBzdGF0aWMgaW5saW5lIHZvaWQgdGR4X21vZHVsZV9jYWxsKHU2NCBm
+biwgdTY0IHJjeCwgdTY0IHJkeCwgdTY0IHI4LCB1NjQgcjksCiAJCXBhbmljKCJURENBTEwg
+JWxsZCBmYWlsZWQgKEJ1Z2d5IFREWCBtb2R1bGUhKVxuIiwgZm4pOwogfQogCi1zdGF0aWMg
+dm9pZCB0ZHhfcGFyc2VfdGRpbmZvKHU2NCAqY2NfbWFzaykKK3N0YXRpYyB1NjQgZ2V0X2Nj
+X21hc2sodm9pZCkKIHsKIAlzdHJ1Y3QgdGR4X21vZHVsZV9vdXRwdXQgb3V0OwotCXVuc2ln
+bmVkIGludCBncGFfd2lkdGg7Ci0JdTY0IHRkX2F0dHI7CiAKLQkvKgotCSAqIFRESU5GTyBU
+RFggbW9kdWxlIGNhbGwgaXMgdXNlZCB0byBnZXQgdGhlIFREIGV4ZWN1dGlvbiBlbnZpcm9u
+bWVudAotCSAqIGluZm9ybWF0aW9uIGxpa2UgR1BBIHdpZHRoLCBudW1iZXIgb2YgYXZhaWxh
+YmxlIHZjcHVzLCBkZWJ1ZyBtb2RlCi0JICogaW5mb3JtYXRpb24sIGV0Yy4gTW9yZSBkZXRh
+aWxzIGFib3V0IHRoZSBBQkkgY2FuIGJlIGZvdW5kIGluIFREWAotCSAqIEd1ZXN0LUhvc3Qt
+Q29tbXVuaWNhdGlvbiBJbnRlcmZhY2UgKEdIQ0kpLCBzZWN0aW9uIDIuNC4yIFREQ0FMTAot
+CSAqIFtUREcuVlAuSU5GT10uCi0JICovCiAJdGR4X21vZHVsZV9jYWxsKFREWF9HRVRfSU5G
+TywgMCwgMCwgMCwgMCwgJm91dCk7CiAKIAkvKgpAQCAtMTIzLDcgKzExNCwxNSBAQCBzdGF0
+aWMgdm9pZCB0ZHhfcGFyc2VfdGRpbmZvKHU2NCAqY2NfbWFzaykKIAkgKiBjYW4gbm90IG1l
+YW5pbmdmdWxseSBydW4gd2l0aG91dCBpdC4KIAkgKi8KIAlncGFfd2lkdGggPSBvdXQucmN4
+ICYgR0VOTUFTSyg1LCAwKTsKLQkqY2NfbWFzayA9IEJJVF9VTEwoZ3BhX3dpZHRoIC0gMSk7
+CisJcmV0dXJuICBCSVRfVUxMKGdwYV93aWR0aCAtIDEpOworfQorCitzdGF0aWMgdm9pZCB0
+ZHhfY2hlY2tfdGRpbmZvKHZvaWQpCit7CisJc3RydWN0IHRkeF9tb2R1bGVfb3V0cHV0IG91
+dDsKKwl1NjQgdGRfYXR0cjsKKworCXRkeF9tb2R1bGVfY2FsbChURFhfR0VUX0lORk8sIDAs
+IDAsIDAsIDAsICZvdXQpOwogCiAJLyoKIAkgKiBUaGUga2VybmVsIGNhbiBub3QgaGFuZGxl
+ICNWRSdzIHdoZW4gYWNjZXNzaW5nIG5vcm1hbCBrZXJuZWwKQEAgLTc2OSw3ICs3NjgsOCBA
+QCB2b2lkIF9faW5pdCB0ZHhfZWFybHlfaW5pdCh2b2lkKQogCXNldHVwX2ZvcmNlX2NwdV9j
+YXAoWDg2X0ZFQVRVUkVfVERYX0dVRVNUKTsKIAogCWNjX3NldF92ZW5kb3IoQ0NfVkVORE9S
+X0lOVEVMKTsKLQl0ZHhfcGFyc2VfdGRpbmZvKCZjY19tYXNrKTsKKwl0ZHhfY2hlY2tfdGRp
+bmZvKCk7CisJY2NfbWFzayA9IGdldF9jY19tYXNrKCk7CiAJY2Nfc2V0X21hc2soY2NfbWFz
+ayk7CiAKIAkvKgo=
+
+--------------od00T7gMHW05lOLhDuaXZoAP--
