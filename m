@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 127CB620CA8
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Nov 2022 10:49:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B6F06217A5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Nov 2022 16:06:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232910AbiKHJtb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Nov 2022 04:49:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60782 "EHLO
+        id S234458AbiKHPG5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Nov 2022 10:06:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233333AbiKHJt1 (ORCPT
+        with ESMTP id S233326AbiKHPGu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Nov 2022 04:49:27 -0500
+        Tue, 8 Nov 2022 10:06:50 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B0A55FD7;
-        Tue,  8 Nov 2022 01:49:25 -0800 (PST)
-Date:   Tue, 08 Nov 2022 09:49:22 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 720EA1834F;
+        Tue,  8 Nov 2022 07:06:49 -0800 (PST)
+Date:   Tue, 08 Nov 2022 15:06:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667900963;
+        s=2020; t=1667920007;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=A//2PWqUGsNd6j8mjXzQwwnRUW0Rd27u4pkRwL2p71k=;
-        b=YLWW1tN9QxfIGOJoZySYCXc/hPhDyYdc6mkJbwDMPQ+R73/bpCQLx44oQwkqZSEpPSR4zL
-        3waSWRdTcQXbCzPxCL8WNGu1LtXRa+OVWuUgZK8FFFguAUpMmy+Iida4wSxrzc5S78wAqI
-        at2pTZESYjkGj+qmJlIvYnrQ9Uy1rX0pY/yJitVFuBpuRNDHmde5ZJ9qV83YW6aj4XatpH
-        YM3OGG3KFCFiBbU+gEeITEAezQVLAPFzEu4G/S4A4MlTONol7fztPQxHM15xFLcetnwvZi
-        XmujPQiHdllXVFayhfxGUQlVng98xYnps1xWv+GlGSZ+UzDLgTEC1RLPakFQaQ==
+        bh=6nn2+6QPtNaSW1pyOCLfhVc5vN3vLiQaT1ZZLVJu6dY=;
+        b=odL9q5P5vQozLA/599EkB1XV7eltdBGo12zdaK1ho1phd/luifBUzobFGVFWPFAsC05lP8
+        c39WxfmJr2M9z6zHlXaJE0q/cQ4LAditpPvPuNHvZxorGwktfv+zSvUkh4Spry3DE8yuyI
+        i2uSirhe5rC5rO59srWWy3HsGtrxsnlaHBKp8A7raC/8bgqGHZfLturZdAnmsb5OT4gChZ
+        fFVQEABFUyMhK9zVVG9QlF/z3wDte6jaP5PDUrCb2wWT/HYM6hfd3Sz3+pIH4L3zNIS0kL
+        VRRz/Dg6MSD9Xzfg/wwAx2KoFv2JRc6OZImyY5lOMYiwOxfc3QpPTju52T3lVg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667900963;
+        s=2020e; t=1667920007;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=A//2PWqUGsNd6j8mjXzQwwnRUW0Rd27u4pkRwL2p71k=;
-        b=7dZNpikRQ/kFUci4/KJypsRAIQbIXEAko6A7yNM3d4T5KbZsfSE2VJrBqPbOjthya4e2Da
-        DW/IE88zJaCa/vDA==
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+        bh=6nn2+6QPtNaSW1pyOCLfhVc5vN3vLiQaT1ZZLVJu6dY=;
+        b=ai4bjf55eLxTVMxxZnI+YGYzya/laqIeAeUZYfFZjPyTAqAoglMqH5OVr07bbkUWky65eI
+        c0Kb6NHmkQfYZDBQ==
+From:   "tip-bot2 for Cole Robinson" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf: Improve missing SIGTRAP checking
-Cc:     syzbot+b8ded3e2e2c6adde4990@syzkaller.appspotmail.com,
-        Marco Elver <elver@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/sev] virt/sev-guest: Add a MODULE_ALIAS
+Cc:     Cole Robinson <crobinso@redhat.com>, Borislav Petkov <bp@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221031093513.3032814-1-elver@google.com>
-References: <20221031093513.3032814-1-elver@google.com>
+In-Reply-To: <ff480c5e688eb0a72a4db0a29c7b1bb54c45bfd4.1667594253.git.crobinso@redhat.com>
+References: <ff480c5e688eb0a72a4db0a29c7b1bb54c45bfd4.1667594253.git.crobinso@redhat.com>
 MIME-Version: 1.0
-Message-ID: <166790096229.4906.6734521018281431632.tip-bot2@tip-bot2>
+Message-ID: <166792000609.4906.10929281276330288769.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,103 +64,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     bb88f9695460bec25aa30ba9072595025cf6c8af
-Gitweb:        https://git.kernel.org/tip/bb88f9695460bec25aa30ba9072595025cf6c8af
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Mon, 31 Oct 2022 10:35:13 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 08 Nov 2022 10:39:27 +01:00
+Commit-ID:     2874529b3513bdc90299c90f40713602da685e35
+Gitweb:        https://git.kernel.org/tip/2874529b3513bdc90299c90f40713602da685e35
+Author:        Cole Robinson <crobinso@redhat.com>
+AuthorDate:    Fri, 04 Nov 2022 16:42:45 -04:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 08 Nov 2022 15:54:34 +01:00
 
-perf: Improve missing SIGTRAP checking
+virt/sev-guest: Add a MODULE_ALIAS
 
-To catch missing SIGTRAP we employ a WARN in __perf_event_overflow(),
-which fires if pending_sigtrap was already set: returning to user space
-without consuming pending_sigtrap, and then having the event fire again
-would re-enter the kernel and trigger the WARN.
+Autoload the driver when, for example, SNP init code creates the
+corresponding platform device.
 
-This, however, seemed to miss the case where some events not associated
-with progress in the user space task can fire and the interrupt handler
-runs before the IRQ work meant to consume pending_sigtrap (and generate
-the SIGTRAP).
+  [ bp: Rewrite commit message. ]
 
-syzbot gifted us this stack trace:
-
- | WARNING: CPU: 0 PID: 3607 at kernel/events/core.c:9313 __perf_event_overflow
- | Modules linked in:
- | CPU: 0 PID: 3607 Comm: syz-executor100 Not tainted 6.1.0-rc2-syzkaller-00073-g88619e77b33d #0
- | Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/11/2022
- | RIP: 0010:__perf_event_overflow+0x498/0x540 kernel/events/core.c:9313
- | <...>
- | Call Trace:
- |  <TASK>
- |  perf_swevent_hrtimer+0x34f/0x3c0 kernel/events/core.c:10729
- |  __run_hrtimer kernel/time/hrtimer.c:1685 [inline]
- |  __hrtimer_run_queues+0x1c6/0xfb0 kernel/time/hrtimer.c:1749
- |  hrtimer_interrupt+0x31c/0x790 kernel/time/hrtimer.c:1811
- |  local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1096 [inline]
- |  __sysvec_apic_timer_interrupt+0x17c/0x640 arch/x86/kernel/apic/apic.c:1113
- |  sysvec_apic_timer_interrupt+0x40/0xc0 arch/x86/kernel/apic/apic.c:1107
- |  asm_sysvec_apic_timer_interrupt+0x16/0x20 arch/x86/include/asm/idtentry.h:649
- | <...>
- |  </TASK>
-
-In this case, syzbot produced a program with event type
-PERF_TYPE_SOFTWARE and config PERF_COUNT_SW_CPU_CLOCK. The hrtimer
-manages to fire again before the IRQ work got a chance to run, all while
-never having returned to user space.
-
-Improve the WARN to check for real progress in user space: approximate
-this by storing a 32-bit hash of the current IP into pending_sigtrap,
-and if an event fires while pending_sigtrap still matches the previous
-IP, we assume no progress (false negatives are possible given we could
-return to user space and trigger again on the same IP).
-
-Fixes: ca6c21327c6a ("perf: Fix missing SIGTRAPs")
-Reported-by: syzbot+b8ded3e2e2c6adde4990@syzkaller.appspotmail.com
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221031093513.3032814-1-elver@google.com
+Fixes: fce96cf04430 ("virt: Add SEV-SNP guest driver")
+Signed-off-by: Cole Robinson <crobinso@redhat.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/ff480c5e688eb0a72a4db0a29c7b1bb54c45bfd4.1667594253.git.crobinso@redhat.com
 ---
- kernel/events/core.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ drivers/virt/coco/sev-guest/sev-guest.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 4ec3717..8848714 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9306,14 +9306,27 @@ static int __perf_event_overflow(struct perf_event *event,
- 	}
- 
- 	if (event->attr.sigtrap) {
--		/*
--		 * Should not be able to return to user space without processing
--		 * pending_sigtrap (kernel events can overflow multiple times).
--		 */
--		WARN_ON_ONCE(event->pending_sigtrap && event->attr.exclude_kernel);
-+		unsigned int pending_id = 1;
-+
-+		if (regs)
-+			pending_id = hash32_ptr((void *)instruction_pointer(regs)) ?: 1;
- 		if (!event->pending_sigtrap) {
--			event->pending_sigtrap = 1;
-+			event->pending_sigtrap = pending_id;
- 			local_inc(&event->ctx->nr_pending);
-+		} else if (event->attr.exclude_kernel) {
-+			/*
-+			 * Should not be able to return to user space without
-+			 * consuming pending_sigtrap; with exceptions:
-+			 *
-+			 *  1. Where !exclude_kernel, events can overflow again
-+			 *     in the kernel without returning to user space.
-+			 *
-+			 *  2. Events that can overflow again before the IRQ-
-+			 *     work without user space progress (e.g. hrtimer).
-+			 *     To approximate progress (with false negatives),
-+			 *     check 32-bit hash of the current IP.
-+			 */
-+			WARN_ON_ONCE(event->pending_sigtrap != pending_id);
- 		}
- 		event->pending_addr = data->addr;
- 		irq_work_queue(&event->pending_irq);
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index e9704ae..13911b9 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -742,3 +742,4 @@ MODULE_AUTHOR("Brijesh Singh <brijesh.singh@amd.com>");
+ MODULE_LICENSE("GPL");
+ MODULE_VERSION("1.0.0");
+ MODULE_DESCRIPTION("AMD SEV Guest Driver");
++MODULE_ALIAS("platform:sev-guest");
