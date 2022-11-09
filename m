@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F31AC621E99
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Nov 2022 22:35:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67D60622B0F
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Nov 2022 13:02:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbiKHVfY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Nov 2022 16:35:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55310 "EHLO
+        id S229448AbiKIMCc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Nov 2022 07:02:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbiKHVfX (ORCPT
+        with ESMTP id S229533AbiKIMCa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Nov 2022 16:35:23 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63105C755;
-        Tue,  8 Nov 2022 13:35:22 -0800 (PST)
-Date:   Tue, 08 Nov 2022 21:35:18 -0000
+        Wed, 9 Nov 2022 07:02:30 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ABC62D758;
+        Wed,  9 Nov 2022 04:02:29 -0800 (PST)
+Date:   Wed, 09 Nov 2022 12:02:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667943320;
+        s=2020; t=1667995347;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dwI1cOu1CAqRFRpZ/qAxaAT22s+X8nsjOxog7of8jq0=;
-        b=EOtfLMR0iqmpcRvEzNg//JD7cRfag+8Qu+/LsrUI+gMHur0Zk7ocE5nDXrqKfUXqAbfBPI
-        0JIOTydxex7m7fn4p+k4v/QSIA7eVihFzKNOgHrAbbTIo41O9fSuD6v2YUIpjgw5ych5jC
-        rH4boX4ntxS6qJrwd506cBdxJ2w06z1+9ezCyuYgXsMFSmT4wL7n5/0xdK/f4zF7jjAlhY
-        1gaqXfztCbJ15VU47sAVocqeyvQn4oS8K48LThRHby2hAu3SRz8URzBqY+2nnlCwdYNnx6
-        SZiuv9+VCnlFU2O4rBQwosB5e92GEegDot8z/cPWEQllW4vIVMOe/XhkW2yyxA==
+        bh=f1NHusvPZescSsAnuNt52eDdfYqmmvDkm49FFnYJ5/k=;
+        b=UmwS121s6OOyBolmRhDUlv8arc4fFtpUIDgwCjyXIeL/sEqsd5J1jgiD8u4KWzkryCR3di
+        wFYDlgftIbpOkxbmWb79vt+xXmWxgLlVfO0+ZCrKvFS9WavsUtpi+khFLvV6Muxf33F06f
+        jRuNyauvbjvCGzrzjegyD1mkOcRGOBKK4ysmtwuIUQty7ueitDm/S6xeBaFgs0hyBD6G9K
+        BkLjAE6pZhZIPJbQ29vGN2djIl08/wH4jk+tDB5gRvnhiYZlhqi052ohoCGWZNLsSIWyXm
+        GGvtkYMh6SU3dzhIg6wJ6awInLM5bylS9ZiQGuEnfQUZWBf2wtNwqmznmR7mpQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667943320;
+        s=2020e; t=1667995347;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dwI1cOu1CAqRFRpZ/qAxaAT22s+X8nsjOxog7of8jq0=;
-        b=5Bq666RNTfL0TNiI79i5Xpl0vmE3SVtornf/3yQIUw2O1HouSp9HEP3muBIe7g9G9BJ0l0
-        kYxWSgbvcnenFjAA==
-From:   "tip-bot2 for Jiapeng Chong" <tip-bot2@linutronix.de>
+        bh=f1NHusvPZescSsAnuNt52eDdfYqmmvDkm49FFnYJ5/k=;
+        b=bgk2Wyk2u8jpcHMbCQ8WTPDjOwbtBrDp5Sr/qT/3pPW9/aAjVQ/41ece8RpE+WF1diwcMi
+        V5uVwFLn11pVg3Aw==
+From:   "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86: Fix misc small issues
-Cc:     Abaci Robot <abaci@linux.alibaba.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1620902768-53822-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-References: <1620902768-53822-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+Subject: [tip: perf/urgent] perf/x86/amd/uncore: Fix memory leak for events array
+Cc:     Ravi Bangoria <ravi.bangoria@amd.com>,
+        Sandipan Das <sandipan.das@amd.com>,
+        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3C4fa9e5ac6d6e41fa889101e7af7e6ba372cfea52=2E16626?=
+ =?utf-8?q?13255=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
+References: =?utf-8?q?=3C4fa9e5ac6d6e41fa889101e7af7e6ba372cfea52=2E166261?=
+ =?utf-8?q?3255=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <166794331892.4906.5411586974851313804.tip-bot2@tip-bot2>
+Message-ID: <166799534540.4906.1796958910733546900.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,65 +67,79 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     6426773410fd829c15b59575afe531d66abc7201
-Gitweb:        https://git.kernel.org/tip/6426773410fd829c15b59575afe531d66abc7201
-Author:        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-AuthorDate:    Tue, 08 Nov 2022 22:09:51 +01:00
+Commit-ID:     bdfe34597139cfcecd47a2eb97fea44d77157491
+Gitweb:        https://git.kernel.org/tip/bdfe34597139cfcecd47a2eb97fea44d77157491
+Author:        Sandipan Das <sandipan.das@amd.com>
+AuthorDate:    Thu, 08 Sep 2022 10:33:15 +05:30
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 08 Nov 2022 22:16:08 +01:00
+CommitterDate: Wed, 09 Nov 2022 12:38:01 +01:00
 
-x86: Fix misc small issues
+perf/x86/amd/uncore: Fix memory leak for events array
 
-Fix:
+When a CPU comes online, the per-CPU NB and LLC uncore contexts are
+freed but not the events array within the context structure. This
+causes a memory leak as identified by the kmemleak detector.
 
-  ./arch/x86/kernel/traps.c: asm/proto.h is included more than once.
+  [...]
+  unreferenced object 0xffff8c5944b8e320 (size 32):
+    comm "swapper/0", pid 1, jiffies 4294670387 (age 151.072s)
+    hex dump (first 32 bytes):
+      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    backtrace:
+      [<000000000759fb79>] amd_uncore_cpu_up_prepare+0xaf/0x230
+      [<00000000ddc9e126>] cpuhp_invoke_callback+0x2cf/0x470
+      [<0000000093e727d4>] cpuhp_issue_call+0x14d/0x170
+      [<0000000045464d54>] __cpuhp_setup_state_cpuslocked+0x11e/0x330
+      [<0000000069f67cbd>] __cpuhp_setup_state+0x6b/0x110
+      [<0000000015365e0f>] amd_uncore_init+0x260/0x321
+      [<00000000089152d2>] do_one_initcall+0x3f/0x1f0
+      [<000000002d0bd18d>] kernel_init_freeable+0x1ca/0x212
+      [<0000000030be8dde>] kernel_init+0x11/0x120
+      [<0000000059709e59>] ret_from_fork+0x22/0x30
+  unreferenced object 0xffff8c5944b8dd40 (size 64):
+    comm "swapper/0", pid 1, jiffies 4294670387 (age 151.072s)
+    hex dump (first 32 bytes):
+      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    backtrace:
+      [<00000000306efe8b>] amd_uncore_cpu_up_prepare+0x183/0x230
+      [<00000000ddc9e126>] cpuhp_invoke_callback+0x2cf/0x470
+      [<0000000093e727d4>] cpuhp_issue_call+0x14d/0x170
+      [<0000000045464d54>] __cpuhp_setup_state_cpuslocked+0x11e/0x330
+      [<0000000069f67cbd>] __cpuhp_setup_state+0x6b/0x110
+      [<0000000015365e0f>] amd_uncore_init+0x260/0x321
+      [<00000000089152d2>] do_one_initcall+0x3f/0x1f0
+      [<000000002d0bd18d>] kernel_init_freeable+0x1ca/0x212
+      [<0000000030be8dde>] kernel_init+0x11/0x120
+      [<0000000059709e59>] ret_from_fork+0x22/0x30
+  [...]
 
-  ./arch/x86/kernel/alternative.c:1610:2-3: Unneeded semicolon.
+Fix the problem by freeing the events array before freeing the uncore
+context.
 
-  [ bp: Merge into a single patch. ]
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Fixes: 39621c5808f5 ("perf/x86/amd/uncore: Use dynamic events array")
+Reported-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/1620902768-53822-1-git-send-email-jiapeng.chong@linux.alibaba.com
-Link: https://lore.kernel.org/r/20220926054628.116957-1-jiapeng.chong@linux.alibaba.com
+Tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/4fa9e5ac6d6e41fa889101e7af7e6ba372cfea52.1662613255.git.sandipan.das@amd.com
 ---
- arch/x86/kernel/alternative.c | 2 +-
- arch/x86/kernel/traps.c       | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/events/amd/uncore.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 5cadcea..d5f1e13 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -1608,7 +1608,7 @@ static void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
+diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
+index d568afc..83f15fe 100644
+--- a/arch/x86/events/amd/uncore.c
++++ b/arch/x86/events/amd/uncore.c
+@@ -553,6 +553,7 @@ static void uncore_clean_online(void)
  
- 	default:
- 		BUG_ON(len != insn.length);
--	};
-+	}
- 
- 
- 	switch (tp->opcode) {
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 178015a..c3bff64 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -67,13 +67,13 @@
- 
- #ifdef CONFIG_X86_64
- #include <asm/x86_init.h>
--#include <asm/proto.h>
- #else
- #include <asm/processor-flags.h>
- #include <asm/setup.h>
--#include <asm/proto.h>
- #endif
- 
-+#include <asm/proto.h>
-+
- DECLARE_BITMAP(system_vectors, NR_VECTORS);
- 
- static inline void cond_local_irq_enable(struct pt_regs *regs)
+ 	hlist_for_each_entry_safe(uncore, n, &uncore_unused_list, node) {
+ 		hlist_del(&uncore->node);
++		kfree(uncore->events);
+ 		kfree(uncore);
+ 	}
+ }
