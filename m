@@ -2,54 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32127624234
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Nov 2022 13:22:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 300566246AA
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Nov 2022 17:14:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230075AbiKJMWL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Nov 2022 07:22:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37248 "EHLO
+        id S230028AbiKJQOi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Nov 2022 11:14:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229920AbiKJMWE (ORCPT
+        with ESMTP id S229701AbiKJQOg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Nov 2022 07:22:04 -0500
+        Thu, 10 Nov 2022 11:14:36 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB57C71F37;
-        Thu, 10 Nov 2022 04:22:01 -0800 (PST)
-Date:   Thu, 10 Nov 2022 12:21:59 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A4AEE0A;
+        Thu, 10 Nov 2022 08:14:35 -0800 (PST)
+Date:   Thu, 10 Nov 2022 16:14:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1668082920;
+        s=2020; t=1668096873;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YWlPPt79KZVQ4iVF+rQ2uLTDqlEKiYXb05/erd5wIAc=;
-        b=VpwwBNHRpHnNA4BGE4NdGw8XWqeKb1REdhKei2LYNiXafcuX/ADrPCCgjCADUn5TgwTZyx
-        VgbGZcIePDLD5QbTO1a8JkHzNzZGKPGXwE+js61QXWi7PMD05oA7auFF86+xqWNMDOb8YP
-        HqRQoLxIswSUVia9rDnk6TczEtTDIEhWSB+T/meWlVWoRYYInmKR0Z/TILUudQDrHFmzSI
-        1EN4VD7bjtHjZgomJsmcjO4snKVyxTagznI2VYpXkNLlMqvgx7QcmCyHhR7Cb2BjOCtH/X
-        49uM+hlHHTkQG4x9X+BvyuEPFXtU9B8Bft0fiCvVopNz4HRw6AMZwXYJwV+TQw==
+        bh=qqUz/+ZIm84a5MGcesgiYEEHMgajdSK9pGpAekBbKYs=;
+        b=LV2HHKg6XAO4C166KK4EmouHK9tldM9DHcLrVLaQnbVsAfnNNXLhWw5LUPwrlMxDW0ECAn
+        XpEO/3OF9jQL9S5/6W+ejOq3J7cgnDWJkq6gwrIVtPdK2DyD272a6CsGLeg3hyC7Gja3Oa
+        QQDIDNPhMPk1D4wuwvdKTownZHPssXA5/FkiC7fERbJ09mnfIORW3OEOOBWGGOlvqQJdPW
+        HHTNGcNAWHxD2bKZEglL0aPLxHMwXcEVpUczchNG9qDa3FikBxU5rem46nP5I10lNj8X+l
+        pbb26xlKnDiuQS20lV9AckjFD6gVkYkp/O65Sm4hXaJRFy4tcb2ft9aXKBY/QA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1668082920;
+        s=2020e; t=1668096873;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YWlPPt79KZVQ4iVF+rQ2uLTDqlEKiYXb05/erd5wIAc=;
-        b=We81QvbcApQDduVHkfkDX2V5FHfEgUDy/l34TPBbG5nTAvZI2MIDh2Dq6IAG/G2Kflr8Be
-        +ws0lJP8llLPf+AA==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=qqUz/+ZIm84a5MGcesgiYEEHMgajdSK9pGpAekBbKYs=;
+        b=QuwqpX568h8yWO/HVgMJaAs8olnVLnX6xJrxSqEMAdtO8rZq1NKTUJlBTdQY3Q8tWYe5Nx
+        ov1Y0/wsitzTmbBw==
+From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/mtrr: Replace use_intel() with a local flag
-Cc:     Juergen Gross <jgross@suse.com>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/urgent] x86/fpu: Drop fpregs lock before inheriting FPU permissions
+Cc:     Mike Galbraith <efault@gmx.de>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Borislav Petkov <bp@suse.de>,
+        Thomas Gleixner <tglx@linutronix.de>, <stable@vger.kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20221102074713.21493-4-jgross@suse.com>
-References: <20221102074713.21493-4-jgross@suse.com>
+In-Reply-To: <20221110124400.zgymc2lnwqjukgfh@techsingularity.net>
+References: <20221110124400.zgymc2lnwqjukgfh@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <166808291924.4906.14811957457604547770.tip-bot2@tip-bot2>
+Message-ID: <166809687209.4906.5542537765622302733.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,200 +66,102 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     45fa71f19a2d73f157d6892a8d677a738a0414fd
-Gitweb:        https://git.kernel.org/tip/45fa71f19a2d73f157d6892a8d677a738a0414fd
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Wed, 02 Nov 2022 08:47:00 +01:00
+Commit-ID:     36b038791e1e2baea892e9276588815fd14894b4
+Gitweb:        https://git.kernel.org/tip/36b038791e1e2baea892e9276588815fd14894b4
+Author:        Mel Gorman <mgorman@techsingularity.net>
+AuthorDate:    Thu, 10 Nov 2022 12:44:00 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 10 Nov 2022 13:12:44 +01:00
+CommitterDate: Thu, 10 Nov 2022 16:57:38 +01:00
 
-x86/mtrr: Replace use_intel() with a local flag
+x86/fpu: Drop fpregs lock before inheriting FPU permissions
 
-In MTRR code use_intel() is only used in one source file, and the
-relevant use_intel_if member of struct mtrr_ops is set only in
-generic_mtrr_ops.
+Mike Galbraith reported the following against an old fork of preempt-rt
+but the same issue also applies to the current preempt-rt tree.
 
-Replace use_intel() with a single flag in cacheinfo.c which can be
-set when assigning generic_mtrr_ops to mtrr_if. This allows to drop
-use_intel_if from mtrr_ops, while preparing to decouple PAT from MTRR.
-As another preparation for the PAT/MTRR decoupling use a bit for MTRR
-control and one for PAT control. For now set both bits together, this
-can be changed later.
+   BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
+   in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1, name: systemd
+   preempt_count: 1, expected: 0
+   RCU nest depth: 0, expected: 0
+   Preemption disabled at:
+   fpu_clone
+   CPU: 6 PID: 1 Comm: systemd Tainted: G            E       (unreleased)
+   Call Trace:
+    <TASK>
+    dump_stack_lvl
+    ? fpu_clone
+    __might_resched
+    rt_spin_lock
+    fpu_clone
+    ? copy_thread
+    ? copy_process
+    ? shmem_alloc_inode
+    ? kmem_cache_alloc
+    ? kernel_clone
+    ? __do_sys_clone
+    ? do_syscall_64
+    ? __x64_sys_rt_sigprocmask
+    ? syscall_exit_to_user_mode
+    ? do_syscall_64
+    ? syscall_exit_to_user_mode
+    ? do_syscall_64
+    ? syscall_exit_to_user_mode
+    ? do_syscall_64
+    ? exc_page_fault
+    ? entry_SYSCALL_64_after_hwframe
+    </TASK>
 
-As the new flag will be set only if mtrr_enabled is set, the test for
-mtrr_enabled can be dropped at some places.
+Mike says:
 
-  [ bp: Massage commit message. ]
+  The splat comes from fpu_inherit_perms() being called under fpregs_lock(),
+  and us reaching the spin_lock_irq() therein due to fpu_state_size_dynamic()
+  returning true despite static key __fpu_state_size_dynamic having never
+  been enabled.
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Mike's assessment looks correct. fpregs_lock on a PREEMPT_RT kernel disables
+preemption so calling spin_lock_irq() in fpu_inherit_perms() is unsafe. This
+problem exists since commit
+
+  9e798e9aa14c ("x86/fpu: Prepare fpu_clone() for dynamically enabled features").
+
+Even though the original bug report should not have enabled the paths at
+all, the bug still exists.
+
+fpregs_lock is necessary when editing the FPU registers or a task's FP
+state but it is not necessary for fpu_inherit_perms(). The only write
+of any FP state in fpu_inherit_perms() is for the new child which is
+not running yet and cannot context switch or be borrowed by a kernel
+thread yet. Hence, fpregs_lock is not protecting anything in the new
+child until clone() completes and can be dropped earlier. The siglock
+still needs to be acquired by fpu_inherit_perms() as the read of the
+parent's permissions has to be serialised.
+
+  [ bp: Cleanup splat. ]
+
+Fixes: 9e798e9aa14c ("x86/fpu: Prepare fpu_clone() for dynamically enabled features")
+Reported-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221102074713.21493-4-jgross@suse.com
-Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20221110124400.zgymc2lnwqjukgfh@techsingularity.net
 ---
- arch/x86/include/asm/cacheinfo.h   |  5 +++++
- arch/x86/kernel/cpu/cacheinfo.c    |  3 +++
- arch/x86/kernel/cpu/mtrr/generic.c |  1 -
- arch/x86/kernel/cpu/mtrr/mtrr.c    | 28 +++++++++++++---------------
- arch/x86/kernel/cpu/mtrr/mtrr.h    |  2 --
- 5 files changed, 21 insertions(+), 18 deletions(-)
+ arch/x86/kernel/fpu/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/cacheinfo.h b/arch/x86/include/asm/cacheinfo.h
-index 86b2e0d..c387396 100644
---- a/arch/x86/include/asm/cacheinfo.h
-+++ b/arch/x86/include/asm/cacheinfo.h
-@@ -2,6 +2,11 @@
- #ifndef _ASM_X86_CACHEINFO_H
- #define _ASM_X86_CACHEINFO_H
- 
-+/* Kernel controls MTRR and/or PAT MSRs. */
-+extern unsigned int memory_caching_control;
-+#define CACHE_MTRR 0x01
-+#define CACHE_PAT  0x02
-+
- void cacheinfo_amd_init_llc_id(struct cpuinfo_x86 *c, int cpu);
- void cacheinfo_hygon_init_llc_id(struct cpuinfo_x86 *c, int cpu);
- 
-diff --git a/arch/x86/kernel/cpu/cacheinfo.c b/arch/x86/kernel/cpu/cacheinfo.c
-index 6655683..32fb049 100644
---- a/arch/x86/kernel/cpu/cacheinfo.c
-+++ b/arch/x86/kernel/cpu/cacheinfo.c
-@@ -35,6 +35,9 @@ DEFINE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_llc_shared_map);
- /* Shared L2 cache maps */
- DEFINE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_l2c_shared_map);
- 
-+/* Kernel controls MTRR and/or PAT MSRs. */
-+unsigned int memory_caching_control __ro_after_init;
-+
- struct _cache_table {
- 	unsigned char descriptor;
- 	char cache_type;
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-index c8f8951..7bbaba4 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -917,7 +917,6 @@ int positive_have_wrcomb(void)
-  * Generic structure...
-  */
- const struct mtrr_ops generic_mtrr_ops = {
--	.use_intel_if		= 1,
- 	.set_all		= generic_set_all,
- 	.get			= generic_get_mtrr,
- 	.get_free_region	= generic_get_free_region,
-diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.c b/arch/x86/kernel/cpu/mtrr/mtrr.c
-index 2746cac..4209945 100644
---- a/arch/x86/kernel/cpu/mtrr/mtrr.c
-+++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
-@@ -46,6 +46,7 @@
- #include <linux/syscore_ops.h>
- #include <linux/rcupdate.h>
- 
-+#include <asm/cacheinfo.h>
- #include <asm/cpufeature.h>
- #include <asm/e820/api.h>
- #include <asm/mtrr.h>
-@@ -119,11 +120,11 @@ static int have_wrcomb(void)
- }
- 
- /*  This function returns the number of variable MTRRs  */
--static void __init set_num_var_ranges(void)
-+static void __init set_num_var_ranges(bool use_generic)
- {
- 	unsigned long config = 0, dummy;
- 
--	if (use_intel())
-+	if (use_generic)
- 		rdmsr(MSR_MTRRcap, config, dummy);
- 	else if (is_cpu(AMD) || is_cpu(HYGON))
- 		config = 2;
-@@ -756,14 +757,16 @@ void __init mtrr_bp_init(void)
- 
- 	if (mtrr_if) {
- 		__mtrr_enabled = true;
--		set_num_var_ranges();
-+		set_num_var_ranges(mtrr_if == &generic_mtrr_ops);
- 		init_table();
--		if (use_intel()) {
-+		if (mtrr_if == &generic_mtrr_ops) {
- 			/* BIOS may override */
- 			__mtrr_enabled = get_mtrr_state();
- 
--			if (mtrr_enabled())
-+			if (mtrr_enabled()) {
- 				mtrr_bp_pat_init();
-+				memory_caching_control |= CACHE_MTRR | CACHE_PAT;
-+			}
- 
- 			if (mtrr_cleanup(phys_addr)) {
- 				changed_by_mtrr_cleanup = 1;
-@@ -786,10 +789,7 @@ void __init mtrr_bp_init(void)
- 
- void mtrr_ap_init(void)
- {
--	if (!mtrr_enabled())
--		return;
--
--	if (!use_intel() || mtrr_aps_delayed_init)
-+	if (!memory_caching_control || mtrr_aps_delayed_init)
- 		return;
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 3b28c5b..d00db56 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -605,9 +605,9 @@ int fpu_clone(struct task_struct *dst, unsigned long clone_flags, bool minimal)
+ 	if (test_thread_flag(TIF_NEED_FPU_LOAD))
+ 		fpregs_restore_userregs();
+ 	save_fpregs_to_fpstate(dst_fpu);
++	fpregs_unlock();
+ 	if (!(clone_flags & CLONE_THREAD))
+ 		fpu_inherit_perms(dst_fpu);
+-	fpregs_unlock();
  
  	/*
-@@ -825,9 +825,7 @@ void mtrr_save_state(void)
- 
- void set_mtrr_aps_delayed_init(void)
- {
--	if (!mtrr_enabled())
--		return;
--	if (!use_intel())
-+	if (!memory_caching_control)
- 		return;
- 
- 	mtrr_aps_delayed_init = true;
-@@ -838,7 +836,7 @@ void set_mtrr_aps_delayed_init(void)
-  */
- void mtrr_aps_init(void)
- {
--	if (!use_intel() || !mtrr_enabled())
-+	if (!memory_caching_control)
- 		return;
- 
- 	/*
-@@ -855,7 +853,7 @@ void mtrr_aps_init(void)
- 
- void mtrr_bp_restore(void)
- {
--	if (!use_intel() || !mtrr_enabled())
-+	if (!memory_caching_control)
- 		return;
- 
- 	mtrr_if->set_all();
-@@ -866,7 +864,7 @@ static int __init mtrr_init_finialize(void)
- 	if (!mtrr_enabled())
- 		return 0;
- 
--	if (use_intel()) {
-+	if (memory_caching_control & CACHE_MTRR) {
- 		if (!changed_by_mtrr_cleanup)
- 			mtrr_state_warn();
- 		return 0;
-diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.h b/arch/x86/kernel/cpu/mtrr/mtrr.h
-index 2ac99e5..88b1c4b 100644
---- a/arch/x86/kernel/cpu/mtrr/mtrr.h
-+++ b/arch/x86/kernel/cpu/mtrr/mtrr.h
-@@ -14,7 +14,6 @@ extern unsigned int mtrr_usage_table[MTRR_MAX_VAR_RANGES];
- 
- struct mtrr_ops {
- 	u32	vendor;
--	u32	use_intel_if;
- 	void	(*set)(unsigned int reg, unsigned long base,
- 		       unsigned long size, mtrr_type type);
- 	void	(*set_all)(void);
-@@ -61,7 +60,6 @@ extern u64 size_or_mask, size_and_mask;
- extern const struct mtrr_ops *mtrr_if;
- 
- #define is_cpu(vnd)	(mtrr_if && mtrr_if->vendor == X86_VENDOR_##vnd)
--#define use_intel()	(mtrr_if && mtrr_if->use_intel_if == 1)
- 
- extern unsigned int num_var_ranges;
- extern u64 mtrr_tom2;
+ 	 * Children never inherit PASID state.
