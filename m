@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FA59622BB4
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Nov 2022 13:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3EB9624223
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Nov 2022 13:21:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbiKIMib (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Nov 2022 07:38:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32920 "EHLO
+        id S229870AbiKJMVv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Nov 2022 07:21:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbiKIMia (ORCPT
+        with ESMTP id S229560AbiKJMVu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Nov 2022 07:38:30 -0500
+        Thu, 10 Nov 2022 07:21:50 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 415485F5D;
-        Wed,  9 Nov 2022 04:38:27 -0800 (PST)
-Date:   Wed, 09 Nov 2022 12:38:24 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D082AE03;
+        Thu, 10 Nov 2022 04:21:49 -0800 (PST)
+Date:   Thu, 10 Nov 2022 12:21:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1667997505;
+        s=2020; t=1668082907;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LK9EehdZiIwa5K6hobz+g0DwtgtF0AoOZ+vJ/cDRSTQ=;
-        b=X8v+aomFyx+6qc64lsUgqcWnLs18jl2WeFenLKsSMchrZ0ZxEvrz5EIwyc1IMAF2F5FW8T
-        HISO1hwgxFBtBZrXHIBVMed5aw0Znht/g3wMWyJwB2hLuI77hhVsqy4OuawYnFqpHynSDE
-        hcPW7bh9bRoad7sPsnXFPd2AoJjZLPDMK4DNLRZJ16RbxR/Gn6CwZZLztAjll5nVpgqSDU
-        9G8ZkGuEB/OWYS4odt5stkzvMkrEM1O2LbJ3mzgyyzYN9fxBTP3g2JOBYfc2wnY7VxPlFp
-        wyD1EhhyBCH+RihPn7sdKXCXK41AXPOm+90Wz1hZCURg46G9vlAyqmJh2b2DHQ==
+        bh=K1OT911XdDs3yG/pnNaK+K8I2VvLnvr5ImbIi7GuHWM=;
+        b=TwSSAyvPfLB0av9i5FzmubMOho7bvU7Bat/LInHwaTMZoFOzr/iyurpbsAnjn6hIBkv779
+        axUSfrstzOo93h6Re6X++VSrdW83GdHgiVLm5qRhpH8/vhhLO6tGxcziFcm44uaHqBe8PI
+        4LtBJ6RlkbEYxQsllvi7I7cDy5JF9gIEPV0Kbi5/fLUXNSSxXvFyY/Cgxrgjt2NAZqUZkN
+        4ZKEv2S13b4dRkT/Wegxv+EQusQYDNPvn2e7yV++nDshfVu19x43eaAuvKFVAuOQzFXv8I
+        VxNpLT++rLtttAyDjgNxEFMtjcwL57VfcFmOM4O5EVbMZFSe4/Vkm/5aFvDjgQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1667997505;
+        s=2020e; t=1668082907;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LK9EehdZiIwa5K6hobz+g0DwtgtF0AoOZ+vJ/cDRSTQ=;
-        b=j8vSZZIKZIusfpm1+LokwLrBq+BhGrnFw5Vz30eY0DGuBIWuHzDlq8YVklpsW54ZJU46ge
-        7PNcUTWq56EgKUCw==
-From:   "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
+        bh=K1OT911XdDs3yG/pnNaK+K8I2VvLnvr5ImbIi7GuHWM=;
+        b=kCYd9lTcM1AJDV4SLBAzLnPjsMsRXVFlFNLKIofw+ERSe33PCfhpV/dw7/nBTUe7ng839Q
+        LljFAd3ULPh//RCg==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu/xstate: Fix XSTATE_WARN_ON() to emit relevant
- diagnostics
-Cc:     Andrew Cooper <andrew.cooper3@citrix.com>,
-        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
+Subject: [tip: x86/cpu] x86/mtrr: Simplify mtrr_ops initialization
+Cc:     Juergen Gross <jgross@suse.com>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220810221909.12768-1-andrew.cooper3@citrix.com>
-References: <20220810221909.12768-1-andrew.cooper3@citrix.com>
+In-Reply-To: <20221102074713.21493-17-jgross@suse.com>
+References: <20221102074713.21493-17-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <166799750447.4906.6850685710564265854.tip-bot2@tip-bot2>
+Message-ID: <166808290573.4906.10004430702775497703.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,75 +63,210 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fpu branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     48280042f2c6e3ac2cfb1d8b752ab4a7e0baea24
-Gitweb:        https://git.kernel.org/tip/48280042f2c6e3ac2cfb1d8b752ab4a7e0baea24
-Author:        Andrew Cooper <andrew.cooper3@citrix.com>
-AuthorDate:    Wed, 10 Aug 2022 23:19:09 +01:00
+Commit-ID:     f8bd9f25c9815161a39886fdd96d110b536a6074
+Gitweb:        https://git.kernel.org/tip/f8bd9f25c9815161a39886fdd96d110b536a6074
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Wed, 02 Nov 2022 08:47:13 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 09 Nov 2022 13:28:31 +01:00
+CommitterDate: Thu, 10 Nov 2022 13:12:45 +01:00
 
-x86/fpu/xstate: Fix XSTATE_WARN_ON() to emit relevant diagnostics
+x86/mtrr: Simplify mtrr_ops initialization
 
-"XSAVE consistency problem" has been reported under Xen, but that's the extent
-of my divination skills.
+The way mtrr_if is initialized with the correct mtrr_ops structure is
+quite weird.
 
-Modify XSTATE_WARN_ON() to force the caller to provide relevant diagnostic
-information, and modify each caller suitably.
+Simplify that by dropping the vendor specific init functions and the
+mtrr_ops[] array. Replace those with direct assignments of the related
+vendor specific ops array to mtrr_if.
 
-For check_xstate_against_struct(), this removes a double WARN() where one will
-do perfectly fine.
+Note that a direct assignment is okay even for 64-bit builds, where the
+symbol isn't present, as the related code will be subject to "dead code
+elimination" due to how cpu_feature_enabled() is implemented.
 
-CC stable as this has been wonky debugging for 7 years and it is good to
-have there too.
-
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20220810221909.12768-1-andrew.cooper3@citrix.com
+Link: https://lore.kernel.org/r/20221102074713.21493-17-jgross@suse.com
+Signed-off-by: Borislav Petkov <bp@suse.de>
 ---
- arch/x86/kernel/fpu/xstate.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/mtrr/amd.c     |  8 +-------
+ arch/x86/kernel/cpu/mtrr/centaur.c |  8 +-------
+ arch/x86/kernel/cpu/mtrr/cyrix.c   |  8 +-------
+ arch/x86/kernel/cpu/mtrr/mtrr.c    | 30 ++---------------------------
+ arch/x86/kernel/cpu/mtrr/mtrr.h    | 10 ++++------
+ 5 files changed, 10 insertions(+), 54 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 59e543b..c2dde46 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -440,8 +440,8 @@ static void __init __xstate_dump_leaves(void)
- 	}
+diff --git a/arch/x86/kernel/cpu/mtrr/amd.c b/arch/x86/kernel/cpu/mtrr/amd.c
+index a65a027..eff6ac6 100644
+--- a/arch/x86/kernel/cpu/mtrr/amd.c
++++ b/arch/x86/kernel/cpu/mtrr/amd.c
+@@ -109,7 +109,7 @@ amd_validate_add_page(unsigned long base, unsigned long size, unsigned int type)
+ 	return 0;
  }
  
--#define XSTATE_WARN_ON(x) do {							\
--	if (WARN_ONCE(x, "XSAVE consistency problem, dumping leaves")) {	\
-+#define XSTATE_WARN_ON(x, fmt, ...) do {					\
-+	if (WARN_ONCE(x, "XSAVE consistency problem: " fmt, ##__VA_ARGS__)) {	\
- 		__xstate_dump_leaves();						\
- 	}									\
- } while (0)
-@@ -554,8 +554,7 @@ static bool __init check_xstate_against_struct(int nr)
- 	    (nr >= XFEATURE_MAX) ||
- 	    (nr == XFEATURE_PT_UNIMPLEMENTED_SO_FAR) ||
- 	    ((nr >= XFEATURE_RSRVD_COMP_11) && (nr <= XFEATURE_RSRVD_COMP_16))) {
--		WARN_ONCE(1, "no structure for xstate: %d\n", nr);
--		XSTATE_WARN_ON(1);
-+		XSTATE_WARN_ON(1, "No structure for xstate: %d\n", nr);
- 		return false;
- 	}
- 	return true;
-@@ -598,12 +597,13 @@ static bool __init paranoid_xstate_size_valid(unsigned int kernel_size)
- 		 * XSAVES.
- 		 */
- 		if (!xsaves && xfeature_is_supervisor(i)) {
--			XSTATE_WARN_ON(1);
-+			XSTATE_WARN_ON(1, "Got supervisor feature %d, but XSAVES not advertised\n", i);
- 			return false;
- 		}
- 	}
- 	size = xstate_calculate_size(fpu_kernel_cfg.max_features, compacted);
--	XSTATE_WARN_ON(size != kernel_size);
-+	XSTATE_WARN_ON(size != kernel_size,
-+		       "size %u != kernel_size %u\n", size, kernel_size);
- 	return size == kernel_size;
+-static const struct mtrr_ops amd_mtrr_ops = {
++const struct mtrr_ops amd_mtrr_ops = {
+ 	.vendor            = X86_VENDOR_AMD,
+ 	.set               = amd_set_mtrr,
+ 	.get               = amd_get_mtrr,
+@@ -117,9 +117,3 @@ static const struct mtrr_ops amd_mtrr_ops = {
+ 	.validate_add_page = amd_validate_add_page,
+ 	.have_wrcomb       = positive_have_wrcomb,
+ };
+-
+-int __init amd_init_mtrr(void)
+-{
+-	set_mtrr_ops(&amd_mtrr_ops);
+-	return 0;
+-}
+diff --git a/arch/x86/kernel/cpu/mtrr/centaur.c b/arch/x86/kernel/cpu/mtrr/centaur.c
+index f271778..b8a74ed 100644
+--- a/arch/x86/kernel/cpu/mtrr/centaur.c
++++ b/arch/x86/kernel/cpu/mtrr/centaur.c
+@@ -111,7 +111,7 @@ centaur_validate_add_page(unsigned long base, unsigned long size, unsigned int t
+ 	return 0;
  }
  
+-static const struct mtrr_ops centaur_mtrr_ops = {
++const struct mtrr_ops centaur_mtrr_ops = {
+ 	.vendor            = X86_VENDOR_CENTAUR,
+ 	.set               = centaur_set_mcr,
+ 	.get               = centaur_get_mcr,
+@@ -119,9 +119,3 @@ static const struct mtrr_ops centaur_mtrr_ops = {
+ 	.validate_add_page = centaur_validate_add_page,
+ 	.have_wrcomb       = positive_have_wrcomb,
+ };
+-
+-int __init centaur_init_mtrr(void)
+-{
+-	set_mtrr_ops(&centaur_mtrr_ops);
+-	return 0;
+-}
+diff --git a/arch/x86/kernel/cpu/mtrr/cyrix.c b/arch/x86/kernel/cpu/mtrr/cyrix.c
+index c77d3b0..173b9e0 100644
+--- a/arch/x86/kernel/cpu/mtrr/cyrix.c
++++ b/arch/x86/kernel/cpu/mtrr/cyrix.c
+@@ -234,7 +234,7 @@ static void cyrix_set_arr(unsigned int reg, unsigned long base,
+ 	post_set();
+ }
+ 
+-static const struct mtrr_ops cyrix_mtrr_ops = {
++const struct mtrr_ops cyrix_mtrr_ops = {
+ 	.vendor            = X86_VENDOR_CYRIX,
+ 	.set               = cyrix_set_arr,
+ 	.get               = cyrix_get_arr,
+@@ -242,9 +242,3 @@ static const struct mtrr_ops cyrix_mtrr_ops = {
+ 	.validate_add_page = generic_validate_add_page,
+ 	.have_wrcomb       = positive_have_wrcomb,
+ };
+-
+-int __init cyrix_init_mtrr(void)
+-{
+-	set_mtrr_ops(&cyrix_mtrr_ops);
+-	return 0;
+-}
+diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.c b/arch/x86/kernel/cpu/mtrr/mtrr.c
+index 8403daf..6432abc 100644
+--- a/arch/x86/kernel/cpu/mtrr/mtrr.c
++++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
+@@ -69,16 +69,8 @@ static DEFINE_MUTEX(mtrr_mutex);
+ 
+ u64 size_or_mask, size_and_mask;
+ 
+-static const struct mtrr_ops *mtrr_ops[X86_VENDOR_NUM] __ro_after_init;
+-
+ const struct mtrr_ops *mtrr_if;
+ 
+-void __init set_mtrr_ops(const struct mtrr_ops *ops)
+-{
+-	if (ops->vendor && ops->vendor < X86_VENDOR_NUM)
+-		mtrr_ops[ops->vendor] = ops;
+-}
+-
+ /*  Returns non-zero if we have the write-combining memory type  */
+ static int have_wrcomb(void)
+ {
+@@ -582,20 +574,6 @@ int arch_phys_wc_index(int handle)
+ }
+ EXPORT_SYMBOL_GPL(arch_phys_wc_index);
+ 
+-/*
+- * HACK ALERT!
+- * These should be called implicitly, but we can't yet until all the initcall
+- * stuff is done...
+- */
+-static void __init init_ifs(void)
+-{
+-#ifndef CONFIG_X86_64
+-	amd_init_mtrr();
+-	cyrix_init_mtrr();
+-	centaur_init_mtrr();
+-#endif
+-}
+-
+ /* The suspend/resume methods are only for CPU without MTRR. CPU using generic
+  * MTRR driver doesn't require this
+  */
+@@ -653,8 +631,6 @@ void __init mtrr_bp_init(void)
+ {
+ 	u32 phys_addr;
+ 
+-	init_ifs();
+-
+ 	phys_addr = 32;
+ 
+ 	if (boot_cpu_has(X86_FEATURE_MTRR)) {
+@@ -695,21 +671,21 @@ void __init mtrr_bp_init(void)
+ 		case X86_VENDOR_AMD:
+ 			if (cpu_feature_enabled(X86_FEATURE_K6_MTRR)) {
+ 				/* Pre-Athlon (K6) AMD CPU MTRRs */
+-				mtrr_if = mtrr_ops[X86_VENDOR_AMD];
++				mtrr_if = &amd_mtrr_ops;
+ 				size_or_mask = SIZE_OR_MASK_BITS(32);
+ 				size_and_mask = 0;
+ 			}
+ 			break;
+ 		case X86_VENDOR_CENTAUR:
+ 			if (cpu_feature_enabled(X86_FEATURE_CENTAUR_MCR)) {
+-				mtrr_if = mtrr_ops[X86_VENDOR_CENTAUR];
++				mtrr_if = &centaur_mtrr_ops;
+ 				size_or_mask = SIZE_OR_MASK_BITS(32);
+ 				size_and_mask = 0;
+ 			}
+ 			break;
+ 		case X86_VENDOR_CYRIX:
+ 			if (cpu_feature_enabled(X86_FEATURE_CYRIX_ARR)) {
+-				mtrr_if = mtrr_ops[X86_VENDOR_CYRIX];
++				mtrr_if = &cyrix_mtrr_ops;
+ 				size_or_mask = SIZE_OR_MASK_BITS(32);
+ 				size_and_mask = 0;
+ 			}
+diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.h b/arch/x86/kernel/cpu/mtrr/mtrr.h
+index c98928c..02eb587 100644
+--- a/arch/x86/kernel/cpu/mtrr/mtrr.h
++++ b/arch/x86/kernel/cpu/mtrr/mtrr.h
+@@ -51,8 +51,6 @@ void fill_mtrr_var_range(unsigned int index,
+ 		u32 base_lo, u32 base_hi, u32 mask_lo, u32 mask_hi);
+ bool get_mtrr_state(void);
+ 
+-extern void __init set_mtrr_ops(const struct mtrr_ops *ops);
+-
+ extern u64 size_or_mask, size_and_mask;
+ extern const struct mtrr_ops *mtrr_if;
+ 
+@@ -66,10 +64,10 @@ void mtrr_state_warn(void);
+ const char *mtrr_attrib_to_str(int x);
+ void mtrr_wrmsr(unsigned, unsigned, unsigned);
+ 
+-/* CPU specific mtrr init functions */
+-int amd_init_mtrr(void);
+-int cyrix_init_mtrr(void);
+-int centaur_init_mtrr(void);
++/* CPU specific mtrr_ops vectors. */
++extern const struct mtrr_ops amd_mtrr_ops;
++extern const struct mtrr_ops cyrix_mtrr_ops;
++extern const struct mtrr_ops centaur_mtrr_ops;
+ 
+ extern int changed_by_mtrr_cleanup;
+ extern int mtrr_cleanup(unsigned address_bits);
