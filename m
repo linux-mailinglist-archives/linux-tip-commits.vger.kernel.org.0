@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B21CA6249C3
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Nov 2022 19:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7DFD6260AD
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Nov 2022 18:50:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbiKJSnS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Nov 2022 13:43:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38408 "EHLO
+        id S230303AbiKKRuI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Nov 2022 12:50:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbiKJSnR (ORCPT
+        with ESMTP id S232851AbiKKRuH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Nov 2022 13:43:17 -0500
+        Fri, 11 Nov 2022 12:50:07 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88DB219C0B;
-        Thu, 10 Nov 2022 10:43:15 -0800 (PST)
-Date:   Thu, 10 Nov 2022 18:43:11 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2545A78782;
+        Fri, 11 Nov 2022 09:50:06 -0800 (PST)
+Date:   Fri, 11 Nov 2022 17:50:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1668105792;
+        s=2020; t=1668189003;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=CN0QjurQxBCq6swfpq+Ep2vruZmfeCLtpDjqNO7tzvU=;
-        b=N2plv8MdjhRY5UboBC6aT5sTlZJMSgt43ytSsWxVFvZ3fh/secfNRRKVzcJjBiJfuoRh7g
-        nKOvvJem7vBknyNMifHcgZf1BPCMEi2EX9Ew0szPv2as4//bxY/AwjjZ6HSSDpzDS3PG1y
-        PdAhmoDtaaY5rEH0Vio56n5FM8+rRiT6KgfGBLf7wDq29vp8ZPvcsO3OOt/tvltywbDuHW
-        iOEx6RWFD4cAEbP5AcwRcN4rMIouUjcqf06ynRWUMIakEZhfykx/IGV3bEsQ7/JHgJuStK
-        Pss8IcxKKMvqGLhcei4ujTZNcNLk3ovwy3Cc/eurFwnsVggzkBcRJIZq6r8l+A==
+        bh=/M7S9czl9l5Pm5Q6ZrOdlNcR7jX39FnWeWvm4H7tNT4=;
+        b=UV7VaeG1V5L2i6GNTHsx4ygpNynDfl3Yx4hNIb04TOwXxe4qt8yU+DTdKDCCrFjsrsETOV
+        qtTkcwPP4Sm+PzE9u/prjcKSXkunSgKBfbAlenMgelfUWTUBC7W5Ax8/HIvMcDqRsVIDA7
+        FSmvvycGoKX3CtzWvmNwlF/30UMg00rowaI1SE41DMS7XJ05dWoqIU02jy9gjxSLA18egx
+        WPV/fksv/2Usi9wevP6Zhdzo5KeOEVnPp6/M4F5LDjfxOMhf3DzZ01MZdBoYXZSJ0h0ujT
+        P2GiMqmYZ2bnw9gFJiq/txhtUAGhqAnomHFJ+OeJeOsy8abU18pdVUj3RwnkZg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1668105792;
+        s=2020e; t=1668189003;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=CN0QjurQxBCq6swfpq+Ep2vruZmfeCLtpDjqNO7tzvU=;
-        b=FQ8eP9iVPVxuiPOEoRzZ1d8qQeXohrHpkdGb5teMVOG9LO85aayDz4BdwjXlR7JIXZ2SBb
-        TkE53Ii8eFBSP/CQ==
-From:   "tip-bot2 for Guilherme G. Piccoli" <tip-bot2@linutronix.de>
+        bh=/M7S9czl9l5Pm5Q6ZrOdlNcR7jX39FnWeWvm4H7tNT4=;
+        b=qS5UulMPFjeD7FiFpTrzgrr/QR0B0nRgWyRrSEMU89FJbS7nYjscVXMQUWD3tnkr9/awK7
+        PORyMnILaAVp/RCQ==
+From:   "tip-bot2 for Tony W Wang-oc" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/splitlock] x86/split_lock: Add sysctl to control the misery mode
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+Subject: [tip: x86/cpu] x86/acpi/cstate: Optimize ARB_DISABLE on Centaur CPUs
+Cc:     "Tony W Wang-oc" <TonyWWang-oc@zhaoxin.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Andre Almeida <andrealmeid@igalia.com>, x86@kernel.org,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <166810579123.4906.13523276753053282918.tip-bot2@tip-bot2>
+Message-ID: <166818900226.4906.17553043807216439790.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -61,211 +59,64 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/splitlock branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     727209376f4998bc84db1d5d8af15afea846a92b
-Gitweb:        https://git.kernel.org/tip/727209376f4998bc84db1d5d8af15afea84=
-6a92b
-Author:        Guilherme G. Piccoli <gpiccoli@igalia.com>
-AuthorDate:    Mon, 24 Oct 2022 17:02:54 -03:00
+Commit-ID:     dacca1e5e75d7c1297f1334cdc10491dcdd1b2b8
+Gitweb:        https://git.kernel.org/tip/dacca1e5e75d7c1297f1334cdc10491dcdd1b2b8
+Author:        Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+AuthorDate:    Mon, 07 Nov 2022 11:34:49 +08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 10 Nov 2022 10:14:22 -08:00
+CommitterDate: Fri, 11 Nov 2022 09:42:05 -08:00
 
-x86/split_lock: Add sysctl to control the misery mode
+x86/acpi/cstate: Optimize ARB_DISABLE on Centaur CPUs
 
-Commit b041b525dab9 ("x86/split_lock: Make life miserable for split lockers")
-changed the way the split lock detector works when in "warn" mode;
-basically, it not only shows the warn message, but also intentionally
-introduces a slowdown through sleeping plus serialization mechanism
-on such task. Based on discussions in [0], seems the warning alone
-wasn't enough motivation for userspace developers to fix their
-applications.
+On all recent Centaur platforms, ARB_DISABLE is handled by PMU
+automatically while entering C3 type state. No need for OS to
+issue the ARB_DISABLE, so set bm_control to zero to indicate that.
 
-This slowdown is enough to totally break some proprietary (aka.
-unfixable) userspace[1].
-
-Happens that originally the proposal in [0] was to add a new mode
-which would warns + slowdown the "split locking" task, keeping the
-old warn mode untouched. In the end, that idea was discarded and
-the regular/default "warn" mode now slows down the applications. This
-is quite aggressive with regards proprietary/legacy programs that
-basically are unable to properly run in kernel with this change.
-While it is understandable that a malicious application could DoS
-by split locking, it seems unacceptable to regress old/proprietary
-userspace programs through a default configuration that previously
-worked. An example of such breakage was reported in [1].
-
-Add a sysctl to allow controlling the "misery mode" behavior, as per
-Thomas suggestion on [2]. This way, users running legacy and/or
-proprietary software are allowed to still execute them with a decent
-performance while still observing the warning messages on kernel log.
-
-[0] https://lore.kernel.org/lkml/20220217012721.9694-1-tony.luck@intel.com/
-[1] https://github.com/doitsujin/dxvk/issues/2938
-[2] https://lore.kernel.org/lkml/87pmf4bter.ffs@tglx/
-
-[ dhansen: minor changelog tweaks, including clarifying the actual
-  	   problem ]
-
-Fixes: b041b525dab9 ("x86/split_lock: Make life miserable for split lockers")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Andre Almeida <andrealmeid@igalia.com>
-Link: https://lore.kernel.org/all/20221024200254.635256-1-gpiccoli%40igalia.c=
-om
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/all/1667792089-4904-1-git-send-email-TonyWWang-oc%40zhaoxin.com
 ---
- Documentation/admin-guide/sysctl/kernel.rst | 23 +++++++-
- arch/x86/kernel/cpu/intel.c                 | 63 ++++++++++++++++----
- 2 files changed, 76 insertions(+), 10 deletions(-)
+ arch/x86/kernel/acpi/cstate.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admi=
-n-guide/sysctl/kernel.rst
-index 98d1b19..c2c64c1 100644
---- a/Documentation/admin-guide/sysctl/kernel.rst
-+++ b/Documentation/admin-guide/sysctl/kernel.rst
-@@ -1314,6 +1314,29 @@ watchdog work to be queued by the watchdog timer funct=
-ion, otherwise the NMI
- watchdog =E2=80=94 if enabled =E2=80=94 can detect a hard lockup condition.
-=20
-=20
-+split_lock_mitigate (x86 only)
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
+index 7945eae..401808b 100644
+--- a/arch/x86/kernel/acpi/cstate.c
++++ b/arch/x86/kernel/acpi/cstate.c
+@@ -52,17 +52,25 @@ void acpi_processor_power_init_bm_check(struct acpi_processor_flags *flags,
+ 	if (c->x86_vendor == X86_VENDOR_INTEL &&
+ 	    (c->x86 > 0xf || (c->x86 == 6 && c->x86_model >= 0x0f)))
+ 			flags->bm_control = 0;
+-	/*
+-	 * For all recent Centaur CPUs, the ucode will make sure that each
+-	 * core can keep cache coherence with each other while entering C3
+-	 * type state. So, set bm_check to 1 to indicate that the kernel
+-	 * doesn't need to execute a cache flush operation (WBINVD) when
+-	 * entering C3 type state.
+-	 */
 +
-+On x86, each "split lock" imposes a system-wide performance penalty. On larg=
-er
-+systems, large numbers of split locks from unprivileged users can result in
-+denials of service to well-behaved and potentially more important users.
-+
-+The kernel mitigates these bad users by detecting split locks and imposing
-+penalties: forcing them to wait and only allowing one core to execute split
-+locks at a time.
-+
-+These mitigations can make those bad applications unbearably slow. Setting
-+split_lock_mitigate=3D0 may restore some application performance, but will a=
-lso
-+increase system exposure to denial of service attacks from split lock users.
-+
-+=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+0 Disable the mitigation mode - just warns the split lock on kernel log
-+  and exposes the system to denials of service from the split lockers.
-+1 Enable the mitigation mode (this is the default) - penalizes the split
-+  lockers with intentional performance degradation.
-+=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+
- stack_erasing
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-=20
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 2d7ea54..4278996 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -1034,8 +1034,32 @@ static const struct {
-=20
- static struct ratelimit_state bld_ratelimit;
-=20
-+static unsigned int sysctl_sld_mitigate =3D 1;
- static DEFINE_SEMAPHORE(buslock_sem);
-=20
-+#ifdef CONFIG_PROC_SYSCTL
-+static struct ctl_table sld_sysctls[] =3D {
-+	{
-+		.procname       =3D "split_lock_mitigate",
-+		.data           =3D &sysctl_sld_mitigate,
-+		.maxlen         =3D sizeof(unsigned int),
-+		.mode           =3D 0644,
-+		.proc_handler	=3D proc_douintvec_minmax,
-+		.extra1         =3D SYSCTL_ZERO,
-+		.extra2         =3D SYSCTL_ONE,
-+	},
-+	{}
-+};
-+
-+static int __init sld_mitigate_sysctl_init(void)
-+{
-+	register_sysctl_init("kernel", sld_sysctls);
-+	return 0;
-+}
-+
-+late_initcall(sld_mitigate_sysctl_init);
-+#endif
-+
- static inline bool match_option(const char *arg, int arglen, const char *opt)
- {
- 	int len =3D strlen(opt), ratelimit;
-@@ -1146,12 +1170,20 @@ static void split_lock_init(void)
- 		split_lock_verify_msr(sld_state !=3D sld_off);
- }
-=20
--static void __split_lock_reenable(struct work_struct *work)
-+static void __split_lock_reenable_unlock(struct work_struct *work)
- {
- 	sld_update_msr(true);
- 	up(&buslock_sem);
- }
-=20
-+static DECLARE_DELAYED_WORK(sl_reenable_unlock, __split_lock_reenable_unlock=
-);
-+
-+static void __split_lock_reenable(struct work_struct *work)
-+{
-+	sld_update_msr(true);
-+}
-+static DECLARE_DELAYED_WORK(sl_reenable, __split_lock_reenable);
-+
- /*
-  * If a CPU goes offline with pending delayed work to re-enable split lock
-  * detection then the delayed work will be executed on some other CPU. That
-@@ -1169,10 +1201,9 @@ static int splitlock_cpu_offline(unsigned int cpu)
- 	return 0;
- }
-=20
--static DECLARE_DELAYED_WORK(split_lock_reenable, __split_lock_reenable);
--
- static void split_lock_warn(unsigned long ip)
- {
-+	struct delayed_work *work;
- 	int cpu;
-=20
- 	if (!current->reported_split_lock)
-@@ -1180,14 +1211,26 @@ static void split_lock_warn(unsigned long ip)
- 				    current->comm, current->pid, ip);
- 	current->reported_split_lock =3D 1;
-=20
--	/* misery factor #1, sleep 10ms before trying to execute split lock */
--	if (msleep_interruptible(10) > 0)
--		return;
--	/* Misery factor #2, only allow one buslocked disabled core at a time */
--	if (down_interruptible(&buslock_sem) =3D=3D -EINTR)
--		return;
-+	if (sysctl_sld_mitigate) {
-+		/*
-+		 * misery factor #1:
-+		 * sleep 10ms before trying to execute split lock.
-+		 */
-+		if (msleep_interruptible(10) > 0)
-+			return;
-+		/*
-+		 * Misery factor #2:
-+		 * only allow one buslocked disabled core at a time.
-+		 */
-+		if (down_interruptible(&buslock_sem) =3D=3D -EINTR)
-+			return;
-+		work =3D &sl_reenable_unlock;
-+	} else {
-+		work =3D &sl_reenable;
-+	}
-+
- 	cpu =3D get_cpu();
--	schedule_delayed_work_on(cpu, &split_lock_reenable, 2);
-+	schedule_delayed_work_on(cpu, work, 2);
-=20
- 	/* Disable split lock detection on this CPU to make progress */
- 	sld_update_msr(false);
+ 	if (c->x86_vendor == X86_VENDOR_CENTAUR) {
+ 		if (c->x86 > 6 || (c->x86 == 6 && c->x86_model == 0x0f &&
+-		    c->x86_stepping >= 0x0e))
++		    c->x86_stepping >= 0x0e)) {
++			/*
++			 * For all recent Centaur CPUs, the ucode will make sure that each
++			 * core can keep cache coherence with each other while entering C3
++			 * type state. So, set bm_check to 1 to indicate that the kernel
++			 * doesn't need to execute a cache flush operation (WBINVD) when
++			 * entering C3 type state.
++			 */
+ 			flags->bm_check = 1;
++			/*
++			 * For all recent Centaur platforms, ARB_DISABLE is a nop.
++			 * Set bm_control to zero to indicate that ARB_DISABLE is
++			 * not required while entering C3 type state.
++			 */
++			flags->bm_control = 0;
++		}
+ 	}
+ 
+ 	if (c->x86_vendor == X86_VENDOR_ZHAOXIN) {
