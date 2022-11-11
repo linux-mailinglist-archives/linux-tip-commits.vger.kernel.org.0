@@ -2,50 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7DFD6260AD
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Nov 2022 18:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0E486263F8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Nov 2022 22:58:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbiKKRuI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Nov 2022 12:50:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44834 "EHLO
+        id S233344AbiKKV6Z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Nov 2022 16:58:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232851AbiKKRuH (ORCPT
+        with ESMTP id S230103AbiKKV6Y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Nov 2022 12:50:07 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2545A78782;
-        Fri, 11 Nov 2022 09:50:06 -0800 (PST)
-Date:   Fri, 11 Nov 2022 17:50:02 -0000
+        Fri, 11 Nov 2022 16:58:24 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D92FB9;
+        Fri, 11 Nov 2022 13:58:22 -0800 (PST)
+Date:   Fri, 11 Nov 2022 21:58:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1668189003;
+        s=2020; t=1668203899;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=/M7S9czl9l5Pm5Q6ZrOdlNcR7jX39FnWeWvm4H7tNT4=;
-        b=UV7VaeG1V5L2i6GNTHsx4ygpNynDfl3Yx4hNIb04TOwXxe4qt8yU+DTdKDCCrFjsrsETOV
-        qtTkcwPP4Sm+PzE9u/prjcKSXkunSgKBfbAlenMgelfUWTUBC7W5Ax8/HIvMcDqRsVIDA7
-        FSmvvycGoKX3CtzWvmNwlF/30UMg00rowaI1SE41DMS7XJ05dWoqIU02jy9gjxSLA18egx
-        WPV/fksv/2Usi9wevP6Zhdzo5KeOEVnPp6/M4F5LDjfxOMhf3DzZ01MZdBoYXZSJ0h0ujT
-        P2GiMqmYZ2bnw9gFJiq/txhtUAGhqAnomHFJ+OeJeOsy8abU18pdVUj3RwnkZg==
+        bh=sgFRx+YUYLURaSF5O8vuDDLXxJFuCKSHBieN9Fs6Pd0=;
+        b=KvBDGYd/UtFV2flMlOYaR1WqU9yqbwEpBGvqwXgeeHA/UJRu82d4wp0kOAOFDRu4mUGx/c
+        xLaxrv8Ic9u1MtixNfBVPAqJ9VZk7FFkG9TtrweC/Y6GbaLtYfJ2T3mSZvBl3iRccl0oP1
+        P83cmwBfXVNfv8bfGoMbrqxsjtbJKnsn4UAhrdoqoqQ8KDKpY6CQub6HQuVFZb6zumfGs3
+        RJNEWLqDnLonDDLZ9zLwVxsCIcdLS7gUI0VIsmBDX6ya8AGOU6w+YZbrJ/c6RA31ny2y6U
+        Ocyd/wwT4UHKOPfi8wROAxFEe98gvgKj09IzcybMCCmVPBRDUWYVYfMr1MCZxA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1668189003;
+        s=2020e; t=1668203899;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=/M7S9czl9l5Pm5Q6ZrOdlNcR7jX39FnWeWvm4H7tNT4=;
-        b=qS5UulMPFjeD7FiFpTrzgrr/QR0B0nRgWyRrSEMU89FJbS7nYjscVXMQUWD3tnkr9/awK7
-        PORyMnILaAVp/RCQ==
-From:   "tip-bot2 for Tony W Wang-oc" <tip-bot2@linutronix.de>
+        bh=sgFRx+YUYLURaSF5O8vuDDLXxJFuCKSHBieN9Fs6Pd0=;
+        b=yhmqPIPKHMXAnefwq6Klt0D6uIpFsiCiR0B5PbHvc4O9qG3LPz+EKgrQBXFwVvrVHesQco
+        hxAH9DmeuZNnchAA==
+From:   "tip-bot2 for Weihong Zhang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/acpi/cstate: Optimize ARB_DISABLE on Centaur CPUs
-Cc:     "Tony W Wang-oc" <TonyWWang-oc@zhaoxin.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
+Subject: [tip: x86/mm] selftests/x86/lam: Add ARCH_FORCE_TAGGED_SVA test cases
+ for linear-address masking
+Cc:     Weihong Zhang <weihong.zhang@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <166818900226.4906.17553043807216439790.tip-bot2@tip-bot2>
+Message-ID: <166820389823.4906.10968580709475105825.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,64 +60,322 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     dacca1e5e75d7c1297f1334cdc10491dcdd1b2b8
-Gitweb:        https://git.kernel.org/tip/dacca1e5e75d7c1297f1334cdc10491dcdd1b2b8
-Author:        Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-AuthorDate:    Mon, 07 Nov 2022 11:34:49 +08:00
+Commit-ID:     bf1269766228ef169145af26ae50ef9ef095b6fe
+Gitweb:        https://git.kernel.org/tip/bf1269766228ef169145af26ae50ef9ef095b6fe
+Author:        Weihong Zhang <weihong.zhang@intel.com>
+AuthorDate:    Wed, 09 Nov 2022 19:51:40 +03:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 11 Nov 2022 09:42:05 -08:00
+CommitterDate: Fri, 11 Nov 2022 13:29:56 -08:00
 
-x86/acpi/cstate: Optimize ARB_DISABLE on Centaur CPUs
+selftests/x86/lam: Add ARCH_FORCE_TAGGED_SVA test cases for linear-address masking
 
-On all recent Centaur platforms, ARB_DISABLE is handled by PMU
-automatically while entering C3 type state. No need for OS to
-issue the ARB_DISABLE, so set bm_control to zero to indicate that.
+By default do not allow to enable both LAM and use SVA in the same
+process.
+The new ARCH_FORCE_TAGGED_SVA arch_prctl() overrides the limitation.
 
-Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+Add new test cases for the new arch_prctl:
+Before using ARCH_FORCE_TAGGED_SVA, should not allow to enable LAM/SVA
+coexisting. the test cases should be negative.
+
+The test depands on idxd driver and iommu. before test, need add
+"intel_iommu=on,sm_on" in kernel command line and insmod idxd driver.
+
+Signed-off-by: Weihong Zhang <weihong.zhang@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/all/1667792089-4904-1-git-send-email-TonyWWang-oc%40zhaoxin.com
+Link: https://lore.kernel.org/all/20221109165140.9137-17-kirill.shutemov%40linux.intel.com
 ---
- arch/x86/kernel/acpi/cstate.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ tools/testing/selftests/x86/lam.c | 237 ++++++++++++++++++++++++++++-
+ 1 file changed, 235 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
-index 7945eae..401808b 100644
---- a/arch/x86/kernel/acpi/cstate.c
-+++ b/arch/x86/kernel/acpi/cstate.c
-@@ -52,17 +52,25 @@ void acpi_processor_power_init_bm_check(struct acpi_processor_flags *flags,
- 	if (c->x86_vendor == X86_VENDOR_INTEL &&
- 	    (c->x86 > 0xf || (c->x86 == 6 && c->x86_model >= 0x0f)))
- 			flags->bm_control = 0;
--	/*
--	 * For all recent Centaur CPUs, the ucode will make sure that each
--	 * core can keep cache coherence with each other while entering C3
--	 * type state. So, set bm_check to 1 to indicate that the kernel
--	 * doesn't need to execute a cache flush operation (WBINVD) when
--	 * entering C3 type state.
--	 */
-+
- 	if (c->x86_vendor == X86_VENDOR_CENTAUR) {
- 		if (c->x86 > 6 || (c->x86 == 6 && c->x86_model == 0x0f &&
--		    c->x86_stepping >= 0x0e))
-+		    c->x86_stepping >= 0x0e)) {
-+			/*
-+			 * For all recent Centaur CPUs, the ucode will make sure that each
-+			 * core can keep cache coherence with each other while entering C3
-+			 * type state. So, set bm_check to 1 to indicate that the kernel
-+			 * doesn't need to execute a cache flush operation (WBINVD) when
-+			 * entering C3 type state.
-+			 */
- 			flags->bm_check = 1;
-+			/*
-+			 * For all recent Centaur platforms, ARB_DISABLE is a nop.
-+			 * Set bm_control to zero to indicate that ARB_DISABLE is
-+			 * not required while entering C3 type state.
-+			 */
-+			flags->bm_control = 0;
-+		}
- 	}
+diff --git a/tools/testing/selftests/x86/lam.c b/tools/testing/selftests/x86/lam.c
+index cfc9073..52a876a 100644
+--- a/tools/testing/selftests/x86/lam.c
++++ b/tools/testing/selftests/x86/lam.c
+@@ -30,6 +30,7 @@
+ #define ARCH_GET_UNTAG_MASK     0x4001
+ #define ARCH_ENABLE_TAGGED_ADDR 0x4002
+ #define ARCH_GET_MAX_TAG_BITS   0x4003
++#define ARCH_FORCE_TAGGED_SVA	0x4004
  
- 	if (c->x86_vendor == X86_VENDOR_ZHAOXIN) {
+ /* Specified test function bits */
+ #define FUNC_MALLOC             0x1
+@@ -38,8 +39,9 @@
+ #define FUNC_SYSCALL            0x8
+ #define FUNC_URING              0x10
+ #define FUNC_INHERITE           0x20
++#define FUNC_PASID              0x40
+ 
+-#define TEST_MASK               0x3f
++#define TEST_MASK               0x7f
+ 
+ #define LOW_ADDR                (0x1UL << 30)
+ #define HIGH_ADDR               (0x3UL << 48)
+@@ -55,11 +57,19 @@
+ #define URING_QUEUE_SZ 1
+ #define URING_BLOCK_SZ 2048
+ 
++/* Pasid test define */
++#define LAM_CMD_BIT 0x1
++#define PAS_CMD_BIT 0x2
++#define SVA_CMD_BIT 0x4
++
++#define PAS_CMD(cmd1, cmd2, cmd3) (((cmd3) << 8) | ((cmd2) << 4) | ((cmd1) << 0))
++
+ struct testcases {
+ 	unsigned int later;
+ 	int expected; /* 2: SIGSEGV Error; 1: other errors */
+ 	unsigned long lam;
+ 	uint64_t addr;
++	uint64_t cmd;
+ 	int (*test_func)(struct testcases *test);
+ 	const char *msg;
+ };
+@@ -556,7 +566,7 @@ int do_uring(unsigned long lam)
+ 	struct file_io *fi;
+ 	struct stat st;
+ 	int ret = 1;
+-	char path[PATH_MAX];
++	char path[PATH_MAX] = {0};
+ 
+ 	/* get current process path */
+ 	if (readlink("/proc/self/exe", path, PATH_MAX) <= 0)
+@@ -852,6 +862,226 @@ static void cmd_help(void)
+ 	printf("\t-h: help\n");
+ }
+ 
++/* Check for file existence */
++uint8_t file_Exists(const char *fileName)
++{
++	struct stat buffer;
++
++	uint8_t ret = (stat(fileName, &buffer) == 0);
++
++	return ret;
++}
++
++/* Sysfs idxd files */
++const char *dsa_configs[] = {
++	"echo 1 > /sys/bus/dsa/devices/dsa0/wq0.1/group_id",
++	"echo shared > /sys/bus/dsa/devices/dsa0/wq0.1/mode",
++	"echo 10 > /sys/bus/dsa/devices/dsa0/wq0.1/priority",
++	"echo 16 > /sys/bus/dsa/devices/dsa0/wq0.1/size",
++	"echo 15 > /sys/bus/dsa/devices/dsa0/wq0.1/threshold",
++	"echo user > /sys/bus/dsa/devices/dsa0/wq0.1/type",
++	"echo MyApp1 > /sys/bus/dsa/devices/dsa0/wq0.1/name",
++	"echo 1 > /sys/bus/dsa/devices/dsa0/engine0.1/group_id",
++	"echo dsa0 > /sys/bus/dsa/drivers/idxd/bind",
++	/* bind files and devices, generated a device file in /dev */
++	"echo wq0.1 > /sys/bus/dsa/drivers/user/bind",
++};
++
++/* DSA device file */
++const char *dsaDeviceFile = "/dev/dsa/wq0.1";
++/* file for io*/
++const char *dsaPasidEnable = "/sys/bus/dsa/devices/dsa0/pasid_enabled";
++
++/*
++ * DSA depends on kernel cmdline "intel_iommu=on,sm_on"
++ * return pasid_enabled (0: disable 1:enable)
++ */
++int Check_DSA_Kernel_Setting(void)
++{
++	char command[256] = "";
++	char buf[256] = "";
++	char *ptr;
++	int rv = -1;
++
++	snprintf(command, sizeof(command) - 1, "cat %s", dsaPasidEnable);
++
++	FILE *cmd = popen(command, "r");
++
++	if (cmd) {
++		while (fgets(buf, sizeof(buf) - 1, cmd) != NULL);
++
++		pclose(cmd);
++		rv = strtol(buf, &ptr, 16);
++	}
++
++	return rv;
++}
++
++/*
++ * Config DSA's sysfs files as shared DSA's WQ.
++ * Generated a device file /dev/dsa/wq0.1
++ * Return:  0 OK; 1 Failed; 3 Skip(SVA disabled).
++ */
++int Dsa_Init_Sysfs(void)
++{
++	uint len = ARRAY_SIZE(dsa_configs);
++	const char **p = dsa_configs;
++
++	if (file_Exists(dsaDeviceFile) == 1)
++		return 0;
++
++	/* check the idxd driver */
++	if (file_Exists(dsaPasidEnable) != 1) {
++		printf("Please make sure idxd driver was loaded\n");
++		return 3;
++	}
++
++	/* Check SVA feature */
++	if (Check_DSA_Kernel_Setting() != 1) {
++		printf("Please enable SVA.(Add intel_iommu=on,sm_on in kernel cmdline)\n");
++		return 3;
++	}
++
++	/* Check the idxd device file on /dev/dsa/ */
++	for (int i = 0; i < len; i++) {
++		if (system(p[i]))
++			return 1;
++	}
++
++	/* After config, /dev/dsa/wq0.1 should be generated */
++	return (file_Exists(dsaDeviceFile) != 1);
++}
++
++/*
++ * Open DSA device file, triger API: iommu_sva_alloc_pasid
++ */
++void *allocate_dsa_pasid(void)
++{
++	int fd;
++	void *wq;
++
++	fd = open(dsaDeviceFile, O_RDWR);
++	if (fd < 0) {
++		perror("open");
++		return MAP_FAILED;
++	}
++
++	wq = mmap(NULL, 0x1000, PROT_WRITE,
++			   MAP_SHARED | MAP_POPULATE, fd, 0);
++	if (wq == MAP_FAILED)
++		perror("mmap");
++
++	return wq;
++}
++
++int set_force_svm(void)
++{
++	int ret = 0;
++
++	ret = syscall(SYS_arch_prctl, ARCH_FORCE_TAGGED_SVA);
++
++	return ret;
++}
++
++int handle_pasid(struct testcases *test)
++{
++	uint tmp = test->cmd;
++	uint runed = 0x0;
++	int ret = 0;
++	void *wq = NULL;
++
++	ret = Dsa_Init_Sysfs();
++	if (ret != 0)
++		return ret;
++
++	for (int i = 0; i < 3; i++) {
++		int err = 0;
++
++		if (tmp & 0x1) {
++			/* run set lam mode*/
++			if ((runed & 0x1) == 0)	{
++				err = set_lam(LAM_U57_BITS);
++				runed = runed | 0x1;
++			} else
++				err = 1;
++		} else if (tmp & 0x4) {
++			/* run force svm */
++			if ((runed & 0x4) == 0)	{
++				err = set_force_svm();
++				runed = runed | 0x4;
++			} else
++				err = 1;
++		} else if (tmp & 0x2) {
++			/* run allocate pasid */
++			if ((runed & 0x2) == 0) {
++				runed = runed | 0x2;
++				wq = allocate_dsa_pasid();
++				if (wq == MAP_FAILED)
++					err = 1;
++			} else
++				err = 1;
++		}
++
++		ret = ret + err;
++		if (ret > 0)
++			break;
++
++		tmp = tmp >> 4;
++	}
++
++	if (wq != MAP_FAILED && wq != NULL)
++		if (munmap(wq, 0x1000))
++			printf("munmap failed %d\n", errno);
++
++	if (runed != 0x7)
++		ret = 1;
++
++	return (ret != 0);
++}
++
++/*
++ * Pasid test depends on idxd and SVA, kernel should enable iommu and sm.
++ * command line(intel_iommu=on,sm_on)
++ */
++static struct testcases pasid_cases[] = {
++	{
++		.expected = 1,
++		.cmd = PAS_CMD(LAM_CMD_BIT, PAS_CMD_BIT, SVA_CMD_BIT),
++		.test_func = handle_pasid,
++		.msg = "PASID: [Negative] Execute LAM, PASID, SVA in sequence\n",
++	},
++	{
++		.expected = 0,
++		.cmd = PAS_CMD(LAM_CMD_BIT, SVA_CMD_BIT, PAS_CMD_BIT),
++		.test_func = handle_pasid,
++		.msg = "PASID: Execute LAM, SVA, PASID in sequence\n",
++	},
++	{
++		.expected = 1,
++		.cmd = PAS_CMD(PAS_CMD_BIT, LAM_CMD_BIT, SVA_CMD_BIT),
++		.test_func = handle_pasid,
++		.msg = "PASID: [Negative] Execute PASID, LAM, SVA in sequence\n",
++	},
++	{
++		.expected = 0,
++		.cmd = PAS_CMD(PAS_CMD_BIT, SVA_CMD_BIT, LAM_CMD_BIT),
++		.test_func = handle_pasid,
++		.msg = "PASID: Execute PASID, SVA, LAM in sequence\n",
++	},
++	{
++		.expected = 0,
++		.cmd = PAS_CMD(SVA_CMD_BIT, LAM_CMD_BIT, PAS_CMD_BIT),
++		.test_func = handle_pasid,
++		.msg = "PASID: Execute SVA, LAM, PASID in sequence\n",
++	},
++	{
++		.expected = 0,
++		.cmd = PAS_CMD(SVA_CMD_BIT, PAS_CMD_BIT, LAM_CMD_BIT),
++		.test_func = handle_pasid,
++		.msg = "PASID: Execute SVA, PASID, LAM in sequence\n",
++	},
++};
++
+ int main(int argc, char **argv)
+ {
+ 	int c = 0;
+@@ -910,6 +1140,9 @@ int main(int argc, char **argv)
+ 	if (tests & FUNC_INHERITE)
+ 		run_test(inheritance_cases, ARRAY_SIZE(inheritance_cases));
+ 
++	if (tests & FUNC_PASID)
++		run_test(pasid_cases, ARRAY_SIZE(pasid_cases));
++
+ 	ksft_set_plan(tests_cnt);
+ 
+ 	return ksft_exit_pass();
