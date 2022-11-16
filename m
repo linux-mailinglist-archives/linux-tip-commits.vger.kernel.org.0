@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B03F362B625
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Nov 2022 10:14:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B02D262B65A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Nov 2022 10:22:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233024AbiKPJOe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Nov 2022 04:14:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38760 "EHLO
+        id S233660AbiKPJWK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Nov 2022 04:22:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232774AbiKPJOd (ORCPT
+        with ESMTP id S233549AbiKPJV7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 16 Nov 2022 04:14:33 -0500
+        Wed, 16 Nov 2022 04:21:59 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A7CE5F41;
-        Wed, 16 Nov 2022 01:14:32 -0800 (PST)
-Date:   Wed, 16 Nov 2022 09:14:29 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC2427142;
+        Wed, 16 Nov 2022 01:21:58 -0800 (PST)
+Date:   Wed, 16 Nov 2022 09:21:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1668590070;
+        s=2020; t=1668590516;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=f5LJJJLKCH1DAYq6JhwQ5TabipDFex5oP5iOp++77Wg=;
-        b=LOq1ykHU2aK9dW4KGfxhSNbmg67N+WuNLvKqZC87sqMUTMjP3twQzKrLQGQBeAV2P7qQ6L
-        qL9oErMNBYZ7CnyRTojR0scFjhSdtw0Pp9ajQM/vY3BvvKZ8DRq1SQahKFHO+FmW33LTce
-        +ukCPZL9IU3XSJ7aIFq288w7tfcJUWQy+RGUIV8Vhl2AJL6VonwI3F6gsoB1JBm5MBLLOy
-        C/tB3OsksvHTttFbE8CiyvyvNs41tPa4CoYOHZZa+cZTmTH6DHBOymCBb6FWV4YJQi98ue
-        w1QbILb/L5k/XRjRt3kohfQ5i6zHV1hp3x+21ZWMOrO966PZd6UToVZV6H7R6w==
+        bh=FVY9uAbTuVF0xKex4cjna3AgPQ7XWMie7xxAYF/HBbc=;
+        b=oMAwXVdZ4/q5UgEfdo00MJ2v3aowzcAkGXykYzlLDQpfYP6urBoYLeN+yrqi3L4qeHuvtO
+        bA+ecYMKKAVI53lH4ZEXBz7yeheA+pERzhISkn0waUfAKgdUzUDm2rkmD56DEANLZKfUNT
+        CXh0rVgHbruhy7n76S1LgXtwxDhdXUpSKRIi745vila1itfXHtfC04GvIomgfk3Kxf8pEn
+        cgbbTWuYPu/EgWquhfald+n8FnMr7ssLbFdyG4jr+Ei0V9yXH//xjPnShUEQOk2Npj/4H1
+        JpQFHdFHO+VwYpZTZEQffg6+V0QMpsefWStXCge+tU7nqw+RI06/CneE8lTa0Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1668590070;
+        s=2020e; t=1668590516;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=f5LJJJLKCH1DAYq6JhwQ5TabipDFex5oP5iOp++77Wg=;
-        b=FebQKjwMFME4ZFxdepCvPeRbtYQuKBfj3wjj918hQnCZQO4vvm+T+6l0FKGHi2v8aywsTS
-        qoxHmmz2AMGryYDg==
-From:   "tip-bot2 for Rafael Mendonca" <tip-bot2@linutronix.de>
+        bh=FVY9uAbTuVF0xKex4cjna3AgPQ7XWMie7xxAYF/HBbc=;
+        b=wZPeI8ew0LEdEn9vdpiKo2zx1wlLFRgV9PIUr7HxnxAk3lr4B6/LEinj7UhU8z7pH0GDTG
+        aHItwo6vaI9AkjCg==
+From:   "tip-bot2 for Guo Jin" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86: Remove unused variable 'cpu_type'
-Cc:     Rafael Mendonca <rafaelmendsr@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/urgent] locking: Fix qspinlock/x86 inline asm error
+Cc:     Guo Jin <guoj17@chinatelecom.cn>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Nathan Chancellor <nathan@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221028203006.976831-1-rafaelmendsr@gmail.com>
-References: <20221028203006.976831-1-rafaelmendsr@gmail.com>
+In-Reply-To: <20221108060126.2505-1-guoj17@chinatelecom.cn>
+References: <20221108060126.2505-1-guoj17@chinatelecom.cn>
 MIME-Version: 1.0
-Message-ID: <166859006941.4906.6854286305825561239.tip-bot2@tip-bot2>
+Message-ID: <166859051534.4906.7078966677789928700.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,44 +65,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     8e356858be2989355aafcc96af541fedf9fb486f
-Gitweb:        https://git.kernel.org/tip/8e356858be2989355aafcc96af541fedf9fb486f
-Author:        Rafael Mendonca <rafaelmendsr@gmail.com>
-AuthorDate:    Fri, 28 Oct 2022 17:30:05 -03:00
+Commit-ID:     23df39fc6a36183af5e6e4f47523f1ad2cdc1d30
+Gitweb:        https://git.kernel.org/tip/23df39fc6a36183af5e6e4f47523f1ad2cdc1d30
+Author:        Guo Jin <guoj17@chinatelecom.cn>
+AuthorDate:    Tue, 08 Nov 2022 14:01:26 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 15 Nov 2022 22:30:11 +01:00
+CommitterDate: Wed, 16 Nov 2022 10:18:09 +01:00
 
-perf/x86: Remove unused variable 'cpu_type'
+locking: Fix qspinlock/x86 inline asm error
 
-Since the removal of function x86_pmu_update_cpu_context() by commit
-983bd8543b5a ("perf: Rewrite core context handling"), there is no need to
-query the type of the hybrid CPU inside function init_hw_perf_events().
+When compiling linux 6.1.0-rc3 configured with CONFIG_64BIT=y and
+CONFIG_PARAVIRT_SPINLOCKS=y on x86_64 using LLVM 11.0, an error:
+"<inline asm> error: changed section flags for .spinlock.text,
+expected:: 0x6" occurred.
 
-Fixes: 983bd8543b5a ("perf: Rewrite core context handling")
-Signed-off-by: Rafael Mendonca <rafaelmendsr@gmail.com>
+The reason is the .spinlock.text in kernel/locking/qspinlock.o
+is used many times, but its flags are omitted in subsequent use.
+
+LLVM 11.0 assembler didn't permit to
+leave out flags in subsequent uses of the same sections.
+
+So this patch adds the corresponding flags to avoid above error.
+
+Fixes: 501f7f69bca1 ("locking: Add __lockfunc to slow path functions")
+Signed-off-by: Guo Jin <guoj17@chinatelecom.cn>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221028203006.976831-1-rafaelmendsr@gmail.com
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20221108060126.2505-1-guoj17@chinatelecom.cn
 ---
- arch/x86/events/core.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/x86/include/asm/qspinlock_paravirt.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 337a99a..85a63a4 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -2161,13 +2161,9 @@ static int __init init_hw_perf_events(void)
- 		if (err)
- 			goto out2;
- 	} else {
--		u8 cpu_type = get_this_hybrid_cpu_type();
- 		struct x86_hybrid_pmu *hybrid_pmu;
- 		int i, j;
- 
--		if (!cpu_type && x86_pmu.get_hybrid_cpu_type)
--			cpu_type = x86_pmu.get_hybrid_cpu_type();
--
- 		for (i = 0; i < x86_pmu.num_hybrid_pmus; i++) {
- 			hybrid_pmu = &x86_pmu.hybrid_pmu[i];
- 
+diff --git a/arch/x86/include/asm/qspinlock_paravirt.h b/arch/x86/include/asm/qspinlock_paravirt.h
+index 60ece59..dbb38a6 100644
+--- a/arch/x86/include/asm/qspinlock_paravirt.h
++++ b/arch/x86/include/asm/qspinlock_paravirt.h
+@@ -37,7 +37,7 @@ __PV_CALLEE_SAVE_REGS_THUNK(__pv_queued_spin_unlock_slowpath, ".spinlock.text");
+  *   rsi = lockval           (second argument)
+  *   rdx = internal variable (set to 0)
+  */
+-asm    (".pushsection .spinlock.text;"
++asm    (".pushsection .spinlock.text, \"ax\";"
+ 	".globl " PV_UNLOCK ";"
+ 	".type " PV_UNLOCK ", @function;"
+ 	".align 4,0x90;"
