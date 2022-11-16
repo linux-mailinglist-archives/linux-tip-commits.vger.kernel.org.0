@@ -2,48 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2511A62AE51
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Nov 2022 23:27:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 603D162B622
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Nov 2022 10:14:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231920AbiKOW1A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Nov 2022 17:27:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60280 "EHLO
+        id S232360AbiKPJOd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Nov 2022 04:14:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232243AbiKOW0n (ORCPT
+        with ESMTP id S232077AbiKPJOa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Nov 2022 17:26:43 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 679CC317E9;
-        Tue, 15 Nov 2022 14:26:31 -0800 (PST)
-Date:   Tue, 15 Nov 2022 22:26:28 -0000
+        Wed, 16 Nov 2022 04:14:30 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23FF0559E;
+        Wed, 16 Nov 2022 01:14:29 -0800 (PST)
+Date:   Wed, 16 Nov 2022 09:14:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1668551190;
+        s=2020; t=1668590067;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=DcgxX3STYUwWxly17519IsLnQkOgRIvO2ojp6HNvEfw=;
-        b=too/gPjNiWybU6NEC1yzFTl0gOJ43FP8ouUP9Mn7q0Q9GgcI/YvpIko6uU0ozY5/YD4hih
-        qnWxFmQ+ts8iuyxFCDiBFdlOAeZNp+cVYeoHk+ibCny41azLOId0OifcTZuiD9j/WLUIjX
-        nd1w5M3DKbY+SiO1PIbVcL3y5vi61N4omReIjGVwJAAr4Do1ysEAgGGWzy1SasZgWoP79I
-        31owgd7ZmylktaZ/1+mC3i5bHl6jQplJ+WyH7ZDh9x/pPBiWJh14LFjdj8DQQ533nwBLxy
-        t0R4ZKZZCWXmvPoL5W8vM/v81YJay5UpWTOkSBEDXSfFRH+fGYwublkpWg8zfw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=WHQ6L7e8QAPaBVaj6+20+/2M+FkroSiESCfGsG3tCKM=;
+        b=J4Ischh9z8cEBBQg6h+0tjNbbPli0hykWBPD/4yvs8MqHs26rV4xZhFsrWTJ6qta43YEFK
+        tBA52QUT9vq0+abkHlhYIpxuMeHOZ06aMJYDSyNmPwph+PgpFPCWIni9LGM+Q6YFPJeLvD
+        Euu1N3wrA7owv+GDy8htLT1sksMYfWbsQhQieyQ727mu1IOn5ftwNXYqqvn1lcRueBSeJf
+        hdppEHBieTONZXkEBgIFSg3giiRtbpfO5RDobLJUhBPQurid8lMwT4TdJaEPpjhWpFeiM2
+        XZbUPoy3bLgv7SYX3onVXs2I84gym4F7TUWWUaA/PccEUViFtWsJvgVHWGsQVw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1668551190;
+        s=2020e; t=1668590067;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=DcgxX3STYUwWxly17519IsLnQkOgRIvO2ojp6HNvEfw=;
-        b=Fqab7t02am5IQ3gq5oz0CA/BvyUfWdGUvBBTQZjs1LbPa+CcFs0JJPBLFgDHFNFrL8H94j
-        ckqXeMhKFRBkFxCQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=WHQ6L7e8QAPaBVaj6+20+/2M+FkroSiESCfGsG3tCKM=;
+        b=naTgVc+kAp0xTEqmJZcDoyvswmE0R5xJK9LoxeapoC3vE7Xft2Z1x/HXUDh7DNX46cdM9r
+        ptZslvOAQ7EQUXCw==
+From:   "tip-bot2 for Chen Zhongjin" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Add a few comments
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf: Fix possible memleak in pmu_dev_alloc()
+Cc:     Chen Zhongjin <chenzhongjin@huawei.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20221111103653.91058-1-chenzhongjin@huawei.com>
+References: <20221111103653.91058-1-chenzhongjin@huawei.com>
 MIME-Version: 1.0
-Message-ID: <166855118885.4906.15832099809755736940.tip-bot2@tip-bot2>
+Message-ID: <166859006599.4906.10242789446125515108.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,65 +64,72 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     558e2dc0fb7145e7b244dcdd2e287bd9c86d66f3
-Gitweb:        https://git.kernel.org/tip/558e2dc0fb7145e7b244dcdd2e287bd9c86d66f3
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 10 Nov 2022 13:33:50 +01:00
+Commit-ID:     e8d7a90c08ce963c592fb49845f2ccc606a2ac21
+Gitweb:        https://git.kernel.org/tip/e8d7a90c08ce963c592fb49845f2ccc606a2ac21
+Author:        Chen Zhongjin <chenzhongjin@huawei.com>
+AuthorDate:    Fri, 11 Nov 2022 18:36:53 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 15 Nov 2022 22:29:57 +01:00
+CommitterDate: Tue, 15 Nov 2022 22:30:12 +01:00
 
-x86/mm: Add a few comments
+perf: Fix possible memleak in pmu_dev_alloc()
 
-It's a shame to hide useful comments in Changelogs, add some to the
-code.
+In pmu_dev_alloc(), when dev_set_name() failed, it will goto free_dev
+and call put_device(pmu->dev) to release it.
+However pmu->dev->release is assigned after this, which makes warning
+and memleak.
+Call dev_set_name() after pmu->dev->release = pmu_dev_release to fix it.
 
-Shamelessly stolen from commit:
+  Device '(null)' does not have a release() function...
+  WARNING: CPU: 2 PID: 441 at drivers/base/core.c:2332 device_release+0x1b9/0x240
+  ...
+  Call Trace:
+    <TASK>
+    kobject_put+0x17f/0x460
+    put_device+0x20/0x30
+    pmu_dev_alloc+0x152/0x400
+    perf_pmu_register+0x96b/0xee0
+    ...
+  kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+  unreferenced object 0xffff888014759000 (size 2048):
+    comm "modprobe", pid 441, jiffies 4294931444 (age 38.332s)
+    backtrace:
+      [<0000000005aed3b4>] kmalloc_trace+0x27/0x110
+      [<000000006b38f9b8>] pmu_dev_alloc+0x50/0x400
+      [<00000000735f17be>] perf_pmu_register+0x96b/0xee0
+      [<00000000e38477f1>] 0xffffffffc0ad8603
+      [<000000004e162216>] do_one_initcall+0xd0/0x4e0
+      ...
 
-  c40a56a7818c ("x86/mm/init: Remove freed kernel image areas from alias mapping")
-
+Fixes: abe43400579d ("perf: Sysfs enumeration")
+Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221110125544.460677011%40infradead.org
+Link: https://lkml.kernel.org/r/20221111103653.91058-1-chenzhongjin@huawei.com
 ---
- arch/x86/mm/pat/set_memory.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ kernel/events/core.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 06eb891..50f81ea 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -219,6 +219,23 @@ within_inclusive(unsigned long addr, unsigned long start, unsigned long end)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index baa6edf..5f262f9 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11308,13 +11308,15 @@ static int pmu_dev_alloc(struct pmu *pmu)
  
- #ifdef CONFIG_X86_64
+ 	pmu->dev->groups = pmu->attr_groups;
+ 	device_initialize(pmu->dev);
+-	ret = dev_set_name(pmu->dev, "%s", pmu->name);
+-	if (ret)
+-		goto free_dev;
  
-+/*
-+ * The kernel image is mapped into two places in the virtual address space
-+ * (addresses without KASLR, of course):
-+ *
-+ * 1. The kernel direct map (0xffff880000000000)
-+ * 2. The "high kernel map" (0xffffffff81000000)
-+ *
-+ * We actually execute out of #2. If we get the address of a kernel symbol, it
-+ * points to #2, but almost all physical-to-virtual translations point to #1.
-+ *
-+ * This is so that we can have both a directmap of all physical memory *and*
-+ * take full advantage of the the limited (s32) immediate addressing range (2G)
-+ * of x86_64.
-+ *
-+ * See Documentation/x86/x86_64/mm.rst for more detail.
-+ */
+ 	dev_set_drvdata(pmu->dev, pmu);
+ 	pmu->dev->bus = &pmu_bus;
+ 	pmu->dev->release = pmu_dev_release;
 +
- static inline unsigned long highmap_start_pfn(void)
- {
- 	return __pa_symbol(_text) >> PAGE_SHIFT;
-@@ -1626,6 +1643,9 @@ repeat:
- 
- static int __change_page_attr_set_clr(struct cpa_data *cpa, int checkalias);
- 
-+/*
-+ * Check the directmap and "high kernel map" 'aliases'.
-+ */
- static int cpa_process_alias(struct cpa_data *cpa)
- {
- 	struct cpa_data alias_cpa;
++	ret = dev_set_name(pmu->dev, "%s", pmu->name);
++	if (ret)
++		goto free_dev;
++
+ 	ret = device_add(pmu->dev);
+ 	if (ret)
+ 		goto free_dev;
