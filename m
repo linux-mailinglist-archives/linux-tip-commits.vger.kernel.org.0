@@ -2,49 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9694362CEC2
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Nov 2022 00:34:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DAAC62CEC3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Nov 2022 00:34:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234225AbiKPXeA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Nov 2022 18:34:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57102 "EHLO
+        id S234176AbiKPXeC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Nov 2022 18:34:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234155AbiKPXd5 (ORCPT
+        with ESMTP id S234181AbiKPXd5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 16 Nov 2022 18:33:57 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A792F02E;
-        Wed, 16 Nov 2022 15:33:55 -0800 (PST)
-Date:   Wed, 16 Nov 2022 23:33:51 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48C632B9C;
+        Wed, 16 Nov 2022 15:33:56 -0800 (PST)
+Date:   Wed, 16 Nov 2022 23:33:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1668641633;
+        s=2020; t=1668641634;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=MsnW/9b3W7fq8fblOzT42xDM/SlxUnTHjHj4eknSx64=;
-        b=pPIVnLwpbnzGuO/1R3bbImKCDpkvN3zvwtmBH3mHwlbGtE1UVdxZd2ncs8w1axYHh1aKvP
-        Z4E1oUlmDqRX311OylQtYS5sbbyK+yixI46UbJlApS1FK5LJ1UJyYG9I4hSYotg8uA589B
-        CdA8ccQsDzLq37RXsYd1oCkJ5Xqq55i1+TLOE3To3AcMG1dk2gteZzQlEPRrRdwOQallQD
-        XbhULjCTebRl01sRlV2O+lUBQ015yZ0afrkT9Tk6N6si39jTA/X+MaLrdVb7bk4NxCw8oJ
-        PRxl0iTLDaPu9plhsxS5J7pFGBu5e4XwFpx/z0BvmbQPODylB0gfIaoT0Efq9A==
+        bh=Rrwn3XiFQACWItqwB/rq8DEZB6S62a07vlj6rycE4sg=;
+        b=igKRZ4urK0SUk7PUglIhEmy+DBYKAVRCLlJXDAGbc3LXhNu0fIaInVhY3ghzijMVSs6KfM
+        HXnrmWZYgEpDhVLQerBILAVeyhFDAqWpePfzX8Ao06I+4owOemWe1uqN7KIjTqZpERoAet
+        i4n278nI+bBMFcxCkfEAVzvAD9b/ZWTbcaIHK4LsKLeoXw5DdxY7nCu8H4AKqW9oTQS+b6
+        hPEGly4bj5DDOc3tg2gqTOzCEX+gfBHbP1xThFK39NZIlbHEoddB/0X1IPsVBIjiy8w5X1
+        TSmFeD6s0jhIW18QnDYNCR3R6RgXQ/PrMvX46BWYJKhR5vUSBz2wHbuVbSnW4Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1668641633;
+        s=2020e; t=1668641634;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=MsnW/9b3W7fq8fblOzT42xDM/SlxUnTHjHj4eknSx64=;
-        b=xC7p0Hhv+SGDHTS1V5SNMT6NY9Zr3CLCTZTj1Jy/IZpD52Noyp+0VbkeQPvTVIkh+3vobh
-        m/M8UwZxD5xbBxAQ==
+        bh=Rrwn3XiFQACWItqwB/rq8DEZB6S62a07vlj6rycE4sg=;
+        b=Szud7kgtTdq3cvWh8KlA5MoYg6Uuk9Q/R6S1BQLUATmml/rhkwNW46WZwRU4zq3lXax95f
+        wIg7UM3Xvxzyw/DQ==
 From:   "tip-bot2 for Kyle Huey" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Add a pkru argument to copy_uabi_to_xstate()
+Subject: [tip: x86/fpu] x86/fpu: Add a pkru argument to
+ copy_uabi_from_kernel_to_xstate().
 Cc:     Kyle Huey <me@kylehuey.com>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <166864163188.4906.12947671892582185831.tip-bot2@tip-bot2>
+Message-ID: <166864163317.4906.15150213496380358511.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,69 +61,83 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     2c87767c35ee9744f666ccec869d5fe742c3de0a
-Gitweb:        https://git.kernel.org/tip/2c87767c35ee9744f666ccec869d5fe742c3de0a
+Commit-ID:     1c813ce0305571e1b2e4cc4acca451da9e6ad18f
+Gitweb:        https://git.kernel.org/tip/1c813ce0305571e1b2e4cc4acca451da9e6ad18f
 Author:        Kyle Huey <me@kylehuey.com>
-AuthorDate:    Tue, 15 Nov 2022 15:09:29 -08:00
+AuthorDate:    Tue, 15 Nov 2022 15:09:28 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 16 Nov 2022 15:03:30 -08:00
+CommitterDate: Wed, 16 Nov 2022 15:03:01 -08:00
 
-x86/fpu: Add a pkru argument to copy_uabi_to_xstate()
+x86/fpu: Add a pkru argument to copy_uabi_from_kernel_to_xstate().
 
-In preparation for moving PKRU handling code out of
-fpu_copy_uabi_to_guest_fpstate() and into copy_uabi_to_xstate(), add an
-argument that copy_uabi_from_kernel_to_xstate() can use to pass the
-canonical location of the PKRU value. For
-copy_sigframe_from_user_to_xstate() the kernel will actually restore the
-PKRU value from the fpstate, but pass in the thread_struct's pkru location
-anyways for consistency.
+Both KVM (through KVM_SET_XSTATE) and ptrace (through PTRACE_SETREGSET
+with NT_X86_XSTATE) ultimately call copy_uabi_from_kernel_to_xstate(),
+but the canonical locations for the current PKRU value for KVM guests
+and processes in a ptrace stop are different (in the kvm_vcpu_arch and
+the thread_state structs respectively).
+
+In preparation for eventually handling PKRU in
+copy_uabi_to_xstate, pass in a pointer to the PKRU location.
 
 Signed-off-by: Kyle Huey <me@kylehuey.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20221115230932.7126-4-khuey%40kylehuey.com
+Link: https://lore.kernel.org/all/20221115230932.7126-3-khuey%40kylehuey.com
 ---
- arch/x86/kernel/fpu/xstate.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/x86/kernel/fpu/core.c   | 2 +-
+ arch/x86/kernel/fpu/regset.c | 2 +-
+ arch/x86/kernel/fpu/xstate.c | 2 +-
+ arch/x86/kernel/fpu/xstate.h | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 3b28c5b..5501576 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -406,7 +406,7 @@ int fpu_copy_uabi_to_guest_fpstate(struct fpu_guest *gfpu, const void *buf,
+ 	if (ustate->xsave.header.xfeatures & ~xcr0)
+ 		return -EINVAL;
+ 
+-	ret = copy_uabi_from_kernel_to_xstate(kstate, ustate);
++	ret = copy_uabi_from_kernel_to_xstate(kstate, ustate, vpkru);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
+index 75ffaef..6d056b6 100644
+--- a/arch/x86/kernel/fpu/regset.c
++++ b/arch/x86/kernel/fpu/regset.c
+@@ -167,7 +167,7 @@ int xstateregs_set(struct task_struct *target, const struct user_regset *regset,
+ 	}
+ 
+ 	fpu_force_restore(fpu);
+-	ret = copy_uabi_from_kernel_to_xstate(fpu->fpstate, kbuf ?: tmpbuf);
++	ret = copy_uabi_from_kernel_to_xstate(fpu->fpstate, kbuf ?: tmpbuf, &target->thread.pkru);
+ 
+ out:
+ 	vfree(tmpbuf);
 diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index d6f414a..d657c8b 100644
+index c88c60b..d6f414a 100644
 --- a/arch/x86/kernel/fpu/xstate.c
 +++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1200,8 +1200,18 @@ static int copy_from_buffer(void *dst, unsigned int offset, unsigned int size,
- }
- 
- 
-+/**
-+ * copy_uabi_to_xstate - Copy a UABI format buffer to the kernel xstate
-+ * @fpstate:	The fpstate buffer to copy to
-+ * @kbuf:	The UABI format buffer, if it comes from the kernel
-+ * @ubuf:	The UABI format buffer, if it comes from userspace
-+ * @pkru:	unused
-+ *
-+ * Converts from the UABI format into the kernel internal hardware
-+ * dependent format.
-+ */
- static int copy_uabi_to_xstate(struct fpstate *fpstate, const void *kbuf,
--			       const void __user *ubuf)
-+			       const void __user *ubuf, u32 *pkru)
- {
- 	struct xregs_state *xsave = &fpstate->regs.xsave;
- 	unsigned int offset, size;
-@@ -1270,7 +1280,7 @@ static int copy_uabi_to_xstate(struct fpstate *fpstate, const void *kbuf,
+@@ -1268,7 +1268,7 @@ static int copy_uabi_to_xstate(struct fpstate *fpstate, const void *kbuf,
+  * Convert from a ptrace standard-format kernel buffer to kernel XSAVE[S]
+  * format and copy to the target thread. Used by ptrace and KVM.
   */
- int copy_uabi_from_kernel_to_xstate(struct fpstate *fpstate, const void *kbuf, u32 *pkru)
+-int copy_uabi_from_kernel_to_xstate(struct fpstate *fpstate, const void *kbuf)
++int copy_uabi_from_kernel_to_xstate(struct fpstate *fpstate, const void *kbuf, u32 *pkru)
  {
--	return copy_uabi_to_xstate(fpstate, kbuf, NULL);
-+	return copy_uabi_to_xstate(fpstate, kbuf, NULL, pkru);
+ 	return copy_uabi_to_xstate(fpstate, kbuf, NULL);
  }
+diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
+index f08ee27..a4ecb04 100644
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -46,7 +46,7 @@ extern void __copy_xstate_to_uabi_buf(struct membuf to, struct fpstate *fpstate,
+ 				      u32 pkru_val, enum xstate_copy_mode copy_mode);
+ extern void copy_xstate_to_uabi_buf(struct membuf to, struct task_struct *tsk,
+ 				    enum xstate_copy_mode mode);
+-extern int copy_uabi_from_kernel_to_xstate(struct fpstate *fpstate, const void *kbuf);
++extern int copy_uabi_from_kernel_to_xstate(struct fpstate *fpstate, const void *kbuf, u32 *pkru);
+ extern int copy_sigframe_from_user_to_xstate(struct task_struct *tsk, const void __user *ubuf);
  
- /*
-@@ -1281,7 +1291,7 @@ int copy_uabi_from_kernel_to_xstate(struct fpstate *fpstate, const void *kbuf, u
- int copy_sigframe_from_user_to_xstate(struct task_struct *tsk,
- 				      const void __user *ubuf)
- {
--	return copy_uabi_to_xstate(tsk->thread.fpu.fpstate, NULL, ubuf);
-+	return copy_uabi_to_xstate(tsk->thread.fpu.fpstate, NULL, ubuf, &tsk->thread.pkru);
- }
  
- static bool validate_independent_components(u64 mask)
