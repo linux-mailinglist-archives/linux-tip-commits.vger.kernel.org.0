@@ -2,50 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A55CB62CEC4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Nov 2022 00:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B78B662D85C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Nov 2022 11:48:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234253AbiKPXeH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Nov 2022 18:34:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57150 "EHLO
+        id S234727AbiKQKso (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 17 Nov 2022 05:48:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234185AbiKPXeA (ORCPT
+        with ESMTP id S234851AbiKQKsi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 16 Nov 2022 18:34:00 -0500
+        Thu, 17 Nov 2022 05:48:38 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D23D449B46;
-        Wed, 16 Nov 2022 15:33:57 -0800 (PST)
-Date:   Wed, 16 Nov 2022 23:33:54 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 470866450;
+        Thu, 17 Nov 2022 02:48:35 -0800 (PST)
+Date:   Thu, 17 Nov 2022 10:48:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1668641636;
+        s=2020; t=1668682113;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=BIb2nOVzdKV7fJjQ2ycPYqfNNp5cI/HfWI1S6RSu83A=;
-        b=TzLuM7xkr9NGQcEE4rtRFVJ3FAdWJ6s7Lwsz+mIUPibLFIVgOcGNsZy/ODX1llcgJRyOUV
-        iofAfo6/93+FSn0NV5nlYQc6DSBm2geIak1nizbEENY3g097YT/UCeHMM0O1ARFX/fC7R4
-        G7rfS7MaJTwrxgWWgEpaAsy9uDMN0uoyZn1gsp4g5oBF2xwn+p29j6pdXSUugg8SgwcEff
-        smB0vuBXMeKg2g/NAPAuqLYZ+5r33LHv3JWNsdV8WvZyXo3Y/RGKJbt/2TfvUH6RGRjS1Q
-        FY5BodTwYJp9tjPhpV6PRoB21Cz/v3moJMQOuJf/pxsupGDFPtwgG+ylZG2xPA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=NGMrXryM4O7/O3wJE9j6fSOZ5sPkDqtPXocsCfQsU8Y=;
+        b=elTeZQPNX0LPLfpOx4o6v9vAsztSzR7XbEio5+FjL5bQPLN6zImcalXugpHiZrhHf2Fek3
+        d7jlGFATWDwIfRXzVRmT8Xm1WhKPm7pOc9YtiCl8kgzsro7+0wZy2mQ3THliCoZEBMu2JR
+        YGYOnip0Dlo60COH9xAHtEJKCasezxMX17fGiL/dd3bhh5IzDzcZYC3WlhtkB4AICSr3sb
+        wKlI4ejwI5uh/gG6fr83xZVxGsBPAVTgVbqZU/85owWEp62nP79siko+schpaJsZhkreue
+        lSsUNWsaDT7EL996CX2Y7koqvTV7vLZL7I1Jp88lHXZc36Pk8G9N15xmRpXyDA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1668641636;
+        s=2020e; t=1668682113;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=BIb2nOVzdKV7fJjQ2ycPYqfNNp5cI/HfWI1S6RSu83A=;
-        b=M2PZen7bnALy83U5Ul57cGLH1B3FQ842UYYAALaQOXC0ahXq7pqDg+bdyCdZS4w9VFkeQ3
-        w1aHwfgYOX8ZL/Dg==
-From:   "tip-bot2 for Kyle Huey" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=NGMrXryM4O7/O3wJE9j6fSOZ5sPkDqtPXocsCfQsU8Y=;
+        b=+UeVv0dgwJN3kOi69kdTcvcdmc069iNeVoRVWehH0QT1i6Zl8TK3r7L7PD6/XojrIxDgYL
+        6MOZ9YYerotidwAA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Take task_struct* in
- copy_sigframe_from_user_to_xstate()
-Cc:     Kyle Huey <me@kylehuey.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Subject: [tip: timers/core] clocksource/drivers/hyper-v: Include
+ asm/hyperv-tlfs.h not asm/mshyperv.h
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Michael Kelley <mikelley@microsoft.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <87fsemtut0.ffs@tglx>
+References: <87fsemtut0.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <166864163463.4906.1952742397458403904.tip-bot2@tip-bot2>
+Message-ID: <166868211189.4906.13092844425377353975.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,69 +65,102 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fpu branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     6a877d2450ace4f27c012519e5a1ae818f931983
-Gitweb:        https://git.kernel.org/tip/6a877d2450ace4f27c012519e5a1ae818f931983
-Author:        Kyle Huey <me@kylehuey.com>
-AuthorDate:    Tue, 15 Nov 2022 15:09:27 -08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 16 Nov 2022 15:02:30 -08:00
+Commit-ID:     d3fe5c2f206148f86f85f56671109a3118bf0d2b
+Gitweb:        https://git.kernel.org/tip/d3fe5c2f206148f86f85f56671109a3118bf0d2b
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sun, 13 Nov 2022 22:21:15 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 17 Nov 2022 11:41:19 +01:00
 
-x86/fpu: Take task_struct* in copy_sigframe_from_user_to_xstate()
+clocksource/drivers/hyper-v: Include asm/hyperv-tlfs.h not asm/mshyperv.h
 
-This will allow copy_sigframe_from_user_to_xstate() to grab the address of
-thread_struct's pkru value in a later patch.
+clocksource/hyperv_timer.h is included into the VDSO build. It includes
+asm/mshyperv.h which in turn includes the world and some more. This worked
+so far by chance, but any subtle change in the include chain results in a
+build breakage because VDSO builds are building user space libraries.
 
-Signed-off-by: Kyle Huey <me@kylehuey.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20221115230932.7126-2-khuey%40kylehuey.com
+Include asm/hyperv-tlfs.h instead which contains everything what the VDSO
+build needs except the hv_get_raw_timer() define. Move this define into a
+separate header file, which contains the prerequisites (msr.h) and is
+included by clocksource/hyperv_timer.h.
+
+Fixup drivers/hv/vmbus_drv.c which relies on the indirect include of
+asm/mshyperv.h.
+
+With that the VDSO build only pulls in the minimum requirements.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/87fsemtut0.ffs@tglx
+
 ---
- arch/x86/kernel/fpu/signal.c | 2 +-
- arch/x86/kernel/fpu/xstate.c | 4 ++--
- arch/x86/kernel/fpu/xstate.h | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/hyperv_timer.h |  9 +++++++++
+ arch/x86/include/asm/mshyperv.h     |  2 --
+ drivers/hv/vmbus_drv.c              |  1 +
+ include/clocksource/hyperv_timer.h  |  4 +++-
+ 4 files changed, 13 insertions(+), 3 deletions(-)
+ create mode 100644 arch/x86/include/asm/hyperv_timer.h
 
-diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
-index 91d4b6d..558076d 100644
---- a/arch/x86/kernel/fpu/signal.c
-+++ b/arch/x86/kernel/fpu/signal.c
-@@ -396,7 +396,7 @@ static bool __fpu_restore_sig(void __user *buf, void __user *buf_fx,
+diff --git a/arch/x86/include/asm/hyperv_timer.h b/arch/x86/include/asm/hyperv_timer.h
+new file mode 100644
+index 0000000..388fa81
+--- /dev/null
++++ b/arch/x86/include/asm/hyperv_timer.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_HYPERV_TIMER_H
++#define _ASM_X86_HYPERV_TIMER_H
++
++#include <asm/msr.h>
++
++#define hv_get_raw_timer() rdtsc_ordered()
++
++#endif
+diff --git a/arch/x86/include/asm/mshyperv.h b/arch/x86/include/asm/mshyperv.h
+index 61f0c20..6d502f3 100644
+--- a/arch/x86/include/asm/mshyperv.h
++++ b/arch/x86/include/asm/mshyperv.h
+@@ -19,8 +19,6 @@ typedef int (*hyperv_fill_flush_list_func)(
+ 		struct hv_guest_mapping_flush_list *flush,
+ 		void *data);
  
- 	fpregs = &fpu->fpstate->regs;
- 	if (use_xsave() && !fx_only) {
--		if (copy_sigframe_from_user_to_xstate(fpu->fpstate, buf_fx))
-+		if (copy_sigframe_from_user_to_xstate(tsk, buf_fx))
- 			return false;
- 	} else {
- 		if (__copy_from_user(&fpregs->fxsave, buf_fx,
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index c2dde46..c88c60b 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1278,10 +1278,10 @@ int copy_uabi_from_kernel_to_xstate(struct fpstate *fpstate, const void *kbuf)
-  * XSAVE[S] format and copy to the target thread. This is called from the
-  * sigreturn() and rt_sigreturn() system calls.
-  */
--int copy_sigframe_from_user_to_xstate(struct fpstate *fpstate,
-+int copy_sigframe_from_user_to_xstate(struct task_struct *tsk,
- 				      const void __user *ubuf)
- {
--	return copy_uabi_to_xstate(fpstate, NULL, ubuf);
-+	return copy_uabi_to_xstate(tsk->thread.fpu.fpstate, NULL, ubuf);
- }
+-#define hv_get_raw_timer() rdtsc_ordered()
+-
+ void hyperv_vector_handler(struct pt_regs *regs);
  
- static bool validate_independent_components(u64 mask)
-diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
-index 5ad4703..f08ee27 100644
---- a/arch/x86/kernel/fpu/xstate.h
-+++ b/arch/x86/kernel/fpu/xstate.h
-@@ -47,7 +47,7 @@ extern void __copy_xstate_to_uabi_buf(struct membuf to, struct fpstate *fpstate,
- extern void copy_xstate_to_uabi_buf(struct membuf to, struct task_struct *tsk,
- 				    enum xstate_copy_mode mode);
- extern int copy_uabi_from_kernel_to_xstate(struct fpstate *fpstate, const void *kbuf);
--extern int copy_sigframe_from_user_to_xstate(struct fpstate *fpstate, const void __user *ubuf);
-+extern int copy_sigframe_from_user_to_xstate(struct task_struct *tsk, const void __user *ubuf);
+ #if IS_ENABLED(CONFIG_HYPERV)
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 8b2e413..1f5d37a 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -37,6 +37,7 @@
+ #include <linux/dma-map-ops.h>
+ #include <linux/pci.h>
+ #include <clocksource/hyperv_timer.h>
++#include <asm/mshyperv.h>
+ #include "hyperv_vmbus.h"
  
+ struct vmbus_dynid {
+diff --git a/include/clocksource/hyperv_timer.h b/include/clocksource/hyperv_timer.h
+index b3f5d73..b4a3935 100644
+--- a/include/clocksource/hyperv_timer.h
++++ b/include/clocksource/hyperv_timer.h
+@@ -15,13 +15,15 @@
  
- extern void fpu__init_cpu_xstate(void);
+ #include <linux/clocksource.h>
+ #include <linux/math64.h>
+-#include <asm/mshyperv.h>
++#include <asm/hyperv-tlfs.h>
+ 
+ #define HV_MAX_MAX_DELTA_TICKS 0xffffffff
+ #define HV_MIN_DELTA_TICKS 1
+ 
+ #ifdef CONFIG_HYPERV_TIMER
+ 
++#include <asm/hyperv_timer.h>
++
+ /* Routines called by the VMbus driver */
+ extern int hv_stimer_alloc(bool have_percpu_irqs);
+ extern int hv_stimer_cleanup(unsigned int cpu);
