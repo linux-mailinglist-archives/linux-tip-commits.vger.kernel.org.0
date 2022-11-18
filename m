@@ -2,51 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EACF62E738
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Nov 2022 22:43:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17C7F62FC04
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Nov 2022 18:52:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234930AbiKQVni (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 17 Nov 2022 16:43:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57088 "EHLO
+        id S234994AbiKRRwj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Nov 2022 12:52:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239211AbiKQVna (ORCPT
+        with ESMTP id S234447AbiKRRwj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 17 Nov 2022 16:43:30 -0500
+        Fri, 18 Nov 2022 12:52:39 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB2921025;
-        Thu, 17 Nov 2022 13:43:27 -0800 (PST)
-Date:   Thu, 17 Nov 2022 21:43:25 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D6ED3F07B;
+        Fri, 18 Nov 2022 09:52:38 -0800 (PST)
+Date:   Fri, 18 Nov 2022 17:52:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1668721406;
+        s=2020; t=1668793956;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=e1EptTRRDZWJPGJ1JeZSDbsVVsKPz/WMABLqUp0/9uc=;
-        b=ewbMtQFGcZ3oIfwVOmzkIvD6WoKj7AWjdWKXuEkjIAQ73tBznZsBDblRrGfJ8KPm7BcOUM
-        I1kraZoWaGagK82bPQTYpkgBiLsqn3vI4l8wmZHsCMHdKB3giC1v3uYVHuadlW8a34nTP2
-        3aIpC6crjUpNs0WOYCoZVVCGuKP6kX1D3zJ6/3f5T3HuKuGnS5BqxEUGJg7BiPnmjPjlMr
-        oXAFEOYIyfhCceayqCpUpUYKhV94GtbdBA6lpMrztnnTFDfb7+0dj4Ntp1f40kOCGV1iaW
-        aSWLY4GVogAkhB23l/Ny+gGtFyMmo1StPZ+wpNQei6uXzF76i8PfI2nZW7C0mQ==
+        bh=C9icFdV4kUTLB8nW3Zigy8SnuVAjyYCTdXQgDFSosuE=;
+        b=PnTT8HBztbtDO/HULmqo2sMXhWKudg+EAzgU6+rT8y4zeWMvndZ0ifCABAUyptlzrkF248
+        HxNF4Z+xfEnp2oy8IdKgbCC3XHG7siGFzGNoOGVY4MeLDPZgu076S2pKXL5ip5X+z+GoL+
+        UzWyCQWPYMqprkt88vYstx1mu71Venh35XW68eogPR06iRo87swN6rp2LdrlEkWpQs71qV
+        nQYnjsZ1Iz4KhiNqHWOBGCsXQUpEaVNpWFmKM2hxDS2ggYbl2vQe4crDF6TVyh0XXiQBG4
+        ss5S8rh800CKWK9hwi+U0wJeugGipLwZxxyCjtuV03+sNxuggmOCQIyxEKem9w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1668721406;
+        s=2020e; t=1668793956;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=e1EptTRRDZWJPGJ1JeZSDbsVVsKPz/WMABLqUp0/9uc=;
-        b=XzL7nxdn81wb/lX0WzkD+2zue+yOTkGWJ91WAX8HltF9A5Zjz1nlmxfdRxR8WeDTHFt8d1
-        NE7doVPWQDCdZ1Bw==
-From:   "tip-bot2 for Kuppuswamy Sathyanarayanan" <tip-bot2@linutronix.de>
+        bh=C9icFdV4kUTLB8nW3Zigy8SnuVAjyYCTdXQgDFSosuE=;
+        b=FdYjwZwnAFRW1h/Ubj3nzbDUZEtdjsPGWErh++oqufh8pQuuwaxuI3REjqhyaZlSbLJwwZ
+        z52rdd22A8W62QCQ==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/tdx: Add a wrapper to get TDREPORT0 from the TDX Module
-Cc:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Wander Lairson Costa <wander@redhat.com>, x86@kernel.org,
+Subject: [tip: x86/mm] x86/mm: Ensure forced page table splitting
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Marco Elver <elver@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <166872140508.4906.7190539793443618681.tip-bot2@tip-bot2>
+Message-ID: <166879395396.4906.1394517398531168643.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,118 +59,52 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/tdx branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     51acfe89af1118f906f9b68d95fdfb22832ac960
-Gitweb:        https://git.kernel.org/tip/51acfe89af1118f906f9b68d95fdfb22832ac960
-Author:        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-AuthorDate:    Wed, 16 Nov 2022 14:38:18 -08:00
+Commit-ID:     71cfdf0c336fb20b0f2941ca9b8f6b23d8d6c86b
+Gitweb:        https://git.kernel.org/tip/71cfdf0c336fb20b0f2941ca9b8f6b23d8d6c86b
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Fri, 18 Nov 2022 07:16:16 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 17 Nov 2022 11:03:09 -08:00
+CommitterDate: Fri, 18 Nov 2022 09:46:05 -08:00
 
-x86/tdx: Add a wrapper to get TDREPORT0 from the TDX Module
+x86/mm: Ensure forced page table splitting
 
-To support TDX attestation, the TDX guest driver exposes an IOCTL
-interface to allow userspace to get the TDREPORT0 (a.k.a. TDREPORT
-subtype 0) from the TDX module via TDG.MR.TDREPORT TDCALL.
+There are a few kernel users like kfence that require 4k pages to work
+correctly and do not support large mappings.  They use set_memory_4k()
+to break down those large mappings.
 
-In order to get the TDREPORT0 in the TDX guest driver, instead of using
-a low level function like __tdx_module_call(), add a
-tdx_mcall_get_report0() wrapper function to handle it.
+That, in turn relies on cpa_data->force_split option to indicate to
+set_memory code that it should split page tables regardless of whether
+the need to be.
 
-This is a preparatory patch for adding attestation support.
+But, a recent change added an optimization which would return early
+if a set_memory request came in that did not change permissions.  It
+did not consult ->force_split and would mistakenly optimize away the
+splitting that set_memory_4k() needs.  This broke kfence.
 
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Skip the same-permission optimization when ->force_split is set.
+
+Fixes: 127960a05548 ("x86/mm: Inhibit _PAGE_NX changes from cpa_process_alias()")
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Wander Lairson Costa <wander@redhat.com>
-Link: https://lore.kernel.org/all/20221116223820.819090-2-sathyanarayanan.kuppuswamy%40linux.intel.com
+Tested-by: Marco Elver <elver@google.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/CA+G9fYuFxZTxkeS35VTZMXwQvohu73W3xbZ5NtjebsVvH6hCuA@mail.gmail.com/
 ---
- arch/x86/coco/tdx/tdx.c    | 40 +++++++++++++++++++++++++++++++++++++-
- arch/x86/include/asm/tdx.h |  2 ++-
- 2 files changed, 42 insertions(+)
+ arch/x86/mm/pat/set_memory.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index b8998cf..cfd4c95 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -5,6 +5,8 @@
- #define pr_fmt(fmt)     "tdx: " fmt
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 220361c..0db6951 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -1727,7 +1727,8 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
+ 	/*
+ 	 * No changes, easy!
+ 	 */
+-	if (!(pgprot_val(cpa->mask_set) | pgprot_val(cpa->mask_clr)))
++	if (!(pgprot_val(cpa->mask_set) | pgprot_val(cpa->mask_clr)) &&
++	    !cpa->force_split)
+ 		return ret;
  
- #include <linux/cpufeature.h>
-+#include <linux/export.h>
-+#include <linux/io.h>
- #include <asm/coco.h>
- #include <asm/tdx.h>
- #include <asm/vmx.h>
-@@ -15,6 +17,7 @@
- /* TDX module Call Leaf IDs */
- #define TDX_GET_INFO			1
- #define TDX_GET_VEINFO			3
-+#define TDX_GET_REPORT			4
- #define TDX_ACCEPT_PAGE			6
- 
- /* TDX hypercall Leaf IDs */
-@@ -36,6 +39,12 @@
- 
- #define ATTR_SEPT_VE_DISABLE	BIT(28)
- 
-+/* TDX Module call error codes */
-+#define TDCALL_RETURN_CODE(a)	((a) >> 32)
-+#define TDCALL_INVALID_OPERAND	0xc0000100
-+
-+#define TDREPORT_SUBTYPE_0	0
-+
- /*
-  * Wrapper for standard use of __tdx_hypercall with no output aside from
-  * return code.
-@@ -100,6 +109,37 @@ static inline void tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
- 		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
- }
- 
-+/**
-+ * tdx_mcall_get_report0() - Wrapper to get TDREPORT0 (a.k.a. TDREPORT
-+ *                           subtype 0) using TDG.MR.REPORT TDCALL.
-+ * @reportdata: Address of the input buffer which contains user-defined
-+ *              REPORTDATA to be included into TDREPORT.
-+ * @tdreport: Address of the output buffer to store TDREPORT.
-+ *
-+ * Refer to section titled "TDG.MR.REPORT leaf" in the TDX Module
-+ * v1.0 specification for more information on TDG.MR.REPORT TDCALL.
-+ * It is used in the TDX guest driver module to get the TDREPORT0.
-+ *
-+ * Return 0 on success, -EINVAL for invalid operands, or -EIO on
-+ * other TDCALL failures.
-+ */
-+int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
-+{
-+	u64 ret;
-+
-+	ret = __tdx_module_call(TDX_GET_REPORT, virt_to_phys(tdreport),
-+				virt_to_phys(reportdata), TDREPORT_SUBTYPE_0,
-+				0, NULL);
-+	if (ret) {
-+		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
-+			return -EINVAL;
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(tdx_mcall_get_report0);
-+
- static void tdx_parse_tdinfo(u64 *cc_mask)
- {
- 	struct tdx_module_output out;
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 020c81a..28d889c 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -67,6 +67,8 @@ void tdx_safe_halt(void);
- 
- bool tdx_early_handle_ve(struct pt_regs *regs);
- 
-+int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
-+
- #else
- 
- static inline void tdx_early_init(void) { };
+ 	while (rempages) {
