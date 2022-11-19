@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CB33630F78
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 19 Nov 2022 17:25:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1172D630F93
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 19 Nov 2022 17:46:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234693AbiKSQZG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 19 Nov 2022 11:25:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40862 "EHLO
+        id S234334AbiKSQp6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 19 Nov 2022 11:45:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234314AbiKSQYX (ORCPT
+        with ESMTP id S234463AbiKSQpw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 19 Nov 2022 11:24:23 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 501F959FFF;
-        Sat, 19 Nov 2022 08:24:17 -0800 (PST)
-Date:   Sat, 19 Nov 2022 16:24:14 -0000
+        Sat, 19 Nov 2022 11:45:52 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AFEC8F;
+        Sat, 19 Nov 2022 08:45:51 -0800 (PST)
+Date:   Sat, 19 Nov 2022 16:45:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1668875055;
+        s=2020; t=1668876350;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cbvTo8n+0L4VHhoU6ZYs0QInSugEwaROee+5EdNGS50=;
-        b=Pb2cgJtBSZdin5JinnLJm+DgH+/B0v8Fn0lU71BnECafWhaOGXl8ixcDpz+stFGkvSjKXu
-        B5++/hPwCrPXCw5Kw7tbaxJN6dlqzEULcHL9twpUEWOHaJEcDGof6ja+ud5m/wyFwOevib
-        L9Kgi7afEilJZe5Fo80bmHrllU7ISlWBWVbUbqL3BsXre1HTK69inIp0C6Q74/DrjtouLy
-        kisFR0jIaF/WQxOgbsbdC55s2PMskR889uCTPiNYaixeSd7rqwGh/wEz6aVd501ipSzS8M
-        vTwnTcEntRcLVglw0yP6FU1OEvyLIy1479Cjpht3zG6MDQmhUq0ZywBEs0/p9w==
+        bh=plrm+xmykYAoNg4a8w8hWmbbNHyol+PQH2YoAgui7nk=;
+        b=uWZ6azFF/+JU7kz1vdz4gQXkCeOKj/tJulY2q2Ee8WArXfLu5LwGH3kdfm1lMtbl/nE6wJ
+        oxLpoIbmukCyT0HaYcRTB31Sr1mkyOZsGjzy0nVGm58dLTAlKtSJkWRLUjWugg2mhpJHUF
+        gN8vhg3SEUkZcW4q/aq5t7xr3kcxNwV2dMbHtwHGI7PfqlL84q0FAjx1nYCUikk2n0I0Td
+        SB9OOjDizonRjBxXQUfJOwQubGuPfaS6An7YdjEiLbywyFe3q5aAvqpefYC0iL2S5TLrsL
+        VH/H/J8hUXSysAon1rf1HP6dWyh7RjA0hXQ6PN0VAx5oKwj5VA/XFz/xkvtE5g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1668875055;
+        s=2020e; t=1668876350;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cbvTo8n+0L4VHhoU6ZYs0QInSugEwaROee+5EdNGS50=;
-        b=AAJ+qrKbujzlqRv6QvO5OKvLWzcHkbA3EmlPRoM0zxtJ/A4/gyFv75DROSMb6WtgggHe9+
-        36nxC5ofVFo3DlCg==
-From:   "tip-bot2 for Jithu Joseph" <tip-bot2@linutronix.de>
+        bh=plrm+xmykYAoNg4a8w8hWmbbNHyol+PQH2YoAgui7nk=;
+        b=dI3IO8rXU+lpkblq0oTd1IelvE/rM5qTRCCQGnORjqXSU3k2uQkIWx/qtLInHsf3WQikN6
+        CsfSHpP9hNKofTCw==
+From:   "tip-bot2 for Jiapeng Chong" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] platform/x86/intel/ifs: Remove unused selection
-Cc:     Jithu Joseph <jithu.joseph@intel.com>,
-        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
-        Sohil Mehta <sohil.mehta@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
+Subject: [tip: x86/cleanups] x86/kaslr: Fix process_mem_region()'s return value
+Cc:     Abaci Robot <abaci@linux.alibaba.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221117035935.4136738-2-jithu.joseph@intel.com>
-References: <20221117035935.4136738-2-jithu.joseph@intel.com>
+In-Reply-To: <20220421202556.129799-1-jiapeng.chong@linux.alibaba.com>
+References: <20220421202556.129799-1-jiapeng.chong@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <166887505465.4906.7039915057720991895.tip-bot2@tip-bot2>
+Message-ID: <166887634865.4906.2868849268609528843.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,39 +65,40 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     10d4853e4c5cd64b9ef1e5579bb2e89bceab4175
-Gitweb:        https://git.kernel.org/tip/10d4853e4c5cd64b9ef1e5579bb2e89bceab4175
-Author:        Jithu Joseph <jithu.joseph@intel.com>
-AuthorDate:    Wed, 16 Nov 2022 19:59:20 -08:00
+Commit-ID:     ee92fa03918d114d3ac9c36a8bf2c032ede75a3b
+Gitweb:        https://git.kernel.org/tip/ee92fa03918d114d3ac9c36a8bf2c032ede75a3b
+Author:        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+AuthorDate:    Fri, 22 Apr 2022 04:25:56 +08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 18 Nov 2022 14:59:20 +01:00
+CommitterDate: Sat, 19 Nov 2022 17:35:10 +01:00
 
-platform/x86/intel/ifs: Remove unused selection
+x86/kaslr: Fix process_mem_region()'s return value
 
-CONFIG_INTEL_IFS_DEVICE is not used anywhere. The selection in
-Kconfig is therefore pointless. Delete it.
+Fix the following coccicheck warning:
 
-Signed-off-by: Jithu Joseph <jithu.joseph@intel.com>
+  ./arch/x86/boot/compressed/kaslr.c:670:8-9: WARNING: return of 0/1 in
+  function 'process_mem_region' with return type bool.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20221117035935.4136738-2-jithu.joseph@intel.com
+Link: https://lore.kernel.org/r/20220421202556.129799-1-jiapeng.chong@linux.alibaba.com
 ---
- drivers/platform/x86/intel/ifs/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/boot/compressed/kaslr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/ifs/Kconfig b/drivers/platform/x86/intel/ifs/Kconfig
-index c341a27..89152d4 100644
---- a/drivers/platform/x86/intel/ifs/Kconfig
-+++ b/drivers/platform/x86/intel/ifs/Kconfig
-@@ -4,7 +4,6 @@ config INTEL_IFS
- 	# Discussion on the list has shown that the sysfs API needs a bit
- 	# more work, mark this as broken for now
- 	depends on BROKEN
--	select INTEL_IFS_DEVICE
- 	help
- 	  Enable support for the In Field Scan capability in select
- 	  CPUs. The capability allows for running low level tests via
+diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+index e476bcb..454757f 100644
+--- a/arch/x86/boot/compressed/kaslr.c
++++ b/arch/x86/boot/compressed/kaslr.c
+@@ -668,7 +668,7 @@ static bool process_mem_region(struct mem_vector *region,
+ 		}
+ 	}
+ #endif
+-	return 0;
++	return false;
+ }
+ 
+ #ifdef CONFIG_EFI
