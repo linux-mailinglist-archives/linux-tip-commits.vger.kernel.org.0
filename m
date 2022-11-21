@@ -2,59 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC01632356
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Nov 2022 14:22:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1EBA63278E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Nov 2022 16:14:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229899AbiKUNW1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Nov 2022 08:22:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57646 "EHLO
+        id S232185AbiKUPOL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Nov 2022 10:14:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbiKUNW1 (ORCPT
+        with ESMTP id S232112AbiKUPNr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Nov 2022 08:22:27 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45698BB;
-        Mon, 21 Nov 2022 05:22:25 -0800 (PST)
-Date:   Mon, 21 Nov 2022 13:22:22 -0000
+        Mon, 21 Nov 2022 10:13:47 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E690C68AE;
+        Mon, 21 Nov 2022 07:08:05 -0800 (PST)
+Date:   Mon, 21 Nov 2022 15:08:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669036943;
+        s=2020; t=1669043283;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jfhKsxVdcYuSS4iVLaMXHyFpJCAusOp0IRAhGPptqaw=;
-        b=hmyUWD+wABAkTih7MeofHzD3Ij2JLyozdukr3NAjkQmg3+cgNMm6cbm3ODDkYd0U8KL9QS
-        UODEc9+iXZJnkhUPDgoC49qRVz5K3Mus7LAYYJhvov2O9Evbj5e2fg3OPdOiKswLPDgP2j
-        AiZCoOX86Hp+I3ptPPRpPV5pbyiJO6vcjMWYz8x+Kg+QpqAaCPj7Vu8ICeuJWbyhDo7QxT
-        Z5y8WRoSgH8sWUbGhR2uNjGgosM+KDIao5ecmhHPbEeEGcca7cL+33yuxlfPQSebpYM8WF
-        OGGFfOdePtZnfbRxbNz4/ZKNUcsa1+eh00dhtBc9C/2x409NiaMEp4yPG7LW0A==
+        bh=3zpF293Xpb7hIE7qRypmxo8y68aTytICJY5A2Ecegdw=;
+        b=PgiWo0S6xD9BH70LrjHvg5GV7A8twZdSSy4NKAREw/12JyDOD5RNhx6NrAwuOqC6oYbWTv
+        nx4dsYgEjL9qSUMfoPjaziL7lnJJDNx5qRCXwtmaaxiL98tM0zXctNkVqtQxDdGBHTfveb
+        SbjfXL3Fj3Gdcs+6pMuHIUwmrVjH6lvCikR8E1G1xvLnMYZzsZCwyQI9QfdM9IjCCEN5uz
+        nBFOyEPx7QwK/xuCIxNsdmoOc32XDemDNviVeahiYPnnpPQpyzUv9pxfhbrxwMsikvXv8L
+        7rqzVROvqn5lxJTkm3SQ2FYAWWSGMoCHZqkax7AAiNsJ+bYnM9/xvVG6XGa6Dw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669036943;
+        s=2020e; t=1669043283;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jfhKsxVdcYuSS4iVLaMXHyFpJCAusOp0IRAhGPptqaw=;
-        b=wVzr8HN4kYEk/1CyjjgSxIFge2rTi9wFzl8O4RnwJ0qRDsAproZjpRIb1QxplLddcDaRPK
-        AvronD3WMxZo+rCA==
-From:   "tip-bot2 for Pawan Gupta" <tip-bot2@linutronix.de>
+        bh=3zpF293Xpb7hIE7qRypmxo8y68aTytICJY5A2Ecegdw=;
+        b=RzKT1lqsFcNODbUbO1UPa0SX9OBj6rxz0/WyK3/IAH3K9/Of2+0Yzc5glmPZScPF6BooRn
+        IzPknonxlDPUP7BA==
+From:   "tip-bot2 for Joe Korty" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/tsx: Add a feature bit for TSX control MSR support
-Cc:     Andrew Cooper <andrew.cooper3@citrix.com>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, <stable@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cde619764e1d98afbb7a5fa58424f1278ede37b45=2E16685?=
- =?utf-8?q?39735=2Egit=2Epawan=2Ekumar=2Egupta=40linux=2Eintel=2Ecom=3E?=
-References: =?utf-8?q?=3Cde619764e1d98afbb7a5fa58424f1278ede37b45=2E166853?=
- =?utf-8?q?9735=2Egit=2Epawan=2Ekumar=2Egupta=40linux=2Eintel=2Ecom=3E?=
+Subject: [tip: timers/urgent] clocksource/drivers/arm_arch_timer: Fix XGene-1
+ TVAL register math error
+Cc:     Joe Korty <joe.korty@concurrent-rt.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20221024165422.GA51107@zipoli.concurrent-rt.com>
+References: <20221024165422.GA51107@zipoli.concurrent-rt.com>
 MIME-Version: 1.0
-Message-ID: <166903694262.4906.2840275250764271155.tip-bot2@tip-bot2>
+Message-ID: <166904328202.4906.4328519083119189817.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,123 +66,93 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     aaa65d17eec372c6a9756833f3964ba05b05ea14
-Gitweb:        https://git.kernel.org/tip/aaa65d17eec372c6a9756833f3964ba05b05ea14
-Author:        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-AuthorDate:    Tue, 15 Nov 2022 11:17:05 -08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 21 Nov 2022 14:08:20 +01:00
+Commit-ID:     839a973988a94c15002cbd81536e4af6ced2bd30
+Gitweb:        https://git.kernel.org/tip/839a973988a94c15002cbd81536e4af6ced2bd30
+Author:        Joe Korty <joe.korty@concurrent-rt.com>
+AuthorDate:    Mon, 21 Nov 2022 14:53:43 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 21 Nov 2022 16:01:56 +01:00
 
-x86/tsx: Add a feature bit for TSX control MSR support
+clocksource/drivers/arm_arch_timer: Fix XGene-1 TVAL register math error
 
-Support for the TSX control MSR is enumerated in MSR_IA32_ARCH_CAPABILITIES.
-This is different from how other CPU features are enumerated i.e. via
-CPUID. Currently, a call to tsx_ctrl_is_supported() is required for
-enumerating the feature. In the absence of a feature bit for TSX control,
-any code that relies on checking feature bits directly will not work.
+The TVAL register is 32 bit signed.  Thus only the lower 31 bits are
+available to specify when an interrupt is to occur at some time in the
+near future.  Attempting to specify a larger interval with TVAL results
+in a negative time delta which means the timer fires immediately upon
+being programmed, rather than firing at that expected future time.
 
-In preparation for adding a feature bit check in MSR save/restore
-during suspend/resume, set a new feature bit X86_FEATURE_TSX_CTRL when
-MSR_IA32_TSX_CTRL is present. Also make tsx_ctrl_is_supported() use the
-new feature bit to avoid any overhead of reading the MSR.
+The solution is for Linux to declare that TVAL is a 31 bit register rather
+than give its true size of 32 bits.  This prevents Linux from programming
+TVAL with a too-large value.  Note that, prior to 5.16, this little trick
+was the standard way to handle TVAL in Linux, so there is nothing new
+happening here on that front.
 
-  [ bp: Remove tsx_ctrl_is_supported(), add room for two more feature
-    bits in word 11 which are coming up in the next merge window. ]
+The softlockup detector hides the issue, because it keeps generating
+short timer deadlines that are within the scope of the broken timer.
 
-Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/de619764e1d98afbb7a5fa58424f1278ede37b45.1668539735.git.pawan.kumar.gupta@linux.intel.com
+Disabling it, it starts using NO_HZ with much longer timer deadlines, which
+turns into an interrupt flood:
+
+ 11: 1124855130  949168462  758009394   76417474  104782230   30210281
+         310890 1734323687     GICv2  29 Level     arch_timer
+
+And "much longer" isn't that long: it takes less than 43s to underflow
+TVAL at 50MHz (the frequency of the counter on XGene-1).
+
+Some comments on the v1 version of this patch by Marc Zyngier:
+
+  XGene implements CVAL (a 64bit comparator) in terms of TVAL (a countdown
+  register) instead of the other way around. TVAL being a 32bit register,
+  the width of the counter should equally be 32.  However, TVAL is a
+  *signed* value, and keeps counting down in the negative range once the
+  timer fires.
+
+  It means that any TVAL value with bit 31 set will fire immediately,
+  as it cannot be distinguished from an already expired timer. Reducing
+  the timer range back to a paltry 31 bits papers over the issue.
+
+  Another problem cannot be fixed though, which is that the timer interrupt
+  *must* be handled within the negative countdown period, or the interrupt
+  will be lost (TVAL will rollover to a positive value, indicative of a
+  new timer deadline).
+
+Fixes: 012f18850452 ("clocksource/drivers/arm_arch_timer: Work around broken CVAL implementations")
+Signed-off-by: Joe Korty <joe.korty@concurrent-rt.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20221024165422.GA51107@zipoli.concurrent-rt.com
+Link: https://lore.kernel.org/r/20221121145343.896018-1-maz@kernel.org
+
+[maz: revamped the commit message]
 ---
- arch/x86/include/asm/cpufeatures.h |  3 ++-
- arch/x86/kernel/cpu/tsx.c          | 38 ++++++++++++-----------------
- 2 files changed, 20 insertions(+), 21 deletions(-)
+ drivers/clocksource/arm_arch_timer.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index b71f4f2..b2da7cb 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -305,6 +305,9 @@
- #define X86_FEATURE_USE_IBPB_FW		(11*32+16) /* "" Use IBPB during runtime firmware calls */
- #define X86_FEATURE_RSB_VMEXIT_LITE	(11*32+17) /* "" Fill RSB on VM exit when EIBRS is enabled */
+diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
+index a7ff775..933bb96 100644
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -806,6 +806,9 @@ static u64 __arch_timer_check_delta(void)
+ 		/*
+ 		 * XGene-1 implements CVAL in terms of TVAL, meaning
+ 		 * that the maximum timer range is 32bit. Shame on them.
++		 *
++		 * Note that TVAL is signed, thus has only 31 of its
++		 * 32 bits to express magnitude.
+ 		 */
+ 		MIDR_ALL_VERSIONS(MIDR_CPU_MODEL(ARM_CPU_IMP_APM,
+ 						 APM_CPU_PART_POTENZA)),
+@@ -813,8 +816,8 @@ static u64 __arch_timer_check_delta(void)
+ 	};
  
-+
-+#define X86_FEATURE_MSR_TSX_CTRL	(11*32+20) /* "" MSR IA32_TSX_CTRL (Intel) implemented */
-+
- /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
- #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* AVX VNNI instructions */
- #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* AVX512 BFLOAT16 instructions */
-diff --git a/arch/x86/kernel/cpu/tsx.c b/arch/x86/kernel/cpu/tsx.c
-index ec7bbac..8009c83 100644
---- a/arch/x86/kernel/cpu/tsx.c
-+++ b/arch/x86/kernel/cpu/tsx.c
-@@ -58,24 +58,6 @@ static void tsx_enable(void)
- 	wrmsrl(MSR_IA32_TSX_CTRL, tsx);
- }
- 
--static bool tsx_ctrl_is_supported(void)
--{
--	u64 ia32_cap = x86_read_arch_cap_msr();
--
--	/*
--	 * TSX is controlled via MSR_IA32_TSX_CTRL.  However, support for this
--	 * MSR is enumerated by ARCH_CAP_TSX_MSR bit in MSR_IA32_ARCH_CAPABILITIES.
--	 *
--	 * TSX control (aka MSR_IA32_TSX_CTRL) is only available after a
--	 * microcode update on CPUs that have their MSR_IA32_ARCH_CAPABILITIES
--	 * bit MDS_NO=1. CPUs with MDS_NO=0 are not planned to get
--	 * MSR_IA32_TSX_CTRL support even after a microcode update. Thus,
--	 * tsx= cmdline requests will do nothing on CPUs without
--	 * MSR_IA32_TSX_CTRL support.
--	 */
--	return !!(ia32_cap & ARCH_CAP_TSX_CTRL_MSR);
--}
--
- static enum tsx_ctrl_states x86_get_tsx_auto_mode(void)
- {
- 	if (boot_cpu_has_bug(X86_BUG_TAA))
-@@ -135,7 +117,7 @@ static void tsx_clear_cpuid(void)
- 		rdmsrl(MSR_TSX_FORCE_ABORT, msr);
- 		msr |= MSR_TFA_TSX_CPUID_CLEAR;
- 		wrmsrl(MSR_TSX_FORCE_ABORT, msr);
--	} else if (tsx_ctrl_is_supported()) {
-+	} else if (cpu_feature_enabled(X86_FEATURE_MSR_TSX_CTRL)) {
- 		rdmsrl(MSR_IA32_TSX_CTRL, msr);
- 		msr |= TSX_CTRL_CPUID_CLEAR;
- 		wrmsrl(MSR_IA32_TSX_CTRL, msr);
-@@ -158,7 +140,8 @@ static void tsx_dev_mode_disable(void)
- 	u64 mcu_opt_ctrl;
- 
- 	/* Check if RTM_ALLOW exists */
--	if (!boot_cpu_has_bug(X86_BUG_TAA) || !tsx_ctrl_is_supported() ||
-+	if (!boot_cpu_has_bug(X86_BUG_TAA) ||
-+	    !cpu_feature_enabled(X86_FEATURE_MSR_TSX_CTRL) ||
- 	    !cpu_feature_enabled(X86_FEATURE_SRBDS_CTRL))
- 		return;
- 
-@@ -191,7 +174,20 @@ void __init tsx_init(void)
- 		return;
+ 	if (is_midr_in_range_list(read_cpuid_id(), broken_cval_midrs)) {
+-		pr_warn_once("Broken CNTx_CVAL_EL1, limiting width to 32bits");
+-		return CLOCKSOURCE_MASK(32);
++		pr_warn_once("Broken CNTx_CVAL_EL1, using 31 bit TVAL instead.\n");
++		return CLOCKSOURCE_MASK(31);
  	}
- 
--	if (!tsx_ctrl_is_supported()) {
-+	/*
-+	 * TSX is controlled via MSR_IA32_TSX_CTRL.  However, support for this
-+	 * MSR is enumerated by ARCH_CAP_TSX_MSR bit in MSR_IA32_ARCH_CAPABILITIES.
-+	 *
-+	 * TSX control (aka MSR_IA32_TSX_CTRL) is only available after a
-+	 * microcode update on CPUs that have their MSR_IA32_ARCH_CAPABILITIES
-+	 * bit MDS_NO=1. CPUs with MDS_NO=0 are not planned to get
-+	 * MSR_IA32_TSX_CTRL support even after a microcode update. Thus,
-+	 * tsx= cmdline requests will do nothing on CPUs without
-+	 * MSR_IA32_TSX_CTRL support.
-+	 */
-+	if (x86_read_arch_cap_msr() & ARCH_CAP_TSX_CTRL_MSR) {
-+		setup_force_cpu_cap(X86_FEATURE_MSR_TSX_CTRL);
-+	} else {
- 		tsx_ctrl_state = TSX_CTRL_NOT_SUPPORTED;
- 		return;
- 	}
+ #endif
+ 	return CLOCKSOURCE_MASK(arch_counter_get_width());
