@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A21CD633C74
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Nov 2022 13:28:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E01E633EE4
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Nov 2022 15:27:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233286AbiKVM2a (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 22 Nov 2022 07:28:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40104 "EHLO
+        id S233878AbiKVO1m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Nov 2022 09:27:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233765AbiKVM20 (ORCPT
+        with ESMTP id S233916AbiKVO1j (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 22 Nov 2022 07:28:26 -0500
+        Tue, 22 Nov 2022 09:27:39 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3DC4C262;
-        Tue, 22 Nov 2022 04:28:25 -0800 (PST)
-Date:   Tue, 22 Nov 2022 12:28:20 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43A52AE5C;
+        Tue, 22 Nov 2022 06:27:35 -0800 (PST)
+Date:   Tue, 22 Nov 2022 14:27:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669120102;
+        s=2020; t=1669127254;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gMhYDeW6cO8i9Z//LZXm6hhlJ2+VSC3EwZFBBVTwq24=;
-        b=PxopwqDCvXYSeYW1C1FSrvHPY/c2Nipl1U4jazlsGG8GNcd4l2gFxNGvrhDg1Sk8IL/34s
-        lfE+3gbkKanrahRQlkNsZzog4ELsXY86AP0W2awSujHclTXxyuh8KntugaduR0Wsq1oC2b
-        btwofzNf7XMbqSWvVca0BLcBi2mfG1II/FDzinzvaFfmyofbbmYfaZQtxD1teHZnv8h2ip
-        LDN+o3N1jHHok6vtpf/Az9KMx9HVdA+eIt2+dZbtCjbp81Ezvfo1PLSypJzhOQvrN+Pdqb
-        yvCG7hsBojq2Sr5d3FaWH6tSu5QqTMMWBU+r5zxWHDB+Fsvdjf0Z68oyyHqo4Q==
+        bh=vG/st4G6W4vPzDUzOjmBSilspPfXfLK8NNMPkNliKwk=;
+        b=ZN04isOGDj2N9eSI34qr0LJjPEgDBNd1f8vA48y1SKm/ZXzyxAI1tdoqkw93DApLoGkAlk
+        LTgem6tOwrAJSIymrzBmZhT2rIt8DGvlV6+kqgnvbYK2ZaNOMRROVtJRzlMyMxIX7bTrNy
+        fR238PNVwSujeuwlKMpD8gsHzUf0IF2y6MY9khcUTcOXOHfO4a6cH6HcwACWm9wo9f6XIJ
+        Eax5xYPxn9jp6OekrxMYIXovHOSKNWi+txVu0UGnDjWOz9F16HlsIVEBkQfz3OYrX7xHWd
+        ix3hqzy+cBc6iIOWTLaKV6FnZA82a3c8+Y4qpTTMQ83OkvlQvGVqbkPOxY6DVQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669120102;
+        s=2020e; t=1669127254;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gMhYDeW6cO8i9Z//LZXm6hhlJ2+VSC3EwZFBBVTwq24=;
-        b=cih7vO3LYLTHmxiOw9QYg6hLazcc7dJXtpNOt/SH+f4IFcSwX6kCjSgjtkCDCqYRnCnqEN
-        8o/7FI52Kn1MRzAg==
+        bh=vG/st4G6W4vPzDUzOjmBSilspPfXfLK8NNMPkNliKwk=;
+        b=3XWhBM6kB1Jp3kTF5jkzy0dBkU/apgnY1dRl1c2Vi7Nv22eQ6/CFDzT+IaOaOsSInHDT7n
+        gU1dVTZeMQrRYpCQ==
 From:   "tip-bot2 for Julian Pidancet" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -52,7 +52,7 @@ Cc:     Julian Pidancet <julian.pidancet@oracle.com>,
 In-Reply-To: <20221027204906.511277-1-julian.pidancet@oracle.com>
 References: <20221027204906.511277-1-julian.pidancet@oracle.com>
 MIME-Version: 1.0
-Message-ID: <166912010097.4906.7346211098182590940.tip-bot2@tip-bot2>
+Message-ID: <166912725270.4906.15781123390853216184.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,12 +68,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/alternatives branch of tip:
 
-Commit-ID:     0b1a2171551e05c45ad999e403272ddafa7286c8
-Gitweb:        https://git.kernel.org/tip/0b1a2171551e05c45ad999e403272ddafa7286c8
+Commit-ID:     be84d8ed3f04e9154a3a55e29a27dcd416f05b31
+Gitweb:        https://git.kernel.org/tip/be84d8ed3f04e9154a3a55e29a27dcd416f05b31
 Author:        Julian Pidancet <julian.pidancet@oracle.com>
 AuthorDate:    Thu, 27 Oct 2022 22:49:06 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 22 Nov 2022 13:13:55 +01:00
+CommitterDate: Tue, 22 Nov 2022 15:16:16 +01:00
 
 x86/alternative: Consistently patch SMP locks in vmlinux and modules
 
@@ -112,11 +112,11 @@ Signed-off-by: Borislav Petkov <bp@suse.de>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Link: https://lore.kernel.org/r/20221027204906.511277-1-julian.pidancet@oracle.com
 ---
- arch/x86/kernel/module.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/x86/kernel/module.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
-index c032edc..b1e6e45 100644
+index c032edc..c8a25ae 100644
 --- a/arch/x86/kernel/module.c
 +++ b/arch/x86/kernel/module.c
 @@ -251,14 +251,12 @@ int module_finalize(const Elf_Ehdr *hdr,
@@ -124,11 +124,9 @@ index c032edc..b1e6e45 100644
  		    struct module *me)
  {
 -	const Elf_Shdr *s, *text = NULL, *alt = NULL, *locks = NULL,
--		*para = NULL, *orc = NULL, *orc_ip = NULL,
--		*retpolines = NULL, *returns = NULL, *ibt_endbr = NULL;
-+	const Elf_Shdr *s, *alt = NULL, *locks = NULL, *para = NULL,
-+		*orc = NULL, *orc_ip = NULL, *retpolines = NULL,
-+		*returns = NULL, *ibt_endbr = NULL;
++	const Elf_Shdr *s, *alt = NULL, *locks = NULL,
+ 		*para = NULL, *orc = NULL, *orc_ip = NULL,
+ 		*retpolines = NULL, *returns = NULL, *ibt_endbr = NULL;
  	char *secstrings = (void *)hdr + sechdrs[hdr->e_shstrndx].sh_offset;
  
  	for (s = sechdrs; s < sechdrs + hdr->e_shnum; s++) {
