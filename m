@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BE95633B9D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Nov 2022 12:43:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A21CD633C74
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Nov 2022 13:28:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232938AbiKVLm6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 22 Nov 2022 06:42:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59936 "EHLO
+        id S233286AbiKVM2a (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Nov 2022 07:28:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233184AbiKVLlm (ORCPT
+        with ESMTP id S233765AbiKVM20 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 22 Nov 2022 06:41:42 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98F815B59C;
-        Tue, 22 Nov 2022 03:38:53 -0800 (PST)
-Date:   Tue, 22 Nov 2022 11:38:50 -0000
+        Tue, 22 Nov 2022 07:28:26 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3DC4C262;
+        Tue, 22 Nov 2022 04:28:25 -0800 (PST)
+Date:   Tue, 22 Nov 2022 12:28:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669117131;
+        s=2020; t=1669120102;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ju8RVrpAmoxu07QrDfR6AfyPN+fjpTPQ6RH2y9sCpj4=;
-        b=Lfuwt/076us6HYFOP1XIUyOesk4P0bfNOz0u+sFvz5EJPderIlVwHW98nksKcapZ3uUOlC
-        XA3bGeIpPsPUdeurClEbDESYd4jRb1OLWYsRj87WIa28GEK6An4hbMhH7PnHxJQLg44jgF
-        g2GhjlPxQOFinRwIhWZbXmmEsZAV5BVCyC8Lld3mWTqTAshmjmecNqseb5AQSXGdQ67o8J
-        niwWk3F2Ybwc2nesNkjMbSlAQN+PytlDCD29fZApbFPDq3JTWGTJQIam5uBX0ftQkCw6z1
-        TOSVvOBeZpaU5LwANsvGCXDK629Hw54tKqGaUwLxF1GDFc+NrP100hYPt91n6w==
+        bh=gMhYDeW6cO8i9Z//LZXm6hhlJ2+VSC3EwZFBBVTwq24=;
+        b=PxopwqDCvXYSeYW1C1FSrvHPY/c2Nipl1U4jazlsGG8GNcd4l2gFxNGvrhDg1Sk8IL/34s
+        lfE+3gbkKanrahRQlkNsZzog4ELsXY86AP0W2awSujHclTXxyuh8KntugaduR0Wsq1oC2b
+        btwofzNf7XMbqSWvVca0BLcBi2mfG1II/FDzinzvaFfmyofbbmYfaZQtxD1teHZnv8h2ip
+        LDN+o3N1jHHok6vtpf/Az9KMx9HVdA+eIt2+dZbtCjbp81Ezvfo1PLSypJzhOQvrN+Pdqb
+        yvCG7hsBojq2Sr5d3FaWH6tSu5QqTMMWBU+r5zxWHDB+Fsvdjf0Z68oyyHqo4Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669117131;
+        s=2020e; t=1669120102;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ju8RVrpAmoxu07QrDfR6AfyPN+fjpTPQ6RH2y9sCpj4=;
-        b=XOuUKUqhW01F6sjByzjjTsTYBbKsadlVQPDxlvsF+s5CfIakI+F7ZtETtSa9EghgeVPw0T
-        XL67fQXUJIDM15CQ==
-From:   "tip-bot2 for Michael Kelley" <tip-bot2@linutronix.de>
+        bh=gMhYDeW6cO8i9Z//LZXm6hhlJ2+VSC3EwZFBBVTwq24=;
+        b=cih7vO3LYLTHmxiOw9QYg6hLazcc7dJXtpNOt/SH+f4IFcSwX6kCjSgjtkCDCqYRnCnqEN
+        8o/7FI52Kn1MRzAg==
+From:   "tip-bot2 for Julian Pidancet" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/ioremap: Fix page aligned size calculation in
- __ioremap_caller()
-Cc:     Michael Kelley <mikelley@microsoft.com>,
+Subject: [tip: x86/alternatives] x86/alternative: Consistently patch SMP locks
+ in vmlinux and modules
+Cc:     Julian Pidancet <julian.pidancet@oracle.com>,
         Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, <stable@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <1668624097-14884-2-git-send-email-mikelley@microsoft.com>
-References: <1668624097-14884-2-git-send-email-mikelley@microsoft.com>
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20221027204906.511277-1-julian.pidancet@oracle.com>
+References: <20221027204906.511277-1-julian.pidancet@oracle.com>
 MIME-Version: 1.0
-Message-ID: <166911713030.4906.16935727667401525991.tip-bot2@tip-bot2>
+Message-ID: <166912010097.4906.7346211098182590940.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,55 +66,91 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/alternatives branch of tip:
 
-Commit-ID:     4dbd6a3e90e03130973688fd79e19425f720d999
-Gitweb:        https://git.kernel.org/tip/4dbd6a3e90e03130973688fd79e19425f720d999
-Author:        Michael Kelley <mikelley@microsoft.com>
-AuthorDate:    Wed, 16 Nov 2022 10:41:24 -08:00
+Commit-ID:     0b1a2171551e05c45ad999e403272ddafa7286c8
+Gitweb:        https://git.kernel.org/tip/0b1a2171551e05c45ad999e403272ddafa7286c8
+Author:        Julian Pidancet <julian.pidancet@oracle.com>
+AuthorDate:    Thu, 27 Oct 2022 22:49:06 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 22 Nov 2022 12:21:16 +01:00
+CommitterDate: Tue, 22 Nov 2022 13:13:55 +01:00
 
-x86/ioremap: Fix page aligned size calculation in __ioremap_caller()
+x86/alternative: Consistently patch SMP locks in vmlinux and modules
 
-Current code re-calculates the size after aligning the starting and
-ending physical addresses on a page boundary. But the re-calculation
-also embeds the masking of high order bits that exceed the size of
-the physical address space (via PHYSICAL_PAGE_MASK). If the masking
-removes any high order bits, the size calculation results in a huge
-value that is likely to immediately fail.
+alternatives_smp_module_add() restricts patching of SMP lock prefixes to
+the text address range passed as an argument.
 
-Fix this by re-calculating the page-aligned size first. Then mask any
-high order bits using PHYSICAL_PAGE_MASK.
+For vmlinux, patching all the instructions located between the _text and
+_etext symbols is allowed. That includes the .text section but also
+other sections such as .text.hot and .text.unlikely.
 
-Fixes: ffa71f33a820 ("x86, ioremap: Fix incorrect physical address handling in PAE mode")
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+As per the comment inside the 'struct smp_alt_module' definition, the
+original purpose of this restriction is to avoid patching the init code
+because in the case when one boots with a single CPU, the LOCK prefixes
+to the locking primitives are removed.
+
+Later on, when other CPUs are onlined, those LOCK prefixes get added
+back in but by that time the .init code is very likely removed so
+patching that would be a bad idea.
+
+For modules, the current code only allows patching instructions located
+inside the .text segment, excluding other sections such as .text.hot or
+.text.unlikely, which may need patching.
+
+Make patching of the kernel core and modules more consistent by
+allowing all text sections of modules except .init.text to be patched in
+module_finalize().
+
+For that, use mod->core_layout.base/mod->core_layout.text_size as the
+address range allowed to be patched, which include all the code sections
+except the init code.
+
+  [ bp: Massage and expand commit message. ]
+
+Signed-off-by: Julian Pidancet <julian.pidancet@oracle.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/1668624097-14884-2-git-send-email-mikelley@microsoft.com
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20221027204906.511277-1-julian.pidancet@oracle.com
 ---
- arch/x86/mm/ioremap.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/kernel/module.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-index 78c5bc6..6453fba 100644
---- a/arch/x86/mm/ioremap.c
-+++ b/arch/x86/mm/ioremap.c
-@@ -217,9 +217,15 @@ __ioremap_caller(resource_size_t phys_addr, unsigned long size,
- 	 * Mappings have to be page-aligned
- 	 */
- 	offset = phys_addr & ~PAGE_MASK;
--	phys_addr &= PHYSICAL_PAGE_MASK;
-+	phys_addr &= PAGE_MASK;
- 	size = PAGE_ALIGN(last_addr+1) - phys_addr;
+diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
+index c032edc..b1e6e45 100644
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -251,14 +251,12 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 		    const Elf_Shdr *sechdrs,
+ 		    struct module *me)
+ {
+-	const Elf_Shdr *s, *text = NULL, *alt = NULL, *locks = NULL,
+-		*para = NULL, *orc = NULL, *orc_ip = NULL,
+-		*retpolines = NULL, *returns = NULL, *ibt_endbr = NULL;
++	const Elf_Shdr *s, *alt = NULL, *locks = NULL, *para = NULL,
++		*orc = NULL, *orc_ip = NULL, *retpolines = NULL,
++		*returns = NULL, *ibt_endbr = NULL;
+ 	char *secstrings = (void *)hdr + sechdrs[hdr->e_shstrndx].sh_offset;
  
-+	/*
-+	 * Mask out any bits not part of the actual physical
-+	 * address, like memory encryption bits.
-+	 */
-+	phys_addr &= PHYSICAL_PAGE_MASK;
-+
- 	retval = memtype_reserve(phys_addr, (u64)phys_addr + size,
- 						pcm, &new_pcm);
- 	if (retval) {
+ 	for (s = sechdrs; s < sechdrs + hdr->e_shnum; s++) {
+-		if (!strcmp(".text", secstrings + s->sh_name))
+-			text = s;
+ 		if (!strcmp(".altinstructions", secstrings + s->sh_name))
+ 			alt = s;
+ 		if (!strcmp(".smp_locks", secstrings + s->sh_name))
+@@ -302,12 +300,13 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 		void *iseg = (void *)ibt_endbr->sh_addr;
+ 		apply_ibt_endbr(iseg, iseg + ibt_endbr->sh_size);
+ 	}
+-	if (locks && text) {
++	if (locks) {
+ 		void *lseg = (void *)locks->sh_addr;
+-		void *tseg = (void *)text->sh_addr;
++		void *text = me->core_layout.base;
++		void *text_end = text + me->core_layout.text_size;
+ 		alternatives_smp_module_add(me, me->name,
+ 					    lseg, lseg + locks->sh_size,
+-					    tseg, tseg + text->sh_size);
++					    text, text_end);
+ 	}
+ 
+ 	if (orc && orc_ip)
