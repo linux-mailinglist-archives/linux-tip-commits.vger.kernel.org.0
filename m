@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E01E633EE4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Nov 2022 15:27:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9DF63416D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Nov 2022 17:26:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233878AbiKVO1m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 22 Nov 2022 09:27:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46330 "EHLO
+        id S233013AbiKVQ0s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Nov 2022 11:26:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233916AbiKVO1j (ORCPT
+        with ESMTP id S232788AbiKVQ0q (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 22 Nov 2022 09:27:39 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43A52AE5C;
-        Tue, 22 Nov 2022 06:27:35 -0800 (PST)
-Date:   Tue, 22 Nov 2022 14:27:32 -0000
+        Tue, 22 Nov 2022 11:26:46 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E54B4205DB;
+        Tue, 22 Nov 2022 08:26:44 -0800 (PST)
+Date:   Tue, 22 Nov 2022 16:26:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669127254;
+        s=2020; t=1669134403;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vG/st4G6W4vPzDUzOjmBSilspPfXfLK8NNMPkNliKwk=;
-        b=ZN04isOGDj2N9eSI34qr0LJjPEgDBNd1f8vA48y1SKm/ZXzyxAI1tdoqkw93DApLoGkAlk
-        LTgem6tOwrAJSIymrzBmZhT2rIt8DGvlV6+kqgnvbYK2ZaNOMRROVtJRzlMyMxIX7bTrNy
-        fR238PNVwSujeuwlKMpD8gsHzUf0IF2y6MY9khcUTcOXOHfO4a6cH6HcwACWm9wo9f6XIJ
-        Eax5xYPxn9jp6OekrxMYIXovHOSKNWi+txVu0UGnDjWOz9F16HlsIVEBkQfz3OYrX7xHWd
-        ix3hqzy+cBc6iIOWTLaKV6FnZA82a3c8+Y4qpTTMQ83OkvlQvGVqbkPOxY6DVQ==
+        bh=v7z18Qsa6WKgfd8idYg0zbdnSVfun8wkjQ1dd6pBtws=;
+        b=Wn7oefSBIV1qyIlXDqpUW4zqQP5CPirWg7oJCx41mipW5DsnmAKXzm4jFLrzmBha3IqA0v
+        S40naqMJ0RE/H7PKJi9lXw1ed+Xp8cZpKQMRnLRnHfvCLpFa2661gJrteOkWhYIuNPvik2
+        VultdZfE+PRBGYNVfwW2zRdjXvXznQcQaqhWED1e82Y7kGwi37AJDn6ERPAKptrXNg83Yt
+        HBZohkBYXX+mWhkc/iu6LSpYqh1pAZmNh4XXvsaWEinzQ9UWaA2+EqXfkZ/YtLlVlPYqF4
+        EdTh98v1BRzFS+hxrqm89YFYlGDrEn6O8s96Syqgwd5qJJRiWgdBYckbF8cKgA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669127254;
+        s=2020e; t=1669134403;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vG/st4G6W4vPzDUzOjmBSilspPfXfLK8NNMPkNliKwk=;
-        b=3XWhBM6kB1Jp3kTF5jkzy0dBkU/apgnY1dRl1c2Vi7Nv22eQ6/CFDzT+IaOaOsSInHDT7n
-        gU1dVTZeMQrRYpCQ==
-From:   "tip-bot2 for Julian Pidancet" <tip-bot2@linutronix.de>
+        bh=v7z18Qsa6WKgfd8idYg0zbdnSVfun8wkjQ1dd6pBtws=;
+        b=cAIEZQJPM4qu43O+saG7R6wjLZD8lCYKsvBdO4uye7axhnqFEpS2z4PKCxKiCSEPj4vAtP
+        c7ZRqa+8YYQ25UDg==
+From:   "tip-bot2 for YingChi Long" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/alternatives] x86/alternative: Consistently patch SMP locks
- in vmlinux and modules
-Cc:     Julian Pidancet <julian.pidancet@oracle.com>,
-        Borislav Petkov <bp@suse.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/fpu] x86/fpu: Use _Alignof to avoid undefined behavior in
+ TYPE_ALIGN
+Cc:     YingChi Long <me@inclyc.cn>, Borislav Petkov <bp@suse.de>,
+        Nick Desaulniers <ndesaulniers@google.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221027204906.511277-1-julian.pidancet@oracle.com>
-References: <20221027204906.511277-1-julian.pidancet@oracle.com>
+In-Reply-To: <20220925153151.2467884-1-me@inclyc.cn>
+References: <20220925153151.2467884-1-me@inclyc.cn>
 MIME-Version: 1.0
-Message-ID: <166912725270.4906.15781123390853216184.tip-bot2@tip-bot2>
+Message-ID: <166913440179.4906.11745141572917292511.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,89 +65,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/alternatives branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     be84d8ed3f04e9154a3a55e29a27dcd416f05b31
-Gitweb:        https://git.kernel.org/tip/be84d8ed3f04e9154a3a55e29a27dcd416f05b31
-Author:        Julian Pidancet <julian.pidancet@oracle.com>
-AuthorDate:    Thu, 27 Oct 2022 22:49:06 +02:00
+Commit-ID:     55228db2697c09abddcb9487c3d9fa5854a932cd
+Gitweb:        https://git.kernel.org/tip/55228db2697c09abddcb9487c3d9fa5854a932cd
+Author:        YingChi Long <me@inclyc.cn>
+AuthorDate:    Fri, 18 Nov 2022 08:55:35 +08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 22 Nov 2022 15:16:16 +01:00
+CommitterDate: Tue, 22 Nov 2022 17:13:03 +01:00
 
-x86/alternative: Consistently patch SMP locks in vmlinux and modules
+x86/fpu: Use _Alignof to avoid undefined behavior in TYPE_ALIGN
 
-alternatives_smp_module_add() restricts patching of SMP lock prefixes to
-the text address range passed as an argument.
+WG14 N2350 specifies that it is an undefined behavior to have type
+definitions within offsetof", see
 
-For vmlinux, patching all the instructions located between the _text and
-_etext symbols is allowed. That includes the .text section but also
-other sections such as .text.hot and .text.unlikely.
+  https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2350.htm
 
-As per the comment inside the 'struct smp_alt_module' definition, the
-original purpose of this restriction is to avoid patching the init code
-because in the case when one boots with a single CPU, the LOCK prefixes
-to the locking primitives are removed.
+This specification is also part of C23.
 
-Later on, when other CPUs are onlined, those LOCK prefixes get added
-back in but by that time the .init code is very likely removed so
-patching that would be a bad idea.
+Therefore, replace the TYPE_ALIGN macro with the _Alignof builtin to
+avoid undefined behavior. (_Alignof itself is C11 and the kernel is
+built with -gnu11).
 
-For modules, the current code only allows patching instructions located
-inside the .text segment, excluding other sections such as .text.hot or
-.text.unlikely, which may need patching.
+ISO C11 _Alignof is subtly different from the GNU C extension
+__alignof__. Latter is the preferred alignment and _Alignof the
+minimal alignment. For long long on x86 these are 8 and 4
+respectively.
 
-Make patching of the kernel core and modules more consistent by
-allowing all text sections of modules except .init.text to be patched in
-module_finalize().
+The macro TYPE_ALIGN's behavior matches _Alignof rather than
+__alignof__.
 
-For that, use mod->core_layout.base/mod->core_layout.text_size as the
-address range allowed to be patched, which include all the code sections
-except the init code.
+  [ bp: Massage commit message. ]
 
-  [ bp: Massage and expand commit message. ]
-
-Signed-off-by: Julian Pidancet <julian.pidancet@oracle.com>
+Signed-off-by: YingChi Long <me@inclyc.cn>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20221027204906.511277-1-julian.pidancet@oracle.com
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Link: https://lore.kernel.org/r/20220925153151.2467884-1-me@inclyc.cn
 ---
- arch/x86/kernel/module.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/x86/kernel/fpu/init.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
-index c032edc..c8a25ae 100644
---- a/arch/x86/kernel/module.c
-+++ b/arch/x86/kernel/module.c
-@@ -251,14 +251,12 @@ int module_finalize(const Elf_Ehdr *hdr,
- 		    const Elf_Shdr *sechdrs,
- 		    struct module *me)
- {
--	const Elf_Shdr *s, *text = NULL, *alt = NULL, *locks = NULL,
-+	const Elf_Shdr *s, *alt = NULL, *locks = NULL,
- 		*para = NULL, *orc = NULL, *orc_ip = NULL,
- 		*retpolines = NULL, *returns = NULL, *ibt_endbr = NULL;
- 	char *secstrings = (void *)hdr + sechdrs[hdr->e_shstrndx].sh_offset;
+diff --git a/arch/x86/kernel/fpu/init.c b/arch/x86/kernel/fpu/init.c
+index 8946f89..851eb13 100644
+--- a/arch/x86/kernel/fpu/init.c
++++ b/arch/x86/kernel/fpu/init.c
+@@ -133,9 +133,6 @@ static void __init fpu__init_system_generic(void)
+ 	fpu__init_system_mxcsr();
+ }
  
- 	for (s = sechdrs; s < sechdrs + hdr->e_shnum; s++) {
--		if (!strcmp(".text", secstrings + s->sh_name))
--			text = s;
- 		if (!strcmp(".altinstructions", secstrings + s->sh_name))
- 			alt = s;
- 		if (!strcmp(".smp_locks", secstrings + s->sh_name))
-@@ -302,12 +300,13 @@ int module_finalize(const Elf_Ehdr *hdr,
- 		void *iseg = (void *)ibt_endbr->sh_addr;
- 		apply_ibt_endbr(iseg, iseg + ibt_endbr->sh_size);
- 	}
--	if (locks && text) {
-+	if (locks) {
- 		void *lseg = (void *)locks->sh_addr;
--		void *tseg = (void *)text->sh_addr;
-+		void *text = me->core_layout.base;
-+		void *text_end = text + me->core_layout.text_size;
- 		alternatives_smp_module_add(me, me->name,
- 					    lseg, lseg + locks->sh_size,
--					    tseg, tseg + text->sh_size);
-+					    text, text_end);
- 	}
+-/* Get alignment of the TYPE. */
+-#define TYPE_ALIGN(TYPE) offsetof(struct { char x; TYPE test; }, test)
+-
+ /*
+  * Enforce that 'MEMBER' is the last field of 'TYPE'.
+  *
+@@ -143,8 +140,8 @@ static void __init fpu__init_system_generic(void)
+  * because that's how C aligns structs.
+  */
+ #define CHECK_MEMBER_AT_END_OF(TYPE, MEMBER) \
+-	BUILD_BUG_ON(sizeof(TYPE) != ALIGN(offsetofend(TYPE, MEMBER), \
+-					   TYPE_ALIGN(TYPE)))
++	BUILD_BUG_ON(sizeof(TYPE) !=         \
++		     ALIGN(offsetofend(TYPE, MEMBER), _Alignof(TYPE)))
  
- 	if (orc && orc_ip)
+ /*
+  * We append the 'struct fpu' to the task_struct:
