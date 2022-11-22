@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1EBA63278E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Nov 2022 16:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BE95633B9D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Nov 2022 12:43:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232185AbiKUPOL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Nov 2022 10:14:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38212 "EHLO
+        id S232938AbiKVLm6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Nov 2022 06:42:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232112AbiKUPNr (ORCPT
+        with ESMTP id S233184AbiKVLlm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Nov 2022 10:13:47 -0500
+        Tue, 22 Nov 2022 06:41:42 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E690C68AE;
-        Mon, 21 Nov 2022 07:08:05 -0800 (PST)
-Date:   Mon, 21 Nov 2022 15:08:02 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98F815B59C;
+        Tue, 22 Nov 2022 03:38:53 -0800 (PST)
+Date:   Tue, 22 Nov 2022 11:38:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669043283;
+        s=2020; t=1669117131;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3zpF293Xpb7hIE7qRypmxo8y68aTytICJY5A2Ecegdw=;
-        b=PgiWo0S6xD9BH70LrjHvg5GV7A8twZdSSy4NKAREw/12JyDOD5RNhx6NrAwuOqC6oYbWTv
-        nx4dsYgEjL9qSUMfoPjaziL7lnJJDNx5qRCXwtmaaxiL98tM0zXctNkVqtQxDdGBHTfveb
-        SbjfXL3Fj3Gdcs+6pMuHIUwmrVjH6lvCikR8E1G1xvLnMYZzsZCwyQI9QfdM9IjCCEN5uz
-        nBFOyEPx7QwK/xuCIxNsdmoOc32XDemDNviVeahiYPnnpPQpyzUv9pxfhbrxwMsikvXv8L
-        7rqzVROvqn5lxJTkm3SQ2FYAWWSGMoCHZqkax7AAiNsJ+bYnM9/xvVG6XGa6Dw==
+        bh=ju8RVrpAmoxu07QrDfR6AfyPN+fjpTPQ6RH2y9sCpj4=;
+        b=Lfuwt/076us6HYFOP1XIUyOesk4P0bfNOz0u+sFvz5EJPderIlVwHW98nksKcapZ3uUOlC
+        XA3bGeIpPsPUdeurClEbDESYd4jRb1OLWYsRj87WIa28GEK6An4hbMhH7PnHxJQLg44jgF
+        g2GhjlPxQOFinRwIhWZbXmmEsZAV5BVCyC8Lld3mWTqTAshmjmecNqseb5AQSXGdQ67o8J
+        niwWk3F2Ybwc2nesNkjMbSlAQN+PytlDCD29fZApbFPDq3JTWGTJQIam5uBX0ftQkCw6z1
+        TOSVvOBeZpaU5LwANsvGCXDK629Hw54tKqGaUwLxF1GDFc+NrP100hYPt91n6w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669043283;
+        s=2020e; t=1669117131;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3zpF293Xpb7hIE7qRypmxo8y68aTytICJY5A2Ecegdw=;
-        b=RzKT1lqsFcNODbUbO1UPa0SX9OBj6rxz0/WyK3/IAH3K9/Of2+0Yzc5glmPZScPF6BooRn
-        IzPknonxlDPUP7BA==
-From:   "tip-bot2 for Joe Korty" <tip-bot2@linutronix.de>
+        bh=ju8RVrpAmoxu07QrDfR6AfyPN+fjpTPQ6RH2y9sCpj4=;
+        b=XOuUKUqhW01F6sjByzjjTsTYBbKsadlVQPDxlvsF+s5CfIakI+F7ZtETtSa9EghgeVPw0T
+        XL67fQXUJIDM15CQ==
+From:   "tip-bot2 for Michael Kelley" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] clocksource/drivers/arm_arch_timer: Fix XGene-1
- TVAL register math error
-Cc:     Joe Korty <joe.korty@concurrent-rt.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20221024165422.GA51107@zipoli.concurrent-rt.com>
-References: <20221024165422.GA51107@zipoli.concurrent-rt.com>
+Subject: [tip: x86/urgent] x86/ioremap: Fix page aligned size calculation in
+ __ioremap_caller()
+Cc:     Michael Kelley <mikelley@microsoft.com>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, <stable@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1668624097-14884-2-git-send-email-mikelley@microsoft.com>
+References: <1668624097-14884-2-git-send-email-mikelley@microsoft.com>
 MIME-Version: 1.0
-Message-ID: <166904328202.4906.4328519083119189817.tip-bot2@tip-bot2>
+Message-ID: <166911713030.4906.16935727667401525991.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,93 +66,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     839a973988a94c15002cbd81536e4af6ced2bd30
-Gitweb:        https://git.kernel.org/tip/839a973988a94c15002cbd81536e4af6ced2bd30
-Author:        Joe Korty <joe.korty@concurrent-rt.com>
-AuthorDate:    Mon, 21 Nov 2022 14:53:43 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 21 Nov 2022 16:01:56 +01:00
+Commit-ID:     4dbd6a3e90e03130973688fd79e19425f720d999
+Gitweb:        https://git.kernel.org/tip/4dbd6a3e90e03130973688fd79e19425f720d999
+Author:        Michael Kelley <mikelley@microsoft.com>
+AuthorDate:    Wed, 16 Nov 2022 10:41:24 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 22 Nov 2022 12:21:16 +01:00
 
-clocksource/drivers/arm_arch_timer: Fix XGene-1 TVAL register math error
+x86/ioremap: Fix page aligned size calculation in __ioremap_caller()
 
-The TVAL register is 32 bit signed.  Thus only the lower 31 bits are
-available to specify when an interrupt is to occur at some time in the
-near future.  Attempting to specify a larger interval with TVAL results
-in a negative time delta which means the timer fires immediately upon
-being programmed, rather than firing at that expected future time.
+Current code re-calculates the size after aligning the starting and
+ending physical addresses on a page boundary. But the re-calculation
+also embeds the masking of high order bits that exceed the size of
+the physical address space (via PHYSICAL_PAGE_MASK). If the masking
+removes any high order bits, the size calculation results in a huge
+value that is likely to immediately fail.
 
-The solution is for Linux to declare that TVAL is a 31 bit register rather
-than give its true size of 32 bits.  This prevents Linux from programming
-TVAL with a too-large value.  Note that, prior to 5.16, this little trick
-was the standard way to handle TVAL in Linux, so there is nothing new
-happening here on that front.
+Fix this by re-calculating the page-aligned size first. Then mask any
+high order bits using PHYSICAL_PAGE_MASK.
 
-The softlockup detector hides the issue, because it keeps generating
-short timer deadlines that are within the scope of the broken timer.
-
-Disabling it, it starts using NO_HZ with much longer timer deadlines, which
-turns into an interrupt flood:
-
- 11: 1124855130  949168462  758009394   76417474  104782230   30210281
-         310890 1734323687     GICv2  29 Level     arch_timer
-
-And "much longer" isn't that long: it takes less than 43s to underflow
-TVAL at 50MHz (the frequency of the counter on XGene-1).
-
-Some comments on the v1 version of this patch by Marc Zyngier:
-
-  XGene implements CVAL (a 64bit comparator) in terms of TVAL (a countdown
-  register) instead of the other way around. TVAL being a 32bit register,
-  the width of the counter should equally be 32.  However, TVAL is a
-  *signed* value, and keeps counting down in the negative range once the
-  timer fires.
-
-  It means that any TVAL value with bit 31 set will fire immediately,
-  as it cannot be distinguished from an already expired timer. Reducing
-  the timer range back to a paltry 31 bits papers over the issue.
-
-  Another problem cannot be fixed though, which is that the timer interrupt
-  *must* be handled within the negative countdown period, or the interrupt
-  will be lost (TVAL will rollover to a positive value, indicative of a
-  new timer deadline).
-
-Fixes: 012f18850452 ("clocksource/drivers/arm_arch_timer: Work around broken CVAL implementations")
-Signed-off-by: Joe Korty <joe.korty@concurrent-rt.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221024165422.GA51107@zipoli.concurrent-rt.com
-Link: https://lore.kernel.org/r/20221121145343.896018-1-maz@kernel.org
-
-[maz: revamped the commit message]
+Fixes: ffa71f33a820 ("x86, ioremap: Fix incorrect physical address handling in PAE mode")
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/1668624097-14884-2-git-send-email-mikelley@microsoft.com
 ---
- drivers/clocksource/arm_arch_timer.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/mm/ioremap.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
-index a7ff775..933bb96 100644
---- a/drivers/clocksource/arm_arch_timer.c
-+++ b/drivers/clocksource/arm_arch_timer.c
-@@ -806,6 +806,9 @@ static u64 __arch_timer_check_delta(void)
- 		/*
- 		 * XGene-1 implements CVAL in terms of TVAL, meaning
- 		 * that the maximum timer range is 32bit. Shame on them.
-+		 *
-+		 * Note that TVAL is signed, thus has only 31 of its
-+		 * 32 bits to express magnitude.
- 		 */
- 		MIDR_ALL_VERSIONS(MIDR_CPU_MODEL(ARM_CPU_IMP_APM,
- 						 APM_CPU_PART_POTENZA)),
-@@ -813,8 +816,8 @@ static u64 __arch_timer_check_delta(void)
- 	};
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index 78c5bc6..6453fba 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -217,9 +217,15 @@ __ioremap_caller(resource_size_t phys_addr, unsigned long size,
+ 	 * Mappings have to be page-aligned
+ 	 */
+ 	offset = phys_addr & ~PAGE_MASK;
+-	phys_addr &= PHYSICAL_PAGE_MASK;
++	phys_addr &= PAGE_MASK;
+ 	size = PAGE_ALIGN(last_addr+1) - phys_addr;
  
- 	if (is_midr_in_range_list(read_cpuid_id(), broken_cval_midrs)) {
--		pr_warn_once("Broken CNTx_CVAL_EL1, limiting width to 32bits");
--		return CLOCKSOURCE_MASK(32);
-+		pr_warn_once("Broken CNTx_CVAL_EL1, using 31 bit TVAL instead.\n");
-+		return CLOCKSOURCE_MASK(31);
- 	}
- #endif
- 	return CLOCKSOURCE_MASK(arch_counter_get_width());
++	/*
++	 * Mask out any bits not part of the actual physical
++	 * address, like memory encryption bits.
++	 */
++	phys_addr &= PHYSICAL_PAGE_MASK;
++
+ 	retval = memtype_reserve(phys_addr, (u64)phys_addr + size,
+ 						pcm, &new_pcm);
+ 	if (retval) {
