@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E66FA638851
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Nov 2022 12:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3D88639D83
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Nov 2022 23:09:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229845AbiKYLL6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 25 Nov 2022 06:11:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36036 "EHLO
+        id S229504AbiK0WJl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 27 Nov 2022 17:09:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbiKYLL5 (ORCPT
+        with ESMTP id S229533AbiK0WJl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 25 Nov 2022 06:11:57 -0500
+        Sun, 27 Nov 2022 17:09:41 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D7A54B748;
-        Fri, 25 Nov 2022 03:11:56 -0800 (PST)
-Date:   Fri, 25 Nov 2022 11:11:49 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACA291BD;
+        Sun, 27 Nov 2022 14:09:39 -0800 (PST)
+Date:   Sun, 27 Nov 2022 22:09:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669374714;
+        s=2020; t=1669586977;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GXTS8DRABfEQqmVVAvJxRLFxj/iVN/fTNZe1cP1ll0Y=;
-        b=nFqNQ+b/dgS+DTMpGP/f8hhZGVgXEIQakgwF9KdL+9HNoi7muYto7StT8TzFahNgKKzAOf
-        3UgaBTtcgQ84bIGW5JUL2aOig686ewaGYh7GU8lB6MD6NKX9JBL91EyTtNHbs7viPTdMZy
-        1ESGD1cxlXgooNKtro5CCeZnD1KjMI67nlEYKKqnmPkp02T04xpb/7m6dFs2K62TZIx4lo
-        3VtE4KRO20FhYoJ4sAzh1N7RRoo5Ef2kA1dN30zu39DtoJVNtRp5ak3ZmB3GdMuTUh/Fuo
-        cLwSKaxisGUV2/bRu8Al33MPiBYIjF4VJ47MoFaED1tjndj1wgS0stKn8GW13A==
+        bh=5WnSODMBbA6Bfa14xT8hm7I0CdPcSERAB6QrKazhsLw=;
+        b=vuFXzvpIl5ZDt13KHNR8xFyy45nNsWSdViJayZ2/8nrEmbbROLovZd6VXsoW6V+DIqTtQD
+        nnDGjojB5Kj75GGJpAtn1/JNOfRXj9+37ll0FHgmKfDBbll14CG2+zlMaZwpOV7SDr8XGB
+        ra7AXGPhxwo2ZnApe/xTxLFxUJfCvGGigJAUdKAWlZaB6TcxoSMb+AmSIudwuCKkT0kx2E
+        r8K4ciO/hPJic3g/sh9CspbqPY/197e6nwP5DY6C48VcTUTfkfXoGl4BJgnHUWkWpk2FFM
+        ejBJdJNEJefWYwI+erPxjt1UelI6IBiF16869Y8UNdFwNeqVvxx/jhMEYn6t2A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669374714;
+        s=2020e; t=1669586977;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GXTS8DRABfEQqmVVAvJxRLFxj/iVN/fTNZe1cP1ll0Y=;
-        b=8AWIyW2D9/cR8fo7uTc7zcYYc98UEdPBCl64Quqc45ffLQ1T6oFQ0KEli6cjXO+oEpAyho
-        QA2GnCT3e8eTz/CQ==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=5WnSODMBbA6Bfa14xT8hm7I0CdPcSERAB6QrKazhsLw=;
+        b=UP2o3OfAd2n9AOYIxbyofxEzrVw8KS9fHn1kt4Xv3MGdP4kAi21i6XT05VK8qIQwEsI/UL
+        G3kpKsAxvh9xa+Cw==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Skip realmode init code when running as Xen
- PV guest
-Cc:     "H. Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: x86/cache] x86/resctrl: Move MSR defines into msr-index.h
+Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221123114523.3467-1-jgross@suse.com>
-References: <20221123114523.3467-1-jgross@suse.com>
+In-Reply-To: <20221106212923.20699-1-bp@alien8.de>
+References: <20221106212923.20699-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <166937470979.4906.10096767565105528046.tip-bot2@tip-bot2>
+Message-ID: <166958697536.4906.10536001538688556050.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,148 +63,159 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     f1e525009493cbd569e7c8dd7d58157855f8658d
-Gitweb:        https://git.kernel.org/tip/f1e525009493cbd569e7c8dd7d58157855f8658d
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Wed, 23 Nov 2022 12:45:23 +01:00
+Commit-ID:     97fa21f65c3eb5bbab9b4734bed37fd624cddd86
+Gitweb:        https://git.kernel.org/tip/97fa21f65c3eb5bbab9b4734bed37fd624cddd86
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Sun, 06 Nov 2022 22:24:08 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 25 Nov 2022 12:05:22 +01:00
+CommitterDate: Sun, 27 Nov 2022 23:00:45 +01:00
 
-x86/boot: Skip realmode init code when running as Xen PV guest
+x86/resctrl: Move MSR defines into msr-index.h
 
-When running as a Xen PV guest there is no need for setting up the
-realmode trampoline, as realmode isn't supported in this environment.
+msr-index.h should contain all MSRs for easier grepping for MSR numbers
+when dealing with unchecked MSR access warnings, for example.
 
-Trying to setup the trampoline has been proven to be problematic in
-some cases, especially when trying to debug early boot problems with
-Xen requiring to keep the EFI boot-services memory mapped (some
-firmware variants seem to claim basically all memory below 1Mb for boot
-services).
+Move the resctrl ones. Prefix IA32_PQR_ASSOC with "MSR_" while at it.
 
-Introduce new x86_platform_ops operations for that purpose, which can
-be set to a NOP by the Xen PV specific kernel boot code.
+No functional changes.
 
-  [ bp: s/call_init_real_mode/do_init_real_mode/ ]
-
-Fixes: 084ee1c641a0 ("x86, realmode: Relocator for realmode code")
-Suggested-by: H. Peter Anvin <hpa@zytor.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221123114523.3467-1-jgross@suse.com
+Link: https://lore.kernel.org/r/20221106212923.20699-1-bp@alien8.de
 ---
- arch/x86/include/asm/realmode.h | 1 +
- arch/x86/include/asm/x86_init.h | 4 ++++
- arch/x86/kernel/setup.c         | 2 +-
- arch/x86/kernel/x86_init.c      | 3 +++
- arch/x86/realmode/init.c        | 8 ++++++--
- arch/x86/xen/enlighten_pv.c     | 2 ++
- 6 files changed, 17 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/msr-index.h          | 21 +++++++++++++++------
+ arch/x86/include/asm/resctrl.h            |  8 +++-----
+ arch/x86/kernel/cpu/resctrl/core.c        |  2 +-
+ arch/x86/kernel/cpu/resctrl/internal.h    | 10 ----------
+ arch/x86/kernel/cpu/resctrl/pseudo_lock.c |  4 ++--
+ 5 files changed, 21 insertions(+), 24 deletions(-)
 
-diff --git a/arch/x86/include/asm/realmode.h b/arch/x86/include/asm/realmode.h
-index fd6f6e5..a336fee 100644
---- a/arch/x86/include/asm/realmode.h
-+++ b/arch/x86/include/asm/realmode.h
-@@ -91,6 +91,7 @@ static inline void set_real_mode_mem(phys_addr_t mem)
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 10ac527..9308eb9 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -4,12 +4,7 @@
  
- void reserve_real_mode(void);
- void load_trampoline_pgtable(void);
-+void init_real_mode(void);
+ #include <linux/bits.h>
  
- #endif /* __ASSEMBLY__ */
+-/*
+- * CPU model specific register (MSR) numbers.
+- *
+- * Do not add new entries to this file unless the definitions are shared
+- * between multiple compilation units.
+- */
++/* CPU model specific register (MSR) numbers. */
  
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index e917045..c1c8c58 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -285,6 +285,8 @@ struct x86_hyper_runtime {
-  * 				possible in x86_early_init_platform_quirks() by
-  * 				only using the current x86_hardware_subarch
-  * 				semantics.
-+ * @realmode_reserve:		reserve memory for realmode trampoline
-+ * @realmode_init:		initialize realmode trampoline
-  * @hyper:			x86 hypervisor specific runtime callbacks
-  */
- struct x86_platform_ops {
-@@ -301,6 +303,8 @@ struct x86_platform_ops {
- 	void (*apic_post_init)(void);
- 	struct x86_legacy_features legacy;
- 	void (*set_legacy_features)(void);
-+	void (*realmode_reserve)(void);
-+	void (*realmode_init)(void);
- 	struct x86_hyper_runtime hyper;
- 	struct x86_guest guest;
- };
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 216fee7..892609c 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -1175,7 +1175,7 @@ void __init setup_arch(char **cmdline_p)
- 	 * Moreover, on machines with SandyBridge graphics or in setups that use
- 	 * crashkernel the entire 1M is reserved anyway.
+ /* x86-64 specific MSRs */
+ #define MSR_EFER		0xc0000080 /* extended feature register */
+@@ -1050,6 +1045,20 @@
+ #define VMX_BASIC_MEM_TYPE_WB	6LLU
+ #define VMX_BASIC_INOUT		0x0040000000000000LLU
+ 
++/* Resctrl MSRs: */
++/* - Intel: */
++#define MSR_IA32_L3_QOS_CFG		0xc81
++#define MSR_IA32_L2_QOS_CFG		0xc82
++#define MSR_IA32_QM_EVTSEL		0xc8d
++#define MSR_IA32_QM_CTR			0xc8e
++#define MSR_IA32_PQR_ASSOC		0xc8f
++#define MSR_IA32_L3_CBM_BASE		0xc90
++#define MSR_IA32_L2_CBM_BASE		0xd10
++#define MSR_IA32_MBA_THRTL_BASE		0xd50
++
++/* - AMD: */
++#define MSR_IA32_MBA_BW_BASE		0xc0000200
++
+ /* MSR_IA32_VMX_MISC bits */
+ #define MSR_IA32_VMX_MISC_INTEL_PT                 (1ULL << 14)
+ #define MSR_IA32_VMX_MISC_VMWRITE_SHADOW_RO_FIELDS (1ULL << 29)
+diff --git a/arch/x86/include/asm/resctrl.h b/arch/x86/include/asm/resctrl.h
+index d24b04e..52788f7 100644
+--- a/arch/x86/include/asm/resctrl.h
++++ b/arch/x86/include/asm/resctrl.h
+@@ -7,8 +7,6 @@
+ #include <linux/sched.h>
+ #include <linux/jump_label.h>
+ 
+-#define IA32_PQR_ASSOC	0x0c8f
+-
+ /**
+  * struct resctrl_pqr_state - State cache for the PQR MSR
+  * @cur_rmid:		The cached Resource Monitoring ID
+@@ -16,8 +14,8 @@
+  * @default_rmid:	The user assigned Resource Monitoring ID
+  * @default_closid:	The user assigned cached Class Of Service ID
+  *
+- * The upper 32 bits of IA32_PQR_ASSOC contain closid and the
+- * lower 10 bits rmid. The update to IA32_PQR_ASSOC always
++ * The upper 32 bits of MSR_IA32_PQR_ASSOC contain closid and the
++ * lower 10 bits rmid. The update to MSR_IA32_PQR_ASSOC always
+  * contains both parts, so we need to cache them. This also
+  * stores the user configured per cpu CLOSID and RMID.
+  *
+@@ -77,7 +75,7 @@ static void __resctrl_sched_in(void)
+ 	if (closid != state->cur_closid || rmid != state->cur_rmid) {
+ 		state->cur_closid = closid;
+ 		state->cur_rmid = rmid;
+-		wrmsr(IA32_PQR_ASSOC, rmid, closid);
++		wrmsr(MSR_IA32_PQR_ASSOC, rmid, closid);
+ 	}
+ }
+ 
+diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
+index 03cfbf0..c98e52f 100644
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -575,7 +575,7 @@ static void clear_closid_rmid(int cpu)
+ 	state->default_rmid = 0;
+ 	state->cur_closid = 0;
+ 	state->cur_rmid = 0;
+-	wrmsr(IA32_PQR_ASSOC, 0, 0);
++	wrmsr(MSR_IA32_PQR_ASSOC, 0, 0);
+ }
+ 
+ static int resctrl_online_cpu(unsigned int cpu)
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
+index 5f71286..5ebd28e 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -8,16 +8,6 @@
+ #include <linux/fs_context.h>
+ #include <linux/jump_label.h>
+ 
+-#define MSR_IA32_L3_QOS_CFG		0xc81
+-#define MSR_IA32_L2_QOS_CFG		0xc82
+-#define MSR_IA32_L3_CBM_BASE		0xc90
+-#define MSR_IA32_L2_CBM_BASE		0xd10
+-#define MSR_IA32_MBA_THRTL_BASE		0xd50
+-#define MSR_IA32_MBA_BW_BASE		0xc0000200
+-
+-#define MSR_IA32_QM_CTR			0x0c8e
+-#define MSR_IA32_QM_EVTSEL		0x0c8d
+-
+ #define L3_QOS_CDP_ENABLE		0x01ULL
+ 
+ #define L2_QOS_CDP_ENABLE		0x01ULL
+diff --git a/arch/x86/kernel/cpu/resctrl/pseudo_lock.c b/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
+index d961ae3..ba8d076 100644
+--- a/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
++++ b/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
+@@ -477,7 +477,7 @@ static int pseudo_lock_fn(void *_rdtgrp)
+ 	 * pseudo-locked followed by reading of kernel memory to load it
+ 	 * into the cache.
  	 */
--	reserve_real_mode();
-+	x86_platform.realmode_reserve();
+-	__wrmsr(IA32_PQR_ASSOC, rmid_p, rdtgrp->closid);
++	__wrmsr(MSR_IA32_PQR_ASSOC, rmid_p, rdtgrp->closid);
+ 	/*
+ 	 * Cache was flushed earlier. Now access kernel memory to read it
+ 	 * into cache region associated with just activated plr->closid.
+@@ -513,7 +513,7 @@ static int pseudo_lock_fn(void *_rdtgrp)
+ 	 * Critical section end: restore closid with capacity bitmask that
+ 	 * does not overlap with pseudo-locked region.
+ 	 */
+-	__wrmsr(IA32_PQR_ASSOC, rmid_p, closid_p);
++	__wrmsr(MSR_IA32_PQR_ASSOC, rmid_p, closid_p);
  
- 	init_mem_mapping();
- 
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index 5735351..ef80d36 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -25,6 +25,7 @@
- #include <asm/iommu.h>
- #include <asm/mach_traps.h>
- #include <asm/irqdomain.h>
-+#include <asm/realmode.h>
- 
- void x86_init_noop(void) { }
- void __init x86_init_uint_noop(unsigned int unused) { }
-@@ -145,6 +146,8 @@ struct x86_platform_ops x86_platform __ro_after_init = {
- 	.get_nmi_reason			= default_get_nmi_reason,
- 	.save_sched_clock_state		= tsc_save_sched_clock_state,
- 	.restore_sched_clock_state	= tsc_restore_sched_clock_state,
-+	.realmode_reserve		= reserve_real_mode,
-+	.realmode_init			= init_real_mode,
- 	.hyper.pin_vcpu			= x86_op_int_noop,
- 
- 	.guest = {
-diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
-index 41d7669..af56581 100644
---- a/arch/x86/realmode/init.c
-+++ b/arch/x86/realmode/init.c
-@@ -200,14 +200,18 @@ static void __init set_real_mode_permissions(void)
- 	set_memory_x((unsigned long) text_start, text_size >> PAGE_SHIFT);
- }
- 
--static int __init init_real_mode(void)
-+void __init init_real_mode(void)
- {
- 	if (!real_mode_header)
- 		panic("Real mode trampoline was not allocated");
- 
- 	setup_real_mode();
- 	set_real_mode_permissions();
-+}
- 
-+static int __init do_init_real_mode(void)
-+{
-+	x86_platform.realmode_init();
- 	return 0;
- }
--early_initcall(init_real_mode);
-+early_initcall(do_init_real_mode);
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 038da45..8944726 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -1266,6 +1266,8 @@ asmlinkage __visible void __init xen_start_kernel(struct start_info *si)
- 	xen_vcpu_info_reset(0);
- 
- 	x86_platform.get_nmi_reason = xen_get_nmi_reason;
-+	x86_platform.realmode_reserve = x86_init_noop;
-+	x86_platform.realmode_init = x86_init_noop;
- 
- 	x86_init.resources.memory_setup = xen_memory_setup;
- 	x86_init.irqs.intr_mode_select	= x86_init_noop;
+ 	/* Re-enable the hardware prefetcher(s) */
+ 	wrmsrl(MSR_MISC_FEATURE_CONTROL, saved_msr);
