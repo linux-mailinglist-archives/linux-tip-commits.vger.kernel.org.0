@@ -2,93 +2,157 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58A5263C711
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Nov 2022 19:17:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E252763C8B9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Nov 2022 20:47:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233851AbiK2SRN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 29 Nov 2022 13:17:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36312 "EHLO
+        id S235138AbiK2Trg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 29 Nov 2022 14:47:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232360AbiK2SRM (ORCPT
+        with ESMTP id S237257AbiK2TrP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 29 Nov 2022 13:17:12 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F392AC5E;
-        Tue, 29 Nov 2022 10:17:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669745832; x=1701281832;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=j3q251Mal8lVh/DoJnMLHUehgxsWyNpXO8J1mcI96BY=;
-  b=i4Ij+9GHqSVKo5IWyC/WuyNLwfLgGlZSC7JilsE4ai0kUFn0GUPbIvmD
-   te+AQM4UNlvo9gZjWZrDI/eDgKLhmSF2HFKkhwchiw/y9V7CDPojxLSzQ
-   9uyDox8er2nw/fjU2Y/MfpK76n1Gf4HyZWJTarcSWMG4Zy8M7gVfvF5c+
-   FFIxGdTHQ+hjZ9lVijDoS0vuj2wUwGY6re+YEWQ+l6TE8MAZiHtMQ/MXT
-   8UFzPjtgpKKtRQ9cfar0Bgi/C5Q4IqbEph0265LkcHfph6aYeN5vt2I7z
-   qhqwHEYejfIw324gmmdFk9taQXHhL2zV5H+QWprnLJWisAYidWtKEyUZO
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10546"; a="315221077"
-X-IronPort-AV: E=Sophos;i="5.96,204,1665471600"; 
-   d="scan'208";a="315221077"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2022 10:17:00 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10546"; a="972786562"
-X-IronPort-AV: E=Sophos;i="5.96,204,1665471600"; 
-   d="scan'208";a="972786562"
-Received: from wteng-mobl1.gar.corp.intel.com (HELO [10.209.83.194]) ([10.209.83.194])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2022 10:16:59 -0800
-Message-ID: <31b30c00-9de9-2881-53c3-b08804571d6c@intel.com>
-Date:   Tue, 29 Nov 2022 10:16:58 -0800
+        Tue, 29 Nov 2022 14:47:15 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1019C2EF31;
+        Tue, 29 Nov 2022 11:44:58 -0800 (PST)
+Date:   Tue, 29 Nov 2022 19:44:53 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1669751095;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yXVtIzomxjTksg3tJ+hAHpeadbStKm5VAGTkI7rYqqM=;
+        b=1iuc7NUcn28WY6asYAUrT+ar37PO3frxZAAZ4YuikdJIQApFa2nJ5Pl/qeYz8Mw1K+Y+CN
+        9FyL0UD1nEVoJhJhM9xyw9pi6kjv0yt1fgoXVeFaf1Vfp5Uio+hijTbnqLyW7/xOpfAwmq
+        ewcyxWhHhNo1fsVXGQF/x/0U+uRRDrtPoZ4WQGFAVZvgUzUnZ2jXSeEEBQul4vNRrzcG2s
+        ediuYu9SmgUPjNxo5/vEdu4j5MTxa6TvlpoP+4SOl4wZ/9P490TSvfqnNHaSEVsyTFKOtY
+        0e7LTICeOQjkGv5OL7cMgTomlDJOiys58eanqqZon1xgJFpxJ0MIfG+pgcB2nQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1669751095;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yXVtIzomxjTksg3tJ+hAHpeadbStKm5VAGTkI7rYqqM=;
+        b=hT1twTOCUbZPOut7Ldf657AKzPGMjy0XbkslyeqA7LCkSm9pK9Ubz9BDO4TqwTXSEBcr5p
+        rxweYfsiTUyFpDAg==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/boot] x86/boot: Remove x86_32 PIC using %ebx workaround
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20221104124546.196077-1-ubizjak@gmail.com>
+References: <20221104124546.196077-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [tip: x86/fpu] x86/fpu/xstate: Define new functions for clearing
- fpregs and xstates
-Content-Language: en-US
-To:     Ivan Zahariev <famzah@icdsoft.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Yu, Yu-cheng" <yu-cheng.yu@intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Cc:     linux-tip-commits@vger.kernel.org,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>,
-        "Shankar, Ravi V" <ravi.v.shankar@intel.com>
-References: <20200512145444.15483-6-yu-cheng.yu@intel.com>
- <158964181793.17951.15480349640697746223.tip-bot2@tip-bot2>
- <CALCETrXfLbsrBX42Y094YLWTG=pqkrf+aSCLruCGzqnZ0Y=P-Q@mail.gmail.com>
- <10a553a5-699f-6921-705e-9afa1a8e42de@intel.com>
- <87y2c28zir.ffs@nanos.tec.linutronix.de>
- <ff5ad474-6d32-8bf8-e297-ed71a967d27c@icdsoft.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <ff5ad474-6d32-8bf8-e297-ed71a967d27c@icdsoft.com>
-Content-Type: text/plain; charset=UTF-8
+Message-ID: <166975109360.4906.1198013784402637046.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 11/29/22 03:19, Ivan Zahariev wrote:
-> Can you please take a look into this bug which syzbot tracked to a
-> commit of yours (b860eb8dce5906b14e3a7f3c771e0b3d6ef61b94). Even since
-> we switched from kernel 4.14 to 5.15 we are experiencing often random
-> segmentation faults with the following error in "dmesg":
+The following commit has been merged into the x86/boot branch of tip:
 
-Which kernel are you running, exactly?  There is a fix for the commit
-that you identified:
+Commit-ID:     60253f100c5846029f1370e51be6ebaeb160dcec
+Gitweb:        https://git.kernel.org/tip/60253f100c5846029f1370e51be6ebaeb160dcec
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Fri, 04 Nov 2022 13:45:46 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 29 Nov 2022 16:26:53 +01:00
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=484cea4f362e
+x86/boot: Remove x86_32 PIC using %ebx workaround
 
-but it should have been in 5.15.
+The currently supported minimum gcc version is 5.1. Before that, the
+PIC register, when generating Position Independent Code, was considered
+"fixed" in the sense that it wasn't in the set of registers available to
+the compiler's register allocator. Which, on x86-32, is already a very
+small set.
 
-Is there a chance you could test current mainline and see if the issue
-is still there?
+What is more, the register allocator was unable to satisfy extended asm
+"=b" constraints. (Yes, PIC code uses %ebx on 32-bit as the base reg.)
+
+With gcc 5.1:
+
+"Reuse of the PIC hard register, instead of using a fixed register,
+was implemented on x86/x86-64 targets. This improves generated PIC
+code performance as more hard registers can be used. Shared libraries
+can significantly benefit from this optimization. Currently it is
+switched on only for x86/x86-64 targets. As RA infrastructure is already
+implemented for PIC register reuse, other targets might follow this in
+the future."
+
+  (from: https://gcc.gnu.org/gcc-5/changes.html)
+
+which basically means that the register allocator has a higher degree
+of freedom when handling %ebx, including reloading it with the correct
+value before a PIC access.
+
+Furthermore:
+
+  arch/x86/Makefile:
+          # Never want PIC in a 32-bit kernel, prevent breakage with GCC built
+          # with nonstandard options
+          KBUILD_CFLAGS += -fno-pic
+
+  $ gcc -Wp,-MMD,arch/x86/boot/.cpuflags.o.d ... -fno-pic ... -D__KBUILD_MODNAME=kmod_cpuflags -c -o arch/x86/boot/cpuflags.o arch/x86/boot/cpuflags.c
+
+so the 32-bit workaround in cpuid_count() is fixing exactly nothing
+because 32-bit configs don't even allow PIC builds.
+
+As to 64-bit builds: they're done using -mcmodel=kernel which produces
+RIP-relative addressing for PIC builds and thus does not apply here
+either.
+
+So get rid of the thing and make cpuid_count() nice and simple.
+
+There should be no functional changes resulting from this.
+
+  [ bp: Expand commit message. ]
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221104124546.196077-1-ubizjak@gmail.com
+---
+ arch/x86/boot/cpuflags.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
+
+diff --git a/arch/x86/boot/cpuflags.c b/arch/x86/boot/cpuflags.c
+index a83d67e..d75237b 100644
+--- a/arch/x86/boot/cpuflags.c
++++ b/arch/x86/boot/cpuflags.c
+@@ -64,20 +64,11 @@ int has_eflag(unsigned long mask)
+ 	return !!((f0^f1) & mask);
+ }
+ 
+-/* Handle x86_32 PIC using ebx. */
+-#if defined(__i386__) && defined(__PIC__)
+-# define EBX_REG "=r"
+-#else
+-# define EBX_REG "=b"
+-#endif
+-
+ void cpuid_count(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d)
+ {
+-	asm volatile(".ifnc %%ebx,%3 ; movl  %%ebx,%3 ; .endif	\n\t"
+-		     "cpuid					\n\t"
+-		     ".ifnc %%ebx,%3 ; xchgl %%ebx,%3 ; .endif	\n\t"
+-		    : "=a" (*a), "=c" (*c), "=d" (*d), EBX_REG (*b)
+-		    : "a" (id), "c" (count)
++	asm volatile("cpuid"
++		     : "=a" (*a), "=b" (*b), "=c" (*c), "=d" (*d)
++		     : "0" (id), "2" (count)
+ 	);
+ }
+ 
