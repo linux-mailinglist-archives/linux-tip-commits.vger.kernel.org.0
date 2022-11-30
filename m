@@ -2,54 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F1D563D4CF
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Nov 2022 12:41:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83DBE63D7E8
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Nov 2022 15:15:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233741AbiK3LlQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Nov 2022 06:41:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34476 "EHLO
+        id S229514AbiK3OO7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Nov 2022 09:14:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234119AbiK3LlH (ORCPT
+        with ESMTP id S229603AbiK3OOt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Nov 2022 06:41:07 -0500
+        Wed, 30 Nov 2022 09:14:49 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF2B2EF23;
-        Wed, 30 Nov 2022 03:41:05 -0800 (PST)
-Date:   Wed, 30 Nov 2022 11:41:02 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F3D7CA8D;
+        Wed, 30 Nov 2022 06:14:37 -0800 (PST)
+Date:   Wed, 30 Nov 2022 14:14:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669808464;
+        s=2020; t=1669817675;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sAAXxhLK1PhnrCXMeKDMnRnD3e/sj6jVUormXog/ISI=;
-        b=YCHFXoaMYElZMgwRw7YfRoe5B+lgqIwoopFcRTyoNlR5UNqXXqN2zToB3F+K1RuXjTE9VQ
-        tOd7Aj9r6LGSEH+2Jt7fbfb61n6GZiK9Rmtw4bBF8WK6YVDQWqA78DPjNIazM6y5/HUeOl
-        HcOicGyVV13YS0IcR4h127/GV4keZRZyavoL/y1CD6W+u980TBJ54e6P9/w2DjnQcGipu8
-        yq/yN/f1oWfWZZDLO5sa4B9pVIVkwMMyTQKOfLLjiRx+V8elisURLxJGedO3LTNyH3XbN8
-        uJB6lPLYN2bng/skWUXxnwAygXcXW05pHUh6VCKI+dzykXHkuB1ZXRnaJSj3Vg==
+        bh=FVO6zWidXe6Zg/00vyTjYgijpJdIvLIKWg8mwZB6WUk=;
+        b=jJr6lvwE5HoKZQ3iwBpA72pDmyP3fzGq2uChpeVtnJAA5sKmEMfDjGtob0EtNYY3QS4Zqj
+        AtxedjVzosKK/C2+SpoDtjTCPNpSikL8up/sO0Fm8akKVJwuAkoerP6jDhg+ptRp7PU9ES
+        Ios+SgGVeyeJk3dCxIebZymao7qahpmU6uftk4FTmwqBBaJJWHRlhCzbW308olJh2lqXRQ
+        nt3iHiS3KzfS6JFED+0AXQ5t5JQyVpirGrUQU6d2J8pm8s8G0cPaxlFNWUvLn6EisGS8Xo
+        Qk44zO3fPoh0wVVF1iPII3gKQBh7y8qipbpZ/K7u6sYPEjG57kZK3AyC9QJA6Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669808464;
+        s=2020e; t=1669817675;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sAAXxhLK1PhnrCXMeKDMnRnD3e/sj6jVUormXog/ISI=;
-        b=mvZLgZVK9hTwTEBhK+gaQr7a0EcXoyRCxA5Q6C09VDSecZyJ0RQ2TGRUPnigLHJ5DOP/kU
-        k/M9DZzPF7H+caDA==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=FVO6zWidXe6Zg/00vyTjYgijpJdIvLIKWg8mwZB6WUk=;
+        b=v3r7yglRuFcMRjgVjbNVSQOPNp4epMuUebQWMxga/8zZwizx0ggqZczYEF2t/1n84TdpU/
+        y7BJL+KlQBLGmtAA==
+From:   "tip-bot2 for Yang Yingliang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpuid: Carve out all CPUID functionality
-Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20221124164150.3040-1-bp@alien8.de>
-References: <20221124164150.3040-1-bp@alien8.de>
+Subject: [tip: irq/core] genirq/irqdesc: Don't try to remove non-existing sysfs files
+Cc:     Yang Yingliang <yangyingliang@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20221128151612.1786122-1-yangyingliang@huawei.com>
+References: <20221128151612.1786122-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
-Message-ID: <166980846247.4906.12851925292211041024.tip-bot2@tip-bot2>
+Message-ID: <166981767350.4906.13064198854331518868.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,366 +65,116 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     d800169041c0e035160c8b81f30d4b7e8f8ef777
-Gitweb:        https://git.kernel.org/tip/d800169041c0e035160c8b81f30d4b7e8f8ef777
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Thu, 24 Nov 2022 16:31:27 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 29 Nov 2022 20:41:24 +01:00
+Commit-ID:     9049e1ca41983ab773d7ea244bee86d7835ec9f5
+Gitweb:        https://git.kernel.org/tip/9049e1ca41983ab773d7ea244bee86d7835ec9f5
+Author:        Yang Yingliang <yangyingliang@huawei.com>
+AuthorDate:    Mon, 28 Nov 2022 23:16:12 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 30 Nov 2022 14:52:11 +01:00
 
-x86/cpuid: Carve out all CPUID functionality
+genirq/irqdesc: Don't try to remove non-existing sysfs files
 
-Carve it out into a special header, where it belongs.
+Fault injection tests trigger warnings like this:
 
-No functional changes.
+  kernfs: can not remove 'chip_name', no directory
+  WARNING: CPU: 0 PID: 253 at fs/kernfs/dir.c:1616 kernfs_remove_by_name_ns+0xce/0xe0
+  RIP: 0010:kernfs_remove_by_name_ns+0xce/0xe0
+  Call Trace:
+   <TASK>
+   remove_files.isra.1+0x3f/0xb0
+   sysfs_remove_group+0x68/0xe0
+   sysfs_remove_groups+0x41/0x70
+   __kobject_del+0x45/0xc0
+   kobject_del+0x29/0x40
+   free_desc+0x42/0x70
+   irq_free_descs+0x5e/0x90
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221124164150.3040-1-bp@alien8.de
+The reason is that the interrupt descriptor sysfs handling does not roll
+back on a failing kobject_add() during allocation. If the descriptor is
+freed later on, kobject_del() is invoked with a not added kobject resulting
+in the above warnings.
+
+A proper rollback in case of a kobject_add() failure would be the straight
+forward solution. But this is not possible due to the way how interrupt
+descriptor sysfs handling works.
+
+Interrupt descriptors are allocated before sysfs becomes available. So the
+sysfs files for the early allocated descriptors are added later in the boot
+process. At this point there can be nothing useful done about a failing
+kobject_add(). For consistency the interrupt descriptor allocation always
+treats kobject_add() failures as non-critical and just emits a warning.
+
+To solve this problem, keep track in the interrupt descriptor whether
+kobject_add() was successful or not and make the invocation of
+kobject_del() conditional on that.
+
+[ tglx: Massage changelog, comments and use a state bit. ]
+
+Fixes: ecb3f394c5db ("genirq: Expose interrupt information through sysfs")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20221128151612.1786122-1-yangyingliang@huawei.com
 ---
- arch/x86/include/asm/cpuid.h     | 141 +++++++++++++++++++++++++++++-
- arch/x86/include/asm/processor.h | 133 +----------------------------
- 2 files changed, 140 insertions(+), 134 deletions(-)
+ kernel/irq/internals.h |  2 ++
+ kernel/irq/irqdesc.c   | 15 +++++++++------
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpuid.h b/arch/x86/include/asm/cpuid.h
-index 70b2db1..9bee3e7 100644
---- a/arch/x86/include/asm/cpuid.h
-+++ b/arch/x86/include/asm/cpuid.h
-@@ -1,13 +1,132 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- /*
-  * CPUID-related helpers/definitions
-- *
-- * Derived from arch/x86/kvm/cpuid.c
+diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
+index f09c603..5fdc0b5 100644
+--- a/kernel/irq/internals.h
++++ b/kernel/irq/internals.h
+@@ -52,6 +52,7 @@ enum {
+  * IRQS_PENDING			- irq is pending and replayed later
+  * IRQS_SUSPENDED		- irq is suspended
+  * IRQS_NMI			- irq line is used to deliver NMIs
++ * IRQS_SYSFS			- descriptor has been added to sysfs
   */
+ enum {
+ 	IRQS_AUTODETECT		= 0x00000001,
+@@ -64,6 +65,7 @@ enum {
+ 	IRQS_SUSPENDED		= 0x00000800,
+ 	IRQS_TIMINGS		= 0x00001000,
+ 	IRQS_NMI		= 0x00002000,
++	IRQS_SYSFS		= 0x00004000,
+ };
  
- #ifndef _ASM_X86_CPUID_H
- #define _ASM_X86_CPUID_H
- 
-+#include <asm/string.h>
-+
-+struct cpuid_regs {
-+	u32 eax, ebx, ecx, edx;
-+};
-+
-+enum cpuid_regs_idx {
-+	CPUID_EAX = 0,
-+	CPUID_EBX,
-+	CPUID_ECX,
-+	CPUID_EDX,
-+};
-+
-+#ifdef CONFIG_X86_32
-+extern int have_cpuid_p(void);
-+#else
-+static inline int have_cpuid_p(void)
-+{
-+	return 1;
-+}
-+#endif
-+static inline void native_cpuid(unsigned int *eax, unsigned int *ebx,
-+				unsigned int *ecx, unsigned int *edx)
-+{
-+	/* ecx is often an input as well as an output. */
-+	asm volatile("cpuid"
-+	    : "=a" (*eax),
-+	      "=b" (*ebx),
-+	      "=c" (*ecx),
-+	      "=d" (*edx)
-+	    : "0" (*eax), "2" (*ecx)
-+	    : "memory");
-+}
-+
-+#define native_cpuid_reg(reg)					\
-+static inline unsigned int native_cpuid_##reg(unsigned int op)	\
-+{								\
-+	unsigned int eax = op, ebx, ecx = 0, edx;		\
-+								\
-+	native_cpuid(&eax, &ebx, &ecx, &edx);			\
-+								\
-+	return reg;						\
-+}
-+
-+/*
-+ * Native CPUID functions returning a single datum.
-+ */
-+native_cpuid_reg(eax)
-+native_cpuid_reg(ebx)
-+native_cpuid_reg(ecx)
-+native_cpuid_reg(edx)
-+
-+#ifdef CONFIG_PARAVIRT_XXL
-+#include <asm/paravirt.h>
-+#else
-+#define __cpuid			native_cpuid
-+#endif
-+
-+/*
-+ * Generic CPUID function
-+ * clear %ecx since some cpus (Cyrix MII) do not set or clear %ecx
-+ * resulting in stale register contents being returned.
-+ */
-+static inline void cpuid(unsigned int op,
-+			 unsigned int *eax, unsigned int *ebx,
-+			 unsigned int *ecx, unsigned int *edx)
-+{
-+	*eax = op;
-+	*ecx = 0;
-+	__cpuid(eax, ebx, ecx, edx);
-+}
-+
-+/* Some CPUID calls want 'count' to be placed in ecx */
-+static inline void cpuid_count(unsigned int op, int count,
-+			       unsigned int *eax, unsigned int *ebx,
-+			       unsigned int *ecx, unsigned int *edx)
-+{
-+	*eax = op;
-+	*ecx = count;
-+	__cpuid(eax, ebx, ecx, edx);
-+}
-+
-+/*
-+ * CPUID functions returning a single datum
-+ */
-+static inline unsigned int cpuid_eax(unsigned int op)
-+{
-+	unsigned int eax, ebx, ecx, edx;
-+
-+	cpuid(op, &eax, &ebx, &ecx, &edx);
-+
-+	return eax;
-+}
-+
-+static inline unsigned int cpuid_ebx(unsigned int op)
-+{
-+	unsigned int eax, ebx, ecx, edx;
-+
-+	cpuid(op, &eax, &ebx, &ecx, &edx);
-+
-+	return ebx;
-+}
-+
-+static inline unsigned int cpuid_ecx(unsigned int op)
-+{
-+	unsigned int eax, ebx, ecx, edx;
-+
-+	cpuid(op, &eax, &ebx, &ecx, &edx);
-+
-+	return ecx;
-+}
-+
-+static inline unsigned int cpuid_edx(unsigned int op)
-+{
-+	unsigned int eax, ebx, ecx, edx;
-+
-+	cpuid(op, &eax, &ebx, &ecx, &edx);
-+
-+	return edx;
-+}
-+
- static __always_inline bool cpuid_function_is_indexed(u32 function)
- {
- 	switch (function) {
-@@ -31,4 +150,22 @@ static __always_inline bool cpuid_function_is_indexed(u32 function)
- 	return false;
+ #include "debug.h"
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index a91f900..fd09962 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -288,22 +288,25 @@ static void irq_sysfs_add(int irq, struct irq_desc *desc)
+ 	if (irq_kobj_base) {
+ 		/*
+ 		 * Continue even in case of failure as this is nothing
+-		 * crucial.
++		 * crucial and failures in the late irq_sysfs_init()
++		 * cannot be rolled back.
+ 		 */
+ 		if (kobject_add(&desc->kobj, irq_kobj_base, "%d", irq))
+ 			pr_warn("Failed to add kobject for irq %d\n", irq);
++		else
++			desc->istate |= IRQS_SYSFS;
+ 	}
  }
  
-+#define for_each_possible_hypervisor_cpuid_base(function) \
-+	for (function = 0x40000000; function < 0x40010000; function += 0x100)
-+
-+static inline uint32_t hypervisor_cpuid_base(const char *sig, uint32_t leaves)
-+{
-+	uint32_t base, eax, signature[3];
-+
-+	for_each_possible_hypervisor_cpuid_base(base) {
-+		cpuid(base, &eax, &signature[0], &signature[1], &signature[2]);
-+
-+		if (!memcmp(sig, signature, 12) &&
-+		    (leaves == 0 || ((eax - base) >= leaves)))
-+			return base;
-+	}
-+
-+	return 0;
-+}
-+
- #endif /* _ASM_X86_CPUID_H */
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 67c9d73..6836c64 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -16,6 +16,7 @@ struct vm86;
- #include <uapi/asm/sigcontext.h>
- #include <asm/current.h>
- #include <asm/cpufeatures.h>
-+#include <asm/cpuid.h>
- #include <asm/page.h>
- #include <asm/pgtable_types.h>
- #include <asm/percpu.h>
-@@ -146,17 +147,6 @@ struct cpuinfo_x86 {
- 	unsigned		initialized : 1;
- } __randomize_layout;
- 
--struct cpuid_regs {
--	u32 eax, ebx, ecx, edx;
--};
--
--enum cpuid_regs_idx {
--	CPUID_EAX = 0,
--	CPUID_EBX,
--	CPUID_ECX,
--	CPUID_EDX,
--};
--
- #define X86_VENDOR_INTEL	0
- #define X86_VENDOR_CYRIX	1
- #define X86_VENDOR_AMD		2
-@@ -205,45 +195,6 @@ extern void identify_secondary_cpu(struct cpuinfo_x86 *);
- extern void print_cpu_info(struct cpuinfo_x86 *);
- void print_cpu_msr(struct cpuinfo_x86 *);
- 
--#ifdef CONFIG_X86_32
--extern int have_cpuid_p(void);
--#else
--static inline int have_cpuid_p(void)
--{
--	return 1;
--}
--#endif
--static inline void native_cpuid(unsigned int *eax, unsigned int *ebx,
--				unsigned int *ecx, unsigned int *edx)
--{
--	/* ecx is often an input as well as an output. */
--	asm volatile("cpuid"
--	    : "=a" (*eax),
--	      "=b" (*ebx),
--	      "=c" (*ecx),
--	      "=d" (*edx)
--	    : "0" (*eax), "2" (*ecx)
--	    : "memory");
--}
--
--#define native_cpuid_reg(reg)					\
--static inline unsigned int native_cpuid_##reg(unsigned int op)	\
--{								\
--	unsigned int eax = op, ebx, ecx = 0, edx;		\
--								\
--	native_cpuid(&eax, &ebx, &ecx, &edx);			\
--								\
--	return reg;						\
--}
--
--/*
-- * Native CPUID functions returning a single datum.
-- */
--native_cpuid_reg(eax)
--native_cpuid_reg(ebx)
--native_cpuid_reg(ecx)
--native_cpuid_reg(edx)
--
- /*
-  * Friendlier CR3 helpers.
-  */
-@@ -578,7 +529,6 @@ static __always_inline bool on_thread_stack(void)
- #ifdef CONFIG_PARAVIRT_XXL
- #include <asm/paravirt.h>
- #else
--#define __cpuid			native_cpuid
- 
- static inline void load_sp0(unsigned long sp0)
+ static void irq_sysfs_del(struct irq_desc *desc)
  {
-@@ -589,69 +539,6 @@ static inline void load_sp0(unsigned long sp0)
+ 	/*
+-	 * If irq_sysfs_init() has not yet been invoked (early boot), then
+-	 * irq_kobj_base is NULL and the descriptor was never added.
+-	 * kobject_del() complains about a object with no parent, so make
+-	 * it conditional.
++	 * Only invoke kobject_del() when kobject_add() was successfully
++	 * invoked for the descriptor. This covers both early boot, where
++	 * sysfs is not initialized yet, and the case of a failed
++	 * kobject_add() invocation.
+ 	 */
+-	if (irq_kobj_base)
++	if (desc->istate & IRQS_SYSFS)
+ 		kobject_del(&desc->kobj);
+ }
  
- unsigned long __get_wchan(struct task_struct *p);
- 
--/*
-- * Generic CPUID function
-- * clear %ecx since some cpus (Cyrix MII) do not set or clear %ecx
-- * resulting in stale register contents being returned.
-- */
--static inline void cpuid(unsigned int op,
--			 unsigned int *eax, unsigned int *ebx,
--			 unsigned int *ecx, unsigned int *edx)
--{
--	*eax = op;
--	*ecx = 0;
--	__cpuid(eax, ebx, ecx, edx);
--}
--
--/* Some CPUID calls want 'count' to be placed in ecx */
--static inline void cpuid_count(unsigned int op, int count,
--			       unsigned int *eax, unsigned int *ebx,
--			       unsigned int *ecx, unsigned int *edx)
--{
--	*eax = op;
--	*ecx = count;
--	__cpuid(eax, ebx, ecx, edx);
--}
--
--/*
-- * CPUID functions returning a single datum
-- */
--static inline unsigned int cpuid_eax(unsigned int op)
--{
--	unsigned int eax, ebx, ecx, edx;
--
--	cpuid(op, &eax, &ebx, &ecx, &edx);
--
--	return eax;
--}
--
--static inline unsigned int cpuid_ebx(unsigned int op)
--{
--	unsigned int eax, ebx, ecx, edx;
--
--	cpuid(op, &eax, &ebx, &ecx, &edx);
--
--	return ebx;
--}
--
--static inline unsigned int cpuid_ecx(unsigned int op)
--{
--	unsigned int eax, ebx, ecx, edx;
--
--	cpuid(op, &eax, &ebx, &ecx, &edx);
--
--	return ecx;
--}
--
--static inline unsigned int cpuid_edx(unsigned int op)
--{
--	unsigned int eax, ebx, ecx, edx;
--
--	cpuid(op, &eax, &ebx, &ecx, &edx);
--
--	return edx;
--}
--
- extern void select_idle_routine(const struct cpuinfo_x86 *c);
- extern void amd_e400_c1e_apic_setup(void);
- 
-@@ -805,24 +692,6 @@ static inline u32 amd_get_nodes_per_socket(void)	{ return 0; }
- static inline u32 amd_get_highest_perf(void)		{ return 0; }
- #endif
- 
--#define for_each_possible_hypervisor_cpuid_base(function) \
--	for (function = 0x40000000; function < 0x40010000; function += 0x100)
--
--static inline uint32_t hypervisor_cpuid_base(const char *sig, uint32_t leaves)
--{
--	uint32_t base, eax, signature[3];
--
--	for_each_possible_hypervisor_cpuid_base(base) {
--		cpuid(base, &eax, &signature[0], &signature[1], &signature[2]);
--
--		if (!memcmp(sig, signature, 12) &&
--		    (leaves == 0 || ((eax - base) >= leaves)))
--			return base;
--	}
--
--	return 0;
--}
--
- extern unsigned long arch_align_stack(unsigned long sp);
- void free_init_pages(const char *what, unsigned long begin, unsigned long end);
- extern void free_kernel_image_pages(const char *what, void *begin, void *end);
