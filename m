@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39FC463EF01
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Dec 2022 12:08:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6D7463EF37
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Dec 2022 12:17:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231220AbiLALIk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 1 Dec 2022 06:08:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44370 "EHLO
+        id S230397AbiLALR0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 1 Dec 2022 06:17:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231326AbiLALIA (ORCPT
+        with ESMTP id S230300AbiLALQz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 1 Dec 2022 06:08:00 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3188B68FD;
-        Thu,  1 Dec 2022 03:05:54 -0800 (PST)
-Date:   Thu, 01 Dec 2022 11:05:51 -0000
+        Thu, 1 Dec 2022 06:16:55 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA57C5C;
+        Thu,  1 Dec 2022 03:13:13 -0800 (PST)
+Date:   Thu, 01 Dec 2022 11:13:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669892753;
+        s=2020; t=1669893192;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=n8oJQFEjC5sobhZIM9mHYcUjrnCXhgGujQYXty2nTEc=;
-        b=heIkxzhfEiFAHkxbc9QMVcJ2hv3r6mSPuRwiUoAYFWsnMK65fkBD6lSP20O3wTdP2XOPyD
-        JSYliPcg4yfcFFf2SOIFevDkbXXweTRIzpPzFB8hZAhLOn9OZ/H578WxF1yTy4+Z8Estuo
-        Qqv25co3L4eTgcx5jMkXeWP/J/ic+1buphl0blkyZHiTaQhMzNWpVSvxKOe0RRiUaqjcek
-        5zzdAfB1FDpx2YCjO2PyDMcz4uTBl4L72WJuvwdKFyElwZOV38jnRnlg/ixaqeB3VkRO4T
-        YOdw+bifdsKQAjB4zV8f2j5sa4Ww1zB0FZH2J0fI5xZIfE6j1x6IpRpkF1paYA==
+        bh=oSyk3GVKETda3mJL2mVRTHou/k8k/Fy1bHpnYznVjrI=;
+        b=JMiSkro8WVCbA9SXyXQVyg1BayfBEBBaIIwXOmgi7ELYhZ9nN+4ExEzLUrcsLKsXkVtvae
+        8Bhzh0m+h7xnm7wXafjWTz0O+5IVTHi3Es2fpwPtogZ+KQOxkaAgmtTNPdpPFw0vJ//XVI
+        13hMc9t7Dzz2tn9TuiJdZKCBezKOrGQI8k3S61i2BMjhUtv24oPGlWAQJ9kvPawDfQ4dxR
+        gekGPFkmVcMk+ole7PEkOchyKUJdEMZB2jX15RQp0hb/n8P/HLOrBF9Jf3fhUgJdNE5ETP
+        jY81oIBwDPEe7JizPYyzcZN+3kJn8O997mS16pFMNJ5wEjb9pxfrQA3cd2/lqA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669892753;
+        s=2020e; t=1669893192;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=n8oJQFEjC5sobhZIM9mHYcUjrnCXhgGujQYXty2nTEc=;
-        b=w/vYrb80THhBDquH03d80/btgI17GxjwIJrDU9hK1mTnEQyS9f5Wrsm/+91rRaVg6XWFqB
-        5K37EPyaUVPkU0CA==
-From:   "tip-bot2 for Wolfram Sang" <tip-bot2@linutronix.de>
+        bh=oSyk3GVKETda3mJL2mVRTHou/k8k/Fy1bHpnYznVjrI=;
+        b=nHbOklTPpDDIVsG1gcVNkXOQDBsX/+NKeYU90KhKWELrRdlXGjwoa5Coe9xRJZr9BUUJiI
+        KzrP8SvIvtbDCuAg==
+From:   "tip-bot2 for Conor Dooley" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/sh_cmt: Access registers
- according to spec
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: timers/urgent] Revert "clocksource/drivers/riscv: Events are
+ stopped during CPU suspend"
+Cc:     Conor Dooley <conor.dooley@microchip.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Samuel Holland <samuel@sholland.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221130210609.7718-1-wsa+renesas@sang-engineering.com>
-References: <20221130210609.7718-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20221122121620.3522431-1-conor.dooley@microchip.com>
+References: <20221122121620.3522431-1-conor.dooley@microchip.com>
 MIME-Version: 1.0
-Message-ID: <166989275157.4906.9800204566784593865.tip-bot2@tip-bot2>
+Message-ID: <166989319052.4906.3934360150862233210.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,197 +67,97 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     3f44f7156f59cae06e9160eafb5d8b2dfd09e639
-Gitweb:        https://git.kernel.org/tip/3f44f7156f59cae06e9160eafb5d8b2dfd09e639
-Author:        Wolfram Sang <wsa+renesas@sang-engineering.com>
-AuthorDate:    Wed, 30 Nov 2022 22:06:09 +01:00
+Commit-ID:     d9f15a9de44affe733e34f93bc184945ba277e6d
+Gitweb:        https://git.kernel.org/tip/d9f15a9de44affe733e34f93bc184945ba277e6d
+Author:        Conor Dooley <conor.dooley@microchip.com>
+AuthorDate:    Tue, 22 Nov 2022 12:16:21 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 01 Dec 2022 11:56:25 +01:00
+CommitterDate: Thu, 01 Dec 2022 12:05:29 +01:00
 
-clocksource/drivers/sh_cmt: Access registers according to spec
+Revert "clocksource/drivers/riscv: Events are stopped during CPU suspend"
 
-Documentation for most CMTs say that it takes two input clocks before
-changes propagate to the timer. This is especially relevant when the timer
-is stopped to change further settings.
+This reverts commit 232ccac1bd9b5bfe73895f527c08623e7fa0752d.
 
-Implement the delays according to the spec. To avoid unnecessary delays in
-atomic mode, also check if the to-be-written value actually differs.
+On the subject of suspend, the RISC-V SBI spec states:
 
-CMCNT is a bit special because testing showed that it requires 3 cycles to
-propagate, which affects all CMTs. Also, the WRFLAG needs to be checked
-before writing. This fixes "cannot clear CMCNT" messages which occur often
-on R-Car Gen4 SoCs, but only very rarely on older SoCs for some reason.
+  This does not cover whether any given events actually reach the hart or
+  not, just what the hart will do if it receives an event. On PolarFire
+  SoC, and potentially other SiFive based implementations, events from the
+  RISC-V timer do reach a hart during suspend. This is not the case for the
+  implementation on the Allwinner D1 - there timer events are not received
+  during suspend.
 
-Fixes: 81b3b2711072 ("clocksource: sh_cmt: Add support for multiple channels per device")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To fix this, the CLOCK_EVT_FEAT_C3STOP (mis)feature was enabled for the
+timer driver - but this has broken both RCU stall detection and timers
+generally on PolarFire SoC and potentially other SiFive based
+implementations.
+
+If an AXI read to the PCIe controller on PolarFire SoC times out, the
+system will stall, however, with CLOCK_EVT_FEAT_C3STOP active, the system
+just locks up without RCU stalling:
+
+	io scheduler mq-deadline registered
+	io scheduler kyber registered
+	microchip-pcie 2000000000.pcie: host bridge /soc/pcie@2000000000 ranges:
+	microchip-pcie 2000000000.pcie:      MEM 0x2008000000..0x2087ffffff -> 0x0008000000
+	microchip-pcie 2000000000.pcie: sec error in pcie2axi buffer
+	microchip-pcie 2000000000.pcie: ded error in pcie2axi buffer
+	microchip-pcie 2000000000.pcie: axi read request error
+	microchip-pcie 2000000000.pcie: axi read timeout
+	microchip-pcie 2000000000.pcie: sec error in pcie2axi buffer
+	microchip-pcie 2000000000.pcie: ded error in pcie2axi buffer
+	microchip-pcie 2000000000.pcie: sec error in pcie2axi buffer
+	microchip-pcie 2000000000.pcie: ded error in pcie2axi buffer
+	microchip-pcie 2000000000.pcie: sec error in pcie2axi buffer
+	microchip-pcie 2000000000.pcie: ded error in pcie2axi buffer
+	Freeing initrd memory: 7332K
+
+Similarly issues were reported with clock_nanosleep() - with a test app
+that sleeps each cpu for 6, 5, 4, 3 ms respectively, HZ=250 & the blamed
+commit in place, the sleep times are rounded up to the next jiffy:
+
+== CPU: 1 ==      == CPU: 2 ==      == CPU: 3 ==      == CPU: 4 ==
+Mean: 7.974992    Mean: 7.976534    Mean: 7.962591    Mean: 3.952179
+Std Dev: 0.154374 Std Dev: 0.156082 Std Dev: 0.171018 Std Dev: 0.076193
+Hi: 9.472000      Hi: 10.495000     Hi: 8.864000      Hi: 4.736000
+Lo: 6.087000      Lo: 6.380000      Lo: 4.872000      Lo: 3.403000
+Samples: 521      Samples: 521      Samples: 521      Samples: 521
+
+Fortunately, the D1 has a second timer, which is "currently used in
+preference to the RISC-V/SBI timer driver" so a revert here does not
+hurt operation of D1 in its current form.
+
+Ultimately, a DeviceTree property (or node) will be added to encode the
+behaviour of the timers, but until then revert the addition of
+CLOCK_EVT_FEAT_C3STOP.
+
+Fixes: 232ccac1bd9b ("clocksource/drivers/riscv: Events are stopped during CPU suspend")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20221130210609.7718-1-wsa+renesas@sang-engineering.com
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Samuel Holland <samuel@sholland.org>
+Link: https://lore.kernel.org/linux-riscv/YzYTNQRxLr7Q9JR0@spud/
+Link: https://github.com/riscv-non-isa/riscv-sbi-doc/issues/98/
+Link: https://lore.kernel.org/linux-riscv/bf6d3b1f-f703-4a25-833e-972a44a04114@sholland.org/
+Link: https://lore.kernel.org/r/20221122121620.3522431-1-conor.dooley@microchip.com
 
 ---
- drivers/clocksource/sh_cmt.c | 88 +++++++++++++++++++++--------------
- 1 file changed, 55 insertions(+), 33 deletions(-)
+ drivers/clocksource/timer-riscv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/sh_cmt.c b/drivers/clocksource/sh_cmt.c
-index 64dcb08..7b952aa 100644
---- a/drivers/clocksource/sh_cmt.c
-+++ b/drivers/clocksource/sh_cmt.c
-@@ -13,6 +13,7 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/ioport.h>
- #include <linux/irq.h>
- #include <linux/module.h>
-@@ -116,6 +117,7 @@ struct sh_cmt_device {
- 	void __iomem *mapbase;
- 	struct clk *clk;
- 	unsigned long rate;
-+	unsigned int reg_delay;
- 
- 	raw_spinlock_t lock; /* Protect the shared start/stop register */
- 
-@@ -247,10 +249,17 @@ static inline u32 sh_cmt_read_cmstr(struct sh_cmt_channel *ch)
- 
- static inline void sh_cmt_write_cmstr(struct sh_cmt_channel *ch, u32 value)
- {
--	if (ch->iostart)
--		ch->cmt->info->write_control(ch->iostart, 0, value);
--	else
--		ch->cmt->info->write_control(ch->cmt->mapbase, 0, value);
-+	u32 old_value = sh_cmt_read_cmstr(ch);
-+
-+	if (value != old_value) {
-+		if (ch->iostart) {
-+			ch->cmt->info->write_control(ch->iostart, 0, value);
-+			udelay(ch->cmt->reg_delay);
-+		} else {
-+			ch->cmt->info->write_control(ch->cmt->mapbase, 0, value);
-+			udelay(ch->cmt->reg_delay);
-+		}
-+	}
- }
- 
- static inline u32 sh_cmt_read_cmcsr(struct sh_cmt_channel *ch)
-@@ -260,7 +269,12 @@ static inline u32 sh_cmt_read_cmcsr(struct sh_cmt_channel *ch)
- 
- static inline void sh_cmt_write_cmcsr(struct sh_cmt_channel *ch, u32 value)
- {
--	ch->cmt->info->write_control(ch->ioctrl, CMCSR, value);
-+	u32 old_value = sh_cmt_read_cmcsr(ch);
-+
-+	if (value != old_value) {
-+		ch->cmt->info->write_control(ch->ioctrl, CMCSR, value);
-+		udelay(ch->cmt->reg_delay);
-+	}
- }
- 
- static inline u32 sh_cmt_read_cmcnt(struct sh_cmt_channel *ch)
-@@ -268,14 +282,33 @@ static inline u32 sh_cmt_read_cmcnt(struct sh_cmt_channel *ch)
- 	return ch->cmt->info->read_count(ch->ioctrl, CMCNT);
- }
- 
--static inline void sh_cmt_write_cmcnt(struct sh_cmt_channel *ch, u32 value)
-+static inline int sh_cmt_write_cmcnt(struct sh_cmt_channel *ch, u32 value)
- {
-+	/* Tests showed that we need to wait 3 clocks here */
-+	unsigned int cmcnt_delay = DIV_ROUND_UP(3 * ch->cmt->reg_delay, 2);
-+	u32 reg;
-+
-+	if (ch->cmt->info->model > SH_CMT_16BIT) {
-+		int ret = read_poll_timeout_atomic(sh_cmt_read_cmcsr, reg,
-+						   !(reg & SH_CMT32_CMCSR_WRFLG),
-+						   1, cmcnt_delay, false, ch);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	ch->cmt->info->write_count(ch->ioctrl, CMCNT, value);
-+	udelay(cmcnt_delay);
-+	return 0;
- }
- 
- static inline void sh_cmt_write_cmcor(struct sh_cmt_channel *ch, u32 value)
- {
--	ch->cmt->info->write_count(ch->ioctrl, CMCOR, value);
-+	u32 old_value = ch->cmt->info->read_count(ch->ioctrl, CMCOR);
-+
-+	if (value != old_value) {
-+		ch->cmt->info->write_count(ch->ioctrl, CMCOR, value);
-+		udelay(ch->cmt->reg_delay);
-+	}
- }
- 
- static u32 sh_cmt_get_counter(struct sh_cmt_channel *ch, u32 *has_wrapped)
-@@ -319,7 +352,7 @@ static void sh_cmt_start_stop_ch(struct sh_cmt_channel *ch, int start)
- 
- static int sh_cmt_enable(struct sh_cmt_channel *ch)
- {
--	int k, ret;
-+	int ret;
- 
- 	dev_pm_syscore_device(&ch->cmt->pdev->dev, true);
- 
-@@ -347,26 +380,9 @@ static int sh_cmt_enable(struct sh_cmt_channel *ch)
- 	}
- 
- 	sh_cmt_write_cmcor(ch, 0xffffffff);
--	sh_cmt_write_cmcnt(ch, 0);
--
--	/*
--	 * According to the sh73a0 user's manual, as CMCNT can be operated
--	 * only by the RCLK (Pseudo 32 kHz), there's one restriction on
--	 * modifying CMCNT register; two RCLK cycles are necessary before
--	 * this register is either read or any modification of the value
--	 * it holds is reflected in the LSI's actual operation.
--	 *
--	 * While at it, we're supposed to clear out the CMCNT as of this
--	 * moment, so make sure it's processed properly here.  This will
--	 * take RCLKx2 at maximum.
--	 */
--	for (k = 0; k < 100; k++) {
--		if (!sh_cmt_read_cmcnt(ch))
--			break;
--		udelay(1);
--	}
-+	ret = sh_cmt_write_cmcnt(ch, 0);
- 
--	if (sh_cmt_read_cmcnt(ch)) {
-+	if (ret || sh_cmt_read_cmcnt(ch)) {
- 		dev_err(&ch->cmt->pdev->dev, "ch%u: cannot clear CMCNT\n",
- 			ch->index);
- 		ret = -ETIMEDOUT;
-@@ -995,8 +1011,8 @@ MODULE_DEVICE_TABLE(of, sh_cmt_of_table);
- 
- static int sh_cmt_setup(struct sh_cmt_device *cmt, struct platform_device *pdev)
- {
--	unsigned int mask;
--	unsigned int i;
-+	unsigned int mask, i;
-+	unsigned long rate;
- 	int ret;
- 
- 	cmt->pdev = pdev;
-@@ -1032,10 +1048,16 @@ static int sh_cmt_setup(struct sh_cmt_device *cmt, struct platform_device *pdev)
- 	if (ret < 0)
- 		goto err_clk_unprepare;
- 
--	if (cmt->info->width == 16)
--		cmt->rate = clk_get_rate(cmt->clk) / 512;
--	else
--		cmt->rate = clk_get_rate(cmt->clk) / 8;
-+	rate = clk_get_rate(cmt->clk);
-+	if (!rate) {
-+		ret = -EINVAL;
-+		goto err_clk_disable;
-+	}
-+
-+	/* We shall wait 2 input clks after register writes */
-+	if (cmt->info->model >= SH_CMT_48BIT)
-+		cmt->reg_delay = DIV_ROUND_UP(2UL * USEC_PER_SEC, rate);
-+	cmt->rate = rate / (cmt->info->width == 16 ? 512 : 8);
- 
- 	/* Map the memory resource(s). */
- 	ret = sh_cmt_map_memory(cmt);
+diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+index 969a552..a0d66fa 100644
+--- a/drivers/clocksource/timer-riscv.c
++++ b/drivers/clocksource/timer-riscv.c
+@@ -51,7 +51,7 @@ static int riscv_clock_next_event(unsigned long delta,
+ static unsigned int riscv_clock_event_irq;
+ static DEFINE_PER_CPU(struct clock_event_device, riscv_clock_event) = {
+ 	.name			= "riscv_timer_clockevent",
+-	.features		= CLOCK_EVT_FEAT_ONESHOT | CLOCK_EVT_FEAT_C3STOP,
++	.features		= CLOCK_EVT_FEAT_ONESHOT,
+ 	.rating			= 100,
+ 	.set_next_event		= riscv_clock_next_event,
+ };
