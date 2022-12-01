@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81ABC63EE55
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Dec 2022 11:46:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BA1E63EEFF
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Dec 2022 12:08:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231160AbiLAKqc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 1 Dec 2022 05:46:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52948 "EHLO
+        id S231246AbiLALIg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 1 Dec 2022 06:08:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbiLAKp4 (ORCPT
+        with ESMTP id S231278AbiLALHz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 1 Dec 2022 05:45:56 -0500
+        Thu, 1 Dec 2022 06:07:55 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B52FDAB007;
-        Thu,  1 Dec 2022 02:44:36 -0800 (PST)
-Date:   Thu, 01 Dec 2022 10:44:31 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52218BA0BF;
+        Thu,  1 Dec 2022 03:05:53 -0800 (PST)
+Date:   Thu, 01 Dec 2022 11:05:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669891472;
+        s=2020; t=1669892751;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pqbQXT58QTEULlGE5E51Xu+0CVuy7mtNhlgtI1eWWec=;
-        b=VLxX0d+gE7eSq+IxFPehwxw4AZTc3QzapP8DtB8IBqlk7XelAfkjoPAHzBh1VWqjRJtwO3
-        hPiJ0PPjovsr3DqudTyScd7xWlwTtMphNnLCkaKm0XaHP2FqHjriLzOULEJ//s3UGm8qpW
-        cCQEVikR+0OZQnYFzVmXmM9FO7FFM9kxHRPcLXT7m8iPlxoJPK8E1fSIZZBZwxOtrCtQrD
-        LaubG5bcXgJJFLpiaBxAbdDw/Dtz4jZh72pijb7RHonJorjcJGlFJr+riDtwv5pPDQbBHh
-        Met9l3LeUiR2tiSaOUd7hgXoI2qG5cjSKl4MEvPn7pVbezzLm0g7Rzd5djQYmQ==
+        bh=kIeIeIcghzxVjqF1TjUsV9dokQhCubnFBxcDqd3Ie/w=;
+        b=Pm6ocLMwtp3qIgXJ1pwRGI3C9DxbQ4wAS+ufsiAfXpb15dFLHrjTNvIWmyZR0n0OJMJwA1
+        ZGYfx10fxTolfVpZ7JxRUveMe6ybzqlcoF2ESyQQNOKlCM0XVog85VnHh1t/VIMv8dSSAl
+        LacSBGWCQOhAxr7fTOS0BluHgcMi8Vz6Mws0Dh/TwoX1tASsxzeDz70XWtFGUKdN6wIBPo
+        DeOXN/9Lw3vh2RS4h7mUnAkPVfomHTdZzmemc+N1YKcV+CDIx+w1adQsR47fdSUMNiqxRn
+        y2MZwUk1DhRuMn5TiNBCuQEvgqsqT4PGGRRQTXTc0TkV8EYR//5g8DrVz7uqIg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669891472;
+        s=2020e; t=1669892751;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pqbQXT58QTEULlGE5E51Xu+0CVuy7mtNhlgtI1eWWec=;
-        b=xHjPo4SM0vTbbKmulGyTg38mp/OqC2ux3mMkwdaqAUimlYobh+fue4W2HnqMDZTJmh0jJ8
-        rlNCD81gSgua/EBw==
-From:   "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
+        bh=kIeIeIcghzxVjqF1TjUsV9dokQhCubnFBxcDqd3Ie/w=;
+        b=YRntC8ygUG7BUoLazW8JRUNFzq6IidLWqmjR1hO1UJ6uZBNxA4gk48QbQMHh8uhN4LE1Wx
+        JsQf5O2dTB6XMVDQ==
+From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] vdso/timens: Refactor copy-pasted
- find_timens_vvar_page() helper into one copy
-Cc:     Jann Horn <jannh@google.com>, Thomas Gleixner <tglx@linutronix.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20221130115320.2918447-1-jannh@google.com>
-References: <20221130115320.2918447-1-jannh@google.com>
+Subject: [tip: timers/core] clocksource/drivers/ingenic-ost: Define pm
+ functions properly in platform_driver struct
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20221123083159.22821-1-lukas.bulwahn@gmail.com>
+References: <20221123083159.22821-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Message-ID: <166989147114.4906.2929001822083296859.tip-bot2@tip-bot2>
+Message-ID: <166989275032.4906.6461931630043046760.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,266 +68,77 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     d6c494e8ee932b2b21ff4b718eebb378e91b3da0
-Gitweb:        https://git.kernel.org/tip/d6c494e8ee932b2b21ff4b718eebb378e91b3da0
-Author:        Jann Horn <jannh@google.com>
-AuthorDate:    Wed, 30 Nov 2022 12:53:20 +01:00
+Commit-ID:     035629547999d0e9095886f248c2580dc56f36c6
+Gitweb:        https://git.kernel.org/tip/035629547999d0e9095886f248c2580dc56f36c6
+Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+AuthorDate:    Wed, 23 Nov 2022 09:31:59 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 01 Dec 2022 11:35:40 +01:00
+CommitterDate: Thu, 01 Dec 2022 11:56:36 +01:00
 
-vdso/timens: Refactor copy-pasted find_timens_vvar_page() helper into one copy
+clocksource/drivers/ingenic-ost: Define pm functions properly in platform_driver struct
 
-find_timens_vvar_page() is not architecture-specific, as can be seen from
-how all five per-architecture versions of it are the same.
+Commit ca7b72b5a5f2 ("clocksource: Add driver for the Ingenic JZ47xx OST")
+adds the struct platform_driver ingenic_ost_driver, with the definition of
+pm functions under the non-existing config PM_SUSPEND, which means the
+intended pm functions were never actually included in any build.
 
-(arm64, powerpc and riscv are exactly the same; x86 and s390 have two
-characters difference inside a comment, less blank lines, and mark the
-!CONFIG_TIME_NS version as inline.)
+As the only callbacks are .suspend_noirq and .resume_noirq, we can assume
+that it is intended to be CONFIG_PM_SLEEP.
 
-Refactor the five copies into a central copy in kernel/time/namespace.c.
+Since commit 1a3c7bb08826 ("PM: core: Add new *_PM_OPS macros, deprecate
+old ones"), the default pattern for platform_driver definitions
+conditional for CONFIG_PM_SLEEP is to use pm_sleep_ptr().
 
-Signed-off-by: Jann Horn <jannh@google.com>
+As __maybe_unused annotations on the dev_pm_ops structure and its callbacks
+are not needed anymore, remove these as well.
+
+Suggested-by: Paul Cercueil <paul@crapouillou.net>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20221130115320.2918447-1-jannh@google.com
-
+Reviewed-by: Paul Cercueil <paul@crapouillou.net>
+Link: https://lore.kernel.org/r/20221123083159.22821-1-lukas.bulwahn@gmail.com
 ---
- arch/arm64/kernel/vdso.c       | 22 ----------------------
- arch/powerpc/kernel/vdso.c     | 22 ----------------------
- arch/riscv/kernel/vdso.c       | 22 ----------------------
- arch/s390/kernel/vdso.c        | 20 --------------------
- arch/x86/entry/vdso/vma.c      | 23 -----------------------
- include/linux/time_namespace.h |  6 ++++++
- kernel/time/namespace.c        | 18 ++++++++++++++++++
- 7 files changed, 24 insertions(+), 109 deletions(-)
+ drivers/clocksource/ingenic-ost.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
-index 99ae81a..e59a32a 100644
---- a/arch/arm64/kernel/vdso.c
-+++ b/arch/arm64/kernel/vdso.c
-@@ -151,28 +151,6 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
- 	mmap_read_unlock(mm);
+diff --git a/drivers/clocksource/ingenic-ost.c b/drivers/clocksource/ingenic-ost.c
+index 06d2575..9f7c280 100644
+--- a/drivers/clocksource/ingenic-ost.c
++++ b/drivers/clocksource/ingenic-ost.c
+@@ -141,7 +141,7 @@ static int __init ingenic_ost_probe(struct platform_device *pdev)
  	return 0;
  }
--
--static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
--{
--	if (likely(vma->vm_mm == current->mm))
--		return current->nsproxy->time_ns->vvar_page;
--
--	/*
--	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
--	 * through interfaces like /proc/$pid/mem or
--	 * process_vm_{readv,writev}() as long as there's no .access()
--	 * in special_mapping_vmops.
--	 * For more details check_vma_flags() and __access_remote_vm()
--	 */
--	WARN(1, "vvar_page accessed remotely");
--
--	return NULL;
--}
--#else
--static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
--{
--	return NULL;
--}
- #endif
  
- static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
-diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
-index 4abc019..507f822 100644
---- a/arch/powerpc/kernel/vdso.c
-+++ b/arch/powerpc/kernel/vdso.c
-@@ -129,28 +129,6 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
- 
- 	return 0;
- }
--
--static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
--{
--	if (likely(vma->vm_mm == current->mm))
--		return current->nsproxy->time_ns->vvar_page;
--
--	/*
--	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
--	 * through interfaces like /proc/$pid/mem or
--	 * process_vm_{readv,writev}() as long as there's no .access()
--	 * in special_mapping_vmops.
--	 * For more details check_vma_flags() and __access_remote_vm()
--	 */
--	WARN(1, "vvar_page accessed remotely");
--
--	return NULL;
--}
--#else
--static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
--{
--	return NULL;
--}
- #endif
- 
- static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
-diff --git a/arch/riscv/kernel/vdso.c b/arch/riscv/kernel/vdso.c
-index 123d052..e410275 100644
---- a/arch/riscv/kernel/vdso.c
-+++ b/arch/riscv/kernel/vdso.c
-@@ -137,28 +137,6 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
- 	mmap_read_unlock(mm);
- 	return 0;
- }
--
--static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
--{
--	if (likely(vma->vm_mm == current->mm))
--		return current->nsproxy->time_ns->vvar_page;
--
--	/*
--	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
--	 * through interfaces like /proc/$pid/mem or
--	 * process_vm_{readv,writev}() as long as there's no .access()
--	 * in special_mapping_vmops.
--	 * For more details check_vma_flags() and __access_remote_vm()
--	 */
--	WARN(1, "vvar_page accessed remotely");
--
--	return NULL;
--}
--#else
--static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
--{
--	return NULL;
--}
- #endif
- 
- static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
-diff --git a/arch/s390/kernel/vdso.c b/arch/s390/kernel/vdso.c
-index 3105ca5..d6df716 100644
---- a/arch/s390/kernel/vdso.c
-+++ b/arch/s390/kernel/vdso.c
-@@ -44,21 +44,6 @@ struct vdso_data *arch_get_vdso_data(void *vvar_page)
- 	return (struct vdso_data *)(vvar_page);
- }
- 
--static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
--{
--	if (likely(vma->vm_mm == current->mm))
--		return current->nsproxy->time_ns->vvar_page;
--	/*
--	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
--	 * through interfaces like /proc/$pid/mem or
--	 * process_vm_{readv,writev}() as long as there's no .access()
--	 * in special_mapping_vmops().
--	 * For more details check_vma_flags() and __access_remote_vm()
--	 */
--	WARN(1, "vvar_page accessed remotely");
--	return NULL;
--}
--
- /*
-  * The VVAR page layout depends on whether a task belongs to the root or
-  * non-root time namespace. Whenever a task changes its namespace, the VVAR
-@@ -84,11 +69,6 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
- 	mmap_read_unlock(mm);
- 	return 0;
- }
--#else
--static inline struct page *find_timens_vvar_page(struct vm_area_struct *vma)
--{
--	return NULL;
--}
- #endif
- 
- static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
-diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
-index 311eae3..6b36485 100644
---- a/arch/x86/entry/vdso/vma.c
-+++ b/arch/x86/entry/vdso/vma.c
-@@ -98,24 +98,6 @@ static int vdso_mremap(const struct vm_special_mapping *sm,
- }
- 
- #ifdef CONFIG_TIME_NS
--static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
--{
--	if (likely(vma->vm_mm == current->mm))
--		return current->nsproxy->time_ns->vvar_page;
--
--	/*
--	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
--	 * through interfaces like /proc/$pid/mem or
--	 * process_vm_{readv,writev}() as long as there's no .access()
--	 * in special_mapping_vmops().
--	 * For more details check_vma_flags() and __access_remote_vm()
--	 */
--
--	WARN(1, "vvar_page accessed remotely");
--
--	return NULL;
--}
--
- /*
-  * The vvar page layout depends on whether a task belongs to the root or
-  * non-root time namespace. Whenever a task changes its namespace, the VVAR
-@@ -140,11 +122,6 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
- 
- 	return 0;
- }
--#else
--static inline struct page *find_timens_vvar_page(struct vm_area_struct *vma)
--{
--	return NULL;
--}
- #endif
- 
- static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
-diff --git a/include/linux/time_namespace.h b/include/linux/time_namespace.h
-index 3146f1c..bb9d3f5 100644
---- a/include/linux/time_namespace.h
-+++ b/include/linux/time_namespace.h
-@@ -45,6 +45,7 @@ struct time_namespace *copy_time_ns(unsigned long flags,
- void free_time_ns(struct time_namespace *ns);
- void timens_on_fork(struct nsproxy *nsproxy, struct task_struct *tsk);
- struct vdso_data *arch_get_vdso_data(void *vvar_page);
-+struct page *find_timens_vvar_page(struct vm_area_struct *vma);
- 
- static inline void put_time_ns(struct time_namespace *ns)
+-static int __maybe_unused ingenic_ost_suspend(struct device *dev)
++static int ingenic_ost_suspend(struct device *dev)
  {
-@@ -141,6 +142,11 @@ static inline void timens_on_fork(struct nsproxy *nsproxy,
- 	return;
+ 	struct ingenic_ost *ost = dev_get_drvdata(dev);
+ 
+@@ -150,14 +150,14 @@ static int __maybe_unused ingenic_ost_suspend(struct device *dev)
+ 	return 0;
  }
  
-+static inline struct page *find_timens_vvar_page(struct vm_area_struct *vma)
-+{
-+	return NULL;
-+}
-+
- static inline void timens_add_monotonic(struct timespec64 *ts) { }
- static inline void timens_add_boottime(struct timespec64 *ts) { }
+-static int __maybe_unused ingenic_ost_resume(struct device *dev)
++static int ingenic_ost_resume(struct device *dev)
+ {
+ 	struct ingenic_ost *ost = dev_get_drvdata(dev);
  
-diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
-index aec8328..0775b9e 100644
---- a/kernel/time/namespace.c
-+++ b/kernel/time/namespace.c
-@@ -192,6 +192,24 @@ static void timens_setup_vdso_data(struct vdso_data *vdata,
- 	offset[CLOCK_BOOTTIME_ALARM]	= boottime;
+ 	return clk_enable(ost->clk);
  }
  
-+struct page *find_timens_vvar_page(struct vm_area_struct *vma)
-+{
-+	if (likely(vma->vm_mm == current->mm))
-+		return current->nsproxy->time_ns->vvar_page;
-+
-+	/*
-+	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
-+	 * through interfaces like /proc/$pid/mem or
-+	 * process_vm_{readv,writev}() as long as there's no .access()
-+	 * in special_mapping_vmops().
-+	 * For more details check_vma_flags() and __access_remote_vm()
-+	 */
-+
-+	WARN(1, "vvar_page accessed remotely");
-+
-+	return NULL;
-+}
-+
- /*
-  * Protects possibly multiple offsets writers racing each other
-  * and tasks entering the namespace.
+-static const struct dev_pm_ops __maybe_unused ingenic_ost_pm_ops = {
++static const struct dev_pm_ops ingenic_ost_pm_ops = {
+ 	/* _noirq: We want the OST clock to be gated last / ungated first */
+ 	.suspend_noirq = ingenic_ost_suspend,
+ 	.resume_noirq  = ingenic_ost_resume,
+@@ -181,9 +181,7 @@ static const struct of_device_id ingenic_ost_of_match[] = {
+ static struct platform_driver ingenic_ost_driver = {
+ 	.driver = {
+ 		.name = "ingenic-ost",
+-#ifdef CONFIG_PM_SUSPEND
+-		.pm = &ingenic_ost_pm_ops,
+-#endif
++		.pm = pm_sleep_ptr(&ingenic_ost_pm_ops),
+ 		.of_match_table = ingenic_ost_of_match,
+ 	},
+ };
