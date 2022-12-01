@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83DBE63D7E8
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Nov 2022 15:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81ABC63EE55
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Dec 2022 11:46:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbiK3OO7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Nov 2022 09:14:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49778 "EHLO
+        id S231160AbiLAKqc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 1 Dec 2022 05:46:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229603AbiK3OOt (ORCPT
+        with ESMTP id S229722AbiLAKp4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Nov 2022 09:14:49 -0500
+        Thu, 1 Dec 2022 05:45:56 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F3D7CA8D;
-        Wed, 30 Nov 2022 06:14:37 -0800 (PST)
-Date:   Wed, 30 Nov 2022 14:14:33 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B52FDAB007;
+        Thu,  1 Dec 2022 02:44:36 -0800 (PST)
+Date:   Thu, 01 Dec 2022 10:44:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669817675;
+        s=2020; t=1669891472;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FVO6zWidXe6Zg/00vyTjYgijpJdIvLIKWg8mwZB6WUk=;
-        b=jJr6lvwE5HoKZQ3iwBpA72pDmyP3fzGq2uChpeVtnJAA5sKmEMfDjGtob0EtNYY3QS4Zqj
-        AtxedjVzosKK/C2+SpoDtjTCPNpSikL8up/sO0Fm8akKVJwuAkoerP6jDhg+ptRp7PU9ES
-        Ios+SgGVeyeJk3dCxIebZymao7qahpmU6uftk4FTmwqBBaJJWHRlhCzbW308olJh2lqXRQ
-        nt3iHiS3KzfS6JFED+0AXQ5t5JQyVpirGrUQU6d2J8pm8s8G0cPaxlFNWUvLn6EisGS8Xo
-        Qk44zO3fPoh0wVVF1iPII3gKQBh7y8qipbpZ/K7u6sYPEjG57kZK3AyC9QJA6Q==
+        bh=pqbQXT58QTEULlGE5E51Xu+0CVuy7mtNhlgtI1eWWec=;
+        b=VLxX0d+gE7eSq+IxFPehwxw4AZTc3QzapP8DtB8IBqlk7XelAfkjoPAHzBh1VWqjRJtwO3
+        hPiJ0PPjovsr3DqudTyScd7xWlwTtMphNnLCkaKm0XaHP2FqHjriLzOULEJ//s3UGm8qpW
+        cCQEVikR+0OZQnYFzVmXmM9FO7FFM9kxHRPcLXT7m8iPlxoJPK8E1fSIZZBZwxOtrCtQrD
+        LaubG5bcXgJJFLpiaBxAbdDw/Dtz4jZh72pijb7RHonJorjcJGlFJr+riDtwv5pPDQbBHh
+        Met9l3LeUiR2tiSaOUd7hgXoI2qG5cjSKl4MEvPn7pVbezzLm0g7Rzd5djQYmQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669817675;
+        s=2020e; t=1669891472;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FVO6zWidXe6Zg/00vyTjYgijpJdIvLIKWg8mwZB6WUk=;
-        b=v3r7yglRuFcMRjgVjbNVSQOPNp4epMuUebQWMxga/8zZwizx0ggqZczYEF2t/1n84TdpU/
-        y7BJL+KlQBLGmtAA==
-From:   "tip-bot2 for Yang Yingliang" <tip-bot2@linutronix.de>
+        bh=pqbQXT58QTEULlGE5E51Xu+0CVuy7mtNhlgtI1eWWec=;
+        b=xHjPo4SM0vTbbKmulGyTg38mp/OqC2ux3mMkwdaqAUimlYobh+fue4W2HnqMDZTJmh0jJ8
+        rlNCD81gSgua/EBw==
+From:   "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/irqdesc: Don't try to remove non-existing sysfs files
-Cc:     Yang Yingliang <yangyingliang@huawei.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20221128151612.1786122-1-yangyingliang@huawei.com>
-References: <20221128151612.1786122-1-yangyingliang@huawei.com>
+Subject: [tip: timers/core] vdso/timens: Refactor copy-pasted
+ find_timens_vvar_page() helper into one copy
+Cc:     Jann Horn <jannh@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20221130115320.2918447-1-jannh@google.com>
+References: <20221130115320.2918447-1-jannh@google.com>
 MIME-Version: 1.0
-Message-ID: <166981767350.4906.13064198854331518868.tip-bot2@tip-bot2>
+Message-ID: <166989147114.4906.2929001822083296859.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,116 +64,268 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     9049e1ca41983ab773d7ea244bee86d7835ec9f5
-Gitweb:        https://git.kernel.org/tip/9049e1ca41983ab773d7ea244bee86d7835ec9f5
-Author:        Yang Yingliang <yangyingliang@huawei.com>
-AuthorDate:    Mon, 28 Nov 2022 23:16:12 +08:00
+Commit-ID:     d6c494e8ee932b2b21ff4b718eebb378e91b3da0
+Gitweb:        https://git.kernel.org/tip/d6c494e8ee932b2b21ff4b718eebb378e91b3da0
+Author:        Jann Horn <jannh@google.com>
+AuthorDate:    Wed, 30 Nov 2022 12:53:20 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 30 Nov 2022 14:52:11 +01:00
+CommitterDate: Thu, 01 Dec 2022 11:35:40 +01:00
 
-genirq/irqdesc: Don't try to remove non-existing sysfs files
+vdso/timens: Refactor copy-pasted find_timens_vvar_page() helper into one copy
 
-Fault injection tests trigger warnings like this:
+find_timens_vvar_page() is not architecture-specific, as can be seen from
+how all five per-architecture versions of it are the same.
 
-  kernfs: can not remove 'chip_name', no directory
-  WARNING: CPU: 0 PID: 253 at fs/kernfs/dir.c:1616 kernfs_remove_by_name_ns+0xce/0xe0
-  RIP: 0010:kernfs_remove_by_name_ns+0xce/0xe0
-  Call Trace:
-   <TASK>
-   remove_files.isra.1+0x3f/0xb0
-   sysfs_remove_group+0x68/0xe0
-   sysfs_remove_groups+0x41/0x70
-   __kobject_del+0x45/0xc0
-   kobject_del+0x29/0x40
-   free_desc+0x42/0x70
-   irq_free_descs+0x5e/0x90
+(arm64, powerpc and riscv are exactly the same; x86 and s390 have two
+characters difference inside a comment, less blank lines, and mark the
+!CONFIG_TIME_NS version as inline.)
 
-The reason is that the interrupt descriptor sysfs handling does not roll
-back on a failing kobject_add() during allocation. If the descriptor is
-freed later on, kobject_del() is invoked with a not added kobject resulting
-in the above warnings.
+Refactor the five copies into a central copy in kernel/time/namespace.c.
 
-A proper rollback in case of a kobject_add() failure would be the straight
-forward solution. But this is not possible due to the way how interrupt
-descriptor sysfs handling works.
-
-Interrupt descriptors are allocated before sysfs becomes available. So the
-sysfs files for the early allocated descriptors are added later in the boot
-process. At this point there can be nothing useful done about a failing
-kobject_add(). For consistency the interrupt descriptor allocation always
-treats kobject_add() failures as non-critical and just emits a warning.
-
-To solve this problem, keep track in the interrupt descriptor whether
-kobject_add() was successful or not and make the invocation of
-kobject_del() conditional on that.
-
-[ tglx: Massage changelog, comments and use a state bit. ]
-
-Fixes: ecb3f394c5db ("genirq: Expose interrupt information through sysfs")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20221128151612.1786122-1-yangyingliang@huawei.com
----
- kernel/irq/internals.h |  2 ++
- kernel/irq/irqdesc.c   | 15 +++++++++------
- 2 files changed, 11 insertions(+), 6 deletions(-)
+Link: https://lore.kernel.org/r/20221130115320.2918447-1-jannh@google.com
 
-diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
-index f09c603..5fdc0b5 100644
---- a/kernel/irq/internals.h
-+++ b/kernel/irq/internals.h
-@@ -52,6 +52,7 @@ enum {
-  * IRQS_PENDING			- irq is pending and replayed later
-  * IRQS_SUSPENDED		- irq is suspended
-  * IRQS_NMI			- irq line is used to deliver NMIs
-+ * IRQS_SYSFS			- descriptor has been added to sysfs
-  */
- enum {
- 	IRQS_AUTODETECT		= 0x00000001,
-@@ -64,6 +65,7 @@ enum {
- 	IRQS_SUSPENDED		= 0x00000800,
- 	IRQS_TIMINGS		= 0x00001000,
- 	IRQS_NMI		= 0x00002000,
-+	IRQS_SYSFS		= 0x00004000,
- };
+---
+ arch/arm64/kernel/vdso.c       | 22 ----------------------
+ arch/powerpc/kernel/vdso.c     | 22 ----------------------
+ arch/riscv/kernel/vdso.c       | 22 ----------------------
+ arch/s390/kernel/vdso.c        | 20 --------------------
+ arch/x86/entry/vdso/vma.c      | 23 -----------------------
+ include/linux/time_namespace.h |  6 ++++++
+ kernel/time/namespace.c        | 18 ++++++++++++++++++
+ 7 files changed, 24 insertions(+), 109 deletions(-)
+
+diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
+index 99ae81a..e59a32a 100644
+--- a/arch/arm64/kernel/vdso.c
++++ b/arch/arm64/kernel/vdso.c
+@@ -151,28 +151,6 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+ 	mmap_read_unlock(mm);
+ 	return 0;
+ }
+-
+-static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+-{
+-	if (likely(vma->vm_mm == current->mm))
+-		return current->nsproxy->time_ns->vvar_page;
+-
+-	/*
+-	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
+-	 * through interfaces like /proc/$pid/mem or
+-	 * process_vm_{readv,writev}() as long as there's no .access()
+-	 * in special_mapping_vmops.
+-	 * For more details check_vma_flags() and __access_remote_vm()
+-	 */
+-	WARN(1, "vvar_page accessed remotely");
+-
+-	return NULL;
+-}
+-#else
+-static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+-{
+-	return NULL;
+-}
+ #endif
  
- #include "debug.h"
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index a91f900..fd09962 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -288,22 +288,25 @@ static void irq_sysfs_add(int irq, struct irq_desc *desc)
- 	if (irq_kobj_base) {
- 		/*
- 		 * Continue even in case of failure as this is nothing
--		 * crucial.
-+		 * crucial and failures in the late irq_sysfs_init()
-+		 * cannot be rolled back.
- 		 */
- 		if (kobject_add(&desc->kobj, irq_kobj_base, "%d", irq))
- 			pr_warn("Failed to add kobject for irq %d\n", irq);
-+		else
-+			desc->istate |= IRQS_SYSFS;
- 	}
+ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+index 4abc019..507f822 100644
+--- a/arch/powerpc/kernel/vdso.c
++++ b/arch/powerpc/kernel/vdso.c
+@@ -129,28 +129,6 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+ 
+ 	return 0;
+ }
+-
+-static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+-{
+-	if (likely(vma->vm_mm == current->mm))
+-		return current->nsproxy->time_ns->vvar_page;
+-
+-	/*
+-	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
+-	 * through interfaces like /proc/$pid/mem or
+-	 * process_vm_{readv,writev}() as long as there's no .access()
+-	 * in special_mapping_vmops.
+-	 * For more details check_vma_flags() and __access_remote_vm()
+-	 */
+-	WARN(1, "vvar_page accessed remotely");
+-
+-	return NULL;
+-}
+-#else
+-static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+-{
+-	return NULL;
+-}
+ #endif
+ 
+ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+diff --git a/arch/riscv/kernel/vdso.c b/arch/riscv/kernel/vdso.c
+index 123d052..e410275 100644
+--- a/arch/riscv/kernel/vdso.c
++++ b/arch/riscv/kernel/vdso.c
+@@ -137,28 +137,6 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+ 	mmap_read_unlock(mm);
+ 	return 0;
+ }
+-
+-static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+-{
+-	if (likely(vma->vm_mm == current->mm))
+-		return current->nsproxy->time_ns->vvar_page;
+-
+-	/*
+-	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
+-	 * through interfaces like /proc/$pid/mem or
+-	 * process_vm_{readv,writev}() as long as there's no .access()
+-	 * in special_mapping_vmops.
+-	 * For more details check_vma_flags() and __access_remote_vm()
+-	 */
+-	WARN(1, "vvar_page accessed remotely");
+-
+-	return NULL;
+-}
+-#else
+-static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+-{
+-	return NULL;
+-}
+ #endif
+ 
+ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+diff --git a/arch/s390/kernel/vdso.c b/arch/s390/kernel/vdso.c
+index 3105ca5..d6df716 100644
+--- a/arch/s390/kernel/vdso.c
++++ b/arch/s390/kernel/vdso.c
+@@ -44,21 +44,6 @@ struct vdso_data *arch_get_vdso_data(void *vvar_page)
+ 	return (struct vdso_data *)(vvar_page);
  }
  
- static void irq_sysfs_del(struct irq_desc *desc)
+-static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+-{
+-	if (likely(vma->vm_mm == current->mm))
+-		return current->nsproxy->time_ns->vvar_page;
+-	/*
+-	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
+-	 * through interfaces like /proc/$pid/mem or
+-	 * process_vm_{readv,writev}() as long as there's no .access()
+-	 * in special_mapping_vmops().
+-	 * For more details check_vma_flags() and __access_remote_vm()
+-	 */
+-	WARN(1, "vvar_page accessed remotely");
+-	return NULL;
+-}
+-
+ /*
+  * The VVAR page layout depends on whether a task belongs to the root or
+  * non-root time namespace. Whenever a task changes its namespace, the VVAR
+@@ -84,11 +69,6 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+ 	mmap_read_unlock(mm);
+ 	return 0;
+ }
+-#else
+-static inline struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+-{
+-	return NULL;
+-}
+ #endif
+ 
+ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
+index 311eae3..6b36485 100644
+--- a/arch/x86/entry/vdso/vma.c
++++ b/arch/x86/entry/vdso/vma.c
+@@ -98,24 +98,6 @@ static int vdso_mremap(const struct vm_special_mapping *sm,
+ }
+ 
+ #ifdef CONFIG_TIME_NS
+-static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+-{
+-	if (likely(vma->vm_mm == current->mm))
+-		return current->nsproxy->time_ns->vvar_page;
+-
+-	/*
+-	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
+-	 * through interfaces like /proc/$pid/mem or
+-	 * process_vm_{readv,writev}() as long as there's no .access()
+-	 * in special_mapping_vmops().
+-	 * For more details check_vma_flags() and __access_remote_vm()
+-	 */
+-
+-	WARN(1, "vvar_page accessed remotely");
+-
+-	return NULL;
+-}
+-
+ /*
+  * The vvar page layout depends on whether a task belongs to the root or
+  * non-root time namespace. Whenever a task changes its namespace, the VVAR
+@@ -140,11 +122,6 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+ 
+ 	return 0;
+ }
+-#else
+-static inline struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+-{
+-	return NULL;
+-}
+ #endif
+ 
+ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+diff --git a/include/linux/time_namespace.h b/include/linux/time_namespace.h
+index 3146f1c..bb9d3f5 100644
+--- a/include/linux/time_namespace.h
++++ b/include/linux/time_namespace.h
+@@ -45,6 +45,7 @@ struct time_namespace *copy_time_ns(unsigned long flags,
+ void free_time_ns(struct time_namespace *ns);
+ void timens_on_fork(struct nsproxy *nsproxy, struct task_struct *tsk);
+ struct vdso_data *arch_get_vdso_data(void *vvar_page);
++struct page *find_timens_vvar_page(struct vm_area_struct *vma);
+ 
+ static inline void put_time_ns(struct time_namespace *ns)
  {
- 	/*
--	 * If irq_sysfs_init() has not yet been invoked (early boot), then
--	 * irq_kobj_base is NULL and the descriptor was never added.
--	 * kobject_del() complains about a object with no parent, so make
--	 * it conditional.
-+	 * Only invoke kobject_del() when kobject_add() was successfully
-+	 * invoked for the descriptor. This covers both early boot, where
-+	 * sysfs is not initialized yet, and the case of a failed
-+	 * kobject_add() invocation.
- 	 */
--	if (irq_kobj_base)
-+	if (desc->istate & IRQS_SYSFS)
- 		kobject_del(&desc->kobj);
+@@ -141,6 +142,11 @@ static inline void timens_on_fork(struct nsproxy *nsproxy,
+ 	return;
  }
  
++static inline struct page *find_timens_vvar_page(struct vm_area_struct *vma)
++{
++	return NULL;
++}
++
+ static inline void timens_add_monotonic(struct timespec64 *ts) { }
+ static inline void timens_add_boottime(struct timespec64 *ts) { }
+ 
+diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
+index aec8328..0775b9e 100644
+--- a/kernel/time/namespace.c
++++ b/kernel/time/namespace.c
+@@ -192,6 +192,24 @@ static void timens_setup_vdso_data(struct vdso_data *vdata,
+ 	offset[CLOCK_BOOTTIME_ALARM]	= boottime;
+ }
+ 
++struct page *find_timens_vvar_page(struct vm_area_struct *vma)
++{
++	if (likely(vma->vm_mm == current->mm))
++		return current->nsproxy->time_ns->vvar_page;
++
++	/*
++	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
++	 * through interfaces like /proc/$pid/mem or
++	 * process_vm_{readv,writev}() as long as there's no .access()
++	 * in special_mapping_vmops().
++	 * For more details check_vma_flags() and __access_remote_vm()
++	 */
++
++	WARN(1, "vvar_page accessed remotely");
++
++	return NULL;
++}
++
+ /*
+  * Protects possibly multiple offsets writers racing each other
+  * and tasks entering the namespace.
