@@ -2,62 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB96E6407BB
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Dec 2022 14:36:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F72640817
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Dec 2022 15:04:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233685AbiLBNgA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 2 Dec 2022 08:36:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37638 "EHLO
+        id S232953AbiLBOEB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Dec 2022 09:04:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233676AbiLBNf7 (ORCPT
+        with ESMTP id S231776AbiLBOEB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 2 Dec 2022 08:35:59 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1055710541;
-        Fri,  2 Dec 2022 05:35:58 -0800 (PST)
-Date:   Fri, 02 Dec 2022 13:35:54 -0000
+        Fri, 2 Dec 2022 09:04:01 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3599BCCFF0;
+        Fri,  2 Dec 2022 06:04:00 -0800 (PST)
+Date:   Fri, 02 Dec 2022 14:03:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669988156;
+        s=2020; t=1669989838;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4EczATHbMMI+edCCwReGmfQQNZinrPTAaTXeUFX0/jo=;
-        b=wazTKousC/5O9zvWGXmh1Sx2XZLNyWEGCa1hnwlKcnjyvVgEEV8CngtpeRq+cYcmfv99rz
-        L2dRQtUHm9FV0zDMMMWD+rBBMkiG42E7PlrlvND7UeApsS8vW8Yb7b5XNDNKUFCxGdz9Sp
-        IUxFKtutLzPFRWMyf6JjlWDThqnZ4el5qSbR9kfGbgAs21gvw2LHgBZvJ7pP3S1VICPd8I
-        0q+N34lCi49akT0g/GW5pu8JMPEkHAWZaOxqFbzpsdUMvyzfsbOt8f25mi518Hxvjk+L+b
-        GYfMUgej7SouNZ77G5ZuJef539AUZ8KW62pa2Fy9dOD3sXYGbXNmcFLmDEdCxg==
+        bh=v9/VVB6YB4wgZHpv4JxrSHkdVN43DQfG6ar/1FBDzPY=;
+        b=ayIxdckXlrlkUKiQek92NRftJ2jIVde3UnRJl+Pg522qr3Rw35u0mn0YHUJxHBjCHkr0/g
+        szYakWh5ofW43NieOlXNxw4yJu9gaWwG2CYGKgg9mCmUtPaSZMXzMXsRWzlF8inQWUCTN/
+        i3ZJD3iftxvY25AQDCMUVrx9VqOUDCIrrJfwklinzBV6phvGSEduzUrUGav36RXcbqpUw7
+        wJ6ZSy8woaLi0MuTfTLKOOsd3CEWt81TFVzQuHXrKXVvrVbWcfThnakJjF+0yW6oYVhq+i
+        pNOWzo3EeOmr0wTWpGs3CSHaAxBtU3w+jGMrJ05sdzmejvRrDhkdF89jjhw5cA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669988156;
+        s=2020e; t=1669989838;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4EczATHbMMI+edCCwReGmfQQNZinrPTAaTXeUFX0/jo=;
-        b=hs5ppUrLCF1drBKPWGlLe3b12BYXyW5Gpl//UfXegz6uw6Z6geTbRxXyTsWl9+UWqAGMJ4
-        v56eAkwlXO3ztrCQ==
-From:   tip-bot2 for Mateusz =?utf-8?q?Jo=C5=84czyk?= 
-        <tip-bot2@linutronix.de>
+        bh=v9/VVB6YB4wgZHpv4JxrSHkdVN43DQfG6ar/1FBDzPY=;
+        b=7CCHGJkvu2uuSpyJRgmyCXEOHi6FQoqWux2FM3sHlmA9UxBgVJxpZv1GTJQEx8PqXTJVOc
+        SG8rNbtlcXzkKdCw==
+From:   "tip-bot2 for Rahul Tanwar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Handle no CONFIG_X86_X2APIC on systems with
- x2APIC enabled by BIOS
-Cc:     Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Robert Elliott (Servers)" <elliott@hpe.com>, mat.jonczyk@o2.pl,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <d573ba1c-0dc4-3016-712a-cc23a8a33d42@molgen.mpg.de>
-References: <d573ba1c-0dc4-3016-712a-cc23a8a33d42@molgen.mpg.de>
+Subject: [tip: x86/apic] x86/of: Add support for boot time interrupt delivery
+ mode configuration
+Cc:     Rahul Tanwar <rtanwar@maxlinear.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20221124084143.21841-5-rtanwar@maxlinear.com>
+References: <20221124084143.21841-5-rtanwar@maxlinear.com>
 MIME-Version: 1.0
-Message-ID: <166998815484.4906.5935864067171458557.tip-bot2@tip-bot2>
+Message-ID: <166998983740.4906.7393408926569297500.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -69,129 +68,56 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     e3998434da4f5b1f57f8d6a8a9f8502ee3723bae
-Gitweb:        https://git.kernel.org/tip/e3998434da4f5b1f57f8d6a8a9f8502ee37=
-23bae
-Author:        Mateusz Jo=C5=84czyk <mat.jonczyk@o2.pl>
-AuthorDate:    Tue, 29 Nov 2022 22:50:08 +01:00
+Commit-ID:     2833275568755eb937a52c358bf8bfa7125a463e
+Gitweb:        https://git.kernel.org/tip/2833275568755eb937a52c358bf8bfa7125a463e
+Author:        Rahul Tanwar <rtanwar@maxlinear.com>
+AuthorDate:    Thu, 24 Nov 2022 16:41:43 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 02 Dec 2022 14:28:52 +01:00
+CommitterDate: Fri, 02 Dec 2022 14:57:14 +01:00
 
-x86/apic: Handle no CONFIG_X86_X2APIC on systems with x2APIC enabled by BIOS
+x86/of: Add support for boot time interrupt delivery mode configuration
 
-A kernel that was compiled without CONFIG_X86_X2APIC was unable to boot on
-platforms that have x2APIC already enabled in the BIOS before starting the
-kernel.
+Presently, init/boot time interrupt delivery mode is enumerated only for
+ACPI enabled systems by parsing MADT table or for older systems by parsing
+MP table. But for OF based x86 systems, it is assumed & hardcoded to be
+legacy PIC mode. This causes a boot time crash for platforms which do not
+provide a 8259 compliant legacy PIC.
 
-The kernel was supposed to panic with an approprite error message in
-validate_x2apic() due to the missing X2APIC support.
+Add support for configuration of init time interrupt delivery mode for x86
+OF based systems by introducing a new optional boolean property
+'intel,virtual-wire-mode' for the local APIC interrupt-controller
+node. This property emulates IMCRP Bit 7 of MP feature info byte 2 of MP
+floating pointer structure.
 
-However, validate_x2apic() was run too late in the boot cycle, and the
-kernel tried to initialize the APIC nonetheless. This resulted in an
-earlier panic in setup_local_APIC() because the APIC was not registered.
+Defaults to legacy PIC mode if absent. Configures it to virtual wire
+compatibility mode if present.
 
-In my experiments, a panic message in setup_local_APIC() was not visible
-in the graphical console, which resulted in a hang with no indication
-what has gone wrong.
-
-Instead of calling panic(), disable the APIC, which results in a somewhat
-working system with the PIC only (and no SMP). This way the user is able to
-diagnose the problem more easily.
-
-Disabling X2APIC mode is not an option because it's impossible on systems
-with locked x2APIC.
-
-The proper place to disable the APIC in this case is in check_x2apic(),
-which is called early from setup_arch(). Doing this in
-__apic_intr_mode_select() is too late.
-
-Make check_x2apic() unconditionally available and remove the empty stub.
-
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reported-by: Robert Elliott (Servers) <elliott@hpe.com>
-Signed-off-by: Mateusz Jo=C5=84czyk <mat.jonczyk@o2.pl>
+Signed-off-by: Rahul Tanwar <rtanwar@maxlinear.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/lkml/d573ba1c-0dc4-3016-712a-cc23a8a33d42@molge=
-n.mpg.de
-Link: https://lore.kernel.org/lkml/20220911084711.13694-3-mat.jonczyk@o2.pl
-Link: https://lore.kernel.org/all/20221129215008.7247-1-mat.jonczyk@o2.pl
----
- arch/x86/Kconfig            |  4 ++--
- arch/x86/include/asm/apic.h |  3 +--
- arch/x86/kernel/apic/apic.c | 13 ++++++++-----
- 3 files changed, 11 insertions(+), 9 deletions(-)
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20221124084143.21841-5-rtanwar@maxlinear.com
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 67745ce..b2c0fce 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -462,8 +462,8 @@ config X86_X2APIC
-=20
- 	  Some Intel systems circa 2022 and later are locked into x2APIC mode
- 	  and can not fall back to the legacy APIC modes if SGX or TDX are
--	  enabled in the BIOS.  They will be unable to boot without enabling
--	  this option.
-+	  enabled in the BIOS. They will boot with very reduced functionality
-+	  without enabling this option.
-=20
- 	  If you don't know what to do here, say N.
-=20
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 3415321..3216da7 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -249,7 +249,6 @@ static inline u64 native_x2apic_icr_read(void)
- extern int x2apic_mode;
- extern int x2apic_phys;
- extern void __init x2apic_set_max_apicid(u32 apicid);
--extern void __init check_x2apic(void);
- extern void x2apic_setup(void);
- static inline int x2apic_enabled(void)
- {
-@@ -258,13 +257,13 @@ static inline int x2apic_enabled(void)
-=20
- #define x2apic_supported()	(boot_cpu_has(X86_FEATURE_X2APIC))
- #else /* !CONFIG_X86_X2APIC */
--static inline void check_x2apic(void) { }
- static inline void x2apic_setup(void) { }
- static inline int x2apic_enabled(void) { return 0; }
-=20
- #define x2apic_mode		(0)
- #define	x2apic_supported()	(0)
- #endif /* !CONFIG_X86_X2APIC */
-+extern void __init check_x2apic(void);
-=20
- struct irq_data;
-=20
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index c6876d3..20d9a60 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1931,16 +1931,19 @@ void __init check_x2apic(void)
+---
+ arch/x86/kernel/devicetree.c |  9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
+index 484783f..28da5dd 100644
+--- a/arch/x86/kernel/devicetree.c
++++ b/arch/x86/kernel/devicetree.c
+@@ -162,7 +162,14 @@ static void __init dtb_lapic_setup(void)
+ 			return;
  	}
- }
- #else /* CONFIG_X86_X2APIC */
--static int __init validate_x2apic(void)
-+void __init check_x2apic(void)
- {
- 	if (!apic_is_x2apic_enabled())
--		return 0;
-+		return;
- 	/*
--	 * Checkme: Can we simply turn off x2apic here instead of panic?
-+	 * Checkme: Can we simply turn off x2APIC here instead of disabling the API=
-C?
- 	 */
--	panic("BIOS has enabled x2apic but kernel doesn't support x2apic, please di=
-sable x2apic in BIOS.\n");
-+	pr_err("Kernel does not support x2APIC, please recompile with CONFIG_X86_X2=
-APIC.\n");
-+	pr_err("Disabling APIC, expect reduced performance and functionality.\n");
+ 	smp_found_config = 1;
+-	pic_mode = 1;
++	if (of_property_read_bool(dn, "intel,virtual-wire-mode")) {
++		pr_info("Virtual Wire compatibility mode.\n");
++		pic_mode = 0;
++	} else {
++		pr_info("IMCR and PIC compatibility mode.\n");
++		pic_mode = 1;
++	}
 +
-+	disable_apic =3D 1;
-+	setup_clear_cpu_cap(X86_FEATURE_APIC);
+ 	register_lapic_address(lapic_addr);
  }
--early_initcall(validate_x2apic);
-=20
- static inline void try_to_enable_x2apic(int remap_mode) { }
- static inline void __x2apic_enable(void) { }
+ 
