@@ -2,55 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A03A64081D
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Dec 2022 15:04:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F20A0640826
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Dec 2022 15:05:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233537AbiLBOEK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 2 Dec 2022 09:04:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37108 "EHLO
+        id S233743AbiLBOFJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Dec 2022 09:05:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233463AbiLBOEG (ORCPT
+        with ESMTP id S233742AbiLBOEr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 2 Dec 2022 09:04:06 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAC0ADB0E1;
-        Fri,  2 Dec 2022 06:04:04 -0800 (PST)
-Date:   Fri, 02 Dec 2022 14:04:02 -0000
+        Fri, 2 Dec 2022 09:04:47 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02CC0DFB73;
+        Fri,  2 Dec 2022 06:04:29 -0800 (PST)
+Date:   Fri, 02 Dec 2022 14:04:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669989843;
+        s=2020; t=1669989867;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Q3vvwrGOWdRjoGVQ6sVEK4/+4iKXVaWVSNwYOLo/UTA=;
-        b=VQhAgBuMYV9N02ol9psTzuroagwbBgWV9MeX1YHRsWI3oD4+4l1qQCbQQZsqKD0ZaKq9xd
-        bp2MfkMz0epMvSWSPZ1pcfNFw6PWclxv6ooFqVQKRToGeadGL+EFzVfqxCtFH5WFx0uyUW
-        MyRGaRAGnyDjoauqTsGaqvT+j93+pO7pYP+UzauyogMaN3S2z+OEKYXqwBsT+POWfMyoTy
-        WA8HR+7xXcXe521s5IlhzFipIImriwiUegDcD1ZNGicmYGF6ndTMhWIWBTXT377ldV+oZy
-        pblxgIE+XFYdRIiOhbvFk1UzSPSSEjhyxryOlV2ZyPYqYAHJDQDPDD7TFNf9MQ==
+        bh=bgesFIhirQ56l6RZnTYg9BoZk9NoSnbAmIIs3vJGpqU=;
+        b=uGTPyOCWEdXhqUisMdVRn8ldi5QoWIAX3Gv5c+hyy+76Lr/aJHZBLpbSITBHE++Cryn7qz
+        8TxkDZHkvtT6fNp51o030iEf2ByVr27Lx4/WcdhsSxpl/STTRiZ1kN1v1NIQXhI1EUMg21
+        sW8Sgn6NCF+qweWltvXjGWJthO3C8wOSYSidusZsADgzcEj5nzK10g1kYbLeDMzTnJySJj
+        lByyxK6OylV6fuFLcEJmgqw42WaRNmeVDG//SRmK42l5GUZhlvOW0WDroDdaPevNGGnez9
+        hc3P/be814l6ZBPF/FiXN8N8XeViPgMkF5MIY6rsU7fNw6dLLeJZ0kpaauT5Pw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669989843;
+        s=2020e; t=1669989867;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Q3vvwrGOWdRjoGVQ6sVEK4/+4iKXVaWVSNwYOLo/UTA=;
-        b=fHkZbly2G7iCw7iWLmQtJ8iWHUnjo3hTqAyYrYtGvw+q09hTBzF/0ymEPKfvgNImR2Dsuy
-        WfD1fQDOX+bqqtBA==
-From:   "tip-bot2 for Andy Shevchenko" <tip-bot2@linutronix.de>
+        bh=bgesFIhirQ56l6RZnTYg9BoZk9NoSnbAmIIs3vJGpqU=;
+        b=PrUj5jKTr4CfVnuyUqm2TzZlOFO5fPXhvqfxg1R1JkHNADLDaoIU6posKH4XsgmdC6nwQB
+        Xk66uycU6tvsGlAw==
+From:   "tip-bot2 for Kristen Carlson Accardi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/of: Remove unused early_init_dt_add_memory_arch()
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/sgx] x86/sgx: Replace kmap/kunmap_atomic() calls
+Cc:     Kristen Carlson Accardi <kristen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        Ira Weiny <ira.weiny@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221124184824.9548-1-andriy.shevchenko@linux.intel.com>
-References: <20221124184824.9548-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20221115161627.4169428-1-kristen@linux.intel.com>
+References: <20221115161627.4169428-1-kristen@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <166998984219.4906.12144964269143777509.tip-bot2@tip-bot2>
+Message-ID: <166998986573.4906.1118337438012920133.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,51 +67,122 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/apic branch of tip:
+The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     9b09927c0cdec4d4e75f7f9e621eaec179a888fd
-Gitweb:        https://git.kernel.org/tip/9b09927c0cdec4d4e75f7f9e621eaec179a888fd
-Author:        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-AuthorDate:    Thu, 24 Nov 2022 20:48:24 +02:00
+Commit-ID:     89e927bbcd45d507e5612ef72fda04182e544a38
+Gitweb:        https://git.kernel.org/tip/89e927bbcd45d507e5612ef72fda04182e544a38
+Author:        Kristen Carlson Accardi <kristen@linux.intel.com>
+AuthorDate:    Tue, 15 Nov 2022 08:16:26 -08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 02 Dec 2022 14:57:13 +01:00
+CommitterDate: Fri, 02 Dec 2022 14:59:56 +01:00
 
-x86/of: Remove unused early_init_dt_add_memory_arch()
+x86/sgx: Replace kmap/kunmap_atomic() calls
 
-Recently objtool started complaining about dead code in the object files,
-in particular
+kmap_local_page() is the preferred way to create temporary mappings when it
+is feasible, because the mappings are thread-local and CPU-local.
 
-vmlinux.o: warning: objtool: early_init_dt_scan_memory+0x191: unreachable instruction
+kmap_local_page() uses per-task maps rather than per-CPU maps. This in
+effect removes the need to disable preemption on the local CPU while the
+mapping is active, and thus vastly reduces overall system latency. It is
+also valid to take pagefaults within the mapped region.
 
-when CONFIG_OF=y.
+The use of kmap_atomic() in the SGX code was not an explicit design choice
+to disable page faults or preemption, and there is no compelling design
+reason to using kmap_atomic() vs. kmap_local_page().
 
-Indeed, early_init_dt_scan() is not used on x86 and making it compile (with
-help of CONFIG_OF) will abrupt the code flow since in the middle of it
-there is a BUG() instruction.
-
-Remove the pointless function.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Kristen Carlson Accardi <kristen@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20221124184824.9548-1-andriy.shevchenko@linux.intel.com
-
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://lore.kernel.org/linux-sgx/Y0biN3%2FJsZMa0yUr@kernel.org/
+Link: https://lore.kernel.org/r/20221115161627.4169428-1-kristen@linux.intel.com
 ---
- arch/x86/kernel/devicetree.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/x86/kernel/cpu/sgx/encl.c  | 12 ++++++------
+ arch/x86/kernel/cpu/sgx/ioctl.c |  4 ++--
+ arch/x86/kernel/cpu/sgx/main.c  |  8 ++++----
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
-index 5cd51f2..59438d2 100644
---- a/arch/x86/kernel/devicetree.c
-+++ b/arch/x86/kernel/devicetree.c
-@@ -31,11 +31,6 @@ char __initdata cmd_line[COMMAND_LINE_SIZE];
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 2c25825..68f8b18 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -160,8 +160,8 @@ static int __sgx_encl_eldu(struct sgx_encl_page *encl_page,
+ 		return ret;
  
- int __initdata of_ioapic;
+ 	pginfo.addr = encl_page->desc & PAGE_MASK;
+-	pginfo.contents = (unsigned long)kmap_atomic(b.contents);
+-	pcmd_page = kmap_atomic(b.pcmd);
++	pginfo.contents = (unsigned long)kmap_local_page(b.contents);
++	pcmd_page = kmap_local_page(b.pcmd);
+ 	pginfo.metadata = (unsigned long)pcmd_page + b.pcmd_offset;
  
--void __init early_init_dt_add_memory_arch(u64 base, u64 size)
--{
--	BUG();
--}
--
- void __init add_dtb(u64 data)
- {
- 	initial_dtb = data + offsetof(struct setup_data, data);
+ 	if (secs_page)
+@@ -187,8 +187,8 @@ static int __sgx_encl_eldu(struct sgx_encl_page *encl_page,
+ 	 */
+ 	pcmd_page_empty = !memchr_inv(pcmd_page, 0, PAGE_SIZE);
+ 
+-	kunmap_atomic(pcmd_page);
+-	kunmap_atomic((void *)(unsigned long)pginfo.contents);
++	kunmap_local(pcmd_page);
++	kunmap_local((void *)(unsigned long)pginfo.contents);
+ 
+ 	get_page(b.pcmd);
+ 	sgx_encl_put_backing(&b);
+@@ -197,10 +197,10 @@ static int __sgx_encl_eldu(struct sgx_encl_page *encl_page,
+ 
+ 	if (pcmd_page_empty && !reclaimer_writing_to_pcmd(encl, pcmd_first_page)) {
+ 		sgx_encl_truncate_backing_page(encl, PFN_DOWN(page_pcmd_off));
+-		pcmd_page = kmap_atomic(b.pcmd);
++		pcmd_page = kmap_local_page(b.pcmd);
+ 		if (memchr_inv(pcmd_page, 0, PAGE_SIZE))
+ 			pr_warn("PCMD page not empty after truncate.\n");
+-		kunmap_atomic(pcmd_page);
++		kunmap_local(pcmd_page);
+ 	}
+ 
+ 	put_page(b.pcmd);
+diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
+index ef87482..03c50f1 100644
+--- a/arch/x86/kernel/cpu/sgx/ioctl.c
++++ b/arch/x86/kernel/cpu/sgx/ioctl.c
+@@ -221,11 +221,11 @@ static int __sgx_encl_add_page(struct sgx_encl *encl,
+ 	pginfo.secs = (unsigned long)sgx_get_epc_virt_addr(encl->secs.epc_page);
+ 	pginfo.addr = encl_page->desc & PAGE_MASK;
+ 	pginfo.metadata = (unsigned long)secinfo;
+-	pginfo.contents = (unsigned long)kmap_atomic(src_page);
++	pginfo.contents = (unsigned long)kmap_local_page(src_page);
+ 
+ 	ret = __eadd(&pginfo, sgx_get_epc_virt_addr(epc_page));
+ 
+-	kunmap_atomic((void *)pginfo.contents);
++	kunmap_local((void *)pginfo.contents);
+ 	put_page(src_page);
+ 
+ 	return ret ? -EIO : 0;
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index 0aad028..e5a37b6 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -165,17 +165,17 @@ static int __sgx_encl_ewb(struct sgx_epc_page *epc_page, void *va_slot,
+ 	pginfo.addr = 0;
+ 	pginfo.secs = 0;
+ 
+-	pginfo.contents = (unsigned long)kmap_atomic(backing->contents);
+-	pginfo.metadata = (unsigned long)kmap_atomic(backing->pcmd) +
++	pginfo.contents = (unsigned long)kmap_local_page(backing->contents);
++	pginfo.metadata = (unsigned long)kmap_local_page(backing->pcmd) +
+ 			  backing->pcmd_offset;
+ 
+ 	ret = __ewb(&pginfo, sgx_get_epc_virt_addr(epc_page), va_slot);
+ 	set_page_dirty(backing->pcmd);
+ 	set_page_dirty(backing->contents);
+ 
+-	kunmap_atomic((void *)(unsigned long)(pginfo.metadata -
++	kunmap_local((void *)(unsigned long)(pginfo.metadata -
+ 					      backing->pcmd_offset));
+-	kunmap_atomic((void *)(unsigned long)pginfo.contents);
++	kunmap_local((void *)(unsigned long)pginfo.contents);
+ 
+ 	return ret;
+ }
