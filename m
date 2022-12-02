@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4282640617
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Dec 2022 12:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 651B7640789
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Dec 2022 14:14:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232795AbiLBLvF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 2 Dec 2022 06:51:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38638 "EHLO
+        id S232800AbiLBNOs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Dec 2022 08:14:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231929AbiLBLvE (ORCPT
+        with ESMTP id S232011AbiLBNOs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 2 Dec 2022 06:51:04 -0500
+        Fri, 2 Dec 2022 08:14:48 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2597C1263D;
-        Fri,  2 Dec 2022 03:51:04 -0800 (PST)
-Date:   Fri, 02 Dec 2022 11:51:01 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2A4CC2D34;
+        Fri,  2 Dec 2022 05:14:46 -0800 (PST)
+Date:   Fri, 02 Dec 2022 13:14:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669981862;
+        s=2020; t=1669986885;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PYx/N7VkLi9cbwQkwAJUfl0UrZSPQe3r5BCoHYTbRH8=;
-        b=KpafTXJXaztJBJbDl9tnm1/AT6mTWHf4Fnqu+kjhE4fnt8oNV3EkiUHL7Qf2OwcYrd8A6F
-        h4rlldWZFUzLXQs1A1O15WNNQmAYjpMiWYyAbw4pW+DKKvv3W8faqTowC0pGjKMXJFuMV1
-        qr9FW/ZuMKl/lVaNbVQOTkVSuyTltAVJyq+HziqHAo+d/ozrjoXMGtW/SkGD6+PtpZLFG+
-        yHBrBqzxbPG21ooA4SMKavOztlKmvK2xZ2SWHNyGL3raHcLtewZ1DZAWB+tdtSTzMWPuBf
-        j+JUjVIp53XNFmf/j5nwhDVbPq1o0HXeUGxXX85+LhyLwo3VjQgT/jzCsz8EcA==
+        bh=h+p2fu6JSCcHY0+/+EgBDL3llyV9MW691Es3BXXbOoA=;
+        b=V5rT8kblTn0wGD71Q6TbK7hSlbNG/8Mo3Be3SGLDQmD3haAkUZhav1D52Z6SIqSN05VRfY
+        46bpuGHep3wfZdQiFIoShYtBQqPAQpBQnZF0e911wVBjkoh0MdB5C/sw16HYwJSultteUM
+        HMztnTn1hMDeJHo76w7V6iA4xUeFeq8FBo6V7F4WQ13KJD+rCy361Zy0CNHxHd6jyCh0cX
+        WSgsQL3t6SlHBlMbsmiqp0UJc4eS8OLNFBm7Hu/eLMWV20fper2ZiuClCbEpwYgvLJLcmT
+        waxFl1oFhRDTD3k038a9imMPPb/GCztgUkNYkuoeTbyhZ0G2kRnpSO52gvvckA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669981862;
+        s=2020e; t=1669986885;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PYx/N7VkLi9cbwQkwAJUfl0UrZSPQe3r5BCoHYTbRH8=;
-        b=3isjQppUJqNrN9+T3eb93rnSU/gPzhzIy6zjMcxcLoohe2uafWkfMixPJ3hM8ZvzV4tgqT
-        5h8jPlCldzupdxBg==
-From:   "tip-bot2 for Phil Auld" <tip-bot2@linutronix.de>
+        bh=h+p2fu6JSCcHY0+/+EgBDL3llyV9MW691Es3BXXbOoA=;
+        b=slJ/mJ+I3cZUWlsJOiQhQgNXk9NEzXEABOwkoFv68OKnxRrTPv6HlD5vTY7jBx/KHbcF6g
+        Dzzv79lGg5gS8lAA==
+From:   "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] cpu/hotplug: Make target_store() a nop when target == state
-Cc:     Phil Auld <pauld@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
-        Valentin Schneider <vschneid@redhat.com>, x86@kernel.org,
+Subject: [tip: x86/cleanups] x86/asm/32: Remove setup_once()
+Cc:     Brian Gerst <brgerst@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221117162329.3164999-2-pauld@redhat.com>
-References: <20221117162329.3164999-2-pauld@redhat.com>
+In-Reply-To: <20221115184328.70874-1-brgerst@gmail.com>
+References: <20221115184328.70874-1-brgerst@gmail.com>
 MIME-Version: 1.0
-Message-ID: <166998186154.4906.2993867265971193970.tip-bot2@tip-bot2>
+Message-ID: <166998688334.4906.16854290928005814272.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,63 +64,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     64ea6e44f85b9b75925ebe1ba0e6e8430cc4e06f
-Gitweb:        https://git.kernel.org/tip/64ea6e44f85b9b75925ebe1ba0e6e8430cc4e06f
-Author:        Phil Auld <pauld@redhat.com>
-AuthorDate:    Thu, 17 Nov 2022 11:23:28 -05:00
+Commit-ID:     ff4c85c05333c6f24d3fe0a344c6dacd18a7ee49
+Gitweb:        https://git.kernel.org/tip/ff4c85c05333c6f24d3fe0a344c6dacd18a7ee49
+Author:        Brian Gerst <brgerst@gmail.com>
+AuthorDate:    Tue, 15 Nov 2022 13:43:28 -05:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 02 Dec 2022 12:43:02 +01:00
+CommitterDate: Fri, 02 Dec 2022 14:06:34 +01:00
 
-cpu/hotplug: Make target_store() a nop when target == state
+x86/asm/32: Remove setup_once()
 
-Writing the current state back in hotplug/target calls cpu_down()
-which will set cpu dying even when it isn't and then nothing will
-ever clear it. A stress test that reads values and writes them back
-for all cpu device files in sysfs will trigger the BUG() in
-select_fallback_rq once all cpus are marked as dying.
+After the removal of the stack canary segment setup code, this function
+does nothing.
 
-kernel/cpu.c::target_store()
-	...
-        if (st->state < target)
-                ret = cpu_up(dev->id, target);
-        else
-                ret = cpu_down(dev->id, target);
-
-cpu_down() -> cpu_set_state()
-	 bool bringup = st->state < target;
-	 ...
-	 if (cpu_dying(cpu) != !bringup)
-		set_cpu_dying(cpu, !bringup);
-
-Fix this by letting state==target fall through in the target_store()
-conditional. Also make sure st->target == target in that case.
-
-Fixes: 757c989b9994 ("cpu/hotplug: Make target state writeable")
-Signed-off-by: Phil Auld <pauld@redhat.com>
+Signed-off-by: Brian Gerst <brgerst@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lore.kernel.org/r/20221117162329.3164999-2-pauld@redhat.com
-
+Link: https://lore.kernel.org/r/20221115184328.70874-1-brgerst@gmail.com
 
 ---
- kernel/cpu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/head_32.S | 22 ----------------------
+ 1 file changed, 22 deletions(-)
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index bbad5e3..979de99 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -2326,8 +2326,10 @@ static ssize_t target_store(struct device *dev, struct device_attribute *attr,
+diff --git a/arch/x86/kernel/head_32.S b/arch/x86/kernel/head_32.S
+index 9b7acc9..67c8ed9 100644
+--- a/arch/x86/kernel/head_32.S
++++ b/arch/x86/kernel/head_32.S
+@@ -261,16 +261,6 @@ SYM_FUNC_START(startup_32_smp)
+ 	addl $__PAGE_OFFSET, %esp
  
- 	if (st->state < target)
- 		ret = cpu_up(dev->id, target);
--	else
-+	else if (st->state > target)
- 		ret = cpu_down(dev->id, target);
-+	else if (WARN_ON(st->target != target))
-+		st->target = target;
- out:
- 	unlock_device_hotplug();
- 	return ret ? ret : count;
+ /*
+- * start system 32-bit setup. We need to re-do some of the things done
+- * in 16-bit mode for the "real" operations.
+- */
+-	movl setup_once_ref,%eax
+-	andl %eax,%eax
+-	jz 1f				# Did we do this already?
+-	call *%eax
+-1:
+-
+-/*
+  * Check if it is 486
+  */
+ 	movb $4,X86			# at least 486
+@@ -331,18 +321,7 @@ SYM_FUNC_END(startup_32_smp)
+ 
+ #include "verify_cpu.S"
+ 
+-/*
+- *  setup_once
+- *
+- *  The setup work we only want to run on the BSP.
+- *
+- *  Warning: %esi is live across this function.
+- */
+ __INIT
+-setup_once:
+-	andl $0,setup_once_ref	/* Once is enough, thanks */
+-	RET
+-
+ SYM_FUNC_START(early_idt_handler_array)
+ 	# 36(%esp) %eflags
+ 	# 32(%esp) %cs
+@@ -458,7 +437,6 @@ SYM_DATA(early_recursion_flag, .long 0)
+ __REFDATA
+ 	.align 4
+ SYM_DATA(initial_code,		.long i386_start_kernel)
+-SYM_DATA(setup_once_ref,	.long setup_once)
+ 
+ #ifdef CONFIG_PAGE_TABLE_ISOLATION
+ #define	PGD_ALIGN	(2 * PAGE_SIZE)
