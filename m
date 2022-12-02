@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D306D6405F8
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Dec 2022 12:42:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 218FB640615
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Dec 2022 12:51:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233217AbiLBLm0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 2 Dec 2022 06:42:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57870 "EHLO
+        id S232596AbiLBLvE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Dec 2022 06:51:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232676AbiLBLmZ (ORCPT
+        with ESMTP id S231367AbiLBLvC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 2 Dec 2022 06:42:25 -0500
+        Fri, 2 Dec 2022 06:51:02 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5602BCAF84;
-        Fri,  2 Dec 2022 03:42:22 -0800 (PST)
-Date:   Fri, 02 Dec 2022 11:42:18 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 875761263D;
+        Fri,  2 Dec 2022 03:51:01 -0800 (PST)
+Date:   Fri, 02 Dec 2022 11:50:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669981340;
+        s=2020; t=1669981860;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=g2Vn6wXmkx0a7mZfcOSbKqYbGwrk92B5MZTOKP0fS5U=;
-        b=2VSQKT/tMjt3lv1J+QVd4bQFz3xkoDrdHs0cYXCgjqYPVe3fBqWyC/QlorLo6sqGgcEbFJ
-        1krieE+yft161hiG4KnM+5tA6MXKNVqvBRXmNSZRM3HmbX1jtadY/npMn75rqkUe7tIn6h
-        Gpe4GHcLOZAl3x2llPEbPKr64ZPNWjAymKwIrTCgiXdN1u1KaEk258aU+x9zS7DSCZTTA9
-        BQmjbxsAPMZepMMTWLTIJZT+IIqB1cyvHLRfhmmpcw22QQf08qTV20LG7okgq3Wtuckf2B
-        MXGkm/41hvPtrKH1ZWeJH1j8g2Kc2dyh6dpwTihRapNGILUoqNVRrjwXTkXFXA==
+        bh=cJPbbV/zpHe91Hs8LO9dQsNTXAtCOPEdqFKM0wf62vE=;
+        b=hn9TyCol/8xSXnxis+GNoyMdFxWsVr3XGOUiXVsir3kentPLhuV4yxzyZjv21yMnJdrygH
+        J8MpAcBgdfRGjSYLTVCI6rF+lvsIlGzIPkIvpmzQ0N9ak+trvl9HATu+lJle8NcKBPwo+Y
+        b9seOFOXOAITauFjDJxgGswpgYjxYlI5f5NPjP2wX8och23FOpKG3YahmXpeIFovNPSFRV
+        jxLoJpYMTGqw0ihRYJhvpSUg7R1egAbXuZpWb/9nlsPAD/X4mpZstFWBNgc57w5KzplkPX
+        SLimWda5SUtvPmfaZY7umQlCTMVyd3mxZs5P2iz5vwkV8beDAXXnABMKmLzmHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669981340;
+        s=2020e; t=1669981860;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=g2Vn6wXmkx0a7mZfcOSbKqYbGwrk92B5MZTOKP0fS5U=;
-        b=im4+CQl3lKmRL4RmQbLooPq+h0Jqc6/ePp5/KlCG0O6GQcUD4F01fd8yGMhpgoLGtBrSwj
-        HFsIs+KwEI/DDTAA==
-From:   "tip-bot2 for Stephen Boyd" <tip-bot2@linutronix.de>
+        bh=cJPbbV/zpHe91Hs8LO9dQsNTXAtCOPEdqFKM0wf62vE=;
+        b=XF7E50RxkKzSUJoQkRVnUDvvXVTVKzb77dXJqoa73boLsGKmBbEi8YVmHPbKJAMwuHXShh
+        8AQgY3ymElj5LLDw==
+From:   "tip-bot2 for Vincent Donnefort" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/debugobjects] debugobjects: Print object pointer in
- debug_print_object()
-Cc:     Stephen Boyd <swboyd@chromium.org>,
+Subject: [tip: smp/core] cpu/hotplug: Do not bail-out in DYING/STARTING sections
+Cc:     Derek Dolney <z23@posteo.net>,
+        Vincent Donnefort <vdonnefort@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Guenter Roeck <linux@roeck-us.net>, x86@kernel.org,
+        Valentin Schneider <vschneid@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220519202201.2348343-1-swboyd@chromium.org>
-References: <20220519202201.2348343-1-swboyd@chromium.org>
+In-Reply-To: <20220927101259.1149636-1-vdonnefort@google.com>
+References: <20220927101259.1149636-1-vdonnefort@google.com>
 MIME-Version: 1.0
-Message-ID: <166998133867.4906.9430088873803994370.tip-bot2@tip-bot2>
+Message-ID: <166998185857.4906.761294546367847039.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,64 +66,143 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/debugobjects branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     c4db2d3b70e586c7c856c891f4f7052e8d789a06
-Gitweb:        https://git.kernel.org/tip/c4db2d3b70e586c7c856c891f4f7052e8d789a06
-Author:        Stephen Boyd <swboyd@chromium.org>
-AuthorDate:    Thu, 19 May 2022 13:22:01 -07:00
+Commit-ID:     6f855b39e4602b6b42a8e5cbcfefb8a1b8b5f0be
+Gitweb:        https://git.kernel.org/tip/6f855b39e4602b6b42a8e5cbcfefb8a1b8b5f0be
+Author:        Vincent Donnefort <vdonnefort@google.com>
+AuthorDate:    Tue, 27 Sep 2022 11:12:59 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 02 Dec 2022 12:32:24 +01:00
+CommitterDate: Fri, 02 Dec 2022 12:43:02 +01:00
 
-debugobjects: Print object pointer in debug_print_object()
+cpu/hotplug: Do not bail-out in DYING/STARTING sections
 
-Delayed kobject debugging (CONFIG_DEBUG_KOBJECT_RELEASE) prints the kobject
-pointer that's being released in kobject_release() before scheduling a
-randomly delayed work to do the actual release work.
+The DYING/STARTING callbacks are not expected to fail. However, as reported
+by Derek, buggy drivers such as tboot are still free to return errors
+within those sections, which halts the hot(un)plug and leaves the CPU in an
+unrecoverable state.
 
-If the caller of kobject_put() frees the kobject upon return then this will
-typically emit a debugobject warning about freeing an active timer.
+As there is no rollback possible, only log the failures and proceed with
+the following steps.
 
-Usually the release function is the function that does the kfree() of the
-struct containing the kobject.
+This restores the hotplug behaviour prior to commit 453e41085183
+("cpu/hotplug: Add cpuhp_invoke_callback_range()")
 
-For example the following print is seen
-
- kobject: 'queue' (ffff888114236190): kobject_release, parent 0000000000000000 (delayed 1000)
- ------------[ cut here ]------------
- ODEBUG: free active (active state 0) object type: timer_list hint: kobject_delayed_cleanup+0x0/0x390
-
-but the kobject printk cannot be matched with the debug object printk
-because it could be any number of kobjects that was released around that
-time. The random delay for the work doesn't help either.
-
-Print the address of the object being tracked to help to figure out which
-kobject is the problem here. Note that this does not use %px here to match
-the other %p usage in debugobject debugging. Due to %p usage it is required
-to disable pointer hashing to correlate the two pointer printks.
-
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Fixes: 453e41085183 ("cpu/hotplug: Add cpuhp_invoke_callback_range()")
+Reported-by: Derek Dolney <z23@posteo.net>
+Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20220519202201.2348343-1-swboyd@chromium.org
+Tested-by: Derek Dolney <z23@posteo.net>
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=215867
+Link: https://lore.kernel.org/r/20220927101259.1149636-1-vdonnefort@google.com
 
 ---
- lib/debugobjects.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/cpu.c | 56 ++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 40 insertions(+), 16 deletions(-)
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index 337d797..4c670d3 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -500,9 +500,9 @@ static void debug_print_object(struct debug_obj *obj, char *msg)
- 			descr->debug_hint(obj->object) : NULL;
- 		limit++;
- 		WARN(1, KERN_ERR "ODEBUG: %s %s (active state %u) "
--				 "object type: %s hint: %pS\n",
-+				 "object: %p object type: %s hint: %pS\n",
- 			msg, obj_states[obj->state], obj->astate,
--			descr->name, hint);
-+			obj->object, descr->name, hint);
- 	}
- 	debug_objects_warnings++;
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 3f704a8..6c0a92c 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -663,21 +663,51 @@ static bool cpuhp_next_state(bool bringup,
+ 	return true;
  }
+ 
+-static int cpuhp_invoke_callback_range(bool bringup,
+-				       unsigned int cpu,
+-				       struct cpuhp_cpu_state *st,
+-				       enum cpuhp_state target)
++static int __cpuhp_invoke_callback_range(bool bringup,
++					 unsigned int cpu,
++					 struct cpuhp_cpu_state *st,
++					 enum cpuhp_state target,
++					 bool nofail)
+ {
+ 	enum cpuhp_state state;
+-	int err = 0;
++	int ret = 0;
+ 
+ 	while (cpuhp_next_state(bringup, &state, st, target)) {
++		int err;
++
+ 		err = cpuhp_invoke_callback(cpu, state, bringup, NULL, NULL);
+-		if (err)
++		if (!err)
++			continue;
++
++		if (nofail) {
++			pr_warn("CPU %u %s state %s (%d) failed (%d)\n",
++				cpu, bringup ? "UP" : "DOWN",
++				cpuhp_get_step(st->state)->name,
++				st->state, err);
++			ret = -1;
++		} else {
++			ret = err;
+ 			break;
++		}
+ 	}
+ 
+-	return err;
++	return ret;
++}
++
++static inline int cpuhp_invoke_callback_range(bool bringup,
++					      unsigned int cpu,
++					      struct cpuhp_cpu_state *st,
++					      enum cpuhp_state target)
++{
++	return __cpuhp_invoke_callback_range(bringup, cpu, st, target, false);
++}
++
++static inline void cpuhp_invoke_callback_range_nofail(bool bringup,
++						      unsigned int cpu,
++						      struct cpuhp_cpu_state *st,
++						      enum cpuhp_state target)
++{
++	__cpuhp_invoke_callback_range(bringup, cpu, st, target, true);
+ }
+ 
+ static inline bool can_rollback_cpu(struct cpuhp_cpu_state *st)
+@@ -999,7 +1029,6 @@ static int take_cpu_down(void *_param)
+ 	struct cpuhp_cpu_state *st = this_cpu_ptr(&cpuhp_state);
+ 	enum cpuhp_state target = max((int)st->target, CPUHP_AP_OFFLINE);
+ 	int err, cpu = smp_processor_id();
+-	int ret;
+ 
+ 	/* Ensure this CPU doesn't handle any more interrupts. */
+ 	err = __cpu_disable();
+@@ -1012,13 +1041,10 @@ static int take_cpu_down(void *_param)
+ 	 */
+ 	WARN_ON(st->state != (CPUHP_TEARDOWN_CPU - 1));
+ 
+-	/* Invoke the former CPU_DYING callbacks */
+-	ret = cpuhp_invoke_callback_range(false, cpu, st, target);
+-
+ 	/*
+-	 * DYING must not fail!
++	 * Invoke the former CPU_DYING callbacks. DYING must not fail!
+ 	 */
+-	WARN_ON_ONCE(ret);
++	cpuhp_invoke_callback_range_nofail(false, cpu, st, target);
+ 
+ 	/* Give up timekeeping duties */
+ 	tick_handover_do_timer();
+@@ -1296,16 +1322,14 @@ void notify_cpu_starting(unsigned int cpu)
+ {
+ 	struct cpuhp_cpu_state *st = per_cpu_ptr(&cpuhp_state, cpu);
+ 	enum cpuhp_state target = min((int)st->target, CPUHP_AP_ONLINE);
+-	int ret;
+ 
+ 	rcu_cpu_starting(cpu);	/* Enables RCU usage on this CPU. */
+ 	cpumask_set_cpu(cpu, &cpus_booted_once_mask);
+-	ret = cpuhp_invoke_callback_range(true, cpu, st, target);
+ 
+ 	/*
+ 	 * STARTING must not fail!
+ 	 */
+-	WARN_ON_ONCE(ret);
++	cpuhp_invoke_callback_range_nofail(true, cpu, st, target);
+ }
+ 
+ /*
