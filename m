@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BDEE6405D2
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Dec 2022 12:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D306D6405F8
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Dec 2022 12:42:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233442AbiLBL3q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 2 Dec 2022 06:29:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45500 "EHLO
+        id S233217AbiLBLm0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Dec 2022 06:42:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233383AbiLBL3E (ORCPT
+        with ESMTP id S232676AbiLBLmZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 2 Dec 2022 06:29:04 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C27CD3A3A;
-        Fri,  2 Dec 2022 03:28:55 -0800 (PST)
-Date:   Fri, 02 Dec 2022 11:28:52 -0000
+        Fri, 2 Dec 2022 06:42:25 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5602BCAF84;
+        Fri,  2 Dec 2022 03:42:22 -0800 (PST)
+Date:   Fri, 02 Dec 2022 11:42:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1669980534;
+        s=2020; t=1669981340;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=K5ex9nqQicUtIknKSQ+fIyf0Cui4gT0k3HCej5xdGY0=;
-        b=kXo7O9Cy5S8Z9750W/dmhVupdZZWqYXX/AoIrRQVWVLnyra6+mzYad9lY+jSkFvmTtJltE
-        WEaKWNK+BrCbquMatqMPaoOx7DehZRXqtf450Hjjjb6BuPJ6o9Htk8Hh/xrwa7UuNIUdix
-        C/L4vYi4hlbfoSNjyM+A35XIe4Fs9dgPOfjMpA+a2mUhM+FnZcxBe2l7TV3TZ9nzlkeJfE
-        xZ1W6KcfO/pyVcq3rPGGU3RemflDi+PRX816j1kNFKf7egxIyC9eR1AYca+3kOqU7AzUXV
-        /gPossxuFW8n32totuYeqGsttjfCbAlw98rjm/V1soaoSM5Ok7RHwugEr6Nu1Q==
+        bh=g2Vn6wXmkx0a7mZfcOSbKqYbGwrk92B5MZTOKP0fS5U=;
+        b=2VSQKT/tMjt3lv1J+QVd4bQFz3xkoDrdHs0cYXCgjqYPVe3fBqWyC/QlorLo6sqGgcEbFJ
+        1krieE+yft161hiG4KnM+5tA6MXKNVqvBRXmNSZRM3HmbX1jtadY/npMn75rqkUe7tIn6h
+        Gpe4GHcLOZAl3x2llPEbPKr64ZPNWjAymKwIrTCgiXdN1u1KaEk258aU+x9zS7DSCZTTA9
+        BQmjbxsAPMZepMMTWLTIJZT+IIqB1cyvHLRfhmmpcw22QQf08qTV20LG7okgq3Wtuckf2B
+        MXGkm/41hvPtrKH1ZWeJH1j8g2Kc2dyh6dpwTihRapNGILUoqNVRrjwXTkXFXA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1669980534;
+        s=2020e; t=1669981340;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=K5ex9nqQicUtIknKSQ+fIyf0Cui4gT0k3HCej5xdGY0=;
-        b=4ZXBvnX7F06hA50qa+VcDHu5j/qoOFMxKYzPR93NrNAN4i7ePwunC1ZbiJRh6/2ACDDzeu
-        LJI1Z98ByVSlKqDg==
-From:   "tip-bot2 for Alexey Izbyshev" <tip-bot2@linutronix.de>
+        bh=g2Vn6wXmkx0a7mZfcOSbKqYbGwrk92B5MZTOKP0fS5U=;
+        b=im4+CQl3lKmRL4RmQbLooPq+h0Jqc6/ePp5/KlCG0O6GQcUD4F01fd8yGMhpgoLGtBrSwj
+        HFsIs+KwEI/DDTAA==
+From:   "tip-bot2 for Stephen Boyd" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] futex: Resend potentially swallowed owner death
- notification
-Cc:     Alexey Izbyshev <izbyshev@ispras.ru>,
+Subject: [tip: core/debugobjects] debugobjects: Print object pointer in
+ debug_print_object()
+Cc:     Stephen Boyd <swboyd@chromium.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        Guenter Roeck <linux@roeck-us.net>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221111215439.248185-1-izbyshev@ispras.ru>
-References: <20221111215439.248185-1-izbyshev@ispras.ru>
+In-Reply-To: <20220519202201.2348343-1-swboyd@chromium.org>
+References: <20220519202201.2348343-1-swboyd@chromium.org>
 MIME-Version: 1.0
-Message-ID: <166998053282.4906.6953226342195740637.tip-bot2@tip-bot2>
+Message-ID: <166998133867.4906.9430088873803994370.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,106 +66,64 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the core/debugobjects branch of tip:
 
-Commit-ID:     90d758896787048fa3d4209309d4800f3920e66f
-Gitweb:        https://git.kernel.org/tip/90d758896787048fa3d4209309d4800f3920e66f
-Author:        Alexey Izbyshev <izbyshev@ispras.ru>
-AuthorDate:    Sat, 12 Nov 2022 00:54:39 +03:00
+Commit-ID:     c4db2d3b70e586c7c856c891f4f7052e8d789a06
+Gitweb:        https://git.kernel.org/tip/c4db2d3b70e586c7c856c891f4f7052e8d789a06
+Author:        Stephen Boyd <swboyd@chromium.org>
+AuthorDate:    Thu, 19 May 2022 13:22:01 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 02 Dec 2022 12:20:24 +01:00
+CommitterDate: Fri, 02 Dec 2022 12:32:24 +01:00
 
-futex: Resend potentially swallowed owner death notification
+debugobjects: Print object pointer in debug_print_object()
 
-Commit ca16d5bee598 ("futex: Prevent robust futex exit race") addressed
-two cases when tasks waiting on a robust non-PI futex remained blocked
-despite the futex not being owned anymore:
+Delayed kobject debugging (CONFIG_DEBUG_KOBJECT_RELEASE) prints the kobject
+pointer that's being released in kobject_release() before scheduling a
+randomly delayed work to do the actual release work.
 
-* if the owner died after writing zero to the futex word, but before
-  waking up a waiter
+If the caller of kobject_put() frees the kobject upon return then this will
+typically emit a debugobject warning about freeing an active timer.
 
-* if a task waiting on the futex was woken up, but died before updating
-  the futex word (effectively swallowing the notification without acting
-  on it)
+Usually the release function is the function that does the kfree() of the
+struct containing the kobject.
 
-In the second case, the task could be woken up either by the previous
-owner (after the futex word was reset to zero) or by the kernel (after
-the OWNER_DIED bit was set and the TID part of the futex word was reset
-to zero) if the previous owner died without the resetting the futex.
+For example the following print is seen
 
-Because the referenced commit wakes up a potential waiter only if the
-whole futex word is zero, the latter subcase remains unaddressed.
+ kobject: 'queue' (ffff888114236190): kobject_release, parent 0000000000000000 (delayed 1000)
+ ------------[ cut here ]------------
+ ODEBUG: free active (active state 0) object type: timer_list hint: kobject_delayed_cleanup+0x0/0x390
 
-Fix this by looking only at the TID part of the futex when deciding
-whether a wake up is needed.
+but the kobject printk cannot be matched with the debug object printk
+because it could be any number of kobjects that was released around that
+time. The random delay for the work doesn't help either.
 
-Fixes: ca16d5bee598 ("futex: Prevent robust futex exit race")
-Signed-off-by: Alexey Izbyshev <izbyshev@ispras.ru>
+Print the address of the object being tracked to help to figure out which
+kobject is the problem here. Note that this does not use %px here to match
+the other %p usage in debugobject debugging. Due to %p usage it is required
+to disable pointer hashing to correlate the two pointer printks.
+
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20221111215439.248185-1-izbyshev@ispras.ru
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20220519202201.2348343-1-swboyd@chromium.org
 
 ---
- kernel/futex/core.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ lib/debugobjects.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-index b22ef1e..514e458 100644
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -638,6 +638,7 @@ static int handle_futex_death(u32 __user *uaddr, struct task_struct *curr,
- 			      bool pi, bool pending_op)
- {
- 	u32 uval, nval, mval;
-+	pid_t owner;
- 	int err;
- 
- 	/* Futex address must be 32bit aligned */
-@@ -659,6 +660,10 @@ retry:
- 	 * 2. A woken up waiter is killed before it can acquire the
- 	 *    futex in user space.
- 	 *
-+	 * In the second case, the wake up notification could be generated
-+	 * by the unlock path in user space after setting the futex value
-+	 * to zero or by the kernel after setting the OWNER_DIED bit below.
-+	 *
- 	 * In both cases the TID validation below prevents a wakeup of
- 	 * potential waiters which can cause these waiters to block
- 	 * forever.
-@@ -667,24 +672,27 @@ retry:
- 	 *
- 	 *	1) task->robust_list->list_op_pending != NULL
- 	 *	   @pending_op == true
--	 *	2) User space futex value == 0
-+	 *	2) The owner part of user space futex value == 0
- 	 *	3) Regular futex: @pi == false
- 	 *
- 	 * If these conditions are met, it is safe to attempt waking up a
- 	 * potential waiter without touching the user space futex value and
--	 * trying to set the OWNER_DIED bit. The user space futex value is
--	 * uncontended and the rest of the user space mutex state is
--	 * consistent, so a woken waiter will just take over the
--	 * uncontended futex. Setting the OWNER_DIED bit would create
--	 * inconsistent state and malfunction of the user space owner died
--	 * handling.
-+	 * trying to set the OWNER_DIED bit. If the futex value is zero,
-+	 * the rest of the user space mutex state is consistent, so a woken
-+	 * waiter will just take over the uncontended futex. Setting the
-+	 * OWNER_DIED bit would create inconsistent state and malfunction
-+	 * of the user space owner died handling. Otherwise, the OWNER_DIED
-+	 * bit is already set, and the woken waiter is expected to deal with
-+	 * this.
- 	 */
--	if (pending_op && !pi && !uval) {
-+	owner = uval & FUTEX_TID_MASK;
-+
-+	if (pending_op && !pi && !owner) {
- 		futex_wake(uaddr, 1, 1, FUTEX_BITSET_MATCH_ANY);
- 		return 0;
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 337d797..4c670d3 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -500,9 +500,9 @@ static void debug_print_object(struct debug_obj *obj, char *msg)
+ 			descr->debug_hint(obj->object) : NULL;
+ 		limit++;
+ 		WARN(1, KERN_ERR "ODEBUG: %s %s (active state %u) "
+-				 "object type: %s hint: %pS\n",
++				 "object: %p object type: %s hint: %pS\n",
+ 			msg, obj_states[obj->state], obj->astate,
+-			descr->name, hint);
++			obj->object, descr->name, hint);
  	}
- 
--	if ((uval & FUTEX_TID_MASK) != task_pid_vnr(curr))
-+	if (owner != task_pid_vnr(curr))
- 		return 0;
- 
- 	/*
+ 	debug_objects_warnings++;
+ }
