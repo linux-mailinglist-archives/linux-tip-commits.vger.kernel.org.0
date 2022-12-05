@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28BFE643019
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE0C6643033
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:27:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233283AbiLES02 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Dec 2022 13:26:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40068 "EHLO
+        id S233321AbiLES0k (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 13:26:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232690AbiLESZY (ORCPT
+        with ESMTP id S232700AbiLESZZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Dec 2022 13:25:24 -0500
+        Mon, 5 Dec 2022 13:25:25 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C320A20BD2;
-        Mon,  5 Dec 2022 10:25:23 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0550820BE9;
+        Mon,  5 Dec 2022 10:25:24 -0800 (PST)
 Date:   Mon, 05 Dec 2022 18:25:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1670264722;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NDH8l4Wxx5e8MUWqcN44DvP8vAxTaA+Dc4mm5fhhLEY=;
-        b=m/25FXv+6inR7+RYx4EPDyyMKFOd4e1RYjI5JPu6IpBz74I4sDtP3uF6A+FtDQ/VD0dwAV
-        BlVNt0ri44FZWdt+p2jOUT1aaAHL1nRAlV/8crXlG5oNyCzv/29ANyJkV4EWLXIisjGfou
-        F2ZIc3XiU+AWpTorc8YUDIMerm6qqB6oE/b4WmmrJt8nvXGCWWRIwFMk7qbm7AWcPwv9y6
-        Dd/voTMhXteN5JbBpZseyrPASDx1mlPuiXDnYr8M2ta23dE9HEIQHLBjsdB4QNHy3M1sSk
-        eb43XCZO+l/vgU/GmBPwN4d6sfOOl1sDmSzF4yWcj99AeHVgFj13SUYrW8wlpw==
+        bh=o2YGqGB0X++gFIlyftW837YV3I04HXl6/I0v3Q1flzU=;
+        b=m8gYEHc+SEEZe3PUV/9s/vh/1ZSVzLRtFFe/vTnp02CO7nFS1cQ8oqsWONPL9MktUx8tuM
+        owlcQ9U7jVCiSkNkds11UU4epdGbnkBacKP84GvREcyUmuZe7aF4X2y5aJr3KGqrks4sE6
+        pYCSvH96j2TYQrBY7WbrQp7UCphs8QlRomn5m5VtpMLpDwWa4y7P6ldvqCBxHbk0t8dmiW
+        9gWJGvQ4hxSdQJ314VFMfVGjR9z8SiiJXpLANeZCcMOcvlTYMpe/Rz6ZQ4MYTE3kFINbrB
+        zn8CvfFaVKMYu37jSWufDTucobbo8XuzdGzAJRjaZOqNSnr0zlKlMf313ADOCA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1670264722;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NDH8l4Wxx5e8MUWqcN44DvP8vAxTaA+Dc4mm5fhhLEY=;
-        b=rLvYzlI+lyeha8gHiCAYAYdfCokY4r2uVcDqil2KaAqCCjYg1kplZ7xKeD3WllBaHn3Pcv
-        4qESTE+QkNu+gDDQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=o2YGqGB0X++gFIlyftW837YV3I04HXl6/I0v3Q1flzU=;
+        b=Tb09lcFxyhB+tzbrZ+AYErnnsKgcVQOhHNlQuCyrf+vgcJTkbat3LFe8Iiax2X79fv8OQb
+        6Hh3+5mmx5NAuVAw==
+From:   "tip-bot2 for Bagas Sanjaya" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/msi: Move IRQ_DOMAIN_MSI_NOMASK_QUIRK to MSI flags
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Marc Zyngier <maz@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20221124230313.454246167@linutronix.de>
-References: <20221124230313.454246167@linutronix.de>
+Subject: [tip: irq/core] PCI/MSI: Use bullet lists in kernel-doc comments of api.c
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        "Ahmed S. Darwish" <darwi@linutronix.de>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20221203100511.222136-1-bagasdotme@gmail.com>
+References: <20221203100511.222136-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-Message-ID: <167026472218.4906.17353441487523538459.tip-bot2@tip-bot2>
+Message-ID: <167026472230.4906.11758765575480144436.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,103 +68,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     3dad5f9ad99b77dfd234d31e2ea3d77f620efc09
-Gitweb:        https://git.kernel.org/tip/3dad5f9ad99b77dfd234d31e2ea3d77f620efc09
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 25 Nov 2022 00:24:08 +01:00
+Commit-ID:     6842694c5088925d216529d4a2358ab5ee8bb862
+Gitweb:        https://git.kernel.org/tip/6842694c5088925d216529d4a2358ab5ee8bb862
+Author:        Bagas Sanjaya <bagasdotme@gmail.com>
+AuthorDate:    Sat, 03 Dec 2022 17:05:11 +07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 05 Dec 2022 19:20:58 +01:00
+CommitterDate: Mon, 05 Dec 2022 18:57:46 +01:00
 
-genirq/msi: Move IRQ_DOMAIN_MSI_NOMASK_QUIRK to MSI flags
+PCI/MSI: Use bullet lists in kernel-doc comments of api.c
 
-It's truly a MSI only flag and for the upcoming per device MSI domains this
-must be in the MSI flags so it can be set during domain setup without
-exposing this quirk outside of x86.
+Use bullet-list RST syntax for kernel-doc parameters' flags and interrupt
+mode descriptions. Otherwise Sphinx produces "Unexpected identation" errors
+and warnings.
 
+Fixes: 5c0997dc33ac24 ("PCI/MSI: Move pci_alloc_irq_vectors() to api.c")
+Fixes: 017239c8db2093 ("PCI/MSI: Move pci_irq_vector() to api.c")
+Fixes: be37b8428b7b77 ("PCI/MSI: Move pci_irq_get_affinity() to api.c")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Suggested-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221124230313.454246167@linutronix.de
-
+Acked-by: Ahmed S. Darwish <darwi@linutronix.de>
+Link: https://lore.kernel.org/r/20221203100511.222136-1-bagasdotme@gmail.com
 ---
- arch/x86/kernel/apic/msi.c |  5 ++---
- include/linux/irqdomain.h  |  9 +--------
- include/linux/msi.h        |  6 ++++++
- kernel/irq/msi.c           |  2 +-
- 4 files changed, 10 insertions(+), 12 deletions(-)
+ drivers/pci/msi/api.c | 33 +++++++++++++++++++--------------
+ 1 file changed, 19 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
-index 248a6a5..71c8751 100644
---- a/arch/x86/kernel/apic/msi.c
-+++ b/arch/x86/kernel/apic/msi.c
-@@ -176,7 +176,8 @@ static struct msi_domain_ops pci_msi_domain_ops = {
- 
- static struct msi_domain_info pci_msi_domain_info = {
- 	.flags		= MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
--			  MSI_FLAG_PCI_MSIX,
-+			  MSI_FLAG_PCI_MSIX | MSI_FLAG_NOMASK_QUIRK,
-+
- 	.ops		= &pci_msi_domain_ops,
- 	.chip		= &pci_msi_controller,
- 	.handler	= handle_edge_irq,
-@@ -200,8 +201,6 @@ struct irq_domain * __init native_create_pci_msi_domain(void)
- 	if (!d) {
- 		irq_domain_free_fwnode(fn);
- 		pr_warn("Failed to initialize PCI-MSI irqdomain.\n");
--	} else {
--		d->flags |= IRQ_DOMAIN_MSI_NOMASK_QUIRK;
- 	}
- 	return d;
- }
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index a4af7f8..c42c369 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -186,15 +186,8 @@ enum {
- 	/* Irq domain implements MSI remapping */
- 	IRQ_DOMAIN_FLAG_MSI_REMAP	= (1 << 5),
- 
--	/*
--	 * Quirk to handle MSI implementations which do not provide
--	 * masking. Currently known to affect x86, but partially
--	 * handled in core code.
--	 */
--	IRQ_DOMAIN_MSI_NOMASK_QUIRK	= (1 << 6),
--
- 	/* Irq domain doesn't translate anything */
--	IRQ_DOMAIN_FLAG_NO_MAP		= (1 << 7),
-+	IRQ_DOMAIN_FLAG_NO_MAP		= (1 << 6),
- 
- 	/*
- 	 * Flags starting from IRQ_DOMAIN_FLAG_NONCORE are reserved
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index 1ce9d5e..2d87e00 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -399,6 +399,12 @@ enum {
- 	MSI_FLAG_ALLOC_SIMPLE_MSI_DESCS	= (1 << 9),
- 	/* Free MSI descriptors */
- 	MSI_FLAG_FREE_MSI_DESCS		= (1 << 10),
-+	/*
-+	 * Quirk to handle MSI implementations which do not provide
-+	 * masking. Currently known to affect x86, but has to be partially
-+	 * handled in the core MSI code.
-+	 */
-+	MSI_FLAG_NOMASK_QUIRK		= (1 << 11),
- };
- 
- int msi_domain_set_affinity(struct irq_data *data, const struct cpumask *mask,
-diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index 4b99f37..c37c0be 100644
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -875,7 +875,7 @@ static int __msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev
- 		 * MSI affinity setting requires a special quirk (X86) when
- 		 * reservation mode is active.
- 		 */
--		if (domain->flags & IRQ_DOMAIN_MSI_NOMASK_QUIRK)
-+		if (info->flags & MSI_FLAG_NOMASK_QUIRK)
- 			vflags |= VIRQ_NOMASK_QUIRK;
- 	}
- 
+diff --git a/drivers/pci/msi/api.c b/drivers/pci/msi/api.c
+index 6c3ad48..2d46a0c 100644
+--- a/drivers/pci/msi/api.c
++++ b/drivers/pci/msi/api.c
+@@ -142,12 +142,15 @@ EXPORT_SYMBOL(pci_disable_msix);
+  * @min_vecs: minimum required number of vectors (must be >= 1)
+  * @max_vecs: maximum desired number of vectors
+  * @flags:    One or more of:
+- *            %PCI_IRQ_MSIX      Allow trying MSI-X vector allocations
+- *            %PCI_IRQ_MSI       Allow trying MSI vector allocations
+- *            %PCI_IRQ_LEGACY    Allow trying legacy INTx interrupts, if
+- *                               and only if @min_vecs == 1
+- *            %PCI_IRQ_AFFINITY  Auto-manage IRQs affinity by spreading
+- *                               the vectors around available CPUs
++ *
++ *            * %PCI_IRQ_MSIX      Allow trying MSI-X vector allocations
++ *            * %PCI_IRQ_MSI       Allow trying MSI vector allocations
++ *
++ *            * %PCI_IRQ_LEGACY    Allow trying legacy INTx interrupts, if
++ *              and only if @min_vecs == 1
++ *
++ *            * %PCI_IRQ_AFFINITY  Auto-manage IRQs affinity by spreading
++ *              the vectors around available CPUs
+  *
+  * Allocate up to @max_vecs interrupt vectors on device. MSI-X irq
+  * vector allocation has a higher precedence over plain MSI, which has a
+@@ -232,10 +235,11 @@ EXPORT_SYMBOL(pci_alloc_irq_vectors_affinity);
+  * pci_irq_vector() - Get Linux IRQ number of a device interrupt vector
+  * @dev: the PCI device to operate on
+  * @nr:  device-relative interrupt vector index (0-based); has different
+- *       meanings, depending on interrupt mode
+- *         MSI-X        the index in the MSI-X vector table
+- *         MSI          the index of the enabled MSI vectors
+- *         INTx         must be 0
++ *       meanings, depending on interrupt mode:
++ *
++ *         * MSI-X     the index in the MSI-X vector table
++ *         * MSI       the index of the enabled MSI vectors
++ *         * INTx      must be 0
+  *
+  * Return: the Linux IRQ number, or -EINVAL if @nr is out of range
+  */
+@@ -255,10 +259,11 @@ EXPORT_SYMBOL(pci_irq_vector);
+  * pci_irq_get_affinity() - Get a device interrupt vector affinity
+  * @dev: the PCI device to operate on
+  * @nr:  device-relative interrupt vector index (0-based); has different
+- *       meanings, depending on interrupt mode
+- *         MSI-X        the index in the MSI-X vector table
+- *         MSI          the index of the enabled MSI vectors
+- *         INTx         must be 0
++ *       meanings, depending on interrupt mode:
++ *
++ *         * MSI-X     the index in the MSI-X vector table
++ *         * MSI       the index of the enabled MSI vectors
++ *         * INTx      must be 0
+  *
+  * Return: MSI/MSI-X vector affinity, NULL if @nr is out of range or if
+  * the MSI(-X) vector was allocated without explicit affinity
