@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67B15643712
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 22:42:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B092643717
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 22:43:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233924AbiLEVmM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Dec 2022 16:42:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40898 "EHLO
+        id S234046AbiLEVmx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 16:42:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233860AbiLEVlz (ORCPT
+        with ESMTP id S233834AbiLEVlx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Dec 2022 16:41:55 -0500
+        Mon, 5 Dec 2022 16:41:53 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 387042B62C;
-        Mon,  5 Dec 2022 13:41:54 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A4B42CDFF;
+        Mon,  5 Dec 2022 13:41:52 -0800 (PST)
 Date:   Mon, 05 Dec 2022 21:41:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670276509;
+        s=2020; t=1670276508;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=V9F5YqJ+18TRULn54q8S9KUU8aieeGGOayC7bQNTDk8=;
-        b=2TsNm8RaQCCs4L+AYKliFIExahTlQi+k/8wbY0yul+8y7wXujNnaXqZ/AZ5je9z8naSH8M
-        J00ywqDpHg+YJFcUsPsK8egOXRwihygJiQlgqyR7VXhRkTR5GuqAbnMeUUce73lv2buhGS
-        ZEi6Xzm6imTZ1w9Q9/GxhnTRLoK9gTfURPPuazCD/xogUg/X3Zhi5VxSKTgLgT6gT6sfKY
-        KVEr/W/pUg5Rtw6fJLfBIHUN3PumlytKc4Y93A5w722Mp4p0Vy2pxrax0Wo4yUw5j3eTsP
-        mxTA+tPr+iP1cbLN7Ix3fNHJ6kOaS9TZLRAaiSXS95Wv3Gw6LPiKkMJHDwRsTw==
+        bh=WY9yMtXTQ2fFqdf0J15wNi6uC9nrSISiLb/X4z5RLiY=;
+        b=xa43GBGKT3zUWOC+iZBrFQyv5V6lt9ZRiz3PxiWd157a11Z8audwN2sMExmE/UILOugvYI
+        c5jVFaeNzOrOCZU8q0KPNUyULCGGnUuSBfUVgQof1DYB1Rg9XPRx5y2Pb4oeCBWA9k1eaD
+        Nl4mDLlwiPGu84UrioitNhKZABWxtoV28xyP0J3XBe8iVr5wiF5xwDIIDqLeapES/yWcSs
+        fw5yluJDBlhr5qYOpVvc07VqJcxqfxIiD9tHlQSuJ9mSIbr1lUQPanqUt7J7QfOhm3G82H
+        KgK6cpg5LSYB2W4CYf+iMp08d8PBcf0pzH6+pZjWfjj1ckLwrKQsCNckFAKprA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670276509;
+        s=2020e; t=1670276508;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=V9F5YqJ+18TRULn54q8S9KUU8aieeGGOayC7bQNTDk8=;
-        b=XMq7lChAFbWMw0LN/DATNFmuIP1Su/L2QwG5A4/p/9fugsc+J6/5glTQaKCcSbIWdFd9fg
-        Exm3C715pc8RUvDw==
+        bh=WY9yMtXTQ2fFqdf0J15wNi6uC9nrSISiLb/X4z5RLiY=;
+        b=dnzQ8zW9HK7ghk2bJEROe/086Ej9ZWp1aYLT5ILtyG4W2jVU8W6jGG7R/wFTL2Sq405/+T
+        7Qk1c76ivmlbfvBA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] x86/apic/msi: Remove arch_create_remap_msi_irq_domain()
+Subject: [tip: irq/core] genirq/msi: Provide msi_domain_ops:: Prepare_desc()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Kevin Tian <kevin.tian@intel.com>,
         Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221124232326.267353814@linutronix.de>
-References: <20221124232326.267353814@linutronix.de>
+In-Reply-To: <20221124232326.444560717@linutronix.de>
+References: <20221124232326.444560717@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <167027650870.4906.11537796116279991707.tip-bot2@tip-bot2>
+Message-ID: <167027650824.4906.6285083438508663553.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,100 +67,79 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     4d5a4ccc519ab0a62e220dc8dcd8bc1c5f8fee10
-Gitweb:        https://git.kernel.org/tip/4d5a4ccc519ab0a62e220dc8dcd8bc1c5f8fee10
+Commit-ID:     8f986fd7755bec8b8c5776824afa1bd1151986d9
+Gitweb:        https://git.kernel.org/tip/8f986fd7755bec8b8c5776824afa1bd1151986d9
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 25 Nov 2022 00:26:12 +01:00
+AuthorDate:    Fri, 25 Nov 2022 00:26:16 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 05 Dec 2022 22:22:33 +01:00
 
-x86/apic/msi: Remove arch_create_remap_msi_irq_domain()
+genirq/msi: Provide msi_domain_ops:: Prepare_desc()
 
-and related code which is not longer required now that the interrupt remap
-code has been converted to MSI parent domains.
+The existing MSI domain ops msi_prepare() and set_desc() turned out to be
+unsuitable for implementing IMS support.
+
+msi_prepare() does not operate on the MSI descriptors. set_desc() lacks
+an irq_domain pointer and has a completely different purpose.
+
+Introduce a prepare_desc() op which allows IMS implementations to amend an
+MSI descriptor which was allocated by the core code, e.g. by adjusting the
+iomem base or adding some data based on the allocated index. This is way
+better than requiring that all IMS domain implementations preallocate the
+MSI descriptor and then allocate the interrupt.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221124232326.267353814@linutronix.de
+Link: https://lore.kernel.org/r/20221124232326.444560717@linutronix.de
 
 ---
- arch/x86/include/asm/irq_remapping.h |  4 +---
- arch/x86/kernel/apic/msi.c           | 42 +---------------------------
- 2 files changed, 1 insertion(+), 45 deletions(-)
+ include/linux/msi.h | 6 +++++-
+ kernel/irq/msi.c    | 3 +++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/irq_remapping.h b/arch/x86/include/asm/irq_remapping.h
-index 7cc4943..7a2ed15 100644
---- a/arch/x86/include/asm/irq_remapping.h
-+++ b/arch/x86/include/asm/irq_remapping.h
-@@ -44,10 +44,6 @@ extern int irq_remapping_reenable(int);
- extern int irq_remap_enable_fault_handling(void);
- extern void panic_if_irq_remap(const char *msg);
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index dca3b80..cb0bee3 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -410,6 +410,8 @@ struct msi_domain_info;
+  * @msi_init:		Domain specific init function for MSI interrupts
+  * @msi_free:		Domain specific function to free a MSI interrupts
+  * @msi_prepare:	Prepare the allocation of the interrupts in the domain
++ * @prepare_desc:	Optional function to prepare the allocated MSI descriptor
++ *			in the domain
+  * @set_desc:		Set the msi descriptor for an interrupt
+  * @domain_alloc_irqs:	Optional function to override the default allocation
+  *			function.
+@@ -421,7 +423,7 @@ struct msi_domain_info;
+  * @get_hwirq, @msi_init and @msi_free are callbacks used by the underlying
+  * irqdomain.
+  *
+- * @msi_check, @msi_prepare and @set_desc are callbacks used by the
++ * @msi_check, @msi_prepare, @prepare_desc and @set_desc are callbacks used by the
+  * msi_domain_alloc/free_irqs*() variants.
+  *
+  * @domain_alloc_irqs, @domain_free_irqs can be used to override the
+@@ -444,6 +446,8 @@ struct msi_domain_ops {
+ 	int		(*msi_prepare)(struct irq_domain *domain,
+ 				       struct device *dev, int nvec,
+ 				       msi_alloc_info_t *arg);
++	void		(*prepare_desc)(struct irq_domain *domain, msi_alloc_info_t *arg,
++					struct msi_desc *desc);
+ 	void		(*set_desc)(msi_alloc_info_t *arg,
+ 				    struct msi_desc *desc);
+ 	int		(*domain_alloc_irqs)(struct irq_domain *domain,
+diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
+index 0749e66..6370ea5 100644
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -1254,6 +1254,9 @@ static int __msi_domain_alloc_irqs(struct device *dev, struct irq_domain *domain
+ 		if (WARN_ON_ONCE(allocated >= ctrl->nirqs))
+ 			return -EINVAL;
  
--/* Create PCI MSI/MSIx irqdomain, use @parent as the parent irqdomain. */
--extern struct irq_domain *
--arch_create_remap_msi_irq_domain(struct irq_domain *par, const char *n, int id);
--
- /* Get parent irqdomain for interrupt remapping irqdomain */
- static inline struct irq_domain *arch_get_ir_parent_domain(void)
- {
-diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
-index d198da3..682f51a 100644
---- a/arch/x86/kernel/apic/msi.c
-+++ b/arch/x86/kernel/apic/msi.c
-@@ -277,7 +277,7 @@ void __init x86_create_pci_msi_domain(void)
- 	x86_pci_msi_default_domain = x86_init.irqs.create_pci_msi_domain();
- }
++		if (ops->prepare_desc)
++			ops->prepare_desc(domain, &arg, desc);
++
+ 		ops->set_desc(&arg, desc);
  
--/* Keep around for hyperV and the remap code below */
-+/* Keep around for hyperV */
- int pci_msi_prepare(struct irq_domain *domain, struct device *dev, int nvec,
- 		    msi_alloc_info_t *arg)
- {
-@@ -291,46 +291,6 @@ int pci_msi_prepare(struct irq_domain *domain, struct device *dev, int nvec,
- }
- EXPORT_SYMBOL_GPL(pci_msi_prepare);
- 
--#ifdef CONFIG_IRQ_REMAP
--static struct msi_domain_ops pci_msi_domain_ops = {
--	.msi_prepare	= pci_msi_prepare,
--};
--
--static struct irq_chip pci_msi_ir_controller = {
--	.name			= "IR-PCI-MSI",
--	.irq_unmask		= pci_msi_unmask_irq,
--	.irq_mask		= pci_msi_mask_irq,
--	.irq_ack		= irq_chip_ack_parent,
--	.irq_retrigger		= irq_chip_retrigger_hierarchy,
--	.flags			= IRQCHIP_SKIP_SET_WAKE |
--				  IRQCHIP_AFFINITY_PRE_STARTUP,
--};
--
--static struct msi_domain_info pci_msi_ir_domain_info = {
--	.flags		= MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
--			  MSI_FLAG_MULTI_PCI_MSI | MSI_FLAG_PCI_MSIX,
--	.ops		= &pci_msi_domain_ops,
--	.chip		= &pci_msi_ir_controller,
--	.handler	= handle_edge_irq,
--	.handler_name	= "edge",
--};
--
--struct irq_domain *arch_create_remap_msi_irq_domain(struct irq_domain *parent,
--						    const char *name, int id)
--{
--	struct fwnode_handle *fn;
--	struct irq_domain *d;
--
--	fn = irq_domain_alloc_named_id_fwnode(name, id);
--	if (!fn)
--		return NULL;
--	d = pci_msi_create_irq_domain(fn, &pci_msi_ir_domain_info, parent);
--	if (!d)
--		irq_domain_free_fwnode(fn);
--	return d;
--}
--#endif
--
- #ifdef CONFIG_DMAR_TABLE
- /*
-  * The Intel IOMMU (ab)uses the high bits of the MSI address to contain the
+ 		virq = __irq_domain_alloc_irqs(domain, -1, desc->nvec_used,
