@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF0E6642703
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 11:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18903642FEB
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:25:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230160AbiLEK72 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Dec 2022 05:59:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53526 "EHLO
+        id S232599AbiLESZX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 13:25:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229982AbiLEK70 (ORCPT
+        with ESMTP id S232372AbiLESZO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Dec 2022 05:59:26 -0500
+        Mon, 5 Dec 2022 13:25:14 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F18EF034;
-        Mon,  5 Dec 2022 02:59:25 -0800 (PST)
-Date:   Mon, 05 Dec 2022 10:59:22 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AF1220BFD;
+        Mon,  5 Dec 2022 10:25:13 -0800 (PST)
+Date:   Mon, 05 Dec 2022 18:25:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670237962;
+        s=2020; t=1670264711;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+iKQb7tlXQKT9kmhFxRWPOGNkOQ5rp1A8q+lu1eey6I=;
-        b=ye7xxGWSUGXEVevalAd8H0+aVqySJeSMN8aJy/BCCIpXYnVvJK4+7CM6Z3rBBeT9FJsnvn
-        PENUR9LZXTIooCNF6GZsR2qNnNsurFqbue3rd5TMCRPqCIGEROERO4m+wmelh7YbtZjd0U
-        sxn2us+WuCrAAbkPXG5FeAbw2pUhJUYjiQ9657AEPSz+f/jjRO9iBwa0LDtHDP8YMHH4dQ
-        vAqvPvZL5DspsKL7asl1XshLbVQhqodNzeQV0Up3HPuyL7kqxKotiItD4FNxkLE7nynFYg
-        r+FsYR6YO0oqfEB8FElhKwDtdUI/EcA+jb1uIPiLZXig7vK4cq3Tz5Uudo0HvA==
+        bh=EQd2hGgB/yRhWx8RU8z9DPIWHZJG+3iAv+YE6tbXlM8=;
+        b=yaCgfjWOHQZLAFdGOBmbN2ctOXS2xjhgmifyUMK+skpfhvh68INHWDevNsa2MrSfRmeWnp
+        TEEWoGqrOG0hy37ptVG/zzGIKIl75ZrlFWd/tQvUCH37s7tNG1+M0vYooCgQfNhyr0LEMX
+        nLmF4jfjpGcVtYWcQiNI+S+e3euJVectvxrgCV2mUwhnDY0arbiY4FwNpXxllk7C8PX0gZ
+        5SBRpW4Y3R1o6uzaQaXFkMpoymSitfgBm0XmUafHFkzMr5EVojJNIicp/RULT8bVFi1GhX
+        p4gWa6WQCAvm3/wCanj+cmdkBqIA39UWFlKBxi6beG4L5V+ktHXfqlhmIbp/kQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670237962;
+        s=2020e; t=1670264711;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+iKQb7tlXQKT9kmhFxRWPOGNkOQ5rp1A8q+lu1eey6I=;
-        b=NvaD6x1G4dNzzP2Niad9KRwtRWx3+SX9gMNQGk43gp8sKwWP0Hcd6x6rZ5qqBBS9ae1yhh
-        rgItNHWhq/rCVcCg==
-From:   "tip-bot2 for Miaohe Lin" <tip-bot2@linutronix.de>
+        bh=EQd2hGgB/yRhWx8RU8z9DPIWHZJG+3iAv+YE6tbXlM8=;
+        b=ofA3B6cL8zUWLeuHk2E1Cjnv6RCvL3S1W8CsM5tLEE4nSme44XJ0G8XmFy0CmhJZVheWGq
+        yR9rUdxGQYPu00CQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/alternative: Remove noinline from
- __ibt_endbr_seal[_end]() stubs
-Cc:     Miaohe Lin <linmiaohe@huawei.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: irq/core] x86/apic/msi: Enable PCI/IMS
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221011113803.956808-1-linmiaohe@huawei.com>
-References: <20221011113803.956808-1-linmiaohe@huawei.com>
+In-Reply-To: <20221124232327.022658817@linutronix.de>
+References: <20221124232327.022658817@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <167023796201.4906.1759849830808373616.tip-bot2@tip-bot2>
+Message-ID: <167026471067.4906.13288838482564117896.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,48 +65,52 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     023e59d4cee91dd3ca811eb01db2c5fb9f783dc2
-Gitweb:        https://git.kernel.org/tip/023e59d4cee91dd3ca811eb01db2c5fb9f783dc2
-Author:        Miaohe Lin <linmiaohe@huawei.com>
-AuthorDate:    Tue, 11 Oct 2022 19:38:03 +08:00
+Commit-ID:     ddd98f1b7b57dad5ae5efbe54154722aa6368b11
+Gitweb:        https://git.kernel.org/tip/ddd98f1b7b57dad5ae5efbe54154722aa6368b11
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 25 Nov 2022 00:26:32 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 02 Dec 2022 12:54:43 +01:00
+CommitterDate: Mon, 05 Dec 2022 19:21:04 +01:00
 
-x86/alternative: Remove noinline from __ibt_endbr_seal[_end]() stubs
+x86/apic/msi: Enable PCI/IMS
 
-Due to the explicit 'noinline' GCC-7.3 is not able to optimize away the
-argument setup of:
+Enable IMS in the domain init and allocation mapping code, but do not
+enable it on the vector domain as discussed in various threads on LKML.
 
-	apply_ibt_endbr(__ibt_endbr_seal, __ibt_enbr_seal_end);
+The interrupt remap domains can expand this setting like they do with
+PCI multi MSI.
 
-even when X86_KERNEL_IBT=n and the function is an empty stub, which leads
-to link errors due to missing __ibt_endbr_seal* symbols:
-
-ld: arch/x86/kernel/alternative.o: in function `alternative_instructions':
-alternative.c:(.init.text+0x15d): undefined reference to `__ibt_endbr_seal_end'
-ld: alternative.c:(.init.text+0x164): undefined reference to `__ibt_endbr_seal'
-
-Remove the explicit 'noinline' to help gcc optimize them away.
-
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20221011113803.956808-1-linmiaohe@huawei.com
----
- arch/x86/kernel/alternative.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20221124232327.022658817@linutronix.de
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 5cadcea..beaf9fc 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -624,7 +624,7 @@ void __init_or_module noinline apply_ibt_endbr(s32 *start, s32 *end)
- 
- #else
- 
--void __init_or_module noinline apply_ibt_endbr(s32 *start, s32 *end) { }
-+void __init_or_module apply_ibt_endbr(s32 *start, s32 *end) { }
- 
- #endif /* CONFIG_X86_KERNEL_IBT */
- 
+---
+ arch/x86/kernel/apic/msi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
+index 682f51a..35d5b8f 100644
+--- a/arch/x86/kernel/apic/msi.c
++++ b/arch/x86/kernel/apic/msi.c
+@@ -184,6 +184,7 @@ static int x86_msi_prepare(struct irq_domain *domain, struct device *dev,
+ 		alloc->type = X86_IRQ_ALLOC_TYPE_PCI_MSI;
+ 		return 0;
+ 	case DOMAIN_BUS_PCI_DEVICE_MSIX:
++	case DOMAIN_BUS_PCI_DEVICE_IMS:
+ 		alloc->type = X86_IRQ_ALLOC_TYPE_PCI_MSIX;
+ 		return 0;
+ 	default:
+@@ -230,6 +231,10 @@ static bool x86_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
+ 	case DOMAIN_BUS_PCI_DEVICE_MSI:
+ 	case DOMAIN_BUS_PCI_DEVICE_MSIX:
+ 		break;
++	case DOMAIN_BUS_PCI_DEVICE_IMS:
++		if (!(pops->supported_flags & MSI_FLAG_PCI_IMS))
++			return false;
++		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
+ 		return false;
