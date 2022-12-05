@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C5D3643011
+	by mail.lfdr.de (Postfix) with ESMTP id E24D8643012
 	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:25:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233046AbiLESZz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S233074AbiLESZz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Mon, 5 Dec 2022 13:25:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39932 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232502AbiLESZU (ORCPT
+        with ESMTP id S232536AbiLESZU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 5 Dec 2022 13:25:20 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2D7E20BD6;
-        Mon,  5 Dec 2022 10:25:18 -0800 (PST)
-Date:   Mon, 05 Dec 2022 18:25:17 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7B6720BE8;
+        Mon,  5 Dec 2022 10:25:19 -0800 (PST)
+Date:   Mon, 05 Dec 2022 18:25:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670264717;
+        s=2020; t=1670264718;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=anBZzE86rmX6ksCPkRXFcLquPa86Pm1QePctOotQD54=;
-        b=i14WGrnIvklzGVctKVfs0i8liUrthgRI5vbasymlNr78syCB4rxWomaIQU4xzNSfGXcwl+
-        6GJXQ2cvWGkut1yTTgkImL3hCUZA8T69auxLEmXh2Y5JtRiO48ARK8BfDRlrWEu/uEJMud
-        TuFlQVOhP4z4yS+/UYAYkmotkXOnBskgRy/3740qV4f7h0I3eoAC5I10/lSILzsR4apH9i
-        oSX8Jx0+Ouu+bvm5p/OPxlSAQdcMuHY5Yk4KQ7xtWL9X55Oa2Eu9pgYIL/BiOJb2z4mlrz
-        4dysWN4h1xWtefXEjUr9r626U55Pw1qw7zR+FVUdeYVcvWprGVerPZtQDQZQtQ==
+        bh=n4TmGrr6CqhWXhuVum4g3dKhcRpAc3swOSW11IndD9w=;
+        b=nsENywLdenZpIIBqQPqpPxX6Ytw7FDCni4TStFqcJZtyNyyVjg4elopXSfnn4QEy+3D9YB
+        4WhuNycxVoLGUYivl4IlCDprKk2Ruho0YStL/u1IaddTmee+SgVyzV+EJrw/tEm+PmjvIz
+        5qFzYLeaFpFaLm9hcdaXVrfBR3p2VhkARKQaZeuqORvNnU2+ygIl0npxgj9tls3cOhS87P
+        QJvyv5Ysaosi9px5bzTc62mxNgnPOeyp6qzxo3wTr9DrQ8iFXUbRKXC4m8r1U2DH8tm+ed
+        3GozSUjFTNZ1L0IUjHm3WkjvSjk83thX6t3Y9vc4M6NdCWV8dTggsFby3BPCwA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670264717;
+        s=2020e; t=1670264718;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=anBZzE86rmX6ksCPkRXFcLquPa86Pm1QePctOotQD54=;
-        b=6sAJpufH41qIsjgCZfPTrmDAucNscfyzxkInQ0y8uafz4mxb7MHrwAQnnO1ComSq6+yzgD
-        rDXl/XTG/bcvvOAw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=n4TmGrr6CqhWXhuVum4g3dKhcRpAc3swOSW11IndD9w=;
+        b=8A+Za5ELO2b5OS8ISPl81XN65cJvd6CBgq8rPvxOYmJROnnZbnuVX3A0PrEbhOwB/vnxJ5
+        lbG+rvKS7HNUZeDw==
+From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/msi: Provide struct msi_parent_ops
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: irq/core] platform-msi: Switch to the domain id aware MSI interfaces
+Cc:     "Ahmed S. Darwish" <darwi@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Kevin Tian <kevin.tian@intel.com>,
         Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221124232325.382485843@linutronix.de>
-References: <20221124232325.382485843@linutronix.de>
+In-Reply-To: <20221124230314.513924920@linutronix.de>
+References: <20221124230314.513924920@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <167026471701.4906.12340517029717748769.tip-bot2@tip-bot2>
+Message-ID: <167026471810.4906.10493249948096555909.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,168 +68,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     b78780d93b068706d04f8f2f02bd08db5da01479
-Gitweb:        https://git.kernel.org/tip/b78780d93b068706d04f8f2f02bd08db5da01479
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 25 Nov 2022 00:25:48 +01:00
+Commit-ID:     b330ff9f0b03d6107ee941240ef63cc95374ff3d
+Gitweb:        https://git.kernel.org/tip/b330ff9f0b03d6107ee941240ef63cc95374ff3d
+Author:        Ahmed S. Darwish <darwi@linutronix.de>
+AuthorDate:    Fri, 25 Nov 2022 00:24:38 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 05 Dec 2022 19:21:01 +01:00
+CommitterDate: Mon, 05 Dec 2022 19:21:00 +01:00
 
-genirq/msi: Provide struct msi_parent_ops
+platform-msi: Switch to the domain id aware MSI interfaces
 
-MSI parent domains must have some control over the MSI domains which are
-built on top. On domain creation they need to fill in e.g. architecture
-specific chip callbacks or msi domain ops to make the outermost domain
-parent agnostic which is obviously required for architecture independence
-etc.
+Switch to the new domain id aware interfaces to phase out the previous
+ones. No functional change.
 
-The structure contains:
-
-    1) A bitfield which exposes the supported functional features. This
-       allows to check for features and is also used in the initialization
-       callback to mask out unsupported features when the actual domain
-       implementation requests a broader range, e.g. on x86 PCI multi-MSI
-       is only supported by remapping domains but not by the underlying
-       vector domain. The PCI/MSI code can then always request multi-MSI
-       support, but the resulting feature set after creation might not
-       have it set.
-
-    2) An optional string prefix which is put in front of domain and chip
-       names during creation of the MSI domain. That allows to keep the
-       naming schemes e.g. on x86 where PCI-MSI domains have a IR- prefix
-       when interrupt remapping is enabled.
-
-    3) An initialization callback to sanity check the domain info of
-       the to be created MSI domain, to restrict features and to
-       apply changes in MSI ops and interrupt chip callbacks to
-       accomodate to the particular MSI parent implementation and/or
-       the underlying hierarchy.
-
-Add a conveniance function to delegate the initialization from the
-MSI parent domain to an underlying domain in the hierarchy.
-
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221124232325.382485843@linutronix.de
+Link: https://lore.kernel.org/r/20221124230314.513924920@linutronix.de
 
 ---
- include/linux/irqdomain.h |  5 +++++-
- include/linux/msi.h       | 21 +++++++++++++++++++-
- kernel/irq/msi.c          | 41 ++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 67 insertions(+)
+ drivers/base/platform-msi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index 24b7668..a668cc0 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -46,6 +46,7 @@ struct irq_desc;
- struct cpumask;
- struct seq_file;
- struct irq_affinity_desc;
-+struct msi_parent_ops;
+diff --git a/drivers/base/platform-msi.c b/drivers/base/platform-msi.c
+index dddafa1..5883e76 100644
+--- a/drivers/base/platform-msi.c
++++ b/drivers/base/platform-msi.c
+@@ -213,7 +213,7 @@ int platform_msi_domain_alloc_irqs(struct device *dev, unsigned int nvec,
+ 	if (err)
+ 		return err;
  
- #define IRQ_DOMAIN_IRQ_SPEC_PARAMS 16
+-	err = msi_domain_alloc_irqs(dev->msi.domain, dev, nvec);
++	err = msi_domain_alloc_irqs_range(dev, MSI_DEFAULT_DOMAIN, 0, nvec - 1);
+ 	if (err)
+ 		platform_msi_free_priv_data(dev);
  
-@@ -134,6 +135,7 @@ struct irq_domain_chip_generic;
-  * @pm_dev:	Pointer to a device that can be utilized for power management
-  *		purposes related to the irq domain.
-  * @parent:	Pointer to parent irq_domain to support hierarchy irq_domains
-+ * @msi_parent_ops: Pointer to MSI parent domain methods for per device domain init
-  *
-  * Revmap data, used internally by the irq domain code:
-  * @revmap_size:	Size of the linear map table @revmap[]
-@@ -157,6 +159,9 @@ struct irq_domain {
- #ifdef	CONFIG_IRQ_DOMAIN_HIERARCHY
- 	struct irq_domain		*parent;
- #endif
-+#ifdef CONFIG_GENERIC_MSI_IRQ
-+	const struct msi_parent_ops	*msi_parent_ops;
-+#endif
- 
- 	/* reverse map data. The linear map gets appended to the irq_domain */
- 	irq_hw_number_t			hwirq_max;
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index a4339eb..9bf3cba 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -500,6 +500,27 @@ enum {
- 
- };
- 
-+/**
-+ * struct msi_parent_ops - MSI parent domain callbacks and configuration info
-+ *
-+ * @supported_flags:	Required: The supported MSI flags of the parent domain
-+ * @prefix:		Optional: Prefix for the domain and chip name
-+ * @init_dev_msi_info:	Required: Callback for MSI parent domains to setup parent
-+ *			domain specific domain flags, domain ops and interrupt chip
-+ *			callbacks when a per device domain is created.
-+ */
-+struct msi_parent_ops {
-+	u32		supported_flags;
-+	const char	*prefix;
-+	bool		(*init_dev_msi_info)(struct device *dev, struct irq_domain *domain,
-+					     struct irq_domain *msi_parent_domain,
-+					     struct msi_domain_info *msi_child_info);
-+};
-+
-+bool msi_parent_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
-+				  struct irq_domain *msi_parent_domain,
-+				  struct msi_domain_info *msi_child_info);
-+
- int msi_domain_set_affinity(struct irq_data *data, const struct cpumask *mask,
- 			    bool force);
- 
-diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index 8e653f0..c368116 100644
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -788,6 +788,47 @@ struct irq_domain *msi_create_irq_domain(struct fwnode_handle *fwnode,
- 	return domain;
- }
- 
-+/**
-+ * msi_parent_init_dev_msi_info - Delegate initialization of device MSI info down
-+ *				  in the domain hierarchy
-+ * @dev:		The device for which the domain should be created
-+ * @domain:		The domain in the hierarchy this op is being called on
-+ * @msi_parent_domain:	The IRQ_DOMAIN_FLAG_MSI_PARENT domain for the child to
-+ *			be created
-+ * @msi_child_info:	The MSI domain info of the IRQ_DOMAIN_FLAG_MSI_DEVICE
-+ *			domain to be created
-+ *
-+ * Return: true on success, false otherwise
-+ *
-+ * This is the most complex problem of per device MSI domains and the
-+ * underlying interrupt domain hierarchy:
-+ *
-+ * The device domain to be initialized requests the broadest feature set
-+ * possible and the underlying domain hierarchy puts restrictions on it.
-+ *
-+ * That's trivial for a simple parent->child relationship, but it gets
-+ * interesting with an intermediate domain: root->parent->child.  The
-+ * intermediate 'parent' can expand the capabilities which the 'root'
-+ * domain is providing. So that creates a classic hen and egg problem:
-+ * Which entity is doing the restrictions/expansions?
-+ *
-+ * One solution is to let the root domain handle the initialization that's
-+ * why there is the @domain and the @msi_parent_domain pointer.
-+ */
-+bool msi_parent_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
-+				  struct irq_domain *msi_parent_domain,
-+				  struct msi_domain_info *msi_child_info)
-+{
-+	struct irq_domain *parent = domain->parent;
-+
-+	if (WARN_ON_ONCE(!parent || !parent->msi_parent_ops ||
-+			 !parent->msi_parent_ops->init_dev_msi_info))
-+		return false;
-+
-+	return parent->msi_parent_ops->init_dev_msi_info(dev, parent, msi_parent_domain,
-+							 msi_child_info);
-+}
-+
- int msi_domain_prepare_irqs(struct irq_domain *domain, struct device *dev,
- 			    int nvec, msi_alloc_info_t *arg)
+@@ -227,7 +227,7 @@ EXPORT_SYMBOL_GPL(platform_msi_domain_alloc_irqs);
+  */
+ void platform_msi_domain_free_irqs(struct device *dev)
  {
+-	msi_domain_free_irqs(dev->msi.domain, dev);
++	msi_domain_free_irqs_all(dev, MSI_DEFAULT_DOMAIN);
+ 	platform_msi_free_priv_data(dev);
+ }
+ EXPORT_SYMBOL_GPL(platform_msi_domain_free_irqs);
