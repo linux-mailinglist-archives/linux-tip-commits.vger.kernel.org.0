@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F485642FF0
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:25:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5ADB643006
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:25:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232851AbiLESZb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Dec 2022 13:25:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39498 "EHLO
+        id S232965AbiLESZn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 13:25:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232399AbiLESZR (ORCPT
+        with ESMTP id S232453AbiLESZT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Dec 2022 13:25:17 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31E99209B0;
-        Mon,  5 Dec 2022 10:25:16 -0800 (PST)
-Date:   Mon, 05 Dec 2022 18:25:13 -0000
+        Mon, 5 Dec 2022 13:25:19 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7CF120BDD;
+        Mon,  5 Dec 2022 10:25:17 -0800 (PST)
+Date:   Mon, 05 Dec 2022 18:25:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670264713;
+        s=2020; t=1670264714;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XyH5tp/Pq0gmC543I0DDyyPYCvch6CUj56MoZZQE83g=;
-        b=24cXOhKLbfVFeQQ4dzJfH8HvvvTpeDYap+kExl/ArXc1Co3rjXokF9041XYPXjSwY01maZ
-        hcWG2s1NND3XnrT4tDxJOGkdnVlkEhX6OTIwrqX8KkT75dZg9D3zz6K3fsXrBtV9ABA1dW
-        8Mvy6hjWEH/CkD0f/hTzFUkZg8PJvQIHaiSTOzRM5Ggy4FtfQcKyTxojZ10QmmIug9Lfd7
-        0c3od/y6U1cScLoEVzqI1FQMllt3quDz4ZGHF9u48yalN4isDJOOzopYtB0qyUKlBB9orX
-        Zdbp51y8IN8ByB9h/fzVyBg8Av2At6D5FQaR69KlSS5hr4PWaEbA8mvEgkVquQ==
+        bh=357WWeib3IJ6NzuTyX0aPEMffyC8GKcTB01ALuYUEh4=;
+        b=oUFntEB7o1gGodPHhC+geGu4YC3kTyv1w5jP/laz83E6aU2pVHhVdtnx3JPkwgQ0TqPdbv
+        7Vv4VPlkDIHp8wBgEtydfQsYZzJKq+Iva9d38XVWjj6DVSPxSiMsKFdwVvtV2JLJwrrePm
+        VQ4Quly1GoRL8vqUhIdjXONd673TbyWuNL2FvyRnxXaTj3X+yrmYQZtGITFaho6gVeZmdt
+        d13vwor+mkm7wVG+bhHNQtP/7GFoRD2NtxBpqr32bCbpbSNSg9Rmf9eb9E6nT5wRiYl+XS
+        7OrKjl28rH2TYpKKgTYoXyCQM7aUVhilrqY9SueqgAsSNDF0GjrM0KorDwjkOA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670264713;
+        s=2020e; t=1670264714;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XyH5tp/Pq0gmC543I0DDyyPYCvch6CUj56MoZZQE83g=;
-        b=10xkrbbAjnL++YsanuZ1EY0gm3byEX7jxSekKHuwceiSO5SiK5G3i1F4W6jN8UVwbyW1Sg
-        lybkZ9RzuT2FXzAQ==
+        bh=357WWeib3IJ6NzuTyX0aPEMffyC8GKcTB01ALuYUEh4=;
+        b=ZIMu7929KLUptdcaC1jj3MczCecFGYGqaoPsVw05ENmQmc2jur8Kb3Y9SZR3ipTXUQAs7J
+        nslkQ23bs6Xf9HBQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/msi: Provide msi_desc:: Msi_data
+Subject: [tip: irq/core] x86/apic/vector: Provide MSI parent domain
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Kevin Tian <kevin.tian@intel.com>,
         Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221124232326.385036043@linutronix.de>
-References: <20221124232326.385036043@linutronix.de>
+In-Reply-To: <20221124232326.034672592@linutronix.de>
+References: <20221124232326.034672592@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <167026471316.4906.9836512628781296296.tip-bot2@tip-bot2>
+Message-ID: <167026471450.4906.9291149824698140476.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,138 +67,299 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     2f70cc0b67c0d71abd5ffa4a8de33277308c2034
-Gitweb:        https://git.kernel.org/tip/2f70cc0b67c0d71abd5ffa4a8de33277308c2034
+Commit-ID:     db2e709542d52ff480f1acdfb6d0803d1529dc12
+Gitweb:        https://git.kernel.org/tip/db2e709542d52ff480f1acdfb6d0803d1529dc12
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 25 Nov 2022 00:26:15 +01:00
+AuthorDate:    Fri, 25 Nov 2022 00:26:05 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 05 Dec 2022 19:21:03 +01:00
+CommitterDate: Mon, 05 Dec 2022 19:21:02 +01:00
 
-genirq/msi: Provide msi_desc:: Msi_data
+x86/apic/vector: Provide MSI parent domain
 
-The upcoming support for PCI/IMS requires to store some information related
-to the message handling in the MSI descriptor, e.g. PASID or a pointer to a
-queue.
+Enable MSI parent domain support in the x86 vector domain and fixup the
+checks in the iommu implementations to check whether device::msi::domain is
+the default MSI parent domain. That keeps the existing logic to protect
+e.g. devices behind VMD working.
 
-Provide a generic storage struct which maps over the existing PCI specific
-storage which means the size of struct msi_desc is not getting bigger.
+The interrupt remap PCI/MSI code still works because the underlying vector
+domain still provides the same functionality.
 
-This storage struct has two elements:
-
-  1) msi_domain_cookie
-  2) msi_instance_cookie
-
-The domain cookie is going to be used to store domain specific information,
-e.g. iobase pointer, data pointer.
-
-The instance cookie is going to be handed in when allocating an interrupt
-on an IMS domain so the irq chip callbacks of the IMS domain have the
-necessary per vector information available. It also comes in handy when
-cleaning up the platform MSI code for wire to MSI bridges which need to
-hand down the type information to the underlying interrupt domain.
-
-For the core code the cookies are opaque and meaningless. It just stores
-the instance cookie during an allocation through the upcoming interfaces
-for IMS and wire to MSI brigdes.
+None of the other x86 PCI/MSI, e.g. XEN and HyperV, implementations are
+affected either. They still work the same way both at the low level and the
+PCI/MSI implementations they provide.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221124232326.385036043@linutronix.de
+Link: https://lore.kernel.org/r/20221124232326.034672592@linutronix.de
 
 ---
- include/linux/msi.h     | 38 +++++++++++++++++++++++++++++++++++++-
- include/linux/msi_api.h | 17 +++++++++++++++++
- 2 files changed, 54 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/msi.h          |   6 +-
+ arch/x86/include/asm/pci.h          |   1 +-
+ arch/x86/kernel/apic/msi.c          | 176 +++++++++++++++++++--------
+ drivers/iommu/amd/iommu.c           |   2 +-
+ drivers/iommu/intel/irq_remapping.c |   2 +-
+ 5 files changed, 138 insertions(+), 49 deletions(-)
 
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index b5dda4b..dca3b80 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -125,6 +125,38 @@ struct pci_msi_desc {
- 	};
- };
+diff --git a/arch/x86/include/asm/msi.h b/arch/x86/include/asm/msi.h
+index d71c7e8..7702958 100644
+--- a/arch/x86/include/asm/msi.h
++++ b/arch/x86/include/asm/msi.h
+@@ -62,4 +62,10 @@ typedef struct x86_msi_addr_hi {
+ struct msi_msg;
+ u32 x86_msi_msg_get_destid(struct msi_msg *msg, bool extid);
  
-+/**
-+ * union msi_domain_cookie - Opaque MSI domain specific data
-+ * @value:	u64 value store
-+ * @ptr:	Pointer to domain specific data
-+ * @iobase:	Domain specific IOmem pointer
-+ *
-+ * The content of this data is implementation defined and used by the MSI
-+ * domain to store domain specific information which is requried for
-+ * interrupt chip callbacks.
-+ */
-+union msi_domain_cookie {
-+	u64	value;
-+	void	*ptr;
-+	void	__iomem *iobase;
-+};
++#define X86_VECTOR_MSI_FLAGS_SUPPORTED					\
++	(MSI_GENERIC_FLAGS_MASK | MSI_FLAG_PCI_MSIX)
 +
-+/**
-+ * struct msi_desc_data - Generic MSI descriptor data
-+ * @dcookie:	Cookie for MSI domain specific data which is required
-+ *		for irq_chip callbacks
-+ * @icookie:	Cookie for the MSI interrupt instance provided by
-+ *		the usage site to the allocation function
-+ *
-+ * The content of this data is implementation defined, e.g. PCI/IMS
-+ * implementations define the meaning of the data. The MSI core ignores
-+ * this data completely.
-+ */
-+struct msi_desc_data {
-+	union msi_domain_cookie		dcookie;
-+	union msi_instance_cookie	icookie;
-+};
++#define X86_VECTOR_MSI_FLAGS_REQUIRED					\
++	(MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS)
 +
- #define MSI_MAX_INDEX		((unsigned int)USHRT_MAX)
+ #endif /* _ASM_X86_MSI_H */
+diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
+index c4789de..b40c462 100644
+--- a/arch/x86/include/asm/pci.h
++++ b/arch/x86/include/asm/pci.h
+@@ -92,6 +92,7 @@ void pcibios_scan_root(int bus);
+ struct irq_routing_table *pcibios_get_irq_routing_table(void);
+ int pcibios_set_irq_routing(struct pci_dev *dev, int pin, int irq);
  
- /**
-@@ -142,6 +174,7 @@ struct pci_msi_desc {
-  *
-  * @msi_index:	Index of the msi descriptor
-  * @pci:	PCI specific msi descriptor data
-+ * @data:	Generic MSI descriptor data
++bool pci_dev_has_default_msi_parent_domain(struct pci_dev *dev);
+ 
+ #define HAVE_PCI_MMAP
+ #define arch_can_pci_mmap_wc()	pat_enabled()
+diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
+index 71c8751..db96bfc 100644
+--- a/arch/x86/kernel/apic/msi.c
++++ b/arch/x86/kernel/apic/msi.c
+@@ -142,67 +142,131 @@ msi_set_affinity(struct irq_data *irqd, const struct cpumask *mask, bool force)
+ 	return ret;
+ }
+ 
+-/*
+- * IRQ Chip for MSI PCI/PCI-X/PCI-Express Devices,
+- * which implement the MSI or MSI-X Capability Structure.
++/**
++ * pci_dev_has_default_msi_parent_domain - Check whether the device has the default
++ *					   MSI parent domain associated
++ * @dev:	Pointer to the PCI device
   */
- struct msi_desc {
- 	/* Shared device/bus type independent data */
-@@ -161,7 +194,10 @@ struct msi_desc {
- 	void *write_msi_msg_data;
+-static struct irq_chip pci_msi_controller = {
+-	.name			= "PCI-MSI",
+-	.irq_unmask		= pci_msi_unmask_irq,
+-	.irq_mask		= pci_msi_mask_irq,
+-	.irq_ack		= irq_chip_ack_parent,
+-	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+-	.irq_set_affinity	= msi_set_affinity,
+-	.flags			= IRQCHIP_SKIP_SET_WAKE |
+-				  IRQCHIP_AFFINITY_PRE_STARTUP,
+-};
+-
+-int pci_msi_prepare(struct irq_domain *domain, struct device *dev, int nvec,
+-		    msi_alloc_info_t *arg)
++bool pci_dev_has_default_msi_parent_domain(struct pci_dev *dev)
+ {
+-	init_irq_alloc_info(arg, NULL);
+-	if (to_pci_dev(dev)->msix_enabled)
+-		arg->type = X86_IRQ_ALLOC_TYPE_PCI_MSIX;
+-	else
+-		arg->type = X86_IRQ_ALLOC_TYPE_PCI_MSI;
++	struct irq_domain *domain = dev_get_msi_domain(&dev->dev);
  
- 	u16				msi_index;
--	struct pci_msi_desc		pci;
-+	union {
-+		struct pci_msi_desc	pci;
-+		struct msi_desc_data	data;
-+	};
- };
+-	return 0;
++	if (!domain)
++		domain = dev_get_msi_domain(&dev->bus->dev);
++	if (!domain)
++		return false;
++
++	return domain == x86_vector_domain;
+ }
+-EXPORT_SYMBOL_GPL(pci_msi_prepare);
  
- /*
-diff --git a/include/linux/msi_api.h b/include/linux/msi_api.h
-index 4cb7f4c..2e4456e 100644
---- a/include/linux/msi_api.h
-+++ b/include/linux/msi_api.h
-@@ -19,6 +19,23 @@ enum msi_domain_ids {
- };
- 
- /**
-+ * union msi_instance_cookie - MSI instance cookie
-+ * @value:	u64 value store
-+ * @ptr:	Pointer to usage site specific data
+-static struct msi_domain_ops pci_msi_domain_ops = {
+-	.msi_prepare	= pci_msi_prepare,
+-};
++/**
++ * x86_msi_prepare - Setup of msi_alloc_info_t for allocations
++ * @domain:	The domain for which this setup happens
++ * @dev:	The device for which interrupts are allocated
++ * @nvec:	The number of vectors to allocate
++ * @alloc:	The allocation info structure to initialize
 + *
-+ * This cookie is handed to the IMS allocation function and stored in the
-+ * MSI descriptor for the interrupt chip callbacks.
-+ *
-+ * The content of this cookie is MSI domain implementation defined.  For
-+ * PCI/IMS implementations this could be a PASID or a pointer to queue
-+ * memory.
++ * This function is to be used for all types of MSI domains above the x86
++ * vector domain and any intermediates. It is always invoked from the
++ * top level interrupt domain. The domain specific allocation
++ * functionality is determined via the @domain's bus token which allows to
++ * map the X86 specific allocation type.
 + */
-+union msi_instance_cookie {
-+	u64	value;
-+	void	*ptr;
++static int x86_msi_prepare(struct irq_domain *domain, struct device *dev,
++			   int nvec, msi_alloc_info_t *alloc)
++{
++	struct msi_domain_info *info = domain->host_data;
++
++	init_irq_alloc_info(alloc, NULL);
++
++	switch (info->bus_token) {
++	case DOMAIN_BUS_PCI_DEVICE_MSI:
++		alloc->type = X86_IRQ_ALLOC_TYPE_PCI_MSI;
++		return 0;
++	case DOMAIN_BUS_PCI_DEVICE_MSIX:
++		alloc->type = X86_IRQ_ALLOC_TYPE_PCI_MSIX;
++		return 0;
++	default:
++		return -EINVAL;
++	}
++}
+ 
+-static struct msi_domain_info pci_msi_domain_info = {
+-	.flags		= MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
+-			  MSI_FLAG_PCI_MSIX | MSI_FLAG_NOMASK_QUIRK,
++/**
++ * x86_init_dev_msi_info - Domain info setup for MSI domains
++ * @dev:		The device for which the domain should be created
++ * @domain:		The (root) domain providing this callback
++ * @real_parent:	The real parent domain of the to initialize domain
++ * @info:		The domain info for the to initialize domain
++ *
++ * This function is to be used for all types of MSI domains above the x86
++ * vector domain and any intermediates. The domain specific functionality
++ * is determined via the @real_parent.
++ */
++static bool x86_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
++				  struct irq_domain *real_parent, struct msi_domain_info *info)
++{
++	const struct msi_parent_ops *pops = real_parent->msi_parent_ops;
++
++	/* MSI parent domain specific settings */
++	switch (real_parent->bus_token) {
++	case DOMAIN_BUS_ANY:
++		/* Only the vector domain can have the ANY token */
++		if (WARN_ON_ONCE(domain != real_parent))
++			return false;
++		info->chip->irq_set_affinity = msi_set_affinity;
++		/* See msi_set_affinity() for the gory details */
++		info->flags |= MSI_FLAG_NOMASK_QUIRK;
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		return false;
++	}
+ 
+-	.ops		= &pci_msi_domain_ops,
+-	.chip		= &pci_msi_controller,
+-	.handler	= handle_edge_irq,
+-	.handler_name	= "edge",
++	/* Is the target supported? */
++	switch(info->bus_token) {
++	case DOMAIN_BUS_PCI_DEVICE_MSI:
++	case DOMAIN_BUS_PCI_DEVICE_MSIX:
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		return false;
++	}
++
++	/*
++	 * Mask out the domain specific MSI feature flags which are not
++	 * supported by the real parent.
++	 */
++	info->flags			&= pops->supported_flags;
++	/* Enforce the required flags */
++	info->flags			|= X86_VECTOR_MSI_FLAGS_REQUIRED;
++
++	/* This is always invoked from the top level MSI domain! */
++	info->ops->msi_prepare		= x86_msi_prepare;
++
++	info->chip->irq_ack		= irq_chip_ack_parent;
++	info->chip->irq_retrigger	= irq_chip_retrigger_hierarchy;
++	info->chip->flags		|= IRQCHIP_SKIP_SET_WAKE |
++					   IRQCHIP_AFFINITY_PRE_STARTUP;
++
++	info->handler			= handle_edge_irq;
++	info->handler_name		= "edge";
++
++	return true;
++}
++
++static const struct msi_parent_ops x86_vector_msi_parent_ops = {
++	.supported_flags	= X86_VECTOR_MSI_FLAGS_SUPPORTED,
++	.init_dev_msi_info	= x86_init_dev_msi_info,
+ };
+ 
+ struct irq_domain * __init native_create_pci_msi_domain(void)
+ {
+-	struct fwnode_handle *fn;
+-	struct irq_domain *d;
+-
+ 	if (disable_apic)
+ 		return NULL;
+ 
+-	fn = irq_domain_alloc_named_fwnode("PCI-MSI");
+-	if (!fn)
+-		return NULL;
+-
+-	d = pci_msi_create_irq_domain(fn, &pci_msi_domain_info,
+-				      x86_vector_domain);
+-	if (!d) {
+-		irq_domain_free_fwnode(fn);
+-		pr_warn("Failed to initialize PCI-MSI irqdomain.\n");
+-	}
+-	return d;
++	x86_vector_domain->flags |= IRQ_DOMAIN_FLAG_MSI_PARENT;
++	x86_vector_domain->msi_parent_ops = &x86_vector_msi_parent_ops;
++	return x86_vector_domain;
+ }
+ 
+ void __init x86_create_pci_msi_domain(void)
+@@ -210,7 +274,25 @@ void __init x86_create_pci_msi_domain(void)
+ 	x86_pci_msi_default_domain = x86_init.irqs.create_pci_msi_domain();
+ }
+ 
++/* Keep around for hyperV and the remap code below */
++int pci_msi_prepare(struct irq_domain *domain, struct device *dev, int nvec,
++		    msi_alloc_info_t *arg)
++{
++	init_irq_alloc_info(arg, NULL);
++
++	if (to_pci_dev(dev)->msix_enabled)
++		arg->type = X86_IRQ_ALLOC_TYPE_PCI_MSIX;
++	else
++		arg->type = X86_IRQ_ALLOC_TYPE_PCI_MSI;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(pci_msi_prepare);
++
+ #ifdef CONFIG_IRQ_REMAP
++static struct msi_domain_ops pci_msi_domain_ops = {
++	.msi_prepare	= pci_msi_prepare,
 +};
 +
-+/**
-  * msi_map - Mapping between MSI index and Linux interrupt number
-  * @index:	The MSI index, e.g. slot in the MSI-X table or
-  *		a software managed index if >= 0. If negative
+ static struct irq_chip pci_msi_ir_controller = {
+ 	.name			= "IR-PCI-MSI",
+ 	.irq_unmask		= pci_msi_unmask_irq,
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 72dfe57..67e209c 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -812,7 +812,7 @@ static void
+ amd_iommu_set_pci_msi_domain(struct device *dev, struct amd_iommu *iommu)
+ {
+ 	if (!irq_remapping_enabled || !dev_is_pci(dev) ||
+-	    pci_dev_has_special_msi_domain(to_pci_dev(dev)))
++	    !pci_dev_has_default_msi_parent_domain(to_pci_dev(dev)))
+ 		return;
+ 
+ 	dev_set_msi_domain(dev, iommu->msi_domain);
+diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_remapping.c
+index a914eba..08bbf08 100644
+--- a/drivers/iommu/intel/irq_remapping.c
++++ b/drivers/iommu/intel/irq_remapping.c
+@@ -1107,7 +1107,7 @@ error:
+  */
+ void intel_irq_remap_add_device(struct dmar_pci_notify_info *info)
+ {
+-	if (!irq_remapping_enabled || pci_dev_has_special_msi_domain(info->dev))
++	if (!irq_remapping_enabled || !pci_dev_has_default_msi_parent_domain(info->dev))
+ 		return;
+ 
+ 	dev_set_msi_domain(&info->dev->dev, map_dev_to_ir(info->dev));
