@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76B9A641720
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 Dec 2022 14:51:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97A3F642688
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 11:16:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbiLCNvS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 3 Dec 2022 08:51:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44674 "EHLO
+        id S230331AbiLEKQv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 05:16:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229609AbiLCNvR (ORCPT
+        with ESMTP id S230184AbiLEKQr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 3 Dec 2022 08:51:17 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B038122B34;
-        Sat,  3 Dec 2022 05:51:15 -0800 (PST)
-Date:   Sat, 03 Dec 2022 13:51:12 -0000
+        Mon, 5 Dec 2022 05:16:47 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB1FE18E24;
+        Mon,  5 Dec 2022 02:16:46 -0800 (PST)
+Date:   Mon, 05 Dec 2022 10:16:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670075473;
+        s=2020; t=1670235404;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+XUwHrsrE6DfDCNkWoJz1FGQB8HJEOn2bw8jH7Zsoy8=;
-        b=ASMHKnA9rhxXeLDKq6Ag2vtLejeG33U4JgIedX65g7JM2s29LRuw5ZGZx9atAKt37ZGFRy
-        LiQvKiUXeemntG+iSQzJ06DR9lqfwyxr/M9Tl3JLEOu0oMIKMaAF/pGuqhsdJAb2JK6Cc6
-        37pyyHvFEUgddNv4cpD7wg+xGzRIpCHByWIDqHze0DZKN+gmVQx9ctUvVa1VbtUag4fgIQ
-        VKElhP7F2ZKPfr9EdDrAHujBKNwFQvbZhSLW/yeH09VPiRjfFy1s141S74fQ6/aXyUFrQ/
-        sx/JNvKahTh0Lt99V0Zvd3JlEamJYlXBqJX8a3+JbrEi5Hd+cJo+Y91atm/J6A==
+        bh=eUABA7cTiUpkbff/4pIrajUwqXIfq2KxpOg7kH+gkCM=;
+        b=YV7MIHP/p2gLYRD+BaTkP3eGWZLoNbImnTocOj5NUeaydwQWffx7hg+2GG/tTu9jdi3cVy
+        lMEgciIVCX9dqsSVdoZsKOSjwCTIjlIcaoAD0KU/2JRW26AuYTszvN61dLydAGJtYF/GwF
+        Jn1Bdjfl+Nt506/2IZ6c7F3ghNk39c0oYIMSvIRc2y7g6C640Zct4wvyZwt+c59JaJAuHD
+        MTgH028yhvcLyb9XbVfYsIflireK3sFauk9qyq5lQ5OeFNrvzkGxb53YzJIWOGnhO8nWPw
+        XirCBIW+or3vugc5XQWoJ4cKKpWRooojHX2Giim3M/vOhvtVzpvmg6Dl42/c1Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670075473;
+        s=2020e; t=1670235404;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+XUwHrsrE6DfDCNkWoJz1FGQB8HJEOn2bw8jH7Zsoy8=;
-        b=YviRu5o/EuWfGn6Etokb2Ohb3rKN8fM3hJvxHKa1xsO8BMiKuW1tWqr/xchzFqSAShiSdI
-        NeTAWrjC0Tq2cCDg==
-From:   "tip-bot2 for Ashok Raj" <tip-bot2@linutronix.de>
+        bh=eUABA7cTiUpkbff/4pIrajUwqXIfq2KxpOg7kH+gkCM=;
+        b=xPN4u2F+74gXC9suJ9NrdnnYe/zgRlB6WASedm8E9/SqQ1t2xD4aiCXhLvvGQAiCrEpcXG
+        eNcQCGZbof+2s9DA==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/intel: Do not print microcode
- revision and processor flags
-Cc:     Tony Luck <tony.luck@intel.com>, Ashok Raj <ashok.raj@intel.com>,
+Subject: [tip: x86/cpu] x86/mtrr: Make message for disabled MTRRs more descriptive
+Cc:     Juergen Gross <jgross@suse.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221103175901.164783-2-ashok.raj@intel.com>
-References: <20221103175901.164783-2-ashok.raj@intel.com>
+In-Reply-To: <20221205080433.16643-3-jgross@suse.com>
+References: <20221205080433.16643-3-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <167007547263.4906.10472927215347122978.tip-bot2@tip-bot2>
+Message-ID: <167023540385.4906.769505168034496699.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,86 +64,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     5b1586ab064ca24c6a7a6be7a9d0cb9e237ef39a
-Gitweb:        https://git.kernel.org/tip/5b1586ab064ca24c6a7a6be7a9d0cb9e237ef39a
-Author:        Ashok Raj <ashok.raj@intel.com>
-AuthorDate:    Tue, 29 Nov 2022 13:08:26 -08:00
+Commit-ID:     7882b69eb6cdf6288a89d831d95c8547400a8b4d
+Gitweb:        https://git.kernel.org/tip/7882b69eb6cdf6288a89d831d95c8547400a8b4d
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Mon, 05 Dec 2022 09:04:33 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sat, 03 Dec 2022 14:41:06 +01:00
+CommitterDate: Mon, 05 Dec 2022 11:08:25 +01:00
 
-x86/microcode/intel: Do not print microcode revision and processor flags
+x86/mtrr: Make message for disabled MTRRs more descriptive
 
-collect_cpu_info() is used to collect the current microcode revision and
-processor flags on every CPU.
+Instead of just saying "Disabled" when MTRRs are disabled for any
+reason, tell what is disabled and why.
 
-It had a weird mechanism to try to mimick a "once" functionality in the
-sense that, that information should be issued only when it is differing
-from the previous CPU.
-
-However (1):
-
-the new calling sequence started doing that in parallel:
-
-  microcode_init()
-  |-> schedule_on_each_cpu(setup_online_cpu)
-      |-> collect_cpu_info()
-
-resulting in multiple redundant prints:
-
-  microcode: sig=0x50654, pf=0x80, revision=0x2006e05
-  microcode: sig=0x50654, pf=0x80, revision=0x2006e05
-  microcode: sig=0x50654, pf=0x80, revision=0x2006e05
-
-However (2):
-
-dumping this here is not that important because the kernel does not
-support mixed silicon steppings microcode. Finally!
-
-Besides, there is already a pr_info() in microcode_reload_late() that
-shows both the old and new revisions.
-
-What is more, the CPU signature (sig=0x50654) and Processor Flags
-(pf=0x80) above aren't that useful to the end user, they are available
-via /proc/cpuinfo and they don't change anyway.
-
-Remove the redundant pr_info().
-
-  [ bp: Heavily massage. ]
-
-Fixes: b6f86689d5b7 ("x86/microcode: Rip out the subsys interface gunk")
-Reported-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20221103175901.164783-2-ashok.raj@intel.com
+Link: https://lore.kernel.org/r/20221205080433.16643-3-jgross@suse.com
 ---
- arch/x86/kernel/cpu/microcode/intel.c | 8 --------
- 1 file changed, 8 deletions(-)
+ arch/x86/kernel/cpu/mtrr/mtrr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index c4a00fb..4f93875 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -554,7 +554,6 @@ void reload_ucode_intel(void)
- 
- static int collect_cpu_info(int cpu_num, struct cpu_signature *csig)
+diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.c b/arch/x86/kernel/cpu/mtrr/mtrr.c
+index 6432abc..783f321 100644
+--- a/arch/x86/kernel/cpu/mtrr/mtrr.c
++++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
+@@ -629,6 +629,7 @@ int __initdata changed_by_mtrr_cleanup;
+  */
+ void __init mtrr_bp_init(void)
  {
--	static struct cpu_signature prev;
- 	struct cpuinfo_x86 *c = &cpu_data(cpu_num);
- 	unsigned int val[2];
++	const char *why = "(not available)";
+ 	u32 phys_addr;
  
-@@ -570,13 +569,6 @@ static int collect_cpu_info(int cpu_num, struct cpu_signature *csig)
+ 	phys_addr = 32;
+@@ -705,12 +706,13 @@ void __init mtrr_bp_init(void)
+ 				changed_by_mtrr_cleanup = mtrr_cleanup(phys_addr);
+ 			} else {
+ 				mtrr_if = NULL;
++				why = "by BIOS";
+ 			}
+ 		}
+ 	}
  
- 	csig->rev = c->microcode;
- 
--	/* No extra locking on prev, races are harmless. */
--	if (csig->sig != prev.sig || csig->pf != prev.pf || csig->rev != prev.rev) {
--		pr_info("sig=0x%x, pf=0x%x, revision=0x%x\n",
--			csig->sig, csig->pf, csig->rev);
--		prev = *csig;
--	}
--
- 	return 0;
+ 	if (!mtrr_enabled())
+-		pr_info("Disabled\n");
++		pr_info("MTRRs disabled %s\n", why);
  }
  
+ /**
