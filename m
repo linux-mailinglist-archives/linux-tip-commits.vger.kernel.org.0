@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB31643025
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62261643620
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 21:53:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232287AbiLES01 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Dec 2022 13:26:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39118 "EHLO
+        id S232720AbiLEUx1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 15:53:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232688AbiLESZY (ORCPT
+        with ESMTP id S232120AbiLEUx1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Dec 2022 13:25:24 -0500
+        Mon, 5 Dec 2022 15:53:27 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5EF4209BA;
-        Mon,  5 Dec 2022 10:25:23 -0800 (PST)
-Date:   Mon, 05 Dec 2022 18:25:22 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FE48B1FD;
+        Mon,  5 Dec 2022 12:53:25 -0800 (PST)
+Date:   Mon, 05 Dec 2022 20:53:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670264722;
+        s=2020; t=1670273603;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4raCAOAHtLFE2VxTLU6b32oB5I+eqLXcRyBlc7VcnGk=;
-        b=BK/T2QWUyqtu2QEU5y+6kbpQCPDk0UTSf7Pu0jfMpe1wFqLlEIohPqyILbmOr+G3iNjj6c
-        uCHByGN/6GLGzlI53FIi0WObch20FUASPBrpO8yWCpUDUfsgKHrWIH8vvFNRCXSg9p/LW0
-        eqzsoArU/PTp/ilFqAPZ5DCWjWi2DJx8nfnESLcvOyRYFsIT/gxbELB5rcIxDeIrH9FItk
-        sugyhynstWOhFFkL/hEA4cOV1Efh+5OXds5erIOJNBCQk+w1cQnmDa99xICtcZSuEHUeG/
-        4CLuTaCfwZH8eC7wDDodRDbubX3QygwzxCQ/SK2GVeu0bhy21/kIhEVf+u6aEQ==
+        bh=CmsGGjpzr0dBe6axNex6kpBFOEjvbolY0Nmn4TPRCvc=;
+        b=JMAgtz+xhtBoishR8oGm3vgwgwuOoQb+DlLCKFJZB0lHHt88mZTH/xoHVSHO/EFBgkOjO2
+        LWr6PgPEm/BBqYTA42St/ZGKfBSJqFdvLSlVkju84Q2EqyKNsCcr1oPpUEPEl1fVOgeyBN
+        R2N0sJUYg9jQHSwwNzJo/CBe/kV4Lgn4fnHFuR+ew/zrwgceAr+mgtIjtfvhLWWdpl75Vu
+        GlttJUThATB1buCJpF0o4j7bHtYQZHhn7bk9fKG4bzBJHz53NnIpj7P1/3b8o1oNp24aZK
+        TgISUl/2p82DkFVzwQiY+MrPVk1uFBpF2a3U+Dl8qJFojOg3l9Z5wTJ01eKUzQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670264722;
+        s=2020e; t=1670273603;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4raCAOAHtLFE2VxTLU6b32oB5I+eqLXcRyBlc7VcnGk=;
-        b=FybjhAIHTokDhbrJko+/+Z4zWbhH+vGedi7gauCf9GhZoX3pvPbDW6AicVin+BFzIjsTSu
-        xLJHfXyit/P40kCw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=CmsGGjpzr0dBe6axNex6kpBFOEjvbolY0Nmn4TPRCvc=;
+        b=eZF06C9aemDd9Np90Kk0EQVhbC0Drqzoj+mOTbK+IKQy+qsMBjxJBXW6a8NvS6+N0rD2Qt
+        cK6hMdYbqNO4C1DQ==
+From:   "tip-bot2 for Ashok Raj" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/irqdomain: Make struct irqdomain readable
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Marc Zyngier <maz@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20221124230313.514944367@linutronix.de>
-References: <20221124230313.514944367@linutronix.de>
+Subject: [tip: x86/microcode] x86/microcode/intel: Do not retry microcode
+ reloading on the APs
+Cc:     Ashok Raj <ashok.raj@intel.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20221129210832.107850-3-ashok.raj@intel.com>
+References: <20221129210832.107850-3-ashok.raj@intel.com>
 MIME-Version: 1.0
-Message-ID: <167026472207.4906.6277292417329349370.tip-bot2@tip-bot2>
+Message-ID: <167027360301.4906.8791952647948114025.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,123 +66,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     f876ea3b7969329d6472ae4126496bb03c89d89a
-Gitweb:        https://git.kernel.org/tip/f876ea3b7969329d6472ae4126496bb03c89d89a
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 25 Nov 2022 00:24:10 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 05 Dec 2022 19:20:58 +01:00
+Commit-ID:     be1b670f61443aa5d0d01782e9b8ea0ee825d018
+Gitweb:        https://git.kernel.org/tip/be1b670f61443aa5d0d01782e9b8ea0ee825d018
+Author:        Ashok Raj <ashok.raj@intel.com>
+AuthorDate:    Tue, 29 Nov 2022 13:08:27 -08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 05 Dec 2022 21:22:21 +01:00
 
-genirq/irqdomain: Make struct irqdomain readable
+x86/microcode/intel: Do not retry microcode reloading on the APs
 
-Tabular alignment of both kernel-doc and the actual struct declaration make
-visual parsing way more conveniant.
+The retries in load_ucode_intel_ap() were in place to support systems
+with mixed steppings. Mixed steppings are no longer supported and there is
+only one microcode image at a time. Any retries will simply reattempt to
+apply the same image over and over without making progress.
 
-No functional change.
+  [ bp: Zap the circumstantial reasoning from the commit message. ]
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221124230313.514944367@linutronix.de
-
+Fixes: 06b8534cb728 ("x86/microcode: Rework microcode loading")
+Signed-off-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20221129210832.107850-3-ashok.raj@intel.com
 ---
- include/linux/irqdomain.h | 74 +++++++++++++++++++-------------------
- 1 file changed, 37 insertions(+), 37 deletions(-)
+ arch/x86/kernel/cpu/microcode/intel.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index c42c369..b1fdd8d 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -117,53 +117,53 @@ struct irq_domain_chip_generic;
+diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+index 4f93875..2dba4b5 100644
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -495,7 +495,6 @@ void load_ucode_intel_ap(void)
+ 	else
+ 		iup = &intel_ucode_patch;
  
- /**
-  * struct irq_domain - Hardware interrupt number translation object
-- * @link: Element in global irq_domain list.
-- * @name: Name of interrupt domain
-- * @ops: pointer to irq_domain methods
-- * @host_data: private data pointer for use by owner.  Not touched by irq_domain
-- *             core code.
-- * @flags: host per irq_domain flags
-- * @mapcount: The number of mapped interrupts
-+ * @link:	Element in global irq_domain list.
-+ * @name:	Name of interrupt domain
-+ * @ops:	Pointer to irq_domain methods
-+ * @host_data:	Private data pointer for use by owner.  Not touched by irq_domain
-+ *		core code.
-+ * @flags:	Per irq_domain flags
-+ * @mapcount:	The number of mapped interrupts
-  *
-- * Optional elements
-- * @fwnode: Pointer to firmware node associated with the irq_domain. Pretty easy
-- *          to swap it for the of_node via the irq_domain_get_of_node accessor
-- * @gc: Pointer to a list of generic chips. There is a helper function for
-- *      setting up one or more generic chips for interrupt controllers
-- *      drivers using the generic chip library which uses this pointer.
-- * @dev: Pointer to a device that the domain represent, and that will be
-- *       used for power management purposes.
-- * @parent: Pointer to parent irq_domain to support hierarchy irq_domains
-+ * Optional elements:
-+ * @fwnode:	Pointer to firmware node associated with the irq_domain. Pretty easy
-+ *		to swap it for the of_node via the irq_domain_get_of_node accessor
-+ * @gc:		Pointer to a list of generic chips. There is a helper function for
-+ *		setting up one or more generic chips for interrupt controllers
-+ *		drivers using the generic chip library which uses this pointer.
-+ * @dev:	Pointer to a device that can be utilized for power management
-+ *		purposes related to the irq domain.
-+ * @parent:	Pointer to parent irq_domain to support hierarchy irq_domains
-  *
-- * Revmap data, used internally by irq_domain
-- * @revmap_size: Size of the linear map table @revmap[]
-- * @revmap_tree: Radix map tree for hwirqs that don't fit in the linear map
-- * @revmap_mutex: Lock for the revmap
-- * @revmap: Linear table of irq_data pointers
-+ * Revmap data, used internally by the irq domain code:
-+ * @revmap_size:	Size of the linear map table @revmap[]
-+ * @revmap_tree:	Radix map tree for hwirqs that don't fit in the linear map
-+ * @revmap_mutex:	Lock for the revmap
-+ * @revmap:		Linear table of irq_data pointers
-  */
- struct irq_domain {
--	struct list_head link;
--	const char *name;
--	const struct irq_domain_ops *ops;
--	void *host_data;
--	unsigned int flags;
--	unsigned int mapcount;
-+	struct list_head		link;
-+	const char			*name;
-+	const struct irq_domain_ops	*ops;
-+	void				*host_data;
-+	unsigned int			flags;
-+	unsigned int			mapcount;
+-reget:
+ 	if (!*iup) {
+ 		patch = __load_ucode_intel(&uci);
+ 		if (!patch)
+@@ -506,12 +505,7 @@ reget:
  
- 	/* Optional data */
--	struct fwnode_handle *fwnode;
--	enum irq_domain_bus_token bus_token;
--	struct irq_domain_chip_generic *gc;
--	struct device *dev;
-+	struct fwnode_handle		*fwnode;
-+	enum irq_domain_bus_token	bus_token;
-+	struct irq_domain_chip_generic	*gc;
-+	struct device			*dev;
- #ifdef	CONFIG_IRQ_DOMAIN_HIERARCHY
--	struct irq_domain *parent;
-+	struct irq_domain		*parent;
- #endif
+ 	uci.mc = *iup;
  
- 	/* reverse map data. The linear map gets appended to the irq_domain */
--	irq_hw_number_t hwirq_max;
--	unsigned int revmap_size;
--	struct radix_tree_root revmap_tree;
--	struct mutex revmap_mutex;
--	struct irq_data __rcu *revmap[];
-+	irq_hw_number_t			hwirq_max;
-+	unsigned int			revmap_size;
-+	struct radix_tree_root		revmap_tree;
-+	struct mutex			revmap_mutex;
-+	struct irq_data __rcu		*revmap[];
- };
+-	if (apply_microcode_early(&uci, true)) {
+-		/* Mixed-silicon system? Try to refetch the proper patch: */
+-		*iup = NULL;
+-
+-		goto reget;
+-	}
++	apply_microcode_early(&uci, true);
+ }
  
- /* Irq domain flags */
+ static struct microcode_intel *find_patch(struct ucode_cpu_info *uci)
