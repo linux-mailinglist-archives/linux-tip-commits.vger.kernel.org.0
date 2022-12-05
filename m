@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62261643620
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 21:53:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC01D64370B
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 22:42:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232720AbiLEUx1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Dec 2022 15:53:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55220 "EHLO
+        id S233791AbiLEVmD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 16:42:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232120AbiLEUx1 (ORCPT
+        with ESMTP id S233751AbiLEVlu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Dec 2022 15:53:27 -0500
+        Mon, 5 Dec 2022 16:41:50 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FE48B1FD;
-        Mon,  5 Dec 2022 12:53:25 -0800 (PST)
-Date:   Mon, 05 Dec 2022 20:53:22 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B36F2CDFB;
+        Mon,  5 Dec 2022 13:41:48 -0800 (PST)
+Date:   Mon, 05 Dec 2022 21:41:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670273603;
+        s=2020; t=1670276507;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CmsGGjpzr0dBe6axNex6kpBFOEjvbolY0Nmn4TPRCvc=;
-        b=JMAgtz+xhtBoishR8oGm3vgwgwuOoQb+DlLCKFJZB0lHHt88mZTH/xoHVSHO/EFBgkOjO2
-        LWr6PgPEm/BBqYTA42St/ZGKfBSJqFdvLSlVkju84Q2EqyKNsCcr1oPpUEPEl1fVOgeyBN
-        R2N0sJUYg9jQHSwwNzJo/CBe/kV4Lgn4fnHFuR+ew/zrwgceAr+mgtIjtfvhLWWdpl75Vu
-        GlttJUThATB1buCJpF0o4j7bHtYQZHhn7bk9fKG4bzBJHz53NnIpj7P1/3b8o1oNp24aZK
-        TgISUl/2p82DkFVzwQiY+MrPVk1uFBpF2a3U+Dl8qJFojOg3l9Z5wTJ01eKUzQ==
+        bh=IMhSepik/XooEqg8QRuWUDLlijXTZPoQ2yr2F7EJias=;
+        b=dYjpNqE7d0kwndxp1FHbRIM7ySjW3V9M/IwyERVwah2ZdpGLKswOlZy5w/lvE8W3v6cZXD
+        7QFppu8HgH+HTzmS0Rdun/ntyYI4HBgD08bAaSyfLo8oVbRAByBFJEAFnmdC1JYBnKqDXG
+        nMk7N3NjNeT717RXHDojMlS4Tl8nTNQVMenjQ24mfrxYFwbTqX+nXwdj3vbwYzJjdNOKvP
+        +KTA36O4RYkyXByD2TYZP1FgGy9nFVDEt57nLmgrOsMPgbX6/LZ5qwepFSPOaG7PELtnoS
+        /U3CLZB0PWSbDUWwRi3owavgVmRlcQ7blUwKRIHFEbugpC2NZ2njGVbGy0h13g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670273603;
+        s=2020e; t=1670276507;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CmsGGjpzr0dBe6axNex6kpBFOEjvbolY0Nmn4TPRCvc=;
-        b=eZF06C9aemDd9Np90Kk0EQVhbC0Drqzoj+mOTbK+IKQy+qsMBjxJBXW6a8NvS6+N0rD2Qt
-        cK6hMdYbqNO4C1DQ==
-From:   "tip-bot2 for Ashok Raj" <tip-bot2@linutronix.de>
+        bh=IMhSepik/XooEqg8QRuWUDLlijXTZPoQ2yr2F7EJias=;
+        b=FqWn1HTiHZewApXMAazpKff0cH0p4NhsGpWmJq80kqihCc2x3z5sGuGuzqLMtdMLKx1eKz
+        GeBu/+jxDUN+vgDw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/intel: Do not retry microcode
- reloading on the APs
-Cc:     Ashok Raj <ashok.raj@intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20221129210832.107850-3-ashok.raj@intel.com>
-References: <20221129210832.107850-3-ashok.raj@intel.com>
+Subject: [tip: irq/core] iommu/vt-d: Enable PCI/IMS
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Marc Zyngier <maz@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20221124232327.081482253@linutronix.de>
+References: <20221124232327.081482253@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <167027360301.4906.8791952647948114025.tip-bot2@tip-bot2>
+Message-ID: <167027650674.4906.11275867268043900372.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,57 +65,76 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     be1b670f61443aa5d0d01782e9b8ea0ee825d018
-Gitweb:        https://git.kernel.org/tip/be1b670f61443aa5d0d01782e9b8ea0ee825d018
-Author:        Ashok Raj <ashok.raj@intel.com>
-AuthorDate:    Tue, 29 Nov 2022 13:08:27 -08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 05 Dec 2022 21:22:21 +01:00
+Commit-ID:     810531a1af5393f010d6508b1cb48e6650fc5e8f
+Gitweb:        https://git.kernel.org/tip/810531a1af5393f010d6508b1cb48e6650fc5e8f
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 25 Nov 2022 00:26:34 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 05 Dec 2022 22:22:35 +01:00
 
-x86/microcode/intel: Do not retry microcode reloading on the APs
+iommu/vt-d: Enable PCI/IMS
 
-The retries in load_ucode_intel_ap() were in place to support systems
-with mixed steppings. Mixed steppings are no longer supported and there is
-only one microcode image at a time. Any retries will simply reattempt to
-apply the same image over and over without making progress.
+PCI/IMS works like PCI/MSI-X in the remapping. Just add the feature flag,
+but only when on real hardware.
 
-  [ bp: Zap the circumstantial reasoning from the commit message. ]
+Virtualized IOMMUs need additional support, e.g. for PASID.
 
-Fixes: 06b8534cb728 ("x86/microcode: Rework microcode loading")
-Signed-off-by: Ashok Raj <ashok.raj@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20221129210832.107850-3-ashok.raj@intel.com
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20221124232327.081482253@linutronix.de
+
 ---
- arch/x86/kernel/cpu/microcode/intel.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/iommu/intel/irq_remapping.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index 4f93875..2dba4b5 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -495,7 +495,6 @@ void load_ucode_intel_ap(void)
- 	else
- 		iup = &intel_ucode_patch;
+diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_remapping.c
+index 6fab407..a723f53 100644
+--- a/drivers/iommu/intel/irq_remapping.c
++++ b/drivers/iommu/intel/irq_remapping.c
+@@ -82,7 +82,7 @@ static const struct irq_domain_ops intel_ir_domain_ops;
  
--reget:
- 	if (!*iup) {
- 		patch = __load_ucode_intel(&uci);
- 		if (!patch)
-@@ -506,12 +505,7 @@ reget:
+ static void iommu_disable_irq_remapping(struct intel_iommu *iommu);
+ static int __init parse_ioapics_under_ir(void);
+-static const struct msi_parent_ops dmar_msi_parent_ops;
++static const struct msi_parent_ops dmar_msi_parent_ops, virt_dmar_msi_parent_ops;
  
- 	uci.mc = *iup;
+ static bool ir_pre_enabled(struct intel_iommu *iommu)
+ {
+@@ -577,7 +577,11 @@ static int intel_setup_irq_remapping(struct intel_iommu *iommu)
  
--	if (apply_microcode_early(&uci, true)) {
--		/* Mixed-silicon system? Try to refetch the proper patch: */
--		*iup = NULL;
--
--		goto reget;
--	}
-+	apply_microcode_early(&uci, true);
- }
+ 	irq_domain_update_bus_token(iommu->ir_domain,  DOMAIN_BUS_DMAR);
+ 	iommu->ir_domain->flags |= IRQ_DOMAIN_FLAG_MSI_PARENT;
+-	iommu->ir_domain->msi_parent_ops = &dmar_msi_parent_ops;
++
++	if (cap_caching_mode(iommu->cap))
++		iommu->ir_domain->msi_parent_ops = &virt_dmar_msi_parent_ops;
++	else
++		iommu->ir_domain->msi_parent_ops = &dmar_msi_parent_ops;
  
- static struct microcode_intel *find_patch(struct ucode_cpu_info *uci)
+ 	ir_table->base = page_address(pages);
+ 	ir_table->bitmap = bitmap;
+@@ -1429,11 +1433,20 @@ static const struct irq_domain_ops intel_ir_domain_ops = {
+ };
+ 
+ static const struct msi_parent_ops dmar_msi_parent_ops = {
+-	.supported_flags	= X86_VECTOR_MSI_FLAGS_SUPPORTED | MSI_FLAG_MULTI_PCI_MSI,
++	.supported_flags	= X86_VECTOR_MSI_FLAGS_SUPPORTED |
++				  MSI_FLAG_MULTI_PCI_MSI |
++				  MSI_FLAG_PCI_IMS,
+ 	.prefix			= "IR-",
+ 	.init_dev_msi_info	= msi_parent_init_dev_msi_info,
+ };
+ 
++static const struct msi_parent_ops virt_dmar_msi_parent_ops = {
++	.supported_flags	= X86_VECTOR_MSI_FLAGS_SUPPORTED |
++				  MSI_FLAG_MULTI_PCI_MSI,
++	.prefix			= "vIR-",
++	.init_dev_msi_info	= msi_parent_init_dev_msi_info,
++};
++
+ /*
+  * Support of Interrupt Remapping Unit Hotplug
+  */
