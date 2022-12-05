@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 233EB64301C
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:27:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19272643036
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:27:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233204AbiLES0P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Dec 2022 13:26:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39780 "EHLO
+        id S233215AbiLES0Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 13:26:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232589AbiLESZX (ORCPT
+        with ESMTP id S232597AbiLESZX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 5 Dec 2022 13:25:23 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2B4321253;
-        Mon,  5 Dec 2022 10:25:21 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1435021256;
+        Mon,  5 Dec 2022 10:25:22 -0800 (PST)
 Date:   Mon, 05 Dec 2022 18:25:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1670264720;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bPx1+HzEba2jw7vNeGkFY7DoJKahwcGEQKsGGExIih0=;
-        b=pyMkelfM/DofC1aD33sOjiMipa5aXr2vzeAr8I25zUqyFzCIM0IiuUqTaZE7uPyLpPcZqN
-        39EBCgFEK1UngrOuHJDGcsXVzCNaNCD9TEloa1r/0EVlVcI+ydfSxvdTMVyFz7ipAE7CaD
-        FvvF77P2VGF8uIfHXlsuKqmCQ9gjXz8NaTQasY1OugeaeugGnlhak+UkoD90nOI2sCVdzB
-        yts9M2soUd4eyuouPkeAW/bGOFfvVy/q7M1FaywLmiPTU5MKnPGFzWnzhdedpFD2Irbinw
-        pfj+Nn8JofLiJt38fT3sRqFaFAoIotXWiJSBWJznB0Y6s78EhM4udrvgZC2zpQ==
+        bh=+FuHGXJQ2eCwfFqjBR9ci6mT+JzX/TmthXfIpZNRGFo=;
+        b=U6KwUJtfluYtJFm3kZ+2+PYYOxxFAD2HFsxpoPCd4LLKL4stHQcpjvirbNjVhxADitGEwC
+        PKnY/2A6rxEPS34WkbWV9rh2iheyYpnyvdyODGXWydQq/QbMWrPPPUr4ZBCstSe/MWT9I9
+        89b8kVf2pqwoT+WYjuLrn+fXv1lITvJG6BQKIrzfBWViBx/b9SsIqspGAxGg8dB7jxGxWM
+        +2Su4A3V/knzZ6d2sgDkeaiM7fxzEV6kit4JFMnD4xluevMnSwjA2W9U7EonnLUOFmTpRB
+        1IcNpoNVRacliTPLFrQWAeJM9PFHQ3+QK7yXA+v7kl91AHMhd+AkjQ17BJGH2Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1670264720;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bPx1+HzEba2jw7vNeGkFY7DoJKahwcGEQKsGGExIih0=;
-        b=cbZtKZpWhvs6EurcoQ//ktTf0wvVtavY91mq11Opu+fain/b8ieZhHaUKsRd2lKhCxoNGj
-        nuPSMhJOATFYYzDQ==
+        bh=+FuHGXJQ2eCwfFqjBR9ci6mT+JzX/TmthXfIpZNRGFo=;
+        b=Ui/xR3JD0AWUZeykhNOrVOalNw0voGfYOSpfe1A0O/mKlf65XPzu6Kf+BVNXNVkfZAg1uT
+        KHLBpTW4I6SR1tBg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/msi: Make MSI descriptor iterators device domain aware
+Subject: [tip: irq/core] genirq/msi: Add pointers for per device irq domains
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Kevin Tian <kevin.tian@intel.com>,
         Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221124230313.985498981@linutronix.de>
-References: <20221124230313.985498981@linutronix.de>
+In-Reply-To: <20221124230313.923860399@linutronix.de>
+References: <20221124230313.923860399@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <167026472023.4906.16856424953692028095.tip-bot2@tip-bot2>
+Message-ID: <167026472045.4906.13119084508984817791.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,211 +67,95 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     94ff94cfea2827e287a42781a47f37c9ef82186b
-Gitweb:        https://git.kernel.org/tip/94ff94cfea2827e287a42781a47f37c9ef82186b
+Commit-ID:     64258eaa442b0b7d7eac8942cf27863ad9e6028e
+Gitweb:        https://git.kernel.org/tip/64258eaa442b0b7d7eac8942cf27863ad9e6028e
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 25 Nov 2022 00:24:24 +01:00
+AuthorDate:    Fri, 25 Nov 2022 00:24:22 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 05 Dec 2022 19:20:59 +01:00
 
-genirq/msi: Make MSI descriptor iterators device domain aware
+genirq/msi: Add pointers for per device irq domains
 
-To support multiple MSI interrupt domains per device it is necessary to
-segment the xarray MSI descriptor storage. Each domain gets up to
-MSI_MAX_INDEX entries.
+With the upcoming per device MSI interrupt domain support it is necessary
+to store the domain pointers per device.
 
-Change the iterators so they operate with domain ids and take the domain
-offsets into account.
+Instead of delegating that storage to device drivers or subsystems add a
+domain pointer to the msi_dev_domain array in struct msi_device_data.
 
-The publicly available iterators which are mostly used in legacy
-implementations and the PCI/MSI core default to MSI_DEFAULT_DOMAIN (0)
-which is the id for the existing "global" domains.
+This pointer is also used to take care of tearing down the irq domains when
+msi_device_data is cleaned up via devres.
 
-No functional change.
+The interfaces into the MSI core will be changed from irqdomain pointer
+based interfaces to domain id based interfaces to support multiple MSI
+domains on a single device (e.g. PCI/MSI[-X] and PCI/IMS.
+
+Once the per device domain support is complete the irq domain pointer in
+struct device::msi.domain will not longer contain a pointer to the "global"
+MSI domain. It will contain a pointer to the MSI parent domain instead.
+
+It would be a horrible maze of conditionals to evaluate all over the place
+which domain pointer should be used, i.e. the "global" one in
+device::msi::domain or one from the internal pointer array.
+
+To avoid this evaluate in msi_setup_device_data() whether the irq domain
+which is associated to a device is a "global" or a parent MSI domain. If it
+is global then copy the pointer into the first entry of the msi_dev_domain
+array.
+
+This allows to convert interfaces and implementation to domain ids while
+keeping everything existing working.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221124230313.985498981@linutronix.de
+Link: https://lore.kernel.org/r/20221124230313.923860399@linutronix.de
 
 ---
- include/linux/msi.h | 48 ++++++++++++++++++++++++++++++++++++++------
- kernel/irq/msi.c    | 35 +++++++++++++++++++++-----------
- 2 files changed, 65 insertions(+), 18 deletions(-)
+ include/linux/msi.h |  3 +++
+ kernel/irq/msi.c    |  9 +++++++++
+ 2 files changed, 12 insertions(+)
 
 diff --git a/include/linux/msi.h b/include/linux/msi.h
-index fdbc80d..764a4e8 100644
+index f7b9c41..fdbc80d 100644
 --- a/include/linux/msi.h
 +++ b/include/linux/msi.h
-@@ -206,11 +206,48 @@ int msi_setup_device_data(struct device *dev);
- void msi_lock_descs(struct device *dev);
- void msi_unlock_descs(struct device *dev);
+@@ -77,6 +77,7 @@ struct msi_desc;
+ struct pci_dev;
+ struct platform_msi_priv_data;
+ struct device_attribute;
++struct irq_domain;
  
--struct msi_desc *msi_first_desc(struct device *dev, enum msi_desc_filter filter);
--struct msi_desc *msi_next_desc(struct device *dev, enum msi_desc_filter filter);
-+struct msi_desc *msi_domain_first_desc(struct device *dev, unsigned int domid,
-+				       enum msi_desc_filter filter);
+ void __get_cached_msi_msg(struct msi_desc *entry, struct msi_msg *msg);
+ #ifdef CONFIG_GENERIC_MSI_IRQ
+@@ -177,9 +178,11 @@ enum msi_desc_filter {
+ /**
+  * struct msi_dev_domain - The internals of MSI domain info per device
+  * @store:		Xarray for storing MSI descriptor pointers
++ * @irqdomain:		Pointer to a per device interrupt domain
+  */
+ struct msi_dev_domain {
+ 	struct xarray		store;
++	struct irq_domain	*domain;
+ };
  
  /**
-- * msi_for_each_desc - Iterate the MSI descriptors
-+ * msi_first_desc - Get the first MSI descriptor of the default irqdomain
-+ * @dev:	Device to operate on
-+ * @filter:	Descriptor state filter
-+ *
-+ * Must be called with the MSI descriptor mutex held, i.e. msi_lock_descs()
-+ * must be invoked before the call.
-+ *
-+ * Return: Pointer to the first MSI descriptor matching the search
-+ *	   criteria, NULL if none found.
-+ */
-+static inline struct msi_desc *msi_first_desc(struct device *dev,
-+					      enum msi_desc_filter filter)
-+{
-+	return msi_domain_first_desc(dev, MSI_DEFAULT_DOMAIN, filter);
-+}
-+
-+struct msi_desc *msi_next_desc(struct device *dev, unsigned int domid,
-+			       enum msi_desc_filter filter);
-+
-+/**
-+ * msi_domain_for_each_desc - Iterate the MSI descriptors in a specific domain
-+ *
-+ * @desc:	struct msi_desc pointer used as iterator
-+ * @dev:	struct device pointer - device to iterate
-+ * @domid:	The id of the interrupt domain which should be walked.
-+ * @filter:	Filter for descriptor selection
-+ *
-+ * Notes:
-+ *  - The loop must be protected with a msi_lock_descs()/msi_unlock_descs()
-+ *    pair.
-+ *  - It is safe to remove a retrieved MSI descriptor in the loop.
-+ */
-+#define msi_domain_for_each_desc(desc, dev, domid, filter)			\
-+	for ((desc) = msi_domain_first_desc((dev), (domid), (filter)); (desc);	\
-+	     (desc) = msi_next_desc((dev), (domid), (filter)))
-+
-+/**
-+ * msi_for_each_desc - Iterate the MSI descriptors in the default irqdomain
-  *
-  * @desc:	struct msi_desc pointer used as iterator
-  * @dev:	struct device pointer - device to iterate
-@@ -221,9 +258,8 @@ struct msi_desc *msi_next_desc(struct device *dev, enum msi_desc_filter filter);
-  *    pair.
-  *  - It is safe to remove a retrieved MSI descriptor in the loop.
-  */
--#define msi_for_each_desc(desc, dev, filter)			\
--	for ((desc) = msi_first_desc((dev), (filter)); (desc);	\
--	     (desc) = msi_next_desc((dev), (filter)))
-+#define msi_for_each_desc(desc, dev, filter)					\
-+	msi_domain_for_each_desc((desc), (dev), MSI_DEFAULT_DOMAIN, (filter))
- 
- #define msi_desc_to_dev(desc)		((desc)->dev)
- 
 diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index de65acc..ec08d1f 100644
+index c2bc94e..de65acc 100644
 --- a/kernel/irq/msi.c
 +++ b/kernel/irq/msi.c
-@@ -19,8 +19,14 @@
+@@ -220,6 +220,15 @@ int msi_setup_device_data(struct device *dev)
+ 	for (i = 0; i < MSI_MAX_DEVICE_IRQDOMAINS; i++)
+ 		xa_init(&md->__domains[i].store);
  
- #include "internals.h"
- 
-+/* Invalid Xarray index which is outside of any searchable range */
-+#define MSI_XA_MAX_INDEX	(ULONG_MAX - 1)
-+/* The maximum domain size */
-+#define MSI_XA_DOMAIN_SIZE	(MSI_MAX_INDEX + 1)
++	/*
++	 * If @dev::msi::domain is set and is a global MSI domain, copy the
++	 * pointer into the domain array so all code can operate on domain
++	 * ids. The NULL pointer check is required to keep the legacy
++	 * architecture specific PCI/MSI support working.
++	 */
++	if (dev->msi.domain && !irq_domain_is_msi_parent(dev->msi.domain))
++		md->__domains[MSI_DEFAULT_DOMAIN].domain = dev->msi.domain;
 +
- static inline int msi_sysfs_create_group(struct device *dev);
- 
-+
- /**
-  * msi_alloc_desc - Allocate an initialized msi_desc
-  * @dev:	Pointer to the device for which this is allocated
-@@ -252,27 +258,29 @@ EXPORT_SYMBOL_GPL(msi_lock_descs);
- void msi_unlock_descs(struct device *dev)
- {
- 	/* Invalidate the index which was cached by the iterator */
--	dev->msi.data->__iter_idx = MSI_MAX_INDEX;
-+	dev->msi.data->__iter_idx = MSI_XA_MAX_INDEX;
- 	mutex_unlock(&dev->msi.data->mutex);
- }
- EXPORT_SYMBOL_GPL(msi_unlock_descs);
- 
--static struct msi_desc *msi_find_desc(struct msi_device_data *md, enum msi_desc_filter filter)
-+static struct msi_desc *msi_find_desc(struct msi_device_data *md, unsigned int domid,
-+				      enum msi_desc_filter filter)
- {
--	struct xarray *xa = &md->__domains[MSI_DEFAULT_DOMAIN].store;
-+	struct xarray *xa = &md->__domains[domid].store;
- 	struct msi_desc *desc;
- 
- 	xa_for_each_start(xa, md->__iter_idx, desc, md->__iter_idx) {
- 		if (msi_desc_match(desc, filter))
- 			return desc;
- 	}
--	md->__iter_idx = MSI_MAX_INDEX;
-+	md->__iter_idx = MSI_XA_MAX_INDEX;
- 	return NULL;
- }
- 
- /**
-- * msi_first_desc - Get the first MSI descriptor of a device
-+ * msi_domain_first_desc - Get the first MSI descriptor of an irqdomain associated to a device
-  * @dev:	Device to operate on
-+ * @domid:	The id of the interrupt domain which should be walked.
-  * @filter:	Descriptor state filter
-  *
-  * Must be called with the MSI descriptor mutex held, i.e. msi_lock_descs()
-@@ -281,23 +289,25 @@ static struct msi_desc *msi_find_desc(struct msi_device_data *md, enum msi_desc_
-  * Return: Pointer to the first MSI descriptor matching the search
-  *	   criteria, NULL if none found.
-  */
--struct msi_desc *msi_first_desc(struct device *dev, enum msi_desc_filter filter)
-+struct msi_desc *msi_domain_first_desc(struct device *dev, unsigned int domid,
-+				       enum msi_desc_filter filter)
- {
- 	struct msi_device_data *md = dev->msi.data;
- 
--	if (WARN_ON_ONCE(!md))
-+	if (WARN_ON_ONCE(!md || domid >= MSI_MAX_DEVICE_IRQDOMAINS))
- 		return NULL;
- 
- 	lockdep_assert_held(&md->mutex);
- 
- 	md->__iter_idx = 0;
--	return msi_find_desc(md, filter);
-+	return msi_find_desc(md, domid, filter);
- }
--EXPORT_SYMBOL_GPL(msi_first_desc);
-+EXPORT_SYMBOL_GPL(msi_domain_first_desc);
- 
- /**
-  * msi_next_desc - Get the next MSI descriptor of a device
-  * @dev:	Device to operate on
-+ * @domid:	The id of the interrupt domain which should be walked.
-  * @filter:	Descriptor state filter
-  *
-  * The first invocation of msi_next_desc() has to be preceeded by a
-@@ -308,11 +318,12 @@ EXPORT_SYMBOL_GPL(msi_first_desc);
-  * Return: Pointer to the next MSI descriptor matching the search
-  *	   criteria, NULL if none found.
-  */
--struct msi_desc *msi_next_desc(struct device *dev, enum msi_desc_filter filter)
-+struct msi_desc *msi_next_desc(struct device *dev, unsigned int domid,
-+			       enum msi_desc_filter filter)
- {
- 	struct msi_device_data *md = dev->msi.data;
- 
--	if (WARN_ON_ONCE(!md))
-+	if (WARN_ON_ONCE(!md || domid >= MSI_MAX_DEVICE_IRQDOMAINS))
- 		return NULL;
- 
- 	lockdep_assert_held(&md->mutex);
-@@ -321,7 +332,7 @@ struct msi_desc *msi_next_desc(struct device *dev, enum msi_desc_filter filter)
- 		return NULL;
- 
- 	md->__iter_idx++;
--	return msi_find_desc(md, filter);
-+	return msi_find_desc(md, domid, filter);
- }
- EXPORT_SYMBOL_GPL(msi_next_desc);
- 
+ 	mutex_init(&md->mutex);
+ 	dev->msi.data = md;
+ 	devres_add(dev, md);
