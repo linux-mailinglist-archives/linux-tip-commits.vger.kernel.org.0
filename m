@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB5F9643004
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:25:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA81A642FF4
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:25:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232950AbiLESZl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Dec 2022 13:25:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39364 "EHLO
+        id S232365AbiLESZh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 13:25:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232444AbiLESZT (ORCPT
+        with ESMTP id S232285AbiLESZS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Dec 2022 13:25:19 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 440C620F45;
-        Mon,  5 Dec 2022 10:25:18 -0800 (PST)
+        Mon, 5 Dec 2022 13:25:18 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58F7520BC1;
+        Mon,  5 Dec 2022 10:25:17 -0800 (PST)
 Date:   Mon, 05 Dec 2022 18:25:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670264715;
+        s=2020; t=1670264714;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mS2z3b1y3oW5O40MVtW9w5wdKrzGp1O/sZM27wOFk5Q=;
-        b=C15yrtmrQ9pgiKsmzajfvnnQVojxw/4ut3qjQnrf1DgW0GPXRzfpt5Es0G11NUsgCwItsp
-        uJihySnM3eGpwRWH2AE2OkTH/YTf/hKA1CHt1MJyFa2oOp9Q2vafNn62hNyVcJ6cTLowEG
-        Q1/KUt3/n46wMYaPW2IyrtKsrFNVUY0FEpLI8kVaniJf1DTbiSph+C0X+aAr3m8/CfRf+v
-        RqB5z5lLv9H3fnoX6J84XtqFP6X2jAO+r3cnt0svhcwjqxpYKi1Nr9gv1jFdkcExY40H/+
-        ctL/p879IRPWJIFd6j8RbjJyJUsmee61wsMsdN4uKpXDz/vdqGKVK9jv6fvOkQ==
+        bh=TwC+1zL/D6a/X+VYAXT8U8US/8yhBkTIPfnDVmQDisI=;
+        b=dgJEBm62Tc+cKl3nkVm+kMKNWjA6/8mxnTbxzXPmRbhRv5pxw6xT3+dCy17X7RUysyFGmP
+        w/51cI0Et8YUG2CgtX089vrQ7UHRfoNzbBNCSfdoN2P8VxS1iHilZdq9hNfGlIWBGfanHC
+        wzB0xAtrsFgSjjUoVPKhA69Fj560xj5t3zloWkmec0V3DflMuyLsD8KR60w+mNM+QkK0JZ
+        /F2RtVVM/Ewa0xVeXfBkPTkOUU4ecPltoyJcG7Ckgy92ZDMRHSQAjkM3e2Gwb6TccG1DRO
+        09EvxLKnY1MrZ+nX8B1yw7R4SnyhgQt0fcjLlWe6JvbUpTEPi4bBA3QVlDbFIg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670264715;
+        s=2020e; t=1670264714;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mS2z3b1y3oW5O40MVtW9w5wdKrzGp1O/sZM27wOFk5Q=;
-        b=2rBB+mQ+tyRcL1GpeP4z4pGPLAhX1GZUTDD4T2O8w03ZuDZN0De0jG0ECgiTV2Pv9zsRvS
-        pEnZIAvZQWSb9JDA==
+        bh=TwC+1zL/D6a/X+VYAXT8U8US/8yhBkTIPfnDVmQDisI=;
+        b=LpPZn1dpRMb6IW7u++xkSDLEld2S/wydBHmYQ/fjerFNeF9e/L3gjXElSFgElh4VFF42UI
+        iTSTRU+6rRb5hOAg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/msi: Provide BUS_DEVICE_PCI_MSI[X]
+Subject: [tip: irq/core] PCI/MSI: Remove unused pci_dev_has_special_msi_domain()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Kevin Tian <kevin.tian@intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221124232325.917219885@linutronix.de>
-References: <20221124232325.917219885@linutronix.de>
+In-Reply-To: <20221124232326.093093200@linutronix.de>
+References: <20221124232326.093093200@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <167026471489.4906.12113430843446895413.tip-bot2@tip-bot2>
+Message-ID: <167026471428.4906.7281447313923412213.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,60 +68,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     29b2f2cfd3f1fd3638799671c3a6758e13943875
-Gitweb:        https://git.kernel.org/tip/29b2f2cfd3f1fd3638799671c3a6758e13943875
+Commit-ID:     96bd2f29f00a60245042f4c0ed85c3e27940d821
+Gitweb:        https://git.kernel.org/tip/96bd2f29f00a60245042f4c0ed85c3e27940d821
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 25 Nov 2022 00:26:02 +01:00
+AuthorDate:    Fri, 25 Nov 2022 00:26:07 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 05 Dec 2022 19:21:02 +01:00
 
-genirq/msi: Provide BUS_DEVICE_PCI_MSI[X]
+PCI/MSI: Remove unused pci_dev_has_special_msi_domain()
 
-Provide new bus tokens for the upcoming per device PCI/MSI and PCI/MSIX
-interrupt domains.
+The check for special MSI domains like VMD which prevents the interrupt
+remapping code to overwrite device::msi::domain is not longer required and
+has been replaced by an x86 specific version which is aware of MSI parent
+domains.
+
+Remove it.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221124232325.917219885@linutronix.de
+Link: https://lore.kernel.org/r/20221124232326.093093200@linutronix.de
 
 ---
- include/linux/irqdomain_defs.h | 2 ++
- kernel/irq/msi.c               | 4 ++++
- 2 files changed, 6 insertions(+)
+ drivers/pci/msi/irqdomain.c | 21 ---------------------
+ include/linux/msi.h         |  1 -
+ 2 files changed, 22 deletions(-)
 
-diff --git a/include/linux/irqdomain_defs.h b/include/linux/irqdomain_defs.h
-index 69035b4..b3f4b7e 100644
---- a/include/linux/irqdomain_defs.h
-+++ b/include/linux/irqdomain_defs.h
-@@ -21,6 +21,8 @@ enum irq_domain_bus_token {
- 	DOMAIN_BUS_TI_SCI_INTA_MSI,
- 	DOMAIN_BUS_WAKEUP,
- 	DOMAIN_BUS_VMD_MSI,
-+	DOMAIN_BUS_PCI_DEVICE_MSI,
-+	DOMAIN_BUS_PCI_DEVICE_MSIX,
- };
- 
- #endif /* _LINUX_IRQDOMAIN_DEFS_H */
-diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index 21a7452..0536db7 100644
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -1121,6 +1121,8 @@ static bool msi_check_reservation_mode(struct irq_domain *domain,
- 
- 	switch(domain->bus_token) {
- 	case DOMAIN_BUS_PCI_MSI:
-+	case DOMAIN_BUS_PCI_DEVICE_MSI:
-+	case DOMAIN_BUS_PCI_DEVICE_MSIX:
- 	case DOMAIN_BUS_VMD_MSI:
- 		break;
- 	default:
-@@ -1146,6 +1148,8 @@ static int msi_handle_pci_fail(struct irq_domain *domain, struct msi_desc *desc,
+diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
+index be3d50f..4736403 100644
+--- a/drivers/pci/msi/irqdomain.c
++++ b/drivers/pci/msi/irqdomain.c
+@@ -414,24 +414,3 @@ struct irq_domain *pci_msi_get_device_domain(struct pci_dev *pdev)
+ 					     DOMAIN_BUS_PCI_MSI);
+ 	return dom;
+ }
+-
+-/**
+- * pci_dev_has_special_msi_domain - Check whether the device is handled by
+- *				    a non-standard PCI-MSI domain
+- * @pdev:	The PCI device to check.
+- *
+- * Returns: True if the device irqdomain or the bus irqdomain is
+- * non-standard PCI/MSI.
+- */
+-bool pci_dev_has_special_msi_domain(struct pci_dev *pdev)
+-{
+-	struct irq_domain *dom = dev_get_msi_domain(&pdev->dev);
+-
+-	if (!dom)
+-		dom = dev_get_msi_domain(&pdev->bus->dev);
+-
+-	if (!dom)
+-		return true;
+-
+-	return dom->bus_token != DOMAIN_BUS_PCI_MSI;
+-}
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index b4ab005..b5dda4b 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -617,7 +617,6 @@ struct irq_domain *pci_msi_create_irq_domain(struct fwnode_handle *fwnode,
+ 					     struct irq_domain *parent);
+ u32 pci_msi_domain_get_msi_rid(struct irq_domain *domain, struct pci_dev *pdev);
+ struct irq_domain *pci_msi_get_device_domain(struct pci_dev *pdev);
+-bool pci_dev_has_special_msi_domain(struct pci_dev *pdev);
+ #else /* CONFIG_PCI_MSI */
+ static inline struct irq_domain *pci_msi_get_device_domain(struct pci_dev *pdev)
  {
- 	switch(domain->bus_token) {
- 	case DOMAIN_BUS_PCI_MSI:
-+	case DOMAIN_BUS_PCI_DEVICE_MSI:
-+	case DOMAIN_BUS_PCI_DEVICE_MSIX:
- 	case DOMAIN_BUS_VMD_MSI:
- 		if (IS_ENABLED(CONFIG_PCI_MSI))
- 			break;
