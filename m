@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F39A642FFB
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:25:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57F54642FF6
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:25:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232947AbiLESZl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Dec 2022 13:25:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39528 "EHLO
+        id S232903AbiLESZf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 13:25:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232410AbiLESZS (ORCPT
+        with ESMTP id S232120AbiLESZS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 5 Dec 2022 13:25:18 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 368D920BCA;
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3649A209A5;
         Mon,  5 Dec 2022 10:25:17 -0800 (PST)
 Date:   Mon, 05 Dec 2022 18:25:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670264714;
+        s=2020; t=1670264713;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Il/CbdHu9pPpiZtWniggttxXh3zGtyvoQhyMRC2LCcw=;
-        b=Nlo4ZNv2J8ClcIlmPHx8DWGX5kIKwdu0LmFBxGI49kps2Kur32WyIHu00xdfMtqI4nrt6W
-        8QBAb6fVQPxj7LyMtxRCZqNpgdmnqjqb3jsjS2DxVjaDtt//SWCbCih2peTz76JhTtZEAU
-        uqjLXYBiBR3aZTdmVUqvx3SJIfnJmA9MPb8iJEIu36Kc++uvtUS3N6oQiktgd4nDhMigyv
-        MwugoVpnioezZSWCcn+tNkY57RPP0pnKosYvI9CAEkauVMaz+AF2OCuTcaB/8HtcYCYddt
-        VJsRGRxNKEkbXhFnPWeACCOajmNe1wJJ6+Z+FVdJgMPqBX9PVFWUxl8CYB6wcA==
+        bh=qtKHZ74nPCKhwCfX/AIwrExnVYjr6fc6kAlNCjlmqnk=;
+        b=CVB/uqRJXb/3w27cQKUTzudgFgCJ6nNoVagJtTaZAY9Qq5RNIYZt74JVqQajKo+V4HmWMg
+        mHuUHG7gcI2hSPG8L4HgZIbnSQQXFd/pNcubx1BDE4Awl6Io4lxto0LkzfN96mV1aOWzia
+        r1AjyfoJRYj3iTdi/lfHVqjn4GO/Q8YC/PkbbgpZyWahLfF/RP+CmSb/99jIekg/MfjkWu
+        dsTdBigeEOCzLwmUWdHQGFezGcFTttkPiQPOeHWEaADKtaxb35xFlsQ28FRh6qwIn0XYaS
+        hKWUS4hOK8HlqkR7uDCa4fITKD6CqWd/PSs9aUlTXKagBHy1opGU2rydwv9/5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670264714;
+        s=2020e; t=1670264713;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Il/CbdHu9pPpiZtWniggttxXh3zGtyvoQhyMRC2LCcw=;
-        b=6puPcduO6SzC+Vl1KbloSzQssnzHX6TlevYWm0eIReo5elLB/VI6WLH/rwGszJDcTfmQef
-        2hFGtYYrkBA68yAQ==
+        bh=qtKHZ74nPCKhwCfX/AIwrExnVYjr6fc6kAlNCjlmqnk=;
+        b=nhbQxHaCRMrNEkGmN7OIk8p3XDMH/KCHPVpWcISA9IOMaHzeGHkya4ylw57KCjWKzLyFjo
+        gDB/QvDUJ8rJPEDw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] iommu/amd: Switch to MSI base domains
+Subject: [tip: irq/core] x86/apic/msi: Remove arch_create_remap_msi_irq_domain()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Kevin Tian <kevin.tian@intel.com>,
         Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221124232326.209212272@linutronix.de>
-References: <20221124232326.209212272@linutronix.de>
+In-Reply-To: <20221124232326.267353814@linutronix.de>
+References: <20221124232326.267353814@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <167026471384.4906.14147282485402173941.tip-bot2@tip-bot2>
+Message-ID: <167026471361.4906.8042825607190869798.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,113 +67,100 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     eb7395d58b1c2c8d5ff76bc2b102d4300a68a67b
-Gitweb:        https://git.kernel.org/tip/eb7395d58b1c2c8d5ff76bc2b102d4300a68a67b
+Commit-ID:     3d81f920bf95dbf2911a87b9ca7e0167525ea325
+Gitweb:        https://git.kernel.org/tip/3d81f920bf95dbf2911a87b9ca7e0167525ea325
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 25 Nov 2022 00:26:10 +01:00
+AuthorDate:    Fri, 25 Nov 2022 00:26:12 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 05 Dec 2022 19:21:02 +01:00
+CommitterDate: Mon, 05 Dec 2022 19:21:03 +01:00
 
-iommu/amd: Switch to MSI base domains
+x86/apic/msi: Remove arch_create_remap_msi_irq_domain()
 
-Remove the global PCI/MSI irqdomain implementation and provide the required
-MSI parent ops so the PCI/MSI code can detect the new parent and setup per
-device domains.
+and related code which is not longer required now that the interrupt remap
+code has been converted to MSI parent domains.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221124232326.209212272@linutronix.de
+Link: https://lore.kernel.org/r/20221124232326.267353814@linutronix.de
 
 ---
- arch/x86/kernel/apic/msi.c          |  1 +
- drivers/iommu/amd/amd_iommu_types.h |  1 -
- drivers/iommu/amd/iommu.c           | 19 +++++++++++++------
- include/linux/irqdomain_defs.h      |  1 +
- 4 files changed, 15 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/irq_remapping.h |  4 +---
+ arch/x86/kernel/apic/msi.c           | 42 +---------------------------
+ 2 files changed, 1 insertion(+), 45 deletions(-)
 
+diff --git a/arch/x86/include/asm/irq_remapping.h b/arch/x86/include/asm/irq_remapping.h
+index 7cc4943..7a2ed15 100644
+--- a/arch/x86/include/asm/irq_remapping.h
++++ b/arch/x86/include/asm/irq_remapping.h
+@@ -44,10 +44,6 @@ extern int irq_remapping_reenable(int);
+ extern int irq_remap_enable_fault_handling(void);
+ extern void panic_if_irq_remap(const char *msg);
+ 
+-/* Create PCI MSI/MSIx irqdomain, use @parent as the parent irqdomain. */
+-extern struct irq_domain *
+-arch_create_remap_msi_irq_domain(struct irq_domain *par, const char *n, int id);
+-
+ /* Get parent irqdomain for interrupt remapping irqdomain */
+ static inline struct irq_domain *arch_get_ir_parent_domain(void)
+ {
 diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
-index a8dccb0..d198da3 100644
+index d198da3..682f51a 100644
 --- a/arch/x86/kernel/apic/msi.c
 +++ b/arch/x86/kernel/apic/msi.c
-@@ -218,6 +218,7 @@ static bool x86_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
- 		info->flags |= MSI_FLAG_NOMASK_QUIRK;
- 		break;
- 	case DOMAIN_BUS_DMAR:
-+	case DOMAIN_BUS_AMDVI:
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index 1d0a70c..3d68419 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -734,7 +734,6 @@ struct amd_iommu {
- 	u8 max_counters;
- #ifdef CONFIG_IRQ_REMAP
- 	struct irq_domain *ir_domain;
--	struct irq_domain *msi_domain;
- 
- 	struct amd_irte_ops *irte_ops;
- #endif
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 67e209c..7caccd8 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -815,7 +815,7 @@ amd_iommu_set_pci_msi_domain(struct device *dev, struct amd_iommu *iommu)
- 	    !pci_dev_has_default_msi_parent_domain(to_pci_dev(dev)))
- 		return;
- 
--	dev_set_msi_domain(dev, iommu->msi_domain);
-+	dev_set_msi_domain(dev, iommu->ir_domain);
+@@ -277,7 +277,7 @@ void __init x86_create_pci_msi_domain(void)
+ 	x86_pci_msi_default_domain = x86_init.irqs.create_pci_msi_domain();
  }
  
- #else /* CONFIG_IRQ_REMAP */
-@@ -3648,6 +3648,12 @@ static struct irq_chip amd_ir_chip = {
- 	.irq_compose_msi_msg	= ir_compose_msi_msg,
- };
- 
-+static const struct msi_parent_ops amdvi_msi_parent_ops = {
-+	.supported_flags	= X86_VECTOR_MSI_FLAGS_SUPPORTED | MSI_FLAG_MULTI_PCI_MSI,
-+	.prefix			= "IR-",
-+	.init_dev_msi_info	= msi_parent_init_dev_msi_info,
-+};
-+
- int amd_iommu_create_irq_domain(struct amd_iommu *iommu)
+-/* Keep around for hyperV and the remap code below */
++/* Keep around for hyperV */
+ int pci_msi_prepare(struct irq_domain *domain, struct device *dev, int nvec,
+ 		    msi_alloc_info_t *arg)
  {
- 	struct fwnode_handle *fn;
-@@ -3655,16 +3661,17 @@ int amd_iommu_create_irq_domain(struct amd_iommu *iommu)
- 	fn = irq_domain_alloc_named_id_fwnode("AMD-IR", iommu->index);
- 	if (!fn)
- 		return -ENOMEM;
--	iommu->ir_domain = irq_domain_create_tree(fn, &amd_ir_domain_ops, iommu);
-+	iommu->ir_domain = irq_domain_create_hierarchy(arch_get_ir_parent_domain(), 0, 0,
-+						       fn, &amd_ir_domain_ops, iommu);
- 	if (!iommu->ir_domain) {
- 		irq_domain_free_fwnode(fn);
- 		return -ENOMEM;
- 	}
- 
--	iommu->ir_domain->parent = arch_get_ir_parent_domain();
--	iommu->msi_domain = arch_create_remap_msi_irq_domain(iommu->ir_domain,
--							     "AMD-IR-MSI",
--							     iommu->index);
-+	irq_domain_update_bus_token(iommu->ir_domain,  DOMAIN_BUS_AMDVI);
-+	iommu->ir_domain->flags |= IRQ_DOMAIN_FLAG_MSI_PARENT;
-+	iommu->ir_domain->msi_parent_ops = &amdvi_msi_parent_ops;
-+
- 	return 0;
+@@ -291,46 +291,6 @@ int pci_msi_prepare(struct irq_domain *domain, struct device *dev, int nvec,
  }
+ EXPORT_SYMBOL_GPL(pci_msi_prepare);
  
-diff --git a/include/linux/irqdomain_defs.h b/include/linux/irqdomain_defs.h
-index 3a09396..0b2d8a8 100644
---- a/include/linux/irqdomain_defs.h
-+++ b/include/linux/irqdomain_defs.h
-@@ -24,6 +24,7 @@ enum irq_domain_bus_token {
- 	DOMAIN_BUS_PCI_DEVICE_MSI,
- 	DOMAIN_BUS_PCI_DEVICE_MSIX,
- 	DOMAIN_BUS_DMAR,
-+	DOMAIN_BUS_AMDVI,
- };
- 
- #endif /* _LINUX_IRQDOMAIN_DEFS_H */
+-#ifdef CONFIG_IRQ_REMAP
+-static struct msi_domain_ops pci_msi_domain_ops = {
+-	.msi_prepare	= pci_msi_prepare,
+-};
+-
+-static struct irq_chip pci_msi_ir_controller = {
+-	.name			= "IR-PCI-MSI",
+-	.irq_unmask		= pci_msi_unmask_irq,
+-	.irq_mask		= pci_msi_mask_irq,
+-	.irq_ack		= irq_chip_ack_parent,
+-	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+-	.flags			= IRQCHIP_SKIP_SET_WAKE |
+-				  IRQCHIP_AFFINITY_PRE_STARTUP,
+-};
+-
+-static struct msi_domain_info pci_msi_ir_domain_info = {
+-	.flags		= MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
+-			  MSI_FLAG_MULTI_PCI_MSI | MSI_FLAG_PCI_MSIX,
+-	.ops		= &pci_msi_domain_ops,
+-	.chip		= &pci_msi_ir_controller,
+-	.handler	= handle_edge_irq,
+-	.handler_name	= "edge",
+-};
+-
+-struct irq_domain *arch_create_remap_msi_irq_domain(struct irq_domain *parent,
+-						    const char *name, int id)
+-{
+-	struct fwnode_handle *fn;
+-	struct irq_domain *d;
+-
+-	fn = irq_domain_alloc_named_id_fwnode(name, id);
+-	if (!fn)
+-		return NULL;
+-	d = pci_msi_create_irq_domain(fn, &pci_msi_ir_domain_info, parent);
+-	if (!d)
+-		irq_domain_free_fwnode(fn);
+-	return d;
+-}
+-#endif
+-
+ #ifdef CONFIG_DMAR_TABLE
+ /*
+  * The Intel IOMMU (ab)uses the high bits of the MSI address to contain the
