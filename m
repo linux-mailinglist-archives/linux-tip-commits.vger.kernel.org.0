@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2566F643028
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:27:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88584643032
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Dec 2022 19:27:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233243AbiLES0Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Dec 2022 13:26:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39808 "EHLO
+        id S233295AbiLES03 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Dec 2022 13:26:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232636AbiLESZX (ORCPT
+        with ESMTP id S232686AbiLESZY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Dec 2022 13:25:23 -0500
+        Mon, 5 Dec 2022 13:25:24 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96ADD2125D;
-        Mon,  5 Dec 2022 10:25:22 -0800 (PST)
-Date:   Mon, 05 Dec 2022 18:25:20 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898392098A;
+        Mon,  5 Dec 2022 10:25:23 -0800 (PST)
+Date:   Mon, 05 Dec 2022 18:25:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670264721;
+        s=2020; t=1670264722;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lK52VqS+nA4fYa+B2TcS1ex1rq4ICiou2FpdOjsQPSI=;
-        b=sSz6UTwcigi7I8akpF7W/bkqYRmZ+ktGtWRpwC6RQ9P73pymvhZK9QXHjFzydhdCJe/DBv
-        M7F7R9I0UcshaOuD8j+O4zQm4k83CZImQuu6cLldPXMZ9f02nb31ZzmeSMdRBtiqchFne3
-        bbt8ax7fP+wNKMlaXORL24KO0pWRaEP6CjVbssQgDFrPCrtslh75RfRSPxIsuJT8UbhK8S
-        yvEfu8rBBwFMrCez2K5f+hiIw4WD6Dsr3mAS0Xr7gT7ygo+yPLXTEW6q9pZ+b+mKhIChYd
-        Byr2OdnCRyGAK+jIfGptECplc7YkeM+DKrJuknoUlirAr87b7z5si9fmlNxNYA==
+        bh=667oBIoslqo0oieRpBWYXvRNbW6Fv1di387HPtPfYSQ=;
+        b=fpSUpg5TCAgpyu6t1UpTSo96VLuH8HuX2QH4HhUUzVDfKiN136uqTNiT5/QM05Ovd22vNL
+        FNkJz9FJtY3w0d3WE1wLzxXJNYBUSSWjINgt/Ht/xX5I0B/zEq1ncifUkBVuBWj/NdOpFI
+        +evlw/9QC7txsf1xKRcuowf0UQVsNm4pmq775n9M0MdGNBLuuYJs7WAQlfEqbeCp5kDTSw
+        DqNcu19kzyqcp6EhbZp6gPpblQ0ttidIZ+kAAFJq9zjJvEeshjZg4egtcZtcNPvuSRSqwI
+        iQupxG6smkw8UUZGPyKgLOPRexM0MNalqqs+IqHdrJj2iJyAE6GsmfPRjDZAEw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670264721;
+        s=2020e; t=1670264722;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lK52VqS+nA4fYa+B2TcS1ex1rq4ICiou2FpdOjsQPSI=;
-        b=0jo1uFk9QBnPy0twNE6B6LIMYFymYbE6c7GTLpIVaA2D+U5DnwTM57Seis/dNb8cahl9bZ
-        psLfyjJoLYqKsxBQ==
+        bh=667oBIoslqo0oieRpBWYXvRNbW6Fv1di387HPtPfYSQ=;
+        b=pCtoYlvwFk8hm+gMgq4hTlni8qZo80b12kQxJgHvHUuKCb6QpIhhodeOF80dtT5AWpZsKH
+        huwPW0niK0qlMqDg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/msi: Check for invalid MSI parent domain usage
+Subject: [tip: irq/core] genirq/irqdomain: Rename irq_domain::dev to
+ irq_domain:: Pm_dev
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Kevin Tian <kevin.tian@intel.com>,
         Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221124230313.806128070@linutronix.de>
-References: <20221124230313.806128070@linutronix.de>
+In-Reply-To: <20221124230313.574541683@linutronix.de>
+References: <20221124230313.574541683@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <167026472092.4906.17905366797803446408.tip-bot2@tip-bot2>
+Message-ID: <167026472181.4906.14684993456898030611.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,66 +69,121 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     3e86a3a3ed031dd498e614db0fa082a58d700df9
-Gitweb:        https://git.kernel.org/tip/3e86a3a3ed031dd498e614db0fa082a58d700df9
+Commit-ID:     6a9fc4190ca23fcf327de666e1a98dbdcdd2d210
+Gitweb:        https://git.kernel.org/tip/6a9fc4190ca23fcf327de666e1a98dbdcdd2d210
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 25 Nov 2022 00:24:19 +01:00
+AuthorDate:    Fri, 25 Nov 2022 00:24:12 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 05 Dec 2022 19:20:59 +01:00
+CommitterDate: Mon, 05 Dec 2022 19:20:58 +01:00
 
-genirq/msi: Check for invalid MSI parent domain usage
+genirq/irqdomain: Rename irq_domain::dev to irq_domain:: Pm_dev
 
-In the upcoming per device MSI domain concept the MSI parent domains are
-not allowed to be used as regular MSI domains where the MSI allocation/free
-operations are applicable.
+irq_domain::dev is a misnomer as it's usually the rule that a device
+pointer points to something which is directly related to the instance.
 
-Add appropriate checks.
+irq_domain::dev can point to some other device for power management to
+ensure that this underlying device is not powered down when an interrupt is
+allocated.
+
+The upcoming per device MSI domains really require a pointer to the device
+which instantiated the irq domain and not to some random other device which
+is required for power management down the chain.
+
+Rename irq_domain::dev to irq_domain::pm_dev and fixup the few sites which
+use that pointer.
+
+Conversion was done with the help of coccinelle.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221124230313.806128070@linutronix.de
+Link: https://lore.kernel.org/r/20221124230313.574541683@linutronix.de
 
 ---
- kernel/irq/msi.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-gic.c | 4 ++--
+ include/linux/irqdomain.h | 6 +++---
+ kernel/irq/chip.c         | 8 ++++----
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index c37c0be..5939dc6 100644
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -937,13 +937,21 @@ int msi_domain_alloc_irqs_descs_locked(struct irq_domain *domain, struct device 
+diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
+index 4c7bae0..08834e5 100644
+--- a/drivers/irqchip/irq-gic.c
++++ b/drivers/irqchip/irq-gic.c
+@@ -401,8 +401,8 @@ static void gic_irq_print_chip(struct irq_data *d, struct seq_file *p)
+ {
+ 	struct gic_chip_data *gic = irq_data_get_irq_chip_data(d);
  
- 	lockdep_assert_held(&dev->msi.data->mutex);
- 
-+	if (WARN_ON_ONCE(irq_domain_is_msi_parent(domain))) {
-+		ret = -EINVAL;
-+		goto free;
-+	}
-+
-+	/* Frees allocated descriptors in case of failure. */
- 	ret = msi_domain_add_simple_msi_descs(info, dev, nvec);
- 	if (ret)
--		return ret;
-+		goto free;
- 
- 	ret = ops->domain_alloc_irqs(domain, dev, nvec);
--	if (ret)
--		msi_domain_free_irqs_descs_locked(domain, dev);
-+	if (!ret)
-+		return 0;
-+free:
-+	msi_domain_free_irqs_descs_locked(domain, dev);
- 	return ret;
+-	if (gic->domain->dev)
+-		seq_printf(p, gic->domain->dev->of_node->name);
++	if (gic->domain->pm_dev)
++		seq_printf(p, gic->domain->pm_dev->of_node->name);
+ 	else
+ 		seq_printf(p, "GIC-%d", (int)(gic - &gic_data[0]));
+ }
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index b1fdd8d..aa76da8 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -131,7 +131,7 @@ struct irq_domain_chip_generic;
+  * @gc:		Pointer to a list of generic chips. There is a helper function for
+  *		setting up one or more generic chips for interrupt controllers
+  *		drivers using the generic chip library which uses this pointer.
+- * @dev:	Pointer to a device that can be utilized for power management
++ * @pm_dev:	Pointer to a device that can be utilized for power management
+  *		purposes related to the irq domain.
+  * @parent:	Pointer to parent irq_domain to support hierarchy irq_domains
+  *
+@@ -153,7 +153,7 @@ struct irq_domain {
+ 	struct fwnode_handle		*fwnode;
+ 	enum irq_domain_bus_token	bus_token;
+ 	struct irq_domain_chip_generic	*gc;
+-	struct device			*dev;
++	struct device			*pm_dev;
+ #ifdef	CONFIG_IRQ_DOMAIN_HIERARCHY
+ 	struct irq_domain		*parent;
+ #endif
+@@ -206,7 +206,7 @@ static inline void irq_domain_set_pm_device(struct irq_domain *d,
+ 					    struct device *dev)
+ {
+ 	if (d)
+-		d->dev = dev;
++		d->pm_dev = dev;
  }
  
-@@ -1013,6 +1021,9 @@ void msi_domain_free_irqs_descs_locked(struct irq_domain *domain, struct device 
+ #ifdef CONFIG_IRQ_DOMAIN
+diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
+index 8ac37e8..49e7bc8 100644
+--- a/kernel/irq/chip.c
++++ b/kernel/irq/chip.c
+@@ -1561,10 +1561,10 @@ int irq_chip_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
+ 	return 0;
+ }
  
- 	lockdep_assert_held(&dev->msi.data->mutex);
+-static struct device *irq_get_parent_device(struct irq_data *data)
++static struct device *irq_get_pm_device(struct irq_data *data)
+ {
+ 	if (data->domain)
+-		return data->domain->dev;
++		return data->domain->pm_dev;
  
-+	if (WARN_ON_ONCE(irq_domain_is_msi_parent(domain)))
-+		return;
-+
- 	ops->domain_free_irqs(domain, dev);
- 	if (ops->msi_post_free)
- 		ops->msi_post_free(domain, dev);
+ 	return NULL;
+ }
+@@ -1578,7 +1578,7 @@ static struct device *irq_get_parent_device(struct irq_data *data)
+  */
+ int irq_chip_pm_get(struct irq_data *data)
+ {
+-	struct device *dev = irq_get_parent_device(data);
++	struct device *dev = irq_get_pm_device(data);
+ 	int retval = 0;
+ 
+ 	if (IS_ENABLED(CONFIG_PM) && dev)
+@@ -1597,7 +1597,7 @@ int irq_chip_pm_get(struct irq_data *data)
+  */
+ int irq_chip_pm_put(struct irq_data *data)
+ {
+-	struct device *dev = irq_get_parent_device(data);
++	struct device *dev = irq_get_pm_device(data);
+ 	int retval = 0;
+ 
+ 	if (IS_ENABLED(CONFIG_PM) && dev)
