@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DC026442C2
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Dec 2022 12:59:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD7CE6442C5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Dec 2022 12:59:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234322AbiLFL7W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 6 Dec 2022 06:59:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51820 "EHLO
+        id S234908AbiLFL7Z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 6 Dec 2022 06:59:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234960AbiLFL6a (ORCPT
+        with ESMTP id S234965AbiLFL6a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 6 Dec 2022 06:58:30 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 801EF286F9;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802A1286FB;
         Tue,  6 Dec 2022 03:57:58 -0800 (PST)
-Date:   Tue, 06 Dec 2022 11:57:55 -0000
+Date:   Tue, 06 Dec 2022 11:57:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1670327876;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UHGQJTwsNN6HaBNZBNClbbvaQLAwkpG5ENTqPqpgULE=;
-        b=DHRVX/SUYV9Y/dC5uIO/CBIgs5X9NVPCJcdOa5yj7dfc8kJjhMykcHPp18V5lNI4ZaruDH
-        tr1q5zZ3QzAIKS1fLeXVPigLkVhmJJ04P9e0ASp3p6T+AfferICWvs1mHaTsW54oi2SoyY
-        9GUuzO2KzbqTTtrHHhyGzvnjelMGt+lXWJSMMYBwTVK5pyzeB81jOGTZkqD9eEXQCX28S4
-        f/4R5EXUbPsjeOPlgWPuU7qjZnurWJfBquzscZm+tK59c1Tckg8gupgATIN3dCirZn+XIu
-        /W4PCIwAQ0tEYvw4+6UhTsospx6b5DzYSds//DcbarQ9feK1KLp11Ya4PdR0rg==
+        bh=6ng/LNbhDzxZQgxT8OoCtHu1I5ZIbZUJTJ9AIa13S1w=;
+        b=pHzgrHtxN28tIu6L7f0id02HAlMG2N8bYyJwXQs7nEIK4NRMOhz0LtO08Xa119YksXG+0P
+        FYECwnMaVKVA443XMzDioQ/aXsEUWT1ka/DJ09WVAVURS37avxIu+if91h+q/kFyu65q+j
+        npbIFzLdLdJK3ZO4eiPs48Uf1gYGd2pUoq6Ae8FtksCB5sJR0DVDbxCh79HvJiYPFwKMTO
+        ApzE55PYxAiXi5mxmkJMkBa8Xhp7K8sQ79Ldew6LvDfe+r3WJENhnC8XLx1AqjW3+oLt34
+        yK2Nk2N5R/cLYFGl9lrA9lXTXh6NqyCEQW7wYj9Tf32GNDYQUrVQ61bowiay6g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1670327876;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,25 +36,25 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UHGQJTwsNN6HaBNZBNClbbvaQLAwkpG5ENTqPqpgULE=;
-        b=b3qlPPzeWbGPj9qWjbFxTrHnljcoP4SMhL2EqCgsmU2CPd+ccj4oOl7KpBPpGlZBBB+wD9
-        Jly6VxEILmQU6jCg==
+        bh=6ng/LNbhDzxZQgxT8OoCtHu1I5ZIbZUJTJ9AIa13S1w=;
+        b=MiEj5BBgE0owB/ni48YA1ckUJP0tIAhHhWM2OcnFixv3ZUtQrVFQeORNdrMDrDwg9iz7bu
+        CnUpt+5rwv+jRIAQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/ti-sci-inta: Fix kernel doc
+Subject: [tip: irq/core] irqchip/gic-v2m: Include arm-gic-common.h
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221121140048.596303869@linutronix.de>
-References: <20221121140048.596303869@linutronix.de>
+In-Reply-To: <20221121140048.470680255@linutronix.de>
+References: <20221121140048.470680255@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <167032787599.4906.15535679126278048472.tip-bot2@tip-bot2>
+Message-ID: <167032787643.4906.14992962434440513220.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -66,38 +66,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     e6d22108621c837f81d041ec5d61b08d17b151df
-Gitweb:        https://git.kernel.org/tip/e6d22108621c837f81d041ec5d61b08d17b151df
+Commit-ID:     72a3f8f22a36aaf05da8941535d1c553fe049b2b
+Gitweb:        https://git.kernel.org/tip/72a3f8f22a36aaf05da8941535d1c553fe0=
+49b2b
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 21 Nov 2022 15:39:34 +01:00
+AuthorDate:    Mon, 21 Nov 2022 15:39:32 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 06 Dec 2022 12:50:18 +01:00
+CommitterDate: Tue, 06 Dec 2022 12:50:17 +01:00
 
-irqchip/ti-sci-inta: Fix kernel doc
+irqchip/gic-v2m: Include arm-gic-common.h
 
-W=1 build complains:
+W=3D1 build complains:
 
-drivers/irqchip/irq-ti-sci-inta.c:177: warning: Function parameter or member 'vint_id' not described in 'ti_sci_inta_xlate_irq'
-drivers/irqchip/irq-ti-sci-inta.c:177: warning: Excess function parameter 'irq' description in 'ti_sci_inta_xlate_irq'
+drivers/irqchip/irq-gic-v2m.c:570:12: warning: no previous prototype for =E2=
+=80=98gicv2m_init=E2=80=99 [-Wmissing-prototypes]
+  570 | int __init gicv2m_init(struct fwnode_handle *parent_handle,
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221121140048.596303869@linutronix.de
+Link: https://lore.kernel.org/r/20221121140048.470680255@linutronix.de
 
 ---
- drivers/irqchip/irq-ti-sci-inta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v2m.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/irqchip/irq-ti-sci-inta.c b/drivers/irqchip/irq-ti-sci-inta.c
-index 5fdbb43..a6ecc53 100644
---- a/drivers/irqchip/irq-ti-sci-inta.c
-+++ b/drivers/irqchip/irq-ti-sci-inta.c
-@@ -168,7 +168,7 @@ static void ti_sci_inta_irq_handler(struct irq_desc *desc)
- /**
-  * ti_sci_inta_xlate_irq() - Translate hwirq to parent's hwirq.
-  * @inta:	IRQ domain corresponding to Interrupt Aggregator
-- * @irq:	Hardware irq corresponding to the above irq domain
-+ * @vint_id:	Hardware irq corresponding to the above irq domain
-  *
-  * Return parent irq number if translation is available else -ENOENT.
-  */
+diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
+index 6e1ac33..fcc871a 100644
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -24,6 +24,7 @@
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/irqchip/arm-gic.h>
++#include <linux/irqchip/arm-gic-common.h>
+=20
+ /*
+ * MSI_TYPER:
