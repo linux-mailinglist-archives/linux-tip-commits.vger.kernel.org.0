@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB03D6485D4
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Dec 2022 16:47:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 596876485D5
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Dec 2022 16:47:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230175AbiLIPrd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Dec 2022 10:47:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35366 "EHLO
+        id S230121AbiLIPre (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Dec 2022 10:47:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230263AbiLIPr1 (ORCPT
+        with ESMTP id S230350AbiLIPr1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 9 Dec 2022 10:47:27 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7E7D37F88;
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E231C379FE;
         Fri,  9 Dec 2022 07:47:26 -0800 (PST)
 Date:   Fri, 09 Dec 2022 15:47:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ITu4OWRFn+S5UYPrlPXpHbPjjMKCTQ8bHagXpCHoZmA=;
-        b=0QNFZTXtVgWf+vJCTnNCH45saEie1CgRxDCZSDiU9XT9W/glHaolkQGAtPrLNl3ERL0ZpR
-        tV9HCc5LSQ4/CzK/Kr03CJt+zZzLioZxNauiIgHE0g9HoQdzaRjtbZ0SdJOaW4VFG5vieX
-        lnoIH2vk4sbVqQQQzbHpzw9L4Z1OkfcGuwlk0POgrBsJ6qAFRvA/uwRE5JIrodmB/YoWUq
-        KZOez76K5XTGVdJJEc7s+K0thYtTB43IanVmLr/ezoTB9Pl/Bq48pczu5dVf+ly+tPyQ45
-        hM0JWIT2SvrS8xKuOuvg+J/1lZrtbEJm9m71iTaUsg5vh1eRw/L2RhKUmykfpQ==
+        bh=kWhPFQaF7u4DJr+B6nu29bDhBVH9d+i6oLF6X/1Nlmc=;
+        b=ejf9GsbtK8AK1hKqLUwVCXc4CDKaVLHQimSgsyRmm+VHhOxjuXvnpDdDWpXZvfHa8mWewJ
+        bvJGBZpKNqHnnnMrg92ymbftewHNIsb1WKHtVdfAX3FyYGm/ZQLDzp/leKybiCf9bbavC7
+        ALChGBba14G5RqmQTCjAWODokaweJ7vCn5arFlHJe7n7ab6zouoK2f+ODSLMJgQEbtr6dD
+        KtBzjGglgPy7LKCS74wRncyTBsPuD1l7mJrHL1DPA8TG+65ossSs4pZ/0EQ9EP7TdAAxUw
+        DMDAD5Dei+Vd7AsPfTE6JOG0KaBpYLFGONPLcQZoNEUZddFdPlazXtfYxS4cMw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1670600844;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,27 +36,28 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ITu4OWRFn+S5UYPrlPXpHbPjjMKCTQ8bHagXpCHoZmA=;
-        b=Gz9dtpev15+JMfOuVHimVSShe0wPxytoqdhSCTwJT7aGRLQhky9/yWpj2kyV2O00b9JLeq
-        T4kfNaWSBN6K/uCA==
-From:   "tip-bot2 for Johan Jonker" <tip-bot2@linutronix.de>
+        bh=kWhPFQaF7u4DJr+B6nu29bDhBVH9d+i6oLF6X/1Nlmc=;
+        b=QUv1RTcDb9m9qmQMtyHi2lX56pmR9dD8a5kK6z0z0EvpoAU3j94Wx/bUTNMX5sQcLp0usA
+        5EiU6tjRpTYryhAA==
+From:   tip-bot2 for Jonathan =?utf-8?q?Neusch=C3=A4fer?= 
+        <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] dt-bindings: timer: rockchip: Add rockchip,rk3128-timer
-Cc:     Johan Jonker <jbx6244@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>,
+Subject: [tip: timers/core] dt-bindings: timer: nuvoton,npcm7xx-timer: Allow
+ specifying all clocks
+Cc:     j.neuschaefer@gmx.net, Rob Herring <robh@kernel.org>,
+        Joel Stanley <joel@jms.id.au>,
         Daniel Lezcano <daniel.lezcano@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <0e57f38f-bace-8556-7258-aa0b3c0ac103@gmail.com>
-References: <0e57f38f-bace-8556-7258-aa0b3c0ac103@gmail.com>
+In-Reply-To: <20221104161850.2889894-2-j.neuschaefer@gmx.net>
+References: <20221104161850.2889894-2-j.neuschaefer@gmx.net>
 MIME-Version: 1.0
-Message-ID: <167060084386.4906.16536323054669590157.tip-bot2@tip-bot2>
+Message-ID: <167060084366.4906.15959650150118240047.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -68,35 +69,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     9ffa5e6b8f93ccf1a217dd12e204c1a5e211abef
-Gitweb:        https://git.kernel.org/tip/9ffa5e6b8f93ccf1a217dd12e204c1a5e211abef
-Author:        Johan Jonker <jbx6244@gmail.com>
-AuthorDate:    Fri, 28 Oct 2022 16:41:30 +02:00
+Commit-ID:     aa3f72ea9410f8c9394a5d25bbf40a4cfb56f5a0
+Gitweb:        https://git.kernel.org/tip/aa3f72ea9410f8c9394a5d25bbf40a4cfb5=
+6f5a0
+Author:        Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+AuthorDate:    Fri, 04 Nov 2022 17:18:45 +01:00
 Committer:     Daniel Lezcano <daniel.lezcano@kernel.org>
-CommitterDate: Fri, 02 Dec 2022 12:48:27 +01:00
+CommitterDate: Fri, 02 Dec 2022 12:48:28 +01:00
 
-dt-bindings: timer: rockchip: Add rockchip,rk3128-timer
+dt-bindings: timer: nuvoton,npcm7xx-timer: Allow specifying all clocks
 
-Add rockchip,rk3128-timer compatible string.
+The timer module contains multiple timers. In the WPCM450 SoC, each timer
+runs off a clock can be gated individually. To model this correctly, the
+timer node in the devicetree needs to take multiple clock inputs.
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+Link: https://lore.kernel.org/r/20221104161850.2889894-2-j.neuschaefer@gmx.net
 Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-Link: https://lore.kernel.org/r/0e57f38f-bace-8556-7258-aa0b3c0ac103@gmail.com
 ---
- Documentation/devicetree/bindings/timer/rockchip,rk-timer.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/timer/nuvoton,npcm7xx-timer.yaml | 8 +++++=
+++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/timer/rockchip,rk-timer.yaml b/Documentation/devicetree/bindings/timer/rockchip,rk-timer.yaml
-index dc3bc1e..b61ed1a 100644
---- a/Documentation/devicetree/bindings/timer/rockchip,rk-timer.yaml
-+++ b/Documentation/devicetree/bindings/timer/rockchip,rk-timer.yaml
-@@ -18,6 +18,7 @@ properties:
-           - enum:
-               - rockchip,rv1108-timer
-               - rockchip,rk3036-timer
-+              - rockchip,rk3128-timer
-               - rockchip,rk3188-timer
-               - rockchip,rk3228-timer
-               - rockchip,rk3229-timer
+diff --git a/Documentation/devicetree/bindings/timer/nuvoton,npcm7xx-timer.ya=
+ml b/Documentation/devicetree/bindings/timer/nuvoton,npcm7xx-timer.yaml
+index 737af78..d53e1bb 100644
+--- a/Documentation/devicetree/bindings/timer/nuvoton,npcm7xx-timer.yaml
++++ b/Documentation/devicetree/bindings/timer/nuvoton,npcm7xx-timer.yaml
+@@ -25,7 +25,13 @@ properties:
+       - description: The timer interrupt of timer 0
+=20
+   clocks:
+-    maxItems: 1
++    items:
++      - description: The reference clock for timer 0
++      - description: The reference clock for timer 1
++      - description: The reference clock for timer 2
++      - description: The reference clock for timer 3
++      - description: The reference clock for timer 4
++    minItems: 1
+=20
+ required:
+   - compatible
