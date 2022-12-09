@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 979C46485CD
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Dec 2022 16:47:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 581306485CF
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Dec 2022 16:47:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230361AbiLIPr2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Dec 2022 10:47:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35368 "EHLO
+        id S230396AbiLIPra (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Dec 2022 10:47:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230205AbiLIPrZ (ORCPT
+        with ESMTP id S230256AbiLIPr1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Dec 2022 10:47:25 -0500
+        Fri, 9 Dec 2022 10:47:27 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65FDC37F88;
-        Fri,  9 Dec 2022 07:47:24 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 152DC30578;
+        Fri,  9 Dec 2022 07:47:26 -0800 (PST)
 Date:   Fri, 09 Dec 2022 15:47:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1670600843;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/L89Jisaszb2KZ82TACDoQmvI8vtjDwMU2HkvQaUgm0=;
-        b=S7Y6R39e9P/x5NKovC5IoWgzZQ4Y1wkgA9CAiiWy2ru1BPXObHRQtSGlcggzjtnlD4lcCU
-        ekQcTcyXTo07hQYbOCii6ZpFIcOWZBq2jNrCZsCuUgwKuPyYF/9xaKq9mino29wBmz8b7Q
-        F1UXynSCE42fK2HYP02wIAT7e/xCoynmxWW1Fc7zNl0SPzZqKcx7xG/Fq0J4gEr4iGLK0Y
-        EeEdCvZcts0v7nolfMY8HRGHsv9un9NHrQzbhdHwp3bTziPExZBkpSLNsNpFl4L+kI2A7B
-        gMTVqEWLgqTXwUF4pSjRXSw+La+pCqy2JXZ5KmpRSj5+KeDWTm0LT3pid/pY1A==
+        bh=C6UfZriK7ryc7OxQIk3jAf9chxTyoygDgagwMczktRM=;
+        b=IL1SHomh5R7RzTfwiyU8++kZ4eJxd+9UuI08JF3d08ccnQxL0uHUdbg23s4ZPnQ4wmhD84
+        zvR2mISpdJXqGcz2Xyr5p1PWexXGYmf8T6Od50Lkv6RTbF1JB0Lv7IbBPpDeEb0jKnKhEE
+        MCIBa/hFzf5oKxqg96/uXGsx3jucz30/DSdQNcZyXVj9m+f3S4Q084Lfzr3MjjajpFBOyS
+        BdyK3qPT6YdJZPpdu2uw2eJwQKNjCn0MiwCZsucshU0AQPXhjDQhOxEGhFPID8CycLbnP5
+        pa8nTJplW/RbDWL1pKvZJb0/WfLZI9f9EFicKC/GfUydjk3qZ0n2bMnUvxGoaA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1670600843;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/L89Jisaszb2KZ82TACDoQmvI8vtjDwMU2HkvQaUgm0=;
-        b=PN78vMFWIOUWyZeaEeVZXX8aaF/ZGgZfvNzkiFQO6YGONsaf6nYP0KpO8a8+LPLc20g4w7
-        /viSSxfOftcrPnAg==
+        bh=C6UfZriK7ryc7OxQIk3jAf9chxTyoygDgagwMczktRM=;
+        b=WfWZ1lIe4aW8ioVfd7WpOLHCs6dQONOD/7SF0jTDKFO3OVxPyKNdw/EKshNwXNfEoxtWZk
+        Ao9CYY533rE2lABg==
 From:   "tip-bot2 for Tony Lindgren" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Clear settings on
- probe and free
-Cc:     Tony Lindgren <tony@atomide.com>,
+Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Make timer_get_irq static
+Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
         Daniel Lezcano <daniel.lezcano@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221028103813.40783-1-tony@atomide.com>
-References: <20221028103813.40783-1-tony@atomide.com>
+In-Reply-To: <20221028103604.40385-1-tony@atomide.com>
+References: <20221028103604.40385-1-tony@atomide.com>
 MIME-Version: 1.0
-Message-ID: <167060084277.4906.10637289144406021448.tip-bot2@tip-bot2>
+Message-ID: <167060084293.4906.12524389435777602440.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,68 +67,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     822963b96dfdb72ec4fb1395fbdfa778656b49d1
-Gitweb:        https://git.kernel.org/tip/822963b96dfdb72ec4fb1395fbdfa778656b49d1
+Commit-ID:     dedb2aced3e958c6f4811d3e6b392652ff0eea01
+Gitweb:        https://git.kernel.org/tip/dedb2aced3e958c6f4811d3e6b392652ff0eea01
 Author:        Tony Lindgren <tony@atomide.com>
-AuthorDate:    Fri, 28 Oct 2022 13:38:13 +03:00
+AuthorDate:    Fri, 28 Oct 2022 13:36:04 +03:00
 Committer:     Daniel Lezcano <daniel.lezcano@kernel.org>
 CommitterDate: Fri, 02 Dec 2022 13:16:46 +01:00
 
-clocksource/drivers/timer-ti-dm: Clear settings on probe and free
+clocksource/drivers/timer-ti-dm: Make timer_get_irq static
 
-Clear the timer control register on driver probe and omap_dm_timer_free().
-Otherwise we assume the consumer driver takes care of properly
-initializing timer interrupts on PWM driver module reload for example.
+We can make timer_get_irq() static as noted by Janusz. It is only used by
+omap_rproc_get_timer_irq() via platform data.
 
-AFAIK this is not currently needed as a fix, I just happened to run into
-this while cleaning up things.
-
+Reported-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20221028103813.40783-1-tony@atomide.com
+Link: https://lore.kernel.org/r/20221028103604.40385-1-tony@atomide.com
 Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
 ---
- drivers/clocksource/timer-ti-dm.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/clocksource/timer-ti-dm.c | 2 +-
+ include/clocksource/timer-ti-dm.h | 2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
-index eeeeb3c..b24b903 100644
+index 00af1a8..eeeeb3c 100644
 --- a/drivers/clocksource/timer-ti-dm.c
 +++ b/drivers/clocksource/timer-ti-dm.c
-@@ -633,6 +633,8 @@ static struct omap_dm_timer *omap_dm_timer_request_by_node(struct device_node *n
- static int omap_dm_timer_free(struct omap_dm_timer *cookie)
- {
- 	struct dmtimer *timer;
-+	struct device *dev;
-+	int rc;
- 
- 	timer = to_dmtimer(cookie);
- 	if (unlikely(!timer))
-@@ -640,6 +642,17 @@ static int omap_dm_timer_free(struct omap_dm_timer *cookie)
- 
- 	WARN_ON(!timer->reserved);
- 	timer->reserved = 0;
-+
-+	dev = &timer->pdev->dev;
-+	rc = pm_runtime_resume_and_get(dev);
-+	if (rc)
-+		return rc;
-+
-+	/* Clear timer configuration */
-+	dmtimer_write(timer, OMAP_TIMER_CTRL_REG, 0);
-+
-+	pm_runtime_put_sync(dev);
-+
+@@ -643,7 +643,7 @@ static int omap_dm_timer_free(struct omap_dm_timer *cookie)
  	return 0;
  }
  
-@@ -1135,6 +1148,10 @@ static int omap_dm_timer_probe(struct platform_device *pdev)
- 			goto err_disable;
- 		}
- 		__omap_dm_timer_init_regs(timer);
-+
-+		/* Clear timer configuration */
-+		dmtimer_write(timer, OMAP_TIMER_CTRL_REG, 0);
-+
- 		pm_runtime_put(dev);
- 	}
+-int omap_dm_timer_get_irq(struct omap_dm_timer *cookie)
++static int omap_dm_timer_get_irq(struct omap_dm_timer *cookie)
+ {
+ 	struct dmtimer *timer = to_dmtimer(cookie);
+ 	if (timer)
+diff --git a/include/clocksource/timer-ti-dm.h b/include/clocksource/timer-ti-dm.h
+index 77eceea..dcc1712 100644
+--- a/include/clocksource/timer-ti-dm.h
++++ b/include/clocksource/timer-ti-dm.h
+@@ -62,8 +62,6 @@
+ struct omap_dm_timer {
+ };
  
+-int omap_dm_timer_get_irq(struct omap_dm_timer *timer);
+-
+ u32 omap_dm_timer_modify_idlect_mask(u32 inputmask);
+ 
+ /*
