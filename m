@@ -2,59 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FCD26485CB
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Dec 2022 16:47:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE50E6485D1
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Dec 2022 16:47:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230320AbiLIPr1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Dec 2022 10:47:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35364 "EHLO
+        id S230459AbiLIPrc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Dec 2022 10:47:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230203AbiLIPrZ (ORCPT
+        with ESMTP id S230259AbiLIPr1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Dec 2022 10:47:25 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44BEC32BB7;
-        Fri,  9 Dec 2022 07:47:24 -0800 (PST)
-Date:   Fri, 09 Dec 2022 15:47:22 -0000
+        Fri, 9 Dec 2022 10:47:27 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17C79326E8;
+        Fri,  9 Dec 2022 07:47:26 -0800 (PST)
+Date:   Fri, 09 Dec 2022 15:47:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670600842;
+        s=2020; t=1670600843;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JOOwBJNPMAhOXpq3k36p3Lw74niqTkZH1cWby86RAfo=;
-        b=UKagibPQG/UNh7JwBRo1dMDPx8+F6KpkV+cA4ir+kzUUVpBKlP7d9g7ByWWzEgUS+sLjrd
-        y/n+XSuSg5OTzBntRp8SKD8dWoRgUQ5rta4pSh4ZdzU+vfervRzjNYJ9hY2ShKW7yQp+K6
-        +RN+Fu5E/RmWI9V/2y0VtW1FR6m4zpt+MS+osOX/Xl8h9oHTaKf5jZnss3/tR1fkBb78zd
-        mPTQc2cIuz82tXAdbw0hNSoIq3qBZ57vLnx7/SjxZ5wUBR4TkaHMOX7j0+yDzRhzeYV+w5
-        ZPkAlc/k1Y+AEOyhFBQBai8JhMnTsZe5syKwUb8jzEdIsefvn50hyWTVftKYzw==
+        bh=MlIa5O5WDWxLlkwZolilJxqo+96OivdxfR42QRJR7Rs=;
+        b=vKVVdR18ORO4yhbFN4+XEeHyhvTX6l8kpMue/9L9sH5xVB2TiQ1zmB3fxe5HLBN760A1PG
+        1kr5IIXnSZWt9ZomT5Ut3tI/owS6HgbfzVyEPLql5bCiP2fvorRn2zg5vzuJvrHcdaZ70N
+        wh8tRoTrPwkuYLhq9JePKZLQas2Sck5jcGWpTdXQ/+sXEQhXWiZLE1S1ChuubltP9qc+rn
+        5V9t64tgTbP5V9qOhNf1Nnx2ZnB0BsGUOQczm8IdqVajeyAkFrv9Q6ixON973qaUR9J9J1
+        q9gtKYacrQVeVy7dOXnhvAmQog3wXru6GhwosmnvdlXzOrOS39cPxefAujXBhw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670600842;
+        s=2020e; t=1670600843;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JOOwBJNPMAhOXpq3k36p3Lw74niqTkZH1cWby86RAfo=;
-        b=AJevUmf6gvbvuqB242D1DcE3nvJA38+vTkuqJbyItclvGF4e5spcnDTScfnW/g7N13F6L7
-        5ir069NSomt1kWDw==
-From:   "tip-bot2 for Christophe JAILLET" <tip-bot2@linutronix.de>
+        bh=MlIa5O5WDWxLlkwZolilJxqo+96OivdxfR42QRJR7Rs=;
+        b=n+BXsLChIFNQfSTWHWDM8PIFH9yEstupJc6dyEegLtqxen9IEzz2qpB11zx4kByJNL/LFE
+        fjTSQDCp64TOFvBQ==
+From:   "tip-bot2 for Tony Lindgren" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/arm_arch_timer: Use
- kstrtobool() instead of strtobool()
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Mark Rutland <mark.rutland@arm.com>,
+Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Fix warning for
+ omap_timer_match
+Cc:     kernel test robot <lkp@intel.com>,
+        Tony Lindgren <tony@atomide.com>,
         Daniel Lezcano <daniel.lezcano@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cf430bb12e12eb225ab1206db0be64b755ddafbdc=2E16673?=
- =?utf-8?q?36095=2Egit=2Echristophe=2Ejaillet=40wanadoo=2Efr=3E?=
-References: =?utf-8?q?=3Cf430bb12e12eb225ab1206db0be64b755ddafbdc=2E166733?=
- =?utf-8?q?6095=2Egit=2Echristophe=2Ejaillet=40wanadoo=2Efr=3E?=
+In-Reply-To: <20221028103526.40319-1-tony@atomide.com>
+References: <20221028103526.40319-1-tony@atomide.com>
 MIME-Version: 1.0
-Message-ID: <167060084243.4906.1276129889140707311.tip-bot2@tip-bot2>
+Message-ID: <167060084310.4906.5137830750682530203.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,49 +68,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     4238568744c0a150d8901e7847092a0f871c938d
-Gitweb:        https://git.kernel.org/tip/4238568744c0a150d8901e7847092a0f871c938d
-Author:        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-AuthorDate:    Tue, 01 Nov 2022 22:13:58 +01:00
+Commit-ID:     9688498b1648aa98a3ee45d9f07763c099f6fb12
+Gitweb:        https://git.kernel.org/tip/9688498b1648aa98a3ee45d9f07763c099f6fb12
+Author:        Tony Lindgren <tony@atomide.com>
+AuthorDate:    Fri, 28 Oct 2022 13:35:26 +03:00
 Committer:     Daniel Lezcano <daniel.lezcano@kernel.org>
-CommitterDate: Fri, 02 Dec 2022 13:17:34 +01:00
+CommitterDate: Fri, 02 Dec 2022 13:16:46 +01:00
 
-clocksource/drivers/arm_arch_timer: Use kstrtobool() instead of strtobool()
+clocksource/drivers/timer-ti-dm: Fix warning for omap_timer_match
 
-strtobool() is the same as kstrtobool().
-However, the latter is more used within the kernel.
+We can now get a warning for 'omap_timer_match' defined but not used.
+Let's fix this by dropping of_match_ptr for omap_timer_match.
 
-In order to remove strtobool() and slightly simplify kstrtox.h, switch to
-the other function name.
-
-While at it, include the corresponding header file (<linux/kstrtox.h>)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/f430bb12e12eb225ab1206db0be64b755ddafbdc.1667336095.git.christophe.jaillet@wanadoo.fr
+Reported-by: kernel test robot <lkp@intel.com>
+Fixes: ab0bbef3ae0f ("clocksource/drivers/timer-ti-dm: Make timer selectable for ARCH_K3")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20221028103526.40319-1-tony@atomide.com
 Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
 ---
- drivers/clocksource/arm_arch_timer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-ti-dm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
-index e2920da..1695c56 100644
---- a/drivers/clocksource/arm_arch_timer.c
-+++ b/drivers/clocksource/arm_arch_timer.c
-@@ -18,6 +18,7 @@
- #include <linux/clocksource.h>
- #include <linux/clocksource_ids.h>
- #include <linux/interrupt.h>
-+#include <linux/kstrtox.h>
- #include <linux/of_irq.h>
- #include <linux/of_address.h>
- #include <linux/io.h>
-@@ -97,7 +98,7 @@ static bool evtstrm_enable __ro_after_init = IS_ENABLED(CONFIG_ARM_ARCH_TIMER_EV
- 
- static int __init early_evtstrm_cfg(char *buf)
- {
--	return strtobool(buf, &evtstrm_enable);
-+	return kstrtobool(buf, &evtstrm_enable);
- }
- early_param("clocksource.arm_arch_timer.evtstrm", early_evtstrm_cfg);
- 
+diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
+index cad29de..00af1a8 100644
+--- a/drivers/clocksource/timer-ti-dm.c
++++ b/drivers/clocksource/timer-ti-dm.c
+@@ -1258,7 +1258,7 @@ static struct platform_driver omap_dm_timer_driver = {
+ 	.remove = omap_dm_timer_remove,
+ 	.driver = {
+ 		.name   = "omap_timer",
+-		.of_match_table = of_match_ptr(omap_timer_match),
++		.of_match_table = omap_timer_match,
+ 		.pm = &omap_dm_timer_pm_ops,
+ 	},
+ };
