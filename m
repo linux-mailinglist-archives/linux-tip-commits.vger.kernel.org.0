@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1D356485CE
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Dec 2022 16:47:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E278B6485CA
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Dec 2022 16:47:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230078AbiLIPr3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Dec 2022 10:47:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35366 "EHLO
+        id S230237AbiLIPr0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Dec 2022 10:47:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230216AbiLIPrZ (ORCPT
+        with ESMTP id S230175AbiLIPrZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 9 Dec 2022 10:47:25 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633EF379FE;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A542326E8;
         Fri,  9 Dec 2022 07:47:24 -0800 (PST)
 Date:   Fri, 09 Dec 2022 15:47:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ptf5JucJI9u3RmOJs1YiPXVOdJFaBXojrhh5idR/RN4=;
-        b=bNfTGrjGpgkCApaF4NH9BaFg3su2rFHipR6iohAGgm6UmH+BRGk/aY1huwkRLnZRqWDhug
-        TFy+Zgt7vf7bSL2eIiypFh7+QN/v1nDxKydYeVmrGBCXcivUbsFUkG/99sxsT9VeDU2kWJ
-        Qy82GwznWCHzaiUtZ4IW/GY+TkQ5ZMXT5CEc++x0cJqxIvpnW6oqbAaRNybD1gq83FGKyB
-        ZsUAnu0Cz2ZfBflDJvhRQVuZQ/PUYHgCUguq7Y7EMCR4FXE0cntgotzjxzwMwUt4yO14PQ
-        r6ds4EjuIN+/wwMkeoJtNCol7Mi+juO4auY17+zY0+mkuhERnbyVW0ZAZagJcA==
+        bh=LaCOYLZODq1zR9A0KgYsAR23HIBI/NpAug2vkbrXSTQ=;
+        b=VztUpcFL1PF+1QpbLEyDLUToIhJpX57Nc+TpGQTYl8qx9wK+7KRx0cZGl+sFGnK2T80628
+        YKx4T4O2YcYmEboBI1Cv+gs737kI3G6cVvKcnM8o/BvSBoZ1NDM4bc6R000RWGS8/pVm8v
+        9ma4f6H0n2pvtAKo7s3RRsOol7WTZWPwvOSaTlu/QQP9hrnyC0aTFk/Dg5ZCN79QxSruzV
+        ttLulSziEv8uRBEltUWv8rSU8tK3J+w1m7rEVUNG37S2DJFnLS6wY5cDk+skC/u/iNpdem
+        C61sPaJLxJspzU2wHUcYjsKgQpcaZYFXWUBIUyh0XwwIPnOxWRCabW2fqE47Qg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1670600842;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ptf5JucJI9u3RmOJs1YiPXVOdJFaBXojrhh5idR/RN4=;
-        b=/Iq8f1Ok6sfvVh3kkkkI7Bl+kwkHWdVqzy/rta3ImM9ka5FTp0vlqcanrWHr+N1kRC5rsU
-        UfH1J7Xnt+k7BGAA==
-From:   "tip-bot2 for Yang Yingliang" <tip-bot2@linutronix.de>
+        bh=LaCOYLZODq1zR9A0KgYsAR23HIBI/NpAug2vkbrXSTQ=;
+        b=2+mZpRd1zAfLfBIguqIpr1u7HNsQFNua876AIxvshXLNG5VGXt+P4bvgb+tMbuifsOEAtb
+        9KR83aA6w8CQNuCQ==
+From:   "tip-bot2 for Wolfram Sang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Fix missing
- clk_disable_unprepare in dmtimer_systimer_init_clock()
-Cc:     Yang Yingliang <yangyingliang@huawei.com>,
-        Tony Lindgren <tony@atomide.com>,
+Subject: [tip: timers/core] dt-bindings: timer: renesas,cmt: Add r8a779g0 CMT support
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Rob Herring <robh@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Daniel Lezcano <daniel.lezcano@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221029114427.946520-1-yangyingliang@huawei.com>
-References: <20221029114427.946520-1-yangyingliang@huawei.com>
+In-Reply-To: <20221104150642.4587-1-wsa+renesas@sang-engineering.com>
+References: <20221104150642.4587-1-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-Message-ID: <167060084258.4906.16638898488037471774.tip-bot2@tip-bot2>
+Message-ID: <167060084204.4906.10697198480362491711.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,41 +68,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     180d35a7c05d520314a590c99ad8643d0213f28b
-Gitweb:        https://git.kernel.org/tip/180d35a7c05d520314a590c99ad8643d0213f28b
-Author:        Yang Yingliang <yangyingliang@huawei.com>
-AuthorDate:    Sat, 29 Oct 2022 19:44:27 +08:00
+Commit-ID:     83571a4389039b1be2d77655b2ce47543d407e41
+Gitweb:        https://git.kernel.org/tip/83571a4389039b1be2d77655b2ce47543d407e41
+Author:        Wolfram Sang <wsa+renesas@sang-engineering.com>
+AuthorDate:    Fri, 04 Nov 2022 16:06:42 +01:00
 Committer:     Daniel Lezcano <daniel.lezcano@kernel.org>
-CommitterDate: Fri, 02 Dec 2022 13:16:46 +01:00
+CommitterDate: Fri, 02 Dec 2022 13:42:32 +01:00
 
-clocksource/drivers/timer-ti-dm: Fix missing clk_disable_unprepare in dmtimer_systimer_init_clock()
+dt-bindings: timer: renesas,cmt: Add r8a779g0 CMT support
 
-If clk_get_rate() fails which is called after clk_prepare_enable(),
-clk_disable_unprepare() need be called in error path to disable the
-clock in dmtimer_systimer_init_clock().
-
-Fixes: 52762fbd1c47 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20221029114427.946520-1-yangyingliang@huawei.com
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20221104150642.4587-1-wsa+renesas@sang-engineering.com
 Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
 ---
- drivers/clocksource/timer-ti-dm-systimer.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/timer/renesas,cmt.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
-index 2737407..632523c 100644
---- a/drivers/clocksource/timer-ti-dm-systimer.c
-+++ b/drivers/clocksource/timer-ti-dm-systimer.c
-@@ -345,8 +345,10 @@ static int __init dmtimer_systimer_init_clock(struct dmtimer_systimer *t,
- 		return error;
+diff --git a/Documentation/devicetree/bindings/timer/renesas,cmt.yaml b/Documentation/devicetree/bindings/timer/renesas,cmt.yaml
+index bde6c9b..a0be175 100644
+--- a/Documentation/devicetree/bindings/timer/renesas,cmt.yaml
++++ b/Documentation/devicetree/bindings/timer/renesas,cmt.yaml
+@@ -102,12 +102,14 @@ properties:
+           - enum:
+               - renesas,r8a779a0-cmt0     # 32-bit CMT0 on R-Car V3U
+               - renesas,r8a779f0-cmt0     # 32-bit CMT0 on R-Car S4-8
++              - renesas,r8a779g0-cmt0     # 32-bit CMT0 on R-Car V4H
+           - const: renesas,rcar-gen4-cmt0 # 32-bit CMT0 on R-Car Gen4
  
- 	r = clk_get_rate(clock);
--	if (!r)
-+	if (!r) {
-+		clk_disable_unprepare(clock);
- 		return -ENODEV;
-+	}
+       - items:
+           - enum:
+               - renesas,r8a779a0-cmt1     # 48-bit CMT on R-Car V3U
+               - renesas,r8a779f0-cmt1     # 48-bit CMT on R-Car S4-8
++              - renesas,r8a779g0-cmt1     # 48-bit CMT on R-Car V4H
+           - const: renesas,rcar-gen4-cmt1 # 48-bit CMT on R-Car Gen4
  
- 	if (is_ick)
- 		t->ick = clock;
+   reg:
