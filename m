@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 379BC649E83
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Dec 2022 13:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6C2C64A7CB
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Dec 2022 20:02:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231812AbiLLMQc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Dec 2022 07:16:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37524 "EHLO
+        id S231715AbiLLTCW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Dec 2022 14:02:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229958AbiLLMQa (ORCPT
+        with ESMTP id S232991AbiLLTBN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Dec 2022 07:16:30 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745D2D4C;
-        Mon, 12 Dec 2022 04:16:29 -0800 (PST)
-Date:   Mon, 12 Dec 2022 12:16:26 -0000
+        Mon, 12 Dec 2022 14:01:13 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 858C317E15;
+        Mon, 12 Dec 2022 10:59:09 -0800 (PST)
+Date:   Mon, 12 Dec 2022 18:59:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670847387;
+        s=2020; t=1670871547;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=yYhHO0ZQVvWpd5slPwnEDusFgtC76psUV6J3MOo3xVc=;
-        b=k/pKDaqODgoDnE3BT6IAyxtZw2vsfqTJDwTcQog2bTObjs1lCYnjzDQkYUmEmC60iu4Wle
-        uBC7+0SapMTE6YAQjDQEoACSOpdFaVIs3+O0Nb87/1smZMvzulxKCHVAivbPdxZjclfU3A
-        6wB3Amz+ibThBB3bXrLDKeIm67dVor6BJhFayGYWeEJFdJDYk0WHt6y5vmV1k+qbyJudE8
-        jM/5jqav4EItGIsXhowvaADjUNK/2+gnzXgIDIVy3c4oQooWqQW8IeqPfhMwRMM3DLvRku
-        kQxTLfbKdp2f0HQV0y9NOUU6jwQluc4oKc/g8IzWDBSPajNIko3FDi9dj7aLMQ==
+        bh=yO0oas4JTBfWeQd8tBUfOqlsN72OrR6vLvNp/9Kw4w0=;
+        b=DKUb2t713ojsWeEu4atCbPfu/XM40B9FHrZBRGNRWB4WPnFJNU+/MZa+syzaB/+M7Wqc8H
+        a5gFJBFIYPONlfph5sDqfGIitGtXtFpaCspnK8MwsZ7VuAe77a0OYdulzXNaDFCMiQBAKs
+        4NPQSlQVRO6t6fccO1FzO4QO78UBIoWR9VEtDVHp/l3p0yvO3VESd4WGswfXrnJye2hor7
+        zLOVCTRVible7s5a9g3XmzzfEuriboxgIbrMBDPjsUbzZw9rFXBwih30ATm0xT7MkhrHcc
+        8Oy0wjlRsjcls8rmv11+3Ewze+KmR8TEEwc0kdzJz8bTejPttBQ0xZROUY3Nsw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670847387;
+        s=2020e; t=1670871547;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=yYhHO0ZQVvWpd5slPwnEDusFgtC76psUV6J3MOo3xVc=;
-        b=OiNUPMvTn0ITGsyQYgyhSspnaoLhbSgZjRUMUy4Izlu1CR/W4jFawqjAdAYqVg6wdppXIz
-        C83XFZdCJbzX4wBA==
+        bh=yO0oas4JTBfWeQd8tBUfOqlsN72OrR6vLvNp/9Kw4w0=;
+        b=O377ISfr4C9EScHTvHdnB9VRuVrP17mboi0PpxWC3uRQCWhFGPfe+LNJLRyrige+qMq/dm
+        0goF7pwal3ZIIvCg==
 From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] ]65;6203;1crtmutex: Add acquire semantics for
- rtmutex lock acquisition slow path
+Subject: [tip: locking/urgent] rtmutex: Add acquire semantics for rtmutex lock
+ acquisition slow path
 Cc:     Jan Kara <jack@suse.cz>, Mel Gorman <mgorman@techsingularity.net>,
         Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
 In-Reply-To: <20221202100223.6mevpbl7i6x5udfd@techsingularity.net>
 References: <20221202100223.6mevpbl7i6x5udfd@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <167084738658.4906.8315031015060203980.tip-bot2@tip-bot2>
+Message-ID: <167087154656.4906.12144089788165343910.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,14 +67,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     2d77ed7afafef79dbb9db77f646ba429d907ed2b
-Gitweb:        https://git.kernel.org/tip/2d77ed7afafef79dbb9db77f646ba429d907ed2b
+Commit-ID:     1c0908d8e441631f5b8ba433523cf39339ee2ba0
+Gitweb:        https://git.kernel.org/tip/1c0908d8e441631f5b8ba433523cf39339ee2ba0
 Author:        Mel Gorman <mgorman@techsingularity.net>
 AuthorDate:    Fri, 02 Dec 2022 10:02:23 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 12 Dec 2022 13:13:38 +01:00
+CommitterDate: Mon, 12 Dec 2022 19:55:56 +01:00
 
-]65;6203;1crtmutex: Add acquire semantics for rtmutex lock acquisition slow path
+rtmutex: Add acquire semantics for rtmutex lock acquisition slow path
 
 Jan Kara reported the following bug triggering on 6.0.5-rt14 running dbench
 on XFS on arm64.
