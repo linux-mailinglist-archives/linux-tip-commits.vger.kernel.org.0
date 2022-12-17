@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5847D64FBD5
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:56:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E0ED64FBD1
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:56:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230157AbiLQS4Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 17 Dec 2022 13:56:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40794 "EHLO
+        id S229996AbiLQS4M (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 17 Dec 2022 13:56:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230119AbiLQSzt (ORCPT
+        with ESMTP id S230089AbiLQSzk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 17 Dec 2022 13:55:49 -0500
+        Sat, 17 Dec 2022 13:55:40 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 521141122;
-        Sat, 17 Dec 2022 10:55:40 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABBB3F49;
+        Sat, 17 Dec 2022 10:55:39 -0800 (PST)
 Date:   Sat, 17 Dec 2022 18:55:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1671303335;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fsb0Jky4Qbbe8cnWUN8Cl6XFdmY6ZEPk8sT8k7OCHro=;
-        b=VN5BLetsCRuETKO1ufW94UeZ28u1GLfSAxvECKynD1gnBwZHRxarQIKdWyNkgE7ifarx6a
-        fVLKvPG5tQNHC+49YpPVMS+RKD2vuZYRzWY/LnbP7o9eSh1Q8Y7PrfxBkuyp4o7Zau1NEJ
-        tXcT6IRRTSO6dd81046MOaOoKiKYp6ABg70wucApSS6p1sl3/7uMGyP4J0MNmf7naVOn9k
-        6RV6SFAkoHiKIVPDpCXbBwsRRTDXb5rwamL9EEUZzIKKub/cPynGTlyQEq458G6XHuN0sW
-        Kl8Rv/fdZkcBWZ4SfEKIhIfLZKBddEkXc3bR1GDCuqashhKziQL/61BJSB3zgA==
+        bh=9oyLziOMTJoU0purFTTd8yDxf6Tw40HdsE7Rn9fFNKI=;
+        b=nDWpVXhxBlIxs9v1RHdkjG5gysIbY1zolNtfKt6I3BBWG4Rh8r/9thrt+2b1Rc5q1+3LrJ
+        3sndYL+nDre55VArD0qZMi6G3cfHM2ELf+SLU3hzjUqMQ+Q78kyK9422LD9lZ7hVUu+UXQ
+        6fZKnf1hjm/qFRW9/qo4XJUpz3gWX4vmI/Hw90nWMNsAjW2iIQn/s5pmq5ApOgmljN8ukq
+        5IOPJDhgSLs+lBsq+nxlxiadw1w/tWoV6nfXIiKTDTKhz0eetHIpI4hT/ZsR/UkTZiEjJy
+        GLHGT9DCkKo++l7xNvwFAq9voQEWft6AIWx74ve5zCuoDQda1WpTzSjxtB6c/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1671303335;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +36,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fsb0Jky4Qbbe8cnWUN8Cl6XFdmY6ZEPk8sT8k7OCHro=;
-        b=iyj2VDJO8dFPaA5iQY4v0exTbC3QaP7dsbQrr8fkKobX72Pj896WAXuWaK4FWsvQuEG3SS
-        uaiZ7PtK/Gy5kuCA==
+        bh=9oyLziOMTJoU0purFTTd8yDxf6Tw40HdsE7Rn9fFNKI=;
+        b=E7Dna2I6zGs1AeKoQl/OqtmJxdPI8tqGUPZzBbgIAIPbhK+O3fu858De5B/0hHCfZBzb4T
+        xQAGPwRLrAEhkvBA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Use mm_alloc() in poking_init()
+Subject: [tip: x86/mm] x86/mm: Initialize text poking earlier
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221025201057.816175235@infradead.org>
-References: <20221025201057.816175235@infradead.org>
+In-Reply-To: <20221025201057.881703081@infradead.org>
+References: <20221025201057.881703081@infradead.org>
 MIME-Version: 1.0
-Message-ID: <167130333552.4906.17400654465838216645.tip-bot2@tip-bot2>
+Message-ID: <167130333534.4906.12011322763172418991.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,66 +65,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     3f4c8211d982099be693be9aa7d6fc4607dff290
-Gitweb:        https://git.kernel.org/tip/3f4c8211d982099be693be9aa7d6fc4607dff290
+Commit-ID:     5b93a83649c7cba3a15eb7e8959b250841acb1b1
+Gitweb:        https://git.kernel.org/tip/5b93a83649c7cba3a15eb7e8959b250841acb1b1
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 25 Oct 2022 21:38:21 +02:00
+AuthorDate:    Tue, 25 Oct 2022 21:38:25 +02:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Thu, 15 Dec 2022 10:37:26 -08:00
 
-x86/mm: Use mm_alloc() in poking_init()
+x86/mm: Initialize text poking earlier
 
-Instead of duplicating init_mm, allocate a fresh mm. The advantage is
-that mm_alloc() has much simpler dependencies. Additionally it makes
-more conceptual sense, init_mm has no (and must not have) user state
-to duplicate.
+Move poking_init() up a bunch; specifically move it right after
+mm_init() which is right before ftrace_init().
+
+This will allow simplifying ftrace text poking which currently has
+a bunch of exceptions for early boot.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221025201057.816175235@infradead.org
+Link: https://lkml.kernel.org/r/20221025201057.881703081@infradead.org
 ---
- arch/x86/mm/init.c         | 2 +-
- include/linux/sched/task.h | 1 -
- kernel/fork.c              | 5 -----
- 3 files changed, 1 insertion(+), 7 deletions(-)
+ init/main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 9121bc1..d398735 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -801,7 +801,7 @@ void __init poking_init(void)
- 	spinlock_t *ptl;
- 	pte_t *ptep;
- 
--	poking_mm = copy_init_mm();
-+	poking_mm = mm_alloc();
- 	BUG_ON(!poking_mm);
- 
- 	/*
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index 8431558..357e006 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -91,7 +91,6 @@ extern void exit_itimers(struct task_struct *);
- extern pid_t kernel_clone(struct kernel_clone_args *kargs);
- struct task_struct *create_io_thread(int (*fn)(void *), void *arg, int node);
- struct task_struct *fork_idle(int);
--struct mm_struct *copy_init_mm(void);
- extern pid_t kernel_thread(int (*fn)(void *), void *arg, unsigned long flags);
- extern pid_t user_mode_thread(int (*fn)(void *), void *arg, unsigned long flags);
- extern long kernel_wait4(pid_t, int __user *, int, struct rusage *);
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 451ce80..6142c58 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2592,11 +2592,6 @@ struct task_struct * __init fork_idle(int cpu)
- 	return task;
- }
- 
--struct mm_struct *copy_init_mm(void)
--{
--	return dup_mm(NULL, &init_mm);
--}
+diff --git a/init/main.c b/init/main.c
+index f1d1a54..5372ea2 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -996,7 +996,7 @@ asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
+ 	sort_main_extable();
+ 	trap_init();
+ 	mm_init();
 -
- /*
-  * This is like kernel_clone(), but shaved down and tailored to just
-  * creating io_uring workers. It returns a created task, or an error pointer.
++	poking_init();
+ 	ftrace_init();
+ 
+ 	/* trace_printk can be enabled here */
+@@ -1135,7 +1135,6 @@ asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
+ 	taskstats_init_early();
+ 	delayacct_init();
+ 
+-	poking_init();
+ 	check_bugs();
+ 
+ 	acpi_subsystem_init();
