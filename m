@@ -2,49 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A4D764FBCA
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:56:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9533464FBC8
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:56:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbiLQS4B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 17 Dec 2022 13:56:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41120 "EHLO
+        id S230154AbiLQSz7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 17 Dec 2022 13:55:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbiLQSzj (ORCPT
+        with ESMTP id S230063AbiLQSzj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 17 Dec 2022 13:55:39 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97C6429E;
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D926B82;
         Sat, 17 Dec 2022 10:55:37 -0800 (PST)
 Date:   Sat, 17 Dec 2022 18:55:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1671303333;
+        s=2020; t=1671303334;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=QZ7G8DdnJbJkLuBIHKD3A8tjle3Vsm81cafdXatLT7g=;
-        b=EcFYhhsm5dYt+3OdkmRxE8HTjBTP8fK+BrkZkJiLgTc2Qzn0pG55hA3NJtWy78UmW9wNI+
-        nlN7j/NIqAsxdEw/unnJtS3wvbOmrMN77aoNOg0lfmG1wzzGiKFGfmCBZ1gYTrqx4yUd9L
-        v/cxjJ3kQ9VogOTaNmX+jcUZZqfWBt4hYhldi9hHYf3AfZR9AlmvluxdoWW8abOedG/CCg
-        71p6wNDA4QBZNYe0xDgzWSL2GTnAkrVP93w6RZba26KdoceFNEoq1g0cgCXOhzxgMPw072
-        wX4fL357CTs1rzTScpkiuwOTMSRxWxaOxemSUxnNZPo4U2oyqvP47Ar9VrRBSw==
+        bh=ywKGG+Ay5HHfwwcN/+QcrnnVJ2RaGNvrw42m1dFBCq0=;
+        b=qPJNybiA6TW4xpRvufI0wbR7KJyu21fERs1Db+m5pPPdY+W5EPLp+pZnVOypfnBK3RNbgO
+        M52HGn/A1TULq3c+jaNuZw2oHscrKGLiCbV3nB8wcryG7LWrL+UI9VFACgDMxtYW7VNqUD
+        vXcQkCXZtvOJQ5LfWQQARAzZy2XnCFAyvVOgJYA5pX9jFCojOZYSnUl04VERJ7Cjv/rke4
+        LzjqtQsxh/WQbUj7hMWUMssZ3KPESqg8gOwkTdJ1aKwIAKH4/TR0mRsxcRRc3Eodgio0mA
+        /fz0vgy5qJLkozuCjdBNeEGLXxlnoCrxyFZlm4l8RmRUAlZBy+GnNv6iV1jVtA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1671303333;
+        s=2020e; t=1671303334;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=QZ7G8DdnJbJkLuBIHKD3A8tjle3Vsm81cafdXatLT7g=;
-        b=14L+lsiJvuW+a3DBXFBWT/z7jeGcQSdVRy/m2urqUxYqPiyTExDbotzdUhD1R0J24UymTx
-        OacEC/FXl3EC/2AA==
+        bh=ywKGG+Ay5HHfwwcN/+QcrnnVJ2RaGNvrw42m1dFBCq0=;
+        b=+LCDcJggeqdm+KnDH2if5eGY/M+lwH20qsN5s/+GxULzvUk7aVhixQXg+iN+C7/LW97xS4
+        cM+9vv7K4uiRojCg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] mm: Rename GUP_GET_PTE_LOW_HIGH
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/mm] mm: Fix pmd_read_atomic()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167130333346.4906.12446557215962501207.tip-bot2@tip-bot2>
+Message-ID: <167130333366.4906.12076354675258081343.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,99 +59,171 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     6ca297d4784625de7b041e8451780643cf5751a4
-Gitweb:        https://git.kernel.org/tip/6ca297d4784625de7b041e8451780643cf5751a4
+Commit-ID:     024d232ae4fcd7a7ce8ea239607d6c1246d7adc8
+Gitweb:        https://git.kernel.org/tip/024d232ae4fcd7a7ce8ea239607d6c1246d7adc8
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 21 Oct 2022 14:51:44 +02:00
+AuthorDate:    Thu, 26 Nov 2020 17:16:22 +01:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Thu, 15 Dec 2022 10:37:27 -08:00
 
-mm: Rename GUP_GET_PTE_LOW_HIGH
+mm: Fix pmd_read_atomic()
 
-Since it no longer applies to only PTEs, rename it to PXX.
+AFAICT there's no reason to do anything different than what we do for
+PTEs. Make it so (also affects SH).
 
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221022114424.776404066%40infradead.org
+Link: https://lkml.kernel.org/r/20221022114424.711181252%40infradead.org
 ---
- arch/mips/Kconfig       | 2 +-
- arch/sh/Kconfig         | 2 +-
- arch/x86/Kconfig        | 2 +-
- include/linux/pgtable.h | 4 ++--
- mm/Kconfig              | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/pgtable-3level.h | 56 +--------------------------
+ include/linux/pgtable.h               | 47 +++++++++++++++++-----
+ 2 files changed, 37 insertions(+), 66 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b26b776..15cb692 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -46,7 +46,7 @@ config MIPS
- 	select GENERIC_SCHED_CLOCK if !CAVIUM_OCTEON_SOC
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
--	select GUP_GET_PTE_LOW_HIGH if CPU_MIPS32 && PHYS_ADDR_T_64BIT
-+	select GUP_GET_PXX_LOW_HIGH if CPU_MIPS32 && PHYS_ADDR_T_64BIT
- 	select HAVE_ARCH_COMPILER_H
- 	select HAVE_ARCH_JUMP_LABEL
- 	select HAVE_ARCH_KGDB if MIPS_FP_SUPPORT
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 5f220e9..0665ac0 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -24,7 +24,7 @@ config SUPERH
- 	select GENERIC_PCI_IOMAP if PCI
- 	select GENERIC_SCHED_CLOCK
- 	select GENERIC_SMP_IDLE_THREAD
--	select GUP_GET_PTE_LOW_HIGH if X2TLB
-+	select GUP_GET_PXX_LOW_HIGH if X2TLB
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_SECCOMP_FILTER
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 67745ce..bb1f326 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -157,7 +157,7 @@ config X86
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_GETTIMEOFDAY
- 	select GENERIC_VDSO_TIME_NS
--	select GUP_GET_PTE_LOW_HIGH		if X86_PAE
-+	select GUP_GET_PXX_LOW_HIGH		if X86_PAE
- 	select HARDIRQS_SW_RESEND
- 	select HARDLOCKUP_CHECK_TIMESTAMP	if X86_64
- 	select HAVE_ACPI_APEI			if ACPI
+diff --git a/arch/x86/include/asm/pgtable-3level.h b/arch/x86/include/asm/pgtable-3level.h
+index 28556d2..94f50b0 100644
+--- a/arch/x86/include/asm/pgtable-3level.h
++++ b/arch/x86/include/asm/pgtable-3level.h
+@@ -34,62 +34,6 @@ static inline void native_set_pte(pte_t *ptep, pte_t pte)
+ 	ptep->pte_low = pte.pte_low;
+ }
+ 
+-#define pmd_read_atomic pmd_read_atomic
+-/*
+- * pte_offset_map_lock() on 32-bit PAE kernels was reading the pmd_t with
+- * a "*pmdp" dereference done by GCC. Problem is, in certain places
+- * where pte_offset_map_lock() is called, concurrent page faults are
+- * allowed, if the mmap_lock is hold for reading. An example is mincore
+- * vs page faults vs MADV_DONTNEED. On the page fault side
+- * pmd_populate() rightfully does a set_64bit(), but if we're reading the
+- * pmd_t with a "*pmdp" on the mincore side, a SMP race can happen
+- * because GCC will not read the 64-bit value of the pmd atomically.
+- *
+- * To fix this all places running pte_offset_map_lock() while holding the
+- * mmap_lock in read mode, shall read the pmdp pointer using this
+- * function to know if the pmd is null or not, and in turn to know if
+- * they can run pte_offset_map_lock() or pmd_trans_huge() or other pmd
+- * operations.
+- *
+- * Without THP if the mmap_lock is held for reading, the pmd can only
+- * transition from null to not null while pmd_read_atomic() runs. So
+- * we can always return atomic pmd values with this function.
+- *
+- * With THP if the mmap_lock is held for reading, the pmd can become
+- * trans_huge or none or point to a pte (and in turn become "stable")
+- * at any time under pmd_read_atomic(). We could read it truly
+- * atomically here with an atomic64_read() for the THP enabled case (and
+- * it would be a whole lot simpler), but to avoid using cmpxchg8b we
+- * only return an atomic pmdval if the low part of the pmdval is later
+- * found to be stable (i.e. pointing to a pte). We are also returning a
+- * 'none' (zero) pmdval if the low part of the pmd is zero.
+- *
+- * In some cases the high and low part of the pmdval returned may not be
+- * consistent if THP is enabled (the low part may point to previously
+- * mapped hugepage, while the high part may point to a more recently
+- * mapped hugepage), but pmd_none_or_trans_huge_or_clear_bad() only
+- * needs the low part of the pmd to be read atomically to decide if the
+- * pmd is unstable or not, with the only exception when the low part
+- * of the pmd is zero, in which case we return a 'none' pmd.
+- */
+-static inline pmd_t pmd_read_atomic(pmd_t *pmdp)
+-{
+-	pmdval_t ret;
+-	u32 *tmp = (u32 *)pmdp;
+-
+-	ret = (pmdval_t) (*tmp);
+-	if (ret) {
+-		/*
+-		 * If the low part is null, we must not read the high part
+-		 * or we can end up with a partial pmd.
+-		 */
+-		smp_rmb();
+-		ret |= ((pmdval_t)*(tmp + 1)) << 32;
+-	}
+-
+-	return (pmd_t) { .pmd = ret };
+-}
+-
+ static inline void native_set_pte_atomic(pte_t *ptep, pte_t pte)
+ {
+ 	set_64bit((unsigned long long *)(ptep), native_pte_val(pte));
 diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 765fd4b..7dd3df7 100644
+index c0b2900..765fd4b 100644
 --- a/include/linux/pgtable.h
 +++ b/include/linux/pgtable.h
-@@ -305,7 +305,7 @@ static inline pmd_t pmdp_get(pmd_t *pmdp)
+@@ -298,6 +298,13 @@ static inline pte_t ptep_get(pte_t *ptep)
  }
  #endif
  
--#ifdef CONFIG_GUP_GET_PTE_LOW_HIGH
-+#ifdef CONFIG_GUP_GET_PXX_LOW_HIGH
++#ifndef __HAVE_ARCH_PMDP_GET
++static inline pmd_t pmdp_get(pmd_t *pmdp)
++{
++	return READ_ONCE(*pmdp);
++}
++#endif
++
+ #ifdef CONFIG_GUP_GET_PTE_LOW_HIGH
  /*
   * For walking the pagetables without holding any locks.  Some architectures
-  * (eg x86-32 PAE) cannot load the entries atomically without using expensive
-@@ -365,7 +365,7 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
- }
- #define pmdp_get_lockless pmdp_get_lockless
- #endif /* CONFIG_PGTABLE_LEVELS > 2 */
--#endif /* CONFIG_GUP_GET_PTE_LOW_HIGH */
-+#endif /* CONFIG_GUP_GET_PXX_LOW_HIGH */
+@@ -340,15 +347,42 @@ static inline pte_t ptep_get_lockless(pte_t *ptep)
  
+ 	return pte;
+ }
+-#else /* CONFIG_GUP_GET_PTE_LOW_HIGH */
++#define ptep_get_lockless ptep_get_lockless
++
++#if CONFIG_PGTABLE_LEVELS > 2
++static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
++{
++	pmd_t pmd;
++
++	do {
++		pmd.pmd_low = pmdp->pmd_low;
++		smp_rmb();
++		pmd.pmd_high = pmdp->pmd_high;
++		smp_rmb();
++	} while (unlikely(pmd.pmd_low != pmdp->pmd_low));
++
++	return pmd;
++}
++#define pmdp_get_lockless pmdp_get_lockless
++#endif /* CONFIG_PGTABLE_LEVELS > 2 */
++#endif /* CONFIG_GUP_GET_PTE_LOW_HIGH */
++
  /*
   * We require that the PTE can be read atomically.
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 57e1d8c..0eabd0b 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1044,7 +1044,7 @@ config GUP_TEST
- comment "GUP_TEST needs to have DEBUG_FS enabled"
- 	depends on !GUP_TEST && !DEBUG_FS
+  */
++#ifndef ptep_get_lockless
+ static inline pte_t ptep_get_lockless(pte_t *ptep)
+ {
+ 	return ptep_get(ptep);
+ }
+-#endif /* CONFIG_GUP_GET_PTE_LOW_HIGH */
++#endif
++
++#ifndef pmdp_get_lockless
++static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
++{
++	return pmdp_get(pmdp);
++}
++#endif
  
--config GUP_GET_PTE_LOW_HIGH
-+config GUP_GET_PXX_LOW_HIGH
- 	bool
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ #ifndef __HAVE_ARCH_PMDP_HUGE_GET_AND_CLEAR
+@@ -1318,17 +1352,10 @@ static inline int pud_trans_unstable(pud_t *pud)
+ #endif
+ }
  
- config ARCH_HAS_PTE_SPECIAL
+-#ifndef pmd_read_atomic
+ static inline pmd_t pmd_read_atomic(pmd_t *pmdp)
+ {
+-	/*
+-	 * Depend on compiler for an atomic pmd read. NOTE: this is
+-	 * only going to work, if the pmdval_t isn't larger than
+-	 * an unsigned long.
+-	 */
+-	return *pmdp;
++	return pmdp_get_lockless(pmdp);
+ }
+-#endif
+ 
+ #ifndef arch_needs_pgtable_deposit
+ #define arch_needs_pgtable_deposit() (false)
