@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E1864FBB9
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:55:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4939864FBBC
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:55:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230113AbiLQSzq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 17 Dec 2022 13:55:46 -0500
+        id S230118AbiLQSzt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 17 Dec 2022 13:55:49 -0500
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230006AbiLQSzg (ORCPT
+        with ESMTP id S230031AbiLQSzi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 17 Dec 2022 13:55:36 -0500
+        Sat, 17 Dec 2022 13:55:38 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9118210FC2;
-        Sat, 17 Dec 2022 10:55:35 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB43310FC9;
+        Sat, 17 Dec 2022 10:55:36 -0800 (PST)
 Date:   Sat, 17 Dec 2022 18:55:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1671303331;
+        s=2020; t=1671303332;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=E53RHJcelb4AnLKZMjCK+9UEbOGOVcHWJYrXV9uNWa0=;
-        b=yH+mnT4RYIgcvr902on/EAwQspQAB5i6UAX0p0QRQ+Eifa6FjFz3XtjZRt+U8rxfzkwhOF
-        5x9bdvSpSWK4NYnMDmZ0kDOw773hTjApeeL4R5MATNDFbaH2iH2YzqJREZIUdv/zsfo8Vj
-        Jvw0A3n+lqRdnuHds7gH9eelXd92/91WppoG+cZHR5+cMXPNN4h8ZBqOh6D7saLopi/CRk
-        lUMfwdQLlwONMI8riylxzoc5+tT2fkhz7DBg8OHukXa5IOOprSZEIeSl2TjbLVqoCOacPc
-        ez1HgJnDdBgww88h7eOxOnARoEOm4PvemSWhfucoyg1wc8/1gM/Yb3b/xR2D+w==
+        bh=QgGIxxjXPXX5AByY57u1zqywk8dbUi7+e1GgB7Rkt0Y=;
+        b=pM+NwnzDN7Jtp0hFFriAUZibIiv0Hf2d8PSVhq0kxwEvJ2DiZ4bsGPNyW9A8XAY2snA/mW
+        H5jC7JBeiOUEqjk7QmvFbbnHgs5eXxuistcc0YGvyOfQSQKtIl62gAjagJ+7++mLSF+EfL
+        GVV9AKl4lA9FH/K+RZNyAq9+dDHGTmxLmNOQRQsto4vzMvi1Qdzi0SE5o2sGGEGJ/+HKfd
+        oezdprsu0nObIeb+/YrIhAroe3jTNdjsDkuDPirwkC8R2+PqesMLeo8cC+qODGxfbeJsve
+        FGxjpLmhP7esdQQmkUUdNnTiPCIW4Ci/KNBgIceH3vBI8q8Oq0UIlkPb0kxP0A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1671303331;
+        s=2020e; t=1671303332;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=E53RHJcelb4AnLKZMjCK+9UEbOGOVcHWJYrXV9uNWa0=;
-        b=8RbTgiRHZ2lW+CfrexmWMarLVi2YezGcVHdpFuu1UYXX1nMmBEoD3W0NB1/8C75H2mF5fR
-        hVviw8XRIdH8f3AQ==
+        bh=QgGIxxjXPXX5AByY57u1zqywk8dbUi7+e1GgB7Rkt0Y=;
+        b=NYXUx1hoQKOjyQpksuBJr0IE29LpapmWP21Udbkj3IC7HYzXUL79nL2Cat9qJxsOoZn6Wx
+        IG+PX1F+hIuxHKCg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Add a few comments
+Subject: [tip: x86/mm] mm: Remove pointless barrier() after pmdp_get_lockless()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167130333104.4906.15196955293503615286.tip-bot2@tip-bot2>
+Message-ID: <167130333179.4906.5607292265365831847.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,63 +59,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     5ceeee7571b7628f439ae0444ec41d132558f47e
-Gitweb:        https://git.kernel.org/tip/5ceeee7571b7628f439ae0444ec41d132558f47e
+Commit-ID:     eb780dcae02d5a71e6979aa7b8c708dea8597adf
+Gitweb:        https://git.kernel.org/tip/eb780dcae02d5a71e6979aa7b8c708dea8597adf
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 10 Nov 2022 13:33:50 +01:00
+AuthorDate:    Fri, 21 Oct 2022 13:47:29 +02:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 15 Dec 2022 10:37:28 -08:00
+CommitterDate: Thu, 15 Dec 2022 10:37:27 -08:00
 
-x86/mm: Add a few comments
+mm: Remove pointless barrier() after pmdp_get_lockless()
 
-It's a shame to hide useful comments in Changelogs, add some to the
-code.
-
-Shamelessly stolen from commit:
-
-  c40a56a7818c ("x86/mm/init: Remove freed kernel image areas from alias mapping")
+pmdp_get_lockless() should itself imply any ordering required.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221110125544.460677011%40infradead.org
+Link: https://lkml.kernel.org/r/20221022114425.298833095%40infradead.org
 ---
- arch/x86/mm/pat/set_memory.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ mm/hmm.c    | 1 -
+ mm/vmscan.c | 3 ---
+ 2 files changed, 4 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 06eb891..50f81ea 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -219,6 +219,23 @@ within_inclusive(unsigned long addr, unsigned long start, unsigned long end)
+diff --git a/mm/hmm.c b/mm/hmm.c
+index 39cf50d..601a99c 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -362,7 +362,6 @@ again:
+ 		 * values.
+ 		 */
+ 		pmd = pmdp_get_lockless(pmdp);
+-		barrier();
+ 		if (!pmd_devmap(pmd) && !pmd_trans_huge(pmd))
+ 			goto again;
  
- #ifdef CONFIG_X86_64
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 88ef873..4936a88 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4041,9 +4041,6 @@ restart:
+ 	for (i = pmd_index(start), addr = start; addr != end; i++, addr = next) {
+ 		pmd_t val = pmdp_get_lockless(pmd + i);
  
-+/*
-+ * The kernel image is mapped into two places in the virtual address space
-+ * (addresses without KASLR, of course):
-+ *
-+ * 1. The kernel direct map (0xffff880000000000)
-+ * 2. The "high kernel map" (0xffffffff81000000)
-+ *
-+ * We actually execute out of #2. If we get the address of a kernel symbol, it
-+ * points to #2, but almost all physical-to-virtual translations point to #1.
-+ *
-+ * This is so that we can have both a directmap of all physical memory *and*
-+ * take full advantage of the the limited (s32) immediate addressing range (2G)
-+ * of x86_64.
-+ *
-+ * See Documentation/x86/x86_64/mm.rst for more detail.
-+ */
-+
- static inline unsigned long highmap_start_pfn(void)
- {
- 	return __pa_symbol(_text) >> PAGE_SHIFT;
-@@ -1626,6 +1643,9 @@ repeat:
+-		/* for pmdp_get_lockless() */
+-		barrier();
+-
+ 		next = pmd_addr_end(addr, end);
  
- static int __change_page_attr_set_clr(struct cpa_data *cpa, int checkalias);
- 
-+/*
-+ * Check the directmap and "high kernel map" 'aliases'.
-+ */
- static int cpa_process_alias(struct cpa_data *cpa)
- {
- 	struct cpa_data alias_cpa;
+ 		if (!pmd_present(val) || is_huge_zero_pmd(val)) {
