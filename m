@@ -2,50 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D08564A826
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Dec 2022 20:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6176C64FBAE
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:55:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233145AbiLLTfg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Dec 2022 14:35:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35764 "EHLO
+        id S229718AbiLQSze (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 17 Dec 2022 13:55:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232790AbiLLTff (ORCPT
+        with ESMTP id S229675AbiLQSzd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Dec 2022 14:35:35 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B577D62CD;
-        Mon, 12 Dec 2022 11:35:34 -0800 (PST)
-Date:   Mon, 12 Dec 2022 19:35:32 -0000
+        Sat, 17 Dec 2022 13:55:33 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E7EE10B79;
+        Sat, 17 Dec 2022 10:55:32 -0800 (PST)
+Date:   Sat, 17 Dec 2022 18:55:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1670873733;
+        s=2020; t=1671303330;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=DA5RYlw5nSZ0avjZnRiKLuF+wuJ2XipiUUQcXPMg/bc=;
-        b=KVO1ndTbbVAgJjaL91xTgu4YqRyTglcJSuAi3zByPEmSfXWYkJ7KvGukeR8XbeQJL+oc7R
-        2TnSH6tqUKxrHHpFVyAJlcqZYBjbJ9hiI/40u1Jg+ZoLDI3KFaJeOKFG2TGgPTuRJMirtq
-        7x6WQY194fHBL5fyKeTai+AAs7QbE1clGYJBdv20oboWe7aNtOLhr8YO1SBZCh7xWx1pDq
-        9drRspRGvJbE3LKWj3THSM62I1QzfFYn6DMqnFxlGDE2BaiI8rhtJ9djS2jZPU0CFuzVnw
-        a7P5yWWey81ro3DbmtTx2aZCGBezCZjsgmP13Eb2rt960XaxopNj87An3TIS6Q==
+        bh=J97gzZkGGDfW+0G87Kan1UFe3sC+UvKIsskpcpsByDU=;
+        b=44yjMEecL9/m6r6NhUNBP9jQGnW86TiWWX45+kULfqzwDd6sDu3fNAL9JmtyUW3Oe5YX+Q
+        /O4MtHURNZhyBrrDMuOyJGRJgf2u9qZo7mwswaUDfP8Aa08MhbEtAF/DwYcPz1C2CRsRV+
+        u+XFl7Am/AE8XS4+gdWvj3DSsLa88DGd+noJY1G1qvTOUUWc7aV6AwfOuThjJg8TaQ6Cba
+        ecBCJZtECbXZ9lv3FHrH4A60kkXYyfGTwqf9EWwiHjUfSEsTjjfya44QxEikX77cw93Im7
+        Sbb6n6/fhYUdfjln2jd26qMzsKmUVImhol5lF6JykIAEhI/t4ppZW7EBRR+UiQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1670873733;
+        s=2020e; t=1671303330;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=DA5RYlw5nSZ0avjZnRiKLuF+wuJ2XipiUUQcXPMg/bc=;
-        b=jxt2UHGKTL0P/ntko87iyt3B4RG7ozFlA+buqdGq4phzjGpnoDyZuonSyPr7O6VowYkosa
-        en3U4ZuQI848FxBw==
-From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
+        bh=J97gzZkGGDfW+0G87Kan1UFe3sC+UvKIsskpcpsByDU=;
+        b=WZJGtSzVPARtkk0/5cqakGaXtPwDm3P0yF9is8AqTcKI5l2bAXFlLUwtrQK8L2RVrOSAPS
+        gKJUIRpdmpj64/CQ==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Fix sparse warnings in untagged_ptr()
-Cc:     kernel test robot <lkp@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Subject: [tip: x86/mm] x86/mm: Ensure forced page table splitting
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Marco Elver <elver@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167087373271.4906.10859226256145693970.tip-bot2@tip-bot2>
+Message-ID: <167130332907.4906.11081622547115559561.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,67 +61,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     ce66a02538f39f071443bac9bc6ff8f3a780ab92
-Gitweb:        https://git.kernel.org/tip/ce66a02538f39f071443bac9bc6ff8f3a780ab92
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Wed, 16 Nov 2022 03:43:53 +03:00
+Commit-ID:     3e844d842d49cdbe61a4b338bdd512654179488a
+Gitweb:        https://git.kernel.org/tip/3e844d842d49cdbe61a4b338bdd512654179488a
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Fri, 18 Nov 2022 07:16:16 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 28 Nov 2022 15:12:25 -08:00
+CommitterDate: Thu, 15 Dec 2022 10:37:28 -08:00
 
-x86/mm: Fix sparse warnings in untagged_ptr()
+x86/mm: Ensure forced page table splitting
 
-Linear Address Masking patchset triggered a lot of sparse warnings.
+There are a few kernel users like kfence that require 4k pages to work
+correctly and do not support large mappings.  They use set_memory_4k()
+to break down those large mappings.
 
-The root cause is that casting pointer to '__typeof__(*(ptr)) *' will
-strip all sparse tags. The type has to be defined based on the pointer
-type, not based on what the pointer points to.
+That, in turn relies on cpa_data->force_split option to indicate to
+set_memory code that it should split page tables regardless of whether
+the need to be.
 
-Fix cast in untagged_ptr() and avoid __typeof__() usage in
-get/put_user().
+But, a recent change added an optimization which would return early
+if a set_memory request came in that did not change permissions.  It
+did not consult ->force_split and would mistakenly optimize away the
+splitting that set_memory_4k() needs.  This broke kfence.
 
-Fixes: 5744534bdae4 ("x86/uaccess: Provide untagged_addr() and remove tags before address check")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Skip the same-permission optimization when ->force_split is set.
+
+Fixes: 127960a05548 ("x86/mm: Inhibit _PAGE_NX changes from cpa_process_alias()")
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20221116004353.15052-3-kirill.shutemov%40linux.intel.com
+Tested-by: Marco Elver <elver@google.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/CA+G9fYuFxZTxkeS35VTZMXwQvohu73W3xbZ5NtjebsVvH6hCuA@mail.gmail.com/
 ---
- arch/x86/include/asm/uaccess.h | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 1d2c792..bd92e1e 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -43,7 +43,7 @@ DECLARE_STATIC_KEY_FALSE(tagged_addr_key);
- #define untagged_ptr(mm, ptr)	({					\
- 	u64 __ptrval = (__force u64)(ptr);				\
- 	__ptrval = untagged_addr(mm, __ptrval);				\
--	(__force __typeof__(*(ptr)) *)__ptrval;				\
-+	(__force __typeof__(ptr))__ptrval;				\
- })
- #else
- #define untagged_addr(mm, addr)	(addr)
-@@ -158,10 +158,8 @@ extern int __get_user_bad(void);
-  */
- #define get_user(x,ptr)							\
- ({									\
--	__typeof__(*(ptr)) __user *__ptr_clean;				\
--	__ptr_clean = untagged_ptr(current->mm, ptr);			\
- 	might_fault();							\
--	do_get_user_call(get_user,x,__ptr_clean);			\
-+	do_get_user_call(get_user,x,untagged_ptr(current->mm, ptr));	\
- })
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 220361c..0db6951 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -1727,7 +1727,8 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
+ 	/*
+ 	 * No changes, easy!
+ 	 */
+-	if (!(pgprot_val(cpa->mask_set) | pgprot_val(cpa->mask_clr)))
++	if (!(pgprot_val(cpa->mask_set) | pgprot_val(cpa->mask_clr)) &&
++	    !cpa->force_split)
+ 		return ret;
  
- /**
-@@ -263,10 +261,8 @@ extern void __put_user_nocheck_8(void);
-  * Return: zero on success, or -EFAULT on error.
-  */
- #define put_user(x, ptr) ({						\
--	__typeof__(*(ptr)) __user *__ptr_clean;				\
--	__ptr_clean = untagged_ptr(current->mm, ptr);			\
- 	might_fault();							\
--	do_put_user_call(put_user,x,__ptr_clean);			\
-+	do_put_user_call(put_user,x,untagged_ptr(current->mm, ptr));	\
- })
- 
- /**
+ 	while (rempages) {
