@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E5C664FBBE
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15B9F64FBC3
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:55:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230145AbiLQSzv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 17 Dec 2022 13:55:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40964 "EHLO
+        id S229495AbiLQSzz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 17 Dec 2022 13:55:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230040AbiLQSzi (ORCPT
+        with ESMTP id S230030AbiLQSzi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 17 Dec 2022 13:55:38 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB4E310FCA;
-        Sat, 17 Dec 2022 10:55:36 -0800 (PST)
-Date:   Sat, 17 Dec 2022 18:55:31 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC7123A;
+        Sat, 17 Dec 2022 10:55:37 -0800 (PST)
+Date:   Sat, 17 Dec 2022 18:55:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1671303332;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=/DXzkQVHXsXFFQGhcGJkM2pr/WpSWQJKwqVtglGJv2c=;
-        b=DmbTL+Vhx4GZyfW72NGc8SRrnOa20ipOD81wKQGK18Rk358/mxA7c6NkTo5Cg8DkPe0EIT
-        c1QbAgb3YIb973GzPxOzXoYqGro64slwm7IasHbcogZ1b1mrf2ttrJduQpguLKj3NH2K9O
-        2m8I17CuolzVPTtvgerxyInDBzZl7uP31MgbDH3l+Afw8Bo+eetnu93edkKslJ0T/96uoj
-        DaclF/T9GsQSGTIBjiglJgoYsFmnRrSTza6gkpCPBl2CCbRV92l1EqztQ/AnXm7eQ5eMx7
-        x6jn82nW4THT3BxfpOb73Et8sT1Ai7UO/p8rq74JlW8P3qvHCixKXhQryXE8TA==
+        bh=c5g6MSrqZsjP8rQ+Bx44M5yo8LZcSCCthyNX2GgIJYU=;
+        b=YIQSN19LWJmoUttmAjjI3Pb/eyiffL6VPEsBMCmPtWT+bBcC7OVrWmScUrH9N8L3n1al2V
+        9WO9PyAOtkX5+tq63dwh45YfCW40AUe5pkbMi4WEgul6Y7kUNn/XojnPX64iPWQrStX1uE
+        xVnZyFqqCbsvWUp+aWSqcYW1WWRHtiPb3D1IEkX/NIbmaswm6FXhFg4CeHAJFfG7B6K7aX
+        UpweqwHacnFSpi5ySY8hD00UMwalOOwfo5PvXgUCaeWgko5ABKKL/yCANSmELZEfjE9KPa
+        GpvI+6Ii6IkBEqPokCIqSrYpEpCH5OnYjqcJUKgh33I+/KSlUXc/6a1xaO5DAQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1671303332;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=/DXzkQVHXsXFFQGhcGJkM2pr/WpSWQJKwqVtglGJv2c=;
-        b=P0KXSAqixfHPHt5eJrlXpOURWg9nrAKlfqMFX33j3BugeLzQxYUExkTnj9auElRuA/XvZz
-        JEyyBYFeDoW76NBw==
+        bh=c5g6MSrqZsjP8rQ+Bx44M5yo8LZcSCCthyNX2GgIJYU=;
+        b=LFhIRGS43jiyYOup8PegzRc+4pycbWG13QfFLUT2uBVNZEr1FhXfDHtKR9sPURnYevLMGY
+        dT1gikrMpdvUfHAw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm/pae: Get rid of set_64bit()
+Subject: [tip: x86/mm] x86/mm/pae: Use WRITE_ONCE()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167130333199.4906.16686068094656515587.tip-bot2@tip-bot2>
+Message-ID: <167130333255.4906.14861666890204509269.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,120 +59,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     d4a72e7fe61a1ea9ad4accf3532411ca685eaead
-Gitweb:        https://git.kernel.org/tip/d4a72e7fe61a1ea9ad4accf3532411ca685eaead
+Commit-ID:     f7bcd4617de67a4700a7bd7dc56808b57f1c8748
+Gitweb:        https://git.kernel.org/tip/f7bcd4617de67a4700a7bd7dc56808b57f1c8748
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 21 Oct 2022 13:36:24 +02:00
+AuthorDate:    Thu, 26 Nov 2020 17:40:12 +01:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Thu, 15 Dec 2022 10:37:27 -08:00
 
-x86/mm/pae: Get rid of set_64bit()
+x86/mm/pae: Use WRITE_ONCE()
 
-Recognise that set_64bit() is a special case of our previously
-introduced pxx_xchg64(), so use that and get rid of set_64bit().
+Disallow write-tearing, that would be really unfortunate.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221022114425.233481884%40infradead.org
+Link: https://lkml.kernel.org/r/20221022114425.038102604%40infradead.org
 ---
- arch/x86/include/asm/cmpxchg_32.h     | 28 +--------------------------
- arch/x86/include/asm/pgtable-3level.h | 23 ++++++++++-----------
- 2 files changed, 12 insertions(+), 39 deletions(-)
+ arch/x86/include/asm/pgtable-3level.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/cmpxchg_32.h b/arch/x86/include/asm/cmpxchg_32.h
-index 215f5a6..6ba80ce 100644
---- a/arch/x86/include/asm/cmpxchg_32.h
-+++ b/arch/x86/include/asm/cmpxchg_32.h
-@@ -7,34 +7,6 @@
-  *       you need to test for the feature in boot_cpu_data.
-  */
- 
--/*
-- * CMPXCHG8B only writes to the target if we had the previous
-- * value in registers, otherwise it acts as a read and gives us the
-- * "new previous" value.  That is why there is a loop.  Preloading
-- * EDX:EAX is a performance optimization: in the common case it means
-- * we need only one locked operation.
-- *
-- * A SIMD/3DNOW!/MMX/FPU 64-bit store here would require at the very
-- * least an FPU save and/or %cr0.ts manipulation.
-- *
-- * cmpxchg8b must be used with the lock prefix here to allow the
-- * instruction to be executed atomically.  We need to have the reader
-- * side to see the coherent 64bit value.
-- */
--static inline void set_64bit(volatile u64 *ptr, u64 value)
--{
--	u32 low  = value;
--	u32 high = value >> 32;
--	u64 prev = *ptr;
--
--	asm volatile("\n1:\t"
--		     LOCK_PREFIX "cmpxchg8b %0\n\t"
--		     "jnz 1b"
--		     : "=m" (*ptr), "+A" (prev)
--		     : "b" (low), "c" (high)
--		     : "memory");
--}
--
- #ifdef CONFIG_X86_CMPXCHG64
- #define arch_cmpxchg64(ptr, o, n)					\
- 	((__typeof__(*(ptr)))__cmpxchg64((ptr), (unsigned long long)(o), \
 diff --git a/arch/x86/include/asm/pgtable-3level.h b/arch/x86/include/asm/pgtable-3level.h
-index 93c82c6..967b135 100644
+index 0a1b81d..d3a2492 100644
 --- a/arch/x86/include/asm/pgtable-3level.h
 +++ b/arch/x86/include/asm/pgtable-3level.h
-@@ -19,7 +19,15 @@
- 	pr_err("%s:%d: bad pgd %p(%016Lx)\n",				\
- 	       __FILE__, __LINE__, &(e), pgd_val(e))
- 
--/* Rules for using set_pte: the pte being assigned *must* be
-+#define pxx_xchg64(_pxx, _ptr, _val) ({					\
-+	_pxx##val_t *_p = (_pxx##val_t *)_ptr;				\
-+	_pxx##val_t _o = *_p;						\
-+	do { } while (!try_cmpxchg64(_p, &_o, (_val)));			\
-+	native_make_##_pxx(_o);						\
-+})
-+
-+/*
-+ * Rules for using set_pte: the pte being assigned *must* be
-  * either not present or in a state where the hardware will
-  * not attempt to update the pte.  In places where this is
-  * not possible, use pte_get_and_clear to obtain the old pte
-@@ -34,12 +42,12 @@ static inline void native_set_pte(pte_t *ptep, pte_t pte)
+@@ -27,9 +27,9 @@
+  */
+ static inline void native_set_pte(pte_t *ptep, pte_t pte)
+ {
+-	ptep->pte_high = pte.pte_high;
++	WRITE_ONCE(ptep->pte_high, pte.pte_high);
+ 	smp_wmb();
+-	ptep->pte_low = pte.pte_low;
++	WRITE_ONCE(ptep->pte_low, pte.pte_low);
+ }
  
  static inline void native_set_pte_atomic(pte_t *ptep, pte_t pte)
+@@ -58,16 +58,16 @@ static inline void native_set_pud(pud_t *pudp, pud_t pud)
+ static inline void native_pte_clear(struct mm_struct *mm, unsigned long addr,
+ 				    pte_t *ptep)
  {
--	set_64bit((unsigned long long *)(ptep), native_pte_val(pte));
-+	pxx_xchg64(pte, ptep, native_pte_val(pte));
+-	ptep->pte_low = 0;
++	WRITE_ONCE(ptep->pte_low, 0);
+ 	smp_wmb();
+-	ptep->pte_high = 0;
++	WRITE_ONCE(ptep->pte_high, 0);
  }
  
- static inline void native_set_pmd(pmd_t *pmdp, pmd_t pmd)
+ static inline void native_pmd_clear(pmd_t *pmdp)
  {
--	set_64bit((unsigned long long *)(pmdp), native_pmd_val(pmd));
-+	pxx_xchg64(pmd, pmdp, native_pmd_val(pmd));
+-	pmdp->pmd_low = 0;
++	WRITE_ONCE(pmdp->pmd_low, 0);
+ 	smp_wmb();
+-	pmdp->pmd_high = 0;
++	WRITE_ONCE(pmdp->pmd_high, 0);
  }
  
- static inline void native_set_pud(pud_t *pudp, pud_t pud)
-@@ -47,7 +55,7 @@ static inline void native_set_pud(pud_t *pudp, pud_t pud)
- #ifdef CONFIG_PAGE_TABLE_ISOLATION
- 	pud.p4d.pgd = pti_set_user_pgtbl(&pudp->p4d.pgd, pud.p4d.pgd);
- #endif
--	set_64bit((unsigned long long *)(pudp), native_pud_val(pud));
-+	pxx_xchg64(pud, pudp, native_pud_val(pud));
- }
- 
- /*
-@@ -91,13 +99,6 @@ static inline void pud_clear(pud_t *pudp)
- }
- 
- 
--#define pxx_xchg64(_pxx, _ptr, _val) ({					\
--	_pxx##val_t *_p = (_pxx##val_t *)_ptr;				\
--	_pxx##val_t _o = *_p;						\
--	do { } while (!try_cmpxchg64(_p, &_o, (_val)));			\
--	native_make_##_pxx(_o);						\
--})
--
- #ifdef CONFIG_SMP
- static inline pte_t native_ptep_get_and_clear(pte_t *ptep)
- {
+ static inline void native_pud_clear(pud_t *pudp)
