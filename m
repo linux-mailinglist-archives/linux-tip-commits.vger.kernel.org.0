@@ -2,49 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 826E264FBB6
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:55:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF6DD64FBB4
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Dec 2022 19:55:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230098AbiLQSzl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 17 Dec 2022 13:55:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40792 "EHLO
+        id S230064AbiLQSzk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 17 Dec 2022 13:55:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229996AbiLQSzg (ORCPT
+        with ESMTP id S229974AbiLQSzf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 17 Dec 2022 13:55:36 -0500
+        Sat, 17 Dec 2022 13:55:35 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D7C910B7B;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C3C110B74;
         Sat, 17 Dec 2022 10:55:35 -0800 (PST)
 Date:   Sat, 17 Dec 2022 18:55:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1671303331;
+        s=2020; t=1671303330;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=nt5Z13x7cPRUra6u/EdfRu87/NpycaDyh7wrSUQR9ck=;
-        b=G1G58/Gb5ndyH6ooxLbFLJ29hJyHGVkqlNF5UoKuCGT5brcQZi+ZV1m4jlDHfk8u4KQ5Mi
-        jYVnmlTH5U5VcZnPu7JbSUnmeGHMmOA43sPoGpMwzWdrVgkK8fhVbfCl+O29jqBXd1KtnX
-        sNDaDTg5V7bSB/aafQydz804ftw0v75hkZUSA/uL9nP8jJTkXOSvMOOnEt9X4L7ZJiw+ys
-        LhRkR4KHoCgmRSga9NEpxEYhv5lbpcjVYg/DQfm/Zuxs6i6aGQEzlxf5UMQVxISlXHoLRK
-        GMpURkDBBC+QQ77h8/jNJWcll9PwO7xGAjR6vQ1EDBFizDHbeC1WjqQpbJ103w==
+        bh=qIRzVhTbXlSOYmY8HvVrzYMs1/8PNFxoic35cj7YCek=;
+        b=RQoxIK3mqJrHDWQQXWIU04aO3NryKZRephnd+AqetljY1ZQOWg4Ev9UtLuug+QcD/Rk1Op
+        i7pTdaAOO6yT9KBYsVHY1Hh8YJjkHff/zfIbZsBKOJlCdgeKtNu+YQH8UrRItT/uj3Kg+/
+        W/mybM5Ibgf90PpUawJRZb0HhJvjKORavKR0sTH0lQO+6jUgP9poouLcY2ScUysOQSd8h8
+        PRygCqfIO/eB7+MdkrlPAF1fwFF11iIKthNT3oUFndPOJKT8tF3VlFRk+q4XtassFOWOyI
+        fIrFEnaUYy5fBUGdUMvD/q70i4f+HLJGnWixBK78HbgbEeI/eAytw9JozmcU9g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1671303331;
+        s=2020e; t=1671303330;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=nt5Z13x7cPRUra6u/EdfRu87/NpycaDyh7wrSUQR9ck=;
-        b=cRUVvfO1HZ2uAoa2pDPSwPdMWrt4SEMgBjfs4F6hFNTu1OSrf8LGf+bw9h9NiX5W8IsN9I
-        yARtmsIK93SidfAA==
+        bh=qIRzVhTbXlSOYmY8HvVrzYMs1/8PNFxoic35cj7YCek=;
+        b=SGNpTz4MYbbWgFaHtSJJxneBaOzYN2Hg9Uxr3npP3lqgN9QTiwDcC94vOdZpPv3dSnKrJW
+        puLLwckiXFN3kpBw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Inhibit _PAGE_NX changes from cpa_process_alias()
-Cc:     kernel test robot <oliver.sang@intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/mm] x86/mm: Rename __change_page_attr_set_clr(.checkalias)
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167130333070.4906.17678564285729472836.tip-bot2@tip-bot2>
+Message-ID: <167130333055.4906.11541544324914437438.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,100 +59,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     d597416683d587e940faa35945fba162329b5a71
-Gitweb:        https://git.kernel.org/tip/d597416683d587e940faa35945fba162329b5a71
+Commit-ID:     e996365ee7475805d2a01312532855004e89df84
+Gitweb:        https://git.kernel.org/tip/e996365ee7475805d2a01312532855004e89df84
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 10 Nov 2022 13:33:57 +01:00
+AuthorDate:    Thu, 10 Nov 2022 13:34:00 +01:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Thu, 15 Dec 2022 10:37:28 -08:00
 
-x86/mm: Inhibit _PAGE_NX changes from cpa_process_alias()
+x86/mm: Rename __change_page_attr_set_clr(.checkalias)
 
-There is a cludge in change_page_attr_set_clr() that inhibits
-propagating NX changes to the aliases (directmap and highmap) -- this
-is a cludge twofold:
+Now that the checkalias functionality is taken by CPA_NO_CHECK_ALIAS
+rename the argument to better match is remaining purpose: primary,
+matching __change_page_attr().
 
- - it also inhibits the primary checks in __change_page_attr();
- - it hard depends on single bit changes.
-
-The introduction of set_memory_rox() triggered this last issue for
-clearing both _PAGE_RW and _PAGE_NX.
-
-Explicitly ignore _PAGE_NX in cpa_process_alias() instead.
-
-Fixes: b38994948567 ("x86/mm: Implement native set_memory_rox()")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Debugged-by: Dave Hansen <dave.hansen@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221110125544.594991716%40infradead.org
+Link: https://lkml.kernel.org/r/20221110125544.661001508%40infradead.org
 ---
- arch/x86/mm/pat/set_memory.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 4943f6c..beef774 100644
+index beef774..220361c 100644
 --- a/arch/x86/mm/pat/set_memory.c
 +++ b/arch/x86/mm/pat/set_memory.c
-@@ -1669,6 +1669,12 @@ static int cpa_process_alias(struct cpa_data *cpa)
- 		alias_cpa.flags &= ~(CPA_PAGES_ARRAY | CPA_ARRAY);
- 		alias_cpa.curpage = 0;
+@@ -1641,7 +1641,7 @@ repeat:
+ 	return err;
+ }
  
-+		/* Directmap always has NX set, do not modify. */
-+		if (__supported_pte_mask & _PAGE_NX) {
-+			alias_cpa.mask_clr.pgprot &= ~_PAGE_NX;
-+			alias_cpa.mask_set.pgprot &= ~_PAGE_NX;
-+		}
-+
- 		cpa->force_flush_all = 1;
+-static int __change_page_attr_set_clr(struct cpa_data *cpa, int checkalias);
++static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary);
  
- 		ret = __change_page_attr_set_clr(&alias_cpa, 0);
-@@ -1691,6 +1697,15 @@ static int cpa_process_alias(struct cpa_data *cpa)
- 		alias_cpa.flags &= ~(CPA_PAGES_ARRAY | CPA_ARRAY);
- 		alias_cpa.curpage = 0;
+ /*
+  * Check the directmap and "high kernel map" 'aliases'.
+@@ -1718,7 +1718,7 @@ static int cpa_process_alias(struct cpa_data *cpa)
+ 	return 0;
+ }
  
-+		/*
-+		 * [_text, _brk_end) also covers data, do not modify NX except
-+		 * in cases where the highmap is the primary target.
-+		 */
-+		if (__supported_pte_mask & _PAGE_NX) {
-+			alias_cpa.mask_clr.pgprot &= ~_PAGE_NX;
-+			alias_cpa.mask_set.pgprot &= ~_PAGE_NX;
-+		}
-+
- 		cpa->force_flush_all = 1;
- 		/*
- 		 * The high mapping range is imprecise, so ignore the
-@@ -1709,6 +1724,12 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int checkalias)
- 	unsigned long rempages = numpages;
- 	int ret = 0;
- 
-+	/*
-+	 * No changes, easy!
-+	 */
-+	if (!(pgprot_val(cpa->mask_set) | pgprot_val(cpa->mask_clr)))
-+		return ret;
-+
- 	while (rempages) {
- 		/*
- 		 * Store the remaining nr of pages for the large page
-@@ -1755,7 +1776,7 @@ static int change_page_attr_set_clr(unsigned long *addr, int numpages,
- 				    struct page **pages)
+-static int __change_page_attr_set_clr(struct cpa_data *cpa, int checkalias)
++static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
  {
- 	struct cpa_data cpa;
--	int ret, cache, checkalias;
-+	int ret, cache;
+ 	unsigned long numpages = cpa->numpages;
+ 	unsigned long rempages = numpages;
+@@ -1742,13 +1742,13 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int checkalias)
  
- 	memset(&cpa, 0, sizeof(cpa));
+ 		if (!debug_pagealloc_enabled())
+ 			spin_lock(&cpa_lock);
+-		ret = __change_page_attr(cpa, checkalias);
++		ret = __change_page_attr(cpa, primary);
+ 		if (!debug_pagealloc_enabled())
+ 			spin_unlock(&cpa_lock);
+ 		if (ret)
+ 			goto out;
  
-@@ -1805,10 +1826,7 @@ static int change_page_attr_set_clr(unsigned long *addr, int numpages,
- 	cpa.curpage = 0;
- 	cpa.force_split = force_split;
- 
--	/* No alias checking for _NX bit modifications */
--	checkalias = (pgprot_val(mask_set) | pgprot_val(mask_clr)) != _PAGE_NX;
--
--	ret = __change_page_attr_set_clr(&cpa, checkalias);
-+	ret = __change_page_attr_set_clr(&cpa, 1);
- 
- 	/*
- 	 * Check whether we really changed something:
+-		if (checkalias && !(cpa->flags & CPA_NO_CHECK_ALIAS)) {
++		if (primary && !(cpa->flags & CPA_NO_CHECK_ALIAS)) {
+ 			ret = cpa_process_alias(cpa);
+ 			if (ret)
+ 				goto out;
