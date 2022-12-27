@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D46206568D6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 10:27:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC070656A0B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 12:51:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229929AbiL0J1m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Dec 2022 04:27:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50150 "EHLO
+        id S231469AbiL0Lva (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Dec 2022 06:51:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229922AbiL0J1l (ORCPT
+        with ESMTP id S229792AbiL0Lv1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Dec 2022 04:27:41 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958D265DB;
-        Tue, 27 Dec 2022 01:27:38 -0800 (PST)
-Date:   Tue, 27 Dec 2022 09:27:35 -0000
+        Tue, 27 Dec 2022 06:51:27 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD378767D;
+        Tue, 27 Dec 2022 03:51:26 -0800 (PST)
+Date:   Tue, 27 Dec 2022 11:51:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1672133256;
+        s=2020; t=1672141884;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=07xF+6hRsc8ELTl0SNyOAwoLSpIteGOwrjyGZCLRCn8=;
-        b=RLE07RZ/tyYyMP4j3LN60BcXEAEeLNlrwcYZL79TCgA02kLeeuX/HpOLtYIrPBAUSXM23K
-        1IV3mR4o/FtiROktP4o/D1mwbYs8fw0lw5f2q3ZKqApljBWbjioB0ueWqzdpZYCnC3xFm1
-        5eIJAmDiXnaNNpeD3pgiT5xBme3onXykiE+0aDQsCszKrQMOa5ON9gL4LO0OrFYYEXCwDz
-        tU+17DixqGKYd5MuFecK98HpLccLm5HI7nwor7wGda7f0h2xxSuPtNDFlS/tFGD6h/WRPx
-        oUA7+IiKxCYv9R/zfL0NaQjOl3aoCMD9D5EuZxfHwl5262tchbB2TeC/YCBG+Q==
+        bh=cCY749kK+ZEZys2HbS2HaPU3xVhCU0w5ngw71ZMD72M=;
+        b=JJ4ykFeB8R6RJWc+16XbuqJ2sWnA7NHiUEIXmhxXVqxZTU5Eq6SQ6f1L/IceBEW2cvcHNX
+        vTWe00LQYOHjq2CXnHH9YCOZ1NlKiSqXPCYlNGsdkoplBFBsP/nCEI1c3CZhOwzS/4NfS1
+        +r/gcZMsi7lXgw4DsncY4g9WCfSvPG7XST2OiJt2h8e8bQkbydUy+wDJVWp7VRxInmt93O
+        BSV1wtAgj1TRVGgANcvzMwi2yd3uua9wV5P4xW4PTcc+r9iIhhkJJOtsbzAK8KED/Q5KqJ
+        Q9m+tf/VjTjOy6YRFgj8HxXbUa+Xk0851soSepcsJRN1By2i0oeFFvFuY37GqQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1672133256;
+        s=2020e; t=1672141884;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=07xF+6hRsc8ELTl0SNyOAwoLSpIteGOwrjyGZCLRCn8=;
-        b=8bGUdMimCid6n2lBETtuNL/1nNrhGbVUAjcBLJUP7fFo1hUDYrDf9nrIlXomK9LH+nDU0i
-        LSxFz4w+VBG2zNCw==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=cCY749kK+ZEZys2HbS2HaPU3xVhCU0w5ngw71ZMD72M=;
+        b=rihS21t3ZlD3eEgwN6Bvmj9Tv7KrVUUh7HGwxha4JWYaU4l8zd0q7afjIEpIaSVFVxyuzz
+        RFKZ1baGJ2T7feBQ==
+From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/AMD: Handle multiple glued
- containers properly
-Cc:     Borislav Petkov <bp@suse.de>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/x86/amd: fix potential integer overflow on
+ shift of a int
+Cc:     Colin Ian King <colin.i.king@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ian Rogers <irogers@google.com>,
+        Kim Phillips <kim.phillips@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221219210656.5140-2-bp@alien8.de>
-References: <20221219210656.5140-2-bp@alien8.de>
+In-Reply-To: <20221202135149.1797974-1-colin.i.king@gmail.com>
+References: <20221202135149.1797974-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Message-ID: <167213325509.4906.5221750679090599711.tip-bot2@tip-bot2>
+Message-ID: <167214188379.4906.307380073396005165.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,86 +67,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     ba73e369b706a853cdafa60570854fecec9f9fdd
-Gitweb:        https://git.kernel.org/tip/ba73e369b706a853cdafa60570854fecec9f9fdd
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Mon, 19 Dec 2022 22:06:56 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 26 Dec 2022 06:41:05 +01:00
+Commit-ID:     08245672cdc6505550d1a5020603b0a8d4a6dcc7
+Gitweb:        https://git.kernel.org/tip/08245672cdc6505550d1a5020603b0a8d4a6dcc7
+Author:        Colin Ian King <colin.i.king@gmail.com>
+AuthorDate:    Fri, 02 Dec 2022 13:51:49 
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 27 Dec 2022 12:44:00 +01:00
 
-x86/microcode/AMD: Handle multiple glued containers properly
+perf/x86/amd: fix potential integer overflow on shift of a int
 
-It can happen that - especially during testing - the microcode
-blobs of all families are all glued together in the initrd. The
-current code doesn't check whether the current container matched
-a microcode patch and continues to the next one, which leads to
-save_microcode_in_initrd_amd() to look at the next and thus wrong one:
+The left shift of int 32 bit integer constant 1 is evaluated using 32 bit
+arithmetic and then passed as a 64 bit function argument. In the case where
+i is 32 or more this can lead to an overflow.  Avoid this by shifting
+using the BIT_ULL macro instead.
 
-  microcode: parse_container: ucode: 0xffff88807e9d9082
-  microcode: verify_patch: buf: 0xffff88807e9d90ce, buf_size: 26428
-  microcode: verify_patch: proc_id: 0x8082, patch_fam: 0x17, this family: 0x17
-  microcode: verify_patch: buf: 0xffff88807e9d9d56, buf_size: 23220
-  microcode: verify_patch: proc_id: 0x8012, patch_fam: 0x17, this family: 0x17
-  microcode: parse_container: MATCH: eq_id: 0x8012, patch proc_rev_id: 0x8012
-
-<-- matching patch found
-
-  microcode: verify_patch: buf: 0xffff88807e9da9de, buf_size: 20012
-  microcode: verify_patch: proc_id: 0x8310, patch_fam: 0x17, this family: 0x17
-  microcode: verify_patch: buf: 0xffff88807e9db666, buf_size: 16804
-  microcode: Invalid type field (0x414d44) in container file section header.
-  microcode: Patch section fail
-
-<-- checking chokes on the microcode magic value of the next container.
-
-  microcode: parse_container: saving container 0xffff88807e9d9082
-  microcode: save_microcode_in_initrd_amd: scanned containers, data: 0xffff88807e9d9082, size: 9700a
-
-and now if there's a next (and last container) it'll use that in
-save_microcode_in_initrd_amd() and not find a proper patch, ofc.
-
-Fix that by moving the out: label up, before the desc->mc check which
-jots down the pointer of the matching patch and is used to signal to the
-caller that it has found a matching patch in the current container.
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20221219210656.5140-2-bp@alien8.de
+Fixes: 471af006a747 ("perf/x86/amd: Constrain Large Increment per Cycle events")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Ian Rogers <irogers@google.com>
+Acked-by: Kim Phillips <kim.phillips@amd.com>
+Link: https://lore.kernel.org/r/20221202135149.1797974-1-colin.i.king@gmail.com
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/events/amd/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index 339c966..d144f91 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -330,8 +330,9 @@ static size_t parse_container(u8 *ucode, size_t size, struct cont_desc *desc)
- 		ret = verify_patch(x86_family(desc->cpuid_1_eax), buf, size, &patch_size, true);
- 		if (ret < 0) {
- 			/*
--			 * Patch verification failed, skip to the next
--			 * container, if there's one:
-+			 * Patch verification failed, skip to the next container, if
-+			 * there is one. Before exit, check whether that container has
-+			 * found a patch already. If so, use it.
- 			 */
- 			goto out;
- 		} else if (ret > 0) {
-@@ -350,6 +351,7 @@ skip:
- 		size -= patch_size + SECTION_HDR_SIZE;
- 	}
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index d6f3703..4386b10 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -1387,7 +1387,7 @@ static int __init amd_core_pmu_init(void)
+ 		 * numbered counter following it.
+ 		 */
+ 		for (i = 0; i < x86_pmu.num_counters - 1; i += 2)
+-			even_ctr_mask |= 1 << i;
++			even_ctr_mask |= BIT_ULL(i);
  
-+out:
- 	/*
- 	 * If we have found a patch (desc->mc), it means we're looking at the
- 	 * container which has a patch for this CPU so return 0 to mean, @ucode
-@@ -364,7 +366,6 @@ skip:
- 		return 0;
- 	}
- 
--out:
- 	return orig_size - size;
- }
- 
+ 		pair_constraint = (struct event_constraint)
+ 				    __EVENT_CONSTRAINT(0, even_ctr_mask, 0,
