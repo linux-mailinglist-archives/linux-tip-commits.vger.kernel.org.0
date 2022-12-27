@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56698656A3F
+	by mail.lfdr.de (Postfix) with ESMTP id A26CC656A40
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 12:59:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231992AbiL0L72 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Dec 2022 06:59:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44046 "EHLO
+        id S232097AbiL0L73 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Dec 2022 06:59:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231967AbiL0L64 (ORCPT
+        with ESMTP id S231972AbiL0L64 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 27 Dec 2022 06:58:56 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB22DAE5A;
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5769B7E6;
         Tue, 27 Dec 2022 03:58:55 -0800 (PST)
-Date:   Tue, 27 Dec 2022 11:58:53 -0000
+Date:   Tue, 27 Dec 2022 11:58:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1672142334;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G9KGHKGvEmHY8m6mMHbHyYBd5mnPoViFa4gD7Us+W8E=;
-        b=ZjzsFz30JcHNNKitODN5AzpHyFp1DhFvc08uWV/qUacYyMhxX0fknUB3nKSdZbUMQ9tHnX
-        iPI0f7nhlXbXmDQ82laEvgvPX/v8wqvCza6nP4gdJ5HjA066oVzJ9Zl055rvz08CLN9WvV
-        QkgzDlduiT//fmEcC/mpQKwAX+HIQiJxt2Gdf6CrvcF08kHt07EMSwWHe/C71xZEK1VOPn
-        qOCKGc9j3YA4jRyqfo+H829XHJq8mTFxhofdJR1bcUgcHYJ2fInIbS7c+fIi5A5jXoUkKC
-        rhrq7NbwvBS2qIztydIHMf6QSMVkX2nnSOAx5WGZMo08Iw5/wQV99yLDLV4b2A==
+        bh=9TZqt83Scy1dn6mE5MEfELkLQ3zO2SAdanIc2JfFnxw=;
+        b=qhk9vEUlzTUL6qHkKrQO9QFUF2NXJE3xVPJEdAdFY08IU5JnYQHZd55sFJ419dC6EPijC1
+        mjVpDTKrjMx9HAYgstMpmhHifMTBNcFmp5WW80H4FwOLhQnWZdJO0dSMWcRTgNsUSNo8sH
+        dn02wnJwqiAqEOhomq8QE1VM6MHDhI6cIj9myyADld1sbGZn6+kyLYnBuKkPUFFzO/5EJ3
+        LHV2BMBYFctRSZzZf6RqGl11KEYVc5ygwbixuasfMZ8IqDWuOZtUTFbTWlyS/2HOLs+U4s
+        YHoxymZh3ej3bUrti4bZi7gtcVgb0q8oNK/XytllpB/3zpQ0xqg7HDaJEFyxdA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1672142334;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,25 +36,25 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G9KGHKGvEmHY8m6mMHbHyYBd5mnPoViFa4gD7Us+W8E=;
-        b=bmtwC+3Li5Q08No3N7rc54fF5SO6AJli3YYN8Aeuym7b+dHnrVq5FL71xaqjUKzT1ejJKP
-        +mdaDqZiH1KiW6Dw==
-From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
+        bh=9TZqt83Scy1dn6mE5MEfELkLQ3zO2SAdanIc2JfFnxw=;
+        b=D2nnJJTYpmrpxMq+3A5RuX2SAAzcvNVd5Efl1e3xTOx5CaAApzcyYPK+S0rl7Zrzj0RLHr
+        twk7hgKJIkfLMwDQ==
+From:   "tip-bot2 for Like Xu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] futex: Fix futex_waitv() hrtimer debug object
- leak on kcalloc error
-Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+Subject: [tip: perf/core] perf/x86/lbr: Simplify the exposure check for the
+ LBR_INFO registers
+Cc:     Like Xu <like.xu@linux.intel.com>,
+        Yang Weijiang <weijiang.yang@intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Davidlohr Bueso <dave@stgolabs.net>, stable@vger.kernel.org,
-        stable@vger.kernel.org, #@tip-bot2.tec.linutronix.de,
-        v5.16+@tip-bot2.tec.linutronix.de, x86@kernel.org,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221214222008.200393-1-mathieu.desnoyers@efficios.com>
-References: <20221214222008.200393-1-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20221125040604.5051-2-weijiang.yang@intel.com>
+References: <20221125040604.5051-2-weijiang.yang@intel.com>
 MIME-Version: 1.0
-Message-ID: <167214233380.4906.7703534432069912531.tip-bot2@tip-bot2>
+Message-ID: <167214233418.4906.13269799714918773894.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,61 +68,45 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     94cd8fa09f5f1ebdd4e90964b08b7f2cc4b36c43
-Gitweb:        https://git.kernel.org/tip/94cd8fa09f5f1ebdd4e90964b08b7f2cc4b36c43
-Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Wed, 14 Dec 2022 17:20:08 -05:00
+Commit-ID:     03c4c7f88709fac0e20b6a48357c73d6fc50e544
+Gitweb:        https://git.kernel.org/tip/03c4c7f88709fac0e20b6a48357c73d6fc50e544
+Author:        Like Xu <like.xu@linux.intel.com>
+AuthorDate:    Thu, 24 Nov 2022 23:05:50 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 27 Dec 2022 12:52:02 +01:00
+CommitterDate: Tue, 27 Dec 2022 12:52:07 +01:00
 
-futex: Fix futex_waitv() hrtimer debug object leak on kcalloc error
+perf/x86/lbr: Simplify the exposure check for the LBR_INFO registers
 
-In a scenario where kcalloc() fails to allocate memory, the futex_waitv
-system call immediately returns -ENOMEM without invoking
-destroy_hrtimer_on_stack(). When CONFIG_DEBUG_OBJECTS_TIMERS=y, this
-results in leaking a timer debug object.
+The x86_pmu.lbr_info is 0 unless explicitly initialized, so there's
+no point checking x86_pmu.intel_cap.lbr_format.
 
-Fixes: bf69bad38cf6 ("futex: Implement sys_futex_waitv()")
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Like Xu <like.xu@linux.intel.com>
+Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Cc: stable@vger.kernel.org
-Cc: stable@vger.kernel.org # v5.16+
-Link: https://lore.kernel.org/r/20221214222008.200393-1-mathieu.desnoyers@efficios.com
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Link: https://lkml.kernel.org/r/20221125040604.5051-2-weijiang.yang@intel.com
 ---
- kernel/futex/syscalls.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/x86/events/intel/lbr.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/futex/syscalls.c b/kernel/futex/syscalls.c
-index 086a22d..a807407 100644
---- a/kernel/futex/syscalls.c
-+++ b/kernel/futex/syscalls.c
-@@ -286,19 +286,22 @@ SYSCALL_DEFINE5(futex_waitv, struct futex_waitv __user *, waiters,
- 	}
- 
- 	futexv = kcalloc(nr_futexes, sizeof(*futexv), GFP_KERNEL);
--	if (!futexv)
--		return -ENOMEM;
-+	if (!futexv) {
-+		ret = -ENOMEM;
-+		goto destroy_timer;
-+	}
- 
- 	ret = futex_parse_waitv(futexv, waiters, nr_futexes);
- 	if (!ret)
- 		ret = futex_wait_multiple(futexv, nr_futexes, timeout ? &to : NULL);
- 
-+	kfree(futexv);
-+
-+destroy_timer:
- 	if (timeout) {
- 		hrtimer_cancel(&to.timer);
- 		destroy_hrtimer_on_stack(&to.timer);
- 	}
+diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
+index 1f21f57..c3b0d15 100644
+--- a/arch/x86/events/intel/lbr.c
++++ b/arch/x86/events/intel/lbr.c
+@@ -1606,12 +1606,10 @@ clear_arch_lbr:
+  */
+ void x86_perf_get_lbr(struct x86_pmu_lbr *lbr)
+ {
+-	int lbr_fmt = x86_pmu.intel_cap.lbr_format;
 -
--	kfree(futexv);
- 	return ret;
+ 	lbr->nr = x86_pmu.lbr_nr;
+ 	lbr->from = x86_pmu.lbr_from;
+ 	lbr->to = x86_pmu.lbr_to;
+-	lbr->info = (lbr_fmt == LBR_FORMAT_INFO) ? x86_pmu.lbr_info : 0;
++	lbr->info = x86_pmu.lbr_info;
  }
+ EXPORT_SYMBOL_GPL(x86_perf_get_lbr);
  
