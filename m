@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5CC3656ABB
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 13:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99AB6656AC8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 13:16:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232299AbiL0MPS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Dec 2022 07:15:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53482 "EHLO
+        id S229825AbiL0MPm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Dec 2022 07:15:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231204AbiL0MOm (ORCPT
+        with ESMTP id S230072AbiL0MOo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Dec 2022 07:14:42 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F253F41;
+        Tue, 27 Dec 2022 07:14:44 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3647960E1;
         Tue, 27 Dec 2022 04:13:56 -0800 (PST)
-Date:   Tue, 27 Dec 2022 12:13:52 -0000
+Date:   Tue, 27 Dec 2022 12:13:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1672143232;
+        s=2020; t=1672143233;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Tcy8KIO8gQc9Kc01ifmjA4/hjm9ajuh+8clk09xwYCU=;
-        b=P35BcO47ib9k3WiOWGbnVxNGO1OLZt/t3+QbTsylmwEp8FQPPUVjJ3Yi6JD5LM8rSKyCkJ
-        79ffDf2g6SKYie+LWtSTo+GMLaNMohVtwPl9jc3FbRrQj5oyJ0A78iQWqidmohJW3XbMk6
-        lzK/RKBhqflnRBrWdJ9Stn0JbCGiKrsQ9atQKkkdrzaVEr+yQU1izdbN/B1ASe0LcQjLwI
-        LzC6ZHPg8A1FpR/pddGw1eJB4jDgc1EgBjMfD8HOLSFFc+J68n/28HQ2DnxRd7h5Z6s+Lf
-        miQ3sSANWw0IG8ygL/YfMlPhPpdnfa0jYxyYULyRCX3pj/OxeT41IwTliN8XxQ==
+        bh=ujyVg/s4AQQQ6UtTl7yr86u4Dr/6yIKm5A8C26cSDAI=;
+        b=PAGp4LGct8rT6tgUota960RX0QP4qmRLqPQD0nVozHSma0SIHKSz+5HVg/ybi+zNskC/v3
+        RnpfEC6DkkYWWNJrxOds6VRNVYCLB6FHQcyc3oYsNjHnjTMsNHpjK4ldIVsrfJEmYI/Eml
+        +Nz8az+S7RZn9s6c4VdcsB2M+RMxlrtlzlVVKqXzrX8xqImD+Kv556Tt0SprnHbYZW3q4R
+        vDPu5kqL7zFsAMwt5TH89wcbQ3yR/e5Xxvz2g1ntoZaD751ywdX54n4FEPUf3AfJEj4YZd
+        3iq6ylJQMf8LPd+CeBq9oRfGhSy/iVHgJEYOl7/WJuHBbktyipJtyTc91muFyg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1672143232;
+        s=2020e; t=1672143233;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Tcy8KIO8gQc9Kc01ifmjA4/hjm9ajuh+8clk09xwYCU=;
-        b=SyBSHE3N8Sg70B+IPJewN06/9kwkfL/6Rh/9xTLWt48qcOozT6eicnakrZ93YrKQrZCzu0
-        pEZ/bEXQxY7tNBBg==
-From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
+        bh=ujyVg/s4AQQQ6UtTl7yr86u4Dr/6yIKm5A8C26cSDAI=;
+        b=UfW3j6pidnesc/cs3oNZgOLe81+p3j43rN7/QauVElIpYaod1w52B8pIkyoKbRo5bOfhPU
+        gNNV1ocfF+HErPCw==
+From:   "tip-bot2 for Josh Don" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] rseq: Extend struct rseq with numa node id
-Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+Subject: [tip: sched/core] sched: Async unthrottling for cfs bandwidth
+Cc:     Josh Don <joshdon@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221122203932.231377-5-mathieu.desnoyers@efficios.com>
-References: <20221122203932.231377-5-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20221117005418.3499691-1-joshdon@google.com>
+References: <20221117005418.3499691-1-joshdon@google.com>
 MIME-Version: 1.0
-Message-ID: <167214323227.4906.16721070982383036641.tip-bot2@tip-bot2>
+Message-ID: <167214323301.4906.13009767372433209180.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,140 +66,284 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     cbae6bac29a8c5cf2f1cb5c6bce35af00cec164b
-Gitweb:        https://git.kernel.org/tip/cbae6bac29a8c5cf2f1cb5c6bce35af00cec164b
-Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Tue, 22 Nov 2022 15:39:06 -05:00
+Commit-ID:     8ad075c2eb1f6b4b33436144ea1ef2619f3b6398
+Gitweb:        https://git.kernel.org/tip/8ad075c2eb1f6b4b33436144ea1ef2619f3b6398
+Author:        Josh Don <joshdon@google.com>
+AuthorDate:    Wed, 16 Nov 2022 16:54:18 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 27 Dec 2022 12:52:10 +01:00
+CommitterDate: Tue, 27 Dec 2022 12:52:09 +01:00
 
-rseq: Extend struct rseq with numa node id
+sched: Async unthrottling for cfs bandwidth
 
-Adding the NUMA node id to struct rseq is a straightforward thing to do,
-and a good way to figure out if anything in the user-space ecosystem
-prevents extending struct rseq.
+CFS bandwidth currently distributes new runtime and unthrottles cfs_rq's
+inline in an hrtimer callback. Runtime distribution is a per-cpu
+operation, and unthrottling is a per-cgroup operation, since a tg walk
+is required. On machines with a large number of cpus and large cgroup
+hierarchies, this cpus*cgroups work can be too much to do in a single
+hrtimer callback: since IRQ are disabled, hard lockups may easily occur.
+Specifically, we've found this scalability issue on configurations with
+256 cpus, O(1000) cgroups in the hierarchy being throttled, and high
+memory bandwidth usage.
 
-This NUMA node id field allows memory allocators such as tcmalloc to
-take advantage of fast access to the current NUMA node id to perform
-NUMA-aware memory allocation.
+To fix this, we can instead unthrottle cfs_rq's asynchronously via a
+CSD. Each cpu is responsible for unthrottling itself, thus sharding the
+total work more fairly across the system, and avoiding hard lockups.
 
-It can also be useful for implementing fast-paths for NUMA-aware
-user-space mutexes.
-
-It also allows implementing getcpu(2) purely in user-space.
-
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Josh Don <joshdon@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20221122203932.231377-5-mathieu.desnoyers@efficios.com
+Link: https://lkml.kernel.org/r/20221117005418.3499691-1-joshdon@google.com
 ---
- include/trace/events/rseq.h |  4 +++-
- include/uapi/linux/rseq.h   |  8 ++++++++
- kernel/rseq.c               | 19 +++++++++++++------
- 3 files changed, 24 insertions(+), 7 deletions(-)
+ kernel/sched/fair.c  | 155 ++++++++++++++++++++++++++++++++++++++----
+ kernel/sched/sched.h |   8 ++-
+ 2 files changed, 150 insertions(+), 13 deletions(-)
 
-diff --git a/include/trace/events/rseq.h b/include/trace/events/rseq.h
-index a04a64b..dde7a35 100644
---- a/include/trace/events/rseq.h
-+++ b/include/trace/events/rseq.h
-@@ -16,13 +16,15 @@ TRACE_EVENT(rseq_update,
- 
- 	TP_STRUCT__entry(
- 		__field(s32, cpu_id)
-+		__field(s32, node_id)
- 	),
- 
- 	TP_fast_assign(
- 		__entry->cpu_id = raw_smp_processor_id();
-+		__entry->node_id = cpu_to_node(__entry->cpu_id);
- 	),
- 
--	TP_printk("cpu_id=%d", __entry->cpu_id)
-+	TP_printk("cpu_id=%d node_id=%d", __entry->cpu_id, __entry->node_id)
- );
- 
- TRACE_EVENT(rseq_ip_fixup,
-diff --git a/include/uapi/linux/rseq.h b/include/uapi/linux/rseq.h
-index 05d3c4c..1cb90a4 100644
---- a/include/uapi/linux/rseq.h
-+++ b/include/uapi/linux/rseq.h
-@@ -132,6 +132,14 @@ struct rseq {
- 	__u32 flags;
- 
- 	/*
-+	 * Restartable sequences node_id field. Updated by the kernel. Read by
-+	 * user-space with single-copy atomicity semantics. This field should
-+	 * only be read by the thread which registered this data structure.
-+	 * Aligned on 32-bit. Contains the current NUMA node ID.
-+	 */
-+	__u32 node_id;
-+
-+	/*
- 	 * Flexible array member at end of structure, after last feature field.
- 	 */
- 	char end[];
-diff --git a/kernel/rseq.c b/kernel/rseq.c
-index 7962738..193cfcc 100644
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -85,15 +85,17 @@
-  *   F1. <failure>
-  */
- 
--static int rseq_update_cpu_id(struct task_struct *t)
-+static int rseq_update_cpu_node_id(struct task_struct *t)
- {
--	u32 cpu_id = raw_smp_processor_id();
- 	struct rseq __user *rseq = t->rseq;
-+	u32 cpu_id = raw_smp_processor_id();
-+	u32 node_id = cpu_to_node(cpu_id);
- 
- 	if (!user_write_access_begin(rseq, t->rseq_len))
- 		goto efault;
- 	unsafe_put_user(cpu_id, &rseq->cpu_id_start, efault_end);
- 	unsafe_put_user(cpu_id, &rseq->cpu_id, efault_end);
-+	unsafe_put_user(node_id, &rseq->node_id, efault_end);
- 	/*
- 	 * Additional feature fields added after ORIG_RSEQ_SIZE
- 	 * need to be conditionally updated only if
-@@ -109,9 +111,9 @@ efault:
- 	return -EFAULT;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index c36aa54..ea81d48 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -5461,22 +5461,105 @@ unthrottle_throttle:
+ 		resched_curr(rq);
  }
  
--static int rseq_reset_rseq_cpu_id(struct task_struct *t)
-+static int rseq_reset_rseq_cpu_node_id(struct task_struct *t)
+-static void distribute_cfs_runtime(struct cfs_bandwidth *cfs_b)
++#ifdef CONFIG_SMP
++static void __cfsb_csd_unthrottle(void *arg)
  {
--	u32 cpu_id_start = 0, cpu_id = RSEQ_CPU_ID_UNINITIALIZED;
-+	u32 cpu_id_start = 0, cpu_id = RSEQ_CPU_ID_UNINITIALIZED, node_id = 0;
- 
- 	/*
- 	 * Reset cpu_id_start to its initial state (0).
-@@ -126,6 +128,11 @@ static int rseq_reset_rseq_cpu_id(struct task_struct *t)
- 	if (put_user(cpu_id, &t->rseq->cpu_id))
- 		return -EFAULT;
- 	/*
-+	 * Reset node_id to its initial state (0).
-+	 */
-+	if (put_user(node_id, &t->rseq->node_id))
-+		return -EFAULT;
+-	struct cfs_rq *cfs_rq;
++	struct cfs_rq *cursor, *tmp;
++	struct rq *rq = arg;
++	struct rq_flags rf;
++
++	rq_lock(rq, &rf);
++
 +	/*
- 	 * Additional feature fields added after ORIG_RSEQ_SIZE
- 	 * need to be conditionally reset only if
- 	 * t->rseq_len != ORIG_RSEQ_SIZE.
-@@ -314,7 +321,7 @@ void __rseq_handle_notify_resume(struct ksignal *ksig, struct pt_regs *regs)
- 		if (unlikely(ret < 0))
- 			goto error;
- 	}
--	if (unlikely(rseq_update_cpu_id(t)))
-+	if (unlikely(rseq_update_cpu_node_id(t)))
- 		goto error;
- 	return;
++	 * Since we hold rq lock we're safe from concurrent manipulation of
++	 * the CSD list. However, this RCU critical section annotates the
++	 * fact that we pair with sched_free_group_rcu(), so that we cannot
++	 * race with group being freed in the window between removing it
++	 * from the list and advancing to the next entry in the list.
++	 */
++	rcu_read_lock();
++
++	list_for_each_entry_safe(cursor, tmp, &rq->cfsb_csd_list,
++				 throttled_csd_list) {
++		list_del_init(&cursor->throttled_csd_list);
++
++		if (cfs_rq_throttled(cursor))
++			unthrottle_cfs_rq(cursor);
++	}
++
++	rcu_read_unlock();
++
++	rq_unlock(rq, &rf);
++}
++
++static inline void __unthrottle_cfs_rq_async(struct cfs_rq *cfs_rq)
++{
++	struct rq *rq = rq_of(cfs_rq);
++	bool first;
++
++	if (rq == this_rq()) {
++		unthrottle_cfs_rq(cfs_rq);
++		return;
++	}
++
++	/* Already enqueued */
++	if (SCHED_WARN_ON(!list_empty(&cfs_rq->throttled_csd_list)))
++		return;
++
++	first = list_empty(&rq->cfsb_csd_list);
++	list_add_tail(&cfs_rq->throttled_csd_list, &rq->cfsb_csd_list);
++	if (first)
++		smp_call_function_single_async(cpu_of(rq), &rq->cfsb_csd);
++}
++#else
++static inline void __unthrottle_cfs_rq_async(struct cfs_rq *cfs_rq)
++{
++	unthrottle_cfs_rq(cfs_rq);
++}
++#endif
++
++static void unthrottle_cfs_rq_async(struct cfs_rq *cfs_rq)
++{
++	lockdep_assert_rq_held(rq_of(cfs_rq));
++
++	if (SCHED_WARN_ON(!cfs_rq_throttled(cfs_rq) ||
++	    cfs_rq->runtime_remaining <= 0))
++		return;
++
++	__unthrottle_cfs_rq_async(cfs_rq);
++}
++
++static bool distribute_cfs_runtime(struct cfs_bandwidth *cfs_b)
++{
++	struct cfs_rq *local_unthrottle = NULL;
++	int this_cpu = smp_processor_id();
+ 	u64 runtime, remaining = 1;
++	bool throttled = false;
++	struct cfs_rq *cfs_rq;
++	struct rq_flags rf;
++	struct rq *rq;
  
-@@ -361,7 +368,7 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len,
- 			return -EINVAL;
- 		if (current->rseq_sig != sig)
- 			return -EPERM;
--		ret = rseq_reset_rseq_cpu_id(current);
-+		ret = rseq_reset_rseq_cpu_node_id(current);
- 		if (ret)
- 			return ret;
- 		current->rseq = NULL;
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(cfs_rq, &cfs_b->throttled_cfs_rq,
+ 				throttled_list) {
+-		struct rq *rq = rq_of(cfs_rq);
+-		struct rq_flags rf;
++		rq = rq_of(cfs_rq);
++
++		if (!remaining) {
++			throttled = true;
++			break;
++		}
+ 
+ 		rq_lock_irqsave(rq, &rf);
+ 		if (!cfs_rq_throttled(cfs_rq))
+ 			goto next;
+ 
+-		/* By the above check, this should never be true */
++#ifdef CONFIG_SMP
++		/* Already queued for async unthrottle */
++		if (!list_empty(&cfs_rq->throttled_csd_list))
++			goto next;
++#endif
++
++		/* By the above checks, this should never be true */
+ 		SCHED_WARN_ON(cfs_rq->runtime_remaining > 0);
+ 
+ 		raw_spin_lock(&cfs_b->lock);
+@@ -5490,16 +5573,30 @@ static void distribute_cfs_runtime(struct cfs_bandwidth *cfs_b)
+ 		cfs_rq->runtime_remaining += runtime;
+ 
+ 		/* we check whether we're throttled above */
+-		if (cfs_rq->runtime_remaining > 0)
+-			unthrottle_cfs_rq(cfs_rq);
++		if (cfs_rq->runtime_remaining > 0) {
++			if (cpu_of(rq) != this_cpu ||
++			    SCHED_WARN_ON(local_unthrottle))
++				unthrottle_cfs_rq_async(cfs_rq);
++			else
++				local_unthrottle = cfs_rq;
++		} else {
++			throttled = true;
++		}
+ 
+ next:
+ 		rq_unlock_irqrestore(rq, &rf);
+-
+-		if (!remaining)
+-			break;
+ 	}
+ 	rcu_read_unlock();
++
++	if (local_unthrottle) {
++		rq = cpu_rq(this_cpu);
++		rq_lock_irqsave(rq, &rf);
++		if (cfs_rq_throttled(local_unthrottle))
++			unthrottle_cfs_rq(local_unthrottle);
++		rq_unlock_irqrestore(rq, &rf);
++	}
++
++	return throttled;
+ }
+ 
+ /*
+@@ -5544,10 +5641,8 @@ static int do_sched_cfs_period_timer(struct cfs_bandwidth *cfs_b, int overrun, u
+ 	while (throttled && cfs_b->runtime > 0) {
+ 		raw_spin_unlock_irqrestore(&cfs_b->lock, flags);
+ 		/* we can't nest cfs_b->lock while distributing bandwidth */
+-		distribute_cfs_runtime(cfs_b);
++		throttled = distribute_cfs_runtime(cfs_b);
+ 		raw_spin_lock_irqsave(&cfs_b->lock, flags);
+-
+-		throttled = !list_empty(&cfs_b->throttled_cfs_rq);
+ 	}
+ 
+ 	/*
+@@ -5824,6 +5919,9 @@ static void init_cfs_rq_runtime(struct cfs_rq *cfs_rq)
+ {
+ 	cfs_rq->runtime_enabled = 0;
+ 	INIT_LIST_HEAD(&cfs_rq->throttled_list);
++#ifdef CONFIG_SMP
++	INIT_LIST_HEAD(&cfs_rq->throttled_csd_list);
++#endif
+ }
+ 
+ void start_cfs_bandwidth(struct cfs_bandwidth *cfs_b)
+@@ -5840,12 +5938,38 @@ void start_cfs_bandwidth(struct cfs_bandwidth *cfs_b)
+ 
+ static void destroy_cfs_bandwidth(struct cfs_bandwidth *cfs_b)
+ {
++	int __maybe_unused i;
++
+ 	/* init_cfs_bandwidth() was not called */
+ 	if (!cfs_b->throttled_cfs_rq.next)
+ 		return;
+ 
+ 	hrtimer_cancel(&cfs_b->period_timer);
+ 	hrtimer_cancel(&cfs_b->slack_timer);
++
++	/*
++	 * It is possible that we still have some cfs_rq's pending on a CSD
++	 * list, though this race is very rare. In order for this to occur, we
++	 * must have raced with the last task leaving the group while there
++	 * exist throttled cfs_rq(s), and the period_timer must have queued the
++	 * CSD item but the remote cpu has not yet processed it. To handle this,
++	 * we can simply flush all pending CSD work inline here. We're
++	 * guaranteed at this point that no additional cfs_rq of this group can
++	 * join a CSD list.
++	 */
++#ifdef CONFIG_SMP
++	for_each_possible_cpu(i) {
++		struct rq *rq = cpu_rq(i);
++		unsigned long flags;
++
++		if (list_empty(&rq->cfsb_csd_list))
++			continue;
++
++		local_irq_save(flags);
++		__cfsb_csd_unthrottle(rq);
++		local_irq_restore(flags);
++	}
++#endif
+ }
+ 
+ /*
+@@ -12474,6 +12598,11 @@ __init void init_sched_fair_class(void)
+ 	for_each_possible_cpu(i) {
+ 		zalloc_cpumask_var_node(&per_cpu(load_balance_mask, i), GFP_KERNEL, cpu_to_node(i));
+ 		zalloc_cpumask_var_node(&per_cpu(select_rq_mask,    i), GFP_KERNEL, cpu_to_node(i));
++
++#ifdef CONFIG_CFS_BANDWIDTH
++		INIT_CSD(&cpu_rq(i)->cfsb_csd, __cfsb_csd_unthrottle, cpu_rq(i));
++		INIT_LIST_HEAD(&cpu_rq(i)->cfsb_csd_list);
++#endif
+ 	}
+ 
+ 	open_softirq(SCHED_SOFTIRQ, run_rebalance_domains);
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 771f8dd..b3d6e81 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -645,6 +645,9 @@ struct cfs_rq {
+ 	int			throttled;
+ 	int			throttle_count;
+ 	struct list_head	throttled_list;
++#ifdef CONFIG_SMP
++	struct list_head	throttled_csd_list;
++#endif
+ #endif /* CONFIG_CFS_BANDWIDTH */
+ #endif /* CONFIG_FAIR_GROUP_SCHED */
+ };
+@@ -1154,6 +1157,11 @@ struct rq {
+ 
+ 	/* Scratch cpumask to be temporarily used under rq_lock */
+ 	cpumask_var_t		scratch_mask;
++
++#if defined(CONFIG_CFS_BANDWIDTH) && defined(CONFIG_SMP)
++	call_single_data_t	cfsb_csd;
++	struct list_head	cfsb_csd_list;
++#endif
+ };
+ 
+ #ifdef CONFIG_FAIR_GROUP_SCHED
