@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD31B656A4C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 13:00:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0CC2656A4E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 13:00:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231962AbiL0MAS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Dec 2022 07:00:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43624 "EHLO
+        id S231820AbiL0MAT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Dec 2022 07:00:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232098AbiL0L73 (ORCPT
+        with ESMTP id S232109AbiL0L7a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Dec 2022 06:59:29 -0500
+        Tue, 27 Dec 2022 06:59:30 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF98BB876;
-        Tue, 27 Dec 2022 03:59:17 -0800 (PST)
-Date:   Tue, 27 Dec 2022 11:59:15 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24734B7F5;
+        Tue, 27 Dec 2022 03:59:18 -0800 (PST)
+Date:   Tue, 27 Dec 2022 11:59:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1672142356;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NcqP92Xi8AJEM26zMaSzANKml99y3YPuVOyvJ6h1uCo=;
-        b=HXlypL+dSMqfH4bIUIsnMe7cCzVzBLkGLvOVWhu8jz/J2cx2oGvHItWqp9qDlQCTtKy5de
-        uTwSNxOGA4joJDakhYwrC0m4yVy2e3e5R0DTjSMvmLyIC17ZWFEk/spT7hfr19v0nape/9
-        sha7IKKo2LwckHqqJaUQQk/1AKCbObBsSB+XvwA6rVFQI0+Q2JlkNyPfyZ/s2Y/f0d/Rwm
-        WpMLQLRhYRbDt7/yUw9WUbeudA5ImstYQhOLn832ShvX96R0Mv6Aufj9wUOEKl+0Uf0lHh
-        OBiF4hrQxdhNl0FSxjRAjVMXnJrWqVBADR6TLu6IWybeqiZ0B8a/KrdzbbtXNw==
+        bh=5iqAaKJfRk6rZtNTrGoo86R4tttMmLNYvpxtFe/8uMQ=;
+        b=a2bc7NZ0C4QuX7KiujnTBhlwvSlrRfOLQ4QGtQRNMLr4WJK5ORVr/uOMtpp2KzQ4c7JvVw
+        HyUO6dnmtVZkYdycX3oukMOeWmX2orVW/q2VFKv5Ey8O0eXHs8nB1Y6dQllubgh9ZRLYXK
+        N2NMJAfLgV7h2UbjMAzGik1cuG8L9c6s18RpxWVBZFi9CvASVG4nuhNed/SbLNOEcbKGtw
+        u/nCqL/5EDJiuQx2/pgah2AAjw9sZNJGkebOu60cmIT3EUUoV0ZdbMuYNGlTE6f8EhMOig
+        fFNypQngHcjpm/xVbpUrSuHqKoRh6ALLLtoPHT6vZ6j+AfF04Gt/jPDfvQMalg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1672142356;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NcqP92Xi8AJEM26zMaSzANKml99y3YPuVOyvJ6h1uCo=;
-        b=zIS6TBvK7bxy5/TXbCqlMhd/a0Yb9fIs3VzPl8Zp9TcB1boDm5D5Az/+QI5cneEwpnkmU1
-        fDN4CbI65y8RsDAA==
-From:   "tip-bot2 for Masami Hiramatsu (Google)" <tip-bot2@linutronix.de>
+        bh=5iqAaKJfRk6rZtNTrGoo86R4tttMmLNYvpxtFe/8uMQ=;
+        b=Qkq88T6V+9wSNySeT77jwo/lEkusWNf66uaM8mSKjI62l3MBFtYrqs5nWqFfpqWPWazral
+        ubFwLU6coi/n2zBg==
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/kprobes: Fix optprobe optimization check with
- CONFIG_RETHUNK
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/calldepth: Fix incorrect init section references
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <167146051929.1374301.7419382929328081706.stgit@devnote3>
-References: <167146051929.1374301.7419382929328081706.stgit@devnote3>
+In-Reply-To: <20221215164334.968863-1-arnd@kernel.org>
+References: <20221215164334.968863-1-arnd@kernel.org>
 MIME-Version: 1.0
-Message-ID: <167214235589.4906.14264782682251794595.tip-bot2@tip-bot2>
+Message-ID: <167214235637.4906.10804629490623439525.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,88 +66,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     63dc6325ff41ee9e570bde705ac34a39c5dbeb44
-Gitweb:        https://git.kernel.org/tip/63dc6325ff41ee9e570bde705ac34a39c5dbeb44
-Author:        Masami Hiramatsu (Google) <mhiramat@kernel.org>
-AuthorDate:    Mon, 19 Dec 2022 23:35:19 +09:00
+Commit-ID:     ade8c20847fcc3f4de08b35f730ec04ef29ddbdc
+Gitweb:        https://git.kernel.org/tip/ade8c20847fcc3f4de08b35f730ec04ef29ddbdc
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Thu, 15 Dec 2022 17:43:23 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 27 Dec 2022 12:51:58 +01:00
 
-x86/kprobes: Fix optprobe optimization check with CONFIG_RETHUNK
+x86/calldepth: Fix incorrect init section references
 
-Since the CONFIG_RETHUNK and CONFIG_SLS will use INT3 for stopping
-speculative execution after function return, kprobe jump optimization
-always fails on the functions with such INT3 inside the function body.
-(It already checks the INT3 padding between functions, but not inside
- the function)
+The addition of callthunks_translate_call_dest means that
+skip_addr() and patch_dest() can no longer be discarded
+as part of the __init section freeing:
 
-To avoid this issue, as same as kprobes, check whether the INT3 comes
-from kgdb or not, and if so, stop decoding and make it fail. The other
-INT3 will come from CONFIG_RETHUNK/CONFIG_SLS and those can be
-treated as a one-byte instruction.
+WARNING: modpost: vmlinux.o: section mismatch in reference: callthunks_translate_call_dest.cold (section: .text.unlikely) -> skip_addr (section: .init.text)
+WARNING: modpost: vmlinux.o: section mismatch in reference: callthunks_translate_call_dest.cold (section: .text.unlikely) -> patch_dest (section: .init.text)
+WARNING: modpost: vmlinux.o: section mismatch in reference: is_callthunk.cold (section: .text.unlikely) -> skip_addr (section: .init.text)
+ERROR: modpost: Section mismatches detected.
+Set CONFIG_SECTION_MISMATCH_WARN_ONLY=y to allow them.
 
-Fixes: e463a09af2f0 ("x86: Add straight-line-speculation mitigation")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: b2e9dfe54be4 ("x86/bpf: Emit call depth accounting if required")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/167146051929.1374301.7419382929328081706.stgit@devnote3
+Link: https://lkml.kernel.org/r/20221215164334.968863-1-arnd@kernel.org
 ---
- arch/x86/kernel/kprobes/opt.c | 28 ++++++++--------------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
+ arch/x86/kernel/callthunks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
-index e6b8c53..e57e07b 100644
---- a/arch/x86/kernel/kprobes/opt.c
-+++ b/arch/x86/kernel/kprobes/opt.c
-@@ -15,6 +15,7 @@
- #include <linux/extable.h>
- #include <linux/kdebug.h>
- #include <linux/kallsyms.h>
-+#include <linux/kgdb.h>
- #include <linux/ftrace.h>
- #include <linux/objtool.h>
- #include <linux/pgtable.h>
-@@ -279,19 +280,6 @@ static int insn_is_indirect_jump(struct insn *insn)
- 	return ret;
+diff --git a/arch/x86/kernel/callthunks.c b/arch/x86/kernel/callthunks.c
+index 7d2c75e..ffea98f 100644
+--- a/arch/x86/kernel/callthunks.c
++++ b/arch/x86/kernel/callthunks.c
+@@ -119,7 +119,7 @@ static bool is_coretext(const struct core_text *ct, void *addr)
+ 	return within_module_coretext(addr);
  }
  
--static bool is_padding_int3(unsigned long addr, unsigned long eaddr)
--{
--	unsigned char ops;
--
--	for (; addr < eaddr; addr++) {
--		if (get_kernel_nofault(ops, (void *)addr) < 0 ||
--		    ops != INT3_INSN_OPCODE)
--			return false;
--	}
--
--	return true;
--}
--
- /* Decode whole function to ensure any instructions don't jump into target */
- static int can_optimize(unsigned long paddr)
+-static __init_or_module bool skip_addr(void *dest)
++static bool skip_addr(void *dest)
  {
-@@ -334,15 +322,15 @@ static int can_optimize(unsigned long paddr)
- 		ret = insn_decode_kernel(&insn, (void *)recovered_insn);
- 		if (ret < 0)
- 			return 0;
--
-+#ifdef CONFIG_KGDB
- 		/*
--		 * In the case of detecting unknown breakpoint, this could be
--		 * a padding INT3 between functions. Let's check that all the
--		 * rest of the bytes are also INT3.
-+		 * If there is a dynamically installed kgdb sw breakpoint,
-+		 * this function should not be probed.
- 		 */
--		if (insn.opcode.bytes[0] == INT3_INSN_OPCODE)
--			return is_padding_int3(addr, paddr - offset + size) ? 1 : 0;
--
-+		if (insn.opcode.bytes[0] == INT3_INSN_OPCODE &&
-+		    kgdb_has_hit_break(addr))
-+			return 0;
-+#endif
- 		/* Recover address */
- 		insn.kaddr = (void *)addr;
- 		insn.next_byte = (void *)(addr + insn.length);
+ 	if (dest == error_entry)
+ 		return true;
+@@ -181,7 +181,7 @@ static const u8 nops[] = {
+ 	0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+ };
+ 
+-static __init_or_module void *patch_dest(void *dest, bool direct)
++static void *patch_dest(void *dest, bool direct)
+ {
+ 	unsigned int tsize = SKL_TMPL_SIZE;
+ 	u8 *pad = dest - tsize;
