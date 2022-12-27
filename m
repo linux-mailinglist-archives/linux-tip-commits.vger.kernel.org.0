@@ -2,59 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A26CC656A40
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 12:59:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD31B656A4C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 13:00:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232097AbiL0L73 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Dec 2022 06:59:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43314 "EHLO
+        id S231962AbiL0MAS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Dec 2022 07:00:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231972AbiL0L64 (ORCPT
+        with ESMTP id S232098AbiL0L73 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Dec 2022 06:58:56 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5769B7E6;
-        Tue, 27 Dec 2022 03:58:55 -0800 (PST)
-Date:   Tue, 27 Dec 2022 11:58:54 -0000
+        Tue, 27 Dec 2022 06:59:29 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF98BB876;
+        Tue, 27 Dec 2022 03:59:17 -0800 (PST)
+Date:   Tue, 27 Dec 2022 11:59:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1672142334;
+        s=2020; t=1672142356;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9TZqt83Scy1dn6mE5MEfELkLQ3zO2SAdanIc2JfFnxw=;
-        b=qhk9vEUlzTUL6qHkKrQO9QFUF2NXJE3xVPJEdAdFY08IU5JnYQHZd55sFJ419dC6EPijC1
-        mjVpDTKrjMx9HAYgstMpmhHifMTBNcFmp5WW80H4FwOLhQnWZdJO0dSMWcRTgNsUSNo8sH
-        dn02wnJwqiAqEOhomq8QE1VM6MHDhI6cIj9myyADld1sbGZn6+kyLYnBuKkPUFFzO/5EJ3
-        LHV2BMBYFctRSZzZf6RqGl11KEYVc5ygwbixuasfMZ8IqDWuOZtUTFbTWlyS/2HOLs+U4s
-        YHoxymZh3ej3bUrti4bZi7gtcVgb0q8oNK/XytllpB/3zpQ0xqg7HDaJEFyxdA==
+        bh=NcqP92Xi8AJEM26zMaSzANKml99y3YPuVOyvJ6h1uCo=;
+        b=HXlypL+dSMqfH4bIUIsnMe7cCzVzBLkGLvOVWhu8jz/J2cx2oGvHItWqp9qDlQCTtKy5de
+        uTwSNxOGA4joJDakhYwrC0m4yVy2e3e5R0DTjSMvmLyIC17ZWFEk/spT7hfr19v0nape/9
+        sha7IKKo2LwckHqqJaUQQk/1AKCbObBsSB+XvwA6rVFQI0+Q2JlkNyPfyZ/s2Y/f0d/Rwm
+        WpMLQLRhYRbDt7/yUw9WUbeudA5ImstYQhOLn832ShvX96R0Mv6Aufj9wUOEKl+0Uf0lHh
+        OBiF4hrQxdhNl0FSxjRAjVMXnJrWqVBADR6TLu6IWybeqiZ0B8a/KrdzbbtXNw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1672142334;
+        s=2020e; t=1672142356;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9TZqt83Scy1dn6mE5MEfELkLQ3zO2SAdanIc2JfFnxw=;
-        b=D2nnJJTYpmrpxMq+3A5RuX2SAAzcvNVd5Efl1e3xTOx5CaAApzcyYPK+S0rl7Zrzj0RLHr
-        twk7hgKJIkfLMwDQ==
-From:   "tip-bot2 for Like Xu" <tip-bot2@linutronix.de>
+        bh=NcqP92Xi8AJEM26zMaSzANKml99y3YPuVOyvJ6h1uCo=;
+        b=zIS6TBvK7bxy5/TXbCqlMhd/a0Yb9fIs3VzPl8Zp9TcB1boDm5D5Az/+QI5cneEwpnkmU1
+        fDN4CbI65y8RsDAA==
+From:   "tip-bot2 for Masami Hiramatsu (Google)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/lbr: Simplify the exposure check for the
- LBR_INFO registers
-Cc:     Like Xu <like.xu@linux.intel.com>,
-        Yang Weijiang <weijiang.yang@intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/kprobes: Fix optprobe optimization check with
+ CONFIG_RETHUNK
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221125040604.5051-2-weijiang.yang@intel.com>
-References: <20221125040604.5051-2-weijiang.yang@intel.com>
+In-Reply-To: <167146051929.1374301.7419382929328081706.stgit@devnote3>
+References: <167146051929.1374301.7419382929328081706.stgit@devnote3>
 MIME-Version: 1.0
-Message-ID: <167214233418.4906.13269799714918773894.tip-bot2@tip-bot2>
+Message-ID: <167214235589.4906.14264782682251794595.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,45 +66,90 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     03c4c7f88709fac0e20b6a48357c73d6fc50e544
-Gitweb:        https://git.kernel.org/tip/03c4c7f88709fac0e20b6a48357c73d6fc50e544
-Author:        Like Xu <like.xu@linux.intel.com>
-AuthorDate:    Thu, 24 Nov 2022 23:05:50 -05:00
+Commit-ID:     63dc6325ff41ee9e570bde705ac34a39c5dbeb44
+Gitweb:        https://git.kernel.org/tip/63dc6325ff41ee9e570bde705ac34a39c5dbeb44
+Author:        Masami Hiramatsu (Google) <mhiramat@kernel.org>
+AuthorDate:    Mon, 19 Dec 2022 23:35:19 +09:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 27 Dec 2022 12:52:07 +01:00
+CommitterDate: Tue, 27 Dec 2022 12:51:58 +01:00
 
-perf/x86/lbr: Simplify the exposure check for the LBR_INFO registers
+x86/kprobes: Fix optprobe optimization check with CONFIG_RETHUNK
 
-The x86_pmu.lbr_info is 0 unless explicitly initialized, so there's
-no point checking x86_pmu.intel_cap.lbr_format.
+Since the CONFIG_RETHUNK and CONFIG_SLS will use INT3 for stopping
+speculative execution after function return, kprobe jump optimization
+always fails on the functions with such INT3 inside the function body.
+(It already checks the INT3 padding between functions, but not inside
+ the function)
 
-Signed-off-by: Like Xu <like.xu@linux.intel.com>
-Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
+To avoid this issue, as same as kprobes, check whether the INT3 comes
+from kgdb or not, and if so, stop decoding and make it fail. The other
+INT3 will come from CONFIG_RETHUNK/CONFIG_SLS and those can be
+treated as a one-byte instruction.
+
+Fixes: e463a09af2f0 ("x86: Add straight-line-speculation mitigation")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Link: https://lkml.kernel.org/r/20221125040604.5051-2-weijiang.yang@intel.com
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/167146051929.1374301.7419382929328081706.stgit@devnote3
 ---
- arch/x86/events/intel/lbr.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/x86/kernel/kprobes/opt.c | 28 ++++++++--------------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
-diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index 1f21f57..c3b0d15 100644
---- a/arch/x86/events/intel/lbr.c
-+++ b/arch/x86/events/intel/lbr.c
-@@ -1606,12 +1606,10 @@ clear_arch_lbr:
-  */
- void x86_perf_get_lbr(struct x86_pmu_lbr *lbr)
- {
--	int lbr_fmt = x86_pmu.intel_cap.lbr_format;
--
- 	lbr->nr = x86_pmu.lbr_nr;
- 	lbr->from = x86_pmu.lbr_from;
- 	lbr->to = x86_pmu.lbr_to;
--	lbr->info = (lbr_fmt == LBR_FORMAT_INFO) ? x86_pmu.lbr_info : 0;
-+	lbr->info = x86_pmu.lbr_info;
+diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
+index e6b8c53..e57e07b 100644
+--- a/arch/x86/kernel/kprobes/opt.c
++++ b/arch/x86/kernel/kprobes/opt.c
+@@ -15,6 +15,7 @@
+ #include <linux/extable.h>
+ #include <linux/kdebug.h>
+ #include <linux/kallsyms.h>
++#include <linux/kgdb.h>
+ #include <linux/ftrace.h>
+ #include <linux/objtool.h>
+ #include <linux/pgtable.h>
+@@ -279,19 +280,6 @@ static int insn_is_indirect_jump(struct insn *insn)
+ 	return ret;
  }
- EXPORT_SYMBOL_GPL(x86_perf_get_lbr);
  
+-static bool is_padding_int3(unsigned long addr, unsigned long eaddr)
+-{
+-	unsigned char ops;
+-
+-	for (; addr < eaddr; addr++) {
+-		if (get_kernel_nofault(ops, (void *)addr) < 0 ||
+-		    ops != INT3_INSN_OPCODE)
+-			return false;
+-	}
+-
+-	return true;
+-}
+-
+ /* Decode whole function to ensure any instructions don't jump into target */
+ static int can_optimize(unsigned long paddr)
+ {
+@@ -334,15 +322,15 @@ static int can_optimize(unsigned long paddr)
+ 		ret = insn_decode_kernel(&insn, (void *)recovered_insn);
+ 		if (ret < 0)
+ 			return 0;
+-
++#ifdef CONFIG_KGDB
+ 		/*
+-		 * In the case of detecting unknown breakpoint, this could be
+-		 * a padding INT3 between functions. Let's check that all the
+-		 * rest of the bytes are also INT3.
++		 * If there is a dynamically installed kgdb sw breakpoint,
++		 * this function should not be probed.
+ 		 */
+-		if (insn.opcode.bytes[0] == INT3_INSN_OPCODE)
+-			return is_padding_int3(addr, paddr - offset + size) ? 1 : 0;
+-
++		if (insn.opcode.bytes[0] == INT3_INSN_OPCODE &&
++		    kgdb_has_hit_break(addr))
++			return 0;
++#endif
+ 		/* Recover address */
+ 		insn.kaddr = (void *)addr;
+ 		insn.next_byte = (void *)(addr + insn.length);
