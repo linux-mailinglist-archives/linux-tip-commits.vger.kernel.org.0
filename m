@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D93D1656AA7
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 13:15:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08C0C656AA5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 13:15:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231962AbiL0MPG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Dec 2022 07:15:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53772 "EHLO
+        id S231931AbiL0MPD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Dec 2022 07:15:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232105AbiL0MOk (ORCPT
+        with ESMTP id S231289AbiL0MOi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Dec 2022 07:14:40 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68E28E37;
-        Tue, 27 Dec 2022 04:13:52 -0800 (PST)
+        Tue, 27 Dec 2022 07:14:38 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AC8ED91;
+        Tue, 27 Dec 2022 04:13:50 -0800 (PST)
 Date:   Tue, 27 Dec 2022 12:13:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1672143229;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AWt1J1Rkb6/iwscbvYQf3NuhLqu0swi3tquUpGaka4M=;
-        b=ZdHGKYBjTOduPnaUAMpWIhCoJJr7Bl8BpdVIQaf4cOFdu7C/1jDU/QtN2CP9dxgzfBUsZ7
-        7/sIuVi3cuT54xGqELmuobhtUDl9K/BPtjCZKIpoVLzrSVEqXlNyFGuQV5fWR+56Ve3xU8
-        S4uacpWVky3OFG7xHCcQiNHzYWofUxNiQz0Uil2ir6mjfloyO/DtCIhd0XET8U2o7aLNaN
-        bg/4dNdy2GBf62XzZ+MNw5vwzx/rqp9Mdz/kOLRj9VIuI4SEK70R4DtbS0XvkVapmX5X6r
-        BEP0kqz2JYv+hI5MQJbbVvigtMyGzmxUVcCZRlt0fbDhD8h5OBuDyjChtWu4Yg==
+        bh=IMPuSiumnJ8BL2tZkVkB7dEReIHDfZei81xDTcWCTxc=;
+        b=UtK44A18uWxtUfWt3bhy4HsPLA1+7Hrx83Eop/cZRN1ydfF0A2jzSau8JR+Gpbqn/OanPM
+        ex/6qOponxA1fgZaZqLB1audm6hxM7sDB6JkIw6PtuB88tQ/L7Z9XTuM6Y0BCMTU9+rI/6
+        H/1oz1PISNJllxtv8MnRH9pq6npVZPG469dJgy4E1xnR6KrP4c1ntFh4LwACi8DfUd08pN
+        XABoT2oWq6GZ+iOu5wXZ58DVq8DuYpQWYXDkmXJtdrmTOWTXzUCcrzsGO8x2NFh/HP3jOA
+        HeEWNrU0QZvu1rCaukaJgn+ASnRlftLDbDk8+H3x/G07H6hPIJ+k1/fZSV6+AA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1672143229;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AWt1J1Rkb6/iwscbvYQf3NuhLqu0swi3tquUpGaka4M=;
-        b=MlkZmaQ0Y3c1+UPULCfZKT8pRVQKuT9QxtRoy7gEm1DgDE+kiOoIxZA26ley52mfr10cN2
-        CE/3glvKyLmLbMCA==
+        bh=IMPuSiumnJ8BL2tZkVkB7dEReIHDfZei81xDTcWCTxc=;
+        b=uiPwBlIzy9kr1wMXDhnYG7KmMqFxr3sFYuUMjApJk2LfCjRKi2DsOQTzd9m563o7jwYOoz
+        U1PD6ziQXzzJ1GBw==
 From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] selftests/rseq: Implement basic percpu ops mm_cid test
+Subject: [tip: sched/core] selftests/rseq: Add mm_numa_cid to test script
 Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221122203932.231377-19-mathieu.desnoyers@efficios.com>
-References: <20221122203932.231377-19-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20221216145332.205095-1-mathieu.desnoyers@efficios.com>
+References: <20221216145332.205095-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Message-ID: <167214322952.4906.6310871589163576060.tip-bot2@tip-bot2>
+Message-ID: <167214322901.4906.6973828345276268649.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,155 +66,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     cead72062756294dff01314b57b68e3e925ef321
-Gitweb:        https://git.kernel.org/tip/cead72062756294dff01314b57b68e3e925ef321
+Commit-ID:     b344b8f2d88dbf095caf97ac57fd3645843fa70f
+Gitweb:        https://git.kernel.org/tip/b344b8f2d88dbf095caf97ac57fd3645843fa70f
 Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Tue, 22 Nov 2022 15:39:20 -05:00
+AuthorDate:    Fri, 16 Dec 2022 09:53:32 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 27 Dec 2022 12:52:15 +01:00
+CommitterDate: Tue, 27 Dec 2022 12:52:16 +01:00
 
-selftests/rseq: Implement basic percpu ops mm_cid test
+selftests/rseq: Add mm_numa_cid to test script
 
-Adapt to the rseq.h API changes introduced by commits
-"selftests/rseq: <arch>: Template memory ordering and percpu access mode".
-
-Build a new basic_percpu_ops_mm_cid_test to test the new "mm_cid" rseq
-field.
+Add mm_numa_cid tests to the run_param_test.sh test script.
 
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20221122203932.231377-19-mathieu.desnoyers@efficios.com
+Link: https://lkml.kernel.org/r/20221216145332.205095-1-mathieu.desnoyers@efficios.com
 ---
- tools/testing/selftests/rseq/.gitignore              |  1 +-
- tools/testing/selftests/rseq/Makefile                |  5 +-
- tools/testing/selftests/rseq/basic_percpu_ops_test.c | 46 +++++++++--
- 3 files changed, 44 insertions(+), 8 deletions(-)
+ tools/testing/selftests/rseq/run_param_test.sh | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/rseq/.gitignore b/tools/testing/selftests/rseq/.gitignore
-index 5910888..7e99554 100644
---- a/tools/testing/selftests/rseq/.gitignore
-+++ b/tools/testing/selftests/rseq/.gitignore
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- basic_percpu_ops_test
-+basic_percpu_ops_mm_cid_test
- basic_test
- basic_rseq_op_test
- param_test
-diff --git a/tools/testing/selftests/rseq/Makefile b/tools/testing/selftests/rseq/Makefile
-index 215e106..2e5e3ea 100644
---- a/tools/testing/selftests/rseq/Makefile
-+++ b/tools/testing/selftests/rseq/Makefile
-@@ -12,7 +12,7 @@ LDLIBS += -lpthread -ldl
- # still track changes to header files and depend on shared object.
- OVERRIDE_TARGETS = 1
- 
--TEST_GEN_PROGS = basic_test basic_percpu_ops_test param_test \
-+TEST_GEN_PROGS = basic_test basic_percpu_ops_test basic_percpu_ops_mm_cid_test param_test \
- 		param_test_benchmark param_test_compare_twice
- 
- TEST_GEN_PROGS_EXTENDED = librseq.so
-@@ -29,6 +29,9 @@ $(OUTPUT)/librseq.so: rseq.c rseq.h rseq-*.h
- $(OUTPUT)/%: %.c $(TEST_GEN_PROGS_EXTENDED) rseq.h rseq-*.h
- 	$(CC) $(CFLAGS) $< $(LDLIBS) -lrseq -o $@
- 
-+$(OUTPUT)/basic_percpu_ops_mm_cid_test: basic_percpu_ops_test.c $(TEST_GEN_PROGS_EXTENDED) rseq.h rseq-*.h
-+	$(CC) $(CFLAGS) -DBUILDOPT_RSEQ_PERCPU_MM_CID_ID $< $(LDLIBS) -lrseq -o $@
+diff --git a/tools/testing/selftests/rseq/run_param_test.sh b/tools/testing/selftests/rseq/run_param_test.sh
+index 8d31426..603b3b6 100755
+--- a/tools/testing/selftests/rseq/run_param_test.sh
++++ b/tools/testing/selftests/rseq/run_param_test.sh
+@@ -47,6 +47,11 @@ function do_tests()
+ 		./param_test_mm_cid ${TEST_LIST[$i]} -r ${REPS} -t ${NR_THREADS} ${@} ${EXTRA_ARGS} || exit 1
+ 		echo "Running mm_cid compare-twice test ${TEST_NAME[$i]}"
+ 		./param_test_mm_cid_compare_twice ${TEST_LIST[$i]} -r ${REPS} -t ${NR_THREADS} ${@} ${EXTRA_ARGS} || exit 1
 +
- $(OUTPUT)/param_test_benchmark: param_test.c $(TEST_GEN_PROGS_EXTENDED) \
- 					rseq.h rseq-*.h
- 	$(CC) $(CFLAGS) -DBENCHMARK $< $(LDLIBS) -lrseq -o $@
-diff --git a/tools/testing/selftests/rseq/basic_percpu_ops_test.c b/tools/testing/selftests/rseq/basic_percpu_ops_test.c
-index 517756a..8875429 100644
---- a/tools/testing/selftests/rseq/basic_percpu_ops_test.c
-+++ b/tools/testing/selftests/rseq/basic_percpu_ops_test.c
-@@ -12,6 +12,32 @@
- #include "../kselftest.h"
- #include "rseq.h"
- 
-+#ifdef BUILDOPT_RSEQ_PERCPU_MM_CID
-+# define RSEQ_PERCPU	RSEQ_PERCPU_MM_CID
-+static
-+int get_current_cpu_id(void)
-+{
-+	return rseq_current_mm_cid();
-+}
-+static
-+bool rseq_validate_cpu_id(void)
-+{
-+	return rseq_mm_cid_available();
-+}
-+#else
-+# define RSEQ_PERCPU	RSEQ_PERCPU_CPU_ID
-+static
-+int get_current_cpu_id(void)
-+{
-+	return rseq_cpu_start();
-+}
-+static
-+bool rseq_validate_cpu_id(void)
-+{
-+	return rseq_current_cpu_raw() >= 0;
-+}
-+#endif
-+
- struct percpu_lock_entry {
- 	intptr_t v;
- } __attribute__((aligned(128)));
-@@ -51,9 +77,9 @@ int rseq_this_cpu_lock(struct percpu_lock *lock)
- 	for (;;) {
- 		int ret;
- 
--		cpu = rseq_cpu_start();
--		ret = rseq_cmpeqv_storev(&lock->c[cpu].v,
--					 0, 1, cpu);
-+		cpu = get_current_cpu_id();
-+		ret = rseq_cmpeqv_storev(RSEQ_MO_RELAXED, RSEQ_PERCPU,
-+					 &lock->c[cpu].v, 0, 1, cpu);
- 		if (rseq_likely(!ret))
- 			break;
- 		/* Retry if comparison fails or rseq aborts. */
-@@ -141,13 +167,14 @@ void this_cpu_list_push(struct percpu_list *list,
- 		intptr_t *targetptr, newval, expect;
- 		int ret;
- 
--		cpu = rseq_cpu_start();
-+		cpu = get_current_cpu_id();
- 		/* Load list->c[cpu].head with single-copy atomicity. */
- 		expect = (intptr_t)RSEQ_READ_ONCE(list->c[cpu].head);
- 		newval = (intptr_t)node;
- 		targetptr = (intptr_t *)&list->c[cpu].head;
- 		node->next = (struct percpu_list_node *)expect;
--		ret = rseq_cmpeqv_storev(targetptr, expect, newval, cpu);
-+		ret = rseq_cmpeqv_storev(RSEQ_MO_RELAXED, RSEQ_PERCPU,
-+					 targetptr, expect, newval, cpu);
- 		if (rseq_likely(!ret))
- 			break;
- 		/* Retry if comparison fails or rseq aborts. */
-@@ -170,12 +197,13 @@ struct percpu_list_node *this_cpu_list_pop(struct percpu_list *list,
- 		long offset;
- 		int ret, cpu;
- 
--		cpu = rseq_cpu_start();
-+		cpu = get_current_cpu_id();
- 		targetptr = (intptr_t *)&list->c[cpu].head;
- 		expectnot = (intptr_t)NULL;
- 		offset = offsetof(struct percpu_list_node, next);
- 		load = (intptr_t *)&head;
--		ret = rseq_cmpnev_storeoffp_load(targetptr, expectnot,
-+		ret = rseq_cmpnev_storeoffp_load(RSEQ_MO_RELAXED, RSEQ_PERCPU,
-+						 targetptr, expectnot,
- 						 offset, load, cpu);
- 		if (rseq_likely(!ret)) {
- 			if (_cpu)
-@@ -295,6 +323,10 @@ int main(int argc, char **argv)
- 			errno, strerror(errno));
- 		goto error;
- 	}
-+	if (!rseq_validate_cpu_id()) {
-+		fprintf(stderr, "Error: cpu id getter unavailable\n");
-+		goto error;
-+	}
- 	printf("spinlock\n");
- 	test_percpu_spinlock();
- 	printf("percpu_list\n");
++		echo "Running mm_numa_cid test ${TEST_NAME[$i]}"
++		./param_test_mm_numa_cid ${TEST_LIST[$i]} -r ${REPS} -t ${NR_THREADS} ${@} ${EXTRA_ARGS} || exit 1
++		echo "Running mm_numa_cid compare-twice test ${TEST_NAME[$i]}"
++		./param_test_mm_numa_cid_compare_twice ${TEST_LIST[$i]} -r ${REPS} -t ${NR_THREADS} ${@} ${EXTRA_ARGS} || exit 1
+ 		let "i++"
+ 	done
+ }
