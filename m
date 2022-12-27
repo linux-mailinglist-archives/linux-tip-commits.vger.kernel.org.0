@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AC4A656ABD
+	by mail.lfdr.de (Postfix) with ESMTP id 3E424656ABC
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Dec 2022 13:15:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232300AbiL0MPS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Dec 2022 07:15:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53458 "EHLO
+        id S232306AbiL0MPT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Dec 2022 07:15:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229883AbiL0MOm (ORCPT
+        with ESMTP id S231718AbiL0MOn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Dec 2022 07:14:42 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 363F5272D;
+        Tue, 27 Dec 2022 07:14:43 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365F563FF;
         Tue, 27 Dec 2022 04:13:56 -0800 (PST)
 Date:   Tue, 27 Dec 2022 12:13:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3YHleamizsjcxSTKmwNgxXpWw4wPScZashrcfCs99co=;
-        b=SCslnUXkYfexq0UHIhkMHYcEPmIVv1GdRuPOAuaNJBZuB2a3MOMYdAMbLG5tAY+xa6T+nA
-        iBnuhz2L5eCdY2RNAi+70y7xMLLnzKGzJI5HBeR5YQfali73KF+zzzu8+CJx8LyyNeW52V
-        Vpe/LU3DS0oZJ+VFCjYGjAD0JJNM9g7eR3MyN0NYFrMsj2xn8oKmsAJZH3tHWp8tG9tWD1
-        bqiht+mPhyUw0Fuy52C94tpTfksz0uikbkb1t8G7QUDQpkVwELZUOblgmhhVGx6CAG1Zt4
-        +t0UtYMJhbYUS4as98A/Unek3OR4AChWMm69hrvJgvVFMVh14rckcsYKQZmVhA==
+        bh=hulIJpjMgo6pOe8FjgQRymuJwZUMCCYKSFHvu1/1r9s=;
+        b=WJyri35SpY+6VrrUTSEbHH0xkbOZuOfXy8Kjw8BHu+XBiKcR1QePxGMRvBLeshfLkrvDVF
+        s6Jn3lKXF6s/Bnus2PBXylzlI7Oot8S2GDFN8eRjP69q/yKMtbMQmPIQAKlq4sGk6wkGfI
+        uonIOND3YW/UAiXPmgMFY7qCcKwUmw5C0CfY/1XogBK8F7BwJ5992tYQYRaMGK19vM8W1T
+        My4HogM6o+ViKvDgjBE6bH1DBiDOGOoFADWDnAODBxS6F0kB4l8sWIM9ofFACGd8bIJVSy
+        Flvsk9sVMoaUBmbmcOL9eeC2rc4ZfuEu7630DEfdpREEfVbFlONv1dTOy56eqA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1672143233;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3YHleamizsjcxSTKmwNgxXpWw4wPScZashrcfCs99co=;
-        b=8e9WYj7NxFLkQtxfOsrtg3qWHtUMmBcedsN6xEv92xHQThboLbkt8gnHfUEi4guoSrEfMc
-        9EzicD1g9U3PiEAg==
+        bh=hulIJpjMgo6pOe8FjgQRymuJwZUMCCYKSFHvu1/1r9s=;
+        b=xoRZfHCSJyKy5ctgOrpsNzDVqqCbIVMkX5AsRuGZS6avlsyFda3HkJI6K6voa2x3kkxYc3
+        PZRrcDye5Tf5aWBA==
 From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] rseq: Introduce feature size and alignment ELF
- auxiliary vector entries
+Subject: [tip: sched/core] selftests/rseq: Fix: Fail thread registration when
+ CONFIG_RSEQ=n
 Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221122203932.231377-3-mathieu.desnoyers@efficios.com>
-References: <20221122203932.231377-3-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20221122203932.231377-2-mathieu.desnoyers@efficios.com>
+References: <20221122203932.231377-2-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Message-ID: <167214323264.4906.3609141535442160200.tip-bot2@tip-bot2>
+Message-ID: <167214323279.4906.12457162726827402464.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,79 +67,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     317c8194e6aeb8b3b573ad139fc2a0635856498e
-Gitweb:        https://git.kernel.org/tip/317c8194e6aeb8b3b573ad139fc2a0635856498e
+Commit-ID:     4842dadfc66f627083ec46c4e9a426e805c765f3
+Gitweb:        https://git.kernel.org/tip/4842dadfc66f627083ec46c4e9a426e805c765f3
 Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Tue, 22 Nov 2022 15:39:04 -05:00
+AuthorDate:    Tue, 22 Nov 2022 15:39:03 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 27 Dec 2022 12:52:10 +01:00
 
-rseq: Introduce feature size and alignment ELF auxiliary vector entries
+selftests/rseq: Fix: Fail thread registration when CONFIG_RSEQ=n
 
-Export the rseq feature size supported by the kernel as well as the
-required allocation alignment for the rseq per-thread area to user-space
-through ELF auxiliary vector entries.
+When linking the selftests against a libc which does not handle rseq
+registration (before 2.35),  rseq thread registration silently succeed
+even with CONFIG_RSEQ=n because it erroneously thinks that libc is
+handling rseq registration.
 
-This is part of the extensible rseq ABI.
+This is caused by setting the rseq ownership flag only after the
+rseq_available() check. It should rather be set before the
+rseq_available() check.
+
+Set the rseq_size to 0 (error value) immediately after the
+rseq_available() check fails rather than in the thread registration
+functions.
 
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20221122203932.231377-3-mathieu.desnoyers@efficios.com
+Link: https://lore.kernel.org/r/20221122203932.231377-2-mathieu.desnoyers@efficios.com
 ---
- fs/binfmt_elf.c             | 5 +++++
- include/uapi/linux/auxvec.h | 2 ++
- include/uapi/linux/rseq.h   | 5 +++++
- 3 files changed, 12 insertions(+)
+ tools/testing/selftests/rseq/rseq.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index de63572..0ba86f0 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -46,6 +46,7 @@
- #include <linux/cred.h>
- #include <linux/dax.h>
- #include <linux/uaccess.h>
-+#include <linux/rseq.h>
- #include <asm/param.h>
- #include <asm/page.h>
- 
-@@ -288,6 +289,10 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
- 	if (bprm->have_execfd) {
- 		NEW_AUX_ENT(AT_EXECFD, bprm->execfd);
+diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
+index 4177f95..376a73f 100644
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -119,9 +119,11 @@ void rseq_init(void)
+ 		rseq_flags = *libc_rseq_flags_p;
+ 		return;
  	}
-+#ifdef CONFIG_RSEQ
-+	NEW_AUX_ENT(AT_RSEQ_FEATURE_SIZE, offsetof(struct rseq, end));
-+	NEW_AUX_ENT(AT_RSEQ_ALIGN, __alignof__(struct rseq));
-+#endif
- #undef NEW_AUX_ENT
- 	/* AT_NULL is zero; clear the rest too */
- 	memset(elf_info, 0, (char *)mm->saved_auxv +
-diff --git a/include/uapi/linux/auxvec.h b/include/uapi/linux/auxvec.h
-index c7e502b..6991c4b 100644
---- a/include/uapi/linux/auxvec.h
-+++ b/include/uapi/linux/auxvec.h
-@@ -30,6 +30,8 @@
- 				 * differ from AT_PLATFORM. */
- #define AT_RANDOM 25	/* address of 16 random bytes */
- #define AT_HWCAP2 26	/* extension of AT_HWCAP */
-+#define AT_RSEQ_FEATURE_SIZE	27	/* rseq supported feature size */
-+#define AT_RSEQ_ALIGN		28	/* rseq allocation alignment */
- 
- #define AT_EXECFN  31	/* filename of program */
- 
-diff --git a/include/uapi/linux/rseq.h b/include/uapi/linux/rseq.h
-index 77ee207..05d3c4c 100644
---- a/include/uapi/linux/rseq.h
-+++ b/include/uapi/linux/rseq.h
-@@ -130,6 +130,11 @@ struct rseq {
- 	 *     this thread.
- 	 */
- 	__u32 flags;
-+
-+	/*
-+	 * Flexible array member at end of structure, after last feature field.
-+	 */
-+	char end[];
- } __attribute__((aligned(4 * sizeof(__u64))));
- 
- #endif /* _UAPI_LINUX_RSEQ_H */
+-	if (!rseq_available())
+-		return;
+ 	rseq_ownership = 1;
++	if (!rseq_available()) {
++		rseq_size = 0;
++		return;
++	}
+ 	rseq_offset = (void *)&__rseq_abi - rseq_thread_pointer();
+ 	rseq_size = sizeof(struct rseq_abi);
+ 	rseq_flags = 0;
