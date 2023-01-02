@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF91865B479
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Jan 2023 16:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F85865B629
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Jan 2023 19:04:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236107AbjABPx0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Jan 2023 10:53:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46644 "EHLO
+        id S236440AbjABSEo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Jan 2023 13:04:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232107AbjABPxZ (ORCPT
+        with ESMTP id S236454AbjABSEc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Jan 2023 10:53:25 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3809AB82;
-        Mon,  2 Jan 2023 07:53:24 -0800 (PST)
-Date:   Mon, 02 Jan 2023 15:53:20 -0000
+        Mon, 2 Jan 2023 13:04:32 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08AA4BF71;
+        Mon,  2 Jan 2023 10:04:18 -0800 (PST)
+Date:   Mon, 02 Jan 2023 18:04:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1672674801;
+        s=2020; t=1672682656;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3P5pISwMYBYCrQ8Yr86Uym3gj8BN/L8IIlaMxfkhy08=;
-        b=WDIaj39zarkxIy3RcXAEsQNsau423KjE7KQGAePWyn2aHanx9EtNzS9QA/UuUQq7qwccw7
-        zbvJ3sYAi4ReSi1N+H3FOs+IAyQo97tSiIkkNz8wtGdinUMWLFRWxGuq1b5DDSGpfUbCQW
-        kFaVmDr39u610okCyxBAKADRvr6VS7khx2vYx5SU/tTS1orbO/QKjbV0DHkpPd+KBvDxeW
-        aFMf66M+Mq0US/F/6+GR7INgIMoFzP5wlyLNbRoyYANMt+u+TvJFXhws8VZl2ZmejV1DEL
-        DOMX6XAgG8CQZGlgvhmopnzgEJAzbBzwROZZSpTIzoIlOgMarV//96i9wekTxA==
+        bh=dgKCXWkN7D8Vg195mJtIF+wUSL0imvOrcDn3Mz+6ocs=;
+        b=XTwnaTJijdkAETCDOlgxzeUpPCLlUVoBrj9LKH8JSswCopF5mmPDTB2csg7Oh3DnnDOaiW
+        k6U2JWU0i7Ow5hkobVWJKArPElSXzpMVgKbpXhmAUOZbLhklyg7RiIVO6YEh8UPt1fxTjQ
+        pulpwNAdziO/N6ba3U2WBubxxD6EephJr0ZxDFmu9A6sDnf4Bptxn57Z7pK1/bt+ATtS4j
+        CgN1NwxpB39B2N1UKZBcZh73ujshmb7xDBVLD3oH1ZrnB9On1KQ4UeVsXUI52IwMXC+T8a
+        LQtvr7TDXPAhutQDhCsrtUsDfHJWBD4LlzvPKhw9hnXr/ElK4wOtN3bMTI5FgQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1672674801;
+        s=2020e; t=1672682656;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3P5pISwMYBYCrQ8Yr86Uym3gj8BN/L8IIlaMxfkhy08=;
-        b=lXFeWHI9Gp0KHaqnUtDDEMeHEE750GwMn4AA+3SZWgZVPNAov8+TElRUZJGJyihCOvdXq6
-        8anhNCCiB1WxDABQ==
-From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
+        bh=dgKCXWkN7D8Vg195mJtIF+wUSL0imvOrcDn3Mz+6ocs=;
+        b=36BKUqqbDT2mfBN84y+MMIO3vC/TFvwzm5Ix81tRFdzfiRtH40hbtBuaozbrsn9FPNRsBk
+        yvj1jOskWh6iX+BA==
+From:   "tip-bot2 for Takashi Iwai" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/rseq: Fix concurrency ID handling of
- usermodehelper kthreads
-Cc:     kernel test robot <yujie.liu@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <202212301353.5c959d72-yujie.liu@intel.com>
-References: <202212301353.5c959d72-yujie.liu@intel.com>
+Subject: [tip: x86/urgent] x86/kexec: Fix double-free of elf header buffer
+Cc:     Takashi Iwai <tiwai@suse.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Baoquan He <bhe@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
+        <stable@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20221122115122.13937-1-tiwai@suse.de>
+References: <20221122115122.13937-1-tiwai@suse.de>
 MIME-Version: 1.0
-Message-ID: <167267480086.4906.14665352998737768536.tip-bot2@tip-bot2>
+Message-ID: <167268265568.4906.5498168349735742588.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,54 +65,52 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     bbd0b031509b880b4e9a880bb27ca2a30ad081ab
-Gitweb:        https://git.kernel.org/tip/bbd0b031509b880b4e9a880bb27ca2a30ad081ab
-Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Mon, 02 Jan 2023 10:12:16 -05:00
+Commit-ID:     d00dd2f2645dca04cf399d8fc692f3f69b6dd996
+Gitweb:        https://git.kernel.org/tip/d00dd2f2645dca04cf399d8fc692f3f69b6dd996
+Author:        Takashi Iwai <tiwai@suse.de>
+AuthorDate:    Tue, 22 Nov 2022 12:51:22 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 02 Jan 2023 16:34:12 +01:00
+CommitterDate: Mon, 02 Jan 2023 18:56:21 +01:00
 
-sched/rseq: Fix concurrency ID handling of usermodehelper kthreads
+x86/kexec: Fix double-free of elf header buffer
 
-sched_mm_cid_after_execve() does not expect NULL t->mm, but it may happen
-if a usermodehelper kthread fails when attempting to execute a binary.
+After
 
-sched_mm_cid_fork() can be issued from a usermodehelper kthread, which
-has t->flags PF_KTHREAD set.
+  b3e34a47f989 ("x86/kexec: fix memory leak of elf header buffer"),
 
-Fixes: af7f588d8f73 ("sched: Introduce per-memory-map concurrency ID")
-Reported-by: kernel test robot <yujie.liu@intel.com>
-Reported-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+freeing image->elf_headers in the error path of crash_load_segments()
+is not needed because kimage_file_post_load_cleanup() will take
+care of that later. And not clearing it could result in a double-free.
+
+Drop the superfluous vfree() call at the error path of
+crash_load_segments().
+
+Fixes: b3e34a47f989 ("x86/kexec: fix memory leak of elf header buffer")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/oe-lkp/202212301353.5c959d72-yujie.liu@intel.com
+Acked-by: Baoquan He <bhe@redhat.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20221122115122.13937-1-tiwai@suse.de
 ---
- kernel/sched/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/crash.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 048ec24..f99ee69 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -11343,8 +11343,8 @@ void sched_mm_cid_after_execve(struct task_struct *t)
- 	struct mm_struct *mm = t->mm;
- 	unsigned long flags;
- 
--	WARN_ON_ONCE((t->flags & PF_KTHREAD) || !t->mm);
--
-+	if (!mm)
-+		return;
- 	local_irq_save(flags);
- 	t->mm_cid = mm_cid_get(mm);
- 	t->mm_cid_active = 1;
-@@ -11354,7 +11354,7 @@ void sched_mm_cid_after_execve(struct task_struct *t)
- 
- void sched_mm_cid_fork(struct task_struct *t)
- {
--	WARN_ON_ONCE((t->flags & PF_KTHREAD) || !t->mm || t->mm_cid != -1);
-+	WARN_ON_ONCE(!t->mm || t->mm_cid != -1);
- 	t->mm_cid_active = 1;
- }
- #endif
+diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+index 9730c88..3055144 100644
+--- a/arch/x86/kernel/crash.c
++++ b/arch/x86/kernel/crash.c
+@@ -401,10 +401,8 @@ int crash_load_segments(struct kimage *image)
+ 	kbuf.buf_align = ELF_CORE_HEADER_ALIGN;
+ 	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+ 	ret = kexec_add_buffer(&kbuf);
+-	if (ret) {
+-		vfree((void *)image->elf_headers);
++	if (ret)
+ 		return ret;
+-	}
+ 	image->elf_load_addr = kbuf.mem;
+ 	pr_debug("Loaded ELF headers at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
+ 		 image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
