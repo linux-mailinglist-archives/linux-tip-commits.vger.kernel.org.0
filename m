@@ -2,55 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 602C765C573
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Jan 2023 18:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B4FD65C591
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Jan 2023 19:00:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238138AbjACRxe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Jan 2023 12:53:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48366 "EHLO
+        id S238421AbjACSAo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Jan 2023 13:00:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233708AbjACRxa (ORCPT
+        with ESMTP id S238465AbjACSAn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Jan 2023 12:53:30 -0500
+        Tue, 3 Jan 2023 13:00:43 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76FCFD2F8;
-        Tue,  3 Jan 2023 09:53:29 -0800 (PST)
-Date:   Tue, 03 Jan 2023 17:53:27 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF8D711474;
+        Tue,  3 Jan 2023 10:00:42 -0800 (PST)
+Date:   Tue, 03 Jan 2023 18:00:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1672768408;
+        s=2020; t=1672768841;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=beUhn54vQ9yAxhGskxJoE0cbMUZA4bJ7XIpbzZYty0Y=;
-        b=y+VTmE99cueCiL1I78JE3ewvTzfCxvKdKfcyxdyHG3LpzZTOZzi7EaDimbIvJw0vGzOjQI
-        K4JPqxJAA6rFXfaSy4mKsJiRh9NbQFoTjMzaBZ68C+bDgSEmCdOo/JAP7zXNcx8HVjblEt
-        fNO5luCHsYZIiSOCxaTDOg3Zb9HeerzYXXPUJfFIOl/WdVwANyrW5yYA9QKi4kfx6s3BpC
-        ypn+EgnFG8iWoP67aw511Euc6sgA25WIuzMlaP3T5uWJGzActnst9hl2kR/sO6Ir4T01j8
-        97kqGhA1Xbzx6TAgtSIk58v2sxCNUfnJ44/nuNpHkiDb+qJmfEeKhkZ8gWYVnA==
+        bh=RtB1U/VEk/htiQd0Z9W7KK2KMQVCfvqESdHqfgHUhSg=;
+        b=l/VLWdoWYh5RYqm/xxabFGJjQKV3OZWzJIGueDgr/mqY0ZQZX5pICahVnEf4SKI5TUkTl9
+        4WNU+vLGVHN1X+Z5fCLYZ9GRtC3UV9lvFxDRU9YdlqxEmQZl0hqTEAo4vDV01ClbRcjXk4
+        hnQeQG0gdl68lmmx721JQYLWMYXi526Z1/ViUa93XXuAEzGb0R6T/0hGa12pwe/XLTu5WP
+        X0bGHXFGx8gLtQ2gMULdBoe4Hj7BzGg4PtfBnLZCBGpUNSbx11YDMtg8RCrIsVgKCuKgV5
+        8chP45b8hen+ONGBUfYG6yZCAq5pJj8oJ61sWuGb3+lUYPBOITB5zOjs8gMnGw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1672768408;
+        s=2020e; t=1672768841;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=beUhn54vQ9yAxhGskxJoE0cbMUZA4bJ7XIpbzZYty0Y=;
-        b=Y1CL4aI9BlTZ+NG807+10MdMOPM2UFpj98KSw67Ebu+sXDnzX/aE2HN7bK3iWBBfc45e90
-        vGg+1VQl7hHbZsDA==
-From:   "tip-bot2 for Anuradha Weeraman" <tip-bot2@linutronix.de>
+        bh=RtB1U/VEk/htiQd0Z9W7KK2KMQVCfvqESdHqfgHUhSg=;
+        b=YkxLZxb0kHUCYDV2HcqUXcs1LNzFVFi3kcbb9l5u/05UtUwcJy3rlJlA6RpyBqiAb1qa2s
+        kjVbgmWqlFlScwCQ==
+From:   "tip-bot2 for Chris Wilson" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/lib: Fix compiler and kernel-doc warnings
-Cc:     Anuradha Weeraman <anuradha@debian.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/x86/rapl: Treat Tigerlake like Icelake
+Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Stephane Eranian <eranian@google.com>,
+        Zhang Rui <rui.zhang@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230103114725.108431-1-anuradha@debian.org>
-References: <20230103114725.108431-1-anuradha@debian.org>
+In-Reply-To: <20221228113454.1199118-1-rodrigo.vivi@intel.com>
+References: <20221228113454.1199118-1-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
-Message-ID: <167276840783.4906.14619707136056889151.tip-bot2@tip-bot2>
+Message-ID: <167276884075.4906.6298448659461708987.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,53 +68,41 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     65c24d7b0f9142c6acc9bd6dabeba22767077681
-Gitweb:        https://git.kernel.org/tip/65c24d7b0f9142c6acc9bd6dabeba22767077681
-Author:        Anuradha Weeraman <anuradha@debian.org>
-AuthorDate:    Tue, 03 Jan 2023 17:17:24 +05:30
+Commit-ID:     c07311b5509f6035f1dd828db3e90ff4859cf3b9
+Gitweb:        https://git.kernel.org/tip/c07311b5509f6035f1dd828db3e90ff4859cf3b9
+Author:        Chris Wilson <chris@chris-wilson.co.uk>
+AuthorDate:    Wed, 28 Dec 2022 06:34:54 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Jan 2023 18:46:21 +01:00
+CommitterDate: Tue, 03 Jan 2023 18:55:35 +01:00
 
-x86/lib: Fix compiler and kernel-doc warnings
+perf/x86/rapl: Treat Tigerlake like Icelake
 
-Fix the following W=1 warnings:
+Since Tigerlake seems to have inherited its cstates and other RAPL power
+caps from Icelake, assume it also follows Icelake for its RAPL events.
 
-arch/x86/lib/cmdline.c:
-
-  - Include <asm/cmdline.h> to fix missing-prototypes warnings.
-
-  - Update comment for __cmdline_find_option_bool to fix a kernel-doc warning.
-
-Signed-off-by: Anuradha Weeraman <anuradha@debian.org>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230103114725.108431-1-anuradha@debian.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Zhang Rui <rui.zhang@intel.com>
+Link: https://lore.kernel.org/r/20221228113454.1199118-1-rodrigo.vivi@intel.com
 ---
- arch/x86/lib/cmdline.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/events/rapl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/lib/cmdline.c b/arch/x86/lib/cmdline.c
-index b6da093..80570eb 100644
---- a/arch/x86/lib/cmdline.c
-+++ b/arch/x86/lib/cmdline.c
-@@ -7,16 +7,18 @@
- #include <linux/string.h>
- #include <linux/ctype.h>
- #include <asm/setup.h>
-+#include <asm/cmdline.h>
- 
- static inline int myisspace(u8 c)
- {
- 	return c <= ' ';	/* Close enough approximation */
- }
- 
--/**
-+/*
-  * Find a boolean option (like quiet,noapic,nosmp....)
-  *
-  * @cmdline: the cmdline string
-+ * @max_cmdline_size: the maximum size of cmdline
-  * @option: option string to look for
-  *
-  * Returns the position of that @option (starts counting with 1)
+diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
+index a829492..ae5779e 100644
+--- a/arch/x86/events/rapl.c
++++ b/arch/x86/events/rapl.c
+@@ -800,6 +800,8 @@ static const struct x86_cpu_id rapl_model_match[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,		&model_hsx),
+ 	X86_MATCH_INTEL_FAM6_MODEL(COMETLAKE_L,		&model_skl),
+ 	X86_MATCH_INTEL_FAM6_MODEL(COMETLAKE,		&model_skl),
++	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L,		&model_skl),
++	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE,		&model_skl),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,		&model_skl),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,		&model_skl),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,		&model_skl),
