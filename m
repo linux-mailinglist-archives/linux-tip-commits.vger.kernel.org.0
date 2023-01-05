@@ -2,58 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11D7C65E915
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Jan 2023 11:37:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CF0D65E96E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Jan 2023 11:59:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232091AbjAEKhR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 5 Jan 2023 05:37:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58762 "EHLO
+        id S231453AbjAEK7L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 5 Jan 2023 05:59:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231573AbjAEKgq (ORCPT
+        with ESMTP id S229834AbjAEK7K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 5 Jan 2023 05:36:46 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19F4C37240;
-        Thu,  5 Jan 2023 02:36:45 -0800 (PST)
-Date:   Thu, 05 Jan 2023 10:36:41 -0000
+        Thu, 5 Jan 2023 05:59:10 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 539E354713;
+        Thu,  5 Jan 2023 02:59:09 -0800 (PST)
+Date:   Thu, 05 Jan 2023 10:59:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1672915002;
+        s=2020; t=1672916348;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=42Z11cFLGIah66u4IrHHvK0enZoFEPHbHFEuy4SF86c=;
-        b=RE+Mf4VUojsfZPLKgID3IyHN8Mhl52IQmD5I3F0xbMKBONmVPiSax/i8C55WC5fxUnBLkb
-        nFANMG4Ehdd2d3/bwefQh6Fel1fVp0irtdDf5PkRRoFROh+dUJIVVYGL7QIUqBSUd8n6lN
-        NYISAuzJSl99G61Bf422DDKF2pGl/JA1dW44FAXa59nkpKrG3pXd+q4lr2m5sN1Zrk8ClI
-        ixzOsjw9UJrWJ2nN0U2aPgPcgwUbwNX59hyLPzbpywelCU3YBRl4OoFtT4lZoF0XUKeWIZ
-        7+oksfXlVFKj1aWsJyk9/StsXSDd9hr46Hz569f8QU+ZAPmQgkY2epDNxjE/yA==
+        bh=pRSZUNHOweE8Gbgz6Bx7yitBQCc4aVsvA+KeqzR9PJQ=;
+        b=Tenx/PkHx2f/Fzgd6hifUtgIw5jZSI41cl9aNKrMsF3gSq2+CJEb6aBQxJJlp9naRzFnmb
+        jGK0O5Kda6GkmrmNKSefXzNwZRT5ViHV4/3TBh6MEiNFPLZfaCHq5tcq0NJaEuIuS2l5kW
+        gu8536ZUqt567ErCQBQV/+9m6Lmtz03opmOhV231xWvcFWz+ohwNkY7VOwn8iJUegr//vN
+        E++O5IzJPyArz48VgixPjfyfU1fudfyshsuck9AfbY9/7FCuN/uenU1nz4vgdvecWTPgD1
+        bnq4KEbT9MPtPMpt6BvnkPwzSNTAanAz0Ud0BqYySYbRphxSpi2HyKK8yucrSg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1672915002;
+        s=2020e; t=1672916348;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=42Z11cFLGIah66u4IrHHvK0enZoFEPHbHFEuy4SF86c=;
-        b=AG52u1YHBCe1LxGig9CtlTMhYnVBWxvdW8IWRcHTG/Fcl72OZI1nYWS/qIp0Ln22jDZBoD
-        Fn5TrJy9xQh2sgDg==
-From:   "tip-bot2 for Guo Ren" <tip-bot2@linutronix.de>
+        bh=pRSZUNHOweE8Gbgz6Bx7yitBQCc4aVsvA+KeqzR9PJQ=;
+        b=9VVgMjgjvk8UUSQeb4jt/9C36uMGct/SOdRtecOg7GJllZ6Hj27Nlk4oUNf0SZXP/CxiFl
+        +GfwKZzlt1cISvBQ==
+From:   "tip-bot2 for Bing Huang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/qspinlock: Micro-optimize pending state
- waiting for unlock
-Cc:     Guo Ren <guoren@linux.alibaba.com>, Guo Ren <guoren@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Waiman Long <longman@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230105021952.3090070-1-guoren@kernel.org>
-References: <20230105021952.3090070-1-guoren@kernel.org>
+Subject: [tip: sched/core] sched/topology: Add __init for sched_init_domains()
+Cc:     Bing Huang <huangbing@kylinos.cn>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230105014943.9857-1-huangbing775@126.com>
+References: <20230105014943.9857-1-huangbing775@126.com>
 MIME-Version: 1.0
-Message-ID: <167291500186.4906.9745084237766663051.tip-bot2@tip-bot2>
+Message-ID: <167291634746.4906.10815870728779627297.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,58 +63,36 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     4282494a20cdcaf38d553f2c2ff6f252084f979c
-Gitweb:        https://git.kernel.org/tip/4282494a20cdcaf38d553f2c2ff6f252084f979c
-Author:        Guo Ren <guoren@linux.alibaba.com>
-AuthorDate:    Wed, 04 Jan 2023 21:19:52 -05:00
+Commit-ID:     ef90cf2281a013d359d24d51732af990badf6e03
+Gitweb:        https://git.kernel.org/tip/ef90cf2281a013d359d24d51732af990badf6e03
+Author:        Bing Huang <huangbing@kylinos.cn>
+AuthorDate:    Thu, 05 Jan 2023 09:49:43 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 05 Jan 2023 11:01:50 +01:00
+CommitterDate: Thu, 05 Jan 2023 11:42:13 +01:00
 
-locking/qspinlock: Micro-optimize pending state waiting for unlock
+sched/topology: Add __init for sched_init_domains()
 
-When we're pending, we only care about lock value. The xchg_tail
-wouldn't affect the pending state. That means the hardware thread
-could stay in a sleep state and leaves the rest execution units'
-resources of pipeline to other hardware threads. This situation is
-the SMT scenarios in the same core. Not an entering low-power state
-situation. Of course, the granularity between cores is "cacheline",
-but the granularity between SMT hw threads of the same core could
-be "byte" which internal LSU handles. For example, when a hw-thread
-yields the resources of the core to other hw-threads, this patch
-could help the hw-thread stay in the sleep state and prevent it
-from being woken up by other hw-threads xchg_tail.
+sched_init_domains() is only used in initialization
 
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
+Signed-off-by: Bing Huang <huangbing@kylinos.cn>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/20230105021952.3090070-1-guoren@kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230105014943.9857-1-huangbing775@126.com
 ---
- kernel/locking/qspinlock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/locking/qspinlock.c b/kernel/locking/qspinlock.c
-index 2b23378..ebe6b8e 100644
---- a/kernel/locking/qspinlock.c
-+++ b/kernel/locking/qspinlock.c
-@@ -371,7 +371,7 @@ void __lockfunc queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
- 	/*
- 	 * We're pending, wait for the owner to go away.
- 	 *
--	 * 0,1,1 -> 0,1,0
-+	 * 0,1,1 -> *,1,0
- 	 *
- 	 * this wait loop must be a load-acquire such that we match the
- 	 * store-release that clears the locked bit and create lock
-@@ -380,7 +380,7 @@ void __lockfunc queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
- 	 * barriers.
- 	 */
- 	if (val & _Q_LOCKED_MASK)
--		atomic_cond_read_acquire(&lock->val, !(VAL & _Q_LOCKED_MASK));
-+		smp_cond_load_acquire(&lock->locked, !VAL);
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index dea9fa3..d93c337 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -2451,7 +2451,7 @@ void free_sched_domains(cpumask_var_t doms[], unsigned int ndoms)
+  * Set up scheduler domains and groups.  For now this just excludes isolated
+  * CPUs, but could be used to exclude other special cases in the future.
+  */
+-int sched_init_domains(const struct cpumask *cpu_map)
++int __init sched_init_domains(const struct cpumask *cpu_map)
+ {
+ 	int err;
  
- 	/*
- 	 * take ownership and clear the pending bit.
