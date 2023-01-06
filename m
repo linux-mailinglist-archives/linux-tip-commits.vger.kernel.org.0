@@ -2,50 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 137EC65FF22
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Jan 2023 11:48:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD19660042
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Jan 2023 13:29:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232320AbjAFKsK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Jan 2023 05:48:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44906 "EHLO
+        id S230075AbjAFM3q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Jan 2023 07:29:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232243AbjAFKsG (ORCPT
+        with ESMTP id S229869AbjAFM3p (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Jan 2023 05:48:06 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 458D66CFDF;
-        Fri,  6 Jan 2023 02:48:05 -0800 (PST)
-Date:   Fri, 06 Jan 2023 10:48:03 -0000
+        Fri, 6 Jan 2023 07:29:45 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 122613DBE8;
+        Fri,  6 Jan 2023 04:29:44 -0800 (PST)
+Date:   Fri, 06 Jan 2023 12:29:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673002083;
+        s=2020; t=1673008181;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=/hxCtPufFtZ5al9rbAfK0+sKz8sTOiY727C5yei9u9k=;
-        b=t1MiUaHuRMCwIAF88dKGsbhsvmMLn/iopIFfDEWrJfWvT2+4gfJXlx7Fa3DQUUvdRwM1EW
-        l/nh5ReZ3ZFJJj5ByIzcUxJ0n2UfJeH3MPb3ID1gbN6V8LtuV/F5fP5h1i4MmdNSS/br9W
-        XGodTzOTdYA/ZcOUtz/TUAX2x0STSkCZEj3lvJPIHv+swBxLKPSilNmgxuAgi6qF/51rJi
-        RQr6qgdes0IHuJgx0xMgaVmVxobf/K+mAcAxK1k0jGusqFLNZNbPacnwHF1ZA9C1KWTPaC
-        s5kf108Ja1KBjufC02i0ytSRpCNP/vPxF0nl78cEnkeCPCWfF8ykYQ/y+c6Dsw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=z66MPSETAUTnm4sAZTxLL8F84UXTMZxMyIRCDiuflnM=;
+        b=q2OidHKmZ8kxtK3ai+NcseOQS8lVWtfsOryf0c3DuAymJnHkZvrRnq5IE0pvIvxUfcMMeH
+        Oi9sa2SJ+P9l9fKiGIbG7P3qp63XsC0SVdvA/gKmXqrXnhGpHxb5L8sfGLPPHHgWdaX4bO
+        XmG/+6w/veTl5W5LfXeeQhohI/eTKz5UH/3Rkz39co91NrVrygwFm88r+82SEzRfCwsAQ7
+        UkOjUGlZIIVU9U4wyzx8QBGTQ6qr87o/Ey9SausfRBonHZ8aIoiDED5HlD6i6fTw49WAGF
+        zKCcPbI9CgS8rmFAqfOcluBc+Ij+auKPuHClmWS+pubFC4cHk6FWyohIX1XQcA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673002083;
+        s=2020e; t=1673008181;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=/hxCtPufFtZ5al9rbAfK0+sKz8sTOiY727C5yei9u9k=;
-        b=REJk9c4Jvqc7Zar4ycE2QFX2GuxLQF7FH8SBRwNK/arsg7SwLc7m/5y1FAAkS6gnRp+KJg
-        urGE9lT/BckJ5WBA==
-From:   "tip-bot2 for Hans de Goede" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=z66MPSETAUTnm4sAZTxLL8F84UXTMZxMyIRCDiuflnM=;
+        b=ElwrptI9079vEe26bp+7PbZhlymSFwTnXjcFO99A+sXqqMhvTM4XSYf9SwZuDI2lkuvQNn
+        YtPg5G6saDWfZzDw==
+From:   "tip-bot2 for Wang Yong" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/rtc: Simplify PNP ids check
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org
+Subject: [tip: x86/cleanups] x86/boot/e820: Fix typo in e820.c comment
+Cc:     Wang Yong <yongw.kernel@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20221211103849.173870-1-yongw.kernel@gmail.com>
+References: <20221211103849.173870-1-yongw.kernel@gmail.com>
 MIME-Version: 1.0
-Message-ID: <167300208315.4906.17267307487336474723.tip-bot2@tip-bot2>
+Message-ID: <167300817793.4906.15796352008210613315.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,53 +63,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     bd4edba2653aeef0119b7a945f07e58711343bf9
-Gitweb:        https://git.kernel.org/tip/bd4edba2653aeef0119b7a945f07e58711343bf9
-Author:        Hans de Goede <hdegoede@redhat.com>
-AuthorDate:    Wed, 14 Dec 2022 22:24:47 +01:00
+Commit-ID:     47cdfb7b0a2733c157b27f772d852bfb9075384b
+Gitweb:        https://git.kernel.org/tip/47cdfb7b0a2733c157b27f772d852bfb9075384b
+Author:        Wang Yong <yongw.kernel@gmail.com>
+AuthorDate:    Sun, 11 Dec 2022 10:38:49 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Jan 2023 04:22:34 +01:00
+CommitterDate: Fri, 06 Jan 2023 13:21:04 +01:00
 
-x86/rtc: Simplify PNP ids check
+x86/boot/e820: Fix typo in e820.c comment
 
-compare_pnp_id() already iterates over the single linked pnp_ids list
-starting with the id past to it.
+change "itsmain" to "its main".
 
-So there is no need for add_rtc_cmos() to call compare_pnp_id()
-for each id on the list.
-
-No change in functionality intended.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 544a0f47e780 ("x86/boot/e820: Rename e820_table_saved to e820_table_firmware and improve the description")
+Signed-off-by: Wang Yong <yongw.kernel@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: linux-kernel@vger.kernel.org
+Link: https://lore.kernel.org/r/20221211103849.173870-1-yongw.kernel@gmail.com
 ---
- arch/x86/kernel/rtc.c |  9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/x86/kernel/e820.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/rtc.c b/arch/x86/kernel/rtc.c
-index 3490464..1309b9b 100644
---- a/arch/x86/kernel/rtc.c
-+++ b/arch/x86/kernel/rtc.c
-@@ -138,15 +138,12 @@ static __init int add_rtc_cmos(void)
- 	static const char * const ids[] __initconst =
- 	    { "PNP0b00", "PNP0b01", "PNP0b02", };
- 	struct pnp_dev *dev;
--	struct pnp_id *id;
- 	int i;
- 
- 	pnp_for_each_dev(dev) {
--		for (id = dev->id; id; id = id->next) {
--			for (i = 0; i < ARRAY_SIZE(ids); i++) {
--				if (compare_pnp_id(id, ids[i]) != 0)
--					return 0;
--			}
-+		for (i = 0; i < ARRAY_SIZE(ids); i++) {
-+			if (compare_pnp_id(dev->id, ids[i]) != 0)
-+				return 0;
- 		}
- 	}
- #endif
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index 9dac246..0614a79 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -53,7 +53,7 @@
+  *
+  * Once the E820 map has been converted to the standard Linux memory layout
+  * information its role stops - modifying it has no effect and does not get
+- * re-propagated. So itsmain role is a temporary bootstrap storage of firmware
++ * re-propagated. So its main role is a temporary bootstrap storage of firmware
+  * specific memory layout data during early bootup.
+  */
+ static struct e820_table e820_table_init		__initdata;
