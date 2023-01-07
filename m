@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FB88660E1B
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Jan 2023 11:53:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBC04660E44
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Jan 2023 12:36:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232416AbjAGKxS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 7 Jan 2023 05:53:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48084 "EHLO
+        id S229704AbjAGLg3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 7 Jan 2023 06:36:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232161AbjAGKxP (ORCPT
+        with ESMTP id S229671AbjAGLg2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 7 Jan 2023 05:53:15 -0500
+        Sat, 7 Jan 2023 06:36:28 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E725A1AA35;
-        Sat,  7 Jan 2023 02:53:13 -0800 (PST)
-Date:   Sat, 07 Jan 2023 10:53:12 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74E726CFF2;
+        Sat,  7 Jan 2023 03:36:26 -0800 (PST)
+Date:   Sat, 07 Jan 2023 11:36:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673088792;
+        s=2020; t=1673091385;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2IG2g6yfdzj3v6AzxV31vJmclu07XKAtOZiLHWzNUv8=;
-        b=uYKFVjejgctGX8iRO6cdRK3X3cDeq1VvUhjHH+1FcARi/B+hZRgeOby4W/OkDsQP4Q2dpf
-        XIWcKxgZRT7JqLUMJyyovetjYCQS36k1TtaHOz+NhumulSBe4AVmMBP1vuO8w0DuRoT2CM
-        Uo1lecLjxjDvNDvQmZ3fYsupfFdbTPgQkRnilIDRD/Pv3r2yyUaeHuC6IkwgHci+oOsJ3R
-        iQB36L+IcscXz0ZOhONZWTvULedSVZ/0SLs0CGDdP8OfkysVB9RivAJQIftgfrUgK97OK3
-        S+/eyip5GTPQCdslk8oErHRwWMbbDcQ1zeCZxqNoqc4WCtg5cUv4cAWSqJaiuA==
+        bh=XHFyM2eIBJfJJi6mFFPW4A3huteEXEQugWFCywDFYpY=;
+        b=FxisGmZ53v75T4A/6w5qor40Wr+U7opG8ubaPyBjw4du22xFUUF1JQpEPTbZ2FuySvmE/u
+        W+9G8LlWH4M3OYrlX0QV31IgVUKwYRjjCnCc4i4VizvOu6+pUE4h1OSSGWnGgBNuVpRBzW
+        9FYxqLYTotycl/tEBaYjRnh99Ae8rrrRQJpwgIZsGg3Ra6bkU4zP+rw6D4/7yGtJlSyg+a
+        UkU1E5rTvvMiRndUXzNPvgsPnpjvHdDb9yglVxZv5Yn2Vij6eDpcBtToUYSHtrwmiMBWGc
+        pqkNT7hPtepgzfM+EsXWcUh1wECgewI8WTGPO52ndhNAUAl4xWVTvC5hTmedzw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673088792;
+        s=2020e; t=1673091385;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2IG2g6yfdzj3v6AzxV31vJmclu07XKAtOZiLHWzNUv8=;
-        b=gh9PitinoVHwIX58N3Wlk/tFUxlI7cvCJ4z193dSgONJ8UbORYQQHp/q4fe8Oi7sH3O6aD
-        qz5NUNEM1WWLYmCQ==
-From:   "tip-bot2 for Miaoqian Lin" <tip-bot2@linutronix.de>
+        bh=XHFyM2eIBJfJJi6mFFPW4A3huteEXEQugWFCywDFYpY=;
+        b=RAlE/kRmDjkZvBhc7cl6GMTDNSPZSvO1AL0KPk0o0cFBVLdPHZqkObp3VJV1BwZAHrqxie
+        ubcz7u/G62XNyWCg==
+From:   "tip-bot2 for Masami Hiramatsu (Google)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Fix memory leak in create_static_call_sections()
-Cc:     Miaoqian Lin <linmq006@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] x86/kprobes: Drop removed INT3 handling code
+Cc:     "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221205080642.558583-1-linmq006@gmail.com>
-References: <20221205080642.558583-1-linmq006@gmail.com>
+In-Reply-To: <166981518895.1131462.4693062055762912734.stgit@devnote3>
+References: <166981518895.1131462.4693062055762912734.stgit@devnote3>
 MIME-Version: 1.0
-Message-ID: <167308879222.4906.1093835434113126695.tip-bot2@tip-bot2>
+Message-ID: <167309138457.4906.13063757584973355042.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,47 +65,64 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     3da73f102309fe29150e5c35acd20dd82063ff67
-Gitweb:        https://git.kernel.org/tip/3da73f102309fe29150e5c35acd20dd82063ff67
-Author:        Miaoqian Lin <linmq006@gmail.com>
-AuthorDate:    Mon, 05 Dec 2022 12:06:42 +04:00
+Commit-ID:     8e791f7eba4c7711f56616ae163ee3cbc00b1bf4
+Gitweb:        https://git.kernel.org/tip/8e791f7eba4c7711f56616ae163ee3cbc00b1bf4
+Author:        Masami Hiramatsu (Google) <mhiramat@kernel.org>
+AuthorDate:    Wed, 30 Nov 2022 22:33:09 +09:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 07 Jan 2023 11:45:24 +01:00
+CommitterDate: Sat, 07 Jan 2023 12:29:08 +01:00
 
-objtool: Fix memory leak in create_static_call_sections()
+x86/kprobes: Drop removed INT3 handling code
 
-strdup() allocates memory for key_name. We need to release the memory in
-the following error paths. Add free() to avoid memory leak.
+Drop removed INT3 handling code from kprobe_int3_handler() because this
+case (get_kprobe() doesn't return corresponding kprobe AND the INT3 is
+removed) must not happen with the kprobe managed INT3, but can happen
+with the non-kprobe INT3, which should be handled by other callbacks.
 
-Fixes: 1e7e47883830 ("x86/static_call: Add inline static call implementation for x86-64")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+For the kprobe managed INT3, it is already safe. The commit 5c02ece81848d
+("x86/kprobes: Fix ordering while text-patching") introduced
+text_poke_sync() to the arch_disarm_kprobe() right after removing INT3.
+Since this text_poke_sync() uses IPI to call sync_core() on all online
+cpus, that ensures that all running INT3 exception handlers have done.
+And, the unregister_kprobe() will remove the kprobe from the hash table
+after arch_disarm_kprobe().
+
+Thus, when the kprobe managed INT3 hits, kprobe_int3_handler() should
+be able to find corresponding kprobe always by get_kprobe(). If it can
+not find any kprobe, this means that is NOT a kprobe managed INT3.
+
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20221205080642.558583-1-linmq006@gmail.com
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/166981518895.1131462.4693062055762912734.stgit@devnote3
 ---
- tools/objtool/check.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/kprobes/core.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 4350be7..cab1a16 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -679,6 +679,7 @@ static int create_static_call_sections(struct objtool_file *file)
- 		if (strncmp(key_name, STATIC_CALL_TRAMP_PREFIX_STR,
- 			    STATIC_CALL_TRAMP_PREFIX_LEN)) {
- 			WARN("static_call: trampoline name malformed: %s", key_name);
-+			free(key_name);
- 			return -1;
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index 6629968..33390ed 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -986,20 +986,6 @@ int kprobe_int3_handler(struct pt_regs *regs)
+ 			kprobe_post_process(p, regs, kcb);
+ 			return 1;
  		}
- 		tmp = key_name + STATIC_CALL_TRAMP_PREFIX_LEN - STATIC_CALL_KEY_PREFIX_LEN;
-@@ -688,6 +689,7 @@ static int create_static_call_sections(struct objtool_file *file)
- 		if (!key_sym) {
- 			if (!opts.module) {
- 				WARN("static_call: can't find static_call_key symbol: %s", tmp);
-+				free(key_name);
- 				return -1;
- 			}
+-	}
+-
+-	if (*addr != INT3_INSN_OPCODE) {
+-		/*
+-		 * The breakpoint instruction was removed right
+-		 * after we hit it.  Another cpu has removed
+-		 * either a probepoint or a debugger breakpoint
+-		 * at this address.  In either case, no further
+-		 * handling of this interrupt is appropriate.
+-		 * Back up over the (now missing) int3 and run
+-		 * the original instruction.
+-		 */
+-		regs->ip = (unsigned long)addr;
+-		return 1;
+ 	} /* else: not a kprobe fault; let the kernel handle it */
  
+ 	return 0;
