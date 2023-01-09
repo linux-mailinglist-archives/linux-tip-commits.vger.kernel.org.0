@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 883686623F2
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Jan 2023 12:16:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CE39662BFD
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Jan 2023 18:02:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231126AbjAILPq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 9 Jan 2023 06:15:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41160 "EHLO
+        id S229908AbjAIRCA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 9 Jan 2023 12:02:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233846AbjAILPJ (ORCPT
+        with ESMTP id S236688AbjAIRBr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 9 Jan 2023 06:15:09 -0500
+        Mon, 9 Jan 2023 12:01:47 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9E78140B4;
-        Mon,  9 Jan 2023 03:15:07 -0800 (PST)
-Date:   Mon, 09 Jan 2023 11:15:05 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E89E93DBD6;
+        Mon,  9 Jan 2023 09:01:20 -0800 (PST)
+Date:   Mon, 09 Jan 2023 17:01:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673262906;
+        s=2020; t=1673283678;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fwBBNxv7C7lDprLRZa06JGOtQtbPsAWbCJVlihexc7Y=;
-        b=SzEjD7CGHGwviEQ+tCm47RP4nW39pKZ5twCFoJHLeQ8L6OtX7imSO24iFKARmDJUAzc4Zb
-        Kn30L+5hO+LO7S5HXGcaoMlP/uYBQS+IdYO+EBcBBCmqOfOdMNW5aJQt6L62M0Ugs5Zcjz
-        ui5fkgU/m6GZcH4SXEGCzXk/9SLrMbpBcnigxA7h2UZ58VLKML43VGVx5Hg9Y//ClGHGIL
-        FZImiONxQVTbh6tQ2afQTnsHBIBOhR4OC5wP662BpZ9Voj7OENrOl0x4gafPvycBy8J5Ry
-        +EadhQCwt+VX/YivDwDlHBBDyppAtoxvTdxKKIh3rXfUiUoTfjgxKxQFvrFj1g==
+        bh=MmTEpx1rglD7bjrUm/jwfOColHcEYONm70QHf3GenQE=;
+        b=DCj6r5wsypfJH6WwaMxb2hEk3kB6Ef0xX/aFxrjpDXZBUSIDgjD0YGX0+vHQ9FThTIEE46
+        1Hz3RxBFTpcZ6c4W6YZWRGPzsIept9hmT/ZAN2tFKcCyEBFV8ibsvZq9lC8DGWUnGwSAaq
+        9Zk91fyoFTo3S3gRA4KbHS9FzjBn85ZAEF/JLkb8M/do+WM4OOC6exg9lO13U5NUrg3njA
+        6aaIE8j+N4kvcJxUM9AXgWYqOU3daAmIBsIUcuu6SmkDs5lh01UxFOapM6wEE6etsRvEgE
+        XjnG+VPbc8pt7CQ7P4w+KgMvX+HJiUmaWO4M97HsustiKe0AzXvJwv3cSsYqzQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673262906;
+        s=2020e; t=1673283678;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fwBBNxv7C7lDprLRZa06JGOtQtbPsAWbCJVlihexc7Y=;
-        b=AJpkU9WXTnhVydkstoEiAcEJ4o78etonN8OpzAQJLbP2WBla75socWUDobF8c+4VyLFoHL
-        5z1ud2FoO6CG52Aw==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=MmTEpx1rglD7bjrUm/jwfOColHcEYONm70QHf3GenQE=;
+        b=W/tVs/DyFQosdn+X9LEpr5YOUqiwQWGNiZ8uZrpirBKCR9M1y2mY7uTE4cQZUHgBkzsiYh
+        qKTk9F1cFSPH98DQ==
+From:   "tip-bot2 for Nicholas Piggin" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/cstate: Add Meteor Lake support
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>, x86@kernel.org,
+Subject: [tip: core/urgent] objtool: Tolerate STT_NOTYPE symbols at end of section
+Cc:     "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+        Sathvika Vasireddy <sv@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230104201349.1451191-6-kan.liang@linux.intel.com>
-References: <20230104201349.1451191-6-kan.liang@linux.intel.com>
+In-Reply-To: <20221220101323.3119939-1-npiggin@gmail.com>
+References: <20221220101323.3119939-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Message-ID: <167326290572.4906.628148987099820944.tip-bot2@tip-bot2>
+Message-ID: <167328367772.4906.2873693536526803314.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,110 +66,62 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     01f2ea5bcf89dbd7a6530dbce7f2fb4e327e7006
-Gitweb:        https://git.kernel.org/tip/01f2ea5bcf89dbd7a6530dbce7f2fb4e327e7006
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 04 Jan 2023 12:13:46 -08:00
+Commit-ID:     cad90e5381d840cf2296aaac9b3eff71a30b7c5b
+Gitweb:        https://git.kernel.org/tip/cad90e5381d840cf2296aaac9b3eff71a30b7c5b
+Author:        Nicholas Piggin <npiggin@gmail.com>
+AuthorDate:    Tue, 20 Dec 2022 20:13:23 +10:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 09 Jan 2023 12:00:51 +01:00
+CommitterDate: Mon, 09 Jan 2023 17:53:46 +01:00
 
-perf/x86/cstate: Add Meteor Lake support
+objtool: Tolerate STT_NOTYPE symbols at end of section
 
-Meteor Lake is Intel's successor to Raptor lake. From the perspective of
-Intel cstate residency counters, there is nothing changed compared with
-Raptor lake.
+Hand-written asm often contains non-function symbols in executable
+sections. _end symbols for finding the size of instruction blocks
+for runtime processing is one such usage.
 
-Share adl_cstates with Raptor lake.
-Update the comments for Meteor Lake.
+optprobe_template_end is one example that causes the warning:
 
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+  objtool: optprobe_template_end(): can't find starting instruction
+
+This is because the symbol happens to be at the end of the file (and
+therefore end of a section in the object file).
+
+So ignore end-of-section STT_NOTYPE symbols instead of bailing out
+because an instruction can't be found. While we're here, add a more
+descriptive warning for STT_FUNC symbols found at the end of a
+section.
+
+[ This also solves a PowerPC regression reported by Sathvika Vasireddy. ]
+
+Reported-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Reported-by: Sathvika Vasireddy <sv@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Link: https://lore.kernel.org/r/20230104201349.1451191-6-kan.liang@linux.intel.com
+Acked-by: Sathvika Vasireddy <sv@linux.ibm.com>
+Link: https://lore.kernel.org/r/20221220101323.3119939-1-npiggin@gmail.com
 ---
- arch/x86/events/intel/cstate.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ tools/objtool/check.c |  9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
-index a2834bc..3019fb1 100644
---- a/arch/x86/events/intel/cstate.c
-+++ b/arch/x86/events/intel/cstate.c
-@@ -41,6 +41,7 @@
-  *	MSR_CORE_C1_RES: CORE C1 Residency Counter
-  *			 perf code: 0x00
-  *			 Available model: SLM,AMT,GLM,CNL,ICX,TNT,ADL,RPL
-+ *					  MTL
-  *			 Scope: Core (each processor core has a MSR)
-  *	MSR_CORE_C3_RESIDENCY: CORE C3 Residency Counter
-  *			       perf code: 0x01
-@@ -51,50 +52,50 @@
-  *			       perf code: 0x02
-  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
-  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
-- *						TGL,TNT,RKL,ADL,RPL,SPR
-+ *						TGL,TNT,RKL,ADL,RPL,SPR,MTL
-  *			       Scope: Core
-  *	MSR_CORE_C7_RESIDENCY: CORE C7 Residency Counter
-  *			       perf code: 0x03
-  *			       Available model: SNB,IVB,HSW,BDW,SKL,CNL,KBL,CML,
-- *						ICL,TGL,RKL,ADL,RPL
-+ *						ICL,TGL,RKL,ADL,RPL,MTL
-  *			       Scope: Core
-  *	MSR_PKG_C2_RESIDENCY:  Package C2 Residency Counter.
-  *			       perf code: 0x00
-  *			       Available model: SNB,IVB,HSW,BDW,SKL,KNL,GLM,CNL,
-  *						KBL,CML,ICL,ICX,TGL,TNT,RKL,ADL,
-- *						RPL,SPR
-+ *						RPL,SPR,MTL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C3_RESIDENCY:  Package C3 Residency Counter.
-  *			       perf code: 0x01
-  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,KNL,
-  *						GLM,CNL,KBL,CML,ICL,TGL,TNT,RKL,
-- *						ADL,RPL
-+ *						ADL,RPL,MTL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C6_RESIDENCY:  Package C6 Residency Counter.
-  *			       perf code: 0x02
-  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
-  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
-- *						TGL,TNT,RKL,ADL,RPL,SPR
-+ *						TGL,TNT,RKL,ADL,RPL,SPR,MTL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C7_RESIDENCY:  Package C7 Residency Counter.
-  *			       perf code: 0x03
-  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,CNL,
-- *						KBL,CML,ICL,TGL,RKL,ADL,RPL
-+ *						KBL,CML,ICL,TGL,RKL,ADL,RPL,MTL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C8_RESIDENCY:  Package C8 Residency Counter.
-  *			       perf code: 0x04
-  *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL,
-- *						ADL,RPL
-+ *						ADL,RPL,MTL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C9_RESIDENCY:  Package C9 Residency Counter.
-  *			       perf code: 0x05
-  *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL,
-- *						ADL,RPL
-+ *						ADL,RPL,MTL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C10_RESIDENCY: Package C10 Residency Counter.
-  *			       perf code: 0x06
-  *			       Available model: HSW ULT,KBL,GLM,CNL,CML,ICL,TGL,
-- *						TNT,RKL,ADL,RPL
-+ *						TNT,RKL,ADL,RPL,MTL
-  *			       Scope: Package (physical package)
-  *
-  */
-@@ -686,6 +687,8 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
- 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,		&adl_cstates),
- 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,	&adl_cstates),
- 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,	&adl_cstates),
-+	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE,		&adl_cstates),
-+	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE_L,	&adl_cstates),
- 	{ },
- };
- MODULE_DEVICE_TABLE(x86cpu, intel_cstates_match);
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 4350be7..4b7c8b3 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -427,6 +427,15 @@ static int decode_instructions(struct objtool_file *file)
+ 			if (func->type != STT_NOTYPE && func->type != STT_FUNC)
+ 				continue;
+ 
++			if (func->offset == sec->sh.sh_size) {
++				/* Heuristic: likely an "end" symbol */
++				if (func->type == STT_NOTYPE)
++					continue;
++				WARN("%s(): STT_FUNC at end of section",
++				     func->name);
++				return -1;
++			}
++
+ 			if (func->return_thunk || func->alias != func)
+ 				continue;
+ 
