@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CE39662BFD
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Jan 2023 18:02:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E134662C03
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Jan 2023 18:02:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbjAIRCA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 9 Jan 2023 12:02:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55374 "EHLO
+        id S237132AbjAIRCd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 9 Jan 2023 12:02:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236688AbjAIRBr (ORCPT
+        with ESMTP id S237138AbjAIRCK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 9 Jan 2023 12:01:47 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E89E93DBD6;
-        Mon,  9 Jan 2023 09:01:20 -0800 (PST)
-Date:   Mon, 09 Jan 2023 17:01:17 -0000
+        Mon, 9 Jan 2023 12:02:10 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DE913FA1C;
+        Mon,  9 Jan 2023 09:02:09 -0800 (PST)
+Date:   Mon, 09 Jan 2023 17:02:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673283678;
+        s=2020; t=1673283728;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MmTEpx1rglD7bjrUm/jwfOColHcEYONm70QHf3GenQE=;
-        b=DCj6r5wsypfJH6WwaMxb2hEk3kB6Ef0xX/aFxrjpDXZBUSIDgjD0YGX0+vHQ9FThTIEE46
-        1Hz3RxBFTpcZ6c4W6YZWRGPzsIept9hmT/ZAN2tFKcCyEBFV8ibsvZq9lC8DGWUnGwSAaq
-        9Zk91fyoFTo3S3gRA4KbHS9FzjBn85ZAEF/JLkb8M/do+WM4OOC6exg9lO13U5NUrg3njA
-        6aaIE8j+N4kvcJxUM9AXgWYqOU3daAmIBsIUcuu6SmkDs5lh01UxFOapM6wEE6etsRvEgE
-        XjnG+VPbc8pt7CQ7P4w+KgMvX+HJiUmaWO4M97HsustiKe0AzXvJwv3cSsYqzQ==
+        bh=Ggc5s/AUOJb6WBoojUyLj8xOxWF8GBO4FCRQAIYsA54=;
+        b=jf1HuaJfcMoeEQ0UywwE2ZUtRfOm1y2ODC8hUkhUDLcmBn/iVmlaFHhA+zxftYFOKN3Fgy
+        LzhNLoGQw7tW68oCHajUbUQ+Zg2xz5a3E869Fp4qXfvtLvhu7nHyLrU6JkvhdCwvnyaX//
+        go4pyMxJZT343uJ68hbfuK5kot8Do/aq3QG/nZeW2QrTB5Nv2gNYGzJFZnY5/WR2yQcpev
+        s6N9IiaFVTtXLjr3x2ruHgPxbjmHjqPjxXSSeUGNo+zJMZB9ZGQ6BsPZtbx6uSP0K3us/B
+        HohHjieOuxd9S5rMM+jM/8uORMMF0YLv2UUJWyCmYsxptGhiktGdfDkEl3VBWw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673283678;
+        s=2020e; t=1673283728;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MmTEpx1rglD7bjrUm/jwfOColHcEYONm70QHf3GenQE=;
-        b=W/tVs/DyFQosdn+X9LEpr5YOUqiwQWGNiZ8uZrpirBKCR9M1y2mY7uTE4cQZUHgBkzsiYh
-        qKTk9F1cFSPH98DQ==
-From:   "tip-bot2 for Nicholas Piggin" <tip-bot2@linutronix.de>
+        bh=Ggc5s/AUOJb6WBoojUyLj8xOxWF8GBO4FCRQAIYsA54=;
+        b=2fWGnmnYSuK5njW1UJCfbNoGbtVFPc9uvEe4YVtZGRgvacB93J9uhScF0INZxUqfyZ54L2
+        bf4M3XvQrHghS+AA==
+From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/urgent] objtool: Tolerate STT_NOTYPE symbols at end of section
-Cc:     "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
-        Sathvika Vasireddy <sv@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
+Subject: [tip: perf/core] perf/core: Change the layout of perf_sample_data
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221220101323.3119939-1-npiggin@gmail.com>
-References: <20221220101323.3119939-1-npiggin@gmail.com>
+In-Reply-To: <20221229204101.1099430-1-namhyung@kernel.org>
+References: <20221229204101.1099430-1-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <167328367772.4906.2873693536526803314.tip-bot2@tip-bot2>
+Message-ID: <167328372777.4906.7014321017745723533.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,62 +65,102 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     cad90e5381d840cf2296aaac9b3eff71a30b7c5b
-Gitweb:        https://git.kernel.org/tip/cad90e5381d840cf2296aaac9b3eff71a30b7c5b
-Author:        Nicholas Piggin <npiggin@gmail.com>
-AuthorDate:    Tue, 20 Dec 2022 20:13:23 +10:00
+Commit-ID:     7bdb1767bf011c7f6065ac483ad2f00e434c3979
+Gitweb:        https://git.kernel.org/tip/7bdb1767bf011c7f6065ac483ad2f00e434c3979
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Thu, 29 Dec 2022 12:40:59 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 09 Jan 2023 17:53:46 +01:00
+CommitterDate: Mon, 09 Jan 2023 12:22:09 +01:00
 
-objtool: Tolerate STT_NOTYPE symbols at end of section
+perf/core: Change the layout of perf_sample_data
 
-Hand-written asm often contains non-function symbols in executable
-sections. _end symbols for finding the size of instruction blocks
-for runtime processing is one such usage.
+The layout of perf_sample_data is designed to minimize cache-line
+access.  The perf_sample_data_init() used to initialize a couple of
+fields unconditionally so they were placed together at the head.
 
-optprobe_template_end is one example that causes the warning:
+But it's changed now to set the fields according to the actual
+sample_type flags.  The main user (the perf tools) sets the IP, TID,
+TIME, PERIOD always.  Also group relevant fields like addr, phys_addr
+and data_page_size.
 
-  objtool: optprobe_template_end(): can't find starting instruction
-
-This is because the symbol happens to be at the end of the file (and
-therefore end of a section in the object file).
-
-So ignore end-of-section STT_NOTYPE symbols instead of bailing out
-because an instruction can't be found. While we're here, add a more
-descriptive warning for STT_FUNC symbols found at the end of a
-section.
-
-[ This also solves a PowerPC regression reported by Sathvika Vasireddy. ]
-
-Reported-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Reported-by: Sathvika Vasireddy <sv@linux.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Sathvika Vasireddy <sv@linux.ibm.com>
-Link: https://lore.kernel.org/r/20221220101323.3119939-1-npiggin@gmail.com
+Link: https://lore.kernel.org/r/20221229204101.1099430-1-namhyung@kernel.org
 ---
- tools/objtool/check.c |  9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/linux/perf_event.h | 34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 4350be7..4b7c8b3 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -427,6 +427,15 @@ static int decode_instructions(struct objtool_file *file)
- 			if (func->type != STT_NOTYPE && func->type != STT_FUNC)
- 				continue;
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index ad92ad3..03949d0 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -1098,47 +1098,51 @@ extern u64 perf_event_read_value(struct perf_event *event,
  
-+			if (func->offset == sec->sh.sh_size) {
-+				/* Heuristic: likely an "end" symbol */
-+				if (func->type == STT_NOTYPE)
-+					continue;
-+				WARN("%s(): STT_FUNC at end of section",
-+				     func->name);
-+				return -1;
-+			}
+ struct perf_sample_data {
+ 	/*
+-	 * Fields set by perf_sample_data_init(), group so as to
+-	 * minimize the cachelines touched.
++	 * Fields set by perf_sample_data_init() unconditionally,
++	 * group so as to minimize the cachelines touched.
+ 	 */
+ 	u64				sample_flags;
+ 	u64				period;
+ 
+ 	/*
+-	 * The other fields, optionally {set,used} by
+-	 * perf_{prepare,output}_sample().
++	 * Fields commonly set by __perf_event_header__init_id(),
++	 * group so as to minimize the cachelines touched.
+ 	 */
+-	struct perf_branch_stack	*br_stack;
+-	union perf_sample_weight	weight;
+-	union  perf_mem_data_src	data_src;
+-	u64				txn;
+-	u64				addr;
+-	struct perf_raw_record		*raw;
+-
+ 	u64				type;
+-	u64				ip;
+ 	struct {
+ 		u32	pid;
+ 		u32	tid;
+ 	}				tid_entry;
+ 	u64				time;
+ 	u64				id;
+-	u64				stream_id;
+ 	struct {
+ 		u32	cpu;
+ 		u32	reserved;
+ 	}				cpu_entry;
 +
- 			if (func->return_thunk || func->alias != func)
- 				continue;
++	/*
++	 * The other fields, optionally {set,used} by
++	 * perf_{prepare,output}_sample().
++	 */
++	u64				ip;
+ 	struct perf_callchain_entry	*callchain;
+-	u64				aux_size;
++	struct perf_raw_record		*raw;
++	struct perf_branch_stack	*br_stack;
++	union perf_sample_weight	weight;
++	union  perf_mem_data_src	data_src;
++	u64				txn;
  
+ 	struct perf_regs		regs_user;
+ 	struct perf_regs		regs_intr;
+ 	u64				stack_user_size;
+ 
+-	u64				phys_addr;
++	u64				stream_id;
+ 	u64				cgroup;
++	u64				addr;
++	u64				phys_addr;
+ 	u64				data_page_size;
+ 	u64				code_page_size;
++	u64				aux_size;
+ } ____cacheline_aligned;
+ 
+ /* default value for data source */
