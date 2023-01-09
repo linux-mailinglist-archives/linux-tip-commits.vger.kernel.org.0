@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAC6B662C05
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Jan 2023 18:02:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D2D662C08
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Jan 2023 18:02:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237418AbjAIRCe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 9 Jan 2023 12:02:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55248 "EHLO
+        id S237228AbjAIRCf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 9 Jan 2023 12:02:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237185AbjAIRCL (ORCPT
+        with ESMTP id S237186AbjAIRCL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 9 Jan 2023 12:02:11 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6003FA20;
-        Mon,  9 Jan 2023 09:02:09 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AB8F3FC81;
+        Mon,  9 Jan 2023 09:02:10 -0800 (PST)
 Date:   Mon, 09 Jan 2023 17:02:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1673283728;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mcsZptQTs5VwiDsbZ745ZsTCdkX4w52AsCFh5mNONZM=;
-        b=0+XTt980qFzWlCPoNEacvu/hCN2QhSareULuA4rxTKxS/kKWIV+m0UzmFKPlR7K/K5TRTo
-        iBNTTz7qKk3kF5C4ia66xltiapVl15cFQ/H/M7yInV/4IwDIvD04Zf0FpOeAilMof1uJwq
-        ENcHr/jJ8sRl8JyLv9j/39P5pOyCGdn5LxAUn3o81vJleHR8KrD/b9s73Qy6rIJR/pMmB6
-        Yt3LIP1mORJvvmNiDQFugyl34eRT0Og9bD7xAbJv3H+4VMUBuEPzzK2CV+l6qCSgEELpoF
-        32rsg81BGSTSIA5NQJc9NXa3X4+A4CEz7ZgxEdSBXBjtlhDjon3zllYpxieskg==
+        bh=UmaWziwEavHLZxEthSZQKu71CPLO6JX9rqytVI/X8pc=;
+        b=lSAQ5QntmQ8PXDkFF3HM0CguxlwA3dJ4w78iKfcNfhOE0pHSf+/QgWdjPfk2J0+TVlSxe5
+        AMyYBaK8IJObIGWIQtkS59p3Sl6sK1a8CHJtgST3u8I+PHJ4wu01sMaBH6ECzjZibQsGai
+        HAoJxRgRXImfceRMluQrHH1TvTahfrl+r8ZF81jOhTS4KTFQpjWH+jro7PyRINrt8huy1T
+        fY4iJhLUdnKRiFcIWlMmBpsv2zcyhwc5WmerGUojNvs3wly5s2mTs2plw8cTQ/Cs6dAK0D
+        jCKXsdxFqqavhn+q8xFmF0bLSBWo9dqry0Mpq1OM4ElF4DTgBjUnyGFtMPiH2A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1673283728;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mcsZptQTs5VwiDsbZ745ZsTCdkX4w52AsCFh5mNONZM=;
-        b=/74jUWanmel4sAFNue7jqNpvXKQ7+NhUykBvBKHF8VPVJSTm+GLAfFisO+pJo4mGVfzDV1
-        WVK+/VQ4ef5EMHDg==
+        bh=UmaWziwEavHLZxEthSZQKu71CPLO6JX9rqytVI/X8pc=;
+        b=ZyQu9eWbLzvTK1/yhvBoUHyre8nHP0zEVPmbpqZwinG6nC1h33pVgJIC54SD8W75GbmB/p
+        di2Nv62+JHUEVPAQ==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/msr: Add Meteor Lake support
+Subject: [tip: perf/core] perf/x86/cstate: Add Meteor Lake support
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         Ingo Molnar <mingo@kernel.org>,
         Andi Kleen <ak@linux.intel.com>,
         Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230104201349.1451191-7-kan.liang@linux.intel.com>
-References: <20230104201349.1451191-7-kan.liang@linux.intel.com>
+In-Reply-To: <20230104201349.1451191-6-kan.liang@linux.intel.com>
+References: <20230104201349.1451191-6-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <167328372805.4906.10978207496989851098.tip-bot2@tip-bot2>
+Message-ID: <167328372831.4906.4387314164399016390.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,37 +68,109 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b0bd3336d87f3403094fbadc7803c1d5bf3df4f7
-Gitweb:        https://git.kernel.org/tip/b0bd3336d87f3403094fbadc7803c1d5bf3df4f7
+Commit-ID:     eaef048c281bf7eaecdfde96d9b305b8644c9f66
+Gitweb:        https://git.kernel.org/tip/eaef048c281bf7eaecdfde96d9b305b8644c9f66
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 04 Jan 2023 12:13:47 -08:00
+AuthorDate:    Wed, 04 Jan 2023 12:13:46 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 09 Jan 2023 12:22:09 +01:00
+CommitterDate: Mon, 09 Jan 2023 12:22:08 +01:00
 
-perf/x86/msr: Add Meteor Lake support
+perf/x86/cstate: Add Meteor Lake support
 
-Meteor Lake is Intel's successor to Raptor lake. PPERF and SMI_COUNT MSRs
-are also supported.
+Meteor Lake is Intel's successor to Raptor lake. From the perspective of
+Intel cstate residency counters, there is nothing changed compared with
+Raptor lake.
+
+Share adl_cstates with Raptor lake.
+Update the comments for Meteor Lake.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Andi Kleen <ak@linux.intel.com>
 Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230104201349.1451191-7-kan.liang@linux.intel.com
+Link: https://lore.kernel.org/r/20230104201349.1451191-6-kan.liang@linux.intel.com
 ---
- arch/x86/events/msr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/events/intel/cstate.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/events/msr.c b/arch/x86/events/msr.c
-index ecced3a..074150d 100644
---- a/arch/x86/events/msr.c
-+++ b/arch/x86/events/msr.c
-@@ -107,6 +107,8 @@ static bool test_intel(int idx, void *data)
- 	case INTEL_FAM6_RAPTORLAKE:
- 	case INTEL_FAM6_RAPTORLAKE_P:
- 	case INTEL_FAM6_RAPTORLAKE_S:
-+	case INTEL_FAM6_METEORLAKE:
-+	case INTEL_FAM6_METEORLAKE_L:
- 		if (idx == PERF_MSR_SMI || idx == PERF_MSR_PPERF)
- 			return true;
- 		break;
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index a2834bc..3019fb1 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -41,6 +41,7 @@
+  *	MSR_CORE_C1_RES: CORE C1 Residency Counter
+  *			 perf code: 0x00
+  *			 Available model: SLM,AMT,GLM,CNL,ICX,TNT,ADL,RPL
++ *					  MTL
+  *			 Scope: Core (each processor core has a MSR)
+  *	MSR_CORE_C3_RESIDENCY: CORE C3 Residency Counter
+  *			       perf code: 0x01
+@@ -51,50 +52,50 @@
+  *			       perf code: 0x02
+  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
+  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
+- *						TGL,TNT,RKL,ADL,RPL,SPR
++ *						TGL,TNT,RKL,ADL,RPL,SPR,MTL
+  *			       Scope: Core
+  *	MSR_CORE_C7_RESIDENCY: CORE C7 Residency Counter
+  *			       perf code: 0x03
+  *			       Available model: SNB,IVB,HSW,BDW,SKL,CNL,KBL,CML,
+- *						ICL,TGL,RKL,ADL,RPL
++ *						ICL,TGL,RKL,ADL,RPL,MTL
+  *			       Scope: Core
+  *	MSR_PKG_C2_RESIDENCY:  Package C2 Residency Counter.
+  *			       perf code: 0x00
+  *			       Available model: SNB,IVB,HSW,BDW,SKL,KNL,GLM,CNL,
+  *						KBL,CML,ICL,ICX,TGL,TNT,RKL,ADL,
+- *						RPL,SPR
++ *						RPL,SPR,MTL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C3_RESIDENCY:  Package C3 Residency Counter.
+  *			       perf code: 0x01
+  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,KNL,
+  *						GLM,CNL,KBL,CML,ICL,TGL,TNT,RKL,
+- *						ADL,RPL
++ *						ADL,RPL,MTL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C6_RESIDENCY:  Package C6 Residency Counter.
+  *			       perf code: 0x02
+  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
+  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
+- *						TGL,TNT,RKL,ADL,RPL,SPR
++ *						TGL,TNT,RKL,ADL,RPL,SPR,MTL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C7_RESIDENCY:  Package C7 Residency Counter.
+  *			       perf code: 0x03
+  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,CNL,
+- *						KBL,CML,ICL,TGL,RKL,ADL,RPL
++ *						KBL,CML,ICL,TGL,RKL,ADL,RPL,MTL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C8_RESIDENCY:  Package C8 Residency Counter.
+  *			       perf code: 0x04
+  *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL,
+- *						ADL,RPL
++ *						ADL,RPL,MTL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C9_RESIDENCY:  Package C9 Residency Counter.
+  *			       perf code: 0x05
+  *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL,
+- *						ADL,RPL
++ *						ADL,RPL,MTL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C10_RESIDENCY: Package C10 Residency Counter.
+  *			       perf code: 0x06
+  *			       Available model: HSW ULT,KBL,GLM,CNL,CML,ICL,TGL,
+- *						TNT,RKL,ADL,RPL
++ *						TNT,RKL,ADL,RPL,MTL
+  *			       Scope: Package (physical package)
+  *
+  */
+@@ -686,6 +687,8 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,		&adl_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,	&adl_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,	&adl_cstates),
++	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE,		&adl_cstates),
++	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE_L,	&adl_cstates),
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(x86cpu, intel_cstates_match);
