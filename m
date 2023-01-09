@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64B75662C0E
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Jan 2023 18:02:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78A46662ED6
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Jan 2023 19:24:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237442AbjAIRCj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 9 Jan 2023 12:02:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55374 "EHLO
+        id S237035AbjAISXr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 9 Jan 2023 13:23:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237230AbjAIRCP (ORCPT
+        with ESMTP id S236801AbjAISXG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 9 Jan 2023 12:02:15 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87E2F4102D;
-        Mon,  9 Jan 2023 09:02:12 -0800 (PST)
-Date:   Mon, 09 Jan 2023 17:02:09 -0000
+        Mon, 9 Jan 2023 13:23:06 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C8BA1742A;
+        Mon,  9 Jan 2023 10:22:09 -0800 (PST)
+Date:   Mon, 09 Jan 2023 18:22:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673283729;
+        s=2020; t=1673288527;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EZm38wdW5+QOVUucpdsdwwl/TOi/yt5E1upu2Li1qCY=;
-        b=cCBUL4x8HGnC62fOlgO8uitWTXVGHQWj/puqUAxMxTsQXYmLfMfE8iFyBS/45oFCJBGPYz
-        XdaR43tfZ7Ew3w/kWtP0RGav70RY7Fq4ZRyIKlTRpfJbF3EwoZesH55um+9MwJ2jNISZ/t
-        Ofqm1aR25afDcAmYm1NdRLramtcTlNdCPzqibjTIIqoVeeYBSS46Ve3IAgbL6DOBvDTy0Z
-        fFmwjX9ywPn0ENlKZlAqIPa9cpBmT3589I4HELpI0Ur1gcfD9A4LngpWVWgmnOfguR+S9q
-        jY4uCQDg3zSlLfTuZ/yKHpdYSpoMcKfpCECSdn6Qt3/enOF0BQnv6odzfZQmzA==
+        bh=2rUwRHOpeMmottQzafUCHpL3iCCe5UPPqlLHncTduVo=;
+        b=yfitI0/+5Z6/mJKB5hBILT1xzObkeEl6YC4BMN/UJvbBGu9w3+hsqknTPaB9s2bq2/CB6a
+        0omhcFxkbm/0tOqcES2ViIb0THTTEMbu9tzDpZKjg3AuGUD4iP3MAwl+zW0Q+tjbX7Jc51
+        LOafarpYzq3vKvDMnX7CDGJhns05n5N6/ilcz17iNC8O65IeTJk1yRjX9amNm8WTzsTkky
+        sV5jGeec+OFYZzISVSFHEHsxT2mfDxV/eYUZd4qzGjHA1CEF/qyPALwssKJDEDK1UMpcEu
+        xwfpvWqeoqmy9JCdRkJtTyQVYioAQB2lh0c9hHDwWxsvJ9IArzox4G/OnLvVsg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673283729;
+        s=2020e; t=1673288527;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EZm38wdW5+QOVUucpdsdwwl/TOi/yt5E1upu2Li1qCY=;
-        b=Rr4qhwltgqwkvwPOscWkOznZ3pv9gLBkWOA6fZcDQGmI8uRgkdHRBsbqq2J8iqK6mRmJAr
-        0aChjyrPlkdWsTAw==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=2rUwRHOpeMmottQzafUCHpL3iCCe5UPPqlLHncTduVo=;
+        b=KQQR8aWCRQM+eR9faud3eh1wEfnu5O/51CvWglOHlYo3RQTk0JN7zpO3JV5c/Ry9PMn8Mh
+        RfCnxIVQ9YCTIMAg==
+From:   "tip-bot2 for Alexander Lobakin" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Add PMU_FORMAT_ATTR_SHOW
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
+Subject: [tip: x86/boot] scripts/head-object-list: Remove x86 from the list
+Cc:     Alexander Lobakin <alexandr.lobakin@intel.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+        Jiri Slaby <jirislaby@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230104201349.1451191-1-kan.liang@linux.intel.com>
-References: <20230104201349.1451191-1-kan.liang@linux.intel.com>
+In-Reply-To: <20230109170403.4117105-3-alexandr.lobakin@intel.com>
+References: <20230109170403.4117105-3-alexandr.lobakin@intel.com>
 MIME-Version: 1.0
-Message-ID: <167328372960.4906.10711570935052964699.tip-bot2@tip-bot2>
+Message-ID: <167328852698.4906.1342756515976813355.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,55 +65,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     b6c00fb9949fbd073e651a77aa75faca978cf2a6
-Gitweb:        https://git.kernel.org/tip/b6c00fb9949fbd073e651a77aa75faca978cf2a6
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 04 Jan 2023 12:13:41 -08:00
+Commit-ID:     5353fff29e42d0efc844dcaf764336d20a7f6b44
+Gitweb:        https://git.kernel.org/tip/5353fff29e42d0efc844dcaf764336d20a7f6b44
+Author:        Alexander Lobakin <alexandr.lobakin@intel.com>
+AuthorDate:    Mon, 09 Jan 2023 18:04:03 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 09 Jan 2023 12:22:07 +01:00
+CommitterDate: Mon, 09 Jan 2023 18:22:21 +01:00
 
-perf: Add PMU_FORMAT_ATTR_SHOW
+scripts/head-object-list: Remove x86 from the list
 
-The macro PMU_FORMAT_ATTR facilitates the definition of both the "show"
-function and "format_attr". But it only works for a non-hybrid platform.
-For a hybrid platform, the name "format_attr_hybrid_" is used.
+Now that x86 boot code is not hardcoded to the particular linking
+order, remove x86 files from the list and let them be placed inside
+the vmlinux according only to the linker script and linker
+preferences.
 
-The definition of the "show" function can be shared between a non-hybrid
-platform and a hybrid platform. Add a new macro PMU_FORMAT_ATTR_SHOW.
-
-No functional change. The PMU_FORMAT_ATTR_SHOW will be used in the
-following patch.
-
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230104201349.1451191-1-kan.liang@linux.intel.com
+Tested-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230109170403.4117105-3-alexandr.lobakin@intel.com
 ---
- include/linux/perf_event.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ scripts/head-object-list.txt | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index c6a3bac..ad92ad3 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1724,7 +1724,7 @@ static struct perf_pmu_events_attr _var = {				    \
- 		  .id = _id, }						\
- 	})[0].attr.attr)
- 
--#define PMU_FORMAT_ATTR(_name, _format)					\
-+#define PMU_FORMAT_ATTR_SHOW(_name, _format)				\
- static ssize_t								\
- _name##_show(struct device *dev,					\
- 			       struct device_attribute *attr,		\
-@@ -1733,6 +1733,9 @@ _name##_show(struct device *dev,					\
- 	BUILD_BUG_ON(sizeof(_format) >= PAGE_SIZE);			\
- 	return sprintf(page, _format "\n");				\
- }									\
-+
-+#define PMU_FORMAT_ATTR(_name, _format)					\
-+	PMU_FORMAT_ATTR_SHOW(_name, _format)				\
- 									\
- static struct device_attribute format_attr_##_name = __ATTR_RO(_name)
- 
+diff --git a/scripts/head-object-list.txt b/scripts/head-object-list.txt
+index b074134..b2a0e21 100644
+--- a/scripts/head-object-list.txt
++++ b/scripts/head-object-list.txt
+@@ -42,10 +42,4 @@ arch/s390/kernel/head64.o
+ arch/sh/kernel/head_32.o
+ arch/sparc/kernel/head_32.o
+ arch/sparc/kernel/head_64.o
+-arch/x86/kernel/head_32.o
+-arch/x86/kernel/head_64.o
+-arch/x86/kernel/head32.o
+-arch/x86/kernel/head64.o
+-arch/x86/kernel/ebda.o
+-arch/x86/kernel/platform-quirks.o
+ arch/xtensa/kernel/head.o
