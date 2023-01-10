@@ -2,56 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 669D366461D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Jan 2023 17:32:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AF4F664B84
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Jan 2023 19:48:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233797AbjAJQcU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Jan 2023 11:32:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49112 "EHLO
+        id S239153AbjAJSs5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Jan 2023 13:48:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238880AbjAJQcD (ORCPT
+        with ESMTP id S239691AbjAJSsb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Jan 2023 11:32:03 -0500
+        Tue, 10 Jan 2023 13:48:31 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328ED84099;
-        Tue, 10 Jan 2023 08:32:01 -0800 (PST)
-Date:   Tue, 10 Jan 2023 16:31:58 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01A8AA0886;
+        Tue, 10 Jan 2023 10:42:00 -0800 (PST)
+Date:   Tue, 10 Jan 2023 18:41:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673368319;
+        s=2020; t=1673376118;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ttxt13H5J51Gqr1Xn/jMJHwCS/g2F1Jlbgm/N+cRYAM=;
-        b=GziND44NHtHJpTpTJI4rkQlAVdumD7TbsumT9wqcOvkijawpUThT5zg7u9calm0ntwPLG2
-        Vs9sg/Xdr/waj3vi5xdUf6suWHFVHEYSute4Sot8/jszcw8p8cO0iqIW0GJYNpwY4yJHEv
-        x3nqSJQGTiBYbBk8LbaYf1YUQbr2ez2qmjPZ9U4ruVOVM8rlP1RotXmCeYIIFIjFYC0qvH
-        tOjPL5zkgRrPff0sxhEnNKOV8jEtIgUfJWyDfhA6G/G5SK6TJkJnJXVo6fCGx+jtYLutYa
-        3meVv/zZe5SUnkyir2aOc72Ve8izqmGWRFrleuOp+1IdP3QiFcOLql9GS/8r/w==
+        bh=zFt8ls/SIq2F8FQFC00tJD9a95U7qyLmsiGpKJdUiJ0=;
+        b=N3ITY5q3aTpbRrn+WslIL6aHo0xUITD9QknJfCIT/zszwfelSwSu4BdLrISjAqawXE1F6a
+        XLLb8ccTqqbOPg7hKxUUANgZ9WdgByzaOdss6OyD3Zi8OXkbEnKd7J/l2/Xn71i0NsUm7Q
+        3wefEGfhDIREAFZpSyGNd8s5CYmAQif+7XllVGdmKnFU63HOBFiqfOhdudKUKBKrpCdHNR
+        rWY1ksrXVqPRF5c5p68RLD3Xn+iWbVvrxEu5KGRs9xnS1956DcYjtpPqeeWuLOtSUGUWkc
+        qo2WUnG1niPDDzYTKajIr0zv4xbTthibo1ABMEgxNrIJMsoUV4loGzEcw/11CA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673368319;
+        s=2020e; t=1673376118;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ttxt13H5J51Gqr1Xn/jMJHwCS/g2F1Jlbgm/N+cRYAM=;
-        b=wZF48rBvO2VBvLT70dlkh7zQyyD0v5rNFM1p8m+F6n+LZ7qD6INSMJ5MdcXD7ifVL6ztpu
-        myMdW2zdLUZtEEBA==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=zFt8ls/SIq2F8FQFC00tJD9a95U7qyLmsiGpKJdUiJ0=;
+        b=WDxADVDikXf9j6yqNbCQnU2z3caJCnhFcWNa68Y1NMmf5/jhU97IyoNmuUXRUcG0sauHuA
+        xoBMVicy9ahHSzBA==
+From:   "tip-bot2 for Kishon Vijay Abraham I" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/pat: Fix pat_x_mtrr_type() for MTRR disabled case
-Cc:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Juergen Gross <jgross@suse.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, <stable@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230110065427.20767-1-jgross@suse.com>
-References: <20230110065427.20767-1-jgross@suse.com>
+Subject: [tip: x86/boot] x86/acpi/boot: Do not register processors that cannot
+ be onlined for x2APIC
+Cc:     Leo Duran <leo.duran@amd.com>,
+        Kishon Vijay Abraham I <kvijayab@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230105041059.39366-1-kvijayab@amd.com>
+References: <20230105041059.39366-1-kvijayab@amd.com>
 MIME-Version: 1.0
-Message-ID: <167336831878.4906.1036202649956155536.tip-bot2@tip-bot2>
+Message-ID: <167337611777.4906.2987946119491090408.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,59 +68,82 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     90b926e68f500844dff16b5bcea178dc55cf580a
-Gitweb:        https://git.kernel.org/tip/90b926e68f500844dff16b5bcea178dc55cf580a
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Tue, 10 Jan 2023 07:54:27 +01:00
+Commit-ID:     e2869bd7af608c343988429ceb1c2fe99644a01f
+Gitweb:        https://git.kernel.org/tip/e2869bd7af608c343988429ceb1c2fe99644a01f
+Author:        Kishon Vijay Abraham I <kvijayab@amd.com>
+AuthorDate:    Thu, 05 Jan 2023 04:10:59 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 10 Jan 2023 17:21:53 +01:00
+CommitterDate: Tue, 10 Jan 2023 19:21:07 +01:00
 
-x86/pat: Fix pat_x_mtrr_type() for MTRR disabled case
+x86/acpi/boot: Do not register processors that cannot be onlined for x2APIC
 
-Since
+Section 5.2.12.12 Processor Local x2APIC Structure in the ACPI v6.5
+spec mandates that both "enabled" and "online capable" Local APIC Flags
+should be used to determine if the processor is usable or not.
 
-  72cbc8f04fe2 ("x86/PAT: Have pat_enabled() properly reflect state when running on Xen")
+However, Linux doesn't use the "online capable" flag for x2APIC to
+determine if the processor is usable. As a result, cpu_possible_mask has
+incorrect value and results in more memory getting allocated for per_cpu
+variables than it is going to be used.
 
-PAT can be enabled without MTRR.
+Make sure Linux parses both "enabled" and "online capable" flags for
+x2APIC to correctly determine if the processor is usable.
 
-This has resulted in problems e.g. for a SEV-SNP guest running under Hyper-V,
-when trying to establish a new mapping via memremap() with WB caching mode, as
-pat_x_mtrr_type() will call mtrr_type_lookup(), which in turn is returning
-MTRR_TYPE_INVALID due to MTRR being disabled in this configuration.
-
-The result is a mapping with UC- caching, leading to severe performance
-degradation.
-
-Fix that by handling MTRR_TYPE_INVALID the same way as MTRR_TYPE_WRBACK
-in pat_x_mtrr_type() because MTRR_TYPE_INVALID means MTRRs are disabled.
-
-  [ bp: Massage commit message. ]
-
-Fixes: 72cbc8f04fe2 ("x86/PAT: Have pat_enabled() properly reflect state when running on Xen")
-Reported-by: Michael Kelley (LINUX) <mikelley@microsoft.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: aa06e20f1be6 ("x86/ACPI: Don't add CPUs that are not online capable")
+Reported-by: Leo Duran <leo.duran@amd.com>
+Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Tested-by: Michael Kelley <mikelley@microsoft.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230110065427.20767-1-jgross@suse.com
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/20230105041059.39366-1-kvijayab@amd.com
 ---
- arch/x86/mm/pat/memtype.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/acpi/boot.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
-index 46de9cf..fb4b1b5 100644
---- a/arch/x86/mm/pat/memtype.c
-+++ b/arch/x86/mm/pat/memtype.c
-@@ -387,7 +387,8 @@ static unsigned long pat_x_mtrr_type(u64 start, u64 end,
- 		u8 mtrr_type, uniform;
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 907cc98..518bda5 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -188,6 +188,17 @@ static int acpi_register_lapic(int id, u32 acpiid, u8 enabled)
+ 	return cpu;
+ }
  
- 		mtrr_type = mtrr_type_lookup(start, end, &uniform);
--		if (mtrr_type != MTRR_TYPE_WRBACK)
-+		if (mtrr_type != MTRR_TYPE_WRBACK &&
-+		    mtrr_type != MTRR_TYPE_INVALID)
- 			return _PAGE_CACHE_MODE_UC_MINUS;
++static bool __init acpi_is_processor_usable(u32 lapic_flags)
++{
++	if (lapic_flags & ACPI_MADT_ENABLED)
++		return true;
++
++	if (acpi_support_online_capable && (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
++		return true;
++
++	return false;
++}
++
+ static int __init
+ acpi_parse_x2apic(union acpi_subtable_headers *header, const unsigned long end)
+ {
+@@ -212,6 +223,10 @@ acpi_parse_x2apic(union acpi_subtable_headers *header, const unsigned long end)
+ 	if (apic_id == 0xffffffff)
+ 		return 0;
  
- 		return _PAGE_CACHE_MODE_WB;
++	/* don't register processors that cannot be onlined */
++	if (!acpi_is_processor_usable(processor->lapic_flags))
++		return 0;
++
+ 	/*
+ 	 * We need to register disabled CPU as well to permit
+ 	 * counting disabled CPUs. This allows us to size
+@@ -250,9 +265,7 @@ acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
+ 		return 0;
+ 
+ 	/* don't register processors that can not be onlined */
+-	if (acpi_support_online_capable &&
+-	    !(processor->lapic_flags & ACPI_MADT_ENABLED) &&
+-	    !(processor->lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
++	if (!acpi_is_processor_usable(processor->lapic_flags))
+ 		return 0;
+ 
+ 	/*
