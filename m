@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3E4F664BEB
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Jan 2023 20:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 632A8664BE5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Jan 2023 20:04:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239578AbjAJTEk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Jan 2023 14:04:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39472 "EHLO
+        id S238633AbjAJTEj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Jan 2023 14:04:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239688AbjAJS6J (ORCPT
+        with ESMTP id S239676AbjAJTEN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Jan 2023 13:58:09 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0995532A5;
-        Tue, 10 Jan 2023 10:56:42 -0800 (PST)
-Date:   Tue, 10 Jan 2023 18:56:40 -0000
+        Tue, 10 Jan 2023 14:04:13 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0738AE53;
+        Tue, 10 Jan 2023 11:04:12 -0800 (PST)
+Date:   Tue, 10 Jan 2023 19:04:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673377001;
+        s=2020; t=1673377451;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/L4DwXMWgDWmNSzdNDeoSpHKvUZyzRWaGNLUdb3sukE=;
-        b=jb7ZHHsGCZEh5FRUXYvm2PJVcQgQIGVPAs778bkFqgo+5zH5qGtk+FuxMN2Mm9JB3rTyF0
-        9YsWcerNQCMoxbko2xpDto9GkdQCb8bvhl9B8rGX0L/qnFZpiJn3wa/7D+t7wtL65MGTPs
-        QHsCZe8s1Tm4NRxxhBvtS/tCIZ3BSnRnyZffCDmkWBlKmgREe2B969XtpX6txNcd2S5OmF
-        6wKuWdsleaILw1oGt1IRdbd6OkR+vIiA1UtjHcZIt8BjPJX5wM5LVePcbw6DJYKnPx5BK4
-        2nt9KIUTbjf74PDfVjQjxWCCZ8eWNeACmhpTTTuTvfHkusgkIBQxndpCIf/PWg==
+        bh=T2zfOUkSSsQd15/kg4FW6QV2wYwvyiy76WI+8wldUuE=;
+        b=nrcLo5oLu4k3yMNjLU/qV/r47/1/2oliMQnodtUP1U1NYHKMqc5CA98ytZrFEh6rxXIM5P
+        RlwBWjF/9G62+J6lCRUcwcVHEQ4AYCa8g0aMh4W8gbeII8hcUNLZhGxUAoW+sQjJga8rny
+        IhtTI+nbAr2zPlR4+pE4MyKlaO5l1yg7JVPZSoS0Q1GD1FSJo/bBvrbbF3nVe7NhBrCICn
+        /rddFUCFOrebcaUr55XHUGXzTmSZiV3rAx1gaBi8BtDSZo8H7ee0R931GugD4eYfH7YeTa
+        UmZbzvmElz1HlADTbopb+lZa7i3PUKqaJZAEF4Bu+sNTpsTzDGbFmAmiiD+gyg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673377001;
+        s=2020e; t=1673377451;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/L4DwXMWgDWmNSzdNDeoSpHKvUZyzRWaGNLUdb3sukE=;
-        b=3MAeEoWlzVwVe4bnCPK3ZHwXAexa1EGVrqKTPQ7Lr5DAMKkCgBuBMZrwfm80iZsMlrSk5S
-        le9KqhNU6+4Wo7BA==
+        bh=T2zfOUkSSsQd15/kg4FW6QV2wYwvyiy76WI+8wldUuE=;
+        b=XJaNo1TvY+pbF1kvoxeUd6+S+w8azYT2tsuL/B4JtilNOQCaYy2SNStK3mw5VLEwT64NqN
+        GkB5Vk+KcoJONXAQ==
 From:   "tip-bot2 for Peter Newman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/resctrl: Fix task CLOSID/RMID update race
+Subject: [tip: x86/urgent] x86/resctrl: Fix event counts regression in reused RMIDs
 Cc:     Peter Newman <peternewman@google.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
         Reinette Chatre <reinette.chatre@intel.com>,
-        Babu Moger <babu.moger@amd.com>, <stable@kernel.org>,
+        Babu Moger <babu.moger@amd.com>, stable@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20221220161123.432120-1-peternewman@google.com>
-References: <20221220161123.432120-1-peternewman@google.com>
+In-Reply-To: <20221220164132.443083-1-peternewman@google.com>
+References: <20221220164132.443083-1-peternewman@google.com>
 MIME-Version: 1.0
-Message-ID: <167337700055.4906.13745071797567132460.tip-bot2@tip-bot2>
+Message-ID: <167337745062.4906.5845664655522796641.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,113 +68,114 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     fe1f0714385fbcf76b0cbceb02b7277d842014fc
-Gitweb:        https://git.kernel.org/tip/fe1f0714385fbcf76b0cbceb02b7277d842014fc
+Commit-ID:     2a81160d29d65b5876ab3f824fda99ae0219f05e
+Gitweb:        https://git.kernel.org/tip/2a81160d29d65b5876ab3f824fda99ae0219f05e
 Author:        Peter Newman <peternewman@google.com>
-AuthorDate:    Tue, 20 Dec 2022 17:11:23 +01:00
+AuthorDate:    Tue, 20 Dec 2022 17:41:31 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 10 Jan 2023 19:47:30 +01:00
+CommitterDate: Tue, 10 Jan 2023 19:51:59 +01:00
 
-x86/resctrl: Fix task CLOSID/RMID update race
+x86/resctrl: Fix event counts regression in reused RMIDs
 
-When the user moves a running task to a new rdtgroup using the task's
-file interface or by deleting its rdtgroup, the resulting change in
-CLOSID/RMID must be immediately propagated to the PQR_ASSOC MSR on the
-task(s) CPUs.
+When creating a new monitoring group, the RMID allocated for it may have
+been used by a group which was previously removed. In this case, the
+hardware counters will have non-zero values which should be deducted
+from what is reported in the new group's counts.
 
-x86 allows reordering loads with prior stores, so if the task starts
-running between a task_curr() check that the CPU hoisted before the
-stores in the CLOSID/RMID update then it can start running with the old
-CLOSID/RMID until it is switched again because __rdtgroup_move_task()
-failed to determine that it needs to be interrupted to obtain the new
-CLOSID/RMID.
+resctrl_arch_reset_rmid() initializes the prev_msr value for counters to
+0, causing the initial count to be charged to the new group. Resurrect
+__rmid_read() and use it to initialize prev_msr correctly.
 
-Refer to the diagram below:
+Unlike before, __rmid_read() checks for error bits in the MSR read so
+that callers don't need to.
 
-CPU 0                                   CPU 1
------                                   -----
-__rdtgroup_move_task():
-  curr <- t1->cpu->rq->curr
-                                        __schedule():
-                                          rq->curr <- t1
-                                        resctrl_sched_in():
-                                          t1->{closid,rmid} -> {1,1}
-  t1->{closid,rmid} <- {2,2}
-  if (curr == t1) // false
-   IPI(t1->cpu)
-
-A similar race impacts rdt_move_group_tasks(), which updates tasks in a
-deleted rdtgroup.
-
-In both cases, use smp_mb() to order the task_struct::{closid,rmid}
-stores before the loads in task_curr().  In particular, in the
-rdt_move_group_tasks() case, simply execute an smp_mb() on every
-iteration with a matching task.
-
-It is possible to use a single smp_mb() in rdt_move_group_tasks(), but
-this would require two passes and a means of remembering which
-task_structs were updated in the first loop. However, benchmarking
-results below showed too little performance impact in the simple
-approach to justify implementing the two-pass approach.
-
-Times below were collected using `perf stat` to measure the time to
-remove a group containing a 1600-task, parallel workload.
-
-CPU: Intel(R) Xeon(R) Platinum P-8136 CPU @ 2.00GHz (112 threads)
-
-  # mkdir /sys/fs/resctrl/test
-  # echo $$ > /sys/fs/resctrl/test/tasks
-  # perf bench sched messaging -g 40 -l 100000
-
-task-clock time ranges collected using:
-
-  # perf stat rmdir /sys/fs/resctrl/test
-
-Baseline:                     1.54 - 1.60 ms
-smp_mb() every matching task: 1.57 - 1.67 ms
-
-  [ bp: Massage commit message. ]
-
-Fixes: ae28d1aae48a ("x86/resctrl: Use an IPI instead of task_work_add() to update PQR_ASSOC MSR")
-Fixes: 0efc89be9471 ("x86/intel_rdt: Update task closid immediately on CPU in rmdir and unmount")
+Fixes: 1d81d15db39c ("x86/resctrl: Move mbm_overflow_count() into resctrl_arch_rmid_read()")
 Signed-off-by: Peter Newman <peternewman@google.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Babu Moger <babu.moger@amd.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20221220161123.432120-1-peternewman@google.com
+Tested-by: Babu Moger <babu.moger@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20221220164132.443083-1-peternewman@google.com
 ---
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/resctrl/monitor.c | 49 +++++++++++++++++---------
+ 1 file changed, 33 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index e5a48f0..5993da2 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -580,8 +580,10 @@ static int __rdtgroup_move_task(struct task_struct *tsk,
- 	/*
- 	 * Ensure the task's closid and rmid are written before determining if
- 	 * the task is current that will decide if it will be interrupted.
-+	 * This pairs with the full barrier between the rq->curr update and
-+	 * resctrl_sched_in() during context switch.
- 	 */
--	barrier();
-+	smp_mb();
+diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
+index efe0c30..77538ab 100644
+--- a/arch/x86/kernel/cpu/resctrl/monitor.c
++++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+@@ -146,6 +146,30 @@ static inline struct rmid_entry *__rmid_entry(u32 rmid)
+ 	return entry;
+ }
  
- 	/*
- 	 * By now, the task's closid and rmid are set. If the task is current
-@@ -2402,6 +2404,14 @@ static void rdt_move_group_tasks(struct rdtgroup *from, struct rdtgroup *to,
- 			WRITE_ONCE(t->rmid, to->mon.rmid);
- 
- 			/*
-+			 * Order the closid/rmid stores above before the loads
-+			 * in task_curr(). This pairs with the full barrier
-+			 * between the rq->curr update and resctrl_sched_in()
-+			 * during context switch.
-+			 */
-+			smp_mb();
++static int __rmid_read(u32 rmid, enum resctrl_event_id eventid, u64 *val)
++{
++	u64 msr_val;
 +
-+			/*
- 			 * If the task is on a CPU, set the CPU in the mask.
- 			 * The detection is inaccurate as tasks might move or
- 			 * schedule before the smp function call takes place.
++	/*
++	 * As per the SDM, when IA32_QM_EVTSEL.EvtID (bits 7:0) is configured
++	 * with a valid event code for supported resource type and the bits
++	 * IA32_QM_EVTSEL.RMID (bits 41:32) are configured with valid RMID,
++	 * IA32_QM_CTR.data (bits 61:0) reports the monitored data.
++	 * IA32_QM_CTR.Error (bit 63) and IA32_QM_CTR.Unavailable (bit 62)
++	 * are error bits.
++	 */
++	wrmsr(MSR_IA32_QM_EVTSEL, eventid, rmid);
++	rdmsrl(MSR_IA32_QM_CTR, msr_val);
++
++	if (msr_val & RMID_VAL_ERROR)
++		return -EIO;
++	if (msr_val & RMID_VAL_UNAVAIL)
++		return -EINVAL;
++
++	*val = msr_val;
++	return 0;
++}
++
+ static struct arch_mbm_state *get_arch_mbm_state(struct rdt_hw_domain *hw_dom,
+ 						 u32 rmid,
+ 						 enum resctrl_event_id eventid)
+@@ -172,8 +196,12 @@ void resctrl_arch_reset_rmid(struct rdt_resource *r, struct rdt_domain *d,
+ 	struct arch_mbm_state *am;
+ 
+ 	am = get_arch_mbm_state(hw_dom, rmid, eventid);
+-	if (am)
++	if (am) {
+ 		memset(am, 0, sizeof(*am));
++
++		/* Record any initial, non-zero count value. */
++		__rmid_read(rmid, eventid, &am->prev_msr);
++	}
+ }
+ 
+ static u64 mbm_overflow_count(u64 prev_msr, u64 cur_msr, unsigned int width)
+@@ -191,25 +219,14 @@ int resctrl_arch_rmid_read(struct rdt_resource *r, struct rdt_domain *d,
+ 	struct rdt_hw_domain *hw_dom = resctrl_to_arch_dom(d);
+ 	struct arch_mbm_state *am;
+ 	u64 msr_val, chunks;
++	int ret;
+ 
+ 	if (!cpumask_test_cpu(smp_processor_id(), &d->cpu_mask))
+ 		return -EINVAL;
+ 
+-	/*
+-	 * As per the SDM, when IA32_QM_EVTSEL.EvtID (bits 7:0) is configured
+-	 * with a valid event code for supported resource type and the bits
+-	 * IA32_QM_EVTSEL.RMID (bits 41:32) are configured with valid RMID,
+-	 * IA32_QM_CTR.data (bits 61:0) reports the monitored data.
+-	 * IA32_QM_CTR.Error (bit 63) and IA32_QM_CTR.Unavailable (bit 62)
+-	 * are error bits.
+-	 */
+-	wrmsr(MSR_IA32_QM_EVTSEL, eventid, rmid);
+-	rdmsrl(MSR_IA32_QM_CTR, msr_val);
+-
+-	if (msr_val & RMID_VAL_ERROR)
+-		return -EIO;
+-	if (msr_val & RMID_VAL_UNAVAIL)
+-		return -EINVAL;
++	ret = __rmid_read(rmid, eventid, &msr_val);
++	if (ret)
++		return ret;
+ 
+ 	am = get_arch_mbm_state(hw_dom, rmid, eventid);
+ 	if (am) {
