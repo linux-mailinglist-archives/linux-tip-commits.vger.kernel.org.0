@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 185ED66406E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Jan 2023 13:27:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 669D366461D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Jan 2023 17:32:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231368AbjAJM0f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Jan 2023 07:26:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41966 "EHLO
+        id S233797AbjAJQcU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Jan 2023 11:32:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238419AbjAJM0W (ORCPT
+        with ESMTP id S238880AbjAJQcD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Jan 2023 07:26:22 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC9412082;
-        Tue, 10 Jan 2023 04:26:14 -0800 (PST)
-Date:   Tue, 10 Jan 2023 12:26:12 -0000
+        Tue, 10 Jan 2023 11:32:03 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328ED84099;
+        Tue, 10 Jan 2023 08:32:01 -0800 (PST)
+Date:   Tue, 10 Jan 2023 16:31:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673353573;
+        s=2020; t=1673368319;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3i8g0Hw2ABdsPM4SxrWovnrLjc8AZV2Gt3pIcj7ReC8=;
-        b=J6ZFvvSPmUxL+7oCwvwxf9uQMCrnZuAk15i35jFN7VpmHDIVVOndTjLAN2jdT0dCfWImOR
-        5mbOR2slcZ7myO1TK9QWBvUWlrJ8B4YEydyzAjKO7JBim3rV5yrJVDRmgP/8R48Wm2N1O7
-        /LxABJwv1S/vcS4uuI4PmBjuKOr9kbqyJCpHcghf6UxW8i90311JogrSsmTzLV+h5ae5IO
-        uZ4dm8uk+aeTybQOo2+/bDAFBYhJquWv2kM2yOZwlVgqdg5f6luBHz2DfOKZxulN3Se/Cs
-        oplCSkHh5gjzA1Ps6/d0+rmf8sTCiODzlH5egZyAv+0F+XoKqRo6C8pa5ppDiw==
+        bh=ttxt13H5J51Gqr1Xn/jMJHwCS/g2F1Jlbgm/N+cRYAM=;
+        b=GziND44NHtHJpTpTJI4rkQlAVdumD7TbsumT9wqcOvkijawpUThT5zg7u9calm0ntwPLG2
+        Vs9sg/Xdr/waj3vi5xdUf6suWHFVHEYSute4Sot8/jszcw8p8cO0iqIW0GJYNpwY4yJHEv
+        x3nqSJQGTiBYbBk8LbaYf1YUQbr2ez2qmjPZ9U4ruVOVM8rlP1RotXmCeYIIFIjFYC0qvH
+        tOjPL5zkgRrPff0sxhEnNKOV8jEtIgUfJWyDfhA6G/G5SK6TJkJnJXVo6fCGx+jtYLutYa
+        3meVv/zZe5SUnkyir2aOc72Ve8izqmGWRFrleuOp+1IdP3QiFcOLql9GS/8r/w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673353573;
+        s=2020e; t=1673368319;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3i8g0Hw2ABdsPM4SxrWovnrLjc8AZV2Gt3pIcj7ReC8=;
-        b=2xpVBenDA2euCKCW+0k3nfctc/dH1fz9VtA9FI9i5AWaa2s+3JurSXL87h9ZTi5L7wF7D6
-        7HRR8/H5r5xUd+Bg==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=ttxt13H5J51Gqr1Xn/jMJHwCS/g2F1Jlbgm/N+cRYAM=;
+        b=wZF48rBvO2VBvLT70dlkh7zQyyD0v5rNFM1p8m+F6n+LZ7qD6INSMJ5MdcXD7ifVL6ztpu
+        myMdW2zdLUZtEEBA==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/boot: Avoid using Intel mnemonics in AT&T syntax asm
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <Y71I3Ex2pvIxMpsP@hirez.programming.kicks-ass.net>
-References: <Y71I3Ex2pvIxMpsP@hirez.programming.kicks-ass.net>
+Subject: [tip: x86/urgent] x86/pat: Fix pat_x_mtrr_type() for MTRR disabled case
+Cc:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        Juergen Gross <jgross@suse.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, <stable@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230110065427.20767-1-jgross@suse.com>
+References: <20230110065427.20767-1-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <167335357249.4906.12734987935688647985.tip-bot2@tip-bot2>
+Message-ID: <167336831878.4906.1036202649956155536.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,74 +67,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7c6dd961d0c8e7e8f9fdc65071fb09ece702e18d
-Gitweb:        https://git.kernel.org/tip/7c6dd961d0c8e7e8f9fdc65071fb09ece702e18d
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 10 Jan 2023 12:15:40 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 10 Jan 2023 13:03:23 +01:00
+Commit-ID:     90b926e68f500844dff16b5bcea178dc55cf580a
+Gitweb:        https://git.kernel.org/tip/90b926e68f500844dff16b5bcea178dc55cf580a
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Tue, 10 Jan 2023 07:54:27 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 10 Jan 2023 17:21:53 +01:00
 
-x86/boot: Avoid using Intel mnemonics in AT&T syntax asm
+x86/pat: Fix pat_x_mtrr_type() for MTRR disabled case
 
-With 'GNU assembler (GNU Binutils for Debian) 2.39.90.20221231' the
-build now reports:
+Since
 
-  arch/x86/realmode/rm/../../boot/bioscall.S: Assembler messages:
-  arch/x86/realmode/rm/../../boot/bioscall.S:35: Warning: found `movsd'; assuming `movsl' was meant
-  arch/x86/realmode/rm/../../boot/bioscall.S:70: Warning: found `movsd'; assuming `movsl' was meant
+  72cbc8f04fe2 ("x86/PAT: Have pat_enabled() properly reflect state when running on Xen")
 
-  arch/x86/boot/bioscall.S: Assembler messages:
-  arch/x86/boot/bioscall.S:35: Warning: found `movsd'; assuming `movsl' was meant
-  arch/x86/boot/bioscall.S:70: Warning: found `movsd'; assuming `movsl' was meant
+PAT can be enabled without MTRR.
 
-Which is due to:
+This has resulted in problems e.g. for a SEV-SNP guest running under Hyper-V,
+when trying to establish a new mapping via memremap() with WB caching mode, as
+pat_x_mtrr_type() will call mtrr_type_lookup(), which in turn is returning
+MTRR_TYPE_INVALID due to MTRR being disabled in this configuration.
 
-  PR gas/29525
+The result is a mapping with UC- caching, leading to severe performance
+degradation.
 
-  Note that with the dropped CMPSD and MOVSD Intel Syntax string insn
-  templates taking operands, mixed IsString/non-IsString template groups
-  (with memory operands) cannot occur anymore. With that
-  maybe_adjust_templates() becomes unnecessary (and is hence being
-  removed).
+Fix that by handling MTRR_TYPE_INVALID the same way as MTRR_TYPE_WRBACK
+in pat_x_mtrr_type() because MTRR_TYPE_INVALID means MTRRs are disabled.
 
-More details: https://sourceware.org/bugzilla/show_bug.cgi?id=29525
+  [ bp: Massage commit message. ]
 
-Borislav Petkov further explains:
-
-  " the particular problem here is is that the 'd' suffix is
-    "conflicting" in the sense that you can have SSE mnemonics like movsD %xmm...
-    and the same thing also for string ops (which is the case here) so apparently
-    the agreement in binutils land is to use the always accepted suffixes 'l' or 'q'
-    and phase out 'd' slowly... "
-
-Fixes: 7a734e7dd93b ("x86, setup: "glove box" BIOS calls -- infrastructure")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/Y71I3Ex2pvIxMpsP@hirez.programming.kicks-ass.net
+Fixes: 72cbc8f04fe2 ("x86/PAT: Have pat_enabled() properly reflect state when running on Xen")
+Reported-by: Michael Kelley (LINUX) <mikelley@microsoft.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Tested-by: Michael Kelley <mikelley@microsoft.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230110065427.20767-1-jgross@suse.com
 ---
- arch/x86/boot/bioscall.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/mm/pat/memtype.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/bioscall.S b/arch/x86/boot/bioscall.S
-index 5521ea1..aa9b964 100644
---- a/arch/x86/boot/bioscall.S
-+++ b/arch/x86/boot/bioscall.S
-@@ -32,7 +32,7 @@ intcall:
- 	movw	%dx, %si
- 	movw	%sp, %di
- 	movw	$11, %cx
--	rep; movsd
-+	rep; movsl
+diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
+index 46de9cf..fb4b1b5 100644
+--- a/arch/x86/mm/pat/memtype.c
++++ b/arch/x86/mm/pat/memtype.c
+@@ -387,7 +387,8 @@ static unsigned long pat_x_mtrr_type(u64 start, u64 end,
+ 		u8 mtrr_type, uniform;
  
- 	/* Pop full state from the stack */
- 	popal
-@@ -67,7 +67,7 @@ intcall:
- 	jz	4f
- 	movw	%sp, %si
- 	movw	$11, %cx
--	rep; movsd
-+	rep; movsl
- 4:	addw	$44, %sp
+ 		mtrr_type = mtrr_type_lookup(start, end, &uniform);
+-		if (mtrr_type != MTRR_TYPE_WRBACK)
++		if (mtrr_type != MTRR_TYPE_WRBACK &&
++		    mtrr_type != MTRR_TYPE_INVALID)
+ 			return _PAGE_CACHE_MODE_UC_MINUS;
  
- 	/* Restore state and return */
+ 		return _PAGE_CACHE_MODE_WB;
