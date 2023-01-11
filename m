@@ -2,51 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8384A6657D3
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jan 2023 10:43:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC4EB665BB2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jan 2023 13:46:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231894AbjAKJmb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Jan 2023 04:42:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43328 "EHLO
+        id S232376AbjAKMqY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 Jan 2023 07:46:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238622AbjAKJls (ORCPT
+        with ESMTP id S231972AbjAKMqW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Jan 2023 04:41:48 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B3065AA;
-        Wed, 11 Jan 2023 01:38:17 -0800 (PST)
-Date:   Wed, 11 Jan 2023 09:38:15 -0000
+        Wed, 11 Jan 2023 07:46:22 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C11AE1DE;
+        Wed, 11 Jan 2023 04:46:21 -0800 (PST)
+Date:   Wed, 11 Jan 2023 12:46:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673429895;
+        s=2020; t=1673441179;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=kehMZIHPNQwe/rgFXgkipzv6RmLxifL8oeDAjS4KObg=;
-        b=umNlVrc1r7BR6PRC2/CPs7WH0THb9RSlmTdDDfbkwTSkmpObdoS0LKwHVtY2SionEIntmY
-        aIWLvL705k25r0PoHDpcyTAkfpo2qR6Zoj2zs+Kjt9YuZ+v2RK1Mzn2COf1iS5lw+95ngC
-        FA+X1LLaRBCz+2NkCWXar/lOPicRy992MwfGm9M8NCAcdgzl0L058Ps/OrGCRBy7h0Y3Jk
-        Njm93lKmypTcuYKMOLPLS0ta6Yz1Cjm6yAjD9lPzRpp/tYCi9JbgWfFnZGCsMkNqnBdaEA
-        AJRSiTPaJNAlqFa4EO4D+ZxTFZCmD1A+s1Kx09URGccPJlb/H1RGFNuDYnBAIg==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HJRmCe2JRPrclyZDv+jxp2gCtkF0MB5rMYfHRUF55lY=;
+        b=v/08Vtu93GWOvzbL3W9z+cBDQK+TN1qqqrR66fvjzYO30IHyK9UZ51CUruPNEzWDJIGCcw
+        hYI+xS0U/nJLWRDNDJJtIeG81AQHQJGrq1S5aeNMepSOsvJ0OlCnyd/RrQ3UBsTGyjiGs1
+        XtIaTN2HpdfVaOV/n8QenwGGzVkLiBfKdXQS0qVGLMzUIa6uqsCsKvI61Tcx47g23/lsna
+        3E4Ym4Hnbo5rscWcMqPA9doOdy/ATFA7MPS++FKv1USREq04i++KKwIq0pAjoJnGwGZ98B
+        ctFU745KwIiT8QOGmZd9u9qg3wgP8FmBJ8Y6bYWZy4QFECOR6AgvonlRM8Vvkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673429895;
+        s=2020e; t=1673441179;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=kehMZIHPNQwe/rgFXgkipzv6RmLxifL8oeDAjS4KObg=;
-        b=x5/l5UspoS/rwDESewhE/c2mxgUE01eZxNJEWqo/VdHvqluPB1Re9TVxNh/ojDpy47Nzty
-        c1jYV86gY2guBkCA==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HJRmCe2JRPrclyZDv+jxp2gCtkF0MB5rMYfHRUF55lY=;
+        b=OboHnC1keQvF/IqHOrgHfPYZfLgdLYCuOjFhDUjX3Axj9hqkt0NotVrgokR6gJ77EjL5st
+        b47xyQqiW+31JaDg==
+From:   "tip-bot2 for Yuntao Wang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/cputime: Fix IA64 build error of missing
- arch_vtime_task_switch() prototype
-Cc:     kernel test robot <lkp@intel.com>, Ingo Molnar <mingo@kernel.org>,
-        linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>, x86@kernel.org
+Subject: [tip: x86/cleanups] x86/setup: Move duplicate boot_cpu_data
+ definition out of the ifdeffery
+Cc:     Yuntao Wang <ytcoode@gmail.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220601122914.820890-1-ytcoode@gmail.com>
+References: <20220601122914.820890-1-ytcoode@gmail.com>
 MIME-Version: 1.0
-Message-ID: <167342989503.4906.9427028157205316404.tip-bot2@tip-bot2>
+Message-ID: <167344117807.4906.12901315064552359156.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,49 +65,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     cd9f5c3d3096e26fa128ae747f66383002001398
-Gitweb:        https://git.kernel.org/tip/cd9f5c3d3096e26fa128ae747f66383002001398
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Wed, 11 Jan 2023 10:25:34 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 11 Jan 2023 10:31:57 +01:00
+Commit-ID:     50c66d7b049ddec095644a005bfe0b28e22c4b02
+Gitweb:        https://git.kernel.org/tip/50c66d7b049ddec095644a005bfe0b28e22c4b02
+Author:        Yuntao Wang <ytcoode@gmail.com>
+AuthorDate:    Wed, 01 Jun 2022 20:29:14 +08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 11 Jan 2023 12:45:16 +01:00
 
-sched/cputime: Fix IA64 build error of missing arch_vtime_task_switch() prototype
+x86/setup: Move duplicate boot_cpu_data definition out of the ifdeffery
 
-The following commit:
+Both the if and else blocks define an exact same boot_cpu_data variable, move
+the duplicate variable definition out of the if/else block.
 
-  c89970202a11 ("cputime: remove cputime_to_nsecs fallback")
+In addition, do some other minor cleanups.
 
-Removed an <asm/cputime.h> inclusion from <linux/sched/cputime.h>, but this
-broke the IA64 build:
+  [ bp: Massage. ]
 
-    arch/ia64/kernel/time.c:110:6: warning: no previous prototype for 'arch_vtime_task_switch' [-Wmissing-prototypes]
-
-Add in the missing <asm/cputime.h> header to fix it.
-
-Fixes: c89970202a11 ("cputime: remove cputime_to_nsecs fallback")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20220601122914.820890-1-ytcoode@gmail.com
 ---
- arch/ia64/kernel/time.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/e820.c  |  4 ++--
+ arch/x86/kernel/setup.c | 10 ++--------
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/arch/ia64/kernel/time.c b/arch/ia64/kernel/time.c
-index fa9c0ab..83ef044 100644
---- a/arch/ia64/kernel/time.c
-+++ b/arch/ia64/kernel/time.c
-@@ -25,6 +25,7 @@
- #include <linux/platform_device.h>
- #include <linux/sched/cputime.h>
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index 0614a79..fb8cf95 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -395,7 +395,7 @@ int __init e820__update_table(struct e820_table *table)
  
-+#include <asm/cputime.h>
- #include <asm/delay.h>
- #include <asm/efi.h>
- #include <asm/hw_irq.h>
+ 		/* Continue building up new map based on this information: */
+ 		if (current_type != last_type || e820_nomerge(current_type)) {
+-			if (last_type != 0)	 {
++			if (last_type) {
+ 				new_entries[new_nr_entries].size = change_point[chg_idx]->addr - last_addr;
+ 				/* Move forward only if the new size was non-zero: */
+ 				if (new_entries[new_nr_entries].size != 0)
+@@ -403,7 +403,7 @@ int __init e820__update_table(struct e820_table *table)
+ 					if (++new_nr_entries >= max_nr_entries)
+ 						break;
+ 			}
+-			if (current_type != 0)	{
++			if (current_type) {
+ 				new_entries[new_nr_entries].addr = change_point[chg_idx]->addr;
+ 				new_entries[new_nr_entries].type = current_type;
+ 				last_addr = change_point[chg_idx]->addr;
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 8818854..16babff 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -114,11 +114,6 @@ static struct resource bss_resource = {
+ #ifdef CONFIG_X86_32
+ /* CPU data as detected by the assembly code in head_32.S */
+ struct cpuinfo_x86 new_cpu_data;
+-
+-/* Common CPU data for all CPUs */
+-struct cpuinfo_x86 boot_cpu_data __read_mostly;
+-EXPORT_SYMBOL(boot_cpu_data);
+-
+ unsigned int def_to_bigsmp;
+ 
+ struct apm_info apm_info;
+@@ -132,11 +127,10 @@ EXPORT_SYMBOL(ist_info);
+ struct ist_info ist_info;
+ #endif
+ 
+-#else
+-struct cpuinfo_x86 boot_cpu_data __read_mostly;
+-EXPORT_SYMBOL(boot_cpu_data);
+ #endif
+ 
++struct cpuinfo_x86 boot_cpu_data __read_mostly;
++EXPORT_SYMBOL(boot_cpu_data);
+ 
+ #if !defined(CONFIG_X86_PAE) || defined(CONFIG_X86_64)
+ __visible unsigned long mmu_cr4_features __ro_after_init;
