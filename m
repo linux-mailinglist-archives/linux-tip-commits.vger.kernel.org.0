@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46AF7665BB1
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jan 2023 13:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1E646662E2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jan 2023 19:39:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232249AbjAKMqX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Jan 2023 07:46:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54114 "EHLO
+        id S235022AbjAKSiu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 Jan 2023 13:38:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231831AbjAKMqW (ORCPT
+        with ESMTP id S234534AbjAKSis (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Jan 2023 07:46:22 -0500
+        Wed, 11 Jan 2023 13:38:48 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1FEBE1C;
-        Wed, 11 Jan 2023 04:46:21 -0800 (PST)
-Date:   Wed, 11 Jan 2023 12:46:18 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 006A714007;
+        Wed, 11 Jan 2023 10:38:47 -0800 (PST)
+Date:   Wed, 11 Jan 2023 18:38:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673441179;
+        s=2020; t=1673462326;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0CBoRt39skz+jx4efNlFIgS/P6kHEEX3x4nw5kpDw6Q=;
-        b=SF07QcbtcT/lnCU1V1GhDAcyJm/arq8PAFTmlRYG64FJsGMcaSTwlb+FiZDwIJvKqJ8g93
-        wZ7OPQjsh5KHQr8Fg1BhgWV9tar3NKaOtjrl34bRWLkETQmAsx9ZPgKGBrH2CCg6JISSEV
-        nhgydFw0ZVTWhfQNRDTJ5vT5FwkDR4X/gftc/7mEsE6Gy5UUZpQnix48W6GVt9hlSZsfIX
-        MJsT8mQSMXV1yu2x4WHSaY98FRSsH+DpSqj+UtMSSDl3A0YY86g8o/m85U+qZGMT2WJ4BC
-        pDJIYB74AI7mz57H2QsC0sxTHkne7E2ocf4P9js8xE3hGaojY7ql4iB7keks8Q==
+        bh=p8y8nobWxJCXxABHliZ6sNM8bCx6NZKVFz9SwmPoCrQ=;
+        b=bJppQ4+5qgJcHNToETLOWI0fnwbdB0QsXaPx3UeLFdg1Ozm+rj8QmcX4WHsaO8jl1baQDG
+        OgVmLo+wKewLI7K13pwiTDKeIn3V6EVrAhcLRp+gU+Dpw8EPPiVGZKa5ImWDF094iAJ8l/
+        lUJrtxke6l0xx4qmiWzr9s/codS3ykGLjieHqmElM2pfKfY+pz86Ffqtj69Tang19qn/qo
+        3fgReC3VbFtp6yYK+M2RKIDnfszQckHcAWGLHrYmAOqDbYjUQ94gtxkTnShQGvqCG/VB+V
+        CiWuN6LuorE+43OUWWypP9cD9+0HZtJ7adbRTLSFWYgZfHd16M2sxxwylTUNzQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673441179;
+        s=2020e; t=1673462326;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0CBoRt39skz+jx4efNlFIgS/P6kHEEX3x4nw5kpDw6Q=;
-        b=Xrvxo+5RFoiXCS+qNEux3IuG/Is5ZLBl9U1+za6Arlggg4L9cULESbvCODSy9smchQtlO0
-        aB3odEIEo33YKTCw==
-From:   "tip-bot2 for Wang Yong" <tip-bot2@linutronix.de>
+        bh=p8y8nobWxJCXxABHliZ6sNM8bCx6NZKVFz9SwmPoCrQ=;
+        b=RH4yXX5IdR2kk9r3Qkrbrek4InvKcH87oft2+4swQysIdmTfn5sAVDB9+XnBsQjvgabbHd
+        pvmVsEDmcJ5ij5Cw==
+From:   "tip-bot2 for Manfred Spraul" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/boot/e820: Fix typo in e820.c comment
-Cc:     Wang Yong <yongw.kernel@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20221211103849.173870-1-yongw.kernel@gmail.com>
-References: <20221211103849.173870-1-yongw.kernel@gmail.com>
+Subject: [tip: irq/core] genirq: Add might_sleep() to disable_irq()
+Cc:     Manfred Spraul <manfred@colorfullife.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20221216150441.200533-3-manfred@colorfullife.com>
+References: <20221216150441.200533-3-manfred@colorfullife.com>
 MIME-Version: 1.0
-Message-ID: <167344117849.4906.7905462837632668543.tip-bot2@tip-bot2>
+Message-ID: <167346232582.4906.17142708908609012375.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,38 +64,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     b7d1f15b5c274999dfe8dda60a9a516eebfbc3d0
-Gitweb:        https://git.kernel.org/tip/b7d1f15b5c274999dfe8dda60a9a516eebfbc3d0
-Author:        Wang Yong <yongw.kernel@gmail.com>
-AuthorDate:    Sun, 11 Dec 2022 10:38:49 
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 11 Jan 2023 12:45:03 +01:00
+Commit-ID:     17549b0f184d870f2cfa4e5cfa79f4c4905ed757
+Gitweb:        https://git.kernel.org/tip/17549b0f184d870f2cfa4e5cfa79f4c4905ed757
+Author:        Manfred Spraul <manfred@colorfullife.com>
+AuthorDate:    Fri, 16 Dec 2022 16:04:41 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 11 Jan 2023 19:35:13 +01:00
 
-x86/boot/e820: Fix typo in e820.c comment
+genirq: Add might_sleep() to disable_irq()
 
-change "itsmain" to "its main".
+With the introduction of threaded interrupt handlers, it is virtually
+never safe to call disable_irq() from non-premptible context.
 
-Fixes: 544a0f47e780 ("x86/boot/e820: Rename e820_table_saved to e820_table_firmware and improve the description")
-Signed-off-by: Wang Yong <yongw.kernel@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20221211103849.173870-1-yongw.kernel@gmail.com
+Thus: Update the documentation, add an explicit might_sleep() to catch any
+offenders. This is more obvious and straight forward than the implicit
+might_sleep() check deeper down in the disable_irq() call chain.
+
+Fixes: 3aa551c9b4c4 ("genirq: add threaded interrupt handler support")
+Signed-off-by: Manfred Spraul <manfred@colorfullife.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20221216150441.200533-3-manfred@colorfullife.com
+
+
 ---
- arch/x86/kernel/e820.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/irq/manage.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index 9dac246..0614a79 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -53,7 +53,7 @@
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index 5b7cf28..8ce7549 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -723,10 +723,13 @@ EXPORT_SYMBOL(disable_irq_nosync);
+  *	to complete before returning. If you use this function while
+  *	holding a resource the IRQ handler may need you will deadlock.
   *
-  * Once the E820 map has been converted to the standard Linux memory layout
-  * information its role stops - modifying it has no effect and does not get
-- * re-propagated. So itsmain role is a temporary bootstrap storage of firmware
-+ * re-propagated. So its main role is a temporary bootstrap storage of firmware
-  * specific memory layout data during early bootup.
+- *	This function may be called - with care - from IRQ context.
++ *	Can only be called from preemptible code as it might sleep when
++ *	an interrupt thread is associated to @irq.
++ *
   */
- static struct e820_table e820_table_init		__initdata;
+ void disable_irq(unsigned int irq)
+ {
++	might_sleep();
+ 	if (!__disable_irq_nosync(irq))
+ 		synchronize_irq(irq);
+ }
