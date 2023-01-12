@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09458666FE1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Jan 2023 11:40:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 353BF667030
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Jan 2023 11:50:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234757AbjALKkh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Jan 2023 05:40:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39674 "EHLO
+        id S232658AbjALKuB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Jan 2023 05:50:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236584AbjALKji (ORCPT
+        with ESMTP id S239761AbjALKtX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Jan 2023 05:39:38 -0500
+        Thu, 12 Jan 2023 05:49:23 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FA2762F6;
-        Thu, 12 Jan 2023 02:34:15 -0800 (PST)
-Date:   Thu, 12 Jan 2023 10:34:12 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D151E3D9;
+        Thu, 12 Jan 2023 02:41:52 -0800 (PST)
+Date:   Thu, 12 Jan 2023 10:41:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673519653;
+        s=2020; t=1673520110;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HToTxnz9S15tHok02madK+uiew5TU6onPq4bHfE8d2A=;
-        b=nOz4T+TL7Vd238tovZ3AnAwX3NTL85Fw0mGTGmkM5fJphH02+/OFrTKsy6xg2IOlhhJR7M
-        PUze760DEZDJP6sXF5kTOVmJGrHk20eBFfht717jaID0i5WuA7mtMvxCLugIm82p8tL95s
-        eqP8cXajaDi63oaw3rUNKCh3Ssmo3BEzCJdu4HMsQZgg1CICZDtzd6EOXMOGUdn6X9WJ1z
-        rqaksxh0BViQ59apgAKtASHyYCw0SCMVNJ5Acm9sQbtIJAOqD2NsdCoFg0nlhzyG5y/0yv
-        khFWnQFQk4K06LPXqTOJFHSUZdf641kxu2TogXtthWEDWiEkQEklOeJd5NlCjQ==
+        bh=l5SOEF2nIRTJ795tnPp75YTjnJZP/VrV7respELeucs=;
+        b=ql2iUcEacyAeNg3ed0/DCVsR2yKvru65exXlHzag8vwmLr0gYWG+jC77KwMrwUcQCaRytG
+        GOhk45hUn79JUD/0QyOAfEn1S69d/3shrk+so8n8R13k+s21ci3C5Hj24EchYbQRM9Jad6
+        TcQlspgOuLk2Suz7RigySarrfkU8qvPfInXarzzPr0jCwvigY+P8HoWthn2rOXuOJhFhkb
+        jVGi+qP7iYZK7zhuTCMrFCqs20/yGbEvonDXoKrKEvPH7y7XAA5+z0VzM8DEer4QYNipFh
+        M18qx4Mc59KUzI/cOxy9HTnN0jXR//kKXhlMuVEXHK1Boi+iGX8WS0oA1CCWtg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673519653;
+        s=2020e; t=1673520110;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HToTxnz9S15tHok02madK+uiew5TU6onPq4bHfE8d2A=;
-        b=YH9JswKSge9L15v7FPBggySzJukch0Ufe4ArJZs/ZIsaJiLgjdHvBSptT8MGoMGXVFq4G9
-        AG/TBr2pS2Y6K9Bw==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=l5SOEF2nIRTJ795tnPp75YTjnJZP/VrV7respELeucs=;
+        b=icfSo/P/EnESWB8djUiftrSfc1pC/41ipvTrd862cD3pCQ52oAdu0Aom6CjamusJGPx9kY
+        LYWWCDQimAH6BUCA==
+From:   "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm: fix poking_init() for Xen PV guests
-Cc:     Juergen Gross <jgross@suse.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/cpu] x86/bugs: Reset speculation control settings on init
+Cc:     Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        Breno Leitao <leitao@debian.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230109150922.10578-1-jgross@suse.com>
-References: <20230109150922.10578-1-jgross@suse.com>
+In-Reply-To: <20221128153148.1129350-1-leitao@debian.org>
+References: <20221128153148.1129350-1-leitao@debian.org>
 MIME-Version: 1.0
-Message-ID: <167351965292.4906.12237792371879613660.tip-bot2@tip-bot2>
+Message-ID: <167352011025.4906.15940595409237822889.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,56 +65,76 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     26ce6ec364f18d2915923bc05784084e54a5c4cc
-Gitweb:        https://git.kernel.org/tip/26ce6ec364f18d2915923bc05784084e54a5c4cc
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Mon, 09 Jan 2023 16:09:22 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 12 Jan 2023 11:22:20 +01:00
+Commit-ID:     0125acda7d76b943ca55811df40ed6ec0ecf670f
+Gitweb:        https://git.kernel.org/tip/0125acda7d76b943ca55811df40ed6ec0ecf670f
+Author:        Breno Leitao <leitao@debian.org>
+AuthorDate:    Mon, 28 Nov 2022 07:31:48 -08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 12 Jan 2023 11:37:01 +01:00
 
-x86/mm: fix poking_init() for Xen PV guests
+x86/bugs: Reset speculation control settings on init
 
-Commit 3f4c8211d982 ("x86/mm: Use mm_alloc() in poking_init()") broke
-the kernel for running as Xen PV guest.
+Currently, x86_spec_ctrl_base is read at boot time and speculative bits
+are set if Kconfig items are enabled. For example, IBRS is enabled if
+CONFIG_CPU_IBRS_ENTRY is configured, etc. These MSR bits are not cleared
+if the mitigations are disabled.
 
-It seems as if the new address space is never activated before being
-used, resulting in Xen rejecting to accept the new CR3 value (the PGD
-isn't pinned).
+This is a problem when kexec-ing a kernel that has the mitigation
+disabled from a kernel that has the mitigation enabled. In this case,
+the MSR bits are not cleared during the new kernel boot. As a result,
+this might have some performance degradation that is hard to pinpoint.
 
-Fix that by adding the now missing call of paravirt_arch_dup_mmap() to
-poking_init(). That call was previously done by dup_mm()->dup_mmap() and
-it is a NOP for all cases but for Xen PV, where it is just doing the
-pinning of the PGD.
+This problem does not happen if the machine is (hard) rebooted because
+the bit will be cleared by default.
 
-Fixes: 3f4c8211d982 ("x86/mm: Use mm_alloc() in poking_init()")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230109150922.10578-1-jgross@suse.com
+  [ bp: Massage. ]
+
+Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20221128153148.1129350-1-leitao@debian.org
 ---
- arch/x86/mm/init.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/include/asm/msr-index.h |  4 ++++
+ arch/x86/kernel/cpu/bugs.c       | 10 +++++++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index d398735..cb258f5 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -26,6 +26,7 @@
- #include <asm/pti.h>
- #include <asm/text-patching.h>
- #include <asm/memtype.h>
-+#include <asm/paravirt.h>
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 37ff475..cb359d6 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -49,6 +49,10 @@
+ #define SPEC_CTRL_RRSBA_DIS_S_SHIFT	6	   /* Disable RRSBA behavior */
+ #define SPEC_CTRL_RRSBA_DIS_S		BIT(SPEC_CTRL_RRSBA_DIS_S_SHIFT)
  
- /*
-  * We need to define the tracepoints somewhere, and tlb.c
-@@ -804,6 +805,9 @@ void __init poking_init(void)
- 	poking_mm = mm_alloc();
- 	BUG_ON(!poking_mm);
- 
-+	/* Xen PV guests need the PGD to be pinned. */
-+	paravirt_arch_dup_mmap(NULL, poking_mm);
++/* A mask for bits which the kernel toggles when controlling mitigations */
++#define SPEC_CTRL_MITIGATIONS_MASK	(SPEC_CTRL_IBRS | SPEC_CTRL_STIBP | SPEC_CTRL_SSBD \
++							| SPEC_CTRL_RRSBA_DIS_S)
 +
- 	/*
- 	 * Randomize the poking address, but make sure that the following page
- 	 * will be mapped at the same PMD. We need 2 pages, so find space for 3,
+ #define MSR_IA32_PRED_CMD		0x00000049 /* Prediction Command */
+ #define PRED_CMD_IBPB			BIT(0)	   /* Indirect Branch Prediction Barrier */
+ 
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 19e1ce0..5f33704 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -145,9 +145,17 @@ void __init check_bugs(void)
+ 	 * have unknown values. AMD64_LS_CFG MSR is cached in the early AMD
+ 	 * init code as it is not enumerated and depends on the family.
+ 	 */
+-	if (boot_cpu_has(X86_FEATURE_MSR_SPEC_CTRL))
++	if (cpu_feature_enabled(X86_FEATURE_MSR_SPEC_CTRL)) {
+ 		rdmsrl(MSR_IA32_SPEC_CTRL, x86_spec_ctrl_base);
+ 
++		/*
++		 * Previously running kernel (kexec), may have some controls
++		 * turned ON. Clear them and let the mitigations setup below
++		 * rediscover them based on configuration.
++		 */
++		x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
++	}
++
+ 	/* Select the proper CPU mitigations before patching alternatives: */
+ 	spectre_v1_select_mitigation();
+ 	spectre_v2_select_mitigation();
