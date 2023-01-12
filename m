@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 353BF667030
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Jan 2023 11:50:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 526E16671E8
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Jan 2023 13:17:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232658AbjALKuB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Jan 2023 05:50:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49698 "EHLO
+        id S232583AbjALMRD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Jan 2023 07:17:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239761AbjALKtX (ORCPT
+        with ESMTP id S234994AbjALMQh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Jan 2023 05:49:23 -0500
+        Thu, 12 Jan 2023 07:16:37 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D151E3D9;
-        Thu, 12 Jan 2023 02:41:52 -0800 (PST)
-Date:   Thu, 12 Jan 2023 10:41:50 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A39F2607;
+        Thu, 12 Jan 2023 04:16:35 -0800 (PST)
+Date:   Thu, 12 Jan 2023 12:16:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673520110;
+        s=2020; t=1673525793;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=l5SOEF2nIRTJ795tnPp75YTjnJZP/VrV7respELeucs=;
-        b=ql2iUcEacyAeNg3ed0/DCVsR2yKvru65exXlHzag8vwmLr0gYWG+jC77KwMrwUcQCaRytG
-        GOhk45hUn79JUD/0QyOAfEn1S69d/3shrk+so8n8R13k+s21ci3C5Hj24EchYbQRM9Jad6
-        TcQlspgOuLk2Suz7RigySarrfkU8qvPfInXarzzPr0jCwvigY+P8HoWthn2rOXuOJhFhkb
-        jVGi+qP7iYZK7zhuTCMrFCqs20/yGbEvonDXoKrKEvPH7y7XAA5+z0VzM8DEer4QYNipFh
-        M18qx4Mc59KUzI/cOxy9HTnN0jXR//kKXhlMuVEXHK1Boi+iGX8WS0oA1CCWtg==
+        bh=yKCyVZ17DkWWOeoDYMPHKFx4KyBogrF+pRNES4m/olI=;
+        b=uLB4KQC26r2xt1ga/Giy0y0YXDDsvf1rFh55DuL5AVv5qyTXKF+Jwvopr4YEWbZQY89gAg
+        BAkdR6wVk3aQ5sctgtcdsS2vruo4bu4GBNZQeSSt6ol1v5EZwGE01sbt4aSQFrpVVeLwHi
+        /WZ9TD+YKmWT9dNZiopHAFw4+oupf+0SHYU0Ytj6XKH8MGHRKH1tyBIlMhPoJmNI0mjSRm
+        wvvhmBxOKNbvMN2ulX6uR1zcs3jg+g+Ar4mWR3Qw/Bi/IA7ksyTDmrn6y0DYzivXYlO0I7
+        DMhRHNRDBCfpdTi5+ZmoQGrnZVMhsdE8T0gFXesA2qrqxk8QJdlQ65FHcUJAsw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673520110;
+        s=2020e; t=1673525793;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=l5SOEF2nIRTJ795tnPp75YTjnJZP/VrV7respELeucs=;
-        b=icfSo/P/EnESWB8djUiftrSfc1pC/41ipvTrd862cD3pCQ52oAdu0Aom6CjamusJGPx9kY
-        LYWWCDQimAH6BUCA==
-From:   "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
+        bh=yKCyVZ17DkWWOeoDYMPHKFx4KyBogrF+pRNES4m/olI=;
+        b=YeHslwAn97vy8JaOMfJ2Cs5KQcr6jYV0oyFabeo6cH72U+CXw4r+ixv1qemZhGQ4k0+bb4
+        HA+9ugYb/dm6SPDQ==
+From:   "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/bugs: Reset speculation control settings on init
-Cc:     Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Breno Leitao <leitao@debian.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20221128153148.1129350-1-leitao@debian.org>
-References: <20221128153148.1129350-1-leitao@debian.org>
+Subject: [tip: x86/cpu] x86/gsseg: Move load_gs_index() to its own new header file
+Cc:     "H. Peter Anvin (Intel)" <hpa@zytor.com>,
+        Xin Li <xin3.li@intel.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230112072032.35626-5-xin3.li@intel.com>
+References: <20230112072032.35626-5-xin3.li@intel.com>
 MIME-Version: 1.0
-Message-ID: <167352011025.4906.15940595409237822889.tip-bot2@tip-bot2>
+Message-ID: <167352579260.4906.893581523646809362.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,74 +66,165 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     0125acda7d76b943ca55811df40ed6ec0ecf670f
-Gitweb:        https://git.kernel.org/tip/0125acda7d76b943ca55811df40ed6ec0ecf670f
-Author:        Breno Leitao <leitao@debian.org>
-AuthorDate:    Mon, 28 Nov 2022 07:31:48 -08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 12 Jan 2023 11:37:01 +01:00
+Commit-ID:     ae53fa18703000f507107df43efd1168a0365361
+Gitweb:        https://git.kernel.org/tip/ae53fa18703000f507107df43efd1168a0365361
+Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
+AuthorDate:    Wed, 11 Jan 2023 23:20:31 -08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 12 Jan 2023 13:06:36 +01:00
 
-x86/bugs: Reset speculation control settings on init
+x86/gsseg: Move load_gs_index() to its own new header file
 
-Currently, x86_spec_ctrl_base is read at boot time and speculative bits
-are set if Kconfig items are enabled. For example, IBRS is enabled if
-CONFIG_CPU_IBRS_ENTRY is configured, etc. These MSR bits are not cleared
-if the mitigations are disabled.
+GS is a special segment on x86_64, move load_gs_index() to its own new
+header file to simplify header inclusion.
 
-This is a problem when kexec-ing a kernel that has the mitigation
-disabled from a kernel that has the mitigation enabled. In this case,
-the MSR bits are not cleared during the new kernel boot. As a result,
-this might have some performance degradation that is hard to pinpoint.
+No change in functionality.
 
-This problem does not happen if the machine is (hard) rebooted because
-the bit will be cleared by default.
-
-  [ bp: Massage. ]
-
-Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20221128153148.1129350-1-leitao@debian.org
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Xin Li <xin3.li@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230112072032.35626-5-xin3.li@intel.com
 ---
- arch/x86/include/asm/msr-index.h |  4 ++++
- arch/x86/kernel/cpu/bugs.c       | 10 +++++++++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/gsseg.h         | 41 +++++++++++++++++++++++++++-
+ arch/x86/include/asm/mmu_context.h   |  1 +-
+ arch/x86/include/asm/special_insns.h | 21 +--------------
+ arch/x86/kernel/paravirt.c           |  1 +-
+ arch/x86/kernel/signal_32.c          |  1 +-
+ arch/x86/kernel/tls.c                |  1 +-
+ 6 files changed, 45 insertions(+), 21 deletions(-)
+ create mode 100644 arch/x86/include/asm/gsseg.h
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 37ff475..cb359d6 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -49,6 +49,10 @@
- #define SPEC_CTRL_RRSBA_DIS_S_SHIFT	6	   /* Disable RRSBA behavior */
- #define SPEC_CTRL_RRSBA_DIS_S		BIT(SPEC_CTRL_RRSBA_DIS_S_SHIFT)
- 
-+/* A mask for bits which the kernel toggles when controlling mitigations */
-+#define SPEC_CTRL_MITIGATIONS_MASK	(SPEC_CTRL_IBRS | SPEC_CTRL_STIBP | SPEC_CTRL_SSBD \
-+							| SPEC_CTRL_RRSBA_DIS_S)
+diff --git a/arch/x86/include/asm/gsseg.h b/arch/x86/include/asm/gsseg.h
+new file mode 100644
+index 0000000..d15577c
+--- /dev/null
++++ b/arch/x86/include/asm/gsseg.h
+@@ -0,0 +1,41 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _ASM_X86_GSSEG_H
++#define _ASM_X86_GSSEG_H
 +
- #define MSR_IA32_PRED_CMD		0x00000049 /* Prediction Command */
- #define PRED_CMD_IBPB			BIT(0)	   /* Indirect Branch Prediction Barrier */
- 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 19e1ce0..5f33704 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -145,9 +145,17 @@ void __init check_bugs(void)
- 	 * have unknown values. AMD64_LS_CFG MSR is cached in the early AMD
- 	 * init code as it is not enumerated and depends on the family.
- 	 */
--	if (boot_cpu_has(X86_FEATURE_MSR_SPEC_CTRL))
-+	if (cpu_feature_enabled(X86_FEATURE_MSR_SPEC_CTRL)) {
- 		rdmsrl(MSR_IA32_SPEC_CTRL, x86_spec_ctrl_base);
- 
-+		/*
-+		 * Previously running kernel (kexec), may have some controls
-+		 * turned ON. Clear them and let the mitigations setup below
-+		 * rediscover them based on configuration.
-+		 */
-+		x86_spec_ctrl_base &= ~SPEC_CTRL_MITIGATIONS_MASK;
-+	}
++#include <linux/types.h>
 +
- 	/* Select the proper CPU mitigations before patching alternatives: */
- 	spectre_v1_select_mitigation();
- 	spectre_v2_select_mitigation();
++#include <asm/asm.h>
++#include <asm/cpufeature.h>
++#include <asm/alternative.h>
++#include <asm/processor.h>
++#include <asm/nops.h>
++
++#ifdef CONFIG_X86_64
++
++extern asmlinkage void asm_load_gs_index(u16 selector);
++
++static inline void native_load_gs_index(unsigned int selector)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	asm_load_gs_index(selector);
++	local_irq_restore(flags);
++}
++
++#endif /* CONFIG_X86_64 */
++
++#ifndef CONFIG_PARAVIRT_XXL
++
++static inline void load_gs_index(unsigned int selector)
++{
++#ifdef CONFIG_X86_64
++	native_load_gs_index(selector);
++#else
++	loadsegment(gs, selector);
++#endif
++}
++
++#endif /* CONFIG_PARAVIRT_XXL */
++
++#endif /* _ASM_X86_GSSEG_H */
+diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
+index b8d40dd..e01aa74 100644
+--- a/arch/x86/include/asm/mmu_context.h
++++ b/arch/x86/include/asm/mmu_context.h
+@@ -12,6 +12,7 @@
+ #include <asm/tlbflush.h>
+ #include <asm/paravirt.h>
+ #include <asm/debugreg.h>
++#include <asm/gsseg.h>
+ 
+ extern atomic64_t last_mm_ctx_id;
+ 
+diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
+index a71d0e8..cfd9499 100644
+--- a/arch/x86/include/asm/special_insns.h
++++ b/arch/x86/include/asm/special_insns.h
+@@ -120,17 +120,6 @@ static inline void native_wbinvd(void)
+ 	asm volatile("wbinvd": : :"memory");
+ }
+ 
+-extern asmlinkage void asm_load_gs_index(u16 selector);
+-
+-static inline void native_load_gs_index(unsigned int selector)
+-{
+-	unsigned long flags;
+-
+-	local_irq_save(flags);
+-	asm_load_gs_index(selector);
+-	local_irq_restore(flags);
+-}
+-
+ static inline unsigned long __read_cr4(void)
+ {
+ 	return native_read_cr4();
+@@ -184,16 +173,6 @@ static inline void wbinvd(void)
+ 	native_wbinvd();
+ }
+ 
+-
+-static inline void load_gs_index(unsigned int selector)
+-{
+-#ifdef CONFIG_X86_64
+-	native_load_gs_index(selector);
+-#else
+-	loadsegment(gs, selector);
+-#endif
+-}
+-
+ #endif /* CONFIG_PARAVIRT_XXL */
+ 
+ static inline void clflush(volatile void *__p)
+diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
+index 327757a..bdc886c 100644
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -32,6 +32,7 @@
+ #include <asm/special_insns.h>
+ #include <asm/tlb.h>
+ #include <asm/io_bitmap.h>
++#include <asm/gsseg.h>
+ 
+ /*
+  * nop stub, which must not clobber anything *including the stack* to
+diff --git a/arch/x86/kernel/signal_32.c b/arch/x86/kernel/signal_32.c
+index 2553136..bb4f3f3 100644
+--- a/arch/x86/kernel/signal_32.c
++++ b/arch/x86/kernel/signal_32.c
+@@ -31,6 +31,7 @@
+ #include <asm/sigframe.h>
+ #include <asm/sighandling.h>
+ #include <asm/smap.h>
++#include <asm/gsseg.h>
+ 
+ #ifdef CONFIG_IA32_EMULATION
+ #include <asm/ia32_unistd.h>
+diff --git a/arch/x86/kernel/tls.c b/arch/x86/kernel/tls.c
+index 3c883e0..3ffbab0 100644
+--- a/arch/x86/kernel/tls.c
++++ b/arch/x86/kernel/tls.c
+@@ -12,6 +12,7 @@
+ #include <asm/ldt.h>
+ #include <asm/processor.h>
+ #include <asm/proto.h>
++#include <asm/gsseg.h>
+ 
+ #include "tls.h"
+ 
