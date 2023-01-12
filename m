@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54507666DD4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Jan 2023 10:12:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09458666FE1
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Jan 2023 11:40:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239965AbjALJMu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Jan 2023 04:12:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56656 "EHLO
+        id S234757AbjALKkh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Jan 2023 05:40:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239952AbjALJKj (ORCPT
+        with ESMTP id S236584AbjALKji (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Jan 2023 04:10:39 -0500
+        Thu, 12 Jan 2023 05:39:38 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D895AE48;
-        Thu, 12 Jan 2023 01:06:46 -0800 (PST)
-Date:   Thu, 12 Jan 2023 09:06:44 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FA2762F6;
+        Thu, 12 Jan 2023 02:34:15 -0800 (PST)
+Date:   Thu, 12 Jan 2023 10:34:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673514405;
+        s=2020; t=1673519653;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IL5ZIP9DYWv2XGsGuDCylsAv4oLuc8Ydy6IeN3eeYd4=;
-        b=gMBriOPkAjWzM9xfLa3A64Yd5U4lcLMC6VczYi2ZjqqZYkEBXE3sPgQtkvi/N7O2tH19yP
-        sJJSaHpdLvFutSM33EimXj9jtprToVStt7CTkF23zTrFHxMpLk3dmpJvpDiwjRSqk5YLdg
-        qP3fQsSWCDfF3nohundfiOeP+OS7e+xyng1CBYjRLDkTI90r878h0sw1pKjKbDwhF3xgv7
-        LBFF8xnDN/6HgPljCm7VcWTdMe5RLPL2qPgN8YqCY9DvPsf1soY9aFLkSvDoZzHpgsLt1e
-        E9L5tBSi8JZcGrhy3dqAOWkd3CfK8hdNWyOBhloe/3d/fO1XTwvf4Ns6YYdRPQ==
+        bh=HToTxnz9S15tHok02madK+uiew5TU6onPq4bHfE8d2A=;
+        b=nOz4T+TL7Vd238tovZ3AnAwX3NTL85Fw0mGTGmkM5fJphH02+/OFrTKsy6xg2IOlhhJR7M
+        PUze760DEZDJP6sXF5kTOVmJGrHk20eBFfht717jaID0i5WuA7mtMvxCLugIm82p8tL95s
+        eqP8cXajaDi63oaw3rUNKCh3Ssmo3BEzCJdu4HMsQZgg1CICZDtzd6EOXMOGUdn6X9WJ1z
+        rqaksxh0BViQ59apgAKtASHyYCw0SCMVNJ5Acm9sQbtIJAOqD2NsdCoFg0nlhzyG5y/0yv
+        khFWnQFQk4K06LPXqTOJFHSUZdf641kxu2TogXtthWEDWiEkQEklOeJd5NlCjQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673514405;
+        s=2020e; t=1673519653;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IL5ZIP9DYWv2XGsGuDCylsAv4oLuc8Ydy6IeN3eeYd4=;
-        b=6Ithw1n9crRy+7vgHkI2hSAbatOvGxTYOQlxN9Qvf71fFnacFl2sJukVIW/ib45gdbUQfP
-        OJwXYT6mmX9m+KDA==
+        bh=HToTxnz9S15tHok02madK+uiew5TU6onPq4bHfE8d2A=;
+        b=YH9JswKSge9L15v7FPBggySzJukch0Ufe4ArJZs/ZIsaJiLgjdHvBSptT8MGoMGXVFq4G9
+        AG/TBr2pS2Y6K9Bw==
 From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -50,7 +50,7 @@ Cc:     Juergen Gross <jgross@suse.com>,
 In-Reply-To: <20230109150922.10578-1-jgross@suse.com>
 References: <20230109150922.10578-1-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <167351440417.4906.2133498085196807325.tip-bot2@tip-bot2>
+Message-ID: <167351965292.4906.12237792371879613660.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,12 +66,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     8a6b240fef388e9c2c40dcb72d142ee781f6432a
-Gitweb:        https://git.kernel.org/tip/8a6b240fef388e9c2c40dcb72d142ee781f6432a
+Commit-ID:     26ce6ec364f18d2915923bc05784084e54a5c4cc
+Gitweb:        https://git.kernel.org/tip/26ce6ec364f18d2915923bc05784084e54a5c4cc
 Author:        Juergen Gross <jgross@suse.com>
 AuthorDate:    Mon, 09 Jan 2023 16:09:22 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 12 Jan 2023 09:48:02 +01:00
+CommitterDate: Thu, 12 Jan 2023 11:22:20 +01:00
 
 x86/mm: fix poking_init() for Xen PV guests
 
@@ -92,14 +92,22 @@ Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Link: https://lkml.kernel.org/r/20230109150922.10578-1-jgross@suse.com
 ---
- arch/x86/mm/init.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/mm/init.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index d398735..5f8ba53 100644
+index d398735..cb258f5 100644
 --- a/arch/x86/mm/init.c
 +++ b/arch/x86/mm/init.c
-@@ -804,6 +804,9 @@ void __init poking_init(void)
+@@ -26,6 +26,7 @@
+ #include <asm/pti.h>
+ #include <asm/text-patching.h>
+ #include <asm/memtype.h>
++#include <asm/paravirt.h>
+ 
+ /*
+  * We need to define the tracepoints somewhere, and tlb.c
+@@ -804,6 +805,9 @@ void __init poking_init(void)
  	poking_mm = mm_alloc();
  	BUG_ON(!poking_mm);
  
