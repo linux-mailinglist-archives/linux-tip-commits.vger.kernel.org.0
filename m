@@ -2,50 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAC70669805
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 14:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB6AF66988A
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 14:32:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241672AbjAMNG7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Jan 2023 08:06:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41268 "EHLO
+        id S240780AbjAMNcm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Jan 2023 08:32:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232818AbjAMNGX (ORCPT
+        with ESMTP id S241135AbjAMNcB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Jan 2023 08:06:23 -0500
+        Fri, 13 Jan 2023 08:32:01 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175F477D0C;
-        Fri, 13 Jan 2023 04:53:53 -0800 (PST)
-Date:   Fri, 13 Jan 2023 12:53:51 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65FC47F449;
+        Fri, 13 Jan 2023 05:23:06 -0800 (PST)
+Date:   Fri, 13 Jan 2023 13:23:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673614431;
+        s=2020; t=1673616184;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uo4Pn34x3mARkiqqYbo0hcHiXCD+oJvRBLIoK4xAgHk=;
-        b=rBevJTUPS7iy3wUmslENJSCuD3oHuKLmnPDbHfoME+hRNRiKa+AZYhQDNVZs/HtRJlyqpR
-        ciSNjYkcLzmRY7r8K270moGNkw6augD/Pqgk7vpd6vhKunXg4lqgJPRFxXbcH067E9EZr4
-        oABlox9fJ7XYAWK+yjZXa29lf/5Sd/b55EO6dTkrTZlqO7znsuD50oG3TUXr8cCZqwnjjv
-        3Y6I+aVF2dpDiEJn/+x/V66gmgnm+XNCY4zhBCVEUF7bcIpcJ5XLx2BfMDQpZt0osue1Bm
-        clgNog8A1+X5wd9vrOEAnVRDLcmoxjOQrQxOAitjsCuNSWLsv8aakAkEVfBmZg==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=a3G1w5pdZU1FIx8tJLnQ2VJQUnMung6oi9cvwhN5A48=;
+        b=HMFMdlMa2JnD0nMC34RVW4wZRkR2Ndqv8a7RO+grDE8FTTe8VGUs5tkAJLX9G9w52Y8/pM
+        jbEzrvWDSjf/tJMiDVy6u3497P8QQ7TjztBTXI8SHMKr6EpvpodKkxvKd/23hY42Cx3lrH
+        uQvOndk3h+PmhBydP8JhSwADhFVD/12KcxQgI1a1BSniezWE74N1kXTHdEWMD+TZx+V+SQ
+        PE06y5RQuXbUjxS8arzXcz8RQVilFyaEqMs23AdxXsgRjhwTIwD+QLW2r1yBjPXgtrnu+Z
+        1jV19eQ+XWHcL9Tp/B4CaKexXQOozmQnJjP0FpVCvqt/+JzBuojDJPRQARQa7g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673614431;
+        s=2020e; t=1673616184;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uo4Pn34x3mARkiqqYbo0hcHiXCD+oJvRBLIoK4xAgHk=;
-        b=n3aNAPVHEm/Ogb1Le9xEcHRdK28QzTTsHodedYe3h46mXZQKjRBKshUBZUU0b44esEgMet
-        rPQgNsIAskPkCcBA==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=a3G1w5pdZU1FIx8tJLnQ2VJQUnMung6oi9cvwhN5A48=;
+        b=kWI3zL47TdDPVvXXnuv/FWfYRl/n00/pbuuGCGCgCnG2d/1zrzTbyOteXv3Az77dD1enIS
+        1DkOU51SXun/AhDA==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/gsseg: Add the new <asm/gsseg.h> header to
- <asm/asm-prototypes.h>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
-        x86@kernel.org
+Subject: [tip: x86/cleanups] x86/cpu: Remove misleading comment
+Cc:     Juergen Gross <jgross@suse.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230113130126.1966-1-jgross@suse.com>
+References: <20230113130126.1966-1-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <167361443119.4906.4984894590925431359.tip-bot2@tip-bot2>
+Message-ID: <167361618361.4906.17805909377526158491.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,39 +63,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     e12ad468c22065a2826b2fc4c11d2113a7975301
-Gitweb:        https://git.kernel.org/tip/e12ad468c22065a2826b2fc4c11d2113a7975301
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 13 Jan 2023 13:43:20 +01:00
+Commit-ID:     d55dcb7384b1234d3caf70c2f8199c4184502ff9
+Gitweb:        https://git.kernel.org/tip/d55dcb7384b1234d3caf70c2f8199c4184502ff9
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Fri, 13 Jan 2023 14:01:26 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 13 Jan 2023 13:43:20 +01:00
+CommitterDate: Fri, 13 Jan 2023 14:20:20 +01:00
 
-x86/gsseg: Add the new <asm/gsseg.h> header to <asm/asm-prototypes.h>
+x86/cpu: Remove misleading comment
 
-Module build needs to be able to pick up the C prototype:
+The comment of the "#endif" after setup_disable_pku() is wrong.
 
-  WARNING: modpost: EXPORT symbol "asm_load_gs_index" [vmlinux] version generation failed, symbol will not be versioned.
-  Is "asm_load_gs_index" prototyped in <asm/asm-prototypes.h>?
+As the related #ifdef is only a few lines above, just remove the
+comment.
 
-Fixes: ae53fa187030 ("x86/gsseg: Move load_gs_index() to its own new header file")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org
+Link: https://lore.kernel.org/r/20230113130126.1966-1-jgross@suse.com
 ---
- arch/x86/include/asm/asm-prototypes.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
-index 8f80de6..b1a98fa 100644
---- a/arch/x86/include/asm/asm-prototypes.h
-+++ b/arch/x86/include/asm/asm-prototypes.h
-@@ -12,6 +12,7 @@
- #include <asm/special_insns.h>
- #include <asm/preempt.h>
- #include <asm/asm.h>
-+#include <asm/gsseg.h>
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 9cfca3d..7670397 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -567,7 +567,7 @@ static __init int setup_disable_pku(char *arg)
+ 	return 1;
+ }
+ __setup("nopku", setup_disable_pku);
+-#endif /* CONFIG_X86_64 */
++#endif
  
- #ifndef CONFIG_X86_CMPXCHG64
- extern void cmpxchg8b_emu(void);
+ #ifdef CONFIG_X86_KERNEL_IBT
+ 
