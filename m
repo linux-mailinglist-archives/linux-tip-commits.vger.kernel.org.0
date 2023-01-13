@@ -2,49 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE0D6669725
+	by mail.lfdr.de (Postfix) with ESMTP id 346BA669723
 	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:33:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241490AbjAMMdA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Jan 2023 07:33:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35468 "EHLO
+        id S241493AbjAMMc7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Jan 2023 07:32:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241244AbjAMMcP (ORCPT
+        with ESMTP id S241271AbjAMMcO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Jan 2023 07:32:15 -0500
+        Fri, 13 Jan 2023 07:32:14 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1645551D3;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EBA95472B;
         Fri, 13 Jan 2023 04:31:12 -0800 (PST)
 Date:   Fri, 13 Jan 2023 12:31:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673613070;
+        s=2020; t=1673613069;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZScG3rP7uVfoE13aE9dCeQr5jYORwblUn6nax2uOQMs=;
-        b=JsqQPVy8Pkzg6i79GvY1yWIAc0qk4Ozm7KqSJlla/hoTlB7/yzMRgVDu2CazIluvLzVSBe
-        s+YRAJIA3mZXS4cogwTThmTpfLlpoFpqkaFNU4rNvcyz4w0zRSAXZnvqlLDySyh5Gf7q+K
-        tTDlIG/F/lNpwUGJYDEDijaHXNU43xiiROskTmSnVsbO4ypKai2YpYGe50fynKcA/cDQyE
-        FeGuHIe4Gy4EbFTq7DGUtpz6EoUOMFx7WAn1lsmbEuUSMLzrWwXb40FzujyPYlgSeX+aab
-        YeStYggeLRBKLoFFMOWg6i2M1TL/PyknJrngietPhIsnnFD/YjJEpki97mU9zQ==
+        bh=tU7xkA9KuMwEryWI7gO1xNJIVv2jk6wF1JG0bF/3e24=;
+        b=hiMLFCuEVVfG7LDn1Sv1jtrXhx/ISEX5W/w1gfoG9hkoFcJ39vkHQFFno8GFXxjSFMdQUr
+        JBn8Y8+ADaz/AACR9YPE3kmK/+4Vb1HPo9HAmfvl7mTgOLwjTy3kTa+h74ei1tM6MTMVlb
+        OnV0FoBq/512UhFBmWya+jxDb/mKlwY8BmNaq4k2oNsfBqppdkkNFuMuzpDDLCS/c21vtK
+        NbidV/+GVHm8uU4vO1XYX9lZ7okouI2B0IADgErldX4tlBVsZaOnMfxo+0BGtPc1Xl/L2r
+        rlcqVyeX+BHrc136EQHO5XI+G7oPcmWiS6J1qmlS2U6LS+iem3SuLFlCFdd/oA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673613070;
+        s=2020e; t=1673613069;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZScG3rP7uVfoE13aE9dCeQr5jYORwblUn6nax2uOQMs=;
-        b=lQE4Cecwc7EuMYAaxXEUgLnTbw+C22J/PDtCaVJE368QT8o+mGqneE7NA8pH6bdzVRT/mI
-        4WLSeWDCZyf/FlBg==
+        bh=tU7xkA9KuMwEryWI7gO1xNJIVv2jk6wF1JG0bF/3e24=;
+        b=tFfmIOso4RExrUJtxR01ctfxfFB9EiysLiSMV6VFVXN7Cuh0dxbIabl2e2euo6yJwJmerN
+        KalDBu2d58Ij/UAw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] cpuidle, sched: Remove instrumentation from
- TIF_{POLLING_NRFLAG,NEED_RESCHED}
+Subject: [tip: sched/core] cpuidle, tdx: Make TDX code noinstr clean
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
         Tony Lindgren <tony@atomide.com>,
@@ -52,10 +51,10 @@ Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230112195540.988741683@infradead.org>
-References: <20230112195540.988741683@infradead.org>
+In-Reply-To: <20230112195541.111485720@infradead.org>
+References: <20230112195541.111485720@infradead.org>
 MIME-Version: 1.0
-Message-ID: <167361306962.4906.12963081149493363429.tip-bot2@tip-bot2>
+Message-ID: <167361306922.4906.15745599332550388182.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,44 +70,27 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     e4df1511e1f4bcaa0d590aa7bbffe8bbbd6dfb49
-Gitweb:        https://git.kernel.org/tip/e4df1511e1f4bcaa0d590aa7bbffe8bbbd6dfb49
+Commit-ID:     c3982c1a36f70bd4521a9852246ea50105912084
+Gitweb:        https://git.kernel.org/tip/c3982c1a36f70bd4521a9852246ea50105912084
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 12 Jan 2023 20:43:41 +01:00
+AuthorDate:    Thu, 12 Jan 2023 20:43:43 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 13 Jan 2023 11:48:16 +01:00
 
-cpuidle, sched: Remove instrumentation from TIF_{POLLING_NRFLAG,NEED_RESCHED}
+cpuidle, tdx: Make TDX code noinstr clean
 
-objtool pointed out that various idle-TIF management methods
-have instrumentation:
+objtool found a few cases where this code called out into instrumented
+code:
 
-  vmlinux.o: warning: objtool: mwait_idle+0x5: call to current_set_polling_and_test() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: acpi_processor_ffh_cstate_enter+0xc5: call to current_set_polling_and_test() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: cpu_idle_poll.isra.0+0x73: call to test_ti_thread_flag() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle+0xbc: call to current_set_polling_and_test() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_irq+0xea: call to current_set_polling_and_test() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_s2idle+0xb4: call to current_set_polling_and_test() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: __halt+0x2c: call to hcall_func.constprop.0() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: __halt+0x3f: call to __tdx_hypercall() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: __tdx_hypercall+0x66: call to __tdx_hypercall_failed() leaves .noinstr.text section
 
-  vmlinux.o: warning: objtool: intel_idle+0xa6: call to current_clr_polling() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_irq+0xbf: call to current_clr_polling() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_s2idle+0xa1: call to current_clr_polling() leaves .noinstr.text section
+Fix it by:
 
-  vmlinux.o: warning: objtool: mwait_idle+0xe: call to __current_set_polling() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: acpi_processor_ffh_cstate_enter+0xc5: call to __current_set_polling() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: cpu_idle_poll.isra.0+0x73: call to test_ti_thread_flag() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle+0xbc: call to __current_set_polling() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_irq+0xea: call to __current_set_polling() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_s2idle+0xb4: call to __current_set_polling() leaves .noinstr.text section
-
-  vmlinux.o: warning: objtool: cpu_idle_poll.isra.0+0x73: call to test_ti_thread_flag() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_s2idle+0x73: call to test_ti_thread_flag.constprop.0() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_irq+0x91: call to test_ti_thread_flag.constprop.0() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle+0x78: call to test_ti_thread_flag.constprop.0() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: acpi_safe_halt+0xf: call to test_ti_thread_flag.constprop.0() leaves .noinstr.text section
-
-Remove the instrumentation, because these methods are used in low-level
-cpuidle code moving between states, that should not be instrumented.
+  - moving TDX tdcall assembly methods into .noinstr.text (they are already noistr-clean)
+  - marking __tdx_hypercall_failed() as 'noinstr'
+  - annotating hcall_func() as __always_inline
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
@@ -116,106 +98,59 @@ Tested-by: Tony Lindgren <tony@atomide.com>
 Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230112195540.988741683@infradead.org
+Link: https://lore.kernel.org/r/20230112195541.111485720@infradead.org
 ---
- include/linux/sched/idle.h  | 40 +++++++++++++++++++++++++++---------
- include/linux/thread_info.h | 18 +++++++++++++++-
- 2 files changed, 47 insertions(+), 11 deletions(-)
+ arch/x86/boot/compressed/vmlinux.lds.S | 1 +
+ arch/x86/coco/tdx/tdcall.S             | 2 ++
+ arch/x86/coco/tdx/tdx.c                | 5 +++--
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sched/idle.h b/include/linux/sched/idle.h
-index d73d314..478084f 100644
---- a/include/linux/sched/idle.h
-+++ b/include/linux/sched/idle.h
-@@ -23,12 +23,37 @@ static inline void wake_up_if_idle(int cpu) { }
+diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
+index 112b237..b22f34b 100644
+--- a/arch/x86/boot/compressed/vmlinux.lds.S
++++ b/arch/x86/boot/compressed/vmlinux.lds.S
+@@ -34,6 +34,7 @@ SECTIONS
+ 		_text = .; 	/* Text */
+ 		*(.text)
+ 		*(.text.*)
++		*(.noinstr.text)
+ 		_etext = . ;
+ 	}
+ 	.rodata : {
+diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
+index 508c173..ad0d51f 100644
+--- a/arch/x86/coco/tdx/tdcall.S
++++ b/arch/x86/coco/tdx/tdcall.S
+@@ -31,6 +31,8 @@
+ 					  TDX_R12 | TDX_R13 | \
+ 					  TDX_R14 | TDX_R15 )
+ 
++.section .noinstr.text, "ax"
++
+ /*
+  * __tdx_module_call()  - Used by TDX guests to request services from
+  * the TDX module (does not include VMM services) using TDCALL instruction.
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 8804174..70e8015 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -64,8 +64,9 @@ static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
+ }
+ 
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+-void __tdx_hypercall_failed(void)
++noinstr void __tdx_hypercall_failed(void)
+ {
++	instrumentation_begin();
+ 	panic("TDVMCALL failed. TDX module bug?");
+ }
+ 
+@@ -75,7 +76,7 @@ void __tdx_hypercall_failed(void)
+  * Reusing the KVM EXIT_REASON macros makes it easier to connect the host and
+  * guest sides of these calls.
   */
- #ifdef TIF_POLLING_NRFLAG
- 
--static inline void __current_set_polling(void)
-+#ifdef _ASM_GENERIC_BITOPS_INSTRUMENTED_ATOMIC_H
-+
-+static __always_inline void __current_set_polling(void)
+-static u64 hcall_func(u64 exit_reason)
++static __always_inline u64 hcall_func(u64 exit_reason)
  {
--	set_thread_flag(TIF_POLLING_NRFLAG);
-+	arch_set_bit(TIF_POLLING_NRFLAG,
-+		     (unsigned long *)(&current_thread_info()->flags));
+ 	return exit_reason;
  }
- 
--static inline bool __must_check current_set_polling_and_test(void)
-+static __always_inline void __current_clr_polling(void)
-+{
-+	arch_clear_bit(TIF_POLLING_NRFLAG,
-+		       (unsigned long *)(&current_thread_info()->flags));
-+}
-+
-+#else
-+
-+static __always_inline void __current_set_polling(void)
-+{
-+	set_bit(TIF_POLLING_NRFLAG,
-+		(unsigned long *)(&current_thread_info()->flags));
-+}
-+
-+static __always_inline void __current_clr_polling(void)
-+{
-+	clear_bit(TIF_POLLING_NRFLAG,
-+		  (unsigned long *)(&current_thread_info()->flags));
-+}
-+
-+#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_ATOMIC_H */
-+
-+static __always_inline bool __must_check current_set_polling_and_test(void)
- {
- 	__current_set_polling();
- 
-@@ -41,12 +66,7 @@ static inline bool __must_check current_set_polling_and_test(void)
- 	return unlikely(tif_need_resched());
- }
- 
--static inline void __current_clr_polling(void)
--{
--	clear_thread_flag(TIF_POLLING_NRFLAG);
--}
--
--static inline bool __must_check current_clr_polling_and_test(void)
-+static __always_inline bool __must_check current_clr_polling_and_test(void)
- {
- 	__current_clr_polling();
- 
-@@ -73,7 +93,7 @@ static inline bool __must_check current_clr_polling_and_test(void)
- }
- #endif
- 
--static inline void current_clr_polling(void)
-+static __always_inline void current_clr_polling(void)
- {
- 	__current_clr_polling();
- 
-diff --git a/include/linux/thread_info.h b/include/linux/thread_info.h
-index 9f392ec..c026468 100644
---- a/include/linux/thread_info.h
-+++ b/include/linux/thread_info.h
-@@ -177,7 +177,23 @@ static __always_inline unsigned long read_ti_thread_flags(struct thread_info *ti
- 	clear_ti_thread_flag(task_thread_info(t), TIF_##fl)
- #endif /* !CONFIG_GENERIC_ENTRY */
- 
--#define tif_need_resched() test_thread_flag(TIF_NEED_RESCHED)
-+#ifdef _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H
-+
-+static __always_inline bool tif_need_resched(void)
-+{
-+	return arch_test_bit(TIF_NEED_RESCHED,
-+			     (unsigned long *)(&current_thread_info()->flags));
-+}
-+
-+#else
-+
-+static __always_inline bool tif_need_resched(void)
-+{
-+	return test_bit(TIF_NEED_RESCHED,
-+			(unsigned long *)(&current_thread_info()->flags));
-+}
-+
-+#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H */
- 
- #ifndef CONFIG_HAVE_ARCH_WITHIN_STACK_FRAMES
- static inline int arch_within_stack_frames(const void * const stack,
