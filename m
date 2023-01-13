@@ -2,56 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7E9F66970D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:32:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB769669713
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:33:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240229AbjAMMcd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Jan 2023 07:32:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33944 "EHLO
+        id S241431AbjAMMco (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Jan 2023 07:32:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241253AbjAMMcH (ORCPT
+        with ESMTP id S239679AbjAMMcJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Jan 2023 07:32:07 -0500
+        Fri, 13 Jan 2023 07:32:09 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5267743DA2;
-        Fri, 13 Jan 2023 04:31:07 -0800 (PST)
-Date:   Fri, 13 Jan 2023 12:31:05 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 216324FCD5;
+        Fri, 13 Jan 2023 04:31:10 -0800 (PST)
+Date:   Fri, 13 Jan 2023 12:31:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673613065;
+        s=2020; t=1673613066;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DQAP4u2bJ+bA1BJFeoVX4LmTMUq5A74Q/vTb8/fHtpA=;
-        b=DPEoiaC1sh/1YSPEie8n5W+mejzUObKFLWD1jlRVjw5cO51HfHtQfR+J+cVtoHuf8benBq
-        q0Lcu2xdj28E87/xRsIRAFPs8Ar3oqKiRuJrUcY94TsQrRo8r8s/57Z/4Cb/AZ+2dTRtkL
-        kmxyU8s4KxmFQp/5Yv2tkBU/Z+Fyp6hPxsJDCtoypFnbIlqAPZjgyckOhp9nVI+mM0AeWY
-        F0HHTQNCUVOz1NiUSb08EDqR9ZoL1Ay1nkBMtNex+eAdaPgKOWGOBODYI6TeN2qBTFBkPh
-        3AlLxcD9CvvU9XzlUQ7i7Skay9gQW63D1h56bpK3PVuiEpHUrjQjSAnnEKPSfw==
+        bh=wDbKxqGYeN5BCJlyVJxQ3gTA0fCKqletaO/hYXAUUnc=;
+        b=vlO/ICev8KZN9TQl3yzW+cLGUJp6hWkhzFsvaQKQ67Ul6emOvti3t5IRszCEc23vlNWV1t
+        kuUDyzaPQfCDf7ydIY7Q1kCcALg4MUTHHK8GeUwK7rysULSrVUMXAklzt0JAvF8weh/YG4
+        Rk2wrsZAHDOPIBxn8MtzJpq7N/YAk5Q3h0HqCPJrf/CFvAkvnOo/lvtd1k4XVBqdVyXfb4
+        5nLMJ8ZRTC5wN3v2gEk1gNyZqUr092bB9jlU/yQ16h+hCUh5fpckB412XmJOinfZO6LkOv
+        cNSAqJbk2c66aaghjAbAD3qNEPXk/I9iY68bnIp1+grl0TOAELxMGQy63EiIeA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673613065;
+        s=2020e; t=1673613066;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DQAP4u2bJ+bA1BJFeoVX4LmTMUq5A74Q/vTb8/fHtpA=;
-        b=BUQqK1S9WXVcgcEEq39nLtpoa+jkUgLH6qGqjOStBhca5nndP0GkmlT/jW4GVc62tM4+KS
-        hhaO7Mjjil3/t3Cw==
+        bh=wDbKxqGYeN5BCJlyVJxQ3gTA0fCKqletaO/hYXAUUnc=;
+        b=vs9samWpAq+oNZD3JEF5YPfkZiLzQC92ChC09IxWdgbv3sJU6tNvWZBJ5sgfRlZbHHTQKU
+        hZFlhv22R2fnG4BQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] cpuidle, arch: Mark all ct_cpuidle_enter() callers
- __cpuidle
+Subject: [tip: sched/core] entry, kasan, x86: Disallow overriding mem*() functions
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        Ingo Molnar <mingo@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230112195542.274096325@infradead.org>
-References: <20230112195542.274096325@infradead.org>
+In-Reply-To: <20230112195542.028523143@infradead.org>
+References: <20230112195542.028523143@infradead.org>
 MIME-Version: 1.0
-Message-ID: <167361306553.4906.5847045361244514962.tip-bot2@tip-bot2>
+Message-ID: <167361306621.4906.6454025554442390032.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,263 +70,195 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     69e26b4f43ed396868c6e7645f9eb06c3a0d2fee
-Gitweb:        https://git.kernel.org/tip/69e26b4f43ed396868c6e7645f9eb06c3a0d2fee
+Commit-ID:     69d4c0d3218692ffa56b0e1b9c76c50c699d7044
+Gitweb:        https://git.kernel.org/tip/69d4c0d3218692ffa56b0e1b9c76c50c699d7044
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 12 Jan 2023 20:44:02 +01:00
+AuthorDate:    Thu, 12 Jan 2023 20:43:58 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 13 Jan 2023 11:48:17 +01:00
 
-cpuidle, arch: Mark all ct_cpuidle_enter() callers __cpuidle
+entry, kasan, x86: Disallow overriding mem*() functions
 
-For all cpuidle drivers that use CPUIDLE_FLAG_RCU_IDLE, ensure that
-all functions that call ct_cpuidle_enter() are marked __cpuidle.
+KASAN cannot just hijack the mem*() functions, it needs to emit
+__asan_mem*() variants if it wants instrumentation (other sanitizers
+already do this).
 
-( due to lack of noinstr validation on these platforms it is entirely
-  possible this isn't complete )
+  vmlinux.o: warning: objtool: sync_regs+0x24: call to memcpy() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: vc_switch_off_ist+0xbe: call to memcpy() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: fixup_bad_iret+0x36: call to memset() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: __sev_get_ghcb+0xa0: call to memcpy() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: __sev_put_ghcb+0x35: call to memcpy() leaves .noinstr.text section
+
+Remove the weak aliases to ensure nobody hijacks these functions and
+add them to the noinstr section.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230112195542.274096325@infradead.org
+Tested-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20230112195542.028523143@infradead.org
 ---
- arch/arm/mach-imx/cpuidle-imx6q.c         |  4 ++--
- arch/arm/mach-imx/cpuidle-imx6sx.c        |  4 ++--
- arch/arm/mach-omap2/omap-mpuss-lowpower.c |  4 ++--
- arch/arm/mach-omap2/pm34xx.c              |  2 +-
- arch/arm64/kernel/cpuidle.c               |  2 +-
- drivers/cpuidle/cpuidle-arm.c             |  4 ++--
- drivers/cpuidle/cpuidle-big_little.c      |  4 ++--
- drivers/cpuidle/cpuidle-mvebu-v7.c        |  6 +++---
- drivers/cpuidle/cpuidle-psci.c            | 17 ++++++-----------
- drivers/cpuidle/cpuidle-qcom-spm.c        |  4 ++--
- drivers/cpuidle/cpuidle-riscv-sbi.c       | 10 +++++-----
- drivers/cpuidle/cpuidle-tegra.c           | 10 +++++-----
- 12 files changed, 33 insertions(+), 38 deletions(-)
+ arch/x86/lib/memcpy_64.S  |  5 ++---
+ arch/x86/lib/memmove_64.S |  4 +++-
+ arch/x86/lib/memset_64.S  |  4 +++-
+ mm/kasan/kasan.h          |  4 ++++-
+ mm/kasan/shadow.c         | 38 ++++++++++++++++++++++++++++++++++++++-
+ tools/objtool/check.c     |  3 +++-
+ 6 files changed, 53 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-imx/cpuidle-imx6q.c b/arch/arm/mach-imx/cpuidle-imx6q.c
-index c24c78a..2b0d316 100644
---- a/arch/arm/mach-imx/cpuidle-imx6q.c
-+++ b/arch/arm/mach-imx/cpuidle-imx6q.c
-@@ -17,8 +17,8 @@
- static int num_idle_cpus = 0;
- static DEFINE_RAW_SPINLOCK(cpuidle_lock);
+diff --git a/arch/x86/lib/memcpy_64.S b/arch/x86/lib/memcpy_64.S
+index dd8cd88..a640176 100644
+--- a/arch/x86/lib/memcpy_64.S
++++ b/arch/x86/lib/memcpy_64.S
+@@ -8,7 +8,7 @@
+ #include <asm/alternative.h>
+ #include <asm/export.h>
  
--static int imx6q_enter_wait(struct cpuidle_device *dev,
--			    struct cpuidle_driver *drv, int index)
-+static __cpuidle int imx6q_enter_wait(struct cpuidle_device *dev,
-+				      struct cpuidle_driver *drv, int index)
- {
- 	raw_spin_lock(&cpuidle_lock);
- 	if (++num_idle_cpus == num_online_cpus())
-diff --git a/arch/arm/mach-imx/cpuidle-imx6sx.c b/arch/arm/mach-imx/cpuidle-imx6sx.c
-index 479f062..83c5cbd 100644
---- a/arch/arm/mach-imx/cpuidle-imx6sx.c
-+++ b/arch/arm/mach-imx/cpuidle-imx6sx.c
-@@ -30,8 +30,8 @@ static int imx6sx_idle_finish(unsigned long val)
- 	return 0;
+-.pushsection .noinstr.text, "ax"
++.section .noinstr.text, "ax"
+ 
+ /*
+  * We build a jump to memcpy_orig by default which gets NOPped out on
+@@ -43,7 +43,7 @@ SYM_TYPED_FUNC_START(__memcpy)
+ SYM_FUNC_END(__memcpy)
+ EXPORT_SYMBOL(__memcpy)
+ 
+-SYM_FUNC_ALIAS_WEAK(memcpy, __memcpy)
++SYM_FUNC_ALIAS(memcpy, __memcpy)
+ EXPORT_SYMBOL(memcpy)
+ 
+ /*
+@@ -184,4 +184,3 @@ SYM_FUNC_START_LOCAL(memcpy_orig)
+ 	RET
+ SYM_FUNC_END(memcpy_orig)
+ 
+-.popsection
+diff --git a/arch/x86/lib/memmove_64.S b/arch/x86/lib/memmove_64.S
+index 724bbf8..0266186 100644
+--- a/arch/x86/lib/memmove_64.S
++++ b/arch/x86/lib/memmove_64.S
+@@ -13,6 +13,8 @@
+ 
+ #undef memmove
+ 
++.section .noinstr.text, "ax"
++
+ /*
+  * Implement memmove(). This can handle overlap between src and dst.
+  *
+@@ -213,5 +215,5 @@ SYM_FUNC_START(__memmove)
+ SYM_FUNC_END(__memmove)
+ EXPORT_SYMBOL(__memmove)
+ 
+-SYM_FUNC_ALIAS_WEAK(memmove, __memmove)
++SYM_FUNC_ALIAS(memmove, __memmove)
+ EXPORT_SYMBOL(memmove)
+diff --git a/arch/x86/lib/memset_64.S b/arch/x86/lib/memset_64.S
+index fc9ffd3..6143b1a 100644
+--- a/arch/x86/lib/memset_64.S
++++ b/arch/x86/lib/memset_64.S
+@@ -6,6 +6,8 @@
+ #include <asm/alternative.h>
+ #include <asm/export.h>
+ 
++.section .noinstr.text, "ax"
++
+ /*
+  * ISO C memset - set a memory block to a byte value. This function uses fast
+  * string to get better performance than the original function. The code is
+@@ -43,7 +45,7 @@ SYM_FUNC_START(__memset)
+ SYM_FUNC_END(__memset)
+ EXPORT_SYMBOL(__memset)
+ 
+-SYM_FUNC_ALIAS_WEAK(memset, __memset)
++SYM_FUNC_ALIAS(memset, __memset)
+ EXPORT_SYMBOL(memset)
+ 
+ /*
+diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+index ea8cf13..71c1543 100644
+--- a/mm/kasan/kasan.h
++++ b/mm/kasan/kasan.h
+@@ -618,6 +618,10 @@ void __asan_set_shadow_f3(const void *addr, size_t size);
+ void __asan_set_shadow_f5(const void *addr, size_t size);
+ void __asan_set_shadow_f8(const void *addr, size_t size);
+ 
++void *__asan_memset(void *addr, int c, size_t len);
++void *__asan_memmove(void *dest, const void *src, size_t len);
++void *__asan_memcpy(void *dest, const void *src, size_t len);
++
+ void __hwasan_load1_noabort(unsigned long addr);
+ void __hwasan_store1_noabort(unsigned long addr);
+ void __hwasan_load2_noabort(unsigned long addr);
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index 2fba1f5..9826993 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -38,6 +38,12 @@ bool __kasan_check_write(const volatile void *p, unsigned int size)
  }
+ EXPORT_SYMBOL(__kasan_check_write);
  
--static int imx6sx_enter_wait(struct cpuidle_device *dev,
--			    struct cpuidle_driver *drv, int index)
-+static __cpuidle int imx6sx_enter_wait(struct cpuidle_device *dev,
-+				       struct cpuidle_driver *drv, int index)
++#ifndef CONFIG_GENERIC_ENTRY
++/*
++ * CONFIG_GENERIC_ENTRY relies on compiler emitted mem*() calls to not be
++ * instrumented. KASAN enabled toolchains should emit __asan_mem*() functions
++ * for the sites they want to instrument.
++ */
+ #undef memset
+ void *memset(void *addr, int c, size_t len)
  {
- 	imx6_set_lpm(WAIT_UNCLOCKED);
+@@ -68,6 +74,38 @@ void *memcpy(void *dest, const void *src, size_t len)
  
-diff --git a/arch/arm/mach-omap2/omap-mpuss-lowpower.c b/arch/arm/mach-omap2/omap-mpuss-lowpower.c
-index 7f29e17..7ad74db 100644
---- a/arch/arm/mach-omap2/omap-mpuss-lowpower.c
-+++ b/arch/arm/mach-omap2/omap-mpuss-lowpower.c
-@@ -224,8 +224,8 @@ static void __init save_l2x0_context(void)
-  *	2 - CPUx L1 and logic lost + GIC lost: MPUSS OSWR
-  *	3 - CPUx L1 and logic lost + GIC + L2 lost: DEVICE OFF
-  */
--int omap4_enter_lowpower(unsigned int cpu, unsigned int power_state,
--			 bool rcuidle)
-+__cpuidle int omap4_enter_lowpower(unsigned int cpu, unsigned int power_state,
-+				   bool rcuidle)
- {
- 	struct omap4_cpu_pm_info *pm_info = &per_cpu(omap4_pm_info, cpu);
- 	unsigned int save_state = 0, cpu_logic_state = PWRDM_POWER_RET;
-diff --git a/arch/arm/mach-omap2/pm34xx.c b/arch/arm/mach-omap2/pm34xx.c
-index 9856091..6897577 100644
---- a/arch/arm/mach-omap2/pm34xx.c
-+++ b/arch/arm/mach-omap2/pm34xx.c
-@@ -175,7 +175,7 @@ static int omap34xx_do_sram_idle(unsigned long save_state)
- 	return 0;
+ 	return __memcpy(dest, src, len);
  }
++#endif
++
++void *__asan_memset(void *addr, int c, size_t len)
++{
++	if (!kasan_check_range((unsigned long)addr, len, true, _RET_IP_))
++		return NULL;
++
++	return __memset(addr, c, len);
++}
++EXPORT_SYMBOL(__asan_memset);
++
++#ifdef __HAVE_ARCH_MEMMOVE
++void *__asan_memmove(void *dest, const void *src, size_t len)
++{
++	if (!kasan_check_range((unsigned long)src, len, false, _RET_IP_) ||
++	    !kasan_check_range((unsigned long)dest, len, true, _RET_IP_))
++		return NULL;
++
++	return __memmove(dest, src, len);
++}
++EXPORT_SYMBOL(__asan_memmove);
++#endif
++
++void *__asan_memcpy(void *dest, const void *src, size_t len)
++{
++	if (!kasan_check_range((unsigned long)src, len, false, _RET_IP_) ||
++	    !kasan_check_range((unsigned long)dest, len, true, _RET_IP_))
++		return NULL;
++
++	return __memcpy(dest, src, len);
++}
++EXPORT_SYMBOL(__asan_memcpy);
  
--void omap_sram_idle(bool rcuidle)
-+__cpuidle void omap_sram_idle(bool rcuidle)
+ void kasan_poison(const void *addr, size_t size, u8 value, bool init)
  {
- 	/* Variable to tell what needs to be saved and restored
- 	 * in omap_sram_idle*/
-diff --git a/arch/arm64/kernel/cpuidle.c b/arch/arm64/kernel/cpuidle.c
-index 4150e30..41974a1 100644
---- a/arch/arm64/kernel/cpuidle.c
-+++ b/arch/arm64/kernel/cpuidle.c
-@@ -62,7 +62,7 @@ int acpi_processor_ffh_lpi_probe(unsigned int cpu)
- 	return psci_acpi_cpu_init_idle(cpu);
- }
- 
--int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi)
-+__cpuidle int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi)
- {
- 	u32 state = lpi->address;
- 
-diff --git a/drivers/cpuidle/cpuidle-arm.c b/drivers/cpuidle/cpuidle-arm.c
-index 8c75892..7cfb980 100644
---- a/drivers/cpuidle/cpuidle-arm.c
-+++ b/drivers/cpuidle/cpuidle-arm.c
-@@ -31,8 +31,8 @@
-  * Called from the CPUidle framework to program the device to the
-  * specified target state selected by the governor.
-  */
--static int arm_enter_idle_state(struct cpuidle_device *dev,
--				struct cpuidle_driver *drv, int idx)
-+static __cpuidle int arm_enter_idle_state(struct cpuidle_device *dev,
-+					  struct cpuidle_driver *drv, int idx)
- {
- 	/*
- 	 * Pass idle state index to arm_cpuidle_suspend which in turn
-diff --git a/drivers/cpuidle/cpuidle-big_little.c b/drivers/cpuidle/cpuidle-big_little.c
-index 5858db2..74972de 100644
---- a/drivers/cpuidle/cpuidle-big_little.c
-+++ b/drivers/cpuidle/cpuidle-big_little.c
-@@ -122,8 +122,8 @@ static int notrace bl_powerdown_finisher(unsigned long arg)
-  * Called from the CPUidle framework to program the device to the
-  * specified target state selected by the governor.
-  */
--static int bl_enter_powerdown(struct cpuidle_device *dev,
--				struct cpuidle_driver *drv, int idx)
-+static __cpuidle int bl_enter_powerdown(struct cpuidle_device *dev,
-+					struct cpuidle_driver *drv, int idx)
- {
- 	cpu_pm_enter();
- 	ct_cpuidle_enter();
-diff --git a/drivers/cpuidle/cpuidle-mvebu-v7.c b/drivers/cpuidle/cpuidle-mvebu-v7.c
-index 20bfb26..114bd09 100644
---- a/drivers/cpuidle/cpuidle-mvebu-v7.c
-+++ b/drivers/cpuidle/cpuidle-mvebu-v7.c
-@@ -25,9 +25,9 @@
- 
- static int (*mvebu_v7_cpu_suspend)(int);
- 
--static int mvebu_v7_enter_idle(struct cpuidle_device *dev,
--				struct cpuidle_driver *drv,
--				int index)
-+static __cpuidle int mvebu_v7_enter_idle(struct cpuidle_device *dev,
-+					 struct cpuidle_driver *drv,
-+					 int index)
- {
- 	int ret;
- 	bool deepidle = false;
-diff --git a/drivers/cpuidle/cpuidle-psci.c b/drivers/cpuidle/cpuidle-psci.c
-index 58b2cbb..4fc4e03 100644
---- a/drivers/cpuidle/cpuidle-psci.c
-+++ b/drivers/cpuidle/cpuidle-psci.c
-@@ -49,14 +49,9 @@ static inline u32 psci_get_domain_state(void)
- 	return __this_cpu_read(domain_state);
- }
- 
--static inline int psci_enter_state(int idx, u32 state)
--{
--	return CPU_PM_CPU_IDLE_ENTER_PARAM(psci_cpu_suspend_enter, idx, state);
--}
--
--static int __psci_enter_domain_idle_state(struct cpuidle_device *dev,
--					  struct cpuidle_driver *drv, int idx,
--					  bool s2idle)
-+static __cpuidle int __psci_enter_domain_idle_state(struct cpuidle_device *dev,
-+						    struct cpuidle_driver *drv, int idx,
-+						    bool s2idle)
- {
- 	struct psci_cpuidle_data *data = this_cpu_ptr(&psci_cpuidle_data);
- 	u32 *states = data->psci_states;
-@@ -192,12 +187,12 @@ static void psci_idle_init_cpuhp(void)
- 		pr_warn("Failed %d while setup cpuhp state\n", err);
- }
- 
--static int psci_enter_idle_state(struct cpuidle_device *dev,
--				struct cpuidle_driver *drv, int idx)
-+static __cpuidle int psci_enter_idle_state(struct cpuidle_device *dev,
-+					   struct cpuidle_driver *drv, int idx)
- {
- 	u32 *state = __this_cpu_read(psci_cpuidle_data.psci_states);
- 
--	return psci_enter_state(idx, state[idx]);
-+	return CPU_PM_CPU_IDLE_ENTER_PARAM(psci_cpu_suspend_enter, idx, state[idx]);
- }
- 
- static const struct of_device_id psci_idle_state_match[] = {
-diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
-index beedf22..326bca1 100644
---- a/drivers/cpuidle/cpuidle-qcom-spm.c
-+++ b/drivers/cpuidle/cpuidle-qcom-spm.c
-@@ -58,8 +58,8 @@ static int qcom_cpu_spc(struct spm_driver_data *drv)
- 	return ret;
- }
- 
--static int spm_enter_idle_state(struct cpuidle_device *dev,
--				struct cpuidle_driver *drv, int idx)
-+static __cpuidle int spm_enter_idle_state(struct cpuidle_device *dev,
-+					  struct cpuidle_driver *drv, int idx)
- {
- 	struct cpuidle_qcom_spm_data *data = container_of(drv, struct cpuidle_qcom_spm_data,
- 							  cpuidle_driver);
-diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidle-riscv-sbi.c
-index 0a480f5..be383f4 100644
---- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-+++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-@@ -93,8 +93,8 @@ static int sbi_suspend(u32 state)
- 		return sbi_suspend_finisher(state, 0, 0);
- }
- 
--static int sbi_cpuidle_enter_state(struct cpuidle_device *dev,
--				   struct cpuidle_driver *drv, int idx)
-+static __cpuidle int sbi_cpuidle_enter_state(struct cpuidle_device *dev,
-+					     struct cpuidle_driver *drv, int idx)
- {
- 	u32 *states = __this_cpu_read(sbi_cpuidle_data.states);
- 	u32 state = states[idx];
-@@ -106,9 +106,9 @@ static int sbi_cpuidle_enter_state(struct cpuidle_device *dev,
- 							     idx, state);
- }
- 
--static int __sbi_enter_domain_idle_state(struct cpuidle_device *dev,
--					  struct cpuidle_driver *drv, int idx,
--					  bool s2idle)
-+static __cpuidle int __sbi_enter_domain_idle_state(struct cpuidle_device *dev,
-+						   struct cpuidle_driver *drv, int idx,
-+						   bool s2idle)
- {
- 	struct sbi_cpuidle_data *data = this_cpu_ptr(&sbi_cpuidle_data);
- 	u32 *states = data->states;
-diff --git a/drivers/cpuidle/cpuidle-tegra.c b/drivers/cpuidle/cpuidle-tegra.c
-index 9c2903c..b203a93 100644
---- a/drivers/cpuidle/cpuidle-tegra.c
-+++ b/drivers/cpuidle/cpuidle-tegra.c
-@@ -160,8 +160,8 @@ static int tegra_cpuidle_coupled_barrier(struct cpuidle_device *dev)
- 	return 0;
- }
- 
--static int tegra_cpuidle_state_enter(struct cpuidle_device *dev,
--				     int index, unsigned int cpu)
-+static __cpuidle int tegra_cpuidle_state_enter(struct cpuidle_device *dev,
-+					       int index, unsigned int cpu)
- {
- 	int err;
- 
-@@ -226,9 +226,9 @@ static int tegra_cpuidle_adjust_state_index(int index, unsigned int cpu)
- 	return index;
- }
- 
--static int tegra_cpuidle_enter(struct cpuidle_device *dev,
--			       struct cpuidle_driver *drv,
--			       int index)
-+static __cpuidle int tegra_cpuidle_enter(struct cpuidle_device *dev,
-+					 struct cpuidle_driver *drv,
-+					 int index)
- {
- 	bool do_rcu = drv->states[index].flags & CPUIDLE_FLAG_RCU_IDLE;
- 	unsigned int cpu = cpu_logical_map(dev->cpu);
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 9767bab..92554c5 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1074,6 +1074,9 @@ static const char *uaccess_safe_builtin[] = {
+ 	"__asan_store16_noabort",
+ 	"__kasan_check_read",
+ 	"__kasan_check_write",
++	"__asan_memset",
++	"__asan_memmove",
++	"__asan_memcpy",
+ 	/* KASAN in-line */
+ 	"__asan_report_load_n_noabort",
+ 	"__asan_report_load1_noabort",
