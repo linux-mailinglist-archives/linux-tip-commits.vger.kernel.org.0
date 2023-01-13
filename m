@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAE9566973A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:35:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C68E8669737
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:35:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241586AbjAMMdj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Jan 2023 07:33:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33596 "EHLO
+        id S241589AbjAMMdl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Jan 2023 07:33:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241123AbjAMMcS (ORCPT
+        with ESMTP id S240996AbjAMMcR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Jan 2023 07:32:18 -0500
+        Fri, 13 Jan 2023 07:32:17 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E77B1559F7;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6CBC559F1;
         Fri, 13 Jan 2023 04:31:14 -0800 (PST)
 Date:   Fri, 13 Jan 2023 12:31:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0mXTiSRpmroi1SGTJNXM+LzGN21KUYrGkkMyQ+4bNa8=;
-        b=avfzgtDduB0RoaHAPB6wK3zgKRyRq1icK1w3FcPeSne38H0mFb5MkgwCDACtcn54exZcFn
-        Fvt5OeBcVkmHPB3hAGVRHZ6+ukvkAHe+20s6WxxMr5COG7G5o1IO2U/cWKK9nKv2ygjDXf
-        rRIKBbnueV9WwT8ROYrl9sHsjA8/Z5wbAb+gI/rNM8LJTYiu4qf9N4sprkhwso37CKGWV0
-        KOl+xy6jBDVf1fF24W62YeBuCLHQQlqDAr6yA9yTvoeSdkDWB2+mlnUJ9Zt2ml+Z7BqdIV
-        +SFFucWINORtnJzlYCcBqq/k3ZI6lwaPTSQLkT6y+KUaQ4u2IWBGKcN5ZRC45Q==
+        bh=ava2esDj8LX1/WtjMbsawd2SNyUiRUUILpEjt2yZw1I=;
+        b=zZ/8+4cCRk8zu/wNYx1JcggGAs4LVapTBmughYm1/w5+otW4XOxQvs9x2PicR9cG3GTC8Z
+        sH81ggRMfRueU7eHTOvhFWA8IgiemVs8DfACXNOjXa/spfRJBACeevoCyJa3s7N+Lo0aVD
+        1e4KyluE+uApi7zoqJODHUiDqoUra72nWXyAZ2SfDP/FNjBCa0k7p81t6cUO403jakSgZ2
+        262zHn0eLgQ7bfsytYNzISSnQcKibd2s2ZbXwJO9COMG80x1667DoZ3PxbLE5zJGII0gwn
+        PMYLD2EiUFDErV4l5IFEFJ9NPU6pbAQWuDiFByMNz4VDoZdyNN5i1lambWO1Fw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1673613073;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,14 +36,14 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0mXTiSRpmroi1SGTJNXM+LzGN21KUYrGkkMyQ+4bNa8=;
-        b=Y9YSU42sewHMa5b94NfQK6FHUm7I44ZPDjAHmtsMT6hrKkHNkJNmZkwLoxckhlTlBygmk3
-        fFX8P47VZL5E/ZAQ==
+        bh=ava2esDj8LX1/WtjMbsawd2SNyUiRUUILpEjt2yZw1I=;
+        b=vJMWF0pDxN67x2pT4XnjFnG23wbKq5U0W12rxgDreBnc/gSOuqvkpP8AEg1Ll3alImnVFf
+        LvCUGy8ByVk5z6Bg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] acpi_idle: Remove tracing
+Subject: [tip: sched/core] cpuidle: Annotate poll_idle()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
         Tony Lindgren <tony@atomide.com>,
@@ -51,10 +51,10 @@ Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230112195540.251666856@infradead.org>
-References: <20230112195540.251666856@infradead.org>
+In-Reply-To: <20230112195540.312601331@infradead.org>
+References: <20230112195540.312601331@infradead.org>
 MIME-Version: 1.0
-Message-ID: <167361307320.4906.12397957651023647321.tip-bot2@tip-bot2>
+Message-ID: <167361307300.4906.5287365679453004139.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,77 +70,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     8ce78470bf2dd1d08107736e813fa62e09aa4647
-Gitweb:        https://git.kernel.org/tip/8ce78470bf2dd1d08107736e813fa62e09aa4647
+Commit-ID:     00717eb8c9557b5fcdd338db6faef532f6991d63
+Gitweb:        https://git.kernel.org/tip/00717eb8c9557b5fcdd338db6faef532f6991d63
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 12 Jan 2023 20:43:29 +01:00
+AuthorDate:    Thu, 12 Jan 2023 20:43:30 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 13 Jan 2023 11:48:15 +01:00
 
-acpi_idle: Remove tracing
+cpuidle: Annotate poll_idle()
 
-All the idle routines are called with RCU disabled, as such there must
-not be any tracing inside.
-
-While there; clean-up the io-port idle thing.
+The __cpuidle functions will become a noinstr class, as such they need
+explicit annotations.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Tested-by: Tony Lindgren <tony@atomide.com>
 Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230112195540.251666856@infradead.org
+Link: https://lore.kernel.org/r/20230112195540.312601331@infradead.org
 ---
- drivers/acpi/processor_idle.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/cpuidle/poll_state.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index a589cfa..48fcd28 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -109,8 +109,8 @@ static const struct dmi_system_id processor_power_dmi_table[] = {
- static void __cpuidle acpi_safe_halt(void)
+diff --git a/drivers/cpuidle/poll_state.c b/drivers/cpuidle/poll_state.c
+index 1f578ed..d25ec52 100644
+--- a/drivers/cpuidle/poll_state.c
++++ b/drivers/cpuidle/poll_state.c
+@@ -13,7 +13,10 @@
+ static int __cpuidle poll_idle(struct cpuidle_device *dev,
+ 			       struct cpuidle_driver *drv, int index)
  {
- 	if (!tif_need_resched()) {
--		safe_halt();
--		local_irq_disable();
-+		raw_safe_halt();
-+		raw_local_irq_disable();
- 	}
- }
- 
-@@ -523,8 +523,11 @@ static int acpi_idle_bm_check(void)
- 	return bm_status;
- }
- 
--static void wait_for_freeze(void)
-+static __cpuidle void io_idle(unsigned long addr)
- {
-+	/* IO port based C-state */
-+	inb(addr);
+-	u64 time_start = local_clock();
++	u64 time_start;
 +
- #ifdef	CONFIG_X86
- 	/* No delay is needed if we are in guest */
- 	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
-@@ -569,9 +572,7 @@ static void __cpuidle acpi_idle_do_entry(struct acpi_processor_cx *cx)
- 	} else if (cx->entry_method == ACPI_CSTATE_HALT) {
- 		acpi_safe_halt();
- 	} else {
--		/* IO port based C-state */
--		inb(cx->address);
--		wait_for_freeze();
-+		io_idle(cx->address);
- 	}
++	instrumentation_begin();
++	time_start = local_clock();
  
- 	perf_lopwr_cb(false);
-@@ -593,8 +594,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
- 		if (cx->entry_method == ACPI_CSTATE_HALT)
- 			safe_halt();
- 		else if (cx->entry_method == ACPI_CSTATE_SYSTEMIO) {
--			inb(cx->address);
--			wait_for_freeze();
-+			io_idle(cx->address);
- 		} else
- 			return -ENODEV;
+ 	dev->poll_time_limit = false;
  
+@@ -39,6 +42,7 @@ static int __cpuidle poll_idle(struct cpuidle_device *dev,
+ 	raw_local_irq_disable();
+ 
+ 	current_clr_polling();
++	instrumentation_end();
+ 
+ 	return index;
+ }
