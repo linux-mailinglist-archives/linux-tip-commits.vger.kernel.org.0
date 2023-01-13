@@ -2,60 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5706E669759
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:35:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAC70669805
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 14:07:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241622AbjAMMe1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Jan 2023 07:34:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33736 "EHLO
+        id S241672AbjAMNG7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Jan 2023 08:06:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241159AbjAMMcV (ORCPT
+        with ESMTP id S232818AbjAMNGX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Jan 2023 07:32:21 -0500
+        Fri, 13 Jan 2023 08:06:23 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BBCD2DE3;
-        Fri, 13 Jan 2023 04:31:18 -0800 (PST)
-Date:   Fri, 13 Jan 2023 12:31:16 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175F477D0C;
+        Fri, 13 Jan 2023 04:53:53 -0800 (PST)
+Date:   Fri, 13 Jan 2023 12:53:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673613076;
+        s=2020; t=1673614431;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=yehUuinpLJOMZYV+HC9TlNSX12bgIR7nh2+agnRE4WI=;
-        b=rHguz8Csmn3EmR+bW30kTEUYY+emIDK5WpsWbJjyzDRD9SxXrbkEvhSRm2p1BeyLej2zcf
-        Ob2UBjYH4oY6ZyN+3E/uRI4LW2sKZ7QclYxiXVgdpM8/vKap89XpOd6AzpgXZQ58sCZRJA
-        JuNWyx4QfgcUzkTzMtzH69+0saJoO76YrLca1DymS+Hc+XOm6vrE1/wa5D/X7HENAFo3lR
-        0I0X7Ll/XjbKB91b9B3RHDQUekEAZrUXFieqtCWiLS7GkFI656FQKuTz6ON9Yx8PgYYt9c
-        oXsh7xALvEgZJxuEcCTpxCg7N0ONlf1wzoELOY//ATIbjQ+eytuYglimEyREOQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=uo4Pn34x3mARkiqqYbo0hcHiXCD+oJvRBLIoK4xAgHk=;
+        b=rBevJTUPS7iy3wUmslENJSCuD3oHuKLmnPDbHfoME+hRNRiKa+AZYhQDNVZs/HtRJlyqpR
+        ciSNjYkcLzmRY7r8K270moGNkw6augD/Pqgk7vpd6vhKunXg4lqgJPRFxXbcH067E9EZr4
+        oABlox9fJ7XYAWK+yjZXa29lf/5Sd/b55EO6dTkrTZlqO7znsuD50oG3TUXr8cCZqwnjjv
+        3Y6I+aVF2dpDiEJn/+x/V66gmgnm+XNCY4zhBCVEUF7bcIpcJ5XLx2BfMDQpZt0osue1Bm
+        clgNog8A1+X5wd9vrOEAnVRDLcmoxjOQrQxOAitjsCuNSWLsv8aakAkEVfBmZg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673613076;
+        s=2020e; t=1673614431;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=yehUuinpLJOMZYV+HC9TlNSX12bgIR7nh2+agnRE4WI=;
-        b=79GBXARECBMjPO74pLAZYQIZr20b4tGwiMXUKi6hH/Obnl/iSfVelfjgsxi2lsPTmm4wS/
-        cKP+faMhhsvTpBAg==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=uo4Pn34x3mARkiqqYbo0hcHiXCD+oJvRBLIoK4xAgHk=;
+        b=n3aNAPVHEm/Ogb1Le9xEcHRdK28QzTTsHodedYe3h46mXZQKjRBKshUBZUU0b44esEgMet
+        rPQgNsIAskPkCcBA==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] cpuidle/poll: Ensure IRQs stay disabled after
- cpuidle_state::enter() calls
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230112195539.515253662@infradead.org>
-References: <20230112195539.515253662@infradead.org>
+Subject: [tip: x86/cpu] x86/gsseg: Add the new <asm/gsseg.h> header to
+ <asm/asm-prototypes.h>
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
+        x86@kernel.org
 MIME-Version: 1.0
-Message-ID: <167361307636.4906.6193432024817736611.tip-bot2@tip-bot2>
+Message-ID: <167361443119.4906.4984894590925431359.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,52 +59,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     5e26aa93391195a64871db5d96d7163f0062ca4f
-Gitweb:        https://git.kernel.org/tip/5e26aa93391195a64871db5d96d7163f0062ca4f
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 12 Jan 2023 20:43:17 +01:00
+Commit-ID:     e12ad468c22065a2826b2fc4c11d2113a7975301
+Gitweb:        https://git.kernel.org/tip/e12ad468c22065a2826b2fc4c11d2113a7975301
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Fri, 13 Jan 2023 13:43:20 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 13 Jan 2023 11:03:21 +01:00
+CommitterDate: Fri, 13 Jan 2023 13:43:20 +01:00
 
-cpuidle/poll: Ensure IRQs stay disabled after cpuidle_state::enter() calls
+x86/gsseg: Add the new <asm/gsseg.h> header to <asm/asm-prototypes.h>
 
-Make cpuidle_state::enter() methods IRQ state invariant on exit.
+Module build needs to be able to pick up the C prototype:
 
-Additionally make sure to use raw_local_irq_*() methods since this
-cpuidle callback will be called with RCU already disabled.
+  WARNING: modpost: EXPORT symbol "asm_load_gs_index" [vmlinux] version generation failed, symbol will not be versioned.
+  Is "asm_load_gs_index" prototyped in <asm/asm-prototypes.h>?
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: ae53fa187030 ("x86/gsseg: Move load_gs_index() to its own new header file")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Tony Lindgren <tony@atomide.com>
-Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230112195539.515253662@infradead.org
+Cc: linux-kernel@vger.kernel.org
 ---
- drivers/cpuidle/poll_state.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/asm-prototypes.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cpuidle/poll_state.c b/drivers/cpuidle/poll_state.c
-index f7e8361..1f578ed 100644
---- a/drivers/cpuidle/poll_state.c
-+++ b/drivers/cpuidle/poll_state.c
-@@ -17,7 +17,7 @@ static int __cpuidle poll_idle(struct cpuidle_device *dev,
+diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
+index 8f80de6..b1a98fa 100644
+--- a/arch/x86/include/asm/asm-prototypes.h
++++ b/arch/x86/include/asm/asm-prototypes.h
+@@ -12,6 +12,7 @@
+ #include <asm/special_insns.h>
+ #include <asm/preempt.h>
+ #include <asm/asm.h>
++#include <asm/gsseg.h>
  
- 	dev->poll_time_limit = false;
- 
--	local_irq_enable();
-+	raw_local_irq_enable();
- 	if (!current_set_polling_and_test()) {
- 		unsigned int loop_count = 0;
- 		u64 limit;
-@@ -36,6 +36,8 @@ static int __cpuidle poll_idle(struct cpuidle_device *dev,
- 			}
- 		}
- 	}
-+	raw_local_irq_disable();
-+
- 	current_clr_polling();
- 
- 	return index;
+ #ifndef CONFIG_X86_CMPXCHG64
+ extern void cmpxchg8b_emu(void);
