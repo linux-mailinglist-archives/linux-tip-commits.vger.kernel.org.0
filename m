@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D0FF669720
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EF5866970E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:33:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241386AbjAMMci (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Jan 2023 07:32:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34032 "EHLO
+        id S233019AbjAMMcp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Jan 2023 07:32:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241295AbjAMMcI (ORCPT
+        with ESMTP id S241254AbjAMMcK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Jan 2023 07:32:08 -0500
+        Fri, 13 Jan 2023 07:32:10 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BF815132E;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA04452C6E;
         Fri, 13 Jan 2023 04:31:10 -0800 (PST)
 Date:   Fri, 13 Jan 2023 12:31:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tJj1Ihp5HQNm3eP2yvjGdkDtetNs/i3WmJ1/xIAoosc=;
-        b=rFhiTx3JA2agohDm++lwQVQcwRpB3G4Z7G/K53a31g5ePPvgJM2bAiCKHFQM9+2KCq+HIT
-        ANRpFgthcYclvnAtCQB9cQRhdpZ+F7uvecQbn6BdieALKPZ/Qmqp3iaYwtvieStKwi54AT
-        l6zTyq31YBU1h/Zb0ltkZ/udEx1HKxPhTVs8+LB4w7xylakhAoaDBr/VtlB/wt8XtawQL1
-        NviWb5ID8tPfxG29vPutsq5m1nwBCC5VRVo2H+bIxjRiskAYLf3Lw8OQkDEcsqvPjPY7qr
-        mwsSYOmOLrJMujPOsTOHqpq1CZcYaHzmL2dymCm5GAJIO1ZNVt+FJOq4d2c4DQ==
+        bh=KvkkEgGNc+X8JPMu5cL4mkFTzR3Cr00C/ewLCIV6n7A=;
+        b=A002BPJv3ylvGpUu1LbJnExAWyKisYV34ZoLr9JZqLY5T2eHaDDGSrVqgg8yR0Z4ycQGyu
+        BW2ZJS1e/KLifnJ53+WbFEhUephVVZSwBAFRT3IT4emrUUhRHlGNcw9husexLDWLM2ajsG
+        eOZjIjXl/kMGUHD1jp4VWkj2MEf8ny/6i43DTWvkyCPFhf+DPB1EvcmMriD0SkW8FuP1Ah
+        Zh5+oXVyKPKSEMr5WlFAUhaMCf2RAGtWA/vhdcL5AqiuC2l2n9lOPqQ0Rukme3Fr4zL1cz
+        81yfrJdWX+L4F8FlvihCfKWXIOwOOuxriV/fEyLASjabeY9CXwChCCM77qT0qg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1673613067;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,26 +36,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tJj1Ihp5HQNm3eP2yvjGdkDtetNs/i3WmJ1/xIAoosc=;
-        b=BQVdOBaOEwbkUy9LdGyntbFAxHT+998s+jZYuFmAgTPp2h1eV7L3qcpeFQYP3kjgD2ZBxJ
-        wJrfmzX/TA4XXUBw==
+        bh=KvkkEgGNc+X8JPMu5cL4mkFTzR3Cr00C/ewLCIV6n7A=;
+        b=4akcYBXgd76M0AgFmKJEap+bhgtG1pQAIus3XbF59AnwSEr9hPxH8Ps0Us+o9+R14CwQ3/
+        w6WOQrSY1y3lwdAw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] cpuidle, clk: Remove trace_.*_rcuidle()
+Subject: [tip: sched/core] cpuidle, ARM: OMAP2+: powerdomain: Remove
+ trace_.*_rcuidle()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
         Tony Lindgren <tony@atomide.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, x86@kernel.org,
+        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230112195541.844982902@infradead.org>
-References: <20230112195541.844982902@infradead.org>
+In-Reply-To: <20230112195541.782536366@infradead.org>
+References: <20230112195541.782536366@infradead.org>
 MIME-Version: 1.0
-Message-ID: <167361306675.4906.5551268690310641457.tip-bot2@tip-bot2>
+Message-ID: <167361306694.4906.5223448518679666811.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,14 +71,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     ca502fc6d9d90c8384eb3e97e964177521d9df48
-Gitweb:        https://git.kernel.org/tip/ca502fc6d9d90c8384eb3e97e964177521d9df48
+Commit-ID:     db8f50861da6b1129b744da3998587a5cceeffeb
+Gitweb:        https://git.kernel.org/tip/db8f50861da6b1129b744da3998587a5cceeffeb
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 12 Jan 2023 20:43:55 +01:00
+AuthorDate:    Thu, 12 Jan 2023 20:43:54 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 13 Jan 2023 11:48:17 +01:00
 
-cpuidle, clk: Remove trace_.*_rcuidle()
+cpuidle, ARM: OMAP2+: powerdomain: Remove trace_.*_rcuidle()
 
 OMAP was the one and only user.
 
@@ -89,43 +89,149 @@ Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
 Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20230112195541.844982902@infradead.org
+Link: https://lore.kernel.org/r/20230112195541.782536366@infradead.org
 ---
- drivers/clk/clk.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/mach-omap2/powerdomain.c | 10 +++++-----
+ drivers/base/power/runtime.c      | 24 ++++++++++++------------
+ 2 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index e62552a..f6d7c6a 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -1055,12 +1055,12 @@ static void clk_core_disable(struct clk_core *core)
- 	if (--core->enable_count > 0)
- 		return;
+diff --git a/arch/arm/mach-omap2/powerdomain.c b/arch/arm/mach-omap2/powerdomain.c
+index 2d747f6..65fec41 100644
+--- a/arch/arm/mach-omap2/powerdomain.c
++++ b/arch/arm/mach-omap2/powerdomain.c
+@@ -187,9 +187,9 @@ static int _pwrdm_state_switch(struct powerdomain *pwrdm, int flag)
+ 			trace_state = (PWRDM_TRACE_STATES_FLAG |
+ 				       ((next & OMAP_POWERSTATE_MASK) << 8) |
+ 				       ((prev & OMAP_POWERSTATE_MASK) << 0));
+-			trace_power_domain_target_rcuidle(pwrdm->name,
+-							  trace_state,
+-							  raw_smp_processor_id());
++			trace_power_domain_target(pwrdm->name,
++						  trace_state,
++						  raw_smp_processor_id());
+ 		}
+ 		break;
+ 	default:
+@@ -541,8 +541,8 @@ int pwrdm_set_next_pwrst(struct powerdomain *pwrdm, u8 pwrst)
  
--	trace_clk_disable_rcuidle(core);
-+	trace_clk_disable(core);
+ 	if (arch_pwrdm && arch_pwrdm->pwrdm_set_next_pwrst) {
+ 		/* Trace the pwrdm desired target state */
+-		trace_power_domain_target_rcuidle(pwrdm->name, pwrst,
+-						  raw_smp_processor_id());
++		trace_power_domain_target(pwrdm->name, pwrst,
++					  raw_smp_processor_id());
+ 		/* Program the pwrdm desired target state */
+ 		ret = arch_pwrdm->pwrdm_set_next_pwrst(pwrdm, pwrst);
+ 	}
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 50e726b..98f7b3d 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -468,7 +468,7 @@ static int rpm_idle(struct device *dev, int rpmflags)
+ 	int (*callback)(struct device *);
+ 	int retval;
  
- 	if (core->ops->disable)
- 		core->ops->disable(core->hw);
+-	trace_rpm_idle_rcuidle(dev, rpmflags);
++	trace_rpm_idle(dev, rpmflags);
+ 	retval = rpm_check_suspend_allowed(dev);
+ 	if (retval < 0)
+ 		;	/* Conditions are wrong. */
+@@ -508,7 +508,7 @@ static int rpm_idle(struct device *dev, int rpmflags)
+ 			dev->power.request_pending = true;
+ 			queue_work(pm_wq, &dev->power.work);
+ 		}
+-		trace_rpm_return_int_rcuidle(dev, _THIS_IP_, 0);
++		trace_rpm_return_int(dev, _THIS_IP_, 0);
+ 		return 0;
+ 	}
  
--	trace_clk_disable_complete_rcuidle(core);
-+	trace_clk_disable_complete(core);
+@@ -530,7 +530,7 @@ static int rpm_idle(struct device *dev, int rpmflags)
+ 	wake_up_all(&dev->power.wait_queue);
  
- 	clk_core_disable(core->parent);
+  out:
+-	trace_rpm_return_int_rcuidle(dev, _THIS_IP_, retval);
++	trace_rpm_return_int(dev, _THIS_IP_, retval);
+ 	return retval ? retval : rpm_suspend(dev, rpmflags | RPM_AUTO);
  }
-@@ -1114,12 +1114,12 @@ static int clk_core_enable(struct clk_core *core)
- 		if (ret)
- 			return ret;
  
--		trace_clk_enable_rcuidle(core);
-+		trace_clk_enable(core);
+@@ -562,7 +562,7 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+ 	struct device *parent = NULL;
+ 	int retval;
  
- 		if (core->ops->enable)
- 			ret = core->ops->enable(core->hw);
+-	trace_rpm_suspend_rcuidle(dev, rpmflags);
++	trace_rpm_suspend(dev, rpmflags);
  
--		trace_clk_enable_complete_rcuidle(core);
-+		trace_clk_enable_complete(core);
+  repeat:
+ 	retval = rpm_check_suspend_allowed(dev);
+@@ -713,7 +713,7 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+ 	}
  
- 		if (ret) {
- 			clk_core_disable(core->parent);
+  out:
+-	trace_rpm_return_int_rcuidle(dev, _THIS_IP_, retval);
++	trace_rpm_return_int(dev, _THIS_IP_, retval);
+ 
+ 	return retval;
+ 
+@@ -765,7 +765,7 @@ static int rpm_resume(struct device *dev, int rpmflags)
+ 	struct device *parent = NULL;
+ 	int retval = 0;
+ 
+-	trace_rpm_resume_rcuidle(dev, rpmflags);
++	trace_rpm_resume(dev, rpmflags);
+ 
+  repeat:
+ 	if (dev->power.runtime_error) {
+@@ -935,7 +935,7 @@ static int rpm_resume(struct device *dev, int rpmflags)
+ 		spin_lock_irq(&dev->power.lock);
+ 	}
+ 
+-	trace_rpm_return_int_rcuidle(dev, _THIS_IP_, retval);
++	trace_rpm_return_int(dev, _THIS_IP_, retval);
+ 
+ 	return retval;
+ }
+@@ -1091,7 +1091,7 @@ int __pm_runtime_idle(struct device *dev, int rpmflags)
+ 		if (retval < 0) {
+ 			return retval;
+ 		} else if (retval > 0) {
+-			trace_rpm_usage_rcuidle(dev, rpmflags);
++			trace_rpm_usage(dev, rpmflags);
+ 			return 0;
+ 		}
+ 	}
+@@ -1129,7 +1129,7 @@ int __pm_runtime_suspend(struct device *dev, int rpmflags)
+ 		if (retval < 0) {
+ 			return retval;
+ 		} else if (retval > 0) {
+-			trace_rpm_usage_rcuidle(dev, rpmflags);
++			trace_rpm_usage(dev, rpmflags);
+ 			return 0;
+ 		}
+ 	}
+@@ -1212,7 +1212,7 @@ int pm_runtime_get_if_active(struct device *dev, bool ign_usage_count)
+ 	} else {
+ 		retval = atomic_inc_not_zero(&dev->power.usage_count);
+ 	}
+-	trace_rpm_usage_rcuidle(dev, 0);
++	trace_rpm_usage(dev, 0);
+ 	spin_unlock_irqrestore(&dev->power.lock, flags);
+ 
+ 	return retval;
+@@ -1576,7 +1576,7 @@ void pm_runtime_allow(struct device *dev)
+ 	if (ret == 0)
+ 		rpm_idle(dev, RPM_AUTO | RPM_ASYNC);
+ 	else if (ret > 0)
+-		trace_rpm_usage_rcuidle(dev, RPM_AUTO | RPM_ASYNC);
++		trace_rpm_usage(dev, RPM_AUTO | RPM_ASYNC);
+ 
+  out:
+ 	spin_unlock_irq(&dev->power.lock);
+@@ -1646,7 +1646,7 @@ static void update_autosuspend(struct device *dev, int old_delay, int old_use)
+ 			atomic_inc(&dev->power.usage_count);
+ 			rpm_resume(dev, 0);
+ 		} else {
+-			trace_rpm_usage_rcuidle(dev, 0);
++			trace_rpm_usage(dev, 0);
+ 		}
+ 	}
+ 
