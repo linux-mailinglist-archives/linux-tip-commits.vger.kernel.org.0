@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D12B666971C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:33:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B883669729
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:33:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241369AbjAMMcx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Jan 2023 07:32:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34100 "EHLO
+        id S241500AbjAMMdE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Jan 2023 07:33:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240712AbjAMMcO (ORCPT
+        with ESMTP id S240874AbjAMMcP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Jan 2023 07:32:14 -0500
+        Fri, 13 Jan 2023 07:32:15 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85CDB5471C;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81D8551D7;
         Fri, 13 Jan 2023 04:31:12 -0800 (PST)
-Date:   Fri, 13 Jan 2023 12:31:08 -0000
+Date:   Fri, 13 Jan 2023 12:31:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1673613069;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5/AIQa6/6PdQImwk8LxNXUYKCdtDXsmcJvvGo69yPMA=;
-        b=0G4JibI7/F5FlXuk1zcnp6SK2NyLtb/H03s9jeECoyRz1od8zjLELpxnnVPLYhad7BvsTz
-        h5APmhmktve7bZxlGonp8Cso2o7QLU7iiCeQnklD4Rx6u9HefAUGiDO9BBx2E0gPfghYim
-        Pyz3UjvX//gJnHky7Qn5b2CwQg371z9JqndUPfYE64seAuKC5ed//iTk7viH8J/nNnZC0v
-        M/g7Olq5WJHsSzVelzlFmJ4/CYNop8DZ1lqHdyYRscmzY4uU+K2Oc1nXuXSvEWHdmtQ88T
-        u/aPThS2AkahRm2B/6mXeBkBMpJPA86cee++n20muWtcTGc/5npUAoA6SbRI5Q==
+        bh=C0ubaXfDfhpMCgnJFD4tqKhLDwUq1u6iRG5Kjrq1zIA=;
+        b=21qUFe+V+/+ol7Lsbmkmct+AcRh6rz/bqjHG+FQimWI/NQUJyDROg3j4v6f26vmop2TYuQ
+        EUjMEh+IdSJMpspkebHFjRGa8b0MxxY8IE8EASA2cx+WLzayMrDhvbvhEqiE3yLJHvu5IB
+        DOCW/X5vqjmfoUUwSCaABmgHxHRjrRWM2fteFwFwK4wHErflN00BgVgjdKtBHhMNARwdW4
+        GgyhLf0yS1dC0gU+c16FebXi8uRCo2O6y/hOrJdcfa68vivo/r2tvGu3cQXOA66g/Al9/l
+        NHs/TCzCJ+kiCkm8Whu+SA8O4LhmrL8Vwjv3OVHZuelpGgwEMRCQYKlaPZY31A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1673613069;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,15 +36,14 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5/AIQa6/6PdQImwk8LxNXUYKCdtDXsmcJvvGo69yPMA=;
-        b=9xSGGfX6RvHkmgjDt7qv1j0c0KBdUBOBioZ4W925est/ctKs4MMqAJhrwXDZWYx/IunyCx
-        EN01dGAEtaYJijDQ==
+        bh=C0ubaXfDfhpMCgnJFD4tqKhLDwUq1u6iRG5Kjrq1zIA=;
+        b=NreBUqAuXTWJcfFzTGFrEVYCVVDmdgkaoWo4ZzxTJnHGT/VhJla4GKMZxDspod8DQvO+z7
+        VdNVt1N1jr6uKeDw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] cpuidle, nospec: Make mds_idle_clear_cpu_buffers()
- noinstr clean
+Subject: [tip: sched/core] cpuidle, mwait: Make the mwait code noinstr clean
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
         Tony Lindgren <tony@atomide.com>,
@@ -52,10 +51,10 @@ Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230112195541.233779815@infradead.org>
-References: <20230112195541.233779815@infradead.org>
+In-Reply-To: <20230112195541.050542952@infradead.org>
+References: <20230112195541.050542952@infradead.org>
 MIME-Version: 1.0
-Message-ID: <167361306886.4906.9313097689901370295.tip-bot2@tip-bot2>
+Message-ID: <167361306942.4906.10598168030102825603.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,25 +70,25 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     10fdb38cee36b8dc4775e6fe4ad85e78bafdbd65
-Gitweb:        https://git.kernel.org/tip/10fdb38cee36b8dc4775e6fe4ad85e78bafdbd65
+Commit-ID:     2ec8efe64e6dfcaa50906ae4b0b5a0a7e1a54d50
+Gitweb:        https://git.kernel.org/tip/2ec8efe64e6dfcaa50906ae4b0b5a0a7e1a54d50
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 12 Jan 2023 20:43:45 +01:00
+AuthorDate:    Thu, 12 Jan 2023 20:43:42 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 13 Jan 2023 11:48:16 +01:00
 
-cpuidle, nospec: Make mds_idle_clear_cpu_buffers() noinstr clean
+cpuidle, mwait: Make the mwait code noinstr clean
 
-objtool found that the mds_idle_clear_cpu_buffers() method got
-uninlined by the compiler where it called out into instrumentation:
+objtool found a few cases where this code called out into instrumented
+code:
 
-  vmlinux.o: warning: objtool: mwait_idle+0x47: call to mds_idle_clear_cpu_buffers() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: acpi_processor_ffh_cstate_enter+0xa2: call to mds_idle_clear_cpu_buffers() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle+0x91: call to mds_idle_clear_cpu_buffers() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_s2idle+0x8c: call to mds_idle_clear_cpu_buffers() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: intel_idle_irq+0xaa: call to mds_idle_clear_cpu_buffers() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: intel_idle_s2idle+0x6e: call to __monitor.constprop.0() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: intel_idle_irq+0x8c: call to __monitor.constprop.0() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: intel_idle+0x73: call to __monitor.constprop.0() leaves .noinstr.text section
 
-Solve this by marking mds_idle_clear_cpu_buffers() as __always_inline.
+  vmlinux.o: warning: objtool: mwait_idle+0x88: call to clflush() leaves .noinstr.text section
+
+Fix it by marking the affected methods as __always_inline.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
@@ -97,21 +96,73 @@ Tested-by: Tony Lindgren <tony@atomide.com>
 Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230112195541.233779815@infradead.org
+Link: https://lore.kernel.org/r/20230112195541.050542952@infradead.org
 ---
- arch/x86/include/asm/nospec-branch.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/mwait.h         | 12 ++++++------
+ arch/x86/include/asm/special_insns.h |  2 +-
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 771b0a2..e04313e 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -564,7 +564,7 @@ static __always_inline void mds_user_clear_cpu_buffers(void)
-  *
-  * Clear CPU buffers if the corresponding static key is enabled
-  */
--static inline void mds_idle_clear_cpu_buffers(void)
-+static __always_inline void mds_idle_clear_cpu_buffers(void)
+diff --git a/arch/x86/include/asm/mwait.h b/arch/x86/include/asm/mwait.h
+index f224216..778df05 100644
+--- a/arch/x86/include/asm/mwait.h
++++ b/arch/x86/include/asm/mwait.h
+@@ -26,7 +26,7 @@
+ #define TPAUSE_C01_STATE		1
+ #define TPAUSE_C02_STATE		0
+ 
+-static inline void __monitor(const void *eax, unsigned long ecx,
++static __always_inline void __monitor(const void *eax, unsigned long ecx,
+ 			     unsigned long edx)
  {
- 	if (static_branch_likely(&mds_idle_clear))
- 		mds_clear_cpu_buffers();
+ 	/* "monitor %eax, %ecx, %edx;" */
+@@ -34,7 +34,7 @@ static inline void __monitor(const void *eax, unsigned long ecx,
+ 		     :: "a" (eax), "c" (ecx), "d"(edx));
+ }
+ 
+-static inline void __monitorx(const void *eax, unsigned long ecx,
++static __always_inline void __monitorx(const void *eax, unsigned long ecx,
+ 			      unsigned long edx)
+ {
+ 	/* "monitorx %eax, %ecx, %edx;" */
+@@ -42,7 +42,7 @@ static inline void __monitorx(const void *eax, unsigned long ecx,
+ 		     :: "a" (eax), "c" (ecx), "d"(edx));
+ }
+ 
+-static inline void __mwait(unsigned long eax, unsigned long ecx)
++static __always_inline void __mwait(unsigned long eax, unsigned long ecx)
+ {
+ 	mds_idle_clear_cpu_buffers();
+ 
+@@ -77,8 +77,8 @@ static inline void __mwait(unsigned long eax, unsigned long ecx)
+  * EAX                     (logical) address to monitor
+  * ECX                     #GP if not zero
+  */
+-static inline void __mwaitx(unsigned long eax, unsigned long ebx,
+-			    unsigned long ecx)
++static __always_inline void __mwaitx(unsigned long eax, unsigned long ebx,
++				     unsigned long ecx)
+ {
+ 	/* No MDS buffer clear as this is AMD/HYGON only */
+ 
+@@ -87,7 +87,7 @@ static inline void __mwaitx(unsigned long eax, unsigned long ebx,
+ 		     :: "a" (eax), "b" (ebx), "c" (ecx));
+ }
+ 
+-static inline void __sti_mwait(unsigned long eax, unsigned long ecx)
++static __always_inline void __sti_mwait(unsigned long eax, unsigned long ecx)
+ {
+ 	mds_idle_clear_cpu_buffers();
+ 	/* "mwait %eax, %ecx;" */
+diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
+index c2e3221..54621e7 100644
+--- a/arch/x86/include/asm/special_insns.h
++++ b/arch/x86/include/asm/special_insns.h
+@@ -196,7 +196,7 @@ static inline void load_gs_index(unsigned int selector)
+ 
+ #endif /* CONFIG_PARAVIRT_XXL */
+ 
+-static inline void clflush(volatile void *__p)
++static __always_inline void clflush(volatile void *__p)
+ {
+ 	asm volatile("clflush %0" : "+m" (*(volatile char __force *)__p));
+ }
