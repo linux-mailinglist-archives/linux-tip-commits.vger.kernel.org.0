@@ -2,57 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E0DA667928
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Jan 2023 16:26:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D68B66933B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 10:48:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238694AbjALP00 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Jan 2023 10:26:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43418 "EHLO
+        id S240713AbjAMJsT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Jan 2023 04:48:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240342AbjALP0E (ORCPT
+        with ESMTP id S239619AbjAMJrc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Jan 2023 10:26:04 -0500
+        Fri, 13 Jan 2023 04:47:32 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67FDC3D1CF;
-        Thu, 12 Jan 2023 07:18:41 -0800 (PST)
-Date:   Thu, 12 Jan 2023 15:18:38 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68D6A69B10;
+        Fri, 13 Jan 2023 01:36:57 -0800 (PST)
+Date:   Fri, 13 Jan 2023 09:36:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673536719;
+        s=2020; t=1673602616;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6rolIEIiO2ig4S+v+S9Rws09BZuTxVnYBcgHmCQBLzI=;
-        b=20wsGnWpG3xJDrp5YPfg4/0hYoub/Ijg4ZbCMqwtlvoTwqWdK5vtftOJMjf+fA2ZEkuDIe
-        T18SduXhF67rW1zojbeTuFuzQ4PVc9r7DNHtfCGqu8v2JXBXs0SB9KTtHRPJIQI+jClfhb
-        wupz/uy7X2qLMOqUDUW7OoP0380IMjtCjWRFJCQRktMG6liWP2jG65CMFUXP0W5F7p7NBt
-        hnMx9OP/Y6XSZV4FThki7WaABOY5+/N1J71XpUd30y+XBdtGyL4FfQvN0QECHEHM6Eu3YD
-        Dm2HmQKXjUkKaE589F4OJubTXKyYS2Nq53z+qwAtU0RwxBOB9awlpuTqbb5Rpg==
+        bh=kXuL1K66hVbbl9oh0JbPD/eGxNZzYXrhlx9eaWy4U8I=;
+        b=y2e+r1z/cqcPUoWXtGQeq+zFge5v/TfLp7Rzbgh92sI1uNdJEVJl657Sv62XMBV6u1Fbul
+        f8A/dl/IbQqFagqv/h41yeDmr8VVVMpOqBomTOt4HWn7zunkYTsyj9BOAX9qwGOZErCQ3Q
+        B8n8civBxxHSWW7RafznrXCNXa+Xvgb98dFFZpFOn9xqxjxGdqw8/yPVaE+7zbPaoDh7MG
+        LJFyAMsJj1euqH5lkNdp8AMSSKV7L1uxzAABVXNbkVWnWWG3HZD73CGLM/iTYxrF4T6Mko
+        VBm3VrPwJU+agYmMlq4RWTen50a7czOKG6ZPGBrChlmrbHcL2MOUNcGG6BKPHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673536719;
+        s=2020e; t=1673602616;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6rolIEIiO2ig4S+v+S9Rws09BZuTxVnYBcgHmCQBLzI=;
-        b=njY+LU9qPrhfNmuBLswoWytKDQP5CKUBWj21Qqnt9WIBnkoVdOm8O53E9dUwjmRVknSRsH
-        pGBu7Pn3bD8YHcDQ==
-From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
+        bh=kXuL1K66hVbbl9oh0JbPD/eGxNZzYXrhlx9eaWy4U8I=;
+        b=54cZ1Z8JGlCzBYnaPnskvMgbrVBTDUsjBPjNdVREMh9sgn553DHY4FBjNW05AiGtKnF5+f
+        VHf6C7RPe+TT9fBw==
+From:   "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] rseq: Increase AT_VECTOR_SIZE_BASE to match rseq
- auxvec entries
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/cpu] x86/gsseg: Use the LKGS instruction if available for
+ load_gs_index()
+Cc:     "H. Peter Anvin (Intel)" <hpa@zytor.com>,
+        Xin Li <xin3.li@intel.com>, Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230104192054.34046-1-mathieu.desnoyers@efficios.com>
-References: <20230104192054.34046-1-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20230112072032.35626-6-xin3.li@intel.com>
+References: <20230112072032.35626-6-xin3.li@intel.com>
 MIME-Version: 1.0
-Message-ID: <167353671841.4906.17789590364136749401.tip-bot2@tip-bot2>
+Message-ID: <167360261521.4906.1537966381271124611.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,40 +69,108 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     28c8e088427ad30b4260953f3b6f908972b77c2d
-Gitweb:        https://git.kernel.org/tip/28c8e088427ad30b4260953f3b6f908972b77c2d
-Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Wed, 04 Jan 2023 14:20:54 -05:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 12 Jan 2023 11:22:22 +01:00
+Commit-ID:     92cbbadf73f45c5d8bb26ed8668ff59671ff21e6
+Gitweb:        https://git.kernel.org/tip/92cbbadf73f45c5d8bb26ed8668ff59671ff21e6
+Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
+AuthorDate:    Wed, 11 Jan 2023 23:20:32 -08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 13 Jan 2023 10:07:27 +01:00
 
-rseq: Increase AT_VECTOR_SIZE_BASE to match rseq auxvec entries
+x86/gsseg: Use the LKGS instruction if available for load_gs_index()
 
-Two new auxiliary vector entries are introduced for rseq without
-matching increment of the AT_VECTOR_SIZE_BASE, which causes failures
-with CONFIG_HARDENED_USERCOPY=y.
+The LKGS instruction atomically loads a segment descriptor into the
+%gs descriptor registers, *except* that %gs.base is unchanged, and the
+base is instead loaded into MSR_IA32_KERNEL_GS_BASE, which is exactly
+what we want this function to do.
 
-Fixes: 317c8194e6ae ("rseq: Introduce feature size and alignment ELF auxiliary vector entries")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20230104192054.34046-1-mathieu.desnoyers@efficios.com
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Xin Li <xin3.li@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230112072032.35626-6-xin3.li@intel.com
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
 ---
- include/linux/auxvec.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/gsseg.h | 33 +++++++++++++++++++++++++++++----
+ arch/x86/kernel/cpu/common.c |  1 +
+ arch/x86/xen/enlighten_pv.c  |  1 +
+ 3 files changed, 31 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/auxvec.h b/include/linux/auxvec.h
-index f68d0ec..407f700 100644
---- a/include/linux/auxvec.h
-+++ b/include/linux/auxvec.h
-@@ -4,6 +4,6 @@
+diff --git a/arch/x86/include/asm/gsseg.h b/arch/x86/include/asm/gsseg.h
+index d15577c..ab6a595 100644
+--- a/arch/x86/include/asm/gsseg.h
++++ b/arch/x86/include/asm/gsseg.h
+@@ -14,17 +14,42 @@
  
- #include <uapi/linux/auxvec.h>
+ extern asmlinkage void asm_load_gs_index(u16 selector);
  
--#define AT_VECTOR_SIZE_BASE 20 /* NEW_AUX_ENT entries in auxiliary table */
-+#define AT_VECTOR_SIZE_BASE 22 /* NEW_AUX_ENT entries in auxiliary table */
-   /* number of "#define AT_.*" above, minus {AT_NULL, AT_IGNORE, AT_NOTELF} */
- #endif /* _LINUX_AUXVEC_H */
++/* Replace with "lkgs %di" once binutils support LKGS instruction */
++#define LKGS_DI _ASM_BYTES(0xf2,0x0f,0x00,0xf7)
++
++static inline void native_lkgs(unsigned int selector)
++{
++	u16 sel = selector;
++	asm_inline volatile("1: " LKGS_DI
++			    _ASM_EXTABLE_TYPE_REG(1b, 1b, EX_TYPE_ZERO_REG, %k[sel])
++			    : [sel] "+D" (sel));
++}
++
+ static inline void native_load_gs_index(unsigned int selector)
+ {
+-	unsigned long flags;
++	if (cpu_feature_enabled(X86_FEATURE_LKGS)) {
++		native_lkgs(selector);
++	} else {
++		unsigned long flags;
+ 
+-	local_irq_save(flags);
+-	asm_load_gs_index(selector);
+-	local_irq_restore(flags);
++		local_irq_save(flags);
++		asm_load_gs_index(selector);
++		local_irq_restore(flags);
++	}
+ }
+ 
+ #endif /* CONFIG_X86_64 */
+ 
++static inline void __init lkgs_init(void)
++{
++#ifdef CONFIG_PARAVIRT_XXL
++#ifdef CONFIG_X86_64
++	if (cpu_feature_enabled(X86_FEATURE_LKGS))
++		pv_ops.cpu.load_gs_index = native_lkgs;
++#endif
++#endif
++}
++
+ #ifndef CONFIG_PARAVIRT_XXL
+ 
+ static inline void load_gs_index(unsigned int selector)
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 9cfca3d..b7ac85a 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1960,6 +1960,7 @@ void __init identify_boot_cpu(void)
+ 	setup_cr_pinning();
+ 
+ 	tsx_init();
++	lkgs_init();
+ }
+ 
+ void identify_secondary_cpu(struct cpuinfo_x86 *c)
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 5b13796..ce2f19e 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -276,6 +276,7 @@ static void __init xen_init_capabilities(void)
+ 	setup_clear_cpu_cap(X86_FEATURE_ACC);
+ 	setup_clear_cpu_cap(X86_FEATURE_X2APIC);
+ 	setup_clear_cpu_cap(X86_FEATURE_SME);
++	setup_clear_cpu_cap(X86_FEATURE_LKGS);
+ 
+ 	/*
+ 	 * Xen PV would need some work to support PCID: CR3 handling as well
