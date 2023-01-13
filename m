@@ -2,55 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1000669709
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:32:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB7B566971D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jan 2023 13:33:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241357AbjAMMc1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Jan 2023 07:32:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33912 "EHLO
+        id S241396AbjAMMch (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Jan 2023 07:32:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241208AbjAMMcH (ORCPT
+        with ESMTP id S241266AbjAMMcI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Jan 2023 07:32:07 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB1FD4319C;
-        Fri, 13 Jan 2023 04:31:06 -0800 (PST)
-Date:   Fri, 13 Jan 2023 12:31:04 -0000
+        Fri, 13 Jan 2023 07:32:08 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CA9B4D72A;
+        Fri, 13 Jan 2023 04:31:10 -0800 (PST)
+Date:   Fri, 13 Jan 2023 12:31:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673613065;
+        s=2020; t=1673613066;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=48P8KVWCYjMGGvLZjw2r6s5bxt15ORTDOcSGZ3/Il2Q=;
-        b=xTBd4OWCGmaNV4APjPCKnJixlVG65hrEm5Ok6jXl3FCyCorsFB3TNki09EghgZPw4CeHhF
-        t/ZldtXAzNp6IhJelqmJFuyqPhByDrkfj8MaJiJsPXNVIu0FI8+c8as9gUI6+evTSDfbF4
-        uhJwlhqTTkv6IbAY8arEmoUfDfG1E/zSsqxbQDDPBvsIyR7Coj/ShvK44PxXwfeR7+9XPU
-        QfK30Pb7aBYThjOnBvJNUb40HJqL79n8ODcF67Cq/AfHnUKuyDdnAEyXCGkm3gidPYnWga
-        la7KSBgShJNS2MchnO9mMf7c1j1vyWD3w3lJODEGOcz4XeImn258UxIh8Wk/+g==
+        bh=pWTyKo6K3mnhY0i107QBhzwJ+zxlbYLQ92Q1X5DIbIY=;
+        b=JAmhDchAM1H/s7LwB1vriHvxIShDQhVkW4/C7nA7mV1ktLQd4qqPwx6Zp1zXRxN3EcJvfk
+        l5lMrEa/xly9VZRIJF8xRQylFgtiXf9opzjeTHnW+Y+5PYmMU3TlZpXR99gVSGvzqs5AjU
+        37tQ6ezIDKxUNRs3NQDnxhOLk+nuv2Q4A2HjOnxQugDNpdfEHZh4H/qnh9JxPmaVt2pV2X
+        UNRMxOKBbiIgQB17nEGs/E7ZaL6Nyh8r/O3f8RNmwG4LlRgvcd3TLc+9PHaoDKvprsrXER
+        cUfPXtPAUr4x87Zmf/HoLjKLkerdzzlre+bsZ7phza9xjKHXAZRa9bzrpB2e2w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673613065;
+        s=2020e; t=1673613066;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=48P8KVWCYjMGGvLZjw2r6s5bxt15ORTDOcSGZ3/Il2Q=;
-        b=MLW5crS0wxMIz2rrWnMMu75203GVRbIZ0au/pJ7cDipr/UXG2YCyiBs8qwFsbnn/Lg/Jq2
-        l1LJ1a7KUMZ1k1DQ==
+        bh=pWTyKo6K3mnhY0i107QBhzwJ+zxlbYLQ92Q1X5DIbIY=;
+        b=r3v4QUhG2p7+kJjjTFdL47QjNDvpJnwO44Rvxz3RAYOmlPGM26f4sl86FuqqHKsKNVorNU
+        UvmFjniiLR9/sBAw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] cpuidle: Add comments about noinstr/__cpuidle usage
+Subject: [tip: sched/core] arm64, riscv, perf: Remove RCU_NONIDLE() usage
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        Ingo Molnar <mingo@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230112195542.397238052@infradead.org>
-References: <20230112195542.397238052@infradead.org>
+In-Reply-To: <20230112195542.151174682@infradead.org>
+References: <20230112195542.151174682@infradead.org>
 MIME-Version: 1.0
-Message-ID: <167361306473.4906.1967859270536906724.tip-bot2@tip-bot2>
+Message-ID: <167361306587.4906.6872487884714268270.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,66 +70,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     0e985e9d22864e29d5d2b3d909ad15134d7f6d46
-Gitweb:        https://git.kernel.org/tip/0e985e9d22864e29d5d2b3d909ad15134d7f6d46
+Commit-ID:     1c38b0615f84f622cd6c821aa40be60fc7f7a096
+Gitweb:        https://git.kernel.org/tip/1c38b0615f84f622cd6c821aa40be60fc7f7a096
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 12 Jan 2023 20:44:04 +01:00
+AuthorDate:    Thu, 12 Jan 2023 20:44:00 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 13 Jan 2023 11:48:18 +01:00
+CommitterDate: Fri, 13 Jan 2023 11:48:17 +01:00
 
-cpuidle: Add comments about noinstr/__cpuidle usage
+arm64, riscv, perf: Remove RCU_NONIDLE() usage
 
-Add a few words on noinstr / __cpuidle usage.
+The PM notifiers should no longer be ran with RCU disabled (per the
+previous patches), as such this hack is no longer required either.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230112195542.397238052@infradead.org
+Tested-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20230112195542.151174682@infradead.org
 ---
- drivers/cpuidle/cpuidle.c      | 12 ++++++++++++
- include/linux/compiler_types.h | 10 ++++++++++
- 2 files changed, 22 insertions(+)
+ drivers/perf/arm_pmu.c       | 11 +----------
+ drivers/perf/riscv_pmu_sbi.c |  8 +-------
+ 2 files changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 73f7d8b..500d172 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -252,6 +252,18 @@ noinstr int cpuidle_enter_state(struct cpuidle_device *dev,
- 		instrumentation_begin();
- 	}
- 
-+	/*
-+	 * NOTE!!
-+	 *
-+	 * For cpuidle_state::enter() methods that do *NOT* set
-+	 * CPUIDLE_FLAG_RCU_IDLE RCU will be disabled here and these functions
-+	 * must be marked either noinstr or __cpuidle.
-+	 *
-+	 * For cpuidle_state::enter() methods that *DO* set
-+	 * CPUIDLE_FLAG_RCU_IDLE this isn't required, but they must mark the
-+	 * function calling ct_cpuidle_enter() as noinstr/__cpuidle and all
-+	 * functions called within the RCU-idle region.
-+	 */
- 	entered_state = target_state->enter(dev, drv, index);
- 
- 	if (WARN_ONCE(!irqs_disabled(), "%ps leaked IRQ state", target_state->enter))
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index d785890..dea5bf5 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -239,6 +239,16 @@ struct ftrace_likely_data {
- 
- #define noinstr __noinstr_section(".noinstr.text")
- 
-+/*
-+ * The __cpuidle section is used twofold:
-+ *
-+ *  1) the original use -- identifying if a CPU is 'stuck' in idle state based
-+ *     on it's instruction pointer. See cpu_in_idle().
-+ *
-+ *  2) supressing instrumentation around where cpuidle disables RCU; where the
-+ *     function isn't strictly required for #1, this is interchangeable with
-+ *     noinstr.
-+ */
- #define __cpuidle __noinstr_section(".cpuidle.text")
- 
- #endif /* __KERNEL__ */
+diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
+index 9b593f9..c34d5fe 100644
+--- a/drivers/perf/arm_pmu.c
++++ b/drivers/perf/arm_pmu.c
+@@ -758,17 +758,8 @@ static void cpu_pm_pmu_setup(struct arm_pmu *armpmu, unsigned long cmd)
+ 		case CPU_PM_ENTER_FAILED:
+ 			 /*
+ 			  * Restore and enable the counter.
+-			  * armpmu_start() indirectly calls
+-			  *
+-			  * perf_event_update_userpage()
+-			  *
+-			  * that requires RCU read locking to be functional,
+-			  * wrap the call within RCU_NONIDLE to make the
+-			  * RCU subsystem aware this cpu is not idle from
+-			  * an RCU perspective for the armpmu_start() call
+-			  * duration.
+ 			  */
+-			RCU_NONIDLE(armpmu_start(event, PERF_EF_RELOAD));
++			armpmu_start(event, PERF_EF_RELOAD);
+ 			break;
+ 		default:
+ 			break;
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index f6507ef..7b2288d 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -771,14 +771,8 @@ static int riscv_pm_pmu_notify(struct notifier_block *b, unsigned long cmd,
+ 		case CPU_PM_ENTER_FAILED:
+ 			/*
+ 			 * Restore and enable the counter.
+-			 *
+-			 * Requires RCU read locking to be functional,
+-			 * wrap the call within RCU_NONIDLE to make the
+-			 * RCU subsystem aware this cpu is not idle from
+-			 * an RCU perspective for the riscv_pmu_start() call
+-			 * duration.
+ 			 */
+-			RCU_NONIDLE(riscv_pmu_start(event, PERF_EF_RELOAD));
++			riscv_pmu_start(event, PERF_EF_RELOAD);
+ 			break;
+ 		default:
+ 			break;
