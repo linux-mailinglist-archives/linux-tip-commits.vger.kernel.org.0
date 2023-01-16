@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 184DB66C87C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Jan 2023 17:39:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09A6166CFA7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Jan 2023 20:43:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233659AbjAPQjm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 16 Jan 2023 11:39:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54180 "EHLO
+        id S232957AbjAPTnf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 16 Jan 2023 14:43:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233633AbjAPQjU (ORCPT
+        with ESMTP id S232312AbjAPTn3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 16 Jan 2023 11:39:20 -0500
+        Mon, 16 Jan 2023 14:43:29 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C34452C650;
-        Mon, 16 Jan 2023 08:27:52 -0800 (PST)
-Date:   Mon, 16 Jan 2023 16:27:49 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3E452B638;
+        Mon, 16 Jan 2023 11:43:27 -0800 (PST)
+Date:   Mon, 16 Jan 2023 19:43:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673886470;
+        s=2020; t=1673898206;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pQQL6K9+g3nFmYTxhhPBdAWY0ZIqAkC6J7tK4XIrDaU=;
-        b=4u6LSUXNyZSxsGSltzZE00kMT/aUmQ+VxdSsJ4DfrJUjWUwti00Yh60m/MD0HDMhouXc+4
-        4/jsDYItlUPEgpzN447amyAKlEW3CtjeV/FBzJyq3mMimdh2OXjIK1eQwhvkMvgQl75pqC
-        3nKQZD+J/1cpDX1IIU/qkt1KAE+YIYCGdze5SE1a56Z0QFnSVOwlhCf6CAilmA4g6dxM25
-        RP6jsAIP//uumxjvV+vOAamJGuWM61sxOD/d13sgdLpXrkUfu8KvBBIiYhrdZ+7ZQJJyA+
-        1Lr6wOYgiRJbrFleUBVOFIgUQFWrlaYzShpXUahw7tpclwTpTMun/bIPKPmTRw==
+        bh=Yivz0yGHpuFw1Nb83xWznhX3sQ8SnxbpXgvCv3wBb1A=;
+        b=Jiz6sB8vxnmgcQuR8YAemKRpB/3+9FWUODDCk5njZi/Sl4XgHBO9TpyduRUzun5FIwkb3I
+        CWSmQyx2xOhSd1p9OQ7gCyNomFvMSO15Zn5yPxDXVT9ItGD7wjTepWA0JBnz3HLCcnG3KW
+        37EYe02F/jU36s99Wq1nJcw/Y/ckpOFkL/+Vwzi2npB153zedHP8Kjp/CCtHmT924XV/77
+        VIP+jucueTR+Wh8drSM/gu2GfDqfVcRdf/DcK3CTbSFY/Q6Pj9aPFsU83lEYP76cWYRALt
+        VIbu0ksKGkZa17O3zHtFbMhZ2x7VAoiLRnMgumUm3ezF73KVzbABajVF8qe+lg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673886470;
+        s=2020e; t=1673898206;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pQQL6K9+g3nFmYTxhhPBdAWY0ZIqAkC6J7tK4XIrDaU=;
-        b=sgeWZOaocyIlaAYRTu9ifRlcpmZvVtfxIx7xVVr5adfXPXKlhAl4gx/4lB5+qBfKHpHGU3
-        Sn4I8c7cqemL0FDg==
+        bh=Yivz0yGHpuFw1Nb83xWznhX3sQ8SnxbpXgvCv3wBb1A=;
+        b=uKeVYlf+rToDffqmSuuarCGhr96xMa9Un2mCLTn8Euq57YmUug44+WZ2++lNTtDAhATnJx
+        F/t7NKkCIuiPCaBQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/i8259: Mark legacy PIC interrupts with IRQ_LEVEL
-Cc:     Baoquan He <bhe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <87mt6rjrra.ffs@tglx>
-References: <87mt6rjrra.ffs@tglx>
+Subject: [tip: x86/urgent] x86/pci/xen: Fixup fallout from the PCI/MSI overhaul
+Cc:     David Woodhouse <dwmw@amazon.co.uk>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <871qnunycr.ffs@tglx>
+References: <871qnunycr.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <167388646935.4906.13609836242653190947.tip-bot2@tip-bot2>
+Message-ID: <167389820565.4906.13957061566790292505.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,67 +66,65 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     5fa55950729d0762a787451dc52862c3f850f859
-Gitweb:        https://git.kernel.org/tip/5fa55950729d0762a787451dc52862c3f850f859
+Commit-ID:     6c796996ee7033bcbbc3cd733513eb43f8160f5e
+Gitweb:        https://git.kernel.org/tip/6c796996ee7033bcbbc3cd733513eb43f8160f5e
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 09 Jan 2023 22:57:13 +01:00
+AuthorDate:    Mon, 16 Jan 2023 19:11:32 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 16 Jan 2023 17:24:56 +01:00
+CommitterDate: Mon, 16 Jan 2023 20:40:44 +01:00
 
-x86/i8259: Mark legacy PIC interrupts with IRQ_LEVEL
+x86/pci/xen: Fixup fallout from the PCI/MSI overhaul
 
-Baoquan reported that after triggering a crash the subsequent crash-kernel
-fails to boot about half of the time. It triggers a NULL pointer
-dereference in the periodic tick code.
+David reported that the recent PCI/MSI rework results in MSI descriptor
+leakage under XEN.
 
-This happens because the legacy timer interrupt (IRQ0) is resent in
-software which happens in soft interrupt (tasklet) context. In this context
-get_irq_regs() returns NULL which leads to the NULL pointer dereference.
+This is caused by:
 
-The reason for the resend is a spurious APIC interrupt on the IRQ0 vector
-which is captured and leads to a resend when the legacy timer interrupt is
-enabled. This is wrong because the legacy PIC interrupts are level
-triggered and therefore should never be resent in software, but nothing
-ever sets the IRQ_LEVEL flag on those interrupts, so the core code does not
-know about their trigger type.
+  1) The missing MSI_FLAG_FREE_MSI_DESCS flag in the XEN MSI domain info,
+     which is required now that PCI/MSI delegates descriptor freeing to
+     the core MSI code.
 
-Ensure that IRQ_LEVEL is set when the legacy PCI interrupts are set up.
+  2) Not disassociating the interrupts on teardown, by setting the
+     msi_desc::irq to 0. This was not required before because the teardown
+     was unconditional and did not check whether a MSI descriptor was still
+     connected to a Linux interrupt.
 
-Fixes: a4633adcdbc1 ("[PATCH] genirq: add genirq sw IRQ-retrigger")
-Reported-by: Baoquan He <bhe@redhat.com>
+On further inspection it came to light that the MSI_FLAG_DEV_SYSFS is
+missing in the XEN MSI domain info as well to restore the pre 6.2 status
+quo.
+
+Add the missing MSI flags and disassociate the MSI descriptor from the
+Linux interrupt in the XEN specific teardown function.
+
+Fixes: b2bdda205c0c ("PCI/MSI: Let the MSI core free descriptors")
+Fixes: 2f2940d16823 ("genirq/msi: Remove filter from msi_free_descs_free_range()")
+Fixes: ffd84485e6be ("PCI/MSI: Let the irq code handle sysfs groups")
+Reported-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Baoquan He <bhe@redhat.com>
-Link: https://lore.kernel.org/r/87mt6rjrra.ffs@tglx
+Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://lore.kernel.org/r/871qnunycr.ffs@tglx
 ---
- arch/x86/kernel/i8259.c   | 1 +
- arch/x86/kernel/irqinit.c | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/pci/xen.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/i8259.c b/arch/x86/kernel/i8259.c
-index 3aa5304..4d8aff0 100644
---- a/arch/x86/kernel/i8259.c
-+++ b/arch/x86/kernel/i8259.c
-@@ -114,6 +114,7 @@ static void make_8259A_irq(unsigned int irq)
- 	disable_irq_nosync(irq);
- 	io_apic_irqs &= ~(1<<irq);
- 	irq_set_chip_and_handler(irq, &i8259A_chip, handle_level_irq);
-+	irq_set_status_flags(irq, IRQ_LEVEL);
- 	enable_irq(irq);
- 	lapic_assign_legacy_vector(irq, true);
- }
-diff --git a/arch/x86/kernel/irqinit.c b/arch/x86/kernel/irqinit.c
-index beb1bad..c683666 100644
---- a/arch/x86/kernel/irqinit.c
-+++ b/arch/x86/kernel/irqinit.c
-@@ -65,8 +65,10 @@ void __init init_ISA_irqs(void)
- 
- 	legacy_pic->init(0);
- 
--	for (i = 0; i < nr_legacy_irqs(); i++)
-+	for (i = 0; i < nr_legacy_irqs(); i++) {
- 		irq_set_chip_and_handler(i, chip, handle_level_irq);
-+		irq_set_status_flags(i, IRQ_LEVEL);
-+	}
+diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
+index 7905504..8babce7 100644
+--- a/arch/x86/pci/xen.c
++++ b/arch/x86/pci/xen.c
+@@ -392,6 +392,7 @@ static void xen_teardown_msi_irqs(struct pci_dev *dev)
+ 	msi_for_each_desc(msidesc, &dev->dev, MSI_DESC_ASSOCIATED) {
+ 		for (i = 0; i < msidesc->nvec_used; i++)
+ 			xen_destroy_irq(msidesc->irq + i);
++		msidesc->irq = 0;
+ 	}
  }
  
- void __init init_IRQ(void)
+@@ -433,7 +434,7 @@ static struct msi_domain_ops xen_pci_msi_domain_ops = {
+ };
+ 
+ static struct msi_domain_info xen_pci_msi_domain_info = {
+-	.flags			= MSI_FLAG_PCI_MSIX,
++	.flags			= MSI_FLAG_PCI_MSIX | MSI_FLAG_FREE_MSI_DESCS | MSI_FLAG_DEV_SYSFS,
+ 	.ops			= &xen_pci_msi_domain_ops,
+ };
+ 
