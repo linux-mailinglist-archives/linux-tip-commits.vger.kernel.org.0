@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD27366BA57
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Jan 2023 10:29:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 184DB66C87C
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Jan 2023 17:39:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232128AbjAPJ3x (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 16 Jan 2023 04:29:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54158 "EHLO
+        id S233659AbjAPQjm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 16 Jan 2023 11:39:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232702AbjAPJ2z (ORCPT
+        with ESMTP id S233633AbjAPQjU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 16 Jan 2023 04:28:55 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEB0A16AC4;
-        Mon, 16 Jan 2023 01:28:53 -0800 (PST)
-Date:   Mon, 16 Jan 2023 09:28:51 -0000
+        Mon, 16 Jan 2023 11:39:20 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C34452C650;
+        Mon, 16 Jan 2023 08:27:52 -0800 (PST)
+Date:   Mon, 16 Jan 2023 16:27:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673861332;
+        s=2020; t=1673886470;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G5OPga9s9el+CHbJ947Z6+l1jBqfCaiyuLxg70TImQI=;
-        b=mXgF/mdvSH/Q6YlDNvzjgbl5+BUz48NBSFltjq16o4dE9A5N909n/tT6vuxMCodrmPhiyA
-        PFLopFJ6OY/j1jBDiXYJZG0zUxXgOZq0rsdnkk+ftZ+8JSZkbqFZZ4sOkdK6UprtxmbYgZ
-        +F9S9e/fj9/fbTE4KR7ksAX0tOFotCrvYXjkCsr3x7kLD2+GMVJhDTpS6CdrW6J74xdaHo
-        KH768kK+PDYHBwGFjtSCQDK1+6IkaowxJNavZy0JJ2jQLUJCCutTZRuDFypq6cRa6MRLAq
-        remUama9eA3fuheTERoMI3qe1bcJdsuwCWUjJU+m5fZIv3C5Cpp7qrkl4OvrTg==
+        bh=pQQL6K9+g3nFmYTxhhPBdAWY0ZIqAkC6J7tK4XIrDaU=;
+        b=4u6LSUXNyZSxsGSltzZE00kMT/aUmQ+VxdSsJ4DfrJUjWUwti00Yh60m/MD0HDMhouXc+4
+        4/jsDYItlUPEgpzN447amyAKlEW3CtjeV/FBzJyq3mMimdh2OXjIK1eQwhvkMvgQl75pqC
+        3nKQZD+J/1cpDX1IIU/qkt1KAE+YIYCGdze5SE1a56Z0QFnSVOwlhCf6CAilmA4g6dxM25
+        RP6jsAIP//uumxjvV+vOAamJGuWM61sxOD/d13sgdLpXrkUfu8KvBBIiYhrdZ+7ZQJJyA+
+        1Lr6wOYgiRJbrFleUBVOFIgUQFWrlaYzShpXUahw7tpclwTpTMun/bIPKPmTRw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673861332;
+        s=2020e; t=1673886470;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G5OPga9s9el+CHbJ947Z6+l1jBqfCaiyuLxg70TImQI=;
-        b=VQufeeKpZGn1kYgRPd4AKwfCq0hIRDSc47/Oz8WNSfT25i+HGUAF2uC/Fg26A9SBHNpLPv
-        o/ph6TS07ugK64CA==
-From:   "tip-bot2 for Yair Podemsky" <tip-bot2@linutronix.de>
+        bh=pQQL6K9+g3nFmYTxhhPBdAWY0ZIqAkC6J7tK4XIrDaU=;
+        b=sgeWZOaocyIlaAYRTu9ifRlcpmZvVtfxIx7xVVr5adfXPXKlhAl4gx/4lB5+qBfKHpHGU3
+        Sn4I8c7cqemL0FDg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] x86/aperfmperf: Erase stale arch_freq_scale
- values when disabling frequency invariance readings
-Cc:     Yair Podemsky <ypodemsk@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230110160206.75912-1-ypodemsk@redhat.com>
-References: <20230110160206.75912-1-ypodemsk@redhat.com>
+Subject: [tip: x86/urgent] x86/i8259: Mark legacy PIC interrupts with IRQ_LEVEL
+Cc:     Baoquan He <bhe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <87mt6rjrra.ffs@tglx>
+References: <87mt6rjrra.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <167386133169.4906.2168836143666979819.tip-bot2@tip-bot2>
+Message-ID: <167388646935.4906.13609836242653190947.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,53 +63,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     5f5cc9ed992cbab6361f198966f0edba5fc52688
-Gitweb:        https://git.kernel.org/tip/5f5cc9ed992cbab6361f198966f0edba5fc52688
-Author:        Yair Podemsky <ypodemsk@redhat.com>
-AuthorDate:    Tue, 10 Jan 2023 18:02:06 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 16 Jan 2023 10:19:15 +01:00
+Commit-ID:     5fa55950729d0762a787451dc52862c3f850f859
+Gitweb:        https://git.kernel.org/tip/5fa55950729d0762a787451dc52862c3f850f859
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 09 Jan 2023 22:57:13 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 16 Jan 2023 17:24:56 +01:00
 
-x86/aperfmperf: Erase stale arch_freq_scale values when disabling frequency invariance readings
+x86/i8259: Mark legacy PIC interrupts with IRQ_LEVEL
 
-Once disable_freq_invariance_work is called the scale_freq_tick function
-will not compute or update the arch_freq_scale values.
-However the scheduler will still read these values and use them.
-The result is that the scheduler might perform unfair decisions based on stale
-values.
+Baoquan reported that after triggering a crash the subsequent crash-kernel
+fails to boot about half of the time. It triggers a NULL pointer
+dereference in the periodic tick code.
 
-This patch adds the step of setting the arch_freq_scale values for all
-cpus to the default (max) value SCHED_CAPACITY_SCALE, Once all cpus
-have the same arch_freq_scale value the scaling is meaningless.
+This happens because the legacy timer interrupt (IRQ0) is resent in
+software which happens in soft interrupt (tasklet) context. In this context
+get_irq_regs() returns NULL which leads to the NULL pointer dereference.
 
-Signed-off-by: Yair Podemsky <ypodemsk@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230110160206.75912-1-ypodemsk@redhat.com
+The reason for the resend is a spurious APIC interrupt on the IRQ0 vector
+which is captured and leads to a resend when the legacy timer interrupt is
+enabled. This is wrong because the legacy PIC interrupts are level
+triggered and therefore should never be resent in software, but nothing
+ever sets the IRQ_LEVEL flag on those interrupts, so the core code does not
+know about their trigger type.
+
+Ensure that IRQ_LEVEL is set when the legacy PCI interrupts are set up.
+
+Fixes: a4633adcdbc1 ("[PATCH] genirq: add genirq sw IRQ-retrigger")
+Reported-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Baoquan He <bhe@redhat.com>
+Link: https://lore.kernel.org/r/87mt6rjrra.ffs@tglx
 ---
- arch/x86/kernel/cpu/aperfmperf.c |  9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/kernel/i8259.c   | 1 +
+ arch/x86/kernel/irqinit.c | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/aperfmperf.c b/arch/x86/kernel/cpu/aperfmperf.c
-index 1f60a2b..fdbb5f0 100644
---- a/arch/x86/kernel/cpu/aperfmperf.c
-+++ b/arch/x86/kernel/cpu/aperfmperf.c
-@@ -330,7 +330,16 @@ static void __init bp_init_freq_invariance(void)
+diff --git a/arch/x86/kernel/i8259.c b/arch/x86/kernel/i8259.c
+index 3aa5304..4d8aff0 100644
+--- a/arch/x86/kernel/i8259.c
++++ b/arch/x86/kernel/i8259.c
+@@ -114,6 +114,7 @@ static void make_8259A_irq(unsigned int irq)
+ 	disable_irq_nosync(irq);
+ 	io_apic_irqs &= ~(1<<irq);
+ 	irq_set_chip_and_handler(irq, &i8259A_chip, handle_level_irq);
++	irq_set_status_flags(irq, IRQ_LEVEL);
+ 	enable_irq(irq);
+ 	lapic_assign_legacy_vector(irq, true);
+ }
+diff --git a/arch/x86/kernel/irqinit.c b/arch/x86/kernel/irqinit.c
+index beb1bad..c683666 100644
+--- a/arch/x86/kernel/irqinit.c
++++ b/arch/x86/kernel/irqinit.c
+@@ -65,8 +65,10 @@ void __init init_ISA_irqs(void)
  
- static void disable_freq_invariance_workfn(struct work_struct *work)
- {
-+	int cpu;
-+
- 	static_branch_disable(&arch_scale_freq_key);
-+
-+	/*
-+	 * Set arch_freq_scale to a default value on all cpus
-+	 * This negates the effect of scaling
-+	 */
-+	for_each_possible_cpu(cpu)
-+		per_cpu(arch_freq_scale, cpu) = SCHED_CAPACITY_SCALE;
+ 	legacy_pic->init(0);
+ 
+-	for (i = 0; i < nr_legacy_irqs(); i++)
++	for (i = 0; i < nr_legacy_irqs(); i++) {
+ 		irq_set_chip_and_handler(i, chip, handle_level_irq);
++		irq_set_status_flags(i, IRQ_LEVEL);
++	}
  }
  
- static DECLARE_WORK(disable_freq_invariance_work,
+ void __init init_IRQ(void)
