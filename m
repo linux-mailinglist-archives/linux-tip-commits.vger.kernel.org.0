@@ -2,57 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AC4866B016
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 15 Jan 2023 10:07:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9267E66B9FA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Jan 2023 10:14:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230441AbjAOJHb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 15 Jan 2023 04:07:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38602 "EHLO
+        id S229930AbjAPJOd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 16 Jan 2023 04:14:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230211AbjAOJHR (ORCPT
+        with ESMTP id S232036AbjAPJOD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 15 Jan 2023 04:07:17 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7722BC15F;
-        Sun, 15 Jan 2023 01:07:07 -0800 (PST)
-Date:   Sun, 15 Jan 2023 09:07:05 -0000
+        Mon, 16 Jan 2023 04:14:03 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7320B1449A;
+        Mon, 16 Jan 2023 01:13:49 -0800 (PST)
+Date:   Mon, 16 Jan 2023 09:13:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673773625;
+        s=2020; t=1673860426;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jpEYCeQRkhvKftDnA3JJ5lal4ivPiXjM45+cvc1Q25A=;
-        b=EPQ698DlMzRjFQiOeVJ84HEHi79z8oZFVpB5fS2Xxk6icztoD2xcmOdNhyl2/VJh2Dy4rL
-        /9jDIEyfzEEd4NC03gMWu4obj++kqaFFkeokvCtxpyKw4sif+h1k5MDMLfj7hj5YovSoFj
-        HNiOOcOebgyMOlyRrl7W8C6ZHZYTflb1B6mf2LvxolGTrWFaAbeypgQmLtEY54aRWd0wqH
-        pvPWgVNDpQRgnNLGvI/+slXXuRTQwy8pHiexwzlL+rq8/iBYvRvypxnc9sGUoU/UPpHNcv
-        vwex1SGYF82fND2qkKdp9IG5AaA4Ulu/41pd5J+Sy/o7TVpKDsh5ZG/stRWkZA==
+        bh=8Qu6T2u5QqV7NYrJSK3GWcl2n1qPVAedbnw8VqSw0zo=;
+        b=4t7EmSf+VAT3JNrKRA/Xvo3fty/takKYhaYWFobK2aVwWhkuDaHFzMQLMhiCD63n41JW77
+        ElsPWsZ3aKIZgzRTsmFFKewGuvjGrvet4LcKZrYWYTK97xrjtM8XxPAO3EM4eFrlO6yJ3A
+        dy+0KWGJStK3MZzyPf+kgHQSkxtFJKY16FSDX6JS+t6hNIpOZ+7AqyoCzCmM18dxpz4H93
+        szwjvkh4ISNzZWaLq+kFGvK48/6MsENEQP200vDSJtacE7ED/pjymI5OwtI7wgKvXZCP0/
+        WFf/QHxMKUeEw+Zv8mBNoXZyJBPjUr7AavPTVzADYYtLNKhEGkJb/ICiKa13tA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673773625;
+        s=2020e; t=1673860426;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jpEYCeQRkhvKftDnA3JJ5lal4ivPiXjM45+cvc1Q25A=;
-        b=+ZW9/HVF4YvZ/rfJIiKue8EMm2OgtrOorpkFsc22aO1xqyM1Mzk8p/TwKT++aaiVUxYitK
-        Uvi1r3WsNqfX+xBw==
-From:   "tip-bot2 for Christophe JAILLET" <tip-bot2@linutronix.de>
+        bh=8Qu6T2u5QqV7NYrJSK3GWcl2n1qPVAedbnw8VqSw0zo=;
+        b=vgiajWa2Qz0uwLOlzJgiVMjvanUyYX1tuflE3rsXS7WrCqlmZR/mI8cectZUBoFyAUMCfe
+        WpeVKQFp2ZNCoMCQ==
+From:   "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/signal: Fix the value returned by strict_sas_size()
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: sched/urgent] sched/core: Fix NULL pointer access fault in
+ sched_setaffinity() with non-SMP configs
+Cc:     kernel test robot <yujie.liu@intel.com>,
+        Waiman Long <longman@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C73882d43ebe420c9d8fb82d0560021722b243000=2E16737?=
- =?utf-8?q?17552=2Egit=2Echristophe=2Ejaillet=40wanadoo=2Efr=3E?=
-References: =?utf-8?q?=3C73882d43ebe420c9d8fb82d0560021722b243000=2E167371?=
- =?utf-8?q?7552=2Egit=2Echristophe=2Ejaillet=40wanadoo=2Efr=3E?=
+In-Reply-To: <20230115193122.563036-1-longman@redhat.com>
+References: <20230115193122.563036-1-longman@redhat.com>
 MIME-Version: 1.0
-Message-ID: <167377362509.4906.11170062722666722678.tip-bot2@tip-bot2>
+Message-ID: <167386042602.4906.3347789446999182606.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,50 +67,60 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     ef6dfc4b238a435ab552207ec09e4a82b6426d31
-Gitweb:        https://git.kernel.org/tip/ef6dfc4b238a435ab552207ec09e4a82b6426d31
-Author:        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-AuthorDate:    Sat, 14 Jan 2023 18:33:09 +01:00
+Commit-ID:     5657c116783545fb49cd7004994c187128552b12
+Gitweb:        https://git.kernel.org/tip/5657c116783545fb49cd7004994c187128552b12
+Author:        Waiman Long <longman@redhat.com>
+AuthorDate:    Sun, 15 Jan 2023 14:31:22 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 15 Jan 2023 09:54:27 +01:00
+CommitterDate: Mon, 16 Jan 2023 10:07:25 +01:00
 
-x86/signal: Fix the value returned by strict_sas_size()
+sched/core: Fix NULL pointer access fault in sched_setaffinity() with non-SMP configs
 
-Functions used with __setup() return 1 when the argument has been
-successfully parsed.
+The kernel commit 9a5418bc48ba ("sched/core: Use kfree_rcu() in
+do_set_cpus_allowed()") introduces a bug for kernels built with non-SMP
+configs. Calling sched_setaffinity() on such a uniprocessor kernel will
+cause cpumask_copy() to be called with a NULL pointer leading to general
+protection fault. This is not really a problem in real use cases as
+there aren't that many uniprocessor kernel configs in use and calling
+sched_setaffinity() on such a uniprocessor system doesn't make sense.
 
-Reverse the returned value so that 1 is returned when kstrtobool() is
-successful (i.e. returns 0).
+Fix this problem by making sure cpumask_copy() will not be called in
+such a case.
 
-My understanding of these __setup() functions is that returning 1 or 0
-does not change much anyway - so this is more of a cleanup than a
-functional fix.
-
-I spot it and found it spurious while looking at something else.
-Even if the output is not perfect, you'll get the idea with:
-
-   $ git grep -B2 -A10 retu.*kstrtobool | grep __setup -B10
-
-Fixes: 3aac3ebea08f ("x86/signal: Implement sigaltstack size validation")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 9a5418bc48ba ("sched/core: Use kfree_rcu() in do_set_cpus_allowed()")
+Reported-by: kernel test robot <yujie.liu@intel.com>
+Signed-off-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/73882d43ebe420c9d8fb82d0560021722b243000.1673717552.git.christophe.jaillet@wanadoo.fr
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230115193122.563036-1-longman@redhat.com
 ---
- arch/x86/kernel/signal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/signal.c b/arch/x86/kernel/signal.c
-index 1504eb8..004cb30 100644
---- a/arch/x86/kernel/signal.c
-+++ b/arch/x86/kernel/signal.c
-@@ -360,7 +360,7 @@ static bool strict_sigaltstack_size __ro_after_init = false;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index bb1ee6d..e838feb 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8290,12 +8290,18 @@ long sched_setaffinity(pid_t pid, const struct cpumask *in_mask)
+ 	if (retval)
+ 		goto out_put_task;
  
- static int __init strict_sas_size(char *arg)
- {
--	return kstrtobool(arg, &strict_sigaltstack_size);
-+	return kstrtobool(arg, &strict_sigaltstack_size) == 0;
- }
- __setup("strict_sas_size", strict_sas_size);
- 
++	/*
++	 * With non-SMP configs, user_cpus_ptr/user_mask isn't used and
++	 * alloc_user_cpus_ptr() returns NULL.
++	 */
+ 	user_mask = alloc_user_cpus_ptr(NUMA_NO_NODE);
+-	if (IS_ENABLED(CONFIG_SMP) && !user_mask) {
++	if (user_mask) {
++		cpumask_copy(user_mask, in_mask);
++	} else if (IS_ENABLED(CONFIG_SMP)) {
+ 		retval = -ENOMEM;
+ 		goto out_put_task;
+ 	}
+-	cpumask_copy(user_mask, in_mask);
++
+ 	ac = (struct affinity_context){
+ 		.new_mask  = in_mask,
+ 		.user_mask = user_mask,
