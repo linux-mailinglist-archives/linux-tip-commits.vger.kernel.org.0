@@ -2,59 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 507AD66E5CD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Jan 2023 19:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A37E670B8C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Jan 2023 23:22:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231968AbjAQSQf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Jan 2023 13:16:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47256 "EHLO
+        id S229936AbjAQWWj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Jan 2023 17:22:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233218AbjAQSOE (ORCPT
+        with ESMTP id S230286AbjAQWWG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Jan 2023 13:14:04 -0500
+        Tue, 17 Jan 2023 17:22:06 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E1684F844;
-        Tue, 17 Jan 2023 09:55:04 -0800 (PST)
-Date:   Tue, 17 Jan 2023 17:54:58 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF06442C0;
+        Tue, 17 Jan 2023 14:01:21 -0800 (PST)
+Date:   Tue, 17 Jan 2023 22:01:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1673978098;
+        s=2020; t=1673992868;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=a5gAG4zyi44i/U2VPhKM2izw3dl4jUTO1hKiLKOHNZE=;
-        b=kLjJ0YBJv5dQhPkTkqqj/b+ve9EBXYOvIVHAETb1zN43J5PfM4ARKXeQbwrZWAj3s+FJr2
-        w6opu9sT82JDHz6nWgm0RpOgl77bQlzG0f3lf0pU0Hq6e/HrIJmSKaz6KBEjeJsAfVpQwH
-        mL9NuWK/0MdMs/3VFq7D+8KMsnVxkFj+HIdZRFKdtYpcju4TsZUq7ixF/bEImdsVKXTS4p
-        WVG9BEIKhKa3jfM839rqRwJhwtjIIinFWehEYcjkD9lDPd2L68W+POQVPyKnxEc2xWCL/u
-        yo4WyDi3gj6A2jKSSRz2DGNN0R1Hc4HTVXo0RvU2+geM8IUqwNXS3DT/AGRf3g==
+        bh=cw2ifadid2co5wrZ8WMKcQk2tEe2rtV1EvOYOZJpSz0=;
+        b=mPQOu0upuAow0EFlbXSZtYpOzm/Ma2pG67mk9BwOvD8bYcbqCETte2+u5ZUgLCOkbxqMEF
+        fcZ7+U1al6Enrg7r+uXSAgqCR9A2o3rmSzNWHezzf/pdZG4wyFbmJdYYlVbOn9jrnN+nj2
+        nnPACwuxsuwSz16sQw1KXbamgDJ2aZkabdBzF+1prTuXUNMi9E9fFzvBAJ0iixljY+vWx6
+        eQNoTfNxW+NTLbCGPCzlhTwfDddRHOGFtxbIvZJnsyvGNX282kRmuCsl0vFuPFcRUx4p5b
+        KJVNrKEI3p5sP0+nNHjSk0Myjd5+LKxFu8X5HYLzoaxeLJMnLuTn3v70w8/INw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1673978098;
+        s=2020e; t=1673992868;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=a5gAG4zyi44i/U2VPhKM2izw3dl4jUTO1hKiLKOHNZE=;
-        b=RP52s0euAx0igtcaDP4h2GderM3mikD8ITObWo0GCyT9jtE7eRH2GbqVx5Mn+Ig66pXWUk
-        XbkajuGQefTvm5AA==
-From:   "tip-bot2 for Ming Lei" <tip-bot2@linutronix.de>
+        bh=cw2ifadid2co5wrZ8WMKcQk2tEe2rtV1EvOYOZJpSz0=;
+        b=eSxVsx7g9HGDdeQUznb3llfcHAVhiYAP5IuRNZRXQ6UvMtroo2xWeY3sPYlZ0LCnJs8yHy
+        czJU8VT+TvudqlAA==
+From:   "tip-bot2 for Jason Gunthorpe" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/affinity: Remove the 'firstvec' parameter from
- irq_build_affinity_masks
-Cc:     Ming Lei <ming.lei@redhat.com>,
+Subject: [tip: irq/urgent] genirq/msi: Free the fwnode created by
+ msi_create_device_irq_domain()
+Cc:     Omri Barazi <obarazi@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Christoph Hellwig <hch@lst.de>,
-        John Garry <john.g.garry@oracle.com>,
-        Jens Axboe <axboe@kernel.dk>, x86@kernel.org,
+        Kalle Valo <kvalo@kernel.org>,
+        Leon Romanovsky <leonro@nvidia.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20221227022905.352674-2-ming.lei@redhat.com>
-References: <20221227022905.352674-2-ming.lei@redhat.com>
+In-Reply-To: <0-v2-24af6665e2da+c9-msi_leak_jgg@nvidia.com>
+References: <0-v2-24af6665e2da+c9-msi_leak_jgg@nvidia.com>
 MIME-Version: 1.0
-Message-ID: <167397809817.4906.18299720094794858383.tip-bot2@tip-bot2>
+Message-ID: <167399286755.4906.18338458048671673819.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,54 +67,99 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     cdf07f0ea48a3b52f924714d477366ac510ee870
-Gitweb:        https://git.kernel.org/tip/cdf07f0ea48a3b52f924714d477366ac510ee870
-Author:        Ming Lei <ming.lei@redhat.com>
-AuthorDate:    Tue, 27 Dec 2022 10:29:00 +08:00
+Commit-ID:     ac8f29aef2f1695956ff6773b33f975290437f29
+Gitweb:        https://git.kernel.org/tip/ac8f29aef2f1695956ff6773b33f975290437f29
+Author:        Jason Gunthorpe <jgg@nvidia.com>
+AuthorDate:    Tue, 17 Jan 2023 15:16:17 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 17 Jan 2023 18:50:06 +01:00
+CommitterDate: Tue, 17 Jan 2023 22:57:04 +01:00
 
-genirq/affinity: Remove the 'firstvec' parameter from irq_build_affinity_masks
+genirq/msi: Free the fwnode created by msi_create_device_irq_domain()
 
-The 'firstvec' parameter is always same with the parameter of
-'startvec', so use 'startvec' directly inside irq_build_affinity_masks().
+msi_create_device_irq_domain() creates a firmware node for the new domain,
+which is never freed. kmemleak reports:
 
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
+unreferenced object 0xffff888120ba9a00 (size 96):
+  comm "systemd-modules", pid 221, jiffies 4294893411 (age 635.732s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 e0 19 8b 83 ff ff ff ff  ................
+    00 00 00 00 00 00 00 00 18 9a ba 20 81 88 ff ff  ........... ....
+  backtrace:
+    [<000000008cdbc98d>] __irq_domain_alloc_fwnode+0x51/0x2b0
+    [<00000000c57acf9d>] msi_create_device_irq_domain+0x283/0x670
+    [<000000009b567982>] __pci_enable_msix_range+0x49e/0xdb0
+    [<0000000077cc1445>] pci_alloc_irq_vectors_affinity+0x11f/0x1c0
+    [<00000000532e9ef5>] mlx5_irq_table_create+0x24c/0x940 [mlx5_core]
+    [<00000000fabd2b80>] mlx5_load+0x1fa/0x680 [mlx5_core]
+    [<000000006bb22ae4>] mlx5_init_one+0x485/0x670 [mlx5_core]
+    [<00000000eaa5e1ad>] probe_one+0x4c2/0x720 [mlx5_core]
+    [<00000000df8efb43>] local_pci_probe+0xd6/0x170
+    [<0000000085cb9924>] pci_device_probe+0x231/0x6e0
+
+Use the proper free operation for the firmware wnode so the name is freed
+during error unwind of msi_create_device_irq_domain() and also free the
+node in msi_remove_device_irq_domain() if it was automatically allocated.
+
+To avoid extra NULL pointer checks make irq_domain_free_fwnode() tolerant
+of NULL.
+
+Fixes: 27a6dea3ebaa ("genirq/msi: Provide msi_create/free_device_irq_domain()")
+Reported-by: Omri Barazi <obarazi@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>                                                                                                                                                                                                    
-Link: https://lore.kernel.org/r/20221227022905.352674-2-ming.lei@redhat.com
+Tested-by: Kalle Valo <kvalo@kernel.org>
+Tested-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/0-v2-24af6665e2da+c9-msi_leak_jgg@nvidia.com
 
 ---
- kernel/irq/affinity.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/irq/irqdomain.c | 2 +-
+ kernel/irq/msi.c       | 6 +++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/irq/affinity.c b/kernel/irq/affinity.c
-index d9a5c1d..3361e36 100644
---- a/kernel/irq/affinity.c
-+++ b/kernel/irq/affinity.c
-@@ -337,10 +337,10 @@ static int __irq_build_affinity_masks(unsigned int startvec,
-  *	2) spread other possible CPUs on these vectors
-  */
- static int irq_build_affinity_masks(unsigned int startvec, unsigned int numvecs,
--				    unsigned int firstvec,
- 				    struct irq_affinity_desc *masks)
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 8fe1da9..5c3fb61 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -114,7 +114,7 @@ void irq_domain_free_fwnode(struct fwnode_handle *fwnode)
  {
- 	unsigned int curvec = startvec, nr_present = 0, nr_others = 0;
-+	unsigned int firstvec = startvec;
- 	cpumask_var_t *node_to_cpumask;
- 	cpumask_var_t nmsk, npresmsk;
- 	int ret = -ENOMEM;
-@@ -463,8 +463,7 @@ irq_create_affinity_masks(unsigned int nvecs, struct irq_affinity *affd)
- 		unsigned int this_vecs = affd->set_size[i];
- 		int ret;
+ 	struct irqchip_fwid *fwid;
  
--		ret = irq_build_affinity_masks(curvec, this_vecs,
--					       curvec, masks);
-+		ret = irq_build_affinity_masks(curvec, this_vecs, masks);
- 		if (ret) {
- 			kfree(masks);
- 			return NULL;
+-	if (WARN_ON(!is_fwnode_irqchip(fwnode)))
++	if (!fwnode || WARN_ON(!is_fwnode_irqchip(fwnode)))
+ 		return;
+ 
+ 	fwid = container_of(fwnode, struct irqchip_fwid, fwnode);
+diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
+index 955267b..783a3e6 100644
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -1000,7 +1000,7 @@ bool msi_create_device_irq_domain(struct device *dev, unsigned int domid,
+ fail:
+ 	msi_unlock_descs(dev);
+ free_fwnode:
+-	kfree(fwnode);
++	irq_domain_free_fwnode(fwnode);
+ free_bundle:
+ 	kfree(bundle);
+ 	return false;
+@@ -1013,6 +1013,7 @@ free_bundle:
+  */
+ void msi_remove_device_irq_domain(struct device *dev, unsigned int domid)
+ {
++	struct fwnode_handle *fwnode = NULL;
+ 	struct msi_domain_info *info;
+ 	struct irq_domain *domain;
+ 
+@@ -1025,7 +1026,10 @@ void msi_remove_device_irq_domain(struct device *dev, unsigned int domid)
+ 
+ 	dev->msi.data->__domains[domid].domain = NULL;
+ 	info = domain->host_data;
++	if (irq_domain_is_msi_device(domain))
++		fwnode = domain->fwnode;
+ 	irq_domain_remove(domain);
++	irq_domain_free_fwnode(fwnode);
+ 	kfree(container_of(info, struct msi_domain_template, info));
+ 
+ unlock:
