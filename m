@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 916E066E5C8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Jan 2023 19:16:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 507AD66E5CD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Jan 2023 19:16:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231642AbjAQSQI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Jan 2023 13:16:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47236 "EHLO
+        id S231968AbjAQSQf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Jan 2023 13:16:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233134AbjAQSOE (ORCPT
+        with ESMTP id S233218AbjAQSOE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 17 Jan 2023 13:14:04 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00B0D4F84D;
-        Tue, 17 Jan 2023 09:54:59 -0800 (PST)
-Date:   Tue, 17 Jan 2023 17:54:57 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E1684F844;
+        Tue, 17 Jan 2023 09:55:04 -0800 (PST)
+Date:   Tue, 17 Jan 2023 17:54:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1673978098;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QtHAhQr4A/WwrJR2xwohwLM8Ekb9akA5k1WMibZ9mvk=;
-        b=CzgiQAutbbkGi9xTFOZ6FIguYiLiaSdKjcb9hvzJVOgoczp7CYJFPs45miUsHBska9cAvQ
-        S6QlYGktEmZDrEmwtMUUqnckL6f3spj2pinJpAa3RyiHw2fpyRFwWF0IV29wvzrjsA5Ge1
-        cuJ/TEJGc3mhicUDxnfvnq0RQPt0YyaycABZNZqcuZC4tCXySwESgQPTmoo2hNuUvV1JJY
-        xH4oxh6MQ3ug9BJpIMSWCYSq7BvOr8glwI4tKKYGDyzbfW8BCRtIfY2L1ka+bCBURKbX0x
-        hU/bfJCtflxCtL4EvBy5wvQjOd54dt3iOuMwbxwhWg/l3WKdGaE2rSWWHMg8Gg==
+        bh=a5gAG4zyi44i/U2VPhKM2izw3dl4jUTO1hKiLKOHNZE=;
+        b=kLjJ0YBJv5dQhPkTkqqj/b+ve9EBXYOvIVHAETb1zN43J5PfM4ARKXeQbwrZWAj3s+FJr2
+        w6opu9sT82JDHz6nWgm0RpOgl77bQlzG0f3lf0pU0Hq6e/HrIJmSKaz6KBEjeJsAfVpQwH
+        mL9NuWK/0MdMs/3VFq7D+8KMsnVxkFj+HIdZRFKdtYpcju4TsZUq7ixF/bEImdsVKXTS4p
+        WVG9BEIKhKa3jfM839rqRwJhwtjIIinFWehEYcjkD9lDPd2L68W+POQVPyKnxEc2xWCL/u
+        yo4WyDi3gj6A2jKSSRz2DGNN0R1Hc4HTVXo0RvU2+geM8IUqwNXS3DT/AGRf3g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1673978098;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,25 +36,25 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QtHAhQr4A/WwrJR2xwohwLM8Ekb9akA5k1WMibZ9mvk=;
-        b=h71hnb21TlTIByfU6OkO0RYn2PPy3I/7Z6MJA5jd/ZNmH8/MoTSEQHWJiCWN1Z658FUr1T
-        C1ehvV+zDZ5GtbAg==
+        bh=a5gAG4zyi44i/U2VPhKM2izw3dl4jUTO1hKiLKOHNZE=;
+        b=RP52s0euAx0igtcaDP4h2GderM3mikD8ITObWo0GCyT9jtE7eRH2GbqVx5Mn+Ig66pXWUk
+        XbkajuGQefTvm5AA==
 From:   "tip-bot2 for Ming Lei" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/affinity: Don't pass irq_affinity_desc array
- to irq_build_affinity_masks
+Subject: [tip: irq/core] genirq/affinity: Remove the 'firstvec' parameter from
+ irq_build_affinity_masks
 Cc:     Ming Lei <ming.lei@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Christoph Hellwig <hch@lst.de>,
         John Garry <john.g.garry@oracle.com>,
         Jens Axboe <axboe@kernel.dk>, x86@kernel.org,
         linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20221227022905.352674-4-ming.lei@redhat.com>
-References: <20221227022905.352674-4-ming.lei@redhat.com>
+In-Reply-To: <20221227022905.352674-2-ming.lei@redhat.com>
+References: <20221227022905.352674-2-ming.lei@redhat.com>
 MIME-Version: 1.0
-Message-ID: <167397809771.4906.11909600068519788572.tip-bot2@tip-bot2>
+Message-ID: <167397809817.4906.18299720094794858383.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,140 +70,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     e7bdd7f0cbd1c001bb9b4d3313edc5ee094bc3f8
-Gitweb:        https://git.kernel.org/tip/e7bdd7f0cbd1c001bb9b4d3313edc5ee094bc3f8
+Commit-ID:     cdf07f0ea48a3b52f924714d477366ac510ee870
+Gitweb:        https://git.kernel.org/tip/cdf07f0ea48a3b52f924714d477366ac510ee870
 Author:        Ming Lei <ming.lei@redhat.com>
-AuthorDate:    Tue, 27 Dec 2022 10:29:02 +08:00
+AuthorDate:    Tue, 27 Dec 2022 10:29:00 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 17 Jan 2023 18:50:06 +01:00
 
-genirq/affinity: Don't pass irq_affinity_desc array to irq_build_affinity_masks
+genirq/affinity: Remove the 'firstvec' parameter from irq_build_affinity_masks
 
-Prepare for abstracting irq_build_affinity_masks() into a public function
-for assigning all CPUs evenly into several groups.
-
-Don't pass irq_affinity_desc array to irq_build_affinity_masks, instead
-return a cpumask array by storing each assigned group into one element of
-the array.
-
-This allows to provide a generic interface for grouping all CPUs evenly
-from a NUMA and CPU locality viewpoint, and the cost is one extra allocation
-in irq_build_affinity_masks(), which should be fine since it is done via
-GFP_KERNEL and irq_build_affinity_masks() is a slow path anyway.
+The 'firstvec' parameter is always same with the parameter of
+'startvec', so use 'startvec' directly inside irq_build_affinity_masks().
 
 Signed-off-by: Ming Lei <ming.lei@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: John Garry <john.g.garry@oracle.com>
 Reviewed-by: Jens Axboe <axboe@kernel.dk>                                                                                                                                                                                                    
-Link: https://lore.kernel.org/r/20221227022905.352674-4-ming.lei@redhat.com
+Link: https://lore.kernel.org/r/20221227022905.352674-2-ming.lei@redhat.com
 
 ---
- kernel/irq/affinity.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ kernel/irq/affinity.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/irq/affinity.c b/kernel/irq/affinity.c
-index da6379c..00bba10 100644
+index d9a5c1d..3361e36 100644
 --- a/kernel/irq/affinity.c
 +++ b/kernel/irq/affinity.c
-@@ -249,7 +249,7 @@ static int __irq_build_affinity_masks(unsigned int startvec,
- 				      cpumask_var_t *node_to_cpumask,
- 				      const struct cpumask *cpu_mask,
- 				      struct cpumask *nmsk,
--				      struct irq_affinity_desc *masks)
-+				      struct cpumask *masks)
- {
- 	unsigned int i, n, nodes, cpus_per_vec, extra_vecs, done = 0;
- 	unsigned int last_affv = numvecs;
-@@ -270,7 +270,7 @@ static int __irq_build_affinity_masks(unsigned int startvec,
- 		for_each_node_mask(n, nodemsk) {
- 			/* Ensure that only CPUs which are in both masks are set */
- 			cpumask_and(nmsk, cpu_mask, node_to_cpumask[n]);
--			cpumask_or(&masks[curvec].mask, &masks[curvec].mask, nmsk);
-+			cpumask_or(&masks[curvec], &masks[curvec], nmsk);
- 			if (++curvec == last_affv)
- 				curvec = 0;
- 		}
-@@ -321,7 +321,7 @@ static int __irq_build_affinity_masks(unsigned int startvec,
- 			 */
- 			if (curvec >= last_affv)
- 				curvec = 0;
--			irq_spread_init_one(&masks[curvec].mask, nmsk,
-+			irq_spread_init_one(&masks[curvec], nmsk,
- 						cpus_per_vec);
- 		}
- 		done += nv->nvectors;
-@@ -335,16 +335,16 @@ static int __irq_build_affinity_masks(unsigned int startvec,
-  *	1) spread present CPU on these vectors
+@@ -337,10 +337,10 @@ static int __irq_build_affinity_masks(unsigned int startvec,
   *	2) spread other possible CPUs on these vectors
   */
--static int irq_build_affinity_masks(unsigned int numvecs,
--				    struct irq_affinity_desc *masks)
-+static struct cpumask *irq_build_affinity_masks(unsigned int numvecs)
+ static int irq_build_affinity_masks(unsigned int startvec, unsigned int numvecs,
+-				    unsigned int firstvec,
+ 				    struct irq_affinity_desc *masks)
  {
- 	unsigned int curvec = 0, nr_present = 0, nr_others = 0;
+ 	unsigned int curvec = startvec, nr_present = 0, nr_others = 0;
++	unsigned int firstvec = startvec;
  	cpumask_var_t *node_to_cpumask;
  	cpumask_var_t nmsk, npresmsk;
  	int ret = -ENOMEM;
-+	struct cpumask *masks = NULL;
- 
- 	if (!zalloc_cpumask_var(&nmsk, GFP_KERNEL))
--		return ret;
-+		return NULL;
- 
- 	if (!zalloc_cpumask_var(&npresmsk, GFP_KERNEL))
- 		goto fail_nmsk;
-@@ -353,6 +353,10 @@ static int irq_build_affinity_masks(unsigned int numvecs,
- 	if (!node_to_cpumask)
- 		goto fail_npresmsk;
- 
-+	masks = kcalloc(numvecs, sizeof(*masks), GFP_KERNEL);
-+	if (!masks)
-+		goto fail_node_to_cpumask;
-+
- 	/* Stabilize the cpumasks */
- 	cpus_read_lock();
- 	build_node_to_cpumask(node_to_cpumask);
-@@ -386,6 +390,7 @@ static int irq_build_affinity_masks(unsigned int numvecs,
- 	if (ret >= 0)
- 		WARN_ON(nr_present + nr_others < numvecs);
- 
-+ fail_node_to_cpumask:
- 	free_node_to_cpumask(node_to_cpumask);
- 
-  fail_npresmsk:
-@@ -393,7 +398,11 @@ static int irq_build_affinity_masks(unsigned int numvecs,
- 
-  fail_nmsk:
- 	free_cpumask_var(nmsk);
--	return ret < 0 ? ret : 0;
-+	if (ret < 0) {
-+		kfree(masks);
-+		return NULL;
-+	}
-+	return masks;
- }
- 
- static void default_calc_sets(struct irq_affinity *affd, unsigned int affvecs)
-@@ -457,13 +466,18 @@ irq_create_affinity_masks(unsigned int nvecs, struct irq_affinity *affd)
- 	 */
- 	for (i = 0, usedvecs = 0; i < affd->nr_sets; i++) {
+@@ -463,8 +463,7 @@ irq_create_affinity_masks(unsigned int nvecs, struct irq_affinity *affd)
  		unsigned int this_vecs = affd->set_size[i];
--		int ret;
-+		int j;
-+		struct cpumask *result = irq_build_affinity_masks(this_vecs);
+ 		int ret;
  
--		ret = irq_build_affinity_masks(this_vecs, &masks[curvec]);
--		if (ret) {
-+		if (!result) {
+-		ret = irq_build_affinity_masks(curvec, this_vecs,
+-					       curvec, masks);
++		ret = irq_build_affinity_masks(curvec, this_vecs, masks);
+ 		if (ret) {
  			kfree(masks);
  			return NULL;
- 		}
-+
-+		for (j = 0; j < this_vecs; j++)
-+			cpumask_copy(&masks[curvec + j].mask, &result[j]);
-+		kfree(result);
-+
- 		curvec += this_vecs;
- 		usedvecs += this_vecs;
- 	}
