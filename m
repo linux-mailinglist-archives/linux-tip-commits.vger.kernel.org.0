@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B42D4671BC0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Jan 2023 13:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD3EA671C02
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Jan 2023 13:26:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbjARMRF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Jan 2023 07:17:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47836 "EHLO
+        id S230225AbjARM0c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Jan 2023 07:26:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229997AbjARMQX (ORCPT
+        with ESMTP id S230424AbjARMZH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Jan 2023 07:16:23 -0500
+        Wed, 18 Jan 2023 07:25:07 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5A4C88745;
-        Wed, 18 Jan 2023 03:38:41 -0800 (PST)
-Date:   Wed, 18 Jan 2023 11:38:40 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC00C69213;
+        Wed, 18 Jan 2023 03:45:30 -0800 (PST)
+Date:   Wed, 18 Jan 2023 11:45:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1674041920;
+        s=2020; t=1674042329;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=J4rOdGazLwqJl2droFxjKDvA7hJVxHlo7hiVAnNC8uw=;
-        b=MxYy96mDPDSBhRSjNdIee+SYI+8E/4axNZH9efBsFaI4/lHEVeaPWxh3hZcwipzKASYxbH
-        JGHDVgINZp0A/wwBdeSySAbQXaRdWR9F9U7d0L6ym4iEI8rQPXUDvKVqDX+qyeZKsrPTJU
-        nSf1923Iud6rvn/gdz+XY1hYvvY7gjaHv2z6nG3ioo49JZ7c3A0ZVgccxERjqLu1HBobUd
-        QdODkQheO6OdqKebXnTgrrys5qxAo+kJ2mSbQXAoSUtN7I1FvU9j4qswBtdTstnNF3prpb
-        jxYLAd9X/sVvplEW26iOnuztGXVEET3WPiTStUF4DOI/CMCZLquweZNGXIE1Lw==
+        bh=eguYxvYQvWOq87mQBf1IYFW3ssD3uE2OjKvba4U0DD0=;
+        b=1nb7vQZEh7dBfP1gioow3zjqH0CKSY6VxOyhclmTJiGAK/2gQxPxcHsAwniiKMX0+lXDVl
+        x0NLLRMBdy1HgLgU8nHNeXMaIj9OnfaCMVKUDILvgEm5fg0+m9pmrldf3FS+XSt+yfZA6Q
+        ngySeo4PNVOO9KNNcPlHgaO7uKy+ObN//8aHM9Hh8n+sDLTzLap9FZPLEqNZKxglX82I7Y
+        9ScOc+21ZBXHp+hP6GYKrb9EBwbr8cgvGeWD71yv8ayX5sl6Yt/PZPULtJr3WBsThJN3K/
+        tVfeCcJVoUyJgOJn08tkHOgxeypGxgRBrSTYjKeb4cQT0xrXI9JBzBXNb3Zlbg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1674041920;
+        s=2020e; t=1674042329;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=J4rOdGazLwqJl2droFxjKDvA7hJVxHlo7hiVAnNC8uw=;
-        b=DNXEYM961ypvgCEXd2vf3uV8GGcJzFJ5ajINOwdMXyq0zp7eGmHl4+wHCvGwu1jQnOJmQD
-        QYHEP6JR9q4s8YAQ==
-From:   "tip-bot2 for Guangju Wang[baidu]" <tip-bot2@linutronix.de>
+        bh=eguYxvYQvWOq87mQBf1IYFW3ssD3uE2OjKvba4U0DD0=;
+        b=nOak67VhUZDY2Wh9xxZntDJf+2uQ6xyI9i3j8ooOE9w4d6QyPMJMdp/y4UMzcv5RYWgteq
+        AmG+W6VMIOeIpiAQ==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode: Use the DEVICE_ATTR_RO() macro
-Cc:     "Guangju Wang[baidu]" <wgj900@163.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/x86/intel/cstate: Add Emerald Rapids
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230118023554.1898-1-wgj900@163.com>
-References: <20230118023554.1898-1-wgj900@163.com>
+In-Reply-To: <20230106160449.3566477-2-kan.liang@linux.intel.com>
+References: <20230106160449.3566477-2-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <167404192010.4906.907537462344732818.tip-bot2@tip-bot2>
+Message-ID: <167404232856.4906.5130030313856361485.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,51 +64,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     59047d942bedc4ce88a2121a9f9e656b9532dd30
-Gitweb:        https://git.kernel.org/tip/59047d942bedc4ce88a2121a9f9e656b9532dd30
-Author:        Guangju Wang[baidu] <wgj900@163.com>
-AuthorDate:    Wed, 18 Jan 2023 10:35:54 +08:00
+Commit-ID:     5a8a05f165fb18d37526062419774d9088c2a9b9
+Gitweb:        https://git.kernel.org/tip/5a8a05f165fb18d37526062419774d9088c2a9b9
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Fri, 06 Jan 2023 08:04:47 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 18 Jan 2023 12:02:20 +01:00
+CommitterDate: Wed, 18 Jan 2023 12:42:49 +01:00
 
-x86/microcode: Use the DEVICE_ATTR_RO() macro
+perf/x86/intel/cstate: Add Emerald Rapids
 
-Use DEVICE_ATTR_RO() helper instead of open-coded DEVICE_ATTR(),
-which makes the code a bit shorter and easier to read.
+>From the perspective of Intel cstate residency counters,
+Emerald Rapids is the same as the Sapphire Rapids and Ice Lake.
+Add Emerald Rapids model.
 
-No change in functionality.
-
-Signed-off-by: Guangju Wang[baidu] <wgj900@163.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230118023554.1898-1-wgj900@163.com
+Link: https://lore.kernel.org/r/20230106160449.3566477-2-kan.liang@linux.intel.com
 ---
- arch/x86/kernel/cpu/microcode/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/events/intel/cstate.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 712aaff..99abb31 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -507,7 +507,7 @@ static ssize_t version_show(struct device *dev,
- 	return sprintf(buf, "0x%x\n", uci->cpu_sig.rev);
- }
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index 3019fb1..551741e 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -677,6 +677,7 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,		&icx_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D,		&icx_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(SAPPHIRERAPIDS_X,	&icx_cstates),
++	X86_MATCH_INTEL_FAM6_MODEL(EMERALDRAPIDS_X,	&icx_cstates),
  
--static ssize_t pf_show(struct device *dev,
-+static ssize_t processor_flags_show(struct device *dev,
- 			struct device_attribute *attr, char *buf)
- {
- 	struct ucode_cpu_info *uci = ucode_cpu_info + dev->id;
-@@ -515,8 +515,8 @@ static ssize_t pf_show(struct device *dev,
- 	return sprintf(buf, "0x%x\n", uci->cpu_sig.pf);
- }
- 
--static DEVICE_ATTR(version, 0444, version_show, NULL);
--static DEVICE_ATTR(processor_flags, 0444, pf_show, NULL);
-+static DEVICE_ATTR_RO(version);
-+static DEVICE_ATTR_RO(processor_flags);
- 
- static struct attribute *mc_default_attrs[] = {
- 	&dev_attr_version.attr,
+ 	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L,		&icl_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE,		&icl_cstates),
