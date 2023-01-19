@@ -2,61 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A605674404
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Jan 2023 22:10:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DCE267464F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Jan 2023 23:41:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230032AbjASVKl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Jan 2023 16:10:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58574 "EHLO
+        id S230430AbjASWlX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Jan 2023 17:41:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230036AbjASVJi (ORCPT
+        with ESMTP id S231312AbjASWkq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Jan 2023 16:09:38 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E1F130F8;
-        Thu, 19 Jan 2023 13:03:02 -0800 (PST)
-Date:   Thu, 19 Jan 2023 21:02:59 -0000
+        Thu, 19 Jan 2023 17:40:46 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF92645BE8;
+        Thu, 19 Jan 2023 14:22:41 -0800 (PST)
+Date:   Thu, 19 Jan 2023 22:22:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1674162180;
+        s=2020; t=1674166960;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=xY+SzRBo17JQPxRpIt0Xv07Ckhs+cRTjf+iujupdH3Q=;
-        b=JdNClVOVN7juiNVlv1BdgZTUI5ocscMjE1ceI8aFyc+YKF8jOq7DjbbvtORx99zIj6dUgN
-        k4fY1KIX0X9AGuPYkRAu+ow/eLCxtCv92PWFpjSfxXjJ4EE1rUvB5JEv1B6KEvS5nzFmvN
-        me1GUQQHQw8PNId1X/O2X3DQZfP7xiTr1rwv+ePumrIp2uGRTx0+FDvpChl2hxgAC9PmHH
-        0eciBohNaOSUmzevgHnZn18Ty4uSwZFTCdy1cppopUGTnvDXHkfWshIGM/WHO5ESkqiwNz
-        S9eMAgor8NVg3jz6GKTKCzVncBRnNZQ8g4dBBqVIKCqDJrD1nU1SBUZeUuh9dQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=Dl7CD/D7G+lEEnQAkMUvyaCXOdQrmVHbu2hv3zw7wS4=;
+        b=YYaNfLX37nPmqRGXTrjCpTAOYLZPNqRJJmdTb1zEc+kWrUmpOaFHlvPiItv7IsLhWKum+P
+        OgxqAtitccCGygSTSR+VDPPWTS9q714/WvRE//+jPl7HrLiQTA6tNzU9ZUHcWHRX4eIXOY
+        /cY2J/qH/30Mji2QNBqnUHdzZ4xNsocpgddCHpsjZL8ys1bAB/qDeHf7KlhPgp29/cqbTN
+        8u46YcVkxG7hwLA3p1bMVJjxb3fqDj67Qn+Sqx3b+3P1537bFSlXFpOqkEiyB3lKJ5aPTH
+        ZuvxhSiZnGARFiJsvbrNk0uwcUpR2s4Oj3lcfO9vqLqP/zNArwYORh3O4xk8eg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1674162180;
+        s=2020e; t=1674166960;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=xY+SzRBo17JQPxRpIt0Xv07Ckhs+cRTjf+iujupdH3Q=;
-        b=DB2zZ4Nd7aoqpqZ9B0qoCnuTHdNlear3ASzlWBeSKmlLshVJ+HX4gO1MecP+8BpnLSUfAE
-        A3X0t0cHxY4IruCg==
-From:   "tip-bot2 for Gustavo A. R. Silva" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=Dl7CD/D7G+lEEnQAkMUvyaCXOdQrmVHbu2hv3zw7wS4=;
+        b=pxNV52oubP0oYTEICwRZIfeuv8AG/eouBTkHsFGWNTPue8NVmjMF0Zde0bLSKfGikKWAVj
+        gpFg8HQqVzY9A1BQ==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Replace zero-length array in struct
- xregs_state with flexible-array member
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kees Cook <keescook@chromium.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] acpi: Fix suspend with Xen PV
+Cc:     marmarek@invisiblethingslab.com, Juergen Gross <jgross@suse.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <o9YQ@work>
-References: <o9YQ@work>
 MIME-Version: 1.0
-Message-ID: <167416217961.4906.13789346237944390735.tip-bot2@tip-bot2>
+Message-ID: <167416695968.4906.1267929896543710738.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -66,45 +59,107 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fpu branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     aa81cb9d9723694bb18359adbef7964030758dba
-Gitweb:        https://git.kernel.org/tip/aa81cb9d9723694bb18359adbef7964030758dba
-Author:        Gustavo A. R. Silva <gustavoars@kernel.org>
-AuthorDate:    Mon, 09 Jan 2023 19:40:38 -06:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 19 Jan 2023 21:59:35 +01:00
+Commit-ID:     fe0ba8c23f9a35b0307eb662f16dd3a75fcdae41
+Gitweb:        https://git.kernel.org/tip/fe0ba8c23f9a35b0307eb662f16dd3a75fc=
+dae41
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Tue, 17 Jan 2023 16:57:23 +01:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 19 Jan 2023 13:52:05 -08:00
 
-x86/fpu: Replace zero-length array in struct xregs_state with flexible-array member
+acpi: Fix suspend with Xen PV
 
-Zero-length arrays are deprecated [1] and have to be replaced by C99
-flexible-array members.
+Commit f1e525009493 ("x86/boot: Skip realmode init code when running as
+Xen PV guest") missed one code path accessing real_mode_header, leading
+to dereferencing NULL when suspending the system under Xen:
 
-This helps with the ongoing efforts to tighten the FORTIFY_SOURCE routines
-on memcpy() and help to make progress towards globally enabling
--fstrict-flex-arrays=3 [2]
+    [  348.284004] PM: suspend entry (deep)
+    [  348.289532] Filesystems sync: 0.005 seconds
+    [  348.291545] Freezing user space processes ... (elapsed 0.000 seconds) =
+done.
+    [  348.292457] OOM killer disabled.
+    [  348.292462] Freezing remaining freezable tasks ... (elapsed 0.104 seco=
+nds) done.
+    [  348.396612] printk: Suspending console(s) (use no_console_suspend to d=
+ebug)
+    [  348.749228] PM: suspend devices took 0.352 seconds
+    [  348.769713] ACPI: EC: interrupt blocked
+    [  348.816077] BUG: kernel NULL pointer dereference, address: 00000000000=
+0001c
+    [  348.816080] #PF: supervisor read access in kernel mode
+    [  348.816081] #PF: error_code(0x0000) - not-present page
+    [  348.816083] PGD 0 P4D 0
+    [  348.816086] Oops: 0000 [#1] PREEMPT SMP NOPTI
+    [  348.816089] CPU: 0 PID: 6764 Comm: systemd-sleep Not tainted 6.1.3-1.f=
+c32.qubes.x86_64 #1
+    [  348.816092] Hardware name: Star Labs StarBook/StarBook, BIOS 8.01 07/0=
+3/2022
+    [  348.816093] RIP: e030:acpi_get_wakeup_address+0xc/0x20
 
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-and-one-element-arrays [1]
-Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [2]
-Link: https://github.com/KSPP/linux/issues/78
-Link: https://lore.kernel.org/r/Y7zCFpa2XNs/o9YQ@work
+Fix that by adding an optional acpi callback allowing to skip setting
+the wakeup address, as in the Xen PV case this will be handled by the
+hypervisor anyway.
+
+Fixes: f1e525009493 ("x86/boot: Skip realmode init code when running as Xen P=
+V guest")
+Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/all/20230117155724.22940-1-jgross%40suse.com
 ---
- arch/x86/include/asm/fpu/types.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/acpi.h | 8 ++++++++
+ drivers/acpi/sleep.c        | 6 +++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
-index eb7cd11..7f6d858 100644
---- a/arch/x86/include/asm/fpu/types.h
-+++ b/arch/x86/include/asm/fpu/types.h
-@@ -321,7 +321,7 @@ struct xstate_header {
- struct xregs_state {
- 	struct fxregs_state		i387;
- 	struct xstate_header		header;
--	u8				extended_state_area[0];
-+	u8				extended_state_area[];
- } __attribute__ ((packed, aligned (64)));
- 
+diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+index 65064d9..8eb74cf 100644
+--- a/arch/x86/include/asm/acpi.h
++++ b/arch/x86/include/asm/acpi.h
+@@ -14,6 +14,7 @@
+ #include <asm/mmu.h>
+ #include <asm/mpspec.h>
+ #include <asm/x86_init.h>
++#include <asm/cpufeature.h>
+=20
+ #ifdef CONFIG_ACPI_APEI
+ # include <asm/pgtable_types.h>
+@@ -63,6 +64,13 @@ extern int (*acpi_suspend_lowlevel)(void);
+ /* Physical address to resume after wakeup */
+ unsigned long acpi_get_wakeup_address(void);
+=20
++static inline bool acpi_skip_set_wakeup_address(void)
++{
++	return cpu_feature_enabled(X86_FEATURE_XENPV);
++}
++
++#define acpi_skip_set_wakeup_address acpi_skip_set_wakeup_address
++
  /*
+  * Check if the CPU can handle C2 and deeper
+  */
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 0b557c0..4ca6672 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -60,13 +60,17 @@ static struct notifier_block tts_notifier =3D {
+ 	.priority	=3D 0,
+ };
+=20
++#ifndef acpi_skip_set_wakeup_address
++#define acpi_skip_set_wakeup_address() false
++#endif
++
+ static int acpi_sleep_prepare(u32 acpi_state)
+ {
+ #ifdef CONFIG_ACPI_SLEEP
+ 	unsigned long acpi_wakeup_address;
+=20
+ 	/* do we have a wakeup address for S2 and S3? */
+-	if (acpi_state =3D=3D ACPI_STATE_S3) {
++	if (acpi_state =3D=3D ACPI_STATE_S3 && !acpi_skip_set_wakeup_address()) {
+ 		acpi_wakeup_address =3D acpi_get_wakeup_address();
+ 		if (!acpi_wakeup_address)
+ 			return -EFAULT;
