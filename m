@@ -2,57 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F27526766CD
+	by mail.lfdr.de (Postfix) with ESMTP id A756E6766CC
 	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Jan 2023 15:54:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229864AbjAUOyd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Jan 2023 09:54:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38462 "EHLO
+        id S229790AbjAUOyc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Jan 2023 09:54:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbjAUOyb (ORCPT
+        with ESMTP id S229540AbjAUOyb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 21 Jan 2023 09:54:31 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8C871A967;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A892D8A59;
         Sat, 21 Jan 2023 06:54:30 -0800 (PST)
-Date:   Sat, 21 Jan 2023 14:54:27 -0000
+Date:   Sat, 21 Jan 2023 14:54:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1674312868;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1nCB5yYS/tkI5VyimcBNhdMpiz8n9jB8G7ssJJ7+P5w=;
-        b=z4qVJH2G8oMoCQvmRkskhatBlRdn0Y7TiusQ26Xbu1owAsz0zxLTw6yuN3bDgri/SVeHKK
-        FXdiCEBwQuGGh1xkGE8PvXkJpLm1+LjYKV466GfS0dmcgBjH+Yvg+OjC+8sbJbXeHa0OE+
-        UC6L6st4uwa3uN7aaxvDyNUYQ43YiXhc050cYwoRDrLU0K1Y/BLEFtOlZ3fs6xGPQLSL2o
-        oo6K1HSN1Fv5J3StjOiCV0fIpSJ9a5reLlQrk/GRwkV01B9TO3p/weWJ5qsTdBm2EZS9Ra
-        eD0CLOO2VVfkUmfwUFjtlXF2UN1vi8qGW3hNS9EPi3G2fs8oLwa1j7EVwIeupg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=xc3e1Isd07hyMmhdJs218O+phbX8yWD6UQMKDWzBjkk=;
+        b=bLO0ff6HMm1bjn5UISQ4JztCD2w2XhJ5pfnRP7yiTzGMnATwgcWRTAj6KYz6JjunkjjScX
+        Nyrz9Lx5RiOE6SSAYmqd7xtEX8u+IFnbuc6Hn4FBIro/13BopeH37C35UJRLWXqCzfbY/1
+        N9NeqDTfiILAGcKssk5t4Cvv/Ks7llt4uacv3ac23xXWoLwHHxZLX7ipym6jX1tDhPqCCX
+        enRwcQcviqqRqyKzu+jruHnFNYJxixDIJvmfTFPDJcGf/esQUqLsGxTUk36isR9dVhOZcz
+        LOdsPKVG+7FaKhBPTgX9jxeaEOwOh5Q6B3zLDrMFWCz4Pe8WbdXBThgBS4zd0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1674312868;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1nCB5yYS/tkI5VyimcBNhdMpiz8n9jB8G7ssJJ7+P5w=;
-        b=w+zMIFSSpg2SDeIEQt/vrbnp3BzOqWtAZMzsMN0TuijBjkw6ZtteRtlHSRhyOSHGWXKwbT
-        bj8PsRC5tbBq5rBA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=xc3e1Isd07hyMmhdJs218O+phbX8yWD6UQMKDWzBjkk=;
+        b=9M2HFj6WtRrCLpx3MQ+2611fxqv/vAPDrOj58RtWpA2uzI2hKFB3Tg9ZXkUqAaMmp8ieGr
+        Y4OE9Z4rZcVzT1DA==
 From:   "tip-bot2 for Ashok Raj" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/intel: Print old and new revision
- during early boot
-Cc:     Ashok Raj <ashok.raj@intel.com>,
+Subject: [tip: x86/microcode] x86/microcode: Adjust late loading result
+ reporting message
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ashok Raj <ashok.raj@intel.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230120161923.118882-6-ashok.raj@intel.com>
-References: <20230120161923.118882-6-ashok.raj@intel.com>
 MIME-Version: 1.0
-Message-ID: <167431286745.4906.3764375388680449088.tip-bot2@tip-bot2>
+Message-ID: <167431286818.4906.11374888066745069135.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,127 +63,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     a9a5cac225b0830d1879640e25231a37e537f0da
-Gitweb:        https://git.kernel.org/tip/a9a5cac225b0830d1879640e25231a37e537f0da
+Commit-ID:     6eab3abac7043226e5375e9ead0c7607ced6767b
+Gitweb:        https://git.kernel.org/tip/6eab3abac7043226e5375e9ead0c7607ced6767b
 Author:        Ashok Raj <ashok.raj@intel.com>
-AuthorDate:    Sun, 15 Jan 2023 19:57:27 +01:00
+AuthorDate:    Mon, 09 Jan 2023 07:35:52 -08:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sat, 21 Jan 2023 14:55:21 +01:00
+CommitterDate: Sat, 21 Jan 2023 14:55:20 +01:00
 
-x86/microcode/intel: Print old and new revision during early boot
+x86/microcode: Adjust late loading result reporting message
 
-Make early loading message match late loading message and print both old
-and new revisions.
+During late microcode loading, the "Reload completed" message is issued
+unconditionally, regardless of success or failure.
 
-This is helpful to know what the BIOS loaded revision is before an early
-update.
+Adjust the message to report the result of the update.
 
-Cache the early BIOS revision before the microcode update and have
-print_ucode_info() print both the old and new revision in the same
-format as microcode_reload_late().
+  [ bp: Massage. ]
 
-  [ bp: Massage, remove useless comment. ]
-
+Fixes: 9bd681251b7c ("x86/microcode: Announce reload operation's completion")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ashok Raj <ashok.raj@intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230120161923.118882-6-ashok.raj@intel.com
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/lkml/874judpqqd.ffs@tglx/
 ---
- arch/x86/kernel/cpu/microcode/intel.c | 28 ++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ arch/x86/kernel/cpu/microcode/core.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index 9dbd007..467cf37 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -305,12 +305,10 @@ static bool load_builtin_intel_microcode(struct cpio_data *cp)
- 	return false;
- }
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index 8ec38c1..61d57d9 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -453,11 +453,14 @@ static int microcode_reload_late(void)
+ 	store_cpu_caps(&prev_info);
  
--/*
-- * Print ucode update info.
-- */
--static void print_ucode_info(unsigned int new_rev, unsigned int date)
-+static void print_ucode_info(int old_rev, int new_rev, unsigned int date)
- {
--	pr_info_once("microcode updated early to revision 0x%x, date = %04x-%02x-%02x\n",
-+	pr_info_once("updated early: 0x%x -> 0x%x, date = %04x-%02x-%02x\n",
-+		     old_rev,
- 		     new_rev,
- 		     date & 0xffff,
- 		     date >> 24,
-@@ -321,6 +319,7 @@ static void print_ucode_info(unsigned int new_rev, unsigned int date)
+ 	ret = stop_machine_cpuslocked(__reload_late, NULL, cpu_online_mask);
+-	if (ret == 0)
++	if (!ret) {
++		pr_info("Reload succeeded, microcode revision: 0x%x -> 0x%x\n",
++			old, boot_cpu_data.microcode);
+ 		microcode_check(&prev_info);
+-
+-	pr_info("Reload completed, microcode revision: 0x%x -> 0x%x\n",
+-		old, boot_cpu_data.microcode);
++	} else {
++		pr_info("Reload failed, current microcode revision: 0x%x\n",
++			boot_cpu_data.microcode);
++	}
  
- static int delay_ucode_info;
- static int current_mc_date;
-+static int early_old_rev;
- 
- /*
-  * Print early updated ucode info after printk works. This is delayed info dump.
-@@ -331,7 +330,7 @@ void show_ucode_info_early(void)
- 
- 	if (delay_ucode_info) {
- 		intel_cpu_collect_info(&uci);
--		print_ucode_info(uci.cpu_sig.rev, current_mc_date);
-+		print_ucode_info(early_old_rev, uci.cpu_sig.rev, current_mc_date);
- 		delay_ucode_info = 0;
- 	}
- }
-@@ -340,29 +339,32 @@ void show_ucode_info_early(void)
-  * At this point, we can not call printk() yet. Delay printing microcode info in
-  * show_ucode_info_early() until printk() works.
-  */
--static void print_ucode(int new_rev, int date)
-+static void print_ucode(int old_rev, int new_rev, int date)
- {
- 	int *delay_ucode_info_p;
- 	int *current_mc_date_p;
-+	int *early_old_rev_p;
- 
- 	delay_ucode_info_p = (int *)__pa_nodebug(&delay_ucode_info);
- 	current_mc_date_p = (int *)__pa_nodebug(&current_mc_date);
-+	early_old_rev_p = (int *)__pa_nodebug(&early_old_rev);
- 
- 	*delay_ucode_info_p = 1;
- 	*current_mc_date_p = date;
-+	*early_old_rev_p = old_rev;
- }
- #else
- 
--static inline void print_ucode(int new_rev, int date)
-+static inline void print_ucode(int old_rev, int new_rev, int date)
- {
--	print_ucode_info(new_rev, date);
-+	print_ucode_info(old_rev, new_rev, date);
- }
- #endif
- 
- static int apply_microcode_early(struct ucode_cpu_info *uci, bool early)
- {
- 	struct microcode_intel *mc;
--	u32 rev;
-+	u32 rev, old_rev;
- 
- 	mc = uci->mc;
- 	if (!mc)
-@@ -379,6 +381,8 @@ static int apply_microcode_early(struct ucode_cpu_info *uci, bool early)
- 		return UCODE_OK;
- 	}
- 
-+	old_rev = rev;
-+
- 	/*
- 	 * Writeback and invalidate caches before updating microcode to avoid
- 	 * internal issues depending on what the microcode is updating.
-@@ -395,9 +399,9 @@ static int apply_microcode_early(struct ucode_cpu_info *uci, bool early)
- 	uci->cpu_sig.rev = rev;
- 
- 	if (early)
--		print_ucode(uci->cpu_sig.rev, mc->hdr.date);
-+		print_ucode(old_rev, uci->cpu_sig.rev, mc->hdr.date);
- 	else
--		print_ucode_info(uci->cpu_sig.rev, mc->hdr.date);
-+		print_ucode_info(old_rev, uci->cpu_sig.rev, mc->hdr.date);
- 
- 	return 0;
+ 	return ret;
  }
