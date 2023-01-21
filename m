@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9DC4676587
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Jan 2023 10:57:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AFF26766D1
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Jan 2023 15:54:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229553AbjAUJ52 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Jan 2023 04:57:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51710 "EHLO
+        id S229911AbjAUOyf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 21 Jan 2023 09:54:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjAUJ51 (ORCPT
+        with ESMTP id S229752AbjAUOyc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Jan 2023 04:57:27 -0500
+        Sat, 21 Jan 2023 09:54:32 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59EE81353B;
-        Sat, 21 Jan 2023 01:57:26 -0800 (PST)
-Date:   Sat, 21 Jan 2023 09:57:24 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8E4B1C33E;
+        Sat, 21 Jan 2023 06:54:30 -0800 (PST)
+Date:   Sat, 21 Jan 2023 14:54:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1674295045;
+        s=2020; t=1674312868;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pmtBArXGsLKsmisCNbGh0SET3ImTh+pYPr5K7kZMwHY=;
-        b=Hg/rIklRGW36JdCrETInvtXNarbgoLaY/lOyUy6Ak93NEddtHldMfBhO6RcB10IA66ylqH
-        0awaLLvDoonsItIP7g55GJ0J9tptABoqG1T4t2xPBh2owNGBpdMtjniBP0KGR0MlkZuKRm
-        cFcf3dqM5OEqXNFiS/bKZbrekTRhnWCJt7cSdSLX7AzM2/dJ+FIf8kCq8sZcUuYCWeTDoh
-        dytmtbGeGmRN60lEGQeiO+G2YqHSNJO47oe1NtgIikXy8Sd64rZJLCOo9lV9NhbnmRL++L
-        FxXPSSqr5b3KQOkgvGHoLybtLU7Rou6yRDqgbaThdPmU3hQTfa0w/gDpGMqlOw==
+        bh=tWBKl1UuzhL2R2rSpoOl8gKRWg72KzOBUffsfHCo8OQ=;
+        b=pRAoVIJRbnaVp0+IjX120L6dNcQTjkKqjkpdllbkxqu47PgRDTNF50OdwzSOTb5gniqWvE
+        JrhpD3bGE3kf0J2QpUqp9jgS3GVTv2Bl/SO+UK0fTS63DvPZNCxSM8Icff53IDvIU4KljK
+        foyaFmlufjNX4oVn9CltpJcLxfrYS1DpoODkKB9FZdDd5wDaCvbbUOBnc4a3UOND3MQHtS
+        pGk3lhWZ860VbU3LrIlm4sM+2D5sRabHGateIWk7kgzKmuwGB4pFrrr0+0djcC/cM8K5yQ
+        FaT7YUllutMMOpfrYeI/7tB592Jgg3YrpvCSEaCs4tsoE/l1LAhKzQhuWyDEeQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1674295045;
+        s=2020e; t=1674312868;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pmtBArXGsLKsmisCNbGh0SET3ImTh+pYPr5K7kZMwHY=;
-        b=4KDZn+IABRzw2ZpOJRb75NFBCHriMBZyXnDEBktL1lRqedAeqHcvhKEwXBD7lVM+Z4f2Up
-        l8GMnzHuTSQ/ufBA==
-From:   "tip-bot2 for Michal Kubecek" <tip-bot2@linutronix.de>
+        bh=tWBKl1UuzhL2R2rSpoOl8gKRWg72KzOBUffsfHCo8OQ=;
+        b=ENc9qjHRPxGXuBPsdzXtfLnj0DtlKGT6Rb6ydPPCYJ9Cx2nDwnlUszRuA9hoqMgkaicBhb
+        FAVWRALWyPDRAqAA==
+From:   "tip-bot2 for Ashok Raj" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Check that module init/exit function is
- an indirect call target
-Cc:     Michal Kubecek <mkubecek@suse.cz>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/microcode] x86/microcode/intel: Pass the microcode revision
+ to print_ucode_info() directly
+Cc:     Ashok Raj <ashok.raj@intel.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230118105215.B9DA960514@lion.mk-sys.cz>
-References: <20230118105215.B9DA960514@lion.mk-sys.cz>
+In-Reply-To: <20230120161923.118882-5-ashok.raj@intel.com>
+References: <20230120161923.118882-5-ashok.raj@intel.com>
 MIME-Version: 1.0
-Message-ID: <167429504442.4906.8670860752531771829.tip-bot2@tip-bot2>
+Message-ID: <167431286787.4906.11043739743543659187.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,70 +66,117 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     03d7a1053cf72372be22b43faada5bca12ff183d
-Gitweb:        https://git.kernel.org/tip/03d7a1053cf72372be22b43faada5bca12ff183d
-Author:        Michal Kubecek <mkubecek@suse.cz>
-AuthorDate:    Wed, 18 Jan 2023 11:52:15 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 21 Jan 2023 10:50:18 +01:00
+Commit-ID:     174f1b909ab0984e5369a634971fb14a618ca797
+Gitweb:        https://git.kernel.org/tip/174f1b909ab0984e5369a634971fb14a618ca797
+Author:        Ashok Raj <ashok.raj@intel.com>
+AuthorDate:    Mon, 09 Jan 2023 07:35:53 -08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Sat, 21 Jan 2023 14:55:20 +01:00
 
-objtool: Check that module init/exit function is an indirect call target
+x86/microcode/intel: Pass the microcode revision to print_ucode_info() directly
 
-Some out-of-tree modules still do not use module_init() / module_exit()
-macros and simply create functions with magic names init_module() and
-cleanup_module() instead. As a result, these functions are not recognized
-as indirect call targets by objtool and such module fails to load into an
-IBT enabled kernel.
+print_ucode_info() takes a struct ucode_cpu_info pointer as parameter.
+Its sole purpose is to print the microcode revision.
 
-This old way is not even documented any more but it is cleaner to issue
-a warning than to let the module fail on load without obvious reason.
+The only available ucode_cpu_info always describes the currently loaded
+microcode revision. After a microcode update is successful, this is the
+new revision, or on failure it is the original revision.
 
-Signed-off-by: Michal Kubecek <mkubecek@suse.cz>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230118105215.B9DA960514@lion.mk-sys.cz
+In preparation for future changes, replace the struct ucode_cpu_info
+pointer parameter with a plain integer which contains the revision
+number and adjust the call sites accordingly.
+
+No functional change.
+
+  [ bp:
+    - Fix + cleanup commit message.
+    - Revert arbitrary, unrelated change.
+  ]
+
+Signed-off-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230120161923.118882-5-ashok.raj@intel.com
 ---
- tools/objtool/Documentation/objtool.txt | 8 ++++++++
- tools/objtool/check.c                   | 7 +++++++
- 2 files changed, 15 insertions(+)
+ arch/x86/kernel/cpu/microcode/intel.c | 30 +++++++-------------------
+ 1 file changed, 9 insertions(+), 21 deletions(-)
 
-diff --git a/tools/objtool/Documentation/objtool.txt b/tools/objtool/Documentation/objtool.txt
-index 8a67190..8e53fc6 100644
---- a/tools/objtool/Documentation/objtool.txt
-+++ b/tools/objtool/Documentation/objtool.txt
-@@ -410,6 +410,14 @@ the objtool maintainers.
-    can remove this warning by putting the ANNOTATE_INTRA_FUNCTION_CALL
-    directive right before the call.
+diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+index cac2bdb..9dbd007 100644
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -308,11 +308,10 @@ static bool load_builtin_intel_microcode(struct cpio_data *cp)
+ /*
+  * Print ucode update info.
+  */
+-static void
+-print_ucode_info(struct ucode_cpu_info *uci, unsigned int date)
++static void print_ucode_info(unsigned int new_rev, unsigned int date)
+ {
+ 	pr_info_once("microcode updated early to revision 0x%x, date = %04x-%02x-%02x\n",
+-		     uci->cpu_sig.rev,
++		     new_rev,
+ 		     date & 0xffff,
+ 		     date >> 24,
+ 		     (date >> 16) & 0xff);
+@@ -332,7 +331,7 @@ void show_ucode_info_early(void)
  
-+12. file.o: warning: func(): not an indirect call target
-+
-+   This means that objtool is running with --ibt and a function expected
-+   to be an indirect call target is not. In particular, this happens for
-+   init_module() or cleanup_module() if a module relies on these special
-+   names and does not use module_init() / module_exit() macros to create
-+   them.
-+
+ 	if (delay_ucode_info) {
+ 		intel_cpu_collect_info(&uci);
+-		print_ucode_info(&uci, current_mc_date);
++		print_ucode_info(uci.cpu_sig.rev, current_mc_date);
+ 		delay_ucode_info = 0;
+ 	}
+ }
+@@ -341,33 +340,22 @@ void show_ucode_info_early(void)
+  * At this point, we can not call printk() yet. Delay printing microcode info in
+  * show_ucode_info_early() until printk() works.
+  */
+-static void print_ucode(struct ucode_cpu_info *uci)
++static void print_ucode(int new_rev, int date)
+ {
+-	struct microcode_intel *mc;
+ 	int *delay_ucode_info_p;
+ 	int *current_mc_date_p;
  
- If the error doesn't seem to make sense, it could be a bug in objtool.
- Feel free to ask the objtool maintainer for help.
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index cab1a16..7c40bd5 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -847,8 +847,15 @@ static int create_ibt_endbr_seal_sections(struct objtool_file *file)
- 	list_for_each_entry(insn, &file->endbr_list, call_node) {
+-	mc = uci->mc;
+-	if (!mc)
+-		return;
+-
+ 	delay_ucode_info_p = (int *)__pa_nodebug(&delay_ucode_info);
+ 	current_mc_date_p = (int *)__pa_nodebug(&current_mc_date);
  
- 		int *site = (int *)sec->data->d_buf + idx;
-+		struct symbol *sym = insn->sym;
- 		*site = 0;
+ 	*delay_ucode_info_p = 1;
+-	*current_mc_date_p = mc->hdr.date;
++	*current_mc_date_p = date;
+ }
+ #else
  
-+		if (opts.module && sym && sym->type == STT_FUNC &&
-+		    insn->offset == sym->offset &&
-+		    (!strcmp(sym->name, "init_module") ||
-+		     !strcmp(sym->name, "cleanup_module")))
-+			WARN("%s(): not an indirect call target", sym->name);
-+
- 		if (elf_add_reloc_to_insn(file->elf, sec,
- 					  idx * sizeof(int),
- 					  R_X86_64_PC32,
+-static inline void print_ucode(struct ucode_cpu_info *uci)
++static inline void print_ucode(int new_rev, int date)
+ {
+-	struct microcode_intel *mc;
+-
+-	mc = uci->mc;
+-	if (!mc)
+-		return;
+-
+-	print_ucode_info(uci, mc->hdr.date);
++	print_ucode_info(new_rev, date);
+ }
+ #endif
+ 
+@@ -407,9 +395,9 @@ static int apply_microcode_early(struct ucode_cpu_info *uci, bool early)
+ 	uci->cpu_sig.rev = rev;
+ 
+ 	if (early)
+-		print_ucode(uci);
++		print_ucode(uci->cpu_sig.rev, mc->hdr.date);
+ 	else
+-		print_ucode_info(uci, mc->hdr.date);
++		print_ucode_info(uci->cpu_sig.rev, mc->hdr.date);
+ 
+ 	return 0;
+ }
