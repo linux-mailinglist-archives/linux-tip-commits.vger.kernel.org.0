@@ -2,113 +2,159 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63AB7676C1B
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Jan 2023 11:42:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF150677A41
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Jan 2023 12:38:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229787AbjAVKmr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 22 Jan 2023 05:42:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56606 "EHLO
+        id S230023AbjAWLiq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 23 Jan 2023 06:38:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbjAVKmq (ORCPT
+        with ESMTP id S231538AbjAWLip (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 22 Jan 2023 05:42:46 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9C06A3;
-        Sun, 22 Jan 2023 02:42:43 -0800 (PST)
-Date:   Sun, 22 Jan 2023 10:42:38 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1674384159;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PQzAUlffxP+Cue4tZ7knjTLBcxiecYtxOrWhjKJnyII=;
-        b=TqlUA4vBbCPiyJpp1gP8yimb7Cioi56xOa1ocWkq07cDmVH0EndkUs6Chqs3jRCNwcuPQN
-        nBAXw3VUr4fYp7TDY2hP/H/g5ZvNBBuiJoyQZH0e9Tphzmpf64dpNH4zOpURC6v9SINMO1
-        pKdhbaWDMz8nsQG7Xe/mIJYH1AxedKyBYe9K3T8Z8KM8jbY+qm+VUhfv/0mfu/ZPp5T4pT
-        QmXc6znrAoXxsPJMz7wujK/WOIstPoLzYohWayqo+EDOTJMky2LmkHhySJMmOFqEdaFn1M
-        tIMQkPPIURmZ+wYReDksqWSH+5IYDPYzelO9J0yoNPMhGozByb++aNOS6D7Wjw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1674384159;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PQzAUlffxP+Cue4tZ7knjTLBcxiecYtxOrWhjKJnyII=;
-        b=ht6Ar4qiK2waBluVvw+/Ohd5EAorLiZ07VR9jNzCaF8AGauCM58nSeZz3vla5EtaGSqJoP
-        Ql99WOXzz1lf2GBg==
-From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/build: Move '-mindirect-branch-cs-prefix' out
- of GCC-only block
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230120165826.2469302-1-nathan@kernel.org>
-References: <20230120165826.2469302-1-nathan@kernel.org>
+        Mon, 23 Jan 2023 06:38:45 -0500
+X-Greylist: delayed 926 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Jan 2023 03:38:42 PST
+Received: from mx-gw-prx01.wika.co.id (pegasus.wika.zone [103.25.196.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4482B1E5F7;
+        Mon, 23 Jan 2023 03:38:42 -0800 (PST)
+Received: from mx-gw-prx01.wika.co.id (localhost.localdomain [127.0.0.1])
+        by mx-gw-prx01.wika.co.id (Proxmox) with ESMTP id 9542543F72;
+        Mon, 23 Jan 2023 18:23:15 +0700 (WIB)
+Received: from smtp-gw.wika.co.id (smtp-gw.wika.co.id [10.4.0.44])
+        by mx-gw-prx01.wika.co.id (Proxmox) with ESMTP id D4CED42D4B;
+        Mon, 23 Jan 2023 18:23:14 +0700 (WIB)
+Received: from smtp-gw-01.wika.co.id (localhost [127.0.0.1])
+        by smtp-gw1.wika.co.id (Postfix) with ESMTP id DB5261D1C5;
+        Mon, 23 Jan 2023 18:23:01 +0700 (WIB)
+X-Virus-Scanned: amavisd-new at wika.co.id
+Received: from smtp-gw.wika.co.id ([127.0.0.1])
+        by smtp-gw-01.wika.co.id (smtp-gw-01.wika.co.id [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ndJ5t11NtQNR; Mon, 23 Jan 2023 18:23:01 +0700 (WIB)
+Received: from mailbox.wika.co.id (unknown [10.4.0.84])
+        by smtp-gw1.wika.co.id (Postfix) with ESMTP id 4956D1D294;
+        Mon, 23 Jan 2023 18:22:35 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by mailbox.wika.co.id (Postfix) with ESMTP id D124B7FEDE967;
+        Mon, 23 Jan 2023 17:41:39 +0700 (WIB)
+Received: from mailbox.wika.co.id ([127.0.0.1])
+        by localhost (mailbox.wika.co.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id d9hdkZcGanI1; Mon, 23 Jan 2023 17:41:39 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by mailbox.wika.co.id (Postfix) with ESMTP id 5E9B57FEDE962;
+        Mon, 23 Jan 2023 17:41:38 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mailbox.wika.co.id 5E9B57FEDE962
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wika.co.id;
+        s=3A269092-2A4A-11ED-99C4-3E27D2C9E2D5; t=1674470499;
+        bh=Jx3dcL/IIt9T0ZSV86Zqvxv64a59Mzb0LP9gkXXwYFY=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=oB3ph2URBjV0SWV8wTOOYA7QxRC1XY9DPePkJrs/s1hVAX825JDcQzII0IWw8qT0e
+         yp8Wv0sEUq842LvR6his4mDpvkl/C9uBDebHYivybT5JBYWFszLPRviP4wGkehr5oE
+         P1HUYWLe3oaAvErjkuEuZEGmzayw4L7RhPqUzwx3mftGUpfn6QAIK71YxTBvqg8FY8
+         I0a4qPcygQCkwn6lIVkqAf9gwIb4ekfPcghfvWu/OWCqvzobKg31uvKxwsw5iA1aOe
+         P4Z7cJzJmu02wlM7xs/wb4T/VFnLDJJ5XC10NNWYU8k6vjyvoBodNNfkvoe/Rry4zq
+         ay9dSmsgAVtFA==
+X-Virus-Scanned: amavisd-new at wika.co.id
+Received: from mailbox.wika.co.id ([127.0.0.1])
+        by localhost (mailbox.wika.co.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id S9Lljg84lApW; Mon, 23 Jan 2023 17:41:37 +0700 (WIB)
+Received: from mailbox.wika.co.id (mailbox.wika.co.id [10.5.0.1])
+        by mailbox.wika.co.id (Postfix) with ESMTP id 7BCA57FE3B31A;
+        Mon, 23 Jan 2023 17:41:05 +0700 (WIB)
+Date:   Mon, 23 Jan 2023 17:41:05 +0700 (WIB)
+From:   =?utf-8?B?0KHQuNGB0YLQtdC80L3Ri9C5INCw0LTQvNC40L3QuNGB0YLRgNCw0YLQvtGA?= 
+        <wellbeing@wika.co.id>
+Reply-To: sistemassadmins@mail2engineer.com
+Message-ID: <1834817443.1773547.1674470465704.JavaMail.zimbra@wika.co.id>
+Subject: 
 MIME-Version: 1.0
-Message-ID: <167438415817.4906.16581804181334586242.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+X-Originating-IP: [10.5.0.1]
+X-Mailer: Zimbra 8.8.12_GA_3866 (zclient/8.8.12_GA_3866)
+Thread-Index: aW51MjFEPLpubSKbG9l0vEMDCm2jfg==
+Thread-Topic: 
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        MISSING_HEADERS,REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  1.0 MISSING_HEADERS Missing To: header
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+=D0=92=D0=9D=D0=98=D0=9C=D0=90=D0=9D=D0=98=D0=95;
 
-Commit-ID:     27b5de622ea3fe0ad5a31a0ebd9f7a0a276932d1
-Gitweb:        https://git.kernel.org/tip/27b5de622ea3fe0ad5a31a0ebd9f7a0a276932d1
-Author:        Nathan Chancellor <nathan@kernel.org>
-AuthorDate:    Fri, 20 Jan 2023 09:58:27 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 22 Jan 2023 11:36:45 +01:00
+=D0=92=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=
+=D1=89=D0=B8=D0=BA =D0=BF=D1=80=D0=B5=D0=B2=D1=8B=D1=81=D0=B8=D0=BB =D0=BE=
+=D0=B3=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =D1=85=D1=80=
+=D0=B0=D0=BD=D0=B8=D0=BB=D0=B8=D1=89=D0=B0, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=
+=D0=BE=D0=B5 =D1=81=D0=BE=D1=81=D1=82=D0=B0=D0=B2=D0=BB=D1=8F=D0=B5=D1=82=
+ 5 =D0=93=D0=91, =D0=BA=D0=B0=D0=BA =D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=
+=BB=D0=B5=D0=BD=D0=BE =D0=B0=D0=B4=D0=BC=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=
+=80=D0=B0=D1=82=D0=BE=D1=80=D0=BE=D0=BC, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=
+=8B=D0=B9 =D0=B2 =D0=BD=D0=B0=D1=81=D1=82=D0=BE=D1=8F=D1=89=D0=B5=D0=B5 =D0=
+=B2=D1=80=D0=B5=D0=BC=D1=8F =D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D0=B5=D1=
+=82 =D0=BD=D0=B0 10,9 =D0=93=D0=91, =D0=B2=D1=8B =D0=BD=D0=B5 =D1=81=D0=BC=
+=D0=BE=D0=B6=D0=B5=D1=82=D0=B5 =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=
+=D1=8F=D1=82=D1=8C =D0=B8=D0=BB=D0=B8 =D0=BF=D0=BE=D0=BB=D1=83=D1=87=D0=B0=
+=D1=82=D1=8C =D0=BD=D0=BE=D0=B2=D1=83=D1=8E =D0=BF=D0=BE=D1=87=D1=82=D1=83=
+ =D0=B4=D0=BE =D1=82=D0=B5=D1=85 =D0=BF=D0=BE=D1=80, =D0=BF=D0=BE=D0=BA=D0=
+=B0 =D0=BD=D0=B5 =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D0=B5 =D0=
+=BF=D0=BE=D1=87=D1=82=D1=83 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=BE=D0=
+=B3=D0=BE =D1=8F=D1=89=D0=B8=D0=BA=D0=B0 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=
+=80=D0=BD=D0=BE. =D0=A7=D1=82=D0=BE=D0=B1=D1=8B =D0=BF=D0=BE=D0=B2=D1=82=D0=
+=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=
+=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=
+=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D1=8C=D1=
+=82=D0=B5 =D1=81=D0=BB=D0=B5=D0=B4=D1=83=D1=8E=D1=89=D1=83=D1=8E =D0=B8=D0=
+=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BD=D0=B8=D0=B6=D0=
+=B5:
 
-x86/build: Move '-mindirect-branch-cs-prefix' out of GCC-only block
+=D0=B8=D0=BC=D1=8F:
+=D0=98=D0=BC=D1=8F =D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=
+=D0=B5=D0=BB=D1=8F:
+=D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
+=D0=9F=D0=BE=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B8=D1=82=D0=B5 =D0=BF=
+=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
+=D0=AD=D0=BB=D0=B5=D0=BA=D1=82=D1=80=D0=BE=D0=BD=D0=BD=D0=B0=D1=8F =D0=BF=
+=D0=BE=D1=87=D1=82=D0=B0:
+=D0=A2=D0=B5=D0=BB=D0=B5=D1=84=D0=BE=D0=BD:
 
-LLVM 16 will have support for this flag so move it out of the GCC-only
-block to allow LLVM builds to take advantage of it.
+=D0=95=D1=81=D0=BB=D0=B8 =D0=B2=D1=8B =D0=BD=D0=B5 =D0=BC=D0=BE=D0=B6=D0=B5=
+=D1=82=D0=B5 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=
+=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=
+=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=B2=
+=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=
+=D0=B8=D0=BA =D0=B1=D1=83=D0=B4=D0=B5=D1=82 =D0=BE=D1=82=D0=BA=D0=BB=D1=8E=
+=D1=87=D0=B5=D0=BD!
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://github.com/ClangBuiltLinux/linux/issues/1665
-Link: https://github.com/llvm/llvm-project/commit/6f867f9102838ebe314c1f3661fdf95700386e5a
-Link: https://lore.kernel.org/r/20230120165826.2469302-1-nathan@kernel.org
----
- arch/x86/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+=D0=9F=D1=80=D0=B8=D0=BD=D0=BE=D1=81=D0=B8=D0=BC =D0=B8=D0=B7=D0=B2=D0=B8=
+=D0=BD=D0=B5=D0=BD=D0=B8=D1=8F =D0=B7=D0=B0 =D0=BD=D0=B5=D1=83=D0=B4=D0=BE=
+=D0=B1=D1=81=D1=82=D0=B2=D0=B0.
+=D0=9F=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=BE=D1=87=D0=BD=D1=8B=D0=B9 =D0=BA=
+=D0=BE=D0=B4: en: WEB. =D0=90=D0=94=D0=9C=D0=98=D0=9D=D0=98=D0=A1=D0=A2=D0=
+=A0=D0=90=D0=A2=D0=9E=D0=A0=D0=90. RU006,524765 @2023
+=D0=9F=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=B0=D1=8F =D1=82=D0=B5=D1=85=D0=BD=
+=D0=B8=D1=87=D0=B5=D1=81=D0=BA=D0=B0=D1=8F =D0=BF=D0=BE=D0=B4=D0=B4=D0=B5=
+=D1=80=D0=B6=D0=BA=D0=B0 @2023
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 9cf0732..73ed982 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -14,13 +14,13 @@ endif
- 
- ifdef CONFIG_CC_IS_GCC
- RETPOLINE_CFLAGS	:= $(call cc-option,-mindirect-branch=thunk-extern -mindirect-branch-register)
--RETPOLINE_CFLAGS	+= $(call cc-option,-mindirect-branch-cs-prefix)
- RETPOLINE_VDSO_CFLAGS	:= $(call cc-option,-mindirect-branch=thunk-inline -mindirect-branch-register)
- endif
- ifdef CONFIG_CC_IS_CLANG
- RETPOLINE_CFLAGS	:= -mretpoline-external-thunk
- RETPOLINE_VDSO_CFLAGS	:= -mretpoline
- endif
-+RETPOLINE_CFLAGS	+= $(call cc-option,-mindirect-branch-cs-prefix)
- 
- ifdef CONFIG_RETHUNK
- RETHUNK_CFLAGS		:= -mfunction-return=thunk-extern
+=D0=A1=D0=BF=D0=B0=D1=81=D0=B8=D0=B1=D0=BE
+=D0=A1=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=BD=D1=8B=D0=B9 =D0=B0=D0=B4=D0=BC=
+=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80.
+
