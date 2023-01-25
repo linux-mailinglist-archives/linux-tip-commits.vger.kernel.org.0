@@ -2,158 +2,112 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D815967AA3C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Jan 2023 07:16:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45D6667AE92
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Jan 2023 10:44:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231563AbjAYGQO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 25 Jan 2023 01:16:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34354 "EHLO
+        id S235386AbjAYJoS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 25 Jan 2023 04:44:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229646AbjAYGQN (ORCPT
+        with ESMTP id S235392AbjAYJoN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 25 Jan 2023 01:16:13 -0500
-Received: from mx-gw-prx01.wika.co.id (pegasus.wika.zone [103.25.196.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 350C322A06;
-        Tue, 24 Jan 2023 22:16:06 -0800 (PST)
-Received: from mx-gw-prx01.wika.co.id (localhost.localdomain [127.0.0.1])
-        by mx-gw-prx01.wika.co.id (Proxmox) with ESMTP id E624F44C46;
-        Wed, 25 Jan 2023 13:15:39 +0700 (WIB)
-Received: from smtp-gw.wika.co.id (smtp-gw.wika.co.id [10.4.0.44])
-        by mx-gw-prx01.wika.co.id (Proxmox) with ESMTP id 2C48A44C3C;
-        Wed, 25 Jan 2023 13:15:39 +0700 (WIB)
-Received: from smtp-gw-01.wika.co.id (localhost [127.0.0.1])
-        by smtp-gw1.wika.co.id (Postfix) with ESMTP id 9C8511A35C;
-        Wed, 25 Jan 2023 13:15:25 +0700 (WIB)
-X-Virus-Scanned: amavisd-new at wika.co.id
-Received: from smtp-gw.wika.co.id ([127.0.0.1])
-        by smtp-gw-01.wika.co.id (smtp-gw-01.wika.co.id [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Yu32ancyTNT2; Wed, 25 Jan 2023 13:15:21 +0700 (WIB)
-Received: from mailbox.wika.co.id (unknown [10.4.0.84])
-        by smtp-gw1.wika.co.id (Postfix) with ESMTP id 13A1B1A3B7;
-        Wed, 25 Jan 2023 13:15:01 +0700 (WIB)
-Received: from localhost (localhost [127.0.0.1])
-        by mailbox.wika.co.id (Postfix) with ESMTP id 034A37FE7EA3C;
-        Wed, 25 Jan 2023 10:58:55 +0700 (WIB)
-Received: from mailbox.wika.co.id ([127.0.0.1])
-        by localhost (mailbox.wika.co.id [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id UlnAFpVEWu7r; Wed, 25 Jan 2023 10:58:54 +0700 (WIB)
-Received: from localhost (localhost [127.0.0.1])
-        by mailbox.wika.co.id (Postfix) with ESMTP id CC0997FE7EA37;
-        Wed, 25 Jan 2023 10:58:53 +0700 (WIB)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mailbox.wika.co.id CC0997FE7EA37
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wika.co.id;
-        s=3A269092-2A4A-11ED-99C4-3E27D2C9E2D5; t=1674619134;
-        bh=hO/q6q0cnVLuJyfm5ntb235jfP04w5acRfRNymqYGkM=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=e9Sf3Ycqq2zzJ9DcBKQ3eqa0bCC1qQsSpDYbgh9aqodRi4VZOyaF/Y2cIIZCnjjXd
-         mjmycF4FV3FJcpNNzpC+8CSiBX78bT5ZQie8Z7UnGdFHqSwkpCU7qMHjopbW1C18zP
-         SEbd9UBCggekNyu2l8ZSRGOkAP13ycRcDhi2HGwzkvfc/kfSowfg0+4PpEsf32Cs7l
-         +mjNFfkFf7aN28Kc+rLFm4zM6J4c0Q8DHoyj4uLo1xKcj/7C4BFP0ptdtoaeTLkiyf
-         WN8VRm5sfRbwWMu0JkI0FvvDRQj6bnHVdHSgRug47GUck+NX4crKieq/LhK0Slx64S
-         VLJrrb054YBvw==
-X-Virus-Scanned: amavisd-new at wika.co.id
-Received: from mailbox.wika.co.id ([127.0.0.1])
-        by localhost (mailbox.wika.co.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id g2-3GhJ0THyn; Wed, 25 Jan 2023 10:58:53 +0700 (WIB)
-Received: from mailbox.wika.co.id (mailbox.wika.co.id [10.5.0.1])
-        by mailbox.wika.co.id (Postfix) with ESMTP id 898A77FFBE08F;
-        Wed, 25 Jan 2023 10:58:06 +0700 (WIB)
-Date:   Wed, 25 Jan 2023 10:58:05 +0700 (WIB)
-From:   =?utf-8?B?0KHQuNGB0YLQtdC80L3Ri9C5INCw0LTQvNC40L3QuNGB0YLRgNCw0YLQvtGA?= 
-        <wellbeing@wika.co.id>
-Reply-To: sistemassadmins@mail2engineer.com
-Message-ID: <915211252.2050785.1674619085747.JavaMail.zimbra@wika.co.id>
-Subject: 
+        Wed, 25 Jan 2023 04:44:13 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549A52726;
+        Wed, 25 Jan 2023 01:43:36 -0800 (PST)
+Date:   Wed, 25 Jan 2023 09:43:31 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1674639811;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vzaEP7E6E1PaybXUfz3v0RQtUATPx3kmREJUUl+Xx80=;
+        b=eMG7Pavtv3lgfnqYR/cRzPhsy0TiuRn7yWMRTdBReilm2epvz3mozwC+Ar3RZVvN90mRlW
+        PjejF5RDuBgq9jtIFrmkXjD6Z6X5HjtYZvf3mMnLWATGrvBJ2iS5jahF6IvQvgVUhfud8+
+        qmyUqXt7u1k/xKqBnoXTW2cOmFyvvsWc2SpGwJsBVNSfHlvDbzUMXiM9aTmOlldLwSuhv7
+        oDekFtaNH5Dg7+yBapPKg8SBxjRhc4/qInZwYSfBuYLYABtK6OWQPCtzeapklx1gJ+eKPh
+        /jYOG4eGnM9WvKNYZahn8RGLzpD7yssgFd/P0kW+vKBxPryMGWThV/YjlxmwyA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1674639811;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vzaEP7E6E1PaybXUfz3v0RQtUATPx3kmREJUUl+Xx80=;
+        b=ofIXQP2O9R4pdYaAw7hB9jcebe6/IZPb0sVs+9OWt6D+Ku6uTQnqoRVyXTl11dMnlTy4qi
+        VzWvv6xArPAnGSCw==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/mm] x86/cpu: Use cpu_feature_enabled() when checking global
+ pages support
+Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230125075013.9292-1-bp@alien8.de>
+References: <20230125075013.9292-1-bp@alien8.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-X-Originating-IP: [10.5.0.1]
-X-Mailer: Zimbra 8.8.12_GA_3866 (zclient/8.8.12_GA_3866)
-Thread-Index: QVCdM6209btIwpzX4de5eUw7keCRjQ==
-Thread-Topic: 
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        MISSING_HEADERS,REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4123]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  1.0 MISSING_HEADERS Missing To: header
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
+Message-ID: <167463981101.4906.8494952549894706565.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-=D0=92=D0=9D=D0=98=D0=9C=D0=90=D0=9D=D0=98=D0=95;
+The following commit has been merged into the x86/mm branch of tip:
 
-=D0=92=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=
-=D1=89=D0=B8=D0=BA =D0=BF=D1=80=D0=B5=D0=B2=D1=8B=D1=81=D0=B8=D0=BB =D0=BE=
-=D0=B3=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =D1=85=D1=80=
-=D0=B0=D0=BD=D0=B8=D0=BB=D0=B8=D1=89=D0=B0, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=
-=D0=BE=D0=B5 =D1=81=D0=BE=D1=81=D1=82=D0=B0=D0=B2=D0=BB=D1=8F=D0=B5=D1=82=
- 5 =D0=93=D0=91, =D0=BA=D0=B0=D0=BA =D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=
-=BB=D0=B5=D0=BD=D0=BE =D0=B0=D0=B4=D0=BC=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=
-=80=D0=B0=D1=82=D0=BE=D1=80=D0=BE=D0=BC, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=
-=8B=D0=B9 =D0=B2 =D0=BD=D0=B0=D1=81=D1=82=D0=BE=D1=8F=D1=89=D0=B5=D0=B5 =D0=
-=B2=D1=80=D0=B5=D0=BC=D1=8F =D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D0=B5=D1=
-=82 =D0=BD=D0=B0 10,9 =D0=93=D0=91, =D0=B2=D1=8B =D0=BD=D0=B5 =D1=81=D0=BC=
-=D0=BE=D0=B6=D0=B5=D1=82=D0=B5 =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=
-=D1=8F=D1=82=D1=8C =D0=B8=D0=BB=D0=B8 =D0=BF=D0=BE=D0=BB=D1=83=D1=87=D0=B0=
-=D1=82=D1=8C =D0=BD=D0=BE=D0=B2=D1=83=D1=8E =D0=BF=D0=BE=D1=87=D1=82=D1=83=
- =D0=B4=D0=BE =D1=82=D0=B5=D1=85 =D0=BF=D0=BE=D1=80, =D0=BF=D0=BE=D0=BA=D0=
-=B0 =D0=BD=D0=B5 =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D0=B5 =D0=
-=BF=D0=BE=D1=87=D1=82=D1=83 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=BE=D0=
-=B3=D0=BE =D1=8F=D1=89=D0=B8=D0=BA=D0=B0 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=
-=80=D0=BD=D0=BE. =D0=A7=D1=82=D0=BE=D0=B1=D1=8B =D0=BF=D0=BE=D0=B2=D1=82=D0=
-=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=
-=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=
-=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D1=8C=D1=
-=82=D0=B5 =D1=81=D0=BB=D0=B5=D0=B4=D1=83=D1=8E=D1=89=D1=83=D1=8E =D0=B8=D0=
-=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BD=D0=B8=D0=B6=D0=
-=B5:
+Commit-ID:     ebd3ad60a688131de7df1dd05fd2d7c57f542268
+Gitweb:        https://git.kernel.org/tip/ebd3ad60a688131de7df1dd05fd2d7c57f542268
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Wed, 25 Jan 2023 08:50:13 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 25 Jan 2023 10:32:06 +01:00
 
-=D0=B8=D0=BC=D1=8F:
-=D0=98=D0=BC=D1=8F =D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=
-=D0=B5=D0=BB=D1=8F:
-=D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
-=D0=9F=D0=BE=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B8=D1=82=D0=B5 =D0=BF=
-=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:=20
-=D0=AD=D0=BB=D0=B5=D0=BA=D1=82=D1=80=D0=BE=D0=BD=D0=BD=D0=B0=D1=8F =D0=BF=
-=D0=BE=D1=87=D1=82=D0=B0:
-=D0=A2=D0=B5=D0=BB=D0=B5=D1=84=D0=BE=D0=BD:
+x86/cpu: Use cpu_feature_enabled() when checking global pages support
 
-=D0=95=D1=81=D0=BB=D0=B8 =D0=B2=D1=8B =D0=BD=D0=B5 =D0=BC=D0=BE=D0=B6=D0=B5=
-=D1=82=D0=B5 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=
-=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=
-=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=B2=
-=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=
-=D0=B8=D0=BA =D0=B1=D1=83=D0=B4=D0=B5=D1=82 =D0=BE=D1=82=D0=BA=D0=BB=D1=8E=
-=D1=87=D0=B5=D0=BD!
+X86_FEATURE_PGE determines whether the CPU has enabled global page
+translations support. Use the faster cpu_feature_enabled() check to
+shave off some more cycles when flushing all TLB entries, including the
+global ones.
 
-=D0=9F=D1=80=D0=B8=D0=BD=D0=BE=D1=81=D0=B8=D0=BC =D0=B8=D0=B7=D0=B2=D0=B8=
-=D0=BD=D0=B5=D0=BD=D0=B8=D1=8F =D0=B7=D0=B0 =D0=BD=D0=B5=D1=83=D0=B4=D0=BE=
-=D0=B1=D1=81=D1=82=D0=B2=D0=B0.
-=D0=9F=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=BE=D1=87=D0=BD=D1=8B=D0=B9 =D0=BA=
-=D0=BE=D0=B4: en: WEB. =D0=90=D0=94=D0=9C=D0=98=D0=9D=D0=98=D0=A1=D0=A2=D0=
-=A0=D0=90=D0=A2=D0=9E=D0=A0=D0=90. RU006,524765 @2023
-=D0=9F=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=B0=D1=8F =D1=82=D0=B5=D1=85=D0=BD=
-=D0=B8=D1=87=D0=B5=D1=81=D0=BA=D0=B0=D1=8F =D0=BF=D0=BE=D0=B4=D0=B4=D0=B5=
-=D1=80=D0=B6=D0=BA=D0=B0 @2023
+What this practically saves is:
 
-=D0=A1=D0=BF=D0=B0=D1=81=D0=B8=D0=B1=D0=BE
-=D0=A1=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=BD=D1=8B=D0=B9 =D0=B0=D0=B4=D0=BC=
-=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80.
+   mov    0x82eb308(%rip),%rax        # 0xffffffff8935bec8 <boot_cpu_data+40>
+   test   $0x20,%ah
 
+... which test the bit. Not a lot, but TLB flushing is a timing-sensitive
+path, so anything to make it even faster.
+
+No functional changes.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230125075013.9292-1-bp@alien8.de
+---
+ arch/x86/mm/tlb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index c1e31e9..92d73cc 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -1205,7 +1205,7 @@ void __flush_tlb_all(void)
+ 	 */
+ 	VM_WARN_ON_ONCE(preemptible());
+ 
+-	if (boot_cpu_has(X86_FEATURE_PGE)) {
++	if (cpu_feature_enabled(X86_FEATURE_PGE)) {
+ 		__flush_tlb_global();
+ 	} else {
+ 		/*
