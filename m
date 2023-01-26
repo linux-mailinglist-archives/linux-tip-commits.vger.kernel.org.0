@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 134FA67C89E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jan 2023 11:34:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49D3367CA1E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jan 2023 12:38:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229786AbjAZKe1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Jan 2023 05:34:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56802 "EHLO
+        id S237308AbjAZLis (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Jan 2023 06:38:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229674AbjAZKe0 (ORCPT
+        with ESMTP id S229639AbjAZLir (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Jan 2023 05:34:26 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF61D3EC4B;
-        Thu, 26 Jan 2023 02:34:23 -0800 (PST)
-Date:   Thu, 26 Jan 2023 10:34:21 -0000
+        Thu, 26 Jan 2023 06:38:47 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D78128D09;
+        Thu, 26 Jan 2023 03:38:46 -0800 (PST)
+Date:   Thu, 26 Jan 2023 11:38:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1674729262;
+        s=2020; t=1674733124;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FcbMsLxLzSVPi5YivDAULjGl6AaAwxfLVanRJMCxmNw=;
-        b=S9Wx+Z6ICh5lyAV/fbKXOpGic9/RmLVdm23I9lGxRVMtAQVPJLs/Dv3TTsUszrudLvpaIQ
-        hzLDx9IR0mn4Xw4P4ou/NMdZX4lxepq7SOJOzpUEy9n93Z2zIcs4ESNJ5R774HetqCI1Tz
-        D7HgENQ1JcE/65y4wkcnMdmFR4ymD42cFhVLXtA/aK+tQzvrEI/5egxvZrRGYoWlF0ayZT
-        isS43jIU1cB1Yj7LLjVS4xN2vWvrj6WddcPVgYWXjv8ZxNICxJL8aR/bVC5lP0DsGsXkAl
-        o6IHYgwHAC1YSrDHkCIhd5GdZNT0U9Z891dWJrH7HLMJQSk/DTKam7kcmNgZsw==
+        bh=Yj7YBvoH2/oKg6SUByjlKXShm6+7+3WB/GHvp/SFSCE=;
+        b=TZlXkgqP9bq4FaoxFPTlol1BKdMMK1CnDNcPs+4eBrRkbaJQ2YrbB36nttno1sRFTRiAob
+        rMFw2qFMqWbGO+tr07ebvPa65UMRln2xAexUlIYzia7uY4BMua4qfLgaOl2e2PzQAzNgqo
+        9aGnbw0uUkOcwWIyCPLgCLCeUF0BUiCailvMSYdDiqJhTH6TkMzTBiFKUfYw07RX71kXq9
+        mlnJFaC8uYkHNHbc5vYfvEs/jkXFJWFedG4VDs3pD+icPlpp1VSB0w7bWtP4LFGGaYtp6p
+        U+eO6VACOZm6g0QZDqzYDQ/AILwp+XZMSCuLVl6Q/jk3Rv7B4eVUenJnBY8TFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1674729262;
+        s=2020e; t=1674733124;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FcbMsLxLzSVPi5YivDAULjGl6AaAwxfLVanRJMCxmNw=;
-        b=UaSBV2tS3Baf60PnBbp9XNzmzh5w8sby7nZaTyzYwrayG9qnXg+diYPj91BIRlvFYqE78/
-        H86WIElhuLpZ+gDw==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=Yj7YBvoH2/oKg6SUByjlKXShm6+7+3WB/GHvp/SFSCE=;
+        b=hcoVFvzigyEU23XWaCIyVlXGMgzV2BZGpW+NL1S0w80MvnMFFLnmiEc96KQHmfSDPZfuvT
+        oBCLy0qsvAGHUwCg==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Fix a silly -Wunused-but-set-variable warning
-Cc:     kernel test robot <lkp@intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Babu Moger <babu.moger@amd.com>, x86@kernel.org,
+Subject: [tip: locking/core] x86/ACPI/boot: Use try_cmpxchg() in
+ __acpi_{acquire,release}_global_lock()
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <202301242015.kbzkVteJ-lkp@intel.com>
-References: <202301242015.kbzkVteJ-lkp@intel.com>
+In-Reply-To: <20230116162522.4072-1-ubizjak@gmail.com>
+References: <20230116162522.4072-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <167472926132.4906.9798540795502253502.tip-bot2@tip-bot2>
+Message-ID: <167473312297.4906.8676420213357731931.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,66 +65,71 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cache branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     793207bad71c5339c614d12ac21d627da7bf771d
-Gitweb:        https://git.kernel.org/tip/793207bad71c5339c614d12ac21d627da7bf771d
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Tue, 24 Jan 2023 19:01:05 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 26 Jan 2023 11:15:20 +01:00
+Commit-ID:     890a0794b34f89fcd90e94ec970ad2bc18b70e73
+Gitweb:        https://git.kernel.org/tip/890a0794b34f89fcd90e94ec970ad2bc18b70e73
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Mon, 16 Jan 2023 17:25:22 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 26 Jan 2023 11:49:40 +01:00
 
-x86/resctrl: Fix a silly -Wunused-but-set-variable warning
+x86/ACPI/boot: Use try_cmpxchg() in __acpi_{acquire,release}_global_lock()
 
-clang correctly complains
+Use try_cmpxchg instead of cmpxchg (*ptr, old, new) == old in
+__acpi_{acquire,release}_global_lock().  x86 CMPXCHG instruction returns
+success in ZF flag, so this change saves a compare after CMPXCHG
+(and related MOV instruction in front of CMPXCHG).
 
-  arch/x86/kernel/cpu/resctrl/rdtgroup.c:1456:6: warning: variable \
-     'h' set but not used [-Wunused-but-set-variable]
-          u32 h;
-              ^
+Also, try_cmpxchg() implicitly assigns old *ptr value to "old" when CMPXCHG
+fails. There is no need to re-read the value in the loop.
 
-but it can't know whether this use is innocuous or really a problem.
-There's a reason why those warning switches are behind a W=1 and not
-enabled by default - yes, one needs to do:
+Note that the value from *ptr should be read using READ_ONCE() to prevent
+the compiler from merging, refetching or reordering the read.
 
-  make W=1 CC=clang HOSTCC=clang arch/x86/kernel/cpu/resctrl/
+No functional change intended.
 
-with clang 14 in order to trigger it.
-
-I would normally not take a silly fix like that but this one is simple
-and doesn't make the code uglier so...
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Tested-by: Babu Moger <babu.moger@amd.com>
-Link: https://lore.kernel.org/r/202301242015.kbzkVteJ-lkp@intel.com
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/20230116162522.4072-1-ubizjak@gmail.com
 ---
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/acpi/boot.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 5990589..e2c1599 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -1453,17 +1453,17 @@ static void mon_event_config_read(void *info)
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 907cc98..4177577 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -1840,23 +1840,23 @@ early_param("acpi_sci", setup_acpi_sci);
+ 
+ int __acpi_acquire_global_lock(unsigned int *lock)
  {
- 	struct mon_config_info *mon_info = info;
- 	unsigned int index;
--	u32 h;
-+	u64 msrval;
- 
- 	index = mon_event_config_index_get(mon_info->evtid);
- 	if (index == INVALID_CONFIG_INDEX) {
- 		pr_warn_once("Invalid event id %d\n", mon_info->evtid);
- 		return;
- 	}
--	rdmsr(MSR_IA32_EVT_CFG_BASE + index, mon_info->mon_config, h);
-+	rdmsrl(MSR_IA32_EVT_CFG_BASE + index, msrval);
- 
- 	/* Report only the valid event configuration bits */
--	mon_info->mon_config &= MAX_EVT_CONFIG_BITS;
-+	mon_info->mon_config = msrval & MAX_EVT_CONFIG_BITS;
+-	unsigned int old, new, val;
++	unsigned int old, new;
++
++	old = READ_ONCE(*lock);
+ 	do {
+-		old = *lock;
+ 		new = (((old & ~0x3) + 2) + ((old >> 1) & 0x1));
+-		val = cmpxchg(lock, old, new);
+-	} while (unlikely (val != old));
++	} while (!try_cmpxchg(lock, &old, new));
+ 	return ((new & 0x3) < 3) ? -1 : 0;
  }
  
- static void mondata_config_read(struct rdt_domain *d, struct mon_config_info *mon_info)
+ int __acpi_release_global_lock(unsigned int *lock)
+ {
+-	unsigned int old, new, val;
++	unsigned int old, new;
++
++	old = READ_ONCE(*lock);
+ 	do {
+-		old = *lock;
+ 		new = old & ~0x3;
+-		val = cmpxchg(lock, old, new);
+-	} while (unlikely (val != old));
++	} while (!try_cmpxchg(lock, &old, new));
+ 	return old & 0x1;
+ }
+ 
