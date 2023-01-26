@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B89DE67C810
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jan 2023 11:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F4F167C814
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jan 2023 11:12:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236679AbjAZKMg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Jan 2023 05:12:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34038 "EHLO
+        id S237019AbjAZKMi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Jan 2023 05:12:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236695AbjAZKMc (ORCPT
+        with ESMTP id S236994AbjAZKMd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Jan 2023 05:12:32 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F0865B1;
-        Thu, 26 Jan 2023 02:12:28 -0800 (PST)
-Date:   Thu, 26 Jan 2023 10:12:26 -0000
+        Thu, 26 Jan 2023 05:12:33 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B354566009;
+        Thu, 26 Jan 2023 02:12:32 -0800 (PST)
+Date:   Thu, 26 Jan 2023 10:12:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1674727947;
+        s=2020; t=1674727948;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gqmhaSY+iJHSNRIh95JPWQFejosPcxyvX9veF4WEUEM=;
-        b=PaGkCzYnQ9pnK0x0Hz+XIj4YVkj1AnFxXVn1dGHI1XPBbewu6jfuRwGJPfUesQjMv0/63L
-        UJh7U1ffFdMkhMiivxCta1m+in4uxk/cr6coT0fLM+IPTzvKgMEMRVwPdAP1d4CN8y+l7Z
-        yD+oKPPHHDYN7lqv5vw4qOJpzV+BX5EIcAVg6p+n60XH5/YOOtbbdJwY38/U5twvgw1YT3
-        15c69LEFoE423Hi4yC9YRYxwO71nV7dwSUQxBjW9Q2Jyvc6RgcbRtT6YVBhKc9x1K5tXOe
-        55HqhKZ3wMNkDhwb48q9/MJubIgJ0NFEWarpp296Z+Uhpre2M06NWr/CyhWKHA==
+        bh=PnmbFw9pmFjIRXsSIt30ejYlyKsvq42lF3vi36XLWME=;
+        b=3x+b/2mkIIqXKZr6jx8DkXaCndZ/KSeUSJoOmkEmxCvE755dOV4GkdgvNE3U0mv1odLTDr
+        4yNRLjgf59Ga0ZmgBOnAdj0Ygwa91HB6Rb06Gzi1JQGPuWLpr/VPurXsaUL63l+ImN91ih
+        bQXHafMYVgJ/zb8nBkOZFSxa7MLq+MvNOOL/Lz4Q4unJmMYWIxC6aPa5fpszuSy2MD/wQy
+        AEhKYv7HBDTgaB5c+xnHdHpWCMjbdq4ifgUpsy2dXbpsNrtXIQNI6CRWybMc4t46HZOVK4
+        HACzfSlhT3vrosXBqag7GaRamKjsNhDCxcT0jCxXHnIkZmVto4+jrNhgIDbLww==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1674727947;
+        s=2020e; t=1674727948;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gqmhaSY+iJHSNRIh95JPWQFejosPcxyvX9veF4WEUEM=;
-        b=QVZ4pfgZi374o1r4a3gR1uHwbdbwYy1sWI2pjdOV2O9d7ksgH0jrAofz3KME1a/bHyTuBf
-        TXQUflVXw6KoIADg==
+        bh=PnmbFw9pmFjIRXsSIt30ejYlyKsvq42lF3vi36XLWME=;
+        b=EJvQvfY3kvgkNnpuK43Rskz3wN53xmNd33O02NDcTKnkzqhS3FWZN8o5GysBnQpmkLM38V
+        Uqk65/u83yvTAJDQ==
 From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu, kvm: Move X86_FEATURE_LFENCE_RDTSC to its native leaf
+Subject: [tip: x86/cpu] KVM: x86: Move open-coded CPUID leaf 0x80000021 EAX
+ bit propagation code
 Cc:     Kim Phillips <kim.phillips@amd.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
         Sean Christopherson <seanjc@google.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230124163319.2277355-5-kim.phillips@amd.com>
-References: <20230124163319.2277355-5-kim.phillips@amd.com>
+In-Reply-To: <20230124163319.2277355-3-kim.phillips@amd.com>
+References: <20230124163319.2277355-3-kim.phillips@amd.com>
 MIME-Version: 1.0
-Message-ID: <167472794699.4906.12879995558166444038.tip-bot2@tip-bot2>
+Message-ID: <167472794770.4906.742433074585875386.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,96 +68,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     84168ae786f8a15a7eb0f79d34f20b8d261ce2f5
-Gitweb:        https://git.kernel.org/tip/84168ae786f8a15a7eb0f79d34f20b8d261ce2f5
+Commit-ID:     c35ac8c4bf600ee23bacb20f863aa7830efb23fb
+Gitweb:        https://git.kernel.org/tip/c35ac8c4bf600ee23bacb20f863aa7830efb23fb
 Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Tue, 24 Jan 2023 10:33:15 -06:00
+AuthorDate:    Tue, 24 Jan 2023 10:33:13 -06:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 25 Jan 2023 13:06:13 +01:00
+CommitterDate: Wed, 25 Jan 2023 12:33:13 +01:00
 
-x86/cpu, kvm: Move X86_FEATURE_LFENCE_RDTSC to its native leaf
+KVM: x86: Move open-coded CPUID leaf 0x80000021 EAX bit propagation code
 
-The LFENCE always serializing feature bit was defined as scattered
-LFENCE_RDTSC and its native leaf bit position open-coded for KVM.  Add
-it to its newly added CPUID leaf 0x80000021 EAX proper.  With
-LFENCE_RDTSC in its proper place, the kernel's set_cpu_cap() will
-effectively synthesize the feature for KVM going forward.
+Move code from __do_cpuid_func() to kvm_set_cpu_caps() in preparation for adding
+the features in their native leaf.
 
-Also, DE_CFG[1] doesn't need to be set on such CPUs anymore.
+Also drop the bit description comments as it will be more self-describing once
+the individual features are added.
 
-  [ bp: Massage and merge diff from Sean. ]
+Whilst there, switch to using the more efficient cpu_feature_enabled() instead
+of static_cpu_has().
+
+Note, LFENCE_RDTSC and "NULL selector clears base" are currently synthetic,
+Linux-defined feature flags as Linux tracking of the features predates AMD's
+definition.  Keep the manual propagation of the flags from their synthetic
+counterparts until the kernel fully converts to AMD's definition, otherwise KVM
+would stop synthesizing the flags as intended.
 
 Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Acked-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20230124163319.2277355-5-kim.phillips@amd.com
+Link: https://lore.kernel.org/r/20230124163319.2277355-3-kim.phillips@amd.com
 ---
- arch/x86/include/asm/cpufeatures.h |  3 ++-
- arch/x86/kernel/cpu/amd.c          |  2 +-
- arch/x86/kvm/cpuid.c               | 16 +++++++++++++---
- 3 files changed, 16 insertions(+), 5 deletions(-)
+ arch/x86/kvm/cpuid.c | 31 ++++++++++++-------------------
+ 1 file changed, 12 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 1b2d40a..901128e 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -97,7 +97,7 @@
- #define X86_FEATURE_SYSENTER32		( 3*32+15) /* "" sysenter in IA32 userspace */
- #define X86_FEATURE_REP_GOOD		( 3*32+16) /* REP microcode works well */
- #define X86_FEATURE_AMD_LBR_V2		( 3*32+17) /* AMD Last Branch Record Extension Version 2 */
--#define X86_FEATURE_LFENCE_RDTSC	( 3*32+18) /* "" LFENCE synchronizes RDTSC */
-+/* FREE, was #define X86_FEATURE_LFENCE_RDTSC		( 3*32+18) "" LFENCE synchronizes RDTSC */
- #define X86_FEATURE_ACC_POWER		( 3*32+19) /* AMD Accumulated Power Mechanism */
- #define X86_FEATURE_NOPL		( 3*32+20) /* The NOPL (0F 1F) instructions */
- #define X86_FEATURE_ALWAYS		( 3*32+21) /* "" Always-present feature */
-@@ -429,6 +429,7 @@
- 
- /* AMD-defined Extended Feature 2 EAX, CPUID level 0x80000021 (EAX), word 20 */
- #define X86_FEATURE_NO_NESTED_DATA_BP	(20*32+ 0) /* "" No Nested Data Breakpoints */
-+#define X86_FEATURE_LFENCE_RDTSC	(20*32+ 2) /* "" LFENCE always serializing / synchronizes RDTSC */
- 
- /*
-  * BUG word(s)
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index f769d6d..208c2ce 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -956,7 +956,7 @@ static void init_amd(struct cpuinfo_x86 *c)
- 
- 	init_amd_cacheinfo(c);
- 
--	if (cpu_has(c, X86_FEATURE_XMM2)) {
-+	if (!cpu_has(c, X86_FEATURE_LFENCE_RDTSC) && cpu_has(c, X86_FEATURE_XMM2)) {
- 		/*
- 		 * Use LFENCE for execution serialization.  On families which
- 		 * don't have that MSR, LFENCE is already serializing.
 diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index aa3a6dc..12455dc 100644
+index b14653b..f3edc35 100644
 --- a/arch/x86/kvm/cpuid.c
 +++ b/arch/x86/kvm/cpuid.c
-@@ -742,12 +742,22 @@ void kvm_set_cpu_caps(void)
+@@ -741,6 +741,17 @@ void kvm_set_cpu_caps(void)
+ 		0 /* SME */ | F(SEV) | 0 /* VM_PAGE_FLUSH */ | F(SEV_ES) |
  		F(SME_COHERENT));
  
- 	kvm_cpu_cap_mask(CPUID_8000_0021_EAX,
--		F(NO_NESTED_DATA_BP) |
--		BIT(2) /* LFENCE Always serializing */ | 0 /* SmmPgCfgLock */ |
-+		F(NO_NESTED_DATA_BP) | F(LFENCE_RDTSC) | 0 /* SmmPgCfgLock */ |
- 		BIT(6) /* NULL_SEL_CLR_BASE */ | 0 /* PrefetchCtlMsr */
- 	);
++	kvm_cpu_cap_mask(CPUID_8000_0021_EAX,
++		BIT(0) /* NO_NESTED_DATA_BP */ |
++		BIT(2) /* LFENCE Always serializing */ | 0 /* SmmPgCfgLock */ |
++		BIT(6) /* NULL_SEL_CLR_BASE */ | 0 /* PrefetchCtlMsr */
++	);
++	if (cpu_feature_enabled(X86_FEATURE_LFENCE_RDTSC))
++		kvm_cpu_caps[CPUID_8000_0021_EAX] |= BIT(2) /* LFENCE Always serializing */;
++	if (!static_cpu_has_bug(X86_BUG_NULL_SEG))
++		kvm_cpu_caps[CPUID_8000_0021_EAX] |= BIT(6) /* NULL_SEL_CLR_BASE */;
++	kvm_cpu_caps[CPUID_8000_0021_EAX] |= BIT(9) /* NO_SMM_CTL_MSR */;
 +
-+	/*
-+	 * Synthesize "LFENCE is serializing" into the AMD-defined entry in
-+	 * KVM's supported CPUID if the feature is reported as supported by the
-+	 * kernel.  LFENCE_RDTSC was a Linux-defined synthetic feature long
-+	 * before AMD joined the bandwagon, e.g. LFENCE is serializing on most
-+	 * CPUs that support SSE2.  On CPUs that don't support AMD's leaf,
-+	 * kvm_cpu_cap_mask() will unfortunately drop the flag due to ANDing
-+	 * the mask with the raw host CPUID, and reporting support in AMD's
-+	 * leaf can make it easier for userspace to detect the feature.
-+	 */
- 	if (cpu_feature_enabled(X86_FEATURE_LFENCE_RDTSC))
--		kvm_cpu_caps[CPUID_8000_0021_EAX] |= BIT(2) /* LFENCE Always serializing */;
-+		kvm_cpu_cap_set(X86_FEATURE_LFENCE_RDTSC);
- 	if (!static_cpu_has_bug(X86_BUG_NULL_SEG))
- 		kvm_cpu_caps[CPUID_8000_0021_EAX] |= BIT(6) /* NULL_SEL_CLR_BASE */;
- 	kvm_cpu_caps[CPUID_8000_0021_EAX] |= BIT(9) /* NO_SMM_CTL_MSR */;
+ 	kvm_cpu_cap_mask(CPUID_C000_0001_EDX,
+ 		F(XSTORE) | F(XSTORE_EN) | F(XCRYPT) | F(XCRYPT_EN) |
+ 		F(ACE2) | F(ACE2_EN) | F(PHE) | F(PHE_EN) |
+@@ -1222,25 +1233,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+ 		break;
+ 	case 0x80000021:
+ 		entry->ebx = entry->ecx = entry->edx = 0;
+-		/*
+-		 * Pass down these bits:
+-		 *    EAX      0      NNDBP, Processor ignores nested data breakpoints
+-		 *    EAX      2      LAS, LFENCE always serializing
+-		 *    EAX      6      NSCB, Null selector clear base
+-		 *
+-		 * Other defined bits are for MSRs that KVM does not expose:
+-		 *   EAX      3      SPCL, SMM page configuration lock
+-		 *   EAX      13     PCMSR, Prefetch control MSR
+-		 *
+-		 * KVM doesn't support SMM_CTL.
+-		 *   EAX       9     SMM_CTL MSR is not supported
+-		 */
+-		entry->eax &= BIT(0) | BIT(2) | BIT(6);
+-		entry->eax |= BIT(9);
+-		if (static_cpu_has(X86_FEATURE_LFENCE_RDTSC))
+-			entry->eax |= BIT(2);
+-		if (!static_cpu_has_bug(X86_BUG_NULL_SEG))
+-			entry->eax |= BIT(6);
++		cpuid_entry_override(entry, CPUID_8000_0021_EAX);
+ 		break;
+ 	/*Add support for Centaur's CPUID instruction*/
+ 	case 0xC0000000:
