@@ -2,50 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BDAB67ED81
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Jan 2023 19:28:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81BBD67ED83
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Jan 2023 19:28:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235408AbjA0S2f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Jan 2023 13:28:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59852 "EHLO
+        id S232974AbjA0S2h (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Jan 2023 13:28:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234543AbjA0S2T (ORCPT
+        with ESMTP id S235210AbjA0S2W (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Jan 2023 13:28:19 -0500
+        Fri, 27 Jan 2023 13:28:22 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B29E8660D;
-        Fri, 27 Jan 2023 10:27:28 -0800 (PST)
-Date:   Fri, 27 Jan 2023 18:26:55 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2453D83240;
+        Fri, 27 Jan 2023 10:27:34 -0800 (PST)
+Date:   Fri, 27 Jan 2023 18:26:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1674844016;
+        s=2020; t=1674844017;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=K6jhIAiVGc51DkalpSpWKncAbZs2uGtkxWDUHxqyi58=;
-        b=Fdy72VxklwHP60cD9VIHCWmoRzK7vIlE3E2oJXwBTD4GkV8RNpNRxTzZu5vsvNeWq88w7b
-        mSRw9+vUUypkXN3rSqlo9HOg/Zn4sJLi04rs4P8qc/xbUkR3niukfzRVcs5YNpKlQYiXbQ
-        AE9eJXi0MszFLsf3+9apEmed+wRMBxEnWvqo9CsJnNnYuTgcIPHefMuOS8XyR0e26F17+9
-        tWL6xem0BnWh7SYy4yXpn2weHTIaPSnKxmqiRtz0HFbQziOMZsBWctXZ8mfIXKobbC4EpP
-        l2K8eWyerG8sk6VkaMpc68NLjaxKpCleVCc4PsbkePyE0J7p85lLSlkCC7cM+w==
+        bh=LHjZkcJoCoNf2FZj9Z1UyWb4+dkvZrYpqan3ctWzrCY=;
+        b=viFJ8oV+gFGDxFxNT+dXGlVJ2rlV3BZlC0syXqx8gPz9ByZwY0u0yYZzEPGbYhqqT9/sfC
+        pGnVU7qc5rBicjiF6LWUGb/QoztgDy+IJNh/AESxv6Sh1sU7HsOgGawx+7lsh7YJWEQn7S
+        col0ZZ7JR2bB2Cb5DourhuiyzPYuQjdd3zw6N675Q/7KAaVcQrlCh4Pobiyo+6QgqRkO60
+        CFShsSa+Q4apCzaAzUy8Xzk1/wmQKhjcDhB5oD5HGY7mln8EySM3QlC6q6D/dTs0w/N9Dt
+        U1oPkLl9au+fwuDEuy8csp8mLQKyot99CAXTZciIyYbeyzEj1gNF+WazmRKCvw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1674844016;
+        s=2020e; t=1674844017;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=K6jhIAiVGc51DkalpSpWKncAbZs2uGtkxWDUHxqyi58=;
-        b=2eHuJm2zdOEjwPS6jibRTCdzkWJKklTdUky9PKmmKt3Wi5i6wQtKxQIB/eGfJ+vWadDD7C
-        9gLpxxlmrD6pr1Cw==
+        bh=LHjZkcJoCoNf2FZj9Z1UyWb4+dkvZrYpqan3ctWzrCY=;
+        b=TBulKF8z7CXpNBN893syMl7K8IR/WXb0TDZ99Uvu9Htoo94ZsV6YeK0T95xmxiv+ijS+Ty
+        G783R11raGi0nLCg==
 From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/tdx: Disable NOTIFY_ENABLES
+Subject: [tip: x86/tdx] x86/tdx: Refactor __tdx_hypercall() to allow pass down
+ more arguments
 Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167484401546.4906.1415806415892666642.tip-bot2@tip-bot2>
+Message-ID: <167484401684.4906.6620390919066115550.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,80 +61,122 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/tdx branch of tip:
 
-Commit-ID:     8de62af018cc9262649d7688f7eb1409b2d8f594
-Gitweb:        https://git.kernel.org/tip/8de62af018cc9262649d7688f7eb1409b2d8f594
+Commit-ID:     c30c4b2555ba93b845559a036293fcaf7ffd2b82
+Gitweb:        https://git.kernel.org/tip/c30c4b2555ba93b845559a036293fcaf7ffd2b82
 Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Fri, 27 Jan 2023 01:11:59 +03:00
+AuthorDate:    Fri, 27 Jan 2023 01:11:55 +03:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 27 Jan 2023 09:46:05 -08:00
+CommitterDate: Fri, 27 Jan 2023 09:42:09 -08:00
 
-x86/tdx: Disable NOTIFY_ENABLES
+x86/tdx: Refactor __tdx_hypercall() to allow pass down more arguments
 
-== Background ==
+RDI is the first argument to __tdx_hypercall() that used to pass pointer
+to struct tdx_hypercall_args. RSI is the second argument that contains
+flags, such as TDX_HCALL_HAS_OUTPUT and TDX_HCALL_ISSUE_STI.
 
-There is a class of side-channel attacks against SGX enclaves called
-"SGX Step"[1]. These attacks create lots of exceptions inside of
-enclaves. Basically, run an in-enclave instruction, cause an exception.
-Over and over.
+RDI and RSI can also be used as arguments to TDVMCALL leafs. Move RDI to
+RAX and RSI to RBP to free up them for the hypercall arguments.
 
-There is a concern that a VMM could attack a TDX guest in the same way
-by causing lots of #VE's. The TDX architecture includes new
-countermeasures for these attacks. It basically counts the number of
-exceptions and can send another *special* exception once the number of
-VMM-induced #VE's hits a critical threshold[2].
+RAX saved on stack during TDCALL as it returns status code in the
+register.
 
-== Problem ==
+RBP value has to be restored before returning from __tdx_hypercall() as
+it is callee-saved register.
 
-But, these special exceptions are independent of any action that the
-guest takes. They can occur anywhere that the guest executes. This
-includes sensitive areas like the entry code. The (non-paranoid) #VE
-handler is incapable of handling exceptions in these areas.
-
-== Solution ==
-
-Fortunately, the special exceptions can be disabled by the guest via
-write to NOTIFY_ENABLES TDCS field. NOTIFY_ENABLES is disabled by
-default, but might be enabled by a bootloader, firmware or an earlier
-kernel before the current kernel runs.
-
-Disable NOTIFY_ENABLES feature explicitly and unconditionally. Any
-NOTIFY_ENABLES-based #VE's that occur before this point will end up
-in the early #VE exception handler and die due to unexpected exit
-reason.
-
-[1] https://github.com/jovanbulck/sgx-step
-[2] https://intel.github.io/ccc-linux-guest-hardening-docs/security-spec.html#safety-against-ve-in-kernel-code
+This is preparatory patch. No functional change.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@intel.com>
-Link: https://lore.kernel.org/all/20230126221159.8635-8-kirill.shutemov%40linux.intel.com
+Link: https://lore.kernel.org/all/20230126221159.8635-4-kirill.shutemov%40linux.intel.com
 ---
- arch/x86/coco/tdx/tdx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/coco/tdx/tdcall.S | 46 ++++++++++++++++++++++---------------
+ 1 file changed, 28 insertions(+), 18 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c4a1299..b593009 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -19,6 +19,10 @@
- #define TDX_GET_VEINFO			3
- #define TDX_GET_REPORT			4
- #define TDX_ACCEPT_PAGE			6
-+#define TDX_WR				8
+diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
+index 74b108e..a9bb4cb 100644
+--- a/arch/x86/coco/tdx/tdcall.S
++++ b/arch/x86/coco/tdx/tdcall.S
+@@ -124,19 +124,26 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	push %r14
+ 	push %r13
+ 	push %r12
++	push %rbp
 +
-+/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
-+#define TDCS_NOTIFY_ENABLES		0x9100000000000010
++	/* Free RDI and RSI to be used as TDVMCALL arguments */
++	movq %rdi, %rax
++	movq %rsi, %rbp
++
++	/* Copy hypercall registers from arg struct: */
++	movq TDX_HYPERCALL_r10(%rax), %r10
++	movq TDX_HYPERCALL_r11(%rax), %r11
++	movq TDX_HYPERCALL_r12(%rax), %r12
++	movq TDX_HYPERCALL_r13(%rax), %r13
++	movq TDX_HYPERCALL_r14(%rax), %r14
++	movq TDX_HYPERCALL_r15(%rax), %r15
++
++	push %rax
  
- /* TDX hypercall Leaf IDs */
- #define TDVMCALL_MAP_GPA		0x10001
-@@ -863,6 +867,9 @@ void __init tdx_early_init(void)
- 	tdx_parse_tdinfo(&cc_mask);
- 	cc_set_mask(cc_mask);
+ 	/* Mangle function call ABI into TDCALL ABI: */
+ 	/* Set TDCALL leaf ID (TDVMCALL (0)) in RAX */
+ 	xor %eax, %eax
  
-+	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
-+	tdx_module_call(TDX_WR, 0, TDCS_NOTIFY_ENABLES, 0, -1ULL, NULL);
+-	/* Copy hypercall registers from arg struct: */
+-	movq TDX_HYPERCALL_r10(%rdi), %r10
+-	movq TDX_HYPERCALL_r11(%rdi), %r11
+-	movq TDX_HYPERCALL_r12(%rdi), %r12
+-	movq TDX_HYPERCALL_r13(%rdi), %r13
+-	movq TDX_HYPERCALL_r14(%rdi), %r14
+-	movq TDX_HYPERCALL_r15(%rdi), %r15
+-
+ 	movl $TDVMCALL_EXPOSE_REGS_MASK, %ecx
+ 
+ 	/*
+@@ -148,7 +155,7 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	 * HLT operation indefinitely. Since this is the not the desired
+ 	 * result, conditionally call STI before TDCALL.
+ 	 */
+-	testq $TDX_HCALL_ISSUE_STI, %rsi
++	testq $TDX_HCALL_ISSUE_STI, %rbp
+ 	jz .Lskip_sti
+ 	sti
+ .Lskip_sti:
+@@ -165,20 +172,22 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	testq %rax, %rax
+ 	jne .Lpanic
+ 
+-	/* TDVMCALL leaf return code is in R10 */
+-	movq %r10, %rax
++	pop %rax
+ 
+ 	/* Copy hypercall result registers to arg struct if needed */
+-	testq $TDX_HCALL_HAS_OUTPUT, %rsi
++	testq $TDX_HCALL_HAS_OUTPUT, %rbp
+ 	jz .Lout
+ 
+-	movq %r10, TDX_HYPERCALL_r10(%rdi)
+-	movq %r11, TDX_HYPERCALL_r11(%rdi)
+-	movq %r12, TDX_HYPERCALL_r12(%rdi)
+-	movq %r13, TDX_HYPERCALL_r13(%rdi)
+-	movq %r14, TDX_HYPERCALL_r14(%rdi)
+-	movq %r15, TDX_HYPERCALL_r15(%rdi)
++	movq %r10, TDX_HYPERCALL_r10(%rax)
++	movq %r11, TDX_HYPERCALL_r11(%rax)
++	movq %r12, TDX_HYPERCALL_r12(%rax)
++	movq %r13, TDX_HYPERCALL_r13(%rax)
++	movq %r14, TDX_HYPERCALL_r14(%rax)
++	movq %r15, TDX_HYPERCALL_r15(%rax)
+ .Lout:
++	/* TDVMCALL leaf return code is in R10 */
++	movq %r10, %rax
 +
  	/*
- 	 * All bits above GPA width are reserved and kernel treats shared bit
- 	 * as flag, not as part of physical address.
+ 	 * Zero out registers exposed to the VMM to avoid speculative execution
+ 	 * with VMM-controlled values. This needs to include all registers
+@@ -189,6 +198,7 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	xor %r11d, %r11d
+ 
+ 	/* Restore callee-saved GPRs as mandated by the x86_64 ABI */
++	pop %rbp
+ 	pop %r12
+ 	pop %r13
+ 	pop %r14
