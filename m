@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B8F6831F5
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Jan 2023 16:58:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B5FC683681
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Jan 2023 20:27:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232308AbjAaP6A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 31 Jan 2023 10:58:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35752 "EHLO
+        id S231634AbjAaT1S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 31 Jan 2023 14:27:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233495AbjAaP56 (ORCPT
+        with ESMTP id S230344AbjAaT1S (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 31 Jan 2023 10:57:58 -0500
+        Tue, 31 Jan 2023 14:27:18 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E94124ED5;
-        Tue, 31 Jan 2023 07:57:56 -0800 (PST)
-Date:   Tue, 31 Jan 2023 15:57:53 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E730413D61;
+        Tue, 31 Jan 2023 11:27:15 -0800 (PST)
+Date:   Tue, 31 Jan 2023 19:27:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1675180674;
+        s=2020; t=1675193234;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TZzJ+GQ2T/0Ua8BfIYWMuAMISueCW/XtJ+YiNk66U1I=;
-        b=pzbnRaPLaQ/3gI7t6UbZa/Oa5PmR4y47cA+G2DKLBBCcUfEM/1uHI3tAcsTXD9NMw1CEBK
-        qqoOhiPwvWe4w6NY9A/s+kE1k3Eflef7H6ginQ+Om6K8s8pBnyPhwgZ+my6HLznBL8wfEQ
-        FYxn06Xxk7KrQwGcC7Mwn6N1Sz6ee9QJmk3Rs7a2HC0OouUzCYDRGywy28WzI9BiQ/4xqb
-        +KHVpSsL9M1nZO9Jxy0BntK8BBIAfMhkEkQT1Lp8l3ekFOl3j1IrvnaeqJUJlMLiGWsO4l
-        8UFG2ePQtQR/c/AhQSZm41uLc1G8AXrl51ntd1jLTvTMgOME3LHLJToHvvQP8A==
+        bh=0HATiiLZYv74OfydVnW0IEt/f49Kgu+SS/ROn0/KEoI=;
+        b=2DlZavsdfT9WXwTeNSTF1qRyDMYF8Q8H1YMbwx1z5tpiUe75qAMCFiHEk8wB/C8MxtsgOS
+        RwVxqiomRkMooU1kPdAhmh/OLZuN3ZTt7KjFXz7vI2H/D7YAa9AcPXew8eoDGXgV6YzDBJ
+        y1drgiVYeMe5yW2TkJsJoq1GwoojT3FLTdLMyDDFhRMkwCOPFGpaJBan5YV+Wjy6aJFg6D
+        RTcd3ziutlX4y/YJso+XDNw1mqVQ5itEl7JtB/ep38M9ttQ1ZbTXADnGVsWOGU1cPQAVvD
+        52cHoirs8duJ0se4foMaNSzb6TBwhZvLz0lp0+c4cdfKiogyPA6H+AfeLudlJQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1675180674;
+        s=2020e; t=1675193234;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TZzJ+GQ2T/0Ua8BfIYWMuAMISueCW/XtJ+YiNk66U1I=;
-        b=h7RpaJHa6/0UI7mJcEDt5gunf0evL5A/bBsDZrDv12iro0vvgltSIUVG8vDBeIeyOwBfPB
-        gA6Atrza6/OTsVAQ==
-From:   "tip-bot2 for Ashok Raj" <tip-bot2@linutronix.de>
+        bh=0HATiiLZYv74OfydVnW0IEt/f49Kgu+SS/ROn0/KEoI=;
+        b=kkDvkmvNc9IemmY+GUhavRN32IjUhzrAhuJEpb6fhEE6OTmFMRuK+sASQVWASnLTasW/ZY
+        6gFHyy68hSmoFzCw==
+From:   "tip-bot2 for Alexey Kardashevskiy" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode: Allow only "1" as a late reload
- trigger value
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ashok Raj <ashok.raj@intel.com>,
+Subject: [tip: x86/cpu] x86/amd: Cache debug register values in percpu variables
+Cc:     Alexey Kardashevskiy <aik@amd.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230130213955.6046-3-ashok.raj@intel.com>
-References: <20230130213955.6046-3-ashok.raj@intel.com>
+In-Reply-To: <20230120031047.628097-2-aik@amd.com>
+References: <20230120031047.628097-2-aik@amd.com>
 MIME-Version: 1.0
-Message-ID: <167518067379.4906.5578847349116389476.tip-bot2@tip-bot2>
+Message-ID: <167519323327.4906.15737370282542087502.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,49 +64,144 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     25d0dc4b957cc8674f8554e85f18a00467e876d7
-Gitweb:        https://git.kernel.org/tip/25d0dc4b957cc8674f8554e85f18a00467e876d7
-Author:        Ashok Raj <ashok.raj@intel.com>
-AuthorDate:    Mon, 30 Jan 2023 13:39:48 -08:00
+Commit-ID:     7914695743d598b189d549f2f57af24aa5633705
+Gitweb:        https://git.kernel.org/tip/7914695743d598b189d549f2f57af24aa5633705
+Author:        Alexey Kardashevskiy <aik@amd.com>
+AuthorDate:    Fri, 20 Jan 2023 14:10:45 +11:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 31 Jan 2023 16:47:03 +01:00
+CommitterDate: Tue, 31 Jan 2023 20:09:26 +01:00
 
-x86/microcode: Allow only "1" as a late reload trigger value
+x86/amd: Cache debug register values in percpu variables
 
-Microcode gets reloaded late only if "1" is written to the reload file.
-However, the code silently treats any other unsigned integer as a
-successful write even though no actions are performed to load microcode.
+Reading DR[0-3]_ADDR_MASK MSRs takes about 250 cycles which is going to
+be noticeable with the AMD KVM SEV-ES DebugSwap feature enabled.  KVM is
+going to store host's DR[0-3] and DR[0-3]_ADDR_MASK before switching to
+a guest; the hardware is going to swap these on VMRUN and VMEXIT.
 
-Make the loader more strict to accept only "1" as a trigger value and
-return an error otherwise.
+Store MSR values passed to set_dr_addr_mask() in percpu variables
+(when changed) and return them via new amd_get_dr_addr_mask().
+The gain here is about 10x.
 
-  [ bp: Massage commit message. ]
+As set_dr_addr_mask() uses the array too, change the @dr type to
+unsigned to avoid checking for <0. And give it the amd_ prefix to match
+the new helper as the whole DR_ADDR_MASK feature is AMD-specific anyway.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ashok Raj <ashok.raj@intel.com>
+While at it, replace deprecated boot_cpu_has() with cpu_feature_enabled()
+in set_dr_addr_mask().
+
+Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230130213955.6046-3-ashok.raj@intel.com
+Link: https://lore.kernel.org/r/20230120031047.628097-2-aik@amd.com
 ---
- arch/x86/kernel/cpu/microcode/core.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/debugreg.h |  9 ++++--
+ arch/x86/kernel/cpu/amd.c       | 47 ++++++++++++++++++++++----------
+ arch/x86/kernel/hw_breakpoint.c |  4 +--
+ 3 files changed, 42 insertions(+), 18 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 61d57d9..fdd1e7e 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -475,11 +475,8 @@ static ssize_t reload_store(struct device *dev,
- 	ssize_t ret = 0;
+diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
+index b049d95..f126b2e 100644
+--- a/arch/x86/include/asm/debugreg.h
++++ b/arch/x86/include/asm/debugreg.h
+@@ -126,9 +126,14 @@ static __always_inline void local_db_restore(unsigned long dr7)
+ }
  
- 	ret = kstrtoul(buf, 0, &val);
--	if (ret)
--		return ret;
--
--	if (val != 1)
--		return size;
-+	if (ret || val != 1)
-+		return -EINVAL;
+ #ifdef CONFIG_CPU_SUP_AMD
+-extern void set_dr_addr_mask(unsigned long mask, int dr);
++extern void amd_set_dr_addr_mask(unsigned long mask, unsigned int dr);
++extern unsigned long amd_get_dr_addr_mask(unsigned int dr);
+ #else
+-static inline void set_dr_addr_mask(unsigned long mask, int dr) { }
++static inline void amd_set_dr_addr_mask(unsigned long mask, unsigned int dr) { }
++static inline unsigned long amd_get_dr_addr_mask(unsigned int dr)
++{
++	return 0;
++}
+ #endif
  
- 	cpus_read_lock();
+ #endif /* _ASM_X86_DEBUGREG_H */
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 208c2ce..380753b 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1158,24 +1158,43 @@ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
+ 	return false;
+ }
  
+-void set_dr_addr_mask(unsigned long mask, int dr)
++static DEFINE_PER_CPU_READ_MOSTLY(unsigned long[4], amd_dr_addr_mask);
++
++static unsigned int amd_msr_dr_addr_masks[] = {
++	MSR_F16H_DR0_ADDR_MASK,
++	MSR_F16H_DR1_ADDR_MASK,
++	MSR_F16H_DR1_ADDR_MASK + 1,
++	MSR_F16H_DR1_ADDR_MASK + 2
++};
++
++void amd_set_dr_addr_mask(unsigned long mask, unsigned int dr)
+ {
+-	if (!boot_cpu_has(X86_FEATURE_BPEXT))
++	int cpu = smp_processor_id();
++
++	if (!cpu_feature_enabled(X86_FEATURE_BPEXT))
+ 		return;
+ 
+-	switch (dr) {
+-	case 0:
+-		wrmsr(MSR_F16H_DR0_ADDR_MASK, mask, 0);
+-		break;
+-	case 1:
+-	case 2:
+-	case 3:
+-		wrmsr(MSR_F16H_DR1_ADDR_MASK - 1 + dr, mask, 0);
+-		break;
+-	default:
+-		break;
+-	}
++	if (WARN_ON_ONCE(dr >= ARRAY_SIZE(amd_msr_dr_addr_masks)))
++		return;
++
++	if (per_cpu(amd_dr_addr_mask, cpu)[dr] == mask)
++		return;
++
++	wrmsr(amd_msr_dr_addr_masks[dr], mask, 0);
++	per_cpu(amd_dr_addr_mask, cpu)[dr] = mask;
++}
++
++unsigned long amd_get_dr_addr_mask(unsigned int dr)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_BPEXT))
++		return 0;
++
++	if (WARN_ON_ONCE(dr >= ARRAY_SIZE(amd_msr_dr_addr_masks)))
++		return 0;
++
++	return per_cpu(amd_dr_addr_mask[dr], smp_processor_id());
+ }
++EXPORT_SYMBOL_GPL(amd_get_dr_addr_mask);
+ 
+ u32 amd_get_highest_perf(void)
+ {
+diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
+index bbb0f73..b01644c 100644
+--- a/arch/x86/kernel/hw_breakpoint.c
++++ b/arch/x86/kernel/hw_breakpoint.c
+@@ -127,7 +127,7 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
+ 
+ 	set_debugreg(*dr7, 7);
+ 	if (info->mask)
+-		set_dr_addr_mask(info->mask, i);
++		amd_set_dr_addr_mask(info->mask, i);
+ 
+ 	return 0;
+ }
+@@ -166,7 +166,7 @@ void arch_uninstall_hw_breakpoint(struct perf_event *bp)
+ 
+ 	set_debugreg(dr7, 7);
+ 	if (info->mask)
+-		set_dr_addr_mask(0, i);
++		amd_set_dr_addr_mask(0, i);
+ 
+ 	/*
+ 	 * Ensure the write to cpu_dr7 is after we've set the DR7 register.
