@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B92B682F1E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Jan 2023 15:22:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BF8C682F24
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Jan 2023 15:23:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231540AbjAaOWv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 31 Jan 2023 09:22:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53872 "EHLO
+        id S231678AbjAaOXV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 31 Jan 2023 09:23:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231872AbjAaOWc (ORCPT
+        with ESMTP id S231761AbjAaOXF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 31 Jan 2023 09:22:32 -0500
+        Tue, 31 Jan 2023 09:23:05 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06802222D1;
-        Tue, 31 Jan 2023 06:22:31 -0800 (PST)
-Date:   Tue, 31 Jan 2023 14:22:28 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF9CD51C5A;
+        Tue, 31 Jan 2023 06:22:42 -0800 (PST)
+Date:   Tue, 31 Jan 2023 14:22:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1675174948;
+        s=2020; t=1675174961;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9Um5LKI/9hScNlYvhBVuAMl7qOTHMQENc5JKgiBOlKk=;
-        b=fF/OfaSloyV3VbAU3W/Pcrt1QcvvFFea2BgWT4FK5A+UleMEXNcAkd7BWdU7hBB3IbqqON
-        zMlyi48csIlUJvOzFY6JDap27BrBjee6/CmRw6RvYbM7/l09nNMmwrzXPKeowHsS2e1ENg
-        oyNL/OHq8F9V18/Jx+rVxKmxKcJUBh7vCedqQfkowf8H/EJwPwJvjNUXizPRNit/88kKIM
-        MGyXlL9i8UltdYiQv3vUnTIiT5vNlGrbdW0b/Vaj5QOkiDpEptgP1Xf8ZRg8t5pp21pU/o
-        GHOFoLm2s+8feYzJT9XcI1sUYKhSK56QhhkyFFRuZy+8UoiyMH9E3ovHEF8Eog==
+        bh=QpNIJKaiSPxzce4dG4J7cfut+YjJQ42C6IM37ZHcyFo=;
+        b=gDW+5nJyeqOY4XyKnp0+yZR+EhXwFJRcm+Fv9YIV+E3frxXexh+/xENK+f7DpC8VaYddbm
+        5yZTXLMLqY0kcSo0rdB2ica2nYTLwji9seAdF1iSRGFTlALm/CX3wRX+WmDeCAhd4I0hzl
+        2TmdARkqiNWliM9UE5CjeOGlQbG72pwJOlem35C/Ry5V76efPlt+ZyzxwL2N9hcla9KMth
+        NNViBIlnojHEQeUOGoKVnCrOypsbz118Gob7zYGgfvCONTPd73l8txvyj/BBQStVSnB/Vr
+        3H+eG9pztDaZwHh/xX/Pc6ssn4tnDrnCK36mJlyJA+fjjmxrJoPTTANps1aNAA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1675174948;
+        s=2020e; t=1675174961;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9Um5LKI/9hScNlYvhBVuAMl7qOTHMQENc5JKgiBOlKk=;
-        b=/9nnECGq4EUylg9Z3bJRH4RBnUUJBWnfygUW3LUVonxRr+QZZ4gfGEJKMG8iAd5ErPg9wQ
-        aDInwWqIqsLK+ACQ==
+        bh=QpNIJKaiSPxzce4dG4J7cfut+YjJQ42C6IM37ZHcyFo=;
+        b=gQdFoaxwSU37KGdOlSZHmc+8rY2NbO2X3BJlvzK4rzKcvSeDY1/pWg9X7+RRcpSZJuytTB
+        e9ZvBoCzUPZMO0DA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/alternatives] x86/static_call: Add support for Jcc tail-calls
+Cc:     "Erhard F." <erhard_f@mailbox.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230126151323.408156109@infradead.org>
-References: <20230126151323.408156109@infradead.org>
+In-Reply-To: <Y9Kdg9QjHkr9G5b5@hirez.programming.kicks-ass.net>
+References: <Y9Kdg9QjHkr9G5b5@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <167517494843.4906.16680899245524839121.tip-bot2@tip-bot2>
+Message-ID: <167517496101.4906.9654598039677692808.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,182 +66,136 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/alternatives branch of tip:
 
-Commit-ID:     5a5d7e9badd2cb8065db171961bd30bd3595e4b6
-Gitweb:        https://git.kernel.org/tip/5a5d7e9badd2cb8065db171961bd30bd3595e4b6
+Commit-ID:     923510c88d2b7d947c4217835fd9ca6bd65cc56c
+Gitweb:        https://git.kernel.org/tip/923510c88d2b7d947c4217835fd9ca6bd65cc56c
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 26 Jan 2023 16:08:31 +01:00
+AuthorDate:    Thu, 26 Jan 2023 16:34:27 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 31 Jan 2023 15:01:45 +01:00
+CommitterDate: Tue, 31 Jan 2023 15:05:31 +01:00
 
-cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG
+x86/static_call: Add support for Jcc tail-calls
 
-In order to avoid WARN/BUG from generating nested or even recursive
-warnings, force rcu_is_watching() true during
-WARN/lockdep_rcu_suspicious().
+Clang likes to create conditional tail calls like:
 
-Notably things like unwinding the stack can trigger rcu_dereference()
-warnings, which then triggers more unwinding which then triggers more
-warnings etc..
+  0000000000000350 <amd_pmu_add_event>:
+  350:       0f 1f 44 00 00          nopl   0x0(%rax,%rax,1) 351: R_X86_64_NONE      __fentry__-0x4
+  355:       48 83 bf 20 01 00 00 00         cmpq   $0x0,0x120(%rdi)
+  35d:       0f 85 00 00 00 00       jne    363 <amd_pmu_add_event+0x13>     35f: R_X86_64_PLT32     __SCT__amd_pmu_branch_add-0x4
+  363:       e9 00 00 00 00          jmp    368 <amd_pmu_add_event+0x18>     364: R_X86_64_PLT32     __x86_return_thunk-0x4
 
+Where 0x35d is a static call site that's turned into a conditional
+tail-call using the Jcc class of instructions.
+
+Teach the in-line static call text patching about this.
+
+Notably, since there is no conditional-ret, in that case patch the Jcc
+to point at an empty stub function that does the ret -- or the return
+thunk when needed.
+
+Reported-by: "Erhard F." <erhard_f@mailbox.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230126151323.408156109@infradead.org
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/Y9Kdg9QjHkr9G5b5@hirez.programming.kicks-ass.net
 ---
- include/linux/context_tracking.h | 27 +++++++++++++++++++++++++++
- kernel/locking/lockdep.c         |  3 +++
- kernel/panic.c                   |  5 +++++
- lib/bug.c                        | 15 ++++++++++++++-
- 4 files changed, 49 insertions(+), 1 deletion(-)
+ arch/x86/kernel/static_call.c | 50 +++++++++++++++++++++++++++++++---
+ 1 file changed, 47 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/context_tracking.h b/include/linux/context_tracking.h
-index dcef4a9..d4afa85 100644
---- a/include/linux/context_tracking.h
-+++ b/include/linux/context_tracking.h
-@@ -130,9 +130,36 @@ static __always_inline unsigned long ct_state_inc(int incby)
- 	return arch_atomic_add_return(incby, this_cpu_ptr(&context_tracking.state));
- }
+diff --git a/arch/x86/kernel/static_call.c b/arch/x86/kernel/static_call.c
+index 2ebc338..b70670a 100644
+--- a/arch/x86/kernel/static_call.c
++++ b/arch/x86/kernel/static_call.c
+@@ -9,6 +9,7 @@ enum insn_type {
+ 	NOP = 1,  /* site cond-call */
+ 	JMP = 2,  /* tramp / site tail-call */
+ 	RET = 3,  /* tramp / site cond-tail-call */
++	JCC = 4,
+ };
  
-+static __always_inline bool warn_rcu_enter(void)
+ /*
+@@ -25,12 +26,40 @@ static const u8 xor5rax[] = { 0x2e, 0x2e, 0x2e, 0x31, 0xc0 };
+ 
+ static const u8 retinsn[] = { RET_INSN_OPCODE, 0xcc, 0xcc, 0xcc, 0xcc };
+ 
++static u8 __is_Jcc(u8 *insn) /* Jcc.d32 */
 +{
-+	bool ret = false;
++	u8 ret = 0;
 +
-+	/*
-+	 * Horrible hack to shut up recursive RCU isn't watching fail since
-+	 * lots of the actual reporting also relies on RCU.
-+	 */
-+	preempt_disable_notrace();
-+	if (rcu_dynticks_curr_cpu_in_eqs()) {
-+		ret = true;
-+		ct_state_inc(RCU_DYNTICKS_IDX);
++	if (insn[0] == 0x0f) {
++		u8 tmp = insn[1];
++		if ((tmp & 0xf0) == 0x80)
++			ret = tmp;
 +	}
 +
 +	return ret;
 +}
 +
-+static __always_inline void warn_rcu_exit(bool rcu)
-+{
-+	if (rcu)
-+		ct_state_inc(RCU_DYNTICKS_IDX);
-+	preempt_enable_notrace();
-+}
++extern void __static_call_return(void);
 +
- #else
- static inline void ct_idle_enter(void) { }
- static inline void ct_idle_exit(void) { }
++asm (".global __static_call_return\n\t"
++     ".type __static_call_return, @function\n\t"
++     ASM_FUNC_ALIGN "\n\t"
++     "__static_call_return:\n\t"
++     ANNOTATE_NOENDBR
++     ANNOTATE_RETPOLINE_SAFE
++     "ret; int3\n\t"
++     ".size __static_call_return, . - __static_call_return \n\t");
 +
-+static __always_inline bool warn_rcu_enter(void) { return false; }
-+static __always_inline void warn_rcu_exit(bool rcu) { }
- #endif /* !CONFIG_CONTEXT_TRACKING_IDLE */
- 
- #endif
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index e3375bc..50d4863 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -55,6 +55,7 @@
- #include <linux/rcupdate.h>
- #include <linux/kprobes.h>
- #include <linux/lockdep.h>
-+#include <linux/context_tracking.h>
- 
- #include <asm/sections.h>
- 
-@@ -6555,6 +6556,7 @@ void lockdep_rcu_suspicious(const char *file, const int line, const char *s)
+ static void __ref __static_call_transform(void *insn, enum insn_type type,
+ 					  void *func, bool modinit)
  {
- 	struct task_struct *curr = current;
- 	int dl = READ_ONCE(debug_locks);
-+	bool rcu = warn_rcu_enter();
+ 	const void *emulate = NULL;
+ 	int size = CALL_INSN_SIZE;
+ 	const void *code;
++	u8 op, buf[6];
++
++	if ((type == JMP || type == RET) && (op = __is_Jcc(insn)))
++		type = JCC;
  
- 	/* Note: the following can be executed concurrently, so be careful. */
- 	pr_warn("\n");
-@@ -6595,5 +6597,6 @@ void lockdep_rcu_suspicious(const char *file, const int line, const char *s)
- 	lockdep_print_held_locks(curr);
- 	pr_warn("\nstack backtrace:\n");
- 	dump_stack();
-+	warn_rcu_exit(rcu);
- }
- EXPORT_SYMBOL_GPL(lockdep_rcu_suspicious);
-diff --git a/kernel/panic.c b/kernel/panic.c
-index 463c929..487f5b0 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -34,6 +34,7 @@
- #include <linux/ratelimit.h>
- #include <linux/debugfs.h>
- #include <linux/sysfs.h>
-+#include <linux/context_tracking.h>
- #include <trace/events/error_report.h>
- #include <asm/sections.h>
+ 	switch (type) {
+ 	case CALL:
+@@ -57,6 +86,20 @@ static void __ref __static_call_transform(void *insn, enum insn_type type,
+ 		else
+ 			code = &retinsn;
+ 		break;
++
++	case JCC:
++		if (!func) {
++			func = __static_call_return;
++			if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
++				func = x86_return_thunk;
++		}
++
++		buf[0] = 0x0f;
++		__text_gen_insn(buf+1, op, insn+1, func, 5);
++		code = buf;
++		size = 6;
++
++		break;
+ 	}
  
-@@ -679,6 +680,7 @@ void __warn(const char *file, int line, void *caller, unsigned taint,
- void warn_slowpath_fmt(const char *file, int line, unsigned taint,
- 		       const char *fmt, ...)
- {
-+	bool rcu = warn_rcu_enter();
- 	struct warn_args args;
- 
- 	pr_warn(CUT_HERE);
-@@ -693,11 +695,13 @@ void warn_slowpath_fmt(const char *file, int line, unsigned taint,
- 	va_start(args.args, fmt);
- 	__warn(file, line, __builtin_return_address(0), taint, NULL, &args);
- 	va_end(args.args);
-+	warn_rcu_exit(rcu);
- }
- EXPORT_SYMBOL(warn_slowpath_fmt);
- #else
- void __warn_printk(const char *fmt, ...)
- {
-+	bool rcu = warn_rcu_enter();
- 	va_list args;
- 
- 	pr_warn(CUT_HERE);
-@@ -705,6 +709,7 @@ void __warn_printk(const char *fmt, ...)
- 	va_start(args, fmt);
- 	vprintk(fmt, args);
- 	va_end(args);
-+	warn_rcu_exit(rcu);
- }
- EXPORT_SYMBOL(__warn_printk);
- #endif
-diff --git a/lib/bug.c b/lib/bug.c
-index c223a25..e0ff219 100644
---- a/lib/bug.c
-+++ b/lib/bug.c
-@@ -47,6 +47,7 @@
- #include <linux/sched.h>
- #include <linux/rculist.h>
- #include <linux/ftrace.h>
-+#include <linux/context_tracking.h>
- 
- extern struct bug_entry __start___bug_table[], __stop___bug_table[];
- 
-@@ -153,7 +154,7 @@ struct bug_entry *find_bug(unsigned long bugaddr)
- 	return module_find_bug(bugaddr);
+ 	if (memcmp(insn, code, size) == 0)
+@@ -68,9 +111,9 @@ static void __ref __static_call_transform(void *insn, enum insn_type type,
+ 	text_poke_bp(insn, code, size, emulate);
  }
  
--enum bug_trap_type report_bug(unsigned long bugaddr, struct pt_regs *regs)
-+static enum bug_trap_type __report_bug(unsigned long bugaddr, struct pt_regs *regs)
+-static void __static_call_validate(void *insn, bool tail, bool tramp)
++static void __static_call_validate(u8 *insn, bool tail, bool tramp)
  {
- 	struct bug_entry *bug;
- 	const char *file;
-@@ -209,6 +210,18 @@ enum bug_trap_type report_bug(unsigned long bugaddr, struct pt_regs *regs)
- 	return BUG_TRAP_TYPE_BUG;
- }
+-	u8 opcode = *(u8 *)insn;
++	u8 opcode = insn[0];
  
-+enum bug_trap_type report_bug(unsigned long bugaddr, struct pt_regs *regs)
-+{
-+	enum bug_trap_type ret;
-+	bool rcu = false;
-+
-+	rcu = warn_rcu_enter();
-+	ret = __report_bug(bugaddr, regs);
-+	warn_rcu_exit(rcu);
-+
-+	return ret;
-+}
-+
- static void clear_once_table(struct bug_entry *start, struct bug_entry *end)
- {
- 	struct bug_entry *bug;
+ 	if (tramp && memcmp(insn+5, tramp_ud, 3)) {
+ 		pr_err("trampoline signature fail");
+@@ -79,7 +122,8 @@ static void __static_call_validate(void *insn, bool tail, bool tramp)
+ 
+ 	if (tail) {
+ 		if (opcode == JMP32_INSN_OPCODE ||
+-		    opcode == RET_INSN_OPCODE)
++		    opcode == RET_INSN_OPCODE ||
++		    __is_Jcc(insn))
+ 			return;
+ 	} else {
+ 		if (opcode == CALL_INSN_OPCODE ||
