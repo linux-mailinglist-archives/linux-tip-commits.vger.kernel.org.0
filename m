@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 450D3682F12
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Jan 2023 15:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C2A8682F18
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Jan 2023 15:22:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230519AbjAaOWa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 31 Jan 2023 09:22:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53822 "EHLO
+        id S231954AbjAaOWe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 31 Jan 2023 09:22:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjAaOW3 (ORCPT
+        with ESMTP id S231795AbjAaOWb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 31 Jan 2023 09:22:29 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEB861D921;
-        Tue, 31 Jan 2023 06:22:28 -0800 (PST)
-Date:   Tue, 31 Jan 2023 14:22:26 -0000
+        Tue, 31 Jan 2023 09:22:31 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8EE51D921;
+        Tue, 31 Jan 2023 06:22:30 -0800 (PST)
+Date:   Tue, 31 Jan 2023 14:22:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1675174947;
+        s=2020; t=1675174948;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JPOiL8d13pVh7cjK6ZqkyQedTFgedP/wdaFxgHoNMP8=;
-        b=T6HUW4VsjQzy6NakQ/7U7DGzPSzgzRWcGM+COW7neHxjFlgf9U1ujLnl/cAsiNhrEMMOyW
-        c9z0wJYt4xtVRUInzo1bPwry5vcFcgS60ahWr64F+L7iYXMegw9SIeb6Fe0/EQAMB6p+XE
-        5Uvkmq4rN6I9csM6SL1TmpzsRTyjVkiKJUKmKBfxsbXXvFzFCJQPiYYUynRJibFf8nXHra
-        cAL+J0eMtBUZAZQoYIpqueRWtV0TXjVkGTNiMBN7Vp4ecFOv+KiQnOVGlABIPNMQt/YtGy
-        gSsQSvM9ktUpnlKEDLhlUtCGTKcn+VMT1CWlwhPySEVFORvxIljncxaevLhFWg==
+        bh=4lUA3VPonoVUn9hM8v0u4FdHhUH8cnco09NvCP743iA=;
+        b=wcUTV3ram6kUDK/x+b5vsHu+h144O6chFf2dP4gbNbHd+0b1F297Vhd20IeW9ikTNnSSBz
+        aH0La4KLp7MZL0li4Vn/0FHcRr3YC9dW2Wo4R4M/Rk+ETcH31OB4TGNtwbgjDfrAZ4VeCg
+        4DUDRRL3Bq7hmfeAH/QAdWvzsg5MEZJrguYLBBqPBeHkOgZcRuIFDh2/Gm6tOf3Fzyl0rw
+        60TmX7FExqgmJz6/YB5wJXSkzpEc/YOUM/LuqcWHZseclfArqTjo9C2fBPzccasv7/I29q
+        gUI3fwbHtPOmNcwJO9lf4OAoomiSCVdFWkoBSZiaD+ir9YlWYPbq5rKbU/OJHg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1675174947;
+        s=2020e; t=1675174948;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JPOiL8d13pVh7cjK6ZqkyQedTFgedP/wdaFxgHoNMP8=;
-        b=Jy2ZkTcFo5b85msl2GS4vnQDjdudrXqq5s8wf/qKcwwee3WzMDq6i8oXyCnHxCwEb1hvNH
-        tO41tNhJjsKv4kCw==
+        bh=4lUA3VPonoVUn9hM8v0u4FdHhUH8cnco09NvCP743iA=;
+        b=lhzgc9Efj4EoBzwzRqr3H+Gw639meGVBeuito+2jqcNGdVkXHMYEEf3hZThELHDn8mgxm1
+        mKOr5n9nFNIByEAw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/clock: Make local_clock() noinstr
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: sched/core] cpuidle: tracing, preempt: Squash _rcuidle tracing
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230126151323.760767043@infradead.org>
-References: <20230126151323.760767043@infradead.org>
+In-Reply-To: <Y9D5AfnOukWNOZ5q@hirez.programming.kicks-ass.net>
+References: <Y9D5AfnOukWNOZ5q@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <167517494685.4906.17448351475328183018.tip-bot2@tip-bot2>
+Message-ID: <167517494797.4906.221283019576785250.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,117 +67,74 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     776f22913b8e50011004c6ae43004711dab7efa5
-Gitweb:        https://git.kernel.org/tip/776f22913b8e50011004c6ae43004711dab7efa5
+Commit-ID:     3017ba4b831bc7fd67cc82e744116b6e45e259a4
+Gitweb:        https://git.kernel.org/tip/3017ba4b831bc7fd67cc82e744116b6e45e259a4
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 26 Jan 2023 16:08:37 +01:00
+AuthorDate:    Tue, 31 Jan 2023 09:50:36 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 31 Jan 2023 15:01:47 +01:00
+CommitterDate: Tue, 31 Jan 2023 15:01:46 +01:00
 
-sched/clock: Make local_clock() noinstr
+cpuidle: tracing, preempt: Squash _rcuidle tracing
 
-With sched_clock() noinstr, provide a noinstr implementation of
-local_clock().
+Extend/fix commit:
 
+  9aedeaed6fc6 ("tracing, hardirq: No moar _rcuidle() tracing")
+
+... to also cover trace_preempt_{on,off}() which were mysteriously
+untouched.
+
+Fixes: 9aedeaed6fc6 ("tracing, hardirq: No moar _rcuidle() tracing")
+Reported-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230126151323.760767043@infradead.org
+Tested-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lkml.kernel.org/r/Y9D5AfnOukWNOZ5q@hirez.programming.kicks-ass.net
+Link: https://lore.kernel.org/r/Y9jWXKgkxY5EZVwW@hirez.programming.kicks-ass.net
 ---
- include/linux/sched/clock.h |  8 +++-----
- kernel/sched/clock.c        | 27 +++++++++++++++++++++------
- 2 files changed, 24 insertions(+), 11 deletions(-)
+ kernel/trace/trace_preemptirq.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/sched/clock.h b/include/linux/sched/clock.h
-index 867d588..ca008f7 100644
---- a/include/linux/sched/clock.h
-+++ b/include/linux/sched/clock.h
-@@ -45,7 +45,7 @@ static inline u64 cpu_clock(int cpu)
- 	return sched_clock();
- }
+diff --git a/kernel/trace/trace_preemptirq.c b/kernel/trace/trace_preemptirq.c
+index f992444..e37446f 100644
+--- a/kernel/trace/trace_preemptirq.c
++++ b/kernel/trace/trace_preemptirq.c
+@@ -15,10 +15,6 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/preemptirq.h>
  
--static inline u64 local_clock(void)
-+static __always_inline u64 local_clock(void)
- {
- 	return sched_clock();
- }
-@@ -79,10 +79,8 @@ static inline u64 cpu_clock(int cpu)
- 	return sched_clock_cpu(cpu);
- }
- 
--static inline u64 local_clock(void)
--{
--	return sched_clock_cpu(raw_smp_processor_id());
--}
-+extern u64 local_clock(void);
-+
+-#ifdef CONFIG_TRACE_IRQFLAGS
+-/* Per-cpu variable to prevent redundant calls when IRQs already off */
+-static DEFINE_PER_CPU(int, tracing_irq_cpu);
+-
+ /*
+  * Use regular trace points on architectures that implement noinstr
+  * tooling: these calls will only happen with RCU enabled, which can
+@@ -33,6 +29,10 @@ static DEFINE_PER_CPU(int, tracing_irq_cpu);
+ #define trace(point)	if (!in_nmi()) trace_##point##_rcuidle
  #endif
  
- #ifdef CONFIG_IRQ_TIME_ACCOUNTING
-diff --git a/kernel/sched/clock.c b/kernel/sched/clock.c
-index e374c0c..5732fa7 100644
---- a/kernel/sched/clock.c
-+++ b/kernel/sched/clock.c
-@@ -93,7 +93,7 @@ struct sched_clock_data {
++#ifdef CONFIG_TRACE_IRQFLAGS
++/* Per-cpu variable to prevent redundant calls when IRQs already off */
++static DEFINE_PER_CPU(int, tracing_irq_cpu);
++
+ /*
+  * Like trace_hardirqs_on() but without the lockdep invocation. This is
+  * used in the low level entry code where the ordering vs. RCU is important
+@@ -100,15 +100,13 @@ NOKPROBE_SYMBOL(trace_hardirqs_off);
  
- static DEFINE_PER_CPU_SHARED_ALIGNED(struct sched_clock_data, sched_clock_data);
- 
--notrace static inline struct sched_clock_data *this_scd(void)
-+static __always_inline struct sched_clock_data *this_scd(void)
+ void trace_preempt_on(unsigned long a0, unsigned long a1)
  {
- 	return this_cpu_ptr(&sched_clock_data);
- }
-@@ -244,12 +244,12 @@ late_initcall(sched_clock_init_late);
-  * min, max except they take wrapping into account
-  */
- 
--notrace static inline u64 wrap_min(u64 x, u64 y)
-+static __always_inline u64 wrap_min(u64 x, u64 y)
- {
- 	return (s64)(x - y) < 0 ? x : y;
+-	if (!in_nmi())
+-		trace_preempt_enable_rcuidle(a0, a1);
++	trace(preempt_enable)(a0, a1);
+ 	tracer_preempt_on(a0, a1);
  }
  
--notrace static inline u64 wrap_max(u64 x, u64 y)
-+static __always_inline u64 wrap_max(u64 x, u64 y)
+ void trace_preempt_off(unsigned long a0, unsigned long a1)
  {
- 	return (s64)(x - y) > 0 ? x : y;
+-	if (!in_nmi())
+-		trace_preempt_disable_rcuidle(a0, a1);
++	trace(preempt_disable)(a0, a1);
+ 	tracer_preempt_off(a0, a1);
  }
-@@ -260,7 +260,7 @@ notrace static inline u64 wrap_max(u64 x, u64 y)
-  *  - filter out backward motion
-  *  - use the GTOD tick value to create a window to filter crazy TSC values
-  */
--notrace static u64 sched_clock_local(struct sched_clock_data *scd)
-+static __always_inline u64 sched_clock_local(struct sched_clock_data *scd)
- {
- 	u64 now, clock, old_clock, min_clock, max_clock, gtod;
- 	s64 delta;
-@@ -287,13 +287,28 @@ again:
- 	clock = wrap_max(clock, min_clock);
- 	clock = wrap_min(clock, max_clock);
- 
--	if (!try_cmpxchg64(&scd->clock, &old_clock, clock))
-+	if (!arch_try_cmpxchg64(&scd->clock, &old_clock, clock))
- 		goto again;
- 
- 	return clock;
- }
- 
--notrace static u64 sched_clock_remote(struct sched_clock_data *scd)
-+noinstr u64 local_clock(void)
-+{
-+	u64 clock;
-+
-+	if (static_branch_likely(&__sched_clock_stable))
-+		return sched_clock() + __sched_clock_offset;
-+
-+	preempt_disable_notrace();
-+	clock = sched_clock_local(this_scd());
-+	preempt_enable_notrace();
-+
-+	return clock;
-+}
-+EXPORT_SYMBOL_GPL(local_clock);
-+
-+static notrace u64 sched_clock_remote(struct sched_clock_data *scd)
- {
- 	struct sched_clock_data *my_scd = this_scd();
- 	u64 this_clock, remote_clock;
+ #endif
