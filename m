@@ -2,49 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1C7D67ED8C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Jan 2023 19:30:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E41A36827E7
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Jan 2023 10:00:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234543AbjA0SaG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Jan 2023 13:30:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35662 "EHLO
+        id S230344AbjAaJAb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 31 Jan 2023 04:00:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234968AbjA0S3z (ORCPT
+        with ESMTP id S232492AbjAaJAM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Jan 2023 13:29:55 -0500
+        Tue, 31 Jan 2023 04:00:12 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B0B87366;
-        Fri, 27 Jan 2023 10:29:31 -0800 (PST)
-Date:   Fri, 27 Jan 2023 18:26:57 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E0F149004;
+        Tue, 31 Jan 2023 00:56:20 -0800 (PST)
+Date:   Tue, 31 Jan 2023 08:54:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1674844017;
+        s=2020; t=1675155285;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=epPoCWc8lGbiioSxrNPnfmFjDOPTiTahBLnIiajrU/Y=;
-        b=ziJZodseiKILLmtpkluvnOLFn1/6jS9ARfIdThOBMuem14ZGoTVlRjMTp1Lj7N+mV7Kh/a
-        MwpwkLVUvHm/oj0hk9Re9Atj4SHx03VG5hZjTgKDyGe4hh8nsfG6Cl3Sw1ZT835PlbB3KY
-        rSzWjZ8rrzOQ+MzDgeYDq+5w+dzgBpYeffeS2mAP66A/qrPIg0Lufh/50x/5trQwSVNXnP
-        2i/aL6rvWOA3F/VLrxAdWCJFGwgIP2XJXhpPwKTLbA21XPegveaus4zUeY36EntH34uqZ0
-        +7Tibnfm/HCbKVfxCZ38x01NLCvUsxe8oqKk9sqL24sWCXhHiaEXu78LoCMi6w==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hZQY3RtqjK9a2IAMKpkMeMf05+WkZxJr/HipNV9bHQY=;
+        b=MiS+3wsqD+cwa5rN3ZgoGqCll17buIeXk7KLBtfiVTr2L8EsRM+EU7wGq4n3SCuGUjMKT7
+        OcYMEAFQeCPZ8+W9EQlTpvWjbfOWS9oPWCxFcJitCcpcgnbFKtjAsR+vugucOytAe6AgUZ
+        n2VWYnFr2LsIgnLVfBP44YTUr6mEpk6wsXOE4+Ehj+E3fW/Y8VXgdu2tw+/W/4q8j5rqHE
+        pAXZ9057hCfCJyetQ70uAjUVyNE4vvXqQJYthCohmYfyUxWvcITkqTChweSbb+bKNWiERJ
+        ctLjuMXd2CEnX77t0NfpS//vOvmj/3wk/urZib/yt2Jmn+w7VAddA4sUJtmLaQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1674844017;
+        s=2020e; t=1675155285;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=epPoCWc8lGbiioSxrNPnfmFjDOPTiTahBLnIiajrU/Y=;
-        b=BLj40Xuox4ZzyRrGqCI08kd5MKIKCjk0xYBkYgRly35IUAa6/Cl2aGk99OZ8xG0iuOXQlC
-        6s9ZhXoC1uyZaCCg==
-From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hZQY3RtqjK9a2IAMKpkMeMf05+WkZxJr/HipNV9bHQY=;
+        b=2oDZxPs//aum9nk5OHgHASQ59E32k6tr00X1RA+BFDFj8/+z8XvVXNBgSqKiBSsPshgf6P
+        vkfuTALQigQRUiCQ==
+From:   "tip-bot2 for Mark Brown" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/tdx: Fix typo in comment in __tdx_hypercall()
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: sched/core] KVM: selftests: Fix build of rseq test
+Cc:     Mark Brown <broonie@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230106-fix-kvm-rseq-build-v1-1-b704d9831d02@kernel.org>
+References: <20230106-fix-kvm-rseq-build-v1-1-b704d9831d02@kernel.org>
 MIME-Version: 1.0
-Message-ID: <167484401749.4906.16764493763561549726.tip-bot2@tip-bot2>
+Message-ID: <167515528478.4906.3305294093555684853.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,39 +65,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/tdx branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     3543f8830babe2666051fb239545f51e0aae4c84
-Gitweb:        https://git.kernel.org/tip/3543f8830babe2666051fb239545f51e0aae4c84
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Fri, 27 Jan 2023 01:11:53 +03:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 27 Jan 2023 09:42:09 -08:00
+Commit-ID:     68efe8f7a1c5168be2228bfb806ddc05475b7205
+Gitweb:        https://git.kernel.org/tip/68efe8f7a1c5168be2228bfb806ddc05475b7205
+Author:        Mark Brown <broonie@kernel.org>
+AuthorDate:    Fri, 06 Jan 2023 19:24:19 
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 30 Jan 2023 16:29:45 +01:00
 
-x86/tdx: Fix typo in comment in __tdx_hypercall()
+KVM: selftests: Fix build of rseq test
 
-Comment in __tdx_hypercall() points that RAX==0 indicates TDVMCALL
-failure which is opposite of the truth: RAX==0 is success.
+The KVM rseq test is failing to build in -next due to a commit merged
+from the tip tree which adds a wrapper for sys_getcpu() to the rseq
+kselftests, conflicting with the wrapper already included in the KVM
+selftest:
 
-Fix the comment. No functional changes.
+rseq_test.c:48:13: error: conflicting types for 'sys_getcpu'
+   48 | static void sys_getcpu(unsigned *cpu)
+          |             ^~~~~~~~~~
+In file included from rseq_test.c:23:
+../rseq/rseq.c:82:12: note: previous definition of 'sys_getcpu' was here
+   82 | static int sys_getcpu(unsigned *cpu, unsigned *node)
+          |            ^~~~~~~~~~
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20230126221159.8635-2-kirill.shutemov%40linux.intel.com
+Fix this by removing the local wrapper and moving the result check up to
+the caller.
+
+Fixes: 99babd04b250 ("selftests/rseq: Implement rseq numa node id field selftest")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/r/20230106-fix-kvm-rseq-build-v1-1-b704d9831d02@kernel.org
 ---
- arch/x86/coco/tdx/tdcall.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/kvm/rseq_test.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
-index f9eb113..74b108e 100644
---- a/arch/x86/coco/tdx/tdcall.S
-+++ b/arch/x86/coco/tdx/tdcall.S
-@@ -155,7 +155,7 @@ SYM_FUNC_START(__tdx_hypercall)
- 	tdcall
+diff --git a/tools/testing/selftests/kvm/rseq_test.c b/tools/testing/selftests/kvm/rseq_test.c
+index 3045fdf..f74e76d 100644
+--- a/tools/testing/selftests/kvm/rseq_test.c
++++ b/tools/testing/selftests/kvm/rseq_test.c
+@@ -41,18 +41,6 @@ static void guest_code(void)
+ 		GUEST_SYNC(0);
+ }
  
+-/*
+- * We have to perform direct system call for getcpu() because it's
+- * not available until glic 2.29.
+- */
+-static void sys_getcpu(unsigned *cpu)
+-{
+-	int r;
+-
+-	r = syscall(__NR_getcpu, cpu, NULL, NULL);
+-	TEST_ASSERT(!r, "getcpu failed, errno = %d (%s)", errno, strerror(errno));
+-}
+-
+ static int next_cpu(int cpu)
+ {
  	/*
--	 * RAX==0 indicates a failure of the TDVMCALL mechanism itself and that
-+	 * RAX!=0 indicates a failure of the TDVMCALL mechanism itself and that
- 	 * something has gone horribly wrong with the TDX module.
- 	 *
- 	 * The return status of the hypercall operation is in a separate
+@@ -249,7 +237,9 @@ int main(int argc, char *argv[])
+ 			 * across the seq_cnt reads.
+ 			 */
+ 			smp_rmb();
+-			sys_getcpu(&cpu);
++			r = sys_getcpu(&cpu, NULL);
++			TEST_ASSERT(!r, "getcpu failed, errno = %d (%s)",
++				    errno, strerror(errno));
+ 			rseq_cpu = rseq_current_cpu_raw();
+ 			smp_rmb();
+ 		} while (snapshot != atomic_read(&seq_cnt));
