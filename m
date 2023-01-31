@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38A4E682A89
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Jan 2023 11:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 616DD682AA3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Jan 2023 11:37:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229624AbjAaK3y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 31 Jan 2023 05:29:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54896 "EHLO
+        id S230239AbjAaKha (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 31 Jan 2023 05:37:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231357AbjAaK3u (ORCPT
+        with ESMTP id S230390AbjAaKh3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 31 Jan 2023 05:29:50 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8FD52E809;
-        Tue, 31 Jan 2023 02:29:49 -0800 (PST)
-Date:   Tue, 31 Jan 2023 10:29:48 -0000
+        Tue, 31 Jan 2023 05:37:29 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23C731422A;
+        Tue, 31 Jan 2023 02:37:28 -0800 (PST)
+Date:   Tue, 31 Jan 2023 10:37:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1675160988;
+        s=2020; t=1675161446;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZSFLu5PcmayMzopI1PFzP7fFHTORSpbtQIe8QyeRbQ0=;
-        b=sDPU5+8rbUNbk1oIr7DZHYma+m1uQXzpqODf1mYB/NmffCakDpx2zyAQDctV2tGD8CF5dC
-        X2JF7wSyf7gcqfZu0tbMfmM3PNHwEDrcW5ePZNtLXVJt0zjy8V6kLW++/b6XBvdMGOZQHh
-        arBXTmCk0tIpqLIkyCTxt77HfFegSYUsTBLTviQzH/y6EeqjIrxB+VIuEC1r8vzooiDr8Z
-        NlfXmcPCwrYobcQgdoKnR05wXCQmAdCIYSNt4uUmaVV1fX/4SHDRieykI2RT/FSTeGtP4x
-        E0H1wMVau6WGPLrubnBnVN4klvyHtbHRUQl3/kpqG4inFny6ti7BVlLbaF2xhA==
+        bh=5nyVX6UzHAlhc/7AFEArzgMDPUZiXMu6IpVjRekl/mg=;
+        b=P8+toq3p29CR4+cYjcPhrOy9rdktq6yNXLxJP6hIqwM8wHGP/49aeHHGHsCWDeUjEwK1yF
+        WVTO/k43BZSK6joUQUHJ7jqzwwxxSgO2YyJiyN9EYf7x/HuhlISHOuI2ddRTRHcYBo32C0
+        3xWF4kFIpEGHWnO6bGasc4cC4FyePdru2atKWxSt7fDcIpEJSpWLXP56ZSDPQPfpZmqukI
+        vlHMXtIdWdjLvKxCNLEkioG7vJCXjI5DqEPItx9vy/ht8o1vSPk6PEjA2ycVl3wYSFYpSP
+        nK1i9SELJCkrAHWOKg8EQXHVRV259lG+/U5e+14JPalvtM8phbYDBsCzOLuPxw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1675160988;
+        s=2020e; t=1675161446;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZSFLu5PcmayMzopI1PFzP7fFHTORSpbtQIe8QyeRbQ0=;
-        b=M+loRO7BRXvfuBV79is4+0PvsASBl6EhoHgZ7L+ivCo4vCvS3Q+XV+XgdEm1DoI8Qkjgru
-        cITXtM7wk3soi/CA==
-From:   "tip-bot2 for Davidlohr Bueso" <tip-bot2@linutronix.de>
+        bh=5nyVX6UzHAlhc/7AFEArzgMDPUZiXMu6IpVjRekl/mg=;
+        b=862MNdN/AdQilGpLLXF0q2fYC3z6FUutTf6yN5I+/hEg2a04AfLTzgWkeijDVPCmzkdUf2
+        sOdTFNySdPGjvqBQ==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] hrtimer: Rely on rt_task() for DL tasks too
-Cc:     Davidlohr Bueso <dave@stgolabs.net>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230123173206.6764-2-dave@stgolabs.net>
-References: <20230123173206.6764-2-dave@stgolabs.net>
+Subject: [tip: x86/urgent] x86/debug: Fix stack recursion caused by wrongly
+ ordered DR7 accesses
+Cc:     Alexey Kardashevskiy <aik@amd.com>, Joerg Roedel <jroedel@suse.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230127035616.508966-1-aik@amd.com>
+References: <20230127035616.508966-1-aik@amd.com>
 MIME-Version: 1.0
-Message-ID: <167516098801.4906.2814079392382418239.tip-bot2@tip-bot2>
+Message-ID: <167516144628.4906.13176618976353474076.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,38 +65,87 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     c14fd3dcacaa480394d3ac0b4a91a7d17a4b5516
-Gitweb:        https://git.kernel.org/tip/c14fd3dcacaa480394d3ac0b4a91a7d17a4b5516
-Author:        Davidlohr Bueso <dave@stgolabs.net>
-AuthorDate:    Mon, 23 Jan 2023 09:32:05 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 31 Jan 2023 11:23:07 +01:00
+Commit-ID:     31859551393bc00f705cae2e1f9d31b80c62f365
+Gitweb:        https://git.kernel.org/tip/31859551393bc00f705cae2e1f9d31b80c62f365
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Tue, 31 Jan 2023 09:57:18 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 31 Jan 2023 11:26:15 +01:00
 
-hrtimer: Rely on rt_task() for DL tasks too
+x86/debug: Fix stack recursion caused by wrongly ordered DR7 accesses
 
-Checking dl_task() is redundant as rt_task() returns true for deadline
-tasks too.
+In kernels compiled with CONFIG_PARAVIRT=n, the compiler re-orders the
+DR7 read in exc_nmi() to happen before the call to sev_es_ist_enter().
 
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230123173206.6764-2-dave@stgolabs.net
+This is problematic when running as an SEV-ES guest because in this
+environment the DR7 read might cause a #VC exception, and taking #VC
+exceptions is not safe in exc_nmi() before sev_es_ist_enter() has run.
 
+The result is stack recursion if the NMI was caused on the #VC IST
+stack, because a subsequent #VC exception in the NMI handler will
+overwrite the stack frame of the interrupted #VC handler.
+
+As there are no compiler barriers affecting the ordering of DR7
+reads/writes, make the accesses to this register volatile, forbidding
+the compiler to re-order them.
+
+  [ bp: Massage text, make them volatile too, to make sure some
+  aggressive compiler optimization pass doesn't discard them. ]
+
+Fixes: 315562c9af3d ("x86/sev-es: Adjust #VC IST Stack on entering NMI handler")
+Reported-by: Alexey Kardashevskiy <aik@amd.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230127035616.508966-1-aik@amd.com
 ---
- kernel/time/hrtimer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/debugreg.h | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index e4f0e3b..667b713 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -2089,7 +2089,7 @@ long hrtimer_nanosleep(ktime_t rqtp, const enum hrtimer_mode mode,
- 	u64 slack;
- 
- 	slack = current->timer_slack_ns;
--	if (dl_task(current) || rt_task(current))
-+	if (rt_task(current))
- 		slack = 0;
- 
- 	hrtimer_init_sleeper_on_stack(&t, clockid, mode);
+diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
+index b049d95..ff1a924 100644
+--- a/arch/x86/include/asm/debugreg.h
++++ b/arch/x86/include/asm/debugreg.h
+@@ -39,7 +39,20 @@ static __always_inline unsigned long native_get_debugreg(int regno)
+ 		asm("mov %%db6, %0" :"=r" (val));
+ 		break;
+ 	case 7:
+-		asm("mov %%db7, %0" :"=r" (val));
++		/*
++		 * Apply __FORCE_ORDER to DR7 reads to forbid re-ordering them
++		 * with other code.
++		 *
++		 * This is needed because a DR7 access can cause a #VC exception
++		 * when running under SEV-ES. Taking a #VC exception is not a
++		 * safe thing to do just anywhere in the entry code and
++		 * re-ordering might place the access into an unsafe location.
++		 *
++		 * This happened in the NMI handler, where the DR7 read was
++		 * re-ordered to happen before the call to sev_es_ist_enter(),
++		 * causing stack recursion.
++		 */
++		asm volatile("mov %%db7, %0" : "=r" (val) : __FORCE_ORDER);
+ 		break;
+ 	default:
+ 		BUG();
+@@ -66,8 +79,16 @@ static __always_inline void native_set_debugreg(int regno, unsigned long value)
+ 		asm("mov %0, %%db6"	::"r" (value));
+ 		break;
+ 	case 7:
+-		asm("mov %0, %%db7"	::"r" (value));
+-		break;
++		/*
++		 * Apply __FORCE_ORDER to DR7 writes to forbid re-ordering them
++		 * with other code.
++		 *
++		 * While is didn't happen with a DR7 write (see the DR7 read
++		 * comment above which explains where it happened), add the
++		 * __FORCE_ORDER here too to avoid similar problems in the
++		 * future.
++		 */
++		asm volatile("mov %0, %%db7"	::"r" (value), __FORCE_ORDER); break;
+ 	default:
+ 		BUG();
+ 	}
