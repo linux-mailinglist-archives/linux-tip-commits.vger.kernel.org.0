@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B5FC683681
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Jan 2023 20:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE9B1686B32
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Feb 2023 17:11:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231634AbjAaT1S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 31 Jan 2023 14:27:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42750 "EHLO
+        id S232921AbjBAQLG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Feb 2023 11:11:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230344AbjAaT1S (ORCPT
+        with ESMTP id S231895AbjBAQLG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 31 Jan 2023 14:27:18 -0500
+        Wed, 1 Feb 2023 11:11:06 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E730413D61;
-        Tue, 31 Jan 2023 11:27:15 -0800 (PST)
-Date:   Tue, 31 Jan 2023 19:27:13 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE66B74A66;
+        Wed,  1 Feb 2023 08:11:02 -0800 (PST)
+Date:   Wed, 01 Feb 2023 16:10:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1675193234;
+        s=2020; t=1675267860;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0HATiiLZYv74OfydVnW0IEt/f49Kgu+SS/ROn0/KEoI=;
-        b=2DlZavsdfT9WXwTeNSTF1qRyDMYF8Q8H1YMbwx1z5tpiUe75qAMCFiHEk8wB/C8MxtsgOS
-        RwVxqiomRkMooU1kPdAhmh/OLZuN3ZTt7KjFXz7vI2H/D7YAa9AcPXew8eoDGXgV6YzDBJ
-        y1drgiVYeMe5yW2TkJsJoq1GwoojT3FLTdLMyDDFhRMkwCOPFGpaJBan5YV+Wjy6aJFg6D
-        RTcd3ziutlX4y/YJso+XDNw1mqVQ5itEl7JtB/ep38M9ttQ1ZbTXADnGVsWOGU1cPQAVvD
-        52cHoirs8duJ0se4foMaNSzb6TBwhZvLz0lp0+c4cdfKiogyPA6H+AfeLudlJQ==
+        bh=oqqWe7eBCUvOpimW7kiVzqgFNPGnEMVUiB85b6iAhEE=;
+        b=dzIM3MzN8hiBdW0RAnP3A3rCc4btN2KARiSJgOpfcUNm35KnAIY2fFBojs06sZC6pp/xsO
+        KjEOOaB9Qbokb2IJgX0w7U1nNrbWze889bAZMdILcdZ/XQdd4bEaO56qhE3lkzwrzZigfD
+        Py8enfeUB438rTZqEmH4qPMi7XExvzkbdfaXw86HCsoFjsn87/mXVAosd+ou5Q3c9bD7f5
+        WAwtECKpgyaQ9xeSKA954WJcjFCfXKOw+h8cS69EEt7V/HukFuVfLVY+rsJlUdhiJ7etkk
+        TRcnLAMjy2S9bIo+4KLTGzfi3fb+MIremXMbyQCzbHSShH/Izy8O8IcUmsJbuQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1675193234;
+        s=2020e; t=1675267860;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0HATiiLZYv74OfydVnW0IEt/f49Kgu+SS/ROn0/KEoI=;
-        b=kkDvkmvNc9IemmY+GUhavRN32IjUhzrAhuJEpb6fhEE6OTmFMRuK+sASQVWASnLTasW/ZY
-        6gFHyy68hSmoFzCw==
-From:   "tip-bot2 for Alexey Kardashevskiy" <tip-bot2@linutronix.de>
+        bh=oqqWe7eBCUvOpimW7kiVzqgFNPGnEMVUiB85b6iAhEE=;
+        b=faTU7XV8eUaUm7+nFIRiZTiAnZvfVZnGOcqUxPfCuQ5zDpf8IDA5rOKum1ZhDOQwCkLvU+
+        B4tLW57MQ/+GCIAg==
+From:   "tip-bot2 for James Clark" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/amd: Cache debug register values in percpu variables
-Cc:     Alexey Kardashevskiy <aik@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf: Fix perf_event_pmu_context serialization
+Cc:     syzbot+697196bc0265049822bd@syzkaller.appspotmail.com,
+        James Clark <james.clark@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ravi Bangoria <ravi.bangoria@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230120031047.628097-2-aik@amd.com>
-References: <20230120031047.628097-2-aik@amd.com>
+In-Reply-To: <20230127143141.1782804-2-james.clark@arm.com>
+References: <20230127143141.1782804-2-james.clark@arm.com>
 MIME-Version: 1.0
-Message-ID: <167519323327.4906.15737370282542087502.tip-bot2@tip-bot2>
+Message-ID: <167526785958.4906.6025271558329131555.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,144 +66,197 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     7914695743d598b189d549f2f57af24aa5633705
-Gitweb:        https://git.kernel.org/tip/7914695743d598b189d549f2f57af24aa5633705
-Author:        Alexey Kardashevskiy <aik@amd.com>
-AuthorDate:    Fri, 20 Jan 2023 14:10:45 +11:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 31 Jan 2023 20:09:26 +01:00
+Commit-ID:     4f64a6c9f6f11e8b7314f8e27e2c4568706009e6
+Gitweb:        https://git.kernel.org/tip/4f64a6c9f6f11e8b7314f8e27e2c4568706009e6
+Author:        James Clark <james.clark@arm.com>
+AuthorDate:    Fri, 27 Jan 2023 14:31:41 
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 31 Jan 2023 20:37:18 +01:00
 
-x86/amd: Cache debug register values in percpu variables
+perf: Fix perf_event_pmu_context serialization
 
-Reading DR[0-3]_ADDR_MASK MSRs takes about 250 cycles which is going to
-be noticeable with the AMD KVM SEV-ES DebugSwap feature enabled.  KVM is
-going to store host's DR[0-3] and DR[0-3]_ADDR_MASK before switching to
-a guest; the hardware is going to swap these on VMRUN and VMEXIT.
+Syzkaller triggered a WARN in put_pmu_ctx().
 
-Store MSR values passed to set_dr_addr_mask() in percpu variables
-(when changed) and return them via new amd_get_dr_addr_mask().
-The gain here is about 10x.
+  WARNING: CPU: 1 PID: 2245 at kernel/events/core.c:4925 put_pmu_ctx+0x1f0/0x278
 
-As set_dr_addr_mask() uses the array too, change the @dr type to
-unsigned to avoid checking for <0. And give it the amd_ prefix to match
-the new helper as the whole DR_ADDR_MASK feature is AMD-specific anyway.
+This is because there is no locking around the access of "if
+(!epc->ctx)" in find_get_pmu_context() and when it is set to NULL in
+put_pmu_ctx().
 
-While at it, replace deprecated boot_cpu_has() with cpu_feature_enabled()
-in set_dr_addr_mask().
+The decrement of the reference count in put_pmu_ctx() also happens
+outside of the spinlock, leading to the possibility of this order of
+events, and the context being cleared in put_pmu_ctx(), after its
+refcount is non zero:
 
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230120031047.628097-2-aik@amd.com
+ CPU0                                   CPU1
+ find_get_pmu_context()
+   if (!epc->ctx) == false
+                                        put_pmu_ctx()
+                                        atomic_dec_and_test(&epc->refcount) == true
+                                        epc->refcount == 0
+     atomic_inc(&epc->refcount);
+     epc->refcount == 1
+                                        list_del_init(&epc->pmu_ctx_entry);
+	                                      epc->ctx = NULL;
+
+Another issue is that WARN_ON for no active PMU events in put_pmu_ctx()
+is outside of the lock. If the perf_event_pmu_context is an embedded
+one, even after clearing it, it won't be deleted and can be re-used. So
+the warning can trigger. For this reason it also needs to be moved
+inside the lock.
+
+The above warning is very quick to trigger on Arm by running these two
+commands at the same time:
+
+  while true; do perf record -- ls; done
+  while true; do perf record -- ls; done
+
+[peterz: atomic_dec_and_raw_lock*()]
+Fixes: bd2756811766 ("perf: Rewrite core context handling")
+Reported-by: syzbot+697196bc0265049822bd@syzkaller.appspotmail.com
+Signed-off-by: James Clark <james.clark@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20230127143141.1782804-2-james.clark@arm.com
 ---
- arch/x86/include/asm/debugreg.h |  9 ++++--
- arch/x86/kernel/cpu/amd.c       | 47 ++++++++++++++++++++++----------
- arch/x86/kernel/hw_breakpoint.c |  4 +--
- 3 files changed, 42 insertions(+), 18 deletions(-)
+ include/linux/spinlock.h |  9 +++++++++-
+ kernel/events/core.c     | 39 +++++++++++++++++----------------------
+ lib/dec_and_lock.c       | 31 +++++++++++++++++++++++++++++++-
+ 3 files changed, 57 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
-index b049d95..f126b2e 100644
---- a/arch/x86/include/asm/debugreg.h
-+++ b/arch/x86/include/asm/debugreg.h
-@@ -126,9 +126,14 @@ static __always_inline void local_db_restore(unsigned long dr7)
- }
+diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+index 1341f7d..be48f1c 100644
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -476,6 +476,15 @@ extern int _atomic_dec_and_lock_irqsave(atomic_t *atomic, spinlock_t *lock,
+ #define atomic_dec_and_lock_irqsave(atomic, lock, flags) \
+ 		__cond_lock(lock, _atomic_dec_and_lock_irqsave(atomic, lock, &(flags)))
  
- #ifdef CONFIG_CPU_SUP_AMD
--extern void set_dr_addr_mask(unsigned long mask, int dr);
-+extern void amd_set_dr_addr_mask(unsigned long mask, unsigned int dr);
-+extern unsigned long amd_get_dr_addr_mask(unsigned int dr);
- #else
--static inline void set_dr_addr_mask(unsigned long mask, int dr) { }
-+static inline void amd_set_dr_addr_mask(unsigned long mask, unsigned int dr) { }
-+static inline unsigned long amd_get_dr_addr_mask(unsigned int dr)
-+{
-+	return 0;
-+}
- #endif
- 
- #endif /* _ASM_X86_DEBUGREG_H */
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 208c2ce..380753b 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1158,24 +1158,43 @@ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
- 	return false;
- }
- 
--void set_dr_addr_mask(unsigned long mask, int dr)
-+static DEFINE_PER_CPU_READ_MOSTLY(unsigned long[4], amd_dr_addr_mask);
++extern int _atomic_dec_and_raw_lock(atomic_t *atomic, raw_spinlock_t *lock);
++#define atomic_dec_and_raw_lock(atomic, lock) \
++		__cond_lock(lock, _atomic_dec_and_raw_lock(atomic, lock))
 +
-+static unsigned int amd_msr_dr_addr_masks[] = {
-+	MSR_F16H_DR0_ADDR_MASK,
-+	MSR_F16H_DR1_ADDR_MASK,
-+	MSR_F16H_DR1_ADDR_MASK + 1,
-+	MSR_F16H_DR1_ADDR_MASK + 2
-+};
++extern int _atomic_dec_and_raw_lock_irqsave(atomic_t *atomic, raw_spinlock_t *lock,
++					unsigned long *flags);
++#define atomic_dec_and_raw_lock_irqsave(atomic, lock, flags) \
++		__cond_lock(lock, _atomic_dec_and_raw_lock_irqsave(atomic, lock, &(flags)))
 +
-+void amd_set_dr_addr_mask(unsigned long mask, unsigned int dr)
+ int __alloc_bucket_spinlocks(spinlock_t **locks, unsigned int *lock_mask,
+ 			     size_t max_size, unsigned int cpu_mult,
+ 			     gfp_t gfp, const char *name,
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index d56328e..c4be13e 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -4813,19 +4813,17 @@ find_get_pmu_context(struct pmu *pmu, struct perf_event_context *ctx,
+ 
+ 		cpc = per_cpu_ptr(pmu->cpu_pmu_context, event->cpu);
+ 		epc = &cpc->epc;
+-
++		raw_spin_lock_irq(&ctx->lock);
+ 		if (!epc->ctx) {
+ 			atomic_set(&epc->refcount, 1);
+ 			epc->embedded = 1;
+-			raw_spin_lock_irq(&ctx->lock);
+ 			list_add(&epc->pmu_ctx_entry, &ctx->pmu_ctx_list);
+ 			epc->ctx = ctx;
+-			raw_spin_unlock_irq(&ctx->lock);
+ 		} else {
+ 			WARN_ON_ONCE(epc->ctx != ctx);
+ 			atomic_inc(&epc->refcount);
+ 		}
+-
++		raw_spin_unlock_irq(&ctx->lock);
+ 		return epc;
+ 	}
+ 
+@@ -4896,33 +4894,30 @@ static void free_epc_rcu(struct rcu_head *head)
+ 
+ static void put_pmu_ctx(struct perf_event_pmu_context *epc)
  {
--	if (!boot_cpu_has(X86_FEATURE_BPEXT))
-+	int cpu = smp_processor_id();
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_BPEXT))
++	struct perf_event_context *ctx = epc->ctx;
+ 	unsigned long flags;
+ 
+-	if (!atomic_dec_and_test(&epc->refcount))
++	/*
++	 * XXX
++	 *
++	 * lockdep_assert_held(&ctx->mutex);
++	 *
++	 * can't because of the call-site in _free_event()/put_event()
++	 * which isn't always called under ctx->mutex.
++	 */
++	if (!atomic_dec_and_raw_lock_irqsave(&epc->refcount, &ctx->lock, flags))
  		return;
  
--	switch (dr) {
--	case 0:
--		wrmsr(MSR_F16H_DR0_ADDR_MASK, mask, 0);
--		break;
--	case 1:
--	case 2:
--	case 3:
--		wrmsr(MSR_F16H_DR1_ADDR_MASK - 1 + dr, mask, 0);
--		break;
--	default:
--		break;
+-	if (epc->ctx) {
+-		struct perf_event_context *ctx = epc->ctx;
++	WARN_ON_ONCE(list_empty(&epc->pmu_ctx_entry));
+ 
+-		/*
+-		 * XXX
+-		 *
+-		 * lockdep_assert_held(&ctx->mutex);
+-		 *
+-		 * can't because of the call-site in _free_event()/put_event()
+-		 * which isn't always called under ctx->mutex.
+-		 */
+-
+-		WARN_ON_ONCE(list_empty(&epc->pmu_ctx_entry));
+-		raw_spin_lock_irqsave(&ctx->lock, flags);
+-		list_del_init(&epc->pmu_ctx_entry);
+-		epc->ctx = NULL;
+-		raw_spin_unlock_irqrestore(&ctx->lock, flags);
 -	}
-+	if (WARN_ON_ONCE(dr >= ARRAY_SIZE(amd_msr_dr_addr_masks)))
-+		return;
-+
-+	if (per_cpu(amd_dr_addr_mask, cpu)[dr] == mask)
-+		return;
-+
-+	wrmsr(amd_msr_dr_addr_masks[dr], mask, 0);
-+	per_cpu(amd_dr_addr_mask, cpu)[dr] = mask;
-+}
-+
-+unsigned long amd_get_dr_addr_mask(unsigned int dr)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_BPEXT))
-+		return 0;
-+
-+	if (WARN_ON_ONCE(dr >= ARRAY_SIZE(amd_msr_dr_addr_masks)))
-+		return 0;
-+
-+	return per_cpu(amd_dr_addr_mask[dr], smp_processor_id());
- }
-+EXPORT_SYMBOL_GPL(amd_get_dr_addr_mask);
++	list_del_init(&epc->pmu_ctx_entry);
++	epc->ctx = NULL;
  
- u32 amd_get_highest_perf(void)
- {
-diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-index bbb0f73..b01644c 100644
---- a/arch/x86/kernel/hw_breakpoint.c
-+++ b/arch/x86/kernel/hw_breakpoint.c
-@@ -127,7 +127,7 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
+ 	WARN_ON_ONCE(!list_empty(&epc->pinned_active));
+ 	WARN_ON_ONCE(!list_empty(&epc->flexible_active));
  
- 	set_debugreg(*dr7, 7);
- 	if (info->mask)
--		set_dr_addr_mask(info->mask, i);
-+		amd_set_dr_addr_mask(info->mask, i);
++	raw_spin_unlock_irqrestore(&ctx->lock, flags);
++
+ 	if (epc->embedded)
+ 		return;
  
+diff --git a/lib/dec_and_lock.c b/lib/dec_and_lock.c
+index 9555b68..1dcca8f 100644
+--- a/lib/dec_and_lock.c
++++ b/lib/dec_and_lock.c
+@@ -49,3 +49,34 @@ int _atomic_dec_and_lock_irqsave(atomic_t *atomic, spinlock_t *lock,
  	return 0;
  }
-@@ -166,7 +166,7 @@ void arch_uninstall_hw_breakpoint(struct perf_event *bp)
- 
- 	set_debugreg(dr7, 7);
- 	if (info->mask)
--		set_dr_addr_mask(0, i);
-+		amd_set_dr_addr_mask(0, i);
- 
- 	/*
- 	 * Ensure the write to cpu_dr7 is after we've set the DR7 register.
+ EXPORT_SYMBOL(_atomic_dec_and_lock_irqsave);
++
++int _atomic_dec_and_raw_lock(atomic_t *atomic, raw_spinlock_t *lock)
++{
++	/* Subtract 1 from counter unless that drops it to 0 (ie. it was 1) */
++	if (atomic_add_unless(atomic, -1, 1))
++		return 0;
++
++	/* Otherwise do it the slow way */
++	raw_spin_lock(lock);
++	if (atomic_dec_and_test(atomic))
++		return 1;
++	raw_spin_unlock(lock);
++	return 0;
++}
++EXPORT_SYMBOL(_atomic_dec_and_raw_lock);
++
++int _atomic_dec_and_raw_lock_irqsave(atomic_t *atomic, raw_spinlock_t *lock,
++				     unsigned long *flags)
++{
++	/* Subtract 1 from counter unless that drops it to 0 (ie. it was 1) */
++	if (atomic_add_unless(atomic, -1, 1))
++		return 0;
++
++	/* Otherwise do it the slow way */
++	raw_spin_lock_irqsave(lock, *flags);
++	if (atomic_dec_and_test(atomic))
++		return 1;
++	raw_spin_unlock_irqrestore(lock, *flags);
++	return 0;
++}
++EXPORT_SYMBOL(_atomic_dec_and_raw_lock_irqsave);
