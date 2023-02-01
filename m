@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67AB7686B98
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Feb 2023 17:26:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCA50686B92
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Feb 2023 17:26:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232135AbjBAQ0p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 1 Feb 2023 11:26:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59524 "EHLO
+        id S232000AbjBAQ0m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Feb 2023 11:26:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231671AbjBAQ0j (ORCPT
+        with ESMTP id S231664AbjBAQ0i (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 1 Feb 2023 11:26:39 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2AD86D5F7;
+        Wed, 1 Feb 2023 11:26:38 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D4C679229;
         Wed,  1 Feb 2023 08:26:36 -0800 (PST)
-Date:   Wed, 01 Feb 2023 16:26:34 -0000
+Date:   Wed, 01 Feb 2023 16:26:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1675268795;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XmdamTuDP6l77sVdfkHRgvvFG9rXjxNtOUL05uqXM78=;
-        b=mCsGICOo1ElSm6plGMRfRshjtm/srGoXpbZzKy7xUwEbhUEuq3GEAT+VgZh0CuF7T/jPYv
-        Qf8V16wWx1tTsTrkge3J31DW9Ubn2Jw3s+0iA+MnqJyq1GEgm1di8i+V5BhiGVoQFqzfCD
-        cqOOn3ao+JuYvfLphuv3XySYrgV0p8TIubFAJZqej0Xg/aoARrR/EKLTu2kdIn3HlZmhl/
-        AP4zN8kTS4zUeLWjVsighxo6uVewrYRGEzkkjx36P/2wNb+N7lwnvcad9nFXZiQWNgWqoc
-        7aSLuN/84r9O33TMzur1fXC+6sT1oRla0w+Mr4CYjAu9BufnqXSIWW1afrFXeg==
+        bh=jda8ZouveWhQ3kglM4IQHdfr7eRw0nMTEcZ4EPxiHAk=;
+        b=kvflDRNfTf9pqh2czJOuExzbiBw7jI5xtv/XNaSVydbhBuUTlRz4HrU+iH9p4M0rwrHCYe
+        tu4EQ6NNm54SR9AE82NzV5eLUmyYUfeENvlDwrdqSnfoQGHWltQVt4lnytYBIr/RnsS29R
+        RfLDTo/4j4MgOiynAHyfLlZMP4F9IHa4ndn2YCblDDC1j9nMrsFdBtERQUHQrsmDbHJIra
+        pjKV741vw1LL1l+iwsnwo1NBBGv1PuzLWJHV1RSJ9Oc8Gc6leIHVo8vUZj1gGSazOKQCyg
+        iDH6qDyeGvnGzjm7Sq7QTalHBaLzG8YYAP8uKP33TeV12rAsumcV7PVDLbceDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1675268795;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XmdamTuDP6l77sVdfkHRgvvFG9rXjxNtOUL05uqXM78=;
-        b=CyoJjvir38hXJFuFIilIw/63RfuBov3oGgrtSOZlc8kP1FBUF6/9z5QOxAyRsHeP7OzurC
-        p2nm9pA7sadb4sBw==
+        bh=jda8ZouveWhQ3kglM4IQHdfr7eRw0nMTEcZ4EPxiHAk=;
+        b=J4ytH9eafIJ2QEg8a0jyMjOniDsU7K40lxWmneB3xMSdKnR3VAo3pEzyXY+lvpbFws+AH7
+        UyDCCO5Do9hJ/rDw==
 From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Fix HOSTCC flag usage
+Subject: [tip: objtool/core] objtool: Properly support make V=1
 Cc:     Ian Rogers <irogers@google.com>,
         Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230126190606.40739-4-irogers@google.com>
-References: <20230126190606.40739-4-irogers@google.com>
+In-Reply-To: <20230126190606.40739-3-irogers@google.com>
+References: <20230126190606.40739-3-irogers@google.com>
 MIME-Version: 1.0
-Message-ID: <167526879495.4906.2898311831401901292.tip-bot2@tip-bot2>
+Message-ID: <167526879529.4906.12024408691779429634.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,92 +66,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     93eacc15687a491a9cf829f94b6891bf544084f3
-Gitweb:        https://git.kernel.org/tip/93eacc15687a491a9cf829f94b6891bf544084f3
+Commit-ID:     8c4526ca6a45e7ff915c2b33b54db6b773291fac
+Gitweb:        https://git.kernel.org/tip/8c4526ca6a45e7ff915c2b33b54db6b773291fac
 Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Thu, 26 Jan 2023 11:06:06 -08:00
+AuthorDate:    Thu, 26 Jan 2023 11:06:05 -08:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Mon, 30 Jan 2023 16:28:18 -08:00
+CommitterDate: Mon, 30 Jan 2023 16:28:16 -08:00
 
-objtool: Fix HOSTCC flag usage
+objtool: Properly support make V=1
 
-HOSTCC is always wanted when building objtool. Setting CC to HOSTCC
-happens after tools/scripts/Makefile.include is included, meaning
-flags (like CFLAGS) are set assuming say CC is gcc, but then it can be
-later set to HOSTCC which may be clang. tools/scripts/Makefile.include
-is needed for host set up and common macros in objtool's
-Makefile. Rather than override the CC variable to HOSTCC, just pass CC
-as HOSTCC to the sub-makes of Makefile.build, the libsubcmd builds and
-also to the linkage step.
+The Q variable was being used but never correctly set up. Add the
+setting up and use in place of @.
 
 Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20230126190606.40739-4-irogers@google.com
+Link: https://lore.kernel.org/r/20230126190606.40739-3-irogers@google.com
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- tools/objtool/Makefile | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ tools/objtool/Makefile | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index d54b669..29a8cd7 100644
+index 3505ae4..d54b669 100644
 --- a/tools/objtool/Makefile
 +++ b/tools/objtool/Makefile
-@@ -2,11 +2,6 @@
- include ../scripts/Makefile.include
- include ../scripts/Makefile.arch
- 
--# always use the host compiler
--AR	 = $(HOSTAR)
--CC	 = $(HOSTCC)
--LD	 = $(HOSTLD)
--
- ifeq ($(srctree),)
- srctree := $(patsubst %/,%,$(dir $(CURDIR)))
- srctree := $(patsubst %/,%,$(dir $(srctree)))
-@@ -34,13 +29,18 @@ INCLUDES := -I$(srctree)/tools/include \
- 	    -I$(srctree)/tools/objtool/include \
- 	    -I$(srctree)/tools/objtool/arch/$(SRCARCH)/include \
- 	    -I$(LIBSUBCMD_OUTPUT)/include
-+# Note, EXTRA_WARNINGS here was determined for CC and not HOSTCC, it
-+# is passed here to match a legacy behavior.
- WARNINGS := $(EXTRA_WARNINGS) -Wno-switch-default -Wno-switch-enum -Wno-packed -Wno-nested-externs
--CFLAGS   := -Werror $(WARNINGS) $(KBUILD_HOSTCFLAGS) -g $(INCLUDES) $(LIBELF_FLAGS)
--LDFLAGS  += $(LIBELF_LIBS) $(LIBSUBCMD) $(KBUILD_HOSTLDFLAGS)
-+OBJTOOL_CFLAGS := -Werror $(WARNINGS) $(KBUILD_HOSTCFLAGS) -g $(INCLUDES) $(LIBELF_FLAGS)
-+OBJTOOL_LDFLAGS := $(LIBELF_LIBS) $(LIBSUBCMD) $(KBUILD_HOSTLDFLAGS)
- 
- # Allow old libelf to be used:
- elfshdr := $(shell echo '$(pound)include <libelf.h>' | $(CC) $(CFLAGS) -x c -E - | grep elf_getshdr)
--CFLAGS += $(if $(elfshdr),,-DLIBELF_USE_DEPRECATED)
-+OBJTOOL_CFLAGS += $(if $(elfshdr),,-DLIBELF_USE_DEPRECATED)
-+
-+# Always want host compilation.
-+HOST_OVERRIDES := CC="$(HOSTCC)" LD="$(HOSTLD)" AR="$(HOSTAR)"
- 
+@@ -45,6 +45,12 @@ CFLAGS += $(if $(elfshdr),,-DLIBELF_USE_DEPRECATED)
  AWK = awk
  MKDIR = mkdir
-@@ -61,12 +61,14 @@ export BUILD_ORC
- export srctree OUTPUT CFLAGS SRCARCH AWK
+ 
++ifeq ($(V),1)
++  Q =
++else
++  Q = @
++endif
++
+ BUILD_ORC := n
+ 
+ ifeq ($(SRCARCH),x86)
+@@ -56,18 +62,18 @@ export srctree OUTPUT CFLAGS SRCARCH AWK
  include $(srctree)/tools/build/Makefile.include
  
--$(OBJTOOL_IN): fixdep FORCE
-+$(OBJTOOL_IN): fixdep $(LIBSUBCMD) FORCE
- 	$(Q)$(CONFIG_SHELL) ./sync-check.sh
--	$(Q)$(MAKE) $(build)=objtool
-+	$(Q)$(MAKE) $(build)=objtool $(HOST_OVERRIDES) CFLAGS="$(OBJTOOL_CFLAGS)" \
-+		LDFLAGS="$(OBJTOOL_LDFLAGS)"
-+
+ $(OBJTOOL_IN): fixdep FORCE
+-	@$(CONFIG_SHELL) ./sync-check.sh
+-	@$(MAKE) $(build)=objtool
++	$(Q)$(CONFIG_SHELL) ./sync-check.sh
++	$(Q)$(MAKE) $(build)=objtool
  
  $(OBJTOOL): $(LIBSUBCMD) $(OBJTOOL_IN)
--	$(QUIET_LINK)$(CC) $(OBJTOOL_IN) $(LDFLAGS) -o $@
-+	$(QUIET_LINK)$(HOSTCC) $(OBJTOOL_IN) $(OBJTOOL_LDFLAGS) -o $@
+ 	$(QUIET_LINK)$(CC) $(OBJTOOL_IN) $(LDFLAGS) -o $@
  
  
  $(LIBSUBCMD_OUTPUT):
-@@ -75,6 +77,7 @@ $(LIBSUBCMD_OUTPUT):
+-	@$(MKDIR) -p $@
++	$(Q)$(MKDIR) -p $@
+ 
  $(LIBSUBCMD): fixdep $(LIBSUBCMD_OUTPUT) FORCE
- 	$(Q)$(MAKE) -C $(LIBSUBCMD_DIR) O=$(LIBSUBCMD_OUTPUT) \
+-	@$(MAKE) -C $(LIBSUBCMD_DIR) O=$(LIBSUBCMD_OUTPUT) \
++	$(Q)$(MAKE) -C $(LIBSUBCMD_DIR) O=$(LIBSUBCMD_OUTPUT) \
  		DESTDIR=$(LIBSUBCMD_OUTPUT) prefix= subdir= \
-+		$(HOST_OVERRIDES) EXTRA_CFLAGS="$(OBJTOOL_CFLAGS)" \
  		$@ install_headers
  
- $(LIBSUBCMD)-clean:
