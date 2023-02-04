@@ -2,157 +2,152 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DA5368A973
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Feb 2023 11:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8991368AB6E
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Feb 2023 18:05:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233693AbjBDKSN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Feb 2023 05:18:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49258 "EHLO
+        id S231355AbjBDRFJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Feb 2023 12:05:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232824AbjBDKRn (ORCPT
+        with ESMTP id S229746AbjBDRFI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Feb 2023 05:17:43 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA322301B4;
-        Sat,  4 Feb 2023 02:17:22 -0800 (PST)
-Date:   Sat, 04 Feb 2023 10:17:12 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1675505832;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=k+ErJ1ZCIB+Rxig0Iv3wV0IJ2MH7kvriSO+behyK/Rc=;
-        b=YlJDdRmKBRvD0Drv4stjgVarILGT4Qkd+/XXAxvWKxkIEaXOdhsnm7dv7at42K/FSeeWuQ
-        lnTaLvfdCB/Ue1wc7Ui97mTdNtznsEu77ypSy+x2b1VVbUCPOWYtUBF3VV1IHZqOxE59yz
-        JfkFx2ZHLZtTmOQPy2/4MAQi8MNfAGPTukqcxiHuR4msTyjCj79KgYnzpTSuIJVLrtCSl+
-        +oCRno4YvFW+robdTiXFg7WTyTfXn0ClPDi+xrdy/qY1/LIgUU3w+pACtuP37lo4/gfKAG
-        GedLXfndmtucpIGSu2hwTyMAU1vKTXBN1knbP4QqJdnvsfkEJ2P4D5FZYBkZkw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1675505832;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=k+ErJ1ZCIB+Rxig0Iv3wV0IJ2MH7kvriSO+behyK/Rc=;
-        b=Gm281Gt1vWg0CIkRKbpwbNWsGORTZNXm+7s5e0+X4DJpraXzcZ2T5qx/sbCN7S3JFoyV00
-        SZZs7/6GEUSwY9CA==
-From:   "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Fix HOSTCC flag usage
-Cc:     Ian Rogers <irogers@google.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230126190606.40739-4-irogers@google.com>
+        Sat, 4 Feb 2023 12:05:08 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25E03113E1;
+        Sat,  4 Feb 2023 09:05:07 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D58E7B80AB0;
+        Sat,  4 Feb 2023 17:05:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2683CC433D2;
+        Sat,  4 Feb 2023 17:05:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675530304;
+        bh=43GndDihT5L1+wA5X85xw22Vc8Kl4Ss63nT+xWN4MFQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bcc9VQt3m6gs+g4pyFNwgV93gGfoQ+Wtb6aYCcVxmb/Bm+7hxRUyWpzTcJhTftYme
+         uU4TyobjIjES2y07AHgL8RQqZU8sickXnH6vXV8r+Dgl74VbmD3sarTeeEnwc8XlKZ
+         ghGmU2Oh3MYFD2G/Zz83ZESWdqeqhsf+OTKvMJ7BcphI6LJnHMOeZiLWdazZ8RnROH
+         ickZQXGUqJUWC/o3P3r/RyIgMuEYkA+HSTPOAXo8Mph6QkuN58nZ3uPommhN6fElhu
+         bVpsmYyeShQKhMxziTBJuEmudOvB8EdIHeRviaSTF8LBaV5zQWNpgrN1qKLosT4efq
+         WAiZF7U63McFg==
+Date:   Sat, 4 Feb 2023 09:05:02 -0800
+From:   Josh Poimboeuf <jpoimboe@kernel.org>
+To:     Vladimir Oltean <olteanv@gmail.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>, linux-kernel@vger.kernel.org,
+        linux-tip-commits@vger.kernel.org, Ian Rogers <irogers@google.com>,
+        x86@kernel.org, netdev@vger.kernel.org
+Subject: Re: [tip: objtool/core] objtool: Fix HOSTCC flag usage
+Message-ID: <20230204170502.qjc3dpmf2owa3w7v@treble>
 References: <20230126190606.40739-4-irogers@google.com>
+ <167526879495.4906.2898311831401901292.tip-bot2@tip-bot2>
+ <Y9qbGHDBFtGoqnKK@FVFF77S0Q05N>
+ <20230201173637.cyu6yzudwsuzl2vj@treble>
+ <20230203182540.7linqqtr3tlrbfe7@skbuf>
 MIME-Version: 1.0
-Message-ID: <167550583232.4906.8771609199163881104.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230203182540.7linqqtr3tlrbfe7@skbuf>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+On Fri, Feb 03, 2023 at 08:25:40PM +0200, Vladimir Oltean wrote:
+> On Wed, Feb 01, 2023 at 09:36:37AM -0800, Josh Poimboeuf wrote:
+> > On Wed, Feb 01, 2023 at 05:02:16PM +0000, Mark Rutland wrote:
+> > > Hi,
+> > > 
+> > > I just spotted this breaks cross-compiling; details below.
+> > 
+> > Thanks, we'll fix it up with
+> > 
+> > diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+> > index 29a8cd7449bf..83b100c1e7f6 100644
+> > --- a/tools/objtool/Makefile
+> > +++ b/tools/objtool/Makefile
+> > @@ -36,7 +36,7 @@ OBJTOOL_CFLAGS := -Werror $(WARNINGS) $(KBUILD_HOSTCFLAGS) -g $(INCLUDES) $(LIBE
+> >  OBJTOOL_LDFLAGS := $(LIBELF_LIBS) $(LIBSUBCMD) $(KBUILD_HOSTLDFLAGS)
+> >  
+> >  # Allow old libelf to be used:
+> > -elfshdr := $(shell echo '$(pound)include <libelf.h>' | $(CC) $(CFLAGS) -x c -E - | grep elf_getshdr)
+> > +elfshdr := $(shell echo '$(pound)include <libelf.h>' | $(HOSTCC) $(OBJTOOL_CFLAGS) -x c -E - | grep elf_getshdr)
+> >  OBJTOOL_CFLAGS += $(if $(elfshdr),,-DLIBELF_USE_DEPRECATED)
+> >  
+> >  # Always want host compilation.
+> 
+> Profiting off of the occasion to point out that cross-compiling with
+> CONFIG_DEBUG_INFO_BTF=y is also broken (it builds the resolve_btfids
+> tool):
 
-Commit-ID:     cd955bdd6aa5ec54cdef622a142f8899a64b5446
-Gitweb:        https://git.kernel.org/tip/cd955bdd6aa5ec54cdef622a142f8899a64b5446
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Thu, 26 Jan 2023 11:06:06 -08:00
-Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Wed, 01 Feb 2023 09:15:18 -08:00
+The above patch was for objtool, though I'm guessing you were bitten by
+a similar patch for bpf:
 
-objtool: Fix HOSTCC flag usage
+  13e07691a16f ("tools/resolve_btfids: Alter how HOSTCC is forced")
 
-HOSTCC is always wanted when building objtool. Setting CC to HOSTCC
-happens after tools/scripts/Makefile.include is included, meaning
-flags (like CFLAGS) are set assuming say CC is gcc, but then it can be
-later set to HOSTCC which may be clang. tools/scripts/Makefile.include
-is needed for host set up and common macros in objtool's
-Makefile. Rather than override the CC variable to HOSTCC, just pass CC
-as HOSTCC to the sub-makes of Makefile.build, the libsubcmd builds and
-also to the linkage step.
+It looks like it might have a similar problem we had for objtool.  Does
+this fix it?
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20230126190606.40739-4-irogers@google.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
----
- tools/objtool/Makefile | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
-
-diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index d54b669..83b100c 100644
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -2,11 +2,6 @@
- include ../scripts/Makefile.include
- include ../scripts/Makefile.arch
+diff --git a/tools/bpf/resolve_btfids/Makefile b/tools/bpf/resolve_btfids/Makefile
+index daed388aa5d7..fff84cd914cd 100644
+--- a/tools/bpf/resolve_btfids/Makefile
++++ b/tools/bpf/resolve_btfids/Makefile
+@@ -18,8 +18,8 @@ else
+ endif
  
--# always use the host compiler
--AR	 = $(HOSTAR)
--CC	 = $(HOSTCC)
--LD	 = $(HOSTLD)
--
- ifeq ($(srctree),)
- srctree := $(patsubst %/,%,$(dir $(CURDIR)))
- srctree := $(patsubst %/,%,$(dir $(srctree)))
-@@ -34,13 +29,18 @@ INCLUDES := -I$(srctree)/tools/include \
- 	    -I$(srctree)/tools/objtool/include \
- 	    -I$(srctree)/tools/objtool/arch/$(SRCARCH)/include \
- 	    -I$(LIBSUBCMD_OUTPUT)/include
-+# Note, EXTRA_WARNINGS here was determined for CC and not HOSTCC, it
-+# is passed here to match a legacy behavior.
- WARNINGS := $(EXTRA_WARNINGS) -Wno-switch-default -Wno-switch-enum -Wno-packed -Wno-nested-externs
--CFLAGS   := -Werror $(WARNINGS) $(KBUILD_HOSTCFLAGS) -g $(INCLUDES) $(LIBELF_FLAGS)
--LDFLAGS  += $(LIBELF_LIBS) $(LIBSUBCMD) $(KBUILD_HOSTLDFLAGS)
-+OBJTOOL_CFLAGS := -Werror $(WARNINGS) $(KBUILD_HOSTCFLAGS) -g $(INCLUDES) $(LIBELF_FLAGS)
-+OBJTOOL_LDFLAGS := $(LIBELF_LIBS) $(LIBSUBCMD) $(KBUILD_HOSTLDFLAGS)
+ # always use the host compiler
+-HOST_OVERRIDES := AR="$(HOSTAR)" CC="$(HOSTCC)" LD="$(HOSTLD)" ARCH="$(HOSTARCH)" \
+-		  EXTRA_CFLAGS="$(HOSTCFLAGS) $(KBUILD_HOSTCFLAGS)"
++HOST_OVERRIDES := AR="$(HOSTAR)" CC="$(HOSTCC)" LD="$(HOSTLD)" ARCH="$(HOSTARCH)"
++BTF_CFLAGS     := $(HOSTCFLAGS) $(KBUILD_HOSTCFLAGS)
  
- # Allow old libelf to be used:
--elfshdr := $(shell echo '$(pound)include <libelf.h>' | $(CC) $(CFLAGS) -x c -E - | grep elf_getshdr)
--CFLAGS += $(if $(elfshdr),,-DLIBELF_USE_DEPRECATED)
-+elfshdr := $(shell echo '$(pound)include <libelf.h>' | $(HOSTCC) $(OBJTOOL_CFLAGS) -x c -E - | grep elf_getshdr)
-+OBJTOOL_CFLAGS += $(if $(elfshdr),,-DLIBELF_USE_DEPRECATED)
-+
-+# Always want host compilation.
-+HOST_OVERRIDES := CC="$(HOSTCC)" LD="$(HOSTLD)" AR="$(HOSTAR)"
+ RM      ?= rm
+ CROSS_COMPILE =
+@@ -53,23 +53,25 @@ $(OUTPUT) $(OUTPUT)/libsubcmd $(LIBBPF_OUT):
  
- AWK = awk
- MKDIR = mkdir
-@@ -61,12 +61,14 @@ export BUILD_ORC
- export srctree OUTPUT CFLAGS SRCARCH AWK
+ $(SUBCMDOBJ): fixdep FORCE | $(OUTPUT)/libsubcmd
+ 	$(Q)$(MAKE) -C $(SUBCMD_SRC) OUTPUT=$(SUBCMD_OUT) \
+-		    DESTDIR=$(SUBCMD_DESTDIR) $(HOST_OVERRIDES) prefix= subdir= \
++		    $(HOST_OVERRIDES) EXTRA_CFLAGS="$(BTF_CFLAGS)" \
++		    DESTDIR=$(LIBBPF_DESTDIR) prefix= subdir= \
+ 		    $(abspath $@) install_headers
+ 
+ $(BPFOBJ): $(wildcard $(LIBBPF_SRC)/*.[ch] $(LIBBPF_SRC)/Makefile) | $(LIBBPF_OUT)
+ 	$(Q)$(MAKE) $(submake_extras) -C $(LIBBPF_SRC) OUTPUT=$(LIBBPF_OUT)    \
+-		    DESTDIR=$(LIBBPF_DESTDIR) $(HOST_OVERRIDES) prefix= subdir= \
++		    $(HOST_OVERRIDES) EXTRA_CFLAGS="$(BTF_CFLAGS)" \
++		    DESTDIR=$(LIBBPF_DESTDIR) prefix= subdir= \
+ 		    $(abspath $@) install_headers
+ 
+ LIBELF_FLAGS := $(shell $(HOSTPKG_CONFIG) libelf --cflags 2>/dev/null)
+ LIBELF_LIBS  := $(shell $(HOSTPKG_CONFIG) libelf --libs 2>/dev/null || echo -lelf)
+ 
+-CFLAGS += -g \
+-          -I$(srctree)/tools/include \
+-          -I$(srctree)/tools/include/uapi \
+-          -I$(LIBBPF_INCLUDE) \
+-          -I$(SUBCMD_INCLUDE) \
+-          $(LIBELF_FLAGS)
++BTF_CFLAGS += -g \
++              -I$(srctree)/tools/include \
++              -I$(srctree)/tools/include/uapi \
++              -I$(LIBBPF_INCLUDE) \
++              -I$(SUBCMD_INCLUDE) \
++              $(LIBELF_FLAGS)
+ 
+ LIBS = $(LIBELF_LIBS) -lz
+ 
+@@ -77,7 +79,7 @@ export srctree OUTPUT CFLAGS Q
  include $(srctree)/tools/build/Makefile.include
  
--$(OBJTOOL_IN): fixdep FORCE
-+$(OBJTOOL_IN): fixdep $(LIBSUBCMD) FORCE
- 	$(Q)$(CONFIG_SHELL) ./sync-check.sh
--	$(Q)$(MAKE) $(build)=objtool
-+	$(Q)$(MAKE) $(build)=objtool $(HOST_OVERRIDES) CFLAGS="$(OBJTOOL_CFLAGS)" \
-+		LDFLAGS="$(OBJTOOL_LDFLAGS)"
-+
+ $(BINARY_IN): fixdep FORCE prepare | $(OUTPUT)
+-	$(Q)$(MAKE) $(build)=resolve_btfids $(HOST_OVERRIDES)
++	$(Q)$(MAKE) $(build)=resolve_btfids $(HOST_OVERRIDES) CFLAGS="$(BTF_CFLAGS)"
  
- $(OBJTOOL): $(LIBSUBCMD) $(OBJTOOL_IN)
--	$(QUIET_LINK)$(CC) $(OBJTOOL_IN) $(LDFLAGS) -o $@
-+	$(QUIET_LINK)$(HOSTCC) $(OBJTOOL_IN) $(OBJTOOL_LDFLAGS) -o $@
- 
- 
- $(LIBSUBCMD_OUTPUT):
-@@ -75,6 +77,7 @@ $(LIBSUBCMD_OUTPUT):
- $(LIBSUBCMD): fixdep $(LIBSUBCMD_OUTPUT) FORCE
- 	$(Q)$(MAKE) -C $(LIBSUBCMD_DIR) O=$(LIBSUBCMD_OUTPUT) \
- 		DESTDIR=$(LIBSUBCMD_OUTPUT) prefix= subdir= \
-+		$(HOST_OVERRIDES) EXTRA_CFLAGS="$(OBJTOOL_CFLAGS)" \
- 		$@ install_headers
- 
- $(LIBSUBCMD)-clean:
+ $(BINARY): $(BPFOBJ) $(SUBCMDOBJ) $(BINARY_IN)
+ 	$(call msg,LINK,$@)
