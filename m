@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F76F68A969
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Feb 2023 11:17:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63C2568A96D
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Feb 2023 11:17:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233456AbjBDKRa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Feb 2023 05:17:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49192 "EHLO
+        id S233493AbjBDKRc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Feb 2023 05:17:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232975AbjBDKRY (ORCPT
+        with ESMTP id S233325AbjBDKRY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 4 Feb 2023 05:17:24 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E996D07F;
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AAB26EAF8;
         Sat,  4 Feb 2023 02:17:14 -0800 (PST)
-Date:   Sat, 04 Feb 2023 10:17:11 -0000
+Date:   Sat, 04 Feb 2023 10:17:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1675505832;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=awbb/MDCUAceNOA9d0sBAdfLnnI1GG/4y/eewIgt/3I=;
-        b=fALohyiyT+DmU56ggOn0WGaptOWDt9hm0fYI1T9dlLRg5E7WktIlxHZMLn7DE78vTmi90c
-        zActyJwyQRHsFjX4X34tmlxAeNKdhrpBnyTNMR2Wz+lswl2aXwT+k+AySqgySV3Sg4gxca
-        1In8QEtFonWEuE1txLJVZe1vgFWXOp1ul4GY+wApV+kAiGE5Iv9MAtFTE56p6pSbL9GRuC
-        nB591b+52CUdbCY3pkOw+CPD0HyXO2vfabiOsWU7xUAApTnpC/gGYXEd+TdheP5QeW0TG8
-        dXvW/r6H+JltKzyCEkVhso+FfLw1BWWd56TMMDr8Fy+pYmLKrI0Yfemu8vUG6Q==
+        bh=0wJn3bVGYanUgnPRXGSIEsEijONrQy3w2WvDeWz6/vo=;
+        b=eywHCIxFBOsPeJ9e1OsE8+x+TF3r4zi/IILrht+yYoA7DIyDwTuOPhrKryu5T2NS0VrprE
+        80AjXHM0vaFdk+fEN2v1i0wV5CsyFmix8uNUkAyci26sRosOyXE9ooTVDo6fGOlZm5apxD
+        b2OEIFAwOao+v1X/rJiNJcuiO2NPg8MPb0xKO8MOWaofGzvQiJsVB81fUpwmKzBXOXab+7
+        bMEL2nFwGWP0oe3C9y0w4sYXs1GqRCWmhlG0333XZvYQnzAinEPxxDAC7FniiY/rt56Nwb
+        PvelKdsA966EKtRt/WtkBC8MWXAs7svmgtE8afkupnM9OXNPJJMiz4CszW14og==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1675505832;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=awbb/MDCUAceNOA9d0sBAdfLnnI1GG/4y/eewIgt/3I=;
-        b=Rf351rwRPaIlUp2qqV+FW2kCP5PFkKlMu66ZkfbiaktqUOVK8F1f+l4SSAmCv9pI2aF3JN
-        +E2jKKE7UtUMg8CA==
+        bh=0wJn3bVGYanUgnPRXGSIEsEijONrQy3w2WvDeWz6/vo=;
+        b=nKw1FQTTqbEYQhUBLBQkrRIJ8lHQCfiylxrIf3kxkw3tD+Qv4LcOUJlG5mzSw+DqdRUIo3
+        tpS4b7xmPwRo+4Ag==
 From:   tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= 
         <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Optimize layout of struct symbol
+Subject: [tip: objtool/core] objtool: Make struct entries[] static and const
 Cc:     linux@weissschuh.net, Josh Poimboeuf <jpoimboe@kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20221216-objtool-memory-v2-6-17968f85a464@weissschuh.net>
-References: <20221216-objtool-memory-v2-6-17968f85a464@weissschuh.net>
+In-Reply-To: <20221216-objtool-memory-v2-1-17968f85a464@weissschuh.net>
+References: <20221216-objtool-memory-v2-1-17968f85a464@weissschuh.net>
 MIME-Version: 1.0
-Message-ID: <167550583149.4906.16009814897021717355.tip-bot2@tip-bot2>
+Message-ID: <167550583213.4906.16896019408675810020.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,47 +66,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     21a899f9fc78be6b289ee4627bccadf560930eb5
-Gitweb:        https://git.kernel.org/tip/21a899f9fc78be6b289ee4627bccadf5609=
-30eb5
+Commit-ID:     d93ee0553cf2e83c1696a18423bcf05b94b85e1d
+Gitweb:        https://git.kernel.org/tip/d93ee0553cf2e83c1696a18423bcf05b94b=
+85e1d
 Author:        Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-AuthorDate:    Tue, 27 Dec 2022 16:01:02=20
+AuthorDate:    Tue, 27 Dec 2022 16:00:57=20
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Wed, 01 Feb 2023 09:15:24 -08:00
+CommitterDate: Wed, 01 Feb 2023 09:15:22 -08:00
 
-objtool: Optimize layout of struct symbol
+objtool: Make struct entries[] static and const
 
-Reduce the size of struct symbol on x86_64 from 208 to 200 bytes.
-This structure is allocated a lot and never freed.
+This data is not modified and not used outside of special.c.
 
-This reduces maximum memory usage while processing vmlinux.o from
-2919716 KB to 2917988 KB (-0.5%) on my notebooks "localmodconfig".
+Also adapt its users to the constness.
 
 Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20221216-objtool-memory-v2-6-17968f85a464@wei=
+Link: https://lore.kernel.org/r/20221216-objtool-memory-v2-1-17968f85a464@wei=
 ssschuh.net
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- tools/objtool/include/objtool/elf.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/objtool/special.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objt=
-ool/elf.h
-index 1c90f0a..ad0024d 100644
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -50,12 +50,11 @@ struct symbol {
- 	GElf_Sym sym;
+diff --git a/tools/objtool/special.c b/tools/objtool/special.c
+index 9c8d827..baa85c3 100644
+--- a/tools/objtool/special.c
++++ b/tools/objtool/special.c
+@@ -26,7 +26,7 @@ struct special_entry {
+ 	unsigned char key; /* jump_label key */
+ };
+=20
+-struct special_entry entries[] =3D {
++static const struct special_entry entries[] =3D {
+ 	{
+ 		.sec =3D ".altinstructions",
+ 		.group =3D true,
+@@ -65,7 +65,7 @@ static void reloc_to_sec_off(struct reloc *reloc, struct se=
+ction **sec,
+ 	*off =3D reloc->sym->offset + reloc->addend;
+ }
+=20
+-static int get_alt_entry(struct elf *elf, struct special_entry *entry,
++static int get_alt_entry(struct elf *elf, const struct special_entry *entry,
+ 			 struct section *sec, int idx,
+ 			 struct special_alt *alt)
+ {
+@@ -139,7 +139,7 @@ static int get_alt_entry(struct elf *elf, struct special_=
+entry *entry,
+  */
+ int special_get_alts(struct elf *elf, struct list_head *alts)
+ {
+-	struct special_entry *entry;
++	const struct special_entry *entry;
  	struct section *sec;
- 	char *name;
--	unsigned int idx;
--	unsigned char bind, type;
-+	unsigned int idx, len;
- 	unsigned long offset;
--	unsigned int len;
- 	unsigned long __subtree_last;
- 	struct symbol *pfunc, *cfunc, *alias;
-+	unsigned char bind, type;
- 	u8 uaccess_safe      : 1;
- 	u8 static_call_tramp : 1;
- 	u8 retpoline_thunk   : 1;
+ 	unsigned int nr_entries;
+ 	struct special_alt *alt;
