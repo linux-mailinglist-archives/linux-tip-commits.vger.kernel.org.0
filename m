@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EB8668BD68
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Feb 2023 14:00:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBC3468BE1D
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Feb 2023 14:29:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229791AbjBFNAM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 6 Feb 2023 08:00:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42392 "EHLO
+        id S229614AbjBFN3T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 6 Feb 2023 08:29:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230202AbjBFNAL (ORCPT
+        with ESMTP id S229500AbjBFN3S (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 6 Feb 2023 08:00:11 -0500
+        Mon, 6 Feb 2023 08:29:18 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0CC323329;
-        Mon,  6 Feb 2023 05:00:09 -0800 (PST)
-Date:   Mon, 06 Feb 2023 13:00:06 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F33159FB;
+        Mon,  6 Feb 2023 05:29:17 -0800 (PST)
+Date:   Mon, 06 Feb 2023 13:29:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1675688406;
+        s=2020; t=1675690156;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zPPSWF1IR2b3xSpi294gSyVTszfWLwynEyv+R7qzIpM=;
-        b=x/Xwi1fALjBqNYEHLVG22nlw03tsfhyL5Fr6JnQke2X5IdLuK22/Fws+yPdUWaGRule0qx
-        uw3hHewaOGTuIbhN8zeUj+bc8O0leL+nBOe0c+462Q+4KOYgEvvI7dHf8GuFCmCkMenMJ4
-        gPEovob00xjkDKrYEwcQj74HDZYwfj+ccTa5nHe+/0sr6IVz/WFriCbjYoYuk/hQkp3RDX
-        Tf1ZAKoxJlaZDgv8GLxq+5D0YpLpOkgtg11CRctuE9a4hkteZafabfzV4oGY3VMkbJzi2W
-        8XYXesMOMODLIxP95E+VOefPp+/uvBapaSTTvtu3ZUOlyZzpeIb1SVZy8rtS/Q==
+        bh=Snt1HVBoVURizE40ikwhMIUzzxmPLegER7XUaky9JDA=;
+        b=2y5oNjVSq/3uMFfV1s1wMQX2H96l/QJQTcaruTSg1SvhQ3evM77uViJzvNz1G9+NnOZVJZ
+        ObCImZFptXe0gMbIn678P1Vmk8AUoK99n2bVuk0KktmsnwGSHOO2PAYJtOmesazhkd29cD
+        DGrdRbs/irE6q9c473y5xspmWeoCtEAh5Z9iaRRKs2IA56t3CpvhUW/IzJ4S2pJw6BYXfG
+        hc53dBCOrgcrgkExegZ1pUL99sduvnzK72DPiXJ2QTSxh55SkmHUsYTPImqLmytnm+CU1R
+        xLp7wBGDCxXSFol8CDDfKR9uJ5K+m/35CfPNQOk+GtF5pEMer3QvdO6m+XFCvQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1675688406;
+        s=2020e; t=1675690156;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zPPSWF1IR2b3xSpi294gSyVTszfWLwynEyv+R7qzIpM=;
-        b=pjny2TDUwOkKx8H/FTCDpQfLlAXMjvoS1lhDXanTx9EjAdKcXPSxD2FCn4RBjB6NfqNdn3
-        B4ThcAy2ft0XTSDQ==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=Snt1HVBoVURizE40ikwhMIUzzxmPLegER7XUaky9JDA=;
+        b=Rv+nHG0ncx8v5jBMVIj4uir+g9L331x7EprRv9auTHOpx4yTvreDc4iZrZw9yt0+t1VFwE
+        RfiMlb9acDyTZAAQ==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/amd: Remove load_microcode_amd()'s
- bsp parameter
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: timers/core] posix-timers: Use atomic64_try_cmpxchg() in
+ __update_gt_cputime()
+Cc:     Uros Bizjak <ubizjak@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230130161709.11615-2-bp@alien8.de>
-References: <20230130161709.11615-2-bp@alien8.de>
+In-Reply-To: <20230116165337.5810-1-ubizjak@gmail.com>
+References: <20230116165337.5810-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <167568840642.4906.3159553171121184156.tip-bot2@tip-bot2>
+Message-ID: <167569015564.4906.9965184663618799874.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,92 +65,56 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     2355370cd941cbb20882cc3f34460f9f2b8f9a18
-Gitweb:        https://git.kernel.org/tip/2355370cd941cbb20882cc3f34460f9f2b8f9a18
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Tue, 17 Jan 2023 23:59:24 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 06 Feb 2023 11:13:04 +01:00
+Commit-ID:     915d4ad3830aa1a2dafda9b737749fb410cb9790
+Gitweb:        https://git.kernel.org/tip/915d4ad3830aa1a2dafda9b737749fb410cb9790
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Mon, 16 Jan 2023 17:53:37 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 06 Feb 2023 14:22:09 +01:00
 
-x86/microcode/amd: Remove load_microcode_amd()'s bsp parameter
+posix-timers: Use atomic64_try_cmpxchg() in __update_gt_cputime()
 
-It is always the BSP.
+Use atomic64_try_cmpxchg() instead of atomic64_cmpxchg() in
+__update_gt_cputime(). The x86 CMPXCHG instruction returns success in ZF
+flag, so this change saves a compare after cmpxchg() (and related move
+instruction in front of cmpxchg()).
 
-No functional changes.
+Also, atomic64_try_cmpxchg() implicitly assigns old *ptr value to "old"
+when cmpxchg() fails.  There is no need to re-read the value in the loop.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230130161709.11615-2-bp@alien8.de
+No functional change intended.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230116165337.5810-1-ubizjak@gmail.com
+
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ kernel/time/posix-cpu-timers.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index d144f91..c2ac6c4 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -553,8 +553,7 @@ void load_ucode_amd_ap(unsigned int cpuid_1_eax)
- 	early_apply_microcode(cpuid_1_eax, cp.data, cp.size, false);
+diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
+index cb925e8..2f5e9b3 100644
+--- a/kernel/time/posix-cpu-timers.c
++++ b/kernel/time/posix-cpu-timers.c
+@@ -243,13 +243,12 @@ static void proc_sample_cputime_atomic(struct task_cputime_atomic *at,
+  */
+ static inline void __update_gt_cputime(atomic64_t *cputime, u64 sum_cputime)
+ {
+-	u64 curr_cputime;
+-retry:
+-	curr_cputime = atomic64_read(cputime);
+-	if (sum_cputime > curr_cputime) {
+-		if (atomic64_cmpxchg(cputime, curr_cputime, sum_cputime) != curr_cputime)
+-			goto retry;
+-	}
++	u64 curr_cputime = atomic64_read(cputime);
++
++	do {
++		if (sum_cputime <= curr_cputime)
++			return;
++	} while (!atomic64_try_cmpxchg(cputime, &curr_cputime, sum_cputime));
  }
  
--static enum ucode_state
--load_microcode_amd(bool save, u8 family, const u8 *data, size_t size);
-+static enum ucode_state load_microcode_amd(u8 family, const u8 *data, size_t size);
- 
- int __init save_microcode_in_initrd_amd(unsigned int cpuid_1_eax)
- {
-@@ -572,7 +571,7 @@ int __init save_microcode_in_initrd_amd(unsigned int cpuid_1_eax)
- 	if (!desc.mc)
- 		return -EINVAL;
- 
--	ret = load_microcode_amd(true, x86_family(cpuid_1_eax), desc.data, desc.size);
-+	ret = load_microcode_amd(x86_family(cpuid_1_eax), desc.data, desc.size);
- 	if (ret > UCODE_UPDATED)
- 		return -EINVAL;
- 
-@@ -851,8 +850,7 @@ static enum ucode_state __load_microcode_amd(u8 family, const u8 *data,
- 	return UCODE_OK;
- }
- 
--static enum ucode_state
--load_microcode_amd(bool save, u8 family, const u8 *data, size_t size)
-+static enum ucode_state load_microcode_amd(u8 family, const u8 *data, size_t size)
- {
- 	struct ucode_patch *p;
- 	enum ucode_state ret;
-@@ -876,10 +874,6 @@ load_microcode_amd(bool save, u8 family, const u8 *data, size_t size)
- 		ret = UCODE_NEW;
- 	}
- 
--	/* save BSP's matching patch for early load */
--	if (!save)
--		return ret;
--
- 	memset(amd_ucode_patch, 0, PATCH_MAX_SIZE);
- 	memcpy(amd_ucode_patch, p->data, min_t(u32, p->size, PATCH_MAX_SIZE));
- 
-@@ -906,14 +900,9 @@ static enum ucode_state request_microcode_amd(int cpu, struct device *device)
- {
- 	char fw_name[36] = "amd-ucode/microcode_amd.bin";
- 	struct cpuinfo_x86 *c = &cpu_data(cpu);
--	bool bsp = c->cpu_index == boot_cpu_data.cpu_index;
- 	enum ucode_state ret = UCODE_NFOUND;
- 	const struct firmware *fw;
- 
--	/* reload ucode container only on the boot cpu */
--	if (!bsp)
--		return UCODE_OK;
--
- 	if (c->x86 >= 0x15)
- 		snprintf(fw_name, sizeof(fw_name), "amd-ucode/microcode_amd_fam%.2xh.bin", c->x86);
- 
-@@ -926,7 +915,7 @@ static enum ucode_state request_microcode_amd(int cpu, struct device *device)
- 	if (!verify_container(fw->data, fw->size, false))
- 		goto fw_release;
- 
--	ret = load_microcode_amd(bsp, c->x86, fw->data, fw->size);
-+	ret = load_microcode_amd(c->x86, fw->data, fw->size);
- 
-  fw_release:
- 	release_firmware(fw);
+ static void update_gt_cputime(struct task_cputime_atomic *cputime_atomic,
