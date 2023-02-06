@@ -2,55 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8FF068BFB8
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Feb 2023 15:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC7268C030
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Feb 2023 15:34:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231321AbjBFOOB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 6 Feb 2023 09:14:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54570 "EHLO
+        id S230363AbjBFOee (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 6 Feb 2023 09:34:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231309AbjBFONo (ORCPT
+        with ESMTP id S230337AbjBFOec (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 6 Feb 2023 09:13:44 -0500
+        Mon, 6 Feb 2023 09:34:32 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA862658E;
-        Mon,  6 Feb 2023 06:13:06 -0800 (PST)
-Date:   Mon, 06 Feb 2023 14:12:45 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC74F23DA0;
+        Mon,  6 Feb 2023 06:34:31 -0800 (PST)
+Date:   Mon, 06 Feb 2023 14:34:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1675692766;
+        s=2020; t=1675694070;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hj0Mhlus84qc7jbWOcuoPYl/kpgWwsAus+jEFc07HZo=;
-        b=C0LZxnQxFSP0wZGizyg93du+bTSseKLtNC3wxFlHAeX4xUKOT5eW6rMRDJFSIJuJb9QxUF
-        N79KekZNrkhC30W8u68rQ2MFD4iQNV4wWKElvlG3WTceWqSyMttSaQns+O6rTmLRKIYkyh
-        8YGu25NLOe4Lh+xCq5AG16On1xRAPFhMi/Tnee8gqOusvNSGv7f8ga8fTunBvn+AWWOeqN
-        /3lKgUi+oL5oPRhWukcSZzIWeLA4cMPa5lWad5EVTM318IdvBoeoJfdAfhi2cRDfv0zPMP
-        9RluZEPUvlN3X0cdksgQcd+vlL37yu6y22ziBMf1tNimdwxX9O5lTOaFRDfGUw==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=lTvjL1KX8h96Jn3F5nqsbDVPXpo9oQm1PefgNz3vkhg=;
+        b=3pAoti8WZuS7RgNMf/03XuCU8LDBBj+ZVV0/LlnthqbkLE+37wyHj4HUna/uNAkWN8D5X6
+        e5sXlZPJxw5DuSlfT1q2ZJb3E8Ck3yY1s8j5x2r+zLhXhvYHhe1nih+rnvFGXPD7cH7gfL
+        3WXrJL17xLsbbWJVZx8VLDYPfz788auv1Z0xHpxeheeW4BFFjgORFDq9V/j/GsFb9z7vHw
+        vN+q8eFRA+KzDsQH7E03U8ZwQPpzpwydrjqUjYpnZhFxo3AWzWm2+PRzzioS++z5wfGMnB
+        AgeZ3It8T20ieO63JsTY4TVU91f2gHVIfTRijZ1U3p2kv000ZLeQZvpbUaRLZQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1675692766;
+        s=2020e; t=1675694070;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hj0Mhlus84qc7jbWOcuoPYl/kpgWwsAus+jEFc07HZo=;
-        b=a9gsloaxOMV1e6d6nOv/FFKRBuTrDfdPvbYLmYM5oiFqJTgzi4l1W7BRNtlGyOlVzzihRc
-        fShbNwGf+EcdDFCg==
-From:   "tip-bot2 for Wander Lairson Costa" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=lTvjL1KX8h96Jn3F5nqsbDVPXpo9oQm1PefgNz3vkhg=;
+        b=KxeRmhxV4cXHkmXmAxf7ZYrPuwQQ3VdmfPgzTK6bEdEQuijUASrPLCo0P6/GZCl2C0LnXG
+        L2nGjQWYWIg8osBw==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] rtmutex: Ensure that the top waiter is always woken up
-Cc:     Wander Lairson Costa <wander@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230117172649.52465-1-wander@redhat.com>
-References: <20230117172649.52465-1-wander@redhat.com>
+Subject: [tip: locking/core] vduse: Remove include of rwlock.h
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Michael S. Tsirkin" <mst@redhat.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167569276573.4906.7991545915243537568.tip-bot2@tip-bot2>
+Message-ID: <167569407005.4906.11428635230479765759.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,126 +59,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     db370a8b9f67ae5f17e3d5482493294467784504
-Gitweb:        https://git.kernel.org/tip/db370a8b9f67ae5f17e3d5482493294467784504
-Author:        Wander Lairson Costa <wander@redhat.com>
-AuthorDate:    Thu, 02 Feb 2023 09:30:20 -03:00
+Commit-ID:     3b4863fa5b7dd50dab1b10abbed938efd203752f
+Gitweb:        https://git.kernel.org/tip/3b4863fa5b7dd50dab1b10abbed938efd203752f
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Wed, 26 Oct 2022 15:44:07 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 06 Feb 2023 14:49:13 +01:00
+CommitterDate: Mon, 06 Feb 2023 15:31:05 +01:00
 
-rtmutex: Ensure that the top waiter is always woken up
+vduse: Remove include of rwlock.h
 
-Let L1 and L2 be two spinlocks.
+rwlock.h should not be included directly. Instead linux/splinlock.h
+should be included. Including it directly will break the RT build.
 
-Let T1 be a task holding L1 and blocked on L2. T1, currently, is the top
-waiter of L2.
+Remove the rwlock.h include.
 
-Let T2 be the task holding L2.
-
-Let T3 be a task trying to acquire L1.
-
-The following events will lead to a state in which the wait queue of L2
-isn't empty, but no task actually holds the lock.
-
-T1                T2                                  T3
-==                ==                                  ==
-
-                                                      spin_lock(L1)
-                                                      | raw_spin_lock(L1->wait_lock)
-                                                      | rtlock_slowlock_locked(L1)
-                                                      | | task_blocks_on_rt_mutex(L1, T3)
-                                                      | | | orig_waiter->lock = L1
-                                                      | | | orig_waiter->task = T3
-                                                      | | | raw_spin_unlock(L1->wait_lock)
-                                                      | | | rt_mutex_adjust_prio_chain(T1, L1, L2, orig_waiter, T3)
-                  spin_unlock(L2)                     | | | |
-                  | rt_mutex_slowunlock(L2)           | | | |
-                  | | raw_spin_lock(L2->wait_lock)    | | | |
-                  | | wakeup(T1)                      | | | |
-                  | | raw_spin_unlock(L2->wait_lock)  | | | |
-                                                      | | | | waiter = T1->pi_blocked_on
-                                                      | | | | waiter == rt_mutex_top_waiter(L2)
-                                                      | | | | waiter->task == T1
-                                                      | | | | raw_spin_lock(L2->wait_lock)
-                                                      | | | | dequeue(L2, waiter)
-                                                      | | | | update_prio(waiter, T1)
-                                                      | | | | enqueue(L2, waiter)
-                                                      | | | | waiter != rt_mutex_top_waiter(L2)
-                                                      | | | | L2->owner == NULL
-                                                      | | | | wakeup(T1)
-                                                      | | | | raw_spin_unlock(L2->wait_lock)
-T1 wakes up
-T1 != top_waiter(L2)
-schedule_rtlock()
-
-If the deadline of T1 is updated before the call to update_prio(), and the
-new deadline is greater than the deadline of the second top waiter, then
-after the requeue, T1 is no longer the top waiter, and the wrong task is
-woken up which will then go back to sleep because it is not the top waiter.
-
-This can be reproduced in PREEMPT_RT with stress-ng:
-
-while true; do
-    stress-ng --sched deadline --sched-period 1000000000 \
-    	    --sched-runtime 800000000 --sched-deadline \
-    	    1000000000 --mmapfork 23 -t 20
-done
-
-A similar issue was pointed out by Thomas versus the cases where the top
-waiter drops out early due to a signal or timeout, which is a general issue
-for all regular rtmutex use cases, e.g. futex.
-
-The problematic code is in rt_mutex_adjust_prio_chain():
-
-    	// Save the top waiter before dequeue/enqueue
-	prerequeue_top_waiter = rt_mutex_top_waiter(lock);
-
-	rt_mutex_dequeue(lock, waiter);
-	waiter_update_prio(waiter, task);
-	rt_mutex_enqueue(lock, waiter);
-
-	// Lock has no owner?
-	if (!rt_mutex_owner(lock)) {
-	   	// Top waiter changed		      			   
-  ---->		if (prerequeue_top_waiter != rt_mutex_top_waiter(lock))
-  ---->			wake_up_state(waiter->task, waiter->wake_state);
-
-This only takes the case into account where @waiter is the new top waiter
-due to the requeue operation.
-
-But it fails to handle the case where @waiter is not longer the top
-waiter due to the requeue operation.
-
-Ensure that the new top waiter is woken up so in all cases so it can take
-over the ownerless lock.
-
-[ tglx: Amend changelog, add Fixes tag ]
-
-Fixes: c014ef69b3ac ("locking/rtmutex: Add wake_state to rt_mutex_waiter")
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230117172649.52465-1-wander@redhat.com
-Link: https://lore.kernel.org/r/20230202123020.14844-1-wander@redhat.com
----
- kernel/locking/rtmutex.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
-index 010cf4e..728f434 100644
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -901,8 +901,9 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
- 		 * then we need to wake the new top waiter up to try
- 		 * to get the lock.
- 		 */
--		if (prerequeue_top_waiter != rt_mutex_top_waiter(lock))
--			wake_up_state(waiter->task, waiter->wake_state);
-+		top_waiter = rt_mutex_top_waiter(lock);
-+		if (prerequeue_top_waiter != top_waiter)
-+			wake_up_state(top_waiter->task, top_waiter->wake_state);
- 		raw_spin_unlock_irq(&lock->wait_lock);
- 		return 0;
- 	}
+---
+ drivers/vdpa/vdpa_user/iova_domain.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/vdpa/vdpa_user/iova_domain.h b/drivers/vdpa/vdpa_user/iova_domain.h
+index 4e0e50e..173e979 100644
+--- a/drivers/vdpa/vdpa_user/iova_domain.h
++++ b/drivers/vdpa/vdpa_user/iova_domain.h
+@@ -14,7 +14,6 @@
+ #include <linux/iova.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/vhost_iotlb.h>
+-#include <linux/rwlock.h>
+ 
+ #define IOVA_START_PFN 1
+ 
