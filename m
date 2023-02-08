@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99AFA68F701
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Feb 2023 19:35:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11D5868F898
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Feb 2023 21:10:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232035AbjBHSfk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Feb 2023 13:35:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35600 "EHLO
+        id S230450AbjBHUJ7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Feb 2023 15:09:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231935AbjBHSf2 (ORCPT
+        with ESMTP id S231713AbjBHUJ6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Feb 2023 13:35:28 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B343956498;
-        Wed,  8 Feb 2023 10:35:11 -0800 (PST)
-Date:   Wed, 08 Feb 2023 18:35:09 -0000
+        Wed, 8 Feb 2023 15:09:58 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AB79E38C;
+        Wed,  8 Feb 2023 12:09:57 -0800 (PST)
+Date:   Wed, 08 Feb 2023 20:09:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1675881310;
+        s=2020; t=1675886995;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=pcFjdWbs2XTopyqPClTl+dUkRc1UPDvqjqiKoje/Vj0=;
-        b=0k14qGeZfdPHaKnLiQkIzZywhiJOcfCacHEP3/Ouw2a0/nMtiOv2nKM7C6uHNHaOeEpS9N
-        heSuWH01fuNJWwJsvrfiWE/4MBk39yBB8GXJYtNELLjU0k1DwTFZ8ctwvEaO25h0+zDG5t
-        SW1a0PLaBQkGJLXwWOSBjOMc1pNrgNhWV4GkC3cmzWokGh7nKXOJ5IWkXWvVQvt4lAvO5p
-        Aj2e3r0iE3vvGeO/LqxiXzkvAlOOgvRi9QXgTQqUMLG+xjTUlaQLyY+9GJ8KQEwMZFHBI2
-        x9QlDkBP2PLJhVJtK23+z3F09wGPgSOVReoQL3sEmzMPSfgLDe/AyWTcAgOGQA==
+        bh=7nkBggcmalQyIVcJVJzEc/6t0NOZc5Dw4snR/EDYZs4=;
+        b=hvFfBHd5EGXj4RmObTGq3wkVU80wsJ57K0ukEaUITpb8STANTBvc++agklzwo/kP9no47e
+        KOV7jIOnLzG04Heyi8BZmkISGkXAulnhSULvDp9rLwlYsY0xa+OlTr4Y7p9XEYdFTWGGKI
+        CvvD/GU1tybLyG7ENTM/0/ggID0h1cfc7N6x0/X5pOV9N045vMXWI7y/dh3tUV5sPu2sju
+        kIssKYn18qFVoA+3fXjlkICKqetRjYk3xH/BsM2ytCC7j6Nl5nt43m+swELZq1cDg+DvQY
+        hvnSznkMQbWKHGtXtJwj6Nus9aWRqR46yWl5Kr3uSs8DA1x9EjcR/r8Cme5HmQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1675881310;
+        s=2020e; t=1675886995;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=pcFjdWbs2XTopyqPClTl+dUkRc1UPDvqjqiKoje/Vj0=;
-        b=y0koWMrDq72sbcPZGIHF4ZqwVgbr8UQ5eAzfJz1dHj/xkirFyUQD+EGq5izg3AOSNFzfBn
-        F1RtiXBK+wvY7DDw==
+        bh=7nkBggcmalQyIVcJVJzEc/6t0NOZc5Dw4snR/EDYZs4=;
+        b=anc3FzAGinGbu5ik5FBLe/mSpbNIm12otmtZkAPPy/JriWjh8cg1LAyUY1huMxR7zYXZHJ
+        9ZTkbwkO1K0DEOCA==
 From:   "tip-bot2 for Nadav Amit" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -43,10 +43,11 @@ Subject: [tip: x86/urgent] x86/kprobes: Fix 1 byte conditional jump target
 Cc:     "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
         Dave Hansen <dave.hansen@intel.com>,
         Nadav Amit <namit@vmware.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167588130939.4906.8140947496160437703.tip-bot2@tip-bot2>
+Message-ID: <167588699468.4906.8001929680008508448.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,12 +63,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     bd467ddd80ab3ecdd846ac148274603e1214ae73
-Gitweb:        https://git.kernel.org/tip/bd467ddd80ab3ecdd846ac148274603e1214ae73
+Commit-ID:     ae052e3ae09572194d7e574906db7272041577d3
+Gitweb:        https://git.kernel.org/tip/ae052e3ae09572194d7e574906db7272041577d3
 Author:        Nadav Amit <namit@vmware.com>
 AuthorDate:    Wed, 08 Feb 2023 07:17:08 
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 08 Feb 2023 08:26:21 -08:00
+CommitterDate: Wed, 08 Feb 2023 12:03:27 -08:00
 
 x86/kprobes: Fix 1 byte conditional jump target
 
@@ -86,6 +87,7 @@ Suggested-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Suggested-by: Dave Hansen <dave.hansen@intel.com>
 Signed-off-by: Nadav Amit <namit@vmware.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Link: https://lore.kernel.org/all/20230208071708.4048-1-namit%40vmware.com
 ---
  arch/x86/kernel/kprobes/core.c | 2 +-
