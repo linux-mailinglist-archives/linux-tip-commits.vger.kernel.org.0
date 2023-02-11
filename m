@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21748692FFA
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Feb 2023 11:30:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1086C692FFD
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Feb 2023 11:31:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229692AbjBKKa4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 11 Feb 2023 05:30:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50424 "EHLO
+        id S229948AbjBKKa6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 11 Feb 2023 05:30:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229658AbjBKKa4 (ORCPT
+        with ESMTP id S229762AbjBKKa4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 11 Feb 2023 05:30:56 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59B112006B;
-        Sat, 11 Feb 2023 02:30:55 -0800 (PST)
-Date:   Sat, 11 Feb 2023 10:30:53 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 042DA2197F;
+        Sat, 11 Feb 2023 02:30:56 -0800 (PST)
+Date:   Sat, 11 Feb 2023 10:30:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676111453;
+        s=2020; t=1676111454;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KxaQ+e28M8FkH0NNi2WoKjdyfNU63nRcy/3GdI0r6gE=;
-        b=ckGbY90VZaKmE3wfqcrQhzkyijIoNGa9lT05m05BbJKTc8kkAQ0vk4z4STi1wwJ2dXTkw/
-        gPm8s6W6zBSMVFPzSlSU9LQYC199T2Tt/cxG+l5RexN0FGPup7mb8DUFI2R6Oeqij3h3Fs
-        3hTeKCb1KmYwr6tADhEfxYTivETkJsEh9MtPKnBuumEDFSrpkrAN4RoSeW23mBjuQRtrAu
-        nlxbSdhpeuw8VunuDVECOGOaCItutjwamYHVliIcV5K/3Y3OA5LzCQ9grsXF5XWHutZccK
-        nCeNelEA1I9Dp6N1WIBB0uLeCv/1PDXKda+rC/vrAU5cjvmadXAOnFZbq1Uv9w==
+        bh=rmdPyDM+tz9rqCjEuFxQxMiI/xnQqO9uZI+vZtzn3Wk=;
+        b=X2RJ+HJ1WB/o9LsLjk5UpoikHGHsiOe95xxcU4MNZCNBydle+Idg0S8Bg39uYdO97kKvaA
+        ihSx6E1D9ekBJak8kuBN/p3wL59VzKtpFCyG71uuHhU5Ok5wOImL9aanY1+nUMM8UgWOBB
+        sHLpFMYffqj2T7boEFik8FXNpZUbr00IOX1a6oS/H4lmnDveBtbX+sre6FlZNSIB2HcJck
+        JDm/SNf8uUlyLytqEuD+w0QkeC4+IkWBTwNEtJFlYAEDa7nvxgmc1Wtai4lB32b/LV4Hzh
+        OfiW+J5WF6ZE2EsV0eg7ulOxxzBqrVnQlIUuFdWtNzEnLbBPVCWpZZpMrsfYng==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676111453;
+        s=2020e; t=1676111454;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KxaQ+e28M8FkH0NNi2WoKjdyfNU63nRcy/3GdI0r6gE=;
-        b=zkUB6WUs314h821Etws0nGquw49t5pEFLuMxwZFgD47NHx8x9hZOlyFji19ddl0SIxG3HX
-        MN0LSw9373zOV1Aw==
-From:   "tip-bot2 for Pietro Borrello" <tip-bot2@linutronix.de>
+        bh=rmdPyDM+tz9rqCjEuFxQxMiI/xnQqO9uZI+vZtzn3Wk=;
+        b=ygGh37fT/U8VUfzwN02SQL2XQczNcXlTzUNXmMloRz8kEAtKoOLRhY5m4tyZmAN9W0JPtN
+        xgDvr4ej7m7UG7Bw==
+From:   "tip-bot2 for Zhang Qiao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/rt: pick_next_rt_entity(): check list_entry
-Cc:     Pietro Borrello <borrello@diag.uniroma1.it>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Phil Auld <pauld@redhat.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: sanitize vruntime of entity being placed
+Cc:     Zhang Qiao <zhangqiao22@huawei.com>,
+        Roman Kagan <rkagan@amazon.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230128-list-entry-null-check-sched-v3-1-b1a71bd1ac6b@diag.uniroma1.it>
-References: <20230128-list-entry-null-check-sched-v3-1-b1a71bd1ac6b@diag.uniroma1.it>
+In-Reply-To: <20230130122216.3555094-1-rkagan@amazon.de>
+References: <20230130122216.3555094-1-rkagan@amazon.de>
 MIME-Version: 1.0
-Message-ID: <167611145334.4906.4760858235156037814.tip-bot2@tip-bot2>
+Message-ID: <167611145417.4906.10757655452818382605.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,54 +67,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     7c4a5b89a0b5a57a64b601775b296abf77a9fe97
-Gitweb:        https://git.kernel.org/tip/7c4a5b89a0b5a57a64b601775b296abf77a9fe97
-Author:        Pietro Borrello <borrello@diag.uniroma1.it>
-AuthorDate:    Mon, 06 Feb 2023 22:33:54 
+Commit-ID:     829c1651e9c4a6f78398d3e67651cef9bb6b42cc
+Gitweb:        https://git.kernel.org/tip/829c1651e9c4a6f78398d3e67651cef9bb6b42cc
+Author:        Zhang Qiao <zhangqiao22@huawei.com>
+AuthorDate:    Mon, 30 Jan 2023 13:22:16 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 11 Feb 2023 11:18:10 +01:00
+CommitterDate: Sat, 11 Feb 2023 11:18:09 +01:00
 
-sched/rt: pick_next_rt_entity(): check list_entry
+sched/fair: sanitize vruntime of entity being placed
 
-Commit 326587b84078 ("sched: fix goto retry in pick_next_task_rt()")
-removed any path which could make pick_next_rt_entity() return NULL.
-However, BUG_ON(!rt_se) in _pick_next_task_rt() (the only caller of
-pick_next_rt_entity()) still checks the error condition, which can
-never happen, since list_entry() never returns NULL.
-Remove the BUG_ON check, and instead emit a warning in the only
-possible error condition here: the queue being empty which should
-never happen.
+When a scheduling entity is placed onto cfs_rq, its vruntime is pulled
+to the base level (around cfs_rq->min_vruntime), so that the entity
+doesn't gain extra boost when placed backwards.
 
-Fixes: 326587b84078 ("sched: fix goto retry in pick_next_task_rt()")
-Signed-off-by: Pietro Borrello <borrello@diag.uniroma1.it>
+However, if the entity being placed wasn't executed for a long time, its
+vruntime may get too far behind (e.g. while cfs_rq was executing a
+low-weight hog), which can inverse the vruntime comparison due to s64
+overflow.  This results in the entity being placed with its original
+vruntime way forwards, so that it will effectively never get to the cpu.
+
+To prevent that, ignore the vruntime of the entity being placed if it
+didn't execute for much longer than the characteristic sheduler time
+scale.
+
+[rkagan: formatted, adjusted commit log, comments, cutoff value]
+Signed-off-by: Zhang Qiao <zhangqiao22@huawei.com>
+Co-developed-by: Roman Kagan <rkagan@amazon.de>
+Signed-off-by: Roman Kagan <rkagan@amazon.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20230128-list-entry-null-check-sched-v3-1-b1a71bd1ac6b@diag.uniroma1.it
+Link: https://lkml.kernel.org/r/20230130122216.3555094-1-rkagan@amazon.de
 ---
- kernel/sched/rt.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index ed2a47e..0a11f44 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -1777,6 +1777,8 @@ static struct sched_rt_entity *pick_next_rt_entity(struct rt_rq *rt_rq)
- 	BUG_ON(idx >= MAX_RT_PRIO);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index c6c8e7f..ff4dbba 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4652,6 +4652,7 @@ static void
+ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)
+ {
+ 	u64 vruntime = cfs_rq->min_vruntime;
++	u64 sleep_time;
  
- 	queue = array->queue + idx;
-+	if (SCHED_WARN_ON(list_empty(queue)))
-+		return NULL;
- 	next = list_entry(queue->next, struct sched_rt_entity, run_list);
+ 	/*
+ 	 * The 'current' period is already promised to the current tasks,
+@@ -4681,8 +4682,18 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)
+ 		vruntime -= thresh;
+ 	}
  
- 	return next;
-@@ -1789,7 +1791,8 @@ static struct task_struct *_pick_next_task_rt(struct rq *rq)
+-	/* ensure we never gain time by being placed backwards. */
+-	se->vruntime = max_vruntime(se->vruntime, vruntime);
++	/*
++	 * Pull vruntime of the entity being placed to the base level of
++	 * cfs_rq, to prevent boosting it if placed backwards.  If the entity
++	 * slept for a long time, don't even try to compare its vruntime with
++	 * the base as it may be too far off and the comparison may get
++	 * inversed due to s64 overflow.
++	 */
++	sleep_time = rq_clock_task(rq_of(cfs_rq)) - se->exec_start;
++	if ((s64)sleep_time > 60LL * NSEC_PER_SEC)
++		se->vruntime = vruntime;
++	else
++		se->vruntime = max_vruntime(se->vruntime, vruntime);
+ }
  
- 	do {
- 		rt_se = pick_next_rt_entity(rt_rq);
--		BUG_ON(!rt_se);
-+		if (unlikely(!rt_se))
-+			return NULL;
- 		rt_rq = group_rt_rq(rt_se);
- 	} while (rt_rq);
- 
+ static void check_enqueue_throttle(struct cfs_rq *cfs_rq);
