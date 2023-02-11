@@ -2,50 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E0F1693009
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Feb 2023 11:38:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66E886930AD
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Feb 2023 12:53:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229543AbjBKKi1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 11 Feb 2023 05:38:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54234 "EHLO
+        id S229936AbjBKLw6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 11 Feb 2023 06:52:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjBKKi0 (ORCPT
+        with ESMTP id S229476AbjBKLwb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 11 Feb 2023 05:38:26 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09DEC20D2B;
-        Sat, 11 Feb 2023 02:38:25 -0800 (PST)
-Date:   Sat, 11 Feb 2023 10:38:23 -0000
+        Sat, 11 Feb 2023 06:52:31 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5657227B7;
+        Sat, 11 Feb 2023 03:52:11 -0800 (PST)
+Date:   Sat, 11 Feb 2023 11:52:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676111903;
+        s=2020; t=1676116329;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=zvoRWe8d4RiHsK7K2t4FuOGTF/jtKq6uzColTL/LSJk=;
-        b=uK2A267bSzItEoZx7/mC3oOOTDTrkLlbknImidujzGa38x3zpZSywkyliKGtxjPQ4+AAxq
-        rMeYSOoj2A5Plywslp0vk1tVlI3UtX3CwgFuOU7Wqr+kUCVQWUYtUPG0mkm+IrdNMNa11q
-        MEo4uptHikb4mZuUxE0PQEV2cKcZiRJwu3o2SAgA2kc2oShiQGQzLN5w4jFKSY7DYe56IX
-        rNrJZuYhy/jJrrLJLXWKVmKxl85MbLAK2ob0ThT6t/mFKgALR10fA6sUMArsrWlROMTGuE
-        6ecRjMdZkak2Ff3W4Kymw/y2RGoW4Zn+F7O+CdG0Kl3ef7c3VL78kKUaSDb7mA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=wofOAcNOe0PexyWaDwti21aKsOg0nFefc80AMYFSY14=;
+        b=pBt9ESaZz2iFsu1/AzEg6rVThKMvJP15VHP/8p/xlTMeY+pEFk9r1P8Gj0tAtUIHpcJp/V
+        C1VRjriX/miwnMlWq1i/b3CJDSU2D2fx8e8CqKq6juXd2pQG/9Zwpmvq+jZ61ar2jZ0FQE
+        NeVJY8mF9Dorn81svkPpMDiWl464jW6NCET0frDs5v0TGNypkqdvofFFFhEQIHjnvXkQr6
+        GyDPraR2EAD1aYCDCLll5rWmc3c5dwqXk8ul2U6Yn+dTmggdLqa4tDyOu0HNOUycWksjw9
+        w0x6FYJshwtYkK3L58u5FB7SNVFkEt3JDml6yrJosiZSL/Wck8lDb18MQATFrg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676111903;
+        s=2020e; t=1676116329;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=zvoRWe8d4RiHsK7K2t4FuOGTF/jtKq6uzColTL/LSJk=;
-        b=PUcCHPchELf3k11pnpd3mDFNgOQAfI0uw+aJsfxpgvwXIbe7yejd8PZKd1TFi1SqkhfUCO
-        uO8cWGOKwCprLGBw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=wofOAcNOe0PexyWaDwti21aKsOg0nFefc80AMYFSY14=;
+        b=m4JsbVRcyAsqnFEHnZ2QvJOS/bzWjukJLd8ZP9l9yEmHgk1Prnf+ub1Mmwv7OjhpHe2mCA
+        cHlx3TtAcK3+AsDQ==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/ds: Fix the conversion from TSC to perf time
-Cc:     Namhyung Kim <namhyung@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/intel/uncore: Add Meteor Lake support
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20230210190238.1726237-1-kan.liang@linux.intel.com>
+References: <20230210190238.1726237-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <167611190335.4906.6861477771600380027.tip-bot2@tip-bot2>
+Message-ID: <167611632910.4906.6089442713007626940.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,117 +66,262 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     89e97eb8cec0f1af5ebf2380308913256ca7915a
-Gitweb:        https://git.kernel.org/tip/89e97eb8cec0f1af5ebf2380308913256ca7915a
+Commit-ID:     c828441f21ddc819a28b5723a72e3c840e9de1c6
+Gitweb:        https://git.kernel.org/tip/c828441f21ddc819a28b5723a72e3c840e9de1c6
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 25 Jan 2023 12:49:25 -08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 11 Feb 2023 11:18:12 +01:00
+AuthorDate:    Fri, 10 Feb 2023 11:02:38 -08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 11 Feb 2023 12:39:03 +01:00
 
-perf/x86/intel/ds: Fix the conversion from TSC to perf time
+perf/x86/intel/uncore: Add Meteor Lake support
 
-The time order is incorrect when the TSC in a PEBS record is used.
+The uncore subsystem for Meteor Lake is similar to the previous Alder
+Lake. The main difference is that MTL provides PMU support for different
+tiles, while ADL only provides PMU support for the whole package. On
+ADL, there are CBOX, ARB, and clockbox uncore PMON units. On MTL, they
+are split into CBOX/HAC_CBOX, ARB/HAC_ARB, and cncu/sncu which provides
+a fixed counter for clockticks. Also, new MSR addresses are introduced
+on MTL.
 
- $perf record -e cycles:upp dd if=/dev/zero of=/dev/null
-  count=10000
- $ perf script --show-task-events
-       perf-exec     0     0.000000: PERF_RECORD_COMM: perf-exec:915/915
-              dd   915   106.479872: PERF_RECORD_COMM exec: dd:915/915
-              dd   915   106.483270: PERF_RECORD_EXIT(915:915):(914:914)
-              dd   915   106.512429:          1 cycles:upp:
- ffffffff96c011b7 [unknown] ([unknown])
- ... ...
+The IMC uncore PMON is the same as Alder Lake. Add new PCIIDs of IMC for
+Meteor Lake.
 
-The perf time is from sched_clock_cpu(). The current PEBS code
-unconditionally convert the TSC to native_sched_clock(). There is a
-shift between the two clocks. If the TSC is stable, the shift is
-consistent, __sched_clock_offset. If the TSC is unstable, the shift has
-to be calculated at runtime.
-
-This patch doesn't support the conversion when the TSC is unstable. The
-TSC unstable case is a corner case and very unlikely to happen. If it
-happens, the TSC in a PEBS record will be dropped and fall back to
-perf_event_clock().
-
-Fixes: 47a3aeb39e8d ("perf/x86/intel/pebs: Fix PEBS timestamps overwritten")
-Reported-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/CAM9d7cgWDVAq8-11RbJ2uGfwkKD6fA-OMwOKDrNUrU_=8MgEjg@mail.gmail.com/
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230210190238.1726237-1-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/ds.c | 35 ++++++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 9 deletions(-)
+ arch/x86/events/intel/uncore.c     |   7 +-
+ arch/x86/events/intel/uncore.h     |   1 +-
+ arch/x86/events/intel/uncore_snb.c | 161 ++++++++++++++++++++++++++++-
+ 3 files changed, 169 insertions(+)
 
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index 183efa9..b0354dc 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -2,12 +2,14 @@
- #include <linux/bitops.h>
- #include <linux/types.h>
- #include <linux/slab.h>
-+#include <linux/sched/clock.h>
+diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
+index 4030b0b..bc22660 100644
+--- a/arch/x86/events/intel/uncore.c
++++ b/arch/x86/events/intel/uncore.c
+@@ -1789,6 +1789,11 @@ static const struct intel_uncore_init_fun adl_uncore_init __initconst = {
+ 	.mmio_init = adl_uncore_mmio_init,
+ };
  
- #include <asm/cpu_entry_area.h>
- #include <asm/perf_event.h>
- #include <asm/tlbflush.h>
- #include <asm/insn.h>
- #include <asm/io.h>
-+#include <asm/timer.h>
++static const struct intel_uncore_init_fun mtl_uncore_init __initconst = {
++	.cpu_init = mtl_uncore_cpu_init,
++	.mmio_init = adl_uncore_mmio_init,
++};
++
+ static const struct intel_uncore_init_fun icx_uncore_init __initconst = {
+ 	.cpu_init = icx_uncore_cpu_init,
+ 	.pci_init = icx_uncore_pci_init,
+@@ -1857,6 +1862,8 @@ static const struct x86_cpu_id intel_uncore_match[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,		&adl_uncore_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,	&adl_uncore_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,	&adl_uncore_init),
++	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE,		&mtl_uncore_init),
++	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE_L,	&mtl_uncore_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(SAPPHIRERAPIDS_X,	&spr_uncore_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(EMERALDRAPIDS_X,	&spr_uncore_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_D,	&snr_uncore_init),
+diff --git a/arch/x86/events/intel/uncore.h b/arch/x86/events/intel/uncore.h
+index e76b945..c30fb5b 100644
+--- a/arch/x86/events/intel/uncore.h
++++ b/arch/x86/events/intel/uncore.h
+@@ -606,6 +606,7 @@ void skl_uncore_cpu_init(void);
+ void icl_uncore_cpu_init(void);
+ void tgl_uncore_cpu_init(void);
+ void adl_uncore_cpu_init(void);
++void mtl_uncore_cpu_init(void);
+ void tgl_uncore_mmio_init(void);
+ void tgl_l_uncore_mmio_init(void);
+ void adl_uncore_mmio_init(void);
+diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncore_snb.c
+index 1f48692..7fd4334 100644
+--- a/arch/x86/events/intel/uncore_snb.c
++++ b/arch/x86/events/intel/uncore_snb.c
+@@ -109,6 +109,19 @@
+ #define PCI_DEVICE_ID_INTEL_RPL_23_IMC		0xA728
+ #define PCI_DEVICE_ID_INTEL_RPL_24_IMC		0xA729
+ #define PCI_DEVICE_ID_INTEL_RPL_25_IMC		0xA72A
++#define PCI_DEVICE_ID_INTEL_MTL_1_IMC		0x7d00
++#define PCI_DEVICE_ID_INTEL_MTL_2_IMC		0x7d01
++#define PCI_DEVICE_ID_INTEL_MTL_3_IMC		0x7d02
++#define PCI_DEVICE_ID_INTEL_MTL_4_IMC		0x7d05
++#define PCI_DEVICE_ID_INTEL_MTL_5_IMC		0x7d10
++#define PCI_DEVICE_ID_INTEL_MTL_6_IMC		0x7d14
++#define PCI_DEVICE_ID_INTEL_MTL_7_IMC		0x7d15
++#define PCI_DEVICE_ID_INTEL_MTL_8_IMC		0x7d16
++#define PCI_DEVICE_ID_INTEL_MTL_9_IMC		0x7d21
++#define PCI_DEVICE_ID_INTEL_MTL_10_IMC		0x7d22
++#define PCI_DEVICE_ID_INTEL_MTL_11_IMC		0x7d23
++#define PCI_DEVICE_ID_INTEL_MTL_12_IMC		0x7d24
++#define PCI_DEVICE_ID_INTEL_MTL_13_IMC		0x7d28
  
- #include "../perf_event.h"
  
-@@ -1568,6 +1570,27 @@ static u64 get_data_src(struct perf_event *event, u64 aux)
- 	return val;
+ #define IMC_UNCORE_DEV(a)						\
+@@ -205,6 +218,32 @@
+ #define ADL_UNC_ARB_PERFEVTSEL0			0x2FD0
+ #define ADL_UNC_ARB_MSR_OFFSET			0x8
+ 
++/* MTL Cbo register */
++#define MTL_UNC_CBO_0_PER_CTR0			0x2448
++#define MTL_UNC_CBO_0_PERFEVTSEL0		0x2442
++
++/* MTL HAC_ARB register */
++#define MTL_UNC_HAC_ARB_CTR			0x2018
++#define MTL_UNC_HAC_ARB_CTRL			0x2012
++
++/* MTL ARB register */
++#define MTL_UNC_ARB_CTR				0x2418
++#define MTL_UNC_ARB_CTRL			0x2412
++
++/* MTL cNCU register */
++#define MTL_UNC_CNCU_FIXED_CTR			0x2408
++#define MTL_UNC_CNCU_FIXED_CTRL			0x2402
++#define MTL_UNC_CNCU_BOX_CTL			0x240e
++
++/* MTL sNCU register */
++#define MTL_UNC_SNCU_FIXED_CTR			0x2008
++#define MTL_UNC_SNCU_FIXED_CTRL			0x2002
++#define MTL_UNC_SNCU_BOX_CTL			0x200e
++
++/* MTL HAC_CBO register */
++#define MTL_UNC_HBO_CTR				0x2048
++#define MTL_UNC_HBO_CTRL			0x2042
++
+ DEFINE_UNCORE_FORMAT_ATTR(event, event, "config:0-7");
+ DEFINE_UNCORE_FORMAT_ATTR(umask, umask, "config:8-15");
+ DEFINE_UNCORE_FORMAT_ATTR(chmask, chmask, "config:8-11");
+@@ -598,6 +637,115 @@ void adl_uncore_cpu_init(void)
+ 	uncore_msr_uncores = adl_msr_uncores;
  }
  
-+static void setup_pebs_time(struct perf_event *event,
-+			    struct perf_sample_data *data,
-+			    u64 tsc)
++static struct intel_uncore_type mtl_uncore_cbox = {
++	.name		= "cbox",
++	.num_counters   = 2,
++	.perf_ctr_bits	= 48,
++	.perf_ctr	= MTL_UNC_CBO_0_PER_CTR0,
++	.event_ctl	= MTL_UNC_CBO_0_PERFEVTSEL0,
++	.event_mask	= ADL_UNC_RAW_EVENT_MASK,
++	.msr_offset	= SNB_UNC_CBO_MSR_OFFSET,
++	.ops		= &icl_uncore_msr_ops,
++	.format_group	= &adl_uncore_format_group,
++};
++
++static struct intel_uncore_type mtl_uncore_hac_arb = {
++	.name		= "hac_arb",
++	.num_counters   = 2,
++	.num_boxes	= 2,
++	.perf_ctr_bits	= 48,
++	.perf_ctr	= MTL_UNC_HAC_ARB_CTR,
++	.event_ctl	= MTL_UNC_HAC_ARB_CTRL,
++	.event_mask	= ADL_UNC_RAW_EVENT_MASK,
++	.msr_offset	= SNB_UNC_CBO_MSR_OFFSET,
++	.ops		= &icl_uncore_msr_ops,
++	.format_group	= &adl_uncore_format_group,
++};
++
++static struct intel_uncore_type mtl_uncore_arb = {
++	.name		= "arb",
++	.num_counters   = 2,
++	.num_boxes	= 2,
++	.perf_ctr_bits	= 48,
++	.perf_ctr	= MTL_UNC_ARB_CTR,
++	.event_ctl	= MTL_UNC_ARB_CTRL,
++	.event_mask	= ADL_UNC_RAW_EVENT_MASK,
++	.msr_offset	= SNB_UNC_CBO_MSR_OFFSET,
++	.ops		= &icl_uncore_msr_ops,
++	.format_group	= &adl_uncore_format_group,
++};
++
++static struct intel_uncore_type mtl_uncore_hac_cbox = {
++	.name		= "hac_cbox",
++	.num_counters   = 2,
++	.num_boxes	= 2,
++	.perf_ctr_bits	= 48,
++	.perf_ctr	= MTL_UNC_HBO_CTR,
++	.event_ctl	= MTL_UNC_HBO_CTRL,
++	.event_mask	= ADL_UNC_RAW_EVENT_MASK,
++	.msr_offset	= SNB_UNC_CBO_MSR_OFFSET,
++	.ops		= &icl_uncore_msr_ops,
++	.format_group	= &adl_uncore_format_group,
++};
++
++static void mtl_uncore_msr_init_box(struct intel_uncore_box *box)
 +{
-+	/* Converting to a user-defined clock is not supported yet. */
-+	if (event->attr.use_clockid != 0)
-+		return;
-+
-+	/*
-+	 * Doesn't support the conversion when the TSC is unstable.
-+	 * The TSC unstable case is a corner case and very unlikely to
-+	 * happen. If it happens, the TSC in a PEBS record will be
-+	 * dropped and fall back to perf_event_clock().
-+	 */
-+	if (!using_native_sched_clock() || !sched_clock_stable())
-+		return;
-+
-+	data->time = native_sched_clock_from_tsc(tsc) + __sched_clock_offset;
-+	data->sample_flags |= PERF_SAMPLE_TIME;
++	wrmsrl(uncore_msr_box_ctl(box), SNB_UNC_GLOBAL_CTL_EN);
 +}
 +
- #define PERF_SAMPLE_ADDR_TYPE	(PERF_SAMPLE_ADDR |		\
- 				 PERF_SAMPLE_PHYS_ADDR |	\
- 				 PERF_SAMPLE_DATA_PAGE_SIZE)
-@@ -1715,11 +1738,8 @@ static void setup_pebs_fixed_sample_data(struct perf_event *event,
- 	 *
- 	 * We can only do this for the default trace clock.
- 	 */
--	if (x86_pmu.intel_cap.pebs_format >= 3 &&
--		event->attr.use_clockid == 0) {
--		data->time = native_sched_clock_from_tsc(pebs->tsc);
--		data->sample_flags |= PERF_SAMPLE_TIME;
--	}
-+	if (x86_pmu.intel_cap.pebs_format >= 3)
-+		setup_pebs_time(event, data, pebs->tsc);
++static struct intel_uncore_ops mtl_uncore_msr_ops = {
++	.init_box	= mtl_uncore_msr_init_box,
++	.disable_event	= snb_uncore_msr_disable_event,
++	.enable_event	= snb_uncore_msr_enable_event,
++	.read_counter	= uncore_msr_read_counter,
++};
++
++static struct intel_uncore_type mtl_uncore_cncu = {
++	.name		= "cncu",
++	.num_counters   = 1,
++	.num_boxes	= 1,
++	.box_ctl	= MTL_UNC_CNCU_BOX_CTL,
++	.fixed_ctr_bits = 48,
++	.fixed_ctr	= MTL_UNC_CNCU_FIXED_CTR,
++	.fixed_ctl	= MTL_UNC_CNCU_FIXED_CTRL,
++	.single_fixed	= 1,
++	.event_mask	= SNB_UNC_CTL_EV_SEL_MASK,
++	.format_group	= &icl_uncore_clock_format_group,
++	.ops		= &mtl_uncore_msr_ops,
++	.event_descs	= icl_uncore_events,
++};
++
++static struct intel_uncore_type mtl_uncore_sncu = {
++	.name		= "sncu",
++	.num_counters   = 1,
++	.num_boxes	= 1,
++	.box_ctl	= MTL_UNC_SNCU_BOX_CTL,
++	.fixed_ctr_bits	= 48,
++	.fixed_ctr	= MTL_UNC_SNCU_FIXED_CTR,
++	.fixed_ctl	= MTL_UNC_SNCU_FIXED_CTRL,
++	.single_fixed	= 1,
++	.event_mask	= SNB_UNC_CTL_EV_SEL_MASK,
++	.format_group	= &icl_uncore_clock_format_group,
++	.ops		= &mtl_uncore_msr_ops,
++	.event_descs	= icl_uncore_events,
++};
++
++static struct intel_uncore_type *mtl_msr_uncores[] = {
++	&mtl_uncore_cbox,
++	&mtl_uncore_hac_arb,
++	&mtl_uncore_arb,
++	&mtl_uncore_hac_cbox,
++	&mtl_uncore_cncu,
++	&mtl_uncore_sncu,
++	NULL
++};
++
++void mtl_uncore_cpu_init(void)
++{
++	mtl_uncore_cbox.num_boxes = icl_get_cbox_num();
++	uncore_msr_uncores = mtl_msr_uncores;
++}
++
+ enum {
+ 	SNB_PCI_UNCORE_IMC,
+ };
+@@ -1264,6 +1412,19 @@ static const struct pci_device_id tgl_uncore_pci_ids[] = {
+ 	IMC_UNCORE_DEV(RPL_23),
+ 	IMC_UNCORE_DEV(RPL_24),
+ 	IMC_UNCORE_DEV(RPL_25),
++	IMC_UNCORE_DEV(MTL_1),
++	IMC_UNCORE_DEV(MTL_2),
++	IMC_UNCORE_DEV(MTL_3),
++	IMC_UNCORE_DEV(MTL_4),
++	IMC_UNCORE_DEV(MTL_5),
++	IMC_UNCORE_DEV(MTL_6),
++	IMC_UNCORE_DEV(MTL_7),
++	IMC_UNCORE_DEV(MTL_8),
++	IMC_UNCORE_DEV(MTL_9),
++	IMC_UNCORE_DEV(MTL_10),
++	IMC_UNCORE_DEV(MTL_11),
++	IMC_UNCORE_DEV(MTL_12),
++	IMC_UNCORE_DEV(MTL_13),
+ 	{ /* end: all zeroes */ }
+ };
  
- 	if (has_branch_stack(event))
- 		perf_sample_save_brstack(data, event, &cpuc->lbr_stack);
-@@ -1781,10 +1801,7 @@ static void setup_pebs_adaptive_sample_data(struct perf_event *event,
- 	perf_sample_data_init(data, 0, event->hw.last_period);
- 	data->period = event->hw.last_period;
- 
--	if (event->attr.use_clockid == 0) {
--		data->time = native_sched_clock_from_tsc(basic->tsc);
--		data->sample_flags |= PERF_SAMPLE_TIME;
--	}
-+	setup_pebs_time(event, data, basic->tsc);
- 
- 	/*
- 	 * We must however always use iregs for the unwinder to stay sane; the
