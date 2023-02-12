@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5005A6930B5
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Feb 2023 12:53:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 661036936CA
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 12 Feb 2023 11:03:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbjBKLxe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 11 Feb 2023 06:53:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33720 "EHLO
+        id S229528AbjBLKDu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 12 Feb 2023 05:03:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229742AbjBKLxQ (ORCPT
+        with ESMTP id S229481AbjBLKDt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 11 Feb 2023 06:53:16 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F701DBBA;
-        Sat, 11 Feb 2023 03:52:45 -0800 (PST)
-Date:   Sat, 11 Feb 2023 11:52:31 -0000
+        Sun, 12 Feb 2023 05:03:49 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F419813DCD;
+        Sun, 12 Feb 2023 02:03:47 -0800 (PST)
+Date:   Sun, 12 Feb 2023 10:03:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676116351;
+        s=2020; t=1676196224;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=w3UF4wUqZTLvsdmEa7SQuuYGrDWhV3gF1yMB3AJ8OCY=;
-        b=C1rHgM0VI4Xh2WVeo/NHY+tfh6BSJNL9LVbHs/ulVoGfj7yu5okNbTq+FuZkij3BfNs2YN
-        oMoaVn0wkAj9lhWCBiSaEEMLqxwQRfT6q0qIjpQc2lpiP4CDshLL9fEzTEZJ5zUW/Ssal8
-        aar2T6KIBVVuc6hhZS0DX70o8eZZOHGUTMvyPm0tV8heaeRJkeuj5CGvVz8RoBvNrjQ/l4
-        g3LigABbYsBnurTXmuVukVGLRvzoEB/cxnzJvY6OiVPbFzZBjVSPNMe+dUssFeFqn6j2lA
-        zyXUbkPNizFCZPSOvph/seHdb0VjB7ogbdqc+v9Fuw/TPI+yuCQ1GCUxibOnvA==
+        bh=ysHXBb1DcM5V0ddOscfbWUty0Zk2SK1CJCjvUWrO308=;
+        b=zBkwI6PoKuPRl+fh83uc5ZF7qs+7xaOYWQcIAQ/MemIr5vrPcZyoTlkFWtgx8Udg78Urfg
+        srnW7OFlUMXZkyJdqNFTLkz4OXUU1sQ2WBWX/BpsmFkOfmsTKFdSXt5vb+WwYriLxdrqFt
+        uIG+5X6gN9wXdd/j0sY8GSHDaYm6rvIgi2ieZlP/rTaWNCaenRSS2xgZ11BqjxXS/CU8rL
+        EyZdFEwZ+tFku1EilTcAl6kDUt+HpkDxZbmSO8RKT1ZY3qjMeKz6qKtgBFLt+VTUpy0lQZ
+        1izALFCnUKvxAzBVyBhYFt7FiDTDptcsTwbFDP8c4Y3NHMlk0XeaZbQo5EP5ag==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676116351;
+        s=2020e; t=1676196224;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=w3UF4wUqZTLvsdmEa7SQuuYGrDWhV3gF1yMB3AJ8OCY=;
-        b=eUfPflm92sbzSIzpiq2s6bEOpIukNzEfJhrjxiJT8CHxFOjs1zYIE0hxZNcQj7329mvDGj
-        T2SdsxRfFEqD7JBQ==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=ysHXBb1DcM5V0ddOscfbWUty0Zk2SK1CJCjvUWrO308=;
+        b=n8KaWnFyinIKpSIxGG0/xAP4WVBHZBRtHQ0LbUr61tj0pENaO/lrxmQlFteMgrAvkJOn/w
+        EeP8p96FA4VOtnCw==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/entry: Fix unwinding from kprobe on PUSH/POP
- instruction
-Cc:     Chen Zhongjin <chenzhongjin@huawei.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: objtool/core] x86/xen: mark xen_pv_play_dead() as __noreturn
+Cc:     Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <baafcd3cc1abb14cb757fe081fa696012a5265ee.1676068346.git.jpoimboe@kernel.org>
-References: <baafcd3cc1abb14cb757fe081fa696012a5265ee.1676068346.git.jpoimboe@kernel.org>
+In-Reply-To: <20221125063248.30256-3-jgross@suse.com>
+References: <20221125063248.30256-3-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <167611635115.4906.2832947332319700484.tip-bot2@tip-bot2>
+Message-ID: <167619622384.4906.15498256119270145523.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,82 +67,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     37064583f63eca93c98a9cdf2360485ea05f617a
-Gitweb:        https://git.kernel.org/tip/37064583f63eca93c98a9cdf2360485ea05f617a
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Fri, 10 Feb 2023 14:42:02 -08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 11 Feb 2023 12:37:51 +01:00
+Commit-ID:     1aff0d2658e5a5217d3168e06a90fbb99fa63e80
+Gitweb:        https://git.kernel.org/tip/1aff0d2658e5a5217d3168e06a90fbb99fa63e80
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Fri, 25 Nov 2022 07:32:48 +01:00
+Committer:     Juergen Gross <jgross@suse.com>
+CommitterDate: Tue, 17 Jan 2023 09:05:32 +01:00
 
-x86/entry: Fix unwinding from kprobe on PUSH/POP instruction
+x86/xen: mark xen_pv_play_dead() as __noreturn
 
-If a kprobe (INT3) is set on a stack-modifying single-byte instruction,
-like a single-byte PUSH/POP or a LEAVE, ORC fails to unwind past it:
+Mark xen_pv_play_dead() and related to that xen_cpu_bringup_again()
+as "__noreturn".
 
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x57/0x90
-   handler_pre+0x33/0x40 [kprobe_example]
-   aggr_pre_handler+0x49/0x90
-   kprobe_int3_handler+0xe3/0x180
-   do_int3+0x3a/0x80
-   exc_int3+0x7d/0xc0
-   asm_exc_int3+0x35/0x40
-  RIP: 0010:kernel_clone+0xe/0x3a0
-  Code: cc e8 16 b2 bf 00 66 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 41 57 41 56 41 55 41 54 cc <53> 48 89 fb 48 83 ec 68 4c 8b 27 65 48 8b 04 25 28 00 00 00 48 89
-  RSP: 0018:ffffc9000074fda0 EFLAGS: 00000206
-  RAX: 0000000000808100 RBX: ffff888109de9d80 RCX: 0000000000000000
-  RDX: 0000000000000011 RSI: ffff888109de9d80 RDI: ffffc9000074fdc8
-  RBP: ffff8881019543c0 R08: ffffffff81127e30 R09: 00000000e71742a5
-  R10: ffff888104764a18 R11: 0000000071742a5e R12: ffff888100078800
-  R13: ffff888100126000 R14: 0000000000000000 R15: ffff888100126005
-   ? __pfx_call_usermodehelper_exec_async+0x10/0x10
-   ? kernel_clone+0xe/0x3a0
-   ? user_mode_thread+0x5b/0x80
-   ? __pfx_call_usermodehelper_exec_async+0x10/0x10
-   ? call_usermodehelper_exec_work+0x77/0xb0
-   ? process_one_work+0x299/0x5f0
-   ? worker_thread+0x4f/0x3a0
-   ? __pfx_worker_thread+0x10/0x10
-   ? kthread+0xf2/0x120
-   ? __pfx_kthread+0x10/0x10
-   ? ret_from_fork+0x29/0x50
-   </TASK>
-
-The problem is that #BP saves the pointer to the instruction immediately
-*after* the INT3, rather than to the INT3 itself.  The instruction
-replaced by the INT3 hasn't actually run, but ORC assumes otherwise and
-expects the wrong stack layout.
-
-Fix it by annotating the #BP exception as a non-signal stack frame,
-which tells the ORC unwinder to decrement the instruction pointer before
-looking up the corresponding ORC entry.
-
-Reported-by: Chen Zhongjin <chenzhongjin@huawei.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/baafcd3cc1abb14cb757fe081fa696012a5265ee.1676068346.git.jpoimboe@kernel.org
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20221125063248.30256-3-jgross@suse.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
 ---
- arch/x86/entry/entry_64.S |  9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/x86/xen/smp.h    | 2 +-
+ arch/x86/xen/smp_pv.c | 4 ++--
+ tools/objtool/check.c | 1 +
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 15739a2..8d21881 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -385,7 +385,14 @@ SYM_CODE_END(xen_error_entry)
-  */
- .macro idtentry vector asmsym cfunc has_error_code:req
- SYM_CODE_START(\asmsym)
--	UNWIND_HINT_IRET_REGS offset=\has_error_code*8
-+
-+	.if \vector == X86_TRAP_BP
-+		/* #BP advances %rip to the next instruction */
-+		UNWIND_HINT_IRET_REGS offset=\has_error_code*8 signal=0
-+	.else
-+		UNWIND_HINT_IRET_REGS offset=\has_error_code*8
-+	.endif
-+
- 	ENDBR
- 	ASM_CLAC
- 	cld
+diff --git a/arch/x86/xen/smp.h b/arch/x86/xen/smp.h
+index 6e90a31..22fb982 100644
+--- a/arch/x86/xen/smp.h
++++ b/arch/x86/xen/smp.h
+@@ -21,7 +21,7 @@ void xen_smp_send_reschedule(int cpu);
+ void xen_smp_send_call_function_ipi(const struct cpumask *mask);
+ void xen_smp_send_call_function_single_ipi(int cpu);
+ 
+-void xen_cpu_bringup_again(unsigned long stack);
++void __noreturn xen_cpu_bringup_again(unsigned long stack);
+ 
+ struct xen_common_irq {
+ 	int irq;
+diff --git a/arch/x86/xen/smp_pv.c b/arch/x86/xen/smp_pv.c
+index a97b050..a9cf8c8 100644
+--- a/arch/x86/xen/smp_pv.c
++++ b/arch/x86/xen/smp_pv.c
+@@ -381,7 +381,7 @@ static void xen_pv_cpu_die(unsigned int cpu)
+ 	}
+ }
+ 
+-static void xen_pv_play_dead(void) /* used only with HOTPLUG_CPU */
++static void __noreturn xen_pv_play_dead(void) /* used only with HOTPLUG_CPU */
+ {
+ 	play_dead_common();
+ 	HYPERVISOR_vcpu_op(VCPUOP_down, xen_vcpu_nr(smp_processor_id()), NULL);
+@@ -400,7 +400,7 @@ static void xen_pv_cpu_die(unsigned int cpu)
+ 	BUG();
+ }
+ 
+-static void xen_pv_play_dead(void)
++static void __noreturn xen_pv_play_dead(void)
+ {
+ 	BUG();
+ }
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 4b7c8b3..68e87b4 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -186,6 +186,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 		"snp_abort",
+ 		"stop_this_cpu",
+ 		"usercopy_abort",
++		"xen_cpu_bringup_again",
+ 		"xen_start_kernel",
+ 	};
+ 
