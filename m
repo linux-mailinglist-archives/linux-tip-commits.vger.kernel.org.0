@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 630FE6943E7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Feb 2023 12:10:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A1466943EB
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Feb 2023 12:10:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230211AbjBMLKg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Feb 2023 06:10:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48404 "EHLO
+        id S230264AbjBMLKi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Feb 2023 06:10:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229958AbjBMLKe (ORCPT
+        with ESMTP id S230216AbjBMLKf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Feb 2023 06:10:34 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FEC8D539;
-        Mon, 13 Feb 2023 03:10:30 -0800 (PST)
-Date:   Mon, 13 Feb 2023 11:10:27 -0000
+        Mon, 13 Feb 2023 06:10:35 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2638C166D7;
+        Mon, 13 Feb 2023 03:10:31 -0800 (PST)
+Date:   Mon, 13 Feb 2023 11:10:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676286628;
+        s=2020; t=1676286629;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UCAK5aWAupP4I1r3332LS3DrK45cnunDMGIlTLQyUSo=;
-        b=IRsCxRgiktT4HER4NFCEgoi7HRdbkmlCtHfK9undKbGEsh88j8cOGa//0ysxSEkNXMeZi6
-        NtVbr73qmRfBKDDMNAJjUS6ZHRr4dBvCl9W6dwAAJ2NQGTRcF+9pi0xWkKI1EJgeDg+HgU
-        OMB4HeAKDFO3GbGG/FUsaBJxt2+uHkV7Lb0l0RyKiMBHsI4KKYunKqaE878pZcFc/E8wEZ
-        s0IT/f9ZsexcnEZFCmaG6qEFV5/Vc8aYgPWOdLD3TDwbdX1g0xGVR3zimzpeJRySvGd/Ml
-        zz7U+slKmCDSjQ5K2yJlwWrRZ5/o/9Usu8bBk8UOZ+XKC/37+r3vtBFWbma9Rg==
+        bh=XSI58zL54a60BSjTXFUFQteQ9oV6v/xVHRSMCwK/BPM=;
+        b=MI1d/lw5/1SrcpQDGtPlWGzQfeVQ+UhYfx/kjXyz4QZ3I9Lfl7/qItnVf/tmKHeTygrV+J
+        LtjqeJ/aK43xW+nmcK6bU/M3cgafPp9i51nyjr/P74HPWyyn0YeE5H/biuORu2hkjsXCH9
+        4avh6GW1wRjQaMEtPHhbBJdTQ7A/JTjGQ0LdTc7LABd3ljqHannmJI6cpuwgJR5rgMzFMU
+        Wn2aOrpPsKQjHYbF+oUAGTySKeMWzzQOBRaa26Wgp0i/FgnszSWfNOYJ3e1wVx2yQh56+g
+        UWvEdFGBgPJgcGh9tuw44AgoD/v7nHIgdOzaNKWXn98l/w8XhDXLwPIJhfuE/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676286628;
+        s=2020e; t=1676286629;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UCAK5aWAupP4I1r3332LS3DrK45cnunDMGIlTLQyUSo=;
-        b=CTK+IbdOWbw5UVv3S3Miip6AoN0ITgU61Za5+NBPLxrKUsV0uB9IUe1K5NyBM85jzHALs5
-        gbZ+hMgH0qs2+mAQ==
+        bh=XSI58zL54a60BSjTXFUFQteQ9oV6v/xVHRSMCwK/BPM=;
+        b=crHyj/jlnMItUhf7A1RrQZwJCPYLloCI9+WqHOP93eAD38xBzBqme3IneUnvD1KEZivgUO
+        9PYZIJ+gAPsSfDBA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Remove instruction::list
+Subject: [tip: objtool/core] objtool: Union instruction::{call_dest,jump_table}
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Josh Poimboeuf <jpoimboe@kernel.org>,
         Nathan Chancellor <nathan@kernel.org>, linux@weissschuh.net,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230208172245.851307606@infradead.org>
-References: <20230208172245.851307606@infradead.org>
+In-Reply-To: <20230208172245.640914454@infradead.org>
+References: <20230208172245.640914454@infradead.org>
 MIME-Version: 1.0
-Message-ID: <167628662763.4906.11858025806195011386.tip-bot2@tip-bot2>
+Message-ID: <167628662893.4906.11673875873234457536.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,603 +67,338 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     5a10ca6e6400d472553fda72e51e5ba598d24e1f
-Gitweb:        https://git.kernel.org/tip/5a10ca6e6400d472553fda72e51e5ba598d=
-24e1f
+Commit-ID:     2f586f32286e33ab97730696244737cec84c4bbe
+Gitweb:        https://git.kernel.org/tip/2f586f32286e33ab97730696244737cec84=
+c4bbe
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 08 Feb 2023 18:18:05 +01:00
+AuthorDate:    Wed, 08 Feb 2023 18:18:02 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 13 Feb 2023 11:26:09 +01:00
+CommitterDate: Mon, 13 Feb 2023 11:26:08 +01:00
 
-objtool: Remove instruction::list
+objtool: Union instruction::{call_dest,jump_table}
 
-Replace the instruction::list by allocating instructions in arrays of
-256 entries and stringing them together by (amortized) find_insn().
-This shrinks instruction by 16 bytes and brings it down to 128.
+The instruction call_dest and jump_table members can never be used at
+the same time, their usage depends on type.
 
  struct instruction {
--	struct list_head           list;                 /*     0    16 */
--	struct hlist_node          hash;                 /*    16    16 */
--	struct list_head           call_node;            /*    32    16 */
--	struct section *           sec;                  /*    48     8 */
--	long unsigned int          offset;               /*    56     8 */
--	/* --- cacheline 1 boundary (64 bytes) --- */
--	long unsigned int          immediate;            /*    64     8 */
--	unsigned int               len;                  /*    72     4 */
--	u8                         type;                 /*    76     1 */
--
--	/* Bitfield combined with previous fields */
-+	struct hlist_node          hash;                 /*     0    16 */
-+	struct list_head           call_node;            /*    16    16 */
-+	struct section *           sec;                  /*    32     8 */
-+	long unsigned int          offset;               /*    40     8 */
-+	long unsigned int          immediate;            /*    48     8 */
-+	u8                         len;                  /*    56     1 */
-+	u8                         prev_len;             /*    57     1 */
-+	u8                         type;                 /*    58     1 */
-+	s8                         instr;                /*    59     1 */
-+	u32                        idx:8;                /*    60: 0  4 */
-+	u32                        dead_end:1;           /*    60: 8  4 */
-+	u32                        ignore:1;             /*    60: 9  4 */
-+	u32                        ignore_alts:1;        /*    60:10  4 */
-+	u32                        hint:1;               /*    60:11  4 */
-+	u32                        save:1;               /*    60:12  4 */
-+	u32                        restore:1;            /*    60:13  4 */
-+	u32                        retpoline_safe:1;     /*    60:14  4 */
-+	u32                        noendbr:1;            /*    60:15  4 */
-+	u32                        entry:1;              /*    60:16  4 */
-+	u32                        visited:4;            /*    60:17  4 */
-+	u32                        no_reloc:1;           /*    60:21  4 */
+ 	struct list_head           list;                 /*     0    16 */
+ 	struct hlist_node          hash;                 /*    16    16 */
+ 	struct list_head           call_node;            /*    32    16 */
+ 	struct section *           sec;                  /*    48     8 */
+ 	long unsigned int          offset;               /*    56     8 */
+ 	/* --- cacheline 1 boundary (64 bytes) --- */
+ 	long unsigned int          immediate;            /*    64     8 */
+ 	unsigned int               len;                  /*    72     4 */
+ 	u8                         type;                 /*    76     1 */
 
--	u16                        dead_end:1;           /*    76: 8  2 */
--	u16                        ignore:1;             /*    76: 9  2 */
--	u16                        ignore_alts:1;        /*    76:10  2 */
--	u16                        hint:1;               /*    76:11  2 */
--	u16                        save:1;               /*    76:12  2 */
--	u16                        restore:1;            /*    76:13  2 */
--	u16                        retpoline_safe:1;     /*    76:14  2 */
--	u16                        noendbr:1;            /*    76:15  2 */
--	u16                        entry:1;              /*    78: 0  2 */
--	u16                        visited:4;            /*    78: 1  2 */
--	u16                        no_reloc:1;           /*    78: 5  2 */
-+	/* XXX 10 bits hole, try to pack */
+ 	/* Bitfield combined with previous fields */
 
--	/* XXX 2 bits hole, try to pack */
--	/* Bitfield combined with next fields */
--
--	s8                         instr;                /*    79     1 */
--	struct alt_group *         alt_group;            /*    80     8 */
--	struct instruction *       jump_dest;            /*    88     8 */
--	struct instruction *       first_jump_src;       /*    96     8 */
-+	/* --- cacheline 1 boundary (64 bytes) --- */
-+	struct alt_group *         alt_group;            /*    64     8 */
-+	struct instruction *       jump_dest;            /*    72     8 */
-+	struct instruction *       first_jump_src;       /*    80     8 */
- 	union {
--		struct symbol *    _call_dest;           /*   104     8 */
--		struct reloc *     _jump_table;          /*   104     8 */
--	};                                               /*   104     8 */
--	struct alternative *       alts;                 /*   112     8 */
--	struct symbol *            sym;                  /*   120     8 */
--	/* --- cacheline 2 boundary (128 bytes) --- */
--	struct stack_op *          stack_ops;            /*   128     8 */
--	struct cfi_state *         cfi;                  /*   136     8 */
-+		struct symbol *    _call_dest;           /*    88     8 */
-+		struct reloc *     _jump_table;          /*    88     8 */
-+	};                                               /*    88     8 */
-+	struct alternative *       alts;                 /*    96     8 */
-+	struct symbol *            sym;                  /*   104     8 */
-+	struct stack_op *          stack_ops;            /*   112     8 */
-+	struct cfi_state *         cfi;                  /*   120     8 */
+ 	u16                        dead_end:1;           /*    76: 8  2 */
+ 	u16                        ignore:1;             /*    76: 9  2 */
+ 	u16                        ignore_alts:1;        /*    76:10  2 */
+ 	u16                        hint:1;               /*    76:11  2 */
+ 	u16                        save:1;               /*    76:12  2 */
+ 	u16                        restore:1;            /*    76:13  2 */
+ 	u16                        retpoline_safe:1;     /*    76:14  2 */
+ 	u16                        noendbr:1;            /*    76:15  2 */
+ 	u16                        entry:1;              /*    78: 0  2 */
+ 	u16                        visited:4;            /*    78: 1  2 */
+ 	u16                        no_reloc:1;           /*    78: 5  2 */
 
--	/* size: 144, cachelines: 3, members: 28 */
--	/* sum members: 142 */
--	/* sum bitfield members: 14 bits, bit holes: 1, sum bit holes: 2 bits */
--	/* last cacheline: 16 bytes */
-+	/* size: 128, cachelines: 2, members: 29 */
-+	/* sum members: 124 */
-+	/* sum bitfield members: 22 bits, bit holes: 1, sum bit holes: 10 bits */
+ 	/* XXX 2 bits hole, try to pack */
+ 	/* Bitfield combined with next fields */
+
+ 	s8                         instr;                /*    79     1 */
+ 	struct alt_group *         alt_group;            /*    80     8 */
+-	struct symbol *            call_dest;            /*    88     8 */
+-	struct instruction *       jump_dest;            /*    96     8 */
+-	struct instruction *       first_jump_src;       /*   104     8 */
+-	struct reloc *             jump_table;           /*   112     8 */
+-	struct alternative *       alts;                 /*   120     8 */
++	struct instruction *       jump_dest;            /*    88     8 */
++	struct instruction *       first_jump_src;       /*    96     8 */
++	union {
++		struct symbol *    _call_dest;           /*   104     8 */
++		struct reloc *     _jump_table;          /*   104     8 */
++	};                                               /*   104     8 */
++	struct alternative *       alts;                 /*   112     8 */
++	struct symbol *            sym;                  /*   120     8 */
+ 	/* --- cacheline 2 boundary (128 bytes) --- */
+-	struct symbol *            sym;                  /*   128     8 */
+-	struct stack_op *          stack_ops;            /*   136     8 */
+-	struct cfi_state *         cfi;                  /*   144     8 */
++	struct stack_op *          stack_ops;            /*   128     8 */
++	struct cfi_state *         cfi;                  /*   136     8 */
+
+-	/* size: 152, cachelines: 3, members: 29 */
+-	/* sum members: 150 */
++	/* size: 144, cachelines: 3, members: 28 */
++	/* sum members: 142 */
+ 	/* sum bitfield members: 14 bits, bit holes: 1, sum bit holes: 2 bits */
+-	/* last cacheline: 24 bytes */
++	/* last cacheline: 16 bytes */
  };
 
-pre:	5:38.18 real,   213.25 user,    124.90 sys,     23449040 mem
-post:	5:03.34 real,   210.75 user,    88.80 sys,      20241232 mem
+pre:	5:39.35 real,   215.58 user,    123.69 sys,     23448736 mem
+post:	5:38.18 real,   213.25 user,    124.90 sys,     23449040 mem
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Tested-by: Nathan Chancellor <nathan@kernel.org> # build only
 Tested-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net> # compile and run
-Link: https://lore.kernel.org/r/20230208172245.851307606@infradead.org
+Link: https://lore.kernel.org/r/20230208172245.640914454@infradead.org
 ---
- tools/objtool/check.c                   | 166 ++++++++++++++---------
- tools/objtool/include/objtool/check.h   |  51 +++----
- tools/objtool/include/objtool/objtool.h |   1 +-
- tools/objtool/objtool.c                 |   1 +-
- 4 files changed, 133 insertions(+), 86 deletions(-)
+ tools/objtool/check.c                 | 73 ++++++++++++++++----------
+ tools/objtool/include/objtool/check.h |  6 +-
+ 2 files changed, 50 insertions(+), 29 deletions(-)
 
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 7e9d3d3..b0b467d 100644
+index 6d0ce23..6f0adb2 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -47,27 +47,29 @@ struct instruction *find_insn(struct objtool_file *file,
- 	return NULL;
- }
+@@ -114,16 +114,34 @@ static struct instruction *prev_insn_same_sym(struct ob=
+jtool_file *file,
+ 	for (insn =3D next_insn_same_sec(file, insn); insn;		\
+ 	     insn =3D next_insn_same_sec(file, insn))
 =20
--static struct instruction *next_insn_same_sec(struct objtool_file *file,
--					      struct instruction *insn)
-+struct instruction *next_insn_same_sec(struct objtool_file *file,
-+				       struct instruction *insn)
- {
--	struct instruction *next =3D list_next_entry(insn, list);
-+	if (insn->idx =3D=3D INSN_CHUNK_MAX)
-+		return find_insn(file, insn->sec, insn->offset + insn->len);
-=20
--	if (!next || &next->list =3D=3D &file->insn_list || next->sec !=3D insn->se=
-c)
-+	insn++;
-+	if (!insn->len)
- 		return NULL;
-=20
--	return next;
-+	return insn;
- }
-=20
- static struct instruction *next_insn_same_func(struct objtool_file *file,
- 					       struct instruction *insn)
- {
--	struct instruction *next =3D list_next_entry(insn, list);
-+	struct instruction *next =3D next_insn_same_sec(file, insn);
- 	struct symbol *func =3D insn_func(insn);
-=20
- 	if (!func)
- 		return NULL;
-=20
--	if (&next->list !=3D &file->insn_list && insn_func(next) =3D=3D func)
-+	if (next && insn_func(next) =3D=3D func)
- 		return next;
-=20
- 	/* Check if we're already in the subfunction: */
-@@ -78,17 +80,35 @@ static struct instruction *next_insn_same_func(struct obj=
-tool_file *file,
- 	return find_insn(file, func->cfunc->sec, func->cfunc->offset);
- }
-=20
-+static struct instruction *prev_insn_same_sec(struct objtool_file *file,
-+					      struct instruction *insn)
++static inline struct symbol *insn_call_dest(struct instruction *insn)
 +{
-+	if (insn->idx =3D=3D 0) {
-+		if (insn->prev_len)
-+			return find_insn(file, insn->sec, insn->offset - insn->prev_len);
++	if (insn->type =3D=3D INSN_JUMP_DYNAMIC ||
++	    insn->type =3D=3D INSN_CALL_DYNAMIC)
 +		return NULL;
-+	}
 +
-+	return insn - 1;
++	return insn->_call_dest;
 +}
 +
- static struct instruction *prev_insn_same_sym(struct objtool_file *file,
--					       struct instruction *insn)
-+					      struct instruction *insn)
- {
--	struct instruction *prev =3D list_prev_entry(insn, list);
-+	struct instruction *prev =3D prev_insn_same_sec(file, insn);
-=20
--	if (&prev->list !=3D &file->insn_list && insn_func(prev) =3D=3D insn_func(i=
-nsn))
-+	if (prev && insn_func(prev) =3D=3D insn_func(insn))
- 		return prev;
-=20
- 	return NULL;
- }
-=20
-+#define for_each_insn(file, insn)					\
-+	for (struct section *__sec, *__fake =3D (struct section *)1;	\
-+	     __fake; __fake =3D NULL)					\
-+		for_each_sec(file, __sec)				\
-+			sec_for_each_insn(file, __sec, insn)
-+
- #define func_for_each_insn(file, func, insn)				\
- 	for (insn =3D find_insn(file, func->sec, func->offset);		\
- 	     insn;							\
-@@ -96,16 +116,13 @@ static struct instruction *prev_insn_same_sym(struct obj=
-tool_file *file,
-=20
- #define sym_for_each_insn(file, sym, insn)				\
- 	for (insn =3D find_insn(file, sym->sec, sym->offset);		\
--	     insn && &insn->list !=3D &file->insn_list &&			\
--		insn->sec =3D=3D sym->sec &&				\
--		insn->offset < sym->offset + sym->len;			\
--	     insn =3D list_next_entry(insn, list))
-+	     insn && insn->offset < sym->offset + sym->len;		\
-+	     insn =3D next_insn_same_sec(file, insn))
-=20
- #define sym_for_each_insn_continue_reverse(file, sym, insn)		\
--	for (insn =3D list_prev_entry(insn, list);			\
--	     &insn->list !=3D &file->insn_list &&				\
--		insn->sec =3D=3D sym->sec && insn->offset >=3D sym->offset;	\
--	     insn =3D list_prev_entry(insn, list))
-+	for (insn =3D prev_insn_same_sec(file, insn);			\
-+	     insn && insn->offset >=3D sym->offset;			\
-+	     insn =3D prev_insn_same_sec(file, insn))
-=20
- #define sec_for_each_insn_from(file, insn)				\
- 	for (; insn; insn =3D next_insn_same_sec(file, insn))
-@@ -384,6 +401,9 @@ static int decode_instructions(struct objtool_file *file)
- 	int ret;
-=20
- 	for_each_sec(file, sec) {
-+		struct instruction *insns =3D NULL;
-+		u8 prev_len =3D 0;
-+		u8 idx =3D 0;
-=20
- 		if (!(sec->sh.sh_flags & SHF_EXECINSTR))
- 			continue;
-@@ -409,22 +429,31 @@ static int decode_instructions(struct objtool_file *fil=
-e)
- 			sec->init =3D true;
-=20
- 		for (offset =3D 0; offset < sec->sh.sh_size; offset +=3D insn->len) {
--			insn =3D malloc(sizeof(*insn));
--			if (!insn) {
--				WARN("malloc failed");
--				return -1;
-+			if (!insns || idx =3D=3D INSN_CHUNK_MAX) {
-+				insns =3D calloc(sizeof(*insn), INSN_CHUNK_SIZE);
-+				if (!insns) {
-+					WARN("malloc failed");
-+					return -1;
-+				}
-+				idx =3D 0;
-+			} else {
-+				idx++;
- 			}
--			memset(insn, 0, sizeof(*insn));
--			INIT_LIST_HEAD(&insn->call_node);
-+			insn =3D &insns[idx];
-+			insn->idx =3D idx;
-=20
-+			INIT_LIST_HEAD(&insn->call_node);
- 			insn->sec =3D sec;
- 			insn->offset =3D offset;
-+			insn->prev_len =3D prev_len;
-=20
- 			ret =3D arch_decode_instruction(file, sec, offset,
- 						      sec->sh.sh_size - offset,
- 						      insn);
- 			if (ret)
--				goto err;
-+				return ret;
-+
-+			prev_len =3D insn->len;
-=20
- 			/*
- 			 * By default, "ud2" is a dead end unless otherwise
-@@ -435,10 +464,11 @@ static int decode_instructions(struct objtool_file *fil=
-e)
- 				insn->dead_end =3D true;
-=20
- 			hash_add(file->insn_hash, &insn->hash, sec_offset_hash(sec, insn->offset)=
-);
--			list_add_tail(&insn->list, &file->insn_list);
- 			nr_insns++;
- 		}
-=20
-+//		printf("%s: last chunk used: %d\n", sec->name, (int)idx);
-+
- 		list_for_each_entry(func, &sec->symbol_list, list) {
- 			if (func->type !=3D STT_NOTYPE && func->type !=3D STT_FUNC)
- 				continue;
-@@ -481,10 +511,6 @@ static int decode_instructions(struct objtool_file *file)
- 		printf("nr_insns: %lu\n", nr_insns);
-=20
- 	return 0;
--
--err:
--	free(insn);
--	return ret;
- }
-=20
- /*
-@@ -599,7 +625,7 @@ static int add_dead_ends(struct objtool_file *file)
- 		}
- 		insn =3D find_insn(file, reloc->sym->sec, reloc->addend);
- 		if (insn)
--			insn =3D list_prev_entry(insn, list);
-+			insn =3D prev_insn_same_sec(file, insn);
- 		else if (reloc->addend =3D=3D reloc->sym->sec->sh.sh_size) {
- 			insn =3D find_last_insn(file, reloc->sym->sec);
- 			if (!insn) {
-@@ -634,7 +660,7 @@ reachable:
- 		}
- 		insn =3D find_insn(file, reloc->sym->sec, reloc->addend);
- 		if (insn)
--			insn =3D list_prev_entry(insn, list);
-+			insn =3D prev_insn_same_sec(file, insn);
- 		else if (reloc->addend =3D=3D reloc->sym->sec->sh.sh_size) {
- 			insn =3D find_last_insn(file, reloc->sym->sec);
- 			if (!insn) {
-@@ -1775,6 +1801,7 @@ static int handle_group_alt(struct objtool_file *file,
- 		orig_alt_group->orig_group =3D NULL;
- 		orig_alt_group->first_insn =3D orig_insn;
- 		orig_alt_group->last_insn =3D last_orig_insn;
-+		orig_alt_group->nop =3D NULL;
- 	} else {
- 		if (orig_alt_group->last_insn->offset + orig_alt_group->last_insn->len -
- 		    orig_alt_group->first_insn->offset !=3D special_alt->orig_len) {
-@@ -1876,12 +1903,11 @@ static int handle_group_alt(struct objtool_file *file,
- 		return -1;
- 	}
-=20
--	if (nop)
--		list_add(&nop->list, &last_new_insn->list);
- end:
- 	new_alt_group->orig_group =3D orig_alt_group;
- 	new_alt_group->first_insn =3D *new_insn;
--	new_alt_group->last_insn =3D nop ? : last_new_insn;
-+	new_alt_group->last_insn =3D last_new_insn;
-+	new_alt_group->nop =3D nop;
- 	new_alt_group->cfi =3D orig_alt_group->cfi;
- 	return 0;
- }
-@@ -1931,7 +1957,7 @@ static int handle_jump_alt(struct objtool_file *file,
- 	else
- 		file->jl_long++;
-=20
--	*new_insn =3D list_next_entry(orig_insn, list);
-+	*new_insn =3D next_insn_same_sec(file, orig_insn);
- 	return 0;
- }
-=20
-@@ -3522,11 +3548,28 @@ static struct instruction *next_insn_to_validate(stru=
-ct objtool_file *file,
- 	 * Simulate the fact that alternatives are patched in-place.  When the
- 	 * end of a replacement alt_group is reached, redirect objtool flow to
- 	 * the end of the original alt_group.
-+	 *
-+	 * insn->alts->insn -> alt_group->first_insn
-+	 *		       ...
-+	 *		       alt_group->last_insn
-+	 *		       [alt_group->nop]      -> next(orig_group->last_insn)
- 	 */
--	if (alt_group && insn =3D=3D alt_group->last_insn && alt_group->orig_group)
--		return next_insn_same_sec(file, alt_group->orig_group->last_insn);
-+	if (alt_group) {
-+		if (alt_group->nop) {
-+			/* ->nop implies ->orig_group */
-+			if (insn =3D=3D alt_group->last_insn)
-+				return alt_group->nop;
-+			if (insn =3D=3D alt_group->nop)
-+				goto next_orig;
-+		}
-+		if (insn =3D=3D alt_group->last_insn && alt_group->orig_group)
-+			goto next_orig;
-+	}
-=20
- 	return next_insn_same_sec(file, insn);
-+
-+next_orig:
-+	return next_insn_same_sec(file, alt_group->orig_group->last_insn);
- }
-=20
- /*
-@@ -3777,11 +3820,25 @@ static int validate_branch(struct objtool_file *file,=
- struct symbol *func,
- 	return 0;
- }
-=20
-+static int validate_unwind_hint(struct objtool_file *file,
-+				  struct instruction *insn,
-+				  struct insn_state *state)
++static inline struct reloc *insn_jump_table(struct instruction *insn)
 +{
-+	if (insn->hint && !insn->visited && !insn->ignore) {
-+		int ret =3D validate_branch(file, insn_func(insn), insn, *state);
-+		if (ret && opts.backtrace)
-+			BT_FUNC("<=3D=3D=3D (hint)", insn);
-+		return ret;
-+	}
++	if (insn->type =3D=3D INSN_JUMP_DYNAMIC ||
++	    insn->type =3D=3D INSN_CALL_DYNAMIC)
++		return insn->_jump_table;
 +
-+	return 0;
++	return NULL;
 +}
 +
- static int validate_unwind_hints(struct objtool_file *file, struct section *=
-sec)
+ static bool is_jump_table_jump(struct instruction *insn)
  {
- 	struct instruction *insn;
- 	struct insn_state state;
--	int ret, warnings =3D 0;
-+	int warnings =3D 0;
+ 	struct alt_group *alt_group =3D insn->alt_group;
 =20
- 	if (!file->hints)
- 		return 0;
-@@ -3789,22 +3846,11 @@ static int validate_unwind_hints(struct objtool_file =
-*file, struct section *sec)
- 	init_insn_state(file, &state, sec);
+-	if (insn->jump_table)
++	if (insn_jump_table(insn))
+ 		return true;
 =20
- 	if (sec) {
--		insn =3D find_insn(file, sec, 0);
--		if (!insn)
--			return 0;
-+		sec_for_each_insn(file, sec, insn)
-+			warnings +=3D validate_unwind_hint(file, insn, &state);
- 	} else {
--		insn =3D list_first_entry(&file->insn_list, typeof(*insn), list);
--	}
--
--	while (&insn->list !=3D &file->insn_list && (!sec || insn->sec =3D=3D sec))=
- {
--		if (insn->hint && !insn->visited && !insn->ignore) {
--			ret =3D validate_branch(file, insn_func(insn), insn, state);
--			if (ret && opts.backtrace)
--				BT_FUNC("<=3D=3D=3D (hint)", insn);
--			warnings +=3D ret;
--		}
--
--		insn =3D list_next_entry(insn, list);
-+		for_each_insn(file, insn)
-+			warnings +=3D validate_unwind_hint(file, insn, &state);
+ 	/* Retpoline alternative for a jump table? */
+ 	return alt_group && alt_group->orig_group &&
+-	       alt_group->orig_group->first_insn->jump_table;
++	       insn_jump_table(alt_group->orig_group->first_insn);
+ }
+=20
+ static bool is_sibling_call(struct instruction *insn)
+@@ -137,8 +155,8 @@ static bool is_sibling_call(struct instruction *insn)
+ 			return !is_jump_table_jump(insn);
  	}
 =20
- 	return warnings;
-@@ -4070,7 +4116,7 @@ static bool ignore_unreachable_insn(struct objtool_file=
- *file, struct instructio
- 	 *
- 	 * It may also insert a UD2 after calling a __noreturn function.
- 	 */
--	prev_insn =3D list_prev_entry(insn, list);
-+	prev_insn =3D prev_insn_same_sec(file, insn);
- 	if ((prev_insn->dead_end ||
- 	     dead_end_function(file, insn_call_dest(prev_insn))) &&
- 	    (insn->type =3D=3D INSN_BUG ||
-@@ -4102,7 +4148,7 @@ static bool ignore_unreachable_insn(struct objtool_file=
- *file, struct instructio
- 		if (insn->offset + insn->len >=3D insn_func(insn)->offset + insn_func(insn=
-)->len)
- 			break;
+-	/* add_jump_destinations() sets insn->call_dest for sibling calls. */
+-	return (is_static_jump(insn) && insn->call_dest);
++	/* add_jump_destinations() sets insn_call_dest(insn) for sibling calls. */
++	return (is_static_jump(insn) && insn_call_dest(insn));
+ }
 =20
--		insn =3D list_next_entry(insn, list);
-+		insn =3D next_insn_same_sec(file, insn);
- 	}
-=20
- 	return false;
-@@ -4115,10 +4161,10 @@ static int add_prefix_symbol(struct objtool_file *fil=
-e, struct symbol *func,
- 		return 0;
-=20
- 	for (;;) {
--		struct instruction *prev =3D list_prev_entry(insn, list);
-+		struct instruction *prev =3D prev_insn_same_sec(file, insn);
- 		u64 offset;
-=20
--		if (&prev->list =3D=3D &file->insn_list)
-+		if (!prev)
- 			break;
-=20
- 		if (prev->type !=3D INSN_NOP)
-@@ -4517,7 +4563,7 @@ int check(struct objtool_file *file)
-=20
- 	warnings +=3D ret;
-=20
--	if (list_empty(&file->insn_list))
-+	if (!nr_insns)
- 		goto out;
-=20
- 	if (opts.retpoline) {
-@@ -4626,7 +4672,7 @@ int check(struct objtool_file *file)
- 		warnings +=3D ret;
- 	}
-=20
--	if (opts.orc && !list_empty(&file->insn_list)) {
-+	if (opts.orc && nr_insns) {
- 		ret =3D orc_create(file);
- 		if (ret < 0)
- 			goto out;
-diff --git a/tools/objtool/include/objtool/check.h b/tools/objtool/include/ob=
-jtool/check.h
-index ab6deae..3e7c700 100644
---- a/tools/objtool/include/objtool/check.h
-+++ b/tools/objtool/include/objtool/check.h
-@@ -27,7 +27,7 @@ struct alt_group {
- 	struct alt_group *orig_group;
-=20
- 	/* First and last instructions in the group */
--	struct instruction *first_insn, *last_insn;
-+	struct instruction *first_insn, *last_insn, *nop;
+ /*
+@@ -274,8 +292,8 @@ static void init_insn_state(struct objtool_file *file, st=
+ruct insn_state *state,
 =20
  	/*
- 	 * Byte-offset-addressed len-sized array of pointers to CFI structs.
-@@ -36,31 +36,36 @@ struct alt_group {
- 	struct cfi_state **cfi;
- };
+ 	 * We need the full vmlinux for noinstr validation, otherwise we can
+-	 * not correctly determine insn->call_dest->sec (external symbols do
+-	 * not have a section).
++	 * not correctly determine insn_call_dest(insn)->sec (external symbols
++	 * do not have a section).
+ 	 */
+ 	if (opts.link && opts.noinstr && sec)
+ 		state->noinstr =3D sec->noinstr;
+@@ -678,7 +696,7 @@ static int create_static_call_sections(struct objtool_fil=
+e *file)
+ 			return -1;
 =20
-+#define INSN_CHUNK_BITS		8
-+#define INSN_CHUNK_SIZE		(1 << INSN_CHUNK_BITS)
-+#define INSN_CHUNK_MAX		(INSN_CHUNK_SIZE - 1)
-+
- struct instruction {
--	struct list_head list;
- 	struct hlist_node hash;
- 	struct list_head call_node;
- 	struct section *sec;
- 	unsigned long offset;
- 	unsigned long immediate;
--	unsigned int len;
--	u8 type;
--
--	u16 dead_end		: 1,
--	   ignore		: 1,
--	   ignore_alts		: 1,
--	   hint			: 1,
--	   save			: 1,
--	   restore		: 1,
--	   retpoline_safe	: 1,
--	   noendbr		: 1,
--	   entry		: 1,
--	   visited		: 4,
--	   no_reloc		: 1;
--		/* 2 bit hole */
+ 		/* find key symbol */
+-		key_name =3D strdup(insn->call_dest->name);
++		key_name =3D strdup(insn_call_dest(insn)->name);
+ 		if (!key_name) {
+ 			perror("strdup");
+ 			return -1;
+@@ -709,7 +727,7 @@ static int create_static_call_sections(struct objtool_fil=
+e *file)
+ 			 * trampoline address.  This is fixed up in
+ 			 * static_call_add_module().
+ 			 */
+-			key_sym =3D insn->call_dest;
++			key_sym =3D insn_call_dest(insn);
+ 		}
+ 		free(key_name);
 =20
-+	u8 len;
-+	u8 prev_len;
-+	u8 type;
- 	s8 instr;
+@@ -1340,7 +1358,7 @@ static void annotate_call_site(struct objtool_file *fil=
+e,
+ 			       struct instruction *insn, bool sibling)
+ {
+ 	struct reloc *reloc =3D insn_reloc(file, insn);
+-	struct symbol *sym =3D insn->call_dest;
++	struct symbol *sym =3D insn_call_dest(insn);
 =20
-+	u32 idx			: INSN_CHUNK_BITS,
-+	    dead_end		: 1,
-+	    ignore		: 1,
-+	    ignore_alts		: 1,
-+	    hint		: 1,
-+	    save		: 1,
-+	    restore		: 1,
-+	    retpoline_safe	: 1,
-+	    noendbr		: 1,
-+	    entry		: 1,
-+	    visited		: 4,
-+	    no_reloc		: 1;
-+		/* 10 bit hole */
-+
- 	struct alt_group *alt_group;
- 	struct instruction *jump_dest;
- 	struct instruction *first_jump_src;
-@@ -109,13 +114,11 @@ static inline bool is_jump(struct instruction *insn)
- struct instruction *find_insn(struct objtool_file *file,
- 			      struct section *sec, unsigned long offset);
+ 	if (!sym)
+ 		sym =3D reloc->sym;
+@@ -1425,7 +1443,7 @@ static void annotate_call_site(struct objtool_file *fil=
+e,
+ static void add_call_dest(struct objtool_file *file, struct instruction *ins=
+n,
+ 			  struct symbol *dest, bool sibling)
+ {
+-	insn->call_dest =3D dest;
++	insn->_call_dest =3D dest;
+ 	if (!dest)
+ 		return;
 =20
--#define for_each_insn(file, insn)					\
--	list_for_each_entry(insn, &file->insn_list, list)
-+struct instruction *next_insn_same_sec(struct objtool_file *file, struct ins=
-truction *insn);
+@@ -1683,12 +1701,12 @@ static int add_call_destinations(struct objtool_file =
+*file)
+ 			if (insn->ignore)
+ 				continue;
 =20
--#define sec_for_each_insn(file, sec, insn)				\
--	for (insn =3D find_insn(file, sec, 0);				\
--	     insn && &insn->list !=3D &file->insn_list &&			\
--			insn->sec =3D=3D sec;				\
--	     insn =3D list_next_entry(insn, list))
-+#define sec_for_each_insn(file, _sec, insn)				\
-+	for (insn =3D find_insn(file, _sec, 0);				\
-+	     insn && insn->sec =3D=3D _sec;					\
-+	     insn =3D next_insn_same_sec(file, insn))
+-			if (!insn->call_dest) {
++			if (!insn_call_dest(insn)) {
+ 				WARN_FUNC("unannotated intra-function call", insn->sec, insn->offset);
+ 				return -1;
+ 			}
 =20
- #endif /* _CHECK_H */
-diff --git a/tools/objtool/include/objtool/objtool.h b/tools/objtool/include/=
-objtool/objtool.h
-index 6b40977..94a33ee 100644
---- a/tools/objtool/include/objtool/objtool.h
-+++ b/tools/objtool/include/objtool/objtool.h
-@@ -21,7 +21,6 @@ struct pv_state {
+-			if (insn_func(insn) && insn->call_dest->type !=3D STT_FUNC) {
++			if (insn_func(insn) && insn_call_dest(insn)->type !=3D STT_FUNC) {
+ 				WARN_FUNC("unsupported call to non-function",
+ 					  insn->sec, insn->offset);
+ 				return -1;
+@@ -2125,7 +2143,7 @@ static void mark_func_jump_tables(struct objtool_file *=
+file,
+ 		reloc =3D find_jump_table(file, func, insn);
+ 		if (reloc) {
+ 			reloc->jump_table_start =3D true;
+-			insn->jump_table =3D reloc;
++			insn->_jump_table =3D reloc;
+ 		}
+ 	}
+ }
+@@ -2137,10 +2155,10 @@ static int add_func_jump_tables(struct objtool_file *=
+file,
+ 	int ret;
 =20
- struct objtool_file {
- 	struct elf *elf;
--	struct list_head insn_list;
- 	DECLARE_HASHTABLE(insn_hash, 20);
- 	struct list_head retpoline_call_list;
- 	struct list_head return_thunk_list;
-diff --git a/tools/objtool/objtool.c b/tools/objtool/objtool.c
-index 6affd80..c54f723 100644
---- a/tools/objtool/objtool.c
-+++ b/tools/objtool/objtool.c
-@@ -99,7 +99,6 @@ struct objtool_file *objtool_open_read(const char *_objname)
- 		return NULL;
+ 	func_for_each_insn(file, func, insn) {
+-		if (!insn->jump_table)
++		if (!insn_jump_table(insn))
+ 			continue;
+=20
+-		ret =3D add_jump_table(file, insn, insn->jump_table);
++		ret =3D add_jump_table(file, insn, insn_jump_table(insn));
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -2612,8 +2630,8 @@ static int decode_sections(struct objtool_file *file)
+ static bool is_fentry_call(struct instruction *insn)
+ {
+ 	if (insn->type =3D=3D INSN_CALL &&
+-	    insn->call_dest &&
+-	    insn->call_dest->fentry)
++	    insn_call_dest(insn) &&
++	    insn_call_dest(insn)->fentry)
+ 		return true;
+=20
+ 	return false;
+@@ -3320,8 +3338,8 @@ static inline const char *call_dest_name(struct instruc=
+tion *insn)
+ 	struct reloc *rel;
+ 	int idx;
+=20
+-	if (insn->call_dest)
+-		return insn->call_dest->name;
++	if (insn_call_dest(insn))
++		return insn_call_dest(insn)->name;
+=20
+ 	rel =3D insn_reloc(NULL, insn);
+ 	if (rel && !strcmp(rel->sym->name, "pv_ops")) {
+@@ -3403,13 +3421,13 @@ static int validate_call(struct objtool_file *file,
+ 			 struct insn_state *state)
+ {
+ 	if (state->noinstr && state->instr <=3D 0 &&
+-	    !noinstr_call_dest(file, insn, insn->call_dest)) {
++	    !noinstr_call_dest(file, insn, insn_call_dest(insn))) {
+ 		WARN_FUNC("call to %s() leaves .noinstr.text section",
+ 				insn->sec, insn->offset, call_dest_name(insn));
+ 		return 1;
  	}
 =20
--	INIT_LIST_HEAD(&file.insn_list);
- 	hash_init(file.insn_hash);
- 	INIT_LIST_HEAD(&file.retpoline_call_list);
- 	INIT_LIST_HEAD(&file.return_thunk_list);
+-	if (state->uaccess && !func_uaccess_safe(insn->call_dest)) {
++	if (state->uaccess && !func_uaccess_safe(insn_call_dest(insn))) {
+ 		WARN_FUNC("call to %s() with UACCESS enabled",
+ 				insn->sec, insn->offset, call_dest_name(insn));
+ 		return 1;
+@@ -3847,11 +3865,11 @@ static int validate_entry(struct objtool_file *file, =
+struct instruction *insn)
+=20
+ 			/* fallthrough */
+ 		case INSN_CALL:
+-			dest =3D find_insn(file, insn->call_dest->sec,
+-					 insn->call_dest->offset);
++			dest =3D find_insn(file, insn_call_dest(insn)->sec,
++					 insn_call_dest(insn)->offset);
+ 			if (!dest) {
+ 				WARN("Unresolved function after linking!?: %s",
+-				     insn->call_dest->name);
++				     insn_call_dest(insn)->name);
+ 				return -1;
+ 			}
+=20
+@@ -3952,13 +3970,13 @@ static int validate_retpoline(struct objtool_file *fi=
+le)
+ static bool is_kasan_insn(struct instruction *insn)
+ {
+ 	return (insn->type =3D=3D INSN_CALL &&
+-		!strcmp(insn->call_dest->name, "__asan_handle_no_return"));
++		!strcmp(insn_call_dest(insn)->name, "__asan_handle_no_return"));
+ }
+=20
+ static bool is_ubsan_insn(struct instruction *insn)
+ {
+ 	return (insn->type =3D=3D INSN_CALL &&
+-		!strcmp(insn->call_dest->name,
++		!strcmp(insn_call_dest(insn)->name,
+ 			"__ubsan_handle_builtin_unreachable"));
+ }
+=20
+@@ -4036,7 +4054,8 @@ static bool ignore_unreachable_insn(struct objtool_file=
+ *file, struct instructio
+ 	 * It may also insert a UD2 after calling a __noreturn function.
+ 	 */
+ 	prev_insn =3D list_prev_entry(insn, list);
+-	if ((prev_insn->dead_end || dead_end_function(file, prev_insn->call_dest)) =
+&&
++	if ((prev_insn->dead_end ||
++	     dead_end_function(file, insn_call_dest(prev_insn))) &&
+ 	    (insn->type =3D=3D INSN_BUG ||
+ 	     (insn->type =3D=3D INSN_JUMP_UNCONDITIONAL &&
+ 	      insn->jump_dest && insn->jump_dest->type =3D=3D INSN_BUG)))
+diff --git a/tools/objtool/include/objtool/check.h b/tools/objtool/include/ob=
+jtool/check.h
+index fffc8b8..ab6deae 100644
+--- a/tools/objtool/include/objtool/check.h
++++ b/tools/objtool/include/objtool/check.h
+@@ -62,10 +62,12 @@ struct instruction {
+ 	s8 instr;
+=20
+ 	struct alt_group *alt_group;
+-	struct symbol *call_dest;
+ 	struct instruction *jump_dest;
+ 	struct instruction *first_jump_src;
+-	struct reloc *jump_table;
++	union {
++		struct symbol *_call_dest;
++		struct reloc *_jump_table;
++	};
+ 	struct alternative *alts;
+ 	struct symbol *sym;
+ 	struct stack_op *stack_ops;
