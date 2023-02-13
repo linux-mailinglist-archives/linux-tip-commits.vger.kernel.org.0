@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BB12694FB9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Feb 2023 19:48:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A350694FBD
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Feb 2023 19:48:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229971AbjBMSsl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Feb 2023 13:48:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42368 "EHLO
+        id S229888AbjBMSst (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Feb 2023 13:48:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbjBMSsg (ORCPT
+        with ESMTP id S229875AbjBMSsh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Feb 2023 13:48:36 -0500
+        Mon, 13 Feb 2023 13:48:37 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E18951CAE9;
-        Mon, 13 Feb 2023 10:48:34 -0800 (PST)
-Date:   Mon, 13 Feb 2023 18:48:33 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D27E1CAED;
+        Mon, 13 Feb 2023 10:48:36 -0800 (PST)
+Date:   Mon, 13 Feb 2023 18:48:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676314113;
+        s=2020; t=1676314114;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9gBKdjlSTAABDh+Tqq2iFzBMT5CiqULyiZe+8Xzhd+4=;
-        b=h9iUCx9rOkdwGAVmkVWAoYPw1ZpOjodJdnCQFGNV5AabEI03uQ8eQvbAEJybquYjT8uxWy
-        YqeYrLAJIu8xAUY8OHvYSh+pog036AmZgcRAYE4KCJOWyLchfZXspGSQ1YsS/pHauFM70K
-        MBU4NiEUZtGfCIIwJte+dYVnBCwdkIVH4jNCmPQK2+WVp/sCl7Dx5xVTc2KAcbEEzl5I7h
-        71neGWFJYdYAIQjWkcDV8LRJpK1aNvjmuWPB3CwQrCsqcuv2Z1GhEce/tmXpiBEyWPHQ0T
-        P+FHcr0rvUvGTiUXwdrlXnKFFkFs7rXi0TxXBY9LujchOh8/Nqk0iCL2qZ8oCw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ONKjRgJE+o9rzyn6Dg12SGG+ABcAw6wFpORVDpPQAKc=;
+        b=RROm1Kc8lB8WKompL/Milko3aDDuOus9weut27IfifFpvRSBWPe83IENDzfD6YVevoiFAB
+        DT5N/UkEyz22dvq25/Cu4G9yLcKTlb0xM05zFFCe47t5Nd5NX3qj5HRK9UVpH47sSO+nI+
+        BBtVkSGs52OOCN8OglljG4EB4OV0GWiSgKtma0kD3R5r9SREnUKQLcpNPVA5IrgNKVyoJE
+        iMNuYB9Fvlek+xqgcQ0mAy7wqXddl0w0xsIrfxUdTGGXuXFMWG4KkotTUeCjZ50hZQWylp
+        eJJzLh075mHes5xCCG77ucTJExiSh5RrLtEczCknuZcrvSoe/Eo4nCxxd4aCcA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676314113;
+        s=2020e; t=1676314114;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9gBKdjlSTAABDh+Tqq2iFzBMT5CiqULyiZe+8Xzhd+4=;
-        b=bRGzLeX8RE58rGsyMOcpK3X5J8WzvYB7lv727skzMNZ+4C4+UHUHNhKOhRLYlfSy1UwRDs
-        jGPWStpeM5UjyiAg==
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ONKjRgJE+o9rzyn6Dg12SGG+ABcAw6wFpORVDpPQAKc=;
+        b=e1PHhhnVejQPbbWIqgVVMGmobTQ67d/3l0YeWohSyccNIpOnW00zlSNN/e8LQQsUk9QRSw
+        3ywLsUnKEYEC4LBA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource: Improve "skew is too large" messages
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        John Stultz <jstultz@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Feng Tang <feng.tang@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: timers/core] Merge tag 'clocksource.2023.02.06b' of
+ git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu into
+ timers/core
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230210193640.GA3325193@paulmck-ThinkPad-P17-Gen-1>
+References: <20230210193640.GA3325193@paulmck-ThinkPad-P17-Gen-1>
 MIME-Version: 1.0
-Message-ID: <167631411316.4906.13551838694214324654.tip-bot2@tip-bot2>
+Message-ID: <167631411455.4906.2066008474842808379.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,64 +66,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     dd029269947a32047b8ce1f8513b0b3b13f0df32
-Gitweb:        https://git.kernel.org/tip/dd029269947a32047b8ce1f8513b0b3b13f0df32
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 13 Dec 2022 16:42:15 -08:00
-Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 05 Jan 2023 12:33:11 -08:00
+Commit-ID:     ab407a1919d2676ddc5761ed459d4cc5c7be18ed
+Gitweb:        https://git.kernel.org/tip/ab407a1919d2676ddc5761ed459d4cc5c7be18ed
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 13 Feb 2023 19:28:48 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 13 Feb 2023 19:28:48 +01:00
 
-clocksource: Improve "skew is too large" messages
+Merge tag 'clocksource.2023.02.06b' of git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu into timers/core
 
-When clocksource_watchdog() detects excessive clocksource skew compared
-to the watchdog clocksource, it marks the clocksource under test as
-unstable and prints several lines worth of message.  But that message
-is unclear to anyone unfamiliar with the code:
+Pull clocksource watchdog changes from Paul McKenney:
 
-clocksource: timekeeping watchdog on CPU2: Marking clocksource 'wdtest-ktime' as unstable because the skew is too large:
-clocksource:                       'kvm-clock' wd_nsec: 400744390 wd_now: 612625c2c wd_last: 5fa7f7c66 mask: ffffffffffffffff
-clocksource:                       'wdtest-ktime' cs_nsec: 600744034 cs_now: 173081397a292d4f cs_last: 17308139565a8ced mask: ffffffffffffffff
-clocksource:                       'kvm-clock' (not 'wdtest-ktime') is current clocksource.
+     o	Improvements to clocksource-watchdog console messages.
 
-Therefore, add the following line near the end of that message:
+     o	Loosening of the clocksource-watchdog skew criteria to match
+     	those of NTP (500 parts per million, relaxed from 400 parts
+     	per million).  If it is good enough for NTP, it is good enough
+     	for the clocksource watchdog.
 
-Clocksource 'wdtest-ktime' skewed 199999644 ns (199 ms) over watchdog 'kvm-clock' interval of 400744390 ns (400 ms)
+     o	Suspend clocksource-watchdog checking temporarily when high
+     	memory latencies are detected.	This avoids the false-positive
+     	clock-skew events that have been seen on production systems
+     	running memory-intensive workloads.
 
-This new line clearly indicates the amount of skew between the two
-clocksources, along with the duration of the time interval over which
-the skew occurred, both in nanoseconds and milliseconds.
+     o	On systems where the TSC is deemed trustworthy, use it as the
+     	watchdog timesource, but only when specifically requested using
+     	the tsc=watchdog kernel boot parameter.  This permits clock-skew
+     	events to be detected, but avoids forcing workloads to use the
+     	slow HPET and ACPI PM timers.  These last two timers are slow
+     	enough to cause systems to be needlessly marked bad on the one
+     	hand, and real skew does sometimes happen on production systems
+     	running production workloads on the other.  And sometimes it is
+     	the fault of the TSC, or at least of the firmware that told the
+     	kernel to program the TSC with the wrong frequency.
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: Feng Tang <feng.tang@intel.com>
+     o	Add a tsc=revalidate kernel boot parameter to allow the kernel
+     	to diagnose cases where the TSC hardware works fine, but was told
+     	by firmware to tick at the wrong frequency.  Such cases are rare,
+     	but they really have happened on production systems.
+
+Link: https://lore.kernel.org/r/20230210193640.GA3325193@paulmck-ThinkPad-P17-Gen-1
 ---
- kernel/time/clocksource.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index b599149..fc486cd 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -446,12 +446,20 @@ static void clocksource_watchdog(struct timer_list *unused)
- 		/* Check the deviation from the watchdog clocksource. */
- 		md = cs->uncertainty_margin + watchdog->uncertainty_margin;
- 		if (abs(cs_nsec - wd_nsec) > md) {
-+			u64 cs_wd_msec;
-+			u64 wd_msec;
-+			u32 wd_rem;
-+
- 			pr_warn("timekeeping watchdog on CPU%d: Marking clocksource '%s' as unstable because the skew is too large:\n",
- 				smp_processor_id(), cs->name);
- 			pr_warn("                      '%s' wd_nsec: %lld wd_now: %llx wd_last: %llx mask: %llx\n",
- 				watchdog->name, wd_nsec, wdnow, wdlast, watchdog->mask);
- 			pr_warn("                      '%s' cs_nsec: %lld cs_now: %llx cs_last: %llx mask: %llx\n",
- 				cs->name, cs_nsec, csnow, cslast, cs->mask);
-+			cs_wd_msec = div_u64_rem(cs_nsec - wd_nsec, 1000U * 1000U, &wd_rem);
-+			wd_msec = div_u64_rem(wd_nsec, 1000U * 1000U, &wd_rem);
-+			pr_warn("                      Clocksource '%s' skewed %lld ns (%lld ms) over watchdog '%s' interval of %lld ns (%lld ms)\n",
-+				cs->name, cs_nsec - wd_nsec, cs_wd_msec, watchdog->name, wd_nsec, wd_msec);
- 			if (curr_clocksource == cs)
- 				pr_warn("                      '%s' is current clocksource.\n", cs->name);
- 			else if (curr_clocksource)
