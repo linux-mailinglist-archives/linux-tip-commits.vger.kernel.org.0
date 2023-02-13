@@ -2,58 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C012694F35
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Feb 2023 19:26:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FADF694F38
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Feb 2023 19:26:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230326AbjBMS0a (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Feb 2023 13:26:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46614 "EHLO
+        id S230332AbjBMS0b (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Feb 2023 13:26:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbjBMS00 (ORCPT
+        with ESMTP id S229741AbjBMS00 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 13 Feb 2023 13:26:26 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52198729D;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7626D1711;
         Mon, 13 Feb 2023 10:26:24 -0800 (PST)
 Date:   Mon, 13 Feb 2023 18:26:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676312782;
+        s=2020; t=1676312783;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RxZ6aEw3H1EuT2X6ppE3XEZQ1Z1VXyr9nlIu9qn19Qc=;
-        b=iLaTSgQYQET1J7W4wFNlcu0sfv2//HPknQ7hXje8H8+Oc3vRfutPtQmCaKh6nKseuFu9+L
-        St7GJjbiJJ/LcUM0M2m9ldPqGaV/odJ/uFXqgeVe+MzAijEVLY/VzTJguC8IktU78DfBzQ
-        +AXkiufO417wPkM8qWuCeI6CbcNjhV6bRcpKAjL8iMh2Izt5c94w8xOGIOVTdKoAbfM6ad
-        80o2Z9qKOfdvzZPMjvevZIb8PKOfGjD6wfvRtxaiYbyQv2OTjoNOyHCeY58Z4BImc6aGvZ
-        LsLhYIkJVlacGqL03HE/LX/4gBW49VE/2TFKOVNXd7mvJU2CrJznWpdbUbdrFg==
+        bh=7LVmk5OQQdIxqEdfNpCuLE9e8cKT+OCZOwBwEjSL6ns=;
+        b=Wt8aDdSxK+or/6H7XhtO8FtsJ3szltCy2+AKDwbl5tP3LThQJ+ciicMKPqSc8KPA+JV2RY
+        SiZv6JwBQMz2ygL0/l/WIJLkCLV0WQxEzJ1cnrzwTEq1RgaZZae2Pqu7rrpRblU/CwJZ89
+        m4zyEw6upjyuOwjEHBsxGduy5DpCJpKDqUdcFh77ZRmi61K8IV7lYap0kyj46KfacH4BIS
+        Bs8emVrrZaaBmYpRnwARIH5WgmM4GNBv5vmgzLvm0WpKluVlfHJZh4uWfX1FUkxXUvaCGx
+        oWVEbRYALELSBo3i8laIT+7ZBKP7WszrWa+UjNRn9J5B7vzr0QSOHnKrOWaYkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676312782;
+        s=2020e; t=1676312783;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RxZ6aEw3H1EuT2X6ppE3XEZQ1Z1VXyr9nlIu9qn19Qc=;
-        b=SX24IGfI5Ake/fd0DDZE0y/CdLn2+nlRBOspAThuExdM49VdMl0IURXm0myiVO4d3U3zeu
-        l28bPq97Q7WbHQBw==
-From:   "tip-bot2 for Matt Evans" <tip-bot2@linutronix.de>
+        bh=7LVmk5OQQdIxqEdfNpCuLE9e8cKT+OCZOwBwEjSL6ns=;
+        b=CFTG9ZFcdCCvWYJ3M3RslMq2LCWcTtrRsCZ77s+xPamyK9yJf8AiMFKGQ8tf6Vyuu4uE2j
+        WW7T2YYv7rfMoRDA==
+From:   "tip-bot2 for Claudiu Beznea" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/riscv: Patch
- riscv_clock_next_event() jump before first use
-Cc:     Matt Evans <mev@rivosinc.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Anup Patel <anup@brainfault.org>,
+Subject: [tip: timers/core] clocksource/drivers/timer-microchip-pit64b: Add
+ delay timer
+Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <CDDAB2D0-264E-42F3-8E31-BA210BEB8EC1@rivosinc.com>
-References: <CDDAB2D0-264E-42F3-8E31-BA210BEB8EC1@rivosinc.com>
+In-Reply-To: <20230203130537.1921608-3-claudiu.beznea@microchip.com>
+References: <20230203130537.1921608-3-claudiu.beznea@microchip.com>
 MIME-Version: 1.0
-Message-ID: <167631278248.4906.12382142113673648566.tip-bot2@tip-bot2>
+Message-ID: <167631278275.4906.11516318831901013239.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,58 +67,65 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     225b9596cb0227c1c1b1e4a836dad43595c3e61a
-Gitweb:        https://git.kernel.org/tip/225b9596cb0227c1c1b1e4a836dad43595c3e61a
-Author:        Matt Evans <mev@rivosinc.com>
-AuthorDate:    Wed, 01 Feb 2023 19:49:42 
+Commit-ID:     f3af3dc7cc351bd22742eac992c72c76749ce8c3
+Gitweb:        https://git.kernel.org/tip/f3af3dc7cc351bd22742eac992c72c76749ce8c3
+Author:        Claudiu Beznea <claudiu.beznea@microchip.com>
+AuthorDate:    Fri, 03 Feb 2023 15:05:37 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Mon, 13 Feb 2023 13:10:17 +01:00
 
-clocksource/drivers/riscv: Patch riscv_clock_next_event() jump before first use
+clocksource/drivers/timer-microchip-pit64b: Add delay timer
 
-A static key is used to select between SBI and Sstc timer usage in
-riscv_clock_next_event(), but currently the direction is resolved
-after cpuhp_setup_state() is called (which sets the next event).  The
-first event will therefore fall through the sbi_set_timer() path; this
-breaks Sstc-only systems.  So, apply the jump patching before first
-use.
+Add delay timer.
 
-Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
-Signed-off-by: Matt Evans <mev@rivosinc.com>
-Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/CDDAB2D0-264E-42F3-8E31-BA210BEB8EC1@rivosinc.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230203130537.1921608-3-claudiu.beznea@microchip.com
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/clocksource/timer-riscv.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/clocksource/timer-microchip-pit64b.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
-index d8cb629..5f0f10c 100644
---- a/drivers/clocksource/timer-riscv.c
-+++ b/drivers/clocksource/timer-riscv.c
-@@ -192,6 +192,11 @@ static int __init riscv_timer_init_dt(struct device_node *n)
- 		return error;
- 	}
+diff --git a/drivers/clocksource/timer-microchip-pit64b.c b/drivers/clocksource/timer-microchip-pit64b.c
+index d5f1436..57209bb 100644
+--- a/drivers/clocksource/timer-microchip-pit64b.c
++++ b/drivers/clocksource/timer-microchip-pit64b.c
+@@ -9,6 +9,7 @@
  
-+	if (riscv_isa_extension_available(NULL, SSTC)) {
-+		pr_info("Timer interrupt in S-mode is available via sstc extension\n");
-+		static_branch_enable(&riscv_sstc_available);
-+	}
+ #include <linux/clk.h>
+ #include <linux/clockchips.h>
++#include <linux/delay.h>
+ #include <linux/interrupt.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+@@ -92,6 +93,8 @@ struct mchp_pit64b_clksrc {
+ static void __iomem *mchp_pit64b_cs_base;
+ /* Default cycles for clockevent timer. */
+ static u64 mchp_pit64b_ce_cycles;
++/* Delay timer. */
++static struct delay_timer mchp_pit64b_dt;
+ 
+ static inline u64 mchp_pit64b_cnt_read(void __iomem *base)
+ {
+@@ -169,6 +172,11 @@ static u64 notrace mchp_pit64b_sched_read_clk(void)
+ 	return mchp_pit64b_cnt_read(mchp_pit64b_cs_base);
+ }
+ 
++static unsigned long notrace mchp_pit64b_dt_read(void)
++{
++	return mchp_pit64b_cnt_read(mchp_pit64b_cs_base);
++}
 +
- 	error = cpuhp_setup_state(CPUHP_AP_RISCV_TIMER_STARTING,
- 			 "clockevents/riscv/timer:starting",
- 			 riscv_timer_starting_cpu, riscv_timer_dying_cpu);
-@@ -199,11 +204,6 @@ static int __init riscv_timer_init_dt(struct device_node *n)
- 		pr_err("cpu hp setup state failed for RISCV timer [%d]\n",
- 		       error);
+ static int mchp_pit64b_clkevt_shutdown(struct clock_event_device *cedev)
+ {
+ 	struct mchp_pit64b_timer *timer = clkevt_to_mchp_pit64b_timer(cedev);
+@@ -376,6 +384,10 @@ static int __init mchp_pit64b_init_clksrc(struct mchp_pit64b_timer *timer,
  
--	if (riscv_isa_extension_available(NULL, SSTC)) {
--		pr_info("Timer interrupt in S-mode is available via sstc extension\n");
--		static_branch_enable(&riscv_sstc_available);
--	}
--
- 	return error;
+ 	sched_clock_register(mchp_pit64b_sched_read_clk, 64, clk_rate);
+ 
++	mchp_pit64b_dt.read_current_timer = mchp_pit64b_dt_read;
++	mchp_pit64b_dt.freq = clk_rate;
++	register_current_timer_delay(&mchp_pit64b_dt);
++
+ 	return 0;
  }
  
