@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7482F694F39
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Feb 2023 19:26:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BD55694F3E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Feb 2023 19:26:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230443AbjBMS0d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Feb 2023 13:26:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46720 "EHLO
+        id S230527AbjBMS0f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Feb 2023 13:26:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229931AbjBMS02 (ORCPT
+        with ESMTP id S230043AbjBMS02 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 13 Feb 2023 13:26:28 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CECA2103;
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF802104;
         Mon, 13 Feb 2023 10:26:27 -0800 (PST)
 Date:   Mon, 13 Feb 2023 18:26:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gUYW88Z3PvwE7weQUKwxFw/NWF6SI7hmAUO2Ck8gTCg=;
-        b=pAjik7xIa0Ys/v/btmFOeilYCYlpZEgMTC2TiDuPIP4N5sdRUULDW4zCL7WJ4ou8xeANhr
-        8G7U5MP/cfRQG2kDadPSbw31zS4HSwLbd37OHnmqTTuPblx2gsSSGsxstPjPRds88qUbZE
-        4s1kSE33FavgHULJ9W3jLVnUrixQ4lyzZYNrKTSHk3OC2ao0mZmA1d1uqcmor43aKdOJmp
-        /E4GrGrLAMzUW625cDcaU1sNN9qc0eGgj72EioKh3YWol7fMZDn8AXAz5xkJXpM9/EUMJI
-        1qqCFWviFK5wmbm2q2/yhAytqJ7XLawMwpzHYsEf5pusd/x5fyg77pnm6pf9aQ==
+        bh=jRvsYlPKAkyUONMmY3Do21DCFIfU1YIyXzRXIXHlfu4=;
+        b=HXeCE88Thb6qPKdWbaw9ml5YuX50g+buEMzqbRSyzOx/SJ51VdRqJwcH2JKzXjigyHhaQG
+        M90VPyeNEqqfX7ekyoh8a3hf1H4Fdx1kECuRdy4LgbctVdL0O270GINRmen54PhsFRIsDA
+        yq1KDFwM9RcZXACqRZdEMPQJElBAGVUszn3xbU33CGPj9eTKkb2vQ49pSMfDfRNfSALMJh
+        DqCUxWRpYvxa0gSTe0ZM/xYqoUqKAwoVvopl7vYvE7RTFk1Bmnn7/bRSMlu0Weed521Zh9
+        fsqR1hYFJ4pS581Wu2CTso0I73URFkSRRdRZWUM9igxDeiA/Sp1ozMNI58jUPA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1676312784;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,26 +36,28 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gUYW88Z3PvwE7weQUKwxFw/NWF6SI7hmAUO2Ck8gTCg=;
-        b=79j+AQ5B860yhzGfNAG7LsO4Gg90zIy8fT3Kr6XS0IdCy64OI0E9sT0osPgPry7kIn25ti
-        l42PdGAmfPQew9Dg==
-From:   tip-bot2 for Uwe =?utf-8?q?Kleine-K=C3=B6nig?= 
-        <tip-bot2@linutronix.de>
+        bh=jRvsYlPKAkyUONMmY3Do21DCFIfU1YIyXzRXIXHlfu4=;
+        b=3oLrymvHZkmkMkiMnofWpJKl1aN0v5FK9rEH2K7pwpo4rxgUfh0vRYQzdARV1gvDxxHvue
+        jP9wmTNkBvQqGRDQ==
+From:   "tip-bot2 for Lad Prabhakar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/sh_cmt: Mark driver as non-removable
-Cc:     u.kleine-koenig@pengutronix.de,
+Subject: [tip: timers/core] clocksource/drivers/riscv: Get rid of
+ clocksource_arch_init() callback
+Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Conor Dooley <conor.dooley@microchip.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230123220221.48164-1-u.kleine-koenig@pengutronix.de>
-References: <20230123220221.48164-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20221229224601.103851-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20221229224601.103851-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 MIME-Version: 1.0
-Message-ID: <167631278391.4906.3345100760900674930.tip-bot2@tip-bot2>
+Message-ID: <167631278366.4906.10317855823309761779.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -67,54 +69,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     c3daa4754f3c57231bf47dcf4bdf897bc5c5f1f1
-Gitweb:        https://git.kernel.org/tip/c3daa4754f3c57231bf47dcf4bdf897bc5c=
-5f1f1
-Author:        Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-AuthorDate:    Mon, 23 Jan 2023 23:02:21 +01:00
+Commit-ID:     3aff0403f814df6ce2377a6ecf61dd7750a3925f
+Gitweb:        https://git.kernel.org/tip/3aff0403f814df6ce2377a6ecf61dd7750a3925f
+Author:        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+AuthorDate:    Thu, 29 Dec 2022 22:46:01 
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Mon, 13 Feb 2023 13:10:17 +01:00
 
-clocksource/drivers/sh_cmt: Mark driver as non-removable
+clocksource/drivers/riscv: Get rid of clocksource_arch_init() callback
 
-The comment in the remove callback suggests that the driver is not
-supposed to be unbound. However returning an error code in the remove
-callback doesn't accomplish that. Instead set the suppress_bind_attrs
-property (which makes it impossible to unbind the driver via sysfs).
-The only remaining way to unbind a sh_cmt device would be module
-unloading, but that doesn't apply here, as the driver cannot be built as
-a module.
+Having a clocksource_arch_init() callback always sets vdso_clock_mode to
+VDSO_CLOCKMODE_ARCHTIMER if GENERIC_GETTIMEOFDAY is enabled, this is
+required for the riscv-timer.
 
-Also drop the useless remove callback.
+This works for platforms where just riscv-timer clocksource is present.
+On platforms where other clock sources are available we want them to
+register with vdso_clock_mode set to VDSO_CLOCKMODE_NONE.
 
-Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230123220221.48164-1-u.kleine-koenig@pengut=
-ronix.de
+On the Renesas RZ/Five SoC OSTM block can be used as clocksource [0], to
+avoid multiple clock sources being registered as VDSO_CLOCKMODE_ARCHTIMER
+move setting of vdso_clock_mode in the riscv-timer driver instead of doing
+this in clocksource_arch_init() callback as done similarly for ARM/64
+architecture.
+
+[0] drivers/clocksource/renesas-ostm.c
+
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Tested-by: Samuel Holland <samuel@sholland.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Samuel Holland <samuel@sholland.org>
+Link: https://lore.kernel.org/r/20221229224601.103851-1-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/clocksource/sh_cmt.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/riscv/Kconfig                |  1 -
+ arch/riscv/kernel/time.c          |  9 ---------
+ drivers/clocksource/timer-riscv.c |  5 +++++
+ 3 files changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/clocksource/sh_cmt.c b/drivers/clocksource/sh_cmt.c
-index 7b952aa..8b2e079 100644
---- a/drivers/clocksource/sh_cmt.c
-+++ b/drivers/clocksource/sh_cmt.c
-@@ -1145,17 +1145,12 @@ static int sh_cmt_probe(struct platform_device *pdev)
- 	return 0;
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index e2b6560..9c687da 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -12,7 +12,6 @@ config 32BIT
+ 
+ config RISCV
+ 	def_bool y
+-	select ARCH_CLOCKSOURCE_INIT
+ 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+ 	select ARCH_HAS_BINFMT_FLAT
+diff --git a/arch/riscv/kernel/time.c b/arch/riscv/kernel/time.c
+index 1cf21db..babaf3b 100644
+--- a/arch/riscv/kernel/time.c
++++ b/arch/riscv/kernel/time.c
+@@ -33,12 +33,3 @@ void __init time_init(void)
+ 
+ 	tick_setup_hrtimer_broadcast();
  }
-=20
--static int sh_cmt_remove(struct platform_device *pdev)
--{
--	return -EBUSY; /* cannot unregister clockevent and clocksource */
--}
 -
- static struct platform_driver sh_cmt_device_driver =3D {
- 	.probe		=3D sh_cmt_probe,
--	.remove		=3D sh_cmt_remove,
- 	.driver		=3D {
- 		.name	=3D "sh_cmt",
- 		.of_match_table =3D of_match_ptr(sh_cmt_of_table),
-+		.suppress_bind_attrs =3D true,
- 	},
- 	.id_table	=3D sh_cmt_id_table,
+-void clocksource_arch_init(struct clocksource *cs)
+-{
+-#ifdef CONFIG_GENERIC_GETTIMEOFDAY
+-	cs->vdso_clock_mode = VDSO_CLOCKMODE_ARCHTIMER;
+-#else
+-	cs->vdso_clock_mode = VDSO_CLOCKMODE_NONE;
+-#endif
+-}
+diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+index adf7f98..d8cb629 100644
+--- a/drivers/clocksource/timer-riscv.c
++++ b/drivers/clocksource/timer-riscv.c
+@@ -78,6 +78,11 @@ static struct clocksource riscv_clocksource = {
+ 	.mask		= CLOCKSOURCE_MASK(64),
+ 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+ 	.read		= riscv_clocksource_rdtime,
++#if IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY)
++	.vdso_clock_mode = VDSO_CLOCKMODE_ARCHTIMER,
++#else
++	.vdso_clock_mode = VDSO_CLOCKMODE_NONE,
++#endif
  };
+ 
+ static int riscv_timer_starting_cpu(unsigned int cpu)
