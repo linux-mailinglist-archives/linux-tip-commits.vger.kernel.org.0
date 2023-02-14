@@ -2,50 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E78F1694FBE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Feb 2023 19:48:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EB59695F5B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Feb 2023 10:36:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229976AbjBMSsu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Feb 2023 13:48:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42406 "EHLO
+        id S232397AbjBNJgH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Feb 2023 04:36:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbjBMSsh (ORCPT
+        with ESMTP id S232499AbjBNJgB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Feb 2023 13:48:37 -0500
+        Tue, 14 Feb 2023 04:36:01 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B641CAFA;
-        Mon, 13 Feb 2023 10:48:36 -0800 (PST)
-Date:   Mon, 13 Feb 2023 18:48:34 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 870B0768C;
+        Tue, 14 Feb 2023 01:35:59 -0800 (PST)
+Date:   Tue, 14 Feb 2023 09:35:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676314114;
+        s=2020; t=1676367357;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=k/nAO6D5+40cddh0WbZTxoJpzCW4ZAewqvnajsY1fag=;
-        b=UfM8+hfar5sYI1mEMKuZtf9gZk6kB8SQ4byg3EpZzkTzyeC1cxNZKNI3IdJmqCaAzmofUs
-        xueYOq6sqzbEQpuKlJxPO2h9gQD2dw0svB1wPSIDwECaDRetrYmrZNP3512Gr8Ozo+Bn4E
-        YoRuhGZo53YGx7+UbniDqWylLNvdVe90pcyp4k+8Wm05lINrwWh0lynF94rScSqs4Uviba
-        VBguS63PYTfFlopUYFVPdg+ITyt/BBXIvKseJbh69zN8kO2qih/JGVBPCnLuoMgJ5Gzd40
-        mVcYw2WGXXsqyoOyprzXVjOIBwY0OvrbHOnC8EPSMkyhno61B2qbEkKPHfab1A==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AnHUKuwyU2GALNl/FSylj78vAcnU+5Z3BJ7Qbr/o6G0=;
+        b=0y5OoRbz7URyNEhfAmt1a3+JoJEpLVuLw5uOK2Vpr1KjBS9Yyi249pLp9oAIXl/4JYAsn5
+        YetnnvzESu35QXDA8pnTY97RwMCxy6CuGT15Kb+DZL+x04C4KZgfd1Lug9s2qo1VsuMoCk
+        BSnNiUXZ9OTQCrg+APTlL8TrkzCvmp0ujsOa3VMNbX6dYuXjSl8kAHtGbeXsBXklAO4IVG
+        MEv5BZ2VBr4q60rwq3ZZ69OIDHMXlAFTF19HRgrmE3xqR7w3KerirmcDCXbho5xIasA2Ir
+        YK9PYBS5Ls8OcmoWP+oaVaO7IASRFBaoZrwhNhyV7CvMrPf0noP8x25OERJ/pQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676314114;
+        s=2020e; t=1676367357;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=k/nAO6D5+40cddh0WbZTxoJpzCW4ZAewqvnajsY1fag=;
-        b=aiC7gRq8/iMVEkbCA2f93/jOg/8+V5itdZEoNXurSHvVz4jMsncOhrCly3OZM5H1jQk4Zl
-        agcjvLFCA8JezYBg==
-From:   "tip-bot2 for Yunying Sun" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AnHUKuwyU2GALNl/FSylj78vAcnU+5Z3BJ7Qbr/o6G0=;
+        b=vFMTTH7snpiDiyAIF5jqVd/pPFxTu5K/CK5fxxWU+zwuB/Dwfem+Xd2i3MVRK1DxqSHEQm
+        pwqoETSX92S60cCw==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource: Print clocksource name when
- clocksource is tested unstable
-Cc:     Yunying Sun <yunying.sun@intel.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/mtrr: Revert 90b926e68f50 ("x86/pat: Fix
+ pat_x_mtrr_type() for MTRR disabled case")
+Cc:     Christian Kujau <lists@nerdbynature.de>,
+        Juergen Gross <jgross@suse.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <4fe9541e-4d4c-2b2a-f8c8-2d34a7284930@nerdbynature.de>
+References: <4fe9541e-4d4c-2b2a-f8c8-2d34a7284930@nerdbynature.de>
 MIME-Version: 1.0
-Message-ID: <167631411430.4906.12795499771072205782.tip-bot2@tip-bot2>
+Message-ID: <167636735608.4906.4788207020350311572.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,45 +66,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     beaa1ffe551c330d8ea23de158432ecaad6c0410
-Gitweb:        https://git.kernel.org/tip/beaa1ffe551c330d8ea23de158432ecaad6c0410
-Author:        Yunying Sun <yunying.sun@intel.com>
-AuthorDate:    Wed, 16 Nov 2022 16:22:21 +08:00
-Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Tue, 03 Jan 2023 20:43:45 -08:00
+Commit-ID:     f9f57da2c2d119dbf109e3f6e1ceab7659294046
+Gitweb:        https://git.kernel.org/tip/f9f57da2c2d119dbf109e3f6e1ceab7659294046
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Thu, 09 Feb 2023 08:22:17 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 14 Feb 2023 10:16:34 +01:00
 
-clocksource: Print clocksource name when clocksource is tested unstable
+x86/mtrr: Revert 90b926e68f50 ("x86/pat: Fix pat_x_mtrr_type() for MTRR disabled case")
 
-Some "TSC fall back to HPET" messages appear on systems having more than
-2 NUMA nodes:
+Commit
 
-clocksource: timekeeping watchdog on CPU168: hpet read-back delay of 4296200ns, attempt 4, marking unstable
+  90b926e68f50 ("x86/pat: Fix pat_x_mtrr_type() for MTRR disabled case")
 
-The "hpet" here is misleading the clocksource watchdog is really
-doing repeated reads of "hpet" in order to check for unrelated delays.
-Therefore, print the name of the clocksource under test, prefixed by
-"wd-" and suffixed by "-wd", for example, "wd-tsc-wd".
+broke the use case of running Xen dom0 kernels on machines with an
+external disk enclosure attached via USB, see Link tag.
 
-Signed-off-by: Yunying Sun <yunying.sun@intel.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+What this commit was originally fixing - SEV-SNP guests on Hyper-V - is
+a more specialized situation which has other issues at the moment anyway
+so reverting this now and addressing the issue properly later is the
+prudent thing to do.
+
+So revert it in time for the 6.2 proper release.
+
+  [ bp: Rewrite commit message. ]
+
+Reported-by: Christian Kujau <lists@nerdbynature.de>
+Tested-by: Christian Kujau <lists@nerdbynature.de>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/4fe9541e-4d4c-2b2a-f8c8-2d34a7284930@nerdbynature.de
 ---
- kernel/time/clocksource.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/mm/pat/memtype.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 9cf32cc..4a2c3bb 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -257,8 +257,8 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow, 
- 			goto skip_test;
- 	}
+diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
+index fb4b1b5..46de9cf 100644
+--- a/arch/x86/mm/pat/memtype.c
++++ b/arch/x86/mm/pat/memtype.c
+@@ -387,8 +387,7 @@ static unsigned long pat_x_mtrr_type(u64 start, u64 end,
+ 		u8 mtrr_type, uniform;
  
--	pr_warn("timekeeping watchdog on CPU%d: %s read-back delay of %lldns, attempt %d, marking unstable\n",
--		smp_processor_id(), watchdog->name, wd_delay, nretries);
-+	pr_warn("timekeeping watchdog on CPU%d: wd-%s-wd read-back delay of %lldns, attempt %d, marking unstable\n",
-+		smp_processor_id(), cs->name, wd_delay, nretries);
- 	return WD_READ_UNSTABLE;
+ 		mtrr_type = mtrr_type_lookup(start, end, &uniform);
+-		if (mtrr_type != MTRR_TYPE_WRBACK &&
+-		    mtrr_type != MTRR_TYPE_INVALID)
++		if (mtrr_type != MTRR_TYPE_WRBACK)
+ 			return _PAGE_CACHE_MODE_UC_MINUS;
  
- skip_test:
+ 		return _PAGE_CACHE_MODE_WB;
