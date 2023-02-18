@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E232697D56
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Feb 2023 14:29:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F71969BDEA
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Feb 2023 00:16:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231818AbjBON3D (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Feb 2023 08:29:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44250 "EHLO
+        id S229489AbjBRXQR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 18 Feb 2023 18:16:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231748AbjBON3B (ORCPT
+        with ESMTP id S229436AbjBRXQQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Feb 2023 08:29:01 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFEED8A5F;
-        Wed, 15 Feb 2023 05:28:33 -0800 (PST)
-Date:   Wed, 15 Feb 2023 13:28:31 -0000
+        Sat, 18 Feb 2023 18:16:16 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C300F14E9D;
+        Sat, 18 Feb 2023 15:16:14 -0800 (PST)
+Date:   Sat, 18 Feb 2023 23:16:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676467712;
+        s=2020; t=1676762171;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4F0ou3VX9jn2+Yq4FUDUy8SBBZh5JpvHrJaRSMBy0D8=;
-        b=eF0tDCjAtu/pO3fOIBXW+OEovGcPHvd40A3uv0FRQfTJ7MFBM6KPvt0rM30aPKECEPG53M
-        5+tqosy60CknZpBnihwFgwUxyW5q7cwOJQB+a1fspUFF5PJcnDk9B6b5JNpgg8HQH+TegT
-        e7yuIq/zoqteyKsKP36esXzbYoRyYmy1UTgJkWIAbMt3GDLMZ2LsOhvPIymD50xeLSAzxA
-        Haxk2XgqcH9Gh0RFOGrlXijuyIvEgj4q6Y/3t+Up4b4Wa+XFnyN/LKI8GJeD9ElAWHWuir
-        tPzwYl7EgUn/drJBjRjrwwCKYhjbpShWKiaRcs/rvzEP7kJ+1uE0pupx9Jikow==
+        bh=n8g43V4MCQR3o/SfYMnKdsdISnPMf7MbBo2vGHoXKMc=;
+        b=p+X8khiLNZ+56Li0kR0e1pv9C/711fsQ2LhUgyD7zZ6pPgfKC/ojjYnmuFcv3jPaPQpUaE
+        10ckiYmd7NNLxru8uJjmIHNvxTzffDuxE+TlxU6Yr+ThrVK1lLyyAciDSxSTmuafEVTWTH
+        Y14w0K3oIKdKZTlXfOKHsURPykhJPYbw0tgpUBKA5sK4NohShIaDHk+mM9baoy9BBw6au4
+        nFoxUgJQ9NbAfX6NA7FWKzKMCTidgCENphodcapuwb6eKRI0ut/W1x0SutxR8pCvEI0ZM5
+        J1E1F4bmiPGnUvEWSI1yLoEEcKAYzfCuaky+2/T872cMmn+iAAH0X2dvnNwIOQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676467712;
+        s=2020e; t=1676762171;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4F0ou3VX9jn2+Yq4FUDUy8SBBZh5JpvHrJaRSMBy0D8=;
-        b=YpN8hqf8nT909o2W5GLnFFWRd/w+Klfv+pAtDSeRnGvysLiN+e+vn1/huDrRNg0DKmxkTG
-        Jhchz/pCfaX+HqAA==
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+        bh=n8g43V4MCQR3o/SfYMnKdsdISnPMf7MbBo2vGHoXKMc=;
+        b=nPdkwNy1V2sjSKOMo5iNscmlz3R/oWaWWXbovVQnHlHKyFaOmSFi3pObDN1lFN91x3vsNZ
+        ossEvBWBSEN5LYBQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/build: Make 64-bit defconfig the default
-Cc:     Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230215091706.1623070-1-arnd@kernel.org>
-References: <20230215091706.1623070-1-arnd@kernel.org>
+Subject: [tip: irq/core] Merge tag 'irqchip-6.3' of
+ git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20230218143452.3817627-1-maz@kernel.org>
+References: <20230218143452.3817627-1-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <167646771153.4906.1352893962848318738.tip-bot2@tip-bot2>
+Message-ID: <167676216961.4906.9294968695532135789.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,47 +63,31 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     f9bb7f6a7eb0efd282f7364115f97e652677a29b
-Gitweb:        https://git.kernel.org/tip/f9bb7f6a7eb0efd282f7364115f97e652677a29b
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Wed, 15 Feb 2023 10:16:56 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 15 Feb 2023 14:20:17 +01:00
+Commit-ID:     6f3ee0e22b4c62f44b8fa3c8de6e369a4d112a75
+Gitweb:        https://git.kernel.org/tip/6f3ee0e22b4c62f44b8fa3c8de6e369a4d112a75
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sun, 19 Feb 2023 00:07:56 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sun, 19 Feb 2023 00:07:56 +01:00
 
-x86/build: Make 64-bit defconfig the default
+Merge tag 'irqchip-6.3' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
 
-Running 'make ARCH=x86 defconfig' on anything other than an x86_64
-machine currently results in a 32-bit build, which is rarely what
-anyone wants these days.
+Pull irqchip updates from Marc Zyngier:
 
-Change the default so that the 64-bit config gets used unless
-the user asks for i386_defconfig, uses ARCH=i386 or runs on
-a system that "uname -m" identifies as i386/i486/i586/i686.
+   - New and improved irqdomain locking, closing a number of races that
+     became apparent now that we are able to probe drivers in parallel
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230215091706.1623070-1-arnd@kernel.org
+   - A bunch of OF node refcounting bugs have been fixed
+
+   - We now have a new IPI mux, lifted from the Apple AIC code and
+     made common. It is expected that riscv will eventually benefit
+     from it
+
+   - Two small fixes for the Broadcom L2 drivers
+
+   - Various cleanups and minor bug fixes
+
+Link: https://lore.kernel.org/r/20230218143452.3817627-1-maz@kernel.org
 ---
- arch/x86/Makefile | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 73ed982..b399759 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -3,10 +3,10 @@
- 
- # select defconfig based on actual architecture
- ifeq ($(ARCH),x86)
--  ifeq ($(shell uname -m),x86_64)
--        KBUILD_DEFCONFIG := x86_64_defconfig
--  else
-+  ifeq ($(shell uname -m | sed -e 's/i.86/i386/'),i386)
-         KBUILD_DEFCONFIG := i386_defconfig
-+  else
-+        KBUILD_DEFCONFIG := x86_64_defconfig
-   endif
- else
-         KBUILD_DEFCONFIG := $(ARCH)_defconfig
