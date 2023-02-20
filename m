@@ -2,54 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F71969BDEA
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Feb 2023 00:16:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE60969CB76
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Feb 2023 13:56:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229489AbjBRXQR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 18 Feb 2023 18:16:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50522 "EHLO
+        id S231824AbjBTM4J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Feb 2023 07:56:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjBRXQQ (ORCPT
+        with ESMTP id S231714AbjBTM4I (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 18 Feb 2023 18:16:16 -0500
+        Mon, 20 Feb 2023 07:56:08 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C300F14E9D;
-        Sat, 18 Feb 2023 15:16:14 -0800 (PST)
-Date:   Sat, 18 Feb 2023 23:16:09 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BAC4E3A1;
+        Mon, 20 Feb 2023 04:56:00 -0800 (PST)
+Date:   Mon, 20 Feb 2023 12:55:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676762171;
+        s=2020; t=1676897758;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=n8g43V4MCQR3o/SfYMnKdsdISnPMf7MbBo2vGHoXKMc=;
-        b=p+X8khiLNZ+56Li0kR0e1pv9C/711fsQ2LhUgyD7zZ6pPgfKC/ojjYnmuFcv3jPaPQpUaE
-        10ckiYmd7NNLxru8uJjmIHNvxTzffDuxE+TlxU6Yr+ThrVK1lLyyAciDSxSTmuafEVTWTH
-        Y14w0K3oIKdKZTlXfOKHsURPykhJPYbw0tgpUBKA5sK4NohShIaDHk+mM9baoy9BBw6au4
-        nFoxUgJQ9NbAfX6NA7FWKzKMCTidgCENphodcapuwb6eKRI0ut/W1x0SutxR8pCvEI0ZM5
-        J1E1F4bmiPGnUvEWSI1yLoEEcKAYzfCuaky+2/T872cMmn+iAAH0X2dvnNwIOQ==
+        bh=5qB7yZQqCaAbjDfa3wxBWK/S/EZXP+UvElzcVrla3Zw=;
+        b=p+z4KuczSvCyjE02fcEL40RqQDI0T06Jem+8OcmhITfmjo/iXsRmw3C14Sk0resFPzkKXn
+        vhMrWRwdVsFjSBeEvJk1Fi/MuxRTti90Hx0f0qH5W1gaDIqiwtczvjSVcgBT+VupfFC87+
+        q9SUzdcpKHCs97hBBxjKHuG5lydwe1QswLQpQ2Ban67+UX0/oQP6LvpKfBfImfMqLGfn1b
+        AtEQcjGaJLiG7IcV8sFCszw79NFESxiYnU8mt5CKjZxn/aKiBUCetSrSWsBl7bJK6fIDIJ
+        rMb3/yZwb+l8iGjEz81pJeCWFifLDNG2SCON2k7QVzXmpKgefSLKnOSQIP/bVA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676762171;
+        s=2020e; t=1676897758;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=n8g43V4MCQR3o/SfYMnKdsdISnPMf7MbBo2vGHoXKMc=;
-        b=nPdkwNy1V2sjSKOMo5iNscmlz3R/oWaWWXbovVQnHlHKyFaOmSFi3pObDN1lFN91x3vsNZ
-        ossEvBWBSEN5LYBQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=5qB7yZQqCaAbjDfa3wxBWK/S/EZXP+UvElzcVrla3Zw=;
+        b=OTI6CrwoTHLyoqcnxmXji3dNX3K9WnOQ/flHEGozMVSqGEidTf4Xp9lj2fKfKWf9EIWhJT
+        8iF3TDajnMRbncAA==
+From:   "tip-bot2 for Sergey Shtylyov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] Merge tag 'irqchip-6.3' of
- git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20230218143452.3817627-1-maz@kernel.org>
-References: <20230218143452.3817627-1-maz@kernel.org>
+Subject: [tip: irq/urgent] genirq/ipi: Fix NULL pointer deref in
+ irq_data_get_affinity_mask()
+Cc:     Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <b541232d-c2b6-1fe9-79b4-a7129459e4d0@omp.ru>
+References: <b541232d-c2b6-1fe9-79b4-a7129459e4d0@omp.ru>
 MIME-Version: 1.0
-Message-ID: <167676216961.4906.9294968695532135789.tip-bot2@tip-bot2>
+Message-ID: <167689775708.387.18354451760866911184.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,31 +65,62 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     6f3ee0e22b4c62f44b8fa3c8de6e369a4d112a75
-Gitweb:        https://git.kernel.org/tip/6f3ee0e22b4c62f44b8fa3c8de6e369a4d112a75
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 19 Feb 2023 00:07:56 +01:00
+Commit-ID:     feabecaff5902f896531dde90646ca5dfa9d4f7d
+Gitweb:        https://git.kernel.org/tip/feabecaff5902f896531dde90646ca5dfa9d4f7d
+Author:        Sergey Shtylyov <s.shtylyov@omp.ru>
+AuthorDate:    Wed, 17 Aug 2022 23:00:45 +03:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 19 Feb 2023 00:07:56 +01:00
+CommitterDate: Mon, 20 Feb 2023 13:53:41 +01:00
 
-Merge tag 'irqchip-6.3' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
+genirq/ipi: Fix NULL pointer deref in irq_data_get_affinity_mask()
 
-Pull irqchip updates from Marc Zyngier:
+If ipi_send_{mask|single}() is called with an invalid interrupt number, all
+the local variables there will be NULL. ipi_send_verify() which is invoked
+from these functions does verify its 'data' parameter, resulting in a
+kernel oops in irq_data_get_affinity_mask() as the passed NULL pointer gets
+dereferenced.
 
-   - New and improved irqdomain locking, closing a number of races that
-     became apparent now that we are able to probe drivers in parallel
+Add a missing NULL pointer check in ipi_send_verify()...
 
-   - A bunch of OF node refcounting bugs have been fixed
+Found by Linux Verification Center (linuxtesting.org) with the SVACE static
+analysis tool.
 
-   - We now have a new IPI mux, lifted from the Apple AIC code and
-     made common. It is expected that riscv will eventually benefit
-     from it
+Fixes: 3b8e29a82dd1 ("genirq: Implement ipi_send_mask/single()")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/b541232d-c2b6-1fe9-79b4-a7129459e4d0@omp.ru
 
-   - Two small fixes for the Broadcom L2 drivers
 
-   - Various cleanups and minor bug fixes
-
-Link: https://lore.kernel.org/r/20230218143452.3817627-1-maz@kernel.org
 ---
+ kernel/irq/ipi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/irq/ipi.c b/kernel/irq/ipi.c
+index bbd945b..961d4af 100644
+--- a/kernel/irq/ipi.c
++++ b/kernel/irq/ipi.c
+@@ -188,9 +188,9 @@ EXPORT_SYMBOL_GPL(ipi_get_hwirq);
+ static int ipi_send_verify(struct irq_chip *chip, struct irq_data *data,
+ 			   const struct cpumask *dest, unsigned int cpu)
+ {
+-	const struct cpumask *ipimask = irq_data_get_affinity_mask(data);
++	const struct cpumask *ipimask;
+ 
+-	if (!chip || !ipimask)
++	if (!chip || !data)
+ 		return -EINVAL;
+ 
+ 	if (!chip->ipi_send_single && !chip->ipi_send_mask)
+@@ -199,6 +199,10 @@ static int ipi_send_verify(struct irq_chip *chip, struct irq_data *data,
+ 	if (cpu >= nr_cpu_ids)
+ 		return -EINVAL;
+ 
++	ipimask = irq_data_get_affinity_mask(data);
++	if (!ipimask)
++		return -EINVAL;
++
+ 	if (dest) {
+ 		if (!cpumask_subset(dest, ipimask))
+ 			return -EINVAL;
