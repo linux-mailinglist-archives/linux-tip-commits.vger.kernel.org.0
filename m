@@ -2,56 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE60969CB76
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Feb 2023 13:56:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A819C69D5D7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Feb 2023 22:37:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231824AbjBTM4J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Feb 2023 07:56:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46352 "EHLO
+        id S232065AbjBTVhR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Feb 2023 16:37:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231714AbjBTM4I (ORCPT
+        with ESMTP id S232258AbjBTVhQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Feb 2023 07:56:08 -0500
+        Mon, 20 Feb 2023 16:37:16 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BAC4E3A1;
-        Mon, 20 Feb 2023 04:56:00 -0800 (PST)
-Date:   Mon, 20 Feb 2023 12:55:56 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B20C2212A2;
+        Mon, 20 Feb 2023 13:37:15 -0800 (PST)
+Date:   Mon, 20 Feb 2023 21:37:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676897758;
+        s=2020; t=1676929034;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5qB7yZQqCaAbjDfa3wxBWK/S/EZXP+UvElzcVrla3Zw=;
-        b=p+z4KuczSvCyjE02fcEL40RqQDI0T06Jem+8OcmhITfmjo/iXsRmw3C14Sk0resFPzkKXn
-        vhMrWRwdVsFjSBeEvJk1Fi/MuxRTti90Hx0f0qH5W1gaDIqiwtczvjSVcgBT+VupfFC87+
-        q9SUzdcpKHCs97hBBxjKHuG5lydwe1QswLQpQ2Ban67+UX0/oQP6LvpKfBfImfMqLGfn1b
-        AtEQcjGaJLiG7IcV8sFCszw79NFESxiYnU8mt5CKjZxn/aKiBUCetSrSWsBl7bJK6fIDIJ
-        rMb3/yZwb+l8iGjEz81pJeCWFifLDNG2SCON2k7QVzXmpKgefSLKnOSQIP/bVA==
+        bh=OUkh5Ko3jhevc1Bk0P+SZ5C68Sj3b1dGZJOtZcbce38=;
+        b=0CNtf7kcqFkcV9pWdxoJNHAKuu1BeQ/YK/XLZQgDHkbNqnSU79B9P0STpA+qtBktIaWmuh
+        y9Ucm07H/GhPXyAOt/Fa7OkHpQdfwts3rUJlURtxuY6bI1yoaqK9X7E1FQDeEmN6GLLy4t
+        BxpQF+Yxe7Vg7NtdOvHh0uPMSADiLk9orEbDjoGNFqWntB5sPsOJkSBcAN0P3hnwXWBZky
+        aAiqzdSa1HXAcIxRYQl6AhX2eqtfoc1GWBcEfgvznf2H6RHx3LY8UbLX/ElR9dOgmvuf+U
+        Q6kMV3hKA3+zPQs3a61gSByVVeSh5+oAKjwym6xXqy6MI22kZ9owe1hFwa4ZKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676897758;
+        s=2020e; t=1676929034;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5qB7yZQqCaAbjDfa3wxBWK/S/EZXP+UvElzcVrla3Zw=;
-        b=OTI6CrwoTHLyoqcnxmXji3dNX3K9WnOQ/flHEGozMVSqGEidTf4Xp9lj2fKfKWf9EIWhJT
-        8iF3TDajnMRbncAA==
-From:   "tip-bot2 for Sergey Shtylyov" <tip-bot2@linutronix.de>
+        bh=OUkh5Ko3jhevc1Bk0P+SZ5C68Sj3b1dGZJOtZcbce38=;
+        b=4xN8exoTrPvE1IPo7Xe37RWmAbNOwHsWXLIAR4a153ZZFVK+SVqEwOW5eDjBrg5XDnOt6M
+        N/zx3VeXq9mPUGAg==
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/ipi: Fix NULL pointer deref in
- irq_data_get_affinity_mask()
-Cc:     Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <b541232d-c2b6-1fe9-79b4-a7129459e4d0@omp.ru>
-References: <b541232d-c2b6-1fe9-79b4-a7129459e4d0@omp.ru>
+Subject: [tip: irq/urgent] genirq/msi: Take the per-device MSI lock before
+ validating the control structure
+Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        stable@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <8E@shell.armlinux.org.uk>
+References: <8E@shell.armlinux.org.uk>
 MIME-Version: 1.0
-Message-ID: <167689775708.387.18354451760866911184.tip-bot2@tip-bot2>
+Message-ID: <167692903325.387.6855102455566331681.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,60 +70,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     feabecaff5902f896531dde90646ca5dfa9d4f7d
-Gitweb:        https://git.kernel.org/tip/feabecaff5902f896531dde90646ca5dfa9d4f7d
-Author:        Sergey Shtylyov <s.shtylyov@omp.ru>
-AuthorDate:    Wed, 17 Aug 2022 23:00:45 +03:00
+Commit-ID:     0af2795f936f1ea1f9f1497447145dfcc7ed2823
+Gitweb:        https://git.kernel.org/tip/0af2795f936f1ea1f9f1497447145dfcc7ed2823
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Mon, 20 Feb 2023 19:01:01 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 20 Feb 2023 13:53:41 +01:00
+CommitterDate: Mon, 20 Feb 2023 22:29:54 +01:00
 
-genirq/ipi: Fix NULL pointer deref in irq_data_get_affinity_mask()
+genirq/msi: Take the per-device MSI lock before validating the control structure
 
-If ipi_send_{mask|single}() is called with an invalid interrupt number, all
-the local variables there will be NULL. ipi_send_verify() which is invoked
-from these functions does verify its 'data' parameter, resulting in a
-kernel oops in irq_data_get_affinity_mask() as the passed NULL pointer gets
-dereferenced.
+Calling msi_ctrl_valid() ultimately results in calling
+msi_get_device_domain(), which requires holding the device MSI lock.
 
-Add a missing NULL pointer check in ipi_send_verify()...
+However, in msi_domain_populate_irqs() the lock is taken right after having
+called msi_ctrl_valid(), which is just a tad too late.
 
-Found by Linux Verification Center (linuxtesting.org) with the SVACE static
-analysis tool.
+Take the lock before invoking msi_ctrl_valid().
 
-Fixes: 3b8e29a82dd1 ("genirq: Implement ipi_send_mask/single()")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Fixes: 40742716f294 ("genirq/msi: Make msi_add_simple_msi_descs() device domain aware")
+Reported-by: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/b541232d-c2b6-1fe9-79b4-a7129459e4d0@omp.ru
-
+Tested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/Y/Opu6ETe3ZzZ/8E@shell.armlinux.org.uk
+Link: https://lore.kernel.org/r/20230220190101.314446-1-maz@kernel.org
 
 ---
- kernel/irq/ipi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/irq/msi.c |  9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/irq/ipi.c b/kernel/irq/ipi.c
-index bbd945b..961d4af 100644
---- a/kernel/irq/ipi.c
-+++ b/kernel/irq/ipi.c
-@@ -188,9 +188,9 @@ EXPORT_SYMBOL_GPL(ipi_get_hwirq);
- static int ipi_send_verify(struct irq_chip *chip, struct irq_data *data,
- 			   const struct cpumask *dest, unsigned int cpu)
- {
--	const struct cpumask *ipimask = irq_data_get_affinity_mask(data);
-+	const struct cpumask *ipimask;
+diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
+index 783a3e6..13d9649 100644
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -1084,10 +1084,13 @@ int msi_domain_populate_irqs(struct irq_domain *domain, struct device *dev,
+ 	struct xarray *xa;
+ 	int ret, virq;
  
--	if (!chip || !ipimask)
-+	if (!chip || !data)
- 		return -EINVAL;
- 
- 	if (!chip->ipi_send_single && !chip->ipi_send_mask)
-@@ -199,6 +199,10 @@ static int ipi_send_verify(struct irq_chip *chip, struct irq_data *data,
- 	if (cpu >= nr_cpu_ids)
- 		return -EINVAL;
- 
-+	ipimask = irq_data_get_affinity_mask(data);
-+	if (!ipimask)
-+		return -EINVAL;
+-	if (!msi_ctrl_valid(dev, &ctrl))
+-		return -EINVAL;
+-
+ 	msi_lock_descs(dev);
 +
- 	if (dest) {
- 		if (!cpumask_subset(dest, ipimask))
- 			return -EINVAL;
++	if (!msi_ctrl_valid(dev, &ctrl)) {
++		ret = -EINVAL;
++		goto unlock;
++	}
++
+ 	ret = msi_domain_add_simple_msi_descs(dev, &ctrl);
+ 	if (ret)
+ 		goto unlock;
