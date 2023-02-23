@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B30F869E3D7
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Feb 2023 16:45:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D83706A03D1
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Feb 2023 09:32:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234182AbjBUPpC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 21 Feb 2023 10:45:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41768 "EHLO
+        id S233404AbjBWIcM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Feb 2023 03:32:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234705AbjBUPpA (ORCPT
+        with ESMTP id S233363AbjBWIcL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 21 Feb 2023 10:45:00 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB1A02BF36;
-        Tue, 21 Feb 2023 07:44:57 -0800 (PST)
-Date:   Tue, 21 Feb 2023 15:44:54 -0000
+        Thu, 23 Feb 2023 03:32:11 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF0604D621;
+        Thu, 23 Feb 2023 00:32:08 -0800 (PST)
+Date:   Thu, 23 Feb 2023 08:32:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1676994295;
+        s=2020; t=1677141126;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZvVF51qU71MZBHDXPIhqzIRdH5CtwkzAppuwxXgMEG0=;
-        b=W5Esqn58uJKK4ZgwRFDEB3sejlKn+obIK5dHNdI3v+zOW17jhHpR2C2cK459aGHpmx5zyP
-        kgpcdNUIw1WFL0FrW5Nymmq0tKvEigmLRjiFFaaPaaHYk1FexkZ/1786aTAcU6VNlKbGb0
-        8FWWu7M84QbETvjIVjq4bftxlU1G4wIqyjNuT/qwy1IiuxJwqLtDO705z/Wn49nAGGbIyx
-        oDUy8kCnlmw3eZWvDbSyYmcnPfWOigr62nNAraBtb5E9T5C/x3EKsdhnFY3W+zhzYz8x4W
-        N234iotY6ui5janPJBJj1hnm5AKcFQA+mkCNxOxw+4HTYcCGi02HYPYl/1s3iQ==
+        bh=XsWzHTULbdcIhpxvYZtfDkmwAxxceRWqYM8+zpCe3qg=;
+        b=pkJEGb0B3vljXtCyjamiPz8hSXPzKAJ7dVFaHDJ1d6jurvZvheRsVyV1Owg6wY5xVDliQ0
+        NeHZ1JdvVZTv5r2pasGaVPqF1DH4vWbztZ1rvgjA37/3uzbyuwvea7y+Y0MNBvUVKkjOMc
+        QAJa8+MrzLc1H0GE7r5gAxzrzkBVLO2sotArJj5L/XZUnCBXpBjIxMLzMA6hQ3s4vQ2xUe
+        0a4grMDoBRJHiZ0b64FedB9crArB79BWYnCbzQ2se+yAbXbuuC9kke2BrJ8Z8QNt8tLiHX
+        Vwv9aWmbFnfO8HGU319SwlYLuK7bs+aqEO1lQKzVRUvXVMMpE3FbLNKMOGRpFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1676994295;
+        s=2020e; t=1677141126;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZvVF51qU71MZBHDXPIhqzIRdH5CtwkzAppuwxXgMEG0=;
-        b=V2rPIKTmXgp5L1+9yv8zvNhdw0S0EAzm031cmv7f4sjluPHbkmFs5UpfylCs2efszC2nBE
-        deWOfwGDCTVz9QCA==
+        bh=XsWzHTULbdcIhpxvYZtfDkmwAxxceRWqYM8+zpCe3qg=;
+        b=kmFbZeWhvpjcg4bcXmMM0jX5CW3F8JT9O6jx3Gx59ANOds7WAvlgogN/yk/ACRIrVsF6Yu
+        WGvpjxK5+Nx2i3Cg==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -52,7 +52,7 @@ Cc:     kernel test robot <oliver.sang@intel.com>,
 In-Reply-To: <97eef9db60cd86d376a9a40d49d77bb67a8f6526.1676579666.git.jpoimboe@kernel.org>
 References: <97eef9db60cd86d376a9a40d49d77bb67a8f6526.1676579666.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <167699429466.387.9214673997610395558.tip-bot2@tip-bot2>
+Message-ID: <167714112587.5837.1928053268533397694.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,12 +68,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     801d48faf6bbf985d14aa1027889f3a3fe4206f1
-Gitweb:        https://git.kernel.org/tip/801d48faf6bbf985d14aa1027889f3a3fe4206f1
+Commit-ID:     00c8f01c4e84637c3db76f368b8687cb61f4dd9d
+Gitweb:        https://git.kernel.org/tip/00c8f01c4e84637c3db76f368b8687cb61f4dd9d
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
 AuthorDate:    Thu, 16 Feb 2023 12:34:41 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 21 Feb 2023 16:40:14 +01:00
+CommitterDate: Thu, 23 Feb 2023 09:21:50 +01:00
 
 objtool: Fix ORC 'signal' propagation
 
