@@ -2,107 +2,134 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 853C86A22AB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Feb 2023 21:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CD326A4148
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Feb 2023 12:59:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229523AbjBXUAb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Feb 2023 15:00:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52094 "EHLO
+        id S229693AbjB0L76 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 27 Feb 2023 06:59:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229532AbjBXUAa (ORCPT
+        with ESMTP id S229470AbjB0L75 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Feb 2023 15:00:30 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCF453757D;
-        Fri, 24 Feb 2023 11:59:57 -0800 (PST)
-Date:   Fri, 24 Feb 2023 19:59:55 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1677268795;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+QDv5nRWs6ZjIbRaVD5ljmBiyofZxQMMwPgAc7wVGTs=;
-        b=g9kMLqjmHdcTN3c6Gza+NM8qDC7FaVtkkijjP35RnHBMOLRYguqGhzlNk40FyoZ1i4Rr9E
-        rML7zG9RldqURWNqWkaK+nhTfE2n5XeZeXQzei5IVrrk42tf9meJYtNSu/nGjW0z7rQLHI
-        djjgoLMO674OXKqeJJr9CAJtBSGep/82MWl+jODzP5PzDFeU3nPNhYXVnJdcE8LVLdd5Vr
-        hAQ2ML0QW/APSnT4cJBIM/FdvKfvqTVzK0sgJpDcSKAIY6MD4sc2e1vt8E8xnZ8INLbuEf
-        BS6h67gq6GOhRh+gHtHMrCD6iktJQ9EmtkRgWGpihPcMv3RVDGmjjUPsx2PuPw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1677268795;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+QDv5nRWs6ZjIbRaVD5ljmBiyofZxQMMwPgAc7wVGTs=;
-        b=fDxbicN7KytEspVSAAHtjG8ejcQHRjKWm4agj+Y7I68Smu9XADePez/PoYvX222eijC0LB
-        ioorswgWhp4eh/BA==
-From:   "tip-bot2 for Johan Hovold" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/msi: Drop dead domain name assignment
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20230224130509.27814-1-johan+linaro@kernel.org>
-References: <20230224130509.27814-1-johan+linaro@kernel.org>
+        Mon, 27 Feb 2023 06:59:57 -0500
+X-Greylist: delayed 619 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Feb 2023 03:59:55 PST
+Received: from jayabaya.inti.net.id (jayabaya.inti.net.id [103.53.76.30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CC18C168;
+        Mon, 27 Feb 2023 03:59:55 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by jayabaya.inti.net.id (Postfix) with ESMTP id E02102062C799;
+        Mon, 27 Feb 2023 18:49:29 +0700 (WIB)
+Received: from jayabaya.inti.net.id ([127.0.0.1])
+        by localhost (jayabaya.inti.net.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 9Z5wPFsBpZAF; Mon, 27 Feb 2023 18:49:26 +0700 (WIB)
+Received: from jayabaya.inti.net.id (localhost [127.0.0.1])
+        by jayabaya.inti.net.id (Postfix) with ESMTPS id 1D0842062C782;
+        Mon, 27 Feb 2023 18:49:26 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 jayabaya.inti.net.id 1D0842062C782
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inti.net.id;
+        s=25E9A704-571A-11E6-9418-628C66225056; t=1677498566;
+        bh=CrM1CZv8v8352BqwtRx6w2ospgnxUoQ1Qfrn1jF8Fqw=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=wRllvUaYSATCXbaB2jAaCXOMSsUWGJ4g3pxSolHjFBasziN2N6FEj2/xQ4RKcCHR1
+         i4m1ahMvvfqSgEKG3D/0FqlmEwHj5iDcnYHoX8lc0CcpaDwdzsHwiAgaYCsqw3TS7u
+         ZcJAOSzbeEqoSBqv4GayW4vaye/8aWCmiwfS5NuFJfW1S7kpPD3pgyzP370LlWx9iT
+         Un/myEzfL47N+q4pAjdy9J95enTsd/Hd162iiDjADtinacgwTxvGiHt78HqL/p4N8Q
+         2Sln/ZDD38aDh/6OPTgdVxgHCql81n8Z7BU9mDMgXqd+Az+auGkiNlmUeXcbcdrqMa
+         9+Mu87keYQ2cw==
+Received: from jayabaya.inti.net.id (jayabaya.inti.net.id [103.53.76.30])
+        by jayabaya.inti.net.id (Postfix) with ESMTP id 59CD8206164DB;
+        Mon, 27 Feb 2023 18:49:24 +0700 (WIB)
+Date:   Mon, 27 Feb 2023 18:49:24 +0700 (WIB)
+From:   =?utf-8?B?0KHQuNGB0YLQtdC80L3Ri9C5INCw0LTQvNC40L3QuNGB0YLRgNCw0YLQvtGA?= 
+        <ali@inti.net.id>
+Reply-To: sistemassadmins@mail2engineer.com
+Message-ID: <1345440694.85204.1677498564192.JavaMail.zimbra@inti.net.id>
+Subject: 
 MIME-Version: 1.0
-Message-ID: <167726879502.5837.7389254031515212648.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+X-Originating-IP: [103.53.76.30]
+X-Mailer: Zimbra 8.7.11_GA_3808 (zclient/8.7.11_GA_3808)
+Thread-Index: r6ewl6eVrxzwczFYme654eD7Zmeg0w==
+Thread-Topic: 
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,MISSING_HEADERS,
+        REPLYTO_WITHOUT_TO_CC,SPF_HELO_PASS,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        *  1.0 MISSING_HEADERS Missing To: header
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+=D0=92=D0=9D=D0=98=D0=9C=D0=90=D0=9D=D0=98=D0=95;
 
-Commit-ID:     ea9a78c3a7a44e36fa690e1cc90dc2a758c8eb9a
-Gitweb:        https://git.kernel.org/tip/ea9a78c3a7a44e36fa690e1cc90dc2a758c8eb9a
-Author:        Johan Hovold <johan+linaro@kernel.org>
-AuthorDate:    Fri, 24 Feb 2023 14:05:09 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 24 Feb 2023 20:54:58 +01:00
+=D0=92=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=
+=D1=89=D0=B8=D0=BA =D0=BF=D1=80=D0=B5=D0=B2=D1=8B=D1=81=D0=B8=D0=BB =D0=BE=
+=D0=B3=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =D1=85=D1=80=
+=D0=B0=D0=BD=D0=B8=D0=BB=D0=B8=D1=89=D0=B0, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=
+=D0=BE=D0=B5 =D1=81=D0=BE=D1=81=D1=82=D0=B0=D0=B2=D0=BB=D1=8F=D0=B5=D1=82=
+ 5 =D0=93=D0=91, =D0=BA=D0=B0=D0=BA =D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=
+=BB=D0=B5=D0=BD=D0=BE =D0=B0=D0=B4=D0=BC=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=
+=80=D0=B0=D1=82=D0=BE=D1=80=D0=BE=D0=BC, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=
+=8B=D0=B9 =D0=B2 =D0=BD=D0=B0=D1=81=D1=82=D0=BE=D1=8F=D1=89=D0=B5=D0=B5 =D0=
+=B2=D1=80=D0=B5=D0=BC=D1=8F =D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D0=B5=D1=
+=82 =D0=BD=D0=B0 10,9 =D0=93=D0=91, =D0=B2=D1=8B =D0=BD=D0=B5 =D1=81=D0=BC=
+=D0=BE=D0=B6=D0=B5=D1=82=D0=B5 =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=
+=D1=8F=D1=82=D1=8C =D0=B8=D0=BB=D0=B8 =D0=BF=D0=BE=D0=BB=D1=83=D1=87=D0=B0=
+=D1=82=D1=8C =D0=BD=D0=BE=D0=B2=D1=83=D1=8E =D0=BF=D0=BE=D1=87=D1=82=D1=83=
+ =D0=B4=D0=BE =D1=82=D0=B5=D1=85 =D0=BF=D0=BE=D1=80, =D0=BF=D0=BE=D0=BA=D0=
+=B0 =D0=BD=D0=B5 =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D0=B5 =D0=
+=BF=D0=BE=D1=87=D1=82=D1=83 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=BE=D0=
+=B3=D0=BE =D1=8F=D1=89=D0=B8=D0=BA=D0=B0 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=
+=80=D0=BD=D0=BE. =D0=A7=D1=82=D0=BE=D0=B1=D1=8B =D0=BF=D0=BE=D0=B2=D1=82=D0=
+=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=
+=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=
+=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D1=8C=D1=
+=82=D0=B5 =D1=81=D0=BB=D0=B5=D0=B4=D1=83=D1=8E=D1=89=D1=83=D1=8E =D0=B8=D0=
+=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BD=D0=B8=D0=B6=D0=
+=B5:
 
-genirq/msi: Drop dead domain name assignment
+=D0=B8=D0=BC=D1=8F:
+=D0=98=D0=BC=D1=8F =D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=
+=D0=B5=D0=BB=D1=8F:
+=D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
+=D0=9F=D0=BE=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B8=D1=82=D0=B5 =D0=BF=
+=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
+=D0=AD=D0=BB=D0=B5=D0=BA=D1=82=D1=80=D0=BE=D0=BD=D0=BD=D0=B0=D1=8F =D0=BF=
+=D0=BE=D1=87=D1=82=D0=B0:
+=D0=A2=D0=B5=D0=BB=D0=B5=D1=84=D0=BE=D0=BD:
 
-Since commit d59f6617eef0 ("genirq: Allow fwnode to carry name
-information only") an IRQ domain is always given a name during
-allocation (e.g. used for the debugfs entry).
+=D0=95=D1=81=D0=BB=D0=B8 =D0=B2=D1=8B =D0=BD=D0=B5 =D0=BC=D0=BE=D0=B6=D0=B5=
+=D1=82=D0=B5 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=
+=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=
+=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=B2=
+=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=
+=D0=B8=D0=BA =D0=B1=D1=83=D0=B4=D0=B5=D1=82 =D0=BE=D1=82=D0=BA=D0=BB=D1=8E=
+=D1=87=D0=B5=D0=BD!
 
-Drop the unused fallback name assignment when creating MSI domains.
+=D0=9F=D1=80=D0=B8=D0=BD=D0=BE=D1=81=D0=B8=D0=BC =D0=B8=D0=B7=D0=B2=D0=B8=
+=D0=BD=D0=B5=D0=BD=D0=B8=D1=8F =D0=B7=D0=B0 =D0=BD=D0=B5=D1=83=D0=B4=D0=BE=
+=D0=B1=D1=81=D1=82=D0=B2=D0=B0.
+=D0=9F=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=BE=D1=87=D0=BD=D1=8B=D0=B9 =D0=BA=
+=D0=BE=D0=B4: en: WEB. =D0=90=D0=94=D0=9C=D0=98=D0=9D=D0=98=D0=A1=D0=A2=D0=
+=A0=D0=90=D0=A2=D0=9E=D0=A0=D0=90. RU006,524765 @2023
+=D0=9F=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=B0=D1=8F =D1=82=D0=B5=D1=85=D0=BD=
+=D0=B8=D1=87=D0=B5=D1=81=D0=BA=D0=B0=D1=8F =D0=BF=D0=BE=D0=B4=D0=B4=D0=B5=
+=D1=80=D0=B6=D0=BA=D0=B0 @2023
 
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230224130509.27814-1-johan+linaro@kernel.org
-
----
- kernel/irq/msi.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index 13d9649..efd21b7 100644
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -830,11 +830,8 @@ static struct irq_domain *__msi_create_irq_domain(struct fwnode_handle *fwnode,
- 	domain = irq_domain_create_hierarchy(parent, flags | IRQ_DOMAIN_FLAG_MSI, 0,
- 					     fwnode, &msi_domain_ops, info);
- 
--	if (domain) {
--		if (!domain->name && info->chip)
--			domain->name = info->chip->name;
-+	if (domain)
- 		irq_domain_update_bus_token(domain, info->bus_token);
--	}
- 
- 	return domain;
- }
+=D0=A1=D0=BF=D0=B0=D1=81=D0=B8=D0=B1=D0=BE
+=D0=A1=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=BD=D1=8B=D0=B9 =D0=B0=D0=B4=D0=BC=
+=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80.
