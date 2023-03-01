@@ -2,61 +2,63 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2582E6A4BD4
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Feb 2023 20:59:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE0596A6A08
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Mar 2023 10:49:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229956AbjB0T7M (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 27 Feb 2023 14:59:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47438 "EHLO
+        id S229618AbjCAJts (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Mar 2023 04:49:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229712AbjB0T7L (ORCPT
+        with ESMTP id S229602AbjCAJts (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 27 Feb 2023 14:59:11 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45C801CAE1;
-        Mon, 27 Feb 2023 11:59:10 -0800 (PST)
-Date:   Mon, 27 Feb 2023 19:59:00 -0000
+        Wed, 1 Mar 2023 04:49:48 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87128271B;
+        Wed,  1 Mar 2023 01:49:46 -0800 (PST)
+Date:   Wed, 01 Mar 2023 09:49:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1677527940;
+        s=2020; t=1677664184;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=U4KEBBZ/Pg7k5qKdW9OQ/6jkuLtTjqleiDqhex5agCM=;
-        b=ksJ5W/bvKui0QivzeqYvJV/0oGvZ1tMmr6zbBONgSC/0CVow65JSIxRI7QCRRA+mdzsszj
-        MgJ0vXlFa7t0P77smn7EuEAKMGFr7qjyRmypraaaKdvgqZgZWHu7GHvtHyZkEm6/2GkIv+
-        GIqCA2K1/WTbvK+eQhplxdceLRSa6JGl0AD6dBsE1pUI11ufqXaE5gW8LE8tp5T+bjkuxj
-        +uW+A1MsXSGZslvwioDfi2aqiLz56VRjmiScNm5d+V8wGbrGSPrMGL9RWhsY/kmGy8/I6M
-        Fept1B5ajQpYoZUlOEL0Me6midmJL4ejwV9FsdUJQVpE4TZtzU81kgvqo3bKUw==
+        bh=AjBYcejPwwKYBVOYzMQ4TIcvZoumdc8c7sD67+6I5es=;
+        b=HdmY4pdz68JHFhefmwNe20cjf3+25B0xeG5/Ca0Kq4QEeAeqdhZi4hXrzTGZ6kpbgDj0E6
+        X3aKQTG95SyOukBa50ucMVcA1TPuffRNN1nEQ+XnCuWTGz9lwC/+aPK8mtbYUILvdmjrox
+        5my3H1hL/XtvJCUv8p/RsNX0AuEGq15JYy+3t1xUpHGcDqGBJr8Z5V3GhLxIEo9pWDJt54
+        w/s3xv0EbEvHR/4x3xa3y/taMHRQX4rVQUd8HuMb++GYlXkzt8/hhVzdYxvTjq5YsXz4V7
+        7fEToIcGbw2fUXuwGeYPnxpGg87N5hxFBvgpN7TVd676yhOwwseuUDQeNJi4FQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1677527940;
+        s=2020e; t=1677664184;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=U4KEBBZ/Pg7k5qKdW9OQ/6jkuLtTjqleiDqhex5agCM=;
-        b=Qf1vkK27PCsj3pQUv1HWsphgyNYhrWKbq2H4GdM6Js98+b5pFaub/cFyv04nwmQ+8NXG39
-        UJuVXLQyVy6S3TDQ==
-From:   "tip-bot2 for KP Singh" <tip-bot2@linutronix.de>
+        bh=AjBYcejPwwKYBVOYzMQ4TIcvZoumdc8c7sD67+6I5es=;
+        b=K3w53KBk5fUtxxp4SG1yyrmNuQljW1V5ii6uBFPzpfsl5yv8aRLQkNBHO4BzkLeNPdDqRv
+        EyeIe/RCIXNLD1Dg==
+From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/speculation: Allow enabling STIBP with legacy IBRS
-Cc:     joseloliveira11@gmail.com,
-        Rodrigo Branco <rodrigo@kernelhacking.com>,
-        KP Singh <kpsingh@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+Subject: [tip: x86/urgent] virt/sev-guest: Return -EIO if certificate buffer
+ is not large enough
+Cc:     Larry Dewey <larry.dewey@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, <stable@kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230220120127.1975241-1-kpsingh@kernel.org>
-References: <20230220120127.1975241-1-kpsingh@kernel.org>
+In-Reply-To: =?utf-8?q?=3C2afbcae6daf13f7ad5a4296692e0a0fe1bc1e4ee=2E16770?=
+ =?utf-8?q?83979=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
+References: =?utf-8?q?=3C2afbcae6daf13f7ad5a4296692e0a0fe1bc1e4ee=2E167708?=
+ =?utf-8?q?3979=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <167752794021.5837.7575103462334259742.tip-bot2@tip-bot2>
+Message-ID: <167766418335.5837.8035431870442051850.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -68,99 +70,75 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     6921ed9049bc7457f66c1596c5b78aec0dae4a9d
-Gitweb:        https://git.kernel.org/tip/6921ed9049bc7457f66c1596c5b78aec0da=
-e4a9d
-Author:        KP Singh <kpsingh@kernel.org>
-AuthorDate:    Mon, 27 Feb 2023 07:05:40 +01:00
+Commit-ID:     dd093fb08e8f8a958fec4eef36f9f09eac047f60
+Gitweb:        https://git.kernel.org/tip/dd093fb08e8f8a958fec4eef36f9f09eac047f60
+Author:        Tom Lendacky <thomas.lendacky@amd.com>
+AuthorDate:    Wed, 22 Feb 2023 10:39:39 -06:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 27 Feb 2023 18:57:09 +01:00
+CommitterDate: Wed, 01 Mar 2023 10:17:46 +01:00
 
-x86/speculation: Allow enabling STIBP with legacy IBRS
+virt/sev-guest: Return -EIO if certificate buffer is not large enough
 
-When plain IBRS is enabled (not enhanced IBRS), the logic in
-spectre_v2_user_select_mitigation() determines that STIBP is not needed.
+Commit
 
-The IBRS bit implicitly protects against cross-thread branch target
-injection. However, with legacy IBRS, the IBRS bit is cleared on
-returning to userspace for performance reasons which leaves userspace
-threads vulnerable to cross-thread branch target injection against which
-STIBP protects.
+  47894e0fa6a5 ("virt/sev-guest: Prevent IV reuse in the SNP guest driver")
 
-Exclude IBRS from the spectre_v2_in_ibrs_mode() check to allow for
-enabling STIBP (through seccomp/prctl() by default or always-on, if
-selected by spectre_v2_user kernel cmdline parameter).
+changed the behavior associated with the return value when the caller
+does not supply a large enough certificate buffer. Prior to the commit a
+value of -EIO was returned. Now, 0 is returned.  This breaks the
+established ABI with the user.
 
-  [ bp: Massage. ]
+Change the code to detect the buffer size error and return -EIO.
 
-Fixes: 7c693f54c873 ("x86/speculation: Add spectre_v2=3Dibrs option to suppor=
-t Kernel IBRS")
-Reported-by: Jos=C3=A9 Oliveira <joseloliveira11@gmail.com>
-Reported-by: Rodrigo Branco <rodrigo@kernelhacking.com>
-Signed-off-by: KP Singh <kpsingh@kernel.org>
+Fixes: 47894e0fa6a5 ("virt/sev-guest: Prevent IV reuse in the SNP guest driver")
+Reported-by: Larry Dewey <larry.dewey@amd.com>
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230220120127.1975241-1-kpsingh@kernel.org
-Link: https://lore.kernel.org/r/20230221184908.2349578-1-kpsingh@kernel.org
+Tested-by: Larry Dewey <larry.dewey@amd.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/2afbcae6daf13f7ad5a4296692e0a0fe1bc1e4ee.1677083979.git.thomas.lendacky@amd.com
 ---
- arch/x86/kernel/cpu/bugs.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/virt/coco/sev-guest/sev-guest.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index cf81848..f9d060e 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1133,14 +1133,18 @@ spectre_v2_parse_user_cmdline(void)
- 	return SPECTRE_V2_USER_CMD_AUTO;
- }
-=20
--static inline bool spectre_v2_in_ibrs_mode(enum spectre_v2_mitigation mode)
-+static inline bool spectre_v2_in_eibrs_mode(enum spectre_v2_mitigation mode)
- {
--	return mode =3D=3D SPECTRE_V2_IBRS ||
--	       mode =3D=3D SPECTRE_V2_EIBRS ||
-+	return mode =3D=3D SPECTRE_V2_EIBRS ||
- 	       mode =3D=3D SPECTRE_V2_EIBRS_RETPOLINE ||
- 	       mode =3D=3D SPECTRE_V2_EIBRS_LFENCE;
- }
-=20
-+static inline bool spectre_v2_in_ibrs_mode(enum spectre_v2_mitigation mode)
-+{
-+	return spectre_v2_in_eibrs_mode(mode) || mode =3D=3D SPECTRE_V2_IBRS;
-+}
-+
- static void __init
- spectre_v2_user_select_mitigation(void)
- {
-@@ -1203,12 +1207,19 @@ spectre_v2_user_select_mitigation(void)
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index 4ec4174..7b4e900 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -377,9 +377,26 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
+ 		snp_dev->input.data_npages = certs_npages;
  	}
-=20
- 	/*
--	 * If no STIBP, IBRS or enhanced IBRS is enabled, or SMT impossible,
--	 * STIBP is not required.
-+	 * If no STIBP, enhanced IBRS is enabled, or SMT impossible, STIBP
-+	 * is not required.
-+	 *
-+	 * Enhanced IBRS also protects against cross-thread branch target
-+	 * injection in user-mode as the IBRS bit remains always set which
-+	 * implicitly enables cross-thread protections.  However, in legacy IBRS
-+	 * mode, the IBRS bit is set only on kernel entry and cleared on return
-+	 * to userspace. This disables the implicit cross-thread protection,
-+	 * so allow for STIBP to be selected in that case.
- 	 */
- 	if (!boot_cpu_has(X86_FEATURE_STIBP) ||
- 	    !smt_possible ||
--	    spectre_v2_in_ibrs_mode(spectre_v2_enabled))
-+	    spectre_v2_in_eibrs_mode(spectre_v2_enabled))
- 		return;
-=20
- 	/*
-@@ -2340,7 +2351,7 @@ static ssize_t mmio_stale_data_show_state(char *buf)
-=20
- static char *stibp_state(void)
- {
--	if (spectre_v2_in_ibrs_mode(spectre_v2_enabled))
-+	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled))
- 		return "";
-=20
- 	switch (spectre_v2_user_stibp) {
+ 
++	/*
++	 * Increment the message sequence number. There is no harm in doing
++	 * this now because decryption uses the value stored in the response
++	 * structure and any failure will wipe the VMPCK, preventing further
++	 * use anyway.
++	 */
++	snp_inc_msg_seqno(snp_dev);
++
+ 	if (fw_err)
+ 		*fw_err = err;
+ 
++	/*
++	 * If an extended guest request was issued and the supplied certificate
++	 * buffer was not large enough, a standard guest request was issued to
++	 * prevent IV reuse. If the standard request was successful, return -EIO
++	 * back to the caller as would have originally been returned.
++	 */
++	if (!rc && err == SNP_GUEST_REQ_INVALID_LEN)
++		return -EIO;
++
+ 	if (rc) {
+ 		dev_alert(snp_dev->dev,
+ 			  "Detected error from ASP request. rc: %d, fw_err: %llu\n",
+@@ -395,9 +412,6 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
+ 		goto disable_vmpck;
+ 	}
+ 
+-	/* Increment to new message sequence after payload decryption was successful. */
+-	snp_inc_msg_seqno(snp_dev);
+-
+ 	return 0;
+ 
+ disable_vmpck:
