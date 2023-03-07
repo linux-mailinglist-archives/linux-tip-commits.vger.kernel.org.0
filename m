@@ -2,144 +2,171 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14EF06AE0FA
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Mar 2023 14:44:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEB756AF917
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Mar 2023 23:43:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230434AbjCGNoj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 7 Mar 2023 08:44:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45436 "EHLO
+        id S231569AbjCGWm7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 7 Mar 2023 17:42:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230350AbjCGNoS (ORCPT
+        with ESMTP id S231232AbjCGWmg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 7 Mar 2023 08:44:18 -0500
-X-Greylist: delayed 4351 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Mar 2023 05:43:06 PST
-Received: from mail.belitungtimurkab.go.id (unknown [103.205.56.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38BBE2942A;
-        Tue,  7 Mar 2023 05:43:05 -0800 (PST)
-Received: from mail.belitungtimurkab.go.id (localhost.localdomain [127.0.0.1])
-        by mail.belitungtimurkab.go.id (Postfix) with ESMTPS id BC3138A700C;
-        Tue,  7 Mar 2023 14:59:49 +0700 (WIB)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.belitungtimurkab.go.id (Postfix) with ESMTP id 3C3F68A5006;
-        Tue,  7 Mar 2023 14:43:12 +0700 (WIB)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.belitungtimurkab.go.id 3C3F68A5006
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=belitungtimurkab.go.id; s=mail; t=1678174992;
-        bh=1yQ6sMopnzyP9MqfXA851yTH5iXi+5F1MZ7Sp6JOGqk=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=cWIOu3KKPNXyPgATk6HA3te214RWKMqlx4e5EfFPu3dFqlcYzZudfH2wpLCmrVI08
-         nFyDYPdQvfPeI6FivksFbNns1f1keqpCfjwspx7vOIgaEXJiyeAXdxqdckKe5LtqOh
-         M5TTDnOCVTyF2yZD+n9wF+zNJEudz+rDhPTnsrKIQsm8MYh8B5q1BGVvOfryzrymjY
-         h36ot5evmptJ0NGT4cYY6XaB86xlcOJ1hQhrsuY/pNGlqMBqmt0jq/TX3/E97K3SGg
-         sdTYg4TF7HSbhGP0/0XxP8Uasw9N4iHqBbv0QnTRZD+4G4gt3lb9ZCGV8HQEsu/u7X
-         Kt82hZoXNz/5Q==
-Received: from mail.belitungtimurkab.go.id ([127.0.0.1])
-        by localhost (mail.belitungtimurkab.go.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id yxFEx8rgsstj; Tue,  7 Mar 2023 14:43:11 +0700 (WIB)
-Received: from mail.belitungtimurkab.go.id (mail.belitungtimurkab.go.id [103.205.56.27])
-        by mail.belitungtimurkab.go.id (Postfix) with ESMTP id 0E8528A6A72;
-        Tue,  7 Mar 2023 14:43:05 +0700 (WIB)
-Date:   Tue, 7 Mar 2023 14:43:04 +0700 (WIB)
-From:   =?utf-8?B?INCh0LjRgdGC0LXQvNC90YvQuSDQsNC00LzQuNC90LjRgdGC0YDQsNGC0L7RgA==?= 
-        <dinkes@belitungtimurkab.go.id>
-Reply-To: sistemassadmins@mail2engineer.com
-Message-ID: <1909914973.29538.1678174984936.JavaMail.zimbra@belitungtimurkab.go.id>
-Subject: 
+        Tue, 7 Mar 2023 17:42:36 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F2559407;
+        Tue,  7 Mar 2023 14:41:56 -0800 (PST)
+Date:   Tue, 07 Mar 2023 22:41:30 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1678228890;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fNE135kfip+/55i0Uctu9VE1eiRjfeodH4xQSM4wxck=;
+        b=AP0qFDjqhVNIt/H65GJ8kqa3v+coTqM73tPhB++rb9PWWh0CCL0IWpZ+sYZ+ylw648E8jN
+        bm4FUkbUeggQMn2lNhpBgh7HG3rgzEvTP05KrHnXRyeKkpiJnp4/eKPiAbK8NdqPxUNlE8
+        PCYMiakXn3IEh2bEnLntVfr/Mnkny1nxDLKg1VV95BjstOHzqLFLqGJYwRKO/TLvGyBD2Y
+        RLNyl++UjQ5Wg2KzeA0c1ZhMPDO+eWnFrkreey2zY86XO95y9TVvDXsR9Q/Gw8F8bSRPFt
+        D+bQrdXQlGNKQDf+/nrDf0WPhbjWC5t/+p+LNej6I00ACFQRbSf25QngwR/zYg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1678228890;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fNE135kfip+/55i0Uctu9VE1eiRjfeodH4xQSM4wxck=;
+        b=I/3uVJJD/bfgPvbsvQNtMLWYFu4V4sBMMWXJnnbOuJCNuLnxlalNAZEdllijS6zFXo35vb
+        IFN8A+4eonmo+4Cg==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/misc] tools/x86/kcpuid: Dump the CPUID function in detailed view
+Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Terry Bowman <terry.bowman@amd.com>,
+        Feng Tang <feng.tang@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230206141832.4162264-4-terry.bowman@amd.com>
+References: <20230206141832.4162264-4-terry.bowman@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-X-Originating-IP: [103.205.56.27]
-X-Mailer: Zimbra 8.7.11_GA_3789 (zclient/8.7.11_GA_3789)
-Thread-Index: Yuws0KvB5P8LfkgJLrQpfFdkkbfUkg==
-Thread-Topic: 
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        MISSING_HEADERS,RDNS_NONE,REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
-        *      blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [URIs: belitungtimurkab.go.id]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  1.0 MISSING_HEADERS Missing To: header
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
-        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: ******
+Message-ID: <167822889002.5837.2464794663329420874.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-=D0=92=D0=9D=D0=98=D0=9C=D0=90=D0=9D=D0=98=D0=95;
+The following commit has been merged into the x86/misc branch of tip:
 
-=D0=92=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=
-=D1=89=D0=B8=D0=BA =D0=BF=D1=80=D0=B5=D0=B2=D1=8B=D1=81=D0=B8=D0=BB =D0=BE=
-=D0=B3=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =D1=85=D1=80=
-=D0=B0=D0=BD=D0=B8=D0=BB=D0=B8=D1=89=D0=B0, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=
-=D0=BE=D0=B5 =D1=81=D0=BE=D1=81=D1=82=D0=B0=D0=B2=D0=BB=D1=8F=D0=B5=D1=82=
- 5 =D0=93=D0=91, =D0=BA=D0=B0=D0=BA =D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=
-=BB=D0=B5=D0=BD=D0=BE =D0=B0=D0=B4=D0=BC=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=
-=80=D0=B0=D1=82=D0=BE=D1=80=D0=BE=D0=BC, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=
-=8B=D0=B9 =D0=B2 =D0=BD=D0=B0=D1=81=D1=82=D0=BE=D1=8F=D1=89=D0=B5=D0=B5 =D0=
-=B2=D1=80=D0=B5=D0=BC=D1=8F =D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D0=B5=D1=
-=82 =D0=BD=D0=B0 10,9 =D0=93=D0=91, =D0=B2=D1=8B =D0=BD=D0=B5 =D1=81=D0=BC=
-=D0=BE=D0=B6=D0=B5=D1=82=D0=B5 =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=
-=D1=8F=D1=82=D1=8C =D0=B8=D0=BB=D0=B8 =D0=BF=D0=BE=D0=BB=D1=83=D1=87=D0=B0=
-=D1=82=D1=8C =D0=BD=D0=BE=D0=B2=D1=83=D1=8E =D0=BF=D0=BE=D1=87=D1=82=D1=83=
- =D0=B4=D0=BE =D1=82=D0=B5=D1=85 =D0=BF=D0=BE=D1=80, =D0=BF=D0=BE=D0=BA=D0=
-=B0 =D0=BD=D0=B5 =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D0=B5 =D0=
-=BF=D0=BE=D1=87=D1=82=D1=83 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=BE=D0=
-=B3=D0=BE =D1=8F=D1=89=D0=B8=D0=BA=D0=B0 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=
-=80=D0=BD=D0=BE. =D0=A7=D1=82=D0=BE=D0=B1=D1=8B =D0=BF=D0=BE=D0=B2=D1=82=D0=
-=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=
-=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=
-=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D1=8C=D1=
-=82=D0=B5 =D1=81=D0=BB=D0=B5=D0=B4=D1=83=D1=8E=D1=89=D1=83=D1=8E =D0=B8=D0=
-=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BD=D0=B8=D0=B6=D0=
-=B5:
+Commit-ID:     cd3ad6619517cda3a055d864a85cebbd434dba9a
+Gitweb:        https://git.kernel.org/tip/cd3ad6619517cda3a055d864a85cebbd434dba9a
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Mon, 06 Feb 2023 08:18:32 -06:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 07 Mar 2023 23:35:44 +01:00
 
-=D0=B8=D0=BC=D1=8F:
-=D0=98=D0=BC=D1=8F =D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=
-=D0=B5=D0=BB=D1=8F:
-=D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
-=D0=9F=D0=BE=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B8=D1=82=D0=B5 =D0=BF=
-=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
-=D0=AD=D0=BB=D0=B5=D0=BA=D1=82=D1=80=D0=BE=D0=BD=D0=BD=D0=B0=D1=8F =D0=BF=
-=D0=BE=D1=87=D1=82=D0=B0:
-=D0=A2=D0=B5=D0=BB=D0=B5=D1=84=D0=BE=D0=BD:
+tools/x86/kcpuid: Dump the CPUID function in detailed view
 
-=D0=95=D1=81=D0=BB=D0=B8 =D0=B2=D1=8B =D0=BD=D0=B5 =D0=BC=D0=BE=D0=B6=D0=B5=
-=D1=82=D0=B5 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=
-=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=
-=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=B2=
-=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=
-=D0=B8=D0=BA =D0=B1=D1=83=D0=B4=D0=B5=D1=82 =D0=BE=D1=82=D0=BA=D0=BB=D1=8E=
-=D1=87=D0=B5=D0=BD!
+Sometimes it is useful to know which CPUID leaf contains the fields so
+add it to -d output so that it looks like this:
 
-=D0=9F=D1=80=D0=B8=D0=BD=D0=BE=D1=81=D0=B8=D0=BC =D0=B8=D0=B7=D0=B2=D0=B8=
-=D0=BD=D0=B5=D0=BD=D0=B8=D1=8F =D0=B7=D0=B0 =D0=BD=D0=B5=D1=83=D0=B4=D0=BE=
-=D0=B1=D1=81=D1=82=D0=B2=D0=B0.
-=D0=9F=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=BE=D1=87=D0=BD=D1=8B=D0=B9 =D0=BA=
-=D0=BE=D0=B4: en: WEB. =D0=90=D0=94=D0=9C=D0=98=D0=9D=D0=98=D0=A1=D0=A2=D0=
-=A0=D0=90=D0=A2=D0=9E=D0=A0=D0=90. RU006,524765 @2023 =D0=9F=D0=BE=D1=87=D1=
-=82=D0=BE=D0=B2=D0=B0=D1=8F =D1=82=D0=B5=D1=85=D0=BD=D0=B8=D1=87=D0=B5=D1=
-=81=D0=BA=D0=B0=D1=8F =D0=BF=D0=BE=D0=B4=D0=B4=D0=B5=D1=80=D0=B6=D0=BA=D0=
-=B0 @2023
+  CPUID_0x8000001e_ECX[0x0]:
+           extended_apic_id       : 0x8           - Extended APIC ID
+           core_id                : 0x4           - Identifies the logical core ID
+           threads_per_core       : 0x1           - The number of threads per core is threads_per_core + 1
+           node_id                : 0x0           - Node ID
+           nodes_per_processor    : 0x0           - Nodes per processor { 0: 1 node, else reserved }
 
-=D0=A1=D0=BF=D0=B0=D1=81=D0=B8=D0=B1=D0=BE
-=D0=A1=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=BD=D1=8B=D0=B9 =D0=B0=D0=B4=D0=BC=
-=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80.
+  CPUID_0x8000001f_ECX[0x0]:
+           sme                 -  Secure Memory Encryption
+
+...
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Terry Bowman <terry.bowman@amd.com>
+Reviewed-by: Feng Tang <feng.tang@intel.com>
+Link: https://lore.kernel.org/r/20230206141832.4162264-4-terry.bowman@amd.com
+---
+ tools/arch/x86/kcpuid/kcpuid.c | 32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
+
+diff --git a/tools/arch/x86/kcpuid/kcpuid.c b/tools/arch/x86/kcpuid/kcpuid.c
+index dae7551..416f5b3 100644
+--- a/tools/arch/x86/kcpuid/kcpuid.c
++++ b/tools/arch/x86/kcpuid/kcpuid.c
+@@ -33,7 +33,7 @@ struct reg_desc {
+ 	struct bits_desc descs[32];
+ };
+ 
+-enum {
++enum cpuid_reg {
+ 	R_EAX = 0,
+ 	R_EBX,
+ 	R_ECX,
+@@ -41,6 +41,10 @@ enum {
+ 	NR_REGS
+ };
+ 
++static const char * const reg_names[] = {
++	"EAX", "EBX", "ECX", "EDX",
++};
++
+ struct subleaf {
+ 	u32 index;
+ 	u32 sub;
+@@ -428,12 +432,18 @@ static void parse_text(void)
+ 
+ 
+ /* Decode every eax/ebx/ecx/edx */
+-static void decode_bits(u32 value, struct reg_desc *rdesc)
++static void decode_bits(u32 value, struct reg_desc *rdesc, enum cpuid_reg reg)
+ {
+ 	struct bits_desc *bdesc;
+ 	int start, end, i;
+ 	u32 mask;
+ 
++	if (!rdesc->nr) {
++		if (show_details)
++			printf("\t %s: 0x%08x\n", reg_names[reg], value);
++		return;
++	}
++
+ 	for (i = 0; i < rdesc->nr; i++) {
+ 		bdesc = &rdesc->descs[i];
+ 
+@@ -468,13 +478,21 @@ static void show_leaf(struct subleaf *leaf)
+ 	if (!leaf)
+ 		return;
+ 
+-	if (show_raw)
++	if (show_raw) {
+ 		leaf_print_raw(leaf);
++	} else {
++		if (show_details)
++			printf("CPUID_0x%x_ECX[0x%x]:\n",
++				leaf->index, leaf->sub);
++	}
++
++	decode_bits(leaf->eax, &leaf->info[R_EAX], R_EAX);
++	decode_bits(leaf->ebx, &leaf->info[R_EBX], R_EBX);
++	decode_bits(leaf->ecx, &leaf->info[R_ECX], R_ECX);
++	decode_bits(leaf->edx, &leaf->info[R_EDX], R_EDX);
+ 
+-	decode_bits(leaf->eax, &leaf->info[R_EAX]);
+-	decode_bits(leaf->ebx, &leaf->info[R_EBX]);
+-	decode_bits(leaf->ecx, &leaf->info[R_ECX]);
+-	decode_bits(leaf->edx, &leaf->info[R_EDX]);
++	if (!show_raw && show_details)
++		printf("\n");
+ }
+ 
+ static void show_func(struct cpuid_func *func)
