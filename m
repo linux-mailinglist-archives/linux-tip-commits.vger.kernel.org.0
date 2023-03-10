@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 896736B0E8B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Mar 2023 17:23:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 322526B3BF3
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Mar 2023 11:23:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229873AbjCHQXp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Mar 2023 11:23:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34920 "EHLO
+        id S230407AbjCJKXz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Mar 2023 05:23:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229785AbjCHQXo (ORCPT
+        with ESMTP id S230519AbjCJKXr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Mar 2023 11:23:44 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76C6F968DE;
-        Wed,  8 Mar 2023 08:23:34 -0800 (PST)
-Date:   Wed, 08 Mar 2023 16:23:31 -0000
+        Fri, 10 Mar 2023 05:23:47 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F7781A4A6;
+        Fri, 10 Mar 2023 02:23:39 -0800 (PST)
+Date:   Fri, 10 Mar 2023 10:23:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1678292612;
+        s=2020; t=1678443816;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HFiuzNGyE2MZXTYS92ORAfHaB7tViY38+H5/LASSeFE=;
-        b=rujE64cWGq/lI9JQ3b7cvWDOVa0reaCVYUt1QLiUkeDAsgNlaSl7hAxe1ZHMQ2sr4RFOHL
-        xwd7yNmhO9SRz94a5088DPKZAiLTLJw9NBvL/X7R9uaWlAyDmlr71/mZQLY16jNvqsDh7M
-        BHFZUC7+ohK9cI/UkgdUSzPZTsHjwV4oniFrxCupC0kq3DreitSTnxu5yuAgaQK2hrmVdX
-        lNKGhpWQOMttpgVI0qrlRthGHisyN9YeuQGFn9oL2Y18s3LK8xXawzDBWj4Vb8KPzmapg8
-        tDExzXENNJspLUWEWwMC4SaMnCc7Yqb8wOz0fyxiF/j2m3CUjntW3E7lU8VcOg==
+        bh=TmW1fMIiJseHqCgSBPyNA5oyhw2rY1T8DauIS/wwJKQ=;
+        b=GwcXFc/T8oNcEKfdCJ7CVXYHcBL8cb9yow5bNV2WDGHKIor9Xt1Nm9/OcTqRqJYu53rSeH
+        wcQmKqZJL1uO6vk1/GyEItVOYABmdCw7NfaX9ZWkEDA2uKr4N6YJCBQ//fsyLs5CKlU7QW
+        LkWkcexOHtbE9PJ9iPoqk2q1I6cTEiytOOpeqRlWYd8Kg7J8MaL99ibWCyBV76dpVdlrP9
+        I9PlC5U7KL1BWPCELcS6XvyvePcbVflx716UjHgbYP00s6V31sFjKQUVKVXNaG9dkKc4D5
+        k/okaEKIidDjQpnWSKMIaURREuJ9l0fUdUB1Gp4j/GwUsJsVB6NwpzEr4J9rcA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1678292612;
+        s=2020e; t=1678443816;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HFiuzNGyE2MZXTYS92ORAfHaB7tViY38+H5/LASSeFE=;
-        b=lMThGvy+Q1AHni5EPxRNSzMsXbjiev8tM/VtaxRGS4dPQrlUlEZWvgiT+h0lhYuvAOCUKx
-        toIWIGFsAK0jXYAg==
-From:   "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
+        bh=TmW1fMIiJseHqCgSBPyNA5oyhw2rY1T8DauIS/wwJKQ=;
+        b=1gMG8WrAo+2Rs1M8s5fkZgyOSLlzaCiIXKFjvy17AzsLJUWdj0KkioVMbeM6pxdKTGEXl8
+        hbZL9Z1xwKIoPaCg==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/CPU/AMD: Disable XSAVES on AMD family 0x17
-Cc:     Tavis Ormandy <taviso@gmail.com>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, <stable@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230307174643.1240184-1-andrew.cooper3@citrix.com>
-References: <20230307174643.1240184-1-andrew.cooper3@citrix.com>
+Subject: [tip: x86/misc] MAINTAINERS: Add x86 hardware vulnerabilities section
+Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230224213522.nofavod2jzhn22wp@treble>
+References: <20230224213522.nofavod2jzhn22wp@treble>
 MIME-Version: 1.0
-Message-ID: <167829261190.5837.14765105385267384206.tip-bot2@tip-bot2>
+Message-ID: <167844381609.5837.4907138475785579088.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,56 +64,48 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     b0563468eeac88ebc70559d52a0b66efc37e4e9d
-Gitweb:        https://git.kernel.org/tip/b0563468eeac88ebc70559d52a0b66efc37e4e9d
-Author:        Andrew Cooper <andrew.cooper3@citrix.com>
-AuthorDate:    Tue, 07 Mar 2023 17:46:43 
+Commit-ID:     5910f06503aae3cc4890e562683abc3e38857ff9
+Gitweb:        https://git.kernel.org/tip/5910f06503aae3cc4890e562683abc3e38857ff9
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Fri, 24 Feb 2023 13:35:22 -08:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 08 Mar 2023 16:56:08 +01:00
+CommitterDate: Fri, 10 Mar 2023 11:13:30 +01:00
 
-x86/CPU/AMD: Disable XSAVES on AMD family 0x17
+MAINTAINERS: Add x86 hardware vulnerabilities section
 
-AMD Erratum 1386 is summarised as:
+Add the bunch of losers who have to deal with this to MAINTAINERS so
+that they can get explicitly CCed on more hw nightmares.
 
-  XSAVES Instruction May Fail to Save XMM Registers to the Provided
-  State Save Area
+  [ bp: Add commit message. ]
 
-This piece of accidental chronomancy causes the %xmm registers to
-occasionally reset back to an older value.
-
-Ignore the XSAVES feature on all AMD Zen1/2 hardware.  The XSAVEC
-instruction (which works fine) is equivalent on affected parts.
-
-  [ bp: Typos, move it into the F17h-specific function. ]
-
-Reported-by: Tavis Ormandy <taviso@gmail.com>
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230307174643.1240184-1-andrew.cooper3@citrix.com
+Link: https://lore.kernel.org/r/20230224213522.nofavod2jzhn22wp@treble
 ---
- arch/x86/kernel/cpu/amd.c |  9 +++++++++
- 1 file changed, 9 insertions(+)
+ MAINTAINERS | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 380753b..95cdd08 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -880,6 +880,15 @@ void init_spectral_chicken(struct cpuinfo_x86 *c)
- 		}
- 	}
- #endif
-+	/*
-+	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
-+	 * certain circumstances on Zen1/2 uarch, and not all parts have had
-+	 * updated microcode at the time of writing (March 2023).
-+	 *
-+	 * Affected parts all have no supervisor XSAVE states, meaning that
-+	 * the XSAVEC instruction (which works fine) is equivalent.
-+	 */
-+	clear_cpu_cap(c, X86_FEATURE_XSAVES);
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8d5bc22..d95c6cc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -22660,6 +22660,17 @@ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/asm
+ F:	arch/x86/entry/
  
- static void init_amd_zn(struct cpuinfo_x86 *c)
++X86 HARDWARE VULNERABILITIES
++M:	Thomas Gleixner <tglx@linutronix.de>
++M:	Borislav Petkov <bp@alien8.de>
++M:	Peter Zijlstra <peterz@infradead.org>
++M:	Josh Poimboeuf <jpoimboe@kernel.org>
++R:	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
++S:	Maintained
++F:	Documentation/admin-guide/hw-vuln/
++F:	arch/x86/include/asm/nospec-branch.h
++F:	arch/x86/kernel/cpu/bugs.c
++
+ X86 MCE INFRASTRUCTURE
+ M:	Tony Luck <tony.luck@intel.com>
+ M:	Borislav Petkov <bp@alien8.de>
