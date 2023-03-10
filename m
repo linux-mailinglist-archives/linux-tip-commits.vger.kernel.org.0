@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36D6F6B524F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Mar 2023 21:55:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C7B16B5253
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Mar 2023 21:55:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231639AbjCJUzU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Mar 2023 15:55:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57026 "EHLO
+        id S231233AbjCJUzX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Mar 2023 15:55:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231588AbjCJUy4 (ORCPT
+        with ESMTP id S231591AbjCJUy5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Mar 2023 15:54:56 -0500
+        Fri, 10 Mar 2023 15:54:57 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D7AB132AAD;
-        Fri, 10 Mar 2023 12:54:55 -0800 (PST)
-Date:   Fri, 10 Mar 2023 20:54:53 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E04413553A;
+        Fri, 10 Mar 2023 12:54:56 -0800 (PST)
+Date:   Fri, 10 Mar 2023 20:54:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1678481694;
+        s=2020; t=1678481695;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h0dR0inVz8gR/sb4C4cDn6wf5TOCd2gsXb1skIBfTaE=;
-        b=a7rC2YTQyy7fIeI1QbOcnSIBy8v7UswIjo1lreFWvsChKfVvdAmq6huh13YOOue5n2cMkb
-        EbC7fwd9TrMTQHWd5D3A2B+kpC7TyzvnlMPZVEkMv+IBuBM+iRMFgm7LuZAM21kWCbhJxi
-        xqB2+6k/OjHkprykGTlAlsNmp89uWDmnZw3NTejTtLrlf7U0Rl98XKPATlurQUfg1g06WD
-        9zY89CzVA0CqEaKWcHX8LRzZ50N1Urb/q1KDZ+xEr6Ih1VKreadfg8dhvFtR28SZ5xhn/F
-        N+YMHy3RDxfXGaI11NylS+2QVFx++8Fm8QtJfPA+hz/iYKTBoUUVfix1p/nw2g==
+        bh=SymeUDKa3DSF68b1pHrLhL33sIy61tisuwLPE9bkyzM=;
+        b=pHHQ3qI0VVvB4B/QmFgYuI5CtIu7qokWeuSzdPuNQSunaaqqRTaKzE7GpC9T6h6sgG9R05
+        dssNHH/M3kP+UpvpExCa2iaKYnC2kS+CkDUZCmY6BLAoWBfg6mITqexjhrbbH4WDKsHvz5
+        eEJ/nVbaaSWL8jwohB8ykX99am5K04CnO1kBLOw5D7q8FugxVfZqHnPUy2bz7NVcOB/jnK
+        nxbBX8XWIr1wh/Gxbo2LIAsp9LO0ZWDXSRpvVs4XMEw9uYU4ERONWf7rA6aIQASqPdop2A
+        4owizD3vBXop6NLppWoWZpGdN9gEwQPB3U+Xi9HcQyS7i1xrOYhp9vdR0dRxPw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1678481694;
+        s=2020e; t=1678481695;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h0dR0inVz8gR/sb4C4cDn6wf5TOCd2gsXb1skIBfTaE=;
-        b=szV94LWCnUVOLsC8n31FgxS9SH523TbSZNMr7kTg7FPNmGtT8azhSTtD9i/whxswFa3PGz
-        BNzsoPd3lh1nAKAw==
+        bh=SymeUDKa3DSF68b1pHrLhL33sIy61tisuwLPE9bkyzM=;
+        b=j2XS2wRiOueYJJD0uftlMVJqpiBsDnAeDwHisvXQO9LNZ44A/cSlq+/fg9lvH87OOYmuZk
+        8pU1nsdEKXi9UMBg==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] loongarch/cpu: Make sure play_dead() doesn't return
-Cc:     Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <21245d687ffeda34dbcf04961a2df3724f04f7c8.1676358308.git.jpoimboe@kernel.org>
-References: <21245d687ffeda34dbcf04961a2df3724f04f7c8.1676358308.git.jpoimboe@kernel.org>
+Subject: [tip: objtool/core] csky/cpu: Make sure arch_cpu_idle_dead() doesn't return
+Cc:     Guo Ren <guoren@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1e9ecc3d248e82973e80bc336fc9f97e3ba2708d.1676358308.git.jpoimboe@kernel.org>
+References: <1e9ecc3d248e82973e80bc336fc9f97e3ba2708d.1676358308.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <167848169385.5837.15599094312506772594.tip-bot2@tip-bot2>
+Message-ID: <167848169468.5837.15267243328787227151.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,37 +65,38 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     13bf7923a4dd34f3d2681768a148b10ddbdb95ed
-Gitweb:        https://git.kernel.org/tip/13bf7923a4dd34f3d2681768a148b10ddbdb95ed
+Commit-ID:     1b2442a835a0acc7d76ae2f48ca7a94f962b29c8
+Gitweb:        https://git.kernel.org/tip/1b2442a835a0acc7d76ae2f48ca7a94f962b29c8
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 13 Feb 2023 23:05:41 -08:00
+AuthorDate:    Mon, 13 Feb 2023 23:05:39 -08:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Mon, 06 Mar 2023 15:34:06 -08:00
+CommitterDate: Mon, 06 Mar 2023 15:34:05 -08:00
 
-loongarch/cpu: Make sure play_dead() doesn't return
+csky/cpu: Make sure arch_cpu_idle_dead() doesn't return
 
-play_dead() doesn't return.  Make that more explicit with a BUG().
+arch_cpu_idle_dead() doesn't return.  Make that more explicit with a
+BUG().
 
 BUG() is preferable to unreachable() because BUG() is a more explicit
 failure mode and avoids undefined behavior like falling off the edge of
 the function into whatever code happens to be next.
 
-Link: https://lore.kernel.org/r/21245d687ffeda34dbcf04961a2df3724f04f7c8.1676358308.git.jpoimboe@kernel.org
+Acked-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/1e9ecc3d248e82973e80bc336fc9f97e3ba2708d.1676358308.git.jpoimboe@kernel.org
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- arch/loongarch/kernel/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/csky/kernel/smp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-index 8c6e227..51f3281 100644
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -336,7 +336,7 @@ void play_dead(void)
- 	iocsr_write32(0xffffffff, LOONGARCH_IOCSR_IPI_CLEAR);
- 
- 	init_fn();
--	unreachable();
+diff --git a/arch/csky/kernel/smp.c b/arch/csky/kernel/smp.c
+index b45d107..0ec20ef 100644
+--- a/arch/csky/kernel/smp.c
++++ b/arch/csky/kernel/smp.c
+@@ -317,5 +317,7 @@ void arch_cpu_idle_dead(void)
+ 		"jmpi	csky_start_secondary"
+ 		:
+ 		: "r" (secondary_stack));
++
 +	BUG();
  }
- 
  #endif
