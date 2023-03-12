@@ -2,54 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00C0D6B6AAA
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 12 Mar 2023 20:33:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9A7D6B6B1B
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 12 Mar 2023 21:38:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbjCLTdB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 12 Mar 2023 15:33:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54226 "EHLO
+        id S231208AbjCLUim (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 12 Mar 2023 16:38:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230085AbjCLTc7 (ORCPT
+        with ESMTP id S230233AbjCLUil (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 12 Mar 2023 15:32:59 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01456392A3;
-        Sun, 12 Mar 2023 12:32:53 -0700 (PDT)
-Date:   Sun, 12 Mar 2023 19:32:50 -0000
+        Sun, 12 Mar 2023 16:38:41 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39106241CB;
+        Sun, 12 Mar 2023 13:38:37 -0700 (PDT)
+Date:   Sun, 12 Mar 2023 20:38:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1678649571;
+        s=2020; t=1678653515;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CKIRktVYI9ydybMvRx3yc+RM+KVutJMeX+5vggZ8T4s=;
-        b=wZ91N7yE8eLvD70UHmSspI///tlJIVrXZXYl+Uc3wVtOgKBo8djFkjCOl+zM9ViUlbyhfu
-        bTeqyzRLtpS1Z1TSYnJd5oOM+MZLBge57LvFxmRU2BJdTTqjQZFbyoKNk0p7ygAHYVvAgG
-        YyqNhQ+IQk+0XgBpqjNSXndHz1iRgcilEqlA2G+IBOpCCF/HyO8d2O/6PjKgCAmnMoyk9+
-        TZ6yNzaoKEQLT1yibJk4xDoZPnNBe52TBW19Vy6yGZvOAcyaAZ/x6nJCCa3wfnogJnz2+K
-        nYacaXRN79hWeH2Bd53FbVUwZKMpITQTZtAXRCsN7hkIANVGnKaJAxZ3rili0w==
+        bh=S8phezYGkV4ZFxG7GBTMyfW74H5g3ySQBRmXlT502Xs=;
+        b=d/rRk4Uk7vsF1DgIlNSMRjyFl0PdtHlENZl3UhP0e5tOJTBJyhQpH0yZUSQiq8Kc/0D6kq
+        pr1B5MoDvU4cHzvXtaZPFIbrlcg2H6rfujJShlYLIh1Zh+76I1CY3X9GUrQVstlRha+ysi
+        eovjkQCC/wLWqgHO/4GP+UdJIK+FoFk8rC5mGiOtifcF5cWiNrg22sjo6tWf4j5bK8J8bC
+        cO8cWe+TQ78LWdOdA0FsvF30rfPYOoY7qRPZ7sS4BXkDDqQUueSndeEsE2PP8CzsS1xWP/
+        /eOeoGuUTtG0lVNvML4o5v1VVkh+XFn+tf1pDgiQcmoGHLdiNhMdjDjfOJ8Q2g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1678649571;
+        s=2020e; t=1678653515;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CKIRktVYI9ydybMvRx3yc+RM+KVutJMeX+5vggZ8T4s=;
-        b=Mk6wuFuwiz3aYg7LrVD3puyktCrXlVJeGbKKnXNlBiF7/AT6s6CBKNzTl0E52Ly3/5nBA+
-        zqhtLOAx+L+3uMBQ==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=S8phezYGkV4ZFxG7GBTMyfW74H5g3ySQBRmXlT502Xs=;
+        b=JXzPiDfYhO+5BWfNMFyUyTKUkBcUZzUPgOZIx8bgdqaPgIZ2NfEtjYXcC0CZBtAV2ZRyHM
+        45tB3uoETAJL1iDg==
+From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/AMD: Get rid of __find_equiv_id()
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230227160352.7260-1-bp@alien8.de>
-References: <20230227160352.7260-1-bp@alien8.de>
+Subject: [tip: ras/urgent] x86/mce: Make sure logged MCEs are processed after
+ sysfs update
+Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Tony Luck <tony.luck@intel.com>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230301221420.2203184-1-yazen.ghannam@amd.com>
+References: <20230301221420.2203184-1-yazen.ghannam@amd.com>
 MIME-Version: 1.0
-Message-ID: <167864957031.5837.1116812221182540208.tip-bot2@tip-bot2>
+Message-ID: <167865351393.5837.17719714572303479044.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,53 +66,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the ras/urgent branch of tip:
 
-Commit-ID:     9652df50cd444d0e6c26906ec9dfa894f2d4d6bc
-Gitweb:        https://git.kernel.org/tip/9652df50cd444d0e6c26906ec9dfa894f2d4d6bc
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Mon, 27 Feb 2023 17:03:52 +01:00
+Commit-ID:     4783b9cb374af02d49740e00e2da19fd4ed6dec4
+Gitweb:        https://git.kernel.org/tip/4783b9cb374af02d49740e00e2da19fd4ed6dec4
+Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+AuthorDate:    Wed, 01 Mar 2023 22:14:20 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sun, 12 Mar 2023 20:14:38 +01:00
+CommitterDate: Sun, 12 Mar 2023 21:12:21 +01:00
 
-x86/microcode/AMD: Get rid of __find_equiv_id()
+x86/mce: Make sure logged MCEs are processed after sysfs update
 
-Merge it into its only call site.
+A recent change introduced a flag to queue up errors found during
+boot-time polling. These errors will be processed during late init once
+the MCE subsystem is fully set up.
 
-No functional changes.
+A number of sysfs updates call mce_restart() which goes through a subset
+of the CPU init flow. This includes polling MCA banks and logging any
+errors found. Since the same function is used as boot-time polling,
+errors will be queued. However, the system is now past late init, so the
+errors will remain queued until another error is found and the workqueue
+is triggered.
 
+Call mce_schedule_work() at the end of mce_restart() so that queued
+errors are processed.
+
+Fixes: 3bff147b187d ("x86/mce: Defer processing of early errors")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230227160352.7260-1-bp@alien8.de
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230301221420.2203184-1-yazen.ghannam@amd.com
 ---
- arch/x86/kernel/cpu/microcode/amd.c |  9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index 9eb457b..394a9e1 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -596,11 +596,6 @@ void reload_ucode_amd(unsigned int cpu)
- 		}
- 	}
- }
--static u16 __find_equiv_id(unsigned int cpu)
--{
--	struct ucode_cpu_info *uci = ucode_cpu_info + cpu;
--	return find_equiv_id(&equiv_table, uci->cpu_sig.sig);
--}
- 
- /*
-  * a small, trivial cache of per-family ucode patches
-@@ -651,9 +646,11 @@ static void free_cache(void)
- 
- static struct ucode_patch *find_patch(unsigned int cpu)
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 7832a69..2eec60f 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2355,6 +2355,7 @@ static void mce_restart(void)
  {
-+	struct ucode_cpu_info *uci = ucode_cpu_info + cpu;
- 	u16 equiv_id;
+ 	mce_timer_delete_all();
+ 	on_each_cpu(mce_cpu_restart, NULL, 1);
++	mce_schedule_work();
+ }
  
--	equiv_id = __find_equiv_id(cpu);
-+
-+	equiv_id = find_equiv_id(&equiv_table, uci->cpu_sig.sig);
- 	if (!equiv_id)
- 		return NULL;
- 
+ /* Toggle features for corrected errors */
