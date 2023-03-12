@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9A7D6B6B1B
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 12 Mar 2023 21:38:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54D4E6B6B67
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 12 Mar 2023 21:47:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231208AbjCLUim (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 12 Mar 2023 16:38:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47016 "EHLO
+        id S229906AbjCLUrk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 12 Mar 2023 16:47:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230233AbjCLUil (ORCPT
+        with ESMTP id S229437AbjCLUrj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 12 Mar 2023 16:38:41 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39106241CB;
-        Sun, 12 Mar 2023 13:38:37 -0700 (PDT)
-Date:   Sun, 12 Mar 2023 20:38:33 -0000
+        Sun, 12 Mar 2023 16:47:39 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 723C12D4D;
+        Sun, 12 Mar 2023 13:47:38 -0700 (PDT)
+Date:   Sun, 12 Mar 2023 20:47:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1678653515;
+        s=2020; t=1678654056;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=S8phezYGkV4ZFxG7GBTMyfW74H5g3ySQBRmXlT502Xs=;
-        b=d/rRk4Uk7vsF1DgIlNSMRjyFl0PdtHlENZl3UhP0e5tOJTBJyhQpH0yZUSQiq8Kc/0D6kq
-        pr1B5MoDvU4cHzvXtaZPFIbrlcg2H6rfujJShlYLIh1Zh+76I1CY3X9GUrQVstlRha+ysi
-        eovjkQCC/wLWqgHO/4GP+UdJIK+FoFk8rC5mGiOtifcF5cWiNrg22sjo6tWf4j5bK8J8bC
-        cO8cWe+TQ78LWdOdA0FsvF30rfPYOoY7qRPZ7sS4BXkDDqQUueSndeEsE2PP8CzsS1xWP/
-        /eOeoGuUTtG0lVNvML4o5v1VVkh+XFn+tf1pDgiQcmoGHLdiNhMdjDjfOJ8Q2g==
+        bh=WmDYs33+VDMIv1F2Mo+7be4m4EhaoKcu+WQiAIsIjEQ=;
+        b=SdCOnOhqbgIqbng3JzNS3oilYUS3u+szQG3od6asYq3RLQGdPIxJqzqDyL1Uz1vuB6GTwN
+        PebQnfLISjOcSUjyZ9sS6biohn2+Sbq/ycWkchwEMU4UPIVGSyoP7W4WZJYm8/NDtwnD1j
+        dDwqgTlEj8Oac+xEgSCSfySXrGRu/X0ndwkX1gDu0c7AuWxm5ohFntt9F5+xiWLxJnHbEs
+        A9ChplF6n9HIoAca+li9WRjBmLsEaCFffyL6yCJd6P4OGQwkE4ElnLOvZeztmJwN/XJr+b
+        vMzdCYUDpxpz89weR5mtrcdJ1Rt+dc1UA+HNA4sraa88HZLGrn9xD0SvKkXFNQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1678653515;
+        s=2020e; t=1678654056;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=S8phezYGkV4ZFxG7GBTMyfW74H5g3ySQBRmXlT502Xs=;
-        b=JXzPiDfYhO+5BWfNMFyUyTKUkBcUZzUPgOZIx8bgdqaPgIZ2NfEtjYXcC0CZBtAV2ZRyHM
-        45tB3uoETAJL1iDg==
-From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
+        bh=WmDYs33+VDMIv1F2Mo+7be4m4EhaoKcu+WQiAIsIjEQ=;
+        b=7NwMpEXknhVoKmKYkmBpgAdbPe36ronJY1PGWneUq9aKO43ZTu/zcMrpEIdlSAbul1h589
+        7zSxbL2BlA3qmxBg==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/urgent] x86/mce: Make sure logged MCEs are processed after
- sysfs update
-Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Tony Luck <tony.luck@intel.com>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230301221420.2203184-1-yazen.ghannam@amd.com>
-References: <20230301221420.2203184-1-yazen.ghannam@amd.com>
+Subject: [tip: x86/microcode] x86/microcode: Do not taint when late loading on AMD
+Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230303114649.18552-1-bp@alien8.de>
+References: <20230303114649.18552-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <167865351393.5837.17719714572303479044.tip-bot2@tip-bot2>
+Message-ID: <167865405614.5837.13144930108431641081.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,50 +63,60 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/urgent branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     4783b9cb374af02d49740e00e2da19fd4ed6dec4
-Gitweb:        https://git.kernel.org/tip/4783b9cb374af02d49740e00e2da19fd4ed6dec4
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Wed, 01 Mar 2023 22:14:20 
+Commit-ID:     09b951476df9eadf15f2acba7568fa35e4b2313b
+Gitweb:        https://git.kernel.org/tip/09b951476df9eadf15f2acba7568fa35e4b2313b
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Fri, 03 Mar 2023 12:46:49 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sun, 12 Mar 2023 21:12:21 +01:00
+CommitterDate: Sun, 12 Mar 2023 21:32:51 +01:00
 
-x86/mce: Make sure logged MCEs are processed after sysfs update
+x86/microcode: Do not taint when late loading on AMD
 
-A recent change introduced a flag to queue up errors found during
-boot-time polling. These errors will be processed during late init once
-the MCE subsystem is fully set up.
+Describe why the concurrency issues which late loading poses are not
+affecting AMD hardware, after discussing it with hw folks. Thus, do not
+taint when late loading on it.
 
-A number of sysfs updates call mce_restart() which goes through a subset
-of the CPU init flow. This includes polling MCA banks and logging any
-errors found. Since the same function is used as boot-time polling,
-errors will be queued. However, the system is now past late init, so the
-errors will remain queued until another error is found and the workqueue
-is triggered.
-
-Call mce_schedule_work() at the end of mce_restart() so that queued
-errors are processed.
-
-Fixes: 3bff147b187d ("x86/mce: Defer processing of early errors")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230301221420.2203184-1-yazen.ghannam@amd.com
+Link: https://lore.kernel.org/r/20230303114649.18552-1-bp@alien8.de
 ---
- arch/x86/kernel/cpu/mce/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/x86/microcode.rst      | 10 ++++++++++
+ arch/x86/kernel/cpu/microcode/core.c |  3 ++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 7832a69..2eec60f 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -2355,6 +2355,7 @@ static void mce_restart(void)
- {
- 	mce_timer_delete_all();
- 	on_each_cpu(mce_cpu_restart, NULL, 1);
-+	mce_schedule_work();
- }
+diff --git a/Documentation/x86/microcode.rst b/Documentation/x86/microcode.rst
+index b627c6f..15b52e2 100644
+--- a/Documentation/x86/microcode.rst
++++ b/Documentation/x86/microcode.rst
+@@ -208,6 +208,16 @@ Basically there is no way to declare a new microcode update suitable
+ for late-loading. This is another one of the problems that caused late
+ loading to be not enabled by default.
  
- /* Toggle features for corrected errors */
++AMD
++---
++
++Late loading on AMD does not have the concurrency issues described
++above: when loading is attempted on T0, the T1 is quiesced and does not
++execute instructions. Therefore, even if a higher priority interrupt or
++a fault happens, the whole core will see it either before the microcode
++patch has been applied or after. In either case, T0 and T1 will have the
++same microcode revision and nothing intermediate.
++
+ Builtin microcode
+ =================
+ 
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index 7a329e5..779f705 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -498,7 +498,8 @@ put:
+ 	if (ret == 0)
+ 		ret = size;
+ 
+-	add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
++		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
+ 
+ 	return ret;
+ }
