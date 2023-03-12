@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D917C6B6734
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 12 Mar 2023 15:41:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 833F26B6738
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 12 Mar 2023 15:41:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjCLOlS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 12 Mar 2023 10:41:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39738 "EHLO
+        id S229623AbjCLOlV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 12 Mar 2023 10:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229623AbjCLOlR (ORCPT
+        with ESMTP id S229945AbjCLOlT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 12 Mar 2023 10:41:17 -0400
+        Sun, 12 Mar 2023 10:41:19 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2330D43927;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDABD457EA;
         Sun, 12 Mar 2023 07:41:16 -0700 (PDT)
-Date:   Sun, 12 Mar 2023 14:41:13 -0000
+Date:   Sun, 12 Mar 2023 14:41:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1678632073;
+        s=2020; t=1678632075;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XFEybelJ9loE0Nupy89Z06wvn5RgHE9M3FshmrNfoEg=;
-        b=iBSKYR6tfeXGG4Q5owQf8Y7yDmbz1YxTy7mdFsmO4DU3PeGvkZf7BI9mlrO3FpscfWdF84
-        9KG0aeMWMJDF0g9Rb66DLU8CBdmnseWd98tlyX4qSuVl1FnlAsF7EsmUvEyU+Qyx+iRuHJ
-        QBPQiYR66nKRBJA0Ivwp1UsPwR8KcOpsInrkWd8Y406TdXqhA5k3Fi/PdByvYq1dD4AzIq
-        zM2QoBuUfA+jW96GdT/SYD9lK8Sspz1RaDvR13YPeGYg2YI6BB14s54+cLg+OAnvW8oQtc
-        eOshsyJaDQ9yqTtzPk7RnKuvIh/Fz4Gbb18ObMrowJXya/6CmarIzY0AjIRlYw==
+        bh=Ibnjpqknbd/BV0ptLJW3NCZXE4/K0EsGAPtfYJyjFyA=;
+        b=PYadZxq8WKhygdPM7ofVQPwZrm2RtGVU9UFJO/dnic9jPSRS/8Nt6W+WrbVHDLpIHKzit1
+        vkzrwP+nqzd+J3sPy2IqMxEJrsXHRBpHRPy9M5+2DnTp88T3XYMf7F+UKGllZ7wXqvn3vr
+        KIq1JDNnDwmPpOmV1ok7SPjN4UuC1vWDaf0ZErPphsWtsKK1mpQvL6vnnYO0MfI6LlU7Ez
+        YEQFvF4T+NDEfDks0oCFLyN5lUnr/OCgdkFrkdQOaYgg7sHHoCcKT5II47u/D6aRGnzZ+M
+        m5Bb03TIPcjaIrChckiBf1hhov5kDbh7Ef8/5OrgWo7J+8skfjfs6YL7puTpow==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1678632073;
+        s=2020e; t=1678632075;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XFEybelJ9loE0Nupy89Z06wvn5RgHE9M3FshmrNfoEg=;
-        b=mDMdfjAKLvXwx0Hb0StL0ZAy5QcTEdHkYofGzVkMapNFN3EGJs2XWAce/9nwVTREtLitNz
-        uJphoAqfxtqGusDg==
+        bh=Ibnjpqknbd/BV0ptLJW3NCZXE4/K0EsGAPtfYJyjFyA=;
+        b=NJfp8G19ClG5sC5jhbcVioZYDdAjm0IO/HA0UkWD9wfJW2RSyGUnOCuJjVCpW3NsIzrMJt
+        nxB/5MR/uCTnnBBA==
 From:   "tip-bot2 for Andrzej Hajda" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] qed: use __xchg if possible
+Subject: [tip: locking/core] arch/*/uprobes: simplify
+ arch_uretprobe_hijack_return_addr
 Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Andi Shyti <andi.shyti@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230118154450.73842-6-andrzej.hajda@intel.com>
-References: <20230118154450.73842-6-andrzej.hajda@intel.com>
+In-Reply-To: <20230118154450.73842-3-andrzej.hajda@intel.com>
+References: <20230118154450.73842-3-andrzej.hajda@intel.com>
 MIME-Version: 1.0
-Message-ID: <167863207321.5837.328011126625602425.tip-bot2@tip-bot2>
+Message-ID: <167863207454.5837.3204445359425962539.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,80 +68,241 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     9b579a841f9032a231e9b14a23dc6699cbe6d311
-Gitweb:        https://git.kernel.org/tip/9b579a841f9032a231e9b14a23dc6699cbe6d311
+Commit-ID:     26ace5d28d3645efe735c3c2ff0b80dd17c85cb2
+Gitweb:        https://git.kernel.org/tip/26ace5d28d3645efe735c3c2ff0b80dd17c85cb2
 Author:        Andrzej Hajda <andrzej.hajda@intel.com>
-AuthorDate:    Wed, 18 Jan 2023 16:44:49 +01:00
+AuthorDate:    Wed, 18 Jan 2023 16:44:46 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Sat, 11 Mar 2023 14:03:59 +01:00
 
-qed: use __xchg if possible
+arch/*/uprobes: simplify arch_uretprobe_hijack_return_addr
 
-Recently introduced helper simplifies the code.
+In all architectures, except x86, arch_uretprobe_hijack_return_addr
+is just __xchg.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20230118154450.73842-6-andrzej.hajda@intel.com
+Link: https://lore.kernel.org/r/20230118154450.73842-3-andrzej.hajda@intel.com
 ---
- include/linux/qed/qed_chain.h | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ arch/arm/probes/uprobes/core.c     |  8 ++------
+ arch/arm64/kernel/probes/uprobes.c |  9 ++-------
+ arch/csky/kernel/probes/uprobes.c  |  9 ++-------
+ arch/mips/kernel/uprobes.c         | 10 ++--------
+ arch/powerpc/kernel/uprobes.c      | 10 ++--------
+ arch/riscv/kernel/probes/uprobes.c |  9 ++-------
+ arch/s390/kernel/uprobes.c         |  7 ++-----
+ arch/sparc/kernel/uprobes.c        |  7 ++-----
+ 8 files changed, 16 insertions(+), 53 deletions(-)
 
-diff --git a/include/linux/qed/qed_chain.h b/include/linux/qed/qed_chain.h
-index a840634..6355d55 100644
---- a/include/linux/qed/qed_chain.h
-+++ b/include/linux/qed/qed_chain.h
-@@ -11,6 +11,7 @@
- #include <asm/byteorder.h>
- #include <linux/kernel.h>
- #include <linux/list.h>
+diff --git a/arch/arm/probes/uprobes/core.c b/arch/arm/probes/uprobes/core.c
+index f5f790c..77ce8ae 100644
+--- a/arch/arm/probes/uprobes/core.c
++++ b/arch/arm/probes/uprobes/core.c
+@@ -9,6 +9,7 @@
+ #include <linux/highmem.h>
+ #include <linux/sched.h>
+ #include <linux/uprobes.h>
 +#include <linux/non-atomic/xchg.h>
- #include <linux/sizes.h>
- #include <linux/slab.h>
- #include <linux/qed/common_hsi.h>
-@@ -368,7 +369,7 @@ static inline void qed_chain_return_produced(struct qed_chain *p_chain)
-  */
- static inline void *qed_chain_produce(struct qed_chain *p_chain)
+ #include <linux/notifier.h>
+ 
+ #include <asm/opcodes.h>
+@@ -61,12 +62,7 @@ unsigned long
+ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr,
+ 				  struct pt_regs *regs)
  {
--	void *p_ret = NULL, *p_prod_idx, *p_prod_page_idx;
-+	void *p_prod_idx, *p_prod_page_idx;
- 
- 	if (is_chain_u16(p_chain)) {
- 		if ((p_chain->u.chain16.prod_idx &
-@@ -390,11 +391,8 @@ static inline void *qed_chain_produce(struct qed_chain *p_chain)
- 		p_chain->u.chain32.prod_idx++;
- 	}
- 
--	p_ret = p_chain->p_prod_elem;
--	p_chain->p_prod_elem = (void *)(((u8 *)p_chain->p_prod_elem) +
--					p_chain->elem_size);
+-	unsigned long orig_ret_vaddr;
 -
--	return p_ret;
-+	return __xchg(&p_chain->p_prod_elem,
-+		      (u8 *)p_chain->p_prod_elem + p_chain->elem_size);
+-	orig_ret_vaddr = regs->ARM_lr;
+-	/* Replace the return addr with trampoline addr */
+-	regs->ARM_lr = trampoline_vaddr;
+-	return orig_ret_vaddr;
++	return __xchg(&regs->ARM_lr, trampoline_vaddr);
+ }
+ 
+ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe, struct mm_struct *mm,
+diff --git a/arch/arm64/kernel/probes/uprobes.c b/arch/arm64/kernel/probes/uprobes.c
+index d49aef2..d7171d3 100644
+--- a/arch/arm64/kernel/probes/uprobes.c
++++ b/arch/arm64/kernel/probes/uprobes.c
+@@ -3,6 +3,7 @@
+  * Copyright (C) 2014-2016 Pratyush Anand <panand@redhat.com>
+  */
+ #include <linux/highmem.h>
++#include <linux/non-atomic/xchg.h>
+ #include <linux/ptrace.h>
+ #include <linux/uprobes.h>
+ #include <asm/cacheflush.h>
+@@ -150,13 +151,7 @@ unsigned long
+ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr,
+ 				  struct pt_regs *regs)
+ {
+-	unsigned long orig_ret_vaddr;
+-
+-	orig_ret_vaddr = procedure_link_pointer(regs);
+-	/* Replace the return addr with trampoline addr */
+-	procedure_link_pointer_set(regs, trampoline_vaddr);
+-
+-	return orig_ret_vaddr;
++	return __xchg(&procedure_link_pointer(regs), trampoline_vaddr);
+ }
+ 
+ int arch_uprobe_exception_notify(struct notifier_block *self,
+diff --git a/arch/csky/kernel/probes/uprobes.c b/arch/csky/kernel/probes/uprobes.c
+index 2d31a12..775fe88 100644
+--- a/arch/csky/kernel/probes/uprobes.c
++++ b/arch/csky/kernel/probes/uprobes.c
+@@ -3,6 +3,7 @@
+  * Copyright (C) 2014-2016 Pratyush Anand <panand@redhat.com>
+  */
+ #include <linux/highmem.h>
++#include <linux/non-atomic/xchg.h>
+ #include <linux/ptrace.h>
+ #include <linux/uprobes.h>
+ #include <asm/cacheflush.h>
+@@ -123,13 +124,7 @@ unsigned long
+ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr,
+ 				  struct pt_regs *regs)
+ {
+-	unsigned long ra;
+-
+-	ra = regs->lr;
+-
+-	regs->lr = trampoline_vaddr;
+-
+-	return ra;
++	return __xchg(&regs->lr, trampoline_vaddr);
+ }
+ 
+ int arch_uprobe_exception_notify(struct notifier_block *self,
+diff --git a/arch/mips/kernel/uprobes.c b/arch/mips/kernel/uprobes.c
+index 6c063aa..2b1f375 100644
+--- a/arch/mips/kernel/uprobes.c
++++ b/arch/mips/kernel/uprobes.c
+@@ -2,6 +2,7 @@
+ #include <linux/highmem.h>
+ #include <linux/kdebug.h>
+ #include <linux/types.h>
++#include <linux/non-atomic/xchg.h>
+ #include <linux/notifier.h>
+ #include <linux/sched.h>
+ #include <linux/uprobes.h>
+@@ -197,14 +198,7 @@ void arch_uprobe_abort_xol(struct arch_uprobe *aup,
+ unsigned long arch_uretprobe_hijack_return_addr(
+ 	unsigned long trampoline_vaddr, struct pt_regs *regs)
+ {
+-	unsigned long ra;
+-
+-	ra = regs->regs[31];
+-
+-	/* Replace the return address with the trampoline address */
+-	regs->regs[31] = trampoline_vaddr;
+-
+-	return ra;
++	return __xchg(&regs->regs[31], trampoline_vaddr);
  }
  
  /**
-@@ -439,7 +437,7 @@ static inline void qed_chain_recycle_consumed(struct qed_chain *p_chain)
+diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
+index 95a41ae..3c15c32 100644
+--- a/arch/powerpc/kernel/uprobes.c
++++ b/arch/powerpc/kernel/uprobes.c
+@@ -7,6 +7,7 @@
+  * Adapted from the x86 port by Ananth N Mavinakayanahalli <ananth@in.ibm.com>
   */
- static inline void *qed_chain_consume(struct qed_chain *p_chain)
+ #include <linux/kernel.h>
++#include <linux/non-atomic/xchg.h>
+ #include <linux/sched.h>
+ #include <linux/ptrace.h>
+ #include <linux/uprobes.h>
+@@ -197,14 +198,7 @@ bool arch_uprobe_skip_sstep(struct arch_uprobe *auprobe, struct pt_regs *regs)
+ unsigned long
+ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr, struct pt_regs *regs)
  {
--	void *p_ret = NULL, *p_cons_idx, *p_cons_page_idx;
-+	void *p_cons_idx, *p_cons_page_idx;
- 
- 	if (is_chain_u16(p_chain)) {
- 		if ((p_chain->u.chain16.cons_idx &
-@@ -461,11 +459,8 @@ static inline void *qed_chain_consume(struct qed_chain *p_chain)
- 		p_chain->u.chain32.cons_idx++;
- 	}
- 
--	p_ret = p_chain->p_cons_elem;
--	p_chain->p_cons_elem = (void *)(((u8 *)p_chain->p_cons_elem) +
--					p_chain->elem_size);
+-	unsigned long orig_ret_vaddr;
 -
--	return p_ret;
-+	return __xchg(&p_chain->p_cons_elem,
-+		      (u8 *)p_chain->p_cons_elem + p_chain->elem_size);
+-	orig_ret_vaddr = regs->link;
+-
+-	/* Replace the return addr with trampoline addr */
+-	regs->link = trampoline_vaddr;
+-
+-	return orig_ret_vaddr;
++	return __xchg(&regs->link, trampoline_vaddr);
  }
  
- /**
+ bool arch_uretprobe_is_alive(struct return_instance *ret, enum rp_check ctx,
+diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
+index c976a21..5c8415e 100644
+--- a/arch/riscv/kernel/probes/uprobes.c
++++ b/arch/riscv/kernel/probes/uprobes.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
+ #include <linux/highmem.h>
++#include <linux/non-atomic/xchg.h>
+ #include <linux/ptrace.h>
+ #include <linux/uprobes.h>
+ 
+@@ -122,13 +123,7 @@ unsigned long
+ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr,
+ 				  struct pt_regs *regs)
+ {
+-	unsigned long ra;
+-
+-	ra = regs->ra;
+-
+-	regs->ra = trampoline_vaddr;
+-
+-	return ra;
++	return __xchg(&regs->ra, trampoline_vaddr);
+ }
+ 
+ int arch_uprobe_exception_notify(struct notifier_block *self,
+diff --git a/arch/s390/kernel/uprobes.c b/arch/s390/kernel/uprobes.c
+index b88345e..18591ca 100644
+--- a/arch/s390/kernel/uprobes.c
++++ b/arch/s390/kernel/uprobes.c
+@@ -11,6 +11,7 @@
+ #include <linux/compat.h>
+ #include <linux/kdebug.h>
+ #include <linux/sched/task_stack.h>
++#include <linux/non-atomic/xchg.h>
+ 
+ #include <asm/switch_to.h>
+ #include <asm/facility.h>
+@@ -144,11 +145,7 @@ void arch_uprobe_abort_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
+ unsigned long arch_uretprobe_hijack_return_addr(unsigned long trampoline,
+ 						struct pt_regs *regs)
+ {
+-	unsigned long orig;
+-
+-	orig = regs->gprs[14];
+-	regs->gprs[14] = trampoline;
+-	return orig;
++	return __xchg(&regs->gprs[14], trampoline);
+ }
+ 
+ bool arch_uretprobe_is_alive(struct return_instance *ret, enum rp_check ctx,
+diff --git a/arch/sparc/kernel/uprobes.c b/arch/sparc/kernel/uprobes.c
+index 1a06002..1c02653 100644
+--- a/arch/sparc/kernel/uprobes.c
++++ b/arch/sparc/kernel/uprobes.c
+@@ -11,6 +11,7 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/highmem.h>
++#include <linux/non-atomic/xchg.h>
+ #include <linux/uprobes.h>
+ #include <linux/uaccess.h>
+ #include <linux/sched.h> /* For struct task_struct */
+@@ -310,9 +311,5 @@ unsigned long
+ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr,
+ 				  struct pt_regs *regs)
+ {
+-	unsigned long orig_ret_vaddr = regs->u_regs[UREG_I7];
+-
+-	regs->u_regs[UREG_I7] = trampoline_vaddr-8;
+-
+-	return orig_ret_vaddr + 8;
++	return __xchg(&regs->u_regs[UREG_I7], trampoline_vaddr - 8) + 8;
+ }
