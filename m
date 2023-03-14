@@ -2,370 +2,151 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 721E66B8F0E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Mar 2023 10:59:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39B1F6B9827
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Mar 2023 15:40:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbjCNJ7C (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Mar 2023 05:59:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36792 "EHLO
+        id S231221AbjCNOkv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Mar 2023 10:40:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbjCNJ7B (ORCPT
+        with ESMTP id S231309AbjCNOkt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Mar 2023 05:59:01 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B0F328860;
-        Tue, 14 Mar 2023 02:58:58 -0700 (PDT)
-Date:   Tue, 14 Mar 2023 09:58:56 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1678787937;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Y5Lm5unbHjFEqDPWjPFDbuZ1nPznMnb7XEBxrkoOiC0=;
-        b=KTpvCdjiqhqYjbRuF+ODrnTk0GK1TJWqXI8Wt7aneGv3Jfb81P06KA4BMlaydaTB2Uz4Xj
-        daSBw3X2w0T7Fgfr+kSVpZE5rt7GjfgwAVxqFrUlWy9/hsFXltpSg1FnqCaP9H67lg/btB
-        XzKnYL/GrmohciIff/n1c18cX+IobO2rZcEBoFM7xwILgciZLweiHGFAjx3agCTAs9htmX
-        vJiMn1or0pf03j76G6Msv2BwrZFdnpJVUqfK1I8UeV8oss1hD3CWMNa2/0GWDkGTG9jyNx
-        7//6lPys+1ElwGEqaLIYSl1gIoGfmM+wJ34L09YEFcAl043fxXfgifHSbPnWFw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1678787937;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Y5Lm5unbHjFEqDPWjPFDbuZ1nPznMnb7XEBxrkoOiC0=;
-        b=93ScY2tLDvVUgC9I9vuK1CVN2zQiD4drq+fmyMd/9A0MAv1WGCPClQHr3aOx2FJZX4m07Q
-        hg4eDFjbkL9A6CCg==
-From:   "tip-bot2 for Andrzej Hajda" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] drm/i915/gt: use __xchg instead of internal helper
-Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Andi Shyti <andi.shyti@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230118154450.73842-7-andrzej.hajda@intel.com>
-References: <20230118154450.73842-7-andrzej.hajda@intel.com>
+        Tue, 14 Mar 2023 10:40:49 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2077.outbound.protection.outlook.com [40.107.237.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85D8C960AF;
+        Tue, 14 Mar 2023 07:40:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=euH87olSDoZZ76Hio1Pn/U9XuJF5/1rqU/b3Z86Fltso04pW+RTBpipB8cMGP83rOAHQnW3oD6rm+GCADDPzVIKhQNvy/N/e8s1uVtPDo4Z75XOBmTWm/s9K3J+m+5jeA+ANlR1DRWkjlywYX+IZCDGKW6LsRFGUiha694Ul+oS70S7HPnvUq6e+tYR1tNZcEppVSWP0d0FYYFUGR0Vi/+qDlOU8pe0gtpVVsCyH22GMC/GBp6BN8EMSNlB15SyVEjCaQYI1fFC0aKKpEq5Mjj2SqjwBUkBgRtgphpnKf6oexNd7ax+4ZJl3rgQLmoUOKHhPlgT5jPhO/bbr9L5bcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3DnILiPN9BwYs1tjzAp5MF5+BbUYPsMmHIwiBXjcPZM=;
+ b=l7B+LQZ6blr8FVYRrkVDNG6iXztphb1GsRA9I2iXEdvHvvoJ/QFosbat/5603JX/n/gLiLaFFzXLqZUsiz3AdP9/X1MYeUBgNSdb0HHCwGVssollws4nyHJM+0xyuuC3GFdnR+z2uuoyq07Dw/rIMflcJBwRRY2Uu4PCHKJW1O0VitIer7t5uMNgo0ZUNpvxbV5Hk6CPLbGI7nkb/9UylXFhMv3DnpoKyTJfaJ0aaZClAS9gsWKM7dHjLpNJY8eNfNx4MM29uT+SiaQwC2cjBLgcmwAD0F7WXGRFjOm0SrYpz1p+L/eU3lpIhIJkoqmezgumJz8zOnghFXfOkx4eEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3DnILiPN9BwYs1tjzAp5MF5+BbUYPsMmHIwiBXjcPZM=;
+ b=5DUCx2y9MAJV+AB1Vyeor2amd4UUXWqquINMouhfuNAzfZvdE1QeYxB94LNXffzI7BNImWKqkD4hBb/ZElGeoziL+UfSL0dZOy87amVSnSrRkIr2sqyLb+QE/OoCtyvJ8uQGJSkg80ljRLh8ug4z59k+0sbY+pnUiz3pYjpNNi4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BN8PR12MB3108.namprd12.prod.outlook.com (2603:10b6:408:40::20)
+ by DM8PR12MB5429.namprd12.prod.outlook.com (2603:10b6:8:29::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.24; Tue, 14 Mar
+ 2023 14:40:36 +0000
+Received: from BN8PR12MB3108.namprd12.prod.outlook.com
+ ([fe80::e62f:89e5:df27:9e45]) by BN8PR12MB3108.namprd12.prod.outlook.com
+ ([fe80::e62f:89e5:df27:9e45%6]) with mapi id 15.20.6178.024; Tue, 14 Mar 2023
+ 14:40:36 +0000
+Date:   Tue, 14 Mar 2023 14:40:32 +0000
+From:   Yazen Ghannam <yazen.ghannam@amd.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Tony Luck <tony.luck@intel.com>, stable@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [tip: ras/urgent] x86/mce: Make sure logged MCEs are processed
+ after sysfs update
+Message-ID: <ZBCHYHq34nlLlXKc@yaz-fattaah>
+References: <20230301221420.2203184-1-yazen.ghannam@amd.com>
+ <167865351393.5837.17719714572303479044.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <167865351393.5837.17719714572303479044.tip-bot2@tip-bot2>
+X-ClientProxiedBy: CH2PR07CA0018.namprd07.prod.outlook.com
+ (2603:10b6:610:20::31) To BN8PR12MB3108.namprd12.prod.outlook.com
+ (2603:10b6:408:40::20)
 MIME-Version: 1.0
-Message-ID: <167878793658.5837.11017923675290686886.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8PR12MB3108:EE_|DM8PR12MB5429:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9d7d431e-e41d-4360-de92-08db249a12a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vbDxMSqK5miz5DF4t69HKleMYGJZVRKG1nCqStbFlTB7z+T5lt+6TfUW+Ewrsjf2MSNZzwY3+4fFbyYtYOUx4GTtIx75j3WK7Wi8X6NckKKHJgF030WNi1xhHu2keuHCrjSoZSZ/IgOHNOkBsP5Y2bJGxRGbyXnPbZBUQx09c3xaNis1n+LH6szpeewSYwWH6+mU5H/7IJxG85Yf4fa+XTBy1SR5UmReEwQEUFpjAo7CGKVl9ckHdSMtfCFfdSM4vU+cXHGWXNYlJh0jllvrx4LfT7BnkIcVKqBvepAStz8T7WX7OB3Lyk2CKmJ1j6XPdMP7D6kPe9u71UjpR/Ne8xgqPqDkWPSDGW++NP3G7FBqMMthSQlB98hneh39Pg9JcFqrj+E2JZHXtOZn+Do6n6uYByesm1yqWiI8RM3rM5UGuNXUBHrcG+Odbj/iNf3RdoqEgY6WoiYwhef7sjCGOEr3mx/GHT5c3KjhU8p4DJwPLW9UR9MT8qQ2skaQrX+yYfnj+5ZR1vbCPAzwm/K8/AiWc13HvR7zRwwA1EQ0Bi/uR8uZYjLpbNDAD6bCcGsbzhPrKqDuLbzr7MrEycbrkCOvJkKlpc/tumXBChB1U79rnCa+SxfONpkjeBGEJaM0
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3108.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(7916004)(136003)(396003)(366004)(39860400002)(376002)(346002)(451199018)(5660300002)(44832011)(83380400001)(186003)(478600001)(26005)(6486002)(6506007)(6666004)(966005)(6512007)(33716001)(9686003)(4326008)(38100700002)(66946007)(6916009)(66476007)(8676002)(66556008)(41300700001)(54906003)(86362001)(316002)(8936002)(15650500001)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iod0hOg9eiTUj1q1LckNsJwatYGw/Kjs19ro5WCl/7D1GGoU+hpOzsLgXNwP?=
+ =?us-ascii?Q?wkvAllLaNlXRR6ulibKLW3hMwmY/D+dGBMuss6PhcmvCz6XIoAeNPGsnVe4X?=
+ =?us-ascii?Q?73D4nfRXkmyf3GiF2La+oWfR/YaFTBl0H2BAciTdMRZ6Fg3bUjQG/NjJujmt?=
+ =?us-ascii?Q?1u8gB9+kFX/QohPt9VNrOFh8XseGIxz/eHZMRyf34XFXozecW7z9ogNHmr6/?=
+ =?us-ascii?Q?yySjIi7MLEqebl112jlkJJLu/RzxFDmJ+eqVHuuPVky9P1iWLQF+9+9woy6x?=
+ =?us-ascii?Q?EzLB73/mxl75RB2+gIEkOx3hrv0v25wB8qDd+RPz3ChcQdl/w+wuN3fBCfx8?=
+ =?us-ascii?Q?V9tcxObo8QGb+Qaao4S3ptAk5jA77UGeppYCpSHYX5bVmHhLi24u36V65ugM?=
+ =?us-ascii?Q?Tb5xRjHlYmHl2mQq5jDLRy/JXcrzPMWg96ZOrQB6Or7dKXX8QL8vP2B4uFjw?=
+ =?us-ascii?Q?XPjMZdWeBchXvijBxwY1HJhNdDlj6cw9GGF+duE0SeGMQlQ9aVejEg0dhgf1?=
+ =?us-ascii?Q?La+RaAqzbQy9JfWaahpIcbwfNxRQ/dDgBUYJAWAgQhHkpxiChGzjUCCc5E4h?=
+ =?us-ascii?Q?OYp5boLDVZlMJuKe2FdRzeSNALarIVsOYQN0CzJxQ91FvSShDBtOOqwCp2fP?=
+ =?us-ascii?Q?+KUGm7BGsQaJUr7K95FvLU5RdaB9zqo15Uci/VALq9WpPA/enqS7/z/rZ34A?=
+ =?us-ascii?Q?eMQtPq+ZpPwBaUKlAWPIGY5qx3v6ZaYye707aFMYlmKkgfO09kAYstFgFUNm?=
+ =?us-ascii?Q?guemvBmV5V80AGmMJFWZDVxiRgsNIujU6/1slNjEEZ8sVLgqf2rmsGVlTYHD?=
+ =?us-ascii?Q?DpP9sc7B6+7hgQvQgl/mmP66RCgLfaCzQDSQ1jKzSSOHg/XB4IS3ifPSx9Fh?=
+ =?us-ascii?Q?b5lmHseJRhVwq6BLBbw/gZpCLbbdxTvqaW9hTMBjjCjmqT3npfUcxtxUTnSZ?=
+ =?us-ascii?Q?BEq49IOvk2u/ul0oFxY4CWwVwo1jVBlK/dSOMM+cR6CDc+MjNEo2300Yh/sF?=
+ =?us-ascii?Q?tmAQFlUg72JPSDa9HjzYNSlGLebMQziZmBbpHehXgSFKSJFQGHQta2Xni3aO?=
+ =?us-ascii?Q?S/xCq43/bn7hBAOZj25iTg25oVEi2IiPz5fgXBwqRrXlvCuYvDm86AzoqF3f?=
+ =?us-ascii?Q?703dyzO7RSRRHryNWyIi3XqKZc+li8JB4ukELT6r40g/8sMRKxZ43hA22iRn?=
+ =?us-ascii?Q?J1hz+Ci7bJd3tUG9uS9mXys3nZcTtHEZNIf3CS8/AMSbOZtdXbBvgaEIaNoi?=
+ =?us-ascii?Q?VC9RdDvGtmDo1pCUHotmjUBcNoaJC6kbSaKgnrCceLnYDnBXhF/UdwX/iuSy?=
+ =?us-ascii?Q?LJZtmj6TexErI0YHwDVO454jTKAwhCpV7MgXFm7L0iLhLZHGXUj4P/WkCVwT?=
+ =?us-ascii?Q?L4R/xe3YeFP65j0hotmzyA7vH3qDNyqrZKf1IAhZcCGQfDDdLkuxTjqw8PtR?=
+ =?us-ascii?Q?QH9i1sauYKKE9LzFAZIT+ZhL7g7evZrJHo+grLOSn1Ush/K+Oy3abomUS29h?=
+ =?us-ascii?Q?mX1lZ0cYJek1H8QgV2z54E6dzGnE7mcGOlWVlKoBrAQGiPW5HwMPl63V352y?=
+ =?us-ascii?Q?53AkepGBHQpQAXymiNDhjf35SCf8REpa97p5Wr3o?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d7d431e-e41d-4360-de92-08db249a12a1
+X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3108.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2023 14:40:36.0312
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: q5n+LZJ3bWiWC3kUq8KEshSjs4M7cF8VNw87MrtLEzLvIFg8WKGW1YmV4tkvKuEKNxgBkPIbRQLdPPhklvJJ7g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5429
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+On Sun, Mar 12, 2023 at 08:38:33PM -0000, tip-bot2 for Yazen Ghannam wrote:
+> The following commit has been merged into the ras/urgent branch of tip:
+> 
+> Commit-ID:     4783b9cb374af02d49740e00e2da19fd4ed6dec4
+> Gitweb:        https://git.kernel.org/tip/4783b9cb374af02d49740e00e2da19fd4ed6dec4
+> Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+> AuthorDate:    Wed, 01 Mar 2023 22:14:20 
+> Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+> CommitterDate: Sun, 12 Mar 2023 21:12:21 +01:00
+> 
+> x86/mce: Make sure logged MCEs are processed after sysfs update
+> 
+> A recent change introduced a flag to queue up errors found during
+> boot-time polling. These errors will be processed during late init once
+> the MCE subsystem is fully set up.
+> 
+> A number of sysfs updates call mce_restart() which goes through a subset
+> of the CPU init flow. This includes polling MCA banks and logging any
+> errors found. Since the same function is used as boot-time polling,
+> errors will be queued. However, the system is now past late init, so the
+> errors will remain queued until another error is found and the workqueue
+> is triggered.
+> 
+> Call mce_schedule_work() at the end of mce_restart() so that queued
+> errors are processed.
+> 
+> Fixes: 3bff147b187d ("x86/mce: Defer processing of early errors")
+> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Reviewed-by: Tony Luck <tony.luck@intel.com>
 
-Commit-ID:     f7faedffa92c35afbcfbf0a3dd73079e16b2b87f
-Gitweb:        https://git.kernel.org/tip/f7faedffa92c35afbcfbf0a3dd73079e16b2b87f
-Author:        Andrzej Hajda <andrzej.hajda@intel.com>
-AuthorDate:    Wed, 18 Jan 2023 16:44:50 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 14 Mar 2023 10:53:57 +01:00
+Thank you!
 
-drm/i915/gt: use __xchg instead of internal helper
-
-Prefer core helper if available.
-
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20230118154450.73842-7-andrzej.hajda@intel.com
----
- drivers/gpu/drm/i915/gt/intel_engine_cs.c            | 2 +-
- drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c     | 4 ++--
- drivers/gpu/drm/i915/gt/intel_execlists_submission.c | 4 ++--
- drivers/gpu/drm/i915/gt/intel_ggtt.c                 | 4 ++--
- drivers/gpu/drm/i915/gt/intel_gsc.c                  | 2 +-
- drivers/gpu/drm/i915/gt/intel_gt.c                   | 4 ++--
- drivers/gpu/drm/i915/gt/intel_gt_pm.c                | 2 +-
- drivers/gpu/drm/i915/gt/intel_lrc.c                  | 6 +++---
- drivers/gpu/drm/i915/gt/intel_migrate.c              | 2 +-
- drivers/gpu/drm/i915/gt/intel_rc6.c                  | 2 +-
- drivers/gpu/drm/i915/gt/intel_rps.c                  | 2 +-
- drivers/gpu/drm/i915/gt/selftest_context.c           | 2 +-
- drivers/gpu/drm/i915/gt/selftest_ring_submission.c   | 2 +-
- drivers/gpu/drm/i915/gt/selftest_timeline.c          | 2 +-
- drivers/gpu/drm/i915/gt/uc/intel_uc.c                | 2 +-
- drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c             | 2 +-
- drivers/gpu/drm/i915/i915_utils.h                    | 1 +
- 17 files changed, 23 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/gt/intel_engine_cs.c b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-index d4e29da..49a0fd4 100644
---- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-@@ -1042,7 +1042,7 @@ static void cleanup_status_page(struct intel_engine_cs *engine)
- 	/* Prevent writes into HWSP after returning the page to the system */
- 	intel_engine_set_hwsp_writemask(engine, ~0u);
- 
--	vma = fetch_and_zero(&engine->status_page.vma);
-+	vma = __xchg(&engine->status_page.vma, 0);
- 	if (!vma)
- 		return;
- 
-diff --git a/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c b/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
-index 9a527e1..09befcc 100644
---- a/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_heartbeat.c
-@@ -229,7 +229,7 @@ unlock:
- 	mutex_unlock(&ce->timeline->mutex);
- out:
- 	if (!engine->i915->params.enable_hangcheck || !next_heartbeat(engine))
--		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
-+		i915_request_put(__xchg(&engine->heartbeat.systole, 0));
- 	intel_engine_pm_put(engine);
- }
- 
-@@ -244,7 +244,7 @@ void intel_engine_unpark_heartbeat(struct intel_engine_cs *engine)
- void intel_engine_park_heartbeat(struct intel_engine_cs *engine)
- {
- 	if (cancel_delayed_work(&engine->heartbeat.work))
--		i915_request_put(fetch_and_zero(&engine->heartbeat.systole));
-+		i915_request_put(__xchg(&engine->heartbeat.systole, 0));
- }
- 
- void intel_gt_unpark_heartbeats(struct intel_gt *gt)
-diff --git a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-index 1bbe670..40413bc 100644
---- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-+++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-@@ -3199,7 +3199,7 @@ static void execlists_reset_cancel(struct intel_engine_cs *engine)
- 		RB_CLEAR_NODE(rb);
- 
- 		spin_lock(&ve->base.sched_engine->lock);
--		rq = fetch_and_zero(&ve->request);
-+		rq = __xchg(&ve->request, NULL);
- 		if (rq) {
- 			if (i915_request_mark_eio(rq)) {
- 				rq->engine = engine;
-@@ -3604,7 +3604,7 @@ static void rcu_virtual_context_destroy(struct work_struct *wrk)
- 
- 		spin_lock_irq(&ve->base.sched_engine->lock);
- 
--		old = fetch_and_zero(&ve->request);
-+		old = __xchg(&ve->request, NULL);
- 		if (old) {
- 			GEM_BUG_ON(!__i915_request_is_complete(old));
- 			__i915_request_submit(old);
-diff --git a/drivers/gpu/drm/i915/gt/intel_ggtt.c b/drivers/gpu/drm/i915/gt/intel_ggtt.c
-index 842e69c..f312bb1 100644
---- a/drivers/gpu/drm/i915/gt/intel_ggtt.c
-+++ b/drivers/gpu/drm/i915/gt/intel_ggtt.c
-@@ -685,7 +685,7 @@ static void fini_aliasing_ppgtt(struct i915_ggtt *ggtt)
- {
- 	struct i915_ppgtt *ppgtt;
- 
--	ppgtt = fetch_and_zero(&ggtt->alias);
-+	ppgtt = __xchg(&ggtt->alias, NULL);
- 	if (!ppgtt)
- 		return;
- 
-@@ -1239,7 +1239,7 @@ bool i915_ggtt_resume_vm(struct i915_address_space *vm)
- 				   was_bound);
- 
- 		if (obj) { /* only used during resume => exclusive access */
--			write_domain_objs |= fetch_and_zero(&obj->write_domain);
-+			write_domain_objs |= __xchg(&obj->write_domain, 0);
- 			obj->read_domains |= I915_GEM_DOMAIN_GTT;
- 		}
- 	}
-diff --git a/drivers/gpu/drm/i915/gt/intel_gsc.c b/drivers/gpu/drm/i915/gt/intel_gsc.c
-index bcc3605..38fbea7 100644
---- a/drivers/gpu/drm/i915/gt/intel_gsc.c
-+++ b/drivers/gpu/drm/i915/gt/intel_gsc.c
-@@ -70,7 +70,7 @@ out_put:
- 
- static void gsc_ext_om_destroy(struct intel_gsc_intf *intf)
- {
--	struct drm_i915_gem_object *obj = fetch_and_zero(&intf->gem_obj);
-+	struct drm_i915_gem_object *obj = __xchg(&intf->gem_obj, 0);
- 
- 	if (!obj)
- 		return;
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt.c b/drivers/gpu/drm/i915/gt/intel_gt.c
-index f0dbfc4..8844585 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt.c
-+++ b/drivers/gpu/drm/i915/gt/intel_gt.c
-@@ -753,7 +753,7 @@ err_uc_init:
- 	intel_uc_fini(&gt->uc);
- err_engines:
- 	intel_engines_release(gt);
--	i915_vm_put(fetch_and_zero(&gt->vm));
-+	i915_vm_put(__xchg(&gt->vm, 0));
- err_pm:
- 	intel_gt_pm_fini(gt);
- 	intel_gt_fini_scratch(gt);
-@@ -800,7 +800,7 @@ void intel_gt_driver_release(struct intel_gt *gt)
- {
- 	struct i915_address_space *vm;
- 
--	vm = fetch_and_zero(&gt->vm);
-+	vm = __xchg(&gt->vm, 0);
- 	if (vm) /* FIXME being called twice on error paths :( */
- 		i915_vm_put(vm);
- 
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_pm.c b/drivers/gpu/drm/i915/gt/intel_gt_pm.c
-index cef3d6f..2527c5a 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt_pm.c
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_pm.c
-@@ -124,7 +124,7 @@ static int __gt_unpark(struct intel_wakeref *wf)
- static int __gt_park(struct intel_wakeref *wf)
- {
- 	struct intel_gt *gt = container_of(wf, typeof(*gt), wakeref);
--	intel_wakeref_t wakeref = fetch_and_zero(&gt->awake);
-+	intel_wakeref_t wakeref = __xchg(&gt->awake, 0);
- 	struct drm_i915_private *i915 = gt->i915;
- 
- 	GT_TRACE(gt, "\n");
-diff --git a/drivers/gpu/drm/i915/gt/intel_lrc.c b/drivers/gpu/drm/i915/gt/intel_lrc.c
-index 81a96c5..62fbfce 100644
---- a/drivers/gpu/drm/i915/gt/intel_lrc.c
-+++ b/drivers/gpu/drm/i915/gt/intel_lrc.c
-@@ -1109,7 +1109,7 @@ __lrc_alloc_state(struct intel_context *ce, struct intel_engine_cs *engine)
- static struct intel_timeline *
- pinned_timeline(struct intel_context *ce, struct intel_engine_cs *engine)
- {
--	struct intel_timeline *tl = fetch_and_zero(&ce->timeline);
-+	struct intel_timeline *tl = __xchg(&ce->timeline, 0);
- 
- 	return intel_timeline_create_from_engine(engine, page_unmask_bits(tl));
- }
-@@ -1226,8 +1226,8 @@ void lrc_fini(struct intel_context *ce)
- 	if (!ce->state)
- 		return;
- 
--	intel_ring_put(fetch_and_zero(&ce->ring));
--	i915_vma_put(fetch_and_zero(&ce->state));
-+	intel_ring_put(__xchg(&ce->ring, 0));
-+	i915_vma_put(__xchg(&ce->state, 0));
- }
- 
- void lrc_destroy(struct kref *kref)
-diff --git a/drivers/gpu/drm/i915/gt/intel_migrate.c b/drivers/gpu/drm/i915/gt/intel_migrate.c
-index 3f638f1..3eab186 100644
---- a/drivers/gpu/drm/i915/gt/intel_migrate.c
-+++ b/drivers/gpu/drm/i915/gt/intel_migrate.c
-@@ -1147,7 +1147,7 @@ void intel_migrate_fini(struct intel_migrate *m)
- {
- 	struct intel_context *ce;
- 
--	ce = fetch_and_zero(&m->context);
-+	ce = __xchg(&m->context, 0);
- 	if (!ce)
- 		return;
- 
-diff --git a/drivers/gpu/drm/i915/gt/intel_rc6.c b/drivers/gpu/drm/i915/gt/intel_rc6.c
-index 5c91622..ca6b0c9 100644
---- a/drivers/gpu/drm/i915/gt/intel_rc6.c
-+++ b/drivers/gpu/drm/i915/gt/intel_rc6.c
-@@ -702,7 +702,7 @@ void intel_rc6_fini(struct intel_rc6 *rc6)
- 
- 	intel_rc6_disable(rc6);
- 
--	pctx = fetch_and_zero(&rc6->pctx);
-+	pctx = __xchg(&rc6->pctx, 0);
- 	if (pctx)
- 		i915_gem_object_put(pctx);
- 
-diff --git a/drivers/gpu/drm/i915/gt/intel_rps.c b/drivers/gpu/drm/i915/gt/intel_rps.c
-index f5d7b51..962fd16 100644
---- a/drivers/gpu/drm/i915/gt/intel_rps.c
-+++ b/drivers/gpu/drm/i915/gt/intel_rps.c
-@@ -1832,7 +1832,7 @@ static void rps_work(struct work_struct *work)
- 	u32 pm_iir = 0;
- 
- 	spin_lock_irq(gt->irq_lock);
--	pm_iir = fetch_and_zero(&rps->pm_iir) & rps->pm_events;
-+	pm_iir = __xchg(&rps->pm_iir, 0) & rps->pm_events;
- 	client_boost = atomic_read(&rps->num_waiters);
- 	spin_unlock_irq(gt->irq_lock);
- 
-diff --git a/drivers/gpu/drm/i915/gt/selftest_context.c b/drivers/gpu/drm/i915/gt/selftest_context.c
-index 76fbae3..3f49ca1 100644
---- a/drivers/gpu/drm/i915/gt/selftest_context.c
-+++ b/drivers/gpu/drm/i915/gt/selftest_context.c
-@@ -171,7 +171,7 @@ static int live_context_size(void *arg)
- 		 * active state is sufficient, we are only checking that we
- 		 * don't use more than we planned.
- 		 */
--		saved = fetch_and_zero(&engine->default_state);
-+		saved = __xchg(&engine->default_state, 0);
- 
- 		/* Overlaps with the execlists redzone */
- 		engine->context_size += I915_GTT_PAGE_SIZE;
-diff --git a/drivers/gpu/drm/i915/gt/selftest_ring_submission.c b/drivers/gpu/drm/i915/gt/selftest_ring_submission.c
-index 87ceb0f..a01aaca 100644
---- a/drivers/gpu/drm/i915/gt/selftest_ring_submission.c
-+++ b/drivers/gpu/drm/i915/gt/selftest_ring_submission.c
-@@ -269,7 +269,7 @@ static int live_ctx_switch_wa(void *arg)
- 		if (IS_GRAPHICS_VER(gt->i915, 4, 5))
- 			continue; /* MI_STORE_DWORD is privileged! */
- 
--		saved_wa = fetch_and_zero(&engine->wa_ctx.vma);
-+		saved_wa = __xchg(&engine->wa_ctx.vma, 0);
- 
- 		intel_engine_pm_get(engine);
- 		err = __live_ctx_switch_wa(engine);
-diff --git a/drivers/gpu/drm/i915/gt/selftest_timeline.c b/drivers/gpu/drm/i915/gt/selftest_timeline.c
-index 522d019..d14d515 100644
---- a/drivers/gpu/drm/i915/gt/selftest_timeline.c
-+++ b/drivers/gpu/drm/i915/gt/selftest_timeline.c
-@@ -892,7 +892,7 @@ static int create_watcher(struct hwsp_watcher *w,
- static int check_watcher(struct hwsp_watcher *w, const char *name,
- 			 bool (*op)(u32 hwsp, u32 seqno))
- {
--	struct i915_request *rq = fetch_and_zero(&w->rq);
-+	struct i915_request *rq = __xchg(&w->rq, NULL);
- 	u32 offset, end;
- 	int err;
- 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_uc.c b/drivers/gpu/drm/i915/gt/uc/intel_uc.c
-index de7f987..2a49be5 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_uc.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_uc.c
-@@ -171,7 +171,7 @@ static void __uc_capture_load_err_log(struct intel_uc *uc)
- 
- static void __uc_free_load_err_log(struct intel_uc *uc)
- {
--	struct drm_i915_gem_object *log = fetch_and_zero(&uc->load_err_log);
-+	struct drm_i915_gem_object *log = __xchg(&uc->load_err_log, NULL);
- 
- 	if (log)
- 		i915_gem_object_put(log);
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c b/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c
-index 65672ff..3f684f3 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c
-@@ -1119,7 +1119,7 @@ void intel_uc_fw_cleanup_fetch(struct intel_uc_fw *uc_fw)
- 	if (!intel_uc_fw_is_available(uc_fw))
- 		return;
- 
--	i915_gem_object_put(fetch_and_zero(&uc_fw->obj));
-+	i915_gem_object_put(__xchg(&uc_fw->obj, NULL));
- 
- 	intel_uc_fw_change_status(uc_fw, INTEL_UC_FIRMWARE_SELECTED);
- }
-diff --git a/drivers/gpu/drm/i915/i915_utils.h b/drivers/gpu/drm/i915/i915_utils.h
-index 2c430c0..be7df2c 100644
---- a/drivers/gpu/drm/i915/i915_utils.h
-+++ b/drivers/gpu/drm/i915/i915_utils.h
-@@ -26,6 +26,7 @@
- #define __I915_UTILS_H
- 
- #include <linux/list.h>
-+#include <linux/non-atomic/xchg.h>
- #include <linux/overflow.h>
- #include <linux/sched.h>
- #include <linux/string_helpers.h>
+-Yazen
