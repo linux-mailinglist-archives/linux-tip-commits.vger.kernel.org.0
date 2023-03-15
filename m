@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A84EB6BBE67
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Mar 2023 22:03:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75D556BBFF9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Mar 2023 23:44:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232412AbjCOVDI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Mar 2023 17:03:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36244 "EHLO
+        id S230280AbjCOWom (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Mar 2023 18:44:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232492AbjCOVDH (ORCPT
+        with ESMTP id S229751AbjCOWom (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Mar 2023 17:03:07 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 846B9A3B5A;
-        Wed, 15 Mar 2023 14:02:38 -0700 (PDT)
-Date:   Wed, 15 Mar 2023 21:01:26 -0000
+        Wed, 15 Mar 2023 18:44:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7361714EA3;
+        Wed, 15 Mar 2023 15:44:40 -0700 (PDT)
+Date:   Wed, 15 Mar 2023 22:44:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1678914086;
+        s=2020; t=1678920278;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XniifjN8MQzq952qxQ6M0YB9CHpC2Jk7NmP1AxZwCpI=;
-        b=tuhSMAtuu0xvXURw6OCbAvdPeDU4C2EHsXpudIqyeefldWoYxZrPvLYohbn8uWwJCCgJaa
-        zoTG1+2raAVxFhW8mckTRtIdDFDv8Oz3NK69RZIaWn4PoS1JvuccIvvfoQklTPN2m+mZtN
-        gxsz+VTABFta3s5kVaYin2bhKxhhBTvdzkxWPF5pfJbQOS9blI3rpdjcq/vYG73r1GexBR
-        ssa+nikXsY2pepaqHKsyIjiN/kioewVFpREQgP+THfDCJpNBvl19LCGElDWs5jRDiH0+47
-        bYCmmjaYjal9AKtrQuoBxEU6pe2rud9e77n76tvwxUpVonbvk88wFO3R9x+vJQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=GjmlrFQTqGturbIE+fgewqog6NLlHfnD7mWRE0jhQv8=;
+        b=nMhDrjSJUw9bqF/tIXTVi8+ftXNoYlgUXzLg72prueoXkTzqyzT0ERLkgWMYQ7r4oq7HIx
+        1P5vFoy8rUjxIRRsj/xrP4ULAoGaTqrDsw3gO9HYg3e1yu55btoptvYSPMJzeqA8Or/ohC
+        9bsWRn4zVqqjOWdCbJMfB7yGrte8lqVGadGi6UPcSZVtLJNBIC2K0JOeaRFhLgCiPmeaWp
+        RlzpZn2gkBZzg8vNGO8xKFBPY7cc+LAWHv+jDGXgvT+b8WInzTYlwF0BCdK+8xl7FY5V2+
+        Mkcjvhh8Qfv+tWhTnDNe/vHkfY/fbrGmOrSOpWeT3WzH7XhotL4xA84H6hSV+A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1678914086;
+        s=2020e; t=1678920278;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XniifjN8MQzq952qxQ6M0YB9CHpC2Jk7NmP1AxZwCpI=;
-        b=4Ytn/jcPWX93151BUwlcCDw0mlmBnEw7e1RAwC8syjox2ErFCBzXdSbmIwFn2bWHCkO9uO
-        /a69gklcoIiip5AA==
-From:   "tip-bot2 for Yang Jihong" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=GjmlrFQTqGturbIE+fgewqog6NLlHfnD7mWRE0jhQv8=;
+        b=zIgROjbG15WKCvx1h/VK2V7yaE7w7oTHNpC3HVSHpo9lWHh55jYYk57rKZhc1hfRot8PTY
+        ingboI/CmGYG28CQ==
+From:   "tip-bot2 for Shawn Wang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Fix perf_output_begin parameter is
- incorrectly invoked in perf_event_bpf_output
-Cc:     Yang Jihong <yangjihong1@huawei.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/resctrl: Clear staged_config[] before and after
+ it is used
+Cc:     Xin Hao <xhao@linux.alibaba.com>,
+        Shawn Wang <shawnwang@linux.alibaba.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230314044735.56551-1-yangjihong1@huawei.com>
-References: <20230314044735.56551-1-yangjihong1@huawei.com>
 MIME-Version: 1.0
-Message-ID: <167891408605.5837.5971862418041833851.tip-bot2@tip-bot2>
+Message-ID: <167892027751.5837.1271275229889484859.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,64 +62,175 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     eb81a2ed4f52be831c9fb879752d89645a312c13
-Gitweb:        https://git.kernel.org/tip/eb81a2ed4f52be831c9fb879752d89645a312c13
-Author:        Yang Jihong <yangjihong1@huawei.com>
-AuthorDate:    Tue, 14 Mar 2023 04:47:35 
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 15 Mar 2023 21:49:46 +01:00
+Commit-ID:     0424a7dfe9129b93f29b277511a60e87f052ac6b
+Gitweb:        https://git.kernel.org/tip/0424a7dfe9129b93f29b277511a60e87f052ac6b
+Author:        Shawn Wang <shawnwang@linux.alibaba.com>
+AuthorDate:    Tue, 17 Jan 2023 13:14:50 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Wed, 15 Mar 2023 15:19:43 -07:00
 
-perf/core: Fix perf_output_begin parameter is incorrectly invoked in perf_event_bpf_output
+x86/resctrl: Clear staged_config[] before and after it is used
 
-syzkaller reportes a KASAN issue with stack-out-of-bounds.
-The call trace is as follows:
-  dump_stack+0x9c/0xd3
-  print_address_description.constprop.0+0x19/0x170
-  __kasan_report.cold+0x6c/0x84
-  kasan_report+0x3a/0x50
-  __perf_event_header__init_id+0x34/0x290
-  perf_event_header__init_id+0x48/0x60
-  perf_output_begin+0x4a4/0x560
-  perf_event_bpf_output+0x161/0x1e0
-  perf_iterate_sb_cpu+0x29e/0x340
-  perf_iterate_sb+0x4c/0xc0
-  perf_event_bpf_event+0x194/0x2c0
-  __bpf_prog_put.constprop.0+0x55/0xf0
-  __cls_bpf_delete_prog+0xea/0x120 [cls_bpf]
-  cls_bpf_delete_prog_work+0x1c/0x30 [cls_bpf]
-  process_one_work+0x3c2/0x730
-  worker_thread+0x93/0x650
-  kthread+0x1b8/0x210
-  ret_from_fork+0x1f/0x30
+As a temporary storage, staged_config[] in rdt_domain should be cleared
+before and after it is used. The stale value in staged_config[] could
+cause an MSR access error.
 
-commit 267fb27352b6 ("perf: Reduce stack usage of perf_output_begin()")
-use on-stack struct perf_sample_data of the caller function.
+Here is a reproducer on a system with 16 usable CLOSIDs for a 15-way L3
+Cache (MBA should be disabled if the number of CLOSIDs for MB is less than
+16.) :
+	mount -t resctrl resctrl -o cdp /sys/fs/resctrl
+	mkdir /sys/fs/resctrl/p{1..7}
+	umount /sys/fs/resctrl/
+	mount -t resctrl resctrl /sys/fs/resctrl
+	mkdir /sys/fs/resctrl/p{1..8}
 
-However, perf_event_bpf_output uses incorrect parameter to convert
-small-sized data (struct perf_bpf_event) into large-sized data
-(struct perf_sample_data), which causes memory overwriting occurs in
-__perf_event_header__init_id.
+An error occurs when creating resource group named p8:
+    unchecked MSR access error: WRMSR to 0xca0 (tried to write 0x00000000000007ff) at rIP: 0xffffffff82249142 (cat_wrmsr+0x32/0x60)
+    Call Trace:
+     <IRQ>
+     __flush_smp_call_function_queue+0x11d/0x170
+     __sysvec_call_function+0x24/0xd0
+     sysvec_call_function+0x89/0xc0
+     </IRQ>
+     <TASK>
+     asm_sysvec_call_function+0x16/0x20
 
-Fixes: 267fb27352b6 ("perf: Reduce stack usage of perf_output_begin()")
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230314044735.56551-1-yangjihong1@huawei.com
+When creating a new resource control group, hardware will be configured
+by the following process:
+    rdtgroup_mkdir()
+      rdtgroup_mkdir_ctrl_mon()
+        rdtgroup_init_alloc()
+          resctrl_arch_update_domains()
+
+resctrl_arch_update_domains() iterates and updates all resctrl_conf_type
+whose have_new_ctrl is true. Since staged_config[] holds the same values as
+when CDP was enabled, it will continue to update the CDP_CODE and CDP_DATA
+configurations. When group p8 is created, get_config_index() called in
+resctrl_arch_update_domains() will return 16 and 17 as the CLOSIDs for
+CDP_CODE and CDP_DATA, which will be translated to an invalid register -
+0xca0 in this scenario.
+
+Fix it by clearing staged_config[] before and after it is used.
+
+[reinette: re-order commit tags]
+
+Fixes: 75408e43509e ("x86/resctrl: Allow different CODE/DATA configurations to be staged")
+Suggested-by: Xin Hao <xhao@linux.alibaba.com>
+Signed-off-by: Shawn Wang <shawnwang@linux.alibaba.com>
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/2fad13f49fbe89687fc40e9a5a61f23a28d1507a.1673988935.git.reinette.chatre%40intel.com
 ---
- kernel/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/resctrl/ctrlmondata.c |  7 +-----
+ arch/x86/kernel/cpu/resctrl/internal.h    |  1 +-
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c    | 25 ++++++++++++++++++----
+ 3 files changed, 24 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index f79fd8b..296617e 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9187,7 +9187,7 @@ static void perf_event_bpf_output(struct perf_event *event, void *data)
+diff --git a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
+index eb07d44..b44c487 100644
+--- a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
++++ b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
+@@ -368,7 +368,6 @@ ssize_t rdtgroup_schemata_write(struct kernfs_open_file *of,
+ {
+ 	struct resctrl_schema *s;
+ 	struct rdtgroup *rdtgrp;
+-	struct rdt_domain *dom;
+ 	struct rdt_resource *r;
+ 	char *tok, *resname;
+ 	int ret = 0;
+@@ -397,10 +396,7 @@ ssize_t rdtgroup_schemata_write(struct kernfs_open_file *of,
+ 		goto out;
+ 	}
  
- 	perf_event_header__init_id(&bpf_event->event_id.header,
- 				   &sample, event);
--	ret = perf_output_begin(&handle, data, event,
-+	ret = perf_output_begin(&handle, &sample, event,
- 				bpf_event->event_id.header.size);
- 	if (ret)
- 		return;
+-	list_for_each_entry(s, &resctrl_schema_all, list) {
+-		list_for_each_entry(dom, &s->res->domains, list)
+-			memset(dom->staged_config, 0, sizeof(dom->staged_config));
+-	}
++	rdt_staged_configs_clear();
+ 
+ 	while ((tok = strsep(&buf, "\n")) != NULL) {
+ 		resname = strim(strsep(&tok, ":"));
+@@ -445,6 +441,7 @@ ssize_t rdtgroup_schemata_write(struct kernfs_open_file *of,
+ 	}
+ 
+ out:
++	rdt_staged_configs_clear();
+ 	rdtgroup_kn_unlock(of->kn);
+ 	cpus_read_unlock();
+ 	return ret ?: nbytes;
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
+index 8edecc5..85ceaf9 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -555,5 +555,6 @@ void __check_limbo(struct rdt_domain *d, bool force_free);
+ void rdt_domain_reconfigure_cdp(struct rdt_resource *r);
+ void __init thread_throttle_mode_init(void);
+ void __init mbm_config_rftype_init(const char *config);
++void rdt_staged_configs_clear(void);
+ 
+ #endif /* _ASM_X86_RESCTRL_INTERNAL_H */
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+index 884b6e9..6ad33f3 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -78,6 +78,19 @@ void rdt_last_cmd_printf(const char *fmt, ...)
+ 	va_end(ap);
+ }
+ 
++void rdt_staged_configs_clear(void)
++{
++	struct rdt_resource *r;
++	struct rdt_domain *dom;
++
++	lockdep_assert_held(&rdtgroup_mutex);
++
++	for_each_alloc_capable_rdt_resource(r) {
++		list_for_each_entry(dom, &r->domains, list)
++			memset(dom->staged_config, 0, sizeof(dom->staged_config));
++	}
++}
++
+ /*
+  * Trivial allocator for CLOSIDs. Since h/w only supports a small number,
+  * we can keep a bitmap of free CLOSIDs in a single integer.
+@@ -3107,7 +3120,9 @@ static int rdtgroup_init_alloc(struct rdtgroup *rdtgrp)
+ {
+ 	struct resctrl_schema *s;
+ 	struct rdt_resource *r;
+-	int ret;
++	int ret = 0;
++
++	rdt_staged_configs_clear();
+ 
+ 	list_for_each_entry(s, &resctrl_schema_all, list) {
+ 		r = s->res;
+@@ -3119,20 +3134,22 @@ static int rdtgroup_init_alloc(struct rdtgroup *rdtgrp)
+ 		} else {
+ 			ret = rdtgroup_init_cat(s, rdtgrp->closid);
+ 			if (ret < 0)
+-				return ret;
++				goto out;
+ 		}
+ 
+ 		ret = resctrl_arch_update_domains(r, rdtgrp->closid);
+ 		if (ret < 0) {
+ 			rdt_last_cmd_puts("Failed to initialize allocations\n");
+-			return ret;
++			goto out;
+ 		}
+ 
+ 	}
+ 
+ 	rdtgrp->mode = RDT_MODE_SHAREABLE;
+ 
+-	return 0;
++out:
++	rdt_staged_configs_clear();
++	return ret;
+ }
+ 
+ static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
