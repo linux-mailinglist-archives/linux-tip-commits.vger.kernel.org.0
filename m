@@ -2,53 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75D556BBFF9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Mar 2023 23:44:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 562236BC1B0
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Mar 2023 00:46:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230280AbjCOWom (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Mar 2023 18:44:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36846 "EHLO
+        id S232898AbjCOXq1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Mar 2023 19:46:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbjCOWom (ORCPT
+        with ESMTP id S232661AbjCOXq0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Mar 2023 18:44:42 -0400
+        Wed, 15 Mar 2023 19:46:26 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7361714EA3;
-        Wed, 15 Mar 2023 15:44:40 -0700 (PDT)
-Date:   Wed, 15 Mar 2023 22:44:37 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA3D15540;
+        Wed, 15 Mar 2023 16:45:57 -0700 (PDT)
+Date:   Wed, 15 Mar 2023 23:36:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1678920278;
+        s=2020; t=1678923379;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=GjmlrFQTqGturbIE+fgewqog6NLlHfnD7mWRE0jhQv8=;
-        b=nMhDrjSJUw9bqF/tIXTVi8+ftXNoYlgUXzLg72prueoXkTzqyzT0ERLkgWMYQ7r4oq7HIx
-        1P5vFoy8rUjxIRRsj/xrP4ULAoGaTqrDsw3gO9HYg3e1yu55btoptvYSPMJzeqA8Or/ohC
-        9bsWRn4zVqqjOWdCbJMfB7yGrte8lqVGadGi6UPcSZVtLJNBIC2K0JOeaRFhLgCiPmeaWp
-        RlzpZn2gkBZzg8vNGO8xKFBPY7cc+LAWHv+jDGXgvT+b8WInzTYlwF0BCdK+8xl7FY5V2+
-        Mkcjvhh8Qfv+tWhTnDNe/vHkfY/fbrGmOrSOpWeT3WzH7XhotL4xA84H6hSV+A==
+        bh=41dIEGEGewUxp2qWhqXvFItcme40IVFHqdBSwxA8Mg4=;
+        b=oSw0bUclzmXJy5ukltY/PYfkqMioLCRNAIYazgnPvBaw9j12Y+xQF4jTq/pohCkIwqTEG9
+        xme3sssPl7onc30B/+mOF+3BQ4OsLrOUpKswlrsOXDOzCZgpKQDwlc0XOl9OMLtB/7IqE/
+        FIaAi4b/xSz4mLjCWet8Bs3ZybcmqmI0cQSYkLV4luzYe0Rt03SOau3+59OUqnV1kOTptt
+        HtE6Jayr4o2pQCkflFKfIDLuFUdOACic0w8S/ZhrBVgOpyMhuXMNU0EnipT7yZ+lOjqymz
+        DEyRGm1elovo5W9+4DM2jqe+JMwbqHzL6CTw37cmElf09uRtEEO13g3fnFYRKg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1678920278;
+        s=2020e; t=1678923379;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=GjmlrFQTqGturbIE+fgewqog6NLlHfnD7mWRE0jhQv8=;
-        b=zIgROjbG15WKCvx1h/VK2V7yaE7w7oTHNpC3HVSHpo9lWHh55jYYk57rKZhc1hfRot8PTY
-        ingboI/CmGYG28CQ==
-From:   "tip-bot2 for Shawn Wang" <tip-bot2@linutronix.de>
+        bh=41dIEGEGewUxp2qWhqXvFItcme40IVFHqdBSwxA8Mg4=;
+        b=TXJVi1UZOcZBV50a2x3ao2DTC9q4/7jpIvkBb1a8q6YTiMVvZBLmeITrnXVFxo0kuRWDRJ
+        uYYj8aY2DrJP5XCQ==
+From:   "tip-bot2 for Peter Newman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/resctrl: Clear staged_config[] before and after
- it is used
-Cc:     Xin Hao <xhao@linux.alibaba.com>,
-        Shawn Wang <shawnwang@linux.alibaba.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
+Subject: [tip: x86/cache] x86/resctrl: Avoid redundant counter read in
+ __mon_event_count()
+Cc:     Peter Newman <peternewman@google.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        stable@vger.kernel.org, x86@kernel.org,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Babu Moger <babu.moger@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167892027751.5837.1271275229889484859.tip-bot2@tip-bot2>
+Message-ID: <167892337886.5837.12368110501318980479.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,175 +61,104 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     0424a7dfe9129b93f29b277511a60e87f052ac6b
-Gitweb:        https://git.kernel.org/tip/0424a7dfe9129b93f29b277511a60e87f052ac6b
-Author:        Shawn Wang <shawnwang@linux.alibaba.com>
-AuthorDate:    Tue, 17 Jan 2023 13:14:50 -08:00
+Commit-ID:     322b72e0fd10101f2da8985b31b4af70f184bf79
+Gitweb:        https://git.kernel.org/tip/322b72e0fd10101f2da8985b31b4af70f184bf79
+Author:        Peter Newman <peternewman@google.com>
+AuthorDate:    Tue, 20 Dec 2022 17:41:32 +01:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 15 Mar 2023 15:19:43 -07:00
+CommitterDate: Wed, 15 Mar 2023 15:44:15 -07:00
 
-x86/resctrl: Clear staged_config[] before and after it is used
+x86/resctrl: Avoid redundant counter read in __mon_event_count()
 
-As a temporary storage, staged_config[] in rdt_domain should be cleared
-before and after it is used. The stale value in staged_config[] could
-cause an MSR access error.
+__mon_event_count() does the per-RMID, per-domain work for
+user-initiated event count reads and the initialization of new monitor
+groups.
 
-Here is a reproducer on a system with 16 usable CLOSIDs for a 15-way L3
-Cache (MBA should be disabled if the number of CLOSIDs for MB is less than
-16.) :
-	mount -t resctrl resctrl -o cdp /sys/fs/resctrl
-	mkdir /sys/fs/resctrl/p{1..7}
-	umount /sys/fs/resctrl/
-	mount -t resctrl resctrl /sys/fs/resctrl
-	mkdir /sys/fs/resctrl/p{1..8}
+In the initialization case, after resctrl_arch_reset_rmid() calls
+__rmid_read() to record an initial count for a new monitor group, it
+immediately calls resctrl_arch_rmid_read(). This re-read of the hardware
+counter is unnecessary and the following computations are ignored by the
+caller during initialization.
 
-An error occurs when creating resource group named p8:
-    unchecked MSR access error: WRMSR to 0xca0 (tried to write 0x00000000000007ff) at rIP: 0xffffffff82249142 (cat_wrmsr+0x32/0x60)
-    Call Trace:
-     <IRQ>
-     __flush_smp_call_function_queue+0x11d/0x170
-     __sysvec_call_function+0x24/0xd0
-     sysvec_call_function+0x89/0xc0
-     </IRQ>
-     <TASK>
-     asm_sysvec_call_function+0x16/0x20
+Following return from resctrl_arch_reset_rmid(), just clear the
+mbm_state and return. This involves moving the mbm_state lookup into the
+rr->first case, as it's not needed for regular event count reads: the
+QOS_L3_OCCUP_EVENT_ID case was redundant with the accumulating logic at
+the end of the function.
 
-When creating a new resource control group, hardware will be configured
-by the following process:
-    rdtgroup_mkdir()
-      rdtgroup_mkdir_ctrl_mon()
-        rdtgroup_init_alloc()
-          resctrl_arch_update_domains()
-
-resctrl_arch_update_domains() iterates and updates all resctrl_conf_type
-whose have_new_ctrl is true. Since staged_config[] holds the same values as
-when CDP was enabled, it will continue to update the CDP_CODE and CDP_DATA
-configurations. When group p8 is created, get_config_index() called in
-resctrl_arch_update_domains() will return 16 and 17 as the CLOSIDs for
-CDP_CODE and CDP_DATA, which will be translated to an invalid register -
-0xca0 in this scenario.
-
-Fix it by clearing staged_config[] before and after it is used.
-
-[reinette: re-order commit tags]
-
-Fixes: 75408e43509e ("x86/resctrl: Allow different CODE/DATA configurations to be staged")
-Suggested-by: Xin Hao <xhao@linux.alibaba.com>
-Signed-off-by: Shawn Wang <shawnwang@linux.alibaba.com>
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Peter Newman <peternewman@google.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/2fad13f49fbe89687fc40e9a5a61f23a28d1507a.1673988935.git.reinette.chatre%40intel.com
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Tested-by: Babu Moger <babu.moger@amd.com>
+Link: https://lore.kernel.org/all/20221220164132.443083-2-peternewman%40google.com
 ---
- arch/x86/kernel/cpu/resctrl/ctrlmondata.c |  7 +-----
- arch/x86/kernel/cpu/resctrl/internal.h    |  1 +-
- arch/x86/kernel/cpu/resctrl/rdtgroup.c    | 25 ++++++++++++++++++----
- 3 files changed, 24 insertions(+), 9 deletions(-)
+ arch/x86/kernel/cpu/resctrl/monitor.c | 43 +++++++++++---------------
+ 1 file changed, 19 insertions(+), 24 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-index eb07d44..b44c487 100644
---- a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-+++ b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-@@ -368,7 +368,6 @@ ssize_t rdtgroup_schemata_write(struct kernfs_open_file *of,
- {
- 	struct resctrl_schema *s;
- 	struct rdtgroup *rdtgrp;
--	struct rdt_domain *dom;
- 	struct rdt_resource *r;
- 	char *tok, *resname;
- 	int ret = 0;
-@@ -397,10 +396,7 @@ ssize_t rdtgroup_schemata_write(struct kernfs_open_file *of,
- 		goto out;
- 	}
- 
--	list_for_each_entry(s, &resctrl_schema_all, list) {
--		list_for_each_entry(dom, &s->res->domains, list)
--			memset(dom->staged_config, 0, sizeof(dom->staged_config));
--	}
-+	rdt_staged_configs_clear();
- 
- 	while ((tok = strsep(&buf, "\n")) != NULL) {
- 		resname = strim(strsep(&tok, ":"));
-@@ -445,6 +441,7 @@ ssize_t rdtgroup_schemata_write(struct kernfs_open_file *of,
- 	}
- 
- out:
-+	rdt_staged_configs_clear();
- 	rdtgroup_kn_unlock(of->kn);
- 	cpus_read_unlock();
- 	return ret ?: nbytes;
-diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
-index 8edecc5..85ceaf9 100644
---- a/arch/x86/kernel/cpu/resctrl/internal.h
-+++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -555,5 +555,6 @@ void __check_limbo(struct rdt_domain *d, bool force_free);
- void rdt_domain_reconfigure_cdp(struct rdt_resource *r);
- void __init thread_throttle_mode_init(void);
- void __init mbm_config_rftype_init(const char *config);
-+void rdt_staged_configs_clear(void);
- 
- #endif /* _ASM_X86_RESCTRL_INTERNAL_H */
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 884b6e9..6ad33f3 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -78,6 +78,19 @@ void rdt_last_cmd_printf(const char *fmt, ...)
- 	va_end(ap);
+diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
+index 7fe5148..2095241 100644
+--- a/arch/x86/kernel/cpu/resctrl/monitor.c
++++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+@@ -383,41 +383,36 @@ void free_rmid(u32 rmid)
+ 		list_add_tail(&entry->list, &rmid_free_lru);
  }
  
-+void rdt_staged_configs_clear(void)
++static struct mbm_state *get_mbm_state(struct rdt_domain *d, u32 rmid,
++				       enum resctrl_event_id evtid)
 +{
-+	struct rdt_resource *r;
-+	struct rdt_domain *dom;
-+
-+	lockdep_assert_held(&rdtgroup_mutex);
-+
-+	for_each_alloc_capable_rdt_resource(r) {
-+		list_for_each_entry(dom, &r->domains, list)
-+			memset(dom->staged_config, 0, sizeof(dom->staged_config));
++	switch (evtid) {
++	case QOS_L3_MBM_TOTAL_EVENT_ID:
++		return &d->mbm_total[rmid];
++	case QOS_L3_MBM_LOCAL_EVENT_ID:
++		return &d->mbm_local[rmid];
++	default:
++		return NULL;
 +	}
 +}
 +
- /*
-  * Trivial allocator for CLOSIDs. Since h/w only supports a small number,
-  * we can keep a bitmap of free CLOSIDs in a single integer.
-@@ -3107,7 +3120,9 @@ static int rdtgroup_init_alloc(struct rdtgroup *rdtgrp)
+ static int __mon_event_count(u32 rmid, struct rmid_read *rr)
  {
- 	struct resctrl_schema *s;
- 	struct rdt_resource *r;
--	int ret;
-+	int ret = 0;
-+
-+	rdt_staged_configs_clear();
+ 	struct mbm_state *m;
+ 	u64 tval = 0;
  
- 	list_for_each_entry(s, &resctrl_schema_all, list) {
- 		r = s->res;
-@@ -3119,20 +3134,22 @@ static int rdtgroup_init_alloc(struct rdtgroup *rdtgrp)
- 		} else {
- 			ret = rdtgroup_init_cat(s, rdtgrp->closid);
- 			if (ret < 0)
--				return ret;
-+				goto out;
- 		}
+-	if (rr->first)
++	if (rr->first) {
+ 		resctrl_arch_reset_rmid(rr->r, rr->d, rmid, rr->evtid);
++		m = get_mbm_state(rr->d, rmid, rr->evtid);
++		if (m)
++			memset(m, 0, sizeof(struct mbm_state));
++		return 0;
++	}
  
- 		ret = resctrl_arch_update_domains(r, rdtgrp->closid);
- 		if (ret < 0) {
- 			rdt_last_cmd_puts("Failed to initialize allocations\n");
--			return ret;
-+			goto out;
- 		}
+ 	rr->err = resctrl_arch_rmid_read(rr->r, rr->d, rmid, rr->evtid, &tval);
+ 	if (rr->err)
+ 		return rr->err;
  
- 	}
+-	switch (rr->evtid) {
+-	case QOS_L3_OCCUP_EVENT_ID:
+-		rr->val += tval;
+-		return 0;
+-	case QOS_L3_MBM_TOTAL_EVENT_ID:
+-		m = &rr->d->mbm_total[rmid];
+-		break;
+-	case QOS_L3_MBM_LOCAL_EVENT_ID:
+-		m = &rr->d->mbm_local[rmid];
+-		break;
+-	default:
+-		/*
+-		 * Code would never reach here because an invalid
+-		 * event id would fail in resctrl_arch_rmid_read().
+-		 */
+-		return -EINVAL;
+-	}
+-
+-	if (rr->first) {
+-		memset(m, 0, sizeof(struct mbm_state));
+-		return 0;
+-	}
+-
+ 	rr->val += tval;
  
- 	rdtgrp->mode = RDT_MODE_SHAREABLE;
- 
--	return 0;
-+out:
-+	rdt_staged_configs_clear();
-+	return ret;
- }
- 
- static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
+ 	return 0;
