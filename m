@@ -2,56 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 269126BD131
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Mar 2023 14:46:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F13A46BD400
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Mar 2023 16:38:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230460AbjCPNqA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Mar 2023 09:46:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45984 "EHLO
+        id S231443AbjCPPir (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Mar 2023 11:38:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230398AbjCPNpr (ORCPT
+        with ESMTP id S230227AbjCPPia (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Mar 2023 09:45:47 -0400
+        Thu, 16 Mar 2023 11:38:30 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E7CA17C9;
-        Thu, 16 Mar 2023 06:45:36 -0700 (PDT)
-Date:   Thu, 16 Mar 2023 13:45:33 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4540BE1FF8;
+        Thu, 16 Mar 2023 08:36:44 -0700 (PDT)
+Date:   Thu, 16 Mar 2023 15:35:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1678974334;
+        s=2020; t=1678980938;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OFyaFDPEPaIsBCnzx7br38Ux0Nge11G84LMEMFd9lFg=;
-        b=APG7eYFsvkLa17FbQXLBkWCWsXBE6CmKSm71TeKkIC2z2EQneH3HnS0bYCShZGaq/XQSbo
-        qKGrgAp+S7yO9NN2k+7/2tAzebNykYk05ctJoetA732ePXvy6n0m0aEWWBlmhdSQG6K/qj
-        pLElFEQnzfS5OS9Hes+WHgtYTJLNHMxDsPBTXeegE9MDfGrH+71t2u7bAuYFr7s+71kYIz
-        e/IKQbSgSLM7bLchNG6F4uJQfGXlLlCrHvhotb5Byfm44iHutTRUtePUVZztA1buZ8gn3P
-        7R2oAnG1rK0nZ9B7QsDybUhgqid7y+COqvgdSWCBntV6NCIdESsOsizucmiKfQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=CMpJA9CnAQbYjqPq7Brlq3mMVZeSNU9fjtUmomY0bN0=;
+        b=lEqeWHw9pgk4oPSMTQm2vWEmPyaVdmrwUm3ROwRZilzhHjRTIGk/o22drfh2Hyc1rv6/dP
+        B+ggbC4RAygfHF96TlIEsvgni923Cjnkh40SARrvNAnPCY+AH9NnySUlPAs+AYqXMzsZog
+        D4/vmSy4ZaFaMpwrVP8euktSO+gDAwP4aKCTnPqT1K6EmUQ9XsETfP8k6WsV8FBms//vKO
+        oZUCaF34hD0dCIG2px9o+O2FQa1oWdSub51TbI9pSRur6wTRtSN47JYeA1Bsw4VgWk7LWW
+        H9G8OyrB8LrA1MWM0ekhLZw4k6Qur3Eh/OegN4PpfpRzPq0H1Eac+7klpi9D3g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1678974334;
+        s=2020e; t=1678980938;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OFyaFDPEPaIsBCnzx7br38Ux0Nge11G84LMEMFd9lFg=;
-        b=EizeFONJGqpwHaWH5R1Z8GM48q/B9DeBRex6t6u4JYaj3jkN0//iCuKjOQ4Cq4cFSErUlM
-        xVOV1Njr6EmlioBA==
-From:   "tip-bot2 for Nikita Zhandarovich" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=CMpJA9CnAQbYjqPq7Brlq3mMVZeSNU9fjtUmomY0bN0=;
+        b=mPU8trPZ3fG7UbuICx6vNy+JDRhafYbnXA3ZWqCY7YEsZ9FvPMQ6mxHyqgeP16qfD24leC
+        tdEbTBw9K2QnsVDQ==
+From:   "tip-bot2 for Ira Weiny" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm: Fix use of uninitialized buffer in sme_enable()
-Cc:     Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>, <stable@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230306160656.14844-1-n.zhandarovich@fintech.ru>
-References: <20230306160656.14844-1-n.zhandarovich@fintech.ru>
+Subject: [tip: x86/cleanups] x86/uaccess: Remove memcpy_page_flushcache()
+Cc:     Ira Weiny <ira.weiny@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167897433346.5837.2554151062062268699.tip-bot2@tip-bot2>
+Message-ID: <167898093734.5837.6665906842521706513.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,46 +58,64 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     cbebd68f59f03633469f3ecf9bea99cd6cce3854
-Gitweb:        https://git.kernel.org/tip/cbebd68f59f03633469f3ecf9bea99cd6cce3854
-Author:        Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-AuthorDate:    Mon, 06 Mar 2023 08:06:56 -08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 16 Mar 2023 12:22:25 +01:00
+Commit-ID:     b9da86e3aade0cd8c8b60a0f6356e7730fc90d5d
+Gitweb:        https://git.kernel.org/tip/b9da86e3aade0cd8c8b60a0f6356e7730fc90d5d
+Author:        Ira Weiny <ira.weiny@intel.com>
+AuthorDate:    Wed, 15 Mar 2023 16:20:54 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 16 Mar 2023 08:27:57 -07:00
 
-x86/mm: Fix use of uninitialized buffer in sme_enable()
+x86/uaccess: Remove memcpy_page_flushcache()
 
-cmdline_find_option() may fail before doing any initialization of
-the buffer array. This may lead to unpredictable results when the same
-buffer is used later in calls to strncmp() function.  Fix the issue by
-returning early if cmdline_find_option() returns an error.
+Commit 21b56c847753 ("iov_iter: get rid of separate bvec and xarray
+callbacks") removed the calls to memcpy_page_flushcache().
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+In addition, memcpy_page_flushcache() uses the deprecated
+kmap_atomic().
 
-Fixes: aca20d546214 ("x86/mm: Add support to make use of Secure Memory Encryption")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230306160656.14844-1-n.zhandarovich@fintech.ru
+Remove the unused x86 memcpy_page_flushcache() implementation and
+also get rid of one more kmap_atomic() user.
+
+[ dhansen: tweak changelog ]
+
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20221230-kmap-x86-v1-1-15f1ecccab50%40intel.com
 ---
- arch/x86/mm/mem_encrypt_identity.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/uaccess_64.h |  2 --
+ arch/x86/lib/usercopy_64.c        |  9 ---------
+ 2 files changed, 11 deletions(-)
 
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index 88cccd6..c6efcf5 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -600,7 +600,8 @@ void __init sme_enable(struct boot_params *bp)
- 	cmdline_ptr = (const char *)((u64)bp->hdr.cmd_line_ptr |
- 				     ((u64)bp->ext_cmd_line_ptr << 32));
+diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
+index d13d71a..c6b1dcd 100644
+--- a/arch/x86/include/asm/uaccess_64.h
++++ b/arch/x86/include/asm/uaccess_64.h
+@@ -62,8 +62,6 @@ extern long __copy_user_nocache(void *dst, const void __user *src,
+ 				unsigned size, int zerorest);
  
--	cmdline_find_option(cmdline_ptr, cmdline_arg, buffer, sizeof(buffer));
-+	if (cmdline_find_option(cmdline_ptr, cmdline_arg, buffer, sizeof(buffer)) < 0)
-+		return;
+ extern long __copy_user_flushcache(void *dst, const void __user *src, unsigned size);
+-extern void memcpy_page_flushcache(char *to, struct page *page, size_t offset,
+-			   size_t len);
  
- 	if (!strncmp(buffer, cmdline_on, sizeof(buffer)))
- 		sme_me_mask = me_mask;
+ static inline int
+ __copy_from_user_inatomic_nocache(void *dst, const void __user *src,
+diff --git a/arch/x86/lib/usercopy_64.c b/arch/x86/lib/usercopy_64.c
+index 6c1f8ac..f515542 100644
+--- a/arch/x86/lib/usercopy_64.c
++++ b/arch/x86/lib/usercopy_64.c
+@@ -136,13 +136,4 @@ void __memcpy_flushcache(void *_dst, const void *_src, size_t size)
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(__memcpy_flushcache);
+-
+-void memcpy_page_flushcache(char *to, struct page *page, size_t offset,
+-		size_t len)
+-{
+-	char *from = kmap_atomic(page);
+-
+-	memcpy_flushcache(to, from + offset, len);
+-	kunmap_atomic(from);
+-}
+ #endif
