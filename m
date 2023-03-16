@@ -2,172 +2,140 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA0266BCD72
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Mar 2023 12:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8DA36BD21C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Mar 2023 15:14:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229929AbjCPLEY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Mar 2023 07:04:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59894 "EHLO
+        id S231251AbjCPOOh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Mar 2023 10:14:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbjCPLEX (ORCPT
+        with ESMTP id S230248AbjCPOOG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Mar 2023 07:04:23 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7995CFF0D;
-        Thu, 16 Mar 2023 04:04:21 -0700 (PDT)
-Date:   Thu, 16 Mar 2023 11:04:18 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1678964659;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=BvzODTdt2rVktDwVAWQSZNh8BaXMdae1JUj9xPFJ8GU=;
-        b=OZ2Cni2uXUCwCxx0wjBSWXlAiBw57rB3EBCK4cR41/zx02PAetiOEFJo85XUIcYs9NFv02
-        kpka3jInsHA0ffvixNF2CVNy7lwXcfKpjEou410Oilw6fENaywN/ytrGe0m7kbTQI5PG6y
-        CoYf19btOAod20H+5n/OPYSN4WHjsjkzrI6ztxL4TlkAjaa02yZpOz4Ujt+0ypy2tvXu91
-        HCmVraW3acGUFCs2tCbi31rR8N+whW8isrhvQMJfKPYTVa3cddWtdryKuN3vLSzDUo3FFj
-        9wsvBT7txdDcUVQJkTEQOI63xbEsuWGl+TZJlc9aLKobb9AiCIzD0w4MxrAdog==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1678964659;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=BvzODTdt2rVktDwVAWQSZNh8BaXMdae1JUj9xPFJ8GU=;
-        b=JHKZIc+QHlrVR1C49DQgjCgwjalNsaGplODPuiPa9EMJTGfi4fMOba3ye4oBtIMdZFDxQ/
-        Dr7WMglahtrU7dCw==
-From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/split_lock: Enumerate architectural split lock disable bit
-Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Thu, 16 Mar 2023 10:14:06 -0400
+Received: from mail.belitungtimurkab.go.id (unknown [103.205.56.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B404A908B;
+        Thu, 16 Mar 2023 07:13:17 -0700 (PDT)
+Received: from mail.belitungtimurkab.go.id (localhost.localdomain [127.0.0.1])
+        by mail.belitungtimurkab.go.id (Postfix) with ESMTPS id 957E98A548C;
+        Thu, 16 Mar 2023 18:17:09 +0700 (WIB)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.belitungtimurkab.go.id (Postfix) with ESMTP id 316998A56C9;
+        Thu, 16 Mar 2023 17:11:03 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.belitungtimurkab.go.id 316998A56C9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=belitungtimurkab.go.id; s=mail; t=1678961463;
+        bh=LjBXUFVAwYLFBDK7H9dfJR2LVch/buu352HP+VChywc=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=POUS/KWJftkutW85SCc8/ftKzecb0oagPNYLSKIYJrqGp7GDFw+IWNyZIk4knHn3H
+         VNZNSC/SpJNJlKo149yRcM8l8zzrGVvtClDugpjEXSDEfISKW5Bj3zALkWNSJm1A+1
+         EBXyq3Mvzf5HTAw2+i8722gGo85bdCAVxVQrP9JZAwRjDrM12sLHsIjewSXoh5DsP8
+         O1haJLfmSJ6ruWVDGcTEYinIkLSJBj12UBZTKSCo7TuBach7tnIKxZW4tmT8dV++PJ
+         O2yuMSY4TSgXopwYk4HG3ncLSKSyilWERiXcIIdMeJRY6gB0u6wZMhQd003tbpPzNb
+         eNnzvz8UkhDzQ==
+Received: from mail.belitungtimurkab.go.id ([127.0.0.1])
+        by localhost (mail.belitungtimurkab.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id zl7fotI3kTVn; Thu, 16 Mar 2023 17:11:02 +0700 (WIB)
+Received: from mail.belitungtimurkab.go.id (mail.belitungtimurkab.go.id [103.205.56.27])
+        by mail.belitungtimurkab.go.id (Postfix) with ESMTP id E3F108A523D;
+        Thu, 16 Mar 2023 17:11:00 +0700 (WIB)
+Date:   Thu, 16 Mar 2023 17:11:00 +0700 (WIB)
+From:   =?utf-8?B?0KHQuNGB0YLQtdC80L3Ri9C5INCw0LTQvNC40L3QuNGB0YLRgNCw0YLQvtGA?= 
+        <dinkes@belitungtimurkab.go.id>
+Reply-To: sistemassadmins@mail2engineer.com
+Message-ID: <181903034.71317.1678961460904.JavaMail.zimbra@belitungtimurkab.go.id>
+Subject: 
 MIME-Version: 1.0
-Message-ID: <167896465821.5837.11576952994116410374.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+X-Originating-IP: [103.205.56.27]
+X-Mailer: Zimbra 8.7.11_GA_3789 (zclient/8.7.11_GA_3789)
+Thread-Index: /QAqzWPI4OG+FzD1PiB1yr991QqwnQ==
+Thread-Topic: 
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        MISSING_HEADERS,RDNS_NONE,REPLYTO_WITHOUT_TO_CC,SPF_PASS,
+        T_SPF_HELO_TEMPERROR autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4995]
+        *  0.0 T_SPF_HELO_TEMPERROR SPF: test of HELO record failed
+        *      (temperror)
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  1.0 MISSING_HEADERS Missing To: header
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     d7ce15e1d4162ab5e56dead10d4ae69a6b5c8ee8
-Gitweb:        https://git.kernel.org/tip/d7ce15e1d4162ab5e56dead10d4ae69a6b5c8ee8
-Author:        Fenghua Yu <fenghua.yu@intel.com>
-AuthorDate:    Wed, 01 Mar 2023 17:19:46 -08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 16 Mar 2023 11:50:51 +01:00
+=D0=92=D0=9D=D0=98=D0=9C=D0=90=D0=9D=D0=98=D0=95;
 
-x86/split_lock: Enumerate architectural split lock disable bit
+=D0=92=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=
+=D1=89=D0=B8=D0=BA =D0=BF=D1=80=D0=B5=D0=B2=D1=8B=D1=81=D0=B8=D0=BB =D0=BE=
+=D0=B3=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =D1=85=D1=80=
+=D0=B0=D0=BD=D0=B8=D0=BB=D0=B8=D1=89=D0=B0, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=
+=D0=BE=D0=B5 =D1=81=D0=BE=D1=81=D1=82=D0=B0=D0=B2=D0=BB=D1=8F=D0=B5=D1=82=
+ 5 =D0=93=D0=91, =D0=BA=D0=B0=D0=BA =D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=
+=BB=D0=B5=D0=BD=D0=BE =D0=B0=D0=B4=D0=BC=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=
+=80=D0=B0=D1=82=D0=BE=D1=80=D0=BE=D0=BC, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=
+=8B=D0=B9 =D0=B2 =D0=BD=D0=B0=D1=81=D1=82=D0=BE=D1=8F=D1=89=D0=B5=D0=B5 =D0=
+=B2=D1=80=D0=B5=D0=BC=D1=8F =D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D0=B5=D1=
+=82 =D0=BD=D0=B0 10,9 =D0=93=D0=91, =D0=B2=D1=8B =D0=BD=D0=B5 =D1=81=D0=BC=
+=D0=BE=D0=B6=D0=B5=D1=82=D0=B5 =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=
+=D1=8F=D1=82=D1=8C =D0=B8=D0=BB=D0=B8 =D0=BF=D0=BE=D0=BB=D1=83=D1=87=D0=B0=
+=D1=82=D1=8C =D0=BD=D0=BE=D0=B2=D1=83=D1=8E =D0=BF=D0=BE=D1=87=D1=82=D1=83=
+ =D0=B4=D0=BE =D1=82=D0=B5=D1=85 =D0=BF=D0=BE=D1=80, =D0=BF=D0=BE=D0=BA=D0=
+=B0 =D0=BD=D0=B5 =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D0=B5 =D0=
+=BF=D0=BE=D1=87=D1=82=D1=83 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=BE=D0=
+=B3=D0=BE =D1=8F=D1=89=D0=B8=D0=BA=D0=B0 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=
+=80=D0=BD=D0=BE. =D0=A7=D1=82=D0=BE=D0=B1=D1=8B =D0=BF=D0=BE=D0=B2=D1=82=D0=
+=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=
+=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=
+=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D1=8C=D1=
+=82=D0=B5 =D1=81=D0=BB=D0=B5=D0=B4=D1=83=D1=8E=D1=89=D1=83=D1=8E =D0=B8=D0=
+=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BD=D0=B8=D0=B6=D0=
+=B5:
 
-The December 2022 edition of the Intel Instruction Set Extensions manual
-defined that the split lock disable bit in the IA32_CORE_CAPABILITIES MSR
-is (and retrospectively always has been) architectural.
+=D0=B8=D0=BC=D1=8F:
+=D0=98=D0=BC=D1=8F =D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=
+=D0=B5=D0=BB=D1=8F:
+=D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
+=D0=9F=D0=BE=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B8=D1=82=D0=B5 =D0=BF=
+=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
+=D0=AD=D0=BB=D0=B5=D0=BA=D1=82=D1=80=D0=BE=D0=BD=D0=BD=D0=B0=D1=8F =D0=BF=
+=D0=BE=D1=87=D1=82=D0=B0:
+=D0=A2=D0=B5=D0=BB=D0=B5=D1=84=D0=BE=D0=BD:
 
-Remove all the model specific checks except for Ice Lake variants which are
-still needed because these CPU models do not enumerate presence of the
-IA32_CORE_CAPABILITIES MSR.
+=D0=95=D1=81=D0=BB=D0=B8 =D0=B2=D1=8B =D0=BD=D0=B5 =D0=BC=D0=BE=D0=B6=D0=B5=
+=D1=82=D0=B5 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=
+=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=
+=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=B2=
+=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=
+=D0=B8=D0=BA =D0=B1=D1=83=D0=B4=D0=B5=D1=82 =D0=BE=D1=82=D0=BA=D0=BB=D1=8E=
+=D1=87=D0=B5=D0=BD!
 
-Originally-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/lkml/20220701131958.687066-1-fenghua.yu@intel.com/t/#mada243bee0915532a6adef6a9e32d244d1a9aef4
----
- arch/x86/kernel/cpu/intel.c | 59 +++++++++++++-----------------------
- 1 file changed, 22 insertions(+), 37 deletions(-)
+=D0=9F=D1=80=D0=B8=D0=BD=D0=BE=D1=81=D0=B8=D0=BC =D0=B8=D0=B7=D0=B2=D0=B8=
+=D0=BD=D0=B5=D0=BD=D0=B8=D1=8F =D0=B7=D0=B0 =D0=BD=D0=B5=D1=83=D0=B4=D0=BE=
+=D0=B1=D1=81=D1=82=D0=B2=D0=B0.
+=D0=9F=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=BE=D1=87=D0=BD=D1=8B=D0=B9 =D0=BA=
+=D0=BE=D0=B4: en: WEB. =D0=90=D0=94=D0=9C=D0=98=D0=9D=D0=98=D0=A1=D0=A2=D0=
+=A0=D0=90=D0=A2=D0=9E=D0=A0=D0=90. RU006,524765 @2023
+=D0=9F=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=B0=D1=8F =D1=82=D0=B5=D1=85=D0=BD=
+=D0=B8=D1=87=D0=B5=D1=81=D0=BA=D0=B0=D1=8F =D0=BF=D0=BE=D0=B4=D0=B4=D0=B5=
+=D1=80=D0=B6=D0=BA=D0=B0 @2023
 
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 291d416..1c648b0 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -1451,31 +1451,13 @@ void handle_bus_lock(struct pt_regs *regs)
- }
- 
- /*
-- * Bits in the IA32_CORE_CAPABILITIES are not architectural, so they should
-- * only be trusted if it is confirmed that a CPU model implements a
-- * specific feature at a particular bit position.
-- *
-- * The possible driver data field values:
-- *
-- * - 0: CPU models that are known to have the per-core split-lock detection
-- *	feature even though they do not enumerate IA32_CORE_CAPABILITIES.
-- *
-- * - 1: CPU models which may enumerate IA32_CORE_CAPABILITIES and if so use
-- *      bit 5 to enumerate the per-core split-lock detection feature.
-+ * CPU models that are known to have the per-core split-lock detection
-+ * feature even though they do not enumerate IA32_CORE_CAPABILITIES.
-  */
- static const struct x86_cpu_id split_lock_cpu_ids[] __initconst = {
--	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,		0),
--	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_L,		0),
--	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D,		0),
--	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT,	1),
--	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_D,	1),
--	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_L,	1),
--	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L,		1),
--	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE,		1),
--	X86_MATCH_INTEL_FAM6_MODEL(SAPPHIRERAPIDS_X,	1),
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,		1),
--	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,		1),
--	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,		1),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,	0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_L,	0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D,	0),
- 	{}
- };
- 
-@@ -1487,24 +1469,27 @@ static void __init split_lock_setup(struct cpuinfo_x86 *c)
- 	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
- 		return;
- 
-+	/* Check for CPUs that have support but do not enumerate it: */
- 	m = x86_match_cpu(split_lock_cpu_ids);
--	if (!m)
--		return;
-+	if (m)
-+		goto supported;
- 
--	switch (m->driver_data) {
--	case 0:
--		break;
--	case 1:
--		if (!cpu_has(c, X86_FEATURE_CORE_CAPABILITIES))
--			return;
--		rdmsrl(MSR_IA32_CORE_CAPS, ia32_core_caps);
--		if (!(ia32_core_caps & MSR_IA32_CORE_CAPS_SPLIT_LOCK_DETECT))
--			return;
--		break;
--	default:
-+	if (!cpu_has(c, X86_FEATURE_CORE_CAPABILITIES))
- 		return;
--	}
- 
-+	/*
-+	 * Not all bits in MSR_IA32_CORE_CAPS are architectural, but
-+	 * MSR_IA32_CORE_CAPS_SPLIT_LOCK_DETECT is.  All CPUs that set
-+	 * it have split lock detection.
-+	 */
-+	rdmsrl(MSR_IA32_CORE_CAPS, ia32_core_caps);
-+	if (ia32_core_caps & MSR_IA32_CORE_CAPS_SPLIT_LOCK_DETECT)
-+		goto supported;
-+
-+	/* CPU is not in the model list and does not have the MSR bit: */
-+	return;
-+
-+supported:
- 	cpu_model_supports_sld = true;
- 	__split_lock_setup();
- }
+=D0=A1=D0=BF=D0=B0=D1=81=D0=B8=D0=B1=D0=BE
+=D0=A1=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=BD=D1=8B=D0=B9 =D0=B0=D0=B4=D0=BC=
+=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80.
