@@ -2,179 +2,162 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BCCF6BF05F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Mar 2023 19:06:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 042926C03BE
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Mar 2023 19:20:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230494AbjCQSGv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Mar 2023 14:06:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58380 "EHLO
+        id S229621AbjCSSUW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 19 Mar 2023 14:20:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230466AbjCQSGs (ORCPT
+        with ESMTP id S229460AbjCSSUV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Mar 2023 14:06:48 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C98BEB1EEE;
-        Fri, 17 Mar 2023 11:06:33 -0700 (PDT)
-Date:   Fri, 17 Mar 2023 18:06:30 -0000
+        Sun, 19 Mar 2023 14:20:21 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C6F1A64E;
+        Sun, 19 Mar 2023 11:20:19 -0700 (PDT)
+Date:   Sun, 19 Mar 2023 18:20:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679076391;
+        s=2020; t=1679250017;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WU4Z6qR1Wid4MUPWVdVJTi6oGBROhg9ZyyhyAzGoY8Y=;
-        b=gm8wEn4+wab0hU/6AFDn4XJgXT/UGu5xWOoQqiZhCU0lNfi0rMWbpIKNJ8DGgbtFIasJva
-        kmhFQxz4p9jHujYx8weTheOJ4Lh8HI1jnnocVo2E58Svg5ozlYHG2XQLvd8fOBs2UNHP4n
-        pL7v0ZIGN1e6LO3nxiuqkI3mrdSbl3kn9tb4mpmbFoTTXlWRa7mM+A9+zQLR6RDiq29UqK
-        i1Ce44vXBbcB5+UyA5a+JrcmQB3fK1HXNkbvF+d9J1STrVkfwgNjXdCRWnX1qHi1+mxEJM
-        MFBD6GdcP/aKhdgfV/pR24eOLfsJyzIzulxQl5MO12pF3dWirWmTZdbbZ0M2Zg==
+        bh=ngFhnr01P3Dr81BS8BYHsS6q4bPxhbfDf5kYIc9VYuE=;
+        b=gIO0PA5YxIdWaQJdU9tI/V4FhJn6qdBakj4qAaxy+SeciWzLvrBFnec30itITaEE5iA1Yy
+        lTthOr01+AC95MpQxcVuSN8CMIQo1K0Z6y+/HwIFodeiWgRTqKnCnwwZMSmThxZSOGrbXJ
+        iVDPoGS9mwZQ7QRxYe0ouGqJPonknOG1SZAEeA1baqDX93nvZqJJNmxEhDNBRLU1XU8lj6
+        kb//fxXPPjpZD9O8g1C0g4yh6+OUPK2SJZ1FcbqENP7SxvsnGzkUc/bw9tQC8bfIbyYvWG
+        Dc1SOa/4l6axfQeH+MxhyM6D2A1UDvz+9M/ozD62DEjmbBGp/dCaFrDnSsLCkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679076391;
+        s=2020e; t=1679250017;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WU4Z6qR1Wid4MUPWVdVJTi6oGBROhg9ZyyhyAzGoY8Y=;
-        b=QIApr6GMTwm2JLsjiK5aHo62H3w4r6/CSvz6QOcuze9S0zJ66U7g03CjfcFHYV09AmhDop
-        ze5CrBgQXHdYEiBQ==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=ngFhnr01P3Dr81BS8BYHsS6q4bPxhbfDf5kYIc9VYuE=;
+        b=0XPb3qjDMq8q5kdakNOC8xQKpBd8tMKSOLqmRfZeFoxbySXLI4t6i1ZQGBgjJbbe/SMHJ2
+        kAG5vNpyrF6myKAw==
+From:   "tip-bot2 for Muralidhara M K" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/paravirt] x86/paravirt: Convert simple paravirt functions to asm
-Cc:     Juergen Gross <jgross@suse.com>,
+Subject: [tip: ras/core] x86/MCE/AMD: Use an u64 for bank_map
+Cc:     Muralidhara M K <muralimk@amd.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230317063325.361-1-jgross@suse.com>
-References: <20230317063325.361-1-jgross@suse.com>
+In-Reply-To: <20230127151601.1068324-1-muralimk@amd.com>
+References: <20230127151601.1068324-1-muralimk@amd.com>
 MIME-Version: 1.0
-Message-ID: <167907639052.5837.17998067253061901240.tip-bot2@tip-bot2>
+Message-ID: <167925001631.5837.3904039518860616672.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/paravirt branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     11af36cb898123fd4e0034f1bc6550aedcc87800
-Gitweb:        https://git.kernel.org/tip/11af36cb898123fd4e0034f1bc6550aedcc87800
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Fri, 17 Mar 2023 07:33:25 +01:00
+Commit-ID:     4c1cdec319b9aadb65737c3eb1f5cb74bd6aa156
+Gitweb:        https://git.kernel.org/tip/4c1cdec319b9aadb65737c3eb1f5cb74bd6aa156
+Author:        Muralidhara M K <muralimk@amd.com>
+AuthorDate:    Fri, 27 Jan 2023 15:16:01 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 17 Mar 2023 13:29:47 +01:00
+CommitterDate: Sun, 19 Mar 2023 19:07:04 +01:00
 
-x86/paravirt: Convert simple paravirt functions to asm
+x86/MCE/AMD: Use an u64 for bank_map
 
-All functions referenced via __PV_IS_CALLEE_SAVE() need to be assembler
-functions, as those functions calls are hidden from the compiler.
+Thee maximum number of MCA banks is 64 (MAX_NR_BANKS), see
 
-In case the kernel is compiled with "-fzero-call-used-regs" the compiler
-will clobber caller-saved registers at the end of C functions, which
-will result in unexpectedly zeroed registers at the call site of the
-related paravirt functions.
+  a0bc32b3cacf ("x86/mce: Increase maximum number of banks to 64").
 
-Replace the C functions with DEFINE_PARAVIRT_ASM() constructs using
-the same instructions as the related paravirt calls in the
-PVOP_ALT_[V]CALLEE*() macros. And since they're not C functions visible
-to the compiler anymore, latter won't do the callee-clobbered zeroing
-invoked by -fzero-call-used-regs and thus won't corrupt registers.
+However, the bank_map which contains a bitfield of which banks to
+initialize is of type unsigned int and that overflows when those bit
+numbers are >= 32, leading to UBSAN complaining correctly:
 
-  [ bp: Extend commit message. ]
+  UBSAN: shift-out-of-bounds in arch/x86/kernel/cpu/mce/amd.c:1365:38
+  shift exponent 32 is too large for 32-bit type 'int'
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Change the bank_map to a u64 and use the proper BIT_ULL() macro when
+modifying bits in there.
+
+  [ bp: Rewrite commit message. ]
+
+Fixes: a0bc32b3cacf ("x86/mce: Increase maximum number of banks to 64")
+Signed-off-by: Muralidhara M K <muralimk@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230317063325.361-1-jgross@suse.com
+Link: https://lore.kernel.org/r/20230127151601.1068324-1-muralimk@amd.com
 ---
- arch/x86/include/asm/paravirt_types.h |  8 +++++++-
- arch/x86/kernel/paravirt.c            | 27 +++++---------------------
- 2 files changed, 13 insertions(+), 22 deletions(-)
+ arch/x86/kernel/cpu/mce/amd.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index 71bf64b..4acbcdd 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -559,8 +559,14 @@ void paravirt_flush_lazy_mmu(void);
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index 4881893..0b971f9 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -235,10 +235,10 @@ static DEFINE_PER_CPU(struct threshold_bank **, threshold_banks);
+  * A list of the banks enabled on each logical CPU. Controls which respective
+  * descriptors to initialize later in mce_threshold_create_device().
+  */
+-static DEFINE_PER_CPU(unsigned int, bank_map);
++static DEFINE_PER_CPU(u64, bank_map);
  
- void _paravirt_nop(void);
- void paravirt_BUG(void);
--u64 _paravirt_ident_64(u64);
- unsigned long paravirt_ret0(void);
-+#ifdef CONFIG_PARAVIRT_XXL
-+u64 _paravirt_ident_64(u64);
-+unsigned long pv_native_save_fl(void);
-+void pv_native_irq_disable(void);
-+void pv_native_irq_enable(void);
-+unsigned long pv_native_read_cr2(void);
-+#endif
+ /* Map of banks that have more than MCA_MISC0 available. */
+-static DEFINE_PER_CPU(u32, smca_misc_banks_map);
++static DEFINE_PER_CPU(u64, smca_misc_banks_map);
  
- #define paravirt_nop	((void *)_paravirt_nop)
+ static void amd_threshold_interrupt(void);
+ static void amd_deferred_error_interrupt(void);
+@@ -267,7 +267,7 @@ static void smca_set_misc_banks_map(unsigned int bank, unsigned int cpu)
+ 		return;
  
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index 0e68a31..ac10b46 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -64,11 +64,11 @@ static unsigned paravirt_patch_call(void *insn_buff, const void *target,
+ 	if (low & MASK_BLKPTR_LO)
+-		per_cpu(smca_misc_banks_map, cpu) |= BIT(bank);
++		per_cpu(smca_misc_banks_map, cpu) |= BIT_ULL(bank);
+ 
  }
  
- #ifdef CONFIG_PARAVIRT_XXL
--/* identity function, which can be inlined */
--u64 notrace _paravirt_ident_64(u64 x)
--{
--	return x;
--}
-+DEFINE_PARAVIRT_ASM(_paravirt_ident_64, "mov %rdi, %rax", .text);
-+DEFINE_PARAVIRT_ASM(pv_native_save_fl, "pushf; pop %rax", .noinstr.text);
-+DEFINE_PARAVIRT_ASM(pv_native_irq_disable, "cli", .noinstr.text);
-+DEFINE_PARAVIRT_ASM(pv_native_irq_enable, "sti", .noinstr.text);
-+DEFINE_PARAVIRT_ASM(pv_native_read_cr2, "mov %cr2, %rax", .noinstr.text);
- #endif
+@@ -530,7 +530,7 @@ static u32 smca_get_block_address(unsigned int bank, unsigned int block,
+ 	if (!block)
+ 		return MSR_AMD64_SMCA_MCx_MISC(bank);
  
- DEFINE_STATIC_KEY_TRUE(virt_spin_lock_key);
-@@ -197,11 +197,6 @@ void paravirt_end_context_switch(struct task_struct *next)
- 		arch_enter_lazy_mmu_mode();
- }
+-	if (!(per_cpu(smca_misc_banks_map, cpu) & BIT(bank)))
++	if (!(per_cpu(smca_misc_banks_map, cpu) & BIT_ULL(bank)))
+ 		return 0;
  
--static noinstr unsigned long pv_native_read_cr2(void)
--{
--	return native_read_cr2();
--}
--
- static noinstr void pv_native_write_cr2(unsigned long val)
- {
- 	native_write_cr2(val);
-@@ -222,16 +217,6 @@ noinstr void pv_native_wbinvd(void)
- 	native_wbinvd();
- }
+ 	return MSR_AMD64_SMCA_MCx_MISCy(bank, block - 1);
+@@ -574,7 +574,7 @@ prepare_threshold_block(unsigned int bank, unsigned int block, u32 addr,
+ 	int new;
  
--static noinstr void pv_native_irq_enable(void)
--{
--	native_irq_enable();
--}
--
--static noinstr void pv_native_irq_disable(void)
--{
--	native_irq_disable();
--}
--
- static noinstr void pv_native_safe_halt(void)
- {
- 	native_safe_halt();
-@@ -298,7 +283,7 @@ struct paravirt_patch_template pv_ops = {
- 	.cpu.end_context_switch		= paravirt_nop,
+ 	if (!block)
+-		per_cpu(bank_map, cpu) |= (1 << bank);
++		per_cpu(bank_map, cpu) |= BIT_ULL(bank);
  
- 	/* Irq ops. */
--	.irq.save_fl		= __PV_IS_CALLEE_SAVE(native_save_fl),
-+	.irq.save_fl		= __PV_IS_CALLEE_SAVE(pv_native_save_fl),
- 	.irq.irq_disable	= __PV_IS_CALLEE_SAVE(pv_native_irq_disable),
- 	.irq.irq_enable		= __PV_IS_CALLEE_SAVE(pv_native_irq_enable),
- 	.irq.safe_halt		= pv_native_safe_halt,
+ 	memset(&b, 0, sizeof(b));
+ 	b.cpu			= cpu;
+@@ -878,7 +878,7 @@ static void amd_threshold_interrupt(void)
+ 		return;
+ 
+ 	for (bank = 0; bank < this_cpu_read(mce_num_banks); ++bank) {
+-		if (!(per_cpu(bank_map, cpu) & (1 << bank)))
++		if (!(per_cpu(bank_map, cpu) & BIT_ULL(bank)))
+ 			continue;
+ 
+ 		first_block = bp[bank]->blocks;
+@@ -1356,7 +1356,7 @@ int mce_threshold_create_device(unsigned int cpu)
+ 		return -ENOMEM;
+ 
+ 	for (bank = 0; bank < numbanks; ++bank) {
+-		if (!(this_cpu_read(bank_map) & (1 << bank)))
++		if (!(this_cpu_read(bank_map) & BIT_ULL(bank)))
+ 			continue;
+ 		err = threshold_create_bank(bp, cpu, bank);
+ 		if (err) {
