@@ -2,45 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 198FB6C1CC1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Mar 2023 17:51:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A636C1CBF
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Mar 2023 17:51:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232388AbjCTQvV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Mar 2023 12:51:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50976 "EHLO
+        id S231207AbjCTQvP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Mar 2023 12:51:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232424AbjCTQuU (ORCPT
+        with ESMTP id S231864AbjCTQuF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Mar 2023 12:50:20 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC342CFEC;
-        Mon, 20 Mar 2023 09:42:42 -0700 (PDT)
+        Mon, 20 Mar 2023 12:50:05 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46E57EF9;
+        Mon, 20 Mar 2023 09:42:30 -0700 (PDT)
 Date:   Mon, 20 Mar 2023 16:39:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679330370;
+        s=2020; t=1679330371;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=wi6Yl5CUNpX5i5q0mEo24Zk7ZCq2pYwSx1YTVZMK+eE=;
-        b=ECIbk3WCRIxKg9n+/hVWlXeH89fhVjb6oqtQiHo75sHqbuf3xCklC8a7F9KrCN9Ov8eXT6
-        brOcBCCgY8PVEbu9hPCwhv08R7WbUW2rUm8FfPaAG1BaFUqm3+cKLfn3szl4VyD80BUftg
-        +OuQuVwAzlUanne0FOQFokt0NsXPztNgqtRAsWm1eJ4z5b7gSZpPB7bvf2wCmHvVL8HNfQ
-        P5Oym20fLWo79digfYC7xbCTUARVN7/YVA5Xd/qtyCRzqEPVRjMlgjnPfseaWAeHVikSeW
-        7gCWGyTEYtKzQzG6YL+eAYICPADiaLAjPnTiSNiuMbkhPxrFn2bQ57r5QTTEkA==
+        bh=GcvX/w1/EqIVBN0T1Ow87iIA7shFWYQbhpGDi3ggWvI=;
+        b=C9U1fgk9Nh7fKMAIpJKXNeXuDiqGJx7+RgrRS3KlLWbp6RVpyoPsB8QOy/1CUb74sgJe/a
+        FZk3qpKqeFm1Sdhfng0r/YseJiNZIdAw8fAx9VvBvWMO+BJZIG1WeUw2yGrs/YYo/xijC7
+        LsvCcuXHz54bQsRK47yLBLfuUXFYJkstqQHI41gFfmRRX0z54eFiISVuVnCvZ9U+uKdyY3
+        M/qrQ9Yyk+7THrDzW3/7dzl+/9O8NkA8qKZw0f1ITHrDk3D2zqnN+AYv3tIbF+NixP6Zpv
+        CFY5jqiCrgwxe2swx3yZaddj0PETUauTxLW2/RTRcJSpnDFNOJE+H4UQT6sOGw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679330370;
+        s=2020e; t=1679330371;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=wi6Yl5CUNpX5i5q0mEo24Zk7ZCq2pYwSx1YTVZMK+eE=;
-        b=XYRq4w6Eu7Fvsj0DXQRrab32juS3445esiHZYbBwXzq6RdkLtvQxNVnNY4hcYroxcBakrV
-        1BBUqD0MT69XySDg==
+        bh=GcvX/w1/EqIVBN0T1Ow87iIA7shFWYQbhpGDi3ggWvI=;
+        b=dkZujAgEqEwSXazG+gUZWkEKGzbFCzIfwn5sqLRPlRxA9u3QsVhfNPRCmr3IYUbDz8Hf9A
+        iyoZWfEF/8w/lDBQ==
 From:   "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/shstk] x86/fpu: Add helper for modifying xstate
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/shstk] x86/cpufeatures: Add CPU feature flags for shadow stacks
+Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
         Rick Edgecombe <rick.p.edgecombe@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
@@ -50,7 +50,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         John Allen <john.allen@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167933037004.5837.10727622061523111195.tip-bot2@tip-bot2>
+Message-ID: <167933037079.5837.2318531976679157988.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,37 +66,35 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/shstk branch of tip:
 
-Commit-ID:     f2f3528ea37dd646cb2a9120e6cf758ef7faacc2
-Gitweb:        https://git.kernel.org/tip/f2f3528ea37dd646cb2a9120e6cf758ef7faacc2
+Commit-ID:     d1b5e84f943c7b5b51bc2c1e50b36a7579ed7c75
+Gitweb:        https://git.kernel.org/tip/d1b5e84f943c7b5b51bc2c1e50b36a7579ed7c75
 Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
-AuthorDate:    Sat, 18 Mar 2023 17:15:01 -07:00
+AuthorDate:    Sat, 18 Mar 2023 17:14:58 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Mon, 20 Mar 2023 09:01:08 -07:00
 
-x86/fpu: Add helper for modifying xstate
+x86/cpufeatures: Add CPU feature flags for shadow stacks
 
-Just like user xfeatures, supervisor xfeatures can be active in the
-registers or present in the task FPU buffer. If the registers are
-active, the registers can be modified directly. If the registers are
-not active, the modification must be performed on the task FPU buffer.
+The Control-Flow Enforcement Technology contains two related features,
+one of which is Shadow Stacks. Future patches will utilize this feature
+for shadow stack support in KVM, so add a CPU feature flags for Shadow
+Stacks (CPUID.(EAX=7,ECX=0):ECX[bit 7]).
 
-When the state is not active, the kernel could perform modifications
-directly to the buffer. But in order for it to do that, it needs
-to know where in the buffer the specific state it wants to modify is
-located. Doing this is not robust against optimizations that compact
-the FPU buffer, as each access would require computing where in the
-buffer it is.
+To protect shadow stack state from malicious modification, the registers
+are only accessible in supervisor mode. This implementation
+context-switches the registers with XSAVES. Make X86_FEATURE_SHSTK depend
+on XSAVES.
 
-The easiest way to modify supervisor xfeature data is to force restore
-the registers and write directly to the MSRs. Often times this is just fine
-anyway as the registers need to be restored before returning to userspace.
-Do this for now, leaving buffer writing optimizations for the future.
+The shadow stack feature, enumerated by the CPUID bit described above,
+encompasses both supervisor and userspace support for shadow stack. In
+near future patches, only userspace shadow stack will be enabled. In
+expectation of future supervisor shadow stack support, create a software
+CPU capability to enumerate kernel utilization of userspace shadow stack
+support. This user shadow stack bit should depend on the HW "shstk"
+capability and that logic will be implemented in future patches.
 
-Add a new function fpregs_lock_and_load() that can simultaneously call
-fpregs_lock() and do this restore. Also perform some extra sanity
-checks in this function since this will be used in non-fpu focused code.
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Co-developed-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
+Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
@@ -105,58 +103,68 @@ Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Tested-by: Pengfei Xu <pengfei.xu@intel.com>
 Tested-by: John Allen <john.allen@amd.com>
 Tested-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/all/20230319001535.23210-7-rick.p.edgecombe%40intel.com
+Link: https://lore.kernel.org/all/20230319001535.23210-4-rick.p.edgecombe%40intel.com
 ---
- arch/x86/include/asm/fpu/api.h |  9 +++++++++
- arch/x86/kernel/fpu/core.c     | 18 ++++++++++++++++++
- 2 files changed, 27 insertions(+)
+ arch/x86/include/asm/cpufeatures.h       | 2 ++
+ arch/x86/include/asm/disabled-features.h | 8 +++++++-
+ arch/x86/kernel/cpu/cpuid-deps.c         | 1 +
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
-index 503a577..aadc689 100644
---- a/arch/x86/include/asm/fpu/api.h
-+++ b/arch/x86/include/asm/fpu/api.h
-@@ -82,6 +82,15 @@ static inline void fpregs_unlock(void)
- 		preempt_enable();
- }
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 73c9672..3d98ce9 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -309,6 +309,7 @@
+ #define X86_FEATURE_MSR_TSX_CTRL	(11*32+20) /* "" MSR IA32_TSX_CTRL (Intel) implemented */
+ #define X86_FEATURE_SMBA		(11*32+21) /* "" Slow Memory Bandwidth Allocation */
+ #define X86_FEATURE_BMEC		(11*32+22) /* "" Bandwidth Monitoring Event Configuration */
++#define X86_FEATURE_USER_SHSTK		(11*32+23) /* Shadow stack support for user mode applications */
  
-+/*
-+ * FPU state gets lazily restored before returning to userspace. So when in the
-+ * kernel, the valid FPU state may be kept in the buffer. This function will force
-+ * restore all the fpu state to the registers early if needed, and lock them from
-+ * being automatically saved/restored. Then FPU state can be modified safely in the
-+ * registers, before unlocking with fpregs_unlock().
-+ */
-+void fpregs_lock_and_load(void);
-+
- #ifdef CONFIG_X86_DEBUG_FPU
- extern void fpregs_assert_state_consistent(void);
- #else
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index caf3348..f851558 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -753,6 +753,24 @@ void switch_fpu_return(void)
- }
- EXPORT_SYMBOL_GPL(switch_fpu_return);
+ /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
+ #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* AVX VNNI instructions */
+@@ -378,6 +379,7 @@
+ #define X86_FEATURE_OSPKE		(16*32+ 4) /* OS Protection Keys Enable */
+ #define X86_FEATURE_WAITPKG		(16*32+ 5) /* UMONITOR/UMWAIT/TPAUSE Instructions */
+ #define X86_FEATURE_AVX512_VBMI2	(16*32+ 6) /* Additional AVX512 Vector Bit Manipulation Instructions */
++#define X86_FEATURE_SHSTK		(16*32+ 7) /* "" Shadow stack */
+ #define X86_FEATURE_GFNI		(16*32+ 8) /* Galois Field New Instructions */
+ #define X86_FEATURE_VAES		(16*32+ 9) /* Vector AES */
+ #define X86_FEATURE_VPCLMULQDQ		(16*32+10) /* Carry-Less Multiplication Double Quadword */
+diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
+index 5dfa4fb..505f78d 100644
+--- a/arch/x86/include/asm/disabled-features.h
++++ b/arch/x86/include/asm/disabled-features.h
+@@ -99,6 +99,12 @@
+ # define DISABLE_TDX_GUEST	(1 << (X86_FEATURE_TDX_GUEST & 31))
+ #endif
  
-+void fpregs_lock_and_load(void)
-+{
-+	/*
-+	 * fpregs_lock() only disables preemption (mostly). So modifying state
-+	 * in an interrupt could screw up some in progress fpregs operation.
-+	 * Warn about it.
-+	 */
-+	WARN_ON_ONCE(!irq_fpu_usable());
-+	WARN_ON_ONCE(current->flags & PF_KTHREAD);
++#ifdef CONFIG_X86_USER_SHADOW_STACK
++#define DISABLE_USER_SHSTK	0
++#else
++#define DISABLE_USER_SHSTK	(1 << (X86_FEATURE_USER_SHSTK & 31))
++#endif
 +
-+	fpregs_lock();
-+
-+	fpregs_assert_state_consistent();
-+
-+	if (test_thread_flag(TIF_NEED_FPU_LOAD))
-+		fpregs_restore_userregs();
-+}
-+
- #ifdef CONFIG_X86_DEBUG_FPU
  /*
-  * If current FPU state according to its tracking (loaded FPU context on this
+  * Make sure to add features to the correct mask
+  */
+@@ -114,7 +120,7 @@
+ #define DISABLED_MASK9	(DISABLE_SGX)
+ #define DISABLED_MASK10	0
+ #define DISABLED_MASK11	(DISABLE_RETPOLINE|DISABLE_RETHUNK|DISABLE_UNRET| \
+-			 DISABLE_CALL_DEPTH_TRACKING)
++			 DISABLE_CALL_DEPTH_TRACKING|DISABLE_USER_SHSTK)
+ #define DISABLED_MASK12	0
+ #define DISABLED_MASK13	0
+ #define DISABLED_MASK14	0
+diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+index f6748c8..e462c1d 100644
+--- a/arch/x86/kernel/cpu/cpuid-deps.c
++++ b/arch/x86/kernel/cpu/cpuid-deps.c
+@@ -81,6 +81,7 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_XFD,			X86_FEATURE_XSAVES    },
+ 	{ X86_FEATURE_XFD,			X86_FEATURE_XGETBV1   },
+ 	{ X86_FEATURE_AMX_TILE,			X86_FEATURE_XFD       },
++	{ X86_FEATURE_SHSTK,			X86_FEATURE_XSAVES    },
+ 	{}
+ };
+ 
