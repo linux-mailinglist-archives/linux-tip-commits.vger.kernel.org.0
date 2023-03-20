@@ -2,46 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 365506C1C74
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Mar 2023 17:46:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D43346C1C83
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Mar 2023 17:47:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231752AbjCTQqx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Mar 2023 12:46:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41858 "EHLO
+        id S231923AbjCTQr5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Mar 2023 12:47:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231848AbjCTQpe (ORCPT
+        with ESMTP id S232476AbjCTQr2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Mar 2023 12:45:34 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8EF22C679;
-        Mon, 20 Mar 2023 09:40:24 -0700 (PDT)
+        Mon, 20 Mar 2023 12:47:28 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5398E24BFA;
+        Mon, 20 Mar 2023 09:41:02 -0700 (PDT)
 Date:   Mon, 20 Mar 2023 16:39:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679330363;
+        s=2020; t=1679330362;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=N3g/H7X0vKHy23DLH09nFe5+vMN+aAJNOUAvGPsE/1Y=;
-        b=CGQF0OiCxBRW8HVrsfKE3EweJVTSmZWfJR0NEjn4F/3hSYEpSISy8KQ9YKXzBpFNUpmA5f
-        0HOkb2V0bX/lkQEMZHcB3gSLqxd+2X6kGMeUhKIG16vydvsLVl2Un9C/jK8X2qZBeVAXsv
-        ivYybGMtw7BUbY1G+fLjrM1xKk8C3EJDSaxpru++jWBnunHAa5azfRdtEahKf4VeMArYyr
-        Fjoq9mROfL9gqyCTErMCmULTIdwV2VjVh0T8TyFv6f0qcLZSCaKx2frlKcL4jpv1r1Sxkk
-        AiVt8uymhNH9tQzR0pkV7uZAnwQoXK8iAG3dsJzhh2No4cmjW01LQDX6IWQgaQ==
+        bh=1DQV3aoHdydkHE7JKChsu66nDBYmtk+rmppR4EPlqpA=;
+        b=e0cB9asfpgC8354HijeYw0Gt/X8ebU/4T8skhbV970P8/yicYJrs8Byx8vn3jCBU2PETJK
+        TvBg4w8KYfZSLDM03G68Kyg4ZtehZRK9kR/TlMJ8+i2DNcvAVctL4jBaBoHEk9lxGs3E/I
+        bV+PP7l0VpiJALGL2AK/1T8VK955mM8cTzwSBQqfsdP20WzXpidVUcqG9Z1woZqIhqPfqZ
+        apPKB4J+mgCQCn82zVzZ7W474FIkhOIcDEgMAgaX6mBHiIXb6US9OH4OAI7mGwdWDooFfO
+        5e/DyGMPZmiOh21kVNBVVSPlPTcV4ZpApSYGJtkYFPm0DquENMdncCCczLvxMg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679330363;
+        s=2020e; t=1679330362;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=N3g/H7X0vKHy23DLH09nFe5+vMN+aAJNOUAvGPsE/1Y=;
-        b=0Ism8uzxjqu4y7Qm4Vu4+3KqaSrn010SjovKBY6d2b/88dIQVVzYzEcUZtj7rEPq8XqmGF
-        SJzVdAYXfIRkPZCA==
+        bh=1DQV3aoHdydkHE7JKChsu66nDBYmtk+rmppR4EPlqpA=;
+        b=DIYL5dUz3qsEuPmWBGHWnqcA2yu/8IyMqLQwWBHNmzrk3WKzaBHqSwscAjasphy2l/1yFG
+        D2esJiXGVhAZgEAw==
 From:   "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/shstk] x86/shstk: Introduce routines modifying shstk
-Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+Subject: [tip: x86/shstk] x86/shstk: Introduce map_shadow_stack syscall
+Cc:     Rick Edgecombe <rick.p.edgecombe@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
         Kees Cook <keescook@chromium.org>,
@@ -50,7 +49,7 @@ Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
         John Allen <john.allen@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167933036287.5837.10678955367611362717.tip-bot2@tip-bot2>
+Message-ID: <167933036238.5837.8681498537887243091.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,41 +65,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/shstk branch of tip:
 
-Commit-ID:     da07286f0c9a33f8254630b319796ea186642713
-Gitweb:        https://git.kernel.org/tip/da07286f0c9a33f8254630b319796ea186642713
+Commit-ID:     a9d48cbbcc40b515db33d462ac7044a6cf7e4961
+Gitweb:        https://git.kernel.org/tip/a9d48cbbcc40b515db33d462ac7044a6cf7e4961
 Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
-AuthorDate:    Sat, 18 Mar 2023 17:15:26 -07:00
+AuthorDate:    Sat, 18 Mar 2023 17:15:28 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 20 Mar 2023 09:01:11 -07:00
+CommitterDate: Mon, 20 Mar 2023 09:01:12 -07:00
 
-x86/shstk: Introduce routines modifying shstk
+x86/shstk: Introduce map_shadow_stack syscall
 
-Shadow stacks are normally written to via CALL/RET or specific CET
-instructions like RSTORSSP/SAVEPREVSSP. However, sometimes the kernel will
-need to write to the shadow stack directly using the ring-0 only WRUSS
-instruction.
+When operating with shadow stacks enabled, the kernel will automatically
+allocate shadow stacks for new threads, however in some cases userspace
+will need additional shadow stacks. The main example of this is the
+ucontext family of functions, which require userspace allocating and
+pivoting to userspace managed stacks.
 
-A shadow stack restore token marks a restore point of the shadow stack, and
-the address in a token must point directly above the token, which is within
-the same shadow stack. This is distinctively different from other pointers
-on the shadow stack, since those pointers point to executable code area.
+Unlike most other user memory permissions, shadow stacks need to be
+provisioned with special data in order to be useful. They need to be setup
+with a restore token so that userspace can pivot to them via the RSTORSSP
+instruction. But, the security design of shadow stacks is that they
+should not be written to except in limited circumstances. This presents a
+problem for userspace, as to how userspace can provision this special
+data, without allowing for the shadow stack to be generally writable.
 
-Introduce token setup and verify routines. Also introduce WRUSS, which is
-a kernel-mode instruction but writes directly to user shadow stack.
+Previously, a new PROT_SHADOW_STACK was attempted, which could be
+mprotect()ed from RW permissions after the data was provisioned. This was
+found to not be secure enough, as other threads could write to the
+shadow stack during the writable window.
 
-In future patches that enable shadow stack to work with signals, the kernel
-will need something to denote the point in the stack where sigreturn may be
-called. This will prevent attackers calling sigreturn at arbitrary places
-in the stack, in order to help prevent SROP attacks.
+The kernel can use a special instruction, WRUSS, to write directly to
+userspace shadow stacks. So the solution can be that memory can be mapped
+as shadow stack permissions from the beginning (never generally writable
+in userspace), and the kernel itself can write the restore token.
 
-To do this, something that can only be written by the kernel needs to be
-placed on the shadow stack. This can be accomplished by setting bit 63 in
-the frame written to the shadow stack. Userspace return addresses can't
-have this bit set as it is in the kernel range. It also can't be a valid
-restore token.
+First, a new madvise() flag was explored, which could operate on the
+PROT_SHADOW_STACK memory. This had a couple of downsides:
+1. Extra checks were needed in mprotect() to prevent writable memory from
+   ever becoming PROT_SHADOW_STACK.
+2. Extra checks/vma state were needed in the new madvise() to prevent
+   restore tokens being written into the middle of pre-used shadow stacks.
+   It is ideal to prevent restore tokens being added at arbitrary
+   locations, so the check was to make sure the shadow stack had never been
+   written to.
+3. It stood out from the rest of the madvise flags, as more of direct
+   action than a hint at future desired behavior.
 
-Co-developed-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
-Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
+So rather than repurpose two existing syscalls (mmap, madvise) that don't
+quite fit, just implement a new map_shadow_stack syscall to allow
+userspace to map and setup new shadow stacks in one step. While ucontext
+is the primary motivator, userspace may have other unforeseen reasons to
+setup its own shadow stacks using the WRSS instruction. Towards this
+provide a flag so that stacks can be optionally setup securely for the
+common case of ucontext without enabling WRSS. Or potentially have the
+kernel set up the shadow stack in some new way.
+
+The following example demonstrates how to create a new shadow stack with
+map_shadow_stack:
+void *shstk = map_shadow_stack(addr, stack_size, SHADOW_STACK_SET_TOKEN);
+
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
@@ -109,133 +131,181 @@ Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Tested-by: Pengfei Xu <pengfei.xu@intel.com>
 Tested-by: John Allen <john.allen@amd.com>
 Tested-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/all/20230319001535.23210-32-rick.p.edgecombe%40intel.com
+Link: https://lore.kernel.org/all/20230319001535.23210-34-rick.p.edgecombe%40intel.com
 ---
- arch/x86/include/asm/special_insns.h | 13 +++++-
- arch/x86/kernel/shstk.c              | 75 +++++++++++++++++++++++++++-
- 2 files changed, 88 insertions(+)
+ arch/x86/entry/syscalls/syscall_64.tbl |  1 +-
+ arch/x86/include/uapi/asm/mman.h       |  3 +-
+ arch/x86/kernel/shstk.c                | 59 +++++++++++++++++++++----
+ include/linux/syscalls.h               |  1 +-
+ include/uapi/asm-generic/unistd.h      |  2 +-
+ kernel/sys_ni.c                        |  1 +-
+ 6 files changed, 58 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index de48d13..d6cd934 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -202,6 +202,19 @@ static inline void clwb(volatile void *__p)
- 		: [pax] "a" (p));
- }
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index c84d126..f65c671 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -372,6 +372,7 @@
+ 448	common	process_mrelease	sys_process_mrelease
+ 449	common	futex_waitv		sys_futex_waitv
+ 450	common	set_mempolicy_home_node	sys_set_mempolicy_home_node
++451	64	map_shadow_stack	sys_map_shadow_stack
  
-+#ifdef CONFIG_X86_USER_SHADOW_STACK
-+static inline int write_user_shstk_64(u64 __user *addr, u64 val)
-+{
-+	asm_volatile_goto("1: wrussq %[val], (%[addr])\n"
-+			  _ASM_EXTABLE(1b, %l[fail])
-+			  :: [addr] "r" (addr), [val] "r" (val)
-+			  :: fail);
-+	return 0;
-+fail:
-+	return -EFAULT;
-+}
-+#endif /* CONFIG_X86_USER_SHADOW_STACK */
+ #
+ # Due to a historical design error, certain syscalls are numbered differently
+diff --git a/arch/x86/include/uapi/asm/mman.h b/arch/x86/include/uapi/asm/mman.h
+index 5a0256e..8148bdd 100644
+--- a/arch/x86/include/uapi/asm/mman.h
++++ b/arch/x86/include/uapi/asm/mman.h
+@@ -13,6 +13,9 @@
+ 		((key) & 0x8 ? VM_PKEY_BIT3 : 0))
+ #endif
+ 
++/* Flags for map_shadow_stack(2) */
++#define SHADOW_STACK_SET_TOKEN	(1ULL << 0)	/* Set up a restore token in the shadow stack */
 +
- #define nop() asm volatile ("nop")
+ #include <asm-generic/mman.h>
  
- static inline void serialize(void)
+ #endif /* _ASM_X86_MMAN_H */
 diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index bd9cdc3..e22928c 100644
+index f02e8ea..6d2531c 100644
 --- a/arch/x86/kernel/shstk.c
 +++ b/arch/x86/kernel/shstk.c
-@@ -25,6 +25,8 @@
- #include <asm/fpu/api.h>
- #include <asm/prctl.h>
- 
-+#define SS_FRAME_SIZE 8
-+
- static bool features_enabled(unsigned long features)
- {
- 	return current->thread.features & features;
-@@ -40,6 +42,35 @@ static void features_clr(unsigned long features)
- 	current->thread.features &= ~features;
+@@ -17,6 +17,7 @@
+ #include <linux/compat.h>
+ #include <linux/sizes.h>
+ #include <linux/user.h>
++#include <linux/syscalls.h>
+ #include <asm/msr.h>
+ #include <asm/fpu/xstate.h>
+ #include <asm/fpu/types.h>
+@@ -71,19 +72,31 @@ static int create_rstor_token(unsigned long ssp, unsigned long *token_addr)
+ 	return 0;
  }
  
-+/*
-+ * Create a restore token on the shadow stack.  A token is always 8-byte
-+ * and aligned to 8.
-+ */
-+static int create_rstor_token(unsigned long ssp, unsigned long *token_addr)
-+{
-+	unsigned long addr;
-+
-+	/* Token must be aligned */
-+	if (!IS_ALIGNED(ssp, 8))
-+		return -EINVAL;
-+
-+	addr = ssp - SS_FRAME_SIZE;
-+
-+	/*
-+	 * SSP is aligned, so reserved bits and mode bit are a zero, just mark
-+	 * the token 64-bit.
-+	 */
-+	ssp |= BIT(0);
-+
-+	if (write_user_shstk_64((u64 __user *)addr, (u64)ssp))
-+		return -EFAULT;
-+
-+	if (token_addr)
-+		*token_addr = addr;
-+
-+	return 0;
-+}
-+
- static unsigned long alloc_shstk(unsigned long size)
+-static unsigned long alloc_shstk(unsigned long size)
++static unsigned long alloc_shstk(unsigned long addr, unsigned long size,
++				 unsigned long token_offset, bool set_res_tok)
  {
  	int flags = MAP_ANONYMOUS | MAP_PRIVATE | MAP_ABOVE4G;
-@@ -157,6 +188,50 @@ unsigned long shstk_alloc_thread_stack(struct task_struct *tsk, unsigned long cl
- 	return addr + size;
+ 	struct mm_struct *mm = current->mm;
+-	unsigned long addr, unused;
++	unsigned long mapped_addr, unused;
+ 
+-	mmap_write_lock(mm);
+-	addr = do_mmap(NULL, 0, size, PROT_READ, flags,
+-		       VM_SHADOW_STACK | VM_WRITE, 0, &unused, NULL);
++	if (addr)
++		flags |= MAP_FIXED_NOREPLACE;
+ 
++	mmap_write_lock(mm);
++	mapped_addr = do_mmap(NULL, addr, size, PROT_READ, flags,
++			      VM_SHADOW_STACK | VM_WRITE, 0, &unused, NULL);
+ 	mmap_write_unlock(mm);
+ 
+-	return addr;
++	if (!set_res_tok || IS_ERR_VALUE(mapped_addr))
++		goto out;
++
++	if (create_rstor_token(mapped_addr + token_offset, NULL)) {
++		vm_munmap(mapped_addr, size);
++		return -EINVAL;
++	}
++
++out:
++	return mapped_addr;
  }
  
-+static unsigned long get_user_shstk_addr(void)
+ static unsigned long adjust_shstk_size(unsigned long size)
+@@ -134,7 +147,7 @@ static int shstk_setup(void)
+ 		return -EOPNOTSUPP;
+ 
+ 	size = adjust_shstk_size(0);
+-	addr = alloc_shstk(size);
++	addr = alloc_shstk(0, size, 0, false);
+ 	if (IS_ERR_VALUE(addr))
+ 		return PTR_ERR((void *)addr);
+ 
+@@ -178,7 +191,7 @@ unsigned long shstk_alloc_thread_stack(struct task_struct *tsk, unsigned long cl
+ 		return 0;
+ 
+ 	size = adjust_shstk_size(stack_size);
+-	addr = alloc_shstk(size);
++	addr = alloc_shstk(0, size, 0, false);
+ 	if (IS_ERR_VALUE(addr))
+ 		return addr;
+ 
+@@ -368,6 +381,36 @@ static int shstk_disable(void)
+ 	return 0;
+ }
+ 
++SYSCALL_DEFINE3(map_shadow_stack, unsigned long, addr, unsigned long, size, unsigned int, flags)
 +{
-+	unsigned long long ssp;
++	bool set_tok = flags & SHADOW_STACK_SET_TOKEN;
++	unsigned long aligned_size;
 +
-+	fpregs_lock_and_load();
++	if (!cpu_feature_enabled(X86_FEATURE_USER_SHSTK))
++		return -EOPNOTSUPP;
 +
-+	rdmsrl(MSR_IA32_PL3_SSP, ssp);
-+
-+	fpregs_unlock();
-+
-+	return ssp;
-+}
-+
-+#define SHSTK_DATA_BIT BIT(63)
-+
-+static int put_shstk_data(u64 __user *addr, u64 data)
-+{
-+	if (WARN_ON_ONCE(data & SHSTK_DATA_BIT))
++	if (flags & ~SHADOW_STACK_SET_TOKEN)
 +		return -EINVAL;
++
++	/* If there isn't space for a token */
++	if (set_tok && size < 8)
++		return -ENOSPC;
++
++	if (addr && addr < SZ_4G)
++		return -ERANGE;
 +
 +	/*
-+	 * Mark the high bit so that the sigframe can't be processed as a
-+	 * return address.
++	 * An overflow would result in attempting to write the restore token
++	 * to the wrong location. Not catastrophic, but just return the right
++	 * error code and block it.
 +	 */
-+	if (write_user_shstk_64(addr, data | SHSTK_DATA_BIT))
-+		return -EFAULT;
-+	return 0;
++	aligned_size = PAGE_ALIGN(size);
++	if (aligned_size < size)
++		return -EOVERFLOW;
++
++	return alloc_shstk(addr, aligned_size, size, set_tok);
 +}
 +
-+static int get_shstk_data(unsigned long *data, unsigned long __user *addr)
-+{
-+	unsigned long ldata;
-+
-+	if (unlikely(get_user(ldata, addr)))
-+		return -EFAULT;
-+
-+	if (!(ldata & SHSTK_DATA_BIT))
-+		return -EINVAL;
-+
-+	*data = ldata & ~SHSTK_DATA_BIT;
-+
-+	return 0;
-+}
-+
- void shstk_free(struct task_struct *tsk)
+ long shstk_prctl(struct task_struct *task, int option, unsigned long features)
  {
- 	struct thread_shstk *shstk = &tsk->thread.shstk;
+ 	if (option == ARCH_SHSTK_LOCK) {
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 33a0ee3..392dc11 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -1058,6 +1058,7 @@ asmlinkage long sys_memfd_secret(unsigned int flags);
+ asmlinkage long sys_set_mempolicy_home_node(unsigned long start, unsigned long len,
+ 					    unsigned long home_node,
+ 					    unsigned long flags);
++asmlinkage long sys_map_shadow_stack(unsigned long addr, unsigned long size, unsigned int flags);
+ 
+ /*
+  * Architecture-specific system calls
+diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
+index 45fa180..b12940e 100644
+--- a/include/uapi/asm-generic/unistd.h
++++ b/include/uapi/asm-generic/unistd.h
+@@ -887,7 +887,7 @@ __SYSCALL(__NR_futex_waitv, sys_futex_waitv)
+ __SYSCALL(__NR_set_mempolicy_home_node, sys_set_mempolicy_home_node)
+ 
+ #undef __NR_syscalls
+-#define __NR_syscalls 451
++#define __NR_syscalls 452
+ 
+ /*
+  * 32 bit systems traditionally used different
+diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
+index 860b2dc..cb9aebd 100644
+--- a/kernel/sys_ni.c
++++ b/kernel/sys_ni.c
+@@ -381,6 +381,7 @@ COND_SYSCALL(vm86old);
+ COND_SYSCALL(modify_ldt);
+ COND_SYSCALL(vm86);
+ COND_SYSCALL(kexec_file_load);
++COND_SYSCALL(map_shadow_stack);
+ 
+ /* s390 */
+ COND_SYSCALL(s390_pci_mmio_read);
