@@ -2,56 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C61C6C35AA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Mar 2023 16:28:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64DE76C3BA2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Mar 2023 21:21:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbjCUP2w (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 21 Mar 2023 11:28:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55452 "EHLO
+        id S229936AbjCUUVL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 21 Mar 2023 16:21:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231661AbjCUP2l (ORCPT
+        with ESMTP id S230012AbjCUUVK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 21 Mar 2023 11:28:41 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCDF9113C4;
-        Tue, 21 Mar 2023 08:28:28 -0700 (PDT)
-Date:   Tue, 21 Mar 2023 15:28:27 -0000
+        Tue, 21 Mar 2023 16:21:10 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12121205D;
+        Tue, 21 Mar 2023 13:20:37 -0700 (PDT)
+Date:   Tue, 21 Mar 2023 20:20:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679412507;
+        s=2020; t=1679430025;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=irVXUrexhjwqxjsn3+Qqg46NzZR3tUhU2ORep83Lm4c=;
-        b=SfGMJxfQKHYhrOVdxHg6wmpcX+M0y3AiHngHrmkIVuBcaLIP3p55fzKzzKP/EDOrdXMlKC
-        qXXJC/cGaxH8XsRAlq1LoQu+YAa4qR/bBHxF9eVBZv8FtBIBkLaeHsAILxPszxKDYn3Z2F
-        fORN1bBFilg1EkqeZXTG3mok0v7Gxo9iReP/5n/pL2HDkp3OaVK9HhNkCBEIhZvjjWzoIb
-        +dKUFt5/9OuFlfkAxOvVnZyYAieDxAg5c5U7Yu5RE+Cl0/xqgqtzvixy4u6DfUTnLiIsh2
-        et78CL8jaC/xjZ/R/EYOIpTTm52xBl0d62V8Bmibz4zUczqvJLdeAevKjViA6Q==
+        bh=DkfAA7kabvZ6a7Gv4ZIn9g9p4FKM0I5uVnIERk3tnK4=;
+        b=cY0RtZMeHfK+akbj4BmYbKVr4M2zpm1oBSiSTZyRH21d0k44lDCRQfdqyQ2vYUKnBjROMS
+        ATyhv8uFjydEvbqdfhd7baJhfsUD63s+nlE42g12oI26QLZVA8rh6wcqHLiuC3x5KsCz6N
+        ipiz6GJr+oBdmWROXp2G+hB3LAGsuxzCcyYsf9Irm1rp66gWysMtbg2cfxHLvKc4T857At
+        fgLgd9f6mQhB8wMAce37TameE0b8hwL7//5AnumEvF8xOsx2qD7QCDaT1m3jD0HVjwMTq7
+        gWXB6oDtAtHqwo6FkaifrjdzzVTli2HWpooPCbdWbkbgRm4zhh6IX1UZj1AR4Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679412507;
+        s=2020e; t=1679430025;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=irVXUrexhjwqxjsn3+Qqg46NzZR3tUhU2ORep83Lm4c=;
-        b=ID+O38O07tAUDxidRPxV2+NGSDPjKHh1VcTUMeQ7AZzpMHYxXL7uGVN89M3Ie19P6b6YDe
-        gLkoqjcPW3jPgXCQ==
-From:   "tip-bot2 for Peter Gonda" <tip-bot2@linutronix.de>
+        bh=DkfAA7kabvZ6a7Gv4ZIn9g9p4FKM0I5uVnIERk3tnK4=;
+        b=Kg2jT7PS3H8lVi+yUFycnDR9W9jqUr0SEsvYG0Mmq/gkAw/QCUSxhNBjxkKTIGposCa0hS
+        EPLueEVpnTBZ2kDw==
+From:   "tip-bot2 for Fangrui Song" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] crypto: ccp - Name -1 return value as SEV_RET_NO_FW_CALL
-Cc:     Peter Gonda <pgonda@google.com>,
-        Dionna Glaze <dionnaglaze@google.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: timers/core] vdso: Improve cmd_vdso_check to check all dynamic
+ relocations
+Cc:     Fangrui Song <maskray@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20221207010210.2563293-2-dionnaglaze@google.com>
-References: <20221207010210.2563293-2-dionnaglaze@google.com>
+In-Reply-To: <20230310190750.3323802-1-maskray@google.com>
+References: <20230310190750.3323802-1-maskray@google.com>
 MIME-Version: 1.0
-Message-ID: <167941250712.5837.17612643714782256267.tip-bot2@tip-bot2>
+Message-ID: <167943002433.5837.13753758233638866340.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,93 +68,241 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sev branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     efb339a83368ab25de1a18c0fdff85e01c13a1ea
-Gitweb:        https://git.kernel.org/tip/efb339a83368ab25de1a18c0fdff85e01c13a1ea
-Author:        Peter Gonda <pgonda@google.com>
-AuthorDate:    Tue, 07 Mar 2023 20:24:39 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 21 Mar 2023 11:37:32 +01:00
+Commit-ID:     aff69273af61f5d1c8fb401d6f19148d11629b41
+Gitweb:        https://git.kernel.org/tip/aff69273af61f5d1c8fb401d6f19148d11629b41
+Author:        Fangrui Song <maskray@google.com>
+AuthorDate:    Fri, 10 Mar 2023 19:07:50 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 21 Mar 2023 21:15:34 +01:00
 
-crypto: ccp - Name -1 return value as SEV_RET_NO_FW_CALL
+vdso: Improve cmd_vdso_check to check all dynamic relocations
 
-The PSP can return a "firmware error" code of -1 in circumstances where
-the PSP has not actually been called. To make this protocol unambiguous,
-name the value SEV_RET_NO_FW_CALL.
+The actual intention is that no dynamic relocation exists in the VDSO. For
+this the VDSO build validates that the resulting .so file does not have any
+relocations which are specified via $(ARCH_REL_TYPE_ABS) per architecture,
+which is fragile as e.g. ARM64 lacks an entry for R_AARCH64_RELATIVE. Aside
+of that ARCH_REL_TYPE_ABS is a misnomer as it checks for relative
+relocations too.
 
-  [ bp: Massage a bit. ]
+However, some GNU ld ports produce unneeded R_*_NONE relocation entries. If
+a port fails to determine the exact .rel[a].dyn size, the trailing zeros
+become R_*_NONE relocations. E.g. ld's powerpc port recently fixed
+https://sourceware.org/bugzilla/show_bug.cgi?id=29540). R_*_NONE are
+generally a no-op in the dynamic loaders. So just ignore them.
 
-Signed-off-by: Peter Gonda <pgonda@google.com>
-Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20221207010210.2563293-2-dionnaglaze@google.com
+Remove the ARCH_REL_TYPE_ABS defines and just validate that the resulting
+.so file does not contain any R_* relocation entries except R_*_NONE.
+
+Signed-off-by: Fangrui Song <maskray@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Vincenzo Frascino <vincenzo.frascino@arm.com> # for aarch64
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com> # for vDSO, aarch64
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Link: https://lore.kernel.org/r/20230310190750.3323802-1-maskray@google.com
+
 ---
- Documentation/virt/coco/sev-guest.rst | 4 ++--
- drivers/crypto/ccp/sev-dev.c          | 8 +++++---
- include/uapi/linux/psp-sev.h          | 7 +++++++
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ arch/arm/vdso/Makefile            |  4 +---
+ arch/arm64/kernel/vdso/Makefile   |  4 +---
+ arch/arm64/kernel/vdso32/Makefile |  3 ---
+ arch/csky/kernel/vdso/Makefile    |  4 +---
+ arch/loongarch/vdso/Makefile      |  4 +---
+ arch/mips/vdso/Makefile           |  4 +---
+ arch/powerpc/kernel/vdso/Makefile |  2 +-
+ arch/riscv/kernel/vdso/Makefile   |  4 +---
+ arch/s390/kernel/vdso32/Makefile  |  3 +--
+ arch/s390/kernel/vdso64/Makefile  |  3 +--
+ arch/x86/entry/vdso/Makefile      |  5 +----
+ lib/vdso/Makefile                 | 13 ++++---------
+ 12 files changed, 14 insertions(+), 39 deletions(-)
 
-diff --git a/Documentation/virt/coco/sev-guest.rst b/Documentation/virt/coco/sev-guest.rst
-index bf593e8..aa3e4c6 100644
---- a/Documentation/virt/coco/sev-guest.rst
-+++ b/Documentation/virt/coco/sev-guest.rst
-@@ -40,8 +40,8 @@ along with a description:
- The guest ioctl should be issued on a file descriptor of the /dev/sev-guest device.
- The ioctl accepts struct snp_user_guest_request. The input and output structure is
- specified through the req_data and resp_data field respectively. If the ioctl fails
--to execute due to a firmware error, then fw_err code will be set otherwise the
--fw_err will be set to 0x00000000000000ff.
-+to execute due to a firmware error, then fw_err code will be set. Otherwise, fw_err
-+will be set to 0x00000000ffffffff, i.e., the lower 32-bits are -1.
+diff --git a/arch/arm/vdso/Makefile b/arch/arm/vdso/Makefile
+index a7ec06c..515ca33 100644
+--- a/arch/arm/vdso/Makefile
++++ b/arch/arm/vdso/Makefile
+@@ -1,8 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
  
- The firmware checks that the message sequence counter is one greater than
- the guests message sequence counter. If guest driver fails to increment message
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index e2f2592..823c67a 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -444,10 +444,10 @@ static int __sev_init_ex_locked(int *error)
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_ARM_JUMP_SLOT|R_ARM_GLOB_DAT|R_ARM_ABS32
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
  
- static int __sev_platform_init_locked(int *error)
- {
-+	int rc = 0, psp_ret = SEV_RET_NO_FW_CALL;
- 	struct psp_device *psp = psp_master;
--	struct sev_device *sev;
--	int rc = 0, psp_ret = -1;
- 	int (*init_function)(int *error);
-+	struct sev_device *sev;
+ hostprogs := vdsomunge
+diff --git a/arch/arm64/kernel/vdso/Makefile b/arch/arm64/kernel/vdso/Makefile
+index beaf958..fe7a53c 100644
+--- a/arch/arm64/kernel/vdso/Makefile
++++ b/arch/arm64/kernel/vdso/Makefile
+@@ -6,9 +6,7 @@
+ # Heavily based on the vDSO Makefiles for other archs.
+ #
  
- 	if (!psp || !psp->sev_data)
- 		return -ENODEV;
-@@ -475,9 +475,11 @@ static int __sev_platform_init_locked(int *error)
- 		 * initialization function should succeed by replacing the state
- 		 * with a reset state.
- 		 */
--		dev_err(sev->dev, "SEV: retrying INIT command because of SECURE_DATA_INVALID error. Retrying once to reset PSP SEV state.");
-+		dev_err(sev->dev,
-+"SEV: retrying INIT command because of SECURE_DATA_INVALID error. Retrying once to reset PSP SEV state.");
- 		rc = init_function(&psp_ret);
- 	}
-+
- 	if (error)
- 		*error = psp_ret;
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_AARCH64_JUMP_SLOT|R_AARCH64_GLOB_DAT|R_AARCH64_ABS64
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
  
-diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
-index 91b4c63..1c9da48 100644
---- a/include/uapi/linux/psp-sev.h
-+++ b/include/uapi/linux/psp-sev.h
-@@ -36,6 +36,13 @@ enum {
-  * SEV Firmware status code
-  */
- typedef enum {
-+	/*
-+	 * This error code is not in the SEV spec. Its purpose is to convey that
-+	 * there was an error that prevented the SEV firmware from being called.
-+	 * The SEV API error codes are 16 bits, so the -1 value will not overlap
-+	 * with possible values from the specification.
-+	 */
-+	SEV_RET_NO_FW_CALL = -1,
- 	SEV_RET_SUCCESS = 0,
- 	SEV_RET_INVALID_PLATFORM_STATE,
- 	SEV_RET_INVALID_GUEST_STATE,
+ obj-vdso := vgettimeofday.o note.o sigreturn.o
+diff --git a/arch/arm64/kernel/vdso32/Makefile b/arch/arm64/kernel/vdso32/Makefile
+index f59bd1a..d014162 100644
+--- a/arch/arm64/kernel/vdso32/Makefile
++++ b/arch/arm64/kernel/vdso32/Makefile
+@@ -3,9 +3,6 @@
+ # Makefile for vdso32
+ #
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_ARM_JUMP_SLOT|R_ARM_GLOB_DAT|R_ARM_ABS32
+ include $(srctree)/lib/vdso/Makefile
+ 
+ # Same as cc-*option, but using CC_COMPAT instead of CC
+diff --git a/arch/csky/kernel/vdso/Makefile b/arch/csky/kernel/vdso/Makefile
+index 0b6909f..299e4e4 100644
+--- a/arch/csky/kernel/vdso/Makefile
++++ b/arch/csky/kernel/vdso/Makefile
+@@ -1,8 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_CKCORE_ADDR32|R_CKCORE_JUMP_SLOT
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ # Symbols present in the vdso
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index d89e2ac..461240a 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -1,9 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Objects to go into the VDSO.
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_LARCH_32|R_LARCH_64|R_LARCH_MARK_LA|R_LARCH_JUMP_SLOT
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ obj-vdso-y := elf.o vgetcpu.o vgettimeofday.o sigreturn.o
+diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+index 18af947..eb56581 100644
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -4,9 +4,7 @@
+ # Sanitizer runtimes are unavailable and cannot be linked here.
+  KCSAN_SANITIZE			:= n
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_MIPS_JUMP_SLOT|R_MIPS_GLOB_DAT
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ obj-vdso-y := elf.o vgettimeofday.o sigreturn.o
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index 66f723f..4c3f344 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -2,7 +2,7 @@
+ 
+ # List of files in the vdso, has to be asm only for now
+ 
+-ARCH_REL_TYPE_ABS := R_PPC_JUMP_SLOT|R_PPC_GLOB_DAT|R_PPC_ADDR32|R_PPC_ADDR24|R_PPC_ADDR16|R_PPC_ADDR16_LO|R_PPC_ADDR16_HI|R_PPC_ADDR16_HA|R_PPC_ADDR14|R_PPC_ADDR14_BRTAKEN|R_PPC_ADDR14_BRNTAKEN|R_PPC_REL24
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ obj-vdso32 = sigtramp32-32.o gettimeofday-32.o datapage-32.o cacheflush-32.o note-32.o getcpu-32.o
+diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
+index 06e6b27..a04b3bc 100644
+--- a/arch/riscv/kernel/vdso/Makefile
++++ b/arch/riscv/kernel/vdso/Makefile
+@@ -1,9 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ # Copied from arch/tile/kernel/vdso/Makefile
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_RISCV_32|R_RISCV_64|R_RISCV_JUMP_SLOT
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ # Symbols present in the vdso
+ vdso-syms  = rt_sigreturn
+diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
+index 245bddf..bafd314 100644
+--- a/arch/s390/kernel/vdso32/Makefile
++++ b/arch/s390/kernel/vdso32/Makefile
+@@ -2,9 +2,8 @@
+ # List of files in the vdso
+ 
+ KCOV_INSTRUMENT := n
+-ARCH_REL_TYPE_ABS := R_390_COPY|R_390_GLOB_DAT|R_390_JMP_SLOT|R_390_RELATIVE
+-ARCH_REL_TYPE_ABS += R_390_GOT|R_390_PLT
+ 
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ obj-vdso32 = vdso_user_wrapper-32.o note-32.o
+ 
+diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
+index 34f9542..a766d28 100644
+--- a/arch/s390/kernel/vdso64/Makefile
++++ b/arch/s390/kernel/vdso64/Makefile
+@@ -2,9 +2,8 @@
+ # List of files in the vdso
+ 
+ KCOV_INSTRUMENT := n
+-ARCH_REL_TYPE_ABS := R_390_COPY|R_390_GLOB_DAT|R_390_JMP_SLOT|R_390_RELATIVE
+-ARCH_REL_TYPE_ABS += R_390_GOT|R_390_PLT
+ 
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ obj-vdso64 = vdso_user_wrapper.o note.o
+ obj-cvdso64 = vdso64_generic.o getcpu.o
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index 1506a22..6a1821b 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -3,10 +3,7 @@
+ # Building vDSO images for x86.
+ #
+ 
+-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+-# the inclusion of generic Makefile.
+-ARCH_REL_TYPE_ABS := R_X86_64_JUMP_SLOT|R_X86_64_GLOB_DAT|R_X86_64_RELATIVE|
+-ARCH_REL_TYPE_ABS += R_386_GLOB_DAT|R_386_JMP_SLOT|R_386_RELATIVE
++# Include the generic Makefile to check the built vdso.
+ include $(srctree)/lib/vdso/Makefile
+ 
+ # Sanitizer runtimes are unavailable and cannot be linked here.
+diff --git a/lib/vdso/Makefile b/lib/vdso/Makefile
+index e814061..9f031ea 100644
+--- a/lib/vdso/Makefile
++++ b/lib/vdso/Makefile
+@@ -5,18 +5,13 @@ GENERIC_VDSO_DIR := $(dir $(GENERIC_VDSO_MK_PATH))
+ 
+ c-gettimeofday-$(CONFIG_GENERIC_GETTIMEOFDAY) := $(addprefix $(GENERIC_VDSO_DIR), gettimeofday.c)
+ 
+-# This cmd checks that the vdso library does not contain absolute relocation
++# This cmd checks that the vdso library does not contain dynamic relocations.
+ # It has to be called after the linking of the vdso library and requires it
+ # as a parameter.
+ #
+-# $(ARCH_REL_TYPE_ABS) is defined in the arch specific makefile and corresponds
+-# to the absolute relocation types printed by "objdump -R" and accepted by the
+-# dynamic linker.
+-ifndef ARCH_REL_TYPE_ABS
+-$(error ARCH_REL_TYPE_ABS is not set)
+-endif
+-
++# As a workaround for some GNU ld ports which produce unneeded R_*_NONE
++# dynamic relocations, ignore R_*_NONE.
+ quiet_cmd_vdso_check = VDSOCHK $@
+-      cmd_vdso_check = if $(OBJDUMP) -R $@ | grep -E -h "$(ARCH_REL_TYPE_ABS)"; \
++      cmd_vdso_check = if $(READELF) -rW $@ | grep -v _NONE | grep -q " R_\w*_"; \
+ 		       then (echo >&2 "$@: dynamic relocations are not supported"; \
+ 			     rm -f $@; /bin/false); fi
