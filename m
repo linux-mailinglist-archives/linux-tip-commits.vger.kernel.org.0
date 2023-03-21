@@ -2,55 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B47C86C2F99
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Mar 2023 11:55:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 243E36C33CD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Mar 2023 15:14:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbjCUKzC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 21 Mar 2023 06:55:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58100 "EHLO
+        id S231139AbjCUOOT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 21 Mar 2023 10:14:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229710AbjCUKzB (ORCPT
+        with ESMTP id S229743AbjCUOOS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 21 Mar 2023 06:55:01 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C95571556B;
-        Tue, 21 Mar 2023 03:54:59 -0700 (PDT)
-Date:   Tue, 21 Mar 2023 10:54:57 -0000
+        Tue, 21 Mar 2023 10:14:18 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40EE9B760;
+        Tue, 21 Mar 2023 07:14:17 -0700 (PDT)
+Date:   Tue, 21 Mar 2023 14:14:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679396098;
+        s=2020; t=1679408055;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GjIQ6cqwjUWanLpYa24zwS4pnPehno8Ojf1BeB1SOW0=;
-        b=YKEdosmZRNeYmaqYK0fzS2Wnq9eMh4EYMBCyCUbS3Gzzwrskhw8j48gojQBF8B5MIiBPxm
-        07IaiqKYIbR3ka8f80Ey2kVJCFz91ydi2NZoM9yHCtSLUDcFn1Agx2B4ymal7OQGniR3jC
-        E25pepyQApZdEnrF/9WjKB7cGJE/jqO1PFsUs3RM3b6aW48ieXLW2WhBLtclS/y+Km9fC0
-        /zS2Kb7+npOdtvM8OGSL6aLzAJe6ddXjC1GooDukdfEi0X3mJd7a0Wcq/YEdhcZQO8c+TE
-        ZoLG6VVhLjJTJOF0AZpFSrPV5+/Z7AKxJ/ARGsTvCkkWMN7yzvfrz29awI096w==
+        bh=YNmBGrkXr5zAQUPF5oLNknj1qwJZo9lMq/43zPofrpg=;
+        b=34JhKb7LbJwy0JIHwAQaqfhERVXrby7lFgb7wET1z/wTN4Q2EXPu+BPeIR7bENbMSfy3bz
+        QU5mDUll7AqWivp/6waO7bqLgn/CmVe0mUyqsBXmrBxkBiPAq0zgWszY897hScaT2bon0t
+        4V512HtMfHeZSnaPVtG15gMfSjU2uVUIIngr6vuOgPqw4U9TL430metPOSQv+a3tG4MfxI
+        dAxZx+aPEkEW6uDvMhFb9P3AGxbYcFjjXdFncbqr2zkxN7vqa4Y1xkX635fT0HYb6EDGrg
+        MQ9u1QUsH/CH5xCwA3Kzs456K+8RgXbQxXFw5nsKqxqt7EqMitIls02SWl9PlA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679396098;
+        s=2020e; t=1679408055;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GjIQ6cqwjUWanLpYa24zwS4pnPehno8Ojf1BeB1SOW0=;
-        b=Gxt1B/nmM07316Skxb64BB9AWd4fN2+3AfUu5Wi6gLc9aZxMdFJJLOHdY3WZRgdSbCn8uZ
-        aSjhXzKVU/GEKzDQ==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=YNmBGrkXr5zAQUPF5oLNknj1qwJZo9lMq/43zPofrpg=;
+        b=CJ/2eW8gJ71i+w3f3NOl+pU8FK7geSUTY/c09zbgsfdb2Y1E8VUw7IL0605Tfb4kMWoQ8K
+        fZIZlkyWkUU/G/BA==
+From:   "tip-bot2 for David Woodhouse" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/urgent] entry: Fix noinstr warning in __enter_from_user_mode()
-Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/apic] x86/smpboot: Reference count on
+ smpboot_setup_warm_reset_vector()
+Cc:     David Woodhouse <dwmw@amazon.co.uk>,
+        Usama Arif <usama.arif@bytedance.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Kim Phillips <kim.phillips@amd.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <d8955fa6d68dc955dda19baf13ae014ae27926f5.1677369694.git.jpoimboe@kernel.org>
-References: <d8955fa6d68dc955dda19baf13ae014ae27926f5.1677369694.git.jpoimboe@kernel.org>
+In-Reply-To: <20230316222109.1940300-5-usama.arif@bytedance.com>
+References: <20230316222109.1940300-5-usama.arif@bytedance.com>
 MIME-Version: 1.0
-Message-ID: <167939609749.5837.2095598522697085146.tip-bot2@tip-bot2>
+Message-ID: <167940805503.5837.227518196726835073.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,81 +70,84 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/urgent branch of tip:
+The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     f87d28673b71b35b248231a2086f9404afbb7f28
-Gitweb:        https://git.kernel.org/tip/f87d28673b71b35b248231a2086f9404afbb7f28
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Sat, 25 Feb 2023 16:01:36 -08:00
+Commit-ID:     805ae9dc3b1c4040a842eb1714e7744af27fd30d
+Gitweb:        https://git.kernel.org/tip/805ae9dc3b1c4040a842eb1714e7744af27fd30d
+Author:        David Woodhouse <dwmw@amazon.co.uk>
+AuthorDate:    Thu, 16 Mar 2023 22:21:01 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 21 Mar 2023 11:53:16 +01:00
+CommitterDate: Tue, 21 Mar 2023 13:35:53 +01:00
 
-entry: Fix noinstr warning in __enter_from_user_mode()
+x86/smpboot: Reference count on smpboot_setup_warm_reset_vector()
 
-__enter_from_user_mode() is triggering noinstr warnings with
-CONFIG_DEBUG_PREEMPT due to its call of preempt_count_add() via
-ct_state().
+When bringing up a secondary CPU from do_boot_cpu(), the warm reset flag
+is set in CMOS and the starting IP for the trampoline written inside the
+BDA at 0x467. Once the CPU is running, the CMOS flag is unset and the
+value in the BDA cleared.
 
-The preemption disable isn't needed as interrupts are already disabled.
-And the context_tracking_enabled() check in ct_state() also isn't needed
-as that's already being done by the CT_WARN_ON().
+To allow for parallel bringup of CPUs, add a reference count to track the
+number of CPUs currently bring brought up, and clear the state only when
+the count reaches zero.
 
-Just use __ct_state() instead.
+Since the RTC spinlock is required to write to the CMOS, it can be used
+for mutual exclusion on the refcount too.
 
-Fixes the following warnings:
-
-  vmlinux.o: warning: objtool: enter_from_user_mode+0xba: call to preempt_count_add() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: syscall_enter_from_user_mode+0xf9: call to preempt_count_add() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: syscall_enter_from_user_mode_prepare+0xc7: call to preempt_count_add() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: irqentry_enter_from_user_mode+0xba: call to preempt_count_add() leaves .noinstr.text section
-
-Fixes: 171476775d32 ("context_tracking: Convert state to atomic_t")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Usama Arif <usama.arif@bytedance.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/d8955fa6d68dc955dda19baf13ae014ae27926f5.1677369694.git.jpoimboe@kernel.org
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Tested-by: Kim Phillips <kim.phillips@amd.com>
+Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Link: https://lore.kernel.org/r/20230316222109.1940300-5-usama.arif@bytedance.com
 
 ---
- include/linux/context_tracking.h       | 1 +
- include/linux/context_tracking_state.h | 2 ++
- kernel/entry/common.c                  | 2 +-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/kernel/smpboot.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/context_tracking.h b/include/linux/context_tracking.h
-index d4afa85..3a7909e 100644
---- a/include/linux/context_tracking.h
-+++ b/include/linux/context_tracking.h
-@@ -96,6 +96,7 @@ static inline void user_exit_irqoff(void) { }
- static inline int exception_enter(void) { return 0; }
- static inline void exception_exit(enum ctx_state prev_ctx) { }
- static inline int ct_state(void) { return -1; }
-+static inline int __ct_state(void) { return -1; }
- static __always_inline bool context_tracking_guest_enter(void) { return false; }
- static inline void context_tracking_guest_exit(void) { }
- #define CT_WARN_ON(cond) do { } while (0)
-diff --git a/include/linux/context_tracking_state.h b/include/linux/context_tracking_state.h
-index 4a4d56f..fdd537e 100644
---- a/include/linux/context_tracking_state.h
-+++ b/include/linux/context_tracking_state.h
-@@ -46,7 +46,9 @@ struct context_tracking {
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index b7d478d..851477f 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -121,17 +121,20 @@ int arch_update_cpu_topology(void)
+ 	return retval;
+ }
  
- #ifdef CONFIG_CONTEXT_TRACKING
- DECLARE_PER_CPU(struct context_tracking, context_tracking);
-+#endif
- 
-+#ifdef CONFIG_CONTEXT_TRACKING_USER
- static __always_inline int __ct_state(void)
++
++static unsigned int smpboot_warm_reset_vector_count;
++
+ static inline void smpboot_setup_warm_reset_vector(unsigned long start_eip)
  {
- 	return arch_atomic_read(this_cpu_ptr(&context_tracking.state)) & CT_STATE_MASK;
-diff --git a/kernel/entry/common.c b/kernel/entry/common.c
-index 846add8..1314894 100644
---- a/kernel/entry/common.c
-+++ b/kernel/entry/common.c
-@@ -21,7 +21,7 @@ static __always_inline void __enter_from_user_mode(struct pt_regs *regs)
- 	arch_enter_from_user_mode(regs);
- 	lockdep_hardirqs_off(CALLER_ADDR0);
+ 	unsigned long flags;
  
--	CT_WARN_ON(ct_state() != CONTEXT_USER);
-+	CT_WARN_ON(__ct_state() != CONTEXT_USER);
- 	user_exit_irqoff();
+ 	spin_lock_irqsave(&rtc_lock, flags);
+-	CMOS_WRITE(0xa, 0xf);
++	if (!smpboot_warm_reset_vector_count++) {
++		CMOS_WRITE(0xa, 0xf);
++		*((volatile unsigned short *)phys_to_virt(TRAMPOLINE_PHYS_HIGH)) = start_eip >> 4;
++		*((volatile unsigned short *)phys_to_virt(TRAMPOLINE_PHYS_LOW)) = start_eip & 0xf;
++	}
+ 	spin_unlock_irqrestore(&rtc_lock, flags);
+-	*((volatile unsigned short *)phys_to_virt(TRAMPOLINE_PHYS_HIGH)) =
+-							start_eip >> 4;
+-	*((volatile unsigned short *)phys_to_virt(TRAMPOLINE_PHYS_LOW)) =
+-							start_eip & 0xf;
+ }
  
- 	instrumentation_begin();
+ static inline void smpboot_restore_warm_reset_vector(void)
+@@ -143,10 +146,12 @@ static inline void smpboot_restore_warm_reset_vector(void)
+ 	 * to default values.
+ 	 */
+ 	spin_lock_irqsave(&rtc_lock, flags);
+-	CMOS_WRITE(0, 0xf);
++	if (!--smpboot_warm_reset_vector_count) {
++		CMOS_WRITE(0, 0xf);
++		*((volatile u32 *)phys_to_virt(TRAMPOLINE_PHYS_LOW)) = 0;
++	}
+ 	spin_unlock_irqrestore(&rtc_lock, flags);
+ 
+-	*((volatile u32 *)phys_to_virt(TRAMPOLINE_PHYS_LOW)) = 0;
+ }
+ 
+ /*
