@@ -2,166 +2,143 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC54E6C1CBB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Mar 2023 17:50:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B47C86C2F99
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Mar 2023 11:55:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232767AbjCTQu5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Mar 2023 12:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50208 "EHLO
+        id S229784AbjCUKzC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 21 Mar 2023 06:55:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232941AbjCTQty (ORCPT
+        with ESMTP id S229710AbjCUKzB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Mar 2023 12:49:54 -0400
+        Tue, 21 Mar 2023 06:55:01 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B5264C06;
-        Mon, 20 Mar 2023 09:42:20 -0700 (PDT)
-Date:   Mon, 20 Mar 2023 16:39:31 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C95571556B;
+        Tue, 21 Mar 2023 03:54:59 -0700 (PDT)
+Date:   Tue, 21 Mar 2023 10:54:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679330371;
+        s=2020; t=1679396098;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=SoWgfdBCQFXYRXc2gw3EFfiFz85wh0sWzg6rAlffUUo=;
-        b=tFcX9xz/+SUIhaY8xGfjC8ZXOruu/9/PIVwjffQ4xZkNXxmAE/Ve9Q0kRK4uT6cpt/nz5K
-        KUjzGStuiaFqGb78R7OwpSEpPwBW3rvuomeisTUEXpBEYnO3mlglvfcxoJL5mqzWOnAjnm
-        obyutVBFJIkVtv0mgFaauEPaTa1dbzqbEgmjNNUb09GbvoHOODNAycKibgz6ozQ9NK+ELz
-        ByFCR7qNjA94hU2dILijUfC5j+AbtDU1jA4GUXtNODSHV6hcEBu0uPbV2Vt94eP2qPaU4o
-        Xbk6Ow2SdwvyDVCfVNfCk95Bwsmp8p2BMNTbghInhnt5Fv1AL6qo1bBrNuLYEA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GjIQ6cqwjUWanLpYa24zwS4pnPehno8Ojf1BeB1SOW0=;
+        b=YKEdosmZRNeYmaqYK0fzS2Wnq9eMh4EYMBCyCUbS3Gzzwrskhw8j48gojQBF8B5MIiBPxm
+        07IaiqKYIbR3ka8f80Ey2kVJCFz91ydi2NZoM9yHCtSLUDcFn1Agx2B4ymal7OQGniR3jC
+        E25pepyQApZdEnrF/9WjKB7cGJE/jqO1PFsUs3RM3b6aW48ieXLW2WhBLtclS/y+Km9fC0
+        /zS2Kb7+npOdtvM8OGSL6aLzAJe6ddXjC1GooDukdfEi0X3mJd7a0Wcq/YEdhcZQO8c+TE
+        ZoLG6VVhLjJTJOF0AZpFSrPV5+/Z7AKxJ/ARGsTvCkkWMN7yzvfrz29awI096w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679330371;
+        s=2020e; t=1679396098;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=SoWgfdBCQFXYRXc2gw3EFfiFz85wh0sWzg6rAlffUUo=;
-        b=G+ITuhvMgbxxTfADnY6kDHw0ohsuHsifkWDz0K/8GCNdXUipw7qnKmJKZIjvkBx3iL4AhZ
-        cRYZ9OjCnaZbb5CA==
-From:   "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GjIQ6cqwjUWanLpYa24zwS4pnPehno8Ojf1BeB1SOW0=;
+        b=Gxt1B/nmM07316Skxb64BB9AWd4fN2+3AfUu5Wi6gLc9aZxMdFJJLOHdY3WZRgdSbCn8uZ
+        aSjhXzKVU/GEKzDQ==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/shstk] x86/shstk: Add Kconfig option for shadow stack
-Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Kees Cook <keescook@chromium.org>,
-        "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Pengfei Xu <pengfei.xu@intel.com>,
-        John Allen <john.allen@amd.com>, x86@kernel.org,
+Subject: [tip: core/urgent] entry: Fix noinstr warning in __enter_from_user_mode()
+Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <d8955fa6d68dc955dda19baf13ae014ae27926f5.1677369694.git.jpoimboe@kernel.org>
+References: <d8955fa6d68dc955dda19baf13ae014ae27926f5.1677369694.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <167933037103.5837.11623929936150441742.tip-bot2@tip-bot2>
+Message-ID: <167939609749.5837.2095598522697085146.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/shstk branch of tip:
+The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     f7dabb27de62e121afc32c44748328841249e68f
-Gitweb:        https://git.kernel.org/tip/f7dabb27de62e121afc32c44748328841249e68f
-Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
-AuthorDate:    Sat, 18 Mar 2023 17:14:57 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 20 Mar 2023 09:01:07 -07:00
+Commit-ID:     f87d28673b71b35b248231a2086f9404afbb7f28
+Gitweb:        https://git.kernel.org/tip/f87d28673b71b35b248231a2086f9404afbb7f28
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Sat, 25 Feb 2023 16:01:36 -08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 21 Mar 2023 11:53:16 +01:00
 
-x86/shstk: Add Kconfig option for shadow stack
+entry: Fix noinstr warning in __enter_from_user_mode()
 
-Shadow stack provides protection for applications against function return
-address corruption. It is active when the processor supports it, the
-kernel has CONFIG_X86_SHADOW_STACK enabled, and the application is built
-for the feature. This is only implemented for the 64-bit kernel. When it
-is enabled, legacy non-shadow stack applications continue to work, but
-without protection.
+__enter_from_user_mode() is triggering noinstr warnings with
+CONFIG_DEBUG_PREEMPT due to its call of preempt_count_add() via
+ct_state().
 
-Since there is another feature that utilizes CET (Kernel IBT) that will
-share implementation with shadow stacks, create CONFIG_CET to signify
-that at least one CET feature is configured.
+The preemption disable isn't needed as interrupts are already disabled.
+And the context_tracking_enabled() check in ct_state() also isn't needed
+as that's already being done by the CT_WARN_ON().
 
-Co-developed-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
+Just use __ct_state() instead.
 
-Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-Tested-by: John Allen <john.allen@amd.com>
-Tested-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/all/20230319001535.23210-3-rick.p.edgecombe%40intel.com
+Fixes the following warnings:
+
+  vmlinux.o: warning: objtool: enter_from_user_mode+0xba: call to preempt_count_add() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: syscall_enter_from_user_mode+0xf9: call to preempt_count_add() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: syscall_enter_from_user_mode_prepare+0xc7: call to preempt_count_add() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: irqentry_enter_from_user_mode+0xba: call to preempt_count_add() leaves .noinstr.text section
+
+Fixes: 171476775d32 ("context_tracking: Convert state to atomic_t")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/d8955fa6d68dc955dda19baf13ae014ae27926f5.1677369694.git.jpoimboe@kernel.org
+
 ---
- arch/x86/Kconfig           | 24 ++++++++++++++++++++++++
- arch/x86/Kconfig.assembler |  5 +++++
- 2 files changed, 29 insertions(+)
+ include/linux/context_tracking.h       | 1 +
+ include/linux/context_tracking_state.h | 2 ++
+ kernel/entry/common.c                  | 2 +-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index a825bf0..f03791b 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1851,6 +1851,11 @@ config CC_HAS_IBT
- 		  (CC_IS_CLANG && CLANG_VERSION >= 140000)) && \
- 		  $(as-instr,endbr64)
+diff --git a/include/linux/context_tracking.h b/include/linux/context_tracking.h
+index d4afa85..3a7909e 100644
+--- a/include/linux/context_tracking.h
++++ b/include/linux/context_tracking.h
+@@ -96,6 +96,7 @@ static inline void user_exit_irqoff(void) { }
+ static inline int exception_enter(void) { return 0; }
+ static inline void exception_exit(enum ctx_state prev_ctx) { }
+ static inline int ct_state(void) { return -1; }
++static inline int __ct_state(void) { return -1; }
+ static __always_inline bool context_tracking_guest_enter(void) { return false; }
+ static inline void context_tracking_guest_exit(void) { }
+ #define CT_WARN_ON(cond) do { } while (0)
+diff --git a/include/linux/context_tracking_state.h b/include/linux/context_tracking_state.h
+index 4a4d56f..fdd537e 100644
+--- a/include/linux/context_tracking_state.h
++++ b/include/linux/context_tracking_state.h
+@@ -46,7 +46,9 @@ struct context_tracking {
  
-+config X86_CET
-+	def_bool n
-+	help
-+	  CET features configured (Shadow stack or IBT)
-+
- config X86_KERNEL_IBT
- 	prompt "Indirect Branch Tracking"
- 	def_bool y
-@@ -1858,6 +1863,7 @@ config X86_KERNEL_IBT
- 	# https://github.com/llvm/llvm-project/commit/9d7001eba9c4cb311e03cd8cdc231f9e579f2d0f
- 	depends on !LD_IS_LLD || LLD_VERSION >= 140000
- 	select OBJTOOL
-+	select X86_CET
- 	help
- 	  Build the kernel with support for Indirect Branch Tracking, a
- 	  hardware support course-grain forward-edge Control Flow Integrity
-@@ -1952,6 +1958,24 @@ config X86_SGX
+ #ifdef CONFIG_CONTEXT_TRACKING
+ DECLARE_PER_CPU(struct context_tracking, context_tracking);
++#endif
  
- 	  If unsure, say N.
++#ifdef CONFIG_CONTEXT_TRACKING_USER
+ static __always_inline int __ct_state(void)
+ {
+ 	return arch_atomic_read(this_cpu_ptr(&context_tracking.state)) & CT_STATE_MASK;
+diff --git a/kernel/entry/common.c b/kernel/entry/common.c
+index 846add8..1314894 100644
+--- a/kernel/entry/common.c
++++ b/kernel/entry/common.c
+@@ -21,7 +21,7 @@ static __always_inline void __enter_from_user_mode(struct pt_regs *regs)
+ 	arch_enter_from_user_mode(regs);
+ 	lockdep_hardirqs_off(CALLER_ADDR0);
  
-+config X86_USER_SHADOW_STACK
-+	bool "X86 userspace shadow stack"
-+	depends on AS_WRUSS
-+	depends on X86_64
-+	select ARCH_USES_HIGH_VMA_FLAGS
-+	select X86_CET
-+	help
-+	  Shadow stack protection is a hardware feature that detects function
-+	  return address corruption.  This helps mitigate ROP attacks.
-+	  Applications must be enabled to use it, and old userspace does not
-+	  get protection "for free".
-+
-+	  CPUs supporting shadow stacks were first released in 2020.
-+
-+	  See Documentation/x86/shstk.rst for more information.
-+
-+	  If unsure, say N.
-+
- config EFI
- 	bool "EFI runtime service support"
- 	depends on ACPI
-diff --git a/arch/x86/Kconfig.assembler b/arch/x86/Kconfig.assembler
-index b88f784..8ad41da 100644
---- a/arch/x86/Kconfig.assembler
-+++ b/arch/x86/Kconfig.assembler
-@@ -24,3 +24,8 @@ config AS_GFNI
- 	def_bool $(as-instr,vgf2p8mulb %xmm0$(comma)%xmm1$(comma)%xmm2)
- 	help
- 	  Supported by binutils >= 2.30 and LLVM integrated assembler
-+
-+config AS_WRUSS
-+	def_bool $(as-instr,wrussq %rax$(comma)(%rbx))
-+	help
-+	  Supported by binutils >= 2.31 and LLVM integrated assembler
+-	CT_WARN_ON(ct_state() != CONTEXT_USER);
++	CT_WARN_ON(__ct_state() != CONTEXT_USER);
+ 	user_exit_irqoff();
+ 
+ 	instrumentation_begin();
