@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 095976C35A6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Mar 2023 16:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C61C6C35AA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Mar 2023 16:28:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231680AbjCUP2u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 21 Mar 2023 11:28:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55410 "EHLO
+        id S229666AbjCUP2w (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 21 Mar 2023 11:28:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231637AbjCUP2j (ORCPT
+        with ESMTP id S231661AbjCUP2l (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 21 Mar 2023 11:28:39 -0400
+        Tue, 21 Mar 2023 11:28:41 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E99912CDB;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCDF9113C4;
         Tue, 21 Mar 2023 08:28:28 -0700 (PDT)
-Date:   Tue, 21 Mar 2023 15:28:26 -0000
+Date:   Tue, 21 Mar 2023 15:28:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679412506;
+        s=2020; t=1679412507;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CHBaZ/SWGtkniVd+1PKIhIQ2oED2sm6RACVOBu3XXnU=;
-        b=PBjxsquSMrb2Q2SC3chZsJPWQAcRGj6HPtGs7D/fz+ZI4+5mGfjMZFbOC7HscuKf3lM5Fg
-        XICcQ6W+7nalIKXj7Fyl+QT0b90mXCHAl8Q7CUZakYw1djW24T/vmAPXkjsrDD1pCK9w+3
-        9FgKCPRo5mKZCrLPP188QUL65VrWB8LDGjn0cEFiIotQcbIYPMb0xMOt3K02THtEHQRl33
-        SX07acmDENZoJr+B0498NgsF56OUsKQHXFNziKTGcgGGV1rTae0pubkCq663bUgejCmDjl
-        Nk/47T6lP0nkqjJvjEwEUhq9VOZk5+vPFSqIUXPXtdYIjEUDqj06dsJdQ5/fLg==
+        bh=irVXUrexhjwqxjsn3+Qqg46NzZR3tUhU2ORep83Lm4c=;
+        b=SfGMJxfQKHYhrOVdxHg6wmpcX+M0y3AiHngHrmkIVuBcaLIP3p55fzKzzKP/EDOrdXMlKC
+        qXXJC/cGaxH8XsRAlq1LoQu+YAa4qR/bBHxF9eVBZv8FtBIBkLaeHsAILxPszxKDYn3Z2F
+        fORN1bBFilg1EkqeZXTG3mok0v7Gxo9iReP/5n/pL2HDkp3OaVK9HhNkCBEIhZvjjWzoIb
+        +dKUFt5/9OuFlfkAxOvVnZyYAieDxAg5c5U7Yu5RE+Cl0/xqgqtzvixy4u6DfUTnLiIsh2
+        et78CL8jaC/xjZ/R/EYOIpTTm52xBl0d62V8Bmibz4zUczqvJLdeAevKjViA6Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679412506;
+        s=2020e; t=1679412507;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CHBaZ/SWGtkniVd+1PKIhIQ2oED2sm6RACVOBu3XXnU=;
-        b=3YZcZxpXXUhgnqDuA7PaEacYPwKfjB5/oEdbgGK4G/c/AAk0cMmueUoE2u9NfTCh8Ok21r
-        RP55RCeH6+BirVBw==
-From:   "tip-bot2 for Dionna Glaze" <tip-bot2@linutronix.de>
+        bh=irVXUrexhjwqxjsn3+Qqg46NzZR3tUhU2ORep83Lm4c=;
+        b=ID+O38O07tAUDxidRPxV2+NGSDPjKHh1VcTUMeQ7AZzpMHYxXL7uGVN89M3Ie19P6b6YDe
+        gLkoqjcPW3jPgXCQ==
+From:   "tip-bot2 for Peter Gonda" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] virt/coco/sev-guest: Double-buffer messages
-Cc:     Dionna Glaze <dionnaglaze@google.com>,
+Subject: [tip: x86/sev] crypto: ccp - Name -1 return value as SEV_RET_NO_FW_CALL
+Cc:     Peter Gonda <pgonda@google.com>,
+        Dionna Glaze <dionnaglaze@google.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230214164638.1189804-3-dionnaglaze@google.com>
-References: <20230214164638.1189804-3-dionnaglaze@google.com>
+In-Reply-To: <20221207010210.2563293-2-dionnaglaze@google.com>
+References: <20221207010210.2563293-2-dionnaglaze@google.com>
 MIME-Version: 1.0
-Message-ID: <167941250633.5837.11136413082956254836.tip-bot2@tip-bot2>
+Message-ID: <167941250712.5837.17612643714782256267.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,97 +67,91 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     965006103a14703cc42043bbf9b5e0cdf7a468ad
-Gitweb:        https://git.kernel.org/tip/965006103a14703cc42043bbf9b5e0cdf7a468ad
-Author:        Dionna Glaze <dionnaglaze@google.com>
-AuthorDate:    Tue, 07 Mar 2023 20:24:48 +01:00
+Commit-ID:     efb339a83368ab25de1a18c0fdff85e01c13a1ea
+Gitweb:        https://git.kernel.org/tip/efb339a83368ab25de1a18c0fdff85e01c13a1ea
+Author:        Peter Gonda <pgonda@google.com>
+AuthorDate:    Tue, 07 Mar 2023 20:24:39 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 21 Mar 2023 13:20:04 +01:00
+CommitterDate: Tue, 21 Mar 2023 11:37:32 +01:00
 
-virt/coco/sev-guest: Double-buffer messages
+crypto: ccp - Name -1 return value as SEV_RET_NO_FW_CALL
 
-The encryption algorithms read and write directly to shared unencrypted
-memory, which may leak information as well as permit the host to tamper
-with the message integrity. Instead, copy whole messages in or out as
-needed before doing any computation on them.
+The PSP can return a "firmware error" code of -1 in circumstances where
+the PSP has not actually been called. To make this protocol unambiguous,
+name the value SEV_RET_NO_FW_CALL.
 
-Fixes: d5af44dde546 ("x86/sev: Provide support for SNP guest request NAEs")
+  [ bp: Massage a bit. ]
+
+Signed-off-by: Peter Gonda <pgonda@google.com>
 Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230214164638.1189804-3-dionnaglaze@google.com
+Link: https://lore.kernel.org/r/20221207010210.2563293-2-dionnaglaze@google.com
 ---
- drivers/virt/coco/sev-guest/sev-guest.c | 27 ++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ Documentation/virt/coco/sev-guest.rst | 4 ++--
+ drivers/crypto/ccp/sev-dev.c          | 8 +++++---
+ include/uapi/linux/psp-sev.h          | 7 +++++++
+ 3 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index 46f1a8d..0c7b47a 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -46,7 +46,15 @@ struct snp_guest_dev {
+diff --git a/Documentation/virt/coco/sev-guest.rst b/Documentation/virt/coco/sev-guest.rst
+index bf593e8..aa3e4c6 100644
+--- a/Documentation/virt/coco/sev-guest.rst
++++ b/Documentation/virt/coco/sev-guest.rst
+@@ -40,8 +40,8 @@ along with a description:
+ The guest ioctl should be issued on a file descriptor of the /dev/sev-guest device.
+ The ioctl accepts struct snp_user_guest_request. The input and output structure is
+ specified through the req_data and resp_data field respectively. If the ioctl fails
+-to execute due to a firmware error, then fw_err code will be set otherwise the
+-fw_err will be set to 0x00000000000000ff.
++to execute due to a firmware error, then fw_err code will be set. Otherwise, fw_err
++will be set to 0x00000000ffffffff, i.e., the lower 32-bits are -1.
  
- 	void *certs_data;
- 	struct snp_guest_crypto *crypto;
-+	/* request and response are in unencrypted memory */
- 	struct snp_guest_msg *request, *response;
-+
-+	/*
-+	 * Avoid information leakage by double-buffering shared messages
-+	 * in fields that are in regular encrypted memory.
-+	 */
-+	struct snp_guest_msg secret_request, secret_response;
-+
- 	struct snp_secrets_page_layout *layout;
- 	struct snp_req_data input;
- 	u32 *os_area_msg_seqno;
-@@ -266,14 +274,17 @@ static int dec_payload(struct snp_guest_dev *snp_dev, struct snp_guest_msg *msg,
- static int verify_and_dec_payload(struct snp_guest_dev *snp_dev, void *payload, u32 sz)
+ The firmware checks that the message sequence counter is one greater than
+ the guests message sequence counter. If guest driver fails to increment message
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index e2f2592..823c67a 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -444,10 +444,10 @@ static int __sev_init_ex_locked(int *error)
+ 
+ static int __sev_platform_init_locked(int *error)
  {
- 	struct snp_guest_crypto *crypto = snp_dev->crypto;
--	struct snp_guest_msg *resp = snp_dev->response;
--	struct snp_guest_msg *req = snp_dev->request;
-+	struct snp_guest_msg *resp = &snp_dev->secret_response;
-+	struct snp_guest_msg *req = &snp_dev->secret_request;
- 	struct snp_guest_msg_hdr *req_hdr = &req->hdr;
- 	struct snp_guest_msg_hdr *resp_hdr = &resp->hdr;
++	int rc = 0, psp_ret = SEV_RET_NO_FW_CALL;
+ 	struct psp_device *psp = psp_master;
+-	struct sev_device *sev;
+-	int rc = 0, psp_ret = -1;
+ 	int (*init_function)(int *error);
++	struct sev_device *sev;
  
- 	dev_dbg(snp_dev->dev, "response [seqno %lld type %d version %d sz %d]\n",
- 		resp_hdr->msg_seqno, resp_hdr->msg_type, resp_hdr->msg_version, resp_hdr->msg_sz);
- 
-+	/* Copy response from shared memory to encrypted memory. */
-+	memcpy(resp, snp_dev->response, sizeof(*resp));
+ 	if (!psp || !psp->sev_data)
+ 		return -ENODEV;
+@@ -475,9 +475,11 @@ static int __sev_platform_init_locked(int *error)
+ 		 * initialization function should succeed by replacing the state
+ 		 * with a reset state.
+ 		 */
+-		dev_err(sev->dev, "SEV: retrying INIT command because of SECURE_DATA_INVALID error. Retrying once to reset PSP SEV state.");
++		dev_err(sev->dev,
++"SEV: retrying INIT command because of SECURE_DATA_INVALID error. Retrying once to reset PSP SEV state.");
+ 		rc = init_function(&psp_ret);
+ 	}
 +
- 	/* Verify that the sequence counter is incremented by 1 */
- 	if (unlikely(resp_hdr->msg_seqno != (req_hdr->msg_seqno + 1)))
- 		return -EBADMSG;
-@@ -297,7 +308,7 @@ static int verify_and_dec_payload(struct snp_guest_dev *snp_dev, void *payload, 
- static int enc_payload(struct snp_guest_dev *snp_dev, u64 seqno, int version, u8 type,
- 			void *payload, size_t sz)
- {
--	struct snp_guest_msg *req = snp_dev->request;
-+	struct snp_guest_msg *req = &snp_dev->secret_request;
- 	struct snp_guest_msg_hdr *hdr = &req->hdr;
+ 	if (error)
+ 		*error = psp_ret;
  
- 	memset(req, 0, sizeof(*req));
-@@ -417,13 +428,21 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
- 	if (!seqno)
- 		return -EIO;
- 
-+	/* Clear shared memory's response for the host to populate. */
- 	memset(snp_dev->response, 0, sizeof(struct snp_guest_msg));
- 
--	/* Encrypt the userspace provided payload */
-+	/* Encrypt the userspace provided payload in snp_dev->secret_request. */
- 	rc = enc_payload(snp_dev, seqno, msg_ver, type, req_buf, req_sz);
- 	if (rc)
- 		return rc;
- 
+diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
+index 91b4c63..1c9da48 100644
+--- a/include/uapi/linux/psp-sev.h
++++ b/include/uapi/linux/psp-sev.h
+@@ -36,6 +36,13 @@ enum {
+  * SEV Firmware status code
+  */
+ typedef enum {
 +	/*
-+	 * Write the fully encrypted request to the shared unencrypted
-+	 * request page.
++	 * This error code is not in the SEV spec. Its purpose is to convey that
++	 * there was an error that prevented the SEV firmware from being called.
++	 * The SEV API error codes are 16 bits, so the -1 value will not overlap
++	 * with possible values from the specification.
 +	 */
-+	memcpy(snp_dev->request, &snp_dev->secret_request,
-+	       sizeof(snp_dev->secret_request));
-+
- 	rc = __handle_guest_request(snp_dev, exit_code, fw_err);
- 	if (rc) {
- 		if (rc == -EIO && *fw_err == SNP_GUEST_REQ_INVALID_LEN)
++	SEV_RET_NO_FW_CALL = -1,
+ 	SEV_RET_SUCCESS = 0,
+ 	SEV_RET_INVALID_PLATFORM_STATE,
+ 	SEV_RET_INVALID_GUEST_STATE,
