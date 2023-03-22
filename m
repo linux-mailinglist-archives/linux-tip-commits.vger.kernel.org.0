@@ -2,51 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A74B6C51D4
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Mar 2023 18:05:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED55B6C51D7
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Mar 2023 18:05:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231367AbjCVRFI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Mar 2023 13:05:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60312 "EHLO
+        id S231420AbjCVRFM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Mar 2023 13:05:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231214AbjCVREf (ORCPT
+        with ESMTP id S230428AbjCVREl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Mar 2023 13:04:35 -0400
+        Wed, 22 Mar 2023 13:04:41 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A0265464;
-        Wed, 22 Mar 2023 10:03:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A96A16546F;
+        Wed, 22 Mar 2023 10:03:54 -0700 (PDT)
 Date:   Wed, 22 Mar 2023 17:03:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679504587;
+        s=2020; t=1679504588;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=nBuo1olh+RupjbAp5df59j0oCBhWWlgOMcq4CCUGQTw=;
-        b=hthQgJ6tpc5PpuTAcfqBO4KeqF5GmoVxNq0q33V4BFM9OrEBkLY3V5yR+ZKxvMQgWO1fwN
-        CAgIFHobMDzKYSw22Zv4RxVYesSnYvsUxISiqOGWrw08PuojQJpKooWgt/7tDn2tNcAYoN
-        quFuZ5231KO7vOO1DsElUmNhsufQ/qyy79LfAoBSoR3FklbmuHrtSvEVXdfpuA38I723Xt
-        6++cZaPF7xQ8+83VW1X4m/HAHlCKBZ6evPpUy4a9Kjv4eTPzt+B6pERT9Tbz1LN1UT+NbW
-        g0v8E+0qhn9FVvJikeoijEin2J6xo0Za+19EwECcwqG/nnogyBoFCFoGuiAmLw==
+        bh=sFFEVBWWG4kPKKNpgGxDKlSRPvy9/vlYPq/aKAl24DE=;
+        b=jQTBROYu+lIM2pNlyVxgOBLBukFsaopjBnBl4CiRixZ+cNWm8fgGj/m60gIHRX79CyW4jj
+        lpoBQnaCpr3eDteQBccPc0pexO7vVCggQUyJo/YobSgJXaW+WEkk/ssFBJI7SHEYgRp0ZO
+        zXqVLujoDo/TYRgdKrrg9cwzlkNYeTmVToNc/+X1yQF23aL/XpA+luJNpMKkvu0df/IOAa
+        wpyYTD3/XV/XLPLuThRlrgPqBhTlqyXYH9kCU4ous6RMokJ2oywAZv6wYTyFsyL9NnYg7W
+        9r/gxrqpK8US2Joc+Aso72dV5B1alM4IqtPPwPoALKUtTshh+EKK+1BK7+Y8qw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679504587;
+        s=2020e; t=1679504588;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=nBuo1olh+RupjbAp5df59j0oCBhWWlgOMcq4CCUGQTw=;
-        b=JeRzuBzmAzz+xv45CjnKOwKD/LtAWSex5+Z0d0k3GADFV3tDHzN1TQOHxPoWuMySXovo16
-        ucsZ/TJJG8DzLzBA==
+        bh=sFFEVBWWG4kPKKNpgGxDKlSRPvy9/vlYPq/aKAl24DE=;
+        b=JtNBSHvCSXQnap2DsDUxfXRNwsK4xTQC5/FNYTt4vaceC5SFj4T5GvgsuQtsTHYVwnk19+
+        NTW1M+4YODBhWMAg==
 From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Provide arch_prctl() interface for LAM
+Subject: [tip: x86/mm] mm: Introduce untagged_addr_remote()
 Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Alexander Potapenko <glider@google.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167950458713.5837.14519789205254281026.tip-bot2@tip-bot2>
+Message-ID: <167950458787.5837.658737830777605511.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,149 +62,239 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     2f8794bd087e7958c8d1f0a0538856ca03e0bf3c
-Gitweb:        https://git.kernel.org/tip/2f8794bd087e7958c8d1f0a0538856ca03e0bf3c
+Commit-ID:     428e106ae1ad4e45d3fd6978a753db475d0d0ec9
+Gitweb:        https://git.kernel.org/tip/428e106ae1ad4e45d3fd6978a753db475d0d0ec9
 Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Sun, 12 Mar 2023 14:26:03 +03:00
+AuthorDate:    Sun, 12 Mar 2023 14:26:00 +03:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Thu, 16 Mar 2023 13:08:39 -07:00
 
-x86/mm: Provide arch_prctl() interface for LAM
+mm: Introduce untagged_addr_remote()
 
-Add a few of arch_prctl() handles:
+untagged_addr() removes tags/metadata from the address and brings it to
+the canonical form. The helper is implemented on arm64 and sparc. Both of
+them do untagging based on global rules.
 
- - ARCH_ENABLE_TAGGED_ADDR enabled LAM. The argument is required number
-   of tag bits. It is rounded up to the nearest LAM mode that can
-   provide it. For now only LAM_U57 is supported, with 6 tag bits.
+However, Linear Address Masking (LAM) on x86 introduces per-process
+settings for untagging. As a result, untagged_addr() is now only
+suitable for untagging addresses for the current proccess.
 
- - ARCH_GET_UNTAG_MASK returns untag mask. It can indicates where tag
-   bits located in the address.
-
- - ARCH_GET_MAX_TAG_BITS returns the maximum tag bits user can request.
-   Zero if LAM is not supported.
+The new helper untagged_addr_remote() has to be used when the address
+targets remote process. It requires the mmap lock for target mm to be
+taken.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Alexander Potapenko <glider@google.com>
-Link: https://lore.kernel.org/all/20230312112612.31869-9-kirill.shutemov%40linux.intel.com
+Link: https://lore.kernel.org/all/20230312112612.31869-6-kirill.shutemov%40linux.intel.com
 ---
- arch/x86/include/asm/mmu.h        |  2 +-
- arch/x86/include/uapi/asm/prctl.h |  4 ++-
- arch/x86/kernel/process.c         |  3 ++-
- arch/x86/kernel/process_64.c      | 55 +++++++++++++++++++++++++++++-
- 4 files changed, 63 insertions(+), 1 deletion(-)
+ arch/sparc/include/asm/uaccess_64.h |  2 ++
+ drivers/vfio/vfio_iommu_type1.c     |  2 +-
+ fs/proc/task_mmu.c                  |  9 +++++++--
+ include/linux/mm.h                  | 11 -----------
+ include/linux/uaccess.h             | 22 ++++++++++++++++++++++
+ mm/gup.c                            |  4 ++--
+ mm/madvise.c                        |  5 +++--
+ mm/migrate.c                        | 11 ++++++-----
+ 8 files changed, 43 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/include/asm/mmu.h b/arch/x86/include/asm/mmu.h
-index 9cac8c4..e80762e 100644
---- a/arch/x86/include/asm/mmu.h
-+++ b/arch/x86/include/asm/mmu.h
-@@ -12,6 +12,8 @@
- #define MM_CONTEXT_UPROBE_IA32		0
- /* vsyscall page is accessible on this MM */
- #define MM_CONTEXT_HAS_VSYSCALL		1
-+/* Do not allow changing LAM mode */
-+#define MM_CONTEXT_LOCK_LAM		2
+diff --git a/arch/sparc/include/asm/uaccess_64.h b/arch/sparc/include/asm/uaccess_64.h
+index 94266a5..b825a5d 100644
+--- a/arch/sparc/include/asm/uaccess_64.h
++++ b/arch/sparc/include/asm/uaccess_64.h
+@@ -8,8 +8,10 @@
+ 
+ #include <linux/compiler.h>
+ #include <linux/string.h>
++#include <linux/mm_types.h>
+ #include <asm/asi.h>
+ #include <asm/spitfire.h>
++#include <asm/pgtable.h>
+ 
+ #include <asm/processor.h>
+ #include <asm-generic/access_ok.h>
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index 493c31d..3d4dd94 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -580,7 +580,7 @@ static int vaddr_get_pfns(struct mm_struct *mm, unsigned long vaddr,
+ 		goto done;
+ 	}
+ 
+-	vaddr = untagged_addr(vaddr);
++	vaddr = untagged_addr_remote(mm, vaddr);
+ 
+ retry:
+ 	vma = vma_lookup(mm, vaddr);
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 6a96e17..29fd6b1 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1689,8 +1689,13 @@ static ssize_t pagemap_read(struct file *file, char __user *buf,
+ 
+ 	/* watch out for wraparound */
+ 	start_vaddr = end_vaddr;
+-	if (svpfn <= (ULONG_MAX >> PAGE_SHIFT))
+-		start_vaddr = untagged_addr(svpfn << PAGE_SHIFT);
++	if (svpfn <= (ULONG_MAX >> PAGE_SHIFT)) {
++		ret = mmap_read_lock_killable(mm);
++		if (ret)
++			goto out_free;
++		start_vaddr = untagged_addr_remote(mm, svpfn << PAGE_SHIFT);
++		mmap_read_unlock(mm);
++	}
+ 
+ 	/* Ensure the address is inside the task */
+ 	if (start_vaddr > mm->task_size)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 1f79667..289ae4c 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -96,17 +96,6 @@ extern int mmap_rnd_compat_bits __read_mostly;
+ #include <asm/page.h>
+ #include <asm/processor.h>
+ 
+-/*
+- * Architectures that support memory tagging (assigning tags to memory regions,
+- * embedding these tags into addresses that point to these memory regions, and
+- * checking that the memory and the pointer tags match on memory accesses)
+- * redefine this macro to strip tags from pointers.
+- * It's defined as noop for architectures that don't support memory tagging.
+- */
+-#ifndef untagged_addr
+-#define untagged_addr(addr) (addr)
+-#endif
+-
+ #ifndef __pa_symbol
+ #define __pa_symbol(x)  __pa(RELOC_HIDE((unsigned long)(x), 0))
+ #endif
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index ab97281..3064314 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -11,6 +11,28 @@
+ #include <asm/uaccess.h>
  
  /*
-  * x86 has arch-specific MMU state beyond what lives in mm_struct.
-diff --git a/arch/x86/include/uapi/asm/prctl.h b/arch/x86/include/uapi/asm/prctl.h
-index 500b96e..a31e27b 100644
---- a/arch/x86/include/uapi/asm/prctl.h
-+++ b/arch/x86/include/uapi/asm/prctl.h
-@@ -20,4 +20,8 @@
- #define ARCH_MAP_VDSO_32		0x2002
- #define ARCH_MAP_VDSO_64		0x2003
- 
-+#define ARCH_GET_UNTAG_MASK		0x4001
-+#define ARCH_ENABLE_TAGGED_ADDR		0x4002
-+#define ARCH_GET_MAX_TAG_BITS		0x4003
-+
- #endif /* _ASM_X86_PRCTL_H */
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index bbc8c4c..50d9507 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -163,6 +163,9 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
- 
- 	savesegment(es, p->thread.es);
- 	savesegment(ds, p->thread.ds);
-+
-+	if (p->mm && (clone_flags & (CLONE_VM | CLONE_VFORK)) == CLONE_VM)
-+		set_bit(MM_CONTEXT_LOCK_LAM, &p->mm->context.flags);
- #else
- 	p->thread.sp0 = (unsigned long) (childregs + 1);
- 	savesegment(gs, p->thread.gs);
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index cd34bcf..186f34a 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -743,6 +743,48 @@ static long prctl_map_vdso(const struct vdso_image *image, unsigned long addr)
- }
- #endif
- 
-+#ifdef CONFIG_ADDRESS_MASKING
-+
-+#define LAM_U57_BITS 6
-+
-+static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_LAM))
-+		return -ENODEV;
-+
-+	/* PTRACE_ARCH_PRCTL */
-+	if (current->mm != mm)
-+		return -EINVAL;
-+
-+	if (mmap_write_lock_killable(mm))
-+		return -EINTR;
-+
-+	if (test_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags)) {
-+		mmap_write_unlock(mm);
-+		return -EBUSY;
-+	}
-+
-+	if (!nr_bits) {
-+		mmap_write_unlock(mm);
-+		return -EINVAL;
-+	} else if (nr_bits <= LAM_U57_BITS) {
-+		mm->context.lam_cr3_mask = X86_CR3_LAM_U57;
-+		mm->context.untag_mask =  ~GENMASK(62, 57);
-+	} else {
-+		mmap_write_unlock(mm);
-+		return -EINVAL;
-+	}
-+
-+	write_cr3(__read_cr3() | mm->context.lam_cr3_mask);
-+	set_tlbstate_lam_mode(mm);
-+	set_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags);
-+
-+	mmap_write_unlock(mm);
-+
-+	return 0;
-+}
++ * Architectures that support memory tagging (assigning tags to memory regions,
++ * embedding these tags into addresses that point to these memory regions, and
++ * checking that the memory and the pointer tags match on memory accesses)
++ * redefine this macro to strip tags from pointers.
++ *
++ * Passing down mm_struct allows to define untagging rules on per-process
++ * basis.
++ *
++ * It's defined as noop for architectures that don't support memory tagging.
++ */
++#ifndef untagged_addr
++#define untagged_addr(addr) (addr)
 +#endif
 +
- long do_arch_prctl_64(struct task_struct *task, int option, unsigned long arg2)
- {
- 	int ret = 0;
-@@ -830,7 +872,18 @@ long do_arch_prctl_64(struct task_struct *task, int option, unsigned long arg2)
- 	case ARCH_MAP_VDSO_64:
- 		return prctl_map_vdso(&vdso_image_64, arg2);
- #endif
++#ifndef untagged_addr_remote
++#define untagged_addr_remote(mm, addr)	({		\
++	mmap_assert_locked(mm);				\
++	untagged_addr(addr);				\
++})
++#endif
++
++/*
+  * Architectures should provide two primitives (raw_copy_{to,from}_user())
+  * and get rid of their private instances of copy_{to,from}_user() and
+  * __copy_{to,from}_user{,_inatomic}().
+diff --git a/mm/gup.c b/mm/gup.c
+index eab18ba..5ee8b68 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1085,7 +1085,7 @@ static long __get_user_pages(struct mm_struct *mm,
+ 	if (!nr_pages)
+ 		return 0;
+ 
+-	start = untagged_addr(start);
++	start = untagged_addr_remote(mm, start);
+ 
+ 	VM_BUG_ON(!!pages != !!(gup_flags & (FOLL_GET | FOLL_PIN)));
+ 
+@@ -1259,7 +1259,7 @@ int fixup_user_fault(struct mm_struct *mm,
+ 	struct vm_area_struct *vma;
+ 	vm_fault_t ret;
+ 
+-	address = untagged_addr(address);
++	address = untagged_addr_remote(mm, address);
+ 
+ 	if (unlocked)
+ 		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 340125d..d4b67f3 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -1402,8 +1402,6 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
+ 	size_t len;
+ 	struct blk_plug plug;
+ 
+-	start = untagged_addr(start);
 -
-+#ifdef CONFIG_ADDRESS_MASKING
-+	case ARCH_GET_UNTAG_MASK:
-+		return put_user(task->mm->context.untag_mask,
-+				(unsigned long __user *)arg2);
-+	case ARCH_ENABLE_TAGGED_ADDR:
-+		return prctl_enable_tagged_addr(task->mm, arg2);
-+	case ARCH_GET_MAX_TAG_BITS:
-+		if (!cpu_feature_enabled(X86_FEATURE_LAM))
-+			return put_user(0, (unsigned long __user *)arg2);
-+		else
-+			return put_user(LAM_U57_BITS, (unsigned long __user *)arg2);
-+#endif
- 	default:
- 		ret = -EINVAL;
- 		break;
+ 	if (!madvise_behavior_valid(behavior))
+ 		return -EINVAL;
+ 
+@@ -1435,6 +1433,9 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
+ 		mmap_read_lock(mm);
+ 	}
+ 
++	start = untagged_addr_remote(mm, start);
++	end = start + len;
++
+ 	blk_start_plug(&plug);
+ 	error = madvise_walk_vmas(mm, start, end, behavior,
+ 			madvise_vma_behavior);
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 98f1c11..8cd11bc 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2097,15 +2097,18 @@ static int do_move_pages_to_node(struct mm_struct *mm,
+  *         target node
+  *     1 - when it has been queued
+  */
+-static int add_page_for_migration(struct mm_struct *mm, unsigned long addr,
++static int add_page_for_migration(struct mm_struct *mm, const void __user *p,
+ 		int node, struct list_head *pagelist, bool migrate_all)
+ {
+ 	struct vm_area_struct *vma;
++	unsigned long addr;
+ 	struct page *page;
+ 	int err;
+ 	bool isolated;
+ 
+ 	mmap_read_lock(mm);
++	addr = (unsigned long)untagged_addr_remote(mm, p);
++
+ 	err = -EFAULT;
+ 	vma = vma_lookup(mm, addr);
+ 	if (!vma || !vma_migratable(vma))
+@@ -2211,7 +2214,6 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
+ 
+ 	for (i = start = 0; i < nr_pages; i++) {
+ 		const void __user *p;
+-		unsigned long addr;
+ 		int node;
+ 
+ 		err = -EFAULT;
+@@ -2219,7 +2221,6 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
+ 			goto out_flush;
+ 		if (get_user(node, nodes + i))
+ 			goto out_flush;
+-		addr = (unsigned long)untagged_addr(p);
+ 
+ 		err = -ENODEV;
+ 		if (node < 0 || node >= MAX_NUMNODES)
+@@ -2247,8 +2248,8 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
+ 		 * Errors in the page lookup or isolation are not fatal and we simply
+ 		 * report them via status
+ 		 */
+-		err = add_page_for_migration(mm, addr, current_node,
+-				&pagelist, flags & MPOL_MF_MOVE_ALL);
++		err = add_page_for_migration(mm, p, current_node, &pagelist,
++					     flags & MPOL_MF_MOVE_ALL);
+ 
+ 		if (err > 0) {
+ 			/* The page is successfully queued for migration */
