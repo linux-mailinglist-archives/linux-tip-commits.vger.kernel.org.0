@@ -2,52 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43AB56C51BB
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Mar 2023 18:03:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CFD86C51CA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Mar 2023 18:04:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231244AbjCVRDw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Mar 2023 13:03:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59356 "EHLO
+        id S231154AbjCVREh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Mar 2023 13:04:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231215AbjCVRDa (ORCPT
+        with ESMTP id S231396AbjCVREK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Mar 2023 13:03:30 -0400
+        Wed, 22 Mar 2023 13:04:10 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C72B41084;
-        Wed, 22 Mar 2023 10:03:10 -0700 (PDT)
-Date:   Wed, 22 Mar 2023 17:03:05 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 210226487D;
+        Wed, 22 Mar 2023 10:03:37 -0700 (PDT)
+Date:   Wed, 22 Mar 2023 17:03:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679504586;
+        s=2020; t=1679504587;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=7cTypdVlEk+cUcIVwRk8ebFLuEnuuETWIvg7bhwhzjI=;
-        b=4NU7D+ZClc7Yky2M4EGdfufkIAyS6aXeTwX14gfOVqvMcfA+GYf1McFdY6bTSsTBgPm71Y
-        1jxoL9oLw5fEM/mUuCKLo9EEzJcp7KhydUJuJIxdGBk+uycuMXLw5AiSY+B+WStqCkoqpo
-        ZrCLrhSDOx9RR0wiUz3u56pmJr3zW/Fz3QocuseMgB0WJMK8blhR1bIRU1A6vX2LYGYK9Q
-        ff1Lcu7BcSShl3hrboE20eJK4nCQVxNe03gvuUdlXzx357PgJKkb7t3HjRTpteztECCKbw
-        wMY4F12XUIImyMQM40HEC3MjHzHOzf8AjjMh+PdrKdG6V9hk9SW/RouUAjJeEg==
+        bh=A3vbjjTd6w880FIrFd3ktS7VWOQqghvEhJ0Trk6NZbg=;
+        b=sxdFYR+Ep6qvTE+N/sZvDrkXaHvjlYVx4NaWVk9GkwLQZ5hvmhc+2yOC7ir4lmFN5pSEeV
+        Kh/434rXndO68bkpu5W3n2BY/mnOUFj4CbYSMg27/wb8RBOZAaICGoTbIyTmiVxlxcfZkP
+        FZMz7DfQB5cjqbNC8st/eETVB1PtExjVXbu10s/0FLNJccJv2QLU8XGKrI0gQcU+rXIdXR
+        Ywxmx9JPHjsZ7bFQmcJn6fagGuUxGyGuRXeB7mZoIiF2yBw1SIyKZvDvEU6yBoO0NkS6Kj
+        xxvM+cXA0f/PlsUnm1K8BWMB8ocLfhj3dsD8vtKi5SuzBoGZaP08FzvdgkcsBQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679504586;
+        s=2020e; t=1679504587;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=7cTypdVlEk+cUcIVwRk8ebFLuEnuuETWIvg7bhwhzjI=;
-        b=DXgfH08PvwcJ33+yMkWnjjh2ltvwUNSffB+Nk/jiRF5Q8DJbNGLaq5zv6ZiPbK91GoFnRw
-        55tzmB6J1u1JjWBQ==
-From:   "tip-bot2 for Weihong Zhang" <tip-bot2@linutronix.de>
+        bh=A3vbjjTd6w880FIrFd3ktS7VWOQqghvEhJ0Trk6NZbg=;
+        b=B44Zca6ekZPshu8G7tChoStrAerOX3+2rapFxvKhBUNB4yPJKc1khPtZzrkD/7qjbYPlpm
+        fumJEEnen9qtg/CA==
+From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] selftests/x86/lam: Add mmap and SYSCALL test cases for
- linear-address masking
-Cc:     Weihong Zhang <weihong.zhang@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+Subject: [tip: x86/mm] iommu/sva: Replace pasid_valid() helper with mm_valid_pasid()
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167950458566.5837.8050835433502044350.tip-bot2@tip-bot2>
+Message-ID: <167950458651.5837.17431637312383085049.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,267 +61,135 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     e67876962ecfc5c8cb1d871d8f66ad3b21dbf065
-Gitweb:        https://git.kernel.org/tip/e67876962ecfc5c8cb1d871d8f66ad3b21dbf065
-Author:        Weihong Zhang <weihong.zhang@intel.com>
-AuthorDate:    Sun, 12 Mar 2023 14:26:08 +03:00
+Commit-ID:     400b9b93441cd4e2fe824a70140f3d5a2a9c802b
+Gitweb:        https://git.kernel.org/tip/400b9b93441cd4e2fe824a70140f3d5a2a9c802b
+Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+AuthorDate:    Sun, 12 Mar 2023 14:26:05 +03:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Thu, 16 Mar 2023 13:08:40 -07:00
 
-selftests/x86/lam: Add mmap and SYSCALL test cases for linear-address masking
+iommu/sva: Replace pasid_valid() helper with mm_valid_pasid()
 
-Add mmap and SYSCALL test cases.
+Kernel has few users of pasid_valid() and all but one checks if the
+process has PASID allocated. The helper takes ioasid_t as the input.
 
-SYSCALL test cases:
+Replace the helper with mm_valid_pasid() that takes mm_struct as the
+argument. The only call that checks PASID that is not tied to mm_struct
+is open-codded now.
 
- - LAM supports set metadata in high bits 62:57 (LAM_U57) of a user pointer, pass
-   the pointer to SYSCALL, SYSCALL can dereference the pointer and return correct
-   result.
+This is preparatory patch. It helps avoid ifdeffery: no need to
+dereference mm->pasid in generic code to check if the process has PASID.
 
- - Disable LAM, pass a pointer with metadata in high bits to SYSCALL,
-   SYSCALL returns -1 (EFAULT).
-
-MMAP test cases:
-
- - Enable LAM_U57, MMAP with low address (below bits 47), set metadata
-   in high bits of the address, dereference the address should be
-   allowed.
-
- - Enable LAM_U57, MMAP with high address (above bits 47), set metadata
-   in high bits of the address, dereference the address should be
-   allowed.
-
-Signed-off-by: Weihong Zhang <weihong.zhang@intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/20230312112612.31869-14-kirill.shutemov%40linux.intel.com
+Link: https://lore.kernel.org/all/20230312112612.31869-11-kirill.shutemov%40linux.intel.com
 ---
- tools/testing/selftests/x86/lam.c | 144 ++++++++++++++++++++++++++++-
- 1 file changed, 140 insertions(+), 4 deletions(-)
+ arch/x86/kernel/traps.c   |  6 +++---
+ drivers/iommu/iommu-sva.c |  4 ++--
+ include/linux/ioasid.h    |  9 ---------
+ include/linux/sched/mm.h  |  8 +++++++-
+ 4 files changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/tools/testing/selftests/x86/lam.c b/tools/testing/selftests/x86/lam.c
-index 268c1d2..39ebfc5 100644
---- a/tools/testing/selftests/x86/lam.c
-+++ b/tools/testing/selftests/x86/lam.c
-@@ -7,6 +7,7 @@
- #include <signal.h>
- #include <setjmp.h>
- #include <sys/mman.h>
-+#include <sys/utsname.h>
- #include <sys/wait.h>
- #include <inttypes.h>
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index d317dc3..8b83d8f 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -671,15 +671,15 @@ static bool try_fixup_enqcmd_gp(void)
+ 	if (!cpu_feature_enabled(X86_FEATURE_ENQCMD))
+ 		return false;
  
-@@ -29,11 +30,18 @@
- /* Specified test function bits */
- #define FUNC_MALLOC             0x1
- #define FUNC_BITS               0x2
-+#define FUNC_MMAP               0x4
-+#define FUNC_SYSCALL            0x8
+-	pasid = current->mm->pasid;
+-
+ 	/*
+ 	 * If the mm has not been allocated a
+ 	 * PASID, the #GP can not be fixed up.
+ 	 */
+-	if (!pasid_valid(pasid))
++	if (!mm_valid_pasid(current->mm))
+ 		return false;
  
--#define TEST_MASK               0x3
-+#define TEST_MASK               0xf
++	pasid = current->mm->pasid;
 +
-+#define LOW_ADDR                (0x1UL << 30)
-+#define HIGH_ADDR               (0x3UL << 48)
+ 	/*
+ 	 * Did this thread already have its PASID activated?
+ 	 * If so, the #GP must be from something else.
+diff --git a/drivers/iommu/iommu-sva.c b/drivers/iommu/iommu-sva.c
+index 24bf9b2..4ee2929 100644
+--- a/drivers/iommu/iommu-sva.c
++++ b/drivers/iommu/iommu-sva.c
+@@ -34,14 +34,14 @@ int iommu_sva_alloc_pasid(struct mm_struct *mm, ioasid_t min, ioasid_t max)
  
- #define MALLOC_LEN              32
+ 	mutex_lock(&iommu_sva_lock);
+ 	/* Is a PASID already associated with this mm? */
+-	if (pasid_valid(mm->pasid)) {
++	if (mm_valid_pasid(mm)) {
+ 		if (mm->pasid < min || mm->pasid >= max)
+ 			ret = -EOVERFLOW;
+ 		goto out;
+ 	}
  
-+#define PAGE_SIZE               (4 << 10)
+ 	pasid = ioasid_alloc(&iommu_sva_pasid, min, max, mm);
+-	if (!pasid_valid(pasid))
++	if (pasid == INVALID_IOASID)
+ 		ret = -ENOMEM;
+ 	else
+ 		mm_pasid_set(mm, pasid);
+diff --git a/include/linux/ioasid.h b/include/linux/ioasid.h
+index af1c9d6..836ae09 100644
+--- a/include/linux/ioasid.h
++++ b/include/linux/ioasid.h
+@@ -40,10 +40,6 @@ void *ioasid_find(struct ioasid_set *set, ioasid_t ioasid,
+ int ioasid_register_allocator(struct ioasid_allocator_ops *allocator);
+ void ioasid_unregister_allocator(struct ioasid_allocator_ops *allocator);
+ int ioasid_set_data(ioasid_t ioasid, void *data);
+-static inline bool pasid_valid(ioasid_t ioasid)
+-{
+-	return ioasid != INVALID_IOASID;
+-}
+ 
+ #else /* !CONFIG_IOASID */
+ static inline ioasid_t ioasid_alloc(struct ioasid_set *set, ioasid_t min,
+@@ -74,10 +70,5 @@ static inline int ioasid_set_data(ioasid_t ioasid, void *data)
+ 	return -ENOTSUPP;
+ }
+ 
+-static inline bool pasid_valid(ioasid_t ioasid)
+-{
+-	return false;
+-}
+-
+ #endif /* CONFIG_IOASID */
+ #endif /* __LINUX_IOASID_H */
+diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+index 2a24361..b69fe7e 100644
+--- a/include/linux/sched/mm.h
++++ b/include/linux/sched/mm.h
+@@ -457,6 +457,11 @@ static inline void mm_pasid_init(struct mm_struct *mm)
+ 	mm->pasid = INVALID_IOASID;
+ }
+ 
++static inline bool mm_valid_pasid(struct mm_struct *mm)
++{
++	return mm->pasid != INVALID_IOASID;
++}
 +
- struct testcases {
- 	unsigned int later;
- 	int expected; /* 2: SIGSEGV Error; 1: other errors */
-@@ -49,6 +57,7 @@ jmp_buf segv_env;
- static void segv_handler(int sig)
+ /* Associate a PASID with an mm_struct: */
+ static inline void mm_pasid_set(struct mm_struct *mm, u32 pasid)
  {
- 	ksft_print_msg("Get segmentation fault(%d).", sig);
-+
- 	siglongjmp(segv_env, 1);
- }
+@@ -465,13 +470,14 @@ static inline void mm_pasid_set(struct mm_struct *mm, u32 pasid)
  
-@@ -61,6 +70,16 @@ static inline int cpu_has_lam(void)
- 	return (cpuinfo[0] & (1 << 26));
- }
- 
-+/* Check 5-level page table feature in CPUID.(EAX=07H, ECX=00H):ECX.[bit 16] */
-+static inline int cpu_has_la57(void)
-+{
-+	unsigned int cpuinfo[4];
-+
-+	__cpuid_count(0x7, 0, cpuinfo[0], cpuinfo[1], cpuinfo[2], cpuinfo[3]);
-+
-+	return (cpuinfo[2] & (1 << 16));
-+}
-+
- /*
-  * Set tagged address and read back untag mask.
-  * check if the untagged mask is expected.
-@@ -213,6 +232,68 @@ static int handle_malloc(struct testcases *test)
- 	return ret;
- }
- 
-+static int handle_mmap(struct testcases *test)
-+{
-+	void *ptr;
-+	unsigned int flags = MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED;
-+	int ret = 0;
-+
-+	if (test->later == 0 && test->lam != 0)
-+		if (set_lam(test->lam) != 0)
-+			return 1;
-+
-+	ptr = mmap((void *)test->addr, PAGE_SIZE, PROT_READ | PROT_WRITE,
-+		   flags, -1, 0);
-+	if (ptr == MAP_FAILED) {
-+		if (test->addr == HIGH_ADDR)
-+			if (!cpu_has_la57())
-+				return 3; /* unsupport LA57 */
-+		return 1;
-+	}
-+
-+	if (test->later != 0 && test->lam != 0)
-+		if (set_lam(test->lam) != 0)
-+			ret = 1;
-+
-+	if (ret == 0) {
-+		if (sigsetjmp(segv_env, 1) == 0) {
-+			signal(SIGSEGV, segv_handler);
-+			ret = handle_lam_test(ptr, test->lam);
-+		} else {
-+			ret = 2;
-+		}
-+	}
-+
-+	munmap(ptr, PAGE_SIZE);
-+	return ret;
-+}
-+
-+static int handle_syscall(struct testcases *test)
-+{
-+	struct utsname unme, *pu;
-+	int ret = 0;
-+
-+	if (test->later == 0 && test->lam != 0)
-+		if (set_lam(test->lam) != 0)
-+			return 1;
-+
-+	if (sigsetjmp(segv_env, 1) == 0) {
-+		signal(SIGSEGV, segv_handler);
-+		pu = (struct utsname *)set_metadata((uint64_t)&unme, test->lam);
-+		ret = uname(pu);
-+		if (ret < 0)
-+			ret = 1;
-+	} else {
-+		ret = 2;
-+	}
-+
-+	if (test->later != 0 && test->lam != 0)
-+		if (set_lam(test->lam) != -1 && ret == 0)
-+			ret = 1;
-+
-+	return ret;
-+}
-+
- static int fork_test(struct testcases *test)
+ static inline void mm_pasid_drop(struct mm_struct *mm)
  {
- 	int ret, child_ret;
-@@ -241,13 +322,20 @@ static void run_test(struct testcases *test, int count)
- 		struct testcases *t = test + i;
- 
- 		/* fork a process to run test case */
-+		tests_cnt++;
- 		ret = fork_test(t);
-+
-+		/* return 3 is not support LA57, the case should be skipped */
-+		if (ret == 3) {
-+			ksft_test_result_skip(t->msg);
-+			continue;
-+		}
-+
- 		if (ret != 0)
- 			ret = (t->expected == ret);
- 		else
- 			ret = !(t->expected);
- 
--		tests_cnt++;
- 		ksft_test_result(ret, t->msg);
+-	if (pasid_valid(mm->pasid)) {
++	if (mm_valid_pasid(mm)) {
+ 		ioasid_free(mm->pasid);
+ 		mm->pasid = INVALID_IOASID;
  	}
  }
-@@ -268,7 +356,6 @@ static struct testcases malloc_cases[] = {
- 	},
- };
- 
--
- static struct testcases bits_cases[] = {
- 	{
- 		.test_func = handle_max_bits,
-@@ -276,11 +363,54 @@ static struct testcases bits_cases[] = {
- 	},
- };
- 
-+static struct testcases syscall_cases[] = {
-+	{
-+		.later = 0,
-+		.lam = LAM_U57_BITS,
-+		.test_func = handle_syscall,
-+		.msg = "SYSCALL: LAM_U57. syscall with metadata\n",
-+	},
-+	{
-+		.later = 1,
-+		.expected = 1,
-+		.lam = LAM_U57_BITS,
-+		.test_func = handle_syscall,
-+		.msg = "SYSCALL:[Negative] Disable LAM. Dereferencing pointer with metadata.\n",
-+	},
-+};
-+
-+static struct testcases mmap_cases[] = {
-+	{
-+		.later = 1,
-+		.expected = 0,
-+		.lam = LAM_U57_BITS,
-+		.addr = HIGH_ADDR,
-+		.test_func = handle_mmap,
-+		.msg = "MMAP: First mmap high address, then set LAM_U57.\n",
-+	},
-+	{
-+		.later = 0,
-+		.expected = 0,
-+		.lam = LAM_U57_BITS,
-+		.addr = HIGH_ADDR,
-+		.test_func = handle_mmap,
-+		.msg = "MMAP: First LAM_U57, then High address.\n",
-+	},
-+	{
-+		.later = 0,
-+		.expected = 0,
-+		.lam = LAM_U57_BITS,
-+		.addr = LOW_ADDR,
-+		.test_func = handle_mmap,
-+		.msg = "MMAP: First LAM_U57, then Low address.\n",
-+	},
-+};
-+
- static void cmd_help(void)
- {
- 	printf("usage: lam [-h] [-t test list]\n");
- 	printf("\t-t test list: run tests specified in the test list, default:0x%x\n", TEST_MASK);
--	printf("\t\t0x1:malloc; 0x2:max_bits;\n");
-+	printf("\t\t0x1:malloc; 0x2:max_bits; 0x4:mmap; 0x8:syscall.\n");
- 	printf("\t-h: help\n");
- }
- 
-@@ -320,6 +450,12 @@ int main(int argc, char **argv)
- 	if (tests & FUNC_BITS)
- 		run_test(bits_cases, ARRAY_SIZE(bits_cases));
- 
-+	if (tests & FUNC_MMAP)
-+		run_test(mmap_cases, ARRAY_SIZE(mmap_cases));
-+
-+	if (tests & FUNC_SYSCALL)
-+		run_test(syscall_cases, ARRAY_SIZE(syscall_cases));
-+
- 	ksft_set_plan(tests_cnt);
- 
- 	return ksft_exit_pass();
+ #else
+ static inline void mm_pasid_init(struct mm_struct *mm) {}
++static inline bool mm_valid_pasid(struct mm_struct *mm) { return false; }
+ static inline void mm_pasid_set(struct mm_struct *mm, u32 pasid) {}
+ static inline void mm_pasid_drop(struct mm_struct *mm) {}
+ #endif
