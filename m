@@ -2,51 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFC556C51DB
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Mar 2023 18:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C00336C51D9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Mar 2023 18:05:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231433AbjCVRFQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S230473AbjCVRFQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 22 Mar 2023 13:05:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59218 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231445AbjCVREl (ORCPT
+        with ESMTP id S230033AbjCVREl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 22 Mar 2023 13:04:41 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A3765C66;
-        Wed, 22 Mar 2023 10:03:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4EC65472;
+        Wed, 22 Mar 2023 10:03:54 -0700 (PDT)
 Date:   Wed, 22 Mar 2023 17:03:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1679504588;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=ouOec+7NOCL/6HfsxTzOoVcV75az3tYHPP2L2vmUoZA=;
-        b=n21G6Kxpw42j/1VCtF4t5tEwrP48rtk6sTOHu083Adw8g1MvT1OjRSlDCJBPQUBU8ShKiR
-        ec0Yo7FTybspMoA9sQT+fw1eiHGaS5ssLWgSqnsvzS7QysQpbN3yifzkX6UXfAZPt2zWJZ
-        MkRPN/P6myZvTuDGNF12uwry6UIOGDCM2N2J9T5fCcRLEvhVbdnPm0zyc7huCpWzA44kTa
-        lNbKBwpM7q1zeuZnI0+VqA8PyXwPl/vptygZL5DwNeIXcGN+odw1HNB+QEsDGCRaPajwMi
-        iKS8jf2GA1S7OPsdIDyJQcyXi5b8WKj3F9swTToZwAq47xspPaBC1JoaDI9zqQ==
+        bh=zna8kIqZxCPhY+jAi7q//tH5wPTOcoLx02DFFyGdkLE=;
+        b=0QWOC+EK7O9mF4qUzJIUO2GaoozHyJO3A5+nC/2zC9cfMkMBfzILhzI5ZRlhxtG+UduYpq
+        Rs2an0Lmy32JY0324ttJI2QSAy5CDkoDfOawh2bQ7aIjXKm3yBdLVQTnL6jQlv8eXaX3pL
+        gVlvZyxI/z0Ni7M8W8u3XJdrI8DdAlBNVsDQ6dAqV05xXtr8mMpLsQm8jytdKb1ZKXzuIM
+        yj2qhd6FParGAV2e1xFAYYBNPbadKWX4uSAYup1sl0ISLbzrUVvBYLxMBO9wl1RJAeQoMr
+        jsAc4r5k1SX29ErxCzjqyYa/g8jp9s013VZcC3X3BxJo8RWvQkOXBJFh3Pmaag==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1679504588;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=ouOec+7NOCL/6HfsxTzOoVcV75az3tYHPP2L2vmUoZA=;
-        b=MhiYw92RtqGs0b7HYWIRVDUYit1ig0fr7Lpt5zxWnZFLJTdk8qD/KViBP4pkDGF5iIlgNh
-        rMgIM5mndl59ODBA==
+        bh=zna8kIqZxCPhY+jAi7q//tH5wPTOcoLx02DFFyGdkLE=;
+        b=00dMIGQODHdI5fyPK4EE9m+/dEuJ2I36GTRNwyRjF5Oge8VB9iyEEQoBKcRoPzxyQ5HeYO
+        EqOfhRJMnBcZdKDw==
 From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Handle LAM on context switch
+Subject: [tip: x86/mm] x86: CPUID and CR3/CR4 flags for Linear Address Masking
 Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Alexander Potapenko <glider@google.com>, x86@kernel.org,
+        Alexander Potapenko <glider@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167950458813.5837.14637148399548578284.tip-bot2@tip-bot2>
+Message-ID: <167950458837.5837.5652718533818017822.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,318 +62,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     82721d8b25d76c5a6f4c6cf4ce4e5b33788820a1
-Gitweb:        https://git.kernel.org/tip/82721d8b25d76c5a6f4c6cf4ce4e5b33788820a1
+Commit-ID:     6449dcb0cac738219d13c618af7fd8664735f99d
+Gitweb:        https://git.kernel.org/tip/6449dcb0cac738219d13c618af7fd8664735f99d
 Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Sun, 12 Mar 2023 14:25:59 +03:00
+AuthorDate:    Sun, 12 Mar 2023 14:25:58 +03:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Thu, 16 Mar 2023 13:08:39 -07:00
 
-x86/mm: Handle LAM on context switch
+x86: CPUID and CR3/CR4 flags for Linear Address Masking
 
-Linear Address Masking mode for userspace pointers encoded in CR3 bits.
-The mode is selected per-process and stored in mm_context_t.
+Enumerate Linear Address Masking and provide defines for CR3 and CR4
+flags.
 
-switch_mm_irqs_off() now respects selected LAM mode and constructs CR3
-accordingly.
-
-The active LAM mode gets recorded in the tlb_state.
+The new CONFIG_ADDRESS_MASKING option enables the feature support in
+kernel.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Alexander Potapenko <glider@google.com>
-Link: https://lore.kernel.org/all/20230312112612.31869-5-kirill.shutemov%40linux.intel.com
+Link: https://lore.kernel.org/all/20230312112612.31869-4-kirill.shutemov%40linux.intel.com
 ---
- arch/x86/include/asm/mmu.h         |  5 +++-
- arch/x86/include/asm/mmu_context.h | 24 +++++++++++++-
- arch/x86/include/asm/tlbflush.h    | 38 ++++++++++++++++++++-
- arch/x86/mm/tlb.c                  | 53 ++++++++++++++++++++---------
- 4 files changed, 103 insertions(+), 17 deletions(-)
+ arch/x86/Kconfig                            | 11 +++++++++++
+ arch/x86/include/asm/cpufeatures.h          |  1 +
+ arch/x86/include/asm/processor-flags.h      |  2 ++
+ arch/x86/include/uapi/asm/processor-flags.h |  6 ++++++
+ 4 files changed, 20 insertions(+)
 
-diff --git a/arch/x86/include/asm/mmu.h b/arch/x86/include/asm/mmu.h
-index efa3eae..22fc9fb 100644
---- a/arch/x86/include/asm/mmu.h
-+++ b/arch/x86/include/asm/mmu.h
-@@ -42,6 +42,11 @@ typedef struct {
- 	unsigned long flags;
- #endif
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index a825bf0..aa9f73f 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2290,6 +2290,17 @@ config RANDOMIZE_MEMORY_PHYSICAL_PADDING
  
-+#ifdef CONFIG_ADDRESS_MASKING
-+	/* Active LAM mode:  X86_CR3_LAM_U48 or X86_CR3_LAM_U57 or 0 (disabled) */
-+	unsigned long lam_cr3_mask;
-+#endif
-+
- 	struct mutex lock;
- 	void __user *vdso;			/* vdso base address */
- 	const struct vdso_image *vdso_image;	/* vdso image in use */
-diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
-index b4e4a0c..0295c38 100644
---- a/arch/x86/include/asm/mmu_context.h
-+++ b/arch/x86/include/asm/mmu_context.h
-@@ -92,6 +92,29 @@ static inline void switch_ldt(struct mm_struct *prev, struct mm_struct *next)
- }
- #endif
+ 	  If unsure, leave at the default value.
  
-+#ifdef CONFIG_ADDRESS_MASKING
-+static inline unsigned long mm_lam_cr3_mask(struct mm_struct *mm)
-+{
-+	return mm->context.lam_cr3_mask;
-+}
++config ADDRESS_MASKING
++	bool "Linear Address Masking support"
++	depends on X86_64
++	help
++	  Linear Address Masking (LAM) modifies the checking that is applied
++	  to 64-bit linear addresses, allowing software to use of the
++	  untranslated address bits for metadata.
 +
-+static inline void dup_lam(struct mm_struct *oldmm, struct mm_struct *mm)
-+{
-+	mm->context.lam_cr3_mask = oldmm->context.lam_cr3_mask;
-+}
++	  The capability can be used for efficient address sanitizers (ASAN)
++	  implementation and for optimizations in JITs.
 +
-+#else
-+
-+static inline unsigned long mm_lam_cr3_mask(struct mm_struct *mm)
-+{
-+	return 0;
-+}
-+
-+static inline void dup_lam(struct mm_struct *oldmm, struct mm_struct *mm)
-+{
-+}
-+#endif
-+
- #define enter_lazy_tlb enter_lazy_tlb
- extern void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk);
+ config HOTPLUG_CPU
+ 	def_bool y
+ 	depends on SMP
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 73c9672..353b054 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -321,6 +321,7 @@
+ #define X86_FEATURE_LKGS		(12*32+18) /* "" Load "kernel" (userspace) GS */
+ #define X86_FEATURE_AMX_FP16		(12*32+21) /* "" AMX fp16 Support */
+ #define X86_FEATURE_AVX_IFMA            (12*32+23) /* "" Support for VPMADD52[H,L]UQ */
++#define X86_FEATURE_LAM			(12*32+26) /* Linear Address Masking */
  
-@@ -169,6 +192,7 @@ static inline int arch_dup_mmap(struct mm_struct *oldmm, struct mm_struct *mm)
- {
- 	arch_dup_pkeys(oldmm, mm);
- 	paravirt_arch_dup_mmap(oldmm, mm);
-+	dup_lam(oldmm, mm);
- 	return ldt_dup_context(oldmm, mm);
- }
+ /* AMD-defined CPU features, CPUID level 0x80000008 (EBX), word 13 */
+ #define X86_FEATURE_CLZERO		(13*32+ 0) /* CLZERO instruction */
+diff --git a/arch/x86/include/asm/processor-flags.h b/arch/x86/include/asm/processor-flags.h
+index a7f3d91..d8cccad 100644
+--- a/arch/x86/include/asm/processor-flags.h
++++ b/arch/x86/include/asm/processor-flags.h
+@@ -28,6 +28,8 @@
+  * On systems with SME, one bit (in a variable position!) is stolen to indicate
+  * that the top-level paging structure is encrypted.
+  *
++ * On systemms with LAM, bits 61 and 62 are used to indicate LAM mode.
++ *
+  * All of the remaining bits indicate the physical address of the top-level
+  * paging structure.
+  *
+diff --git a/arch/x86/include/uapi/asm/processor-flags.h b/arch/x86/include/uapi/asm/processor-flags.h
+index c47cc7f..d898432 100644
+--- a/arch/x86/include/uapi/asm/processor-flags.h
++++ b/arch/x86/include/uapi/asm/processor-flags.h
+@@ -82,6 +82,10 @@
+ #define X86_CR3_PCID_BITS	12
+ #define X86_CR3_PCID_MASK	(_AC((1UL << X86_CR3_PCID_BITS) - 1, UL))
  
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index cda3118..e8b47f5 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -2,7 +2,7 @@
- #ifndef _ASM_X86_TLBFLUSH_H
- #define _ASM_X86_TLBFLUSH_H
++#define X86_CR3_LAM_U57_BIT	61 /* Activate LAM for userspace, 62:57 bits masked */
++#define X86_CR3_LAM_U57		_BITULL(X86_CR3_LAM_U57_BIT)
++#define X86_CR3_LAM_U48_BIT	62 /* Activate LAM for userspace, 62:48 bits masked */
++#define X86_CR3_LAM_U48		_BITULL(X86_CR3_LAM_U48_BIT)
+ #define X86_CR3_PCID_NOFLUSH_BIT 63 /* Preserve old PCID */
+ #define X86_CR3_PCID_NOFLUSH    _BITULL(X86_CR3_PCID_NOFLUSH_BIT)
  
--#include <linux/mm.h>
-+#include <linux/mm_types.h>
- #include <linux/sched.h>
- 
- #include <asm/processor.h>
-@@ -12,6 +12,7 @@
- #include <asm/invpcid.h>
- #include <asm/pti.h>
- #include <asm/processor-flags.h>
-+#include <asm/pgtable.h>
- 
- void __flush_tlb_all(void);
- 
-@@ -101,6 +102,16 @@ struct tlb_state {
- 	 */
- 	bool invalidate_other;
- 
-+#ifdef CONFIG_ADDRESS_MASKING
-+	/*
-+	 * Active LAM mode.
-+	 *
-+	 * X86_CR3_LAM_U57/U48 shifted right by X86_CR3_LAM_U57_BIT or 0 if LAM
-+	 * disabled.
-+	 */
-+	u8 lam;
-+#endif
-+
- 	/*
- 	 * Mask that contains TLB_NR_DYN_ASIDS+1 bits to indicate
- 	 * the corresponding user PCID needs a flush next time we
-@@ -357,6 +368,31 @@ static inline bool huge_pmd_needs_flush(pmd_t oldpmd, pmd_t newpmd)
- }
- #define huge_pmd_needs_flush huge_pmd_needs_flush
- 
-+#ifdef CONFIG_ADDRESS_MASKING
-+static inline  u64 tlbstate_lam_cr3_mask(void)
-+{
-+	u64 lam = this_cpu_read(cpu_tlbstate.lam);
-+
-+	return lam << X86_CR3_LAM_U57_BIT;
-+}
-+
-+static inline void set_tlbstate_lam_mode(struct mm_struct *mm)
-+{
-+	this_cpu_write(cpu_tlbstate.lam,
-+		       mm->context.lam_cr3_mask >> X86_CR3_LAM_U57_BIT);
-+}
-+
-+#else
-+
-+static inline u64 tlbstate_lam_cr3_mask(void)
-+{
-+	return 0;
-+}
-+
-+static inline void set_tlbstate_lam_mode(struct mm_struct *mm)
-+{
-+}
-+#endif
- #endif /* !MODULE */
- 
- static inline void __native_tlb_flush_global(unsigned long cr4)
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 92d73cc..724f98d 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -154,26 +154,30 @@ static inline u16 user_pcid(u16 asid)
- 	return ret;
- }
- 
--static inline unsigned long build_cr3(pgd_t *pgd, u16 asid)
-+static inline unsigned long build_cr3(pgd_t *pgd, u16 asid, unsigned long lam)
- {
-+	unsigned long cr3 = __sme_pa(pgd) | lam;
-+
- 	if (static_cpu_has(X86_FEATURE_PCID)) {
--		return __sme_pa(pgd) | kern_pcid(asid);
-+		VM_WARN_ON_ONCE(asid > MAX_ASID_AVAILABLE);
-+		cr3 |= kern_pcid(asid);
- 	} else {
- 		VM_WARN_ON_ONCE(asid != 0);
--		return __sme_pa(pgd);
- 	}
-+
-+	return cr3;
- }
- 
--static inline unsigned long build_cr3_noflush(pgd_t *pgd, u16 asid)
-+static inline unsigned long build_cr3_noflush(pgd_t *pgd, u16 asid,
-+					      unsigned long lam)
- {
--	VM_WARN_ON_ONCE(asid > MAX_ASID_AVAILABLE);
- 	/*
- 	 * Use boot_cpu_has() instead of this_cpu_has() as this function
- 	 * might be called during early boot. This should work even after
- 	 * boot because all CPU's the have same capabilities:
- 	 */
- 	VM_WARN_ON_ONCE(!boot_cpu_has(X86_FEATURE_PCID));
--	return __sme_pa(pgd) | kern_pcid(asid) | CR3_NOFLUSH;
-+	return build_cr3(pgd, asid, lam) | CR3_NOFLUSH;
- }
+@@ -132,6 +136,8 @@
+ #define X86_CR4_PKE		_BITUL(X86_CR4_PKE_BIT)
+ #define X86_CR4_CET_BIT		23 /* enable Control-flow Enforcement Technology */
+ #define X86_CR4_CET		_BITUL(X86_CR4_CET_BIT)
++#define X86_CR4_LAM_SUP_BIT	28 /* LAM for supervisor pointers */
++#define X86_CR4_LAM_SUP		_BITUL(X86_CR4_LAM_SUP_BIT)
  
  /*
-@@ -274,15 +278,16 @@ static inline void invalidate_user_asid(u16 asid)
- 		  (unsigned long *)this_cpu_ptr(&cpu_tlbstate.user_pcid_flush_mask));
- }
- 
--static void load_new_mm_cr3(pgd_t *pgdir, u16 new_asid, bool need_flush)
-+static void load_new_mm_cr3(pgd_t *pgdir, u16 new_asid, unsigned long lam,
-+			    bool need_flush)
- {
- 	unsigned long new_mm_cr3;
- 
- 	if (need_flush) {
- 		invalidate_user_asid(new_asid);
--		new_mm_cr3 = build_cr3(pgdir, new_asid);
-+		new_mm_cr3 = build_cr3(pgdir, new_asid, lam);
- 	} else {
--		new_mm_cr3 = build_cr3_noflush(pgdir, new_asid);
-+		new_mm_cr3 = build_cr3_noflush(pgdir, new_asid, lam);
- 	}
- 
- 	/*
-@@ -491,6 +496,7 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- {
- 	struct mm_struct *real_prev = this_cpu_read(cpu_tlbstate.loaded_mm);
- 	u16 prev_asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
-+	unsigned long new_lam = mm_lam_cr3_mask(next);
- 	bool was_lazy = this_cpu_read(cpu_tlbstate_shared.is_lazy);
- 	unsigned cpu = smp_processor_id();
- 	u64 next_tlb_gen;
-@@ -520,7 +526,8 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- 	 * isn't free.
- 	 */
- #ifdef CONFIG_DEBUG_VM
--	if (WARN_ON_ONCE(__read_cr3() != build_cr3(real_prev->pgd, prev_asid))) {
-+	if (WARN_ON_ONCE(__read_cr3() != build_cr3(real_prev->pgd, prev_asid,
-+						   tlbstate_lam_cr3_mask()))) {
- 		/*
- 		 * If we were to BUG here, we'd be very likely to kill
- 		 * the system so hard that we don't see the call trace.
-@@ -552,10 +559,16 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- 	 * instruction.
- 	 */
- 	if (real_prev == next) {
-+		/* Not actually switching mm's */
- 		VM_WARN_ON(this_cpu_read(cpu_tlbstate.ctxs[prev_asid].ctx_id) !=
- 			   next->context.ctx_id);
- 
- 		/*
-+		 * If this races with another thread that enables lam, 'new_lam'
-+		 * might not match tlbstate_lam_cr3_mask().
-+		 */
-+
-+		/*
- 		 * Even in lazy TLB mode, the CPU should stay set in the
- 		 * mm_cpumask. The TLB shootdown code can figure out from
- 		 * cpu_tlbstate_shared.is_lazy whether or not to send an IPI.
-@@ -622,15 +635,16 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- 		barrier();
- 	}
- 
-+	set_tlbstate_lam_mode(next);
- 	if (need_flush) {
- 		this_cpu_write(cpu_tlbstate.ctxs[new_asid].ctx_id, next->context.ctx_id);
- 		this_cpu_write(cpu_tlbstate.ctxs[new_asid].tlb_gen, next_tlb_gen);
--		load_new_mm_cr3(next->pgd, new_asid, true);
-+		load_new_mm_cr3(next->pgd, new_asid, new_lam, true);
- 
- 		trace_tlb_flush(TLB_FLUSH_ON_TASK_SWITCH, TLB_FLUSH_ALL);
- 	} else {
- 		/* The new ASID is already up to date. */
--		load_new_mm_cr3(next->pgd, new_asid, false);
-+		load_new_mm_cr3(next->pgd, new_asid, new_lam, false);
- 
- 		trace_tlb_flush(TLB_FLUSH_ON_TASK_SWITCH, 0);
- 	}
-@@ -691,6 +705,10 @@ void initialize_tlbstate_and_flush(void)
- 	/* Assert that CR3 already references the right mm. */
- 	WARN_ON((cr3 & CR3_ADDR_MASK) != __pa(mm->pgd));
- 
-+	/* LAM expected to be disabled */
-+	WARN_ON(cr3 & (X86_CR3_LAM_U48 | X86_CR3_LAM_U57));
-+	WARN_ON(mm_lam_cr3_mask(mm));
-+
- 	/*
- 	 * Assert that CR4.PCIDE is set if needed.  (CR4.PCIDE initialization
- 	 * doesn't work like other CR4 bits because it can only be set from
-@@ -699,8 +717,8 @@ void initialize_tlbstate_and_flush(void)
- 	WARN_ON(boot_cpu_has(X86_FEATURE_PCID) &&
- 		!(cr4_read_shadow() & X86_CR4_PCIDE));
- 
--	/* Force ASID 0 and force a TLB flush. */
--	write_cr3(build_cr3(mm->pgd, 0));
-+	/* Disable LAM, force ASID 0 and force a TLB flush. */
-+	write_cr3(build_cr3(mm->pgd, 0, 0));
- 
- 	/* Reinitialize tlbstate. */
- 	this_cpu_write(cpu_tlbstate.last_user_mm_spec, LAST_USER_MM_INIT);
-@@ -708,6 +726,7 @@ void initialize_tlbstate_and_flush(void)
- 	this_cpu_write(cpu_tlbstate.next_asid, 1);
- 	this_cpu_write(cpu_tlbstate.ctxs[0].ctx_id, mm->context.ctx_id);
- 	this_cpu_write(cpu_tlbstate.ctxs[0].tlb_gen, tlb_gen);
-+	set_tlbstate_lam_mode(mm);
- 
- 	for (i = 1; i < TLB_NR_DYN_ASIDS; i++)
- 		this_cpu_write(cpu_tlbstate.ctxs[i].ctx_id, 0);
-@@ -1071,8 +1090,10 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
-  */
- unsigned long __get_current_cr3_fast(void)
- {
--	unsigned long cr3 = build_cr3(this_cpu_read(cpu_tlbstate.loaded_mm)->pgd,
--		this_cpu_read(cpu_tlbstate.loaded_mm_asid));
-+	unsigned long cr3 =
-+		build_cr3(this_cpu_read(cpu_tlbstate.loaded_mm)->pgd,
-+			  this_cpu_read(cpu_tlbstate.loaded_mm_asid),
-+			  tlbstate_lam_cr3_mask());
- 
- 	/* For now, be very restrictive about when this can be called. */
- 	VM_WARN_ON(in_nmi() || preemptible());
+  * x86-64 Task Priority Register, CR8
