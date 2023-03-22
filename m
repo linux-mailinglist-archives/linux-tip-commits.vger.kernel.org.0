@@ -2,53 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4EC86C577A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Mar 2023 21:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 826076C579F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Mar 2023 21:30:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232064AbjCVU0g (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Mar 2023 16:26:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47792 "EHLO
+        id S231491AbjCVUa4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Mar 2023 16:30:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232172AbjCVU0S (ORCPT
+        with ESMTP id S232184AbjCVUaf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Mar 2023 16:26:18 -0400
+        Wed, 22 Mar 2023 16:30:35 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003A88C967;
-        Wed, 22 Mar 2023 13:16:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C8359BE02;
+        Wed, 22 Mar 2023 13:21:21 -0700 (PDT)
 Date:   Wed, 22 Mar 2023 20:14:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679516097;
+        s=2020; t=1679516094;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=NQQuVQiY/sIoaQ5n0A3D+PWJlpQRmQdA8vFtOkT8Gsk=;
-        b=SLjWGkDXuJNDL12fSJydNVRbfzMtf5EXpP/AgYUjbmgIkT94WYBN8kaTVJEXxAfZMqbL4Q
-        KY7XhbNjLJtVOxtcKO6IbPQlagTQWNSqEo/hBcbhZ3S8FpbbMRtvQy5VLqf6/zt0j39gMU
-        t92SdepPx2ES7UzpBsX3+1UCjwKV5Ki6clPmtvKg4uUpDIR+fBDTk8xexBt8xenKULsCGg
-        YQbIR0a/bP/TvWXW38V9HN6iQVwvrZ+7I1JnzXSBzU/2C2BrjUbp4J9CGa5o+kcXVR2gof
-        2XpARYNvAgEBW0iv9L2fkhLFKM1YSjElDG6idVYsmwvxCIQ5WrsHVb8LkiMcvQ==
+        bh=SirrcNGjJd8qTjAXCDvK74Q1/5ugn2H17xCJeG7U+EU=;
+        b=EK2bXwKIuBrIFIyiuVsD4FsEkC7iw4wDCVqXwscPPG8E88RmrBzl2PAQKm+0J99EPF2qBO
+        Ktnl/A1wNR0OgRh7RDHZL58+xkrgRfoDSgvOJB0BTk7gYMBzq6BsqsyVC1QzGcbrS26u4G
+        lmv57IeQcieLRbDkI8+LGKBwPcurE+47ayvli/cfHrjxVcezQI7LydFYAZdFZOZ/XITDWy
+        6QWvlzkz0ECdysMmIJXUSAoGyC5UYv0ImikCU+puVLjVVink3YLkcSZFKwlgv979k2K/3+
+        NyLakfyYbC5I7faC/vpWTA6pNv7wIjMD/GXpAP/0jxrkFqZIJtZav8PeLf220g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679516097;
+        s=2020e; t=1679516094;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=NQQuVQiY/sIoaQ5n0A3D+PWJlpQRmQdA8vFtOkT8Gsk=;
-        b=sLiVViCR4387AXb2Bqoab1YuTB76BZwWUIjmIk3eZIpNLJYRaXOlP1BcO0rEE6DTQVj8kj
-        sVsJQ6jcC8qMi7DA==
+        bh=SirrcNGjJd8qTjAXCDvK74Q1/5ugn2H17xCJeG7U+EU=;
+        b=gEyJXRudKj3AaKqfgECyCtxD2sdhOQemQhQHrOP2E1zqtDjEnW2HJcAV+vq20IxQKVLoWQ
+        C9Pxf6yTjobGFEDA==
 From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] Documentation/x86: Explain the state component
- permission for guests
+Subject: [tip: x86/fpu] Documentation/x86: Add the AMX enabling example
 Cc:     "Chang S. Bae" <chang.seok.bae@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Thiago Macieira <thiago.macieira@intel.com>,
-        Yang Zhong <yang.zhong@intel.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
         Tony Luck <tony.luck@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <167951609339.5837.3788677511456464455.tip-bot2@tip-bot2>
+Message-ID: <167951609373.5837.2925763899751490246.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,63 +63,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     5fbff260755750559aa12a30f6fa7f8a863666f1
-Gitweb:        https://git.kernel.org/tip/5fbff260755750559aa12a30f6fa7f8a863666f1
+Commit-ID:     7f9daaf59e14d62b29b6f4ca743e17bf96ff42ae
+Gitweb:        https://git.kernel.org/tip/7f9daaf59e14d62b29b6f4ca743e17bf96ff42ae
 Author:        Chang S. Bae <chang.seok.bae@intel.com>
-AuthorDate:    Fri, 20 Jan 2023 16:19:00 -08:00
+AuthorDate:    Fri, 20 Jan 2023 16:18:59 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 22 Mar 2023 13:08:02 -07:00
+CommitterDate: Wed, 22 Mar 2023 13:07:58 -07:00
 
-Documentation/x86: Explain the state component permission for guests
+Documentation/x86: Add the AMX enabling example
 
-Commit 980fe2fddcff ("x86/fpu: Extend fpu_xstate_prctl() with guest
-permissions") extends a couple of arch_prctl(2) options for VCPU threads.
-Add description for them.
+Explain steps to enable the dynamic feature with a code example.
 
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Thiago Macieira <thiago.macieira@intel.com>
-Reviewed-by: Yang Zhong <yang.zhong@intel.com>
+Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
 Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/all/20230121001900.14900-5-chang.seok.bae%40intel.com
+Link: https://lore.kernel.org/all/20230121001900.14900-4-chang.seok.bae%40intel.com
 ---
- Documentation/x86/xstate.rst | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ Documentation/x86/xstate.rst | 55 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+)
 
 diff --git a/Documentation/x86/xstate.rst b/Documentation/x86/xstate.rst
-index 23b1c9f..ae5c69e 100644
+index e954e79..23b1c9f 100644
 --- a/Documentation/x86/xstate.rst
 +++ b/Documentation/x86/xstate.rst
-@@ -143,3 +143,32 @@ entry if the feature is in its initial configuration.  This differs from
- non-dynamic features which are always written regardless of their
- configuration.  Signal handlers can examine the XSAVE buffer's XSTATE_BV
- field to determine if a features was written.
+@@ -80,6 +80,61 @@ the handler allocates a larger xstate buffer for the task so the large
+ state can be context switched. In the unlikely cases that the allocation
+ fails, the kernel sends SIGSEGV.
+ 
++AMX TILE_DATA enabling example
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 +
-+Dynamic features for virtual machines
-+-------------------------------------
++Below is the example of how userspace applications enable
++TILE_DATA dynamically:
 +
-+The permission for the guest state component needs to be managed separately
-+from the host, as they are exclusive to each other. A coupled of options
-+are extended to control the guest permission:
++  1. The application first needs to query the kernel for AMX
++     support::
 +
-+-ARCH_GET_XCOMP_GUEST_PERM
++        #include <asm/prctl.h>
++        #include <sys/syscall.h>
++        #include <stdio.h>
++        #include <unistd.h>
 +
-+ arch_prctl(ARCH_GET_XCOMP_GUEST_PERM, &features);
++        #ifndef ARCH_GET_XCOMP_SUPP
++        #define ARCH_GET_XCOMP_SUPP  0x1021
++        #endif
 +
-+ ARCH_GET_XCOMP_GUEST_PERM is a variant of ARCH_GET_XCOMP_PERM. So it
-+ provides the same semantics and functionality but for the guest
-+ components.
++        #ifndef ARCH_XCOMP_TILECFG
++        #define ARCH_XCOMP_TILECFG   17
++        #endif
 +
-+-ARCH_REQ_XCOMP_GUEST_PERM
++        #ifndef ARCH_XCOMP_TILEDATA
++        #define ARCH_XCOMP_TILEDATA  18
++        #endif
 +
-+ arch_prctl(ARCH_REQ_XCOMP_GUEST_PERM, feature_nr);
++        #define MASK_XCOMP_TILE      ((1 << ARCH_XCOMP_TILECFG) | \
++                                      (1 << ARCH_XCOMP_TILEDATA))
 +
-+ ARCH_REQ_XCOMP_GUEST_PERM is a variant of ARCH_REQ_XCOMP_PERM. It has the
-+ same semantics for the guest permission. While providing a similar
-+ functionality, this comes with a constraint. Permission is frozen when the
-+ first VCPU is created. Any attempt to change permission after that point
-+ is going to be rejected. So, the permission has to be requested before the
-+ first VCPU creation.
++        unsigned long features;
++        long rc;
 +
-+Note that some VMMs may have already established a set of supported state
-+components. These options are not presumed to support any particular VMM.
++        ...
++
++        rc = syscall(SYS_arch_prctl, ARCH_GET_XCOMP_SUPP, &features);
++
++        if (!rc && (features & MASK_XCOMP_TILE) == MASK_XCOMP_TILE)
++            printf("AMX is available.\n");
++
++  2. After that, determining support for AMX, an application must
++     explicitly ask permission to use it::
++
++        #ifndef ARCH_REQ_XCOMP_PERM
++        #define ARCH_REQ_XCOMP_PERM  0x1023
++        #endif
++
++        ...
++
++        rc = syscall(SYS_arch_prctl, ARCH_REQ_XCOMP_PERM, ARCH_XCOMP_TILEDATA);
++
++        if (!rc)
++            printf("AMX is ready for use.\n");
++
++Note this example does not include the sigaltstack preparation.
++
+ Dynamic features in signal frames
+ ---------------------------------
+ 
