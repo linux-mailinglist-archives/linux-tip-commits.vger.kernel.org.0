@@ -2,307 +2,203 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64DE76C3BA2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Mar 2023 21:21:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD7EB6C45AE
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Mar 2023 10:07:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229936AbjCUUVL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 21 Mar 2023 16:21:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33690 "EHLO
+        id S229939AbjCVJHr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Mar 2023 05:07:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230012AbjCUUVK (ORCPT
+        with ESMTP id S230000AbjCVJHk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 21 Mar 2023 16:21:10 -0400
+        Wed, 22 Mar 2023 05:07:40 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12121205D;
-        Tue, 21 Mar 2023 13:20:37 -0700 (PDT)
-Date:   Tue, 21 Mar 2023 20:20:24 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F105DED0;
+        Wed, 22 Mar 2023 02:07:17 -0700 (PDT)
+Date:   Wed, 22 Mar 2023 09:07:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679430025;
+        s=2020; t=1679476034;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DkfAA7kabvZ6a7Gv4ZIn9g9p4FKM0I5uVnIERk3tnK4=;
-        b=cY0RtZMeHfK+akbj4BmYbKVr4M2zpm1oBSiSTZyRH21d0k44lDCRQfdqyQ2vYUKnBjROMS
-        ATyhv8uFjydEvbqdfhd7baJhfsUD63s+nlE42g12oI26QLZVA8rh6wcqHLiuC3x5KsCz6N
-        ipiz6GJr+oBdmWROXp2G+hB3LAGsuxzCcyYsf9Irm1rp66gWysMtbg2cfxHLvKc4T857At
-        fgLgd9f6mQhB8wMAce37TameE0b8hwL7//5AnumEvF8xOsx2qD7QCDaT1m3jD0HVjwMTq7
-        gWXB6oDtAtHqwo6FkaifrjdzzVTli2HWpooPCbdWbkbgRm4zhh6IX1UZj1AR4Q==
+        bh=/MTBir7EOIL7ucr13rJikG5m8y+tjbggVcRsU1LLOh4=;
+        b=rZvNejBaFw3ceqvkkc78OpBPcGMRNnr90PNemGUB0EnKkR78Qzw06blRlIjhlcnT7utRWF
+        ExTak4EHEAX3MrlFCulVoC+G8onHqTdC1iI1+NzaQGuZ2nKXk7Fu6kwnWlVuMiACBfigdM
+        ccEeIkCxh2w747HEE25bttDrYpfBr1oVQ5s/58hDAfH/xfRZq6EEOCNW+NCB7mfBEncTFc
+        Wo0zCh/B9r5mYxF3ZDajc0ralHxfE6R/SDjCz0OLWzFnkZ+WGvkEKVg73Z8PCsQfl26C3m
+        npe8yNpywEz4Psr0yffPfKYUoVQZy8u29WqQvLoYIt41YUqql5XlPKjigcM9Lw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679430025;
+        s=2020e; t=1679476034;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DkfAA7kabvZ6a7Gv4ZIn9g9p4FKM0I5uVnIERk3tnK4=;
-        b=Kg2jT7PS3H8lVi+yUFycnDR9W9jqUr0SEsvYG0Mmq/gkAw/QCUSxhNBjxkKTIGposCa0hS
-        EPLueEVpnTBZ2kDw==
-From:   "tip-bot2 for Fangrui Song" <tip-bot2@linutronix.de>
+        bh=/MTBir7EOIL7ucr13rJikG5m8y+tjbggVcRsU1LLOh4=;
+        b=+oyxZMBRQschognWNgZy5/G5kR4kO1nxc/n6bQqhFMFXd7a+n3W6+kQQM4OIbWLHqQT11l
+        tmk+tvVU145fDKAg==
+From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] vdso: Improve cmd_vdso_check to check all dynamic
- relocations
-Cc:     Fangrui Song <maskray@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
+Subject: [tip: sched/urgent] sched/fair: Sanitize vruntime of entity being migrated
+Cc:     Zhang Qiao <zhangqiao22@huawei.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230310190750.3323802-1-maskray@google.com>
-References: <20230310190750.3323802-1-maskray@google.com>
+In-Reply-To: <20230317160810.107988-1-vincent.guittot@linaro.org>
+References: <20230317160810.107988-1-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <167943002433.5837.13753758233638866340.tip-bot2@tip-bot2>
+Message-ID: <167947603333.5837.1459442924981000636.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     aff69273af61f5d1c8fb401d6f19148d11629b41
-Gitweb:        https://git.kernel.org/tip/aff69273af61f5d1c8fb401d6f19148d11629b41
-Author:        Fangrui Song <maskray@google.com>
-AuthorDate:    Fri, 10 Mar 2023 19:07:50 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 21 Mar 2023 21:15:34 +01:00
+Commit-ID:     a53ce18cacb477dd0513c607f187d16f0fa96f71
+Gitweb:        https://git.kernel.org/tip/a53ce18cacb477dd0513c607f187d16f0fa96f71
+Author:        Vincent Guittot <vincent.guittot@linaro.org>
+AuthorDate:    Fri, 17 Mar 2023 17:08:10 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 21 Mar 2023 14:43:04 +01:00
 
-vdso: Improve cmd_vdso_check to check all dynamic relocations
+sched/fair: Sanitize vruntime of entity being migrated
 
-The actual intention is that no dynamic relocation exists in the VDSO. For
-this the VDSO build validates that the resulting .so file does not have any
-relocations which are specified via $(ARCH_REL_TYPE_ABS) per architecture,
-which is fragile as e.g. ARM64 lacks an entry for R_AARCH64_RELATIVE. Aside
-of that ARCH_REL_TYPE_ABS is a misnomer as it checks for relative
-relocations too.
+Commit 829c1651e9c4 ("sched/fair: sanitize vruntime of entity being placed")
+fixes an overflowing bug, but ignore a case that se->exec_start is reset
+after a migration.
 
-However, some GNU ld ports produce unneeded R_*_NONE relocation entries. If
-a port fails to determine the exact .rel[a].dyn size, the trailing zeros
-become R_*_NONE relocations. E.g. ld's powerpc port recently fixed
-https://sourceware.org/bugzilla/show_bug.cgi?id=29540). R_*_NONE are
-generally a no-op in the dynamic loaders. So just ignore them.
+For fixing this case, we delay the reset of se->exec_start after
+placing the entity which se->exec_start to detect long sleeping task.
 
-Remove the ARCH_REL_TYPE_ABS defines and just validate that the resulting
-.so file does not contain any R_* relocation entries except R_*_NONE.
+In order to take into account a possible divergence between the clock_task
+of 2 rqs, we increase the threshold to around 104 days.
 
-Signed-off-by: Fangrui Song <maskray@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Vincenzo Frascino <vincenzo.frascino@arm.com> # for aarch64
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com> # for vDSO, aarch64
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Link: https://lore.kernel.org/r/20230310190750.3323802-1-maskray@google.com
-
+Fixes: 829c1651e9c4 ("sched/fair: sanitize vruntime of entity being placed")
+Originally-by: Zhang Qiao <zhangqiao22@huawei.com>
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Zhang Qiao <zhangqiao22@huawei.com>
+Link: https://lore.kernel.org/r/20230317160810.107988-1-vincent.guittot@linaro.org
 ---
- arch/arm/vdso/Makefile            |  4 +---
- arch/arm64/kernel/vdso/Makefile   |  4 +---
- arch/arm64/kernel/vdso32/Makefile |  3 ---
- arch/csky/kernel/vdso/Makefile    |  4 +---
- arch/loongarch/vdso/Makefile      |  4 +---
- arch/mips/vdso/Makefile           |  4 +---
- arch/powerpc/kernel/vdso/Makefile |  2 +-
- arch/riscv/kernel/vdso/Makefile   |  4 +---
- arch/s390/kernel/vdso32/Makefile  |  3 +--
- arch/s390/kernel/vdso64/Makefile  |  3 +--
- arch/x86/entry/vdso/Makefile      |  5 +----
- lib/vdso/Makefile                 | 13 ++++---------
- 12 files changed, 14 insertions(+), 39 deletions(-)
+ kernel/sched/core.c |  3 ++-
+ kernel/sched/fair.c | 55 +++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 47 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/vdso/Makefile b/arch/arm/vdso/Makefile
-index a7ec06c..515ca33 100644
---- a/arch/arm/vdso/Makefile
-+++ b/arch/arm/vdso/Makefile
-@@ -1,8 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 488655f..0d18c39 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2084,6 +2084,9 @@ static inline void dequeue_task(struct rq *rq, struct task_struct *p, int flags)
  
--# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
--# the inclusion of generic Makefile.
--ARCH_REL_TYPE_ABS := R_ARM_JUMP_SLOT|R_ARM_GLOB_DAT|R_ARM_ABS32
-+# Include the generic Makefile to check the built vdso.
- include $(srctree)/lib/vdso/Makefile
+ void activate_task(struct rq *rq, struct task_struct *p, int flags)
+ {
++	if (task_on_rq_migrating(p))
++		flags |= ENQUEUE_MIGRATED;
++
+ 	enqueue_task(rq, p, flags);
  
- hostprogs := vdsomunge
-diff --git a/arch/arm64/kernel/vdso/Makefile b/arch/arm64/kernel/vdso/Makefile
-index beaf958..fe7a53c 100644
---- a/arch/arm64/kernel/vdso/Makefile
-+++ b/arch/arm64/kernel/vdso/Makefile
-@@ -6,9 +6,7 @@
- # Heavily based on the vDSO Makefiles for other archs.
- #
+ 	p->on_rq = TASK_ON_RQ_QUEUED;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 7a1b1f8..6986ea3 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4648,11 +4648,33 @@ static void check_spread(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ #endif
+ }
  
--# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
--# the inclusion of generic Makefile.
--ARCH_REL_TYPE_ABS := R_AARCH64_JUMP_SLOT|R_AARCH64_GLOB_DAT|R_AARCH64_ABS64
-+# Include the generic Makefile to check the built vdso.
- include $(srctree)/lib/vdso/Makefile
++static inline bool entity_is_long_sleeper(struct sched_entity *se)
++{
++	struct cfs_rq *cfs_rq;
++	u64 sleep_time;
++
++	if (se->exec_start == 0)
++		return false;
++
++	cfs_rq = cfs_rq_of(se);
++
++	sleep_time = rq_clock_task(rq_of(cfs_rq));
++
++	/* Happen while migrating because of clock task divergence */
++	if (sleep_time <= se->exec_start)
++		return false;
++
++	sleep_time -= se->exec_start;
++	if (sleep_time > ((1ULL << 63) / scale_load_down(NICE_0_LOAD)))
++		return true;
++
++	return false;
++}
++
+ static void
+ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)
+ {
+ 	u64 vruntime = cfs_rq->min_vruntime;
+-	u64 sleep_time;
  
- obj-vdso := vgettimeofday.o note.o sigreturn.o
-diff --git a/arch/arm64/kernel/vdso32/Makefile b/arch/arm64/kernel/vdso32/Makefile
-index f59bd1a..d014162 100644
---- a/arch/arm64/kernel/vdso32/Makefile
-+++ b/arch/arm64/kernel/vdso32/Makefile
-@@ -3,9 +3,6 @@
- # Makefile for vdso32
- #
+ 	/*
+ 	 * The 'current' period is already promised to the current tasks,
+@@ -4684,13 +4706,24 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)
  
--# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
--# the inclusion of generic Makefile.
--ARCH_REL_TYPE_ABS := R_ARM_JUMP_SLOT|R_ARM_GLOB_DAT|R_ARM_ABS32
- include $(srctree)/lib/vdso/Makefile
+ 	/*
+ 	 * Pull vruntime of the entity being placed to the base level of
+-	 * cfs_rq, to prevent boosting it if placed backwards.  If the entity
+-	 * slept for a long time, don't even try to compare its vruntime with
+-	 * the base as it may be too far off and the comparison may get
+-	 * inversed due to s64 overflow.
+-	 */
+-	sleep_time = rq_clock_task(rq_of(cfs_rq)) - se->exec_start;
+-	if ((s64)sleep_time > 60LL * NSEC_PER_SEC)
++	 * cfs_rq, to prevent boosting it if placed backwards.
++	 * However, min_vruntime can advance much faster than real time, with
++	 * the extreme being when an entity with the minimal weight always runs
++	 * on the cfs_rq. If the waking entity slept for a long time, its
++	 * vruntime difference from min_vruntime may overflow s64 and their
++	 * comparison may get inversed, so ignore the entity's original
++	 * vruntime in that case.
++	 * The maximal vruntime speedup is given by the ratio of normal to
++	 * minimal weight: scale_load_down(NICE_0_LOAD) / MIN_SHARES.
++	 * When placing a migrated waking entity, its exec_start has been set
++	 * from a different rq. In order to take into account a possible
++	 * divergence between new and prev rq's clocks task because of irq and
++	 * stolen time, we take an additional margin.
++	 * So, cutting off on the sleep time of
++	 *     2^63 / scale_load_down(NICE_0_LOAD) ~ 104 days
++	 * should be safe.
++	 */
++	if (entity_is_long_sleeper(se))
+ 		se->vruntime = vruntime;
+ 	else
+ 		se->vruntime = max_vruntime(se->vruntime, vruntime);
+@@ -4770,6 +4803,9 @@ enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
  
- # Same as cc-*option, but using CC_COMPAT instead of CC
-diff --git a/arch/csky/kernel/vdso/Makefile b/arch/csky/kernel/vdso/Makefile
-index 0b6909f..299e4e4 100644
---- a/arch/csky/kernel/vdso/Makefile
-+++ b/arch/csky/kernel/vdso/Makefile
-@@ -1,8 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
+ 	if (flags & ENQUEUE_WAKEUP)
+ 		place_entity(cfs_rq, se, 0);
++	/* Entity has migrated, no longer consider this task hot */
++	if (flags & ENQUEUE_MIGRATED)
++		se->exec_start = 0;
  
--# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
--# the inclusion of generic Makefile.
--ARCH_REL_TYPE_ABS := R_CKCORE_ADDR32|R_CKCORE_JUMP_SLOT
-+# Include the generic Makefile to check the built vdso.
- include $(srctree)/lib/vdso/Makefile
+ 	check_schedstat_required();
+ 	update_stats_enqueue_fair(cfs_rq, se, flags);
+@@ -7657,9 +7693,6 @@ static void migrate_task_rq_fair(struct task_struct *p, int new_cpu)
+ 	/* Tell new CPU we are migrated */
+ 	se->avg.last_update_time = 0;
  
- # Symbols present in the vdso
-diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-index d89e2ac..461240a 100644
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -1,9 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- # Objects to go into the VDSO.
- 
--# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
--# the inclusion of generic Makefile.
--ARCH_REL_TYPE_ABS := R_LARCH_32|R_LARCH_64|R_LARCH_MARK_LA|R_LARCH_JUMP_SLOT
-+# Include the generic Makefile to check the built vdso.
- include $(srctree)/lib/vdso/Makefile
- 
- obj-vdso-y := elf.o vgetcpu.o vgettimeofday.o sigreturn.o
-diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-index 18af947..eb56581 100644
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -4,9 +4,7 @@
- # Sanitizer runtimes are unavailable and cannot be linked here.
-  KCSAN_SANITIZE			:= n
- 
--# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
--# the inclusion of generic Makefile.
--ARCH_REL_TYPE_ABS := R_MIPS_JUMP_SLOT|R_MIPS_GLOB_DAT
-+# Include the generic Makefile to check the built vdso.
- include $(srctree)/lib/vdso/Makefile
- 
- obj-vdso-y := elf.o vgettimeofday.o sigreturn.o
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index 66f723f..4c3f344 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -2,7 +2,7 @@
- 
- # List of files in the vdso, has to be asm only for now
- 
--ARCH_REL_TYPE_ABS := R_PPC_JUMP_SLOT|R_PPC_GLOB_DAT|R_PPC_ADDR32|R_PPC_ADDR24|R_PPC_ADDR16|R_PPC_ADDR16_LO|R_PPC_ADDR16_HI|R_PPC_ADDR16_HA|R_PPC_ADDR14|R_PPC_ADDR14_BRTAKEN|R_PPC_ADDR14_BRNTAKEN|R_PPC_REL24
-+# Include the generic Makefile to check the built vdso.
- include $(srctree)/lib/vdso/Makefile
- 
- obj-vdso32 = sigtramp32-32.o gettimeofday-32.o datapage-32.o cacheflush-32.o note-32.o getcpu-32.o
-diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-index 06e6b27..a04b3bc 100644
---- a/arch/riscv/kernel/vdso/Makefile
-+++ b/arch/riscv/kernel/vdso/Makefile
-@@ -1,9 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- # Copied from arch/tile/kernel/vdso/Makefile
- 
--# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
--# the inclusion of generic Makefile.
--ARCH_REL_TYPE_ABS := R_RISCV_32|R_RISCV_64|R_RISCV_JUMP_SLOT
-+# Include the generic Makefile to check the built vdso.
- include $(srctree)/lib/vdso/Makefile
- # Symbols present in the vdso
- vdso-syms  = rt_sigreturn
-diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
-index 245bddf..bafd314 100644
---- a/arch/s390/kernel/vdso32/Makefile
-+++ b/arch/s390/kernel/vdso32/Makefile
-@@ -2,9 +2,8 @@
- # List of files in the vdso
- 
- KCOV_INSTRUMENT := n
--ARCH_REL_TYPE_ABS := R_390_COPY|R_390_GLOB_DAT|R_390_JMP_SLOT|R_390_RELATIVE
--ARCH_REL_TYPE_ABS += R_390_GOT|R_390_PLT
- 
-+# Include the generic Makefile to check the built vdso.
- include $(srctree)/lib/vdso/Makefile
- obj-vdso32 = vdso_user_wrapper-32.o note-32.o
- 
-diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
-index 34f9542..a766d28 100644
---- a/arch/s390/kernel/vdso64/Makefile
-+++ b/arch/s390/kernel/vdso64/Makefile
-@@ -2,9 +2,8 @@
- # List of files in the vdso
- 
- KCOV_INSTRUMENT := n
--ARCH_REL_TYPE_ABS := R_390_COPY|R_390_GLOB_DAT|R_390_JMP_SLOT|R_390_RELATIVE
--ARCH_REL_TYPE_ABS += R_390_GOT|R_390_PLT
- 
-+# Include the generic Makefile to check the built vdso.
- include $(srctree)/lib/vdso/Makefile
- obj-vdso64 = vdso_user_wrapper.o note.o
- obj-cvdso64 = vdso64_generic.o getcpu.o
-diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-index 1506a22..6a1821b 100644
---- a/arch/x86/entry/vdso/Makefile
-+++ b/arch/x86/entry/vdso/Makefile
-@@ -3,10 +3,7 @@
- # Building vDSO images for x86.
- #
- 
--# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
--# the inclusion of generic Makefile.
--ARCH_REL_TYPE_ABS := R_X86_64_JUMP_SLOT|R_X86_64_GLOB_DAT|R_X86_64_RELATIVE|
--ARCH_REL_TYPE_ABS += R_386_GLOB_DAT|R_386_JMP_SLOT|R_386_RELATIVE
-+# Include the generic Makefile to check the built vdso.
- include $(srctree)/lib/vdso/Makefile
- 
- # Sanitizer runtimes are unavailable and cannot be linked here.
-diff --git a/lib/vdso/Makefile b/lib/vdso/Makefile
-index e814061..9f031ea 100644
---- a/lib/vdso/Makefile
-+++ b/lib/vdso/Makefile
-@@ -5,18 +5,13 @@ GENERIC_VDSO_DIR := $(dir $(GENERIC_VDSO_MK_PATH))
- 
- c-gettimeofday-$(CONFIG_GENERIC_GETTIMEOFDAY) := $(addprefix $(GENERIC_VDSO_DIR), gettimeofday.c)
- 
--# This cmd checks that the vdso library does not contain absolute relocation
-+# This cmd checks that the vdso library does not contain dynamic relocations.
- # It has to be called after the linking of the vdso library and requires it
- # as a parameter.
- #
--# $(ARCH_REL_TYPE_ABS) is defined in the arch specific makefile and corresponds
--# to the absolute relocation types printed by "objdump -R" and accepted by the
--# dynamic linker.
--ifndef ARCH_REL_TYPE_ABS
--$(error ARCH_REL_TYPE_ABS is not set)
--endif
+-	/* We have migrated, no longer consider this task hot */
+-	se->exec_start = 0;
 -
-+# As a workaround for some GNU ld ports which produce unneeded R_*_NONE
-+# dynamic relocations, ignore R_*_NONE.
- quiet_cmd_vdso_check = VDSOCHK $@
--      cmd_vdso_check = if $(OBJDUMP) -R $@ | grep -E -h "$(ARCH_REL_TYPE_ABS)"; \
-+      cmd_vdso_check = if $(READELF) -rW $@ | grep -v _NONE | grep -q " R_\w*_"; \
- 		       then (echo >&2 "$@: dynamic relocations are not supported"; \
- 			     rm -f $@; /bin/false); fi
+ 	update_scan_period(p, new_cpu);
+ }
+ 
