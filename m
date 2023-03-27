@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DF6E6CAF6D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Mar 2023 22:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B1D96CAF6F
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Mar 2023 22:10:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231779AbjC0UKA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 27 Mar 2023 16:10:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33682 "EHLO
+        id S230033AbjC0UKB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 27 Mar 2023 16:10:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232200AbjC0UJ6 (ORCPT
+        with ESMTP id S231694AbjC0UJ7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 27 Mar 2023 16:09:58 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CDFE198D;
+        Mon, 27 Mar 2023 16:09:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3B519AF;
         Mon, 27 Mar 2023 13:09:55 -0700 (PDT)
-Date:   Mon, 27 Mar 2023 20:09:52 -0000
+Date:   Mon, 27 Mar 2023 20:09:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1679947793;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=B+c5GdlWj1yBxvFb1qVwQW6Ns/qLp2fdd2CY1LbeZ3w=;
-        b=UPB4pYqJK32LmtsStt47YBM5CDrySrZmFa05YJxi6WH/xF2894Fr1R47DJbeNiubHoplfk
-        FYvcP+iyC7OH01QT/pk9xoIT/9xEzYA1VOl/mu7uLsOa0jtKqaOEtWDJgDEkF3xrxqnyO2
-        RacJxgU1cnOeOb5gJ3eJmniHZTbfEjhTgP/9SNDz+5PJlUkdbiHyaeECnXzRn8iOkdteoA
-        ke+qTQe3rQP10Hg53nheUj3FSTxE+awlmuH2g6EmgXI2Ej9nM1eh9qelpX4fxNW1Vb7Fku
-        EmXdBHv4k3N/jDymuswibbBjMXZZWUgDaHmkFx6PZ1Xq3/hwl+tsSzbbLu74xA==
+        bh=p/jg0IjOptV1RpO6xfMPKncUzgMu+5YqsOJB4MMvtx4=;
+        b=ERrCNWv4o0+DbOFz0yFNgU5aso5HtbpKHBmAmJyvnZq6Ip1OGJtYSzQ+9wXp+YKicAaSCL
+        fepRRwOpETnaQKwiDHN92AER7LEUxPJljPoU2jXwp6DiRo9WHeQCBbRG+A+zbzOEu/h3KL
+        ooV/wogu5Miz8p/TsZU9FIT33ydw6OUNg8i6MCYzoS4QLEe5W2bhLSQS1RX2qRlvjTCPOc
+        IOw5zB0q4S9g2cBY3FDhXsDkZqqwg4469ahq1mTBX/zLTOF/jopNLHQYRQE0j6HjBa2qGW
+        v7NA5hSPOv29DAIt6sTu9TpDa9OHoQUWTGHKmwYVqkWpPuySpnz6ePko9q19cg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1679947793;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=B+c5GdlWj1yBxvFb1qVwQW6Ns/qLp2fdd2CY1LbeZ3w=;
-        b=V2bvNWBNqq6K5bMlp+hxHd+GH0OokcOZLZxr4rQZQ0S7l4+QlQg1xbnqXtD0ICARWAyeLN
-        fOavEpzc43CGUpAw==
+        bh=p/jg0IjOptV1RpO6xfMPKncUzgMu+5YqsOJB4MMvtx4=;
+        b=XqaeGPDrzuMiNOqaa1Evo0LWoPkCsPydph7kCP25AEfefvI99qGOZYh2cBxLhDgTxrVWWp
+        4H/nxRSOIUufn9Cg==
 From:   "tip-bot2 for Michael Kelley" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] init: Call mem_encrypt_init() after Hyper-V hypercall
- init is done
+Subject: [tip: x86/sev] x86/hyperv: Reorder code to facilitate future work
 Cc:     Michael Kelley <mikelley@microsoft.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
+        Tianyu Lan <Tianyu.Lan@microsoft.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1678329614-3482-6-git-send-email-mikelley@microsoft.com>
-References: <1678329614-3482-6-git-send-email-mikelley@microsoft.com>
+In-Reply-To: <1679838727-87310-3-git-send-email-mikelley@microsoft.com>
+References: <1679838727-87310-3-git-send-email-mikelley@microsoft.com>
 MIME-Version: 1.0
-Message-ID: <167994779275.5837.4752888881557420711.tip-bot2@tip-bot2>
+Message-ID: <167994779344.5837.1535425214409753862.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,68 +67,106 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     e45e761b77bc0739e7e23258c4394013bbb919c7
-Gitweb:        https://git.kernel.org/tip/e45e761b77bc0739e7e23258c4394013bbb919c7
+Commit-ID:     71290be18f2deeae013482bf79cd526df61fcfcd
+Gitweb:        https://git.kernel.org/tip/71290be18f2deeae013482bf79cd526df61fcfcd
 Author:        Michael Kelley <mikelley@microsoft.com>
-AuthorDate:    Wed, 08 Mar 2023 18:40:06 -08:00
+AuthorDate:    Sun, 26 Mar 2023 06:51:57 -07:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 27 Mar 2023 09:24:01 +02:00
+CommitterDate: Mon, 27 Mar 2023 07:56:40 +02:00
 
-init: Call mem_encrypt_init() after Hyper-V hypercall init is done
+x86/hyperv: Reorder code to facilitate future work
 
-Full Hyper-V initialization, including support for hypercalls, is done
-as an apic_post_init callback via late_time_init().  mem_encrypt_init()
-needs to make hypercalls when it marks swiotlb memory as decrypted.
-But mem_encrypt_init() is currently called a few lines before
-late_time_init(), so the hypercalls don't work.
-
-Fix this by moving mem_encrypt_init() after late_time_init() and
-related clock initializations. The intervening initializations don't
-do any I/O that requires the swiotlb, so moving mem_encrypt_init()
-slightly later has no impact.
+Reorder some code to facilitate future work. No functional
+change.
 
 Signed-off-by: Michael Kelley <mikelley@microsoft.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/1678329614-3482-6-git-send-email-mikelley@microsoft.com
+Reviewed-by: Tianyu Lan <Tianyu.Lan@microsoft.com>
+Link: https://lore.kernel.org/r/1679838727-87310-3-git-send-email-mikelley@microsoft.com
 ---
- init/main.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ arch/x86/hyperv/ivm.c | 68 +++++++++++++++++++++---------------------
+ 1 file changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/init/main.c b/init/main.c
-index 4425d17..7e9c0ca 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -1088,14 +1088,6 @@ asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
- 	 */
- 	locking_selftest();
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index 1dbcbd9..f33c67e 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -235,40 +235,6 @@ void hv_ghcb_msr_read(u64 msr, u64 *value)
+ EXPORT_SYMBOL_GPL(hv_ghcb_msr_read);
+ #endif
  
--	/*
--	 * This needs to be called before any devices perform DMA
--	 * operations that might use the SWIOTLB bounce buffers. It will
--	 * mark the bounce buffers as decrypted so that their usage will
--	 * not cause "plain-text" data to be decrypted when accessed.
--	 */
--	mem_encrypt_init();
+-enum hv_isolation_type hv_get_isolation_type(void)
+-{
+-	if (!(ms_hyperv.priv_high & HV_ISOLATION))
+-		return HV_ISOLATION_TYPE_NONE;
+-	return FIELD_GET(HV_ISOLATION_TYPE, ms_hyperv.isolation_config_b);
+-}
+-EXPORT_SYMBOL_GPL(hv_get_isolation_type);
 -
- #ifdef CONFIG_BLK_DEV_INITRD
- 	if (initrd_start && !initrd_below_start_ok &&
- 	    page_to_pfn(virt_to_page((void *)initrd_start)) < min_low_pfn) {
-@@ -1112,6 +1104,17 @@ asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
- 		late_time_init();
- 	sched_clock_init();
- 	calibrate_delay();
+-/*
+- * hv_is_isolation_supported - Check system runs in the Hyper-V
+- * isolation VM.
+- */
+-bool hv_is_isolation_supported(void)
+-{
+-	if (!cpu_feature_enabled(X86_FEATURE_HYPERVISOR))
+-		return false;
+-
+-	if (!hypervisor_is_type(X86_HYPER_MS_HYPERV))
+-		return false;
+-
+-	return hv_get_isolation_type() != HV_ISOLATION_TYPE_NONE;
+-}
+-
+-DEFINE_STATIC_KEY_FALSE(isolation_type_snp);
+-
+-/*
+- * hv_isolation_type_snp - Check system runs in the AMD SEV-SNP based
+- * isolation VM.
+- */
+-bool hv_isolation_type_snp(void)
+-{
+-	return static_branch_unlikely(&isolation_type_snp);
+-}
+-
+ /*
+  * hv_mark_gpa_visibility - Set pages visible to host via hvcall.
+  *
+@@ -387,3 +353,37 @@ void hv_unmap_memory(void *addr)
+ {
+ 	vunmap(addr);
+ }
 +
-+	/*
-+	 * This needs to be called before any devices perform DMA
-+	 * operations that might use the SWIOTLB bounce buffers. It will
-+	 * mark the bounce buffers as decrypted so that their usage will
-+	 * not cause "plain-text" data to be decrypted when accessed. It
-+	 * must be called after late_time_init() so that Hyper-V x86/x64
-+	 * hypercalls work when the SWIOTLB bounce buffers are decrypted.
-+	 */
-+	mem_encrypt_init();
++enum hv_isolation_type hv_get_isolation_type(void)
++{
++	if (!(ms_hyperv.priv_high & HV_ISOLATION))
++		return HV_ISOLATION_TYPE_NONE;
++	return FIELD_GET(HV_ISOLATION_TYPE, ms_hyperv.isolation_config_b);
++}
++EXPORT_SYMBOL_GPL(hv_get_isolation_type);
 +
- 	pid_idr_init();
- 	anon_vma_init();
- #ifdef CONFIG_X86
++/*
++ * hv_is_isolation_supported - Check system runs in the Hyper-V
++ * isolation VM.
++ */
++bool hv_is_isolation_supported(void)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_HYPERVISOR))
++		return false;
++
++	if (!hypervisor_is_type(X86_HYPER_MS_HYPERV))
++		return false;
++
++	return hv_get_isolation_type() != HV_ISOLATION_TYPE_NONE;
++}
++
++DEFINE_STATIC_KEY_FALSE(isolation_type_snp);
++
++/*
++ * hv_isolation_type_snp - Check system runs in the AMD SEV-SNP based
++ * isolation VM.
++ */
++bool hv_isolation_type_snp(void)
++{
++	return static_branch_unlikely(&isolation_type_snp);
++}
