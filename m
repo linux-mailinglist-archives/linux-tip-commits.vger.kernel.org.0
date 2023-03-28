@@ -2,58 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6AD36CB982
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Mar 2023 10:36:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 755C86CB978
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Mar 2023 10:36:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232400AbjC1Iey (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 28 Mar 2023 04:34:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51836 "EHLO
+        id S229811AbjC1Ie5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 28 Mar 2023 04:34:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232324AbjC1Iev (ORCPT
+        with ESMTP id S232349AbjC1Iew (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 28 Mar 2023 04:34:51 -0400
+        Tue, 28 Mar 2023 04:34:52 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A061335A1;
-        Tue, 28 Mar 2023 01:34:50 -0700 (PDT)
-Date:   Tue, 28 Mar 2023 08:34:46 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A6E349FA;
+        Tue, 28 Mar 2023 01:34:51 -0700 (PDT)
+Date:   Tue, 28 Mar 2023 08:34:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679992486;
+        s=2020; t=1679992488;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XO6hDe3Y+PUd7kKgZVf+zuUdDB4Cc0B8dXgM5NXPIE8=;
-        b=q2YLWKQ46VYo26Ssu8LHoYac0li5Rdoiea3SNVfqg87HYZ8dHzrNszv6jTddEiGVYshkyT
-        KZa91cRPSFoYCsUUPKImShjgkiyfHDnev0lrwMy7QyMZJU+HVFrgw+lYR+tlssf+P/mrbm
-        no7SI7eWOM2FmXUF4nBWSgozQ1zO/z60F01vaeOdEKjwxD1AZpM4QfGD3V3UQAHY0YTNr8
-        93MOaYtoB1/bjQPbE+HlclKy6IqF57SG2SPwgOIX1mMUqKXfzVo0gvPQUz7xK2iGaT6yus
-        1ltF2vmCBZC9uLezmVbOCzsERB4gP4ktlFdeWFpr2Uzaf0bvVNryg0MTuGf4nw==
+        bh=6gKvxFcvri+uJgjsNs13jjfDwNVN9Rvd9wPogP5FUgY=;
+        b=q6tbYMY9B2dy51AejWp6J0Reu7yYpuR5FAFSz1HS+Fa8S+i6uuWbmLkxZ7Mnd12sNHl91D
+        9mnc8DNAXAyqTtyzeImoObOHqXBpWduWfrbal3G7ZhHR0peVLFaWo3BkJgAxAs2BMhk60l
+        WstYijBN6k1WBRw10LUQDMYRn082ny8ddJXT6Vo+B2NhZaFdNYVSVPo+pO7e1xht/hF2tv
+        wjpfWtmrwIvpx1LqsyBM1v4H5l4CUiE33/4HTt4bPPZOFSWeAU1u6wpgCvnsOJn493vK0l
+        6W948Yp57dFULCAv05/DEe0XMJ4Vi6O9M5DjD5bVeHcByVOqJysbW5kvLnV2yQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679992486;
+        s=2020e; t=1679992488;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XO6hDe3Y+PUd7kKgZVf+zuUdDB4Cc0B8dXgM5NXPIE8=;
-        b=g86gzRx3SGHd5mRdGuuMA7sa3P6INk8YJraspl7eCxcYWzNNTAxXvoVh1XTJJo7r124EuN
-        KQYtSvligSxkVbCg==
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+        bh=6gKvxFcvri+uJgjsNs13jjfDwNVN9Rvd9wPogP5FUgY=;
+        b=URCvw3Y3O56XksshsrflZMVbgJ1N4bjLN5ZmgdYXIg9CsR1/6YYwCKzRUUawXcOUi3woqu
+        +3H0BtTJqu2NoPBw==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] sched, smp: Trace IPIs sent via
- send_call_function_single_ipi()
-Cc:     Valentin Schneider <vschneid@redhat.com>,
+Subject: [tip: smp/core] locking/csd_lock: Add Kconfig option for csd_debug default
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230307143558.294354-3-vschneid@redhat.com>
-References: <20230307143558.294354-3-vschneid@redhat.com>
+In-Reply-To: <20230321005516.50558-1-paulmck@kernel.org>
+References: <20230321005516.50558-1-paulmck@kernel.org>
 MIME-Version: 1.0
-Message-ID: <167999248631.5837.6674946507911418669.tip-bot2@tip-bot2>
+Message-ID: <167999248761.5837.5758345327502379976.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,104 +67,78 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     cc9cb0a71725aa8dd8d8f534a9b562bbf7981f75
-Gitweb:        https://git.kernel.org/tip/cc9cb0a71725aa8dd8d8f534a9b562bbf7981f75
-Author:        Valentin Schneider <vschneid@redhat.com>
-AuthorDate:    Tue, 07 Mar 2023 14:35:53 
+Commit-ID:     c52198601695851622f361d3f16456e9fc857629
+Gitweb:        https://git.kernel.org/tip/c52198601695851622f361d3f16456e9fc857629
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Mon, 20 Mar 2023 17:55:13 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 24 Mar 2023 11:01:27 +01:00
+CommitterDate: Fri, 24 Mar 2023 11:01:25 +01:00
 
-sched, smp: Trace IPIs sent via send_call_function_single_ipi()
+locking/csd_lock: Add Kconfig option for csd_debug default
 
-send_call_function_single_ipi() is the thing that sends IPIs at the bottom
-of smp_call_function*() via either generic_exec_single() or
-smp_call_function_many_cond(). Give it an IPI-related tracepoint.
+The csd_debug kernel parameter works well, but is inconvenient in cases
+where it is more closely associated with boot loaders or automation than
+with a particular kernel version or release.  Thererfore, provide a new
+CSD_LOCK_WAIT_DEBUG_DEFAULT Kconfig option that defaults csd_debug to
+1 when selected and 0 otherwise, with this latter being the default.
 
-Note that this ends up tracing any IPI sent via __smp_call_single_queue(),
-which covers __ttwu_queue_wakelist() and irq_work_queue_on() "for free".
-
-Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230307143558.294354-3-vschneid@redhat.com
+Acked-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20230321005516.50558-1-paulmck@kernel.org
 ---
- arch/arm/kernel/smp.c   |  1 -
- arch/arm64/kernel/smp.c |  1 -
- kernel/sched/core.c     |  9 +++++++--
- kernel/smp.c            |  2 ++
- 4 files changed, 9 insertions(+), 4 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  6 ++++--
+ kernel/smp.c                                    |  2 +-
+ lib/Kconfig.debug                               |  9 +++++++++
+ 3 files changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index 0b8c257..5edf092 100644
---- a/arch/arm/kernel/smp.c
-+++ b/arch/arm/kernel/smp.c
-@@ -48,7 +48,6 @@
- #include <asm/mach/arch.h>
- #include <asm/mpu.h>
- 
--#define CREATE_TRACE_POINTS
- #include <trace/events/ipi.h>
- 
- /*
-diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
-index 4e83272..438c16f 100644
---- a/arch/arm64/kernel/smp.c
-+++ b/arch/arm64/kernel/smp.c
-@@ -51,7 +51,6 @@
- #include <asm/ptrace.h>
- #include <asm/virt.h>
- 
--#define CREATE_TRACE_POINTS
- #include <trace/events/ipi.h>
- 
- DEFINE_PER_CPU_READ_MOSTLY(int, cpu_number);
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 488655f..c26a2cd 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -80,6 +80,7 @@
- #define CREATE_TRACE_POINTS
- #include <linux/sched/rseq_api.h>
- #include <trace/events/sched.h>
-+#include <trace/events/ipi.h>
- #undef CREATE_TRACE_POINTS
- 
- #include "sched.h"
-@@ -95,6 +96,8 @@
- #include "../../io_uring/io-wq.h"
- #include "../smpboot.h"
- 
-+EXPORT_TRACEPOINT_SYMBOL_GPL(ipi_send_cpumask);
-+
- /*
-  * Export tracepoints that act as a bare tracehook (ie: have no trace event
-  * associated with them) to allow external modules to probe them.
-@@ -3830,10 +3833,12 @@ void send_call_function_single_ipi(int cpu)
- {
- 	struct rq *rq = cpu_rq(cpu);
- 
--	if (!set_nr_if_polling(rq->idle))
-+	if (!set_nr_if_polling(rq->idle)) {
-+		trace_ipi_send_cpumask(cpumask_of(cpu), _RET_IP_, NULL);
- 		arch_send_call_function_single_ipi(cpu);
--	else
-+	} else {
- 		trace_sched_wake_idle_without_ipi(cpu);
-+	}
- }
- 
- /*
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 6221a1d..ce70777 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -893,8 +893,10 @@
+ 			handling. When switched on, additional debug data is
+ 			printed to the console in case a hanging CPU is
+ 			detected, and that CPU is pinged again in order to try
+-			to resolve the hang situation.
+-			0: disable csdlock debugging (default)
++			to resolve the hang situation.  The default value of
++			this option depends on the CSD_LOCK_WAIT_DEBUG_DEFAULT
++			Kconfig option.
++			0: disable csdlock debugging
+ 			1: enable basic csdlock debugging (minor impact)
+ 			ext: enable extended csdlock debugging (more impact,
+ 			     but more data)
 diff --git a/kernel/smp.c b/kernel/smp.c
-index 298ba75..770e879 100644
+index 06a4139..e2d558f 100644
 --- a/kernel/smp.c
 +++ b/kernel/smp.c
-@@ -26,6 +26,8 @@
- #include <linux/sched/debug.h>
- #include <linux/jump_label.h>
+@@ -158,7 +158,7 @@ void __init call_function_init(void)
  
-+#include <trace/events/ipi.h>
+ #ifdef CONFIG_CSD_LOCK_WAIT_DEBUG
+ 
+-static DEFINE_STATIC_KEY_FALSE(csdlock_debug_enabled);
++static DEFINE_STATIC_KEY_MAYBE(CONFIG_CSD_LOCK_WAIT_DEBUG_DEFAULT, csdlock_debug_enabled);
+ static DEFINE_STATIC_KEY_FALSE(csdlock_debug_extended);
+ 
+ static int __init csdlock_debug(char *str)
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index c8b379e..e1b160a 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1480,6 +1480,15 @@ config CSD_LOCK_WAIT_DEBUG
+ 	  include the IPI handler function currently executing (if any)
+ 	  and relevant stack traces.
+ 
++config CSD_LOCK_WAIT_DEBUG_DEFAULT
++	bool "Default csd_lock_wait() debugging on at boot time"
++	depends on CSD_LOCK_WAIT_DEBUG
++	depends on 64BIT
++	default n
++	help
++	  This option causes the csdlock_debug= kernel boot parameter to
++	  default to 1 (basic debugging) instead of 0 (no debugging).
 +
- #include "smpboot.h"
- #include "sched/smp.h"
+ endmenu # lock debugging
  
+ config TRACE_IRQFLAGS
