@@ -2,57 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 748346CAF6E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Mar 2023 22:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 171656CB2F6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Mar 2023 03:04:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232310AbjC0UKA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 27 Mar 2023 16:10:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33678 "EHLO
+        id S230017AbjC1BEG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 27 Mar 2023 21:04:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229685AbjC0UJ7 (ORCPT
+        with ESMTP id S229897AbjC1BEF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 27 Mar 2023 16:09:59 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D2F619A7;
-        Mon, 27 Mar 2023 13:09:55 -0700 (PDT)
-Date:   Mon, 27 Mar 2023 20:09:53 -0000
+        Mon, 27 Mar 2023 21:04:05 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF621A5;
+        Mon, 27 Mar 2023 18:04:01 -0700 (PDT)
+Date:   Tue, 28 Mar 2023 01:03:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1679947793;
+        s=2020; t=1679965439;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ws/cONdphCMGN2kVG9ytVBFiCX4w0E0yXRd1E6lu6dQ=;
-        b=Bu1TOWzujWz6c1PNVFAUVhXmcmRD57MNgqxWo/RyTCJXAiot94zjbEMgs4iA7jkHD4KVwq
-        d4wkj7YJ1KILLM/EOv4az2m0qzhdn4Gp2FdCAV+jOmSXgMx7hDZpBpBYRcQLc9ZPvVeNRo
-        R6dkCCyk3y7PJFq3CicppgGWV2rG+KlzIh3AWcSNIllrKqHBtVckoEXiZIFW6fWSz6ttbS
-        b2xViN3f4t2OoJdAfKgBwMY9NkM66OibN2OQjP1Ts1LxpZFo5E/ojkrV9W59qlLUNVQlmp
-        BseISOS/BCUgpkGsWBfeFx7NFwq/gJLSd+h3w/sCV1w9kewVempOY1pgtSRKMg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=67MctZIWISax8lWg/O1BUzadU9+7vRWPYiN1MT2xET4=;
+        b=c0pmAtjJQX4yOSfxD0H4QkzTWoJCAOhHpmEyMZiBPiAEMbVwmgEzIzQYipoq2vGF7ZLxGm
+        w+07+v7Wcf31m6vT5QQgXyPQGx/p6pX3eQj1rrOLER9b7/gZl5B1rlXo7Y6f64mAYUFt5C
+        WRN+5lHCzv9cad7aVgx3ZAHykUBu0yF425G6Qbse6Gk9yWsggY5IIYqJvk4DIsod9mcBp3
+        QNtNyufJasIgYttJNTYL/QIEWvFua6BwpRFDUBPKK0u8FYC8HJ/7+ZUpF/HuQ+Bdvn5rLd
+        9mAY2hFlxxQ1a2HWKBxgRgo168rHm1t2aFIvRgE6T5V0IWbvIf2QYgMk1K2Pow==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1679947793;
+        s=2020e; t=1679965439;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ws/cONdphCMGN2kVG9ytVBFiCX4w0E0yXRd1E6lu6dQ=;
-        b=NMgVRnN1pjaJRJzALKJT1ZINvQopw1p1b0BiZAvCpYyheVd09TRo/xH2c+Xl1TkGIFosY2
-        yDHeoQwGATgYp+BQ==
-From:   "tip-bot2 for Michael Kelley" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=67MctZIWISax8lWg/O1BUzadU9+7vRWPYiN1MT2xET4=;
+        b=dSMnQ/psMnohljrtpotyYNblxfvkBIgTme3m9btGomqyUeHjAqx4N5WXxJLBxtzU5o1a37
+        22c4QbhcU6Vnj3Dg==
+From:   "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/mm: Handle decryption/re-encryption of
- bss_decrypted consistently
-Cc:     Michael Kelley <mikelley@microsoft.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
+Subject: [tip: x86/shstk] x86/shstk: Enforce only whole copies for ssp_set()
+Cc:     Dan Carpenter <error27@gmail.com>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1678329614-3482-5-git-send-email-mikelley@microsoft.com>
-References: <1678329614-3482-5-git-send-email-mikelley@microsoft.com>
 MIME-Version: 1.0
-Message-ID: <167994779300.5837.15408896550338511854.tip-bot2@tip-bot2>
+Message-ID: <167996543824.5837.9196113102924582471.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,61 +59,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sev branch of tip:
+The following commit has been merged into the x86/shstk branch of tip:
 
-Commit-ID:     c7b5254bd802ee3868f1c59333545272dc700d6d
-Gitweb:        https://git.kernel.org/tip/c7b5254bd802ee3868f1c59333545272dc700d6d
-Author:        Michael Kelley <mikelley@microsoft.com>
-AuthorDate:    Wed, 08 Mar 2023 18:40:05 -08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 27 Mar 2023 09:23:21 +02:00
+Commit-ID:     11c95c77eef6d56c1ef9f55d8afd83ceb6d99996
+Gitweb:        https://git.kernel.org/tip/11c95c77eef6d56c1ef9f55d8afd83ceb6d99996
+Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
+AuthorDate:    Sat, 25 Mar 2023 12:33:49 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 27 Mar 2023 17:55:51 -07:00
 
-x86/mm: Handle decryption/re-encryption of bss_decrypted consistently
+x86/shstk: Enforce only whole copies for ssp_set()
 
-sme_postprocess_startup() decrypts the bss_decrypted section when
-sme_me_mask is non-zero.
+The regset set interface takes pos and count arguments to allow for
+partial copies. No callers use a non-zero pos, but ptrace allows for the
+count to be specified. It limits count to be a multiple of regset size, so
+this still allows for a zero size to be passed to ssp_set().
 
-mem_encrypt_free_decrypted_mem() re-encrypts the unused portion based
-on CC_ATTR_MEM_ENCRYPT.
+In ssp_set(), user_regset_copyin() returns success for copying zero bytes,
+which means user_ssp can later be accessed uninitialized. So add
+enforcement for this case. The other regset's also enforce pos == 0, so do
+that as well even though there is no caller today.
 
-In a Hyper-V guest VM using vTOM, these conditions are not equivalent
-as sme_me_mask is always zero when using vTOM. Consequently,
-mem_encrypt_free_decrypted_mem() attempts to re-encrypt memory that was
-never decrypted.
+In the case of partial copies, some regsets return -EINVAL and some
+return -EFAULT. -EINVAL seems more appropriate, so use that error code.
 
-So check sme_me_mask in mem_encrypt_free_decrypted_mem() too.
-
-Hyper-V guests using vTOM don't need the bss_decrypted section to be
-decrypted, so skipping the decryption/re-encryption doesn't cause a
-problem.
-
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/1678329614-3482-5-git-send-email-mikelley@microsoft.com
+Fixes: d84e6ee122e5 ("x86: Add PTRACE interface for shadow stack")
+Reported-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/90af27cc-6c9d-4fb9-be3b-fc4ef378766d@kili.mountain/
+Link: https://lore.kernel.org/all/20230325193349.31893-1-rick.p.edgecombe%40intel.com
 ---
- arch/x86/mm/mem_encrypt_amd.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/x86/kernel/fpu/regset.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-index 9c4d8db..e0b51c0 100644
---- a/arch/x86/mm/mem_encrypt_amd.c
-+++ b/arch/x86/mm/mem_encrypt_amd.c
-@@ -513,10 +513,14 @@ void __init mem_encrypt_free_decrypted_mem(void)
- 	npages = (vaddr_end - vaddr) >> PAGE_SHIFT;
+diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
+index f0a8eaf..6bc1eb2 100644
+--- a/arch/x86/kernel/fpu/regset.c
++++ b/arch/x86/kernel/fpu/regset.c
+@@ -223,6 +223,9 @@ int ssp_set(struct task_struct *target, const struct user_regset *regset,
+ 	    !ssp_active(target, regset))
+ 		return -ENODEV;
  
- 	/*
--	 * The unused memory range was mapped decrypted, change the encryption
--	 * attribute from decrypted to encrypted before freeing it.
-+	 * If the unused memory range was mapped decrypted, change the encryption
-+	 * attribute from decrypted to encrypted before freeing it. Base the
-+	 * re-encryption on the same condition used for the decryption in
-+	 * sme_postprocess_startup(). Higher level abstractions, such as
-+	 * CC_ATTR_MEM_ENCRYPT, aren't necessarily equivalent in a Hyper-V VM
-+	 * using vTOM, where sme_me_mask is always zero.
- 	 */
--	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
-+	if (sme_me_mask) {
- 		r = set_memory_encrypted(vaddr, npages);
- 		if (r) {
- 			pr_warn("failed to free unused decrypted pages\n");
++	if (pos != 0 || count != sizeof(user_ssp))
++		return -EINVAL;
++
+ 	r = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &user_ssp, 0, -1);
+ 	if (r)
+ 		return r;
