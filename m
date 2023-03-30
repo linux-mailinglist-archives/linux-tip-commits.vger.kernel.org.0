@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98A8B6D00B1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Mar 2023 12:10:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFAA46D0469
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Mar 2023 14:12:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230153AbjC3KKG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Mar 2023 06:10:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50072 "EHLO
+        id S230413AbjC3MMY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Mar 2023 08:12:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230413AbjC3KKF (ORCPT
+        with ESMTP id S229923AbjC3MMX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Mar 2023 06:10:05 -0400
+        Thu, 30 Mar 2023 08:12:23 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A8DA7D93;
-        Thu, 30 Mar 2023 03:09:41 -0700 (PDT)
-Date:   Thu, 30 Mar 2023 10:09:39 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C84D420B;
+        Thu, 30 Mar 2023 05:12:07 -0700 (PDT)
+Date:   Thu, 30 Mar 2023 12:12:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1680170979;
+        s=2020; t=1680178324;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MzwYpHAlGFh2jcUeq4SdySXMk9iHC9iZ6y9++anDNoE=;
-        b=KM222hMi3A2IIcnhPjYwrQpr8XiHlwxM/zurbhYUwW3asTzbulzgIHuHPDtj2VLhsnus3k
-        tLmNJSxRCvVHTIpi1vWgvclkgS7X98iCa3YBKYeIPcwBu7w/W8UxwC7+iiH5cmlp3WMwH6
-        /xAnuieEaidnmu/VepjY+wKB3u5b9Oi07ePEJxY2nBjZ6JTEB4PKuGc50DRd2M9DFGFxDN
-        ljtPn2GGM29/nXGVKnBY2XL+JUVYzoB8FZqW2tKeUNKGqPrZTHK+Kkpe0FmmHhkatF8OXf
-        zjHdaY9xmVkG+lcbKFsorwFSV3d42qozjzg5IFZFfz9fjVRLpXY8oUlTeweDGg==
+        bh=V+JuhT5uJ9g2/YYYFJ/EjWALSEY8vu20u5ts54xdaiI=;
+        b=CU9TlKqTDYTbfJU10SlCEiIBUyzCePgw2KVZ3QTc5BZlnARLXWgCkf9jZ2nNANsrfVESlW
+        VSJ79lSTxDpSMUJJHBG3Ms4rIvqxjjtCjLzHYG2S5EJr/GPTf61+VFtHhe689xypK5XPRl
+        O6YFBIP38XN/DaVkvfl9kuQxfYOMIuOWDimIfiEIiheFTCDqsRDp5qY1cQn0FIyBklkyuN
+        zIh7FzWQkKzje5a+QS9gItoZYwFsbpnZamFryC/WC3vuGpdIWObhkW2N+n7FJtZc4qdE2g
+        6zurRcJCvATVe27xA3bw+NQdafjd7vGbGbxqi16tydXIoq49hW/yYuYtBHKjkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1680170979;
+        s=2020e; t=1680178324;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MzwYpHAlGFh2jcUeq4SdySXMk9iHC9iZ6y9++anDNoE=;
-        b=+bZu9CFZt+G66lzntjHFTd0Mcgmf5VI71aMmmY/JKMq00J0FLiaHi1LdhwmfToTEjgcLkV
-        btofhqMghNsItUCg==
+        bh=V+JuhT5uJ9g2/YYYFJ/EjWALSEY8vu20u5ts54xdaiI=;
+        b=LSUdl0ot0d8bVhAU6XVyu4AVrIk+u4PgZRIsiTRgXOD+HEWS377OImx7zc903YpbuiJx++
+        XYcAi61vQpx4CQDg==
 From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -50,7 +50,7 @@ Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>,
 In-Reply-To: <20230318115634.9392-2-bp@alien8.de>
 References: <20230318115634.9392-2-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <168017097924.404.15209284037516830804.tip-bot2@tip-bot2>
+Message-ID: <168017832388.404.10347137104098194414.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,33 +66,31 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cc branch of tip:
 
-Commit-ID:     52e490dcb9e47e8dcf9d915214c6b9d79580d03e
-Gitweb:        https://git.kernel.org/tip/52e490dcb9e47e8dcf9d915214c6b9d79580d03e
+Commit-ID:     3d91c537296794d5d0773f61abbe7b63f2f132d8
+Gitweb:        https://git.kernel.org/tip/3d91c537296794d5d0773f61abbe7b63f2f132d8
 Author:        Borislav Petkov (AMD) <bp@alien8.de>
 AuthorDate:    Sat, 18 Mar 2023 12:56:33 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 30 Mar 2023 11:59:58 +02:00
+CommitterDate: Thu, 30 Mar 2023 14:06:28 +02:00
 
 x86/coco: Export cc_vendor
 
-It will be used in different checks in future changes. Export it
-directly and drop the setter as it is a __ro_after_init variable anyway.
+It will be used in different checks in future changes. Export it directly
+and provide accessor functions and stubs so this can be used in general
+code when CONFIG_ARCH_HAS_CC_PLATFORM is not set.
 
 No functional changes.
 
-[ tglx: Add accessor function ]
+[ tglx: Add accessor functions ]
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Link: https://lore.kernel.org/r/20230318115634.9392-2-bp@alien8.de
 
 ---
- arch/x86/coco/core.c               | 13 ++++---------
- arch/x86/coco/tdx/tdx.c            |  2 +-
- arch/x86/include/asm/coco.h        | 16 +++++++++++++---
- arch/x86/kernel/cpu/mshyperv.c     |  2 +-
- arch/x86/mm/mem_encrypt_identity.c |  2 +-
- 5 files changed, 20 insertions(+), 15 deletions(-)
+ arch/x86/coco/core.c        | 13 ++++---------
+ arch/x86/include/asm/coco.h | 23 ++++++++++++++++++++---
+ 2 files changed, 24 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
 index 49b44f8..684f0a9 100644
@@ -146,24 +144,11 @@ index 49b44f8..684f0a9 100644
  __init void cc_set_mask(u64 mask)
  {
  	cc_mask = mask;
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 055300e..bab29cb 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -852,7 +852,7 @@ void __init tdx_early_init(void)
- 
- 	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
- 
--	cc_set_vendor(CC_VENDOR_INTEL);
-+	cc_vendor = CC_VENDOR_INTEL;
- 	tdx_parse_tdinfo(&cc_mask);
- 	cc_set_mask(cc_mask);
- 
 diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
-index 3d98c3a..35d7aa9 100644
+index 3d98c3a..91b9448 100644
 --- a/arch/x86/include/asm/coco.h
 +++ b/arch/x86/include/asm/coco.h
-@@ -11,13 +11,23 @@ enum cc_vendor {
+@@ -11,13 +11,30 @@ enum cc_vendor {
  	CC_VENDOR_INTEL,
  };
  
@@ -178,6 +163,11 @@ index 3d98c3a..35d7aa9 100644
 +	return cc_vendor;
 +}
 +
++static inline void cc_set_vendor(enum cc_vendor vendor)
++{
++	cc_vendor = vendor;
++}
++
 +void cc_set_mask(u64 mask);
  u64 cc_mkenc(u64 val);
  u64 cc_mkdec(u64 val);
@@ -187,32 +177,8 @@ index 3d98c3a..35d7aa9 100644
 +	return CC_VENDOR_NONE;
 +}
 +
++static inline void cc_set_vendor(enum cc_vendor vendor) { }
++
  static inline u64 cc_mkenc(u64 val)
  {
  	return val;
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index f36dc2f..9f3fad3 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -412,7 +412,7 @@ static void __init ms_hyperv_init_platform(void)
- 		/* Isolation VMs are unenlightened SEV-based VMs, thus this check: */
- 		if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
- 			if (hv_get_isolation_type() != HV_ISOLATION_TYPE_NONE)
--				cc_set_vendor(CC_VENDOR_HYPERV);
-+				cc_vendor = CC_VENDOR_HYPERV;
- 		}
- 	}
- 
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index c6efcf5..bfe22fd 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -612,7 +612,7 @@ void __init sme_enable(struct boot_params *bp)
- out:
- 	if (sme_me_mask) {
- 		physical_mask &= ~sme_me_mask;
--		cc_set_vendor(CC_VENDOR_AMD);
-+		cc_vendor = CC_VENDOR_AMD;
- 		cc_set_mask(sme_me_mask);
- 	}
- }
