@@ -2,144 +2,116 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BC1A6CC9EC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Mar 2023 20:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07E5E6CFFDE
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Mar 2023 11:33:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbjC1SQk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 28 Mar 2023 14:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55928 "EHLO
+        id S229950AbjC3JdJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Mar 2023 05:33:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbjC1SQg (ORCPT
+        with ESMTP id S229814AbjC3JdI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 28 Mar 2023 14:16:36 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F989F;
-        Tue, 28 Mar 2023 11:16:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F17E2B81E36;
-        Tue, 28 Mar 2023 18:16:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67F7C433D2;
-        Tue, 28 Mar 2023 18:16:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680027392;
-        bh=mX5FRbksEdfPlA5RUWG2p76bf5c21aezUdzZqBwXRc4=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=RF5Oo+8B15Rvbo4Iy/ABMMd3rpjtWQ0KLqJf4DuK8e69IgLmRwg1BH/0ck2+iyfJg
-         Usy5YSlziFGN7jauK5Zgtqva2leRhdF85jgXTDEbqfJnuHtQ3CdjwR06duuDRjbgDG
-         dC5TGL+vhzmFTbTfvk4T49lxKtTuNSW3ZVgKjHAxPoe3bL5Iu1jVg4rBs7ixulJHSG
-         UGjjxaCXKkIkh0Nef1eDQxCB1JoJZ7IGEbh3JBIOzS+O/I7QCCPGa18XCvZY47dSFd
-         jqNbz3MyHsApeDTpjRhHwWjpFEdYZr2KuJjBB5iXN4CVMj4fDtmYLlTNCgVuNopFeU
-         HngDaNdAKISaA==
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 3A16F1540479; Tue, 28 Mar 2023 11:16:32 -0700 (PDT)
-Date:   Tue, 28 Mar 2023 11:16:32 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Juergen Gross <jgross@suse.com>, x86@kernel.org,
-        rcu@vger.kernel.org
-Subject: Re: [tip: smp/core] kernel/smp: Make csdlock_debug= resettable
-Message-ID: <c6169b0d-94e5-43c3-bb9b-997b478a0e6f@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20230321005516.50558-4-paulmck@kernel.org>
- <167999248681.5837.4240401894848544789.tip-bot2@tip-bot2>
+        Thu, 30 Mar 2023 05:33:08 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A4806E93;
+        Thu, 30 Mar 2023 02:33:03 -0700 (PDT)
+Date:   Thu, 30 Mar 2023 09:33:00 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1680168781;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vqOK79NtrV7he0FM5j2OjTQDuyQecRZj6vRZgqwExg4=;
+        b=b76AvJO2QCUzr7uneadSs/vpjdB8eCOtTw59Z8PY3Ww7KYI01iVOX5H6N2c5rVczuoTL0A
+        ua4O0L1MCXV1opaDoVHAbq0PL1qyICyloNiND2vzPZCnzPidfyB4CRKupp87p5Lz6/TmOI
+        1FL/mdwFnyna1Rap4okeaymaG7dc5ejxj82n8r7gpHHBq6+Il2cHuLH8P4VCVGkx/K/VdT
+        uWLcd5JKG/K4kxm1duR5YVHpTH3NhNz3ynEoa9bC0gk5EbaTiv0JQWkcZnkuZh7cfntOCr
+        s1x/Z+n2DjmaPVhEvztIBDwhxSujR+jtEO8fJHCEpR2lbfOcYDqUf/cpg0dcOA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1680168781;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vqOK79NtrV7he0FM5j2OjTQDuyQecRZj6vRZgqwExg4=;
+        b=COCFp4z0K2EoY/I25UgrX58l47Bk1g6afszS3EVJWvF7f6egDobKI+edqkhiwydXmNEyre
+        sy9/Ox01EOc/OcDw==
+From:   "tip-bot2 for Eric DeVolder" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/acpi/boot: Correct acpi_is_processor_usable() check
+Cc:     Miguel Luis <miguel.luis@oracle.com>,
+        Boris Ostrovsky <boris.ovstrosky@oracle.com>,
+        Eric DeVolder <eric.devolder@oracle.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        David R <david@unsolicited.net>, <stable@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230327191026.3454-2-eric.devolder@oracle.com>
+References: <20230327191026.3454-2-eric.devolder@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <167999248681.5837.4240401894848544789.tip-bot2@tip-bot2>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Message-ID: <168016878002.404.5262105401164408214.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, Mar 28, 2023 at 08:34:46AM -0000, tip-bot2 for Paul E. McKenney wrote:
-> The following commit has been merged into the smp/core branch of tip:
-> 
-> Commit-ID:     203e435844734cfa503cd1755f35db2514db5cca
-> Gitweb:        https://git.kernel.org/tip/203e435844734cfa503cd1755f35db2514db5cca
-> Author:        Paul E. McKenney <paulmck@kernel.org>
-> AuthorDate:    Mon, 20 Mar 2023 17:55:16 -07:00
-> Committer:     Peter Zijlstra <peterz@infradead.org>
-> CommitterDate: Fri, 24 Mar 2023 11:01:26 +01:00
-> 
-> kernel/smp: Make csdlock_debug= resettable
+The following commit has been merged into the x86/urgent branch of tip:
 
-Very good, thank you!  I have removed these from the -rcu tree's "dev"
-branch, and if testing goes well will be sending the new version to -next.
+Commit-ID:     fed8d8773b8ea68ad99d9eee8c8343bef9da2c2c
+Gitweb:        https://git.kernel.org/tip/fed8d8773b8ea68ad99d9eee8c8343bef9da2c2c
+Author:        Eric DeVolder <eric.devolder@oracle.com>
+AuthorDate:    Mon, 27 Mar 2023 15:10:26 -04:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 30 Mar 2023 11:07:30 +02:00
 
-							Thanx, Paul
+x86/acpi/boot: Correct acpi_is_processor_usable() check
 
-> It is currently possible to set the csdlock_debug_enabled static
-> branch, but not to reset it.  This is an issue when several different
-> entities supply kernel boot parameters and also for kernels built with
-> CONFIG_CSD_LOCK_WAIT_DEBUG_DEFAULT=y.
-> 
-> Therefore, make the csdlock_debug=0 kernel boot parameter turn off
-> debugging.  Last one wins!
-> 
-> Reported-by: Jes Sorensen <Jes.Sorensen@gmail.com>
-> Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Acked-by: Juergen Gross <jgross@suse.com>
-> Link: https://lore.kernel.org/r/20230321005516.50558-4-paulmck@kernel.org
-> ---
->  Documentation/admin-guide/kernel-parameters.txt | 13 +++++++------
->  kernel/smp.c                                    | 11 ++++++++---
->  2 files changed, 15 insertions(+), 9 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index b15198a..5f2ec4b 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -889,12 +889,13 @@
->  	cs89x0_media=	[HW,NET]
->  			Format: { rj45 | aui | bnc }
->  
-> -	csdlock_debug=	[KNL] Enable debug add-ons of cross-CPU function call
-> -			handling. When switched on, additional debug data is
-> -			printed to the console in case a hanging CPU is
-> -			detected, and that CPU is pinged again in order to try
-> -			to resolve the hang situation.  The default value of
-> -			this option depends on the CSD_LOCK_WAIT_DEBUG_DEFAULT
-> +	csdlock_debug=	[KNL] Enable or disable debug add-ons of cross-CPU
-> +			function call handling. When switched on,
-> +			additional debug data is printed to the console
-> +			in case a hanging CPU is detected, and that
-> +			CPU is pinged again in order to try to resolve
-> +			the hang situation.  The default value of this
-> +			option depends on the CSD_LOCK_WAIT_DEBUG_DEFAULT
->  			Kconfig option.
->  
->  	dasd=		[HW,NET]
-> diff --git a/kernel/smp.c b/kernel/smp.c
-> index 7a85bcd..298ba75 100644
-> --- a/kernel/smp.c
-> +++ b/kernel/smp.c
-> @@ -116,11 +116,16 @@ static DEFINE_STATIC_KEY_MAYBE(CONFIG_CSD_LOCK_WAIT_DEBUG_DEFAULT, csdlock_debug
->   */
->  static int __init csdlock_debug(char *str)
->  {
-> +	int ret;
->  	unsigned int val = 0;
->  
-> -	get_option(&str, &val);
-> -	if (val)
-> -		static_branch_enable(&csdlock_debug_enabled);
-> +	ret = get_option(&str, &val);
-> +	if (ret) {
-> +		if (val)
-> +			static_branch_enable(&csdlock_debug_enabled);
-> +		else
-> +			static_branch_disable(&csdlock_debug_enabled);
-> +	}
->  
->  	return 1;
->  }
+The logic in acpi_is_processor_usable() requires the online capable
+bit be set for hotpluggable CPUs.  The online capable bit has been
+introduced in ACPI 6.3.
+
+However, for ACPI revisions < 6.3 which do not support that bit, CPUs
+should be reported as usable, not the other way around.
+
+Reverse the check.
+
+  [ bp: Rewrite commit message. ]
+
+Fixes: e2869bd7af60 ("x86/acpi/boot: Do not register processors that cannot be onlined for x2APIC")
+Suggested-by: Miguel Luis <miguel.luis@oracle.com>
+Suggested-by: Boris Ostrovsky <boris.ovstrosky@oracle.com>
+Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: David R <david@unsolicited.net>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230327191026.3454-2-eric.devolder@oracle.com
+---
+ arch/x86/kernel/acpi/boot.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 7292184..0dac4ab 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -197,7 +197,8 @@ static bool __init acpi_is_processor_usable(u32 lapic_flags)
+ 	if (lapic_flags & ACPI_MADT_ENABLED)
+ 		return true;
+ 
+-	if (acpi_support_online_capable && (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
++	if (!acpi_support_online_capable ||
++	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
+ 		return true;
+ 
+ 	return false;
