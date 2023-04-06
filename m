@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E37946D939B
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Apr 2023 12:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73AAF6D93A0
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Apr 2023 12:05:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236806AbjDFKFV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Apr 2023 06:05:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59440 "EHLO
+        id S236387AbjDFKFr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Apr 2023 06:05:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229912AbjDFKFJ (ORCPT
+        with ESMTP id S236622AbjDFKFU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 Apr 2023 06:05:09 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F6D4ED2;
-        Thu,  6 Apr 2023 03:05:08 -0700 (PDT)
-Date:   Thu, 06 Apr 2023 10:05:05 -0000
+        Thu, 6 Apr 2023 06:05:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75CF92727;
+        Thu,  6 Apr 2023 03:05:19 -0700 (PDT)
+Date:   Thu, 06 Apr 2023 10:05:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1680775506;
+        s=2020; t=1680775518;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=L4U473xiBwsWpVCNwCcEEXKybetROkdDo1lDqE9zYZc=;
-        b=IuvRBVCGpqZSxz2dJ+nMTmxpblUmFLfKzcC1to+zBR9n9AVzEsMSGGZzWuzBeF8Vok/TYM
-        GbkNPweUVPTJFaxiGAl/hCou2NJTEInXjLtlIkJKdVVf6wIzoL9jtHOkFllaZpcqBhWsl3
-        oJRu/LXyM8yTsa+0TxfysEb5gvnLnllvobWQu3eeI2TKlLuHRy9bss6aty/IC30fP0Z1aN
-        F8YAoHHdSDGAkREtHv/pwhc7lQ2kjpbyOBsIU2bG+26aAF9CIQ2bbWP5cXl8+WkgBqqPiV
-        Cp78xpTu+knCWIqQN9bUa54FIGLW6X17H38mKZDgzVCePkB7DJErQF+pLdeUlQ==
+        bh=2GFJ1KgWCYMCP8ag70cl83o6IW655tDj0gST7iBEuUQ=;
+        b=Uo7FuSv36y4C7X2FbYDiPa3ml4hKkZUGAGFMcVP9fuKTzmJxLtPZJZzJg4wMZSOQOyVPXB
+        ciZ4D84pqn2FicmFmFdGKcMfq9O1L0CP3sKS2kH8Hsx8E7yX2X4k56m3b9SdwOJjvgVmbu
+        vo6m2LlHgXMmpdR5DdrT/bt9DJfAJcH5XULaosLqNMBylVzIRT42Zj+1kE0Z2i1IiZyU7d
+        Q6C3vG7tSzrPYU5eZYrfd17evflcbiVLTUFq65a5zmWjmFIjMHCYmue/Iuqd7SAvVle4Ea
+        FJaSrmeiXBONye0PnNo8/yFyxSMBxcGDTfq5pb5o+ZSVBTg8DIdKqgT/df0H2w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1680775506;
+        s=2020e; t=1680775518;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=L4U473xiBwsWpVCNwCcEEXKybetROkdDo1lDqE9zYZc=;
-        b=ZeRDUUMRYXlc04IM+ZC4phXV2Njb5iVxmRqBwtVyNyks0AsyOBLG05e/y9KQwBR7ns/sYt
-        KP/1Zf41WGBLxSAw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=2GFJ1KgWCYMCP8ag70cl83o6IW655tDj0gST7iBEuUQ=;
+        b=11a+pjG9H/nJy+RVK4JOUAWrvVzJehelHsoSwstGs6i9Bc7geG6B6mlXpVDiFB7a1Hl0Y2
+        eA/+J+ZXSroGinDA==
+From:   "tip-bot2 for Domenico Cerasuolo" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf: Optimize perf_pmu_migrate_context()
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/psi: Extract update_triggers side effect
+Cc:     Johannes Weiner <hannes@cmpxchg.org>,
+        Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230403090858.GT4253@hirez.programming.kicks-ass.net>
-References: <20230403090858.GT4253@hirez.programming.kicks-ass.net>
+In-Reply-To: <20230330105418.77061-4-cerasuolodomenico@gmail.com>
+References: <20230330105418.77061-4-cerasuolodomenico@gmail.com>
 MIME-Version: 1.0
-Message-ID: <168077550562.404.4256750619103519881.tip-bot2@tip-bot2>
+Message-ID: <168077551773.404.15307578031838005119.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,56 +65,91 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     b168098912926236bbeebaf7795eb7aab76d2b45
-Gitweb:        https://git.kernel.org/tip/b168098912926236bbeebaf7795eb7aab76d2b45
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 03 Apr 2023 11:08:58 +02:00
+Commit-ID:     4468fcae49f08e88fbbffe05b29496192df89991
+Gitweb:        https://git.kernel.org/tip/4468fcae49f08e88fbbffe05b29496192df89991
+Author:        Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+AuthorDate:    Thu, 30 Mar 2023 12:54:17 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 05 Apr 2023 09:58:46 +02:00
+CommitterDate: Wed, 05 Apr 2023 09:58:49 +02:00
 
-perf: Optimize perf_pmu_migrate_context()
+sched/psi: Extract update_triggers side effect
 
-Thomas reported that offlining CPUs spends a lot of time in
-synchronize_rcu() as called from perf_pmu_migrate_context() even though
-he's not actually using uncore events.
+This change moves update_total flag out of update_triggers function,
+currently called only in psi_poll_work.
+In the next patch, update_triggers will be called also in psi_avgs_work,
+but the total update information is specific to psi_poll_work.
+Returning update_total value to the caller let us avoid differentiating
+the implementation of update_triggers for different aggregators.
 
-Turns out, the thing is unconditionally waiting for RCU, even if there's
-no actual events to migrate.
-
-Fixes: 0cda4c023132 ("perf: Introduce perf_pmu_migrate_context()")
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lkml.kernel.org/r/20230403090858.GT4253@hirez.programming.kicks-ass.net
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Link: https://lore.kernel.org/r/20230330105418.77061-4-cerasuolodomenico@gmail.com
 ---
- kernel/events/core.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ kernel/sched/psi.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index fb3e436..115320f 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -12893,12 +12893,14 @@ void perf_pmu_migrate_context(struct pmu *pmu, int src_cpu, int dst_cpu)
- 	__perf_pmu_remove(src_ctx, src_cpu, pmu, &src_ctx->pinned_groups, &events);
- 	__perf_pmu_remove(src_ctx, src_cpu, pmu, &src_ctx->flexible_groups, &events);
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index a3d0b5c..f3df6a8 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -430,11 +430,11 @@ static u64 window_update(struct psi_window *win, u64 now, u64 value)
+ 	return growth;
+ }
  
--	/*
--	 * Wait for the events to quiesce before re-instating them.
--	 */
--	synchronize_rcu();
-+	if (!list_empty(&events)) {
-+		/*
-+		 * Wait for the events to quiesce before re-instating them.
-+		 */
-+		synchronize_rcu();
+-static u64 update_triggers(struct psi_group *group, u64 now)
++static u64 update_triggers(struct psi_group *group, u64 now, bool *update_total)
+ {
+ 	struct psi_trigger *t;
+-	bool update_total = false;
+ 	u64 *total = group->total[PSI_POLL];
++	*update_total = false;
  
--	__perf_pmu_install(dst_ctx, dst_cpu, pmu, &events);
-+		__perf_pmu_install(dst_ctx, dst_cpu, pmu, &events);
+ 	/*
+ 	 * On subsequent updates, calculate growth deltas and let
+@@ -462,7 +462,7 @@ static u64 update_triggers(struct psi_group *group, u64 now)
+ 			 * been through all of them. Also remember to extend the
+ 			 * polling time if we see new stall activity.
+ 			 */
+-			update_total = true;
++			*update_total = true;
+ 
+ 			/* Calculate growth since last update */
+ 			growth = window_update(&t->win, now, total[t->state]);
+@@ -485,10 +485,6 @@ static u64 update_triggers(struct psi_group *group, u64 now)
+ 		t->pending_event = false;
+ 	}
+ 
+-	if (update_total)
+-		memcpy(group->rtpoll_total, total,
+-				sizeof(group->rtpoll_total));
+-
+ 	return now + group->rtpoll_min_period;
+ }
+ 
+@@ -622,6 +618,7 @@ static void psi_rtpoll_work(struct psi_group *group)
+ {
+ 	bool force_reschedule = false;
+ 	u32 changed_states;
++	bool update_total;
+ 	u64 now;
+ 
+ 	mutex_lock(&group->rtpoll_trigger_lock);
+@@ -686,8 +683,12 @@ static void psi_rtpoll_work(struct psi_group *group)
+ 		goto out;
+ 	}
+ 
+-	if (now >= group->rtpoll_next_update)
+-		group->rtpoll_next_update = update_triggers(group, now);
++	if (now >= group->rtpoll_next_update) {
++		group->rtpoll_next_update = update_triggers(group, now, &update_total);
++		if (update_total)
++			memcpy(group->rtpoll_total, group->total[PSI_POLL],
++				   sizeof(group->rtpoll_total));
 +	}
  
- 	mutex_unlock(&dst_ctx->mutex);
- 	mutex_unlock(&src_ctx->mutex);
+ 	psi_schedule_rtpoll_work(group,
+ 		nsecs_to_jiffies(group->rtpoll_next_update - now) + 1,
