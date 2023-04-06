@@ -2,51 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C0786DA409
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Apr 2023 22:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 654AA6DA41B
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Apr 2023 22:56:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240606AbjDFUtm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Apr 2023 16:49:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45620 "EHLO
+        id S230398AbjDFU4d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Apr 2023 16:56:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239649AbjDFUtS (ORCPT
+        with ESMTP id S229899AbjDFU4c (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 Apr 2023 16:49:18 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633EF9768;
-        Thu,  6 Apr 2023 13:48:35 -0700 (PDT)
-Date:   Thu, 06 Apr 2023 20:48:33 -0000
+        Thu, 6 Apr 2023 16:56:32 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ED5AE6;
+        Thu,  6 Apr 2023 13:56:31 -0700 (PDT)
+Date:   Thu, 06 Apr 2023 20:56:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1680814114;
+        s=2020; t=1680814589;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=fbL2+aKE7uWxGvp96AkCTTIcstJSjZVPvRpLsq3o3LI=;
-        b=1GiO0WK8UY95oCMJ4h6lyJbyCu3JyOcFZ/ymaaWAoSlXeAgkPsz9H6UYQDtgtu2doMkAYj
-        OA7Yg+SJwlNf0Pe6sjuuSSDJUqMb6G43kFsg2+ZD3V25cjICioqv2qKO4Mtc5JRor3N77v
-        tLtJxsTaWDscWLeI74CdU3BtiAYvwR7IOmWUCu7V50VuhRkIgp0yqHDs2mbb1kMrmm8Mv5
-        kPYiZPIF+9OkC777e0SzHx/DQPuMpFZQbYt9J2XT7hieQXoYx5BM2PSwyawOg0QEoU3kgQ
-        xfHu7ls0PFCbL0ML756dAqKrCesuCB6eLC7PkQIDEi9rJpR8rQI96WnFFbg6Zg==
+        bh=+A8lo5ONOHktWl6dqH6/xaISHAXuz58cuUsDMYfnqIU=;
+        b=mFW6ZqBvlPm3IyerNR1QsxLm9vs7Dy6re6qo1bmEqOJlAYsWZjx078RcCECnV1cZe0Genn
+        vgAJEAvgOsrWb5RCJUwNr06YST+r/oensPC3/e7J/8Z4rb/YqWCyc5nXVyzUpi+uYfDO1x
+        JDgI3yB+nGE5F5kr9PsvQLs4GzEfem13JAYbcyxzuEyuJE3YJe54659+FgkXewhcrAEXWY
+        6AZo+qmhFasWzmxz6/XKde4mqSwF7QxN7T0TdfY0iAwcMLHBAjaI2BD+95EDs1kzJkSyNc
+        vLceM3tsdt9RfhPsatfkVUMGD0QXUGqs+fY2rNYw4CG2jyhg41hT1TBGJyNlSQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1680814114;
+        s=2020e; t=1680814589;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=fbL2+aKE7uWxGvp96AkCTTIcstJSjZVPvRpLsq3o3LI=;
-        b=vxFNZhFfxknS1vNGn4gu6R7xC8aGhqUPL6TuOKomX8ukxH37XLEkcw3gS9NhwgYFZygHRD
-        jqXaKPDMexuklaBw==
+        bh=+A8lo5ONOHktWl6dqH6/xaISHAXuz58cuUsDMYfnqIU=;
+        b=ubcc2YTUhcI6OqryRq9iTTFC9b2nnql1ES5SZP4+Tlawa2v1zLnX8RNT51mJAWMDxJ0L/a
+        kOUuDwLQRU5i2PBA==
 From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/boot: Centralize __pa()/__va() definitions
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        Mike Rapoport <rppt@linux.ibm.com>, x86@kernel.org,
+Subject: [tip: x86/mm] x86/mm/iommu/sva: Do not allow to set FORCE_TAGGED_SVA
+ bit from outside
+Cc:     Dmitry Vyukov <dvyukov@google.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <168081411330.404.15815077102640119254.tip-bot2@tip-bot2>
+Message-ID: <168081458918.404.18350482081623211324.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,81 +60,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     5462ade6871e96646502cc95e7e05f0ab4fc84de
-Gitweb:        https://git.kernel.org/tip/5462ade6871e96646502cc95e7e05f0ab4fc84de
+Commit-ID:     97740266de26e5dfe6e4fbecacb6995b66c2e378
+Gitweb:        https://git.kernel.org/tip/97740266de26e5dfe6e4fbecacb6995b66c2e378
 Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Thu, 30 Mar 2023 14:49:43 +03:00
+AuthorDate:    Mon, 03 Apr 2023 14:10:20 +03:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 04 Apr 2023 13:42:37 -07:00
+CommitterDate: Thu, 06 Apr 2023 13:45:06 -07:00
 
-x86/boot: Centralize __pa()/__va() definitions
+x86/mm/iommu/sva: Do not allow to set FORCE_TAGGED_SVA bit from outside
 
-Replace multiple __pa()/__va() definitions with a single one in misc.h.
+arch_prctl(ARCH_FORCE_TAGGED_SVA) overrides the default and allows LAM
+and SVA to co-exist in the process. It is expected by called by the
+process when it knows what it is doing.
 
+arch_prctl() operates on the current process, but the same code is
+reachable from ptrace where it can be called on arbitrary task.
+
+Make it strict and only allow to set MM_CONTEXT_FORCE_TAGGED_SVA for the
+current process.
+
+Fixes: 23e5d9ec2bab ("x86/mm/iommu/sva: Make LAM and SVA mutually exclusive")
+Suggested-by: Dmitry Vyukov <dvyukov@google.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20230330114956.20342-2-kirill.shutemov%40linux.intel.com
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Link: https://lore.kernel.org/all/20230403111020.3136-3-kirill.shutemov%40linux.intel.com
 ---
- arch/x86/boot/compressed/ident_map_64.c |  8 --------
- arch/x86/boot/compressed/misc.h         |  9 +++++++++
- arch/x86/boot/compressed/sev.c          |  2 --
- 3 files changed, 9 insertions(+), 10 deletions(-)
+ arch/x86/kernel/process_64.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
-index 321a501..bcc956c 100644
---- a/arch/x86/boot/compressed/ident_map_64.c
-+++ b/arch/x86/boot/compressed/ident_map_64.c
-@@ -8,14 +8,6 @@
-  * Copyright (C)      2016  Kees Cook
-  */
- 
--/*
-- * Since we're dealing with identity mappings, physical and virtual
-- * addresses are the same, so override these defines which are ultimately
-- * used by the headers in misc.h.
-- */
--#define __pa(x)  ((unsigned long)(x))
--#define __va(x)  ((void *)((unsigned long)(x)))
--
- /* No PAGE_TABLE_ISOLATION support needed either: */
- #undef CONFIG_PAGE_TABLE_ISOLATION
- 
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index 20118fb..2f155a0 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -19,6 +19,15 @@
- /* cpu_feature_enabled() cannot be used this early */
- #define USE_EARLY_PGTABLE_L5
- 
-+/*
-+ * Boot stub deals with identity mappings, physical and virtual addresses are
-+ * the same, so override these defines.
-+ *
-+ * <asm/page.h> will not define them if they are already defined.
-+ */
-+#define __pa(x)  ((unsigned long)(x))
-+#define __va(x)  ((void *)((unsigned long)(x)))
-+
- #include <linux/linkage.h>
- #include <linux/screen_info.h>
- #include <linux/elf.h>
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index d63ad8f..014b89c 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -104,9 +104,7 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
- }
- 
- #undef __init
--#undef __pa
- #define __init
--#define __pa(x)	((unsigned long)(x))
- 
- #define __BOOT_COMPRESSED
- 
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index bc2ac56..223b223 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -883,6 +883,8 @@ long do_arch_prctl_64(struct task_struct *task, int option, unsigned long arg2)
+ 	case ARCH_ENABLE_TAGGED_ADDR:
+ 		return prctl_enable_tagged_addr(task->mm, arg2);
+ 	case ARCH_FORCE_TAGGED_SVA:
++		if (current != task)
++			return -EINVAL;
+ 		set_bit(MM_CONTEXT_FORCE_TAGGED_SVA, &task->mm->context.flags);
+ 		return 0;
+ 	case ARCH_GET_MAX_TAG_BITS:
