@@ -2,57 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18ECF6D93A5
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Apr 2023 12:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C0786DA409
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Apr 2023 22:49:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236870AbjDFKFv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Apr 2023 06:05:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59798 "EHLO
+        id S240606AbjDFUtm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Apr 2023 16:49:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236645AbjDFKFW (ORCPT
+        with ESMTP id S239649AbjDFUtS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 Apr 2023 06:05:22 -0400
+        Thu, 6 Apr 2023 16:49:18 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A23B5FCF;
-        Thu,  6 Apr 2023 03:05:21 -0700 (PDT)
-Date:   Thu, 06 Apr 2023 10:05:19 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633EF9768;
+        Thu,  6 Apr 2023 13:48:35 -0700 (PDT)
+Date:   Thu, 06 Apr 2023 20:48:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1680775519;
+        s=2020; t=1680814114;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=RtBwv407r3SAF6Swovvpje9RF/5WDCm8wYaw2CnX4Sc=;
-        b=ZdX2rvYe3ClPSQAb8kALWpLgrxSKUFNS8S6fbkhmGB217LowdRgPgx4bHFbb6k3l93ti5h
-        NOVhy50nZ510upWaiSptUatUXY0OIw4PpJ60ZhHuURetMtATYwIveOf5iP/VSkZyERZS3m
-        6ZYrdQFjFu6cfkkPb6vmfLe3neJbRIm1b7EyvScqy0J4VBxvrUgUW7gv+qEZgq7TTVVgW0
-        AJ+kv2U5Xcb9S7iGPO1gSu+oeY4ZaJe0kzwfQs/J49Z8pYsMfw0TY3Xo2OQdoe1Dpr5o54
-        C27I3XhyCo9WefbUnjFVKgJjbn2jfAQ3zSObSN5ixlCMl8CfrE1ZaOdxgU2QFg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=fbL2+aKE7uWxGvp96AkCTTIcstJSjZVPvRpLsq3o3LI=;
+        b=1GiO0WK8UY95oCMJ4h6lyJbyCu3JyOcFZ/ymaaWAoSlXeAgkPsz9H6UYQDtgtu2doMkAYj
+        OA7Yg+SJwlNf0Pe6sjuuSSDJUqMb6G43kFsg2+ZD3V25cjICioqv2qKO4Mtc5JRor3N77v
+        tLtJxsTaWDscWLeI74CdU3BtiAYvwR7IOmWUCu7V50VuhRkIgp0yqHDs2mbb1kMrmm8Mv5
+        kPYiZPIF+9OkC777e0SzHx/DQPuMpFZQbYt9J2XT7hieQXoYx5BM2PSwyawOg0QEoU3kgQ
+        xfHu7ls0PFCbL0ML756dAqKrCesuCB6eLC7PkQIDEi9rJpR8rQI96WnFFbg6Zg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1680775519;
+        s=2020e; t=1680814114;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=RtBwv407r3SAF6Swovvpje9RF/5WDCm8wYaw2CnX4Sc=;
-        b=crAfDN44zbMVh3jCuDRfhfAfgkuERL7EdJk0z9fOi1bfNEAHJtudV1451+Dhm32dGGzADj
-        HnRwx2qQncrnhYBg==
-From:   "tip-bot2 for Libo Chen" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=fbL2+aKE7uWxGvp96AkCTTIcstJSjZVPvRpLsq3o3LI=;
+        b=vxFNZhFfxknS1vNGn4gu6R7xC8aGhqUPL6TuOKomX8ukxH37XLEkcw3gS9NhwgYFZygHRD
+        jqXaKPDMexuklaBw==
+From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Fix inaccurate tally of ttwu_move_affine
-Cc:     Daniel Jordan <daniel.m.jordan@oracle.com>,
-        Libo Chen <libo.chen@oracle.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Gautham R. Shenoy" <gautham.shenoy@amd.com>, x86@kernel.org,
+Subject: [tip: x86/cleanups] x86/boot: Centralize __pa()/__va() definitions
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        Mike Rapoport <rppt@linux.ibm.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220810223313.386614-1-libo.chen@oracle.com>
-References: <20220810223313.386614-1-libo.chen@oracle.com>
 MIME-Version: 1.0
-Message-ID: <168077551915.404.18277041961422238219.tip-bot2@tip-bot2>
+Message-ID: <168081411330.404.15815077102640119254.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,47 +60,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     39afe5d6fc59237ff7738bf3ede5a8856822d59d
-Gitweb:        https://git.kernel.org/tip/39afe5d6fc59237ff7738bf3ede5a8856822d59d
-Author:        Libo Chen <libo.chen@oracle.com>
-AuthorDate:    Wed, 10 Aug 2022 15:33:13 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 05 Apr 2023 09:58:48 +02:00
+Commit-ID:     5462ade6871e96646502cc95e7e05f0ab4fc84de
+Gitweb:        https://git.kernel.org/tip/5462ade6871e96646502cc95e7e05f0ab4fc84de
+Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+AuthorDate:    Thu, 30 Mar 2023 14:49:43 +03:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 04 Apr 2023 13:42:37 -07:00
 
-sched/fair: Fix inaccurate tally of ttwu_move_affine
+x86/boot: Centralize __pa()/__va() definitions
 
-There are scenarios where non-affine wakeups are incorrectly counted as
-affine wakeups by schedstats.
+Replace multiple __pa()/__va() definitions with a single one in misc.h.
 
-When wake_affine_idle() returns prev_cpu which doesn't equal to
-nr_cpumask_bits, it will slip through the check: target == nr_cpumask_bits
-in wake_affine() and be counted as if target == this_cpu in schedstats.
-
-Replace target == nr_cpumask_bits with target != this_cpu to make sure
-affine wakeups are accurately tallied.
-
-Fixes: 806486c377e33 (sched/fair: Do not migrate if the prev_cpu is idle)
-Suggested-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Libo Chen <libo.chen@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://lore.kernel.org/r/20220810223313.386614-1-libo.chen@oracle.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20230330114956.20342-2-kirill.shutemov%40linux.intel.com
 ---
- kernel/sched/fair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/boot/compressed/ident_map_64.c |  8 --------
+ arch/x86/boot/compressed/misc.h         |  9 +++++++++
+ arch/x86/boot/compressed/sev.c          |  2 --
+ 3 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index bc358dc..f5da01a 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6582,7 +6582,7 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p,
- 		target = wake_affine_weight(sd, p, this_cpu, prev_cpu, sync);
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index 321a501..bcc956c 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -8,14 +8,6 @@
+  * Copyright (C)      2016  Kees Cook
+  */
  
- 	schedstat_inc(p->stats.nr_wakeups_affine_attempts);
--	if (target == nr_cpumask_bits)
-+	if (target != this_cpu)
- 		return prev_cpu;
+-/*
+- * Since we're dealing with identity mappings, physical and virtual
+- * addresses are the same, so override these defines which are ultimately
+- * used by the headers in misc.h.
+- */
+-#define __pa(x)  ((unsigned long)(x))
+-#define __va(x)  ((void *)((unsigned long)(x)))
+-
+ /* No PAGE_TABLE_ISOLATION support needed either: */
+ #undef CONFIG_PAGE_TABLE_ISOLATION
  
- 	schedstat_inc(sd->ttwu_move_affine);
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 20118fb..2f155a0 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -19,6 +19,15 @@
+ /* cpu_feature_enabled() cannot be used this early */
+ #define USE_EARLY_PGTABLE_L5
+ 
++/*
++ * Boot stub deals with identity mappings, physical and virtual addresses are
++ * the same, so override these defines.
++ *
++ * <asm/page.h> will not define them if they are already defined.
++ */
++#define __pa(x)  ((unsigned long)(x))
++#define __va(x)  ((void *)((unsigned long)(x)))
++
+ #include <linux/linkage.h>
+ #include <linux/screen_info.h>
+ #include <linux/elf.h>
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index d63ad8f..014b89c 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -104,9 +104,7 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
+ }
+ 
+ #undef __init
+-#undef __pa
+ #define __init
+-#define __pa(x)	((unsigned long)(x))
+ 
+ #define __BOOT_COMPRESSED
+ 
