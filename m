@@ -2,60 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA45D6D85DA
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  5 Apr 2023 20:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B8246D939D
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Apr 2023 12:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233678AbjDESTt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 5 Apr 2023 14:19:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49170 "EHLO
+        id S234842AbjDFKFW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Apr 2023 06:05:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230012AbjDESTs (ORCPT
+        with ESMTP id S229914AbjDFKFJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 5 Apr 2023 14:19:48 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37DD36E9F;
-        Wed,  5 Apr 2023 11:19:43 -0700 (PDT)
-Date:   Wed, 05 Apr 2023 18:19:36 -0000
+        Thu, 6 Apr 2023 06:05:09 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 399C55FCF;
+        Thu,  6 Apr 2023 03:05:08 -0700 (PDT)
+Date:   Thu, 06 Apr 2023 10:05:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1680718780;
+        s=2020; t=1680775505;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rMui9Fr9c1VBh2UjQht4/dyIn0riU7J1nVklvg3Cw5A=;
-        b=xVTZ/4X/7P00O6yJ7TC4HgOkya7axkeIWGgvbznKaxdiKoreF/Twf43eEGc+cTKkwmoBUP
-        WhPXXV4Ovxi2KBwFC/09IEHRnrJZLdVua/Jl+D7CXbZmpUyXQj2mqZL0uVBUDC2G19XM6m
-        zWZHX3Nsw1Mns1ITjLUB4O6/Z34XzEzmPVNM9i9JJGZapi5/x/X4QhI3ncO5WYmVEqkmUe
-        0+7FlwyPjt7XeFn2KBpTspFjT/jrdcMm58TZMnwpFGYk/k4emrgnP551oeCbyL4c93uuYh
-        NK1mdY90a7RbJYTPE7cg1ZKd1iBoXEX1TjP61nKCZa0Wfqfb+mkKoPHgZyA5Yw==
+        bh=G9bnni2qE+KJKUu6Bc/CyqquYnVEcMbzQozYy1BO+BI=;
+        b=nfX1T98dWe3IfkI85QD8rAassbC/Vq9vh81/5WhVBC7xQFDenWuJkkvC8U+gbXuKGvtsHU
+        R1m/UuKSXyLquDGnFSaj5KXUBiBvlKCT3rNsiibFKP4wuTcx74yx+iYBu/XTALsl/9rfoL
+        AnKHbtm6DcdrT8aNTBogMQPhPDFCXPph/j/qhHDAe7gIbbnD6OzA0F0smHZtUGtVZdF7dg
+        JE6Mc0gJC16c2UaRDHZIEP6UGEwxHJNN6mvxXDfRqn2VDz4iCzX7RdabONAeU3fqcOMHyL
+        2bk5slWNz/VCeDNpXnCTV+tRII9k6h6h1v6nez+FDq5Sdn/LovbrWFWO5dV7jg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1680718780;
+        s=2020e; t=1680775505;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rMui9Fr9c1VBh2UjQht4/dyIn0riU7J1nVklvg3Cw5A=;
-        b=eJ9EPoM12Ws4wQYukXXGEfpZPNnwWBTth1oS/MoA06YhPuGv9xnKu7iN1deOrIkKmkzFYK
-        /lXjmkVOHl5WjHBQ==
-From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+        bh=G9bnni2qE+KJKUu6Bc/CyqquYnVEcMbzQozYy1BO+BI=;
+        b=0rT0U5uopLKHRXjnAlS80z7pH6mTRsnS3gdRZsYY8Jn+CBw1CjhY2WjdKjoDhPkbRfNqJ1
+        vr/D+xR3aJQ7zPDw==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu: Add Xeon Emerald Rapids to list of CPUs that
- support PPIN
-Cc:     Tony Luck <tony.luck@intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/core: Fix the same task check in
+ perf_event_set_output
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Zhengjun Xing <zhengjun.xing@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230404212124.428118-1-tony.luck@intel.com>
-References: <20230404212124.428118-1-tony.luck@intel.com>
+In-Reply-To: <20230322202449.512091-1-kan.liang@linux.intel.com>
+References: <20230322202449.512091-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <168071877680.404.6240417347613164470.tip-bot2@tip-bot2>
+Message-ID: <168077550501.404.1381259757947658488.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
         DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
@@ -65,36 +66,77 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     36168bc061b4368ad19e82b06a6463c95d3bb9a7
-Gitweb:        https://git.kernel.org/tip/36168bc061b4368ad19e82b06a6463c95d3bb9a7
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Tue, 04 Apr 2023 14:21:24 -07:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 05 Apr 2023 20:01:52 +02:00
+Commit-ID:     24d3ae2f37d8bc3c14b31d353c5d27baf582b6a6
+Gitweb:        https://git.kernel.org/tip/24d3ae2f37d8bc3c14b31d353c5d27baf58=
+2b6a6
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Wed, 22 Mar 2023 13:24:49 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 05 Apr 2023 09:58:46 +02:00
 
-x86/cpu: Add Xeon Emerald Rapids to list of CPUs that support PPIN
+perf/core: Fix the same task check in perf_event_set_output
 
-This should be the last addition to this table. Future CPUs will
-enumerate PPIN support using CPUID.
+The same task check in perf_event_set_output has some potential issues
+for some usages.
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230404212124.428118-1-tony.luck@intel.com
+For the current perf code, there is a problem if using of
+perf_event_open() to have multiple samples getting into the same mmap=E2=80=
+=99d
+memory when they are both attached to the same process.
+https://lore.kernel.org/all/92645262-D319-4068-9C44-2409EF44888E@gmail.com/
+Because the event->ctx is not ready when the perf_event_set_output() is
+invoked in the perf_event_open().
+
+Besides the above issue, before the commit bd2756811766 ("perf: Rewrite
+core context handling"), perf record can errors out when sampling with
+a hardware event and a software event as below.
+ $ perf record -e cycles,dummy --per-thread ls
+ failed to mmap with 22 (Invalid argument)
+That's because that prior to the commit a hardware event and a software
+event are from different task context.
+
+The problem should be a long time issue since commit c3f00c70276d
+("perk: Separate find_get_context() from event initialization").
+
+The task struct is stored in the event->hw.target for each per-thread
+event. It is a more reliable way to determine whether two events are
+attached to the same task.
+
+The event->hw.target was also introduced several years ago by the
+commit 50f16a8bf9d7 ("perf: Remove type specific target pointers"). It
+can not only be used to fix the issue with the current code, but also
+back port to fix the issues with an older kernel.
+
+Note: The event->hw.target was introduced later than commit
+c3f00c70276d. The patch may cannot be applied between the commit
+c3f00c70276d and commit 50f16a8bf9d7. Anybody that wants to back-port
+this at that period may have to find other solutions.
+
+Fixes: c3f00c70276d ("perf: Separate find_get_context() from event initializa=
+tion")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Zhengjun Xing <zhengjun.xing@linux.intel.com>
+Link: https://lkml.kernel.org/r/20230322202449.512091-1-kan.liang@linux.intel=
+.com
 ---
- arch/x86/kernel/cpu/common.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/events/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 8cd4126..80710a6 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -121,6 +121,7 @@ static const struct x86_cpu_id ppin_cpuids[] = {
- 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X, &ppin_info[X86_VENDOR_INTEL]),
- 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D, &ppin_info[X86_VENDOR_INTEL]),
- 	X86_MATCH_INTEL_FAM6_MODEL(SAPPHIRERAPIDS_X, &ppin_info[X86_VENDOR_INTEL]),
-+	X86_MATCH_INTEL_FAM6_MODEL(EMERALDRAPIDS_X, &ppin_info[X86_VENDOR_INTEL]),
- 	X86_MATCH_INTEL_FAM6_MODEL(XEON_PHI_KNL, &ppin_info[X86_VENDOR_INTEL]),
- 	X86_MATCH_INTEL_FAM6_MODEL(XEON_PHI_KNM, &ppin_info[X86_VENDOR_INTEL]),
- 
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 115320f..435815d 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -12173,7 +12173,7 @@ perf_event_set_output(struct perf_event *event, struc=
+t perf_event *output_event)
+ 	/*
+ 	 * If its not a per-cpu rb, it must be the same task.
+ 	 */
+-	if (output_event->cpu =3D=3D -1 && output_event->ctx !=3D event->ctx)
++	if (output_event->cpu =3D=3D -1 && output_event->hw.target !=3D event->hw.t=
+arget)
+ 		goto out;
+=20
+ 	/*
