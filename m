@@ -2,101 +2,106 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBAB16DCA1B
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Apr 2023 19:40:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2274B6DDB24
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Apr 2023 14:48:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229893AbjDJRkT convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 10 Apr 2023 13:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33326 "EHLO
+        id S229482AbjDKMsl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 11 Apr 2023 08:48:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229854AbjDJRkS (ORCPT
+        with ESMTP id S229815AbjDKMsj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 10 Apr 2023 13:40:18 -0400
-X-Greylist: delayed 3764 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 10 Apr 2023 10:40:16 PDT
-Received: from energy.go.ug (unknown [154.72.195.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5C68F2
-        for <linux-tip-commits@vger.kernel.org>; Mon, 10 Apr 2023 10:40:16 -0700 (PDT)
-Received: from [192.168.10.4] (port=33825 helo=Exchange1.energy.go.ug)
-        by energy.go.ug with esmtps  (TLS1) tls TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
-        (Exim 4.96)
-        (envelope-from <msmd@energy.go.ug>)
-        id 1plr8K-0002kt-0b;
-        Mon, 10 Apr 2023 16:00:32 +0300
-Received: from [45.80.158.229] (192.168.10.1) by Exchange1.energy.go.ug
- (192.168.10.4) with Microsoft SMTP Server (TLS) id 15.0.847.32; Mon, 10 Apr
- 2023 16:20:34 +0300
-Content-Type: text/plain; charset="iso-8859-1"
+        Tue, 11 Apr 2023 08:48:39 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEB5E3596;
+        Tue, 11 Apr 2023 05:48:38 -0700 (PDT)
+Received: from zn.tnic (p5de8e687.dip0.t-ipconnect.de [93.232.230.135])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7DB711EC0102;
+        Tue, 11 Apr 2023 14:48:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1681217317;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=2AX/Yk1SUY0S02ZvQVZW8ykeMgzMpqSJymlGaALSeJg=;
+        b=dDuNxWii94DD61uuwWojjkDopP+gurSLtAONy3q2JEf3VAz+X2bREGTQH9y38vnp7+PTQf
+        /B+1FbXWAdtQyGOHu0+XCEOOBRDtlIqnQF6kP6ZlIGzqwL874k1+r+Fk/6yIetEq6Ssv3Y
+        SHiLi7Uk1H/7ohbu6Mwk5WVnfuWehlk=
+Date:   Tue, 11 Apr 2023 14:48:32 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, x86@kernel.org
+Subject: Re: [tip: x86/microcode] x86/microcode: Do not taint when late
+ loading on AMD
+Message-ID: <20230411124832.GAZDVXIFR3BiExtXba@fat_crate.local>
+References: <20230303114649.18552-1-bp@alien8.de>
+ <167865405614.5837.13144930108431641081.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: GUTE NACHRICHTEN:
-To:     Recipients <msmd@energy.go.ug>
-From:   Maria Elisabeth Schaeffler <msmd@energy.go.ug>
-Date:   Mon, 10 Apr 2023 15:18:22 +0200
-Reply-To: <info.mariaelisabethschaeffler1@gmail.com>
-Message-ID: <2550b873-463c-453f-b83e-07679a5276bf@Exchange1.energy.go.ug>
-X-Originating-IP: [192.168.10.1]
-X-ClientProxiedBy: Exchange1.energy.go.ug (192.168.10.4) To
- Exchange1.energy.go.ug (192.168.10.4)
-X-Sophos-OBS: success
-X-SASI-Version: Antispam-Engine: 5.1.1, AntispamData: 2023.4.10.153017
-X-SASI-RCODE: 200
-X-SASI-SpamProbability: 87%
-X-SASI-Hits: BODYTEXTP_SIZE_3000_LESS 0.000000, BODY_SIZE_1000_LESS 0.000000,
- BODY_SIZE_2000_LESS 0.000000, BODY_SIZE_5000_LESS 0.000000,
- BODY_SIZE_500_599 0.000000, BODY_SIZE_7000_LESS 0.000000,
- CTE_QUOTED_PRINTABLE 0.000000, FRAUD_WEBMAIL_R_NOT_F 0.100000,
- FROM_NAME_PHRASE 0.000000, FROM_SAME_AS_TO_DOMAIN 0.000000,
- MSGID_SAMEAS_FROM_HEX_844412 0.100000, NO_FUR_HEADER 0.000000,
- OUTBOUND 0.000000, OUTBOUND_SOPHOS 0.000000, REPLYTO_FROM_DIFF_ADDY 0.100000,
- SENDER_NO_AUTH 0.000000, URI_CLASS_SCAM_MAILTO 8.000000,
- WEBMAIL_REPLYTO_NOT_FROM 0.500000, WEBMAIL_SOURCE 0.000000,
- WEBMAIL_XOIP 0.000000, WEBMAIL_X_IP_HDR 0.000000, __CT 0.000000,
- __CTE 0.000000, __CT_TEXT_PLAIN 0.000000, __FRAUD_SUBJ_ALLCAPS 0.000000,
- __FRAUD_WEBMAIL_REPLYTO 0.000000, __FROM_DOMAIN_IN_RCPT 0.000000,
- __FROM_NAME_NOT_IN_ADDR 0.000000, __HAS_FROM 0.000000, __HAS_MSGID 0.000000,
- __HAS_REPLYTO 0.000000, __HAS_XOIP 0.000000, __HEADER_ORDER_FROM 0.000000,
- __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
- __MSGID_HEX_844412 0.000000, __OUTBOUND_SOPHOS_FUR 0.000000,
- __OUTBOUND_SOPHOS_FUR_IP 0.000000, __PHISH_SPEAR_SUBJECT 0.000000,
- __PHISH_SPEAR_SUBJECT_CAPS 0.000000, __PHISH_SPEAR_SUBJ_SUBJECT 0.000000,
- __REPLYTO_GMAIL 0.000000, __SANE_MSGID 0.000000, __SUBJECT_ALLCAPS 0.000000,
- __SUBJECT_NOLC 0.000000, __SUBJ_SHORT 0.000000, __TO_DOMAIN_IN_FROM 0.000000,
- __TO_DOMAIN_IN_MSGID 0.000000, __TO_HOST_IN_FROM 0.000000,
- __TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
- __TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
- __URI_CLASS_ANY 0.000000
-X-Spam-Status: Yes, score=7.2 required=5.0 tests=FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MAY_BE_FORGED,
-        MONEY_FREEMAIL_REPTO,RCVD_IN_SORBS_WEB,SPF_FAIL,SPF_HELO_FAIL,
-        SUBJ_ALL_CAPS,TO_EQ_FM_DOM_SPF_FAIL,TO_EQ_FM_SPF_FAIL autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.5 RCVD_IN_SORBS_WEB RBL: SORBS: sender is an abusable web server
-        *      [154.72.195.50 listed in dnsbl.sorbs.net]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [info.mariaelisabethschaeffler1[at]gmail.com]
-        *  0.0 SPF_HELO_FAIL SPF: HELO does not match SPF record (fail)
-        *      [SPF failed: Please see http://www.openspf.org/Why?s=helo;id=energy.go.ug;ip=154.72.195.50;r=lindbergh.monkeyblade.net]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.9 SPF_FAIL SPF: sender does not match SPF record (fail)
-        *      [SPF failed: Please see http://www.openspf.org/Why?s=mfrom;id=msmd%40energy.go.ug;ip=154.72.195.50;r=lindbergh.monkeyblade.net]
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  1.5 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  2.5 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-        *  0.0 TO_EQ_FM_DOM_SPF_FAIL To domain == From domain and external SPF
-        *       failed
-        *  0.0 TO_EQ_FM_SPF_FAIL To == From and external SPF failed
-        *  0.0 MAY_BE_FORGED Relay IP's reverse DNS does not resolve to IP
-X-Spam-Level: *******
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <167865405614.5837.13144930108431641081.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hallo,
+On Sun, Mar 12, 2023 at 08:47:36PM -0000, tip-bot2 for Borislav Petkov (AMD) wrote:
+> The following commit has been merged into the x86/microcode branch of tip:
+> 
+> Commit-ID:     09b951476df9eadf15f2acba7568fa35e4b2313b
+> Gitweb:        https://git.kernel.org/tip/09b951476df9eadf15f2acba7568fa35e4b2313b
+> Author:        Borislav Petkov (AMD) <bp@alien8.de>
+> AuthorDate:    Fri, 03 Mar 2023 12:46:49 +01:00
+> Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+> CommitterDate: Sun, 12 Mar 2023 21:32:51 +01:00
+> 
+> x86/microcode: Do not taint when late loading on AMD
+> 
+> Describe why the concurrency issues which late loading poses are not
+> affecting AMD hardware, after discussing it with hw folks. Thus, do not
+> taint when late loading on it.
+> 
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Link: https://lore.kernel.org/r/20230303114649.18552-1-bp@alien8.de
 
-Ich bin Frau Maria Elisabeth Schaeffler, eine deutsche Wirtschaftsmagnatin, Investorin und Philanthropin. Ich bin der Vorsitzende von Wipro Limited. 25% meines persönlichen Vermögens werden für wohltätige Zwecke ausgegeben. Und ich habe auch versprochen, die restlichen 25% dieses Jahr an Einzelpersonen zu verschenken. Ich habe mich entschlossen, Ihnen 1.000.000,00 Euro zu spenden. Wenn Sie an meiner Spende interessiert sind, kontaktieren Sie mich für weitere Informationen über: info.mariaelisabethschaeffler1@gmail.com
+Forgot to adjust the error message too. Updated patch coming up.
+
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index 779f70547fb7..22cf57c899b6 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -440,9 +440,6 @@ static int microcode_reload_late(void)
+ 	int old = boot_cpu_data.microcode, ret;
+ 	struct cpuinfo_x86 prev_info;
+ 
+-	pr_err("Attempting late microcode loading - it is dangerous and taints the kernel.\n");
+-	pr_err("You should switch to early loading, if possible.\n");
+-
+ 	atomic_set(&late_cpus_in,  0);
+ 	atomic_set(&late_cpus_out, 0);
+ 
+@@ -498,8 +495,11 @@ static ssize_t reload_store(struct device *dev,
+ 	if (ret == 0)
+ 		ret = size;
+ 
+-	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD) {
++		pr_err("Late microcode loading is dangerous and taints the kernel.\n");
++		pr_err("You should switch to early loading if possible.\n");
+ 		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
++	}
+ 
+ 	return ret;
+ }
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
