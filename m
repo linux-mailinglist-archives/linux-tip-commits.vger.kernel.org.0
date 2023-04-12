@@ -2,106 +2,136 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2274B6DDB24
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Apr 2023 14:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 116926DFA9E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Apr 2023 17:55:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjDKMsl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 11 Apr 2023 08:48:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40608 "EHLO
+        id S229648AbjDLPzx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 Apr 2023 11:55:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229815AbjDKMsj (ORCPT
+        with ESMTP id S229575AbjDLPzw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 11 Apr 2023 08:48:39 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEB5E3596;
-        Tue, 11 Apr 2023 05:48:38 -0700 (PDT)
-Received: from zn.tnic (p5de8e687.dip0.t-ipconnect.de [93.232.230.135])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7DB711EC0102;
-        Tue, 11 Apr 2023 14:48:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1681217317;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=2AX/Yk1SUY0S02ZvQVZW8ykeMgzMpqSJymlGaALSeJg=;
-        b=dDuNxWii94DD61uuwWojjkDopP+gurSLtAONy3q2JEf3VAz+X2bREGTQH9y38vnp7+PTQf
-        /B+1FbXWAdtQyGOHu0+XCEOOBRDtlIqnQF6kP6ZlIGzqwL874k1+r+Fk/6yIetEq6Ssv3Y
-        SHiLi7Uk1H/7ohbu6Mwk5WVnfuWehlk=
-Date:   Tue, 11 Apr 2023 14:48:32 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, x86@kernel.org
-Subject: Re: [tip: x86/microcode] x86/microcode: Do not taint when late
- loading on AMD
-Message-ID: <20230411124832.GAZDVXIFR3BiExtXba@fat_crate.local>
-References: <20230303114649.18552-1-bp@alien8.de>
- <167865405614.5837.13144930108431641081.tip-bot2@tip-bot2>
+        Wed, 12 Apr 2023 11:55:52 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A66FB40FB;
+        Wed, 12 Apr 2023 08:55:51 -0700 (PDT)
+Date:   Wed, 12 Apr 2023 15:55:48 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1681314950;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gyJPOKJL8+7PQlCso7HQtQzxVvaJLCpeyOybz5yLnSM=;
+        b=lwj7Gv9H1KVkoBLmvX/XSgDZwo1kHBkjV9cqV8VFW8qDK0eAg0ZI+eeO1eHCegSO++XkQt
+        DinfwyY60QU6zaYyJAdcjlEjTYF1n4vaijWll3nglLgPb+bsQZCfro61bK+Nd1nRmBKLX1
+        P5Vfab6H9db+4q8J+MfpzluVDEe5gt94e9yeqP+1x56Eg/+PEfaxBFA9dGZZyO1HrgN0F5
+        oVxLO4S/kbfN0/fV3dHv8CQbczFJG+aVZQgDD1M51g/LIfDO+2i9z2mgAUfomPD0RdUgpv
+        hqtl3UTJHWsU6uszjJuskHFlQA5Vhjf7XPD8Zja4XlwIFZihQ8tlhDZdB1HC9A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1681314950;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gyJPOKJL8+7PQlCso7HQtQzxVvaJLCpeyOybz5yLnSM=;
+        b=xAgSbDNPxDPg3ceO3tXHmodpHf/GIqE5R/zPTpdyYe9Y/YasA5gUz8xAbleHa6+hOrfO42
+        r458FjoyPI8f2QCw==
+From:   "tip-bot2 for Saurabh Sengar" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/apic] x86/ioapic: Don't return 0 from arch_dynirq_lower_bound()
+Cc:     Saurabh Sengar <ssengar@linux.microsoft.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <1679988604-20308-1-git-send-email-ssengar@linux.microsoft.com>
+References: <1679988604-20308-1-git-send-email-ssengar@linux.microsoft.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <167865405614.5837.13144930108431641081.tip-bot2@tip-bot2>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Message-ID: <168131494872.404.16905626584604172948.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sun, Mar 12, 2023 at 08:47:36PM -0000, tip-bot2 for Borislav Petkov (AMD) wrote:
-> The following commit has been merged into the x86/microcode branch of tip:
-> 
-> Commit-ID:     09b951476df9eadf15f2acba7568fa35e4b2313b
-> Gitweb:        https://git.kernel.org/tip/09b951476df9eadf15f2acba7568fa35e4b2313b
-> Author:        Borislav Petkov (AMD) <bp@alien8.de>
-> AuthorDate:    Fri, 03 Mar 2023 12:46:49 +01:00
-> Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-> CommitterDate: Sun, 12 Mar 2023 21:32:51 +01:00
-> 
-> x86/microcode: Do not taint when late loading on AMD
-> 
-> Describe why the concurrency issues which late loading poses are not
-> affecting AMD hardware, after discussing it with hw folks. Thus, do not
-> taint when late loading on it.
-> 
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Link: https://lore.kernel.org/r/20230303114649.18552-1-bp@alien8.de
+The following commit has been merged into the x86/apic branch of tip:
 
-Forgot to adjust the error message too. Updated patch coming up.
+Commit-ID:     5af507bef93c09a94fb8f058213b489178f4cbe5
+Gitweb:        https://git.kernel.org/tip/5af507bef93c09a94fb8f058213b489178f4cbe5
+Author:        Saurabh Sengar <ssengar@linux.microsoft.com>
+AuthorDate:    Tue, 28 Mar 2023 00:30:04 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 12 Apr 2023 17:45:50 +02:00
 
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 779f70547fb7..22cf57c899b6 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -440,9 +440,6 @@ static int microcode_reload_late(void)
- 	int old = boot_cpu_data.microcode, ret;
- 	struct cpuinfo_x86 prev_info;
+x86/ioapic: Don't return 0 from arch_dynirq_lower_bound()
+
+arch_dynirq_lower_bound() is invoked by the core interrupt code to
+retrieve the lowest possible Linux interrupt number for dynamically
+allocated interrupts like MSI.
+
+The x86 implementation uses this to exclude the IO/APIC GSI space.
+This works correctly as long as there is an IO/APIC registered, but
+returns 0 if not. This has been observed in VMs where the BIOS does
+not advertise an IO/APIC.
+
+0 is an invalid interrupt number except for the legacy timer interrupt
+on x86. The return value is unchecked in the core code, so it ends up
+to allocate interrupt number 0 which is subsequently considered to be
+invalid by the caller, e.g. the MSI allocation code.
+
+The function has already a check for 0 in the case that an IO/APIC is
+registered, as ioapic_dynirq_base is 0 in case of device tree setups.
+
+Consolidate this and zero check for both ioapic_dynirq_base and gsi_top,
+which is used in the case that no IO/APIC is registered.
+
+Fixes: 3e5bedc2c258 ("x86/apic: Fix arch_dynirq_lower_bound() bug for DT enabled machines")
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/1679988604-20308-1-git-send-email-ssengar@linux.microsoft.com
+
+---
+ arch/x86/kernel/apic/io_apic.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index 1f83b05..f980b38 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -2477,17 +2477,21 @@ static int io_apic_get_redir_entries(int ioapic)
  
--	pr_err("Attempting late microcode loading - it is dangerous and taints the kernel.\n");
--	pr_err("You should switch to early loading, if possible.\n");
--
- 	atomic_set(&late_cpus_in,  0);
- 	atomic_set(&late_cpus_out, 0);
- 
-@@ -498,8 +495,11 @@ static ssize_t reload_store(struct device *dev,
- 	if (ret == 0)
- 		ret = size;
- 
--	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD) {
-+		pr_err("Late microcode loading is dangerous and taints the kernel.\n");
-+		pr_err("You should switch to early loading if possible.\n");
- 		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
-+	}
- 
- 	return ret;
+ unsigned int arch_dynirq_lower_bound(unsigned int from)
+ {
++	unsigned int ret;
++
+ 	/*
+ 	 * dmar_alloc_hwirq() may be called before setup_IO_APIC(), so use
+ 	 * gsi_top if ioapic_dynirq_base hasn't been initialized yet.
+ 	 */
+-	if (!ioapic_initialized)
+-		return gsi_top;
++	ret = ioapic_dynirq_base ? : gsi_top;
++
+ 	/*
+-	 * For DT enabled machines ioapic_dynirq_base is irrelevant and not
+-	 * updated. So simply return @from if ioapic_dynirq_base == 0.
++	 * For DT enabled machines ioapic_dynirq_base is irrelevant and
++	 * always 0. gsi_top can be 0 if there is no IO/APIC registered.
++	 * 0 is an invalid interrupt number for dynamic allocations. Return
++	 * @from instead.
+ 	 */
+-	return ioapic_dynirq_base ? : from;
++	return ret ? : from;
  }
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+ 
+ #ifdef CONFIG_X86_32
