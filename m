@@ -2,50 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37F3A6E0CD0
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Apr 2023 13:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED1536E0DAF
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Apr 2023 14:49:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229951AbjDMLje (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 13 Apr 2023 07:39:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40964 "EHLO
+        id S229663AbjDMMtc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 13 Apr 2023 08:49:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230356AbjDMLjd (ORCPT
+        with ESMTP id S229597AbjDMMtb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 13 Apr 2023 07:39:33 -0400
+        Thu, 13 Apr 2023 08:49:31 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3030F2D44;
-        Thu, 13 Apr 2023 04:39:09 -0700 (PDT)
-Date:   Thu, 13 Apr 2023 11:39:07 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A6B98A74;
+        Thu, 13 Apr 2023 05:49:30 -0700 (PDT)
+Date:   Thu, 13 Apr 2023 12:49:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1681385947;
+        s=2020; t=1681390168;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=2I/H6ikXZS+0X6d3hXT76wrpWBLuX8bWchyD1Vp8Ch0=;
-        b=AIkH/eQICTWpOesNhSiyK4hR856+jA6Nur7zLyZrUuO24Ar6RK8MD4IR1XSmIZXIqQ5l//
-        EmKFqNZYA9LxQcmSwHRO957izHNdfIA1Q5ZEUTuQcDLUEazdVztxu0G9qUSNysmq23owkz
-        OfXuN91+VB8LDJ/KrL8rwaXQO8sCTDALxAXq99hifI99jeiFfOz13oMJWXZewGsvwhmGiS
-        V8TNs7VX3xJMbkZsssSiEGExUdfLD+WuZqJ0WiJ0qRqYNBDa853+w10SfgieNCjUgDyCle
-        s0mZfqjhD+nPBvd0OFdARa/JjUZFRUWxhIjtLbwmAxSVYgnP11okG6/N8xak/Q==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=cLAZQxthnAOiIurDfw5zGDp0kN/9mkHLRzgaJt8JHLQ=;
+        b=1aPQ5CzxwZJtT3sT4knjAIC5aJXEZ+g5TGo9tVG5ZfyofItT9vZncUvmk9fA50rH1dbA1t
+        FM6yM+rWJ7RZ6Qsqg9bL3xiJaF0ueoTH8/r1g89rw1U9Gs7Lo3y1+N+qEyqTkve10cvPMA
+        gv6sGMn3b/vfZjLYevc4q45lMu1zdKYeMcIoMJxxD/gVpqOWPdy7JNcPiYuuMQoyaZTKBp
+        iNOiQ+oQghCNqcnYrzmnQNgMPgz0rIZHDlDtiYupK8XnoDWqn0er+3GSfpKMSV+KIh9d/X
+        eqKYuGT6OxGtfyWZ+e7UpG7ijJLdByhqtsk2J2dZfUtgWuj0YCmo/CcyVh8g5g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1681385947;
+        s=2020e; t=1681390168;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=2I/H6ikXZS+0X6d3hXT76wrpWBLuX8bWchyD1Vp8Ch0=;
-        b=YFXCyzPwJsOETZBX+ECJ9kNa86xLkzlA3eQEd2CgIfSnfOp/AtUUMY2c8nvzjcNzn2dD8O
-        x6IXKy++062+sEBg==
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=cLAZQxthnAOiIurDfw5zGDp0kN/9mkHLRzgaJt8JHLQ=;
+        b=PLMqnrSiQkfmO0lzFCmtMILaVvGfDH3smrXDZBXuXi+DKjf9Bx1xORjkN0MP3xvmLQznhi
+        HTq/a41WxlvkmdCw==
+From:   "tip-bot2 for Matija Glavinic Pecotic" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Fix imbalance overflow
-Cc:     Tingjia Cao <tjcao980311@gmail.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: x86/urgent] x86/rtc: Remove __init for runtime functions
+Cc:     Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <59f7ceb1-446b-1d3d-0bc8-1f0ee94b1e18@nokia.com>
+References: <59f7ceb1-446b-1d3d-0bc8-1f0ee94b1e18@nokia.com>
 MIME-Version: 1.0
-Message-ID: <168138594723.404.11738777497442624414.tip-bot2@tip-bot2>
+Message-ID: <168139016723.404.3254458483027508395.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,49 +65,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     91dcf1e8068e9a8823e419a7a34ff4341275fb70
-Gitweb:        https://git.kernel.org/tip/91dcf1e8068e9a8823e419a7a34ff4341275fb70
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Tue, 11 Apr 2023 11:06:11 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 12 Apr 2023 16:46:30 +02:00
+Commit-ID:     775d3c514c5b2763a50ab7839026d7561795924d
+Gitweb:        https://git.kernel.org/tip/775d3c514c5b2763a50ab7839026d7561795924d
+Author:        Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>
+AuthorDate:    Thu, 06 Apr 2023 08:26:52 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 13 Apr 2023 14:41:04 +02:00
 
-sched/fair: Fix imbalance overflow
+x86/rtc: Remove __init for runtime functions
 
-When local group is fully busy but its average load is above system load,
-computing the imbalance will overflow and local group is not the best
-target for pulling this load.
+set_rtc_noop(), get_rtc_noop() are after booting, therefore their __init
+annotation is wrong.
 
-Fixes: 0b0695f2b34a ("sched/fair: Rework load_balance()")
-Reported-by: Tingjia Cao <tjcao980311@gmail.com>
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Tingjia Cao <tjcao980311@gmail.com>
-Link: https://lore.kernel.org/lkml/CABcWv9_DAhVBOq2=W=2ypKE9dKM5s2DvoV8-U0+GDwwuKZ89jQ@mail.gmail.com/T/
+A crash was observed on an x86 platform where CMOS RTC is unused and
+disabled via device tree. set_rtc_noop() was invoked from ntp:
+sync_hw_clock(), although CONFIG_RTC_SYSTOHC=n, however sync_cmos_clock()
+doesn't honour that.
+
+  Workqueue: events_power_efficient sync_hw_clock
+  RIP: 0010:set_rtc_noop
+  Call Trace:
+   update_persistent_clock64
+   sync_hw_clock
+
+Fix this by dropping the __init annotation from set/get_rtc_noop().
+
+Fixes: c311ed6183f4 ("x86/init: Allow DT configured systems to disable RTC at boot time")
+Signed-off-by: Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/59f7ceb1-446b-1d3d-0bc8-1f0ee94b1e18@nokia.com
+
 ---
- kernel/sched/fair.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/kernel/x86_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 6986ea3..5f6587d 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10238,6 +10238,16 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
+diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
+index ef80d36..10622cf 100644
+--- a/arch/x86/kernel/x86_init.c
++++ b/arch/x86/kernel/x86_init.c
+@@ -33,8 +33,8 @@ static int __init iommu_init_noop(void) { return 0; }
+ static void iommu_shutdown_noop(void) { }
+ bool __init bool_x86_init_noop(void) { return false; }
+ void x86_op_int_noop(int cpu) { }
+-static __init int set_rtc_noop(const struct timespec64 *now) { return -EINVAL; }
+-static __init void get_rtc_noop(struct timespec64 *now) { }
++static int set_rtc_noop(const struct timespec64 *now) { return -EINVAL; }
++static void get_rtc_noop(struct timespec64 *now) { }
  
- 		sds->avg_load = (sds->total_load * SCHED_CAPACITY_SCALE) /
- 				sds->total_capacity;
-+
-+		/*
-+		 * If the local group is more loaded than the average system
-+		 * load, don't try to pull any tasks.
-+		 */
-+		if (local->avg_load >= sds->avg_load) {
-+			env->imbalance = 0;
-+			return;
-+		}
-+
- 	}
- 
- 	/*
+ static __initconst const struct of_device_id of_cmos_match[] = {
+ 	{ .compatible = "motorola,mc146818" },
