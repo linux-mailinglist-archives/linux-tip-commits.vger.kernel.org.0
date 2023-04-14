@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E5676E2117
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Apr 2023 12:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A7036E2614
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Apr 2023 16:48:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbjDNKj1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 14 Apr 2023 06:39:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45506 "EHLO
+        id S231205AbjDNOr7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 14 Apr 2023 10:47:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230175AbjDNKjZ (ORCPT
+        with ESMTP id S231147AbjDNOr6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 14 Apr 2023 06:39:25 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D292705;
-        Fri, 14 Apr 2023 03:38:58 -0700 (PDT)
-Date:   Fri, 14 Apr 2023 10:38:54 -0000
+        Fri, 14 Apr 2023 10:47:58 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 501FD7DB6;
+        Fri, 14 Apr 2023 07:47:56 -0700 (PDT)
+Date:   Fri, 14 Apr 2023 14:47:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1681468735;
+        s=2020; t=1681483674;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=npO0D8Vo1wi+XzrnkB7csP/fIIyWYUfjkdVUgReY53c=;
-        b=A7ITVD5z2LZfawIZmtS+A8f4v7WCbTB+de9e2gLPZkKdteGOU19R6wCl3lRGlKbGvQjcqS
-        ip4cg+5s6kLWcS/jzBMMjN/QUUzxePMTuiA3sD4+5jlrMlhnMXYZB4R07pd2q9/j7D5emN
-        SMU6hkl2CDYSFpDJBBBtcpyoqdY/7dVZBxOFD+pKDa1Fyh1hwUp7Q/U7tUO8n6sZxKC32i
-        aQk1krwE1h1guuHwDVnpTBh1zDXE9MKpMim2gHZ0fni5zOlpfVOo5repxOhx1fsTdil5sm
-        EM7vzxI7nYiS15GjC/1fhWJaklohWNngx5cGBswKQsy6+kAog4ndv7s7H8Q73g==
+        bh=Vx2tQ9V501hMgE+B9bKTly7ITMMu1r81FFJ9D0d/AY4=;
+        b=rXfoSBAh+9zOO0O7ORnXvFEHPbqdso/LrrBW7cPQkPvoNGmcUlU4kh7yUOUJTcrmsyua8o
+        PcsrX8xAhe3fVn1xbJMTNDt4Flz6Jg5QN5ra7c895tj2nvE/OZcmn223nNUa4n+Sqc6dc6
+        rX3Ru5dAEH+xVw4Ou8Ifi7rJrr8YWNRTtoMOep4QCxyM2vxN2byaFKQnLxzEcin5tgoa4r
+        IWCu4hzMwlFgq1ChaPX8YETt24tAkOUlSyWoa8yV79oFWjgpAibDo2zlqpQIMmu2TEJqj7
+        J8oGN2tk+JHCDgrXDpqBX+pb7COjMB+B4D5pvWAEIbrP2DUamz2gvMJYOgkpQQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1681468735;
+        s=2020e; t=1681483674;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=npO0D8Vo1wi+XzrnkB7csP/fIIyWYUfjkdVUgReY53c=;
-        b=57toTX39E09HdmdfFYwWKbbd2OYhoqNeuOfSpJDaTNy05QzNK2fJYCely2pasgKHpGN5yl
-        lGkzclmI6bd81bDg==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=Vx2tQ9V501hMgE+B9bKTly7ITMMu1r81FFJ9D0d/AY4=;
+        b=hhyocZy1ce+CkY7npJa9xl4C45iTO0tbA+bkeTxA99vc4gHZA+0KoafuPjW+3+GLCw18E6
+        c/dkIwJnzd3HxyAA==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode: Do not taint when late loading on AMD
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: objtool/core] objtool: Generate ORC data for __pfx code
+Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230411125056.2333-1-bp@alien8.de>
-References: <20230411125056.2333-1-bp@alien8.de>
+In-Reply-To: <bc3344e51f3e87102f1301a0be0f72a7689ea4a4.1681331135.git.jpoimboe@kernel.org>
+References: <bc3344e51f3e87102f1301a0be0f72a7689ea4a4.1681331135.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168146873499.404.13384379805660350129.tip-bot2@tip-bot2>
+Message-ID: <168148367374.404.8240503217919092997.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,73 +65,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     7bc9c1df89a3e5496ace55c198ff09409da0feb0
-Gitweb:        https://git.kernel.org/tip/7bc9c1df89a3e5496ace55c198ff09409da0feb0
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Fri, 03 Mar 2023 12:46:49 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 14 Apr 2023 12:27:36 +02:00
+Commit-ID:     5743654f5e2ebd56df99f56fca5ba4b23fe3c815
+Gitweb:        https://git.kernel.org/tip/5743654f5e2ebd56df99f56fca5ba4b23fe3c815
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Wed, 12 Apr 2023 13:26:15 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 14 Apr 2023 16:08:30 +02:00
 
-x86/microcode: Do not taint when late loading on AMD
+objtool: Generate ORC data for __pfx code
 
-Describe why the concurrency issues which late loading poses are not
-affecting AMD hardware, after discussing it with hw folks. Thus, do not
-taint when late loading on it.
+Allow unwinding from prefix code by copying the CFI from the starting
+instruction of the corresponding function.  Even when the NOPs are
+replaced, they're still stack-invariant instructions so the same ORC
+entry can be reused everywhere.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230411125056.2333-1-bp@alien8.de
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/bc3344e51f3e87102f1301a0be0f72a7689ea4a4.1681331135.git.jpoimboe@kernel.org
 ---
- Documentation/x86/microcode.rst      | 10 ++++++++++
- arch/x86/kernel/cpu/microcode/core.c |  9 +++++----
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ tools/objtool/check.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/Documentation/x86/microcode.rst b/Documentation/x86/microcode.rst
-index b627c6f..15b52e2 100644
---- a/Documentation/x86/microcode.rst
-+++ b/Documentation/x86/microcode.rst
-@@ -208,6 +208,16 @@ Basically there is no way to declare a new microcode update suitable
- for late-loading. This is another one of the problems that caused late
- loading to be not enabled by default.
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 8ee4d51..df634da 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -4117,6 +4117,7 @@ static bool ignore_unreachable_insn(struct objtool_file *file, struct instructio
+ static int add_prefix_symbol(struct objtool_file *file, struct symbol *func)
+ {
+ 	struct instruction *insn, *prev;
++	struct cfi_state *cfi;
  
-+AMD
-+---
-+
-+Late loading on AMD does not have the concurrency issues described
-+above: when loading is attempted on T0, the T1 is quiesced and does not
-+execute instructions. Therefore, even if a higher priority interrupt or
-+a fault happens, the whole core will see it either before the microcode
-+patch has been applied or after. In either case, T0 and T1 will have the
-+same microcode revision and nothing intermediate.
-+
- Builtin microcode
- =================
+ 	insn = find_insn(file, func->sec, func->offset);
+ 	if (!insn)
+@@ -4145,6 +4146,19 @@ static int add_prefix_symbol(struct objtool_file *file, struct symbol *func)
+ 	if (!prev)
+ 		return -1;
  
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 7a329e5..22cf57c 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -440,9 +440,6 @@ static int microcode_reload_late(void)
- 	int old = boot_cpu_data.microcode, ret;
- 	struct cpuinfo_x86 prev_info;
- 
--	pr_err("Attempting late microcode loading - it is dangerous and taints the kernel.\n");
--	pr_err("You should switch to early loading, if possible.\n");
--
- 	atomic_set(&late_cpus_in,  0);
- 	atomic_set(&late_cpus_out, 0);
- 
-@@ -498,7 +495,11 @@ put:
- 	if (ret == 0)
- 		ret = size;
- 
--	add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD) {
-+		pr_err("Late microcode loading is dangerous and taints the kernel.\n");
-+		pr_err("You should switch to early loading if possible.\n");
-+		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
++	if (!insn->cfi) {
++		/*
++		 * This can happen if stack validation isn't enabled or the
++		 * function is annotated with STACK_FRAME_NON_STANDARD.
++		 */
++		return 0;
 +	}
- 
- 	return ret;
++
++	/* Propagate insn->cfi to the prefix code */
++	cfi = cfi_hash_find_or_add(insn->cfi);
++	for (; prev != insn; prev = next_insn_same_sec(file, prev))
++		prev->cfi = cfi;
++
+ 	return 0;
  }
+ 
