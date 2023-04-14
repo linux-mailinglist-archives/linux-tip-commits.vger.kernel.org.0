@@ -2,118 +2,135 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED1536E0DAF
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Apr 2023 14:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E5676E2117
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Apr 2023 12:39:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229663AbjDMMtc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 13 Apr 2023 08:49:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53802 "EHLO
+        id S229720AbjDNKj1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 14 Apr 2023 06:39:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbjDMMtb (ORCPT
+        with ESMTP id S230175AbjDNKjZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 13 Apr 2023 08:49:31 -0400
+        Fri, 14 Apr 2023 06:39:25 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A6B98A74;
-        Thu, 13 Apr 2023 05:49:30 -0700 (PDT)
-Date:   Thu, 13 Apr 2023 12:49:27 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D292705;
+        Fri, 14 Apr 2023 03:38:58 -0700 (PDT)
+Date:   Fri, 14 Apr 2023 10:38:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1681390168;
+        s=2020; t=1681468735;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cLAZQxthnAOiIurDfw5zGDp0kN/9mkHLRzgaJt8JHLQ=;
-        b=1aPQ5CzxwZJtT3sT4knjAIC5aJXEZ+g5TGo9tVG5ZfyofItT9vZncUvmk9fA50rH1dbA1t
-        FM6yM+rWJ7RZ6Qsqg9bL3xiJaF0ueoTH8/r1g89rw1U9Gs7Lo3y1+N+qEyqTkve10cvPMA
-        gv6sGMn3b/vfZjLYevc4q45lMu1zdKYeMcIoMJxxD/gVpqOWPdy7JNcPiYuuMQoyaZTKBp
-        iNOiQ+oQghCNqcnYrzmnQNgMPgz0rIZHDlDtiYupK8XnoDWqn0er+3GSfpKMSV+KIh9d/X
-        eqKYuGT6OxGtfyWZ+e7UpG7ijJLdByhqtsk2J2dZfUtgWuj0YCmo/CcyVh8g5g==
+        bh=npO0D8Vo1wi+XzrnkB7csP/fIIyWYUfjkdVUgReY53c=;
+        b=A7ITVD5z2LZfawIZmtS+A8f4v7WCbTB+de9e2gLPZkKdteGOU19R6wCl3lRGlKbGvQjcqS
+        ip4cg+5s6kLWcS/jzBMMjN/QUUzxePMTuiA3sD4+5jlrMlhnMXYZB4R07pd2q9/j7D5emN
+        SMU6hkl2CDYSFpDJBBBtcpyoqdY/7dVZBxOFD+pKDa1Fyh1hwUp7Q/U7tUO8n6sZxKC32i
+        aQk1krwE1h1guuHwDVnpTBh1zDXE9MKpMim2gHZ0fni5zOlpfVOo5repxOhx1fsTdil5sm
+        EM7vzxI7nYiS15GjC/1fhWJaklohWNngx5cGBswKQsy6+kAog4ndv7s7H8Q73g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1681390168;
+        s=2020e; t=1681468735;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cLAZQxthnAOiIurDfw5zGDp0kN/9mkHLRzgaJt8JHLQ=;
-        b=PLMqnrSiQkfmO0lzFCmtMILaVvGfDH3smrXDZBXuXi+DKjf9Bx1xORjkN0MP3xvmLQznhi
-        HTq/a41WxlvkmdCw==
-From:   "tip-bot2 for Matija Glavinic Pecotic" <tip-bot2@linutronix.de>
+        bh=npO0D8Vo1wi+XzrnkB7csP/fIIyWYUfjkdVUgReY53c=;
+        b=57toTX39E09HdmdfFYwWKbbd2OYhoqNeuOfSpJDaTNy05QzNK2fJYCely2pasgKHpGN5yl
+        lGkzclmI6bd81bDg==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/rtc: Remove __init for runtime functions
-Cc:     Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <59f7ceb1-446b-1d3d-0bc8-1f0ee94b1e18@nokia.com>
-References: <59f7ceb1-446b-1d3d-0bc8-1f0ee94b1e18@nokia.com>
+Subject: [tip: x86/microcode] x86/microcode: Do not taint when late loading on AMD
+Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230411125056.2333-1-bp@alien8.de>
+References: <20230411125056.2333-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <168139016723.404.3254458483027508395.tip-bot2@tip-bot2>
+Message-ID: <168146873499.404.13384379805660350129.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     775d3c514c5b2763a50ab7839026d7561795924d
-Gitweb:        https://git.kernel.org/tip/775d3c514c5b2763a50ab7839026d7561795924d
-Author:        Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>
-AuthorDate:    Thu, 06 Apr 2023 08:26:52 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 13 Apr 2023 14:41:04 +02:00
+Commit-ID:     7bc9c1df89a3e5496ace55c198ff09409da0feb0
+Gitweb:        https://git.kernel.org/tip/7bc9c1df89a3e5496ace55c198ff09409da0feb0
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Fri, 03 Mar 2023 12:46:49 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 14 Apr 2023 12:27:36 +02:00
 
-x86/rtc: Remove __init for runtime functions
+x86/microcode: Do not taint when late loading on AMD
 
-set_rtc_noop(), get_rtc_noop() are after booting, therefore their __init
-annotation is wrong.
+Describe why the concurrency issues which late loading poses are not
+affecting AMD hardware, after discussing it with hw folks. Thus, do not
+taint when late loading on it.
 
-A crash was observed on an x86 platform where CMOS RTC is unused and
-disabled via device tree. set_rtc_noop() was invoked from ntp:
-sync_hw_clock(), although CONFIG_RTC_SYSTOHC=n, however sync_cmos_clock()
-doesn't honour that.
-
-  Workqueue: events_power_efficient sync_hw_clock
-  RIP: 0010:set_rtc_noop
-  Call Trace:
-   update_persistent_clock64
-   sync_hw_clock
-
-Fix this by dropping the __init annotation from set/get_rtc_noop().
-
-Fixes: c311ed6183f4 ("x86/init: Allow DT configured systems to disable RTC at boot time")
-Signed-off-by: Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/59f7ceb1-446b-1d3d-0bc8-1f0ee94b1e18@nokia.com
-
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230411125056.2333-1-bp@alien8.de
 ---
- arch/x86/kernel/x86_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/x86/microcode.rst      | 10 ++++++++++
+ arch/x86/kernel/cpu/microcode/core.c |  9 +++++----
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index ef80d36..10622cf 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -33,8 +33,8 @@ static int __init iommu_init_noop(void) { return 0; }
- static void iommu_shutdown_noop(void) { }
- bool __init bool_x86_init_noop(void) { return false; }
- void x86_op_int_noop(int cpu) { }
--static __init int set_rtc_noop(const struct timespec64 *now) { return -EINVAL; }
--static __init void get_rtc_noop(struct timespec64 *now) { }
-+static int set_rtc_noop(const struct timespec64 *now) { return -EINVAL; }
-+static void get_rtc_noop(struct timespec64 *now) { }
+diff --git a/Documentation/x86/microcode.rst b/Documentation/x86/microcode.rst
+index b627c6f..15b52e2 100644
+--- a/Documentation/x86/microcode.rst
++++ b/Documentation/x86/microcode.rst
+@@ -208,6 +208,16 @@ Basically there is no way to declare a new microcode update suitable
+ for late-loading. This is another one of the problems that caused late
+ loading to be not enabled by default.
  
- static __initconst const struct of_device_id of_cmos_match[] = {
- 	{ .compatible = "motorola,mc146818" },
++AMD
++---
++
++Late loading on AMD does not have the concurrency issues described
++above: when loading is attempted on T0, the T1 is quiesced and does not
++execute instructions. Therefore, even if a higher priority interrupt or
++a fault happens, the whole core will see it either before the microcode
++patch has been applied or after. In either case, T0 and T1 will have the
++same microcode revision and nothing intermediate.
++
+ Builtin microcode
+ =================
+ 
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index 7a329e5..22cf57c 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -440,9 +440,6 @@ static int microcode_reload_late(void)
+ 	int old = boot_cpu_data.microcode, ret;
+ 	struct cpuinfo_x86 prev_info;
+ 
+-	pr_err("Attempting late microcode loading - it is dangerous and taints the kernel.\n");
+-	pr_err("You should switch to early loading, if possible.\n");
+-
+ 	atomic_set(&late_cpus_in,  0);
+ 	atomic_set(&late_cpus_out, 0);
+ 
+@@ -498,7 +495,11 @@ put:
+ 	if (ret == 0)
+ 		ret = size;
+ 
+-	add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD) {
++		pr_err("Late microcode loading is dangerous and taints the kernel.\n");
++		pr_err("You should switch to early loading if possible.\n");
++		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
++	}
+ 
+ 	return ret;
+ }
