@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28B206E458F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Apr 2023 12:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB4B36E45BE
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Apr 2023 12:51:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229976AbjDQKtA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Apr 2023 06:49:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48536 "EHLO
+        id S230502AbjDQKvi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Apr 2023 06:51:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229940AbjDQKsm (ORCPT
+        with ESMTP id S230397AbjDQKvC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Apr 2023 06:48:42 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29D704ECB;
-        Mon, 17 Apr 2023 03:47:52 -0700 (PDT)
-Date:   Mon, 17 Apr 2023 10:46:45 -0000
+        Mon, 17 Apr 2023 06:51:02 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87F655BB7;
+        Mon, 17 Apr 2023 03:50:12 -0700 (PDT)
+Date:   Mon, 17 Apr 2023 10:46:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1681728406;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2eRms53gsCOGxd9wfLLeeaNB85kzjJoqLxCQxZQiw6Q=;
-        b=EBRq/5zINw18RCMNTUNRcjn31FnbGfhFsFDo6+OCRE6uy8Lcb0TRyRCup0stmkAW3fso5A
-        10pnTaNorpzMp6RlihHjG125uPA4seEwOar+ylIGlsFXgBOzsEPdlnj4K0nzLM/D5DsxxP
-        N62unRu8lUrMK6Tbzr/gksmG5ekuvj42s3XhUcm85U1UhT89F6rpk/ItgpBt6coZb2Z7BP
-        755yEG4Q3dLH8amZVISFk6KpetDO+ObfQ4Egt7qSYe8clABOzXrRoF7wnlCu8MW7pV9uyP
-        M8bGoNj3fUtpvpyvLv3p9XjvaZeEIct5cPkRuOdKsi9zLM3XTax93aL/wv5Ikw==
+        bh=lHCuVIKv9lJeUMV86l7lW7YN40YLX6EODBOItfrACTY=;
+        b=jie2ZkFUYAIOb/ESCiCoALxlQiYXnlsxWvlcUgji4tRIiYEG4VRjfCZEFpW+Hfn4eec64N
+        8vAyuIXsxmlUEW7JHUOFwBeBACprfDSeQJ2SaaHnwwDLSyESuZLFC3ggrruS2cv5aQctNs
+        JDhbu52tBSAYxBvVj+zNy1EL38DNoqbzZjk/9O7dhyRq8OM03JAmhWuhXFObuDUd790QYV
+        dH/AFkcxotigxvkR9IBh6bVkfSvQcJFghvkRAoKoQ13QUyvi+FU2TplASOO7Glb2NO218m
+        rvZg2TxMZyljHOajR+6vTkGYd0FO69w8KtOrGFSAW+Eysp92EREm8lBv8OrM+Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1681728406;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,24 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2eRms53gsCOGxd9wfLLeeaNB85kzjJoqLxCQxZQiw6Q=;
-        b=iCeuKA7/qepbW3Bjx3np1pkdJN+xPOvas8qTXg7k7Qja1UHolCPXUE0n8V2m9pm4cbgGEa
-        srKEs5xNKsaUhLBw==
+        bh=lHCuVIKv9lJeUMV86l7lW7YN40YLX6EODBOItfrACTY=;
+        b=U9keWq0TBpKplrTDUBvfyDCcRRiQHQkvWhFapBRFh+sxSDCavPCrwn6QW66Pur9nVp0UFA
+        RwNTYHuJERFiXvDg==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] scsi: message: fusion: Mark mpt_halt_firmware()
- __noreturn
+Subject: [tip: objtool/core] btrfs: Mark btrfs_assertfail() __noreturn
 Cc:     kernel test robot <lkp@intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
         Josh Poimboeuf <jpoimboe@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <d8129817423422355bf30e90dadc6764261b53e0.1681342859.git.jpoimboe@kernel.org>
-References: <d8129817423422355bf30e90dadc6764261b53e0.1681342859.git.jpoimboe@kernel.org>
+In-Reply-To: <960bd9c0c9e3cfc409ba9c35a17644b11b832956.1681342859.git.jpoimboe@kernel.org>
+References: <960bd9c0c9e3cfc409ba9c35a17644b11b832956.1681342859.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168172840572.404.16516527452411089196.tip-bot2@tip-bot2>
+Message-ID: <168172840624.404.13655279959647957415.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,69 +68,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     6e36a56a5f617262c0e8ae7e961487361c720b9e
-Gitweb:        https://git.kernel.org/tip/6e36a56a5f617262c0e8ae7e961487361c720b9e
+Commit-ID:     09c5ae30d007514a1be870fa5873ad55c3319f3a
+Gitweb:        https://git.kernel.org/tip/09c5ae30d007514a1be870fa5873ad55c3319f3a
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Wed, 12 Apr 2023 16:49:40 -07:00
+AuthorDate:    Wed, 12 Apr 2023 16:49:38 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 14 Apr 2023 17:31:27 +02:00
+CommitterDate: Fri, 14 Apr 2023 17:31:26 +02:00
 
-scsi: message: fusion: Mark mpt_halt_firmware() __noreturn
+btrfs: Mark btrfs_assertfail() __noreturn
 
-mpt_halt_firmware() doesn't return.  Mark it as such.
+Fixes a bunch of warnings including:
 
-Fixes the following warnings:
-
-  vmlinux.o: warning: objtool: mptscsih_abort+0x7f4: unreachable instruction
-  vmlinux.o: warning: objtool: mptctl_timeout_expired+0x310: unreachable instruction
+  vmlinux.o: warning: objtool: select_reloc_root+0x314: unreachable instruction
+  vmlinux.o: warning: objtool: finish_inode_if_needed+0x15b1: unreachable instruction
+  vmlinux.o: warning: objtool: get_bio_sector_nr+0x259: unreachable instruction
+  vmlinux.o: warning: objtool: raid_wait_read_end_io+0xc26: unreachable instruction
+  vmlinux.o: warning: objtool: raid56_parity_alloc_scrub_rbio+0x37b: unreachable instruction
+  ...
 
 Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Mark Rutland <mark.rutland@arm.com>
-Debugged-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/d8129817423422355bf30e90dadc6764261b53e0.1681342859.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/960bd9c0c9e3cfc409ba9c35a17644b11b832956.1681342859.git.jpoimboe@kernel.org
 ---
- drivers/message/fusion/mptbase.c | 2 +-
- drivers/message/fusion/mptbase.h | 2 +-
- tools/objtool/check.c            | 1 +
+ fs/btrfs/messages.c   | 2 +-
+ fs/btrfs/messages.h   | 2 +-
+ tools/objtool/check.c | 1 +
  3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/message/fusion/mptbase.c b/drivers/message/fusion/mptbase.c
-index 9b3ba2d..4f0afce 100644
---- a/drivers/message/fusion/mptbase.c
-+++ b/drivers/message/fusion/mptbase.c
-@@ -6935,7 +6935,7 @@ EXPORT_SYMBOL(mpt_clear_taskmgmt_in_progress_flag);
-  *	@ioc: Pointer to MPT_ADAPTER structure
-  *
-  **/
--void
-+void __noreturn
- mpt_halt_firmware(MPT_ADAPTER *ioc)
+diff --git a/fs/btrfs/messages.c b/fs/btrfs/messages.c
+index fde5aaa..310a05c 100644
+--- a/fs/btrfs/messages.c
++++ b/fs/btrfs/messages.c
+@@ -253,7 +253,7 @@ void __cold _btrfs_printk(const struct btrfs_fs_info *fs_info, const char *fmt, 
+ #endif
+ 
+ #ifdef CONFIG_BTRFS_ASSERT
+-void __cold btrfs_assertfail(const char *expr, const char *file, int line)
++void __cold __noreturn btrfs_assertfail(const char *expr, const char *file, int line)
  {
- 	u32	 ioc_raw_state;
-diff --git a/drivers/message/fusion/mptbase.h b/drivers/message/fusion/mptbase.h
-index 4bd0682..0f226cd 100644
---- a/drivers/message/fusion/mptbase.h
-+++ b/drivers/message/fusion/mptbase.h
-@@ -945,7 +945,7 @@ extern int	mpt_raid_phys_disk_get_num_paths(MPT_ADAPTER *ioc,
- 		u8 phys_disk_num);
- extern int	 mpt_set_taskmgmt_in_progress_flag(MPT_ADAPTER *ioc);
- extern void	 mpt_clear_taskmgmt_in_progress_flag(MPT_ADAPTER *ioc);
--extern void     mpt_halt_firmware(MPT_ADAPTER *ioc);
-+extern void __noreturn mpt_halt_firmware(MPT_ADAPTER *ioc);
+ 	pr_err("assertion failed: %s, in %s:%d\n", expr, file, line);
+ 	BUG();
+diff --git a/fs/btrfs/messages.h b/fs/btrfs/messages.h
+index 8c516ee..ac2d198 100644
+--- a/fs/btrfs/messages.h
++++ b/fs/btrfs/messages.h
+@@ -160,7 +160,7 @@ do {								\
+ } while (0)
  
+ #ifdef CONFIG_BTRFS_ASSERT
+-void __cold btrfs_assertfail(const char *expr, const char *file, int line);
++void __cold __noreturn btrfs_assertfail(const char *expr, const char *file, int line);
  
- /*
+ #define ASSERT(expr)						\
+ 	(likely(expr) ? (void)0 : btrfs_assertfail(#expr, __FILE__, __LINE__))
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 724a63b..e1b01ea 100644
+index ae0c942..ceb9848 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -219,6 +219,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
- 		"lbug_with_loc",
- 		"machine_real_restart",
- 		"make_task_dead",
-+		"mpt_halt_firmware",
- 		"nmi_panic_self_stop",
- 		"panic",
- 		"panic_smp_self_stop",
+@@ -204,6 +204,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 		"__ubsan_handle_builtin_unreachable",
+ 		"arch_call_rest_init",
+ 		"arch_cpu_idle_dead",
++		"btrfs_assertfail",
+ 		"cpu_bringup_and_idle",
+ 		"cpu_startup_entry",
+ 		"do_exit",
