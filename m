@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A556E45B3
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Apr 2023 12:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E8836E45AC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Apr 2023 12:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230375AbjDQKvA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Apr 2023 06:51:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50614 "EHLO
+        id S230316AbjDQKuy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Apr 2023 06:50:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230296AbjDQKut (ORCPT
+        with ESMTP id S230232AbjDQKun (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Apr 2023 06:50:49 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86017690;
-        Mon, 17 Apr 2023 03:50:03 -0700 (PDT)
+        Mon, 17 Apr 2023 06:50:43 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AD581737;
+        Mon, 17 Apr 2023 03:49:59 -0700 (PDT)
 Date:   Mon, 17 Apr 2023 10:46:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1681728408;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zd9+BPhdTSoYfBjHrlvprQxOAwNDesh2RaIgh/3N3uI=;
-        b=Nf/3uSKwBO93jCeGRdBr0IIex+XWkI+OSZnPZeTGx4NKkqdk2aJHSmNI1HmW+QH9VHFBhK
-        InYe4HkVCNXVJEfT1C15p7QzK4VAxsPowH4752rU2ZCwILlsUPOWoqvqeG+boAS4I/BBAg
-        UzsNPiQ8kKRykNf3SBy4OIrKu33VZ28XqJtb3zLkz9VupdAIgbU8HwvPvzRpZBzgO5sCYN
-        gyh2xPvpweI+CvIFBr+uNhZaupz1YbRQhYhzeyhdjyi+C0/aa6fm4srJKMju/IbFa7T6FV
-        bop8W5Y71EemMjGZTurZ5kH7OSVUmJUn1aUNIL+0jdbRz0MLG82EQUCoEbPmVw==
+        bh=DMJ+cbokOctSN0U6wHjIbInp6iX43XTC0mQ1d+BTzbg=;
+        b=wDEBJ6VcRx9pzel12ZIixHs/KB1eWrkf43cuXt9PWu5MCrr5ghBXbYwOxQCfUJzcuA0j9w
+        dKbkr4AP+P/r/i4yMPN9iGpSDQo/6T7T4YMOgq6KAdGMrQ5aD3xNGXU7BmS9Zzcuv3cgu0
+        f9MbQ4rgOStO3DKmL5kHQgyDS74XHVTlkm1AqZz3LR9agZc8C0CgitLmVQ/WEvfeFTPuCg
+        QEH1/qEZD/yI+4fB8t4uSAWHL3LSPTCkcyxnGhFqaDPv0CbqfUm4I045er6mQqUDUcJrkG
+        /8Z8ukx0EjZ990Qs696iYtpM0QP5mTt49QM1vdTsj8NtzMUAsdjoMCXSAQV1YA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1681728408;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zd9+BPhdTSoYfBjHrlvprQxOAwNDesh2RaIgh/3N3uI=;
-        b=PWp4+BbZ5GKzlSMv4UvSKAG0KfAxXgWU4k5AHusjyi4B5POftuleddfedg6YkJ73f4ape1
-        FndtWhsWta1MVWDQ==
+        bh=DMJ+cbokOctSN0U6wHjIbInp6iX43XTC0mQ1d+BTzbg=;
+        b=k3HrFrko+wBbrv4Q8F85qGSgG/3MzFL4ifc9hj5VvwMqkdlmAc3vbphhS5sM9C8I+VtPE/
+        xHLgMa/a+GStpcCQ==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] init: Mark start_kernel() __noreturn
+Subject: [tip: objtool/core] x86/head: Mark *_start_kernel() __noreturn
 Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <7069acf026a195f26a88061227fba5a3b0337b9a.1681342859.git.jpoimboe@kernel.org>
-References: <7069acf026a195f26a88061227fba5a3b0337b9a.1681342859.git.jpoimboe@kernel.org>
+In-Reply-To: <c2525f96b88be98ee027ee0291d58003036d4120.1681342859.git.jpoimboe@kernel.org>
+References: <c2525f96b88be98ee027ee0291d58003036d4120.1681342859.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168172840785.404.969854172131344642.tip-bot2@tip-bot2>
+Message-ID: <168172840758.404.8391667372410527352.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,62 +67,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     25a6917ca63ad4470bf88535c56f0dec72b570fe
-Gitweb:        https://git.kernel.org/tip/25a6917ca63ad4470bf88535c56f0dec72b570fe
+Commit-ID:     4208d2d79837ef70f260d6170e3ac7fd6fde7788
+Gitweb:        https://git.kernel.org/tip/4208d2d79837ef70f260d6170e3ac7fd6fde7788
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Wed, 12 Apr 2023 16:49:32 -07:00
+AuthorDate:    Wed, 12 Apr 2023 16:49:33 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 14 Apr 2023 17:31:23 +02:00
+CommitterDate: Fri, 14 Apr 2023 17:31:24 +02:00
 
-init: Mark start_kernel() __noreturn
+x86/head: Mark *_start_kernel() __noreturn
 
-Now that arch_call_rest_init() is __noreturn, mark its caller
-start_kernel() __noreturn.
+Now that start_kernel() is __noreturn, mark its chain of callers
+__noreturn.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/7069acf026a195f26a88061227fba5a3b0337b9a.1681342859.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/c2525f96b88be98ee027ee0291d58003036d4120.1681342859.git.jpoimboe@kernel.org
 ---
- include/linux/start_kernel.h | 2 +-
- init/main.c                  | 2 +-
- tools/objtool/check.c        | 1 +
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/setup.h | 6 +++---
+ arch/x86/kernel/head32.c     | 2 +-
+ arch/x86/kernel/head64.c     | 4 ++--
+ tools/objtool/check.c        | 2 ++
+ 4 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/start_kernel.h b/include/linux/start_kernel.h
-index 864921e..a9806a4 100644
---- a/include/linux/start_kernel.h
-+++ b/include/linux/start_kernel.h
-@@ -8,7 +8,7 @@
- /* Define the prototype for start_kernel here, rather than cluttering
-    up something else. */
+diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
+index f37cbff..f349562 100644
+--- a/arch/x86/include/asm/setup.h
++++ b/arch/x86/include/asm/setup.h
+@@ -125,11 +125,11 @@ void clear_bss(void);
  
--extern asmlinkage void __init start_kernel(void);
-+extern asmlinkage void __init __noreturn start_kernel(void);
- extern void __init __noreturn arch_call_rest_init(void);
- extern void __ref __noreturn rest_init(void);
+ #ifdef __i386__
  
-diff --git a/init/main.c b/init/main.c
-index 161ed95..65aab4e 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -937,7 +937,7 @@ static void __init print_unknown_bootoptions(void)
- 	memblock_free(unknown_options, len);
+-asmlinkage void __init i386_start_kernel(void);
++asmlinkage void __init __noreturn i386_start_kernel(void);
+ 
+ #else
+-asmlinkage void __init x86_64_start_kernel(char *real_mode);
+-asmlinkage void __init x86_64_start_reservations(char *real_mode_data);
++asmlinkage void __init __noreturn x86_64_start_kernel(char *real_mode);
++asmlinkage void __init __noreturn x86_64_start_reservations(char *real_mode_data);
+ 
+ #endif /* __i386__ */
+ #endif /* _SETUP */
+diff --git a/arch/x86/kernel/head32.c b/arch/x86/kernel/head32.c
+index ec6fefb..10c27b4 100644
+--- a/arch/x86/kernel/head32.c
++++ b/arch/x86/kernel/head32.c
+@@ -29,7 +29,7 @@ static void __init i386_default_early_setup(void)
+ 	x86_init.mpparse.setup_ioapic_ids = setup_ioapic_ids_from_mpc;
  }
  
--asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
-+asmlinkage __visible void __init __no_sanitize_address __noreturn start_kernel(void)
+-asmlinkage __visible void __init i386_start_kernel(void)
++asmlinkage __visible void __init __noreturn i386_start_kernel(void)
  {
- 	char *command_line;
- 	char *after_dashes;
+ 	/* Make sure IDT is set up before any exception happens */
+ 	idt_setup_early_handler();
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 387e4b1..49f7629 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -471,7 +471,7 @@ static void __init copy_bootdata(char *real_mode_data)
+ 	sme_unmap_bootdata(real_mode_data);
+ }
+ 
+-asmlinkage __visible void __init x86_64_start_kernel(char * real_mode_data)
++asmlinkage __visible void __init __noreturn x86_64_start_kernel(char * real_mode_data)
+ {
+ 	/*
+ 	 * Build-time sanity checks on the kernel image and module
+@@ -537,7 +537,7 @@ asmlinkage __visible void __init x86_64_start_kernel(char * real_mode_data)
+ 	x86_64_start_reservations(real_mode_data);
+ }
+ 
+-void __init x86_64_start_reservations(char *real_mode_data)
++void __init __noreturn x86_64_start_reservations(char *real_mode_data)
+ {
+ 	/* version is always not zero if it is copied */
+ 	if (!boot_params.hdr.version)
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 3d7227f..9aaad9d 100644
+index 9aaad9d..a436bc1 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -222,6 +222,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
- 		"rewind_stack_and_make_dead",
- 		"sev_es_terminate",
- 		"snp_abort",
-+		"start_kernel",
+@@ -225,6 +225,8 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 		"start_kernel",
  		"stop_this_cpu",
  		"usercopy_abort",
++		"x86_64_start_kernel",
++		"x86_64_start_reservations",
  		"xen_cpu_bringup_again",
+ 		"xen_start_kernel",
+ 	};
