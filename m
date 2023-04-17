@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B93C6E45AE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Apr 2023 12:50:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26B3B6E45B4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Apr 2023 12:51:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230257AbjDQKu4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Apr 2023 06:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50550 "EHLO
+        id S230369AbjDQKu7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Apr 2023 06:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230251AbjDQKuo (ORCPT
+        with ESMTP id S230147AbjDQKus (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Apr 2023 06:50:44 -0400
+        Mon, 17 Apr 2023 06:50:48 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF5FE7D8C;
-        Mon, 17 Apr 2023 03:50:00 -0700 (PDT)
-Date:   Mon, 17 Apr 2023 10:46:47 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11EE3868B;
+        Mon, 17 Apr 2023 03:50:03 -0700 (PDT)
+Date:   Mon, 17 Apr 2023 10:46:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1681728407;
+        s=2020; t=1681728408;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ocUW9GOElvL8AYWsHoDMzMItwN417znLpFX8N+bV3DE=;
-        b=uXeFCd08pjlQs7JNty6HsruviAcNU9rbvoGmzIJ1sxUF7OzmoGhtDWNz45aBocqypFC5/B
-        /7fqJvPXtCKIDzc5Eeq8BA78+RykigOKfdNgmHjzRB/VfBR+2dN0S90WoaP+UgKt79pwvp
-        dMO/mOFQ3TPyHlky3U6VXogLdrUbBuahE+2YA7dZWIFy3am2vA61PvhlJmFc1JYhsqwqAO
-        5GimNWnx7a7dhHtN57vk1OUCbkdNc+QDQmnZiX52foko/LF616qQNMqNL5E/QHvpP1ud0G
-        69rpB+5OOfy6+tOz/bMx458fY9tr+54oJqkcFLej1HzVCEgJOJHEG8pKs7gLBQ==
+        bh=aolYCW6BgKOyEtD8DrOwUI4vowED8g/kmdmypggM9C8=;
+        b=H6ouT7OvKN8c2M+K4Yxtcyt/W6y0H2vOT+E9Ee8nG8LX1nCElXJTK60h0sTTkJIaUx6cV/
+        //2bGvjT5PT+1oLI0TJfdmTWNl+RPjVZNffKpNJuYxAw8tg2+TceTfFvgbl6HQpPwM1m0N
+        1PGU3s5vrivVFvIqY9Eoz0Q6Jzoagi+kvRhsAfebpZlobA8qdMP/hL9staj5PRbQIkRy+A
+        W3pgnUTKzD8XdGSpva7ozMz8t9y2C0f3wVIjSjsnqRr6TNwmBwv1pU2AGKh5cg0jRBbGta
+        iwujHZrZYx2lPKWj8uJok8Tr1s1s2fbx7NDtZWy7iqn5D0Wq4eO4PVdCCkn5cA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1681728407;
+        s=2020e; t=1681728408;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ocUW9GOElvL8AYWsHoDMzMItwN417znLpFX8N+bV3DE=;
-        b=0doHOdMPYju8+8LqoHAzRWTVBY4EAPb9i7esTGnCb35cs1nZ/Ssl6D6i7qmxbW0eZkpFeX
-        S/uIbB+hS4t/EAAQ==
+        bh=aolYCW6BgKOyEtD8DrOwUI4vowED8g/kmdmypggM9C8=;
+        b=z/lrDazUoFU10SPyVdzEi6CEORp8wWY6wd6aYGotfmvb7frPnkZdh+JSA41/6sqdrXYvjy
+        t6WCNpkCo7SgQNAw==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] cpu: Mark panic_smp_self_stop() __noreturn
+Subject: [tip: objtool/core] init: Mark [arch_call_]rest_init() __noreturn
 Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Nick Desaulniers <ndesaulniers@google.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <92d76ab5c8bf660f04fdcd3da1084519212de248.1681342859.git.jpoimboe@kernel.org>
-References: <92d76ab5c8bf660f04fdcd3da1084519212de248.1681342859.git.jpoimboe@kernel.org>
+In-Reply-To: <7194ed8a989a85b98d92e62df660f4a90435a723.1681342859.git.jpoimboe@kernel.org>
+References: <7194ed8a989a85b98d92e62df660f4a90435a723.1681342859.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168172840703.404.1762919033768263988.tip-bot2@tip-bot2>
+Message-ID: <168172840811.404.2288887185629391218.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,117 +68,96 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     7412a60decec2a6744cf773280ff17a0f89e8395
-Gitweb:        https://git.kernel.org/tip/7412a60decec2a6744cf773280ff17a0f89e8395
+Commit-ID:     9ea7e6b62c2bd2f7bbfc3f10099df803002dd33b
+Gitweb:        https://git.kernel.org/tip/9ea7e6b62c2bd2f7bbfc3f10099df803002dd33b
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Wed, 12 Apr 2023 16:49:35 -07:00
+AuthorDate:    Wed, 12 Apr 2023 16:49:31 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 14 Apr 2023 17:31:25 +02:00
+CommitterDate: Fri, 14 Apr 2023 17:31:23 +02:00
 
-cpu: Mark panic_smp_self_stop() __noreturn
+init: Mark [arch_call_]rest_init() __noreturn
 
 In preparation for improving objtool's handling of weak noreturn
-functions, mark panic_smp_self_stop() __noreturn.
+functions, mark start_kernel(), arch_call_rest_init(), and rest_init()
+__noreturn.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/92d76ab5c8bf660f04fdcd3da1084519212de248.1681342859.git.jpoimboe@kernel.org
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Link: https://lore.kernel.org/r/7194ed8a989a85b98d92e62df660f4a90435a723.1681342859.git.jpoimboe@kernel.org
 ---
- arch/arm/kernel/smp.c          | 2 +-
- arch/arm64/include/asm/smp.h   | 1 -
- arch/arm64/kernel/smp.c        | 2 +-
- arch/powerpc/kernel/setup_64.c | 2 +-
- include/linux/smp.h            | 2 +-
- kernel/panic.c                 | 2 +-
- tools/objtool/check.c          | 1 +
- 7 files changed, 6 insertions(+), 6 deletions(-)
+ arch/s390/kernel/setup.c     | 2 +-
+ include/linux/start_kernel.h | 4 ++--
+ init/main.c                  | 4 ++--
+ tools/objtool/check.c        | 2 ++
+ 4 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index d6be450..f4a4ac0 100644
---- a/arch/arm/kernel/smp.c
-+++ b/arch/arm/kernel/smp.c
-@@ -779,7 +779,7 @@ void smp_send_stop(void)
-  * kdump fails. So split out the panic_smp_self_stop() and add
-  * set_cpu_online(smp_processor_id(), false).
-  */
--void panic_smp_self_stop(void)
-+void __noreturn panic_smp_self_stop(void)
- {
- 	pr_debug("CPU %u will stop doing anything useful since another CPU has paniced\n",
- 	         smp_processor_id());
-diff --git a/arch/arm64/include/asm/smp.h b/arch/arm64/include/asm/smp.h
-index 07f4ea1..f2d2623 100644
---- a/arch/arm64/include/asm/smp.h
-+++ b/arch/arm64/include/asm/smp.h
-@@ -143,7 +143,6 @@ bool cpus_are_stuck_in_kernel(void);
- 
- extern void crash_smp_send_stop(void);
- extern bool smp_crash_stop_failed(void);
--extern void panic_smp_self_stop(void);
- 
- #endif /* ifndef __ASSEMBLY__ */
- 
-diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
-index 07d156f..05fe797 100644
---- a/arch/arm64/kernel/smp.c
-+++ b/arch/arm64/kernel/smp.c
-@@ -830,7 +830,7 @@ static void __noreturn local_cpu_stop(void)
-  * that cpu_online_mask gets correctly updated and smp_send_stop() can skip
-  * CPUs that have already stopped themselves.
-  */
--void panic_smp_self_stop(void)
-+void __noreturn panic_smp_self_stop(void)
- {
- 	local_cpu_stop();
+diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
+index 8ec5cdf..4259b6c 100644
+--- a/arch/s390/kernel/setup.c
++++ b/arch/s390/kernel/setup.c
+@@ -396,7 +396,7 @@ int __init arch_early_irq_init(void)
+ 	return 0;
  }
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index b2e0d3c..246201d 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -480,7 +480,7 @@ void early_setup_secondary(void)
  
- #endif /* CONFIG_SMP */
- 
--void panic_smp_self_stop(void)
-+void __noreturn panic_smp_self_stop(void)
+-void __init arch_call_rest_init(void)
++void __init __noreturn arch_call_rest_init(void)
  {
- 	hard_irq_disable();
- 	spin_begin();
-diff --git a/include/linux/smp.h b/include/linux/smp.h
-index a80ab58..2a737b3 100644
---- a/include/linux/smp.h
-+++ b/include/linux/smp.h
-@@ -59,7 +59,7 @@ int smp_call_function_single_async(int cpu, struct __call_single_data *csd);
-  * Cpus stopping functions in panic. All have default weak definitions.
-  * Architecture-dependent code may override them.
-  */
--void panic_smp_self_stop(void);
-+void __noreturn panic_smp_self_stop(void);
- void nmi_panic_self_stop(struct pt_regs *regs);
- void crash_smp_send_stop(void);
+ 	unsigned long stack;
  
-diff --git a/kernel/panic.c b/kernel/panic.c
-index 5cfea83..5e4982d 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -141,7 +141,7 @@ EXPORT_SYMBOL(panic_blink);
- /*
-  * Stop ourself in panic -- architecture code may override this
-  */
--void __weak panic_smp_self_stop(void)
-+void __weak __noreturn panic_smp_self_stop(void)
+diff --git a/include/linux/start_kernel.h b/include/linux/start_kernel.h
+index 8b369a4..864921e 100644
+--- a/include/linux/start_kernel.h
++++ b/include/linux/start_kernel.h
+@@ -9,7 +9,7 @@
+    up something else. */
+ 
+ extern asmlinkage void __init start_kernel(void);
+-extern void __init arch_call_rest_init(void);
+-extern void __ref rest_init(void);
++extern void __init __noreturn arch_call_rest_init(void);
++extern void __ref __noreturn rest_init(void);
+ 
+ #endif /* _LINUX_START_KERNEL_H */
+diff --git a/init/main.c b/init/main.c
+index 4425d17..161ed95 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -683,7 +683,7 @@ static void __init setup_command_line(char *command_line)
+ 
+ static __initdata DECLARE_COMPLETION(kthreadd_done);
+ 
+-noinline void __ref rest_init(void)
++noinline void __ref __noreturn rest_init(void)
  {
- 	while (1)
- 		cpu_relax();
+ 	struct task_struct *tsk;
+ 	int pid;
+@@ -889,7 +889,7 @@ static int __init early_randomize_kstack_offset(char *buf)
+ early_param("randomize_kstack_offset", early_randomize_kstack_offset);
+ #endif
+ 
+-void __init __weak arch_call_rest_init(void)
++void __init __weak __noreturn arch_call_rest_init(void)
+ {
+ 	rest_init();
+ }
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index a436bc1..4b52ed6 100644
+index df634da..3d7227f 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -218,6 +218,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+@@ -202,6 +202,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 		"__reiserfs_panic",
+ 		"__stack_chk_fail",
+ 		"__ubsan_handle_builtin_unreachable",
++		"arch_call_rest_init",
+ 		"arch_cpu_idle_dead",
+ 		"cpu_bringup_and_idle",
+ 		"cpu_startup_entry",
+@@ -217,6 +218,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
  		"machine_real_restart",
  		"make_task_dead",
  		"panic",
-+		"panic_smp_self_stop",
- 		"rest_init",
++		"rest_init",
  		"rewind_stack_and_make_dead",
  		"sev_es_terminate",
+ 		"snp_abort",
