@@ -2,58 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE176E4590
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Apr 2023 12:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C116E4594
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Apr 2023 12:49:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbjDQKtB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Apr 2023 06:49:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48534 "EHLO
+        id S230170AbjDQKtG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Apr 2023 06:49:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230019AbjDQKsm (ORCPT
+        with ESMTP id S230271AbjDQKtC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Apr 2023 06:48:42 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 298BFA9;
-        Mon, 17 Apr 2023 03:47:52 -0700 (PDT)
+        Mon, 17 Apr 2023 06:49:02 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B3E8ED;
+        Mon, 17 Apr 2023 03:48:12 -0700 (PDT)
 Date:   Mon, 17 Apr 2023 10:46:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1681728405;
+        s=2020; t=1681728406;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W5gz0IAPwW8Ml+TPwzI2zzEnnHxfoa0E4AWfaz+JnGM=;
-        b=ycu5EFvgo2VWpyjSRBGDmDd/h4hpo2wBiH2VbxpHQWJCJTgxEpgsCJTLSSNe5wtQdzF82k
-        1wP0+5Dj/23IkzjhhHkjT4ZutwjKoOfIZtOt0D6wVxLuq6agj7czZhRAOmEbZUZty/jAjW
-        BhUsh26jqs6wtY4z7VadeOmaBTSO0Ubt8ECebRkMqupeZ8ijziTm8zowr2wOKG347CVCWW
-        qNE1g6PST6VoZ4f3gNNDtvH4Al2MBKQ9RCpPa8lxJhrWHGY0eNemvIPyLCjpTPYywnSnJi
-        MJsxaCOIoHhFfVmO+dj89I5f702XDHIue0NuQhtnkzfH+1HZJPG/a5e7bJPk+Q==
+        bh=EygwRbB8JyZnkTtOgv8diB/DIMVBm1/6K4FuPOI9bXM=;
+        b=tuIQyVEw8pRS8KPuqNfCmSr+gP6U/gQ8phJzhksfq379Z2dKY8Vfiy4UFyw4Xmi65VM3ls
+        A3EvHolwJWpq+om49n8p1DIM5Vog16IBXMu++UVU4kwAa6d1l0tzVFBQ5mitZ5fTrbWLOK
+        xvbRhKapeXp7qmA7NCYqjCDGMuaHTaluIk5UINBCngsWZIvQSNWzcvqQrxHwuTug+Zk30C
+        yWz7z9S9e4wyZVNiw2xW6nLD7tgvyT6zMgtGjGYs92t/mVSo7cBVCibHrKi3jo5EFrRcCv
+        eO3yuFdVzrRSni+njxErBojpGIr0FhTz7mbzGKEfaK8WFGQ/QONXjug2SBcaNg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1681728405;
+        s=2020e; t=1681728406;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W5gz0IAPwW8Ml+TPwzI2zzEnnHxfoa0E4AWfaz+JnGM=;
-        b=IatCR1nrLl6AdV6PUJGG4QhrGoFAjl7fG+oIycCyls0pO3vzN7IlLYcokWLz9hFJhm0bMm
-        Rw+FNMkVxSBqTSDw==
-From:   "tip-bot2 for Guilherme G. Piccoli" <tip-bot2@linutronix.de>
+        bh=EygwRbB8JyZnkTtOgv8diB/DIMVBm1/6K4FuPOI9bXM=;
+        b=aezQTuIGs1lQVIWSLljq6polu1aPIiEFkZRDZUjd961NT5pFZfqRH0ky11tS+5MajtFmfp
+        RBAUK5O7yl77N+CA==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/hyperv: Mark hv_ghcb_terminate() as noreturn
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+Subject: [tip: objtool/core] x86/cpu: Mark {hlt,resume}_play_dead() __noreturn
+Cc:     kernel test robot <lkp@intel.com>,
         Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Michael Kelley <mikelley@microsoft.com>, x86@kernel.org,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <32453a703dfcf0d007b473c9acbf70718222b74b.1681342859.git.jpoimboe@kernel.org>
-References: <32453a703dfcf0d007b473c9acbf70718222b74b.1681342859.git.jpoimboe@kernel.org>
+In-Reply-To: <ce1407c4bf88b1334fe40413126343792a77ca50.1681342859.git.jpoimboe@kernel.org>
+References: <ce1407c4bf88b1334fe40413126343792a77ca50.1681342859.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168172840540.404.15994550116544514863.tip-bot2@tip-bot2>
+Message-ID: <168172840596.404.15545078409070467274.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,90 +68,86 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     611d4c716db0141cfc436994dc5aff1d69c924ad
-Gitweb:        https://git.kernel.org/tip/611d4c716db0141cfc436994dc5aff1d69c924ad
-Author:        Guilherme G. Piccoli <gpiccoli@igalia.com>
-AuthorDate:    Wed, 12 Apr 2023 16:49:41 -07:00
+Commit-ID:     52668badd34b4b346f32c33a9bcba069a06c3caa
+Gitweb:        https://git.kernel.org/tip/52668badd34b4b346f32c33a9bcba069a06c3caa
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Wed, 12 Apr 2023 16:49:39 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 14 Apr 2023 17:31:28 +02:00
+CommitterDate: Fri, 14 Apr 2023 17:31:27 +02:00
 
-x86/hyperv: Mark hv_ghcb_terminate() as noreturn
+x86/cpu: Mark {hlt,resume}_play_dead() __noreturn
 
-Annotate the function prototype and definition as noreturn to prevent
-objtool warnings like:
+Fixes the following warning:
 
-vmlinux.o: warning: objtool: hyperv_init+0x55c: unreachable instruction
+  vmlinux.o: warning: objtool: resume_play_dead+0x21: unreachable instruction
 
-Also, as per Josh's suggestion, add it to the global_noreturns list.
-As a comparison, an objdump output without the annotation:
-
-[...]
-1b63:  mov    $0x1,%esi
-1b68:  xor    %edi,%edi
-1b6a:  callq  ffffffff8102f680 <hv_ghcb_terminate>
-1b6f:  jmpq   ffffffff82f217ec <hyperv_init+0x9c> # unreachable
-1b74:  cmpq   $0xffffffffffffffff,-0x702a24(%rip)
-[...]
-
-Now, after adding the __noreturn to the function prototype:
-
-[...]
-17df:  callq  ffffffff8102f6d0 <hv_ghcb_negotiate_protocol>
-17e4:  test   %al,%al
-17e6:  je     ffffffff82f21bb9 <hyperv_init+0x469>
-[...]  <many insns>
-1bb9:  mov    $0x1,%esi
-1bbe:  xor    %edi,%edi
-1bc0:  callq  ffffffff8102f680 <hv_ghcb_terminate>
-1bc5:  nopw   %cs:0x0(%rax,%rax,1) # end of function
-
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/32453a703dfcf0d007b473c9acbf70718222b74b.1681342859.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/ce1407c4bf88b1334fe40413126343792a77ca50.1681342859.git.jpoimboe@kernel.org
 ---
- arch/x86/hyperv/ivm.c           | 2 +-
- arch/x86/include/asm/mshyperv.h | 2 +-
- tools/objtool/check.c           | 1 +
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/smp.h | 2 +-
+ arch/x86/kernel/smpboot.c  | 2 +-
+ arch/x86/power/cpu.c       | 2 +-
+ tools/objtool/check.c      | 2 ++
+ 4 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 1dbcbd9..4f79dc7 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -127,7 +127,7 @@ static enum es_result hv_ghcb_hv_call(struct ghcb *ghcb, u64 exit_code,
- 		return ES_OK;
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index e6d1d28..47ce4c7 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -125,7 +125,7 @@ int native_cpu_up(unsigned int cpunum, struct task_struct *tidle);
+ int native_cpu_disable(void);
+ int common_cpu_die(unsigned int cpu);
+ void native_cpu_die(unsigned int cpu);
+-void hlt_play_dead(void);
++void __noreturn hlt_play_dead(void);
+ void native_play_dead(void);
+ void play_dead_common(void);
+ void wbinvd_on_cpu(int cpu);
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 9013bb2..a6da3f9 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1816,7 +1816,7 @@ static inline void mwait_play_dead(void)
+ 	}
  }
  
--void hv_ghcb_terminate(unsigned int set, unsigned int reason)
-+void __noreturn hv_ghcb_terminate(unsigned int set, unsigned int reason)
+-void hlt_play_dead(void)
++void __noreturn hlt_play_dead(void)
  {
- 	u64 val = GHCB_MSR_TERM_REQ;
+ 	if (__this_cpu_read(cpu_info.x86) >= 4)
+ 		wbinvd();
+diff --git a/arch/x86/power/cpu.c b/arch/x86/power/cpu.c
+index 236447e..7a4d5e9 100644
+--- a/arch/x86/power/cpu.c
++++ b/arch/x86/power/cpu.c
+@@ -288,7 +288,7 @@ EXPORT_SYMBOL(restore_processor_state);
+ #endif
  
-diff --git a/arch/x86/include/asm/mshyperv.h b/arch/x86/include/asm/mshyperv.h
-index 4c4c0ec..09c26e6 100644
---- a/arch/x86/include/asm/mshyperv.h
-+++ b/arch/x86/include/asm/mshyperv.h
-@@ -212,7 +212,7 @@ int hv_set_mem_host_visibility(unsigned long addr, int numpages, bool visible);
- void hv_ghcb_msr_write(u64 msr, u64 value);
- void hv_ghcb_msr_read(u64 msr, u64 *value);
- bool hv_ghcb_negotiate_protocol(void);
--void hv_ghcb_terminate(unsigned int set, unsigned int reason);
-+void __noreturn hv_ghcb_terminate(unsigned int set, unsigned int reason);
- #else
- static inline void hv_ghcb_msr_write(u64 msr, u64 value) {}
- static inline void hv_ghcb_msr_read(u64 msr, u64 *value) {}
+ #if defined(CONFIG_HIBERNATION) && defined(CONFIG_HOTPLUG_CPU)
+-static void resume_play_dead(void)
++static void __noreturn resume_play_dead(void)
+ {
+ 	play_dead_common();
+ 	tboot_shutdown(TB_SHUTDOWN_WFS);
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index e1b01ea..5b600bb 100644
+index ceb9848..724a63b 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -213,6 +213,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+@@ -212,6 +212,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 		"do_task_dead",
  		"ex_handler_msr_mce",
  		"fortify_panic",
- 		"hlt_play_dead",
-+		"hv_ghcb_terminate",
++		"hlt_play_dead",
  		"kthread_complete_and_exit",
  		"kthread_exit",
  		"kunit_try_catch_throw",
+@@ -222,6 +223,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 		"panic",
+ 		"panic_smp_self_stop",
+ 		"rest_init",
++		"resume_play_dead",
+ 		"rewind_stack_and_make_dead",
+ 		"sev_es_terminate",
+ 		"snp_abort",
