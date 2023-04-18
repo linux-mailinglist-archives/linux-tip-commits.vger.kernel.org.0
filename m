@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7A8E6E65A0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Apr 2023 15:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E686E6786
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Apr 2023 16:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232364AbjDRNOO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 18 Apr 2023 09:14:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40492 "EHLO
+        id S231305AbjDROxe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 18 Apr 2023 10:53:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232342AbjDRNON (ORCPT
+        with ESMTP id S230026AbjDROxd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 18 Apr 2023 09:14:13 -0400
+        Tue, 18 Apr 2023 10:53:33 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D085A1562E;
-        Tue, 18 Apr 2023 06:14:12 -0700 (PDT)
-Date:   Tue, 18 Apr 2023 13:14:07 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 198FFB46E;
+        Tue, 18 Apr 2023 07:53:29 -0700 (PDT)
+Date:   Tue, 18 Apr 2023 14:53:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1681823648;
+        s=2020; t=1681829608;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/GXGqGs7T+Ve8kmreWNRb9Lyte+TG2+q4hyj5YfKx4g=;
-        b=eR6/V/FZPoSXwSdj2suTN78MOzvTVGGcQFyPbHuq7Qexwet1C2m6uGmiuCiWbSRxdq271J
-        vg8k4CgH0BDXsAR/6qeBQr/bWaqbn3FaNMfU7lCpxUl/3f5fCvvopDvE1CmZ5UEZfP1jAV
-        xKXNk9CZJk7Fo+cPZZRqsxQy++6lz62llQG2Zo4IoQfUU/tSpIwVkix9VM0y8VlwlTgYUW
-        APf+bTeEekaSGjjQhXnX0QvQuint1b0VBrn6uGBDiwS3LcSr8lBFDAB4BRH3uDwcYmADLX
-        9nJxoKZQKRlf3PGG5oygeHhk+rP/FJLNl4E+u0Bvo7FWVEEMejNFG3aQiQadQg==
+        bh=H6sWjK/1vBRPdFiB0bWblioUbBh8IBBuVDZSPm6isq4=;
+        b=JL7SbDfBmTHRaOkrlEAAhpQst0PY37zwQTd19smMl+zbXLcPoQ0RKSOs9Sqv6UjkO3zqTj
+        K9xj0s6jPT5JRfndwXDz0XBK3QZdevyIxucsDVzMv72q4K+Mr0eOZYNTmweKnxZrocVLbz
+        IoVc5pl1mRsE+TAbEqaBFmxxI+YUpC58DICyUOg5BbQ/SWMtBkHNtXB00jR3WpiD+zMp7+
+        Il7WpojK3rZ2cTpCKUEJdzMMSmXQwwl+l52ag9p6T9nlDzyeg9+hLyIcx04PSvdPbUArEJ
+        frodeNKL3b5WEzO6QCG5IHhUrhp7q7MPEGOuj9vtKv0vGF5sIA+UiEqHlcdLKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1681823648;
+        s=2020e; t=1681829608;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/GXGqGs7T+Ve8kmreWNRb9Lyte+TG2+q4hyj5YfKx4g=;
-        b=JKmIDZMh0U5+EdmbwxKJUkW/6LPDzL+NvKw1UdNJf7lN1RjhnkArXmR1CVa7rs0uyem1a4
-        HqYlE9fqCoCLyKAw==
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+        bh=H6sWjK/1vBRPdFiB0bWblioUbBh8IBBuVDZSPm6isq4=;
+        b=SaTiNSB11xZ+fzSJ63tz6T89byFobuZiIxk7P/VtBkzjMTFlYx4QXeqU5F9Cd30C/eIhgv
+        LQi+CNeSh//+xLAw==
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] tick/common: Align tick period with the HZ tick.
-Cc:     Gusenleitner Klaus <gus@keba.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: timers/core] selftests/proc: Assert
+ clock_gettime(CLOCK_BOOTTIME) VS /proc/uptime monotonicity
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230406095735.0_14edn3@linutronix.de>
-References: <20230406095735.0_14edn3@linutronix.de>
+In-Reply-To: <20230222144649.624380-9-frederic@kernel.org>
+References: <20230222144649.624380-9-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168182364782.404.4164105102665678709.tip-bot2@tip-bot2>
+Message-ID: <168182960725.404.16948283844933816567.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,66 +68,164 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     e9523a0d81899361214d118ad60ef76f0e92f71d
-Gitweb:        https://git.kernel.org/tip/e9523a0d81899361214d118ad60ef76f0e92f71d
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Tue, 18 Apr 2023 14:26:39 +02:00
+Commit-ID:     263dda24fff0957f6b0a9abde2809122f7f0fad8
+Gitweb:        https://git.kernel.org/tip/263dda24fff0957f6b0a9abde2809122f7f0fad8
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Wed, 22 Feb 2023 15:46:49 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 18 Apr 2023 15:06:50 +02:00
+CommitterDate: Tue, 18 Apr 2023 16:35:13 +02:00
 
-tick/common: Align tick period with the HZ tick.
+selftests/proc: Assert clock_gettime(CLOCK_BOOTTIME) VS /proc/uptime monotonicity
 
-With HIGHRES enabled tick_sched_timer() is programmed every jiffy to
-expire the timer_list timers. This timer is programmed accurate in
-respect to CLOCK_MONOTONIC so that 0 seconds and nanoseconds is the
-first tick and the next one is 1000/CONFIG_HZ ms later. For HZ=250 it is
-every 4 ms and so based on the current time the next tick can be
-computed.
+The first field of /proc/uptime relies on the CLOCK_BOOTTIME clock which
+can also be fetched from clock_gettime() API.
 
-This accuracy broke since the commit mentioned below because the jiffy
-based clocksource is initialized with higher accuracy in
-read_persistent_wall_and_boot_offset(). This higher accuracy is
-inherited during the setup in tick_setup_device(). The timer still fires
-every 4ms with HZ=250 but timer is no longer aligned with
-CLOCK_MONOTONIC with 0 as it origin but has an offset in the us/ns part
-of the timestamp. The offset differs with every boot and makes it
-impossible for user land to align with the tick.
+Improve the test coverage while verifying the monotonicity of
+CLOCK_BOOTTIME accross both interfaces.
 
-Align the tick period with CLOCK_MONOTONIC ensuring that it is always a
-multiple of 1000/CONFIG_HZ ms.
-
-Fixes: 857baa87b6422 ("sched/clock: Enable sched clock early")
-Reported-by: Gusenleitner Klaus <gus@keba.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/20230406095735.0_14edn3@linutronix.de
-Link: https://lore.kernel.org/r/20230418122639.ikgfvu3f@linutronix.de
----
- kernel/time/tick-common.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+Link: https://lore.kernel.org/r/20230222144649.624380-9-frederic@kernel.org
 
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index 4678935..65b8658 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -218,9 +218,19 @@ static void tick_setup_device(struct tick_device *td,
- 		 * this cpu:
- 		 */
- 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
-+			ktime_t next_p;
-+			u32 rem;
-+
- 			tick_do_timer_cpu = cpu;
+---
+ tools/testing/selftests/proc/proc-uptime-001.c | 21 ++++++++++++----
+ tools/testing/selftests/proc/proc-uptime-002.c | 22 +++++++++++++----
+ tools/testing/selftests/proc/proc-uptime.h     | 12 +++++++++-
+ 3 files changed, 47 insertions(+), 8 deletions(-)
+
+diff --git a/tools/testing/selftests/proc/proc-uptime-001.c b/tools/testing/selftests/proc/proc-uptime-001.c
+index 35bddd9..f335eec 100644
+--- a/tools/testing/selftests/proc/proc-uptime-001.c
++++ b/tools/testing/selftests/proc/proc-uptime-001.c
+@@ -13,9 +13,9 @@
+  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+-// Test that boottime value in /proc/uptime increments monotonically.
+-// We don't test idle time monotonicity due to broken iowait task
+-// counting, cf: comment above get_cpu_idle_time_us()
++// Test that boottime value in /proc/uptime and CLOCK_BOOTTIME increment
++// monotonically. We don't test idle time monotonicity due to broken iowait
++// task counting, cf: comment above get_cpu_idle_time_us()
+ #undef NDEBUG
+ #include <assert.h>
+ #include <stdint.h>
+@@ -27,7 +27,7 @@
  
--			tick_next_period = ktime_get();
-+			next_p = ktime_get();
-+			div_u64_rem(next_p, TICK_NSEC, &rem);
-+			if (rem) {
-+				next_p -= rem;
-+				next_p += TICK_NSEC;
-+			}
+ int main(void)
+ {
+-	uint64_t start, u0, u1;
++	uint64_t start, u0, u1, c0, c1;
+ 	int fd;
+ 
+ 	fd = open("/proc/uptime", O_RDONLY);
+@@ -35,10 +35,23 @@ int main(void)
+ 
+ 	u0 = proc_uptime(fd);
+ 	start = u0;
++	c0 = clock_boottime();
 +
-+			tick_next_period = next_p;
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
- 			 * The boot CPU may be nohz_full, in which case set
+ 	do {
+ 		u1 = proc_uptime(fd);
++		c1 = clock_boottime();
++
++		/* Is /proc/uptime monotonic ? */
+ 		assert(u1 >= u0);
++
++		/* Is CLOCK_BOOTTIME monotonic ? */
++		assert(c1 >= c0);
++
++		/* Is CLOCK_BOOTTIME VS /proc/uptime monotonic ? */
++		assert(c0 >= u0);
++
+ 		u0 = u1;
++		c0 = c1;
+ 	} while (u1 - start < 100);
+ 
+ 	return 0;
+diff --git a/tools/testing/selftests/proc/proc-uptime-002.c b/tools/testing/selftests/proc/proc-uptime-002.c
+index 7ad79d5..ae453da 100644
+--- a/tools/testing/selftests/proc/proc-uptime-002.c
++++ b/tools/testing/selftests/proc/proc-uptime-002.c
+@@ -13,9 +13,10 @@
+  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+-// Test that boottime value in /proc/uptime increments monotonically
+-// while shifting across CPUs. We don't test idle time monotonicity
+-// due to broken iowait task counting, cf: comment above get_cpu_idle_time_us()
++// Test that boottime value in /proc/uptime and CLOCK_BOOTTIME increment
++// monotonically while shifting across CPUs. We don't test idle time
++// monotonicity due to broken iowait task counting, cf: comment above
++// get_cpu_idle_time_us()
+ #undef NDEBUG
+ #include <assert.h>
+ #include <errno.h>
+@@ -43,10 +44,10 @@ static inline int sys_sched_setaffinity(pid_t pid, unsigned int len, unsigned lo
+ 
+ int main(void)
+ {
++	uint64_t u0, u1, c0, c1;
+ 	unsigned int len;
+ 	unsigned long *m;
+ 	unsigned int cpu;
+-	uint64_t u0, u1;
+ 	int fd;
+ 
+ 	/* find out "nr_cpu_ids" */
+@@ -62,6 +63,8 @@ int main(void)
+ 	assert(fd >= 0);
+ 
+ 	u0 = proc_uptime(fd);
++	c0 = clock_boottime();
++
+ 	for (cpu = 0; cpu < len * 8; cpu++) {
+ 		memset(m, 0, len);
+ 		m[cpu / (8 * sizeof(unsigned long))] |= 1UL << (cpu % (8 * sizeof(unsigned long)));
+@@ -70,8 +73,19 @@ int main(void)
+ 		sys_sched_setaffinity(0, len, m);
+ 
+ 		u1 = proc_uptime(fd);
++		c1 = clock_boottime();
++
++		/* Is /proc/uptime monotonic ? */
+ 		assert(u1 >= u0);
++
++		/* Is CLOCK_BOOTTIME monotonic ? */
++		assert(c1 >= c0);
++
++		/* Is CLOCK_BOOTTIME VS /proc/uptime monotonic ? */
++		assert(c0 >= u0);
++
+ 		u0 = u1;
++		c0 = c1;
+ 	}
+ 
+ 	return 0;
+diff --git a/tools/testing/selftests/proc/proc-uptime.h b/tools/testing/selftests/proc/proc-uptime.h
+index ca55abe..730cce4 100644
+--- a/tools/testing/selftests/proc/proc-uptime.h
++++ b/tools/testing/selftests/proc/proc-uptime.h
+@@ -19,9 +19,21 @@
+ #include <string.h>
+ #include <stdlib.h>
+ #include <unistd.h>
++#include <time.h>
+ 
+ #include "proc.h"
+ 
++static uint64_t clock_boottime(void)
++{
++	struct timespec ts;
++	int err;
++
++	err = clock_gettime(CLOCK_BOOTTIME, &ts);
++	assert(err >= 0);
++
++	return (ts.tv_sec * 100) + (ts.tv_nsec / 10000000);
++}
++
+ static uint64_t proc_uptime(int fd)
+ {
+ 	uint64_t val1, val2;
