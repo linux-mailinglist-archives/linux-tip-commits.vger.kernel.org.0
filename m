@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE1EA6E5C67
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Apr 2023 10:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E64986E5C6A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Apr 2023 10:47:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230389AbjDRIrq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S231328AbjDRIrq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 18 Apr 2023 04:47:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55052 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbjDRIrm (ORCPT
+        with ESMTP id S231222AbjDRIrm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 18 Apr 2023 04:47:42 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0635D40CC;
-        Tue, 18 Apr 2023 01:47:40 -0700 (PDT)
-Date:   Tue, 18 Apr 2023 08:47:38 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A4FC40D5;
+        Tue, 18 Apr 2023 01:47:41 -0700 (PDT)
+Date:   Tue, 18 Apr 2023 08:47:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1681807659;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RH1QL+CMMUftjue/1I+BE+vaXEZ73VCJ4XeV2fk8Lj0=;
-        b=UUG9NnR4yfIvRMs3Bl7FESxzQlE8K8PQIl7CodAVuH1D2N22lrAkq2xTcxBub2Ah8y4VaG
-        ojnoAWR6xKXKTGuGiN55EbsyCx72Uosg595kz1EOixk6sU6fzKwusat6rLO6lffFN8eyXP
-        Bp+1hN0sy2ctn8PR7dcuL1bRX5sVhl9d9E3l1CgBizujN7ob3gR2JTM72CPeQuuKrkm4IZ
-        fFWpPJ9Mgp6nWa2lYBwlzUiA5Xcx9+djpTu+s+fJBgyQalH1UYeoWW15xw1bFNNvhuEn+p
-        COs2+D3d5IlHyh+tp2s3ApFx6mKrvdATYHTcKtBIbomeqFufsHP0c2xK4EehlA==
+        bh=rsdIAMAwWopaXTDtOD5aLMYboZIulPn7eG1OGyICisY=;
+        b=xwdwruv5LDE0XdxsJNO3X4Ce8VwNwW1kTbUv8dNRcQs2A74197WoXjAOQuo8rwieyp/gPf
+        sHjYruQ+/DDhqfgZy/68rXJLuPGDOlr1LZgcV9ieBDaGEhrME1nxaeiYND6idsHuudoTXv
+        FWy+ax3/HwHtA+hSQgGI0ZS2pTELCiPyACi20PApvPaZ0+48UzM4PWAK5Y9O6rYRubMjNL
+        6+ffz0BZzPkQcMizAjz4eKSazv2Ra4zNh3o9OLNZHEZDnHJ8uU+0jERqbEK1mBx7YGnca+
+        N0i83gU7M1gQlMp5YzGnBN0xSE2FBfr+5rwlgVccH4xCh7N5ba+NN+Wn/fyHCg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1681807659;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,24 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RH1QL+CMMUftjue/1I+BE+vaXEZ73VCJ4XeV2fk8Lj0=;
-        b=w0gs+xu7KLm4gvfWZMs/eBzZw8gCYEaeQue47nwrW02woD8LYdpksgrpzJZILeBo/yxQon
-        zCSR6NIBm9TOMMAQ==
+        bh=rsdIAMAwWopaXTDtOD5aLMYboZIulPn7eG1OGyICisY=;
+        b=m+YIBgxL+JFywTivrGbJLJYCDdNBQALYylOekIxGtcI7zzgWtRN3xXkhLnQIoVRwaWrL6S
+        vO2pFvNasplqyNAg==
 From:   "tip-bot2 for Gregory Price" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/entry] syscall_user_dispatch: Untag selector address
- before access_ok()
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Gregory Price <gregory.price@memverge.com>,
+Subject: [tip: core/entry] syscall_user_dispatch: Split up set_syscall_user_dispatch()
+Cc:     Gregory Price <gregory.price@memverge.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Oleg Nesterov <oleg@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230407171834.3558-3-gregory.price@memverge.com>
-References: <20230407171834.3558-3-gregory.price@memverge.com>
+In-Reply-To: <20230407171834.3558-2-gregory.price@memverge.com>
+References: <20230407171834.3558-2-gregory.price@memverge.com>
 MIME-Version: 1.0
-Message-ID: <168180765889.404.10655049417638355294.tip-bot2@tip-bot2>
+Message-ID: <168180765934.404.13399191864427617953.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,62 +68,74 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/entry branch of tip:
 
-Commit-ID:     463b7715e7ce367fce89769c5d85e31595715ee1
-Gitweb:        https://git.kernel.org/tip/463b7715e7ce367fce89769c5d85e31595715ee1
+Commit-ID:     43360686328b1f4b7d9dcc883ee9243ad7c16fae
+Gitweb:        https://git.kernel.org/tip/43360686328b1f4b7d9dcc883ee9243ad7c16fae
 Author:        Gregory Price <gourry.memverge@gmail.com>
-AuthorDate:    Fri, 07 Apr 2023 13:18:32 -04:00
+AuthorDate:    Fri, 07 Apr 2023 13:18:31 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sun, 16 Apr 2023 14:23:07 +02:00
 
-syscall_user_dispatch: Untag selector address before access_ok()
+syscall_user_dispatch: Split up set_syscall_user_dispatch()
 
-To support checkpoint/restart, ptrace must be able to set the selector
-of the tracee.  The selector is a user pointer that may be subject to
-memory tagging extensions on some architectures (namely ARM MTE).
+syscall user dispatch configuration is not covered by checkpoint/restore.
 
-access_ok() clears memory tags for tagged addresses if the current task has
-memory tagging enabled.
+To prepare for ptrace access to the syscall user dispatch configuration,
+move the inner working of set_syscall_user_dispatch() into a helper
+function. Make the helper function task pointer based and let
+set_syscall_user_dispatch() invoke it with task=current.
 
-This obviously fails when ptrace modifies the selector of a tracee when
-tracer and tracee do not have the same memory tagging enabled state.
+No functional change.
 
-Solve this by untagging the selector address before handing it to
-access_ok(), like other ptrace functions which modify tracee pointers do.
-
-Obviously a tracer can set an invalid selector address for the tracee, but
-that's independent of tagging and a general capability of the tracer.
-
-Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Gregory Price <gregory.price@memverge.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/all/ZCWXE04nLZ4pXEtM@arm.com/
-Link: https://lore.kernel.org/r/20230407171834.3558-3-gregory.price@memverge.com
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20230407171834.3558-2-gregory.price@memverge.com
 
 ---
- kernel/entry/syscall_user_dispatch.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ kernel/entry/syscall_user_dispatch.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/entry/syscall_user_dispatch.c b/kernel/entry/syscall_user_dispatch.c
-index 22396b2..7f2add4 100644
+index 0b6379a..22396b2 100644
 --- a/kernel/entry/syscall_user_dispatch.c
 +++ b/kernel/entry/syscall_user_dispatch.c
-@@ -87,7 +87,16 @@ static int task_set_syscall_user_dispatch(struct task_struct *task, unsigned lon
- 		if (offset && offset + len <= offset)
- 			return -EINVAL;
+@@ -68,8 +68,9 @@ bool syscall_user_dispatch(struct pt_regs *regs)
+ 	return true;
+ }
  
--		if (selector && !access_ok(selector, sizeof(*selector)))
-+		/*
-+		 * access_ok() will clear memory tags for tagged addresses
-+		 * if current has memory tagging enabled.
+-int set_syscall_user_dispatch(unsigned long mode, unsigned long offset,
+-			      unsigned long len, char __user *selector)
++static int task_set_syscall_user_dispatch(struct task_struct *task, unsigned long mode,
++					  unsigned long offset, unsigned long len,
++					  char __user *selector)
+ {
+ 	switch (mode) {
+ 	case PR_SYS_DISPATCH_OFF:
+@@ -94,15 +95,21 @@ int set_syscall_user_dispatch(unsigned long mode, unsigned long offset,
+ 		return -EINVAL;
+ 	}
+ 
+-	current->syscall_dispatch.selector = selector;
+-	current->syscall_dispatch.offset = offset;
+-	current->syscall_dispatch.len = len;
+-	current->syscall_dispatch.on_dispatch = false;
++	task->syscall_dispatch.selector = selector;
++	task->syscall_dispatch.offset = offset;
++	task->syscall_dispatch.len = len;
++	task->syscall_dispatch.on_dispatch = false;
+ 
+ 	if (mode == PR_SYS_DISPATCH_ON)
+-		set_syscall_work(SYSCALL_USER_DISPATCH);
++		set_task_syscall_work(task, SYSCALL_USER_DISPATCH);
+ 	else
+-		clear_syscall_work(SYSCALL_USER_DISPATCH);
++		clear_task_syscall_work(task, SYSCALL_USER_DISPATCH);
+ 
+ 	return 0;
+ }
 +
-+		 * To enable a tracer to set a tracees selector the
-+		 * selector address must be untagged for access_ok(),
-+		 * otherwise an untagged tracer will always fail to set a
-+		 * tagged tracees selector.
-+		 */
-+		if (selector && !access_ok(untagged_addr(selector), sizeof(*selector)))
- 			return -EFAULT;
- 
- 		break;
++int set_syscall_user_dispatch(unsigned long mode, unsigned long offset,
++			      unsigned long len, char __user *selector)
++{
++	return task_set_syscall_user_dispatch(current, mode, offset, len, selector);
++}
