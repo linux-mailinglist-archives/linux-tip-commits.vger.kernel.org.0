@@ -2,50 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E9E06E5E38
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Apr 2023 12:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7A8E6E65A0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Apr 2023 15:14:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbjDRKHs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 18 Apr 2023 06:07:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35550 "EHLO
+        id S232364AbjDRNOO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 18 Apr 2023 09:14:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230143AbjDRKHr (ORCPT
+        with ESMTP id S232342AbjDRNON (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 18 Apr 2023 06:07:47 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29EF6619C;
-        Tue, 18 Apr 2023 03:07:42 -0700 (PDT)
-Date:   Tue, 18 Apr 2023 10:07:39 -0000
+        Tue, 18 Apr 2023 09:14:13 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D085A1562E;
+        Tue, 18 Apr 2023 06:14:12 -0700 (PDT)
+Date:   Tue, 18 Apr 2023 13:14:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1681812460;
+        s=2020; t=1681823648;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=hrIALWXAVvGDVGjm5iMETsfeRBQvW4diD917HCsP7SM=;
-        b=zEdTygMBmxRbuq3UWYmaCKQ2N69eNcWO+DJgq7ecoguN5Yzf4sUJyMDQq6hQopX89E6po1
-        PC2eKbKEWDYdrRdQf852aC2pXzS/1e9PXS+0VqJdhWWoNowH8XZOFqLzFyKfRe2iXgQTEt
-        62Ikc55r7lA3rmmwU1IRv7OkjlrVeRI/O3Iy6NBwhSHMxSOx8C467NG+qVb4/Oz2xasPZO
-        2BhbgBFWzce4Gxt1aj6m3Y9xpY9gUvnVbgIbA2IdrlbdPhqqcMFR0Xnge8h/zutWyrIF7y
-        KAc9j9F1/gXX3mKTVrYav7NqhB11c2lU1Y1VI/8aMz2hzdA7QUadLcM9P8CnLA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/GXGqGs7T+Ve8kmreWNRb9Lyte+TG2+q4hyj5YfKx4g=;
+        b=eR6/V/FZPoSXwSdj2suTN78MOzvTVGGcQFyPbHuq7Qexwet1C2m6uGmiuCiWbSRxdq271J
+        vg8k4CgH0BDXsAR/6qeBQr/bWaqbn3FaNMfU7lCpxUl/3f5fCvvopDvE1CmZ5UEZfP1jAV
+        xKXNk9CZJk7Fo+cPZZRqsxQy++6lz62llQG2Zo4IoQfUU/tSpIwVkix9VM0y8VlwlTgYUW
+        APf+bTeEekaSGjjQhXnX0QvQuint1b0VBrn6uGBDiwS3LcSr8lBFDAB4BRH3uDwcYmADLX
+        9nJxoKZQKRlf3PGG5oygeHhk+rP/FJLNl4E+u0Bvo7FWVEEMejNFG3aQiQadQg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1681812460;
+        s=2020e; t=1681823648;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=hrIALWXAVvGDVGjm5iMETsfeRBQvW4diD917HCsP7SM=;
-        b=WdjaLI5SBAoUI6RRkyv99qgAJiSi7hA2VYlIj8kPAk84KCa+08HW+01Q7g8wHO7fY9Nc40
-        hpab2McjZfARAfAQ==
-From:   "tip-bot2 for Willy Tarreau" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/GXGqGs7T+Ve8kmreWNRb9Lyte+TG2+q4hyj5YfKx4g=;
+        b=JKmIDZMh0U5+EdmbwxKJUkW/6LPDzL+NvKw1UdNJf7lN1RjhnkArXmR1CVa7rs0uyem1a4
+        HqYlE9fqCoCLyKAw==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/alternatives: Do not use integer constant
- suffixes in inline asm
-Cc:     Willy Tarreau <w@1wt.eu>, "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Jingbo Xu <jefflexu@linux.alibaba.com>, x86@kernel.org,
+Subject: [tip: timers/core] tick/common: Align tick period with the HZ tick.
+Cc:     Gusenleitner Klaus <gus@keba.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20230406095735.0_14edn3@linutronix.de>
+References: <20230406095735.0_14edn3@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168181245918.404.18412827126729944603.tip-bot2@tip-bot2>
+Message-ID: <168182364782.404.4164105102665678709.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,61 +66,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     c22ef5684b64a3a1ac08db06a6f327f2695fd377
-Gitweb:        https://git.kernel.org/tip/c22ef5684b64a3a1ac08db06a6f327f2695fd377
-Author:        Willy Tarreau <w@1wt.eu>
-AuthorDate:    Tue, 18 Apr 2023 08:42:28 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 18 Apr 2023 11:57:18 +02:00
+Commit-ID:     e9523a0d81899361214d118ad60ef76f0e92f71d
+Gitweb:        https://git.kernel.org/tip/e9523a0d81899361214d118ad60ef76f0e92f71d
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Tue, 18 Apr 2023 14:26:39 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 18 Apr 2023 15:06:50 +02:00
 
-x86/alternatives: Do not use integer constant suffixes in inline asm
+tick/common: Align tick period with the HZ tick.
 
-The usage of the BIT() macro in inline asm code was introduced in 6.3 by
-the commit in the Fixes tag. However, this macro uses "1UL" for integer
-constant suffixes in its shift operation, while gas before 2.28 does not
-support the "L" suffix after a number, and gas before 2.27 does not
-support the "U" suffix, resulting in build errors such as the following
-with such versions:
+With HIGHRES enabled tick_sched_timer() is programmed every jiffy to
+expire the timer_list timers. This timer is programmed accurate in
+respect to CLOCK_MONOTONIC so that 0 seconds and nanoseconds is the
+first tick and the next one is 1000/CONFIG_HZ ms later. For HZ=250 it is
+every 4 ms and so based on the current time the next tick can be
+computed.
 
-  ./arch/x86/include/asm/uaccess_64.h:124: Error: found 'L', expected: ')'
-  ./arch/x86/include/asm/uaccess_64.h:124: Error: junk at end of line,
-  first unrecognized character is `L'
+This accuracy broke since the commit mentioned below because the jiffy
+based clocksource is initialized with higher accuracy in
+read_persistent_wall_and_boot_offset(). This higher accuracy is
+inherited during the setup in tick_setup_device(). The timer still fires
+every 4ms with HZ=250 but timer is no longer aligned with
+CLOCK_MONOTONIC with 0 as it origin but has an offset in the us/ns part
+of the timestamp. The offset differs with every boot and makes it
+impossible for user land to align with the tick.
 
-However, the currently minimal binutils version the kernel supports is
-2.25.
+Align the tick period with CLOCK_MONOTONIC ensuring that it is always a
+multiple of 1000/CONFIG_HZ ms.
 
-There's a single use of this macro here, revert to (1 << 0) that works
-with such older binutils.
-
-As an additional info, the binutils PRs which add support for those
-suffixes are:
-
-  https://sourceware.org/bugzilla/show_bug.cgi?id=19910
-  https://sourceware.org/bugzilla/show_bug.cgi?id=20732
-
-  [ bp: Massage and extend commit message. ]
-
-Fixes: 5d1dd961e743 ("x86/alternatives: Add alt_instr.flags")
-Signed-off-by: Willy Tarreau <w@1wt.eu>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Link: https://lore.kernel.org/lkml/a9aae568-3046-306c-bd71-92c1fc8eeddc@linux.alibaba.com/
+Fixes: 857baa87b6422 ("sched/clock: Enable sched clock early")
+Reported-by: Gusenleitner Klaus <gus@keba.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/20230406095735.0_14edn3@linutronix.de
+Link: https://lore.kernel.org/r/20230418122639.ikgfvu3f@linutronix.de
 ---
- arch/x86/include/asm/alternative.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/tick-common.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
-index e2975a3..d7da28f 100644
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -8,7 +8,7 @@
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 4678935..65b8658 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -218,9 +218,19 @@ static void tick_setup_device(struct tick_device *td,
+ 		 * this cpu:
+ 		 */
+ 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
++			ktime_t next_p;
++			u32 rem;
++
+ 			tick_do_timer_cpu = cpu;
  
- #define ALT_FLAGS_SHIFT		16
- 
--#define ALT_FLAG_NOT		BIT(0)
-+#define ALT_FLAG_NOT		(1 << 0)
- #define ALT_NOT(feature)	((ALT_FLAG_NOT << ALT_FLAGS_SHIFT) | (feature))
- 
- #ifndef __ASSEMBLY__
+-			tick_next_period = ktime_get();
++			next_p = ktime_get();
++			div_u64_rem(next_p, TICK_NSEC, &rem);
++			if (rem) {
++				next_p -= rem;
++				next_p += TICK_NSEC;
++			}
++
++			tick_next_period = next_p;
+ #ifdef CONFIG_NO_HZ_FULL
+ 			/*
+ 			 * The boot CPU may be nohz_full, in which case set
