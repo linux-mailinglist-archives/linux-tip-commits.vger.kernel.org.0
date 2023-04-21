@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 336006E8BD6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Apr 2023 09:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BED896EABF5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Apr 2023 15:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234260AbjDTHvv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 20 Apr 2023 03:51:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56572 "EHLO
+        id S232284AbjDUNoP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 21 Apr 2023 09:44:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234220AbjDTHvn (ORCPT
+        with ESMTP id S232552AbjDUNn6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 20 Apr 2023 03:51:43 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2C275266;
-        Thu, 20 Apr 2023 00:51:23 -0700 (PDT)
-Date:   Thu, 20 Apr 2023 07:51:19 -0000
+        Fri, 21 Apr 2023 09:43:58 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E86901D;
+        Fri, 21 Apr 2023 06:43:56 -0700 (PDT)
+Date:   Fri, 21 Apr 2023 13:43:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1681977080;
+        s=2020; t=1682084633;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wrfKZHACbiZdqlHX5STw0Wm12OXCEZyMuwDyhaqkDaY=;
-        b=y8xxgw72dEuGx4QCF/UAA7A3W75ZnzTIeFLNWrR3b9kLGeMwkTjFj44EDIa+Wrqs+09IiC
-        BvN7itsHF37nPEykTJQRCuJI/c5zF9QGE7h/rGSf0qKnLGbH1IcEWbqR7bX6n249NmkoNP
-        syRgB1DJ2+iW/W32fPzMIaP7DNYfovnzr+OCaUeAiLdcDAqm4xOUuqI0nNYZQQq0nFYtti
-        Jt896cPEUVhGrMaKw7T8j7dyUHODk8GX4TJeov5bOZKlbjm2TQZyBI86XeJHbMfGXhQDbH
-        cv1LObWfysc+0hUnMpb/+Cr6FpiepHsOVGDy6ERh5MRQMcg1yCYt9zLFq8JLmQ==
+        bh=C0O37kSG9cn47ThZVSKDBRehsK4sAJTXDHn8iITKki0=;
+        b=ye5oNglfHgalrD3a8fVUci7oynPcGigmAzNtz5lFcVQN9pUZGY2DYFzDbVV/K/e5DbhMyq
+        5D5hkuqbPMvPWTdQ9U5QLZg97iYujh5ccfJ+CVo8TWN4f1qd+mTJtbF36yA17iJjSz8Z+F
+        2Cctd+YBGu14aGkYuKoyb4zNc4yH90k80jxLmlp6YIYjmHQGtGL5yjZx2b3CQlIP5CgUkx
+        Ou+56KRbrwjF+vx2b2OZzmNlgBdKQuEtAC2DpWMW+2OwPOgE4mPiJAZ2pRrLOuqPxSrfCv
+        KKOD6zS2qlKZciR14F9JKMuRrSOV62AFGa6yrMmYT4Q2+xn/UxrhXr8UPk3s+w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1681977080;
+        s=2020e; t=1682084633;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wrfKZHACbiZdqlHX5STw0Wm12OXCEZyMuwDyhaqkDaY=;
-        b=cMEsePt98BDL9rVVZsCpVLVpkkjo9Bjikg6paurSzQzthiTcg35njfKICtft1JLUEAxpBG
-        pJtv+BCgCxQt+sAw==
+        bh=C0O37kSG9cn47ThZVSKDBRehsK4sAJTXDHn8iITKki0=;
+        b=xUW+bM0Dax1LJRz70nG6Zllvvjc/Zi5zTKPZzvQdnnijPcKep+IjtfU8DkvxFSZczthiKD
+        /jDDCI7Nx1QA8OCA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -54,15 +54,15 @@ Cc:     Marco Elver <elver@google.com>,
 In-Reply-To: <87zg764ojw.ffs@tglx>
 References: <87zg764ojw.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <168197707963.404.4401817352530995029.tip-bot2@tip-bot2>
+Message-ID: <168208463308.404.3673866554234059628.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -71,12 +71,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     2aaae4bf41b101f7e58e8b06778b1cd9a1dddf94
-Gitweb:        https://git.kernel.org/tip/2aaae4bf41b101f7e58e8b06778b1cd9a1dddf94
+Commit-ID:     f7abf14f0001a5a47539d9f60bbdca649e43536b
+Gitweb:        https://git.kernel.org/tip/f7abf14f0001a5a47539d9f60bbdca649e43536b
 Author:        Thomas Gleixner <tglx@linutronix.de>
 AuthorDate:    Mon, 17 Apr 2023 15:37:55 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 20 Apr 2023 09:47:26 +02:00
+CommitterDate: Fri, 21 Apr 2023 15:34:33 +02:00
 
 posix-cpu-timers: Implement the missing timer_wait_running callback
 
@@ -192,7 +192,7 @@ index 2c6e99c..d607f51 100644
  };
  
 diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index 2f5e9b3..93c5a19 100644
+index 2f5e9b3..e9c6f9d 100644
 --- a/kernel/time/posix-cpu-timers.c
 +++ b/kernel/time/posix-cpu-timers.c
 @@ -846,6 +846,8 @@ static u64 collect_timerqueue(struct timerqueue_head *head,
@@ -273,9 +273,9 @@ index 2f5e9b3..93c5a19 100644
 +
 +static void posix_cpu_timer_wait_running_nsleep(struct k_itimer *timr)
 +{
-+	spin_unlock_irq(&timr.it_lock);
++	spin_unlock_irq(&timr->it_lock);
 +	cpu_relax();
-+	spin_lock_irq(&timr.it_lock);
++	spin_lock_irq(&timr->it_lock);
 +}
 +
  static inline bool posix_cpu_timers_work_scheduled(struct task_struct *tsk)
