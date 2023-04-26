@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10DA96EB7E9
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Apr 2023 09:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7CF06EF0A2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Apr 2023 11:12:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229590AbjDVHuq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 22 Apr 2023 03:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44240 "EHLO
+        id S240153AbjDZJMl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 26 Apr 2023 05:12:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjDVHup (ORCPT
+        with ESMTP id S240020AbjDZJMe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 22 Apr 2023 03:50:45 -0400
+        Wed, 26 Apr 2023 05:12:34 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C9C11BDD;
-        Sat, 22 Apr 2023 00:50:44 -0700 (PDT)
-Date:   Sat, 22 Apr 2023 07:50:42 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B23940EB;
+        Wed, 26 Apr 2023 02:12:32 -0700 (PDT)
+Date:   Wed, 26 Apr 2023 09:12:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1682149842;
+        s=2020; t=1682500351;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kp72LK9WaclJ5pxZEmvQTdkDkgnKqBFZ36Ua+p4S1L4=;
-        b=kbh0TBfYYaPSjZtNZmsi0AjbPVypLTkkoIknelpgBOR0fusNkaE6UZg9ZacaiiPqVEpllc
-        q/IHTRsPMEk6mjYEFez1SnfZcj9axqeUyl0CDuEIPRB4Ki79NqAULiiSL7t/8biKRo5uwQ
-        b1yxKV81blMPQx1Tk3w40scVbJOKTANyrb8dze6WmvBHc8htDtEwTiO1zVUaLY8kA6mK4J
-        7oQklLrR9sph0QsbF9hDTVZm4gkpvZdnNiNWzkRGhaMboQfS5TKeAHl7x85toOu5akcbMD
-        4LvHtx0LRVJO9D+FcI8dGjS55OhGAyAhDT5RLad5iha8FFgghBBUYzKFl/qEWA==
+        bh=PW2qdQNYhjoc3puUY5UKoVoCOqDj2zdCmLzkt/LCC4w=;
+        b=an9ooknCDztkENrctmPhNJLnTMLa5px7gapNmTdn2e18P5evIvH8Cykrrp6gvOeNimc5r6
+        rKDuejLaGU+y8y7AUZ4l5zv97Qa+4AmvIQl2PTQdUBTnF7xkLXgB8XPrg34DWCWneZHIkl
+        SKWE2/FtwFvwSJ7VtslFoe8O7cXnjpZuogiay82i0tDy4hSc0XcT0c3ol8nb1ZZoasAc4K
+        eATFvWy4ueOOHFgVqJf++q//gt+JTM/zM4e61yeYBvYwRoJLVSevODyhXf6SnbpiVDzgeu
+        r5My1ACfTKYLICg7KHnaCR21E6XElmCPE0ww6GKjH2Nmhfnx/a0MR0E3wh4hQA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1682149842;
+        s=2020e; t=1682500351;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kp72LK9WaclJ5pxZEmvQTdkDkgnKqBFZ36Ua+p4S1L4=;
-        b=XJacbsippoNtco/F8fnx7kKWI05HXVglmzIO3utWeK9sMtPV7SfH1aWgEVIsd7/KEywZgk
-        SBdL2dPyGqPNA+Cw==
-From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
+        bh=PW2qdQNYhjoc3puUY5UKoVoCOqDj2zdCmLzkt/LCC4w=;
+        b=Bh/Es1c6zWu+32DP7NPEWFt1GQfLa/IByWY6YnK2mAHGCNwUc5DVBwVw0+GFE+DxGnHj2n
+        ak7x06hXsZaEtJAg==
+From:   "tip-bot2 for Rob Herring" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Add events for Intel SPR IMC PMU
-Cc:     Stephane Eranian <eranian@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org,
+Subject: [tip: timers/core] clocksource/drivers/ti: Use
+ of_property_read_bool() for boolean properties
+Cc:     Rob Herring <robh@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230419214241.2310385-1-eranian@google.com>
-References: <20230419214241.2310385-1-eranian@google.com>
+In-Reply-To: <20230310144702.1541660-1-robh@kernel.org>
+References: <20230310144702.1541660-1-robh@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168214984206.404.825013264888504546.tip-bot2@tip-bot2>
+Message-ID: <168250035069.404.8593852242747733907.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,55 +66,71 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     743767d6f6b8f28228be181fe369657f7ecd1eb2
-Gitweb:        https://git.kernel.org/tip/743767d6f6b8f28228be181fe369657f7ecd1eb2
-Author:        Stephane Eranian <eranian@google.com>
-AuthorDate:    Wed, 19 Apr 2023 14:42:41 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 21 Apr 2023 13:24:23 +02:00
+Commit-ID:     87dd04f9b1a37a92ebbea5eb46e4941551d3547e
+Gitweb:        https://git.kernel.org/tip/87dd04f9b1a37a92ebbea5eb46e4941551d3547e
+Author:        Rob Herring <robh@kernel.org>
+AuthorDate:    Fri, 10 Mar 2023 08:47:01 -06:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Mon, 24 Apr 2023 16:56:14 +02:00
 
-perf/x86/intel/uncore: Add events for Intel SPR IMC PMU
+clocksource/drivers/ti: Use of_property_read_bool() for boolean properties
 
-Add missing clockticks and cas_count_* events for Intel SapphireRapids IMC
-PMU. These events are useful to measure memory bandwidth.
+It is preferred to use typed property access functions (i.e.
+of_property_read_<type> functions) rather than low-level
+of_get_property/of_find_property functions for reading properties.
+Convert reading boolean properties to to of_property_read_bool().
 
-Signed-off-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20230419214241.2310385-1-eranian@google.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230310144702.1541660-1-robh@kernel.org
 ---
- arch/x86/events/intel/uncore_snbep.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/clocksource/timer-ti-dm-systimer.c | 4 ++--
+ drivers/clocksource/timer-ti-dm.c          | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index 7d11995..fa9b209 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -6068,6 +6068,17 @@ static struct intel_uncore_ops spr_uncore_mmio_ops = {
- 	.read_counter		= uncore_mmio_read_counter,
- };
+diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+index 4fa68f6..c2dcd8d 100644
+--- a/drivers/clocksource/timer-ti-dm-systimer.c
++++ b/drivers/clocksource/timer-ti-dm-systimer.c
+@@ -584,7 +584,7 @@ static int __init dmtimer_clkevt_init_common(struct dmtimer_clockevent *clkevt,
+ 	writel_relaxed(OMAP_TIMER_INT_OVERFLOW, t->base + t->wakeup);
  
-+static struct uncore_event_desc spr_uncore_imc_events[] = {
-+	INTEL_UNCORE_EVENT_DESC(clockticks,      "event=0x01,umask=0x00"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read,  "event=0x05,umask=0xcf"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read.unit, "MiB"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write, "event=0x05,umask=0xf0"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write.unit, "MiB"),
-+	{ /* end: all zeroes */ },
-+};
-+
- static struct intel_uncore_type spr_uncore_imc = {
- 	SPR_UNCORE_COMMON_FORMAT(),
- 	.name			= "imc",
-@@ -6075,6 +6086,7 @@ static struct intel_uncore_type spr_uncore_imc = {
- 	.fixed_ctr		= SNR_IMC_MMIO_PMON_FIXED_CTR,
- 	.fixed_ctl		= SNR_IMC_MMIO_PMON_FIXED_CTL,
- 	.ops			= &spr_uncore_mmio_ops,
-+	.event_descs		= spr_uncore_imc_events,
- };
+ 	pr_info("TI gptimer %s: %s%lu Hz at %pOF\n",
+-		name, of_find_property(np, "ti,timer-alwon", NULL) ?
++		name, of_property_read_bool(np, "ti,timer-alwon") ?
+ 		"always-on " : "", t->rate, np->parent);
  
- static void spr_uncore_pci_enable_event(struct intel_uncore_box *box,
+ 	return 0;
+@@ -785,7 +785,7 @@ static int __init dmtimer_clocksource_init(struct device_node *np)
+ 		       t->base + t->ctrl);
+ 
+ 	pr_info("TI gptimer clocksource: %s%pOF\n",
+-		of_find_property(np, "ti,timer-alwon", NULL) ?
++		of_property_read_bool(np, "ti,timer-alwon") ?
+ 		"always-on " : "", np->parent);
+ 
+ 	if (!dmtimer_sched_clock_counter) {
+diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
+index ab7a6ca..1d3ad51 100644
+--- a/drivers/clocksource/timer-ti-dm.c
++++ b/drivers/clocksource/timer-ti-dm.c
+@@ -1104,13 +1104,13 @@ static int omap_dm_timer_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, timer);
+ 
+ 	if (dev->of_node) {
+-		if (of_find_property(dev->of_node, "ti,timer-alwon", NULL))
++		if (of_property_read_bool(dev->of_node, "ti,timer-alwon"))
+ 			timer->capability |= OMAP_TIMER_ALWON;
+-		if (of_find_property(dev->of_node, "ti,timer-dsp", NULL))
++		if (of_property_read_bool(dev->of_node, "ti,timer-dsp"))
+ 			timer->capability |= OMAP_TIMER_HAS_DSP_IRQ;
+-		if (of_find_property(dev->of_node, "ti,timer-pwm", NULL))
++		if (of_property_read_bool(dev->of_node, "ti,timer-pwm"))
+ 			timer->capability |= OMAP_TIMER_HAS_PWM;
+-		if (of_find_property(dev->of_node, "ti,timer-secure", NULL))
++		if (of_property_read_bool(dev->of_node, "ti,timer-secure"))
+ 			timer->capability |= OMAP_TIMER_SECURE;
+ 	} else {
+ 		timer->id = pdev->id;
