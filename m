@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64C756EF0C4
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Apr 2023 11:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31BD86EF0C5
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Apr 2023 11:12:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239729AbjDZJMx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 26 Apr 2023 05:12:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34634 "EHLO
+        id S240030AbjDZJMz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 26 Apr 2023 05:12:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240089AbjDZJMj (ORCPT
+        with ESMTP id S240098AbjDZJMk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 26 Apr 2023 05:12:39 -0400
+        Wed, 26 Apr 2023 05:12:40 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A134495;
-        Wed, 26 Apr 2023 02:12:35 -0700 (PDT)
-Date:   Wed, 26 Apr 2023 09:12:33 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC41244A4;
+        Wed, 26 Apr 2023 02:12:36 -0700 (PDT)
+Date:   Wed, 26 Apr 2023 09:12:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1682500353;
+        s=2020; t=1682500354;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AD++uZqsO1TQvdELJ+jJo+eoOluJlmJJrrN46Beilj4=;
-        b=uX/N76n0Pm/oJBlhoLXcuQuEUymv1seEjg6ExkoUq0DTrVesMdomD7iTKHf507Z1COMryY
-        bFaN0KZ3UBkiQ1AGkSocY9bR2fWw26QeyKn2BgECXtty0wKLZQV6mTAA820ZCs9qlGnxnI
-        zxELjtmAtBujYt2dYthwgn0CWpqueuEV5vLAge1ijEOU1LsoWaGvH2sxFIOXrVZi0J2oF8
-        Un2YajMYMtV2YPQs6YTWWoPDOLic2MBMnesWYJmPEAEYiBOJFKZ3UsPhlhFdEfydGV+rvZ
-        LCGy+RZbXfWeUgmUlmjmDHLqIpY/KFxNcu4S7uI8jvZagV+XwisWjvT9pbqVgQ==
+        bh=5eEWw2UgUIcY1/6Bj5z8sB9qImeKvvwVREQNFo/ZVpI=;
+        b=Rjvic15lgAQvIaAccNlOsJ6xbDAsfPoUYiN5Fmh8nqo44LqpFH7ig6l6rpQDDk7jNdrQ2M
+        mnozlo7kCIzQdcyDJ6yig6RBviOSFXNY2JaQe9JrDWYQ91cUjzplVuzVud6Wl9VMY/PYM/
+        XiHSvVat4np+MNzxhDjL6nKvgUVEXQcTWKufh/V6QgV/2yf0C+dQWCoeh5LWTr0Ib5tZkW
+        lKSsBrx9ZJF3K6CPrFbp20u9tJKPH3S5oedyFBzZkNgqtJwbWOIYDTtKg5Cc9BqP8VTaad
+        WWNWBBdwuAgl0IgSUGjXqV0vQWxfZVkW9dTFqn5zgqfwxLkcu9EAkPYxs1h86Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1682500353;
+        s=2020e; t=1682500354;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AD++uZqsO1TQvdELJ+jJo+eoOluJlmJJrrN46Beilj4=;
-        b=12Ef82nXAyJkxsuwWwonCcTPWH9g5OxLJc+4WbdBNovK59W1D30QN4purxWFWm0poONSCc
-        zKV70F6F8MM1gqAA==
-From:   "tip-bot2 for Fabio Estevam" <tip-bot2@linutronix.de>
+        bh=5eEWw2UgUIcY1/6Bj5z8sB9qImeKvvwVREQNFo/ZVpI=;
+        b=Sc7UjOw5aX8kD2KdwGAJdSQobH7TrS1k65kRY8fHE9r91rLw6WNWDv63BKqpkCNXRz9tht
+        sRFeBHGB1zUTQ2Cg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-imx-gpt: Remove non-DT function
-Cc:     Fabio Estevam <festevam@denx.de>, u.kleine-koenig@pengutronix.de,
-        Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230307124313.708255-1-festevam@denx.de>
-References: <20230307124313.708255-1-festevam@denx.de>
+Subject: [tip: timers/core] Merge tag 'timers-v6.4-rc1' of
+ https://git.linaro.org/people/daniel.lezcano/linux into timers/core
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <d30fd923-e6e5-a1a6-ca76-1b39f8fad6c9@linaro.org>
+References: <d30fd923-e6e5-a1a6-ca76-1b39f8fad6c9@linaro.org>
 MIME-Version: 1.0
-Message-ID: <168250035320.404.1746468610150984093.tip-bot2@tip-bot2>
+Message-ID: <168250035403.404.14046775663667152077.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,78 +66,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     f68a40ee4732731f149961abab27a45b6c11f413
-Gitweb:        https://git.kernel.org/tip/f68a40ee4732731f149961abab27a45b6c1=
-1f413
-Author:        Fabio Estevam <festevam@denx.de>
-AuthorDate:    Tue, 07 Mar 2023 09:43:13 -03:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Mon, 24 Apr 2023 16:56:13 +02:00
+Commit-ID:     7e0664b660bc8f977d2948d8c8fbfc4809b3e6b4
+Gitweb:        https://git.kernel.org/tip/7e0664b660bc8f977d2948d8c8fbfc4809b=
+3e6b4
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 26 Apr 2023 11:03:57 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 26 Apr 2023 11:06:00 +02:00
 
-clocksource/drivers/timer-imx-gpt: Remove non-DT function
+Merge tag 'timers-v6.4-rc1' of https://git.linaro.org/people/daniel.lezcano/l=
+inux into timers/core
 
-mxc_timer_init() was originally only used by non-DT i.MX platforms.
+Pull clocksource and clockevent updates from Daniel Lezcano:
 
-i.MX has already been converted to be a DT-only platform.
+  - Fix error returned for shared timers on Exynos MCT timers (Krzysztof Kozl=
+owski)
 
-Remove the unused mxc_timer_init() function.
+  - Code reorg by splitting the CPUXGPT timer code (AngeloGioacchino Del Regn=
+o)
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Acked-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230307124313.708255-1-festevam@denx.de
+  - Remove the unused mxc_timer_init() function on i.MX (Fabio Estevam)
+
+  - Replace of_get_address() and of_translate_address() calls with
+    single call to of_address_to_resource() on TI timer (Rob Herring)
+
+  - Mark driver as non-removable and remove useless remove() callback on
+    SH MTU2 and STM32 LP timers. Improve the error message in the remove
+    callback of the TI DM timer (Uwe Kleine-K=C3=B6nig)
+
+  - Convert to platform remove callback returning void on Tegra186, TI
+    DM timers (Uwe Kleine-K=C3=B6nig)
+
+  - Drop pointless of_match_ptr for ID table in the STM32 LP timer
+    (Krzysztof Kozlowski)
+
+  - Fix memory leak in davinci_timer_register when init fails on DaVinci
+    (Qinrun Dai)
+
+  - Fix finding alwon timer regression on Timer TI DM (Tony Lindgren)
+
+  - Use of_property_read_bool() for boolean properties on TI timer (Rob
+    Herring)
+
+  - Drop superfluous rk3288 compatible and add rk3588 compatible DT
+    bindings (Cristian Ciocaltea)
+
+Link: htttps://lore.kernel.org/lkml/d30fd923-e6e5-a1a6-ca76-1b39f8fad6c9@lina=
+ro.org
 ---
- drivers/clocksource/timer-imx-gpt.c | 19 -------------------
- include/soc/imx/timer.h             |  7 -------
- 2 files changed, 26 deletions(-)
-
-diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-=
-imx-gpt.c
-index 7b2c70f..ca3e4cb 100644
---- a/drivers/clocksource/timer-imx-gpt.c
-+++ b/drivers/clocksource/timer-imx-gpt.c
-@@ -420,25 +420,6 @@ static int __init _mxc_timer_init(struct imx_timer *imxt=
-m)
- 	return mxc_clockevent_init(imxtm);
- }
-=20
--void __init mxc_timer_init(unsigned long pbase, int irq, enum imx_gpt_type t=
-ype)
--{
--	struct imx_timer *imxtm;
--
--	imxtm =3D kzalloc(sizeof(*imxtm), GFP_KERNEL);
--	BUG_ON(!imxtm);
--
--	imxtm->clk_per =3D clk_get_sys("imx-gpt.0", "per");
--	imxtm->clk_ipg =3D clk_get_sys("imx-gpt.0", "ipg");
--
--	imxtm->base =3D ioremap(pbase, SZ_4K);
--	BUG_ON(!imxtm->base);
--
--	imxtm->type =3D type;
--	imxtm->irq =3D irq;
--
--	_mxc_timer_init(imxtm);
--}
--
- static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_ty=
-pe type)
- {
- 	struct imx_timer *imxtm;
-diff --git a/include/soc/imx/timer.h b/include/soc/imx/timer.h
-index b888d50..25f29c6 100644
---- a/include/soc/imx/timer.h
-+++ b/include/soc/imx/timer.h
-@@ -13,11 +13,4 @@ enum imx_gpt_type {
- 	GPT_TYPE_IMX6DL,	/* i.MX6DL/SX/SL */
- };
-=20
--/*
-- * This is a stop-gap solution for clock drivers like imx1/imx21 which call
-- * mxc_timer_init() to initialize timer for non-DT boot.  It can be removed
-- * when these legacy non-DT support is converted or dropped.
-- */
--void mxc_timer_init(unsigned long pbase, int irq, enum imx_gpt_type type);
--
- #endif  /* __SOC_IMX_TIMER_H__ */
