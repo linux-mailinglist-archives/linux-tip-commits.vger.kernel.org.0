@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE5436EF0C7
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Apr 2023 11:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DD176EF0BD
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Apr 2023 11:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240032AbjDZJM4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 26 Apr 2023 05:12:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34680 "EHLO
+        id S240223AbjDZJMw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 26 Apr 2023 05:12:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240047AbjDZJMj (ORCPT
+        with ESMTP id S240070AbjDZJMj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 26 Apr 2023 05:12:39 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71D404226;
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6D284496;
         Wed, 26 Apr 2023 02:12:35 -0700 (PDT)
 Date:   Wed, 26 Apr 2023 09:12:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mQK9TSaek0IhyUumlIsOAJS3PZ7m3d2pI3cWfiwZNFc=;
-        b=pYW406mZuUwIQoe110TwEWGYRnC072R20Y1Dp+CX17axv+zT+nRXCtqX1YjcQHJ5vsFEPK
-        Wsa2wvgYbgEbQHMAcIRGmz15XuNh6fmF6gwqhCgmw7Dnumf/B6THSSd9WH2djgmR+Gb5ik
-        nh9osI5+oGqIb2tDOB7O8xma2IH0x8veG3QpvD1zUX7dLTjnUzx3Z/Gkxzf1BX5WtONeGi
-        a6k5h+KmzfAQUJgkOkFirybRambo7PogekRPOYn24wonjqUIeiz7Nv62D1NKuHXQLheGX+
-        I0wYXEFs3mOlaax0pIe/8K2hzWrApLgNvUVmdajHrDD3vlFi8jzt4lTpbQChhg==
+        bh=kXREl/1bmbiXbNsXCjOEmqqeut0cSRsTmJ4GkEHgJZ4=;
+        b=oDBVCu8TYB8Knr6Qehs5GPM5KrEA/FRzNBTP61AvHSWqif/1ZPFLgwyCSq3dKUSVE0J5NN
+        DX46GzQLTkMo4SBQBHlaHBb3I+Ff2A9gq5eteVmL2dMO8Mkm9FzWvSLo25ycHvOYrOAodG
+        vmXOyELzixl6gMEmH96zh9QDw0OF8n/rJLV01n5kdLN6Gh32iW7rm5n/rzyhfe0WjqPR5E
+        Aa8rrJiDbmwRLD8tUlADVs7utTkLXEmsefs6hRRacFug34oMjfIXe257yN8yvbXfV4v9Kf
+        XuvfUTEo0SXrJ4VENrsvj+o548VjTgLDfKDoRXM91qXJoD2QEuhTdUbnQdK4nA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1682500353;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,26 +36,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mQK9TSaek0IhyUumlIsOAJS3PZ7m3d2pI3cWfiwZNFc=;
-        b=lRYX/C8ZohkKIkm6KQtT1VAZZrlkbf98/jupUls321+w4Haf8YI1ab/mf7HjWXUkU1AYF0
-        dJ4fKxYQWtJ2xCDQ==
-From:   tip-bot2 for Uwe =?utf-8?q?Kleine-K=C3=B6nig?= 
-        <tip-bot2@linutronix.de>
+        bh=kXREl/1bmbiXbNsXCjOEmqqeut0cSRsTmJ4GkEHgJZ4=;
+        b=3hy56a64hlYEqH6YkP78QsI6HnAX7VW/PzJDCKnyxF395KLfza6ESAxhmMoWnLtWq00acx
+        JmvvXiyk0kL5reDg==
+From:   "tip-bot2 for Rob Herring" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/sh_mtu2: Mark driver as non-removable
-Cc:     u.kleine-koenig@pengutronix.de,
+Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Use
+ of_address_to_resource()
+Cc:     Rob Herring <robh@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230313075430.2730803-2-u.kleine-koenig@pengutronix.de>
-References: <20230313075430.2730803-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20230319163220.226273-1-robh@kernel.org>
+References: <20230319163220.226273-1-robh@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168250035266.404.6498503358644410758.tip-bot2@tip-bot2>
+Message-ID: <168250035290.404.6276091333899871488.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -68,59 +68,120 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     78012e3880a62e0eb130a0b5a10230162ad42a06
-Gitweb:        https://git.kernel.org/tip/78012e3880a62e0eb130a0b5a10230162ad=
-42a06
-Author:        Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-AuthorDate:    Mon, 13 Mar 2023 08:54:26 +01:00
+Commit-ID:     0fabf9f3a0c1ca44e01c5c4dccacfe69143413c5
+Gitweb:        https://git.kernel.org/tip/0fabf9f3a0c1ca44e01c5c4dccacfe69143413c5
+Author:        Rob Herring <robh@kernel.org>
+AuthorDate:    Sun, 19 Mar 2023 11:32:20 -05:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Mon, 24 Apr 2023 16:56:13 +02:00
 
-clocksource/drivers/sh_mtu2: Mark driver as non-removable
+clocksource/drivers/timer-ti-dm: Use of_address_to_resource()
 
-The comment in the remove callback suggests that the driver is not
-supposed to be unbound. However returning an error code in the remove
-callback doesn't accomplish that. Instead set the suppress_bind_attrs
-property (which makes it impossible to unbind the driver via sysfs).
-The only remaining way to unbind a sh_tmu2 device would be module
-unloading, but that doesn't apply here, as the driver cannot be built as
-a module.
+Replace of_get_address() and of_translate_address() calls with single
+call to of_address_to_resource().
 
-Also drop the useless remove callback.
-
-Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230313075430.2730803-2-u.kleine-koenig@peng=
-utronix.de
+Link: https://lore.kernel.org/r/20230319163220.226273-1-robh@kernel.org
 ---
- drivers/clocksource/sh_mtu2.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/clocksource/timer-ti-dm-systimer.c | 57 +++++++++------------
+ 1 file changed, 27 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/clocksource/sh_mtu2.c b/drivers/clocksource/sh_mtu2.c
-index 169a1fc..6bd2d02 100644
---- a/drivers/clocksource/sh_mtu2.c
-+++ b/drivers/clocksource/sh_mtu2.c
-@@ -484,11 +484,6 @@ static int sh_mtu2_probe(struct platform_device *pdev)
- 	return 0;
- }
-=20
--static int sh_mtu2_remove(struct platform_device *pdev)
--{
--	return -EBUSY; /* cannot unregister clockevent */
--}
+diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+index 632523c..3b98a3c 100644
+--- a/drivers/clocksource/timer-ti-dm-systimer.c
++++ b/drivers/clocksource/timer-ti-dm-systimer.c
+@@ -251,24 +251,22 @@ static void __init dmtimer_systimer_assign_alwon(void)
+ 		counter_32k = -ENODEV;
+ 
+ 	for_each_matching_node(np, dmtimer_match_table) {
++		struct resource res;
+ 		if (!dmtimer_is_preferred(np))
+ 			continue;
+ 
+-		if (of_property_read_bool(np, "ti,timer-alwon")) {
+-			const __be32 *addr;
 -
- static const struct platform_device_id sh_mtu2_id_table[] =3D {
- 	{ "sh-mtu2", 0 },
- 	{ },
-@@ -503,10 +498,10 @@ MODULE_DEVICE_TABLE(of, sh_mtu2_of_table);
-=20
- static struct platform_driver sh_mtu2_device_driver =3D {
- 	.probe		=3D sh_mtu2_probe,
--	.remove		=3D sh_mtu2_remove,
- 	.driver		=3D {
- 		.name	=3D "sh_mtu2",
- 		.of_match_table =3D of_match_ptr(sh_mtu2_of_table),
-+		.suppress_bind_attrs =3D true,
- 	},
- 	.id_table	=3D sh_mtu2_id_table,
- };
+-			addr = of_get_address(np, 0, NULL, NULL);
+-			pa = of_translate_address(np, addr);
+-			if (pa) {
+-				/* Quirky omap3 boards must use dmtimer12 */
+-				if (quirk_unreliable_oscillator &&
+-				    pa == 0x48318000)
+-					continue;
+-
+-				of_node_put(np);
+-				break;
+-			}
+-		}
++		if (!of_property_read_bool(np, "ti,timer-alwon"))
++			continue;
++
++		if (of_address_to_resource(np, 0, &res))
++			continue;
++
++		/* Quirky omap3 boards must use dmtimer12 */
++		if (quirk_unreliable_oscillator && res.start == 0x48318000)
++			continue;
++
++		of_node_put(np);
++		break;
+ 	}
+ 
+ 	/* Usually no need for dmtimer clocksource if we have counter32 */
+@@ -285,24 +283,22 @@ static void __init dmtimer_systimer_assign_alwon(void)
+ static u32 __init dmtimer_systimer_find_first_available(void)
+ {
+ 	struct device_node *np;
+-	const __be32 *addr;
+ 	u32 pa = 0;
+ 
+ 	for_each_matching_node(np, dmtimer_match_table) {
++		struct resource res;
+ 		if (!dmtimer_is_preferred(np))
+ 			continue;
+ 
+-		addr = of_get_address(np, 0, NULL, NULL);
+-		pa = of_translate_address(np, addr);
+-		if (pa) {
+-			if (pa == clocksource || pa == clockevent) {
+-				pa = 0;
+-				continue;
+-			}
+-
+-			of_node_put(np);
+-			break;
+-		}
++		if (of_address_to_resource(np, 0, &res))
++			continue;
++
++		if (res.start == clocksource || res.start == clockevent)
++			continue;
++
++		pa = res.start;
++		of_node_put(np);
++		break;
+ 	}
+ 
+ 	return pa;
+@@ -812,7 +808,7 @@ err_out_free:
+  */
+ static int __init dmtimer_systimer_init(struct device_node *np)
+ {
+-	const __be32 *addr;
++	struct resource res;
+ 	u32 pa;
+ 
+ 	/* One time init for the preferred timer configuration */
+@@ -826,8 +822,9 @@ static int __init dmtimer_systimer_init(struct device_node *np)
+ 		return -EINVAL;
+ 	}
+ 
+-	addr = of_get_address(np, 0, NULL, NULL);
+-	pa = of_translate_address(np, addr);
++
++	of_address_to_resource(np, 0, &res);
++	pa = (u32)res.start;
+ 	if (!pa)
+ 		return -EINVAL;
+ 
