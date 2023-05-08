@@ -2,94 +2,134 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 899AB6F86EF
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 May 2023 18:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7B9C6FA385
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 May 2023 11:41:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229781AbjEEQmt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 5 May 2023 12:42:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36342 "EHLO
+        id S233662AbjEHJlP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 8 May 2023 05:41:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230444AbjEEQms (ORCPT
+        with ESMTP id S233552AbjEHJlO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 5 May 2023 12:42:48 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F8016355;
-        Fri,  5 May 2023 09:42:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683304960; x=1714840960;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=N1JPxPIJIdERUPcr+WZPlldDq0rv6gkR5Peeo9bpwuU=;
-  b=PJophe6hSSjb8lfqyHG7X0B+YzX8XsALTq4fXRYUUe+FNsPOD8JsE6jP
-   KSdc7+bKOjzw21++MpxmiEb2jfUtDFLoncNLYAfNHyIAKkFeJ/myArD04
-   SshN917CNGLOlEtkqXaLq6bF+5eRehE00eFmJ75/SFMUEqdXDFOAaXVfu
-   yfhpnHv7jPENr2cdIDyA6w/0epsxDGSWczLVCVbdvLF1iKeSh43VfHSH3
-   u+th5Wr+hfTKQzNT6VhSXoNGV5CLSeFyAzi3ur548rzUKT9c3tfyahyvH
-   KTV23eLReJ2JQoJ21au3AsoaekHDRU3n2WDWhT63oupwrJCwk+JXgNl/9
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10701"; a="333674469"
-X-IronPort-AV: E=Sophos;i="5.99,252,1677571200"; 
-   d="scan'208";a="333674469"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2023 09:42:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10701"; a="700511808"
-X-IronPort-AV: E=Sophos;i="5.99,252,1677571200"; 
-   d="scan'208";a="700511808"
-Received: from annguyen-mobl2.amr.corp.intel.com (HELO [10.209.140.100]) ([10.209.140.100])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2023 09:42:38 -0700
-Message-ID: <55343361-d991-c157-4a88-843947aa45ff@intel.com>
-Date:   Fri, 5 May 2023 09:42:36 -0700
+        Mon, 8 May 2023 05:41:14 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7B81E9B7;
+        Mon,  8 May 2023 02:40:59 -0700 (PDT)
+Date:   Mon, 08 May 2023 09:40:56 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1683538857;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Cng7TLVSH71g87ujYCYuNZuOfQdfaBqovpjDFRGtTHs=;
+        b=4mUgM1AjMiw/TOEj7gU8aXIqqkcdZTqiB5KkARQR1ObaqRoqLlEhbBC7rK8Y3+KOvJyya4
+        f5TB8zczWuRayP9TLF8GYU+LrRu6IpyDdweLS10OlAqyN9xhRR+cieObon/eBuO1WXcy86
+        CzHrS6aNibl+EDgoba/YYVtzlru3j9/NhjKHGSfLO0HNRRzoM1eiZP0pqwH++ZXY/jJNgr
+        mJy5gXKLjBZ/S+F4BrRqqwryDtmiUxcimC6KBY/HzbETer2FYy0AdSgIIKd/wLY0j31yoe
+        QHoC4n/M2YJeF0UApzo9UvLhewJy0qE/eNoWuZjg0smkxXh6BmxMoIntAdwGLA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1683538857;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Cng7TLVSH71g87ujYCYuNZuOfQdfaBqovpjDFRGtTHs=;
+        b=yHsF6siykYeZCixTWS4NwKGUACE+qEgzSjyJp4lHAl4/kh5kJedobImhanPvl+axFgueOw
+        pZT2JhVfrFGmIfAw==
+From:   "tip-bot2 for Mario Limonciello" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/amd_nb: Add PCI ID for family 19h model 78h
+Cc:     Mario Limonciello <mario.limonciello@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Guenter Roeck <linux@roeck-us.net>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230427053338.16653-2-mario.limonciello@amd.com>
+References: <20230427053338.16653-2-mario.limonciello@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [tip: perf/core] x86/cpu: Add helper function to get the type of
- the current hybrid CPU
-Content-Language: en-US
-To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
-Cc:     Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Len Brown <len.brown@intel.com>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org
-References: <1618237865-33448-3-git-send-email-kan.liang@linux.intel.com>
- <161891560955.29796.10811256921836669612.tip-bot2@tip-bot2>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <161891560955.29796.10811256921836669612.tip-bot2@tip-bot2>
-Content-Type: text/plain; charset=UTF-8
+Message-ID: <168353885677.404.42750208560084923.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 4/20/21 03:46, tip-bot2 for Ricardo Neri wrote:
-> +#define X86_HYBRID_CPU_TYPE_ID_SHIFT	24
-> +
-> +/**
-> + * get_this_hybrid_cpu_type() - Get the type of this hybrid CPU
-> + *
-> + * Returns the CPU type [31:24] (i.e., Atom or Core) of a CPU in
-> + * a hybrid processor. If the processor is not hybrid, returns 0.
-> + */
-> +u8 get_this_hybrid_cpu_type(void)
-> +{
-> +	if (!cpu_feature_enabled(X86_FEATURE_HYBRID_CPU))
-> +		return 0;
-> +
-> +	return cpuid_eax(0x0000001a) >> X86_HYBRID_CPU_TYPE_ID_SHIFT;
-> +}
+The following commit has been merged into the x86/urgent branch of tip:
 
-Hi Folks,
+Commit-ID:     23a5b8bb022c1e071ca91b1a9c10f0ad6a0966e9
+Gitweb:        https://git.kernel.org/tip/23a5b8bb022c1e071ca91b1a9c10f0ad6a0966e9
+Author:        Mario Limonciello <mario.limonciello@amd.com>
+AuthorDate:    Thu, 27 Apr 2023 00:33:36 -05:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 08 May 2023 11:25:19 +02:00
 
-Sorry to dredge up an old thread.  But, where does this information
-about "If the processor is not hybrid, returns 0." come from?
+x86/amd_nb: Add PCI ID for family 19h model 78h
 
-What is there to keep cpuid_eax(0x0000001a) from having 0x0 in those
-bits?  Seems to me like 0 is theoretically a valid hybrid CPU type.  Right?
+Commit
+
+  310e782a99c7 ("platform/x86/amd: pmc: Utilize SMN index 0 for driver probe")
+
+switched to using amd_smn_read() which relies upon the misc PCI ID used
+by DF function 3 being included in a table.  The ID for model 78h is
+missing in that table, so amd_smn_read() doesn't work.
+
+Add the missing ID into amd_nb, restoring s2idle on this system.
+
+  [ bp: Simplify commit message. ]
+
+Fixes: 310e782a99c7 ("platform/x86/amd: pmc: Utilize SMN index 0 for driver probe")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>  # pci_ids.h
+Acked-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230427053338.16653-2-mario.limonciello@amd.com
+---
+ arch/x86/kernel/amd_nb.c | 2 ++
+ include/linux/pci_ids.h  | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 4266b64..7e331e8 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -36,6 +36,7 @@
+ #define PCI_DEVICE_ID_AMD_19H_M50H_DF_F4 0x166e
+ #define PCI_DEVICE_ID_AMD_19H_M60H_DF_F4 0x14e4
+ #define PCI_DEVICE_ID_AMD_19H_M70H_DF_F4 0x14f4
++#define PCI_DEVICE_ID_AMD_19H_M78H_DF_F4 0x12fc
+ 
+ /* Protect the PCI config register pairs used for SMN. */
+ static DEFINE_MUTEX(smn_mutex);
+@@ -79,6 +80,7 @@ static const struct pci_device_id amd_nb_misc_ids[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M50H_DF_F3) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M60H_DF_F3) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M70H_DF_F3) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M78H_DF_F3) },
+ 	{}
+ };
+ 
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 45c3d62..95f33da 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -567,6 +567,7 @@
+ #define PCI_DEVICE_ID_AMD_19H_M50H_DF_F3 0x166d
+ #define PCI_DEVICE_ID_AMD_19H_M60H_DF_F3 0x14e3
+ #define PCI_DEVICE_ID_AMD_19H_M70H_DF_F3 0x14f3
++#define PCI_DEVICE_ID_AMD_19H_M78H_DF_F3 0x12fb
+ #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
+ #define PCI_DEVICE_ID_AMD_LANCE		0x2000
+ #define PCI_DEVICE_ID_AMD_LANCE_HOME	0x2001
