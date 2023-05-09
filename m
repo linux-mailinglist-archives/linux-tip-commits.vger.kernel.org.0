@@ -2,54 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DCC76FC45C
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 May 2023 12:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E2CB6FCEDB
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 May 2023 21:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234798AbjEIK60 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 9 May 2023 06:58:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49366 "EHLO
+        id S232313AbjEIT4V (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 9 May 2023 15:56:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234833AbjEIK6Y (ORCPT
+        with ESMTP id S229826AbjEIT4U (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 9 May 2023 06:58:24 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F267A5CD;
-        Tue,  9 May 2023 03:58:20 -0700 (PDT)
-Date:   Tue, 09 May 2023 10:58:18 -0000
+        Tue, 9 May 2023 15:56:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282E43C0C;
+        Tue,  9 May 2023 12:56:19 -0700 (PDT)
+Date:   Tue, 09 May 2023 19:56:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1683629899;
+        s=2020; t=1683662177;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LKtyLkl5wfWVJ9mnQLv/tgAJtfNUubeqaAT2EQqmslQ=;
-        b=0gOPOvOrFomVE3Zu3RfjgPz2OFRtwg18g64enWz8lqGj4NrLE+qxBptSLGP/cfjUWGdFBu
-        97fit1+LYb8AqpVRkdNujyuK3NcnViaiwgNmlAvjpvJJjnsTvpkSFJ2Og1dx6q8YmM13x8
-        x7NEfiTZs8+IcA2AwLA7AHf+EnbPHUXZu/q03kPz1Nmn8TT3oWe0OmvSJvJjtj99FzNedF
-        i+EOAA8m1T3EWHhf2ZP7hFbgHC0glaG5G2VDlO8JsECHvmOUz4w4i5FOWEvLIVyx6u3qOe
-        Gq8C0O63tNGxExb4JydQ1QRh1L/FPIAAiRmtGtn/mD2J4Jl+FUugU2eXmhhpjQ==
+        bh=i/vEnI/WFdPHZGqXC/3G2/DQm+2OzEhIX3KzqGEKGV0=;
+        b=WWeCfinM04pROlGUdsFazYzPo/sHmWF1rxTCgVX0XqZBRZKudUJeWlUvdD2l4I+sGpoEiO
+        Xfu/U31CiC/2oI+o4ewfoLNO9UbhWURr82RMzVzyf0/xOvdk6c1XE14S0Ea92QD60Jap6f
+        f14SGK/zw8KQ9A8IZF49QhIxMgRJ52mjJ7ZVsQrGSwmP2vhODHPyTe9N4UUGi8ik2CKrQ4
+        Fr9X6lIBug1URhSCG8YQ1SN8dL1ySTICcuJQQfzmvp4ZGIiiiU5+9OvlYMwxJieUzxWAt8
+        qbiRSFc41hu7z6D6XuGG9DAD5lf1KDTtiZC1OhpZzVrhdsNKBbFBrCAGc8CyCg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1683629899;
+        s=2020e; t=1683662177;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LKtyLkl5wfWVJ9mnQLv/tgAJtfNUubeqaAT2EQqmslQ=;
-        b=9L15JitIH4tLlI6E0F4Dh1hz0UmWyRVCz4ZV5dnCeJgS8blB5swclKwejD6HH0cwbmlfc9
-        I+yM9sdapDKcM3Dg==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=i/vEnI/WFdPHZGqXC/3G2/DQm+2OzEhIX3KzqGEKGV0=;
+        b=jkNrt+obk5uJZpjgeqWqBfdwhbBGIEuDQRMWAK0+7IOWxkrQSxWaupXqOkUlxULv+fhH/C
+        TBkW2+utiV1lUWDg==
+From:   "tip-bot2 for Paolo Abeni" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/coco: Get rid of accessor functions
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230508121957.32341-1-bp@alien8.de>
-References: <20230508121957.32341-1-bp@alien8.de>
+Subject: [tip: irq/core] Revert "softirq: Let ksoftirqd do its job"
+Cc:     Paolo Abeni <pabeni@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Xing <kerneljasonxing@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, netdev@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <305d7742212cbe98621b16be782b0562f1012cb6.camel@redhat.com>
+References: <305d7742212cbe98621b16be782b0562f1012cb6.camel@redhat.com>
 MIME-Version: 1.0
-Message-ID: <168362989823.404.6000170263756196115.tip-bot2@tip-bot2>
+Message-ID: <168366217649.404.15332707412932478981.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,116 +71,116 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sev branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     da86eb9611840772a459693832e54c63cbcc040a
-Gitweb:        https://git.kernel.org/tip/da86eb9611840772a459693832e54c63cbcc040a
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Mon, 08 May 2023 12:44:28 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 09 May 2023 12:53:16 +02:00
+Commit-ID:     d15121be7485655129101f3960ae6add40204463
+Gitweb:        https://git.kernel.org/tip/d15121be7485655129101f3960ae6add40204463
+Author:        Paolo Abeni <pabeni@redhat.com>
+AuthorDate:    Mon, 08 May 2023 08:17:44 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 09 May 2023 21:50:27 +02:00
 
-x86/coco: Get rid of accessor functions
+Revert "softirq: Let ksoftirqd do its job"
 
-cc_vendor is __ro_after_init and thus can be used directly.
+This reverts the following commits:
 
-No functional changes.
+  4cd13c21b207 ("softirq: Let ksoftirqd do its job")
+  3c53776e29f8 ("Mark HI and TASKLET softirq synchronous")
+  1342d8080f61 ("softirq: Don't skip softirq execution when softirq thread is parking")
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230508121957.32341-1-bp@alien8.de
+in a single change to avoid known bad intermediate states introduced by a
+patch series reverting them individually.
+
+Due to the mentioned commit, when the ksoftirqd threads take charge of
+softirq processing, the system can experience high latencies.
+
+In the past a few workarounds have been implemented for specific
+side-effects of the initial ksoftirqd enforcement commit:
+
+commit 1ff688209e2e ("watchdog: core: make sure the watchdog_worker is not deferred")
+commit 8d5755b3f77b ("watchdog: softdog: fire watchdog even if softirqs do not get to run")
+commit 217f69743681 ("net: busy-poll: allow preemption in sk_busy_loop()")
+commit 3c53776e29f8 ("Mark HI and TASKLET softirq synchronous")
+
+But the latency problem still exists in real-life workloads, see the link
+below.
+
+The reverted commit intended to solve a live-lock scenario that can now be
+addressed with the NAPI threaded mode, introduced with commit 29863d41bb6e
+("net: implement threaded-able napi poll loop support"), which is nowadays
+in a pretty stable status.
+
+While a complete solution to put softirq processing under nice resource
+control would be preferable, that has proven to be a very hard task. In
+the short term, remove the main pain point, and also simplify a bit the
+current softirq implementation.
+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: netdev@vger.kernel.org
+Link: https://lore.kernel.org/netdev/305d7742212cbe98621b16be782b0562f1012cb6.camel@redhat.com
+Link: https://lore.kernel.org/r/57e66b364f1b6f09c9bc0316742c3b14f4ce83bd.1683526542.git.pabeni@redhat.com
 ---
- arch/x86/coco/core.c               |  2 +-
- arch/x86/coco/tdx/tdx.c            |  2 +-
- arch/x86/hyperv/ivm.c              |  2 +-
- arch/x86/include/asm/coco.h        | 19 +------------------
- arch/x86/mm/mem_encrypt_identity.c |  2 +-
- 5 files changed, 5 insertions(+), 22 deletions(-)
+ kernel/softirq.c | 22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
-diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-index df10e75..eeec998 100644
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -13,7 +13,7 @@
- #include <asm/coco.h>
- #include <asm/processor.h>
- 
--enum cc_vendor cc_vendor __ro_after_init;
-+enum cc_vendor cc_vendor __ro_after_init = CC_VENDOR_NONE;
- static u64 cc_mask __ro_after_init;
- 
- static bool noinstr intel_cc_platform_has(enum cc_attr attr)
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index e146b59..971c6cf 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -852,7 +852,7 @@ void __init tdx_early_init(void)
- 
- 	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
- 
--	cc_set_vendor(CC_VENDOR_INTEL);
-+	cc_vendor = CC_VENDOR_INTEL;
- 	tdx_parse_tdinfo(&cc_mask);
- 	cc_set_mask(cc_mask);
- 
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index cc92388..868f5de 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -364,7 +364,7 @@ void __init hv_vtom_init(void)
- 	 * Set it here to indicate a vTOM VM.
- 	 */
- 	sev_status = MSR_AMD64_SNP_VTOM;
--	cc_set_vendor(CC_VENDOR_AMD);
-+	cc_vendor = CC_VENDOR_AMD;
- 	cc_set_mask(ms_hyperv.shared_gpa_boundary);
- 	physical_mask &= ms_hyperv.shared_gpa_boundary - 1;
- 
-diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
-index eb08796..6ae2d16 100644
---- a/arch/x86/include/asm/coco.h
-+++ b/arch/x86/include/asm/coco.h
-@@ -10,30 +10,13 @@ enum cc_vendor {
- 	CC_VENDOR_INTEL,
- };
- 
--#ifdef CONFIG_ARCH_HAS_CC_PLATFORM
- extern enum cc_vendor cc_vendor;
- 
--static inline enum cc_vendor cc_get_vendor(void)
--{
--	return cc_vendor;
--}
--
--static inline void cc_set_vendor(enum cc_vendor vendor)
--{
--	cc_vendor = vendor;
--}
--
-+#ifdef CONFIG_ARCH_HAS_CC_PLATFORM
- void cc_set_mask(u64 mask);
- u64 cc_mkenc(u64 val);
- u64 cc_mkdec(u64 val);
- #else
--static inline enum cc_vendor cc_get_vendor(void)
--{
--	return CC_VENDOR_NONE;
--}
--
--static inline void cc_set_vendor(enum cc_vendor vendor) { }
--
- static inline u64 cc_mkenc(u64 val)
- {
- 	return val;
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index c6efcf5..bfe22fd 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -612,7 +612,7 @@ void __init sme_enable(struct boot_params *bp)
- out:
- 	if (sme_me_mask) {
- 		physical_mask &= ~sme_me_mask;
--		cc_set_vendor(CC_VENDOR_AMD);
-+		cc_vendor = CC_VENDOR_AMD;
- 		cc_set_mask(sme_me_mask);
- 	}
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index 1b72551..807b34c 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -80,21 +80,6 @@ static void wakeup_softirqd(void)
+ 		wake_up_process(tsk);
  }
+ 
+-/*
+- * If ksoftirqd is scheduled, we do not want to process pending softirqs
+- * right now. Let ksoftirqd handle this at its own rate, to get fairness,
+- * unless we're doing some of the synchronous softirqs.
+- */
+-#define SOFTIRQ_NOW_MASK ((1 << HI_SOFTIRQ) | (1 << TASKLET_SOFTIRQ))
+-static bool ksoftirqd_running(unsigned long pending)
+-{
+-	struct task_struct *tsk = __this_cpu_read(ksoftirqd);
+-
+-	if (pending & SOFTIRQ_NOW_MASK)
+-		return false;
+-	return tsk && task_is_running(tsk) && !__kthread_should_park(tsk);
+-}
+-
+ #ifdef CONFIG_TRACE_IRQFLAGS
+ DEFINE_PER_CPU(int, hardirqs_enabled);
+ DEFINE_PER_CPU(int, hardirq_context);
+@@ -236,7 +221,7 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
+ 		goto out;
+ 
+ 	pending = local_softirq_pending();
+-	if (!pending || ksoftirqd_running(pending))
++	if (!pending)
+ 		goto out;
+ 
+ 	/*
+@@ -432,9 +417,6 @@ static inline bool should_wake_ksoftirqd(void)
+ 
+ static inline void invoke_softirq(void)
+ {
+-	if (ksoftirqd_running(local_softirq_pending()))
+-		return;
+-
+ 	if (!force_irqthreads() || !__this_cpu_read(ksoftirqd)) {
+ #ifdef CONFIG_HAVE_IRQ_EXIT_ON_IRQ_STACK
+ 		/*
+@@ -468,7 +450,7 @@ asmlinkage __visible void do_softirq(void)
+ 
+ 	pending = local_softirq_pending();
+ 
+-	if (pending && !ksoftirqd_running(pending))
++	if (pending)
+ 		do_softirq_own_stack();
+ 
+ 	local_irq_restore(flags);
