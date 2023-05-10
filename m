@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D3796FDE73
+	by mail.lfdr.de (Postfix) with ESMTP id 726B66FDE74
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:26:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237009AbjEJNZ7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 May 2023 09:25:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60582 "EHLO
+        id S237031AbjEJN0A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 May 2023 09:26:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236738AbjEJNZ6 (ORCPT
+        with ESMTP id S236808AbjEJNZ6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 10 May 2023 09:25:58 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 767345B96;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77FB95BBB;
         Wed, 10 May 2023 06:25:55 -0700 (PDT)
-Date:   Wed, 10 May 2023 13:25:52 -0000
+Date:   Wed, 10 May 2023 13:25:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1683725153;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2wCDCMVLVHkAwMTT4agPvZQd6bXtY1uPlo5JBSddpyI=;
-        b=4qNVnhTCFEUDKGHJXbKI5a0lwGqp+R7m8fkL5mrAr2GhI7eeOextrxCcnbK3WQM1+XbYiX
-        LzpUX4JSul74/EPXsTMZ69JLUW1nRj5RYoeYxTUwRXj0LJv0kTHF4R8FhgbsZn7/rRSZ+p
-        mJhyGLnYdfUWJyvROfzSCvgU8CCPzxzrEy2DHTUYsC2fsT2BzcQCztmw0hWo+Ndd/e53Gm
-        wjnCw62L2eiWOA+FPGmz0gH72D7sLhrI9iEgByKeMb02tpH22dDf5Jhsasek2YrgbMZucc
-        Sj0W5SOscUOD8OlrkBRsQSfeaa4fqq9JUqBryA+eWaiP5Jl4KDcQDtp+kpVvbA==
+        bh=+50aCcQo7yk8tGTr01frSlis0+nA0wrpfvXRz/M9unE=;
+        b=vliowQ8e/566MxivxMmyONSWLB8UEuf/k6awcdUjWvTT6DeIaxyajYhJo6j1Gs2lblqCtx
+        TehQtO2DV35EkosFY+8xTdp9KftNiSQTuXZ8WpeRNqPViZBc2NsDmzDlAs1Si4tpoJ0eW9
+        uUl4JaFxHylO1syiNvkusaTK7QZzbxNB+jZQ8Zs9IahMzn/hp0I6nLHWlOV/wpiuy4EfdH
+        540SFnCx8wRcVJc11z7hM9mcSg+VS5oQW/Ro/JJErFSKuK3Jw975LIl+toMjn2JbSJGkke
+        MgN3OKrV3hoau7vTgiPsJdx+pVYFivnA2W5N1wizjm1xvBS+LH1BmuWKHvmPig==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1683725153;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2wCDCMVLVHkAwMTT4agPvZQd6bXtY1uPlo5JBSddpyI=;
-        b=4SU/X6289E2I+zi/BXaDKmo66YETFiIl/mrkdl/m66YRuh9clYQMySPy0rdf9rflyP7LnU
-        ItVgm5ua0xVgUSCQ==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=+50aCcQo7yk8tGTr01frSlis0+nA0wrpfvXRz/M9unE=;
+        b=D4bLYkNGhQW2Fb8yvEdE+LSAxWhUd9EsBvnUplWN6E4yiOHtNnJbwWGXGvMEskLzG9deqt
+        J4xvA1pYYd64m1AA==
+From:   "tip-bot2 for Yang Jihong" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel/ds: Flush PEBS DS when changing
- PEBS_DATA_CFG
-Cc:     Stephane Eranian <eranian@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/core: Fix perf_sample_data not properly
+ initialized for different swevents in perf_tp_event()
+Cc:     Yang Jihong <yangjihong1@huawei.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230421184529.3320912-1-kan.liang@linux.intel.com>
-References: <20230421184529.3320912-1-kan.liang@linux.intel.com>
+In-Reply-To: <20230425103217.130600-1-yangjihong1@huawei.com>
+References: <20230425103217.130600-1-yangjihong1@huawei.com>
 MIME-Version: 1.0
-Message-ID: <168372515266.404.11587715767446878831.tip-bot2@tip-bot2>
+Message-ID: <168372515329.404.5827790675701138277.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,188 +68,106 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     b752ea0c28e3f7f0aaaad6abf84f735eebc37a60
-Gitweb:        https://git.kernel.org/tip/b752ea0c28e3f7f0aaaad6abf84f735eebc37a60
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 21 Apr 2023 11:45:28 -07:00
+Commit-ID:     1d1bfe30dad50d4bea83cd38d73c441972ea0173
+Gitweb:        https://git.kernel.org/tip/1d1bfe30dad50d4bea83cd38d73c441972ea0173
+Author:        Yang Jihong <yangjihong1@huawei.com>
+AuthorDate:    Tue, 25 Apr 2023 10:32:17 
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 08 May 2023 10:58:27 +02:00
+CommitterDate: Mon, 08 May 2023 10:58:26 +02:00
 
-perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG
+perf/core: Fix perf_sample_data not properly initialized for different swevents in perf_tp_event()
 
-Several similar kernel warnings can be triggered,
+data->sample_flags may be modified in perf_prepare_sample(),
+in perf_tp_event(), different swevents use the same on-stack
+perf_sample_data, the previous swevent may change sample_flags in
+perf_prepare_sample(), as a result, some members of perf_sample_data are
+not correctly initialized when next swevent_event preparing sample
+(for example data->id, the value varies according to swevent).
 
-  [56605.607840] CPU0 PEBS record size 0, expected 32, config 0 cpuc->record_size=208
+A simple scenario triggers this problem is as follows:
 
-when the below commands are running in parallel for a while on SPR.
+  # perf record -e sched:sched_switch --switch-output-event sched:sched_switch -a sleep 1
+  [ perf record: dump data: Woken up 0 times ]
+  [ perf record: Dump perf.data.2023041209014396 ]
+  [ perf record: dump data: Woken up 0 times ]
+  [ perf record: Dump perf.data.2023041209014662 ]
+  [ perf record: dump data: Woken up 0 times ]
+  [ perf record: Dump perf.data.2023041209014910 ]
+  [ perf record: Woken up 0 times to write data ]
+  [ perf record: Dump perf.data.2023041209015164 ]
+  [ perf record: Captured and wrote 0.069 MB perf.data.<timestamp> ]
+  # ls -l
+  total 860
+  -rw------- 1 root root  95694 Apr 12 09:01 perf.data.2023041209014396
+  -rw------- 1 root root 606430 Apr 12 09:01 perf.data.2023041209014662
+  -rw------- 1 root root  82246 Apr 12 09:01 perf.data.2023041209014910
+  -rw------- 1 root root  82342 Apr 12 09:01 perf.data.2023041209015164
+  # perf script -i perf.data.2023041209014396
+  0x11d58 [0x80]: failed to process type: 9 [Bad address]
 
-  while true;
-  do
-	perf record --no-buildid -a --intr-regs=AX  \
-		    -e cpu/event=0xd0,umask=0x81/pp \
-		    -c 10003 -o /dev/null ./triad;
-  done &
+Solution: Re-initialize perf_sample_data after each event is processed.
+Note that data->raw->frag.data may be accessed in perf_tp_event_match().
+Therefore, need to init sample_data and then go through swevent hlist to prevent
+reference of NULL pointer, reported by [1].
 
-  while true;
-  do
-	perf record -o /tmp/out -W -d \
-		    -e '{ld_blocks.store_forward:period=1000000, \
-                         MEM_TRANS_RETIRED.LOAD_LATENCY:u:precise=2:ldlat=4}' \
-		    -c 1037 ./triad;
-  done
+After fix:
 
-The triad program is just the generation of loads/stores.
+  # perf record -e sched:sched_switch --switch-output-event sched:sched_switch -a sleep 1
+  [ perf record: dump data: Woken up 0 times ]
+  [ perf record: Dump perf.data.2023041209442259 ]
+  [ perf record: dump data: Woken up 0 times ]
+  [ perf record: Dump perf.data.2023041209442514 ]
+  [ perf record: dump data: Woken up 0 times ]
+  [ perf record: Dump perf.data.2023041209442760 ]
+  [ perf record: Woken up 0 times to write data ]
+  [ perf record: Dump perf.data.2023041209443003 ]
+  [ perf record: Captured and wrote 0.069 MB perf.data.<timestamp> ]
+  # ls -l
+  total 864
+  -rw------- 1 root root 100166 Apr 12 09:44 perf.data.2023041209442259
+  -rw------- 1 root root 606438 Apr 12 09:44 perf.data.2023041209442514
+  -rw------- 1 root root  82246 Apr 12 09:44 perf.data.2023041209442760
+  -rw------- 1 root root  82342 Apr 12 09:44 perf.data.2023041209443003
+  # perf script -i perf.data.2023041209442259 | head -n 5
+              perf   232 [000]    66.846217: sched:sched_switch: prev_comm=perf prev_pid=232 prev_prio=120 prev_state=D ==> next_comm=perf next_pid=234 next_prio=120
+              perf   234 [000]    66.846449: sched:sched_switch: prev_comm=perf prev_pid=234 prev_prio=120 prev_state=S ==> next_comm=perf next_pid=232 next_prio=120
+              perf   232 [000]    66.846546: sched:sched_switch: prev_comm=perf prev_pid=232 prev_prio=120 prev_state=R ==> next_comm=perf next_pid=234 next_prio=120
+              perf   234 [000]    66.846606: sched:sched_switch: prev_comm=perf prev_pid=234 prev_prio=120 prev_state=S ==> next_comm=perf next_pid=232 next_prio=120
+              perf   232 [000]    66.846646: sched:sched_switch: prev_comm=perf prev_pid=232 prev_prio=120 prev_state=R ==> next_comm=perf next_pid=234 next_prio=120
 
-The warnings are triggered when an unexpected PEBS record (with a
-different config and size) is found.
+[1] Link: https://lore.kernel.org/oe-lkp/202304250929.efef2caa-yujie.liu@intel.com
 
-A system-wide PEBS event with the large PEBS config may be enabled
-during a context switch. Some PEBS records for the system-wide PEBS
-may be generated while the old task is sched out but the new one
-hasn't been sched in yet. When the new task is sched in, the
-cpuc->pebs_record_size may be updated for the per-task PEBS events. So
-the existing system-wide PEBS records have a different size from the
-later PEBS records.
-
-The PEBS buffer should be flushed right before the hardware is
-reprogrammed. The new size and threshold should be updated after the
-old buffer has been flushed.
-
-Reported-by: Stephane Eranian <eranian@google.com>
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Fixes: bb447c27a467 ("perf/core: Set data->sample_flags in perf_prepare_sample()")
+Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230421184529.3320912-1-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/20230425103217.130600-1-yangjihong1@huawei.com
 ---
- arch/x86/events/intel/ds.c        | 56 +++++++++++++++++-------------
- arch/x86/include/asm/perf_event.h |  3 ++-
- 2 files changed, 35 insertions(+), 24 deletions(-)
+ kernel/events/core.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index a2e566e..df88576 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -1229,12 +1229,14 @@ pebs_update_state(bool needed_cb, struct cpu_hw_events *cpuc,
- 		  struct perf_event *event, bool add)
- {
- 	struct pmu *pmu = event->pmu;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 68baa81..db016e4 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -10150,8 +10150,20 @@ void perf_tp_event(u16 event_type, u64 count, void *record, int entry_size,
+ 	perf_trace_buf_update(record, event_type);
+ 
+ 	hlist_for_each_entry_rcu(event, head, hlist_entry) {
+-		if (perf_tp_event_match(event, &data, regs))
++		if (perf_tp_event_match(event, &data, regs)) {
+ 			perf_swevent_event(event, count, &data, regs);
 +
- 	/*
- 	 * Make sure we get updated with the first PEBS
- 	 * event. It will trigger also during removal, but
- 	 * that does not hurt:
- 	 */
--	bool update = cpuc->n_pebs == 1;
-+	if (cpuc->n_pebs == 1)
-+		cpuc->pebs_data_cfg = PEBS_UPDATE_DS_SW;
- 
- 	if (needed_cb != pebs_needs_sched_cb(cpuc)) {
- 		if (!needed_cb)
-@@ -1242,7 +1244,7 @@ pebs_update_state(bool needed_cb, struct cpu_hw_events *cpuc,
- 		else
- 			perf_sched_cb_dec(pmu);
- 
--		update = true;
-+		cpuc->pebs_data_cfg |= PEBS_UPDATE_DS_SW;
- 	}
- 
- 	/*
-@@ -1252,24 +1254,13 @@ pebs_update_state(bool needed_cb, struct cpu_hw_events *cpuc,
- 	if (x86_pmu.intel_cap.pebs_baseline && add) {
- 		u64 pebs_data_cfg;
- 
--		/* Clear pebs_data_cfg and pebs_record_size for first PEBS. */
--		if (cpuc->n_pebs == 1) {
--			cpuc->pebs_data_cfg = 0;
--			cpuc->pebs_record_size = sizeof(struct pebs_basic);
--		}
--
- 		pebs_data_cfg = pebs_update_adaptive_cfg(event);
--
--		/* Update pebs_record_size if new event requires more data. */
--		if (pebs_data_cfg & ~cpuc->pebs_data_cfg) {
--			cpuc->pebs_data_cfg |= pebs_data_cfg;
--			adaptive_pebs_record_size_update();
--			update = true;
--		}
-+		/*
-+		 * Be sure to update the thresholds when we change the record.
-+		 */
-+		if (pebs_data_cfg & ~cpuc->pebs_data_cfg)
-+			cpuc->pebs_data_cfg |= pebs_data_cfg | PEBS_UPDATE_DS_SW;
- 	}
--
--	if (update)
--		pebs_update_threshold(cpuc);
- }
- 
- void intel_pmu_pebs_add(struct perf_event *event)
-@@ -1326,9 +1317,17 @@ static void intel_pmu_pebs_via_pt_enable(struct perf_event *event)
- 	wrmsrl(base + idx, value);
- }
- 
-+static inline void intel_pmu_drain_large_pebs(struct cpu_hw_events *cpuc)
-+{
-+	if (cpuc->n_pebs == cpuc->n_large_pebs &&
-+	    cpuc->n_pebs != cpuc->n_pebs_via_pt)
-+		intel_pmu_drain_pebs_buffer();
-+}
-+
- void intel_pmu_pebs_enable(struct perf_event *event)
- {
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	u64 pebs_data_cfg = cpuc->pebs_data_cfg & ~PEBS_UPDATE_DS_SW;
- 	struct hw_perf_event *hwc = &event->hw;
- 	struct debug_store *ds = cpuc->ds;
- 	unsigned int idx = hwc->idx;
-@@ -1344,11 +1343,22 @@ void intel_pmu_pebs_enable(struct perf_event *event)
- 
- 	if (x86_pmu.intel_cap.pebs_baseline) {
- 		hwc->config |= ICL_EVENTSEL_ADAPTIVE;
--		if (cpuc->pebs_data_cfg != cpuc->active_pebs_data_cfg) {
--			wrmsrl(MSR_PEBS_DATA_CFG, cpuc->pebs_data_cfg);
--			cpuc->active_pebs_data_cfg = cpuc->pebs_data_cfg;
-+		if (pebs_data_cfg != cpuc->active_pebs_data_cfg) {
 +			/*
-+			 * drain_pebs() assumes uniform record size;
-+			 * hence we need to drain when changing said
-+			 * size.
++			 * Here use the same on-stack perf_sample_data,
++			 * some members in data are event-specific and
++			 * need to be re-computed for different sweveents.
++			 * Re-initialize data->sample_flags safely to avoid
++			 * the problem that next event skips preparing data
++			 * because data->sample_flags is set.
 +			 */
-+			intel_pmu_drain_large_pebs(cpuc);
-+			adaptive_pebs_record_size_update();
-+			wrmsrl(MSR_PEBS_DATA_CFG, pebs_data_cfg);
-+			cpuc->active_pebs_data_cfg = pebs_data_cfg;
- 		}
++			perf_sample_data_init(&data, 0, 0);
++			perf_sample_save_raw_data(&data, &raw);
++		}
  	}
-+	if (cpuc->pebs_data_cfg & PEBS_UPDATE_DS_SW) {
-+		cpuc->pebs_data_cfg = pebs_data_cfg;
-+		pebs_update_threshold(cpuc);
-+	}
  
- 	if (idx >= INTEL_PMC_IDX_FIXED) {
- 		if (x86_pmu.intel_cap.pebs_format < 5)
-@@ -1391,9 +1401,7 @@ void intel_pmu_pebs_disable(struct perf_event *event)
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
- 	struct hw_perf_event *hwc = &event->hw;
- 
--	if (cpuc->n_pebs == cpuc->n_large_pebs &&
--	    cpuc->n_pebs != cpuc->n_pebs_via_pt)
--		intel_pmu_drain_pebs_buffer();
-+	intel_pmu_drain_large_pebs(cpuc);
- 
- 	cpuc->pebs_enabled &= ~(1ULL << hwc->idx);
- 
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 8fc15ed..abf0988 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -121,6 +121,9 @@
- #define PEBS_DATACFG_LBRS	BIT_ULL(3)
- #define PEBS_DATACFG_LBR_SHIFT	24
- 
-+/* Steal the highest bit of pebs_data_cfg for SW usage */
-+#define PEBS_UPDATE_DS_SW	BIT_ULL(63)
-+
- /*
-  * Intel "Architectural Performance Monitoring" CPUID
-  * detection/enumeration details:
+ 	/*
