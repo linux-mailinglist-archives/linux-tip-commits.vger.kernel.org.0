@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6522B6FDF0E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EC2E6FDF13
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:49:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237250AbjEJNt2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 May 2023 09:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51950 "EHLO
+        id S236975AbjEJNtb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 May 2023 09:49:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237272AbjEJNtX (ORCPT
+        with ESMTP id S237275AbjEJNtX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 10 May 2023 09:49:23 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E82D7D96;
-        Wed, 10 May 2023 06:49:19 -0700 (PDT)
-Date:   Wed, 10 May 2023 13:49:12 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B62941BE5;
+        Wed, 10 May 2023 06:49:20 -0700 (PDT)
+Date:   Wed, 10 May 2023 13:49:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1683726552;
+        s=2020; t=1683726554;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=daQbWBn3z/bvLFEar+JNX4QlqkiGxgGZ2GC2wZDBP28=;
-        b=KCPxjakpb1DTXH5KU3uqYR8/XSkWM2tuIn9yfutd+3eAdfqC2ZcFTuP7FzDtP4J5E3l2mI
-        9hNBfbOlk5WN2yfVAL3rCpFR8Zq83VuprtiM6SGsE5kTQUCYs2BUtFi2KpP9iTRwXu9X9P
-        +mKlfgFDDZRlNdXVcXrOV/Q8bzYhZpYAvoh1uyAZHAKU3s1rTl7vLKPoLSCzG/+kO478fz
-        rlM7F3ik9yaN/8hPr5MmBI/kJvu4UGsnuvOWvTldMMa2d0r7nhbLRnnDUOpPQiMacN3jGu
-        7YiHggxw14ZvSQWd3jTeMdJjyBxpYbxIcYDhKI1UhMih40JkEToUUgTfaJPULQ==
+        bh=YKGyqrD8zYmw4nObiR+R8GcM1J6bpSuoUPrrBmfOVuQ=;
+        b=Ju4n2lm4LwUBxgaIR0G8TXRAYnSCGfOa4+YGCSbp3relLpmPnxjC/VMEnQ5zHbSvUGtWsW
+        l3+sgzcl/6Z2m4pO4qytTu6blG1I1fz/wIHXSauTJynlNdP7nj+Odqg1jZD5wFblLLN366
+        GfYMuXzJl0nuFRyUkqfNYuUK+rsnmuZV9ZT4DtsBtA1EFpN/93rGKZnVpbFYO4nRHiwhB0
+        ZodMurDaYdDan3wHe68h9VP5CwO9sUoiORX2F2BHsooN3DqO2uixu139aVc2M90WB+J6H8
+        +rv81dS7htX1uTB7AIQAlLAnT3ZpxD6EbV6Qaj2mjK/j8a74gkYnIsO4awc+cg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1683726552;
+        s=2020e; t=1683726554;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=daQbWBn3z/bvLFEar+JNX4QlqkiGxgGZ2GC2wZDBP28=;
-        b=1Nj8HBSJfrBJuU2UTNJp2flUKQ8sxOdyQ2Cv4ddPB2jbLBFYfVCZyVIDAd2m7Hiu/0Pcpd
-        NNUJu6SAv+x/N5DQ==
+        bh=YKGyqrD8zYmw4nObiR+R8GcM1J6bpSuoUPrrBmfOVuQ=;
+        b=GK8BhBBMjofjX2uB1ahdZRDsw28rp0kbR1XazHu7tzEKzWi+T1Xd3sc7Cz3t1415GWFTvB
+        DXbTE4nA3+MGGCBQ==
 From:   "tip-bot2 for Ricardo Neri" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/topology: Check SDF_SHARED_CHILD in
- highest_flag_domain()
-Cc:     Ionela Voinescu <ionela.voinescu@arm.com>,
-        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: Keep a fully_busy SMT sched group as busiest
+Cc:     Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Zhang Rui <rui.zhang@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230406203148.19182-9-ricardo.neri-calderon@linux.intel.com>
-References: <20230406203148.19182-9-ricardo.neri-calderon@linux.intel.com>
+In-Reply-To: <20230406203148.19182-6-ricardo.neri-calderon@linux.intel.com>
+References: <20230406203148.19182-6-ricardo.neri-calderon@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <168372655213.404.5276333289857461855.tip-bot2@tip-bot2>
+Message-ID: <168372655364.404.8890048970678444740.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,70 +68,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     40b4d3dc328265c8ec6688657d74813edf785c83
-Gitweb:        https://git.kernel.org/tip/40b4d3dc328265c8ec6688657d74813edf785c83
+Commit-ID:     5fd6d7f43958cb62da105c8413eac3e78480f09a
+Gitweb:        https://git.kernel.org/tip/5fd6d7f43958cb62da105c8413eac3e78480f09a
 Author:        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-AuthorDate:    Thu, 06 Apr 2023 13:31:44 -07:00
+AuthorDate:    Thu, 06 Apr 2023 13:31:41 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 08 May 2023 10:58:36 +02:00
+CommitterDate: Mon, 08 May 2023 10:58:35 +02:00
 
-sched/topology: Check SDF_SHARED_CHILD in highest_flag_domain()
+sched/fair: Keep a fully_busy SMT sched group as busiest
 
-Do not assume that all the children of a scheduling domain have a given
-flag. Check whether it has the SDF_SHARED_CHILD meta flag.
+When comparing two fully_busy scheduling groups, keep the current busiest
+group if it represents an SMT core. Tasks in such scheduling group share
+CPU resources and need more help than tasks in a non-SMT fully_busy group.
 
-Suggested-by: Ionela Voinescu <ionela.voinescu@arm.com>
 Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230406203148.19182-9-ricardo.neri-calderon@linux.intel.com
+Tested-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://lore.kernel.org/r/20230406203148.19182-6-ricardo.neri-calderon@linux.intel.com
 ---
- kernel/sched/sched.h | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index ec7b3e0..6784462 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1772,6 +1772,13 @@ queue_balance_callback(struct rq *rq,
- 	for (__sd = rcu_dereference_check_sched_domain(cpu_rq(cpu)->sd); \
- 			__sd; __sd = __sd->parent)
- 
-+/* A mask of all the SD flags that have the SDF_SHARED_CHILD metaflag */
-+#define SD_FLAG(name, mflags) (name * !!((mflags) & SDF_SHARED_CHILD)) |
-+static const unsigned int SD_SHARED_CHILD_MASK =
-+#include <linux/sched/sd_flags.h>
-+0;
-+#undef SD_FLAG
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 85ce249..4a9f040 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -9619,10 +9619,22 @@ static bool update_sd_pick_busiest(struct lb_env *env,
+ 		 * contention when accessing shared HW resources.
+ 		 *
+ 		 * XXX for now avg_load is not computed and always 0 so we
+-		 * select the 1st one.
++		 * select the 1st one, except if @sg is composed of SMT
++		 * siblings.
+ 		 */
+-		if (sgs->avg_load <= busiest->avg_load)
 +
- /**
-  * highest_flag_domain - Return highest sched_domain containing flag.
-  * @cpu:	The CPU whose highest level of sched domain is to
-@@ -1779,16 +1786,25 @@ queue_balance_callback(struct rq *rq,
-  * @flag:	The flag to check for the highest sched_domain
-  *		for the given CPU.
-  *
-- * Returns the highest sched_domain of a CPU which contains the given flag.
-+ * Returns the highest sched_domain of a CPU which contains @flag. If @flag has
-+ * the SDF_SHARED_CHILD metaflag, all the children domains also have @flag.
-  */
- static inline struct sched_domain *highest_flag_domain(int cpu, int flag)
- {
- 	struct sched_domain *sd, *hsd = NULL;
- 
- 	for_each_domain(cpu, sd) {
--		if (!(sd->flags & flag))
-+		if (sd->flags & flag) {
-+			hsd = sd;
-+			continue;
++		if (sgs->avg_load < busiest->avg_load)
+ 			return false;
++
++		if (sgs->avg_load == busiest->avg_load) {
++			/*
++			 * SMT sched groups need more help than non-SMT groups.
++			 * If @sg happens to also be SMT, either choice is good.
++			 */
++			if (sds->busiest->flags & SD_SHARE_CPUCAPACITY)
++				return false;
 +		}
 +
-+		/*
-+		 * Stop the search if @flag is known to be shared at lower
-+		 * levels. It will not be found further up.
-+		 */
-+		if (flag & SD_SHARED_CHILD_MASK)
- 			break;
--		hsd = sd;
- 	}
+ 		break;
  
- 	return hsd;
+ 	case group_has_spare:
