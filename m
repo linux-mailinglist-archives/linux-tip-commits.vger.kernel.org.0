@@ -2,57 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB71A6FDF10
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:49:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D2076FDF17
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:49:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237285AbjEJNt3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 May 2023 09:49:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52034 "EHLO
+        id S237112AbjEJNtc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 May 2023 09:49:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237264AbjEJNtX (ORCPT
+        with ESMTP id S237279AbjEJNtX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 10 May 2023 09:49:23 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E6B132;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D541D3A88;
         Wed, 10 May 2023 06:49:20 -0700 (PDT)
-Date:   Wed, 10 May 2023 13:49:13 -0000
+Date:   Wed, 10 May 2023 13:49:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1683726553;
+        s=2020; t=1683726554;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=STLE+lEn62lghiT5iyQdNTaJC1NuBzr89zYXWMekTp0=;
-        b=CtPMBuVF7WaWozv6J/2r2cPCspuBicu0mgOKHgKgyZzBmA2IjQbgNibO0EgHXx2zKTGp9w
-        yrHDv+69j1GNkbG1ZFtmnPjO8uM/9SPvfEK1J3Z5WwV6llTPs7sYrwwbNdbYn0Jw5b8WVV
-        aL6Ik/VjNslXFj8AqF37yefAzM0rrwNzwhB14aG5zO+Gk54VOB4/ohf66dbI4OZH2aqVjL
-        dF5ZPnyHBe0rvNYSRTvgcVtuwzG1WsLwfGHMyRmCc9FVcDxacV5iHr62wm+RDzCcPJy28f
-        uPBipye2MbhXDh9LI1y+6+W42TwtFRSwqBdBlKV6jjEvyyxNdx716dZP6fsEzg==
+        bh=F7U5mUytH1qvTyKHQoLqeFYjjmc4tobmvVpTivDaTIU=;
+        b=nDuz4WFmI0GZJWiuhkG7YKkRPTdOPylceCe3yHWPTowHLIPDkCSPz8CbBZQvJ2Wx4AiggV
+        u7Qm890xqtR7tSk2Eyrs9XuLQCkjdoAyqe7Kc2GB3K1+v/PJcSb4OumAjqBxeX2W2VlNez
+        ZlOmzGSRMxYBAWr1zymIRODy2iYDBB+QizarvH8uqBzrQoXpzWrBdfzDF9+XeHGJmUeozh
+        KY0GyMeR0FhhUaNzmv4TiK/gR29Q4GMFP3vroEKL+ZVjYgb3svA6X/IKrSAzqGMPyiWLaw
+        mWEkoReimw+4WaurTBqQCdsAP58Vjqzg+0sO7y2Q7RqxLHuqisemyREsjSf73g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1683726553;
+        s=2020e; t=1683726554;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=STLE+lEn62lghiT5iyQdNTaJC1NuBzr89zYXWMekTp0=;
-        b=qdK8CC51mcF/5yQ4xwGrP1jwTrcPp0N8/lKICf2Wz09XpBSo7vH9gLUvPvcVpa0+10BJxU
-        un6tQDRg5B0aK/CA==
+        bh=F7U5mUytH1qvTyKHQoLqeFYjjmc4tobmvVpTivDaTIU=;
+        b=+Gh1gSuEBpmfx8fNenN4VYs2RPDi9f08TOfu0q+GNBMoQ/O1DNTP8ZYQd6794dNfsiW4S5
+        Gqe0QcDwH3iN+GAg==
 From:   "tip-bot2 for Ricardo Neri" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Use the busiest group to set prefer_sibling
-Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+Subject: [tip: sched/core] sched/fair: Let low-priority cores help
+ high-priority busy SMT cores
+Cc:     Valentin Schneider <vschneid@redhat.com>,
         Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Zhang Rui <rui.zhang@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230406203148.19182-7-ricardo.neri-calderon@linux.intel.com>
-References: <20230406203148.19182-7-ricardo.neri-calderon@linux.intel.com>
+In-Reply-To: <20230406203148.19182-5-ricardo.neri-calderon@linux.intel.com>
+References: <20230406203148.19182-5-ricardo.neri-calderon@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <168372655311.404.12627370082433827466.tip-bot2@tip-bot2>
+Message-ID: <168372655417.404.18317397549108469001.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,75 +70,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     43726bdedd29797d8e1fee2e7300a6d2b9a74ba8
-Gitweb:        https://git.kernel.org/tip/43726bdedd29797d8e1fee2e7300a6d2b9a74ba8
+Commit-ID:     18ad34532755feb5b9f4284b07769b1bfec18ab3
+Gitweb:        https://git.kernel.org/tip/18ad34532755feb5b9f4284b07769b1bfec18ab3
 Author:        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-AuthorDate:    Thu, 06 Apr 2023 13:31:42 -07:00
+AuthorDate:    Thu, 06 Apr 2023 13:31:40 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 08 May 2023 10:58:35 +02:00
 
-sched/fair: Use the busiest group to set prefer_sibling
+sched/fair: Let low-priority cores help high-priority busy SMT cores
 
-The prefer_sibling setting acts on the busiest group to move excess tasks
-to the local group. This should be done as per request of the child of the
-busiest group's sched domain, not the local group's.
+Using asym_packing priorities within an SMT core is straightforward. Just
+follow the priorities that hardware indicates.
 
-Using the flags of the child domain of the local group works fortuitously
-if both groups have child domains.
+When balancing load from an SMT core, also consider the idle state of its
+siblings. Priorities do not reflect that an SMT core divides its throughput
+among all its busy siblings. They only makes sense when exactly one sibling
+is busy.
 
-There are cases, however, in which the busiest group's sched domain has
-child but the local group's does not. Consider, for instance a non-SMT
-core (or an SMT core with only one online sibling) doing load balance with
-an SMT core at the MC level. SD_PREFER_SIBLING of the busiest group's child
-domain will not be honored. We are left with a fully busy SMT core and an
-idle non-SMT core.
+Indicate that active balance is needed if the destination CPU has lower
+priority than the source CPU but the latter has busy SMT siblings.
 
-Suggested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Make find_busiest_queue() not skip higher-priority SMT cores with more than
+busy sibling.
+
+Suggested-by: Valentin Schneider <vschneid@redhat.com>
 Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://lore.kernel.org/r/20230406203148.19182-7-ricardo.neri-calderon@linux.intel.com
+Link: https://lore.kernel.org/r/20230406203148.19182-5-ricardo.neri-calderon@linux.intel.com
 ---
- kernel/sched/fair.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ kernel/sched/fair.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 4a9f040..3bb8934 100644
+index a8a02ae..85ce249 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -10109,7 +10109,6 @@ static void update_idle_cpu_scan(struct lb_env *env,
+@@ -10551,8 +10551,15 @@ static struct rq *find_busiest_queue(struct lb_env *env,
+ 		    nr_running == 1)
+ 			continue;
  
- static inline void update_sd_lb_stats(struct lb_env *env, struct sd_lb_stats *sds)
- {
--	struct sched_domain *child = env->sd->child;
- 	struct sched_group *sg = env->sd->groups;
- 	struct sg_lb_stats *local = &sds->local_stat;
- 	struct sg_lb_stats tmp_sgs;
-@@ -10150,8 +10149,13 @@ next_group:
- 		sg = sg->next;
- 	} while (sg != env->sd->groups);
+-		/* Make sure we only pull tasks from a CPU of lower priority */
++		/*
++		 * Make sure we only pull tasks from a CPU of lower priority
++		 * when balancing between SMT siblings.
++		 *
++		 * If balancing between cores, let lower priority CPUs help
++		 * SMT cores with more than one busy sibling.
++		 */
+ 		if ((env->sd->flags & SD_ASYM_PACKING) &&
++		    sched_use_asym_prio(env->sd, i) &&
+ 		    sched_asym_prefer(i, env->dst_cpu) &&
+ 		    nr_running == 1)
+ 			continue;
+@@ -10645,10 +10652,15 @@ asym_active_balance(struct lb_env *env)
+ 	 * priority CPUs in order to pack all tasks in the highest priority
+ 	 * CPUs. When done between cores, do it only if the whole core if the
+ 	 * whole core is idle.
++	 *
++	 * If @env::src_cpu is an SMT core with busy siblings, let
++	 * the lower priority @env::dst_cpu help it. Do not follow
++	 * CPU priority.
+ 	 */
+ 	return env->idle != CPU_NOT_IDLE && (env->sd->flags & SD_ASYM_PACKING) &&
+ 	       sched_use_asym_prio(env->sd, env->dst_cpu) &&
+-	       sched_asym_prefer(env->dst_cpu, env->src_cpu);
++	       (sched_asym_prefer(env->dst_cpu, env->src_cpu) ||
++		!sched_use_asym_prio(env->sd, env->src_cpu));
+ }
  
--	/* Tag domain that child domain prefers tasks go to siblings first */
--	sds->prefer_sibling = child && child->flags & SD_PREFER_SIBLING;
-+	/*
-+	 * Indicate that the child domain of the busiest group prefers tasks
-+	 * go to a child's sibling domains first. NB the flags of a sched group
-+	 * are those of the child domain.
-+	 */
-+	if (sds->busiest)
-+		sds->prefer_sibling = !!(sds->busiest->flags & SD_PREFER_SIBLING);
- 
- 
- 	if (env->sd->flags & SD_NUMA)
-@@ -10461,7 +10465,10 @@ static struct sched_group *find_busiest_group(struct lb_env *env)
- 			goto out_balanced;
- 	}
- 
--	/* Try to move all excess tasks to child's sibling domain */
-+	/*
-+	 * Try to move all excess tasks to a sibling domain of the busiest
-+	 * group's child domain.
-+	 */
- 	if (sds.prefer_sibling && local->group_type == group_has_spare &&
- 	    busiest->sum_nr_running > local->sum_nr_running + 1)
- 		goto force_balance;
+ static inline bool
