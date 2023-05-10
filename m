@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4C936FDE7B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61FB06FDEA1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237088AbjEJN0i (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 May 2023 09:26:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32856 "EHLO
+        id S237135AbjEJNdt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 May 2023 09:33:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237090AbjEJN0b (ORCPT
+        with ESMTP id S237053AbjEJNdo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 May 2023 09:26:31 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAB01900E;
-        Wed, 10 May 2023 06:26:14 -0700 (PDT)
-Date:   Wed, 10 May 2023 13:26:11 -0000
+        Wed, 10 May 2023 09:33:44 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9337A6593;
+        Wed, 10 May 2023 06:33:42 -0700 (PDT)
+Date:   Wed, 10 May 2023 13:33:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1683725172;
+        s=2020; t=1683725621;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UVknTNt976+E+pdbpfYQXjSnp9XJ60CYSW5lA/PZPHM=;
-        b=cLDXYrkpHLmSM/skeWKoU11K/+DdhDzAusCKxSaZLyWK+8rmpt0m6+yquIX9eANZDWgJjM
-        vhrjLf0YcSu/k3lFSm9/zlujC3LkEwymTv5105T+s3ZBLgV2FlpPoaVy3Xdqg7bpAU1vgd
-        kONDcnRoZIaeX9Qy8xnNpZ9EPMHxdWclP0tWo+piEvRpJLKc9sGTBEpYi1iNKyElfiWXih
-        ZLHslBxLZ+42+z0DKOsxwMVODosPz075rzlIzPipdxbU4ThoKNq+czdu+Rkltzijc6D7tG
-        /ocUbiL7Fn+bP3dHN1ReXsPPkjzg8SV3C+aLLs2cVN8tF0GtCSHFFQj2hrBxaw==
+        bh=BAxoZCeSd5zG1NNfEIA4xb3uYzvJHnExt1jxq4Xhiu4=;
+        b=NQHpe4hMNaOIXnbSYiH7zmUiAa+tyAR286Fsv7TOuiu7cDJ0WQ7PLO0fFTkON7j2V1wxJq
+        ukDvftpGMxgdI0ju3FDFfSAAgNizaHNEiog+ycFMIa/irsGC68VxM9UAMzDg2IYbLvgkA6
+        wg0QXeHW4cCCV3OkMoV2q38PIa1g9iucoMC40luOylbbIT4Cr3KO5+Im3lzl+uRvBxRys1
+        qFzBXVdtpkXG9L/oXK8zxcCloye8lOugLXPU0FB0LSIFuOrsD2814hfNwXJWuu87rRqfOj
+        WSEp/Gd3UyKp5JuPWSGGQT3pJc9Ma6CIuauPaNxrhMZK9P8ij0GdoVHRnnmwfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1683725172;
+        s=2020e; t=1683725621;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UVknTNt976+E+pdbpfYQXjSnp9XJ60CYSW5lA/PZPHM=;
-        b=RCyDWHA7HXCrvYKuRRrsFNqHDqPoLMqlGuBnPWXexleJpTnv7HJeHZTLt5WGvZ7ZJG+9bH
-        WdUsqI8BJds+UjBw==
-From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+        bh=BAxoZCeSd5zG1NNfEIA4xb3uYzvJHnExt1jxq4Xhiu4=;
+        b=O4wto+1ZiEqwdT7/L6PSlwB0mnq6+HK7kDQ5AI3QBaJ0ZNSWHJXpEfptyCjZxmduEq0yxl
+        +2XMyDy8j0390YDw==
+From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched: fix cid_lock kernel-doc warnings
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
+Subject: [tip: perf/core] perf test: Add selftest to test IBS invocation via
+ core pmu events
+Cc:     Ravi Bangoria <ravi.bangoria@amd.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230428031111.322-1-rdunlap@infradead.org>
-References: <20230428031111.322-1-rdunlap@infradead.org>
+In-Reply-To: <20230504110003.2548-5-ravi.bangoria@amd.com>
+References: <20230504110003.2548-5-ravi.bangoria@amd.com>
 MIME-Version: 1.0
-Message-ID: <168372517178.404.13654987530273728202.tip-bot2@tip-bot2>
+Message-ID: <168372562075.404.10852387134590654382.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,52 +66,175 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     0019a2d4b7e37a983d133d42b707b8a3018ae6f4
-Gitweb:        https://git.kernel.org/tip/0019a2d4b7e37a983d133d42b707b8a3018ae6f4
-Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Thu, 27 Apr 2023 20:11:11 -07:00
+Commit-ID:     78075d947534013b4575687d19ebcbbb6d3addcd
+Gitweb:        https://git.kernel.org/tip/78075d947534013b4575687d19ebcbbb6d3addcd
+Author:        Ravi Bangoria <ravi.bangoria@amd.com>
+AuthorDate:    Thu, 04 May 2023 16:30:03 +05:30
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 08 May 2023 10:58:28 +02:00
+CommitterDate: Mon, 08 May 2023 10:58:31 +02:00
 
-sched: fix cid_lock kernel-doc warnings
+perf test: Add selftest to test IBS invocation via core pmu events
 
-Fix kernel-doc warnings for cid_lock and use_cid_lock.
-These comments are not in kernel-doc format.
+IBS pmu can be invoked via fixed set of core pmu events with 'precise_ip'
+set to 1. Add a simple event open test for all these events.
 
-kernel/sched/core.c:11496: warning: Cannot understand  * @cid_lock: Guarantee forward-progress of cid allocation.
- on line 11496 - I thought it was a doc line
-kernel/sched/core.c:11505: warning: Cannot understand  * @use_cid_lock: Select cid allocation behavior: lock-free vs spinlock.
- on line 11505 - I thought it was a doc line
+Without kernel fix:
+  $ sudo ./perf test -vv 76
+   76: AMD IBS via core pmu                                      :
+  --- start ---
+  test child forked, pid 6553
+  Using CPUID AuthenticAMD-25-1-1
+  type: 0x0, config: 0x0, fd: 3  -  Pass
+  type: 0x0, config: 0x1, fd: -1  -  Pass
+  type: 0x4, config: 0x76, fd: -1  -  Fail
+  type: 0x4, config: 0xc1, fd: -1  -  Fail
+  type: 0x4, config: 0x12, fd: -1  -  Pass
+  test child finished with -1
+  ---- end ----
+  AMD IBS via core pmu: FAILED!
 
-Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+With kernel fix:
+  $ sudo ./perf test -vv 76
+   76: AMD IBS via core pmu                                      :
+  --- start ---
+  test child forked, pid 7526
+  Using CPUID AuthenticAMD-25-1-1
+  type: 0x0, config: 0x0, fd: 3  -  Pass
+  type: 0x0, config: 0x1, fd: -1  -  Pass
+  type: 0x4, config: 0x76, fd: 3  -  Pass
+  type: 0x4, config: 0xc1, fd: 3  -  Pass
+  type: 0x4, config: 0x12, fd: -1  -  Pass
+  test child finished with 0
+  ---- end ----
+  AMD IBS via core pmu: Ok
+
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230428031111.322-1-rdunlap@infradead.org
+Link: https://lkml.kernel.org/r/20230504110003.2548-5-ravi.bangoria@amd.com
 ---
- kernel/sched/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/arch/x86/include/arch-tests.h         |  1 +-
+ tools/perf/arch/x86/tests/Build                  |  1 +-
+ tools/perf/arch/x86/tests/amd-ibs-via-core-pmu.c | 71 +++++++++++++++-
+ tools/perf/arch/x86/tests/arch-tests.c           |  2 +-
+ 4 files changed, 75 insertions(+)
+ create mode 100644 tools/perf/arch/x86/tests/amd-ibs-via-core-pmu.c
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 944c3ae..a68d127 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -11492,7 +11492,7 @@ void call_trace_sched_update_nr_running(struct rq *rq, int count)
+diff --git a/tools/perf/arch/x86/include/arch-tests.h b/tools/perf/arch/x86/include/arch-tests.h
+index 902e9ea..93d3b88 100644
+--- a/tools/perf/arch/x86/include/arch-tests.h
++++ b/tools/perf/arch/x86/include/arch-tests.h
+@@ -11,6 +11,7 @@ int test__intel_pt_pkt_decoder(struct test_suite *test, int subtest);
+ int test__intel_pt_hybrid_compat(struct test_suite *test, int subtest);
+ int test__bp_modify(struct test_suite *test, int subtest);
+ int test__x86_sample_parsing(struct test_suite *test, int subtest);
++int test__amd_ibs_via_core_pmu(struct test_suite *test, int subtest);
  
- #ifdef CONFIG_SCHED_MM_CID
+ extern struct test_suite *arch_tests[];
  
--/**
-+/*
-  * @cid_lock: Guarantee forward-progress of cid allocation.
-  *
-  * Concurrency ID allocation within a bitmap is mostly lock-free. The cid_lock
-@@ -11501,7 +11501,7 @@ void call_trace_sched_update_nr_running(struct rq *rq, int count)
-  */
- DEFINE_RAW_SPINLOCK(cid_lock);
+diff --git a/tools/perf/arch/x86/tests/Build b/tools/perf/arch/x86/tests/Build
+index 6f4e863..fd02d81 100644
+--- a/tools/perf/arch/x86/tests/Build
++++ b/tools/perf/arch/x86/tests/Build
+@@ -5,3 +5,4 @@ perf-y += arch-tests.o
+ perf-y += sample-parsing.o
+ perf-$(CONFIG_AUXTRACE) += insn-x86.o intel-pt-test.o
+ perf-$(CONFIG_X86_64) += bp-modify.o
++perf-y += amd-ibs-via-core-pmu.o
+diff --git a/tools/perf/arch/x86/tests/amd-ibs-via-core-pmu.c b/tools/perf/arch/x86/tests/amd-ibs-via-core-pmu.c
+new file mode 100644
+index 0000000..2902798
+--- /dev/null
++++ b/tools/perf/arch/x86/tests/amd-ibs-via-core-pmu.c
+@@ -0,0 +1,71 @@
++// SPDX-License-Identifier: GPL-2.0
++#include "arch-tests.h"
++#include "linux/perf_event.h"
++#include "tests/tests.h"
++#include "pmu.h"
++#include "pmus.h"
++#include "../perf-sys.h"
++#include "debug.h"
++
++#define NR_SUB_TESTS 5
++
++static struct sub_tests {
++	int type;
++	unsigned long config;
++	bool valid;
++} sub_tests[NR_SUB_TESTS] = {
++	{ PERF_TYPE_HARDWARE, PERF_COUNT_HW_CPU_CYCLES, true },
++	{ PERF_TYPE_HARDWARE, PERF_COUNT_HW_INSTRUCTIONS, false },
++	{ PERF_TYPE_RAW, 0x076, true },
++	{ PERF_TYPE_RAW, 0x0C1, true },
++	{ PERF_TYPE_RAW, 0x012, false },
++};
++
++static int event_open(int type, unsigned long config)
++{
++	struct perf_event_attr attr;
++
++	memset(&attr, 0, sizeof(struct perf_event_attr));
++	attr.type = type;
++	attr.size = sizeof(struct perf_event_attr);
++	attr.config = config;
++	attr.disabled = 1;
++	attr.precise_ip = 1;
++	attr.sample_type = PERF_SAMPLE_IP | PERF_SAMPLE_TID;
++	attr.sample_period = 100000;
++
++	return sys_perf_event_open(&attr, -1, 0, -1, 0);
++}
++
++int test__amd_ibs_via_core_pmu(struct test_suite *test __maybe_unused,
++			       int subtest __maybe_unused)
++{
++	struct perf_pmu *ibs_pmu;
++	int ret = TEST_OK;
++	int fd, i;
++
++	if (list_empty(&pmus))
++		perf_pmu__scan(NULL);
++
++	ibs_pmu = perf_pmu__find("ibs_op");
++	if (!ibs_pmu)
++		return TEST_SKIP;
++
++	for (i = 0; i < NR_SUB_TESTS; i++) {
++		fd = event_open(sub_tests[i].type, sub_tests[i].config);
++		pr_debug("type: 0x%x, config: 0x%lx, fd: %d  -  ", sub_tests[i].type,
++			 sub_tests[i].config, fd);
++		if ((sub_tests[i].valid && fd == -1) ||
++		    (!sub_tests[i].valid && fd > 0)) {
++			pr_debug("Fail\n");
++			ret = TEST_FAIL;
++		} else {
++			pr_debug("Pass\n");
++		}
++
++		if (fd > 0)
++			close(fd);
++	}
++
++	return ret;
++}
+diff --git a/tools/perf/arch/x86/tests/arch-tests.c b/tools/perf/arch/x86/tests/arch-tests.c
+index aae6ea0..b5c85ab 100644
+--- a/tools/perf/arch/x86/tests/arch-tests.c
++++ b/tools/perf/arch/x86/tests/arch-tests.c
+@@ -22,6 +22,7 @@ struct test_suite suite__intel_pt = {
+ DEFINE_SUITE("x86 bp modify", bp_modify);
+ #endif
+ DEFINE_SUITE("x86 Sample parsing", x86_sample_parsing);
++DEFINE_SUITE("AMD IBS via core pmu", amd_ibs_via_core_pmu);
  
--/**
-+/*
-  * @use_cid_lock: Select cid allocation behavior: lock-free vs spinlock.
-  *
-  * When @use_cid_lock is 0, the cid allocation is lock-free. When contention is
+ struct test_suite *arch_tests[] = {
+ #ifdef HAVE_DWARF_UNWIND_SUPPORT
+@@ -35,5 +36,6 @@ struct test_suite *arch_tests[] = {
+ 	&suite__bp_modify,
+ #endif
+ 	&suite__x86_sample_parsing,
++	&suite__amd_ibs_via_core_pmu,
+ 	NULL,
+ };
