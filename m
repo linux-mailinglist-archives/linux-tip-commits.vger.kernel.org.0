@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2289D6FDEA2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9AF6FDEA4
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:33:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236593AbjEJNdu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 May 2023 09:33:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40048 "EHLO
+        id S236761AbjEJNdv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 May 2023 09:33:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237085AbjEJNdp (ORCPT
+        with ESMTP id S237115AbjEJNdq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 May 2023 09:33:45 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E59A6A48;
-        Wed, 10 May 2023 06:33:43 -0700 (PDT)
-Date:   Wed, 10 May 2023 13:33:41 -0000
+        Wed, 10 May 2023 09:33:46 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13610B0;
+        Wed, 10 May 2023 06:33:44 -0700 (PDT)
+Date:   Wed, 10 May 2023 13:33:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1683725622;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=knVNVjRUBByN5+Lhgn1P4/ETOz0nSMABsMXAadKItbE=;
-        b=i06PJe7g4X/Nkbg+9+hHXanESzdIg/WUkLPl/QnqLIYvIIa9Z1qrLeYKVF0DJlMcGJ7xAw
-        JRO+IBgQU6rT7Vk+hVoX1mygksRrAT4iAAx9yPxE/BA5jtRu2e6ts3MIsrcPMhI56xPKfE
-        b1gWOH/N4CTiXFaInDfGpJBL+2hvtd1B5Z9yqUNnV4eHX1fn2GoZRginlTieKZ7JsX4X0T
-        3viqRFUg7/quBMNiqRmysZGQVJnQ2BnfMRuJ+5AlP+rsb00Yn74cNtBs3wPsQH6vTIkv9/
-        pmnp8lJ4l4DqVVnyYKe36fr9SlgDn7jfAb6aOdAHJ6YTB4PZfBtjCfq0xVvUIg==
+        bh=PY6F26NK8UmvrH96aAC5DrHFygHK5zxj6SowBHiosHE=;
+        b=PYaMYOkN0ESNgOvRmmk7mUflEbbIUk8niehneCz2WOSwrd5k0n4JITBJ0k5dY60xYI5ED1
+        N//akpoX9HRbqRyEeCOg7V+TfCHrK/U6z+TeK8FknzYZ9bdb+06yAZp+hg4OkoXJaaI29+
+        KzD0vkvVHZnaZWGv/YBuQFs1ZLtVmtpw3eypsdcCYc3cNLc0aDHeRS2SkRl2CmsDTIPVj6
+        zrczugZnx49qCpBiK/zmfIsmP+9hJo+WJx9qI/yxP401J0gI9WpM8CfRtHjbOTIGrKKbJI
+        FJM9l3JALjIFfFd9s1L0CmXiER34jPFA2oCT1FglM78AVjt1axkSCHHY1wKBIA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1683725622;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=knVNVjRUBByN5+Lhgn1P4/ETOz0nSMABsMXAadKItbE=;
-        b=X90AkS6bNiCIHgf9S7GRdNNomAr8nPoYljmnWUI1jxo4qnJhL/IL+O4tKNXvBxHGr/sumH
-        rqc77I/15egbOkAw==
+        bh=PY6F26NK8UmvrH96aAC5DrHFygHK5zxj6SowBHiosHE=;
+        b=Zm6ROnHl6+SzUudVa7ss9ejGFSz/nO7ebJMaOFrbrLOJ3/zzpUUpuE7iCSPOyQ0G2b1QOG
+        IKKLIQKlNK1WTiBA==
 From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/ibs: Fix interface via core pmu events
-Cc:     Stephane Eranian <eranian@google.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf/core: Rework forwarding of {task|cpu}-clock events
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ravi Bangoria <ravi.bangoria@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230504110003.2548-3-ravi.bangoria@amd.com>
-References: <20230504110003.2548-3-ravi.bangoria@amd.com>
+In-Reply-To: <20230504110003.2548-2-ravi.bangoria@amd.com>
+References: <20230504110003.2548-2-ravi.bangoria@amd.com>
 MIME-Version: 1.0
-Message-ID: <168372562174.404.9638595530517340082.tip-bot2@tip-bot2>
+Message-ID: <168372562225.404.13530707071831243955.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,163 +67,253 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     2fad201fe38ff9a692acedb1990ece2c52a29f95
-Gitweb:        https://git.kernel.org/tip/2fad201fe38ff9a692acedb1990ece2c52a29f95
+Commit-ID:     0d6d062ca27ec7ef547712d34dcfcfb952bcef53
+Gitweb:        https://git.kernel.org/tip/0d6d062ca27ec7ef547712d34dcfcfb952bcef53
 Author:        Ravi Bangoria <ravi.bangoria@amd.com>
-AuthorDate:    Thu, 04 May 2023 16:30:01 +05:30
+AuthorDate:    Thu, 04 May 2023 16:30:00 +05:30
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 08 May 2023 10:58:30 +02:00
 
-perf/ibs: Fix interface via core pmu events
+perf/core: Rework forwarding of {task|cpu}-clock events
 
-Although, IBS pmus can be invoked via their own interface, indirect
-IBS invocation via core pmu events is also supported with fixed set
-of events: cpu-cycles:p, r076:p (same as cpu-cycles:p) and r0C1:p
-(micro-ops) for user convenience.
+Currently, PERF_TYPE_SOFTWARE is treated specially since task-clock and
+cpu-clock events are interfaced through it but internally gets forwarded
+to their own pmus.
 
-This indirect IBS invocation is broken since commit 66d258c5b048
-("perf/core: Optimize perf_init_event()"), which added RAW pmu under
-'pmu_idr' list and thus if event_init() fails with RAW pmu, it started
-returning error instead of trying other pmus.
+Rework this by overwriting event->attr.type in perf_swevent_init() which
+will cause perf_init_event() to retry with updated type and event will
+automatically get forwarded to right pmu. With the change, SW pmu no
+longer needs to be treated specially and can be included in 'pmu_idr'
+list.
 
-Forward precise events from core pmu to IBS by overwriting 'type' and
-'config' in the kernel copy of perf_event_attr. Overwriting will cause
-perf_init_event() to retry with updated 'type' and 'config', which will
-automatically forward event to IBS pmu.
-
-Without patch:
-  $ sudo ./perf record -C 0 -e r076:p -- sleep 1
-  Error:
-  The r076:p event is not supported.
-
-With patch:
-  $ sudo ./perf record -C 0 -e r076:p -- sleep 1
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.341 MB perf.data (37 samples) ]
-
-Fixes: 66d258c5b048 ("perf/core: Optimize perf_init_event()")
-Reported-by: Stephane Eranian <eranian@google.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230504110003.2548-3-ravi.bangoria@amd.com
+Link: https://lkml.kernel.org/r/20230504110003.2548-2-ravi.bangoria@amd.com
 ---
- arch/x86/events/amd/core.c        |  2 +-
- arch/x86/events/amd/ibs.c         | 53 ++++++++++++++----------------
- arch/x86/include/asm/perf_event.h |  2 +-
- 3 files changed, 29 insertions(+), 28 deletions(-)
+ include/linux/perf_event.h | 10 +++++-
+ kernel/events/core.c       | 77 +++++++++++++++++++------------------
+ 2 files changed, 51 insertions(+), 36 deletions(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index bccea57..abadd5f 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -374,7 +374,7 @@ static int amd_pmu_hw_config(struct perf_event *event)
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index d5628a7..bf4f346 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -295,6 +295,8 @@ struct perf_event_pmu_context;
  
- 	/* pass precise event sampling to ibs: */
- 	if (event->attr.precise_ip && get_ibs_caps())
--		return -ENOENT;
-+		return forward_event_to_ibs(event);
+ struct perf_output_handle;
  
- 	if (has_branch_stack(event) && !x86_pmu.lbr_nr)
- 		return -EOPNOTSUPP;
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index 6458295..3710148 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -190,7 +190,7 @@ static struct perf_ibs *get_ibs_pmu(int type)
++#define PMU_NULL_DEV	((void *)(~0UL))
++
+ /**
+  * struct pmu - generic performance monitoring unit
+  */
+@@ -827,6 +829,14 @@ struct perf_event {
+ 	void *security;
+ #endif
+ 	struct list_head		sb_list;
++
++	/*
++	 * Certain events gets forwarded to another pmu internally by over-
++	 * writing kernel copy of event->attr.type without user being aware
++	 * of it. event->orig_type contains original 'type' requested by
++	 * user.
++	 */
++	__u32				orig_type;
+ #endif /* CONFIG_PERF_EVENTS */
+ };
+ 
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 68baa81..c01bbe9 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6647,7 +6647,7 @@ static void perf_sigtrap(struct perf_event *event)
+ 		return;
+ 
+ 	send_sig_perf((void __user *)event->pending_addr,
+-		      event->attr.type, event->attr.sig_data);
++		      event->orig_type, event->attr.sig_data);
  }
  
  /*
-- * Use IBS for precise event sampling:
-+ * core pmu config -> IBS config
-  *
-  *  perf record -a -e cpu-cycles:p ...    # use ibs op counting cycle count
-  *  perf record -a -e r076:p ...          # same as -e cpu-cycles:p
-@@ -199,25 +199,9 @@ static struct perf_ibs *get_ibs_pmu(int type)
-  * IbsOpCntCtl (bit 19) of IBS Execution Control Register (IbsOpCtl,
-  * MSRC001_1033) is used to select either cycle or micro-ops counting
-  * mode.
-- *
-- * The rip of IBS samples has skid 0. Thus, IBS supports precise
-- * levels 1 and 2 and the PERF_EFLAGS_EXACT is set. In rare cases the
-- * rip is invalid when IBS was not able to record the rip correctly.
-- * We clear PERF_EFLAGS_EXACT and take the rip from pt_regs then.
-- *
-  */
--static int perf_ibs_precise_event(struct perf_event *event, u64 *config)
-+static int core_pmu_ibs_config(struct perf_event *event, u64 *config)
- {
--	switch (event->attr.precise_ip) {
--	case 0:
--		return -ENOENT;
--	case 1:
--	case 2:
--		break;
--	default:
--		return -EOPNOTSUPP;
--	}
--
- 	switch (event->attr.type) {
- 	case PERF_TYPE_HARDWARE:
- 		switch (event->attr.config) {
-@@ -243,22 +227,37 @@ static int perf_ibs_precise_event(struct perf_event *event, u64 *config)
- 	return -EOPNOTSUPP;
+@@ -9951,6 +9951,9 @@ static void sw_perf_event_destroy(struct perf_event *event)
+ 	swevent_hlist_put();
  }
  
-+/*
-+ * The rip of IBS samples has skid 0. Thus, IBS supports precise
-+ * levels 1 and 2 and the PERF_EFLAGS_EXACT is set. In rare cases the
-+ * rip is invalid when IBS was not able to record the rip correctly.
-+ * We clear PERF_EFLAGS_EXACT and take the rip from pt_regs then.
-+ */
-+int forward_event_to_ibs(struct perf_event *event)
-+{
-+	u64 config = 0;
++static struct pmu perf_cpu_clock; /* fwd declaration */
++static struct pmu perf_task_clock;
 +
-+	if (!event->attr.precise_ip || event->attr.precise_ip > 2)
-+		return -EOPNOTSUPP;
-+
-+	if (!core_pmu_ibs_config(event, &config)) {
-+		event->attr.type = perf_ibs_op.pmu.type;
-+		event->attr.config = config;
-+	}
-+	return -ENOENT;
-+}
-+
- static int perf_ibs_init(struct perf_event *event)
+ static int perf_swevent_init(struct perf_event *event)
  {
- 	struct hw_perf_event *hwc = &event->hw;
- 	struct perf_ibs *perf_ibs;
- 	u64 max_cnt, config;
--	int ret;
+ 	u64 event_id = event->attr.config;
+@@ -9966,7 +9969,10 @@ static int perf_swevent_init(struct perf_event *event)
  
- 	perf_ibs = get_ibs_pmu(event->attr.type);
--	if (perf_ibs) {
--		config = event->attr.config;
--	} else {
--		perf_ibs = &perf_ibs_op;
--		ret = perf_ibs_precise_event(event, &config);
--		if (ret)
--			return ret;
--	}
-+	if (!perf_ibs)
+ 	switch (event_id) {
+ 	case PERF_COUNT_SW_CPU_CLOCK:
++		event->attr.type = perf_cpu_clock.type;
 +		return -ENOENT;
-+
-+	config = event->attr.config;
- 
- 	if (event->pmu != &perf_ibs->pmu)
+ 	case PERF_COUNT_SW_TASK_CLOCK:
++		event->attr.type = perf_task_clock.type;
  		return -ENOENT;
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 8fc15ed..fc86248 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -475,8 +475,10 @@ struct pebs_xmm {
  
- #ifdef CONFIG_X86_LOCAL_APIC
- extern u32 get_ibs_caps(void);
-+extern int forward_event_to_ibs(struct perf_event *event);
- #else
- static inline u32 get_ibs_caps(void) { return 0; }
-+static inline int forward_event_to_ibs(struct perf_event *event) { return -ENOENT; }
- #endif
+ 	default:
+@@ -11086,7 +11092,7 @@ static void cpu_clock_event_read(struct perf_event *event)
  
- #ifdef CONFIG_PERF_EVENTS
+ static int cpu_clock_event_init(struct perf_event *event)
+ {
+-	if (event->attr.type != PERF_TYPE_SOFTWARE)
++	if (event->attr.type != perf_cpu_clock.type)
+ 		return -ENOENT;
+ 
+ 	if (event->attr.config != PERF_COUNT_SW_CPU_CLOCK)
+@@ -11107,6 +11113,7 @@ static struct pmu perf_cpu_clock = {
+ 	.task_ctx_nr	= perf_sw_context,
+ 
+ 	.capabilities	= PERF_PMU_CAP_NO_NMI,
++	.dev		= PMU_NULL_DEV,
+ 
+ 	.event_init	= cpu_clock_event_init,
+ 	.add		= cpu_clock_event_add,
+@@ -11167,7 +11174,7 @@ static void task_clock_event_read(struct perf_event *event)
+ 
+ static int task_clock_event_init(struct perf_event *event)
+ {
+-	if (event->attr.type != PERF_TYPE_SOFTWARE)
++	if (event->attr.type != perf_task_clock.type)
+ 		return -ENOENT;
+ 
+ 	if (event->attr.config != PERF_COUNT_SW_TASK_CLOCK)
+@@ -11188,6 +11195,7 @@ static struct pmu perf_task_clock = {
+ 	.task_ctx_nr	= perf_sw_context,
+ 
+ 	.capabilities	= PERF_PMU_CAP_NO_NMI,
++	.dev		= PMU_NULL_DEV,
+ 
+ 	.event_init	= task_clock_event_init,
+ 	.add		= task_clock_event_add,
+@@ -11415,31 +11423,31 @@ int perf_pmu_register(struct pmu *pmu, const char *name, int type)
+ 		goto unlock;
+ 
+ 	pmu->type = -1;
+-	if (!name)
+-		goto skip_type;
++	if (WARN_ONCE(!name, "Can not register anonymous pmu.\n")) {
++		ret = -EINVAL;
++		goto free_pdc;
++	}
++
+ 	pmu->name = name;
+ 
+-	if (type != PERF_TYPE_SOFTWARE) {
+-		if (type >= 0)
+-			max = type;
++	if (type >= 0)
++		max = type;
+ 
+-		ret = idr_alloc(&pmu_idr, pmu, max, 0, GFP_KERNEL);
+-		if (ret < 0)
+-			goto free_pdc;
++	ret = idr_alloc(&pmu_idr, pmu, max, 0, GFP_KERNEL);
++	if (ret < 0)
++		goto free_pdc;
+ 
+-		WARN_ON(type >= 0 && ret != type);
++	WARN_ON(type >= 0 && ret != type);
+ 
+-		type = ret;
+-	}
++	type = ret;
+ 	pmu->type = type;
+ 
+-	if (pmu_bus_running) {
++	if (pmu_bus_running && !pmu->dev) {
+ 		ret = pmu_dev_alloc(pmu);
+ 		if (ret)
+ 			goto free_idr;
+ 	}
+ 
+-skip_type:
+ 	ret = -ENOMEM;
+ 	pmu->cpu_pmu_context = alloc_percpu(struct perf_cpu_pmu_context);
+ 	if (!pmu->cpu_pmu_context)
+@@ -11481,16 +11489,7 @@ skip_type:
+ 	if (!pmu->event_idx)
+ 		pmu->event_idx = perf_event_idx_default;
+ 
+-	/*
+-	 * Ensure the TYPE_SOFTWARE PMUs are at the head of the list,
+-	 * since these cannot be in the IDR. This way the linear search
+-	 * is fast, provided a valid software event is provided.
+-	 */
+-	if (type == PERF_TYPE_SOFTWARE || !name)
+-		list_add_rcu(&pmu->entry, &pmus);
+-	else
+-		list_add_tail_rcu(&pmu->entry, &pmus);
+-
++	list_add_rcu(&pmu->entry, &pmus);
+ 	atomic_set(&pmu->exclusive_cnt, 0);
+ 	ret = 0;
+ unlock:
+@@ -11499,12 +11498,13 @@ unlock:
+ 	return ret;
+ 
+ free_dev:
+-	device_del(pmu->dev);
+-	put_device(pmu->dev);
++	if (pmu->dev && pmu->dev != PMU_NULL_DEV) {
++		device_del(pmu->dev);
++		put_device(pmu->dev);
++	}
+ 
+ free_idr:
+-	if (pmu->type != PERF_TYPE_SOFTWARE)
+-		idr_remove(&pmu_idr, pmu->type);
++	idr_remove(&pmu_idr, pmu->type);
+ 
+ free_pdc:
+ 	free_percpu(pmu->pmu_disable_count);
+@@ -11525,9 +11525,8 @@ void perf_pmu_unregister(struct pmu *pmu)
+ 	synchronize_rcu();
+ 
+ 	free_percpu(pmu->pmu_disable_count);
+-	if (pmu->type != PERF_TYPE_SOFTWARE)
+-		idr_remove(&pmu_idr, pmu->type);
+-	if (pmu_bus_running) {
++	idr_remove(&pmu_idr, pmu->type);
++	if (pmu_bus_running && pmu->dev && pmu->dev != PMU_NULL_DEV) {
+ 		if (pmu->nr_addr_filters)
+ 			device_remove_file(pmu->dev, &dev_attr_nr_addr_filters);
+ 		device_del(pmu->dev);
+@@ -11601,6 +11600,12 @@ static struct pmu *perf_init_event(struct perf_event *event)
+ 
+ 	idx = srcu_read_lock(&pmus_srcu);
+ 
++	/*
++	 * Save original type before calling pmu->event_init() since certain
++	 * pmus overwrites event->attr.type to forward event to another pmu.
++	 */
++	event->orig_type = event->attr.type;
++
+ 	/* Try parent's PMU first: */
+ 	if (event->parent && event->parent->pmu) {
+ 		pmu = event->parent->pmu;
+@@ -13640,8 +13645,8 @@ void __init perf_event_init(void)
+ 	perf_event_init_all_cpus();
+ 	init_srcu_struct(&pmus_srcu);
+ 	perf_pmu_register(&perf_swevent, "software", PERF_TYPE_SOFTWARE);
+-	perf_pmu_register(&perf_cpu_clock, NULL, -1);
+-	perf_pmu_register(&perf_task_clock, NULL, -1);
++	perf_pmu_register(&perf_cpu_clock, "cpu_clock", -1);
++	perf_pmu_register(&perf_task_clock, "task_clock", -1);
+ 	perf_tp_register();
+ 	perf_event_init_cpu(smp_processor_id());
+ 	register_reboot_notifier(&perf_reboot_notifier);
+@@ -13684,7 +13689,7 @@ static int __init perf_event_sysfs_init(void)
+ 		goto unlock;
+ 
+ 	list_for_each_entry(pmu, &pmus, entry) {
+-		if (!pmu->name || pmu->type < 0)
++		if (pmu->dev)
+ 			continue;
+ 
+ 		ret = pmu_dev_alloc(pmu);
