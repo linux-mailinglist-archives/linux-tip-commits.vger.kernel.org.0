@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 726B66FDE74
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C936FDE7B
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 May 2023 15:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237031AbjEJN0A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 May 2023 09:26:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60584 "EHLO
+        id S237088AbjEJN0i (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 May 2023 09:26:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236808AbjEJNZ6 (ORCPT
+        with ESMTP id S237090AbjEJN0b (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 May 2023 09:25:58 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77FB95BBB;
-        Wed, 10 May 2023 06:25:55 -0700 (PDT)
-Date:   Wed, 10 May 2023 13:25:53 -0000
+        Wed, 10 May 2023 09:26:31 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAB01900E;
+        Wed, 10 May 2023 06:26:14 -0700 (PDT)
+Date:   Wed, 10 May 2023 13:26:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1683725153;
+        s=2020; t=1683725172;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+50aCcQo7yk8tGTr01frSlis0+nA0wrpfvXRz/M9unE=;
-        b=vliowQ8e/566MxivxMmyONSWLB8UEuf/k6awcdUjWvTT6DeIaxyajYhJo6j1Gs2lblqCtx
-        TehQtO2DV35EkosFY+8xTdp9KftNiSQTuXZ8WpeRNqPViZBc2NsDmzDlAs1Si4tpoJ0eW9
-        uUl4JaFxHylO1syiNvkusaTK7QZzbxNB+jZQ8Zs9IahMzn/hp0I6nLHWlOV/wpiuy4EfdH
-        540SFnCx8wRcVJc11z7hM9mcSg+VS5oQW/Ro/JJErFSKuK3Jw975LIl+toMjn2JbSJGkke
-        MgN3OKrV3hoau7vTgiPsJdx+pVYFivnA2W5N1wizjm1xvBS+LH1BmuWKHvmPig==
+        bh=UVknTNt976+E+pdbpfYQXjSnp9XJ60CYSW5lA/PZPHM=;
+        b=cLDXYrkpHLmSM/skeWKoU11K/+DdhDzAusCKxSaZLyWK+8rmpt0m6+yquIX9eANZDWgJjM
+        vhrjLf0YcSu/k3lFSm9/zlujC3LkEwymTv5105T+s3ZBLgV2FlpPoaVy3Xdqg7bpAU1vgd
+        kONDcnRoZIaeX9Qy8xnNpZ9EPMHxdWclP0tWo+piEvRpJLKc9sGTBEpYi1iNKyElfiWXih
+        ZLHslBxLZ+42+z0DKOsxwMVODosPz075rzlIzPipdxbU4ThoKNq+czdu+Rkltzijc6D7tG
+        /ocUbiL7Fn+bP3dHN1ReXsPPkjzg8SV3C+aLLs2cVN8tF0GtCSHFFQj2hrBxaw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1683725153;
+        s=2020e; t=1683725172;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+50aCcQo7yk8tGTr01frSlis0+nA0wrpfvXRz/M9unE=;
-        b=D4bLYkNGhQW2Fb8yvEdE+LSAxWhUd9EsBvnUplWN6E4yiOHtNnJbwWGXGvMEskLzG9deqt
-        J4xvA1pYYd64m1AA==
-From:   "tip-bot2 for Yang Jihong" <tip-bot2@linutronix.de>
+        bh=UVknTNt976+E+pdbpfYQXjSnp9XJ60CYSW5lA/PZPHM=;
+        b=RCyDWHA7HXCrvYKuRRrsFNqHDqPoLMqlGuBnPWXexleJpTnv7HJeHZTLt5WGvZ7ZJG+9bH
+        WdUsqI8BJds+UjBw==
+From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Fix perf_sample_data not properly
- initialized for different swevents in perf_tp_event()
-Cc:     Yang Jihong <yangjihong1@huawei.com>,
+Subject: [tip: sched/urgent] sched: fix cid_lock kernel-doc warnings
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230425103217.130600-1-yangjihong1@huawei.com>
-References: <20230425103217.130600-1-yangjihong1@huawei.com>
+In-Reply-To: <20230428031111.322-1-rdunlap@infradead.org>
+References: <20230428031111.322-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Message-ID: <168372515329.404.5827790675701138277.tip-bot2@tip-bot2>
+Message-ID: <168372517178.404.13654987530273728202.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,108 +65,52 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     1d1bfe30dad50d4bea83cd38d73c441972ea0173
-Gitweb:        https://git.kernel.org/tip/1d1bfe30dad50d4bea83cd38d73c441972ea0173
-Author:        Yang Jihong <yangjihong1@huawei.com>
-AuthorDate:    Tue, 25 Apr 2023 10:32:17 
+Commit-ID:     0019a2d4b7e37a983d133d42b707b8a3018ae6f4
+Gitweb:        https://git.kernel.org/tip/0019a2d4b7e37a983d133d42b707b8a3018ae6f4
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Thu, 27 Apr 2023 20:11:11 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 08 May 2023 10:58:26 +02:00
+CommitterDate: Mon, 08 May 2023 10:58:28 +02:00
 
-perf/core: Fix perf_sample_data not properly initialized for different swevents in perf_tp_event()
+sched: fix cid_lock kernel-doc warnings
 
-data->sample_flags may be modified in perf_prepare_sample(),
-in perf_tp_event(), different swevents use the same on-stack
-perf_sample_data, the previous swevent may change sample_flags in
-perf_prepare_sample(), as a result, some members of perf_sample_data are
-not correctly initialized when next swevent_event preparing sample
-(for example data->id, the value varies according to swevent).
+Fix kernel-doc warnings for cid_lock and use_cid_lock.
+These comments are not in kernel-doc format.
 
-A simple scenario triggers this problem is as follows:
+kernel/sched/core.c:11496: warning: Cannot understand  * @cid_lock: Guarantee forward-progress of cid allocation.
+ on line 11496 - I thought it was a doc line
+kernel/sched/core.c:11505: warning: Cannot understand  * @use_cid_lock: Select cid allocation behavior: lock-free vs spinlock.
+ on line 11505 - I thought it was a doc line
 
-  # perf record -e sched:sched_switch --switch-output-event sched:sched_switch -a sleep 1
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209014396 ]
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209014662 ]
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209014910 ]
-  [ perf record: Woken up 0 times to write data ]
-  [ perf record: Dump perf.data.2023041209015164 ]
-  [ perf record: Captured and wrote 0.069 MB perf.data.<timestamp> ]
-  # ls -l
-  total 860
-  -rw------- 1 root root  95694 Apr 12 09:01 perf.data.2023041209014396
-  -rw------- 1 root root 606430 Apr 12 09:01 perf.data.2023041209014662
-  -rw------- 1 root root  82246 Apr 12 09:01 perf.data.2023041209014910
-  -rw------- 1 root root  82342 Apr 12 09:01 perf.data.2023041209015164
-  # perf script -i perf.data.2023041209014396
-  0x11d58 [0x80]: failed to process type: 9 [Bad address]
-
-Solution: Re-initialize perf_sample_data after each event is processed.
-Note that data->raw->frag.data may be accessed in perf_tp_event_match().
-Therefore, need to init sample_data and then go through swevent hlist to prevent
-reference of NULL pointer, reported by [1].
-
-After fix:
-
-  # perf record -e sched:sched_switch --switch-output-event sched:sched_switch -a sleep 1
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209442259 ]
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209442514 ]
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209442760 ]
-  [ perf record: Woken up 0 times to write data ]
-  [ perf record: Dump perf.data.2023041209443003 ]
-  [ perf record: Captured and wrote 0.069 MB perf.data.<timestamp> ]
-  # ls -l
-  total 864
-  -rw------- 1 root root 100166 Apr 12 09:44 perf.data.2023041209442259
-  -rw------- 1 root root 606438 Apr 12 09:44 perf.data.2023041209442514
-  -rw------- 1 root root  82246 Apr 12 09:44 perf.data.2023041209442760
-  -rw------- 1 root root  82342 Apr 12 09:44 perf.data.2023041209443003
-  # perf script -i perf.data.2023041209442259 | head -n 5
-              perf   232 [000]    66.846217: sched:sched_switch: prev_comm=perf prev_pid=232 prev_prio=120 prev_state=D ==> next_comm=perf next_pid=234 next_prio=120
-              perf   234 [000]    66.846449: sched:sched_switch: prev_comm=perf prev_pid=234 prev_prio=120 prev_state=S ==> next_comm=perf next_pid=232 next_prio=120
-              perf   232 [000]    66.846546: sched:sched_switch: prev_comm=perf prev_pid=232 prev_prio=120 prev_state=R ==> next_comm=perf next_pid=234 next_prio=120
-              perf   234 [000]    66.846606: sched:sched_switch: prev_comm=perf prev_pid=234 prev_prio=120 prev_state=S ==> next_comm=perf next_pid=232 next_prio=120
-              perf   232 [000]    66.846646: sched:sched_switch: prev_comm=perf prev_pid=232 prev_prio=120 prev_state=R ==> next_comm=perf next_pid=234 next_prio=120
-
-[1] Link: https://lore.kernel.org/oe-lkp/202304250929.efef2caa-yujie.liu@intel.com
-
-Fixes: bb447c27a467 ("perf/core: Set data->sample_flags in perf_prepare_sample()")
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
+Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230425103217.130600-1-yangjihong1@huawei.com
+Link: https://lkml.kernel.org/r/20230428031111.322-1-rdunlap@infradead.org
 ---
- kernel/events/core.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ kernel/sched/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 68baa81..db016e4 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -10150,8 +10150,20 @@ void perf_tp_event(u16 event_type, u64 count, void *record, int entry_size,
- 	perf_trace_buf_update(record, event_type);
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 944c3ae..a68d127 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -11492,7 +11492,7 @@ void call_trace_sched_update_nr_running(struct rq *rq, int count)
  
- 	hlist_for_each_entry_rcu(event, head, hlist_entry) {
--		if (perf_tp_event_match(event, &data, regs))
-+		if (perf_tp_event_match(event, &data, regs)) {
- 			perf_swevent_event(event, count, &data, regs);
-+
-+			/*
-+			 * Here use the same on-stack perf_sample_data,
-+			 * some members in data are event-specific and
-+			 * need to be re-computed for different sweveents.
-+			 * Re-initialize data->sample_flags safely to avoid
-+			 * the problem that next event skips preparing data
-+			 * because data->sample_flags is set.
-+			 */
-+			perf_sample_data_init(&data, 0, 0);
-+			perf_sample_save_raw_data(&data, &raw);
-+		}
- 	}
+ #ifdef CONFIG_SCHED_MM_CID
  
- 	/*
+-/**
++/*
+  * @cid_lock: Guarantee forward-progress of cid allocation.
+  *
+  * Concurrency ID allocation within a bitmap is mostly lock-free. The cid_lock
+@@ -11501,7 +11501,7 @@ void call_trace_sched_update_nr_running(struct rq *rq, int count)
+  */
+ DEFINE_RAW_SPINLOCK(cid_lock);
+ 
+-/**
++/*
+  * @use_cid_lock: Select cid allocation behavior: lock-free vs spinlock.
+  *
+  * When @use_cid_lock is 0, the cid allocation is lock-free. When contention is
