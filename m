@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F41667016C8
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 13 May 2023 15:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5457B7016C9
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 13 May 2023 15:03:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237639AbjEMNDx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 13 May 2023 09:03:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49200 "EHLO
+        id S238193AbjEMNDz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 13 May 2023 09:03:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231934AbjEMNDw (ORCPT
+        with ESMTP id S235589AbjEMNDx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 13 May 2023 09:03:52 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A123C1D;
-        Sat, 13 May 2023 06:03:49 -0700 (PDT)
-Date:   Sat, 13 May 2023 13:03:47 -0000
+        Sat, 13 May 2023 09:03:53 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D2D3C1E;
+        Sat, 13 May 2023 06:03:50 -0700 (PDT)
+Date:   Sat, 13 May 2023 13:03:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1683983028;
+        s=2020; t=1683983029;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W1EJEcR+AEzUmA99JgX5AmBXZDc9dgM8/B5i2adcZbo=;
-        b=bImkBl5BnLLSX4fyIITZXutcB8/twGR5T4pUk9SV67KWbAoT3cOtjhCZriwlB/cSu+GAEy
-        5jywC8ozBairmjLWpJbDkRNa07mjiv0OALioBM/og+sP1+bWx2Fqkfe7/ZPqUBcHNRgvqB
-        R+o4OyuePV44k83vnxGgnkG5gDUtLPCSYhpH+Gxp22rdTs2ZRkSe06XL8cxO083t/saXz7
-        CH27NczUR1qu9KVPHo+b0IUilqW/5/zAhO8PIWogvl81en6E9b0IbuksoPfR98Ssdf/DAw
-        T+gtFb1wbz3ga3mMsAXqvLeimtVyfbTmNpbIBfmNE4NMFRVShQDtvD/s4IjN4Q==
+        bh=06cgyC4tpqJVQwWefSxRaQJ43JciCACo/Dm4GRiLBBM=;
+        b=GBnjNQg78aZtx2XPFOMF1E9PB2jZUkpnmnQyazwl685BiweNh/hpfRx9f1ehvJGLGTIjqX
+        yr23pk84p3+Gpcvgdr7Bc7MLPN4Hk8KLErs36Z+DIh4D/RTG8ZV5ERDS84HsIPeqM1Bk7J
+        GKO9DgRjKSf6uqK0aM+A4o+Ief6InyGzx98xSRLFYRDd7s8BC2x4uKEJtNRYxLHKYAfsX/
+        ydBfLuu35TDMXB/roeHyTedbIri7GShP5ytlTg/OGyzgCRsL+W+Ug8oR5yg4Qo9e0xyH1r
+        KnDc8p4pth9vG+AnS6hSQN1AQsuGiGP1FYmRibnRGvDcBO80YWhvLLw2etrSzA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1683983028;
+        s=2020e; t=1683983029;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W1EJEcR+AEzUmA99JgX5AmBXZDc9dgM8/B5i2adcZbo=;
-        b=1W8hD30ijSQaUPOHdFA4l2R4m1SvZbgROE6jV51GnpKsSgJdInPFzhhWBEXh98gHu2J10E
-        JeUDTEmpc0ya83Ag==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=06cgyC4tpqJVQwWefSxRaQJ43JciCACo/Dm4GRiLBBM=;
+        b=lwhBENOxTnM+78Hzi0AGpNEX7Rf5LxTIA1UJwq7L/TQfEs9cC9Xr9glnu/7y5/On7ZsSg0
+        HyPVMhmbdoOsYaBg==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/alternatives] x86/alternative: Rewrite optimize_nops() some
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/alternatives] x86/lib/memmove: Decouple ERMS from FSRM
+Cc:     Daniel Verkamp <dverkamp@chromium.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230208171431.373412974@infradead.org>
-References: <20230208171431.373412974@infradead.org>
+In-Reply-To: <yK0dyzI0MMdTie@zn.tnic>
+References: <yK0dyzI0MMdTie@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <168398302782.404.12700216088592831704.tip-bot2@tip-bot2>
+Message-ID: <168398302855.404.16319361795751047208.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,226 +68,63 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/alternatives branch of tip:
 
-Commit-ID:     6c480f22212826425b57932f09b1f0abbec85485
-Gitweb:        https://git.kernel.org/tip/6c480f22212826425b57932f09b1f0abbec85485
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 08 Feb 2023 18:10:53 +01:00
+Commit-ID:     14e4ec9c3e9164c6719f98d8a3065c487be2aaa5
+Gitweb:        https://git.kernel.org/tip/14e4ec9c3e9164c6719f98d8a3065c487be2aaa5
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Sun, 26 Feb 2023 21:04:26 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 11 May 2023 17:33:36 +02:00
+CommitterDate: Wed, 10 May 2023 14:51:56 +02:00
 
-x86/alternative: Rewrite optimize_nops() some
+x86/lib/memmove: Decouple ERMS from FSRM
 
-Address two issues:
+Up until now it was perceived that FSRM is an improvement to ERMS and
+thus it was made dependent on latter.
 
- - it no longer hard requires single byte NOP runs - now it accepts any
-   NOP and NOPL encoded instruction (but not the more complicated 32bit
-   NOPs).
+However, there are AMD BIOSes out there which allow for disabling of
+either features and thus preventing kernels from booting due to the CMP
+disappearing and thus breaking the logic in the memmove() function.
 
- - it writes a single 'instruction' replacement.
+Similar observation happens on some VM migration scenarios.
 
-Specifically, ORC unwinder relies on the tail NOP of an alternative to
-be a single instruction. In particular, it relies on the inner bytes not
-being executed.
+Patch the proper sequences depending on which feature is enabled.
 
-Once the max supported NOP length has been reached (currently 8, could easily
-be extended to 11 on x86_64), switch to JMP.d8 and INT3 padding to
-achieve the same result.
-
-Objtool uses this guarantee in the analysis of alternative/overlapping
-CFI state for the ORC unwinder data. Every instruction edge gets a CFI
-state and the more instructions the larger the chance of conflicts.
-
-  [ bp:
-  - Add a comment over add_nop() to explain why it does it this way
-  - Make add_nops() PARAVIRT only as it is used solely there now ]
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reported-by: Daniel Verkamp <dverkamp@chromium.org>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230208171431.373412974@infradead.org
+Link: https://lore.kernel.org/r/Y/yK0dyzI0MMdTie@zn.tnic
 ---
- arch/x86/kernel/alternative.c | 129 ++++++++++++++++++---------------
- 1 file changed, 71 insertions(+), 58 deletions(-)
+ arch/x86/lib/memmove_64.S | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 28eb1d0..839bc6d 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -113,17 +113,35 @@ const unsigned char * const x86_nops[ASM_NOP_MAX+1] =
- 	x86nops + 1 + 2 + 3 + 4 + 5 + 6 + 7,
- };
+diff --git a/arch/x86/lib/memmove_64.S b/arch/x86/lib/memmove_64.S
+index 0266186..0559b20 100644
+--- a/arch/x86/lib/memmove_64.S
++++ b/arch/x86/lib/memmove_64.S
+@@ -38,10 +38,12 @@ SYM_FUNC_START(__memmove)
+ 	cmp %rdi, %r8
+ 	jg 2f
  
--/* Use this to add nops to a buffer, then text_poke the whole buffer. */
--static void __init_or_module add_nops(void *insns, unsigned int len)
-+/*
-+ * In order not to issue an ORC stack depth tracking CFI entry (Call Frame Info)
-+ * for every single-byte NOP, try to generate the maximally available NOP of
-+ * size <= ASM_NOP_MAX such that only a single CFI entry is generated (vs one for
-+ * each single-byte NOPs). If @len to fill out is > ASM_NOP_MAX, pad with INT3 and
-+ * *jump* over instead of executing long and daft NOPs.
-+ */
-+static void __init_or_module add_nop(u8 *instr, unsigned int len)
- {
--	while (len > 0) {
--		unsigned int noplen = len;
--		if (noplen > ASM_NOP_MAX)
--			noplen = ASM_NOP_MAX;
--		memcpy(insns, x86_nops[noplen], noplen);
--		insns += noplen;
--		len -= noplen;
-+	u8 *target = instr + len;
-+
-+	if (!len)
-+		return;
-+
-+	if (len <= ASM_NOP_MAX) {
-+		memcpy(instr, x86_nops[len], len);
-+		return;
- 	}
-+
-+	if (len < 128) {
-+		__text_gen_insn(instr, JMP8_INSN_OPCODE, instr, target, JMP8_INSN_SIZE);
-+		instr += JMP8_INSN_SIZE;
-+	} else {
-+		__text_gen_insn(instr, JMP32_INSN_OPCODE, instr, target, JMP32_INSN_SIZE);
-+		instr += JMP32_INSN_SIZE;
-+	}
-+
-+	for (;instr < target; instr++)
-+		*instr = INT3_INSN_OPCODE;
- }
+-	/* FSRM implies ERMS => no length checks, do the copy directly */
++#define CHECK_LEN	cmp $0x20, %rdx; jb 1f
++#define MEMMOVE_BYTES	movq %rdx, %rcx; rep movsb; RET
+ .Lmemmove_begin_forward:
+-	ALTERNATIVE "cmp $0x20, %rdx; jb 1f", "", X86_FEATURE_FSRM
+-	ALTERNATIVE "", "jmp .Lmemmove_erms", X86_FEATURE_ERMS
++	ALTERNATIVE_2 __stringify(CHECK_LEN), \
++		      __stringify(CHECK_LEN; MEMMOVE_BYTES), X86_FEATURE_ERMS, \
++		      __stringify(MEMMOVE_BYTES), X86_FEATURE_FSRM
  
- extern s32 __retpoline_sites[], __retpoline_sites_end[];
-@@ -134,39 +152,32 @@ extern struct alt_instr __alt_instructions[], __alt_instructions_end[];
- extern s32 __smp_locks[], __smp_locks_end[];
- void text_poke_early(void *addr, const void *opcode, size_t len);
- 
--/*
-- * optimize_nops_range() - Optimize a sequence of single byte NOPs (0x90)
-- *
-- * @instr: instruction byte stream
-- * @instrlen: length of the above
-- * @off: offset within @instr where the first NOP has been detected
-- *
-- * Return: number of NOPs found (and replaced).
-- */
--static __always_inline int optimize_nops_range(u8 *instr, u8 instrlen, int off)
-+static bool insn_is_nop(struct insn *insn)
- {
--	unsigned long flags;
--	int i = off, nnops;
-+	if (insn->opcode.bytes[0] == 0x90)
-+		return true;
- 
--	while (i < instrlen) {
--		if (instr[i] != 0x90)
--			break;
-+	if (insn->opcode.bytes[0] == 0x0F && insn->opcode.bytes[1] == 0x1F)
-+		return true;
- 
--		i++;
--	}
-+	/* TODO: more nops */
- 
--	nnops = i - off;
-+	return false;
-+}
- 
--	if (nnops <= 1)
--		return nnops;
-+static int skip_nops(u8 *instr, int offset, int len)
-+{
-+	struct insn insn;
- 
--	local_irq_save(flags);
--	add_nops(instr + off, nnops);
--	local_irq_restore(flags);
-+	for (; offset < len; offset += insn.length) {
-+		if (insn_decode_kernel(&insn, &instr[offset]))
-+			break;
- 
--	DUMP_BYTES(ALT, instr, instrlen, "%px: [%d:%d) optimized NOPs: ", instr, off, i);
-+		if (!insn_is_nop(&insn))
-+			break;
-+	}
- 
--	return nnops;
-+	return offset;
- }
- 
- /*
-@@ -175,28 +186,19 @@ static __always_inline int optimize_nops_range(u8 *instr, u8 instrlen, int off)
-  */
- static void __init_or_module noinline optimize_nops(u8 *instr, size_t len)
- {
--	struct insn insn;
--	int i = 0;
-+	for (int next, i = 0; i < len; i = next) {
-+		struct insn insn;
- 
--	/*
--	 * Jump over the non-NOP insns and optimize single-byte NOPs into bigger
--	 * ones.
--	 */
--	for (;;) {
- 		if (insn_decode_kernel(&insn, &instr[i]))
- 			return;
- 
--		/*
--		 * See if this and any potentially following NOPs can be
--		 * optimized.
--		 */
--		if (insn.length == 1 && insn.opcode.bytes[0] == 0x90)
--			i += optimize_nops_range(instr, len, i);
--		else
--			i += insn.length;
-+		next = i + insn.length;
- 
--		if (i >= len)
--			return;
-+		if (insn_is_nop(&insn)) {
-+			next = skip_nops(instr, next, len);
-+			add_nop(instr + i, next - i);
-+			DUMP_BYTES(ALT, instr, len, "%px: [%d:%d) optimized NOPs: ", instr, i, next);
-+		}
- 	}
- }
- 
-@@ -323,13 +325,10 @@ apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
- 			}
- 		}
- 
+ 	/*
+ 	 * movsq instruction have many startup latency
+@@ -207,11 +209,6 @@ SYM_FUNC_START(__memmove)
+ 	movb %r11b, (%rdi)
+ 13:
+ 	RET
 -
--		/*
--		 * See if this and any potentially following NOPs can be
--		 * optimized.
--		 */
--		if (insn.length == 1 && insn.opcode.bytes[0] == 0x90)
--			next = i + optimize_nops_range(buf, len, i);
-+		if (insn_is_nop(&insn)) {
-+			next = skip_nops(buf, next, len);
-+			add_nop(buf + i, next - i);
-+		}
- 	}
- }
+-.Lmemmove_erms:
+-	movq %rdx, %rcx
+-	rep movsb
+-	RET
+ SYM_FUNC_END(__memmove)
+ EXPORT_SYMBOL(__memmove)
  
-@@ -1289,6 +1288,20 @@ int alternatives_text_reserved(void *start, void *end)
- #endif /* CONFIG_SMP */
- 
- #ifdef CONFIG_PARAVIRT
-+
-+/* Use this to add nops to a buffer, then text_poke the whole buffer. */
-+static void __init_or_module add_nops(void *insns, unsigned int len)
-+{
-+	while (len > 0) {
-+		unsigned int noplen = len;
-+		if (noplen > ASM_NOP_MAX)
-+			noplen = ASM_NOP_MAX;
-+		memcpy(insns, x86_nops[noplen], noplen);
-+		insns += noplen;
-+		len -= noplen;
-+	}
-+}
-+
- void __init_or_module apply_paravirt(struct paravirt_patch_site *start,
- 				     struct paravirt_patch_site *end)
- {
