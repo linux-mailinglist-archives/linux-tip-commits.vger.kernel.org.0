@@ -2,111 +2,102 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59543701824
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 13 May 2023 18:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D410703189
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 May 2023 17:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjEMQKq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 13 May 2023 12:10:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37836 "EHLO
+        id S242254AbjEOP27 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 May 2023 11:28:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229721AbjEMQKp (ORCPT
+        with ESMTP id S240538AbjEOP26 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 13 May 2023 12:10:45 -0400
+        Mon, 15 May 2023 11:28:58 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C670D3586;
-        Sat, 13 May 2023 09:10:40 -0700 (PDT)
-Date:   Sat, 13 May 2023 16:10:37 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50BD71BEF;
+        Mon, 15 May 2023 08:28:57 -0700 (PDT)
+Date:   Mon, 15 May 2023 15:28:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1683994238;
+        s=2020; t=1684164535;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4H6Il2FBjbUen97ykKMKxuTbqQHAqsS0ZdcQh+Q5uC8=;
-        b=uX5bAQK2urQVQFwcW9Pe26LPKnQxrE3uYLVjIw7daO9acjtCZ6dCuBqmq0um0v2Wnqm8F9
-        TAILMWMshDoDqdGURxpptleoTr1BgDChdhbeK23IOmPklo0mHQzCFdVkGv8RJynynyXnhU
-        4emdv9kFY5xLQGci5JZkRUHu7iIy5urreBkao2kGo4AjebpNolA1oWQNvYuqZMxfdLdsrA
-        BIydgMbyHB5me7QlyOZ1aNS7hoVHsvpPs3LcLRi8uhl9fN5SsCmnmES4xK15SlKo1pdyep
-        zu5VfOtpan6nOAZd0eKvtYlDFUTd/lLR7HGakP/dIesp3dIeTWIQdrmfWcWo+w==
+        bh=JHkRtBnLgUXHekCUCH9zzjA8JoRFSuD+qEnkNCWR4Rg=;
+        b=TidLpN4HmkuWKwu32AJAX1EL1oe/30cMlcY1fCfk+Jcnh+B8N7Kfy1in5ToJXH+hhnwx6n
+        SBV+wIps71XKrqmgBa8/4r8AXvZ+SIFtzf1/dsRPMtCRjs6199LJy/Tj04JI3AQUAkxjY6
+        wFBeR66y/R9h7N+0Efa60fk3QVTEFtAfsIHrgMTogo7ug964iv5EYgu89k+q8/XW+tTOFD
+        DKG0pXWH+PPdE9jJaFjjqrCcP5zKQ1/JLE3SRwLUtpBaYCnu5RwYH2tzvV5+A95MiZQBGP
+        T51i2NF3w0BHSlI/dMbaBVD6MQGxQTB9noCMtro6hfcjxqTJQRBbH93wU6SSDg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1683994238;
+        s=2020e; t=1684164535;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4H6Il2FBjbUen97ykKMKxuTbqQHAqsS0ZdcQh+Q5uC8=;
-        b=ZuxUTWsvKRit+0e9IMLEqIYV47VGePwvwS0YcQyYmhGVz/ZWuVf8OcYzGbvPlOunhnu7kS
-        gJH7S9vhvviwrdBA==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=JHkRtBnLgUXHekCUCH9zzjA8JoRFSuD+qEnkNCWR4Rg=;
+        b=GWjNHgoaC4oShKwj8ZAmo7mm+Y0Uo7D0MsToUfDCy2nP66/B5D3iC0KDAl2hy+G+eYGX8m
+        0199MON2mI1Mz4Dw==
+From:   "tip-bot2 for Christian Kujau" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/alternatives] x86/alternatives: Fix section mismatch warnings
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: x86/cleanups] Documentation/process: Explain when tip branches
+ get merged into mainline
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Christian Kujau <lists@nerdbynature.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230513160146.16039-1-bp@alien8.de>
-References: <20230513160146.16039-1-bp@alien8.de>
+In-Reply-To: <8a1fd8b7-9fe3-b2b5-406e-fa6f5e03e7c0@nerdbynature.de>
+References: <8a1fd8b7-9fe3-b2b5-406e-fa6f5e03e7c0@nerdbynature.de>
 MIME-Version: 1.0
-Message-ID: <168399423765.404.4543227971125516398.tip-bot2@tip-bot2>
+Message-ID: <168416453547.404.5378455363307181129.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/alternatives branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     d42a2a89121071cc8dd285235253a4c739641635
-Gitweb:        https://git.kernel.org/tip/d42a2a89121071cc8dd285235253a4c739641635
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Sat, 13 May 2023 16:01:39 +02:00
+Commit-ID:     4f1192559707eaa7adef307f5b9ad3a444b248f8
+Gitweb:        https://git.kernel.org/tip/4f1192559707eaa7adef307f5b9ad3a444b248f8
+Author:        Christian Kujau <lists@nerdbynature.de>
+AuthorDate:    Sat, 18 Feb 2023 22:29:44 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sat, 13 May 2023 18:04:42 +02:00
+CommitterDate: Mon, 15 May 2023 17:11:28 +02:00
 
-x86/alternatives: Fix section mismatch warnings
+Documentation/process: Explain when tip branches get merged into mainline
 
-Fix stuff like:
+Explain when tip branches get merged into mainline.
 
-  WARNING: modpost: vmlinux.o: section mismatch in reference: \
-  __optimize_nops (section: .text) -> debug_alternative (section: .init.data)
-
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Christian Kujau <lists@nerdbynature.de>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230513160146.16039-1-bp@alien8.de
+Link: https://lore.kernel.org/r/8a1fd8b7-9fe3-b2b5-406e-fa6f5e03e7c0@nerdbynature.de
 ---
- arch/x86/kernel/alternative.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/process/maintainer-tip.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 3bb0a5f..93aa95a 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -193,8 +193,8 @@ static int skip_nops(u8 *instr, int offset, int len)
-  * Optimize a sequence of NOPs, possibly preceded by an unconditional jump
-  * to the end of the NOP sequence into a single NOP.
-  */
--static bool __optimize_nops(u8 *instr, size_t len, struct insn *insn,
--			    int *next, int *prev, int *target)
-+static bool __init_or_module
-+__optimize_nops(u8 *instr, size_t len, struct insn *insn, int *next, int *prev, int *target)
- {
- 	int i = *next - insn->length;
+diff --git a/Documentation/process/maintainer-tip.rst b/Documentation/process/maintainer-tip.rst
+index 178c95f..93d8a79 100644
+--- a/Documentation/process/maintainer-tip.rst
++++ b/Documentation/process/maintainer-tip.rst
+@@ -421,6 +421,9 @@ allowing themselves a breath. Please respect that.
+ The release candidate -rc1 is the starting point for new patches to be
+ applied which are targeted for the next merge window.
  
-@@ -765,7 +765,7 @@ void __init_or_module noinline apply_returns(s32 *start, s32 *end) { }
++So called _urgent_ branches will be merged into mainline during the
++stabilization phase of each release.
++
  
- #ifdef CONFIG_X86_KERNEL_IBT
- 
--static void poison_endbr(void *addr, bool warn)
-+static void __init_or_module poison_endbr(void *addr, bool warn)
- {
- 	u32 endbr, poison = gen_endbr_poison();
- 
+ Git
+ ^^^
