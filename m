@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D756704883
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 223FC704888
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231868AbjEPJKR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 May 2023 05:10:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46108 "EHLO
+        id S231687AbjEPJKV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 May 2023 05:10:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231799AbjEPJKE (ORCPT
+        with ESMTP id S231812AbjEPJKF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 May 2023 05:10:04 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 298674C04;
-        Tue, 16 May 2023 02:10:01 -0700 (PDT)
-Date:   Tue, 16 May 2023 09:09:56 -0000
+        Tue, 16 May 2023 05:10:05 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD28A2D7F;
+        Tue, 16 May 2023 02:10:03 -0700 (PDT)
+Date:   Tue, 16 May 2023 09:09:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684228197;
+        s=2020; t=1684228198;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i1JV2VttK9sYAaqITq7ZS8l//oZbDX+nsKl/YA+dOtc=;
-        b=bo8SxMJT56zdQWUVIfWGqtFgsHUnkPNXCTIKMIbH+QHOA4ygIuIGzxCfR3lJcv6HtmkkT9
-        k8eUrXcPlaWXhbJWqmLWjAiDugsCN7AYsHp1pu+q5JGCu0dTfBJi+Dyo7SV22+KIf/QmNf
-        2GIoV72yuEnHfQtfwcven7Y1uira7Vkow9abLOAAUNs+M7wpdwHSVezvpzc7qg8gFXclTm
-        1P3rRrX9UQmbSveZ/rIz4tQub8qP0SbyE5DEnuoMxBIre/QSpMjSTvVW9JwNJ/6SRyO62I
-        OaWPmc1743G++O1yPjQ0vBgKTAi2aZ23WJeDubz7wjssF4iET3jMp8A5CahbtQ==
+        bh=UaP3IirQS29/nSRBGEvaWqpv53AEDPCueTjFwjsewdU=;
+        b=yYMXhxyw1cZSdgPS9GRgRXxHEwwE0Q2foQtzhTHwRJfEslu2EcG1qguNDVLs9lKxak49sq
+        EtfCsXV2ZLsvOX8n53uVsQCG4ckLLwm588joMplO/GPGktMFPcLwbZC7cw1W7ddAcxjZ28
+        1Sfb9iXGWbn8FNIM6MHYCQ7BKM5UKCZvOCGscSXJRV8Jac1N7ttTAiaqwwDYrQpBGZjdaG
+        nFqE4UA2snPMycANAhSaPDsO8GPfAiryqDgqD5jjnaMjJHy5Aeli+FUHWhH1znpfIxCEiD
+        EpjnCjY5UHoy5uzyh0Fu9Adwg78KEbBgNkZkM1pl8zaY8BZk51/zDH9T9Va2Wg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684228197;
+        s=2020e; t=1684228198;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i1JV2VttK9sYAaqITq7ZS8l//oZbDX+nsKl/YA+dOtc=;
-        b=COhnqNysLHyeHEZnBREQQQ5NMyk8ru/bnNE9uy79C40WKhPUBRiSnS6DIgq0PIM+G4AmyM
-        5bpqorlaa7OphwDA==
+        bh=UaP3IirQS29/nSRBGEvaWqpv53AEDPCueTjFwjsewdU=;
+        b=hV/fvp5UmC1dZ4ZtJhTYLv2Rk6mveoUPHZ2LhHIiCUJUNj7E1RHj/unQDv/dWL5YtZyyhl
+        GeSJYRRzo0h/rtCA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] parisc: Switch to hotplug core state synchronization
+Subject: [tip: smp/core] ARM: smp: Switch to hotplug core state synchronization
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Michael Kelley <mikelley@microsoft.com>,
@@ -51,10 +51,10 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Helge Deller <deller@gmx.de>,
         "Guilherme G. Piccoli" <gpiccoli@igalia.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230512205256.859920443@linutronix.de>
-References: <20230512205256.859920443@linutronix.de>
+In-Reply-To: <20230512205256.635326070@linutronix.de>
+References: <20230512205256.635326070@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168422819654.404.3463481491264474300.tip-bot2@tip-bot2>
+Message-ID: <168422819767.404.5002572577505730138.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,14 +71,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     51e0efe1f26ec900ad80025b9faa2bec9575f1b2
-Gitweb:        https://git.kernel.org/tip/51e0efe1f26ec900ad80025b9faa2bec9575f1b2
+Commit-ID:     5490e769cdc7230cb93e804e656cce19d6c82253
+Gitweb:        https://git.kernel.org/tip/5490e769cdc7230cb93e804e656cce19d6c82253
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 12 May 2023 23:07:38 +02:00
+AuthorDate:    Fri, 12 May 2023 23:07:32 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 May 2023 13:44:59 +02:00
+CommitterDate: Mon, 15 May 2023 13:44:57 +02:00
 
-parisc: Switch to hotplug core state synchronization
+ARM: smp: Switch to hotplug core state synchronization
 
 Switch to the CPU hotplug core state tracking and synchronization
 mechanim. No functional change intended.
@@ -89,56 +89,74 @@ Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
 Tested-by: Helge Deller <deller@gmx.de> # parisc
 Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
-Link: https://lore.kernel.org/r/20230512205256.859920443@linutronix.de
+Link: https://lore.kernel.org/r/20230512205256.635326070@linutronix.de
 ---
- arch/parisc/Kconfig          | 1 +
- arch/parisc/kernel/process.c | 4 ++--
- arch/parisc/kernel/smp.c     | 7 +++----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/Kconfig           |  1 +
+ arch/arm/include/asm/smp.h |  2 +-
+ arch/arm/kernel/smp.c      | 18 +++++++-----------
+ 3 files changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 466a255..67a3f98 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -57,6 +57,7 @@ config PARISC
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_REGS_AND_STACK_ACCESS_API
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 0fb4b21..775ce86 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -124,6 +124,7 @@ config ARM
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select HAVE_UID16
+ 	select HAVE_VIRT_CPU_ACCOUNTING_GEN
 +	select HOTPLUG_CORE_SYNC_DEAD if HOTPLUG_CPU
- 	select GENERIC_SCHED_CLOCK
- 	select GENERIC_IRQ_MIGRATION if SMP
- 	select HAVE_UNSTABLE_SCHED_CLOCK if SMP
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index 97c6f87..66f6543 100644
---- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -166,8 +166,8 @@ void __noreturn arch_cpu_idle_dead(void)
+ 	select IRQ_FORCED_THREADING
+ 	select MODULES_USE_ELF_REL
+ 	select NEED_DMA_MAP_STATE
+diff --git a/arch/arm/include/asm/smp.h b/arch/arm/include/asm/smp.h
+index 7c1c90d..8c05a7f 100644
+--- a/arch/arm/include/asm/smp.h
++++ b/arch/arm/include/asm/smp.h
+@@ -64,7 +64,7 @@ extern void secondary_startup_arm(void);
  
- 	local_irq_disable();
+ extern int __cpu_disable(void);
  
--	/* Tell __cpu_die() that this CPU is now safe to dispose of. */
--	(void)cpu_report_death();
-+	/* Tell the core that this CPU is now safe to dispose of. */
-+	cpuhp_ap_report_dead();
+-extern void __cpu_die(unsigned int cpu);
++static inline void __cpu_die(unsigned int cpu) { }
  
- 	/* Ensure that the cache lines are written out. */
- 	flush_cache_all_local();
-diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
-index b7fc859..6b6eaa4 100644
---- a/arch/parisc/kernel/smp.c
-+++ b/arch/parisc/kernel/smp.c
-@@ -500,11 +500,10 @@ int __cpu_disable(void)
- void __cpu_die(unsigned int cpu)
+ extern void arch_send_call_function_single_ipi(int cpu);
+ extern void arch_send_call_function_ipi_mask(const struct cpumask *mask);
+diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
+index 87f8d0e..6756203 100644
+--- a/arch/arm/kernel/smp.c
++++ b/arch/arm/kernel/smp.c
+@@ -288,15 +288,11 @@ int __cpu_disable(void)
+ }
+ 
+ /*
+- * called on the thread which is asking for a CPU to be shutdown -
+- * waits until shutdown has completed, or it is timed out.
++ * called on the thread which is asking for a CPU to be shutdown after the
++ * shutdown completed.
+  */
+-void __cpu_die(unsigned int cpu)
++void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
  {
- 	pdc_cpu_rendezvous_lock();
-+}
- 
 -	if (!cpu_wait_death(cpu, 5)) {
--		pr_crit("CPU%u: cpu didn't die\n", cpu);
+-		pr_err("CPU%u: cpu didn't die\n", cpu);
 -		return;
 -	}
-+void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
-+{
- 	pr_info("CPU%u: is shutting down\n", cpu);
+ 	pr_debug("CPU%u: shutdown\n", cpu);
  
- 	/* set task's state to interruptible sleep */
+ 	clear_tasks_mm_cpumask(cpu);
+@@ -336,11 +332,11 @@ void __noreturn arch_cpu_idle_dead(void)
+ 	flush_cache_louis();
+ 
+ 	/*
+-	 * Tell __cpu_die() that this CPU is now safe to dispose of.  Once
+-	 * this returns, power and/or clocks can be removed at any point
+-	 * from this CPU and its cache by platform_cpu_kill().
++	 * Tell cpuhp_bp_sync_dead() that this CPU is now safe to dispose
++	 * of. Once this returns, power and/or clocks can be removed at
++	 * any point from this CPU and its cache by platform_cpu_kill().
+ 	 */
+-	(void)cpu_report_death();
++	cpuhp_ap_report_dead();
+ 
+ 	/*
+ 	 * Ensure that the cache lines associated with that completion are
