@@ -2,59 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 954D4704876
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BA3870487E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbjEPJKD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 May 2023 05:10:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45906 "EHLO
+        id S231453AbjEPJKM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 May 2023 05:10:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjEPJJ6 (ORCPT
+        with ESMTP id S231796AbjEPJKE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 May 2023 05:09:58 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E05030CF;
-        Tue, 16 May 2023 02:09:56 -0700 (PDT)
-Date:   Tue, 16 May 2023 09:09:54 -0000
+        Tue, 16 May 2023 05:10:04 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29635421A;
+        Tue, 16 May 2023 02:10:00 -0700 (PDT)
+Date:   Tue, 16 May 2023 09:09:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684228194;
+        s=2020; t=1684228196;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mtlhvL39diIsHoEJEeHi/4xzRIVFTtzXhH36aRuQsIc=;
-        b=298a2DrEuTwk7HVjGyp2vWepEfugPTdMAUTU523dTeQ59Rph9GS3+j9UufrjUlassdryhN
-        3txvxwQA5A7wqbk3Hw9NRj/oNCLZ3gduLBI5UwPhxMY4QFMEUtb5CKu873rV/xvZwhr/BN
-        npjvJvCysua2AEyCiW6NkuvFbQ4NSTteA5UOYSAsZHFkllrpUxT/+RW4HbOr6Y7A3nKjNg
-        SC4CJHVeRA+7HiKd5zknus++MT70XteIHBBKa7FgMBqeIS2/wL8zrNRRfBBxoFj1764IN3
-        q4+ly9M4KFTTY9MqmFqyLT+aBuKdrvfH0VpHcMqi/8nGm/WiP/27xpsY921S5A==
+        bh=pPk+J3aq3bXChS7qb82NQ2BLD6Yszz/2hu6XSw1UagY=;
+        b=XibnvBuoh5+7xmwpAKdp9yb0QegERnx6wQs8daMYQHQPQlqZtQAwaAwUEqx73u7sfzsfR+
+        CYTYIFj/o3Xoq9kUMHrgsr8GLMfsrt9MZoQi4DmDUAMl0eD0trMmBrudvZt2kYBr8vj2Ey
+        lVC8rTSREAPdPcQmcl52PD3asQF3J4m+zdjV+dm4oGdn2rgGNy5azkFgwwzSYCcEWnZl8G
+        zQ95AOGxoRfV6ZCYBI8k4nxe2zsgX3fjCv/h5qjeZGyhqlXaBcuRaSuYj4psUMFFWYNY0u
+        ChYDwDi1DYaEgGyNImn8N9PQSVh/l7INYtkKu+buLa1NzIlEOslA4RqKF2REeA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684228194;
+        s=2020e; t=1684228196;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mtlhvL39diIsHoEJEeHi/4xzRIVFTtzXhH36aRuQsIc=;
-        b=c6r1QdGUbJmFLpvWdCvOl8JnlxvMXvHzBFOyxR0xpvsMwKAC99DJMj9r5q+aWRny6ecZEZ
-        BAu4SLtu8pi458AA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=pPk+J3aq3bXChS7qb82NQ2BLD6Yszz/2hu6XSw1UagY=;
+        b=f4joasLOCZZKzHgL62N4mj6fXQNsvo4VPy75LJ1R4ziJucVklr9jcOabZQIebIrz1hMjQn
+        XOn8t0GQlNhuLuAw==
+From:   "tip-bot2 for David Woodhouse" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] x86/apic: Save the APIC virtual base address
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: smp/core] cpu/hotplug: Reset task stack state in _cpu_up()
+Cc:     David Woodhouse <dwmw@amazon.co.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Michael Kelley <mikelley@microsoft.com>,
         Oleksandr Natalenko <oleksandr@natalenko.name>,
         Helge Deller <deller@gmx.de>,
         "Guilherme G. Piccoli" <gpiccoli@igalia.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230512205257.299231005@linutronix.de>
-References: <20230512205257.299231005@linutronix.de>
+In-Reply-To: <20230512205257.027075560@linutronix.de>
+References: <20230512205257.027075560@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168422819438.404.10533112303979170137.tip-bot2@tip-bot2>
+Message-ID: <168422819576.404.15600821277186598321.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,70 +73,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     bea629d57d006733d155bdb65ba4867788da69b6
-Gitweb:        https://git.kernel.org/tip/bea629d57d006733d155bdb65ba4867788da69b6
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 12 May 2023 23:07:51 +02:00
+Commit-ID:     6d712b9b3a58018259fb40ddd498d1f7dfa1f4ec
+Gitweb:        https://git.kernel.org/tip/6d712b9b3a58018259fb40ddd498d1f7dfa1f4ec
+Author:        David Woodhouse <dwmw@amazon.co.uk>
+AuthorDate:    Fri, 12 May 2023 23:07:43 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 May 2023 13:45:03 +02:00
+CommitterDate: Mon, 15 May 2023 13:45:00 +02:00
 
-x86/apic: Save the APIC virtual base address
+cpu/hotplug: Reset task stack state in _cpu_up()
 
-For parallel CPU brinugp it's required to read the APIC ID in the low level
-startup code. The virtual APIC base address is a constant because its a
-fix-mapped address. Exposing that constant which is composed via macros to
-assembly code is non-trivial due to header inclusion hell.
+Commit dce1ca0525bf ("sched/scs: Reset task stack state in bringup_cpu()")
+ensured that the shadow call stack and KASAN poisoning were removed from
+a CPU's stack each time that CPU is brought up, not just once.
 
-Aside of that it's constant only because of the vsyscall ABI
-requirement. Once vsyscall is out of the picture the fixmap can be placed
-at runtime.
+This is not incorrect. However, with parallel bringup the idle thread setup
+will happen at a different step. As a consequence the cleanup in
+bringup_cpu() would be too late.
 
-Avoid header hell, stay flexible and store the address in a variable which
-can be exposed to the low level startup code.
+Move the SCS/KASAN cleanup to the generic _cpu_up() function instead,
+which already ensures that the new CPU's stack is available, purely to
+allow for early failure. This occurs when the CPU to be brought up is
+in the CPUHP_OFFLINE state, which should correctly do the cleanup any
+time the CPU has been taken down to the point where such is needed.
 
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Tested-by: Mark Rutland <mark.rutland@arm.com>
 Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
 Tested-by: Helge Deller <deller@gmx.de> # parisc
 Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
-Link: https://lore.kernel.org/r/20230512205257.299231005@linutronix.de
+Link: https://lore.kernel.org/r/20230512205257.027075560@linutronix.de
 ---
- arch/x86/include/asm/smp.h  | 1 +
- arch/x86/kernel/apic/apic.c | 4 ++++
- 2 files changed, 5 insertions(+)
+ kernel/cpu.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-index 726c2a2..c6d5b65 100644
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -196,6 +196,7 @@ extern void nmi_selftest(void);
- #endif
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 64b6242..0ab6a7d 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -771,12 +771,6 @@ static int bringup_cpu(unsigned int cpu)
+ 		return -EAGAIN;
  
- extern unsigned int smpboot_control;
-+extern unsigned long apic_mmio_base;
- 
- #endif /* !__ASSEMBLY__ */
- 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index e17600d..d3f6c18 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -101,6 +101,9 @@ static int apic_extnmi __ro_after_init = APIC_EXTNMI_BSP;
-  */
- static bool virt_ext_dest_id __ro_after_init;
- 
-+/* For parallel bootup. */
-+unsigned long apic_mmio_base __ro_after_init;
+ 	/*
+-	 * Reset stale stack state from the last time this CPU was online.
+-	 */
+-	scs_task_reset(idle);
+-	kasan_unpoison_task_stack(idle);
+-
+-	/*
+ 	 * Some architectures have to walk the irq descriptors to
+ 	 * setup the vector space for the cpu which comes online.
+ 	 *
+@@ -1587,6 +1581,12 @@ static int _cpu_up(unsigned int cpu, int tasks_frozen, enum cpuhp_state target)
+ 			ret = PTR_ERR(idle);
+ 			goto out;
+ 		}
 +
- /*
-  * Map cpu index to physical APIC ID
-  */
-@@ -2163,6 +2166,7 @@ void __init register_lapic_address(unsigned long address)
- 
- 	if (!x2apic_mode) {
- 		set_fixmap_nocache(FIX_APIC_BASE, address);
-+		apic_mmio_base = APIC_BASE;
- 		apic_printk(APIC_VERBOSE, "mapped APIC to %16lx (%16lx)\n",
- 			    APIC_BASE, address);
++		/*
++		 * Reset stale stack state from the last time this CPU was online.
++		 */
++		scs_task_reset(idle);
++		kasan_unpoison_task_stack(idle);
  	}
+ 
+ 	cpuhp_tasks_frozen = tasks_frozen;
