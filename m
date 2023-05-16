@@ -2,59 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B8A770489E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 971A770489B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231938AbjEPJKi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 May 2023 05:10:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46098 "EHLO
+        id S231931AbjEPJKg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 May 2023 05:10:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231830AbjEPJKJ (ORCPT
+        with ESMTP id S231837AbjEPJKK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 May 2023 05:10:09 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51D3448E;
+        Tue, 16 May 2023 05:10:10 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E62BE4227;
         Tue, 16 May 2023 02:10:05 -0700 (PDT)
 Date:   Tue, 16 May 2023 09:10:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684228201;
+        s=2020; t=1684228202;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ULuzcb5nad6EGCbAuAqxnfKjuoT6ohKfsh71FfBZLxY=;
-        b=jGk5ICOXekSwA+c8Ldtk7ZOr4YrBquk8m0FW4SFtxOLB+AU59bm1rCrGBiag+Vus1VkMg2
-        jsGseNre9J5Namo7IkzTvYG2HB1wICD5bdjAUKULf+bX5bYVf2xO65F3izwlVcS3NpRX4E
-        SxDNXg0Bsm/BcVwsuYQ5+47/2+lwWefM82TChMXvLmYxxKnM+PDdvqW2rN+j6SBZqujVqh
-        dFnUyGQE4Lj4ucNqeU11pOkNdf0Bj9OdJACUes46Lhq+uNOOELfYVgWNrnw/GCaXNdkGWN
-        V/wAZ1MsZor1FcFJU6NL7YaJfuWk/vpC6AtY5gfuBbN3aPVLTEuxYWTjIzJ/6Q==
+        bh=PHaRK3I24TIpOwkk8o0h35z1n6u18ucV9SW/BP6B49Y=;
+        b=zsbK+Q8TLSbFRZJw2EWhpjsiiLNi3bS0ZGmNU2X9zALnjHTa6tqNo3m9eIoxuJLKKRDHim
+        kWQazWrHWgeTOyXZXZ5YySD8vZw6AyaltaoXYfikR7RkHjkE9NeIA+Yv7Kvr8Hj8MxexxQ
+        SWWdQHMiBdH9e9R+7wUGYECsPCBvWWB+4RWPg48LQ+7dQkyGcU1IDAOuLVtnryAzts2AWs
+        f/qbaDLdKqFX0SCi55tz8H+3BZ8BR140ywvzQHJxhZCMgbeHbqusi+PIORTrxeuBU8B8Ee
+        OMcbVv6ogOsv+O045VeM5plvUMedKoOVCygVwjLos4k4FrqgO/5tPjMwXLCztg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684228201;
+        s=2020e; t=1684228202;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ULuzcb5nad6EGCbAuAqxnfKjuoT6ohKfsh71FfBZLxY=;
-        b=wt/eLqj2Qwx3CL6pOLpnMxowx6QYKbFJkjjQdP7vpTWcq8wSvv22nhMsd/K6YCETsplzNa
-        9H+pr+JX0tro4xDA==
+        bh=PHaRK3I24TIpOwkk8o0h35z1n6u18ucV9SW/BP6B49Y=;
+        b=qlo0+caWMBb2zW1wf/sYJje82WD2zKue+xTJQnm3buAt9TcoRzjLP6MvfjJSe9EunM8SV/
+        bJ6vVaUFOkGXsAAg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] x86/smpboot: Get rid of cpu_init_secondary()
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Michael Kelley <mikelley@microsoft.com>,
+Subject: [tip: smp/core] x86/smpboot: Remove unnecessary barrier()
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Oleksandr Natalenko <oleksandr@natalenko.name>,
         Helge Deller <deller@gmx.de>,
         "Guilherme G. Piccoli" <gpiccoli@igalia.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230512205255.981999763@linutronix.de>
-References: <20230512205255.981999763@linutronix.de>
+In-Reply-To: <20230512205255.875713771@linutronix.de>
+References: <20230512205255.875713771@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168422820115.404.14146820972820297511.tip-bot2@tip-bot2>
+Message-ID: <168422820167.404.7473956116508095076.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,141 +70,86 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     e94cd1503b153ea753f0c4ed9d5ed12e7abd1306
-Gitweb:        https://git.kernel.org/tip/e94cd1503b153ea753f0c4ed9d5ed12e7abd1306
+Commit-ID:     c7f15dd3f0e9f1d12d1ae21f0bbd61302ef3abcf
+Gitweb:        https://git.kernel.org/tip/c7f15dd3f0e9f1d12d1ae21f0bbd61302ef3abcf
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 12 May 2023 23:07:12 +02:00
+AuthorDate:    Fri, 12 May 2023 23:07:09 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 May 2023 13:44:51 +02:00
+CommitterDate: Mon, 15 May 2023 13:44:50 +02:00
 
-x86/smpboot: Get rid of cpu_init_secondary()
+x86/smpboot: Remove unnecessary barrier()
 
-The synchronization of the AP with the control CPU is a SMP boot problem
-and has nothing to do with cpu_init().
+Peter stumbled over the barrier() after the invocation of smp_callin() in
+start_secondary():
 
-Open code cpu_init_secondary() in start_secondary() and move
-wait_for_master_cpu() into the SMP boot code.
+  "...this barrier() and it's comment seem weird vs smp_callin(). That
+   function ends with an atomic bitop (it has to, at the very least it must
+   not be weaker than store-release) but also has an explicit wmb() to order
+   setup vs CPU_STARTING.
 
-No functional change.
+   There is no way the smp_processor_id() referred to in this comment can land
+   before cpu_init() even without the barrier()."
 
+The barrier() along with the comment was added in 2003 with commit
+d8f19f2cac70 ("[PATCH] x86-64 merge") in the history tree. One of those
+well documented combo patches of that time which changes world and some
+more. The context back then was:
+
+	/*
+	 * Dont put anything before smp_callin(), SMP
+	 * booting is too fragile that we want to limit the
+	 * things done here to the most necessary things.
+	 */
+	cpu_init();
+	smp_callin();
+
++	/* otherwise gcc will move up smp_processor_id before the cpu_init */
++ 	barrier();
+
+	Dprintk("cpu %d: waiting for commence\n", smp_processor_id());
+
+Even back in 2003 the compiler was not allowed to reorder that
+smp_processor_id() invocation before the cpu_init() function call.
+Especially not as smp_processor_id() resolved to:
+
+  asm volatile("movl %%gs:%c1,%0":"=r" (ret__):"i"(pda_offset(field)):"memory");
+
+There is no trace of this change in any mailing list archive including the
+back then official x86_64 list discuss@x86-64.org, which would explain the
+problem this change solved.
+
+The debug prints are gone by now and the the only smp_processor_id()
+invocation today is farther down in start_secondary() after locking
+vector_lock which itself prevents reordering.
+
+Even if the compiler would be allowed to reorder this, the code would still
+be correct as GSBASE is set up early in the assembly code and is valid when
+the CPU reaches start_secondary(), while the code at the time when this
+barrier was added did the GSBASE setup in cpu_init().
+
+As the barrier has zero value, remove it.
+
+Reported-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
 Tested-by: Helge Deller <deller@gmx.de> # parisc
 Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
-Link: https://lore.kernel.org/r/20230512205255.981999763@linutronix.de
+Link: https://lore.kernel.org/r/20230512205255.875713771@linutronix.de
 ---
- arch/x86/include/asm/processor.h |  1 -
- arch/x86/kernel/cpu/common.c     | 27 ---------------------------
- arch/x86/kernel/smpboot.c        | 24 +++++++++++++++++++-----
- 3 files changed, 19 insertions(+), 33 deletions(-)
+ arch/x86/kernel/smpboot.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index a1e4fa5..d46300e 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -551,7 +551,6 @@ extern void switch_gdt_and_percpu_base(int);
- extern void load_direct_gdt(int);
- extern void load_fixmap_gdt(int);
- extern void cpu_init(void);
--extern void cpu_init_secondary(void);
- extern void cpu_init_exception_handling(void);
- extern void cr4_init(void);
- 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 80710a6..e25fb13 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2123,19 +2123,6 @@ static void dbg_restore_debug_regs(void)
- #define dbg_restore_debug_regs()
- #endif /* ! CONFIG_KGDB */
- 
--static void wait_for_master_cpu(int cpu)
--{
--#ifdef CONFIG_SMP
--	/*
--	 * wait for ACK from master CPU before continuing
--	 * with AP initialization
--	 */
--	WARN_ON(cpumask_test_and_set_cpu(cpu, cpu_initialized_mask));
--	while (!cpumask_test_cpu(cpu, cpu_callout_mask))
--		cpu_relax();
--#endif
--}
--
- static inline void setup_getcpu(int cpu)
- {
- 	unsigned long cpudata = vdso_encode_cpunode(cpu, early_cpu_to_node(cpu));
-@@ -2239,8 +2226,6 @@ void cpu_init(void)
- 	struct task_struct *cur = current;
- 	int cpu = raw_smp_processor_id();
- 
--	wait_for_master_cpu(cpu);
--
- 	ucode_cpu_init(cpu);
- 
- #ifdef CONFIG_NUMA
-@@ -2293,18 +2278,6 @@ void cpu_init(void)
- 	load_fixmap_gdt(cpu);
- }
- 
--#ifdef CONFIG_SMP
--void cpu_init_secondary(void)
--{
--	/*
--	 * Relies on the BP having set-up the IDT tables, which are loaded
--	 * on this CPU in cpu_init_exception_handling().
--	 */
--	cpu_init_exception_handling();
--	cpu_init();
--}
--#endif
--
- #ifdef CONFIG_MICROCODE_LATE_LOADING
- /**
-  * store_cpu_caps() - Store a snapshot of CPU capabilities
 diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 0bd9c9f..50eff9b 100644
+index 466e83a..f5f4328 100644
 --- a/arch/x86/kernel/smpboot.c
 +++ b/arch/x86/kernel/smpboot.c
-@@ -220,6 +220,17 @@ static void ap_calibrate_delay(void)
- 	cpu_data(smp_processor_id()).loops_per_jiffy = loops_per_jiffy;
- }
- 
-+static void wait_for_master_cpu(int cpu)
-+{
-+	/*
-+	 * Wait for release by control CPU before continuing with AP
-+	 * initialization.
-+	 */
-+	WARN_ON(cpumask_test_and_set_cpu(cpu, cpu_initialized_mask));
-+	while (!cpumask_test_cpu(cpu, cpu_callout_mask))
-+		cpu_relax();
-+}
-+
- /*
-  * Activate a secondary processor.
-  */
-@@ -237,13 +248,16 @@ static void notrace start_secondary(void *unused)
- 	load_cr3(swapper_pg_dir);
- 	__flush_tlb_all();
- #endif
-+	cpu_init_exception_handling();
-+
- 	/*
--	 * Sync point with wait_cpu_initialized(). Before proceeding through
--	 * cpu_init(), the AP will call wait_for_master_cpu() which sets its
--	 * own bit in cpu_initialized_mask and then waits for the BSP to set
--	 * its bit in cpu_callout_mask to release it.
-+	 * Sync point with wait_cpu_initialized(). Sets AP in
-+	 * cpu_initialized_mask and then waits for the control CPU
-+	 * to release it.
- 	 */
--	cpu_init_secondary();
-+	wait_for_master_cpu(raw_smp_processor_id());
-+
-+	cpu_init();
- 	rcu_cpu_starting(raw_smp_processor_id());
+@@ -238,8 +238,6 @@ static void notrace start_secondary(void *unused)
  	x86_cpuinit.early_percpu_clock_init();
+ 	smp_callin();
+ 
+-	/* otherwise gcc will move up smp_processor_id before the cpu_init */
+-	barrier();
+ 	/* Check TSC synchronization with the control CPU: */
+ 	check_tsc_sync_target();
  
