@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B333770488C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4AA8704891
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231601AbjEPJKZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 May 2023 05:10:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46074 "EHLO
+        id S231899AbjEPJKb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 May 2023 05:10:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231817AbjEPJKH (ORCPT
+        with ESMTP id S231786AbjEPJKI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 May 2023 05:10:07 -0400
+        Tue, 16 May 2023 05:10:08 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C98C935AC;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E69E23A8B;
         Tue, 16 May 2023 02:10:04 -0700 (PDT)
-Date:   Tue, 16 May 2023 09:09:59 -0000
+Date:   Tue, 16 May 2023 09:10:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684228200;
+        s=2020; t=1684228201;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iumz4nYEL/eZH8YC/m5GHga++Vy/iQFId5+7wJh361g=;
-        b=IWRjGTSg9wd7zx8Ge/KuatrCVMV95GML14viMSKJFJs4cI5hbnTHk+1/CgMzcxlWOewH0z
-        fdfoh7J3jQaI6s4xSGL1ONfulIEsNT7fhEkc3xpRPmhTeBMM8/pHnH7kWt5RH0kKIH9brr
-        PCU9W5uW1r8up3ARAD3upCZ2RMSc0wbtrPCcsKPQWXO4o808Gqy3pl8Do4COT/UmdwyHIE
-        fKj4pEyscU5GDwmWl7XTJFrwbE/2M0RPTAnMdsMIlLTJQi3mXBZ4gUoc8Z7zftLtHSQvr9
-        yulVQ413IbPdR8zf98II8eyn+XSndE8B7juvkX516DAjyUoOl6KXFqDI0S526A==
+        bh=3q8O7a28kSLjHluxQewDFtvXhCS5hO4DWnL4DgX97Dw=;
+        b=zOfaVihHqPUWaq8awz3QcCU3U30w18i475a4w2pM4BEwvmFH+aoTTHWk/YKgm+01t5/ZOl
+        K14bVns3VHE6oBo8/DPpwSBpiAuzavBXsKBmvELTqn5xtdC5r6lNsRGBpvauqmd4En7Ndf
+        s/gh3gugL3z3b+0PVkRJf8nTw6MJJ/9YbpYnWBB7A/FHrfkL7IMMxwk8G80g+UC5j/mfUp
+        wFr2AX+/jrRDlQY4wtswkxKZjllyOqa1SYtLxSiAznwVARxW2IdXeYKRd9RkOHCTgrnljD
+        CP3VRP1Ufa1yr64SXzrrdezj1Xc/O31fbuqNOCP4m+C2IF249lHmUiTGaejr4g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684228200;
+        s=2020e; t=1684228201;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iumz4nYEL/eZH8YC/m5GHga++Vy/iQFId5+7wJh361g=;
-        b=q9QvoAPghBUA0YnEc8ZWGmd8umozTdmVGbDcOXXRgc2xap17mNT1Y2wklUOi0VqOZUiw11
-        j5yt6zDI1YLimVAw==
+        bh=3q8O7a28kSLjHluxQewDFtvXhCS5hO4DWnL4DgX97Dw=;
+        b=5Dw+GBggcSjnC6OO01mnWDSIp0e/SaR6Q9Dkk7dTHK3dTRWYwg0bjOFpYlQws3YrvDaPPd
+        VQZ+tiL8xNorDvAQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] cpu/hotplug: Rework sparse_irq locking in bringup_cpu()
+Subject: [tip: smp/core] x86/smpboot: Move synchronization masks to SMP boot code
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Michael Kelley <mikelley@microsoft.com>,
@@ -51,10 +51,10 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Helge Deller <deller@gmx.de>,
         "Guilherme G. Piccoli" <gpiccoli@igalia.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230512205256.263722880@linutronix.de>
-References: <20230512205256.263722880@linutronix.de>
+In-Reply-To: <20230512205256.091511483@linutronix.de>
+References: <20230512205256.091511483@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168422819974.404.13412319672677019398.tip-bot2@tip-bot2>
+Message-ID: <168422820054.404.7589840711079362902.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,18 +71,20 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     22b612e2d53f6e13ce7b55ed565a104512f0eb00
-Gitweb:        https://git.kernel.org/tip/22b612e2d53f6e13ce7b55ed565a104512f0eb00
+Commit-ID:     d4f28f07c2fe736bce8ca415a86fb74c629200f3
+Gitweb:        https://git.kernel.org/tip/d4f28f07c2fe736bce8ca415a86fb74c629200f3
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 12 May 2023 23:07:21 +02:00
+AuthorDate:    Fri, 12 May 2023 23:07:16 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 May 2023 13:44:54 +02:00
+CommitterDate: Mon, 15 May 2023 13:44:52 +02:00
 
-cpu/hotplug: Rework sparse_irq locking in bringup_cpu()
+x86/smpboot: Move synchronization masks to SMP boot code
 
-There is no harm to hold sparse_irq lock until the upcoming CPU completes
-in cpuhp_online_idle(). This allows to remove cpu_online() synchronization
-from architecture code.
+The usage is in smpboot.c and not in the CPU initialization code.
+
+The XEN_PV usage of cpu_callout_mask is obsolete as cpu_init() not longer
+waits and cacheinfo has its own CPU mask now, so cpu_callout_mask can be
+made static too.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
@@ -90,77 +92,116 @@ Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
 Tested-by: Helge Deller <deller@gmx.de> # parisc
 Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
-Link: https://lore.kernel.org/r/20230512205256.263722880@linutronix.de
+Link: https://lore.kernel.org/r/20230512205256.091511483@linutronix.de
 ---
- kernel/cpu.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ arch/x86/include/asm/cpumask.h |  5 -----
+ arch/x86/kernel/cpu/common.c   | 17 -----------------
+ arch/x86/kernel/smpboot.c      | 16 ++++++++++++++++
+ arch/x86/xen/smp_pv.c          |  3 ---
+ 4 files changed, 16 insertions(+), 25 deletions(-)
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index c0d859c..df8f137 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -558,7 +558,7 @@ static int cpuhp_kick_ap(int cpu, struct cpuhp_cpu_state *st,
- 	return ret;
- }
+diff --git a/arch/x86/include/asm/cpumask.h b/arch/x86/include/asm/cpumask.h
+index c5aed9e..4acfd57 100644
+--- a/arch/x86/include/asm/cpumask.h
++++ b/arch/x86/include/asm/cpumask.h
+@@ -4,11 +4,6 @@
+ #ifndef __ASSEMBLY__
+ #include <linux/cpumask.h>
  
--static int bringup_wait_for_ap(unsigned int cpu)
-+static int bringup_wait_for_ap_online(unsigned int cpu)
- {
- 	struct cpuhp_cpu_state *st = per_cpu_ptr(&cpuhp_state, cpu);
- 
-@@ -579,15 +579,12 @@ static int bringup_wait_for_ap(unsigned int cpu)
- 	 */
- 	if (!cpu_smt_allowed(cpu))
- 		return -ECANCELED;
+-extern cpumask_var_t cpu_callin_mask;
+-extern cpumask_var_t cpu_callout_mask;
+-extern cpumask_var_t cpu_initialized_mask;
+-extern cpumask_var_t cpu_sibling_setup_mask;
 -
--	if (st->target <= CPUHP_AP_ONLINE_IDLE)
--		return 0;
+ extern void setup_cpu_local_masks(void);
+ 
+ /*
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index e25fb13..640fd18 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -67,14 +67,6 @@
+ 
+ u32 elf_hwcap2 __read_mostly;
+ 
+-/* all of these masks are initialized in setup_cpu_local_masks() */
+-cpumask_var_t cpu_initialized_mask;
+-cpumask_var_t cpu_callout_mask;
+-cpumask_var_t cpu_callin_mask;
 -
--	return cpuhp_kick_ap(cpu, st, st->target);
-+	return 0;
+-/* representing cpus for which sibling maps can be computed */
+-cpumask_var_t cpu_sibling_setup_mask;
+-
+ /* Number of siblings per CPU package */
+ int smp_num_siblings = 1;
+ EXPORT_SYMBOL(smp_num_siblings);
+@@ -169,15 +161,6 @@ clear_ppin:
+ 	clear_cpu_cap(c, info->feature);
  }
  
- static int bringup_cpu(unsigned int cpu)
+-/* correctly size the local cpu masks */
+-void __init setup_cpu_local_masks(void)
+-{
+-	alloc_bootmem_cpumask_var(&cpu_initialized_mask);
+-	alloc_bootmem_cpumask_var(&cpu_callin_mask);
+-	alloc_bootmem_cpumask_var(&cpu_callout_mask);
+-	alloc_bootmem_cpumask_var(&cpu_sibling_setup_mask);
+-}
+-
+ static void default_init(struct cpuinfo_x86 *c)
  {
-+	struct cpuhp_cpu_state *st = per_cpu_ptr(&cpuhp_state, cpu);
- 	struct task_struct *idle = idle_thread_get(cpu);
- 	int ret;
+ #ifdef CONFIG_X86_64
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 50eff9b..8b07c6e 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -101,6 +101,13 @@ EXPORT_PER_CPU_SYMBOL(cpu_die_map);
+ DEFINE_PER_CPU_READ_MOSTLY(struct cpuinfo_x86, cpu_info);
+ EXPORT_PER_CPU_SYMBOL(cpu_info);
  
-@@ -600,16 +597,33 @@ static int bringup_cpu(unsigned int cpu)
- 	/*
- 	 * Some architectures have to walk the irq descriptors to
- 	 * setup the vector space for the cpu which comes online.
--	 * Prevent irq alloc/free across the bringup.
-+	 *
-+	 * Prevent irq alloc/free across the bringup by acquiring the
-+	 * sparse irq lock. Hold it until the upcoming CPU completes the
-+	 * startup in cpuhp_online_idle() which allows to avoid
-+	 * intermediate synchronization points in the architecture code.
- 	 */
- 	irq_lock_sparse();
- 
- 	/* Arch-specific enabling code. */
- 	ret = __cpu_up(cpu, idle);
--	irq_unlock_sparse();
- 	if (ret)
--		return ret;
--	return bringup_wait_for_ap(cpu);
-+		goto out_unlock;
++/* All of these masks are initialized in setup_cpu_local_masks() */
++static cpumask_var_t cpu_initialized_mask;
++static cpumask_var_t cpu_callout_mask;
++static cpumask_var_t cpu_callin_mask;
++/* Representing CPUs for which sibling maps can be computed */
++static cpumask_var_t cpu_sibling_setup_mask;
 +
-+	ret = bringup_wait_for_ap_online(cpu);
-+	if (ret)
-+		goto out_unlock;
-+
-+	irq_unlock_sparse();
-+
-+	if (st->target <= CPUHP_AP_ONLINE_IDLE)
-+		return 0;
-+
-+	return cpuhp_kick_ap(cpu, st, st->target);
-+
-+out_unlock:
-+	irq_unlock_sparse();
-+	return ret;
+ /* Logical package management. We might want to allocate that dynamically */
+ unsigned int __max_logical_packages __read_mostly;
+ EXPORT_SYMBOL(__max_logical_packages);
+@@ -1545,6 +1552,15 @@ __init void prefill_possible_map(void)
+ 		set_cpu_possible(i, true);
  }
  
- static int finish_cpu(unsigned int cpu)
++/* correctly size the local cpu masks */
++void __init setup_cpu_local_masks(void)
++{
++	alloc_bootmem_cpumask_var(&cpu_initialized_mask);
++	alloc_bootmem_cpumask_var(&cpu_callin_mask);
++	alloc_bootmem_cpumask_var(&cpu_callout_mask);
++	alloc_bootmem_cpumask_var(&cpu_sibling_setup_mask);
++}
++
+ #ifdef CONFIG_HOTPLUG_CPU
+ 
+ /* Recompute SMT state for all CPUs on offline */
+diff --git a/arch/x86/xen/smp_pv.c b/arch/x86/xen/smp_pv.c
+index a9cf8c8..a6f9128 100644
+--- a/arch/x86/xen/smp_pv.c
++++ b/arch/x86/xen/smp_pv.c
+@@ -254,15 +254,12 @@ cpu_initialize_context(unsigned int cpu, struct task_struct *idle)
+ 	struct desc_struct *gdt;
+ 	unsigned long gdt_mfn;
+ 
+-	/* used to tell cpu_init() that it can proceed with initialization */
+-	cpumask_set_cpu(cpu, cpu_callout_mask);
+ 	if (cpumask_test_and_set_cpu(cpu, xen_cpu_initialized_map))
+ 		return 0;
+ 
+ 	ctxt = kzalloc(sizeof(*ctxt), GFP_KERNEL);
+ 	if (ctxt == NULL) {
+ 		cpumask_clear_cpu(cpu, xen_cpu_initialized_map);
+-		cpumask_clear_cpu(cpu, cpu_callout_mask);
+ 		return -ENOMEM;
+ 	}
+ 
