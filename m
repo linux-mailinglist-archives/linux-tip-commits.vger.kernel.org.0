@@ -2,60 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B126C704881
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72696704889
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231183AbjEPJKP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 May 2023 05:10:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46112 "EHLO
+        id S231883AbjEPJKX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 May 2023 05:10:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231783AbjEPJKE (ORCPT
+        with ESMTP id S231794AbjEPJKG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 May 2023 05:10:04 -0400
+        Tue, 16 May 2023 05:10:06 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A328249EC;
-        Tue, 16 May 2023 02:10:01 -0700 (PDT)
-Date:   Tue, 16 May 2023 09:09:57 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57FE02D53;
+        Tue, 16 May 2023 02:10:04 -0700 (PDT)
+Date:   Tue, 16 May 2023 09:09:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684228197;
+        s=2020; t=1684228199;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Xtsc3QMq8abgtUkGI84p9HLSUWmPJubMFXi/P9/1NSM=;
-        b=ovj1DmATjCmMdQ29dXsLG1sF6YCPlYOiB/djY7HMySqF2dtIgAw9/LYOFMZqwN+sQCbk4u
-        0LchI/IU6aZUmoGg4qD+Ffy0xvc4NM0Qv82sqBVnogqeZyN75795b8zhzK+994KcuV+Kq+
-        QmmObrevb2H7ftX7NdXfxAePPCUca87y9WeYt3/zxvDjrKWcZIbkZtOEpQMbnt9BeHJgHN
-        LwxBNckAskkVkRadZlzw1EFPmOGSX7vWdT11YK3OjJQ/YGSdZtAq92MX9q3INGGSrvw6DN
-        1oyX4lECYaxBSCPeyz/HMMNxMiHLht/c52umh8RtY2Wvg0iqVHVmowZ9rp0BtA==
+        bh=5Dz97XQ5meyngqjRIFPYPmInwSGxHK9PFZi+D8liCts=;
+        b=nOO10I37aXxk1FFG76fYu7Q43IDEhTKJ/gM/e66DNuJBhOC45ZmeMx4P+K7IE0BVjineZo
+        ARpBzNoRMbXrw71wMLwoh/8oJsDAVIWSN8vGxZBiIK2nFu7bAqLBBo9imndvq1aX8Q5BgK
+        7KxEQxFJCM//iJhQvBAFChheAvdsRkFo8yZmAActgwQyEFFBpoyeUBJQHUMZgRiHAfFSTZ
+        3vNpBPX6wSUQB9tTV3k+vxWAH7lJSjRqSbZjTM1mmxTEh4DVlHpobFWNk723knS8aMBqlz
+        fpscwW6DW1+83tcVfwxvBcglckx9QrtdkE4IWxR/ulXhwldxIS3Jn1YgS/HyPw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684228197;
+        s=2020e; t=1684228199;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Xtsc3QMq8abgtUkGI84p9HLSUWmPJubMFXi/P9/1NSM=;
-        b=sYQAPLhLFG/gdHrikvezY2t/zGdf632TgXhG8tIKW/pqINDsa5zy5RwywdQskPDSGs2MdO
-        T7UGwjBO87unhhBQ==
+        bh=5Dz97XQ5meyngqjRIFPYPmInwSGxHK9PFZi+D8liCts=;
+        b=o4ty2sWqQiQ/1JbpLIY8Du3+gJJcROiyCxFY1zrUJPGjgPuQqX/hx6vYruBMmktGNBs7oV
+        wHS6bVA+SEv75kAg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] arm64: smp: Switch to hotplug core state synchronization
+Subject: [tip: smp/core] x86/xen/hvm: Get rid of DEAD_FROZEN handling
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
         Michael Kelley <mikelley@microsoft.com>,
         Oleksandr Natalenko <oleksandr@natalenko.name>,
         Helge Deller <deller@gmx.de>,
         "Guilherme G. Piccoli" <gpiccoli@igalia.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230512205256.690926018@linutronix.de>
-References: <20230512205256.690926018@linutronix.de>
+In-Reply-To: <20230512205256.423407127@linutronix.de>
+References: <20230512205256.423407127@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168422819737.404.15725341721545451300.tip-bot2@tip-bot2>
+Message-ID: <168422819895.404.9292905514858665876.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -72,90 +71,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     b3091f172fed63ee59d1746f088bdcc76a79a79c
-Gitweb:        https://git.kernel.org/tip/b3091f172fed63ee59d1746f088bdcc76a79a79c
+Commit-ID:     ab24eb9abb9c60c45119370731735b79ed79f36c
+Gitweb:        https://git.kernel.org/tip/ab24eb9abb9c60c45119370731735b79ed79f36c
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 12 May 2023 23:07:33 +02:00
+AuthorDate:    Fri, 12 May 2023 23:07:25 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 May 2023 13:44:57 +02:00
+CommitterDate: Mon, 15 May 2023 13:44:55 +02:00
 
-arm64: smp: Switch to hotplug core state synchronization
+x86/xen/hvm: Get rid of DEAD_FROZEN handling
 
-Switch to the CPU hotplug core state tracking and synchronization
-mechanim. No functional change intended.
+No point in this conditional voodoo. Un-initializing the lock mechanism is
+safe to be called unconditionally even if it was already invoked when the
+CPU died.
+
+Remove the invocation of xen_smp_intr_free() as that has been already
+cleaned up in xen_cpu_dead_hvm().
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Mark Rutland <mark.rutland@arm.com>
 Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
 Tested-by: Helge Deller <deller@gmx.de> # parisc
 Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
-Link: https://lore.kernel.org/r/20230512205256.690926018@linutronix.de
+Link: https://lore.kernel.org/r/20230512205256.423407127@linutronix.de
 ---
- arch/arm64/Kconfig           |  1 +
- arch/arm64/include/asm/smp.h |  2 +-
- arch/arm64/kernel/smp.c      | 14 +++++---------
- 3 files changed, 7 insertions(+), 10 deletions(-)
+ arch/x86/xen/enlighten_hvm.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index b1201d2..fcb945b 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -222,6 +222,7 @@ config ARM64
- 	select HAVE_KPROBES
- 	select HAVE_KRETPROBES
- 	select HAVE_GENERIC_VDSO
-+	select HOTPLUG_CORE_SYNC_DEAD if HOTPLUG_CPU
- 	select IRQ_DOMAIN
- 	select IRQ_FORCED_THREADING
- 	select KASAN_VMALLOC if KASAN
-diff --git a/arch/arm64/include/asm/smp.h b/arch/arm64/include/asm/smp.h
-index f2d2623..9b31e6d 100644
---- a/arch/arm64/include/asm/smp.h
-+++ b/arch/arm64/include/asm/smp.h
-@@ -99,7 +99,7 @@ static inline void arch_send_wakeup_ipi_mask(const struct cpumask *mask)
+diff --git a/arch/x86/xen/enlighten_hvm.c b/arch/x86/xen/enlighten_hvm.c
+index c1cd28e..a6820ca 100644
+--- a/arch/x86/xen/enlighten_hvm.c
++++ b/arch/x86/xen/enlighten_hvm.c
+@@ -161,13 +161,12 @@ static int xen_cpu_up_prepare_hvm(unsigned int cpu)
+ 	int rc = 0;
  
- extern int __cpu_disable(void);
- 
--extern void __cpu_die(unsigned int cpu);
-+static inline void __cpu_die(unsigned int cpu) { }
- extern void __noreturn cpu_die(void);
- extern void __noreturn cpu_die_early(void);
- 
-diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
-index d00d4cb..edd6389 100644
---- a/arch/arm64/kernel/smp.c
-+++ b/arch/arm64/kernel/smp.c
-@@ -332,17 +332,13 @@ static int op_cpu_kill(unsigned int cpu)
- }
- 
- /*
-- * called on the thread which is asking for a CPU to be shutdown -
-- * waits until shutdown has completed, or it is timed out.
-+ * Called on the thread which is asking for a CPU to be shutdown after the
-+ * shutdown completed.
-  */
--void __cpu_die(unsigned int cpu)
-+void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
- {
- 	int err;
- 
--	if (!cpu_wait_death(cpu, 5)) {
--		pr_crit("CPU%u: cpu didn't die\n", cpu);
--		return;
+ 	/*
+-	 * This can happen if CPU was offlined earlier and
+-	 * offlining timed out in common_cpu_die().
++	 * If a CPU was offlined earlier and offlining timed out then the
++	 * lock mechanism is still initialized. Uninit it unconditionally
++	 * as it's safe to call even if already uninited. Interrupts and
++	 * timer have already been handled in xen_cpu_dead_hvm().
+ 	 */
+-	if (cpu_report_state(cpu) == CPU_DEAD_FROZEN) {
+-		xen_smp_intr_free(cpu);
+-		xen_uninit_lock_cpu(cpu);
 -	}
- 	pr_debug("CPU%u: shutdown\n", cpu);
++	xen_uninit_lock_cpu(cpu);
  
- 	/*
-@@ -369,8 +365,8 @@ void __noreturn cpu_die(void)
- 
- 	local_daif_mask();
- 
--	/* Tell __cpu_die() that this CPU is now safe to dispose of */
--	(void)cpu_report_death();
-+	/* Tell cpuhp_bp_sync_dead() that this CPU is now safe to dispose of */
-+	cpuhp_ap_report_dead();
- 
- 	/*
- 	 * Actually shutdown the CPU. This must never fail. The specific hotplug
+ 	if (cpu_acpi_id(cpu) != U32_MAX)
+ 		per_cpu(xen_vcpu_id, cpu) = cpu_acpi_id(cpu);
