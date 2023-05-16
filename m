@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE4F6704884
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B126C704881
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 11:10:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231642AbjEPJKT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 May 2023 05:10:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46072 "EHLO
+        id S231183AbjEPJKP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 May 2023 05:10:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231808AbjEPJKF (ORCPT
+        with ESMTP id S231783AbjEPJKE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 May 2023 05:10:05 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A355A49F5;
+        Tue, 16 May 2023 05:10:04 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A328249EC;
         Tue, 16 May 2023 02:10:01 -0700 (PDT)
 Date:   Tue, 16 May 2023 09:09:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KX8Ot/wYO1ZvdLJGOBq0J38CTuRduAdt+c2T/8576OE=;
-        b=kLo6DZ4bCROyzmjRa2awRgSnnSHSu/UP+Ci8BOWPfgpsGJcchxP3wnDyI+jtrd1J8p80kS
-        yHuNlFXBLU6ksLgloeAbWXO4MaIrVPkqdCYZzsNaAJ5RdUgAiAeZ/1dHxoYhVyu9uW/aTi
-        8LurvBeJu0/749D+f2YfZpNZR3G0m3S1CU+ZUJgcZRHjOQd/5oWqZqd2YjA77GdChsaLjW
-        DDyYSTQo282VFKjfPg+U1TwY3U9yjC6oX365JGTJT9Ge+a4SmMAsirg9aAasjUx0XqZZgc
-        MIhZ59dRXqECocKYjQCuFmt/BeFgIler3AO1YxW7yO+SdybSPT2yJC+4PNg+HQ==
+        bh=Xtsc3QMq8abgtUkGI84p9HLSUWmPJubMFXi/P9/1NSM=;
+        b=ovj1DmATjCmMdQ29dXsLG1sF6YCPlYOiB/djY7HMySqF2dtIgAw9/LYOFMZqwN+sQCbk4u
+        0LchI/IU6aZUmoGg4qD+Ffy0xvc4NM0Qv82sqBVnogqeZyN75795b8zhzK+994KcuV+Kq+
+        QmmObrevb2H7ftX7NdXfxAePPCUca87y9WeYt3/zxvDjrKWcZIbkZtOEpQMbnt9BeHJgHN
+        LwxBNckAskkVkRadZlzw1EFPmOGSX7vWdT11YK3OjJQ/YGSdZtAq92MX9q3INGGSrvw6DN
+        1oyX4lECYaxBSCPeyz/HMMNxMiHLht/c52umh8RtY2Wvg0iqVHVmowZ9rp0BtA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1684228197;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,25 +36,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KX8Ot/wYO1ZvdLJGOBq0J38CTuRduAdt+c2T/8576OE=;
-        b=0UPuvfTtbRuJY6s5ZLVIV2d8rv9m2qkyd7H3TfAR/4o6pgLE2CmODzKXhOHNC5vl5wnr3k
-        DtGKg4W/wTefflBQ==
+        bh=Xtsc3QMq8abgtUkGI84p9HLSUWmPJubMFXi/P9/1NSM=;
+        b=sYQAPLhLFG/gdHrikvezY2t/zGdf632TgXhG8tIKW/pqINDsa5zy5RwywdQskPDSGs2MdO
+        T7UGwjBO87unhhBQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] csky/smp: Switch to hotplug core state synchronization
+Subject: [tip: smp/core] arm64: smp: Switch to hotplug core state synchronization
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Michael Kelley <mikelley@microsoft.com>,
         Oleksandr Natalenko <oleksandr@natalenko.name>,
         Helge Deller <deller@gmx.de>,
         "Guilherme G. Piccoli" <gpiccoli@igalia.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230512205256.747254502@linutronix.de>
-References: <20230512205256.747254502@linutronix.de>
+In-Reply-To: <20230512205256.690926018@linutronix.de>
+References: <20230512205256.690926018@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168422819707.404.11869298820913365779.tip-bot2@tip-bot2>
+Message-ID: <168422819737.404.15725341721545451300.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,80 +72,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     7202e979645715318f2f21a324cb8a506e12fa76
-Gitweb:        https://git.kernel.org/tip/7202e979645715318f2f21a324cb8a506e12fa76
+Commit-ID:     b3091f172fed63ee59d1746f088bdcc76a79a79c
+Gitweb:        https://git.kernel.org/tip/b3091f172fed63ee59d1746f088bdcc76a79a79c
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 12 May 2023 23:07:35 +02:00
+AuthorDate:    Fri, 12 May 2023 23:07:33 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 May 2023 13:44:58 +02:00
+CommitterDate: Mon, 15 May 2023 13:44:57 +02:00
 
-csky/smp: Switch to hotplug core state synchronization
+arm64: smp: Switch to hotplug core state synchronization
 
 Switch to the CPU hotplug core state tracking and synchronization
 mechanim. No functional change intended.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Mark Rutland <mark.rutland@arm.com>
 Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
 Tested-by: Helge Deller <deller@gmx.de> # parisc
 Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
-Link: https://lore.kernel.org/r/20230512205256.747254502@linutronix.de
+Link: https://lore.kernel.org/r/20230512205256.690926018@linutronix.de
 ---
- arch/csky/Kconfig           | 1 +
- arch/csky/include/asm/smp.h | 2 +-
- arch/csky/kernel/smp.c      | 8 ++------
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ arch/arm64/Kconfig           |  1 +
+ arch/arm64/include/asm/smp.h |  2 +-
+ arch/arm64/kernel/smp.c      | 14 +++++---------
+ 3 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
-index 4df1f8c..95f1e9b 100644
---- a/arch/csky/Kconfig
-+++ b/arch/csky/Kconfig
-@@ -96,6 +96,7 @@ config CSKY
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_STACKPROTECTOR
- 	select HAVE_SYSCALL_TRACEPOINTS
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index b1201d2..fcb945b 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -222,6 +222,7 @@ config ARM64
+ 	select HAVE_KPROBES
+ 	select HAVE_KRETPROBES
+ 	select HAVE_GENERIC_VDSO
 +	select HOTPLUG_CORE_SYNC_DEAD if HOTPLUG_CPU
- 	select MAY_HAVE_SPARSE_IRQ
- 	select MODULES_USE_ELF_RELA if MODULES
- 	select OF
-diff --git a/arch/csky/include/asm/smp.h b/arch/csky/include/asm/smp.h
-index 668b79c..d3db334 100644
---- a/arch/csky/include/asm/smp.h
-+++ b/arch/csky/include/asm/smp.h
-@@ -23,7 +23,7 @@ void __init set_send_ipi(void (*func)(const struct cpumask *mask), int irq);
+ 	select IRQ_DOMAIN
+ 	select IRQ_FORCED_THREADING
+ 	select KASAN_VMALLOC if KASAN
+diff --git a/arch/arm64/include/asm/smp.h b/arch/arm64/include/asm/smp.h
+index f2d2623..9b31e6d 100644
+--- a/arch/arm64/include/asm/smp.h
++++ b/arch/arm64/include/asm/smp.h
+@@ -99,7 +99,7 @@ static inline void arch_send_wakeup_ipi_mask(const struct cpumask *mask)
  
- int __cpu_disable(void);
+ extern int __cpu_disable(void);
  
--void __cpu_die(unsigned int cpu);
+-extern void __cpu_die(unsigned int cpu);
 +static inline void __cpu_die(unsigned int cpu) { }
+ extern void __noreturn cpu_die(void);
+ extern void __noreturn cpu_die_early(void);
  
- #endif /* CONFIG_SMP */
- 
-diff --git a/arch/csky/kernel/smp.c b/arch/csky/kernel/smp.c
-index b12e2c3..8e42352 100644
---- a/arch/csky/kernel/smp.c
-+++ b/arch/csky/kernel/smp.c
-@@ -291,12 +291,8 @@ int __cpu_disable(void)
- 	return 0;
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index d00d4cb..edd6389 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -332,17 +332,13 @@ static int op_cpu_kill(unsigned int cpu)
  }
  
+ /*
+- * called on the thread which is asking for a CPU to be shutdown -
+- * waits until shutdown has completed, or it is timed out.
++ * Called on the thread which is asking for a CPU to be shutdown after the
++ * shutdown completed.
+  */
 -void __cpu_die(unsigned int cpu)
 +void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
  {
+ 	int err;
+ 
 -	if (!cpu_wait_death(cpu, 5)) {
--		pr_crit("CPU%u: shutdown failed\n", cpu);
+-		pr_crit("CPU%u: cpu didn't die\n", cpu);
 -		return;
 -	}
- 	pr_notice("CPU%u: shutdown\n", cpu);
- }
+ 	pr_debug("CPU%u: shutdown\n", cpu);
  
-@@ -304,7 +300,7 @@ void __noreturn arch_cpu_idle_dead(void)
- {
- 	idle_task_exit();
+ 	/*
+@@ -369,8 +365,8 @@ void __noreturn cpu_die(void)
  
--	cpu_report_death();
+ 	local_daif_mask();
+ 
+-	/* Tell __cpu_die() that this CPU is now safe to dispose of */
+-	(void)cpu_report_death();
++	/* Tell cpuhp_bp_sync_dead() that this CPU is now safe to dispose of */
 +	cpuhp_ap_report_dead();
  
- 	while (!secondary_stack)
- 		arch_cpu_idle();
+ 	/*
+ 	 * Actually shutdown the CPU. This must never fail. The specific hotplug
