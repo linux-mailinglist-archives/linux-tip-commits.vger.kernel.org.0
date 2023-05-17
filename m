@@ -2,55 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD89870653C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 May 2023 12:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D06F1707493
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 May 2023 23:56:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229733AbjEQKaJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 May 2023 06:30:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48754 "EHLO
+        id S229501AbjEQV4k (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 May 2023 17:56:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230296AbjEQKaH (ORCPT
+        with ESMTP id S229437AbjEQV4k (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 May 2023 06:30:07 -0400
+        Wed, 17 May 2023 17:56:40 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59AF13593;
-        Wed, 17 May 2023 03:30:05 -0700 (PDT)
-Date:   Wed, 17 May 2023 10:30:01 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE13126B7;
+        Wed, 17 May 2023 14:56:38 -0700 (PDT)
+Date:   Wed, 17 May 2023 21:56:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684319403;
+        s=2020; t=1684360596;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=F22RJkxJI1b+I5i2VjSwwVk+cR/vRtmgdQGDjBJl8+E=;
-        b=vh6KVmOVFhmKJDa42ZIqnWSSGLjL/+EJnrt8m2e6nE0crl935+evN1p1+IVH5zF61lnKB2
-        AAeJtZPBiDrapQ30NFT8mYKnq5PYTUYa6XQKMFFNDbDlKQfm4bAdACPetk4g9bUXaHkiFV
-        9RShdmzpX0gHswJwwoUgI6mVSZldzpoosHOJqc3vrMa6dKuP/toP489P0LckppyIxU5/vo
-        IR7+Bfr26Rt+cBDFiW5pKgT+GywZExq3PRUk3W6r3GgHWoQoZFumWbxOM102pF2Rtb73lz
-        NH6lBK/SlKkCeWhoPglP5ozo4dPrWqmdKXb5CJDjIWCeRNFRJuLWDcNMzDJcKQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=ixxUzxjjfsnbP6oJRKzWVldOG+Bm+11hZ2PkJgmgdYo=;
+        b=0jGoR85aFzxhzq0tU9nBOSeJlTjohhXR30cVa78jqmA8BFU/7o2Gm/LIOdIptebzyc0R9I
+        ypFG9a3f+++CV8qN60FyKVZKFwT6hp2iChUCq9YteuKKNDxSuznV0TnNn8l6GHyBKh49gq
+        O6SqsyfkGbK06J1HUSPTpM3WCh6ytpyKKgCDaSB1QyiER1+wMPtgSMMetFP7PhZvAIpxRI
+        UQ2NVTSZsDRnkYAHEX0SrZBBzMmiCsYCeKIu8tgxhkzA0Tbmk0tNO+MHdCTSBh2+m1JO/D
+        /2gG6cSD5CY/7o5sVTOAGvOoC9jdJboVEiLgAWwIqU4EuWCSyhg379y+n0D81A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684319403;
+        s=2020e; t=1684360596;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=F22RJkxJI1b+I5i2VjSwwVk+cR/vRtmgdQGDjBJl8+E=;
-        b=O7+KbNlw/TX60LnXJR9m95XutrpkvfMq+Eti4/9xvRDcTcw/aJE2NhyzIlf4STxVq8yjNp
-        uZ+V9EApo7tY/vAQ==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=ixxUzxjjfsnbP6oJRKzWVldOG+Bm+11hZ2PkJgmgdYo=;
+        b=8cRGbrwbfKERg06qduq1ebGfr6WDUrf2Ubjey4aY/K8AWm1XUEyXflK0pk5WYC1tUDiaYO
+        hsqNpRLd5KkLApAw==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/retbleed: Add __x86_return_thunk alignment checks
-Cc:     Andrew Cooper <andrew.cooper3@citrix.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230515140726.28689-1-bp@alien8.de>
-References: <20230515140726.28689-1-bp@alien8.de>
+Subject: [tip: x86/urgent] x86/mm: Avoid incomplete Global INVLPG flushes
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <168431940157.404.1281647175804224989.tip-bot2@tip-bot2>
+Message-ID: <168436059559.404.13934972543631851306.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,53 +59,91 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     f220125b999b2c9694149c6bda2798d8096f47ed
-Gitweb:        https://git.kernel.org/tip/f220125b999b2c9694149c6bda2798d8096f47ed
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Mon, 15 May 2023 16:07:26 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 17 May 2023 12:14:21 +02:00
+Commit-ID:     ce0b15d11ad837fbacc5356941712218e38a0a83
+Gitweb:        https://git.kernel.org/tip/ce0b15d11ad837fbacc5356941712218e38a0a83
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Tue, 16 May 2023 12:24:25 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Wed, 17 May 2023 08:55:02 -07:00
 
-x86/retbleed: Add __x86_return_thunk alignment checks
+x86/mm: Avoid incomplete Global INVLPG flushes
 
-Add a linker assertion and compute the 0xcc padding dynamically so that
-__x86_return_thunk is always cacheline-aligned. Leave the SYM_START()
-macro in as the untraining doesn't need ENDBR annotations anyway.
+The INVLPG instruction is used to invalidate TLB entries for a
+specified virtual address.  When PCIDs are enabled, INVLPG is supposed
+to invalidate TLB entries for the specified address for both the
+current PCID *and* Global entries.  (Note: Only kernel mappings set
+Global=1.)
 
-Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Link: https://lore.kernel.org/r/20230515140726.28689-1-bp@alien8.de
+Unfortunately, some INVLPG implementations can leave Global
+translations unflushed when PCIDs are enabled.
+
+As a workaround, never enable PCIDs on affected processors.
+
+I expect there to eventually be microcode mitigations to replace this
+software workaround.  However, the exact version numbers where that
+will happen are not known today.  Once the version numbers are set in
+stone, the processor list can be tweaked to only disable PCIDs on
+affected processors with affected microcode.
+
+Note: if anyone wants a quick fix that doesn't require patching, just
+stick 'nopcid' on your kernel command-line.
+
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
 ---
- arch/x86/kernel/vmlinux.lds.S | 4 ++++
- arch/x86/lib/retpoline.S      | 2 +-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/mm/init.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index 25f1552..03c885d 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -508,4 +508,8 @@ INIT_PER_CPU(irq_stack_backing_store);
-            "fixed_percpu_data is not at start of per-cpu area");
- #endif
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 3cdac0f..8192452 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -9,6 +9,7 @@
+ #include <linux/sched/task.h>
  
-+#ifdef CONFIG_RETHUNK
-+. = ASSERT((__x86_return_thunk & 0x3f) == 0, "__x86_return_thunk not cacheline-aligned");
-+#endif
+ #include <asm/set_memory.h>
++#include <asm/cpu_device_id.h>
+ #include <asm/e820/api.h>
+ #include <asm/init.h>
+ #include <asm/page.h>
+@@ -261,6 +262,24 @@ static void __init probe_page_size_mask(void)
+ 	}
+ }
+ 
++#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
++			      .family  = 6,			\
++			      .model = _model,			\
++			    }
++/*
++ * INVLPG may not properly flush Global entries
++ * on these CPUs when PCIDs are enabled.
++ */
++static const struct x86_cpu_id invlpg_miss_ids[] = {
++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
++	{}
++};
 +
- #endif /* CONFIG_X86_64 */
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index b3b1e37..3fd066d 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -143,7 +143,7 @@ SYM_CODE_END(__x86_indirect_jump_thunk_array)
-  *    from re-poisioning the BTB prediction.
-  */
- 	.align 64
--	.skip 63, 0xcc
-+	.skip 64 - (__x86_return_thunk - zen_untrain_ret), 0xcc
- SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	ANNOTATE_NOENDBR
- 	/*
+ static void setup_pcid(void)
+ {
+ 	if (!IS_ENABLED(CONFIG_X86_64))
+@@ -269,6 +288,12 @@ static void setup_pcid(void)
+ 	if (!boot_cpu_has(X86_FEATURE_PCID))
+ 		return;
+ 
++	if (x86_match_cpu(invlpg_miss_ids)) {
++		pr_info("Incomplete global flushes, disabling PCID");
++		setup_clear_cpu_cap(X86_FEATURE_PCID);
++		return;
++	}
++
+ 	if (boot_cpu_has(X86_FEATURE_PGE)) {
+ 		/*
+ 		 * This can't be cr4_set_bits_and_update_boot() -- the
