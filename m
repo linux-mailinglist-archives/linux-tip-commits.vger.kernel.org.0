@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DC8C70570C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 May 2023 21:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD89870653C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 May 2023 12:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229796AbjEPTZv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 May 2023 15:25:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51086 "EHLO
+        id S229733AbjEQKaJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 May 2023 06:30:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229793AbjEPTZs (ORCPT
+        with ESMTP id S230296AbjEQKaH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 May 2023 15:25:48 -0400
+        Wed, 17 May 2023 06:30:07 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CC57AB8;
-        Tue, 16 May 2023 12:25:43 -0700 (PDT)
-Date:   Tue, 16 May 2023 19:25:39 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59AF13593;
+        Wed, 17 May 2023 03:30:05 -0700 (PDT)
+Date:   Wed, 17 May 2023 10:30:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684265141;
+        s=2020; t=1684319403;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5oc/4U3LxxwXeuua8k3JKf4lQsuXnu0v2GB/nxPvrxQ=;
-        b=jrCnx+4OnOu6Wo7yd0zVoHojAQarFBr68+unZtHgM3yVAnr+rNU+R5/lpQbq+5aE6eawVC
-        AEdwA0qol+H3jj2GzaEEjoStSONGquqD/5yEISXfwF8EHY2SSce7nTC+zHTzNbLdoq6zOA
-        QVIy0n7G1YAGiv3Sa2ctLXtSX2IQsy402BHGkvUeYw8bhIAdweQoedsnufDn7WIWHPhI3J
-        Q56V0c4j+rFbHEBh9CsrrBC5Jk2T5GzZMz1yBz9BAmWx7TlxqS9SHv0LKB03r8SUoPtRpS
-        beFQx8sj6yVw3A40aRneB+jl+wwV4ooi2du+nRZpOr30jkV5LEll+rfOiaj4cg==
+        bh=F22RJkxJI1b+I5i2VjSwwVk+cR/vRtmgdQGDjBJl8+E=;
+        b=vh6KVmOVFhmKJDa42ZIqnWSSGLjL/+EJnrt8m2e6nE0crl935+evN1p1+IVH5zF61lnKB2
+        AAeJtZPBiDrapQ30NFT8mYKnq5PYTUYa6XQKMFFNDbDlKQfm4bAdACPetk4g9bUXaHkiFV
+        9RShdmzpX0gHswJwwoUgI6mVSZldzpoosHOJqc3vrMa6dKuP/toP489P0LckppyIxU5/vo
+        IR7+Bfr26Rt+cBDFiW5pKgT+GywZExq3PRUk3W6r3GgHWoQoZFumWbxOM102pF2Rtb73lz
+        NH6lBK/SlKkCeWhoPglP5ozo4dPrWqmdKXb5CJDjIWCeRNFRJuLWDcNMzDJcKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684265141;
+        s=2020e; t=1684319403;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5oc/4U3LxxwXeuua8k3JKf4lQsuXnu0v2GB/nxPvrxQ=;
-        b=R9LF7eEz0yLjneDEU213z5m8mo1jQ821QyVAzbxo/+uCXJxz9qA9cUEh88lbjz9uLZz7CT
-        FqPnxRRqg2JTrxBA==
-From:   "tip-bot2 for Osama Muhammad" <tip-bot2@linutronix.de>
+        bh=F22RJkxJI1b+I5i2VjSwwVk+cR/vRtmgdQGDjBJl8+E=;
+        b=O7+KbNlw/TX60LnXJR9m95XutrpkvfMq+Eti4/9xvRDcTcw/aJE2NhyzIlf4STxVq8yjNp
+        uZ+V9EApo7tY/vAQ==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] ras/debugfs: Fix error checking for debugfs_create_dir()
-Cc:     Osama Muhammad <osmtendev@gmail.com>,
+Subject: [tip: x86/cpu] x86/retbleed: Add __x86_return_thunk alignment checks
+Cc:     Andrew Cooper <andrew.cooper3@citrix.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230516182927.9171-1-osmtendev@gmail.com>
-References: <20230516182927.9171-1-osmtendev@gmail.com>
+In-Reply-To: <20230515140726.28689-1-bp@alien8.de>
+References: <20230515140726.28689-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <168426514015.404.17879655413957369852.tip-bot2@tip-bot2>
+Message-ID: <168431940157.404.1281647175804224989.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,38 +65,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     2a1d18a5dc5056825b8e9527d188130da6256efc
-Gitweb:        https://git.kernel.org/tip/2a1d18a5dc5056825b8e9527d188130da6256efc
-Author:        Osama Muhammad <osmtendev@gmail.com>
-AuthorDate:    Tue, 16 May 2023 23:29:27 +05:00
+Commit-ID:     f220125b999b2c9694149c6bda2798d8096f47ed
+Gitweb:        https://git.kernel.org/tip/f220125b999b2c9694149c6bda2798d8096f47ed
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Mon, 15 May 2023 16:07:26 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 16 May 2023 21:12:23 +02:00
+CommitterDate: Wed, 17 May 2023 12:14:21 +02:00
 
-ras/debugfs: Fix error checking for debugfs_create_dir()
+x86/retbleed: Add __x86_return_thunk alignment checks
 
-Check the return value of debugfs_create_dir() properly.
+Add a linker assertion and compute the 0xcc padding dynamically so that
+__x86_return_thunk is always cacheline-aligned. Leave the SYM_START()
+macro in as the untraining doesn't need ENDBR annotations anyway.
 
-  [ bp: Rewrite commit message. ]
-
-Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230516182927.9171-1-osmtendev@gmail.com
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Link: https://lore.kernel.org/r/20230515140726.28689-1-bp@alien8.de
 ---
- drivers/ras/debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/vmlinux.lds.S | 4 ++++
+ arch/x86/lib/retpoline.S      | 2 +-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ras/debugfs.c b/drivers/ras/debugfs.c
-index f0a6391..ffb973c 100644
---- a/drivers/ras/debugfs.c
-+++ b/drivers/ras/debugfs.c
-@@ -46,7 +46,7 @@ int __init ras_add_daemon_trace(void)
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 25f1552..03c885d 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -508,4 +508,8 @@ INIT_PER_CPU(irq_stack_backing_store);
+            "fixed_percpu_data is not at start of per-cpu area");
+ #endif
  
- 	fentry = debugfs_create_file("daemon_active", S_IRUSR, ras_debugfs_dir,
- 				     NULL, &trace_fops);
--	if (!fentry)
-+	if (IS_ERR(fentry))
- 		return -ENODEV;
- 
- 	return 0;
++#ifdef CONFIG_RETHUNK
++. = ASSERT((__x86_return_thunk & 0x3f) == 0, "__x86_return_thunk not cacheline-aligned");
++#endif
++
+ #endif /* CONFIG_X86_64 */
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index b3b1e37..3fd066d 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -143,7 +143,7 @@ SYM_CODE_END(__x86_indirect_jump_thunk_array)
+  *    from re-poisioning the BTB prediction.
+  */
+ 	.align 64
+-	.skip 63, 0xcc
++	.skip 64 - (__x86_return_thunk - zen_untrain_ret), 0xcc
+ SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	ANNOTATE_NOENDBR
+ 	/*
