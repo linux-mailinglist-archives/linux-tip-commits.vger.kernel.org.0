@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 885BB707ED4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 May 2023 13:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A31707EE2
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 May 2023 13:09:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230476AbjERLI3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 18 May 2023 07:08:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42964 "EHLO
+        id S231197AbjERLJT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 18 May 2023 07:09:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230482AbjERLI3 (ORCPT
+        with ESMTP id S231179AbjERLJP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 18 May 2023 07:08:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DAF4B8;
-        Thu, 18 May 2023 04:08:04 -0700 (PDT)
-Date:   Thu, 18 May 2023 11:08:01 -0000
+        Thu, 18 May 2023 07:09:15 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD8BF2134;
+        Thu, 18 May 2023 04:08:34 -0700 (PDT)
+Date:   Thu, 18 May 2023 11:08:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684408081;
+        s=2020; t=1684408083;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oCi1DmbpTPgutTsGMxhvkAhYR5c4MoOJ0Tep7lmMR/8=;
-        b=H6y94iYyqFgzX50S9lgITYuAd+JamGsgVgxP6kq2kgsozovmJj5kgFXpQFBcYB4QyXN9eL
-        gOjfS9PUoUwUcklMX4ldWXXrwYHa1HFqk1k8qo3I9vCx9cjc7+mvTHB5klYIZH0MpXmGt2
-        po/3nijnYC28xBA4zI/7p25vbcQy1gL6hots50r1nh9SVsnwtabDsYx22whwxDeo9romjM
-        GICVskfzrY8gnuMBWYNnulbEcNG0HgiHOfIXD4Jpht/b9dCQoNSPNnRcgiRiYvmDGCNrdj
-        mo8wKGrI9+TILgajfmr9L4rzOApuDUXt0uLXLgZ/n1+TZ1ip8NAopzLuuFuuOQ==
+        bh=4l2NYHmbJ9RLaYs6c6lgF3CKWCorQeRK5kkXH/k0WVA=;
+        b=CZl8PdzbETXyq4DgVVb+dbWxsrmTi2JVR+zUXijPn3ndaR7B4vWBKOEyaQ5XF8y9/qhOIy
+        1wUSpHU+wZdacqebipQHpy6G6NbUvRfTV7UXSgTXNMfP0KiMpSFokciPQ8c+SnrMLumsK9
+        zOfp8d4ETA74JbtpQKcDLAL6Xk03zZfHGfNLL5CxUz2rWDaPd1+6e5pfkvEAfSEh/AXs8V
+        87aR2sIdXWxlfAwX0hKMSH8ZW/0U4T7BpHNGCMPJ2k3us1XjLtzh+lhAXXuBDkSuAoBmlk
+        Ni6rSSLXMlbj9KgLwh5bI/N3Rlzk7NwnJGCTmcIIVqx26/WBawu9FHsuVBTonQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684408081;
+        s=2020e; t=1684408083;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oCi1DmbpTPgutTsGMxhvkAhYR5c4MoOJ0Tep7lmMR/8=;
-        b=f88n1st0iDU3Geimdz71dEw2KU77o4zgZtzECtdl1RCvA9EVV4LJVtrMn6FkLNQza0pohp
-        kt2vFabD0o8ByrAQ==
+        bh=4l2NYHmbJ9RLaYs6c6lgF3CKWCorQeRK5kkXH/k0WVA=;
+        b=OUVSZqpI7DmB5YP/CtRxNe5fGDqwXLmq/ps+1RaOsBG7NmtLQmUK2zqbBF0Kj2jKlzf3AL
+        NiXGhYXcIXcz5mDw==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] tools/lib/subcmd: Replace NORETURN usage with __noreturn
+Subject: [tip: objtool/core] objtool: Add verbose option for disassembling
+ affected functions
 Cc:     Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <c7c83d1e6b3d2b0c3e65dd3790c22c772d3b2527.1681853186.git.jpoimboe@kernel.org>
-References: <c7c83d1e6b3d2b0c3e65dd3790c22c772d3b2527.1681853186.git.jpoimboe@kernel.org>
+In-Reply-To: <dd0fe13428ede186f09c74059a8001f4adcea5fc.1681853186.git.jpoimboe@kernel.org>
+References: <dd0fe13428ede186f09c74059a8001f4adcea5fc.1681853186.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168440808137.404.4849730726607986574.tip-bot2@tip-bot2>
+Message-ID: <168440808274.404.5668260031593336858.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,72 +68,174 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     d59fec29b131f30b27343d54bdf1071ee98eda8e
-Gitweb:        https://git.kernel.org/tip/d59fec29b131f30b27343d54bdf1071ee98eda8e
+Commit-ID:     ca653464dd097fe64e69f1735e9f348b2a0f8037
+Gitweb:        https://git.kernel.org/tip/ca653464dd097fe64e69f1735e9f348b2a0f8037
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Tue, 18 Apr 2023 14:27:53 -07:00
+AuthorDate:    Tue, 18 Apr 2023 14:27:48 -07:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Tue, 16 May 2023 06:31:54 -07:00
+CommitterDate: Tue, 16 May 2023 06:31:51 -07:00
 
-tools/lib/subcmd: Replace NORETURN usage with __noreturn
+objtool: Add verbose option for disassembling affected functions
 
-NORETURN is redundant with __noreturn, just use the latter.
+When a warning is associated with a function, add an option to
+disassemble that function.
+
+This makes it easier for reporters to submit the information needed to
+diagnose objtool warnings.
 
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Link: https://lore.kernel.org/r/c7c83d1e6b3d2b0c3e65dd3790c22c772d3b2527.1681853186.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/dd0fe13428ede186f09c74059a8001f4adcea5fc.1681853186.git.jpoimboe@kernel.org
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- tools/lib/subcmd/parse-options.h | 8 ++------
- tools/lib/subcmd/subcmd-util.h   | 5 ++---
- 2 files changed, 4 insertions(+), 9 deletions(-)
+ tools/objtool/Documentation/objtool.txt |  5 ++-
+ tools/objtool/builtin-check.c           |  5 ++-
+ tools/objtool/check.c                   | 77 ++++++++++++++++++++++++-
+ tools/objtool/include/objtool/builtin.h |  1 +-
+ 4 files changed, 88 insertions(+)
 
-diff --git a/tools/lib/subcmd/parse-options.h b/tools/lib/subcmd/parse-options.h
-index 41b9b94..8e91473 100644
---- a/tools/lib/subcmd/parse-options.h
-+++ b/tools/lib/subcmd/parse-options.h
-@@ -6,10 +6,6 @@
- #include <stdbool.h>
- #include <stdint.h>
+diff --git a/tools/objtool/Documentation/objtool.txt b/tools/objtool/Documentation/objtool.txt
+index 744db42..8db1f29 100644
+--- a/tools/objtool/Documentation/objtool.txt
++++ b/tools/objtool/Documentation/objtool.txt
+@@ -244,6 +244,11 @@ To achieve the validation, objtool enforces the following rules:
+ Objtool warnings
+ ----------------
  
--#ifndef NORETURN
--#define NORETURN __attribute__((__noreturn__))
--#endif
--
- enum parse_opt_type {
- 	/* special types */
- 	OPTION_END,
-@@ -183,9 +179,9 @@ extern int parse_options_subcommand(int argc, const char **argv,
- 				const char *const subcommands[],
- 				const char *usagestr[], int flags);
++NOTE: When requesting help with an objtool warning, please recreate with
++OBJTOOL_VERBOSE=1 (e.g., "make OBJTOOL_VERBOSE=1") and send the full
++output, including any disassembly below the warning, to the objtool
++maintainers.
++
+ For asm files, if you're getting an error which doesn't make sense,
+ first make sure that the affected code follows the above rules.
  
--extern NORETURN void usage_with_options(const char * const *usagestr,
-+extern __noreturn void usage_with_options(const char * const *usagestr,
-                                         const struct option *options);
--extern NORETURN __attribute__((format(printf,3,4)))
-+extern __noreturn __attribute__((format(printf,3,4)))
- void usage_with_options_msg(const char * const *usagestr,
- 			    const struct option *options,
- 			    const char *fmt, ...);
-diff --git a/tools/lib/subcmd/subcmd-util.h b/tools/lib/subcmd/subcmd-util.h
-index b2aec04..dfac76e 100644
---- a/tools/lib/subcmd/subcmd-util.h
-+++ b/tools/lib/subcmd/subcmd-util.h
-@@ -5,8 +5,7 @@
- #include <stdarg.h>
- #include <stdlib.h>
- #include <stdio.h>
--
--#define NORETURN __attribute__((__noreturn__))
-+#include <linux/compiler.h>
+diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
+index 7c17519..5e21cfb 100644
+--- a/tools/objtool/builtin-check.c
++++ b/tools/objtool/builtin-check.c
+@@ -93,6 +93,7 @@ static const struct option check_options[] = {
+ 	OPT_BOOLEAN(0, "no-unreachable", &opts.no_unreachable, "skip 'unreachable instruction' warnings"),
+ 	OPT_BOOLEAN(0, "sec-address", &opts.sec_address, "print section addresses in warnings"),
+ 	OPT_BOOLEAN(0, "stats", &opts.stats, "print statistics"),
++	OPT_BOOLEAN('v', "verbose", &opts.verbose, "verbose warnings"),
  
- static inline void report(const char *prefix, const char *err, va_list params)
- {
-@@ -15,7 +14,7 @@ static inline void report(const char *prefix, const char *err, va_list params)
- 	fprintf(stderr, " %s%s\n", prefix, msg);
+ 	OPT_END(),
+ };
+@@ -118,6 +119,10 @@ int cmd_parse_options(int argc, const char **argv, const char * const usage[])
+ 		parse_options(envc, envv, check_options, env_usage, 0);
+ 	}
+ 
++	env = getenv("OBJTOOL_VERBOSE");
++	if (env && !strcmp(env, "1"))
++		opts.verbose = true;
++
+ 	argc = parse_options(argc, argv, check_options, usage, 0);
+ 	if (argc != 1)
+ 		usage_with_options(usage, check_options);
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 98e6c3b..0bd0ca4 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -4530,6 +4530,81 @@ static int validate_reachable_instructions(struct objtool_file *file)
+ 	return warnings;
  }
  
--static NORETURN inline void die(const char *err, ...)
-+static __noreturn inline void die(const char *err, ...)
++/* 'funcs' is a space-separated list of function names */
++static int disas_funcs(const char *funcs)
++{
++	const char *objdump_str, *cross_compile;
++	int size, ret;
++	char *cmd;
++
++	cross_compile = getenv("CROSS_COMPILE");
++
++	objdump_str = "%sobjdump -wdr %s | gawk -M -v _funcs='%s' '"
++			"BEGIN { split(_funcs, funcs); }"
++			"/^$/ { func_match = 0; }"
++			"/<.*>:/ { "
++				"f = gensub(/.*<(.*)>:/, \"\\\\1\", 1);"
++				"for (i in funcs) {"
++					"if (funcs[i] == f) {"
++						"func_match = 1;"
++						"base = strtonum(\"0x\" $1);"
++						"break;"
++					"}"
++				"}"
++			"}"
++			"{"
++				"if (func_match) {"
++					"addr = strtonum(\"0x\" $1);"
++					"printf(\"%%04x \", addr - base);"
++					"print;"
++				"}"
++			"}' 1>&2";
++
++	/* fake snprintf() to calculate the size */
++	size = snprintf(NULL, 0, objdump_str, cross_compile, objname, funcs) + 1;
++	if (size <= 0) {
++		WARN("objdump string size calculation failed");
++		return -1;
++	}
++
++	cmd = malloc(size);
++
++	/* real snprintf() */
++	snprintf(cmd, size, objdump_str, cross_compile, objname, funcs);
++	ret = system(cmd);
++	if (ret) {
++		WARN("disassembly failed: %d", ret);
++		return -1;
++	}
++
++	return 0;
++}
++
++static int disas_warned_funcs(struct objtool_file *file)
++{
++	struct symbol *sym;
++	char *funcs = NULL, *tmp;
++
++	for_each_sym(file, sym) {
++		if (sym->warned) {
++			if (!funcs) {
++				funcs = malloc(strlen(sym->name) + 1);
++				strcpy(funcs, sym->name);
++			} else {
++				tmp = malloc(strlen(funcs) + strlen(sym->name) + 2);
++				sprintf(tmp, "%s %s", funcs, sym->name);
++				free(funcs);
++				funcs = tmp;
++			}
++		}
++	}
++
++	if (funcs)
++		disas_funcs(funcs);
++
++	return 0;
++}
++
+ int check(struct objtool_file *file)
  {
- 	va_list params;
+ 	int ret, warnings = 0;
+@@ -4674,6 +4749,8 @@ int check(struct objtool_file *file)
+ 		warnings += ret;
+ 	}
  
++	if (opts.verbose)
++		disas_warned_funcs(file);
+ 
+ 	if (opts.stats) {
+ 		printf("nr_insns_visited: %ld\n", nr_insns_visited);
+diff --git a/tools/objtool/include/objtool/builtin.h b/tools/objtool/include/objtool/builtin.h
+index 2a108e6..fcca666 100644
+--- a/tools/objtool/include/objtool/builtin.h
++++ b/tools/objtool/include/objtool/builtin.h
+@@ -37,6 +37,7 @@ struct opts {
+ 	bool no_unreachable;
+ 	bool sec_address;
+ 	bool stats;
++	bool verbose;
+ };
+ 
+ extern struct opts opts;
