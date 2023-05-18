@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A48DB707EE4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 May 2023 13:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56BE3707EE6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 May 2023 13:09:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231190AbjERLJV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 18 May 2023 07:09:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43600 "EHLO
+        id S231228AbjERLJW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 18 May 2023 07:09:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231165AbjERLJS (ORCPT
+        with ESMTP id S231176AbjERLJS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 18 May 2023 07:09:18 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3FE8213B;
-        Thu, 18 May 2023 04:08:36 -0700 (PDT)
-Date:   Thu, 18 May 2023 11:08:03 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 601D32683;
+        Thu, 18 May 2023 04:08:37 -0700 (PDT)
+Date:   Thu, 18 May 2023 11:08:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684408083;
+        s=2020; t=1684408084;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5ejN/mH3LR4t0/RUCezt3x65qUEpqLMlgQXY4nbjFu8=;
-        b=XC6eLNNsAdHp2b1+A3c+pnQghTjEL3wVKhHYIY5YjHmAUd88GYRm6AG5WTglqeoArFVR2h
-        UxivzU+HIJyIjwZvNlHpo06Bq2aw6vGRhtAzUPUtQjF7QB+iqVLR9RJRTPJyfbNhnUliFu
-        hDqUlFpq+tT+xIZmZov+y1iKmkvpSSG9/bmWQGqzqPfFEkmhhKgcZuz3Cix7IW1nyXHQ+W
-        gYinMFk1gCFu+z2f9th7ZoIvMcrHuQ10fopwSBPfMxQ3f81NTWZtwPnMC6RCWcCG3wlJCY
-        zGgt9aQJaSedQdj8hMKaNa8OnehslekxEapqvhf32gRHvMWQu7RUxD50R6qYjg==
+        bh=DDrie1cOrSTy8hqwWcIdLpLvCM2cPcYwzeoDx6sC2kg=;
+        b=El1p1inTGcqDn7LQQLop654NpQp8sIv4EyD0MgnMLD2KfsTVq9Ys3n/8TVhMs7q58PLzD7
+        fN/luGBHV2j6jW/se2dXHAbWTisVl+NgQped5FGrsbObBfRf1Nkx6Cf+jwQokIid6U4YC9
+        dIS06ngrVKmioHnwBU8s8yONaVSjVE5TxcvpJFvI7ot5WHaCASWMdlJYWdVY2S6DXCIiHB
+        LjsxOsFF7kgRQ5om1F3cRnY/QDkxOsSj0HZ2JWKdGg3MQ5kTyD8mzJTmYTvojDFxznitlb
+        cbH1QMEKai1bYlZvwhsYg7q5nWKK3kTDVcn9tWNRq9d4HUxB4LN6P5sWMz+iRQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684408083;
+        s=2020e; t=1684408084;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5ejN/mH3LR4t0/RUCezt3x65qUEpqLMlgQXY4nbjFu8=;
-        b=51/M3jrukm/XcJMmtDuSZIBW9GG7Y57/BG1pVdiWYWKLgYj54RmbGam1WV0cPwlL7YbrgJ
-        4wLJdsY5DeCsEJBw==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=DDrie1cOrSTy8hqwWcIdLpLvCM2cPcYwzeoDx6sC2kg=;
+        b=SULRuuQB232AlMs0oNflsT5tfyr2/NpfuPDHIeb2uVNnU2/hdqWw08NrhyMUOLQBw4zHM7
+        MHZbwX3a21crwFCw==
+From:   "tip-bot2 for Jiapeng Chong" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/unwind/orc: Add 'unwind_debug' cmdline option
-Cc:     Miroslav Benes <mbenes@suse.cz>,
+Subject: [tip: objtool/core] x86/unwind/orc: Use swap() instead of open coding it
+Cc:     Abaci Robot <abaci@linux.alibaba.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
         Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <6afb9e48a05fd2046bfad47e69b061b43dfd0e0e.1681331449.git.jpoimboe@kernel.org>
-References: <6afb9e48a05fd2046bfad47e69b061b43dfd0e0e.1681331449.git.jpoimboe@kernel.org>
+In-Reply-To: <20230330020014.40489-1-jiapeng.chong@linux.alibaba.com>
+References: <20230330020014.40489-1-jiapeng.chong@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <168440808334.404.13534074205868319070.tip-bot2@tip-bot2>
+Message-ID: <168440808427.404.1399705978286968537.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,111 +68,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     89da5a69a831f20df6463fd524e1578e12a8f46f
-Gitweb:        https://git.kernel.org/tip/89da5a69a831f20df6463fd524e1578e12a8f46f
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Wed, 12 Apr 2023 13:31:05 -07:00
+Commit-ID:     95f0e3a209b0045a56a06987d85981280f523270
+Gitweb:        https://git.kernel.org/tip/95f0e3a209b0045a56a06987d85981280f523270
+Author:        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+AuthorDate:    Thu, 30 Mar 2023 10:00:14 +08:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Tue, 16 May 2023 06:31:50 -07:00
+CommitterDate: Tue, 16 May 2023 06:06:56 -07:00
 
-x86/unwind/orc: Add 'unwind_debug' cmdline option
+x86/unwind/orc: Use swap() instead of open coding it
 
-Sometimes the one-line ORC unwinder warnings aren't very helpful.  Add a
-new 'unwind_debug' cmdline option which will dump the full stack
-contents of the current task when an error condition is encountered.
+Swap is a function interface that provides exchange function. To avoid
+code duplication, we can use swap function.
 
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Link: https://lore.kernel.org/r/6afb9e48a05fd2046bfad47e69b061b43dfd0e0e.1681331449.git.jpoimboe@kernel.org
+./arch/x86/kernel/unwind_orc.c:235:16-17: WARNING opportunity for swap().
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=4641
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230330020014.40489-1-jiapeng.chong@linux.alibaba.com
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  6 ++-
- arch/x86/kernel/unwind_orc.c                    | 49 +++++++++++++++-
- 2 files changed, 54 insertions(+), 1 deletion(-)
+ arch/x86/kernel/unwind_orc.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 9e5bab2..f922eea 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6563,6 +6563,12 @@
- 	unknown_nmi_panic
- 			[X86] Cause panic on unknown NMI.
- 
-+	unwind_debug	[X86-64]
-+			Enable unwinder debug output.  This can be
-+			useful for debugging certain unwinder error
-+			conditions, including corrupt stacks and
-+			bad/missing unwinder metadata.
-+
- 	usbcore.authorized_default=
- 			[USB] Default USB device authorization:
- 			(default -1 = authorized except for wireless USB,
 diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
-index 5fbcb22..7891727 100644
+index 3ac50b7..5fbcb22 100644
 --- a/arch/x86/kernel/unwind_orc.c
 +++ b/arch/x86/kernel/unwind_orc.c
-@@ -13,8 +13,14 @@
- 
- #define orc_warn_current(args...)					\
- ({									\
--	if (state->task == current && !state->error)			\
-+	static bool dumped_before;					\
-+	if (state->task == current && !state->error) {			\
- 		orc_warn(args);						\
-+		if (unwind_debug && !dumped_before) {			\
-+			dumped_before = true;				\
-+			unwind_dump(state);				\
-+		}							\
-+	}								\
- })
- 
- extern int __start_orc_unwind_ip[];
-@@ -23,8 +29,49 @@ extern struct orc_entry __start_orc_unwind[];
- extern struct orc_entry __stop_orc_unwind[];
- 
- static bool orc_init __ro_after_init;
-+static bool unwind_debug __ro_after_init;
- static unsigned int lookup_num_blocks __ro_after_init;
- 
-+static int __init unwind_debug_cmdline(char *str)
-+{
-+	unwind_debug = true;
-+
-+	return 0;
-+}
-+early_param("unwind_debug", unwind_debug_cmdline);
-+
-+static void unwind_dump(struct unwind_state *state)
-+{
-+	static bool dumped_before;
-+	unsigned long word, *sp;
-+	struct stack_info stack_info = {0};
-+	unsigned long visit_mask = 0;
-+
-+	if (dumped_before)
-+		return;
-+
-+	dumped_before = true;
-+
-+	printk_deferred("unwind stack type:%d next_sp:%p mask:0x%lx graph_idx:%d\n",
-+			state->stack_info.type, state->stack_info.next_sp,
-+			state->stack_mask, state->graph_idx);
-+
-+	for (sp = __builtin_frame_address(0); sp;
-+	     sp = PTR_ALIGN(stack_info.next_sp, sizeof(long))) {
-+		if (get_stack_info(sp, state->task, &stack_info, &visit_mask))
-+			break;
-+
-+		for (; sp < stack_info.end; sp++) {
-+
-+			word = READ_ONCE_NOCHECK(*sp);
-+
-+			printk_deferred("%0*lx: %0*lx (%pB)\n", BITS_PER_LONG/4,
-+					(unsigned long)sp, BITS_PER_LONG/4,
-+					word, (void *)word);
-+		}
-+	}
-+}
-+
- static inline unsigned long orc_ip(const int *ip)
+@@ -219,7 +219,6 @@ static struct orc_entry *cur_orc_table = __start_orc_unwind;
+ static void orc_sort_swap(void *_a, void *_b, int size)
  {
- 	return (unsigned long)ip + *ip;
+ 	struct orc_entry *orc_a, *orc_b;
+-	struct orc_entry orc_tmp;
+ 	int *a = _a, *b = _b, tmp;
+ 	int delta = _b - _a;
+ 
+@@ -231,9 +230,7 @@ static void orc_sort_swap(void *_a, void *_b, int size)
+ 	/* Swap the corresponding .orc_unwind entries: */
+ 	orc_a = cur_orc_table + (a - cur_orc_ip_table);
+ 	orc_b = cur_orc_table + (b - cur_orc_ip_table);
+-	orc_tmp = *orc_a;
+-	*orc_a = *orc_b;
+-	*orc_b = orc_tmp;
++	swap(*orc_a, *orc_b);
+ }
+ 
+ static int orc_sort_cmp(const void *_a, const void *_b)
