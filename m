@@ -2,51 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EC02708B32
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 May 2023 00:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C254708B3F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 May 2023 00:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230330AbjERWDU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 18 May 2023 18:03:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59788 "EHLO
+        id S230361AbjERWDX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 18 May 2023 18:03:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbjERWDS (ORCPT
+        with ESMTP id S230317AbjERWDT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 18 May 2023 18:03:18 -0400
+        Thu, 18 May 2023 18:03:19 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CEB2E5E;
-        Thu, 18 May 2023 15:03:17 -0700 (PDT)
-Date:   Thu, 18 May 2023 22:03:14 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DE70E6B;
+        Thu, 18 May 2023 15:03:18 -0700 (PDT)
+Date:   Thu, 18 May 2023 22:03:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684447394;
+        s=2020; t=1684447395;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Q90wEZtoy57yTiX+qUnwxcIu4K08qvGduE+8ufkTtbc=;
-        b=KqJdnBj+TO//bnu55swXXJd1dg5O+GrnJZG7fiywLPEZzU1mS6N9Q647XXwsVvqcvKl6W4
-        3OdQOCfcDSlhGAIDHljN/c4Pru8bgKLBuEAkfUQuSzda11K8t2S4vD10y9/DozLt0PTNiO
-        +ancU/ok8RIJIYlUDI11EiHM2XnxFCNupNzcC4Bj+VAdXXVEflXQw6iP5PE+q1YDO/DgvV
-        Qeq5ALHGYBditW0odmSFb0zL1TlZ7VYwjaaolSN2Wb9Fw6NHAOzu4sctAAC5CaTgKjrpCr
-        RbBTqkA22YnjBK65m9Fy4QuTV5dWLAIRzXNstqFBv9A1rECAHWbX/EE5iBP73w==
+        bh=I6pXIb9fQE5juMsJz0V8ZGE7yVqeUevIja1EUkuR/qk=;
+        b=z5iZ9LSfzYS1r2pfNT4Ip5ffGsH7msJpQYv6BoOpD7sVSib/aFCskVqTtZzC/GGckugJEy
+        xOO1o4454zLo4zx1KVlP8zbHs2PLRVSxQwwYrRjvorm4AUjMM9aWFDRIqoVZflQvMo88Sq
+        MSOUTO9C1TyUKhytj9RGe+r6taYNKv/VM/OAToE9br9fU2A5prw6sFGeRSHpgxy6BOMgyB
+        qT6xW4rs/Dw2CrDqLcQLEnyE3UtGJp8IiS1jQmxQrEhrws9nCgCOqsz8q434XEXS5Jxfwy
+        L1GmWRZe/3MW/vKPMKC5I3z/JGrzSaplJA3hORWThOEDcd6ze3fxjvaG3diYcw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684447394;
+        s=2020e; t=1684447395;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Q90wEZtoy57yTiX+qUnwxcIu4K08qvGduE+8ufkTtbc=;
-        b=lPJlOjPdobLK2l94IyZBttqM4s0xuv5yUwjK6aOki1QRLxxbM4uejzx5uCio3WwjdZKrMS
-        lSDScYwmHSNQvxCA==
+        bh=I6pXIb9fQE5juMsJz0V8ZGE7yVqeUevIja1EUkuR/qk=;
+        b=hJdlbU4aDWET+94oiY+r/ks/FQv295YfjCbyXkY2GLJWDvV9chyQl0zSe7sQ1YWd02kV4D
+        QcChATrjCk/DIEBg==
 From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/quirks: Include linux/pnp.h for
- arch_pnpbios_disabled()
+Subject: [tip: x86/cleanups] x86/pci: Mark local functions as 'static'
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Alexander Lobakin <aleksander.lobakin@intel.com>,
         x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <168444739404.404.1981750002519034291.tip-bot2@tip-bot2>
+Message-ID: <168444739547.404.4202344290739070365.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,37 +62,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     056b44a4d10907ec8153863b2a0564e808ef1440
-Gitweb:        https://git.kernel.org/tip/056b44a4d10907ec8153863b2a0564e808ef1440
+Commit-ID:     0253b04d5b2683f5a4fdcf655b1cae6739d5ab30
+Gitweb:        https://git.kernel.org/tip/0253b04d5b2683f5a4fdcf655b1cae6739d5ab30
 Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Tue, 16 May 2023 21:35:38 +02:00
+AuthorDate:    Tue, 16 May 2023 21:35:31 +02:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 18 May 2023 11:56:18 -07:00
+CommitterDate: Thu, 18 May 2023 11:56:10 -07:00
 
-x86/quirks: Include linux/pnp.h for arch_pnpbios_disabled()
+x86/pci: Mark local functions as 'static'
 
-arch_pnpbios_disabled() is defined in architecture code on x86, but this
-does not include the appropriate header, causing a warning:
+Two functions in this file are global but have no prototype in
+a header and are not called from elsewhere, so they should
+be static:
 
-arch/x86/kernel/platform-quirks.c:42:13: error: no previous prototype for 'arch_pnpbios_disabled' [-Werror=missing-prototypes]
+arch/x86/pci/ce4100.c:86:6: error: no previous prototype for 'sata_revid_init' [-Werror=missing-prototypes]
+arch/x86/pci/ce4100.c:175:5: error: no previous prototype for 'bridge_read' [-Werror=missing-prototypes]
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://lore.kernel.org/all/20230516193549.544673-10-arnd%40kernel.org
+Link: https://lore.kernel.org/all/20230516193549.544673-3-arnd%40kernel.org
 ---
- arch/x86/kernel/platform-quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/pci/ce4100.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/platform-quirks.c b/arch/x86/kernel/platform-quirks.c
-index b348a67..b525fe6 100644
---- a/arch/x86/kernel/platform-quirks.c
-+++ b/arch/x86/kernel/platform-quirks.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/kernel.h>
- #include <linux/init.h>
-+#include <linux/pnp.h>
+diff --git a/arch/x86/pci/ce4100.c b/arch/x86/pci/ce4100.c
+index 584c25b..8731370 100644
+--- a/arch/x86/pci/ce4100.c
++++ b/arch/x86/pci/ce4100.c
+@@ -83,7 +83,7 @@ static void ehci_reg_read(struct sim_dev_reg *reg, u32 *value)
+ 		*value |= 0x100;
+ }
  
- #include <asm/setup.h>
- #include <asm/bios_ebda.h>
+-void sata_revid_init(struct sim_dev_reg *reg)
++static void sata_revid_init(struct sim_dev_reg *reg)
+ {
+ 	reg->sim_reg.value = 0x01060100;
+ 	reg->sim_reg.mask = 0;
+@@ -172,7 +172,7 @@ static inline void extract_bytes(u32 *value, int reg, int len)
+ 	*value &= mask;
+ }
+ 
+-int bridge_read(unsigned int devfn, int reg, int len, u32 *value)
++static int bridge_read(unsigned int devfn, int reg, int len, u32 *value)
+ {
+ 	u32 av_bridge_base, av_bridge_limit;
+ 	int retval = 0;
