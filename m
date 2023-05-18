@@ -2,50 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7FAC708B33
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 May 2023 00:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60DC7708B35
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 May 2023 00:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230335AbjERWDU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 18 May 2023 18:03:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59786 "EHLO
+        id S230337AbjERWDV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 18 May 2023 18:03:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230273AbjERWDS (ORCPT
+        with ESMTP id S229493AbjERWDS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 18 May 2023 18:03:18 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 763DCE57;
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E15BCE61;
         Thu, 18 May 2023 15:03:17 -0700 (PDT)
-Date:   Thu, 18 May 2023 22:03:13 -0000
+Date:   Thu, 18 May 2023 22:03:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684447394;
+        s=2020; t=1684447395;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=dcyvsg0Btvdn8+Kef5n19qjzFQcju1U15FF4mHUaMJg=;
-        b=tIxqoHF9K7MQtw89Hqyyu4tCJ3Hw5p3HUzycuC+HWHx1gIucItsrCOL/Tpeg1/LdjM0V1X
-        RmHtWSlDU1wX4kV7zBIgr1s4tW8kbuM/Bu8W6eWJA+cBAkEoh6CoAddzjpbuGKWLVrc5NW
-        LcUFuHxjL8jJGdUeG5C62xK8K5BAVPmLFiSOvNQp1FLobRpnoQo1VG4z826t1211ekuwMX
-        Bkc3WRyjAZ8EiftFGi9J/V2m1RcIh3KmGhFVLCZmePYPzvAbWgmmryBOnBnq3uUqQkt+St
-        BlEZh4eTtTQML68G/on9u3eHZGuFou1e0VNXw+r0rPpcxfxfMyXL+15YQ05IpQ==
+        bh=CVVhUaVpd99ia/UHaFKuasy0L+DSdo1nXROm6c19S8s=;
+        b=BJHh4I6KTyln6s4ZrKUMz3X5OeC0hWIZLSZSk64KJKWRjLiqoMPZKTw30htJr+JbBqolJx
+        3MlpkXZb4comMsXzKfMUdgy2msXxGQ41ULvrwMCsFKJGx4R3FlXaoeFpcYZwYqg4vxbx8r
+        EZ/Fj8ic09gwdXsY+cJzxEz9aWlYEyP1G3kUoq3hjOywLxnpPSoMK70q8sejNay7U66fF9
+        iFwIPrz37BvxCZCHI6zdEcxMThj3qFZ/jW/eYLAjOu94u76uMtFSv+pvXtJXTwfSFXFeki
+        jMuhgKO7pdtjNITnFDFNuHO/4K7R/Vo3OFproZKABB0iwTBij03yOLuG/BZhCg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684447394;
+        s=2020e; t=1684447395;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=dcyvsg0Btvdn8+Kef5n19qjzFQcju1U15FF4mHUaMJg=;
-        b=ofPFEKgtrteb1nWZ64leJ0FvsEjJaE0nMCTPWByEAuP4K51MvnYU1gRTzNNR/i8Jc2bfr/
-        Z44kQdh1CyiBXVAQ==
+        bh=CVVhUaVpd99ia/UHaFKuasy0L+DSdo1nXROm6c19S8s=;
+        b=FBcYtLYDj02ZBXy/qtJlUyj65uO5semr1KWF4RmmXHVBWslw5k9DBvXvuxzCpuH4ZoC3i6
+        J/bYCAi8oh6LkIAQ==
 From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/entry: Add do_SYSENTER_32() prototype
+Subject: [tip: x86/cleanups] x86: Avoid missing-prototype warnings for
+ doublefault code
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Alexander Lobakin <aleksander.lobakin@intel.com>,
         x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <168444739377.404.12912509719388717312.tip-bot2@tip-bot2>
+Message-ID: <168444739461.404.1026256630293999646.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,45 +63,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     f34f0d3c10eb4d3160fc6fe7a2482cb78d3b0c12
-Gitweb:        https://git.kernel.org/tip/f34f0d3c10eb4d3160fc6fe7a2482cb78d3b0c12
+Commit-ID:     c9664839305dfaccd098b1606c197b0eb21056dc
+Gitweb:        https://git.kernel.org/tip/c9664839305dfaccd098b1606c197b0eb21056dc
 Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Tue, 16 May 2023 21:35:40 +02:00
+AuthorDate:    Tue, 16 May 2023 21:35:36 +02:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Thu, 18 May 2023 11:56:18 -07:00
 
-x86/entry: Add do_SYSENTER_32() prototype
+x86: Avoid missing-prototype warnings for doublefault code
 
-The 32-bit system call entry points can be called on both 32-bit
-and 64-bit kernels, but on the former the declarations are hidden:
+Two functions in the 32-bit doublefault code are lacking a prototype:
 
-arch/x86/entry/common.c:238:24: error: no previous prototype for 'do_SYSENTER_32' [-Werror=missing-prototypes]
+arch/x86/kernel/doublefault_32.c:23:36: error: no previous prototype for 'doublefault_shim' [-Werror=missing-prototypes]
+   23 | asmlinkage noinstr void __noreturn doublefault_shim(void)
+      |                                    ^~~~~~~~~~~~~~~~
+arch/x86/kernel/doublefault_32.c:114:6: error: no previous prototype for 'doublefault_init_cpu_tss' [-Werror=missing-prototypes]
+  114 | void doublefault_init_cpu_tss(void)
 
-Move them all out of the #ifdef block to avoid the warnings.
+The first one is only called from assembler, while the second one is
+declared in doublefault.h, but this file is not included.
+
+Include the header file and add the other declaration there as well.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://lore.kernel.org/all/20230516193549.544673-12-arnd%40kernel.org
+Link: https://lore.kernel.org/all/20230516193549.544673-8-arnd%40kernel.org
 ---
- arch/x86/include/asm/syscall.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/doublefault.h | 4 ++++
+ arch/x86/kernel/doublefault_32.c   | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
-index 5b85987..4fb36fb 100644
---- a/arch/x86/include/asm/syscall.h
-+++ b/arch/x86/include/asm/syscall.h
-@@ -127,9 +127,11 @@ static inline int syscall_get_arch(struct task_struct *task)
- }
+diff --git a/arch/x86/include/asm/doublefault.h b/arch/x86/include/asm/doublefault.h
+index 54a6e4a..de0e88b 100644
+--- a/arch/x86/include/asm/doublefault.h
++++ b/arch/x86/include/asm/doublefault.h
+@@ -2,6 +2,8 @@
+ #ifndef _ASM_X86_DOUBLEFAULT_H
+ #define _ASM_X86_DOUBLEFAULT_H
  
- void do_syscall_64(struct pt_regs *regs, int nr);
--void do_int80_syscall_32(struct pt_regs *regs);
--long do_fast_syscall_32(struct pt_regs *regs);
- 
- #endif	/* CONFIG_X86_32 */
- 
-+void do_int80_syscall_32(struct pt_regs *regs);
-+long do_fast_syscall_32(struct pt_regs *regs);
-+long do_SYSENTER_32(struct pt_regs *regs);
++#include <linux/linkage.h>
 +
- #endif	/* _ASM_X86_SYSCALL_H */
+ #ifdef CONFIG_X86_32
+ extern void doublefault_init_cpu_tss(void);
+ #else
+@@ -10,4 +12,6 @@ static inline void doublefault_init_cpu_tss(void)
+ }
+ #endif
+ 
++asmlinkage void __noreturn doublefault_shim(void);
++
+ #endif /* _ASM_X86_DOUBLEFAULT_H */
+diff --git a/arch/x86/kernel/doublefault_32.c b/arch/x86/kernel/doublefault_32.c
+index 3b58d87..6eaf9a6 100644
+--- a/arch/x86/kernel/doublefault_32.c
++++ b/arch/x86/kernel/doublefault_32.c
+@@ -9,6 +9,7 @@
+ #include <asm/processor.h>
+ #include <asm/desc.h>
+ #include <asm/traps.h>
++#include <asm/doublefault.h>
+ 
+ #define ptr_ok(x) ((x) > PAGE_OFFSET && (x) < PAGE_OFFSET + MAXMEM)
+ 
