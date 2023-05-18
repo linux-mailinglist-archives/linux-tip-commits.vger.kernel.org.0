@@ -2,56 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56BE3707EE6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 May 2023 13:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75F8E708B2F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 May 2023 00:03:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231228AbjERLJW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 18 May 2023 07:09:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43608 "EHLO
+        id S230268AbjERWDS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 18 May 2023 18:03:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231176AbjERLJS (ORCPT
+        with ESMTP id S229914AbjERWDQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 18 May 2023 07:09:18 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 601D32683;
-        Thu, 18 May 2023 04:08:37 -0700 (PDT)
-Date:   Thu, 18 May 2023 11:08:04 -0000
+        Thu, 18 May 2023 18:03:16 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFB7BE56;
+        Thu, 18 May 2023 15:03:14 -0700 (PDT)
+Date:   Thu, 18 May 2023 22:03:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684408084;
+        s=2020; t=1684447392;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=DDrie1cOrSTy8hqwWcIdLpLvCM2cPcYwzeoDx6sC2kg=;
-        b=El1p1inTGcqDn7LQQLop654NpQp8sIv4EyD0MgnMLD2KfsTVq9Ys3n/8TVhMs7q58PLzD7
-        fN/luGBHV2j6jW/se2dXHAbWTisVl+NgQped5FGrsbObBfRf1Nkx6Cf+jwQokIid6U4YC9
-        dIS06ngrVKmioHnwBU8s8yONaVSjVE5TxcvpJFvI7ot5WHaCASWMdlJYWdVY2S6DXCIiHB
-        LjsxOsFF7kgRQ5om1F3cRnY/QDkxOsSj0HZ2JWKdGg3MQ5kTyD8mzJTmYTvojDFxznitlb
-        cbH1QMEKai1bYlZvwhsYg7q5nWKK3kTDVcn9tWNRq9d4HUxB4LN6P5sWMz+iRQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=6yOBB+dHnhueTNIEBj0qNl2Hq3gUzpZCTpbw2qcH+0Q=;
+        b=bS+LYrgodFX5yVX2CVoFfgJG1y5rm0HiGidLdLjmTfXc/bokkWFgH+mEj2lPcc1Q7NhKkv
+        EBIVauqrreXDeS4d7AG4gMWqCP7qnq1bt7Ws/cRlgJyz9nf6Rne2thtbn2xBsGTNbfAoWA
+        JcwLGFwT54tU7NdxadVNnV9EJI1MTPRk2jzcijKEtFDYCEfryGftgQkX0D9JD57rOhgus1
+        IYFIH1J3BovukBXl2L7vpA5/a+GsrbYzM3hKbYMJ5BGFzvvcKmL/yz281DrnkaMM3GOE6S
+        sH1UNa4b6PJs+iJE90AMJ2cdS3OP2IxNZeaK20uT040oYneTPR2XdWAxx3wzXQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684408084;
+        s=2020e; t=1684447392;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=DDrie1cOrSTy8hqwWcIdLpLvCM2cPcYwzeoDx6sC2kg=;
-        b=SULRuuQB232AlMs0oNflsT5tfyr2/NpfuPDHIeb2uVNnU2/hdqWw08NrhyMUOLQBw4zHM7
-        MHZbwX3a21crwFCw==
-From:   "tip-bot2 for Jiapeng Chong" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=6yOBB+dHnhueTNIEBj0qNl2Hq3gUzpZCTpbw2qcH+0Q=;
+        b=s0i6bFdU7QlseHJShdb0OD4QwSIu5SwTmYhPAd5Y+38Y1JROfhHPmu6MBWQITSqgi8a3nu
+        mcW4YOTShPGsoICg==
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/unwind/orc: Use swap() instead of open coding it
-Cc:     Abaci Robot <abaci@linux.alibaba.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230330020014.40489-1-jiapeng.chong@linux.alibaba.com>
-References: <20230330020014.40489-1-jiapeng.chong@linux.alibaba.com>
+Subject: [tip: x86/cleanups] x86/platform: Avoid missing-prototype warnings for OLPC
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <168440808427.404.1399705978286968537.tip-bot2@tip-bot2>
+Message-ID: <168444739153.404.3947589482547079284.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,51 +60,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     95f0e3a209b0045a56a06987d85981280f523270
-Gitweb:        https://git.kernel.org/tip/95f0e3a209b0045a56a06987d85981280f523270
-Author:        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-AuthorDate:    Thu, 30 Mar 2023 10:00:14 +08:00
-Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Tue, 16 May 2023 06:06:56 -07:00
+Commit-ID:     454a348714954f7b626c027a90c3967278e3f93b
+Gitweb:        https://git.kernel.org/tip/454a348714954f7b626c027a90c3967278e3f93b
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Tue, 16 May 2023 21:35:49 +02:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 18 May 2023 11:56:19 -07:00
 
-x86/unwind/orc: Use swap() instead of open coding it
+x86/platform: Avoid missing-prototype warnings for OLPC
 
-Swap is a function interface that provides exchange function. To avoid
-code duplication, we can use swap function.
+There are two functions in the olpc platform that have no prototype:
 
-./arch/x86/kernel/unwind_orc.c:235:16-17: WARNING opportunity for swap().
+arch/x86/platform/olpc/olpc_dt.c:237:13: error: no previous prototype for 'olpc_dt_fixup' [-Werror=missing-prototypes]
+arch/x86/platform/olpc/olpc-xo1-pm.c:73:26: error: no previous prototype for 'xo1_do_sleep' [-Werror=missing-prototypes]
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=4641
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230330020014.40489-1-jiapeng.chong@linux.alibaba.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+The first one should just be marked 'static' as there are no other
+callers, while the second one is called from assembler and is
+just a false-positive warning that can be silenced by adding a
+prototype.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Link: https://lore.kernel.org/all/20230516193549.544673-21-arnd%40kernel.org
 ---
- arch/x86/kernel/unwind_orc.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/x86/platform/olpc/olpc_dt.c | 2 +-
+ include/linux/olpc-ec.h          | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
-index 3ac50b7..5fbcb22 100644
---- a/arch/x86/kernel/unwind_orc.c
-+++ b/arch/x86/kernel/unwind_orc.c
-@@ -219,7 +219,6 @@ static struct orc_entry *cur_orc_table = __start_orc_unwind;
- static void orc_sort_swap(void *_a, void *_b, int size)
- {
- 	struct orc_entry *orc_a, *orc_b;
--	struct orc_entry orc_tmp;
- 	int *a = _a, *b = _b, tmp;
- 	int delta = _b - _a;
- 
-@@ -231,9 +230,7 @@ static void orc_sort_swap(void *_a, void *_b, int size)
- 	/* Swap the corresponding .orc_unwind entries: */
- 	orc_a = cur_orc_table + (a - cur_orc_ip_table);
- 	orc_b = cur_orc_table + (b - cur_orc_ip_table);
--	orc_tmp = *orc_a;
--	*orc_a = *orc_b;
--	*orc_b = orc_tmp;
-+	swap(*orc_a, *orc_b);
+diff --git a/arch/x86/platform/olpc/olpc_dt.c b/arch/x86/platform/olpc/olpc_dt.c
+index 75e3319..74ebd68 100644
+--- a/arch/x86/platform/olpc/olpc_dt.c
++++ b/arch/x86/platform/olpc/olpc_dt.c
+@@ -234,7 +234,7 @@ static int __init olpc_dt_compatible_match(phandle node, const char *compat)
+ 	return 0;
  }
  
- static int orc_sort_cmp(const void *_a, const void *_b)
+-void __init olpc_dt_fixup(void)
++static void __init olpc_dt_fixup(void)
+ {
+ 	phandle node;
+ 	u32 board_rev;
+diff --git a/include/linux/olpc-ec.h b/include/linux/olpc-ec.h
+index c460236..3c2891d 100644
+--- a/include/linux/olpc-ec.h
++++ b/include/linux/olpc-ec.h
+@@ -56,6 +56,8 @@ extern int olpc_ec_sci_query(u16 *sci_value);
+ 
+ extern bool olpc_ec_wakeup_available(void);
+ 
++asmlinkage int xo1_do_sleep(u8 sleep_state);
++
+ #else
+ 
+ static inline int olpc_ec_cmd(u8 cmd, u8 *inbuf, size_t inlen, u8 *outbuf,
