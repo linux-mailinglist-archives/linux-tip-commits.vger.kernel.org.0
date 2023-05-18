@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C254708B3F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 May 2023 00:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11FEA708B38
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 May 2023 00:03:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230361AbjERWDX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 18 May 2023 18:03:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59804 "EHLO
+        id S230414AbjERWD1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 18 May 2023 18:03:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230317AbjERWDT (ORCPT
+        with ESMTP id S230341AbjERWDV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 18 May 2023 18:03:19 -0400
+        Thu, 18 May 2023 18:03:21 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DE70E6B;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 401BEE7A;
         Thu, 18 May 2023 15:03:18 -0700 (PDT)
 Date:   Thu, 18 May 2023 22:03:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -21,31 +21,31 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=I6pXIb9fQE5juMsJz0V8ZGE7yVqeUevIja1EUkuR/qk=;
-        b=z5iZ9LSfzYS1r2pfNT4Ip5ffGsH7msJpQYv6BoOpD7sVSib/aFCskVqTtZzC/GGckugJEy
-        xOO1o4454zLo4zx1KVlP8zbHs2PLRVSxQwwYrRjvorm4AUjMM9aWFDRIqoVZflQvMo88Sq
-        MSOUTO9C1TyUKhytj9RGe+r6taYNKv/VM/OAToE9br9fU2A5prw6sFGeRSHpgxy6BOMgyB
-        qT6xW4rs/Dw2CrDqLcQLEnyE3UtGJp8IiS1jQmxQrEhrws9nCgCOqsz8q434XEXS5Jxfwy
-        L1GmWRZe/3MW/vKPMKC5I3z/JGrzSaplJA3hORWThOEDcd6ze3fxjvaG3diYcw==
+        bh=PcgtW3iA4+dOUhzzk/M2he6NDx+hgFUlACPkQmL+IVI=;
+        b=mkcMrZLFWhphvPJ8QzuXMqo0gu3z8a43LPLnSNFoDNTq2CpShPSeG8oXVEhYcPLlcrFxKU
+        mDP47f3XrEl88CQbYRjyA+StsB8qMmAHmb45eWgk/diP60re40dDEiR0yGavn7/Y/7B+9r
+        tRnc4PaIvT/Q6yS744jwXifdr9L35hi2/FmLMTqjfrJfx6yB2cmoL6/dcmKW4nh5Sv7TOK
+        HIwaOvabz9MJxAlbdhXAyQCu0XxvPDcQexA5qA7PckeFybr2Ze2j3+DJMncgzK35vrWSE4
+        vOUSw/QP38FAjVFsC+03hWTZKywVRNYmVxrqV60akT3FfLY4x+UIS+mZVatXlA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1684447395;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=I6pXIb9fQE5juMsJz0V8ZGE7yVqeUevIja1EUkuR/qk=;
-        b=hJdlbU4aDWET+94oiY+r/ks/FQv295YfjCbyXkY2GLJWDvV9chyQl0zSe7sQ1YWd02kV4D
-        QcChATrjCk/DIEBg==
+        bh=PcgtW3iA4+dOUhzzk/M2he6NDx+hgFUlACPkQmL+IVI=;
+        b=xQlDWD4qoho+SxiVvKxcUYknmEb/0RqODuADgO9XHO2UUtmYzVVhQqnuLRFHbN0NnKfkB4
+        i2wt/htfuYqfyLAA==
 From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/pci: Mark local functions as 'static'
+Subject: [tip: x86/cleanups] x86: Add dummy prototype for mk_early_pgtbl_32()
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Alexander Lobakin <aleksander.lobakin@intel.com>,
         x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <168444739547.404.4202344290739070365.tip-bot2@tip-bot2>
+Message-ID: <168444739518.404.1158362129763767934.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,49 +62,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     0253b04d5b2683f5a4fdcf655b1cae6739d5ab30
-Gitweb:        https://git.kernel.org/tip/0253b04d5b2683f5a4fdcf655b1cae6739d5ab30
+Commit-ID:     2eb5d1df2aa657ccc65cfab67e65eb9f97cef4d6
+Gitweb:        https://git.kernel.org/tip/2eb5d1df2aa657ccc65cfab67e65eb9f97cef4d6
 Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Tue, 16 May 2023 21:35:31 +02:00
+AuthorDate:    Tue, 16 May 2023 21:35:34 +02:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 18 May 2023 11:56:10 -07:00
+CommitterDate: Thu, 18 May 2023 11:56:16 -07:00
 
-x86/pci: Mark local functions as 'static'
+x86: Add dummy prototype for mk_early_pgtbl_32()
 
-Two functions in this file are global but have no prototype in
-a header and are not called from elsewhere, so they should
-be static:
+'make W=1' warns about a function without a prototype in the x86-32 head code:
 
-arch/x86/pci/ce4100.c:86:6: error: no previous prototype for 'sata_revid_init' [-Werror=missing-prototypes]
-arch/x86/pci/ce4100.c:175:5: error: no previous prototype for 'bridge_read' [-Werror=missing-prototypes]
+arch/x86/kernel/head32.c:72:13: error: no previous prototype for 'mk_early_pgtbl_32' [-Werror=missing-prototypes]
+
+This is called from assembler code, so it does not actually need a prototype.
+I could not find an appropriate header for it, so just declare it in front
+of the definition to shut up the warning.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://lore.kernel.org/all/20230516193549.544673-3-arnd%40kernel.org
+Link: https://lore.kernel.org/all/20230516193549.544673-6-arnd%40kernel.org
 ---
- arch/x86/pci/ce4100.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/head32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/pci/ce4100.c b/arch/x86/pci/ce4100.c
-index 584c25b..8731370 100644
---- a/arch/x86/pci/ce4100.c
-+++ b/arch/x86/pci/ce4100.c
-@@ -83,7 +83,7 @@ static void ehci_reg_read(struct sim_dev_reg *reg, u32 *value)
- 		*value |= 0x100;
- }
- 
--void sata_revid_init(struct sim_dev_reg *reg)
-+static void sata_revid_init(struct sim_dev_reg *reg)
+diff --git a/arch/x86/kernel/head32.c b/arch/x86/kernel/head32.c
+index 10c27b4..246a609 100644
+--- a/arch/x86/kernel/head32.c
++++ b/arch/x86/kernel/head32.c
+@@ -69,6 +69,7 @@ asmlinkage __visible void __init __noreturn i386_start_kernel(void)
+  * to the first kernel PMD. Note the upper half of each PMD or PTE are
+  * always zero at this stage.
+  */
++void __init mk_early_pgtbl_32(void);
+ void __init mk_early_pgtbl_32(void)
  {
- 	reg->sim_reg.value = 0x01060100;
- 	reg->sim_reg.mask = 0;
-@@ -172,7 +172,7 @@ static inline void extract_bytes(u32 *value, int reg, int len)
- 	*value &= mask;
- }
- 
--int bridge_read(unsigned int devfn, int reg, int len, u32 *value)
-+static int bridge_read(unsigned int devfn, int reg, int len, u32 *value)
- {
- 	u32 av_bridge_base, av_bridge_limit;
- 	int retval = 0;
+ #ifdef __pa
