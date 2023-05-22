@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5513F70BD10
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 May 2023 14:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0861F70BED6
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 May 2023 14:56:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229757AbjEVMNL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 22 May 2023 08:13:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47362 "EHLO
+        id S232335AbjEVM4P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 22 May 2023 08:56:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232133AbjEVMNE (ORCPT
+        with ESMTP id S233823AbjEVM4N (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 22 May 2023 08:13:04 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B698119;
-        Mon, 22 May 2023 05:12:46 -0700 (PDT)
-Date:   Mon, 22 May 2023 12:12:44 -0000
+        Mon, 22 May 2023 08:56:13 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35DA7AA;
+        Mon, 22 May 2023 05:56:12 -0700 (PDT)
+Date:   Mon, 22 May 2023 12:56:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684757564;
+        s=2020; t=1684760169;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iEjofJonbFjcrIFx5W6JsYcXuFz3vdclGrLXxCuKyb4=;
-        b=r3mq2lyd/CSnJMz4F/RrxpJQKpG1+eo9TAe1UmzqW/zTFFq4IbrSBfpnUETpwxBnrhqa5Y
-        fQq41JENXrZ9pUrZvzhr/hLGNfKnp4i7dojPoLBCwGt0BqTA9buHEzBFFkpf2id/+m/VPu
-        3J6IabjH5frnsPvrNbg6nX4WPhceVB7digFwEbSLUA0obn+MzEX0kAjrvK8uZIuaqSzfg2
-        t19lutUeznB3uvrAVNHv5oHOzbMFPesKJN+UomNaLMUaHq94lB6MhV49JFkhIllpROcbuk
-        VDsnqV/VE91hvPT4QiXRpdE1tIue5EcqT8Smi4DXyUA/12zd9becH4C5pJ61Bw==
+        bh=yIrOEV3UUxlpbFp+rN0C9KkFZE50OIvh19Gvh/h9PPI=;
+        b=AXMVhD7wnq7tAsoCB2MKnK97xN50ZcD8klFg6Wj6qviHET2vAtpn7OVFM2bxOti1SpneFS
+        yGvLgyptQCLNgTbpAqZlGz+oKd0eLKKIeX9qqXSySAyqCzkdkwaU6fv6dKzHgKj3J65a27
+        2oZJENG60anNOsK0iZRleQydZIgYSxfjxpKGRksOymdv2QwAXauxJyF/NvaAIAIVemFrTG
+        pwITXqR9HwHHojkqxDIURt7Fp80+9Nicg+dspJzvK2JFwSX/RMKyh1/PFhoM6UHoq0xYCo
+        EYhg/ykdhEmSfnUy/iCS/JhSCtclJWVW9s36vIPTamPbxVH2qQjhKIp5KgacpA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684757564;
+        s=2020e; t=1684760169;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iEjofJonbFjcrIFx5W6JsYcXuFz3vdclGrLXxCuKyb4=;
-        b=P5lbzH1qjGAKTAAHz5CS+xoLnOq1+LMRsgdDcxDsO88gFnjQmo665zxOsfe5h8z8b/QAVO
-        Fr3BskORxf2cq8Dw==
-From:   "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
+        bh=yIrOEV3UUxlpbFp+rN0C9KkFZE50OIvh19Gvh/h9PPI=;
+        b=xOxkYSSlje/0EhkPNJm+Fc2y2qqVefNJ2o/aaP/Av0WCGIh0wH22GE53Zg4QwKacNneK1s
+        AKTJKYMOtX5R+RCQ==
+From:   "tip-bot2 for Tetsuo Handa" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] x86/apic: Fix use of X{,2}APIC_ENABLE in asm with
- older binutils
-Cc:     Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
+Subject: [tip: core/debugobjects] debugobjects: Don't wake up kswapd from fill_pool()
+Cc:     syzbot <syzbot+fe0c72f0ccbb93786380@syzkaller.appspotmail.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230522105738.2378364-1-andrew.cooper3@citrix.com>
-References: <20230522105738.2378364-1-andrew.cooper3@citrix.com>
+In-Reply-To: <6577e1fa-b6ee-f2be-2414-a2b51b1c5e30@I-love.SAKURA.ne.jp>
+References: <6577e1fa-b6ee-f2be-2414-a2b51b1c5e30@I-love.SAKURA.ne.jp>
 MIME-Version: 1.0
-Message-ID: <168475756408.404.16653429197194734425.tip-bot2@tip-bot2>
+Message-ID: <168476016890.404.6911447269153588182.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,54 +66,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the core/debugobjects branch of tip:
 
-Commit-ID:     6a4be6984595b164b6f281c5b242dbdf1c06d528
-Gitweb:        https://git.kernel.org/tip/6a4be6984595b164b6f281c5b242dbdf1c06d528
-Author:        Andrew Cooper <andrew.cooper3@citrix.com>
-AuthorDate:    Mon, 22 May 2023 11:57:38 +01:00
+Commit-ID:     eb799279fb1f9c63c520fe8c1c41cb9154252db6
+Gitweb:        https://git.kernel.org/tip/eb799279fb1f9c63c520fe8c1c41cb9154252db6
+Author:        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+AuthorDate:    Thu, 11 May 2023 22:47:32 +09:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 22 May 2023 14:06:33 +02:00
+CommitterDate: Mon, 22 May 2023 14:52:58 +02:00
 
-x86/apic: Fix use of X{,2}APIC_ENABLE in asm with older binutils
+debugobjects: Don't wake up kswapd from fill_pool()
 
-"x86/smpboot: Support parallel startup of secondary CPUs" adds the first use
-of X2APIC_ENABLE in assembly, but older binutils don't tolerate the UL suffix.
+syzbot is reporting a lockdep warning in fill_pool() because the allocation
+from debugobjects is using GFP_ATOMIC, which is (__GFP_HIGH | __GFP_KSWAPD_RECLAIM)
+and therefore tries to wake up kswapd, which acquires kswapd_wait::lock.
 
-Switch to using BIT() instead.
+Since fill_pool() might be called with arbitrary locks held, fill_pool()
+should not assume that acquiring kswapd_wait::lock is safe.
 
-Fixes: 7e75178a0950 ("x86/smpboot: Support parallel startup of secondary CPUs")
-Reported-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Use __GFP_HIGH instead and remove __GFP_NORETRY as it is pointless for
+!__GFP_DIRECT_RECLAIM allocation.
+
+Fixes: 3ac7fe5a4aab ("infrastructure to debug (dynamic) objects")
+Reported-by: syzbot <syzbot+fe0c72f0ccbb93786380@syzkaller.appspotmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://lore.kernel.org/r/20230522105738.2378364-1-andrew.cooper3@citrix.com
-
+Link: https://lore.kernel.org/r/6577e1fa-b6ee-f2be-2414-a2b51b1c5e30@I-love.SAKURA.ne.jp
+Closes: https://syzkaller.appspot.com/bug?extid=fe0c72f0ccbb93786380
 ---
- arch/x86/include/asm/apicdef.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ lib/debugobjects.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/apicdef.h b/arch/x86/include/asm/apicdef.h
-index bf546df..4b125e5 100644
---- a/arch/x86/include/asm/apicdef.h
-+++ b/arch/x86/include/asm/apicdef.h
-@@ -2,6 +2,8 @@
- #ifndef _ASM_X86_APICDEF_H
- #define _ASM_X86_APICDEF_H
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 826c617..984985c 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -126,7 +126,7 @@ static const char *obj_states[ODEBUG_STATE_MAX] = {
  
-+#include <linux/bits.h>
-+
- /*
-  * Constants for various Intel APICs. (local APIC, IOAPIC, etc.)
-  *
-@@ -140,8 +142,8 @@
- #define APIC_BASE (fix_to_virt(FIX_APIC_BASE))
- #define APIC_BASE_MSR		0x800
- #define APIC_X2APIC_ID_MSR	0x802
--#define XAPIC_ENABLE	(1UL << 11)
--#define X2APIC_ENABLE	(1UL << 10)
-+#define XAPIC_ENABLE		BIT(11)
-+#define X2APIC_ENABLE		BIT(10)
+ static void fill_pool(void)
+ {
+-	gfp_t gfp = GFP_ATOMIC | __GFP_NORETRY | __GFP_NOWARN;
++	gfp_t gfp = __GFP_HIGH | __GFP_NOWARN;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
  
- #ifdef CONFIG_X86_32
- # define MAX_IO_APICS 64
