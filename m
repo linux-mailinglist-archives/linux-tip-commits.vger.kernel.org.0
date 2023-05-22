@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2C070BA13
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 May 2023 12:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9093070BA16
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 May 2023 12:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232769AbjEVK1t (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 22 May 2023 06:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57516 "EHLO
+        id S232689AbjEVK1w (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 22 May 2023 06:27:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232845AbjEVK1b (ORCPT
+        with ESMTP id S232018AbjEVK1c (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 22 May 2023 06:27:31 -0400
+        Mon, 22 May 2023 06:27:32 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AC77186;
-        Mon, 22 May 2023 03:27:28 -0700 (PDT)
-Date:   Mon, 22 May 2023 10:27:26 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3FBF1BE;
+        Mon, 22 May 2023 03:27:29 -0700 (PDT)
+Date:   Mon, 22 May 2023 10:27:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684751246;
+        s=2020; t=1684751248;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kfjgleaAX3ezxYz5NiHreKN1+06F3nzIlYYYc1MIWMc=;
-        b=m1SHo7y73ifgWBKblc6asXYO8EibVuuRGt4Ds3q7+21I2BafDFMaajWCMHOkd7E6iR/MqH
-        c8r9BRyLUmBT6BcF7ojMF4w5uh0dV1+9sTv+BPQ83nMYYeKsROA1wwRXY1Q2irBvEGGMGD
-        myFAkSnvpWc7w+ZLZIoRp1UYyxdGCQ3YGo4TMs0O8RvLsYFv2d2fuXcuY8G/CkGo5Vh1Dp
-        ZSVIsxFXOYwVfkXzwQNWI4Bh6AgvsGay46+RlRT4uYXZbcbi2nQtreMdseefszd7qrpkXA
-        ba+LgIYiMen0tj+xBju/85oKdurh8brxoWs29Vp61gQKOT5kuNCCSxNnmzNBbw==
+        bh=2jg+PEFLPaxod2aGd5ToSr/xf/b+owxH3fTbsNQbh18=;
+        b=qK0wMMQ0j1Pnt7fJeMfr7OQoe6mN+2BKXjmhzczLoIZuF8Kx3gvpquLWyKsIwmxm2jTtSN
+        zSpzuO+F5n37iRvoTTvClUpXcFxKkPa8y4nnVkqtTE9zMbd34uM8Gl/DfZP/tQU8stcSUp
+        LalozWSX46gXfG6a/fxKNyYeGu0cOeHxPhSLqdIqMq5xkPcdTJqbIM90ae4sK9M7oafQOt
+        hHBjZY7w2c7XwSfYp+Zlq93swuyVwsoVNZkT2ow5ElJSDjYJAzVD2EaikIVY6eq9abxnuj
+        LQ6c+hMIDBanlB1brBjJLMXL3nhcbSSLDAvQXD+Svv1ddTa64Xbhm5iFrslE4A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684751246;
+        s=2020e; t=1684751248;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kfjgleaAX3ezxYz5NiHreKN1+06F3nzIlYYYc1MIWMc=;
-        b=UqfRhGoqDC5WI6fFjtufGBuPEzr/V5GdQoMV/LbuslcLx5KFaQ8FBg5d+cN1ia/BbbLQu7
-        KJRuomLFkavIoqDQ==
+        bh=2jg+PEFLPaxod2aGd5ToSr/xf/b+owxH3fTbsNQbh18=;
+        b=O8ZrWpXD4EUcUE7Ezo1zpT4ol6uhWJuM7nRoASqX7c16HKDjwXkprSDuWY6In8QipMVQrO
+        8PeAmP4gaCbxhzDQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] x86,intel_iommu: Replace cmpxchg_double()
+Subject: [tip: locking/core] percpu: Wire up cmpxchg128
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
         Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230515080554.382778664@infradead.org>
-References: <20230515080554.382778664@infradead.org>
+In-Reply-To: <20230515080554.248739380@infradead.org>
+References: <20230515080554.248739380@infradead.org>
 MIME-Version: 1.0
-Message-ID: <168475124641.404.951916622997470351.tip-bot2@tip-bot2>
+Message-ID: <168475124752.404.11683694870847476596.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,184 +67,194 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     6d46dba6bb1cfb1885d9751fadc00ac247d9ccaf
-Gitweb:        https://git.kernel.org/tip/6d46dba6bb1cfb1885d9751fadc00ac247d9ccaf
+Commit-ID:     fed3b1fae1030f87828ff000c69077d660f3bdf3
+Gitweb:        https://git.kernel.org/tip/fed3b1fae1030f87828ff000c69077d660f3bdf3
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 15 May 2023 09:57:06 +02:00
+AuthorDate:    Mon, 15 May 2023 09:57:04 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 22 May 2023 10:49:50 +02:00
+CommitterDate: Mon, 22 May 2023 10:49:49 +02:00
 
-x86,intel_iommu: Replace cmpxchg_double()
+percpu: Wire up cmpxchg128
+
+In order to replace cmpxchg_double() with the newly minted
+cmpxchg128() family of functions, wire it up in this_cpu_cmpxchg().
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230515080554.382778664@infradead.org
+Link: https://lore.kernel.org/r/20230515080554.248739380@infradead.org
 ---
- drivers/iommu/intel/irq_remapping.c |   8 +--
- include/linux/dmar.h                | 125 ++++++++++++++-------------
- 2 files changed, 68 insertions(+), 65 deletions(-)
+ arch/arm64/include/asm/percpu.h | 20 +++++++++++-
+ arch/s390/include/asm/percpu.h  | 16 +++++++++-
+ arch/x86/include/asm/percpu.h   | 59 ++++++++++++++++++++++++++++++++-
+ include/asm-generic/percpu.h    | 16 +++++++++-
+ 4 files changed, 111 insertions(+)
 
-diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_remapping.c
-index a1b9873..08f5632 100644
---- a/drivers/iommu/intel/irq_remapping.c
-+++ b/drivers/iommu/intel/irq_remapping.c
-@@ -175,18 +175,14 @@ static int modify_irte(struct irq_2_iommu *irq_iommu,
- 	irte = &iommu->ir_table->base[index];
+diff --git a/arch/arm64/include/asm/percpu.h b/arch/arm64/include/asm/percpu.h
+index b9ba19d..2549829 100644
+--- a/arch/arm64/include/asm/percpu.h
++++ b/arch/arm64/include/asm/percpu.h
+@@ -140,6 +140,10 @@ PERCPU_RET_OP(add, add, ldadd)
+  * re-enabling preemption for preemptible kernels, but doing that in a way
+  * which builds inside a module would mean messing directly with the preempt
+  * count. If you do this, peterz and tglx will hunt you down.
++ *
++ * Not to mention it'll break the actual preemption model for missing a
++ * preemption point when TIF_NEED_RESCHED gets set while preemption is
++ * disabled.
+  */
+ #define this_cpu_cmpxchg_double_8(ptr1, ptr2, o1, o2, n1, n2)		\
+ ({									\
+@@ -240,6 +244,22 @@ PERCPU_RET_OP(add, add, ldadd)
+ #define this_cpu_cmpxchg_8(pcp, o, n)	\
+ 	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
  
- 	if ((irte->pst == 1) || (irte_modified->pst == 1)) {
--		bool ret;
--
--		ret = cmpxchg_double(&irte->low, &irte->high,
--				     irte->low, irte->high,
--				     irte_modified->low, irte_modified->high);
- 		/*
- 		 * We use cmpxchg16 to atomically update the 128-bit IRTE,
- 		 * and it cannot be updated by the hardware or other processors
- 		 * behind us, so the return value of cmpxchg16 should be the
- 		 * same as the old value.
- 		 */
--		WARN_ON(!ret);
-+		u128 old = irte->irte;
-+		WARN_ON(!try_cmpxchg128(&irte->irte, &old, irte_modified->irte));
- 	} else {
- 		WRITE_ONCE(irte->low, irte_modified->low);
- 		WRITE_ONCE(irte->high, irte_modified->high);
-diff --git a/include/linux/dmar.h b/include/linux/dmar.h
-index 725d5e6..27dbd4c 100644
---- a/include/linux/dmar.h
-+++ b/include/linux/dmar.h
-@@ -202,67 +202,74 @@ static inline void detect_intel_iommu(void)
++#define this_cpu_cmpxchg64(pcp, o, n)	this_cpu_cmpxchg_8(pcp, o, n)
++
++#define this_cpu_cmpxchg128(pcp, o, n)					\
++({									\
++	typedef typeof(pcp) pcp_op_T__;					\
++	u128 old__, new__, ret__;					\
++	pcp_op_T__ *ptr__;						\
++	old__ = o;							\
++	new__ = n;							\
++	preempt_disable_notrace();					\
++	ptr__ = raw_cpu_ptr(&(pcp));					\
++	ret__ = cmpxchg128_local((void *)ptr__, old__, new__);		\
++	preempt_enable_notrace();					\
++	ret__;								\
++})
++
+ #ifdef __KVM_NVHE_HYPERVISOR__
+ extern unsigned long __hyp_per_cpu_offset(unsigned int cpu);
+ #define __per_cpu_offset
+diff --git a/arch/s390/include/asm/percpu.h b/arch/s390/include/asm/percpu.h
+index 081837b..5603402 100644
+--- a/arch/s390/include/asm/percpu.h
++++ b/arch/s390/include/asm/percpu.h
+@@ -148,6 +148,22 @@
+ #define this_cpu_cmpxchg_4(pcp, oval, nval) arch_this_cpu_cmpxchg(pcp, oval, nval)
+ #define this_cpu_cmpxchg_8(pcp, oval, nval) arch_this_cpu_cmpxchg(pcp, oval, nval)
  
- struct irte {
- 	union {
--		/* Shared between remapped and posted mode*/
- 		struct {
--			__u64	present		: 1,  /*  0      */
--				fpd		: 1,  /*  1      */
--				__res0		: 6,  /*  2 -  6 */
--				avail		: 4,  /*  8 - 11 */
--				__res1		: 3,  /* 12 - 14 */
--				pst		: 1,  /* 15      */
--				vector		: 8,  /* 16 - 23 */
--				__res2		: 40; /* 24 - 63 */
-+			union {
-+				/* Shared between remapped and posted mode*/
-+				struct {
-+					__u64	present		: 1,  /*  0      */
-+						fpd		: 1,  /*  1      */
-+						__res0		: 6,  /*  2 -  6 */
-+						avail		: 4,  /*  8 - 11 */
-+						__res1		: 3,  /* 12 - 14 */
-+						pst		: 1,  /* 15      */
-+						vector		: 8,  /* 16 - 23 */
-+						__res2		: 40; /* 24 - 63 */
-+				};
++#define this_cpu_cmpxchg64(pcp, o, n)	this_cpu_cmpxchg_8(pcp, o, n)
 +
-+				/* Remapped mode */
-+				struct {
-+					__u64	r_present	: 1,  /*  0      */
-+						r_fpd		: 1,  /*  1      */
-+						dst_mode	: 1,  /*  2      */
-+						redir_hint	: 1,  /*  3      */
-+						trigger_mode	: 1,  /*  4      */
-+						dlvry_mode	: 3,  /*  5 -  7 */
-+						r_avail		: 4,  /*  8 - 11 */
-+						r_res0		: 4,  /* 12 - 15 */
-+						r_vector	: 8,  /* 16 - 23 */
-+						r_res1		: 8,  /* 24 - 31 */
-+						dest_id		: 32; /* 32 - 63 */
-+				};
++#define this_cpu_cmpxchg128(pcp, oval, nval)				\
++({									\
++	typedef typeof(pcp) pcp_op_T__;					\
++	u128 old__, new__, ret__;					\
++	pcp_op_T__ *ptr__;						\
++	old__ = oval;							\
++	new__ = nval;							\
++	preempt_disable_notrace();					\
++	ptr__ = raw_cpu_ptr(&(pcp));					\
++	ret__ = cmpxchg128((void *)ptr__, old__, new__);		\
++	preempt_enable_notrace();					\
++	ret__;								\
++})
 +
-+				/* Posted mode */
-+				struct {
-+					__u64	p_present	: 1,  /*  0      */
-+						p_fpd		: 1,  /*  1      */
-+						p_res0		: 6,  /*  2 -  7 */
-+						p_avail		: 4,  /*  8 - 11 */
-+						p_res1		: 2,  /* 12 - 13 */
-+						p_urgent	: 1,  /* 14      */
-+						p_pst		: 1,  /* 15      */
-+						p_vector	: 8,  /* 16 - 23 */
-+						p_res2		: 14, /* 24 - 37 */
-+						pda_l		: 26; /* 38 - 63 */
-+				};
-+				__u64 low;
-+			};
+ #define arch_this_cpu_xchg(pcp, nval)					\
+ ({									\
+ 	typeof(pcp) *ptr__;						\
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index 13c0d63..4d58b97 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -210,6 +210,65 @@ do {									\
+ 	(typeof(_var))(unsigned long) pco_old__;			\
+ })
+ 
++#if defined(CONFIG_X86_32) && defined(CONFIG_X86_CMPXCHG64)
++#define percpu_cmpxchg64_op(size, qual, _var, _oval, _nval)		\
++({									\
++	union {								\
++		u64 var;						\
++		struct {						\
++			u32 low, high;					\
++		};							\
++	} old__, new__;							\
++									\
++	old__.var = _oval;						\
++	new__.var = _nval;						\
++									\
++	asm qual ("cmpxchg8b " __percpu_arg([var])			\
++		  : [var] "+m" (_var),					\
++		    "+a" (old__.low),					\
++		    "+d" (old__.high)					\
++		  : "b" (new__.low),					\
++		    "c" (new__.high)					\
++		  : "memory");						\
++									\
++	old__.var;							\
++})
 +
-+			union {
-+				/* Shared between remapped and posted mode*/
-+				struct {
-+					__u64	sid		: 16,  /* 64 - 79  */
-+						sq		: 2,   /* 80 - 81  */
-+						svt		: 2,   /* 82 - 83  */
-+						__res3		: 44;  /* 84 - 127 */
-+				};
-+
-+				/* Posted mode*/
-+				struct {
-+					__u64	p_sid		: 16,  /* 64 - 79  */
-+						p_sq		: 2,   /* 80 - 81  */
-+						p_svt		: 2,   /* 82 - 83  */
-+						p_res3		: 12,  /* 84 - 95  */
-+						pda_h		: 32;  /* 96 - 127 */
-+				};
-+				__u64 high;
-+			};
- 		};
--
--		/* Remapped mode */
--		struct {
--			__u64	r_present	: 1,  /*  0      */
--				r_fpd		: 1,  /*  1      */
--				dst_mode	: 1,  /*  2      */
--				redir_hint	: 1,  /*  3      */
--				trigger_mode	: 1,  /*  4      */
--				dlvry_mode	: 3,  /*  5 -  7 */
--				r_avail		: 4,  /*  8 - 11 */
--				r_res0		: 4,  /* 12 - 15 */
--				r_vector	: 8,  /* 16 - 23 */
--				r_res1		: 8,  /* 24 - 31 */
--				dest_id		: 32; /* 32 - 63 */
--		};
--
--		/* Posted mode */
--		struct {
--			__u64	p_present	: 1,  /*  0      */
--				p_fpd		: 1,  /*  1      */
--				p_res0		: 6,  /*  2 -  7 */
--				p_avail		: 4,  /*  8 - 11 */
--				p_res1		: 2,  /* 12 - 13 */
--				p_urgent	: 1,  /* 14      */
--				p_pst		: 1,  /* 15      */
--				p_vector	: 8,  /* 16 - 23 */
--				p_res2		: 14, /* 24 - 37 */
--				pda_l		: 26; /* 38 - 63 */
--		};
--		__u64 low;
--	};
--
--	union {
--		/* Shared between remapped and posted mode*/
--		struct {
--			__u64	sid		: 16,  /* 64 - 79  */
--				sq		: 2,   /* 80 - 81  */
--				svt		: 2,   /* 82 - 83  */
--				__res3		: 44;  /* 84 - 127 */
--		};
--
--		/* Posted mode*/
--		struct {
--			__u64	p_sid		: 16,  /* 64 - 79  */
--				p_sq		: 2,   /* 80 - 81  */
--				p_svt		: 2,   /* 82 - 83  */
--				p_res3		: 12,  /* 84 - 95  */
--				pda_h		: 32;  /* 96 - 127 */
--		};
--		__u64 high;
-+#ifdef CONFIG_IRQ_REMAP
-+		__u128 irte;
++#define raw_cpu_cmpxchg64(pcp, oval, nval)	percpu_cmpxchg64_op(8,         , pcp, oval, nval)
++#define this_cpu_cmpxchg64(pcp, oval, nval)	percpu_cmpxchg64_op(8, volatile, pcp, oval, nval)
 +#endif
- 	};
- };
++
++#ifdef CONFIG_X86_64
++#define raw_cpu_cmpxchg64(pcp, oval, nval)	percpu_cmpxchg_op(8,         , pcp, oval, nval);
++#define this_cpu_cmpxchg64(pcp, oval, nval)	percpu_cmpxchg_op(8, volatile, pcp, oval, nval);
++
++#define percpu_cmpxchg128_op(size, qual, _var, _oval, _nval)		\
++({									\
++	union {								\
++		u128 var;						\
++		struct {						\
++			u64 low, high;					\
++		};							\
++	} old__, new__;							\
++									\
++	old__.var = _oval;						\
++	new__.var = _nval;						\
++									\
++	asm qual ("cmpxchg16b " __percpu_arg([var])			\
++		  : [var] "+m" (_var),					\
++		    "+a" (old__.low),					\
++		    "+d" (old__.high)					\
++		  : "b" (new__.low),					\
++		    "c" (new__.high)					\
++		  : "memory");						\
++									\
++	old__.var;							\
++})
++
++#define raw_cpu_cmpxchg128(pcp, oval, nval)	percpu_cmpxchg128_op(16,         , pcp, oval, nval)
++#define this_cpu_cmpxchg128(pcp, oval, nval)	percpu_cmpxchg128_op(16, volatile, pcp, oval, nval)
++#endif
++
+ /*
+  * this_cpu_read() makes gcc load the percpu variable every time it is
+  * accessed while this_cpu_read_stable() allows the value to be cached.
+diff --git a/include/asm-generic/percpu.h b/include/asm-generic/percpu.h
+index 6432a7f..53d933e 100644
+--- a/include/asm-generic/percpu.h
++++ b/include/asm-generic/percpu.h
+@@ -298,6 +298,14 @@ do {									\
+ #define raw_cpu_cmpxchg_8(pcp, oval, nval) \
+ 	raw_cpu_generic_cmpxchg(pcp, oval, nval)
+ #endif
++#ifndef raw_cpu_cmpxchg64
++#define raw_cpu_cmpxchg64(pcp, oval, nval) \
++	raw_cpu_generic_cmpxchg(pcp, oval, nval)
++#endif
++#ifndef raw_cpu_cmpxchg128
++#define raw_cpu_cmpxchg128(pcp, oval, nval) \
++	raw_cpu_generic_cmpxchg(pcp, oval, nval)
++#endif
  
+ #ifndef raw_cpu_cmpxchg_double_1
+ #define raw_cpu_cmpxchg_double_1(pcp1, pcp2, oval1, oval2, nval1, nval2) \
+@@ -423,6 +431,14 @@ do {									\
+ #define this_cpu_cmpxchg_8(pcp, oval, nval) \
+ 	this_cpu_generic_cmpxchg(pcp, oval, nval)
+ #endif
++#ifndef this_cpu_cmpxchg64
++#define this_cpu_cmpxchg64(pcp, oval, nval) \
++	this_cpu_generic_cmpxchg(pcp, oval, nval)
++#endif
++#ifndef this_cpu_cmpxchg128
++#define this_cpu_cmpxchg128(pcp, oval, nval) \
++	this_cpu_generic_cmpxchg(pcp, oval, nval)
++#endif
+ 
+ #ifndef this_cpu_cmpxchg_double_1
+ #define this_cpu_cmpxchg_double_1(pcp1, pcp2, oval1, oval2, nval1, nval2) \
