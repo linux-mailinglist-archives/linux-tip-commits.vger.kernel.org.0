@@ -2,64 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF51970B6A1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 May 2023 09:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15A1270B7B9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 May 2023 10:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230363AbjEVHgp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 22 May 2023 03:36:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59318 "EHLO
+        id S232305AbjEVIfP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 22 May 2023 04:35:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232236AbjEVHgW (ORCPT
+        with ESMTP id S230183AbjEVIfJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 22 May 2023 03:36:22 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D479E;
-        Mon, 22 May 2023 00:36:21 -0700 (PDT)
-Date:   Mon, 22 May 2023 07:36:18 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684740979;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HclomYqxXBZ3OnkgIaxRM8YAcyCDYke5WBWeP1ix/lw=;
-        b=Qc0MfG3X1248XuNE9WaDt+x2HX8f8rrqlsmFdQIZ7KsasEq5rIHW7wm0JrJCtIo58yxs+G
-        XkFMpTLtgqE5PnwxuPCYZ3Kli1N1dD6DinY80wDxdpCSo2MwSnijRIIZ/EIbVgs8QLtykT
-        W8XgklWYRLiXE3XCbs6i5XFY/hLz0AAq1rVegQrq5fcbSt+z2FtAHJDDzQij/I8BJtveAa
-        TNWAFth4Y7o/vxVgc1cF9rtVma32IS4KFFgo2VkOTZTu7B6/TWLeEhA6Bk38jZ2G6GNdeF
-        t/NQRXvxIETVviINl2M6yp5M2DA6JDOqaCOPmXUIh0m5L6AoIOECvhmNr2TeTQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684740979;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HclomYqxXBZ3OnkgIaxRM8YAcyCDYke5WBWeP1ix/lw=;
-        b=T+QkETzs/yzNykD1Z+lT2Uw6kLU6zf0dPIdZQVGAXZpfG2BlFuNUsgbHdKW+IGaEiWSVTI
-        eHTL3cpGR8ZKSOCA==
-From:   "tip-bot2 for Yang Yang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/psi: Avoid resetting the min update period
- when it is unnecessary
-Cc:     Yang Yang <yang.yang29@zte.com.cn>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Suren Baghdasaryan <surenb@google.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230514163338.834345-1-surenb@google.com>
-References: <20230514163338.834345-1-surenb@google.com>
+        Mon, 22 May 2023 04:35:09 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EBDDB0;
+        Mon, 22 May 2023 01:35:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=m31uO0f8F/ozSNGIQ728G+whj+ekxuEhuW+7zVs2Fno=; b=NZOyxWu48JCyy9CSgR+tK5vU4n
+        Yrf+NFRMDntJNcJ5IqzbOl2WEQWUIqo/hUhCe5zcqD1SCeZG82nmBOaO4kQMejxfh3MjMO1hmsWqN
+        dc8M52FSi1UDDz0vW6ek1Msq0vKgqmU5eFCDuTrU1S0npl/heWLFyojPHwqNxBzuxJlKSrAQFq4wl
+        ZHN4ajm4zRpVCPN9ZmHehpDPHs0EzvaCoGGN6NhWdPyFUmyu23NQPKJlt/TWOpe9HSH3yQtl4rDmR
+        d3rET2Tn17QeiGQIZdWpGn+4bRKGnQeDKTcMo114idvASOMq19VoyQ4VZ60d8J2atMSbeRFeoNGfA
+        DtciWq8g==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1q110N-008vMV-Gv; Mon, 22 May 2023 08:35:01 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 67AF330003A;
+        Mon, 22 May 2023 10:34:58 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 4C89D20564757; Mon, 22 May 2023 10:34:58 +0200 (CEST)
+Date:   Mon, 22 May 2023 10:34:58 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Coly Li <colyli@suse.de>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Coly Li <colyli@suse.de>" <colyli@suse.de>, x86@kernel.org
+Subject: Re: [tip: locking/core] bcache: Convert to lock_cmp_fn
+Message-ID: <20230522083458.GM83892@hirez.programming.kicks-ass.net>
+References: <20230509195847.1745548-2-kent.overstreet@linux.dev>
+ <168457974565.404.16611061652498882569.tip-bot2@tip-bot2>
+ <1FBFDA28-6886-4315-A942-88F3542CE244@suse.de>
 MIME-Version: 1.0
-Message-ID: <168474097813.404.1664592171771825825.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1FBFDA28-6886-4315-A942-88F3542CE244@suse.de>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,54 +63,36 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+On Sun, May 21, 2023 at 09:21:36PM +0800, Coly Li wrote:
+> 
+> 
+> > 2023年5月20日 18:49，tip-bot2 for Kent Overstreet <tip-bot2@linutronix.de> 写道：
+> > 
+> > The following commit has been merged into the locking/core branch of tip:
+> > 
+> > Commit-ID:     0ad397b556936a14052aa65d8fa958a9f3175add
+> > Gitweb:        https://git.kernel.org/tip/0ad397b556936a14052aa65d8fa958a9f3175add
+> > Author:        Kent Overstreet <kent.overstreet@linux.dev>
+> > AuthorDate:    Tue, 09 May 2023 15:58:47 -04:00
+> > Committer:     Peter Zijlstra <peterz@infradead.org>
+> > CommitterDate: Fri, 19 May 2023 12:35:10 +02:00
+> > 
+> > bcache: Convert to lock_cmp_fn
+> > 
+> > Replace one of bcache's lockdep_set_novalidate_class() usage with the
+> > newly introduced custom lock nesting annotation.
+> > 
+> > [peterz: changelog]
+> > Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Acked-by: Coly Li <colyli@suse.de <mailto:colyli@suse.de>>
+> 
+> 
+> Can the above “<mailto:colyli@suse.de>” be removed from my acked-by. This was automatically and invisibly added by MacOS email client, which just introduced chaos in such use case.
+> 
+> Thanks.
 
-Commit-ID:     e2a1f85bf9f509afd09b5d3308e3489b65845c28
-Gitweb:        https://git.kernel.org/tip/e2a1f85bf9f509afd09b5d3308e3489b65845c28
-Author:        Yang Yang <yang.yang29@zte.com.cn>
-AuthorDate:    Sun, 14 May 2023 09:33:38 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 20 May 2023 12:53:16 +02:00
+Urgh, something I should add to my script on a rainy day I suppose.
 
-sched/psi: Avoid resetting the min update period when it is unnecessary
-
-Psi_group's poll_min_period is determined by the minimum window size of
-psi_trigger when creating new triggers. While destroying a psi_trigger,
-there is no need to reset poll_min_period if the psi_trigger being
-destroyed did not have the minimum window size, since in this condition
-poll_min_period will remain the same as before.
-
-Signed-off-by: Yang Yang <yang.yang29@zte.com.cn>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Link: https://lkml.kernel.org/r/20230514163338.834345-1-surenb@google.com
----
- kernel/sched/psi.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index b49af59..81fca77 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -1407,11 +1407,16 @@ void psi_trigger_destroy(struct psi_trigger *t)
- 			group->rtpoll_nr_triggers[t->state]--;
- 			if (!group->rtpoll_nr_triggers[t->state])
- 				group->rtpoll_states &= ~(1 << t->state);
--			/* reset min update period for the remaining triggers */
--			list_for_each_entry(tmp, &group->rtpoll_triggers, node)
--				period = min(period, div_u64(tmp->win.size,
--						UPDATES_PER_WINDOW));
--			group->rtpoll_min_period = period;
-+			/*
-+			 * Reset min update period for the remaining triggers
-+			 * iff the destroying trigger had the min window size.
-+			 */
-+			if (group->rtpoll_min_period == div_u64(t->win.size, UPDATES_PER_WINDOW)) {
-+				list_for_each_entry(tmp, &group->rtpoll_triggers, node)
-+					period = min(period, div_u64(tmp->win.size,
-+							UPDATES_PER_WINDOW));
-+				group->rtpoll_min_period = period;
-+			}
- 			/* Destroy rtpoll_task when the last trigger is destroyed */
- 			if (group->rtpoll_states == 0) {
- 				group->rtpoll_until = 0;
+I'll have to rebase the tree, but I suppose I can do that. Let me go see
+if I can remember the git incantations required.
