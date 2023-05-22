@@ -2,60 +2,63 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15A1270B7B9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 May 2023 10:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FC0170BA12
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 May 2023 12:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232305AbjEVIfP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 22 May 2023 04:35:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60236 "EHLO
+        id S232301AbjEVK1s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 22 May 2023 06:27:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230183AbjEVIfJ (ORCPT
+        with ESMTP id S232839AbjEVK12 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 22 May 2023 04:35:09 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EBDDB0;
-        Mon, 22 May 2023 01:35:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=m31uO0f8F/ozSNGIQ728G+whj+ekxuEhuW+7zVs2Fno=; b=NZOyxWu48JCyy9CSgR+tK5vU4n
-        Yrf+NFRMDntJNcJ5IqzbOl2WEQWUIqo/hUhCe5zcqD1SCeZG82nmBOaO4kQMejxfh3MjMO1hmsWqN
-        dc8M52FSi1UDDz0vW6ek1Msq0vKgqmU5eFCDuTrU1S0npl/heWLFyojPHwqNxBzuxJlKSrAQFq4wl
-        ZHN4ajm4zRpVCPN9ZmHehpDPHs0EzvaCoGGN6NhWdPyFUmyu23NQPKJlt/TWOpe9HSH3yQtl4rDmR
-        d3rET2Tn17QeiGQIZdWpGn+4bRKGnQeDKTcMo114idvASOMq19VoyQ4VZ60d8J2atMSbeRFeoNGfA
-        DtciWq8g==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1q110N-008vMV-Gv; Mon, 22 May 2023 08:35:01 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 67AF330003A;
-        Mon, 22 May 2023 10:34:58 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 4C89D20564757; Mon, 22 May 2023 10:34:58 +0200 (CEST)
-Date:   Mon, 22 May 2023 10:34:58 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Coly Li <colyli@suse.de>
-Cc:     linux-tip-commits@vger.kernel.org,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Coly Li <colyli@suse.de>" <colyli@suse.de>, x86@kernel.org
-Subject: Re: [tip: locking/core] bcache: Convert to lock_cmp_fn
-Message-ID: <20230522083458.GM83892@hirez.programming.kicks-ass.net>
-References: <20230509195847.1745548-2-kent.overstreet@linux.dev>
- <168457974565.404.16611061652498882569.tip-bot2@tip-bot2>
- <1FBFDA28-6886-4315-A942-88F3542CE244@suse.de>
+        Mon, 22 May 2023 06:27:28 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A91C013E;
+        Mon, 22 May 2023 03:27:26 -0700 (PDT)
+Date:   Mon, 22 May 2023 10:27:24 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1684751245;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QyoEJscqttA4sWRI20/kiCjpEBVOAmv+DBGxIn4KKCA=;
+        b=hdkdGh31dIvHo/ZCBJHJE1Rw+bbnVsvChIA6M2zpHxUGu6GiZ6amqMMnphXnN61C/ndE7N
+        Ge5wn0zBAU+SqMiUww4vUCFENYoR+WhR3hTMsOygiZnVEdtIJJeHDLwdtmcKP+zaXaR1+G
+        IiIyDztjlzuEtEbLghgREqoz8k/GjWskW0hCXhWKrz1FtsenzUcLFuPHE852/bBarLn2n2
+        RfmuI0CUsUO5YlsOhckPLI5DtFXM0fpeMgtzsycz135F3B5g/awXcwsou4WqO0Nv+dGrsO
+        IjHHpOBBfIKnJ1esf7XTTe7sVDr2HAnqDG0b/RQaUtOczqcWtS6Hi9+jRWCgDw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1684751245;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QyoEJscqttA4sWRI20/kiCjpEBVOAmv+DBGxIn4KKCA=;
+        b=PA/grkZfwT3sf7vS5+jW0GqRNtjjE+cFvcyotJNdWrLKLly2kFyURnoGFwTtJ6f+UUJUjC
+        5F4bNnfSDru4eqAw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/core] s390/cpum_sf: Convert to cmpxchg128()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230515080554.657068280@infradead.org>
+References: <20230515080554.657068280@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1FBFDA28-6886-4315-A942-88F3542CE244@suse.de>
+Message-ID: <168475124454.404.7157778737320291304.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,36 +66,87 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sun, May 21, 2023 at 09:21:36PM +0800, Coly Li wrote:
-> 
-> 
-> > 2023年5月20日 18:49，tip-bot2 for Kent Overstreet <tip-bot2@linutronix.de> 写道：
-> > 
-> > The following commit has been merged into the locking/core branch of tip:
-> > 
-> > Commit-ID:     0ad397b556936a14052aa65d8fa958a9f3175add
-> > Gitweb:        https://git.kernel.org/tip/0ad397b556936a14052aa65d8fa958a9f3175add
-> > Author:        Kent Overstreet <kent.overstreet@linux.dev>
-> > AuthorDate:    Tue, 09 May 2023 15:58:47 -04:00
-> > Committer:     Peter Zijlstra <peterz@infradead.org>
-> > CommitterDate: Fri, 19 May 2023 12:35:10 +02:00
-> > 
-> > bcache: Convert to lock_cmp_fn
-> > 
-> > Replace one of bcache's lockdep_set_novalidate_class() usage with the
-> > newly introduced custom lock nesting annotation.
-> > 
-> > [peterz: changelog]
-> > Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Acked-by: Coly Li <colyli@suse.de <mailto:colyli@suse.de>>
-> 
-> 
-> Can the above “<mailto:colyli@suse.de>” be removed from my acked-by. This was automatically and invisibly added by MacOS email client, which just introduced chaos in such use case.
-> 
-> Thanks.
+The following commit has been merged into the locking/core branch of tip:
 
-Urgh, something I should add to my script on a rainy day I suppose.
+Commit-ID:     3cf363a4daf359e8392b5048c619b7e9e429f122
+Gitweb:        https://git.kernel.org/tip/3cf363a4daf359e8392b5048c619b7e9e429f122
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 15 May 2023 09:57:10 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 22 May 2023 10:49:51 +02:00
 
-I'll have to rebase the tree, but I suppose I can do that. Let me go see
-if I can remember the git incantations required.
+s390/cpum_sf: Convert to cmpxchg128()
+
+Now that there is a cross arch u128 and cmpxchg128(), use those
+instead of the custom CDSG helper.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230515080554.657068280@infradead.org
+---
+ arch/s390/include/asm/cpu_mf.h  |  2 +-
+ arch/s390/kernel/perf_cpum_sf.c | 16 +++-------------
+ 2 files changed, 4 insertions(+), 14 deletions(-)
+
+diff --git a/arch/s390/include/asm/cpu_mf.h b/arch/s390/include/asm/cpu_mf.h
+index 7e417d7..a0de5b9 100644
+--- a/arch/s390/include/asm/cpu_mf.h
++++ b/arch/s390/include/asm/cpu_mf.h
+@@ -140,7 +140,7 @@ union hws_trailer_header {
+ 		unsigned int dsdes:16;	/* 48-63: size of diagnostic SDE */
+ 		unsigned long long overflow; /* 64 - Overflow Count   */
+ 	};
+-	__uint128_t val;
++	u128 val;
+ };
+ 
+ struct hws_trailer_entry {
+diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
+index 7ef72f5..8ecfbce 100644
+--- a/arch/s390/kernel/perf_cpum_sf.c
++++ b/arch/s390/kernel/perf_cpum_sf.c
+@@ -1271,16 +1271,6 @@ static void hw_collect_samples(struct perf_event *event, unsigned long *sdbt,
+ 	}
+ }
+ 
+-static inline __uint128_t __cdsg(__uint128_t *ptr, __uint128_t old, __uint128_t new)
+-{
+-	asm volatile(
+-		"	cdsg	%[old],%[new],%[ptr]\n"
+-		: [old] "+d" (old), [ptr] "+QS" (*ptr)
+-		: [new] "d" (new)
+-		: "memory", "cc");
+-	return old;
+-}
+-
+ /* hw_perf_event_update() - Process sampling buffer
+  * @event:	The perf event
+  * @flush_all:	Flag to also flush partially filled sample-data-blocks
+@@ -1352,7 +1342,7 @@ static void hw_perf_event_update(struct perf_event *event, int flush_all)
+ 			new.f = 0;
+ 			new.a = 1;
+ 			new.overflow = 0;
+-			prev.val = __cdsg(&te->header.val, old.val, new.val);
++			prev.val = cmpxchg128(&te->header.val, old.val, new.val);
+ 		} while (prev.val != old.val);
+ 
+ 		/* Advance to next sample-data-block */
+@@ -1562,7 +1552,7 @@ static bool aux_set_alert(struct aux_buffer *aux, unsigned long alert_index,
+ 		}
+ 		new.a = 1;
+ 		new.overflow = 0;
+-		prev.val = __cdsg(&te->header.val, old.val, new.val);
++		prev.val = cmpxchg128(&te->header.val, old.val, new.val);
+ 	} while (prev.val != old.val);
+ 	return true;
+ }
+@@ -1636,7 +1626,7 @@ static bool aux_reset_buffer(struct aux_buffer *aux, unsigned long range,
+ 				new.a = 1;
+ 			else
+ 				new.a = 0;
+-			prev.val = __cdsg(&te->header.val, old.val, new.val);
++			prev.val = cmpxchg128(&te->header.val, old.val, new.val);
+ 		} while (prev.val != old.val);
+ 		*overflow += orig_overflow;
+ 	}
