@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C9770BA1D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 May 2023 12:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5513F70BD10
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 May 2023 14:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232900AbjEVK2B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 22 May 2023 06:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58678 "EHLO
+        id S229757AbjEVMNL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 22 May 2023 08:13:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232775AbjEVK1f (ORCPT
+        with ESMTP id S232133AbjEVMNE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 22 May 2023 06:27:35 -0400
+        Mon, 22 May 2023 08:13:04 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EEEDE9;
-        Mon, 22 May 2023 03:27:32 -0700 (PDT)
-Date:   Mon, 22 May 2023 10:27:29 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B698119;
+        Mon, 22 May 2023 05:12:46 -0700 (PDT)
+Date:   Mon, 22 May 2023 12:12:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684751249;
+        s=2020; t=1684757564;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WDmzPHq8N8NLyDm473tmWBhjWYbFtWVCH+cMOEV25O8=;
-        b=TVHAfJ3cPOjyAVyiAxmmzL95ZrIZRohZQyJuU6hm6O1dd/AqvNSC4RDKkRaOs6VG7R8VCH
-        EcnU0whnWYUH1EUH0MHkOAweIkYBtwNI6uLjbKuKaYB3mH9ss2ow4wkhlzMi1qqMCk32Hb
-        XYiA+XdR+6i993EWOt5PWHqhye9AxL14VfE9XdhH3I7myxVG2sHP4SNQZR/KsXgNWY5nzI
-        ovp3jPATmYCzWCKZWV54BtIr4+WOYBxXdcaqQm4gntY2szr0AiVHagowMcMEilHpBcgrMR
-        dmHutiGhwnAbH/c1Vj74x7iq5Ggq7H6KLgs9p1h5g9vFs8BsWFMVbcZcFgLCVA==
+        bh=iEjofJonbFjcrIFx5W6JsYcXuFz3vdclGrLXxCuKyb4=;
+        b=r3mq2lyd/CSnJMz4F/RrxpJQKpG1+eo9TAe1UmzqW/zTFFq4IbrSBfpnUETpwxBnrhqa5Y
+        fQq41JENXrZ9pUrZvzhr/hLGNfKnp4i7dojPoLBCwGt0BqTA9buHEzBFFkpf2id/+m/VPu
+        3J6IabjH5frnsPvrNbg6nX4WPhceVB7digFwEbSLUA0obn+MzEX0kAjrvK8uZIuaqSzfg2
+        t19lutUeznB3uvrAVNHv5oHOzbMFPesKJN+UomNaLMUaHq94lB6MhV49JFkhIllpROcbuk
+        VDsnqV/VE91hvPT4QiXRpdE1tIue5EcqT8Smi4DXyUA/12zd9becH4C5pJ61Bw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684751249;
+        s=2020e; t=1684757564;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WDmzPHq8N8NLyDm473tmWBhjWYbFtWVCH+cMOEV25O8=;
-        b=Sn+meX4fYPiRhpV9+eTTPatSU/tVommJhJZ5mH1RVfY5vnjhEv/pgYfIYo1xeWgOVFhaXh
-        DTapTO2kIfaFAlDg==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=iEjofJonbFjcrIFx5W6JsYcXuFz3vdclGrLXxCuKyb4=;
+        b=P5lbzH1qjGAKTAAHz5CS+xoLnOq1+LMRsgdDcxDsO88gFnjQmo665zxOsfe5h8z8b/QAVO
+        Fr3BskORxf2cq8Dw==
+From:   "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] types: Introduce [us]128
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org,
+Subject: [tip: smp/core] x86/apic: Fix use of X{,2}APIC_ENABLE in asm with
+ older binutils
+Cc:     Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230515080554.047618712@infradead.org>
-References: <20230515080554.047618712@infradead.org>
+In-Reply-To: <20230522105738.2378364-1-andrew.cooper3@citrix.com>
+References: <20230522105738.2378364-1-andrew.cooper3@citrix.com>
 MIME-Version: 1.0
-Message-ID: <168475124922.404.17464873847581624680.tip-bot2@tip-bot2>
+Message-ID: <168475756408.404.16653429197194734425.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,88 +67,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     c8c216a63fe28b247046a15e995688289ce416ad
-Gitweb:        https://git.kernel.org/tip/c8c216a63fe28b247046a15e995688289ce416ad
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 15 May 2023 09:57:01 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 22 May 2023 10:49:49 +02:00
+Commit-ID:     6a4be6984595b164b6f281c5b242dbdf1c06d528
+Gitweb:        https://git.kernel.org/tip/6a4be6984595b164b6f281c5b242dbdf1c06d528
+Author:        Andrew Cooper <andrew.cooper3@citrix.com>
+AuthorDate:    Mon, 22 May 2023 11:57:38 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 22 May 2023 14:06:33 +02:00
 
-types: Introduce [us]128
+x86/apic: Fix use of X{,2}APIC_ENABLE in asm with older binutils
 
-Introduce [us]128 (when available). Unlike [us]64, ensure they are
-always naturally aligned.
+"x86/smpboot: Support parallel startup of secondary CPUs" adds the first use
+of X2APIC_ENABLE in assembly, but older binutils don't tolerate the UL suffix.
 
-This also enables 128bit wide atomics (which require natural
-alignment) such as cmpxchg128().
+Switch to using BIT() instead.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Link: https://lore.kernel.org/r/20230515080554.047618712@infradead.org
+Fixes: 7e75178a0950 ("x86/smpboot: Support parallel startup of secondary CPUs")
+Reported-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://lore.kernel.org/r/20230522105738.2378364-1-andrew.cooper3@citrix.com
+
 ---
- include/linux/types.h          | 5 +++++
- include/uapi/linux/types.h     | 4 ++++
- lib/crypto/curve25519-hacl64.c | 2 --
- lib/crypto/poly1305-donna64.c  | 2 --
- 4 files changed, 9 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/apicdef.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 688fb94..becb8cd 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -10,6 +10,11 @@
- #define DECLARE_BITMAP(name,bits) \
- 	unsigned long name[BITS_TO_LONGS(bits)]
+diff --git a/arch/x86/include/asm/apicdef.h b/arch/x86/include/asm/apicdef.h
+index bf546df..4b125e5 100644
+--- a/arch/x86/include/asm/apicdef.h
++++ b/arch/x86/include/asm/apicdef.h
+@@ -2,6 +2,8 @@
+ #ifndef _ASM_X86_APICDEF_H
+ #define _ASM_X86_APICDEF_H
  
-+#ifdef __SIZEOF_INT128__
-+typedef __s128 s128;
-+typedef __u128 u128;
-+#endif
++#include <linux/bits.h>
 +
- typedef u32 __kernel_dev_t;
- 
- typedef __kernel_fd_set		fd_set;
-diff --git a/include/uapi/linux/types.h b/include/uapi/linux/types.h
-index 308433b..6375a06 100644
---- a/include/uapi/linux/types.h
-+++ b/include/uapi/linux/types.h
-@@ -13,6 +13,10 @@
- 
- #include <linux/posix_types.h>
- 
-+#ifdef __SIZEOF_INT128__
-+typedef __signed__ __int128 __s128 __attribute__((aligned(16)));
-+typedef unsigned __int128 __u128 __attribute__((aligned(16)));
-+#endif
- 
  /*
-  * Below are truly Linux-specific types that should never collide with
-diff --git a/lib/crypto/curve25519-hacl64.c b/lib/crypto/curve25519-hacl64.c
-index 771d82d..c40e5d9 100644
---- a/lib/crypto/curve25519-hacl64.c
-+++ b/lib/crypto/curve25519-hacl64.c
-@@ -14,8 +14,6 @@
- #include <crypto/curve25519.h>
- #include <linux/string.h>
+  * Constants for various Intel APICs. (local APIC, IOAPIC, etc.)
+  *
+@@ -140,8 +142,8 @@
+ #define APIC_BASE (fix_to_virt(FIX_APIC_BASE))
+ #define APIC_BASE_MSR		0x800
+ #define APIC_X2APIC_ID_MSR	0x802
+-#define XAPIC_ENABLE	(1UL << 11)
+-#define X2APIC_ENABLE	(1UL << 10)
++#define XAPIC_ENABLE		BIT(11)
++#define X2APIC_ENABLE		BIT(10)
  
--typedef __uint128_t u128;
--
- static __always_inline u64 u64_eq_mask(u64 a, u64 b)
- {
- 	u64 x = a ^ b;
-diff --git a/lib/crypto/poly1305-donna64.c b/lib/crypto/poly1305-donna64.c
-index d34cf40..988702c 100644
---- a/lib/crypto/poly1305-donna64.c
-+++ b/lib/crypto/poly1305-donna64.c
-@@ -10,8 +10,6 @@
- #include <asm/unaligned.h>
- #include <crypto/internal/poly1305.h>
- 
--typedef __uint128_t u128;
--
- void poly1305_core_setkey(struct poly1305_core_key *key,
- 			  const u8 raw_key[POLY1305_BLOCK_SIZE])
- {
+ #ifdef CONFIG_X86_32
+ # define MAX_IO_APICS 64
