@@ -2,64 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22F9A70D715
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 May 2023 10:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0020C70DB9B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 May 2023 13:40:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236134AbjEWIS3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 23 May 2023 04:18:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38944 "EHLO
+        id S231326AbjEWLkO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 23 May 2023 07:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235753AbjEWIRv (ORCPT
+        with ESMTP id S236568AbjEWLkN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 23 May 2023 04:17:51 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C75BFE;
-        Tue, 23 May 2023 01:15:51 -0700 (PDT)
-Date:   Tue, 23 May 2023 08:15:46 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684829747;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=iSC48ejrFN1szNw+99ZFEvTjXIrUUeq57tpcf9Ujqnc=;
-        b=FJLmWUMQoaYV6Vt2wS1axS4sZink+fnW1KTOFU8edXwGOCxlilZ/gFCxJjbW1IpQDTnfJT
-        AKhWWyB5NfPoI9W0767/Hoqsyre2Y/4jtghqaxaELd+QBil3aI6fhrkEG+xs+7qWuEdE41
-        AF8FO9oFAldHMBT80hcMDphaqWYIA6Y48TaXkUZAtnJPMiRNyf0zchJJofQeSBe28MjKHV
-        e5OvABbiqZe2Wv9PNTdSvrJnYdXYMT0fNYG1OvTuduo2wquI3loiRQgit2kAtVaFl0RJPX
-        g10j/DsasxkZ2CTfM+oVwbcrgYu4rPJeKB7j5q7k9PzDk8SA0RnBp5pi2PN5rA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684829747;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=iSC48ejrFN1szNw+99ZFEvTjXIrUUeq57tpcf9Ujqnc=;
-        b=0PNorpVbfhzsbmJjRDYluqjwmmcZBkOOMpOzAnJBu/83r0+iRXkRP8mBFCAs3fEuWYEtfy
-        IMNiw0DDZTq9gHDA==
-From:   "tip-bot2 for Like Xu" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel: Save/restore
- cpuc->active_pebs_data_cfg when using guest PEBS
-Cc:     Like Xu <likexu@tencent.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230517133808.67885-1-likexu@tencent.com>
-References: <20230517133808.67885-1-likexu@tencent.com>
+        Tue, 23 May 2023 07:40:13 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A5BE118;
+        Tue, 23 May 2023 04:40:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=u58gKGYImk19qWRxWKlrjAh5POyCRjifFqBhEoUWksk=; b=lYt51G6qfsyAQCtCCDMJ8pDclW
+        04RPhDEpqBfjX7FDBwBQWngCk5Yxv6NjbE3gnd7tjLDDPdE8BRS3NA0NeuUBc83FgM9BfxCtzCNF9
+        7/Zc50lwtiUDeH3HdQ0aOltxQZh6eSMz249+cnx4SgTAyMCGxf6KjUyOGI8oRfP8INZgC2MoUmTZd
+        iJG9OUWHGd7wSAS5y1PQFgZxX7ttHCgYwXcksJYvkfOmywILB/BwVU7K07RH42xCQ/cHN24XWASYO
+        Udd4D7WL0bwAl+Dnl7fh6oCy9nez0GLjgMgxZqscBmwe1WGYj4RU1f5pFGS2gxIoBlpq2gd9rn+kI
+        WED2RC8w==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1q1Pjt-003UQV-1Q;
+        Tue, 23 May 2023 10:59:37 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 83490300338;
+        Tue, 23 May 2023 12:59:35 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 3571220A99311; Tue, 23 May 2023 12:59:35 +0200 (CEST)
+Date:   Tue, 23 May 2023 12:59:35 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Len Brown <len.brown@intel.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org
+Subject: Re: [tip: sched/core] sched/topology: Introduce sched_group::flags
+Message-ID: <20230523105935.GN83892@hirez.programming.kicks-ass.net>
+References: <20210911011819.12184-3-ricardo.neri-calderon@linux.intel.com>
+ <163344312261.25758.16010066552550079330.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <168482974681.404.11952331540708115887.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <163344312261.25758.16010066552550079330.tip-bot2@tip-bot2>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,43 +63,31 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+On Tue, Oct 05, 2021 at 02:12:02PM -0000, tip-bot2 for Ricardo Neri wrote:
 
-Commit-ID:     3c845304d2d723f20d5b91fef5d133ff94825d76
-Gitweb:        https://git.kernel.org/tip/3c845304d2d723f20d5b91fef5d133ff94825d76
-Author:        Like Xu <likexu@tencent.com>
-AuthorDate:    Wed, 17 May 2023 21:38:08 +08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 23 May 2023 10:01:13 +02:00
+> index 4e8698e..c56faae 100644
+> --- a/kernel/sched/topology.c
+> +++ b/kernel/sched/topology.c
+> @@ -716,8 +716,20 @@ cpu_attach_domain(struct sched_domain *sd, struct root_domain *rd, int cpu)
+>  		tmp = sd;
+>  		sd = sd->parent;
+>  		destroy_sched_domain(tmp);
+> -		if (sd)
+> +		if (sd) {
+> +			struct sched_group *sg = sd->groups;
+> +
+> +			/*
+> +			 * sched groups hold the flags of the child sched
+> +			 * domain for convenience. Clear such flags since
+> +			 * the child is being destroyed.
+> +			 */
+> +			do {
+> +				sg->flags = 0;
+> +			} while (sg != sd->groups);
 
-perf/x86/intel: Save/restore cpuc->active_pebs_data_cfg when using guest PEBS
 
-After commit b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing
-PEBS_DATA_CFG"), the cpuc->pebs_data_cfg may save some bits that are not
-supported by real hardware, such as PEBS_UPDATE_DS_SW. This would cause
-the VMX hardware MSR switching mechanism to save/restore invalid values
-for PEBS_DATA_CFG MSR, thus crashing the host when PEBS is used for guest.
-Fix it by using the active host value from cpuc->active_pebs_data_cfg.
+I happened to be reading this here code and aren't we missing:
 
-Fixes: b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
-Signed-off-by: Like Xu <likexu@tencent.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20230517133808.67885-1-likexu@tencent.com
----
- arch/x86/events/intel/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+	sg = sg->next;
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 070cc4e..89b9c1c 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4074,7 +4074,7 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
- 	if (x86_pmu.intel_cap.pebs_baseline) {
- 		arr[(*nr)++] = (struct perf_guest_switch_msr){
- 			.msr = MSR_PEBS_DATA_CFG,
--			.host = cpuc->pebs_data_cfg,
-+			.host = cpuc->active_pebs_data_cfg,
- 			.guest = kvm_pmu->pebs_data_cfg,
- 		};
- 	}
+somewhere in that loop?
