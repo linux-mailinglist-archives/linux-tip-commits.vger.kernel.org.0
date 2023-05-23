@@ -2,50 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 432C570DEEE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 May 2023 16:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F9F570E17D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 May 2023 18:14:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234774AbjEWOPM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 23 May 2023 10:15:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53324 "EHLO
+        id S229773AbjEWQOD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 23 May 2023 12:14:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237328AbjEWOPF (ORCPT
+        with ESMTP id S236276AbjEWQOC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 23 May 2023 10:15:05 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F26BCA;
-        Tue, 23 May 2023 07:15:03 -0700 (PDT)
-Date:   Tue, 23 May 2023 14:14:59 -0000
+        Tue, 23 May 2023 12:14:02 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 119B8C2;
+        Tue, 23 May 2023 09:14:00 -0700 (PDT)
+Date:   Tue, 23 May 2023 16:13:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684851300;
+        s=2020; t=1684858438;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Nk3X6BKw3HRCtmi2q1JAJeoY4KAETf3DsT8Z6wEf8Rw=;
-        b=3y0glTUIVtWGDeDInhXGc3UU65t7OkopbpSkRJ8/FRQW03eYuSjt4dcwoizogeDXbIeXd9
-        QADforY/YbWKQG3WU8Lfzyc1fvzcicvQTVlpE/kHSEm4Lb8P652poduyJxXjLmZb2r1pwR
-        yv/PGoqLZKsgxr71Ww4qAUt8WErsQD9Jfc1hyqOwfz/lz2UgCdVb/aiVATDaqinPe4Cyvt
-        ag7ZxktXSoc9Al+D4YmSkR4ntoXP/e9O1s5z0HShoPgMsEXdHClkj7b/L5Qv2LgXywrJDe
-        NHi/NgbtzgX2X5WEeK1afdTSNCFO1gmi5EIqizpb2rpV7G0rTvDfI3xdoTY9fw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1o3nB3jocoaLuOI5Obrg0Pu8tnjT0B5WS7aKcG30c3Y=;
+        b=Q4wL1SOb9nb9hZJ1ZPygVvgEoQvInC21KXzRQtsc/lO3otIZhyvgiBCTSA1UYwMD16KNrF
+        zrV8is0x6hkvRMom/DUqX56fqXhwg6iBByudcInyhv5xMTOvmRIjq8Y5ry1Di2UuM/Tb47
+        hM7fWJtDadpsE/FKSCkk4gVJJ7m5ifLyiRnXH7anDyoYRM+xa2i4Tp7TMXibLGmLaVDwsH
+        hEqLP82Rewf2Y6G8wGcqCvnvYokBJR+fPYF1Vg3Ltp6vARkxW90dQzC62i/XioLPljtCgT
+        9Pz8vWVB4IxhhRSvNE8EYDzlWKBlGngsRkDvTHKQNb+8DW1UJ0cpNZ37lmQbRw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684851300;
+        s=2020e; t=1684858438;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Nk3X6BKw3HRCtmi2q1JAJeoY4KAETf3DsT8Z6wEf8Rw=;
-        b=YXFyZN1kcjYigNPEGD02bFcoQMRP4pcg0/+BenAybTqpk+SSmf31/FmDDpusSfU5JeRosA
-        B89XGOU2DrAqSMDA==
-From:   "tip-bot2 for Nikolay Borisov" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1o3nB3jocoaLuOI5Obrg0Pu8tnjT0B5WS7aKcG30c3Y=;
+        b=Vmkwzh/2Q4t7kGk6VPI59MRREU6bQWu0aOWjFj/YXYkWApAM2zdfCBYGJvBhBkryOcKayc
+        2ZenPJQsd0wG1AAw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/tdx: Wrap exit reason with hcall_func()
-Cc:     Nikolay Borisov <nik.borisov@suse.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: smp/core] cpu/hotplug: Fix off by one in cpuhp_bringup_mask()
+Cc:     Mark Brown <broonie@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <87wn10ufj9.ffs@tglx>
+References: <87wn10ufj9.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <168485129927.404.7998546441150815663.tip-bot2@tip-bot2>
+Message-ID: <168485843734.404.16847199234383553669.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,99 +65,56 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/tdx branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     122333d6bd229af279cdb35d1b874b71b3b9ccfb
-Gitweb:        https://git.kernel.org/tip/122333d6bd229af279cdb35d1b874b71b3b9ccfb
-Author:        Nikolay Borisov <nik.borisov@suse.com>
-AuthorDate:    Fri, 05 May 2023 15:03:32 +03:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 23 May 2023 07:01:45 -07:00
+Commit-ID:     06c6796e0304234da65e70577f354cb194086521
+Gitweb:        https://git.kernel.org/tip/06c6796e0304234da65e70577f354cb194086521
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 23 May 2023 01:12:26 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 23 May 2023 18:06:40 +02:00
 
-x86/tdx: Wrap exit reason with hcall_func()
+cpu/hotplug: Fix off by one in cpuhp_bringup_mask()
 
-TDX reuses VMEXIT "reasons" in its guest->host hypercall ABI.  This is
-confusing because there might not be a VMEXIT involved at *all*.
-These instances are supposed to document situation and reduce confusion
-by wrapping VMEXIT reasons with hcall_func().
+cpuhp_bringup_mask() iterates over a cpumask and starts all present CPUs up
+to a caller provided upper limit.
 
-The decompression code does not follow this convention.
+The limit variable is decremented and checked for 0 before invoking
+cpu_up(), which is obviously off by one and prevents the bringup of the
+last CPU when the limit is equal to the number of present CPUs.
 
-Unify the TDX decompression code with the other TDX use of VMEXIT reasons.
-No functional changes.
+Move the decrement and check after the cpu_up() invocation.
 
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/all/20230505120332.1429957-1-nik.borisov%40suse.com
+Fixes: 18415f33e2ac ("cpu/hotplug: Allow "parallel" bringup up to CPUHP_BP_KICK_AP_STATE")
+Reported-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/87wn10ufj9.ffs@tglx
 ---
- arch/x86/boot/compressed/tdx.c    |  4 ++--
- arch/x86/coco/tdx/tdx.c           | 11 -----------
- arch/x86/include/asm/shared/tdx.h | 11 +++++++++++
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ kernel/cpu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
-index 2d81d3c..8841b94 100644
---- a/arch/x86/boot/compressed/tdx.c
-+++ b/arch/x86/boot/compressed/tdx.c
-@@ -20,7 +20,7 @@ static inline unsigned int tdx_io_in(int size, u16 port)
- {
- 	struct tdx_hypercall_args args = {
- 		.r10 = TDX_HYPERCALL_STANDARD,
--		.r11 = EXIT_REASON_IO_INSTRUCTION,
-+		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
- 		.r12 = size,
- 		.r13 = 0,
- 		.r14 = port,
-@@ -36,7 +36,7 @@ static inline void tdx_io_out(int size, u16 port, u32 value)
- {
- 	struct tdx_hypercall_args args = {
- 		.r10 = TDX_HYPERCALL_STANDARD,
--		.r11 = EXIT_REASON_IO_INSTRUCTION,
-+		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
- 		.r12 = size,
- 		.r13 = 1,
- 		.r14 = port,
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index e146b59..15569bd 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -76,17 +76,6 @@ noinstr void __tdx_hypercall_failed(void)
- 	panic("TDVMCALL failed. TDX module bug?");
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 005f863..88a7ede 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1770,9 +1770,6 @@ static void __init cpuhp_bringup_mask(const struct cpumask *mask, unsigned int n
+ 	for_each_cpu(cpu, mask) {
+ 		struct cpuhp_cpu_state *st = per_cpu_ptr(&cpuhp_state, cpu);
+ 
+-		if (!--ncpus)
+-			break;
+-
+ 		if (cpu_up(cpu, target) && can_rollback_cpu(st)) {
+ 			/*
+ 			 * If this failed then cpu_up() might have only
+@@ -1781,6 +1778,9 @@ static void __init cpuhp_bringup_mask(const struct cpumask *mask, unsigned int n
+ 			 */
+ 			WARN_ON(cpuhp_invoke_callback_range(false, cpu, st, CPUHP_OFFLINE));
+ 		}
++
++		if (!--ncpus)
++			break;
+ 	}
  }
  
--/*
-- * The TDG.VP.VMCALL-Instruction-execution sub-functions are defined
-- * independently from but are currently matched 1:1 with VMX EXIT_REASONs.
-- * Reusing the KVM EXIT_REASON macros makes it easier to connect the host and
-- * guest sides of these calls.
-- */
--static __always_inline u64 hcall_func(u64 exit_reason)
--{
--	return exit_reason;
--}
--
- #ifdef CONFIG_KVM_GUEST
- long tdx_kvm_hypercall(unsigned int nr, unsigned long p1, unsigned long p2,
- 		       unsigned long p3, unsigned long p4)
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 2631e01..b415a24 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -40,5 +40,16 @@ u64 __tdx_hypercall_ret(struct tdx_hypercall_args *args);
- /* Called from __tdx_hypercall() for unrecoverable failure */
- void __tdx_hypercall_failed(void);
- 
-+/*
-+ * The TDG.VP.VMCALL-Instruction-execution sub-functions are defined
-+ * independently from but are currently matched 1:1 with VMX EXIT_REASONs.
-+ * Reusing the KVM EXIT_REASON macros makes it easier to connect the host and
-+ * guest sides of these calls.
-+ */
-+static __always_inline u64 hcall_func(u64 exit_reason)
-+{
-+        return exit_reason;
-+}
-+
- #endif /* !__ASSEMBLY__ */
- #endif /* _ASM_X86_SHARED_TDX_H */
