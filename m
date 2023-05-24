@@ -2,119 +2,257 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F9F570E17D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 May 2023 18:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E654C70F3A7
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 May 2023 12:01:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229773AbjEWQOD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 23 May 2023 12:14:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35088 "EHLO
+        id S232036AbjEXKBp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 24 May 2023 06:01:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236276AbjEWQOC (ORCPT
+        with ESMTP id S232020AbjEXKBn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 23 May 2023 12:14:02 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 119B8C2;
-        Tue, 23 May 2023 09:14:00 -0700 (PDT)
-Date:   Tue, 23 May 2023 16:13:57 -0000
+        Wed, 24 May 2023 06:01:43 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA93312F;
+        Wed, 24 May 2023 03:01:39 -0700 (PDT)
+Date:   Wed, 24 May 2023 10:01:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684858438;
+        s=2020; t=1684922496;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1o3nB3jocoaLuOI5Obrg0Pu8tnjT0B5WS7aKcG30c3Y=;
-        b=Q4wL1SOb9nb9hZJ1ZPygVvgEoQvInC21KXzRQtsc/lO3otIZhyvgiBCTSA1UYwMD16KNrF
-        zrV8is0x6hkvRMom/DUqX56fqXhwg6iBByudcInyhv5xMTOvmRIjq8Y5ry1Di2UuM/Tb47
-        hM7fWJtDadpsE/FKSCkk4gVJJ7m5ifLyiRnXH7anDyoYRM+xa2i4Tp7TMXibLGmLaVDwsH
-        hEqLP82Rewf2Y6G8wGcqCvnvYokBJR+fPYF1Vg3Ltp6vARkxW90dQzC62i/XioLPljtCgT
-        9Pz8vWVB4IxhhRSvNE8EYDzlWKBlGngsRkDvTHKQNb+8DW1UJ0cpNZ37lmQbRw==
+        bh=6FvvkhJf/VpDV2K3UEFi36r/TgLCYSuRfq0un7lMtc0=;
+        b=Apcsf/ldQ3STJDYdOFw4txp9D9A5NgP6Tu5uaYIFrw05BacWvG/tNygtjIgSlxah5bPz5S
+        Fs+Ggglat0z7o80EetmQkwkdGAX4cM6MkmPP769FqZuLPzCiCQl+0iyJGfqhWu4Vbgtjh+
+        pmyQ5M1sk1DFugUTKVYUp240V4pqd+g9NLy1UN83u62zRr8E1EXCw8i2mEiyGFJrj01Vhr
+        7jUveAHauKHgtFiuZLMlZx7B9ml8GTX3MlfWwdOhxB7rAqXMb2I8ONVszaW+rrCZcRKZI/
+        DVQWYxpyzvy4AdzHSpL/fX/vzqtrvB+vWj2Z2ECX+vaMhE9F1KPUztSGX9y4Vg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684858438;
+        s=2020e; t=1684922496;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1o3nB3jocoaLuOI5Obrg0Pu8tnjT0B5WS7aKcG30c3Y=;
-        b=Vmkwzh/2Q4t7kGk6VPI59MRREU6bQWu0aOWjFj/YXYkWApAM2zdfCBYGJvBhBkryOcKayc
-        2ZenPJQsd0wG1AAw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=6FvvkhJf/VpDV2K3UEFi36r/TgLCYSuRfq0un7lMtc0=;
+        b=3QG3fcFPzMPy6K7+OGiGNu2KqawvhQ1XK9e6yzqUKRQepvqWefL23gwA60EMx9Ous4egUF
+        eBKXoIh3ze15cHBw==
+From:   "tip-bot2 for Shanker Donthineni" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] cpu/hotplug: Fix off by one in cpuhp_bringup_mask()
-Cc:     Mark Brown <broonie@kernel.org>,
+Subject: [tip: irq/core] genirq: Use a maple tree for interrupt descriptor management
+Cc:     Shanker Donthineni <sdonthineni@nvidia.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <87wn10ufj9.ffs@tglx>
-References: <87wn10ufj9.ffs@tglx>
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20230519134902.1495562-4-sdonthineni@nvidia.com>
+References: <20230519134902.1495562-4-sdonthineni@nvidia.com>
 MIME-Version: 1.0
-Message-ID: <168485843734.404.16847199234383553669.tip-bot2@tip-bot2>
+Message-ID: <168492249583.404.6723379224465568533.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     06c6796e0304234da65e70577f354cb194086521
-Gitweb:        https://git.kernel.org/tip/06c6796e0304234da65e70577f354cb194086521
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 23 May 2023 01:12:26 +02:00
+Commit-ID:     721255b9826bd11c7a38b585905fc2dd0fb94e52
+Gitweb:        https://git.kernel.org/tip/721255b9826bd11c7a38b585905fc2dd0fb94e52
+Author:        Shanker Donthineni <sdonthineni@nvidia.com>
+AuthorDate:    Fri, 19 May 2023 08:49:02 -05:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 23 May 2023 18:06:40 +02:00
+CommitterDate: Wed, 24 May 2023 11:39:44 +02:00
 
-cpu/hotplug: Fix off by one in cpuhp_bringup_mask()
+genirq: Use a maple tree for interrupt descriptor management
 
-cpuhp_bringup_mask() iterates over a cpumask and starts all present CPUs up
-to a caller provided upper limit.
+The current implementation uses a static bitmap for interrupt descriptor
+allocation and a radix tree to pointer store the pointer for lookup.
 
-The limit variable is decremented and checked for 0 before invoking
-cpu_up(), which is obviously off by one and prevents the bringup of the
-last CPU when the limit is equal to the number of present CPUs.
+However, the size of the bitmap is constrained by the build time macro
+MAX_SPARSE_IRQS, which may not be sufficient to support high-end servers,
+particularly those with GICv4.1 hardware, which require a large interrupt
+space to cover LPIs and vSGIs.
 
-Move the decrement and check after the cpu_up() invocation.
+Replace the bitmap and the radix tree with a maple tree, which not only
+stores pointers for lookup, but also provides a mechanism to find free
+ranges. That removes the build time hardcoded upper limit.
 
-Fixes: 18415f33e2ac ("cpu/hotplug: Allow "parallel" bringup up to CPUHP_BP_KICK_AP_STATE")
-Reported-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/87wn10ufj9.ffs@tglx
----
- kernel/cpu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Link: https://lore.kernel.org/r/20230519134902.1495562-4-sdonthineni@nvidia.com
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 005f863..88a7ede 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1770,9 +1770,6 @@ static void __init cpuhp_bringup_mask(const struct cpumask *mask, unsigned int n
- 	for_each_cpu(cpu, mask) {
- 		struct cpuhp_cpu_state *st = per_cpu_ptr(&cpuhp_state, cpu);
+---
+ kernel/irq/internals.h |  2 +-
+ kernel/irq/irqdesc.c   | 57 +++++++++++++++++++++++------------------
+ 2 files changed, 33 insertions(+), 26 deletions(-)
+
+diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
+index f3f2090..7bdb750 100644
+--- a/kernel/irq/internals.h
++++ b/kernel/irq/internals.h
+@@ -12,7 +12,7 @@
+ #include <linux/sched/clock.h>
  
--		if (!--ncpus)
--			break;
--
- 		if (cpu_up(cpu, target) && can_rollback_cpu(st)) {
- 			/*
- 			 * If this failed then cpu_up() might have only
-@@ -1781,6 +1778,9 @@ static void __init cpuhp_bringup_mask(const struct cpumask *mask, unsigned int n
- 			 */
- 			WARN_ON(cpuhp_invoke_callback_range(false, cpu, st, CPUHP_OFFLINE));
- 		}
+ #ifdef CONFIG_SPARSE_IRQ
+-# define MAX_SPARSE_IRQS	(NR_IRQS + 8196)
++# define MAX_SPARSE_IRQS	INT_MAX
+ #else
+ # define MAX_SPARSE_IRQS	NR_IRQS
+ #endif
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index e0d9dd9..27ca1c8 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -12,8 +12,7 @@
+ #include <linux/export.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel_stat.h>
+-#include <linux/radix-tree.h>
+-#include <linux/bitmap.h>
++#include <linux/maple_tree.h>
+ #include <linux/irqdomain.h>
+ #include <linux/sysfs.h>
+ 
+@@ -131,17 +130,39 @@ int nr_irqs = NR_IRQS;
+ EXPORT_SYMBOL_GPL(nr_irqs);
+ 
+ static DEFINE_MUTEX(sparse_irq_lock);
+-static DECLARE_BITMAP(allocated_irqs, MAX_SPARSE_IRQS);
++static struct maple_tree sparse_irqs = MTREE_INIT_EXT(sparse_irqs,
++					MT_FLAGS_ALLOC_RANGE |
++					MT_FLAGS_LOCK_EXTERN |
++					MT_FLAGS_USE_RCU,
++					sparse_irq_lock);
+ 
+ static int irq_find_free_area(unsigned int from, unsigned int cnt)
+ {
+-	return bitmap_find_next_zero_area(allocated_irqs, MAX_SPARSE_IRQS,
+-					  from, cnt, 0);
++	MA_STATE(mas, &sparse_irqs, 0, 0);
 +
-+		if (!--ncpus)
-+			break;
- 	}
++	if (mas_empty_area(&mas, from, MAX_SPARSE_IRQS, cnt))
++		return -ENOSPC;
++	return mas.index;
  }
  
+ static unsigned int irq_find_at_or_after(unsigned int offset)
+ {
+-	return find_next_bit(allocated_irqs, nr_irqs, offset);
++	unsigned long index = offset;
++	struct irq_desc *desc = mt_find(&sparse_irqs, &index, nr_irqs);
++
++	return desc ? irq_desc_get_irq(desc) : nr_irqs;
++}
++
++static void irq_insert_desc(unsigned int irq, struct irq_desc *desc)
++{
++	MA_STATE(mas, &sparse_irqs, irq, irq);
++	WARN_ON(mas_store_gfp(&mas, desc, GFP_KERNEL) != 0);
++}
++
++static void delete_irq_desc(unsigned int irq)
++{
++	MA_STATE(mas, &sparse_irqs, irq, irq);
++	mas_erase(&mas);
+ }
+ 
+ #ifdef CONFIG_SPARSE_IRQ
+@@ -355,26 +376,14 @@ static void irq_sysfs_del(struct irq_desc *desc) {}
+ 
+ #endif /* CONFIG_SYSFS */
+ 
+-static RADIX_TREE(irq_desc_tree, GFP_KERNEL);
+-
+-static void irq_insert_desc(unsigned int irq, struct irq_desc *desc)
+-{
+-	radix_tree_insert(&irq_desc_tree, irq, desc);
+-}
+-
+ struct irq_desc *irq_to_desc(unsigned int irq)
+ {
+-	return radix_tree_lookup(&irq_desc_tree, irq);
++	return mtree_load(&sparse_irqs, irq);
+ }
+ #ifdef CONFIG_KVM_BOOK3S_64_HV_MODULE
+ EXPORT_SYMBOL_GPL(irq_to_desc);
+ #endif
+ 
+-static void delete_irq_desc(unsigned int irq)
+-{
+-	radix_tree_delete(&irq_desc_tree, irq);
+-}
+-
+ #ifdef CONFIG_SMP
+ static void free_masks(struct irq_desc *desc)
+ {
+@@ -517,7 +526,6 @@ static int alloc_descs(unsigned int start, unsigned int cnt, int node,
+ 		irq_sysfs_add(start + i, desc);
+ 		irq_add_debugfs_entry(start + i, desc);
+ 	}
+-	bitmap_set(allocated_irqs, start, cnt);
+ 	return start;
+ 
+ err:
+@@ -557,7 +565,6 @@ int __init early_irq_init(void)
+ 
+ 	for (i = 0; i < initcnt; i++) {
+ 		desc = alloc_desc(i, node, 0, NULL, NULL);
+-		set_bit(i, allocated_irqs);
+ 		irq_insert_desc(i, desc);
+ 	}
+ 	return arch_early_irq_init();
+@@ -612,6 +619,7 @@ static void free_desc(unsigned int irq)
+ 	raw_spin_lock_irqsave(&desc->lock, flags);
+ 	desc_set_defaults(irq, desc, irq_desc_get_node(desc), NULL, NULL);
+ 	raw_spin_unlock_irqrestore(&desc->lock, flags);
++	delete_irq_desc(irq);
+ }
+ 
+ static inline int alloc_descs(unsigned int start, unsigned int cnt, int node,
+@@ -624,8 +632,8 @@ static inline int alloc_descs(unsigned int start, unsigned int cnt, int node,
+ 		struct irq_desc *desc = irq_to_desc(start + i);
+ 
+ 		desc->owner = owner;
++		irq_insert_desc(start + i, desc);
+ 	}
+-	bitmap_set(allocated_irqs, start, cnt);
+ 	return start;
+ }
+ 
+@@ -637,7 +645,7 @@ static int irq_expand_nr_irqs(unsigned int nr)
+ void irq_mark_irq(unsigned int irq)
+ {
+ 	mutex_lock(&sparse_irq_lock);
+-	bitmap_set(allocated_irqs, irq, 1);
++	irq_insert_desc(irq, irq_desc + irq);
+ 	mutex_unlock(&sparse_irq_lock);
+ }
+ 
+@@ -781,7 +789,6 @@ void irq_free_descs(unsigned int from, unsigned int cnt)
+ 	for (i = 0; i < cnt; i++)
+ 		free_desc(from + i);
+ 
+-	bitmap_clear(allocated_irqs, from, cnt);
+ 	mutex_unlock(&sparse_irq_lock);
+ }
+ EXPORT_SYMBOL_GPL(irq_free_descs);
+@@ -844,7 +851,7 @@ EXPORT_SYMBOL_GPL(__irq_alloc_descs);
+  * irq_get_next_irq - get next allocated irq number
+  * @offset:	where to start the search
+  *
+- * Returns next irq number at or after offset or nr_irqs if none is found.
++ * Returns next irq number after offset or nr_irqs if none is found.
+  */
+ unsigned int irq_get_next_irq(unsigned int offset)
+ {
