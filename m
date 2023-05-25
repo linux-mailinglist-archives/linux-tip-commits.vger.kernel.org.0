@@ -2,57 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D3847108A3
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 May 2023 11:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F1697111AA
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 May 2023 19:08:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240638AbjEYJSG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 25 May 2023 05:18:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52956 "EHLO
+        id S239807AbjEYRIR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 25 May 2023 13:08:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240634AbjEYJSE (ORCPT
+        with ESMTP id S238954AbjEYRIP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 25 May 2023 05:18:04 -0400
+        Thu, 25 May 2023 13:08:15 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6ED5E52;
-        Thu, 25 May 2023 02:17:53 -0700 (PDT)
-Date:   Thu, 25 May 2023 09:17:49 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB15B6;
+        Thu, 25 May 2023 10:08:14 -0700 (PDT)
+Date:   Thu, 25 May 2023 17:08:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685006270;
+        s=2020; t=1685034491;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pQDHdMweLp26JWI66gNfSmSOqaEQMETapWdZ/4lFbxc=;
-        b=gjEQjDT6rfSYn9QE45B8dEYTwTcqa6X1cdLbSvS/inpt7kXDMH3TJScdhol0P1L2Z6AHEG
-        jXlNGp9Gsn1jh4Oz0DH5NxX2c6LljjsKe5bvn3BQkfERi8nMKHZoL1klux5uaqllDR56jF
-        QhmRDCLYM/mZuY2jfDY6VdiXAE4azmJPBDp4GoUqU+v0lIhMxy9YtCVHZSvqjE/4DagyH/
-        QBBls5ji/XEdlqKSV8r71+h6rzcRzRH9uBPdB7SE/ubYDTvHLN3tIt0bN9GBO5jrrjm3Bq
-        SFj7KZclhWlK7iNvpSK3gnJnYgWdACal/1CG9zjKmZrTPEIperUcCO0k7/mqzg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=PqN7pZM5Ne2hSJTJYt7bvR5U0D9tiJx20qbHFDDiomM=;
+        b=M29zIeZPAeEIFUsGdpk+pnVeFO5Sp0da+exV0FRHweaoDcU8rhgdzgxdlP3FOJ8ZBgXJ1x
+        Req8nvBNtbz1mVeWr5Geig6Ij/fAGp+M64fAYVwULIk4pJJI3POnr900qWhPH7Sy9xSFX6
+        pCb11YCcf9HHXWh8LNqAwdseDUihP+QQIRhjfO8z6/O1Dn/uhwiShgW934vkDo4I0Cg7qL
+        l5ATdjRFM5s6ceotC7MyFW/wpLtZFtf1kLVT9GXApSBUhnELBr5LYt7mXP64YuUjxW3WQr
+        GKgT1mJyEwI0ASsUlqY+wDI/xs/zrvNLvPLBqOrfg1318qwb9CFbL+4kK/7CQg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685006270;
+        s=2020e; t=1685034491;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pQDHdMweLp26JWI66gNfSmSOqaEQMETapWdZ/4lFbxc=;
-        b=sRSbVuAD9GfgAYesDUMakDbjTz8Sa6kcUwrNmBE+s4eB7VP+1DqwUu9fQZpQoAJxRzFqso
-        MQsL/DjCE1/VE/Aw==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=PqN7pZM5Ne2hSJTJYt7bvR5U0D9tiJx20qbHFDDiomM=;
+        b=xIi/eEuAIM1piVbikJx5cBm6dVfZd866mZ0MmtMMw9gEplXQXsp4+b+Eo8Qjk/yVf1RbU/
+        aztFtz2B95QXqnCA==
+From:   "tip-bot2 for Zhang Rui" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/uncore: Correct the number of CHAs on SPR
-Cc:     Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/topology: Fix erroneous smp_num_siblings on
+ Intel Hybrid platforms
+Cc:     Len Brown <len.brown@intel.com>, Zhang Rui <rui.zhang@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230508140206.283708-1-kan.liang@linux.intel.com>
-References: <20230508140206.283708-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <168500626995.404.15734964484046172688.tip-bot2@tip-bot2>
+Message-ID: <168503449068.404.11918466864756004526.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,64 +61,90 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     38776cc45eb7603df4735a0410f42cffff8e71a1
-Gitweb:        https://git.kernel.org/tip/38776cc45eb7603df4735a0410f42cffff8e71a1
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 08 May 2023 07:02:06 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 24 May 2023 22:19:41 +02:00
+Commit-ID:     55f63fd6d4cfcaf2f5fc385bf7a80c459fe1d165
+Gitweb:        https://git.kernel.org/tip/55f63fd6d4cfcaf2f5fc385bf7a80c459fe1d165
+Author:        Zhang Rui <rui.zhang@intel.com>
+AuthorDate:    Thu, 23 Mar 2023 09:56:40 +08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 25 May 2023 10:03:03 -07:00
 
-perf/x86/uncore: Correct the number of CHAs on SPR
+x86/topology: Fix erroneous smp_num_siblings on Intel Hybrid platforms
 
-The number of CHAs from the discovery table on some SPR variants is
-incorrect, because of a firmware issue. An accurate number can be read
-from the MSR UNC_CBO_CONFIG.
+Traditionally, all CPUs in a system have identical numbers of SMT
+siblings.  That changes with hybrid processors where some logical CPUs
+have a sibling and others have none.
 
-Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server CHA support")
-Reported-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Stephane Eranian <eranian@google.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230508140206.283708-1-kan.liang@linux.intel.com
+Today, the CPU boot code sets the global variable smp_num_siblings when
+every CPU thread is brought up. The last thread to boot will overwrite
+it with the number of siblings of *that* thread. That last thread to
+boot will "win". If the thread is a Pcore, smp_num_siblings == 2.  If it
+is an Ecore, smp_num_siblings == 1.
+
+smp_num_siblings describes if the *system* supports SMT.  It should
+specify the maximum number of SMT threads among all cores.
+
+Ensure that smp_num_siblings represents the system-wide maximum number
+of siblings by always increasing its value. Never allow it to decrease.
+
+On MeteorLake-P platform, this fixes a problem that the Ecore CPUs are
+not updated in any cpu sibling map because the system is treated as an
+UP system when probing Ecore CPUs.
+
+Below shows part of the CPU topology information before and after the
+fix, for both Pcore and Ecore CPU (cpu0 is Pcore, cpu 12 is Ecore).
+...
+-/sys/devices/system/cpu/cpu0/topology/package_cpus:000fff
+-/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-11
++/sys/devices/system/cpu/cpu0/topology/package_cpus:3fffff
++/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-21
+...
+-/sys/devices/system/cpu/cpu12/topology/package_cpus:001000
+-/sys/devices/system/cpu/cpu12/topology/package_cpus_list:12
++/sys/devices/system/cpu/cpu12/topology/package_cpus:3fffff
++/sys/devices/system/cpu/cpu12/topology/package_cpus_list:0-21
+
+And this also breaks userspace tools like lscpu
+-Core(s) per socket:  1
+-Socket(s):           11
++Core(s) per socket:  16
++Socket(s):           1
+
+[ dhansen: remove CPUID detail from changelog ]
+
+CC: stable@kernel.org
+Fixes: bbb65d2d365e ("x86: use cpuid vector 0xb when available for detecting cpu topology")
+Fixes: 95f3d39ccf7a ("x86/cpu/topology: Provide detect_extended_topology_early()")
+Suggested-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/20230323015640.27906-1-rui.zhang%40intel.com
 ---
- arch/x86/events/intel/uncore_snbep.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/x86/kernel/cpu/topology.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index fa9b209..d49e90d 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -6150,6 +6150,7 @@ static struct intel_uncore_type spr_uncore_mdf = {
- };
- 
- #define UNCORE_SPR_NUM_UNCORE_TYPES		12
-+#define UNCORE_SPR_CHA				0
- #define UNCORE_SPR_IIO				1
- #define UNCORE_SPR_IMC				6
- #define UNCORE_SPR_UPI				8
-@@ -6460,12 +6461,22 @@ static int uncore_type_max_boxes(struct intel_uncore_type **types,
- 	return max + 1;
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index 5e868b6..0270925 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -79,7 +79,7 @@ int detect_extended_topology_early(struct cpuinfo_x86 *c)
+ 	 * initial apic id, which also represents 32-bit extended x2apic id.
+ 	 */
+ 	c->initial_apicid = edx;
+-	smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
++	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
+ #endif
+ 	return 0;
  }
- 
-+#define SPR_MSR_UNC_CBO_CONFIG		0x2FFE
-+
- void spr_uncore_cpu_init(void)
- {
-+	struct intel_uncore_type *type;
-+	u64 num_cbo;
-+
- 	uncore_msr_uncores = uncore_get_uncores(UNCORE_ACCESS_MSR,
- 						UNCORE_SPR_MSR_EXTRA_UNCORES,
- 						spr_msr_uncores);
- 
-+	type = uncore_find_type_by_id(uncore_msr_uncores, UNCORE_SPR_CHA);
-+	if (type) {
-+		rdmsrl(SPR_MSR_UNC_CBO_CONFIG, num_cbo);
-+		type->num_boxes = num_cbo;
-+	}
- 	spr_uncore_iio_free_running.num_boxes = uncore_type_max_boxes(uncore_msr_uncores, UNCORE_SPR_IIO);
- }
- 
+@@ -109,7 +109,8 @@ int detect_extended_topology(struct cpuinfo_x86 *c)
+ 	 */
+ 	cpuid_count(leaf, SMT_LEVEL, &eax, &ebx, &ecx, &edx);
+ 	c->initial_apicid = edx;
+-	core_level_siblings = smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
++	core_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
++	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
+ 	core_plus_mask_width = ht_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
+ 	die_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
+ 	pkg_mask_width = die_plus_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
