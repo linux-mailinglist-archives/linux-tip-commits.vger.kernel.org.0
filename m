@@ -2,50 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A859D714D14
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 May 2023 17:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77E67714FD4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 May 2023 21:39:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbjE2Pd3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 29 May 2023 11:33:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33620 "EHLO
+        id S229476AbjE2Tjt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 29 May 2023 15:39:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbjE2Pd2 (ORCPT
+        with ESMTP id S229455AbjE2Tjt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 29 May 2023 11:33:28 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 411D29C;
-        Mon, 29 May 2023 08:33:26 -0700 (PDT)
-Date:   Mon, 29 May 2023 15:33:22 -0000
+        Mon, 29 May 2023 15:39:49 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED6CB7;
+        Mon, 29 May 2023 12:39:47 -0700 (PDT)
+Date:   Mon, 29 May 2023 19:39:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685374403;
+        s=2020; t=1685389186;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=IVExDsKMOfQgMfJYMFd84Zl750/nZDXDFa/lLIGwQYw=;
-        b=Sl7uwjaIV0D/Dc0EbqsrHfanFriAqQARVDi2FNG6jwy1RosR5RfvXGJKzFMwyuH/9VRnSJ
-        0/douHIs9KnGNOjJ6nDW2eG3GJ1Qu3qovUBb4/M8cC4nrXB6BSWH2q+bLQJJ00KKmsYhMo
-        rD6s3SbZWjnYSzIWr+bk7LOobR3l7gmhcXBxoi/hbUhDybKwUgC/Pv18gzLPyO1ylmEVwe
-        stT5W3Sv89WxZuZF6ut8k0PykBATojSBY8nXtJ9hWiD7WjlylN/LYkKPMejc+bhQxg6VYB
-        icUnvxs5YZXogIcsOU7jiGCIIPP46cPFZKLoWO/hxaTALTyL1bvBs43LcaKKmw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2KtZGfYQCjjS2SqnUxX40yZ82weExH9THlmAMKW1Z3k=;
+        b=x3ergisLX/s9jJg/N/JYXP6tp8uM6lGjQX4pjAf4qhylZr17iFqDi/NrZnz+a4zzomkXC6
+        D+UQU19B0X/r2NIyDAiGTc94Hik6QjsWfUqIOOQ+zvW6Ro90Hdj8G6qDgj0oZ5SQg9nMF1
+        2/mT5PoTtASzKedTRHg5v9YAFkyqFiQ3kWHxySOZdyrIqJlMYqWFJh9PJnCvfG3lelyROw
+        04hwJGLtjYGNXV3BSgTVwje173Svn46DTMvua5ThKZ0Gn73TdkkVIG+ErpH4nlgdwIw+BP
+        yCH8tlzNsDn75Lw3k/13PxrvNDyzSga00vshGHjcBfAGskH1WSXGSLkRBjrl7w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685374403;
+        s=2020e; t=1685389186;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=IVExDsKMOfQgMfJYMFd84Zl750/nZDXDFa/lLIGwQYw=;
-        b=SHjjbwtDOW+vtTBTgNDsBUpe0mrQ5afnbhWCCjMZV/qz8k2BdzCUzG7lrWutdDifjhnc3b
-        084RPg4mafS02gCA==
-From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2KtZGfYQCjjS2SqnUxX40yZ82weExH9THlmAMKW1Z3k=;
+        b=EI2+EB4hGX6vpsU31qjJYaZx251wBvNzCi1bb3BjbsADswxgyhCEtfIA6d4SRod1SrPPvr
+        IcyF5+qdTnu3PNDg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/csum: Fix clang -Wuninitialized in csum_partial()
-Cc:     kernel test robot <lkp@intel.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: smp/core] x86/smp: Initialize cpu_primary_thread_mask late
+Cc:     "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <87sfbhlwp9.ffs@tglx>
+References: <87sfbhlwp9.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <168537440297.404.2900420539886506252.tip-bot2@tip-bot2>
+Message-ID: <168538918580.404.12778821542174933312.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,85 +66,79 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     2fe1e67e6987b6f05329740da79c8150a2205b0d
-Gitweb:        https://git.kernel.org/tip/2fe1e67e6987b6f05329740da79c8150a2205b0d
-Author:        Nathan Chancellor <nathan@kernel.org>
-AuthorDate:    Fri, 26 May 2023 08:47:40 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 29 May 2023 06:52:32 -07:00
+Commit-ID:     5da80b28bf25c3458c7beb23794ff53622ce7eb4
+Gitweb:        https://git.kernel.org/tip/5da80b28bf25c3458c7beb23794ff53622ce7eb4
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 26 May 2023 21:38:47 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 29 May 2023 21:31:23 +02:00
 
-x86/csum: Fix clang -Wuninitialized in csum_partial()
+x86/smp: Initialize cpu_primary_thread_mask late
 
-Clang warns:
+Marking primary threads in the cpumask during early boot is only correct in
+certain configurations, but broken e.g. for the legacy hyperthreading
+detection.
 
-  arch/x86/lib/csum-partial_64.c:74:20: error: variable 'result' is uninitialized when used here [-Werror,-Wuninitialized]
-                  return csum_tail(result, temp64, odd);
-                                   ^~~~~~
-  arch/x86/lib/csum-partial_64.c:48:22: note: initialize the variable 'result' to silence this warning
-          unsigned odd, result;
-                              ^
-                               = 0
-  1 error generated.
+This is due to the complete mess in the CPUID evaluation code which
+initializes smp_num_siblings only half during early init and fixes it up
+later when identify_boot_cpu() is invoked.
 
-The only initialization and uses of result in csum_partial() were moved
-into csum_tail() but result is still being passed by value to
-csum_tail() (clang's -Wuninitialized does not do interprocedural
-analysis to realize that result is always assigned in csum_tail()
-however). Sink the declaration of result into csum_tail() to clear up
-the warning.
+So using smp_num_siblings before identify_boot_cpu() leads to incorrect
+results.
 
-Closes: https://lore.kernel.org/202305262039.3HUYjWJk-lkp@intel.com/
-Fixes: 688eb8191b47 ("x86/csum: Improve performance of `csum_partial`")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20230526-csum_partial-wuninitialized-v1-1-ebc0108dcec1%40kernel.org
+Fixing the early CPU init code to provide the proper data is a larger scale
+surgery as the code has dependencies on data structures which are not
+initialized during early boot.
+
+Move the initialization of cpu_primary_thread_mask wich depends on
+smp_num_siblings being correct to an early initcall so that it is set up
+correctly before SMP bringup.
+
+Fixes: f54d4434c281 ("x86/apic: Provide cpu_primary_thread mask")
+Reported-by: "Kirill A. Shutemov" <kirill@shutemov.name>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lore.kernel.org/r/87sfbhlwp9.ffs@tglx
+
 ---
- arch/x86/lib/csum-partial_64.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/kernel/apic/apic.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/lib/csum-partial_64.c b/arch/x86/lib/csum-partial_64.c
-index fe58619..cea25ca 100644
---- a/arch/x86/lib/csum-partial_64.c
-+++ b/arch/x86/lib/csum-partial_64.c
-@@ -21,8 +21,10 @@ static inline unsigned short from32to16(unsigned a)
- 	return b;
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 209c505..af49e24 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -2398,6 +2398,21 @@ static void cpu_mark_primary_thread(unsigned int cpu, unsigned int apicid)
+ 	if (smp_num_siblings == 1 || !(apicid & mask))
+ 		cpumask_set_cpu(cpu, &__cpu_primary_thread_mask);
  }
- 
--static inline __wsum csum_tail(unsigned int result, u64 temp64, int odd)
-+static inline __wsum csum_tail(u64 temp64, int odd)
- {
-+	unsigned int result;
 +
- 	result = add32_with_carry(temp64 >> 32, temp64 & 0xffffffff);
- 	if (unlikely(odd)) {
- 		result = from32to16(result);
-@@ -45,7 +47,7 @@ static inline __wsum csum_tail(unsigned int result, u64 temp64, int odd)
- __wsum csum_partial(const void *buff, int len, __wsum sum)
- {
- 	u64 temp64 = (__force u64)sum;
--	unsigned odd, result;
-+	unsigned odd;
++/*
++ * Due to the utter mess of CPUID evaluation smp_num_siblings is not valid
++ * during early boot. Initialize the primary thread mask before SMP
++ * bringup.
++ */
++static int __init smp_init_primary_thread_mask(void)
++{
++	unsigned int cpu;
++
++	for (cpu = 0; cpu < nr_logical_cpuids; cpu++)
++		cpu_mark_primary_thread(cpu, cpuid_to_apicid[cpu]);
++	return 0;
++}
++early_initcall(smp_init_primary_thread_mask);
+ #else
+ static inline void cpu_mark_primary_thread(unsigned int cpu, unsigned int apicid) { }
+ #endif
+@@ -2544,7 +2559,8 @@ int generic_processor_info(int apicid, int version)
+ 	set_cpu_present(cpu, true);
+ 	num_processors++;
  
- 	odd = 1 & (unsigned long) buff;
- 	if (unlikely(odd)) {
-@@ -71,7 +73,7 @@ __wsum csum_partial(const void *buff, int len, __wsum sum)
- 		    "adcq $0,%[res]"
- 		    : [res] "+r"(temp64)
- 		    : [src] "r"(buff), "m"(*(const char(*)[40])buff));
--		return csum_tail(result, temp64, odd);
-+		return csum_tail(temp64, odd);
- 	}
- 	if (unlikely(len >= 64)) {
- 		/*
-@@ -141,7 +143,7 @@ __wsum csum_partial(const void *buff, int len, __wsum sum)
- 		    : [res] "+r"(temp64)
- 		    : [trail] "r"(trail));
- 	}
--	return csum_tail(result, temp64, odd);
-+	return csum_tail(temp64, odd);
+-	cpu_mark_primary_thread(cpu, apicid);
++	if (system_state != SYSTEM_BOOTING)
++		cpu_mark_primary_thread(cpu, apicid);
+ 
+ 	return cpu;
  }
- EXPORT_SYMBOL(csum_partial);
- 
