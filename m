@@ -2,64 +2,63 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77E67714FD4
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 May 2023 21:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40B40715ED5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 May 2023 14:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjE2Tjt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 29 May 2023 15:39:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56936 "EHLO
+        id S229698AbjE3MSV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 30 May 2023 08:18:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229455AbjE2Tjt (ORCPT
+        with ESMTP id S230220AbjE3MSU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 29 May 2023 15:39:49 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED6CB7;
-        Mon, 29 May 2023 12:39:47 -0700 (PDT)
-Date:   Mon, 29 May 2023 19:39:45 -0000
+        Tue, 30 May 2023 08:18:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E8B9D;
+        Tue, 30 May 2023 05:18:13 -0700 (PDT)
+Date:   Tue, 30 May 2023 12:18:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685389186;
+        s=2020; t=1685449091;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2KtZGfYQCjjS2SqnUxX40yZ82weExH9THlmAMKW1Z3k=;
-        b=x3ergisLX/s9jJg/N/JYXP6tp8uM6lGjQX4pjAf4qhylZr17iFqDi/NrZnz+a4zzomkXC6
-        D+UQU19B0X/r2NIyDAiGTc94Hik6QjsWfUqIOOQ+zvW6Ro90Hdj8G6qDgj0oZ5SQg9nMF1
-        2/mT5PoTtASzKedTRHg5v9YAFkyqFiQ3kWHxySOZdyrIqJlMYqWFJh9PJnCvfG3lelyROw
-        04hwJGLtjYGNXV3BSgTVwje173Svn46DTMvua5ThKZ0Gn73TdkkVIG+ErpH4nlgdwIw+BP
-        yCH8tlzNsDn75Lw3k/13PxrvNDyzSga00vshGHjcBfAGskH1WSXGSLkRBjrl7w==
+        bh=hbDBIBOfL3vn6G8GVP1VF/4Ec/pcFLy9njdXtwuykC4=;
+        b=ohN+1XE4NI8iN2blzE3PGkclS8OvmjDaLqbBood0k61WodakQFKBm81phvOXheMN5BfiPi
+        k8C7U6TRWjcof+5DNKJFrMp2MBBw82+C5VbdrZY6djFjGF9m3lEd5KbEDRhk76pU5muCvO
+        TxWji4QIhUy9Kw+yINtnqq/VIigOlgjxhocOsPaXtbcljYEQvzcCSIewLjiyrWqJIwyILt
+        ZYfc2xb7LVnHPbamrfIGW5qnyXPxeQswhZ+ymr3YP1B1cwOq4qdizBzzMQ63XV6ZL48w7S
+        lpZn9wYNu9i422Xyc43dRhoWjC94Ylfm6FijF4k2U/467C9t0JlLRahBwr1Ciw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685389186;
+        s=2020e; t=1685449091;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2KtZGfYQCjjS2SqnUxX40yZ82weExH9THlmAMKW1Z3k=;
-        b=EI2+EB4hGX6vpsU31qjJYaZx251wBvNzCi1bb3BjbsADswxgyhCEtfIA6d4SRod1SrPPvr
-        IcyF5+qdTnu3PNDg==
+        bh=hbDBIBOfL3vn6G8GVP1VF/4Ec/pcFLy9njdXtwuykC4=;
+        b=YT9aQdbhy6+9VgUO6lEO6zNst8GcSbKzekmFUYSGXn3jnFNpBSM9tgDpRf7ofxRoXJtrUI
+        f7TAvkWTNrOsKHBA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] x86/smp: Initialize cpu_primary_thread_mask late
-Cc:     "Kirill A. Shutemov" <kirill@shutemov.name>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <87sfbhlwp9.ffs@tglx>
-References: <87sfbhlwp9.ffs@tglx>
+Subject: [tip: smp/core] x86/realmode: Make stack lock work in trampoline_compat()
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <87h6rujdvl.ffs@tglx>
+References: <87h6rujdvl.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <168538918580.404.12778821542174933312.tip-bot2@tip-bot2>
+Message-ID: <168544909088.404.150583934765484487.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -68,77 +67,86 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     5da80b28bf25c3458c7beb23794ff53622ce7eb4
-Gitweb:        https://git.kernel.org/tip/5da80b28bf25c3458c7beb23794ff53622ce7eb4
+Commit-ID:     33e20b07bec4991c169e3c6ff28c2126583724fc
+Gitweb:        https://git.kernel.org/tip/33e20b07bec4991c169e3c6ff28c2126583724fc
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 26 May 2023 21:38:47 +02:00
+AuthorDate:    Tue, 30 May 2023 12:46:22 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 29 May 2023 21:31:23 +02:00
+CommitterDate: Tue, 30 May 2023 14:11:47 +02:00
 
-x86/smp: Initialize cpu_primary_thread_mask late
+x86/realmode: Make stack lock work in trampoline_compat()
 
-Marking primary threads in the cpumask during early boot is only correct in
-certain configurations, but broken e.g. for the legacy hyperthreading
-detection.
+The stack locking and stack assignment macro LOAD_REALMODE_ESP fails to
+work when invoked from the 64bit trampoline entry point:
 
-This is due to the complete mess in the CPUID evaluation code which
-initializes smp_num_siblings only half during early init and fixes it up
-later when identify_boot_cpu() is invoked.
+trampoline_start64
+  trampoline_compat
+    LOAD_REALMODE_ESP <- lock
 
-So using smp_num_siblings before identify_boot_cpu() leads to incorrect
-results.
+Accessing tr_lock is only possible from 16bit mode. For the compat entry
+point this needs to be pa_tr_lock so that the required relocation entry is
+generated. Otherwise it locks the non-relocated address which is
+aside of being wrong never cleared in secondary_startup_64() causing all
+but the first CPU to get stuck on the lock.
 
-Fixing the early CPU init code to provide the proper data is a larger scale
-surgery as the code has dependencies on data structures which are not
-initialized during early boot.
+Make the macro take an argument lock_pa which defaults to 0 and rename it
+to LOCK_AND_LOAD_REALMODE_ESP to make it clear what this is about.
 
-Move the initialization of cpu_primary_thread_mask wich depends on
-smp_num_siblings being correct to an early initcall so that it is set up
-correctly before SMP bringup.
-
-Fixes: f54d4434c281 ("x86/apic: Provide cpu_primary_thread mask")
-Reported-by: "Kirill A. Shutemov" <kirill@shutemov.name>
+Fixes: f6f1ae9128d2 ("x86/smpboot: Implement a bit spinlock to protect the realmode stack")
+Reported-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/87sfbhlwp9.ffs@tglx
-
+Link: https://lore.kernel.org/r/87h6rujdvl.ffs@tglx
 ---
- arch/x86/kernel/apic/apic.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ arch/x86/realmode/rm/trampoline_64.S | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 209c505..af49e24 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -2398,6 +2398,21 @@ static void cpu_mark_primary_thread(unsigned int cpu, unsigned int apicid)
- 	if (smp_num_siblings == 1 || !(apicid & mask))
- 		cpumask_set_cpu(cpu, &__cpu_primary_thread_mask);
- }
-+
-+/*
-+ * Due to the utter mess of CPUID evaluation smp_num_siblings is not valid
-+ * during early boot. Initialize the primary thread mask before SMP
-+ * bringup.
-+ */
-+static int __init smp_init_primary_thread_mask(void)
-+{
-+	unsigned int cpu;
-+
-+	for (cpu = 0; cpu < nr_logical_cpuids; cpu++)
-+		cpu_mark_primary_thread(cpu, cpuid_to_apicid[cpu]);
-+	return 0;
-+}
-+early_initcall(smp_init_primary_thread_mask);
- #else
- static inline void cpu_mark_primary_thread(unsigned int cpu, unsigned int apicid) { }
- #endif
-@@ -2544,7 +2559,8 @@ int generic_processor_info(int apicid, int version)
- 	set_cpu_present(cpu, true);
- 	num_processors++;
+diff --git a/arch/x86/realmode/rm/trampoline_64.S b/arch/x86/realmode/rm/trampoline_64.S
+index 4822ad2..c9f76fa 100644
+--- a/arch/x86/realmode/rm/trampoline_64.S
++++ b/arch/x86/realmode/rm/trampoline_64.S
+@@ -37,12 +37,16 @@
+ 	.text
+ 	.code16
  
--	cpu_mark_primary_thread(cpu, apicid);
-+	if (system_state != SYSTEM_BOOTING)
-+		cpu_mark_primary_thread(cpu, apicid);
+-.macro LOAD_REALMODE_ESP
++.macro LOCK_AND_LOAD_REALMODE_ESP lock_pa=0
+ 	/*
+ 	 * Make sure only one CPU fiddles with the realmode stack
+ 	 */
+ .Llock_rm\@:
++	.if \lock_pa
++        lock btsl       $0, pa_tr_lock
++	.else
+         lock btsl       $0, tr_lock
++	.endif
+         jnc             2f
+         pause
+         jmp             .Llock_rm\@
+@@ -63,7 +67,7 @@ SYM_CODE_START(trampoline_start)
+ 	mov	%ax, %es
+ 	mov	%ax, %ss
  
- 	return cpu;
- }
+-	LOAD_REALMODE_ESP
++	LOCK_AND_LOAD_REALMODE_ESP
+ 
+ 	call	verify_cpu		# Verify the cpu supports long mode
+ 	testl   %eax, %eax		# Check for return code
+@@ -106,7 +110,7 @@ SYM_CODE_START(sev_es_trampoline_start)
+ 	mov	%ax, %es
+ 	mov	%ax, %ss
+ 
+-	LOAD_REALMODE_ESP
++	LOCK_AND_LOAD_REALMODE_ESP
+ 
+ 	jmp	.Lswitch_to_protected
+ SYM_CODE_END(sev_es_trampoline_start)
+@@ -189,7 +193,7 @@ SYM_CODE_START(pa_trampoline_compat)
+ 	 * In compatibility mode.  Prep ESP and DX for startup_32, then disable
+ 	 * paging and complete the switch to legacy 32-bit mode.
+ 	 */
+-	LOAD_REALMODE_ESP
++	LOCK_AND_LOAD_REALMODE_ESP lock_pa=1
+ 	movw	$__KERNEL_DS, %dx
+ 
+ 	movl	$(CR0_STATE & ~X86_CR0_PG), %eax
