@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37BB1717F75
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 May 2023 14:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94826717F7A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 May 2023 14:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232018AbjEaMEx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 31 May 2023 08:04:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55030 "EHLO
+        id S235586AbjEaMEy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 31 May 2023 08:04:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235574AbjEaMEv (ORCPT
+        with ESMTP id S235792AbjEaMEx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 31 May 2023 08:04:51 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C0EE5;
-        Wed, 31 May 2023 05:04:50 -0700 (PDT)
-Date:   Wed, 31 May 2023 12:04:48 -0000
+        Wed, 31 May 2023 08:04:53 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7F410B;
+        Wed, 31 May 2023 05:04:51 -0700 (PDT)
+Date:   Wed, 31 May 2023 12:04:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685534689;
+        s=2020; t=1685534690;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EnXceI711UzJSpm9Tc/LUW38R3dqqmQbiyu3XHe+824=;
-        b=UZHQhSJbYkB7uyPgdESiTQ4qHJrR7+m/n67D4HEMYCVOFxZZe3aNOPK4m6aHr/q9SkL0Vt
-        rlPLjST1ZGR4sorLSsC2OGPx+6LDIrBBQ6HJVee0GG/eWgAgIw2UvU4zl1lAeXBsWYKPJG
-        sx2KshNrSxJ2NlynKPr4HgECCXi6f5N14Z4cLaGglUV9DzpRVpKiCBFZUDZ2lH1BZSjfRY
-        g4uMTaz25XBw9je7gileZ6N6Ag3wbDepqEl5rKKGyOR3EVP50j2DdhZ1xjqi/q7eMz1O6z
-        f0O9xToRXeGfNGVj/2MR7/jrFKMuj1jXDGWSza8bAO/68jW+qmmV0sxGHigE/w==
+        bh=Ldt2eBdZjUhBa/gsmh/4m1hI9n4EcmmtGa8p/lsAqBI=;
+        b=RnxiO3Ys2tdSFDNKjjdH5udvVrKlGOTJeyIpBgqPuMtStfiXgNUCWjqwuhZrdc0ACfErLD
+        eqkeaCGhWSRA6q9p9u2aaipVW2vYAO/Ochwx4g4Nh0f01/BaHZMbqKzaEFDB08wajk8DYj
+        GQd0Fkd2FOxaQIvHNSNjVGZ+4K8beSiFZdv5b+bVIn/MGSokS/U5IE0b0JwlcCUJyn7EPe
+        bokl1LldS1XlEdToTbLjCLZWftHrVGLbiytoKbBG4gaJOtDGYA3CrHp2tZ9lLohLpwJZ5D
+        9iBgMNGS891X3v50vcESrTa0kF9TcObQkSpy0D2dPmRvC1/dlv2N1jXEJp8qcw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685534689;
+        s=2020e; t=1685534690;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EnXceI711UzJSpm9Tc/LUW38R3dqqmQbiyu3XHe+824=;
-        b=nmQRFUKe+/Ed7WwHBQQ6GgyOxr87CkfCWXEG0OaGFOr1cQkLAeunAlFkD+420y5jNW9QSS
-        SpLRIByHu7qLmwBA==
+        bh=Ldt2eBdZjUhBa/gsmh/4m1hI9n4EcmmtGa8p/lsAqBI=;
+        b=iAKG8byCxOUveQS47vtSgcG7qFYutbrlZdE2bZz8w46mXAahHT/NbvATHRSlwYFt8RE6y6
+        njw7gmJfP77egkBw==
 From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Move unused stub functions to header
+Subject: [tip: sched/core] sched/fair: Hide unused init_cfs_bandwidth() stub
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230522195021.3456768-6-arnd@kernel.org>
-References: <20230522195021.3456768-6-arnd@kernel.org>
+In-Reply-To: <20230522195021.3456768-4-arnd@kernel.org>
+References: <20230522195021.3456768-4-arnd@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168553468874.404.6309078676435197068.tip-bot2@tip-bot2>
+Message-ID: <168553469008.404.7937834671472850266.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,87 +68,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     7aa55f2a5902646a19db89dab9961867724b27b8
-Gitweb:        https://git.kernel.org/tip/7aa55f2a5902646a19db89dab9961867724b27b8
+Commit-ID:     c0bdfd72fbfb7319581bd5bb09b4f10979385bac
+Gitweb:        https://git.kernel.org/tip/c0bdfd72fbfb7319581bd5bb09b4f10979385bac
 Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Mon, 22 May 2023 21:50:21 +02:00
+AuthorDate:    Mon, 22 May 2023 21:50:19 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 30 May 2023 22:46:26 +02:00
+CommitterDate: Tue, 30 May 2023 22:46:25 +02:00
 
-sched/fair: Move unused stub functions to header
+sched/fair: Hide unused init_cfs_bandwidth() stub
 
-These four functions have a normal definition for CONFIG_FAIR_GROUP_SCHED,
-and empty one that is only referenced when FAIR_GROUP_SCHED is disabled
-but CGROUP_SCHED is still enabled. If both are turned off, the functions
-are still defined but the misisng prototype causes a W=1 warning:
+init_cfs_bandwidth() is only used when CONFIG_FAIR_GROUP_SCHED is
+enabled, and without this causes a W=1 warning for the missing prototype:
 
-kernel/sched/fair.c:12544:6: error: no previous prototype for 'free_fair_sched_group'
-kernel/sched/fair.c:12546:5: error: no previous prototype for 'alloc_fair_sched_group'
-kernel/sched/fair.c:12553:6: error: no previous prototype for 'online_fair_sched_group'
-kernel/sched/fair.c:12555:6: error: no previous prototype for 'unregister_fair_sched_group'
+kernel/sched/fair.c:6131:6: error: no previous prototype for 'init_cfs_bandwidth'
 
-Move the alternatives into the header as static inline functions with
-the correct combination of #ifdef checks to avoid the warning without
-adding even more complexity.
+The normal implementation is only defined for CONFIG_CFS_BANDWIDTH,
+so the stub exists when CFS_BANDWIDTH is disabled but FAIR_GROUP_SCHED
+is enabled.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20230522195021.3456768-6-arnd@kernel.org
+Link: https://lore.kernel.org/r/20230522195021.3456768-4-arnd@kernel.org
 ---
- kernel/sched/fair.c  | 6 +++---
- kernel/sched/sched.h | 2 --
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ kernel/sched/fair.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a7a8ccd..48b6f0c 100644
+index 2c1b345..a7a8ccd 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -684,7 +684,7 @@ struct sched_entity *__pick_last_entity(struct cfs_rq *cfs_rq)
- /**************************************************************
-  * Scheduling class statistics methods:
-  */
--#ifdef CONFIG_SMP
-+
- int sched_update_scaling(void)
- {
- 	unsigned int factor = get_update_sysctl_factor();
-@@ -702,7 +702,6 @@ int sched_update_scaling(void)
- 	return 0;
- }
- #endif
--#endif
- 
- /*
-  * delta /= w
-@@ -6169,8 +6168,9 @@ static inline int throttled_lb_pair(struct task_group *tg,
+@@ -6169,9 +6169,8 @@ static inline int throttled_lb_pair(struct task_group *tg,
  	return 0;
  }
  
--#ifdef CONFIG_FAIR_GROUP_SCHED
- void init_cfs_bandwidth(struct cfs_bandwidth *cfs_b) {}
-+
-+#ifdef CONFIG_FAIR_GROUP_SCHED
+-void init_cfs_bandwidth(struct cfs_bandwidth *cfs_b) {}
+-
+ #ifdef CONFIG_FAIR_GROUP_SCHED
++void init_cfs_bandwidth(struct cfs_bandwidth *cfs_b) {}
  static void init_cfs_rq_runtime(struct cfs_rq *cfs_rq) {}
  #endif
  
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index ce07782..6784462 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1245,7 +1245,6 @@ static inline raw_spinlock_t *__rq_lockp(struct rq *rq)
- 
- bool cfs_prio_less(const struct task_struct *a, const struct task_struct *b,
- 			bool fi);
--void task_vruntime_update(struct rq *rq, struct task_struct *p, bool in_fi);
- 
- /*
-  * Helpers to check if the CPU's core cookie matches with the task's cookie
-@@ -2377,7 +2376,6 @@ static inline struct cpuidle_state *idle_get_state(struct rq *rq)
- #endif
- 
- extern void schedule_idle(void);
--asmlinkage void schedule_user(void);
- 
- extern void sysrq_sched_debug_show(void);
- extern void sched_init_granularity(void);
