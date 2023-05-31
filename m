@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6667A7188CA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 May 2023 19:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93DEA718A7C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 May 2023 21:50:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230138AbjEaRtN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 31 May 2023 13:49:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41720 "EHLO
+        id S229787AbjEaTuH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 31 May 2023 15:50:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230251AbjEaRtG (ORCPT
+        with ESMTP id S229603AbjEaTuG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 31 May 2023 13:49:06 -0400
+        Wed, 31 May 2023 15:50:06 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30910135;
-        Wed, 31 May 2023 10:49:04 -0700 (PDT)
-Date:   Wed, 31 May 2023 17:49:01 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF38C180;
+        Wed, 31 May 2023 12:49:54 -0700 (PDT)
+Date:   Wed, 31 May 2023 19:49:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685555342;
+        s=2020; t=1685562593;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oOn6x3AozCBBpfR6dbtaX2BxqOGwH5ggpmXeuAyznSc=;
-        b=R2KchUbkhf1S0kroPiZdGoO9uCLOX7ul7c/81CTBFRuGcFR2BiF74L3EkLOtp+c68tphya
-        pYQUDhoF7J3BhJN2e+SDPTyUAafmpHtmM8wiEShF+eVUtmLUndnp3Di7terfLJI5q7yfcn
-        pZUJRchrcwAdd9BjDvqpbSC88PjQxAL8ytlXia8tePx6wQ2O4pTIj8oXX/5gkVN856QPl9
-        zsalYjP8N8NTIDQ4vHOLeLbzcf4xP8CQl22lHqob8+/C2lRt3XuI1z9/CtZuLmawJVUI64
-        2aY8imgprt0V9t0Fpq9G8ZULNrYZhNFU2wR2/mGVYvj4CK346bhMIFvbaM6MqQ==
+        bh=pElWneLjM7SUDkkkhZokKjsYLWcqMuio7YltlDNyBxk=;
+        b=N73tbZIsp8H/1SE/hjMdSxeEzWFN+vBZUwIb20zrbVx77ywwbAziV5PlDTAMwZGN/QTJiW
+        PT0dsT3a+p9+Vr/MCrEDxo1Y990M4x27g4TVi+cY+FsDzbjPcX5dO2p3tBnN/xdShPxBrG
+        Pj5UPXK6RRcxS+cOIhJ8r3tCOV687ntXMJIMs3V8IjQdtIv1n8QylEaMkUuqbMzOUXsJCq
+        LOM6Q1me5vDlz1IYbvPEtWkKmOUYms7IgMniqNlRcHpsKevXQr09fq7GGcMKBswMSp2msX
+        Vl5X3IVVbipRhNDYBZaUIEaBUzedN+IsPoacvS4YEhSxuI0Mrvk1dS6j8z5I6g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685555342;
+        s=2020e; t=1685562593;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oOn6x3AozCBBpfR6dbtaX2BxqOGwH5ggpmXeuAyznSc=;
-        b=qBReCQcT2ga27hCYuVOH3Zvv9X6n+jAXImNkhiKW8g8syI8gA3e1x2UCHZApuLaOTFHeBm
-        pFfFxJDWy82eQXBw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=pElWneLjM7SUDkkkhZokKjsYLWcqMuio7YltlDNyBxk=;
+        b=DrKQyGjgfPkZqvr/S39XBrV1i3hQm0WUxi7bpzJbXm1aatPkSIOj/fpKFyJEFFlhoi/GRA
+        Vxphd0nKfaP7DSCg==
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] Merge tag 'irqchip-fixes-6.4-2' of
- git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into
- irq/urgent
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20230531160549.433528-1-maz@kernel.org>
-References: <20230531160549.433528-1-maz@kernel.org>
+Subject: [tip: timers/core] vdso/timens: Always provide arch_get_vdso_data()
+ prototype for vdso
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230517131102.934196-15-arnd@kernel.org>
+References: <20230517131102.934196-15-arnd@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168555534175.404.15649510085660741280.tip-bot2@tip-bot2>
+Message-ID: <168556259256.404.5823615515338296247.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,20 +66,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     2d5b205dfa32b5f0f357ebc9db73931d2186391e
-Gitweb:        https://git.kernel.org/tip/2d5b205dfa32b5f0f357ebc9db73931d2186391e
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 31 May 2023 19:42:53 +02:00
+Commit-ID:     b7a7ce1bb77b19ff2859d365da96285340fbc145
+Gitweb:        https://git.kernel.org/tip/b7a7ce1bb77b19ff2859d365da96285340fbc145
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Wed, 17 May 2023 15:11:02 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 31 May 2023 19:42:53 +02:00
+CommitterDate: Wed, 31 May 2023 21:45:49 +02:00
 
-Merge tag 'irqchip-fixes-6.4-2' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/urgent
+vdso/timens: Always provide arch_get_vdso_data() prototype for vdso
 
-Pull an irqchip fix from Marc Zyngier:
+The arch_get_vdso_data() function is defined separately on each architecture,
+but only called when CONFIG_TIME_NS is set. If the definition is a global
+function, this causes a W=1 warning without TIME_NS:
 
- - Fix regression introduced by the Mediatek workaround.
+arch/x86/entry/vdso/vma.c:35:19: error: no previous prototype for 'arch_get_vdso_data' [-Werror=missing-prototypes]
 
-Link: https://lore.kernel.org/lkml/20230531160549.433528-1-maz@kernel.org
+Move the prototype out of the #ifdef block to reliably turn off that
+warning.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230517131102.934196-15-arnd@kernel.org
 ---
+ include/linux/time_namespace.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/time_namespace.h b/include/linux/time_namespace.h
+index bb9d3f5..03d9c5a 100644
+--- a/include/linux/time_namespace.h
++++ b/include/linux/time_namespace.h
+@@ -44,7 +44,6 @@ struct time_namespace *copy_time_ns(unsigned long flags,
+ 				    struct time_namespace *old_ns);
+ void free_time_ns(struct time_namespace *ns);
+ void timens_on_fork(struct nsproxy *nsproxy, struct task_struct *tsk);
+-struct vdso_data *arch_get_vdso_data(void *vvar_page);
+ struct page *find_timens_vvar_page(struct vm_area_struct *vma);
+ 
+ static inline void put_time_ns(struct time_namespace *ns)
+@@ -163,4 +162,6 @@ static inline ktime_t timens_ktime_to_host(clockid_t clockid, ktime_t tim)
+ }
+ #endif
+ 
++struct vdso_data *arch_get_vdso_data(void *vvar_page);
++
+ #endif /* _LINUX_TIMENS_H */
