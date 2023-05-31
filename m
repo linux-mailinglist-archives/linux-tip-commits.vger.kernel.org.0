@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9F0E717F77
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 May 2023 14:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAC1B717F81
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 May 2023 14:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235800AbjEaMEx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 31 May 2023 08:04:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55046 "EHLO
+        id S235827AbjEaME7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 31 May 2023 08:04:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235750AbjEaMEw (ORCPT
+        with ESMTP id S235811AbjEaMEy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 31 May 2023 08:04:52 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C22910E;
-        Wed, 31 May 2023 05:04:51 -0700 (PDT)
-Date:   Wed, 31 May 2023 12:04:49 -0000
+        Wed, 31 May 2023 08:04:54 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1517B10E;
+        Wed, 31 May 2023 05:04:53 -0700 (PDT)
+Date:   Wed, 31 May 2023 12:04:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685534689;
+        s=2020; t=1685534691;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rNwUXukSEl/JgYnsL6fJJ1J4br3SvY99FMxfaCaZ3Cc=;
-        b=ak8GNogfuNVQNKbMkypBkrAkC7i2N5ysg6AERNmOG1xL9bMdPZITw8/jD4uSFZc//0XUDu
-        +nLSrLsx5FCIuxiIh8vt7aAKT13ep21jAsZreTviMSxXRXpHg75T6VhT260Fe+CaWElPjY
-        hrqb8yvJXqgNXpwlNNXl+ZtlUCltNP1Nl1VRYa9+1uuqmAtc8fEBpOuxEhKq9EBFOQR2wD
-        6AA7yU7CS9h0X830qGzwe/bvXc9T684+VxaRupbNPxSWbGsy1muJ6k5TCF9nQIVoZ9yj4V
-        Us9EQYXCaXTvyzpIhQBQ+yGOLxu21n9i/BTPTEG3HhsgwT8FdKwRepSK/Z3X6A==
+        bh=jAHu/ZeCNq2zA/+Hvbn6tZi8UxHRbFPIWy674Hkm38E=;
+        b=VMC5CcQ3Jvl9m9h1W58szK4kJXB2WowZ1bghSlopHsV5Hs6WF/MOsmQODgsmg1JNTXdv+u
+        mUG09EoZ9Yl91d5yZPnId1F4AY59sThwc0OyOqwSdvahVbHEOM7boBJi1GERCOmlElM7Ix
+        YQuygTMB0fzsCe75wge6xdNDnEnYb6OzDWG41COlOg7KtpNFWLQXZIwWhpbkNrvOZgLchP
+        OcMd5Edzl4viEBWgjoeSPiS8yG1uCMDkEADEQcCESxNDs97KE1Mg2DgCxzWw6hgLSfeu/2
+        8AO0hSqxENCYhl4yXXpiInliexz/se8GlUhxfBnZQJ3RkMiE7yxNjsmye+N5Dw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685534689;
+        s=2020e; t=1685534691;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rNwUXukSEl/JgYnsL6fJJ1J4br3SvY99FMxfaCaZ3Cc=;
-        b=2my4tOoarOyW6hz1DKRhNqMOuWC1U6c1qnlS5U59nXT36rJEqEB+OV/JGQySN0xR6/Ow0C
-        K7kkkJpY0m6d2dDQ==
+        bh=jAHu/ZeCNq2zA/+Hvbn6tZi8UxHRbFPIWy674Hkm38E=;
+        b=7itMFfwrSUbIfyZdPqDaFOSYyOpvi73hTyuDwDIRcqj/aAYEQRjwqOnibtro1tP/jgDt5a
+        9ZCQ2y1iL+qOBUAg==
 From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Make task_vruntime_update() prototype visible
+Subject: [tip: sched/core] sched: Hide unused sched_update_scaling()
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230522195021.3456768-5-arnd@kernel.org>
-References: <20230522195021.3456768-5-arnd@kernel.org>
+In-Reply-To: <20230522195021.3456768-2-arnd@kernel.org>
+References: <20230522195021.3456768-2-arnd@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168553468933.404.13669678273109677886.tip-bot2@tip-bot2>
+Message-ID: <168553469099.404.5063205940562431875.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,39 +68,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     f7df852ad6dbb84644e75df7402d9a34f39f31bd
-Gitweb:        https://git.kernel.org/tip/f7df852ad6dbb84644e75df7402d9a34f39f31bd
+Commit-ID:     d55ebae3f3122b07689cc4c34043114e09ce904c
+Gitweb:        https://git.kernel.org/tip/d55ebae3f3122b07689cc4c34043114e09ce904c
 Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Mon, 22 May 2023 21:50:20 +02:00
+AuthorDate:    Mon, 22 May 2023 21:50:17 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 30 May 2023 22:46:26 +02:00
+CommitterDate: Tue, 30 May 2023 22:46:24 +02:00
 
-sched: Make task_vruntime_update() prototype visible
+sched: Hide unused sched_update_scaling()
 
-Having the prototype next to the caller but not visible to the callee causes
-a W=1 warning:
+This function is only used when CONFIG_SMP is enabled, without that there
+is no caller and no prototype:
 
-kernel/sched/fair.c:11985:6: error: no previous prototype for 'task_vruntime_update' [-Werror=missing-prototypes]
+kernel/sched/fair.c:688:5: error: no previous prototype for 'sched_update_scaling' [-Werror=missing-prototypes
 
-Move this to a header, as we do for all other function declarations.
+Hide the definition in the same #ifdef check as the declaration.
 
+Fixes: 8a99b6833c88 ("sched: Move SCHED_DEBUG sysctl to debugfs")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20230522195021.3456768-5-arnd@kernel.org
+Link: https://lore.kernel.org/r/20230522195021.3456768-2-arnd@kernel.org
 ---
- kernel/sched/sched.h | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/fair.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 192e781..ce07782 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1245,6 +1245,7 @@ static inline raw_spinlock_t *__rq_lockp(struct rq *rq)
- 
- bool cfs_prio_less(const struct task_struct *a, const struct task_struct *b,
- 			bool fi);
-+void task_vruntime_update(struct rq *rq, struct task_struct *p, bool in_fi);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 48b6f0c..2c1b345 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -684,7 +684,7 @@ struct sched_entity *__pick_last_entity(struct cfs_rq *cfs_rq)
+ /**************************************************************
+  * Scheduling class statistics methods:
+  */
+-
++#ifdef CONFIG_SMP
+ int sched_update_scaling(void)
+ {
+ 	unsigned int factor = get_update_sysctl_factor();
+@@ -702,6 +702,7 @@ int sched_update_scaling(void)
+ 	return 0;
+ }
+ #endif
++#endif
  
  /*
-  * Helpers to check if the CPU's core cookie matches with the task's cookie
+  * delta /= w
