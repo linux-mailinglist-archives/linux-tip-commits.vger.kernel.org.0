@@ -2,50 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EA30718E37
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Jun 2023 00:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE87F718E45
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Jun 2023 00:15:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230486AbjEaWOO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 31 May 2023 18:14:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37410 "EHLO
+        id S231297AbjEaWOu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 31 May 2023 18:14:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230503AbjEaWON (ORCPT
+        with ESMTP id S231160AbjEaWOe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 31 May 2023 18:14:13 -0400
+        Wed, 31 May 2023 18:14:34 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2189C19F;
-        Wed, 31 May 2023 15:13:52 -0700 (PDT)
-Date:   Wed, 31 May 2023 22:13:37 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD97125;
+        Wed, 31 May 2023 15:14:13 -0700 (PDT)
+Date:   Wed, 31 May 2023 22:13:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685571217;
+        s=2020; t=1685571218;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Idql9wYvayKlckV//P3YAjharrUUnA7q9DOtYjFM6JU=;
-        b=gR3/ozlug71f8BWfJinh5G6JzawN+9PzXRf5WlymIk2wzgZiiayI7La0K5gdF11yDeNDVj
-        nB3utUv/yB40crtr2X6cPjOtWruuBDt1gk/qymp93gz2OneYz8Q+OhCs9n6NVgyY5xkJDA
-        gqmsNbQHP1Y62WliAwcMYkO4MNJn8F9oYXm9sKZHI2sLA4heKrZkUyv/kIV+lA3G+RQoCV
-        g7tVUrtZnL9m7zZaVA31tCnkbmlnPhCvpDHBB4EREgj1UHe0YCLIgXeVn3VdeMaNvxrmCJ
-        k9pyXnKwW4V9PhFszheUNLyV/88pDn2Xno5MxX50MYbHxP56j6kp1TZ0xK93oQ==
+        bh=Dfl+bzG7o/eFPC1aATqO2T6EL2+L+fj78OJOHP/rVCo=;
+        b=ZXHUw++WVAZX5OczPrYoXGhvs7T3Jk2dK+hoMbGkXHd7vxIsIMI8YfcMSSu8mBfGD1D9mv
+        zi8A4OHadE/wI0K7BiRVMMwTndW4Dwoa55nEiZVha0iCeXYAJII0wJAlzjGB0teuPlBB4U
+        EF6zMw2hJ4fw0A+NpWxEIjgXeDSdh6PM6iiScVVOpG6FSlcdO8NZD58hRrSRFA3tciLPV+
+        fPxvD9WAh9tBkE7VOQgpbyyhg1IXcShNpiiP0ZwVdoiQMdqq7cd3l+jGDR3ykK5og++9Uu
+        UGKm/Y4A/ffW+QyaPrZPs2z2W7qDLIvUqsvjnwQac2ESAzzdHNC03Vo0mZYzjg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685571217;
+        s=2020e; t=1685571218;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Idql9wYvayKlckV//P3YAjharrUUnA7q9DOtYjFM6JU=;
-        b=ZrRdBFDiF9mhpyRTVqiq/Tpv4YKyTwT+MaauI6BJbRoQzVo3yAV6M+OrF45nPv2Pz6TuH3
-        ARxAEnnPkQImP+DQ==
+        bh=Dfl+bzG7o/eFPC1aATqO2T6EL2+L+fj78OJOHP/rVCo=;
+        b=tjjEGn1l83E70fnFPETZH17fA3/vJMHaxmZWFnkMuy9XavpVvOV34GEf6sa4oHAIi748qf
+        6yTT1f0phCzSEqBQ==
 From:   "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Helper functions for allocating
- and freeing conversion tables
+Subject: [tip: x86/platform] x86/platform/uv: Fix printed information in
+ calc_mmioh_map
 Cc:     Steve Wahl <steve.wahl@hpe.com>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <168557121713.404.15918712839713361105.tip-bot2@tip-bot2>
+Message-ID: <168557121818.404.10436980757207022007.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,162 +62,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     45e9f9a99529a54a7ed195eea4aad102b9eadb23
-Gitweb:        https://git.kernel.org/tip/45e9f9a99529a54a7ed195eea4aad102b9eadb23
+Commit-ID:     e4860f03779cadff011a7a8685c7157ebc133bda
+Gitweb:        https://git.kernel.org/tip/e4860f03779cadff011a7a8685c7157ebc133bda
 Author:        Steve Wahl <steve.wahl@hpe.com>
-AuthorDate:    Fri, 19 May 2023 14:07:49 -05:00
+AuthorDate:    Fri, 19 May 2023 14:07:47 -05:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Wed, 31 May 2023 09:34:59 -07:00
 
-x86/platform/uv: Helper functions for allocating and freeing conversion tables
+x86/platform/uv: Fix printed information in calc_mmioh_map
 
-Add alloc_conv_table() and FREE_1_TO_1_TABLE() to reduce duplicated
-code among the conversion tables we use.
+Fix incorrect mask names and values in calc_mmioh_map() that caused it
+to print wrong NASID information. And an unused blade position is not
+an error condition, but will yield an invalid NASID value, so change
+the invalid NASID message from an error to a debug message.
 
 Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20230519190752.3297140-6-steve.wahl%40hpe.com
+Link: https://lore.kernel.org/all/20230519190752.3297140-4-steve.wahl%40hpe.com
 ---
- arch/x86/kernel/apic/x2apic_uv_x.c | 97 +++++++++++++++--------------
- 1 file changed, 53 insertions(+), 44 deletions(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 2da84be..1bd15b1 100644
+index 4828552..6d2739e 100644
 --- a/arch/x86/kernel/apic/x2apic_uv_x.c
 +++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -1491,16 +1491,50 @@ static __init void boot_init_possible_blades(struct uv_hub_info_s *hub_info)
- 	pr_info("UV: number nodes/possible blades %d\n", uv_pb);
- }
+@@ -1022,7 +1022,7 @@ static void __init calc_mmioh_map(enum mmioh_arch index,
+ 	switch (index) {
+ 	case UVY_MMIOH0:
+ 		mmr = UVH_RH10_GAM_MMIOH_REDIRECT_CONFIG0;
+-		nasid_mask = UVH_RH10_GAM_MMIOH_OVERLAY_CONFIG0_BASE_MASK;
++		nasid_mask = UVYH_RH10_GAM_MMIOH_REDIRECT_CONFIG0_NASID_MASK;
+ 		n = UVH_RH10_GAM_MMIOH_REDIRECT_CONFIG0_DEPTH;
+ 		min_nasid = min_pnode;
+ 		max_nasid = max_pnode;
+@@ -1030,7 +1030,7 @@ static void __init calc_mmioh_map(enum mmioh_arch index,
+ 		break;
+ 	case UVY_MMIOH1:
+ 		mmr = UVH_RH10_GAM_MMIOH_REDIRECT_CONFIG1;
+-		nasid_mask = UVH_RH10_GAM_MMIOH_OVERLAY_CONFIG1_BASE_MASK;
++		nasid_mask = UVYH_RH10_GAM_MMIOH_REDIRECT_CONFIG1_NASID_MASK;
+ 		n = UVH_RH10_GAM_MMIOH_REDIRECT_CONFIG1_DEPTH;
+ 		min_nasid = min_pnode;
+ 		max_nasid = max_pnode;
+@@ -1038,7 +1038,7 @@ static void __init calc_mmioh_map(enum mmioh_arch index,
+ 		break;
+ 	case UVX_MMIOH0:
+ 		mmr = UVH_RH_GAM_MMIOH_REDIRECT_CONFIG0;
+-		nasid_mask = UVH_RH_GAM_MMIOH_OVERLAY_CONFIG0_BASE_MASK;
++		nasid_mask = UVH_RH_GAM_MMIOH_REDIRECT_CONFIG0_NASID_MASK;
+ 		n = UVH_RH_GAM_MMIOH_REDIRECT_CONFIG0_DEPTH;
+ 		min_nasid = min_pnode * 2;
+ 		max_nasid = max_pnode * 2;
+@@ -1046,7 +1046,7 @@ static void __init calc_mmioh_map(enum mmioh_arch index,
+ 		break;
+ 	case UVX_MMIOH1:
+ 		mmr = UVH_RH_GAM_MMIOH_REDIRECT_CONFIG1;
+-		nasid_mask = UVH_RH_GAM_MMIOH_OVERLAY_CONFIG1_BASE_MASK;
++		nasid_mask = UVH_RH_GAM_MMIOH_REDIRECT_CONFIG1_NASID_MASK;
+ 		n = UVH_RH_GAM_MMIOH_REDIRECT_CONFIG1_DEPTH;
+ 		min_nasid = min_pnode * 2;
+ 		max_nasid = max_pnode * 2;
+@@ -1072,8 +1072,9 @@ static void __init calc_mmioh_map(enum mmioh_arch index,
  
-+static int __init alloc_conv_table(int num_elem, unsigned short **table)
-+{
-+	int i;
-+	size_t bytes;
-+
-+	bytes = num_elem * sizeof(*table[0]);
-+	*table = kmalloc(bytes, GFP_KERNEL);
-+	if (WARN_ON_ONCE(!*table))
-+		return -ENOMEM;
-+	for (i = 0; i < num_elem; i++)
-+		((unsigned short *)*table)[i] = SOCK_EMPTY;
-+	return 0;
-+}
-+
-+/* Remove conversion table if it's 1:1 */
-+#define FREE_1_TO_1_TABLE(tbl, min, max, max2) free_1_to_1_table(&tbl, #tbl, min, max, max2)
-+
-+static void __init free_1_to_1_table(unsigned short **tp, char *tname, int min, int max, int max2)
-+{
-+	int i;
-+	unsigned short *table = *tp;
-+
-+	if (table == NULL)
-+		return;
-+	if (max != max2)
-+		return;
-+	for (i = 0; i < max; i++) {
-+		if (i != table[i])
-+			return;
-+	}
-+	kfree(table);
-+	*tp = NULL;
-+	pr_info("UV: %s is 1:1, conversion table removed\n", tname);
-+}
-+
- static void __init build_socket_tables(void)
- {
- 	struct uv_gam_range_entry *gre = uv_gre_table;
--	int num, nump;
-+	int nums, numn, nump;
- 	int cpu, i, lnid;
- 	int minsock = _min_socket;
- 	int maxsock = _max_socket;
- 	int minpnode = _min_pnode;
- 	int maxpnode = _max_pnode;
--	size_t bytes;
+ 		/* Invalid NASID check */
+ 		if (nasid < min_nasid || max_nasid < nasid) {
+-			pr_err("UV:%s:Invalid NASID:%x (range:%x..%x)\n",
+-				__func__, index, min_nasid, max_nasid);
++			/* Not an error: unused table entries get "poison" values */
++			pr_debug("UV:%s:Invalid NASID(%x):%x (range:%x..%x)\n",
++			       __func__, index, nasid, min_nasid, max_nasid);
+ 			nasid = -1;
+ 		}
  
- 	if (!gre) {
- 		if (is_uv2_hub() || is_uv3_hub()) {
-@@ -1511,22 +1545,20 @@ static void __init build_socket_tables(void)
- 		BUG();
- 	}
- 
--	/* Build socket id -> node id, pnode */
--	num = maxsock - minsock + 1;
--	bytes = num * sizeof(_socket_to_node[0]);
--	_socket_to_node = kmalloc(bytes, GFP_KERNEL);
--	_socket_to_pnode = kmalloc(bytes, GFP_KERNEL);
--
-+	numn = num_possible_nodes();
- 	nump = maxpnode - minpnode + 1;
--	bytes = nump * sizeof(_pnode_to_socket[0]);
--	_pnode_to_socket = kmalloc(bytes, GFP_KERNEL);
--	BUG_ON(!_socket_to_node || !_socket_to_pnode || !_pnode_to_socket);
--
--	for (i = 0; i < num; i++)
--		_socket_to_node[i] = _socket_to_pnode[i] = SOCK_EMPTY;
--
--	for (i = 0; i < nump; i++)
--		_pnode_to_socket[i] = SOCK_EMPTY;
-+	nums = maxsock - minsock + 1;
-+
-+	/* Allocate and clear tables */
-+	if ((alloc_conv_table(nump, &_pnode_to_socket) < 0)
-+	    || (alloc_conv_table(nums, &_socket_to_pnode) < 0)
-+	    || (alloc_conv_table(numn, &_node_to_pnode) < 0)
-+	    || (alloc_conv_table(nums, &_socket_to_node) < 0)) {
-+		kfree(_pnode_to_socket);
-+		kfree(_socket_to_pnode);
-+		kfree(_node_to_pnode);
-+		return;
-+	}
- 
- 	/* Fill in pnode/node/addr conversion list values: */
- 	pr_info("UV: GAM Building socket/pnode conversion tables\n");
-@@ -1565,10 +1597,6 @@ static void __init build_socket_tables(void)
- 	}
- 
- 	/* Set up physical blade to pnode translation from GAM Range Table: */
--	bytes = num_possible_nodes() * sizeof(_node_to_pnode[0]);
--	_node_to_pnode = kmalloc(bytes, GFP_KERNEL);
--	BUG_ON(!_node_to_pnode);
--
- 	for (lnid = 0; lnid < num_possible_nodes(); lnid++) {
- 		unsigned short sockid;
- 
-@@ -1585,31 +1613,12 @@ static void __init build_socket_tables(void)
- 	}
- 
- 	/*
--	 * If socket id == pnode or socket id == node for all nodes,
-+	 * If e.g. socket id == pnode for all pnodes,
- 	 *   system runs faster by removing corresponding conversion table.
- 	 */
--	pr_info("UV: Checking socket->node/pnode for identity maps\n");
--	if (minsock == 0) {
--		for (i = 0; i < num; i++)
--			if (_socket_to_node[i] == SOCK_EMPTY || i != _socket_to_node[i])
--				break;
--		if (i >= num) {
--			kfree(_socket_to_node);
--			_socket_to_node = NULL;
--			pr_info("UV: 1:1 socket_to_node table removed\n");
--		}
--	}
--	if (minsock == minpnode) {
--		for (i = 0; i < num; i++)
--			if (_socket_to_pnode[i] != SOCK_EMPTY &&
--				_socket_to_pnode[i] != i + minpnode)
--				break;
--		if (i >= num) {
--			kfree(_socket_to_pnode);
--			_socket_to_pnode = NULL;
--			pr_info("UV: 1:1 socket_to_pnode table removed\n");
--		}
--	}
-+	FREE_1_TO_1_TABLE(_socket_to_node, _min_socket, nums, numn);
-+	FREE_1_TO_1_TABLE(_socket_to_pnode, _min_pnode, nums, nump);
-+	FREE_1_TO_1_TABLE(_pnode_to_socket, _min_pnode, nums, nump);
- }
- 
- /* Check which reboot to use */
