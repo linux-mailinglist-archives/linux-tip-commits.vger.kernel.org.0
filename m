@@ -2,56 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93DEA718A7C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 May 2023 21:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50D9F718E35
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Jun 2023 00:14:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229787AbjEaTuH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 31 May 2023 15:50:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35760 "EHLO
+        id S230488AbjEaWON (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 31 May 2023 18:14:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229603AbjEaTuG (ORCPT
+        with ESMTP id S229648AbjEaWOL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 31 May 2023 15:50:06 -0400
+        Wed, 31 May 2023 18:14:11 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF38C180;
-        Wed, 31 May 2023 12:49:54 -0700 (PDT)
-Date:   Wed, 31 May 2023 19:49:52 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EDBDE5A;
+        Wed, 31 May 2023 15:13:50 -0700 (PDT)
+Date:   Wed, 31 May 2023 22:13:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685562593;
+        s=2020; t=1685571215;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pElWneLjM7SUDkkkhZokKjsYLWcqMuio7YltlDNyBxk=;
-        b=N73tbZIsp8H/1SE/hjMdSxeEzWFN+vBZUwIb20zrbVx77ywwbAziV5PlDTAMwZGN/QTJiW
-        PT0dsT3a+p9+Vr/MCrEDxo1Y990M4x27g4TVi+cY+FsDzbjPcX5dO2p3tBnN/xdShPxBrG
-        Pj5UPXK6RRcxS+cOIhJ8r3tCOV687ntXMJIMs3V8IjQdtIv1n8QylEaMkUuqbMzOUXsJCq
-        LOM6Q1me5vDlz1IYbvPEtWkKmOUYms7IgMniqNlRcHpsKevXQr09fq7GGcMKBswMSp2msX
-        Vl5X3IVVbipRhNDYBZaUIEaBUzedN+IsPoacvS4YEhSxuI0Mrvk1dS6j8z5I6g==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=9gPpVY6uFe9zQYYB935R56xd8npqMVa5jD3LWmJEDr4=;
+        b=OGoVl+dTMoYp60F1IcVSmgU8xNfjrNzyDIBtvgGs61diPKm0eOwLl6MmdaKTHjZHmWjWlq
+        lp5pvp8bUmnduy6ik80zz0eHL/Huuluewy4vs1d2ID6IBiNwacR9wRkemUVT6z6mxEco/z
+        BHukA3Y4Kr5Yq9Isk2++Wh3UFnYUgIH3xeo8oXmtSFHEubiLSE4fo+DxlyLdxZTmFgrgpR
+        MmJzsX78Kf0tzbi75z2IL39EFlok1t2lxDg8cvAxUHTGtpWlU5Aq7IdYoytqydhWn9AV9q
+        ugaylbioImkQLZbJBy6QIQ43hqRdQcnqlr5dbQ7fZEJtYirSJ751kGc/YMSs+Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685562593;
+        s=2020e; t=1685571215;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pElWneLjM7SUDkkkhZokKjsYLWcqMuio7YltlDNyBxk=;
-        b=DrKQyGjgfPkZqvr/S39XBrV1i3hQm0WUxi7bpzJbXm1aatPkSIOj/fpKFyJEFFlhoi/GRA
-        Vxphd0nKfaP7DSCg==
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=9gPpVY6uFe9zQYYB935R56xd8npqMVa5jD3LWmJEDr4=;
+        b=iXi59UlvWmCp4u0PcHc7APUV9lJuLgPUA/DE/fzZ3IPnPsF3GhzsPfXC/UhkvO10BrTelp
+        9QSu4cH+O6Yr9KDQ==
+From:   "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] vdso/timens: Always provide arch_get_vdso_data()
- prototype for vdso
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/platform] x86/platform/uv: Update UV[23] platform code for SNC
+Cc:     Steve Wahl <steve.wahl@hpe.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230517131102.934196-15-arnd@kernel.org>
-References: <20230517131102.934196-15-arnd@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168556259256.404.5823615515338296247.tip-bot2@tip-bot2>
+Message-ID: <168557121408.404.10546775442593930020.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,49 +59,103 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     b7a7ce1bb77b19ff2859d365da96285340fbc145
-Gitweb:        https://git.kernel.org/tip/b7a7ce1bb77b19ff2859d365da96285340fbc145
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Wed, 17 May 2023 15:11:02 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 31 May 2023 21:45:49 +02:00
+Commit-ID:     73b3108dfd9d53ea565c0777a27007c1c621467d
+Gitweb:        https://git.kernel.org/tip/73b3108dfd9d53ea565c0777a27007c1c621467d
+Author:        Steve Wahl <steve.wahl@hpe.com>
+AuthorDate:    Fri, 19 May 2023 14:07:52 -05:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Wed, 31 May 2023 09:35:00 -07:00
 
-vdso/timens: Always provide arch_get_vdso_data() prototype for vdso
+x86/platform/uv: Update UV[23] platform code for SNC
 
-The arch_get_vdso_data() function is defined separately on each architecture,
-but only called when CONFIG_TIME_NS is set. If the definition is a global
-function, this causes a W=1 warning without TIME_NS:
+Previous Sub-NUMA Clustering changes need not just a count of blades
+present, but a count that includes any missing ids for blades not
+present; in other words, the range from lowest to highest blade id.
 
-arch/x86/entry/vdso/vma.c:35:19: error: no previous prototype for 'arch_get_vdso_data' [-Werror=missing-prototypes]
-
-Move the prototype out of the #ifdef block to reliably turn off that
-warning.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230517131102.934196-15-arnd@kernel.org
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20230519190752.3297140-9-steve.wahl%40hpe.com
 ---
- include/linux/time_namespace.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 42 ++++++++++++++++++++++++++---
+ 1 file changed, 38 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/time_namespace.h b/include/linux/time_namespace.h
-index bb9d3f5..03d9c5a 100644
---- a/include/linux/time_namespace.h
-+++ b/include/linux/time_namespace.h
-@@ -44,7 +44,6 @@ struct time_namespace *copy_time_ns(unsigned long flags,
- 				    struct time_namespace *old_ns);
- void free_time_ns(struct time_namespace *ns);
- void timens_on_fork(struct nsproxy *nsproxy, struct task_struct *tsk);
--struct vdso_data *arch_get_vdso_data(void *vvar_page);
- struct page *find_timens_vvar_page(struct vm_area_struct *vma);
- 
- static inline void put_time_ns(struct time_namespace *ns)
-@@ -163,4 +162,6 @@ static inline ktime_t timens_ktime_to_host(clockid_t clockid, ktime_t tim)
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index 1836330..d9384d5 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -1462,11 +1462,37 @@ static int __init decode_uv_systab(void)
+ 	return 0;
  }
- #endif
  
-+struct vdso_data *arch_get_vdso_data(void *vvar_page);
++/*
++ * Given a bitmask 'bits' representing presnt blades, numbered
++ * starting at 'base', masking off unused high bits of blade number
++ * with 'mask', update the minimum and maximum blade numbers that we
++ * have found.  (Masking with 'mask' necessary because of BIOS
++ * treatment of system partitioning when creating this table we are
++ * interpreting.)
++ */
++static inline void blade_update_min_max(unsigned long bits, int base, int mask, int *min, int *max)
++{
++	int first, last;
 +
- #endif /* _LINUX_TIMENS_H */
++	if (!bits)
++		return;
++	first = (base + __ffs(bits)) & mask;
++	last =  (base + __fls(bits)) & mask;
++
++	if (*min > first)
++		*min = first;
++	if (*max < last)
++		*max = last;
++}
++
+ /* Set up physical blade translations from UVH_NODE_PRESENT_TABLE */
+ static __init void boot_init_possible_blades(struct uv_hub_info_s *hub_info)
+ {
+ 	unsigned long np;
+ 	int i, uv_pb = 0;
++	int sock_min = INT_MAX, sock_max = -1, s_mask;
++
++	s_mask = (1 << uv_cpuid.n_skt) - 1;
+ 
+ 	if (UVH_NODE_PRESENT_TABLE) {
+ 		pr_info("UV: NODE_PRESENT_DEPTH = %d\n",
+@@ -1474,23 +1500,31 @@ static __init void boot_init_possible_blades(struct uv_hub_info_s *hub_info)
+ 		for (i = 0; i < UVH_NODE_PRESENT_TABLE_DEPTH; i++) {
+ 			np = uv_read_local_mmr(UVH_NODE_PRESENT_TABLE + i * 8);
+ 			pr_info("UV: NODE_PRESENT(%d) = 0x%016lx\n", i, np);
+-			uv_pb += hweight64(np);
++			blade_update_min_max(np, i * 64, s_mask, &sock_min, &sock_max);
+ 		}
+ 	}
+ 	if (UVH_NODE_PRESENT_0) {
+ 		np = uv_read_local_mmr(UVH_NODE_PRESENT_0);
+ 		pr_info("UV: NODE_PRESENT_0 = 0x%016lx\n", np);
+-		uv_pb += hweight64(np);
++		blade_update_min_max(np, 0, s_mask, &sock_min, &sock_max);
+ 	}
+ 	if (UVH_NODE_PRESENT_1) {
+ 		np = uv_read_local_mmr(UVH_NODE_PRESENT_1);
+ 		pr_info("UV: NODE_PRESENT_1 = 0x%016lx\n", np);
+-		uv_pb += hweight64(np);
++		blade_update_min_max(np, 64, s_mask, &sock_min, &sock_max);
++	}
++
++	/* Only update if we actually found some bits indicating blades present */
++	if (sock_max >= sock_min) {
++		_min_socket = sock_min;
++		_max_socket = sock_max;
++		uv_pb = sock_max - sock_min + 1;
+ 	}
+ 	if (uv_possible_blades != uv_pb)
+ 		uv_possible_blades = uv_pb;
+ 
+-	pr_info("UV: number nodes/possible blades %d\n", uv_pb);
++	pr_info("UV: number nodes/possible blades %d (%d - %d)\n",
++		uv_pb, sock_min, sock_max);
+ }
+ 
+ static int __init alloc_conv_table(int num_elem, unsigned short **table)
