@@ -2,48 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3538871A0CC
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Jun 2023 16:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D510171A0F4
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Jun 2023 16:51:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234350AbjFAOrQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 1 Jun 2023 10:47:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32800 "EHLO
+        id S233814AbjFAOvW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 1 Jun 2023 10:51:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234041AbjFAOrO (ORCPT
+        with ESMTP id S233476AbjFAOvW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 1 Jun 2023 10:47:14 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E94E2E7;
-        Thu,  1 Jun 2023 07:47:11 -0700 (PDT)
+        Thu, 1 Jun 2023 10:51:22 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C12C0;
+        Thu,  1 Jun 2023 07:51:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=ZYEXK8/Tilwt+GKS21Lw8IVncikUgCMWDnG3N7IZ52A=; b=ZodfAQROT8IbcsBfMZ/WoWQPhI
-        X+50z2rjZ2lSQnewrN80mLaPbZRoj/PGTWlo/iLasb0fh+zSCHxallvKNBUyMoSWYbQzTU2Uf99i9
-        /upu87ASZxCujQYrqy1kKPEVb6iCVZu3nGUe+TH1ysebkcWo3aVtA2A9GWBeKKV0j+RM48aI+fXbc
-        9EEqTI+AP04j5a47n3IOdWSt4K29Y0K2qWzoEzlhwgx6qo5u6OwO5Sks8tC9LyAsHWZVxszn1fbCy
-        GdXwp5rGNY8yvXyUdbXDXSM1ARlb7vm3qt9POUYHg0/iExeR9+DT28Hvq0g6xYtSaFmoX2bAg+Nn4
-        R5RU0YdA==;
+        bh=1JQ8H5SWLeF9hOjl0b6jkGrksawhL5bRI40mRJFX8jI=; b=AQipA1TAR5OQm4luUa3IrhuR+Q
+        FgALeD2E/Nc+RT2aOlQFunr2BdKZkbGkQ7Q+nDWwOFxAJWAaWXg/8NU6mvJng/EZ1Fc+rMaF9yq3N
+        dNO6Kh1F4gAbUz3hz/m/xU129pQ12UMkZbg8sAcvVmzn+P9/B7xN7QLozGANCPwRAmnweqK4Vonnd
+        d1oNWX0fJDB3PbN7wHOov41U6yqHvMD/hEE78WiE0T2vIXe6rfTKY51/wUJGVaHCggdJWLyL7aavQ
+        iIQmdoxx1BNYf+EoXMQ705PGwT0Hwzjg0c7j5eAX1xi0QymrQD/YJ3CfXFsmi/6MzM9RthImW4J5B
+        g6i9DJtA==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1q4ja0-008SNV-2z; Thu, 01 Jun 2023 14:47:08 +0000
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1q4jdz-00HB7j-0r;
+        Thu, 01 Jun 2023 14:51:15 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D30D730031F;
-        Thu,  1 Jun 2023 16:47:06 +0200 (CEST)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id ED838300269;
+        Thu,  1 Jun 2023 16:51:13 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id BC362202BDCAC; Thu,  1 Jun 2023 16:47:06 +0200 (CEST)
-Date:   Thu, 1 Jun 2023 16:47:06 +0200
+        id CFD43202BDCAC; Thu,  1 Jun 2023 16:51:13 +0200 (CEST)
+Date:   Thu, 1 Jun 2023 16:51:13 +0200
 From:   Peter Zijlstra <peterz@infradead.org>
 To:     K Prateek Nayak <kprateek.nayak@amd.com>
 Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
         Tejun Heo <tj@kernel.org>, x86@kernel.org,
         Gautham Shenoy <gautham.shenoy@amd.com>
 Subject: Re: [tip: sched/core] sched/fair: Multi-LLC select_idle_sibling()
-Message-ID: <20230601144706.GA559454@hirez.programming.kicks-ass.net>
+Message-ID: <20230601145113.GA559993@hirez.programming.kicks-ass.net>
 References: <168553468754.404.2298362895524875073.tip-bot2@tip-bot2>
  <3de5c24f-6437-f21b-ed61-76b86a199e8c@amd.com>
  <20230601111326.GV4253@hirez.programming.kicks-ass.net>
@@ -101,16 +102,7 @@ On Thu, Jun 01, 2023 at 02:00:01PM +0200, Peter Zijlstra wrote:
 > I can't seem to find pretty pictures for Zen4 Epyc; what does that want?
 > That's even bigger at 96/8=12 LLCs afaict.
 
-One way to fix all this would be by having arch/x86/kernel/smpboot.c set
-an AMD specific set_sched_topology() that has a CCD domain above the MC
-and below the DIE domain that groups 'near' CCDs together based on some
-AMD specific topology information.
+Going by random pictures on the interweb again, it looks like this Zen4
+thing wants either 2 groups of 6 each, or 4 groups of 3.
 
-Then for small systems that will probably be just a single CCD domain
-and the degenerate code will make it go away, but for these large
-systems it will do what is right for their respective configuration.
-
-Then, since this new multi-llc code uses MC->parent it will end up on
-the fancy new CCD domain and not scan the *entire* socket.
-
-Hmm?
+But you have the hardware, so I'll let you figure it out.
