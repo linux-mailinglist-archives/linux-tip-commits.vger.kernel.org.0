@@ -2,64 +2,63 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3EB5720052
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Jun 2023 13:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4F717209BB
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Jun 2023 21:22:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234942AbjFBLX4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 2 Jun 2023 07:23:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56440 "EHLO
+        id S237102AbjFBTWU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Jun 2023 15:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234865AbjFBLX4 (ORCPT
+        with ESMTP id S237200AbjFBTWT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 2 Jun 2023 07:23:56 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E839919B;
-        Fri,  2 Jun 2023 04:23:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=CW5FFS/sfC8BHeiLTKhUb9W7eHeglZWQrHMkx8btbA8=; b=OU/j2ooPhXxxOw3rjviWIUTvdj
-        8R1/ULne0Ku4w2Wh2VrqMchcHZpojiBD7WG442NEIG8mL4zgsiT9wHAH02BRt2xkCup9btESHDX0N
-        rpG+5Tsn5vj/Q0dW2pxNRpA8h0rgUY62GCYoVK9np7sJb1TVoU1/Z44BdWKz6U5b/Pfbazw34m2Sh
-        ifZ2pa98+9oF/LFtPv97wEV+nbTYgZfC6oKHCTCBQP2rboTBif8iV2GTIy9++j4fVOGXcACUEOaCx
-        3npYpmNO8rrfUdAMeEDdEp4Oj4ms2AJYcZofQTHWjiv285m1dLSpHJddkvCxCbfEQk3lUTqfkADy+
-        PEiCPeAw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1q52sl-001JSl-2G;
-        Fri, 02 Jun 2023 11:23:47 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 4CC2930031F;
-        Fri,  2 Jun 2023 13:23:47 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 348BB243B0938; Fri,  2 Jun 2023 13:23:47 +0200 (CEST)
-Date:   Fri, 2 Jun 2023 13:23:47 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Gautham R. Shenoy" <gautham.shenoy@amd.com>
-Cc:     K Prateek Nayak <kprateek.nayak@amd.com>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Tejun Heo <tj@kernel.org>, x86@kernel.org
-Subject: Re: [tip: sched/core] sched/fair: Multi-LLC select_idle_sibling()
-Message-ID: <20230602112347.GF620383@hirez.programming.kicks-ass.net>
-References: <168553468754.404.2298362895524875073.tip-bot2@tip-bot2>
- <3de5c24f-6437-f21b-ed61-76b86a199e8c@amd.com>
- <20230601111326.GV4253@hirez.programming.kicks-ass.net>
- <20230601115643.GX4253@hirez.programming.kicks-ass.net>
- <20230601120001.GJ38236@hirez.programming.kicks-ass.net>
- <20230601145113.GA559993@hirez.programming.kicks-ass.net>
- <a78b5df0-2374-29bf-f948-3054f1e7e46c@amd.com>
- <ZHmxHWbkQWvcq+bZ@BLR-5CG11610CF.amd.com>
+        Fri, 2 Jun 2023 15:22:19 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B093D1BC;
+        Fri,  2 Jun 2023 12:22:08 -0700 (PDT)
+Date:   Fri, 02 Jun 2023 19:22:06 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1685733726;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ThsPPSvvi0NQuDbE3V2XkRsox2z+4m2CiOPtkRH1F7w=;
+        b=PyxJvpgrfSc+7RQ+v9un/vJOraVQL5Wj49KBWiagvT+LfqxbJCKpbd4QEKI6pBa0S3RgGI
+        1B1WRV3TkdlDkBaMhKczjBQbHBI1WXrXUF6bDc2sU/oAUsKKXjJWUK49gXCP1ChFyzwbMd
+        bWse7C3qA6jzIdgb35OAzsredZqRA81IVHH1t815UloN4JIdIKSVc4Bgtq+3xnvBaoZlOn
+        PkqYULmLDAAQ23lYlMXzazRTYx8PawTBXiot6huh6XnHFm6ox8RyFHAJAMa0bEyOB2tuB/
+        oM6Ut59fdaiLQNuYkEjU+d7HQtLll8mk3zjzGzxnbGIrwkGqxh/6dTOljAXg6Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1685733726;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ThsPPSvvi0NQuDbE3V2XkRsox2z+4m2CiOPtkRH1F7w=;
+        b=qAqjZDruE0UXn2lqVEHDwTiOWV1JwVjiiFfhCY4jUA5FACpr/k7F0snb+GuWf7Cy/8obty
+        2guLfndcUNMSg8DQ==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: objtool/core] objtool: Add __kunit_abort() to noreturns
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230602175453.swsn3ehyochtwkhy@treble>
+References: <20230602175453.swsn3ehyochtwkhy@treble>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZHmxHWbkQWvcq+bZ@BLR-5CG11610CF.amd.com>
+Message-ID: <168573372607.404.6955816775416345418.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,52 +66,41 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Jun 02, 2023 at 02:36:37PM +0530, Gautham R. Shenoy wrote:
+The following commit has been merged into the objtool/core branch of tip:
 
-> Yes, this is what the topology looks like
-> 
-> |---------------------------------------------------------------------------------| 
-> |                                                                                 |
-> |   ----------- ----------- -----------     ----------- ----------- -----------   |
-> |   |(0-7)    | |(8-15)   | |(16-23)  |     |(48-55)  | |(56-63)  | |(64-71)  |   |
-> |   | LLC0    | | LLC1    | | LLC2    |     | LLC6    | | LLC7    | | LLC8    |   |
-> |   |(96-103) | |(104-111)| |(112-119)|     |(144-151)| |(152-159)| |(160-167)|   |
-> |   ----------- ----------- -----------     ----------- ----------- -----------   |
-> |                                                                                 |
-> |                                                                                 |
-> |   ----------- ----------- -----------     ----------- ----------- -----------   |
-> |   |(24-31)  | |(32-39)  | |(40-47)  |     |(72-79)  | |(80-87)  | |(88-95)  |   |
-> |   | LLC3    | | LLC4    | | LLC5    |     | LLC9    | | LLC10   | | LLC11   |   |
-> |   |(120-127)| |(128-135)| |(136-143)|     |(168-175)| |(176-183)| |(184-191)|   |
-> |   ----------- ----------- -----------     ----------- ----------- -----------   |
-> |                                                                                 |
-> |---------------------------------------------------------------------------------|
+Commit-ID:     ff9a6459bbec06df7da2545020d7383aba13b3fb
+Gitweb:        https://git.kernel.org/tip/ff9a6459bbec06df7da2545020d7383aba13b3fb
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Fri, 02 Jun 2023 10:54:53 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 02 Jun 2023 21:12:24 +02:00
 
-Yup, that's the pictures I found online.
+objtool: Add __kunit_abort() to noreturns
 
-> > I would think it is the latter since NPS4 does that but let me go verify.
-> 
-> 2 groups of 6 each is the vertical split which is NPS2.
-> 
-> 4 groups of 3 each is the vertical and horizontal split, which is
-> NPS4.
-> 
-> In both these cases, currently the domain hierarchy
-> 
-> SMT --> MC --> NODE --> NUMA
-> 
-> where the NODE will be the parent of MC and be the 2nd level wakeup domain.
-> 
-> If we define CLS to be the group with 3 LLCs, which becomes the parent
-> of the MC domain, then, the hierarchy would be
-> 
-> NPS1 : SMT --> MC --> CLS --> DIE
-> NPS2 : SMT --> MC --> CLS --> NODE --> NUMA
-> NPS4 : SMT --> MC --> CLS --> NUMA
-> 
-> NPS2 will have 5 domains within a single socket. Oh well!
+Fixes a bunch of warnings like:
 
-I think cluster/CLS is taken for L2, we should not re-purpose that for
-groups of L3.
+  drivers/input/tests/input_test.o: warning: objtool: input_test_init+0x1cb: stack state mismatch: cfa1=4+64 cfa2=4+56
+  lib/kunit/kunit-test.o: warning: objtool: kunit_log_newline_test+0xfb: return with modified stack frame
+  ...
 
-Anyway, yes, 5 levels. Shouldn't be a problem though, right?
+Fixes: 260755184cbd ("kunit: Move kunit_abort() call out of kunit_do_failed_assertion()")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230602175453.swsn3ehyochtwkhy@treble
+---
+ tools/objtool/noreturns.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tools/objtool/noreturns.h b/tools/objtool/noreturns.h
+index cede606..1514e84 100644
+--- a/tools/objtool/noreturns.h
++++ b/tools/objtool/noreturns.h
+@@ -7,6 +7,7 @@
+  * Yes, this is unfortunate.  A better solution is in the works.
+  */
+ NORETURN(__invalid_creds)
++NORETURN(__kunit_abort)
+ NORETURN(__module_put_and_kthread_exit)
+ NORETURN(__reiserfs_panic)
+ NORETURN(__stack_chk_fail)
