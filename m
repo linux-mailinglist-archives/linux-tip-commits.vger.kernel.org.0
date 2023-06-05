@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4141D722DFE
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 19:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1969E722F47
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 21:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjFER4s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Jun 2023 13:56:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59954 "EHLO
+        id S229576AbjFETI2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Jun 2023 15:08:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbjFER4s (ORCPT
+        with ESMTP id S232598AbjFETI1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Jun 2023 13:56:48 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C572ED3;
-        Mon,  5 Jun 2023 10:56:46 -0700 (PDT)
+        Mon, 5 Jun 2023 15:08:27 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ABC011C;
+        Mon,  5 Jun 2023 12:08:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=qtXPOVUwv/0vffgfXDo1OC5mmgba+WXT0tEe3GMrRTI=; b=vWHXAWSWQaOKQtVQyiIM8w32o5
-        S9d50NCVYfTYOM1+rN+OUZPNKvAOhitkDF7uPC+JV2D/KIzK2ptB2xAOnCRmGIwXPOeI/c+6inMet
-        UruFZyQtCN6T1+D1P8+CA7QJzvEsUTM9c5PtOS7p6qAkEUeh77oUwDkxfK8d4cmxm8IEJrQNJpI1c
-        GhYkpetIQgRvubjdY9OYWxSErJpGZGrt1skMwaeqQmEPQcy4Er6NtzijDXgm6msfu8qHI0hP+xrro
-        WUA4QuxIRDdYCO0s9Nge+slA6vofeU1XlKMBOfdrB1np7SJk1B3GiBNiL5iFl0Re+SsDjvG9t+u7i
-        JxOqPVKg==;
+        bh=hL5n7COSgJewUYLdr3pIlMLv/l/WFdfImP62rc7BcMI=; b=Myozm7A9r8XitGgf7HiMO3Pvxc
+        DzGg9y4BqW/BQ0bPlJ8mK9DWV2oZT37H1LiXBmY0i1R5hVSR9FTqDECfcyH9bvudES4l9sRRixqL7
+        XRxe4pIw8k0xGWJzUFw0G3jF/cqaJ6SKc5bqSGpeCC7eV2iL8kWSC6Oug9OFpRQCQ7cOfcjw5qBbG
+        IrNj+Xj7LHE2SjZZBvv7ncLelqnM1Qkmplsdu6Rr0Axsv3m6L1FU0kIkfQf+daoTDlY6nr1w15y4o
+        q8rRqtFCgxnyo4RnSZMnGI6nxgAVJxcQMae4XAc72z6gf6p+NifPjz20oCgYRpVEgBQR+NlF72d5m
+        oIdGK9BQ==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1q6ERa-00CFr5-En; Mon, 05 Jun 2023 17:56:38 +0000
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1q6FYS-003R2p-1P;
+        Mon, 05 Jun 2023 19:07:49 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 2265A30031B;
-        Mon,  5 Jun 2023 19:56:37 +0200 (CEST)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B88F2300322;
+        Mon,  5 Jun 2023 21:07:46 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id F0D25244F9E2F; Mon,  5 Jun 2023 19:56:36 +0200 (CEST)
-Date:   Mon, 5 Jun 2023 19:56:36 +0200
+        id 9C1C220AC06F4; Mon,  5 Jun 2023 21:07:46 +0200 (CEST)
+Date:   Mon, 5 Jun 2023 21:07:46 +0200
 From:   Peter Zijlstra <peterz@infradead.org>
 To:     Marek Szyprowski <m.szyprowski@samsung.com>
 Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Tejun Heo <tj@kernel.org>, x86@kernel.org,
-        kprateek.nayak@amd.com
+        Tejun Heo <tj@kernel.org>, x86@kernel.org
 Subject: Re: [tip: sched/core] sched/fair: Multi-LLC select_idle_sibling()
-Message-ID: <20230605175636.GA4253@hirez.programming.kicks-ass.net>
+Message-ID: <20230605190746.GX83892@hirez.programming.kicks-ass.net>
 References: <168553468754.404.2298362895524875073.tip-bot2@tip-bot2>
  <CGME20230605152531eucas1p2a10401ec2180696cc9a5f2e94a67adca@eucas1p2.samsung.com>
  <3051ad44-0ac3-e77b-3178-fac7cac3b3f2@samsung.com>
@@ -62,44 +62,68 @@ List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 On Mon, Jun 05, 2023 at 05:25:30PM +0200, Marek Szyprowski wrote:
-> On 31.05.2023 14:04, tip-bot2 for Peter Zijlstra wrote:
-> > The following commit has been merged into the sched/core branch of tip:
-> >
-> > Commit-ID:     c7dfd6b9122d29d0e9a4587ab470c0564d7f92ab
-> > Gitweb:        https://git.kernel.org/tip/c7dfd6b9122d29d0e9a4587ab470c0564d7f92ab
-> > Author:        Peter Zijlstra <peterz@infradead.org>
-> > AuthorDate:    Tue, 30 May 2023 13:20:46 +02:00
-> > Committer:     Peter Zijlstra <peterz@infradead.org>
-> > CommitterDate: Tue, 30 May 2023 22:46:27 +02:00
-> >
-> > sched/fair: Multi-LLC select_idle_sibling()
-> >
-> > Tejun reported that when he targets workqueues towards a specific LLC
-> > on his Zen2 machine with 3 cores / LLC and 4 LLCs in total, he gets
-> > significant idle time.
-> >
-> > This is, of course, because of how select_idle_sibling() will not
-> > consider anything outside of the local LLC, and since all these tasks
-> > are short running the periodic idle load balancer is ineffective.
-> >
-> > And while it is good to keep work cache local, it is better to not
-> > have significant idle time. Therefore, have select_idle_sibling() try
-> > other LLCs inside the same node when the local one comes up empty.
-> >
-> > Reported-by: Tejun Heo <tj@kernel.org>
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> 
-> This patch landed in today's linux next-20230605 as commit c5214e13ad60 
-> ("sched/fair: Multi-LLC select_idle_sibling()"). Unfortunately it causes 
+
+> nfortunately it causes 
 > regression on my ARM 64bit Exynos5433-based TM2e test board during the 
-> CPU hotplug tests. From time to time I get the NULL pointer dereference. 
-> Reverting $subject on top of linux-next fixes the issue. Let me know if 
-> I can help somehow debugging this issue. Here is a complete log (I've 
-> intentionally kept all the stack dumps, although they don't look very 
-> relevant...):
+> CPU hotplug tests. 
 
-Moo... OK, since our friends from AMD need some tuning on this anyway,
-i'm going to pull the patch entirely. And we'll try again once they've
-sorted out the best way to do this.
+Can you elucidate an ARM illiterate on the actual topology of that
+machine?
 
 
+> CPU: 6 PID: 43 Comm: cpuhp/6 Not tainted 6.4.0-rc1+ #13640
+> Hardware name: Samsung TM2E board (DT)
+> pstate: 000000c5 (nzcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> pc : __bitmap_and+0x4c/0x78
+> lr : select_idle_cpu+0x64/0x450
+
+Btw, where is lr at? Is that perhaps per_cpu(sd_llc) being NULL  or
+something?
+
+
+> > ---
+> >   kernel/sched/fair.c     | 38 ++++++++++++++++++++++++++++++++++++++
+> >   kernel/sched/features.h |  1 +
+> >   2 files changed, 39 insertions(+)
+> >
+> > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> > index 48b6f0c..0172458 100644
+> > --- a/kernel/sched/fair.c
+> > +++ b/kernel/sched/fair.c
+> > @@ -7028,6 +7028,38 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, bool
+> >   }
+> >   
+> >   /*
+> > + * For the multiple-LLC per node case, make sure to try the other LLC's if the
+> > + * local LLC comes up empty.
+> > + */
+> > +static int
+> > +select_idle_node(struct task_struct *p, struct sched_domain *sd, int target)
+> > +{
+> > +	struct sched_domain *parent = sd->parent;
+> > +	struct sched_group *sg;
+> > +
+> > +	/* Make sure to not cross nodes. */
+> > +	if (!parent || parent->flags & SD_NUMA)
+> > +		return -1;
+> > +
+> > +	sg = parent->groups;
+> > +	do {
+> > +		int cpu = cpumask_first(sched_group_span(sg));
+> > +		struct sched_domain *sd_child;
+> > +
+> > +		sd_child = per_cpu(sd_llc, cpu);
+
+IOW, sd_child end up NULL?
+
+> > +		if (sd_child != sd) {
+> > +			int i = select_idle_cpu(p, sd_child, test_idle_cores(cpu), cpu);
+> > +			if ((unsigned)i < nr_cpumask_bits)
+> > +				return i;
+> > +		}
+> > +
+> > +		sg = sg->next;
+> > +	} while (sg != parent->groups);
+> > +
+> > +	return -1;
+> > +}
