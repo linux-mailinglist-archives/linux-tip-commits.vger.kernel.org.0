@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD9A8722F76
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 21:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F135D722F78
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 21:16:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235355AbjFETQW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Jun 2023 15:16:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40322 "EHLO
+        id S235291AbjFETQX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Jun 2023 15:16:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235297AbjFETQT (ORCPT
+        with ESMTP id S235323AbjFETQU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Jun 2023 15:16:19 -0400
+        Mon, 5 Jun 2023 15:16:20 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2428DED;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C8C109;
         Mon,  5 Jun 2023 12:16:18 -0700 (PDT)
-Date:   Mon, 05 Jun 2023 19:16:15 -0000
+Date:   Mon, 05 Jun 2023 19:16:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1685992576;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Z2cLY1ozMTw4KDVSAVub6jpX7BafSFI8k9ZI7soaBJY=;
-        b=DBWlsNUwZWkW4ynyACghcZ+XqiumyBWfzJQ75HnKPKMm2nvUkFX/XtlnPKaflxTAzMKwW7
-        s/hOcmorgJzdAYfkx7Gu4s+PpSJPivBRHJ5VTsPhbkH9MgP0FzFkgGd8FwbV2Ee3HxlVXc
-        G+DDtMJsHlExoqdyP3uPntRuR/LBXM0twXP7Xu8lYD2sINb+mKTINYt1uXcG+mtWoJ4C9J
-        gp+4b7syTjV4ktOFjJ/RMQpTD1X2B8alvrDKIOBc5hpJYGAaphf14wd3quMnEB6AG2dFw9
-        GmFYsGChPhDOrFWmCf7dj2qt/7+M9DiAkrEtyEw04ZKyn3TnQg7Qh1vxmuwXAQ==
+        bh=YS7puzy0F12PrihIN3ZXJfwGTwkSXPTPP9QLsT1w4Xo=;
+        b=HCZYpTQaIRv87id4XWJ7/Nc2RiFuSbFFjS/ewDo8EBmJMTpAZIZwZrpb5Z6NjBwnbmrksP
+        ZnB8WsxgOG85PWcGNs278o66cv6/HR64Zkq3FfjcEC1Teh5osNlO+OmQk+bo216Ot89FyX
+        +0Oj2UkVqJNEhyk0MWteHxRdJ2NrlmnRt9zXVomx9WnVIauZr4v/xkg+v8T/uvXfnbujRe
+        y7H7ww7I5z5MY4cCzclDBoU6iDRv1vyJ8GrlqdYn78O5lDfJLaaz7Z6jl5F0OMFyGFQukw
+        hOqHxI4dSij0LfZ8ZUd1WiMqDI5yJtTBCIa8f+JuTETMz7mUZaXQq+2kpsnq3g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1685992576;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Z2cLY1ozMTw4KDVSAVub6jpX7BafSFI8k9ZI7soaBJY=;
-        b=e3Zl6FoYoF6kCrsYUNZgoIjdMEwU59aW8cCHyUMei4JhMwT0NHkkqrapofNIGE13nqD3Jf
-        egGpLY/+R+e+ffDw==
+        bh=YS7puzy0F12PrihIN3ZXJfwGTwkSXPTPP9QLsT1w4Xo=;
+        b=2EvkrWzUbvn1X750HydIK1DU4jfxinvfYshYAlrl76rZZpPJC4Nm90i6Fev8PvImZT3E7d
+        Pe5o3nT3P7BNRjDQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] cpuidle: Use local_clock_noinstr()
+Subject: [tip: sched/core] x86/tsc: Provide sched_clock_noinstr()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
         Michael Kelley <mikelley@microsoft.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230519102716.045980863@infradead.org>
-References: <20230519102716.045980863@infradead.org>
+In-Reply-To: <20230519102715.910937674@infradead.org>
+References: <20230519102715.910937674@infradead.org>
 MIME-Version: 1.0
-Message-ID: <168599257519.404.12817417791147203587.tip-bot2@tip-bot2>
+Message-ID: <168599257618.404.5379549502996624214.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,86 +67,172 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     e6a15fa9ea8372ad4db973191233f743ae1081d5
-Gitweb:        https://git.kernel.org/tip/e6a15fa9ea8372ad4db973191233f743ae1081d5
+Commit-ID:     5c5e9a2b25b6a79d4b7a5f2a54d02ef1c36dc35a
+Gitweb:        https://git.kernel.org/tip/5c5e9a2b25b6a79d4b7a5f2a54d02ef1c36dc35a
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 19 May 2023 12:21:11 +02:00
+AuthorDate:    Fri, 19 May 2023 12:21:09 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 05 Jun 2023 21:11:09 +02:00
+CommitterDate: Mon, 05 Jun 2023 21:11:08 +02:00
 
-cpuidle: Use local_clock_noinstr()
+x86/tsc: Provide sched_clock_noinstr()
 
-With the introduction of local_clock_noinstr(), local_clock() itself
-is no longer marked noinstr, use the correct function.
+With the intent to provide local_clock_noinstr(), a variant of
+local_clock() that's safe to be called from noinstr code (with the
+assumption that any such code will already be non-preemptible),
+prepare for things by providing a noinstr sched_clock_noinstr()
+function.
+
+Specifically, preempt_enable_*() calls out to schedule(), which upsets
+noinstr validation efforts.
+
+  vmlinux.o: warning: objtool: native_sched_clock+0x96: call to preempt_schedule_notrace_thunk() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: kvm_clock_read+0x22: call to preempt_schedule_notrace_thunk() leaves .noinstr.text section
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 Tested-by: Michael Kelley <mikelley@microsoft.com>  # Hyper-V
-Link: https://lore.kernel.org/r/20230519102716.045980863@infradead.org
+Link: https://lore.kernel.org/r/20230519102715.910937674@infradead.org
 ---
- drivers/cpuidle/cpuidle.c    | 8 ++++----
- drivers/cpuidle/poll_state.c | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/kernel/kvmclock.c |  4 ++--
+ arch/x86/kernel/tsc.c      | 38 ++++++++++++++++++++++++++++---------
+ arch/x86/xen/time.c        |  3 +--
+ 3 files changed, 32 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 8e929f6..737a026 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -145,7 +145,7 @@ static noinstr void enter_s2idle_proper(struct cpuidle_driver *drv,
+diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
+index 0f35d44..fb8f521 100644
+--- a/arch/x86/kernel/kvmclock.c
++++ b/arch/x86/kernel/kvmclock.c
+@@ -71,7 +71,7 @@ static int kvm_set_wallclock(const struct timespec64 *now)
+ 	return -ENODEV;
+ }
  
- 	instrumentation_begin();
- 
--	time_start = ns_to_ktime(local_clock());
-+	time_start = ns_to_ktime(local_clock_noinstr());
- 
- 	tick_freeze();
- 	/*
-@@ -169,7 +169,7 @@ static noinstr void enter_s2idle_proper(struct cpuidle_driver *drv,
- 	tick_unfreeze();
- 	start_critical_timings();
- 
--	time_end = ns_to_ktime(local_clock());
-+	time_end = ns_to_ktime(local_clock_noinstr());
- 
- 	dev->states_usage[index].s2idle_time += ktime_us_delta(time_end, time_start);
- 	dev->states_usage[index].s2idle_usage++;
-@@ -243,7 +243,7 @@ noinstr int cpuidle_enter_state(struct cpuidle_device *dev,
- 	sched_idle_set_state(target_state);
- 
- 	trace_cpu_idle(index, dev->cpu);
--	time_start = ns_to_ktime(local_clock());
-+	time_start = ns_to_ktime(local_clock_noinstr());
- 
- 	stop_critical_timings();
- 	if (!(target_state->flags & CPUIDLE_FLAG_RCU_IDLE)) {
-@@ -276,7 +276,7 @@ noinstr int cpuidle_enter_state(struct cpuidle_device *dev,
- 	start_critical_timings();
- 
- 	sched_clock_idle_wakeup_event();
--	time_end = ns_to_ktime(local_clock());
-+	time_end = ns_to_ktime(local_clock_noinstr());
- 	trace_cpu_idle(PWR_EVENT_EXIT, dev->cpu);
- 
- 	/* The cpu is no longer idle or about to enter idle. */
-diff --git a/drivers/cpuidle/poll_state.c b/drivers/cpuidle/poll_state.c
-index bdcfeae..9b6d90a 100644
---- a/drivers/cpuidle/poll_state.c
-+++ b/drivers/cpuidle/poll_state.c
-@@ -15,7 +15,7 @@ static int __cpuidle poll_idle(struct cpuidle_device *dev,
+-static noinstr u64 kvm_clock_read(void)
++static u64 kvm_clock_read(void)
  {
- 	u64 time_start;
+ 	u64 ret;
  
--	time_start = local_clock();
-+	time_start = local_clock_noinstr();
+@@ -88,7 +88,7 @@ static u64 kvm_clock_get_cycles(struct clocksource *cs)
  
- 	dev->poll_time_limit = false;
+ static noinstr u64 kvm_sched_clock_read(void)
+ {
+-	return kvm_clock_read() - kvm_sched_clock_offset;
++	return pvclock_clocksource_read_nowd(this_cpu_pvti()) - kvm_sched_clock_offset;
+ }
  
-@@ -32,7 +32,7 @@ static int __cpuidle poll_idle(struct cpuidle_device *dev,
- 				continue;
+ static inline void kvm_sched_clock_init(bool stable)
+diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+index 3446988..782a90e 100644
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -69,12 +69,10 @@ static int __init tsc_early_khz_setup(char *buf)
+ }
+ early_param("tsc_early_khz", tsc_early_khz_setup);
  
- 			loop_count = 0;
--			if (local_clock() - time_start > limit) {
-+			if (local_clock_noinstr() - time_start > limit) {
- 				dev->poll_time_limit = true;
- 				break;
- 			}
+-__always_inline void cyc2ns_read_begin(struct cyc2ns_data *data)
++__always_inline void __cyc2ns_read(struct cyc2ns_data *data)
+ {
+ 	int seq, idx;
+ 
+-	preempt_disable_notrace();
+-
+ 	do {
+ 		seq = this_cpu_read(cyc2ns.seq.seqcount.sequence);
+ 		idx = seq & 1;
+@@ -86,6 +84,12 @@ __always_inline void cyc2ns_read_begin(struct cyc2ns_data *data)
+ 	} while (unlikely(seq != this_cpu_read(cyc2ns.seq.seqcount.sequence)));
+ }
+ 
++__always_inline void cyc2ns_read_begin(struct cyc2ns_data *data)
++{
++	preempt_disable_notrace();
++	__cyc2ns_read(data);
++}
++
+ __always_inline void cyc2ns_read_end(void)
+ {
+ 	preempt_enable_notrace();
+@@ -115,18 +119,25 @@ __always_inline void cyc2ns_read_end(void)
+  *                      -johnstul@us.ibm.com "math is hard, lets go shopping!"
+  */
+ 
+-static __always_inline unsigned long long cycles_2_ns(unsigned long long cyc)
++static __always_inline unsigned long long __cycles_2_ns(unsigned long long cyc)
+ {
+ 	struct cyc2ns_data data;
+ 	unsigned long long ns;
+ 
+-	cyc2ns_read_begin(&data);
++	__cyc2ns_read(&data);
+ 
+ 	ns = data.cyc2ns_offset;
+ 	ns += mul_u64_u32_shr(cyc, data.cyc2ns_mul, data.cyc2ns_shift);
+ 
+-	cyc2ns_read_end();
++	return ns;
++}
+ 
++static __always_inline unsigned long long cycles_2_ns(unsigned long long cyc)
++{
++	unsigned long long ns;
++	preempt_disable_notrace();
++	ns = __cycles_2_ns(cyc);
++	preempt_enable_notrace();
+ 	return ns;
+ }
+ 
+@@ -223,7 +234,7 @@ noinstr u64 native_sched_clock(void)
+ 		u64 tsc_now = rdtsc();
+ 
+ 		/* return the value in ns */
+-		return cycles_2_ns(tsc_now);
++		return __cycles_2_ns(tsc_now);
+ 	}
+ 
+ 	/*
+@@ -250,7 +261,7 @@ u64 native_sched_clock_from_tsc(u64 tsc)
+ /* We need to define a real function for sched_clock, to override the
+    weak default version */
+ #ifdef CONFIG_PARAVIRT
+-noinstr u64 sched_clock(void)
++noinstr u64 sched_clock_noinstr(void)
+ {
+ 	return paravirt_sched_clock();
+ }
+@@ -260,11 +271,20 @@ bool using_native_sched_clock(void)
+ 	return static_call_query(pv_sched_clock) == native_sched_clock;
+ }
+ #else
+-u64 sched_clock(void) __attribute__((alias("native_sched_clock")));
++u64 sched_clock_noinstr(void) __attribute__((alias("native_sched_clock")));
+ 
+ bool using_native_sched_clock(void) { return true; }
+ #endif
+ 
++notrace u64 sched_clock(void)
++{
++	u64 now;
++	preempt_disable_notrace();
++	now = sched_clock_noinstr();
++	preempt_enable_notrace();
++	return now;
++}
++
+ int check_tsc_unstable(void)
+ {
+ 	return tsc_unstable;
+diff --git a/arch/x86/xen/time.c b/arch/x86/xen/time.c
+index b74ac25..52fa560 100644
+--- a/arch/x86/xen/time.c
++++ b/arch/x86/xen/time.c
+@@ -66,11 +66,10 @@ static noinstr u64 xen_sched_clock(void)
+         struct pvclock_vcpu_time_info *src;
+ 	u64 ret;
+ 
+-	preempt_disable_notrace();
+ 	src = &__this_cpu_read(xen_vcpu)->time;
+ 	ret = pvclock_clocksource_read_nowd(src);
+ 	ret -= xen_sched_clock_offset;
+-	preempt_enable_notrace();
++
+ 	return ret;
+ }
+ 
