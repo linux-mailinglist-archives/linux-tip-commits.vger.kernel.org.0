@@ -2,48 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B07F9722F8D
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 21:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8046C72330A
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Jun 2023 00:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235601AbjFETQq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Jun 2023 15:16:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40324 "EHLO
+        id S232106AbjFEWRh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Jun 2023 18:17:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235462AbjFETQ0 (ORCPT
+        with ESMTP id S230006AbjFEWRg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Jun 2023 15:16:26 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BADA7;
-        Mon,  5 Jun 2023 12:16:23 -0700 (PDT)
-Date:   Mon, 05 Jun 2023 19:16:21 -0000
+        Mon, 5 Jun 2023 18:17:36 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A2B2AF;
+        Mon,  5 Jun 2023 15:17:35 -0700 (PDT)
+Date:   Mon, 05 Jun 2023 22:17:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685992581;
+        s=2020; t=1686003453;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uhzLkj49YJUuRG22jBOVFdrVFrIngllWs7LukgCiquo=;
-        b=kgvE/2EOBrYEDRHP7LonBAIZK65ngOnxOB3eepYMTrkllw9H4XHh8fgRPMv77TbV/4GfnF
-        v6qMGl/X/4FtWNX2PA7g1MkmJAc9Fcpdwfy55Ce5kWYJ2/e5exAyMJWsi07J1AikyiD0ma
-        30JPn6TcoeWwUJZR+pXnazlfs12/AcH84u9LR3PgUD7o2lYwo1gOB2n5lgGRXeM7MlWq5F
-        Mmg4uU7cKkxQcQTKd0EmJ1rFx6QNqThvtwd91HNRrYaOlnkmY//nJ8tmy9YA8ktyz/+dqk
-        eF534TqtiGYRMUbH2uUmM3YmwK4Pexqc6FXRlkWq1JIFYUjGoo0fXMev7KjiCQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YI5W3YjQ1K9oa7fcUmMupvk4A5HHThGVA4WIB5FmNV0=;
+        b=tLf8QJaP52B4ViOiaFyu3uUffM8/9oE2XWtnAXSE6H1rTSyklhBaL42hkjUxD2aH/qcIAi
+        z6KeshfZrxaDPK4Qcxdc/isjIwG2rcI0zq1hZW4iLqb0PHCWlC0cSC3hmwq4eJp7P5GhTI
+        21rI/1na7U4CujdOB1PFOU6YYm+E6gbYix64diFNy1ST5jYfK5xJqDdjGMDMH5Ex1yxQJu
+        r0oUTxOi4k6qaHKvvlhgnozDVVPrbZ6B2ZvxOkejt28fPxWxQr80VLPKWIbPq35ElEx5C0
+        gm/7tqjeW5DPrhxg9XdfYfBBWQlhnTwtwHQbVsFEr+GVGdVlxJauwyaXzlCslQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685992581;
+        s=2020e; t=1686003453;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uhzLkj49YJUuRG22jBOVFdrVFrIngllWs7LukgCiquo=;
-        b=ziVHrQCO95Yz/4pq/VeT1KwPnCfL/i3NgqQ14f4Ye8pYM9+sqtHT8KYjGTVIFXMX5jqnhj
-        U2Sk8Tyt1djGp5BQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YI5W3YjQ1K9oa7fcUmMupvk4A5HHThGVA4WIB5FmNV0=;
+        b=Bqb3Q7rwPOQCjzUcAzuyMddvCa6blC0rRLS+4ig6G88GfBcJJaTMGd8LpssNSJsBc9jFCG
+        wkYoPEjWqVyjmdBw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Unconditionally use full-fat wait_task_inactive()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: timers/core] posix-timers: Polish coding style in a few places
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20230425183313.888493625@linutronix.de>
+References: <20230425183313.888493625@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168599258108.404.12910966685801669273.tip-bot2@tip-bot2>
+Message-ID: <168600345197.404.4874809035786394442.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,288 +65,89 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     d5e1586617be7093ea3419e3fa9387ed833cdbb1
-Gitweb:        https://git.kernel.org/tip/d5e1586617be7093ea3419e3fa9387ed833cdbb1
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 02 Jun 2023 10:42:53 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 05 Jun 2023 21:11:02 +02:00
+Commit-ID:     6fbe3a3b4fa1fe5cf05f91193d81d930c6820eda
+Gitweb:        https://git.kernel.org/tip/6fbe3a3b4fa1fe5cf05f91193d81d930c6820eda
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 25 Apr 2023 20:49:27 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 06 Jun 2023 00:12:55 +02:00
 
-sched: Unconditionally use full-fat wait_task_inactive()
+posix-timers: Polish coding style in a few places
 
-While modifying wait_task_inactive() for PREEMPT_RT; the build robot
-noted that UP got broken. This led to audit and consideration of the
-UP implementation of wait_task_inactive().
+Make it consistent with the TIP tree documentation.
 
-It looks like the UP implementation is also broken for PREEMPT;
-consider task_current_syscall() getting preempted between the two
-calls to wait_task_inactive().
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20230425183313.888493625@linutronix.de
 
-Therefore move the wait_task_inactive() implementation out of
-CONFIG_SMP and unconditionally use it.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230602103731.GA630648%40hirez.programming.kicks-ass.net
 ---
- include/linux/sched.h |   7 +-
- kernel/sched/core.c   | 216 ++++++++++++++++++++---------------------
- 2 files changed, 110 insertions(+), 113 deletions(-)
+ kernel/time/posix-timers.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index eed5d65..1292d38 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2006,15 +2006,12 @@ static __always_inline void scheduler_ipi(void)
- 	 */
- 	preempt_fold_need_resched();
- }
--extern unsigned long wait_task_inactive(struct task_struct *, unsigned int match_state);
- #else
- static inline void scheduler_ipi(void) { }
--static inline unsigned long wait_task_inactive(struct task_struct *p, unsigned int match_state)
--{
--	return 1;
--}
- #endif
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index bdd718c..8bb0dcf 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -309,10 +309,10 @@ int posix_timer_event(struct k_itimer *timr, int si_private)
+  */
+ static enum hrtimer_restart posix_timer_fn(struct hrtimer *timer)
+ {
++	enum hrtimer_restart ret = HRTIMER_NORESTART;
+ 	struct k_itimer *timr;
+ 	unsigned long flags;
+ 	int si_private = 0;
+-	enum hrtimer_restart ret = HRTIMER_NORESTART;
  
-+extern unsigned long wait_task_inactive(struct task_struct *, unsigned int match_state);
-+
- /*
-  * Set thread flags in other task's structures.
-  * See asm/thread_info.h for TIF_xxxx flags available:
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 944c3ae..810cf7d 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -2213,6 +2213,114 @@ void check_preempt_curr(struct rq *rq, struct task_struct *p, int flags)
- 		rq_clock_skip_update(rq);
- }
+ 	timr = container_of(timer, struct k_itimer, it.real.timer);
+ 	spin_lock_irqsave(&timr->it_lock, flags);
+@@ -400,8 +400,8 @@ static struct pid *good_sigevent(sigevent_t * event)
  
-+/*
-+ * wait_task_inactive - wait for a thread to unschedule.
-+ *
-+ * Wait for the thread to block in any of the states set in @match_state.
-+ * If it changes, i.e. @p might have woken up, then return zero.  When we
-+ * succeed in waiting for @p to be off its CPU, we return a positive number
-+ * (its total switch count).  If a second call a short while later returns the
-+ * same number, the caller can be sure that @p has remained unscheduled the
-+ * whole time.
-+ *
-+ * The caller must ensure that the task *will* unschedule sometime soon,
-+ * else this function might spin for a *long* time. This function can't
-+ * be called with interrupts off, or it may introduce deadlock with
-+ * smp_call_function() if an IPI is sent by the same process we are
-+ * waiting to become inactive.
-+ */
-+unsigned long wait_task_inactive(struct task_struct *p, unsigned int match_state)
-+{
-+	int running, queued;
-+	struct rq_flags rf;
-+	unsigned long ncsw;
-+	struct rq *rq;
+ static struct k_itimer * alloc_posix_timer(void)
+ {
+-	struct k_itimer *tmr;
+-	tmr = kmem_cache_zalloc(posix_timers_cache, GFP_KERNEL);
++	struct k_itimer *tmr = kmem_cache_zalloc(posix_timers_cache, GFP_KERNEL);
 +
-+	for (;;) {
-+		/*
-+		 * We do the initial early heuristics without holding
-+		 * any task-queue locks at all. We'll only try to get
-+		 * the runqueue lock when things look like they will
-+		 * work out!
-+		 */
-+		rq = task_rq(p);
-+
-+		/*
-+		 * If the task is actively running on another CPU
-+		 * still, just relax and busy-wait without holding
-+		 * any locks.
-+		 *
-+		 * NOTE! Since we don't hold any locks, it's not
-+		 * even sure that "rq" stays as the right runqueue!
-+		 * But we don't care, since "task_on_cpu()" will
-+		 * return false if the runqueue has changed and p
-+		 * is actually now running somewhere else!
-+		 */
-+		while (task_on_cpu(rq, p)) {
-+			if (!(READ_ONCE(p->__state) & match_state))
-+				return 0;
-+			cpu_relax();
-+		}
-+
-+		/*
-+		 * Ok, time to look more closely! We need the rq
-+		 * lock now, to be *sure*. If we're wrong, we'll
-+		 * just go back and repeat.
-+		 */
-+		rq = task_rq_lock(p, &rf);
-+		trace_sched_wait_task(p);
-+		running = task_on_cpu(rq, p);
-+		queued = task_on_rq_queued(p);
-+		ncsw = 0;
-+		if (READ_ONCE(p->__state) & match_state)
-+			ncsw = p->nvcsw | LONG_MIN; /* sets MSB */
-+		task_rq_unlock(rq, p, &rf);
-+
-+		/*
-+		 * If it changed from the expected state, bail out now.
-+		 */
-+		if (unlikely(!ncsw))
-+			break;
-+
-+		/*
-+		 * Was it really running after all now that we
-+		 * checked with the proper locks actually held?
-+		 *
-+		 * Oops. Go back and try again..
-+		 */
-+		if (unlikely(running)) {
-+			cpu_relax();
-+			continue;
-+		}
-+
-+		/*
-+		 * It's not enough that it's not actively running,
-+		 * it must be off the runqueue _entirely_, and not
-+		 * preempted!
-+		 *
-+		 * So if it was still runnable (but just not actively
-+		 * running right now), it's preempted, and we should
-+		 * yield - it could be a while.
-+		 */
-+		if (unlikely(queued)) {
-+			ktime_t to = NSEC_PER_SEC / HZ;
-+
-+			set_current_state(TASK_UNINTERRUPTIBLE);
-+			schedule_hrtimeout(&to, HRTIMER_MODE_REL_HARD);
-+			continue;
-+		}
-+
-+		/*
-+		 * Ahh, all good. It wasn't running, and it wasn't
-+		 * runnable, which means that it will never become
-+		 * running in the future either. We're all done!
-+		 */
-+		break;
-+	}
-+
-+	return ncsw;
-+}
-+
- #ifdef CONFIG_SMP
+ 	if (!tmr)
+ 		return tmr;
+ 	if (unlikely(!(tmr->sigq = sigqueue_alloc()))) {
+@@ -695,8 +695,8 @@ void common_timer_get(struct k_itimer *timr, struct itimerspec64 *cur_setting)
  
- static void
-@@ -3341,114 +3449,6 @@ out:
- }
- #endif /* CONFIG_NUMA_BALANCING */
+ static int do_timer_gettime(timer_t timer_id,  struct itimerspec64 *setting)
+ {
+-	struct k_itimer *timr;
+ 	const struct k_clock *kc;
++	struct k_itimer *timr;
+ 	unsigned long flags;
+ 	int ret = 0;
  
--/*
-- * wait_task_inactive - wait for a thread to unschedule.
-- *
-- * Wait for the thread to block in any of the states set in @match_state.
-- * If it changes, i.e. @p might have woken up, then return zero.  When we
-- * succeed in waiting for @p to be off its CPU, we return a positive number
-- * (its total switch count).  If a second call a short while later returns the
-- * same number, the caller can be sure that @p has remained unscheduled the
-- * whole time.
-- *
-- * The caller must ensure that the task *will* unschedule sometime soon,
-- * else this function might spin for a *long* time. This function can't
-- * be called with interrupts off, or it may introduce deadlock with
-- * smp_call_function() if an IPI is sent by the same process we are
-- * waiting to become inactive.
-- */
--unsigned long wait_task_inactive(struct task_struct *p, unsigned int match_state)
--{
--	int running, queued;
--	struct rq_flags rf;
--	unsigned long ncsw;
--	struct rq *rq;
--
--	for (;;) {
--		/*
--		 * We do the initial early heuristics without holding
--		 * any task-queue locks at all. We'll only try to get
--		 * the runqueue lock when things look like they will
--		 * work out!
--		 */
--		rq = task_rq(p);
--
--		/*
--		 * If the task is actively running on another CPU
--		 * still, just relax and busy-wait without holding
--		 * any locks.
--		 *
--		 * NOTE! Since we don't hold any locks, it's not
--		 * even sure that "rq" stays as the right runqueue!
--		 * But we don't care, since "task_on_cpu()" will
--		 * return false if the runqueue has changed and p
--		 * is actually now running somewhere else!
--		 */
--		while (task_on_cpu(rq, p)) {
--			if (!(READ_ONCE(p->__state) & match_state))
--				return 0;
--			cpu_relax();
--		}
--
--		/*
--		 * Ok, time to look more closely! We need the rq
--		 * lock now, to be *sure*. If we're wrong, we'll
--		 * just go back and repeat.
--		 */
--		rq = task_rq_lock(p, &rf);
--		trace_sched_wait_task(p);
--		running = task_on_cpu(rq, p);
--		queued = task_on_rq_queued(p);
--		ncsw = 0;
--		if (READ_ONCE(p->__state) & match_state)
--			ncsw = p->nvcsw | LONG_MIN; /* sets MSB */
--		task_rq_unlock(rq, p, &rf);
--
--		/*
--		 * If it changed from the expected state, bail out now.
--		 */
--		if (unlikely(!ncsw))
--			break;
--
--		/*
--		 * Was it really running after all now that we
--		 * checked with the proper locks actually held?
--		 *
--		 * Oops. Go back and try again..
--		 */
--		if (unlikely(running)) {
--			cpu_relax();
--			continue;
--		}
--
--		/*
--		 * It's not enough that it's not actively running,
--		 * it must be off the runqueue _entirely_, and not
--		 * preempted!
--		 *
--		 * So if it was still runnable (but just not actively
--		 * running right now), it's preempted, and we should
--		 * yield - it could be a while.
--		 */
--		if (unlikely(queued)) {
--			ktime_t to = NSEC_PER_SEC / HZ;
--
--			set_current_state(TASK_UNINTERRUPTIBLE);
--			schedule_hrtimeout(&to, HRTIMER_MODE_REL_HARD);
--			continue;
--		}
--
--		/*
--		 * Ahh, all good. It wasn't running, and it wasn't
--		 * runnable, which means that it will never become
--		 * running in the future either. We're all done!
--		 */
--		break;
--	}
--
--	return ncsw;
--}
--
- /***
-  * kick_process - kick a running thread to enter/exit the kernel
-  * @p: the to-be-kicked thread
+@@ -767,8 +767,8 @@ SYSCALL_DEFINE2(timer_gettime32, timer_t, timer_id,
+ SYSCALL_DEFINE1(timer_getoverrun, timer_t, timer_id)
+ {
+ 	struct k_itimer *timr;
+-	int overrun;
+ 	unsigned long flags;
++	int overrun;
+ 
+ 	timr = lock_timer(timer_id, &flags);
+ 	if (!timr)
+@@ -941,8 +941,7 @@ SYSCALL_DEFINE4(timer_settime, timer_t, timer_id, int, flags,
+ 		const struct __kernel_itimerspec __user *, new_setting,
+ 		struct __kernel_itimerspec __user *, old_setting)
+ {
+-	struct itimerspec64 new_spec, old_spec;
+-	struct itimerspec64 *rtn = old_setting ? &old_spec : NULL;
++	struct itimerspec64 new_spec, old_spec, *rtn;
+ 	int error = 0;
+ 
+ 	if (!new_setting)
+@@ -951,6 +950,7 @@ SYSCALL_DEFINE4(timer_settime, timer_t, timer_id, int, flags,
+ 	if (get_itimerspec64(&new_spec, new_setting))
+ 		return -EFAULT;
+ 
++	rtn = old_setting ? &old_spec : NULL;
+ 	error = do_timer_settime(timer_id, flags, &new_spec, rtn);
+ 	if (!error && old_setting) {
+ 		if (put_itimerspec64(&old_spec, old_setting))
