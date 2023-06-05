@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71A75722A5D
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 17:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 680C1722A60
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 17:09:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234348AbjFEPIs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Jun 2023 11:08:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47970 "EHLO
+        id S234385AbjFEPIt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Jun 2023 11:08:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234160AbjFEPIc (ORCPT
+        with ESMTP id S234130AbjFEPIc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 5 Jun 2023 11:08:32 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E7B5F2;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0757CF1;
         Mon,  5 Jun 2023 08:08:31 -0700 (PDT)
 Date:   Mon, 05 Jun 2023 15:08:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685977710;
+        s=2020; t=1685977709;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1e6Yds5W7rP7fF0+wFeNJOpuoQxhcru5LRYemFpOo6U=;
-        b=0gliyGVpuO8Df+2CTjcRQhQMFXG8wnUdDsTKC7O2HedbcXYSIQbnjVz/Ula5cVb301ynEl
-        cgXBCeqCpZ0vzPlGYucyrG19/weJc1TlOeHfxigGl57kkmHD/HP9HMnEmBeZzEzU7VuJJX
-        TtdEEBK8kDn2yvPrfu04NrzDegtNYTs5a8KYDp4lZ9lxUGV9EKd3mk8n7ptXSCnqfC5+O7
-        2hK56ol9xtnRauuHHtMCVWlZjnh8gjUMGzi39pi0nBid2LU1firdxuH2684FTqnF0cdk6d
-        aNDWhRLFsVfbm6POzB+AgGvvdsgkMvnGbeo/Vl06gJU8B8wK3+ejaPPSMhKT4A==
+        bh=s6w8b+H38nB35U6zyxY6nQhPl5ZOw2Hhn62YucR+QBU=;
+        b=IqO7TKvNrN2T+F4MZu7H4XdvBACYaD6PyTYYcClr2MxkPFDHqhmbSfLkjkKMe3t3T3bRSE
+        DLbG0ID8a4v3YCzbApSUg7upRnHMwx1HdxiaAIDOiU1aux/Gc6MwLGFnD1IrO7Lpn/q8m3
+        rX6Gjg52bt3MN69cpeXLJhw/PIoJdLnRRrtxasqZDWBJlwolrT2N/1uOp5SxJxd2y5dlee
+        0vOZIK+BNIfQ8jtg/TpGqiRGtnX/L3Q8xOI6+3iJBvGl4ZPGLv9BQBT6Qn8Pn8cvCWGkzh
+        kPi7ZP/RSjuIXFcpt+YMS4I2KEBcBUlxfe+ZIEC2zfaqcj/7169XE620jNbTXw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685977710;
+        s=2020e; t=1685977709;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1e6Yds5W7rP7fF0+wFeNJOpuoQxhcru5LRYemFpOo6U=;
-        b=n+C/23niQpWWx9cSIt48Mfu/f5e6AH6q+/JWv/Zt2jo1i6op3oVq5ygP9qrcyB1ABSKQE3
-        90zaV2UvewzfkhAw==
+        bh=s6w8b+H38nB35U6zyxY6nQhPl5ZOw2Hhn62YucR+QBU=;
+        b=jsWaV6pLG6gMZNE1SeZm3/H3piue8qdy+iUqI8FdoLCBkdPoao00sdGq302lcr2TTXjssG
+        sTrCKZOBEppxPFCw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-timers: Remove pointless irqsafe from hash_lock
+Subject: [tip: timers/core] posix-timers: Document sys_clock_getres() correctly
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230425183313.249063953@linutronix.de>
-References: <20230425183313.249063953@linutronix.de>
+In-Reply-To: <20230425183313.356427330@linutronix.de>
+References: <20230425183313.356427330@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168597770991.404.1945996479338799259.tip-bot2@tip-bot2>
+Message-ID: <168597770919.404.14552512930116138988.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,40 +67,123 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     032c960ac9f3d64487423e0e01a0fb7327509595
-Gitweb:        https://git.kernel.org/tip/032c960ac9f3d64487423e0e01a0fb7327509595
+Commit-ID:     4898e5d912108c8a865ffb3fc0230559b40ca361
+Gitweb:        https://git.kernel.org/tip/4898e5d912108c8a865ffb3fc0230559b40ca361
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Apr 2023 20:49:08 +02:00
+AuthorDate:    Tue, 25 Apr 2023 20:49:11 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 05 Jun 2023 17:03:37 +02:00
 
-posix-timers: Remove pointless irqsafe from hash_lock
+posix-timers: Document sys_clock_getres() correctly
 
-All usage of hash_lock is in thread context. No point in using
-spin_lock_irqsave()/irqrestore() for a single usage site.
+The decades old comment about Posix clock resolution is confusing at best.
+
+Remove it and add a proper explanation to sys_clock_getres().
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230425183313.249063953@linutronix.de
+Link: https://lore.kernel.org/r/20230425183313.356427330@linutronix.de
 
 ---
- kernel/time/posix-timers.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/time/posix-timers.c | 81 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 73 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index e8d877f..d8d4cdf 100644
+index 8153374..c9896ff 100644
 --- a/kernel/time/posix-timers.c
 +++ b/kernel/time/posix-timers.c
-@@ -471,10 +471,9 @@ static void k_itimer_rcu_free(struct rcu_head *head)
- static void release_posix_timer(struct k_itimer *tmr, int it_id_set)
+@@ -67,14 +67,6 @@ static const struct k_clock clock_realtime, clock_monotonic;
+  *	    to implement others.  This structure defines the various
+  *	    clocks.
+  *
+- * RESOLUTION: Clock resolution is used to round up timer and interval
+- *	    times, NOT to report clock times, which are reported with as
+- *	    much resolution as the system can muster.  In some cases this
+- *	    resolution may depend on the underlying clock hardware and
+- *	    may not be quantifiable until run time, and only then is the
+- *	    necessary code is written.	The standard says we should say
+- *	    something about this issue in the documentation...
+- *
+  * FUNCTIONS: The CLOCKs structure defines possible functions to
+  *	    handle various clock functions.
+  *
+@@ -1198,6 +1190,79 @@ SYSCALL_DEFINE2(clock_adjtime, const clockid_t, which_clock,
+ 	return err;
+ }
+ 
++/**
++ * sys_clock_getres - Get the resolution of a clock
++ * @which_clock:	The clock to get the resolution for
++ * @tp:			Pointer to a a user space timespec64 for storage
++ *
++ * POSIX defines:
++ *
++ * "The clock_getres() function shall return the resolution of any
++ * clock. Clock resolutions are implementation-defined and cannot be set by
++ * a process. If the argument res is not NULL, the resolution of the
++ * specified clock shall be stored in the location pointed to by res. If
++ * res is NULL, the clock resolution is not returned. If the time argument
++ * of clock_settime() is not a multiple of res, then the value is truncated
++ * to a multiple of res."
++ *
++ * Due to the various hardware constraints the real resolution can vary
++ * wildly and even change during runtime when the underlying devices are
++ * replaced. The kernel also can use hardware devices with different
++ * resolutions for reading the time and for arming timers.
++ *
++ * The kernel therefore deviates from the POSIX spec in various aspects:
++ *
++ * 1) The resolution returned to user space
++ *
++ *    For CLOCK_REALTIME, CLOCK_MONOTONIC, CLOCK_BOOTTIME, CLOCK_TAI,
++ *    CLOCK_REALTIME_ALARM, CLOCK_BOOTTIME_ALAREM and CLOCK_MONOTONIC_RAW
++ *    the kernel differentiates only two cases:
++ *
++ *    I)  Low resolution mode:
++ *
++ *	  When high resolution timers are disabled at compile or runtime
++ *	  the resolution returned is nanoseconds per tick, which represents
++ *	  the precision at which timers expire.
++ *
++ *    II) High resolution mode:
++ *
++ *	  When high resolution timers are enabled the resolution returned
++ *	  is always one nanosecond independent of the actual resolution of
++ *	  the underlying hardware devices.
++ *
++ *	  For CLOCK_*_ALARM the actual resolution depends on system
++ *	  state. When system is running the resolution is the same as the
++ *	  resolution of the other clocks. During suspend the actual
++ *	  resolution is the resolution of the underlying RTC device which
++ *	  might be way less precise than the clockevent device used during
++ *	  running state.
++ *
++ *   For CLOCK_REALTIME_COARSE and CLOCK_MONOTONIC_COARSE the resolution
++ *   returned is always nanoseconds per tick.
++ *
++ *   For CLOCK_PROCESS_CPUTIME and CLOCK_THREAD_CPUTIME the resolution
++ *   returned is always one nanosecond under the assumption that the
++ *   underlying scheduler clock has a better resolution than nanoseconds
++ *   per tick.
++ *
++ *   For dynamic POSIX clocks (PTP devices) the resolution returned is
++ *   always one nanosecond.
++ *
++ * 2) Affect on sys_clock_settime()
++ *
++ *    The kernel does not truncate the time which is handed in to
++ *    sys_clock_settime(). The kernel internal timekeeping is always using
++ *    nanoseconds precision independent of the clocksource device which is
++ *    used to read the time from. The resolution of that device only
++ *    affects the presicion of the time returned by sys_clock_gettime().
++ *
++ * Returns:
++ *	0		Success. @tp contains the resolution
++ *	-EINVAL		@which_clock is not a valid clock ID
++ *	-EFAULT		Copying the resolution to @tp faulted
++ *	-ENODEV		Dynamic POSIX clock is not backed by a device
++ *	-EOPNOTSUPP	Dynamic POSIX clock does not support getres()
++ */
+ SYSCALL_DEFINE2(clock_getres, const clockid_t, which_clock,
+ 		struct __kernel_timespec __user *, tp)
  {
- 	if (it_id_set) {
--		unsigned long flags;
--		spin_lock_irqsave(&hash_lock, flags);
-+		spin_lock(&hash_lock, flags);
- 		hlist_del_rcu(&tmr->t_hash);
--		spin_unlock_irqrestore(&hash_lock, flags);
-+		spin_unlock(&hash_lock, flags);
- 	}
- 	put_pid(tmr->it_pid);
- 	sigqueue_free(tmr->sigq);
