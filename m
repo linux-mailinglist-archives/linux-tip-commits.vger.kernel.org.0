@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFCBA722855
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 16:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A887228AA
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 16:20:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234469AbjFEOJH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Jun 2023 10:09:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36092 "EHLO
+        id S232630AbjFEOUo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Jun 2023 10:20:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234205AbjFEOIh (ORCPT
+        with ESMTP id S234911AbjFEOPJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Jun 2023 10:08:37 -0400
+        Mon, 5 Jun 2023 10:15:09 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61EE8E54;
-        Mon,  5 Jun 2023 07:08:20 -0700 (PDT)
-Date:   Mon, 05 Jun 2023 14:08:17 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC51C10F9;
+        Mon,  5 Jun 2023 07:14:43 -0700 (PDT)
+Date:   Mon, 05 Jun 2023 14:14:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685974098;
+        s=2020; t=1685974482;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=paNP292sfeDaRbA9lZSiZo3oka1xntFg+WeA1DhWd3Y=;
-        b=11p31SqCuIjTLaB/Y8Fq/YogslPaU1MnWBt4W5ZGX0OGa/LfrytY6df5wZTEH+T15iWFLa
-        QF3XAwYVGzs6GOp8RmpN6JvvLRxfoMslGGEZiE9LhxNQwjXpIyNoGzfuWXiJpm3JsBRzZJ
-        n1SVCA/1yCrkPh6ZFzPfjZud+N7ZvJdpjzleXdQghXMf5jc6zn4QJvKpFFfU2aB2l+nGRw
-        BIAglmh99Pa8OXZmlz54D4Xpw6poPnA7kKAU2vI0F3ZpfnIePGOH+F0D9aGAHq7sqnHqgs
-        WyoxXjAOGai5h4v2BOmkpyCid1EQMYwx8WT+WN7ZssJSOQl96vq7MmpPYH1VUg==
+        bh=KDsnAbFl/koTE0Dl0BN3mQjS+9ciwBGJ3f8Zlh4UZLQ=;
+        b=qK5R6FrY9BZwV5VW7Zo4ZQD2/2RSZ3xMrI3pvRI/CL3mbJ8jQ2yu/iQhz9J5xsDP06D6aN
+        n67lXeM7aHSqGV3tCc15bxAFSSkMdiovK5Tj6pIGRxbifi7uVm02YWfqslOQNZe/qdKYom
+        Pn3YSrH4/UBUQzCr3hUgk35HxCIX+w7AgimXdt+XEAr5ibvrcKpjwsuV3uimoQLLHPan4V
+        GPgAUEhqwbnp8Vjd2gkJRyST6qN19k+WW6+5mv78/oEOalEMrfkypqqgq+WGrWxfzHiGUJ
+        p/2C29Gy/ILNHXreYvMuSmGXR02064sa0Hc/aB1ebe4EG029k/RrlnpYbCAXSg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685974098;
+        s=2020e; t=1685974482;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=paNP292sfeDaRbA9lZSiZo3oka1xntFg+WeA1DhWd3Y=;
-        b=8YnUbyzNFu8CT0Y2E0P9rgAEZPhuIAD8p3XNogsTno0NiGBaoECuWfFjiM6VKDRAs/knbl
-        dITQiUY5eZsSeSBw==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=KDsnAbFl/koTE0Dl0BN3mQjS+9ciwBGJ3f8Zlh4UZLQ=;
+        b=OMuRKr3/W8bytphTE1gaGXa63Er0Z+TuyB4b+e2Ifh0fDyNhdJwbjRZC+ZcrRJrnD6GkYn
+        Zocc6eAsmBJyQuAQ==
+From:   "tip-bot2 for Muralidhara M K" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mtrr] x86/mtrr: Replace size_or_mask and size_and_mask with
- a much easier concept
-Cc:     Juergen Gross <jgross@suse.com>,
+Subject: [tip: ras/core] EDAC/amd64: Document heterogeneous system enumeration
+Cc:     Muralidhara M K <muralidhara.mk@amd.com>,
+        Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230502120931.20719-3-jgross@suse.com>
-References: <20230502120931.20719-3-jgross@suse.com>
+In-Reply-To: <20230515113537.1052146-4-muralimk@amd.com>
+References: <20230515113537.1052146-4-muralimk@amd.com>
 MIME-Version: 1.0
-Message-ID: <168597409759.404.4107410930941956610.tip-bot2@tip-bot2>
+Message-ID: <168597448189.404.1787278187429193729.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,371 +67,182 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mtrr branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     d053b481a5f16dbd4f020c6b3ebdf9173fdef0e2
-Gitweb:        https://git.kernel.org/tip/d053b481a5f16dbd4f020c6b3ebdf9173fd=
-ef0e2
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Tue, 02 May 2023 14:09:17 +02:00
+Commit-ID:     4f3fa571a48feb56e7ed1978a27983b89dd2107a
+Gitweb:        https://git.kernel.org/tip/4f3fa571a48feb56e7ed1978a27983b89dd=
+2107a
+Author:        Muralidhara M K <muralidhara.mk@amd.com>
+AuthorDate:    Mon, 15 May 2023 11:35:35=20
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 01 Jun 2023 15:04:23 +02:00
+CommitterDate: Mon, 05 Jun 2023 12:27:15 +02:00
 
-x86/mtrr: Replace size_or_mask and size_and_mask with a much easier concept
+EDAC/amd64: Document heterogeneous system enumeration
 
-Replace size_or_mask and size_and_mask with the much easier concept of
-high reserved bits.
+Document High Bandwidth Memory (HBM) and AMD heterogeneous system
+topology and enumeration.
 
-While at it, instead of using constants in the MTRR code, use some new
+  [ bp: Simplify and de-marketize, unify, massage. ]
 
-  [ bp:
-   - Drop mtrr_set_mask()
-   - Unbreak long lines
-   - Move struct mtrr_state_type out of the uapi header as it doesn't
-     belong there. It also fixes a HDRTEST breakage "unknown type name =E2=80=
-=98bool=E2=80=99"
-     as Reported-by: kernel test robot <lkp@intel.com>
-   - Massage.
-  ]
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Muralidhara M K <muralidhara.mk@amd.com>
+Co-developed-by: Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>
+Signed-off-by: Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230502120931.20719-3-jgross@suse.com
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230515113537.1052146-4-muralimk@amd.com
 ---
- arch/x86/include/asm/mtrr.h        | 32 ++++++++++++-
- arch/x86/include/uapi/asm/mtrr.h   |  8 +---
- arch/x86/kernel/cpu/mtrr/cleanup.c |  2 +-
- arch/x86/kernel/cpu/mtrr/generic.c | 70 ++++++++++++-----------------
- arch/x86/kernel/cpu/mtrr/mtrr.c    |  4 +-
- arch/x86/kernel/cpu/mtrr/mtrr.h    |  2 +-
- 6 files changed, 65 insertions(+), 53 deletions(-)
+ Documentation/driver-api/edac.rst | 120 +++++++++++++++++++++++++++++-
+ 1 file changed, 120 insertions(+)
 
-diff --git a/arch/x86/include/asm/mtrr.h b/arch/x86/include/asm/mtrr.h
-index f0eeaf6..1421fe8 100644
---- a/arch/x86/include/asm/mtrr.h
-+++ b/arch/x86/include/asm/mtrr.h
-@@ -23,8 +23,35 @@
- #ifndef _ASM_X86_MTRR_H
- #define _ASM_X86_MTRR_H
+diff --git a/Documentation/driver-api/edac.rst b/Documentation/driver-api/eda=
+c.rst
+index b8c742a..f4f044b 100644
+--- a/Documentation/driver-api/edac.rst
++++ b/Documentation/driver-api/edac.rst
+@@ -106,6 +106,16 @@ will occupy those chip-select rows.
+ This term is avoided because it is unclear when needing to distinguish
+ between chip-select rows and socket sets.
 =20
-+#include <linux/bits.h>
- #include <uapi/asm/mtrr.h>
-=20
-+/* Defines for hardware MTRR registers. */
-+#define MTRR_CAP_VCNT		GENMASK(7, 0)
-+#define MTRR_CAP_FIX		BIT_MASK(8)
-+#define MTRR_CAP_WC		BIT_MASK(10)
++* High Bandwidth Memory (HBM)
 +
-+#define MTRR_DEF_TYPE_TYPE	GENMASK(7, 0)
-+#define MTRR_DEF_TYPE_FE	BIT_MASK(10)
-+#define MTRR_DEF_TYPE_E		BIT_MASK(11)
++HBM is a new memory type with low power consumption and ultra-wide
++communication lanes. It uses vertically stacked memory chips (DRAM dies)
++interconnected by microscopic wires called "through-silicon vias," or
++TSVs.
 +
-+#define MTRR_DEF_TYPE_ENABLE	(MTRR_DEF_TYPE_FE | MTRR_DEF_TYPE_E)
-+#define MTRR_DEF_TYPE_DISABLE	~(MTRR_DEF_TYPE_TYPE | MTRR_DEF_TYPE_ENABLE)
++Several stacks of HBM chips connect to the CPU or GPU through an ultra-fast
++interconnect called the "interposer". Therefore, HBM's characteristics
++are nearly indistinguishable from on-chip integrated RAM.
+=20
+ Memory Controllers
+ ------------------
+@@ -176,3 +186,113 @@ nodes::
+ 	the L1 and L2 directories would be "edac_device_block's"
+=20
+ .. kernel-doc:: drivers/edac/edac_device.h
 +
-+#define MTRR_PHYSBASE_TYPE	GENMASK(7, 0)
-+#define MTRR_PHYSBASE_RSVD	GENMASK(11, 8)
 +
-+#define MTRR_PHYSMASK_RSVD	GENMASK(10, 0)
-+#define MTRR_PHYSMASK_V		BIT_MASK(11)
++Heterogeneous system support
++----------------------------
 +
-+struct mtrr_state_type {
-+	struct mtrr_var_range var_ranges[MTRR_MAX_VAR_RANGES];
-+	mtrr_type fixed_ranges[MTRR_NUM_FIXED_RANGES];
-+	unsigned char enabled;
-+	bool have_fixed;
-+	mtrr_type def_type;
-+};
++An AMD heterogeneous system is built by connecting the data fabrics of
++both CPUs and GPUs via custom xGMI links. Thus, the data fabric on the
++GPU nodes can be accessed the same way as the data fabric on CPU nodes.
 +
- /*
-  * The following functions are for use by other drivers that cannot use
-  * arch_phys_wc_add and arch_phys_wc_del.
-@@ -121,7 +148,8 @@ struct mtrr_gentry32 {
- #endif /* CONFIG_COMPAT */
-=20
- /* Bit fields for enabled in struct mtrr_state_type */
--#define MTRR_STATE_MTRR_FIXED_ENABLED	0x01
--#define MTRR_STATE_MTRR_ENABLED		0x02
-+#define MTRR_STATE_SHIFT		10
-+#define MTRR_STATE_MTRR_FIXED_ENABLED	(MTRR_DEF_TYPE_FE >> MTRR_STATE_SHIFT)
-+#define MTRR_STATE_MTRR_ENABLED		(MTRR_DEF_TYPE_E >> MTRR_STATE_SHIFT)
-=20
- #endif /* _ASM_X86_MTRR_H */
-diff --git a/arch/x86/include/uapi/asm/mtrr.h b/arch/x86/include/uapi/asm/mtr=
-r.h
-index 376563f..ab194c8 100644
---- a/arch/x86/include/uapi/asm/mtrr.h
-+++ b/arch/x86/include/uapi/asm/mtrr.h
-@@ -81,14 +81,6 @@ typedef __u8 mtrr_type;
- #define MTRR_NUM_FIXED_RANGES 88
- #define MTRR_MAX_VAR_RANGES 256
-=20
--struct mtrr_state_type {
--	struct mtrr_var_range var_ranges[MTRR_MAX_VAR_RANGES];
--	mtrr_type fixed_ranges[MTRR_NUM_FIXED_RANGES];
--	unsigned char enabled;
--	unsigned char have_fixed;
--	mtrr_type def_type;
--};
--
- #define MTRRphysBase_MSR(reg) (0x200 + 2 * (reg))
- #define MTRRphysMask_MSR(reg) (0x200 + 2 * (reg) + 1)
-=20
-diff --git a/arch/x86/kernel/cpu/mtrr/cleanup.c b/arch/x86/kernel/cpu/mtrr/cl=
-eanup.c
-index 7031409..ca2d567 100644
---- a/arch/x86/kernel/cpu/mtrr/cleanup.c
-+++ b/arch/x86/kernel/cpu/mtrr/cleanup.c
-@@ -890,7 +890,7 @@ int __init mtrr_trim_uncached_memory(unsigned long end_pf=
-n)
- 		return 0;
-=20
- 	rdmsr(MSR_MTRRdefType, def, dummy);
--	def &=3D 0xff;
-+	def &=3D MTRR_DEF_TYPE_TYPE;
- 	if (def !=3D MTRR_TYPE_UNCACHABLE)
- 		return 0;
-=20
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/ge=
-neric.c
-index 3922552..08ba558 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -38,15 +38,8 @@ u64 mtrr_tom2;
- struct mtrr_state_type mtrr_state;
- EXPORT_SYMBOL_GPL(mtrr_state);
-=20
--static u64 size_or_mask, size_and_mask;
--
--void __init mtrr_set_mask(void)
--{
--	unsigned int phys_addr =3D boot_cpu_data.x86_phys_bits;
--
--	size_or_mask =3D ~GENMASK_ULL(phys_addr - PAGE_SHIFT - 1, 0);
--	size_and_mask =3D ~size_or_mask & GENMASK_ULL(39, 20);
--}
-+/* Reserved bits in the high portion of the MTRRphysBaseN MSR. */
-+u32 phys_hi_rsvd;
-=20
- /*
-  * BIOS is expected to clear MtrrFixDramModEn bit, see for example
-@@ -79,10 +72,9 @@ static u64 get_mtrr_size(u64 mask)
- {
- 	u64 size;
-=20
--	mask >>=3D PAGE_SHIFT;
--	mask |=3D size_or_mask;
-+	mask |=3D (u64)phys_hi_rsvd << 32;
- 	size =3D -mask;
--	size <<=3D PAGE_SHIFT;
++The MI200 accelerators are data center GPUs. They have 2 data fabrics,
++and each GPU data fabric contains four Unified Memory Controllers (UMC).
++Each UMC contains eight channels. Each UMC channel controls one 128-bit
++HBM2e (2GB) channel (equivalent to 8 X 2GB ranks).  This creates a total
++of 4096-bits of DRAM data bus.
 +
- 	return size;
- }
-=20
-@@ -181,7 +173,7 @@ static u8 mtrr_type_lookup_variable(u64 start, u64 end, u=
-64 *partial_end,
- 	for (i =3D 0; i < num_var_ranges; ++i) {
- 		unsigned short start_state, end_state, inclusive;
-=20
--		if (!(mtrr_state.var_ranges[i].mask_lo & (1 << 11)))
-+		if (!(mtrr_state.var_ranges[i].mask_lo & MTRR_PHYSMASK_V))
- 			continue;
-=20
- 		base =3D (((u64)mtrr_state.var_ranges[i].base_hi) << 32) +
-@@ -233,7 +225,7 @@ static u8 mtrr_type_lookup_variable(u64 start, u64 end, u=
-64 *partial_end,
- 		if ((start & mask) !=3D (base & mask))
- 			continue;
-=20
--		curr_match =3D mtrr_state.var_ranges[i].base_lo & 0xff;
-+		curr_match =3D mtrr_state.var_ranges[i].base_lo & MTRR_PHYSBASE_TYPE;
- 		if (prev_match =3D=3D MTRR_TYPE_INVALID) {
- 			prev_match =3D curr_match;
- 			continue;
-@@ -435,7 +427,7 @@ static void __init print_mtrr_state(void)
- 	high_width =3D (boot_cpu_data.x86_phys_bits - (32 - PAGE_SHIFT) + 3) / 4;
-=20
- 	for (i =3D 0; i < num_var_ranges; ++i) {
--		if (mtrr_state.var_ranges[i].mask_lo & (1 << 11))
-+		if (mtrr_state.var_ranges[i].mask_lo & MTRR_PHYSMASK_V)
- 			pr_debug("  %u base %0*X%05X000 mask %0*X%05X000 %s\n",
- 				 i,
- 				 high_width,
-@@ -444,7 +436,8 @@ static void __init print_mtrr_state(void)
- 				 high_width,
- 				 mtrr_state.var_ranges[i].mask_hi,
- 				 mtrr_state.var_ranges[i].mask_lo >> 12,
--				 mtrr_attrib_to_str(mtrr_state.var_ranges[i].base_lo & 0xff));
-+				 mtrr_attrib_to_str(mtrr_state.var_ranges[i].base_lo &
-+						    MTRR_PHYSBASE_TYPE));
- 		else
- 			pr_debug("  %u disabled\n", i);
- 	}
-@@ -462,7 +455,7 @@ bool __init get_mtrr_state(void)
- 	vrs =3D mtrr_state.var_ranges;
-=20
- 	rdmsr(MSR_MTRRcap, lo, dummy);
--	mtrr_state.have_fixed =3D (lo >> 8) & 1;
-+	mtrr_state.have_fixed =3D lo & MTRR_CAP_FIX;
-=20
- 	for (i =3D 0; i < num_var_ranges; i++)
- 		get_mtrr_var_range(i, &vrs[i]);
-@@ -470,8 +463,8 @@ bool __init get_mtrr_state(void)
- 		get_fixed_ranges(mtrr_state.fixed_ranges);
-=20
- 	rdmsr(MSR_MTRRdefType, lo, dummy);
--	mtrr_state.def_type =3D (lo & 0xff);
--	mtrr_state.enabled =3D (lo & 0xc00) >> 10;
-+	mtrr_state.def_type =3D lo & MTRR_DEF_TYPE_TYPE;
-+	mtrr_state.enabled =3D (lo & MTRR_DEF_TYPE_ENABLE) >> MTRR_STATE_SHIFT;
-=20
- 	if (amd_special_default_mtrr()) {
- 		unsigned low, high;
-@@ -584,7 +577,7 @@ static void generic_get_mtrr(unsigned int reg, unsigned l=
-ong *base,
-=20
- 	rdmsr(MTRRphysMask_MSR(reg), mask_lo, mask_hi);
-=20
--	if ((mask_lo & 0x800) =3D=3D 0) {
-+	if (!(mask_lo & MTRR_PHYSMASK_V)) {
- 		/*  Invalid (i.e. free) range */
- 		*base =3D 0;
- 		*size =3D 0;
-@@ -595,8 +588,8 @@ static void generic_get_mtrr(unsigned int reg, unsigned l=
-ong *base,
- 	rdmsr(MTRRphysBase_MSR(reg), base_lo, base_hi);
-=20
- 	/* Work out the shifted address mask: */
--	tmp =3D (u64)mask_hi << (32 - PAGE_SHIFT) | mask_lo >> PAGE_SHIFT;
--	mask =3D size_or_mask | tmp;
-+	tmp =3D (u64)mask_hi << 32 | (mask_lo & PAGE_MASK);
-+	mask =3D (u64)phys_hi_rsvd << 32 | tmp;
-=20
- 	/* Expand tmp with high bits to all 1s: */
- 	hi =3D fls64(tmp);
-@@ -614,9 +607,9 @@ static void generic_get_mtrr(unsigned int reg, unsigned l=
-ong *base,
- 	 * This works correctly if size is a power of two, i.e. a
- 	 * contiguous range:
- 	 */
--	*size =3D -mask;
-+	*size =3D -mask >> PAGE_SHIFT;
- 	*base =3D (u64)base_hi << (32 - PAGE_SHIFT) | base_lo >> PAGE_SHIFT;
--	*type =3D base_lo & 0xff;
-+	*type =3D base_lo & MTRR_PHYSBASE_TYPE;
-=20
- out_put_cpu:
- 	put_cpu();
-@@ -654,9 +647,8 @@ static bool set_mtrr_var_ranges(unsigned int index, struc=
-t mtrr_var_range *vr)
- 	bool changed =3D false;
-=20
- 	rdmsr(MTRRphysBase_MSR(index), lo, hi);
--	if ((vr->base_lo & 0xfffff0ffUL) !=3D (lo & 0xfffff0ffUL)
--	    || (vr->base_hi & (size_and_mask >> (32 - PAGE_SHIFT))) !=3D
--		(hi & (size_and_mask >> (32 - PAGE_SHIFT)))) {
-+	if ((vr->base_lo & ~MTRR_PHYSBASE_RSVD) !=3D (lo & ~MTRR_PHYSBASE_RSVD)
-+	    || (vr->base_hi & ~phys_hi_rsvd) !=3D (hi & ~phys_hi_rsvd)) {
-=20
- 		mtrr_wrmsr(MTRRphysBase_MSR(index), vr->base_lo, vr->base_hi);
- 		changed =3D true;
-@@ -664,9 +656,8 @@ static bool set_mtrr_var_ranges(unsigned int index, struc=
-t mtrr_var_range *vr)
-=20
- 	rdmsr(MTRRphysMask_MSR(index), lo, hi);
-=20
--	if ((vr->mask_lo & 0xfffff800UL) !=3D (lo & 0xfffff800UL)
--	    || (vr->mask_hi & (size_and_mask >> (32 - PAGE_SHIFT))) !=3D
--		(hi & (size_and_mask >> (32 - PAGE_SHIFT)))) {
-+	if ((vr->mask_lo & ~MTRR_PHYSMASK_RSVD) !=3D (lo & ~MTRR_PHYSMASK_RSVD)
-+	    || (vr->mask_hi & ~phys_hi_rsvd) !=3D (hi & ~phys_hi_rsvd)) {
- 		mtrr_wrmsr(MTRRphysMask_MSR(index), vr->mask_lo, vr->mask_hi);
- 		changed =3D true;
- 	}
-@@ -701,11 +692,12 @@ static unsigned long set_mtrr_state(void)
- 	 * Set_mtrr_restore restores the old value of MTRRdefType,
- 	 * so to set it we fiddle with the saved value:
- 	 */
--	if ((deftype_lo & 0xff) !=3D mtrr_state.def_type
--	    || ((deftype_lo & 0xc00) >> 10) !=3D mtrr_state.enabled) {
-+	if ((deftype_lo & MTRR_DEF_TYPE_TYPE) !=3D mtrr_state.def_type ||
-+	    ((deftype_lo & MTRR_DEF_TYPE_ENABLE) >> MTRR_STATE_SHIFT) !=3D mtrr_sta=
-te.enabled) {
-=20
--		deftype_lo =3D (deftype_lo & ~0xcff) | mtrr_state.def_type |
--			     (mtrr_state.enabled << 10);
-+		deftype_lo =3D (deftype_lo & MTRR_DEF_TYPE_DISABLE) |
-+			     mtrr_state.def_type |
-+			     (mtrr_state.enabled << MTRR_STATE_SHIFT);
- 		change_mask |=3D MTRR_CHANGE_MASK_DEFTYPE;
- 	}
-=20
-@@ -718,7 +710,7 @@ void mtrr_disable(void)
- 	rdmsr(MSR_MTRRdefType, deftype_lo, deftype_hi);
-=20
- 	/* Disable MTRRs, and set the default type to uncached */
--	mtrr_wrmsr(MSR_MTRRdefType, deftype_lo & ~0xcff, deftype_hi);
-+	mtrr_wrmsr(MSR_MTRRdefType, deftype_lo & MTRR_DEF_TYPE_DISABLE, deftype_hi);
- }
-=20
- void mtrr_enable(void)
-@@ -772,9 +764,9 @@ static void generic_set_mtrr(unsigned int reg, unsigned l=
-ong base,
- 		memset(vr, 0, sizeof(struct mtrr_var_range));
- 	} else {
- 		vr->base_lo =3D base << PAGE_SHIFT | type;
--		vr->base_hi =3D (base & size_and_mask) >> (32 - PAGE_SHIFT);
--		vr->mask_lo =3D -size << PAGE_SHIFT | 0x800;
--		vr->mask_hi =3D (-size & size_and_mask) >> (32 - PAGE_SHIFT);
-+		vr->base_hi =3D (base >> (32 - PAGE_SHIFT)) & ~phys_hi_rsvd;
-+		vr->mask_lo =3D -size << PAGE_SHIFT | MTRR_PHYSMASK_V;
-+		vr->mask_hi =3D (-size >> (32 - PAGE_SHIFT)) & ~phys_hi_rsvd;
-=20
- 		mtrr_wrmsr(MTRRphysBase_MSR(reg), vr->base_lo, vr->base_hi);
- 		mtrr_wrmsr(MTRRphysMask_MSR(reg), vr->mask_lo, vr->mask_hi);
-@@ -827,7 +819,7 @@ static int generic_have_wrcomb(void)
- {
- 	unsigned long config, dummy;
- 	rdmsr(MSR_MTRRcap, config, dummy);
--	return config & (1 << 10);
-+	return config & MTRR_CAP_WC;
- }
-=20
- int positive_have_wrcomb(void)
-diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.c b/arch/x86/kernel/cpu/mtrr/mtrr.c
-index 1bdab16..1067f12 100644
---- a/arch/x86/kernel/cpu/mtrr/mtrr.c
-+++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
-@@ -115,7 +115,7 @@ static void __init set_num_var_ranges(bool use_generic)
- 	else if (is_cpu(CYRIX) || is_cpu(CENTAUR))
- 		config =3D 8;
-=20
--	num_var_ranges =3D config & 0xff;
-+	num_var_ranges =3D config & MTRR_CAP_VCNT;
- }
-=20
- static void __init init_table(void)
-@@ -627,7 +627,7 @@ void __init mtrr_bp_init(void)
- {
- 	const char *why =3D "(not available)";
-=20
--	mtrr_set_mask();
-+	phys_hi_rsvd =3D GENMASK(31, boot_cpu_data.x86_phys_bits - 32);
-=20
- 	if (cpu_feature_enabled(X86_FEATURE_MTRR)) {
- 		mtrr_if =3D &generic_mtrr_ops;
-diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.h b/arch/x86/kernel/cpu/mtrr/mtrr.h
-index a00987e..59e8fb2 100644
---- a/arch/x86/kernel/cpu/mtrr/mtrr.h
-+++ b/arch/x86/kernel/cpu/mtrr/mtrr.h
-@@ -58,8 +58,8 @@ extern const struct mtrr_ops *mtrr_if;
- extern unsigned int num_var_ranges;
- extern u64 mtrr_tom2;
- extern struct mtrr_state_type mtrr_state;
-+extern u32 phys_hi_rsvd;
-=20
--void mtrr_set_mask(void);
- void mtrr_state_warn(void);
- const char *mtrr_attrib_to_str(int x);
- void mtrr_wrmsr(unsigned, unsigned, unsigned);
++While the UMC is interfacing a 16GB (8high X 2GB DRAM) HBM stack, each UMC
++channel is interfacing 2GB of DRAM (represented as rank).
++
++Memory controllers on AMD GPU nodes can be represented in EDAC thusly:
++
++	GPU DF / GPU Node -> EDAC MC
++	GPU UMC           -> EDAC CSROW
++	GPU UMC channel   -> EDAC CHANNEL
++
++For example: a heterogeneous system with 1 AMD CPU is connected to
++4 MI200 (Aldebaran) GPUs using xGMI.
++
++Some more heterogeneous hardware details:
++
++- The CPU UMC (Unified Memory Controller) is mostly the same as the GPU UMC.
++  They have chip selects (csrows) and channels. However, the layouts are dif=
+ferent
++  for performance, physical layout, or other reasons.
++- CPU UMCs use 1 channel, In this case UMC =3D EDAC channel. This follows the
++  marketing speak. CPU has X memory channels, etc.
++- CPU UMCs use up to 4 chip selects, So UMC chip select =3D EDAC CSROW.
++- GPU UMCs use 1 chip select, So UMC =3D EDAC CSROW.
++- GPU UMCs use 8 channels, So UMC channel =3D EDAC channel.
++
++The EDAC subsystem provides a mechanism to handle AMD heterogeneous
++systems by calling system specific ops for both CPUs and GPUs.
++
++AMD GPU nodes are enumerated in sequential order based on the PCI
++hierarchy, and the first GPU node is assumed to have a Node ID value
++following those of the CPU nodes after latter are fully populated::
++
++	$ ls /sys/devices/system/edac/mc/
++		mc0   - CPU MC node 0
++		mc1  |
++		mc2  |- GPU card[0] =3D> node 0(mc1), node 1(mc2)
++		mc3  |
++		mc4  |- GPU card[1] =3D> node 0(mc3), node 1(mc4)
++		mc5  |
++		mc6  |- GPU card[2] =3D> node 0(mc5), node 1(mc6)
++		mc7  |
++		mc8  |- GPU card[3] =3D> node 0(mc7), node 1(mc8)
++
++For example, a heterogeneous system with one AMD CPU is connected to
++four MI200 (Aldebaran) GPUs using xGMI. This topology can be represented
++via the following sysfs entries::
++
++	/sys/devices/system/edac/mc/..
++
++	CPU			# CPU node
++	=E2=94=9C=E2=94=80=E2=94=80 mc 0
++
++	GPU Nodes are enumerated sequentially after CPU nodes have been populated
++	GPU card 1		# Each MI200 GPU has 2 nodes/mcs
++	=E2=94=9C=E2=94=80=E2=94=80 mc 1		# GPU node 0 =3D=3D mc1, Each MC node has=
+ 4 UMCs/CSROWs
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 csrow 0		# UMC 0
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 0	# Each UMC has 8 channels
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 1   # size of each channel is 2 GB, so each UMC has 16 GB
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 2
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 3
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 4
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 5
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 6
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 7
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 csrow 1		# UMC 1
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 0
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 7
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..		..
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 csrow 3		# UMC 3
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 0
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
++	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
+nnel 7
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 rank 0
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..		..
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 rank 31		# total 32 ranks=
+/dimms from 4 UMCs
++	=E2=94=9C
++	=E2=94=9C=E2=94=80=E2=94=80 mc 2		# GPU node 1 =3D=3D mc2
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..		# each GPU has total =
+64 GB
++
++	GPU card 2
++	=E2=94=9C=E2=94=80=E2=94=80 mc 3
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
++	=E2=94=9C=E2=94=80=E2=94=80 mc 4
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
++
++	GPU card 3
++	=E2=94=9C=E2=94=80=E2=94=80 mc 5
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
++	=E2=94=9C=E2=94=80=E2=94=80 mc 6
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
++
++	GPU card 4
++	=E2=94=9C=E2=94=80=E2=94=80 mc 7
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
++	=E2=94=9C=E2=94=80=E2=94=80 mc 8
++	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
