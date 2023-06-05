@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0878B722888
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 16:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C55CD722A49
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 17:08:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231562AbjFEOPd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Jun 2023 10:15:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40718 "EHLO
+        id S231348AbjFEPIh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Jun 2023 11:08:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234908AbjFEOPJ (ORCPT
+        with ESMTP id S231840AbjFEPI1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Jun 2023 10:15:09 -0400
+        Mon, 5 Jun 2023 11:08:27 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5349710FC;
-        Mon,  5 Jun 2023 07:14:44 -0700 (PDT)
-Date:   Mon, 05 Jun 2023 14:14:42 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD204EA;
+        Mon,  5 Jun 2023 08:08:26 -0700 (PDT)
+Date:   Mon, 05 Jun 2023 15:08:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685974482;
+        s=2020; t=1685977705;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QY+lB4deJeNs+5LMljDCM92McOB3G+R8psZsInJgy3M=;
-        b=b8iO4zLSH2ChyHWOvlcws68+n3SmqOF36W1Z2lTfJckeyoCXEkkE0GDEkeAdrp2a/0PCcF
-        OWJJTURbHR40gitdjJM+EOQq2r/Qb75J6JKA+0lp8OVwDVZNDUpyt7sLrIPKXWGoq/yMCs
-        xcUNptNjCVIZuOW2s1MKyXgLopEXI0xEvXHZQHsTUfKVG0Hh1I6nksJwDO2ciJI3ltfbDF
-        Wgore1tvWDFLIUHdN9mQq3m9rA9gcwlZxk1EZgTGDxCueIO9HLfhiqi/SkmUeslxhbqFHv
-        Ba+D+N9doC/xUQiJWFnPLXkS7XUEEgRerqWHDy1Fwy9sdvLNAOOgq5yrPk+eTw==
+        bh=Y8OW7mNLB3v0H4YFi6rliOeKhkABoAx15A5MO4MS50I=;
+        b=E0xqgxC2VTZvipboSYI7RTh8oNURjcetGVs3OHTp6pELrxPJg5+UUsRjW9A453HYTN6wed
+        Ba0h4rK7ftrGl73ObYCaV7S/n7aQxtNdKyDq8B2u848UilnF4RSfPzIyjcYVs75ncECfLF
+        NWVyaS6OsxokwB/UZn11pF6v3o4G8kFRYXAOgL/p1/VmRaK6UeCu3LtT8EHucVibsOXWc9
+        wAtIZRRrdj9p2bu+UP9OqA0qUHocTHs6GA0MfP0zy4kBxmkKX9N12gpvzFMLgpDIjLrUev
+        wOCnjoVVUNeZK0oyzugeyd5txqlGL/xwukByDnQROhVcJxOyuMqk4Q5rN2gN8Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685974483;
+        s=2020e; t=1685977705;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QY+lB4deJeNs+5LMljDCM92McOB3G+R8psZsInJgy3M=;
-        b=1yLL548NyiRbbwUdmBKKzB0F+LbDC5U39ABeTTdOjmy6IpUril2K8AXb/FjJfyCF4QfRyl
-        WouzzjeWikL78ACg==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=Y8OW7mNLB3v0H4YFi6rliOeKhkABoAx15A5MO4MS50I=;
+        b=Yjy2j4uy/w0xJYi1KC2hF6T32einOMYvyMef/djO0OYvzzLfcHMTy6qNcwDbUuZ3U3W+vP
+        5W1zb0l4QnPDolDQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/amd_nb: Re-sort and re-indent PCI defines
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: timers/core] posix-timers: Polish coding style in a few places
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230531094212.GHZHcWdMDkCpAp4daj@fat_crate.local>
-References: <20230531094212.GHZHcWdMDkCpAp4daj@fat_crate.local>
+In-Reply-To: <20230425183313.888493625@linutronix.de>
+References: <20230425183313.888493625@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168597448250.404.11782473771242053949.tip-bot2@tip-bot2>
+Message-ID: <168597770464.404.17603246020123754187.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,85 +65,89 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     f5e87cd5114e9c6d15a12922f26bdd6e24e508ee
-Gitweb:        https://git.kernel.org/tip/f5e87cd5114e9c6d15a12922f26bdd6e24e508ee
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Wed, 31 May 2023 11:39:57 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 05 Jun 2023 12:26:54 +02:00
+Commit-ID:     1263a2a9d71bac5ffabf9603c36e36cb6edbcdcf
+Gitweb:        https://git.kernel.org/tip/1263a2a9d71bac5ffabf9603c36e36cb6edbcdcf
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 25 Apr 2023 20:49:27 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 05 Jun 2023 17:03:39 +02:00
 
-x86/amd_nb: Re-sort and re-indent PCI defines
+posix-timers: Polish coding style in a few places
 
-Sort them by family, model and type and align them vertically for better
-readability.
+Make it consistent with the TIP tree documentation.
 
-No functional changes.
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20230425183313.888493625@linutronix.de
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230531094212.GHZHcWdMDkCpAp4daj@fat_crate.local
 ---
- arch/x86/kernel/amd_nb.c | 49 +++++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 24 deletions(-)
+ kernel/time/posix-timers.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 8fd9554..035a3db 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -15,30 +15,31 @@
- #include <linux/pci_ids.h>
- #include <asm/amd_nb.h>
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index fde1ca9..276f231 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -309,10 +309,10 @@ int posix_timer_event(struct k_itimer *timr, int si_private)
+  */
+ static enum hrtimer_restart posix_timer_fn(struct hrtimer *timer)
+ {
++	enum hrtimer_restart ret = HRTIMER_NORESTART;
+ 	struct k_itimer *timr;
+ 	unsigned long flags;
+ 	int si_private = 0;
+-	enum hrtimer_restart ret = HRTIMER_NORESTART;
  
--#define PCI_DEVICE_ID_AMD_17H_ROOT	0x1450
--#define PCI_DEVICE_ID_AMD_17H_M10H_ROOT	0x15d0
--#define PCI_DEVICE_ID_AMD_17H_M30H_ROOT	0x1480
--#define PCI_DEVICE_ID_AMD_17H_M60H_ROOT	0x1630
--#define PCI_DEVICE_ID_AMD_17H_MA0H_ROOT	0x14b5
--#define PCI_DEVICE_ID_AMD_19H_M10H_ROOT	0x14a4
--#define PCI_DEVICE_ID_AMD_19H_M60H_ROOT	0x14d8
--#define PCI_DEVICE_ID_AMD_19H_M70H_ROOT	0x14e8
--#define PCI_DEVICE_ID_AMD_MI200_ROOT	0x14bb
--#define PCI_DEVICE_ID_AMD_17H_DF_F4	0x1464
--#define PCI_DEVICE_ID_AMD_17H_M10H_DF_F4 0x15ec
--#define PCI_DEVICE_ID_AMD_17H_M30H_DF_F4 0x1494
--#define PCI_DEVICE_ID_AMD_17H_M60H_DF_F4 0x144c
--#define PCI_DEVICE_ID_AMD_17H_M70H_DF_F4 0x1444
--#define PCI_DEVICE_ID_AMD_17H_MA0H_DF_F4 0x1728
--#define PCI_DEVICE_ID_AMD_19H_DF_F4	0x1654
--#define PCI_DEVICE_ID_AMD_19H_M10H_DF_F4 0x14b1
--#define PCI_DEVICE_ID_AMD_19H_M40H_ROOT	0x14b5
--#define PCI_DEVICE_ID_AMD_19H_M40H_DF_F4 0x167d
--#define PCI_DEVICE_ID_AMD_19H_M50H_DF_F4 0x166e
--#define PCI_DEVICE_ID_AMD_19H_M60H_DF_F4 0x14e4
--#define PCI_DEVICE_ID_AMD_19H_M70H_DF_F4 0x14f4
--#define PCI_DEVICE_ID_AMD_19H_M78H_DF_F4 0x12fc
--#define PCI_DEVICE_ID_AMD_MI200_DF_F4	0x14d4
-+#define PCI_DEVICE_ID_AMD_17H_ROOT		0x1450
-+#define PCI_DEVICE_ID_AMD_17H_M10H_ROOT		0x15d0
-+#define PCI_DEVICE_ID_AMD_17H_M30H_ROOT		0x1480
-+#define PCI_DEVICE_ID_AMD_17H_M60H_ROOT		0x1630
-+#define PCI_DEVICE_ID_AMD_17H_MA0H_ROOT		0x14b5
-+#define PCI_DEVICE_ID_AMD_19H_M10H_ROOT		0x14a4
-+#define PCI_DEVICE_ID_AMD_19H_M40H_ROOT		0x14b5
-+#define PCI_DEVICE_ID_AMD_19H_M60H_ROOT		0x14d8
-+#define PCI_DEVICE_ID_AMD_19H_M70H_ROOT		0x14e8
-+#define PCI_DEVICE_ID_AMD_MI200_ROOT		0x14bb
+ 	timr = container_of(timer, struct k_itimer, it.real.timer);
+ 	spin_lock_irqsave(&timr->it_lock, flags);
+@@ -400,8 +400,8 @@ static struct pid *good_sigevent(sigevent_t * event)
+ 
+ static struct k_itimer * alloc_posix_timer(void)
+ {
+-	struct k_itimer *tmr;
+-	tmr = kmem_cache_zalloc(posix_timers_cache, GFP_KERNEL);
++	struct k_itimer *tmr = kmem_cache_zalloc(posix_timers_cache, GFP_KERNEL);
 +
-+#define PCI_DEVICE_ID_AMD_17H_DF_F4		0x1464
-+#define PCI_DEVICE_ID_AMD_17H_M10H_DF_F4	0x15ec
-+#define PCI_DEVICE_ID_AMD_17H_M30H_DF_F4	0x1494
-+#define PCI_DEVICE_ID_AMD_17H_M60H_DF_F4	0x144c
-+#define PCI_DEVICE_ID_AMD_17H_M70H_DF_F4	0x1444
-+#define PCI_DEVICE_ID_AMD_17H_MA0H_DF_F4	0x1728
-+#define PCI_DEVICE_ID_AMD_19H_DF_F4		0x1654
-+#define PCI_DEVICE_ID_AMD_19H_M10H_DF_F4	0x14b1
-+#define PCI_DEVICE_ID_AMD_19H_M40H_DF_F4	0x167d
-+#define PCI_DEVICE_ID_AMD_19H_M50H_DF_F4	0x166e
-+#define PCI_DEVICE_ID_AMD_19H_M60H_DF_F4	0x14e4
-+#define PCI_DEVICE_ID_AMD_19H_M70H_DF_F4	0x14f4
-+#define PCI_DEVICE_ID_AMD_19H_M78H_DF_F4	0x12fc
-+#define PCI_DEVICE_ID_AMD_MI200_DF_F4		0x14d4
+ 	if (!tmr)
+ 		return tmr;
+ 	if (unlikely(!(tmr->sigq = sigqueue_alloc()))) {
+@@ -695,8 +695,8 @@ void common_timer_get(struct k_itimer *timr, struct itimerspec64 *cur_setting)
  
- /* Protect the PCI config register pairs used for SMN. */
- static DEFINE_MUTEX(smn_mutex);
+ static int do_timer_gettime(timer_t timer_id,  struct itimerspec64 *setting)
+ {
+-	struct k_itimer *timr;
+ 	const struct k_clock *kc;
++	struct k_itimer *timr;
+ 	unsigned long flags;
+ 	int ret = 0;
+ 
+@@ -767,8 +767,8 @@ SYSCALL_DEFINE2(timer_gettime32, timer_t, timer_id,
+ SYSCALL_DEFINE1(timer_getoverrun, timer_t, timer_id)
+ {
+ 	struct k_itimer *timr;
+-	int overrun;
+ 	unsigned long flags;
++	int overrun;
+ 
+ 	timr = lock_timer(timer_id, &flags);
+ 	if (!timr)
+@@ -941,8 +941,7 @@ SYSCALL_DEFINE4(timer_settime, timer_t, timer_id, int, flags,
+ 		const struct __kernel_itimerspec __user *, new_setting,
+ 		struct __kernel_itimerspec __user *, old_setting)
+ {
+-	struct itimerspec64 new_spec, old_spec;
+-	struct itimerspec64 *rtn = old_setting ? &old_spec : NULL;
++	struct itimerspec64 new_spec, old_spec, *rtn;
+ 	int error = 0;
+ 
+ 	if (!new_setting)
+@@ -951,6 +950,7 @@ SYSCALL_DEFINE4(timer_settime, timer_t, timer_id, int, flags,
+ 	if (get_itimerspec64(&new_spec, new_setting))
+ 		return -EFAULT;
+ 
++	rtn = old_setting ? &old_spec : NULL;
+ 	error = do_timer_settime(timer_id, flags, &new_spec, rtn);
+ 	if (!error && old_setting) {
+ 		if (put_itimerspec64(&old_spec, old_setting))
