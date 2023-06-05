@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47D8C722F80
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 21:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7090722F88
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 21:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234595AbjFETQ3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Jun 2023 15:16:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40366 "EHLO
+        id S235575AbjFETQj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Jun 2023 15:16:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235379AbjFETQX (ORCPT
+        with ESMTP id S235345AbjFETQY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Jun 2023 15:16:23 -0400
+        Mon, 5 Jun 2023 15:16:24 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2712122;
-        Mon,  5 Jun 2023 12:16:20 -0700 (PDT)
-Date:   Mon, 05 Jun 2023 19:16:18 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C18131;
+        Mon,  5 Jun 2023 12:16:21 -0700 (PDT)
+Date:   Mon, 05 Jun 2023 19:16:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685992578;
+        s=2020; t=1685992580;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nefLx1ncunt24Z9x1hQOgvZ54e8uI2PhjSAmZ7CKnB4=;
-        b=vIjOi4HXm2/HBdwlpRTecee/kB5/WB+X3aLLXYxM56/xwQiRZefbkz6WmDcsctafOW+ctN
-        ktGuiKXHEapnQADkzO3m7+jHZ0z2umXZcZ+PNCNdMd7KYr+cn2c8DEiYEaglWD0szt6x/M
-        avLM00LnoRUyO2A0un8YKaeji4cnwTe2gTdQP0SQAZJAVtGYKoAVoGjg+HCODpySPAoo/K
-        HY48R4Mpb8ELLSYFBZzsCJogL+9mCGB/g1QjCDziyQd2UJL0KCG0gFFfUPDzG2QDMIHUG7
-        PEn4yj93iC/NMpyO98cWwEPlLMoqFJDLmAMkEuA8m/hw6D13bCFf7pOtyY0Y6g==
+        bh=dIi96m4QyCUQHfMrUC8WJDqLTIqs0bPtYIDfR912ZMI=;
+        b=xl2OeToJMYSCYavvN2z7aNgJ/GWRTdudvYaLbmy/F0frsyJQTBfLqYO4cd2cVTj54lNZIF
+        bXSCzWwL491eyw0654HaggQsvXFkymg8aKRzZIZa0eGkAPL/9rhv4nzztQbVq6Gqym9BCO
+        IIDBZh/SJJtmlBLgJLI6WWkieA9jrMFlFGv/6GpcMhpV1VRazCiIFShhSwfINhsvsGmv7p
+        bjnNbm7mg3q4mo4EXXnOFhzOO690t/K2KTIeOdC4tXtheAVh9VdVsNdWZT/VDFH+UKu4Y5
+        BZE2IP7eaDliyi42awfdE7MoAMftF6FtapdW9Am1d8gl3PbE9S4P3Sz2T01Hsg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685992578;
+        s=2020e; t=1685992580;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nefLx1ncunt24Z9x1hQOgvZ54e8uI2PhjSAmZ7CKnB4=;
-        b=84ph86KnuremQ5Ymzwz5assjnYvAJ94dII6939vSjOTBgKrwg/O46vFOSBw5HAd8P7R/y9
-        4H0IhdhJwqX06bDQ==
+        bh=dIi96m4QyCUQHfMrUC8WJDqLTIqs0bPtYIDfR912ZMI=;
+        b=/+FZRc+3P3RxC/oI6Ie0U0EHSbKiM7ZOwh8OpZbQzKZn+pfVIe7fDl5xbltD+bKku/eLj/
+        9u6qLXi+C/SEElCQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] loongarch: Provide noinstr sched_clock_read()
+Subject: [tip: sched/core] seqlock/latch: Provide raw_read_seqcount_latch_retry()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Petr Mladek <pmladek@suse.com>,
         Michael Kelley <mikelley@microsoft.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230519102715.502547082@infradead.org>
-References: <20230519102715.502547082@infradead.org>
+In-Reply-To: <20230519102715.233598176@infradead.org>
+References: <20230519102715.233598176@infradead.org>
 MIME-Version: 1.0
-Message-ID: <168599257836.404.16765871891993348111.tip-bot2@tip-bot2>
+Message-ID: <168599257987.404.1603603912054856425.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,66 +69,153 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     6b10fef09f937433563822f4bb6a2f947176e5a0
-Gitweb:        https://git.kernel.org/tip/6b10fef09f937433563822f4bb6a2f947176e5a0
+Commit-ID:     d16317de9b412aa7bd3598c607112298e36b4352
+Gitweb:        https://git.kernel.org/tip/d16317de9b412aa7bd3598c607112298e36b4352
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 19 May 2023 12:21:03 +02:00
+AuthorDate:    Fri, 19 May 2023 12:20:59 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 05 Jun 2023 21:11:05 +02:00
+CommitterDate: Mon, 05 Jun 2023 21:11:03 +02:00
 
-loongarch: Provide noinstr sched_clock_read()
+seqlock/latch: Provide raw_read_seqcount_latch_retry()
 
-With the intent to provide local_clock_noinstr(), a variant of
-local_clock() that's safe to be called from noinstr code (with the
-assumption that any such code will already be non-preemptible),
-prepare for things by providing a noinstr sched_clock_read() function.
+The read side of seqcount_latch consists of:
 
-Specifically, preempt_enable_*() calls out to schedule(), which upsets
-noinstr validation efforts.
+  do {
+    seq = raw_read_seqcount_latch(&latch->seq);
+    ...
+  } while (read_seqcount_latch_retry(&latch->seq, seq));
+
+which is asymmetric in the raw_ department, and sure enough,
+read_seqcount_latch_retry() includes (explicit) instrumentation where
+raw_read_seqcount_latch() does not.
+
+This inconsistency becomes a problem when trying to use it from
+noinstr code. As such, fix it by renaming and re-implementing
+raw_read_seqcount_latch_retry() without the instrumentation.
+
+Specifically the instrumentation in question is kcsan_atomic_next(0)
+in do___read_seqcount_retry(). Loosing this annotation is not a
+problem because raw_read_seqcount_latch() does not pass through
+kcsan_atomic_next(KCSAN_SEQLOCK_REGION_MAX).
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 Tested-by: Michael Kelley <mikelley@microsoft.com>  # Hyper-V
-Link: https://lore.kernel.org/r/20230519102715.502547082@infradead.org
+Link: https://lore.kernel.org/r/20230519102715.233598176@infradead.org
 ---
- arch/loongarch/include/asm/loongarch.h | 2 +-
- arch/loongarch/kernel/time.c           | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ include/linux/rbtree_latch.h |  2 +-
+ include/linux/seqlock.h      | 15 ++++++++-------
+ kernel/printk/printk.c       |  2 +-
+ kernel/time/sched_clock.c    |  2 +-
+ kernel/time/timekeeping.c    |  4 ++--
+ 5 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/loongarch.h b/arch/loongarch/include/asm/loongarch.h
-index b3323ab..357ef70 100644
---- a/arch/loongarch/include/asm/loongarch.h
-+++ b/arch/loongarch/include/asm/loongarch.h
-@@ -1167,7 +1167,7 @@ static __always_inline void iocsr_write64(u64 val, u32 reg)
+diff --git a/include/linux/rbtree_latch.h b/include/linux/rbtree_latch.h
+index 3d1a9e7..6a0999c 100644
+--- a/include/linux/rbtree_latch.h
++++ b/include/linux/rbtree_latch.h
+@@ -206,7 +206,7 @@ latch_tree_find(void *key, struct latch_tree_root *root,
+ 	do {
+ 		seq = raw_read_seqcount_latch(&root->seq);
+ 		node = __lt_find(key, root, seq & 1, ops->comp);
+-	} while (read_seqcount_latch_retry(&root->seq, seq));
++	} while (raw_read_seqcount_latch_retry(&root->seq, seq));
  
- #ifndef __ASSEMBLY__
- 
--static inline u64 drdtime(void)
-+static __always_inline u64 drdtime(void)
+ 	return node;
+ }
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index 3926e90..987a59d 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -671,9 +671,9 @@ typedef struct {
+  *
+  * Return: sequence counter raw value. Use the lowest bit as an index for
+  * picking which data copy to read. The full counter must then be checked
+- * with read_seqcount_latch_retry().
++ * with raw_read_seqcount_latch_retry().
+  */
+-static inline unsigned raw_read_seqcount_latch(const seqcount_latch_t *s)
++static __always_inline unsigned raw_read_seqcount_latch(const seqcount_latch_t *s)
  {
- 	int rID = 0;
- 	u64 val = 0;
-diff --git a/arch/loongarch/kernel/time.c b/arch/loongarch/kernel/time.c
-index f377e50..c189e03 100644
---- a/arch/loongarch/kernel/time.c
-+++ b/arch/loongarch/kernel/time.c
-@@ -190,9 +190,9 @@ static u64 read_const_counter(struct clocksource *clk)
- 	return drdtime();
+ 	/*
+ 	 * Pairs with the first smp_wmb() in raw_write_seqcount_latch().
+@@ -683,16 +683,17 @@ static inline unsigned raw_read_seqcount_latch(const seqcount_latch_t *s)
  }
  
--static u64 native_sched_clock(void)
-+static noinstr u64 sched_clock_read(void)
+ /**
+- * read_seqcount_latch_retry() - end a seqcount_latch_t read section
++ * raw_read_seqcount_latch_retry() - end a seqcount_latch_t read section
+  * @s:		Pointer to seqcount_latch_t
+  * @start:	count, from raw_read_seqcount_latch()
+  *
+  * Return: true if a read section retry is required, else false
+  */
+-static inline int
+-read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
++static __always_inline int
++raw_read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
  {
--	return read_const_counter(NULL);
-+	return drdtime();
+-	return read_seqcount_retry(&s->seqcount, start);
++	smp_rmb();
++	return unlikely(READ_ONCE(s->seqcount.sequence) != start);
  }
  
- static struct clocksource clocksource_const = {
-@@ -211,7 +211,7 @@ int __init constant_clocksource_init(void)
+ /**
+@@ -752,7 +753,7 @@ read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
+  *			entry = data_query(latch->data[idx], ...);
+  *
+  *		// This includes needed smp_rmb()
+- *		} while (read_seqcount_latch_retry(&latch->seq, seq));
++ *		} while (raw_read_seqcount_latch_retry(&latch->seq, seq));
+  *
+  *		return entry;
+  *	}
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 6a333ad..357a4d1 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -528,7 +528,7 @@ static u64 latched_seq_read_nolock(struct latched_seq *ls)
+ 		seq = raw_read_seqcount_latch(&ls->latch);
+ 		idx = seq & 0x1;
+ 		val = ls->val[idx];
+-	} while (read_seqcount_latch_retry(&ls->latch, seq));
++	} while (raw_read_seqcount_latch_retry(&ls->latch, seq));
  
- 	res = clocksource_register_hz(&clocksource_const, freq);
+ 	return val;
+ }
+diff --git a/kernel/time/sched_clock.c b/kernel/time/sched_clock.c
+index 8464c5a..e8f2fb0 100644
+--- a/kernel/time/sched_clock.c
++++ b/kernel/time/sched_clock.c
+@@ -77,7 +77,7 @@ notrace struct clock_read_data *sched_clock_read_begin(unsigned int *seq)
  
--	sched_clock_register(native_sched_clock, 64, freq);
-+	sched_clock_register(sched_clock_read, 64, freq);
+ notrace int sched_clock_read_retry(unsigned int seq)
+ {
+-	return read_seqcount_latch_retry(&cd.seq, seq);
++	return raw_read_seqcount_latch_retry(&cd.seq, seq);
+ }
  
- 	pr_info("Constant clock source device register\n");
+ unsigned long long notrace sched_clock(void)
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 09d5949..266d028 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -450,7 +450,7 @@ static __always_inline u64 __ktime_get_fast_ns(struct tk_fast *tkf)
+ 		tkr = tkf->base + (seq & 0x01);
+ 		now = ktime_to_ns(tkr->base);
+ 		now += fast_tk_get_delta_ns(tkr);
+-	} while (read_seqcount_latch_retry(&tkf->seq, seq));
++	} while (raw_read_seqcount_latch_retry(&tkf->seq, seq));
  
+ 	return now;
+ }
+@@ -566,7 +566,7 @@ static __always_inline u64 __ktime_get_real_fast(struct tk_fast *tkf, u64 *mono)
+ 		basem = ktime_to_ns(tkr->base);
+ 		baser = ktime_to_ns(tkr->base_real);
+ 		delta = fast_tk_get_delta_ns(tkr);
+-	} while (read_seqcount_latch_retry(&tkf->seq, seq));
++	} while (raw_read_seqcount_latch_retry(&tkf->seq, seq));
+ 
+ 	if (mono)
+ 		*mono = basem + delta;
