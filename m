@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1F5F722A57
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 17:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D3E3722A5C
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 17:09:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234284AbjFEPIp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Jun 2023 11:08:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47902 "EHLO
+        id S234380AbjFEPIt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Jun 2023 11:08:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234092AbjFEPIb (ORCPT
+        with ESMTP id S234149AbjFEPIc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Jun 2023 11:08:31 -0400
+        Mon, 5 Jun 2023 11:08:32 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FFAFF4;
-        Mon,  5 Jun 2023 08:08:30 -0700 (PDT)
-Date:   Mon, 05 Jun 2023 15:08:28 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A9DDE8;
+        Mon,  5 Jun 2023 08:08:31 -0700 (PDT)
+Date:   Mon, 05 Jun 2023 15:08:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685977709;
+        s=2020; t=1685977710;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pHADv+7OJHIno4T2z92NZCkIXEf4MQBrTvQux6oHnC8=;
-        b=gONi7Sz/LG3KaZQTg5rLL6R8Ouiev/MBANiPRmkfQ/j4skcRVCxDSEBJnR08PAbVjS6Y7e
-        3MLeyrnTEGnKH5q4L0EprOKzch+KXNmNhudbEumda55MbI231dEc/9wP9D0IjJ5NWFJID2
-        PW6ENxc1wBshcLniDamwavTkIJZ85H+tXjPhyiGiuxoexP52KEZTUDqoRfkaNhSIg7m2bE
-        ipHLdibporcdpspY7BDPithJdOeKTwqjDswW6CVtW+7udGPJaAEUGpEWKgj1kWFmM4vy4R
-        UyssLAncvDiT8lGp9uuHzK4abYqUSdyoyajI0Pa7s8H941SZMuAKkX0gPJ+ZpQ==
+        bh=OBdeCUFo/IU1pBwgRAOi17itc3qlLbBiaXExgTWjgC8=;
+        b=1+wmDHao8XBiMfVll797Q6pRfFex5htu6uDgDFtq+hPBoX0eRhuwtG8qFmThIHj31UVnDi
+        B7bMA99ZujZkjkSMA6NLOaTymYTbCVc5rWDH2I9/3sk7rbwXOhg9w77cvSKK9dXK5u1i+k
+        Eafy1cV2yhHqDb/OSY0AeG7/Ve4CRgMNv7yVeaHtlNJFROu2mIUQ87zOpT0zJSX9NOhD3l
+        Jj603lay0U72LRFcZWdpe2G+aGXrYACh99lt87f84iOTKXx7C7nmg9pO/0/HaQQNt0y8wc
+        smFXNeaK3k2yqOJJNY5OyqI6nGPGszo16yine/euJoQCtHw/JoT+l2e6w7Sslw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685977709;
+        s=2020e; t=1685977710;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pHADv+7OJHIno4T2z92NZCkIXEf4MQBrTvQux6oHnC8=;
-        b=Hvlypsmq8DED57jrR2753CEClplnHfko9+WXlbt0Teog+84Jmx9+Sn3DsGtR6grWOyI6fp
-        121tocJ9N8EBS6DQ==
+        bh=OBdeCUFo/IU1pBwgRAOi17itc3qlLbBiaXExgTWjgC8=;
+        b=aPaY2BmLV1ycdu7pg56oqpa1lG5CLmSUd+yEmj47BTlSO3z0FhV28k9mTzq6HAMd4nCZM6
+        tOmAeHwKjZuw5jBQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-timers: Document common_clock_get() correctly
+Subject: [tip: timers/core] posix-timers: Split release_posix_timers()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230425183313.409169321@linutronix.de>
-References: <20230425183313.409169321@linutronix.de>
+In-Reply-To: <20230425183313.301432503@linutronix.de>
+References: <20230425183313.301432503@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168597770881.404.18105372994539780742.tip-bot2@tip-bot2>
+Message-ID: <168597770958.404.15665270041131228632.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,113 +67,113 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     13a5dd88bb4c8aec6c3f808f75b73b1fe4705244
-Gitweb:        https://git.kernel.org/tip/13a5dd88bb4c8aec6c3f808f75b73b1fe4705244
+Commit-ID:     e7441aa344046cbdcb402ac173fb163613471097
+Gitweb:        https://git.kernel.org/tip/e7441aa344046cbdcb402ac173fb163613471097
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Apr 2023 20:49:12 +02:00
+AuthorDate:    Tue, 25 Apr 2023 20:49:09 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 05 Jun 2023 17:03:38 +02:00
+CommitterDate: Mon, 05 Jun 2023 17:03:37 +02:00
 
-posix-timers: Document common_clock_get() correctly
+posix-timers: Split release_posix_timers()
 
-Replace another confusing and inaccurate set of comments.
+release_posix_timers() is called for cleaning up both hashed and unhashed
+timers. The cases are differentiated by an argument and the usage is
+hideous.
+
+Seperate the actual free path out and use it for unhashed timers. Provide a
+function for hashed timers.
+
+No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230425183313.409169321@linutronix.de
+Link: https://lore.kernel.org/r/20230425183313.301432503@linutronix.de
 
 ---
- kernel/time/posix-timers.c | 50 ++++++++++++++++++++++---------------
- 1 file changed, 30 insertions(+), 20 deletions(-)
+ kernel/time/posix-timers.c | 31 +++++++++++++++----------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
 diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index c9896ff..663d3c6 100644
+index d8d4cdf..8153374 100644
 --- a/kernel/time/posix-timers.c
 +++ b/kernel/time/posix-timers.c
-@@ -660,20 +660,16 @@ static s64 common_hrtimer_forward(struct k_itimer *timr, ktime_t now)
+@@ -466,20 +466,21 @@ static void k_itimer_rcu_free(struct rcu_head *head)
+ 	kmem_cache_free(posix_timers_cache, tmr);
+ }
+ 
+-#define IT_ID_SET	1
+-#define IT_ID_NOT_SET	0
+-static void release_posix_timer(struct k_itimer *tmr, int it_id_set)
+-{
+-	if (it_id_set) {
+-		spin_lock(&hash_lock, flags);
+-		hlist_del_rcu(&tmr->t_hash);
+-		spin_unlock(&hash_lock, flags);
+-	}
++static void posix_timer_free(struct k_itimer *tmr)
++{
+ 	put_pid(tmr->it_pid);
+ 	sigqueue_free(tmr->sigq);
+ 	call_rcu(&tmr->rcu, k_itimer_rcu_free);
+ }
+ 
++static void posix_timer_unhash_and_free(struct k_itimer *tmr)
++{
++	spin_lock(&hash_lock);
++	hlist_del_rcu(&tmr->t_hash);
++	spin_unlock(&hash_lock);
++	posix_timer_free(tmr);
++}
++
+ static int common_timer_create(struct k_itimer *new_timer)
+ {
+ 	hrtimer_init(&new_timer->it.real.timer, new_timer->it_clock, 0);
+@@ -493,7 +494,6 @@ static int do_timer_create(clockid_t which_clock, struct sigevent *event,
+ 	const struct k_clock *kc = clockid_to_kclock(which_clock);
+ 	struct k_itimer *new_timer;
+ 	int error, new_timer_id;
+-	int it_id_set = IT_ID_NOT_SET;
+ 
+ 	if (!kc)
+ 		return -EINVAL;
+@@ -513,11 +513,10 @@ static int do_timer_create(clockid_t which_clock, struct sigevent *event,
+ 	 */
+ 	new_timer_id = posix_timer_add(new_timer);
+ 	if (new_timer_id < 0) {
+-		error = new_timer_id;
+-		goto out;
++		posix_timer_free(new_timer);
++		return new_timer_id;
+ 	}
+ 
+-	it_id_set = IT_ID_SET;
+ 	new_timer->it_id = (timer_t) new_timer_id;
+ 	new_timer->it_clock = which_clock;
+ 	new_timer->kclock = kc;
+@@ -569,7 +568,7 @@ static int do_timer_create(clockid_t which_clock, struct sigevent *event,
+ 	 * new_timer after the unlock call.
+ 	 */
+ out:
+-	release_posix_timer(new_timer, it_id_set);
++	posix_timer_unhash_and_free(new_timer);
+ 	return error;
+ }
+ 
+@@ -1057,7 +1056,7 @@ retry_delete:
+ 	WRITE_ONCE(timer->it_signal, NULL);
+ 
+ 	unlock_timer(timer, flags);
+-	release_posix_timer(timer, IT_ID_SET);
++	posix_timer_unhash_and_free(timer);
+ 	return 0;
+ }
+ 
+@@ -1109,7 +1108,7 @@ retry_delete:
+ 	WRITE_ONCE(timer->it_signal, NULL);
+ 
+ 	spin_unlock_irqrestore(&timer->it_lock, flags);
+-	release_posix_timer(timer, IT_ID_SET);
++	posix_timer_unhash_and_free(timer);
  }
  
  /*
-- * Get the time remaining on a POSIX.1b interval timer.  This function
-- * is ALWAYS called with spin_lock_irq on the timer, thus it must not
-- * mess with irq.
-+ * Get the time remaining on a POSIX.1b interval timer.
-  *
-- * We have a couple of messes to clean up here.  First there is the case
-- * of a timer that has a requeue pending.  These timers should appear to
-- * be in the timer list with an expiry as if we were to requeue them
-- * now.
-+ * Two issues to handle here:
-  *
-- * The second issue is the SIGEV_NONE timer which may be active but is
-- * not really ever put in the timer list (to save system resources).
-- * This timer may be expired, and if so, we will do it here.  Otherwise
-- * it is the same as a requeue pending timer WRT to what we should
-- * report.
-+ *  1) The timer has a requeue pending. The return value must appear as
-+ *     if the timer has been requeued right now.
-+ *
-+ *  2) The timer is a SIGEV_NONE timer. These timers are never enqueued
-+ *     into the hrtimer queue and therefore never expired. Emulate expiry
-+ *     here taking #1 into account.
-  */
- void common_timer_get(struct k_itimer *timr, struct itimerspec64 *cur_setting)
- {
-@@ -689,8 +685,12 @@ void common_timer_get(struct k_itimer *timr, struct itimerspec64 *cur_setting)
- 		cur_setting->it_interval = ktime_to_timespec64(iv);
- 	} else if (!timr->it_active) {
- 		/*
--		 * SIGEV_NONE oneshot timers are never queued. Check them
--		 * below.
-+		 * SIGEV_NONE oneshot timers are never queued and therefore
-+		 * timr->it_active is always false. The check below
-+		 * vs. remaining time will handle this case.
-+		 *
-+		 * For all other timers there is nothing to update here, so
-+		 * return.
- 		 */
- 		if (!sig_none)
- 			return;
-@@ -699,18 +699,29 @@ void common_timer_get(struct k_itimer *timr, struct itimerspec64 *cur_setting)
- 	now = kc->clock_get_ktime(timr->it_clock);
- 
- 	/*
--	 * When a requeue is pending or this is a SIGEV_NONE timer move the
--	 * expiry time forward by intervals, so expiry is > now.
-+	 * If this is an interval timer and either has requeue pending or
-+	 * is a SIGEV_NONE timer move the expiry time forward by intervals,
-+	 * so expiry is > now.
- 	 */
- 	if (iv && (timr->it_requeue_pending & REQUEUE_PENDING || sig_none))
- 		timr->it_overrun += kc->timer_forward(timr, now);
- 
- 	remaining = kc->timer_remaining(timr, now);
--	/* Return 0 only, when the timer is expired and not pending */
-+	/*
-+	 * As @now is retrieved before a possible timer_forward() and
-+	 * cannot be reevaluated by the compiler @remaining is based on the
-+	 * same @now value. Therefore @remaining is consistent vs. @now.
-+	 *
-+	 * Consequently all interval timers, i.e. @iv > 0, cannot have a
-+	 * remaining time <= 0 because timer_forward() guarantees to move
-+	 * them forward so that the next timer expiry is > @now.
-+	 */
- 	if (remaining <= 0) {
- 		/*
--		 * A single shot SIGEV_NONE timer must return 0, when
--		 * it is expired !
-+		 * A single shot SIGEV_NONE timer must return 0, when it is
-+		 * expired! Timers which have a real signal delivery mode
-+		 * must return a remaining time greater than 0 because the
-+		 * signal has not yet been delivered.
- 		 */
- 		if (!sig_none)
- 			cur_setting->it_value.tv_nsec = 1;
-@@ -719,7 +730,6 @@ void common_timer_get(struct k_itimer *timr, struct itimerspec64 *cur_setting)
- 	}
- }
- 
--/* Get the time remaining on a POSIX.1b interval timer. */
- static int do_timer_gettime(timer_t timer_id,  struct itimerspec64 *setting)
- {
- 	struct k_itimer *timr;
