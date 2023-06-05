@@ -2,61 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5A887228AA
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 16:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D75EC722887
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 16:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232630AbjFEOUo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Jun 2023 10:20:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40484 "EHLO
+        id S229521AbjFEOPc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Jun 2023 10:15:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234911AbjFEOPJ (ORCPT
+        with ESMTP id S234900AbjFEOPJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 5 Jun 2023 10:15:09 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC51C10F9;
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3308E10EF;
         Mon,  5 Jun 2023 07:14:43 -0700 (PDT)
 Date:   Mon, 05 Jun 2023 14:14:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1685974482;
+        s=2020; t=1685974481;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KDsnAbFl/koTE0Dl0BN3mQjS+9ciwBGJ3f8Zlh4UZLQ=;
-        b=qK5R6FrY9BZwV5VW7Zo4ZQD2/2RSZ3xMrI3pvRI/CL3mbJ8jQ2yu/iQhz9J5xsDP06D6aN
-        n67lXeM7aHSqGV3tCc15bxAFSSkMdiovK5Tj6pIGRxbifi7uVm02YWfqslOQNZe/qdKYom
-        Pn3YSrH4/UBUQzCr3hUgk35HxCIX+w7AgimXdt+XEAr5ibvrcKpjwsuV3uimoQLLHPan4V
-        GPgAUEhqwbnp8Vjd2gkJRyST6qN19k+WW6+5mv78/oEOalEMrfkypqqgq+WGrWxfzHiGUJ
-        p/2C29Gy/ILNHXreYvMuSmGXR02064sa0Hc/aB1ebe4EG029k/RrlnpYbCAXSg==
+        bh=XALBQt2T10eow7gTU9dXEDATIELffe/oUXyAi3OyFRY=;
+        b=szruDV4LC6CbHHbwV4g/9A1Yz+8vFXHuIYVRkEAusHEg1uGZZAEq0ZZI2I4tSJMb7fyx7H
+        a9zPirSjlSVdhgHCAX/vP8fFfW5gT0FOu5ol3G93fwRbQL1wNs3B+h7/tnbttwPLw5Mtn1
+        RAK/Wx60ak/SEPo9rRqMtrv9zrH+evztoPNLS9u/OfB27I4MCUq8OZa8y/mXzpztmn7qT1
+        X8LJn92NHEQx90yXXURtqvU2yhSeyAEZu3FJ8nd8zL4dWUg2QiEDyupmVGIMFyKOXUSHz/
+        UmYtRxc/wEP9Gn5IcsM4g9cdbBZa6UOrd8vKt8rjxMcp2OOmu//xDpr1Rhhoag==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1685974482;
+        s=2020e; t=1685974481;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KDsnAbFl/koTE0Dl0BN3mQjS+9ciwBGJ3f8Zlh4UZLQ=;
-        b=OMuRKr3/W8bytphTE1gaGXa63Er0Z+TuyB4b+e2Ifh0fDyNhdJwbjRZC+ZcrRJrnD6GkYn
-        Zocc6eAsmBJyQuAQ==
-From:   "tip-bot2 for Muralidhara M K" <tip-bot2@linutronix.de>
+        bh=XALBQt2T10eow7gTU9dXEDATIELffe/oUXyAi3OyFRY=;
+        b=BDM5uFeOz70J8MU0YGY0rkdBKflC8lcnSIGJwBA3RAB8F/Vizq1MrTyyRMNJXzJtR6xXph
+        66oH5AAjiqOsF8Dw==
+From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] EDAC/amd64: Document heterogeneous system enumeration
-Cc:     Muralidhara M K <muralidhara.mk@amd.com>,
-        Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
+Subject: [tip: ras/core] EDAC/amd64: Cache and use GPU node map
+Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
+        Muralidhara M K <muralidhara.mk@amd.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230515113537.1052146-4-muralimk@amd.com>
-References: <20230515113537.1052146-4-muralimk@amd.com>
+In-Reply-To: <20230515113537.1052146-6-muralimk@amd.com>
+References: <20230515113537.1052146-6-muralimk@amd.com>
 MIME-Version: 1.0
-Message-ID: <168597448189.404.1787278187429193729.tip-bot2@tip-bot2>
+Message-ID: <168597448108.404.2973843984211504897.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -69,180 +68,193 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     4f3fa571a48feb56e7ed1978a27983b89dd2107a
-Gitweb:        https://git.kernel.org/tip/4f3fa571a48feb56e7ed1978a27983b89dd=
-2107a
-Author:        Muralidhara M K <muralidhara.mk@amd.com>
-AuthorDate:    Mon, 15 May 2023 11:35:35=20
+Commit-ID:     1b474896156b1b30e37dcd1f98e79875cf505090
+Gitweb:        https://git.kernel.org/tip/1b474896156b1b30e37dcd1f98e79875cf505090
+Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+AuthorDate:    Mon, 15 May 2023 11:35:37 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 05 Jun 2023 12:27:15 +02:00
+CommitterDate: Mon, 05 Jun 2023 12:27:21 +02:00
 
-EDAC/amd64: Document heterogeneous system enumeration
+EDAC/amd64: Cache and use GPU node map
 
-Document High Bandwidth Memory (HBM) and AMD heterogeneous system
-topology and enumeration.
+AMD systems have historically provided an "AMD Node ID" that is a unique
+identifier for each die in a multi-die package. This was associated with
+a unique instance of the AMD Northbridge on a legacy system. And now it
+is associated with a unique instance of the AMD Data Fabric on modern
+systems. Each instance is referred to as a "Node"; this is an
+AMD-specific term not to be confused with NUMA nodes.
 
-  [ bp: Simplify and de-marketize, unify, massage. ]
+The data fabric provides a number of interfaces accessible through a set
+of functions in a single PCI device. There is one PCI device per Data
+Fabric (AMD Node), and multi-die systems will see multiple such PCI
+devices. The AMD Node ID matches a Node's position in the PCI hierarchy.
+For example, the Node 0 is accessed using the first PCI device, Node 1
+is accessed using the second, and so on. A logical CPU can find its AMD
+Node ID using CPUID. Furthermore, the AMD Node ID is used within the
+hardware fabric, so it is not purely a logical value.
 
-Signed-off-by: Muralidhara M K <muralidhara.mk@amd.com>
-Co-developed-by: Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>
-Signed-off-by: Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>
+Heterogeneous AMD systems, with a CPU Data Fabric connected to GPU data
+fabrics, follow a similar convention. Each CPU and GPU die has a unique
+AMD Node ID value, and each Node ID corresponds to PCI devices in
+sequential order.
+
+However, there are two caveats:
+1) GPUs are not x86, and they don't have CPUID to read their AMD Node ID
+like on CPUs. This means the value is more implicit and based on PCI
+enumeration and hardware-specifics.
+2) There is a gap in the hardware values for AMD Node IDs. Values 0-7
+are for CPUs and values 8-15 are for GPUs.
+
+For example, a system with one CPU die and two GPUs dies will have the
+following values:
+  CPU0 -> AMD Node 0
+  GPU0 -> AMD Node 8
+  GPU1 -> AMD Node 9
+
+EDAC is the only subsystem where this has a practical effect. Memory
+errors on AMD systems are commonly reported through MCA to a CPU on the
+local AMD Node. The error information is passed along to EDAC where the
+AMD EDAC modules use the AMD Node ID of reporting logical CPU to access
+AMD Node information.
+
+However, memory errors from a GPU die will be reported to the CPU die.
+Therefore, the logical CPU's AMD Node ID can't be used since it won't
+match the AMD Node ID of the GPU die. The AMD Node ID of the GPU die is
+provided as part of the MCA information, and the value will match the
+hardware enumeration (e.g. 8-15).
+
+Handle this situation by discovering GPU dies the same way as CPU dies
+in the AMD NB code. But do a "node id" fixup in AMD64 EDAC where it's
+needed.
+
+The GPU data fabrics provide a register with the base AMD Node ID for
+their local "type", i.e. GPU data fabric. This value is the same for all
+fabrics of the same type in a system.
+
+Read and cache the base AMD Node ID from one of the GPU devices during
+module initialization. Use this to fixup the "node id" when reporting
+memory errors at runtime.
+
 Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Co-developed-by: Muralidhara M K <muralidhara.mk@amd.com>
+Signed-off-by: Muralidhara M K <muralidhara.mk@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230515113537.1052146-4-muralimk@amd.com
+Link: https://lore.kernel.org/r/20230515113537.1052146-6-muralimk@amd.com
 ---
- Documentation/driver-api/edac.rst | 120 +++++++++++++++++++++++++++++-
- 1 file changed, 120 insertions(+)
+ drivers/edac/amd64_edac.c | 76 ++++++++++++++++++++++++++++++++++++++-
+ drivers/edac/amd64_edac.h |  1 +-
+ 2 files changed, 77 insertions(+)
 
-diff --git a/Documentation/driver-api/edac.rst b/Documentation/driver-api/eda=
-c.rst
-index b8c742a..f4f044b 100644
---- a/Documentation/driver-api/edac.rst
-+++ b/Documentation/driver-api/edac.rst
-@@ -106,6 +106,16 @@ will occupy those chip-select rows.
- This term is avoided because it is unclear when needing to distinguish
- between chip-select rows and socket sets.
-=20
-+* High Bandwidth Memory (HBM)
+diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
+index 28155b0..ef3e50f 100644
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -975,6 +975,74 @@ static int sys_addr_to_csrow(struct mem_ctl_info *mci, u64 sys_addr)
+ 	return csrow;
+ }
+ 
++/*
++ * See AMD PPR DF::LclNodeTypeMap
++ *
++ * This register gives information for nodes of the same type within a system.
++ *
++ * Reading this register from a GPU node will tell how many GPU nodes are in the
++ * system and what the lowest AMD Node ID value is for the GPU nodes. Use this
++ * info to fixup the Linux logical "Node ID" value set in the AMD NB code and EDAC.
++ */
++struct local_node_map {
++	u16 node_count;
++	u16 base_node_id;
++} gpu_node_map;
 +
-+HBM is a new memory type with low power consumption and ultra-wide
-+communication lanes. It uses vertically stacked memory chips (DRAM dies)
-+interconnected by microscopic wires called "through-silicon vias," or
-+TSVs.
++#define PCI_DEVICE_ID_AMD_MI200_DF_F1		0x14d1
++#define REG_LOCAL_NODE_TYPE_MAP			0x144
 +
-+Several stacks of HBM chips connect to the CPU or GPU through an ultra-fast
-+interconnect called the "interposer". Therefore, HBM's characteristics
-+are nearly indistinguishable from on-chip integrated RAM.
-=20
- Memory Controllers
- ------------------
-@@ -176,3 +186,113 @@ nodes::
- 	the L1 and L2 directories would be "edac_device_block's"
-=20
- .. kernel-doc:: drivers/edac/edac_device.h
++/* Local Node Type Map (LNTM) fields */
++#define LNTM_NODE_COUNT				GENMASK(27, 16)
++#define LNTM_BASE_NODE_ID			GENMASK(11, 0)
 +
++static int gpu_get_node_map(void)
++{
++	struct pci_dev *pdev;
++	int ret;
++	u32 tmp;
 +
-+Heterogeneous system support
-+----------------------------
++	/*
++	 * Node ID 0 is reserved for CPUs.
++	 * Therefore, a non-zero Node ID means we've already cached the values.
++	 */
++	if (gpu_node_map.base_node_id)
++		return 0;
 +
-+An AMD heterogeneous system is built by connecting the data fabrics of
-+both CPUs and GPUs via custom xGMI links. Thus, the data fabric on the
-+GPU nodes can be accessed the same way as the data fabric on CPU nodes.
++	pdev = pci_get_device(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_DF_F1, NULL);
++	if (!pdev) {
++		ret = -ENODEV;
++		goto out;
++	}
 +
-+The MI200 accelerators are data center GPUs. They have 2 data fabrics,
-+and each GPU data fabric contains four Unified Memory Controllers (UMC).
-+Each UMC contains eight channels. Each UMC channel controls one 128-bit
-+HBM2e (2GB) channel (equivalent to 8 X 2GB ranks).  This creates a total
-+of 4096-bits of DRAM data bus.
++	ret = pci_read_config_dword(pdev, REG_LOCAL_NODE_TYPE_MAP, &tmp);
++	if (ret)
++		goto out;
 +
-+While the UMC is interfacing a 16GB (8high X 2GB DRAM) HBM stack, each UMC
-+channel is interfacing 2GB of DRAM (represented as rank).
++	gpu_node_map.node_count = FIELD_GET(LNTM_NODE_COUNT, tmp);
++	gpu_node_map.base_node_id = FIELD_GET(LNTM_BASE_NODE_ID, tmp);
 +
-+Memory controllers on AMD GPU nodes can be represented in EDAC thusly:
++out:
++	pci_dev_put(pdev);
++	return ret;
++}
 +
-+	GPU DF / GPU Node -> EDAC MC
-+	GPU UMC           -> EDAC CSROW
-+	GPU UMC channel   -> EDAC CHANNEL
++static int fixup_node_id(int node_id, struct mce *m)
++{
++	/* MCA_IPID[InstanceIdHi] give the AMD Node ID for the bank. */
++	u8 nid = (m->ipid >> 44) & 0xF;
 +
-+For example: a heterogeneous system with 1 AMD CPU is connected to
-+4 MI200 (Aldebaran) GPUs using xGMI.
++	if (smca_get_bank_type(m->extcpu, m->bank) != SMCA_UMC_V2)
++		return node_id;
 +
-+Some more heterogeneous hardware details:
++	/* Nodes below the GPU base node are CPU nodes and don't need a fixup. */
++	if (nid < gpu_node_map.base_node_id)
++		return node_id;
 +
-+- The CPU UMC (Unified Memory Controller) is mostly the same as the GPU UMC.
-+  They have chip selects (csrows) and channels. However, the layouts are dif=
-ferent
-+  for performance, physical layout, or other reasons.
-+- CPU UMCs use 1 channel, In this case UMC =3D EDAC channel. This follows the
-+  marketing speak. CPU has X memory channels, etc.
-+- CPU UMCs use up to 4 chip selects, So UMC chip select =3D EDAC CSROW.
-+- GPU UMCs use 1 chip select, So UMC =3D EDAC CSROW.
-+- GPU UMCs use 8 channels, So UMC channel =3D EDAC channel.
++	/* Convert the hardware-provided AMD Node ID to a Linux logical one. */
++	return nid - gpu_node_map.base_node_id + 1;
++}
 +
-+The EDAC subsystem provides a mechanism to handle AMD heterogeneous
-+systems by calling system specific ops for both CPUs and GPUs.
+ /* Protect the PCI config register pairs used for DF indirect access. */
+ static DEFINE_MUTEX(df_indirect_mutex);
+ 
+@@ -3001,6 +3069,8 @@ static void decode_umc_error(int node_id, struct mce *m)
+ 	struct err_info err;
+ 	u64 sys_addr;
+ 
++	node_id = fixup_node_id(node_id, m);
 +
-+AMD GPU nodes are enumerated in sequential order based on the PCI
-+hierarchy, and the first GPU node is assumed to have a Node ID value
-+following those of the CPU nodes after latter are fully populated::
+ 	mci = edac_mc_find(node_id);
+ 	if (!mci)
+ 		return;
+@@ -3888,6 +3958,12 @@ static void gpu_prep_chip_selects(struct amd64_pvt *pvt)
+ 
+ static int gpu_hw_info_get(struct amd64_pvt *pvt)
+ {
++	int ret;
 +
-+	$ ls /sys/devices/system/edac/mc/
-+		mc0   - CPU MC node 0
-+		mc1  |
-+		mc2  |- GPU card[0] =3D> node 0(mc1), node 1(mc2)
-+		mc3  |
-+		mc4  |- GPU card[1] =3D> node 0(mc3), node 1(mc4)
-+		mc5  |
-+		mc6  |- GPU card[2] =3D> node 0(mc5), node 1(mc6)
-+		mc7  |
-+		mc8  |- GPU card[3] =3D> node 0(mc7), node 1(mc8)
++	ret = gpu_get_node_map();
++	if (ret)
++		return ret;
 +
-+For example, a heterogeneous system with one AMD CPU is connected to
-+four MI200 (Aldebaran) GPUs using xGMI. This topology can be represented
-+via the following sysfs entries::
-+
-+	/sys/devices/system/edac/mc/..
-+
-+	CPU			# CPU node
-+	=E2=94=9C=E2=94=80=E2=94=80 mc 0
-+
-+	GPU Nodes are enumerated sequentially after CPU nodes have been populated
-+	GPU card 1		# Each MI200 GPU has 2 nodes/mcs
-+	=E2=94=9C=E2=94=80=E2=94=80 mc 1		# GPU node 0 =3D=3D mc1, Each MC node has=
- 4 UMCs/CSROWs
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 csrow 0		# UMC 0
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 0	# Each UMC has 8 channels
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 1   # size of each channel is 2 GB, so each UMC has 16 GB
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 2
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 3
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 4
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 5
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 6
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 7
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 csrow 1		# UMC 1
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 0
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 7
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..		..
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 csrow 3		# UMC 3
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 0
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 cha=
-nnel 7
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 rank 0
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..		..
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 rank 31		# total 32 ranks=
-/dimms from 4 UMCs
-+	=E2=94=9C
-+	=E2=94=9C=E2=94=80=E2=94=80 mc 2		# GPU node 1 =3D=3D mc2
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..		# each GPU has total =
-64 GB
-+
-+	GPU card 2
-+	=E2=94=9C=E2=94=80=E2=94=80 mc 3
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
-+	=E2=94=9C=E2=94=80=E2=94=80 mc 4
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
-+
-+	GPU card 3
-+	=E2=94=9C=E2=94=80=E2=94=80 mc 5
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
-+	=E2=94=9C=E2=94=80=E2=94=80 mc 6
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
-+
-+	GPU card 4
-+	=E2=94=9C=E2=94=80=E2=94=80 mc 7
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
-+	=E2=94=9C=E2=94=80=E2=94=80 mc 8
-+	=E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 ..
+ 	pvt->umc = kcalloc(pvt->max_mcs, sizeof(struct amd64_umc), GFP_KERNEL);
+ 	if (!pvt->umc)
+ 		return -ENOMEM;
+diff --git a/drivers/edac/amd64_edac.h b/drivers/edac/amd64_edac.h
+index e84fe0d..a9d6290 100644
+--- a/drivers/edac/amd64_edac.h
++++ b/drivers/edac/amd64_edac.h
+@@ -16,6 +16,7 @@
+ #include <linux/slab.h>
+ #include <linux/mmzone.h>
+ #include <linux/edac.h>
++#include <linux/bitfield.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/msr.h>
+ #include "edac_module.h"
