@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DA15722A52
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 17:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D24EC722A58
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jun 2023 17:09:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233575AbjFEPIm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Jun 2023 11:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47924 "EHLO
+        id S229489AbjFEPIq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Jun 2023 11:08:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234060AbjFEPIa (ORCPT
+        with ESMTP id S234087AbjFEPIb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Jun 2023 11:08:30 -0400
+        Mon, 5 Jun 2023 11:08:31 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD030E8;
-        Mon,  5 Jun 2023 08:08:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C12F3;
+        Mon,  5 Jun 2023 08:08:30 -0700 (PDT)
 Date:   Mon, 05 Jun 2023 15:08:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1685977708;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hXQRYqtlpQDTr+SKUec6AAcG5d95nzBgx1vMPLRNdJQ=;
-        b=0C8QW2+/Zywgl/pf53SipFLPMiPLxVkfGL8QNfvhXgIkTRdGPqSWqrrkQ42g990+I89HSc
-        UsEd3hzhf0gPXDsoZwRHYouiTTFtQLyZIQ+TEZuy3K+hk2EpykIa7I59cPQrRtS+/WxhBe
-        wyzegNICBYNeYiGFZgos7mAxF3eTtqixUxSkDoakUk4EDI1cza7MEwl3Nch0kXC6OTi763
-        og6l+AoWOvbw5uTWyw5exs7JEjKc7vLc9O/mW/j6rGaK3VpyixfS/xFKvsh2WMEhiOHcHW
-        wQwwepYQMaaLwCToFnF6b0v+9Aa697YrCVov0I6maqCHBMwG2xAjTSeLsweLbw==
+        bh=xau9hnP+xB/FyBTuzfYxEESPSpayrKGs3N53kYahp90=;
+        b=WXTNLZEx6XNVozuyardP+0hnkhacI/FxbQ38zclWzJfChtI7ByMLNGTf4dbmm9unoPQKrE
+        BZbpKcxj5gE+LtlSQjK6QJ38M3FerjasX+WKW2CyPO1CGFP7XHqHs4+bhSzGgDqhqOLq34
+        4f0d7Q/a1C0bySi/t0Up3a8/DkEVeQqNDaosWX3Ui2GyTmHltSTqlxvQVOcUDqEWI494zq
+        U+nTuAYuqTfk0r1TlrGG8TxYgUsMrBlEv2LSKMYgPohKksBkCXy3zmbuZDO4pDEqI1YISI
+        JmYF6ykzcr5idG8LWgyDCoZUdNr8fK1TG3JUhV5JVbzgQM2RQo8jmFJOTgBKcg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1685977708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hXQRYqtlpQDTr+SKUec6AAcG5d95nzBgx1vMPLRNdJQ=;
-        b=K3LMWL28exF4Rx49bkKmLK3BhaAHtMm0kQ8CE5gKXv7f6gSZ5/sPHSbBMjrBCBxKtlNCz/
-        PEzE9SNHkXwYuTBg==
+        bh=xau9hnP+xB/FyBTuzfYxEESPSpayrKGs3N53kYahp90=;
+        b=BIllHdgV3oA2aoc9HUFKFp5qBH2W2Xy4Ts62MoHlfV4TRSVn+0AUnqgpZ7ytjwtE9CRSqZ
+        pXIZWUJArFhL9/Bw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-timers: Document sys_clock_settime()
- permissions in place
+Subject: [tip: timers/core] posix-timers: Document sys_clock_getoverrun()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230425183313.514700292@linutronix.de>
-References: <20230425183313.514700292@linutronix.de>
+In-Reply-To: <20230425183313.462051641@linutronix.de>
+References: <20230425183313.462051641@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168597770811.404.16869702165621785153.tip-bot2@tip-bot2>
+Message-ID: <168597770840.404.11783761312188039507.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,54 +67,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     6a0fc851449cdcad42f96e00854af4ac36a4b357
-Gitweb:        https://git.kernel.org/tip/6a0fc851449cdcad42f96e00854af4ac36a4b357
+Commit-ID:     1adc8de86737c3d134c2da5ed8e56c2de4729923
+Gitweb:        https://git.kernel.org/tip/1adc8de86737c3d134c2da5ed8e56c2de4729923
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Apr 2023 20:49:16 +02:00
+AuthorDate:    Tue, 25 Apr 2023 20:49:14 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 05 Jun 2023 17:03:38 +02:00
 
-posix-timers: Document sys_clock_settime() permissions in place
+posix-timers: Document sys_clock_getoverrun()
 
-The documentation of sys_clock_settime() permissions is at a random place
-and mostly word salad.
-
-Remove it and add a concise comment into sys_clock_settime().
+Document the syscall in detail and with coherent sentences.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230425183313.514700292@linutronix.de
+Link: https://lore.kernel.org/r/20230425183313.462051641@linutronix.de
 
 ---
- kernel/time/posix-timers.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ kernel/time/posix-timers.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 67c1d4d..9d99d4b 100644
+index 663d3c6..67c1d4d 100644
 --- a/kernel/time/posix-timers.c
 +++ b/kernel/time/posix-timers.c
-@@ -74,13 +74,6 @@ static const struct k_clock clock_realtime, clock_monotonic;
-  *	    following: 1.) The k_itimer struct (sched.h) is used for
-  *	    the timer.  2.) The list, it_lock, it_clock, it_id and
-  *	    it_pid fields are not modified by timer code.
-- *
-- * Permissions: It is assumed that the clock_settime() function defined
-- *	    for each clock will take care of permission checks.	 Some
-- *	    clocks may be set able by any user (i.e. local process
-- *	    clocks) others not.	 Currently the only set able clock we
-- *	    have is CLOCK_REALTIME and its high res counter part, both of
-- *	    which we beg off on and pass to do_sys_settimeofday().
+@@ -783,14 +783,23 @@ SYSCALL_DEFINE2(timer_gettime32, timer_t, timer_id,
+ 
+ #endif
+ 
+-/*
+- * Get the number of overruns of a POSIX.1b interval timer.  This is to
+- * be the overrun of the timer last delivered.  At the same time we are
+- * accumulating overruns on the next timer.  The overrun is frozen when
+- * the signal is delivered, either at the notify time (if the info block
+- * is not queued) or at the actual delivery time (as we are informed by
+- * the call back to posixtimer_rearm().  So all we need to do is
+- * to pick up the frozen overrun.
++/**
++ * sys_timer_getoverrun - Get the number of overruns of a POSIX.1b interval timer
++ * @timer_id:	The timer ID which identifies the timer
++ *
++ * The "overrun count" of a timer is one plus the number of expiration
++ * intervals which have elapsed between the first expiry, which queues the
++ * signal and the actual signal delivery. On signal delivery the "overrun
++ * count" is calculated and cached, so it can be returned directly here.
++ *
++ * As this is relative to the last queued signal the returned overrun count
++ * is meaningless outside of the signal delivery path and even there it
++ * does not accurately reflect the current state when user space evaluates
++ * it.
++ *
++ * Returns:
++ *	-EINVAL		@timer_id is invalid
++ *	1..INT_MAX	The number of overruns related to the last delivered signal
   */
- static struct k_itimer *__lock_timer(timer_t timer_id, unsigned long *flags);
- 
-@@ -1159,6 +1152,10 @@ SYSCALL_DEFINE2(clock_settime, const clockid_t, which_clock,
- 	if (get_timespec64(&new_tp, tp))
- 		return -EFAULT;
- 
-+	/*
-+	 * Permission checks have to be done inside the clock specific
-+	 * setter callback.
-+	 */
- 	return kc->clock_set(which_clock, &new_tp);
- }
- 
+ SYSCALL_DEFINE1(timer_getoverrun, timer_t, timer_id)
+ {
