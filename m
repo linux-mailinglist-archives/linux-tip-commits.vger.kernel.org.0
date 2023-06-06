@@ -2,42 +2,64 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E29C723B11
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Jun 2023 10:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A9AC723B2E
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Jun 2023 10:18:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232496AbjFFINz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 6 Jun 2023 04:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43262 "EHLO
+        id S235842AbjFFISs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 6 Jun 2023 04:18:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231278AbjFFINz (ORCPT
+        with ESMTP id S235987AbjFFISq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 6 Jun 2023 04:13:55 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 25D30C7;
-        Tue,  6 Jun 2023 01:13:53 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8325CAB6;
-        Tue,  6 Jun 2023 01:14:38 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.23.98])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 191CD3F793;
-        Tue,  6 Jun 2023 01:13:51 -0700 (PDT)
-Date:   Tue, 6 Jun 2023 09:13:44 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Michael Kelley <mikelley@microsoft.com>, x86@kernel.org
-Subject: Re: [tip: sched/core] arm64/arch_timer: Provide noinstr
- sched_clock_read() functions
-Message-ID: <ZH7quID+xqcT4tLi@FVFF77S0Q05N>
-References: <20230519102715.435618812@infradead.org>
- <168599257881.404.5741830687039428221.tip-bot2@tip-bot2>
- <20230606080614.GB905437@hirez.programming.kicks-ass.net>
+        Tue, 6 Jun 2023 04:18:46 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5117518E;
+        Tue,  6 Jun 2023 01:18:44 -0700 (PDT)
+Date:   Tue, 06 Jun 2023 08:18:42 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1686039523;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=loGpNdhbZ2dJUcxifiO+fpK1K/ID5CqdSLfcmB+jq1I=;
+        b=GgogaaHTQPfiKBzoSVKpwHt3PCTaE/7QDSKf/NQVSKnZo/uN5n+xYflJUIMTAGQaMW05Ej
+        2i4F9QugWfvxYQZneN7kJHa2SCrAN9h7NKv6gw6DwuApmM8eb+mDz4ohBFjw9DKtxtO9a3
+        Ulyl5+N/zRRD1TQ+N/f3fuG+qwIv/h/B6eb7OBSH02dNbh9YoVIxu3jgToVo3OY2mIuL+0
+        0Mzn0s0UlC6d/3Fqb9elHsDTn2ayQ024kKNSWCEY0bHxdlsGYmEUwBsvGLoiW9SUqAPBtT
+        JjkVWb+g+KjOUdDnKi3/KXoWXnNptQ6iXtSdO74WdandLCUWhCgElA7l6gtxNg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1686039523;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=loGpNdhbZ2dJUcxifiO+fpK1K/ID5CqdSLfcmB+jq1I=;
+        b=vzW2RcWE4SkiQ8S83SYsZJcIrtz/4zjo+CoCkV4ye+G6ARa5tSvSk1f/LjWyUGyiHPxbET
+        Afzvs7Qlu19CFvDA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/core] perf: Re-instate the linear PMU search
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230605101401.GL38236@hirez.programming.kicks-ass.net>
+References: <20230605101401.GL38236@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230606080614.GB905437@hirez.programming.kicks-ass.net>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Message-ID: <168603952210.404.6172864840237247274.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,64 +67,88 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, Jun 06, 2023 at 10:06:14AM +0200, Peter Zijlstra wrote:
-> On Mon, Jun 05, 2023 at 07:16:18PM -0000, tip-bot2 for Peter Zijlstra wrote:
-> > @@ -753,14 +771,14 @@ static int arch_timer_set_next_event_phys(unsigned long evt,
-> >  	return 0;
-> >  }
-> >  
-> > -static u64 arch_counter_get_cnt_mem(struct arch_timer *t, int offset_lo)
-> > +static noinstr u64 arch_counter_get_cnt_mem(struct arch_timer *t, int offset_lo)
-> >  {
-> >  	u32 cnt_lo, cnt_hi, tmp_hi;
-> >  
-> >  	do {
-> > -		cnt_hi = readl_relaxed(t->base + offset_lo + 4);
-> > -		cnt_lo = readl_relaxed(t->base + offset_lo);
-> > -		tmp_hi = readl_relaxed(t->base + offset_lo + 4);
-> > +		cnt_hi = __raw_readl(t->base + offset_lo + 4);
-> > +		cnt_lo = __raw_readl(t->base + offset_lo);
-> > +		tmp_hi = __raw_readl(t->base + offset_lo + 4);
-> >  	} while (cnt_hi != tmp_hi);
-> >  
-> >  	return ((u64) cnt_hi << 32) | cnt_lo;
-> 
-> Mark noted that this looses the byteswap :/
-> 
-> 
-> ---
-> Subject: arm64/arch_timer: Fix MMIO byteswap
-> 
-> The readl_relaxed() to __raw_readl() change meant to loose the
-> instrumentation, but also (inadvertently) lost the byteswap.
-> 
-> Fixes: 24ee7607b286 ("arm64/arch_timer: Provide noinstr sched_clock_read() functions")
-> Reported-by: Mark Rutland <mark.rutland@arm.com>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
-> diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
-> index b23d23b033cc..e733a2a1927a 100644
-> --- a/drivers/clocksource/arm_arch_timer.c
-> +++ b/drivers/clocksource/arm_arch_timer.c
-> @@ -776,9 +776,9 @@ static noinstr u64 arch_counter_get_cnt_mem(struct arch_timer *t, int offset_lo)
->  	u32 cnt_lo, cnt_hi, tmp_hi;
->  
->  	do {
-> -		cnt_hi = __raw_readl(t->base + offset_lo + 4);
-> -		cnt_lo = __raw_readl(t->base + offset_lo);
-> -		tmp_hi = __raw_readl(t->base + offset_lo + 4);
-> +		cnt_hi = __le32_to_cpu((__le32 __force)__raw_readl(t->base + offset_lo + 4));
-> +		cnt_lo = __le32_to_cpu((__le32 __force)__raw_readl(t->base + offset_lo));
-> +		tmp_hi = __le32_to_cpu((__le32 __force)__raw_readl(t->base + offset_lo + 4));
->  	} while (cnt_hi != tmp_hi);
+The following commit has been merged into the perf/core branch of tip:
 
-This LGTM, so FWIW:
+Commit-ID:     228020b490eda9133c9cb6f59a5ee1278d8c463f
+Gitweb:        https://git.kernel.org/tip/228020b490eda9133c9cb6f59a5ee1278d8c463f
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 05 Jun 2023 12:14:01 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 06 Jun 2023 10:09:21 +02:00
 
+perf: Re-instate the linear PMU search
+
+Full revert of commit 9551fbb64d09 ("perf/core: Remove pmu linear
+searching code").
+
+Some architectures (notably arm/arm64) still relied on the linear
+search in order to find the PMU that consumes
+PERF_TYPE_{HARDWARE,HW_CACHE,RAW}.
+
+This will need a more thorought audit and cleanup.
+
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230605101401.GL38236@hirez.programming.kicks-ass.net
+---
+ kernel/events/core.c | 37 ++++++++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
-Longer term it'd be good to have noistr-safe forms of the MMIO accessors, but
-from a quick play that's a much bigger piece of work, and I think this is fine
-for now!
-
-Thanks,
-Mark.
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 231b187..c01bbe9 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11630,27 +11630,38 @@ static struct pmu *perf_init_event(struct perf_event *event)
+ 	}
+ 
+ again:
+-	ret = -ENOENT;
+ 	rcu_read_lock();
+ 	pmu = idr_find(&pmu_idr, type);
+ 	rcu_read_unlock();
+-	if (!pmu)
+-		goto fail;
++	if (pmu) {
++		if (event->attr.type != type && type != PERF_TYPE_RAW &&
++		    !(pmu->capabilities & PERF_PMU_CAP_EXTENDED_HW_TYPE))
++			goto fail;
+ 
+-	if (event->attr.type != type && type != PERF_TYPE_RAW &&
+-	    !(pmu->capabilities & PERF_PMU_CAP_EXTENDED_HW_TYPE))
+-		goto fail;
++		ret = perf_try_init_event(pmu, event);
++		if (ret == -ENOENT && event->attr.type != type && !extended_type) {
++			type = event->attr.type;
++			goto again;
++		}
+ 
+-	ret = perf_try_init_event(pmu, event);
+-	if (ret == -ENOENT && event->attr.type != type && !extended_type) {
+-		type = event->attr.type;
+-		goto again;
++		if (ret)
++			pmu = ERR_PTR(ret);
++
++		goto unlock;
+ 	}
+ 
+-fail:
+-	if (ret)
+-		pmu = ERR_PTR(ret);
++	list_for_each_entry_rcu(pmu, &pmus, entry, lockdep_is_held(&pmus_srcu)) {
++		ret = perf_try_init_event(pmu, event);
++		if (!ret)
++			goto unlock;
+ 
++		if (ret != -ENOENT) {
++			pmu = ERR_PTR(ret);
++			goto unlock;
++		}
++	}
++fail:
++	pmu = ERR_PTR(-ENOENT);
+ unlock:
+ 	srcu_read_unlock(&pmus_srcu, idx);
+ 
