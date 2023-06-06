@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DE4D723B34
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Jun 2023 10:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8FD6723B7C
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Jun 2023 10:26:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236098AbjFFITE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 6 Jun 2023 04:19:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46524 "EHLO
+        id S236660AbjFFI0V (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 6 Jun 2023 04:26:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236148AbjFFIS6 (ORCPT
+        with ESMTP id S236619AbjFFI0T (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 6 Jun 2023 04:18:58 -0400
+        Tue, 6 Jun 2023 04:26:19 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56139E40;
-        Tue,  6 Jun 2023 01:18:56 -0700 (PDT)
-Date:   Tue, 06 Jun 2023 08:18:54 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 048B2E8;
+        Tue,  6 Jun 2023 01:26:16 -0700 (PDT)
+Date:   Tue, 06 Jun 2023 08:26:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686039534;
+        s=2020; t=1686039975;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vbZvBwsTqFXWY9oaJ114END5x75WZTbsWPBUYt1EctA=;
-        b=DVIo9BQympy6w2Cvx8DrFNYsCl8qrZj8r269lEo47/+aJaOVXuWDCxAW62iRXzHLwYw8oy
-        UpEV7qJLYngRhVrGqq25OensgLPDcPYxPZCWKCZkoOBZm70xVOv+Hyv2BQd3SkFNs5dO4E
-        aCnJZsUjjRI6BpXN+pa27Mt/95/q0l68zTVjVMqzdVC9/fOvsK6CtA1SZo44CQi2yeEU0L
-        HXz8+7Cw7KYt6z+CZej9tjcd6CPop0OjDt1KajiTK94DqRWniOd/fTKVMg9pK7j/pgE+PR
-        b1B41iSG/8qAzEtzvi3vjJS5F/7TfRi4gAHeBztCOHqeg7jOPI1W9Q73ed07GA==
+        bh=9TK1wlccTM/oew9VGNxJ3LUXzLB8jpUa9eTaVhUIacc=;
+        b=MdQPMhuNGrDNqVLsUqHV9QOoU7GPGmK7kP1Znl/alZcROSFFdOSvUpuZz99ZT4eiMkkSMA
+        +0b2P+XOHlaB5FGxLcc8CPTV1gLAVUP7r8PJr8g8fJIQO58N3VgV5QCz3MFhc+4xh12aIr
+        DeJ3xxQ9hDTsRGrN4kolY1Ba9s6uI1aS2n13ZLIiDbqWrMRLNwQxAmslmmH9vmWmzkZpHP
+        CnQ+RGzF/C136HmEjYKO532yrYV/7ZA2MppAHNRZgBLlLtSW4hwruM1d08wimBXy+grXwc
+        OE596FIoiwq7JEb9ntyJgB7HUOqy14XvMhBSOka6FtEctZkfZyCCmD6o8EemMQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686039534;
+        s=2020e; t=1686039975;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vbZvBwsTqFXWY9oaJ114END5x75WZTbsWPBUYt1EctA=;
-        b=GxVDKjhqyVWoV79iV5SCwyrRckve/zxnlxejQABIxbKA/2xsEcSPnCHHL25E8r9kHoUNYz
-        SgNc1TYQRRJjA+Ag==
-From:   "tip-bot2 for Dietmar Eggemann" <tip-bot2@linutronix.de>
+        bh=9TK1wlccTM/oew9VGNxJ3LUXzLB8jpUa9eTaVhUIacc=;
+        b=7229X6zvtk94WQFtRV7SSWWHhR+PH+tFmfdyOAtPuhrlKV2SKz5mFH4Z63Ir6AH+sSWLqr
+        VeeFeX520Zd9BrDw==
+From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Refactor CPU utilization functions
-Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+Subject: [tip: locking/core] locking/atomic: treewide: delete arch_atomic_*()
+ kerneldoc
+Cc:     Mark Rutland <mark.rutland@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+        Kees Cook <keescook@chromium.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230515115735.296329-2-dietmar.eggemann@arm.com>
-References: <20230515115735.296329-2-dietmar.eggemann@arm.com>
+In-Reply-To: <20230605070124.3741859-28-mark.rutland@arm.com>
+References: <20230605070124.3741859-28-mark.rutland@arm.com>
 MIME-Version: 1.0
-Message-ID: <168603953443.404.1204658294899368545.tip-bot2@tip-bot2>
+Message-ID: <168603997447.404.5216233293564519123.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,224 +67,733 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     3eb6d6ececca2fd566d717b37ab467c246f66be7
-Gitweb:        https://git.kernel.org/tip/3eb6d6ececca2fd566d717b37ab467c246f66be7
-Author:        Dietmar Eggemann <dietmar.eggemann@arm.com>
-AuthorDate:    Mon, 15 May 2023 13:57:34 +02:00
+Commit-ID:     ef558b4b7bbbf7e115c87e4da21ce86444d6ec3b
+Gitweb:        https://git.kernel.org/tip/ef558b4b7bbbf7e115c87e4da21ce86444d6ec3b
+Author:        Mark Rutland <mark.rutland@arm.com>
+AuthorDate:    Mon, 05 Jun 2023 08:01:24 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 05 Jun 2023 21:13:43 +02:00
+CommitterDate: Mon, 05 Jun 2023 09:57:24 +02:00
 
-sched/fair: Refactor CPU utilization functions
+locking/atomic: treewide: delete arch_atomic_*() kerneldoc
 
-There is a lot of code duplication in cpu_util_next() & cpu_util_cfs().
+Currently several architectures have kerneldoc comments for
+arch_atomic_*(), which is unhelpful as these live in a shared namespace
+where they clash, and the arch_atomic_*() ops are now an implementation
+detail of the raw_atomic_*() ops, which no-one should use those
+directly.
 
-Remove this by allowing cpu_util_next() to be called with p = NULL.
-Rename cpu_util_next() to cpu_util() since the '_next' suffix is no
-longer necessary to distinct cpu utilization related functions.
-Implement cpu_util_cfs(cpu) as cpu_util(cpu, p = NULL, -1).
+Delete the kerneldoc comments for arch_atomic_*(), along with
+pseudo-kerneldoc comments which are in the correct style but are missing
+the leading '/**' necessary to be true kerneldoc comments.
 
-This will allow to code future related cpu util changes only in one
-place, namely in cpu_util().
+There should be no functional change as a result of this patch.
 
-Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20230515115735.296329-2-dietmar.eggemann@arm.com
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230605070124.3741859-28-mark.rutland@arm.com
 ---
- kernel/sched/fair.c  | 63 +++++++++++++++++++++++++++++++++----------
- kernel/sched/sched.h | 47 +--------------------------------
- 2 files changed, 50 insertions(+), 60 deletions(-)
+ arch/alpha/include/asm/atomic.h       | 25 +-------
+ arch/arc/include/asm/atomic64-arcv2.h | 17 +-----
+ arch/hexagon/include/asm/atomic.h     | 16 +-----
+ arch/loongarch/include/asm/atomic.h   | 49 +---------------
+ arch/x86/include/asm/atomic.h         | 87 +--------------------------
+ arch/x86/include/asm/atomic64_32.h    | 76 +-----------------------
+ arch/x86/include/asm/atomic64_64.h    | 81 +------------------------
+ 7 files changed, 351 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index df0ff90..09e3be2 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7202,11 +7202,41 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
- 	return target;
+diff --git a/arch/alpha/include/asm/atomic.h b/arch/alpha/include/asm/atomic.h
+index ec8ab55..cbd9244 100644
+--- a/arch/alpha/include/asm/atomic.h
++++ b/arch/alpha/include/asm/atomic.h
+@@ -200,15 +200,6 @@ ATOMIC_OPS(xor, xor)
+ #undef ATOMIC_OP_RETURN
+ #undef ATOMIC_OP
+ 
+-/**
+- * arch_atomic_fetch_add_unless - add unless the number is a given value
+- * @v: pointer of type atomic_t
+- * @a: the amount to add to v...
+- * @u: ...unless v is equal to u.
+- *
+- * Atomically adds @a to @v, so long as it was not @u.
+- * Returns the old value of @v.
+- */
+ static __inline__ int arch_atomic_fetch_add_unless(atomic_t *v, int a, int u)
+ {
+ 	int c, new, old;
+@@ -232,15 +223,6 @@ static __inline__ int arch_atomic_fetch_add_unless(atomic_t *v, int a, int u)
+ }
+ #define arch_atomic_fetch_add_unless arch_atomic_fetch_add_unless
+ 
+-/**
+- * arch_atomic64_fetch_add_unless - add unless the number is a given value
+- * @v: pointer of type atomic64_t
+- * @a: the amount to add to v...
+- * @u: ...unless v is equal to u.
+- *
+- * Atomically adds @a to @v, so long as it was not @u.
+- * Returns the old value of @v.
+- */
+ static __inline__ s64 arch_atomic64_fetch_add_unless(atomic64_t *v, s64 a, s64 u)
+ {
+ 	s64 c, new, old;
+@@ -264,13 +246,6 @@ static __inline__ s64 arch_atomic64_fetch_add_unless(atomic64_t *v, s64 a, s64 u
+ }
+ #define arch_atomic64_fetch_add_unless arch_atomic64_fetch_add_unless
+ 
+-/*
+- * arch_atomic64_dec_if_positive - decrement by 1 if old value positive
+- * @v: pointer of type atomic_t
+- *
+- * The function returns the old value of *v minus 1, even if
+- * the atomic variable, v, was not decremented.
+- */
+ static inline s64 arch_atomic64_dec_if_positive(atomic64_t *v)
+ {
+ 	s64 old, tmp;
+diff --git a/arch/arc/include/asm/atomic64-arcv2.h b/arch/arc/include/asm/atomic64-arcv2.h
+index 2b7c9e6..6b6db98 100644
+--- a/arch/arc/include/asm/atomic64-arcv2.h
++++ b/arch/arc/include/asm/atomic64-arcv2.h
+@@ -182,14 +182,6 @@ static inline s64 arch_atomic64_xchg(atomic64_t *ptr, s64 new)
+ }
+ #define arch_atomic64_xchg arch_atomic64_xchg
+ 
+-/**
+- * arch_atomic64_dec_if_positive - decrement by 1 if old value positive
+- * @v: pointer of type atomic64_t
+- *
+- * The function returns the old value of *v minus 1, even if
+- * the atomic variable, v, was not decremented.
+- */
+-
+ static inline s64 arch_atomic64_dec_if_positive(atomic64_t *v)
+ {
+ 	s64 val;
+@@ -214,15 +206,6 @@ static inline s64 arch_atomic64_dec_if_positive(atomic64_t *v)
+ }
+ #define arch_atomic64_dec_if_positive arch_atomic64_dec_if_positive
+ 
+-/**
+- * arch_atomic64_fetch_add_unless - add unless the number is a given value
+- * @v: pointer of type atomic64_t
+- * @a: the amount to add to v...
+- * @u: ...unless v is equal to u.
+- *
+- * Atomically adds @a to @v, if it was not @u.
+- * Returns the old value of @v
+- */
+ static inline s64 arch_atomic64_fetch_add_unless(atomic64_t *v, s64 a, s64 u)
+ {
+ 	s64 old, temp;
+diff --git a/arch/hexagon/include/asm/atomic.h b/arch/hexagon/include/asm/atomic.h
+index 5c84400..2447d08 100644
+--- a/arch/hexagon/include/asm/atomic.h
++++ b/arch/hexagon/include/asm/atomic.h
+@@ -28,12 +28,6 @@ static inline void arch_atomic_set(atomic_t *v, int new)
+ 
+ #define arch_atomic_set_release(v, i)	arch_atomic_set((v), (i))
+ 
+-/**
+- * arch_atomic_read - reads a word, atomically
+- * @v: pointer to atomic value
+- *
+- * Assumes all word reads on our architecture are atomic.
+- */
+ #define arch_atomic_read(v)		READ_ONCE((v)->counter)
+ 
+ #define ATOMIC_OP(op)							\
+@@ -112,16 +106,6 @@ ATOMIC_OPS(xor)
+ #undef ATOMIC_OP_RETURN
+ #undef ATOMIC_OP
+ 
+-/**
+- * arch_atomic_fetch_add_unless - add unless the number is a given value
+- * @v: pointer to value
+- * @a: amount to add
+- * @u: unless value is equal to u
+- *
+- * Returns old value.
+- *
+- */
+-
+ static inline int arch_atomic_fetch_add_unless(atomic_t *v, int a, int u)
+ {
+ 	int __oldval;
+diff --git a/arch/loongarch/include/asm/atomic.h b/arch/loongarch/include/asm/atomic.h
+index 8d73c85..e27f0c7 100644
+--- a/arch/loongarch/include/asm/atomic.h
++++ b/arch/loongarch/include/asm/atomic.h
+@@ -29,21 +29,7 @@
+ 
+ #define ATOMIC_INIT(i)	  { (i) }
+ 
+-/*
+- * arch_atomic_read - read atomic variable
+- * @v: pointer of type atomic_t
+- *
+- * Atomically reads the value of @v.
+- */
+ #define arch_atomic_read(v)	READ_ONCE((v)->counter)
+-
+-/*
+- * arch_atomic_set - set atomic variable
+- * @v: pointer of type atomic_t
+- * @i: required value
+- *
+- * Atomically sets the value of @v to @i.
+- */
+ #define arch_atomic_set(v, i)	WRITE_ONCE((v)->counter, (i))
+ 
+ #define ATOMIC_OP(op, I, asm_op)					\
+@@ -139,14 +125,6 @@ static inline int arch_atomic_fetch_add_unless(atomic_t *v, int a, int u)
+ }
+ #define arch_atomic_fetch_add_unless arch_atomic_fetch_add_unless
+ 
+-/*
+- * arch_atomic_sub_if_positive - conditionally subtract integer from atomic variable
+- * @i: integer value to subtract
+- * @v: pointer of type atomic_t
+- *
+- * Atomically test @v and subtract @i if @v is greater or equal than @i.
+- * The function returns the old value of @v minus @i.
+- */
+ static inline int arch_atomic_sub_if_positive(int i, atomic_t *v)
+ {
+ 	int result;
+@@ -181,28 +159,13 @@ static inline int arch_atomic_sub_if_positive(int i, atomic_t *v)
+ 	return result;
  }
  
 -/*
-- * Predicts what cpu_util(@cpu) would return if @p was removed from @cpu
-- * (@dst_cpu = -1) or migrated to @dst_cpu.
+- * arch_atomic_dec_if_positive - decrement by 1 if old value positive
+- * @v: pointer of type atomic_t
 - */
--static unsigned long cpu_util_next(int cpu, struct task_struct *p, int dst_cpu)
-+/**
-+ * cpu_util() - Estimates the amount of CPU capacity used by CFS tasks.
-+ * @cpu: the CPU to get the utilization for
-+ * @p: task for which the CPU utilization should be predicted or NULL
-+ * @dst_cpu: CPU @p migrates to, -1 if @p moves from @cpu or @p == NULL
-+ *
-+ * The unit of the return value must be the same as the one of CPU capacity
-+ * so that CPU utilization can be compared with CPU capacity.
-+ *
-+ * CPU utilization is the sum of running time of runnable tasks plus the
-+ * recent utilization of currently non-runnable tasks on that CPU.
-+ * It represents the amount of CPU capacity currently used by CFS tasks in
-+ * the range [0..max CPU capacity] with max CPU capacity being the CPU
-+ * capacity at f_max.
-+ *
-+ * The estimated CPU utilization is defined as the maximum between CPU
-+ * utilization and sum of the estimated utilization of the currently
-+ * runnable tasks on that CPU. It preserves a utilization "snapshot" of
-+ * previously-executed tasks, which helps better deduce how busy a CPU will
-+ * be when a long-sleeping task wakes up. The contribution to CPU utilization
-+ * of such a task would be significantly decayed at this point of time.
-+ *
-+ * CPU utilization can be higher than the current CPU capacity
-+ * (f_curr/f_max * max CPU capacity) or even the max CPU capacity because
-+ * of rounding errors as well as task migrations or wakeups of new tasks.
-+ * CPU utilization has to be capped to fit into the [0..max CPU capacity]
-+ * range. Otherwise a group of CPUs (CPU0 util = 121% + CPU1 util = 80%)
-+ * could be seen as over-utilized even though CPU1 has 20% of spare CPU
-+ * capacity. CPU utilization is allowed to overshoot current CPU capacity
-+ * though since this is useful for predicting the CPU capacity required
-+ * after task migrations (scheduler-driven DVFS).
-+ *
-+ * Return: (Estimated) utilization for the specified CPU.
-+ */
-+static unsigned long cpu_util(int cpu, struct task_struct *p, int dst_cpu)
+ #define arch_atomic_dec_if_positive(v)	arch_atomic_sub_if_positive(1, v)
+ 
+ #ifdef CONFIG_64BIT
+ 
+ #define ATOMIC64_INIT(i)    { (i) }
+ 
+-/*
+- * arch_atomic64_read - read atomic variable
+- * @v: pointer of type atomic64_t
+- *
+- */
+ #define arch_atomic64_read(v)	READ_ONCE((v)->counter)
+-
+-/*
+- * arch_atomic64_set - set atomic variable
+- * @v: pointer of type atomic64_t
+- * @i: required value
+- */
+ #define arch_atomic64_set(v, i)	WRITE_ONCE((v)->counter, (i))
+ 
+ #define ATOMIC64_OP(op, I, asm_op)					\
+@@ -297,14 +260,6 @@ static inline long arch_atomic64_fetch_add_unless(atomic64_t *v, long a, long u)
+ }
+ #define arch_atomic64_fetch_add_unless arch_atomic64_fetch_add_unless
+ 
+-/*
+- * arch_atomic64_sub_if_positive - conditionally subtract integer from atomic variable
+- * @i: integer value to subtract
+- * @v: pointer of type atomic64_t
+- *
+- * Atomically test @v and subtract @i if @v is greater or equal than @i.
+- * The function returns the old value of @v minus @i.
+- */
+ static inline long arch_atomic64_sub_if_positive(long i, atomic64_t *v)
  {
- 	struct cfs_rq *cfs_rq = &cpu_rq(cpu)->cfs;
- 	unsigned long util = READ_ONCE(cfs_rq->avg.util_avg);
-@@ -7217,9 +7247,9 @@ static unsigned long cpu_util_next(int cpu, struct task_struct *p, int dst_cpu)
- 	 * contribution. In all the other cases @cpu is not impacted by the
- 	 * migration so its util_avg is already correct.
- 	 */
--	if (task_cpu(p) == cpu && dst_cpu != cpu)
-+	if (p && task_cpu(p) == cpu && dst_cpu != cpu)
- 		lsub_positive(&util, task_util(p));
--	else if (task_cpu(p) != cpu && dst_cpu == cpu)
-+	else if (p && task_cpu(p) != cpu && dst_cpu == cpu)
- 		util += task_util(p);
- 
- 	if (sched_feat(UTIL_EST)) {
-@@ -7255,7 +7285,7 @@ static unsigned long cpu_util_next(int cpu, struct task_struct *p, int dst_cpu)
- 		 */
- 		if (dst_cpu == cpu)
- 			util_est += _task_util_est(p);
--		else if (unlikely(task_on_rq_queued(p) || current == p))
-+		else if (p && unlikely(task_on_rq_queued(p) || current == p))
- 			lsub_positive(&util_est, _task_util_est(p));
- 
- 		util = max(util, util_est);
-@@ -7264,6 +7294,11 @@ static unsigned long cpu_util_next(int cpu, struct task_struct *p, int dst_cpu)
- 	return min(util, capacity_orig_of(cpu));
+ 	long result;
+@@ -339,10 +294,6 @@ static inline long arch_atomic64_sub_if_positive(long i, atomic64_t *v)
+ 	return result;
  }
  
-+unsigned long cpu_util_cfs(int cpu)
-+{
-+	return cpu_util(cpu, NULL, -1);
-+}
-+
- /*
-  * cpu_util_without: compute cpu utilization without any contributions from *p
-  * @cpu: the CPU which utilization is requested
-@@ -7281,9 +7316,9 @@ static unsigned long cpu_util_without(int cpu, struct task_struct *p)
+-/*
+- * arch_atomic64_dec_if_positive - decrement by 1 if old value positive
+- * @v: pointer of type atomic64_t
+- */
+ #define arch_atomic64_dec_if_positive(v)	arch_atomic64_sub_if_positive(1, v)
+ 
+ #endif /* CONFIG_64BIT */
+diff --git a/arch/x86/include/asm/atomic.h b/arch/x86/include/asm/atomic.h
+index 5e754e8..55a55ec 100644
+--- a/arch/x86/include/asm/atomic.h
++++ b/arch/x86/include/asm/atomic.h
+@@ -14,12 +14,6 @@
+  * resource counting etc..
+  */
+ 
+-/**
+- * arch_atomic_read - read atomic variable
+- * @v: pointer of type atomic_t
+- *
+- * Atomically reads the value of @v.
+- */
+ static __always_inline int arch_atomic_read(const atomic_t *v)
  {
- 	/* Task has no contribution or is new */
- 	if (cpu != task_cpu(p) || !READ_ONCE(p->se.avg.last_update_time))
--		return cpu_util_cfs(cpu);
-+		p = NULL;
- 
--	return cpu_util_next(cpu, p, -1);
-+	return cpu_util(cpu, p, -1);
- }
- 
- /*
-@@ -7330,7 +7365,7 @@ static inline void eenv_task_busy_time(struct energy_env *eenv,
-  * cpu_capacity.
-  *
-  * The contribution of the task @p for which we want to estimate the
-- * energy cost is removed (by cpu_util_next()) and must be calculated
-+ * energy cost is removed (by cpu_util()) and must be calculated
-  * separately (see eenv_task_busy_time). This ensures:
-  *
-  *   - A stable PD utilization, no matter which CPU of that PD we want to place
-@@ -7351,7 +7386,7 @@ static inline void eenv_pd_busy_time(struct energy_env *eenv,
- 	int cpu;
- 
- 	for_each_cpu(cpu, pd_cpus) {
--		unsigned long util = cpu_util_next(cpu, p, -1);
-+		unsigned long util = cpu_util(cpu, p, -1);
- 
- 		busy_time += effective_cpu_util(cpu, util, ENERGY_UTIL, NULL);
- 	}
-@@ -7375,7 +7410,7 @@ eenv_pd_max_util(struct energy_env *eenv, struct cpumask *pd_cpus,
- 
- 	for_each_cpu(cpu, pd_cpus) {
- 		struct task_struct *tsk = (cpu == dst_cpu) ? p : NULL;
--		unsigned long util = cpu_util_next(cpu, p, dst_cpu);
-+		unsigned long util = cpu_util(cpu, p, dst_cpu);
- 		unsigned long cpu_util;
- 
- 		/*
-@@ -7521,7 +7556,7 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
- 			if (!cpumask_test_cpu(cpu, p->cpus_ptr))
- 				continue;
- 
--			util = cpu_util_next(cpu, p, cpu);
-+			util = cpu_util(cpu, p, cpu);
- 			cpu_cap = capacity_of(cpu);
- 
- 			/*
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index d8ba81c..aaf6fc2 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2955,53 +2955,8 @@ static inline unsigned long cpu_util_dl(struct rq *rq)
- 	return READ_ONCE(rq->avg_dl.util_avg);
+ 	/*
+@@ -29,25 +23,11 @@ static __always_inline int arch_atomic_read(const atomic_t *v)
+ 	return __READ_ONCE((v)->counter);
  }
  
 -/**
-- * cpu_util_cfs() - Estimates the amount of CPU capacity used by CFS tasks.
-- * @cpu: the CPU to get the utilization for.
+- * arch_atomic_set - set atomic variable
+- * @v: pointer of type atomic_t
+- * @i: required value
 - *
-- * The unit of the return value must be the same as the one of CPU capacity
-- * so that CPU utilization can be compared with CPU capacity.
-- *
-- * CPU utilization is the sum of running time of runnable tasks plus the
-- * recent utilization of currently non-runnable tasks on that CPU.
-- * It represents the amount of CPU capacity currently used by CFS tasks in
-- * the range [0..max CPU capacity] with max CPU capacity being the CPU
-- * capacity at f_max.
-- *
-- * The estimated CPU utilization is defined as the maximum between CPU
-- * utilization and sum of the estimated utilization of the currently
-- * runnable tasks on that CPU. It preserves a utilization "snapshot" of
-- * previously-executed tasks, which helps better deduce how busy a CPU will
-- * be when a long-sleeping task wakes up. The contribution to CPU utilization
-- * of such a task would be significantly decayed at this point of time.
-- *
-- * CPU utilization can be higher than the current CPU capacity
-- * (f_curr/f_max * max CPU capacity) or even the max CPU capacity because
-- * of rounding errors as well as task migrations or wakeups of new tasks.
-- * CPU utilization has to be capped to fit into the [0..max CPU capacity]
-- * range. Otherwise a group of CPUs (CPU0 util = 121% + CPU1 util = 80%)
-- * could be seen as over-utilized even though CPU1 has 20% of spare CPU
-- * capacity. CPU utilization is allowed to overshoot current CPU capacity
-- * though since this is useful for predicting the CPU capacity required
-- * after task migrations (scheduler-driven DVFS).
-- *
-- * Return: (Estimated) utilization for the specified CPU.
+- * Atomically sets the value of @v to @i.
 - */
--static inline unsigned long cpu_util_cfs(int cpu)
--{
--	struct cfs_rq *cfs_rq;
--	unsigned long util;
--
--	cfs_rq = &cpu_rq(cpu)->cfs;
--	util = READ_ONCE(cfs_rq->avg.util_avg);
- 
--	if (sched_feat(UTIL_EST)) {
--		util = max_t(unsigned long, util,
--			     READ_ONCE(cfs_rq->avg.util_est.enqueued));
--	}
--
--	return min(util, capacity_orig_of(cpu));
--}
-+extern unsigned long cpu_util_cfs(int cpu);
- 
- static inline unsigned long cpu_util_rt(struct rq *rq)
+ static __always_inline void arch_atomic_set(atomic_t *v, int i)
  {
+ 	__WRITE_ONCE(v->counter, i);
+ }
+ 
+-/**
+- * arch_atomic_add - add integer to atomic variable
+- * @i: integer value to add
+- * @v: pointer of type atomic_t
+- *
+- * Atomically adds @i to @v.
+- */
+ static __always_inline void arch_atomic_add(int i, atomic_t *v)
+ {
+ 	asm volatile(LOCK_PREFIX "addl %1,%0"
+@@ -55,13 +35,6 @@ static __always_inline void arch_atomic_add(int i, atomic_t *v)
+ 		     : "ir" (i) : "memory");
+ }
+ 
+-/**
+- * arch_atomic_sub - subtract integer from atomic variable
+- * @i: integer value to subtract
+- * @v: pointer of type atomic_t
+- *
+- * Atomically subtracts @i from @v.
+- */
+ static __always_inline void arch_atomic_sub(int i, atomic_t *v)
+ {
+ 	asm volatile(LOCK_PREFIX "subl %1,%0"
+@@ -69,27 +42,12 @@ static __always_inline void arch_atomic_sub(int i, atomic_t *v)
+ 		     : "ir" (i) : "memory");
+ }
+ 
+-/**
+- * arch_atomic_sub_and_test - subtract value from variable and test result
+- * @i: integer value to subtract
+- * @v: pointer of type atomic_t
+- *
+- * Atomically subtracts @i from @v and returns
+- * true if the result is zero, or false for all
+- * other cases.
+- */
+ static __always_inline bool arch_atomic_sub_and_test(int i, atomic_t *v)
+ {
+ 	return GEN_BINARY_RMWcc(LOCK_PREFIX "subl", v->counter, e, "er", i);
+ }
+ #define arch_atomic_sub_and_test arch_atomic_sub_and_test
+ 
+-/**
+- * arch_atomic_inc - increment atomic variable
+- * @v: pointer of type atomic_t
+- *
+- * Atomically increments @v by 1.
+- */
+ static __always_inline void arch_atomic_inc(atomic_t *v)
+ {
+ 	asm volatile(LOCK_PREFIX "incl %0"
+@@ -97,12 +55,6 @@ static __always_inline void arch_atomic_inc(atomic_t *v)
+ }
+ #define arch_atomic_inc arch_atomic_inc
+ 
+-/**
+- * arch_atomic_dec - decrement atomic variable
+- * @v: pointer of type atomic_t
+- *
+- * Atomically decrements @v by 1.
+- */
+ static __always_inline void arch_atomic_dec(atomic_t *v)
+ {
+ 	asm volatile(LOCK_PREFIX "decl %0"
+@@ -110,69 +62,30 @@ static __always_inline void arch_atomic_dec(atomic_t *v)
+ }
+ #define arch_atomic_dec arch_atomic_dec
+ 
+-/**
+- * arch_atomic_dec_and_test - decrement and test
+- * @v: pointer of type atomic_t
+- *
+- * Atomically decrements @v by 1 and
+- * returns true if the result is 0, or false for all other
+- * cases.
+- */
+ static __always_inline bool arch_atomic_dec_and_test(atomic_t *v)
+ {
+ 	return GEN_UNARY_RMWcc(LOCK_PREFIX "decl", v->counter, e);
+ }
+ #define arch_atomic_dec_and_test arch_atomic_dec_and_test
+ 
+-/**
+- * arch_atomic_inc_and_test - increment and test
+- * @v: pointer of type atomic_t
+- *
+- * Atomically increments @v by 1
+- * and returns true if the result is zero, or false for all
+- * other cases.
+- */
+ static __always_inline bool arch_atomic_inc_and_test(atomic_t *v)
+ {
+ 	return GEN_UNARY_RMWcc(LOCK_PREFIX "incl", v->counter, e);
+ }
+ #define arch_atomic_inc_and_test arch_atomic_inc_and_test
+ 
+-/**
+- * arch_atomic_add_negative - add and test if negative
+- * @i: integer value to add
+- * @v: pointer of type atomic_t
+- *
+- * Atomically adds @i to @v and returns true
+- * if the result is negative, or false when
+- * result is greater than or equal to zero.
+- */
+ static __always_inline bool arch_atomic_add_negative(int i, atomic_t *v)
+ {
+ 	return GEN_BINARY_RMWcc(LOCK_PREFIX "addl", v->counter, s, "er", i);
+ }
+ #define arch_atomic_add_negative arch_atomic_add_negative
+ 
+-/**
+- * arch_atomic_add_return - add integer and return
+- * @i: integer value to add
+- * @v: pointer of type atomic_t
+- *
+- * Atomically adds @i to @v and returns @i + @v
+- */
+ static __always_inline int arch_atomic_add_return(int i, atomic_t *v)
+ {
+ 	return i + xadd(&v->counter, i);
+ }
+ #define arch_atomic_add_return arch_atomic_add_return
+ 
+-/**
+- * arch_atomic_sub_return - subtract integer and return
+- * @v: pointer of type atomic_t
+- * @i: integer value to subtract
+- *
+- * Atomically subtracts @i from @v and returns @v - @i
+- */
+ static __always_inline int arch_atomic_sub_return(int i, atomic_t *v)
+ {
+ 	return arch_atomic_add_return(-i, v);
+diff --git a/arch/x86/include/asm/atomic64_32.h b/arch/x86/include/asm/atomic64_32.h
+index 808b4ee..3486d91 100644
+--- a/arch/x86/include/asm/atomic64_32.h
++++ b/arch/x86/include/asm/atomic64_32.h
+@@ -61,30 +61,12 @@ ATOMIC64_DECL(add_unless);
+ #undef __ATOMIC64_DECL
+ #undef ATOMIC64_EXPORT
+ 
+-/**
+- * arch_atomic64_cmpxchg - cmpxchg atomic64 variable
+- * @v: pointer to type atomic64_t
+- * @o: expected value
+- * @n: new value
+- *
+- * Atomically sets @v to @n if it was equal to @o and returns
+- * the old value.
+- */
+-
+ static __always_inline s64 arch_atomic64_cmpxchg(atomic64_t *v, s64 o, s64 n)
+ {
+ 	return arch_cmpxchg64(&v->counter, o, n);
+ }
+ #define arch_atomic64_cmpxchg arch_atomic64_cmpxchg
+ 
+-/**
+- * arch_atomic64_xchg - xchg atomic64 variable
+- * @v: pointer to type atomic64_t
+- * @n: value to assign
+- *
+- * Atomically xchgs the value of @v to @n and returns
+- * the old value.
+- */
+ static __always_inline s64 arch_atomic64_xchg(atomic64_t *v, s64 n)
+ {
+ 	s64 o;
+@@ -97,13 +79,6 @@ static __always_inline s64 arch_atomic64_xchg(atomic64_t *v, s64 n)
+ }
+ #define arch_atomic64_xchg arch_atomic64_xchg
+ 
+-/**
+- * arch_atomic64_set - set atomic64 variable
+- * @v: pointer to type atomic64_t
+- * @i: value to assign
+- *
+- * Atomically sets the value of @v to @n.
+- */
+ static __always_inline void arch_atomic64_set(atomic64_t *v, s64 i)
+ {
+ 	unsigned high = (unsigned)(i >> 32);
+@@ -113,12 +88,6 @@ static __always_inline void arch_atomic64_set(atomic64_t *v, s64 i)
+ 			     : "eax", "edx", "memory");
+ }
+ 
+-/**
+- * arch_atomic64_read - read atomic64 variable
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically reads the value of @v and returns it.
+- */
+ static __always_inline s64 arch_atomic64_read(const atomic64_t *v)
+ {
+ 	s64 r;
+@@ -126,13 +95,6 @@ static __always_inline s64 arch_atomic64_read(const atomic64_t *v)
+ 	return r;
+ }
+ 
+-/**
+- * arch_atomic64_add_return - add and return
+- * @i: integer value to add
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically adds @i to @v and returns @i + *@v
+- */
+ static __always_inline s64 arch_atomic64_add_return(s64 i, atomic64_t *v)
+ {
+ 	alternative_atomic64(add_return,
+@@ -142,9 +104,6 @@ static __always_inline s64 arch_atomic64_add_return(s64 i, atomic64_t *v)
+ }
+ #define arch_atomic64_add_return arch_atomic64_add_return
+ 
+-/*
+- * Other variants with different arithmetic operators:
+- */
+ static __always_inline s64 arch_atomic64_sub_return(s64 i, atomic64_t *v)
+ {
+ 	alternative_atomic64(sub_return,
+@@ -172,13 +131,6 @@ static __always_inline s64 arch_atomic64_dec_return(atomic64_t *v)
+ }
+ #define arch_atomic64_dec_return arch_atomic64_dec_return
+ 
+-/**
+- * arch_atomic64_add - add integer to atomic64 variable
+- * @i: integer value to add
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically adds @i to @v.
+- */
+ static __always_inline s64 arch_atomic64_add(s64 i, atomic64_t *v)
+ {
+ 	__alternative_atomic64(add, add_return,
+@@ -187,13 +139,6 @@ static __always_inline s64 arch_atomic64_add(s64 i, atomic64_t *v)
+ 	return i;
+ }
+ 
+-/**
+- * arch_atomic64_sub - subtract the atomic64 variable
+- * @i: integer value to subtract
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically subtracts @i from @v.
+- */
+ static __always_inline s64 arch_atomic64_sub(s64 i, atomic64_t *v)
+ {
+ 	__alternative_atomic64(sub, sub_return,
+@@ -202,12 +147,6 @@ static __always_inline s64 arch_atomic64_sub(s64 i, atomic64_t *v)
+ 	return i;
+ }
+ 
+-/**
+- * arch_atomic64_inc - increment atomic64 variable
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically increments @v by 1.
+- */
+ static __always_inline void arch_atomic64_inc(atomic64_t *v)
+ {
+ 	__alternative_atomic64(inc, inc_return, /* no output */,
+@@ -215,12 +154,6 @@ static __always_inline void arch_atomic64_inc(atomic64_t *v)
+ }
+ #define arch_atomic64_inc arch_atomic64_inc
+ 
+-/**
+- * arch_atomic64_dec - decrement atomic64 variable
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically decrements @v by 1.
+- */
+ static __always_inline void arch_atomic64_dec(atomic64_t *v)
+ {
+ 	__alternative_atomic64(dec, dec_return, /* no output */,
+@@ -228,15 +161,6 @@ static __always_inline void arch_atomic64_dec(atomic64_t *v)
+ }
+ #define arch_atomic64_dec arch_atomic64_dec
+ 
+-/**
+- * arch_atomic64_add_unless - add unless the number is a given value
+- * @v: pointer of type atomic64_t
+- * @a: the amount to add to v...
+- * @u: ...unless v is equal to u.
+- *
+- * Atomically adds @a to @v, so long as it was not @u.
+- * Returns non-zero if the add was done, zero otherwise.
+- */
+ static __always_inline int arch_atomic64_add_unless(atomic64_t *v, s64 a, s64 u)
+ {
+ 	unsigned low = (unsigned)u;
+diff --git a/arch/x86/include/asm/atomic64_64.h b/arch/x86/include/asm/atomic64_64.h
+index c496595..3165c0f 100644
+--- a/arch/x86/include/asm/atomic64_64.h
++++ b/arch/x86/include/asm/atomic64_64.h
+@@ -10,37 +10,16 @@
+ 
+ #define ATOMIC64_INIT(i)	{ (i) }
+ 
+-/**
+- * arch_atomic64_read - read atomic64 variable
+- * @v: pointer of type atomic64_t
+- *
+- * Atomically reads the value of @v.
+- * Doesn't imply a read memory barrier.
+- */
+ static __always_inline s64 arch_atomic64_read(const atomic64_t *v)
+ {
+ 	return __READ_ONCE((v)->counter);
+ }
+ 
+-/**
+- * arch_atomic64_set - set atomic64 variable
+- * @v: pointer to type atomic64_t
+- * @i: required value
+- *
+- * Atomically sets the value of @v to @i.
+- */
+ static __always_inline void arch_atomic64_set(atomic64_t *v, s64 i)
+ {
+ 	__WRITE_ONCE(v->counter, i);
+ }
+ 
+-/**
+- * arch_atomic64_add - add integer to atomic64 variable
+- * @i: integer value to add
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically adds @i to @v.
+- */
+ static __always_inline void arch_atomic64_add(s64 i, atomic64_t *v)
+ {
+ 	asm volatile(LOCK_PREFIX "addq %1,%0"
+@@ -48,13 +27,6 @@ static __always_inline void arch_atomic64_add(s64 i, atomic64_t *v)
+ 		     : "er" (i), "m" (v->counter) : "memory");
+ }
+ 
+-/**
+- * arch_atomic64_sub - subtract the atomic64 variable
+- * @i: integer value to subtract
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically subtracts @i from @v.
+- */
+ static __always_inline void arch_atomic64_sub(s64 i, atomic64_t *v)
+ {
+ 	asm volatile(LOCK_PREFIX "subq %1,%0"
+@@ -62,27 +34,12 @@ static __always_inline void arch_atomic64_sub(s64 i, atomic64_t *v)
+ 		     : "er" (i), "m" (v->counter) : "memory");
+ }
+ 
+-/**
+- * arch_atomic64_sub_and_test - subtract value from variable and test result
+- * @i: integer value to subtract
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically subtracts @i from @v and returns
+- * true if the result is zero, or false for all
+- * other cases.
+- */
+ static __always_inline bool arch_atomic64_sub_and_test(s64 i, atomic64_t *v)
+ {
+ 	return GEN_BINARY_RMWcc(LOCK_PREFIX "subq", v->counter, e, "er", i);
+ }
+ #define arch_atomic64_sub_and_test arch_atomic64_sub_and_test
+ 
+-/**
+- * arch_atomic64_inc - increment atomic64 variable
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically increments @v by 1.
+- */
+ static __always_inline void arch_atomic64_inc(atomic64_t *v)
+ {
+ 	asm volatile(LOCK_PREFIX "incq %0"
+@@ -91,12 +48,6 @@ static __always_inline void arch_atomic64_inc(atomic64_t *v)
+ }
+ #define arch_atomic64_inc arch_atomic64_inc
+ 
+-/**
+- * arch_atomic64_dec - decrement atomic64 variable
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically decrements @v by 1.
+- */
+ static __always_inline void arch_atomic64_dec(atomic64_t *v)
+ {
+ 	asm volatile(LOCK_PREFIX "decq %0"
+@@ -105,56 +56,24 @@ static __always_inline void arch_atomic64_dec(atomic64_t *v)
+ }
+ #define arch_atomic64_dec arch_atomic64_dec
+ 
+-/**
+- * arch_atomic64_dec_and_test - decrement and test
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically decrements @v by 1 and
+- * returns true if the result is 0, or false for all other
+- * cases.
+- */
+ static __always_inline bool arch_atomic64_dec_and_test(atomic64_t *v)
+ {
+ 	return GEN_UNARY_RMWcc(LOCK_PREFIX "decq", v->counter, e);
+ }
+ #define arch_atomic64_dec_and_test arch_atomic64_dec_and_test
+ 
+-/**
+- * arch_atomic64_inc_and_test - increment and test
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically increments @v by 1
+- * and returns true if the result is zero, or false for all
+- * other cases.
+- */
+ static __always_inline bool arch_atomic64_inc_and_test(atomic64_t *v)
+ {
+ 	return GEN_UNARY_RMWcc(LOCK_PREFIX "incq", v->counter, e);
+ }
+ #define arch_atomic64_inc_and_test arch_atomic64_inc_and_test
+ 
+-/**
+- * arch_atomic64_add_negative - add and test if negative
+- * @i: integer value to add
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically adds @i to @v and returns true
+- * if the result is negative, or false when
+- * result is greater than or equal to zero.
+- */
+ static __always_inline bool arch_atomic64_add_negative(s64 i, atomic64_t *v)
+ {
+ 	return GEN_BINARY_RMWcc(LOCK_PREFIX "addq", v->counter, s, "er", i);
+ }
+ #define arch_atomic64_add_negative arch_atomic64_add_negative
+ 
+-/**
+- * arch_atomic64_add_return - add and return
+- * @i: integer value to add
+- * @v: pointer to type atomic64_t
+- *
+- * Atomically adds @i to @v and returns @i + @v
+- */
+ static __always_inline s64 arch_atomic64_add_return(s64 i, atomic64_t *v)
+ {
+ 	return i + xadd(&v->counter, i);
