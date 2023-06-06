@@ -2,59 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40700724D4B
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Jun 2023 21:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF2DA724D4A
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Jun 2023 21:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239101AbjFFTm7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S239098AbjFFTm7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 6 Jun 2023 15:42:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33918 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239135AbjFFTmk (ORCPT
+        with ESMTP id S239140AbjFFTmk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 6 Jun 2023 15:42:40 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CDF810FB;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BFA610F8;
         Tue,  6 Jun 2023 12:42:38 -0700 (PDT)
-Date:   Tue, 06 Jun 2023 19:42:35 -0000
+Date:   Tue, 06 Jun 2023 19:42:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686080556;
+        s=2020; t=1686080557;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i5R2sL6rKsk29qzEv5zQGnq6eOM/ZoNfbjetALpWF/A=;
-        b=ZGqLOq/6wFR4YOecZJuBk1Kt0Cyoj7YaDNUn5kH6Xi+gsMcihpBtvggfDsGvQoTF18PEkg
-        hXgkKSwOi9/WT4zbyOlZhDlRQtFKIfUvDhNDpECTyaszz6Vw3Nlzjr3IcYaXy1Jy0fRhRG
-        9Li5qaYeVnc+Di3+928FfnHNn3ia0Z/T2HsWGUq8QXz/C3AeyNGdjAs50ja75EgH5gow+E
-        C436OrBGHqRgg96g+fCLNijyQffe/NIojS16W0sQvKOQRtFtZYSCxX/Hf3DIRwTOn/et40
-        o/VXdwcnnO4O38+n/TupVFCAX6120gIXnEFjdkprKEHxG3VaCBR2T5JU5IAT0Q==
+        bh=DLXa1THRzBA0rvWLifkwVhv+vx6rwJktV26Xtre25Gw=;
+        b=NuIfvg8GOS93pxKHMUBebHCUcTvQKd30v0CXnJH4x8HjojYs4pJs8CtqBz3H91a7Y+DeKB
+        oWhrBQcUgZ0LswJDjRgjapZSLGQqeWACE5+zP+Tu/EWi61FSFWe0L5ToJ+nKDHxApExvye
+        bdm7XagNzk+ysIC5ZjJA/QEFhKxK9Id6WSd/ij3mmZlaumqmsGS0x/m7nyuZZMPUVN4Cml
+        D1X6kV3btsETN1GxpmmpiNMXGpyn4fQVcCpckaQDeq9tLZQzCvsw0zFGUTGwcrZZvUAQla
+        ZEYcFiN0O5nCf7xQJm+4GtWfPwcYdqdY7MSZCQkdmhRCq+RSMtQiJd70c7IO/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686080556;
+        s=2020e; t=1686080557;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i5R2sL6rKsk29qzEv5zQGnq6eOM/ZoNfbjetALpWF/A=;
-        b=KFxUMXXxu3vPCog24k9p3CA2msRAbtZlaSkT99NFPgcnSyLbLK0ZR+kZ1VJCn0z/ivFsT3
-        rZzd0k/FcBKsd4BQ==
-From:   "tip-bot2 for Dionna Glaze" <tip-bot2@linutronix.de>
+        bh=DLXa1THRzBA0rvWLifkwVhv+vx6rwJktV26Xtre25Gw=;
+        b=GQtDfZHJUfzCmhrweCXjSIk6zJzYQdN5gUwK//lDILVHh0KXA9MU3a3rYZ7kcHyIwU9gp9
+        Dft9oThhkXmkwdBw==
+From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cc] x86/efi: Safely enable unaccepted memory in UEFI
-Cc:     Dionna Glaze <dionnaglaze@google.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/cc] x86/sev: Allow for use of the early boot GHCB for PSC requests
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C0d5f3d9a20b5cf361945b7ab1263c36586a78a42=2E16860?=
+In-Reply-To: =?utf-8?q?=3Cd6cbb21f87f81eb8282dd3bf6c34d9698c8a4bbc=2E16860?=
  =?utf-8?q?63086=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3C0d5f3d9a20b5cf361945b7ab1263c36586a78a42=2E168606?=
+References: =?utf-8?q?=3Cd6cbb21f87f81eb8282dd3bf6c34d9698c8a4bbc=2E168606?=
  =?utf-8?q?3086=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <168608055573.404.11417198471686782791.tip-bot2@tip-bot2>
+Message-ID: <168608055685.404.12449337233179053718.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,124 +69,162 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cc branch of tip:
 
-Commit-ID:     c0461bd16666351f0de11578b1e02dcdae4db736
-Gitweb:        https://git.kernel.org/tip/c0461bd16666351f0de11578b1e02dcdae4db736
-Author:        Dionna Glaze <dionnaglaze@google.com>
-AuthorDate:    Tue, 06 Jun 2023 09:51:27 -05:00
+Commit-ID:     7006b75592feb1902563ac1decfd98d7e4a0dd6c
+Gitweb:        https://git.kernel.org/tip/7006b75592feb1902563ac1decfd98d7e4a0dd6c
+Author:        Tom Lendacky <thomas.lendacky@amd.com>
+AuthorDate:    Tue, 06 Jun 2023 09:51:24 -05:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 06 Jun 2023 18:32:59 +02:00
+CommitterDate: Tue, 06 Jun 2023 18:29:00 +02:00
 
-x86/efi: Safely enable unaccepted memory in UEFI
+x86/sev: Allow for use of the early boot GHCB for PSC requests
 
-The UEFI v2.9 specification includes a new memory type to be used in
-environments where the OS must accept memory that is provided from its
-host. Before the introduction of this memory type, all memory was
-accepted eagerly in the firmware. In order for the firmware to safely
-stop accepting memory on the OS's behalf, the OS must affirmatively
-indicate support to the firmware. This is only a problem for AMD
-SEV-SNP, since Linux has had support for it since 5.19. The other
-technology that can make use of unaccepted memory, Intel TDX, does not
-yet have Linux support, so it can strictly require unaccepted memory
-support as a dependency of CONFIG_TDX and not require communication with
-the firmware.
+Using a GHCB for a page stage change (as opposed to the MSR protocol)
+allows for multiple pages to be processed in a single request. In prep
+for early PSC requests in support of unaccepted memory, update the
+invocation of vmgexit_psc() to be able to use the early boot GHCB and not
+just the per-CPU GHCB structure.
 
-Enabling unaccepted memory requires calling a 0-argument enablement
-protocol before ExitBootServices. This call is only made if the kernel
-is compiled with UNACCEPTED_MEMORY=y
+In order to use the proper GHCB (early boot vs per-CPU), set a flag that
+indicates when the per-CPU GHCBs are available and registered. For APs,
+the per-CPU GHCBs are created before they are started and registered upon
+startup, so this flag can be used globally for the BSP and APs instead of
+creating a per-CPU flag. This will allow for a significant reduction in
+the number of MSR protocol page state change requests when accepting
+memory.
 
-This protocol will be removed after the end of life of the first LTS
-that includes it, in order to give firmware implementations an
-expiration date for it. When the protocol is removed, firmware will
-strictly infer that a SEV-SNP VM is running an OS that supports the
-unaccepted memory type. At the earliest convenience, when unaccepted
-memory support is added to Linux, SEV-SNP may take strict dependence in
-it. After the firmware removes support for the protocol, this should be
-reverted.
-
-  [tl: address some checkscript warnings]
-
-Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
 Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/0d5f3d9a20b5cf361945b7ab1263c36586a78a42.1686063086.git.thomas.lendacky@amd.com
+Link: https://lore.kernel.org/r/d6cbb21f87f81eb8282dd3bf6c34d9698c8a4bbc.1686063086.git.thomas.lendacky@amd.com
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 36 ++++++++++++++++++++++++-
- include/linux/efi.h                     |  3 ++-
- 2 files changed, 39 insertions(+)
+ arch/x86/kernel/sev.c | 61 ++++++++++++++++++++++++++----------------
+ 1 file changed, 38 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 3cc7faa..220be75 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -26,6 +26,17 @@ const efi_dxe_services_table_t *efi_dxe_table;
- u32 image_offset __section(".data");
- static efi_loaded_image_t *image = NULL;
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 7b0144a..973756c 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -119,7 +119,19 @@ static DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
  
-+typedef union sev_memory_acceptance_protocol sev_memory_acceptance_protocol_t;
-+union sev_memory_acceptance_protocol {
-+	struct {
-+		efi_status_t (__efiapi * allow_unaccepted_memory)(
-+			sev_memory_acceptance_protocol_t *);
-+	};
-+	struct {
-+		u32 allow_unaccepted_memory;
-+	} mixed_mode;
-+};
+ struct sev_config {
+ 	__u64 debug		: 1,
+-	      __reserved	: 63;
 +
- static efi_status_t
- preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
- {
-@@ -310,6 +321,29 @@ setup_memory_protection(unsigned long image_base, unsigned long image_size)
- #endif
++	      /*
++	       * A flag used by __set_pages_state() that indicates when the
++	       * per-CPU GHCB has been created and registered and thus can be
++	       * used by the BSP instead of the early boot GHCB.
++	       *
++	       * For APs, the per-CPU GHCB is created before they are started
++	       * and registered upon startup, so this flag can be used globally
++	       * for the BSP and APs.
++	       */
++	      ghcbs_initialized	: 1,
++
++	      __reserved	: 62;
+ };
+ 
+ static struct sev_config sev_cfg __read_mostly;
+@@ -662,7 +674,7 @@ static void pvalidate_pages(unsigned long vaddr, unsigned long npages, bool vali
+ 	}
  }
  
-+static void setup_unaccepted_memory(void)
-+{
-+	efi_guid_t mem_acceptance_proto = OVMF_SEV_MEMORY_ACCEPTANCE_PROTOCOL_GUID;
-+	sev_memory_acceptance_protocol_t *proto;
-+	efi_status_t status;
-+
-+	if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
-+		return;
-+
-+	/*
-+	 * Enable unaccepted memory before calling exit boot services in order
-+	 * for the UEFI to not accept all memory on EBS.
-+	 */
-+	status = efi_bs_call(locate_protocol, &mem_acceptance_proto, NULL,
-+			     (void **)&proto);
-+	if (status != EFI_SUCCESS)
-+		return;
-+
-+	status = efi_call_proto(proto, allow_unaccepted_memory);
-+	if (status != EFI_SUCCESS)
-+		efi_err("Memory acceptance protocol failed\n");
-+}
-+
- static const efi_char16_t apple[] = L"Apple";
+-static void __init early_set_pages_state(unsigned long paddr, unsigned long npages, enum psc_op op)
++static void early_set_pages_state(unsigned long paddr, unsigned long npages, enum psc_op op)
+ {
+ 	unsigned long paddr_end;
+ 	u64 val;
+@@ -756,26 +768,13 @@ void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op
+ 		WARN(1, "invalid memory op %d\n", op);
+ }
  
- static void setup_quirks(struct boot_params *boot_params,
-@@ -908,6 +942,8 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
+-static int vmgexit_psc(struct snp_psc_desc *desc)
++static int vmgexit_psc(struct ghcb *ghcb, struct snp_psc_desc *desc)
+ {
+ 	int cur_entry, end_entry, ret = 0;
+ 	struct snp_psc_desc *data;
+-	struct ghcb_state state;
+ 	struct es_em_ctxt ctxt;
+-	unsigned long flags;
+-	struct ghcb *ghcb;
  
- 	setup_quirks(boot_params, bzimage_addr, buffer_end - buffer_start);
+-	/*
+-	 * __sev_get_ghcb() needs to run with IRQs disabled because it is using
+-	 * a per-CPU GHCB.
+-	 */
+-	local_irq_save(flags);
+-
+-	ghcb = __sev_get_ghcb(&state);
+-	if (!ghcb) {
+-		ret = 1;
+-		goto out_unlock;
+-	}
++	vc_ghcb_invalidate(ghcb);
  
-+	setup_unaccepted_memory();
+ 	/* Copy the input desc into GHCB shared buffer */
+ 	data = (struct snp_psc_desc *)ghcb->shared_buffer;
+@@ -832,20 +831,18 @@ static int vmgexit_psc(struct snp_psc_desc *desc)
+ 	}
+ 
+ out:
+-	__sev_put_ghcb(&state);
+-
+-out_unlock:
+-	local_irq_restore(flags);
+-
+ 	return ret;
+ }
+ 
+ static void __set_pages_state(struct snp_psc_desc *data, unsigned long vaddr,
+ 			      unsigned long vaddr_end, int op)
+ {
++	struct ghcb_state state;
+ 	struct psc_hdr *hdr;
+ 	struct psc_entry *e;
++	unsigned long flags;
+ 	unsigned long pfn;
++	struct ghcb *ghcb;
+ 	int i;
+ 
+ 	hdr = &data->hdr;
+@@ -875,8 +872,20 @@ static void __set_pages_state(struct snp_psc_desc *data, unsigned long vaddr,
+ 		i++;
+ 	}
+ 
+-	if (vmgexit_psc(data))
++	local_irq_save(flags);
 +
- 	status = exit_boot(boot_params, handle);
- 	if (status != EFI_SUCCESS) {
- 		efi_err("exit_boot() failed!\n");
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 67cb72d..18d83a6 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -437,6 +437,9 @@ void efi_native_runtime_setup(void);
- #define DELLEMC_EFI_RCI2_TABLE_GUID		EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
- #define AMD_SEV_MEM_ENCRYPT_GUID		EFI_GUID(0x0cf29b71, 0x9e51, 0x433a,  0xa3, 0xb7, 0x81, 0xf3, 0xab, 0x16, 0xb8, 0x75)
- 
-+/* OVMF protocol GUIDs */
-+#define OVMF_SEV_MEMORY_ACCEPTANCE_PROTOCOL_GUID	EFI_GUID(0xc5a010fe, 0x38a7, 0x4531,  0x8a, 0x4a, 0x05, 0x00, 0xd2, 0xfd, 0x16, 0x49)
++	if (sev_cfg.ghcbs_initialized)
++		ghcb = __sev_get_ghcb(&state);
++	else
++		ghcb = boot_ghcb;
 +
- typedef struct {
- 	efi_guid_t guid;
- 	u64 table;
++	if (!ghcb || vmgexit_psc(ghcb, data))
+ 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
++
++	if (sev_cfg.ghcbs_initialized)
++		__sev_put_ghcb(&state);
++
++	local_irq_restore(flags);
+ }
+ 
+ static void set_pages_state(unsigned long vaddr, unsigned long npages, int op)
+@@ -884,6 +893,10 @@ static void set_pages_state(unsigned long vaddr, unsigned long npages, int op)
+ 	unsigned long vaddr_end, next_vaddr;
+ 	struct snp_psc_desc desc;
+ 
++	/* Use the MSR protocol when a GHCB is not available. */
++	if (!boot_ghcb)
++		return early_set_pages_state(__pa(vaddr), npages, op);
++
+ 	vaddr = vaddr & PAGE_MASK;
+ 	vaddr_end = vaddr + (npages << PAGE_SHIFT);
+ 
+@@ -1261,6 +1274,8 @@ void setup_ghcb(void)
+ 		if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+ 			snp_register_per_cpu_ghcb();
+ 
++		sev_cfg.ghcbs_initialized = true;
++
+ 		return;
+ 	}
+ 
