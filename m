@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCA5D7291A6
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 648D2729198
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:48:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239082AbjFIHsQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Jun 2023 03:48:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54984 "EHLO
+        id S238729AbjFIHsI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Jun 2023 03:48:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239118AbjFIHrq (ORCPT
+        with ESMTP id S239120AbjFIHrq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 9 Jun 2023 03:47:46 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A2C30C8;
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D27B4210C;
         Fri,  9 Jun 2023 00:47:43 -0700 (PDT)
-Date:   Fri, 09 Jun 2023 07:47:39 -0000
+Date:   Fri, 09 Jun 2023 07:47:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686296860;
+        s=2020; t=1686296861;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BVqi+HwSBu5+RBoe6c7hBNQEOzIi/+hzXFyc/TgfZsk=;
-        b=T0KqIHNI96iAZ7E5n0vBVOTmf7XC/G7Nr9FyKYnGXYKS5h2emWqnu+ekfMkHiDyZeScsQd
-        uoJW0Rj2zinpR4R+LKO3VxuCEKIOxgC6h5x8RbAQW85NAPrk53jGXJbZb05TjqdQm0hQJ4
-        mVtm/or9DZtUayqp4XsxzrOoI3pLGj8kSiEqg4cK5IYXIGTT3NCRTijkzN8VA40392grSP
-        JhxCVkdl3QvdAlllXb8YxgNzSuSM5qBR8yPLqUTsDhkgTm9TJxOhFPp3Kl6eS4nUe6lEGW
-        +4ahAIKjBMVHuchCoOY3KRjHGmJYw3qHh16YM56HAWf8vPqyhiqgY+154CbGRA==
+        bh=vlHTX3+aA/2+zboelFSuY6ojH1eXBOnVryBW0r+TA6c=;
+        b=KZfjmxMj+Bu5VvTgaiuO45PgX/o77sVetHbu/o/1Wyi5pYgKHXA7pOKr8beiIKgwbvb3vF
+        RM1Uq6oWNvajhT4Wwe73+SsC5YxCZwsFtiWug2iFXdIcnoSJ/pQvB/4NsPZ73GVrK04zfs
+        Q+84uYKlf1J6zFsN//WHErt8tNeplPXvXfVRPgejkmcyNtOHtD/4H+DvPAOk1cuglNj1nk
+        xewD1rooI8hOXt/3OzFtdW00AOj8islzqGk9k21s+BwykK9DlLXnDeELACRPZAaQNhxAh6
+        eV89FEpKMT6YXqpdS9Ao+UshrkyixH8v349xzBbJ9JFvPjit2cWGpsyU4DTPzA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686296860;
+        s=2020e; t=1686296861;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BVqi+HwSBu5+RBoe6c7hBNQEOzIi/+hzXFyc/TgfZsk=;
-        b=TDssK2RHim3KS6VrACiWIfzr5P5MkOZmdPcJjc25UzDbzPoZmR1QlSacPto87J6Qy1kfl9
-        kp9Tzy1wF2JbR+DQ==
+        bh=vlHTX3+aA/2+zboelFSuY6ojH1eXBOnVryBW0r+TA6c=;
+        b=twi8vI3HA/cHgiW+9/AXXPwcY2ciX/PorlU2qCUULLyoOqpKMuokQgDiTbFmYJxTJnwZVd
+        kv673jHbwsPc7iDA==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] drm/vmwgfx: Add unwind hints around RBP clobber
-Cc:     kernel test robot <lkp@intel.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+Subject: [tip: objtool/core] objtool: Allow stack operations in
+ UNWIND_HINT_UNDEFINED regions
+Cc:     Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <4c795f2d87bc0391cf6543bcb224fa540b55ce4b.1685981486.git.jpoimboe@kernel.org>
-References: <4c795f2d87bc0391cf6543bcb224fa540b55ce4b.1685981486.git.jpoimboe@kernel.org>
+In-Reply-To: <820c5b433f17c84e8761fb7465a8d319d706b1cf.1685981486.git.jpoimboe@kernel.org>
+References: <820c5b433f17c84e8761fb7465a8d319d706b1cf.1685981486.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168629685987.404.14910646503772478220.tip-bot2@tip-bot2>
+Message-ID: <168629686051.404.16012940122573453456.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,105 +67,79 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     a9da8247627eefc73f909bf945031a5431a53993
-Gitweb:        https://git.kernel.org/tip/a9da8247627eefc73f909bf945031a5431a53993
+Commit-ID:     1e4b619185e83e54aca617cf5070c64a88fe936b
+Gitweb:        https://git.kernel.org/tip/1e4b619185e83e54aca617cf5070c64a88fe936b
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 05 Jun 2023 09:12:22 -07:00
+AuthorDate:    Mon, 05 Jun 2023 09:12:21 -07:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Wed, 07 Jun 2023 10:03:12 -07:00
+CommitterDate: Wed, 07 Jun 2023 10:03:11 -07:00
 
-drm/vmwgfx: Add unwind hints around RBP clobber
+objtool: Allow stack operations in UNWIND_HINT_UNDEFINED regions
 
-VMware high-bandwidth hypercalls take the RBP register as input.  This
-breaks basic frame pointer convention, as RBP should never be clobbered.
+If the code specified UNWIND_HINT_UNDEFINED, skip the "undefined stack
+state" warning due to a stack operation.  Just ignore the stack op and
+continue to propagate the undefined state.
 
-So frame pointer unwinding is broken for the instructions surrounding
-the hypercalls.  Fortunately this doesn't break live patching with
-CONFIG_FRAME_POINTER, as it only unwinds from blocking tasks, and stack
-traces from preempted tasks are already marked unreliable anyway.
-
-However, for live patching with ORC, this could actually be a
-theoretical problem if vmw_port_hb_{in,out}() were still compiled with a
-frame pointer due to having an aligned stack.  In practice that hasn't
-seemed to be an issue since the objtool warnings have only been seen
-with CONFIG_FRAME_POINTER.
-
-Add unwind hint annotations to tell the ORC unwinder to mark stack
-traces as unreliable.
-
-Fixes the following warnings:
-
-  vmlinux.o: warning: objtool: vmw_port_hb_in+0x1df: return with modified stack frame
-  vmlinux.o: warning: objtool: vmw_port_hb_out+0x1dd: return with modified stack frame
-
-Fixes: 89da76fde68d ("drm/vmwgfx: Add VMWare host messaging capability")
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202305160135.97q0Elax-lkp@intel.com/
-Link: https://lore.kernel.org/r/4c795f2d87bc0391cf6543bcb224fa540b55ce4b.1685981486.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/820c5b433f17c84e8761fb7465a8d319d706b1cf.1685981486.git.jpoimboe@kernel.org
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- arch/x86/include/asm/unwind_hints.h     |  9 +++++++++
- drivers/gpu/drm/vmwgfx/vmwgfx_msg_x86.h | 16 ++++++++++++----
- 2 files changed, 21 insertions(+), 4 deletions(-)
+ tools/objtool/check.c               | 12 ++++++++++++
+ tools/objtool/include/objtool/cfi.h |  1 +
+ 2 files changed, 13 insertions(+)
 
-diff --git a/arch/x86/include/asm/unwind_hints.h b/arch/x86/include/asm/unwind_hints.h
-index 01cb969..85cc57c 100644
---- a/arch/x86/include/asm/unwind_hints.h
-+++ b/arch/x86/include/asm/unwind_hints.h
-@@ -76,9 +76,18 @@
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 4b869de..b11c25a 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -33,6 +33,7 @@ static unsigned long nr_cfi, nr_cfi_reused, nr_cfi_cache;
+ static struct cfi_init_state initial_func_cfi;
+ static struct cfi_state init_cfi;
+ static struct cfi_state func_cfi;
++static struct cfi_state force_undefined_cfi;
  
- #else
+ struct instruction *find_insn(struct objtool_file *file,
+ 			      struct section *sec, unsigned long offset)
+@@ -2240,6 +2241,11 @@ static int read_unwind_hints(struct objtool_file *file)
  
-+#define UNWIND_HINT_UNDEFINED \
-+	UNWIND_HINT(UNWIND_HINT_TYPE_UNDEFINED, 0, 0, 0)
+ 		insn->hint = true;
+ 
++		if (hint->type == UNWIND_HINT_TYPE_UNDEFINED) {
++			insn->cfi = &force_undefined_cfi;
++			continue;
++		}
 +
- #define UNWIND_HINT_FUNC \
- 	UNWIND_HINT(UNWIND_HINT_TYPE_FUNC, ORC_REG_SP, 8, 0)
+ 		if (hint->type == UNWIND_HINT_TYPE_SAVE) {
+ 			insn->hint = false;
+ 			insn->save = true;
+@@ -2793,6 +2799,10 @@ static int update_cfi_state(struct instruction *insn,
+ 	struct cfi_reg *cfa = &cfi->cfa;
+ 	struct cfi_reg *regs = cfi->regs;
  
-+#define UNWIND_HINT_SAVE \
-+	UNWIND_HINT(UNWIND_HINT_TYPE_SAVE, 0, 0, 0)
++	/* ignore UNWIND_HINT_UNDEFINED regions */
++	if (cfi->force_undefined)
++		return 0;
 +
-+#define UNWIND_HINT_RESTORE \
-+	UNWIND_HINT(UNWIND_HINT_TYPE_RESTORE, 0, 0, 0)
-+
- #endif /* __ASSEMBLY__ */
+ 	/* stack operations don't make sense with an undefined CFA */
+ 	if (cfa->base == CFI_UNDEFINED) {
+ 		if (insn_func(insn)) {
+@@ -4607,6 +4617,8 @@ int check(struct objtool_file *file)
+ 	init_cfi_state(&init_cfi);
+ 	init_cfi_state(&func_cfi);
+ 	set_func_state(&func_cfi);
++	init_cfi_state(&force_undefined_cfi);
++	force_undefined_cfi.force_undefined = true;
  
- #endif /* _ASM_X86_UNWIND_HINTS_H */
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_msg_x86.h b/drivers/gpu/drm/vmwgfx/vmwgfx_msg_x86.h
-index 0b74ca2..23899d7 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_msg_x86.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_msg_x86.h
-@@ -105,10 +105,14 @@
-                         flags, magic, bp,		\
-                         eax, ebx, ecx, edx, si, di)	\
- ({							\
--        asm volatile ("push %%rbp;"			\
-+        asm volatile (					\
-+		UNWIND_HINT_SAVE			\
-+		"push %%rbp;"				\
-+		UNWIND_HINT_UNDEFINED			\
-                 "mov %12, %%rbp;"			\
-                 VMWARE_HYPERCALL_HB_OUT			\
--                "pop %%rbp;" :				\
-+                "pop %%rbp;"				\
-+		UNWIND_HINT_RESTORE :			\
-                 "=a"(eax),				\
-                 "=b"(ebx),				\
-                 "=c"(ecx),				\
-@@ -130,10 +134,14 @@
-                        flags, magic, bp,		\
-                        eax, ebx, ecx, edx, si, di)	\
- ({							\
--        asm volatile ("push %%rbp;"			\
-+        asm volatile (					\
-+		UNWIND_HINT_SAVE			\
-+		"push %%rbp;"				\
-+		UNWIND_HINT_UNDEFINED			\
-                 "mov %12, %%rbp;"			\
-                 VMWARE_HYPERCALL_HB_IN			\
--                "pop %%rbp" :				\
-+                "pop %%rbp;"				\
-+		UNWIND_HINT_RESTORE :			\
-                 "=a"(eax),				\
-                 "=b"(ebx),				\
-                 "=c"(ecx),				\
+ 	if (!cfi_hash_alloc(1UL << (file->elf->symbol_bits - 3)))
+ 		goto out;
+diff --git a/tools/objtool/include/objtool/cfi.h b/tools/objtool/include/objtool/cfi.h
+index b1258e7..c8a6bec 100644
+--- a/tools/objtool/include/objtool/cfi.h
++++ b/tools/objtool/include/objtool/cfi.h
+@@ -36,6 +36,7 @@ struct cfi_state {
+ 	bool drap;
+ 	bool signal;
+ 	bool end;
++	bool force_undefined;
+ };
+ 
+ #endif /* _OBJTOOL_CFI_H */
