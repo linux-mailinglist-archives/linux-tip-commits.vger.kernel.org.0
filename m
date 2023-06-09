@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 648D2729198
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A09A72919B
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:48:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238729AbjFIHsI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Jun 2023 03:48:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54986 "EHLO
+        id S239187AbjFIHsL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Jun 2023 03:48:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239120AbjFIHrq (ORCPT
+        with ESMTP id S239130AbjFIHrr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Jun 2023 03:47:46 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D27B4210C;
-        Fri,  9 Jun 2023 00:47:43 -0700 (PDT)
-Date:   Fri, 09 Jun 2023 07:47:40 -0000
+        Fri, 9 Jun 2023 03:47:47 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FCC830D1;
+        Fri,  9 Jun 2023 00:47:44 -0700 (PDT)
+Date:   Fri, 09 Jun 2023 07:47:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686296861;
+        s=2020; t=1686296862;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vlHTX3+aA/2+zboelFSuY6ojH1eXBOnVryBW0r+TA6c=;
-        b=KZfjmxMj+Bu5VvTgaiuO45PgX/o77sVetHbu/o/1Wyi5pYgKHXA7pOKr8beiIKgwbvb3vF
-        RM1Uq6oWNvajhT4Wwe73+SsC5YxCZwsFtiWug2iFXdIcnoSJ/pQvB/4NsPZ73GVrK04zfs
-        Q+84uYKlf1J6zFsN//WHErt8tNeplPXvXfVRPgejkmcyNtOHtD/4H+DvPAOk1cuglNj1nk
-        xewD1rooI8hOXt/3OzFtdW00AOj8islzqGk9k21s+BwykK9DlLXnDeELACRPZAaQNhxAh6
-        eV89FEpKMT6YXqpdS9Ao+UshrkyixH8v349xzBbJ9JFvPjit2cWGpsyU4DTPzA==
+        bh=lPLNXf9zWyzWyCwmesDgnVebog7KOM+Va2Vyt9T/g5Q=;
+        b=tVEDJ6LVH1R5m+I68OIqDMMQMtOUUZShNe8op2Jqn57N9+VYeg/bSbQ5N2FG3RsgoZvFxG
+        FiKP6QI4skTN8ptwW231MeBpW88xzqtO7y/5AYJgd+h/AdpafOOtgxDmL0lr4p/GWwhxd6
+        VajwILC0GDHj6bMcrrzTug3HGSJU5HC1qlS+E7xqh2Hl87df/AsHMD0nAxnFelp/SJqe0s
+        7NiuFey9m2YPul0a+fVmCVRGR422EeDbyk1nvUtfonaEx23OdU420IC+xkz+0ARYZdMU5L
+        vN0r51k9L6FiDMj5sa6jJJ0CpfVjZCebcvX5NNeC3Pu57Qt2DoIcDi+9MfYGDg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686296861;
+        s=2020e; t=1686296862;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vlHTX3+aA/2+zboelFSuY6ojH1eXBOnVryBW0r+TA6c=;
-        b=twi8vI3HA/cHgiW+9/AXXPwcY2ciX/PorlU2qCUULLyoOqpKMuokQgDiTbFmYJxTJnwZVd
-        kv673jHbwsPc7iDA==
+        bh=lPLNXf9zWyzWyCwmesDgnVebog7KOM+Va2Vyt9T/g5Q=;
+        b=1gBi7ubdBLao5CQ2lQRyZUQhYNL5vemHJQKQ05O/MsEaGzQMdCWWrStUA90+tZcqx45bbm
+        QY8bjN7xC0gyetAw==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Allow stack operations in
- UNWIND_HINT_UNDEFINED regions
+Subject: [tip: objtool/core] Revert "x86/orc: Make it callthunk aware"
 Cc:     Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <820c5b433f17c84e8761fb7465a8d319d706b1cf.1685981486.git.jpoimboe@kernel.org>
-References: <820c5b433f17c84e8761fb7465a8d319d706b1cf.1685981486.git.jpoimboe@kernel.org>
+In-Reply-To: <a05b916ef941da872cbece1ab3593eceabd05a79.1684245404.git.jpoimboe@kernel.org>
+References: <a05b916ef941da872cbece1ab3593eceabd05a79.1684245404.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168629686051.404.16012940122573453456.tip-bot2@tip-bot2>
+Message-ID: <168629686183.404.12250905754837686812.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,79 +66,106 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     1e4b619185e83e54aca617cf5070c64a88fe936b
-Gitweb:        https://git.kernel.org/tip/1e4b619185e83e54aca617cf5070c64a88fe936b
+Commit-ID:     020126239b8f376ed2f0bef9dc07d0b280a0b7f5
+Gitweb:        https://git.kernel.org/tip/020126239b8f376ed2f0bef9dc07d0b280a0b7f5
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 05 Jun 2023 09:12:21 -07:00
+AuthorDate:    Tue, 16 May 2023 06:56:46 -07:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Wed, 07 Jun 2023 10:03:11 -07:00
+CommitterDate: Wed, 07 Jun 2023 09:48:57 -07:00
 
-objtool: Allow stack operations in UNWIND_HINT_UNDEFINED regions
+Revert "x86/orc: Make it callthunk aware"
 
-If the code specified UNWIND_HINT_UNDEFINED, skip the "undefined stack
-state" warning due to a stack operation.  Just ignore the stack op and
-continue to propagate the undefined state.
+Commit 396e0b8e09e8 ("x86/orc: Make it callthunk aware") attempted to
+deal with the fact that function prefix code didn't have ORC coverage.
+However, it didn't work as advertised.  Use of the "null" ORC entry just
+caused affected unwinds to end early.
 
-Link: https://lore.kernel.org/r/820c5b433f17c84e8761fb7465a8d319d706b1cf.1685981486.git.jpoimboe@kernel.org
+The root cause has now been fixed with commit 5743654f5e2e ("objtool:
+Generate ORC data for __pfx code").
+
+Revert most of commit 396e0b8e09e8 ("x86/orc: Make it callthunk aware").
+The is_callthunk() function remains as it's now used by other code.
+
+Link: https://lore.kernel.org/r/a05b916ef941da872cbece1ab3593eceabd05a79.1684245404.git.jpoimboe@kernel.org
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- tools/objtool/check.c               | 12 ++++++++++++
- tools/objtool/include/objtool/cfi.h |  1 +
- 2 files changed, 13 insertions(+)
+ arch/x86/include/asm/alternative.h |  5 -----
+ arch/x86/kernel/callthunks.c       |  2 +-
+ arch/x86/kernel/unwind_orc.c       | 21 +--------------------
+ 3 files changed, 2 insertions(+), 26 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 4b869de..b11c25a 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -33,6 +33,7 @@ static unsigned long nr_cfi, nr_cfi_reused, nr_cfi_cache;
- static struct cfi_init_state initial_func_cfi;
- static struct cfi_state init_cfi;
- static struct cfi_state func_cfi;
-+static struct cfi_state force_undefined_cfi;
+diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
+index d7da28f..6c15a62 100644
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -113,7 +113,6 @@ extern void callthunks_patch_builtin_calls(void);
+ extern void callthunks_patch_module_calls(struct callthunk_sites *sites,
+ 					  struct module *mod);
+ extern void *callthunks_translate_call_dest(void *dest);
+-extern bool is_callthunk(void *addr);
+ extern int x86_call_depth_emit_accounting(u8 **pprog, void *func);
+ #else
+ static __always_inline void callthunks_patch_builtin_calls(void) {}
+@@ -124,10 +123,6 @@ static __always_inline void *callthunks_translate_call_dest(void *dest)
+ {
+ 	return dest;
+ }
+-static __always_inline bool is_callthunk(void *addr)
+-{
+-	return false;
+-}
+ static __always_inline int x86_call_depth_emit_accounting(u8 **pprog,
+ 							  void *func)
+ {
+diff --git a/arch/x86/kernel/callthunks.c b/arch/x86/kernel/callthunks.c
+index 22ab139..8e0a9b6 100644
+--- a/arch/x86/kernel/callthunks.c
++++ b/arch/x86/kernel/callthunks.c
+@@ -293,7 +293,7 @@ void *callthunks_translate_call_dest(void *dest)
+ 	return target ? : dest;
+ }
  
- struct instruction *find_insn(struct objtool_file *file,
- 			      struct section *sec, unsigned long offset)
-@@ -2240,6 +2241,11 @@ static int read_unwind_hints(struct objtool_file *file)
- 
- 		insn->hint = true;
- 
-+		if (hint->type == UNWIND_HINT_TYPE_UNDEFINED) {
-+			insn->cfi = &force_undefined_cfi;
-+			continue;
-+		}
-+
- 		if (hint->type == UNWIND_HINT_TYPE_SAVE) {
- 			insn->hint = false;
- 			insn->save = true;
-@@ -2793,6 +2799,10 @@ static int update_cfi_state(struct instruction *insn,
- 	struct cfi_reg *cfa = &cfi->cfa;
- 	struct cfi_reg *regs = cfi->regs;
- 
-+	/* ignore UNWIND_HINT_UNDEFINED regions */
-+	if (cfi->force_undefined)
-+		return 0;
-+
- 	/* stack operations don't make sense with an undefined CFA */
- 	if (cfa->base == CFI_UNDEFINED) {
- 		if (insn_func(insn)) {
-@@ -4607,6 +4617,8 @@ int check(struct objtool_file *file)
- 	init_cfi_state(&init_cfi);
- 	init_cfi_state(&func_cfi);
- 	set_func_state(&func_cfi);
-+	init_cfi_state(&force_undefined_cfi);
-+	force_undefined_cfi.force_undefined = true;
- 
- 	if (!cfi_hash_alloc(1UL << (file->elf->symbol_bits - 3)))
- 		goto out;
-diff --git a/tools/objtool/include/objtool/cfi.h b/tools/objtool/include/objtool/cfi.h
-index b1258e7..c8a6bec 100644
---- a/tools/objtool/include/objtool/cfi.h
-+++ b/tools/objtool/include/objtool/cfi.h
-@@ -36,6 +36,7 @@ struct cfi_state {
- 	bool drap;
- 	bool signal;
- 	bool end;
-+	bool force_undefined;
+-bool is_callthunk(void *addr)
++static bool is_callthunk(void *addr)
+ {
+ 	unsigned int tmpl_size = SKL_TMPL_SIZE;
+ 	void *tmpl = skl_call_thunk_template;
+diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
+index 7891727..4ee16b0 100644
+--- a/arch/x86/kernel/unwind_orc.c
++++ b/arch/x86/kernel/unwind_orc.c
+@@ -183,21 +183,6 @@ static struct orc_entry null_orc_entry = {
+ 	.type = ORC_TYPE_CALL
  };
  
- #endif /* _OBJTOOL_CFI_H */
+-#ifdef CONFIG_CALL_THUNKS
+-static struct orc_entry *orc_callthunk_find(unsigned long ip)
+-{
+-	if (!is_callthunk((void *)ip))
+-		return NULL;
+-
+-	return &null_orc_entry;
+-}
+-#else
+-static struct orc_entry *orc_callthunk_find(unsigned long ip)
+-{
+-	return NULL;
+-}
+-#endif
+-
+ /* Fake frame pointer entry -- used as a fallback for generated code */
+ static struct orc_entry orc_fp_entry = {
+ 	.type		= ORC_TYPE_CALL,
+@@ -250,11 +235,7 @@ static struct orc_entry *orc_find(unsigned long ip)
+ 	if (orc)
+ 		return orc;
+ 
+-	orc =  orc_ftrace_find(ip);
+-	if (orc)
+-		return orc;
+-
+-	return orc_callthunk_find(ip);
++	return orc_ftrace_find(ip);
+ }
+ 
+ #ifdef CONFIG_MODULES
