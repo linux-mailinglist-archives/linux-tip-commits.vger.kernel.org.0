@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11FE072919A
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68B8C72919E
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:48:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238515AbjFIHsL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Jun 2023 03:48:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54998 "EHLO
+        id S238410AbjFIHsN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Jun 2023 03:48:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239126AbjFIHrr (ORCPT
+        with ESMTP id S239128AbjFIHrr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 9 Jun 2023 03:47:47 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF1912139;
-        Fri,  9 Jun 2023 00:47:43 -0700 (PDT)
-Date:   Fri, 09 Jun 2023 07:47:41 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D33930D0;
+        Fri,  9 Jun 2023 00:47:44 -0700 (PDT)
+Date:   Fri, 09 Jun 2023 07:47:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686296861;
+        s=2020; t=1686296863;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lqRQz1OjzzpGQ4iiY57BC9yGXPvO2QKKws/Tybsfw8I=;
-        b=v2fuNeHLUbSTOOAsx0dKhALq3wbgSNpaMjLUxp93MDWh0LMLtrHk+8YsxJgvRh1rkc03pD
-        eOexA1DgrkkRSJDtTHqS1E2XxUgcUqBLau7ka3dhCMdpTgyISjVqYD8hjbU9V/cXDAF++7
-        4q2XZskxqNIbm9zLMUZBuGee+7idVtHh0J1Ym+RCP59k87FiMo2i7X+IdIyQQvrVO0/0WW
-        TUJYAoe1s/0U2LfnnGaV1UNd5cWYZBf2cye5a9mwLCyT8v8zkYCNCU9ZRxnQw++5a+MT3s
-        oikTB+lOoQanSeb5X6phyE55IQZCQCq0edbCV3CflFDM7S2cHfKJDyCGjwESuw==
+        bh=+4vOWr9voQDkbobHqEG1up9eGMDw9BioboJbbB7D1RQ=;
+        b=hdUQjlaeNkTABcVJ4aGWE9aTYB8pFsFg2G+P38AvQ9/X4hi8LPfUHSiUljoJgW9PqG4VUC
+        sDLkmbTLa64rZXASrSkz85ES4N4pMwPSDsrKqysDzDeJXcwz8Dbp4bSFD5lpXbG0tnY7kg
+        0mNt6n1NEneloZR/JcYI6TgUEK2IfW608GHAJtg0Mf7S9Pl0fr+TCTsFluY84iqk5HTtx/
+        jM32U84uozh2Vaqy1jp+qJc65NKwvF1wnBa1jvJjN1kCVOkC4Ds7ZmhVQPpzwi/FeWzryq
+        GK4kIJGDKYEf2/y75uuHfTGuZOIQMR2fGyFvCCxzOMRKFJ0i+x/Hu8PjvdoFmQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686296861;
+        s=2020e; t=1686296863;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lqRQz1OjzzpGQ4iiY57BC9yGXPvO2QKKws/Tybsfw8I=;
-        b=ZgN+BxIz14x96iS5pjCMddFITiE5G/mnz+7SJIo5DvzEumjYsIuDWQRy98iAHGG9Z+DE/Q
-        rMxaSFNpYjWQ2WBg==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=+4vOWr9voQDkbobHqEG1up9eGMDw9BioboJbbB7D1RQ=;
+        b=Y89Jo8RmvRB2zfmEMkrwPOw17uW3wZyfkuFwDOEe4lk598ja9eC2V9FcRVs6MmXEKiNQhl
+        derpQzREMx+sAcBQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/entry: Move thunk restore code into thunk functions
+Subject: [tip: objtool/core] lkdtm: Avoid objtool/ibt warning
 Cc:     kernel test robot <lkp@intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
         Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <46aa8aeb716f302e22e1673ae15ee6fe050b41f4.1685488050.git.jpoimboe@kernel.org>
-References: <46aa8aeb716f302e22e1673ae15ee6fe050b41f4.1685488050.git.jpoimboe@kernel.org>
+In-Reply-To: <Y3JdgbXRV0MNZ+9h@hirez.programming.kicks-ass.net>
+References: <Y3JdgbXRV0MNZ+9h@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <168629686115.404.13695695960788796083.tip-bot2@tip-bot2>
+Message-ID: <168629686249.404.5579713530746693171.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,66 +69,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     ac27ecf68a1ada240bb71531dc2d30cde04ad70a
-Gitweb:        https://git.kernel.org/tip/ac27ecf68a1ada240bb71531dc2d30cde04ad70a
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Tue, 30 May 2023 16:07:41 -07:00
+Commit-ID:     4a03aa34432abe0703abf232f31fc5e2ed8256f6
+Gitweb:        https://git.kernel.org/tip/4a03aa34432abe0703abf232f31fc5e2ed8256f6
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 14 Nov 2022 16:23:45 +01:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Wed, 07 Jun 2023 09:54:45 -07:00
+CommitterDate: Wed, 07 Jun 2023 09:27:11 -07:00
 
-x86/entry: Move thunk restore code into thunk functions
+lkdtm: Avoid objtool/ibt warning
 
-There's no need for both thunk functions to jump to the same shared
-thunk restore code which lives outside the thunk function boundaries.
-It disrupts i-cache locality and confuses objtool.  Keep it simple by
-keeping each thunk's restore code self-contained within the function.
+For certain configs objtool will complain like:
 
-Fixes a bunch of false positive "missing __noreturn" warnings like:
+  vmlinux.o: warning: objtool: lkdtm_UNSET_SMEP+0x1c3: relocation to !ENDBR: native_write_cr4+0x41
 
-  vmlinux.o: warning: objtool: do_arch_prctl_common+0xf4: preempt_schedule_thunk() is missing a __noreturn annotation
+What happens is that GCC optimizes the loop:
 
-Fixes: fedb724c3db5 ("objtool: Detect missing __noreturn annotations")
+        insn = (unsigned char *)native_write_cr4;
+        for (i = 0; i < MOV_CR4_DEPTH; i++)
+
+to read something like:
+
+        for (insn = (unsigned char *)native_write_cr4;
+             insn < (unsigned char *)native_write_cr4 + MOV_CR4_DEPTH;
+             insn++)
+
+Which then obviously generates the text reference
+native_write_cr4+041. Since none of this is a fast path, simply
+confuse GCC enough to inhibit this optimization.
+
 Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202305281037.3PaI3tW4-lkp@intel.com/
-Link: https://lore.kernel.org/r/46aa8aeb716f302e22e1673ae15ee6fe050b41f4.1685488050.git.jpoimboe@kernel.org
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/Y3JdgbXRV0MNZ+9h@hirez.programming.kicks-ass.net
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- arch/x86/entry/thunk_64.S | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/misc/lkdtm/bugs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
-index 5e37f41..27b5da2 100644
---- a/arch/x86/entry/thunk_64.S
-+++ b/arch/x86/entry/thunk_64.S
-@@ -26,17 +26,7 @@ SYM_FUNC_START(\name)
- 	pushq %r11
- 
- 	call \func
--	jmp  __thunk_restore
--SYM_FUNC_END(\name)
--	_ASM_NOKPROBE(\name)
--	.endm
--
--	THUNK preempt_schedule_thunk, preempt_schedule
--	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
--	EXPORT_SYMBOL(preempt_schedule_thunk)
--	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
- 
--SYM_CODE_START_LOCAL(__thunk_restore)
- 	popq %r11
- 	popq %r10
- 	popq %r9
-@@ -48,5 +38,11 @@ SYM_CODE_START_LOCAL(__thunk_restore)
- 	popq %rdi
- 	popq %rbp
- 	RET
--	_ASM_NOKPROBE(__thunk_restore)
--SYM_CODE_END(__thunk_restore)
-+SYM_FUNC_END(\name)
-+	_ASM_NOKPROBE(\name)
-+	.endm
-+
-+THUNK preempt_schedule_thunk, preempt_schedule
-+THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
-+EXPORT_SYMBOL(preempt_schedule_thunk)
-+EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
+diff --git a/drivers/misc/lkdtm/bugs.c b/drivers/misc/lkdtm/bugs.c
+index 48821f4..92110cb 100644
+--- a/drivers/misc/lkdtm/bugs.c
++++ b/drivers/misc/lkdtm/bugs.c
+@@ -487,6 +487,7 @@ static void lkdtm_UNSET_SMEP(void)
+ 	 * the cr4 writing instruction.
+ 	 */
+ 	insn = (unsigned char *)native_write_cr4;
++	OPTIMIZER_HIDE_VAR(insn);
+ 	for (i = 0; i < MOV_CR4_DEPTH; i++) {
+ 		/* mov %rdi, %cr4 */
+ 		if (insn[i] == 0x0f && insn[i+1] == 0x22 && insn[i+2] == 0xe7)
