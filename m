@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B2872919D
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1CDE7291D0
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239196AbjFIHsM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Jun 2023 03:48:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54860 "EHLO
+        id S239493AbjFIH4H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Jun 2023 03:56:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239137AbjFIHru (ORCPT
+        with ESMTP id S239372AbjFIHzy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Jun 2023 03:47:50 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1314830D2;
-        Fri,  9 Jun 2023 00:47:44 -0700 (PDT)
-Date:   Fri, 09 Jun 2023 07:47:43 -0000
+        Fri, 9 Jun 2023 03:55:54 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CB141BE2;
+        Fri,  9 Jun 2023 00:55:25 -0700 (PDT)
+Date:   Fri, 09 Jun 2023 07:55:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686296863;
+        s=2020; t=1686297315;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MSXRmBdF1kkwvwVrlXr/CrK5/h7D+Oeb67qWTqXPAZk=;
-        b=clEeeacPta/cCyqCtbfys08yGM2/5XYvhyWI4gjXv2XxBCzkrDhBEs2b4QU6tgkj1CJYke
-        HGfgp0Pv7KB+XT0Kq8rWM7QhN42vVUEPlHd9XPH8DIkGlOAJlfAoov4WVKLTvOhQEwnB9x
-        ULw9EeWncYyhbqTrIJe/64299V+zFCj4J/Qv2tpa3k93ABZx4ylj+1nwHJmWxKrULMbyzT
-        5vUoSEcsiwUnPPceLCa7kWyCl79bGU8SF5tnj3ZKx0JGzm4HSyM+CWf3hGegW3h/kZTInO
-        RswuM4TAB9XupXkconQewP+XakjEfT95PsFpxIrPQFODRvhxwX/+T5KHllQS5g==
+        bh=Q6FqFH1BcUytgqX4QKu6xifdNtfoGeELk4tAxVMyGeg=;
+        b=HXuE+w7Dm3yxc6KfeAmuQen4ZEiCLEoqXCE0+BoFCME8c6NxNHkGWj7xNYAvuUPJ8ynbHp
+        yZ/XUYYlZ0kxxpC0v9oXm2w2NgGecWrkUMYYy2z8XGBZE+FZo4bp44sQWYaqZ4CfpOsoTm
+        kBoEYqZYdMQbosbu1pJ1KjYkRwRanzJFKe+Mg0CTBcsLeIfdpMhmCeYnYRJDW+yXPu+SpE
+        WdenkcA5OOMnURRdC9WdsBAnTVkh+meAnPJBgZ9+Rn6gDlc+qU5uX8MfEfmKnDqPpGejaN
+        s/OL6kZe/xsyPf8C2BuKgT/XzFR1kS9k3rKPA5YC/gMGXN+SfdaUTyR3OOV9uQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686296863;
+        s=2020e; t=1686297315;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MSXRmBdF1kkwvwVrlXr/CrK5/h7D+Oeb67qWTqXPAZk=;
-        b=lh2HfPxY9hGah1Y2G2g6oOsaKIA47z3lU3KQfiyf3dmy8eXKKJzaySXrQb91TwQys5fsWf
-        8Bnv/jF02UVZx3CQ==
-From:   "tip-bot2 for Lu Hongfei" <tip-bot2@linutronix.de>
+        bh=Q6FqFH1BcUytgqX4QKu6xifdNtfoGeELk4tAxVMyGeg=;
+        b=bXlnvLXqk8XNGDfJmxMlGjIHwA/9V4Ihxb29PCFQIl/LZqG74lptlhlNyL7qohJa+kC1OI
+        6nxePkJoApN2rFDw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] tools: Remove unnecessary variables
-Cc:     Lu Hongfei <luhongfei@vivo.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+Subject: [tip: sched/core] arm64/arch_timer: Fix MMIO byteswap
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230530075649.21661-1-luhongfei@vivo.com>
-References: <20230530075649.21661-1-luhongfei@vivo.com>
+In-Reply-To: <20230606080614.GB905437@hirez.programming.kicks-ass.net>
+References: <20230606080614.GB905437@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <168629686313.404.5459876924248310571.tip-bot2@tip-bot2>
+Message-ID: <168629731478.404.15268928192840800699.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,63 +65,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d49d1666aab51ad3caf79f414aff6b641837a6ea
-Gitweb:        https://git.kernel.org/tip/d49d1666aab51ad3caf79f414aff6b641837a6ea
-Author:        Lu Hongfei <luhongfei@vivo.com>
-AuthorDate:    Tue, 30 May 2023 15:56:49 +08:00
-Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Wed, 07 Jun 2023 09:27:11 -07:00
+Commit-ID:     5416bf1cf5602ab3a38b4c0d15ccec1ca4199633
+Gitweb:        https://git.kernel.org/tip/5416bf1cf5602ab3a38b4c0d15ccec1ca4199633
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 06 Jun 2023 10:06:14 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 06 Jun 2023 10:19:51 +02:00
 
-tools: Remove unnecessary variables
+arm64/arch_timer: Fix MMIO byteswap
 
-There are several places where warnings variables are not needed,
-remove them and directly return 0.
+The readl_relaxed() to __raw_readl() change meant to loose the
+instrumentation, but also (inadvertently) lost the byteswap.
 
-Signed-off-by: Lu Hongfei <luhongfei@vivo.com>
-Link: https://lore.kernel.org/r/20230530075649.21661-1-luhongfei@vivo.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Fixes: 24ee7607b286 ("arm64/arch_timer: Provide noinstr sched_clock_read() functions")
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lkml.kernel.org/r/20230606080614.GB905437@hirez.programming.kicks-ass.net
 ---
- tools/objtool/check.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/clocksource/arm_arch_timer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index a13c257..4b869de 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3799,7 +3799,7 @@ static int validate_unwind_hints(struct objtool_file *file, struct section *sec)
- static int validate_unret(struct objtool_file *file, struct instruction *insn)
- {
- 	struct instruction *next, *dest;
--	int ret, warnings = 0;
-+	int ret;
+diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
+index b23d23b..e733a2a 100644
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -776,9 +776,9 @@ static noinstr u64 arch_counter_get_cnt_mem(struct arch_timer *t, int offset_lo)
+ 	u32 cnt_lo, cnt_hi, tmp_hi;
  
- 	for (;;) {
- 		next = next_insn_to_validate(file, insn);
-@@ -3897,7 +3897,7 @@ static int validate_unret(struct objtool_file *file, struct instruction *insn)
- 		insn = next;
- 	}
+ 	do {
+-		cnt_hi = __raw_readl(t->base + offset_lo + 4);
+-		cnt_lo = __raw_readl(t->base + offset_lo);
+-		tmp_hi = __raw_readl(t->base + offset_lo + 4);
++		cnt_hi = __le32_to_cpu((__le32 __force)__raw_readl(t->base + offset_lo + 4));
++		cnt_lo = __le32_to_cpu((__le32 __force)__raw_readl(t->base + offset_lo));
++		tmp_hi = __le32_to_cpu((__le32 __force)__raw_readl(t->base + offset_lo + 4));
+ 	} while (cnt_hi != tmp_hi);
  
--	return warnings;
-+	return 0;
- }
- 
- /*
-@@ -4132,7 +4132,6 @@ static int add_prefix_symbols(struct objtool_file *file)
- {
- 	struct section *sec;
- 	struct symbol *func;
--	int warnings = 0;
- 
- 	for_each_sec(file, sec) {
- 		if (!(sec->sh.sh_flags & SHF_EXECINSTR))
-@@ -4146,7 +4145,7 @@ static int add_prefix_symbols(struct objtool_file *file)
- 		}
- 	}
- 
--	return warnings;
-+	return 0;
- }
- 
- static int validate_symbol(struct objtool_file *file, struct section *sec,
+ 	return ((u64) cnt_hi << 32) | cnt_lo;
