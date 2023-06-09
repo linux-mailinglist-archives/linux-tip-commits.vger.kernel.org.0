@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43DD7729184
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B396B729190
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:48:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238660AbjFIHrn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Jun 2023 03:47:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54788 "EHLO
+        id S239134AbjFIHrt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Jun 2023 03:47:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239082AbjFIHrk (ORCPT
+        with ESMTP id S237064AbjFIHrl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Jun 2023 03:47:40 -0400
+        Fri, 9 Jun 2023 03:47:41 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCFE930DB;
-        Fri,  9 Jun 2023 00:47:36 -0700 (PDT)
-Date:   Fri, 09 Jun 2023 07:47:29 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B805F30E3;
+        Fri,  9 Jun 2023 00:47:37 -0700 (PDT)
+Date:   Fri, 09 Jun 2023 07:47:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686296849;
+        s=2020; t=1686296850;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RHkI+jsm6uRa/u76pvw2ij+ApgtQIQEjvDppD45sA8g=;
-        b=S3zIuWak3eBZGJZNivPh5rHx3nfa0XzUbV3ILXbDTuKqNYy/TDkNHUkEqGlJmsSPmfMYDf
-        OyV06vx2nZBQVARGu8GrsjBQw83XZPTm2jvYWM2VoQjktA28AE4JYZi08rm97GJL09I5Gw
-        udvwzk72lne5XvHor/PKxkdlymxx2JqDWEu6J3hTCiqdQ19gk+8E65aA2vnB5f0c9P0SSC
-        FexRRvlLjF9mBVz4vIxTUxX098LWSqVrc9Q3iAprqqyJAKUFeEDtuu/3Svqfm8QADD15co
-        cejzsCnkSkswWk3aJDigubT0yPurCQ7mEYLu+Ui+JPX223yrW06/g5R/jL7Zbg==
+        bh=nwLwpUzKyq6nNNTl3+k2cjBO3xBi59DowUTOWE4B3Ow=;
+        b=QtFs65zeIzZNE3ZBY/p25QowAlBtYHphOEAeB59uFRX+i+/bKIoohPli0YKyPh6aXJIx5Q
+        d23Mn/2GAO0gvj8RA1zSVElQTyJ/yfdoCNCw8oZYG1S/9d+VA15zWgNyrw/LBlo7suhIo+
+        lttbTyFcRdsFndFK1Oaeg1KN2trM7zZ6kQLv/tux3yH/V02sjnYLRNndYjFh5WPkyOFEWU
+        WakDgNeWJcxJc14KFzpCJbP26ACJ6zQ+nhCEoGcByJxroeaOIHjRufJgTdoNg5VQ6ONsln
+        DyKYW1Y4KqHjGyUEVox+Q1nYuYfCqBX++qkRKp6CBCMRctMcvKI/BPGhW47z1Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686296849;
+        s=2020e; t=1686296850;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RHkI+jsm6uRa/u76pvw2ij+ApgtQIQEjvDppD45sA8g=;
-        b=Dvt+CZqeqwZNHy9ivqjK36b6XBBll5wy1xwMHBIu+H9RkZWw0rr/IJqs45WpwrxnHcqsOM
-        y06CssnnHdixKJBQ==
+        bh=nwLwpUzKyq6nNNTl3+k2cjBO3xBi59DowUTOWE4B3Ow=;
+        b=WcOK/E3c/DV7oI03oW5W4aHaJLngE++Em+RZM2JuBJ/NIOmGXPpIfR3zM+X7RTPnrXx7C6
+        NuppdjAvJSq5pmAw==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Get rid of reloc->jump_table_start
+Subject: [tip: objtool/core] objtool: Get rid of reloc->type
 Cc:     Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <e1602ed8a6171ada3cfac0bd8449892ec82bd188.1685464332.git.jpoimboe@kernel.org>
-References: <e1602ed8a6171ada3cfac0bd8449892ec82bd188.1685464332.git.jpoimboe@kernel.org>
+In-Reply-To: <d1c1f8da31e4f052a2478aea585fcf355cacc53a.1685464332.git.jpoimboe@kernel.org>
+References: <d1c1f8da31e4f052a2478aea585fcf355cacc53a.1685464332.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <168629684907.404.3230061904592631898.tip-bot2@tip-bot2>
+Message-ID: <168629685037.404.16323541302922091525.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,118 +66,180 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     be2f0b1e12644c956a347d7fde93c2ffe9cdb1af
-Gitweb:        https://git.kernel.org/tip/be2f0b1e12644c956a347d7fde93c2ffe9cdb1af
+Commit-ID:     fcee899d2794319c9dbeb7b877b0c4ac92f5dd16
+Gitweb:        https://git.kernel.org/tip/fcee899d2794319c9dbeb7b877b0c4ac92f5dd16
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Tue, 30 May 2023 10:21:09 -07:00
+AuthorDate:    Tue, 30 May 2023 10:21:07 -07:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Wed, 07 Jun 2023 10:03:24 -07:00
+CommitterDate: Wed, 07 Jun 2023 10:03:22 -07:00
 
-objtool: Get rid of reloc->jump_table_start
+objtool: Get rid of reloc->type
 
-Rework the jump table logic slightly so 'jump_table_start' is no longer
-needed.
+Get the type from the embedded GElf_Rel[a] struct.
 
-With allyesconfig + CONFIG_DEBUG_INFO:
-
-- Before: peak heap memory consumption: 40.37G
-- After:  peak heap memory consumption: 38.64G
-
-Link: https://lore.kernel.org/r/e1602ed8a6171ada3cfac0bd8449892ec82bd188.1685464332.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/d1c1f8da31e4f052a2478aea585fcf355cacc53a.1685464332.git.jpoimboe@kernel.org
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- tools/objtool/check.c               | 35 ++++++++++++++++++----------
- tools/objtool/include/objtool/elf.h |  1 +-
- 2 files changed, 23 insertions(+), 13 deletions(-)
+ tools/objtool/arch/x86/decode.c     |  2 +-
+ tools/objtool/arch/x86/special.c    |  4 ++--
+ tools/objtool/check.c               | 11 ++++++-----
+ tools/objtool/elf.c                 |  6 ++----
+ tools/objtool/include/objtool/elf.h | 11 ++++++++++-
+ 5 files changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 745487d..7fb6467 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1989,13 +1989,14 @@ out:
- }
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index 9ef024f..ffb12e8 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -84,7 +84,7 @@ bool arch_pc_relative_reloc(struct reloc *reloc)
+ 	 * All relocation types where P (the address of the target)
+ 	 * is included in the computation.
+ 	 */
+-	switch (reloc->type) {
++	switch (reloc_type(reloc)) {
+ 	case R_X86_64_PC8:
+ 	case R_X86_64_PC16:
+ 	case R_X86_64_PC32:
+diff --git a/tools/objtool/arch/x86/special.c b/tools/objtool/arch/x86/special.c
+index 7c97b73..1a54a24 100644
+--- a/tools/objtool/arch/x86/special.c
++++ b/tools/objtool/arch/x86/special.c
+@@ -108,7 +108,7 @@ struct reloc *arch_find_switch_table(struct objtool_file *file,
+ 	table_offset = text_reloc->addend;
+ 	table_sec = text_reloc->sym->sec;
  
- static int add_jump_table(struct objtool_file *file, struct instruction *insn,
--			    struct reloc *table)
-+			  struct reloc *next_table)
- {
--	struct reloc *reloc = table;
--	struct instruction *dest_insn;
--	struct alternative *alt;
- 	struct symbol *pfunc = insn_func(insn)->pfunc;
-+	struct reloc *table = insn_jump_table(insn);
-+	struct instruction *dest_insn;
- 	unsigned int prev_offset = 0;
-+	struct reloc *reloc = table;
-+	struct alternative *alt;
+-	if (text_reloc->type == R_X86_64_PC32)
++	if (reloc_type(text_reloc) == R_X86_64_PC32)
+ 		table_offset += 4;
  
  	/*
- 	 * Each @reloc is a switch table relocation which points to the target
-@@ -2004,7 +2005,7 @@ static int add_jump_table(struct objtool_file *file, struct instruction *insn,
- 	for_each_reloc_from(table->sec, reloc) {
+@@ -138,7 +138,7 @@ struct reloc *arch_find_switch_table(struct objtool_file *file,
+ 	 * indicates a rare GCC quirk/bug which can leave dead
+ 	 * code behind.
+ 	 */
+-	if (text_reloc->type == R_X86_64_PC32)
++	if (reloc_type(text_reloc) == R_X86_64_PC32)
+ 		file->ignore_unreachables = true;
  
- 		/* Check for the end of the table: */
--		if (reloc != table && reloc->jump_table_start)
-+		if (reloc != table && reloc == next_table)
- 			break;
+ 	return rodata_reloc;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index e06ffad..04b4152 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -958,7 +958,7 @@ static int create_mcount_loc_sections(struct objtool_file *file)
+ 		if (!reloc)
+ 			return -1;
  
- 		/* Make sure the table entries are consecutive: */
-@@ -2119,29 +2120,39 @@ static void mark_func_jump_tables(struct objtool_file *file,
+-		reloc->type = addr_size == 8 ? R_ABS64 : R_ABS32;
++		set_reloc_type(reloc, addr_size == 8 ? R_ABS64 : R_ABS32);
+ 
+ 		idx++;
+ 	}
+@@ -1354,7 +1354,7 @@ static void annotate_call_site(struct objtool_file *file,
+ 	 */
+ 	if (opts.hack_noinstr && insn->sec->noinstr && sym->profiling_func) {
+ 		if (reloc) {
+-			reloc->type = R_NONE;
++			set_reloc_type(reloc, R_NONE);
+ 			elf_write_reloc(file->elf, reloc);
+ 		}
+ 
+@@ -1383,7 +1383,7 @@ static void annotate_call_site(struct objtool_file *file,
+ 			WARN_INSN(insn, "tail call to __fentry__ !?!?");
+ 		if (opts.mnop) {
+ 			if (reloc) {
+-				reloc->type = R_NONE;
++				set_reloc_type(reloc, R_NONE);
+ 				elf_write_reloc(file->elf, reloc);
+ 			}
+ 
+@@ -1865,7 +1865,7 @@ static int handle_jump_alt(struct objtool_file *file,
+ 		struct reloc *reloc = insn_reloc(file, orig_insn);
+ 
+ 		if (reloc) {
+-			reloc->type = R_NONE;
++			set_reloc_type(reloc, R_NONE);
+ 			elf_write_reloc(file->elf, reloc);
+ 		}
+ 		elf_write_insn(file->elf, orig_insn->sec,
+@@ -4277,7 +4277,8 @@ static int validate_ibt_insn(struct objtool_file *file, struct instruction *insn
  			continue;
  
- 		reloc = find_jump_table(file, func, insn);
--		if (reloc) {
--			reloc->jump_table_start = true;
-+		if (reloc)
- 			insn->_jump_table = reloc;
--		}
+ 		off = reloc->sym->offset;
+-		if (reloc->type == R_X86_64_PC32 || reloc->type == R_X86_64_PLT32)
++		if (reloc_type(reloc) == R_X86_64_PC32 ||
++		    reloc_type(reloc) == R_X86_64_PLT32)
+ 			off += arch_dest_reloc_offset(reloc->addend);
+ 		else
+ 			off += reloc->addend;
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index 2b45460..be9d24d 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -541,6 +541,7 @@ static int elf_update_sym_relocs(struct elf *elf, struct symbol *sym)
+ 	struct reloc *reloc;
+ 
+ 	list_for_each_entry(reloc, &sym->reloc_list, sym_reloc_entry) {
++		reloc->rel.r_info = GELF_R_INFO(reloc->sym->idx, reloc_type(reloc));
+ 		if (elf_write_reloc(elf, reloc))
+ 			return -1;
  	}
- }
- 
- static int add_func_jump_tables(struct objtool_file *file,
- 				  struct symbol *func)
- {
--	struct instruction *insn;
--	int ret;
-+	struct instruction *insn, *insn_t1 = NULL, *insn_t2;
-+	int ret = 0;
- 
- 	func_for_each_insn(file, func, insn) {
- 		if (!insn_jump_table(insn))
- 			continue;
- 
--		ret = add_jump_table(file, insn, insn_jump_table(insn));
-+		if (!insn_t1) {
-+			insn_t1 = insn;
-+			continue;
-+		}
-+
-+		insn_t2 = insn;
-+
-+		ret = add_jump_table(file, insn_t1, insn_jump_table(insn_t2));
- 		if (ret)
- 			return ret;
-+
-+		insn_t1 = insn_t2;
+@@ -831,11 +832,11 @@ static struct reloc *elf_init_reloc(struct elf *elf, struct section *rsec,
  	}
  
--	return 0;
-+	if (insn_t1)
-+		ret = add_jump_table(file, insn_t1, NULL);
-+
-+	return ret;
- }
+ 	reloc->sec = rsec;
+-	reloc->type = type;
+ 	reloc->sym = sym;
+ 	reloc->addend = addend;
  
- /*
+ 	reloc->rel.r_offset = offset;
++	reloc->rel.r_info = GELF_R_INFO(sym->idx, type);
+ 
+ 	if (elf_write_reloc(elf, reloc))
+ 		return NULL;
+@@ -910,7 +911,6 @@ static int read_reloc(struct section *rsec, int i, struct reloc *reloc)
+ 		return -1;
+ 	}
+ 
+-	reloc->type = GELF_R_TYPE(reloc->rel.r_info);
+ 	reloc->addend = rela ? reloc->rela.r_addend : 0;
+ 
+ 	return 0;
+@@ -1231,8 +1231,6 @@ int elf_write_reloc(struct elf *elf, struct reloc *reloc)
+ 	struct section *rsec = reloc->sec;
+ 	int ret;
+ 
+-	reloc->rel.r_info = GELF_R_INFO(reloc->sym->idx, reloc->type);
+-
+ 	if (rsec->sh.sh_type == SHT_RELA) {
+ 		reloc->rela.r_addend = reloc->addend;
+ 		ret = gelf_update_rela(rsec->data, reloc_idx(reloc), &reloc->rela);
 diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
-index be08b32..60686f7 100644
+index 2070860..41d2149 100644
 --- a/tools/objtool/include/objtool/elf.h
 +++ b/tools/objtool/include/objtool/elf.h
-@@ -75,7 +75,6 @@ struct reloc {
- 	struct section *sec;
+@@ -76,7 +76,6 @@ struct reloc {
  	struct symbol *sym;
  	struct list_head sym_reloc_entry;
--	bool jump_table_start;
+ 	s64 addend;
+-	unsigned int type;
+ 	bool jump_table_start;
  };
  
- struct elf {
+@@ -208,6 +207,16 @@ static inline unsigned long reloc_offset(struct reloc *reloc)
+ 	return reloc->rel.r_offset;
+ }
+ 
++static inline unsigned int reloc_type(struct reloc *reloc)
++{
++	return GELF_R_TYPE(reloc->rel.r_info);
++}
++
++static inline void set_reloc_type(struct reloc *reloc, int type)
++{
++	reloc->rel.r_info = GELF_R_INFO(GELF_R_SYM(reloc->rel.r_info), type);
++}
++
+ #define for_each_sec(file, sec)						\
+ 	list_for_each_entry(sec, &file->elf->sections, list)
+ 
