@@ -2,59 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1CDE7291D0
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 09:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B082772948E
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Jun 2023 11:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239493AbjFIH4H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Jun 2023 03:56:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33526 "EHLO
+        id S241341AbjFIJQp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Jun 2023 05:16:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239372AbjFIHzy (ORCPT
+        with ESMTP id S239338AbjFIJP6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Jun 2023 03:55:54 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CB141BE2;
-        Fri,  9 Jun 2023 00:55:25 -0700 (PDT)
-Date:   Fri, 09 Jun 2023 07:55:14 -0000
+        Fri, 9 Jun 2023 05:15:58 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3169421A;
+        Fri,  9 Jun 2023 02:11:54 -0700 (PDT)
+Date:   Fri, 09 Jun 2023 09:10:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686297315;
+        s=2020; t=1686301826;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Q6FqFH1BcUytgqX4QKu6xifdNtfoGeELk4tAxVMyGeg=;
-        b=HXuE+w7Dm3yxc6KfeAmuQen4ZEiCLEoqXCE0+BoFCME8c6NxNHkGWj7xNYAvuUPJ8ynbHp
-        yZ/XUYYlZ0kxxpC0v9oXm2w2NgGecWrkUMYYy2z8XGBZE+FZo4bp44sQWYaqZ4CfpOsoTm
-        kBoEYqZYdMQbosbu1pJ1KjYkRwRanzJFKe+Mg0CTBcsLeIfdpMhmCeYnYRJDW+yXPu+SpE
-        WdenkcA5OOMnURRdC9WdsBAnTVkh+meAnPJBgZ9+Rn6gDlc+qU5uX8MfEfmKnDqPpGejaN
-        s/OL6kZe/xsyPf8C2BuKgT/XzFR1kS9k3rKPA5YC/gMGXN+SfdaUTyR3OOV9uQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=h4GO9ye3jFV7uDmDscZs0Go8LN5BRnU6BdMpCcsv9+M=;
+        b=Mq/HyQcMH2TcUX3C63uYul9aoarM8b1s/sbImeHGjeFetDtvcxcbv/OaYRFZI8Q/TAeLr4
+        g+TX4gDsKYcQJl5bzydVkCNyGdK0cVlDy/KcA6klH1iBXZy5+6kB1Nu58ZJUmpYRXvUqws
+        y9EiJf5cFTa5beW76K1t8epNAMdHHIk7E2xecz9nA/xvMks7Yenb/UHDn11QjsLv5vUQmO
+        7SJ0nBVMH/I150v+usDpT+A93p/X+16myq+qAe2DhL6zdXt7gGsZ43AJ0Z3eXI0/GGEfCJ
+        0kOWEoGLZMNhHg2rcuJOamZHYTafpbbVDoq/MTRplYvQ9zhIvvkOoyFvpEUkVg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686297315;
+        s=2020e; t=1686301826;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Q6FqFH1BcUytgqX4QKu6xifdNtfoGeELk4tAxVMyGeg=;
-        b=bXlnvLXqk8XNGDfJmxMlGjIHwA/9V4Ihxb29PCFQIl/LZqG74lptlhlNyL7qohJa+kC1OI
-        6nxePkJoApN2rFDw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=h4GO9ye3jFV7uDmDscZs0Go8LN5BRnU6BdMpCcsv9+M=;
+        b=nxJOAGxKznuQKAH4xHsTM6ZbfXHxzR4zDbwaDKs4tTm2F6tT5qIU/UopTYiUHshlJAdGcs
+        r4ldWGluTCmvqwBQ==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] arm64/arch_timer: Fix MMIO byteswap
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230606080614.GB905437@hirez.programming.kicks-ass.net>
-References: <20230606080614.GB905437@hirez.programming.kicks-ass.net>
+Subject: [tip: objtool/core] x86/orc: Make the is_callthunk() definition
+ depend on CONFIG_BPF_JIT=y
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
 MIME-Version: 1.0
-Message-ID: <168629731478.404.15268928192840800699.tip-bot2@tip-bot2>
+Message-ID: <168630182497.404.6489095228075454990.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -65,43 +61,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     5416bf1cf5602ab3a38b4c0d15ccec1ca4199633
-Gitweb:        https://git.kernel.org/tip/5416bf1cf5602ab3a38b4c0d15ccec1ca4199633
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 06 Jun 2023 10:06:14 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 06 Jun 2023 10:19:51 +02:00
+Commit-ID:     f2d89c50301987db9e9252919fb6ce2ecdb667c7
+Gitweb:        https://git.kernel.org/tip/f2d89c50301987db9e9252919fb6ce2ecdb=
+667c7
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Fri, 09 Jun 2023 11:04:53 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 09 Jun 2023 11:04:53 +02:00
 
-arm64/arch_timer: Fix MMIO byteswap
+x86/orc: Make the is_callthunk() definition depend on CONFIG_BPF_JIT=3Dy
 
-The readl_relaxed() to __raw_readl() change meant to loose the
-instrumentation, but also (inadvertently) lost the byteswap.
+Recent commit:
 
-Fixes: 24ee7607b286 ("arm64/arch_timer: Provide noinstr sched_clock_read() functions")
-Reported-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lkml.kernel.org/r/20230606080614.GB905437@hirez.programming.kicks-ass.net
+  020126239b8f Revert "x86/orc: Make it callthunk aware"
+
+Made the only user of is_callthunk() depend on CONFIG_BPF_JIT=3Dy, while
+the definition of the helper function is unconditional.
+
+Addresses this build failure:
+
+   arch/x86/kernel/callthunks.c:296:13: error: =E2=80=98is_callthunk=E2=80=99=
+ defined but not used [-Werror=3Dunused-function]
+
+Move is_callthunk() inside the #ifdef block.
+
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
 ---
- drivers/clocksource/arm_arch_timer.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/callthunks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
-index b23d23b..e733a2a 100644
---- a/drivers/clocksource/arm_arch_timer.c
-+++ b/drivers/clocksource/arm_arch_timer.c
-@@ -776,9 +776,9 @@ static noinstr u64 arch_counter_get_cnt_mem(struct arch_timer *t, int offset_lo)
- 	u32 cnt_lo, cnt_hi, tmp_hi;
- 
- 	do {
--		cnt_hi = __raw_readl(t->base + offset_lo + 4);
--		cnt_lo = __raw_readl(t->base + offset_lo);
--		tmp_hi = __raw_readl(t->base + offset_lo + 4);
-+		cnt_hi = __le32_to_cpu((__le32 __force)__raw_readl(t->base + offset_lo + 4));
-+		cnt_lo = __le32_to_cpu((__le32 __force)__raw_readl(t->base + offset_lo));
-+		tmp_hi = __le32_to_cpu((__le32 __force)__raw_readl(t->base + offset_lo + 4));
- 	} while (cnt_hi != tmp_hi);
- 
- 	return ((u64) cnt_hi << 32) | cnt_lo;
+diff --git a/arch/x86/kernel/callthunks.c b/arch/x86/kernel/callthunks.c
+index 8e0a9b6..fcb8eea 100644
+--- a/arch/x86/kernel/callthunks.c
++++ b/arch/x86/kernel/callthunks.c
+@@ -293,6 +293,7 @@ void *callthunks_translate_call_dest(void *dest)
+ 	return target ? : dest;
+ }
+=20
++#ifdef CONFIG_BPF_JIT
+ static bool is_callthunk(void *addr)
+ {
+ 	unsigned int tmpl_size =3D SKL_TMPL_SIZE;
+@@ -306,7 +307,6 @@ static bool is_callthunk(void *addr)
+ 	return !bcmp((void *)(dest - tmpl_size), tmpl, tmpl_size);
+ }
+=20
+-#ifdef CONFIG_BPF_JIT
+ int x86_call_depth_emit_accounting(u8 **pprog, void *func)
+ {
+ 	unsigned int tmpl_size =3D SKL_TMPL_SIZE;
