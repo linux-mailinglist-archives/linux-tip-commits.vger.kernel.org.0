@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 747DF72AB5B
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 10 Jun 2023 14:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CD2672AB83
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 10 Jun 2023 14:45:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230156AbjFJMHy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 10 Jun 2023 08:07:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33892 "EHLO
+        id S231290AbjFJMpd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 10 Jun 2023 08:45:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229867AbjFJMHy (ORCPT
+        with ESMTP id S229746AbjFJMpc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 10 Jun 2023 08:07:54 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D762D41;
-        Sat, 10 Jun 2023 05:07:53 -0700 (PDT)
-Date:   Sat, 10 Jun 2023 12:07:50 -0000
+        Sat, 10 Jun 2023 08:45:32 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5586A35A9;
+        Sat, 10 Jun 2023 05:45:31 -0700 (PDT)
+Date:   Sat, 10 Jun 2023 12:45:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686398871;
+        s=2020; t=1686401130;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dqhTjGJVv+sS1VkVG+X2pGcGQAgiVCBQXPAZBUMN6Ao=;
-        b=Y15D8tDnkyRCi3gXRU1vsorwYCgpjMCrR73BurxgdazLR/hDzBeHaMFkyhuNkbfSeXByz6
-        ei8AVkGKGgXgFdBq4LOocb24vLEj88FRbzhRURNKZowDJzJJEirolzCg33TcMheFiI9YPD
-        ut29OEgjGNMyrGh7M2JnJd+M1q18q8o58dIuXT9IUKvwa4tX++UtzVweGMRRB5YivZStbm
-        dU8NK6euIF8abAnPuMbvRKijh1hdaP46E5/ZBTJ7oy2JGcGjD6LLiK2oQl3+lF6RnuBqsl
-        BEWMH/1SZIZNqj9HhOH90wwdJZmSlwWlDbGRKhWME/DCA4rBrrPKXZxuu+LxZA==
+        bh=XboSUGbdr0u3XL6PVEwK6uua1P2wr0tGpGmjuZRtSzw=;
+        b=APOAJCIxP8No2Xm40yAMANDmIkGb+N0E6CwzRD/CwFOIoSwCIiER0WmQEmz/VprFjX/RuC
+        lWygmV+LVQFev1sq/iVZ9y8naG/+VCG2Q0zBiHvjO7KS97RZ2ssgFYUVF2Q7ymXwiDOwvN
+        AFAnWlsVFqfLBmdDDTg5cTkpwlXr2Z5dEeae6jN5tG6UsfbyMQdjlyKMvXs0p23s9amt6b
+        BO8uwWoABvDoHFIcpdxb28a9GCkjFYD5RSTk+YbU9FF0kb8LKJmxPF+UdnHhl7sEyFB8wI
+        VoCvaUVAGyL5t8Su/h8jIwpUIws48H2vhaIUBsSPH2FlvWuI0VS/UFIXiiKVJQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686398871;
+        s=2020e; t=1686401130;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dqhTjGJVv+sS1VkVG+X2pGcGQAgiVCBQXPAZBUMN6Ao=;
-        b=b/6Rw6CMoR6krTYPNhe515S7zZ6SVtnX5+7ZNtVUCnD0ewBI0t0m9OQe0O2R+0bgIDMP/N
-        I0HEPzo/oO+3jSAw==
-From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
+        bh=XboSUGbdr0u3XL6PVEwK6uua1P2wr0tGpGmjuZRtSzw=;
+        b=D7ax3R2ue6vSHytfgqvV66ngUofx/6Z2TXV5wJqdXIdZRidkN/z2RHtCrWSUFu6LSMUgio
+        ydh8gC89sru3RrAg==
+From:   "tip-bot2 for Wen Yang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-timers: Refer properly to CONFIG_HIGH_RES_TIMERS
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+Subject: [tip: timers/core] tick/rcu: Fix bogus ratelimit condition
+Cc:     Wen Yang <wenyang.linux@foxmail.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230609094643.26253-1-lukas.bulwahn@gmail.com>
-References: <20230609094643.26253-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <tencent_5AAA3EEAB42095C9B7740BE62FBF9A67E007@qq.com>
+References: <tencent_5AAA3EEAB42095C9B7740BE62FBF9A67E007@qq.com>
 MIME-Version: 1.0
-Message-ID: <168639887089.404.4739586245713692955.tip-bot2@tip-bot2>
+Message-ID: <168640112909.404.8400459838695123810.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,41 +67,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     0babddc4977904509287719c1314b9e04bec2307
-Gitweb:        https://git.kernel.org/tip/0babddc4977904509287719c1314b9e04bec2307
-Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-AuthorDate:    Fri, 09 Jun 2023 11:46:43 +02:00
+Commit-ID:     5579a8a8f15bd08b731a015630daca6ccd0f8a14
+Gitweb:        https://git.kernel.org/tip/5579a8a8f15bd08b731a015630daca6ccd0f8a14
+Author:        Wen Yang <wenyang.linux@foxmail.com>
+AuthorDate:    Fri, 05 May 2023 00:12:53 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 10 Jun 2023 13:58:35 +02:00
+CommitterDate: Sat, 10 Jun 2023 14:36:17 +02:00
 
-posix-timers: Refer properly to CONFIG_HIGH_RES_TIMERS
+tick/rcu: Fix bogus ratelimit condition
 
-Commit c78f261e5dcb ("posix-timers: Clarify posix_timer_fn() comments")
-turns an ifdef CONFIG_HIGH_RES_TIMERS into an conditional on
-"IS_ENABLED(CONFIG_HIGHRES_TIMERS)"; note that the new conditional refers
-to "HIGHRES_TIMERS" not "HIGH_RES_TIMERS" as before.
+The ratelimit logic in report_idle_softirq() is broken because the
+exit condition is always true:
 
-Fix this typo introduced in that refactoring.
+	static int ratelimit;
 
-Fixes: c78f261e5dcb ("posix-timers: Clarify posix_timer_fn() comments")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+	if (ratelimit < 10)
+		return false;  ---> always returns here
+
+	ratelimit++;           ---> no chance to run
+
+Make it check for >= 10 instead.
+
+Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
+Signed-off-by: Wen Yang <wenyang.linux@foxmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230609094643.26253-1-lukas.bulwahn@gmail.com
+Link: https://lore.kernel.org/r/tencent_5AAA3EEAB42095C9B7740BE62FBF9A67E007@qq.com
 
 ---
- kernel/time/posix-timers.c | 2 +-
+ kernel/time/tick-sched.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 8bb0dcf..17fff68 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -356,7 +356,7 @@ static enum hrtimer_restart posix_timer_fn(struct hrtimer *timer)
- 			 * enabled as the periodic tick based timers are
- 			 * automatically aligned to the next tick.
- 			 */
--			if (IS_ENABLED(CONFIG_HIGHRES_TIMERS)) {
-+			if (IS_ENABLED(CONFIG_HIGH_RES_TIMERS)) {
- 				ktime_t kj = TICK_NSEC;
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 5225467..8905505 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -1030,7 +1030,7 @@ static bool report_idle_softirq(void)
+ 			return false;
+ 	}
  
- 				if (timr->it_interval < kj)
+-	if (ratelimit < 10)
++	if (ratelimit >= 10)
+ 		return false;
+ 
+ 	/* On RT, softirqs handling may be waiting on some lock */
