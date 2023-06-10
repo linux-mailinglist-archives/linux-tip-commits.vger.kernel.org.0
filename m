@@ -2,113 +2,106 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E0A372A72B
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 10 Jun 2023 02:58:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 747DF72AB5B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 10 Jun 2023 14:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232593AbjFJA62 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Jun 2023 20:58:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55040 "EHLO
+        id S230156AbjFJMHy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 10 Jun 2023 08:07:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232531AbjFJA61 (ORCPT
+        with ESMTP id S229867AbjFJMHy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Jun 2023 20:58:27 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53BE32717
-        for <linux-tip-commits@vger.kernel.org>; Fri,  9 Jun 2023 17:58:26 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id 41be03b00d2f7-528cdc9576cso1012976a12.0
-        for <linux-tip-commits@vger.kernel.org>; Fri, 09 Jun 2023 17:58:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686358706; x=1688950706;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SOQvEYFJS49CmVb219guKJhS/TAPg15aR5EB78g0vGA=;
-        b=JeS8wxLCvHAWZUidwa1TDbmldfslEpMI/X5u1/PqQZ+g9KaM4OgIfvivRHE6uSlqZm
-         cSUpXQhkSG6HEw5JH9fjk+0zByurF+SzYxQILW+ifQdhGb3rbhGxbxCCWeXDa72ikjUi
-         CgrbEV5HmEnj1+aEchT94L6EZYDy2pUduRmXrm2XD8fmh2CHtn0gUpQTGtSMSf0GFP2O
-         cNps5YwYEzskkn2oPjeWXGYrQLkoKBmuCsqw6BOs1igLQNE6z4aJINskBiSiX7ByUVZD
-         MPqT8JwEHIoBWglZ/Ve4nfrXc65nlHGElGj7KZT0sBsDhCZs3OLqgZwI4euN+9kw73Zi
-         NBtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686358706; x=1688950706;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SOQvEYFJS49CmVb219guKJhS/TAPg15aR5EB78g0vGA=;
-        b=lgDvGl/gewouyTCRhA2rI3zlxI2tTQSWSTDHbz8qilqxdKWa66A8eKbZ0jrAeyqRlD
-         Tzerxto9/TiqNbXfAAfXGqWCU0B0+0u50JQHoDUuMwUKZjfoW9pNuqHqnR46AOErSEO/
-         j/dwcxyf8pGwLu5sbmwby7BbSXHvyoQM3YphFeye0JaGeYStf0N10n/+5d8LGHOhpXvw
-         QU0EdNC8IHKVfiQMn+sQhCEzDJ3gOcbbeo5rZ8/mQsN/pXFjShytYuktrnCMJN4ijXpy
-         hDwlAokYZ33dVZk5kaMtyxLfrQrENzPzmY8mVdGwPSjFf2ade72RmIKC00q2OHS+H9a3
-         CmIQ==
-X-Gm-Message-State: AC+VfDxfLkoLueE5mcUkrliDzk9/8zKLLs5E0VqLl8WAjGGTzWg7N5zU
-        O8ZVPd2yZd8SM0I1QezBMc17TMI7lnftwTS0hZE=
-X-Google-Smtp-Source: ACHHUZ6aU4mB1SL49AlKAV0uOr1wap/vDC+m3rzGCLaVqo2isTcPhRVc+DvK9F0tGBUR6GV04eYS/EC3gSiFogmF12s=
-X-Received: by 2002:a17:90b:f8e:b0:256:1fd3:b593 with SMTP id
- ft14-20020a17090b0f8e00b002561fd3b593mr2295470pjb.38.1686358705815; Fri, 09
- Jun 2023 17:58:25 -0700 (PDT)
+        Sat, 10 Jun 2023 08:07:54 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D762D41;
+        Sat, 10 Jun 2023 05:07:53 -0700 (PDT)
+Date:   Sat, 10 Jun 2023 12:07:50 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1686398871;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dqhTjGJVv+sS1VkVG+X2pGcGQAgiVCBQXPAZBUMN6Ao=;
+        b=Y15D8tDnkyRCi3gXRU1vsorwYCgpjMCrR73BurxgdazLR/hDzBeHaMFkyhuNkbfSeXByz6
+        ei8AVkGKGgXgFdBq4LOocb24vLEj88FRbzhRURNKZowDJzJJEirolzCg33TcMheFiI9YPD
+        ut29OEgjGNMyrGh7M2JnJd+M1q18q8o58dIuXT9IUKvwa4tX++UtzVweGMRRB5YivZStbm
+        dU8NK6euIF8abAnPuMbvRKijh1hdaP46E5/ZBTJ7oy2JGcGjD6LLiK2oQl3+lF6RnuBqsl
+        BEWMH/1SZIZNqj9HhOH90wwdJZmSlwWlDbGRKhWME/DCA4rBrrPKXZxuu+LxZA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1686398871;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dqhTjGJVv+sS1VkVG+X2pGcGQAgiVCBQXPAZBUMN6Ao=;
+        b=b/6Rw6CMoR6krTYPNhe515S7zZ6SVtnX5+7ZNtVUCnD0ewBI0t0m9OQe0O2R+0bgIDMP/N
+        I0HEPzo/oO+3jSAw==
+From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] posix-timers: Refer properly to CONFIG_HIGH_RES_TIMERS
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230609094643.26253-1-lukas.bulwahn@gmail.com>
+References: <20230609094643.26253-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:a687:b0:47b:6481:cb77 with HTTP; Fri, 9 Jun 2023
- 17:58:25 -0700 (PDT)
-Reply-To: mauhin52@gmail.com
-From:   "Mrs. Maureen Hinckley" <zaraumnjidda@gmail.com>
-Date:   Sat, 10 Jun 2023 01:58:25 +0100
-Message-ID: <CAP6gr-cggQ2N1M5xoF4YwFh8CTeZjJFu+CdfrN0PN-LVA+fuWw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,REPTO_419_FRAUD_GM,SPF_HELO_NONE,SPF_PASS,
-        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:543 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5086]
-        *  1.0 REPTO_419_FRAUD_GM Reply-To is known advance fee fraud
-        *      collector mailbox
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [zaraumnjidda[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mauhin52[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Message-ID: <168639887089.404.4739586245713692955.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
---=20
-Hello,
+The following commit has been merged into the timers/core branch of tip:
 
-I am Maureen Hinckley and my foundation is donating ($550,000 USD) to
-you. Contact us via my email at (mauhin52@gmail.com) for further
-details.
+Commit-ID:     0babddc4977904509287719c1314b9e04bec2307
+Gitweb:        https://git.kernel.org/tip/0babddc4977904509287719c1314b9e04bec2307
+Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+AuthorDate:    Fri, 09 Jun 2023 11:46:43 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sat, 10 Jun 2023 13:58:35 +02:00
 
-Best Regards,
-Mrs. Maureen Hinckley,
-Copyright =C2=A92023 The Maureen Hinckley Foundation All Rights Reserved.
+posix-timers: Refer properly to CONFIG_HIGH_RES_TIMERS
+
+Commit c78f261e5dcb ("posix-timers: Clarify posix_timer_fn() comments")
+turns an ifdef CONFIG_HIGH_RES_TIMERS into an conditional on
+"IS_ENABLED(CONFIG_HIGHRES_TIMERS)"; note that the new conditional refers
+to "HIGHRES_TIMERS" not "HIGH_RES_TIMERS" as before.
+
+Fix this typo introduced in that refactoring.
+
+Fixes: c78f261e5dcb ("posix-timers: Clarify posix_timer_fn() comments")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230609094643.26253-1-lukas.bulwahn@gmail.com
+
+---
+ kernel/time/posix-timers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index 8bb0dcf..17fff68 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -356,7 +356,7 @@ static enum hrtimer_restart posix_timer_fn(struct hrtimer *timer)
+ 			 * enabled as the periodic tick based timers are
+ 			 * automatically aligned to the next tick.
+ 			 */
+-			if (IS_ENABLED(CONFIG_HIGHRES_TIMERS)) {
++			if (IS_ENABLED(CONFIG_HIGH_RES_TIMERS)) {
+ 				ktime_t kj = TICK_NSEC;
+ 
+ 				if (timr->it_interval < kj)
