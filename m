@@ -2,119 +2,233 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34FB472ACC9
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 10 Jun 2023 18:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A78572BC44
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Jun 2023 11:27:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232614AbjFJQHX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 10 Jun 2023 12:07:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33082 "EHLO
+        id S234549AbjFLJ1U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Jun 2023 05:27:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231684AbjFJQHX (ORCPT
+        with ESMTP id S234608AbjFLJ0f (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 10 Jun 2023 12:07:23 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 939A89E;
-        Sat, 10 Jun 2023 09:07:21 -0700 (PDT)
-Date:   Sat, 10 Jun 2023 16:07:11 -0000
+        Mon, 12 Jun 2023 05:26:35 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59B7644B7;
+        Mon, 12 Jun 2023 02:20:32 -0700 (PDT)
+Date:   Mon, 12 Jun 2023 09:20:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686413232;
+        s=2020; t=1686561630;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AvwYa+1b+gn3pQXI5Z99TCOGlSyQIK1HBe30/jd1Z+Q=;
-        b=pvjFyJivhN4uAWfYQmukt0u+GS2fjgzS8u/TrHL4PovjpM8aAftOaQwXPrl+ozxQJeJCi2
-        LXg+KWxtLi/2wc7stxMmnVPYhz9dj/HITi3U0ZUKcoxIiE1QqSJfdHonuA+5k8M1YxxEbQ
-        FHDQQUZA6pXDo+6GmKS87IQcYJc7wyNdEslwpttxowWW0KbMPt6gdn+8gAD8rv4mm9l6f0
-        05dwH8HlpvUGIyh7DnKPXHxtyT43bsR7L2vJ/gmBhUAuYfEt5NrLaAzyZKuQu5ldf6HRI3
-        frCRSU1H1a3JunFJxazT+KdTUwa5SVnoFc+2mHBrM02tx3jmLu3RDtl/R8qyYw==
+        bh=I5KgXB4wJLlgssofluB7u2dvkHMqsZiOXCz9D9xcZ48=;
+        b=RMjP6Qmzg52VUlHvm4UA6ucKB/GD/YAfMUf8MPEZudYERla/vK4DEoeiZTf1P0cR/PHC4H
+        FA17avXC9ijcmKnqViwhrv2WTcvGSb84eG0ZYdq3Mw/nUT0fvZBd/BJJG98Q+2IaUQXb+r
+        gddr4ybTjKBxwQhMYbH71zfWLZs3X9CEYcC6sy3CGjDUcU1BkrebI1jBs/yDAFLCavvPbc
+        0WXyO+5uVLR3F34R9YD55QXmXZqKYNUnZkapNu05VT2mIhRzKgsD7NUBNadFj31KnDXB7i
+        rb3NoreGuA8djDnOPZcQ4mxOyvIWRPVrTfyyKe4NioNwjOsMMRG1IpDa5+Hrzw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686413232;
+        s=2020e; t=1686561630;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AvwYa+1b+gn3pQXI5Z99TCOGlSyQIK1HBe30/jd1Z+Q=;
-        b=fFl99LW+eDGiuTmU5lP39T73ZicCuZ2wPPS41L9mtsWerBfARzRjY4rj+t6IEtvbliJO+/
-        nHDHdMENDtiixQAQ==
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+        bh=I5KgXB4wJLlgssofluB7u2dvkHMqsZiOXCz9D9xcZ48=;
+        b=h8VjlF5aQ29oldHSUKV3lvM21tViNK4aRrvL6LjEXkitW+hdoMvBcapC6os5c+mby9qjwV
+        yMbdDKW/0Zd86xBA==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-timers: Add sys_ni_posix_timers() prototype
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kees Cook <keescook@chromium.org>, x86@kernel.org,
+Subject: [tip: x86/microcode] x86/microcode: Add a "microcode=" command line option
+Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230607142925.3126422-1-arnd@kernel.org>
-References: <20230607142925.3126422-1-arnd@kernel.org>
+In-Reply-To: <20230605141332.25948-2-bp@alien8.de>
+References: <20230605141332.25948-2-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <168641323120.404.166067010257758345.tip-bot2@tip-bot2>
+Message-ID: <168656162970.404.6477920187705031691.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     ad0334ffa4f9ae3dacfd89dae578df97f18a5203
-Gitweb:        https://git.kernel.org/tip/ad0334ffa4f9ae3dacfd89dae578df97f18a5203
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Wed, 07 Jun 2023 16:28:45 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 10 Jun 2023 17:57:30 +02:00
+Commit-ID:     4a7349239418d78193e8d328f5eebd14a3f77bcd
+Gitweb:        https://git.kernel.org/tip/4a7349239418d78193e8d328f5eebd14a3f77bcd
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Thu, 18 May 2023 03:02:29 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 12 Jun 2023 11:02:52 +02:00
 
-posix-timers: Add sys_ni_posix_timers() prototype
+x86/microcode: Add a "microcode=" command line option
 
-The sys_ni_posix_timers() definition causes a warning when the declaration
-is missing, so this needs to be added along with the normal syscalls,
-outside of the #ifdef.
+It will be used to control microcode loader behavior. Add the first
+chicken bit: to control whether the AMD side should load microcode late
+on all logical SMT threads.
 
-kernel/time/posix-stubs.c:26:17: error: no previous prototype for 'sys_ni_posix_timers' [-Werror=missing-prototypes]
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230607142925.3126422-1-arnd@kernel.org
-
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230605141332.25948-2-bp@alien8.de
 ---
- arch/alpha/kernel/osf_sys.c | 2 --
- include/linux/syscalls.h    | 1 +
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  7 +++-
+ arch/x86/kernel/cpu/microcode/amd.c             |  5 +-
+ arch/x86/kernel/cpu/microcode/core.c            | 44 ++++++++++++++++-
+ arch/x86/kernel/cpu/microcode/internal.h        | 16 ++++++-
+ 4 files changed, 71 insertions(+), 1 deletion(-)
+ create mode 100644 arch/x86/kernel/cpu/microcode/internal.h
 
-diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
-index 2a9a877..d98701e 100644
---- a/arch/alpha/kernel/osf_sys.c
-+++ b/arch/alpha/kernel/osf_sys.c
-@@ -1014,8 +1014,6 @@ SYSCALL_DEFINE2(osf_settimeofday, struct timeval32 __user *, tv,
- 	return do_sys_settimeofday64(tv ? &kts : NULL, tz ? &ktz : NULL);
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 9e5bab2..b88ff02 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3228,6 +3228,13 @@
+ 
+ 	mga=		[HW,DRM]
+ 
++	microcode=	[X86] Control the behavior of the microcode
++			loader. Available options:
++
++			no_late_all - do not load on all SMT threads on
++			AMD. Loading on all logical threads is enabled by
++			default.
++
+ 	min_addr=nn[KMG]	[KNL,BOOT,IA-64] All physical memory below this
+ 			physical address is ignored.
+ 
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index 87208e4..76b5306 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -36,6 +36,8 @@
+ #include <asm/cpu.h>
+ #include <asm/msr.h>
+ 
++#include "internal.h"
++
+ static struct equiv_cpu_table {
+ 	unsigned int num_entries;
+ 	struct equiv_cpu_entry *entry;
+@@ -700,7 +702,8 @@ static enum ucode_state apply_microcode_amd(int cpu)
+ 	rdmsr(MSR_AMD64_PATCH_LEVEL, rev, dummy);
+ 
+ 	/* need to apply patch? */
+-	if (rev > mc_amd->hdr.patch_id) {
++	if ((rev > mc_amd->hdr.patch_id) ||
++	    (rev == mc_amd->hdr.patch_id && !(control & LATE_ALL_THREADS))) {
+ 		ret = UCODE_OK;
+ 		goto out;
+ 	}
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index 3afcf3d..5f3185d 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -40,11 +40,15 @@
+ #include <asm/cmdline.h>
+ #include <asm/setup.h>
+ 
++#include "internal.h"
++
+ #define DRIVER_VERSION	"2.2"
+ 
+ static struct microcode_ops	*microcode_ops;
+ static bool dis_ucode_ldr = true;
+ 
++unsigned long control = LATE_ALL_THREADS;
++
+ bool initrd_gone;
+ 
+ LIST_HEAD(microcode_cache);
+@@ -522,8 +526,32 @@ static ssize_t processor_flags_show(struct device *dev,
+ 	return sprintf(buf, "0x%x\n", uci->cpu_sig.pf);
  }
  
--asmlinkage long sys_ni_posix_timers(void);
--
- SYSCALL_DEFINE2(osf_utimes, const char __user *, filename,
- 		struct timeval32 __user *, tvs)
- {
-diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-index 33a0ee3..24871f8 100644
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -1280,6 +1280,7 @@ asmlinkage long sys_ni_syscall(void);
++static ssize_t control_show(struct device *dev,
++			     struct device_attribute *attr, char *buf)
++{
++	return sprintf(buf, "0x%lx\n", control);
++}
++
++static ssize_t control_store(struct device *dev,
++			     struct device_attribute *attr,
++			     const char *buf, size_t count)
++{
++	unsigned long val;
++
++	if (kstrtoul(buf, 0, &val) < 0)
++		return -ERANGE;
++
++	if (val & CONTROL_FLAGS_MASK)
++		return -EINVAL;
++
++	control = val;
++
++	return count;
++}
++
+ static DEVICE_ATTR_RO(version);
+ static DEVICE_ATTR_RO(processor_flags);
++static DEVICE_ATTR_ADMIN_RW(control);
  
- #endif /* CONFIG_ARCH_HAS_SYSCALL_WRAPPER */
+ static struct attribute *mc_default_attrs[] = {
+ 	&dev_attr_version.attr,
+@@ -622,6 +650,7 @@ static struct attribute *cpu_root_microcode_attrs[] = {
+ #ifdef CONFIG_MICROCODE_LATE_LOADING
+ 	&dev_attr_reload.attr,
+ #endif
++	&dev_attr_control.attr,
+ 	NULL
+ };
  
-+asmlinkage long sys_ni_posix_timers(void);
- 
- /*
-  * Kernel code should not call syscalls (i.e., sys_xyzyyz()) directly.
+@@ -683,3 +712,18 @@ static int __init microcode_init(void)
+ }
+ fs_initcall(save_microcode_in_initrd);
+ late_initcall(microcode_init);
++
++static int __init parse_cmdline_param(char *str)
++{
++	if (!str)
++		return 0;
++
++	if (*str == '=')
++		str++;
++
++	if (!strcmp(str, "no_late_all"))
++		control &= ~LATE_ALL_THREADS;
++
++        return 1;
++}
++__setup("microcode", parse_cmdline_param);
+diff --git a/arch/x86/kernel/cpu/microcode/internal.h b/arch/x86/kernel/cpu/microcode/internal.h
+new file mode 100644
+index 0000000..5e3c5fc
+--- /dev/null
++++ b/arch/x86/kernel/cpu/microcode/internal.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __X86_MICROCODE_INTERNAL_H__
++#define __X86_MICROCODE_INTERNAL_H__
++
++extern unsigned long control;
++
++/* Loader control flags. */
++enum control_flags {
++	__LATE_ALL_THREADS = 0,
++	__CONTROL_FLAGS_NUM,
++};
++
++#define LATE_ALL_THREADS	BIT_ULL(__LATE_ALL_THREADS)
++#define CONTROL_FLAGS_MASK	~(BIT_ULL(__CONTROL_FLAGS_NUM) - 1)
++
++#endif /* __X86_MICROCODE_INTERNAL_H__ */
