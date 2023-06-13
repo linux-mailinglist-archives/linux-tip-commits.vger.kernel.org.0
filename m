@@ -2,98 +2,113 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A080072BC45
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Jun 2023 11:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E94DF72DBF2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jun 2023 10:03:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234530AbjFLJ1S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Jun 2023 05:27:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44400 "EHLO
+        id S240748AbjFMIDa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 13 Jun 2023 04:03:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbjFLJ0X (ORCPT
+        with ESMTP id S240768AbjFMIDQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Jun 2023 05:26:23 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59C7D44B8;
-        Mon, 12 Jun 2023 02:20:32 -0700 (PDT)
-Date:   Mon, 12 Jun 2023 09:20:30 -0000
+        Tue, 13 Jun 2023 04:03:16 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAFC219B5;
+        Tue, 13 Jun 2023 01:02:51 -0700 (PDT)
+Date:   Tue, 13 Jun 2023 08:02:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686561630;
+        s=2020; t=1686643369;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=70zNvW5VA+Ah0281r+mT+kVt1mXlLOUUZzCOWk3D6fo=;
-        b=DFPCi/rJ+6iWsWuSBXd7uikjQZANygh7+YFriqGBex2nMnblVyRM2+6UJlHniZbzCOuw/I
-        E2lVjsbl/1DSjQjI1o1mxfsjRRnyeS3TYBL8+tdTSMLgXh4yMR2mpYN9/YUhT5D5yqjQJ3
-        GH+UPSiVJReWtRGtF0iMs3FvnBVYxJa69j2tnTIIOOnjwrtihaZqK1n95CZGjeZJnAWG38
-        VCNoA+7AosfP9V5w+yQjEqXQS7iwidTqI+Autjrw0AFYsuxp2d4x9+hQAesOCWJ/f+0pKF
-        cH6ecHmuZkoJeJXB3NOj3grTBvjplOBAMPeYMwgNwlFCYv2STae9uBxFJXf5tw==
+        bh=/YpJn7ym7O+kUFtJNN1uSkvsegGCM6j+jfCyCTBlrxM=;
+        b=rQG7TQY/8f4Gxoz42JdNmfPEw3qpEH4kl5pIFztaumvpSgY7FkjAtA3UwpMNTeAYuHVP5D
+        Iscr7R7nxVL+P+L8qxecO1YrUaX8dn4Ctjf9n1Jk5qVnUCBZmmEP9w7PVopEA890HZ1mQc
+        wTBesJVXZhduElCl6Ce1jJRqGzJSrjFSMAPYcEb7pjDCh0LIehwYxfwp7irIoGETW6ZbDL
+        CQ5klr4Xqie/qY6Cgd8Q1jV4WmfJy333E6WxrraDZVul5rOTCo5M4eQ0KAxST1NhSUfxpQ
+        ip+eixvIkzVRRAH4vNy+u99RxEB17xGNofIPSLoX8GaI/hfS61shXjgKK3mUmg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686561630;
+        s=2020e; t=1686643369;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=70zNvW5VA+Ah0281r+mT+kVt1mXlLOUUZzCOWk3D6fo=;
-        b=BcvIhHpWG3YQQFIxCIcIzPOErxf1ybpEAlQ80BnlWnVM/yqf8lUaaM0DsRXL6TOs5fGDRv
-        uqM6IEGUIy1GipDw==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=/YpJn7ym7O+kUFtJNN1uSkvsegGCM6j+jfCyCTBlrxM=;
+        b=BTtY1GEHqBQPSDaJlvoQtvBtA2T4zK/KJNO8DptrEluiVG2nUlFioCxDunNDHopDaW/6Bj
+        bh4LjTAByLhxrrCg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/AMD: Load late on both threads too
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, <stable@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230605141332.25948-1-bp@alien8.de>
-References: <20230605141332.25948-1-bp@alien8.de>
+Subject: [tip: smp/core] MAINTAINERS: Add CPU HOTPLUG entry
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Randy Dunlap <rdunlap@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <87o7ll6ogo.ffs@tglx>
+References: <87o7ll6ogo.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <168656163014.404.7079279455029595651.tip-bot2@tip-bot2>
+Message-ID: <168664336821.404.8200536168212514927.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     a32b0f0db3f396f1c9be2fe621e77c09ec3d8e7d
-Gitweb:        https://git.kernel.org/tip/a32b0f0db3f396f1c9be2fe621e77c09ec3d8e7d
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Tue, 02 May 2023 19:53:50 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 12 Jun 2023 11:02:17 +02:00
+Commit-ID:     60be49bdf1d4ddb9e2deb7aa718d5b8bc167ee4e
+Gitweb:        https://git.kernel.org/tip/60be49bdf1d4ddb9e2deb7aa718d5b8bc167ee4e
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 12 Jun 2023 11:04:39 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 13 Jun 2023 09:57:18 +02:00
 
-x86/microcode/AMD: Load late on both threads too
+MAINTAINERS: Add CPU HOTPLUG entry
 
-Do the same as early loading - load on both threads.
+Document the status quo and add myself and Peter as CPU hotplug
+maintainers.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230605141332.25948-1-bp@alien8.de
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/87o7ll6ogo.ffs@tglx
+
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index f14f4ea..87208e4 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -700,7 +700,7 @@ static enum ucode_state apply_microcode_amd(int cpu)
- 	rdmsr(MSR_AMD64_PATCH_LEVEL, rev, dummy);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e0ad886..273f980 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5341,6 +5341,18 @@ F:	include/linux/sched/cpufreq.h
+ F:	kernel/sched/cpufreq*.c
+ F:	tools/testing/selftests/cpufreq/
  
- 	/* need to apply patch? */
--	if (rev >= mc_amd->hdr.patch_id) {
-+	if (rev > mc_amd->hdr.patch_id) {
- 		ret = UCODE_OK;
- 		goto out;
- 	}
++CPU HOTPLUG
++M:	Thomas Gleixner <tglx@linutronix.de>
++M:	Peter Zijlstra <peterz@infradead.org>
++L:	linux-kernel@vger.kernel.org
++S:	Maintained
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git smp/core
++F:	kernel/cpu.c
++F:	kernel/smpboot.*
++F:	include/linux/cpu.h
++F:	include/linux/cpuhotplug.h
++F:	include/linux/smpboot.h
++
+ CPU IDLE TIME MANAGEMENT FRAMEWORK
+ M:	"Rafael J. Wysocki" <rafael@kernel.org>
+ M:	Daniel Lezcano <daniel.lezcano@linaro.org>
