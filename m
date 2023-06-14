@@ -2,67 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B93ED73032C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jun 2023 17:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC0E730637
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jun 2023 19:43:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343620AbjFNPOA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 14 Jun 2023 11:14:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53062 "EHLO
+        id S238969AbjFNRm7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 14 Jun 2023 13:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343608AbjFNPOA (ORCPT
+        with ESMTP id S237525AbjFNRm6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 14 Jun 2023 11:14:00 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 821AE2101;
-        Wed, 14 Jun 2023 08:13:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=UbFlhjvrs4yVUIifiHFAt8+Ke12wfSm4l9j/zsHycX4=; b=sg4IjbsCmgg1KldkL37VIqOk/v
-        0iaB3rRbD/ol+9WGiDHXY+cwG0257Tu8u3myIJlRD8+quu0f3VaibDaaxuID31a36RN+6mFlI0OMC
-        JMmWXn7qZ8B/2Qmy6lIvU1bkREP+KcKZ3REG8NGt4hpY+RJ7mVRveS8D9Atz5/n84luLJHzfeZqYa
-        iKpX9EtfJKKsTB6cNbve0WKvuqwRiGq43/fAysVvAOzXGJfWFSO2nkZYEnciOJTdUXHvBbhzBgplb
-        Zg383lL3VMhUfDtn6ZxbPXK9t3d9fTAjsxunAtjdXNg+jtNRvgFqJLZU+cHfeQFt02PDubwFtCXuE
-        9GaNedfA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1q9SBx-006SiF-U1; Wed, 14 Jun 2023 15:13:50 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E179D300195;
-        Wed, 14 Jun 2023 17:13:48 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id CAC31240FDF97; Wed, 14 Jun 2023 17:13:48 +0200 (CEST)
-Date:   Wed, 14 Jun 2023 17:13:48 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Chen Yu <yu.c.chen@intel.com>
-Cc:     K Prateek Nayak <kprateek.nayak@amd.com>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Tejun Heo <tj@kernel.org>, x86@kernel.org,
-        Gautham Shenoy <gautham.shenoy@amd.com>,
-        Tim Chen <tim.c.chen@intel.com>
-Subject: Re: [tip: sched/core] sched/fair: Multi-LLC select_idle_sibling()
-Message-ID: <20230614151348.GM1639749@hirez.programming.kicks-ass.net>
-References: <20230601115643.GX4253@hirez.programming.kicks-ass.net>
- <20230601120001.GJ38236@hirez.programming.kicks-ass.net>
- <20230601144706.GA559454@hirez.programming.kicks-ass.net>
- <7bee9860-2d2a-067b-adea-04012516095c@amd.com>
- <20230602065438.GB620383@hirez.programming.kicks-ass.net>
- <bd083d8d-023a-698e-701b-725f1b15766e@amd.com>
- <20230613082536.GI83892@hirez.programming.kicks-ass.net>
- <3402dcc4-d52f-d99f-e6ce-b435478a5a59@amd.com>
- <20230614081757.GA1639749@hirez.programming.kicks-ass.net>
- <ZInVjPRLsyaKksfZ@chenyu5-mobl2.ccr.corp.intel.com>
+        Wed, 14 Jun 2023 13:42:58 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22CE1BF0;
+        Wed, 14 Jun 2023 10:42:57 -0700 (PDT)
+Date:   Wed, 14 Jun 2023 17:42:54 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1686764575;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=hfkqaiey4eDp8QZH5LR5I91Mf3eI8gRoHf9KYFgCwTM=;
+        b=p2UvlN3pOnWAt8bO2PQHu4MCkuWYzG5/L5PsA+XTlrWVmWPUVkBpSZCFmpR8T2fXJ6dY4q
+        pKXfrCpi8OH1vN3f/nrnITSFkVp3GmxhlBOJv6ujXvd7wNbv0YrqCRMt9rYwJKazC6cVnk
+        5jqjGQmn9B/I6xP5apC+s4VbRrEUj/qKq45sbykrdGtbTJ2xrJimtwnnkzr42QVID0qN1t
+        SF9PPO5OBFahSE3TBUsPGn2YwPvYTMkgnvCks1knmgpafsE4tnw+Bzcm4hq+E4aYcyp/So
+        opJRfamE6fjMvYFaZgCgvywCOhLjrLfaovG3fkoZ0impVL204cPqLfWSeLyumQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1686764575;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=hfkqaiey4eDp8QZH5LR5I91Mf3eI8gRoHf9KYFgCwTM=;
+        b=VUIyuFVu+aw2Zf5NuWRLRt/gHhj3bmuCIqL7B0aDU1QbOPmy4f/wk3Z5SkI/eAmf0beF8k
+        5E2t5j6i4jzWKEDA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/alternatives] x86/alternative: PAUSE is not a NOP
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZInVjPRLsyaKksfZ@chenyu5-mobl2.ccr.corp.intel.com>
+Message-ID: <168676457432.404.2368644491901077612.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,27 +59,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Jun 14, 2023 at 10:58:20PM +0800, Chen Yu wrote:
-> On 2023-06-14 at 10:17:57 +0200, Peter Zijlstra wrote:
-> > On Tue, Jun 13, 2023 at 04:00:39PM +0530, K Prateek Nayak wrote:
-> > 
-> > > >> - SIS_NODE_TOPOEXT - tip:sched/core + this patch
-> > > >>                      + new sched domain (Multi-Multi-Core or MMC)
-> > > >> 		     (https://lore.kernel.org/all/20230601153522.GB559993@hirez.programming.kicks-ass.net/)
-> > > >> 		     MMC domain groups 2 nearby CCX.
-> > > > 
-> > > > OK, so you managed to get the NPS4 topology in NPS1 mode?
-> > > 
-> > > Yup! But it is a hack. I'll leave the patch at the end.
-> > 
-> > Chen Yu, could we do the reverse? Instead of building a bigger LLC
-> > domain, can we split our LLC based on SNC (sub-numa-cluster) topologies?
-> >
-> Hi Peter,
-> Do you mean with SNC enabled, if the LLC domain gets smaller? 
-> According to the test, the answer seems to be yes.
+The following commit has been merged into the x86/alternatives branch of tip:
 
-No, I mean to build smaller LLC domains even with SNC disabled, as-if
-SNC were active.
+Commit-ID:     2bd4aa9325821551648cf9738d6aa3a49317d7e5
+Gitweb:        https://git.kernel.org/tip/2bd4aa9325821551648cf9738d6aa3a49317d7e5
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 14 Jun 2023 16:35:50 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 14 Jun 2023 19:02:54 +02:00
 
+x86/alternative: PAUSE is not a NOP
 
+While chasing ghosts, I did notice that optimize_nops() was replacing
+'REP NOP' aka 'PAUSE' with NOP2. This is clearly not right.
+
+Fixes: 6c480f222128 ("x86/alternative: Rewrite optimize_nops() some")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/linux-next/20230524130104.GR83892@hirez.programming.kicks-ass.net/
+---
+ arch/x86/kernel/alternative.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index bbfbf7a..a7e1ec5 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -169,9 +169,12 @@ void text_poke_early(void *addr, const void *opcode, size_t len);
+  */
+ static bool insn_is_nop(struct insn *insn)
+ {
+-	if (insn->opcode.bytes[0] == 0x90)
++	/* Anything NOP, but no REP NOP */
++	if (insn->opcode.bytes[0] == 0x90 &&
++	    (!insn->prefixes.nbytes || insn->prefixes.bytes[0] != 0xF3))
+ 		return true;
+ 
++	/* NOPL */
+ 	if (insn->opcode.bytes[0] == 0x0F && insn->opcode.bytes[1] == 0x1F)
+ 		return true;
+ 
