@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 514DB732B5F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jun 2023 11:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BFA9732B65
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jun 2023 11:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230149AbjFPJZV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Jun 2023 05:25:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41396 "EHLO
+        id S1344004AbjFPJZZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Jun 2023 05:25:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344133AbjFPJYz (ORCPT
+        with ESMTP id S1344134AbjFPJYz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 16 Jun 2023 05:24:55 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B4CA270E;
-        Fri, 16 Jun 2023 02:24:51 -0700 (PDT)
-Date:   Fri, 16 Jun 2023 09:24:47 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B775EA;
+        Fri, 16 Jun 2023 02:24:52 -0700 (PDT)
+Date:   Fri, 16 Jun 2023 09:24:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686907487;
+        s=2020; t=1686907488;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AV6KkFtgrM2z233LjJh0pvjZzz7p2tEBabShKhguHIU=;
-        b=GltytqPbDYjI3ykBmgF4MUl+rFPEKlZlZqaSB5tIh+sHOCmrTjatQKzQBL7DKxoVf/wfcd
-        G/psAhq5DCW7UfgOYdtmq2FH4uuqmCqFSAmreIDY1k+fTo5YyhGjA6ACsrq3igm13sE4/L
-        dNJ1PNIsJRkaCo5I+KKDxXoYfTvPVnNElsnDMo0sCZfAXXgVTYfVkS+Gl4L5BT6hpVcV4a
-        ciTeDjJox7pQ9hNJesEle/olNE79RvOmg0ldtkAHchdknPlhVLdlDllo4yVP4hwYc8w4bY
-        rtMJzVlWFWEiAfpk4z/CDkBeT/aWlOXBUa2GRcQ3bU/XcfdwfOK38mDnHtDlwQ==
+        bh=7CRZ/I+UHhDqzwb3VMqBS3zXkZGutnO/KuKUuPRDd4w=;
+        b=iiRuaZqg+ML8Y7P/U4IvPnWsPvt360b1m4qJFPRXIHUgtSZI311SDLKRN9z/snR5Vs6YRx
+        ODimoHNTpntc6LXvwIooI02dtPgSfhyYMLmSUa0GrRzl7qkNn32giLW1j1An7hjm8g1eCk
+        WEKSwzM3epB2vckajyFbSTxykloq9eUHXjeMMMyqy726iTeG5OrHpWaIpVctQPpwDqqbZt
+        bQwddA3VxXV0tPotH2RuZ2mSOAFocyaKixA41DJVjgWyZIsZk7AmTITm2neOY3E/Yp3X1n
+        3ZpN/co2UavIGMC7iJf6EkKYg+Jd3F+2ogsa+OHk0jsJ2eyGDLfhC1xpyp/igw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686907487;
+        s=2020e; t=1686907488;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AV6KkFtgrM2z233LjJh0pvjZzz7p2tEBabShKhguHIU=;
-        b=PLCqIyRcb6jQuPir0pVr8YZ6N1hZbBXIaFWZmMTFZs7bD13LA56mQINzr99JJ4KFDv0dL1
-        85Rpoj4WFYjowICw==
+        bh=7CRZ/I+UHhDqzwb3VMqBS3zXkZGutnO/KuKUuPRDd4w=;
+        b=3CIbApYBXKikxfE00QRM4Djn93HFAAzVRCmFv2xTNrWupP7Opn+bCmFHzSUGisOY1rnwdw
+        6CZ0/7rGs17BK/Dw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] sh/cpu: Switch to arch_cpu_finalize_init()
-Cc:     Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/boot] m68k/cpu: Switch to arch_cpu_finalize_init()
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230613224545.371697797@linutronix.de>
-References: <20230613224545.371697797@linutronix.de>
+In-Reply-To: <20230613224545.254342916@linutronix.de>
+References: <20230613224545.254342916@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168690748709.404.14314407199380002907.tip-bot2@tip-bot2>
+Message-ID: <168690748843.404.10599176474859670498.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,14 +67,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     01eb454e9bfe593f320ecbc9aaec60bf87cd453d
-Gitweb:        https://git.kernel.org/tip/01eb454e9bfe593f320ecbc9aaec60bf87cd453d
+Commit-ID:     9ceecc2589b9d7cef6b321339ed8de484eac4b20
+Gitweb:        https://git.kernel.org/tip/9ceecc2589b9d7cef6b321339ed8de484eac4b20
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 14 Jun 2023 01:39:33 +02:00
+AuthorDate:    Wed, 14 Jun 2023 01:39:30 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 16 Jun 2023 10:16:00 +02:00
+CommitterDate: Fri, 16 Jun 2023 10:15:59 +02:00
 
-sh/cpu: Switch to arch_cpu_finalize_init()
+m68k/cpu: Switch to arch_cpu_finalize_init()
 
 check_bugs() is about to be phased out. Switch over to the new
 arch_cpu_finalize_init() implementation.
@@ -81,38 +82,40 @@ arch_cpu_finalize_init() implementation.
 No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230613224545.371697797@linutronix.de
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20230613224545.254342916@linutronix.de
 
 ---
- arch/sh/Kconfig                 |  1 +-
- arch/sh/include/asm/bugs.h      | 74 +--------------------------------
- arch/sh/include/asm/processor.h |  2 +-
- arch/sh/kernel/idle.c           |  1 +-
- arch/sh/kernel/setup.c          | 55 ++++++++++++++++++++++++-
- 5 files changed, 59 insertions(+), 74 deletions(-)
- delete mode 100644 arch/sh/include/asm/bugs.h
+ arch/m68k/Kconfig            |  1 +
+ arch/m68k/include/asm/bugs.h | 21 ---------------------
+ arch/m68k/kernel/setup_mm.c  |  3 ++-
+ 3 files changed, 3 insertions(+), 22 deletions(-)
+ delete mode 100644 arch/m68k/include/asm/bugs.h
 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 9652d36..e339745 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -6,6 +6,7 @@ config SUPERH
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE if SPARSEMEM && MMU
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG if (GUSA_RB || CPU_SH4A)
- 	select ARCH_HAS_BINFMT_FLAT if !MMU
-+	select ARCH_HAS_CPU_FINALIZE_INIT
+diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
+index 40198a1..dc792b3 100644
+--- a/arch/m68k/Kconfig
++++ b/arch/m68k/Kconfig
+@@ -4,6 +4,7 @@ config M68K
+ 	default y
+ 	select ARCH_32BIT_OFF_T
+ 	select ARCH_HAS_BINFMT_FLAT
++	select ARCH_HAS_CPU_FINALIZE_INIT if MMU
  	select ARCH_HAS_CURRENT_STACK_POINTER
- 	select ARCH_HAS_GIGANTIC_PAGE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
-diff --git a/arch/sh/include/asm/bugs.h b/arch/sh/include/asm/bugs.h
+ 	select ARCH_HAS_DMA_PREP_COHERENT if HAS_DMA && MMU && !COLDFIRE
+ 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE if HAS_DMA
+diff --git a/arch/m68k/include/asm/bugs.h b/arch/m68k/include/asm/bugs.h
 deleted file mode 100644
-index fe52abb..0000000
---- a/arch/sh/include/asm/bugs.h
+index 7455306..0000000
+--- a/arch/m68k/include/asm/bugs.h
 +++ /dev/null
-@@ -1,74 +0,0 @@
+@@ -1,21 +0,0 @@
 -/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __ASM_SH_BUGS_H
--#define __ASM_SH_BUGS_H
+-/*
+- *  include/asm-m68k/bugs.h
+- *
+- *  Copyright (C) 1994  Linus Torvalds
+- */
 -
 -/*
 - * This is included by init/main.c to check for architecture-dependent bugs.
@@ -121,161 +124,31 @@ index fe52abb..0000000
 - *	void check_bugs(void);
 - */
 -
--/*
-- * I don't know of any Super-H bugs yet.
-- */
--
--#include <asm/processor.h>
--
--extern void select_idle_routine(void);
--
--static void __init check_bugs(void)
+-#ifdef CONFIG_MMU
+-extern void check_bugs(void);	/* in arch/m68k/kernel/setup.c */
+-#else
+-static void check_bugs(void)
 -{
--	extern unsigned long loops_per_jiffy;
--	char *p = &init_utsname()->machine[2]; /* "sh" */
--
--	select_idle_routine();
--
--	current_cpu_data.loops_per_jiffy = loops_per_jiffy;
--
--	switch (current_cpu_data.family) {
--	case CPU_FAMILY_SH2:
--		*p++ = '2';
--		break;
--	case CPU_FAMILY_SH2A:
--		*p++ = '2';
--		*p++ = 'a';
--		break;
--	case CPU_FAMILY_SH3:
--		*p++ = '3';
--		break;
--	case CPU_FAMILY_SH4:
--		*p++ = '4';
--		break;
--	case CPU_FAMILY_SH4A:
--		*p++ = '4';
--		*p++ = 'a';
--		break;
--	case CPU_FAMILY_SH4AL_DSP:
--		*p++ = '4';
--		*p++ = 'a';
--		*p++ = 'l';
--		*p++ = '-';
--		*p++ = 'd';
--		*p++ = 's';
--		*p++ = 'p';
--		break;
--	case CPU_FAMILY_UNKNOWN:
--		/*
--		 * Specifically use CPU_FAMILY_UNKNOWN rather than
--		 * default:, so we're able to have the compiler whine
--		 * about unhandled enumerations.
--		 */
--		break;
--	}
--
--	printk("CPU: %s\n", get_cpu_subtype(&current_cpu_data));
--
--#ifndef __LITTLE_ENDIAN__
--	/* 'eb' means 'Endian Big' */
--	*p++ = 'e';
--	*p++ = 'b';
--#endif
--	*p = '\0';
 -}
--#endif /* __ASM_SH_BUGS_H */
-diff --git a/arch/sh/include/asm/processor.h b/arch/sh/include/asm/processor.h
-index 85a6c1c..73fba7c 100644
---- a/arch/sh/include/asm/processor.h
-+++ b/arch/sh/include/asm/processor.h
-@@ -166,6 +166,8 @@ extern unsigned int instruction_size(unsigned int insn);
- #define instruction_size(insn)	(2)
+-#endif
+diff --git a/arch/m68k/kernel/setup_mm.c b/arch/m68k/kernel/setup_mm.c
+index fbff1ce..6f1ae01 100644
+--- a/arch/m68k/kernel/setup_mm.c
++++ b/arch/m68k/kernel/setup_mm.c
+@@ -10,6 +10,7 @@
+  */
+ 
+ #include <linux/kernel.h>
++#include <linux/cpu.h>
+ #include <linux/mm.h>
+ #include <linux/sched.h>
+ #include <linux/delay.h>
+@@ -504,7 +505,7 @@ static int __init proc_hardware_init(void)
+ module_init(proc_hardware_init);
  #endif
  
-+void select_idle_routine(void);
-+
- #endif /* __ASSEMBLY__ */
- 
- #include <asm/processor_32.h>
-diff --git a/arch/sh/kernel/idle.c b/arch/sh/kernel/idle.c
-index d662503..045d93f 100644
---- a/arch/sh/kernel/idle.c
-+++ b/arch/sh/kernel/idle.c
-@@ -15,6 +15,7 @@
- #include <linux/irqflags.h>
- #include <linux/smp.h>
- #include <linux/atomic.h>
-+#include <asm/processor.h>
- #include <asm/smp.h>
- #include <asm/bl_bit.h>
- 
-diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
-index af977ec..cf7c0f7 100644
---- a/arch/sh/kernel/setup.c
-+++ b/arch/sh/kernel/setup.c
-@@ -43,6 +43,7 @@
- #include <asm/smp.h>
- #include <asm/mmu_context.h>
- #include <asm/mmzone.h>
-+#include <asm/processor.h>
- #include <asm/sparsemem.h>
- #include <asm/platform_early.h>
- 
-@@ -354,3 +355,57 @@ int test_mode_pin(int pin)
- {
- 	return sh_mv.mv_mode_pins() & pin;
- }
-+
+-void check_bugs(void)
 +void __init arch_cpu_finalize_init(void)
-+{
-+	char *p = &init_utsname()->machine[2]; /* "sh" */
-+
-+	select_idle_routine();
-+
-+	current_cpu_data.loops_per_jiffy = loops_per_jiffy;
-+
-+	switch (current_cpu_data.family) {
-+	case CPU_FAMILY_SH2:
-+		*p++ = '2';
-+		break;
-+	case CPU_FAMILY_SH2A:
-+		*p++ = '2';
-+		*p++ = 'a';
-+		break;
-+	case CPU_FAMILY_SH3:
-+		*p++ = '3';
-+		break;
-+	case CPU_FAMILY_SH4:
-+		*p++ = '4';
-+		break;
-+	case CPU_FAMILY_SH4A:
-+		*p++ = '4';
-+		*p++ = 'a';
-+		break;
-+	case CPU_FAMILY_SH4AL_DSP:
-+		*p++ = '4';
-+		*p++ = 'a';
-+		*p++ = 'l';
-+		*p++ = '-';
-+		*p++ = 'd';
-+		*p++ = 's';
-+		*p++ = 'p';
-+		break;
-+	case CPU_FAMILY_UNKNOWN:
-+		/*
-+		 * Specifically use CPU_FAMILY_UNKNOWN rather than
-+		 * default:, so we're able to have the compiler whine
-+		 * about unhandled enumerations.
-+		 */
-+		break;
-+	}
-+
-+	pr_info("CPU: %s\n", get_cpu_subtype(&current_cpu_data));
-+
-+#ifndef __LITTLE_ENDIAN__
-+	/* 'eb' means 'Endian Big' */
-+	*p++ = 'e';
-+	*p++ = 'b';
-+#endif
-+	*p = '\0';
-+}
+ {
+ #if defined(CONFIG_FPU) && !defined(CONFIG_M68KFPU_EMU)
+ 	if (m68k_fputype == 0) {
