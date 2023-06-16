@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7C1C73344C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jun 2023 17:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84514733450
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jun 2023 17:08:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345820AbjFPPIf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Jun 2023 11:08:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34274 "EHLO
+        id S1344801AbjFPPI6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Jun 2023 11:08:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345789AbjFPPIb (ORCPT
+        with ESMTP id S1345846AbjFPPIp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Jun 2023 11:08:31 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 989063AB4;
-        Fri, 16 Jun 2023 08:08:20 -0700 (PDT)
-Date:   Fri, 16 Jun 2023 15:08:17 -0000
+        Fri, 16 Jun 2023 11:08:45 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62310358C;
+        Fri, 16 Jun 2023 08:08:43 -0700 (PDT)
+Date:   Fri, 16 Jun 2023 15:08:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686928098;
+        s=2020; t=1686928121;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Zo4BHRS0fFM3DRVeEcp3Ohgx+qJzY6kAau/PUgQhPQE=;
-        b=f5o9Jl7hceRJsZU6/iFGqosfmB/NM9+kQ21MVe/aP8pttBmO4S5BKnkfZ4SUMT0qutP0f+
-        85mW8grcG5OhgOG6537iRwFBsyVr8GE1aNXP+XiFGjZjprmNPQZgjMgj7uTLIQnAEgbHSf
-        nMBzfg32Y2zH60hnCaLrS6H3eiFXh+J+5KpLJBw0zHqkCfSxN+19ofXGLAlE7RnGtouhia
-        yT27xNfRrvx9NzdnnFVRRkMZckaEXFYv7wueFwO/GSjKKkmaCllwl2Sz7VODANzcL+W8M9
-        7m6SwfOxUBm2jRbeeivIQof7jgROFB9m8rIFnnkVEO9BeXdupsCTNVj5QMWZ5Q==
+        bh=MWN9/UVJSfR8UNKg5ncnrUXsrX5NsjGgJXK/AFJEOIU=;
+        b=0bE4Ms5rZYj/Ya7VR/VM2vqJn6G9RfZ5d+VdljhLagkZXz6smXDdSnXsj80bET+r49GHa6
+        v0zcFOIX6i5l5U3LiTTq2BvEurboGW8NBkol4tcH+DxURITI7mczOG2HR94jK0e160OKSR
+        IEQGPC4Qo4w6d5ia48bG2zj2X1xSa1BmiMtW/I+bGHpmsuenS4PZ6bssDRwSLt1om7An4/
+        QdhxDRYvwLu3DN+hW/P0hr1TNbz66H00U49IaXEwVRty2x+ECbPMbybgmkMF+Rnjap6HD3
+        2bPUoIR59NFbaa9GOVDSeYhZUhdAJWl2e3oOOGqdOx3b2avnNPDzAyvLxDK7Bg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686928098;
+        s=2020e; t=1686928121;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Zo4BHRS0fFM3DRVeEcp3Ohgx+qJzY6kAau/PUgQhPQE=;
-        b=hYZk3m7eGYTydA+bysyv7wKERNLpidQZ+1ufuM4lQTcOSHcj4P+L20nVYGD+wsKlV4fDnp
-        YnFRC9e36YGEDKCw==
-From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
+        bh=MWN9/UVJSfR8UNKg5ncnrUXsrX5NsjGgJXK/AFJEOIU=;
+        b=mDFCWnYOqeaKx4iNd1H/UoIwXlJfwnJXK2vQaNbjJjR5U1pOGCx1Is+eO+C+avWvcEx9C1
+        dBI2gtFljm3sFjCw==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/atomic: scripts: fix
- ${atomic}_dec_if_positive() kerneldoc
-Cc:     Mark Rutland <mark.rutland@arm.com>,
+Subject: [tip: perf/urgent] perf/x86/intel: Fix the FRONTEND encoding on GNR and MTL
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230615132734.1119765-1-mark.rutland@arm.com>
-References: <20230615132734.1119765-1-mark.rutland@arm.com>
+In-Reply-To: <20230615173242.3726364-1-kan.liang@linux.intel.com>
+References: <20230615173242.3726364-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <168692809794.404.8967719378203068298.tip-bot2@tip-bot2>
+Message-ID: <168692812071.404.11837107430102881683.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,139 +66,78 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     b33eb50a92b0a298fa8a6ac350e741c3ec100f6d
-Gitweb:        https://git.kernel.org/tip/b33eb50a92b0a298fa8a6ac350e741c3ec100f6d
-Author:        Mark Rutland <mark.rutland@arm.com>
-AuthorDate:    Thu, 15 Jun 2023 14:27:34 +01:00
+Commit-ID:     a6742cb90b567f952a95efa27dee345748d09fc7
+Gitweb:        https://git.kernel.org/tip/a6742cb90b567f952a95efa27dee345748d09fc7
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Thu, 15 Jun 2023 10:32:42 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Jun 2023 16:46:30 +02:00
+CommitterDate: Fri, 16 Jun 2023 16:46:33 +02:00
 
-locking/atomic: scripts: fix ${atomic}_dec_if_positive() kerneldoc
+perf/x86/intel: Fix the FRONTEND encoding on GNR and MTL
 
-The ${atomic}_dec_if_positive() ops are unlike all the other conditional
-atomic ops. Rather than returning a boolean success value, these return
-the value that the atomic variable would be updated to, even when no
-update is performed.
+When counting a FRONTEND event, the MSR_PEBS_FRONTEND is not correctly
+set on GNR and MTL p-core.
 
-We missed this when adding kerneldoc comments, and the documentation for
-${atomic}_dec_if_positive() erroneously states:
+The umask value for the FRONTEND events is changed on GNR and MTL. The
+new umask is missing in the extra_regs[] table.
 
-| Return: @true if @v was updated, @false otherwise.
+Add a dedicated intel_gnr_extra_regs[] for GNR and MTL p-core.
 
-Ideally we'd clean this up by aligning ${atomic}_dec_if_positive() with
-the usual atomic op conventions: with ${atomic}_fetch_dec_if_positive()
-for those who care about the value of the varaible, and
-${atomic}_dec_if_positive() returning a boolean success value.
-
-In the mean time, align the documentation with the current reality.
-
-Fixes: ad8110706f381170 ("locking/atomic: scripts: generate kerneldoc comments")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: bc4000fdb009 ("perf/x86/intel: Add Granite Rapids")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20230615132734.1119765-1-mark.rutland@arm.com
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20230615173242.3726364-1-kan.liang@linux.intel.com
 ---
- include/linux/atomic/atomic-arch-fallback.h | 6 +++---
- include/linux/atomic/atomic-instrumented.h  | 8 ++++----
- include/linux/atomic/atomic-long.h          | 4 ++--
- scripts/atomic/kerneldoc/dec_if_positive    | 2 +-
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ arch/x86/events/intel/core.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/atomic/atomic-arch-fallback.h b/include/linux/atomic/atomic-arch-fallback.h
-index 8cded57..18f5744 100644
---- a/include/linux/atomic/atomic-arch-fallback.h
-+++ b/include/linux/atomic/atomic-arch-fallback.h
-@@ -2520,7 +2520,7 @@ raw_atomic_dec_unless_positive(atomic_t *v)
-  *
-  * Safe to use in noinstr code; prefer atomic_dec_if_positive() elsewhere.
-  *
-- * Return: @true if @v was updated, @false otherwise.
-+ * Return: The old value of (@v - 1), regardless of whether @v was updated.
-  */
- static __always_inline int
- raw_atomic_dec_if_positive(atomic_t *v)
-@@ -4636,7 +4636,7 @@ raw_atomic64_dec_unless_positive(atomic64_t *v)
-  *
-  * Safe to use in noinstr code; prefer atomic64_dec_if_positive() elsewhere.
-  *
-- * Return: @true if @v was updated, @false otherwise.
-+ * Return: The old value of (@v - 1), regardless of whether @v was updated.
-  */
- static __always_inline s64
- raw_atomic64_dec_if_positive(atomic64_t *v)
-@@ -4657,4 +4657,4 @@ raw_atomic64_dec_if_positive(atomic64_t *v)
- }
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 89b9c1c..27f3a7b 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -349,6 +349,16 @@ static struct event_constraint intel_spr_event_constraints[] = {
+ 	EVENT_CONSTRAINT_END
+ };
  
- #endif /* _LINUX_ATOMIC_FALLBACK_H */
--// 3916f02c038baa3f5190d275f68b9211667fcc9d
-+// 202b45c7db600ce36198eb1f1fc2c2d5268ace2d
-diff --git a/include/linux/atomic/atomic-instrumented.h b/include/linux/atomic/atomic-instrumented.h
-index ebfc795..d401b40 100644
---- a/include/linux/atomic/atomic-instrumented.h
-+++ b/include/linux/atomic/atomic-instrumented.h
-@@ -1570,7 +1570,7 @@ atomic_dec_unless_positive(atomic_t *v)
-  *
-  * Unsafe to use in noinstr code; use raw_atomic_dec_if_positive() there.
-  *
-- * Return: @true if @v was updated, @false otherwise.
-+ * Return: The old value of (@v - 1), regardless of whether @v was updated.
-  */
- static __always_inline int
- atomic_dec_if_positive(atomic_t *v)
-@@ -3134,7 +3134,7 @@ atomic64_dec_unless_positive(atomic64_t *v)
-  *
-  * Unsafe to use in noinstr code; use raw_atomic64_dec_if_positive() there.
-  *
-- * Return: @true if @v was updated, @false otherwise.
-+ * Return: The old value of (@v - 1), regardless of whether @v was updated.
-  */
- static __always_inline s64
- atomic64_dec_if_positive(atomic64_t *v)
-@@ -4698,7 +4698,7 @@ atomic_long_dec_unless_positive(atomic_long_t *v)
-  *
-  * Unsafe to use in noinstr code; use raw_atomic_long_dec_if_positive() there.
-  *
-- * Return: @true if @v was updated, @false otherwise.
-+ * Return: The old value of (@v - 1), regardless of whether @v was updated.
-  */
- static __always_inline long
- atomic_long_dec_if_positive(atomic_long_t *v)
-@@ -5000,4 +5000,4 @@ atomic_long_dec_if_positive(atomic_long_t *v)
++static struct extra_reg intel_gnr_extra_regs[] __read_mostly = {
++	INTEL_UEVENT_EXTRA_REG(0x012a, MSR_OFFCORE_RSP_0, 0x3fffffffffull, RSP_0),
++	INTEL_UEVENT_EXTRA_REG(0x012b, MSR_OFFCORE_RSP_1, 0x3fffffffffull, RSP_1),
++	INTEL_UEVENT_PEBS_LDLAT_EXTRA_REG(0x01cd),
++	INTEL_UEVENT_EXTRA_REG(0x02c6, MSR_PEBS_FRONTEND, 0x9, FE),
++	INTEL_UEVENT_EXTRA_REG(0x03c6, MSR_PEBS_FRONTEND, 0x7fff1f, FE),
++	INTEL_UEVENT_EXTRA_REG(0x40ad, MSR_PEBS_FRONTEND, 0x7, FE),
++	INTEL_UEVENT_EXTRA_REG(0x04c2, MSR_PEBS_FRONTEND, 0x8, FE),
++	EVENT_EXTRA_END
++};
  
+ EVENT_ATTR_STR(mem-loads,	mem_ld_nhm,	"event=0x0b,umask=0x10,ldlat=3");
+ EVENT_ATTR_STR(mem-loads,	mem_ld_snb,	"event=0xcd,umask=0x1,ldlat=3");
+@@ -6496,6 +6506,7 @@ __init int intel_pmu_init(void)
+ 	case INTEL_FAM6_SAPPHIRERAPIDS_X:
+ 	case INTEL_FAM6_EMERALDRAPIDS_X:
+ 		x86_pmu.flags |= PMU_FL_MEM_LOADS_AUX;
++		x86_pmu.extra_regs = intel_spr_extra_regs;
+ 		fallthrough;
+ 	case INTEL_FAM6_GRANITERAPIDS_X:
+ 	case INTEL_FAM6_GRANITERAPIDS_D:
+@@ -6506,7 +6517,8 @@ __init int intel_pmu_init(void)
  
- #endif /* _LINUX_ATOMIC_INSTRUMENTED_H */
--// 06cec02e676a484857aee38b0071a1d846ec9457
-+// 1568f875fef72097413caab8339120c065a39aa4
-diff --git a/include/linux/atomic/atomic-long.h b/include/linux/atomic/atomic-long.h
-index f6df2ad..c829471 100644
---- a/include/linux/atomic/atomic-long.h
-+++ b/include/linux/atomic/atomic-long.h
-@@ -1782,7 +1782,7 @@ raw_atomic_long_dec_unless_positive(atomic_long_t *v)
-  *
-  * Safe to use in noinstr code; prefer atomic_long_dec_if_positive() elsewhere.
-  *
-- * Return: @true if @v was updated, @false otherwise.
-+ * Return: The old value of (@v - 1), regardless of whether @v was updated.
-  */
- static __always_inline long
- raw_atomic_long_dec_if_positive(atomic_long_t *v)
-@@ -1795,4 +1795,4 @@ raw_atomic_long_dec_if_positive(atomic_long_t *v)
- }
- 
- #endif /* _LINUX_ATOMIC_LONG_H */
--// 029d2e3a493086671e874a4c2e0e42084be42403
-+// 4ef23f98c73cff96d239896175fd26b10b88899e
-diff --git a/scripts/atomic/kerneldoc/dec_if_positive b/scripts/atomic/kerneldoc/dec_if_positive
-index 7c74286..04f1aed 100644
---- a/scripts/atomic/kerneldoc/dec_if_positive
-+++ b/scripts/atomic/kerneldoc/dec_if_positive
-@@ -7,6 +7,6 @@ cat <<EOF
-  *
-  * ${desc_noinstr}
-  *
-- * Return: @true if @v was updated, @false otherwise.
-+ * Return: The old value of (@v - 1), regardless of whether @v was updated.
-  */
- EOF
+ 		x86_pmu.event_constraints = intel_spr_event_constraints;
+ 		x86_pmu.pebs_constraints = intel_spr_pebs_event_constraints;
+-		x86_pmu.extra_regs = intel_spr_extra_regs;
++		if (!x86_pmu.extra_regs)
++			x86_pmu.extra_regs = intel_gnr_extra_regs;
+ 		x86_pmu.limit_period = spr_limit_period;
+ 		x86_pmu.pebs_ept = 1;
+ 		x86_pmu.pebs_aliases = NULL;
+@@ -6650,6 +6662,7 @@ __init int intel_pmu_init(void)
+ 		pmu->pebs_constraints = intel_grt_pebs_event_constraints;
+ 		pmu->extra_regs = intel_grt_extra_regs;
+ 		if (is_mtl(boot_cpu_data.x86_model)) {
++			x86_pmu.hybrid_pmu[X86_HYBRID_PMU_CORE_IDX].extra_regs = intel_gnr_extra_regs;
+ 			x86_pmu.pebs_latency_data = mtl_latency_data_small;
+ 			extra_attr = boot_cpu_has(X86_FEATURE_RTM) ?
+ 				mtl_hybrid_extra_attr_rtm : mtl_hybrid_extra_attr;
