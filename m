@@ -2,61 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C56E473347C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jun 2023 17:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17E1373347E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jun 2023 17:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244396AbjFPPQp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Jun 2023 11:16:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40158 "EHLO
+        id S1345906AbjFPPQr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Jun 2023 11:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230027AbjFPPQo (ORCPT
+        with ESMTP id S1345700AbjFPPQq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Jun 2023 11:16:44 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55ABB273C;
-        Fri, 16 Jun 2023 08:16:43 -0700 (PDT)
-Date:   Fri, 16 Jun 2023 15:16:41 -0000
+        Fri, 16 Jun 2023 11:16:46 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 980B03590;
+        Fri, 16 Jun 2023 08:16:44 -0700 (PDT)
+Date:   Fri, 16 Jun 2023 15:16:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686928602;
+        s=2020; t=1686928603;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OhPj1jzUP7z+D2MYdptA9f+z018Cf2TbfZdtWXdgl8A=;
-        b=Llgvm61zlunkPGHzvxKJ8lt8dppLl30fk4joaGmYdKU3j6+qge6/PffLiE8O4YZ2/MrYVK
-        a9hTtlxG6ud6UdUoMZV0Vm0cDvzgze6syAhxrtq+KtV9NYahBXn2znhbSwOvEP2oDC56oj
-        HcvRI49Id9AAhotmZ8HARzTk3NFqih0eRGjCAstVfKI/5/CHbqtUKayGe6eRCpsfym4gc7
-        wWxfwJ2UJVYP338thK+czwToWwHpXiBcGd+41fKTEePETFmbBBNAth+hkoISR1WtS0OEkd
-        0kfDnfDqM0V4jyvn0AGmnzx/YFEu70OvUTRynFhYO92P7OEzjcTLIz4FlB6T5Q==
+        bh=T2X08GY+8je3qIgAuEB7aoFUINAb3BIhnuWZ+7W6UHM=;
+        b=1mS2+hNsg8EjxouaUGM6POvlbWuURlGOeAXX/6Z7a9wsO1HzzFqNyCUp1PaRJNGZInT1I0
+        qizOSEhLKAW2KWrGznlc2xd4N4vWqx/tVZBlQiCK2Xy4MfU3r9Z23GCk6AAViOrw8D5Lbg
+        ZnBkC8pdn9QD2PVGSeSywRRwVIi1FVUKm4yEKm72v6x6S4NIc1eWTXgNfw22mVxOSmoN8O
+        090/3FjitJBJDU7+joI/GG1mG4XPkslVLAFlUBJQoyWXmEBtEk6HY3fNaVAJX6r1SrLJ+e
+        K8HBBj7XBRC39NaE+ihkQ1Fiy3Aj6G5GJfALmiH6ivOghoje6vTmFumU56W26Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686928602;
+        s=2020e; t=1686928603;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OhPj1jzUP7z+D2MYdptA9f+z018Cf2TbfZdtWXdgl8A=;
-        b=FXTLb0pmVUSdYdEgnikYKKrLsP+RJoL7SHJWMBxNkzDg8+pWXZILxUBN+l+GCqe7iceFLQ
-        pspR4piFcQ/t1hCw==
-From:   tip-bot2 for Arve =?utf-8?q?Hj=C3=B8nnev=C3=A5g?= 
-        <tip-bot2@linutronix.de>
+        bh=T2X08GY+8je3qIgAuEB7aoFUINAb3BIhnuWZ+7W6UHM=;
+        b=cVkHiXdcXgRkHiGge5BLxf9ikfsxikbq6nu2VxzWvXaoeUgOlC8jzvBD/MbXhKCqW45+YA
+        BPi1r8h3JKOLCrAQ==
+From:   "tip-bot2 for Tom Rix" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/wait: Fix a kthread_park race with wait_woken()
-Cc:     arve@android.com, John Stultz <jstultz@google.com>,
+Subject: [tip: sched/core] sched/fair: Rename variable cpu_util eff_util
+Cc:     Tom Rix <trix@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Valentin Schneider <vschneid@redhat.com>, x86@kernel.org,
+        Valentin Schneider <vschneid@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230602212350.535358-1-jstultz@google.com>
-References: <20230602212350.535358-1-jstultz@google.com>
+In-Reply-To: <20230611122535.183654-1-trix@redhat.com>
+References: <20230611122535.183654-1-trix@redhat.com>
 MIME-Version: 1.0
-Message-ID: <168692860128.404.10971094774968505077.tip-bot2@tip-bot2>
+Message-ID: <168692860274.404.124512830013535834.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -69,93 +69,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     ef73d6a4ef0b35524125c3cfc6deafc26a0c966a
-Gitweb:        https://git.kernel.org/tip/ef73d6a4ef0b35524125c3cfc6deafc26a0=
-c966a
-Author:        Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-AuthorDate:    Fri, 02 Jun 2023 21:23:46=20
+Commit-ID:     a707df30c9438a9d4d0a43ae7f22b59b078f94c4
+Gitweb:        https://git.kernel.org/tip/a707df30c9438a9d4d0a43ae7f22b59b078f94c4
+Author:        Tom Rix <trix@redhat.com>
+AuthorDate:    Sun, 11 Jun 2023 08:25:35 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 16 Jun 2023 17:08:01 +02:00
 
-sched/wait: Fix a kthread_park race with wait_woken()
+sched/fair: Rename variable cpu_util eff_util
 
-kthread_park and wait_woken have a similar race that
-kthread_stop and wait_woken used to have before it was fixed in
-commit cb6538e740d7 ("sched/wait: Fix a kthread race with
-wait_woken()"). Extend that fix to also cover kthread_park.
+cppcheck reports
+kernel/sched/fair.c:7436:17: style: Local variable 'cpu_util' shadows outer function [shadowFunction]
+  unsigned long cpu_util;
+                ^
 
-[jstultz: Made changes suggested by Peter to optimize
- memory loads]
+Clean this up by renaming the variable to eff_util
 
-Signed-off-by: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
-Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Tom Rix <trix@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lore.kernel.org/r/20230602212350.535358-1-jstultz@google.com
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Link: https://lore.kernel.org/r/20230611122535.183654-1-trix@redhat.com
 ---
- include/linux/kthread.h |  1 +
- kernel/kthread.c        | 10 ++++++++++
- kernel/sched/wait.c     |  7 +------
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ kernel/sched/fair.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/kthread.h b/include/linux/kthread.h
-index 30e5bec..f1f95a7 100644
---- a/include/linux/kthread.h
-+++ b/include/linux/kthread.h
-@@ -89,6 +89,7 @@ int kthread_stop(struct task_struct *k);
- bool kthread_should_stop(void);
- bool kthread_should_park(void);
- bool __kthread_should_park(struct task_struct *k);
-+bool kthread_should_stop_or_park(void);
- bool kthread_freezable_should_stop(bool *was_frozen);
- void *kthread_func(struct task_struct *k);
- void *kthread_data(struct task_struct *k);
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 490792b..07a0570 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -182,6 +182,16 @@ bool kthread_should_park(void)
- }
- EXPORT_SYMBOL_GPL(kthread_should_park);
-=20
-+bool kthread_should_stop_or_park(void)
-+{
-+	struct kthread *kthread =3D __to_kthread(current);
-+
-+	if (!kthread)
-+		return false;
-+
-+	return kthread->flags & (BIT(KTHREAD_SHOULD_STOP) | BIT(KTHREAD_SHOULD_PARK=
-));
-+}
-+
- /**
-  * kthread_freezable_should_stop - should this freezable kthread return now?
-  * @was_frozen: optional out parameter, indicates whether %current was frozen
-diff --git a/kernel/sched/wait.c b/kernel/sched/wait.c
-index 133b747..48c53e4 100644
---- a/kernel/sched/wait.c
-+++ b/kernel/sched/wait.c
-@@ -425,11 +425,6 @@ int autoremove_wake_function(struct wait_queue_entry *wq=
-_entry, unsigned mode, i
- }
- EXPORT_SYMBOL(autoremove_wake_function);
-=20
--static inline bool is_kthread_should_stop(void)
--{
--	return (current->flags & PF_KTHREAD) && kthread_should_stop();
--}
--
- /*
-  * DEFINE_WAIT_FUNC(wait, woken_wake_func);
-  *
-@@ -459,7 +454,7 @@ long wait_woken(struct wait_queue_entry *wq_entry, unsign=
-ed mode, long timeout)
- 	 * or woken_wake_function() sees our store to current->state.
- 	 */
- 	set_current_state(mode); /* A */
--	if (!(wq_entry->flags & WQ_FLAG_WOKEN) && !is_kthread_should_stop())
-+	if (!(wq_entry->flags & WQ_FLAG_WOKEN) && !kthread_should_stop_or_park())
- 		timeout =3D schedule_timeout(timeout);
- 	__set_current_state(TASK_RUNNING);
-=20
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 6189d1a..7666dbc 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7433,7 +7433,7 @@ eenv_pd_max_util(struct energy_env *eenv, struct cpumask *pd_cpus,
+ 	for_each_cpu(cpu, pd_cpus) {
+ 		struct task_struct *tsk = (cpu == dst_cpu) ? p : NULL;
+ 		unsigned long util = cpu_util(cpu, p, dst_cpu, 1);
+-		unsigned long cpu_util;
++		unsigned long eff_util;
+ 
+ 		/*
+ 		 * Performance domain frequency: utilization clamping
+@@ -7442,8 +7442,8 @@ eenv_pd_max_util(struct energy_env *eenv, struct cpumask *pd_cpus,
+ 		 * NOTE: in case RT tasks are running, by default the
+ 		 * FREQUENCY_UTIL's utilization can be max OPP.
+ 		 */
+-		cpu_util = effective_cpu_util(cpu, util, FREQUENCY_UTIL, tsk);
+-		max_util = max(max_util, cpu_util);
++		eff_util = effective_cpu_util(cpu, util, FREQUENCY_UTIL, tsk);
++		max_util = max(max_util, eff_util);
+ 	}
+ 
+ 	return min(max_util, eenv->cpu_cap);
