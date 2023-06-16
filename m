@@ -2,57 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11C657334A9
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jun 2023 17:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8E8D733868
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jun 2023 20:53:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344354AbjFPPYq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Jun 2023 11:24:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44944 "EHLO
+        id S1345310AbjFPSxc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Jun 2023 14:53:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231865AbjFPPYp (ORCPT
+        with ESMTP id S1345156AbjFPSx0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Jun 2023 11:24:45 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B57B1BF8;
-        Fri, 16 Jun 2023 08:24:44 -0700 (PDT)
-Date:   Fri, 16 Jun 2023 15:24:42 -0000
+        Fri, 16 Jun 2023 14:53:26 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8AE3A9E;
+        Fri, 16 Jun 2023 11:53:22 -0700 (PDT)
+Date:   Fri, 16 Jun 2023 18:53:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686929083;
+        s=2020; t=1686941600;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MN0HZQJ57wcfQb0HXOoE0f/WDPV885JVC8YH6SW6jGc=;
-        b=C0y32c97lZb8A7q170qU6bYWn5PMRiHAM9hHN9Kh/gn4QXaFzYqWg5f5Wb+nJ9sqeN8yCR
-        P3qkGit4wE26RZVonRcVINaf7JiNV8fhynG7NiAkU49Jkk0MWu+chKgqdJucrFgWwYq5dw
-        Ju6cT0U6VfsRUykC/Ou/vK8g4IKGXQcICAY0oB9DmyFc4F5N7I35N60wz0HqoUY0vdXspa
-        mLhoabFIEfSFHrtZ4oDD24ve3VZ+xzuu6oryeG5Pj2MZh7luKjfUC6JIbgaL3tkYQ1WOeq
-        FX4Cs9jApKNKNLa5U4IQgsxXQyLEj0V4+XEzSWLfiEI0bylbOVw+IuwW5cSEGg==
+        bh=vwwe934FIcaw97RpxpbJdTmS2f0r5fdZZt43SX5cE2I=;
+        b=BojAA2eXo0THrTKJEZbIpojWx9evZe7MU47eHPGhLHbaPCA4AaV/euHLRXdBNIBytdAPDM
+        epV2Ac9WAcLrmg9xXoYQGN8uO4mnr/MXB8C9HIOrQX3uoY4Y7gpn3AbYqOPvyxM3k3MGk1
+        hKM2HBB1D58LhPQprApVrNrOTsN99rYYi4VQ3wCpgwQkRqj5BZu+I2JIPuy+YiEot603rd
+        jNpoH9+HU1OEttuG8EkrXrJyF7Hvog+3onJGDwonYcK7zOJta9yNdMD8mWxZKRWoOoj5HL
+        2SjUWR3GxICjTipPDufuqQk5tte59lho7hq6I0Yk34XFgfRT0tLzrg7nxm4v4A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686929083;
+        s=2020e; t=1686941600;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MN0HZQJ57wcfQb0HXOoE0f/WDPV885JVC8YH6SW6jGc=;
-        b=GRyrBCvBIVuTVociW22kOcTmmo/cV5aIpLzrjK7Oa+olQT+jyHUNG+YVseF8qWQVDhoPXE
-        BCWI2acVcEWMuoCA==
-From:   "tip-bot2 for Omar Sandoval" <tip-bot2@linutronix.de>
+        bh=vwwe934FIcaw97RpxpbJdTmS2f0r5fdZZt43SX5cE2I=;
+        b=tkIMnXU+b12oBdoyl2GFlPd9wmGyB4UoBkOZvEp7hql83pwsz7qXRQwXu8zxL4obV5XfdV
+        3v5QnXA07FHsZLBQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] x86/unwind/orc: Add ELF section with ORC
- version identifier
-Cc:     Omar Sandoval <osandov@fb.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <aef9c8dc43915b886a8c48509a12ec1b006ca1ca.1686690801.git.osandov@osandov.com>
-References: <aef9c8dc43915b886a8c48509a12ec1b006ca1ca.1686690801.git.osandov@osandov.com>
+Subject: [tip: timers/urgent] tick/common: Align tick period during sched_timer setup
+Cc:     Mathias Krause <minipli@grsecurity.net>,
+        "Bhatnagar, Rishabh" <risbhat@amazon.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Richard W.M. Jones" <rjones@redhat.com>,
+        SeongJae Park <sj@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net>
+References: <5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net>
 MIME-Version: 1.0
-Message-ID: <168692908232.404.1145760096244311999.tip-bot2@tip-bot2>
+Message-ID: <168694159988.404.1902283865304443546.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,182 +69,103 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     b9f174c811e3ae4ae8959dc57e6adb9990e913f4
-Gitweb:        https://git.kernel.org/tip/b9f174c811e3ae4ae8959dc57e6adb9990e913f4
-Author:        Omar Sandoval <osandov@fb.com>
-AuthorDate:    Tue, 13 Jun 2023 14:14:56 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Jun 2023 17:17:42 +02:00
+Commit-ID:     13bb06f8dd42071cb9a49f6e21099eea05d4b856
+Gitweb:        https://git.kernel.org/tip/13bb06f8dd42071cb9a49f6e21099eea05d4b856
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 15 Jun 2023 11:18:30 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 16 Jun 2023 20:45:28 +02:00
 
-x86/unwind/orc: Add ELF section with ORC version identifier
+tick/common: Align tick period during sched_timer setup
 
-Commits ffb1b4a41016 ("x86/unwind/orc: Add 'signal' field to ORC
-metadata") and fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in
-two") changed the ORC format. Although ORC is internal to the kernel,
-it's the only way for external tools to get reliable kernel stack traces
-on x86-64. In particular, the drgn debugger [1] uses ORC for stack
-unwinding, and these format changes broke it [2]. As the drgn
-maintainer, I don't care how often or how much the kernel changes the
-ORC format as long as I have a way to detect the change.
+The tick period is aligned very early while the first clock_event_device is
+registered. At that point the system runs in periodic mode and switches
+later to one-shot mode if possible.
 
-It suffices to store a version identifier in the vmlinux and kernel
-module ELF files (to use when parsing ORC sections from ELF), and in
-kernel memory (to use when parsing ORC from a core dump+symbol table).
-Rather than hard-coding a version number that needs to be manually
-bumped, Peterz suggested hashing the definitions from orc_types.h. If
-there is a format change that isn't caught by this, the hashing script
-can be updated.
+The next wake-up event is programmed based on the aligned value
+(tick_next_period) but the delta value, that is used to program the
+clock_event_device, is computed based on ktime_get().
 
-This patch adds an .orc_header allocated ELF section containing the
-20-byte hash to vmlinux and kernel modules, along with the corresponding
-__start_orc_header and __stop_orc_header symbols in vmlinux.
+With the subtracted offset, the device fires earlier than the exact time
+frame. With a large enough offset the system programs the timer for the
+next wake-up and the remaining time left is too small to make any boot
+progress. The system hangs.
 
-1: https://github.com/osandov/drgn
-2: https://github.com/osandov/drgn/issues/303
+Move the alignment later to the setup of tick_sched timer. At this point
+the system switches to oneshot mode and a high resolution clocksource is
+available. At this point it is safe to align tick_next_period because
+ktime_get() will now return accurate (not jiffies based) time.
 
-Fixes: ffb1b4a41016 ("x86/unwind/orc: Add 'signal' field to ORC metadata")
-Fixes: fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lkml.kernel.org/r/aef9c8dc43915b886a8c48509a12ec1b006ca1ca.1686690801.git.osandov@osandov.com
+[bigeasy: Patch description + testing].
+
+Fixes: e9523a0d81899 ("tick/common: Align tick period with the HZ tick.")
+Reported-by: Mathias Krause <minipli@grsecurity.net>
+Reported-by: "Bhatnagar, Rishabh" <risbhat@amazon.com>
+Suggested-by: Mathias Krause <minipli@grsecurity.net>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Richard W.M. Jones <rjones@redhat.com>
+Tested-by: Mathias Krause <minipli@grsecurity.net>
+Acked-by: SeongJae Park <sj@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net
+Link: https://lore.kernel.org/12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com
+Link: https://lore.kernel.org/r/20230615091830.RxMV2xf_@linutronix.de
 ---
- arch/x86/Makefile                 | 12 ++++++++++++
- arch/x86/include/asm/Kbuild       |  1 +
- arch/x86/include/asm/orc_header.h | 19 +++++++++++++++++++
- arch/x86/kernel/unwind_orc.c      |  3 +++
- include/asm-generic/vmlinux.lds.h |  3 +++
- scripts/mod/modpost.c             |  5 +++++
- scripts/orc_hash.sh               | 16 ++++++++++++++++
- 7 files changed, 59 insertions(+)
- create mode 100644 arch/x86/include/asm/orc_header.h
- create mode 100644 scripts/orc_hash.sh
+ kernel/time/tick-common.c | 13 +------------
+ kernel/time/tick-sched.c  | 13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index b399759..fdc2e3a 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -305,6 +305,18 @@ ifeq ($(RETPOLINE_CFLAGS),)
- endif
- endif
- 
-+ifdef CONFIG_UNWINDER_ORC
-+orc_hash_h := arch/$(SRCARCH)/include/generated/asm/orc_hash.h
-+orc_hash_sh := $(srctree)/scripts/orc_hash.sh
-+targets += $(orc_hash_h)
-+quiet_cmd_orc_hash = GEN     $@
-+      cmd_orc_hash = mkdir -p $(dir $@); \
-+		     $(CONFIG_SHELL) $(orc_hash_sh) < $< > $@
-+$(orc_hash_h): $(srctree)/arch/x86/include/asm/orc_types.h $(orc_hash_sh) FORCE
-+	$(call if_changed,orc_hash)
-+archprepare: $(orc_hash_h)
-+endif
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 65b8658..e9138cd 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -218,19 +218,8 @@ static void tick_setup_device(struct tick_device *td,
+ 		 * this cpu:
+ 		 */
+ 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
+-			ktime_t next_p;
+-			u32 rem;
+-
+ 			tick_do_timer_cpu = cpu;
+-
+-			next_p = ktime_get();
+-			div_u64_rem(next_p, TICK_NSEC, &rem);
+-			if (rem) {
+-				next_p -= rem;
+-				next_p += TICK_NSEC;
+-			}
+-
+-			tick_next_period = next_p;
++			tick_next_period = ktime_get();
+ #ifdef CONFIG_NO_HZ_FULL
+ 			/*
+ 			 * The boot CPU may be nohz_full, in which case set
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 5225467..42c0be3 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -161,8 +161,19 @@ static ktime_t tick_init_jiffy_update(void)
+ 	raw_spin_lock(&jiffies_lock);
+ 	write_seqcount_begin(&jiffies_seq);
+ 	/* Did we start the jiffies update yet ? */
+-	if (last_jiffies_update == 0)
++	if (last_jiffies_update == 0) {
++		u32 rem;
 +
- archclean:
- 	$(Q)rm -rf $(objtree)/arch/i386
- 	$(Q)rm -rf $(objtree)/arch/x86_64
-diff --git a/arch/x86/include/asm/Kbuild b/arch/x86/include/asm/Kbuild
-index 1e51650..4f1ce5f 100644
---- a/arch/x86/include/asm/Kbuild
-+++ b/arch/x86/include/asm/Kbuild
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- 
-+generated-y += orc_hash.h
- generated-y += syscalls_32.h
- generated-y += syscalls_64.h
- generated-y += syscalls_x32.h
-diff --git a/arch/x86/include/asm/orc_header.h b/arch/x86/include/asm/orc_header.h
-new file mode 100644
-index 0000000..07bacf3
---- /dev/null
-+++ b/arch/x86/include/asm/orc_header.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* Copyright (c) Meta Platforms, Inc. and affiliates. */
++		/*
++		 * Ensure that the tick is aligned to a multiple of
++		 * TICK_NSEC.
++		 */
++		div_u64_rem(tick_next_period, TICK_NSEC, &rem);
++		if (rem)
++			tick_next_period += TICK_NSEC - rem;
 +
-+#ifndef _ORC_HEADER_H
-+#define _ORC_HEADER_H
-+
-+#include <linux/types.h>
-+#include <linux/compiler.h>
-+#include <asm/orc_hash.h>
-+
-+/*
-+ * The header is currently a 20-byte hash of the ORC entry definition; see
-+ * scripts/orc_hash.sh.
-+ */
-+#define ORC_HEADER					\
-+	__used __section(".orc_header") __aligned(4)	\
-+	static const u8 orc_header[] = { ORC_HASH }
-+
-+#endif /* _ORC_HEADER_H */
-diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
-index 3ac50b7..4d8e518 100644
---- a/arch/x86/kernel/unwind_orc.c
-+++ b/arch/x86/kernel/unwind_orc.c
-@@ -7,6 +7,9 @@
- #include <asm/unwind.h>
- #include <asm/orc_types.h>
- #include <asm/orc_lookup.h>
-+#include <asm/orc_header.h>
-+
-+ORC_HEADER;
- 
- #define orc_warn(fmt, ...) \
- 	printk_deferred_once(KERN_WARNING "WARNING: " fmt, ##__VA_ARGS__)
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index cebdf1c..da9e562 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -839,6 +839,9 @@
- 
- #ifdef CONFIG_UNWINDER_ORC
- #define ORC_UNWIND_TABLE						\
-+	.orc_header : AT(ADDR(.orc_header) - LOAD_OFFSET) {		\
-+		BOUNDED_SECTION_BY(.orc_header, _orc_header)		\
-+	}								\
- 	. = ALIGN(4);							\
- 	.orc_unwind_ip : AT(ADDR(.orc_unwind_ip) - LOAD_OFFSET) {	\
- 		BOUNDED_SECTION_BY(.orc_unwind_ip, _orc_unwind_ip)	\
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index d4531d0..c12150f 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -1979,6 +1979,11 @@ static void add_header(struct buffer *b, struct module *mod)
- 	buf_printf(b, "#include <linux/vermagic.h>\n");
- 	buf_printf(b, "#include <linux/compiler.h>\n");
- 	buf_printf(b, "\n");
-+	buf_printf(b, "#ifdef CONFIG_UNWINDER_ORC\n");
-+	buf_printf(b, "#include <asm/orc_header.h>\n");
-+	buf_printf(b, "ORC_HEADER;\n");
-+	buf_printf(b, "#endif\n");
-+	buf_printf(b, "\n");
- 	buf_printf(b, "BUILD_SALT;\n");
- 	buf_printf(b, "BUILD_LTO_INFO;\n");
- 	buf_printf(b, "\n");
-diff --git a/scripts/orc_hash.sh b/scripts/orc_hash.sh
-new file mode 100644
-index 0000000..466611a
---- /dev/null
-+++ b/scripts/orc_hash.sh
-@@ -0,0 +1,16 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+# Copyright (c) Meta Platforms, Inc. and affiliates.
-+
-+set -e
-+
-+printf '%s' '#define ORC_HASH '
-+
-+awk '
-+/^#define ORC_(REG|TYPE)_/ { print }
-+/^struct orc_entry {$/ { p=1 }
-+p { print }
-+/^}/ { p=0 }' |
-+	sha1sum |
-+	cut -d " " -f 1 |
-+	sed 's/\([0-9a-f]\{2\}\)/0x\1,/g'
+ 		last_jiffies_update = tick_next_period;
++	}
+ 	period = last_jiffies_update;
+ 	write_seqcount_end(&jiffies_seq);
+ 	raw_spin_unlock(&jiffies_lock);
