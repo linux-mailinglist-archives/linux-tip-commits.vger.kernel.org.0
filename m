@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F53B732AF6
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jun 2023 11:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E220732B63
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jun 2023 11:25:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343793AbjFPJEf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Jun 2023 05:04:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52794 "EHLO
+        id S244566AbjFPJZY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Jun 2023 05:25:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230226AbjFPJD7 (ORCPT
+        with ESMTP id S1343991AbjFPJYt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Jun 2023 05:03:59 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1EB44A2;
-        Fri, 16 Jun 2023 02:02:09 -0700 (PDT)
-Date:   Fri, 16 Jun 2023 09:02:04 -0000
+        Fri, 16 Jun 2023 05:24:49 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3E28271E;
+        Fri, 16 Jun 2023 02:24:43 -0700 (PDT)
+Date:   Fri, 16 Jun 2023 09:24:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686906125;
+        s=2020; t=1686907481;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LU49bcez6wCr9PSZlpeTSPyjPXkpp4vHnRF+CbyLaVs=;
-        b=PByfvvvN4HXfCOQ6mZnz0kEFZQYrXe3M+ugt4TunMxUTjVhrMuNRad9HeQgFAqMg9lHZ+y
-        MJL+NItG+z2tqMKQb+qes8zshqsRq+VoJuzDrv6XpcNYKkt25ioHmFhejoweSIt45OUpPQ
-        fso5i/6e71PFRb5EFsCvK2TPN7f3lDRwT1QrSpyXez8N1RpgATelZ/sXh/1KpwD0QrTbQ+
-        onUVlYzEZe+lZ44e7PhXoMhPfzGoq3LaW6PUIvBGvXtTLkitBwHj2XCxX7Vsbb/DDRNZvY
-        59D75qC2d2669xzyIR7xUcjOXDtdkAVcao1AXk/4+9raA/qTkh/3u5HE/GCRPQ==
+        bh=MjTC0bn1c6tuURZzGvFsI612RvzdiyDdTjdWG5MDlzU=;
+        b=wF2SmJWuNppxnWPNrs81++B5IdpKH61pDoL/tR9JOHqjEJ11/n1l9kOUl+fMgrnqxDlmIC
+        O3kJfSi99UVFzWr/CHTxCxSKkvv/pYrCIIkobhmmkKL1NBgcYMvQ/8UjIcZWAeUpjfHPa0
+        5Un7u52oetO6mciwq2mQ3LCx5HuFcDl3PZYaixL9gGGPF8Bs/StdWXZbQTZm8Kf7J4duXr
+        vXY98MKyEbxZZFdN4Tchya+kHmW18OJhG12M5Y3JfRgQDFrSBTdSgZw0vdfhf/3fxH3UvV
+        zOFEUtuvKYT4+6mxhqowa+7YMnuES9zZY0KqJkBcvpjTO5tdK4rKvAmd6Qsghg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686906125;
+        s=2020e; t=1686907481;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LU49bcez6wCr9PSZlpeTSPyjPXkpp4vHnRF+CbyLaVs=;
-        b=KbRFM+a/3AV9oGdWV0/oSkWExaEZLhFJq5TnmJTmVamxUp3pao3maS2CmXQBkxKPTsgU0W
-        9gxAsJiaTDH+UUBQ==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=MjTC0bn1c6tuURZzGvFsI612RvzdiyDdTjdWG5MDlzU=;
+        b=ezM+NdLbqduyvN1oe2vodJ+TxHZ91y5g1UqcEsjacSf7udrLhxZwVLGp7VrOW6RVoKN4uD
+        NN6UEWF2qkSMRuCw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/mm: Remove unused current_untag_mask()
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230614174148.5439-1-bp@alien8.de>
-References: <20230614174148.5439-1-bp@alien8.de>
+Subject: [tip: x86/boot] x86/fpu: Move FPU initialization into
+ arch_cpu_finalize_init()
+Cc:     Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230613224545.902376621@linutronix.de>
+References: <20230613224545.902376621@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <168690612426.404.7374086470513389742.tip-bot2@tip-bot2>
+Message-ID: <168690748113.404.13314023725457189436.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,57 +65,80 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     013fdeb07a8fd32bbb3412e5f49d60207a78bf08
-Gitweb:        https://git.kernel.org/tip/013fdeb07a8fd32bbb3412e5f49d60207a78bf08
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Wed, 14 Jun 2023 19:41:48 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 16 Jun 2023 10:50:16 +02:00
+Commit-ID:     b81fac906a8f9e682e513ddd95697ec7a20878d4
+Gitweb:        https://git.kernel.org/tip/b81fac906a8f9e682e513ddd95697ec7a20878d4
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 14 Jun 2023 01:39:46 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 16 Jun 2023 10:16:01 +02:00
 
-x86/mm: Remove unused current_untag_mask()
+x86/fpu: Move FPU initialization into arch_cpu_finalize_init()
 
-e0bddc19ba95 ("x86/mm: Reduce untagged_addr() overhead for systems without LAM")
+Initializing the FPU during the early boot process is a pointless
+exercise. Early boot is convoluted and fragile enough.
 
-removed its only usage site so drop it.
+Nothing requires that the FPU is set up early. It has to be initialized
+before fork_init() because the task_struct size depends on the FPU register
+buffer size.
 
-Move the tlbstate_untag_mask up in the header and drop the ugly
-ifdeffery as the unused declaration should be properly discarded.
+Move the initialization to arch_cpu_finalize_init() which is the perfect
+place to do so.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20230614174148.5439-1-bp@alien8.de
+No functional change.
+
+This allows to remove quite some of the custom early command line parsing,
+but that's subject to the next installment.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230613224545.902376621@linutronix.de
+
 ---
- arch/x86/include/asm/tlbflush.h | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ arch/x86/kernel/cpu/common.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index 75bfaa4..80450e1 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -14,6 +14,8 @@
- #include <asm/processor-flags.h>
- #include <asm/pgtable.h>
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 2807e5b..46ebdd6 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1604,8 +1604,6 @@ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
  
-+DECLARE_PER_CPU(u64, tlbstate_untag_mask);
-+
- void __flush_tlb_all(void);
+ 	sld_setup(c);
  
- #define TLB_FLUSH_ALL	-1UL
-@@ -54,15 +56,6 @@ static inline void cr4_clear_bits(unsigned long mask)
- 	local_irq_restore(flags);
+-	fpu__init_system();
+-
+ #ifdef CONFIG_X86_32
+ 	/*
+ 	 * Regardless of whether PCID is enumerated, the SDM says
+@@ -2287,8 +2285,6 @@ void cpu_init(void)
+ 
+ 	doublefault_init_cpu_tss();
+ 
+-	fpu__init_cpu();
+-
+ 	if (is_uv_system())
+ 		uv_cpu_init();
+ 
+@@ -2304,6 +2300,7 @@ void cpu_init_secondary(void)
+ 	 */
+ 	cpu_init_exception_handling();
+ 	cpu_init();
++	fpu__init_cpu();
  }
+ #endif
  
--#ifdef CONFIG_ADDRESS_MASKING
--DECLARE_PER_CPU(u64, tlbstate_untag_mask);
--
--static inline u64 current_untag_mask(void)
--{
--	return this_cpu_read(tlbstate_untag_mask);
--}
--#endif
--
- #ifndef MODULE
- /*
-  * 6 because 6 should be plenty and struct tlb_state will fit in two cache
+@@ -2396,6 +2393,13 @@ void __init arch_cpu_finalize_init(void)
+ 			'0' + (boot_cpu_data.x86 > 6 ? 6 : boot_cpu_data.x86);
+ 	}
+ 
++	/*
++	 * Must be before alternatives because it might set or clear
++	 * feature bits.
++	 */
++	fpu__init_system();
++	fpu__init_cpu();
++
+ 	alternative_instructions();
+ 
+ 	if (IS_ENABLED(CONFIG_X86_64)) {
