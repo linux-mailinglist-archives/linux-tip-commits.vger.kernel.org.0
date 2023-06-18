@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 977CB73484E
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jun 2023 22:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3A80734852
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jun 2023 22:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjFRUuS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 18 Jun 2023 16:50:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48750 "EHLO
+        id S229725AbjFRUuT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 18 Jun 2023 16:50:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbjFRUuL (ORCPT
+        with ESMTP id S229675AbjFRUuO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 18 Jun 2023 16:50:11 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E45DE5D;
-        Sun, 18 Jun 2023 13:50:09 -0700 (PDT)
-Date:   Sun, 18 Jun 2023 20:50:07 -0000
+        Sun, 18 Jun 2023 16:50:14 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CF5DE5F;
+        Sun, 18 Jun 2023 13:50:10 -0700 (PDT)
+Date:   Sun, 18 Jun 2023 20:50:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1687121408;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0rZmwii/QkARH24aAlxE20/L4+QJ9DGFPRuwo6gx48U=;
-        b=3GMDTePwyFmRAUOlTuiX/coZ1rY5XbdVyoFmMNFlHOlxTeXrih4QYUd5oUz+kTSx6vgmFJ
-        VTt2gNZcLMT7mwnIknSZn2PUDF9vwb5ixO+ooL5Jo+ej9rVrGnSEsvPTt/sHgm6rvqLL+6
-        42h1AKg4BSV6g+lpa+P3HFTPrUxRObvFkiZuKU3rYnyU71P254IjArUFZwRsLXK6I0/sFj
-        ghm7unyCrRNlpyT2Uppht1xXWrzyDb7S2wWphUnrjnihR0bk4v7+y61vBi+g4vO9n+/MkJ
-        dGJfa31VOA27o9PUhWDcIzJsNQxyimo6Vhl/IXawsUKhS4DElH4YC/I/FDU3iw==
+        bh=/F4iP9SdBXFdAGaxPkH5ta1aHllR3vAjqy9jhfMl7yA=;
+        b=eqCgSnUFockrGcvAA9QICTVbcf+PjQvbHnmpnYSAR8MhUN2HW7TtSQWIAK479YOQZTOyAt
+        j5sie1NczNUOia3SjW9EGjxQ+qnueeJ1QjhH6mgOnC4NNcTF/mFkOPRz29tn+XCODEUWzY
+        WBxcnL862PSxmIujvD9mohGUropujP9qNMR/D/OHX6RNg6CuB/Hl2VQ+q6DEKc9cXebjEg
+        r3GvNgj4ouPUYKkOjOWJOsRzA+tYnjLao0ZjUfBVR2B1VNiNglfCgyFr+hXqDZq8KJ7kTX
+        0e9GjXOzwsQzBsitsItQ5JIz9Mx6B03jMvd3KvGC2+Q5ePDjhxzgjHBPLnwLCA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1687121408;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0rZmwii/QkARH24aAlxE20/L4+QJ9DGFPRuwo6gx48U=;
-        b=P9KTMmp5BsaP4TqEMxyCMq6Xy1d5hlP2Q0Nntg2wtq4WNVOSecnq4xswED73j/3g0+Aa2r
-        U9Y8iJb5KtYUVaAQ==
+        bh=/F4iP9SdBXFdAGaxPkH5ta1aHllR3vAjqy9jhfMl7yA=;
+        b=DCUg6kqvO2Wve893ELypLdCVtxq52bYP94xjvfrwMTDls6YFIDw+mXBzOxgI1uQNiuuZ3y
+        d/onRb327kCQP1AA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-timers: Clarify timer_wait_running() comment
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: timers/core] posix-timers: Ensure timer ID search-loop limit is valid
+Cc:     syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230425183312.985681995@linutronix.de>
-References: <20230425183312.985681995@linutronix.de>
+In-Reply-To: <87bkhzdn6g.ffs@tglx>
+References: <87bkhzdn6g.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <168712140796.404.15897229283135813033.tip-bot2@tip-bot2>
+Message-ID: <168712140837.404.7747591826658395670.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,50 +69,115 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7d9909026645064cd31b20cee5939a0f72282261
-Gitweb:        https://git.kernel.org/tip/7d9909026645064cd31b20cee5939a0f72282261
+Commit-ID:     8ce8849dd1e78dadcee0ec9acbd259d239b7069f
+Gitweb:        https://git.kernel.org/tip/8ce8849dd1e78dadcee0ec9acbd259d239b7069f
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Apr 2023 20:49:00 +02:00
+AuthorDate:    Thu, 01 Jun 2023 20:58:47 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sun, 18 Jun 2023 22:41:48 +02:00
 
-posix-timers: Clarify timer_wait_running() comment
+posix-timers: Ensure timer ID search-loop limit is valid
 
-Explain it better and add the CONFIG_POSIX_CPU_TIMERS_TASK_WORK=y aspect
-for completeness.
+posix_timer_add() tries to allocate a posix timer ID by starting from the
+cached ID which was stored by the last successful allocation.
 
+This is done in a loop searching the ID space for a free slot one by
+one. The loop has to terminate when the search wrapped around to the
+starting point.
+
+But that's racy vs. establishing the starting point. That is read out
+lockless, which leads to the following problem:
+
+CPU0	  	      	     	   CPU1
+posix_timer_add()
+  start = sig->posix_timer_id;
+  lock(hash_lock);
+  ...				   posix_timer_add()
+  if (++sig->posix_timer_id < 0)
+      			             start = sig->posix_timer_id;
+     sig->posix_timer_id = 0;
+
+So CPU1 can observe a negative start value, i.e. -1, and the loop break
+never happens because the condition can never be true:
+
+  if (sig->posix_timer_id == start)
+     break;
+
+While this is unlikely to ever turn into an endless loop as the ID space is
+huge (INT_MAX), the racy read of the start value caught the attention of
+KCSAN and Dmitry unearthed that incorrectness.
+
+Rewrite it so that all id operations are under the hash lock.
+
+Reported-by: syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com
+Reported-by: Dmitry Vyukov <dvyukov@google.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230425183312.985681995@linutronix.de
+Link: https://lore.kernel.org/r/87bkhzdn6g.ffs@tglx
 
 ---
- kernel/time/posix-timers.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ include/linux/sched/signal.h |  2 +-
+ kernel/time/posix-timers.c   | 31 ++++++++++++++++++-------------
+ 2 files changed, 19 insertions(+), 14 deletions(-)
 
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index 2009926..669e8cf 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -135,7 +135,7 @@ struct signal_struct {
+ #ifdef CONFIG_POSIX_TIMERS
+ 
+ 	/* POSIX.1b Interval Timers */
+-	int			posix_timer_id;
++	unsigned int		next_posix_timer_id;
+ 	struct list_head	posix_timers;
+ 
+ 	/* ITIMER_REAL timer for the process */
 diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 2d6cf93..0c61f29 100644
+index ed3c4a9..2d6cf93 100644
 --- a/kernel/time/posix-timers.c
 +++ b/kernel/time/posix-timers.c
-@@ -836,10 +836,18 @@ static void common_timer_wait_running(struct k_itimer *timer)
+@@ -140,25 +140,30 @@ static struct k_itimer *posix_timer_by_id(timer_t id)
+ static int posix_timer_add(struct k_itimer *timer)
+ {
+ 	struct signal_struct *sig = current->signal;
+-	int first_free_id = sig->posix_timer_id;
+ 	struct hlist_head *head;
+-	int ret = -ENOENT;
++	unsigned int cnt, id;
+ 
+-	do {
++	/*
++	 * FIXME: Replace this by a per signal struct xarray once there is
++	 * a plan to handle the resulting CRIU regression gracefully.
++	 */
++	for (cnt = 0; cnt <= INT_MAX; cnt++) {
+ 		spin_lock(&hash_lock);
+-		head = &posix_timers_hashtable[hash(sig, sig->posix_timer_id)];
+-		if (!__posix_timers_find(head, sig, sig->posix_timer_id)) {
++		id = sig->next_posix_timer_id;
++
++		/* Write the next ID back. Clamp it to the positive space */
++		sig->next_posix_timer_id = (id + 1) & INT_MAX;
++
++		head = &posix_timers_hashtable[hash(sig, id)];
++		if (!__posix_timers_find(head, sig, id)) {
+ 			hlist_add_head_rcu(&timer->t_hash, head);
+-			ret = sig->posix_timer_id;
++			spin_unlock(&hash_lock);
++			return id;
+ 		}
+-		if (++sig->posix_timer_id < 0)
+-			sig->posix_timer_id = 0;
+-		if ((sig->posix_timer_id == first_free_id) && (ret == -ENOENT))
+-			/* Loop over all possible ids completed */
+-			ret = -EAGAIN;
+ 		spin_unlock(&hash_lock);
+-	} while (ret == -ENOENT);
+-	return ret;
++	}
++	/* POSIX return code when no timer ID could be allocated */
++	return -EAGAIN;
  }
  
- /*
-- * On PREEMPT_RT this prevent priority inversion against softirq kthread in
-- * case it gets preempted while executing a timer callback. See comments in
-- * hrtimer_cancel_wait_running. For PREEMPT_RT=n this just results in a
-- * cpu_relax().
-+ * On PREEMPT_RT this prevents priority inversion and a potential livelock
-+ * against the ksoftirqd thread in case that ksoftirqd gets preempted while
-+ * executing a hrtimer callback.
-+ *
-+ * See the comments in hrtimer_cancel_wait_running(). For PREEMPT_RT=n this
-+ * just results in a cpu_relax().
-+ *
-+ * For POSIX CPU timers with CONFIG_POSIX_CPU_TIMERS_TASK_WORK=n this is
-+ * just a cpu_relax(). With CONFIG_POSIX_CPU_TIMERS_TASK_WORK=y this
-+ * prevents spinning on an eventually scheduled out task and a livelock
-+ * when the task which tries to delete or disarm the timer has preempted
-+ * the task which runs the expiry in task work context.
-  */
- static struct k_itimer *timer_wait_running(struct k_itimer *timer,
- 					   unsigned long *flags)
+ static inline void unlock_timer(struct k_itimer *timr, unsigned long flags)
