@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74335735570
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Jun 2023 13:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9ED3735584
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Jun 2023 13:12:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232580AbjFSLGA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Jun 2023 07:06:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37120 "EHLO
+        id S231442AbjFSLMJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Jun 2023 07:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232576AbjFSLFn (ORCPT
+        with ESMTP id S231365AbjFSLMI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Jun 2023 07:05:43 -0400
+        Mon, 19 Jun 2023 07:12:08 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12DF410DE;
-        Mon, 19 Jun 2023 04:04:55 -0700 (PDT)
-Date:   Mon, 19 Jun 2023 11:04:52 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8928391;
+        Mon, 19 Jun 2023 04:12:06 -0700 (PDT)
+Date:   Mon, 19 Jun 2023 11:12:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1687172693;
+        s=2020; t=1687173123;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OBk6SVQF8hbLqgrYb7zBnRJ0TouOnsyxVPTI0vV8hDc=;
-        b=hbmtd5SEN1CPWEFk6+CLULGU5Bp1u7moVRZ3FQHARFXXBFi3GZcS0Z4vYVCl9hOtwWpcIr
-        pmJ2HPaxCP4OmY1gdHVSxNz8FOV8SvgjNZjtLLTGXSPU/gJ8mMIMehSAqg4GnVMlUylj1T
-        Hb1sJpp+GpH9HxS3WRZwA4WRnkAnhrMCqzFu1NG6Y5EiCc9jyH7B8qMbKYqCApUmqSPeAl
-        nkHNilI1mdyDgrCj5ebwB4881Jcw+c9WXeZMxtZEOcx6I/vMoDPVyvyrD7/KvQaADm5Imj
-        F7YkLzBRfMFFqA8sKDfmCKF65AXVEpYNFxiM7fsCWZOzvJE7yqKiREhW5vW49Q==
+        bh=BNJEUYNaGO3ndcxsqEx3+fRdKWTSJ0HsE326eSb9jdQ=;
+        b=IQGhwOSi4DtjxNYzq42oDElp3x+Au/Koo2kIDPkgm3CmbagNgZBjVJ8ZuZS1SKfjrMxIse
+        m2Ki1imnxMBaviunDBNQeb77X2nAqhTHYLJ/v1H0gJ18d42MUwr+R5/jgxkRu5kdrYwbZD
+        UtLIkxpOBz6ZgnlvQWRfbRiTXd/1BDcjUnAvRrwKUDPUoHCplk1TGLw2ZEgcXzOmHMvjhq
+        tzxuBU9HsWi03nIe+PAp+BC0c1AclIS+x1Y6C3dDM33QTigC/FLYzkxP1NAAyiI2foJLIF
+        nYl00IT4oKSx8d2NkjbIVrmw3/aRyV3FiH0ekBEWsJBl8nynG/uNZeR05hZGEA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1687172693;
+        s=2020e; t=1687173123;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OBk6SVQF8hbLqgrYb7zBnRJ0TouOnsyxVPTI0vV8hDc=;
-        b=Ggq39IJsydop6sOJbiJ8PF2HeS7F/itIyzGezceFf3T8PkKMOmrkcBZYWuF2y21oO1O5YY
-        DI4s2dDFowUT99Dw==
-From:   "tip-bot2 for Vineeth Pillai" <tip-bot2@linutronix.de>
+        bh=BNJEUYNaGO3ndcxsqEx3+fRdKWTSJ0HsE326eSb9jdQ=;
+        b=3snc5LE2YXLbyZIQFrPN55H+M4yEUnNRSfpkoFalBRlaUk+iP9DAsxEW+n9nv0zo3BxYXL
+        Po2LY8W+POKa9VBw==
+From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/deadline: Fix bandwidth reclaim equation in GRUB
-Cc:     "Vineeth Pillai (Google)" <vineeth@bitbyteword.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Daniel Bristot de Oliveira <bristot@kernel.org>,
-        Juri Lelli <juri.lelli@redhat.com>, x86@kernel.org,
+Subject: [tip: ras/core] EDAC/amd64: Cache and use GPU node map
+Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
+        Muralidhara M K <muralidhara.mk@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230530135526.2385378-1-vineeth@bitbyteword.org>
-References: <20230530135526.2385378-1-vineeth@bitbyteword.org>
+In-Reply-To: <20230610210930.174074-1-trix@redhat.com ]>
+References: <20230610210930.174074-1-trix@redhat.com ]>
 MIME-Version: 1.0
-Message-ID: <168717269311.404.14622042036287952781.tip-bot2@tip-bot2>
+Message-ID: <168717312215.404.10267458336828769262.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,194 +66,199 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     6a9d623aad89539eca71eb264db6b9d538620ad5
-Gitweb:        https://git.kernel.org/tip/6a9d623aad89539eca71eb264db6b9d538620ad5
-Author:        Vineeth Pillai <vineeth@bitbyteword.org>
-AuthorDate:    Tue, 30 May 2023 09:55:25 -04:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Jun 2023 22:08:11 +02:00
+Commit-ID:     4251566ebc1cf95ae26a1e5a24cdac1ac25e942f
+Gitweb:        https://git.kernel.org/tip/4251566ebc1cf95ae26a1e5a24cdac1ac25e942f
+Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+AuthorDate:    Mon, 15 May 2023 11:35:37 
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 19 Jun 2023 13:01:44 +02:00
 
-sched/deadline: Fix bandwidth reclaim equation in GRUB
+EDAC/amd64: Cache and use GPU node map
 
-According to the GRUB[1] rule, the runtime is depreciated as:
-  "dq = -max{u, (1 - Uinact - Uextra)} dt" (1)
+AMD systems have historically provided an "AMD Node ID" that is a unique
+identifier for each die in a multi-die package. This was associated with
+a unique instance of the AMD Northbridge on a legacy system. And now it
+is associated with a unique instance of the AMD Data Fabric on modern
+systems. Each instance is referred to as a "Node"; this is an
+AMD-specific term not to be confused with NUMA nodes.
 
-To guarantee that deadline tasks doesn't starve lower class tasks,
-we do not allocate the full bandwidth of the cpu to deadline tasks.
-Maximum bandwidth usable by deadline tasks is denoted by "Umax".
-Considering Umax, equation (1) becomes:
-  "dq = -(max{u, (Umax - Uinact - Uextra)} / Umax) dt" (2)
+The data fabric provides a number of interfaces accessible through a set
+of functions in a single PCI device. There is one PCI device per Data
+Fabric (AMD Node), and multi-die systems will see multiple such PCI
+devices. The AMD Node ID matches a Node's position in the PCI hierarchy.
+For example, the Node 0 is accessed using the first PCI device, Node 1
+is accessed using the second, and so on. A logical CPU can find its AMD
+Node ID using CPUID. Furthermore, the AMD Node ID is used within the
+hardware fabric, so it is not purely a logical value.
 
-Current implementation has a minor bug in equation (2), which this
-patch fixes.
+Heterogeneous AMD systems, with a CPU Data Fabric connected to GPU data
+fabrics, follow a similar convention. Each CPU and GPU die has a unique
+AMD Node ID value, and each Node ID corresponds to PCI devices in
+sequential order.
 
-The reclamation logic is verified by a sample program which creates
-multiple deadline threads and observing their utilization. The tests
-were run on an isolated cpu(isolcpus=3) on a 4 cpu system.
+However, there are two caveats:
+1) GPUs are not x86, and they don't have CPUID to read their AMD Node ID
+like on CPUs. This means the value is more implicit and based on PCI
+enumeration and hardware-specifics.
+2) There is a gap in the hardware values for AMD Node IDs. Values 0-7
+are for CPUs and values 8-15 are for GPUs.
 
-Tests on 6.3.0
-==============
+For example, a system with one CPU die and two GPUs dies will have the
+following values:
+  CPU0 -> AMD Node 0
+  GPU0 -> AMD Node 8
+  GPU1 -> AMD Node 9
 
-RUN 1: runtime=7ms, deadline=period=10ms, RT capacity = 95%
-TID[693]: RECLAIM=1, (r=7ms, d=10ms, p=10ms), Util: 93.33
-TID[693]: RECLAIM=1, (r=7ms, d=10ms, p=10ms), Util: 93.35
+EDAC is the only subsystem where this has a practical effect. Memory
+errors on AMD systems are commonly reported through MCA to a CPU on the
+local AMD Node. The error information is passed along to EDAC where the
+AMD EDAC modules use the AMD Node ID of reporting logical CPU to access
+AMD Node information.
 
-RUN 2: runtime=1ms, deadline=period=100ms, RT capacity = 95%
-TID[708]: RECLAIM=1, (r=1ms, d=100ms, p=100ms), Util: 16.69
-TID[708]: RECLAIM=1, (r=1ms, d=100ms, p=100ms), Util: 16.69
+However, memory errors from a GPU die will be reported to the CPU die.
+Therefore, the logical CPU's AMD Node ID can't be used since it won't
+match the AMD Node ID of the GPU die. The AMD Node ID of the GPU die is
+provided as part of the MCA information, and the value will match the
+hardware enumeration (e.g. 8-15).
 
-RUN 3: 2 tasks
-  Task 1: runtime=1ms, deadline=period=10ms
-  Task 2: runtime=1ms, deadline=period=100ms
-TID[631]: RECLAIM=1, (r=1ms, d=10ms, p=10ms), Util: 62.67
-TID[632]: RECLAIM=1, (r=1ms, d=100ms, p=100ms), Util: 6.37
-TID[631]: RECLAIM=1, (r=1ms, d=10ms, p=10ms), Util: 62.38
-TID[632]: RECLAIM=1, (r=1ms, d=100ms, p=100ms), Util: 6.23
+Handle this situation by discovering GPU dies the same way as CPU dies
+in the AMD NB code. But do a "node id" fixup in AMD64 EDAC where it's
+needed.
 
-As seen above, the reclamation doesn't reclaim the maximum allowed
-bandwidth and as the bandwidth of tasks gets smaller, the reclaimed
-bandwidth also comes down.
+The GPU data fabrics provide a register with the base AMD Node ID for
+their local "type", i.e. GPU data fabric. This value is the same for all
+fabrics of the same type in a system.
 
-Tests with this patch applied
-=============================
+Read and cache the base AMD Node ID from one of the GPU devices during
+module initialization. Use this to fixup the "node id" when reporting
+memory errors at runtime.
 
-RUN 1: runtime=7ms, deadline=period=10ms, RT capacity = 95%
-TID[608]: RECLAIM=1, (r=7ms, d=10ms, p=10ms), Util: 95.19
-TID[608]: RECLAIM=1, (r=7ms, d=10ms, p=10ms), Util: 95.16
+  [ bp: Squash a fix making gpu_node_map static as reported by
+        Tom Rix <trix@redhat.com>.
+    Link: https://lore.kernel.org/r/20230610210930.174074-1-trix@redhat.com ]
 
-RUN 2: runtime=1ms, deadline=period=100ms, RT capacity = 95%
-TID[616]: RECLAIM=1, (r=1ms, d=100ms, p=100ms), Util: 95.27
-TID[616]: RECLAIM=1, (r=1ms, d=100ms, p=100ms), Util: 95.21
-
-RUN 3: 2 tasks
-  Task 1: runtime=1ms, deadline=period=10ms
-  Task 2: runtime=1ms, deadline=period=100ms
-TID[620]: RECLAIM=1, (r=1ms, d=10ms, p=10ms), Util: 86.64
-TID[621]: RECLAIM=1, (r=1ms, d=100ms, p=100ms), Util: 8.66
-TID[620]: RECLAIM=1, (r=1ms, d=10ms, p=10ms), Util: 86.45
-TID[621]: RECLAIM=1, (r=1ms, d=100ms, p=100ms), Util: 8.73
-
-Running tasks on all cpus allowing for migration also showed that
-the utilization is reclaimed to the maximum. Running 10 tasks on
-3 cpus SCHED_FLAG_RECLAIM - top shows:
-%Cpu0  : 94.6 us,  0.0 sy,  0.0 ni,  5.4 id,  0.0 wa
-%Cpu1  : 95.2 us,  0.0 sy,  0.0 ni,  4.8 id,  0.0 wa
-%Cpu2  : 95.8 us,  0.0 sy,  0.0 ni,  4.2 id,  0.0 wa
-
-[1]: Abeni, Luca & Lipari, Giuseppe & Parri, Andrea & Sun, Youcheng.
-     (2015). Parallel and sequential reclaiming in multicore
-     real-time global scheduling.
-
-Signed-off-by: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lore.kernel.org/r/20230530135526.2385378-1-vineeth@bitbyteword.org
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Co-developed-by: Muralidhara M K <muralidhara.mk@amd.com>
+Signed-off-by: Muralidhara M K <muralidhara.mk@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230515113537.1052146-6-muralimk@amd.com
 ---
- kernel/sched/deadline.c | 50 ++++++++++++++++++----------------------
- kernel/sched/sched.h    |  6 +++++-
- 2 files changed, 29 insertions(+), 27 deletions(-)
+ drivers/edac/amd64_edac.c | 76 ++++++++++++++++++++++++++++++++++++++-
+ drivers/edac/amd64_edac.h |  1 +-
+ 2 files changed, 77 insertions(+)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index f827067..e41a36b 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1253,43 +1253,39 @@ int dl_runtime_exceeded(struct sched_dl_entity *dl_se)
+diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
+index 28155b0..c52834d 100644
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -975,6 +975,74 @@ static int sys_addr_to_csrow(struct mem_ctl_info *mci, u64 sys_addr)
+ 	return csrow;
  }
  
- /*
-- * This function implements the GRUB accounting rule:
-- * according to the GRUB reclaiming algorithm, the runtime is
-- * not decreased as "dq = -dt", but as
-- * "dq = -max{u / Umax, (1 - Uinact - Uextra)} dt",
-+ * This function implements the GRUB accounting rule. According to the
-+ * GRUB reclaiming algorithm, the runtime is not decreased as "dq = -dt",
-+ * but as "dq = -(max{u, (Umax - Uinact - Uextra)} / Umax) dt",
-  * where u is the utilization of the task, Umax is the maximum reclaimable
-  * utilization, Uinact is the (per-runqueue) inactive utilization, computed
-  * as the difference between the "total runqueue utilization" and the
-- * runqueue active utilization, and Uextra is the (per runqueue) extra
-+ * "runqueue active utilization", and Uextra is the (per runqueue) extra
-  * reclaimable utilization.
-- * Since rq->dl.running_bw and rq->dl.this_bw contain utilizations
-- * multiplied by 2^BW_SHIFT, the result has to be shifted right by
-- * BW_SHIFT.
-- * Since rq->dl.bw_ratio contains 1 / Umax multiplied by 2^RATIO_SHIFT,
-- * dl_bw is multiped by rq->dl.bw_ratio and shifted right by RATIO_SHIFT.
-- * Since delta is a 64 bit variable, to have an overflow its value
-- * should be larger than 2^(64 - 20 - 8), which is more than 64 seconds.
-- * So, overflow is not an issue here.
-+ * Since rq->dl.running_bw and rq->dl.this_bw contain utilizations multiplied
-+ * by 2^BW_SHIFT, the result has to be shifted right by BW_SHIFT.
-+ * Since rq->dl.bw_ratio contains 1 / Umax multiplied by 2^RATIO_SHIFT, dl_bw
-+ * is multiped by rq->dl.bw_ratio and shifted right by RATIO_SHIFT.
-+ * Since delta is a 64 bit variable, to have an overflow its value should be
-+ * larger than 2^(64 - 20 - 8), which is more than 64 seconds. So, overflow is
-+ * not an issue here.
-  */
- static u64 grub_reclaim(u64 delta, struct rq *rq, struct sched_dl_entity *dl_se)
- {
--	u64 u_inact = rq->dl.this_bw - rq->dl.running_bw; /* Utot - Uact */
- 	u64 u_act;
--	u64 u_act_min = (dl_se->dl_bw * rq->dl.bw_ratio) >> RATIO_SHIFT;
-+	u64 u_inact = rq->dl.this_bw - rq->dl.running_bw; /* Utot - Uact */
- 
- 	/*
--	 * Instead of computing max{u * bw_ratio, (1 - u_inact - u_extra)},
--	 * we compare u_inact + rq->dl.extra_bw with
--	 * 1 - (u * rq->dl.bw_ratio >> RATIO_SHIFT), because
--	 * u_inact + rq->dl.extra_bw can be larger than
--	 * 1 * (so, 1 - u_inact - rq->dl.extra_bw would be negative
--	 * leading to wrong results)
-+	 * Instead of computing max{u, (u_max - u_inact - u_extra)}, we
-+	 * compare u_inact + u_extra with u_max - u, because u_inact + u_extra
-+	 * can be larger than u_max. So, u_max - u_inact - u_extra would be
-+	 * negative leading to wrong results.
- 	 */
--	if (u_inact + rq->dl.extra_bw > BW_UNIT - u_act_min)
--		u_act = u_act_min;
-+	if (u_inact + rq->dl.extra_bw > rq->dl.max_bw - dl_se->dl_bw)
-+		u_act = dl_se->dl_bw;
- 	else
--		u_act = BW_UNIT - u_inact - rq->dl.extra_bw;
-+		u_act = rq->dl.max_bw - u_inact - rq->dl.extra_bw;
- 
-+	u_act = (u_act * rq->dl.bw_ratio) >> RATIO_SHIFT;
- 	return (delta * u_act) >> BW_SHIFT;
- }
- 
-@@ -2788,12 +2784,12 @@ static void init_dl_rq_bw_ratio(struct dl_rq *dl_rq)
- {
- 	if (global_rt_runtime() == RUNTIME_INF) {
- 		dl_rq->bw_ratio = 1 << RATIO_SHIFT;
--		dl_rq->extra_bw = 1 << BW_SHIFT;
-+		dl_rq->max_bw = dl_rq->extra_bw = 1 << BW_SHIFT;
- 	} else {
- 		dl_rq->bw_ratio = to_ratio(global_rt_runtime(),
- 			  global_rt_period()) >> (BW_SHIFT - RATIO_SHIFT);
--		dl_rq->extra_bw = to_ratio(global_rt_period(),
--						    global_rt_runtime());
-+		dl_rq->max_bw = dl_rq->extra_bw =
-+			to_ratio(global_rt_period(), global_rt_runtime());
- 	}
- }
- 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 556496c..36e23e4 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -748,6 +748,12 @@ struct dl_rq {
- 	u64			extra_bw;
- 
- 	/*
-+	 * Maximum available bandwidth for reclaiming by SCHED_FLAG_RECLAIM
-+	 * tasks of this rq. Used in calculation of reclaimable bandwidth(GRUB).
-+	 */
-+	u64			max_bw;
++/*
++ * See AMD PPR DF::LclNodeTypeMap
++ *
++ * This register gives information for nodes of the same type within a system.
++ *
++ * Reading this register from a GPU node will tell how many GPU nodes are in the
++ * system and what the lowest AMD Node ID value is for the GPU nodes. Use this
++ * info to fixup the Linux logical "Node ID" value set in the AMD NB code and EDAC.
++ */
++static struct local_node_map {
++	u16 node_count;
++	u16 base_node_id;
++} gpu_node_map;
++
++#define PCI_DEVICE_ID_AMD_MI200_DF_F1		0x14d1
++#define REG_LOCAL_NODE_TYPE_MAP			0x144
++
++/* Local Node Type Map (LNTM) fields */
++#define LNTM_NODE_COUNT				GENMASK(27, 16)
++#define LNTM_BASE_NODE_ID			GENMASK(11, 0)
++
++static int gpu_get_node_map(void)
++{
++	struct pci_dev *pdev;
++	int ret;
++	u32 tmp;
 +
 +	/*
- 	 * Inverse of the fraction of CPU utilization that can be reclaimed
- 	 * by the GRUB algorithm.
- 	 */
++	 * Node ID 0 is reserved for CPUs.
++	 * Therefore, a non-zero Node ID means we've already cached the values.
++	 */
++	if (gpu_node_map.base_node_id)
++		return 0;
++
++	pdev = pci_get_device(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_DF_F1, NULL);
++	if (!pdev) {
++		ret = -ENODEV;
++		goto out;
++	}
++
++	ret = pci_read_config_dword(pdev, REG_LOCAL_NODE_TYPE_MAP, &tmp);
++	if (ret)
++		goto out;
++
++	gpu_node_map.node_count = FIELD_GET(LNTM_NODE_COUNT, tmp);
++	gpu_node_map.base_node_id = FIELD_GET(LNTM_BASE_NODE_ID, tmp);
++
++out:
++	pci_dev_put(pdev);
++	return ret;
++}
++
++static int fixup_node_id(int node_id, struct mce *m)
++{
++	/* MCA_IPID[InstanceIdHi] give the AMD Node ID for the bank. */
++	u8 nid = (m->ipid >> 44) & 0xF;
++
++	if (smca_get_bank_type(m->extcpu, m->bank) != SMCA_UMC_V2)
++		return node_id;
++
++	/* Nodes below the GPU base node are CPU nodes and don't need a fixup. */
++	if (nid < gpu_node_map.base_node_id)
++		return node_id;
++
++	/* Convert the hardware-provided AMD Node ID to a Linux logical one. */
++	return nid - gpu_node_map.base_node_id + 1;
++}
++
+ /* Protect the PCI config register pairs used for DF indirect access. */
+ static DEFINE_MUTEX(df_indirect_mutex);
+ 
+@@ -3001,6 +3069,8 @@ static void decode_umc_error(int node_id, struct mce *m)
+ 	struct err_info err;
+ 	u64 sys_addr;
+ 
++	node_id = fixup_node_id(node_id, m);
++
+ 	mci = edac_mc_find(node_id);
+ 	if (!mci)
+ 		return;
+@@ -3888,6 +3958,12 @@ static void gpu_prep_chip_selects(struct amd64_pvt *pvt)
+ 
+ static int gpu_hw_info_get(struct amd64_pvt *pvt)
+ {
++	int ret;
++
++	ret = gpu_get_node_map();
++	if (ret)
++		return ret;
++
+ 	pvt->umc = kcalloc(pvt->max_mcs, sizeof(struct amd64_umc), GFP_KERNEL);
+ 	if (!pvt->umc)
+ 		return -ENOMEM;
+diff --git a/drivers/edac/amd64_edac.h b/drivers/edac/amd64_edac.h
+index e84fe0d..a9d6290 100644
+--- a/drivers/edac/amd64_edac.h
++++ b/drivers/edac/amd64_edac.h
+@@ -16,6 +16,7 @@
+ #include <linux/slab.h>
+ #include <linux/mmzone.h>
+ #include <linux/edac.h>
++#include <linux/bitfield.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/msr.h>
+ #include "edac_module.h"
