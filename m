@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0583735262
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Jun 2023 12:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22A0F7353EF
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Jun 2023 12:50:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230431AbjFSKeV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Jun 2023 06:34:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41230 "EHLO
+        id S230394AbjFSKu2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Jun 2023 06:50:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230461AbjFSKeT (ORCPT
+        with ESMTP id S232168AbjFSKtc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Jun 2023 06:34:19 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F964CA;
-        Mon, 19 Jun 2023 03:34:17 -0700 (PDT)
-Date:   Mon, 19 Jun 2023 10:34:15 -0000
+        Mon, 19 Jun 2023 06:49:32 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE26173D;
+        Mon, 19 Jun 2023 03:49:26 -0700 (PDT)
+Date:   Mon, 19 Jun 2023 10:49:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1687170856;
+        s=2020; t=1687171765;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tzKIAkSRNHA5Cf1RLkHRArxPwsAojW8HDj1bvezLzf4=;
-        b=wVz0QZ4oAdkldlkaSS4r5USfgXKKSTN2s+NwWrqv7AmnBHUIrM1tVpXu3Zmle+OsiYP+V1
-        HQ7ZD0cEK6Z1qSw0kFbgc1Kyynqu/WwRUmxz5HJ5UnYKESnVM2P5pVpVW+JqKFyCfHERK2
-        CT5CPqef1IyUdkBEnzpTev5e8AT5WivMG+4SKiDZYhG0RQfQavglQt9883E1DcVGdWrQM/
-        IRyQ9dkBOQfwPuT9eIIqX0Yz4UdnRoJVxyv6L4JNRlgkgBodNxNnf7DSjpcwKmPhYuUZI0
-        UHnHZpAIEt4P/Y160PRuBiSu+PgkL+zYxv0oFZIKh243e0w/+x+EwqH754JcDg==
+        bh=JLpmxaC3hPQe85VWfgs8yWcsP3kWSaneGCYgT+zvxro=;
+        b=ha0fF8u+iYQvW1C7+CD2X7AZtmYEdCHc4pMhyL0u3WgLKhF6KK/jqWY94LT4UX8KuV/P5Y
+        Q8FXQ2IOqLsTvZR7IJxFJgYN33QqPIgMTKVxUtgCXs+RerysQqawajCaCt/jwJXUr0cB9i
+        4L2W03TTkr7nejP92IKHd9RP+JnuTUSMVLb6+5CckYexh2C3gqBYyJbL5i2DS2d2p9mr4w
+        nRpTHitlqPRSWqr87fyHwAJoEVYoHcKLEFvOQFmUNid+6BmGdyAH7joIvh8bEvXJcYpXW8
+        XahYypT/cLFiQL6o5eRZbK+02cFU4S1j4GFFR6JbR2+wHw8RVbP9ib5Q36o44Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1687170856;
+        s=2020e; t=1687171765;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tzKIAkSRNHA5Cf1RLkHRArxPwsAojW8HDj1bvezLzf4=;
-        b=NkiMitom9yLW+v8kO5yTC5xYgRUGQvlkX596aeYc4cPnhxO0WZRimMVr4uWcoq7Q/Vjc7m
-        aZyaK+z+lDYSgbAQ==
-From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+        bh=JLpmxaC3hPQe85VWfgs8yWcsP3kWSaneGCYgT+zvxro=;
+        b=NJdwaFEQ3pQ+VZV5Wy5QSXK6vgY2oreJsKG5j1K8Yxnvn6FYlx4fN005v+9MGMhd4w8YX3
+        t0EYcb4FvaYNvUDA==
+From:   "tip-bot2 for Leonardo Bras" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] Documentation: virt: Clean up paravirt_ops doc
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Juergen Gross <jgross@suse.com>, x86@kernel.org,
+Subject: [tip: smp/core] trace,smp: Add tracepoints for scheduling remotelly
+ called functions
+Cc:     Valentin Schneider <vschneid@redhat.com>,
+        Leonardo Bras <leobras@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230610054310.6242-1-rdunlap@infradead.org>
-References: <20230610054310.6242-1-rdunlap@infradead.org>
+In-Reply-To: <20230615065944.188876-7-leobras@redhat.com>
+References: <20230615065944.188876-7-leobras@redhat.com>
 MIME-Version: 1.0
-Message-ID: <168717085535.404.15451163061150954875.tip-bot2@tip-bot2>
+Message-ID: <168717176421.404.11770639740909284184.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,71 +67,140 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     6f7f812f54b46da88ec6e98b4a10e501d0d7164c
-Gitweb:        https://git.kernel.org/tip/6f7f812f54b46da88ec6e98b4a10e501d0d7164c
-Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Fri, 09 Jun 2023 22:43:10 -07:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 19 Jun 2023 12:09:54 +02:00
+Commit-ID:     bf5a8c26ad7caf0772a1cd48c8a0924e48bdbaf0
+Gitweb:        https://git.kernel.org/tip/bf5a8c26ad7caf0772a1cd48c8a0924e48bdbaf0
+Author:        Leonardo Bras <leobras@redhat.com>
+AuthorDate:    Thu, 15 Jun 2023 03:59:47 -03:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 16 Jun 2023 22:08:09 +02:00
 
-Documentation: virt: Clean up paravirt_ops doc
+trace,smp: Add tracepoints for scheduling remotelly called functions
 
-Clarify language. Clean up grammar. Hyphenate some words.
+Add a tracepoint for when a CSD is queued to a remote CPU's
+call_single_queue. This allows finding exactly which CPU queued a given CSD
+when looking at a csd_function_{entry,exit} event, and also enables us to
+accurately measure IPI delivery time with e.g. a synthetic event:
 
-Change "low-ops" to "low-level" since "low-ops" isn't defined or even
-mentioned anywhere else in the kernel source tree.
+  $ echo 'hist:keys=cpu,csd.hex:ts=common_timestamp.usecs' >\
+      /sys/kernel/tracing/events/smp/csd_queue_cpu/trigger
+  $ echo 'csd_latency unsigned int dst_cpu; unsigned long csd; u64 time' >\
+      /sys/kernel/tracing/synthetic_events
+  $ echo \
+  'hist:keys=common_cpu,csd.hex:'\
+  'time=common_timestamp.usecs-$ts:'\
+  'onmatch(smp.csd_queue_cpu).trace(csd_latency,common_cpu,csd,$time)' >\
+      /sys/kernel/tracing/events/smp/csd_function_entry/trigger
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20230610054310.6242-1-rdunlap@infradead.org
+  $ trace-cmd record -e 'synthetic:csd_latency' hackbench
+  $ trace-cmd report
+  <...>-467   [001]    21.824263: csd_queue_cpu:        cpu=0 callsite=try_to_wake_up+0x2ea func=sched_ttwu_pending csd=0xffff8880076148b8
+  <...>-467   [001]    21.824280: ipi_send_cpu:         cpu=0 callsite=try_to_wake_up+0x2ea callback=generic_smp_call_function_single_interrupt+0x0
+  <...>-489   [000]    21.824299: csd_function_entry:   func=sched_ttwu_pending csd=0xffff8880076148b8
+  <...>-489   [000]    21.824320: csd_latency:          dst_cpu=0, csd=18446612682193848504, time=36
+
+Suggested-by: Valentin Schneider <vschneid@redhat.com>
+Signed-off-by: Leonardo Bras <leobras@redhat.com>
+Tested-and-reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230615065944.188876-7-leobras@redhat.com
 ---
- Documentation/virt/paravirt_ops.rst | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ include/trace/events/csd.h | 27 +++++++++++++++++++++++++++
+ kernel/smp.c               | 16 +++++-----------
+ 2 files changed, 32 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/virt/paravirt_ops.rst b/Documentation/virt/paravirt_ops.rst
-index 6b789d2..62d867e 100644
---- a/Documentation/virt/paravirt_ops.rst
-+++ b/Documentation/virt/paravirt_ops.rst
-@@ -5,31 +5,31 @@ Paravirt_ops
- ============
+diff --git a/include/trace/events/csd.h b/include/trace/events/csd.h
+index af1df52..67e9d01 100644
+--- a/include/trace/events/csd.h
++++ b/include/trace/events/csd.h
+@@ -7,6 +7,33 @@
  
- Linux provides support for different hypervisor virtualization technologies.
--Historically different binary kernels would be required in order to support
--different hypervisors, this restriction was removed with pv_ops.
-+Historically, different binary kernels would be required in order to support
-+different hypervisors; this restriction was removed with pv_ops.
- Linux pv_ops is a virtualization API which enables support for different
- hypervisors. It allows each hypervisor to override critical operations and
- allows a single kernel binary to run on all supported execution environments
- including native machine -- without any hypervisors.
+ #include <linux/tracepoint.h>
  
- pv_ops provides a set of function pointers which represent operations
--corresponding to low level critical instructions and high level
--functionalities in various areas. pv-ops allows for optimizations at run
--time by enabling binary patching of the low-ops critical operations
-+corresponding to low-level critical instructions and high-level
-+functionalities in various areas. pv_ops allows for optimizations at run
-+time by enabling binary patching of the low-level critical operations
- at boot time.
++TRACE_EVENT(csd_queue_cpu,
++
++	TP_PROTO(const unsigned int cpu,
++		unsigned long callsite,
++		smp_call_func_t func,
++		struct __call_single_data *csd),
++
++	TP_ARGS(cpu, callsite, func, csd),
++
++	TP_STRUCT__entry(
++		__field(unsigned int, cpu)
++		__field(void *, callsite)
++		__field(void *, func)
++		__field(void *, csd)
++		),
++
++	    TP_fast_assign(
++		__entry->cpu = cpu;
++		__entry->callsite = (void *)callsite;
++		__entry->func = func;
++		__entry->csd  = csd;
++		),
++
++	TP_printk("cpu=%u callsite=%pS func=%ps csd=%p",
++		__entry->cpu, __entry->callsite, __entry->func, __entry->csd)
++	);
++
+ /*
+  * Tracepoints for a function which is called as an effect of smp_call_function.*
+  */
+diff --git a/kernel/smp.c b/kernel/smp.c
+index 1fa01a8..385179d 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -340,7 +340,7 @@ void __smp_call_single_queue(int cpu, struct llist_node *node)
+ 	 * even if we haven't sent the smp_call IPI yet (e.g. the stopper
+ 	 * executes migration_cpu_stop() on the remote CPU).
+ 	 */
+-	if (trace_ipi_send_cpu_enabled()) {
++	if (trace_csd_queue_cpu_enabled()) {
+ 		call_single_data_t *csd;
+ 		smp_call_func_t func;
  
- pv_ops operations are classified into three categories:
+@@ -348,7 +348,7 @@ void __smp_call_single_queue(int cpu, struct llist_node *node)
+ 		func = CSD_TYPE(csd) == CSD_TYPE_TTWU ?
+ 			sched_ttwu_pending : csd->func;
  
- - simple indirect call
--   These operations correspond to high level functionality where it is
-+   These operations correspond to high-level functionality where it is
-    known that the overhead of indirect call isn't very important.
+-		trace_ipi_send_cpu(cpu, _RET_IP_, func);
++		trace_csd_queue_cpu(cpu, _RET_IP_, func, csd);
+ 	}
  
- - indirect call which allows optimization with binary patch
--   Usually these operations correspond to low level critical instructions. They
-+   Usually these operations correspond to low-level critical instructions. They
-    are called frequently and are performance critical. The overhead is
-    very important.
+ 	/*
+@@ -741,7 +741,7 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
+ 	int cpu, last_cpu, this_cpu = smp_processor_id();
+ 	struct call_function_data *cfd;
+ 	bool wait = scf_flags & SCF_WAIT;
+-	int nr_cpus = 0, nr_queued = 0;
++	int nr_cpus = 0;
+ 	bool run_remote = false;
+ 	bool run_local = false;
  
- - a set of macros for hand written assembly code
-    Hand written assembly codes (.S files) also need paravirtualization
--   because they include sensitive instructions or some of code paths in
-+   because they include sensitive instructions or some code paths in
-    them are very performance critical.
+@@ -799,22 +799,16 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
+ 			csd->node.src = smp_processor_id();
+ 			csd->node.dst = cpu;
+ #endif
++			trace_csd_queue_cpu(cpu, _RET_IP_, func, csd);
++
+ 			if (llist_add(&csd->node.llist, &per_cpu(call_single_queue, cpu))) {
+ 				__cpumask_set_cpu(cpu, cfd->cpumask_ipi);
+ 				nr_cpus++;
+ 				last_cpu = cpu;
+ 			}
+-			nr_queued++;
+ 		}
+ 
+ 		/*
+-		 * Trace each smp_function_call_*() as an IPI, actual IPIs
+-		 * will be traced with func==generic_smp_call_function_single_ipi().
+-		 */
+-		if (nr_queued)
+-			trace_ipi_send_cpumask(cfd->cpumask, _RET_IP_, func);
+-
+-		/*
+ 		 * Choose the most efficient way to send an IPI. Note that the
+ 		 * number of CPUs might be zero due to concurrent changes to the
+ 		 * provided mask.
