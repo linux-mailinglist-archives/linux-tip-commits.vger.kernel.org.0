@@ -2,56 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9ED3735584
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Jun 2023 13:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 471B2735DC9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Jun 2023 21:10:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231442AbjFSLMJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Jun 2023 07:12:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41634 "EHLO
+        id S231225AbjFSTKv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Jun 2023 15:10:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231365AbjFSLMI (ORCPT
+        with ESMTP id S229628AbjFSTKu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Jun 2023 07:12:08 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8928391;
-        Mon, 19 Jun 2023 04:12:06 -0700 (PDT)
-Date:   Mon, 19 Jun 2023 11:12:02 -0000
+        Mon, 19 Jun 2023 15:10:50 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666C39C;
+        Mon, 19 Jun 2023 12:10:49 -0700 (PDT)
+Date:   Mon, 19 Jun 2023 19:10:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1687173123;
+        s=2020; t=1687201847;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BNJEUYNaGO3ndcxsqEx3+fRdKWTSJ0HsE326eSb9jdQ=;
-        b=IQGhwOSi4DtjxNYzq42oDElp3x+Au/Koo2kIDPkgm3CmbagNgZBjVJ8ZuZS1SKfjrMxIse
-        m2Ki1imnxMBaviunDBNQeb77X2nAqhTHYLJ/v1H0gJ18d42MUwr+R5/jgxkRu5kdrYwbZD
-        UtLIkxpOBz6ZgnlvQWRfbRiTXd/1BDcjUnAvRrwKUDPUoHCplk1TGLw2ZEgcXzOmHMvjhq
-        tzxuBU9HsWi03nIe+PAp+BC0c1AclIS+x1Y6C3dDM33QTigC/FLYzkxP1NAAyiI2foJLIF
-        nYl00IT4oKSx8d2NkjbIVrmw3/aRyV3FiH0ekBEWsJBl8nynG/uNZeR05hZGEA==
+        bh=RArQM0+vEpbmY2TBMGIyzGSZCOddW5TaaQ+oLRvEaLo=;
+        b=Tgb/SUOJ229Prfl8me5zen9JUzcr4j/7IrQG3vgwTn5T7KNmmPFKSERDusZt6uCasbqT2P
+        b0ygboVWA0pUv0bex4pmvc681Pa53fwUHbYJTF9KYna6W3z7VSG0hDgb0vVujvdf6rY5bN
+        gRuetMIjcjV+bPX3aTfk9BOW+f+fO8mud9uZEI0hrfwzeHMOdSmCAudHm/SH5uvRKgEH+j
+        +a0v0wj5dwmjM3YiMqWkHlgRbK8TLmQalW2elboypwZDn/92MVHXG+LdipwYCAJxWhPHwR
+        ZHX0QyCyPLQWvkjkYfmoEVySeOMim450k9epochhO+MhDKqzRb1J1WPalHwhDA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1687173123;
+        s=2020e; t=1687201847;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BNJEUYNaGO3ndcxsqEx3+fRdKWTSJ0HsE326eSb9jdQ=;
-        b=3snc5LE2YXLbyZIQFrPN55H+M4yEUnNRSfpkoFalBRlaUk+iP9DAsxEW+n9nv0zo3BxYXL
-        Po2LY8W+POKa9VBw==
-From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
+        bh=RArQM0+vEpbmY2TBMGIyzGSZCOddW5TaaQ+oLRvEaLo=;
+        b=E7pvXYdSVvDoR1MU2wlD+U7hft+Rs3RamhYeMwvFNVj3zvzx06m1SF6almagY2iM/K16Ql
+        AJX7iqc64Bp8pbBA==
+From:   "tip-bot2 for Dheeraj Kumar Srivastava" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] EDAC/amd64: Cache and use GPU node map
-Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
-        Muralidhara M K <muralidhara.mk@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/apic: Fix kernel panic when booting with
+ intremap=off and x2apic_phys
+Cc:     Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Kishon Vijay Abraham I <kvijayab@amd.com>,
+        Vasant Hegde <vasant.hegde@amd.com>,
+        Cyrill Gorcunov <gorcunov@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230610210930.174074-1-trix@redhat.com ]>
-References: <20230610210930.174074-1-trix@redhat.com ]>
+In-Reply-To: <20230616212236.1389-1-dheerajkumar.srivastava@amd.com>
+References: <20230616212236.1389-1-dheerajkumar.srivastava@amd.com>
 MIME-Version: 1.0
-Message-ID: <168717312215.404.10267458336828769262.tip-bot2@tip-bot2>
+Message-ID: <168720184607.404.13278064522951862638.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,199 +70,80 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     4251566ebc1cf95ae26a1e5a24cdac1ac25e942f
-Gitweb:        https://git.kernel.org/tip/4251566ebc1cf95ae26a1e5a24cdac1ac25e942f
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Mon, 15 May 2023 11:35:37 
+Commit-ID:     85d38d5810e285d5aec7fb5283107d1da70c12a9
+Gitweb:        https://git.kernel.org/tip/85d38d5810e285d5aec7fb5283107d1da70c12a9
+Author:        Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+AuthorDate:    Sat, 17 Jun 2023 02:52:36 +05:30
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 19 Jun 2023 13:01:44 +02:00
+CommitterDate: Mon, 19 Jun 2023 20:59:40 +02:00
 
-EDAC/amd64: Cache and use GPU node map
+x86/apic: Fix kernel panic when booting with intremap=off and x2apic_phys
 
-AMD systems have historically provided an "AMD Node ID" that is a unique
-identifier for each die in a multi-die package. This was associated with
-a unique instance of the AMD Northbridge on a legacy system. And now it
-is associated with a unique instance of the AMD Data Fabric on modern
-systems. Each instance is referred to as a "Node"; this is an
-AMD-specific term not to be confused with NUMA nodes.
+When booting with "intremap=off" and "x2apic_phys" on the kernel command
+line, the physical x2APIC driver ends up being used even when x2APIC
+mode is disabled ("intremap=off" disables x2APIC mode). This happens
+because the first compound condition check in x2apic_phys_probe() is
+false due to x2apic_mode == 0 and so the following one returns true
+after default_acpi_madt_oem_check() having already selected the physical
+x2APIC driver.
 
-The data fabric provides a number of interfaces accessible through a set
-of functions in a single PCI device. There is one PCI device per Data
-Fabric (AMD Node), and multi-die systems will see multiple such PCI
-devices. The AMD Node ID matches a Node's position in the PCI hierarchy.
-For example, the Node 0 is accessed using the first PCI device, Node 1
-is accessed using the second, and so on. A logical CPU can find its AMD
-Node ID using CPUID. Furthermore, the AMD Node ID is used within the
-hardware fabric, so it is not purely a logical value.
+This results in the following panic:
 
-Heterogeneous AMD systems, with a CPU Data Fabric connected to GPU data
-fabrics, follow a similar convention. Each CPU and GPU die has a unique
-AMD Node ID value, and each Node ID corresponds to PCI devices in
-sequential order.
+   kernel BUG at arch/x86/kernel/apic/io_apic.c:2409!
+   invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+   CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.0-rc2-ver4.1rc2 #2
+   Hardware name: Dell Inc. PowerEdge R6515/07PXPY, BIOS 2.3.6 07/06/2021
+   RIP: 0010:setup_IO_APIC+0x9c/0xaf0
+   Call Trace:
+    <TASK>
+    ? native_read_msr
+    apic_intr_mode_init
+    x86_late_time_init
+    start_kernel
+    x86_64_start_reservations
+    x86_64_start_kernel
+    secondary_startup_64_no_verify
+    </TASK>
 
-However, there are two caveats:
-1) GPUs are not x86, and they don't have CPUID to read their AMD Node ID
-like on CPUs. This means the value is more implicit and based on PCI
-enumeration and hardware-specifics.
-2) There is a gap in the hardware values for AMD Node IDs. Values 0-7
-are for CPUs and values 8-15 are for GPUs.
+which is:
 
-For example, a system with one CPU die and two GPUs dies will have the
-following values:
-  CPU0 -> AMD Node 0
-  GPU0 -> AMD Node 8
-  GPU1 -> AMD Node 9
+setup_IO_APIC:
+  apic_printk(APIC_VERBOSE, "ENABLING IO-APIC IRQs\n");
+  for_each_ioapic(ioapic)
+  	BUG_ON(mp_irqdomain_create(ioapic));
 
-EDAC is the only subsystem where this has a practical effect. Memory
-errors on AMD systems are commonly reported through MCA to a CPU on the
-local AMD Node. The error information is passed along to EDAC where the
-AMD EDAC modules use the AMD Node ID of reporting logical CPU to access
-AMD Node information.
+Return 0 to denote that x2APIC has not been enabled when probing the
+physical x2APIC driver.
 
-However, memory errors from a GPU die will be reported to the CPU die.
-Therefore, the logical CPU's AMD Node ID can't be used since it won't
-match the AMD Node ID of the GPU die. The AMD Node ID of the GPU die is
-provided as part of the MCA information, and the value will match the
-hardware enumeration (e.g. 8-15).
+  [ bp: Massage commit message heavily. ]
 
-Handle this situation by discovering GPU dies the same way as CPU dies
-in the AMD NB code. But do a "node id" fixup in AMD64 EDAC where it's
-needed.
-
-The GPU data fabrics provide a register with the base AMD Node ID for
-their local "type", i.e. GPU data fabric. This value is the same for all
-fabrics of the same type in a system.
-
-Read and cache the base AMD Node ID from one of the GPU devices during
-module initialization. Use this to fixup the "node id" when reporting
-memory errors at runtime.
-
-  [ bp: Squash a fix making gpu_node_map static as reported by
-        Tom Rix <trix@redhat.com>.
-    Link: https://lore.kernel.org/r/20230610210930.174074-1-trix@redhat.com ]
-
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Co-developed-by: Muralidhara M K <muralidhara.mk@amd.com>
-Signed-off-by: Muralidhara M K <muralidhara.mk@amd.com>
+Fixes: 9ebd680bd029 ("x86, apic: Use probe routines to simplify apic selection")
+Signed-off-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230515113537.1052146-6-muralimk@amd.com
+Reviewed-by: Kishon Vijay Abraham I <kvijayab@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230616212236.1389-1-dheerajkumar.srivastava@amd.com
 ---
- drivers/edac/amd64_edac.c | 76 ++++++++++++++++++++++++++++++++++++++-
- drivers/edac/amd64_edac.h |  1 +-
- 2 files changed, 77 insertions(+)
+ arch/x86/kernel/apic/x2apic_phys.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
-index 28155b0..c52834d 100644
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -975,6 +975,74 @@ static int sys_addr_to_csrow(struct mem_ctl_info *mci, u64 sys_addr)
- 	return csrow;
- }
+diff --git a/arch/x86/kernel/apic/x2apic_phys.c b/arch/x86/kernel/apic/x2apic_phys.c
+index 6bde05a..896bc41 100644
+--- a/arch/x86/kernel/apic/x2apic_phys.c
++++ b/arch/x86/kernel/apic/x2apic_phys.c
+@@ -97,7 +97,10 @@ static void init_x2apic_ldr(void)
  
-+/*
-+ * See AMD PPR DF::LclNodeTypeMap
-+ *
-+ * This register gives information for nodes of the same type within a system.
-+ *
-+ * Reading this register from a GPU node will tell how many GPU nodes are in the
-+ * system and what the lowest AMD Node ID value is for the GPU nodes. Use this
-+ * info to fixup the Linux logical "Node ID" value set in the AMD NB code and EDAC.
-+ */
-+static struct local_node_map {
-+	u16 node_count;
-+	u16 base_node_id;
-+} gpu_node_map;
-+
-+#define PCI_DEVICE_ID_AMD_MI200_DF_F1		0x14d1
-+#define REG_LOCAL_NODE_TYPE_MAP			0x144
-+
-+/* Local Node Type Map (LNTM) fields */
-+#define LNTM_NODE_COUNT				GENMASK(27, 16)
-+#define LNTM_BASE_NODE_ID			GENMASK(11, 0)
-+
-+static int gpu_get_node_map(void)
-+{
-+	struct pci_dev *pdev;
-+	int ret;
-+	u32 tmp;
-+
-+	/*
-+	 * Node ID 0 is reserved for CPUs.
-+	 * Therefore, a non-zero Node ID means we've already cached the values.
-+	 */
-+	if (gpu_node_map.base_node_id)
+ static int x2apic_phys_probe(void)
+ {
+-	if (x2apic_mode && (x2apic_phys || x2apic_fadt_phys()))
++	if (!x2apic_mode)
 +		return 0;
 +
-+	pdev = pci_get_device(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_DF_F1, NULL);
-+	if (!pdev) {
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+
-+	ret = pci_read_config_dword(pdev, REG_LOCAL_NODE_TYPE_MAP, &tmp);
-+	if (ret)
-+		goto out;
-+
-+	gpu_node_map.node_count = FIELD_GET(LNTM_NODE_COUNT, tmp);
-+	gpu_node_map.base_node_id = FIELD_GET(LNTM_BASE_NODE_ID, tmp);
-+
-+out:
-+	pci_dev_put(pdev);
-+	return ret;
-+}
-+
-+static int fixup_node_id(int node_id, struct mce *m)
-+{
-+	/* MCA_IPID[InstanceIdHi] give the AMD Node ID for the bank. */
-+	u8 nid = (m->ipid >> 44) & 0xF;
-+
-+	if (smca_get_bank_type(m->extcpu, m->bank) != SMCA_UMC_V2)
-+		return node_id;
-+
-+	/* Nodes below the GPU base node are CPU nodes and don't need a fixup. */
-+	if (nid < gpu_node_map.base_node_id)
-+		return node_id;
-+
-+	/* Convert the hardware-provided AMD Node ID to a Linux logical one. */
-+	return nid - gpu_node_map.base_node_id + 1;
-+}
-+
- /* Protect the PCI config register pairs used for DF indirect access. */
- static DEFINE_MUTEX(df_indirect_mutex);
++	if (x2apic_phys || x2apic_fadt_phys())
+ 		return 1;
  
-@@ -3001,6 +3069,8 @@ static void decode_umc_error(int node_id, struct mce *m)
- 	struct err_info err;
- 	u64 sys_addr;
- 
-+	node_id = fixup_node_id(node_id, m);
-+
- 	mci = edac_mc_find(node_id);
- 	if (!mci)
- 		return;
-@@ -3888,6 +3958,12 @@ static void gpu_prep_chip_selects(struct amd64_pvt *pvt)
- 
- static int gpu_hw_info_get(struct amd64_pvt *pvt)
- {
-+	int ret;
-+
-+	ret = gpu_get_node_map();
-+	if (ret)
-+		return ret;
-+
- 	pvt->umc = kcalloc(pvt->max_mcs, sizeof(struct amd64_umc), GFP_KERNEL);
- 	if (!pvt->umc)
- 		return -ENOMEM;
-diff --git a/drivers/edac/amd64_edac.h b/drivers/edac/amd64_edac.h
-index e84fe0d..a9d6290 100644
---- a/drivers/edac/amd64_edac.h
-+++ b/drivers/edac/amd64_edac.h
-@@ -16,6 +16,7 @@
- #include <linux/slab.h>
- #include <linux/mmzone.h>
- #include <linux/edac.h>
-+#include <linux/bitfield.h>
- #include <asm/cpu_device_id.h>
- #include <asm/msr.h>
- #include "edac_module.h"
+ 	return apic == &apic_x2apic_phys;
