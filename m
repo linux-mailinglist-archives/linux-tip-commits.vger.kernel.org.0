@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CA867353ED
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Jun 2023 12:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D45F73556E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Jun 2023 13:06:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231511AbjFSKu0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Jun 2023 06:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52062 "EHLO
+        id S232648AbjFSLF7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Jun 2023 07:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232157AbjFSKtc (ORCPT
+        with ESMTP id S232658AbjFSLFn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Jun 2023 06:49:32 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F23FB198B;
-        Mon, 19 Jun 2023 03:49:26 -0700 (PDT)
-Date:   Mon, 19 Jun 2023 10:49:24 -0000
+        Mon, 19 Jun 2023 07:05:43 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03E321BC1;
+        Mon, 19 Jun 2023 04:04:53 -0700 (PDT)
+Date:   Mon, 19 Jun 2023 11:04:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1687171765;
+        s=2020; t=1687172691;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wImM+p33UZ20jm9bf7CgfuXOmXaME53jmn4uQACAOXc=;
-        b=tlLpx0nhI+ax4T5nIZvbEEPlpLEpCTei40PPJx94XEtVtGcuZMDvLdlkE4S/E284svq0ha
-        oYJlW82oHFpxZMFasI3LXhd4LFCvHKIik8flnYyb9shYxnHoxqNLThGP7WACUEUQjnWg3h
-        PMCA+iPSMuKAbAARf5Eu0v/UJdsJcRm7c7eNDPKpuX5CXJ35MVQWrPV7O+D7Y2nvLXJX8x
-        /y18Gq3S2LWyTRfmYSK1pw8pxi/VF+VQAaC0SNo5m0vCTuzH+Ph30lCMj33+69e0AQJofD
-        Th2CaJZWwAZyUHVV1cjEVTFbe5pMxu36/WfyzpgnSMRICwvXR6GpsRrAbk9iKQ==
+        bh=6HJ+EWkrX10ljGl7K8BAce/hg/LIYukKCp9hwGTV8Is=;
+        b=GdzjjDcRJ4MG0RrL2miNDvypDr5Buw+fprgogjGgofXXrmQ1UYdBfsarIIaS4vz2nq9co8
+        R1fK1shBXNrVGNqX8R3WwJBud3XCH6tsk4ZMDL0kmbzO9q7T8G9Ij+GOBR48dvgbhSPN8a
+        /26gRCv5RrqBWkp1fPMbOIa1N7VsR6PAKr+NRr6d1WBeVFdG6gZqQ2/ctAMS+umtXxZk8L
+        OF14aq+7KytoEFXIR2CvZ17MwZVS7UPzQXE6Ho1kZqIxj62hS/wzIhD/KFG0shuy/8Y7ql
+        HpWiQOotpOLc7xm+HCk+c4/v8Lg1jP5KMeHEPMgUqwn0S5AtQu5T8VMI8zSsXw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1687171765;
+        s=2020e; t=1687172691;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wImM+p33UZ20jm9bf7CgfuXOmXaME53jmn4uQACAOXc=;
-        b=i6n6D/8rja9F5ZrA8h2BXghOv9vNjG0zt1UtgE7yr6D0AML3jOFy1y6Y2RNKDFoSHMVK4X
-        FpAHrwn9mdiSIoAg==
-From:   "tip-bot2 for Leonardo Bras" <tip-bot2@linutronix.de>
+        bh=6HJ+EWkrX10ljGl7K8BAce/hg/LIYukKCp9hwGTV8Is=;
+        b=NVHMgAj8araB2PV4/4RKTDBrhoR1GNGvyToyPJWwuswJ7aDUyQjaxPsv2qq/G3n9jsZJwb
+        JlwBUIlOu9rRFHDA==
+From:   "tip-bot2 for Hao Jia" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] trace,smp: Add tracepoints around remotelly called functions
-Cc:     Leonardo Bras <leobras@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/core: Avoid double calling update_rq_clock()
+ in __balance_push_cpu_stop()
+Cc:     Hao Jia <jiahao.os@bytedance.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230615065944.188876-5-leobras@redhat.com>
-References: <20230615065944.188876-5-leobras@redhat.com>
+In-Reply-To: <20230613082012.49615-3-jiahao.os@bytedance.com>
+References: <20230613082012.49615-3-jiahao.os@bytedance.com>
 MIME-Version: 1.0
-Message-ID: <168717176494.404.16420010294801824681.tip-bot2@tip-bot2>
+Message-ID: <168717269089.404.10438864985621759181.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,164 +67,62 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     949fa3f11ced2a5c8e3737e73b09676adf4b322b
-Gitweb:        https://git.kernel.org/tip/949fa3f11ced2a5c8e3737e73b09676adf4b322b
-Author:        Leonardo Bras <leobras@redhat.com>
-AuthorDate:    Thu, 15 Jun 2023 03:59:45 -03:00
+Commit-ID:     96500560f0c73c71bca1b27536c6254fa0e8ce37
+Gitweb:        https://git.kernel.org/tip/96500560f0c73c71bca1b27536c6254fa0e8ce37
+Author:        Hao Jia <jiahao.os@bytedance.com>
+AuthorDate:    Tue, 13 Jun 2023 16:20:10 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Jun 2023 22:08:09 +02:00
+CommitterDate: Fri, 16 Jun 2023 22:08:12 +02:00
 
-trace,smp: Add tracepoints around remotelly called functions
+sched/core: Avoid double calling update_rq_clock() in __balance_push_cpu_stop()
 
-The recently added ipi_send_{cpu,cpumask} tracepoints allow finding sources
-of IPIs targeting CPUs running latency-sensitive applications.
+There is a double update_rq_clock() invocation:
 
-For NOHZ_FULL CPUs, all IPIs are interference, and those tracepoints are
-sufficient to find them and work on getting rid of them. In some setups
-however, not *all* IPIs are to be suppressed, but long-running IPI
-callbacks can still be problematic.
+  __balance_push_cpu_stop()
+    update_rq_clock()
+    __migrate_task()
+      update_rq_clock()
 
-Add a pair of tracepoints to mark the start and end of processing a CSD IPI
-callback, similar to what exists for softirq, workqueue or timer callbacks.
+Sadly select_fallback_rq() also needs update_rq_clock() for
+__do_set_cpus_allowed(), it is not possible to remove the update from
+__balance_push_cpu_stop(). So remove it from __migrate_task() and
+ensure all callers of this function call update_rq_clock() prior to
+calling it.
 
-Signed-off-by: Leonardo Bras <leobras@redhat.com>
-Tested-and-reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Signed-off-by: Hao Jia <jiahao.os@bytedance.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230615065944.188876-5-leobras@redhat.com
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20230613082012.49615-3-jiahao.os@bytedance.com
 ---
- include/trace/events/csd.h | 45 +++++++++++++++++++++++++++++++++++++-
- kernel/smp.c               | 25 +++++++++++++++------
- 2 files changed, 64 insertions(+), 6 deletions(-)
- create mode 100644 include/trace/events/csd.h
+ kernel/sched/core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/trace/events/csd.h b/include/trace/events/csd.h
-new file mode 100644
-index 0000000..af1df52
---- /dev/null
-+++ b/include/trace/events/csd.h
-@@ -0,0 +1,45 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM csd
-+
-+#if !defined(_TRACE_CSD_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_CSD_H
-+
-+#include <linux/tracepoint.h>
-+
-+/*
-+ * Tracepoints for a function which is called as an effect of smp_call_function.*
-+ */
-+DECLARE_EVENT_CLASS(csd_function,
-+
-+	TP_PROTO(smp_call_func_t func, struct __call_single_data *csd),
-+
-+	TP_ARGS(func, csd),
-+
-+	TP_STRUCT__entry(
-+		__field(void *,	func)
-+		__field(void *,	csd)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->func	= func;
-+		__entry->csd	= csd;
-+	),
-+
-+	TP_printk("func=%ps, csd=%p", __entry->func, __entry->csd)
-+);
-+
-+DEFINE_EVENT(csd_function, csd_function_entry,
-+	TP_PROTO(smp_call_func_t func, struct __call_single_data *csd),
-+	TP_ARGS(func, csd)
-+);
-+
-+DEFINE_EVENT(csd_function, csd_function_exit,
-+	TP_PROTO(smp_call_func_t func, struct __call_single_data *csd),
-+	TP_ARGS(func, csd)
-+);
-+
-+#endif /* _TRACE_CSD_H */
-+
-+/* This part must be outside protection */
-+#include <trace/define_trace.h>
-diff --git a/kernel/smp.c b/kernel/smp.c
-index 71dce74..1fa01a8 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -27,6 +27,9 @@
- #include <linux/jump_label.h>
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 442efe5..c7db597 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2546,7 +2546,6 @@ static struct rq *__migrate_task(struct rq *rq, struct rq_flags *rf,
+ 	if (!is_cpu_allowed(p, dest_cpu))
+ 		return rq;
  
- #include <trace/events/ipi.h>
-+#define CREATE_TRACE_POINTS
-+#include <trace/events/csd.h>
-+#undef CREATE_TRACE_POINTS
+-	update_rq_clock(rq);
+ 	rq = move_queued_task(rq, rf, p, dest_cpu);
  
- #include "smpboot.h"
- #include "sched/smp.h"
-@@ -121,6 +124,14 @@ send_call_function_ipi_mask(struct cpumask *mask)
- 	arch_send_call_function_ipi_mask(mask);
- }
+ 	return rq;
+@@ -2604,10 +2603,12 @@ static int migration_cpu_stop(void *data)
+ 				goto out;
+ 		}
  
-+static __always_inline void
-+csd_do_func(smp_call_func_t func, void *info, struct __call_single_data *csd)
-+{
-+	trace_csd_function_entry(func, csd);
-+	func(info);
-+	trace_csd_function_exit(func, csd);
-+}
-+
- #ifdef CONFIG_CSD_LOCK_WAIT_DEBUG
+-		if (task_on_rq_queued(p))
++		if (task_on_rq_queued(p)) {
++			update_rq_clock(rq);
+ 			rq = __migrate_task(rq, &rf, p, arg->dest_cpu);
+-		else
++		} else {
+ 			p->wake_cpu = arg->dest_cpu;
++		}
  
- static DEFINE_STATIC_KEY_MAYBE(CONFIG_CSD_LOCK_WAIT_DEBUG_DEFAULT, csdlock_debug_enabled);
-@@ -375,7 +386,7 @@ static int generic_exec_single(int cpu, struct __call_single_data *csd)
- 		csd_lock_record(csd);
- 		csd_unlock(csd);
- 		local_irq_save(flags);
--		func(info);
-+		csd_do_func(func, info, NULL);
- 		csd_lock_record(NULL);
- 		local_irq_restore(flags);
- 		return 0;
-@@ -477,7 +488,7 @@ static void __flush_smp_call_function_queue(bool warn_cpu_offline)
- 			}
- 
- 			csd_lock_record(csd);
--			func(info);
-+			csd_do_func(func, info, csd);
- 			csd_unlock(csd);
- 			csd_lock_record(NULL);
- 		} else {
-@@ -508,7 +519,7 @@ static void __flush_smp_call_function_queue(bool warn_cpu_offline)
- 
- 				csd_lock_record(csd);
- 				csd_unlock(csd);
--				func(info);
-+				csd_do_func(func, info, csd);
- 				csd_lock_record(NULL);
- 			} else if (type == CSD_TYPE_IRQ_WORK) {
- 				irq_work_single(csd);
-@@ -522,8 +533,10 @@ static void __flush_smp_call_function_queue(bool warn_cpu_offline)
- 	/*
- 	 * Third; only CSD_TYPE_TTWU is left, issue those.
- 	 */
--	if (entry)
--		sched_ttwu_pending(entry);
-+	if (entry) {
-+		csd = llist_entry(entry, typeof(*csd), node.llist);
-+		csd_do_func(sched_ttwu_pending, entry, csd);
-+	}
- }
- 
- 
-@@ -816,7 +829,7 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
- 		unsigned long flags;
- 
- 		local_irq_save(flags);
--		func(info);
-+		csd_do_func(func, info, NULL);
- 		local_irq_restore(flags);
- 	}
- 
+ 		/*
+ 		 * XXX __migrate_task() can fail, at which point we might end
