@@ -2,55 +2,62 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4A477369E3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jun 2023 12:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5FEE736CA0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jun 2023 15:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231320AbjFTKur (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 20 Jun 2023 06:50:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36044 "EHLO
+        id S232785AbjFTNB2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 20 Jun 2023 09:01:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231384AbjFTKuq (ORCPT
+        with ESMTP id S232661AbjFTNBR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 20 Jun 2023 06:50:46 -0400
-Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ADE1DB;
-        Tue, 20 Jun 2023 03:50:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
-        s=smtpout1; t=1687258241;
-        bh=23RT6RtZKvvnvUCQtE/sFUYZKbZaC+odctzLJUb05D0=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=XZSvI0WO7TcaPHgqseIjOc99tO0KfHNEvaCFLKYZevVGmsnAJQNrLUSPo6RC/EyWE
-         8Zt0aRFqsInw7nKsVhTNSNX6fcLuL/NAgpUYJtUkII6T51LBIDHU8eow9cj0M7xV6R
-         lZRjS4c2ciu58OoPt/vEqIcqq9OE0K1nauPDVCRf89LjwnaM0//m86/1nF87DGwR5Y
-         pK6ZtbilZUOiayMHF3o4Q/fYNiYwxAFEgWM1ZaTSYcIo8dGGvhwWT2ajlijfvaggU0
-         Ad3Hm3mYwEbSPlGct3Ozj++tiz3wJRDslNy0XrGxtYRMW9wB4JBnSWbrRBWxDn7Igl
-         H8f3oB6chNy+w==
-Received: from [192.168.18.28] (unknown [198.16.185.171])
-        by smtpout.efficios.com (Postfix) with ESMTPSA id 4Qlk1s3YrHz194q;
-        Tue, 20 Jun 2023 06:50:41 -0400 (EDT)
-Message-ID: <3e9eaed6-4708-9e58-c80d-143760d6b23a@efficios.com>
-Date:   Tue, 20 Jun 2023 06:51:01 -0400
+        Tue, 20 Jun 2023 09:01:17 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9945619A6;
+        Tue, 20 Jun 2023 06:00:53 -0700 (PDT)
+Date:   Tue, 20 Jun 2023 13:00:48 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1687266051;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IHnqKX3zFPUhzg5NdonDjx0z2k46RLriZ3H8hzKz34o=;
+        b=m2QRURdmIwASV8t/9sTC4LSTORlRxdRZ2mSgvCNAtpjS4dqnZYv85LGZ8CwS2WLgTx0nms
+        cbRVy1yxisRlLaY1TeHZJKOW04ed8oCC3uqHgvRnIqXSNT+NxnPYwjbS/d+XmyHHAmn5/m
+        6pOfoRWRv2lKf31SzFTmuq/ii1j7KD5rYcb3YL1f9eRVhI+5+CBCEyMqb+ubx3OSofhirr
+        xw8/YHHd5zjRd0oPXp3gbmuX9C2g5QtE5qWcIzwgjs+tZn3aoLMbkpD8rGSTyJoYclfq+4
+        hwxzEBMX6hrGZSq9r5kMfBolEefb8xTk/paxUWErZiNfip1k9Fbly1zR3zNDiA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1687266051;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IHnqKX3zFPUhzg5NdonDjx0z2k46RLriZ3H8hzKz34o=;
+        b=HyausT/1rulZK1G7R74e7gTO+GYoGfqoOe2NDriMNjCDqDdygES1xoQ7YYeWNit7ZbBn6W
+        mq7j0MwUqP8wewBQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/core] x86/smp: Put CPUs into INIT on shutdown if possible
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ashok Raj <ashok.raj@intel.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230615193330.608657211@linutronix.de>
+References: <20230615193330.608657211@linutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [tip: sched/core] sched: Fix performance regression introduced by
- mm_cid
-Content-Language: en-US
-To:     Swapnil Sapkal <Swapnil.Sapkal@amd.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Aaron Lu <aaron.lu@intel.com>, x86@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <168214940343.404.10896712987516429042.tip-bot2@tip-bot2>
- <09e0f469-a3f7-62ef-75a1-e64cec2dcfc5@amd.com>
- <20230620091139.GZ4253@hirez.programming.kicks-ass.net>
- <44428f1e-ca2c-466f-952f-d5ad33f12073@amd.com>
-From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-In-Reply-To: <44428f1e-ca2c-466f-952f-d5ad33f12073@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+Message-ID: <168726604886.404.14688140659781504530.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,183 +66,163 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 6/20/23 06:35, Swapnil Sapkal wrote:
-> Hello Peter,
-> 
-> On 6/20/2023 2:41 PM, Peter Zijlstra wrote:
->> On Tue, Jun 20, 2023 at 01:44:32PM +0530, Swapnil Sapkal wrote:
->>> Hello Mathieu,
->>>
->>> On 4/22/2023 1:13 PM, tip-bot2 for Mathieu Desnoyers wrote:
->>>> The following commit has been merged into the sched/core branch of tip:
->>>>
->>>> Commit-ID:     223baf9d17f25e2608dbdff7232c095c1e612268
->>>> Gitweb:        
->>>> https://git.kernel.org/tip/223baf9d17f25e2608dbdff7232c095c1e612268
->>>> Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->>>> AuthorDate:    Thu, 20 Apr 2023 10:55:48 -04:00
->>>> Committer:     Peter Zijlstra <peterz@infradead.org>
->>>> CommitterDate: Fri, 21 Apr 2023 13:24:20 +02:00
->>>>
->>>> sched: Fix performance regression introduced by mm_cid
->>>>
->>>> Introduce per-mm/cpu current concurrency id (mm_cid) to fix a 
->>>> PostgreSQL
->>>> sysbench regression reported by Aaron Lu.
->>>>
->>>> Keep track of the currently allocated mm_cid for each mm/cpu rather 
->>>> than
->>>> freeing them immediately on context switch. This eliminates most atomic
->>>> operations when context switching back and forth between threads
->>>> belonging to different memory spaces in multi-threaded scenarios (many
->>>> processes, each with many threads). The per-mm/per-cpu mm_cid values 
->>>> are
->>>> serialized by their respective runqueue locks.
->>>>
->>>> Thread migration is handled by introducing invocation to
->>>> sched_mm_cid_migrate_to() (with destination runqueue lock held) in
->>>> activate_task() for migrating tasks. If the destination cpu's mm_cid is
->>>> unset, and if the source runqueue is not actively using its mm_cid, 
->>>> then
->>>> the source cpu's mm_cid is moved to the destination cpu on migration.
->>>>
->>>> Introduce a task-work executed periodically, similarly to NUMA work,
->>>> which delays reclaim of cid values when they are unused for a period of
->>>> time.
->>>>
->>>> Keep track of the allocation time for each per-cpu cid, and let the 
->>>> task
->>>> work clear them when they are observed to be older than
->>>> SCHED_MM_CID_PERIOD_NS and unused. This task work also clears all
->>>> mm_cids which are greater or equal to the Hamming weight of the mm
->>>> cidmask to keep concurrency ids compact.
->>>>
->>>> Because we want to ensure the mm_cid converges towards the smaller
->>>> values as migrations happen, the prior optimization that was done when
->>>> context switching between threads belonging to the same mm is removed,
->>>> because it could delay the lazy release of the destination runqueue
->>>> mm_cid after it has been replaced by a migration. Removing this prior
->>>> optimization is not an issue performance-wise because the introduced
->>>> per-mm/per-cpu mm_cid tracking also covers this more specific case.
->>>>
->>>> Fixes: af7f588d8f73 ("sched: Introduce per-memory-map concurrency ID")
->>>> Reported-by: Aaron Lu <aaron.lu@intel.com>
->>>> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->>>> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->>>> Tested-by: Aaron Lu <aaron.lu@intel.com>
->>>> Link: 
->>>> https://lore.kernel.org/lkml/20230327080502.GA570847@ziqianlu-desk2/
->>>
->>> I run standard benchmarks as a part of kernel performance regression
->>> testing. When I run these benchmarks against v6.3.0 to v6.4-rc1,
->>> I have seen performance regression in hackbench running with threads. 
->>> When I did
->>> git bisect it pointed to this commit and reverting this commit helps 
->>> regains
->>> the performance. This regression is not seen with hackbench processes.
->>
->> Well, *this* commit was supposed to help fix the horrible contention on
->> cid_lock that was introduced with af7f588d8f73.
-> 
-> I went back and tested the commit that introduced mm_cid and I found 
-> that the
-> original implementation actually helped hackbench. Following are numbers 
-> from
-> 2 Socket Zen3 Server (2 X 64C/128T):
-> 
-> Test:           base (v6.2-rc1)      base + orig_mm_cid
->   1-groups:     4.29 (0.00 pct)     4.32 (-0.69 pct)
->   2-groups:     4.96 (0.00 pct)     4.94 (0.40 pct)
->   4-groups:     5.21 (0.00 pct)     4.10 (21.30 pct)
->   8-groups:     5.44 (0.00 pct)     4.50 (17.27 pct)
-> 16-groups:     7.09 (0.00 pct)     5.28 (25.52 pct)
-> 
-> I see following IBS traces in this case:
-> 
-> Base:
-> 
->     6.69%  sched-messaging  [kernel.vmlinux]          [k] 
-> copy_user_generic_string
->     5.38%  sched-messaging  [kernel.vmlinux]          [k] 
-> native_queued_spin_lock_slowpath
->     3.73%  swapper          [kernel.vmlinux]          [k] __switch_to_asm
->     3.23%  sched-messaging  [kernel.vmlinux]          [k] __calc_delta
->     2.93%  sched-messaging  [kernel.vmlinux]          [k] try_to_wake_up
->     2.63%  sched-messaging  [kernel.vmlinux]          [k] dequeue_task_fair
->     2.56%  sched-messaging  [kernel.vmlinux]          [k] osq_lock
-> 
-> Base + orig_mm_cid:
-> 
->    13.70%  sched-messaging  [kernel.vmlinux]      [k] 
-> native_queued_spin_lock_slowpath
->    11.87%  swapper          [kernel.vmlinux]      [k] 
-> native_queued_spin_lock_slowpath
->     8.99%  sched-messaging  [kernel.vmlinux]      [k] 
-> copy_user_generic_string
->     6.08%  sched-messaging  [kernel.vmlinux]      [k] osq_lock
->     4.79%  sched-messaging  [kernel.vmlinux]      [k] 
-> apparmor_file_permission
->     3.71%  sched-messaging  [kernel.vmlinux]      [k] mutex_spin_on_owner
->     3.66%  sched-messaging  [kernel.vmlinux]      [k] 
-> ktime_get_coarse_real_ts64
->     3.11%  sched-messaging  [kernel.vmlinux]      [k] _copy_from_iter
-> 
->>
->>> Following are the results from 1 Socket 4th generation EPYC
->>> Processor(1 X 96C/192T) configured in NPS1 mode. This regression
->>> becomes more severe as the number of core count increases.
->>>
->>> The numbers on a 1 Socket Bergamo (1 X 128 cores/256 threads) is 
->>> significantly worse.
->>>
->>> Threads:
->>>
->>> Test:             With-mmcid-patch        Without-mmcid-patch
->>>   1-groups:         5.23 (0.00 pct)         4.61 (+11.85 pct)
->>>   2-groups:         4.99 (0.00 pct)         4.72 (+5.41 pct)
->>>   4-groups:         5.96 (0.00 pct)         4.87 (+18.28 pct)
->>>   8-groups:         6.58 (0.00 pct)         5.44 (+17.32 pct)
->>> 16-groups:        11.48 (0.00 pct)         8.07 (+29.70 pct)
->>
->> I'm really confused, so you're saying that having a process wide
->> spinlock is better than what this patch does? Or are you testing against
->> something without mm-cid entirely?
-> 
-> It does look like the lock contention introduced by the original mm_cid 
-> patch helped
-> hackbench in this case. In that case, I see hackbench threads run for 
-> longer on average (avg_atom)
-> and total idle entries are down significantly. Even on disabling C1 and 
-> C2, I see
-> similar behavior. With the new mm_cid patch that gets rid of the lock 
-> contention, we see a drop
-> in the hackbench performance.
-> 
-> I will go dig into this further meanwhile if you have any pointers 
-> please do let me know.
+The following commit has been merged into the x86/core branch of tip:
 
-I suspect the baseline don't have spinlock contention because the test-case
-schedules between threads belonging to the same process, for which the initial
-mm_cid patch had an optimization which skips the spinlock entirely.
+Commit-ID:     45e34c8af58f23db4474e2bfe79183efec09a18b
+Gitweb:        https://git.kernel.org/tip/45e34c8af58f23db4474e2bfe79183efec09a18b
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 15 Jun 2023 22:34:00 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 20 Jun 2023 14:51:47 +02:00
 
-This optimization for inter-thread scheduling had to be removed in the following
-patch to address the performance issue more generally, covering the inter-process
-scheduling.
+x86/smp: Put CPUs into INIT on shutdown if possible
 
-I suspect the regression is caused by the mm_count cache line bouncing.
+Parking CPUs in a HLT loop is not completely safe vs. kexec() as HLT can
+resume execution due to NMI, SMI and MCE, which has the same issue as the
+MWAIT loop.
 
-Please try with this additional patch applied:
+Kicking the secondary CPUs into INIT makes this safe against NMI and SMI.
 
-https://lore.kernel.org/lkml/20230515143536.114960-1-mathieu.desnoyers@efficios.com/
+A broadcast MCE will take the machine down, but a broadcast MCE which makes
+HLT resume and execute overwritten text, pagetables or data will end up in
+a disaster too.
 
-This patch has recently been merged into the mm tree.
+So chose the lesser of two evils and kick the secondary CPUs into INIT
+unless the system has installed special wakeup mechanisms which are not
+using INIT.
 
-Thanks,
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230615193330.608657211@linutronix.de
 
-Mathieu
+---
+ arch/x86/include/asm/smp.h |  2 ++-
+ arch/x86/kernel/smp.c      | 39 ++++++++++++++++++++++++++++++-------
+ arch/x86/kernel/smpboot.c  | 19 ++++++++++++++++++-
+ 3 files changed, 53 insertions(+), 7 deletions(-)
 
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
-
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index d4ce5cb..5906aa9 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -139,6 +139,8 @@ void native_send_call_func_ipi(const struct cpumask *mask);
+ void native_send_call_func_single_ipi(int cpu);
+ void x86_idle_thread_init(unsigned int cpu, struct task_struct *idle);
+ 
++bool smp_park_other_cpus_in_init(void);
++
+ void smp_store_boot_cpu_info(void);
+ void smp_store_cpu_info(int id);
+ 
+diff --git a/arch/x86/kernel/smp.c b/arch/x86/kernel/smp.c
+index 174d623..0076932 100644
+--- a/arch/x86/kernel/smp.c
++++ b/arch/x86/kernel/smp.c
+@@ -131,7 +131,7 @@ static int smp_stop_nmi_callback(unsigned int val, struct pt_regs *regs)
+ }
+ 
+ /*
+- * this function calls the 'stop' function on all other CPUs in the system.
++ * Disable virtualization, APIC etc. and park the CPU in a HLT loop
+  */
+ DEFINE_IDTENTRY_SYSVEC(sysvec_reboot)
+ {
+@@ -172,13 +172,17 @@ static void native_stop_other_cpus(int wait)
+ 	 * 2) Wait for all other CPUs to report that they reached the
+ 	 *    HLT loop in stop_this_cpu()
+ 	 *
+-	 * 3) If #2 timed out send an NMI to the CPUs which did not
+-	 *    yet report
++	 * 3) If the system uses INIT/STARTUP for CPU bringup, then
++	 *    send all present CPUs an INIT vector, which brings them
++	 *    completely out of the way.
+ 	 *
+-	 * 4) Wait for all other CPUs to report that they reached the
++	 * 4) If #3 is not possible and #2 timed out send an NMI to the
++	 *    CPUs which did not yet report
++	 *
++	 * 5) Wait for all other CPUs to report that they reached the
+ 	 *    HLT loop in stop_this_cpu()
+ 	 *
+-	 * #3 can obviously race against a CPU reaching the HLT loop late.
++	 * #4 can obviously race against a CPU reaching the HLT loop late.
+ 	 * That CPU will have reported already and the "have all CPUs
+ 	 * reached HLT" condition will be true despite the fact that the
+ 	 * other CPU is still handling the NMI. Again, there is no
+@@ -194,7 +198,7 @@ static void native_stop_other_cpus(int wait)
+ 		/*
+ 		 * Don't wait longer than a second for IPI completion. The
+ 		 * wait request is not checked here because that would
+-		 * prevent an NMI shutdown attempt in case that not all
++		 * prevent an NMI/INIT shutdown in case that not all
+ 		 * CPUs reach shutdown state.
+ 		 */
+ 		timeout = USEC_PER_SEC;
+@@ -202,7 +206,27 @@ static void native_stop_other_cpus(int wait)
+ 			udelay(1);
+ 	}
+ 
+-	/* if the REBOOT_VECTOR didn't work, try with the NMI */
++	/*
++	 * Park all other CPUs in INIT including "offline" CPUs, if
++	 * possible. That's a safe place where they can't resume execution
++	 * of HLT and then execute the HLT loop from overwritten text or
++	 * page tables.
++	 *
++	 * The only downside is a broadcast MCE, but up to the point where
++	 * the kexec() kernel brought all APs online again an MCE will just
++	 * make HLT resume and handle the MCE. The machine crashes and burns
++	 * due to overwritten text, page tables and data. So there is a
++	 * choice between fire and frying pan. The result is pretty much
++	 * the same. Chose frying pan until x86 provides a sane mechanism
++	 * to park a CPU.
++	 */
++	if (smp_park_other_cpus_in_init())
++		goto done;
++
++	/*
++	 * If park with INIT was not possible and the REBOOT_VECTOR didn't
++	 * take all secondary CPUs offline, try with the NMI.
++	 */
+ 	if (!cpumask_empty(&cpus_stop_mask)) {
+ 		/*
+ 		 * If NMI IPI is enabled, try to register the stop handler
+@@ -225,6 +249,7 @@ static void native_stop_other_cpus(int wait)
+ 			udelay(1);
+ 	}
+ 
++done:
+ 	local_irq_save(flags);
+ 	disable_local_APIC();
+ 	mcheck_cpu_clear(this_cpu_ptr(&cpu_info));
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index b403ead..4ee4339 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1465,6 +1465,25 @@ void arch_thaw_secondary_cpus_end(void)
+ 	cache_aps_init();
+ }
+ 
++bool smp_park_other_cpus_in_init(void)
++{
++	unsigned int cpu, this_cpu = smp_processor_id();
++	unsigned int apicid;
++
++	if (apic->wakeup_secondary_cpu_64 || apic->wakeup_secondary_cpu)
++		return false;
++
++	for_each_present_cpu(cpu) {
++		if (cpu == this_cpu)
++			continue;
++		apicid = apic->cpu_present_to_apicid(cpu);
++		if (apicid == BAD_APICID)
++			continue;
++		send_init_sequence(apicid);
++	}
++	return true;
++}
++
+ /*
+  * Early setup to make printk work.
+  */
