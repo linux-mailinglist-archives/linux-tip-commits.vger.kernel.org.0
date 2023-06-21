@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC6A1738E0B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Jun 2023 20:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 051B3738F2F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Jun 2023 20:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231760AbjFUSC6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 21 Jun 2023 14:02:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34882 "EHLO
+        id S229549AbjFUSv1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 21 Jun 2023 14:51:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231189AbjFUSCk (ORCPT
+        with ESMTP id S229472AbjFUSv0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 21 Jun 2023 14:02:40 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A3F81710;
-        Wed, 21 Jun 2023 11:02:39 -0700 (PDT)
-Date:   Wed, 21 Jun 2023 18:02:35 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1687370556;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=iQxjUsgsC/WPSkUYa9/qyRTPa+IzhBw37VPPoiW/Ep4=;
-        b=h7FbXNQsQRLhBeeZn3zZamxvnTfjIQooDQ0Oqjva3XLlTzutSgY6oU6Ao0f+/0TCfhUm3X
-        KHoYS6m0Cd5AmdiqwmDRPQ2kW6a68LnhhvD7FDfIfSWuJ1Y5px5RxQ/LTEWsZpna5M0PmF
-        doE44RfGClxU2CBjkSHedUo49VXvVG3r6KoQsa0EFByCASyUFgRshfJzKJV0KCZSC0ZAHI
-        tNtpwc9bXMkG4Iw+xXQzvbYJYKZrmWw/4FgA26Om7LHTa+3FTketRte2oLXi6F7SqkbXN7
-        GWbRfiKfnPAPyoibmNNa6/ciyxtigY3ANBRZTG4tQ4f0B6QdV26dm/7HqZD07A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1687370556;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=iQxjUsgsC/WPSkUYa9/qyRTPa+IzhBw37VPPoiW/Ep4=;
-        b=hawb49/GCpkH0I7iWNUPgYJRoPMFCEzd6JW4uCjRD2XBKrt6EhgRo0gTd6Qid4+EIF6tvh
-        mvLj4YtjnMjyHfAw==
-From:   "tip-bot2 for YueHaibing" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/acpi: Remove unused extern declaration
- acpi_copy_wakeup_routine()
-Cc:     YueHaibing <yuehaibing@huawei.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Wed, 21 Jun 2023 14:51:26 -0400
+Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58E5A185;
+        Wed, 21 Jun 2023 11:51:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
+        s=smtpout1; t=1687373480;
+        bh=IkYTpNiWVPFQuyyt4zVLfvRihtNFeiVQpAvULgsLDAc=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=s3a58nQ7tBn3aEbpRPxPwSexeuVYyvbEA1RT5tW7EQoaG4XJGmk9ixnlvFDUSHLKu
+         cMcT1F/uQGsD2G+D7wh1kpNJ1C/IPmJp3DwFv/tErLhriGgkOJgALFKjkLQ0KPqSGO
+         ypQ/un3vquCZDh9uyGNUK3gwc5R8TWEE/lWZiVoJNDWDtlUcw0QZnjsSoI/0CvFAje
+         b78Cpznh+GpTJYrEc3zwltFv5s7sLEfYef+KxQ3akN9FRRhdpyGGJdr0GXXoDdERIH
+         9ceOCiQL+MwtC9q9+Iq2dCKkTgYlfitZwSL8561M+APVruaEQndyGKnuI4xiIMfGPa
+         j+eAUu2R4NkmQ==
+Received: from [172.16.0.134] (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
+        by smtpout.efficios.com (Postfix) with ESMTPSA id 4QmXf05Qxjz199k;
+        Wed, 21 Jun 2023 14:51:20 -0400 (EDT)
+Message-ID: <a73761e4-b791-e9a2-a276-e1551628e33b@efficios.com>
+Date:   Wed, 21 Jun 2023 14:51:42 -0400
 MIME-Version: 1.0
-Message-ID: <168737055575.404.2070205807282162061.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [tip: sched/core] sched: Fix performance regression introduced by
+ mm_cid
+Content-Language: en-US
+To:     Swapnil Sapkal <Swapnil.Sapkal@amd.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Aaron Lu <aaron.lu@intel.com>, x86@kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <168214940343.404.10896712987516429042.tip-bot2@tip-bot2>
+ <09e0f469-a3f7-62ef-75a1-e64cec2dcfc5@amd.com>
+ <20230620091139.GZ4253@hirez.programming.kicks-ass.net>
+ <44428f1e-ca2c-466f-952f-d5ad33f12073@amd.com>
+ <3e9eaed6-4708-9e58-c80d-143760d6b23a@efficios.com>
+ <ddbd1564-8135-5bc3-72b4-afb7c6e9caba@amd.com>
+From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+In-Reply-To: <ddbd1564-8135-5bc3-72b4-afb7c6e9caba@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,36 +61,206 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+On 6/21/23 12:36, Swapnil Sapkal wrote:
+> Hello Mathieu,
+> 
+[...]
+>>
+>> I suspect the regression is caused by the mm_count cache line bouncing.
+>>
+>> Please try with this additional patch applied:
+>>
+>> https://lore.kernel.org/lkml/20230515143536.114960-1-mathieu.desnoyers@efficios.com/
+> 
+> Thanks for the suggestion. I tried out with the patch you suggested. I 
+> am seeing
+> improvement in hackbench numbers with mm_count padding. But this is not 
+> matching
+> with what we achieved through reverting the new mm_cid patch.
+> 
+> Below are the results on the 1 Socket 4th Generation EPYC Processor (1 x 
+> 96C/192T):
+> 
+> Threads:
+> 
+> Test:              Base (v6.4-rc1)   Base + new_mmcid_reverted  Base + 
+> mm_count_padding
+>   1-groups:         5.23 (0.00 pct)         4.61 (11.85 pct)        5.11 
+> (2.29 pct)
+>   2-groups:         4.99 (0.00 pct)         4.72 (5.41 pct)         5.00 
+> (-0.20 pct)
+>   4-groups:         5.96 (0.00 pct)         4.87 (18.28 pct)        5.86 
+> (1.67 pct)
+>   8-groups:         6.58 (0.00 pct)         5.44 (17.32 pct)        6.20 
+> (5.77 pct)
+> 16-groups:        11.48 (0.00 pct)         8.07 (29.70 pct)       10.68 
+> (6.96 pct)
+> 
+> Processes:
+> 
+> Test:              Base (v6.4-rc1)  Base + new_mmcid_reverted   Base + 
+> mm_count_padding
+>   1-groups:         5.19 (0.00 pct)         4.90 (5.58 pct)         5.19 
+> (0.00 pct)
+>   2-groups:         5.44 (0.00 pct)         5.39 (0.91 pct)         5.39 
+> (0.91 pct)
+>   4-groups:         5.69 (0.00 pct)         5.64 (0.87 pct)         5.64 
+> (0.87 pct)
+>   8-groups:         6.08 (0.00 pct)         6.01 (1.15 pct)         6.04 
+> (0.65 pct)
+> 16-groups:        10.87 (0.00 pct)        10.83 (0.36 pct)        10.93 
+> (-0.55 pct)
+> 
+> The ibs profile shows that function __switch_to_asm() is coming at top 
+> in baseline
+> run and is not seen with mm_count padding patch. Will be attaching full 
+> ibs profile
+> data for all the 3 runs:
+> 
+> # Base (v6.4-rc1)
+> Threads:
+> Total time: 11.486 [sec]
+> 
+>     5.15%  sched-messaging  [kernel.vmlinux]      [k] __switch_to_asm
+>     4.31%  sched-messaging  [kernel.vmlinux]      [k] copyout
+>     4.29%  sched-messaging  [kernel.vmlinux]      [k] 
+> native_queued_spin_lock_slowpath
+>     4.22%  sched-messaging  [kernel.vmlinux]      [k] copyin
+>     3.92%  sched-messaging  [kernel.vmlinux]      [k] 
+> apparmor_file_permission
+>     2.91%  sched-messaging  [kernel.vmlinux]      [k] __schedule
+>     2.34%  swapper          [kernel.vmlinux]      [k] __switch_to_asm
+>     2.10%  sched-messaging  [kernel.vmlinux]      [k] prepare_to_wait_event
+>     2.10%  sched-messaging  [kernel.vmlinux]      [k] try_to_wake_up
+>     2.07%  sched-messaging  [kernel.vmlinux]      [k] 
+> finish_task_switch.isra.0
+>     2.00%  sched-messaging  [kernel.vmlinux]      [k] pipe_write
+>     1.82%  sched-messaging  [kernel.vmlinux]      [k] 
+> check_preemption_disabled
+>     1.73%  sched-messaging  [kernel.vmlinux]      [k] 
+> exit_to_user_mode_prepare
+>     1.52%  sched-messaging  [kernel.vmlinux]      [k] __entry_text_start
+>     1.49%  sched-messaging  [kernel.vmlinux]      [k] osq_lock
+>     1.45%  sched-messaging  libc.so.6             [.] write
+>     1.44%  swapper          [kernel.vmlinux]      [k] native_sched_clock
+>     1.38%  sched-messaging  [kernel.vmlinux]      [k] psi_group_change
+>     1.38%  sched-messaging  [kernel.vmlinux]      [k] pipe_read
+>     1.37%  sched-messaging  libc.so.6             [.] read
+>     1.06%  sched-messaging  [kernel.vmlinux]      [k] vfs_read
+>     1.01%  swapper          [kernel.vmlinux]      [k] psi_group_change
+>     1.00%  sched-messaging  [kernel.vmlinux]      [k] update_curr
+> 
+> # Base + mm_count_padding
+> Threads:
+> Total time: 11.384 [sec]
+> 
+>     4.43%  sched-messaging  [kernel.vmlinux]         [k] copyin
+>     4.39%  sched-messaging  [kernel.vmlinux]         [k] 
+> native_queued_spin_lock_slowpath
+>     4.07%  sched-messaging  [kernel.vmlinux]         [k] 
+> apparmor_file_permission
+>     4.07%  sched-messaging  [kernel.vmlinux]         [k] copyout
+>     2.49%  sched-messaging  [kernel.vmlinux]         [k] entry_SYSCALL_64
+>     2.37%  sched-messaging  [kernel.vmlinux]         [k] update_cfs_group
+>     2.19%  sched-messaging  [kernel.vmlinux]         [k] pipe_write
+>     2.00%  sched-messaging  [kernel.vmlinux]         [k] 
+> check_preemption_disabled
+>     1.93%  swapper          [kernel.vmlinux]         [k] update_load_avg
+>     1.81%  sched-messaging  [kernel.vmlinux]         [k] 
+> exit_to_user_mode_prepare
+>     1.69%  sched-messaging  [kernel.vmlinux]         [k] try_to_wake_up
+>     1.58%  sched-messaging  libc.so.6                [.] write
+>     1.53%  sched-messaging  [kernel.vmlinux]         [k] psi_group_change
+>     1.50%  sched-messaging  libc.so.6                [.] read
+>     1.50%  sched-messaging  [kernel.vmlinux]         [k] pipe_read
+>     1.39%  sched-messaging  [kernel.vmlinux]         [k] update_load_avg
+>     1.39%  sched-messaging  [kernel.vmlinux]         [k] osq_lock
+>     1.30%  sched-messaging  [kernel.vmlinux]         [k] update_curr
+>     1.28%  swapper          [kernel.vmlinux]         [k] psi_group_change
+>     1.16%  sched-messaging  [kernel.vmlinux]         [k] vfs_read
+>     1.12%  sched-messaging  [kernel.vmlinux]         [k] vfs_write
+>     1.10%  sched-messaging  [kernel.vmlinux]         [k] 
+> entry_SYSRETQ_unsafe_stack
+>     1.09%  sched-messaging  [kernel.vmlinux]         [k] __switch_to_asm
+>     1.08%  sched-messaging  [kernel.vmlinux]         [k] do_syscall_64
+>     1.06%  sched-messaging  [kernel.vmlinux]         [k] 
+> select_task_rq_fair
+>     1.03%  swapper          [kernel.vmlinux]         [k] update_cfs_group
+>     1.00%  swapper          [kernel.vmlinux]         [k] rb_insert_color
+> 
+> # Base + reverted_new_mm_cid
+> Threads:
+> Total time: 7.847 [sec]
+> 
+>    12.14%  sched-messaging  [kernel.vmlinux]      [k] 
+> native_queued_spin_lock_slowpath
+>     8.86%  swapper          [kernel.vmlinux]      [k] 
+> native_queued_spin_lock_slowpath
+>     6.13%  sched-messaging  [kernel.vmlinux]      [k] copyin
+>     5.54%  sched-messaging  [kernel.vmlinux]      [k] 
+> apparmor_file_permission
+>     3.59%  sched-messaging  [kernel.vmlinux]      [k] copyout
+>     2.61%  sched-messaging  [kernel.vmlinux]      [k] osq_lock
+>     2.48%  sched-messaging  [kernel.vmlinux]      [k] pipe_write
+>     2.33%  sched-messaging  [kernel.vmlinux]      [k] 
+> exit_to_user_mode_prepare
+>     2.01%  sched-messaging  [kernel.vmlinux]      [k] 
+> check_preemption_disabled
+>     1.96%  sched-messaging  [kernel.vmlinux]      [k] __entry_text_start
+>     1.91%  sched-messaging  libc.so.6             [.] write
+>     1.77%  sched-messaging  libc.so.6             [.] read
+>     1.64%  sched-messaging  [kernel.vmlinux]      [k] mutex_spin_on_owner
+>     1.58%  sched-messaging  [kernel.vmlinux]      [k] pipe_read
+>     1.52%  sched-messaging  [kernel.vmlinux]      [k] try_to_wake_up
+>     1.38%  sched-messaging  [kernel.vmlinux]      [k] 
+> ktime_get_coarse_real_ts64
+>     1.35%  sched-messaging  [kernel.vmlinux]      [k] vfs_write
+>     1.28%  sched-messaging  [kernel.vmlinux]      [k] 
+> entry_SYSRETQ_unsafe_stack
+>     1.28%  sched-messaging  [kernel.vmlinux]      [k] vfs_read
+>     1.25%  sched-messaging  [kernel.vmlinux]      [k] do_syscall_64
+>     1.22%  sched-messaging  [kernel.vmlinux]      [k] __fget_light
+>     1.18%  sched-messaging  [kernel.vmlinux]      [k] mutex_lock
+>     1.12%  sched-messaging  [kernel.vmlinux]      [k] file_update_time
+>     1.04%  sched-messaging  [kernel.vmlinux]      [k] _copy_from_iter
+>     1.01%  sched-messaging  [kernel.vmlinux]      [k] current_time
+> 
+> So with the reverted new_mm_cid patch, we are seeing a lot of time being 
+> spent in
+> native_queued_spin_lock_slowpath and yet, hackbench finishes faster.
+> 
+> I keep further digging into this please let me know if you have any 
+> pointers for me.
 
-Commit-ID:     b360cbd254fde61cb500a4a3ca2e65dff3dfa039
-Gitweb:        https://git.kernel.org/tip/b360cbd254fde61cb500a4a3ca2e65dff3dfa039
-Author:        YueHaibing <yuehaibing@huawei.com>
-AuthorDate:    Tue, 20 Jun 2023 17:45:19 +08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 21 Jun 2023 10:57:54 -07:00
+Do you have CONFIG_SECURITY_APPARMOR=y ? Can you try without ?
 
-x86/acpi: Remove unused extern declaration acpi_copy_wakeup_routine()
+I notice that apparmor_file_permission appears near the top of your
+profiles, and apparmor uses an internal aa_buffers_lock spinlock,
+which could possibly explain the top hits for
+native_queued_spin_lock_slowpath. My current suspicion is that
+the raw spinlock that was taken by "Base + reverted_new_mm_cid"
+changed the contention pattern on the apparmor lock enough to
+speed things up by pure accident.
 
-This is now unused, so can be removed.
+Thanks,
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/all/20230620094519.15300-1-yuehaibing%40huawei.com
----
- arch/x86/kernel/acpi/sleep.h | 1 -
- 1 file changed, 1 deletion(-)
+Mathieu
 
-diff --git a/arch/x86/kernel/acpi/sleep.h b/arch/x86/kernel/acpi/sleep.h
-index 171a40c..054c15a 100644
---- a/arch/x86/kernel/acpi/sleep.h
-+++ b/arch/x86/kernel/acpi/sleep.h
-@@ -12,7 +12,6 @@ extern int wakeup_pmode_return;
- 
- extern u8 wake_sleep_flags;
- 
--extern unsigned long acpi_copy_wakeup_routine(unsigned long);
- extern void wakeup_long64(void);
- 
- extern void do_suspend_lowlevel(void);
+
+> 
+>>
+>> This patch has recently been merged into the mm tree.
+>>
+>> Thanks,
+>>
+>> Mathieu
+>>
+> -- 
+> Thanks and Regards,
+> Swapnil
+
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
+
