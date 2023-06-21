@@ -2,344 +2,413 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6477737C57
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Jun 2023 09:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A963738B87
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Jun 2023 18:37:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231244AbjFUHQ4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 21 Jun 2023 03:16:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53216 "EHLO
+        id S232023AbjFUQhl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 21 Jun 2023 12:37:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231246AbjFUHQx (ORCPT
+        with ESMTP id S229934AbjFUQhP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 21 Jun 2023 03:16:53 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA7BE12E;
-        Wed, 21 Jun 2023 00:16:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687331811; x=1718867811;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=t8i2c+yFreV3pVaaIoAwS6m/LkU+phjeuLaTKAWN3n8=;
-  b=J2Y64XBJshYbKMXp09Lw0Ev2HvtrdWAp/4VNI3HInm9iEQz6CEJ5q52+
-   PNRkNMH+iTs7Pqe5Tjuwa2igKv2HIz/JcDIYTpZUbUh7zsir+QJkLl3HY
-   +xWAHdylt3BUKcF50Ph0jxV6MTI91VIyb3KGmD0kBnPgik/GhmJ1b/SGg
-   HQdDhcumsaLsMlBMTLH7w4COZIfiiRkxEMQsJN1tjuA9WZiWhLfYS4v9C
-   2XZ0LCEo3WoBVPXZ4Ns912w96q6XNSIlqcwnPyRSUnPBNGuPsHfm/dSfS
-   0ztveoytnpnhI3hDhuNfAA3JbBL4UQIxkhfYHLDIPSJ2UiiRE3pROrcZ2
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="423758354"
-X-IronPort-AV: E=Sophos;i="6.00,259,1681196400"; 
-   d="scan'208";a="423758354"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 00:16:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="714344684"
-X-IronPort-AV: E=Sophos;i="6.00,259,1681196400"; 
-   d="scan'208";a="714344684"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orsmga002.jf.intel.com with ESMTP; 21 Jun 2023 00:16:35 -0700
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 21 Jun 2023 00:16:35 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Wed, 21 Jun 2023 00:16:35 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.104)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Wed, 21 Jun 2023 00:16:35 -0700
+        Wed, 21 Jun 2023 12:37:15 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2067.outbound.protection.outlook.com [40.107.223.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CD631FD9;
+        Wed, 21 Jun 2023 09:36:51 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hBea+jdr6JaEtCBBq8BtUKx3jz5xDhY99Hzqfwdw5fIdYy+F66nVLpJHAvKd46w2mDvfxNUHPwBDHju2I+ABXnE8mMqSt7Hc1XSDQhdiQ2AAfyCiBrvPu7xnq9jVw6L7bQyE/YL+MCdUVAYtkTLRLbqZbft35ipee7+JlU6zAvlzFPFXSYNpt/86k15GEIOsUs69jxj59JEWfnpV4cMBKawgSoR/Mc/9YgpIDi6QdahIGmoj4dJ56iVnJsmVE4i1PDAf/PzKGLWzfhqU9rk0dphZ60+8WOUTuTIfrfVMz4F4lGHc9D72M9qyF+MpEdG3bfSkNm3b21vcRe5WndWE0w==
+ b=V/5ZScoe5hplK9owxbVtZAfUltKfxU/aAkXqvf2n+pk6yzrysyxJ8pYkvp+eOLw8pQbLwhhqcEqNMnGAUyivG8R2OjmLlYJmcZr7RcDmBO3fGi//i0avUquhmf2uMgFyfKWlsOJ4mUiyB/Tf/AY+X9nTZnV3Mat02oE9qgYrUIxJxtKaJ/AwmTm5uINKt3xjmHPzeUDqzdMMfdyVqnAbMpAvt9rsuE9Xvmu1BO/Zj1mNSb2YiJDozB7beSaqmNYZ8RWfqgmVl5Odm2POeBWYyWt5Ii04T5ZM3qvqOwYsCY3zYjwad/J1F5uXwxfaD/CUuCseIRv8j7LLDErBU/gqXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B9KnCZiAphkpKT4cjTrTNulqBP2MVjdYBd1/LAuhbVE=;
- b=K5G8ESEF7c4QqGyf1II5D3tOFz3E+S+r0Bcl5j8vg4tSkseGtyTgUYBOrrn3W7Q2dPMinXmaT7ZvKbQ2psqx7twcRy62k4fpLPu2KgBKW9da05vXMvDaaGvv3GvEg++iClBc+NNkPPA+BWqfvbVJFSlZNanFCMESpi6HYNmijPXYe1ZfnzBFdpOnMfYwWYRUYbUlQBS04R3AE9RmJkbazCgSqh02ku5cIZ4egBeEyIinWcJNeVDowU7ItDQMLCUYnKX7z3WK3UH3mkcB2W964B3ABGCIqUnhIIpO/8pHv41kq9PfspUwPakp6Xi2o4wmv7bMHOzRnNEEj4EbLkDHOw==
+ bh=KwYWuFTss1Huf7Rv0/psfjsTLEpSJwFIiFQbyFa96J0=;
+ b=QMlljmsDz5kSX+UMN5ilGTnPGO2pcfvS4sdKw8UFm52xtu4DiYe74XF3gl9DRtHDZIUGbKInTRCfHGaUc1q3nPut9/TZQotUFqkCSYc7FxfdA/ttDjjF4bvo0198UtTXYag4IIMQ7IJ1m5cXVFk2e7/qSAkl4ZqIL6a7rx5ncXaV5d+Wtzxb9QZZPzaTO9G3K8rgea6DaN/4rpiB0drFL8kikt8YhbXZbBxBQidT5OK7MrfU+GqGa03d+vFdv3YzvSMz3JoPB/vZf7uuYLtXW9ebZrn+BGaxK+Qa7pUMzD7sv5oc2i5YQIRLFQ3xqK9xJTDA7bL7d6hZbk0a8J7hQA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KwYWuFTss1Huf7Rv0/psfjsTLEpSJwFIiFQbyFa96J0=;
+ b=IRfWP5flYXr0caT/3ZryHCo65Nl8YFyrWl6Wj8SdmgmXW6hyVlY+trZbqcfzT5Yh8YfFJVZ3vIYhXJEtCJQS/ldJvbda83JhFDyPzRSMEKPRCJCjl62l/+TW6cbojpRkKW5h+9jwZMRav5wcjW4z4JCG1yjJUxJkChz0yoUsR2Y=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN0PR11MB6206.namprd11.prod.outlook.com (2603:10b6:208:3c6::8)
- by PH7PR11MB7596.namprd11.prod.outlook.com (2603:10b6:510:27e::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Wed, 21 Jun
- 2023 07:16:32 +0000
-Received: from MN0PR11MB6206.namprd11.prod.outlook.com
- ([fe80::17da:2dd:f920:ef03]) by MN0PR11MB6206.namprd11.prod.outlook.com
- ([fe80::17da:2dd:f920:ef03%4]) with mapi id 15.20.6521.023; Wed, 21 Jun 2023
- 07:16:32 +0000
-Date:   Wed, 21 Jun 2023 15:16:15 +0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-CC:     K Prateek Nayak <kprateek.nayak@amd.com>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-tip-commits@vger.kernel.org>, Tejun Heo <tj@kernel.org>,
-        <x86@kernel.org>, Gautham Shenoy <gautham.shenoy@amd.com>,
-        Tim Chen <tim.c.chen@intel.com>
-Subject: Re: [tip: sched/core] sched/fair: Multi-LLC select_idle_sibling()
-Message-ID: <ZJKjvx/NxooM5z1Y@chenyu5-mobl2.ccr.corp.intel.com>
-References: <20230601120001.GJ38236@hirez.programming.kicks-ass.net>
- <20230601144706.GA559454@hirez.programming.kicks-ass.net>
- <7bee9860-2d2a-067b-adea-04012516095c@amd.com>
- <20230602065438.GB620383@hirez.programming.kicks-ass.net>
- <bd083d8d-023a-698e-701b-725f1b15766e@amd.com>
- <20230613082536.GI83892@hirez.programming.kicks-ass.net>
- <3402dcc4-d52f-d99f-e6ce-b435478a5a59@amd.com>
- <20230614081757.GA1639749@hirez.programming.kicks-ass.net>
- <ZInVjPRLsyaKksfZ@chenyu5-mobl2.ccr.corp.intel.com>
- <20230614151348.GM1639749@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230614151348.GM1639749@hirez.programming.kicks-ass.net>
-X-ClientProxiedBy: SI2PR02CA0037.apcprd02.prod.outlook.com
- (2603:1096:4:196::8) To MN0PR11MB6206.namprd11.prod.outlook.com
- (2603:10b6:208:3c6::8)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6165.namprd12.prod.outlook.com (2603:10b6:8:9a::21) by
+ SA0PR12MB4511.namprd12.prod.outlook.com (2603:10b6:806:95::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6521.23; Wed, 21 Jun 2023 16:36:47 +0000
+Received: from DS7PR12MB6165.namprd12.prod.outlook.com
+ ([fe80::714c:3289:2d9e:954e]) by DS7PR12MB6165.namprd12.prod.outlook.com
+ ([fe80::714c:3289:2d9e:954e%4]) with mapi id 15.20.6500.036; Wed, 21 Jun 2023
+ 16:36:47 +0000
+Message-ID: <ddbd1564-8135-5bc3-72b4-afb7c6e9caba@amd.com>
+Date:   Wed, 21 Jun 2023 22:06:34 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [tip: sched/core] sched: Fix performance regression introduced by
+ mm_cid
+Content-Language: en-US
+To:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Aaron Lu <aaron.lu@intel.com>, x86@kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <168214940343.404.10896712987516429042.tip-bot2@tip-bot2>
+ <09e0f469-a3f7-62ef-75a1-e64cec2dcfc5@amd.com>
+ <20230620091139.GZ4253@hirez.programming.kicks-ass.net>
+ <44428f1e-ca2c-466f-952f-d5ad33f12073@amd.com>
+ <3e9eaed6-4708-9e58-c80d-143760d6b23a@efficios.com>
+From:   Swapnil Sapkal <Swapnil.Sapkal@amd.com>
+In-Reply-To: <3e9eaed6-4708-9e58-c80d-143760d6b23a@efficios.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA0P287CA0015.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:d9::10) To DS7PR12MB6165.namprd12.prod.outlook.com
+ (2603:10b6:8:9a::21)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR11MB6206:EE_|PH7PR11MB7596:EE_
-X-MS-Office365-Filtering-Correlation-Id: 28d0e1cd-7977-4082-53ae-08db72277025
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6165:EE_|SA0PR12MB4511:EE_
+X-MS-Office365-Filtering-Correlation-Id: c5975a27-3751-465c-4f36-08db7275b4ca
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: AIUvPeFcqEtz2XRPSQdK6ya7buSR3x97DkeQHPhY7TmJsmg+GroxphCqL7Jhe5QE8vsPEeHQ4530J7xi3Uu/pbp02ly8otIFUwjJtWozWFhUBKNdcVGgI7dmYf8f2hu1RXbT9nSJucV1E+5J/XLv4sxwy4yjpF5uGnGXgt42I++QBc3Apz1Nj9VSPl7D2DjnaJeRbe2mtP0C39fQQ1uk2/dFCP1GUW3eurQq5ykI7r6OR3ZbwTLqSfOMkiZ0uZ6zHBDmIie2vkpm8fnBbv+lsfG1sI9oz37KruM5aAz0Hk+4zp7ssMzPPhCbvP60+jtuc9uf6ZWWN6aAZJgzXqu0YkAQt7xSsEjLTrXjgZguD/8lB8WFYdaTYXaGnJHTC0FM7UR63JKWyikc3TXbhvKHpDTzXWJHzgHxkkIWCAF+aOK3VN0ypaACbhAX/2hNYTeoi6HHKP4VjdaoSpthO+cixT4HoFJ52JGNMBLTXLjM0Lz2Nbna7j3NyakgOn/95C7PFgcP/NEyLbNaMIfJ/zDDTNNPsOk/pFflVSh2CjDsbcfUZQOoEOE0C82vsnC1rMbZSu9Al53Irm5UaW8za6ZxzQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB6206.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(396003)(366004)(39860400002)(376002)(346002)(451199021)(107886003)(82960400001)(86362001)(83380400001)(2906002)(5660300002)(4326008)(54906003)(66946007)(66556008)(8936002)(186003)(8676002)(66476007)(966005)(38100700002)(478600001)(6512007)(53546011)(6916009)(6506007)(41300700001)(26005)(6486002)(6666004)(316002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: 1hlkplOJOFQR4tzLp1Cmb19xUfD9bX3kNbB/4a2Q5E3YrcSi6tcvsbkh6QklFt4F9FAmra3qafEMKlL6WFv4HohZ1lxJuIqMQNRH4MYZMR93A0l2vULENanUKyfE0Baj4ld3sRBob6f1vjIAXfTvZPfY4x9vD02JMtBm37FNMtcvU+SGe25ODiIea1R1KE6jhs1UqllFMCgZgOd3/ioPiPZBk69Sr4IGErWiSL1YQq47CFrWRLhxyjkxrf8OiPBnbNUy8ZzQN76wDcH9EQCWQtJHpoZ6fKaLB2FxIh11XBtQnarvEpQqxmYA+l+5g3LKUvUhpKIDUpsnNNQdx/Voft6UUes8wubUqNH2pyN50Zoy4ZIX3gPDufq+tH16Te0LN9a/VoSC0iIvK4UTj7bqP1b1v/WqZP/caLJhZaIqw2REbbgZ3dEYpjZ9halNr6mvKPTxyWlLSlF5hbOj3KQTJ/cDlMqUP3rxiUs3R0eqfQix10lxjrxhL2YZxYYNSJKSJKeUKDYmf4gK9MomRx1aVhB+qckuILMuQX54D0LZcHZJmWmbv6/u0EPsRhElFNbNbNwM0utTPTo9Ae/OfvAe8/fPsP3mQrj84punRYtta26UwVloGZmRPSHSvkgK+96Uix0ng5qCCPqk6OnrK+1XTpq1axgfCxhWdwPbFd0riesDwLokSXGl2lyAcY72ZG01
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6165.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(376002)(39860400002)(136003)(346002)(396003)(451199021)(6486002)(6666004)(478600001)(36756003)(83380400001)(38100700002)(2616005)(31696002)(86362001)(186003)(53546011)(966005)(6506007)(26005)(6512007)(8936002)(8676002)(41300700001)(31686004)(5660300002)(30864003)(2906002)(54906003)(110136005)(316002)(66946007)(66476007)(66556008)(4326008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1+VAuP+E1EVE/WPL63z2PEQa3f7v/hjfnS1PlkA57RjkDN4CnVVeaM2sSlao?=
- =?us-ascii?Q?cjsb/O4QSSIyUAa6ZPF6xfOPP2dJRJKCVcsb06GE04+bgoc6+yrZPRY6B6KX?=
- =?us-ascii?Q?NaS5KoVTvHD3TbF7tMOLYNfTaOVlnYbROG2YFQix22wJ+xjKGTeXLkQgj2qv?=
- =?us-ascii?Q?hlbNg7HbT1YUz1PyMvTKhQx/lbaArGNl2f2TMCDDA5/CdIeo0K2hXxhX1cLX?=
- =?us-ascii?Q?UpEY1qfYwF8oUp9wh/MAjPxTbxdFgkKSfcZPhBtJon+0d7sssjCQE4HdyH0G?=
- =?us-ascii?Q?wEnWoVAICHCQDxZAosXEdalPlFM1W8PCeidtFb6bbYEdrPZpKjfwyZVFpJpM?=
- =?us-ascii?Q?DPoDLbLFYcZN2XabT+xlmeBnBOWqhFRisctTVZ4T7h4ZCutCk6GsjAEiMdeA?=
- =?us-ascii?Q?DopJPvDK8IVLw3XHs7QZSPtF1GJWpQPErjH+uXvlHu2E57W4dz0EGmqus8T7?=
- =?us-ascii?Q?m9+iB1IrtDebygu8RbAhAvVdaK67uJ7gGvOOcGM39HxrBZAn0Usyv/iXN9h1?=
- =?us-ascii?Q?aay0++R12bczjKXEWlUVcAUdri8oCTOeSVJY5m2TBe+jyR37qwSDTC9pgaIh?=
- =?us-ascii?Q?JAjkn2z+Z6QVsnZkQwaP765CxDDYbLWP2mjX+1wUcIspGK3teCO7jKLl+DpO?=
- =?us-ascii?Q?hdlB0k30pKXU5RUjGV5G/ku94NC88BUKpUJVez5MQJnuA6jUXaveKjlcO0CY?=
- =?us-ascii?Q?Y/rfxDB+h0cRvwkWmCttbVIpNh7QM4BBeJrj0VH8P84FCbafk43G8jV7fw3N?=
- =?us-ascii?Q?N9LQxGiL1HDrH6tk0ZVuwxpKuplx5KvBRwgA1P8xAxwl2EWX82hNieQxpdTG?=
- =?us-ascii?Q?U0ta3GvS8tyr/EoLPgtvoG3ITNMKIZMQsUf+P6t/U+qyzsqfk2kALxDXocKW?=
- =?us-ascii?Q?t37FzWUBj+l2C0TyLwT/1dp2VuPhP7ud6Gmi1uM57a9hROnqGFA0L3r3Byaw?=
- =?us-ascii?Q?nE8/Rmt1wzGyN0NlhZZ+WGE6Rl95zOuXLDwo7+bOXDPiKqLgPNgmNjyKwuZF?=
- =?us-ascii?Q?x3bGrfXtbnRRy+14CoPTISUG6vDbV41JfGthTgKFkcKoSOfb1NcjBD1Zo1IA?=
- =?us-ascii?Q?Vg+aBuTguveRgPPIkCraWtBHljXqiIp2qMyrWyb/5sMgbZp58QDiUsVGyhJZ?=
- =?us-ascii?Q?C60ONIajOc+nfy+v7GwLdPU1fcVjUHk9jFrS0FwZK9uiZJaalZqCDYZmJC71?=
- =?us-ascii?Q?z5AqRkjvCTk9xe+xqjFlL2rhmZQ13rMj/JSm6p2Jm1xnK7JuZARkTyivMEC/?=
- =?us-ascii?Q?/umZKw8y0f2WOYZiDQ9Ak8U5tYyNBTcKOJc5dqkGjUa2zHb+08MJs1/BKUzY?=
- =?us-ascii?Q?vbNfcbtwdnSLyuafp57EFFvC+D1TZN287yN2J+yfsC6Gio+BGY4gJ8lgOT2X?=
- =?us-ascii?Q?KPpchDdyYBmOwppylbYdavzMcuZNgos9u9d0YM9XLkPnNKsr1+VzzicRU4Re?=
- =?us-ascii?Q?jTNuv3AW+Ytf1DrKn6DiGFvum1b5obMd71DdtBkoJaR9mgVPaAN6D904JpZH?=
- =?us-ascii?Q?Fh3umLdEjmVFvy9saBHuVB4NKfeYgmRBSxil3avwjry/p9oYVH9y9J+nN1N2?=
- =?us-ascii?Q?l3mDHrOl27cuxDcTSKFR7zkNgUjai3QxkI/wu+2i?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28d0e1cd-7977-4082-53ae-08db72277025
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6206.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?anhqclprUUxnS2E2K1dsYXZ1T0d6TDE0R1lvWmxEbWo5WGZMR2x5aTNvNEVY?=
+ =?utf-8?B?WXpPdVc1L0IvVEliQ0RJOWRzNkFIU0R2d1BlbW5CZEppQ09VOEdEREpWSEc3?=
+ =?utf-8?B?cS80Z0NWczB2UU9xTVlpdVcvcGR0ek1USldMSWw5UldERXZYd0s0c25Pcms3?=
+ =?utf-8?B?VDJ4SlNnK2dBa2EwaUd3ODFWaTh1b1pQN3F6Z1QxMkVUUVVjYW0ydzh2MEZi?=
+ =?utf-8?B?bmdhUVlPZThGS212UWVLdlg1MlBxQWZ0ZWdMaUNUeUhicXNOZGp6ckM2aGV2?=
+ =?utf-8?B?TGxPTHlQUitNUjR4OVpjeVpVOGMwb2IvTUc0Z1ZHZThWWlV3N3RZVHJNSzZL?=
+ =?utf-8?B?TUdORkduc0hlN2lNTGhLdGRWd0dVUG43SGc2RG5sN0R2c0xaN1dMRElWanYz?=
+ =?utf-8?B?dm1pMEFwQkhhMURGMUVaWDZ3WE5NTllqUk9WOS9xK0JYbXhOdHFFbWpxT1Qr?=
+ =?utf-8?B?Z01UeUhqbHQxNVdOUklUUFVzWkFIRDhuekJEcWQrSnVmeGRlTFcxdWZJNDNm?=
+ =?utf-8?B?Yy9sR1o1M3I5ZFduT2R3eE1MdGp3aEhGa2FsSFRGUzlyQ1A2aGRQcysvZWd2?=
+ =?utf-8?B?VlBUbUFYWnAzZlg3a0JyZHkwNDhubjE1cUd3K2VrK0Fjemo3WCs4a2J0TzRY?=
+ =?utf-8?B?NE5CeUdnQ203QkpoU2FRMVVWcEtCME5aYVRycjYySlZKcCtHdks1SnJ0ZDUx?=
+ =?utf-8?B?eGo0OVFlQi9KNUtOYXpLZ2RZTkJydVMvYkY3Tyt2VDZnOFFyNkRqamlWckhT?=
+ =?utf-8?B?N1JyT0Qybis2RlBTMCs0d2tDeFZENXVuV3doWlVpVlRuUmJrTVhvTmNLaUNL?=
+ =?utf-8?B?b3RLaUp5VExKNnBvTXFOZWZ4Q1BtZkx5ZFFhYTBWT3EvV1FLQ1k2SWp3QUg2?=
+ =?utf-8?B?U2hQQTRRNi91czhhcEljWHdDTzdNa0NhMGpkNW9WVVo3MGlOSHJ5Tm9ZUEFT?=
+ =?utf-8?B?Z2lxYitIZElyNVdVazFPbW9zRFF0NVQ3RTdyRENPOUpaSXB6bi9oRFo4SkEy?=
+ =?utf-8?B?Q3h3c2c4REdEQnVYcnhlV0Nha2RlWURML1JlSU9xRFV3K0tvQUtjSDI3YmJG?=
+ =?utf-8?B?RVgvQmx3UjNEQWdLaVZLL1lwRjNFR1NUYWNlSHhTSkRKa2N3T21DaDhNdU5s?=
+ =?utf-8?B?ZWkvdWZEZGIyWUVkSnZ0MEEzMXN0aUtMNGZLejdqeUdtVDMzZ2IwclYveHA2?=
+ =?utf-8?B?VUtjazhEUXROOTJEV2EzaStjbmpPUmUyWVliK1FFSnUvSFhFOEdVa2VkZnh0?=
+ =?utf-8?B?K0szODNKeHlFaGVSV2I5ZTZMMVlTUVdmSCtxYTBOUENndkhHRmN4L0lrOExM?=
+ =?utf-8?B?Nmlwc2drMXR1UnV0QmFrdzV0OFlKbVUxSDA5WDI5NmFzTUVpcE4wcjZtY3FR?=
+ =?utf-8?B?N0IzYUxLMEF6M3RsRlpaTUNPdk90RGhHOThkWHNQMDh5SjNjT1c1VHhTTWJS?=
+ =?utf-8?B?Y0NVU29laUJLMFdBSHJtY0JQb0ZhbXIzTnE1Z0hTaWMxVFYvS09TbTNxUjlT?=
+ =?utf-8?B?aTB5SDQ2SnlicjlvWVc4bjdlQmZmbk94WE8zTnJUS1E4Zk9vbVlRTVJsWWd4?=
+ =?utf-8?B?VGQ0NXB3VVdVQ3dpSnlpZzVnUzk1bm1SNExUbE1HMC91cXZiK3VNQVhZRzJ0?=
+ =?utf-8?B?R1poQWYxKzhUNE01VnloNlord05OQjVMN0JoQnVZTllQaXJkUjEwMVNocTFY?=
+ =?utf-8?B?ZmNBVG81Uk1WSTQ4MUxWUzJpRVlVS2dKQkNQalVOc1RpQkdjejN0YUpRVGV5?=
+ =?utf-8?B?R3RRNHFCOUorMkEyN2N4NXpmT3NxUFVRc3lwL2UvN1kxczhRWWhybEY5OTdi?=
+ =?utf-8?B?RU9hamZJVXRHc0dYUGc3ekpCR3lCMzJMWEtQUXBnckZJcVFXd3B6RXZiZHZl?=
+ =?utf-8?B?VFBaSWJESXR4bzF0aktaVG9lU0tqNG8rQVhIdlAxZkhXVVMxRGJuSmpleVkr?=
+ =?utf-8?B?UmpmYm5scm1wUzJZcmp1T2xaWENEWUh5N1M2UVJ3ZnQ2Z2JiL0Q5RVVjemJy?=
+ =?utf-8?B?RWs1cHU1VVJHZDRaczhZOEZScGkxcEJsQzA0RWlSNXVMSnR5T2VXMDh0QmpH?=
+ =?utf-8?B?YmZHR3o0MXpLQTY1MVdQM1IyRytpaVJpVkRSWHNwbjc0by9SUHF3WEJYODRY?=
+ =?utf-8?Q?ap76NKv8Sy/c9tRjJ8IAcTDco?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c5975a27-3751-465c-4f36-08db7275b4ca
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6165.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 07:16:31.8604
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 16:36:47.6379
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3YCHmLRTS4v1PKDMK4RNE/7b2FNXN1Na6HmlfjYhDMPJmhda/HdrlYyMfI2FKO5MTnMEgzQEW+dQvvDG4hni6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7596
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: gR3PfJIZMoSCbkIFFbP0uT8Z6OI0kfXiQdN4NMECKRSE3O93ec3hoaG90H6R1/GQ9gKogSut5hAJMcSEPmtX2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4511
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 2023-06-14 at 17:13:48 +0200, Peter Zijlstra wrote:
-> On Wed, Jun 14, 2023 at 10:58:20PM +0800, Chen Yu wrote:
-> > On 2023-06-14 at 10:17:57 +0200, Peter Zijlstra wrote:
-> > > On Tue, Jun 13, 2023 at 04:00:39PM +0530, K Prateek Nayak wrote:
-> > > 
-> > > > >> - SIS_NODE_TOPOEXT - tip:sched/core + this patch
-> > > > >>                      + new sched domain (Multi-Multi-Core or MMC)
-> > > > >> 		     (https://lore.kernel.org/all/20230601153522.GB559993@hirez.programming.kicks-ass.net/)
-> > > > >> 		     MMC domain groups 2 nearby CCX.
-> > > > > 
-> > > > > OK, so you managed to get the NPS4 topology in NPS1 mode?
-> > > > 
-> > > > Yup! But it is a hack. I'll leave the patch at the end.
-> > > 
-> > > Chen Yu, could we do the reverse? Instead of building a bigger LLC
-> > > domain, can we split our LLC based on SNC (sub-numa-cluster) topologies?
-> > >
-> > Hi Peter,
-> > Do you mean with SNC enabled, if the LLC domain gets smaller? 
-> > According to the test, the answer seems to be yes.
+Hello Mathieu,
+
+On 6/20/2023 4:21 PM, Mathieu Desnoyers wrote:
+> On 6/20/23 06:35, Swapnil Sapkal wrote:
+>> Hello Peter,
+>>
+>> On 6/20/2023 2:41 PM, Peter Zijlstra wrote:
+>>> On Tue, Jun 20, 2023 at 01:44:32PM +0530, Swapnil Sapkal wrote:
+>>>> Hello Mathieu,
+>>>>
+>>>> On 4/22/2023 1:13 PM, tip-bot2 for Mathieu Desnoyers wrote:
+>>>>> The following commit has been merged into the sched/core branch of tip:
+>>>>>
+>>>>> Commit-ID:     223baf9d17f25e2608dbdff7232c095c1e612268
+>>>>> Gitweb: https://git.kernel.org/tip/223baf9d17f25e2608dbdff7232c095c1e612268
+>>>>> Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>>>>> AuthorDate:    Thu, 20 Apr 2023 10:55:48 -04:00
+>>>>> Committer:     Peter Zijlstra <peterz@infradead.org>
+>>>>> CommitterDate: Fri, 21 Apr 2023 13:24:20 +02:00
+>>>>>
+>>>>> sched: Fix performance regression introduced by mm_cid
+>>>>>
+>>>>> Introduce per-mm/cpu current concurrency id (mm_cid) to fix a PostgreSQL
+>>>>> sysbench regression reported by Aaron Lu.
+>>>>>
+>>>>> Keep track of the currently allocated mm_cid for each mm/cpu rather than
+>>>>> freeing them immediately on context switch. This eliminates most atomic
+>>>>> operations when context switching back and forth between threads
+>>>>> belonging to different memory spaces in multi-threaded scenarios (many
+>>>>> processes, each with many threads). The per-mm/per-cpu mm_cid values are
+>>>>> serialized by their respective runqueue locks.
+>>>>>
+>>>>> Thread migration is handled by introducing invocation to
+>>>>> sched_mm_cid_migrate_to() (with destination runqueue lock held) in
+>>>>> activate_task() for migrating tasks. If the destination cpu's mm_cid is
+>>>>> unset, and if the source runqueue is not actively using its mm_cid, then
+>>>>> the source cpu's mm_cid is moved to the destination cpu on migration.
+>>>>>
+>>>>> Introduce a task-work executed periodically, similarly to NUMA work,
+>>>>> which delays reclaim of cid values when they are unused for a period of
+>>>>> time.
+>>>>>
+>>>>> Keep track of the allocation time for each per-cpu cid, and let the task
+>>>>> work clear them when they are observed to be older than
+>>>>> SCHED_MM_CID_PERIOD_NS and unused. This task work also clears all
+>>>>> mm_cids which are greater or equal to the Hamming weight of the mm
+>>>>> cidmask to keep concurrency ids compact.
+>>>>>
+>>>>> Because we want to ensure the mm_cid converges towards the smaller
+>>>>> values as migrations happen, the prior optimization that was done when
+>>>>> context switching between threads belonging to the same mm is removed,
+>>>>> because it could delay the lazy release of the destination runqueue
+>>>>> mm_cid after it has been replaced by a migration. Removing this prior
+>>>>> optimization is not an issue performance-wise because the introduced
+>>>>> per-mm/per-cpu mm_cid tracking also covers this more specific case.
+>>>>>
+>>>>> Fixes: af7f588d8f73 ("sched: Introduce per-memory-map concurrency ID")
+>>>>> Reported-by: Aaron Lu <aaron.lu@intel.com>
+>>>>> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>>>>> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>>>>> Tested-by: Aaron Lu <aaron.lu@intel.com>
+>>>>> Link: https://lore.kernel.org/lkml/20230327080502.GA570847@ziqianlu-desk2/
+>>>>
+>>>> I run standard benchmarks as a part of kernel performance regression
+>>>> testing. When I run these benchmarks against v6.3.0 to v6.4-rc1,
+>>>> I have seen performance regression in hackbench running with threads. When I did
+>>>> git bisect it pointed to this commit and reverting this commit helps regains
+>>>> the performance. This regression is not seen with hackbench processes.
+>>>
+>>> Well, *this* commit was supposed to help fix the horrible contention on
+>>> cid_lock that was introduced with af7f588d8f73.
+>>
+>> I went back and tested the commit that introduced mm_cid and I found that the
+>> original implementation actually helped hackbench. Following are numbers from
+>> 2 Socket Zen3 Server (2 X 64C/128T):
+>>
+>> Test:           base (v6.2-rc1)      base + orig_mm_cid
+>>   1-groups:     4.29 (0.00 pct)     4.32 (-0.69 pct)
+>>   2-groups:     4.96 (0.00 pct)     4.94 (0.40 pct)
+>>   4-groups:     5.21 (0.00 pct)     4.10 (21.30 pct)
+>>   8-groups:     5.44 (0.00 pct)     4.50 (17.27 pct)
+>> 16-groups:     7.09 (0.00 pct)     5.28 (25.52 pct)
+>>
+>> I see following IBS traces in this case:
+>>
+>> Base:
+>>
+>>     6.69%  sched-messaging  [kernel.vmlinux]          [k] copy_user_generic_string
+>>     5.38%  sched-messaging  [kernel.vmlinux]          [k] native_queued_spin_lock_slowpath
+>>     3.73%  swapper          [kernel.vmlinux]          [k] __switch_to_asm
+>>     3.23%  sched-messaging  [kernel.vmlinux]          [k] __calc_delta
+>>     2.93%  sched-messaging  [kernel.vmlinux]          [k] try_to_wake_up
+>>     2.63%  sched-messaging  [kernel.vmlinux]          [k] dequeue_task_fair
+>>     2.56%  sched-messaging  [kernel.vmlinux]          [k] osq_lock
+>>
+>> Base + orig_mm_cid:
+>>
+>>    13.70%  sched-messaging  [kernel.vmlinux]      [k] native_queued_spin_lock_slowpath
+>>    11.87%  swapper          [kernel.vmlinux]      [k] native_queued_spin_lock_slowpath
+>>     8.99%  sched-messaging  [kernel.vmlinux]      [k] copy_user_generic_string
+>>     6.08%  sched-messaging  [kernel.vmlinux]      [k] osq_lock
+>>     4.79%  sched-messaging  [kernel.vmlinux]      [k] apparmor_file_permission
+>>     3.71%  sched-messaging  [kernel.vmlinux]      [k] mutex_spin_on_owner
+>>     3.66%  sched-messaging  [kernel.vmlinux]      [k] ktime_get_coarse_real_ts64
+>>     3.11%  sched-messaging  [kernel.vmlinux]      [k] _copy_from_iter
+>>
+>>>
+>>>> Following are the results from 1 Socket 4th generation EPYC
+>>>> Processor(1 X 96C/192T) configured in NPS1 mode. This regression
+>>>> becomes more severe as the number of core count increases.
+>>>>
+>>>> The numbers on a 1 Socket Bergamo (1 X 128 cores/256 threads) is significantly worse.
+>>>>
+>>>> Threads:
+>>>>
+>>>> Test:             With-mmcid-patch        Without-mmcid-patch
+>>>>   1-groups:         5.23 (0.00 pct)         4.61 (+11.85 pct)
+>>>>   2-groups:         4.99 (0.00 pct)         4.72 (+5.41 pct)
+>>>>   4-groups:         5.96 (0.00 pct)         4.87 (+18.28 pct)
+>>>>   8-groups:         6.58 (0.00 pct)         5.44 (+17.32 pct)
+>>>> 16-groups:        11.48 (0.00 pct)         8.07 (+29.70 pct)
+>>>
+>>> I'm really confused, so you're saying that having a process wide
+>>> spinlock is better than what this patch does? Or are you testing against
+>>> something without mm-cid entirely?
+>>
+>> It does look like the lock contention introduced by the original mm_cid patch helped
+>> hackbench in this case. In that case, I see hackbench threads run for longer on average (avg_atom)
+>> and total idle entries are down significantly. Even on disabling C1 and C2, I see
+>> similar behavior. With the new mm_cid patch that gets rid of the lock contention, we see a drop
+>> in the hackbench performance.
+>>
+>> I will go dig into this further meanwhile if you have any pointers please do let me know.
 > 
-> No, I mean to build smaller LLC domains even with SNC disabled, as-if
-> SNC were active.
+> I suspect the baseline don't have spinlock contention because the test-case
+> schedules between threads belonging to the same process, for which the initial
+> mm_cid patch had an optimization which skips the spinlock entirely.
 > 
->
-The topology on Sapphire Rapids is that there are 4 memory controllers within
-1 package per lstopo result, and the LLCs could have slightly difference distance
-to the 4 mc with SNC disabled. Unfortunately there is no interface for the OS
-to query this partition. I used a hack to split the LLC into 4 smaller ones
-with SNC disabled, according to the topology in SNC4. Then I had a test on this
-platform with/withouth this LLC split, both with SIS_NODE enabled and with
-this issue fixed[1]. Something like this when iterating the groups in select_idle_node():
+> This optimization for inter-thread scheduling had to be removed in the following
+> patch to address the performance issue more generally, covering the inter-process
+> scheduling.
+> 
+> I suspect the regression is caused by the mm_count cache line bouncing.
+> 
+> Please try with this additional patch applied:
+> 
+> https://lore.kernel.org/lkml/20230515143536.114960-1-mathieu.desnoyers@efficios.com/
 
-if (cpumask_test_cpu(target, sched_group_span(sg)))
-	continue;
+Thanks for the suggestion. I tried out with the patch you suggested. I am seeing
+improvement in hackbench numbers with mm_count padding. But this is not matching
+with what we achieved through reverting the new mm_cid patch.
 
-The SIS_NODE should have no impact on non-LLC-split version on
-Sapphire Rapids, so the baseline is vanilla+SIS_NODE.
+Below are the results on the 1 Socket 4th Generation EPYC Processor (1 x 96C/192T):
 
-In summary, huge improvement from netperf was observed, but also regression from
-hackbench/schbench was observed when the system is under load. I'll collect some
-schedstats to check the scan depth in the problematic cases.
+Threads:
 
+Test:              Base (v6.4-rc1)   Base + new_mmcid_reverted  Base + mm_count_padding
+  1-groups:         5.23 (0.00 pct)         4.61 (11.85 pct)        5.11 (2.29 pct)
+  2-groups:         4.99 (0.00 pct)         4.72 (5.41 pct)         5.00 (-0.20 pct)
+  4-groups:         5.96 (0.00 pct)         4.87 (18.28 pct)        5.86 (1.67 pct)
+  8-groups:         6.58 (0.00 pct)         5.44 (17.32 pct)        6.20 (5.77 pct)
+16-groups:        11.48 (0.00 pct)         8.07 (29.70 pct)       10.68 (6.96 pct)
 
-With SNC disabled and with the hack llc-split patch applied, there is a new
-Die domain generated, the LLC is divided into 4 sub-llc groups:
+Processes:
 
- grep  . domain*/{name,flags}
-domain0/name:SMT
-domain1/name:MC
-domain2/name:DIE
-domain3/name:NUMA
-domain0/flags:SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_CPUCAPACITY SD_SHARE_PKG_RESOURCES SD_PREFER_SIBLING
-domain1/flags:SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_PKG_RESOURCES SD_PREFER_SIBLING
-domain2/flags:SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_PREFER_SIBLING
-domain3/flags:SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SERIALIZE SD_OVERLAP SD_NUMA
+Test:              Base (v6.4-rc1)  Base + new_mmcid_reverted   Base + mm_count_padding
+  1-groups:         5.19 (0.00 pct)         4.90 (5.58 pct)         5.19 (0.00 pct)
+  2-groups:         5.44 (0.00 pct)         5.39 (0.91 pct)         5.39 (0.91 pct)
+  4-groups:         5.69 (0.00 pct)         5.64 (0.87 pct)         5.64 (0.87 pct)
+  8-groups:         6.08 (0.00 pct)         6.01 (1.15 pct)         6.04 (0.65 pct)
+16-groups:        10.87 (0.00 pct)        10.83 (0.36 pct)        10.93 (-0.55 pct)
 
-cat /proc/schedstat | grep cpu0 -A 4
-cpu0 0 0 0 0 0 0 15968391465 3630455022 18084
-domain0 00000000,00000000,00000000,00010000,00000000,00000000,00000001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-domain1 00000000,00000000,00000000,3fff0000,00000000,00000000,00003fff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-domain2 00000000,000000ff,ffffffff,ffff0000,00000000,00ffffff,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-domain3 ffffffff,ffffffff,ffffffff,ffffffff,ffffffff,ffffffff,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+The ibs profile shows that function __switch_to_asm() is coming at top in baseline
+run and is not seen with mm_count padding patch. Will be attaching full ibs profile
+data for all the 3 runs:
 
+# Base (v6.4-rc1)
+Threads:
+Total time: 11.486 [sec]
 
-hackbench
-=========
-case                    load            baseline(std%)  compare%( std%)
-process-pipe            1-groups         1.00 (  3.81)  -100.18 (  0.19)
-process-pipe            2-groups         1.00 ( 10.74)  -59.21 (  0.91)
-process-pipe            4-groups         1.00 (  5.37)  -56.37 (  0.56)
-process-pipe            8-groups         1.00 (  0.36)  +17.11 (  0.82)
-process-sockets         1-groups         1.00 (  0.09)  -26.53 (  1.45)
-process-sockets         2-groups         1.00 (  0.82)  -26.45 (  0.40)
-process-sockets         4-groups         1.00 (  0.21)   -4.09 (  0.19)
-process-sockets         8-groups         1.00 (  0.13)   -5.31 (  0.36)
-threads-pipe            1-groups         1.00 (  2.14)  -62.87 (  1.11)
-threads-pipe            2-groups         1.00 (  3.18)  -55.82 (  1.14)
-threads-pipe            4-groups         1.00 (  4.68)  -54.92 (  0.34)
-threads-pipe            8-groups         1.00 (  5.08)  +15.81 (  3.08)
-threads-sockets         1-groups         1.00 (  2.60)  -18.28 (  6.03)
-threads-sockets         2-groups         1.00 (  0.83)  -30.17 (  0.60)
-threads-sockets         4-groups         1.00 (  0.16)   -4.15 (  0.27)
-threads-sockets         8-groups         1.00 (  0.36)   -5.92 (  0.94)
+    5.15%  sched-messaging  [kernel.vmlinux]      [k] __switch_to_asm
+    4.31%  sched-messaging  [kernel.vmlinux]      [k] copyout
+    4.29%  sched-messaging  [kernel.vmlinux]      [k] native_queued_spin_lock_slowpath
+    4.22%  sched-messaging  [kernel.vmlinux]      [k] copyin
+    3.92%  sched-messaging  [kernel.vmlinux]      [k] apparmor_file_permission
+    2.91%  sched-messaging  [kernel.vmlinux]      [k] __schedule
+    2.34%  swapper          [kernel.vmlinux]      [k] __switch_to_asm
+    2.10%  sched-messaging  [kernel.vmlinux]      [k] prepare_to_wait_event
+    2.10%  sched-messaging  [kernel.vmlinux]      [k] try_to_wake_up
+    2.07%  sched-messaging  [kernel.vmlinux]      [k] finish_task_switch.isra.0
+    2.00%  sched-messaging  [kernel.vmlinux]      [k] pipe_write
+    1.82%  sched-messaging  [kernel.vmlinux]      [k] check_preemption_disabled
+    1.73%  sched-messaging  [kernel.vmlinux]      [k] exit_to_user_mode_prepare
+    1.52%  sched-messaging  [kernel.vmlinux]      [k] __entry_text_start
+    1.49%  sched-messaging  [kernel.vmlinux]      [k] osq_lock
+    1.45%  sched-messaging  libc.so.6             [.] write
+    1.44%  swapper          [kernel.vmlinux]      [k] native_sched_clock
+    1.38%  sched-messaging  [kernel.vmlinux]      [k] psi_group_change
+    1.38%  sched-messaging  [kernel.vmlinux]      [k] pipe_read
+    1.37%  sched-messaging  libc.so.6             [.] read
+    1.06%  sched-messaging  [kernel.vmlinux]      [k] vfs_read
+    1.01%  swapper          [kernel.vmlinux]      [k] psi_group_change
+    1.00%  sched-messaging  [kernel.vmlinux]      [k] update_curr
 
-The 1 group, 2 groups, 4 groups suffered.
+# Base + mm_count_padding
+Threads:
+Total time: 11.384 [sec]
 
-netperf
-=======
-case                    load            baseline(std%)  compare%( std%)
-TCP_RR                  56-threads       1.00 (  2.75)  +10.49 ( 10.88)
-TCP_RR                  112-threads      1.00 (  2.39)   -1.88 (  2.82)
-TCP_RR                  168-threads      1.00 (  2.05)   +8.31 (  9.73)
-TCP_RR                  224-threads      1.00 (  2.32)  +788.25 (  1.94)
-TCP_RR                  280-threads      1.00 ( 59.77)  +83.07 ( 12.38)
-TCP_RR                  336-threads      1.00 ( 21.61)   -0.22 ( 28.72)
-TCP_RR                  392-threads      1.00 ( 31.26)   -0.13 ( 36.11)
-TCP_RR                  448-threads      1.00 ( 39.93)   -0.14 ( 45.71)
-UDP_RR                  56-threads       1.00 (  5.57)   +2.38 (  7.41)
-UDP_RR                  112-threads      1.00 ( 24.53)   +1.51 (  8.43)
-UDP_RR                  168-threads      1.00 ( 11.83)   +7.34 ( 20.20)
-UDP_RR                  224-threads      1.00 ( 10.55)  +163.81 ( 20.64)
-UDP_RR                  280-threads      1.00 ( 11.32)  +176.04 ( 21.83)
-UDP_RR                  336-threads      1.00 ( 31.79)  +12.87 ( 37.23)
-UDP_RR                  392-threads      1.00 ( 34.06)  +15.64 ( 44.62)
-UDP_RR                  448-threads      1.00 ( 59.09)  +14.00 ( 52.93)
+    4.43%  sched-messaging  [kernel.vmlinux]         [k] copyin
+    4.39%  sched-messaging  [kernel.vmlinux]         [k] native_queued_spin_lock_slowpath
+    4.07%  sched-messaging  [kernel.vmlinux]         [k] apparmor_file_permission
+    4.07%  sched-messaging  [kernel.vmlinux]         [k] copyout
+    2.49%  sched-messaging  [kernel.vmlinux]         [k] entry_SYSCALL_64
+    2.37%  sched-messaging  [kernel.vmlinux]         [k] update_cfs_group
+    2.19%  sched-messaging  [kernel.vmlinux]         [k] pipe_write
+    2.00%  sched-messaging  [kernel.vmlinux]         [k] check_preemption_disabled
+    1.93%  swapper          [kernel.vmlinux]         [k] update_load_avg
+    1.81%  sched-messaging  [kernel.vmlinux]         [k] exit_to_user_mode_prepare
+    1.69%  sched-messaging  [kernel.vmlinux]         [k] try_to_wake_up
+    1.58%  sched-messaging  libc.so.6                [.] write
+    1.53%  sched-messaging  [kernel.vmlinux]         [k] psi_group_change
+    1.50%  sched-messaging  libc.so.6                [.] read
+    1.50%  sched-messaging  [kernel.vmlinux]         [k] pipe_read
+    1.39%  sched-messaging  [kernel.vmlinux]         [k] update_load_avg
+    1.39%  sched-messaging  [kernel.vmlinux]         [k] osq_lock
+    1.30%  sched-messaging  [kernel.vmlinux]         [k] update_curr
+    1.28%  swapper          [kernel.vmlinux]         [k] psi_group_change
+    1.16%  sched-messaging  [kernel.vmlinux]         [k] vfs_read
+    1.12%  sched-messaging  [kernel.vmlinux]         [k] vfs_write
+    1.10%  sched-messaging  [kernel.vmlinux]         [k] entry_SYSRETQ_unsafe_stack
+    1.09%  sched-messaging  [kernel.vmlinux]         [k] __switch_to_asm
+    1.08%  sched-messaging  [kernel.vmlinux]         [k] do_syscall_64
+    1.06%  sched-messaging  [kernel.vmlinux]         [k] select_task_rq_fair
+    1.03%  swapper          [kernel.vmlinux]         [k] update_cfs_group
+    1.00%  swapper          [kernel.vmlinux]         [k] rb_insert_color
 
-The 224-thread/280-threads show good improvement.
+# Base + reverted_new_mm_cid
+Threads:
+Total time: 7.847 [sec]
 
-tbench
-======
-case                    load            baseline(std%)  compare%( std%)
-loopback                56-threads       1.00 (  0.83)   +1.38 (  1.56)
-loopback                112-threads      1.00 (  0.19)   -4.25 (  0.90)
-loopback                168-threads      1.00 ( 56.43)  -31.12 (  0.37)
-loopback                224-threads      1.00 (  0.28)   -2.50 (  0.44)
-loopback                280-threads      1.00 (  0.10)   -1.64 (  0.81)
-loopback                336-threads      1.00 (  0.19)   -2.10 (  0.10)
-loopback                392-threads      1.00 (  0.13)   -2.15 (  0.39)
-loopback                448-threads      1.00 (  0.45)   -2.14 (  0.43)
+   12.14%  sched-messaging  [kernel.vmlinux]      [k] native_queued_spin_lock_slowpath
+    8.86%  swapper          [kernel.vmlinux]      [k] native_queued_spin_lock_slowpath
+    6.13%  sched-messaging  [kernel.vmlinux]      [k] copyin
+    5.54%  sched-messaging  [kernel.vmlinux]      [k] apparmor_file_permission
+    3.59%  sched-messaging  [kernel.vmlinux]      [k] copyout
+    2.61%  sched-messaging  [kernel.vmlinux]      [k] osq_lock
+    2.48%  sched-messaging  [kernel.vmlinux]      [k] pipe_write
+    2.33%  sched-messaging  [kernel.vmlinux]      [k] exit_to_user_mode_prepare
+    2.01%  sched-messaging  [kernel.vmlinux]      [k] check_preemption_disabled
+    1.96%  sched-messaging  [kernel.vmlinux]      [k] __entry_text_start
+    1.91%  sched-messaging  libc.so.6             [.] write
+    1.77%  sched-messaging  libc.so.6             [.] read
+    1.64%  sched-messaging  [kernel.vmlinux]      [k] mutex_spin_on_owner
+    1.58%  sched-messaging  [kernel.vmlinux]      [k] pipe_read
+    1.52%  sched-messaging  [kernel.vmlinux]      [k] try_to_wake_up
+    1.38%  sched-messaging  [kernel.vmlinux]      [k] ktime_get_coarse_real_ts64
+    1.35%  sched-messaging  [kernel.vmlinux]      [k] vfs_write
+    1.28%  sched-messaging  [kernel.vmlinux]      [k] entry_SYSRETQ_unsafe_stack
+    1.28%  sched-messaging  [kernel.vmlinux]      [k] vfs_read
+    1.25%  sched-messaging  [kernel.vmlinux]      [k] do_syscall_64
+    1.22%  sched-messaging  [kernel.vmlinux]      [k] __fget_light
+    1.18%  sched-messaging  [kernel.vmlinux]      [k] mutex_lock
+    1.12%  sched-messaging  [kernel.vmlinux]      [k] file_update_time
+    1.04%  sched-messaging  [kernel.vmlinux]      [k] _copy_from_iter
+    1.01%  sched-messaging  [kernel.vmlinux]      [k] current_time
 
-Might have no impact to tbench(the 168 threads result is unstable and could
-be ignored)
+So with the reverted new_mm_cid patch, we are seeing a lot of time being spent in
+native_queued_spin_lock_slowpath and yet, hackbench finishes faster.
 
-schbench
-========
-case                    load            baseline(std%)  compare%( std%)
-normal                  1-mthreads       1.00 (  0.42)   -0.59 (  0.72)
-normal                  2-mthreads       1.00 (  2.72)   +1.76 (  0.42)
-normal                  4-mthreads       1.00 (  0.75)   -1.22 (  1.86)
-normal                  8-mthreads       1.00 (  6.44)  -14.56 (  5.64)
+I keep further digging into this please let me know if you have any pointers for me.
 
-8 message case is not good for schbench.
-
-
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 352f0ce1ece4..ffc44639447e 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -511,6 +511,30 @@ static const struct x86_cpu_id intel_cod_cpu[] = {
- 	{}
- };
- 
-+static unsigned int sub_llc_nr;
-+
-+static int __init parse_sub_llc(char *str)
-+{
-+	get_option(&str, &sub_llc_nr);
-+
-+	return 0;
-+}
-+early_param("sub_llc_nr", parse_sub_llc);
-+
-+static bool
-+topology_same_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
-+{
-+	int idx1, idx2;
-+
-+	if (!sub_llc_nr)
-+		return true;
-+
-+	idx1 = c->apicid / sub_llc_nr;
-+	idx2 = o->apicid / sub_llc_nr;
-+
-+	return idx1 == idx2;
-+}
-+
- static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
- {
- 	const struct x86_cpu_id *id = x86_match_cpu(intel_cod_cpu);
-@@ -530,7 +554,7 @@ static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
- 	 * means 'c' does not share the LLC of 'o'. This will be
- 	 * reflected to userspace.
- 	 */
--	if (match_pkg(c, o) && !topology_same_node(c, o) && intel_snc)
-+	if (match_pkg(c, o) && (!topology_same_node(c, o) || !topology_same_llc(c, o)) && intel_snc)
- 		return false;
- 
- 	return topology_sane(c, o, "llc");
--- 
-2.25.1
-
-
-
-[1] https://lore.kernel.org/lkml/5903fc0a-787e-9471-0256-77ff66f0bdef@bytedance.com/
-
-
+> 
+> This patch has recently been merged into the mm tree.
+> 
+> Thanks,
+> 
+> Mathieu
+> 
+--
+Thanks and Regards,
+Swapnil
