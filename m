@@ -2,38 +2,38 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 924FF73B121
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Jun 2023 09:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D173B73B1C0
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Jun 2023 09:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230379AbjFWHQu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 23 Jun 2023 03:16:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53822 "EHLO
+        id S230286AbjFWHfi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 23 Jun 2023 03:35:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjFWHQs (ORCPT
+        with ESMTP id S230009AbjFWHfh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 23 Jun 2023 03:16:48 -0400
+        Fri, 23 Jun 2023 03:35:37 -0400
 Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CF04212F;
-        Fri, 23 Jun 2023 00:16:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 012C7195;
+        Fri, 23 Jun 2023 00:35:35 -0700 (PDT)
 Received: from [192.168.192.83] (unknown [50.47.134.245])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 1F1703F25E;
-        Fri, 23 Jun 2023 07:16:37 +0000 (UTC)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 993973F038;
+        Fri, 23 Jun 2023 07:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1687504600;
-        bh=73AceqojPXWStCY0HStziMfBPTlnRPdDZenbiyAd+Oo=;
+        s=20210705; t=1687505734;
+        bh=bKhME4x6xiWH8kS9xyBkaY6hugmNKgepHlQQ2MHYY2c=;
         h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
          In-Reply-To:Content-Type;
-        b=inaS1mDldoyLsr0oGvlk+7v19hoXWqAp3uzBB8vV4pgI90utpfUi4WZ85HmTfgxmo
-         bD2vY5t5spga5+lamnMxe6l0zak37VvD+EW5IaY/1B/yebqlPF4NP4zQVpC+Ue/hXo
-         SwNVtM9Ul6HDhA1GxxYvNqjr0E80ELD5z19wfCFAo3yiWLelwa/SosBFn8C+nn1BdI
-         uTVQKg9cfU7uFxMuUUVK3IH0FBvoDCHBiiWFh2eKjz37W9wW3LyY1tPO29q4uzfi42
-         A8V/Gzt8GZqbsCQMNRxgTOMlZbSGgULiVS7GITh/X4UmXV/2AE9gZrpQ4Dp8UuXLRx
-         HKxlE9OIXRiXA==
-Message-ID: <1d8d0032-261f-fe35-0c12-23043083e676@canonical.com>
-Date:   Fri, 23 Jun 2023 00:16:35 -0700
+        b=bkvTi4fDtVrzGxPgZhQoYFws4ul5LKb3XZvqKX2PjwzI2Yw4mCgf3X7vY04yQ+XdF
+         4yVkhJPvnhIHfsUoVT8QlCBZzXQb9LlvrVe+haC5T6DFZr+OJUbf+0MtCbXaxLf5Yl
+         u6E+tOCyEMMTOLh1QjHmNCxE79tWyg5petDJ+/9Y40xl9NfTvT1AE2KEnBVPvrrTyw
+         tNz4noVSc1tWilRFCjn3AO6DRCC4levw+WaSbGQm7xvtMN7joONSUtBmVTdmkJmba+
+         SmjfyZisipmXCBV44N+DPSk0h7/iM91lZnqBBepziIPt/10YR3fhNMpakg6y5xkWkF
+         QA5pP8R6HT11Q==
+Message-ID: <ed287d2f-5b53-dffb-dec3-e5b28fa70a52@canonical.com>
+Date:   Fri, 23 Jun 2023 00:35:29 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
@@ -90,16 +90,15 @@ On 6/22/23 23:37, Sebastian Andrzej Siewior wrote:
 > I think I've been looking at this patch, or a former version of it, and
 > it looked good.
 > 
+iirc the difference with the earlier version, is in the put case. Where in
+the earlier version, if there was lock contention the buffer would always
+get pushed onto the percpu list. With some debug patches on top we
+saw some degenerate cases where this would result in percpu lists that
+had excessive buffers on them.
 
-so, I am not satisfied with the way the scaling works, it feels like it
-is more complicated than it needs to be. I also wanted to see with the percpu
-caching if it was worth dropping the global pool and just going to the allocator.
+So this version added a condition to force putting the buffer back
+in to the global pool if the percpu list already has 2 buffers
+cached on it.
 
-With that said the patch does work, and seems to be stable in the broader
-testing it has gotten. Its more complicated than I would like, and wanted to
-play with ideas around improving it. I also wanted get some better benchmark data.
-All things I just haven't had time for
 
-I am also not opposed to using some version of this patch now, to solve the
-immediate needs and working to improve it after the fact.
 
