@@ -2,118 +2,134 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FBFF73B87B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Jun 2023 15:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 904E073DAA3
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Jun 2023 11:00:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231336AbjFWNMj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 23 Jun 2023 09:12:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47312 "EHLO
+        id S231164AbjFZJAF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Jun 2023 05:00:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230185AbjFWNMe (ORCPT
+        with ESMTP id S231169AbjFZI7j (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 23 Jun 2023 09:12:34 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A0FC9D;
-        Fri, 23 Jun 2023 06:12:33 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qCgaQ-0005IP-MF; Fri, 23 Jun 2023 15:12:26 +0200
-Message-ID: <ab67a069-81f1-cbf9-3bf0-a388c1cf3ef9@leemhuis.info>
-Date:   Fri, 23 Jun 2023 15:12:25 +0200
+        Mon, 26 Jun 2023 04:59:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD7A3A96;
+        Mon, 26 Jun 2023 01:55:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EB3760CF4;
+        Mon, 26 Jun 2023 08:54:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551BBC433C8;
+        Mon, 26 Jun 2023 08:54:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687769696;
+        bh=DEIMe5XDnPx9xmBprqQ4BwzUKNcmLu7DPgVnu+X2mBg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CPz/03UFZKoppLCLlRCHYWZ+OA1yeujxHkjvqDTtpPj2lLWm4Jt2bfzuqsK2MC9Fe
+         GpVACk/1wB/rbPlli3yts3ixM6U7QP2+CF/iVBEu7IwRLH1iUUhlNGt63MmnGlqCV2
+         ORqBEGc/TNHcpT+96MGN+gubQZFUCTk+X4uexo0IBeAyistYA9ouPyTsgmBzytICiN
+         qC2vR5JM0CxD4Obrg0nhN1RLGe7KN4noB6heXJyJf35XJnVQlCDbeHREPZYKnx7LzL
+         530MlrGSE07S0sszDhsPA9kTMEggV1cUFkj/qa22JNRk3kqegO1WqPrDean1Sb4rPR
+         3Ni8zcOkbLuaw==
+Date:   Mon, 26 Jun 2023 09:54:50 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        stable@vger.kernel.org, x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/mm: Avoid using set_pgd() outside of real
+ PGD pages
+Message-ID: <20230626085450.GA1344014@google.com>
+References: <168694160067.404.13343792487331756749.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [tip: sched/core] sched: Fix performance regression introduced by
- mm_cid
-Content-Language: en-US, de-DE
-To:     Swapnil Sapkal <Swapnil.Sapkal@amd.com>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
-Cc:     Aaron Lu <aaron.lu@intel.com>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-References: <168214940343.404.10896712987516429042.tip-bot2@tip-bot2>
- <09e0f469-a3f7-62ef-75a1-e64cec2dcfc5@amd.com>
-From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <09e0f469-a3f7-62ef-75a1-e64cec2dcfc5@amd.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1687525953;2d858438;
-X-HE-SMSGID: 1qCgaQ-0005IP-MF
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <168694160067.404.13343792487331756749.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-[CCing the regression list, as it should be in the loop for regressions:
-https://docs.kernel.org/admin-guide/reporting-regressions.html]
+Dear Stable,
 
-[TLDR: I'm adding this report to the list of tracked Linux kernel
-regressions; the text you find below is based on a few templates
-paragraphs you might have encountered already in similar form.
-See link in footer if these mails annoy you.]
+On Fri, 16 Jun 2023, tip-bot2 for Lee Jones wrote:
 
-On 20.06.23 10:14, Swapnil Sapkal wrote:
+> The following commit has been merged into the x86/urgent branch of tip:
 > 
-> On 4/22/2023 1:13 PM, tip-bot2 for Mathieu Desnoyers wrote:
->> The following commit has been merged into the sched/core branch of tip:
->>
->> Commit-ID:     223baf9d17f25e2608dbdff7232c095c1e612268
->> Gitweb:       
->> https://git.kernel.org/tip/223baf9d17f25e2608dbdff7232c095c1e612268
->> Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->> AuthorDate:    Thu, 20 Apr 2023 10:55:48 -04:00
->> Committer:     Peter Zijlstra <peterz@infradead.org>
->> CommitterDate: Fri, 21 Apr 2023 13:24:20 +02:00
->>
->> sched: Fix performance regression introduced by mm_cid
->>
->> Introduce per-mm/cpu current concurrency id (mm_cid) to fix a PostgreSQL
->> sysbench regression reported by Aaron Lu.
-> [...]
-> I run standard benchmarks as a part of kernel performance regression
-> testing. When I run these benchmarks against v6.3.0 to v6.4-rc1,
-> I have seen performance regression in hackbench running with threads.
-> When I did
-> git bisect it pointed to this commit and reverting this commit helps
-> regains
-> the performance. This regression is not seen with hackbench processes.
-> Following are the results from 1 Socket 4th generation EPYC
-> Processor(1 X 96C/192T) configured in NPS1 mode. This regression
-> becomes more severe as the number of core count increases.
+> Commit-ID:     d082d48737c75d2b3cc1f972b8c8674c25131534
+> Gitweb:        https://git.kernel.org/tip/d082d48737c75d2b3cc1f972b8c8674c25131534
+> Author:        Lee Jones <lee@kernel.org>
+> AuthorDate:    Wed, 14 Jun 2023 17:38:54 +01:00
+> Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+> CommitterDate: Fri, 16 Jun 2023 11:46:42 -07:00
 > 
-> The numbers on a 1 Socket Bergamo (1 X 128 cores/256 threads) is
-> significantly worse.
-> [...]
+> x86/mm: Avoid using set_pgd() outside of real PGD pages
+> 
+> KPTI keeps around two PGDs: one for userspace and another for the
+> kernel. Among other things, set_pgd() contains infrastructure to
+> ensure that updates to the kernel PGD are reflected in the user PGD
+> as well.
+> 
+> One side-effect of this is that set_pgd() expects to be passed whole
+> pages.  Unfortunately, init_trampoline_kaslr() passes in a single entry:
+> 'trampoline_pgd_entry'.
+> 
+> When KPTI is on, set_pgd() will update 'trampoline_pgd_entry' (an
+> 8-Byte globally stored [.bss] variable) and will then proceed to
+> replicate that value into the non-existent neighboring user page
+> (located +4k away), leading to the corruption of other global [.bss]
+> stored variables.
+> 
+> Fix it by directly assigning 'trampoline_pgd_entry' and avoiding
+> set_pgd().
+> 
+> [ dhansen: tweak subject and changelog ]
+> 
+> Fixes: 0925dda5962e ("x86/mm/KASLR: Use only one PUD entry for real mode trampoline")
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: <stable@vger.kernel.org>
+> Link: https://lore.kernel.org/all/20230614163859.924309-1-lee@kernel.org/g
+> ---
+>  arch/x86/mm/kaslr.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
+> index 557f0fe..37db264 100644
+> --- a/arch/x86/mm/kaslr.c
+> +++ b/arch/x86/mm/kaslr.c
+> @@ -172,10 +172,10 @@ void __meminit init_trampoline_kaslr(void)
+>  		set_p4d(p4d_tramp,
+>  			__p4d(_KERNPG_TABLE | __pa(pud_page_tramp)));
+>  
+> -		set_pgd(&trampoline_pgd_entry,
+> -			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp)));
+> +		trampoline_pgd_entry =
+> +			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp));
+>  	} else {
+> -		set_pgd(&trampoline_pgd_entry,
+> -			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp)));
+> +		trampoline_pgd_entry =
+> +			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp));
+>  	}
+>  }
 
-Thanks for the report. To be sure the issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-tracking bot:
+Could we have this expedited please?  There are users waiting for it.
 
-#regzbot ^introduced 223baf9d17f
-#regzbot title sched: performance regression in hackbench (partly solved
-in -next by c1753fd02a00, partially caused by df323337e50)
-#regzbot ignore-activity
+Upstream commit is:
 
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply and tell me -- ideally
-while also telling regzbot about it, as explained by the page listed in
-the footer of this mail.
+  d082d48737c75 ("x86/mm: Avoid using set_pgd() outside of real PGD pages")
 
-Developers: When fixing the issue, remember to add 'Link:' tags pointing
-to the report (the parent of this mail). See page linked in footer for
-details.
+Thanks muchly.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+-- 
+Lee Jones [李琼斯]
