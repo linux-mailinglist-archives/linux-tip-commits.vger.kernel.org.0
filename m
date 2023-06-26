@@ -2,61 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E4A73DAEF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Jun 2023 11:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 381EF73DAF4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Jun 2023 11:13:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbjFZJNp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 26 Jun 2023 05:13:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56806 "EHLO
+        id S229482AbjFZJNs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Jun 2023 05:13:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbjFZJNL (ORCPT
+        with ESMTP id S229689AbjFZJNN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 26 Jun 2023 05:13:11 -0400
+        Mon, 26 Jun 2023 05:13:13 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 396EBDD;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7B8FE6;
         Mon, 26 Jun 2023 02:11:40 -0700 (PDT)
-Date:   Mon, 26 Jun 2023 09:11:38 -0000
+Date:   Mon, 26 Jun 2023 09:11:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1687770698;
+        s=2020; t=1687770699;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FU1rRT5rRxL9pM8a+1rMbZNJKqtiIhbKRAc/m62/7RQ=;
-        b=Gvo5i9Fk9+OdF/voFqD5zQC8rpUGq618/N/fMBccDd4PsTQ5EsicvYzYxBNOLqM3hm2Tqd
-        2cdp90KDoqpm54Kii3w5dyAg1qcE7be2kBcpiBENtfLiU1HT4R4hK+GT8qljdU4s/a4Iyp
-        YithflBxmJqTfwZlP+/io3OGMqBQ8mR/Fi6wBa0peXH7aqJOx3x7qtDD9KNOCpDwbBqE/a
-        O8PPgmbQaNU5ZFbhWvydAijtOkoFKrMOJ20Cnw5mn8mE5U9uqygLqxRGPKlTgx4thej1Vg
-        nf2ZuKspqriTeRDgg5tJyyJvPCww6ywZeD6YwQVeyg8ylsB9uTwzOjKZ/2Fd+w==
+        bh=8U6HqRIVCmdFTK2bG+jKp3mqwOBDyQxzcI+oyYrBZzk=;
+        b=krHrUkWyZbF+kEVD3vyBaV52tKjPWvgdCuInBIkdTgIeUJHFRnyaTcJmuumwnpNuigE2hd
+        eCn2rdj7/dCfmsnZkQn9mkZFWEcnFK+ghiyOiyVSMDfci0Vyxl7phEyZCrjeOEjG8c+tlk
+        Kttp9lDgks8EIjsh7q8DgucsINHSHGYpF5JYEe2fhXogHDLhcUBXnr1vVEnNcCrSzJGY5W
+        cwM/llrp6mI0a3lZyvMsWDNNCwJrUJom1RuxjC21Y+kdHMoD5vZQtMcB9loK8nXfjcA08y
+        9+WVkI0bQhyHnXNllm6LqdmEKkNo/OOksNwWyKR7yD4GStUnPS0s1T+mlDz+LQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1687770698;
+        s=2020e; t=1687770699;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FU1rRT5rRxL9pM8a+1rMbZNJKqtiIhbKRAc/m62/7RQ=;
-        b=YBAFNA0fCNH74x45Xgi0eLoWd5pMJ7Tu98NdhePwv1sOn0MzQeIsjIvSDqntkQNoU/mSIP
-        3u8YoDgBEGRxJqCA==
-From:   tip-bot2 for Uwe =?utf-8?q?Kleine-K=C3=B6nig?= 
-        <tip-bot2@linutronix.de>
+        bh=8U6HqRIVCmdFTK2bG+jKp3mqwOBDyQxzcI+oyYrBZzk=;
+        b=f2jNQfn8/8zIX3jjG3lhRVfNE5ePy03BLylGJu3kTH54YanWN/aRDWbwtaN57BswpFSfFw
+        fKWDPlI/Jbk+nvDw==
+From:   "tip-bot2 for Keguang Zhang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/imx-gpt: Use only a single
- name for functions
-Cc:     u.kleine-koenig@pengutronix.de,
+Subject: [tip: timers/core] dt-bindings: timer: Add Loongson-1 clocksource
+Cc:     Keguang Zhang <keguang.zhang@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230328091514.874724-1-u.kleine-koenig@pengutronix.de>
-References: <20230328091514.874724-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20230512103724.587760-3-keguang.zhang@gmail.com>
+References: <20230512103724.587760-3-keguang.zhang@gmail.com>
 MIME-Version: 1.0
-Message-ID: <168777069819.404.8166787255260497760.tip-bot2@tip-bot2>
+Message-ID: <168777069909.404.17882663079174570164.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -69,112 +68,77 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     95aded1b1c409fb2e902c6bd455068700ac38878
-Gitweb:        https://git.kernel.org/tip/95aded1b1c409fb2e902c6bd455068700ac=
-38878
-Author:        Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-AuthorDate:    Tue, 28 Mar 2023 11:15:14 +02:00
+Commit-ID:     b25efff2a63f0d573f409f22e82904db9cc7d577
+Gitweb:        https://git.kernel.org/tip/b25efff2a63f0d573f409f22e82904db9cc7d577
+Author:        Keguang Zhang <keguang.zhang@gmail.com>
+AuthorDate:    Fri, 12 May 2023 18:37:23 +08:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Mon, 19 Jun 2023 17:31:56 +02:00
+CommitterDate: Mon, 19 Jun 2023 17:06:55 +02:00
 
-clocksource/drivers/imx-gpt: Use only a single name for functions
+dt-bindings: timer: Add Loongson-1 clocksource
 
-When looking at the data structs defining the different behaviours of
-the GPT blocks in different SoCs it's not helpful that the same
-functions are used with different names.
+Add devicetree binding document for Loongson-1 clocksource.
 
-So drop the cpp defines and use the original names.
-
-This commit was generated using:
-
-	perl -i -e 'my %m; while (<>) { if (/^#define (imx[a-zA-Z0-6_]*)\s(imx[a-zA-=
-Z0-6_]*)/) {$m{$1} =3D $2; } else { foreach my $f (keys %m) {s/$f/$m{$f}/; } =
-print; } }' drivers/clocksource/timer-imx-gpt.c
-
-This patch has no effect on the generated code.
-
-Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Keguang Zhang <keguang.zhang@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230328091514.874724-1-u.kleine-koenig@pengu=
-tronix.de
+Link: https://lore.kernel.org/r/20230512103724.587760-3-keguang.zhang@gmail.com
 ---
- drivers/clocksource/timer-imx-gpt.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ Documentation/devicetree/bindings/timer/loongson,ls1x-pwmtimer.yaml | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/timer/loongson,ls1x-pwmtimer.yaml
 
-diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-=
-imx-gpt.c
-index ca3e4cb..83cefff 100644
---- a/drivers/clocksource/timer-imx-gpt.c
-+++ b/drivers/clocksource/timer-imx-gpt.c
-@@ -93,13 +93,11 @@ static void imx1_gpt_irq_disable(struct imx_timer *imxtm)
- 	tmp =3D readl_relaxed(imxtm->base + MXC_TCTL);
- 	writel_relaxed(tmp & ~MX1_2_TCTL_IRQEN, imxtm->base + MXC_TCTL);
- }
--#define imx21_gpt_irq_disable imx1_gpt_irq_disable
-=20
- static void imx31_gpt_irq_disable(struct imx_timer *imxtm)
- {
- 	writel_relaxed(0, imxtm->base + V2_IR);
- }
--#define imx6dl_gpt_irq_disable imx31_gpt_irq_disable
-=20
- static void imx1_gpt_irq_enable(struct imx_timer *imxtm)
- {
-@@ -108,13 +106,11 @@ static void imx1_gpt_irq_enable(struct imx_timer *imxtm)
- 	tmp =3D readl_relaxed(imxtm->base + MXC_TCTL);
- 	writel_relaxed(tmp | MX1_2_TCTL_IRQEN, imxtm->base + MXC_TCTL);
- }
--#define imx21_gpt_irq_enable imx1_gpt_irq_enable
-=20
- static void imx31_gpt_irq_enable(struct imx_timer *imxtm)
- {
- 	writel_relaxed(1<<0, imxtm->base + V2_IR);
- }
--#define imx6dl_gpt_irq_enable imx31_gpt_irq_enable
-=20
- static void imx1_gpt_irq_acknowledge(struct imx_timer *imxtm)
- {
-@@ -131,7 +127,6 @@ static void imx31_gpt_irq_acknowledge(struct imx_timer *i=
-mxtm)
- {
- 	writel_relaxed(V2_TSTAT_OF1, imxtm->base + V2_TSTAT);
- }
--#define imx6dl_gpt_irq_acknowledge imx31_gpt_irq_acknowledge
-=20
- static void __iomem *sched_clock_reg;
-=20
-@@ -296,7 +291,6 @@ static void imx1_gpt_setup_tctl(struct imx_timer *imxtm)
- 	tctl_val =3D MX1_2_TCTL_FRR | MX1_2_TCTL_CLK_PCLK1 | MXC_TCTL_TEN;
- 	writel_relaxed(tctl_val, imxtm->base + MXC_TCTL);
- }
--#define imx21_gpt_setup_tctl imx1_gpt_setup_tctl
-=20
- static void imx31_gpt_setup_tctl(struct imx_timer *imxtm)
- {
-@@ -343,10 +337,10 @@ static const struct imx_gpt_data imx21_gpt_data =3D {
- 	.reg_tstat =3D MX1_2_TSTAT,
- 	.reg_tcn =3D MX1_2_TCN,
- 	.reg_tcmp =3D MX1_2_TCMP,
--	.gpt_irq_enable =3D imx21_gpt_irq_enable,
--	.gpt_irq_disable =3D imx21_gpt_irq_disable,
-+	.gpt_irq_enable =3D imx1_gpt_irq_enable,
-+	.gpt_irq_disable =3D imx1_gpt_irq_disable,
- 	.gpt_irq_acknowledge =3D imx21_gpt_irq_acknowledge,
--	.gpt_setup_tctl =3D imx21_gpt_setup_tctl,
-+	.gpt_setup_tctl =3D imx1_gpt_setup_tctl,
- 	.set_next_event =3D mx1_2_set_next_event,
- };
-=20
-@@ -365,9 +359,9 @@ static const struct imx_gpt_data imx6dl_gpt_data =3D {
- 	.reg_tstat =3D V2_TSTAT,
- 	.reg_tcn =3D V2_TCN,
- 	.reg_tcmp =3D V2_TCMP,
--	.gpt_irq_enable =3D imx6dl_gpt_irq_enable,
--	.gpt_irq_disable =3D imx6dl_gpt_irq_disable,
--	.gpt_irq_acknowledge =3D imx6dl_gpt_irq_acknowledge,
-+	.gpt_irq_enable =3D imx31_gpt_irq_enable,
-+	.gpt_irq_disable =3D imx31_gpt_irq_disable,
-+	.gpt_irq_acknowledge =3D imx31_gpt_irq_acknowledge,
- 	.gpt_setup_tctl =3D imx6dl_gpt_setup_tctl,
- 	.set_next_event =3D v2_set_next_event,
- };
+diff --git a/Documentation/devicetree/bindings/timer/loongson,ls1x-pwmtimer.yaml b/Documentation/devicetree/bindings/timer/loongson,ls1x-pwmtimer.yaml
+new file mode 100644
+index 0000000..ad61ae5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/timer/loongson,ls1x-pwmtimer.yaml
+@@ -0,0 +1,48 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/timer/loongson,ls1x-pwmtimer.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Loongson-1 PWM timer
++
++maintainers:
++  - Keguang Zhang <keguang.zhang@gmail.com>
++
++description:
++  Loongson-1 PWM timer can be used for system clock source
++  and clock event timers.
++
++properties:
++  compatible:
++    const: loongson,ls1b-pwmtimer
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/loongson,ls1x-clk.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    clocksource: timer@1fe5c030 {
++        compatible = "loongson,ls1b-pwmtimer";
++        reg = <0x1fe5c030 0x10>;
++
++        clocks = <&clkc LS1X_CLKID_APB>;
++        interrupt-parent = <&intc0>;
++        interrupts = <20 IRQ_TYPE_LEVEL_HIGH>;
++    };
