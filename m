@@ -2,66 +2,62 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE7E6748395
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  5 Jul 2023 13:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4BC774B22A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Jul 2023 15:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231851AbjGEL5Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 5 Jul 2023 07:57:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57198 "EHLO
+        id S232620AbjGGNtI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 7 Jul 2023 09:49:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231756AbjGEL5X (ORCPT
+        with ESMTP id S232602AbjGGNtH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 5 Jul 2023 07:57:23 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ED4A198C;
-        Wed,  5 Jul 2023 04:57:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=qWOXZoOwtdv2FTUEyab7Ca0ycVEr64BN5CCvi3RnzVY=; b=cT31V9jF0tfm4rnAxYjuHtnWGy
-        rhUW9thkhku4AnYgcBEsmh4hV9JOfiaD7nDNIdS37kFzrIgy9n8arX0jwrSchI3xcooZixM8ZoFMc
-        +7kzvem+apw+5OZwQuOiTUUVbZ/hqa2hI+ll5JqKL5UF8FVYcfMw66633lEn58QgB70pQTMKpn46b
-        4yiNPGBLZLlaGkyO/jDsPSwGIL2snOGLD5Icaxhz6qrrfIdm4PuAVkcUv8PyvUUW2KLQ2uhmjAcgS
-        84aOtf/FtuQMk8CXhjzhjwKD6ZUXSxHQzvOU0o2GyAOv6BONzscCA+ql/XbogjQW+2excN5DR3wWn
-        eKuSG1uQ==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qH184-00A2sW-7U; Wed, 05 Jul 2023 11:57:04 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id DA9543001E7;
-        Wed,  5 Jul 2023 13:57:02 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id BE617200E5EA2; Wed,  5 Jul 2023 13:57:02 +0200 (CEST)
-Date:   Wed, 5 Jul 2023 13:57:02 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     K Prateek Nayak <kprateek.nayak@amd.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Tejun Heo <tj@kernel.org>, x86@kernel.org,
-        Gautham Shenoy <gautham.shenoy@amd.com>,
-        Chen Yu <yu.c.chen@intel.com>
-Subject: Re: [tip: sched/core] sched/fair: Multi-LLC select_idle_sibling()
-Message-ID: <20230705115702.GY4253@hirez.programming.kicks-ass.net>
-References: <3de5c24f-6437-f21b-ed61-76b86a199e8c@amd.com>
- <20230601111326.GV4253@hirez.programming.kicks-ass.net>
- <20230601115643.GX4253@hirez.programming.kicks-ass.net>
- <20230601120001.GJ38236@hirez.programming.kicks-ass.net>
- <20230601144706.GA559454@hirez.programming.kicks-ass.net>
- <7bee9860-2d2a-067b-adea-04012516095c@amd.com>
- <20230602065438.GB620383@hirez.programming.kicks-ass.net>
- <bd083d8d-023a-698e-701b-725f1b15766e@amd.com>
- <20230613082536.GI83892@hirez.programming.kicks-ass.net>
- <f212f491-cd3f-6eee-20d7-8f9ab8937902@amd.com>
+        Fri, 7 Jul 2023 09:49:07 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89084211C;
+        Fri,  7 Jul 2023 06:49:04 -0700 (PDT)
+Date:   Fri, 07 Jul 2023 13:49:01 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1688737741;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bOp3f4wh/6xnl+G448V8SHs5VAzAGxRkAFRFPsNd6ro=;
+        b=eefyaulPDjU4YtiKUPSsEkFVXilAuwpCAXf/IPnxeF50v9mFWwkvnqQN4rEgo4lUHcXZ1S
+        sajBuZXLJttONqBTavkECkCeJAWAO6F8XmdoEQdpuRosscwy1WqWx5Rg3bbYLBq1ZMUJ/e
+        hyqNJVYrOC3lyOxps/utEgKU2Pn5RMKDkQcVMiezs//23QXuODHohmv8lW5/ui20S/Rk6F
+        SCndamPQu+4SsKr9lZqL4mlnlDBhxvd3baeE+btN95R4vI+CivV8bsvnn2jVZRD1kgphlj
+        R6+JZH9br1yn5gxjt+SVf0IlHgFCmTuLzOazdRR0TJDoniLWoRtPNnaRJWIAUA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1688737741;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bOp3f4wh/6xnl+G448V8SHs5VAzAGxRkAFRFPsNd6ro=;
+        b=vBWSWY76UFRUBiHRIiWzmDnyuHuZtY0uHSzZgEvmB7x7tmzQSyRWvZ43GyMlH+nholizRD
+        yNtHJpw847o3L3BQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/core] x86/smp: Don't send INIT to boot CPU
+Cc:     Baokun Li <libaokun1@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <87ttui91jo.ffs@tglx>
+References: <87ttui91jo.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f212f491-cd3f-6eee-20d7-8f9ab8937902@amd.com>
+Message-ID: <168873774104.404.4503374695287410422.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,142 +65,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Jun 16, 2023 at 12:04:48PM +0530, K Prateek Nayak wrote:
+The following commit has been merged into the x86/core branch of tip:
 
-> [2] https://lore.kernel.org/all/3402dcc4-d52f-d99f-e6ce-b435478a5a59@amd.com/
+Commit-ID:     b1472a60a584694875a05cf8bcba8bdf0dc1cd3a
+Gitweb:        https://git.kernel.org/tip/b1472a60a584694875a05cf8bcba8bdf0dc1cd3a
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 05 Jul 2023 10:59:23 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 07 Jul 2023 15:42:31 +02:00
 
-With the crucial bit being:
+x86/smp: Don't send INIT to boot CPU
 
- 		per_cpu(cpu_llc_id, cpu) = c->apicid >> 3;
-+		per_cpu(cpu_mc_id, cpu) = c->apicid >> 4;
+Parking CPUs in INIT works well, except for the crash case when the CPU
+which invokes smp_park_other_cpus_in_init() is not the boot CPU. Sending
+INIT to the boot CPU resets the whole machine.
 
-Would need some adjustments for <Zen3 I would think, because this simply
-groups two LLCs, but those chips have a 4 core LLC and might be better
-off with something like >> 5 instead.
+Prevent this by validating that this runs on the boot CPU. If not fall back
+and let CPUs hang in HLT.
 
-> Conclusion seems to be that most workloads would like to run on an idle
-> thread as quickly as possible, however, once the system becomes
-> overloaded, even iterating over the groups to find an idle CPU outside
-> of the target group can affect the workload performance. TOPOEXT is a
-> clean way to limit search (as long as marking the boundaries can be
-> done in a clean way) but there are concerns about the load balancing
-> jitters the new domain will introduce. There will also be an increase
-> in amount of C2C transfers as some of the shared data structures are
-> accessed and modified (for example sched_domain_shared->has_idle_cores
-> updates).
-
-So per the parent of all this, I do think we want something like
-SIS_NODE, at the very least for the desktop parts, doubly so for the
-<Zen3 parts that have super dinky LLCs (like TJs desktop).
-
-It's just that your big-ass chips need a little 'help' and in that
-regard the TOPOEXT thing does look the most reasonable of the bunch.
-
-One variant I did consider was to make SIS_NODE a domain flag, that
-way the architecture can decide and we run less risk of randomly
-regressing other archs that might not want this.
-
-(did not yet test the SD flag version below)
-
+Fixes: 45e34c8af58f ("x86/smp: Put CPUs into INIT on shutdown if possible")
+Reported-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/87ttui91jo.ffs@tglx
 ---
-Subject: sched/fair: Multi-LLC select_idle_sibling()
+ arch/x86/kernel/smpboot.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Tejun reported that when he targets workqueues towards a specific LLC
-on his Zen2 machine with 3 cores / LLC and 4 LLCs in total, he gets
-significant idle time.
-
-This is, of course, because of how select_idle_sibling() will not
-consider anything outside of the local LLC, and since all these tasks
-are short running the periodic idle load balancer is ineffective.
-
-And while it is good to keep work cache local, it is better to not
-have significant idle time. Therefore, have select_idle_sibling() try
-other LLCs inside the same node when the local one comes up empty.
-
-Reported-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/168560901866.404.8439301702539997013.tip-bot2@tip-bot2
----
- arch/x86/kernel/smpboot.c      |    2 +-
- include/linux/sched/sd_flags.h |    7 +++++++
- kernel/sched/fair.c            |   38 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 46 insertions(+), 1 deletion(-)
-
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 4ee4339..7417d9b 100644
 --- a/arch/x86/kernel/smpboot.c
 +++ b/arch/x86/kernel/smpboot.c
-@@ -596,7 +596,7 @@ static inline int x86_sched_itmt_flags(v
- #ifdef CONFIG_SCHED_MC
- static int x86_core_flags(void)
- {
--	return cpu_core_flags() | x86_sched_itmt_flags();
-+	return cpu_core_flags() | x86_sched_itmt_flags() | SD_IDLE_SIBLING;
- }
- #endif
- #ifdef CONFIG_SCHED_SMT
---- a/include/linux/sched/sd_flags.h
-+++ b/include/linux/sched/sd_flags.h
-@@ -161,3 +161,10 @@ SD_FLAG(SD_OVERLAP, SDF_SHARED_PARENT |
-  * NEEDS_GROUPS: No point in preserving domain if it has a single group.
-  */
- SD_FLAG(SD_NUMA, SDF_SHARED_PARENT | SDF_NEEDS_GROUPS)
-+
-+/*
-+ * Search for idle CPUs in sibling groups
-+ *
-+ * NEEDS_GROUPS: Load balancing flag.
-+ */
-+SD_FLAG(SD_IDLE_SIBLING, SDF_NEEDS_GROUPS)
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7046,6 +7046,38 @@ static int select_idle_cpu(struct task_s
- }
+@@ -1473,6 +1473,14 @@ bool smp_park_other_cpus_in_init(void)
+ 	if (apic->wakeup_secondary_cpu_64 || apic->wakeup_secondary_cpu)
+ 		return false;
  
- /*
-+ * For the multiple-LLC per node case, make sure to try the other LLC's if the
-+ * local LLC comes up empty.
-+ */
-+static int
-+select_idle_node(struct task_struct *p, struct sched_domain *sd, int target)
-+{
-+	struct sched_domain *parent = sd->parent;
-+	struct sched_group *sg;
++	/*
++	 * If this is a crash stop which does not execute on the boot CPU,
++	 * then this cannot use the INIT mechanism because INIT to the boot
++	 * CPU will reset the machine.
++	 */
++	if (this_cpu)
++		return false;
 +
-+	/* Make sure to not cross nodes. */
-+	if (!parent || parent->flags & SD_NUMA)
-+		return -1;
-+
-+	sg = parent->groups;
-+	do {
-+		int cpu = cpumask_first(sched_group_span(sg));
-+		struct sched_domain *sd_child = per_cpu(sd_llc, cpu);
-+
-+		if (!cpus_share_cache(cpu, target) && sd_child) {
-+			int i = select_idle_cpu(p, sd_child,
-+						test_idle_cores(cpu), cpu);
-+			if ((unsigned)i < nr_cpumask_bits)
-+				return i;
-+		}
-+
-+		sg = sg->next;
-+	} while (sg != parent->groups);
-+
-+	return -1;
-+}
-+
-+/*
-  * Scan the asym_capacity domain for idle CPUs; pick the first idle one on which
-  * the task fits. If no CPU is big enough, but there are idle ones, try to
-  * maximize capacity.
-@@ -7217,6 +7249,12 @@ static int select_idle_sibling(struct ta
- 	if ((unsigned)i < nr_cpumask_bits)
- 		return i;
- 
-+	if (sd->flags & SD_IDLE_SIBLING) {
-+		i = select_idle_node(p, sd, target);
-+		if ((unsigned)i < nr_cpumask_bits)
-+			return i;
-+	}
-+
- 	return target;
- }
- 
+ 	for_each_present_cpu(cpu) {
+ 		if (cpu == this_cpu)
+ 			continue;
