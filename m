@@ -2,50 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09E9974CFA6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jul 2023 10:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF0674D017
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jul 2023 10:38:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232658AbjGJIOd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 10 Jul 2023 04:14:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38616 "EHLO
+        id S230244AbjGJIiA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 10 Jul 2023 04:38:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232792AbjGJIOW (ORCPT
+        with ESMTP id S230298AbjGJIhx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 10 Jul 2023 04:14:22 -0400
+        Mon, 10 Jul 2023 04:37:53 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32D2C106;
-        Mon, 10 Jul 2023 01:14:00 -0700 (PDT)
-Date:   Mon, 10 Jul 2023 08:13:58 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DC6DC3;
+        Mon, 10 Jul 2023 01:37:52 -0700 (PDT)
+Date:   Mon, 10 Jul 2023 08:37:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1688976838;
+        s=2020; t=1688978271;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=XdyazlaR2vkeRMooQSXhSLbL72/JIV9G5hPYgdB8Xxo=;
-        b=ESLdYvVqX3qf0VuJmZYG/+WWs3g+Zq6ECI2+51mmYeA/C3HQ/IsfM73u03Z/NbRCrdI7v5
-        YU+pjY0FWmjksKPRmznLLfgQPan4yjHqCGZTMHN1nNvTtj0cYSyyBURZAYQVjYZXhh+lBm
-        H9KFUrrcwvJaBNhpaYJmBAWkezzr5a7cHURXUaSI6CiYgtY5p61QSTt4mAQLJiKGlOxp0A
-        GXobPzJ98mpe64X8tDq88UMvnrP9EqUu/098DFvdl1YbASIh1uozTtXlGXZJrMKL4djDTM
-        iML3bMXOpjSF+L12dk5FxWCGIyoLVYh7PnfaQ4Jhm+tDbPPAjMB2iaeiigTAUw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ilamyJDbICYtSDb02PIB2zgJt9yweTD8M1ng84MwQtQ=;
+        b=yvC0+IPHasmDZAPNA/tb0hmOSfp/3yyOH4FFI8TPzUkrkomA6ew0odlx8y9qf6aZzPnjUR
+        xdRHtaE/YuldyorlD5vcipUXK/FcsdKy4YNW/mqJpSeVvg3ibcXvU/V9dEorv5t3B0CRU4
+        BIUokeaIxmBcEHjgKepNpYYmSxAPONrqrNwTfhKqA9YAE2g8MaqlPUvacqL5IlDkXetfdd
+        qBuYTmh/B4cBJQx4CX0tTJ7hKrnyy78f9xdvSwNifipK0CONopMDBdkBqKZAnuM9Dz9mkM
+        XlNdhvvpvELX5OnigvsU3l3NB96ERbFwduEDQSoSTkbtbuWzLPOOjhHOfFqiWw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1688976838;
+        s=2020e; t=1688978271;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=XdyazlaR2vkeRMooQSXhSLbL72/JIV9G5hPYgdB8Xxo=;
-        b=2yAXpxS47/Y9AItOvG830z7uXQD8OiX5judgbtO10elNNyR1gzPBPwnJjszNBwYOYOve4H
-        B3n0K7alH6s11WAQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ilamyJDbICYtSDb02PIB2zgJt9yweTD8M1ng84MwQtQ=;
+        b=AtiqU7oQOKOd+xFWe3ucgcLxmVux0idjwNTHPEyjZhlikqzfphk/giRBlHB0g0zH0zqrFf
+        847qAlusQXOm4hDg==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/alternative: Rename apply_ibt_endbr()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Sami Tolvanen <samitolvanen@google.com>, x86@kernel.org,
+Subject: [tip: perf/core] perf/ring_buffer: Use local_try_cmpxchg in
+ __perf_output_begin
+Cc:     Uros Bizjak <ubizjak@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20230708090048.63046-2-ubizjak@gmail.com>
+References: <20230708090048.63046-2-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <168897683815.404.9610507600520458133.tip-bot2@tip-bot2>
+Message-ID: <168897827031.404.10627731369793852895.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,114 +66,56 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     be0fffa5ca894a971a31c5e28aa77b633a97d1dc
-Gitweb:        https://git.kernel.org/tip/be0fffa5ca894a971a31c5e28aa77b633a97d1dc
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 22 Jun 2023 15:36:50 +02:00
+Commit-ID:     1af61adb3a23192023fec1733bd4c8500f53e546
+Gitweb:        https://git.kernel.org/tip/1af61adb3a23192023fec1733bd4c8500f53e546
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Sat, 08 Jul 2023 11:00:37 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 10 Jul 2023 09:52:23 +02:00
+CommitterDate: Mon, 10 Jul 2023 09:52:36 +02:00
 
-x86/alternative: Rename apply_ibt_endbr()
+perf/ring_buffer: Use local_try_cmpxchg in __perf_output_begin
 
-The current name doesn't reflect what it does very well.
+Use local_try_cmpxchg instead of local_cmpxchg (*ptr, old, new) == old
+in __perf_output_begin.  x86 CMPXCHG instruction returns success in ZF
+flag, so this change saves a compare after cmpxchg (and related move
+instruction in front of cmpxchg).
 
+Also, try_cmpxchg implicitly assigns old *ptr value to "old" when cmpxchg
+fails. There is no need to re-read the value in the loop.
+
+No functional change intended.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Link: https://lkml.kernel.org/r/20230622144321.427441595%40infradead.org
+Link: https://lkml.kernel.org/r/20230708090048.63046-2-ubizjak@gmail.com
 ---
- arch/um/kernel/um_arch.c           |  2 +-
- arch/x86/include/asm/alternative.h |  2 +-
- arch/x86/include/asm/ibt.h         |  2 +-
- arch/x86/kernel/alternative.c      |  9 ++++++---
- arch/x86/kernel/module.c           |  2 +-
- 5 files changed, 10 insertions(+), 7 deletions(-)
+ kernel/events/ring_buffer.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/um/kernel/um_arch.c b/arch/um/kernel/um_arch.c
-index 918fed7..b1bfed0 100644
---- a/arch/um/kernel/um_arch.c
-+++ b/arch/um/kernel/um_arch.c
-@@ -437,7 +437,7 @@ void __init arch_cpu_finalize_init(void)
- 	os_check_bugs();
- }
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index a0433f3..fb1e180 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -191,9 +191,10 @@ __perf_output_begin(struct perf_output_handle *handle,
  
--void apply_ibt_endbr(s32 *start, s32 *end)
-+void apply_seal_endbr(s32 *start, s32 *end)
- {
- }
+ 	perf_output_get_handle(handle);
  
-diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
-index 6c15a62..9c4da69 100644
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -96,7 +96,7 @@ extern void alternative_instructions(void);
- extern void apply_alternatives(struct alt_instr *start, struct alt_instr *end);
- extern void apply_retpolines(s32 *start, s32 *end);
- extern void apply_returns(s32 *start, s32 *end);
--extern void apply_ibt_endbr(s32 *start, s32 *end);
-+extern void apply_seal_endbr(s32 *start, s32 *end);
- extern void apply_fineibt(s32 *start_retpoline, s32 *end_retpoine,
- 			  s32 *start_cfi, s32 *end_cfi);
++	offset = local_read(&rb->head);
+ 	do {
++		head = offset;
+ 		tail = READ_ONCE(rb->user_page->data_tail);
+-		offset = head = local_read(&rb->head);
+ 		if (!rb->overwrite) {
+ 			if (unlikely(!ring_buffer_has_space(head, tail,
+ 							    perf_data_size(rb),
+@@ -217,7 +218,7 @@ __perf_output_begin(struct perf_output_handle *handle,
+ 			head += size;
+ 		else
+ 			head -= size;
+-	} while (local_cmpxchg(&rb->head, offset, head) != offset);
++	} while (!local_try_cmpxchg(&rb->head, &offset, head));
  
-diff --git a/arch/x86/include/asm/ibt.h b/arch/x86/include/asm/ibt.h
-index baae6b4..1e59581 100644
---- a/arch/x86/include/asm/ibt.h
-+++ b/arch/x86/include/asm/ibt.h
-@@ -34,7 +34,7 @@
- /*
-  * Create a dummy function pointer reference to prevent objtool from marking
-  * the function as needing to be "sealed" (i.e. ENDBR converted to NOP by
-- * apply_ibt_endbr()).
-+ * apply_seal_endbr()).
-  */
- #define IBT_NOSEAL(fname)				\
- 	".pushsection .discard.ibt_endbr_noseal\n\t"	\
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 72646d7..27e0cb4 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -803,7 +803,7 @@ static void __init_or_module poison_endbr(void *addr, bool warn)
- /*
-  * Generated by: objtool --ibt
-  */
--void __init_or_module noinline apply_ibt_endbr(s32 *start, s32 *end)
-+void __init_or_module noinline apply_seal_endbr(s32 *start, s32 *end)
- {
- 	s32 *s;
- 
-@@ -818,7 +818,7 @@ void __init_or_module noinline apply_ibt_endbr(s32 *start, s32 *end)
- 
- #else
- 
--void __init_or_module apply_ibt_endbr(s32 *start, s32 *end) { }
-+void __init_or_module apply_seal_endbr(s32 *start, s32 *end) { }
- 
- #endif /* CONFIG_X86_KERNEL_IBT */
- 
-@@ -1565,7 +1565,10 @@ void __init alternative_instructions(void)
- 	 */
- 	callthunks_patch_builtin_calls();
- 
--	apply_ibt_endbr(__ibt_endbr_seal, __ibt_endbr_seal_end);
-+	/*
-+	 * Seal all functions that do not have their address taken.
-+	 */
-+	apply_seal_endbr(__ibt_endbr_seal, __ibt_endbr_seal_end);
- 
- #ifdef CONFIG_SMP
- 	/* Patch to UP if other cpus not imminent. */
-diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
-index b05f62e..5f71a0c 100644
---- a/arch/x86/kernel/module.c
-+++ b/arch/x86/kernel/module.c
-@@ -358,7 +358,7 @@ int module_finalize(const Elf_Ehdr *hdr,
- 	}
- 	if (ibt_endbr) {
- 		void *iseg = (void *)ibt_endbr->sh_addr;
--		apply_ibt_endbr(iseg, iseg + ibt_endbr->sh_size);
-+		apply_seal_endbr(iseg, iseg + ibt_endbr->sh_size);
- 	}
- 	if (locks) {
- 		void *lseg = (void *)locks->sh_addr;
+ 	if (backward) {
+ 		offset = head;
