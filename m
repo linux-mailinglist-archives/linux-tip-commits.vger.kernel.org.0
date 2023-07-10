@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4136074D014
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jul 2023 10:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C5BC74D013
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jul 2023 10:37:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230194AbjGJIh7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 10 Jul 2023 04:37:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51332 "EHLO
+        id S230049AbjGJIh6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 10 Jul 2023 04:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230446AbjGJIhy (ORCPT
+        with ESMTP id S231215AbjGJIhy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 10 Jul 2023 04:37:54 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDFBBC7;
-        Mon, 10 Jul 2023 01:37:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B34BAE7;
+        Mon, 10 Jul 2023 01:37:53 -0700 (PDT)
 Date:   Mon, 10 Jul 2023 08:37:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1688978271;
+        s=2020; t=1688978272;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=b5NJHJ+H28lGHwbhSa9F6XeQ+mXfL8Cc5aFSC6L775s=;
-        b=U5jqE1oDQwhYZmqxQ6xXeEkdAnF44QO7HfBYnXkMjxD/fb/6SnPanxQaSWx5VqsaT1giqt
-        CKCU4XCMoSBheHoOdxCT9DyqXlddDoa80Rq+GLVYfgh/BAPrpBPP41BC5IjvAe2FnmtHdH
-        aodbGfSQfsAJLWdbjLGcdwAsjmEsI4rgl7MxtV5HPXIPsPfc2/2zFKkvFk37giky6AoRYh
-        /9pIoIrklhHoaHs/1OJ9fz1/l4PFa6yvj5Kk/WqH2rrmLrdCafuJlymMxa07trp7l22wdq
-        F1wrkADXX5R8jw1uOFCoGfXvosoAAG68ZSpwxI6xDBHKjR0/ELRDQF44GOSWog==
+        bh=BkEV7e94CvD29tG1A+d36LoGy9+Z10KJyC4UL+8m9vA=;
+        b=E8fcE1zE/0LL0PTIC0UeKJ7pC2LWoMgmNJHt4pVpiUU9Iy50ohNZi5IlEz0wYRdZhyeDSK
+        69cL8rCVvP1lOnEGG0s3uAwtYW3qHaLgE3XZX9OlM2bD6Greuvq6Heng67GEUjckGhkMbi
+        lCksUVzpyfHoSjaM8UuXQ4ysGwJ0RzRL/VFKt/B0TgFXmS+PORx+56EpSucKihp4t9MxHQ
+        7yEgDLy5gX2XWE1jEn8Sm0lP0R83CbvOqvQnG3eABsscgs/47i1lAOBy8Kl8FSEtc7GmzI
+        IK4M0LeCDd4UVFBu67p0A2TKALfi58lOs1+H1Qmdmq2OuU2O5wS+Ur1MN+cEXg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1688978271;
+        s=2020e; t=1688978272;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=b5NJHJ+H28lGHwbhSa9F6XeQ+mXfL8Cc5aFSC6L775s=;
-        b=pR6E+3nn4EWwcvQeAzwUSb21dc1QGjkPsjQOnSgdgw3nebxB2AfVQoZWdNPukn6SDx08gr
-        /OG7PPS9qgksMOBg==
+        bh=BkEV7e94CvD29tG1A+d36LoGy9+Z10KJyC4UL+8m9vA=;
+        b=7WXTwqYYgsdP5/PLGDq/L4BOl1mLw/sgBUusU7m8IIQrc7V8NgSXa0mMTIKf64O0cIhfjx
+        GHG7phTOQ5APlECg==
 From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] locking/arch: Avoid variable shadowing in
- local_try_cmpxchg()
-Cc:     Charlemagne Lasse <charlemagnelasse@gmail.com>,
-        Uros Bizjak <ubizjak@gmail.com>,
+Subject: [tip: perf/core] perf/x86: Use local64_try_cmpxchg
+Cc:     Uros Bizjak <ubizjak@gmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230708090048.63046-1-ubizjak@gmail.com>
-References: <20230708090048.63046-1-ubizjak@gmail.com>
+In-Reply-To: <20230706141720.2672-1-ubizjak@gmail.com>
+References: <20230706141720.2672-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <168897827110.404.18144213137097595757.tip-bot2@tip-bot2>
+Message-ID: <168897827185.404.3533982389263997885.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,75 +67,111 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d6b45484c130f4095313ae3edeb4aae662c12fb1
-Gitweb:        https://git.kernel.org/tip/d6b45484c130f4095313ae3edeb4aae662c12fb1
+Commit-ID:     4c1c9dea2089374cb58505a0df6136969ff3c8b9
+Gitweb:        https://git.kernel.org/tip/4c1c9dea2089374cb58505a0df6136969ff3c8b9
 Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Sat, 08 Jul 2023 11:00:36 +02:00
+AuthorDate:    Thu, 06 Jul 2023 16:16:48 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 10 Jul 2023 09:52:36 +02:00
+CommitterDate: Mon, 10 Jul 2023 09:52:35 +02:00
 
-locking/arch: Avoid variable shadowing in local_try_cmpxchg()
+perf/x86: Use local64_try_cmpxchg
 
-Several architectures define arch_try_local_cmpxchg macro using
-internal temporary variables named ___old, __old or _old. Remove
-temporary varible in local_try_cmpxchg to avoid variable shadowing.
+Use local64_try_cmpxchg instead of local64_cmpxchg (*ptr, old, new) == old.
+x86 CMPXCHG instruction returns success in ZF flag, so this change saves a
+compare after cmpxchg (and related move instruction in front of cmpxchg).
+
+Also, try_cmpxchg implicitly assigns old *ptr value to "old" when cmpxchg
+fails. There is no need to re-read the value in the loop.
 
 No functional change intended.
 
-Fixes: d994f2c8e241 ("locking/arch: Wire up local_try_cmpxchg()")
-Closes: https://lore.kernel.org/lkml/CAFGhKbyxtuk=LoW-E3yLXgcmR93m+Dfo5-u9oQA_YC5Fcy_t9g@mail.gmail.com/
-Reported-by: Charlemagne Lasse <charlemagnelasse@gmail.com>
+Cc. "H. Peter Anvin" <hpa@zytor.com>
 Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230708090048.63046-1-ubizjak@gmail.com
+Link: https://lkml.kernel.org/r/20230706141720.2672-1-ubizjak@gmail.com
 ---
- arch/loongarch/include/asm/local.h | 4 ++--
- arch/mips/include/asm/local.h      | 4 ++--
- arch/x86/include/asm/local.h       | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/events/amd/ibs.c      |  4 ++--
+ arch/x86/events/core.c         | 10 ++++------
+ arch/x86/events/intel/cstate.c | 10 ++++------
+ arch/x86/events/msr.c          |  8 +++-----
+ 4 files changed, 13 insertions(+), 19 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/local.h b/arch/loongarch/include/asm/local.h
-index 83e995b..c496758 100644
---- a/arch/loongarch/include/asm/local.h
-+++ b/arch/loongarch/include/asm/local.h
-@@ -63,8 +63,8 @@ static inline long local_cmpxchg(local_t *l, long old, long new)
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index 74e6642..7d29be0 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -156,8 +156,8 @@ perf_event_try_update(struct perf_event *event, u64 new_raw_count, int width)
+ 	 * count to the generic event atomically:
+ 	 */
+ 	prev_raw_count = local64_read(&hwc->prev_count);
+-	if (local64_cmpxchg(&hwc->prev_count, prev_raw_count,
+-					new_raw_count) != prev_raw_count)
++	if (!local64_try_cmpxchg(&hwc->prev_count,
++				 &prev_raw_count, new_raw_count))
+ 		return 0;
  
- static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
- {
--	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
--	return try_cmpxchg_local(&l->a.counter, __old, new);
-+	return try_cmpxchg_local(&l->a.counter,
-+				 (typeof(l->a.counter) *) old, new);
+ 	/*
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index 9d24870..23c9642 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -129,13 +129,11 @@ u64 x86_perf_event_update(struct perf_event *event)
+ 	 * exchange a new raw count - then add that new-prev delta
+ 	 * count to the generic event atomically:
+ 	 */
+-again:
+ 	prev_raw_count = local64_read(&hwc->prev_count);
+-	rdpmcl(hwc->event_base_rdpmc, new_raw_count);
+-
+-	if (local64_cmpxchg(&hwc->prev_count, prev_raw_count,
+-					new_raw_count) != prev_raw_count)
+-		goto again;
++	do {
++		rdpmcl(hwc->event_base_rdpmc, new_raw_count);
++	} while (!local64_try_cmpxchg(&hwc->prev_count,
++				      &prev_raw_count, new_raw_count));
+ 
+ 	/*
+ 	 * Now we have the new raw value and have updated the prev
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index 835862c..97035db 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -365,13 +365,11 @@ static void cstate_pmu_event_update(struct perf_event *event)
+ 	struct hw_perf_event *hwc = &event->hw;
+ 	u64 prev_raw_count, new_raw_count;
+ 
+-again:
+ 	prev_raw_count = local64_read(&hwc->prev_count);
+-	new_raw_count = cstate_pmu_read_counter(event);
+-
+-	if (local64_cmpxchg(&hwc->prev_count, prev_raw_count,
+-			    new_raw_count) != prev_raw_count)
+-		goto again;
++	do {
++		new_raw_count = cstate_pmu_read_counter(event);
++	} while (!local64_try_cmpxchg(&hwc->prev_count,
++				      &prev_raw_count, new_raw_count));
+ 
+ 	local64_add(new_raw_count - prev_raw_count, &event->count);
  }
+diff --git a/arch/x86/events/msr.c b/arch/x86/events/msr.c
+index 0feaaa5..61c59e0 100644
+--- a/arch/x86/events/msr.c
++++ b/arch/x86/events/msr.c
+@@ -244,12 +244,10 @@ static void msr_event_update(struct perf_event *event)
+ 	s64 delta;
  
- #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
-diff --git a/arch/mips/include/asm/local.h b/arch/mips/include/asm/local.h
-index 5daf6fe..e6ae3df 100644
---- a/arch/mips/include/asm/local.h
-+++ b/arch/mips/include/asm/local.h
-@@ -101,8 +101,8 @@ static __inline__ long local_cmpxchg(local_t *l, long old, long new)
+ 	/* Careful, an NMI might modify the previous event value: */
+-again:
+ 	prev = local64_read(&event->hw.prev_count);
+-	now = msr_read_counter(event);
+-
+-	if (local64_cmpxchg(&event->hw.prev_count, prev, now) != prev)
+-		goto again;
++	do {
++		now = msr_read_counter(event);
++	} while (!local64_try_cmpxchg(&event->hw.prev_count, &prev, now));
  
- static __inline__ bool local_try_cmpxchg(local_t *l, long *old, long new)
- {
--	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
--	return try_cmpxchg_local(&l->a.counter, __old, new);
-+	return try_cmpxchg_local(&l->a.counter,
-+				 (typeof(l->a.counter) *) old, new);
- }
- 
- #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
-diff --git a/arch/x86/include/asm/local.h b/arch/x86/include/asm/local.h
-index 56d4ef6..635132a 100644
---- a/arch/x86/include/asm/local.h
-+++ b/arch/x86/include/asm/local.h
-@@ -127,8 +127,8 @@ static inline long local_cmpxchg(local_t *l, long old, long new)
- 
- static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
- {
--	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
--	return try_cmpxchg_local(&l->a.counter, __old, new);
-+	return try_cmpxchg_local(&l->a.counter,
-+				 (typeof(l->a.counter) *) old, new);
- }
- 
- /* Always has a lock prefix */
+ 	delta = now - prev;
+ 	if (unlikely(event->hw.event_base == MSR_SMI_COUNT)) {
