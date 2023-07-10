@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF0674D017
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jul 2023 10:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19F9B74D012
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jul 2023 10:37:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230244AbjGJIiA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 10 Jul 2023 04:38:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51326 "EHLO
+        id S229732AbjGJIh6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 10 Jul 2023 04:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230298AbjGJIhx (ORCPT
+        with ESMTP id S230477AbjGJIhy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 10 Jul 2023 04:37:53 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DC6DC3;
-        Mon, 10 Jul 2023 01:37:52 -0700 (PDT)
-Date:   Mon, 10 Jul 2023 08:37:50 -0000
+        Mon, 10 Jul 2023 04:37:54 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 501D7E6;
+        Mon, 10 Jul 2023 01:37:53 -0700 (PDT)
+Date:   Mon, 10 Jul 2023 08:37:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1688978271;
+        s=2020; t=1688978272;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ilamyJDbICYtSDb02PIB2zgJt9yweTD8M1ng84MwQtQ=;
-        b=yvC0+IPHasmDZAPNA/tb0hmOSfp/3yyOH4FFI8TPzUkrkomA6ew0odlx8y9qf6aZzPnjUR
-        xdRHtaE/YuldyorlD5vcipUXK/FcsdKy4YNW/mqJpSeVvg3ibcXvU/V9dEorv5t3B0CRU4
-        BIUokeaIxmBcEHjgKepNpYYmSxAPONrqrNwTfhKqA9YAE2g8MaqlPUvacqL5IlDkXetfdd
-        qBuYTmh/B4cBJQx4CX0tTJ7hKrnyy78f9xdvSwNifipK0CONopMDBdkBqKZAnuM9Dz9mkM
-        XlNdhvvpvELX5OnigvsU3l3NB96ERbFwduEDQSoSTkbtbuWzLPOOjhHOfFqiWw==
+        bh=SUn+6Bo1QBKBDK8RwHrPsSPwL7VkjRzPfS9/sg4u31c=;
+        b=M06fGKAE6ERw5kLlpZVH/oGeAXIfutzXNjrVHaTNY0+LfYNz3SVhofFih2djuPpTu/wxym
+        cpg7RIx5SAeWxfl++M/5N/oXje9d3PsrcLWug31KsCEdPCeEJK6Suy03XwLqe8kJEAKv1v
+        5htR/HyXst+a66Pt5yWtaQeSpqv+WnSD81eiWcfK9OVAXRoFhbeLRrqRDV+gnxIKzQRHZt
+        gWw3YxqAg16scveBvdoVS/ns2bvhsSIdvWcIfhknyuw2i9nrdbI3I5dBCTYZuQqOmA8WC+
+        6Zs/SHBofcvOp+QKUBIapJ4qe8FMZnRm6OO/UoN7Y14VLF6ZVsbF/841AEWUPw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1688978271;
+        s=2020e; t=1688978272;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ilamyJDbICYtSDb02PIB2zgJt9yweTD8M1ng84MwQtQ=;
-        b=AtiqU7oQOKOd+xFWe3ucgcLxmVux0idjwNTHPEyjZhlikqzfphk/giRBlHB0g0zH0zqrFf
-        847qAlusQXOm4hDg==
+        bh=SUn+6Bo1QBKBDK8RwHrPsSPwL7VkjRzPfS9/sg4u31c=;
+        b=8vptgk6J3Ee6tJikx/zsVGwBt4ClhLlWY8hA+syearJDRE/Ss5P9TAj0U+HaZC66ORj5+Z
+        janxNOAO5nRSflCg==
 From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/ring_buffer: Use local_try_cmpxchg in
- __perf_output_begin
+Subject: [tip: perf/core] perf/core: Use local64_try_cmpxchg in
+ perf_swevent_set_period
 Cc:     Uros Bizjak <ubizjak@gmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230708090048.63046-2-ubizjak@gmail.com>
-References: <20230708090048.63046-2-ubizjak@gmail.com>
+In-Reply-To: <20230708081129.45915-1-ubizjak@gmail.com>
+References: <20230708081129.45915-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <168897827031.404.10627731369793852895.tip-bot2@tip-bot2>
+Message-ID: <168897827147.404.3167586601225398989.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,17 +68,17 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1af61adb3a23192023fec1733bd4c8500f53e546
-Gitweb:        https://git.kernel.org/tip/1af61adb3a23192023fec1733bd4c8500f53e546
+Commit-ID:     28fd85a10a2a73658c6e26056d9e093de06b5a22
+Gitweb:        https://git.kernel.org/tip/28fd85a10a2a73658c6e26056d9e093de06b5a22
 Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Sat, 08 Jul 2023 11:00:37 +02:00
+AuthorDate:    Sat, 08 Jul 2023 10:10:57 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 10 Jul 2023 09:52:36 +02:00
+CommitterDate: Mon, 10 Jul 2023 09:52:35 +02:00
 
-perf/ring_buffer: Use local_try_cmpxchg in __perf_output_begin
+perf/core: Use local64_try_cmpxchg in perf_swevent_set_period
 
-Use local_try_cmpxchg instead of local_cmpxchg (*ptr, old, new) == old
-in __perf_output_begin.  x86 CMPXCHG instruction returns success in ZF
+Use local64_try_cmpxchg instead of local64_cmpxchg (*ptr, old, new) == old
+in perf_swevent_set_period.  x86 CMPXCHG instruction returns success in ZF
 flag, so this change saves a compare after cmpxchg (and related move
 instruction in front of cmpxchg).
 
@@ -89,33 +89,38 @@ No functional change intended.
 
 Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230708090048.63046-2-ubizjak@gmail.com
+Link: https://lkml.kernel.org/r/20230708081129.45915-1-ubizjak@gmail.com
 ---
- kernel/events/ring_buffer.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/events/core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index a0433f3..fb1e180 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -191,9 +191,10 @@ __perf_output_begin(struct perf_output_handle *handle,
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 78ae7b6..f84e264 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9595,16 +9595,16 @@ u64 perf_swevent_set_period(struct perf_event *event)
  
- 	perf_output_get_handle(handle);
+ 	hwc->last_period = hwc->sample_period;
  
-+	offset = local_read(&rb->head);
- 	do {
-+		head = offset;
- 		tail = READ_ONCE(rb->user_page->data_tail);
--		offset = head = local_read(&rb->head);
- 		if (!rb->overwrite) {
- 			if (unlikely(!ring_buffer_has_space(head, tail,
- 							    perf_data_size(rb),
-@@ -217,7 +218,7 @@ __perf_output_begin(struct perf_output_handle *handle,
- 			head += size;
- 		else
- 			head -= size;
--	} while (local_cmpxchg(&rb->head, offset, head) != offset);
-+	} while (!local_try_cmpxchg(&rb->head, &offset, head));
+-again:
+-	old = val = local64_read(&hwc->period_left);
+-	if (val < 0)
+-		return 0;
++	old = local64_read(&hwc->period_left);
++	do {
++		val = old;
++		if (val < 0)
++			return 0;
  
- 	if (backward) {
- 		offset = head;
+-	nr = div64_u64(period + val, period);
+-	offset = nr * period;
+-	val -= offset;
+-	if (local64_cmpxchg(&hwc->period_left, old, val) != old)
+-		goto again;
++		nr = div64_u64(period + val, period);
++		offset = nr * period;
++		val -= offset;
++	} while (!local64_try_cmpxchg(&hwc->period_left, &old, val));
+ 
+ 	return nr;
+ }
