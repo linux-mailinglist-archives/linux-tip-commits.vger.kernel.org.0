@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D16674CFA2
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jul 2023 10:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C23E674CFA3
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jul 2023 10:14:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232814AbjGJIOZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 10 Jul 2023 04:14:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38616 "EHLO
+        id S232836AbjGJIO3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 10 Jul 2023 04:14:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232671AbjGJIN5 (ORCPT
+        with ESMTP id S231501AbjGJIN6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 10 Jul 2023 04:13:57 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23771E1;
+        Mon, 10 Jul 2023 04:13:58 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CBD7E8;
         Mon, 10 Jul 2023 01:13:56 -0700 (PDT)
-Date:   Mon, 10 Jul 2023 08:13:54 -0000
+Date:   Mon, 10 Jul 2023 08:13:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1688976834;
+        s=2020; t=1688976835;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/Aa8ViPN2c8hO3w2Nhk0VmIBYhoiv9WTo6E6nOQzuJ4=;
-        b=lVrBwyQmImYHl4E85lTfmTWMjKokLQ9qhPkfcVzi8/4XBQqIzGtmkUZSPB7F7qglgPv9+j
-        Uo2pE4DmnXFZhxkkeSOmxp97bfdYCBHwTU5LuWJds6Ox4AtHCHa2aVLkZc+CbOHJk4+HGb
-        u0q1C0mMdvVK4FXqa6PNdlvd8qaVwjnmPNdv1SfWcmiTKbN/nPXkUt7ssWyKYqZiHX0zh0
-        iLVFqpOqYPRAhnrK3sdwhatvKSzVdhbGf+beFpDgVJfOv2NSGl+EUoFOHnRpqf9R1EdVVB
-        +wuhQKQfeTB3IhqQZ5l2HMfdgbokaQskF4H/oZ12GqsOqo5eKL1q5a1ulGTzZQ==
+        bh=cgIfuLHvepzq9VhUs97s3Fny+OkENVlJAw90urJEAJ0=;
+        b=aSrCs42FDprIx3vZ2sSDzCWVsCcVm/tjYkgDYmKMuhlY6hcbpXLdh5kxjx4rAthtoBHDOM
+        FMcVqnG2MDeEou29UY411oGxwLQiNAboVPT0sE5FPiCZoj4EL8mZbEtwQgDlSsmVYuVrOw
+        YkbJw7mf6/ZzNPzCTuW0RfOVpOymM+6hvMrnwDYhrA+znfXz6ZWgI6UOxHOz1bFPIX95aN
+        znBPp8P9Zs/OXl8oNsl8DI7R0v+0UsP77nRN8AE4wuwCsvY6xWLmPFpVimyNRUJ0otw9GG
+        TRi4Vz4cqQhs6a6Wvw3QVL81eM6NfakEHVNpocX/EDPotQkN9BW2oBeTuGrxIA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1688976834;
+        s=2020e; t=1688976835;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/Aa8ViPN2c8hO3w2Nhk0VmIBYhoiv9WTo6E6nOQzuJ4=;
-        b=MxglSJcjZYJq1Sr7syHndkCEwcKRMR1SgGkX5WWe+tDb0YgLo25ZdCnuV4KjPKqvY//gPr
-        uYjMUz1k784Vx3AA==
-From:   "tip-bot2 for Michal Kubecek" <tip-bot2@linutronix.de>
+        bh=cgIfuLHvepzq9VhUs97s3Fny+OkENVlJAw90urJEAJ0=;
+        b=VgNkuDfDrqiUOTgOrBSNU6I/oh7veNxTmTtlngxDY0i8Tu9gGpTqnNqj4WMdbRDNhDaoML
+        NUTeyM3qikc1OaAA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: initialize all of struct elf
-Cc:     Michal Kubecek <mkubecek@suse.cz>,
+Subject: [tip: x86/urgent] x86/fineibt: Poison ENDBR at +0
+Cc:     "Milburn, Alyssa" <alyssa.milburn@intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+        Kees Cook <keescook@chromium.org>,
+        Sami Tolvanen <samitolvanen@google.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230629102051.42E8360467@lion.mk-sys.cz>
-References: <20230629102051.42E8360467@lion.mk-sys.cz>
+In-Reply-To: <20230615193722.194131053@infradead.org>
+References: <20230615193722.194131053@infradead.org>
 MIME-Version: 1.0
-Message-ID: <168897683429.404.6801969953192508868.tip-bot2@tip-bot2>
+Message-ID: <168897683510.404.15529620600902653917.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,45 +67,90 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     9f71fbcde2820f2af4658313e808cf1e579190a4
-Gitweb:        https://git.kernel.org/tip/9f71fbcde2820f2af4658313e808cf1e579190a4
-Author:        Michal Kubecek <mkubecek@suse.cz>
-AuthorDate:    Thu, 29 Jun 2023 12:05:05 +02:00
+Commit-ID:     04505bbbbb15da950ea0239e328a76a3ad2376e0
+Gitweb:        https://git.kernel.org/tip/04505bbbbb15da950ea0239e328a76a3ad2376e0
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Thu, 15 Jun 2023 21:35:48 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 10 Jul 2023 09:52:28 +02:00
+CommitterDate: Mon, 10 Jul 2023 09:52:25 +02:00
 
-objtool: initialize all of struct elf
+x86/fineibt: Poison ENDBR at +0
 
-Function elf_open_read() only zero initializes the initial part of
-allocated struct elf; num_relocs member was recently added outside the
-zeroed part so that it was left uninitialized, resulting in build failures
-on some systems.
+Alyssa noticed that when building the kernel with CFI_CLANG+IBT and
+booting on IBT enabled hardware to obtain FineIBT, the indirect
+functions look like:
 
-The partial initialization is a relic of times when struct elf had large
-hash tables embedded. This is no longer the case so remove the trap and
-initialize the whole structure instead.
+  __cfi_foo:
+	endbr64
+	subl	$hash, %r10d
+	jz	1f
+	ud2
+	nop
+  1:
+  foo:
+	endbr64
 
-Fixes: eb0481bbc4ce ("objtool: Fix reloc_hash size")
-Signed-off-by: Michal Kubecek <mkubecek@suse.cz>
+This is because the compiler generates code for kCFI+IBT. In that case
+the caller does the hash check and will jump to +0, so there must be
+an ENDBR there. The compiler doesn't know about FineIBT at all; also
+it is possible to actually use kCFI+IBT when booting with 'cfi=kcfi'
+on IBT enabled hardware.
+
+Having this second ENDBR however makes it possible to elide the CFI
+check. Therefore, we should poison this second ENDBR when switching to
+FineIBT mode.
+
+Fixes: 931ab63664f0 ("x86/ibt: Implement FineIBT")
+Reported-by: "Milburn, Alyssa" <alyssa.milburn@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20230629102051.42E8360467@lion.mk-sys.cz
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Link: https://lore.kernel.org/r/20230615193722.194131053@infradead.org
 ---
- tools/objtool/elf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/alternative.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index d420b5d..081befa 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -1005,7 +1005,7 @@ struct elf *elf_open_read(const char *name, int flags)
- 		perror("malloc");
- 		return NULL;
- 	}
--	memset(elf, 0, offsetof(struct elf, sections));
-+	memset(elf, 0, sizeof(*elf));
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 04b25a2..d77aaab 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -1068,6 +1068,17 @@ static int cfi_rewrite_preamble(s32 *start, s32 *end)
+ 	return 0;
+ }
  
- 	INIT_LIST_HEAD(&elf->sections);
++static void cfi_rewrite_endbr(s32 *start, s32 *end)
++{
++	s32 *s;
++
++	for (s = start; s < end; s++) {
++		void *addr = (void *)s + *s;
++
++		poison_endbr(addr+16, false);
++	}
++}
++
+ /* .retpoline_sites */
+ static int cfi_rand_callers(s32 *start, s32 *end)
+ {
+@@ -1162,14 +1173,19 @@ static void __apply_fineibt(s32 *start_retpoline, s32 *end_retpoline,
+ 		return;
  
+ 	case CFI_FINEIBT:
++		/* place the FineIBT preamble at func()-16 */
+ 		ret = cfi_rewrite_preamble(start_cfi, end_cfi);
+ 		if (ret)
+ 			goto err;
+ 
++		/* rewrite the callers to target func()-16 */
+ 		ret = cfi_rewrite_callers(start_retpoline, end_retpoline);
+ 		if (ret)
+ 			goto err;
+ 
++		/* now that nobody targets func()+0, remove ENDBR there */
++		cfi_rewrite_endbr(start_cfi, end_cfi);
++
+ 		if (builtin)
+ 			pr_info("Using FineIBT CFI\n");
+ 		return;
