@@ -2,396 +2,312 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE6727516D6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Jul 2023 05:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 726BD7531AD
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Jul 2023 08:02:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233605AbjGMDnq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 Jul 2023 23:43:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49310 "EHLO
+        id S235093AbjGNGCn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 14 Jul 2023 02:02:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232728AbjGMDnp (ORCPT
+        with ESMTP id S235102AbjGNGCW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 12 Jul 2023 23:43:45 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2056.outbound.protection.outlook.com [40.107.243.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C6A11FDA;
-        Wed, 12 Jul 2023 20:43:43 -0700 (PDT)
+        Fri, 14 Jul 2023 02:02:22 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2045.outbound.protection.outlook.com [40.107.94.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA5EB2D48;
+        Thu, 13 Jul 2023 23:02:16 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MiEoLjFJqGNL/4jupsYPpVf7VFhWhZqf2e+tttETPM8RDDrfmhi1kNA2YrfFN7AmaG8uffY/P5VD0GlK0KeYdIn+CWf2bF9qsY4y2Wu0z9e91B0No2iFfQ1ygKR71qVPjua4+jJ8gRfBYe3IbuYtQkmOuBJ3XIEydDIhJkCLRBpN2LTarmhCKbw/BDEglSvc0EzGfZl0s4yjjB3hRjJG9imOU1GJfZ76nExGbyyMH1aL6MJ+5in3Jfuo6uWUVOZBKyzkWKJdX/XD8qiu1RBkelJWqhm1Ir8FeqZgEQyrGeq8VNEpOn4jEH70B8asnTkIC7rMuwvpUMe86BuytDYXrA==
+ b=VCq/qbfCA+KKC7pKaj1nK+ToivXx4ig7STc4mCK/y7qm9dHl4b3XdfqB+BunDjzx9bNk4dO8G8po9W/ibg0Kn6jqDVSW8vWi0N8Ia5fpyTVfhJOb+HjCLh4IUHsYsUD0JcUWHtGUJEr1/CV3jorFFLsiLX6pdVeVuU1jxuvgD1ENuGOHOT3ypQR5hOpm0m/AX0KHqZFKVVBLjmouZOmHYQ3XpiRV1qr2rlG/ma5tDZb2IehZQPTI6BKvipkqjmSxKmeg+7e3SL1IDm2n86BBMhcOb8wEnI36AITJ6AAtB7jssOViqYaRVVBOc7ssw3+4wtyW7bwtcHE+FRTEr85IjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I9gACOMAoJef8yHTf9r3vVdR31JPKO1IPDC38yb0iMA=;
- b=RhQCIPGQRENOB5YMc5pEwYPvb3kgaZRLIGhLVUjy3pgyP11MrTIaTEGVJ8YPJrDpspj7xg946gAfm8rQYbz3frUhKyXCPvR520JeDpsIYR8DBTj4gfN5uR7ro7MptbH70vca9Rn4PFQUuu9XoA8PwurrpJPlBsArHsGS6z9jwof2q7zbfYkdUND4qm8+UOZ4wwAnZIgzL++IJbe5BJXeTOIwbIVjKT0LZwhlE1TxCoPJ0jbQd5XWV5NEffjMhixkz2S2vizow8HGmMKjKGaxIZ17tRnNzYjBZpFWkwJdXe54mPoyQeVRnfjSPJ11VFNlRrgvN4b/AjSgpK9nFvyvrA==
+ bh=9/LF3weuamdRrsMUPt3jnZVrhWgd2iimN+7qkiWWcwM=;
+ b=LP3kLSctS9v/fxYCHM0lyfp6TDGAam6dFRe6hNbQmXT2kCov0vIjWg5JXf6F+3EzUlnvgEOaPZvunRdw4mYrbkYmaEin/t1lgyiQto03svZ8kw0ffxbgLd4nAFNVXCyrqyLE0jaqDbOc7cbcDb1LBtE12/Xhy8kK9OYwAP/I8DaP9/FM7r/Yw3YfNYJvbi6hipWUJuXdpmFxCXeZEn5z3B8z7Zd6KpnYOlWdvtkJB176clz9zTT6v8ZCJDLQz3z6s/5IH4w9XyN8O5sTjac8buH/BuR/JBGsACrlSKiudfZizA9h9dalG3y5Fhdckt6u96ByKzMVUOsVLe9Vbh5rNA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I9gACOMAoJef8yHTf9r3vVdR31JPKO1IPDC38yb0iMA=;
- b=lZoy0WmMzw1yod6QM1/gcitEKevsKlEDOkCuUG1r/y54HAF5/IN21f7dxNz0YZEO0yylYA6JAFhXWGjz6UALd2Nfx/spN10ESghMZ7GI7oTLShbLEsaHeu0dMLaDHEwxFKXO64iOBCNFxkC4G/uClcMHiPmAWjsblaRHoT00mp0=
+ bh=9/LF3weuamdRrsMUPt3jnZVrhWgd2iimN+7qkiWWcwM=;
+ b=X3n0Fu+c4WxcCE8PBcY0WtxBCVHDhD0EOz0jV27c6ksrxcd8Lm4RHP9XHvX87hRfybifz36TjJgV+jDDGECIfF2UzCQanxpQ7uwVOcUW/e0pekweXRXa3O0lfDzybAuDgeN/arOMsnUePoKVpNArNOMCGD8XHTfQWGHw4Ne4Q7c=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MW2PR12MB2379.namprd12.prod.outlook.com (2603:10b6:907:9::24)
- by SJ0PR12MB5675.namprd12.prod.outlook.com (2603:10b6:a03:42d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.26; Thu, 13 Jul
- 2023 03:43:41 +0000
-Received: from MW2PR12MB2379.namprd12.prod.outlook.com
- ([fe80::88b4:a667:a7e7:1b2c]) by MW2PR12MB2379.namprd12.prod.outlook.com
- ([fe80::88b4:a667:a7e7:1b2c%2]) with mapi id 15.20.6588.017; Thu, 13 Jul 2023
- 03:43:40 +0000
-Message-ID: <8702a92f-317e-c38f-48ec-5ac373ba5072@amd.com>
-Date:   Thu, 13 Jul 2023 09:13:29 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [tip: sched/core] sched/fair: Multi-LLC select_idle_sibling()
-Content-Language: en-US
-To:     Chen Yu <yu.c.chen@intel.com>,
+Received: from DS7PR12MB6165.namprd12.prod.outlook.com (2603:10b6:8:9a::21) by
+ DS7PR12MB5910.namprd12.prod.outlook.com (2603:10b6:8:7b::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6565.30; Fri, 14 Jul 2023 06:02:12 +0000
+Received: from DS7PR12MB6165.namprd12.prod.outlook.com
+ ([fe80::714c:3289:2d9e:954e]) by DS7PR12MB6165.namprd12.prod.outlook.com
+ ([fe80::714c:3289:2d9e:954e%4]) with mapi id 15.20.6565.028; Fri, 14 Jul 2023
+ 06:02:12 +0000
+Message-ID: <ae21fca4-68ad-0599-39b6-028ade02b813@amd.com>
+Date:   Fri, 14 Jul 2023 11:32:01 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [tip: sched/core] sched: Fix performance regression introduced by
+ mm_cid
+To:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         Peter Zijlstra <peterz@infradead.org>
 Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Tejun Heo <tj@kernel.org>, Tim Chen <tim.c.chen@intel.com>,
-        x86@kernel.org, Gautham Shenoy <gautham.shenoy@amd.com>
-References: <20230601115643.GX4253@hirez.programming.kicks-ass.net>
- <20230601120001.GJ38236@hirez.programming.kicks-ass.net>
- <20230601144706.GA559454@hirez.programming.kicks-ass.net>
- <7bee9860-2d2a-067b-adea-04012516095c@amd.com>
- <20230602065438.GB620383@hirez.programming.kicks-ass.net>
- <bd083d8d-023a-698e-701b-725f1b15766e@amd.com>
- <20230613082536.GI83892@hirez.programming.kicks-ass.net>
- <f212f491-cd3f-6eee-20d7-8f9ab8937902@amd.com>
- <20230705115702.GY4253@hirez.programming.kicks-ass.net>
- <ZKlh1u2kkHzHY/nB@chenyu5-mobl2> <ZK7groqlP3S7r8vt@chenyu5-mobl2>
-From:   K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <ZK7groqlP3S7r8vt@chenyu5-mobl2>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0081.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:23::26) To MW2PR12MB2379.namprd12.prod.outlook.com
- (2603:10b6:907:9::24)
+        Aaron Lu <aaron.lu@intel.com>, x86@kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <168214940343.404.10896712987516429042.tip-bot2@tip-bot2>
+ <09e0f469-a3f7-62ef-75a1-e64cec2dcfc5@amd.com>
+ <20230620091139.GZ4253@hirez.programming.kicks-ass.net>
+ <44428f1e-ca2c-466f-952f-d5ad33f12073@amd.com>
+ <3e9eaed6-4708-9e58-c80d-143760d6b23a@efficios.com>
+ <ddbd1564-8135-5bc3-72b4-afb7c6e9caba@amd.com>
+ <a73761e4-b791-e9a2-a276-e1551628e33b@efficios.com>
+Content-Language: en-US
+From:   Swapnil Sapkal <Swapnil.Sapkal@amd.com>
+In-Reply-To: <a73761e4-b791-e9a2-a276-e1551628e33b@efficios.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN2PR01CA0234.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:eb::6) To DS7PR12MB6165.namprd12.prod.outlook.com
+ (2603:10b6:8:9a::21)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW2PR12MB2379:EE_|SJ0PR12MB5675:EE_
-X-MS-Office365-Filtering-Correlation-Id: e41b636c-8221-4f5c-eb5f-08db835358f2
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6165:EE_|DS7PR12MB5910:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2fe34dac-e281-4089-4244-08db842fdd5d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7430akorZdybRz4z2ie7Mwnx0UF/bXXc6NnjOf3nu2AYW2DCBfm5V47k1IuGOEhI8A0AH774TLQ9+ardwg+9CjdRxj3xwXQvbkOlXTPnAiFLsX8aFIgYrk0gKAbcbYgO8vgdcuojA84JTDkKy3zeYOND3RaBxJRFmvR53m8GyIReEJ1T6oiQFxtYZaXygXvmuuzy9Nt8do73BqYsmp9hV8KoLFR2Po1sqfmtgBz/0KuTXKfWBrt6sBtIsLGlf0KCiH+BOlTan8y0OEHHAVh/DtGUZR5SzGJkiloMT66WImzReLO6GsC7nS4k204mviUlwXs1BkBfwQln20NA79MGCYQfAucvmE7VeGh+xC6pOtA3Y0LZJPhCqq9pXSyf6yUO46eVUZ9T4TxeAT7/5k/b8X+Gp7LiOEZ0s463wn4XYZFcPwpIuBHoVsc3iPKqjN/fEuWGc21GoEblZScofFgMCPlPbOxCumJLE3eLiSFDQJeWruKOkemnQua4A9tgKpzWiAdn+oGCWJ2YSBv0RGoWRtlo9A69m1mKgiSgtUknWqDsrz/gZkbA+XDIxEn+qgwG9bjG6oAQgI7lcX+t0dglR/4fvc1UMS1YUV5gyG3z3RLYaz5d+hI/3eGBCNx1papxyg38+Zg/x25QN8GacBSueGTce12K44GJMeLaVhACOzM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW2PR12MB2379.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(396003)(366004)(39860400002)(346002)(136003)(451199021)(30864003)(41300700001)(31686004)(5660300002)(110136005)(54906003)(8936002)(316002)(8676002)(2906002)(6486002)(4326008)(66476007)(66556008)(66946007)(6512007)(478600001)(966005)(6666004)(86362001)(186003)(31696002)(2616005)(38100700002)(36756003)(53546011)(26005)(83380400001)(6506007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Wy/0iVxGH5R0VTCindm9aR/ie1DL/ud4FReIoxQn+MChLlWGjXKhx5lQ3lvrPY9y3gM3BElkvQwIlGiCJOK1Z8ZjDlxYa3DKonWgVkfeE7Nixq4wt3wX8TKzvMbbJ1PMoPcN2UQI0+CRPW1Q48HaWrTK6BpYC9oEgtILzxYxHqkBXnbYKUR7mgDswlxzaSiynCEpw1SYvMklm32Q3msMCNHMnbmiJqbJJEIlHk2Z2vEjnMDZ5dTQSPHuL7M8x2boALdvBp0RjG6fX6AhJEZhhCZLg3JavYJ5aQexFQby6kuS76WZOij3nInB8uJ70hK6dVmBEKgJKEmN4kOTvcfA1B3A8Dbe5b9DpT5QQRIy/PCPnJtkpC9m6SS5hw/jGZKXwIpBjXMYNwXhLvzO8XbD8Swy5rl/u1+3b0HaRhmTuHXStKzfAkMjsd2L9MUtPJlGFzrxuG+w2gOqfIwCSG26dwd4DcOZbMLYxXjCP2wqvv4qpT4pw39ayrKc7YDlA3wd2k5odZQxegdnW/pwR/VjeckXk8eCSimfl222QgXJMOpEF+u067cGRgmWNB+o2tIkSj9bx99nfeROZbMa0p55QmyNU4Q0A2PH9D0LHJuCVwxu8nuStxB84cj4hOmGyuJ3+/IEG6ZXqArmP+3QWnSoBA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6165.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(39860400002)(376002)(346002)(136003)(396003)(451199021)(186003)(6512007)(5660300002)(26005)(966005)(6666004)(53546011)(2616005)(4326008)(2906002)(8936002)(41300700001)(316002)(66946007)(66556008)(66476007)(478600001)(83380400001)(8676002)(110136005)(54906003)(36756003)(6506007)(6486002)(86362001)(38100700002)(31696002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RVo1ZnZhSXpjSDIwcm9JUW41WVFCT01uSVpTYmRnYk5Vc1g5ME05R3lKdFp3?=
- =?utf-8?B?RVNZZW1VTm5GeDl5Z0U5UGpNa2Uza2pEdHRvU1dFY3JLZTZvNUFaak9SZFUz?=
- =?utf-8?B?ZGpWR050UlJrRlViQitKNW45cDFzamt3T3FrdFZEL2RDRXozNk9HbkRoV2Zz?=
- =?utf-8?B?Z3d0ZTVVcEp6clhZTUJhcU5sUm5HbmFVL2tiUFhXMHdsUTVCOFRJRUVJQkVC?=
- =?utf-8?B?WVM4aGd1dlY2cHZhUXhDVEF4MkpjMFBEY3czTG81SmxSc0hlR0ZWbldlcUZy?=
- =?utf-8?B?eXBQM0lDQ2N6eVNXRVRRVGsrVFlRWjFBR2grSFBiN1hwT2dOZVVkZmZUVVpU?=
- =?utf-8?B?VEQvWWc5K1FKUk5Id2ZrZElEVTVVVTZjeTNvbTc4Qy9Nc0E2cndCTnpoY3lP?=
- =?utf-8?B?RkQ2VkYwbTNZK1FZaTBkSXpMdHpmMEhuNFZnZU9NbkRaT25uMDVXRzk5clkv?=
- =?utf-8?B?Z1hRejJZYWJNWjh6Y2t4b1IyMms0NXZIb0ZPcnFUOEUydldocEYzSTY0cjBG?=
- =?utf-8?B?Wnd3YXZ1MFgvVURzY3owRzVVL3RsK2ZmZENKMXBPWXMvazEwUEsrNmRVeENV?=
- =?utf-8?B?OVdsZVo5R2pCcitKakFDNWdONWJWNmxkNDg4c0VnZHY4bGhDcmgxMU1Sd2tq?=
- =?utf-8?B?UGdRV01IS0FIQzlMMzVvY3RxdU5lc0lYVE41RnQxZ1UwYzZ0UklQYzJSbnhH?=
- =?utf-8?B?aWNGaUhYM1hCcnBkVitNQ3RFUEI0S0Zrd2tMYkROMWl3dWxuL3dweGo3ZURt?=
- =?utf-8?B?dlkzVFZDdDBrTlIxazlWdVVaa2VzQXRqR3lKVTZMSGg4WWI0ZTNsbnd1K25a?=
- =?utf-8?B?L0hVTTFHTjQwZTZMbkg0Y0dGRUdMK3dWVFF2ZUhjOEQxdmhSdkJwUUVGM3VM?=
- =?utf-8?B?bnpKTDRPT2M0djJTNDdTdXk4OWVLYWJ1VjBxeWdRUWZDYWhlRGRUeDVTTlVy?=
- =?utf-8?B?amYxbnExZDFJM0ZadVRVTDlKbnErRm1wdktmR1NaYk5Pc1d4bWVRY3J6RTBu?=
- =?utf-8?B?ajNzbGRocWZiU0U2Ymg4S3EwUFNrcXZPQ2ZseXFBQUVaRmpyY1VBTm5nYTQ4?=
- =?utf-8?B?cTRYRlBTemE2UUJ3dko0S3VOMFNoKzRZWmhEbkpJWVE2bkszMUZsU0NnVGJB?=
- =?utf-8?B?c3VXWG9kSmRsMHdrQTNJUTg0c0k3NHpsWFNCcTJLV0N5WGpQdFErWVZ3SUJt?=
- =?utf-8?B?N0VVOERSNW9OWFVqQUpNVFNQTlJYLzZLdkRXenVqZGVqTmU1czlEZjdpbXVI?=
- =?utf-8?B?b1crdTlHdkNaTTM4NWJWd3ZXRjZrYUQxVGhrZmRLTWw4VkJ5Q2t6N3FQZ3NG?=
- =?utf-8?B?QjJmTXRWN0pKSGRrSTYwYVFZRXpuY0RobE5BRDFhZHNKZUo1VllvSDBZaU1y?=
- =?utf-8?B?Y1JKZXFtSjYzNHAvS25id0JQMTVTYTRBOXJCL3Z3MEZUMXIyYXdmY2M5M0ND?=
- =?utf-8?B?RU5tU0NrWnZrbXQ2MUw3Q045OUY0VThnRWxnWGVST0NhNWNtZXRFYVdiZFBI?=
- =?utf-8?B?SWcwcXRaRitUN0lUQzkyWWxXT0JCVUtmWmowM3Fxeml1ajhtN3VLTFdXeGFE?=
- =?utf-8?B?dzRBT3Y1RmFGQXQ2dFR4YUNudFc2NGhDR0V2ZUJseW9ud2F0a1hDYXF1V0Zo?=
- =?utf-8?B?UU1BdXhWcG5jS0tPMFROY1lsc1c1SERIM0V1TFBrY1Y0RFJDNkZZTS9nRkE4?=
- =?utf-8?B?L056Yk5OUFFkYzczcktyUzdSTDg1a2lKdGwrUTVvYUFDeXQ1S25FczdRZGVl?=
- =?utf-8?B?RkhlSHdISlcyVWwrSE9HcFo3NkhjZWNQdkU0elZialN3aUF0RzVnRzg5ZHQ1?=
- =?utf-8?B?alRkdXJLRWdBcUZLTm5wUUpFVjlUL2hFRkgveG1jS2hTamt2b25aQkR3TjZw?=
- =?utf-8?B?N3p4Skt0OWhEd3lYN0FwR0tmeWFObjMvaVlvNTdjZS85N0FzQTFLQ3pPcWYx?=
- =?utf-8?B?WUVQVG5zemg5QUg0UU95UnBsM1VsZlc1WEtZSTczTXBidzdBc2J6WmtBYkt1?=
- =?utf-8?B?alk2M3NBaVNlZFVWK1BGUWVIbUdiOGtyOXY3andXZ0xEckNUWmFRQlk1dGFL?=
- =?utf-8?B?TjlxTk9yZVZYaXQvZ3AxL0xab2hoYlZnVW1RUWx6VkM5RzZmQVN6YXRiRDE2?=
- =?utf-8?Q?8aoxAotfBDm1wAx1/uoJVJvNu?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L01Hb0dOYlA1Z2ZoWmdpS1o3TE9TdGQ0YUEzd3lwM0N3dVA1S0VCTVlUSnpr?=
+ =?utf-8?B?RUpRR3JpRG1DV1BXN0pIQnM4UEZIRzkxR1NSRUpZeW1yVm80cCtnVkVSeWxt?=
+ =?utf-8?B?Wk42cTYzRDk2ZWRheENhRlJvRmREdGdwOHhNZkVQcEJpSXJtak1aQ3dhbkpZ?=
+ =?utf-8?B?MVlXa3I1YTg3SUppQ2pLaEUvMHBnM0pwaXVnWVhnZEtveElWeGZXeXpoTy9v?=
+ =?utf-8?B?b2xxbFBzbjh5cytYVTdTOWZiRWRQWGVzcnowUWJyMmRrVHI2bVF1TVdDQTZN?=
+ =?utf-8?B?MHNHbVlEcGl0aXVXc0RvMGxWSVlKbUtBQzRWenltVmZHMzRtOXZpdVA3RTZa?=
+ =?utf-8?B?ajlwMkVEdlN2dmlEcEszM3Nva3h1VlpHdTNMemczei9UYjk3U3o0TXBlaEFG?=
+ =?utf-8?B?a25rMTlLM04wNk1DWlEwOVhPRHlxVzV4TVZpWmFJWVZoc2ljekNlazNpYS9r?=
+ =?utf-8?B?NUZhb3RaS29yUU44b3Nac1NLUGdWNWV5bUVuM09mSHdMdDFjMG44TTNmdnQy?=
+ =?utf-8?B?ZXA1OFVtdUNqbG83dmZVZEFWUE10TTB1NHJ6Uk1TMDhmVStURXJNbEtaL0J5?=
+ =?utf-8?B?Q0ZFcTE4SCtKTW9uRzNSQ2RiSE4wbG40QlAyd05WaVZCMEJxNDMyM3N0dEFF?=
+ =?utf-8?B?Y2pIWGRlS25hNVU4YmZnRGNYMldRYTVRbjVrMUJzNTBVeEtBU0pYUVVDbjQ2?=
+ =?utf-8?B?QUltMEY4eDJrS0VBQ2xuL3RDUWlNT2xPeVdkNTdIcTNNZUdmSXlLUWRTU3V4?=
+ =?utf-8?B?eWZ5Y3JXQ25RZzdIc2RudmpNeVpaY0lvWk5pMGZ4dU5NN2lsTTJQRlpDdmxF?=
+ =?utf-8?B?eldWUFZMdTlSbDFIVVRPMXhIK3htQWQzR1Q3QXd4UnpNdUlyRXlvUVpDakV2?=
+ =?utf-8?B?cGlNY09KemZqOTZ4TWlaYlJ6alZyNStaZ2F3UjZQZEM4cnZTT2JkQnRnc3FM?=
+ =?utf-8?B?QkEzVE5hR1VuK2FCb0lEZ3hoWk1EbVlNYW9WSUFnMThVeWwrQzFxNkVwYmc1?=
+ =?utf-8?B?cVFWM1YrVFByOTZRZjZYY0NXM05DdDN2S3luT0d1UHJuK29MM2RZTnh5V0Vv?=
+ =?utf-8?B?WnozVitxOUN6bGwydXJNaGFGU2hwN0pzQUxsYjRuMENoSTFFcDhoV1lpeEZY?=
+ =?utf-8?B?VXErWG1CVTlmSkdwN05iS0JnY0dkNUFqUTlhZUVLcFhBYUZ3QXJjT0VXckdB?=
+ =?utf-8?B?UEtXUjF2VW1aYzNqSWxMRXpLY0Y5QXlJSENaalRJZUcrUlRGZVpHbVlZOUJh?=
+ =?utf-8?B?UWMrcGdVOFU1SVJRV2lWUjd2UUxPZVovSEk5c3Vhc05qRnZ1RGxiWGQwSXNx?=
+ =?utf-8?B?UDg4OUxLQzhkUEYvYnJCU1BvTTF0TUhkWVdiRGRJaCtjaUZ1ZldFQS85enlo?=
+ =?utf-8?B?QXcrRFdXTW1pZjlsa2ZkNjk2Ym9odFoxNXJLazdZblE0YzdWUlIzTjl1eDhJ?=
+ =?utf-8?B?eEZlbWx4VlNPbk1xeEUrUTNka2tTTFM3MCtkZVNaQmZCSVYwY0dhYWpLaGNC?=
+ =?utf-8?B?VjZnLzJqZkx1SDRKQTZRbTZtR2NrQlkxZ3MyQUpHVlBFR25UdHhBSFNTZEZ3?=
+ =?utf-8?B?bWJpc1VnUHlRQTZ2Sk8zVlJOVHV4QnJkTXN0MVhoVXhleWhmcnNDSWFYczVR?=
+ =?utf-8?B?cVBQdno1Ris0dFc1WnJWYjFENUl3NUpEM096WlBxR1VuWldzRFFMaVBvQm03?=
+ =?utf-8?B?NkV5Mi9qVE9ZaEt4MXRvV0NQT1J2ZWw3clNIV3c5MVhpajdWdGZ4SG9JeDBw?=
+ =?utf-8?B?Z3gzc3ZzeVJsQ2VJTDE5bnUvZ05DZWhuUE1wa0lwQXd3a1pBcSs0S0dQMHZS?=
+ =?utf-8?B?YllnOFdMQXh6ZzhPNVpiKzVrRVptTXdXQmtCdTZWMXlTTkh2UUUrY1Vzenha?=
+ =?utf-8?B?U3Q1VHR0b3Z3L05DdWJKMmJvMTIyektXL1F5YkhpM2lyajd4YzhCZ2V0TkZL?=
+ =?utf-8?B?dkhGN0d4clJlbzdmcEpENFU0U21neWgrUldQbTYyWURFOFZESFZMT1pybEk3?=
+ =?utf-8?B?L0Z4aWhYcThhR1ZRYjNCTCtNSTJVbXluYjhMb0NaV005ZWk3TkdJMHA4Sk1E?=
+ =?utf-8?B?RzRDVUQ1dGx1aDZRNHl4NGJaQzhUODkrclROMWxxdGVTVTdDNXpkWjVlYit5?=
+ =?utf-8?Q?c7Aw3yCjOnn6l16/UzSogqjkh?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e41b636c-8221-4f5c-eb5f-08db835358f2
-X-MS-Exchange-CrossTenant-AuthSource: MW2PR12MB2379.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2fe34dac-e281-4089-4244-08db842fdd5d
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6165.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2023 03:43:40.5447
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2023 06:02:12.0226
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IANcZkwMl3OUdF+EyuyaNbbjjqoMg27MLxjFmqp3bSNbkPpgloa2osYDt4d6HqP2k4bQZvbObS2uDqXrVYOCew==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5675
+X-MS-Exchange-CrossTenant-UserPrincipalName: vEXI7XwZlsELiHgcGM60E2CBvJWif8bJoDgxUrZNI6GMkaux5npa+1nMXM0pkdU+6Cn0mJKOT9J0cZdT0U/vXA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5910
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hello Chenyu,
+Hello Mathieu,
 
-On 7/12/2023 10:49 PM, Chen Yu wrote:
-> On 2023-07-08 at 21:17:10 +0800, Chen Yu wrote:
->> On 2023-07-05 at 13:57:02 +0200, Peter Zijlstra wrote:
->>> On Fri, Jun 16, 2023 at 12:04:48PM +0530, K Prateek Nayak wrote:
->>>
->>> --- a/arch/x86/kernel/smpboot.c
->>> +++ b/arch/x86/kernel/smpboot.c
->>> @@ -596,7 +596,7 @@ static inline int x86_sched_itmt_flags(v
->>>  #ifdef CONFIG_SCHED_MC
->>>  static int x86_core_flags(void)
->>>  {
->>> -	return cpu_core_flags() | x86_sched_itmt_flags();
->>> +	return cpu_core_flags() | x86_sched_itmt_flags() | SD_IDLE_SIBLING;
->>>  }
->> I guess this flag might need to be added into the valid mask:
+On 6/22/2023 12:21 AM, Mathieu Desnoyers wrote:
+> On 6/21/23 12:36, Swapnil Sapkal wrote:
+>> Hello Mathieu,
 >>
->> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
->> index d3a3b2646ec4..4a563e9f7b10 100644
->> --- a/kernel/sched/topology.c
->> +++ b/kernel/sched/topology.c
->> @@ -1540,6 +1540,7 @@ static struct cpumask		***sched_domains_numa_masks;
->>  #define TOPOLOGY_SD_FLAGS		\
->>  	(SD_SHARE_CPUCAPACITY	|	\
->>  	 SD_SHARE_PKG_RESOURCES |	\
->> +	 SD_IDLE_SIBLING	|	\
->>  	 SD_NUMA		|	\
->>  	 SD_ASYM_PACKING)
->>>  #endif
->>>  #ifdef CONFIG_SCHED_SMT
->>> --- a/include/linux/sched/sd_flags.h
->>> +++ b/include/linux/sched/sd_flags.h
->>> @@ -161,3 +161,10 @@ SD_FLAG(SD_OVERLAP, SDF_SHARED_PARENT |
->>>   * NEEDS_GROUPS: No point in preserving domain if it has a single group.
->>>   */
->>>  SD_FLAG(SD_NUMA, SDF_SHARED_PARENT | SDF_NEEDS_GROUPS)
->>> +
->>> +/*
->>> + * Search for idle CPUs in sibling groups
->>> + *
->>> + * NEEDS_GROUPS: Load balancing flag.
->>> + */
->>> +SD_FLAG(SD_IDLE_SIBLING, SDF_NEEDS_GROUPS)
->>> --- a/kernel/sched/fair.c
->>> +++ b/kernel/sched/fair.c
->>> @@ -7046,6 +7046,38 @@ static int select_idle_cpu(struct task_s
->>>  }
->>>  
->>>  /*
->>> + * For the multiple-LLC per node case, make sure to try the other LLC's if the
->>> + * local LLC comes up empty.
->>> + */
->>> +static int
->>> +select_idle_node(struct task_struct *p, struct sched_domain *sd, int target)
->>> +{
->>> +	struct sched_domain *parent = sd->parent;
->>> +	struct sched_group *sg;
->>> +
->>> +	/* Make sure to not cross nodes. */
->>> +	if (!parent || parent->flags & SD_NUMA)
->>> +		return -1;
->>> +
->>> +	sg = parent->groups;
->>> +	do {
->>> +		int cpu = cpumask_first(sched_group_span(sg));
->>> +		struct sched_domain *sd_child = per_cpu(sd_llc, cpu);
+> [...]
 >>>
->> I wonder if we can use rcu_dereference() in case the cpu hotplug
->> changes the content sd_llc points to. (I'm still thinking of the
->> symptom you described here:)
->> https://lore.kernel.org/lkml/20230605190746.GX83892@hirez.programming.kicks-ass.net/
+>>> I suspect the regression is caused by the mm_count cache line bouncing.
+>>>
+>>> Please try with this additional patch applied:
+>>>
+>>> https://lore.kernel.org/lkml/20230515143536.114960-1-mathieu.desnoyers@efficios.com/
 >>
->> I'll launch some tests with this version on Sapphire Rapids(and with/without LLC-split hack patch).
+>> Thanks for the suggestion. I tried out with the patch you suggested. I am seeing
+>> improvement in hackbench numbers with mm_count padding. But this is not matching
+>> with what we achieved through reverting the new mm_cid patch.
+>>
+>> Below are the results on the 1 Socket 4th Generation EPYC Processor (1 x 96C/192T):
+>>
+>> Threads:
+>>
+>> Test:              Base (v6.4-rc1)   Base + new_mmcid_reverted  Base + mm_count_padding
+>>   1-groups:         5.23 (0.00 pct)         4.61 (11.85 pct)        5.11 (2.29 pct)
+>>   2-groups:         4.99 (0.00 pct)         4.72 (5.41 pct)         5.00 (-0.20 pct)
+>>   4-groups:         5.96 (0.00 pct)         4.87 (18.28 pct)        5.86 (1.67 pct)
+>>   8-groups:         6.58 (0.00 pct)         5.44 (17.32 pct)        6.20 (5.77 pct)
+>> 16-groups:        11.48 (0.00 pct)         8.07 (29.70 pct)       10.68 (6.96 pct)
+>>
+>> Processes:
+>>
+>> Test:              Base (v6.4-rc1)  Base + new_mmcid_reverted   Base + mm_count_padding
+>>   1-groups:         5.19 (0.00 pct)         4.90 (5.58 pct)         5.19 (0.00 pct)
+>>   2-groups:         5.44 (0.00 pct)         5.39 (0.91 pct)         5.39 (0.91 pct)
+>>   4-groups:         5.69 (0.00 pct)         5.64 (0.87 pct)         5.64 (0.87 pct)
+>>   8-groups:         6.08 (0.00 pct)         6.01 (1.15 pct)         6.04 (0.65 pct)
+>> 16-groups:        10.87 (0.00 pct)        10.83 (0.36 pct)        10.93 (-0.55 pct)
+>>
+>> The ibs profile shows that function __switch_to_asm() is coming at top in baseline
+>> run and is not seen with mm_count padding patch. Will be attaching full ibs profile
+>> data for all the 3 runs:
+>>
+>> # Base (v6.4-rc1)
+>> Threads:
+>> Total time: 11.486 [sec]
+>>
+>>     5.15%  sched-messaging  [kernel.vmlinux]      [k] __switch_to_asm
+>>     4.31%  sched-messaging  [kernel.vmlinux]      [k] copyout
+>>     4.29%  sched-messaging  [kernel.vmlinux]      [k] native_queued_spin_lock_slowpath
+>>     4.22%  sched-messaging  [kernel.vmlinux]      [k] copyin
+>>     3.92%  sched-messaging  [kernel.vmlinux]      [k] apparmor_file_permission
+>>     2.91%  sched-messaging  [kernel.vmlinux]      [k] __schedule
+>>     2.34%  swapper          [kernel.vmlinux]      [k] __switch_to_asm
+>>     2.10%  sched-messaging  [kernel.vmlinux]      [k] prepare_to_wait_event
+>>     2.10%  sched-messaging  [kernel.vmlinux]      [k] try_to_wake_up
+>>     2.07%  sched-messaging  [kernel.vmlinux]      [k] finish_task_switch.isra.0
+>>     2.00%  sched-messaging  [kernel.vmlinux]      [k] pipe_write
+>>     1.82%  sched-messaging  [kernel.vmlinux]      [k] check_preemption_disabled
+>>     1.73%  sched-messaging  [kernel.vmlinux]      [k] exit_to_user_mode_prepare
+>>     1.52%  sched-messaging  [kernel.vmlinux]      [k] __entry_text_start
+>>     1.49%  sched-messaging  [kernel.vmlinux]      [k] osq_lock
+>>     1.45%  sched-messaging  libc.so.6             [.] write
+>>     1.44%  swapper          [kernel.vmlinux]      [k] native_sched_clock
+>>     1.38%  sched-messaging  [kernel.vmlinux]      [k] psi_group_change
+>>     1.38%  sched-messaging  [kernel.vmlinux]      [k] pipe_read
+>>     1.37%  sched-messaging  libc.so.6             [.] read
+>>     1.06%  sched-messaging  [kernel.vmlinux]      [k] vfs_read
+>>     1.01%  swapper          [kernel.vmlinux]      [k] psi_group_change
+>>     1.00%  sched-messaging  [kernel.vmlinux]      [k] update_curr
+>>
+>> # Base + mm_count_padding
+>> Threads:
+>> Total time: 11.384 [sec]
+>>
+>>     4.43%  sched-messaging  [kernel.vmlinux]         [k] copyin
+>>     4.39%  sched-messaging  [kernel.vmlinux]         [k] native_queued_spin_lock_slowpath
+>>     4.07%  sched-messaging  [kernel.vmlinux]         [k] apparmor_file_permission
+>>     4.07%  sched-messaging  [kernel.vmlinux]         [k] copyout
+>>     2.49%  sched-messaging  [kernel.vmlinux]         [k] entry_SYSCALL_64
+>>     2.37%  sched-messaging  [kernel.vmlinux]         [k] update_cfs_group
+>>     2.19%  sched-messaging  [kernel.vmlinux]         [k] pipe_write
+>>     2.00%  sched-messaging  [kernel.vmlinux]         [k] check_preemption_disabled
+>>     1.93%  swapper          [kernel.vmlinux]         [k] update_load_avg
+>>     1.81%  sched-messaging  [kernel.vmlinux]         [k] exit_to_user_mode_prepare
+>>     1.69%  sched-messaging  [kernel.vmlinux]         [k] try_to_wake_up
+>>     1.58%  sched-messaging  libc.so.6                [.] write
+>>     1.53%  sched-messaging  [kernel.vmlinux]         [k] psi_group_change
+>>     1.50%  sched-messaging  libc.so.6                [.] read
+>>     1.50%  sched-messaging  [kernel.vmlinux]         [k] pipe_read
+>>     1.39%  sched-messaging  [kernel.vmlinux]         [k] update_load_avg
+>>     1.39%  sched-messaging  [kernel.vmlinux]         [k] osq_lock
+>>     1.30%  sched-messaging  [kernel.vmlinux]         [k] update_curr
+>>     1.28%  swapper          [kernel.vmlinux]         [k] psi_group_change
+>>     1.16%  sched-messaging  [kernel.vmlinux]         [k] vfs_read
+>>     1.12%  sched-messaging  [kernel.vmlinux]         [k] vfs_write
+>>     1.10%  sched-messaging  [kernel.vmlinux]         [k] entry_SYSRETQ_unsafe_stack
+>>     1.09%  sched-messaging  [kernel.vmlinux]         [k] __switch_to_asm
+>>     1.08%  sched-messaging  [kernel.vmlinux]         [k] do_syscall_64
+>>     1.06%  sched-messaging  [kernel.vmlinux]         [k] select_task_rq_fair
+>>     1.03%  swapper          [kernel.vmlinux]         [k] update_cfs_group
+>>     1.00%  swapper          [kernel.vmlinux]         [k] rb_insert_color
+>>
+>> # Base + reverted_new_mm_cid
+>> Threads:
+>> Total time: 7.847 [sec]
+>>
+>>    12.14%  sched-messaging  [kernel.vmlinux]      [k] native_queued_spin_lock_slowpath
+>>     8.86%  swapper          [kernel.vmlinux]      [k] native_queued_spin_lock_slowpath
+>>     6.13%  sched-messaging  [kernel.vmlinux]      [k] copyin
+>>     5.54%  sched-messaging  [kernel.vmlinux]      [k] apparmor_file_permission
+>>     3.59%  sched-messaging  [kernel.vmlinux]      [k] copyout
+>>     2.61%  sched-messaging  [kernel.vmlinux]      [k] osq_lock
+>>     2.48%  sched-messaging  [kernel.vmlinux]      [k] pipe_write
+>>     2.33%  sched-messaging  [kernel.vmlinux]      [k] exit_to_user_mode_prepare
+>>     2.01%  sched-messaging  [kernel.vmlinux]      [k] check_preemption_disabled
+>>     1.96%  sched-messaging  [kernel.vmlinux]      [k] __entry_text_start
+>>     1.91%  sched-messaging  libc.so.6             [.] write
+>>     1.77%  sched-messaging  libc.so.6             [.] read
+>>     1.64%  sched-messaging  [kernel.vmlinux]      [k] mutex_spin_on_owner
+>>     1.58%  sched-messaging  [kernel.vmlinux]      [k] pipe_read
+>>     1.52%  sched-messaging  [kernel.vmlinux]      [k] try_to_wake_up
+>>     1.38%  sched-messaging  [kernel.vmlinux]      [k] ktime_get_coarse_real_ts64
+>>     1.35%  sched-messaging  [kernel.vmlinux]      [k] vfs_write
+>>     1.28%  sched-messaging  [kernel.vmlinux]      [k] entry_SYSRETQ_unsafe_stack
+>>     1.28%  sched-messaging  [kernel.vmlinux]      [k] vfs_read
+>>     1.25%  sched-messaging  [kernel.vmlinux]      [k] do_syscall_64
+>>     1.22%  sched-messaging  [kernel.vmlinux]      [k] __fget_light
+>>     1.18%  sched-messaging  [kernel.vmlinux]      [k] mutex_lock
+>>     1.12%  sched-messaging  [kernel.vmlinux]      [k] file_update_time
+>>     1.04%  sched-messaging  [kernel.vmlinux]      [k] _copy_from_iter
+>>     1.01%  sched-messaging  [kernel.vmlinux]      [k] current_time
+>>
+>> So with the reverted new_mm_cid patch, we are seeing a lot of time being spent in
+>> native_queued_spin_lock_slowpath and yet, hackbench finishes faster.
+>>
+>> I keep further digging into this please let me know if you have any pointers for me.
 > 
-> Tested on Sapphire Rapids, which has 2 x 56C/112T and 224 CPUs in total. C-states
-> deeper than C1E are disabled. Turbo is disabled. CPU frequency governor is performance.
-> 
-> The baseline is v6.4-rc1 tip:sched/core, on top of
-> commit 637c9509f3db ("sched/core: Avoid multiple calling update_rq_clock() in __cfsb_csd_unthrottle()")
-> 
-> patch0: this SD_IDLE_SIBLING patch with above change to TOPOLOGY_SD_FLAGS
-> patch1: hack patch to split 1 LLC domain into 4 smaller LLC domains(with some fixes on top of
->         https://lore.kernel.org/lkml/ZJKjvx%2FNxooM5z1Y@chenyu5-mobl2.ccr.corp.intel.com/)
->         The test data in above link is invalid due to bugs in the hack patch, fixed in this version)
-> 
-> 
-> Baseline vs Baseline+patch0:
-> There is no much difference between the two, and it is expected because Sapphire Rapids
-> does not have multiple LLC domains within 1 Numa node(also consider the run to run variation):
-> 
-> hackbench
-> =========
-> case            	load    	baseline(std%)	compare%( std%)
-> process-pipe    	1-groups	 1.00 (  2.66)	+13.84 ( 12.80)
-> process-pipe    	2-groups	 1.00 (  3.67)	 -8.37 (  2.33)
-> process-pipe    	4-groups	 1.00 (  6.45)	 +4.17 (  6.36)
-> process-pipe    	8-groups	 1.00 (  1.69)	 +2.28 (  1.72)
-> process-sockets 	1-groups	 1.00 (  1.73)	 +0.61 (  0.69)
-> process-sockets 	2-groups	 1.00 (  2.68)	 -2.20 (  0.55)
-> process-sockets 	4-groups	 1.00 (  0.03)	 -0.34 (  0.17)
-> process-sockets 	8-groups	 1.00 (  0.09)	 -0.28 (  0.09)
-> threads-pipe    	1-groups	 1.00 (  2.42)	 +6.95 (  3.86)
-> threads-pipe    	2-groups	 1.00 (  2.26)	 +2.68 (  6.56)
-> threads-pipe    	4-groups	 1.00 (  5.08)	 +3.57 (  4.61)
-> threads-pipe    	8-groups	 1.00 (  7.89)	 -2.52 (  3.45)
-> threads-sockets 	1-groups	 1.00 (  1.15)	 +0.87 (  3.13)
-> threads-sockets 	2-groups	 1.00 (  0.63)	 -0.02 (  1.27)
-> threads-sockets 	4-groups	 1.00 (  0.27)	 +0.29 (  0.17)
-> threads-sockets 	8-groups	 1.00 (  0.07)	 -0.42 (  0.40)
-> 
-> netperf
-> =======
-> case            	load    	baseline(std%)	compare%( std%)
-> TCP_RR          	56-threads	 1.00 (  2.56)	 -0.25 (  3.27)
-> TCP_RR          	112-threads	 1.00 (  2.26)	 +0.04 (  2.18)
-> TCP_RR          	168-threads	 1.00 (  0.81)	 +0.01 (  0.74)
-> TCP_RR          	224-threads	 1.00 (  0.65)	 +0.04 (  0.66)
-> TCP_RR          	280-threads	 1.00 ( 64.56)	+69.47 ( 56.78)
-> TCP_RR          	336-threads	 1.00 ( 20.39)	 +0.08 ( 19.58)
-> TCP_RR          	392-threads	 1.00 ( 31.63)	 +0.17 ( 31.08)
-> TCP_RR          	448-threads	 1.00 ( 39.72)	 -0.14 ( 39.14)
-> UDP_RR          	56-threads	 1.00 (  8.94)	 -0.71 ( 12.03)
-> UDP_RR          	112-threads	 1.00 ( 18.72)	 +0.78 ( 16.71)
-> UDP_RR          	168-threads	 1.00 ( 11.39)	 -0.18 (  8.34)
-> UDP_RR          	224-threads	 1.00 (  9.02)	 +0.81 ( 11.47)
-> UDP_RR          	280-threads	 1.00 ( 15.87)	 -0.12 ( 12.87)
-> UDP_RR          	336-threads	 1.00 ( 39.89)	 +2.25 ( 32.35)
-> UDP_RR          	392-threads	 1.00 ( 28.17)	 +3.47 ( 25.99)
-> UDP_RR          	448-threads	 1.00 ( 58.68)	 +0.35 ( 56.16)
-> 
-> tbench
-> ======
-> case            	load    	baseline(std%)	compare%( std%)
-> loopback        	56-threads	 1.00 (  0.94)	 +0.24 (  0.69)
-> loopback        	112-threads	 1.00 (  0.19)	 +0.18 (  0.25)
-> loopback        	168-threads	 1.00 ( 52.17)	 -1.42 ( 50.95)
-> loopback        	224-threads	 1.00 (  0.86)	 -0.38 (  0.19)
-> loopback        	280-threads	 1.00 (  0.12)	 -0.28 (  0.17)
-> loopback        	336-threads	 1.00 (  0.10)	 -0.33 (  0.19)
-> loopback        	392-threads	 1.00 (  0.27)	 -0.49 (  0.26)
-> loopback        	448-threads	 1.00 (  0.06)	 -0.88 (  0.59)
-> 
-> schbench
-> ========
-> case            	load    	baseline(std%)	compare%( std%)
-> normal          	1-mthreads	 1.00 (  0.72)	 -1.47 (  0.41)
-> normal          	2-mthreads	 1.00 (  1.66)	 +1.18 (  2.63)
-> normal          	4-mthreads	 1.00 (  1.12)	 +1.20 (  4.52)
-> normal          	8-mthreads	 1.00 ( 11.03)	 -3.87 (  5.14)
-> 
-> 
-> Baseline+patch1    vs    Baseline+patch0+patch1:
-> 
-> With multiple LLC domains in 1 Numa node, SD_IDLE_SIBLING brings improvement
-> to hackbench/schbench, while brings downgrading to netperf/tbench. This is aligned
-> with what was observed previously, if the waker and wakee wakes up each other
-> frequently, they would like to be put together for cache locality. While for
-> other tasks do not have shared resource, always choosing an idle CPU is better.
-> Maybe in the future we can look back at SIS_SHORT and terminates scan in
-> select_idle_node() if the waker and wakee have close relationship with
-> each other.
+> Do you have CONFIG_SECURITY_APPARMOR=y ? Can you try without ?
+>  
+Sorry for the delay in response. My system was busy running some workloads. I tried
+running hackbench disabling apparmor, looks like apparmor is not the culprit here.
+Below are the results with apparmor disabled:
 
-Gautham and I were discussing this and realized that when calling
-ttwu_queue_wakelist(), in a simulated split-LLC case, ttwu_queue_cond()
-will recommend using the wakelist and send an IPI despite the
-groups of the DIE domain sharing the cache in your case.
+Test:                   Base            Base + Reverted_new_mmcid   Base+Apparmour_disabled
+  1-groups:         2.81 (0.00 pct)         2.79 (0.71 pct)              2.79 (0.71 pct)
+  2-groups:         3.25 (0.00 pct)         3.25 (0.00 pct)              3.20 (1.53 pct)
+  4-groups:         3.44 (0.00 pct)         3.28 (4.65 pct)              3.43 (0.29 pct)
+  8-groups:         3.52 (0.00 pct)         3.42 (2.84 pct)              3.53 (-0.28 pct)
+16-groups:         5.65 (0.00 pct)         4.52 (20.00 pct)             5.67 (-0.35 pct)
 
-Can you check if the following change helps the regression?
-(Note: Completely untested and there may be other such cases lurking
-around that we've not yet considered)
+Thanks,
+Swapnil
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index a68d1276bab0..a8cab1c81aca 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3929,7 +3929,7 @@ static inline bool ttwu_queue_cond(struct task_struct *p, int cpu)
- 	 * If the CPU does not share cache, then queue the task on the
- 	 * remote rqs wakelist to avoid accessing remote data.
- 	 */
--	if (!cpus_share_cache(smp_processor_id(), cpu))
-+	if (cpu_to_node(smp_processor_id()) !=  cpu_to_node(cpu))
- 		return true;
- 
- 	if (cpu == smp_processor_id())
---
-
+> I notice that apparmor_file_permission appears near the top of your
+> profiles, and apparmor uses an internal aa_buffers_lock spinlock,
+> which could possibly explain the top hits for
+> native_queued_spin_lock_slowpath. My current suspicion is that
+> the raw spinlock that was taken by "Base + reverted_new_mm_cid"
+> changed the contention pattern on the apparmor lock enough to
+> speed things up by pure accident.
+> 
+> Thanks,
+> 
+> Mathieu
 > 
 > 
-> hackbench
-> =========
-> case            	load    	baseline(std%)	compare%( std%)
-> process-pipe    	1-groups	 1.00 (  0.25)	+31.65 (  6.77)
-> process-pipe    	2-groups	 1.00 (  0.28)	+29.50 (  5.35)
-> process-pipe    	4-groups	 1.00 (  0.08)	+16.77 (  1.30)
-> process-pipe    	8-groups	 1.00 (  0.20)	 -5.18 (  0.04)
-> process-sockets 	1-groups	 1.00 (  0.23)	+13.68 (  1.28)
-> process-sockets 	2-groups	 1.00 (  0.16)	+11.18 (  1.87)
-> process-sockets 	4-groups	 1.00 (  0.23)	 -0.06 (  0.21)
-> process-sockets 	8-groups	 1.00 (  0.36)	 +2.34 (  0.15)
-> threads-pipe    	1-groups	 1.00 (  5.23)	+16.38 ( 12.10)
-> threads-pipe    	2-groups	 1.00 (  1.63)	+28.52 (  5.17)
-> threads-pipe    	4-groups	 1.00 (  0.77)	+23.28 (  2.42)
-> threads-pipe    	8-groups	 1.00 (  2.27)	 +2.35 (  5.75)
-> threads-sockets 	1-groups	 1.00 (  2.31)	 +0.42 (  1.68)
-> threads-sockets 	2-groups	 1.00 (  0.56)	 +3.98 (  0.65)
-> threads-sockets 	4-groups	 1.00 (  0.12)	 +0.29 (  0.32)
-> threads-sockets 	8-groups	 1.00 (  0.86)	 +1.92 (  0.27)
+>>
+>>>
+>>> This patch has recently been merged into the mm tree.
+>>>
+>>> Thanks,
+>>>
+>>> Mathieu
+>>>
+>> -- 
+>> Thanks and Regards,
+>> Swapnil
 > 
-> netperf
-> =======
-> case            	load    	baseline(std%)	compare%( std%)
-> TCP_RR          	56-threads	 1.00 ( 12.46)	 -1.62 ( 12.14)
-> TCP_RR          	112-threads	 1.00 (  1.34)	 -0.16 (  1.42)
-> TCP_RR          	168-threads	 1.00 (  6.26)	 -0.88 (  6.08)
-> TCP_RR          	224-threads	 1.00 (  2.19)	-90.18 (  6.12)
-> TCP_RR          	280-threads	 1.00 ( 12.27)	-63.81 ( 74.25)
-> TCP_RR          	336-threads	 1.00 ( 29.28)	 -6.21 ( 18.48)
-> TCP_RR          	392-threads	 1.00 ( 39.39)	 -3.87 ( 26.63)
-> TCP_RR          	448-threads	 1.00 ( 47.45)	 -2.34 ( 32.37)
-> UDP_RR          	56-threads	 1.00 (  3.28)	 -0.31 (  2.81)
-> UDP_RR          	112-threads	 1.00 (  7.03)	 +0.55 (  7.03)
-> UDP_RR          	168-threads	 1.00 ( 17.42)	 -0.51 ( 15.63)
-> UDP_RR          	224-threads	 1.00 ( 20.79)	-68.28 ( 14.32)
-> UDP_RR          	280-threads	 1.00 ( 26.23)	-68.58 ( 18.60)
-> UDP_RR          	336-threads	 1.00 ( 38.99)	 -0.55 ( 21.19)
-> UDP_RR          	392-threads	 1.00 ( 44.22)	 -1.91 ( 27.44)
-> UDP_RR          	448-threads	 1.00 ( 55.11)	 -2.74 ( 38.55)
-> 
-> tbench
-> ======
-> case            	load    	baseline(std%)	compare%( std%)
-> loopback        	56-threads	 1.00 (  2.69)	 -2.30 (  2.69)
-> loopback        	112-threads	 1.00 (  1.92)	 +0.62 (  1.46)
-> loopback        	168-threads	 1.00 (  0.97)	-67.69 (  0.06)
-> loopback        	224-threads	 1.00 (  0.24)	 -6.79 (  8.81)
-> loopback        	280-threads	 1.00 (  0.10)	 +0.47 (  0.62)
-> loopback        	336-threads	 1.00 (  0.85)	 -0.05 (  0.05)
-> loopback        	392-threads	 1.00 (  0.62)	 +0.77 (  0.50)
-> loopback        	448-threads	 1.00 (  0.36)	 +0.77 (  0.77)
-> 
-> schbench
-> ========
-> case            	load    	baseline(std%)	compare%( std%)
-> normal          	1-mthreads	 1.00 (  0.82)	 +1.44 (  1.24)
-> normal          	2-mthreads	 1.00 (  2.13)	 +1.16 (  0.41)
-> normal          	4-mthreads	 1.00 (  3.82)	 -0.30 (  1.48)
-> normal          	8-mthreads	 1.00 (  4.80)	+22.43 ( 13.03)
-> 
-> But since the multiple LLC is just a simulation on Intel platform for now,
-> the patch is ok and:
-> 
-> Tested-by: Chen Yu <yu.c.chen@intel.com>
-> 
-> thanks,
-> Chenyu
-
---
-Thanks and Regards,
-Prateek
