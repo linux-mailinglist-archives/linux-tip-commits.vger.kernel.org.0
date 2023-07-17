@@ -2,156 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FBE07558F7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jul 2023 03:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 771E1756373
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jul 2023 14:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229868AbjGQBJl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 16 Jul 2023 21:09:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33224 "EHLO
+        id S230053AbjGQM40 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Jul 2023 08:56:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229710AbjGQBJk (ORCPT
+        with ESMTP id S229732AbjGQM40 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 16 Jul 2023 21:09:40 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1FE91B4;
-        Sun, 16 Jul 2023 18:09:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689556179; x=1721092179;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=VMYttp+OsKD42PIdqaXkxOwWLWULv3BDQ5DaFXpoEBk=;
-  b=Y8jh4zh7+lWKYzDIPFJYUt05a4f4sAd7hgn7z6yU5mw3qlkf22kqflvA
-   gE/L2Tqlc+d8IRrSD10c+XbdbvK/bq4adxKYJ2P0IVKmMqCS7JfwDxeNY
-   qjCiGRflLzlTbgjpUtte+cGHiyP9BUv4Ksek2b/bBd142TDhqqgSfYGNc
-   pMW00+c5LgdmyA6hKe1cKneMkat15FmTFGXsbHogNrvlTV3FzvbWWiISL
-   VRvREaGaWpWtzo65d/mJ19cBHh86ejEnwOpMkiJnFf9ZcTzbq0R6etnBn
-   BbnP3DuxWdN/WDAcqkAxtSe4AebvUOgiovtPovOdFkCRTfpqEhGD/a+fJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10773"; a="365860304"
-X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
-   d="scan'208";a="365860304"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2023 18:09:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10773"; a="847106120"
-X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
-   d="scan'208";a="847106120"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orsmga004.jf.intel.com with ESMTP; 16 Jul 2023 18:09:31 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Sun, 16 Jul 2023 18:09:31 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Sun, 16 Jul 2023 18:09:30 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Sun, 16 Jul 2023 18:09:30 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Sun, 16 Jul 2023 18:09:30 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RjOUgALtOFzeV7XjMZ6Q3gQIheKTGp9lq7roSlWTj+CxxlOTOJDZ0oyutCSw3MXY5Y2bvbnGXvsnk//R28v6So2Z48/GrE8YEnjHTNMv6/59JgKdjK21Slgyna9Y1/tBPhLampFD4tzVc1w2kBrciuDV1nukIYBBN5vThRTLc4jtmpiyhvrIGrlUoRa33qy6YE9nfJndltNEsWjkbEtmrAQ3wsoXSMBntuFttaiL+6Ks23jjH4ZSQ40Gbc3m6DWz1PxnjWsh6D45pAkpOZvWT3WP3ukd1jurREz87wDsRibThjfJN/AD3bhf53tB+ek9agbyNZr08lN+QR7d028udw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A9wboGPtbgUP4kPS5pTlGr7T+ABRSfyUaI9U/QJsnsY=;
- b=GG9M0/PV1xJJvfWH2X+wZyDV1pCxgB1xQ653Xp+EQaWYpO6reRdncenNbcgebwkTsDyL0G7A69QLlr5ksms8QgpCB0vhyZdKgAxuMA1WUclmLx4Hbnqt8794opy1Me+LTnWqUEtXHIMKVHXU5h4RntEg4LKiZOhGYN6OfziXRF34e754kHOLf+LHMugcaER/LYWmHyXDTOCTxn89fi/NcCwdTidjfkt4CoNvR/fgDN3Nsynjyro3e/VQxVEOgUrXTmMFscb1fun81VI9nY+pn1aWebVLKdi/U721mZxpa+NFDI5Yeyzo4DH1CkD+h3Cry0UvmouW/uq36TUFLZ9eZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN0PR11MB6206.namprd11.prod.outlook.com (2603:10b6:208:3c6::8)
- by CH0PR11MB5299.namprd11.prod.outlook.com (2603:10b6:610:be::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Mon, 17 Jul
- 2023 01:09:29 +0000
-Received: from MN0PR11MB6206.namprd11.prod.outlook.com
- ([fe80::d9d9:1535:1180:603a]) by MN0PR11MB6206.namprd11.prod.outlook.com
- ([fe80::d9d9:1535:1180:603a%2]) with mapi id 15.20.6588.031; Mon, 17 Jul 2023
- 01:09:29 +0000
-Date:   Mon, 17 Jul 2023 09:09:12 +0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     K Prateek Nayak <kprateek.nayak@amd.com>
-CC:     Peter Zijlstra <peterz@infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-tip-commits@vger.kernel.org>, Tejun Heo <tj@kernel.org>,
-        Tim Chen <tim.c.chen@intel.com>, <x86@kernel.org>,
-        Gautham Shenoy <gautham.shenoy@amd.com>
-Subject: Re: [tip: sched/core] sched/fair: Multi-LLC select_idle_sibling()
-Message-ID: <ZLSUuEdwDQ2lbR/Z@chenyu5-mobl2>
-References: <20230601144706.GA559454@hirez.programming.kicks-ass.net>
- <7bee9860-2d2a-067b-adea-04012516095c@amd.com>
- <20230602065438.GB620383@hirez.programming.kicks-ass.net>
- <bd083d8d-023a-698e-701b-725f1b15766e@amd.com>
- <20230613082536.GI83892@hirez.programming.kicks-ass.net>
- <f212f491-cd3f-6eee-20d7-8f9ab8937902@amd.com>
- <20230705115702.GY4253@hirez.programming.kicks-ass.net>
- <ZKlh1u2kkHzHY/nB@chenyu5-mobl2>
- <ZK7groqlP3S7r8vt@chenyu5-mobl2>
- <8702a92f-317e-c38f-48ec-5ac373ba5072@amd.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <8702a92f-317e-c38f-48ec-5ac373ba5072@amd.com>
-X-ClientProxiedBy: SG3P274CA0023.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::35)
- To MN0PR11MB6206.namprd11.prod.outlook.com (2603:10b6:208:3c6::8)
+        Mon, 17 Jul 2023 08:56:26 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C46AB10D8;
+        Mon, 17 Jul 2023 05:56:03 -0700 (PDT)
+Date:   Mon, 17 Jul 2023 12:55:57 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1689598558;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=SgZqW9RddXgn6IwxLivsXd52mIhpbSLafU3rkUx1N30=;
+        b=j+cuzMj0CMvtUtJQrIT6YSy8uQWJWPZvdACdvhjXxidNByJty1j8svt5WJTLvzXsVI+kcQ
+        q/ZXeByNlHJmVFU/LOlpOkCPs1wV2tAwCJVe3f74WNymEgZ7NLiunBVVhV+IkhX/8HkvRO
+        R+8Po5wBTT8Qs54HkHQ2jGcl4XiC5Yw8fhVnL5s61zPwBhWdnVm+/eyn64mhrzHTOvza3L
+        ypLkwYTXVvXcy0oKN0OltRsCd0vU757FINpnDOaLi9Hmw7PI9tJ4pw/z1kGnE55NgMQqFD
+        vmmiEAk4V3H4eA7R91/ehJxCjqWl7LKAHoDBh1N6HfVTAiQ/k7N3qpuMevstPQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1689598558;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=SgZqW9RddXgn6IwxLivsXd52mIhpbSLafU3rkUx1N30=;
+        b=ue9V4T5DzREyj5MPEmwnAG2AAeocGsTgjSvDlWRz314YgW5mnYOpp47ua7uCWBwqL3tftA
+        +kPmL3cYBxyYpDBg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/urgent] locking/rtmutex: Fix task->pi_waiters integrity
+Cc:     Henry Wu <triangletrap12@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR11MB6206:EE_|CH0PR11MB5299:EE_
-X-MS-Office365-Filtering-Correlation-Id: da40eebf-a71c-42be-56cc-08db8662785b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: FONn0If7un/2W5WYThp9byRYr6d0Rmhh/Bc5XqtHBDTErC1vbIAEWoXxZD8K3mG7lcWqzJhS06WAXQS/OPoBOIhRZ71U8Nwlq10xXXqD+ImHqioK0wcbkj+Bq5JfsAlwr0+zj/0aIPnT8sNpCzDhDo4gTG896/ZBc+a5g4mSfBIT+WqTuA6FCfqpgKM6Cc8NAQefSH5sWYdPXgnIEDExq+m915MHCTyOUQGahwTLcy1kP9raqzhKoXR2oo5LI7qid8TmXquP7gdNt1VtRvud+UbCBTXZyS21UNuSl5qSXJqdKADzP1LNaM8mzF2VUE9qsWFDG/TxW92oCmUF+7Bb9/P6OTZEwi/8Z/F2aA6qX3SlyU6Prpsro8x2bYpS8ewHvGCSJHH2Wze8mDLetJYfVGCbl75JLxf08zMZ9F1PwzandyrhbxQTTZ9CSltfSrohZNDIpJVb0UjzYKjXxexeLVniAXYAoT8aBOdVm20v9zG9CFwyiu7PvuhsyMDsixytIkr+KV5VvF3ALgLEQ7XoJF9J8z/VeoTfEXsCknpzT/4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB6206.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(346002)(396003)(136003)(366004)(376002)(39860400002)(451199021)(54906003)(6666004)(82960400001)(38100700002)(6486002)(478600001)(41300700001)(8676002)(5660300002)(8936002)(66556008)(316002)(66946007)(66476007)(6916009)(4326008)(186003)(83380400001)(6512007)(966005)(53546011)(9686003)(26005)(6506007)(86362001)(33716001)(2906002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?yvTr6bitgYkafYbYPOolJB85UCGHRfCsudpRkeHPFwSHfi7ey8JpzcPUKi1O?=
- =?us-ascii?Q?GXmES/CEkMlpk775kCajPgq/QebfBPx8drxKmKuGhX8+aVdMNRXeXYTLfnlX?=
- =?us-ascii?Q?v5nZvHbRzvQZ33UA00oFt0AJYmZY6zub0BgcXULPkUQp16rnbL1myr9fB85W?=
- =?us-ascii?Q?TIeBv/4SOI+lNgytMYq/Du/LXGzOqw8lRWo7KeopbM4Dv6JwK2pb1gNBN4UJ?=
- =?us-ascii?Q?59NWSGMpj59eoXFqsasRCpqF8LEbkMS8XGjx6vccPBaZLyz9yp1EyDS1ggZv?=
- =?us-ascii?Q?RAmfX109d7xa2DrBbxAzjRPjT59lMM+Mj+4Dly3rIhcQXLl29y2OVEfUzifP?=
- =?us-ascii?Q?Fxl3bmNyRzRB7o2DwNJeJ9z6g64HDBE/XVyyYLiByCe6XtZFk5jr9GYyqkOy?=
- =?us-ascii?Q?pTYOawfqObc+d0HsxCbZELRad2yphegLUuwM2soPWENZ/HYd+edL1D778ceK?=
- =?us-ascii?Q?fnn22unBXL5qNRdI9LTpNQZ18Dug5OMDbb5CHlLKwzsh6uVVDgSa6NQXNCf7?=
- =?us-ascii?Q?3qdPmB1qascgqmmu65cQpcGwTvt0y+Y2cupZAB5gtJCzHJlDAc2pG2GHEtDe?=
- =?us-ascii?Q?DWXWYa8cL5ybWOHBeDBLeV/iyzT0+Qe3YuC1BrvnC+CRD3zuLQepxp4CkXvm?=
- =?us-ascii?Q?MN7xfrHE0Ir2kzfKG+37D8OlJAnOtmIr96HP6gy0SnaP7H4KkYP8X1AlWPNP?=
- =?us-ascii?Q?FRf9YefCiBEAAEWESo96dbuN9/F0EDEfzAN1EP1AAKcrqtVcJ2ckJtnNAUua?=
- =?us-ascii?Q?z/7vzCbva1DJhdtZ/zQPgj80PQB01XTTlu7GZs19gNziVYW7WI6AQByIwMGD?=
- =?us-ascii?Q?vPmPSP3h/+4EANCaotXS+cQuVt4M30XXIMAeNr4Q+rf4ubQQz71mdrXjgLnh?=
- =?us-ascii?Q?I2xknxZHm29j2+bKDwaONzck8bjDAXSP/GOVAMPrXAqTtt1sXP9UgcVM+RF2?=
- =?us-ascii?Q?aRHE3vsAM6tU+bgo+STcTaqdaKMPfqmPAMItW6haBqtfKQSERBhbsu32MnA9?=
- =?us-ascii?Q?d26quQq0Qwh71dwUoyfDP/vCiSYg4mAuKqiV9dbmghZccJGFjfrcoP/ZYIwF?=
- =?us-ascii?Q?B1EoADt+G5KhCJZWkbSFWrW1J+WJGLh6mK234T0KdZxgW+SE2KwzDCODwDkR?=
- =?us-ascii?Q?hXvj3uP2zY0Yebo9Vf8NRBPCmAs5jSlqTIuvr+QRKFZfVHtggfsFT9gPIS8N?=
- =?us-ascii?Q?QGxuYqP0e410TlRHqCO3qZFaZFZ4G+iOwyQ/+onkAvSFRxWP2dJhJJBx75/K?=
- =?us-ascii?Q?JP7vTgtcas+Vccm47jPPstUHy3i8YPcLZ4ZN3ou3hp5TXC80EDDzgW2kf8Q9?=
- =?us-ascii?Q?mXMniBM8uv7gZu+l+Pmg6Aj1UnnTMSFKSOdbrcZbobg0KWjlu4I3mZJNbk2n?=
- =?us-ascii?Q?Lo6rTKwqIl+6kqZD3NF7vNe+DagX8Qp2JXOeQQ909EENNRGfTto7cd58XhEU?=
- =?us-ascii?Q?1MIPnf8aePW547nAcGHtCBmqR3dWnx1FnLRb2ZV07gNWC3f9/wnDNcZ5Qs+3?=
- =?us-ascii?Q?8pQQk2tAGzuteTpw8ktrZ0icnQhZEejFPM8GDc5jeOvW3APfDC+o6JVoInjN?=
- =?us-ascii?Q?s3VkYhx0pCoW/4mfDF/5hjMmFGuaeQIzg3dCOvMO?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: da40eebf-a71c-42be-56cc-08db8662785b
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6206.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2023 01:09:28.9073
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0LNK1Vba+H1PaChIgDFNusVYyH1+YXHbuWjZeIG2EmU7r8aZkrW+FZcfse6P4tpA7eTv56Q2ycLZDFKwCII27g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5299
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Message-ID: <168959855775.28540.3741618896919693994.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -159,135 +60,615 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi Prateek,
+The following commit has been merged into the locking/urgent branch of tip:
 
-On 2023-07-13 at 09:13:29 +0530, K Prateek Nayak wrote:
-> Hello Chenyu,
-> 
-> > 
-> > Tested on Sapphire Rapids, which has 2 x 56C/112T and 224 CPUs in total. C-states
-> > deeper than C1E are disabled. Turbo is disabled. CPU frequency governor is performance.
-> > 
-> > The baseline is v6.4-rc1 tip:sched/core, on top of
-> > commit 637c9509f3db ("sched/core: Avoid multiple calling update_rq_clock() in __cfsb_csd_unthrottle()")
-> > 
-> > patch0: this SD_IDLE_SIBLING patch with above change to TOPOLOGY_SD_FLAGS
-> > patch1: hack patch to split 1 LLC domain into 4 smaller LLC domains(with some fixes on top of
-> >         https://lore.kernel.org/lkml/ZJKjvx%2FNxooM5z1Y@chenyu5-mobl2.ccr.corp.intel.com/)
-> >         The test data in above link is invalid due to bugs in the hack patch, fixed in this version)
-> > 
-> > 
-> > Baseline vs Baseline+patch0:
-> > There is no much difference between the two, and it is expected because Sapphire Rapids
-> > does not have multiple LLC domains within 1 Numa node(also consider the run to run variation):
-> >
+Commit-ID:     f7853c34241807bb97673a5e97719123be39a09e
+Gitweb:        https://git.kernel.org/tip/f7853c34241807bb97673a5e97719123be39a09e
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 07 Jul 2023 16:19:09 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 17 Jul 2023 13:59:10 +02:00
 
-[snip] 
+locking/rtmutex: Fix task->pi_waiters integrity
 
-> > 
-> > Baseline+patch1    vs    Baseline+patch0+patch1:
-> > 
-> > With multiple LLC domains in 1 Numa node, SD_IDLE_SIBLING brings improvement
-> > to hackbench/schbench, while brings downgrading to netperf/tbench. This is aligned
-> > with what was observed previously, if the waker and wakee wakes up each other
-> > frequently, they would like to be put together for cache locality. While for
-> > other tasks do not have shared resource, always choosing an idle CPU is better.
-> > Maybe in the future we can look back at SIS_SHORT and terminates scan in
-> > select_idle_node() if the waker and wakee have close relationship with
-> > each other.
-> 
-> Gautham and I were discussing this and realized that when calling
-> ttwu_queue_wakelist(), in a simulated split-LLC case, ttwu_queue_cond()
-> will recommend using the wakelist and send an IPI despite the
-> groups of the DIE domain sharing the cache in your case.
-> 
-> Can you check if the following change helps the regression?
-> (Note: Completely untested and there may be other such cases lurking
-> around that we've not yet considered)
-> 
+Henry reported that rt_mutex_adjust_prio_check() has an ordering
+problem and puts the lie to the comment in [7]. Sharing the sort key
+between lock->waiters and owner->pi_waiters *does* create problems,
+since unlike what the comment claims, holding [L] is insufficient.
 
-Good point. There are quite some cpus_share_cache() in the code, and it
-could behave differently if simulated split-LLC is enabled. For example,
-the chance to choose a previous CPU, or a recent_used_cpu is lower in
-select_idle_sibling(), because the range of cpus_share_cache() shrinks.
+Notably, consider:
 
-I launched netperf(224 threads) and hackbench (2 groups) with below patch
-applied, it seems there was no much difference(consider the run-to-run variation)
+	A
+      /   \
+     M1   M2
+     |     |
+     B     C
 
-patch2: the cpus_share_cache() change below.
+That is, task A owns both M1 and M2, B and C block on them. In this
+case a concurrent chain walk (B & C) will modify their resp. sort keys
+in [7] while holding M1->wait_lock and M2->wait_lock. So holding [L]
+is meaningless, they're different Ls.
 
+This then gives rise to a race condition between [7] and [11], where
+the requeue of pi_waiters will observe an inconsistent tree order.
 
-Baseline+patch1    vs    Baseline+patch0+patch1+patch2:
+	B				C
 
+  (holds M1->wait_lock,		(holds M2->wait_lock,
+   holds B->pi_lock)		 holds A->pi_lock)
 
-netperf
-=======
-case            	load    	baseline(std%)	compare%( std%)
-TCP_RR          	224-threads	 1.00 (  2.36)	 -0.19 (  2.30)
+  [7]
+  waiter_update_prio();
+  ...
+  [8]
+  raw_spin_unlock(B->pi_lock);
+  ...
+  [10]
+  raw_spin_lock(A->pi_lock);
 
-hackbench
-=========
-case            	load    	baseline(std%)	compare%( std%)
-process-pipe    	2-groups	 1.00 (  4.78)	 -6.28 (  9.42)
+				[11]
+				rt_mutex_enqueue_pi();
+				// observes inconsistent A->pi_waiters
+				// tree order
 
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index a68d1276bab0..a8cab1c81aca 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -3929,7 +3929,7 @@ static inline bool ttwu_queue_cond(struct task_struct *p, int cpu)
->  	 * If the CPU does not share cache, then queue the task on the
->  	 * remote rqs wakelist to avoid accessing remote data.
->  	 */
-> -	if (!cpus_share_cache(smp_processor_id(), cpu))
-> +	if (cpu_to_node(smp_processor_id()) !=  cpu_to_node(cpu))
->  		return true;
->  
->  	if (cpu == smp_processor_id())
-> --
->
+Fixing this means either extending the range of the owner lock from
+[10-13] to [6-13], with the immediate problem that this means [6-8]
+hold both blocked and owner locks, or duplicating the sort key.
 
-Then I did a hack patch3 in select_idle_node(), to put C/S 1:1 wakeup workloads together.
-For netperf, it is a 1:1 waker/wakee relationship, for hackbench, it is 1:16 waker/wakee
-by default(verified by bpftrace).
+Since the locking in chain walk is horrible enough without having to
+consider pi_lock nesting rules, duplicate the sort key instead.
 
+By giving each tree their own sort key, the above race becomes
+harmless, if C sees B at the old location, then B will correct things
+(if they need correcting) when it walks up the chain and reaches A.
 
-patch3:
+Fixes: fb00aca47440 ("rtmutex: Turn the plist into an rb-tree")
+Reported-by: Henry Wu <triangletrap12@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Henry Wu <triangletrap12@gmail.com>
+Link: https://lkml.kernel.org/r/20230707161052.GF2883469%40hirez.programming.kicks-ass.net
+---
+ kernel/locking/rtmutex.c        | 170 ++++++++++++++++++++-----------
+ kernel/locking/rtmutex_api.c    |   2 +-
+ kernel/locking/rtmutex_common.h |  47 ++++++---
+ kernel/locking/ww_mutex.h       |  12 +-
+ 4 files changed, 155 insertions(+), 76 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 5904da690f59..3bdfbd546f14 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7161,6 +7161,11 @@ select_idle_node(struct task_struct *p, struct sched_domain *sd, int target)
- 	if (!parent || parent->flags & SD_NUMA)
- 		return -1;
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index 728f434..21db0df 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -333,21 +333,43 @@ static __always_inline int __waiter_prio(struct task_struct *task)
+ 	return prio;
+ }
  
-+	/* Tasks pair should be put on local LLC as much as possible. */
-+	if (current->last_wakee == p && p->last_wakee == current &&
-+	    !current->wakee_flips && !p->wakee_flips)
-+		return -1;
++/*
++ * Update the waiter->tree copy of the sort keys.
++ */
+ static __always_inline void
+ waiter_update_prio(struct rt_mutex_waiter *waiter, struct task_struct *task)
+ {
+-	waiter->prio = __waiter_prio(task);
+-	waiter->deadline = task->dl.deadline;
++	lockdep_assert_held(&waiter->lock->wait_lock);
++	lockdep_assert(RB_EMPTY_NODE(&waiter->tree.entry));
 +
- 	sg = parent->groups;
- 	do {
- 		int cpu = cpumask_first(sched_group_span(sg));
--- 
-2.25.1
-
-Baseline+patch1    vs    Baseline+patch0+patch1+patch3:
-
-netperf
-=======
-case            	load    	baseline(std%)	compare%( std%)
-TCP_RR          	224-threads	 1.00 (  2.36)	+804.31 (  2.88)
-
-
-hackbench
-=========
-case            	load    	baseline(std%)	compare%( std%)
-process-pipe    	2-groups	 1.00 (  4.78)	 -6.28 (  6.69)
-
-
-It brings the performance of netperf back, while more or less keeps the improvment
-of hackbench(consider the run-run variance).
-
-thanks,
-Chenyu
++	waiter->tree.prio = __waiter_prio(task);
++	waiter->tree.deadline = task->dl.deadline;
++}
++
++/*
++ * Update the waiter->pi_tree copy of the sort keys (from the tree copy).
++ */
++static __always_inline void
++waiter_clone_prio(struct rt_mutex_waiter *waiter, struct task_struct *task)
++{
++	lockdep_assert_held(&waiter->lock->wait_lock);
++	lockdep_assert_held(&task->pi_lock);
++	lockdep_assert(RB_EMPTY_NODE(&waiter->pi_tree.entry));
++
++	waiter->pi_tree.prio = waiter->tree.prio;
++	waiter->pi_tree.deadline = waiter->tree.deadline;
+ }
+ 
+ /*
+- * Only use with rt_mutex_waiter_{less,equal}()
++ * Only use with rt_waiter_node_{less,equal}()
+  */
++#define task_to_waiter_node(p)	\
++	&(struct rt_waiter_node){ .prio = __waiter_prio(p), .deadline = (p)->dl.deadline }
+ #define task_to_waiter(p)	\
+-	&(struct rt_mutex_waiter){ .prio = __waiter_prio(p), .deadline = (p)->dl.deadline }
++	&(struct rt_mutex_waiter){ .tree = *task_to_waiter_node(p) }
+ 
+-static __always_inline int rt_mutex_waiter_less(struct rt_mutex_waiter *left,
+-						struct rt_mutex_waiter *right)
++static __always_inline int rt_waiter_node_less(struct rt_waiter_node *left,
++					       struct rt_waiter_node *right)
+ {
+ 	if (left->prio < right->prio)
+ 		return 1;
+@@ -364,8 +386,8 @@ static __always_inline int rt_mutex_waiter_less(struct rt_mutex_waiter *left,
+ 	return 0;
+ }
+ 
+-static __always_inline int rt_mutex_waiter_equal(struct rt_mutex_waiter *left,
+-						 struct rt_mutex_waiter *right)
++static __always_inline int rt_waiter_node_equal(struct rt_waiter_node *left,
++						 struct rt_waiter_node *right)
+ {
+ 	if (left->prio != right->prio)
+ 		return 0;
+@@ -385,7 +407,7 @@ static __always_inline int rt_mutex_waiter_equal(struct rt_mutex_waiter *left,
+ static inline bool rt_mutex_steal(struct rt_mutex_waiter *waiter,
+ 				  struct rt_mutex_waiter *top_waiter)
+ {
+-	if (rt_mutex_waiter_less(waiter, top_waiter))
++	if (rt_waiter_node_less(&waiter->tree, &top_waiter->tree))
+ 		return true;
+ 
+ #ifdef RT_MUTEX_BUILD_SPINLOCKS
+@@ -393,30 +415,30 @@ static inline bool rt_mutex_steal(struct rt_mutex_waiter *waiter,
+ 	 * Note that RT tasks are excluded from same priority (lateral)
+ 	 * steals to prevent the introduction of an unbounded latency.
+ 	 */
+-	if (rt_prio(waiter->prio) || dl_prio(waiter->prio))
++	if (rt_prio(waiter->tree.prio) || dl_prio(waiter->tree.prio))
+ 		return false;
+ 
+-	return rt_mutex_waiter_equal(waiter, top_waiter);
++	return rt_waiter_node_equal(&waiter->tree, &top_waiter->tree);
+ #else
+ 	return false;
+ #endif
+ }
+ 
+ #define __node_2_waiter(node) \
+-	rb_entry((node), struct rt_mutex_waiter, tree_entry)
++	rb_entry((node), struct rt_mutex_waiter, tree.entry)
+ 
+ static __always_inline bool __waiter_less(struct rb_node *a, const struct rb_node *b)
+ {
+ 	struct rt_mutex_waiter *aw = __node_2_waiter(a);
+ 	struct rt_mutex_waiter *bw = __node_2_waiter(b);
+ 
+-	if (rt_mutex_waiter_less(aw, bw))
++	if (rt_waiter_node_less(&aw->tree, &bw->tree))
+ 		return 1;
+ 
+ 	if (!build_ww_mutex())
+ 		return 0;
+ 
+-	if (rt_mutex_waiter_less(bw, aw))
++	if (rt_waiter_node_less(&bw->tree, &aw->tree))
+ 		return 0;
+ 
+ 	/* NOTE: relies on waiter->ww_ctx being set before insertion */
+@@ -434,48 +456,58 @@ static __always_inline bool __waiter_less(struct rb_node *a, const struct rb_nod
+ static __always_inline void
+ rt_mutex_enqueue(struct rt_mutex_base *lock, struct rt_mutex_waiter *waiter)
+ {
+-	rb_add_cached(&waiter->tree_entry, &lock->waiters, __waiter_less);
++	lockdep_assert_held(&lock->wait_lock);
++
++	rb_add_cached(&waiter->tree.entry, &lock->waiters, __waiter_less);
+ }
+ 
+ static __always_inline void
+ rt_mutex_dequeue(struct rt_mutex_base *lock, struct rt_mutex_waiter *waiter)
+ {
+-	if (RB_EMPTY_NODE(&waiter->tree_entry))
++	lockdep_assert_held(&lock->wait_lock);
++
++	if (RB_EMPTY_NODE(&waiter->tree.entry))
+ 		return;
+ 
+-	rb_erase_cached(&waiter->tree_entry, &lock->waiters);
+-	RB_CLEAR_NODE(&waiter->tree_entry);
++	rb_erase_cached(&waiter->tree.entry, &lock->waiters);
++	RB_CLEAR_NODE(&waiter->tree.entry);
+ }
+ 
+-#define __node_2_pi_waiter(node) \
+-	rb_entry((node), struct rt_mutex_waiter, pi_tree_entry)
++#define __node_2_rt_node(node) \
++	rb_entry((node), struct rt_waiter_node, entry)
+ 
+-static __always_inline bool
+-__pi_waiter_less(struct rb_node *a, const struct rb_node *b)
++static __always_inline bool __pi_waiter_less(struct rb_node *a, const struct rb_node *b)
+ {
+-	return rt_mutex_waiter_less(__node_2_pi_waiter(a), __node_2_pi_waiter(b));
++	return rt_waiter_node_less(__node_2_rt_node(a), __node_2_rt_node(b));
+ }
+ 
+ static __always_inline void
+ rt_mutex_enqueue_pi(struct task_struct *task, struct rt_mutex_waiter *waiter)
+ {
+-	rb_add_cached(&waiter->pi_tree_entry, &task->pi_waiters, __pi_waiter_less);
++	lockdep_assert_held(&task->pi_lock);
++
++	rb_add_cached(&waiter->pi_tree.entry, &task->pi_waiters, __pi_waiter_less);
+ }
+ 
+ static __always_inline void
+ rt_mutex_dequeue_pi(struct task_struct *task, struct rt_mutex_waiter *waiter)
+ {
+-	if (RB_EMPTY_NODE(&waiter->pi_tree_entry))
++	lockdep_assert_held(&task->pi_lock);
++
++	if (RB_EMPTY_NODE(&waiter->pi_tree.entry))
+ 		return;
+ 
+-	rb_erase_cached(&waiter->pi_tree_entry, &task->pi_waiters);
+-	RB_CLEAR_NODE(&waiter->pi_tree_entry);
++	rb_erase_cached(&waiter->pi_tree.entry, &task->pi_waiters);
++	RB_CLEAR_NODE(&waiter->pi_tree.entry);
+ }
+ 
+-static __always_inline void rt_mutex_adjust_prio(struct task_struct *p)
++static __always_inline void rt_mutex_adjust_prio(struct rt_mutex_base *lock,
++						 struct task_struct *p)
+ {
+ 	struct task_struct *pi_task = NULL;
+ 
++	lockdep_assert_held(&lock->wait_lock);
++	lockdep_assert(rt_mutex_owner(lock) == p);
+ 	lockdep_assert_held(&p->pi_lock);
+ 
+ 	if (task_has_pi_waiters(p))
+@@ -571,9 +603,14 @@ static __always_inline struct rt_mutex_base *task_blocked_on_lock(struct task_st
+  * Chain walk basics and protection scope
+  *
+  * [R] refcount on task
+- * [P] task->pi_lock held
++ * [Pn] task->pi_lock held
+  * [L] rtmutex->wait_lock held
+  *
++ * Normal locking order:
++ *
++ *   rtmutex->wait_lock
++ *     task->pi_lock
++ *
+  * Step	Description				Protected by
+  *	function arguments:
+  *	@task					[R]
+@@ -588,27 +625,32 @@ static __always_inline struct rt_mutex_base *task_blocked_on_lock(struct task_st
+  *	again:
+  *	  loop_sanity_check();
+  *	retry:
+- * [1]	  lock(task->pi_lock);			[R] acquire [P]
+- * [2]	  waiter = task->pi_blocked_on;		[P]
+- * [3]	  check_exit_conditions_1();		[P]
+- * [4]	  lock = waiter->lock;			[P]
+- * [5]	  if (!try_lock(lock->wait_lock)) {	[P] try to acquire [L]
+- *	    unlock(task->pi_lock);		release [P]
++ * [1]	  lock(task->pi_lock);			[R] acquire [P1]
++ * [2]	  waiter = task->pi_blocked_on;		[P1]
++ * [3]	  check_exit_conditions_1();		[P1]
++ * [4]	  lock = waiter->lock;			[P1]
++ * [5]	  if (!try_lock(lock->wait_lock)) {	[P1] try to acquire [L]
++ *	    unlock(task->pi_lock);		release [P1]
+  *	    goto retry;
+  *	  }
+- * [6]	  check_exit_conditions_2();		[P] + [L]
+- * [7]	  requeue_lock_waiter(lock, waiter);	[P] + [L]
+- * [8]	  unlock(task->pi_lock);		release [P]
++ * [6]	  check_exit_conditions_2();		[P1] + [L]
++ * [7]	  requeue_lock_waiter(lock, waiter);	[P1] + [L]
++ * [8]	  unlock(task->pi_lock);		release [P1]
+  *	  put_task_struct(task);		release [R]
+  * [9]	  check_exit_conditions_3();		[L]
+  * [10]	  task = owner(lock);			[L]
+  *	  get_task_struct(task);		[L] acquire [R]
+- *	  lock(task->pi_lock);			[L] acquire [P]
+- * [11]	  requeue_pi_waiter(tsk, waiters(lock));[P] + [L]
+- * [12]	  check_exit_conditions_4();		[P] + [L]
+- * [13]	  unlock(task->pi_lock);		release [P]
++ *	  lock(task->pi_lock);			[L] acquire [P2]
++ * [11]	  requeue_pi_waiter(tsk, waiters(lock));[P2] + [L]
++ * [12]	  check_exit_conditions_4();		[P2] + [L]
++ * [13]	  unlock(task->pi_lock);		release [P2]
+  *	  unlock(lock->wait_lock);		release [L]
+  *	  goto again;
++ *
++ * Where P1 is the blocking task and P2 is the lock owner; going up one step
++ * the owner becomes the next blocked task etc..
++ *
++*
+  */
+ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+ 					      enum rtmutex_chainwalk chwalk,
+@@ -756,7 +798,7 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+ 	 * enabled we continue, but stop the requeueing in the chain
+ 	 * walk.
+ 	 */
+-	if (rt_mutex_waiter_equal(waiter, task_to_waiter(task))) {
++	if (rt_waiter_node_equal(&waiter->tree, task_to_waiter_node(task))) {
+ 		if (!detect_deadlock)
+ 			goto out_unlock_pi;
+ 		else
+@@ -764,13 +806,18 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+ 	}
+ 
+ 	/*
+-	 * [4] Get the next lock
++	 * [4] Get the next lock; per holding task->pi_lock we can't unblock
++	 * and guarantee @lock's existence.
+ 	 */
+ 	lock = waiter->lock;
+ 	/*
+ 	 * [5] We need to trylock here as we are holding task->pi_lock,
+ 	 * which is the reverse lock order versus the other rtmutex
+ 	 * operations.
++	 *
++	 * Per the above, holding task->pi_lock guarantees lock exists, so
++	 * inverting this lock order is infeasible from a life-time
++	 * perspective.
+ 	 */
+ 	if (!raw_spin_trylock(&lock->wait_lock)) {
+ 		raw_spin_unlock_irq(&task->pi_lock);
+@@ -874,17 +921,18 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+ 	 * or
+ 	 *
+ 	 *   DL CBS enforcement advancing the effective deadline.
+-	 *
+-	 * Even though pi_waiters also uses these fields, and that tree is only
+-	 * updated in [11], we can do this here, since we hold [L], which
+-	 * serializes all pi_waiters access and rb_erase() does not care about
+-	 * the values of the node being removed.
+ 	 */
+ 	waiter_update_prio(waiter, task);
+ 
+ 	rt_mutex_enqueue(lock, waiter);
+ 
+-	/* [8] Release the task */
++	/*
++	 * [8] Release the (blocking) task in preparation for
++	 * taking the owner task in [10].
++	 *
++	 * Since we hold lock->waiter_lock, task cannot unblock, even if we
++	 * release task->pi_lock.
++	 */
+ 	raw_spin_unlock(&task->pi_lock);
+ 	put_task_struct(task);
+ 
+@@ -908,7 +956,12 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+ 		return 0;
+ 	}
+ 
+-	/* [10] Grab the next task, i.e. the owner of @lock */
++	/*
++	 * [10] Grab the next task, i.e. the owner of @lock
++	 *
++	 * Per holding lock->wait_lock and checking for !owner above, there
++	 * must be an owner and it cannot go away.
++	 */
+ 	task = get_task_struct(rt_mutex_owner(lock));
+ 	raw_spin_lock(&task->pi_lock);
+ 
+@@ -921,8 +974,9 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+ 		 * and adjust the priority of the owner.
+ 		 */
+ 		rt_mutex_dequeue_pi(task, prerequeue_top_waiter);
++		waiter_clone_prio(waiter, task);
+ 		rt_mutex_enqueue_pi(task, waiter);
+-		rt_mutex_adjust_prio(task);
++		rt_mutex_adjust_prio(lock, task);
+ 
+ 	} else if (prerequeue_top_waiter == waiter) {
+ 		/*
+@@ -937,8 +991,9 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+ 		 */
+ 		rt_mutex_dequeue_pi(task, waiter);
+ 		waiter = rt_mutex_top_waiter(lock);
++		waiter_clone_prio(waiter, task);
+ 		rt_mutex_enqueue_pi(task, waiter);
+-		rt_mutex_adjust_prio(task);
++		rt_mutex_adjust_prio(lock, task);
+ 	} else {
+ 		/*
+ 		 * Nothing changed. No need to do any priority
+@@ -1154,6 +1209,7 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
+ 	waiter->task = task;
+ 	waiter->lock = lock;
+ 	waiter_update_prio(waiter, task);
++	waiter_clone_prio(waiter, task);
+ 
+ 	/* Get the top priority waiter on the lock */
+ 	if (rt_mutex_has_waiters(lock))
+@@ -1187,7 +1243,7 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
+ 		rt_mutex_dequeue_pi(owner, top_waiter);
+ 		rt_mutex_enqueue_pi(owner, waiter);
+ 
+-		rt_mutex_adjust_prio(owner);
++		rt_mutex_adjust_prio(lock, owner);
+ 		if (owner->pi_blocked_on)
+ 			chain_walk = 1;
+ 	} else if (rt_mutex_cond_detect_deadlock(waiter, chwalk)) {
+@@ -1234,6 +1290,8 @@ static void __sched mark_wakeup_next_waiter(struct rt_wake_q_head *wqh,
+ {
+ 	struct rt_mutex_waiter *waiter;
+ 
++	lockdep_assert_held(&lock->wait_lock);
++
+ 	raw_spin_lock(&current->pi_lock);
+ 
+ 	waiter = rt_mutex_top_waiter(lock);
+@@ -1246,7 +1304,7 @@ static void __sched mark_wakeup_next_waiter(struct rt_wake_q_head *wqh,
+ 	 * task unblocks.
+ 	 */
+ 	rt_mutex_dequeue_pi(current, waiter);
+-	rt_mutex_adjust_prio(current);
++	rt_mutex_adjust_prio(lock, current);
+ 
+ 	/*
+ 	 * As we are waking up the top waiter, and the waiter stays
+@@ -1482,7 +1540,7 @@ static void __sched remove_waiter(struct rt_mutex_base *lock,
+ 	if (rt_mutex_has_waiters(lock))
+ 		rt_mutex_enqueue_pi(owner, rt_mutex_top_waiter(lock));
+ 
+-	rt_mutex_adjust_prio(owner);
++	rt_mutex_adjust_prio(lock, owner);
+ 
+ 	/* Store the lock on which owner is blocked or NULL */
+ 	next_lock = task_blocked_on_lock(owner);
+diff --git a/kernel/locking/rtmutex_api.c b/kernel/locking/rtmutex_api.c
+index cb9fdff..a6974d0 100644
+--- a/kernel/locking/rtmutex_api.c
++++ b/kernel/locking/rtmutex_api.c
+@@ -459,7 +459,7 @@ void __sched rt_mutex_adjust_pi(struct task_struct *task)
+ 	raw_spin_lock_irqsave(&task->pi_lock, flags);
+ 
+ 	waiter = task->pi_blocked_on;
+-	if (!waiter || rt_mutex_waiter_equal(waiter, task_to_waiter(task))) {
++	if (!waiter || rt_waiter_node_equal(&waiter->tree, task_to_waiter_node(task))) {
+ 		raw_spin_unlock_irqrestore(&task->pi_lock, flags);
+ 		return;
+ 	}
+diff --git a/kernel/locking/rtmutex_common.h b/kernel/locking/rtmutex_common.h
+index c47e836..1162e07 100644
+--- a/kernel/locking/rtmutex_common.h
++++ b/kernel/locking/rtmutex_common.h
+@@ -17,27 +17,44 @@
+ #include <linux/rtmutex.h>
+ #include <linux/sched/wake_q.h>
+ 
++
++/*
++ * This is a helper for the struct rt_mutex_waiter below. A waiter goes in two
++ * separate trees and they need their own copy of the sort keys because of
++ * different locking requirements.
++ *
++ * @entry:		rbtree node to enqueue into the waiters tree
++ * @prio:		Priority of the waiter
++ * @deadline:		Deadline of the waiter if applicable
++ *
++ * See rt_waiter_node_less() and waiter_*_prio().
++ */
++struct rt_waiter_node {
++	struct rb_node	entry;
++	int		prio;
++	u64		deadline;
++};
++
+ /*
+  * This is the control structure for tasks blocked on a rt_mutex,
+  * which is allocated on the kernel stack on of the blocked task.
+  *
+- * @tree_entry:		pi node to enqueue into the mutex waiters tree
+- * @pi_tree_entry:	pi node to enqueue into the mutex owner waiters tree
++ * @tree:		node to enqueue into the mutex waiters tree
++ * @pi_tree:		node to enqueue into the mutex owner waiters tree
+  * @task:		task reference to the blocked task
+  * @lock:		Pointer to the rt_mutex on which the waiter blocks
+  * @wake_state:		Wakeup state to use (TASK_NORMAL or TASK_RTLOCK_WAIT)
+- * @prio:		Priority of the waiter
+- * @deadline:		Deadline of the waiter if applicable
+  * @ww_ctx:		WW context pointer
++ *
++ * @tree is ordered by @lock->wait_lock
++ * @pi_tree is ordered by rt_mutex_owner(@lock)->pi_lock
+  */
+ struct rt_mutex_waiter {
+-	struct rb_node		tree_entry;
+-	struct rb_node		pi_tree_entry;
++	struct rt_waiter_node	tree;
++	struct rt_waiter_node	pi_tree;
+ 	struct task_struct	*task;
+ 	struct rt_mutex_base	*lock;
+ 	unsigned int		wake_state;
+-	int			prio;
+-	u64			deadline;
+ 	struct ww_acquire_ctx	*ww_ctx;
+ };
+ 
+@@ -105,7 +122,7 @@ static inline bool rt_mutex_waiter_is_top_waiter(struct rt_mutex_base *lock,
+ {
+ 	struct rb_node *leftmost = rb_first_cached(&lock->waiters);
+ 
+-	return rb_entry(leftmost, struct rt_mutex_waiter, tree_entry) == waiter;
++	return rb_entry(leftmost, struct rt_mutex_waiter, tree.entry) == waiter;
+ }
+ 
+ static inline struct rt_mutex_waiter *rt_mutex_top_waiter(struct rt_mutex_base *lock)
+@@ -113,8 +130,10 @@ static inline struct rt_mutex_waiter *rt_mutex_top_waiter(struct rt_mutex_base *
+ 	struct rb_node *leftmost = rb_first_cached(&lock->waiters);
+ 	struct rt_mutex_waiter *w = NULL;
+ 
++	lockdep_assert_held(&lock->wait_lock);
++
+ 	if (leftmost) {
+-		w = rb_entry(leftmost, struct rt_mutex_waiter, tree_entry);
++		w = rb_entry(leftmost, struct rt_mutex_waiter, tree.entry);
+ 		BUG_ON(w->lock != lock);
+ 	}
+ 	return w;
+@@ -127,8 +146,10 @@ static inline int task_has_pi_waiters(struct task_struct *p)
+ 
+ static inline struct rt_mutex_waiter *task_top_pi_waiter(struct task_struct *p)
+ {
++	lockdep_assert_held(&p->pi_lock);
++
+ 	return rb_entry(p->pi_waiters.rb_leftmost, struct rt_mutex_waiter,
+-			pi_tree_entry);
++			pi_tree.entry);
+ }
+ 
+ #define RT_MUTEX_HAS_WAITERS	1UL
+@@ -190,8 +211,8 @@ static inline void debug_rt_mutex_free_waiter(struct rt_mutex_waiter *waiter)
+ static inline void rt_mutex_init_waiter(struct rt_mutex_waiter *waiter)
+ {
+ 	debug_rt_mutex_init_waiter(waiter);
+-	RB_CLEAR_NODE(&waiter->pi_tree_entry);
+-	RB_CLEAR_NODE(&waiter->tree_entry);
++	RB_CLEAR_NODE(&waiter->pi_tree.entry);
++	RB_CLEAR_NODE(&waiter->tree.entry);
+ 	waiter->wake_state = TASK_NORMAL;
+ 	waiter->task = NULL;
+ }
+diff --git a/kernel/locking/ww_mutex.h b/kernel/locking/ww_mutex.h
+index 56f1392..3ad2cc4 100644
+--- a/kernel/locking/ww_mutex.h
++++ b/kernel/locking/ww_mutex.h
+@@ -96,25 +96,25 @@ __ww_waiter_first(struct rt_mutex *lock)
+ 	struct rb_node *n = rb_first(&lock->rtmutex.waiters.rb_root);
+ 	if (!n)
+ 		return NULL;
+-	return rb_entry(n, struct rt_mutex_waiter, tree_entry);
++	return rb_entry(n, struct rt_mutex_waiter, tree.entry);
+ }
+ 
+ static inline struct rt_mutex_waiter *
+ __ww_waiter_next(struct rt_mutex *lock, struct rt_mutex_waiter *w)
+ {
+-	struct rb_node *n = rb_next(&w->tree_entry);
++	struct rb_node *n = rb_next(&w->tree.entry);
+ 	if (!n)
+ 		return NULL;
+-	return rb_entry(n, struct rt_mutex_waiter, tree_entry);
++	return rb_entry(n, struct rt_mutex_waiter, tree.entry);
+ }
+ 
+ static inline struct rt_mutex_waiter *
+ __ww_waiter_prev(struct rt_mutex *lock, struct rt_mutex_waiter *w)
+ {
+-	struct rb_node *n = rb_prev(&w->tree_entry);
++	struct rb_node *n = rb_prev(&w->tree.entry);
+ 	if (!n)
+ 		return NULL;
+-	return rb_entry(n, struct rt_mutex_waiter, tree_entry);
++	return rb_entry(n, struct rt_mutex_waiter, tree.entry);
+ }
+ 
+ static inline struct rt_mutex_waiter *
+@@ -123,7 +123,7 @@ __ww_waiter_last(struct rt_mutex *lock)
+ 	struct rb_node *n = rb_last(&lock->rtmutex.waiters.rb_root);
+ 	if (!n)
+ 		return NULL;
+-	return rb_entry(n, struct rt_mutex_waiter, tree_entry);
++	return rb_entry(n, struct rt_mutex_waiter, tree.entry);
+ }
+ 
+ static inline void
