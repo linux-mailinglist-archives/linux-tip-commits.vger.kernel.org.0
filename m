@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4480F756399
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jul 2023 14:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FE57756391
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jul 2023 14:57:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231262AbjGQM6R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Jul 2023 08:58:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38766 "EHLO
+        id S231314AbjGQM5r (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Jul 2023 08:57:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231232AbjGQM6G (ORCPT
+        with ESMTP id S231342AbjGQM5d (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Jul 2023 08:58:06 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D6ED10CF;
-        Mon, 17 Jul 2023 05:57:41 -0700 (PDT)
-Date:   Mon, 17 Jul 2023 12:56:14 -0000
+        Mon, 17 Jul 2023 08:57:33 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFC71725;
+        Mon, 17 Jul 2023 05:57:05 -0700 (PDT)
+Date:   Mon, 17 Jul 2023 12:56:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1689598575;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wyp8SW9fPKvymKp02vvtkcYqY11RKymqENoP2oThiHY=;
-        b=oqLBGxYRO0/tIsKdQnooTlx+mtnPnE9nVYhYqOX2lXiJajGyW5xm20/T/EBQkewdlmoTUr
-        6/QaWs+9heRNy6w3q/GFWmTXkmAv4SDyJvL0WTwTacrDUA9c675N8ft0FuGdKPbGP6STRq
-        7MYrqpw6sDH8HZNJyaZBhgdxDzbmJIdHbAj827yCzxIJzc28S8xjbWDtrCeI1rTSkpGhEz
-        /CZb9lDaTSfeIInPcRANhXbSUQgB317f09P8TP44u+J0U7qRGgoRees8pc2biakYazpTYY
-        x2IytUVNVV07JEWQY0EwZ85YJZ1uoCpzN+eK2XTarLQi58VIcvkahWq+4sbjkg==
+        bh=oaYAAOjfyi4fSbHjYzAAIzNL+EJVRTa62d71dD8b2+g=;
+        b=iZxYaiuiI/lC9fBYA+/xWEKq5DD1+5aG8ekNb2u8AeH/owug6xnooRdhClIess1rLCWPi/
+        EQzbolKRx+C/9r973KarrBIN0S2hi9Xq40NCOJTwAF/C6GnlEg8Z/cINiKTrJRYvZU+FeQ
+        8gH/LzYVqtjNLYp74BP3hRIa4TTVajDxzWQSMzXDQwucCq4w6y4m8eMG+cM4GMkVUFdpkv
+        ExBRsuBTvJwmKMP84dePutp+WQk8IWgxwV7l6zyyW3VQW7z0q7KBbTp1FuxVSdSf6fZ8Qk
+        WpfrZIrkAKDPxfzdRdkL8ff5cbPk+6vv3NoKLGfiBzT7WfAwNEj3JCk4UlOlVg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1689598575;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wyp8SW9fPKvymKp02vvtkcYqY11RKymqENoP2oThiHY=;
-        b=p3Dur/RsOl0KCQ3JZhpyW9cjAOrB7KHybvp9rDBGz6B5UmmqJwHUKoNU3hdqEu+Ej2HpCt
-        PaRAQVh07U7KRmCA==
-From:   "tip-bot2 for Cruz Zhao" <tip-bot2@linutronix.de>
+        bh=oaYAAOjfyi4fSbHjYzAAIzNL+EJVRTa62d71dD8b2+g=;
+        b=TptSdbtPnO2KhazmC84rFF4uKdyLVK3Hcq9jY3RofmGriLi301Ut7DGE2Tp16ThH3bsozz
+        WcdFm/svGTOTLWDw==
+From:   "tip-bot2 for Josh Don" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/core: introduce sched_core_idle_cpu()
-Cc:     Cruz Zhao <CruzZhao@linux.alibaba.com>,
+Subject: [tip: sched/core] sched: add throttled time stat for throttled children
+Cc:     Josh Don <joshdon@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Joel Fernandes <joel@joelfernandes.org>, x86@kernel.org,
+        Tejun Heo <tj@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1688011324-42406-1-git-send-email-CruzZhao@linux.alibaba.com>
-References: <1688011324-42406-1-git-send-email-CruzZhao@linux.alibaba.com>
+In-Reply-To: <20230620183247.737942-2-joshdon@google.com>
+References: <20230620183247.737942-2-joshdon@google.com>
 MIME-Version: 1.0
-Message-ID: <168959857473.28540.17999305003559332771.tip-bot2@tip-bot2>
+Message-ID: <168959857513.28540.14955186299342817688.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,102 +68,237 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     548796e2e70b44b4661fd7feee6eb239245ff1f8
-Gitweb:        https://git.kernel.org/tip/548796e2e70b44b4661fd7feee6eb239245ff1f8
-Author:        Cruz Zhao <CruzZhao@linux.alibaba.com>
-AuthorDate:    Thu, 29 Jun 2023 12:02:04 +08:00
+Commit-ID:     677ea015f231aa38b3972aa7be54ecd2637e99fd
+Gitweb:        https://git.kernel.org/tip/677ea015f231aa38b3972aa7be54ecd2637e99fd
+Author:        Josh Don <joshdon@google.com>
+AuthorDate:    Tue, 20 Jun 2023 11:32:47 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 13 Jul 2023 15:21:50 +02:00
+CommitterDate: Thu, 13 Jul 2023 15:21:49 +02:00
 
-sched/core: introduce sched_core_idle_cpu()
+sched: add throttled time stat for throttled children
 
-As core scheduling introduced, a new state of idle is defined as
-force idle, running idle task but nr_running greater than zero.
+We currently export the total throttled time for cgroups that are given
+a bandwidth limit. This patch extends this accounting to also account
+the total time that each children cgroup has been throttled.
 
-If a cpu is in force idle state, idle_cpu() will return zero. This
-result makes sense in some scenarios, e.g., load balance,
-showacpu when dumping, and judge the RCU boost kthread is starving.
+This is useful to understand the degree to which children have been
+affected by the throttling control. Children which are not runnable
+during the entire throttled period, for example, will not show any
+self-throttling time during this period.
 
-But this will cause error in other scenarios, e.g., tick_irq_exit():
-When force idle, rq->curr == rq->idle but rq->nr_running > 0, results
-that idle_cpu() returns 0. In function tick_irq_exit(), if idle_cpu()
-is 0, tick_nohz_irq_exit() will not be called, and ts->idle_active will
-not become 1, which became 0 in tick_nohz_irq_enter().
-ts->idle_sleeptime won't update in function update_ts_time_stats(), if
-ts->idle_active is 0, which should be 1. And this bug will result that
-ts->idle_sleeptime is less than the actual value, and finally will
-result that the idle time in /proc/stat is less than the actual value.
+Expose this in a new interface, 'cpu.stat.local', which is similar to
+how non-hierarchical events are accounted in 'memory.events.local'.
 
-To solve this problem, we introduce sched_core_idle_cpu(), which
-returns 1 when force idle. We audit all users of idle_cpu(), and
-change idle_cpu() into sched_core_idle_cpu() in function
-tick_irq_exit().
-
-v2-->v3: Only replace idle_cpu() with sched_core_idle_cpu() in
-function tick_irq_exit(). And modify the corresponding commit log.
-
-Signed-off-by: Cruz Zhao <CruzZhao@linux.alibaba.com>
+Signed-off-by: Josh Don <joshdon@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Peter Zijlstra <peterz@infradead.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Joel Fernandes <joel@joelfernandes.org>
-Link: https://lore.kernel.org/r/1688011324-42406-1-git-send-email-CruzZhao@linux.alibaba.com
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20230620183247.737942-2-joshdon@google.com
 ---
- include/linux/sched.h |  2 ++
- kernel/sched/core.c   | 13 +++++++++++++
- kernel/softirq.c      |  2 +-
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ include/linux/cgroup-defs.h |  2 ++-
+ kernel/cgroup/cgroup.c      | 34 ++++++++++++++++++++++++++++-
+ kernel/sched/core.c         | 44 ++++++++++++++++++++++++++++++++++++-
+ kernel/sched/fair.c         | 21 ++++++++++++++++-
+ kernel/sched/sched.h        |  2 ++-
+ 5 files changed, 102 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 609bde8..efc9f4b 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2433,9 +2433,11 @@ extern void sched_core_free(struct task_struct *tsk);
- extern void sched_core_fork(struct task_struct *p);
- extern int sched_core_share_pid(unsigned int cmd, pid_t pid, enum pid_type type,
- 				unsigned long uaddr);
-+extern int sched_core_idle_cpu(int cpu);
- #else
- static inline void sched_core_free(struct task_struct *tsk) { }
- static inline void sched_core_fork(struct task_struct *p) { }
-+static inline int sched_core_idle_cpu(int cpu) { return idle_cpu(cpu); }
- #endif
+diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
+index 8a0d546..ae20dbb 100644
+--- a/include/linux/cgroup-defs.h
++++ b/include/linux/cgroup-defs.h
+@@ -661,6 +661,8 @@ struct cgroup_subsys {
+ 	void (*css_rstat_flush)(struct cgroup_subsys_state *css, int cpu);
+ 	int (*css_extra_stat_show)(struct seq_file *seq,
+ 				   struct cgroup_subsys_state *css);
++	int (*css_local_stat_show)(struct seq_file *seq,
++				   struct cgroup_subsys_state *css);
  
- extern void sched_set_stop_task(int cpu, struct task_struct *stop);
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 2291f9d..83e3654 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7383,6 +7383,19 @@ struct task_struct *idle_task(int cpu)
- 	return cpu_rq(cpu)->idle;
+ 	int (*can_attach)(struct cgroup_taskset *tset);
+ 	void (*cancel_attach)(struct cgroup_taskset *tset);
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index bfe3cd8..4e3ee13 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -3685,6 +3685,36 @@ static int cpu_stat_show(struct seq_file *seq, void *v)
+ 	return ret;
  }
  
-+#ifdef CONFIG_SCHED_CORE
-+int sched_core_idle_cpu(int cpu)
++static int __maybe_unused cgroup_local_stat_show(struct seq_file *seq,
++						 struct cgroup *cgrp, int ssid)
 +{
-+	struct rq *rq = cpu_rq(cpu);
++	struct cgroup_subsys *ss = cgroup_subsys[ssid];
++	struct cgroup_subsys_state *css;
++	int ret;
 +
-+	if (sched_core_enabled(rq) && rq->curr == rq->idle)
-+		return 1;
++	if (!ss->css_local_stat_show)
++		return 0;
 +
-+	return idle_cpu(cpu);
++	css = cgroup_tryget_css(cgrp, ss);
++	if (!css)
++		return 0;
++
++	ret = ss->css_local_stat_show(seq, css);
++	css_put(css);
++	return ret;
 +}
 +
-+#endif
++static int cpu_local_stat_show(struct seq_file *seq, void *v)
++{
++	struct cgroup __maybe_unused *cgrp = seq_css(seq)->cgroup;
++	int ret = 0;
 +
- #ifdef CONFIG_SMP
- /*
-  * This function computes an effective utilization for the given CPU, to be
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 807b34c..210cf5f 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -612,7 +612,7 @@ static inline void tick_irq_exit(void)
- 	int cpu = smp_processor_id();
++#ifdef CONFIG_CGROUP_SCHED
++	ret = cgroup_local_stat_show(seq, cgrp, cpu_cgrp_id);
++#endif
++	return ret;
++}
++
+ #ifdef CONFIG_PSI
+ static int cgroup_io_pressure_show(struct seq_file *seq, void *v)
+ {
+@@ -5235,6 +5265,10 @@ static struct cftype cgroup_base_files[] = {
+ 		.name = "cpu.stat",
+ 		.seq_show = cpu_stat_show,
+ 	},
++	{
++		.name = "cpu.stat.local",
++		.seq_show = cpu_local_stat_show,
++	},
+ 	{ }	/* terminate */
+ };
  
- 	/* Make sure that timer wheel updates are propagated */
--	if ((idle_cpu(cpu) && !need_resched()) || tick_nohz_full_cpu(cpu)) {
-+	if ((sched_core_idle_cpu(cpu) && !need_resched()) || tick_nohz_full_cpu(cpu)) {
- 		if (!in_hardirq())
- 			tick_nohz_irq_exit();
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index c52c2eb..2291f9d 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -11139,6 +11139,27 @@ static int cpu_cfs_stat_show(struct seq_file *sf, void *v)
+ 
+ 	return 0;
+ }
++
++static u64 throttled_time_self(struct task_group *tg)
++{
++	int i;
++	u64 total = 0;
++
++	for_each_possible_cpu(i) {
++		total += READ_ONCE(tg->cfs_rq[i]->throttled_clock_self_time);
++	}
++
++	return total;
++}
++
++static int cpu_cfs_local_stat_show(struct seq_file *sf, void *v)
++{
++	struct task_group *tg = css_tg(seq_css(sf));
++
++	seq_printf(sf, "throttled_time %llu\n", throttled_time_self(tg));
++
++	return 0;
++}
+ #endif /* CONFIG_CFS_BANDWIDTH */
+ #endif /* CONFIG_FAIR_GROUP_SCHED */
+ 
+@@ -11215,6 +11236,10 @@ static struct cftype cpu_legacy_files[] = {
+ 		.name = "stat",
+ 		.seq_show = cpu_cfs_stat_show,
+ 	},
++	{
++		.name = "stat.local",
++		.seq_show = cpu_cfs_local_stat_show,
++	},
+ #endif
+ #ifdef CONFIG_RT_GROUP_SCHED
+ 	{
+@@ -11271,6 +11296,24 @@ static int cpu_extra_stat_show(struct seq_file *sf,
+ 	return 0;
+ }
+ 
++static int cpu_local_stat_show(struct seq_file *sf,
++			       struct cgroup_subsys_state *css)
++{
++#ifdef CONFIG_CFS_BANDWIDTH
++	{
++		struct task_group *tg = css_tg(css);
++		u64 throttled_self_usec;
++
++		throttled_self_usec = throttled_time_self(tg);
++		do_div(throttled_self_usec, NSEC_PER_USEC);
++
++		seq_printf(sf, "throttled_usec %llu\n",
++			   throttled_self_usec);
++	}
++#endif
++	return 0;
++}
++
+ #ifdef CONFIG_FAIR_GROUP_SCHED
+ static u64 cpu_weight_read_u64(struct cgroup_subsys_state *css,
+ 			       struct cftype *cft)
+@@ -11449,6 +11492,7 @@ struct cgroup_subsys cpu_cgrp_subsys = {
+ 	.css_released	= cpu_cgroup_css_released,
+ 	.css_free	= cpu_cgroup_css_free,
+ 	.css_extra_stat_show = cpu_extra_stat_show,
++	.css_local_stat_show = cpu_local_stat_show,
+ #ifdef CONFIG_RT_GROUP_SCHED
+ 	.can_attach	= cpu_cgroup_can_attach,
+ #endif
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 51ccae7..159b202 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4878,8 +4878,12 @@ enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ 			list_add_leaf_cfs_rq(cfs_rq);
+ 		} else {
+ #ifdef CONFIG_CFS_BANDWIDTH
++			struct rq *rq = rq_of(cfs_rq);
++
+ 			if (cfs_rq_throttled(cfs_rq) && !cfs_rq->throttled_clock)
+-				cfs_rq->throttled_clock = rq_clock(rq_of(cfs_rq));
++				cfs_rq->throttled_clock = rq_clock(rq);
++			if (!cfs_rq->throttled_clock_self)
++				cfs_rq->throttled_clock_self = rq_clock(rq);
+ #endif
+ 		}
  	}
+@@ -5384,6 +5388,17 @@ static int tg_unthrottle_up(struct task_group *tg, void *data)
+ 		/* Add cfs_rq with load or one or more already running entities to the list */
+ 		if (!cfs_rq_is_decayed(cfs_rq))
+ 			list_add_leaf_cfs_rq(cfs_rq);
++
++		if (cfs_rq->throttled_clock_self) {
++			u64 delta = rq_clock(rq) - cfs_rq->throttled_clock_self;
++
++			cfs_rq->throttled_clock_self = 0;
++
++			if (SCHED_WARN_ON((s64)delta < 0))
++				delta = 0;
++
++			cfs_rq->throttled_clock_self_time += delta;
++		}
+ 	}
+ 
+ 	return 0;
+@@ -5398,6 +5413,10 @@ static int tg_throttle_down(struct task_group *tg, void *data)
+ 	if (!cfs_rq->throttle_count) {
+ 		cfs_rq->throttled_clock_pelt = rq_clock_pelt(rq);
+ 		list_del_leaf_cfs_rq(cfs_rq);
++
++		SCHED_WARN_ON(cfs_rq->throttled_clock_self);
++		if (cfs_rq->nr_running)
++			cfs_rq->throttled_clock_self = rq_clock(rq);
+ 	}
+ 	cfs_rq->throttle_count++;
+ 
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index e93e006..1dcea9b 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -636,6 +636,8 @@ struct cfs_rq {
+ 	u64			throttled_clock;
+ 	u64			throttled_clock_pelt;
+ 	u64			throttled_clock_pelt_time;
++	u64			throttled_clock_self;
++	u64			throttled_clock_self_time;
+ 	int			throttled;
+ 	int			throttle_count;
+ 	struct list_head	throttled_list;
