@@ -2,58 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B6BC75637F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jul 2023 14:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBBA675638B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jul 2023 14:57:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230396AbjGQM5A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Jul 2023 08:57:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37994 "EHLO
+        id S231354AbjGQM5e (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Jul 2023 08:57:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230348AbjGQM47 (ORCPT
+        with ESMTP id S231289AbjGQM5P (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Jul 2023 08:56:59 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18417172C;
-        Mon, 17 Jul 2023 05:56:25 -0700 (PDT)
-Date:   Mon, 17 Jul 2023 12:56:11 -0000
+        Mon, 17 Jul 2023 08:57:15 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A9319AE;
+        Mon, 17 Jul 2023 05:56:42 -0700 (PDT)
+Date:   Mon, 17 Jul 2023 12:56:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1689598571;
+        s=2020; t=1689598573;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3QRwIIAu6SKfQwuKHc8Rqk9eOFOdTrr4UqMtZzl4/z8=;
-        b=4isY0zU3c5Ul6iPccQlZm04q4iLXfT72llvfxngdvmvd0DvjYosDt97r/KFwvlhMYBP4um
-        gwwWmk+Ojquj4unIWFAoKbNayoRZljBDSpEx9UkMyFEQahjlNYQSjc2gxUM3Qn4R57IMwd
-        ZUwxbkRCETzKONaRlu9j0rxYW2hbQLC7tY61XmZ8nWNUOePS6IJ4YaH/R5wLFdpPgpP6Pz
-        /yDA1LFITlqc91SwM8ua4SPR4kx9c0ynoexamOt4SYVXWsZA4SPmsSlvgIe0MRrWTUIC3W
-        2JMenDhrSEheMDADuYzaG5ixrHV7j5G0oTptvNQyju6pMZbfI5orukc4k09SPw==
+        bh=Eknuv9JzEkTP8q2JWBFLcMfKm/vef1f57vqL4RUF+M0=;
+        b=Dah4yfUr2ZAnTYLZjviQ9J5JhglZ+f8A/6WeVQ+my6VJQG99N8GIYnuYZu3HXEYrBCyFUR
+        vDvES0375l+K6TEpo7WMlTxaYDp5yMlirF3tDPAlwSTw4avWpeMfy0y524M9YzjTkZshGW
+        qaNgfITTqKatfhli+Z40P792PVDim4OjG3CX6pUYiAk8n/doXkAAvsKCfyL1yqUiME0xZ0
+        AExyPfnfvU9mfD6dhvQUkHkL/asKGTXDHT+gz2uRBshw1Ru/9CuiRgqe92QeOIS0ENfSGN
+        ZhILAldqgvUjBB8Zm4Pov7fNCi/UbrdBRLXby/y/52nYXQgjYWHwe6BmdDfS+w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1689598571;
+        s=2020e; t=1689598573;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3QRwIIAu6SKfQwuKHc8Rqk9eOFOdTrr4UqMtZzl4/z8=;
-        b=/UdhrTwC/SAzR0x716buR9G//O7jVf5c3f1+BkCjSkPcK1KkU/IEbJlfwApzceKGB+fxLm
-        gVeBDoRj2ro5UKDA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=Eknuv9JzEkTP8q2JWBFLcMfKm/vef1f57vqL4RUF+M0=;
+        b=bYuPTL5aaW0YxGwTHpM8HZbHUT2D11h4xvWMITYeCm/y1lxhGzzK6gfqjztp1kDsxg9xsV
+        qAYMxrVWaW2JivDA==
+From:   "tip-bot2 for Tim C Chen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/debug: Dump domains' sched group flags
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Valentin Schneider <vschneid@redhat.com>, x86@kernel.org,
+Subject: [tip: sched/core] sched/topology: Record number of cores in sched group
+Cc:     Tim Chen <tim.c.chen@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Ced1749262d94d95a8296c86a415999eda90bcfe3=2E16887?=
+In-Reply-To: =?utf-8?q?=3C04641eeb0e95c21224352f5743ecb93dfac44654=2E16887?=
  =?utf-8?q?70494=2Egit=2Etim=2Ec=2Echen=40linux=2Eintel=2Ecom=3E?=
-References: =?utf-8?q?=3Ced1749262d94d95a8296c86a415999eda90bcfe3=2E168877?=
+References: =?utf-8?q?=3C04641eeb0e95c21224352f5743ecb93dfac44654=2E168877?=
  =?utf-8?q?0494=2Egit=2Etim=2Ec=2Echen=40linux=2Eintel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <168959857109.28540.8257126646779538127.tip-bot2@tip-bot2>
+Message-ID: <168959857267.28540.7534555852542758519.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,44 +69,67 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     ed74cc4995d314ea6cbf406caf978c442f451fa5
-Gitweb:        https://git.kernel.org/tip/ed74cc4995d314ea6cbf406caf978c442f451fa5
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 07 Jul 2023 15:57:05 -07:00
+Commit-ID:     d24cb0d9113f5932b8832533ce82351b5911ed50
+Gitweb:        https://git.kernel.org/tip/d24cb0d9113f5932b8832533ce82351b5911ed50
+Author:        Tim C Chen <tim.c.chen@linux.intel.com>
+AuthorDate:    Fri, 07 Jul 2023 15:57:01 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 13 Jul 2023 15:21:53 +02:00
+CommitterDate: Thu, 13 Jul 2023 15:21:51 +02:00
 
-sched/debug: Dump domains' sched group flags
+sched/topology: Record number of cores in sched group
 
-There have been a case where the SD_SHARE_CPUCAPACITY sched group flag
-in a parent domain were not set and propagated properly when a degenerate
-domain is removed.
+When balancing sibling domains that have different number of cores,
+tasks in respective sibling domain should be proportional to the
+number of cores in each domain. In preparation of implementing such a
+policy, record the number of cores in a scheduling group.
 
-Add dump of domain sched group flags of a CPU to make debug easier
-in the future.
-
-Usage:
-cat /debug/sched/domains/cpu0/domain1/groups_flags
-to dump cpu0 domain1's sched group flags.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lore.kernel.org/r/ed1749262d94d95a8296c86a415999eda90bcfe3.1688770494.git.tim.c.chen@linux.intel.com
+Link: https://lore.kernel.org/r/04641eeb0e95c21224352f5743ecb93dfac44654.1688770494.git.tim.c.chen@linux.intel.com
 ---
- kernel/sched/debug.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/sched.h    |  1 +
+ kernel/sched/topology.c | 12 +++++++++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 066ff1c..aeeba46 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -427,6 +427,7 @@ static void register_sd(struct sched_domain *sd, struct dentry *parent)
- #undef SDM
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 1dcea9b..9baeb1a 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1884,6 +1884,7 @@ struct sched_group {
+ 	atomic_t		ref;
  
- 	debugfs_create_file("flags", 0444, parent, &sd->flags, &sd_flags_fops);
-+	debugfs_create_file("groups_flags", 0444, parent, &sd->groups->flags, &sd_flags_fops);
- }
+ 	unsigned int		group_weight;
++	unsigned int		cores;
+ 	struct sched_group_capacity *sgc;
+ 	int			asym_prefer_cpu;	/* CPU of highest priority in group */
+ 	int			flags;
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index d3a3b26..7cfcfe5 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1275,14 +1275,24 @@ build_sched_groups(struct sched_domain *sd, int cpu)
+ static void init_sched_groups_capacity(int cpu, struct sched_domain *sd)
+ {
+ 	struct sched_group *sg = sd->groups;
++	struct cpumask *mask = sched_domains_tmpmask2;
  
- void update_sched_domain_debugfs(void)
+ 	WARN_ON(!sg);
+ 
+ 	do {
+-		int cpu, max_cpu = -1;
++		int cpu, cores = 0, max_cpu = -1;
+ 
+ 		sg->group_weight = cpumask_weight(sched_group_span(sg));
+ 
++		cpumask_copy(mask, sched_group_span(sg));
++		for_each_cpu(cpu, mask) {
++			cores++;
++#ifdef CONFIG_SCHED_SMT
++			cpumask_andnot(mask, mask, cpu_smt_mask(cpu));
++#endif
++		}
++		sg->cores = cores;
++
+ 		if (!(sd->flags & SD_ASYM_PACKING))
+ 			goto next;
+ 
