@@ -2,60 +2,156 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E8D753E29
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Jul 2023 16:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FBE07558F7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jul 2023 03:09:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236170AbjGNOzG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 14 Jul 2023 10:55:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60248 "EHLO
+        id S229868AbjGQBJl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 16 Jul 2023 21:09:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236195AbjGNOzF (ORCPT
+        with ESMTP id S229710AbjGQBJk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 14 Jul 2023 10:55:05 -0400
-Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD23930D8;
-        Fri, 14 Jul 2023 07:54:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
-        s=smtpout1; t=1689346493;
-        bh=XADEfjndjszbVYJrrMYipbQN7ysubBOBpXKhMIrWSxo=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=UeOIcxZ9v19yUjgSe0SAT7wmloUiDstYjIl0ayAcL5+Eotjs7Hta+skMi5HA55xkQ
-         vd8tRyMFEGW0jEO3tMsSQrtLUh/MPLU2zvPPz+x4u+ZW/4loji/pvrQX4jSlSn49n/
-         Ns1hWErTRmU2/Swz1LdlqkurShKI1HqyoyV82a1PqAPexQX/0UVoCfxCYaFeKPNhi9
-         oxOwWKLlcNz67QbK6FFEcJAJgJvIt4HZEFKYsvBYYNVSkQmDgt80aFo6r3X1zHPhDT
-         TiXAzBH3zJDy8Zpj7fakWFPwhn5LRDF7mjd+sFxW22H2BhrqSetci7PcXMXJA85dcU
-         FjS313RKqgQ+g==
-Received: from [172.16.0.134] (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
-        by smtpout.efficios.com (Postfix) with ESMTPSA id 4R2ZJY2njrz1Hrt;
-        Fri, 14 Jul 2023 10:54:53 -0400 (EDT)
-Message-ID: <794520d1-8cfa-0b81-a8d6-2c2bf4b55eb9@efficios.com>
-Date:   Fri, 14 Jul 2023 10:55:32 -0400
+        Sun, 16 Jul 2023 21:09:40 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1FE91B4;
+        Sun, 16 Jul 2023 18:09:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689556179; x=1721092179;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=VMYttp+OsKD42PIdqaXkxOwWLWULv3BDQ5DaFXpoEBk=;
+  b=Y8jh4zh7+lWKYzDIPFJYUt05a4f4sAd7hgn7z6yU5mw3qlkf22kqflvA
+   gE/L2Tqlc+d8IRrSD10c+XbdbvK/bq4adxKYJ2P0IVKmMqCS7JfwDxeNY
+   qjCiGRflLzlTbgjpUtte+cGHiyP9BUv4Ksek2b/bBd142TDhqqgSfYGNc
+   pMW00+c5LgdmyA6hKe1cKneMkat15FmTFGXsbHogNrvlTV3FzvbWWiISL
+   VRvREaGaWpWtzo65d/mJ19cBHh86ejEnwOpMkiJnFf9ZcTzbq0R6etnBn
+   BbnP3DuxWdN/WDAcqkAxtSe4AebvUOgiovtPovOdFkCRTfpqEhGD/a+fJ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10773"; a="365860304"
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
+   d="scan'208";a="365860304"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2023 18:09:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10773"; a="847106120"
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
+   d="scan'208";a="847106120"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orsmga004.jf.intel.com with ESMTP; 16 Jul 2023 18:09:31 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Sun, 16 Jul 2023 18:09:31 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Sun, 16 Jul 2023 18:09:30 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Sun, 16 Jul 2023 18:09:30 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Sun, 16 Jul 2023 18:09:30 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RjOUgALtOFzeV7XjMZ6Q3gQIheKTGp9lq7roSlWTj+CxxlOTOJDZ0oyutCSw3MXY5Y2bvbnGXvsnk//R28v6So2Z48/GrE8YEnjHTNMv6/59JgKdjK21Slgyna9Y1/tBPhLampFD4tzVc1w2kBrciuDV1nukIYBBN5vThRTLc4jtmpiyhvrIGrlUoRa33qy6YE9nfJndltNEsWjkbEtmrAQ3wsoXSMBntuFttaiL+6Ks23jjH4ZSQ40Gbc3m6DWz1PxnjWsh6D45pAkpOZvWT3WP3ukd1jurREz87wDsRibThjfJN/AD3bhf53tB+ek9agbyNZr08lN+QR7d028udw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A9wboGPtbgUP4kPS5pTlGr7T+ABRSfyUaI9U/QJsnsY=;
+ b=GG9M0/PV1xJJvfWH2X+wZyDV1pCxgB1xQ653Xp+EQaWYpO6reRdncenNbcgebwkTsDyL0G7A69QLlr5ksms8QgpCB0vhyZdKgAxuMA1WUclmLx4Hbnqt8794opy1Me+LTnWqUEtXHIMKVHXU5h4RntEg4LKiZOhGYN6OfziXRF34e754kHOLf+LHMugcaER/LYWmHyXDTOCTxn89fi/NcCwdTidjfkt4CoNvR/fgDN3Nsynjyro3e/VQxVEOgUrXTmMFscb1fun81VI9nY+pn1aWebVLKdi/U721mZxpa+NFDI5Yeyzo4DH1CkD+h3Cry0UvmouW/uq36TUFLZ9eZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MN0PR11MB6206.namprd11.prod.outlook.com (2603:10b6:208:3c6::8)
+ by CH0PR11MB5299.namprd11.prod.outlook.com (2603:10b6:610:be::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Mon, 17 Jul
+ 2023 01:09:29 +0000
+Received: from MN0PR11MB6206.namprd11.prod.outlook.com
+ ([fe80::d9d9:1535:1180:603a]) by MN0PR11MB6206.namprd11.prod.outlook.com
+ ([fe80::d9d9:1535:1180:603a%2]) with mapi id 15.20.6588.031; Mon, 17 Jul 2023
+ 01:09:29 +0000
+Date:   Mon, 17 Jul 2023 09:09:12 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     K Prateek Nayak <kprateek.nayak@amd.com>
+CC:     Peter Zijlstra <peterz@infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-tip-commits@vger.kernel.org>, Tejun Heo <tj@kernel.org>,
+        Tim Chen <tim.c.chen@intel.com>, <x86@kernel.org>,
+        Gautham Shenoy <gautham.shenoy@amd.com>
+Subject: Re: [tip: sched/core] sched/fair: Multi-LLC select_idle_sibling()
+Message-ID: <ZLSUuEdwDQ2lbR/Z@chenyu5-mobl2>
+References: <20230601144706.GA559454@hirez.programming.kicks-ass.net>
+ <7bee9860-2d2a-067b-adea-04012516095c@amd.com>
+ <20230602065438.GB620383@hirez.programming.kicks-ass.net>
+ <bd083d8d-023a-698e-701b-725f1b15766e@amd.com>
+ <20230613082536.GI83892@hirez.programming.kicks-ass.net>
+ <f212f491-cd3f-6eee-20d7-8f9ab8937902@amd.com>
+ <20230705115702.GY4253@hirez.programming.kicks-ass.net>
+ <ZKlh1u2kkHzHY/nB@chenyu5-mobl2>
+ <ZK7groqlP3S7r8vt@chenyu5-mobl2>
+ <8702a92f-317e-c38f-48ec-5ac373ba5072@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <8702a92f-317e-c38f-48ec-5ac373ba5072@amd.com>
+X-ClientProxiedBy: SG3P274CA0023.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::35)
+ To MN0PR11MB6206.namprd11.prod.outlook.com (2603:10b6:208:3c6::8)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [tip: sched/core] sched: Fix performance regression introduced by
- mm_cid
-Content-Language: en-US
-To:     Swapnil Sapkal <Swapnil.Sapkal@amd.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Aaron Lu <aaron.lu@intel.com>, x86@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <168214940343.404.10896712987516429042.tip-bot2@tip-bot2>
- <09e0f469-a3f7-62ef-75a1-e64cec2dcfc5@amd.com>
- <20230620091139.GZ4253@hirez.programming.kicks-ass.net>
- <44428f1e-ca2c-466f-952f-d5ad33f12073@amd.com>
- <3e9eaed6-4708-9e58-c80d-143760d6b23a@efficios.com>
- <ddbd1564-8135-5bc3-72b4-afb7c6e9caba@amd.com>
- <a73761e4-b791-e9a2-a276-e1551628e33b@efficios.com>
- <ae21fca4-68ad-0599-39b6-028ade02b813@amd.com>
-From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-In-Reply-To: <ae21fca4-68ad-0599-39b6-028ade02b813@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR11MB6206:EE_|CH0PR11MB5299:EE_
+X-MS-Office365-Filtering-Correlation-Id: da40eebf-a71c-42be-56cc-08db8662785b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: FONn0If7un/2W5WYThp9byRYr6d0Rmhh/Bc5XqtHBDTErC1vbIAEWoXxZD8K3mG7lcWqzJhS06WAXQS/OPoBOIhRZ71U8Nwlq10xXXqD+ImHqioK0wcbkj+Bq5JfsAlwr0+zj/0aIPnT8sNpCzDhDo4gTG896/ZBc+a5g4mSfBIT+WqTuA6FCfqpgKM6Cc8NAQefSH5sWYdPXgnIEDExq+m915MHCTyOUQGahwTLcy1kP9raqzhKoXR2oo5LI7qid8TmXquP7gdNt1VtRvud+UbCBTXZyS21UNuSl5qSXJqdKADzP1LNaM8mzF2VUE9qsWFDG/TxW92oCmUF+7Bb9/P6OTZEwi/8Z/F2aA6qX3SlyU6Prpsro8x2bYpS8ewHvGCSJHH2Wze8mDLetJYfVGCbl75JLxf08zMZ9F1PwzandyrhbxQTTZ9CSltfSrohZNDIpJVb0UjzYKjXxexeLVniAXYAoT8aBOdVm20v9zG9CFwyiu7PvuhsyMDsixytIkr+KV5VvF3ALgLEQ7XoJF9J8z/VeoTfEXsCknpzT/4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB6206.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(346002)(396003)(136003)(366004)(376002)(39860400002)(451199021)(54906003)(6666004)(82960400001)(38100700002)(6486002)(478600001)(41300700001)(8676002)(5660300002)(8936002)(66556008)(316002)(66946007)(66476007)(6916009)(4326008)(186003)(83380400001)(6512007)(966005)(53546011)(9686003)(26005)(6506007)(86362001)(33716001)(2906002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?yvTr6bitgYkafYbYPOolJB85UCGHRfCsudpRkeHPFwSHfi7ey8JpzcPUKi1O?=
+ =?us-ascii?Q?GXmES/CEkMlpk775kCajPgq/QebfBPx8drxKmKuGhX8+aVdMNRXeXYTLfnlX?=
+ =?us-ascii?Q?v5nZvHbRzvQZ33UA00oFt0AJYmZY6zub0BgcXULPkUQp16rnbL1myr9fB85W?=
+ =?us-ascii?Q?TIeBv/4SOI+lNgytMYq/Du/LXGzOqw8lRWo7KeopbM4Dv6JwK2pb1gNBN4UJ?=
+ =?us-ascii?Q?59NWSGMpj59eoXFqsasRCpqF8LEbkMS8XGjx6vccPBaZLyz9yp1EyDS1ggZv?=
+ =?us-ascii?Q?RAmfX109d7xa2DrBbxAzjRPjT59lMM+Mj+4Dly3rIhcQXLl29y2OVEfUzifP?=
+ =?us-ascii?Q?Fxl3bmNyRzRB7o2DwNJeJ9z6g64HDBE/XVyyYLiByCe6XtZFk5jr9GYyqkOy?=
+ =?us-ascii?Q?pTYOawfqObc+d0HsxCbZELRad2yphegLUuwM2soPWENZ/HYd+edL1D778ceK?=
+ =?us-ascii?Q?fnn22unBXL5qNRdI9LTpNQZ18Dug5OMDbb5CHlLKwzsh6uVVDgSa6NQXNCf7?=
+ =?us-ascii?Q?3qdPmB1qascgqmmu65cQpcGwTvt0y+Y2cupZAB5gtJCzHJlDAc2pG2GHEtDe?=
+ =?us-ascii?Q?DWXWYa8cL5ybWOHBeDBLeV/iyzT0+Qe3YuC1BrvnC+CRD3zuLQepxp4CkXvm?=
+ =?us-ascii?Q?MN7xfrHE0Ir2kzfKG+37D8OlJAnOtmIr96HP6gy0SnaP7H4KkYP8X1AlWPNP?=
+ =?us-ascii?Q?FRf9YefCiBEAAEWESo96dbuN9/F0EDEfzAN1EP1AAKcrqtVcJ2ckJtnNAUua?=
+ =?us-ascii?Q?z/7vzCbva1DJhdtZ/zQPgj80PQB01XTTlu7GZs19gNziVYW7WI6AQByIwMGD?=
+ =?us-ascii?Q?vPmPSP3h/+4EANCaotXS+cQuVt4M30XXIMAeNr4Q+rf4ubQQz71mdrXjgLnh?=
+ =?us-ascii?Q?I2xknxZHm29j2+bKDwaONzck8bjDAXSP/GOVAMPrXAqTtt1sXP9UgcVM+RF2?=
+ =?us-ascii?Q?aRHE3vsAM6tU+bgo+STcTaqdaKMPfqmPAMItW6haBqtfKQSERBhbsu32MnA9?=
+ =?us-ascii?Q?d26quQq0Qwh71dwUoyfDP/vCiSYg4mAuKqiV9dbmghZccJGFjfrcoP/ZYIwF?=
+ =?us-ascii?Q?B1EoADt+G5KhCJZWkbSFWrW1J+WJGLh6mK234T0KdZxgW+SE2KwzDCODwDkR?=
+ =?us-ascii?Q?hXvj3uP2zY0Yebo9Vf8NRBPCmAs5jSlqTIuvr+QRKFZfVHtggfsFT9gPIS8N?=
+ =?us-ascii?Q?QGxuYqP0e410TlRHqCO3qZFaZFZ4G+iOwyQ/+onkAvSFRxWP2dJhJJBx75/K?=
+ =?us-ascii?Q?JP7vTgtcas+Vccm47jPPstUHy3i8YPcLZ4ZN3ou3hp5TXC80EDDzgW2kf8Q9?=
+ =?us-ascii?Q?mXMniBM8uv7gZu+l+Pmg6Aj1UnnTMSFKSOdbrcZbobg0KWjlu4I3mZJNbk2n?=
+ =?us-ascii?Q?Lo6rTKwqIl+6kqZD3NF7vNe+DagX8Qp2JXOeQQ909EENNRGfTto7cd58XhEU?=
+ =?us-ascii?Q?1MIPnf8aePW547nAcGHtCBmqR3dWnx1FnLRb2ZV07gNWC3f9/wnDNcZ5Qs+3?=
+ =?us-ascii?Q?8pQQk2tAGzuteTpw8ktrZ0icnQhZEejFPM8GDc5jeOvW3APfDC+o6JVoInjN?=
+ =?us-ascii?Q?s3VkYhx0pCoW/4mfDF/5hjMmFGuaeQIzg3dCOvMO?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: da40eebf-a71c-42be-56cc-08db8662785b
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6206.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2023 01:09:28.9073
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0LNK1Vba+H1PaChIgDFNusVYyH1+YXHbuWjZeIG2EmU7r8aZkrW+FZcfse6P4tpA7eTv56Q2ycLZDFKwCII27g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5299
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,261 +159,135 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 7/14/23 02:02, Swapnil Sapkal wrote:
-> Hello Mathieu,
+Hi Prateek,
+
+On 2023-07-13 at 09:13:29 +0530, K Prateek Nayak wrote:
+> Hello Chenyu,
 > 
-> On 6/22/2023 12:21 AM, Mathieu Desnoyers wrote:
->> On 6/21/23 12:36, Swapnil Sapkal wrote:
->>> Hello Mathieu,
->>>
->> [...]
->>>>
->>>> I suspect the regression is caused by the mm_count cache line bouncing.
->>>>
->>>> Please try with this additional patch applied:
->>>>
->>>> https://lore.kernel.org/lkml/20230515143536.114960-1-mathieu.desnoyers@efficios.com/
->>>
->>> Thanks for the suggestion. I tried out with the patch you suggested. 
->>> I am seeing
->>> improvement in hackbench numbers with mm_count padding. But this is 
->>> not matching
->>> with what we achieved through reverting the new mm_cid patch.
->>>
->>> Below are the results on the 1 Socket 4th Generation EPYC Processor 
->>> (1 x 96C/192T):
->>>
->>> Threads:
->>>
->>> Test:              Base (v6.4-rc1)   Base + new_mmcid_reverted  Base 
->>> + mm_count_padding
->>>   1-groups:         5.23 (0.00 pct)         4.61 (11.85 pct)        
->>> 5.11 (2.29 pct)
->>>   2-groups:         4.99 (0.00 pct)         4.72 (5.41 pct)         
->>> 5.00 (-0.20 pct)
->>>   4-groups:         5.96 (0.00 pct)         4.87 (18.28 pct)        
->>> 5.86 (1.67 pct)
->>>   8-groups:         6.58 (0.00 pct)         5.44 (17.32 pct)        
->>> 6.20 (5.77 pct)
->>> 16-groups:        11.48 (0.00 pct)         8.07 (29.70 pct)       
->>> 10.68 (6.96 pct)
->>>
->>> Processes:
->>>
->>> Test:              Base (v6.4-rc1)  Base + new_mmcid_reverted   Base 
->>> + mm_count_padding
->>>   1-groups:         5.19 (0.00 pct)         4.90 (5.58 pct)         
->>> 5.19 (0.00 pct)
->>>   2-groups:         5.44 (0.00 pct)         5.39 (0.91 pct)         
->>> 5.39 (0.91 pct)
->>>   4-groups:         5.69 (0.00 pct)         5.64 (0.87 pct)         
->>> 5.64 (0.87 pct)
->>>   8-groups:         6.08 (0.00 pct)         6.01 (1.15 pct)         
->>> 6.04 (0.65 pct)
->>> 16-groups:        10.87 (0.00 pct)        10.83 (0.36 pct)        
->>> 10.93 (-0.55 pct)
->>>
->>> The ibs profile shows that function __switch_to_asm() is coming at 
->>> top in baseline
->>> run and is not seen with mm_count padding patch. Will be attaching 
->>> full ibs profile
->>> data for all the 3 runs:
->>>
->>> # Base (v6.4-rc1)
->>> Threads:
->>> Total time: 11.486 [sec]
->>>
->>>     5.15%  sched-messaging  [kernel.vmlinux]      [k] __switch_to_asm
->>>     4.31%  sched-messaging  [kernel.vmlinux]      [k] copyout
->>>     4.29%  sched-messaging  [kernel.vmlinux]      [k] 
->>> native_queued_spin_lock_slowpath
->>>     4.22%  sched-messaging  [kernel.vmlinux]      [k] copyin
->>>     3.92%  sched-messaging  [kernel.vmlinux]      [k] 
->>> apparmor_file_permission
->>>     2.91%  sched-messaging  [kernel.vmlinux]      [k] __schedule
->>>     2.34%  swapper          [kernel.vmlinux]      [k] __switch_to_asm
->>>     2.10%  sched-messaging  [kernel.vmlinux]      [k] 
->>> prepare_to_wait_event
->>>     2.10%  sched-messaging  [kernel.vmlinux]      [k] try_to_wake_up
->>>     2.07%  sched-messaging  [kernel.vmlinux]      [k] 
->>> finish_task_switch.isra.0
->>>     2.00%  sched-messaging  [kernel.vmlinux]      [k] pipe_write
->>>     1.82%  sched-messaging  [kernel.vmlinux]      [k] 
->>> check_preemption_disabled
->>>     1.73%  sched-messaging  [kernel.vmlinux]      [k] 
->>> exit_to_user_mode_prepare
->>>     1.52%  sched-messaging  [kernel.vmlinux]      [k] __entry_text_start
->>>     1.49%  sched-messaging  [kernel.vmlinux]      [k] osq_lock
->>>     1.45%  sched-messaging  libc.so.6             [.] write
->>>     1.44%  swapper          [kernel.vmlinux]      [k] native_sched_clock
->>>     1.38%  sched-messaging  [kernel.vmlinux]      [k] psi_group_change
->>>     1.38%  sched-messaging  [kernel.vmlinux]      [k] pipe_read
->>>     1.37%  sched-messaging  libc.so.6             [.] read
->>>     1.06%  sched-messaging  [kernel.vmlinux]      [k] vfs_read
->>>     1.01%  swapper          [kernel.vmlinux]      [k] psi_group_change
->>>     1.00%  sched-messaging  [kernel.vmlinux]      [k] update_curr
->>>
->>> # Base + mm_count_padding
->>> Threads:
->>> Total time: 11.384 [sec]
->>>
->>>     4.43%  sched-messaging  [kernel.vmlinux]         [k] copyin
->>>     4.39%  sched-messaging  [kernel.vmlinux]         [k] 
->>> native_queued_spin_lock_slowpath
->>>     4.07%  sched-messaging  [kernel.vmlinux]         [k] 
->>> apparmor_file_permission
->>>     4.07%  sched-messaging  [kernel.vmlinux]         [k] copyout
->>>     2.49%  sched-messaging  [kernel.vmlinux]         [k] 
->>> entry_SYSCALL_64
->>>     2.37%  sched-messaging  [kernel.vmlinux]         [k] 
->>> update_cfs_group
->>>     2.19%  sched-messaging  [kernel.vmlinux]         [k] pipe_write
->>>     2.00%  sched-messaging  [kernel.vmlinux]         [k] 
->>> check_preemption_disabled
->>>     1.93%  swapper          [kernel.vmlinux]         [k] update_load_avg
->>>     1.81%  sched-messaging  [kernel.vmlinux]         [k] 
->>> exit_to_user_mode_prepare
->>>     1.69%  sched-messaging  [kernel.vmlinux]         [k] try_to_wake_up
->>>     1.58%  sched-messaging  libc.so.6                [.] write
->>>     1.53%  sched-messaging  [kernel.vmlinux]         [k] 
->>> psi_group_change
->>>     1.50%  sched-messaging  libc.so.6                [.] read
->>>     1.50%  sched-messaging  [kernel.vmlinux]         [k] pipe_read
->>>     1.39%  sched-messaging  [kernel.vmlinux]         [k] update_load_avg
->>>     1.39%  sched-messaging  [kernel.vmlinux]         [k] osq_lock
->>>     1.30%  sched-messaging  [kernel.vmlinux]         [k] update_curr
->>>     1.28%  swapper          [kernel.vmlinux]         [k] 
->>> psi_group_change
->>>     1.16%  sched-messaging  [kernel.vmlinux]         [k] vfs_read
->>>     1.12%  sched-messaging  [kernel.vmlinux]         [k] vfs_write
->>>     1.10%  sched-messaging  [kernel.vmlinux]         [k] 
->>> entry_SYSRETQ_unsafe_stack
->>>     1.09%  sched-messaging  [kernel.vmlinux]         [k] __switch_to_asm
->>>     1.08%  sched-messaging  [kernel.vmlinux]         [k] do_syscall_64
->>>     1.06%  sched-messaging  [kernel.vmlinux]         [k] 
->>> select_task_rq_fair
->>>     1.03%  swapper          [kernel.vmlinux]         [k] 
->>> update_cfs_group
->>>     1.00%  swapper          [kernel.vmlinux]         [k] rb_insert_color
->>>
->>> # Base + reverted_new_mm_cid
->>> Threads:
->>> Total time: 7.847 [sec]
->>>
->>>    12.14%  sched-messaging  [kernel.vmlinux]      [k] 
->>> native_queued_spin_lock_slowpath
->>>     8.86%  swapper          [kernel.vmlinux]      [k] 
->>> native_queued_spin_lock_slowpath
->>>     6.13%  sched-messaging  [kernel.vmlinux]      [k] copyin
->>>     5.54%  sched-messaging  [kernel.vmlinux]      [k] 
->>> apparmor_file_permission
->>>     3.59%  sched-messaging  [kernel.vmlinux]      [k] copyout
->>>     2.61%  sched-messaging  [kernel.vmlinux]      [k] osq_lock
->>>     2.48%  sched-messaging  [kernel.vmlinux]      [k] pipe_write
->>>     2.33%  sched-messaging  [kernel.vmlinux]      [k] 
->>> exit_to_user_mode_prepare
->>>     2.01%  sched-messaging  [kernel.vmlinux]      [k] 
->>> check_preemption_disabled
->>>     1.96%  sched-messaging  [kernel.vmlinux]      [k] __entry_text_start
->>>     1.91%  sched-messaging  libc.so.6             [.] write
->>>     1.77%  sched-messaging  libc.so.6             [.] read
->>>     1.64%  sched-messaging  [kernel.vmlinux]      [k] 
->>> mutex_spin_on_owner
->>>     1.58%  sched-messaging  [kernel.vmlinux]      [k] pipe_read
->>>     1.52%  sched-messaging  [kernel.vmlinux]      [k] try_to_wake_up
->>>     1.38%  sched-messaging  [kernel.vmlinux]      [k] 
->>> ktime_get_coarse_real_ts64
->>>     1.35%  sched-messaging  [kernel.vmlinux]      [k] vfs_write
->>>     1.28%  sched-messaging  [kernel.vmlinux]      [k] 
->>> entry_SYSRETQ_unsafe_stack
->>>     1.28%  sched-messaging  [kernel.vmlinux]      [k] vfs_read
->>>     1.25%  sched-messaging  [kernel.vmlinux]      [k] do_syscall_64
->>>     1.22%  sched-messaging  [kernel.vmlinux]      [k] __fget_light
->>>     1.18%  sched-messaging  [kernel.vmlinux]      [k] mutex_lock
->>>     1.12%  sched-messaging  [kernel.vmlinux]      [k] file_update_time
->>>     1.04%  sched-messaging  [kernel.vmlinux]      [k] _copy_from_iter
->>>     1.01%  sched-messaging  [kernel.vmlinux]      [k] current_time
->>>
->>> So with the reverted new_mm_cid patch, we are seeing a lot of time 
->>> being spent in
->>> native_queued_spin_lock_slowpath and yet, hackbench finishes faster.
->>>
->>> I keep further digging into this please let me know if you have any 
->>> pointers for me.
->>
->> Do you have CONFIG_SECURITY_APPARMOR=y ? Can you try without ?
->>
-> Sorry for the delay in response. My system was busy running some 
-> workloads. I tried
-> running hackbench disabling apparmor, looks like apparmor is not the 
-> culprit here.
-> Below are the results with apparmor disabled:
+> > 
+> > Tested on Sapphire Rapids, which has 2 x 56C/112T and 224 CPUs in total. C-states
+> > deeper than C1E are disabled. Turbo is disabled. CPU frequency governor is performance.
+> > 
+> > The baseline is v6.4-rc1 tip:sched/core, on top of
+> > commit 637c9509f3db ("sched/core: Avoid multiple calling update_rq_clock() in __cfsb_csd_unthrottle()")
+> > 
+> > patch0: this SD_IDLE_SIBLING patch with above change to TOPOLOGY_SD_FLAGS
+> > patch1: hack patch to split 1 LLC domain into 4 smaller LLC domains(with some fixes on top of
+> >         https://lore.kernel.org/lkml/ZJKjvx%2FNxooM5z1Y@chenyu5-mobl2.ccr.corp.intel.com/)
+> >         The test data in above link is invalid due to bugs in the hack patch, fixed in this version)
+> > 
+> > 
+> > Baseline vs Baseline+patch0:
+> > There is no much difference between the two, and it is expected because Sapphire Rapids
+> > does not have multiple LLC domains within 1 Numa node(also consider the run to run variation):
+> >
+
+[snip] 
+
+> > 
+> > Baseline+patch1    vs    Baseline+patch0+patch1:
+> > 
+> > With multiple LLC domains in 1 Numa node, SD_IDLE_SIBLING brings improvement
+> > to hackbench/schbench, while brings downgrading to netperf/tbench. This is aligned
+> > with what was observed previously, if the waker and wakee wakes up each other
+> > frequently, they would like to be put together for cache locality. While for
+> > other tasks do not have shared resource, always choosing an idle CPU is better.
+> > Maybe in the future we can look back at SIS_SHORT and terminates scan in
+> > select_idle_node() if the waker and wakee have close relationship with
+> > each other.
 > 
-> Test:                   Base            Base + Reverted_new_mmcid   
-> Base+Apparmour_disabled
->   1-groups:         2.81 (0.00 pct)         2.79 (0.71 pct)              
-> 2.79 (0.71 pct)
->   2-groups:         3.25 (0.00 pct)         3.25 (0.00 pct)              
-> 3.20 (1.53 pct)
->   4-groups:         3.44 (0.00 pct)         3.28 (4.65 pct)              
-> 3.43 (0.29 pct)
->   8-groups:         3.52 (0.00 pct)         3.42 (2.84 pct)              
-> 3.53 (-0.28 pct)
-> 16-groups:         5.65 (0.00 pct)         4.52 (20.00 pct)             
-> 5.67 (-0.35 pct)
-
-Can you provide the kernel config file associated with this
-test ? I would also need to see ibs profiles showing the
-functions using most cpu, especially spinlocks and their
-callers.
-
-My working hypothesis is that adding the rseq-mm-cid spinlock
-in the scheduler improves performances of your benchmark because
-it lessens the contention on _another_ lock somewhere else.
-
-Note that we've just received a brand new 2 sockets,
-96 cores/socket AMD machine at EfficiOS. We've bought it to
-increase our coverage of scalability testing. With this I should
-be able to reproduce those regressions on my end, which should
-facilitate the investigation.
-
-Thanks!
-
-Mathieu
-
-
+> Gautham and I were discussing this and realized that when calling
+> ttwu_queue_wakelist(), in a simulated split-LLC case, ttwu_queue_cond()
+> will recommend using the wakelist and send an IPI despite the
+> groups of the DIE domain sharing the cache in your case.
 > 
-> Thanks,
-> Swapnil
+> Can you check if the following change helps the regression?
+> (Note: Completely untested and there may be other such cases lurking
+> around that we've not yet considered)
 > 
->> I notice that apparmor_file_permission appears near the top of your
->> profiles, and apparmor uses an internal aa_buffers_lock spinlock,
->> which could possibly explain the top hits for
->> native_queued_spin_lock_slowpath. My current suspicion is that
->> the raw spinlock that was taken by "Base + reverted_new_mm_cid"
->> changed the contention pattern on the apparmor lock enough to
->> speed things up by pure accident.
->>
->> Thanks,
->>
->> Mathieu
->>
->>
->>>
->>>>
->>>> This patch has recently been merged into the mm tree.
->>>>
->>>> Thanks,
->>>>
->>>> Mathieu
->>>>
->>> -- 
->>> Thanks and Regards,
->>> Swapnil
->>
 
+Good point. There are quite some cpus_share_cache() in the code, and it
+could behave differently if simulated split-LLC is enabled. For example,
+the chance to choose a previous CPU, or a recent_used_cpu is lower in
+select_idle_sibling(), because the range of cpus_share_cache() shrinks.
+
+I launched netperf(224 threads) and hackbench (2 groups) with below patch
+applied, it seems there was no much difference(consider the run-to-run variation)
+
+patch2: the cpus_share_cache() change below.
+
+
+Baseline+patch1    vs    Baseline+patch0+patch1+patch2:
+
+
+netperf
+=======
+case            	load    	baseline(std%)	compare%( std%)
+TCP_RR          	224-threads	 1.00 (  2.36)	 -0.19 (  2.30)
+
+hackbench
+=========
+case            	load    	baseline(std%)	compare%( std%)
+process-pipe    	2-groups	 1.00 (  4.78)	 -6.28 (  9.42)
+
+> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> index a68d1276bab0..a8cab1c81aca 100644
+> --- a/kernel/sched/core.c
+> +++ b/kernel/sched/core.c
+> @@ -3929,7 +3929,7 @@ static inline bool ttwu_queue_cond(struct task_struct *p, int cpu)
+>  	 * If the CPU does not share cache, then queue the task on the
+>  	 * remote rqs wakelist to avoid accessing remote data.
+>  	 */
+> -	if (!cpus_share_cache(smp_processor_id(), cpu))
+> +	if (cpu_to_node(smp_processor_id()) !=  cpu_to_node(cpu))
+>  		return true;
+>  
+>  	if (cpu == smp_processor_id())
+> --
+>
+
+Then I did a hack patch3 in select_idle_node(), to put C/S 1:1 wakeup workloads together.
+For netperf, it is a 1:1 waker/wakee relationship, for hackbench, it is 1:16 waker/wakee
+by default(verified by bpftrace).
+
+
+patch3:
+
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 5904da690f59..3bdfbd546f14 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7161,6 +7161,11 @@ select_idle_node(struct task_struct *p, struct sched_domain *sd, int target)
+ 	if (!parent || parent->flags & SD_NUMA)
+ 		return -1;
+ 
++	/* Tasks pair should be put on local LLC as much as possible. */
++	if (current->last_wakee == p && p->last_wakee == current &&
++	    !current->wakee_flips && !p->wakee_flips)
++		return -1;
++
+ 	sg = parent->groups;
+ 	do {
+ 		int cpu = cpumask_first(sched_group_span(sg));
 -- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+2.25.1
 
+Baseline+patch1    vs    Baseline+patch0+patch1+patch3:
+
+netperf
+=======
+case            	load    	baseline(std%)	compare%( std%)
+TCP_RR          	224-threads	 1.00 (  2.36)	+804.31 (  2.88)
+
+
+hackbench
+=========
+case            	load    	baseline(std%)	compare%( std%)
+process-pipe    	2-groups	 1.00 (  4.78)	 -6.28 (  6.69)
+
+
+It brings the performance of netperf back, while more or less keeps the improvment
+of hackbench(consider the run-run variance).
+
+thanks,
+Chenyu
