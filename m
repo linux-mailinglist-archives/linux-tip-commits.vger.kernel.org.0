@@ -2,169 +2,143 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E1CE756E11
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jul 2023 22:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB392758F75
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Jul 2023 09:48:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230040AbjGQUTo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Jul 2023 16:19:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57054 "EHLO
+        id S229724AbjGSHsH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Jul 2023 03:48:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230022AbjGQUTn (ORCPT
+        with ESMTP id S230333AbjGSHrm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Jul 2023 16:19:43 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6084194;
-        Mon, 17 Jul 2023 13:19:41 -0700 (PDT)
-Date:   Mon, 17 Jul 2023 20:19:39 -0000
+        Wed, 19 Jul 2023 03:47:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F008B1736;
+        Wed, 19 Jul 2023 00:47:39 -0700 (PDT)
+Date:   Wed, 19 Jul 2023 07:47:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1689625180;
+        s=2020; t=1689752858;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=5g+e7Kt7N77MeQFIg5zCypZ5xcAyk/U+HKCYby31Fyo=;
-        b=0Vkkqv6rXDXMJrftEIS7sj/xF2s8HAlmY5tPQsQv9ftbwGa1hyvrFCvbw6HjEW81duQAKQ
-        oM41APpPcBvkJoKb6nZIH9CWx3F2qw8sXwISmA3Xt5jCXaXdzD5gfvZDO5FcnwHlq7Y4CC
-        E8Gv2XpRVCIpA4ZpwObGgZTyctY5TDulHPp3IsC73pysjdEt0O8AfZg9piXAQx143LXFs/
-        rUt4c8JLzwoJVakcIoTgdjknn0l6eQervtWqkmJsyUYdBcuQZki+sPCHVMrdsWnNlVZfrP
-        Kf5q9L1xsQJwJer6p3jJdja6T2c5vps4ES/FaE/+plPV+HtQOX4RuSJWfDB8+g==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=crG8yI+O19YDwNsTIzlOmC+Mf49wGu7sPAQKUPi6ugc=;
+        b=XzD4TUZ5x6YtlzybKbQliIBsCC7EYD8UmtqN41Ui5SX9D0HRiBxVbhneM8QnmL2wL1utB/
+        LhAESxtjqjEoNqHao38mqIzGtsSvCVS2xGI0SRj4XInckA5uUEHvTNPScdBOhtJKkfZIZb
+        pdWoVGTmbeCKyv/DjFMFIDl5SgcX8/ydcDyb1PgXonHz6zNWkzCuamaMArtLR8vPfnuRq2
+        eELraspdNktnRv65o0oX73r+b+9fIrU/1y1JhcVSQfro44rYIXCIl6hXLTg02SEYowAdrd
+        NdJyA6y5tCAH5Z01m7gGloHDAYgrxCghJOrdThRic6+bWKbzPcjvksGlQwyGuQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1689625180;
+        s=2020e; t=1689752858;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=5g+e7Kt7N77MeQFIg5zCypZ5xcAyk/U+HKCYby31Fyo=;
-        b=PntMVBuDpiscCrpCJJP7/KmrkK9UkFUvnK/C0M3O9/t6Eriz4+M+p1yGmUtf4awGnJdai1
-        9IlqBoZU1oEETeCg==
-From:   "tip-bot2 for Janusz Krzysztofik" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=crG8yI+O19YDwNsTIzlOmC+Mf49wGu7sPAQKUPi6ugc=;
+        b=XTaFpCDF/phJb3Faj0sH2FQ/LwGAIlMNVaFawpfdR1ciWGQv1hvECadDUPb7+yyLTxHOnZ
+        2AkmdBxMwLNl0YCg==
+From:   "tip-bot2 for Chin Yik Ming" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Fix PAT bit missing from page protection modify mask
-Cc:     Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Juergen Gross <jgross@suse.com>,
-        marmarek@invisiblethingslab.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: sched/core] sched/headers: Rename task_struct::state to
+ task_struct::__state in the comments too
+Cc:     Chin Yik Ming <yikming2222@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Daniel Bristot de Oliveira <bristot@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230717064952.2804-1-yikming2222@gmail.com>
+References: <20230717064952.2804-1-yikming2222@gmail.com>
 MIME-Version: 1.0
-Message-ID: <168962517947.28540.12391028567128094902.tip-bot2@tip-bot2>
+Message-ID: <168975285779.28540.5554306672674995336.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     548cb932051fb6232ac983ed6673dae7bdf3cf4c
-Gitweb:        https://git.kernel.org/tip/548cb932051fb6232ac983ed6673dae7bdf=
-3cf4c
-Author:        Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-AuthorDate:    Mon, 10 Jul 2023 09:36:14 +02:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 17 Jul 2023 07:41:45 -07:00
+Commit-ID:     48b5583719cdfbdee238f9549a6a1a47af2b0469
+Gitweb:        https://git.kernel.org/tip/48b5583719cdfbdee238f9549a6a1a47af2b0469
+Author:        Chin Yik Ming <yikming2222@gmail.com>
+AuthorDate:    Mon, 17 Jul 2023 14:49:52 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 19 Jul 2023 09:42:58 +02:00
 
-x86/mm: Fix PAT bit missing from page protection modify mask
+sched/headers: Rename task_struct::state to task_struct::__state in the comments too
 
-Visible glitches have been observed when running graphics applications on
-Linux under Xen hypervisor.  Those observations have been confirmed with
-failures from kms_pwrite_crc Intel GPU test that verifies data coherency
-of DRM frame buffer objects using hardware CRC checksums calculated by
-display controllers, exposed to userspace via debugfs.  Affected
-processing paths have then been identified with new IGT test variants that
-mmap the objects using different methods and caching modes [1].
+The rename in 2f064a59a11f ("sched: Change task_struct::state") missed the
+comments.
 
-When running as a Xen PV guest, Linux uses Xen provided PAT configuration
-which is different from its native one.  In particular, Xen specific PTE
-encoding of write-combining caching, likely used by graphics applications,
-differs from the Linux default one found among statically defined minimal
-set of supported modes.  Since Xen defines PTE encoding of the WC mode as
-_PAGE_PAT, it no longer belongs to the minimal set, depends on correct
-handling of _PAGE_PAT bit, and can be mismatched with write-back caching.
+[ mingo: Improved the changelog. ]
 
-When a user calls mmap() for a DRM buffer object, DRM device specific
-.mmap file operation, called from mmap_region(), takes care of setting PTE
-encoding bits in a vm_page_prot field of an associated virtual memory area
-structure.  Unfortunately, _PAGE_PAT bit is not preserved when the vma's
-.vm_flags are then applied to .vm_page_prot via vm_set_page_prot().  Bits
-to be preserved are determined with _PAGE_CHG_MASK symbol that doesn't
-cover _PAGE_PAT.  As a consequence, WB caching is requested instead of WC
-when running under Xen (also, WP is silently changed to WT, and UC
-downgraded to UC_MINUS).  When running on bare metal, WC is not affected,
-but WP and WT extra modes are unintentionally replaced with WC and UC,
-respectively.
-
-WP and WT modes, encoded with _PAGE_PAT bit set, were introduced by commit
-281d4078bec3 ("x86: Make page cache mode a real type").  Care was taken
-to extend _PAGE_CACHE_MASK symbol with that additional bit, but that
-symbol has never been used for identification of bits preserved when
-applying page protection flags.  Support for all cache modes under Xen,
-including the problematic WC mode, was then introduced by commit
-47591df50512 ("xen: Support Xen pv-domains using PAT").
-
-The issue needs to be fixed by including _PAGE_PAT bit into a bitmask used
-by pgprot_modify() for selecting bits to be preserved.  We can do that
-either internally to pgprot_modify() (as initially proposed), or by making
-_PAGE_PAT a part of _PAGE_CHG_MASK.  If we go for the latter then, since
-_PAGE_PAT is the same as _PAGE_PSE, we need to note that _HPAGE_CHG_MASK
--- a huge pmds' counterpart of _PAGE_CHG_MASK, introduced by commit
-c489f1257b8c ("thp: add pmd_modify"), defined as (_PAGE_CHG_MASK |
-_PAGE_PSE) -- will no longer differ from _PAGE_CHG_MASK.  If such
-modification of _PAGE_CHG_MASK was irrelevant to its users then one might
-wonder why that new _HPAGE_CHG_MASK symbol was introduced instead of
-reusing the existing one with that otherwise irrelevant bit (_PAGE_PSE in
-that case) added.
-
-Add _PAGE_PAT to _PAGE_CHG_MASK and _PAGE_PAT_LARGE to _HPAGE_CHG_MASK for
-symmetry.  Split out common bits from both symbols to a common symbol for
-clarity.
-
-[ dhansen: tweak the solution changelog description ]
-
-[1] https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/commit/0f0754413f14
-
-Fixes: 281d4078bec3 ("x86: Make page cache mode a real type")
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab.com>
-Link: https://gitlab.freedesktop.org/drm/intel/-/issues/7648
-Link: https://lore.kernel.org/all/20230710073613.8006-2-janusz.krzysztofik%40=
-linux.intel.com
+Signed-off-by: Chin Yik Ming <yikming2222@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Link: https://lore.kernel.org/r/20230717064952.2804-1-yikming2222@gmail.com
 ---
- arch/x86/include/asm/pgtable_types.h | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ include/linux/sched.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgta=
-ble_types.h
-index ba3e255..a6deb67 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -125,11 +125,12 @@
-  * instance, and is *not* included in this mask since
-  * pte_modify() does modify it.
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index efc9f4b..2aab7be 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -75,14 +75,14 @@ struct user_event_mm;
+  * Task state bitmask. NOTE! These bits are also
+  * encoded in fs/proc/array.c: get_task_state().
+  *
+- * We have two separate sets of flags: task->state
++ * We have two separate sets of flags: task->__state
+  * is about runnability, while task->exit_state are
+  * about the task exiting. Confusing, but this way
+  * modifying one set can't modify the other one by
+  * mistake.
   */
--#define _PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |		\
--			 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |	\
--			 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP | _PAGE_ENC |  \
--			 _PAGE_UFFD_WP)
--#define _HPAGE_CHG_MASK (_PAGE_CHG_MASK | _PAGE_PSE)
-+#define _COMMON_PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |	      =
- \
-+				 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |\
-+				 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP | _PAGE_ENC | \
-+				 _PAGE_UFFD_WP)
-+#define _PAGE_CHG_MASK	(_COMMON_PAGE_CHG_MASK | _PAGE_PAT)
-+#define _HPAGE_CHG_MASK (_COMMON_PAGE_CHG_MASK | _PAGE_PSE | _PAGE_PAT_LARGE)
-=20
+ 
+-/* Used in tsk->state: */
++/* Used in tsk->__state: */
+ #define TASK_RUNNING			0x00000000
+ #define TASK_INTERRUPTIBLE		0x00000001
+ #define TASK_UNINTERRUPTIBLE		0x00000002
+@@ -92,7 +92,7 @@ struct user_event_mm;
+ #define EXIT_DEAD			0x00000010
+ #define EXIT_ZOMBIE			0x00000020
+ #define EXIT_TRACE			(EXIT_ZOMBIE | EXIT_DEAD)
+-/* Used in tsk->state again: */
++/* Used in tsk->__state again: */
+ #define TASK_PARKED			0x00000040
+ #define TASK_DEAD			0x00000080
+ #define TASK_WAKEKILL			0x00000100
+@@ -173,7 +173,7 @@ struct user_event_mm;
+ #endif
+ 
  /*
-  * The cache modes defined here are used to translate between pure SW usage
+- * set_current_state() includes a barrier so that the write of current->state
++ * set_current_state() includes a barrier so that the write of current->__state
+  * is correctly serialised wrt the caller's subsequent test of whether to
+  * actually sleep:
+  *
+@@ -196,9 +196,9 @@ struct user_event_mm;
+  *   wake_up_state(p, TASK_UNINTERRUPTIBLE);
+  *
+  * where wake_up_state()/try_to_wake_up() executes a full memory barrier before
+- * accessing p->state.
++ * accessing p->__state.
+  *
+- * Wakeup will do: if (@state & p->state) p->state = TASK_RUNNING, that is,
++ * Wakeup will do: if (@state & p->__state) p->__state = TASK_RUNNING, that is,
+  * once it observes the TASK_UNINTERRUPTIBLE store the waking CPU can issue a
+  * TASK_RUNNING store which can collide with __set_current_state(TASK_RUNNING).
+  *
