@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB392758F75
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Jul 2023 09:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93EF175A22D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Jul 2023 00:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229724AbjGSHsH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Jul 2023 03:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41800 "EHLO
+        id S229705AbjGSWra (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Jul 2023 18:47:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230333AbjGSHrm (ORCPT
+        with ESMTP id S229451AbjGSWr3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Jul 2023 03:47:42 -0400
+        Wed, 19 Jul 2023 18:47:29 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F008B1736;
-        Wed, 19 Jul 2023 00:47:39 -0700 (PDT)
-Date:   Wed, 19 Jul 2023 07:47:37 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 462FB1FF1;
+        Wed, 19 Jul 2023 15:47:28 -0700 (PDT)
+Date:   Wed, 19 Jul 2023 22:47:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1689752858;
+        s=2020; t=1689806846;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=crG8yI+O19YDwNsTIzlOmC+Mf49wGu7sPAQKUPi6ugc=;
-        b=XzD4TUZ5x6YtlzybKbQliIBsCC7EYD8UmtqN41Ui5SX9D0HRiBxVbhneM8QnmL2wL1utB/
-        LhAESxtjqjEoNqHao38mqIzGtsSvCVS2xGI0SRj4XInckA5uUEHvTNPScdBOhtJKkfZIZb
-        pdWoVGTmbeCKyv/DjFMFIDl5SgcX8/ydcDyb1PgXonHz6zNWkzCuamaMArtLR8vPfnuRq2
-        eELraspdNktnRv65o0oX73r+b+9fIrU/1y1JhcVSQfro44rYIXCIl6hXLTg02SEYowAdrd
-        NdJyA6y5tCAH5Z01m7gGloHDAYgrxCghJOrdThRic6+bWKbzPcjvksGlQwyGuQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=giUarVDnv1Z4cvepgxL2Be4qlcKqGuVFS1qBPnFcdD0=;
+        b=RPBUsSapf5QCVvtmPNOMeAy+2lILSV8GeD1+iNmDnvdiS/B7LRg2sGLH6Y3Ru9ukWpDJ6u
+        x9ndeAEIa7DkfGiqlDFg5L+7YoqF1C0TlMw2giRiQaBsH+DOUZM5/dXCo/0Z7AKAdJZYB1
+        Hb3IoPOE7S7Ldc7K8U1nyYJ23UOGOqABMeD1QeOVrao+ItbKj3cp2izO6NXNqToYQi4ymJ
+        pelNUYFNVuHJ+gFsvxBoN+ENPJKQADi3GW4is1rQzy8bIVoWjL7PVhIBAlhqZrr2REibyN
+        JHUe1JuZiEsNqR4ZhO87HLZa5QxMeBIhD9Ei5Btc1h7ZPOEUSa+ZQ62YqfPo0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1689752858;
+        s=2020e; t=1689806846;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=crG8yI+O19YDwNsTIzlOmC+Mf49wGu7sPAQKUPi6ugc=;
-        b=XTaFpCDF/phJb3Faj0sH2FQ/LwGAIlMNVaFawpfdR1ciWGQv1hvECadDUPb7+yyLTxHOnZ
-        2AkmdBxMwLNl0YCg==
-From:   "tip-bot2 for Chin Yik Ming" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=giUarVDnv1Z4cvepgxL2Be4qlcKqGuVFS1qBPnFcdD0=;
+        b=3DCUWoIODa/svnS8S9lsYBsQQHcGDGUaEh/50BVwlc6FbZbqfOiCzOnns4MgrcDXy6e+Yj
+        HXQs2LpzbovZ0VBw==
+From:   "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/headers: Rename task_struct::state to
- task_struct::__state in the comments too
-Cc:     Chin Yik Ming <yikming2222@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Daniel Bristot de Oliveira <bristot@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230717064952.2804-1-yikming2222@gmail.com>
-References: <20230717064952.2804-1-yikming2222@gmail.com>
+Subject: [tip: x86/shstk] x86/shstk: Add ARCH_SHSTK_STATUS
+Cc:     Mike Rapoport <rppt@kernel.org>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Kees Cook <keescook@chromium.org>,
+        Pengfei Xu <pengfei.xu@intel.com>,
+        John Allen <john.allen@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <168975285779.28540.5554306672674995336.tip-bot2@tip-bot2>
+Message-ID: <168980684564.28540.1364207622351188041.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,78 +64,121 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/shstk branch of tip:
 
-Commit-ID:     48b5583719cdfbdee238f9549a6a1a47af2b0469
-Gitweb:        https://git.kernel.org/tip/48b5583719cdfbdee238f9549a6a1a47af2b0469
-Author:        Chin Yik Ming <yikming2222@gmail.com>
-AuthorDate:    Mon, 17 Jul 2023 14:49:52 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 19 Jul 2023 09:42:58 +02:00
+Commit-ID:     0b3374b01dd47b29ca87f4523340ec142510335a
+Gitweb:        https://git.kernel.org/tip/0b3374b01dd47b29ca87f4523340ec142510335a
+Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
+AuthorDate:    Mon, 12 Jun 2023 17:11:08 -07:00
+Committer:     Rick Edgecombe <rick.p.edgecombe@intel.com>
+CommitterDate: Tue, 11 Jul 2023 14:14:15 -07:00
 
-sched/headers: Rename task_struct::state to task_struct::__state in the comments too
+x86/shstk: Add ARCH_SHSTK_STATUS
 
-The rename in 2f064a59a11f ("sched: Change task_struct::state") missed the
-comments.
+CRIU and GDB need to get the current shadow stack and WRSS enablement
+status. This information is already available via /proc/pid/status, but
+this is inconvenient for CRIU because it involves parsing the text output
+in an area of the code where this is difficult. Provide a status
+arch_prctl(), ARCH_SHSTK_STATUS for retrieving the status. Have arg2 be a
+userspace address, and make the new arch_prctl simply copy the features
+out to userspace.
 
-[ mingo: Improved the changelog. ]
-
-Signed-off-by: Chin Yik Ming <yikming2222@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Link: https://lore.kernel.org/r/20230717064952.2804-1-yikming2222@gmail.com
+Suggested-by: Mike Rapoport <rppt@kernel.org>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+Tested-by: John Allen <john.allen@amd.com>
+Tested-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/all/20230613001108.3040476-43-rick.p.edgecombe%40intel.com
 ---
- include/linux/sched.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ Documentation/arch/x86/shstk.rst  | 6 ++++++
+ arch/x86/include/asm/shstk.h      | 2 +-
+ arch/x86/include/uapi/asm/prctl.h | 1 +
+ arch/x86/kernel/process_64.c      | 1 +
+ arch/x86/kernel/shstk.c           | 8 +++++++-
+ 5 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index efc9f4b..2aab7be 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -75,14 +75,14 @@ struct user_event_mm;
-  * Task state bitmask. NOTE! These bits are also
-  * encoded in fs/proc/array.c: get_task_state().
-  *
-- * We have two separate sets of flags: task->state
-+ * We have two separate sets of flags: task->__state
-  * is about runnability, while task->exit_state are
-  * about the task exiting. Confusing, but this way
-  * modifying one set can't modify the other one by
-  * mistake.
-  */
+diff --git a/Documentation/arch/x86/shstk.rst b/Documentation/arch/x86/shstk.rst
+index f3553cc..60260e8 100644
+--- a/Documentation/arch/x86/shstk.rst
++++ b/Documentation/arch/x86/shstk.rst
+@@ -79,6 +79,11 @@ arch_prctl(ARCH_SHSTK_UNLOCK, unsigned long features)
+     Unlock features. 'features' is a mask of all features to unlock. All
+     bits set are processed, unset bits are ignored. Only works via ptrace.
  
--/* Used in tsk->state: */
-+/* Used in tsk->__state: */
- #define TASK_RUNNING			0x00000000
- #define TASK_INTERRUPTIBLE		0x00000001
- #define TASK_UNINTERRUPTIBLE		0x00000002
-@@ -92,7 +92,7 @@ struct user_event_mm;
- #define EXIT_DEAD			0x00000010
- #define EXIT_ZOMBIE			0x00000020
- #define EXIT_TRACE			(EXIT_ZOMBIE | EXIT_DEAD)
--/* Used in tsk->state again: */
-+/* Used in tsk->__state again: */
- #define TASK_PARKED			0x00000040
- #define TASK_DEAD			0x00000080
- #define TASK_WAKEKILL			0x00000100
-@@ -173,7 +173,7 @@ struct user_event_mm;
- #endif
++arch_prctl(ARCH_SHSTK_STATUS, unsigned long addr)
++    Copy the currently enabled features to the address passed in addr. The
++    features are described using the bits passed into the others in
++    'features'.
++
+ The return values are as follows. On success, return 0. On error, errno can
+ be::
  
- /*
-- * set_current_state() includes a barrier so that the write of current->state
-+ * set_current_state() includes a barrier so that the write of current->__state
-  * is correctly serialised wrt the caller's subsequent test of whether to
-  * actually sleep:
-  *
-@@ -196,9 +196,9 @@ struct user_event_mm;
-  *   wake_up_state(p, TASK_UNINTERRUPTIBLE);
-  *
-  * where wake_up_state()/try_to_wake_up() executes a full memory barrier before
-- * accessing p->state.
-+ * accessing p->__state.
-  *
-- * Wakeup will do: if (@state & p->state) p->state = TASK_RUNNING, that is,
-+ * Wakeup will do: if (@state & p->__state) p->__state = TASK_RUNNING, that is,
-  * once it observes the TASK_UNINTERRUPTIBLE store the waking CPU can issue a
-  * TASK_RUNNING store which can collide with __set_current_state(TASK_RUNNING).
-  *
+@@ -86,6 +91,7 @@ be::
+         -ENOTSUPP if the feature is not supported by the hardware or
+          kernel.
+         -EINVAL arguments (non existing feature, etc)
++        -EFAULT if could not copy information back to userspace
+ 
+ The feature's bits supported are::
+ 
+diff --git a/arch/x86/include/asm/shstk.h b/arch/x86/include/asm/shstk.h
+index ecb23a8..42fee89 100644
+--- a/arch/x86/include/asm/shstk.h
++++ b/arch/x86/include/asm/shstk.h
+@@ -14,7 +14,7 @@ struct thread_shstk {
+ 	u64	size;
+ };
+ 
+-long shstk_prctl(struct task_struct *task, int option, unsigned long features);
++long shstk_prctl(struct task_struct *task, int option, unsigned long arg2);
+ void reset_thread_features(void);
+ unsigned long shstk_alloc_thread_stack(struct task_struct *p, unsigned long clone_flags,
+ 				       unsigned long stack_size);
+diff --git a/arch/x86/include/uapi/asm/prctl.h b/arch/x86/include/uapi/asm/prctl.h
+index 3189c4a..384e2cc 100644
+--- a/arch/x86/include/uapi/asm/prctl.h
++++ b/arch/x86/include/uapi/asm/prctl.h
+@@ -34,6 +34,7 @@
+ #define ARCH_SHSTK_DISABLE		0x5002
+ #define ARCH_SHSTK_LOCK			0x5003
+ #define ARCH_SHSTK_UNLOCK		0x5004
++#define ARCH_SHSTK_STATUS		0x5005
+ 
+ /* ARCH_SHSTK_ features bits */
+ #define ARCH_SHSTK_SHSTK		(1ULL <<  0)
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index e6db21c..33b2687 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -900,6 +900,7 @@ long do_arch_prctl_64(struct task_struct *task, int option, unsigned long arg2)
+ 	case ARCH_SHSTK_DISABLE:
+ 	case ARCH_SHSTK_LOCK:
+ 	case ARCH_SHSTK_UNLOCK:
++	case ARCH_SHSTK_STATUS:
+ 		return shstk_prctl(task, option, arg2);
+ 	default:
+ 		ret = -EINVAL;
+diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
+index d43b7a9..b26810c 100644
+--- a/arch/x86/kernel/shstk.c
++++ b/arch/x86/kernel/shstk.c
+@@ -482,8 +482,14 @@ SYSCALL_DEFINE3(map_shadow_stack, unsigned long, addr, unsigned long, size, unsi
+ 	return alloc_shstk(addr, aligned_size, size, set_tok);
+ }
+ 
+-long shstk_prctl(struct task_struct *task, int option, unsigned long features)
++long shstk_prctl(struct task_struct *task, int option, unsigned long arg2)
+ {
++	unsigned long features = arg2;
++
++	if (option == ARCH_SHSTK_STATUS) {
++		return put_user(task->thread.features, (unsigned long __user *)arg2);
++	}
++
+ 	if (option == ARCH_SHSTK_LOCK) {
+ 		task->thread.features_locked |= features;
+ 		return 0;
