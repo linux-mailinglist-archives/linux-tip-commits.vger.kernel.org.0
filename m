@@ -2,57 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2277175A263
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Jul 2023 00:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4052B75A27D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Jul 2023 00:50:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231310AbjGSWs5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Jul 2023 18:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42774 "EHLO
+        id S230214AbjGSWuK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Jul 2023 18:50:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231312AbjGSWr5 (ORCPT
+        with ESMTP id S231349AbjGSWsB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Jul 2023 18:47:57 -0400
+        Wed, 19 Jul 2023 18:48:01 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2059E2102;
-        Wed, 19 Jul 2023 15:47:45 -0700 (PDT)
-Date:   Wed, 19 Jul 2023 22:47:42 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B37F1272E;
+        Wed, 19 Jul 2023 15:47:46 -0700 (PDT)
+Date:   Wed, 19 Jul 2023 22:47:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1689806862;
+        s=2020; t=1689806864;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=McIINoN2Zzl0rumlI+oWtUhdgZB318fvnA01t2xoQgo=;
-        b=t50QpBv+kepWZVvm9AmY/ibuqu2KoIctmvL2ufNE/8jeDE6ATpfx8NTIfL7EHT7mTyeTwu
-        MGHNpAigeWv+Moqg34PjQwrlqNO8ecO781aD2vrpDPCwG3yxxOo+e/ON7oWvvAyQt2jAzg
-        tJaTzlcHo+IlrEpoZ/VVJi7M0r1MDs+lYOCfirgD2QgBhDHNgOFJmEseD5h5sW1xmbug81
-        /74D8bTZZGtxZPPVdgs1xwX6C8DgZj+iaIXDRaWY8DB2TaVNRN/NfwluE3lXxGK0pOjaof
-        zHUb4cVLPBJQ3YDRp+MRwOmd91GGtOv/DYLZp0wgKLXtEcCDU7MK4we/ByVvJg==
+        bh=8f5DMXEf7X81RbgTGU0XSKH5lIM6jC9ZTg0YCnkAQL0=;
+        b=O5g/w8jpBDFiL+XPMHsq5+ZRw+Hfm4HaAmZs4mnO2EffiQ4Uj3/gM3UW6AXiAHlPLy24O+
+        hxu5E/9szqX70LFZY0ijZhl1xMP3oL3Va9L8Edajy7KGSTyKQ36/ft/XKrtJOam0qEHRr0
+        srAlu1IA/Q+mVhwyFr59/DVA8a10ZgJiPwVVhL4hoTv/yVm3qTkUoOuvZR0mYp8CaaTt+i
+        wT8HCZaHErnF1mvblGhOP+wUS0ljtktfx6XH0lVgv01CUcwmPbMWRviu3eQuIgQrmaZBNd
+        gtAR9UEYD+KOyq60QFb0i41IpPBOrRN5xq/fI+OcPBFDX0dCwRwsG7Tr2F3S+g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1689806862;
+        s=2020e; t=1689806864;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=McIINoN2Zzl0rumlI+oWtUhdgZB318fvnA01t2xoQgo=;
-        b=q6pilhhn+nQ0WfwcH452a7hgTJpfE5p+rQH0egLxWc/7GyVIUWElyGKy3M3PlqzP5BLTlS
-        nvfwtKKHUhj0phCw==
-From:   "tip-bot2 for Yu-cheng Yu" <tip-bot2@linutronix.de>
+        bh=8f5DMXEf7X81RbgTGU0XSKH5lIM6jC9ZTg0YCnkAQL0=;
+        b=lGO9mS1rcZnTxOYhX8Kp0H8dfctw2ciTWJ0Ll416tc+XSUNut2dDLklurNyWmu8o/hHp9G
+        WuIG9H41ckJx04Bw==
+From:   "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/shstk] mm: Move VM_UFFD_MINOR_BIT from 37 to 38
-Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+Subject: [tip: x86/shstk] mm: Move pte/pmd_mkwrite() callers with no VMA to _novma()
+Cc:     Rick Edgecombe <rick.p.edgecombe@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Kees Cook <keescook@chromium.org>,
-        Axel Rasmussen <axelrasmussen@google.com>,
         "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Peter Xu <peterx@redhat.com>,
-        Pengfei Xu <pengfei.xu@intel.com>,
-        John Allen <john.allen@amd.com>, x86@kernel.org,
+        David Hildenbrand <david@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <168980686210.28540.5448033149665984047.tip-bot2@tip-bot2>
+Message-ID: <168980686350.28540.1064645086568907964.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,54 +63,109 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/shstk branch of tip:
 
-Commit-ID:     fb47a799cc5ccc469c63e9174f2ad555a21ba2a1
-Gitweb:        https://git.kernel.org/tip/fb47a799cc5ccc469c63e9174f2ad555a21ba2a1
-Author:        Yu-cheng Yu <yu-cheng.yu@intel.com>
-AuthorDate:    Mon, 12 Jun 2023 17:10:31 -07:00
+Commit-ID:     6ecc21bb432dab7241bcbd766ecd1b15620c75c3
+Gitweb:        https://git.kernel.org/tip/6ecc21bb432dab7241bcbd766ecd1b15620c75c3
+Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
+AuthorDate:    Mon, 12 Jun 2023 17:10:28 -07:00
 Committer:     Rick Edgecombe <rick.p.edgecombe@intel.com>
-CommitterDate: Tue, 11 Jul 2023 14:12:18 -07:00
+CommitterDate: Tue, 11 Jul 2023 14:10:57 -07:00
 
-mm: Move VM_UFFD_MINOR_BIT from 37 to 38
+mm: Move pte/pmd_mkwrite() callers with no VMA to _novma()
 
-The x86 Control-flow Enforcement Technology (CET) feature includes a new
-type of memory called shadow stack. This shadow stack memory has some
-unusual properties, which requires some core mm changes to function
-properly.
+The x86 Shadow stack feature includes a new type of memory called shadow
+stack. This shadow stack memory has some unusual properties, which requires
+some core mm changes to function properly.
 
-Future patches will introduce a new VM flag VM_SHADOW_STACK that will be
-VM_HIGH_ARCH_BIT_5. VM_HIGH_ARCH_BIT_1 through VM_HIGH_ARCH_BIT_4 are
-bits 32-36, and bit 37 is the unrelated VM_UFFD_MINOR_BIT. For the sake
-of order, make all VM_HIGH_ARCH_BITs stay together by moving
-VM_UFFD_MINOR_BIT from 37 to 38. This will allow VM_SHADOW_STACK to be
-introduced as 37.
+One of these unusual properties is that shadow stack memory is writable,
+but only in limited ways. These limits are applied via a specific PTE
+bit combination. Nevertheless, the memory is writable, and core mm code
+will need to apply the writable permissions in the typical paths that
+call pte_mkwrite(). Future patches will make pte_mkwrite() take a VMA, so
+that the x86 implementation of it can know whether to create regular
+writable or shadow stack mappings.
 
-Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
+But there are a couple of challenges to this. Modifying the signatures of
+each arch pte_mkwrite() implementation would be error prone because some
+are generated with macros and would need to be re-implemented. Also, some
+pte_mkwrite() callers operate on kernel memory without a VMA.
+
+So this can be done in a three step process. First pte_mkwrite() can be
+renamed to pte_mkwrite_novma() in each arch, with a generic pte_mkwrite()
+added that just calls pte_mkwrite_novma(). Next callers without a VMA can
+be moved to pte_mkwrite_novma(). And lastly, pte_mkwrite() and all callers
+can be changed to take/pass a VMA.
+
+Earlier work did the first step, so next move the callers that don't have
+a VMA to pte_mkwrite_novma(). Also do the same for pmd_mkwrite().  This
+will be ok for the shadow stack feature, as these callers are on kernel
+memory which will not need to be made shadow stack, and the other
+architectures only currently support one type of memory in pte_mkwrite()
+
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Acked-by: Peter Xu <peterx@redhat.com>
-Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-Tested-by: John Allen <john.allen@amd.com>
-Tested-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/all/20230613001108.3040476-6-rick.p.edgecombe%40intel.com
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/all/20230613001108.3040476-3-rick.p.edgecombe%40intel.com
 ---
- include/linux/mm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/mm/trans_pgd.c | 4 ++--
+ arch/s390/mm/pageattr.c   | 4 ++--
+ arch/x86/xen/mmu_pv.c     | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index f9a627c..82990f3 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -370,7 +370,7 @@ extern unsigned int kobjsize(const void *objp);
- #endif
+diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
+index 4ea2eef..a01493f 100644
+--- a/arch/arm64/mm/trans_pgd.c
++++ b/arch/arm64/mm/trans_pgd.c
+@@ -40,7 +40,7 @@ static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
+ 		 * read only (code, rodata). Clear the RDONLY bit from
+ 		 * the temporary mappings we use during restore.
+ 		 */
+-		set_pte(dst_ptep, pte_mkwrite(pte));
++		set_pte(dst_ptep, pte_mkwrite_novma(pte));
+ 	} else if (debug_pagealloc_enabled() && !pte_none(pte)) {
+ 		/*
+ 		 * debug_pagealloc will removed the PTE_VALID bit if
+@@ -53,7 +53,7 @@ static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
+ 		 */
+ 		BUG_ON(!pfn_valid(pte_pfn(pte)));
  
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
--# define VM_UFFD_MINOR_BIT	37
-+# define VM_UFFD_MINOR_BIT	38
- # define VM_UFFD_MINOR		BIT(VM_UFFD_MINOR_BIT)	/* UFFD minor faults */
- #else /* !CONFIG_HAVE_ARCH_USERFAULTFD_MINOR */
- # define VM_UFFD_MINOR		VM_NONE
+-		set_pte(dst_ptep, pte_mkpresent(pte_mkwrite(pte)));
++		set_pte(dst_ptep, pte_mkpresent(pte_mkwrite_novma(pte)));
+ 	}
+ }
+ 
+diff --git a/arch/s390/mm/pageattr.c b/arch/s390/mm/pageattr.c
+index ca5a418..e5ec762 100644
+--- a/arch/s390/mm/pageattr.c
++++ b/arch/s390/mm/pageattr.c
+@@ -98,7 +98,7 @@ static int walk_pte_level(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		if (flags & SET_MEMORY_RO)
+ 			new = pte_wrprotect(new);
+ 		else if (flags & SET_MEMORY_RW)
+-			new = pte_mkwrite(pte_mkdirty(new));
++			new = pte_mkwrite_novma(pte_mkdirty(new));
+ 		if (flags & SET_MEMORY_NX)
+ 			new = set_pte_bit(new, __pgprot(_PAGE_NOEXEC));
+ 		else if (flags & SET_MEMORY_X)
+@@ -156,7 +156,7 @@ static void modify_pmd_page(pmd_t *pmdp, unsigned long addr,
+ 	if (flags & SET_MEMORY_RO)
+ 		new = pmd_wrprotect(new);
+ 	else if (flags & SET_MEMORY_RW)
+-		new = pmd_mkwrite(pmd_mkdirty(new));
++		new = pmd_mkwrite_novma(pmd_mkdirty(new));
+ 	if (flags & SET_MEMORY_NX)
+ 		new = set_pmd_bit(new, __pgprot(_SEGMENT_ENTRY_NOEXEC));
+ 	else if (flags & SET_MEMORY_X)
+diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
+index e0a9751..ccf3d30 100644
+--- a/arch/x86/xen/mmu_pv.c
++++ b/arch/x86/xen/mmu_pv.c
+@@ -166,7 +166,7 @@ void make_lowmem_page_readwrite(void *vaddr)
+ 	if (pte == NULL)
+ 		return;		/* vaddr missing */
+ 
+-	ptev = pte_mkwrite(*pte);
++	ptev = pte_mkwrite_novma(*pte);
+ 
+ 	if (HYPERVISOR_update_va_mapping(address, ptev, 0))
+ 		BUG();
