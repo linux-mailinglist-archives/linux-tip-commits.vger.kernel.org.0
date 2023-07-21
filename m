@@ -2,80 +2,62 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E34C75C1C5
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Jul 2023 10:34:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 160A375C2D8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Jul 2023 11:21:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230462AbjGUIeV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 21 Jul 2023 04:34:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44632 "EHLO
+        id S231743AbjGUJVA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 21 Jul 2023 05:21:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231586AbjGUIeR (ORCPT
+        with ESMTP id S231653AbjGUJU7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 21 Jul 2023 04:34:17 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80CCB30C3;
-        Fri, 21 Jul 2023 01:34:09 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fbc6ab5ff5so13908695e9.1;
-        Fri, 21 Jul 2023 01:34:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689928447; x=1690533247;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RQAwCIhJQKqcYnCuAcDKHJfPf6lVhwCI1dubWC+OCok=;
-        b=bI8ei4FEb7bBSYhgsSPUywSQ5XnjsSSLQavY2q4fPr0JNWgvaSPcOqpC4iZZU1Ufxj
-         tabL7NbtBO0sB9n3dQhtMdnV2w2RSMAlyjoVlNQKVGKR/8u/YAZaTYVOhlL1dzHRXEBS
-         ZZxahZO16cB5m22uYkiMg8ynUf0UjrIMFRX9WeMWc1x1sGYdtMRVM42cVKpxcTTjpMaz
-         IAW2ZQakzTNWqkEic3LjVB9LFq4OJuL4Kqr7NxFRnvTvuslucDEXgeSNEA0jL2HYbjCs
-         i4zcL6ZniALVTd01sBfCV8D1mUMZ8pfDcU6d0aG1vXIOB11PtXZ3rhLQSn1EHrZws9Jf
-         zjsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689928447; x=1690533247;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RQAwCIhJQKqcYnCuAcDKHJfPf6lVhwCI1dubWC+OCok=;
-        b=MgiQc3td1unY+ECRocM0JKCWSv+WkfJ2A1Ago52/wWQsACzj8QXLmaHP9iivzXdF98
-         8A9BWhW3ZNDAZuZ8iM9rKoiu/Rnve+SHSlQ/AoiMIeqOpWStvjuYRJftt3I5yg78Eebb
-         RBhin+yD7KCet/FBErbDDdtksPHJTXKCm9cy7wUlCrWgxfpL8pDQemosq0z0KLM/r2Ux
-         CJTl5monKz/5ZMNjpiG+6ybbO259xKWEnV3eWSE0Bjfp96F/ubxsht76B03I11uSuDTG
-         5DE1We87N/2gv3oXvu29xQS355ty0rYZ6tYwe5glxii0HASJl+oGnPNYI+CzHYllcWUD
-         dWFg==
-X-Gm-Message-State: ABy/qLZ4Arl/he/pYnVz1HTliFLBjRcTEkeuVeJyEoEnQx7xGng9VHfo
-        aKEFzG65+u/41Q305ji4ZdgblNbnn+o=
-X-Google-Smtp-Source: APBJJlGcaMnbd/zNvCFSLkP92ZxlT0y98wOs124UuYYj8d+gm7hhYqcbODGqa+5VJFa6n61iNzjo6A==
-X-Received: by 2002:a05:600c:2802:b0:3fb:c462:1833 with SMTP id m2-20020a05600c280200b003fbc4621833mr872759wmb.30.1689928446942;
-        Fri, 21 Jul 2023 01:34:06 -0700 (PDT)
-Received: from gmail.com (1F2EF292.nat.pool.telekom.hu. [31.46.242.146])
-        by smtp.gmail.com with ESMTPSA id m11-20020a05600c280b00b003fa968e9c27sm5615351wmb.9.2023.07.21.01.34.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jul 2023 01:34:06 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Fri, 21 Jul 2023 10:34:04 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Kees Cook <keescook@chromium.org>,
-        "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Pengfei Xu <pengfei.xu@intel.com>,
-        John Allen <john.allen@amd.com>, x86@kernel.org
-Subject: Re: [tip: x86/shstk] mm: Don't allow write GUPs to shadow stack
- memory
-Message-ID: <ZLpC/IbswCA0yUHD@gmail.com>
-References: <168980685456.28540.8149705038742119504.tip-bot2@tip-bot2>
+        Fri, 21 Jul 2023 05:20:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6BAD2D57;
+        Fri, 21 Jul 2023 02:20:57 -0700 (PDT)
+Date:   Fri, 21 Jul 2023 09:20:54 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1689931255;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lnSn0ECivsr7eEcD2ltZgdffvBPmL6Z4J6rcVRb2slo=;
+        b=qFa3SmpnufMsfmk97ue4xwhxkkjwhLhWoBDYGFS50GhnIdz5i0OS/jFBdDyovnm5wzxDgq
+        MSzVXMcL/RiIhg2jh5yeam/uXOX/NQ0pclZUbNWMC8m4yADjfBtlbbqRJZlQDNSjciIuNt
+        0g2QOtEF5Pk9YE/0p1lADltzh0SVDo1YNL95QeHiPMTDEgm6ggiVBxxTFCJttz1I7xW511
+        zdHjErwgwymDUQtb5osrw6R+72MyHfYUIAGCVSo6CiEeU4ImJhhWBymlgmtweCUlXn520d
+        H+vH/tfJTNKmznTilyTWUf7RvJXeC0JfG5dfvVtZSOU/Jf0yRd/zyRrDeHsTHQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1689931255;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lnSn0ECivsr7eEcD2ltZgdffvBPmL6Z4J6rcVRb2slo=;
+        b=jEsxa6cHpQgPde3U7UwP5rO4fNg9DuTc4UbcZJBARNeT49ovoMX4N0P9cOhAiBgXPGPHAo
+        XVW9r0VY2oD5dwDg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86: Fix kthread unwind
+Cc:     Petr Mladek <pmladek@suse.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230719201538.GA3553016@hirez.programming.kicks-ass.net>
+References: <20230719201538.GA3553016@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <168980685456.28540.8149705038742119504.tip-bot2@tip-bot2>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        FSL_HELO_FAKE,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+Message-ID: <168993125450.28540.2663691700893492367.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,28 +65,64 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the x86/urgent branch of tip:
 
-* tip-bot2 for Rick Edgecombe <tip-bot2@linutronix.de> wrote:
+Commit-ID:     2e7e5bbb1c3c8d502edeb5c0670eac4995134b6f
+Gitweb:        https://git.kernel.org/tip/2e7e5bbb1c3c8d502edeb5c0670eac4995134b6f
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 19 Jul 2023 22:15:38 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 20 Jul 2023 23:03:50 +02:00
 
-> The following commit has been merged into the x86/shstk branch of tip:
-> 
-> Commit-ID:     7c8f82db8acb9f0935703c0d96cda552bbf91ff2
-> Gitweb:        https://git.kernel.org/tip/7c8f82db8acb9f0935703c0d96cda552bbf91ff2
-> Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
-> AuthorDate:    Mon, 12 Jun 2023 17:10:48 -07:00
-> Committer:     Rick Edgecombe <rick.p.edgecombe@intel.com>
-> CommitterDate: Tue, 11 Jul 2023 14:12:47 -07:00
-> 
-> mm: Don't allow write GUPs to shadow stack memory
+x86: Fix kthread unwind
 
-JFYI, this commit was the last user of writable_file_mapping_allowed(), 
-which breaks the x86-defconfig build:
+The rewrite of ret_from_form() misplaced an unwind hint which caused
+all kthread stack unwinds to be marked unreliable, breaking
+livepatching.
 
-  mm/gup.c:1015:13: error: ‘writable_file_mapping_allowed’ defined but not used [-Werror=unused-function]
+Restore the annotation and add a comment to explain the how and why of
+things.
 
-There's also a now orphan reference to writable_file_mapping_allowed() in 
-the comment of folio_fast_pin_allowed().
+Fixes: 3aec4ecb3d1f ("x86: Rewrite ret_from_fork() in C")
+Reported-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Petr Mladek <pmladek@suse.com>
+Link: https://lkml.kernel.org/r/20230719201538.GA3553016@hirez.programming.kicks-ass.net
+---
+ arch/x86/entry/entry_64.S | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-Thanks,
-
-	Ingo
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 91f6818..43606de 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -285,7 +285,15 @@ SYM_FUNC_END(__switch_to_asm)
+  */
+ .pushsection .text, "ax"
+ SYM_CODE_START(ret_from_fork_asm)
+-	UNWIND_HINT_REGS
++	/*
++	 * This is the start of the kernel stack; even through there's a
++	 * register set at the top, the regset isn't necessarily coherent
++	 * (consider kthreads) and one cannot unwind further.
++	 *
++	 * This ensures stack unwinds of kernel threads terminate in a known
++	 * good state.
++	 */
++	UNWIND_HINT_END_OF_STACK
+ 	ANNOTATE_NOENDBR // copy_thread
+ 	CALL_DEPTH_ACCOUNT
+ 
+@@ -295,6 +303,12 @@ SYM_CODE_START(ret_from_fork_asm)
+ 	movq	%r12, %rcx		/* fn_arg */
+ 	call	ret_from_fork
+ 
++	/*
++	 * Set the stack state to what is expected for the target function
++	 * -- at this point the register set should be a valid user set
++	 * and unwind should work normally.
++	 */
++	UNWIND_HINT_REGS
+ 	jmp	swapgs_restore_regs_and_return_to_usermode
+ SYM_CODE_END(ret_from_fork_asm)
+ .popsection
