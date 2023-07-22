@@ -2,59 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDDDB75DD5D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Jul 2023 18:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68C8875DD6B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Jul 2023 18:19:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbjGVQDd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 22 Jul 2023 12:03:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52080 "EHLO
+        id S229557AbjGVQTC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 22 Jul 2023 12:19:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbjGVQDc (ORCPT
+        with ESMTP id S229468AbjGVQTC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 22 Jul 2023 12:03:32 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D44A1FDF;
-        Sat, 22 Jul 2023 09:03:31 -0700 (PDT)
-Date:   Sat, 22 Jul 2023 16:03:27 -0000
+        Sat, 22 Jul 2023 12:19:02 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1106F1FCB;
+        Sat, 22 Jul 2023 09:19:01 -0700 (PDT)
+Date:   Sat, 22 Jul 2023 16:18:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1690041808;
+        s=2020; t=1690042739;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dIlUKNOZbqeMD94L3neoznK1YkPZS74c2BtITe69l/k=;
-        b=GGLv4iM6WnZDW78RJ5+CuAvj80uZMdsF5isE4nKovuV+++ySEwVRCRwRWhwoc8f8isH6+n
-        7B1es3eD35+kc6RQ2hWSoru+0jmIJouVw7EV1D0EuI/jNH2r6cF/Zk+uQiOM9neAQ2WFMr
-        rjt90USSL+l9mZesrd25Tmk+NYTauYOzxii+cQ5HaYguOM1tsUOia8sLhiXVXHTSFh4fdG
-        CaUS+8wpG/0c1/KCIokzSTCaE4f8t5v/AOjhs2oUoRhIAqNIiYlad0Ot0IZu/sjpx+gWIA
-        VWqV+/TZilJQd9QK59KPEwJpBEAuVB/a9YnAzRF95FVqaQtp5qyql1Bi9/yX4Q==
+        bh=7HxdfOmHaQBGRnG6kfgqJKnhhkp+BdN+BlMqHiWUe1w=;
+        b=qmErEK3NL6xrZP0u/tmXkmrQZ0z0KeyaoAtBmMJFdeutR1UPdLiKHRD8GBirSWLJ1z6FYw
+        GUMstq7LvMm8xrlcerIsXtFmzTJskSRMCxD5S13Q2PtfzBVytKqjSr0JRNPibkiGiHPBzd
+        vTob9VqXqL6EspFrMk1vB49CYX3Ytvz3ajm7Fc3ZppeGv1Vbe+Genvn/bfFOgJTF9LNIzN
+        RM5+PgHhsHRZU74g56mQdwAAtKYpacuUT8nvqQ0uGoQwR5/veXtybT/RHGN5J1ROtuk8BW
+        t7BjzdTaawUUWUQiGs7n5r4XDQuX6Ti8gf3KSlIR/Ks4Aa/kKn3N2CCq8whxYw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1690041808;
+        s=2020e; t=1690042739;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dIlUKNOZbqeMD94L3neoznK1YkPZS74c2BtITe69l/k=;
-        b=iz75Bid9Qiui3nrBFlzThsbpB+ZeyI752O9Sc9AbsfayQZYbO5VcIy/KsrpvBz3ztfT/QM
-        BZRiVJNnENZn1LCg==
-From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
+        bh=7HxdfOmHaQBGRnG6kfgqJKnhhkp+BdN+BlMqHiWUe1w=;
+        b=872UD6kuSJSNjJfL1ZyaG3sgH8YoUDoGrgphet11KygaZSqRjI3Xtq/EHAfyYHVdvzb6cJ
+        W3/IwL6S/p90j0AA==
+From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/MCE/AMD: Decrement threshold_bank refcount when
- removing threshold blocks
-Cc:     Mikulas Patocka <mpatocka@redhat.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, <stable@kernel.org>,
+Subject: [tip: x86/urgent] x86/cpu: Enable STIBP on AMD if Automatic IBRS is enabled
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Kim Phillips <kim.phillips@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Calpine=2ELRH=2E2=2E02=2E2205301145540=2E2584?=
- =?utf-8?q?0=40file01=2Eintranet=2Eprod=2Eint=2Erdu2=2Eredhat=2Ecom=3E?=
-References: =?utf-8?q?=3Calpine=2ELRH=2E2=2E02=2E2205301145540=2E25840?=
- =?utf-8?q?=40file01=2Eintranet=2Eprod=2Eint=2Erdu2=2Eredhat=2Ecom=3E?=
+In-Reply-To: <20230720194727.67022-1-kim.phillips@amd.com>
+References: <20230720194727.67022-1-kim.phillips@amd.com>
 MIME-Version: 1.0
-Message-ID: <169004180799.28540.1304114763325215952.tip-bot2@tip-bot2>
+Message-ID: <169004273861.28540.3552352830983009627.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,97 +68,97 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     3ba2e83334bed2b1980b59734e6e84dfaf96026c
-Gitweb:        https://git.kernel.org/tip/3ba2e83334bed2b1980b59734e6e84dfaf96026c
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Mon, 06 Jun 2022 19:45:56 
+Commit-ID:     fd470a8beed88440b160d690344fbae05a0b9b1b
+Gitweb:        https://git.kernel.org/tip/fd470a8beed88440b160d690344fbae05a0b9b1b
+Author:        Kim Phillips <kim.phillips@amd.com>
+AuthorDate:    Thu, 20 Jul 2023 14:47:27 -05:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sat, 22 Jul 2023 17:35:16 +02:00
+CommitterDate: Sat, 22 Jul 2023 18:04:22 +02:00
 
-x86/MCE/AMD: Decrement threshold_bank refcount when removing threshold blocks
+x86/cpu: Enable STIBP on AMD if Automatic IBRS is enabled
 
-AMD systems from Family 10h to 16h share MCA bank 4 across multiple CPUs.
-Therefore, the threshold_bank structure for bank 4, and its threshold_block
-structures, will be initialized once at boot time. And the kobject for the
-shared bank will be added to each of the CPUs that share it. Furthermore,
-the threshold_blocks for the shared bank will be added again to the bank's
-kobject. These additions will increase the refcount for the bank's kobject.
+Unlike Intel's Enhanced IBRS feature, AMD's Automatic IBRS does not
+provide protection to processes running at CPL3/user mode, see section
+"Extended Feature Enable Register (EFER)" in the APM v2 at
+https://bugzilla.kernel.org/attachment.cgi?id=304652
 
-For example, a shared bank with two blocks and shared across two CPUs will
-be set up like this:
+Explicitly enable STIBP to protect against cross-thread CPL3
+branch target injections on systems with Automatic IBRS enabled.
 
-  CPU0 init
-    bank create and add; bank refcount = 1; threshold_create_bank()
-      block 0 init and add; bank refcount = 2; allocate_threshold_blocks()
-      block 1 init and add; bank refcount = 3; allocate_threshold_blocks()
-  CPU1 init
-    bank add; bank refcount = 3; threshold_create_bank()
-      block 0 add; bank refcount = 4; __threshold_add_blocks()
-      block 1 add; bank refcount = 5; __threshold_add_blocks()
+Also update the relevant documentation.
 
-Currently in threshold_remove_bank(), if the bank is shared then
-__threshold_remove_blocks() is called. Here the shared bank's kobject and
-the bank's blocks' kobjects are deleted. This is done on the first call
-even while the structures are still shared. Subsequent calls from other
-CPUs that share the structures will attempt to delete the kobjects.
-
-During kobject_del(), kobject->sd is removed. If the kobject is not part of
-a kset with default_groups, then subsequent kobject_del() calls seem safe
-even with kobject->sd == NULL.
-
-Originally, the AMD MCA thresholding structures did not use default_groups.
-And so the above behavior was not apparent.
-
-However, a recent change implemented default_groups for the thresholding
-structures. Therefore, kobject_del() will go down the sysfs_remove_groups()
-code path. In this case, the first kobject_del() may succeed and remove
-kobject->sd. But subsequent kobject_del() calls will give a WARNing in
-kernfs_remove_by_name_ns() since kobject->sd == NULL.
-
-Use kobject_put() on the shared bank's kobject when "removing" blocks. This
-decrements the bank's refcount while keeping kobjects enabled until the
-bank is no longer shared. At that point, kobject_put() will be called on
-the blocks which drives their refcount to 0 and deletes them and also
-decrementing the bank's refcount. And finally kobject_put() will be called
-on the bank driving its refcount to 0 and deleting it.
-
-The same example above:
-
-  CPU1 shutdown
-    bank is shared; bank refcount = 5; threshold_remove_bank()
-      block 0 put parent bank; bank refcount = 4; __threshold_remove_blocks()
-      block 1 put parent bank; bank refcount = 3; __threshold_remove_blocks()
-  CPU0 shutdown
-    bank is no longer shared; bank refcount = 3; threshold_remove_bank()
-      block 0 put block; bank refcount = 2; deallocate_threshold_blocks()
-      block 1 put block; bank refcount = 1; deallocate_threshold_blocks()
-    put bank; bank refcount = 0; threshold_remove_bank()
-
-Fixes: 7f99cb5e6039 ("x86/CPU/AMD: Use default_groups in kobj_type")
-Reported-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Fixes: e7862eda309e ("x86/cpu: Support AMD Automatic IBRS")
+Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/alpine.LRH.2.02.2205301145540.25840@file01.intranet.prod.int.rdu2.redhat.com
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230720194727.67022-1-kim.phillips@amd.com
 ---
- arch/x86/kernel/cpu/mce/amd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/hw-vuln/spectre.rst | 11 +++++++----
+ arch/x86/kernel/cpu/bugs.c                    | 15 +++++++++------
+ 2 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index 5e74610..c4ec4ca 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -1261,10 +1261,10 @@ static void __threshold_remove_blocks(struct threshold_bank *b)
- 	struct threshold_block *pos = NULL;
- 	struct threshold_block *tmp = NULL;
+diff --git a/Documentation/admin-guide/hw-vuln/spectre.rst b/Documentation/admin-guide/hw-vuln/spectre.rst
+index 4d186f5..32a8893 100644
+--- a/Documentation/admin-guide/hw-vuln/spectre.rst
++++ b/Documentation/admin-guide/hw-vuln/spectre.rst
+@@ -484,11 +484,14 @@ Spectre variant 2
  
--	kobject_del(b->kobj);
-+	kobject_put(b->kobj);
+    Systems which support enhanced IBRS (eIBRS) enable IBRS protection once at
+    boot, by setting the IBRS bit, and they're automatically protected against
+-   Spectre v2 variant attacks, including cross-thread branch target injections
+-   on SMT systems (STIBP). In other words, eIBRS enables STIBP too.
++   Spectre v2 variant attacks.
  
- 	list_for_each_entry_safe(pos, tmp, &b->blocks->miscj, miscj)
--		kobject_del(&pos->kobj);
-+		kobject_put(b->kobj);
- }
+-   Legacy IBRS systems clear the IBRS bit on exit to userspace and
+-   therefore explicitly enable STIBP for that
++   On Intel's enhanced IBRS systems, this includes cross-thread branch target
++   injections on SMT systems (STIBP). In other words, Intel eIBRS enables
++   STIBP, too.
++
++   AMD Automatic IBRS does not protect userspace, and Legacy IBRS systems clear
++   the IBRS bit on exit to userspace, therefore both explicitly enable STIBP.
  
- static void threshold_remove_bank(struct threshold_bank *bank)
+    The retpoline mitigation is turned on by default on vulnerable
+    CPUs. It can be forced on or off by the administrator
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 9e2a918..9550744 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1150,19 +1150,21 @@ spectre_v2_user_select_mitigation(void)
+ 	}
+ 
+ 	/*
+-	 * If no STIBP, enhanced IBRS is enabled, or SMT impossible, STIBP
++	 * If no STIBP, Intel enhanced IBRS is enabled, or SMT impossible, STIBP
+ 	 * is not required.
+ 	 *
+-	 * Enhanced IBRS also protects against cross-thread branch target
++	 * Intel's Enhanced IBRS also protects against cross-thread branch target
+ 	 * injection in user-mode as the IBRS bit remains always set which
+ 	 * implicitly enables cross-thread protections.  However, in legacy IBRS
+ 	 * mode, the IBRS bit is set only on kernel entry and cleared on return
+-	 * to userspace. This disables the implicit cross-thread protection,
+-	 * so allow for STIBP to be selected in that case.
++	 * to userspace.  AMD Automatic IBRS also does not protect userspace.
++	 * These modes therefore disable the implicit cross-thread protection,
++	 * so allow for STIBP to be selected in those cases.
+ 	 */
+ 	if (!boot_cpu_has(X86_FEATURE_STIBP) ||
+ 	    !smt_possible ||
+-	    spectre_v2_in_eibrs_mode(spectre_v2_enabled))
++	    (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
++	     !boot_cpu_has(X86_FEATURE_AUTOIBRS)))
+ 		return;
+ 
+ 	/*
+@@ -2294,7 +2296,8 @@ static ssize_t mmio_stale_data_show_state(char *buf)
+ 
+ static char *stibp_state(void)
+ {
+-	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled))
++	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
++	    !boot_cpu_has(X86_FEATURE_AUTOIBRS))
+ 		return "";
+ 
+ 	switch (spectre_v2_user_stibp) {
