@@ -2,163 +2,93 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68C8875DD6B
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Jul 2023 18:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B90C075EDBF
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Jul 2023 10:35:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbjGVQTC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 22 Jul 2023 12:19:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54662 "EHLO
+        id S229999AbjGXIfp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 24 Jul 2023 04:35:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjGVQTC (ORCPT
+        with ESMTP id S229898AbjGXIfi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 22 Jul 2023 12:19:02 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1106F1FCB;
-        Sat, 22 Jul 2023 09:19:01 -0700 (PDT)
-Date:   Sat, 22 Jul 2023 16:18:58 -0000
+        Mon, 24 Jul 2023 04:35:38 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18184E42;
+        Mon, 24 Jul 2023 01:35:35 -0700 (PDT)
+Date:   Mon, 24 Jul 2023 08:35:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1690042739;
+        s=2020; t=1690187732;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7HxdfOmHaQBGRnG6kfgqJKnhhkp+BdN+BlMqHiWUe1w=;
-        b=qmErEK3NL6xrZP0u/tmXkmrQZ0z0KeyaoAtBmMJFdeutR1UPdLiKHRD8GBirSWLJ1z6FYw
-        GUMstq7LvMm8xrlcerIsXtFmzTJskSRMCxD5S13Q2PtfzBVytKqjSr0JRNPibkiGiHPBzd
-        vTob9VqXqL6EspFrMk1vB49CYX3Ytvz3ajm7Fc3ZppeGv1Vbe+Genvn/bfFOgJTF9LNIzN
-        RM5+PgHhsHRZU74g56mQdwAAtKYpacuUT8nvqQ0uGoQwR5/veXtybT/RHGN5J1ROtuk8BW
-        t7BjzdTaawUUWUQiGs7n5r4XDQuX6Ti8gf3KSlIR/Ks4Aa/kKn3N2CCq8whxYw==
+        bh=xZIFjd8b1zmq6CVD9es57l2q/FwdfakaSpxogKN3LCM=;
+        b=Cnqp3Il5EAZzbO5gF5oyvQgm1s9AyD2s8OxRCuE2mNOhsz2ZmK6CN5EXxabiKdVB/xfgGw
+        /krkivpb7YAuEmfMq3BC8CQLsXF4P01e7kDga0l/jTNJ+Zp0SCOigB1KnIqv7KZ1p5kEdt
+        cKq2iCGsYZ6tnvUzOC7lKyQKBR6z1V7tKidA/UC+Z9xhZGWgsbcA0vf+26AMK0J5JjAFN8
+        rLkioU+cXKAJyQKtmJphzUNTy+d5AOn5KX2bCUX04ZiNBqjsJx2IdDdmLCTfBDqYadhA0v
+        ZZcpRWT8BLFNpzv0Oe+feKGXqXAqzFfd4DePYcYoBVzp9cIXAHLlsUMBCLO9PA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1690042739;
+        s=2020e; t=1690187732;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7HxdfOmHaQBGRnG6kfgqJKnhhkp+BdN+BlMqHiWUe1w=;
-        b=872UD6kuSJSNjJfL1ZyaG3sgH8YoUDoGrgphet11KygaZSqRjI3Xtq/EHAfyYHVdvzb6cJ
-        W3/IwL6S/p90j0AA==
-From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
+        bh=xZIFjd8b1zmq6CVD9es57l2q/FwdfakaSpxogKN3LCM=;
+        b=qG46IOBV6pcEF/+bslz0Kds2yWit5LG1QtVxBvAJDUTBkLQJorb3R3oKWR5//TzHfJTcz7
+        5VBjloj03mSDMgDA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Enable STIBP on AMD if Automatic IBRS is enabled
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Kim Phillips <kim.phillips@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230720194727.67022-1-kim.phillips@amd.com>
-References: <20230720194727.67022-1-kim.phillips@amd.com>
+Subject: [tip: irq/urgent] Merge tag 'irqchip-fixes-6.5-1' of
+ git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into
+ irq/urgent
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20230717113857.304919-1-maz@kernel.org>
+References: <20230717113857.304919-1-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169004273861.28540.3552352830983009627.tip-bot2@tip-bot2>
+Message-ID: <169018773176.28540.6935364489444309798.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     fd470a8beed88440b160d690344fbae05a0b9b1b
-Gitweb:        https://git.kernel.org/tip/fd470a8beed88440b160d690344fbae05a0b9b1b
-Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Thu, 20 Jul 2023 14:47:27 -05:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sat, 22 Jul 2023 18:04:22 +02:00
+Commit-ID:     de990908521073d98a46ad0e29885df447e95242
+Gitweb:        https://git.kernel.org/tip/de990908521073d98a46ad0e29885df447e95242
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 24 Jul 2023 10:27:43 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 24 Jul 2023 10:27:43 +02:00
 
-x86/cpu: Enable STIBP on AMD if Automatic IBRS is enabled
+Merge tag 'irqchip-fixes-6.5-1' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/urgent
 
-Unlike Intel's Enhanced IBRS feature, AMD's Automatic IBRS does not
-provide protection to processes running at CPL3/user mode, see section
-"Extended Feature Enable Register (EFER)" in the APM v2 at
-https://bugzilla.kernel.org/attachment.cgi?id=304652
+Pull irqchip fixes from Marc Zyngier:
 
-Explicitly enable STIBP to protect against cross-thread CPL3
-branch target injections on systems with Automatic IBRS enabled.
+  - Work around an erratum on GIC700, where a race between a CPU
+    handling a wake-up interrupt, a change of affinity, and another
+    CPU going to sleep can result in a lack of wake-up event on the
+    next interrupt.
 
-Also update the relevant documentation.
+  - Fix the locking required on a VPE for GICv4
 
-Fixes: e7862eda309e ("x86/cpu: Support AMD Automatic IBRS")
-Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230720194727.67022-1-kim.phillips@amd.com
+  - Enable Rockchip 3588001 erratum workaround for RK3588S
+
+  - Fix the irq-bcm6345-l1 assumtions of the boot CPU always be
+    the first CPU in the system
+
+Link: https://lore.kernel.org/lkml/20230717113857.304919-1-maz@kernel.org
 ---
- Documentation/admin-guide/hw-vuln/spectre.rst | 11 +++++++----
- arch/x86/kernel/cpu/bugs.c                    | 15 +++++++++------
- 2 files changed, 16 insertions(+), 10 deletions(-)
-
-diff --git a/Documentation/admin-guide/hw-vuln/spectre.rst b/Documentation/admin-guide/hw-vuln/spectre.rst
-index 4d186f5..32a8893 100644
---- a/Documentation/admin-guide/hw-vuln/spectre.rst
-+++ b/Documentation/admin-guide/hw-vuln/spectre.rst
-@@ -484,11 +484,14 @@ Spectre variant 2
- 
-    Systems which support enhanced IBRS (eIBRS) enable IBRS protection once at
-    boot, by setting the IBRS bit, and they're automatically protected against
--   Spectre v2 variant attacks, including cross-thread branch target injections
--   on SMT systems (STIBP). In other words, eIBRS enables STIBP too.
-+   Spectre v2 variant attacks.
- 
--   Legacy IBRS systems clear the IBRS bit on exit to userspace and
--   therefore explicitly enable STIBP for that
-+   On Intel's enhanced IBRS systems, this includes cross-thread branch target
-+   injections on SMT systems (STIBP). In other words, Intel eIBRS enables
-+   STIBP, too.
-+
-+   AMD Automatic IBRS does not protect userspace, and Legacy IBRS systems clear
-+   the IBRS bit on exit to userspace, therefore both explicitly enable STIBP.
- 
-    The retpoline mitigation is turned on by default on vulnerable
-    CPUs. It can be forced on or off by the administrator
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 9e2a918..9550744 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1150,19 +1150,21 @@ spectre_v2_user_select_mitigation(void)
- 	}
- 
- 	/*
--	 * If no STIBP, enhanced IBRS is enabled, or SMT impossible, STIBP
-+	 * If no STIBP, Intel enhanced IBRS is enabled, or SMT impossible, STIBP
- 	 * is not required.
- 	 *
--	 * Enhanced IBRS also protects against cross-thread branch target
-+	 * Intel's Enhanced IBRS also protects against cross-thread branch target
- 	 * injection in user-mode as the IBRS bit remains always set which
- 	 * implicitly enables cross-thread protections.  However, in legacy IBRS
- 	 * mode, the IBRS bit is set only on kernel entry and cleared on return
--	 * to userspace. This disables the implicit cross-thread protection,
--	 * so allow for STIBP to be selected in that case.
-+	 * to userspace.  AMD Automatic IBRS also does not protect userspace.
-+	 * These modes therefore disable the implicit cross-thread protection,
-+	 * so allow for STIBP to be selected in those cases.
- 	 */
- 	if (!boot_cpu_has(X86_FEATURE_STIBP) ||
- 	    !smt_possible ||
--	    spectre_v2_in_eibrs_mode(spectre_v2_enabled))
-+	    (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
-+	     !boot_cpu_has(X86_FEATURE_AUTOIBRS)))
- 		return;
- 
- 	/*
-@@ -2294,7 +2296,8 @@ static ssize_t mmio_stale_data_show_state(char *buf)
- 
- static char *stibp_state(void)
- {
--	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled))
-+	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
-+	    !boot_cpu_has(X86_FEATURE_AUTOIBRS))
- 		return "";
- 
- 	switch (spectre_v2_user_stibp) {
