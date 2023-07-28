@@ -2,298 +2,177 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4863D764F12
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Jul 2023 11:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58FAD7665E5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Jul 2023 09:58:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234014AbjG0JOh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Jul 2023 05:14:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39102 "EHLO
+        id S234082AbjG1H6P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 28 Jul 2023 03:58:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234694AbjG0JN2 (ORCPT
+        with ESMTP id S234547AbjG1H55 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Jul 2023 05:13:28 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC8BB420F;
-        Thu, 27 Jul 2023 02:05:26 -0700 (PDT)
-Date:   Thu, 27 Jul 2023 09:05:23 -0000
+        Fri, 28 Jul 2023 03:57:57 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE8031BD6;
+        Fri, 28 Jul 2023 00:57:55 -0700 (PDT)
+Date:   Fri, 28 Jul 2023 07:57:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1690448724;
+        s=2020; t=1690531074;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FnLObyjMCdqdnKrzpEy/ZyR/PvCbK4jayHFj7eUjbvs=;
-        b=rTQHPAwEEDKrAIz1YUXqWWbH9q0Viqex5+xgqMLYq/yXaoUQhqPvCOn+oi/H2N6TY9qvd0
-        rH+KQHBupOx+GfWES+LB7uxtN55J3tUvpXGoLHMiqKPK9yssCiyD/O2blhpLcPc4Ub61Pe
-        uDeyomk7ZHzTXpNYDJiC5HGUoV6A2LvU7gVF0Fl3qJ7uyUGXIKjzgyfQZE/8EPaW8Ia7Jy
-        I8AJefizrDBcBGffOwWXyuWBHQlpd8ZALGxPhgwleEWNBVjIP+JNHIwzzsfjXSnl1Dj1Sh
-        CqeP4W5gJjQxthEdzE2iNV7ZVk9ybJahGmougHNFE89/y5YT1lsZzLqJ8U7ZGA==
+        bh=cSt15Rr+JQTNzb15gpi7pyOrqtr97YDY270BQfFkjWw=;
+        b=Kmyr3KI+i0LioI8zz4U/BVS5wjkNVtrgJTbyZeXEamHQ0QOzIBM/nnXvsYykbGnJWmaxD0
+        FGR3EPNRfgTT7wXfsLv7pKt9WzhAeXhzXH0k0+zHutORRMQUuQgu2Iq6t7/s7YREG7cHPy
+        Tt1+E3eoaDwFWbKw5t45l9qXFm2F62R6K4O6oO8QRjJoTJqZaPyYq+ezM7Bg6tLMdbWW5v
+        wcDSal8FC50CUmZOmg8DC2LJ56Y6e7wIXIn+r5wy+xTbOFgeiLUVIHfZlkDu+phC5g4vmR
+        yM1dVDGdYddjNEH/oyZQ+e90wvRGTKt8PzKbY1c/0hnONHzf6CnLXzWIuZCDSA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1690448724;
+        s=2020e; t=1690531074;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FnLObyjMCdqdnKrzpEy/ZyR/PvCbK4jayHFj7eUjbvs=;
-        b=JpYUuQTWwx7ktB66vCsqwwV1WOw4I21/a/k2gPOF9VFZUUH8zui/jrEsFssyhJ9cBPNqhC
-        NsJ/m9eISAkEX0Cg==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=cSt15Rr+JQTNzb15gpi7pyOrqtr97YDY270BQfFkjWw=;
+        b=FV/f0ixm09LwcGTimV9jk8htKdmg/E6pbauikN2ETIxBJ4PxqC0t4iBYnaedB1hhMsKPXk
+        u0pxjnU6o4NwiZDw==
+From:   "tip-bot2 for Michael Ellerman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/AMD: Rip out static buffers
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>,
-        John Allen <john.allen@amd.com>, x86@kernel.org,
+Subject: [tip: smp/core] cpu/SMT: Create topology_smt_thread_allowed()
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Laurent Dufour <ldufour@linux.ibm.com>,
+        Zhang Rui <rui.zhang@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230720202813.3269888-1-john.allen@amd.com>
-References: <20230720202813.3269888-1-john.allen@amd.com>
+In-Reply-To: <20230705145143.40545-7-ldufour@linux.ibm.com>
+References: <20230705145143.40545-7-ldufour@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <169044872366.28540.16194824117181865838.tip-bot2@tip-bot2>
+Message-ID: <169053107371.28540.17441460087624163045.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     05e91e72113833385fb8c9a33bda9dbd93e27609
-Gitweb:        https://git.kernel.org/tip/05e91e72113833385fb8c9a33bda9dbd93e27609
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Wed, 07 Jun 2023 21:01:06 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 27 Jul 2023 10:04:54 +02:00
+Commit-ID:     38253464bc821d6de6bba81bb1412ebb36f6cbd1
+Gitweb:        https://git.kernel.org/tip/38253464bc821d6de6bba81bb1412ebb36f6cbd1
+Author:        Michael Ellerman <mpe@ellerman.id.au>
+AuthorDate:    Wed, 05 Jul 2023 16:51:39 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 28 Jul 2023 09:53:37 +02:00
 
-x86/microcode/AMD: Rip out static buffers
+cpu/SMT: Create topology_smt_thread_allowed()
 
-Load straight from the containers (initrd or builtin, for example).
-There's no need to cache the patch per node.
+Some architectures allows partial SMT states, i.e. when not all SMT threads
+are brought online.
 
-This even simplifies the code a bit with the opportunity for more
-cleanups later.
+To support that, add an architecture helper which checks whether a given
+CPU is allowed to be brought online depending on how many SMT threads are
+currently enabled. Since this is only applicable to architecture supporting
+partial SMT, only these architectures should select the new configuration
+variable CONFIG_SMT_NUM_THREADS_DYNAMIC. For the other architectures, not
+supporting the partial SMT states, there is no need to define
+topology_cpu_smt_allowed(), the generic code assumed that all the threads
+are allowed or only the primary ones.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: John Allen <john.allen@amd.com>
-Link: https://lore.kernel.org/r/20230720202813.3269888-1-john.allen@amd.com
+Call the helper from cpu_smt_enable(), and cpu_smt_allowed() when SMT is
+enabled, to check if the particular thread should be onlined. Notably,
+also call it from cpu_smt_disable() if CPU_SMT_ENABLED, to allow
+offlining some threads to move from a higher to lower number of threads
+online.
+
+[ ldufour: Slightly reword the commit's description ]
+[ ldufour: Introduce CONFIG_SMT_NUM_THREADS_DYNAMIC ]
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://lore.kernel.org/r/20230705145143.40545-7-ldufour@linux.ibm.com
+
 ---
- arch/x86/include/asm/microcode_amd.h |  6 +--
- arch/x86/kernel/cpu/microcode/amd.c  | 91 ++++++++-------------------
- arch/x86/kernel/cpu/microcode/core.c |  4 +-
- 3 files changed, 31 insertions(+), 70 deletions(-)
+ arch/Kconfig |  3 +++
+ kernel/cpu.c | 24 +++++++++++++++++++++++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/microcode_amd.h b/arch/x86/include/asm/microcode_amd.h
-index e6662ad..a995b76 100644
---- a/arch/x86/include/asm/microcode_amd.h
-+++ b/arch/x86/include/asm/microcode_amd.h
-@@ -44,13 +44,11 @@ struct microcode_amd {
- #define PATCH_MAX_SIZE (3 * PAGE_SIZE)
+diff --git a/arch/Kconfig b/arch/Kconfig
+index aff2746..63c5d6a 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -34,6 +34,9 @@ config ARCH_HAS_SUBPAGE_FAULTS
+ config HOTPLUG_SMT
+ 	bool
  
- #ifdef CONFIG_MICROCODE_AMD
--extern void __init load_ucode_amd_bsp(unsigned int family);
--extern void load_ucode_amd_ap(unsigned int family);
-+extern void load_ucode_amd_early(unsigned int cpuid_1_eax);
- extern int __init save_microcode_in_initrd_amd(unsigned int family);
- void reload_ucode_amd(unsigned int cpu);
- #else
--static inline void __init load_ucode_amd_bsp(unsigned int family) {}
--static inline void load_ucode_amd_ap(unsigned int family) {}
-+static inline void load_ucode_amd_early(unsigned int cpuid_1_eax) {}
- static inline int __init
- save_microcode_in_initrd_amd(unsigned int family) { return -EINVAL; }
- static inline void reload_ucode_amd(unsigned int cpu) {}
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index 87208e4..a28b103 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -56,9 +56,6 @@ struct cont_desc {
- 
- static u32 ucode_new_rev;
- 
--/* One blob per node. */
--static u8 amd_ucode_patch[MAX_NUMNODES][PATCH_MAX_SIZE];
--
- /*
-  * Microcode patch container file is prepended to the initrd in cpio
-  * format. See Documentation/arch/x86/microcode.rst
-@@ -415,20 +412,17 @@ static int __apply_microcode_amd(struct microcode_amd *mc)
-  *
-  * Returns true if container found (sets @desc), false otherwise.
-  */
--static bool early_apply_microcode(u32 cpuid_1_eax, void *ucode, size_t size, bool save_patch)
-+static bool early_apply_microcode(u32 cpuid_1_eax, void *ucode, size_t size)
- {
- 	struct cont_desc desc = { 0 };
--	u8 (*patch)[PATCH_MAX_SIZE];
- 	struct microcode_amd *mc;
- 	u32 rev, dummy, *new_rev;
- 	bool ret = false;
- 
- #ifdef CONFIG_X86_32
- 	new_rev = (u32 *)__pa_nodebug(&ucode_new_rev);
--	patch	= (u8 (*)[PATCH_MAX_SIZE])__pa_nodebug(&amd_ucode_patch);
- #else
- 	new_rev = &ucode_new_rev;
--	patch	= &amd_ucode_patch[0];
- #endif
- 
- 	desc.cpuid_1_eax = cpuid_1_eax;
-@@ -452,9 +446,6 @@ static bool early_apply_microcode(u32 cpuid_1_eax, void *ucode, size_t size, boo
- 	if (!__apply_microcode_amd(mc)) {
- 		*new_rev = mc->hdr.patch_id;
- 		ret      = true;
--
--		if (save_patch)
--			memcpy(patch, mc, min_t(u32, desc.psize, PATCH_MAX_SIZE));
- 	}
- 
- 	return ret;
-@@ -507,7 +498,7 @@ static void find_blobs_in_containers(unsigned int cpuid_1_eax, struct cpio_data 
- 	*ret = cp;
++config SMT_NUM_THREADS_DYNAMIC
++	bool
++
+ # Selected by HOTPLUG_CORE_SYNC_DEAD or HOTPLUG_CORE_SYNC_FULL
+ config HOTPLUG_CORE_SYNC
+ 	bool
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 70add05..9a8d068 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -645,9 +645,23 @@ static int __init smt_cmdline_disable(char *str)
  }
+ early_param("nosmt", smt_cmdline_disable);
  
--void __init load_ucode_amd_bsp(unsigned int cpuid_1_eax)
-+static void apply_ucode_from_containers(unsigned int cpuid_1_eax)
- {
- 	struct cpio_data cp = { };
- 
-@@ -515,42 +506,12 @@ void __init load_ucode_amd_bsp(unsigned int cpuid_1_eax)
- 	if (!(cp.data && cp.size))
- 		return;
- 
--	early_apply_microcode(cpuid_1_eax, cp.data, cp.size, true);
-+	early_apply_microcode(cpuid_1_eax, cp.data, cp.size);
- }
- 
--void load_ucode_amd_ap(unsigned int cpuid_1_eax)
-+void load_ucode_amd_early(unsigned int cpuid_1_eax)
- {
--	struct microcode_amd *mc;
--	struct cpio_data cp;
--	u32 *new_rev, rev, dummy;
--
--	if (IS_ENABLED(CONFIG_X86_32)) {
--		mc	= (struct microcode_amd *)__pa_nodebug(amd_ucode_patch);
--		new_rev = (u32 *)__pa_nodebug(&ucode_new_rev);
--	} else {
--		mc	= (struct microcode_amd *)amd_ucode_patch;
--		new_rev = &ucode_new_rev;
--	}
--
--	native_rdmsr(MSR_AMD64_PATCH_LEVEL, rev, dummy);
--
--	/*
--	 * Check whether a new patch has been saved already. Also, allow application of
--	 * the same revision in order to pick up SMT-thread-specific configuration even
--	 * if the sibling SMT thread already has an up-to-date revision.
--	 */
--	if (*new_rev && rev <= mc->hdr.patch_id) {
--		if (!__apply_microcode_amd(mc)) {
--			*new_rev = mc->hdr.patch_id;
--			return;
--		}
--	}
--
--	find_blobs_in_containers(cpuid_1_eax, &cp);
--	if (!(cp.data && cp.size))
--		return;
--
--	early_apply_microcode(cpuid_1_eax, cp.data, cp.size, false);
-+	return apply_ucode_from_containers(cpuid_1_eax);
- }
- 
- static enum ucode_state load_microcode_amd(u8 family, const u8 *data, size_t size);
-@@ -578,23 +539,6 @@ int __init save_microcode_in_initrd_amd(unsigned int cpuid_1_eax)
- 	return 0;
- }
- 
--void reload_ucode_amd(unsigned int cpu)
--{
--	u32 rev, dummy __always_unused;
--	struct microcode_amd *mc;
--
--	mc = (struct microcode_amd *)amd_ucode_patch[cpu_to_node(cpu)];
--
--	rdmsr(MSR_AMD64_PATCH_LEVEL, rev, dummy);
--
--	if (rev < mc->hdr.patch_id) {
--		if (!__apply_microcode_amd(mc)) {
--			ucode_new_rev = mc->hdr.patch_id;
--			pr_info("reload patch_level=0x%08x\n", ucode_new_rev);
--		}
--	}
--}
--
- /*
-  * a small, trivial cache of per-family ucode patches
-  */
-@@ -655,6 +599,28 @@ static struct ucode_patch *find_patch(unsigned int cpu)
- 	return cache_find_patch(equiv_id);
- }
- 
-+void reload_ucode_amd(unsigned int cpu)
++/*
++ * For Archicture supporting partial SMT states check if the thread is allowed.
++ * Otherwise this has already been checked through cpu_smt_max_threads when
++ * setting the SMT level.
++ */
++static inline bool cpu_smt_thread_allowed(unsigned int cpu)
 +{
-+	u32 rev, dummy __always_unused;
-+	struct microcode_amd *mc;
-+	struct ucode_patch *p;
-+
-+	p = find_patch(cpu);
-+	if (!p)
-+		return;
-+
-+	mc = p->data;
-+
-+	rdmsr(MSR_AMD64_PATCH_LEVEL, rev, dummy);
-+
-+	if (rev < mc->hdr.patch_id) {
-+		if (!__apply_microcode_amd(mc)) {
-+			ucode_new_rev = mc->hdr.patch_id;
-+			pr_info("reload patch_level=0x%08x\n", ucode_new_rev);
-+		}
-+	}
++#ifdef CONFIG_SMT_NUM_THREADS_DYNAMIC
++	return topology_smt_thread_allowed(cpu);
++#else
++	return true;
++#endif
 +}
 +
- static int collect_cpu_info_amd(int cpu, struct cpu_signature *csig)
+ static inline bool cpu_smt_allowed(unsigned int cpu)
  {
- 	struct cpuinfo_x86 *c = &cpu_data(cpu);
-@@ -875,9 +841,6 @@ static enum ucode_state load_microcode_amd(u8 family, const u8 *data, size_t siz
+-	if (cpu_smt_control == CPU_SMT_ENABLED)
++	if (cpu_smt_control == CPU_SMT_ENABLED && cpu_smt_thread_allowed(cpu))
+ 		return true;
+ 
+ 	if (topology_is_primary_thread(cpu))
+@@ -2642,6 +2656,12 @@ int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval)
+ 	for_each_online_cpu(cpu) {
+ 		if (topology_is_primary_thread(cpu))
  			continue;
- 
- 		ret = UCODE_NEW;
--
--		memset(&amd_ucode_patch[nid], 0, PATCH_MAX_SIZE);
--		memcpy(&amd_ucode_patch[nid], p->data, min_t(u32, p->size, PATCH_MAX_SIZE));
- 	}
- 
- 	return ret;
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 3afcf3d..192adf5 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -172,7 +172,7 @@ void __init load_ucode_bsp(void)
- 	if (intel)
- 		load_ucode_intel_bsp();
- 	else
--		load_ucode_amd_bsp(cpuid_1_eax);
-+		load_ucode_amd_early(cpuid_1_eax);
- }
- 
- static bool check_loader_disabled_ap(void)
-@@ -200,7 +200,7 @@ void load_ucode_ap(void)
- 		break;
- 	case X86_VENDOR_AMD:
- 		if (x86_family(cpuid_1_eax) >= 0x10)
--			load_ucode_amd_ap(cpuid_1_eax);
-+			load_ucode_amd_early(cpuid_1_eax);
- 		break;
- 	default:
- 		break;
++		/*
++		 * Disable can be called with CPU_SMT_ENABLED when changing
++		 * from a higher to lower number of SMT threads per core.
++		 */
++		if (ctrlval == CPU_SMT_ENABLED && cpu_smt_thread_allowed(cpu))
++			continue;
+ 		ret = cpu_down_maps_locked(cpu, CPUHP_OFFLINE);
+ 		if (ret)
+ 			break;
+@@ -2676,6 +2696,8 @@ int cpuhp_smt_enable(void)
+ 		/* Skip online CPUs and CPUs on offline nodes */
+ 		if (cpu_online(cpu) || !node_online(cpu_to_node(cpu)))
+ 			continue;
++		if (!cpu_smt_thread_allowed(cpu))
++			continue;
+ 		ret = _cpu_up(cpu, 0, CPUHP_ONLINE);
+ 		if (ret)
+ 			break;
