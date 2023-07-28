@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 589437665EC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Jul 2023 09:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABE9A7666ED
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Jul 2023 10:23:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234580AbjG1H6S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 28 Jul 2023 03:58:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41586 "EHLO
+        id S234872AbjG1IXY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 28 Jul 2023 04:23:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234557AbjG1H6A (ORCPT
+        with ESMTP id S234935AbjG1IW2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 28 Jul 2023 03:58:00 -0400
+        Fri, 28 Jul 2023 04:22:28 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96C463598;
-        Fri, 28 Jul 2023 00:57:58 -0700 (PDT)
-Date:   Fri, 28 Jul 2023 07:57:55 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D64F41FF2;
+        Fri, 28 Jul 2023 01:21:22 -0700 (PDT)
+Date:   Fri, 28 Jul 2023 08:21:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1690531076;
+        s=2020; t=1690532481;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZkJmbLByvVLLbdC4tk/TA0S14VRcxaBYW/wOJ5jRGtg=;
-        b=ohqTXWgPMsAgCzfdbrWAqv6qFru6K7gte+hLZG+lwGOMeaikQaxFL0DZTzGMkmqjASSyEK
-        /5ovfShF8kxyShTAYQUSgC5/ceup9A8w8m9Q0CX3VlgWf/pnyQ4rSmxGK47x52r970ZkXu
-        DaredsqRCQ8n2dQXclsdyh06tAzYzDSEZW6EeiKuIdiqaAQkw/1YmZNy9JSkCDxgxtCJH8
-        dpDf8+JpQHmn2XcDiynUYGuxTQbGCL+05y3QkdsTDt83xZMkIvIt/9rsK82F6FwYzucM0E
-        65NVH5QgqEOmQal3i1FxL0mTnV0qk2akhYaTa3cc15Werix60H1jjZW9qLHcnQ==
+        bh=LMfd0HelnlVjNH3W4Qx7FiKgivaaAG98nFZrasSoh3k=;
+        b=vGW8b2dEOtvSfOI9UVMDi8XG7jCGBKutFCDW+bAgRsDeAUDKTfcp0bS51qrLcSlhB9cda4
+        IL+GF9mJQQ+cMAbUgfYxkJowiIj/20F/4EsaBs3A0vZetpqw6skMAYC0hUVF4sokr7bumx
+        kCdYLYksm3oORVIjJW7zc8lz+6HsS56SUF1jzIEZBNHzuOd0MV04dqLO/yBd1tUfhsZbeV
+        S/qBF5iFyQaH7VVXML8FB7c7JYHjADwru+EuvPATyuu2zFE0tiuzG4v7GSc1ZJpyLc8CD2
+        zqX3AEHnhXmTXqqJc8KWMvtJ2eFjGKf7FeT8pSCezHm7FHakDaZKmXdKQBqJ9Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1690531076;
+        s=2020e; t=1690532481;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZkJmbLByvVLLbdC4tk/TA0S14VRcxaBYW/wOJ5jRGtg=;
-        b=IfwLtX191mJLFH5Os9LZK7V92Xd3ve24a+XZq+F0Ks/DdpNt17jPD+nvTa+l/Sgs4ZE4dp
-        UfxY+ffwy6fy+HDA==
-From:   "tip-bot2 for Laurent Dufour" <tip-bot2@linutronix.de>
+        bh=LMfd0HelnlVjNH3W4Qx7FiKgivaaAG98nFZrasSoh3k=;
+        b=/71fy/Q5QFqSXJqoFPYLv1J7i9VSGzLty/4et+VaFMGOD7rIm6rkkvI+lJKPe2iB3K8ExA
+        xY3kpHpGNArJVdBw==
+From:   "tip-bot2 for Sohil Mehta" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] cpu/hotplug: Remove dependancy against
- cpu_primary_thread_mask
-Cc:     Laurent Dufour <ldufour@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Zhang Rui <rui.zhang@intel.com>, x86@kernel.org,
+Subject: [tip: x86/core] x86/smpboot: Change smp_store_boot_cpu_info() to static
+Cc:     Sohil Mehta <sohil.mehta@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230705145143.40545-2-ldufour@linux.ibm.com>
-References: <20230705145143.40545-2-ldufour@linux.ibm.com>
+In-Reply-To: <20230727180533.3119660-4-sohil.mehta@intel.com>
+References: <20230727180533.3119660-4-sohil.mehta@intel.com>
 MIME-Version: 1.0
-Message-ID: <169053107559.28540.11243157708630222054.tip-bot2@tip-bot2>
+Message-ID: <169053248069.28540.9487948211210505000.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,77 +65,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     7a4dcb4a5de1214c4a59448a759e2e264c2c4473
-Gitweb:        https://git.kernel.org/tip/7a4dcb4a5de1214c4a59448a759e2e264c2c4473
-Author:        Laurent Dufour <ldufour@linux.ibm.com>
-AuthorDate:    Wed, 05 Jul 2023 16:51:34 +02:00
+Commit-ID:     d7114f83ee051dfeac82546d7ba03d74f8b92af3
+Gitweb:        https://git.kernel.org/tip/d7114f83ee051dfeac82546d7ba03d74f8b92af3
+Author:        Sohil Mehta <sohil.mehta@intel.com>
+AuthorDate:    Thu, 27 Jul 2023 18:05:33 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 28 Jul 2023 09:53:36 +02:00
+CommitterDate: Fri, 28 Jul 2023 10:17:53 +02:00
 
-cpu/hotplug: Remove dependancy against cpu_primary_thread_mask
+x86/smpboot: Change smp_store_boot_cpu_info() to static
 
-The commit 18415f33e2ac ("cpu/hotplug: Allow "parallel" bringup up to
-CPUHP_BP_KICK_AP_STATE") introduce a dependancy against a global variable
-cpu_primary_thread_mask exported by the X86 code. This variable is only
-used when CONFIG_HOTPLUG_PARALLEL is set.
+The function is only used locally. Convert it to a static one.
 
-Since cpuhp_get_primary_thread_mask() and cpuhp_smt_aware() are only used
-when CONFIG_HOTPLUG_PARALLEL is set, don't define them when it is not set.
-
-No functional change.
-
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://lore.kernel.org/r/20230705145143.40545-2-ldufour@linux.ibm.com
+Link: https://lore.kernel.org/r/20230727180533.3119660-4-sohil.mehta@intel.com
 
 ---
- kernel/cpu.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ arch/x86/include/asm/smp.h | 2 --
+ arch/x86/kernel/smpboot.c  | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 88a7ede..03309f2 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -650,22 +650,8 @@ bool cpu_smt_possible(void)
- }
- EXPORT_SYMBOL_GPL(cpu_smt_possible);
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index 094f31d..cf7217a 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -134,8 +134,6 @@ void native_send_call_func_ipi(const struct cpumask *mask);
+ void native_send_call_func_single_ipi(int cpu);
  
--static inline bool cpuhp_smt_aware(void)
--{
--	return topology_smt_supported();
--}
+ bool smp_park_other_cpus_in_init(void);
 -
--static inline const struct cpumask *cpuhp_get_primary_thread_mask(void)
--{
--	return cpu_primary_thread_mask;
--}
- #else
- static inline bool cpu_smt_allowed(unsigned int cpu) { return true; }
--static inline bool cpuhp_smt_aware(void) { return false; }
--static inline const struct cpumask *cpuhp_get_primary_thread_mask(void)
--{
--	return cpu_present_mask;
--}
- #endif
+-void smp_store_boot_cpu_info(void);
+ void smp_store_cpu_info(int id);
  
- static inline enum cpuhp_state
-@@ -1793,6 +1779,16 @@ static int __init parallel_bringup_parse_param(char *arg)
+ asmlinkage __visible void smp_reboot_interrupt(void);
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 6a09a02..28c590b 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -422,7 +422,7 @@ found:
+ 	return 0;
  }
- early_param("cpuhp.parallel", parallel_bringup_parse_param);
  
-+static inline bool cpuhp_smt_aware(void)
-+{
-+	return topology_smt_supported();
-+}
-+
-+static inline const struct cpumask *cpuhp_get_primary_thread_mask(void)
-+{
-+	return cpu_primary_thread_mask;
-+}
-+
- /*
-  * On architectures which have enabled parallel bringup this invokes all BP
-  * prepare states for each of the to be onlined APs first. The last state
+-void __init smp_store_boot_cpu_info(void)
++static void __init smp_store_boot_cpu_info(void)
+ {
+ 	int id = 0; /* CPU 0 */
+ 	struct cpuinfo_x86 *c = &cpu_data(id);
