@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59D777692EA
+	by mail.lfdr.de (Postfix) with ESMTP id F3A567692EC
 	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 Jul 2023 12:19:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230209AbjGaKTd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 31 Jul 2023 06:19:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54712 "EHLO
+        id S232037AbjGaKTf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 31 Jul 2023 06:19:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229661AbjGaKTc (ORCPT
+        with ESMTP id S231474AbjGaKTd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 31 Jul 2023 06:19:32 -0400
+        Mon, 31 Jul 2023 06:19:33 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D2EA6;
-        Mon, 31 Jul 2023 03:19:31 -0700 (PDT)
-Date:   Mon, 31 Jul 2023 10:19:29 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB5F9B8;
+        Mon, 31 Jul 2023 03:19:32 -0700 (PDT)
+Date:   Mon, 31 Jul 2023 10:19:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1690798770;
+        s=2020; t=1690798771;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=si2rHQ7oAZJMqEY6pXFDHPBiIsEDLkyzqysOdhQbPi8=;
-        b=ozxpSvP4x7YQES8NjLra9dpO7QSHryCYZJEqqFc8zP0UVS/7huvIuBGT7Pl35w8dp5EchU
-        LXoPUzTYU75AJwi2LVY7d3j5vzcDsqFJhb7vXLntsZcKbx6p5lhvXW53MqbzbhKYhUrwaT
-        CrjREpjQ/E8qNC959nMyY0pn0vSyokCzQ5Zq8VAnwLAlAHo2M38ZCtx7ouw3qtDzn6suf9
-        iRB35G3X6ahKTVJT4KOOqID16M+A+RxN6JxV9VRSyGed8iB90EJWubBb4fdt4ljYCnTtwd
-        Ht9/o4s8f+35h1J3H5nVM96HO2eVVYmGhRwlubeoi3ykSgb5b0Z9dpQ0ehVPpQ==
+        bh=v16GS4bcPgXubu6zg/xsRqgp7LY5t94J0pFTVC7YOBg=;
+        b=zhPZa3iF1NdFWMY1j9Sxd+feLergV049NE05co7igal59f3E99sj0PRHIfwfjDCuz+iaRD
+        eK7Ti9blTxwZHJLoU+UvxwH/Aqk+mMPVJgv3k3YwPGqOXarFlghscZOKDKHV4raRpvtbdo
+        nKY6z8yGmtT7vir/T1vzpkW00Ebm8RackF1i2HfYrI0bt94yKhdVA2yAjbLN8TindfVlgm
+        LbYVNDf243rYQezLQlefpYiamuk+iB5upHl/Hf1UFCRe3t+8j9Nc5ebY1zLW4tUWxis+Ll
+        OvvfhC7p1n6k7ahHJWxOR+WRFOqKK95Fcj6qpa+26MY03bW/iibKh1GWxAaATA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1690798770;
+        s=2020e; t=1690798771;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=si2rHQ7oAZJMqEY6pXFDHPBiIsEDLkyzqysOdhQbPi8=;
-        b=BOs2q+y6fnkGN2oRFnmhIrXdr5eHdfinQl8jY7Io6TYpr5eDYWiKg8QOdWb/KlhL4DdZ+1
-        FKjoIPYDY3TxkTAQ==
-From:   "tip-bot2 for YueHaibing" <tip-bot2@linutronix.de>
+        bh=v16GS4bcPgXubu6zg/xsRqgp7LY5t94J0pFTVC7YOBg=;
+        b=Ll874X6WVsyBo9IaWJK6mqRxIdUuwt2sxE5slS61UqgasON3E0W4kIA9Z2PFe+Kk6+vmAs
+        NecD8ALtAxsn2dAQ==
+From:   "tip-bot2 for James Clark" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Remove unused extern declaration
- arch_perf_get_page_size()
-Cc:     YueHaibing <yuehaibing@huawei.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] arm_pmu: Remove unused
+ PERF_PMU_CAP_HETEROGENEOUS_CPUS capability
+Cc:     James Clark <james.clark@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Ian Rogers <irogers@google.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230725135038.25060-1-yuehaibing@huawei.com>
-References: <20230725135038.25060-1-yuehaibing@huawei.com>
+In-Reply-To: <20230724134500.970496-4-james.clark@arm.com>
+References: <20230724134500.970496-4-james.clark@arm.com>
 MIME-Version: 1.0
-Message-ID: <169079876986.28540.2484423091109012326.tip-bot2@tip-bot2>
+Message-ID: <169079877090.28540.17067379324093297410.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,37 +70,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     62af03223785c11a0916df6a854ef4785d2350a5
-Gitweb:        https://git.kernel.org/tip/62af03223785c11a0916df6a854ef4785d2350a5
-Author:        YueHaibing <yuehaibing@huawei.com>
-AuthorDate:    Tue, 25 Jul 2023 21:50:38 +08:00
+Commit-ID:     80391d8c387d406e2ec79776ec834666ab9611b0
+Gitweb:        https://git.kernel.org/tip/80391d8c387d406e2ec79776ec834666ab9611b0
+Author:        James Clark <james.clark@arm.com>
+AuthorDate:    Mon, 24 Jul 2023 14:44:58 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 26 Jul 2023 12:28:48 +02:00
+CommitterDate: Wed, 26 Jul 2023 12:28:47 +02:00
 
-perf: Remove unused extern declaration arch_perf_get_page_size()
+arm_pmu: Remove unused PERF_PMU_CAP_HETEROGENEOUS_CPUS capability
 
-commit 8af26be06272 ("perf/core: Fix arch_perf_get_page_size()")
-left behind this.
+Since commit bd2756811766 ("perf: Rewrite core context handling") the
+relationship between perf_event_context and PMUs has changed so that
+the error scenario that PERF_PMU_CAP_HETEROGENEOUS_CPUS originally
+silenced no longer exists.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Remove the capability and associated comment to avoid confusion that it
+actually influences any perf core behavior. This change should be a
+no-op.
+
+Signed-off-by: James Clark <james.clark@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230725135038.25060-1-yuehaibing@huawei.com
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20230724134500.970496-4-james.clark@arm.com
 ---
- include/linux/perf_event.h | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/perf/arm_pmu.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 9b1cf3c..e83f13c 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1860,10 +1860,6 @@ extern void arch_perf_update_userpage(struct perf_event *event,
- 				      struct perf_event_mmap_page *userpg,
- 				      u64 now);
+diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
+index 2e79201..d712a19 100644
+--- a/drivers/perf/arm_pmu.c
++++ b/drivers/perf/arm_pmu.c
+@@ -877,15 +877,12 @@ struct arm_pmu *armpmu_alloc(void)
+ 		.attr_groups	= pmu->attr_groups,
+ 		/*
+ 		 * This is a CPU PMU potentially in a heterogeneous
+-		 * configuration (e.g. big.LITTLE). This is not an uncore PMU,
+-		 * and we have taken ctx sharing into account (e.g. with our
+-		 * pmu::filter callback and pmu::event_init group validation).
+-		 *
++		 * configuration (e.g. big.LITTLE) so
+ 		 * PERF_PMU_CAP_EXTENDED_HW_TYPE is required to open
+ 		 * PERF_TYPE_HARDWARE and PERF_TYPE_HW_CACHE events on a
+ 		 * specific PMU.
+ 		 */
+-		.capabilities	= PERF_PMU_CAP_HETEROGENEOUS_CPUS | PERF_PMU_CAP_EXTENDED_REGS |
++		.capabilities	= PERF_PMU_CAP_EXTENDED_REGS |
+ 				  PERF_PMU_CAP_EXTENDED_HW_TYPE,
+ 	};
  
--#ifdef CONFIG_MMU
--extern __weak u64 arch_perf_get_page_size(struct mm_struct *mm, unsigned long addr);
--#endif
--
- /*
-  * Snapshot branch stack on software events.
-  *
