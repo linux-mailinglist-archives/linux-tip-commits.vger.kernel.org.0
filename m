@@ -2,62 +2,62 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 289107666EE
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Jul 2023 10:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D7C7692C9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 Jul 2023 12:11:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234893AbjG1IXZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 28 Jul 2023 04:23:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56784 "EHLO
+        id S230183AbjGaKLT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 31 Jul 2023 06:11:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234871AbjG1IW2 (ORCPT
+        with ESMTP id S230094AbjGaKLS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 28 Jul 2023 04:22:28 -0400
+        Mon, 31 Jul 2023 06:11:18 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CDE13582;
-        Fri, 28 Jul 2023 01:21:23 -0700 (PDT)
-Date:   Fri, 28 Jul 2023 08:21:21 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA824C9;
+        Mon, 31 Jul 2023 03:11:16 -0700 (PDT)
+Date:   Mon, 31 Jul 2023 10:11:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1690532481;
+        s=2020; t=1690798274;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P5Y/oYGIsg/lEQP/IWXfklA5/PBU/PmzxbYkTrrMcfc=;
-        b=kDCYkdPe/c3M+RE/IZiuzilR5BfhksRDPlv5jpv9/l91fwBz+QRZezRHYRD2Dl4A18dNtO
-        /eePhrj2L7NkHdHk0e+W3Drgrro0bvl+q9x5JQ+mEX+p3RtEyqAHX4VhC1M2BfhOhPpKbJ
-        En6nRlSo6RNoM9mRnQ9O9izNhIiyUWP7QBPii+gOrd272sbTtLUP2c0cuKT4AWy17t2Fyx
-        adQYyagNTEtuJkMk+aD9zLwxLONNf296st+5uxVcVALGp1REVys1CnLUmGtu1VWU4huWid
-        Q3vTwyROKAys+FRHIBsg0IX7FQPw9KIKeIX9gPogFIzZZwpPe4THYxsISVaSHw==
+        bh=WpvjYxFI4BzrGEa0puYjd3LNu9omFnS53DfshMviWQw=;
+        b=b0rE5NLwh2xybTCMgLFwGn7U1KceX4NIM8sHZZELQbRlZyw4tzy4FpbVlyhg+EEtaVhSTQ
+        JAw8ybZIDT3UltA8s00AsvA7dHC1kyCvkiKT9EPY4Z6J69C72g0Vecm04/4v5yf03HraJ3
+        TY3PzSnvj76GXKshGUvuhfynd3rW53qMiBnKsUaTHzZ26HXxziF9CQ8H2b+dhll8vfkFd1
+        hwzKkw3V2p8QBXIBnZqU2CK8PrYCLayYgcLFYuXKhGpB/UbEuapfmwV9IKO0ZBZZ+ihBaP
+        SMDw3ZsOMsB3SnRo18lpDpcCnq1fiHtIuSe4vlFbD3AIkAYYwyaRMAX0fD4o/Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1690532481;
+        s=2020e; t=1690798274;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P5Y/oYGIsg/lEQP/IWXfklA5/PBU/PmzxbYkTrrMcfc=;
-        b=powh/1HNqZC7x1ZJmmBVEziNAMXmj3sfHPOxEz9ogh+2t5TvXw3TCofkBfD03niWCZUkms
-        1AqRXqUB9fFUD8CA==
-From:   "tip-bot2 for Sohil Mehta" <tip-bot2@linutronix.de>
+        bh=WpvjYxFI4BzrGEa0puYjd3LNu9omFnS53DfshMviWQw=;
+        b=dY3kaiUf1HhsESrjRDRm0WkSjwnA5Xw+nDBt+qxE6ZyvKriNVfQX/5Tm1DG1jabl5lS1jP
+        gjob7/rKJgaFjlBQ==
+From:   "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/smp: Remove a non-existent function declaration
-Cc:     Sohil Mehta <sohil.mehta@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: locking/core] lockdep/selftests: Use SBRM APIs for wait context tests
+Cc:     Boqun Feng <boqun.feng@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230727180533.3119660-3-sohil.mehta@intel.com>
-References: <20230727180533.3119660-3-sohil.mehta@intel.com>
+In-Reply-To: <20230715235257.110325-1-boqun.feng@gmail.com>
+References: <20230715235257.110325-1-boqun.feng@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169053248123.28540.16359111840279202443.tip-bot2@tip-bot2>
+Message-ID: <169079827354.28540.2671825457338788190.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,37 +65,222 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     54bfd02bbfcd0582bc4ebf6fd57fba323b141b5b
-Gitweb:        https://git.kernel.org/tip/54bfd02bbfcd0582bc4ebf6fd57fba323b141b5b
-Author:        Sohil Mehta <sohil.mehta@intel.com>
-AuthorDate:    Thu, 27 Jul 2023 18:05:32 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 28 Jul 2023 10:17:53 +02:00
+Commit-ID:     f66c538098b61e2eb596bb88fae90dbd2cebb378
+Gitweb:        https://git.kernel.org/tip/f66c538098b61e2eb596bb88fae90dbd2cebb378
+Author:        Boqun Feng <boqun.feng@gmail.com>
+AuthorDate:    Sat, 15 Jul 2023 16:52:57 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 26 Jul 2023 12:29:13 +02:00
 
-x86/smp: Remove a non-existent function declaration
+lockdep/selftests: Use SBRM APIs for wait context tests
 
-x86_idle_thread_init() does not exist anywhere. Remove its declaration
-from the header.
+The "__cleanup__" attribute is already used for wait context tests, so
+using it for locking tests has already been proven working. Now since
+SBRM APIs are merged, let's use these APIs instead of a local guard
+framework. This also helps testing SBRM APIs.
 
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230727180533.3119660-3-sohil.mehta@intel.com
+Note that originally the tests don't rely on the cleanup ordering of
+two variables in the same scope, but since now it's something we'd like
+to assume and rely on[1], drop the extra scope in inner_in_outer()
+function. Again this gives us another opportunity to test the compiler
+behavior.
 
+[1]: https://lore.kernel.org/lkml/CAHk-=whEsr6fuVSdsoNPokLR2fZiGuo_hCLyrS-LCw7hT_N7cQ@mail.gmail.com/
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230715235257.110325-1-boqun.feng@gmail.com
 ---
- arch/x86/include/asm/smp.h | 1 -
- 1 file changed, 1 deletion(-)
+ lib/locking-selftest.c | 135 ++++++++++------------------------------
+ 1 file changed, 35 insertions(+), 100 deletions(-)
 
-diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-index 600cf25..094f31d 100644
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -132,7 +132,6 @@ void smp_kick_mwait_play_dead(void);
- void native_smp_send_reschedule(int cpu);
- void native_send_call_func_ipi(const struct cpumask *mask);
- void native_send_call_func_single_ipi(int cpu);
--void x86_idle_thread_init(unsigned int cpu, struct task_struct *idle);
+diff --git a/lib/locking-selftest.c b/lib/locking-selftest.c
+index 8d24279..6f6a5fc 100644
+--- a/lib/locking-selftest.c
++++ b/lib/locking-selftest.c
+@@ -2506,94 +2506,29 @@ static void fs_reclaim_tests(void)
+ 	pr_cont("\n");
+ }
  
- bool smp_park_other_cpus_in_init(void);
+-#define __guard(cleanup) __maybe_unused __attribute__((__cleanup__(cleanup)))
++/* Defines guard classes to create contexts */
++DEFINE_LOCK_GUARD_0(HARDIRQ, HARDIRQ_ENTER(), HARDIRQ_EXIT())
++DEFINE_LOCK_GUARD_0(NOTTHREADED_HARDIRQ,
++	do {
++		local_irq_disable();
++		__irq_enter();
++		WARN_ON(!in_irq());
++	} while(0), HARDIRQ_EXIT())
++DEFINE_LOCK_GUARD_0(SOFTIRQ, SOFTIRQ_ENTER(), SOFTIRQ_EXIT())
++
++/* Define RCU guards, should go away when RCU has its own guard definitions */
++DEFINE_LOCK_GUARD_0(RCU, rcu_read_lock(), rcu_read_unlock())
++DEFINE_LOCK_GUARD_0(RCU_BH, rcu_read_lock_bh(), rcu_read_unlock_bh())
++DEFINE_LOCK_GUARD_0(RCU_SCHED, rcu_read_lock_sched(), rcu_read_unlock_sched())
+ 
+-static void hardirq_exit(int *_)
+-{
+-	HARDIRQ_EXIT();
+-}
+-
+-#define HARDIRQ_CONTEXT(name, ...)					\
+-	int hardirq_guard_##name __guard(hardirq_exit);			\
+-	HARDIRQ_ENTER();
+-
+-#define NOTTHREADED_HARDIRQ_CONTEXT(name, ...)				\
+-	int notthreaded_hardirq_guard_##name __guard(hardirq_exit);	\
+-	local_irq_disable();						\
+-	__irq_enter();							\
+-	WARN_ON(!in_irq());
+-
+-static void softirq_exit(int *_)
+-{
+-	SOFTIRQ_EXIT();
+-}
+-
+-#define SOFTIRQ_CONTEXT(name, ...)				\
+-	int softirq_guard_##name __guard(softirq_exit);		\
+-	SOFTIRQ_ENTER();
+-
+-static void rcu_exit(int *_)
+-{
+-	rcu_read_unlock();
+-}
+-
+-#define RCU_CONTEXT(name, ...)					\
+-	int rcu_guard_##name __guard(rcu_exit);			\
+-	rcu_read_lock();
+-
+-static void rcu_bh_exit(int *_)
+-{
+-	rcu_read_unlock_bh();
+-}
+-
+-#define RCU_BH_CONTEXT(name, ...)				\
+-	int rcu_bh_guard_##name __guard(rcu_bh_exit);		\
+-	rcu_read_lock_bh();
+-
+-static void rcu_sched_exit(int *_)
+-{
+-	rcu_read_unlock_sched();
+-}
+-
+-#define RCU_SCHED_CONTEXT(name, ...)				\
+-	int rcu_sched_guard_##name __guard(rcu_sched_exit);	\
+-	rcu_read_lock_sched();
+-
+-static void raw_spinlock_exit(raw_spinlock_t **lock)
+-{
+-	raw_spin_unlock(*lock);
+-}
+-
+-#define RAW_SPINLOCK_CONTEXT(name, lock)						\
+-	raw_spinlock_t *raw_spinlock_guard_##name __guard(raw_spinlock_exit) = &(lock);	\
+-	raw_spin_lock(&(lock));
+-
+-static void spinlock_exit(spinlock_t **lock)
+-{
+-	spin_unlock(*lock);
+-}
+-
+-#define SPINLOCK_CONTEXT(name, lock)						\
+-	spinlock_t *spinlock_guard_##name __guard(spinlock_exit) = &(lock);	\
+-	spin_lock(&(lock));
+-
+-static void mutex_exit(struct mutex **lock)
+-{
+-	mutex_unlock(*lock);
+-}
+-
+-#define MUTEX_CONTEXT(name, lock)					\
+-	struct mutex *mutex_guard_##name __guard(mutex_exit) = &(lock);	\
+-	mutex_lock(&(lock));
+ 
+ #define GENERATE_2_CONTEXT_TESTCASE(outer, outer_lock, inner, inner_lock)	\
+ 										\
+ static void __maybe_unused inner##_in_##outer(void)				\
+ {										\
+-	outer##_CONTEXT(_, outer_lock);						\
+-	{									\
+-		inner##_CONTEXT(_, inner_lock);					\
+-	}									\
++	/* Relies the reversed clean-up ordering: inner first */		\
++	guard(outer)(outer_lock);						\
++	guard(inner)(inner_lock);						\
+ }
+ 
+ /*
+@@ -2632,21 +2567,21 @@ GENERATE_2_CONTEXT_TESTCASE(SOFTIRQ, , inner, inner_lock)			\
+ GENERATE_2_CONTEXT_TESTCASE(RCU, , inner, inner_lock)				\
+ GENERATE_2_CONTEXT_TESTCASE(RCU_BH, , inner, inner_lock)			\
+ GENERATE_2_CONTEXT_TESTCASE(RCU_SCHED, , inner, inner_lock)			\
+-GENERATE_2_CONTEXT_TESTCASE(RAW_SPINLOCK, raw_lock_A, inner, inner_lock)	\
+-GENERATE_2_CONTEXT_TESTCASE(SPINLOCK, lock_A, inner, inner_lock)		\
+-GENERATE_2_CONTEXT_TESTCASE(MUTEX, mutex_A, inner, inner_lock)
++GENERATE_2_CONTEXT_TESTCASE(raw_spinlock, &raw_lock_A, inner, inner_lock)	\
++GENERATE_2_CONTEXT_TESTCASE(spinlock, &lock_A, inner, inner_lock)		\
++GENERATE_2_CONTEXT_TESTCASE(mutex, &mutex_A, inner, inner_lock)
+ 
+ GENERATE_2_CONTEXT_TESTCASE_FOR_ALL_OUTER(RCU, )
+-GENERATE_2_CONTEXT_TESTCASE_FOR_ALL_OUTER(RAW_SPINLOCK, raw_lock_B)
+-GENERATE_2_CONTEXT_TESTCASE_FOR_ALL_OUTER(SPINLOCK, lock_B)
+-GENERATE_2_CONTEXT_TESTCASE_FOR_ALL_OUTER(MUTEX, mutex_B)
++GENERATE_2_CONTEXT_TESTCASE_FOR_ALL_OUTER(raw_spinlock, &raw_lock_B)
++GENERATE_2_CONTEXT_TESTCASE_FOR_ALL_OUTER(spinlock, &lock_B)
++GENERATE_2_CONTEXT_TESTCASE_FOR_ALL_OUTER(mutex, &mutex_B)
+ 
+ /* the outer context allows all kinds of preemption */
+ #define DO_CONTEXT_TESTCASE_OUTER_PREEMPTIBLE(outer)			\
+ 	dotest(RCU_in_##outer, SUCCESS, LOCKTYPE_RWLOCK);		\
+-	dotest(RAW_SPINLOCK_in_##outer, SUCCESS, LOCKTYPE_SPIN);	\
+-	dotest(SPINLOCK_in_##outer, SUCCESS, LOCKTYPE_SPIN);		\
+-	dotest(MUTEX_in_##outer, SUCCESS, LOCKTYPE_MUTEX);		\
++	dotest(raw_spinlock_in_##outer, SUCCESS, LOCKTYPE_SPIN);	\
++	dotest(spinlock_in_##outer, SUCCESS, LOCKTYPE_SPIN);		\
++	dotest(mutex_in_##outer, SUCCESS, LOCKTYPE_MUTEX);		\
+ 
+ /*
+  * the outer context only allows the preemption introduced by spinlock_t (which
+@@ -2654,16 +2589,16 @@ GENERATE_2_CONTEXT_TESTCASE_FOR_ALL_OUTER(MUTEX, mutex_B)
+  */
+ #define DO_CONTEXT_TESTCASE_OUTER_LIMITED_PREEMPTIBLE(outer)		\
+ 	dotest(RCU_in_##outer, SUCCESS, LOCKTYPE_RWLOCK);		\
+-	dotest(RAW_SPINLOCK_in_##outer, SUCCESS, LOCKTYPE_SPIN);	\
+-	dotest(SPINLOCK_in_##outer, SUCCESS, LOCKTYPE_SPIN);		\
+-	dotest(MUTEX_in_##outer, FAILURE, LOCKTYPE_MUTEX);		\
++	dotest(raw_spinlock_in_##outer, SUCCESS, LOCKTYPE_SPIN);	\
++	dotest(spinlock_in_##outer, SUCCESS, LOCKTYPE_SPIN);		\
++	dotest(mutex_in_##outer, FAILURE, LOCKTYPE_MUTEX);		\
+ 
+ /* the outer doesn't allows any kind of preemption */
+ #define DO_CONTEXT_TESTCASE_OUTER_NOT_PREEMPTIBLE(outer)			\
+ 	dotest(RCU_in_##outer, SUCCESS, LOCKTYPE_RWLOCK);		\
+-	dotest(RAW_SPINLOCK_in_##outer, SUCCESS, LOCKTYPE_SPIN);	\
+-	dotest(SPINLOCK_in_##outer, FAILURE, LOCKTYPE_SPIN);		\
+-	dotest(MUTEX_in_##outer, FAILURE, LOCKTYPE_MUTEX);		\
++	dotest(raw_spinlock_in_##outer, SUCCESS, LOCKTYPE_SPIN);	\
++	dotest(spinlock_in_##outer, FAILURE, LOCKTYPE_SPIN);		\
++	dotest(mutex_in_##outer, FAILURE, LOCKTYPE_MUTEX);		\
+ 
+ static void wait_context_tests(void)
+ {
+@@ -2697,15 +2632,15 @@ static void wait_context_tests(void)
+ 	pr_cont("\n");
+ 
+ 	print_testname("in RAW_SPINLOCK context");
+-	DO_CONTEXT_TESTCASE_OUTER_NOT_PREEMPTIBLE(RAW_SPINLOCK);
++	DO_CONTEXT_TESTCASE_OUTER_NOT_PREEMPTIBLE(raw_spinlock);
+ 	pr_cont("\n");
+ 
+ 	print_testname("in SPINLOCK context");
+-	DO_CONTEXT_TESTCASE_OUTER_LIMITED_PREEMPTIBLE(SPINLOCK);
++	DO_CONTEXT_TESTCASE_OUTER_LIMITED_PREEMPTIBLE(spinlock);
+ 	pr_cont("\n");
+ 
+ 	print_testname("in MUTEX context");
+-	DO_CONTEXT_TESTCASE_OUTER_PREEMPTIBLE(MUTEX);
++	DO_CONTEXT_TESTCASE_OUTER_PREEMPTIBLE(mutex);
+ 	pr_cont("\n");
+ }
  
