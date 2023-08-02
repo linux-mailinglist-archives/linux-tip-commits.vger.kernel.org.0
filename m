@@ -2,45 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30EA376DA96
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Aug 2023 00:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBB9276DA9D
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Aug 2023 00:20:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233972AbjHBWUT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 2 Aug 2023 18:20:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60332 "EHLO
+        id S233895AbjHBWUg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 2 Aug 2023 18:20:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233057AbjHBWTi (ORCPT
+        with ESMTP id S233920AbjHBWT4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 2 Aug 2023 18:19:38 -0400
+        Wed, 2 Aug 2023 18:19:56 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5398C2D5A;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 974892D5B;
         Wed,  2 Aug 2023 15:19:36 -0700 (PDT)
-Date:   Wed, 02 Aug 2023 22:19:33 -0000
+Date:   Wed, 02 Aug 2023 22:19:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691014773;
+        s=2020; t=1691014775;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=hBcLLF0FiiDy+ONWtVZrfYECMSeeB3e9Bvpz9aU3qoY=;
-        b=dICfo/PB5Cv6PpjcgJXq96LguKtDh4noWLULOoqXVrpkY4pDhM/OWcw3lsG6yJUQzq3IFm
-        o7FM0IgBSoQre7PRJAqulIKT+TaGgWy4TtHH6OItvc+a3eFeZJ5X9S2v1HtZV0SXJ8hHqL
-        N4Z5nQJOyk9aPNoFEJVuyo+4hRtwHqW06YV+mIlX2qBPtbKMTowmIBUJRjap6KJ3ec08aT
-        vKwJSLrcucQU4x8X/+iQ1ZnFbiC0AMY97JtvEVlDKvapEkz8XtgkeuLfnPkB32t17KZqy+
-        1gv0QA1NfySrWcui7j5qBZraCKF++FjCb+9gzZkarzmEte7fUKEY1CZjEwJMPg==
+        bh=HX+zZlSJXtYwHjFRCE6UapYLXN+0IjpUzEslXW67SCA=;
+        b=wPtWztkoRJgoua6TROKATzuD2g/k4iVO9VhxWuK3TBfmWpN8lyOvYbFx/d6xndEtLCyW6a
+        m+8kJd3I7syLqvNSzpshDOP5dVLmusZ+zdhOxzr80pz56gh7k0yC5HZAHgo+x+rbOAR8Cn
+        H6IOoidk7SIrZntbR5U1+kwSGLkksqjaGk6nDtmnPFqQaXN2z51xG92/CRdZBafbjwfUpd
+        cYP/i5aZn8YmzeTbvHWDDLwstnLXL0uncNuhgAJ7kflrCfqodb7n2NITpXMOddqaYm1QHe
+        HaCH5gqExeGChB0bB92PBR2ilJ7pO6+7QS1Yz4e3qdMHf0NOjFaoIkq6Gl+RjA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691014773;
+        s=2020e; t=1691014775;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=hBcLLF0FiiDy+ONWtVZrfYECMSeeB3e9Bvpz9aU3qoY=;
-        b=90uLXHTcGKtAgAfUe9eHUIn1F86aRfEeiKvf/c9SZqO9ARpZz1DhiZ4/GyM3Hv52knV0Ir
-        3m9+G4ui6gY2caDw==
+        bh=HX+zZlSJXtYwHjFRCE6UapYLXN+0IjpUzEslXW67SCA=;
+        b=m619mHGWqrRbMIC8hw19IhuldqFnMOhgVAZ8HbnEeY9/CM45OYPpzIvT965f3Uk5UbcSTP
+        B/Do2/GwvTwdFwBQ==
 From:   "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/shstk] x86/shstk: Handle signals for shadow stack
-Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
+Subject: [tip: x86/shstk] x86/shstk: Handle thread shadow stack
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
         Rick Edgecombe <rick.p.edgecombe@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
@@ -50,7 +51,7 @@ Cc:     "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
         John Allen <john.allen@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169101477307.28540.14783580206934111696.tip-bot2@tip-bot2>
+Message-ID: <169101477453.28540.9769875672491404968.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,46 +68,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/shstk branch of tip:
 
-Commit-ID:     05e36022c0543ba55a3de55af455b00cb3eb4fcc
-Gitweb:        https://git.kernel.org/tip/05e36022c0543ba55a3de55af455b00cb3eb4fcc
+Commit-ID:     b2926a36b97a4f8daf162b6dc79b519c2b5a8b94
+Gitweb:        https://git.kernel.org/tip/b2926a36b97a4f8daf162b6dc79b519c2b5a8b94
 Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
-AuthorDate:    Mon, 12 Jun 2023 17:10:57 -07:00
+AuthorDate:    Mon, 12 Jun 2023 17:10:55 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Wed, 02 Aug 2023 15:01:50 -07:00
 
-x86/shstk: Handle signals for shadow stack
+x86/shstk: Handle thread shadow stack
 
-When a signal is handled, the context is pushed to the stack before
-handling it. For shadow stacks, since the shadow stack only tracks return
-addresses, there isn't any state that needs to be pushed. However, there
-are still a few things that need to be done. These things are visible to
-userspace and which will be kernel ABI for shadow stacks.
+When a process is duplicated, but the child shares the address space with
+the parent, there is potential for the threads sharing a single stack to
+cause conflicts for each other. In the normal non-CET case this is handled
+in two ways.
 
-One is to make sure the restorer address is written to shadow stack, since
-the signal handler (if not changing ucontext) returns to the restorer, and
-the restorer calls sigreturn. So add the restorer on the shadow stack
-before handling the signal, so there is not a conflict when the signal
-handler returns to the restorer.
+With regular CLONE_VM a new stack is provided by userspace such that the
+parent and child have different stacks.
 
-The other thing to do is to place some type of checkable token on the
-thread's shadow stack before handling the signal and check it during
-sigreturn. This is an extra layer of protection to hamper attackers
-calling sigreturn manually as in SROP-like attacks.
+For vfork, the parent is suspended until the child exits. So as long as
+the child doesn't return from the vfork()/CLONE_VFORK calling function and
+sticks to a limited set of operations, the parent and child can share the
+same stack.
 
-For this token the shadow stack data format defined earlier can be used.
-Have the data pushed be the previous SSP. In the future the sigreturn
-might want to return back to a different stack. Storing the SSP (instead
-of a restore offset or something) allows for future functionality that
-may want to restore to a different stack.
+For shadow stack, these scenarios present similar sharing problems. For the
+CLONE_VM case, the child and the parent must have separate shadow stacks.
+Instead of changing clone to take a shadow stack, have the kernel just
+allocate one and switch to it.
 
-So, when handling a signal push
- - the SSP pointing in the shadow stack data format
- - the restorer address below the restore token.
+Use stack_size passed from clone3() syscall for thread shadow stack size. A
+compat-mode thread shadow stack size is further reduced to 1/4. This
+allows more threads to run in a 32-bit address space. The clone() does not
+pass stack_size, which was added to clone3(). In that case, use
+RLIMIT_STACK size and cap to 4 GB.
 
-In sigreturn, verify SSP is stored in the data format and pop the shadow
-stack.
+For shadow stack enabled vfork(), the parent and child can share the same
+shadow stack, like they can share a normal stack. Since the parent is
+suspended until the child terminates, the child will not interfere with
+the parent while executing as long as it doesn't return from the vfork()
+and overwrite up the shadow stack. The child can safely overwrite down
+the shadow stack, as the parent can just overwrite this later. So CET does
+not add any additional limitations for vfork().
+
+Free the shadow stack on thread exit by doing it in mm_release(). Skip
+this when exiting a vfork() child since the stack is shared in the
+parent.
+
+During this operation, the shadow stack pointer of the new thread needs
+to be updated to point to the newly allocated shadow stack. Since the
+ability to do this is confined to the FPU subsystem, change
+fpu_clone() to take the new shadow stack pointer, and update it
+internally inside the FPU subsystem. This part was suggested by Thomas
+Gleixner.
 
 Co-developed-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Yu-cheng Yu <yu-cheng.yu@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -116,183 +131,242 @@ Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Tested-by: Pengfei Xu <pengfei.xu@intel.com>
 Tested-by: John Allen <john.allen@amd.com>
 Tested-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/all/20230613001108.3040476-32-rick.p.edgecombe%40intel.com
+Link: https://lore.kernel.org/all/20230613001108.3040476-30-rick.p.edgecombe%40intel.com
 ---
- arch/x86/include/asm/shstk.h |  5 ++-
- arch/x86/kernel/shstk.c      | 95 +++++++++++++++++++++++++++++++++++-
- arch/x86/kernel/signal.c     |  1 +-
- arch/x86/kernel/signal_64.c  |  6 ++-
- 4 files changed, 107 insertions(+)
+ arch/x86/include/asm/fpu/sched.h   |  3 +-
+ arch/x86/include/asm/mmu_context.h |  2 +-
+ arch/x86/include/asm/shstk.h       |  5 ++++-
+ arch/x86/kernel/fpu/core.c         | 36 ++++++++++++++++++++++++-
+ arch/x86/kernel/process.c          | 21 ++++++++++++++-
+ arch/x86/kernel/shstk.c            | 41 +++++++++++++++++++++++++++--
+ 6 files changed, 103 insertions(+), 5 deletions(-)
 
+diff --git a/arch/x86/include/asm/fpu/sched.h b/arch/x86/include/asm/fpu/sched.h
+index 78fcde7..ca6e5e5 100644
+--- a/arch/x86/include/asm/fpu/sched.h
++++ b/arch/x86/include/asm/fpu/sched.h
+@@ -11,7 +11,8 @@
+ 
+ extern void save_fpregs_to_fpstate(struct fpu *fpu);
+ extern void fpu__drop(struct fpu *fpu);
+-extern int  fpu_clone(struct task_struct *dst, unsigned long clone_flags, bool minimal);
++extern int  fpu_clone(struct task_struct *dst, unsigned long clone_flags, bool minimal,
++		      unsigned long shstk_addr);
+ extern void fpu_flush_thread(void);
+ 
+ /*
+diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
+index 1d29dc7..416901d 100644
+--- a/arch/x86/include/asm/mmu_context.h
++++ b/arch/x86/include/asm/mmu_context.h
+@@ -186,6 +186,8 @@ do {						\
+ #else
+ #define deactivate_mm(tsk, mm)			\
+ do {						\
++	if (!tsk->vfork_done)			\
++		shstk_free(tsk);		\
+ 	load_gs_index(0);			\
+ 	loadsegment(fs, 0);			\
+ } while (0)
 diff --git a/arch/x86/include/asm/shstk.h b/arch/x86/include/asm/shstk.h
-index d4a5c7b..ecb23a8 100644
+index 2b1f7c9..d4a5c7b 100644
 --- a/arch/x86/include/asm/shstk.h
 +++ b/arch/x86/include/asm/shstk.h
-@@ -6,6 +6,7 @@
- #include <linux/types.h>
+@@ -15,11 +15,16 @@ struct thread_shstk {
  
- struct task_struct;
-+struct ksignal;
- 
- #ifdef CONFIG_X86_USER_SHADOW_STACK
- struct thread_shstk {
-@@ -18,6 +19,8 @@ void reset_thread_features(void);
- unsigned long shstk_alloc_thread_stack(struct task_struct *p, unsigned long clone_flags,
- 				       unsigned long stack_size);
+ long shstk_prctl(struct task_struct *task, int option, unsigned long features);
+ void reset_thread_features(void);
++unsigned long shstk_alloc_thread_stack(struct task_struct *p, unsigned long clone_flags,
++				       unsigned long stack_size);
  void shstk_free(struct task_struct *p);
-+int setup_signal_shadow_stack(struct ksignal *ksig);
-+int restore_signal_shadow_stack(void);
  #else
  static inline long shstk_prctl(struct task_struct *task, int option,
  			       unsigned long arg2) { return -EINVAL; }
-@@ -26,6 +29,8 @@ static inline unsigned long shstk_alloc_thread_stack(struct task_struct *p,
- 						     unsigned long clone_flags,
- 						     unsigned long stack_size) { return 0; }
+ static inline void reset_thread_features(void) {}
++static inline unsigned long shstk_alloc_thread_stack(struct task_struct *p,
++						     unsigned long clone_flags,
++						     unsigned long stack_size) { return 0; }
  static inline void shstk_free(struct task_struct *p) {}
-+static inline int setup_signal_shadow_stack(struct ksignal *ksig) { return 0; }
-+static inline int restore_signal_shadow_stack(void) { return 0; }
  #endif /* CONFIG_X86_USER_SHADOW_STACK */
  
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index e22928c..f02e8ea 100644
---- a/arch/x86/kernel/shstk.c
-+++ b/arch/x86/kernel/shstk.c
-@@ -232,6 +232,101 @@ static int get_shstk_data(unsigned long *data, unsigned long __user *addr)
- 	return 0;
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 375852c..e03b6b1 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -552,8 +552,36 @@ static inline void fpu_inherit_perms(struct fpu *dst_fpu)
+ 	}
  }
  
-+static int shstk_push_sigframe(unsigned long *ssp)
++/* A passed ssp of zero will not cause any update */
++static int update_fpu_shstk(struct task_struct *dst, unsigned long ssp)
 +{
-+	unsigned long target_ssp = *ssp;
++#ifdef CONFIG_X86_USER_SHADOW_STACK
++	struct cet_user_state *xstate;
 +
-+	/* Token must be aligned */
-+	if (!IS_ALIGNED(target_ssp, 8))
-+		return -EINVAL;
-+
-+	*ssp -= SS_FRAME_SIZE;
-+	if (put_shstk_data((void *__user)*ssp, target_ssp))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int shstk_pop_sigframe(unsigned long *ssp)
-+{
-+	unsigned long token_addr;
-+	int err;
-+
-+	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
-+	if (unlikely(err))
-+		return err;
-+
-+	/* Restore SSP aligned? */
-+	if (unlikely(!IS_ALIGNED(token_addr, 8)))
-+		return -EINVAL;
-+
-+	/* SSP in userspace? */
-+	if (unlikely(token_addr >= TASK_SIZE_MAX))
-+		return -EINVAL;
-+
-+	*ssp = token_addr;
-+
-+	return 0;
-+}
-+
-+int setup_signal_shadow_stack(struct ksignal *ksig)
-+{
-+	void __user *restorer = ksig->ka.sa.sa_restorer;
-+	unsigned long ssp;
-+	int err;
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_USER_SHSTK) ||
-+	    !features_enabled(ARCH_SHSTK_SHSTK))
++	/* If ssp update is not needed. */
++	if (!ssp)
 +		return 0;
 +
-+	if (!restorer)
-+		return -EINVAL;
++	xstate = get_xsave_addr(&dst->thread.fpu.fpstate->regs.xsave,
++				XFEATURE_CET_USER);
 +
-+	ssp = get_user_shstk_addr();
-+	if (unlikely(!ssp))
-+		return -EINVAL;
++	/*
++	 * If there is a non-zero ssp, then 'dst' must be configured with a shadow
++	 * stack and the fpu state should be up to date since it was just copied
++	 * from the parent in fpu_clone(). So there must be a valid non-init CET
++	 * state location in the buffer.
++	 */
++	if (WARN_ON_ONCE(!xstate))
++		return 1;
 +
-+	err = shstk_push_sigframe(&ssp);
-+	if (unlikely(err))
-+		return err;
-+
-+	/* Push restorer address */
-+	ssp -= SS_FRAME_SIZE;
-+	err = write_user_shstk_64((u64 __user *)ssp, (u64)restorer);
-+	if (unlikely(err))
-+		return -EFAULT;
-+
-+	fpregs_lock_and_load();
-+	wrmsrl(MSR_IA32_PL3_SSP, ssp);
-+	fpregs_unlock();
-+
++	xstate->user_ssp = (u64)ssp;
++#endif
 +	return 0;
 +}
 +
-+int restore_signal_shadow_stack(void)
-+{
-+	unsigned long ssp;
-+	int err;
+ /* Clone current's FPU state on fork */
+-int fpu_clone(struct task_struct *dst, unsigned long clone_flags, bool minimal)
++int fpu_clone(struct task_struct *dst, unsigned long clone_flags, bool minimal,
++	      unsigned long ssp)
+ {
+ 	struct fpu *src_fpu = &current->thread.fpu;
+ 	struct fpu *dst_fpu = &dst->thread.fpu;
+@@ -613,6 +641,12 @@ int fpu_clone(struct task_struct *dst, unsigned long clone_flags, bool minimal)
+ 	if (use_xsave())
+ 		dst_fpu->fpstate->regs.xsave.header.xfeatures &= ~XFEATURE_MASK_PASID;
+ 
++	/*
++	 * Update shadow stack pointer, in case it changed during clone.
++	 */
++	if (update_fpu_shstk(dst, ssp))
++		return 1;
 +
-+	if (!cpu_feature_enabled(X86_FEATURE_USER_SHSTK) ||
-+	    !features_enabled(ARCH_SHSTK_SHSTK))
+ 	trace_x86_fpu_copy_src(src_fpu);
+ 	trace_x86_fpu_copy_dst(dst_fpu);
+ 
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index ff9b80a..cc7a642 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -50,6 +50,7 @@
+ #include <asm/unwind.h>
+ #include <asm/tdx.h>
+ #include <asm/mmu_context.h>
++#include <asm/shstk.h>
+ 
+ #include "process.h"
+ 
+@@ -121,6 +122,7 @@ void exit_thread(struct task_struct *tsk)
+ 
+ 	free_vm86(t);
+ 
++	shstk_free(tsk);
+ 	fpu__drop(fpu);
+ }
+ 
+@@ -142,6 +144,7 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	struct inactive_task_frame *frame;
+ 	struct fork_frame *fork_frame;
+ 	struct pt_regs *childregs;
++	unsigned long new_ssp;
+ 	int ret = 0;
+ 
+ 	childregs = task_pt_regs(p);
+@@ -179,7 +182,16 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	frame->flags = X86_EFLAGS_FIXED;
+ #endif
+ 
+-	fpu_clone(p, clone_flags, args->fn);
++	/*
++	 * Allocate a new shadow stack for thread if needed. If shadow stack,
++	 * is disabled, new_ssp will remain 0, and fpu_clone() will know not to
++	 * update it.
++	 */
++	new_ssp = shstk_alloc_thread_stack(p, clone_flags, args->stack_size);
++	if (IS_ERR_VALUE(new_ssp))
++		return PTR_ERR((void *)new_ssp);
++
++	fpu_clone(p, clone_flags, args->fn, new_ssp);
+ 
+ 	/* Kernel thread ? */
+ 	if (unlikely(p->flags & PF_KTHREAD)) {
+@@ -225,6 +237,13 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	if (!ret && unlikely(test_tsk_thread_flag(current, TIF_IO_BITMAP)))
+ 		io_bitmap_share(p);
+ 
++	/*
++	 * If copy_thread() if failing, don't leak the shadow stack possibly
++	 * allocated in shstk_alloc_thread_stack() above.
++	 */
++	if (ret)
++		shstk_free(p);
++
+ 	return ret;
+ }
+ 
+diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
+index 3cb8522..bd9cdc3 100644
+--- a/arch/x86/kernel/shstk.c
++++ b/arch/x86/kernel/shstk.c
+@@ -47,7 +47,7 @@ static unsigned long alloc_shstk(unsigned long size)
+ 	unsigned long addr, unused;
+ 
+ 	mmap_write_lock(mm);
+-	addr = do_mmap(NULL, addr, size, PROT_READ, flags,
++	addr = do_mmap(NULL, 0, size, PROT_READ, flags,
+ 		       VM_SHADOW_STACK | VM_WRITE, 0, &unused, NULL);
+ 
+ 	mmap_write_unlock(mm);
+@@ -126,6 +126,37 @@ void reset_thread_features(void)
+ 	current->thread.features_locked = 0;
+ }
+ 
++unsigned long shstk_alloc_thread_stack(struct task_struct *tsk, unsigned long clone_flags,
++				       unsigned long stack_size)
++{
++	struct thread_shstk *shstk = &tsk->thread.shstk;
++	unsigned long addr, size;
++
++	/*
++	 * If shadow stack is not enabled on the new thread, skip any
++	 * switch to a new shadow stack.
++	 */
++	if (!features_enabled(ARCH_SHSTK_SHSTK))
 +		return 0;
 +
-+	ssp = get_user_shstk_addr();
-+	if (unlikely(!ssp))
-+		return -EINVAL;
++	/*
++	 * For CLONE_VM, except vfork, the child needs a separate shadow
++	 * stack.
++	 */
++	if ((clone_flags & (CLONE_VFORK | CLONE_VM)) != CLONE_VM)
++		return 0;
 +
-+	err = shstk_pop_sigframe(&ssp);
-+	if (unlikely(err))
-+		return err;
++	size = adjust_shstk_size(stack_size);
++	addr = alloc_shstk(size);
++	if (IS_ERR_VALUE(addr))
++		return addr;
 +
-+	fpregs_lock_and_load();
-+	wrmsrl(MSR_IA32_PL3_SSP, ssp);
-+	fpregs_unlock();
++	shstk->base = addr;
++	shstk->size = size;
 +
-+	return 0;
++	return addr + size;
 +}
 +
  void shstk_free(struct task_struct *tsk)
  {
  	struct thread_shstk *shstk = &tsk->thread.shstk;
-diff --git a/arch/x86/kernel/signal.c b/arch/x86/kernel/signal.c
-index cfeec3e..65fe209 100644
---- a/arch/x86/kernel/signal.c
-+++ b/arch/x86/kernel/signal.c
-@@ -40,6 +40,7 @@
- #include <asm/syscall.h>
- #include <asm/sigframe.h>
- #include <asm/signal.h>
-+#include <asm/shstk.h>
+@@ -134,7 +165,13 @@ void shstk_free(struct task_struct *tsk)
+ 	    !features_enabled(ARCH_SHSTK_SHSTK))
+ 		return;
  
- static inline int is_ia32_compat_frame(struct ksignal *ksig)
- {
-diff --git a/arch/x86/kernel/signal_64.c b/arch/x86/kernel/signal_64.c
-index 0e808c7..cacf2ed 100644
---- a/arch/x86/kernel/signal_64.c
-+++ b/arch/x86/kernel/signal_64.c
-@@ -175,6 +175,9 @@ int x64_setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs)
- 	frame = get_sigframe(ksig, regs, sizeof(struct rt_sigframe), &fp);
- 	uc_flags = frame_uc_flags(regs);
+-	if (!tsk->mm)
++	/*
++	 * When fork() with CLONE_VM fails, the child (tsk) already has a
++	 * shadow stack allocated, and exit_thread() calls this function to
++	 * free it.  In this case the parent (current) and the child share
++	 * the same mm struct.
++	 */
++	if (!tsk->mm || tsk->mm != current->mm)
+ 		return;
  
-+	if (setup_signal_shadow_stack(ksig))
-+		return -EFAULT;
-+
- 	if (!user_access_begin(frame, sizeof(*frame)))
- 		return -EFAULT;
- 
-@@ -260,6 +263,9 @@ SYSCALL_DEFINE0(rt_sigreturn)
- 	if (!restore_sigcontext(regs, &frame->uc.uc_mcontext, uc_flags))
- 		goto badframe;
- 
-+	if (restore_signal_shadow_stack())
-+		goto badframe;
-+
- 	if (restore_altstack(&frame->uc.uc_stack))
- 		goto badframe;
- 
+ 	unmap_shadow_stack(shstk->base, shstk->size);
