@@ -2,107 +2,225 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52C52769AE1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 Jul 2023 17:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A080676D018
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Aug 2023 16:33:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231426AbjGaPgA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 31 Jul 2023 11:36:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48560 "EHLO
+        id S233801AbjHBOdW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 2 Aug 2023 10:33:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230171AbjGaPf7 (ORCPT
+        with ESMTP id S232489AbjHBOdU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 31 Jul 2023 11:35:59 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5ACC126;
-        Mon, 31 Jul 2023 08:35:58 -0700 (PDT)
-Date:   Mon, 31 Jul 2023 15:35:56 -0000
+        Wed, 2 Aug 2023 10:33:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6798E19B0;
+        Wed,  2 Aug 2023 07:33:18 -0700 (PDT)
+Date:   Wed, 02 Aug 2023 14:33:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1690817757;
+        s=2020; t=1690986796;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lXQ2UlHztnSm7+VktGweD1ERC2/wwrBIcTkCarc5xAU=;
-        b=s6zw5x4dkby2sE8Od+vaTzPkZMiBkUxKhohNUIZOa7Qg4x08pRw8lpCIPnrpDYfD/XqPVN
-        l6R8EwOZg/XV7r7JkNlobCvohEHmRFw6rGKxrgYScLVrP15smYySsdi2e8Lr7hPkrgoqCm
-        BSstqyEqf2UgCIrq/UV1XyCU7FE/dZ5adKkG8cRNzoVGUqiJoH9BboLiVolIl+PA8TYSwm
-        UeyrFtusegoLW+Bsu40giK9uAp2RjGSzO3hHvSFJRmY10W6qOyQp0ucYzH8k9aJnPqhHqw
-        lMQ7Gt9CxYrIRsDsxwTDp9z9KIivVKV6eH5tpKwSBg/yTjFQqdnmLZxexKgyNw==
+        bh=Pah/arar9NtcS7UbPidywH94kx8HEMnQMVyR6NuD98w=;
+        b=hfZeeLXWDdBK/tWgk3Ft359Z3bpUifeYdtRXplcHkurCMqxHGRrERvAoDVkmQ9vxA87scb
+        0yr8gORFLfwjTeXcaGZrEfRLFagzz66XVVXWEVZPuRdnnBBsN6irL5gSG+fPYcWHMUAxyK
+        PBdmWrKPhRekucd3zr61f1p0T/Z5o9fZK8RIodnJaRLoBYtlueHGiR+PQ99BsP/cpNl8Hj
+        qCew/wVzGifg1z86hNAGe7AQN244CJarq2t79HOY1p07M3bX1iOKIR9+4hbjC1i7R/QRHI
+        AEvRbOrhmBEJqlQ9yvHG44NexwYhW8n5DPtBxR2OinqLXbf/YStFhsQTrk5Z+w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1690817757;
+        s=2020e; t=1690986796;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lXQ2UlHztnSm7+VktGweD1ERC2/wwrBIcTkCarc5xAU=;
-        b=Txh65fJ0g+AhCBJiHTvb5jYL7Kn9pzOhRKQt1+5vEZ3Xlfw2hveeTw/Q8e7ubJ5EEJLg8W
-        YZx5J3ONgKfryfBg==
-From:   "tip-bot2 for Zhang Rui" <tip-bot2@linutronix.de>
+        bh=Pah/arar9NtcS7UbPidywH94kx8HEMnQMVyR6NuD98w=;
+        b=CVn1n/xyCGLuxybIe8G+5w0u3iYNsRijvNrYrvHgsUxRqBjoWhD+zZn4n1B7QNw4ZvIfms
+        XMODNHzBNYPh0ABQ==
+From:   "tip-bot2 for Petr Pavlu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] cpu/SMT: Fix cpu_smt_possible() comment
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>, x86@kernel.org,
+Subject: [tip: x86/core] x86/retpoline,kprobes: Skip optprobe check for
+ indirect jumps with retpolines and IBT
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Petr Pavlu <petr.pavlu@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230728155313.44170-1-rui.zhang@intel.com>
-References: <20230728155313.44170-1-rui.zhang@intel.com>
+In-Reply-To: <20230711091952.27944-3-petr.pavlu@suse.com>
+References: <20230711091952.27944-3-petr.pavlu@suse.com>
 MIME-Version: 1.0
-Message-ID: <169081775691.28540.11108672281544540952.tip-bot2@tip-bot2>
+Message-ID: <169098679555.28540.9078901836593234321.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     52b38b7ad589c89a8c69272497bed20034f8e322
-Gitweb:        https://git.kernel.org/tip/52b38b7ad589c89a8c69272497bed20034f8e322
-Author:        Zhang Rui <rui.zhang@intel.com>
-AuthorDate:    Fri, 28 Jul 2023 23:53:13 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 31 Jul 2023 17:32:44 +02:00
+Commit-ID:     029239c5b0e6484e4443be90e5664fd0bf0f066b
+Gitweb:        https://git.kernel.org/tip/029239c5b0e6484e4443be90e5664fd0bf0f066b
+Author:        Petr Pavlu <petr.pavlu@suse.com>
+AuthorDate:    Tue, 11 Jul 2023 11:19:52 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 02 Aug 2023 16:27:08 +02:00
 
-cpu/SMT: Fix cpu_smt_possible() comment
+x86/retpoline,kprobes: Skip optprobe check for indirect jumps with retpolines and IBT
 
-Commit e1572f1d08be ("cpu/SMT: create and export cpu_smt_possible()")
-introduces cpu_smt_possible() to represent if SMT is theoretically
-possible. It returns true when SMT is supported and not forcefully
-disabled ('nosmt=force'). But the comment of it says "Returns true if
-SMT is not supported of forcefully (irreversibly) disabled", which is
-wrong. Fix that comment accordingly.
+The kprobes optimization check can_optimize() calls
+insn_is_indirect_jump() to detect indirect jump instructions in
+a target function. If any is found, creating an optprobe is disallowed
+in the function because the jump could be from a jump table and could
+potentially land in the middle of the target optprobe.
 
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/20230728155313.44170-1-rui.zhang@intel.com
+With retpolines, insn_is_indirect_jump() additionally looks for calls to
+indirect thunks which the compiler potentially used to replace original
+jumps. This extra check is however unnecessary because jump tables are
+disabled when the kernel is built with retpolines. The same is currently
+the case with IBT.
 
+Based on this observation, remove the logic to look for calls to
+indirect thunks and skip the check for indirect jumps altogether if the
+kernel is built with retpolines or IBT. Remove subsequently the symbols
+__indirect_thunk_start and __indirect_thunk_end which are no longer
+needed.
+
+Dropping this logic indirectly fixes a problem where the range
+[__indirect_thunk_start, __indirect_thunk_end] wrongly included also the
+return thunk. It caused that machines which used the return thunk as
+a mitigation and didn't have it patched by any alternative ended up not
+being able to use optprobes in any regular function.
+
+Fixes: 0b53c374b9ef ("x86/retpoline: Use -mfunction-return")
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Suggested-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20230711091952.27944-3-petr.pavlu@suse.com
 ---
- kernel/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |  3 +--
+ arch/x86/kernel/kprobes/opt.c        | 40 ++++++++++-----------------
+ arch/x86/kernel/vmlinux.lds.S        |  2 +-
+ tools/perf/util/thread-stack.c       |  4 +---
+ 4 files changed, 17 insertions(+), 32 deletions(-)
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 7e8f1b0..f6811c8 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -676,7 +676,7 @@ static inline bool cpu_smt_allowed(unsigned int cpu)
- 	return !cpumask_test_cpu(cpu, &cpus_booted_once_mask);
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 1a65cf4..db460e6 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -465,9 +465,6 @@ enum ssb_mitigation {
+ 	SPEC_STORE_BYPASS_SECCOMP,
+ };
+ 
+-extern char __indirect_thunk_start[];
+-extern char __indirect_thunk_end[];
+-
+ static __always_inline
+ void alternative_msr_write(unsigned int msr, u64 val, unsigned int feature)
+ {
+diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
+index 57b0037..517821b 100644
+--- a/arch/x86/kernel/kprobes/opt.c
++++ b/arch/x86/kernel/kprobes/opt.c
+@@ -226,7 +226,7 @@ static int copy_optimized_instructions(u8 *dest, u8 *src, u8 *real)
  }
  
--/* Returns true if SMT is not supported of forcefully (irreversibly) disabled */
-+/* Returns true if SMT is supported and not forcefully (irreversibly) disabled */
- bool cpu_smt_possible(void)
+ /* Check whether insn is indirect jump */
+-static int __insn_is_indirect_jump(struct insn *insn)
++static int insn_is_indirect_jump(struct insn *insn)
  {
- 	return cpu_smt_control != CPU_SMT_FORCE_DISABLED &&
+ 	return ((insn->opcode.bytes[0] == 0xff &&
+ 		(X86_MODRM_REG(insn->modrm.value) & 6) == 4) || /* Jump */
+@@ -260,26 +260,6 @@ static int insn_jump_into_range(struct insn *insn, unsigned long start, int len)
+ 	return (start <= target && target <= start + len);
+ }
+ 
+-static int insn_is_indirect_jump(struct insn *insn)
+-{
+-	int ret = __insn_is_indirect_jump(insn);
+-
+-#ifdef CONFIG_RETPOLINE
+-	/*
+-	 * Jump to x86_indirect_thunk_* is treated as an indirect jump.
+-	 * Note that even with CONFIG_RETPOLINE=y, the kernel compiled with
+-	 * older gcc may use indirect jump. So we add this check instead of
+-	 * replace indirect-jump check.
+-	 */
+-	if (!ret)
+-		ret = insn_jump_into_range(insn,
+-				(unsigned long)__indirect_thunk_start,
+-				(unsigned long)__indirect_thunk_end -
+-				(unsigned long)__indirect_thunk_start);
+-#endif
+-	return ret;
+-}
+-
+ /* Decode whole function to ensure any instructions don't jump into target */
+ static int can_optimize(unsigned long paddr)
+ {
+@@ -334,9 +314,21 @@ static int can_optimize(unsigned long paddr)
+ 		/* Recover address */
+ 		insn.kaddr = (void *)addr;
+ 		insn.next_byte = (void *)(addr + insn.length);
+-		/* Check any instructions don't jump into target */
+-		if (insn_is_indirect_jump(&insn) ||
+-		    insn_jump_into_range(&insn, paddr + INT3_INSN_SIZE,
++		/*
++		 * Check any instructions don't jump into target, indirectly or
++		 * directly.
++		 *
++		 * The indirect case is present to handle a code with jump
++		 * tables. When the kernel uses retpolines, the check should in
++		 * theory additionally look for jumps to indirect thunks.
++		 * However, the kernel built with retpolines or IBT has jump
++		 * tables disabled so the check can be skipped altogether.
++		 */
++		if (!IS_ENABLED(CONFIG_RETPOLINE) &&
++		    !IS_ENABLED(CONFIG_X86_KERNEL_IBT) &&
++		    insn_is_indirect_jump(&insn))
++			return 0;
++		if (insn_jump_into_range(&insn, paddr + INT3_INSN_SIZE,
+ 					 DISP32_SIZE))
+ 			return 0;
+ 		addr += insn.length;
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index a4cd04c..dd5b0a6 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -133,9 +133,7 @@ SECTIONS
+ 		KPROBES_TEXT
+ 		SOFTIRQENTRY_TEXT
+ #ifdef CONFIG_RETPOLINE
+-		__indirect_thunk_start = .;
+ 		*(.text..__x86.*)
+-		__indirect_thunk_end = .;
+ #endif
+ 		STATIC_CALL_TEXT
+ 
+diff --git a/tools/perf/util/thread-stack.c b/tools/perf/util/thread-stack.c
+index 374d142..c6a0a27 100644
+--- a/tools/perf/util/thread-stack.c
++++ b/tools/perf/util/thread-stack.c
+@@ -1038,9 +1038,7 @@ static int thread_stack__trace_end(struct thread_stack *ts,
+ 
+ static bool is_x86_retpoline(const char *name)
+ {
+-	const char *p = strstr(name, "__x86_indirect_thunk_");
+-
+-	return p == name || !strcmp(name, "__indirect_thunk_start");
++	return strstr(name, "__x86_indirect_thunk_") == name;
+ }
+ 
+ /*
