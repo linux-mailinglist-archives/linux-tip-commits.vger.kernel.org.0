@@ -2,55 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EB1076EEDE
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Aug 2023 17:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6CDB76F0AB
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Aug 2023 19:31:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237275AbjHCP7W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Aug 2023 11:59:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42114 "EHLO
+        id S233157AbjHCRbj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Aug 2023 13:31:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237276AbjHCP7U (ORCPT
+        with ESMTP id S230408AbjHCRbi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Aug 2023 11:59:20 -0400
+        Thu, 3 Aug 2023 13:31:38 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AAEF211B;
-        Thu,  3 Aug 2023 08:59:18 -0700 (PDT)
-Date:   Thu, 03 Aug 2023 15:59:16 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3019106;
+        Thu,  3 Aug 2023 10:31:36 -0700 (PDT)
+Date:   Thu, 03 Aug 2023 17:31:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691078356;
+        s=2020; t=1691083894;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eTChyiFhvIi4JIl1UodawWAFP422YBkqPUZjcTiWnRQ=;
-        b=mEtG/rtDo/OBInzajt2mngeLe+8/pjFaAOxIo5Zp/N+jKIsm9ZauzMw5Sr0dt+K/m6FiiF
-        z53O1KDp2+TttsDv5MjRnhb3vgUUBmuJh43vEjsOYHTThWOg0tdB1j6lvWwWz8PMDEdnwd
-        e0EscLecnlEdK5Pdx3qCSAMCO5v7a7G8zyx9dZlPnld8zFat5GIsz9k/984v6L62lC0Wxc
-        Gn009ZgiQZW409zGkIcZ3kA8nCNA4l3ea2M74mU/ICEzw0y0+xpalv+uIhp7AqTAWk/WMw
-        mI7YaDWzb7HSqE3T9TcmuLhZSuiXVW9tynnRuyn8GYesVQjYnRAnhHf/U7KJpA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=uFHGqz6Z8BeI8UIbRFTeALT3obNJdgQfXriVoQf/Zxs=;
+        b=bl38m1OTX6EHg0AXRTjfADtZ0Xb0AW/dUyX2l7GhMhE+6QjXVaUxiNacD3q4GajbIfJuFf
+        NHQ2k2QW2vIcVRVoat8y/EKRwdENoRnu6YcQ/g0ZJ/9ERfYQGITFLDHBgFPGVz+sxLdj9i
+        HOu7GirZsTx0MEWN+b9gQTDDh7rpJIe/akLlRFvBNw2e7ZuwcFob6Fgm46HIMdzwvWVGxF
+        fOewjYnlmzfdHiKbBc31rDbzzsWLpaAKyW0QGDqfONY2OoQaAbU6nhM9qd4Iwpav3nFzHN
+        t7dxn4xYEHd6qSGf1MqNkQCaNSgEuwuOwm7uQ8UZmwa4Hb1yBKjkIK1AM/pvrg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691078356;
+        s=2020e; t=1691083894;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eTChyiFhvIi4JIl1UodawWAFP422YBkqPUZjcTiWnRQ=;
-        b=ggXJJUhgVsZBl73vnO/8+g2PFQ/ftKnxSM6z44MyE+hu1Y7OrtEZwRobHYSj9k2prZ1eoZ
-        kJ2wgTVpiujXujCw==
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=uFHGqz6Z8BeI8UIbRFTeALT3obNJdgQfXriVoQf/Zxs=;
+        b=3tGB5Lb07Oug4Ei5W0H2N0R2nVXb+CoYeNZ2SiTyzqmiJHjMzAogAYTjMbecyfxvMC9n9c
+        AQcVCPg43sZNlXBA==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/cpu: Fix amd_check_microcode() declaration
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: x86/mm] x86/mm: Remove "INVPCID single" feature tracking
+Cc:     Jann Horn <jannh@google.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230725121751.2007665-1-arnd@kernel.org>
-References: <20230725121751.2007665-1-arnd@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169107835629.28540.8472266349964382413.tip-bot2@tip-bot2>
+Message-ID: <169108389377.28540.1358170196008758927.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,73 +59,162 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     566ffa3ae9649f7aa1debcf559ee7e26ed4a110f
-Gitweb:        https://git.kernel.org/tip/566ffa3ae9649f7aa1debcf559ee7e26ed4a110f
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Tue, 25 Jul 2023 14:17:39 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 31 Jul 2023 11:03:16 +02:00
+Commit-ID:     8bf96500d546fdd9fa36dc843b9e16a1c8603fc7
+Gitweb:        https://git.kernel.org/tip/8bf96500d546fdd9fa36dc843b9e16a1c8603fc7
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Tue, 18 Jul 2023 10:06:30 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 03 Aug 2023 10:27:17 -07:00
 
-x86/cpu: Fix amd_check_microcode() declaration
+x86/mm: Remove "INVPCID single" feature tracking
 
-The newly added amd_check_microcode() function has two conflicting definitions
-if CONFIG_CPU_SUP_AMD is enabled and CONFIG_MICROCODE_AMD is disabled. Since
-the header with the stub definition is not included in cpu/amd.c, this only
-causes a -Wmissing-prototype warning with W=1:
+Changes from v1:
+ * Move both 'cpu_tlbstate' references down in the function.  Neither
+   is used in the !PTI path.  The invlpg is both a fully serializing
+   instruction and compiler barrier.  The compiler can't optimize
+   these references, so do it the hard way instead.
 
-  arch/x86/kernel/cpu/amd.c:1289:6: error: no previous prototype for 'amd_check_microcode' [-Werror=missing-prototypes]
+--
 
-Adding the missing #include shows the other problem:
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-  arch/x86/kernel/cpu/amd.c:1290:6: error: redefinition of 'amd_check_microcode'
-  arch/x86/include/asm/microcode_amd.h:58:20: note: previous definition of 'amd_check_microcode' with type 'void(void)'
+tl;dr: Replace a synthetic X86_FEATURE with a hardware X86_FEATURE
+       and check of existing per-cpu state.
 
-Move the declaration into a more appropriate header that is already
-included, with the #ifdef check changed to match the definition's.
+== Background ==
 
-Fixes: 522b1d69219d8 ("x86/cpu/amd: Add a Zenbleed fix")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230725121751.2007665-1-arnd@kernel.org
+There are three features in play here:
+ 1. Good old Page Table Isolation (PTI)
+ 2. Process Context IDentifiers (PCIDs) which allow entries from
+    multiple address spaces to be in the TLB at once.
+ 3. Support for the "Invalidate PCID" (INVPCID) instruction,
+    specifically the "individual address" mode (aka. mode 0).
+
+When all *three* of these are in place, INVPCID can and should be used
+to flush out individual addresses in the PTI user address space.
+
+But there's a wrinkle or two: First, this INVPCID mode is dependent on
+CR4.PCIDE.  Even if X86_FEATURE_INVPCID==1, the instruction may #GP
+without setting up CR4.  Second, TLB flushing is done very early, even
+before CR4 is fully set up.  That means even if PTI, PCID and INVPCID
+are supported, there is *still* a window where INVPCID can #GP.
+
+== Problem ==
+
+The current code seems to work, but mostly by chance and there are a
+bunch of ways it can go wrong.  It's also somewhat hard to follow
+since X86_FEATURE_INVPCID_SINGLE is set far away from its lone user.
+
+== Solution ==
+
+Make "INVPCID single" more robust and easier to follow by placing all
+the logic in one place.  Remove X86_FEATURE_INVPCID_SINGLE.
+
+Make two explicit checks before using INVPCID:
+ 1. Check that the system supports INVPCID itself (boot_cpu_has())
+ 2. Then check the CR4.PCIDE shadow to ensures that the CPU
+    can safely use INVPCID for individual address invalidation.
+
+The CR4 check *always* works and is not affected by any X86_FEATURE_*
+twiddling or inconsistencies between the boot and secondary CPUs.
+
+This has been tested on non-Meltdown hardware by using pti=on and
+then flipping PCID and INVPCID support with qemu.
+
+== Aside ==
+
+How does this code even work today?  By chance, I think.  First, PTI
+is initialized around the same time that the boot CPU sets
+CR4.PCIDE=1.  There are currently no TLB invalidations when PTI=1 but
+CR4.PCIDE=0.  That means that the X86_FEATURE_INVPCID_SINGLE check is
+never even reached.
+
+this_cpu_has() is also very nasty to use in this context because the
+boot CPU reaches here before cpu_data(0) has been initialized.  It
+happens to work for X86_FEATURE_INVPCID_SINGLE since it's a
+software-defined feature but it would fall over for a hardware-
+derived X86_FEATURE.
+
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20230718170630.7922E235%40davehans-spike.ostc.intel.com
 ---
- arch/x86/include/asm/microcode_amd.h | 3 +--
- arch/x86/include/asm/processor.h     | 2 ++
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/cpufeatures.h |  1 -
+ arch/x86/mm/init.c                 |  9 ---------
+ arch/x86/mm/tlb.c                  | 19 +++++++++++++------
+ 3 files changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/include/asm/microcode_amd.h b/arch/x86/include/asm/microcode_amd.h
-index 9675c62..2ed09a1 100644
---- a/arch/x86/include/asm/microcode_amd.h
-+++ b/arch/x86/include/asm/microcode_amd.h
-@@ -48,13 +48,12 @@ extern void __init load_ucode_amd_bsp(unsigned int family);
- extern void load_ucode_amd_ap(unsigned int family);
- extern int __init save_microcode_in_initrd_amd(unsigned int family);
- void reload_ucode_amd(unsigned int cpu);
--extern void amd_check_microcode(void);
- #else
- static inline void __init load_ucode_amd_bsp(unsigned int family) {}
- static inline void load_ucode_amd_ap(unsigned int family) {}
- static inline int __init
- save_microcode_in_initrd_amd(unsigned int family) { return -EINVAL; }
- static inline void reload_ucode_amd(unsigned int cpu) {}
--static inline void amd_check_microcode(void) {}
- #endif
-+
- #endif /* _ASM_X86_MICROCODE_AMD_H */
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index d46300e..36d5207 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -682,9 +682,11 @@ extern u16 get_llc_id(unsigned int cpu);
- #ifdef CONFIG_CPU_SUP_AMD
- extern u32 amd_get_nodes_per_socket(void);
- extern u32 amd_get_highest_perf(void);
-+extern void amd_check_microcode(void);
- #else
- static inline u32 amd_get_nodes_per_socket(void)	{ return 0; }
- static inline u32 amd_get_highest_perf(void)		{ return 0; }
-+static inline void amd_check_microcode(void)		{ }
- #endif
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index cb8ca46..ec1bce0 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -198,7 +198,6 @@
+ #define X86_FEATURE_CAT_L3		( 7*32+ 4) /* Cache Allocation Technology L3 */
+ #define X86_FEATURE_CAT_L2		( 7*32+ 5) /* Cache Allocation Technology L2 */
+ #define X86_FEATURE_CDP_L3		( 7*32+ 6) /* Code and Data Prioritization L3 */
+-#define X86_FEATURE_INVPCID_SINGLE	( 7*32+ 7) /* Effectively INVPCID && CR4.PCIDE=1 */
+ #define X86_FEATURE_HW_PSTATE		( 7*32+ 8) /* AMD HW-PState */
+ #define X86_FEATURE_PROC_FEEDBACK	( 7*32+ 9) /* AMD ProcFeedbackInterface */
+ #define X86_FEATURE_XCOMPACTED		( 7*32+10) /* "" Use compacted XSTATE (XSAVES or XSAVEC) */
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 8192452..4e152d8 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -307,15 +307,6 @@ static void setup_pcid(void)
+ 		 * start_secondary().
+ 		 */
+ 		cr4_set_bits(X86_CR4_PCIDE);
+-
+-		/*
+-		 * INVPCID's single-context modes (2/3) only work if we set
+-		 * X86_CR4_PCIDE, *and* we INVPCID support.  It's unusable
+-		 * on systems that have X86_CR4_PCIDE clear, or that have
+-		 * no INVPCID support at all.
+-		 */
+-		if (boot_cpu_has(X86_FEATURE_INVPCID))
+-			setup_force_cpu_cap(X86_FEATURE_INVPCID_SINGLE);
+ 	} else {
+ 		/*
+ 		 * flush_tlb_all(), as currently implemented, won't work if
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 267acf2..6982b4f 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -1140,21 +1140,28 @@ void flush_tlb_one_kernel(unsigned long addr)
+  */
+ STATIC_NOPV void native_flush_tlb_one_user(unsigned long addr)
+ {
+-	u32 loaded_mm_asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
++	u32 loaded_mm_asid;
++	bool cpu_pcide;
  
- extern unsigned long arch_align_stack(unsigned long sp);
++	/* Flush 'addr' from the kernel PCID: */
+ 	asm volatile("invlpg (%0)" ::"r" (addr) : "memory");
+ 
++	/* If PTI is off there is no user PCID and nothing to flush. */
+ 	if (!static_cpu_has(X86_FEATURE_PTI))
+ 		return;
+ 
++	loaded_mm_asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
++	cpu_pcide      = this_cpu_read(cpu_tlbstate.cr4) & X86_CR4_PCIDE;
++
+ 	/*
+-	 * Some platforms #GP if we call invpcid(type=1/2) before CR4.PCIDE=1.
+-	 * Just use invalidate_user_asid() in case we are called early.
++	 * invpcid_flush_one(pcid>0) will #GP if CR4.PCIDE==0.  Check
++	 * 'cpu_pcide' to ensure that *this* CPU will not trigger those
++	 * #GP's even if called before CR4.PCIDE has been initialized.
+ 	 */
+-	if (!this_cpu_has(X86_FEATURE_INVPCID_SINGLE))
+-		invalidate_user_asid(loaded_mm_asid);
+-	else
++	if (boot_cpu_has(X86_FEATURE_INVPCID) && cpu_pcide)
+ 		invpcid_flush_one(user_pcid(loaded_mm_asid), addr);
++	else
++		invalidate_user_asid(loaded_mm_asid);
+ }
+ 
+ void flush_tlb_one_user(unsigned long addr)
