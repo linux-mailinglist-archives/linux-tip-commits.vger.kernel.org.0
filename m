@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6CDB76F0AB
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Aug 2023 19:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49C6676F0CA
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Aug 2023 19:39:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233157AbjHCRbj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Aug 2023 13:31:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46118 "EHLO
+        id S235099AbjHCRjw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Aug 2023 13:39:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230408AbjHCRbi (ORCPT
+        with ESMTP id S235082AbjHCRjv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Aug 2023 13:31:38 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3019106;
-        Thu,  3 Aug 2023 10:31:36 -0700 (PDT)
-Date:   Thu, 03 Aug 2023 17:31:33 -0000
+        Thu, 3 Aug 2023 13:39:51 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD2D10B;
+        Thu,  3 Aug 2023 10:39:49 -0700 (PDT)
+Date:   Thu, 03 Aug 2023 17:39:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691083894;
+        s=2020; t=1691084388;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uFHGqz6Z8BeI8UIbRFTeALT3obNJdgQfXriVoQf/Zxs=;
-        b=bl38m1OTX6EHg0AXRTjfADtZ0Xb0AW/dUyX2l7GhMhE+6QjXVaUxiNacD3q4GajbIfJuFf
-        NHQ2k2QW2vIcVRVoat8y/EKRwdENoRnu6YcQ/g0ZJ/9ERfYQGITFLDHBgFPGVz+sxLdj9i
-        HOu7GirZsTx0MEWN+b9gQTDDh7rpJIe/akLlRFvBNw2e7ZuwcFob6Fgm46HIMdzwvWVGxF
-        fOewjYnlmzfdHiKbBc31rDbzzsWLpaAKyW0QGDqfONY2OoQaAbU6nhM9qd4Iwpav3nFzHN
-        t7dxn4xYEHd6qSGf1MqNkQCaNSgEuwuOwm7uQ8UZmwa4Hb1yBKjkIK1AM/pvrg==
+        bh=7bDsaV6hyYcOiwh9F6/VUEneRjm/h/xzE+3LGBYN8Ns=;
+        b=cwHZDNZoFYie9lHh7dVdLca+yPIkEDicEIgmBw1xVErlr7otutcmBRiseigsqDaEyQJtKB
+        c8lQss4uoCCtmFo9Eb4L+rkMNhiiwclf0+EOfVAavDoqIR7D/aR2LoMYhv8k1QMqyrm+nl
+        SUBZu3juLcnLgKMwcyb98rjy8h8Dl/6xpS7YqfGkBLB+rueaK+YynfvSaSFD72QiWQ8cAE
+        vWNcBpk6Dv56TQXXEP5EMWgubIzmj+j++shSPqeleyNlguqrqYYyt9JhSX1aSl8iYYZMAT
+        x+T6Acy9Z8bK+vuOdoYohbae87LHqO8eLZhJUBjBTZ4nXnFxVE07xzL2njet0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691083894;
+        s=2020e; t=1691084388;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uFHGqz6Z8BeI8UIbRFTeALT3obNJdgQfXriVoQf/Zxs=;
-        b=3tGB5Lb07Oug4Ei5W0H2N0R2nVXb+CoYeNZ2SiTyzqmiJHjMzAogAYTjMbecyfxvMC9n9c
-        AQcVCPg43sZNlXBA==
+        bh=7bDsaV6hyYcOiwh9F6/VUEneRjm/h/xzE+3LGBYN8Ns=;
+        b=EfBTOZT8ZCa2ZEw0MkIAWM8ngm7MQQceP86oxeiQBViA2e3+R5Gxowjb2EBmr0fDWZ/1o8
+        AwbBaN9KUeGLrqDg==
 From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -44,15 +44,15 @@ Cc:     Jann Horn <jannh@google.com>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169108389377.28540.1358170196008758927.tip-bot2@tip-bot2>
+Message-ID: <169108438740.28540.12152477147812811555.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -61,22 +61,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     8bf96500d546fdd9fa36dc843b9e16a1c8603fc7
-Gitweb:        https://git.kernel.org/tip/8bf96500d546fdd9fa36dc843b9e16a1c8603fc7
+Commit-ID:     54e3d9434ef61b97fd3263c141b928dc5635e50d
+Gitweb:        https://git.kernel.org/tip/54e3d9434ef61b97fd3263c141b928dc5635e50d
 Author:        Dave Hansen <dave.hansen@linux.intel.com>
 AuthorDate:    Tue, 18 Jul 2023 10:06:30 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 03 Aug 2023 10:27:17 -07:00
+CommitterDate: Thu, 03 Aug 2023 10:34:05 -07:00
 
 x86/mm: Remove "INVPCID single" feature tracking
-
-Changes from v1:
- * Move both 'cpu_tlbstate' references down in the function.  Neither
-   is used in the !PTI path.  The invlpg is both a fully serializing
-   instruction and compiler barrier.  The compiler can't optimize
-   these references, so do it the hard way instead.
-
---
 
 From: Dave Hansen <dave.hansen@linux.intel.com>
 
@@ -138,7 +130,6 @@ software-defined feature but it would fall over for a hardware-
 derived X86_FEATURE.
 
 Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Link: https://lore.kernel.org/all/20230718170630.7922E235%40davehans-spike.ostc.intel.com
 ---
