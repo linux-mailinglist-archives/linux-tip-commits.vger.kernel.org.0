@@ -2,210 +2,112 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49C6676F0CA
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Aug 2023 19:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74BD176F4E5
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Aug 2023 23:56:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235099AbjHCRjw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Aug 2023 13:39:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50462 "EHLO
+        id S229626AbjHCV4v (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Aug 2023 17:56:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235082AbjHCRjv (ORCPT
+        with ESMTP id S229882AbjHCV4t (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Aug 2023 13:39:51 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD2D10B;
-        Thu,  3 Aug 2023 10:39:49 -0700 (PDT)
-Date:   Thu, 03 Aug 2023 17:39:47 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691084388;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=7bDsaV6hyYcOiwh9F6/VUEneRjm/h/xzE+3LGBYN8Ns=;
-        b=cwHZDNZoFYie9lHh7dVdLca+yPIkEDicEIgmBw1xVErlr7otutcmBRiseigsqDaEyQJtKB
-        c8lQss4uoCCtmFo9Eb4L+rkMNhiiwclf0+EOfVAavDoqIR7D/aR2LoMYhv8k1QMqyrm+nl
-        SUBZu3juLcnLgKMwcyb98rjy8h8Dl/6xpS7YqfGkBLB+rueaK+YynfvSaSFD72QiWQ8cAE
-        vWNcBpk6Dv56TQXXEP5EMWgubIzmj+j++shSPqeleyNlguqrqYYyt9JhSX1aSl8iYYZMAT
-        x+T6Acy9Z8bK+vuOdoYohbae87LHqO8eLZhJUBjBTZ4nXnFxVE07xzL2njet0g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691084388;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=7bDsaV6hyYcOiwh9F6/VUEneRjm/h/xzE+3LGBYN8Ns=;
-        b=EfBTOZT8ZCa2ZEw0MkIAWM8ngm7MQQceP86oxeiQBViA2e3+R5Gxowjb2EBmr0fDWZ/1o8
-        AwbBaN9KUeGLrqDg==
-From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Remove "INVPCID single" feature tracking
-Cc:     Jann Horn <jannh@google.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Thu, 3 Aug 2023 17:56:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EAA62D7E
+        for <linux-tip-commits@vger.kernel.org>; Thu,  3 Aug 2023 14:56:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691099761;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=KM8Vigl0h9QVHeYdLXISDzZx4epLj9fcgIeYJK+1hsU=;
+        b=UwqDAVcBgLCll0fZ76oOwxOE/ym/RDKfH6MjdUnUCwwo2x4FfQdoNXp3U7JzHywI6UyS2U
+        yXL6rNm1ElT1NxDOktJy9CbNNPQTW3icXc/L2+nrPvN6HI61OPj6vxGn/9B8c/+8T/C49E
+        F1z3e3sze/il1jvlIhk7uKVVsgaahNA=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-363-Q6jZ1CgdNamR45o91H29dw-1; Thu, 03 Aug 2023 17:55:59 -0400
+X-MC-Unique: Q6jZ1CgdNamR45o91H29dw-1
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-76c81b2cf8bso162892485a.3
+        for <linux-tip-commits@vger.kernel.org>; Thu, 03 Aug 2023 14:55:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691099759; x=1691704559;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KM8Vigl0h9QVHeYdLXISDzZx4epLj9fcgIeYJK+1hsU=;
+        b=JX6bWlEajW05je/+Cl2cn6Yn3/F1UxHTrovEEFVVNip3Rspn47KVhx01gIZlBh/0Ry
+         VfpVSznWcG6Q4gbdEwf8MfBqslhjGdgfsp84XUukyNMVDvwwwFcBIVvJ7K7hGrFKRLqi
+         QfpJE5VlFlBuGQSRyBh+MXEQsdGXQOnld2v0cnoJboheUml9HTNWh8R5ODaw2DOL+yCp
+         1l74hdHY4OqmO+U92r+Ufcv0JUEVBmmynYvRT1824D3xApmSTYTDQqfg4Worv9xY16Ts
+         PXFOD63kVZ8l3+MWfJZKhZeAH7k2+Vh3C21N0AQB34TisMk8zhqcZxntEoiRbl8Jo2Mf
+         f1uQ==
+X-Gm-Message-State: AOJu0YwGdmP111VzL34d75phg8gtgD7XBOhuFr/e7o7FAVHnOGcRnGU7
+        GnnosUPLQy/Sg7VSnR1U6oBzib31oj3Eh9cFXBEzU/cwHN8gthg4UOHAN5AgkJS7tHzMUdZxsNr
+        bjwDRJhnYXPJn+mBHsUuZUWRbIXeziNM=
+X-Received: by 2002:a05:620a:31a6:b0:76c:a659:5ed8 with SMTP id bi38-20020a05620a31a600b0076ca6595ed8mr27579qkb.10.1691099758943;
+        Thu, 03 Aug 2023 14:55:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEoIExBmpCGcB5Ujy49S5j2ELer/eE6FTmCA1IE4XqBWVfbQwo9zmA6CbU1bkSRxRP/ULAwsw==
+X-Received: by 2002:a05:620a:31a6:b0:76c:a659:5ed8 with SMTP id bi38-20020a05620a31a600b0076ca6595ed8mr27567qkb.10.1691099758704;
+        Thu, 03 Aug 2023 14:55:58 -0700 (PDT)
+Received: from treble ([199.195.15.105])
+        by smtp.gmail.com with ESMTPSA id a4-20020a05620a124400b0076c71c1d2f5sm208712qkl.34.2023.08.03.14.55.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Aug 2023 14:55:58 -0700 (PDT)
+Date:   Thu, 3 Aug 2023 16:55:55 -0500
+From:   Josh Poimboeuf <jpoimboe@redhat.com>
+To:     tip-bot2 for Petr Pavlu <tip-bot2@linutronix.de>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Petr Pavlu <petr.pavlu@suse.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+Subject: Re: [tip: x86/core] x86/retpoline,kprobes: Fix position of thunk
+ sections with CONFIG_LTO_CLANG
+Message-ID: <20230803215555.zl5oabntc44ry3uc@treble>
+References: <20230711091952.27944-2-petr.pavlu@suse.com>
+ <169098679602.28540.7005603884356771970.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <169108438740.28540.12152477147812811555.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <169098679602.28540.7005603884356771970.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+On Wed, Aug 02, 2023 at 02:33:16PM -0000, tip-bot2 for Petr Pavlu wrote:
+> The following commit has been merged into the x86/core branch of tip:
+> 
+> Commit-ID:     973ab2d61f33dc85212c486e624af348c4eeb5c9
+> Gitweb:        https://git.kernel.org/tip/973ab2d61f33dc85212c486e624af348c4eeb5c9
+> Author:        Petr Pavlu <petr.pavlu@suse.com>
+> AuthorDate:    Tue, 11 Jul 2023 11:19:51 +02:00
+> Committer:     Peter Zijlstra <peterz@infradead.org>
+> CommitterDate: Wed, 02 Aug 2023 16:27:07 +02:00
+> 
+> x86/retpoline,kprobes: Fix position of thunk sections with CONFIG_LTO_CLANG
+> 
 
-Commit-ID:     54e3d9434ef61b97fd3263c141b928dc5635e50d
-Gitweb:        https://git.kernel.org/tip/54e3d9434ef61b97fd3263c141b928dc5635e50d
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Tue, 18 Jul 2023 10:06:30 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 03 Aug 2023 10:34:05 -07:00
+[...]
 
-x86/mm: Remove "INVPCID single" feature tracking
+> --- a/tools/objtool/check.c
+> +++ b/tools/objtool/check.c
+> @@ -389,7 +389,7 @@ static int decode_instructions(struct objtool_file *file)
+>  		if (!strcmp(sec->name, ".noinstr.text") ||
+>  		    !strcmp(sec->name, ".entry.text") ||
+>  		    !strcmp(sec->name, ".cpuidle.text") ||
+> -		    !strncmp(sec->name, ".text.__x86.", 12))
+> +		    !strncmp(sec->name, ".text..__x86.", 12))
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+Andy Cooper reported this should be 13.
 
-tl;dr: Replace a synthetic X86_FEATURE with a hardware X86_FEATURE
-       and check of existing per-cpu state.
+-- 
+Josh
 
-== Background ==
-
-There are three features in play here:
- 1. Good old Page Table Isolation (PTI)
- 2. Process Context IDentifiers (PCIDs) which allow entries from
-    multiple address spaces to be in the TLB at once.
- 3. Support for the "Invalidate PCID" (INVPCID) instruction,
-    specifically the "individual address" mode (aka. mode 0).
-
-When all *three* of these are in place, INVPCID can and should be used
-to flush out individual addresses in the PTI user address space.
-
-But there's a wrinkle or two: First, this INVPCID mode is dependent on
-CR4.PCIDE.  Even if X86_FEATURE_INVPCID==1, the instruction may #GP
-without setting up CR4.  Second, TLB flushing is done very early, even
-before CR4 is fully set up.  That means even if PTI, PCID and INVPCID
-are supported, there is *still* a window where INVPCID can #GP.
-
-== Problem ==
-
-The current code seems to work, but mostly by chance and there are a
-bunch of ways it can go wrong.  It's also somewhat hard to follow
-since X86_FEATURE_INVPCID_SINGLE is set far away from its lone user.
-
-== Solution ==
-
-Make "INVPCID single" more robust and easier to follow by placing all
-the logic in one place.  Remove X86_FEATURE_INVPCID_SINGLE.
-
-Make two explicit checks before using INVPCID:
- 1. Check that the system supports INVPCID itself (boot_cpu_has())
- 2. Then check the CR4.PCIDE shadow to ensures that the CPU
-    can safely use INVPCID for individual address invalidation.
-
-The CR4 check *always* works and is not affected by any X86_FEATURE_*
-twiddling or inconsistencies between the boot and secondary CPUs.
-
-This has been tested on non-Meltdown hardware by using pti=on and
-then flipping PCID and INVPCID support with qemu.
-
-== Aside ==
-
-How does this code even work today?  By chance, I think.  First, PTI
-is initialized around the same time that the boot CPU sets
-CR4.PCIDE=1.  There are currently no TLB invalidations when PTI=1 but
-CR4.PCIDE=0.  That means that the X86_FEATURE_INVPCID_SINGLE check is
-never even reached.
-
-this_cpu_has() is also very nasty to use in this context because the
-boot CPU reaches here before cpu_data(0) has been initialized.  It
-happens to work for X86_FEATURE_INVPCID_SINGLE since it's a
-software-defined feature but it would fall over for a hardware-
-derived X86_FEATURE.
-
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20230718170630.7922E235%40davehans-spike.ostc.intel.com
----
- arch/x86/include/asm/cpufeatures.h |  1 -
- arch/x86/mm/init.c                 |  9 ---------
- arch/x86/mm/tlb.c                  | 19 +++++++++++++------
- 3 files changed, 13 insertions(+), 16 deletions(-)
-
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index cb8ca46..ec1bce0 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -198,7 +198,6 @@
- #define X86_FEATURE_CAT_L3		( 7*32+ 4) /* Cache Allocation Technology L3 */
- #define X86_FEATURE_CAT_L2		( 7*32+ 5) /* Cache Allocation Technology L2 */
- #define X86_FEATURE_CDP_L3		( 7*32+ 6) /* Code and Data Prioritization L3 */
--#define X86_FEATURE_INVPCID_SINGLE	( 7*32+ 7) /* Effectively INVPCID && CR4.PCIDE=1 */
- #define X86_FEATURE_HW_PSTATE		( 7*32+ 8) /* AMD HW-PState */
- #define X86_FEATURE_PROC_FEEDBACK	( 7*32+ 9) /* AMD ProcFeedbackInterface */
- #define X86_FEATURE_XCOMPACTED		( 7*32+10) /* "" Use compacted XSTATE (XSAVES or XSAVEC) */
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 8192452..4e152d8 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -307,15 +307,6 @@ static void setup_pcid(void)
- 		 * start_secondary().
- 		 */
- 		cr4_set_bits(X86_CR4_PCIDE);
--
--		/*
--		 * INVPCID's single-context modes (2/3) only work if we set
--		 * X86_CR4_PCIDE, *and* we INVPCID support.  It's unusable
--		 * on systems that have X86_CR4_PCIDE clear, or that have
--		 * no INVPCID support at all.
--		 */
--		if (boot_cpu_has(X86_FEATURE_INVPCID))
--			setup_force_cpu_cap(X86_FEATURE_INVPCID_SINGLE);
- 	} else {
- 		/*
- 		 * flush_tlb_all(), as currently implemented, won't work if
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 267acf2..6982b4f 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -1140,21 +1140,28 @@ void flush_tlb_one_kernel(unsigned long addr)
-  */
- STATIC_NOPV void native_flush_tlb_one_user(unsigned long addr)
- {
--	u32 loaded_mm_asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
-+	u32 loaded_mm_asid;
-+	bool cpu_pcide;
- 
-+	/* Flush 'addr' from the kernel PCID: */
- 	asm volatile("invlpg (%0)" ::"r" (addr) : "memory");
- 
-+	/* If PTI is off there is no user PCID and nothing to flush. */
- 	if (!static_cpu_has(X86_FEATURE_PTI))
- 		return;
- 
-+	loaded_mm_asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
-+	cpu_pcide      = this_cpu_read(cpu_tlbstate.cr4) & X86_CR4_PCIDE;
-+
- 	/*
--	 * Some platforms #GP if we call invpcid(type=1/2) before CR4.PCIDE=1.
--	 * Just use invalidate_user_asid() in case we are called early.
-+	 * invpcid_flush_one(pcid>0) will #GP if CR4.PCIDE==0.  Check
-+	 * 'cpu_pcide' to ensure that *this* CPU will not trigger those
-+	 * #GP's even if called before CR4.PCIDE has been initialized.
- 	 */
--	if (!this_cpu_has(X86_FEATURE_INVPCID_SINGLE))
--		invalidate_user_asid(loaded_mm_asid);
--	else
-+	if (boot_cpu_has(X86_FEATURE_INVPCID) && cpu_pcide)
- 		invpcid_flush_one(user_pcid(loaded_mm_asid), addr);
-+	else
-+		invalidate_user_asid(loaded_mm_asid);
- }
- 
- void flush_tlb_one_user(unsigned long addr)
