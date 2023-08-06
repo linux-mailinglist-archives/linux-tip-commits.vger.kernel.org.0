@@ -2,112 +2,117 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74BD176F4E5
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Aug 2023 23:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 027967714F9
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Aug 2023 14:21:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229626AbjHCV4v (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Aug 2023 17:56:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48974 "EHLO
+        id S230193AbjHFMVt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 6 Aug 2023 08:21:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229882AbjHCV4t (ORCPT
+        with ESMTP id S229509AbjHFMVt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Aug 2023 17:56:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EAA62D7E
-        for <linux-tip-commits@vger.kernel.org>; Thu,  3 Aug 2023 14:56:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691099761;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        Sun, 6 Aug 2023 08:21:49 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8112F4;
+        Sun,  6 Aug 2023 05:21:47 -0700 (PDT)
+Date:   Sun, 06 Aug 2023 12:21:44 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1691324505;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KM8Vigl0h9QVHeYdLXISDzZx4epLj9fcgIeYJK+1hsU=;
-        b=UwqDAVcBgLCll0fZ76oOwxOE/ym/RDKfH6MjdUnUCwwo2x4FfQdoNXp3U7JzHywI6UyS2U
-        yXL6rNm1ElT1NxDOktJy9CbNNPQTW3icXc/L2+nrPvN6HI61OPj6vxGn/9B8c/+8T/C49E
-        F1z3e3sze/il1jvlIhk7uKVVsgaahNA=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-363-Q6jZ1CgdNamR45o91H29dw-1; Thu, 03 Aug 2023 17:55:59 -0400
-X-MC-Unique: Q6jZ1CgdNamR45o91H29dw-1
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-76c81b2cf8bso162892485a.3
-        for <linux-tip-commits@vger.kernel.org>; Thu, 03 Aug 2023 14:55:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691099759; x=1691704559;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KM8Vigl0h9QVHeYdLXISDzZx4epLj9fcgIeYJK+1hsU=;
-        b=JX6bWlEajW05je/+Cl2cn6Yn3/F1UxHTrovEEFVVNip3Rspn47KVhx01gIZlBh/0Ry
-         VfpVSznWcG6Q4gbdEwf8MfBqslhjGdgfsp84XUukyNMVDvwwwFcBIVvJ7K7hGrFKRLqi
-         QfpJE5VlFlBuGQSRyBh+MXEQsdGXQOnld2v0cnoJboheUml9HTNWh8R5ODaw2DOL+yCp
-         1l74hdHY4OqmO+U92r+Ufcv0JUEVBmmynYvRT1824D3xApmSTYTDQqfg4Worv9xY16Ts
-         PXFOD63kVZ8l3+MWfJZKhZeAH7k2+Vh3C21N0AQB34TisMk8zhqcZxntEoiRbl8Jo2Mf
-         f1uQ==
-X-Gm-Message-State: AOJu0YwGdmP111VzL34d75phg8gtgD7XBOhuFr/e7o7FAVHnOGcRnGU7
-        GnnosUPLQy/Sg7VSnR1U6oBzib31oj3Eh9cFXBEzU/cwHN8gthg4UOHAN5AgkJS7tHzMUdZxsNr
-        bjwDRJhnYXPJn+mBHsUuZUWRbIXeziNM=
-X-Received: by 2002:a05:620a:31a6:b0:76c:a659:5ed8 with SMTP id bi38-20020a05620a31a600b0076ca6595ed8mr27579qkb.10.1691099758943;
-        Thu, 03 Aug 2023 14:55:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEoIExBmpCGcB5Ujy49S5j2ELer/eE6FTmCA1IE4XqBWVfbQwo9zmA6CbU1bkSRxRP/ULAwsw==
-X-Received: by 2002:a05:620a:31a6:b0:76c:a659:5ed8 with SMTP id bi38-20020a05620a31a600b0076ca6595ed8mr27567qkb.10.1691099758704;
-        Thu, 03 Aug 2023 14:55:58 -0700 (PDT)
-Received: from treble ([199.195.15.105])
-        by smtp.gmail.com with ESMTPSA id a4-20020a05620a124400b0076c71c1d2f5sm208712qkl.34.2023.08.03.14.55.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 14:55:58 -0700 (PDT)
-Date:   Thu, 3 Aug 2023 16:55:55 -0500
-From:   Josh Poimboeuf <jpoimboe@redhat.com>
-To:     tip-bot2 for Petr Pavlu <tip-bot2@linutronix.de>
-Cc:     linux-tip-commits@vger.kernel.org,
-        Petr Pavlu <petr.pavlu@suse.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [tip: x86/core] x86/retpoline,kprobes: Fix position of thunk
- sections with CONFIG_LTO_CLANG
-Message-ID: <20230803215555.zl5oabntc44ry3uc@treble>
-References: <20230711091952.27944-2-petr.pavlu@suse.com>
- <169098679602.28540.7005603884356771970.tip-bot2@tip-bot2>
+        bh=Lj2o2lMy4Naxup/WI6x4iavrDazv2xdKBIHEdvWvGYk=;
+        b=JR4gvvSAVQ2luaSxrRQahxfaU3Lut2HPhXRDp4VvMi4RBmkl1XydmI3IF79lj7nHMCX0xX
+        jOeMO/Icgljg/MavVK/yMFxpRvxMSojgTOPQ9Ds4avQv4mwbm2sn85A8F52/6ToQAzKVfq
+        LO1+L5GTQKBkaauqSJA55GrzTpDvgWiF0nGEsDxqglKMN4pnHGuMVko9CyvowPRxaMHDUm
+        QCUfnIKX7lnHvPTD5JYPgTsWG7eZNXq58sIYHYi6j48PxO4kLIjIEKNaL5nUuYXlRTHKaq
+        5zBj3+BYf0okgEpm7PtSdI7LxEybkaeqoYIvmDFj7qGQ819Rga2CLPLGNC/Dzw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1691324505;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Lj2o2lMy4Naxup/WI6x4iavrDazv2xdKBIHEdvWvGYk=;
+        b=R13j8xtNxnxwKCJA3eJNGY+lstH1VYUHi+piSQriVC8z3yGEwmBsQzxzKzufTTAFz5KqmW
+        F4mgobINPp5dgUCQ==
+From:   "tip-bot2 for Xin Li" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/apic] tools: Get rid of IRQ_MOVE_CLEANUP_VECTOR from tools
+Cc:     Xin Li <xin3.li@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230621171248.6805-4-xin3.li@intel.com>
+References: <20230621171248.6805-4-xin3.li@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <169098679602.28540.7005603884356771970.tip-bot2@tip-bot2>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Message-ID: <169132450428.28540.15994029338286764122.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Aug 02, 2023 at 02:33:16PM -0000, tip-bot2 for Petr Pavlu wrote:
-> The following commit has been merged into the x86/core branch of tip:
-> 
-> Commit-ID:     973ab2d61f33dc85212c486e624af348c4eeb5c9
-> Gitweb:        https://git.kernel.org/tip/973ab2d61f33dc85212c486e624af348c4eeb5c9
-> Author:        Petr Pavlu <petr.pavlu@suse.com>
-> AuthorDate:    Tue, 11 Jul 2023 11:19:51 +02:00
-> Committer:     Peter Zijlstra <peterz@infradead.org>
-> CommitterDate: Wed, 02 Aug 2023 16:27:07 +02:00
-> 
-> x86/retpoline,kprobes: Fix position of thunk sections with CONFIG_LTO_CLANG
-> 
+The following commit has been merged into the x86/apic branch of tip:
 
-[...]
+Commit-ID:     6e3edb0fb5c0ee3ab1edc1fcfd159e7dd177ef0e
+Gitweb:        https://git.kernel.org/tip/6e3edb0fb5c0ee3ab1edc1fcfd159e7dd177ef0e
+Author:        Xin Li <xin3.li@intel.com>
+AuthorDate:    Wed, 21 Jun 2023 10:12:48 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sun, 06 Aug 2023 14:15:10 +02:00
 
-> --- a/tools/objtool/check.c
-> +++ b/tools/objtool/check.c
-> @@ -389,7 +389,7 @@ static int decode_instructions(struct objtool_file *file)
->  		if (!strcmp(sec->name, ".noinstr.text") ||
->  		    !strcmp(sec->name, ".entry.text") ||
->  		    !strcmp(sec->name, ".cpuidle.text") ||
-> -		    !strncmp(sec->name, ".text.__x86.", 12))
-> +		    !strncmp(sec->name, ".text..__x86.", 12))
+tools: Get rid of IRQ_MOVE_CLEANUP_VECTOR from tools
 
-Andy Cooper reported this should be 13.
+IRQ_MOVE_CLEANUP_VECTOR is not longer in use. Remove the last traces.
 
--- 
-Josh
+Signed-off-by: Xin Li <xin3.li@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230621171248.6805-4-xin3.li@intel.com
 
+---
+ tools/arch/x86/include/asm/irq_vectors.h               | 7 -------
+ tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh | 2 +-
+ 2 files changed, 1 insertion(+), 8 deletions(-)
+
+diff --git a/tools/arch/x86/include/asm/irq_vectors.h b/tools/arch/x86/include/asm/irq_vectors.h
+index 43dcb92..3a19904 100644
+--- a/tools/arch/x86/include/asm/irq_vectors.h
++++ b/tools/arch/x86/include/asm/irq_vectors.h
+@@ -35,13 +35,6 @@
+  */
+ #define FIRST_EXTERNAL_VECTOR		0x20
+ 
+-/*
+- * Reserve the lowest usable vector (and hence lowest priority)  0x20 for
+- * triggering cleanup after irq migration. 0x21-0x2f will still be used
+- * for device interrupts.
+- */
+-#define IRQ_MOVE_CLEANUP_VECTOR		FIRST_EXTERNAL_VECTOR
+-
+ #define IA32_SYSCALL_VECTOR		0x80
+ 
+ /*
+diff --git a/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh b/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
+index eed9ce0..87dc68c 100755
+--- a/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
++++ b/tools/perf/trace/beauty/tracepoints/x86_irq_vectors.sh
+@@ -12,7 +12,7 @@ x86_irq_vectors=${arch_x86_header_dir}/irq_vectors.h
+ 
+ # FIRST_EXTERNAL_VECTOR is not that useful, find what is its number
+ # and then replace whatever is using it and that is useful, which at
+-# the time of writing of this script was: IRQ_MOVE_CLEANUP_VECTOR.
++# the time of writing of this script was: 0x20.
+ 
+ first_external_regex='^#define[[:space:]]+FIRST_EXTERNAL_VECTOR[[:space:]]+(0x[[:xdigit:]]+)$'
+ first_external_vector=$(grep -E ${first_external_regex} ${x86_irq_vectors} | sed -r "s/${first_external_regex}/\1/g")
