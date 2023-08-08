@@ -2,60 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A903773EA2
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 18:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAD3A773EB3
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 18:34:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232918AbjHHQdY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Aug 2023 12:33:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41300 "EHLO
+        id S232941AbjHHQem (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Aug 2023 12:34:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232915AbjHHQcc (ORCPT
+        with ESMTP id S232889AbjHHQdi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Aug 2023 12:32:32 -0400
+        Tue, 8 Aug 2023 12:33:38 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6459831024;
-        Tue,  8 Aug 2023 08:52:00 -0700 (PDT)
-Date:   Tue, 08 Aug 2023 08:44:05 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E062E1397B;
+        Tue,  8 Aug 2023 08:52:17 -0700 (PDT)
+Date:   Tue, 08 Aug 2023 08:44:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691484245;
+        s=2020; t=1691484247;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1Or2b4Na7nTw1tFARkW7WHc5iPHSvRQThhKn5LYONTM=;
-        b=4NL+DV5vu25vxrX4bhBaUbqNa71x3FmcliKVnGMT97x4jXpiBkwE9RgChbeLJq7UXX1SwT
-        MmMyAzPtXh0BWeRJVoROfxUe+G5IFOvYbl0Q/f/ly0EJYyQ57KpuBgR8/8gwOa68lUQ8e9
-        NH1vbh3WyQ76BV56nN23QhSEdrOS1tVbP5oJy9aMyDmyL2zBfYuvYPRFvm2DI/eDh4akj2
-        faiAuII503BMMZd1UOy2ubLT100+JmlfUs8N2WIhfQCzK22ZjVjbTJxHItSRbTGvuKVpD7
-        VcGBH74bGmUiU7dEWUX+q2V8vcF3VXuACuvYUrYwxw1D3DLs00tLWgr6kVTeWQ==
+        bh=akwmlJvPa/5tWkMpeCgswWq6rVyG0zRGX8qCsIqf1YY=;
+        b=GW51cpb6vI0qGTsCkiM1cr2LnuG7s8M4UTRHtZJXL3V1X8+iKpNRLyPo531fFrGP/0IfR/
+        Avw6EqYQtHYAI3mnGtyGSRlIFOC4BsgasZ8Myo6Fgn+kKpQHe7j4cd4Rib4pLFrYdf49XW
+        jJFW4ndvuBbLfWD46xfUriu+6MgviatkCW4w3ZNCsQt29MZXZhBhiLy8C877vwsVZ7jcTP
+        33u87E8IZdu0ZBhBnL+EbmltBo7i8iS2FuHFtZOYY2YXDJAeqOMFvxukFtx9nogvOfeXng
+        pazvTVrIhpk10YQi8E06B2C1Ttq1xnuGZc9aKUBuqMspvPkz6Cx+2JHtBgwMjw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691484245;
+        s=2020e; t=1691484247;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1Or2b4Na7nTw1tFARkW7WHc5iPHSvRQThhKn5LYONTM=;
-        b=CQdYCbv3nTcsptwwHFCOTaadktKENjEER7AMBALs4c+aFCNgUH081TDUFwK4EiNzPdoDOM
-        TxBZM6HkxdWG+HDQ==
+        bh=akwmlJvPa/5tWkMpeCgswWq6rVyG0zRGX8qCsIqf1YY=;
+        b=tUIAnbTiuZp5eOwvEz8V+f4e18jYBEDKo11641KQaX1ZKrd4Jtv73WhwKkvA59TxY/9+F8
+        rXDJmlth8AK+jXDQ==
 From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/decompressor: Avoid magic offsets for EFI
- handover entrypoint
+Subject: [tip: x86/boot] x86/decompressor: Don't rely on upper 32 bits of GPRs
+ being preserved
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230807162720.545787-6-ardb@kernel.org>
-References: <20230807162720.545787-6-ardb@kernel.org>
+In-Reply-To: <20230807162720.545787-2-ardb@kernel.org>
+References: <20230807162720.545787-2-ardb@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169148424523.27769.14326172898952623288.tip-bot2@tip-bot2>
+Message-ID: <169148424686.27769.7264155385078320796.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
@@ -68,119 +68,113 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     12792064587623065250069d1df980e2c9ac3e67
-Gitweb:        https://git.kernel.org/tip/12792064587623065250069d1df980e2c9ac3e67
+Commit-ID:     264b82fdb4989cf6a44a2bcd0c6ea05e8026b2ac
+Gitweb:        https://git.kernel.org/tip/264b82fdb4989cf6a44a2bcd0c6ea05e802=
+6b2ac
 Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Mon, 07 Aug 2023 18:27:02 +02:00
+AuthorDate:    Mon, 07 Aug 2023 18:26:58 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 07 Aug 2023 20:39:00 +02:00
+CommitterDate: Mon, 07 Aug 2023 19:02:06 +02:00
 
-x86/decompressor: Avoid magic offsets for EFI handover entrypoint
+x86/decompressor: Don't rely on upper 32 bits of GPRs being preserved
 
-The native 32-bit or 64-bit EFI handover protocol entrypoint offset
-relative to the respective startup_32/64 address is described in
-boot_params as handover_offset, so that the special Linux/x86 aware EFI
-loader can find it there.
+The 4-to-5 level mode switch trampoline disables long mode and paging in
+order to be able to flick the LA57 bit. According to section 3.4.1.1 of
+the x86 architecture manual [0], 64-bit GPRs might not retain the upper
+32 bits of their contents across such a mode switch.
 
-When mixed mode is enabled, this single field has to describe this
-offset for both the 32-bit and 64-bit entrypoints, so their respective
-relative offsets have to be identical. Given that startup_32 and
-startup_64 are 0x200 bytes apart, and the EFI handover entrypoint
-resides at a fixed offset, the 32-bit and 64-bit versions of those
-entrypoints must be exactly 0x200 bytes apart as well.
+Given that RBP, RBX and RSI are live at this point, preserve them on the
+stack, along with the return address that might be above 4G as well.
 
-Currently, hard-coded fixed offsets are used to ensure this, but it is
-sufficient to emit the 64-bit entrypoint 0x200 bytes after the 32-bit
-one, wherever it happens to reside. This allows this code (which is now
-EFI mixed mode specific) to be moved into efi_mixed.S and out of the
-startup code in head_64.S.
+[0] Intel=C2=AE 64 and IA-32 Architectures Software Developer=E2=80=99s Manua=
+l, Volume 1: Basic Architecture
 
+  "Because the upper 32 bits of 64-bit general-purpose registers are
+   undefined in 32-bit modes, the upper 32 bits of any general-purpose
+   register are not preserved when switching from 64-bit mode to a 32-bit
+   mode (to protected mode or compatibility mode). Software must not
+   depend on these bits to maintain a value after a 64-bit to 32-bit
+   mode switch."
+
+Fixes: 194a9749c73d650c ("x86/boot/compressed/64: Handle 5-level paging boot =
+if kernel is above 4G")
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-6-ardb@kernel.org
+Link: https://lore.kernel.org/r/20230807162720.545787-2-ardb@kernel.org
 ---
- arch/x86/boot/compressed/efi_mixed.S | 20 +++++++++++++++++++-
- arch/x86/boot/compressed/head_64.S   | 18 ------------------
- 2 files changed, 19 insertions(+), 19 deletions(-)
+ arch/x86/boot/compressed/head_64.S | 30 ++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/efi_mixed.S b/arch/x86/boot/compressed/efi_mixed.S
-index dcc562c..9308b59 100644
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -140,6 +140,16 @@ SYM_FUNC_START(__efi64_thunk)
- SYM_FUNC_END(__efi64_thunk)
- 
- 	.code32
-+#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
-+SYM_FUNC_START(efi32_stub_entry)
-+	add	$0x4, %esp		/* Discard return address */
-+	popl	%ecx
-+	popl	%edx
-+	popl	%esi
-+	jmp	efi32_entry
-+SYM_FUNC_END(efi32_stub_entry)
-+#endif
-+
- /*
-  * EFI service pointer must be in %edi.
-  *
-@@ -220,7 +230,7 @@ SYM_FUNC_END(efi_enter32)
-  * stub may still exit and return to the firmware using the Exit() EFI boot
-  * service.]
-  */
--SYM_FUNC_START(efi32_entry)
-+SYM_FUNC_START_LOCAL(efi32_entry)
- 	call	1f
- 1:	pop	%ebx
- 
-@@ -320,6 +330,14 @@ SYM_FUNC_START(efi32_pe_entry)
- 	RET
- SYM_FUNC_END(efi32_pe_entry)
- 
-+#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
-+	.org	efi32_stub_entry + 0x200
-+	.code64
-+SYM_FUNC_START_NOALIGN(efi64_stub_entry)
-+	jmp	efi_stub_entry
-+SYM_FUNC_END(efi64_stub_entry)
-+#endif
-+
- 	.section ".rodata"
- 	/* EFI loaded image protocol GUID */
- 	.balign 4
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index e688020..a3f764d 100644
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/he=
+ad_64.S
+index 03c4328..f732426 100644
 --- a/arch/x86/boot/compressed/head_64.S
 +++ b/arch/x86/boot/compressed/head_64.S
-@@ -294,17 +294,6 @@ SYM_FUNC_START(startup_32)
- 	lret
- SYM_FUNC_END(startup_32)
- 
--#if IS_ENABLED(CONFIG_EFI_MIXED) && IS_ENABLED(CONFIG_EFI_HANDOVER_PROTOCOL)
--	.org 0x190
--SYM_FUNC_START(efi32_stub_entry)
--	add	$0x4, %esp		/* Discard return address */
--	popl	%ecx
--	popl	%edx
--	popl	%esi
--	jmp	efi32_entry
--SYM_FUNC_END(efi32_stub_entry)
--#endif
+@@ -459,11 +459,25 @@ SYM_CODE_START(startup_64)
+ 	/* Save the trampoline address in RCX */
+ 	movq	%rax, %rcx
+=20
++	/* Set up 32-bit addressable stack */
++	leaq	TRAMPOLINE_32BIT_STACK_END(%rcx), %rsp
++
++	/*
++	 * Preserve live 64-bit registers on the stack: this is necessary
++	 * because the architecture does not guarantee that GPRs will retain
++	 * their full 64-bit values across a 32-bit mode switch.
++	 */
++	pushq	%rbp
++	pushq	%rbx
++	pushq	%rsi
++
+ 	/*
+-	 * Load the address of trampoline_return() into RDI.
+-	 * It will be used by the trampoline to return to the main code.
++	 * Push the 64-bit address of trampoline_return() onto the new stack.
++	 * It will be used by the trampoline to return to the main code. Due to
++	 * the 32-bit mode switch, it cannot be kept it in a register either.
+ 	 */
+ 	leaq	trampoline_return(%rip), %rdi
++	pushq	%rdi
+=20
+ 	/* Switch to compatibility mode (CS.L =3D 0 CS.D =3D 1) via far return */
+ 	pushq	$__KERNEL32_CS
+@@ -471,6 +485,11 @@ SYM_CODE_START(startup_64)
+ 	pushq	%rax
+ 	lretq
+ trampoline_return:
++	/* Restore live 64-bit registers */
++	popq	%rsi
++	popq	%rbx
++	popq	%rbp
++
+ 	/* Restore the stack, the 32-bit trampoline uses its own stack */
+ 	leaq	rva(boot_stack_end)(%rbx), %rsp
+=20
+@@ -582,7 +601,7 @@ SYM_FUNC_END(.Lrelocated)
+ /*
+  * This is the 32-bit trampoline that will be copied over to low memory.
+  *
+- * RDI contains the return address (might be above 4G).
++ * Return address is at the top of the stack (might be above 4G).
+  * ECX contains the base address of the trampoline memory.
+  * Non zero RDX means trampoline needs to enable 5-level paging.
+  */
+@@ -592,9 +611,6 @@ SYM_CODE_START(trampoline_32bit_src)
+ 	movl	%eax, %ds
+ 	movl	%eax, %ss
+=20
+-	/* Set up new stack */
+-	leal	TRAMPOLINE_32BIT_STACK_END(%ecx), %esp
 -
+ 	/* Disable paging */
+ 	movl	%cr0, %eax
+ 	btrl	$X86_CR0_PG_BIT, %eax
+@@ -671,7 +687,7 @@ SYM_CODE_END(trampoline_32bit_src)
  	.code64
- 	.org 0x200
- SYM_CODE_START(startup_64)
-@@ -542,13 +531,6 @@ trampoline_return:
- 	jmp	*%rax
- SYM_CODE_END(startup_64)
- 
--#if IS_ENABLED(CONFIG_EFI_MIXED) && IS_ENABLED(CONFIG_EFI_HANDOVER_PROTOCOL)
--	.org 0x390
--SYM_FUNC_START(efi64_stub_entry)
--	jmp	efi_stub_entry
--SYM_FUNC_END(efi64_stub_entry)
--#endif
--
- 	.text
- SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
- 
+ SYM_FUNC_START_LOCAL_NOALIGN(.Lpaging_enabled)
+ 	/* Return from the trampoline */
+-	jmp	*%rdi
++	retq
+ SYM_FUNC_END(.Lpaging_enabled)
+=20
+ 	/*
