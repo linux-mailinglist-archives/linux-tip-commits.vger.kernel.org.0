@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D493773EBD
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 18:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98F08773ECE
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 18:36:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233097AbjHHQfJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Aug 2023 12:35:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48062 "EHLO
+        id S233157AbjHHQgF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Aug 2023 12:36:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233005AbjHHQeM (ORCPT
+        with ESMTP id S233084AbjHHQe5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Aug 2023 12:34:12 -0400
+        Tue, 8 Aug 2023 12:34:57 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 385A31FF3;
-        Tue,  8 Aug 2023 08:52:27 -0700 (PDT)
-Date:   Tue, 08 Aug 2023 08:44:03 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7D214252;
+        Tue,  8 Aug 2023 08:52:39 -0700 (PDT)
+Date:   Tue, 08 Aug 2023 08:44:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691484243;
+        s=2020; t=1691484244;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7OnvnQWhupjYWp1MgPVjQQ6/qDtRRqdDMe5rBy72aN4=;
-        b=0xY+wkB+l1TsMEqOGglt+78JfbRTVXLbwhNiwk3q/6Y0M+F4ZaQFY0naFco1vxAct8S7do
-        b0LFN+dDNbtB6RSQpjos3jKmZLTmZ3DjM/d/O+7lPiX3OwlMgUN9E7MD3L59mYLUCgnhEB
-        CVuxatRsfxcwW5zB5dUhoAAsISjplUcl06q7zO+Z3xfaiHXi79h12vvqfZTqkQ5CJLN5T9
-        2MHzosC7NrmOzDk4w/R0bHM0/pg+6gK4OUyCJllJRO+1bcKwFJwAj4/WLyup9Bcsgs73nE
-        C8NreI0kN0Vp6vWRBiU47wsn+acLwbLNiu0s3Y7O0X5wIRVGD8aOSq2SFwFVBg==
+        bh=YhLoOH1vlpur8m0pcnb4dIj/5jh+8qUt0fIQH+l+3PE=;
+        b=4Y8vBj30dWZXpBpkbXXG/LsgbnLQaskp0K7T2CgyG7u9sQ6qlxWtCkldmZj57Qf0DcaTqA
+        YnimaZhO3f8BiOmzFG+oDDuerJDWbPt+9T44XeuK+Doxh2kxNi1T6Hre1WRocLMqKc97ph
+        UE3Ea28uYQmulya7qaIv/SqBiJAC81I+hz47EwgN81Lxs/9Q1EA7iAP4nFdpy0N8Oha/HP
+        lnJ09uBI4ya4aLuS1RdPF90ofgCz0XYMxH3gWsRah6dArIpKBwprcqAXwucXqcCGgKPnsi
+        ynTJSWKRJD8k1gY+uobjhA18ErvF7LMKQVTumhvhs+Fvpu7iqXgaoYG7Eced8A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691484243;
+        s=2020e; t=1691484244;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7OnvnQWhupjYWp1MgPVjQQ6/qDtRRqdDMe5rBy72aN4=;
-        b=R0ip1rYHBfUYESlOctpK4iXatQW0xgbvJvVDPttr84ctu4GeEqC6WY8Daordl4hvRQqea0
-        K59lzXW+hXORtVDA==
+        bh=YhLoOH1vlpur8m0pcnb4dIj/5jh+8qUt0fIQH+l+3PE=;
+        b=MiHnw00gWUJmXq42f3toB4CdQCWvgdlHypOdg3ovp3DHfcHTIuAqPaYset21+x4BBfGqzs
+        muuHDmlL5LcZWEDA==
 From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/decompressor: Use standard calling convention for
- trampoline
+Subject: [tip: x86/boot] x86/decompressor: Assign paging related global
+ variables earlier
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230807162720.545787-11-ardb@kernel.org>
-References: <20230807162720.545787-11-ardb@kernel.org>
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230807162720.545787-9-ardb@kernel.org>
+References: <20230807162720.545787-9-ardb@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169148424322.27769.15495483249376498258.tip-bot2@tip-bot2>
+Message-ID: <169148424406.27769.1064202115749702744.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,115 +68,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     918a7a04e71745e99a0efc6753e587439b794b29
-Gitweb:        https://git.kernel.org/tip/918a7a04e71745e99a0efc6753e587439b794b29
+Commit-ID:     00c6b0978ec182f1a672095930872168b9d5b1e2
+Gitweb:        https://git.kernel.org/tip/00c6b0978ec182f1a672095930872168b9d5b1e2
 Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Mon, 07 Aug 2023 18:27:07 +02:00
+AuthorDate:    Mon, 07 Aug 2023 18:27:05 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 07 Aug 2023 20:43:59 +02:00
+CommitterDate: Mon, 07 Aug 2023 20:42:11 +02:00
 
-x86/decompressor: Use standard calling convention for trampoline
+x86/decompressor: Assign paging related global variables earlier
 
-Update the trampoline code so its arguments are passed via RDI and RSI,
-which matches the ordinary SysV calling convention for x86_64. This will
-allow this code to be called directly from C.
+There is no need to defer the assignment of the paging related global
+variables 'pgdir_shift' and 'ptrs_per_p4d' until after the trampoline is
+cleaned up, so assign them as soon as it is clear that 5-level paging
+will be enabled.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20230807162720.545787-11-ardb@kernel.org
+Link: https://lore.kernel.org/r/20230807162720.545787-9-ardb@kernel.org
 ---
- arch/x86/boot/compressed/head_64.S | 27 +++++++++++++--------------
- arch/x86/boot/compressed/pgtable.h |  2 +-
- 2 files changed, 14 insertions(+), 15 deletions(-)
+ arch/x86/boot/compressed/misc.h       |  2 --
+ arch/x86/boot/compressed/pgtable_64.c | 14 +++++---------
+ 2 files changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 91b5eee..c475042 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -444,9 +444,9 @@ SYM_CODE_START(startup_64)
- 	movq	%r15, %rdi
- 	call	paging_prepare
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 964fe90..cc70d3f 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -179,9 +179,7 @@ static inline int count_immovable_mem_regions(void) { return 0; }
+ #endif
  
--	/* Save the trampoline address in RCX */
--	movq	%rax, %rcx
+ /* ident_map_64.c */
+-#ifdef CONFIG_X86_5LEVEL
+ extern unsigned int __pgtable_l5_enabled, pgdir_shift, ptrs_per_p4d;
+-#endif
+ extern void kernel_add_identity_map(unsigned long start, unsigned long end);
+ 
+ /* Used by PAGE_KERN* macros: */
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index 2ac12ff..f8092d3 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -130,6 +130,11 @@ struct paging_config paging_prepare(void *rmode)
+ 			native_cpuid_eax(0) >= 7 &&
+ 			(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)))) {
+ 		paging_config.l5_required = 1;
++
++		/* Initialize variables for 5-level paging */
++		__pgtable_l5_enabled = 1;
++		pgdir_shift = 48;
++		ptrs_per_p4d = 512;
+ 	}
+ 
+ 	paging_config.trampoline_start = find_trampoline_placement();
+@@ -206,13 +211,4 @@ void cleanup_trampoline(void *pgtable)
+ 
+ 	/* Restore trampoline memory */
+ 	memcpy(trampoline_32bit, trampoline_save, TRAMPOLINE_32BIT_SIZE);
 -
-+	/* Pass the trampoline address and boolean flag as args #1 and #2 */
-+	movq	%rax, %rdi
-+	movq	%rdx, %rsi
- 	leaq	TRAMPOLINE_32BIT_CODE_OFFSET(%rax), %rax
- 	call	*%rax
- 
-@@ -531,11 +531,14 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
- SYM_FUNC_END(.Lrelocated)
- 
- /*
-- * This is the 32-bit trampoline that will be copied over to low memory.
-+ * This is the 32-bit trampoline that will be copied over to low memory. It
-+ * will be called using the ordinary 64-bit calling convention from code
-+ * running in 64-bit mode.
-  *
-  * Return address is at the top of the stack (might be above 4G).
-- * ECX contains the base address of the trampoline memory.
-- * Non zero RDX means trampoline needs to enable 5-level paging.
-+ * The first argument (EDI) contains the 32-bit addressable base of the
-+ * trampoline memory. A non-zero second argument (ESI) means that the
-+ * trampoline needs to enable 5-level paging.
-  */
- SYM_CODE_START(trampoline_32bit_src)
- 	/*
-@@ -582,7 +585,7 @@ SYM_CODE_START(trampoline_32bit_src)
- 	movl	%eax, %cr0
- 
- 	/* Check what paging mode we want to be in after the trampoline */
--	testl	%edx, %edx
-+	testl	%esi, %esi
- 	jz	1f
- 
- 	/* We want 5-level paging: don't touch CR3 if it already points to 5-level page tables */
-@@ -597,21 +600,17 @@ SYM_CODE_START(trampoline_32bit_src)
- 	jz	3f
- 2:
- 	/* Point CR3 to the trampoline's new top level page table */
--	leal	TRAMPOLINE_32BIT_PGTABLE_OFFSET(%ecx), %eax
-+	leal	TRAMPOLINE_32BIT_PGTABLE_OFFSET(%edi), %eax
- 	movl	%eax, %cr3
- 3:
- 	/* Set EFER.LME=1 as a precaution in case hypervsior pulls the rug */
--	pushl	%ecx
--	pushl	%edx
- 	movl	$MSR_EFER, %ecx
- 	rdmsr
- 	btsl	$_EFER_LME, %eax
- 	/* Avoid writing EFER if no change was made (for TDX guest) */
- 	jc	1f
- 	wrmsr
--1:	popl	%edx
--	popl	%ecx
--
-+1:
- #ifdef CONFIG_X86_MCE
- 	/*
- 	 * Preserve CR4.MCE if the kernel will enable #MC support.
-@@ -628,7 +627,7 @@ SYM_CODE_START(trampoline_32bit_src)
- 
- 	/* Enable PAE and LA57 (if required) paging modes */
- 	orl	$X86_CR4_PAE, %eax
--	testl	%edx, %edx
-+	testl	%esi, %esi
- 	jz	1f
- 	orl	$X86_CR4_LA57, %eax
- 1:
-diff --git a/arch/x86/boot/compressed/pgtable.h b/arch/x86/boot/compressed/pgtable.h
-index 91dbb99..4e8cef1 100644
---- a/arch/x86/boot/compressed/pgtable.h
-+++ b/arch/x86/boot/compressed/pgtable.h
-@@ -14,7 +14,7 @@
- 
- extern unsigned long *trampoline_32bit;
- 
--extern void trampoline_32bit_src(void *return_ptr);
-+extern void trampoline_32bit_src(void *trampoline, bool enable_5lvl);
- 
- #endif /* __ASSEMBLER__ */
- #endif /* BOOT_COMPRESSED_PAGETABLE_H */
+-	/* Initialize variables for 5-level paging */
+-#ifdef CONFIG_X86_5LEVEL
+-	if (__read_cr4() & X86_CR4_LA57) {
+-		__pgtable_l5_enabled = 1;
+-		pgdir_shift = 48;
+-		ptrs_per_p4d = 512;
+-	}
+-#endif
+ }
