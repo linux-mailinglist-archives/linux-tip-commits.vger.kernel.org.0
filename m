@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34764773E92
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 18:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18C2E773EA7
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 18:33:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjHHQct (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Aug 2023 12:32:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45856 "EHLO
+        id S232966AbjHHQdf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Aug 2023 12:33:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232804AbjHHQbN (ORCPT
+        with ESMTP id S232941AbjHHQcm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Aug 2023 12:31:13 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E221395E;
-        Tue,  8 Aug 2023 08:51:43 -0700 (PDT)
+        Tue, 8 Aug 2023 12:32:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49DB531034;
+        Tue,  8 Aug 2023 08:52:03 -0700 (PDT)
 Date:   Tue, 08 Aug 2023 08:44:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691484246;
+        s=2020; t=1691484247;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4FdDYtj/PJTr7QNgxSySfERBaEeNWE+ml2AZNGkpXbs=;
-        b=ex4e7Eltn1BuyK7KcsAk2jqK1UANcMjkFY9c4723AIBVHfksLOnOsonUQZcHDNuX7wPfYL
-        xcHHxVGCDH2ZcYYCnHmqlP4zfqfCcnWQyBkHgGIVmseRLc1MdzH3HFtmQya3jgh5OGur6S
-        W9XkqG+xrYlWFUWGKIO36Y8NpqF2rgKwAaeYmBXg/TOUTo72HB3/PfS1doA/K5oWa0smXx
-        c6oZjCsbIqVVI5EC79lE3KcP1+yZ6CZKjc1I+U3NXMAPi4/x5HQgsBJs1dP/SJGyo2RmOZ
-        BCG+HLow7lA507/mQUFystNS82WSeTeYz9jUoOw5VJCGHGEeNtMsg8PmUKXolw==
+        bh=/QMZQliKphSu6iVAfYaGfKqsW7zTXWKkam3GAeYdPzw=;
+        b=p9yR6lVtT8I19k2kQ68h4moDM2uDiFrsBZJ11EL8yH7YoeL6T9ojS8V8G43YC+zYJ0obr1
+        LlsZm505oz9bVfVxY2eCqVvZgRt3R2+9ulnl1B27xY3nxgEXand9yKws/UBzcmxqd5Ss4L
+        oUwcBIVwtROtW2MoTPh566ozHKpOd7eotPFycLGiYOsLZXfVn11ZwqksapT0f8qr3IjDyK
+        dCLorbYRwF0jw31UcVOmHtz+19/iZJDos/lM9arvzH9u9SHqHZwmGo/0Bzpi6orSwACK4m
+        bYtn/spfXQxbUzsF3wXf08Gcs5JWtqTCkq5/P7RxCxrctXt1DD88kER9nczVqw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691484246;
+        s=2020e; t=1691484247;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4FdDYtj/PJTr7QNgxSySfERBaEeNWE+ml2AZNGkpXbs=;
-        b=FPz1UJY9TaCx3LFikMhIFzIAtmDjHI1DOdzf5piECiKyMaG0HAyfsSO2qaffF52WjeTXbz
-        fYyQIreY85oOE+DA==
+        bh=/QMZQliKphSu6iVAfYaGfKqsW7zTXWKkam3GAeYdPzw=;
+        b=lg/kn6lUd6scXMLFS4tTbViF55XfCtwaCoBmOt8bdRSmVpVwepHikZzbb8a6XqvY5kDWnE
+        ZdX+dBU/axuUpvDw==
 From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/efistub: Branch straight to kernel entry point
- from C code
+Subject: [tip: x86/boot] x86/head_64: Store boot_params pointer in callee save
+ register
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230807162720.545787-4-ardb@kernel.org>
-References: <20230807162720.545787-4-ardb@kernel.org>
+In-Reply-To: <20230807162720.545787-3-ardb@kernel.org>
+References: <20230807162720.545787-3-ardb@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169148424606.27769.13302670504473669940.tip-bot2@tip-bot2>
+Message-ID: <169148424646.27769.12729891213885700414.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,73 +68,137 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     d2d7a54f69b67cd0a30e0ebb5307cb2de625baac
-Gitweb:        https://git.kernel.org/tip/d2d7a54f69b67cd0a30e0ebb5307cb2de625baac
+Commit-ID:     2f69a81ad6873231a2ae78d5ade3263ec54a4c9c
+Gitweb:        https://git.kernel.org/tip/2f69a81ad6873231a2ae78d5ade3263ec54a4c9c
 Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Mon, 07 Aug 2023 18:27:00 +02:00
+AuthorDate:    Mon, 07 Aug 2023 18:26:59 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 07 Aug 2023 20:36:06 +02:00
+CommitterDate: Mon, 07 Aug 2023 19:20:32 +02:00
 
-x86/efistub: Branch straight to kernel entry point from C code
+x86/head_64: Store boot_params pointer in callee save register
 
-Instead of returning to the calling code in assembler that does nothing
-more than perform an indirect call with the boot_params pointer in
-register ESI/RSI, perform the jump directly from the EFI stub C code.
-This will allow the asm entrypoint code to be dropped entirely in
-subsequent patches.
+Instead of pushing/popping %RSI to/from the stack every time a function
+is called from startup_64(), store it in a callee preserved register
+and grab it from there when its value is actually needed.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-4-ardb@kernel.org
+Link: https://lore.kernel.org/r/20230807162720.545787-3-ardb@kernel.org
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ arch/x86/kernel/head_64.S | 32 ++++++++++++--------------------
+ 1 file changed, 12 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 220be75..40a10db 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -290,7 +290,7 @@ adjust_memory_range_protection(unsigned long start, unsigned long size)
- #define TRAMPOLINE_PLACEMENT_BASE ((128 - 8)*1024)
- #define TRAMPOLINE_PLACEMENT_SIZE (640*1024 - (128 - 8)*1024)
+diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+index c5b9289..ea69959 100644
+--- a/arch/x86/kernel/head_64.S
++++ b/arch/x86/kernel/head_64.S
+@@ -51,7 +51,9 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	 * for us.  These identity mapped page tables map all of the
+ 	 * kernel pages and possibly all of memory.
+ 	 *
+-	 * %rsi holds a physical pointer to real_mode_data.
++	 * %RSI holds the physical address of the boot_params structure
++	 * provided by the bootloader. Preserve it in %R15 so C function calls
++	 * will not clobber it.
+ 	 *
+ 	 * We come here either directly from a 64bit bootloader, or from
+ 	 * arch/x86/boot/compressed/head_64.S.
+@@ -62,6 +64,7 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	 * compiled to run at we first fixup the physical addresses in our page
+ 	 * tables and then reload them.
+ 	 */
++	mov	%rsi, %r15
  
--void startup_32(struct boot_params *boot_params);
-+extern const u8 startup_32[], startup_64[];
+ 	/* Set up the stack for verify_cpu() */
+ 	leaq	(__end_init_task - PTREGS_SIZE)(%rip), %rsp
+@@ -75,9 +78,7 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	shrq	$32,  %rdx
+ 	wrmsr
  
- static void
- setup_memory_protection(unsigned long image_base, unsigned long image_size)
-@@ -803,10 +803,19 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
- 	return EFI_SUCCESS;
- }
+-	pushq	%rsi
+ 	call	startup_64_setup_env
+-	popq	%rsi
  
-+static void __noreturn enter_kernel(unsigned long kernel_addr,
-+				    struct boot_params *boot_params)
-+{
-+	/* enter decompressed kernel with boot_params pointer in RSI/ESI */
-+	asm("jmp *%0"::"r"(kernel_addr), "S"(boot_params));
+ 	/* Now switch to __KERNEL_CS so IRET works reliably */
+ 	pushq	$__KERNEL_CS
+@@ -93,12 +94,10 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	 * Activate SEV/SME memory encryption if supported/enabled. This needs to
+ 	 * be done now, since this also includes setup of the SEV-SNP CPUID table,
+ 	 * which needs to be done before any CPUID instructions are executed in
+-	 * subsequent code.
++	 * subsequent code. Pass the boot_params pointer as the first argument.
+ 	 */
+-	movq	%rsi, %rdi
+-	pushq	%rsi
++	movq	%r15, %rdi
+ 	call	sme_enable
+-	popq	%rsi
+ #endif
+ 
+ 	/* Sanitize CPU configuration */
+@@ -111,9 +110,8 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	 * programmed into CR3.
+ 	 */
+ 	leaq	_text(%rip), %rdi
+-	pushq	%rsi
++	movq	%r15, %rsi
+ 	call	__startup_64
+-	popq	%rsi
+ 
+ 	/* Form the CR3 value being sure to include the CR3 modifier */
+ 	addq	$(early_top_pgt - __START_KERNEL_map), %rax
+@@ -127,8 +125,6 @@ SYM_CODE_START(secondary_startup_64)
+ 	 * At this point the CPU runs in 64bit mode CS.L = 1 CS.D = 0,
+ 	 * and someone has loaded a mapped page table.
+ 	 *
+-	 * %rsi holds a physical pointer to real_mode_data.
+-	 *
+ 	 * We come here either from startup_64 (using physical addresses)
+ 	 * or from trampoline.S (using virtual addresses).
+ 	 *
+@@ -153,6 +149,9 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+ 	UNWIND_HINT_END_OF_STACK
+ 	ANNOTATE_NOENDBR
+ 
++	/* Clear %R15 which holds the boot_params pointer on the boot CPU */
++	xorq	%r15, %r15
 +
-+	unreachable();
-+}
-+
- /*
-- * On success, we return the address of startup_32, which has potentially been
-- * relocated by efi_relocate_kernel.
-- * On failure, we exit to the firmware via efi_exit instead of returning.
-+ * On success, this routine will jump to the relocated image directly and never
-+ * return.  On failure, it will exit to the firmware via efi_exit() instead of
-+ * returning.
-  */
- asmlinkage unsigned long efi_main(efi_handle_t handle,
- 				  efi_system_table_t *sys_table_arg,
-@@ -950,7 +959,10 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
- 		goto fail;
- 	}
+ 	/*
+ 	 * Retrieve the modifier (SME encryption mask if SME is active) to be
+ 	 * added to the initial pgdir entry that will be programmed into CR3.
+@@ -199,13 +198,9 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+ 	 * hypervisor could lie about the C-bit position to perform a ROP
+ 	 * attack on the guest by writing to the unencrypted stack and wait for
+ 	 * the next RET instruction.
+-	 * %rsi carries pointer to realmode data and is callee-clobbered. Save
+-	 * and restore it.
+ 	 */
+-	pushq	%rsi
+ 	movq	%rax, %rdi
+ 	call	sev_verify_cbit
+-	popq	%rsi
  
--	return bzimage_addr;
-+	if (IS_ENABLED(CONFIG_X86_64))
-+		bzimage_addr += startup_64 - startup_32;
-+
-+	enter_kernel(bzimage_addr, boot_params);
- fail:
- 	efi_err("efi_main() failed!\n");
+ 	/*
+ 	 * Switch to new page-table
+@@ -365,9 +360,7 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+ 	wrmsr
  
+ 	/* Setup and Load IDT */
+-	pushq	%rsi
+ 	call	early_setup_idt
+-	popq	%rsi
+ 
+ 	/* Check if nx is implemented */
+ 	movl	$0x80000001, %eax
+@@ -403,9 +396,8 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+ 	pushq $0
+ 	popfq
+ 
+-	/* rsi is pointer to real mode structure with interesting info.
+-	   pass it to C */
+-	movq	%rsi, %rdi
++	/* Pass the boot_params pointer as first argument */
++	movq	%r15, %rdi
+ 
+ .Ljump_to_C_code:
+ 	/*
