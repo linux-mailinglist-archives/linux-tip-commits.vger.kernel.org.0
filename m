@@ -2,144 +2,147 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99991774131
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 19:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B92B6774D36
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 23:43:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233837AbjHHRQG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Aug 2023 13:16:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36432 "EHLO
+        id S231190AbjHHVnE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Aug 2023 17:43:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233090AbjHHRPV (ORCPT
+        with ESMTP id S231203AbjHHVnC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Aug 2023 13:15:21 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 649762D5B;
-        Tue,  8 Aug 2023 09:06:18 -0700 (PDT)
-Date:   Tue, 08 Aug 2023 08:59:15 -0000
+        Tue, 8 Aug 2023 17:43:02 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 295091CA74;
+        Tue,  8 Aug 2023 10:14:45 -0700 (PDT)
+Date:   Tue, 08 Aug 2023 17:14:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691485156;
+        s=2020; t=1691514883;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mRTAJBEqdoIqtU1fMTNa9ss/qzISSuT9FpyeLJjVRzs=;
-        b=JZ5uwZHIcQwKkYH1TBRgIRa1c91CxdUiA/o4NovsnqNDZGMuG9b5LxAIUyFn79PZneDkss
-        DLrDVIhGtQYU5dgJ/yl4OO75GdrCN6evDqbtBGumnpQkMfyZd6sO9EConBZ4deDzqADGbb
-        2Z0oSHa0VdXnvxttH/dswYcqyIXPE0afjNuYDITR7DUNXPCAqzXruDXpeor6D+V5og5J5M
-        lt+1jIIFl90DF2j2W395iJDNs3f1IucaRhRnETI+HRWYWBDJmVAI9PvmMDTZbTZl5hoeBT
-        sU9hlhMtSZKtTokkm8DJpDIth18+3JQc2tTvIu6AsA+cxc7cmluW38VgnYWsLA==
+        bh=YOb2x6mt0eFNIk/LmR8xz0yg/z1yvjxM0oWW1/EPPjw=;
+        b=nqDkC0e7t1+UsirdX7xeAiS3apFEnEleCPANZBdFOXCoTmTJ3Xv8dPb4zKFfNXDagt3fBV
+        vUp+HTovcu2tP+tMhLIzTcuAhsgLKVl4o19Cw5Hc5wj8IcCMksyBua5eoftc6eqZgHOG+C
+        ikseVP3hmEK0/O30dEOjtTkNfxF2XL0jqaSN8V7xQMw/f0y8BufXm9cPrwZY0tPL9Jpd6c
+        psJOL5xpZON2VGu9RMiMyn1D9SHYi8hyhr6x47urkiybcXY9o51RwGWwLvPOhDe573N7Bl
+        v12AZPQeCb5zv6+Nr8UgKTriCM85o4NCM29RuqJJ3OCDYPz/3jugFQHWJnWGXA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691485156;
+        s=2020e; t=1691514883;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mRTAJBEqdoIqtU1fMTNa9ss/qzISSuT9FpyeLJjVRzs=;
-        b=apP4cgbaxuJ2fNBJJ1eYz3lmKZQVlnhDae/HKCLkAFAXTKSIROQytcsvaTsu5BpRUEF8pk
-        5Uj7ZvjWJLlSaQBw==
-From:   "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
+        bh=YOb2x6mt0eFNIk/LmR8xz0yg/z1yvjxM0oWW1/EPPjw=;
+        b=YhadQQTpSoNn1uNFQn8ED6kO1uDN0nk3MXOiiS/l8EZWqGTae1eoR7RM962Qfhf8zLIe/h
+        XkhR8cB/s+zi08CA==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] Documentation: core-api/cpuhotplug: Fix state names
-Cc:     "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+Subject: [tip: x86/microcode] x86/microcode: Remove microcode_mutex
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Sohil Mehta <sohil.mehta@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230515162038.62703-1-anna-maria@linutronix.de>
-References: <20230515162038.62703-1-anna-maria@linutronix.de>
+In-Reply-To: <20230804075853.JF_n6GXC@linutronix.de>
+References: <20230804075853.JF_n6GXC@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <169148515588.27769.11927101338682187648.tip-bot2@tip-bot2>
+Message-ID: <169151488243.27769.14789329848292946571.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     e0a99a839f04c90bf9f16919997c4b34f9c8f1f0
-Gitweb:        https://git.kernel.org/tip/e0a99a839f04c90bf9f16919997c4b34f9c8f1f0
-Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
-AuthorDate:    Mon, 15 May 2023 18:20:38 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 08 Aug 2023 10:55:58 +02:00
+Commit-ID:     80347cd515ca149f1da31786ec9a59b0dfd1e579
+Gitweb:        https://git.kernel.org/tip/80347cd515ca149f1da31786ec9a59b0dfd1e579
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Fri, 04 Aug 2023 09:58:53 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 08 Aug 2023 19:06:29 +02:00
 
-Documentation: core-api/cpuhotplug: Fix state names
+x86/microcode: Remove microcode_mutex
 
-Dynamic allocated hotplug states in documentation and the comment above
-cpuhp_state enum do not match the code. To not get confused by wrong
-documentation, change to proper state names.
+microcode_mutex is only used by reload_store(). It has a comment saying
+"to synchronize with each other". Other user of this mutex have been
+removed in the commits
 
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230515162038.62703-1-anna-maria@linutronix.de
+  181b6f40e9ea8 ("x86/microcode: Rip out the OLD_INTERFACE").
+  b6f86689d5b74 ("x86/microcode: Rip out the subsys interface gunk")
+
+The sysfs interface does not need additional synchronisation vs itself
+because it is provided as kernfs_ops::mutex which is acquired in
+kernfs_fop_write_iter().
+
+Remove the superfluous microcode_mutex.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230804075853.JF_n6GXC@linutronix.de
 ---
- Documentation/core-api/cpu_hotplug.rst | 10 +++++-----
- include/linux/cpuhotplug.h             |  2 +-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/common.c         | 3 +--
+ arch/x86/kernel/cpu/microcode/core.c | 6 ------
+ 2 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/Documentation/core-api/cpu_hotplug.rst b/Documentation/core-api/cpu_hotplug.rst
-index e6f5bc3..b9ae591 100644
---- a/Documentation/core-api/cpu_hotplug.rst
-+++ b/Documentation/core-api/cpu_hotplug.rst
-@@ -395,8 +395,8 @@ multi-instance state the following function is available:
- * cpuhp_setup_state_multi(state, name, startup, teardown)
- 
- The @state argument is either a statically allocated state or one of the
--constants for dynamically allocated states - CPUHP_PREPARE_DYN,
--CPUHP_ONLINE_DYN - depending on the state section (PREPARE, ONLINE) for
-+constants for dynamically allocated states - CPUHP_BP_PREPARE_DYN,
-+CPUHP_AP_ONLINE_DYN - depending on the state section (PREPARE, ONLINE) for
- which a dynamic state should be allocated.
- 
- The @name argument is used for sysfs output and for instrumentation. The
-@@ -588,7 +588,7 @@ notifications on online and offline operations::
- Setup and teardown a dynamically allocated state in the ONLINE section
- for notifications on offline operations::
- 
--   state = cpuhp_setup_state(CPUHP_ONLINE_DYN, "subsys:offline", NULL, subsys_cpu_offline);
-+   state = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "subsys:offline", NULL, subsys_cpu_offline);
-    if (state < 0)
-        return state;
-    ....
-@@ -597,7 +597,7 @@ for notifications on offline operations::
- Setup and teardown a dynamically allocated state in the ONLINE section
- for notifications on online operations without invoking the callbacks::
- 
--   state = cpuhp_setup_state_nocalls(CPUHP_ONLINE_DYN, "subsys:online", subsys_cpu_online, NULL);
-+   state = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "subsys:online", subsys_cpu_online, NULL);
-    if (state < 0)
-        return state;
-    ....
-@@ -606,7 +606,7 @@ for notifications on online operations without invoking the callbacks::
- Setup, use and teardown a dynamically allocated multi-instance state in the
- ONLINE section for notifications on online and offline operation::
- 
--   state = cpuhp_setup_state_multi(CPUHP_ONLINE_DYN, "subsys:online", subsys_cpu_online, subsys_cpu_offline);
-+   state = cpuhp_setup_state_multi(CPUHP_AP_ONLINE_DYN, "subsys:online", subsys_cpu_online, subsys_cpu_offline);
-    if (state < 0)
-        return state;
-    ....
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index 25b6e6e..06dda85 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -48,7 +48,7 @@
-  *    same section.
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 52683fd..06015f3 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2276,8 +2276,7 @@ void store_cpu_caps(struct cpuinfo_x86 *curr_info)
+  * @prev_info:	CPU capabilities stored before an update.
   *
-  * If neither #1 nor #2 apply, please use the dynamic state space when
-- * setting up a state by using CPUHP_PREPARE_DYN or CPUHP_PREPARE_ONLINE
-+ * setting up a state by using CPUHP_BP_PREPARE_DYN or CPUHP_AP_ONLINE_DYN
-  * for the @state argument of the setup function.
+  * The microcode loader calls this upon late microcode load to recheck features,
+- * only when microcode has been updated. Caller holds microcode_mutex and CPU
+- * hotplug lock.
++ * only when microcode has been updated. Caller holds and CPU hotplug lock.
   *
-  * See Documentation/core-api/cpu_hotplug.rst for further information and
+  * Return: None
+  */
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index 192adf5..c9a53e3 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -54,15 +54,12 @@ LIST_HEAD(microcode_cache);
+  *
+  * All non cpu-hotplug-callback call sites use:
+  *
+- * - microcode_mutex to synchronize with each other;
+  * - cpus_read_lock/unlock() to synchronize with
+  *   the cpu-hotplug-callback call sites.
+  *
+  * We guarantee that only a single cpu is being
+  * updated at any particular moment of time.
+  */
+-static DEFINE_MUTEX(microcode_mutex);
+-
+ struct ucode_cpu_info		ucode_cpu_info[NR_CPUS];
+ 
+ struct cpu_info_ctx {
+@@ -488,10 +485,7 @@ static ssize_t reload_store(struct device *dev,
+ 	if (tmp_ret != UCODE_NEW)
+ 		goto put;
+ 
+-	mutex_lock(&microcode_mutex);
+ 	ret = microcode_reload_late();
+-	mutex_unlock(&microcode_mutex);
+-
+ put:
+ 	cpus_read_unlock();
+ 
