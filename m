@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18C2E773EA7
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 18:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99991774131
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 19:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232966AbjHHQdf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Aug 2023 12:33:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58550 "EHLO
+        id S233837AbjHHRQG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Aug 2023 13:16:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232941AbjHHQcm (ORCPT
+        with ESMTP id S233090AbjHHRPV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Aug 2023 12:32:42 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49DB531034;
-        Tue,  8 Aug 2023 08:52:03 -0700 (PDT)
-Date:   Tue, 08 Aug 2023 08:44:06 -0000
+        Tue, 8 Aug 2023 13:15:21 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 649762D5B;
+        Tue,  8 Aug 2023 09:06:18 -0700 (PDT)
+Date:   Tue, 08 Aug 2023 08:59:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691484247;
+        s=2020; t=1691485156;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/QMZQliKphSu6iVAfYaGfKqsW7zTXWKkam3GAeYdPzw=;
-        b=p9yR6lVtT8I19k2kQ68h4moDM2uDiFrsBZJ11EL8yH7YoeL6T9ojS8V8G43YC+zYJ0obr1
-        LlsZm505oz9bVfVxY2eCqVvZgRt3R2+9ulnl1B27xY3nxgEXand9yKws/UBzcmxqd5Ss4L
-        oUwcBIVwtROtW2MoTPh566ozHKpOd7eotPFycLGiYOsLZXfVn11ZwqksapT0f8qr3IjDyK
-        dCLorbYRwF0jw31UcVOmHtz+19/iZJDos/lM9arvzH9u9SHqHZwmGo/0Bzpi6orSwACK4m
-        bYtn/spfXQxbUzsF3wXf08Gcs5JWtqTCkq5/P7RxCxrctXt1DD88kER9nczVqw==
+        bh=mRTAJBEqdoIqtU1fMTNa9ss/qzISSuT9FpyeLJjVRzs=;
+        b=JZ5uwZHIcQwKkYH1TBRgIRa1c91CxdUiA/o4NovsnqNDZGMuG9b5LxAIUyFn79PZneDkss
+        DLrDVIhGtQYU5dgJ/yl4OO75GdrCN6evDqbtBGumnpQkMfyZd6sO9EConBZ4deDzqADGbb
+        2Z0oSHa0VdXnvxttH/dswYcqyIXPE0afjNuYDITR7DUNXPCAqzXruDXpeor6D+V5og5J5M
+        lt+1jIIFl90DF2j2W395iJDNs3f1IucaRhRnETI+HRWYWBDJmVAI9PvmMDTZbTZl5hoeBT
+        sU9hlhMtSZKtTokkm8DJpDIth18+3JQc2tTvIu6AsA+cxc7cmluW38VgnYWsLA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691484247;
+        s=2020e; t=1691485156;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/QMZQliKphSu6iVAfYaGfKqsW7zTXWKkam3GAeYdPzw=;
-        b=lg/kn6lUd6scXMLFS4tTbViF55XfCtwaCoBmOt8bdRSmVpVwepHikZzbb8a6XqvY5kDWnE
-        ZdX+dBU/axuUpvDw==
-From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+        bh=mRTAJBEqdoIqtU1fMTNa9ss/qzISSuT9FpyeLJjVRzs=;
+        b=apP4cgbaxuJ2fNBJJ1eYz3lmKZQVlnhDae/HKCLkAFAXTKSIROQytcsvaTsu5BpRUEF8pk
+        5Uj7ZvjWJLlSaQBw==
+From:   "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/head_64: Store boot_params pointer in callee save
- register
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: smp/core] Documentation: core-api/cpuhotplug: Fix state names
+Cc:     "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230807162720.545787-3-ardb@kernel.org>
-References: <20230807162720.545787-3-ardb@kernel.org>
+In-Reply-To: <20230515162038.62703-1-anna-maria@linutronix.de>
+References: <20230515162038.62703-1-anna-maria@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <169148424646.27769.12729891213885700414.tip-bot2@tip-bot2>
+Message-ID: <169148515588.27769.11927101338682187648.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,139 +65,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     2f69a81ad6873231a2ae78d5ade3263ec54a4c9c
-Gitweb:        https://git.kernel.org/tip/2f69a81ad6873231a2ae78d5ade3263ec54a4c9c
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Mon, 07 Aug 2023 18:26:59 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 07 Aug 2023 19:20:32 +02:00
+Commit-ID:     e0a99a839f04c90bf9f16919997c4b34f9c8f1f0
+Gitweb:        https://git.kernel.org/tip/e0a99a839f04c90bf9f16919997c4b34f9c8f1f0
+Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
+AuthorDate:    Mon, 15 May 2023 18:20:38 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 08 Aug 2023 10:55:58 +02:00
 
-x86/head_64: Store boot_params pointer in callee save register
+Documentation: core-api/cpuhotplug: Fix state names
 
-Instead of pushing/popping %RSI to/from the stack every time a function
-is called from startup_64(), store it in a callee preserved register
-and grab it from there when its value is actually needed.
+Dynamic allocated hotplug states in documentation and the comment above
+cpuhp_state enum do not match the code. To not get confused by wrong
+documentation, change to proper state names.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-3-ardb@kernel.org
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230515162038.62703-1-anna-maria@linutronix.de
 ---
- arch/x86/kernel/head_64.S | 32 ++++++++++++--------------------
- 1 file changed, 12 insertions(+), 20 deletions(-)
+ Documentation/core-api/cpu_hotplug.rst | 10 +++++-----
+ include/linux/cpuhotplug.h             |  2 +-
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index c5b9289..ea69959 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -51,7 +51,9 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	 * for us.  These identity mapped page tables map all of the
- 	 * kernel pages and possibly all of memory.
- 	 *
--	 * %rsi holds a physical pointer to real_mode_data.
-+	 * %RSI holds the physical address of the boot_params structure
-+	 * provided by the bootloader. Preserve it in %R15 so C function calls
-+	 * will not clobber it.
- 	 *
- 	 * We come here either directly from a 64bit bootloader, or from
- 	 * arch/x86/boot/compressed/head_64.S.
-@@ -62,6 +64,7 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	 * compiled to run at we first fixup the physical addresses in our page
- 	 * tables and then reload them.
- 	 */
-+	mov	%rsi, %r15
+diff --git a/Documentation/core-api/cpu_hotplug.rst b/Documentation/core-api/cpu_hotplug.rst
+index e6f5bc3..b9ae591 100644
+--- a/Documentation/core-api/cpu_hotplug.rst
++++ b/Documentation/core-api/cpu_hotplug.rst
+@@ -395,8 +395,8 @@ multi-instance state the following function is available:
+ * cpuhp_setup_state_multi(state, name, startup, teardown)
  
- 	/* Set up the stack for verify_cpu() */
- 	leaq	(__end_init_task - PTREGS_SIZE)(%rip), %rsp
-@@ -75,9 +78,7 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	shrq	$32,  %rdx
- 	wrmsr
+ The @state argument is either a statically allocated state or one of the
+-constants for dynamically allocated states - CPUHP_PREPARE_DYN,
+-CPUHP_ONLINE_DYN - depending on the state section (PREPARE, ONLINE) for
++constants for dynamically allocated states - CPUHP_BP_PREPARE_DYN,
++CPUHP_AP_ONLINE_DYN - depending on the state section (PREPARE, ONLINE) for
+ which a dynamic state should be allocated.
  
--	pushq	%rsi
- 	call	startup_64_setup_env
--	popq	%rsi
+ The @name argument is used for sysfs output and for instrumentation. The
+@@ -588,7 +588,7 @@ notifications on online and offline operations::
+ Setup and teardown a dynamically allocated state in the ONLINE section
+ for notifications on offline operations::
  
- 	/* Now switch to __KERNEL_CS so IRET works reliably */
- 	pushq	$__KERNEL_CS
-@@ -93,12 +94,10 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	 * Activate SEV/SME memory encryption if supported/enabled. This needs to
- 	 * be done now, since this also includes setup of the SEV-SNP CPUID table,
- 	 * which needs to be done before any CPUID instructions are executed in
--	 * subsequent code.
-+	 * subsequent code. Pass the boot_params pointer as the first argument.
- 	 */
--	movq	%rsi, %rdi
--	pushq	%rsi
-+	movq	%r15, %rdi
- 	call	sme_enable
--	popq	%rsi
- #endif
+-   state = cpuhp_setup_state(CPUHP_ONLINE_DYN, "subsys:offline", NULL, subsys_cpu_offline);
++   state = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "subsys:offline", NULL, subsys_cpu_offline);
+    if (state < 0)
+        return state;
+    ....
+@@ -597,7 +597,7 @@ for notifications on offline operations::
+ Setup and teardown a dynamically allocated state in the ONLINE section
+ for notifications on online operations without invoking the callbacks::
  
- 	/* Sanitize CPU configuration */
-@@ -111,9 +110,8 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	 * programmed into CR3.
- 	 */
- 	leaq	_text(%rip), %rdi
--	pushq	%rsi
-+	movq	%r15, %rsi
- 	call	__startup_64
--	popq	%rsi
+-   state = cpuhp_setup_state_nocalls(CPUHP_ONLINE_DYN, "subsys:online", subsys_cpu_online, NULL);
++   state = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "subsys:online", subsys_cpu_online, NULL);
+    if (state < 0)
+        return state;
+    ....
+@@ -606,7 +606,7 @@ for notifications on online operations without invoking the callbacks::
+ Setup, use and teardown a dynamically allocated multi-instance state in the
+ ONLINE section for notifications on online and offline operation::
  
- 	/* Form the CR3 value being sure to include the CR3 modifier */
- 	addq	$(early_top_pgt - __START_KERNEL_map), %rax
-@@ -127,8 +125,6 @@ SYM_CODE_START(secondary_startup_64)
- 	 * At this point the CPU runs in 64bit mode CS.L = 1 CS.D = 0,
- 	 * and someone has loaded a mapped page table.
- 	 *
--	 * %rsi holds a physical pointer to real_mode_data.
--	 *
- 	 * We come here either from startup_64 (using physical addresses)
- 	 * or from trampoline.S (using virtual addresses).
- 	 *
-@@ -153,6 +149,9 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	UNWIND_HINT_END_OF_STACK
- 	ANNOTATE_NOENDBR
- 
-+	/* Clear %R15 which holds the boot_params pointer on the boot CPU */
-+	xorq	%r15, %r15
-+
- 	/*
- 	 * Retrieve the modifier (SME encryption mask if SME is active) to be
- 	 * added to the initial pgdir entry that will be programmed into CR3.
-@@ -199,13 +198,9 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	 * hypervisor could lie about the C-bit position to perform a ROP
- 	 * attack on the guest by writing to the unencrypted stack and wait for
- 	 * the next RET instruction.
--	 * %rsi carries pointer to realmode data and is callee-clobbered. Save
--	 * and restore it.
- 	 */
--	pushq	%rsi
- 	movq	%rax, %rdi
- 	call	sev_verify_cbit
--	popq	%rsi
- 
- 	/*
- 	 * Switch to new page-table
-@@ -365,9 +360,7 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	wrmsr
- 
- 	/* Setup and Load IDT */
--	pushq	%rsi
- 	call	early_setup_idt
--	popq	%rsi
- 
- 	/* Check if nx is implemented */
- 	movl	$0x80000001, %eax
-@@ -403,9 +396,8 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	pushq $0
- 	popfq
- 
--	/* rsi is pointer to real mode structure with interesting info.
--	   pass it to C */
--	movq	%rsi, %rdi
-+	/* Pass the boot_params pointer as first argument */
-+	movq	%r15, %rdi
- 
- .Ljump_to_C_code:
- 	/*
+-   state = cpuhp_setup_state_multi(CPUHP_ONLINE_DYN, "subsys:online", subsys_cpu_online, subsys_cpu_offline);
++   state = cpuhp_setup_state_multi(CPUHP_AP_ONLINE_DYN, "subsys:online", subsys_cpu_online, subsys_cpu_offline);
+    if (state < 0)
+        return state;
+    ....
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index 25b6e6e..06dda85 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -48,7 +48,7 @@
+  *    same section.
+  *
+  * If neither #1 nor #2 apply, please use the dynamic state space when
+- * setting up a state by using CPUHP_PREPARE_DYN or CPUHP_PREPARE_ONLINE
++ * setting up a state by using CPUHP_BP_PREPARE_DYN or CPUHP_AP_ONLINE_DYN
+  * for the @state argument of the setup function.
+  *
+  * See Documentation/core-api/cpu_hotplug.rst for further information and
