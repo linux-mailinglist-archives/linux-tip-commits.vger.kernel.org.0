@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9209E773EC8
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 18:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2629773EA0
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Aug 2023 18:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233137AbjHHQfq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Aug 2023 12:35:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45258 "EHLO
+        id S232907AbjHHQdX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Aug 2023 12:33:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233030AbjHHQel (ORCPT
+        with ESMTP id S232921AbjHHQcg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Aug 2023 12:34:41 -0400
+        Tue, 8 Aug 2023 12:32:36 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B71290BC;
-        Tue,  8 Aug 2023 08:52:35 -0700 (PDT)
-Date:   Tue, 08 Aug 2023 08:43:59 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1989D31029;
+        Tue,  8 Aug 2023 08:52:01 -0700 (PDT)
+Date:   Tue, 08 Aug 2023 08:44:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1691484240;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=y77rgn7E7TfOuMWUCKwBavhvM7WJdaVehINdRrYibZ4=;
-        b=QfomoJby8n++lU8QdermIsj5JolG5JYq7kfupJzzzFE5K810wsMOPrjuB1MTwCvbT721Mj
-        +WKtPfEpNpITseMdq9tuULIOiWvujAHzPqqKeut938J9eZyweIX0EQ7HGBTMHuV11RoSZO
-        a/bYFcg1L06fdBiO6FddkUObhRCGZ8WsB2eeHbdSH/EYdqnuehoJOOgU1sRuyZx9W+h2lY
-        PFDIibgbU3OTCJ7VaDO2/J2v9vYXmb1MpRlR+7AogC+irI1wDnEg6iHX7zaAh6PCsUhtej
-        pZf1g4Xj1XJLcrIhbBJpMNym57b7F/KeeXtnaxyIsdOPD/CWSwd8luba9zXS2w==
+        bh=fk74tCtX53wVUn2Lm/NtmiVu1U7qFhlk1cx1q4Oyjgc=;
+        b=kBTewyJl8lJyAvsER9fySaS2M7oa8WTobHE+tAL31bpku1DHabxX3j4vrIkpSxcXoCVlSu
+        UW889tl1JEGy5/a469Hh4leMOG/k2tyLst0XdV7A782g7uPPOmT2hAWgefzB3JiWtxBkCF
+        kWovHcZMa74R8iVSZDulwodh62pg0SXrOautcEOVbI8OejATI7IjrM76K9ny72BZvHUkki
+        2JrFecvQ9UGYL/QP2ob05Edvy3D/IMaqd5mScwaB8XmDwuB8iwMGOBudcDsgFAJ5S2RSXg
+        HmrW4k4Y/0ZhHVvYLeDIBjoWfaepuaD3tLfC0hm6NmJLK6pCQDQnonVOlnTVwQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1691484240;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=y77rgn7E7TfOuMWUCKwBavhvM7WJdaVehINdRrYibZ4=;
-        b=9D6cKiU37Yi4ul0awgJy9eR+7tYNOfPqzykhnpzSOp+KzQpYRJP0WZpsV/Hc7/EamSIVRf
-        mdjP8yuNq8KPYMBg==
+        bh=fk74tCtX53wVUn2Lm/NtmiVu1U7qFhlk1cx1q4Oyjgc=;
+        b=c37Vpfy9lgdBz7GsthOrQq/vuiNud0IU51CfmeCTbfa67tH4Lg/f88xuwcT8Ur43ftGX8G
+        iGQUItWTYPFb6xAA==
 From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/decompressor: Move global symbol references to C code
+Subject: [tip: x86/boot] decompress: Use 8 byte alignment
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230807162720.545787-20-ardb@kernel.org>
-References: <20230807162720.545787-20-ardb@kernel.org>
+In-Reply-To: <20230807162720.545787-19-ardb@kernel.org>
+References: <20230807162720.545787-19-ardb@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169148423950.27769.1609790519786768176.tip-bot2@tip-bot2>
+Message-ID: <169148424001.27769.17774724848904519464.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,140 +67,35 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     24388292e2d7fae79a0d4183cc91716b851299cf
-Gitweb:        https://git.kernel.org/tip/24388292e2d7fae79a0d4183cc91716b851299cf
+Commit-ID:     8217ad0a435ff06d651d7298ea8ae8d72388179e
+Gitweb:        https://git.kernel.org/tip/8217ad0a435ff06d651d7298ea8ae8d72388179e
 Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Mon, 07 Aug 2023 18:27:16 +02:00
+AuthorDate:    Mon, 07 Aug 2023 18:27:15 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 07 Aug 2023 20:58:02 +02:00
+CommitterDate: Mon, 07 Aug 2023 20:55:27 +02:00
 
-x86/decompressor: Move global symbol references to C code
+decompress: Use 8 byte alignment
 
-It is no longer necessary to be cautious when referring to global
-variables in the position independent decompressor code, now that it is
-built using PIE codegen and makes an assertion in the linker script that
-no GOT entries exist (which would require adjustment for the actual
-runtime load address of the decompressor binary).
-
-This means global variables can be referenced directly from C code,
-instead of having to pass their runtime addresses into C routines from
-asm code, which needs to happen at each call site. Do so for the code
-that will be called directly from the EFI stub after a subsequent patch,
-and avoid the need to duplicate this logic a third time.
+The ZSTD decompressor requires malloc() allocations to be 8 byte
+aligned, so ensure that this the case.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-20-ardb@kernel.org
+Link: https://lore.kernel.org/r/20230807162720.545787-19-ardb@kernel.org
 ---
- arch/x86/boot/compressed/head_32.S |  8 --------
- arch/x86/boot/compressed/head_64.S | 10 ++--------
- arch/x86/boot/compressed/misc.c    | 16 +++++++++-------
- 3 files changed, 11 insertions(+), 23 deletions(-)
+ include/linux/decompress/mm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
-index 8876ffe..3af4a38 100644
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -168,13 +168,7 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
-  */
- 	/* push arguments for extract_kernel: */
+diff --git a/include/linux/decompress/mm.h b/include/linux/decompress/mm.h
+index 9192986..ac86242 100644
+--- a/include/linux/decompress/mm.h
++++ b/include/linux/decompress/mm.h
+@@ -48,7 +48,7 @@ MALLOC_VISIBLE void *malloc(int size)
+ 	if (!malloc_ptr)
+ 		malloc_ptr = free_mem_ptr;
  
--	pushl	output_len@GOTOFF(%ebx)	/* decompressed length, end of relocs */
- 	pushl	%ebp			/* output address */
--	pushl	input_len@GOTOFF(%ebx)	/* input_len */
--	leal	input_data@GOTOFF(%ebx), %eax
--	pushl	%eax			/* input_data */
--	leal	boot_heap@GOTOFF(%ebx), %eax
--	pushl	%eax			/* heap area */
- 	pushl	%esi			/* real mode pointer */
- 	call	extract_kernel		/* returns kernel entry point in %eax */
- 	addl	$24, %esp
-@@ -202,8 +196,6 @@ SYM_DATA_END_LABEL(gdt, SYM_L_LOCAL, gdt_end)
-  */
- 	.bss
- 	.balign 4
--boot_heap:
--	.fill BOOT_HEAP_SIZE, 1, 0
- boot_stack:
- 	.fill BOOT_STACK_SIZE, 1, 0
- boot_stack_end:
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index fb0e562..28f4605 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -493,13 +493,9 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
- /*
-  * Do the extraction, and jump to the new kernel..
-  */
--	/* pass struct boot_params pointer */
-+	/* pass struct boot_params pointer and output target address */
- 	movq	%r15, %rdi
--	leaq	boot_heap(%rip), %rsi	/* malloc area for uncompression */
--	leaq	input_data(%rip), %rdx  /* input_data */
--	movl	input_len(%rip), %ecx	/* input_len */
--	movq	%rbp, %r8		/* output target address */
--	movl	output_len(%rip), %r9d	/* decompressed length, end of relocs */
-+	movq	%rbp, %rsi
- 	call	extract_kernel		/* returns kernel entry point in %rax */
+-	malloc_ptr = (malloc_ptr + 3) & ~3;     /* Align */
++	malloc_ptr = (malloc_ptr + 7) & ~7;     /* Align */
  
- /*
-@@ -657,8 +653,6 @@ SYM_DATA_END_LABEL(boot_idt, SYM_L_GLOBAL, boot_idt_end)
-  */
- 	.bss
- 	.balign 4
--SYM_DATA_LOCAL(boot_heap,	.fill BOOT_HEAP_SIZE, 1, 0)
--
- SYM_DATA_START_LOCAL(boot_stack)
- 	.fill BOOT_STACK_SIZE, 1, 0
- 	.balign 16
-diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index 94b7abc..2d91d56 100644
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -330,6 +330,11 @@ static size_t parse_elf(void *output)
- 	return ehdr.e_entry - LOAD_PHYSICAL_ADDR;
- }
- 
-+static u8 boot_heap[BOOT_HEAP_SIZE] __aligned(4);
-+
-+extern unsigned char input_data[];
-+extern unsigned int input_len, output_len;
-+
- /*
-  * The compressed kernel image (ZO), has been moved so that its position
-  * is against the end of the buffer used to hold the uncompressed kernel
-@@ -347,14 +352,11 @@ static size_t parse_elf(void *output)
-  *             |-------uncompressed kernel image---------|
-  *
-  */
--asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
--				  unsigned char *input_data,
--				  unsigned long input_len,
--				  unsigned char *output,
--				  unsigned long output_len)
-+asmlinkage __visible void *extract_kernel(void *rmode, unsigned char *output)
- {
- 	const unsigned long kernel_total_size = VO__end - VO__text;
- 	unsigned long virt_addr = LOAD_PHYSICAL_ADDR;
-+	memptr heap = (memptr)boot_heap;
- 	unsigned long needed_size;
- 	size_t entry_offset;
- 
-@@ -412,7 +414,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
- 	 * entries. This ensures the full mapped area is usable RAM
- 	 * and doesn't include any reserved areas.
- 	 */
--	needed_size = max(output_len, kernel_total_size);
-+	needed_size = max_t(unsigned long, output_len, kernel_total_size);
- #ifdef CONFIG_X86_64
- 	needed_size = ALIGN(needed_size, MIN_KERNEL_ALIGN);
- #endif
-@@ -443,7 +445,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
- #ifdef CONFIG_X86_64
- 	if (heap > 0x3fffffffffffUL)
- 		error("Destination address too large");
--	if (virt_addr + max(output_len, kernel_total_size) > KERNEL_IMAGE_SIZE)
-+	if (virt_addr + needed_size > KERNEL_IMAGE_SIZE)
- 		error("Destination virtual address is beyond the kernel mapping area");
- #else
- 	if (heap > ((-__PAGE_OFFSET-(128<<20)-1) & 0x7fffffff))
+ 	p = (void *)malloc_ptr;
+ 	malloc_ptr += size;
