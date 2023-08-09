@@ -2,45 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E17D0776A40
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E65B776A48
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:37:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234541AbjHIUhA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 16:37:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55330 "EHLO
+        id S234622AbjHIUhC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Aug 2023 16:37:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234623AbjHIUgY (ORCPT
+        with ESMTP id S234645AbjHIUg2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Aug 2023 16:36:24 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BBAE2698;
-        Wed,  9 Aug 2023 13:36:17 -0700 (PDT)
-Date:   Wed, 09 Aug 2023 20:36:15 -0000
+        Wed, 9 Aug 2023 16:36:28 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1EDD211D;
+        Wed,  9 Aug 2023 13:36:18 -0700 (PDT)
+Date:   Wed, 09 Aug 2023 20:36:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691613375;
+        s=2020; t=1691613377;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=MFyHblZdeyOOHmzTPso+H1vG4mwX5vS5BrXcAJngnRY=;
-        b=NCOHqscuDdJqcM+/qtj/cOLKDEzddBU1H0QfYwpN7Fec5PuNizwSqbGTAy3mBTnU41pMhs
-        nW+MdQ2Rs2c13NubwR2SQlr6aOmpUkTVrgiR02z1VnUvarEc8DIisS8iFQSzWTlDQoq3nE
-        2eD6WvJR18MdJPaccpbJ2rD2a9yHgd33+b9FHvi9R2v78g5U/iYj9nWlG5SPOWHaIOUX9J
-        U32ljgqxozDnhXKfBETqzz8t3PxHhigNHCXMzH4E0Nkxjx5Pw+bYr1X8MQ2K21BBdf3QDZ
-        6ACQ+GAZAqBL8rxIjAQxLlaISjAYqR/lZSAyIH+6R3Hy9G4QTWnTkA69d6krSQ==
+        bh=6V2eda6tSDiMcWu3bB/es9oPxcHTEiZuS6QOtH2lPkc=;
+        b=h2GsWi1v++Y+0otWpeISvuUh/Hqj9K8oh4UMNOjyCdBU6VYRr3Lij7SVjaNupOCLvX8xNL
+        ys/7oB8A7pLyeFhoxJryfAi7RJSvlVdFYB2Sd6YhdxmclKBfQ5R/Qx3CXk0lz7naYT2Sij
+        cSwHOaV95aKYGLxb4HSfibJSpX38y+1v+PX8TeJ4HWsOQhVPsqvQ8XitM9Uk8jj3LmvsY2
+        AN4eGKeNxraQp9iCOpV42rz4Zr1ynRJOy7gRnWE3rSR0LaeymS1m7gcbYnswK5vUv/a8Iw
+        MYohAF0f+0n23ozSeeblxn8I1t7Dlhav7b2kt4twpw4LCHVE2H9rBSSZ2QvPhw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691613375;
+        s=2020e; t=1691613377;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=MFyHblZdeyOOHmzTPso+H1vG4mwX5vS5BrXcAJngnRY=;
-        b=7oE0/Ztj+vipkefVGZHyBQcxHzP5MTir+DxYTDXYxie2lJK4wNaknxS74Li399hub2qmdR
-        ImpsLHjO1g0bSdCw==
+        bh=6V2eda6tSDiMcWu3bB/es9oPxcHTEiZuS6QOtH2lPkc=;
+        b=dybyrnWG5L+Q+SdHDt6UAOSG84mN1LytkGouJDWzlBpVcAVzggNK3yQ4tr1NPvnXjDXvF8
+        Eh3dceAhOF4BzTDQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Move safe wait_icr_idle() next to
- apic_mem_wait_icr_idle()
+Subject: [tip: x86/apic] x86/apic: Consolidate wait_icr_idle() implementations
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -49,7 +48,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169161337509.27769.87182267511901610.tip-bot2@tip-bot2>
+Message-ID: <169161337651.27769.15560408419021834767.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,17 +65,17 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     e7b6a023d2c90fcd540a29bbf5bd4e1b816e613c
-Gitweb:        https://git.kernel.org/tip/e7b6a023d2c90fcd540a29bbf5bd4e1b816e613c
+Commit-ID:     cfebd0077f3fc083cc139d7851e2068d058a89dd
+Gitweb:        https://git.kernel.org/tip/cfebd0077f3fc083cc139d7851e2068d058a89dd
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 08 Aug 2023 15:04:06 -07:00
+AuthorDate:    Tue, 08 Aug 2023 15:04:04 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 09 Aug 2023 11:58:29 -07:00
+CommitterDate: Wed, 09 Aug 2023 11:58:28 -07:00
 
-x86/apic: Move safe wait_icr_idle() next to apic_mem_wait_icr_idle()
+x86/apic: Consolidate wait_icr_idle() implementations
 
-Move it next to apic_mem_wait_icr_idle(), rename it so that it's clear what
-it does and rewrite it in readable form.
+Two copies and also needlessly public. Move it into ipi.c so it can be
+inlined. Rename it to apic_mem_wait_icr_idle().
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -85,164 +84,133 @@ Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Sohil Mehta <sohil.mehta@intel.com>
 Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
 ---
- arch/x86/include/asm/apic.h         |  1 -
- arch/x86/kernel/apic/apic.c         | 17 -----------------
- arch/x86/kernel/apic/apic_flat_64.c |  4 ++--
- arch/x86/kernel/apic/bigsmp_32.c    |  2 +-
- arch/x86/kernel/apic/ipi.c          | 19 +++++++++++++++++--
- arch/x86/kernel/apic/local.h        |  1 +
- arch/x86/kernel/apic/probe_32.c     |  2 +-
- 7 files changed, 22 insertions(+), 24 deletions(-)
+ arch/x86/include/asm/apic.h         | 1 -
+ arch/x86/kernel/apic/apic.c         | 6 ------
+ arch/x86/kernel/apic/apic_flat_64.c | 4 ++--
+ arch/x86/kernel/apic/bigsmp_32.c    | 2 +-
+ arch/x86/kernel/apic/ipi.c          | 6 +++---
+ arch/x86/kernel/apic/local.h        | 2 ++
+ arch/x86/kernel/apic/probe_32.c     | 2 +-
+ 7 files changed, 9 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index dd0a05d..49b6c7e 100644
+index 4fb71b7..1499865 100644
 --- a/arch/x86/include/asm/apic.h
 +++ b/arch/x86/include/asm/apic.h
 @@ -98,7 +98,6 @@ static inline u32 native_apic_mem_read(u32 reg)
  	return *((volatile u32 *)(APIC_BASE + reg));
  }
  
--extern u32 native_safe_apic_wait_icr_idle(void);
+-extern void native_apic_wait_icr_idle(void);
+ extern u32 native_safe_apic_wait_icr_idle(void);
  extern void native_apic_icr_write(u32 low, u32 id);
  extern u64 native_apic_icr_read(void);
- 
 diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index ab26a61..80a31f2 100644
+index 4ee95cb..ab26a61 100644
 --- a/arch/x86/kernel/apic/apic.c
 +++ b/arch/x86/kernel/apic/apic.c
-@@ -240,23 +240,6 @@ static void __init apic_disable(void)
+@@ -240,12 +240,6 @@ static void __init apic_disable(void)
  	apic = &apic_noop;
  }
  
--u32 native_safe_apic_wait_icr_idle(void)
+-void native_apic_wait_icr_idle(void)
 -{
--	u32 send_status;
--	int timeout;
--
--	timeout = 0;
--	do {
--		send_status = apic_read(APIC_ICR) & APIC_ICR_BUSY;
--		if (!send_status)
--			break;
--		inc_irq_stat(icr_read_retry_count);
--		udelay(100);
--	} while (timeout++ < 1000);
--
--	return send_status;
+-	while (apic_read(APIC_ICR) & APIC_ICR_BUSY)
+-		cpu_relax();
 -}
 -
- void native_apic_icr_write(u32 low, u32 id)
+ u32 native_safe_apic_wait_icr_idle(void)
  {
- 	unsigned long flags;
+ 	u32 send_status;
 diff --git a/arch/x86/kernel/apic/apic_flat_64.c b/arch/x86/kernel/apic/apic_flat_64.c
-index 57d3afb..1da865f 100644
+index a0c875d..57d3afb 100644
 --- a/arch/x86/kernel/apic/apic_flat_64.c
 +++ b/arch/x86/kernel/apic/apic_flat_64.c
-@@ -112,7 +112,7 @@ static struct apic apic_flat __ro_after_init = {
+@@ -111,7 +111,7 @@ static struct apic apic_flat __ro_after_init = {
+ 	.eoi_write			= native_apic_mem_write,
  	.icr_read			= native_apic_icr_read,
  	.icr_write			= native_apic_icr_write,
- 	.wait_icr_idle			= apic_mem_wait_icr_idle,
--	.safe_wait_icr_idle		= native_safe_apic_wait_icr_idle,
-+	.safe_wait_icr_idle		= apic_mem_wait_icr_idle_timeout,
+-	.wait_icr_idle			= native_apic_wait_icr_idle,
++	.wait_icr_idle			= apic_mem_wait_icr_idle,
+ 	.safe_wait_icr_idle		= native_safe_apic_wait_icr_idle,
  };
  
- /*
-@@ -188,7 +188,7 @@ static struct apic apic_physflat __ro_after_init = {
+@@ -187,7 +187,7 @@ static struct apic apic_physflat __ro_after_init = {
+ 	.eoi_write			= native_apic_mem_write,
  	.icr_read			= native_apic_icr_read,
  	.icr_write			= native_apic_icr_write,
- 	.wait_icr_idle			= apic_mem_wait_icr_idle,
--	.safe_wait_icr_idle		= native_safe_apic_wait_icr_idle,
-+	.safe_wait_icr_idle		= apic_mem_wait_icr_idle_timeout,
+-	.wait_icr_idle			= native_apic_wait_icr_idle,
++	.wait_icr_idle			= apic_mem_wait_icr_idle,
+ 	.safe_wait_icr_idle		= native_safe_apic_wait_icr_idle,
  };
  
- /*
 diff --git a/arch/x86/kernel/apic/bigsmp_32.c b/arch/x86/kernel/apic/bigsmp_32.c
-index 57077fc..32984bf 100644
+index ffff294..57077fc 100644
 --- a/arch/x86/kernel/apic/bigsmp_32.c
 +++ b/arch/x86/kernel/apic/bigsmp_32.c
-@@ -109,7 +109,7 @@ static struct apic apic_bigsmp __ro_after_init = {
+@@ -108,7 +108,7 @@ static struct apic apic_bigsmp __ro_after_init = {
+ 	.eoi_write			= native_apic_mem_write,
  	.icr_read			= native_apic_icr_read,
  	.icr_write			= native_apic_icr_write,
- 	.wait_icr_idle			= apic_mem_wait_icr_idle,
--	.safe_wait_icr_idle		= native_safe_apic_wait_icr_idle,
-+	.safe_wait_icr_idle		= apic_mem_wait_icr_idle_timeout,
+-	.wait_icr_idle			= native_apic_wait_icr_idle,
++	.wait_icr_idle			= apic_mem_wait_icr_idle,
+ 	.safe_wait_icr_idle		= native_safe_apic_wait_icr_idle,
  };
  
- bool __init apic_bigsmp_possible(bool cmdline_override)
 diff --git a/arch/x86/kernel/apic/ipi.c b/arch/x86/kernel/apic/ipi.c
-index e0e0567..460df02 100644
+index 614ac55..e0e0567 100644
 --- a/arch/x86/kernel/apic/ipi.c
 +++ b/arch/x86/kernel/apic/ipi.c
-@@ -1,7 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/cpumask.h>
-+#include <linux/delay.h>
- #include <linux/smp.h>
-+
- #include <asm/io_apic.h>
- 
- #include "local.h"
-@@ -102,6 +104,19 @@ static inline int __prepare_ICR2(unsigned int mask)
+@@ -102,7 +102,7 @@ static inline int __prepare_ICR2(unsigned int mask)
  	return SET_XAPIC_DEST_FIELD(mask);
  }
  
-+u32 apic_mem_wait_icr_idle_timeout(void)
-+{
-+	int cnt;
-+
-+	for (cnt = 0; cnt < 1000; cnt++) {
-+		if (!(apic_read(APIC_ICR) & APIC_ICR_BUSY))
-+			return 0;
-+		inc_irq_stat(icr_read_retry_count);
-+		udelay(100);
-+	}
-+	return APIC_ICR_BUSY;
-+}
-+
- void apic_mem_wait_icr_idle(void)
+-static inline void __xapic_wait_icr_idle(void)
++void apic_mem_wait_icr_idle(void)
  {
  	while (native_apic_mem_read(APIC_ICR) & APIC_ICR_BUSY)
-@@ -135,7 +150,7 @@ static void __default_send_IPI_shortcut(unsigned int shortcut, int vector)
- 	 * to stop the others before launching the kdump kernel.
- 	 */
+ 		cpu_relax();
+@@ -137,7 +137,7 @@ static void __default_send_IPI_shortcut(unsigned int shortcut, int vector)
  	if (unlikely(vector == NMI_VECTOR))
--		safe_apic_wait_icr_idle();
-+		apic_mem_wait_icr_idle_timeout();
+ 		safe_apic_wait_icr_idle();
  	else
- 		apic_mem_wait_icr_idle();
+-		__xapic_wait_icr_idle();
++		apic_mem_wait_icr_idle();
  
-@@ -152,7 +167,7 @@ void __default_send_IPI_dest_field(unsigned int dest_mask, int vector,
- {
- 	/* See comment in __default_send_IPI_shortcut() */
+ 	/* Destination field (ICR2) and the destination mode are ignored */
+ 	native_apic_mem_write(APIC_ICR, __prepare_ICR(shortcut, vector, 0));
+@@ -154,7 +154,7 @@ void __default_send_IPI_dest_field(unsigned int dest_mask, int vector,
  	if (unlikely(vector == NMI_VECTOR))
--		safe_apic_wait_icr_idle();
-+		apic_mem_wait_icr_idle_timeout();
+ 		safe_apic_wait_icr_idle();
  	else
- 		apic_mem_wait_icr_idle();
+-		__xapic_wait_icr_idle();
++		apic_mem_wait_icr_idle();
  
+ 	/* Set the IPI destination field in the ICR */
+ 	native_apic_mem_write(APIC_ICR2, __prepare_ICR2(dest_mask));
 diff --git a/arch/x86/kernel/apic/local.h b/arch/x86/kernel/apic/local.h
-index 2eb49d4..98cfe78 100644
+index 5b0a0e7..2eb49d4 100644
 --- a/arch/x86/kernel/apic/local.h
 +++ b/arch/x86/kernel/apic/local.h
-@@ -45,6 +45,7 @@ static inline unsigned int __prepare_ICR(unsigned int shortcut, int vector,
+@@ -44,6 +44,8 @@ static inline unsigned int __prepare_ICR(unsigned int shortcut, int vector,
+ 
  void default_init_apic_ldr(void);
  
- void apic_mem_wait_icr_idle(void);
-+u32 apic_mem_wait_icr_idle_timeout(void);
- 
++void apic_mem_wait_icr_idle(void);
++
  /*
   * This is used to send an IPI with no shorthand notation (the destination is
+  * specified in bits 56 to 63 of the ICR).
 diff --git a/arch/x86/kernel/apic/probe_32.c b/arch/x86/kernel/apic/probe_32.c
-index 52f3c6f..a861a77 100644
+index 81c69d7..52f3c6f 100644
 --- a/arch/x86/kernel/apic/probe_32.c
 +++ b/arch/x86/kernel/apic/probe_32.c
-@@ -65,7 +65,7 @@ static struct apic apic_default __ro_after_init = {
+@@ -64,7 +64,7 @@ static struct apic apic_default __ro_after_init = {
+ 	.eoi_write			= native_apic_mem_write,
  	.icr_read			= native_apic_icr_read,
  	.icr_write			= native_apic_icr_write,
- 	.wait_icr_idle			= apic_mem_wait_icr_idle,
--	.safe_wait_icr_idle		= native_safe_apic_wait_icr_idle,
-+	.safe_wait_icr_idle		= apic_mem_wait_icr_idle_timeout,
+-	.wait_icr_idle			= native_apic_wait_icr_idle,
++	.wait_icr_idle			= apic_mem_wait_icr_idle,
+ 	.safe_wait_icr_idle		= native_safe_apic_wait_icr_idle,
  };
  
- apic_driver(apic_default);
