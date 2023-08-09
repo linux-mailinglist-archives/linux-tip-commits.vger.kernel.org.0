@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA1A3776A24
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16411776A28
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234531AbjHIUgJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 16:36:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53284 "EHLO
+        id S234574AbjHIUgR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Aug 2023 16:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234528AbjHIUgI (ORCPT
+        with ESMTP id S234541AbjHIUgK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Aug 2023 16:36:08 -0400
+        Wed, 9 Aug 2023 16:36:10 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135792111;
-        Wed,  9 Aug 2023 13:36:08 -0700 (PDT)
-Date:   Wed, 09 Aug 2023 20:36:06 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AEF42109;
+        Wed,  9 Aug 2023 13:36:09 -0700 (PDT)
+Date:   Wed, 09 Aug 2023 20:36:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691613366;
+        s=2020; t=1691613367;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=BKgymA0Nyj04yj+S/5v9Z2cdQX5tomjetwTLfJopQm0=;
-        b=ogkd9tFf7INt7FItVYdJ4dXgsQYy3Sip3yTNrcgGstUjGUQ/rdRVS9xrG5defcFNyWEmN4
-        r8c3wttb4zXGDrRuZ2aNZHROrK5z3NuSefM/nRacbkcbAIIFwVEHlnQqfuxlnws++yR7l8
-        dvtrD/OCbIIIqW/IA/i3SJKKNvscbZsoXRX0hDVfyjIOPFiVzzZDhXMp4/RztvH/8FD+hj
-        6fyhBqh2YqLhTMCvJXI7sdqETr9xREJ9j/Vjy2ImeyVVVoD3YaRAJrSLYVXvFPvx+EsDh3
-        2SzoNyOLPZ8BMMx0Ectckx51KHIKutvbXzrp0bOSLgy8M6lfSxtsXoank2Pgpg==
+        bh=HfUWz6QDof0eaP1RS1dsvScAIJcevBHYPir4cDnEYrI=;
+        b=I5Nl/C68h5GGy336T/7usjNgNUprSYJFcHTnCREzfk54UdQFcBiS5cuLs6LPcU0naV2DmZ
+        eQrEvCXoKIdcU91s9LbFMExXrMadhiookMq26sTDSmKg6OaIFnGAqPerSvvTd5GIYxKE1+
+        ewHLyiSbe0KX/EdngTuP/Mqu6FMHb+B/1ZBhTU1AlsL0KP9Di2d0O9jdgQgyzkJdV882cd
+        8JlAl1gEJ0uNGumeDMWBjDcn3s9HFUTL3XX8J8VKf7694THjtvkgB7aACsav3FjZnik1MP
+        DPfQrM19t/ouenc+ePe3cdddG+FGuk8nXzx4n33OQR8w7/CyV2kQ3qgCZcOZxg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691613366;
+        s=2020e; t=1691613367;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=BKgymA0Nyj04yj+S/5v9Z2cdQX5tomjetwTLfJopQm0=;
-        b=nnPNM5ZpS6foRg3rdgujadq2Jz5nEiJRTnuTM6xs5w8X4DgW7YpRAUSn5IxmFoUj2V+VRF
-        Msndf+er6fNayODA==
+        bh=HfUWz6QDof0eaP1RS1dsvScAIJcevBHYPir4cDnEYrI=;
+        b=zGarAqutFXghF+38msqlgLKt0fzRbsBe/ppMtTy1uE2eOJVVw4080HLiXmwu/tO+bpF0lO
+        4YNBHu2vsYhyShAQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Convert other overrides to apic_update_callback()
+Subject: [tip: x86/apic] x86/apic: Provide apic_update_callback()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -48,7 +48,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169161336618.27769.10942135525224144038.tip-bot2@tip-bot2>
+Message-ID: <169161336718.27769.12478895840101814238.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,22 +65,23 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     d6f361ea706710f8d582bb176793b779a3b8b2ca
-Gitweb:        https://git.kernel.org/tip/d6f361ea706710f8d582bb176793b779a3b8b2ca
+Commit-ID:     bef4f379e953af49a9bd81790954e78fcb264920
+Gitweb:        https://git.kernel.org/tip/bef4f379e953af49a9bd81790954e78fcb264920
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 08 Aug 2023 15:04:20 -07:00
+AuthorDate:    Tue, 08 Aug 2023 15:04:19 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Wed, 09 Aug 2023 12:00:46 -07:00
 
-x86/apic: Convert other overrides to apic_update_callback()
+x86/apic: Provide apic_update_callback()
 
-Convert all places which just assign a new function directly to the apic
-callback to use apic_update_callback() which prepares for using static
-calls.
+There are already two variants of update mechanism for particular callbacks
+and virtualization just writes into the data structure.
 
-Mark snp_set_wakeup_secondary_cpu() and kvm_setup_pv_ipi() __init, as they
-are only invoked from init code and otherwise trigger a section mismatch as
-they are now invoking a __init function.
+Provide an interface and use a shadow data structure to preserve callbacks
+so they can be reapplied when the APIC driver is replaced.
+
+The extra data structure is intentional as any new callback needs to be
+also updated in the core code. This also prepares for static calls.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -89,86 +90,141 @@ Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Sohil Mehta <sohil.mehta@intel.com>
 Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
 ---
- arch/x86/hyperv/hv_apic.c | 20 ++++++++++----------
- arch/x86/kernel/kvm.c     |  6 +++---
- arch/x86/kernel/sev.c     |  4 ++--
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ arch/x86/include/asm/apic.h | 28 ++++++++++++++++++++++++++-
+ arch/x86/kernel/apic/init.c | 39 +++++++++++++++++++++++++++++++++++-
+ arch/x86/kernel/setup.c     |  2 ++-
+ 3 files changed, 68 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/hyperv/hv_apic.c b/arch/x86/hyperv/hv_apic.c
-index bfb02f6..72d9931 100644
---- a/arch/x86/hyperv/hv_apic.c
-+++ b/arch/x86/hyperv/hv_apic.c
-@@ -288,12 +288,12 @@ void __init hv_apic_init(void)
- 		 */
- 		orig_apic = *apic;
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index 90814ec..6e279c1 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -308,6 +308,23 @@ struct apic {
+ 	char	*name;
+ };
  
--		apic->send_IPI = hv_send_ipi;
--		apic->send_IPI_mask = hv_send_ipi_mask;
--		apic->send_IPI_mask_allbutself = hv_send_ipi_mask_allbutself;
--		apic->send_IPI_allbutself = hv_send_ipi_allbutself;
--		apic->send_IPI_all = hv_send_ipi_all;
--		apic->send_IPI_self = hv_send_ipi_self;
-+		apic_update_callback(send_IPI, hv_send_ipi);
-+		apic_update_callback(send_IPI_mask, hv_send_ipi_mask);
-+		apic_update_callback(send_IPI_mask_allbutself, hv_send_ipi_mask_allbutself);
-+		apic_update_callback(send_IPI_allbutself, hv_send_ipi_allbutself);
-+		apic_update_callback(send_IPI_all, hv_send_ipi_all);
-+		apic_update_callback(send_IPI_self, hv_send_ipi_self);
- 	}
- 
- 	if (ms_hyperv.hints & HV_X64_APIC_ACCESS_RECOMMENDED) {
-@@ -312,10 +312,10 @@ void __init hv_apic_init(void)
- 		 */
- 		apic_update_callback(eoi, hv_apic_eoi_write);
- 		if (!x2apic_enabled()) {
--			apic->read      = hv_apic_read;
--			apic->write     = hv_apic_write;
--			apic->icr_write = hv_apic_icr_write;
--			apic->icr_read  = hv_apic_icr_read;
-+			apic_update_callback(read, hv_apic_read);
-+			apic_update_callback(write, hv_apic_write);
-+			apic_update_callback(icr_write, hv_apic_icr_write);
-+			apic_update_callback(icr_read, hv_apic_icr_read);
- 		}
- 	}
- }
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index c86cedb..6a36db4 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -622,10 +622,10 @@ late_initcall(setup_efi_kvm_sev_migration);
++struct apic_override {
++	void	(*eoi)(void);
++	void	(*native_eoi)(void);
++	void	(*write)(u32 reg, u32 v);
++	u32	(*read)(u32 reg);
++	void	(*send_IPI)(int cpu, int vector);
++	void	(*send_IPI_mask)(const struct cpumask *mask, int vector);
++	void	(*send_IPI_mask_allbutself)(const struct cpumask *msk, int vec);
++	void	(*send_IPI_allbutself)(int vector);
++	void	(*send_IPI_all)(int vector);
++	void	(*send_IPI_self)(int vector);
++	u64	(*icr_read)(void);
++	void	(*icr_write)(u32 low, u32 high);
++	int	(*wakeup_secondary_cpu)(int apicid, unsigned long start_eip);
++	int	(*wakeup_secondary_cpu_64)(int apicid, unsigned long start_eip);
++};
++
  /*
-  * Set the IPI entry points
-  */
--static void kvm_setup_pv_ipi(void)
-+static __init void kvm_setup_pv_ipi(void)
+  * Pointer to the local APIC driver in use on this system (there's
+  * always just one such driver in use - the kernel decides via an
+@@ -343,9 +360,17 @@ extern int lapic_can_unplug_cpu(void);
+ #endif
+ 
+ #ifdef CONFIG_X86_LOCAL_APIC
++extern struct apic_override __x86_apic_override;
+ 
++void __init apic_setup_apic_calls(void);
+ void __init apic_install_driver(struct apic *driver);
+ 
++#define apic_update_callback(_callback, _fn) {					\
++		__x86_apic_override._callback = _fn;				\
++		apic->_callback = _fn;						\
++		pr_info("APIC: %s() replaced with %ps()\n", #_callback, _fn);	\
++}
++
+ static inline u32 apic_read(u32 reg)
  {
--	apic->send_IPI_mask = kvm_send_ipi_mask;
--	apic->send_IPI_mask_allbutself = kvm_send_ipi_mask_allbutself;
-+	apic_update_callback(send_IPI_mask, kvm_send_ipi_mask);
-+	apic_update_callback(send_IPI_mask_allbutself, kvm_send_ipi_mask_allbutself);
- 	pr_info("setup PV IPIs\n");
- }
+ 	return apic->read(reg);
+@@ -405,6 +430,9 @@ static inline void apic_wait_icr_idle(void) { }
+ static inline u32 safe_apic_wait_icr_idle(void) { return 0; }
+ static inline void apic_set_eoi_cb(void (*eoi)(void)) {}
+ static inline void apic_native_eoi(void) { WARN_ON_ONCE(1); }
++static inline void apic_setup_apic_calls(void) { }
++
++#define apic_update_callback(_callback, _fn) do { } while (0)
  
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 1ee7bed..a2b50ae 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -1089,7 +1089,7 @@ static int wakeup_cpu_via_vmgexit(int apic_id, unsigned long start_ip)
- 	return ret;
- }
+ #endif /* CONFIG_X86_LOCAL_APIC */
  
--void snp_set_wakeup_secondary_cpu(void)
-+void __init snp_set_wakeup_secondary_cpu(void)
+diff --git a/arch/x86/kernel/apic/init.c b/arch/x86/kernel/apic/init.c
+index 25cf39b..dab3afa 100644
+--- a/arch/x86/kernel/apic/init.c
++++ b/arch/x86/kernel/apic/init.c
+@@ -5,6 +5,37 @@
+ 
+ #include "local.h"
+ 
++/* The container for function call overrides */
++struct apic_override __x86_apic_override __initdata;
++
++#define apply_override(__cb)					\
++	if (__x86_apic_override.__cb)				\
++		apic->__cb = __x86_apic_override.__cb
++
++static __init void restore_override_callbacks(void)
++{
++	apply_override(eoi);
++	apply_override(native_eoi);
++	apply_override(write);
++	apply_override(read);
++	apply_override(send_IPI);
++	apply_override(send_IPI_mask);
++	apply_override(send_IPI_mask_allbutself);
++	apply_override(send_IPI_allbutself);
++	apply_override(send_IPI_all);
++	apply_override(send_IPI_self);
++	apply_override(icr_read);
++	apply_override(icr_write);
++	apply_override(wakeup_secondary_cpu);
++	apply_override(wakeup_secondary_cpu_64);
++}
++
++void __init apic_setup_apic_calls(void)
++{
++	/* Ensure that the default APIC has native_eoi populated */
++	apic->native_eoi = apic->eoi;
++}
++
+ void __init apic_install_driver(struct apic *driver)
  {
- 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
- 		return;
-@@ -1099,7 +1099,7 @@ void snp_set_wakeup_secondary_cpu(void)
- 	 * required method to start APs under SNP. If the hypervisor does
- 	 * not support AP creation, then no APs will be started.
- 	 */
--	apic->wakeup_secondary_cpu = wakeup_cpu_via_vmgexit;
-+	apic_update_callback(wakeup_secondary_cpu, wakeup_cpu_via_vmgexit);
+ 	if (apic == driver)
+@@ -15,6 +46,13 @@ void __init apic_install_driver(struct apic *driver)
+ 	if (IS_ENABLED(CONFIG_X86_X2APIC) && apic->x2apic_set_max_apicid)
+ 		apic->max_apic_id = x2apic_max_apicid;
+ 
++	/* Copy the original eoi() callback as KVM/HyperV might overwrite it */
++	if (!apic->native_eoi)
++		apic->native_eoi = apic->eoi;
++
++	/* Apply any already installed callback overrides */
++	restore_override_callbacks();
++
+ 	pr_info("Switched APIC routing to: %s\n", driver->name);
  }
  
- int __init sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
+@@ -41,7 +79,6 @@ void __init apic_set_eoi_cb(void (*eoi)(void))
+ 	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++) {
+ 		/* Should happen once for each apic */
+ 		WARN_ON((*drv)->eoi == eoi);
+-		(*drv)->native_eoi = (*drv)->eoi;
+ 		(*drv)->eoi = eoi;
+ 	}
+ }
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index f83d02b..b9145a6 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1017,6 +1017,8 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	x86_report_nx();
+ 
++	apic_setup_apic_calls();
++
+ 	if (acpi_mps_check()) {
+ #ifdef CONFIG_X86_LOCAL_APIC
+ 		apic_is_disabled = true;
