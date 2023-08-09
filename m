@@ -2,53 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A2FE77683E
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 21:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC2AD776855
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 21:14:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233386AbjHITNj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 15:13:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42018 "EHLO
+        id S233269AbjHITOO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Aug 2023 15:14:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233493AbjHITM7 (ORCPT
+        with ESMTP id S229639AbjHITNh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Aug 2023 15:12:59 -0400
+        Wed, 9 Aug 2023 15:13:37 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA838212C;
-        Wed,  9 Aug 2023 12:12:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54CF30E9;
+        Wed,  9 Aug 2023 12:12:53 -0700 (PDT)
 Date:   Wed, 09 Aug 2023 19:12:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691608345;
+        s=2020; t=1691608346;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=fJ0OYFuKv7/VhR4WNvEypz1rwyj+na07BQdaWK7QByc=;
-        b=wZqZt38HrOeSeGWUag0tFZNGvEaFKr11dYxYgkDW3l5+dPSFocuKtLmRoVEoGMzFQXqtkb
-        h2+Nk3JKTEZXJw52o9fpeMPb1OdqPSr94jXdLw5c/ERRm4sHgY/p0nxxkskVK9qcMzex1c
-        6n8HtRbFbFZuWlcgoCVW9aEh6zVBuyOdhfwvSysCF5NPIM5GPf/fQnvZcy0znYrB1xpWwF
-        iSThwOD7fa0VMsygU70hyOZItOTQckwCvJcDsjOL4wc0xp8HVRLcnq8kctA/3XFAUKbXB0
-        3z5OGSaCC9dgp3/HFe9afTySyeu+fzT5vOiCznYUYCHuBbsUyFL4QSlJl1Dpyg==
+        bh=x5XCJnY1rrpq6ehSxamA971kpUww8ISxLLlpIRugkIU=;
+        b=jkNDq8NFfWjf/AxRpfYOGhZ5fJet2KAH1tPXtEEQ2j/pHyRMK1/hc7HbPpBHTG+DpYsKAd
+        jh9HIzH73s5HMvvgoRqU3gwDNBgeC/t9/5Y22BfSe8rb1IwtE/qyFsOZR1H4VSnEX/sBNB
+        UddhsswdKAeDipY3hTD3NFLghUdhAphFvuXxLgqh6Jx4IgzvQhsV6GCVuvGtUeRvzyh5bn
+        DkmJ1T7d+S1z9gUMmQLZfQt9o0IULiVFH+y6Jz9LXv1xz9dKns7hyNdP2NXv72jpwvs5/9
+        4bytJdCxpkzDqZtl5kQCkCEZjqSu3+BPMFs5rJ1njGewRt9PKfuoaLsBxRpWRg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691608345;
+        s=2020e; t=1691608346;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=fJ0OYFuKv7/VhR4WNvEypz1rwyj+na07BQdaWK7QByc=;
-        b=bjqEwHqqo1MPh81fzV3Ptv3A7Kj1o68QqO7ogPwpn+lbLpxypT7ClFGepWeawoJ+qfpe8N
-        9FHaGmA+bLl17oCQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=x5XCJnY1rrpq6ehSxamA971kpUww8ISxLLlpIRugkIU=;
+        b=/qaw/eykOVgRwHgdR/lnS9z2ncaDzHUHHTafEG04tkt+NdZE3DF1ZToxfXxXH0hJhSwMAw
+        MUL249ZTU2874FCg==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/of: Fix the APIC address registration
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Sohil Mehta <sohil.mehta@intel.com>,
-        Juergen Gross <jgross@suse.com>, x86@kernel.org,
+Subject: [tip: x86/apic] x86/apic: Remove mpparse 'apicid' variable
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169160834528.27769.7010023693541059077.tip-bot2@tip-bot2>
+Message-ID: <169160834565.27769.5763058021367629941.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,60 +60,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     2906a67ac83b06b874b32bf6413a8d5e186fc33e
-Gitweb:        https://git.kernel.org/tip/2906a67ac83b06b874b32bf6413a8d5e186fc33e
-Author:        Thomas Gleixner <tglx@linutronix.de>
+Commit-ID:     004671e5c9335736ef808482bfc69cccd93cccc5
+Gitweb:        https://git.kernel.org/tip/004671e5c9335736ef808482bfc69cccd93cccc5
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
 AuthorDate:    Tue, 08 Aug 2023 15:03:47 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Wed, 09 Aug 2023 11:58:19 -07:00
 
-x86/of: Fix the APIC address registration
+x86/apic: Remove mpparse 'apicid' variable
 
-The device tree APIC parser tries to force-enable the local APIC when it is
-not set in CPUID. apic_force_enable() registers the boot CPU apic on
-success.
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-If that succeeds then dtb_lapic_setup() registers the local APIC again
-eventually with a different address.
+Some truly ancient code had different ways of calculating the 'apicid'
+but it is long gone.  Zap the unnecssary local variablee
 
-Rewrite the code so that it only registers it once.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Michael Kelley <mikelley@microsoft.com>
-Tested-by: Sohil Mehta <sohil.mehta@intel.com>
-Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
 ---
- arch/x86/kernel/devicetree.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ arch/x86/kernel/mpparse.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
-index 56f6d59..8f94eb6 100644
---- a/arch/x86/kernel/devicetree.c
-+++ b/arch/x86/kernel/devicetree.c
-@@ -157,19 +157,15 @@ static void __init dtb_lapic_setup(void)
+diff --git a/arch/x86/kernel/mpparse.c b/arch/x86/kernel/mpparse.c
+index 82518c1..333dee2 100644
+--- a/arch/x86/kernel/mpparse.c
++++ b/arch/x86/kernel/mpparse.c
+@@ -48,7 +48,6 @@ static int __init mpf_checksum(unsigned char *mp, int len)
  
- 	/* Did the boot loader setup the local APIC ? */
- 	if (!boot_cpu_has(X86_FEATURE_APIC)) {
-+		/* Try force enabling, which registers the APIC address */
- 		if (apic_force_enable(lapic_addr))
- 			return;
--	}
--	smp_found_config = 1;
--	if (of_property_read_bool(dn, "intel,virtual-wire-mode")) {
--		pr_info("Virtual Wire compatibility mode.\n");
--		pic_mode = 0;
- 	} else {
--		pr_info("IMCR and PIC compatibility mode.\n");
--		pic_mode = 1;
-+		register_lapic_address(lapic_addr);
+ static void __init MP_processor_info(struct mpc_cpu *m)
+ {
+-	int apicid;
+ 	char *bootup_cpu = "";
+ 
+ 	if (!(m->cpuflag & CPU_ENABLED)) {
+@@ -56,13 +55,11 @@ static void __init MP_processor_info(struct mpc_cpu *m)
+ 		return;
  	}
+ 
+-	apicid = m->apicid;
 -
--	register_lapic_address(lapic_addr);
-+	smp_found_config = 1;
-+	pic_mode = !of_property_read_bool(dn, "intel,virtual-wire-mode");
-+	pr_info("%s compatibility mode.\n", pic_mode ? "IMCR and PIC" : "Virtual Wire");
+ 	if (m->cpuflag & CPU_BOOTPROCESSOR)
+ 		bootup_cpu = " (Bootup-CPU)";
+ 
+ 	pr_info("Processor #%d%s\n", m->apicid, bootup_cpu);
+-	generic_processor_info(apicid);
++	generic_processor_info(m->apicid);
  }
  
- #endif /* CONFIG_X86_LOCAL_APIC */
+ #ifdef CONFIG_X86_IO_APIC
