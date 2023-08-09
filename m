@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 282F077685C
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 21:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83167776854
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 21:14:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232334AbjHITOU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 15:14:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36452 "EHLO
+        id S230000AbjHITOS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Aug 2023 15:14:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233490AbjHITNj (ORCPT
+        with ESMTP id S231721AbjHITNj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 9 Aug 2023 15:13:39 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 657AB30F9;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6571630F8;
         Wed,  9 Aug 2023 12:12:55 -0700 (PDT)
 Date:   Wed, 09 Aug 2023 19:12:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691608350;
+        s=2020; t=1691608349;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=MXwcVDDBW7sqU63OU7EilLSmlL9E7utdV3gPELnQmJo=;
-        b=o0rzwTz2S5TfAMabCVr3L7x/Tj5EAkKsUY9O5iyj4V5P/4rYerraWI3iEXOsiycwZTRR2u
-        Yp+yJtAaVKdPO+DzB/U3RpkV4Wu7YGrxNajdgmtxKLgVL4Cw7W5OomKpkszTCq1RQsVip9
-        CHdAF4iK4LPTVZiTCj3T4J2KKU+Nl0W0wretTIS9o7MtJtaC3ma+nU7GB3bL7CupIstDU2
-        WynBDXUZvPgG8EDy4ekB4BE+e1fOAWJ0ZBbcnXWNZ0GjY4Ty/5xFg1qMa0Y0JUDy30NZqM
-        L9Rc/QKzYpgAZ0HX31RRg5u68EL2obg3vg+bmuPf1eKxxxs7XHGDb0xOjqViXQ==
+        bh=BhNcG3RW2gPGVKT05cKmofNtobbogrPsenm0HcgBK2c=;
+        b=hOh61FVuMZXu4a33IdwuvFgUaBWaAkupnWeKyTVMx9rxe8elORG0zWW/++VyK69fsHNFPP
+        jYFrukRsde7oH/yJ+cUDP4R+aAALuxPpYy5M3xBhuj0L4MOdbe0vVPjDymOfsa5cBvE8ax
+        DIWuSZga+4ZyMy/A44gO7GAXde+A2yErLSrc9ruz5SPng4ZwBaF3NCc35ZlcVBh8QXfeM0
+        RaewNGbLumkbH1izU/3nxiTSrrE5GC2dYvHDVvBsQ1qKIBlMBDl5EY4UX5KUs9xAtAFk8V
+        roiaVc50xY0JZ9rxbcY/ShAOxhLIDSOzKcvsvJsz+iYPgCnLHcw8I6YpQbe3lA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691608350;
+        s=2020e; t=1691608349;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=MXwcVDDBW7sqU63OU7EilLSmlL9E7utdV3gPELnQmJo=;
-        b=F1sJ9EG5Sf8qfiRaNRIk0SMEghcMG3qFVs12Zpspz2XqoIEqmujuc2OlrijN5K/oH+8bnX
-        0dj9kvCoq6J1f7CQ==
+        bh=BhNcG3RW2gPGVKT05cKmofNtobbogrPsenm0HcgBK2c=;
+        b=Ef7rZZ/h/yFAUUX5oL/CfbjfWCWZ0Ip2tKBsMcXmtYsgnbXD06QCfCree5+X7wVscHc3rn
+        OL+I4F0BqVqVpABQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Rename disable_apic
+Subject: [tip: x86/apic] x86/apic/ioapic: Rename skip_ioapic_setup
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -48,7 +48,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169160834951.27769.4037911057470052100.tip-bot2@tip-bot2>
+Message-ID: <169160834905.27769.5994413508640755019.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,16 +65,16 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     49062454a3eb4a27add7a3df57e7a34266f6a760
-Gitweb:        https://git.kernel.org/tip/49062454a3eb4a27add7a3df57e7a34266f6a760
+Commit-ID:     ecf600f8942e04c9bf5f7046e096577eebaf6406
+Gitweb:        https://git.kernel.org/tip/ecf600f8942e04c9bf5f7046e096577eebaf6406
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 08 Aug 2023 15:03:40 -07:00
+AuthorDate:    Tue, 08 Aug 2023 15:03:41 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Wed, 09 Aug 2023 11:58:16 -07:00
 
-x86/apic: Rename disable_apic
+x86/apic/ioapic: Rename skip_ioapic_setup
 
-It reflects a state and not a command. Make it bool while at it.
+Another variable name which is confusing at best. Convert to bool.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -83,209 +83,164 @@ Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Sohil Mehta <sohil.mehta@intel.com>
 Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
 ---
- arch/x86/include/asm/apic.h      |  4 ++--
- arch/x86/kernel/apic/apic.c      | 22 +++++++++++-----------
- arch/x86/kernel/apic/apic_noop.c |  6 +++---
- arch/x86/kernel/apic/msi.c       |  2 +-
- arch/x86/kernel/apic/vector.c    |  2 +-
- arch/x86/kernel/setup.c          |  2 +-
- arch/x86/pci/xen.c               |  2 +-
- 7 files changed, 20 insertions(+), 20 deletions(-)
+ arch/x86/include/asm/io_apic.h |  7 ++++---
+ arch/x86/kernel/acpi/boot.c    |  2 +-
+ arch/x86/kernel/apic/apic.c    | 12 ++++++------
+ arch/x86/kernel/apic/io_apic.c | 12 ++++++------
+ arch/x86/xen/smp_pv.c          |  2 +-
+ 5 files changed, 18 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 98c32aa..4b1110a 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -52,7 +52,7 @@ static inline void generic_apic_probe(void)
- extern int apic_verbosity;
- extern int local_apic_timer_c2_ok;
+diff --git a/arch/x86/include/asm/io_apic.h b/arch/x86/include/asm/io_apic.h
+index 437aa8d..51c7826 100644
+--- a/arch/x86/include/asm/io_apic.h
++++ b/arch/x86/include/asm/io_apic.h
+@@ -109,8 +109,8 @@ extern int mp_irq_entries;
+ /* MP IRQ source entries */
+ extern struct mpc_intsrc mp_irqs[MAX_IRQ_SOURCES];
  
--extern int disable_apic;
-+extern bool apic_is_disabled;
- extern unsigned int lapic_timer_period;
+-/* 1 if "noapic" boot option passed */
+-extern int skip_ioapic_setup;
++/* True if "noapic" boot option passed */
++extern bool ioapic_is_disabled;
  
- extern int cpuid_to_apicid[];
-@@ -90,7 +90,7 @@ static inline void default_inquire_remote_apic(int apicid)
+ /* 1 if "noapic" boot option passed */
+ extern int noioapicquirk;
+@@ -129,7 +129,7 @@ extern unsigned long io_apic_irqs;
+  * assignment of PCI IRQ's.
   */
- static inline bool apic_from_smp_config(void)
- {
--	return smp_found_config && !disable_apic;
-+	return smp_found_config && !apic_is_disabled;
- }
+ #define io_apic_assign_pci_irqs \
+-	(mp_irq_entries && !skip_ioapic_setup && io_apic_irqs)
++	(mp_irq_entries && !ioapic_is_disabled && io_apic_irqs)
  
- /*
+ struct irq_cfg;
+ extern void ioapic_insert_resources(void);
+@@ -179,6 +179,7 @@ extern void print_IO_APICs(void);
+ #define IO_APIC_IRQ(x)		0
+ #define io_apic_assign_pci_irqs 0
+ #define setup_ioapic_ids_from_mpc x86_init_noop
++#define nr_ioapics		(0)
+ static inline void ioapic_insert_resources(void) { }
+ static inline int arch_early_ioapic_init(void) { return 0; }
+ static inline void print_IO_APICs(void) {}
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 21b542a..38a5298 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -1275,7 +1275,7 @@ static int __init acpi_parse_madt_ioapic_entries(void)
+ 	/*
+ 	 * if "noapic" boot option, don't look for IO-APICs
+ 	 */
+-	if (skip_ioapic_setup) {
++	if (ioapic_is_disabled) {
+ 		pr_info("Skipping IOAPIC probe due to 'noapic' option.\n");
+ 		return -ENODEV;
+ 	}
 diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index af49e24..a9dd903 100644
+index a9dd903..cffec1f 100644
 --- a/arch/x86/kernel/apic/apic.c
 +++ b/arch/x86/kernel/apic/apic.c
-@@ -180,7 +180,7 @@ __setup("apicpmtimer", setup_apicpmtimer);
- #endif
+@@ -1691,7 +1691,7 @@ static void setup_local_APIC(void)
+ 	 * TODO: set up through-local-APIC from through-I/O-APIC? --macro
+ 	 */
+ 	value = apic_read(APIC_LVT0) & APIC_LVT_MASKED;
+-	if (!cpu && (pic_mode || !value || skip_ioapic_setup)) {
++	if (!cpu && (pic_mode || !value || ioapic_is_disabled)) {
+ 		value = APIC_DM_EXTINT;
+ 		apic_printk(APIC_VERBOSE, "enabled ExtINT on CPU#%d\n", cpu);
+ 	} else {
+@@ -1956,7 +1956,7 @@ void __init enable_IR_x2apic(void)
+ 	unsigned long flags;
+ 	int ret, ir_stat;
  
- unsigned long mp_lapic_addr __ro_after_init;
--int disable_apic __ro_after_init;
-+bool apic_is_disabled __ro_after_init;
- /* Disable local APIC timer from the kernel commandline or via dmi quirk */
- static int disable_apic_timer __initdata;
- /* Local APIC timer works in C2 */
-@@ -810,7 +810,7 @@ bool __init apic_needs_pit(void)
- 		return true;
- 
- 	/* Is there an APIC at all or is it disabled? */
--	if (!boot_cpu_has(X86_FEATURE_APIC) || disable_apic)
-+	if (!boot_cpu_has(X86_FEATURE_APIC) || apic_is_disabled)
- 		return true;
- 
- 	/*
-@@ -1299,7 +1299,7 @@ enum apic_intr_mode_id apic_intr_mode __ro_after_init;
- static int __init __apic_intr_mode_select(void)
- {
- 	/* Check kernel option */
--	if (disable_apic) {
-+	if (apic_is_disabled) {
- 		pr_info("APIC disabled via kernel command line\n");
- 		return APIC_PIC;
- 	}
-@@ -1308,7 +1308,7 @@ static int __init __apic_intr_mode_select(void)
- #ifdef CONFIG_X86_64
- 	/* On 64-bit, the APIC must be integrated, Check local APIC only */
- 	if (!boot_cpu_has(X86_FEATURE_APIC)) {
--		disable_apic = 1;
-+		apic_is_disabled = true;
- 		pr_info("APIC disabled by BIOS\n");
- 		return APIC_PIC;
- 	}
-@@ -1317,14 +1317,14 @@ static int __init __apic_intr_mode_select(void)
- 
- 	/* Neither 82489DX nor integrated APIC ? */
- 	if (!boot_cpu_has(X86_FEATURE_APIC) && !smp_found_config) {
--		disable_apic = 1;
-+		apic_is_disabled = true;
- 		return APIC_PIC;
- 	}
- 
- 	/* If the BIOS pretends there is an integrated APIC ? */
- 	if (!boot_cpu_has(X86_FEATURE_APIC) &&
- 		APIC_INTEGRATED(boot_cpu_apic_version)) {
--		disable_apic = 1;
-+		apic_is_disabled = true;
- 		pr_err(FW_BUG "Local APIC %d not detected, force emulation\n",
- 				       boot_cpu_physical_apicid);
- 		return APIC_PIC;
-@@ -1567,7 +1567,7 @@ static void setup_local_APIC(void)
- 	int cpu = smp_processor_id();
- 	unsigned int value;
- 
--	if (disable_apic) {
-+	if (apic_is_disabled) {
- 		disable_ioapic_support();
+-	if (skip_ioapic_setup) {
++	if (ioapic_is_disabled) {
+ 		pr_info("Not enabling interrupt remapping due to skipped IO-APIC setup\n");
  		return;
  	}
-@@ -1943,7 +1943,7 @@ void __init check_x2apic(void)
- 	pr_err("Kernel does not support x2APIC, please recompile with CONFIG_X86_X2APIC.\n");
- 	pr_err("Disabling APIC, expect reduced performance and functionality.\n");
- 
--	disable_apic = 1;
-+	apic_is_disabled = true;
- 	setup_clear_cpu_cap(X86_FEATURE_APIC);
- }
- 
-@@ -2037,7 +2037,7 @@ int __init apic_force_enable(unsigned long addr)
+@@ -2956,11 +2956,11 @@ early_param("nolapic_timer", parse_nolapic_timer);
+ static int __init apic_set_verbosity(char *arg)
  {
- 	u32 h, l;
- 
--	if (disable_apic)
-+	if (apic_is_disabled)
- 		return -1;
- 
- 	/*
-@@ -2064,7 +2064,7 @@ int __init apic_force_enable(unsigned long addr)
- static int __init detect_init_APIC(void)
- {
- 	/* Disabled by kernel option? */
--	if (disable_apic)
-+	if (apic_is_disabled)
- 		return -1;
- 
- 	switch (boot_cpu_data.x86_vendor) {
-@@ -2919,7 +2919,7 @@ int apic_is_clustered_box(void)
-  */
- static int __init setup_disableapic(char *arg)
- {
--	disable_apic = 1;
-+	apic_is_disabled = true;
- 	setup_clear_cpu_cap(X86_FEATURE_APIC);
- 	return 0;
- }
-diff --git a/arch/x86/kernel/apic/apic_noop.c b/arch/x86/kernel/apic/apic_noop.c
-index fe78319..f310dc2 100644
---- a/arch/x86/kernel/apic/apic_noop.c
-+++ b/arch/x86/kernel/apic/apic_noop.c
-@@ -71,13 +71,13 @@ static int noop_apic_id_registered(void)
- 
- static u32 noop_apic_read(u32 reg)
- {
--	WARN_ON_ONCE(boot_cpu_has(X86_FEATURE_APIC) && !disable_apic);
-+	WARN_ON_ONCE(boot_cpu_has(X86_FEATURE_APIC) && !apic_is_disabled);
- 	return 0;
- }
- 
--static void noop_apic_write(u32 reg, u32 v)
-+static void noop_apic_write(u32 reg, u32 val)
- {
--	WARN_ON_ONCE(boot_cpu_has(X86_FEATURE_APIC) && !disable_apic);
-+	WARN_ON_ONCE(boot_cpu_has(X86_FEATURE_APIC) && !apic_is_disabled);
- }
- 
- #ifdef CONFIG_X86_32
-diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
-index 35d5b8f..6b6b711 100644
---- a/arch/x86/kernel/apic/msi.c
-+++ b/arch/x86/kernel/apic/msi.c
-@@ -269,7 +269,7 @@ static const struct msi_parent_ops x86_vector_msi_parent_ops = {
- 
- struct irq_domain * __init native_create_pci_msi_domain(void)
- {
--	if (disable_apic)
-+	if (apic_is_disabled)
- 		return NULL;
- 
- 	x86_vector_domain->flags |= IRQ_DOMAIN_FLAG_MSI_PARENT;
-diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
-index 01c359a..04655b7 100644
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -547,7 +547,7 @@ static int x86_vector_alloc_irqs(struct irq_domain *domain, unsigned int virq,
- 	struct irq_data *irqd;
- 	int i, err, node;
- 
--	if (disable_apic)
-+	if (apic_is_disabled)
- 		return -ENXIO;
- 
- 	/*
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index fd975a4..a5ef400 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -1020,7 +1020,7 @@ void __init setup_arch(char **cmdline_p)
- 
- 	if (acpi_mps_check()) {
- #ifdef CONFIG_X86_LOCAL_APIC
--		disable_apic = 1;
-+		apic_is_disabled = true;
- #endif
- 		setup_clear_cpu_cap(X86_FEATURE_APIC);
+ 	if (!arg)  {
+-#ifdef CONFIG_X86_64
+-		skip_ioapic_setup = 0;
++		if (IS_ENABLED(CONFIG_X86_32))
++			return -EINVAL;
++
++		ioapic_is_disabled = false;
+ 		return 0;
+-#endif
+-		return -EINVAL;
  	}
-diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
-index 014c508..652cd53 100644
---- a/arch/x86/pci/xen.c
-+++ b/arch/x86/pci/xen.c
-@@ -517,7 +517,7 @@ int __init pci_xen_init(void)
- #ifdef CONFIG_PCI_MSI
- static void __init xen_hvm_msi_init(void)
+ 
+ 	if (strcmp("debug", arg) == 0)
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index 4241dc2..48975d5 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -178,7 +178,7 @@ int mp_bus_id_to_type[MAX_MP_BUSSES];
+ 
+ DECLARE_BITMAP(mp_bus_not_pci, MAX_MP_BUSSES);
+ 
+-int skip_ioapic_setup;
++bool ioapic_is_disabled __ro_after_init;
+ 
+ /**
+  * disable_ioapic_support() - disables ioapic support at runtime
+@@ -189,7 +189,7 @@ void disable_ioapic_support(void)
+ 	noioapicquirk = 1;
+ 	noioapicreroute = -1;
+ #endif
+-	skip_ioapic_setup = 1;
++	ioapic_is_disabled = true;
+ }
+ 
+ static int __init parse_noapic(char *str)
+@@ -831,7 +831,7 @@ static int __acpi_get_override_irq(u32 gsi, bool *trigger, bool *polarity)
  {
--	if (!disable_apic) {
-+	if (!apic_is_disabled) {
- 		/*
- 		 * If hardware supports (x2)APIC virtualization (as indicated
- 		 * by hypervisor's leaf 4) then we don't need to use pirqs/
+ 	int ioapic, pin, idx;
+ 
+-	if (skip_ioapic_setup)
++	if (ioapic_is_disabled)
+ 		return -1;
+ 
+ 	ioapic = mp_find_ioapic(gsi);
+@@ -1366,7 +1366,7 @@ void __init enable_IO_APIC(void)
+ 	int i8259_apic, i8259_pin;
+ 	int apic, pin;
+ 
+-	if (skip_ioapic_setup)
++	if (ioapic_is_disabled)
+ 		nr_ioapics = 0;
+ 
+ 	if (!nr_legacy_irqs() || !nr_ioapics)
+@@ -2399,7 +2399,7 @@ void __init setup_IO_APIC(void)
+ {
+ 	int ioapic;
+ 
+-	if (skip_ioapic_setup || !nr_ioapics)
++	if (ioapic_is_disabled || !nr_ioapics)
+ 		return;
+ 
+ 	io_apic_irqs = nr_legacy_irqs() ? ~PIC_IRQS : ~0UL;
+@@ -2715,7 +2715,7 @@ void __init io_apic_init_mappings(void)
+ 				       "address found in MPTABLE, "
+ 				       "disabling IO/APIC support!\n");
+ 				smp_found_config = 0;
+-				skip_ioapic_setup = 1;
++				ioapic_is_disabled = true;
+ 				goto fake_ioapic_page;
+ 			}
+ #endif
+diff --git a/arch/x86/xen/smp_pv.c b/arch/x86/xen/smp_pv.c
+index cef78b8..c6b42c6 100644
+--- a/arch/x86/xen/smp_pv.c
++++ b/arch/x86/xen/smp_pv.c
+@@ -210,7 +210,7 @@ static void __init xen_pv_smp_prepare_cpus(unsigned int max_cpus)
+ {
+ 	unsigned cpu;
+ 
+-	if (skip_ioapic_setup) {
++	if (ioapic_is_disabled) {
+ 		char *m = (max_cpus == 0) ?
+ 			"The nosmp parameter is incompatible with Xen; " \
+ 			"use Xen dom0_max_vcpus=1 parameter" :
