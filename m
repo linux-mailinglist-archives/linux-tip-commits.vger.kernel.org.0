@@ -2,45 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C2B0776A1D
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC1AA776A21
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234501AbjHIUgG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 16:36:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53230 "EHLO
+        id S234526AbjHIUgI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Aug 2023 16:36:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234476AbjHIUgG (ORCPT
+        with ESMTP id S234519AbjHIUgH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Aug 2023 16:36:06 -0400
+        Wed, 9 Aug 2023 16:36:07 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62398210D;
-        Wed,  9 Aug 2023 13:36:05 -0700 (PDT)
-Date:   Wed, 09 Aug 2023 20:36:03 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BCECB4;
+        Wed,  9 Aug 2023 13:36:07 -0700 (PDT)
+Date:   Wed, 09 Aug 2023 20:36:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691613364;
+        s=2020; t=1691613365;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=YMHRE6vpczkT2y70DcYjQV5Ow6Pn3URx8WJOxHSyjYk=;
-        b=GM0vEt6l7c4AMnlWfSJf95/+inYI01n1OSXGMLXZQga8mmKKO5+12A1BeFJrgXCi1SkO1A
-        LnXE+/2h6eBCrdjKtKQFX25V82/lnnIjd2G3HWg2XgnY4TKHzhLRXNzBL6uT7lTYAHChI3
-        x9K8utFc8TWZP2VmEKli15teaE+LOD++6beCcpY04L1jgDYZgdQ63cterNthaMJRWmzVt7
-        NK0Qk0x4fuqfuG5zcfFhfvq4BYBnAaCqm1F3jmcB5mdg0P7N9kmLQKdowPo9rz/LoRe/Uy
-        QDZJGeZrQKPRFdRIvIISrR70teEUAvtmjdjbFgloUuF7KHpGo6P4Knrvz1rxvQ==
+        bh=21BnrJemQ5ShwvF1DpadbMtcAI7G0bRuOodYTBsfLZU=;
+        b=M04qBt/gu0UBjeKbFEgCzbrFBpiCev3smzs5yckPvpACKWf9VyFe2FvL34bzAaMQ4ilKWz
+        dCliGyskeD4qIzJQe+OC+wZ2a3Am/re3UkMmeeQE+H02B9rMk/8fV07FedSenoc1qC2tW3
+        Ln6gil9wW5iZI/ABV7VF3kHZ+rVL4GOpt0Z0R6MCY1TWGaGMaw77jTy20V+8ldjtxT3QlC
+        YGf+P03e1LD2vF8bWG0Hv/f5RMFuFiKvG8TNahW0AbWlV+3wnnuJIYOST4O58WU3jlS4JE
+        hFkdzlIuuViqO+BQChko18mXDqPkKBl15qS9K9g1feA5RZ3ONpxzsk+aVUHl6A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691613364;
+        s=2020e; t=1691613365;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=YMHRE6vpczkT2y70DcYjQV5Ow6Pn3URx8WJOxHSyjYk=;
-        b=e5hZEsdE6yhq9K+aUFqDUzGjxALbTJUpKOwVVe1FJ/44YMJCxPEOWI+cqureZ1Hspgo1+A
-        qGB60dhTRJvzOLCQ==
+        bh=21BnrJemQ5ShwvF1DpadbMtcAI7G0bRuOodYTBsfLZU=;
+        b=c7MbXL05YJGim0k1BpQS14HLVvET6jBLPZ4SOEMcanm2h14iGvVdH79MCjUAU6BMd6vZxY
+        MKL/+Et0aXjPmMDQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Provide static call infrastructure for APIC
- callbacks
+Subject: [tip: x86/apic] x86/apic: Mark all hotpath APIC callback wrappers
+ __always_inline
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -49,7 +49,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169161336347.27769.10345804539414758133.tip-bot2@tip-bot2>
+Message-ID: <169161336448.27769.4347654295175166611.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,34 +66,17 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     3b7c27e6789911359867a9e8d3d7889fc94a3d55
-Gitweb:        https://git.kernel.org/tip/3b7c27e6789911359867a9e8d3d7889fc94a3d55
+Commit-ID:     54271fb0b78511048aa7910d593994f2ca055e68
+Gitweb:        https://git.kernel.org/tip/54271fb0b78511048aa7910d593994f2ca055e68
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 08 Aug 2023 15:04:23 -07:00
+AuthorDate:    Tue, 08 Aug 2023 15:04:21 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Wed, 09 Aug 2023 12:00:55 -07:00
 
-x86/apic: Provide static call infrastructure for APIC callbacks
+x86/apic: Mark all hotpath APIC callback wrappers __always_inline
 
-Declare and define the static calls for the hotpath APIC callbacks. Note
-this deliberately uses STATIC_CALL_NULL() because otherwise it would be
-required to have the definitions in the 32bit and the 64bit default APIC
-implementations and it's hard to keep the calls in sync. The other option
-would be to have stub functions for each callback type. Not pretty either
-
-So the NULL capable calls are used and filled in during early boot after
-the static key infrastructure has been initialized. The calls will be
-static_call() except for the wait_irc_idle() callback which is valid to be
-NULL for X2APIC systems.
-
-Update the calls when a new APIC driver is installed and when a callback
-override is invoked.
-
-Export the trampolines for the two calls which are used in KVM and MCE
-error inject modules.
-
-Test the setup and let the next step convert the inline wrappers to make it
-effective.
+There is no value for instrumentation to look at those wrappers and with the
+upcoming conversion to static calls even less so.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -102,131 +85,68 @@ Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Sohil Mehta <sohil.mehta@intel.com>
 Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
 ---
- arch/x86/include/asm/apic.h | 21 ++++++++++++++-
- arch/x86/kernel/apic/init.c | 53 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 74 insertions(+)
+ arch/x86/include/asm/apic.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 62471e2..ddafd14 100644
+index 1742f97..28192a2 100644
 --- a/arch/x86/include/asm/apic.h
 +++ b/arch/x86/include/asm/apic.h
-@@ -3,6 +3,7 @@
- #define _ASM_X86_APIC_H
- 
- #include <linux/cpumask.h>
-+#include <linux/static_call.h>
- 
- #include <asm/alternative.h>
- #include <asm/cpufeature.h>
-@@ -368,9 +369,29 @@ void __init apic_install_driver(struct apic *driver);
- #define apic_update_callback(_callback, _fn) {					\
- 		__x86_apic_override._callback = _fn;				\
- 		apic->_callback = _fn;						\
-+		static_call_update(apic_call_##_callback, _fn);			\
+@@ -371,48 +371,48 @@ void __init apic_install_driver(struct apic *driver);
  		pr_info("APIC: %s() replaced with %ps()\n", #_callback, _fn);	\
  }
  
-+#define DECLARE_APIC_CALL(__cb)							\
-+	DECLARE_STATIC_CALL(apic_call_##__cb, *apic->__cb)
-+
-+DECLARE_APIC_CALL(eoi);
-+DECLARE_APIC_CALL(native_eoi);
-+DECLARE_APIC_CALL(icr_read);
-+DECLARE_APIC_CALL(icr_write);
-+DECLARE_APIC_CALL(read);
-+DECLARE_APIC_CALL(send_IPI);
-+DECLARE_APIC_CALL(send_IPI_mask);
-+DECLARE_APIC_CALL(send_IPI_mask_allbutself);
-+DECLARE_APIC_CALL(send_IPI_allbutself);
-+DECLARE_APIC_CALL(send_IPI_all);
-+DECLARE_APIC_CALL(send_IPI_self);
-+DECLARE_APIC_CALL(wait_icr_idle);
-+DECLARE_APIC_CALL(wakeup_secondary_cpu);
-+DECLARE_APIC_CALL(wakeup_secondary_cpu_64);
-+DECLARE_APIC_CALL(write);
-+
- static __always_inline u32 apic_read(u32 reg)
+-static inline u32 apic_read(u32 reg)
++static __always_inline u32 apic_read(u32 reg)
  {
  	return apic->read(reg);
-diff --git a/arch/x86/kernel/apic/init.c b/arch/x86/kernel/apic/init.c
-index d7f4aca..821e2e5 100644
---- a/arch/x86/kernel/apic/init.c
-+++ b/arch/x86/kernel/apic/init.c
-@@ -5,6 +5,34 @@
- 
- #include "local.h"
- 
-+/*
-+ * Use DEFINE_STATIC_CALL_NULL() to avoid having to provide stub functions
-+ * for each callback. The callbacks are setup during boot and all except
-+ * wait_icr_idle() must be initialized before usage. The IPI wrappers
-+ * use static_call() and not static_call_cond() to catch any fails.
-+ */
-+#define DEFINE_APIC_CALL(__cb)						\
-+	DEFINE_STATIC_CALL_NULL(apic_call_##__cb, *apic->__cb)
-+
-+DEFINE_APIC_CALL(eoi);
-+DEFINE_APIC_CALL(native_eoi);
-+DEFINE_APIC_CALL(icr_read);
-+DEFINE_APIC_CALL(icr_write);
-+DEFINE_APIC_CALL(read);
-+DEFINE_APIC_CALL(send_IPI);
-+DEFINE_APIC_CALL(send_IPI_mask);
-+DEFINE_APIC_CALL(send_IPI_mask_allbutself);
-+DEFINE_APIC_CALL(send_IPI_allbutself);
-+DEFINE_APIC_CALL(send_IPI_all);
-+DEFINE_APIC_CALL(send_IPI_self);
-+DEFINE_APIC_CALL(wait_icr_idle);
-+DEFINE_APIC_CALL(wakeup_secondary_cpu);
-+DEFINE_APIC_CALL(wakeup_secondary_cpu_64);
-+DEFINE_APIC_CALL(write);
-+
-+EXPORT_STATIC_CALL_TRAMP_GPL(apic_call_send_IPI_mask);
-+EXPORT_STATIC_CALL_TRAMP_GPL(apic_call_send_IPI_self);
-+
- /* The container for function call overrides */
- struct apic_override __x86_apic_override __initdata;
- 
-@@ -30,10 +58,34 @@ static __init void restore_override_callbacks(void)
- 	apply_override(wakeup_secondary_cpu_64);
  }
  
-+#define update_call(__cb)					\
-+	static_call_update(apic_call_##__cb, *apic->__cb)
-+
-+static __init void update_static_calls(void)
-+{
-+	update_call(eoi);
-+	update_call(native_eoi);
-+	update_call(write);
-+	update_call(read);
-+	update_call(send_IPI);
-+	update_call(send_IPI_mask);
-+	update_call(send_IPI_mask_allbutself);
-+	update_call(send_IPI_allbutself);
-+	update_call(send_IPI_all);
-+	update_call(send_IPI_self);
-+	update_call(icr_read);
-+	update_call(icr_write);
-+	update_call(wait_icr_idle);
-+	update_call(wakeup_secondary_cpu);
-+	update_call(wakeup_secondary_cpu_64);
-+}
-+
- void __init apic_setup_apic_calls(void)
+-static inline void apic_write(u32 reg, u32 val)
++static __always_inline void apic_write(u32 reg, u32 val)
  {
- 	/* Ensure that the default APIC has native_eoi populated */
- 	apic->native_eoi = apic->eoi;
-+	update_static_calls();
-+	pr_info("Static calls initialized\n");
+ 	apic->write(reg, val);
  }
  
- void __init apic_install_driver(struct apic *driver)
-@@ -52,6 +104,7 @@ void __init apic_install_driver(struct apic *driver)
+-static inline void apic_eoi(void)
++static __always_inline void apic_eoi(void)
+ {
+ 	apic->eoi();
+ }
  
- 	/* Apply any already installed callback overrides */
- 	restore_override_callbacks();
-+	update_static_calls();
+-static inline void apic_native_eoi(void)
++static __always_inline void apic_native_eoi(void)
+ {
+ 	apic->native_eoi();
+ }
  
- 	pr_info("Switched APIC routing to: %s\n", driver->name);
+-static inline u64 apic_icr_read(void)
++static __always_inline u64 apic_icr_read(void)
+ {
+ 	return apic->icr_read();
+ }
+ 
+-static inline void apic_icr_write(u32 low, u32 high)
++static __always_inline void apic_icr_write(u32 low, u32 high)
+ {
+ 	apic->icr_write(low, high);
+ }
+ 
+-static inline void apic_wait_icr_idle(void)
++static __always_inline void apic_wait_icr_idle(void)
+ {
+ 	if (apic->wait_icr_idle)
+ 		apic->wait_icr_idle();
+ }
+ 
+-static inline u32 safe_apic_wait_icr_idle(void)
++static __always_inline u32 safe_apic_wait_icr_idle(void)
+ {
+ 	return apic->safe_wait_icr_idle ? apic->safe_wait_icr_idle() : 0;
+ }
+ 
+-static inline bool apic_id_valid(u32 apic_id)
++static __always_inline bool apic_id_valid(u32 apic_id)
+ {
+ 	return apic_id <= apic->max_apic_id;
  }
