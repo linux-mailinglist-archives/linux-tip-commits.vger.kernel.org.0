@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 822CD776822
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 21:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB677776829
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 21:12:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232864AbjHITMh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 15:12:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42194 "EHLO
+        id S232971AbjHITM6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Aug 2023 15:12:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231851AbjHITMc (ORCPT
+        with ESMTP id S232469AbjHITMe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Aug 2023 15:12:32 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04DF526AF;
-        Wed,  9 Aug 2023 12:12:21 -0700 (PDT)
-Date:   Wed, 09 Aug 2023 19:12:19 -0000
+        Wed, 9 Aug 2023 15:12:34 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 136D62718;
+        Wed,  9 Aug 2023 12:12:25 -0700 (PDT)
+Date:   Wed, 09 Aug 2023 19:12:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691608339;
+        s=2020; t=1691608340;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=AL5tloo4gcCakXKY0xrTL05hpNQrhljrtfWZbb8Ohaw=;
-        b=pjAWnMGmmzIKYDOFXAfOTT0R6KFbeKsHRQv8dGLEqmx45Hx5wUeKuNmu/Bb1UvlD/kdVYZ
-        uGYsos75iVwr1AjNiFkMxY/djRpT6oCGPZukqyFJUGPaPthB43arWD43/4hVfVNQjAuBQ4
-        mF3NCpfPWfMsv3kErtsBM1HjJEsFY815DpU+3P3ik5wWzOOzwAk7+IyQH2Jto2/ZuNN1bj
-        cogeEdAKm1tsRJgo8OfepxOPpcPZeC5xU7W+SXKN+LGBAE6/jmaLhZRfJCZXgsooJHHFrI
-        y28q0D98IKrxFO9hxGc9t5YUgdajPiyfN0zlENEbbV8ZqT27oHbEDDIDe+yXDA==
+        bh=ePpxdb54UK1w0dW/aOACxgPueYpJk/5MQbAXokeoOik=;
+        b=IpgwJJIZbEC5wSbbiRbn/KNdZhihTac2Yba+t5gaOwpJa4ZcN/ez/lri/i6wPfubh8kd+t
+        qHKdiEOjQZcLDRNF9s7ArsKKvK0+5RnsQaleLPWNc07EnB+v2s3Jw5NErp7ViSZhn7HHiT
+        dK2zt93RF0dpy0dIn3ekjOvhIx6sMK+l0mwTzqiQ4tNhccrvZKzwYVgFz2LrxLzcfnzwpX
+        W9VlKFg3hQqxXQQEPxJkvTjFMFfNxUczuNEMsYg+3O/WUIHF4hX9z1CQAMlJaYmVXf4TBq
+        6qX5XZBgVSgU0ldUEhpD3erkcz38zr9geZxLnn1nPJ0vBNooawhgIYp26gn0HA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691608339;
+        s=2020e; t=1691608340;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=AL5tloo4gcCakXKY0xrTL05hpNQrhljrtfWZbb8Ohaw=;
-        b=2MzixbH/R+vaZ03KkecjXHRX9IPUBPj40688lwDXl+yecMWsnOVtCf7G/OrCfgR5qZFRPb
-        hH24vnJ49mH4wgBQ==
+        bh=ePpxdb54UK1w0dW/aOACxgPueYpJk/5MQbAXokeoOik=;
+        b=E5h8WbS6BmrP1KupnMEWHiruGuAewEsq1N4R9g15wU+3ovKy4xN8F6o+I/PBlqFPyK6Y5x
+        5xBqn42mhgU33pDA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic/32: Remove bigsmp_cpu_present_to_apicid()
+Subject: [tip: x86/apic] x86/apic: Mop up early_per_cpu() abuse
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -48,7 +48,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169160833914.27769.16527369886376883585.tip-bot2@tip-bot2>
+Message-ID: <169160834035.27769.6808573188622126756.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,20 +65,22 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     4114e1686fdc350e4191ca670710b3fa9bd10947
-Gitweb:        https://git.kernel.org/tip/4114e1686fdc350e4191ca670710b3fa9bd10947
+Commit-ID:     e3243ed0142bb438bbd284c8c04f4c8e0c2ff498
+Gitweb:        https://git.kernel.org/tip/e3243ed0142bb438bbd284c8c04f4c8e0c2ff498
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 08 Aug 2023 15:03:56 -07:00
+AuthorDate:    Tue, 08 Aug 2023 15:03:54 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 09 Aug 2023 11:58:25 -07:00
+CommitterDate: Wed, 09 Aug 2023 11:58:24 -07:00
 
-x86/apic/32: Remove bigsmp_cpu_present_to_apicid()
+x86/apic: Mop up early_per_cpu() abuse
 
-It's a copy of default_cpu_present_to_apicid() with the omission of the
-actual check whether the CPU is present.
+UV X2APIC uses the per CPU variable from:
 
-This APIC callback should die completely, but the XEN APIC implementation
-does something different which needs to be addressed first.
+  native_smp_prepare_cpus()
+    uv_system_init()
+      uv_system_init_hub()
+
+which is long after the per CPU areas have been set up.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -87,34 +89,19 @@ Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Sohil Mehta <sohil.mehta@intel.com>
 Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
 ---
- arch/x86/kernel/apic/bigsmp_32.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/bigsmp_32.c b/arch/x86/kernel/apic/bigsmp_32.c
-index a26cb46..aba8ce1 100644
---- a/arch/x86/kernel/apic/bigsmp_32.c
-+++ b/arch/x86/kernel/apic/bigsmp_32.c
-@@ -43,14 +43,6 @@ static void bigsmp_setup_apic_routing(void)
- 		nr_ioapics);
- }
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index 0d812fd..8b14451 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -1843,7 +1843,7 @@ static void __init uv_system_init_hub(void)
  
--static int bigsmp_cpu_present_to_apicid(int mps_cpu)
--{
--	if (mps_cpu < nr_cpu_ids)
--		return (int) per_cpu(x86_cpu_to_apicid, mps_cpu);
--
--	return BAD_APICID;
--}
--
- static void bigsmp_ioapic_phys_id_map(physid_mask_t *phys_map, physid_mask_t *retmap)
- {
- 	/* For clustered we don't have a good way to do this yet - hack */
-@@ -119,7 +111,7 @@ static struct apic apic_bigsmp __ro_after_init = {
- 	.init_apic_ldr			= bigsmp_init_apic_ldr,
- 	.ioapic_phys_id_map		= bigsmp_ioapic_phys_id_map,
- 	.setup_apic_routing		= bigsmp_setup_apic_routing,
--	.cpu_present_to_apicid		= bigsmp_cpu_present_to_apicid,
-+	.cpu_present_to_apicid		= default_cpu_present_to_apicid,
- 	.apicid_to_cpu_present		= physid_set_mask_of_physid,
- 	.phys_pkg_id			= bigsmp_phys_pkg_id,
+ 	/* Initialize per CPU info: */
+ 	for_each_possible_cpu(cpu) {
+-		int apicid = early_per_cpu(x86_cpu_to_apicid, cpu);
++		int apicid = per_cpu(x86_cpu_to_apicid, cpu);
+ 		unsigned short bid;
+ 		unsigned short pnode;
  
