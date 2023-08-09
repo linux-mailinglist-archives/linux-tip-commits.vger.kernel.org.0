@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B7A4776A3C
+	by mail.lfdr.de (Postfix) with ESMTP id 09401776A3A
 	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234662AbjHIUge (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 16:36:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55244 "EHLO
+        id S234659AbjHIUgd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Aug 2023 16:36:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234599AbjHIUgT (ORCPT
+        with ESMTP id S234598AbjHIUgT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 9 Aug 2023 16:36:19 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D142213F;
-        Wed,  9 Aug 2023 13:36:14 -0700 (PDT)
-Date:   Wed, 09 Aug 2023 20:36:12 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24A692681;
+        Wed,  9 Aug 2023 13:36:15 -0700 (PDT)
+Date:   Wed, 09 Aug 2023 20:36:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1691613373;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Pri/xAfFEOv7afiT8ifOWeBxfCrRsuTPLyFOHIFshE8=;
-        b=zK/zCKnZ/SbHv16UlBU/YvKxAtMfugHWMLd+gQcJXdXrlqKRy4EmtlKzlW6VmWSpqrmeVF
-        OmOsZ7VWjGD9LUE5i5VZUStNS8RIxs2ZIerp1sAu6DbqNiROxgMVosF0Nwn2Apndaz+KPC
-        fRLzBZVBXJE2zDnHOn1HWoCJqklagK8HIFHqTvqgDcqAnJK4vmfaL+aXtv/iMZULQJNrDy
-        ChDAxu2ZM5EvlgqrvoL+BQuwupWeo0+Dl2Mi+Yp173PW3x1ll8tCGekNuzIw2BcKWXCouN
-        01VdncfasGvR5lx5miBZHIUw3TDraC51lK6iIE7no1VQBswMNzfmgO7CfN1vvA==
+        bh=pLS/yN2JRu4KeYQ10Wo0ka6U0a/tWqGmM3JwO0xgb5Y=;
+        b=lg3Ef+xijgqHZ39tCEiv5nHBcz22+8KXgVtThgOCp9VGKPKriyNgJNhUGjQxUxmr/wnog4
+        P8+wQpfnkR5mRcs+Xhg+s+OFKEfwJ8eUoQYXaj+De+LVtCuAiJLaw60/xi6QxyPJ0T8r4N
+        u89W85zyU1VJr06WyYx3JeBO45dS7A9foNjhjTDQfrddD7wF2b7nz7TQGZGjLfA2cmvUXv
+        KwkV3xsZOBbvysqPoJrOZfAJhnvX5m7ewxZCXR6mrrHb4ZaIKrCi3e7YnPysvTSt3xJT25
+        VYeOKgKdjy9328zB5jgS9//4FqBo1Ox1JSjWGbFJfZQ7D3biFcfbcyGevEuuDA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1691613373;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Pri/xAfFEOv7afiT8ifOWeBxfCrRsuTPLyFOHIFshE8=;
-        b=XAlHzB77G9yknc40FN/DUY5wFDZiA2BqioYE4hQuUDWeJ+R8kpbnHa/MLv1Oca6dAiqrME
-        iHXhicTIv+HIibAQ==
+        bh=pLS/yN2JRu4KeYQ10Wo0ka6U0a/tWqGmM3JwO0xgb5Y=;
+        b=4RpydYh79RXBQkC8Ms34GL2O8t5hM6VoGbDqGzu43tCuar9Xdwn5aTfAhMEVurz8S8ufSj
+        oGZxG923NYp9sRCQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Wrap APIC ID validation into an inline
+Subject: [tip: x86/apic] x86/apic/64: Uncopypaste probing
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -48,7 +48,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169161337277.27769.12491244937778127318.tip-bot2@tip-bot2>
+Message-ID: <169161337321.27769.6325032308676598325.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,17 +65,17 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     9132d720eb8a40be5eaa539ed940beaf2bd2e421
-Gitweb:        https://git.kernel.org/tip/9132d720eb8a40be5eaa539ed940beaf2bd2e421
+Commit-ID:     d65eb3195862d600b120b3f6481e016c312158cb
+Gitweb:        https://git.kernel.org/tip/d65eb3195862d600b120b3f6481e016c312158cb
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 08 Aug 2023 15:04:09 -07:00
+AuthorDate:    Tue, 08 Aug 2023 15:04:08 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Wed, 09 Aug 2023 11:58:30 -07:00
 
-x86/apic: Wrap APIC ID validation into an inline
+x86/apic/64: Uncopypaste probing
 
-Prepare for removing the callback and making this as simple comparison to
-an upper limit, which is the obvious solution to do for limit checks...
+No need for the same thing twice. Also prepares for simplifying the APIC ID
+validation checks.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -84,84 +84,52 @@ Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Sohil Mehta <sohil.mehta@intel.com>
 Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
 ---
- arch/x86/include/asm/apic.h   | 5 +++++
- arch/x86/kernel/acpi/boot.c   | 2 +-
- arch/x86/kernel/apic/vector.c | 2 +-
- arch/x86/kernel/smpboot.c     | 5 ++---
- arch/x86/mm/srat.c            | 5 ++---
- 5 files changed, 11 insertions(+), 8 deletions(-)
+ arch/x86/kernel/apic/probe_64.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 49b6c7e..5a01d51 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -372,6 +372,11 @@ static inline u32 safe_apic_wait_icr_idle(void)
- 	return apic->safe_wait_icr_idle ? apic->safe_wait_icr_idle() : 0;
- }
+diff --git a/arch/x86/kernel/apic/probe_64.c b/arch/x86/kernel/apic/probe_64.c
+index 7c9f1a8..a82bb52 100644
+--- a/arch/x86/kernel/apic/probe_64.c
++++ b/arch/x86/kernel/apic/probe_64.c
+@@ -13,6 +13,15 @@
  
-+static inline bool apic_id_valid(u32 apic_id)
+ #include "local.h"
+ 
++static __init void apic_install_driver(struct apic *driver)
 +{
-+	return apic->apic_id_valid(apic_id);
++	if (apic == driver)
++		return;
++
++	apic = driver;
++	pr_info("Switched APIC routing to %s:\n", apic->name);
 +}
 +
- extern void __init apic_set_eoi_write(void (*eoi_write)(u32 reg, u32 v));
+ /* Select the appropriate APIC driver */
+ void __init x86_64_probe_apic(void)
+ {
+@@ -22,11 +31,7 @@ void __init x86_64_probe_apic(void)
  
- #else /* CONFIG_X86_LOCAL_APIC */
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index cca1a07..7f5b257 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -235,7 +235,7 @@ acpi_parse_x2apic(union acpi_subtable_headers *header, const unsigned long end)
- 	 * to not preallocating memory for all NR_CPUS
- 	 * when we use CPU hotplug.
- 	 */
--	if (!apic->apic_id_valid(apic_id)) {
-+	if (!apic_id_valid(apic_id)) {
- 		if (enabled)
- 			pr_warn("x2apic entry ignored\n");
- 		return 0;
-diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
-index 71feae7..2ee3f5a 100644
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -691,7 +691,7 @@ static int x86_vector_select(struct irq_domain *d, struct irq_fwspec *fwspec,
- 	 * if IRQ remapping is enabled. APIC IDs above 15 bits are
- 	 * only permitted if IRQ remapping is enabled, so check that.
- 	 */
--	if (apic->apic_id_valid(32768))
-+	if (apic_id_valid(32768))
- 		return 0;
- 
- 	return x86_fwspec_is_ioapic(fwspec) || x86_fwspec_is_hpet(fwspec);
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index df1c5f0..7349974 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -1064,9 +1064,8 @@ int native_kick_ap(unsigned int cpu, struct task_struct *tidle)
- 
- 	pr_debug("++++++++++++++++++++=_---CPU UP  %u\n", cpu);
- 
--	if (apicid == BAD_APICID ||
--	    !physid_isset(apicid, phys_cpu_present_map) ||
--	    !apic->apic_id_valid(apicid)) {
-+	if (apicid == BAD_APICID || !physid_isset(apicid, phys_cpu_present_map) ||
-+	    !apic_id_valid(apicid)) {
- 		pr_err("%s: bad cpu %d\n", __func__, cpu);
- 		return -EINVAL;
+ 	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++) {
+ 		if ((*drv)->probe && (*drv)->probe()) {
+-			if (apic != *drv) {
+-				apic = *drv;
+-				pr_info("Switched APIC routing to %s.\n",
+-					apic->name);
+-			}
++			apic_install_driver(*drv);
+ 			break;
+ 		}
  	}
-diff --git a/arch/x86/mm/srat.c b/arch/x86/mm/srat.c
-index dac07e4..9c52a95 100644
---- a/arch/x86/mm/srat.c
-+++ b/arch/x86/mm/srat.c
-@@ -40,9 +40,8 @@ acpi_numa_x2apic_affinity_init(struct acpi_srat_x2apic_cpu_affinity *pa)
- 		return;
- 	pxm = pa->proximity_domain;
- 	apic_id = pa->apic_id;
--	if (!apic->apic_id_valid(apic_id)) {
--		printk(KERN_INFO "SRAT: PXM %u -> X2APIC 0x%04x ignored\n",
--			 pxm, apic_id);
-+	if (!apic_id_valid(apic_id)) {
-+		pr_info("SRAT: PXM %u -> X2APIC 0x%04x ignored\n", pxm, apic_id);
- 		return;
+@@ -38,11 +43,7 @@ int __init default_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
+ 
+ 	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++) {
+ 		if ((*drv)->acpi_madt_oem_check(oem_id, oem_table_id)) {
+-			if (apic != *drv) {
+-				apic = *drv;
+-				pr_info("Setting APIC routing to %s.\n",
+-					apic->name);
+-			}
++			apic_install_driver(*drv);
+ 			return 1;
+ 		}
  	}
- 	node = acpi_map_pxm_to_node(pxm);
