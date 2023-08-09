@@ -2,58 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D380776A34
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBCC6776A30
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234577AbjHIUgS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 16:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54414 "EHLO
+        id S234583AbjHIUgT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Aug 2023 16:36:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234544AbjHIUgK (ORCPT
+        with ESMTP id S234561AbjHIUgR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Aug 2023 16:36:10 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F1222111;
-        Wed,  9 Aug 2023 13:36:09 -0700 (PDT)
-Date:   Wed, 09 Aug 2023 20:36:07 -0000
+        Wed, 9 Aug 2023 16:36:17 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584D7211D;
+        Wed,  9 Aug 2023 13:36:10 -0700 (PDT)
+Date:   Wed, 09 Aug 2023 20:36:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691613368;
+        s=2020; t=1691613369;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8GaGJ3bnBR3FDNAqc73b+69m9a1DR32bbhdN0uUW04w=;
-        b=g7fDQ2FWSDaX3naCXC9Z3yWPfqDwuQYvEASUoxQo9q+f9X4xq93uYAxEm2fdqFZmBQqPHu
-        ND+ayNLEYUkhVGAeBRXnZYOrG0eLM8odhbHmlpqRdKCoUAbLzh2povBXnk/XV9T65ss/Am
-        KFLTIyAYHY1wNHnjykZQtFrZPI7Wj23DbIXWnaf2K9iMygRdmE29GBMyd9LmQGlqVvq+NA
-        fDAH9eTmfCTSpC8P+1Y/P5rMzjGMmLCVGfH5nSmPtZxYfDIZNa5sBKVao7k0FYCFBSCX6N
-        EJ+SpLWm2Ykdg5Kkc8yQMwi3Oc9WYYTdow5q/WT+agk7urN1XOOtYQh0EclVvg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=fAx6/DBTqZ9b24JRB23n48mMO1c95bbtwnPOhGCQBWE=;
+        b=0zFuGbieuiXa8Dgs6zQL2AIWvLqvleMqGJdW+gjc1D2LbjvqfEsW0xiXYCz4vIXTQjFHAb
+        JWMDnVcV3ftw+zOmAsVHnCUzYVoIsEI/aM4jBLgXjF9rU+5396fBH2+cdgPtJ/IM4UqUXK
+        zPc3NyNaMHSSxiBxhqQLLhTN3nTq/Jze13PPutP75ANwnkQmRz7Hw33u/FiADwcEstPJwQ
+        5rZb3IhsyvDWXwz/bNTgeiNGrhlt/tJITu7KZLwQ25UkgBm6oMWauYXHH50CH86ZrUjb9+
+        LODbfbM88odP+Q7m9ukABUPHRRA0+oJ+iAKrU3pHvn+Aw1MfdVuacrJ25i4raQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691613368;
+        s=2020e; t=1691613369;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8GaGJ3bnBR3FDNAqc73b+69m9a1DR32bbhdN0uUW04w=;
-        b=/mH8eBUIgwJkGISBrGaShXVDbBjb/wjTUZNrU6cuybgUaNsOgpTZcrGbU+ytRqCyKjsX6Q
-        VMO51TtQX9uOASCA==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=fAx6/DBTqZ9b24JRB23n48mMO1c95bbtwnPOhGCQBWE=;
+        b=/2fvOVkONyPuD/e4WQ0tnaiDsZk6zwUhHC640wQHzZ4wmvdpTmRoqzkswyDP7QVeaUtwgq
+        UhGo8Gav4EydQ8BQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/xen/apic: Use standard apic driver mechanism for Xen PV
-Cc:     Juergen Gross <jgross@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/apic] x86/apic: Wrap apic->native_eoi() into a helper
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Michael Kelley <mikelley@microsoft.com>,
-        Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
+        Sohil Mehta <sohil.mehta@intel.com>,
+        Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <aa086365-fd02-210f-67c6-5c9175c0dfee@suse.com>
-References: <aa086365-fd02-210f-67c6-5c9175c0dfee@suse.com>
 MIME-Version: 1.0
-Message-ID: <169161336764.27769.5356778195879024330.tip-bot2@tip-bot2>
+Message-ID: <169161336854.27769.11656148486231578593.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,83 +65,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     3b5244bef15e0ec2b51ae5ea4182e1b674d01551
-Gitweb:        https://git.kernel.org/tip/3b5244bef15e0ec2b51ae5ea4182e1b674d01551
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Tue, 08 Aug 2023 15:04:18 -07:00
+Commit-ID:     0fa075769cd4af9c568044973e7bdf430cc7c158
+Gitweb:        https://git.kernel.org/tip/0fa075769cd4af9c568044973e7bdf430cc7c158
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 08 Aug 2023 15:04:17 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 09 Aug 2023 12:00:41 -07:00
+CommitterDate: Wed, 09 Aug 2023 11:58:34 -07:00
 
-x86/xen/apic: Use standard apic driver mechanism for Xen PV
+x86/apic: Wrap apic->native_eoi() into a helper
 
-Instead of setting the Xen PV apic driver very early during boot, just use
-the standard apic driver probing by setting an appropriate
-x86_init.irqs.intr_mode_init callback.
+Prepare for converting the hotpath APIC callbacks to static calls.
 
-At the same time eliminate xen_apic_check() which has never been used.
-
-The #ifdef CONFIG_X86_LOCAL_APIC around the call of xen_init_apic()
-can be removed, too, as CONFIG_XEN depends on CONFIG_X86_LOCAL_APIC.
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Sohil Mehta <sohil.mehta@intel.com>
 Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
-Link: https://lore.kernel.org/lkml/aa086365-fd02-210f-67c6-5c9175c0dfee@suse.com
 ---
- arch/x86/xen/apic.c         | 11 -----------
- arch/x86/xen/enlighten_pv.c |  4 +---
- 2 files changed, 1 insertion(+), 14 deletions(-)
+ arch/x86/include/asm/apic.h | 6 ++++++
+ arch/x86/kernel/kvm.c       | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/xen/apic.c b/arch/x86/xen/apic.c
-index 1838aef..315ffd8 100644
---- a/arch/x86/xen/apic.c
-+++ b/arch/x86/xen/apic.c
-@@ -158,19 +158,8 @@ static struct apic xen_pv_apic = {
- 	.icr_write 			= xen_apic_icr_write,
- };
- 
--static void __init xen_apic_check(void)
--{
--	apic_install_driver(&xen_pv_apic);
--}
--
- void __init xen_init_apic(void)
- {
- 	x86_apic_ops.io_apic_read = xen_io_apic_read;
--	/* On PV guests the APIC CPUID bit is disabled so none of the
--	 * routines end up executing. */
--	if (!xen_initial_domain())
--		apic_install_driver(&xen_pv_apic);
--
--	x86_platform.apic_post_init = xen_apic_check;
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index 6ad3574..5d98c4b 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -359,6 +359,11 @@ static inline void apic_eoi(void)
+ 	apic->eoi();
  }
- apic_driver(xen_pv_apic);
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 93b6582..c393c44 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -1326,7 +1326,7 @@ asmlinkage __visible void __init xen_start_kernel(struct start_info *si)
  
- 	x86_init.resources.memory_setup = xen_memory_setup;
- 	x86_init.irqs.intr_mode_select	= x86_init_noop;
--	x86_init.irqs.intr_mode_init	= x86_init_noop;
-+	x86_init.irqs.intr_mode_init	= x86_64_probe_apic;
- 	x86_init.oem.arch_setup = xen_arch_setup;
- 	x86_init.oem.banner = xen_banner;
- 	x86_init.hyper.init_platform = xen_pv_init_platform;
-@@ -1366,12 +1366,10 @@ asmlinkage __visible void __init xen_start_kernel(struct start_info *si)
++static inline void apic_native_eoi(void)
++{
++	apic->native_eoi();
++}
++
+ static inline u64 apic_icr_read(void)
+ {
+ 	return apic->icr_read();
+@@ -397,6 +402,7 @@ static inline void apic_icr_write(u32 low, u32 high) { }
+ static inline void apic_wait_icr_idle(void) { }
+ static inline u32 safe_apic_wait_icr_idle(void) { return 0; }
+ static inline void apic_set_eoi_cb(void (*eoi)(void)) {}
++static inline void apic_native_eoi(void) { WARN_ON_ONCE(1); }
  
- 	xen_init_capabilities();
+ #endif /* CONFIG_X86_LOCAL_APIC */
  
--#ifdef CONFIG_X86_LOCAL_APIC
- 	/*
- 	 * set up the basic apic ops.
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index f5339e3..54625a4 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -343,7 +343,7 @@ static notrace void kvm_guest_apic_eoi_write(void)
  	 */
- 	xen_init_apic();
--#endif
+ 	if (__test_and_clear_bit(KVM_PV_EOI_BIT, this_cpu_ptr(&kvm_apic_eoi)))
+ 		return;
+-	apic->native_eoi();
++	apic_native_eoi();
+ }
  
- 	machine_ops = xen_machine_ops;
- 
+ static void kvm_guest_cpu_init(void)
