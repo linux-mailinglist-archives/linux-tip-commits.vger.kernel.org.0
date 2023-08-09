@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 224C077696F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6112776A1E
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232223AbjHIUFD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 16:05:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58518 "EHLO
+        id S234514AbjHIUgH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Aug 2023 16:36:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230229AbjHIUFC (ORCPT
+        with ESMTP id S234460AbjHIUgG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Aug 2023 16:05:02 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B02310D4;
-        Wed,  9 Aug 2023 13:05:02 -0700 (PDT)
-Date:   Wed, 09 Aug 2023 20:05:00 -0000
+        Wed, 9 Aug 2023 16:36:06 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 190ADB4;
+        Wed,  9 Aug 2023 13:36:05 -0700 (PDT)
+Date:   Wed, 09 Aug 2023 20:36:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691611500;
+        s=2020; t=1691613363;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jfwImcTI7YaZYZrzmlihZWVOTd+VrMC3wiA0U3w+xDg=;
-        b=g02pWa5rGxq/IhPWRz5L5ginA7VzCbT5kMA6ml4aKruJfyPUO5IVwevFZUM0MiJQy7EKOz
-        0EInhxfs35m4cl1A6E8cHCPUUgnh0xDPEgpoG/P+sP8/JCYG/bIfgHF8LuYj5ovPOtkclB
-        lDHriQcjdf+5Zdno2JVQ3wEcac3C9f+NbwFItBcnYVhJNxswBC2ezKQJPJx0AUP+P5Iovm
-        n4ImEQWufpCbZHnkwUzwwZb+IUKCLqS3iIsfol2Xca2h8tcUyl4j0jvobA+HQORrqjVqjP
-        d/ZbKtwQlXnA4MNGgZf350HKu8qkfdImvKiq3H8sIsPuvLNNNmJgSxO2knn6lw==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=IkphxmPM5tysB4op+m1B+DDZ6LJglMpAWxW9xITodPE=;
+        b=cn20GOZA+83HgU9xYQDT3T7EPnr99AqNbtGHgR1O24P58uPEn8FjVKmepWsDOkM66c4gCH
+        8MFeI1m5k+mQaTQof8zTkSE9VzCj5J2h5CmhlC9UV4+ucdTEghxL898WzNCYDCnYNI2GhH
+        jgD2UFvbtfpdlwhFtvN0PAiT1i3l91saiZWt/baBl9p61MDKmkKFw/o4kXqX+++VkEU2DU
+        aMQ6dbwMQZELMAXKhPsZDGwe1Aa0t2JrQSMNgKMLpvWnKv7c2kxARvXSL5rIC8YBuSi5dJ
+        p5hXcYI6EsMhthu3irsLEcwPntNVgXGTFyepbWSpWgSNvry+IFvoyILRSnPO5w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691611500;
+        s=2020e; t=1691613363;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jfwImcTI7YaZYZrzmlihZWVOTd+VrMC3wiA0U3w+xDg=;
-        b=SGWljJYDSoa0ShuDlRHzeOMG35gvbEfXvvegN45Tl1jO/i/7tkYZLaD41/wEnA0zcyewWW
-        idgxnEOyBSdsTqBQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=IkphxmPM5tysB4op+m1B+DDZ6LJglMpAWxW9xITodPE=;
+        b=iIuM8jOGYgfhiElq7CGBFrQIrVpJfNAb0svdW5+aMiD1gHYqpWpA5Dvjrgu/yq0W7mINTv
+        LrdatQ9mK/QgBvBQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] x86/cpu: Fix Crestmont uarch
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
+Subject: [tip: x86/apic] x86/apic: Turn on static calls
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Juergen Gross <jgross@suse.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230807150405.757666627@infradead.org>
-References: <20230807150405.757666627@infradead.org>
 MIME-Version: 1.0
-Message-ID: <169161150022.27769.13986653864659019340.tip-bot2@tip-bot2>
+Message-ID: <169161336293.27769.2235554939869573461.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,70 +63,116 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     0cfd8fbadd6833d243c9a9d8649ba4a9f4361c93
-Gitweb:        https://git.kernel.org/tip/0cfd8fbadd6833d243c9a9d8649ba4a9f4361c93
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 07 Aug 2023 14:38:08 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 09 Aug 2023 21:51:06 +02:00
+Commit-ID:     f8542a55499a69a859c84866b66f0df43933e563
+Gitweb:        https://git.kernel.org/tip/f8542a55499a69a859c84866b66f0df43933e563
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 08 Aug 2023 15:04:24 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Wed, 09 Aug 2023 12:00:55 -07:00
 
-x86/cpu: Fix Crestmont uarch
+x86/apic: Turn on static calls
 
-Sierra Forest and Grand Ridge are both E-core only using Crestmont
-micro-architecture, They fit the pre-existing naming scheme prefectly
-fine, adhere to it.
+Convert all the APIC callback inline wrappers from apic->foo() to
+static_call(apic_call_foo)(), except for the safe_wait_icr_idle() one which
+is only used during SMP bringup when sending INIT/SIPI. That really can do
+the conditional callback. The regular wait_icr_idle() matters as it is used
+in irq_work_raise(), so X2APIC machines spare the conditional.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230807150405.757666627@infradead.org
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
+Tested-by: Michael Kelley <mikelley@microsoft.com>
+Tested-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
- arch/x86/include/asm/intel-family.h                         | 5 ++---
- drivers/edac/i10nm_base.c                                   | 2 +-
- drivers/platform/x86/intel/speed_select_if/isst_if_common.c | 2 +-
- 3 files changed, 4 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/apic.h | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 4041326..49d40ee 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -155,9 +155,8 @@
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index ddafd14..5af4ec1 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -394,68 +394,67 @@ DECLARE_APIC_CALL(write);
  
- #define INTEL_FAM6_ATOM_GRACEMONT	0xBE /* Alderlake N */
+ static __always_inline u32 apic_read(u32 reg)
+ {
+-	return apic->read(reg);
++	return static_call(apic_call_read)(reg);
+ }
  
--#define INTEL_FAM6_SIERRAFOREST_X	0xAF
--
--#define INTEL_FAM6_GRANDRIDGE		0xB6
-+#define INTEL_FAM6_ATOM_CRESTMONT_X	0xAF /* Sierra Forest */
-+#define INTEL_FAM6_ATOM_CRESTMONT	0xB6 /* Grand Ridge */
+ static __always_inline void apic_write(u32 reg, u32 val)
+ {
+-	apic->write(reg, val);
++	static_call(apic_call_write)(reg, val);
+ }
  
- /* Xeon Phi */
+ static __always_inline void apic_eoi(void)
+ {
+-	apic->eoi();
++	static_call(apic_call_eoi)();
+ }
  
-diff --git a/drivers/edac/i10nm_base.c b/drivers/edac/i10nm_base.c
-index a897b6a..5abf997 100644
---- a/drivers/edac/i10nm_base.c
-+++ b/drivers/edac/i10nm_base.c
-@@ -906,7 +906,7 @@ static const struct x86_cpu_id i10nm_cpuids[] = {
- 	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(SAPPHIRERAPIDS_X,	X86_STEPPINGS(0x0, 0xf), &spr_cfg),
- 	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(EMERALDRAPIDS_X,	X86_STEPPINGS(0x0, 0xf), &spr_cfg),
- 	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(GRANITERAPIDS_X,	X86_STEPPINGS(0x0, 0xf), &gnr_cfg),
--	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(SIERRAFOREST_X,	X86_STEPPINGS(0x0, 0xf), &gnr_cfg),
-+	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(ATOM_CRESTMONT_X,	X86_STEPPINGS(0x0, 0xf), &gnr_cfg),
- 	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, i10nm_cpuids);
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-index 1f59ac5..47e5a94 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-@@ -720,7 +720,7 @@ static struct miscdevice isst_if_char_driver = {
+ static __always_inline void apic_native_eoi(void)
+ {
+-	apic->native_eoi();
++	static_call(apic_call_native_eoi)();
+ }
  
- static const struct x86_cpu_id hpm_cpu_ids[] = {
- 	X86_MATCH_INTEL_FAM6_MODEL(GRANITERAPIDS_X,	NULL),
--	X86_MATCH_INTEL_FAM6_MODEL(SIERRAFOREST_X,	NULL),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_CRESTMONT_X,	NULL),
- 	{}
- };
+ static __always_inline u64 apic_icr_read(void)
+ {
+-	return apic->icr_read();
++	return static_call(apic_call_icr_read)();
+ }
  
+ static __always_inline void apic_icr_write(u32 low, u32 high)
+ {
+-	apic->icr_write(low, high);
++	static_call(apic_call_icr_write)(low, high);
+ }
+ 
+ static __always_inline void __apic_send_IPI(int cpu, int vector)
+ {
+-	apic->send_IPI(cpu, vector);
++	static_call(apic_call_send_IPI)(cpu, vector);
+ }
+ 
+ static __always_inline void __apic_send_IPI_mask(const struct cpumask *mask, int vector)
+ {
+-	apic->send_IPI_mask(mask, vector);
++	static_call_mod(apic_call_send_IPI_mask)(mask, vector);
+ }
+ 
+ static __always_inline void __apic_send_IPI_mask_allbutself(const struct cpumask *mask, int vector)
+ {
+-	apic->send_IPI_mask_allbutself(mask, vector);
++	static_call(apic_call_send_IPI_mask_allbutself)(mask, vector);
+ }
+ 
+ static __always_inline void __apic_send_IPI_allbutself(int vector)
+ {
+-	apic->send_IPI_allbutself(vector);
++	static_call(apic_call_send_IPI_allbutself)(vector);
+ }
+ 
+ static __always_inline void __apic_send_IPI_all(int vector)
+ {
+-	apic->send_IPI_all(vector);
++	static_call(apic_call_send_IPI_all)(vector);
+ }
+ 
+ static __always_inline void __apic_send_IPI_self(int vector)
+ {
+-	apic->send_IPI_self(vector);
++	static_call_mod(apic_call_send_IPI_self)(vector);
+ }
+ 
+ static __always_inline void apic_wait_icr_idle(void)
+ {
+-	if (apic->wait_icr_idle)
+-		apic->wait_icr_idle();
++	static_call_cond(apic_call_wait_icr_idle)();
+ }
+ 
+ static __always_inline u32 safe_apic_wait_icr_idle(void)
