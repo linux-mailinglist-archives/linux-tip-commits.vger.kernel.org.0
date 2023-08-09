@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10F93776A31
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF7C3776A36
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234602AbjHIUgU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S234606AbjHIUgU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 9 Aug 2023 16:36:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54438 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234519AbjHIUgR (ORCPT
+        with ESMTP id S234563AbjHIUgR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 9 Aug 2023 16:36:17 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01694211B;
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E05DD210D;
         Wed,  9 Aug 2023 13:36:10 -0700 (PDT)
-Date:   Wed, 09 Aug 2023 20:36:08 -0000
+Date:   Wed, 09 Aug 2023 20:36:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691613368;
+        s=2020; t=1691613369;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=bimBVY8RdmfT0LAkUV4jrKBGiIhXO+0jFslavpxZtLs=;
-        b=JhYPAI3B6XoED6OHEFgOYbd3MJNhNYzfyQSJ+MOs5V1QzxYyCUg8bsboUYgWzwx+ddtgXR
-        UE2HbuVnIwEOE12bGjAANKKGolb5NbOaQoU4YKjyaYNbeoawAW1nz7EaHtzoR5QRHsPX5a
-        +ShLBVOqkNn1DT4pXHfm9cMcUxk13KfwQ3ippoP9cykt2y6N39AZ7aVDvBlvXeYsby/x3q
-        FcMWGjCqTnk/71MVoVYo8zh+oKBTtlVZ6CEr/nE9S4DUDXebL3mDmEj4nWQloTcGMmax59
-        9TOewUSDQnaEknZlZ22s26S4BEf+7pO8xw4GZqQpsICod5MXilxGnXM/DbY8Yg==
+        bh=KXsQ0JunJmhEILsfuaFj/Rm3XHMEgou5uI3kmWnfOHE=;
+        b=Lw3RrJzyoZl4QGKBe+dI+6hUT6Uu+YO20V/jPXV+B4JQhvo6yEXr+O30NSrZtx5zJkhiEg
+        hzbHJVfBUAVnTeK4iYwi1SJ2Gr50HgmVF6lYygIH/ikABmGiaBkUtUD78wncU389NA7oYP
+        rZNaWYJsaqDU0SgdgurDPRLhCl9HlzCcthQgWgH21nEsjGg0EWAWDIr0N6zD6eU+9o/hSN
+        7aEfdPUd1TUPDurq2FoI6MnzdwJALQ858rX8zFoiJ6y2+MNioRwgZ8c/hqQ/WZ4sBuUSzD
+        PUGgXqr6h3gF4qPWLuSLUYu+x2Qiey/EP74kDk3x+kbrFS0wqpQqlT+CeiOwDQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691613368;
+        s=2020e; t=1691613369;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=bimBVY8RdmfT0LAkUV4jrKBGiIhXO+0jFslavpxZtLs=;
-        b=2LS0jn0TRpUNKHLikt0+qmqL+Jsg21MaLH7JxpGT4fE0V/XU2hHBxOISCIkS6PObxjtdDA
-        nTRoEikxOe5WyGCQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=KXsQ0JunJmhEILsfuaFj/Rm3XHMEgou5uI3kmWnfOHE=;
+        b=YfMDGPFGV2zgFGjHj2KRRMmqbgukdYXdTYm2h/B6ajAZM0KpihEE3pFwESnGDJCQY68PGN
+        JnIBblwMeUmxJBDQ==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Provide common init infrastructure
+Subject: [tip: x86/apic] x86/apic: Nuke ack_APIC_irq()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
+        Wei Liu <wei.liu@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Michael Kelley <mikelley@microsoft.com>,
         Sohil Mehta <sohil.mehta@intel.com>,
         Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169161336811.27769.16060148631353900017.tip-bot2@tip-bot2>
+Message-ID: <169161336901.27769.5381986886968999187.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,280 +66,361 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     3af1e415e4d43128b72af615b346b832694377d3
-Gitweb:        https://git.kernel.org/tip/3af1e415e4d43128b72af615b346b832694377d3
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 08 Aug 2023 15:04:18 -07:00
+Commit-ID:     670c04add6e1a22de7c59e282c138ddcf6c9e5a2
+Gitweb:        https://git.kernel.org/tip/670c04add6e1a22de7c59e282c138ddcf6c9e5a2
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Wed, 09 Aug 2023 08:16:46 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Wed, 09 Aug 2023 11:58:34 -07:00
 
-x86/apic: Provide common init infrastructure
+x86/apic: Nuke ack_APIC_irq()
 
-In preparation for converting the hotpath APIC callbacks to static keys,
-provide common initialization infrastructure.
-
-Lift apic_install_drivers() from probe_64.c and convert all places which
-switch the apic instance by storing the pointer to use apic_install_driver()
-as a first step.
+Yet another wrapper of a wrapper gone along with the outdated comment
+that this compiles to a single instruction.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Wei Liu <wei.liu@kernel.org>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Sohil Mehta <sohil.mehta@intel.com>
 Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
 ---
- arch/x86/include/asm/apic.h         |  2 +-
- arch/x86/kernel/apic/Makefile       |  2 +-
- arch/x86/kernel/apic/apic.c         | 31 +------------------
- arch/x86/kernel/apic/apic_flat_64.c |  6 +----
- arch/x86/kernel/apic/bigsmp_32.c    |  6 +---
- arch/x86/kernel/apic/init.c         | 47 ++++++++++++++++++++++++++++-
- arch/x86/kernel/apic/probe_32.c     |  5 +--
- arch/x86/kernel/apic/probe_64.c     | 13 +--------
- arch/x86/xen/apic.c                 | 10 +-----
- 9 files changed, 59 insertions(+), 63 deletions(-)
- create mode 100644 arch/x86/kernel/apic/init.c
+ arch/x86/hyperv/hv_init.c           |  2 +-
+ arch/x86/include/asm/apic.h         | 10 ----------
+ arch/x86/kernel/apic/apic.c         | 10 +++++-----
+ arch/x86/kernel/apic/io_apic.c      |  4 ++--
+ arch/x86/kernel/apic/vector.c       |  2 +-
+ arch/x86/kernel/cpu/acrn.c          |  2 +-
+ arch/x86/kernel/cpu/mce/amd.c       |  2 +-
+ arch/x86/kernel/cpu/mce/threshold.c |  2 +-
+ arch/x86/kernel/cpu/mshyperv.c      |  4 ++--
+ arch/x86/kernel/irq.c               | 14 +++++++-------
+ arch/x86/kernel/irq_work.c          |  2 +-
+ arch/x86/kernel/kvm.c               |  2 +-
+ arch/x86/kernel/smp.c               |  8 ++++----
+ arch/x86/xen/enlighten_hvm.c        |  2 +-
+ 14 files changed, 28 insertions(+), 38 deletions(-)
 
+diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+index 6c04b52..fc56fc8 100644
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -161,7 +161,7 @@ static inline bool hv_reenlightenment_available(void)
+ 
+ DEFINE_IDTENTRY_SYSVEC(sysvec_hyperv_reenlightenment)
+ {
+-	ack_APIC_irq();
++	apic_eoi();
+ 	inc_irq_stat(irq_hv_reenlightenment_count);
+ 	schedule_delayed_work(&hv_reenlightenment_work, HZ/10);
+ }
 diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 5d98c4b..90814ec 100644
+index 790f15d..6ad3574 100644
 --- a/arch/x86/include/asm/apic.h
 +++ b/arch/x86/include/asm/apic.h
-@@ -344,6 +344,8 @@ extern int lapic_can_unplug_cpu(void);
+@@ -402,16 +402,6 @@ static inline void apic_set_eoi_cb(void (*eoi)(void)) {}
  
- #ifdef CONFIG_X86_LOCAL_APIC
+ extern void apic_ack_irq(struct irq_data *data);
  
-+void __init apic_install_driver(struct apic *driver);
-+
- static inline u32 apic_read(u32 reg)
+-static inline void ack_APIC_irq(void)
+-{
+-	/*
+-	 * ack_APIC_irq() actually gets compiled as a single instruction
+-	 * ... yummie.
+-	 */
+-	apic_eoi();
+-}
+-
+-
+ static inline bool lapic_vector_set_in_irr(unsigned int vector)
  {
- 	return apic->read(reg);
-diff --git a/arch/x86/kernel/apic/Makefile b/arch/x86/kernel/apic/Makefile
-index a6fcaf1..2ee867d 100644
---- a/arch/x86/kernel/apic/Makefile
-+++ b/arch/x86/kernel/apic/Makefile
-@@ -7,7 +7,7 @@
- # In particualr, smp_apic_timer_interrupt() is called in random places.
- KCOV_INSTRUMENT		:= n
- 
--obj-$(CONFIG_X86_LOCAL_APIC)	+= apic.o apic_common.o apic_noop.o ipi.o vector.o
-+obj-$(CONFIG_X86_LOCAL_APIC)	+= apic.o apic_common.o apic_noop.o ipi.o vector.o init.o
- obj-y				+= hw_nmi.o
- 
- obj-$(CONFIG_X86_IO_APIC)	+= io_apic.o
+ 	u32 irr = apic_read(APIC_IRR + (vector / 32 * 0x10));
 diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index b8b801e..55f2b96 100644
+index 33d5ed6..b8b801e 100644
 --- a/arch/x86/kernel/apic/apic.c
 +++ b/arch/x86/kernel/apic/apic.c
-@@ -236,8 +236,7 @@ static int modern_apic(void)
-  */
- static void __init apic_disable(void)
+@@ -1076,7 +1076,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_apic_timer_interrupt)
  {
--	pr_info("APIC: switched to apic NOOP\n");
--	apic = &apic_noop;
-+	apic_install_driver(&apic_noop);
- }
+ 	struct pt_regs *old_regs = set_irq_regs(regs);
  
- void native_apic_icr_write(u32 low, u32 id)
-@@ -2486,34 +2485,6 @@ u32 x86_msi_msg_get_destid(struct msi_msg *msg, bool extid)
- }
- EXPORT_SYMBOL_GPL(x86_msi_msg_get_destid);
- 
--#ifdef CONFIG_X86_64
--void __init acpi_wake_cpu_handler_update(wakeup_cpu_handler handler)
--{
--	struct apic **drv;
--
--	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++)
--		(*drv)->wakeup_secondary_cpu_64 = handler;
--}
--#endif
--
--/*
-- * Override the generic EOI implementation with an optimized version.
-- * Only called during early boot when only one CPU is active and with
-- * interrupts disabled, so we know this does not race with actual APIC driver
-- * use.
-- */
--void __init apic_set_eoi_cb(void (*eoi)(void))
--{
--	struct apic **drv;
--
--	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++) {
--		/* Should happen once for each apic */
--		WARN_ON((*drv)->eoi == eoi);
--		(*drv)->native_eoi = (*drv)->eoi;
--		(*drv)->eoi = eoi;
--	}
--}
--
- static void __init apic_bsp_up_setup(void)
- {
- #ifdef CONFIG_X86_64
-diff --git a/arch/x86/kernel/apic/apic_flat_64.c b/arch/x86/kernel/apic/apic_flat_64.c
-index 5ce1b37..032a84e 100644
---- a/arch/x86/kernel/apic/apic_flat_64.c
-+++ b/arch/x86/kernel/apic/apic_flat_64.c
-@@ -143,11 +143,7 @@ static int physflat_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
- 
- static int physflat_probe(void)
- {
--	if (apic == &apic_physflat || num_possible_cpus() > 8 ||
--	    jailhouse_paravirt())
--		return 1;
--
--	return 0;
-+	return apic == &apic_physflat || num_possible_cpus() > 8 || jailhouse_paravirt();
- }
- 
- static struct apic apic_physflat __ro_after_init = {
-diff --git a/arch/x86/kernel/apic/bigsmp_32.c b/arch/x86/kernel/apic/bigsmp_32.c
-index 23c29a0..0e5535a 100644
---- a/arch/x86/kernel/apic/bigsmp_32.c
-+++ b/arch/x86/kernel/apic/bigsmp_32.c
-@@ -119,10 +119,8 @@ bool __init apic_bigsmp_possible(bool cmdline_override)
- 
- void __init apic_bigsmp_force(void)
- {
--	if (apic != &apic_bigsmp) {
--		apic = &apic_bigsmp;
--		pr_info("Overriding APIC driver with bigsmp\n");
--	}
-+	if (apic != &apic_bigsmp)
-+		apic_install_driver(&apic_bigsmp);
- }
- 
- apic_driver(apic_bigsmp);
-diff --git a/arch/x86/kernel/apic/init.c b/arch/x86/kernel/apic/init.c
-new file mode 100644
-index 0000000..25cf39b
---- /dev/null
-+++ b/arch/x86/kernel/apic/init.c
-@@ -0,0 +1,47 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#define pr_fmt(fmt) "APIC: " fmt
-+
-+#include <asm/apic.h>
-+
-+#include "local.h"
-+
-+void __init apic_install_driver(struct apic *driver)
-+{
-+	if (apic == driver)
-+		return;
-+
-+	apic = driver;
-+
-+	if (IS_ENABLED(CONFIG_X86_X2APIC) && apic->x2apic_set_max_apicid)
-+		apic->max_apic_id = x2apic_max_apicid;
-+
-+	pr_info("Switched APIC routing to: %s\n", driver->name);
-+}
-+
-+#ifdef CONFIG_X86_64
-+void __init acpi_wake_cpu_handler_update(wakeup_cpu_handler handler)
-+{
-+	struct apic **drv;
-+
-+	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++)
-+		(*drv)->wakeup_secondary_cpu_64 = handler;
-+}
-+#endif
-+
-+/*
-+ * Override the generic EOI implementation with an optimized version.
-+ * Only called during early boot when only one CPU is active and with
-+ * interrupts disabled, so we know this does not race with actual APIC driver
-+ * use.
-+ */
-+void __init apic_set_eoi_cb(void (*eoi)(void))
-+{
-+	struct apic **drv;
-+
-+	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++) {
-+		/* Should happen once for each apic */
-+		WARN_ON((*drv)->eoi == eoi);
-+		(*drv)->native_eoi = (*drv)->eoi;
-+		(*drv)->eoi = eoi;
-+	}
-+}
-diff --git a/arch/x86/kernel/apic/probe_32.c b/arch/x86/kernel/apic/probe_32.c
-index 3671cc1..9a06df6 100644
---- a/arch/x86/kernel/apic/probe_32.c
-+++ b/arch/x86/kernel/apic/probe_32.c
-@@ -82,7 +82,7 @@ static int __init parse_apic(char *arg)
- 
- 	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++) {
- 		if (!strcmp((*drv)->name, arg)) {
--			apic = *drv;
-+			apic_install_driver(*drv);
- 			cmdline_apic = 1;
- 			return 0;
- 		}
-@@ -129,7 +129,7 @@ void __init x86_32_probe_apic(void)
- 
- 		for (drv = __apicdrivers; drv < __apicdrivers_end; drv++) {
- 			if ((*drv)->probe()) {
--				apic = *drv;
-+				apic_install_driver(*drv);
- 				break;
- 			}
- 		}
-@@ -137,5 +137,4 @@ void __init x86_32_probe_apic(void)
- 		if (drv == __apicdrivers_end)
- 			panic("Didn't find an APIC driver");
+-	ack_APIC_irq();
++	apic_eoi();
+ 	trace_local_timer_entry(LOCAL_TIMER_VECTOR);
+ 	local_apic_timer_interrupt();
+ 	trace_local_timer_exit(LOCAL_TIMER_VECTOR);
+@@ -1480,7 +1480,7 @@ static bool apic_check_and_ack(union apic_ir *irr, union apic_ir *isr)
+ 		 * per set bit.
+ 		 */
+ 		for_each_set_bit(bit, isr->map, APIC_IR_BITS)
+-			ack_APIC_irq();
++			apic_eoi();
+ 		return true;
  	}
--	printk(KERN_INFO "Using APIC driver %s\n", apic->name);
- }
-diff --git a/arch/x86/kernel/apic/probe_64.c b/arch/x86/kernel/apic/probe_64.c
-index a12a379..ecdf0c4 100644
---- a/arch/x86/kernel/apic/probe_64.c
-+++ b/arch/x86/kernel/apic/probe_64.c
-@@ -13,19 +13,6 @@
  
- #include "local.h"
+@@ -1492,7 +1492,7 @@ static bool apic_check_and_ack(union apic_ir *irr, union apic_ir *isr)
+  * interrupt from previous kernel might still have ISR bit set.
+  *
+  * Most probably by now the CPU has serviced that pending interrupt and it
+- * might not have done the ack_APIC_irq() because it thought, interrupt
++ * might not have done the apic_eoi() because it thought, interrupt
+  * came from i8259 as ExtInt. LAPIC did not get EOI so it does not clear
+  * the ISR bit and cpu thinks it has already serviced the interrupt. Hence
+  * a vector might get locked. It was noticed for timer irq (vector
+@@ -2147,7 +2147,7 @@ static noinline void handle_spurious_interrupt(u8 vector)
+ 	if (v & (1 << (vector & 0x1f))) {
+ 		pr_info("Spurious interrupt (vector 0x%02x) on CPU#%d. Acked\n",
+ 			vector, smp_processor_id());
+-		ack_APIC_irq();
++		apic_eoi();
+ 	} else {
+ 		pr_info("Spurious interrupt (vector 0x%02x) on CPU#%d. Not pending!\n",
+ 			vector, smp_processor_id());
+@@ -2198,7 +2198,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_error_interrupt)
+ 	if (lapic_get_maxlvt() > 3)	/* Due to the Pentium erratum 3AP. */
+ 		apic_write(APIC_ESR, 0);
+ 	v = apic_read(APIC_ESR);
+-	ack_APIC_irq();
++	apic_eoi();
+ 	atomic_inc(&irq_err_count);
  
--static __init void apic_install_driver(struct apic *driver)
--{
--	if (apic == driver)
--		return;
--
--	apic = driver;
--
--	if (IS_ENABLED(CONFIG_X86_X2APIC) && apic->x2apic_set_max_apicid)
--		apic->max_apic_id = x2apic_max_apicid;
--
--	pr_info("Switched APIC routing to %s:\n", apic->name);
--}
--
- /* Select the appropriate APIC driver */
- void __init x86_64_probe_apic(void)
+ 	apic_printk(APIC_DEBUG, KERN_DEBUG "APIC error on CPU%d: %02x",
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index ff2d27e..00da6cf 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -1823,7 +1823,7 @@ static void ioapic_ack_level(struct irq_data *irq_data)
+ 	 * We must acknowledge the irq before we move it or the acknowledge will
+ 	 * not propagate properly.
+ 	 */
+-	ack_APIC_irq();
++	apic_eoi();
+ 
+ 	/*
+ 	 * Tail end of clearing remote IRR bit (either by delivering the EOI
+@@ -2046,7 +2046,7 @@ static void unmask_lapic_irq(struct irq_data *data)
+ 
+ static void ack_lapic_irq(struct irq_data *data)
  {
-diff --git a/arch/x86/xen/apic.c b/arch/x86/xen/apic.c
-index 804a26b..1838aef 100644
---- a/arch/x86/xen/apic.c
-+++ b/arch/x86/xen/apic.c
-@@ -160,20 +160,16 @@ static struct apic xen_pv_apic = {
- 
- static void __init xen_apic_check(void)
- {
--	if (apic == &xen_pv_apic)
--		return;
--
--	pr_info("Switched APIC routing from %s to %s.\n", apic->name,
--		xen_pv_apic.name);
--	apic = &xen_pv_apic;
-+	apic_install_driver(&xen_pv_apic);
+-	ack_APIC_irq();
++	apic_eoi();
  }
-+
- void __init xen_init_apic(void)
- {
- 	x86_apic_ops.io_apic_read = xen_io_apic_read;
- 	/* On PV guests the APIC CPUID bit is disabled so none of the
- 	 * routines end up executing. */
- 	if (!xen_initial_domain())
--		apic = &xen_pv_apic;
-+		apic_install_driver(&xen_pv_apic);
  
- 	x86_platform.apic_post_init = xen_apic_check;
+ static struct irq_chip lapic_chip __read_mostly = {
+diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
+index 2ee3f5a..4a262c6 100644
+--- a/arch/x86/kernel/apic/vector.c
++++ b/arch/x86/kernel/apic/vector.c
+@@ -907,7 +907,7 @@ static int apic_retrigger_irq(struct irq_data *irqd)
+ void apic_ack_irq(struct irq_data *irqd)
+ {
+ 	irq_move_irq(irqd);
+-	ack_APIC_irq();
++	apic_eoi();
  }
+ 
+ void apic_ack_edge(struct irq_data *irqd)
+diff --git a/arch/x86/kernel/cpu/acrn.c b/arch/x86/kernel/cpu/acrn.c
+index 485441b..bfeb18f 100644
+--- a/arch/x86/kernel/cpu/acrn.c
++++ b/arch/x86/kernel/cpu/acrn.c
+@@ -51,7 +51,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_acrn_hv_callback)
+ 	 * will block the interrupt whose vector is lower than
+ 	 * HYPERVISOR_CALLBACK_VECTOR.
+ 	 */
+-	ack_APIC_irq();
++	apic_eoi();
+ 	inc_irq_stat(irq_hv_callback_count);
+ 
+ 	if (acrn_intr_handler)
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index c4ec4ca..c267f43 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -759,7 +759,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_deferred_error)
+ 	inc_irq_stat(irq_deferred_error_count);
+ 	deferred_error_int_vector();
+ 	trace_deferred_error_apic_exit(DEFERRED_ERROR_VECTOR);
+-	ack_APIC_irq();
++	apic_eoi();
+ }
+ 
+ /*
+diff --git a/arch/x86/kernel/cpu/mce/threshold.c b/arch/x86/kernel/cpu/mce/threshold.c
+index 6a059a0..ef4e7bb 100644
+--- a/arch/x86/kernel/cpu/mce/threshold.c
++++ b/arch/x86/kernel/cpu/mce/threshold.c
+@@ -27,5 +27,5 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_threshold)
+ 	inc_irq_stat(irq_threshold_count);
+ 	mce_threshold_vector();
+ 	trace_threshold_apic_exit(THRESHOLD_APIC_VECTOR);
+-	ack_APIC_irq();
++	apic_eoi();
+ }
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index c7969e8..0100468 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -119,7 +119,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_hyperv_callback)
+ 		vmbus_handler();
+ 
+ 	if (ms_hyperv.hints & HV_DEPRECATING_AEOI_RECOMMENDED)
+-		ack_APIC_irq();
++		apic_eoi();
+ 
+ 	set_irq_regs(old_regs);
+ }
+@@ -147,7 +147,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_hyperv_stimer0)
+ 	if (hv_stimer0_handler)
+ 		hv_stimer0_handler();
+ 	add_interrupt_randomness(HYPERV_STIMER0_VECTOR);
+-	ack_APIC_irq();
++	apic_eoi();
+ 
+ 	set_irq_regs(old_regs);
+ }
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index 9f668d2..11761c1 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -49,7 +49,7 @@ void ack_bad_irq(unsigned int irq)
+ 	 * completely.
+ 	 * But only ack when the APIC is enabled -AK
+ 	 */
+-	ack_APIC_irq();
++	apic_eoi();
+ }
+ 
+ #define irq_stats(x)		(&per_cpu(irq_stat, x))
+@@ -256,7 +256,7 @@ DEFINE_IDTENTRY_IRQ(common_interrupt)
+ 	if (likely(!IS_ERR_OR_NULL(desc))) {
+ 		handle_irq(desc, regs);
+ 	} else {
+-		ack_APIC_irq();
++		apic_eoi();
+ 
+ 		if (desc == VECTOR_UNUSED) {
+ 			pr_emerg_ratelimited("%s: %d.%u No irq handler for vector\n",
+@@ -280,7 +280,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_x86_platform_ipi)
+ {
+ 	struct pt_regs *old_regs = set_irq_regs(regs);
+ 
+-	ack_APIC_irq();
++	apic_eoi();
+ 	trace_x86_platform_ipi_entry(X86_PLATFORM_IPI_VECTOR);
+ 	inc_irq_stat(x86_platform_ipis);
+ 	if (x86_platform_ipi_callback)
+@@ -310,7 +310,7 @@ EXPORT_SYMBOL_GPL(kvm_set_posted_intr_wakeup_handler);
+  */
+ DEFINE_IDTENTRY_SYSVEC_SIMPLE(sysvec_kvm_posted_intr_ipi)
+ {
+-	ack_APIC_irq();
++	apic_eoi();
+ 	inc_irq_stat(kvm_posted_intr_ipis);
+ }
+ 
+@@ -319,7 +319,7 @@ DEFINE_IDTENTRY_SYSVEC_SIMPLE(sysvec_kvm_posted_intr_ipi)
+  */
+ DEFINE_IDTENTRY_SYSVEC(sysvec_kvm_posted_intr_wakeup_ipi)
+ {
+-	ack_APIC_irq();
++	apic_eoi();
+ 	inc_irq_stat(kvm_posted_intr_wakeup_ipis);
+ 	kvm_posted_intr_wakeup_handler();
+ }
+@@ -329,7 +329,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_kvm_posted_intr_wakeup_ipi)
+  */
+ DEFINE_IDTENTRY_SYSVEC_SIMPLE(sysvec_kvm_posted_intr_nested_ipi)
+ {
+-	ack_APIC_irq();
++	apic_eoi();
+ 	inc_irq_stat(kvm_posted_intr_nested_ipis);
+ }
+ #endif
+@@ -401,6 +401,6 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_thermal)
+ 	inc_irq_stat(irq_thermal_count);
+ 	smp_thermal_vector();
+ 	trace_thermal_apic_exit(THERMAL_APIC_VECTOR);
+-	ack_APIC_irq();
++	apic_eoi();
+ }
+ #endif
+diff --git a/arch/x86/kernel/irq_work.c b/arch/x86/kernel/irq_work.c
+index 890d477..ee53419 100644
+--- a/arch/x86/kernel/irq_work.c
++++ b/arch/x86/kernel/irq_work.c
+@@ -16,7 +16,7 @@
+ #ifdef CONFIG_X86_LOCAL_APIC
+ DEFINE_IDTENTRY_SYSVEC(sysvec_irq_work)
+ {
+-	ack_APIC_irq();
++	apic_eoi();
+ 	trace_irq_work_entry(IRQ_WORK_VECTOR);
+ 	inc_irq_stat(apic_irq_work_irqs);
+ 	irq_work_run();
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index c2e3e7a..f5339e3 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -291,7 +291,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_kvm_asyncpf_interrupt)
+ 	struct pt_regs *old_regs = set_irq_regs(regs);
+ 	u32 token;
+ 
+-	ack_APIC_irq();
++	apic_eoi();
+ 
+ 	inc_irq_stat(irq_hv_callback_count);
+ 
+diff --git a/arch/x86/kernel/smp.c b/arch/x86/kernel/smp.c
+index 7eb18ca..6299bf8 100644
+--- a/arch/x86/kernel/smp.c
++++ b/arch/x86/kernel/smp.c
+@@ -135,7 +135,7 @@ static int smp_stop_nmi_callback(unsigned int val, struct pt_regs *regs)
+  */
+ DEFINE_IDTENTRY_SYSVEC(sysvec_reboot)
+ {
+-	ack_APIC_irq();
++	apic_eoi();
+ 	cpu_emergency_disable_virtualization();
+ 	stop_this_cpu(NULL);
+ }
+@@ -268,7 +268,7 @@ done:
+  */
+ DEFINE_IDTENTRY_SYSVEC_SIMPLE(sysvec_reschedule_ipi)
+ {
+-	ack_APIC_irq();
++	apic_eoi();
+ 	trace_reschedule_entry(RESCHEDULE_VECTOR);
+ 	inc_irq_stat(irq_resched_count);
+ 	scheduler_ipi();
+@@ -277,7 +277,7 @@ DEFINE_IDTENTRY_SYSVEC_SIMPLE(sysvec_reschedule_ipi)
+ 
+ DEFINE_IDTENTRY_SYSVEC(sysvec_call_function)
+ {
+-	ack_APIC_irq();
++	apic_eoi();
+ 	trace_call_function_entry(CALL_FUNCTION_VECTOR);
+ 	inc_irq_stat(irq_call_count);
+ 	generic_smp_call_function_interrupt();
+@@ -286,7 +286,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_call_function)
+ 
+ DEFINE_IDTENTRY_SYSVEC(sysvec_call_function_single)
+ {
+-	ack_APIC_irq();
++	apic_eoi();
+ 	trace_call_function_single_entry(CALL_FUNCTION_SINGLE_VECTOR);
+ 	inc_irq_stat(irq_call_count);
+ 	generic_smp_call_function_single_interrupt();
+diff --git a/arch/x86/xen/enlighten_hvm.c b/arch/x86/xen/enlighten_hvm.c
+index a6820ca..9a192f5 100644
+--- a/arch/x86/xen/enlighten_hvm.c
++++ b/arch/x86/xen/enlighten_hvm.c
+@@ -132,7 +132,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_xen_hvm_callback)
+ 	struct pt_regs *old_regs = set_irq_regs(regs);
+ 
+ 	if (xen_percpu_upcall)
+-		ack_APIC_irq();
++		apic_eoi();
+ 
+ 	inc_irq_stat(irq_hv_callback_count);
+ 
