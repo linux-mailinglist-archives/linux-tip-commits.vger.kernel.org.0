@@ -2,53 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 092EF776A25
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69445776A29
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 22:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234538AbjHIUgK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 16:36:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53278 "EHLO
+        id S234570AbjHIUgR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Aug 2023 16:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234476AbjHIUgI (ORCPT
+        with ESMTP id S234535AbjHIUgJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Aug 2023 16:36:08 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FBDC210D;
-        Wed,  9 Aug 2023 13:36:07 -0700 (PDT)
-Date:   Wed, 09 Aug 2023 20:36:05 -0000
+        Wed, 9 Aug 2023 16:36:09 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F7A42112;
+        Wed,  9 Aug 2023 13:36:08 -0700 (PDT)
+Date:   Wed, 09 Aug 2023 20:36:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691613366;
+        s=2020; t=1691613367;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=HqQREe5s5t0jawKfWIjoBUzhTBBvOGOobL6oF/1tVUs=;
-        b=FtQkt73nX7mVe4Em0Dk/Hn0DS6Ui0JQIemvAOAyHlv4C1T8WFzbZ7vdMvOUJro0i46rdEL
-        yyuyEdKPPDHIIKzvCbOtcWEtUk+RKvfL/EJkCXzBn3KjlZmu8D+sJrAno52LaXgjz20vLy
-        mgrWMsOPV2DyC5WnoxilIjQiQpHkEZP31J912z3RsQvHlAvnzdCCBjocXRREA+N6q6zqpH
-        nYNHp1M/jhwhiCFeC5t1tS8duyBYnAKCieLP+6Yb0z1UoYjdJlF9P7l+0CA94RlTnrngzc
-        g4BVQ8lgiZ9JZhIftBho+Wj0iMlt+eP4aOkGpD4brVeU4Ac3miek8SxVIGnrNg==
+        bh=L4/E+IllbdMPEZagDIc603Uq48zuXbP57pSztKeeOwQ=;
+        b=IF1925lYp2t43P4rIvwwdEDX/KLBB2TQ6Vvks7VD7eZ9z2CQiub6z9ZmVdTltmBec/rfyf
+        lewy7hwZWn+1jXV80OjFVF4LFvQaJK/sVxeYL9elSF+12VY4Z1eCXZhe9awQmzCvyij1UM
+        XNEmv4OdTfEamP1ecAOeM7RHEFSXxMmq5i1jS9r0FIRBO00AI3bxqAK876t+v0pg7Xx3Al
+        DPxgIMNFjh+CRC2/OxSfFNpqwA9LEPey06/Fbf32hXNlNZN4awp1roAYeG26tx1zPsdjkg
+        5ukuOWNCo9r4r9bQMu2BaqSoEjJnjijUhdXzZ07JfTILfjDAq/bBlZ3Af5Tz6w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691613366;
+        s=2020e; t=1691613367;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=HqQREe5s5t0jawKfWIjoBUzhTBBvOGOobL6oF/1tVUs=;
-        b=PBpyYsXr9KtTZIgntOR9qiATEd4zJtxsTp0ixEkaKPA8iwrmrGjP+a65f39bt48WAxrDCB
-        3k4G1CQAdrpGVqCg==
+        bh=L4/E+IllbdMPEZagDIc603Uq48zuXbP57pSztKeeOwQ=;
+        b=/UM5qqh3eCmfTihR2WKpA2NzeJtgHTF5FZfYsXWiMn+LM488eV5LKx6e88+J0ZZvU6JTr6
+        UlcKICZqGavhfPCA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/xen/apic: Mark apic __ro_after_init
+Subject: [tip: x86/apic] x86/apic: Replace acpi_wake_cpu_handler_update() and
+ apic_set_eoi_cb()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
+        Wei Liu <wei.liu@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Michael Kelley <mikelley@microsoft.com>,
         Sohil Mehta <sohil.mehta@intel.com>,
         Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169161336571.27769.15995204331486892801.tip-bot2@tip-bot2>
+Message-ID: <169161336670.27769.11370854432317500189.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,91 +67,147 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     ac72b92d8cec9ee96f15301a4d5a3dd455c0a7cf
-Gitweb:        https://git.kernel.org/tip/ac72b92d8cec9ee96f15301a4d5a3dd455c0a7cf
+Commit-ID:     2744a7ce34a776444225f20ae11ead6e980a129a
+Gitweb:        https://git.kernel.org/tip/2744a7ce34a776444225f20ae11ead6e980a129a
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 08 Aug 2023 15:04:21 -07:00
+AuthorDate:    Tue, 08 Aug 2023 15:04:20 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Wed, 09 Aug 2023 12:00:46 -07:00
 
-x86/xen/apic: Mark apic __ro_after_init
+x86/apic: Replace acpi_wake_cpu_handler_update() and apic_set_eoi_cb()
 
-Nothing can change it post init.
-
-Remove the 32bit callbacks and comments as XENPV is strictly 64bit.
-
-While at it mop up the whitespace damage which causes eyebleed due to an
-editor which is highlighting it.
+Switch them over to apic_update_callback() and remove the code.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Wei Liu <wei.liu@kernel.org>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Sohil Mehta <sohil.mehta@intel.com>
 Tested-by: Juergen Gross <jgross@suse.com> # Xen PV (dom0 and unpriv. guest)
-Cc: Juergen Gross <jgross@suse.com>
 ---
- arch/x86/xen/apic.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ arch/x86/hyperv/hv_apic.c   |  2 +-
+ arch/x86/hyperv/hv_vtl.c    |  2 +-
+ arch/x86/include/asm/apic.h |  3 ---
+ arch/x86/kernel/acpi/boot.c |  2 +-
+ arch/x86/kernel/apic/init.c | 27 ---------------------------
+ arch/x86/kernel/kvm.c       |  4 ++--
+ 6 files changed, 5 insertions(+), 35 deletions(-)
 
-diff --git a/arch/x86/xen/apic.c b/arch/x86/xen/apic.c
-index 315ffd8..7ad9122 100644
---- a/arch/x86/xen/apic.c
-+++ b/arch/x86/xen/apic.c
-@@ -123,43 +123,41 @@ static int xen_cpu_present_to_apicid(int cpu)
- 		return BAD_APICID;
+diff --git a/arch/x86/hyperv/hv_apic.c b/arch/x86/hyperv/hv_apic.c
+index 5513f60..bfb02f6 100644
+--- a/arch/x86/hyperv/hv_apic.c
++++ b/arch/x86/hyperv/hv_apic.c
+@@ -310,7 +310,7 @@ void __init hv_apic_init(void)
+ 		 * lazy EOI when available, but the same accessor works for
+ 		 * both xapic and x2apic because the field layout is the same.
+ 		 */
+-		apic_set_eoi_cb(hv_apic_eoi_write);
++		apic_update_callback(eoi, hv_apic_eoi_write);
+ 		if (!x2apic_enabled()) {
+ 			apic->read      = hv_apic_read;
+ 			apic->write     = hv_apic_write;
+diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
+index 85d38b9..9976b77 100644
+--- a/arch/x86/hyperv/hv_vtl.c
++++ b/arch/x86/hyperv/hv_vtl.c
+@@ -222,7 +222,7 @@ static int __init hv_vtl_early_init(void)
+ 			  "Please add 'noxsave' to the kernel command line.\n");
+ 
+ 	real_mode_header = &hv_vtl_real_mode_header;
+-	apic->wakeup_secondary_cpu_64 = hv_vtl_wakeup_secondary_cpu;
++	apic_update_callback(wakeup_secondary_cpu_64, hv_vtl_wakeup_secondary_cpu);
+ 
+ 	return 0;
+ }
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index 6e279c1..1742f97 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -417,8 +417,6 @@ static inline bool apic_id_valid(u32 apic_id)
+ 	return apic_id <= apic->max_apic_id;
  }
  
--static struct apic xen_pv_apic = {
--	.name 				= "Xen PV",
--	.probe 				= xen_apic_probe_pv,
-+static struct apic xen_pv_apic __ro_after_init = {
-+	.name				= "Xen PV",
-+	.probe				= xen_apic_probe_pv,
- 	.acpi_madt_oem_check		= xen_madt_oem_check,
+-extern void __init apic_set_eoi_cb(void (*eoi)(void));
+-
+ #else /* CONFIG_X86_LOCAL_APIC */
  
- 	/* .delivery_mode and .dest_mode_logical not used by XENPV */
+ static inline u32 apic_read(u32 reg) { return 0; }
+@@ -478,7 +476,6 @@ static inline unsigned int read_apic_id(void)
  
- 	.disable_esr			= 0,
+ #ifdef CONFIG_X86_64
+ typedef int (*wakeup_cpu_handler)(int apicid, unsigned long start_eip);
+-extern void acpi_wake_cpu_handler_update(wakeup_cpu_handler handler);
+ extern int default_acpi_madt_oem_check(char *, char *);
+ extern void x86_64_probe_apic(void);
+ #else
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 7f5b257..2374989 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -1174,7 +1174,7 @@ static int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
  
--	.check_apicid_used		= default_check_apicid_used, /* Used on 32-bit */
--	.ioapic_phys_id_map		= default_ioapic_phys_id_map, /* Used on 32-bit */
- 	.cpu_present_to_apicid		= xen_cpu_present_to_apicid,
- 	.phys_pkg_id			= xen_phys_pkg_id, /* detect_ht */
+ 	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
  
- 	.max_apic_id			= UINT_MAX,
--	.get_apic_id 			= xen_get_apic_id,
--	.set_apic_id 			= xen_set_apic_id, /* Can be NULL on 32-bit. */
-+	.get_apic_id			= xen_get_apic_id,
-+	.set_apic_id			= xen_set_apic_id,
+-	acpi_wake_cpu_handler_update(acpi_wakeup_cpu);
++	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
  
- 	.calc_dest_apicid		= apic_flat_calc_apicid,
+ 	return 0;
+ }
+diff --git a/arch/x86/kernel/apic/init.c b/arch/x86/kernel/apic/init.c
+index dab3afa..d7f4aca 100644
+--- a/arch/x86/kernel/apic/init.c
++++ b/arch/x86/kernel/apic/init.c
+@@ -55,30 +55,3 @@ void __init apic_install_driver(struct apic *driver)
  
- #ifdef CONFIG_SMP
--	.send_IPI_mask 			= xen_send_IPI_mask,
--	.send_IPI_mask_allbutself 	= xen_send_IPI_mask_allbutself,
--	.send_IPI_allbutself 		= xen_send_IPI_allbutself,
--	.send_IPI_all 			= xen_send_IPI_all,
--	.send_IPI_self 			= xen_send_IPI_self,
-+	.send_IPI_mask			= xen_send_IPI_mask,
-+	.send_IPI_mask_allbutself	= xen_send_IPI_mask_allbutself,
-+	.send_IPI_allbutself		= xen_send_IPI_allbutself,
-+	.send_IPI_all			= xen_send_IPI_all,
-+	.send_IPI_self			= xen_send_IPI_self,
- #endif
- 	.read				= xen_apic_read,
- 	.write				= xen_apic_write,
- 	.eoi				= xen_apic_eoi,
+ 	pr_info("Switched APIC routing to: %s\n", driver->name);
+ }
+-
+-#ifdef CONFIG_X86_64
+-void __init acpi_wake_cpu_handler_update(wakeup_cpu_handler handler)
+-{
+-	struct apic **drv;
+-
+-	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++)
+-		(*drv)->wakeup_secondary_cpu_64 = handler;
+-}
+-#endif
+-
+-/*
+- * Override the generic EOI implementation with an optimized version.
+- * Only called during early boot when only one CPU is active and with
+- * interrupts disabled, so we know this does not race with actual APIC driver
+- * use.
+- */
+-void __init apic_set_eoi_cb(void (*eoi)(void))
+-{
+-	struct apic **drv;
+-
+-	for (drv = __apicdrivers; drv < __apicdrivers_end; drv++) {
+-		/* Should happen once for each apic */
+-		WARN_ON((*drv)->eoi == eoi);
+-		(*drv)->eoi = eoi;
+-	}
+-}
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 54625a4..c86cedb 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -332,7 +332,7 @@ static void kvm_register_steal_time(void)
  
--	.icr_read 			= xen_apic_icr_read,
--	.icr_write 			= xen_apic_icr_write,
-+	.icr_read			= xen_apic_icr_read,
-+	.icr_write			= xen_apic_icr_write,
- };
-+apic_driver(xen_pv_apic);
+ static DEFINE_PER_CPU_DECRYPTED(unsigned long, kvm_apic_eoi) = KVM_PV_EOI_DISABLED;
  
- void __init xen_init_apic(void)
+-static notrace void kvm_guest_apic_eoi_write(void)
++static notrace __maybe_unused void kvm_guest_apic_eoi_write(void)
  {
- 	x86_apic_ops.io_apic_read = xen_io_apic_read;
- }
--apic_driver(xen_pv_apic);
+ 	/**
+ 	 * This relies on __test_and_clear_bit to modify the memory
+@@ -825,7 +825,7 @@ static void __init kvm_guest_init(void)
+ 	}
+ 
+ 	if (kvm_para_has_feature(KVM_FEATURE_PV_EOI))
+-		apic_set_eoi_cb(kvm_guest_apic_eoi_write);
++		apic_update_callback(eoi, kvm_guest_apic_eoi_write);
+ 
+ 	if (kvm_para_has_feature(KVM_FEATURE_ASYNC_PF_INT) && kvmapf) {
+ 		static_branch_enable(&kvm_async_pf_enabled);
