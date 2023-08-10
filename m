@@ -2,118 +2,148 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4E8776AB4
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Aug 2023 23:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC6F2777105
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Aug 2023 09:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbjHIVG6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Aug 2023 17:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54724 "EHLO
+        id S230051AbjHJHK5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Aug 2023 03:10:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjHIVG6 (ORCPT
+        with ESMTP id S229934AbjHJHK4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Aug 2023 17:06:58 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64E5138;
-        Wed,  9 Aug 2023 14:06:56 -0700 (PDT)
-Date:   Wed, 09 Aug 2023 21:06:54 -0000
+        Thu, 10 Aug 2023 03:10:56 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE47FE64;
+        Thu, 10 Aug 2023 00:10:55 -0700 (PDT)
+Date:   Thu, 10 Aug 2023 07:10:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691615215;
+        s=2020; t=1691651453;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=8iC6K4qMca1HxvCjZ+227qIOOBi29M4/B4ry0PMUGMM=;
-        b=lGWbP+0kYVNSySa3BRb4DJv8qEN/FE/dh+bZIhuSWyJ/OrljPzjIdOihfEw65n8rTk29iE
-        7ZKlJO+9u6bPCcBWtRo+JfiSQr7w7915dNwwhIyS7UDXFMzEYNfR8Qlnju9aCovEM0gd49
-        H9ZmcSyH2KHE72/w5EdGOXaQ/0fMP/aHHa32Vlhm4jgZsGA5U7WGMfwDFfTEQ9rkFaeBHO
-        loLs/SNY6zn+2/KBzlDHwyezIKpr9kGEwzB7sBHQVH5rrNFUBL0tZlBR9mG0XXhI8P+3PH
-        Jb1nqqvAh5rKZqHrCWg614+jhtt4dCKOPgJvoEfBnNvhp3ulEVsHX47fLesQow==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Y+t+Hn9BMuqn0HYD61DzGQMc+TnHT3KZlNg5KP22Z74=;
+        b=0NAsilt6h+hcyW4zKfAbuXfRUb1UfKqYKi4KCmJUITOlxoRCubzriC2itYeYVYDRajpN/y
+        wi8rOhuUY0QawmAosWIriOVfJGI7Xu6sdQp7EmfV3OIPMU2Nv+Muw57Jwy4EFZ++BZJRDj
+        BrbUOaNJ2ZvgXzeefwz7p4L8dBS+zt6wHfeJdLSgQZ74J/7J3pA7ujj5LeJ0JADbaPOdpy
+        vQkTL3LmCKkjRZ9mgFDmQSIAL2Sqbl22tVzhtCkbEkTOmAQhj27zDrqR2t04/tdq0N+XJ8
+        t4YpacHXcXtl0JcAM67hq0wVVlrzk0KD6+fU99xIJzkIoE0nyo3qfnOrIPX5Mg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691615215;
+        s=2020e; t=1691651453;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=8iC6K4qMca1HxvCjZ+227qIOOBi29M4/B4ry0PMUGMM=;
-        b=8vqZKJqY3mB6hBcbwK9jhkZFRORLgSUeTBeLp3m4kqRrbVSzPtIPZNjFpY9Hx5RhRkDE4O
-        BBE3C9EnprNJm4DQ==
-From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Y+t+Hn9BMuqn0HYD61DzGQMc+TnHT3KZlNg5KP22Z74=;
+        b=y83y/SkAiwx2RemuNdF3ZM7ThgEkw0oT/xTZdmElXidezkoqmtPC5pISVKd+RVLPTEjnaw
+        wLqBWORb3WtG5pAA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm: Fix VDSO and VVAR placement on 5-level
- paging machines
-Cc:     Yingcong Wu <yingcong.wu@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: Propagate enqueue flags into place_entity()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20230531124604.274010996@infradead.org>
+References: <20230531124604.274010996@infradead.org>
 MIME-Version: 1.0
-Message-ID: <169161521427.27769.11895332773100602883.tip-bot2@tip-bot2>
+Message-ID: <169165145291.27769.13852159578081861156.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     1b8b1aa90c9c0e825b181b98b8d9e249dc395470
-Gitweb:        https://git.kernel.org/tip/1b8b1aa90c9c0e825b181b98b8d9e249dc395470
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Thu, 03 Aug 2023 18:16:09 +03:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 09 Aug 2023 13:38:48 -07:00
+Commit-ID:     d07f09a1f99cabbc86bc5c97d962eb8a466106b5
+Gitweb:        https://git.kernel.org/tip/d07f09a1f99cabbc86bc5c97d962eb8a466106b5
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 31 May 2023 13:58:49 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 19 Jul 2023 09:43:59 +02:00
 
-x86/mm: Fix VDSO and VVAR placement on 5-level paging machines
+sched/fair: Propagate enqueue flags into place_entity()
 
-Yingcong has noticed that on the 5-level paging machine, VDSO and VVAR
-VMAs are placed above the 47-bit border:
+This allows place_entity() to consider ENQUEUE_WAKEUP and
+ENQUEUE_MIGRATED.
 
-8000001a9000-8000001ad000 r--p 00000000 00:00 0                          [vvar]
-8000001ad000-8000001af000 r-xp 00000000 00:00 0                          [vdso]
-
-This might confuse users who are not aware of 5-level paging and expect
-all userspace addresses to be under the 47-bit border.
-
-So far problem has only been triggered with ASLR disabled, although it
-may also occur with ASLR enabled if the layout is randomized in a just
-right way.
-
-The problem happens due to custom placement for the VMAs in the VDSO
-code: vdso_addr() tries to place them above the stack and checks the
-result against TASK_SIZE_MAX, which is wrong. TASK_SIZE_MAX is set to
-the 56-bit border on 5-level paging machines. Use DEFAULT_MAP_WINDOW
-instead.
-
-Fixes: b569bab78d8d ("x86/mm: Prepare to expose larger address space to userspace")
-Reported-by: Yingcong Wu <yingcong.wu@intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20230803151609.22141-1-kirill.shutemov%40linux.intel.com
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230531124604.274010996@infradead.org
 ---
- arch/x86/entry/vdso/vma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c  | 10 +++++-----
+ kernel/sched/sched.h |  1 +
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
-index 11a5c68..7645730 100644
---- a/arch/x86/entry/vdso/vma.c
-+++ b/arch/x86/entry/vdso/vma.c
-@@ -299,8 +299,8 @@ static unsigned long vdso_addr(unsigned long start, unsigned len)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 61747a2..5c8c9f7 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4909,7 +4909,7 @@ static inline void update_misfit_status(struct task_struct *p, struct rq *rq) {}
+ #endif /* CONFIG_SMP */
  
- 	/* Round the lowest possible end address up to a PMD boundary. */
- 	end = (start + len + PMD_SIZE - 1) & PMD_MASK;
--	if (end >= TASK_SIZE_MAX)
--		end = TASK_SIZE_MAX;
-+	if (end >= DEFAULT_MAP_WINDOW)
-+		end = DEFAULT_MAP_WINDOW;
- 	end -= len;
+ static void
+-place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)
++place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ {
+ 	u64 vslice = calc_delta_fair(se->slice, se);
+ 	u64 vruntime = avg_vruntime(cfs_rq);
+@@ -4998,7 +4998,7 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)
+ 	 * on average, halfway through their slice, as such start tasks
+ 	 * off with half a slice to ease into the competition.
+ 	 */
+-	if (sched_feat(PLACE_DEADLINE_INITIAL) && initial)
++	if (sched_feat(PLACE_DEADLINE_INITIAL) && (flags & ENQUEUE_INITIAL))
+ 		vslice /= 2;
  
- 	if (end > start) {
+ 	/*
+@@ -5022,7 +5022,7 @@ enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ 	 * update_curr().
+ 	 */
+ 	if (curr)
+-		place_entity(cfs_rq, se, 0);
++		place_entity(cfs_rq, se, flags);
+ 
+ 	update_curr(cfs_rq);
+ 
+@@ -5049,7 +5049,7 @@ enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ 	 * we can place the entity.
+ 	 */
+ 	if (!curr)
+-		place_entity(cfs_rq, se, 0);
++		place_entity(cfs_rq, se, flags);
+ 
+ 	account_entity_enqueue(cfs_rq, se);
+ 
+@@ -12280,7 +12280,7 @@ static void task_fork_fair(struct task_struct *p)
+ 	curr = cfs_rq->curr;
+ 	if (curr)
+ 		update_curr(cfs_rq);
+-	place_entity(cfs_rq, se, 1);
++	place_entity(cfs_rq, se, ENQUEUE_INITIAL);
+ 	rq_unlock(rq, &rf);
+ }
+ 
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 7ff9965..db58537 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2199,6 +2199,7 @@ extern const u32		sched_prio_to_wmult[40];
+ #else
+ #define ENQUEUE_MIGRATED	0x00
+ #endif
++#define ENQUEUE_INITIAL		0x80
+ 
+ #define RETRY_TASK		((void *)-1UL)
+ 
