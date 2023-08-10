@@ -2,55 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 462E9777113
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Aug 2023 09:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C9F17773DA
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Aug 2023 11:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233748AbjHJHLL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Aug 2023 03:11:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54362 "EHLO
+        id S234632AbjHJJMd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Aug 2023 05:12:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233752AbjHJHLC (ORCPT
+        with ESMTP id S234558AbjHJJMQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Aug 2023 03:11:02 -0400
+        Thu, 10 Aug 2023 05:12:16 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE1E61718;
-        Thu, 10 Aug 2023 00:11:00 -0700 (PDT)
-Date:   Thu, 10 Aug 2023 07:10:58 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25369273E;
+        Thu, 10 Aug 2023 02:11:51 -0700 (PDT)
+Date:   Thu, 10 Aug 2023 09:11:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691651459;
+        s=2020; t=1691658708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4z3qjTKksTG+hc6zmxe0k4gXAH/v+hP6uADhoSiHyGQ=;
-        b=GWT/dju8VOPbLuI4DTsDCrrChiQQCfD4hR5nc6dRhdyOm1id78vnVgXV4iNPGTMlDoX+S5
-        dLThzv1bf4ymKrjOODXnr4oaPCc56a532zYh1JiDunN0w/rx2i9KUV9OenjriZWaM54kL8
-        z9T8V6SPfB1qwfHa4rLNNcug3pyfrJR1m7J8gLUj8p1nIVHJYhnLQrTKzRcRqXeKqm8DVI
-        VxSzr0gu6RGDshkrdp2f5a5ERU1dU4KgUhF1Vf6JVQUabmsWx0pBvIe1DZr8ALoK8cNved
-        Jv5+u/0rWvQNWFy/L0x+7KNDbItcI7I5yxFFvuo2LtWpT8r50jt/tOfzgRiSrw==
+        bh=Iqd8hxH/JVHj2zElMsZyPmhL9UvDhbSOu1e+bbCcz/M=;
+        b=k6QlX2mrbtASUEHbg7Y1Yp8SYKjijNMCdb+6ZlG+YiU1sFqtshY2ntfsQI439afUMeOpDG
+        l4gjTWt53GIBV7kbnAQriUU+8DFnyo4MLWk/UpxWsBDh9lA73mNqJ5RNbiBKGah+HZTaX7
+        xvQtkR49CcEqtCcRcAE9RbdyDl6zQxQ+A3VCT7RtYn3O8CIHGafJpaH1QQCYWfd2ROKyB0
+        Y1PYw6E9WgXsGhoCSR84+ZgqZN510uXvF5G8upr06KHkuP/mQdiRrQ+V9l/7KNVzP3Ct55
+        gUP+KP2pbiQ8rnwCiEK5kR4Tn9n7n/KU+BeVnzxpoDXkJWC4Igmljju96mfq6A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691651459;
+        s=2020e; t=1691658708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4z3qjTKksTG+hc6zmxe0k4gXAH/v+hP6uADhoSiHyGQ=;
-        b=yDgXZYue2s+mLuDAtnHsNRR6MXRYe7ss414uj/LvSR3OIpIaM3Rh27M6CzOF8B+3M51YPJ
-        kQttk6bIE+UfTSBw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=Iqd8hxH/JVHj2zElMsZyPmhL9UvDhbSOu1e+bbCcz/M=;
+        b=gydce7zW9AoOBJdPYaysJX/6ZKRT7IheSPra25//yjMSUxXZ6Hpluy6n9teHzzGomBd6x9
+        RGQSG1JIobIb3SDw==
+From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Add cfs_rq::avg_vruntime
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/bugs] x86/srso: Fix build breakage with the LLVM linker
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Daniel Kolesa <daniel@octaforge.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Sven Volkinsfeld <thyrc@gmx.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230531124603.654144274@infradead.org>
-References: <20230531124603.654144274@infradead.org>
+In-Reply-To: <20230809-gds-v1-1-eaac90b0cbcc@google.com>
+References: <20230809-gds-v1-1-eaac90b0cbcc@google.com>
 MIME-Version: 1.0
-Message-ID: <169165145896.27769.15700825811302012794.tip-bot2@tip-bot2>
+Message-ID: <169165870802.27769.15353947574704602257.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,302 +68,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     af4cf40470c22efa3987200fd19478199e08e103
-Gitweb:        https://git.kernel.org/tip/af4cf40470c22efa3987200fd19478199e08e103
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 31 May 2023 13:58:40 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 19 Jul 2023 09:43:58 +02:00
+Commit-ID:     cbe8ded48b939b9d55d2c5589ab56caa7b530709
+Gitweb:        https://git.kernel.org/tip/cbe8ded48b939b9d55d2c5589ab56caa7b530709
+Author:        Nick Desaulniers <ndesaulniers@google.com>
+AuthorDate:    Wed, 09 Aug 2023 09:40:26 -07:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 10 Aug 2023 11:03:12 +02:00
 
-sched/fair: Add cfs_rq::avg_vruntime
+x86/srso: Fix build breakage with the LLVM linker
 
-In order to move to an eligibility based scheduling policy, we need
-to have a better approximation of the ideal scheduler.
+The assertion added to verify the difference in bits set of the
+addresses of srso_untrain_ret_alias() and srso_safe_ret_alias() would fail
+to link in LLVM's ld.lld linker with the following error:
 
-Specifically, for a virtual time weighted fair queueing based
-scheduler the ideal scheduler will be the weighted average of the
-individual virtual runtimes (math in the comment).
+  ld.lld: error: ./arch/x86/kernel/vmlinux.lds:210: at least one side of
+  the expression must be absolute
+  ld.lld: error: ./arch/x86/kernel/vmlinux.lds:211: at least one side of
+  the expression must be absolute
 
-As such, compute the weighted average to approximate the ideal
-scheduler -- note that the approximation is in the individual task
-behaviour, which isn't strictly conformant.
+Use ABSOLUTE to evaluate the expression referring to at least one of the
+symbols so that LLD can evaluate the linker script.
 
-Specifically consider adding a task with a vruntime left of center, in
-this case the average will move backwards in time -- something the
-ideal scheduler would of course never do.
+Also, add linker version info to the comment about XOR being unsupported
+in either ld.bfd or ld.lld until somewhat recently.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230531124603.654144274@infradead.org
+Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+Closes: https://lore.kernel.org/llvm/CA+G9fYsdUeNu-gwbs0+T6XHi4hYYk=Y9725-wFhZ7gJMspLDRA@mail.gmail.com/
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: Daniel Kolesa <daniel@octaforge.org>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Suggested-by: Sven Volkinsfeld <thyrc@gmx.net>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1907
+Link: https://lore.kernel.org/r/20230809-gds-v1-1-eaac90b0cbcc@google.com
 ---
- kernel/sched/debug.c |  32 ++++------
- kernel/sched/fair.c  | 137 +++++++++++++++++++++++++++++++++++++++++-
- kernel/sched/sched.h |   5 ++-
- 3 files changed, 154 insertions(+), 20 deletions(-)
+ arch/x86/kernel/vmlinux.lds.S | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index aeeba46..e48d2b2 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -627,10 +627,9 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index e768132..ef06211 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -529,11 +529,17 @@ INIT_PER_CPU(irq_stack_backing_store);
  
- void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
- {
--	s64 MIN_vruntime = -1, min_vruntime, max_vruntime = -1,
--		spread, rq0_min_vruntime, spread0;
-+	s64 left_vruntime = -1, min_vruntime, right_vruntime = -1, spread;
-+	struct sched_entity *last, *first;
- 	struct rq *rq = cpu_rq(cpu);
--	struct sched_entity *last;
- 	unsigned long flags;
- 
- #ifdef CONFIG_FAIR_GROUP_SCHED
-@@ -644,26 +643,25 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
- 			SPLIT_NS(cfs_rq->exec_clock));
- 
- 	raw_spin_rq_lock_irqsave(rq, flags);
--	if (rb_first_cached(&cfs_rq->tasks_timeline))
--		MIN_vruntime = (__pick_first_entity(cfs_rq))->vruntime;
-+	first = __pick_first_entity(cfs_rq);
-+	if (first)
-+		left_vruntime = first->vruntime;
- 	last = __pick_last_entity(cfs_rq);
- 	if (last)
--		max_vruntime = last->vruntime;
-+		right_vruntime = last->vruntime;
- 	min_vruntime = cfs_rq->min_vruntime;
--	rq0_min_vruntime = cpu_rq(0)->cfs.min_vruntime;
- 	raw_spin_rq_unlock_irqrestore(rq, flags);
--	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "MIN_vruntime",
--			SPLIT_NS(MIN_vruntime));
-+
-+	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "left_vruntime",
-+			SPLIT_NS(left_vruntime));
- 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "min_vruntime",
- 			SPLIT_NS(min_vruntime));
--	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "max_vruntime",
--			SPLIT_NS(max_vruntime));
--	spread = max_vruntime - MIN_vruntime;
--	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "spread",
--			SPLIT_NS(spread));
--	spread0 = min_vruntime - rq0_min_vruntime;
--	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "spread0",
--			SPLIT_NS(spread0));
-+	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "avg_vruntime",
-+			SPLIT_NS(avg_vruntime(cfs_rq)));
-+	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "right_vruntime",
-+			SPLIT_NS(right_vruntime));
-+	spread = right_vruntime - left_vruntime;
-+	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "spread", SPLIT_NS(spread));
- 	SEQ_printf(m, "  .%-30s: %d\n", "nr_spread_over",
- 			cfs_rq->nr_spread_over);
- 	SEQ_printf(m, "  .%-30s: %d\n", "nr_running", cfs_rq->nr_running);
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index d3df5b1..bb54606 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -601,9 +601,134 @@ static inline bool entity_before(const struct sched_entity *a,
- 	return (s64)(a->vruntime - b->vruntime) < 0;
- }
- 
-+static inline s64 entity_key(struct cfs_rq *cfs_rq, struct sched_entity *se)
-+{
-+	return (s64)(se->vruntime - cfs_rq->min_vruntime);
-+}
-+
- #define __node_2_se(node) \
- 	rb_entry((node), struct sched_entity, run_node)
- 
-+/*
-+ * Compute virtual time from the per-task service numbers:
+ #ifdef CONFIG_CPU_SRSO
+ /*
+- * GNU ld cannot do XOR so do: (A | B) - (A & B) in order to compute the XOR
++ * GNU ld cannot do XOR until 2.41.
++ * https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=f6f78318fca803c4907fb8d7f6ded8295f1947b1
 + *
-+ * Fair schedulers conserve lag:
++ * LLVM lld cannot do XOR until lld-17.
++ * https://github.com/llvm/llvm-project/commit/fae96104d4378166cbe5c875ef8ed808a356f3fb
 + *
-+ *   \Sum lag_i = 0
-+ *
-+ * Where lag_i is given by:
-+ *
-+ *   lag_i = S - s_i = w_i * (V - v_i)
-+ *
-+ * Where S is the ideal service time and V is it's virtual time counterpart.
-+ * Therefore:
-+ *
-+ *   \Sum lag_i = 0
-+ *   \Sum w_i * (V - v_i) = 0
-+ *   \Sum w_i * V - w_i * v_i = 0
-+ *
-+ * From which we can solve an expression for V in v_i (which we have in
-+ * se->vruntime):
-+ *
-+ *       \Sum v_i * w_i   \Sum v_i * w_i
-+ *   V = -------------- = --------------
-+ *          \Sum w_i            W
-+ *
-+ * Specifically, this is the weighted average of all entity virtual runtimes.
-+ *
-+ * [[ NOTE: this is only equal to the ideal scheduler under the condition
-+ *          that join/leave operations happen at lag_i = 0, otherwise the
-+ *          virtual time has non-continguous motion equivalent to:
-+ *
-+ *	      V +-= lag_i / W
-+ *
-+ *	    Also see the comment in place_entity() that deals with this. ]]
-+ *
-+ * However, since v_i is u64, and the multiplcation could easily overflow
-+ * transform it into a relative form that uses smaller quantities:
-+ *
-+ * Substitute: v_i == (v_i - v0) + v0
-+ *
-+ *     \Sum ((v_i - v0) + v0) * w_i   \Sum (v_i - v0) * w_i
-+ * V = ---------------------------- = --------------------- + v0
-+ *                  W                            W
-+ *
-+ * Which we track using:
-+ *
-+ *                    v0 := cfs_rq->min_vruntime
-+ * \Sum (v_i - v0) * w_i := cfs_rq->avg_vruntime
-+ *              \Sum w_i := cfs_rq->avg_load
-+ *
-+ * Since min_vruntime is a monotonic increasing variable that closely tracks
-+ * the per-task service, these deltas: (v_i - v), will be in the order of the
-+ * maximal (virtual) lag induced in the system due to quantisation.
-+ *
-+ * Also, we use scale_load_down() to reduce the size.
-+ *
-+ * As measured, the max (key * weight) value was ~44 bits for a kernel build.
-+ */
-+static void
-+avg_vruntime_add(struct cfs_rq *cfs_rq, struct sched_entity *se)
-+{
-+	unsigned long weight = scale_load_down(se->load.weight);
-+	s64 key = entity_key(cfs_rq, se);
-+
-+	cfs_rq->avg_vruntime += key * weight;
-+	cfs_rq->avg_load += weight;
-+}
-+
-+static void
-+avg_vruntime_sub(struct cfs_rq *cfs_rq, struct sched_entity *se)
-+{
-+	unsigned long weight = scale_load_down(se->load.weight);
-+	s64 key = entity_key(cfs_rq, se);
-+
-+	cfs_rq->avg_vruntime -= key * weight;
-+	cfs_rq->avg_load -= weight;
-+}
-+
-+static inline
-+void avg_vruntime_update(struct cfs_rq *cfs_rq, s64 delta)
-+{
-+	/*
-+	 * v' = v + d ==> avg_vruntime' = avg_runtime - d*avg_load
-+	 */
-+	cfs_rq->avg_vruntime -= cfs_rq->avg_load * delta;
-+}
-+
-+u64 avg_vruntime(struct cfs_rq *cfs_rq)
-+{
-+	struct sched_entity *curr = cfs_rq->curr;
-+	s64 avg = cfs_rq->avg_vruntime;
-+	long load = cfs_rq->avg_load;
-+
-+	if (curr && curr->on_rq) {
-+		unsigned long weight = scale_load_down(curr->load.weight);
-+
-+		avg += entity_key(cfs_rq, curr) * weight;
-+		load += weight;
-+	}
-+
-+	if (load)
-+		avg = div_s64(avg, load);
-+
-+	return cfs_rq->min_vruntime + avg;
-+}
-+
-+static u64 __update_min_vruntime(struct cfs_rq *cfs_rq, u64 vruntime)
-+{
-+	u64 min_vruntime = cfs_rq->min_vruntime;
-+	/*
-+	 * open coded max_vruntime() to allow updating avg_vruntime
-+	 */
-+	s64 delta = (s64)(vruntime - min_vruntime);
-+	if (delta > 0) {
-+		avg_vruntime_update(cfs_rq, delta);
-+		min_vruntime = vruntime;
-+	}
-+	return min_vruntime;
-+}
-+
- static void update_min_vruntime(struct cfs_rq *cfs_rq)
- {
- 	struct sched_entity *curr = cfs_rq->curr;
-@@ -629,7 +754,7 @@ static void update_min_vruntime(struct cfs_rq *cfs_rq)
- 
- 	/* ensure we never gain time by being placed backwards. */
- 	u64_u32_store(cfs_rq->min_vruntime,
--		      max_vruntime(cfs_rq->min_vruntime, vruntime));
-+		      __update_min_vruntime(cfs_rq, vruntime));
- }
- 
- static inline bool __entity_less(struct rb_node *a, const struct rb_node *b)
-@@ -642,12 +767,14 @@ static inline bool __entity_less(struct rb_node *a, const struct rb_node *b)
++ * Instead do: (A | B) - (A & B) in order to compute the XOR
+  * of the two function addresses:
   */
- static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
-+	avg_vruntime_add(cfs_rq, se);
- 	rb_add_cached(&se->run_node, &cfs_rq->tasks_timeline, __entity_less);
- }
- 
- static void __dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
- 	rb_erase_cached(&se->run_node, &cfs_rq->tasks_timeline);
-+	avg_vruntime_sub(cfs_rq, se);
- }
- 
- struct sched_entity *__pick_first_entity(struct cfs_rq *cfs_rq)
-@@ -3379,6 +3506,8 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
- 		/* commit outstanding execution time */
- 		if (cfs_rq->curr == se)
- 			update_curr(cfs_rq);
-+		else
-+			avg_vruntime_sub(cfs_rq, se);
- 		update_load_sub(&cfs_rq->load, se->load.weight);
- 	}
- 	dequeue_load_avg(cfs_rq, se);
-@@ -3394,9 +3523,11 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
+-. = ASSERT(((srso_untrain_ret_alias | srso_safe_ret_alias) -
+-		(srso_untrain_ret_alias & srso_safe_ret_alias)) == ((1 << 2) | (1 << 8) | (1 << 14) | (1 << 20)),
++. = ASSERT(((ABSOLUTE(srso_untrain_ret_alias) | srso_safe_ret_alias) -
++		(ABSOLUTE(srso_untrain_ret_alias) & srso_safe_ret_alias)) == ((1 << 2) | (1 << 8) | (1 << 14) | (1 << 20)),
+ 		"SRSO function pair won't alias");
  #endif
  
- 	enqueue_load_avg(cfs_rq, se);
--	if (se->on_rq)
-+	if (se->on_rq) {
- 		update_load_add(&cfs_rq->load, se->load.weight);
--
-+		if (cfs_rq->curr != se)
-+			avg_vruntime_add(cfs_rq, se);
-+	}
- }
- 
- void reweight_task(struct task_struct *p, int prio)
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 9baeb1a..52a0a4b 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -548,6 +548,9 @@ struct cfs_rq {
- 	unsigned int		idle_nr_running;   /* SCHED_IDLE */
- 	unsigned int		idle_h_nr_running; /* SCHED_IDLE */
- 
-+	s64			avg_vruntime;
-+	u64			avg_load;
-+
- 	u64			exec_clock;
- 	u64			min_vruntime;
- #ifdef CONFIG_SCHED_CORE
-@@ -3483,4 +3486,6 @@ static inline void task_tick_mm_cid(struct rq *rq, struct task_struct *curr) { }
- static inline void init_sched_mm_cid(struct task_struct *t) { }
- #endif
- 
-+extern u64 avg_vruntime(struct cfs_rq *cfs_rq);
-+
- #endif /* _KERNEL_SCHED_SCHED_H */
