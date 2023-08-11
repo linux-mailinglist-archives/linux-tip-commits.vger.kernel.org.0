@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2DCB77972A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Aug 2023 20:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 081A8779927
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Aug 2023 23:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235606AbjHKSji (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Aug 2023 14:39:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35116 "EHLO
+        id S236791AbjHKVDL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Aug 2023 17:03:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjHKSji (ORCPT
+        with ESMTP id S236722AbjHKVDK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Aug 2023 14:39:38 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F044030DC;
-        Fri, 11 Aug 2023 11:39:37 -0700 (PDT)
-Date:   Fri, 11 Aug 2023 18:39:29 -0000
+        Fri, 11 Aug 2023 17:03:10 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18900E77;
+        Fri, 11 Aug 2023 14:03:10 -0700 (PDT)
+Date:   Fri, 11 Aug 2023 21:03:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691779170;
+        s=2020; t=1691787787;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7U18nUB7ZZylyWZlfzeqQZ7OwuY9eqjEWthoA8dO794=;
-        b=kuMz1LxWWrX8QglIll+lhrYcE5rLf8TyWXJsKrXb9wk0PWYRIa32yypGMYJMbp6UqsapIC
-        9hkh6yM7tUpLp/mw+oj9dzv+qBf/qqMh7PmpYpctybGTIWRJISI2o+FWbHNt2O4X45WVyj
-        jhZT0lwjzvitDJmnY0qwVdrrgrXhn/H6xlNLoWAq90Lxpb6e2a3BKQO7FMdQ7ItIfNwChI
-        TAPHZv/d9RkXsTaVKRblzAMtFWtxXdgK/skP62mPbYUqswVJDmc+BZ/8MKD65HsMZX3o+g
-        bCXJN6prJCr2thvKIXM02kp2CxtOCyJY9DAsgc1/l2TgVQKyb3utPLp5ZRByOg==
+        bh=qQEbgcv3SXBzdgQ2vH6bH00o0e6nyx9jJoKAj9oSlmc=;
+        b=ys2iEpJAXMMK0zl/MA4h+ZSsqF9if5VQw5MG1I0PvTxYMKe37Ohgzl3V5DWE8Puguw9DLS
+        l7npYzjaN0IJQhrkVZQLJLRFvT28pLI2QMlhpxOyNvZFeOQWK1xSfPSufrNd2rI6LQZXSJ
+        CAPCgLn2L5kChkMytyhAv5h9/GNjI7Qht3SFBywvA93J6+N3QDziyPfPJ3t9SALsh5PuJJ
+        UyZdZxfEPKGya2c24LoLZ/PytP90xOfdyNL8P/1D/sd9uJw4/jj9yo/ZvhqroySxMNoCzP
+        Y2tX3zJbWQmlJUVpHjc7cWeYFFq78lJb+xpEqZpN7iKeWamRRfhzSXjensCmmw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691779170;
+        s=2020e; t=1691787787;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7U18nUB7ZZylyWZlfzeqQZ7OwuY9eqjEWthoA8dO794=;
-        b=hGnA6QuaWDDoX3Q742fNoz2hEX8ouxV6iT9tS3xgjeK0gWm9DFvM4ZDYn6ZaZeySnI2F8f
-        Be5M5K9rOA0hDZAQ==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=qQEbgcv3SXBzdgQ2vH6bH00o0e6nyx9jJoKAj9oSlmc=;
+        b=Lo0AjL857grJ4eGOtWUXvVX4zQPHHG/11xzTdKx4hxBGAVDVT4+dND2khfXZeRmrhTWF9k
+        IXNnytUv072/B8Aw==
+From:   "tip-bot2 for Cristian Ciocaltea" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] driver core: cpu: Fix the fallback cpu_show_gds() name
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230811095831.27513-1-bp@alien8.de>
-References: <20230811095831.27513-1-bp@alien8.de>
+Subject: [tip: x86/urgent] x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
+Cc:     Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230811203705.1699914-1-cristian.ciocaltea@collabora.com>
+References: <20230811203705.1699914-1-cristian.ciocaltea@collabora.com>
 MIME-Version: 1.0
-Message-ID: <169177916977.27769.3694730476189512700.tip-bot2@tip-bot2>
+Message-ID: <169178778665.27769.10759890614564556189.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,53 +65,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/bugs branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     3477144c878a52fc3938a529186e81ea030e7779
-Gitweb:        https://git.kernel.org/tip/3477144c878a52fc3938a529186e81ea030e7779
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Fri, 11 Aug 2023 11:32:09 +02:00
+Commit-ID:     6dbef74aeb090d6bee7d64ef3fa82ae6fa53f271
+Gitweb:        https://git.kernel.org/tip/6dbef74aeb090d6bee7d64ef3fa82ae6fa53f271
+Author:        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+AuthorDate:    Fri, 11 Aug 2023 23:37:05 +03:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 11 Aug 2023 20:36:02 +02:00
+CommitterDate: Fri, 11 Aug 2023 22:52:29 +02:00
 
-driver core: cpu: Fix the fallback cpu_show_gds() name
+x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
 
-In
+Commit
 
-  6524c798b727 ("driver core: cpu: Make cpu_show_not_affected() static")
+  522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
 
-I fat-fingered the name of cpu_show_gds(). Usually, I'd rebase but since
-those are extraordinary embargoed times, the commit above was already
-pulled into another tree so no no.
+provided a fix for the Zen2 VZEROUPPER data corruption bug affecting
+a range of CPU models, but the AMD Custom APU 0405 found on SteamDeck
+was not listed, although it is clearly affected by the vulnerability.
 
-Therefore, fix it ontop.
+Add this CPU variant to the Zenbleed erratum list, in order to
+unconditionally enable the fallback fix until a proper microcode update
+is available.
 
-Fixes: 6524c798b727 ("driver core: cpu: Make cpu_show_not_affected() static")
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230811095831.27513-1-bp@alien8.de
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230811203705.1699914-1-cristian.ciocaltea@collabora.com
 ---
- drivers/base/cpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
-index d7300d8..fe6690e 100644
---- a/drivers/base/cpu.c
-+++ b/drivers/base/cpu.c
-@@ -532,7 +532,7 @@ CPU_SHOW_VULN_FALLBACK(srbds);
- CPU_SHOW_VULN_FALLBACK(mmio_stale_data);
- CPU_SHOW_VULN_FALLBACK(retbleed);
- CPU_SHOW_VULN_FALLBACK(spec_rstack_overflow);
--CPU_SHOW_VULN_FALLBACK(gather_data_sampling);
-+CPU_SHOW_VULN_FALLBACK(gds);
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 26ad7ca..c15b4f0 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -73,6 +73,7 @@ static const int amd_erratum_1054[] =
+ static const int amd_zenbleed[] =
+ 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x30, 0x0, 0x4f, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0x60, 0x0, 0x7f, 0xf),
++			   AMD_MODEL_RANGE(0x17, 0x90, 0x0, 0x91, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0xa0, 0x0, 0xaf, 0xf));
  
- static DEVICE_ATTR(meltdown, 0444, cpu_show_meltdown, NULL);
- static DEVICE_ATTR(spectre_v1, 0444, cpu_show_spectre_v1, NULL);
-@@ -546,7 +546,7 @@ static DEVICE_ATTR(srbds, 0444, cpu_show_srbds, NULL);
- static DEVICE_ATTR(mmio_stale_data, 0444, cpu_show_mmio_stale_data, NULL);
- static DEVICE_ATTR(retbleed, 0444, cpu_show_retbleed, NULL);
- static DEVICE_ATTR(spec_rstack_overflow, 0444, cpu_show_spec_rstack_overflow, NULL);
--static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gather_data_sampling, NULL);
-+static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gds, NULL);
- 
- static struct attribute *cpu_root_vulnerabilities_attrs[] = {
- 	&dev_attr_meltdown.attr,
+ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
