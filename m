@@ -2,50 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 870BD7793E7
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Aug 2023 18:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2DCB77972A
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Aug 2023 20:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232726AbjHKQJh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Aug 2023 12:09:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56398 "EHLO
+        id S235606AbjHKSji (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Aug 2023 14:39:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjHKQJg (ORCPT
+        with ESMTP id S229549AbjHKSji (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Aug 2023 12:09:36 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B5CC100;
-        Fri, 11 Aug 2023 09:09:36 -0700 (PDT)
-Date:   Fri, 11 Aug 2023 16:09:32 -0000
+        Fri, 11 Aug 2023 14:39:38 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F044030DC;
+        Fri, 11 Aug 2023 11:39:37 -0700 (PDT)
+Date:   Fri, 11 Aug 2023 18:39:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691770173;
+        s=2020; t=1691779170;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=cXYfpMzUYguskcqo9HziCt6lFBVLknD46HoylNqVPXA=;
-        b=wNAlz9Gh7CQTvgwz+Bt2CSR58X4rMC5AeY9WYFahTFbkQC7QEomj0G8Rg7OPNzWr8yGaYx
-        rUkIDUn7gder6SPbFHO48WnAGnH0scaJuicXKkRhieJgBQy+Csl/V2ITUK1QvT4M+gxzJd
-        NNjOI73RljpNKsbuZ/uhqUcRkNsCRI4IuMlL7hTEtjPAF9ncVFfqnFwyracnQo6lQBhhdJ
-        0Fn6DKWc66ZzJfQHjdq+F7DdQ+vDvwn+Kptpoid/5e61kzgHvzsuhkfFlylse+IA1Cxtiz
-        STtNJES8wf8+R/Ztsw3wEwq3FptygKruapbGJlmSLEjRDJN5OulC+m0T2Pnk6w==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7U18nUB7ZZylyWZlfzeqQZ7OwuY9eqjEWthoA8dO794=;
+        b=kuMz1LxWWrX8QglIll+lhrYcE5rLf8TyWXJsKrXb9wk0PWYRIa32yypGMYJMbp6UqsapIC
+        9hkh6yM7tUpLp/mw+oj9dzv+qBf/qqMh7PmpYpctybGTIWRJISI2o+FWbHNt2O4X45WVyj
+        jhZT0lwjzvitDJmnY0qwVdrrgrXhn/H6xlNLoWAq90Lxpb6e2a3BKQO7FMdQ7ItIfNwChI
+        TAPHZv/d9RkXsTaVKRblzAMtFWtxXdgK/skP62mPbYUqswVJDmc+BZ/8MKD65HsMZX3o+g
+        bCXJN6prJCr2thvKIXM02kp2CxtOCyJY9DAsgc1/l2TgVQKyb3utPLp5ZRByOg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691770173;
+        s=2020e; t=1691779170;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=cXYfpMzUYguskcqo9HziCt6lFBVLknD46HoylNqVPXA=;
-        b=TJAd44epnJ8BFcqS/IcJzkpPyOPpr9fd9v7H33cmI0EsESze7na+YpfY53bfP3uLfgPc4x
-        ndjOmDzjdX+X/rAA==
-From:   "tip-bot2 for Justin Ernst" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7U18nUB7ZZylyWZlfzeqQZ7OwuY9eqjEWthoA8dO794=;
+        b=hGnA6QuaWDDoX3Q742fNoz2hEX8ouxV6iT9tS3xgjeK0gWm9DFvM4ZDYn6ZaZeySnI2F8f
+        Be5M5K9rOA0hDZAQ==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/uv: Update HPE Superdome Flex Maintainers
-Cc:     Justin Ernst <justin.ernst@hpe.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Joel Granados <j.granados@samsung.com>, x86@kernel.org,
+Subject: [tip: x86/bugs] driver core: cpu: Fix the fallback cpu_show_gds() name
+Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20230811095831.27513-1-bp@alien8.de>
+References: <20230811095831.27513-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <169177017294.27769.10099440426367314269.tip-bot2@tip-bot2>
+Message-ID: <169177916977.27769.3694730476189512700.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,48 +64,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     1393bc8c6a3311bf6496e704c59870e0fc44a2c3
-Gitweb:        https://git.kernel.org/tip/1393bc8c6a3311bf6496e704c59870e0fc44a2c3
-Author:        Justin Ernst <justin.ernst@hpe.com>
-AuthorDate:    Tue, 01 Aug 2023 10:57:56 -05:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 11 Aug 2023 09:02:39 -07:00
+Commit-ID:     3477144c878a52fc3938a529186e81ea030e7779
+Gitweb:        https://git.kernel.org/tip/3477144c878a52fc3938a529186e81ea030e7779
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Fri, 11 Aug 2023 11:32:09 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 11 Aug 2023 20:36:02 +02:00
 
-x86/uv: Update HPE Superdome Flex Maintainers
+driver core: cpu: Fix the fallback cpu_show_gds() name
 
-Mike Travis has retired. His expertise will be sorely missed.
-Remove Mike's entry under SGI XP/XPC/XPNET DRIVER.
-Replace Mike's entry under UV HPE SUPERDOME FLEX.
+In
 
-Signed-off-by: Justin Ernst <justin.ernst@hpe.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Joel Granados <j.granados@samsung.com>
-Link: https://lore.kernel.org/all/20230801155756.22308-1-justin.ernst%40hpe.com
+  6524c798b727 ("driver core: cpu: Make cpu_show_not_affected() static")
+
+I fat-fingered the name of cpu_show_gds(). Usually, I'd rebase but since
+those are extraordinary embargoed times, the commit above was already
+pulled into another tree so no no.
+
+Therefore, fix it ontop.
+
+Fixes: 6524c798b727 ("driver core: cpu: Make cpu_show_not_affected() static")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230811095831.27513-1-bp@alien8.de
 ---
- MAINTAINERS | 4 ++--
+ drivers/base/cpu.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0f966f0..7998c1e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19283,7 +19283,6 @@ F:	drivers/misc/sgi-gru/
- SGI XP/XPC/XPNET DRIVER
- M:	Robin Holt <robinmholt@gmail.com>
- M:	Steve Wahl <steve.wahl@hpe.com>
--R:	Mike Travis <mike.travis@hpe.com>
- S:	Maintained
- F:	drivers/misc/sgi-xp/
+diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
+index d7300d8..fe6690e 100644
+--- a/drivers/base/cpu.c
++++ b/drivers/base/cpu.c
+@@ -532,7 +532,7 @@ CPU_SHOW_VULN_FALLBACK(srbds);
+ CPU_SHOW_VULN_FALLBACK(mmio_stale_data);
+ CPU_SHOW_VULN_FALLBACK(retbleed);
+ CPU_SHOW_VULN_FALLBACK(spec_rstack_overflow);
+-CPU_SHOW_VULN_FALLBACK(gather_data_sampling);
++CPU_SHOW_VULN_FALLBACK(gds);
  
-@@ -23142,7 +23141,8 @@ F:	arch/x86/platform
+ static DEVICE_ATTR(meltdown, 0444, cpu_show_meltdown, NULL);
+ static DEVICE_ATTR(spectre_v1, 0444, cpu_show_spectre_v1, NULL);
+@@ -546,7 +546,7 @@ static DEVICE_ATTR(srbds, 0444, cpu_show_srbds, NULL);
+ static DEVICE_ATTR(mmio_stale_data, 0444, cpu_show_mmio_stale_data, NULL);
+ static DEVICE_ATTR(retbleed, 0444, cpu_show_retbleed, NULL);
+ static DEVICE_ATTR(spec_rstack_overflow, 0444, cpu_show_spec_rstack_overflow, NULL);
+-static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gather_data_sampling, NULL);
++static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gds, NULL);
  
- X86 PLATFORM UV HPE SUPERDOME FLEX
- M:	Steve Wahl <steve.wahl@hpe.com>
--R:	Mike Travis <mike.travis@hpe.com>
-+R:	Justin Ernst <justin.ernst@hpe.com>
-+R:	Kyle Meyer <kyle.meyer@hpe.com>
- R:	Dimitri Sivanich <dimitri.sivanich@hpe.com>
- R:	Russ Anderson <russ.anderson@hpe.com>
- S:	Supported
+ static struct attribute *cpu_root_vulnerabilities_attrs[] = {
+ 	&dev_attr_meltdown.attr,
