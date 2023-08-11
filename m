@@ -2,56 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 721DD77841E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Aug 2023 01:29:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE078778484
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Aug 2023 02:29:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232266AbjHJX3P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Aug 2023 19:29:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
+        id S229686AbjHKA3B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Aug 2023 20:29:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbjHJX3O (ORCPT
+        with ESMTP id S232365AbjHKA3A (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Aug 2023 19:29:14 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 169C7270F;
-        Thu, 10 Aug 2023 16:29:14 -0700 (PDT)
-Date:   Thu, 10 Aug 2023 23:29:11 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691710151;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Qzz2rJbDMwtqi+XPUXa6GMdkxcSTLqzLBFlCQ0ojhsA=;
-        b=0Onl/r8SDqIpcMTNPkT9+/pwvrtLztRR7og50ZMjCZ25rCk7jwdiRLKrY44wM4VroU9kwe
-        5o4OsK90/MnG43xk/6veRZDol3O1ZeNbu1KSpMv295D6rsS+led3c1aJFnPx55XYGBprOy
-        yN9zS0w4qw1jndw4Xr1PNSjWWeuehImCM8E5KpTU67Vh3pVK1peVYDm8FtLxlcSDKtNP5Z
-        hYkP9F8Ueliqn8emUqkpQfNppN4XguPctsP4YMvHcqpJWIVLSy10L1qck8kgicFo4MMTzq
-        5T8LMlPeVcd/PcZ8mwxI6EANVL8PXnOjn2wPbAVipboTawEDMkLcX8ZE8P7TSA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691710151;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Qzz2rJbDMwtqi+XPUXa6GMdkxcSTLqzLBFlCQ0ojhsA=;
-        b=tW+T1rftDFNJLZHKnA7KJPwVvAdDwhKUNh5UKA51+hrA86j+783o+5MxV11JpGn3oTK4mq
-        RQ+A/fRI/Ssi4QDA==
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/speculation: Add cpu_show_gds() prototype
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-        stable@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+        Thu, 10 Aug 2023 20:29:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C25AC2D54;
+        Thu, 10 Aug 2023 17:29:00 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 58BC066118;
+        Fri, 11 Aug 2023 00:29:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A73BC433C7;
+        Fri, 11 Aug 2023 00:28:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691713739;
+        bh=+c5/OsEBgDnJX2KvgJ9pc4qBsjp8YGnODvKI3Jus9tw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ij2sVd4uf9Z5r88ZswuOjfOvTEbqxEszS2bGHGgnzp5V80Hu+QMCQHxOOV/yPlPuA
+         bCGo81r4IV8MxgBmvJ+SxPtikZ4UpPd2Hji1zvRmDY0P+MhYcz6h9LBn3w1grLQ4jz
+         DIBJptSYz+gzImJy8+9r5JYwge7AtLLZjyYzToqKDjLOlkwYyieU2fX9xWgiJP0izI
+         TdDMth64J+GDoFV0lDTFYiRQcydxw5NvrvtELqxmPTcxgbJxMRxed6Ymr1hOeACMjj
+         el4h+kZrl60foSK/y5vJX9qYPE0ayYo/Z8pBgeOWCtnuZZd1k4Eo+xs20QewJBUeEY
+         wdx1SZzgsXP1g==
+Date:   Thu, 10 Aug 2023 17:28:58 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     "Borislav Petkov (AMD)" <bp@alien8.de>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Nathan Chancellor <nathan@kernel.org>,
+        Daniel Kolesa <daniel@octaforge.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Sven Volkinsfeld <thyrc@gmx.net>,
+        Nick Desaulniers <ndesaulniers@google.com>, x86@kernel.org,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        torvalds@linux-foundation.org,
+        Martin KaFai Lau <martin.lau@linux.dev>
+Subject: Re: [tip: x86/bugs] x86/srso: Fix build breakage with the LLVM
+ linker
+Message-ID: <20230810172858.12291fe6@kernel.org>
+In-Reply-To: <20230810162524.7c426664@kernel.org>
+References: <20230809-gds-v1-1-eaac90b0cbcc@google.com>
+        <169165870802.27769.15353947574704602257.tip-bot2@tip-bot2>
+        <20230810162524.7c426664@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169171015127.27769.17078494858704021692.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,44 +64,13 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/bugs branch of tip:
+On Thu, 10 Aug 2023 16:25:24 -0700 Jakub Kicinski wrote:
+> On Thu, 10 Aug 2023 09:11:48 -0000 tip-bot2 for Nick Desaulniers wrote:
+> > The following commit has been merged into the x86/bugs branch of tip:  
+> 
+> Hi folks, is there an ETA on this getting to Linus?
+> The breakage has propagated to the networking trees, if the fix reaches
+> Linus soon we'll just hold off on applying stuff and fast forward again.
 
-Commit-ID:     a57c27c7ad85c420b7de44c6ee56692d51709dda
-Gitweb:        https://git.kernel.org/tip/a57c27c7ad85c420b7de44c6ee56692d51709dda
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Wed, 09 Aug 2023 15:04:59 +02:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 10 Aug 2023 09:12:18 -07:00
-
-x86/speculation: Add cpu_show_gds() prototype
-
-The newly added function has two definitions but no prototypes:
-
-drivers/base/cpu.c:605:16: error: no previous prototype for 'cpu_show_gds' [-Werror=missing-prototypes]
-
-Add a declaration next to the other ones for this file to avoid the
-warning.
-
-Fixes: 8974eb588283b ("x86/speculation: Add Gather Data Sampling mitigation")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/all/20230809130530.1913368-1-arnd%40kernel.org
----
- include/linux/cpu.h | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index 23ac87b..e006c71 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -72,6 +72,8 @@ extern ssize_t cpu_show_retbleed(struct device *dev,
- 				 struct device_attribute *attr, char *buf);
- extern ssize_t cpu_show_spec_rstack_overflow(struct device *dev,
- 					     struct device_attribute *attr, char *buf);
-+extern ssize_t cpu_show_gds(struct device *dev,
-+			    struct device_attribute *attr, char *buf);
- 
- extern __printf(4, 5)
- struct device *cpu_device_create(struct device *parent, void *drvdata,
+Are the commit IDs stable on x86/bugs? 
+Would it be rude if we pulled that in?
