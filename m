@@ -2,110 +2,127 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 081A8779927
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Aug 2023 23:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B08D977AA52
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Aug 2023 19:26:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236791AbjHKVDL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Aug 2023 17:03:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43546 "EHLO
+        id S230417AbjHMR0c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Aug 2023 13:26:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236722AbjHKVDK (ORCPT
+        with ESMTP id S229563AbjHMR0c (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Aug 2023 17:03:10 -0400
+        Sun, 13 Aug 2023 13:26:32 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18900E77;
-        Fri, 11 Aug 2023 14:03:10 -0700 (PDT)
-Date:   Fri, 11 Aug 2023 21:03:06 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0141E10FB;
+        Sun, 13 Aug 2023 10:26:34 -0700 (PDT)
+Date:   Sun, 13 Aug 2023 17:26:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1691787787;
+        s=2020; t=1691947591;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qQEbgcv3SXBzdgQ2vH6bH00o0e6nyx9jJoKAj9oSlmc=;
-        b=ys2iEpJAXMMK0zl/MA4h+ZSsqF9if5VQw5MG1I0PvTxYMKe37Ohgzl3V5DWE8Puguw9DLS
-        l7npYzjaN0IJQhrkVZQLJLRFvT28pLI2QMlhpxOyNvZFeOQWK1xSfPSufrNd2rI6LQZXSJ
-        CAPCgLn2L5kChkMytyhAv5h9/GNjI7Qht3SFBywvA93J6+N3QDziyPfPJ3t9SALsh5PuJJ
-        UyZdZxfEPKGya2c24LoLZ/PytP90xOfdyNL8P/1D/sd9uJw4/jj9yo/ZvhqroySxMNoCzP
-        Y2tX3zJbWQmlJUVpHjc7cWeYFFq78lJb+xpEqZpN7iKeWamRRfhzSXjensCmmw==
+        bh=Ml8FmwzrGUL0cDZP6Dx80nGHWdATwlWTLMNiFVmxrTQ=;
+        b=D4H8VW1/5cSw3OvO7+I+4eUhoe1xeausxSC2Ze9BiDrPFne4X82k8g4q8AIleQ0Zzfk/jZ
+        iEmPxgOIW65D9jsYZJrKiRGPkymI2Ch/5UeWjB18uZNAzCjsHlT1GQbgVCcBonpRI/68ZG
+        UOOi7sGGaFJv+fstaCIWGZRu4uIycTErheQz6t36iZmXpAF997DC/WzFk4n77JSw0eGjIv
+        YWN+8d+k03qIAz9tdop12Qn85/1Q2678C1gCnX4BxJjD+mUOy3SwX3XFyyXWkiV0PlXYIf
+        vSDqRvzfZYazry1GyL35ujSnBD5IbsJMs/oxHl7UiAyJoOkTJU94WRFnOMvFkA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1691787787;
+        s=2020e; t=1691947591;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qQEbgcv3SXBzdgQ2vH6bH00o0e6nyx9jJoKAj9oSlmc=;
-        b=Lo0AjL857grJ4eGOtWUXvVX4zQPHHG/11xzTdKx4hxBGAVDVT4+dND2khfXZeRmrhTWF9k
-        IXNnytUv072/B8Aw==
-From:   "tip-bot2 for Cristian Ciocaltea" <tip-bot2@linutronix.de>
+        bh=Ml8FmwzrGUL0cDZP6Dx80nGHWdATwlWTLMNiFVmxrTQ=;
+        b=8GowjzxmkmKI3Vo3x3LHHmQY6WWU68ih+LEixwYr+yVjhgnaV1aB405C4pEFmJrUDjOe7v
+        zHmCEy0Sq7WVEYBw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
-Cc:     Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230811203705.1699914-1-cristian.ciocaltea@collabora.com>
-References: <20230811203705.1699914-1-cristian.ciocaltea@collabora.com>
+Subject: [tip: x86/microcode] x86/microcode/intel: Remove pointless mutex
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230812195728.069849788@linutronix.de>
+References: <20230812195728.069849788@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <169178778665.27769.10759890614564556189.tip-bot2@tip-bot2>
+Message-ID: <169194759091.27769.17557260574183887104.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     6dbef74aeb090d6bee7d64ef3fa82ae6fa53f271
-Gitweb:        https://git.kernel.org/tip/6dbef74aeb090d6bee7d64ef3fa82ae6fa53f271
-Author:        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-AuthorDate:    Fri, 11 Aug 2023 23:37:05 +03:00
+Commit-ID:     d2700f406713d04573803b9fe8a0fb02c015df39
+Gitweb:        https://git.kernel.org/tip/d2700f406713d04573803b9fe8a0fb02c015df39
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sat, 12 Aug 2023 21:58:50 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 11 Aug 2023 22:52:29 +02:00
+CommitterDate: Sun, 13 Aug 2023 18:42:55 +02:00
 
-x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
+x86/microcode/intel: Remove pointless mutex
 
-Commit
+There is no concurrency.
 
-  522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
-
-provided a fix for the Zen2 VZEROUPPER data corruption bug affecting
-a range of CPU models, but the AMD Custom APU 0405 found on SteamDeck
-was not listed, although it is clearly affected by the vulnerability.
-
-Add this CPU variant to the Zenbleed erratum list, in order to
-unconditionally enable the fallback fix until a proper microcode update
-is available.
-
-Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230811203705.1699914-1-cristian.ciocaltea@collabora.com
+Link: https://lore.kernel.org/r/20230812195728.069849788@linutronix.de
 ---
- arch/x86/kernel/cpu/amd.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/microcode/intel.c | 24 ++----------------------
+ 1 file changed, 2 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 26ad7ca..c15b4f0 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -73,6 +73,7 @@ static const int amd_erratum_1054[] =
- static const int amd_zenbleed[] =
- 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x30, 0x0, 0x4f, 0xf),
- 			   AMD_MODEL_RANGE(0x17, 0x60, 0x0, 0x7f, 0xf),
-+			   AMD_MODEL_RANGE(0x17, 0x90, 0x0, 0x91, 0xf),
- 			   AMD_MODEL_RANGE(0x17, 0xa0, 0x0, 0xaf, 0xf));
+diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+index 8621ef4..94dd6af 100644
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -397,22 +397,6 @@ next:
+ 	return patch;
+ }
  
- static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
+-/*
+- * Save this microcode patch. It will be loaded early when a CPU is
+- * hot-added or resumes.
+- */
+-static void save_mc_for_early(struct ucode_cpu_info *uci, u8 *mc, unsigned int size)
+-{
+-	/* Synchronization during CPU hotplug. */
+-	static DEFINE_MUTEX(x86_cpu_microcode_mutex);
+-
+-	mutex_lock(&x86_cpu_microcode_mutex);
+-
+-	save_microcode_patch(uci, mc, size);
+-
+-	mutex_unlock(&x86_cpu_microcode_mutex);
+-}
+-
+ static bool load_builtin_intel_microcode(struct cpio_data *cp)
+ {
+ 	unsigned int eax = 1, ebx, ecx = 0, edx;
+@@ -829,12 +813,8 @@ static enum ucode_state generic_load_microcode(int cpu, struct iov_iter *iter)
+ 	vfree(uci->mc);
+ 	uci->mc = (struct microcode_intel *)new_mc;
+ 
+-	/*
+-	 * If early loading microcode is supported, save this mc into
+-	 * permanent memory. So it will be loaded early when a CPU is hot added
+-	 * or resumes.
+-	 */
+-	save_mc_for_early(uci, new_mc, new_mc_size);
++	/* Save for CPU hotplug */
++	save_microcode_patch(uci, new_mc, new_mc_size);
+ 
+ 	pr_debug("CPU%d found a matching microcode update with version 0x%x (current=0x%x)\n",
+ 		 cpu, new_rev, uci->cpu_sig.rev);
