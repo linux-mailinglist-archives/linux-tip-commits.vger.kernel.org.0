@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46C6877AA53
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Aug 2023 19:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A44777AA54
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Aug 2023 19:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231130AbjHMR0c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Aug 2023 13:26:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50146 "EHLO
+        id S229563AbjHMR0d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Aug 2023 13:26:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230413AbjHMR0c (ORCPT
+        with ESMTP id S230519AbjHMR0c (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 13 Aug 2023 13:26:32 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F25BA10FA;
-        Sun, 13 Aug 2023 10:26:33 -0700 (PDT)
-Date:   Sun, 13 Aug 2023 17:26:31 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F24310DD;
+        Sun, 13 Aug 2023 10:26:34 -0700 (PDT)
+Date:   Sun, 13 Aug 2023 17:26:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1691947592;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9g6wafFE0TX2vxDL1r12AgYaUDRlw2j8fDT0M+x+k8A=;
-        b=t+zdgeZTjuIlmcTvMeyi7JlL1VTQOvFE/7bP3qwzBCicNepXCfS/xPmnCOrZd0Ib3yOj+c
-        40YXuFywW4MyPT3bO81eKm3EYihutFgh6QroWm2qoihtoyMlxNnIjXU//n8ADHeF4Dr4nZ
-        foJ49v2DOoceBTlk59y+zIUIfshrGSdit4dOKBfsBNnze40qEo1f6XvVv0i+VFSLRV5uLd
-        fL3+u6rTYwU618zdnfRmxseoOWOgDC2CUn4CO1DWx29wre6Wvgr6Mn19ZHGcLY+kJF6jUo
-        8AnSh97VaOJMreJBu8wpMzkGHsYRha4AD8YofpqOmwQk/e8njS2DNNxY8cF5Rg==
+        bh=A8LGehJNTJbownToq2PBq86XXUmUG/UNqrjBht0bAvk=;
+        b=lN+KfnS1ECrF2z/N/NTjHmgE4wUI4GuaNFA9xnOOB2c8ofmbvWVPZGtIvcfi5Eik0eD1wN
+        mipQPAd0o7VT1+0OPzJPaaQVsj2cCNyXOltv/sKYZhvgvKtpW0yNy0vQ52Bv5rG+2SGG3d
+        qxueYQvEPReKbTvo4PRekcfOuXiJBQEGikCQ2AM4Zt80ETiU0YkVABN03v2k7XH9LAjOMh
+        rA7380amp0luZQevxSNBD3au9hHiwnRJpPe88cW7p5yv4Bjzqjui1izQvFGkoVfEqK/KuN
+        CPJlcID/LdbGY9AUf5Zoq0RoQ6wWrr3r4CuZf+r13BW0ckbUIr/QN00ce2xMvg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1691947592;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9g6wafFE0TX2vxDL1r12AgYaUDRlw2j8fDT0M+x+k8A=;
-        b=5npoWuLqmZL20dlQ7a5k24y21HzkTn3NSkrBtv5Pyxb++3ChEkGIShX+jHQ5hXwYSU6mDq
-        zQl/6WSW7lUmusAg==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=A8LGehJNTJbownToq2PBq86XXUmUG/UNqrjBht0bAvk=;
+        b=bx3E2F5KzHyQUzlkZGZDcFtxmyzy2+FPhghaJp0oPN9ndKaIxdr68rITAglGFwRhEzqZYC
+        BUhKu6Hbejnmf/CQ==
+From:   "tip-bot2 for Ashok Raj" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/intel: Remove debug code
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: x86/microcode] x86/microcode/intel: Rename get_datasize() since
+ its used externally
+Cc:     Boris Petkov <bp@alien8.de>, Ashok Raj <ashok.raj@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230812195728.010895747@linutronix.de>
-References: <20230812195728.010895747@linutronix.de>
+In-Reply-To: <20230812195727.894165745@linutronix.de>
+References: <20230812195727.894165745@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <169194759141.27769.2999860222151032837.tip-bot2@tip-bot2>
+Message-ID: <169194759234.27769.9182026169292220932.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,129 +67,100 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     d44450c5939949fe37e4e94db69429de1ab1aad6
-Gitweb:        https://git.kernel.org/tip/d44450c5939949fe37e4e94db69429de1ab1aad6
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 12 Aug 2023 21:58:49 +02:00
+Commit-ID:     b0e67db12d769cc308a50c1c0ac3721c4f6aead7
+Gitweb:        https://git.kernel.org/tip/b0e67db12d769cc308a50c1c0ac3721c4f6aead7
+Author:        Ashok Raj <ashok.raj@intel.com>
+AuthorDate:    Sat, 12 Aug 2023 21:58:45 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
 CommitterDate: Sun, 13 Aug 2023 18:42:55 +02:00
 
-x86/microcode/intel: Remove debug code
+x86/microcode/intel: Rename get_datasize() since its used externally
 
-This is really of dubious value.
+Rename get_datasize() to intel_microcode_get_datasize() and make it an inline.
 
+  [ tglx: Make the argument typed and fix up the IFS code ]
+
+Suggested-by: Boris Petkov <bp@alien8.de>
+Signed-off-by: Ashok Raj <ashok.raj@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230812195728.010895747@linutronix.de
+Link: https://lore.kernel.org/r/20230812195727.894165745@linutronix.de
 ---
- arch/x86/kernel/cpu/microcode/intel.c | 75 +--------------------------
- 1 file changed, 75 deletions(-)
+ arch/x86/include/asm/microcode_intel.h | 7 ++++---
+ arch/x86/kernel/cpu/microcode/intel.c  | 8 ++++----
+ drivers/platform/x86/intel/ifs/load.c  | 5 +++--
+ 3 files changed, 11 insertions(+), 9 deletions(-)
 
+diff --git a/arch/x86/include/asm/microcode_intel.h b/arch/x86/include/asm/microcode_intel.h
+index 9951a4b..7bd4c29 100644
+--- a/arch/x86/include/asm/microcode_intel.h
++++ b/arch/x86/include/asm/microcode_intel.h
+@@ -26,9 +26,10 @@ struct microcode_intel {
+ #define MC_HEADER_TYPE_IFS		2
+ #define DEFAULT_UCODE_DATASIZE		(2000)
+ 
+-#define get_datasize(mc) \
+-	(((struct microcode_intel *)mc)->hdr.datasize ? \
+-	 ((struct microcode_intel *)mc)->hdr.datasize : DEFAULT_UCODE_DATASIZE)
++static inline int intel_microcode_get_datasize(struct microcode_header_intel *hdr)
++{
++	return hdr->datasize ? : DEFAULT_UCODE_DATASIZE;
++}
+ 
+ static inline u32 intel_get_microcode_revision(void)
+ {
 diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index d983a3e..8621ef4 100644
+index 171d96b..9866672 100644
 --- a/arch/x86/kernel/cpu/microcode/intel.c
 +++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -10,15 +10,7 @@
-  * Copyright (C) 2012 Fenghua Yu <fenghua.yu@intel.com>
-  *		      H Peter Anvin" <hpa@zytor.com>
-  */
--
--/*
-- * This needs to be before all headers so that pr_debug in printk.h doesn't turn
-- * printk calls into no_printk().
-- *
-- *#define DEBUG
-- */
- #define pr_fmt(fmt) "microcode: " fmt
--
- #include <linux/earlycpio.h>
- #include <linux/firmware.h>
- #include <linux/uaccess.h>
-@@ -405,69 +397,6 @@ next:
- 	return patch;
- }
+@@ -118,10 +118,10 @@ int intel_find_matching_signature(void *mc, unsigned int csig, int cpf)
+ 		return 1;
  
--static void show_saved_mc(void)
--{
--#ifdef DEBUG
--	int i = 0, j;
--	unsigned int sig, pf, rev, total_size, data_size, date;
--	struct ucode_cpu_info uci;
--	struct ucode_patch *p;
--
--	if (list_empty(&microcode_cache)) {
--		pr_debug("no microcode data saved.\n");
--		return;
--	}
--
--	intel_cpu_collect_info(&uci);
--
--	sig	= uci.cpu_sig.sig;
--	pf	= uci.cpu_sig.pf;
--	rev	= uci.cpu_sig.rev;
--	pr_debug("CPU: sig=0x%x, pf=0x%x, rev=0x%x\n", sig, pf, rev);
--
--	list_for_each_entry(p, &microcode_cache, plist) {
--		struct microcode_header_intel *mc_saved_header;
--		struct extended_sigtable *ext_header;
--		struct extended_signature *ext_sig;
--		int ext_sigcount;
--
--		mc_saved_header = (struct microcode_header_intel *)p->data;
--
--		sig	= mc_saved_header->sig;
--		pf	= mc_saved_header->pf;
--		rev	= mc_saved_header->rev;
--		date	= mc_saved_header->date;
--
--		total_size	= get_totalsize(mc_saved_header);
--		data_size	= intel_microcode_get_datasize(mc_saved_header);
--
--		pr_debug("mc_saved[%d]: sig=0x%x, pf=0x%x, rev=0x%x, total size=0x%x, date = %04x-%02x-%02x\n",
--			 i++, sig, pf, rev, total_size,
--			 date & 0xffff,
--			 date >> 24,
--			 (date >> 16) & 0xff);
--
--		/* Look for ext. headers: */
--		if (total_size <= data_size + MC_HEADER_SIZE)
--			continue;
--
--		ext_header = (void *)mc_saved_header + data_size + MC_HEADER_SIZE;
--		ext_sigcount = ext_header->count;
--		ext_sig = (void *)ext_header + EXT_HEADER_SIZE;
--
--		for (j = 0; j < ext_sigcount; j++) {
--			sig = ext_sig->sig;
--			pf = ext_sig->pf;
--
--			pr_debug("\tExtended[%d]: sig=0x%x, pf=0x%x\n",
--				 j, sig, pf);
--
--			ext_sig++;
--		}
--	}
--#endif
--}
--
- /*
-  * Save this microcode patch. It will be loaded early when a CPU is
-  * hot-added or resumes.
-@@ -480,7 +409,6 @@ static void save_mc_for_early(struct ucode_cpu_info *uci, u8 *mc, unsigned int s
- 	mutex_lock(&x86_cpu_microcode_mutex);
+ 	/* Look for ext. headers: */
+-	if (get_totalsize(mc_hdr) <= get_datasize(mc_hdr) + MC_HEADER_SIZE)
++	if (get_totalsize(mc_hdr) <= intel_microcode_get_datasize(mc_hdr) + MC_HEADER_SIZE)
+ 		return 0;
  
- 	save_microcode_patch(uci, mc, size);
--	show_saved_mc();
+-	ext_hdr = mc + get_datasize(mc_hdr) + MC_HEADER_SIZE;
++	ext_hdr = mc + intel_microcode_get_datasize(mc_hdr) + MC_HEADER_SIZE;
+ 	ext_sig = (void *)ext_hdr + EXT_HEADER_SIZE;
  
- 	mutex_unlock(&x86_cpu_microcode_mutex);
- }
-@@ -631,9 +559,6 @@ int __init save_microcode_in_initrd_intel(void)
- 	intel_cpu_collect_info(&uci);
+ 	for (i = 0; i < ext_hdr->count; i++) {
+@@ -156,7 +156,7 @@ int intel_microcode_sanity_check(void *mc, bool print_err, int hdr_type)
+ 	struct extended_signature *ext_sig;
  
- 	scan_microcode(cp.data, cp.size, &uci, true);
--
--	show_saved_mc();
--
- 	return 0;
- }
+ 	total_size = get_totalsize(mc_header);
+-	data_size = get_datasize(mc_header);
++	data_size = intel_microcode_get_datasize(mc_header);
+ 
+ 	if (data_size + MC_HEADER_SIZE > total_size) {
+ 		if (print_err)
+@@ -438,7 +438,7 @@ static void show_saved_mc(void)
+ 		date	= mc_saved_header->date;
+ 
+ 		total_size	= get_totalsize(mc_saved_header);
+-		data_size	= get_datasize(mc_saved_header);
++		data_size	= intel_microcode_get_datasize(mc_saved_header);
+ 
+ 		pr_debug("mc_saved[%d]: sig=0x%x, pf=0x%x, rev=0x%x, total size=0x%x, date = %04x-%02x-%02x\n",
+ 			 i++, sig, pf, rev, total_size,
+diff --git a/drivers/platform/x86/intel/ifs/load.c b/drivers/platform/x86/intel/ifs/load.c
+index 390862a..cefd0d8 100644
+--- a/drivers/platform/x86/intel/ifs/load.c
++++ b/drivers/platform/x86/intel/ifs/load.c
+@@ -56,12 +56,13 @@ struct metadata_header {
+ 
+ static struct metadata_header *find_meta_data(void *ucode, unsigned int meta_type)
+ {
++	struct microcode_header_intel *hdr = &((struct microcode_intel *)ucode)->hdr;
+ 	struct metadata_header *meta_header;
+ 	unsigned long data_size, total_meta;
+ 	unsigned long meta_size = 0;
+ 
+-	data_size = get_datasize(ucode);
+-	total_meta = ((struct microcode_intel *)ucode)->hdr.metasize;
++	data_size = intel_microcode_get_datasize(hdr);
++	total_meta = hdr->metasize;
+ 	if (!total_meta)
+ 		return NULL;
  
