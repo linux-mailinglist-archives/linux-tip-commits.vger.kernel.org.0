@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 932C277BC77
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Aug 2023 17:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD5877BC7A
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Aug 2023 17:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232648AbjHNPIa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 14 Aug 2023 11:08:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41152 "EHLO
+        id S232674AbjHNPIb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 14 Aug 2023 11:08:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232654AbjHNPII (ORCPT
+        with ESMTP id S232647AbjHNPIH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 14 Aug 2023 11:08:08 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2B88E73;
+        Mon, 14 Aug 2023 11:08:07 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82CB10DB;
         Mon, 14 Aug 2023 08:08:06 -0700 (PDT)
 Date:   Mon, 14 Aug 2023 15:08:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LaHbiCMCfbZIfXO7fsqxjcg2YfBJRG0ZhYvKRch2ogw=;
-        b=ytZqVRMYtcAoIS8zc3ztUW0iqx9mzU8e+tBXi1qn4G1Ap5d2uq36wKduanXK+5AGZ0xxrp
-        IRbqyCgSqftPWKuQJ/pxebjUbTu0fsESp0+RB+BYAR25KUgNklfUnMtnbVZeLGghWgjy+y
-        9BSvt/36qdj+jPpgCHoC1mjuk55GHsgrQrLBZjEJiJf3+Z2biQ5VE3U0IaRZ4etB2loXyB
-        fMGxYu1YYM/GRwSQ0YYB82hams9iXG371XE/27VdSuuxkgGSYE48zyO8q8TLLDjvm2t4mp
-        BNX5zWaD1fGqdGfST9BOQrkeBfCc7PRY0sDVJyTz194rkvKePxa0epYJq6Ntbg==
+        bh=4MG8zIdJaSPttNahgRZX3O6vRsNEXcaW746LCNK2vMc=;
+        b=RoDhZ4+Kl0lbICE+t7kADNeImv/UR2CKzyWTtj54Z0UAkt9j7WYeSc/hZLy60a3oF+sqhz
+        VvSc3qjnR5lC7AgtDETNtQ3ELCLqDQh2F1kBE4j8xZxoMcHbXjRwKW0VEkDkQhZ/U+Tr31
+        6KCw5Vi6RUd44rkFrccw6VAKT/51+9un5RjDTpnvAGeCHvK93Oz40TBPyXabjGt4Ql/sXq
+        pKCU9kxb3o5Mndj5k+LzmRUizKbNABYPXOpqInETIACPseg/U42zE1ql6tdBGGcQXgL5Lf
+        vT3Nz+iRgexIF7K5VImEIs7elpHqTNFSRIDVPv+uQyoJoxXDYm8TV6qtMzEtRg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1692025685;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LaHbiCMCfbZIfXO7fsqxjcg2YfBJRG0ZhYvKRch2ogw=;
-        b=EjzGqrD9+hyeS2rgAV/UPM67Ni9kEIrNCTgo8J8eLuEJXiMLlyfkSG+izl9OuSJnleA0uc
-        fa0bbNw94Zu5CJAg==
+        bh=4MG8zIdJaSPttNahgRZX3O6vRsNEXcaW746LCNK2vMc=;
+        b=Q5Qcc+x0j1p3HtKhvPdVshLubnm2DRKWX8qFvEYilchkZEVBcwrM6jDi4MDFHqV9TqnVmd
+        epaq5PcTpj8+PTCA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Simplify sched_tick_remote()
+Subject: [tip: sched/core] sched: Simplify sched_exec()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Valentin Schneider <vschneid@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230801211812.236247952@infradead.org>
-References: <20230801211812.236247952@infradead.org>
+In-Reply-To: <20230801211812.168490417@infradead.org>
+References: <20230801211812.168490417@infradead.org>
 MIME-Version: 1.0
-Message-ID: <169202568446.27769.11567105117886428004.tip-bot2@tip-bot2>
+Message-ID: <169202568491.27769.6494521766531042551.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,82 +66,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     6dafc713e3b0d8ffbd696d200d8c9dd212ddcdfc
-Gitweb:        https://git.kernel.org/tip/6dafc713e3b0d8ffbd696d200d8c9dd212ddcdfc
+Commit-ID:     4bdada79f3464d85f6e187213c088e7c934e0554
+Gitweb:        https://git.kernel.org/tip/4bdada79f3464d85f6e187213c088e7c934e0554
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 01 Aug 2023 22:41:28 +02:00
+AuthorDate:    Tue, 01 Aug 2023 22:41:27 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 14 Aug 2023 17:01:26 +02:00
 
-sched: Simplify sched_tick_remote()
+sched: Simplify sched_exec()
 
 Use guards to reduce gotos and simplify control flow.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lore.kernel.org/r/20230801211812.236247952@infradead.org
+Link: https://lore.kernel.org/r/20230801211812.168490417@infradead.org
 ---
- kernel/sched/core.c | 39 ++++++++++++++++-----------------------
- 1 file changed, 16 insertions(+), 23 deletions(-)
+ kernel/sched/core.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index cd7f2ed..1b2fa91 100644
+index 68bd68d..cd7f2ed 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -5721,9 +5721,6 @@ static void sched_tick_remote(struct work_struct *work)
- 	struct tick_work *twork = container_of(dwork, struct tick_work, work);
- 	int cpu = twork->cpu;
- 	struct rq *rq = cpu_rq(cpu);
--	struct task_struct *curr;
--	struct rq_flags rf;
--	u64 delta;
- 	int os;
+@@ -5498,23 +5498,20 @@ unsigned int nr_iowait(void)
+ void sched_exec(void)
+ {
+ 	struct task_struct *p = current;
+-	unsigned long flags;
++	struct migration_arg arg;
+ 	int dest_cpu;
  
- 	/*
-@@ -5733,30 +5730,26 @@ static void sched_tick_remote(struct work_struct *work)
- 	 * statistics and checks timeslices in a time-independent way, regardless
- 	 * of when exactly it is running.
- 	 */
--	if (!tick_nohz_tick_stopped_cpu(cpu))
--		goto out_requeue;
-+	if (tick_nohz_tick_stopped_cpu(cpu)) {
-+		guard(rq_lock_irq)(rq);
-+		struct task_struct *curr = rq->curr;
+-	raw_spin_lock_irqsave(&p->pi_lock, flags);
+-	dest_cpu = p->sched_class->select_task_rq(p, task_cpu(p), WF_EXEC);
+-	if (dest_cpu == smp_processor_id())
+-		goto unlock;
++	scoped_guard (raw_spinlock_irqsave, &p->pi_lock) {
++		dest_cpu = p->sched_class->select_task_rq(p, task_cpu(p), WF_EXEC);
++		if (dest_cpu == smp_processor_id())
++			return;
  
--	rq_lock_irq(rq, &rf);
--	curr = rq->curr;
--	if (cpu_is_offline(cpu))
--		goto out_unlock;
-+		if (cpu_online(cpu)) {
-+			update_rq_clock(rq);
+-	if (likely(cpu_active(dest_cpu))) {
+-		struct migration_arg arg = { p, dest_cpu };
++		if (unlikely(!cpu_active(dest_cpu)))
++			return;
  
--	update_rq_clock(rq);
-+			if (!is_idle_task(curr)) {
-+				/*
-+				 * Make sure the next tick runs within a
-+				 * reasonable amount of time.
-+				 */
-+				u64 delta = rq_clock_task(rq) - curr->se.exec_start;
-+				WARN_ON_ONCE(delta > (u64)NSEC_PER_SEC * 3);
-+			}
-+			curr->sched_class->task_tick(rq, curr, 0);
- 
--	if (!is_idle_task(curr)) {
--		/*
--		 * Make sure the next tick runs within a reasonable
--		 * amount of time.
--		 */
--		delta = rq_clock_task(rq) - curr->se.exec_start;
--		WARN_ON_ONCE(delta > (u64)NSEC_PER_SEC * 3);
-+			calc_load_nohz_remote(rq);
-+		}
+-		raw_spin_unlock_irqrestore(&p->pi_lock, flags);
+-		stop_one_cpu(task_cpu(p), migration_cpu_stop, &arg);
+-		return;
++		arg = (struct migration_arg){ p, dest_cpu };
  	}
--	curr->sched_class->task_tick(rq, curr, 0);
--
--	calc_load_nohz_remote(rq);
--out_unlock:
--	rq_unlock_irq(rq, &rf);
--out_requeue:
+-unlock:
+-	raw_spin_unlock_irqrestore(&p->pi_lock, flags);
++	stop_one_cpu(task_cpu(p), migration_cpu_stop, &arg);
+ }
  
- 	/*
- 	 * Run the remote tick once per second (1Hz). This arbitrary
+ #endif
