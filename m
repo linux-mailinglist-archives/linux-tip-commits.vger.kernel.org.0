@@ -2,139 +2,152 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA16D77DC29
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Aug 2023 10:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B06D77E0F9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Aug 2023 14:00:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242506AbjHPI0k (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Aug 2023 04:26:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52668 "EHLO
+        id S244772AbjHPL7m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Aug 2023 07:59:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242585AbjHPI02 (ORCPT
+        with ESMTP id S244963AbjHPL7f (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 16 Aug 2023 04:26:28 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8858D1990;
-        Wed, 16 Aug 2023 01:26:27 -0700 (PDT)
-Date:   Wed, 16 Aug 2023 08:26:25 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1692174386;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=D5Uo85dlChXiK1e7VOp+AQdIs8SHZzORk/Gf/7Po0gY=;
-        b=vvzkT8cZIWvKKpoafhrHBB0EvECJqCy3HOtNKtHHGa5gtwOofoBYVJHrDjs+G2aQJWA5cs
-        crX7U0GbrrKCtzflf2hYwqaR/VdK6jDHF7P1oLEoZUSD+l3IlSv6MReEOdwuYC4VXKZY8v
-        Q//9heXPlibT9N5Mlhx9aqNHVL47QSjyMtofRDObBu5tCPwnVTvymDZg2zFvptlSIZkq4Q
-        qlbBCBfpFXZo+EIvkjSzTIbgJTCv/RH19OOVS7dCfHeuCDjVm0RhfExIZoUkrWCod3JgFt
-        Vx9eEXSrzn2d9pm/vyjYXHBfoAhMM0hlNx/ATRR3zbvi+GsNKt0QlWUAuEj6jQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1692174386;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=D5Uo85dlChXiK1e7VOp+AQdIs8SHZzORk/Gf/7Po0gY=;
-        b=KQeEmaEtXMLBxbkGf+kVuX1J/ONMEeazGLNhs+5NRyY1nUdZI0Ve9IjXibDf7VcgLM/PZi
-        rkXM9RNBPrArUnCg==
-From:   "tip-bot2 for Alexey Kardashevskiy" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Do not handle #VC for DR7 read/write
-Cc:     Alexey Kardashevskiy <aik@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Carlos Bilbao <carlos.bilbao@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Pankaj Gupta <pankaj.gupta@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230816022122.981998-1-aik@amd.com>
-References: <20230816022122.981998-1-aik@amd.com>
+        Wed, 16 Aug 2023 07:59:35 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2AEF2121;
+        Wed, 16 Aug 2023 04:59:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=w4pNixXG/yujqwuAAE04Kdf6OftnyKzc8cljjGmu4i0=; b=JdVKR7WK8g11MZo+4lm3fupwxw
+        GoLvxoGZxjzWh+wP9bd0wrNAt8ewSXQl5qjB3tp0OvS+R3xJB9Jkf7+sKU16nrgNaVC9MckkWdC1I
+        PE1NPfdpesLNRMb+w0SupQ3T2PXmV4n09rMp41IfsqhGnqE92gMMpwaPan299rizYgBmYUVJBtwq1
+        eyoUIhYWVc5a3pxl86GdNmil5LhcaS2vi25ISLrhq6H4zvoRlFEA1rgDRCVxwvBMKEwx/P45ztu7f
+        ZseukUVqOzPx9L+X2TxW+ZeByx4fUNP9K4SdRRZkdbF23SPK2uctEoorUYKNj3yxWy2SLGKAdaCwq
+        JIu5mnFw==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qWFBK-00CytP-1g;
+        Wed, 16 Aug 2023 11:59:22 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 289123001FD;
+        Wed, 16 Aug 2023 13:59:22 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 057EE2C904588; Wed, 16 Aug 2023 13:59:22 +0200 (CEST)
+Date:   Wed, 16 Aug 2023 13:59:21 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org
+Subject: Re: [tip: x86/urgent] objtool/x86: Fix SRSO mess
+Message-ID: <20230816115921.GH980931@hirez.programming.kicks-ass.net>
+References: <20230814121148.704502245@infradead.org>
+ <169217251760.27769.15304146275480287222.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <169217438542.27769.5398729789133595994.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <169217251760.27769.15304146275480287222.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sev branch of tip:
+On Wed, Aug 16, 2023 at 07:55:17AM -0000, tip-bot2 for Peter Zijlstra wrote:
+> The following commit has been merged into the x86/urgent branch of tip:
+> 
+> Commit-ID:     4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40
+> Gitweb:        https://git.kernel.org/tip/4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40
+> Author:        Peter Zijlstra <peterz@infradead.org>
+> AuthorDate:    Mon, 14 Aug 2023 13:44:29 +02:00
+> Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+> CommitterDate: Wed, 16 Aug 2023 09:39:16 +02:00
+> 
+> objtool/x86: Fix SRSO mess
+> 
+> Objtool --rethunk does two things:
+> 
+>  - it collects all (tail) call's of __x86_return_thunk and places them
+>    into .return_sites. These are typically compiler generated, but
+>    RET also emits this same.
+> 
+>  - it fudges the validation of the __x86_return_thunk symbol; because
+>    this symbol is inside another instruction, it can't actually find
+>    the instruction pointed to by the symbol offset and gets upset.
+> 
+> Because these two things pertained to the same symbol, there was no
+> pressing need to separate these two separate things.
+> 
+> However, alas, along comes SRSO and more crazy things to deal with
+> appeared.
+> 
+> The SRSO patch itself added the following symbol names to identify as
+> rethunk:
+> 
+>   'srso_untrain_ret', 'srso_safe_ret' and '__ret'
+> 
+> Where '__ret' is the old retbleed return thunk, 'srso_safe_ret' is a
+> new similarly embedded return thunk, and 'srso_untrain_ret' is
+> completely unrelated to anything the above does (and was only included
+> because of that INT3 vs UD2 issue fixed previous).
+> 
+> Clear things up by adding a second category for the embedded instruction
+> thing.
+> 
+> Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Link: https://lore.kernel.org/r/20230814121148.704502245@infradead.org
 
-Commit-ID:     e221804dad4e6fe3a0cf192ba3c42cd2f328bdac
-Gitweb:        https://git.kernel.org/tip/e221804dad4e6fe3a0cf192ba3c42cd2f328bdac
-Author:        Alexey Kardashevskiy <aik@amd.com>
-AuthorDate:    Wed, 16 Aug 2023 12:21:22 +10:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 16 Aug 2023 10:13:42 +02:00
+Turns out I forgot to build with FRAME_POINTER=y, that still gives:
 
-x86/sev: Do not handle #VC for DR7 read/write
+vmlinux.o: warning: objtool: srso_untrain_ret+0xd: call without frame pointer save/setup
 
-With MSR_AMD64_SEV_DEBUG_SWAP enabled, the guest is not expected to
-receive a #VC for reads or writes of DR7.
+the below seems to cure this.
 
-Update the SNP_FEATURES_PRESENT mask with MSR_AMD64_SNP_DEBUG_SWAP so
-an SNP guest doesn't gracefully terminate during SNP feature negotiation
-if MSR_AMD64_SEV_DEBUG_SWAP is enabled.
-
-Since a guest is not expected to receive a #VC on DR7 accesses when
-MSR_AMD64_SEV_DEBUG_SWAP is enabled, return an error from the #VC
-handler in this situation.
-
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Carlos Bilbao <carlos.bilbao@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Link: https://lore.kernel.org/r/20230816022122.981998-1-aik@amd.com
 ---
- arch/x86/boot/compressed/sev.c | 2 +-
- arch/x86/kernel/sev.c          | 6 ++++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ tools/objtool/check.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index c3e343b..e83e710 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -365,7 +365,7 @@ static void enforce_vmpl0(void)
-  * by the guest kernel. As and when a new feature is implemented in the
-  * guest kernel, a corresponding bit should be added to the mask.
-  */
--#define SNP_FEATURES_PRESENT (0)
-+#define SNP_FEATURES_PRESENT	MSR_AMD64_SNP_DEBUG_SWAP
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 7a9aaf400873..1384090530db 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2650,12 +2650,17 @@ static int decode_sections(struct objtool_file *file)
+ 	return 0;
+ }
  
- void snp_check_features(void)
+-static bool is_fentry_call(struct instruction *insn)
++static bool is_special_call(struct instruction *insn)
  {
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 1ee7bed..d380c93 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -1575,6 +1575,9 @@ static enum es_result vc_handle_dr7_write(struct ghcb *ghcb,
- 	long val, *reg = vc_insn_get_rm(ctxt);
- 	enum es_result ret;
- 
-+	if (sev_status & MSR_AMD64_SNP_DEBUG_SWAP)
-+		return ES_VMM_ERROR;
+-	if (insn->type == INSN_CALL &&
+-	    insn_call_dest(insn) &&
+-	    insn_call_dest(insn)->fentry)
+-		return true;
++	if (insn->type == INSN_CALL) {
++		struct symbol *dest = insn_call_dest(insn);
 +
- 	if (!reg)
- 		return ES_DECODE_FAILED;
- 
-@@ -1612,6 +1615,9 @@ static enum es_result vc_handle_dr7_read(struct ghcb *ghcb,
- 	struct sev_es_runtime_data *data = this_cpu_read(runtime_data);
- 	long *reg = vc_insn_get_rm(ctxt);
- 
-+	if (sev_status & MSR_AMD64_SNP_DEBUG_SWAP)
-+		return ES_VMM_ERROR;
++		if (!dest)
++			return false;
 +
- 	if (!reg)
- 		return ES_DECODE_FAILED;
++		if (dest->fentry || dest->embedded_insn)
++			return true;
++	}
  
+ 	return false;
+ }
+@@ -3656,7 +3661,7 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 			if (ret)
+ 				return ret;
+ 
+-			if (opts.stackval && func && !is_fentry_call(insn) &&
++			if (opts.stackval && func && !is_special_call(insn) &&
+ 			    !has_valid_stack_frame(&state)) {
+ 				WARN_INSN(insn, "call without frame pointer save/setup");
+ 				return 1;
