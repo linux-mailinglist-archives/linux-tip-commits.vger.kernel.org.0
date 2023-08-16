@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6492677DB6D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Aug 2023 09:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 680BA77DB6A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Aug 2023 09:56:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242546AbjHPHza (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Aug 2023 03:55:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49068 "EHLO
+        id S242544AbjHPHz3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Aug 2023 03:55:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242614AbjHPHzV (ORCPT
+        with ESMTP id S242615AbjHPHzV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 16 Aug 2023 03:55:21 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D98FF26A9;
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA3AA26AA;
         Wed, 16 Aug 2023 00:55:17 -0700 (PDT)
-Date:   Wed, 16 Aug 2023 07:55:14 -0000
+Date:   Wed, 16 Aug 2023 07:55:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1692172515;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NgvPMkdo6adZocli65oddA0uD+22Gh9QHc+5yviNzU8=;
-        b=eg21/HzeCKNBYp4FLRNsvFT3blHgJnJJyVBgLJLu6ymw2W0iv988Ngds1ggcIEKDzVySmp
-        G7HituYoSpExwjpUQN+IpSmgad9bGuhFqm26YrblbLubg2MHt0rOAyXC6u5qcb1UEGioDx
-        DuwJroB1cNQQg64q1YAT+4JvlfmN5y9bkKMTf0SJKP2fl4lf4g5qj+uDVGpLNJ24R9Bi63
-        gGjOAHulUzGGwg3/8dnBJLrnpbsc6f2taf0FdSglg3Bu+Tdstrw184BOLeHTMHQyvL6XK3
-        kITbBPGcUllZyKX5nkjFJqGcqms2F9ZyniDQHx12ReAJ/eRYlrwx9r6AsuCsZw==
+        bh=igPmhn36L1KqEP/LYyBsGAO/y1ElMV3MkWVAxtjY1Ng=;
+        b=Xq7c1kqNKs7jGp1ekumQGVX9pfx7mbA34maWN2daHH0X07aE/s81NZGVfkHPY6fPWpg2xa
+        3kQBarj5R3egseTN3DZjGQq9KB9qm5q/eE43rYqhPUPoBFzfl3XHG4uO9qhmgspuSpnGO3
+        Z6WT/+8Al1rwEqfR+OAplOD9FPLccOuoowhtCLGDxET4OpHk9kJXDoalg7yDRsMBfK8aAO
+        Go6BlUO4qFWh1UGOI+tQRAQPojD798TaZbiW0IqEbqVtw8dJ3xqK/TJhXCweIy1mMsxlaX
+        tZg/5wEtKYKjTjsYbAsTwpmiLOpNTZT3ZUl69fDXXkptVL8Lyv8xZnfcS6CyTw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1692172515;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NgvPMkdo6adZocli65oddA0uD+22Gh9QHc+5yviNzU8=;
-        b=FgkULZ+Zrsrsy/9/W+hy5W64K+fwVjxZtxFlRvxT0pWgCzCP1jl02ZZTGoBdrbkH46Qth6
-        00IAVSonN5qQXWAQ==
+        bh=igPmhn36L1KqEP/LYyBsGAO/y1ElMV3MkWVAxtjY1Ng=;
+        b=110CHZgHvCgL4gvS34fbLEZhGo9ceOy68jvwx0OMVMbgVpkT7MoLwKs2+5YroULPrIR3NQ
+        ctAP2ydVgrF7RsCg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu/kvm: Provide UNTRAIN_RET_VM
+Subject: [tip: x86/urgent] x86/cpu: Cleanup the untrain mess
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230814121149.109557833@infradead.org>
-References: <20230814121149.109557833@infradead.org>
+In-Reply-To: <20230814121149.042774962@infradead.org>
+References: <20230814121149.042774962@infradead.org>
 MIME-Version: 1.0
-Message-ID: <169217251477.27769.1201631042444536455.tip-bot2@tip-bot2>
+Message-ID: <169217251522.27769.15630220729423710647.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,104 +67,117 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     ad63073765fa394665bcb54660cc997f05b704d4
-Gitweb:        https://git.kernel.org/tip/ad63073765fa394665bcb54660cc997f05b704d4
+Commit-ID:     4854a36d877a3aef0afdd241cccb68c1825234d0
+Gitweb:        https://git.kernel.org/tip/4854a36d877a3aef0afdd241cccb68c1825234d0
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 14 Aug 2023 13:44:35 +02:00
+AuthorDate:    Mon, 14 Aug 2023 13:44:34 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
 CommitterDate: Wed, 16 Aug 2023 09:39:16 +02:00
 
-x86/cpu/kvm: Provide UNTRAIN_RET_VM
+x86/cpu: Cleanup the untrain mess
 
-Similar to how it doesn't make sense to have UNTRAIN_RET have two
-untrain calls, it also doesn't make sense for VMEXIT to have an extra
-IBPB call.
+Since there can only be one active return_thunk, there only needs be
+one (matching) untrain_ret. It fundamentally doesn't make sense to
+allow multiple untrain_ret at the same time.
 
-This cures VMEXIT doing potentially unret+IBPB or double IBPB.
-Also, the (SEV) VMEXIT case seems to have been overlooked.
-
-Redefine the meaning of the synthetic IBPB flags to:
-
- - ENTRY_IBPB     -- issue IBPB on entry  (was: entry + VMEXIT)
- - IBPB_ON_VMEXIT -- issue IBPB on VMEXIT
-
-And have 'retbleed=ibpb' set *BOTH* feature flags to ensure it retains
-the previous behaviour and issues IBPB on entry+VMEXIT.
-
-The new 'srso=ibpb_vmexit' option only sets IBPB_ON_VMEXIT.
-
-Create UNTRAIN_RET_VM specifically for the VMEXIT case, and have that
-check IBPB_ON_VMEXIT.
-
-All this avoids having the VMEXIT case having to check both ENTRY_IBPB
-and IBPB_ON_VMEXIT and simplifies the alternatives.
+Fold all the 3 different untrain methods into a single (temporary)
+helper stub.
 
 Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121149.109557833@infradead.org
+Link: https://lore.kernel.org/r/20230814121149.042774962@infradead.org
 ---
- arch/x86/include/asm/nospec-branch.h | 11 +++++++++++
+ arch/x86/include/asm/nospec-branch.h | 19 +++++--------------
  arch/x86/kernel/cpu/bugs.c           |  1 +
- arch/x86/kvm/svm/vmenter.S           |  7 ++-----
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ arch/x86/lib/retpoline.S             |  7 +++++++
+ 3 files changed, 13 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 5285c8e..c55cc24 100644
+index f7c3375..5285c8e 100644
 --- a/arch/x86/include/asm/nospec-branch.h
 +++ b/arch/x86/include/asm/nospec-branch.h
-@@ -299,6 +299,17 @@
- #endif
+@@ -272,9 +272,9 @@
  .endm
  
-+.macro UNTRAIN_RET_VM
-+#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
-+	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
-+	VALIDATE_UNRET_END
-+	ALTERNATIVE_3 "",						\
+ #ifdef CONFIG_CPU_UNRET_ENTRY
+-#define CALL_ZEN_UNTRAIN_RET	"call retbleed_untrain_ret"
++#define CALL_UNTRAIN_RET	"call entry_untrain_ret"
+ #else
+-#define CALL_ZEN_UNTRAIN_RET	""
++#define CALL_UNTRAIN_RET	""
+ #endif
+ 
+ /*
+@@ -293,15 +293,10 @@
+ 	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
+ 	VALIDATE_UNRET_END
+ 	ALTERNATIVE_3 "",						\
+-		      CALL_ZEN_UNTRAIN_RET, X86_FEATURE_UNRET,		\
 +		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
-+		      "call entry_ibpb", X86_FEATURE_IBPB_ON_VMEXIT,	\
-+		      __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
-+#endif
-+.endm
-+
+ 		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB,	\
+ 		      __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
+ #endif
+-
+-#ifdef CONFIG_CPU_SRSO
+-	ALTERNATIVE_2 "", "call srso_untrain_ret", X86_FEATURE_SRSO, \
+-			  "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
+-#endif
+ .endm
+ 
  .macro UNTRAIN_RET_FROM_CALL
- #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
+@@ -309,15 +304,10 @@
  	defined(CONFIG_CALL_DEPTH_TRACKING)
+ 	VALIDATE_UNRET_END
+ 	ALTERNATIVE_3 "",						\
+-		      CALL_ZEN_UNTRAIN_RET, X86_FEATURE_UNRET,		\
++		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+ 		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB,	\
+ 		      __stringify(RESET_CALL_DEPTH_FROM_CALL), X86_FEATURE_CALL_DEPTH
+ #endif
+-
+-#ifdef CONFIG_CPU_SRSO
+-	ALTERNATIVE_2 "", "call srso_untrain_ret", X86_FEATURE_SRSO, \
+-			  "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
+-#endif
+ .endm
+ 
+ 
+@@ -355,6 +345,7 @@ extern void retbleed_untrain_ret(void);
+ extern void srso_untrain_ret(void);
+ extern void srso_alias_untrain_ret(void);
+ 
++extern void entry_untrain_ret(void);
+ extern void entry_ibpb(void);
+ 
+ extern void (*x86_return_thunk)(void);
 diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 6f3e195..9026e3f 100644
+index bbbbda9..6f3e195 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1054,6 +1054,7 @@ do_cmd_auto:
+@@ -2460,6 +2460,7 @@ static void __init srso_select_mitigation(void)
+ 			 * like ftrace, static_call, etc.
+ 			 */
+ 			setup_force_cpu_cap(X86_FEATURE_RETHUNK);
++			setup_force_cpu_cap(X86_FEATURE_UNRET);
  
- 	case RETBLEED_MITIGATION_IBPB:
- 		setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
-+		setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
- 		mitigate_smt = true;
- 		break;
+ 			if (boot_cpu_data.x86 == 0x19) {
+ 				setup_force_cpu_cap(X86_FEATURE_SRSO_ALIAS);
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index d37e5ab..5e85da1 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -289,6 +289,13 @@ SYM_CODE_START(srso_return_thunk)
+ 	ud2
+ SYM_CODE_END(srso_return_thunk)
  
-diff --git a/arch/x86/kvm/svm/vmenter.S b/arch/x86/kvm/svm/vmenter.S
-index 265452f..ef2ebab 100644
---- a/arch/x86/kvm/svm/vmenter.S
-+++ b/arch/x86/kvm/svm/vmenter.S
-@@ -222,10 +222,7 @@ SYM_FUNC_START(__svm_vcpu_run)
- 	 * because interrupt handlers won't sanitize 'ret' if the return is
- 	 * from the kernel.
- 	 */
--	UNTRAIN_RET
--
--	/* SRSO */
--	ALTERNATIVE "", "call entry_ibpb", X86_FEATURE_IBPB_ON_VMEXIT
-+	UNTRAIN_RET_VM
- 
- 	/*
- 	 * Clear all general purpose registers except RSP and RAX to prevent
-@@ -362,7 +359,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
- 	 * because interrupt handlers won't sanitize RET if the return is
- 	 * from the kernel.
- 	 */
--	UNTRAIN_RET
-+	UNTRAIN_RET_VM
- 
- 	/* "Pop" @spec_ctrl_intercepted.  */
- 	pop %_ASM_BX
++SYM_FUNC_START(entry_untrain_ret)
++	ALTERNATIVE_2 "jmp retbleed_untrain_ret", \
++		      "jmp srso_untrain_ret", X86_FEATURE_SRSO, \
++		      "jmp srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
++SYM_FUNC_END(entry_untrain_ret)
++__EXPORT_THUNK(entry_untrain_ret)
++
+ SYM_CODE_START(__x86_return_thunk)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
