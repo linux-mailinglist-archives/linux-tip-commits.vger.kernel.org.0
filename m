@@ -2,152 +2,121 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B06D77E0F9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Aug 2023 14:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7E077E924
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Aug 2023 20:59:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244772AbjHPL7m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Aug 2023 07:59:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42556 "EHLO
+        id S233815AbjHPS67 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Aug 2023 14:58:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244963AbjHPL7f (ORCPT
+        with ESMTP id S1345437AbjHPS6n (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 16 Aug 2023 07:59:35 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2AEF2121;
-        Wed, 16 Aug 2023 04:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=w4pNixXG/yujqwuAAE04Kdf6OftnyKzc8cljjGmu4i0=; b=JdVKR7WK8g11MZo+4lm3fupwxw
-        GoLvxoGZxjzWh+wP9bd0wrNAt8ewSXQl5qjB3tp0OvS+R3xJB9Jkf7+sKU16nrgNaVC9MckkWdC1I
-        PE1NPfdpesLNRMb+w0SupQ3T2PXmV4n09rMp41IfsqhGnqE92gMMpwaPan299rizYgBmYUVJBtwq1
-        eyoUIhYWVc5a3pxl86GdNmil5LhcaS2vi25ISLrhq6H4zvoRlFEA1rgDRCVxwvBMKEwx/P45ztu7f
-        ZseukUVqOzPx9L+X2TxW+ZeByx4fUNP9K4SdRRZkdbF23SPK2uctEoorUYKNj3yxWy2SLGKAdaCwq
-        JIu5mnFw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qWFBK-00CytP-1g;
-        Wed, 16 Aug 2023 11:59:22 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        Wed, 16 Aug 2023 14:58:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F8732700;
+        Wed, 16 Aug 2023 11:58:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 289123001FD;
-        Wed, 16 Aug 2023 13:59:22 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 057EE2C904588; Wed, 16 Aug 2023 13:59:22 +0200 (CEST)
-Date:   Wed, 16 Aug 2023 13:59:21 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org
-Subject: Re: [tip: x86/urgent] objtool/x86: Fix SRSO mess
-Message-ID: <20230816115921.GH980931@hirez.programming.kicks-ass.net>
-References: <20230814121148.704502245@infradead.org>
- <169217251760.27769.15304146275480287222.tip-bot2@tip-bot2>
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2493D616BE;
+        Wed, 16 Aug 2023 18:58:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C587C433C8;
+        Wed, 16 Aug 2023 18:58:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692212321;
+        bh=KOcJnVf+IGU2HZid9hXIz9udCgKgKpVwzp9BezrllYQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WAa03ArG6fJtgrH4Q/F1/UyLWFbddV2PsGcj7oOVMkfSq54qSd+qXeOHAIwYXltm1
+         3GoSZDpxZiJVjTqVDYNWS6q2tJoXN2+vcE5AVAasxUzUrb+xOia19YFJZT45UGAVy/
+         6DKChDW+AaoP6j7+H4sUZctU0CBlE9wWavlmswRPHFwsgkzWOboWh7fFnwRVSklcxB
+         a8Od9glXb2jorhdOqm09jU6jkCf32aWNCKvYycIAA1QYfja6hhWkOa8uwqdrBOHIQp
+         51TW16IbJaRLl7jm9L/+kvdixG4E07RD8RS9kcX0v4Udv78Qbot6bGg8Ck/fypNz9K
+         bCZo+UdqI9lEw==
+Date:   Wed, 16 Aug 2023 11:58:39 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Borislav Petkov <bp@alien8.de>
+Cc:     linux-tip-commits@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/cpu: Clean up SRSO return thunk mess
+Message-ID: <20230816185839.GA3843691@dev-arch.thelio-3990X>
+References: <20230814121148.842775684@infradead.org>
+ <169217251663.27769.14430226618442726061.tip-bot2@tip-bot2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <169217251760.27769.15304146275480287222.tip-bot2@tip-bot2>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <169217251663.27769.14430226618442726061.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Aug 16, 2023 at 07:55:17AM -0000, tip-bot2 for Peter Zijlstra wrote:
+On Wed, Aug 16, 2023 at 07:55:16AM -0000, tip-bot2 for Peter Zijlstra wrote:
 > The following commit has been merged into the x86/urgent branch of tip:
 > 
-> Commit-ID:     4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40
-> Gitweb:        https://git.kernel.org/tip/4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40
+> Commit-ID:     9010e01a8efffa0d14972b79fbe87bd329d79bfd
+> Gitweb:        https://git.kernel.org/tip/9010e01a8efffa0d14972b79fbe87bd329d79bfd
 > Author:        Peter Zijlstra <peterz@infradead.org>
-> AuthorDate:    Mon, 14 Aug 2023 13:44:29 +02:00
+> AuthorDate:    Mon, 14 Aug 2023 13:44:31 +02:00
 > Committer:     Borislav Petkov (AMD) <bp@alien8.de>
 > CommitterDate: Wed, 16 Aug 2023 09:39:16 +02:00
 > 
-> objtool/x86: Fix SRSO mess
-> 
-> Objtool --rethunk does two things:
-> 
->  - it collects all (tail) call's of __x86_return_thunk and places them
->    into .return_sites. These are typically compiler generated, but
->    RET also emits this same.
-> 
->  - it fudges the validation of the __x86_return_thunk symbol; because
->    this symbol is inside another instruction, it can't actually find
->    the instruction pointed to by the symbol offset and gets upset.
-> 
-> Because these two things pertained to the same symbol, there was no
-> pressing need to separate these two separate things.
-> 
-> However, alas, along comes SRSO and more crazy things to deal with
-> appeared.
-> 
-> The SRSO patch itself added the following symbol names to identify as
-> rethunk:
-> 
->   'srso_untrain_ret', 'srso_safe_ret' and '__ret'
-> 
-> Where '__ret' is the old retbleed return thunk, 'srso_safe_ret' is a
-> new similarly embedded return thunk, and 'srso_untrain_ret' is
-> completely unrelated to anything the above does (and was only included
-> because of that INT3 vs UD2 issue fixed previous).
-> 
-> Clear things up by adding a second category for the embedded instruction
-> thing.
-> 
-> Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Link: https://lore.kernel.org/r/20230814121148.704502245@infradead.org
+> x86/cpu: Clean up SRSO return thunk mess
 
-Turns out I forgot to build with FRAME_POINTER=y, that still gives:
+<snip>
 
-vmlinux.o: warning: objtool: srso_untrain_ret+0xd: call without frame pointer save/setup
+> diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+> index a478eb5..fb81895 100644
+> --- a/arch/x86/lib/retpoline.S
+> +++ b/arch/x86/lib/retpoline.S
+> @@ -151,22 +151,27 @@ SYM_CODE_END(__x86_indirect_jump_thunk_array)
+>  	.section .text..__x86.rethunk_untrain
+>  
+>  SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
+> +	UNWIND_HINT_FUNC
+>  	ANNOTATE_NOENDBR
+>  	ASM_NOP2
+>  	lfence
+> -	jmp __x86_return_thunk
+> +	jmp srso_alias_return_thunk
+>  SYM_FUNC_END(srso_untrain_ret_alias)
+>  __EXPORT_THUNK(srso_untrain_ret_alias)
+>  
+>  	.section .text..__x86.rethunk_safe
+> +#else
+> +/* dummy definition for alternatives */
+> +SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
+> +	ANNOTATE_UNRET_SAFE
+> +	ret
+> +	int3
+> +SYM_FUNC_END(srso_alias_untrain_ret)
 
-the below seems to cure this.
+Just a heads up, this series will have a small bisectability issue
+because of this hunk, it needs
 
----
- tools/objtool/check.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 7a9aaf400873..1384090530db 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2650,12 +2650,17 @@ static int decode_sections(struct objtool_file *file)
- 	return 0;
- }
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index fb818957955b..7df8582fb64e 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -166,7 +166,7 @@ SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
+ 	ANNOTATE_UNRET_SAFE
+ 	ret
+ 	int3
+-SYM_FUNC_END(srso_alias_untrain_ret)
++SYM_FUNC_END(srso_untrain_ret_alias)
+ #endif
  
--static bool is_fentry_call(struct instruction *insn)
-+static bool is_special_call(struct instruction *insn)
- {
--	if (insn->type == INSN_CALL &&
--	    insn_call_dest(insn) &&
--	    insn_call_dest(insn)->fentry)
--		return true;
-+	if (insn->type == INSN_CALL) {
-+		struct symbol *dest = insn_call_dest(insn);
-+
-+		if (!dest)
-+			return false;
-+
-+		if (dest->fentry || dest->embedded_insn)
-+			return true;
-+	}
- 
- 	return false;
- }
-@@ -3656,7 +3661,7 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			if (ret)
- 				return ret;
- 
--			if (opts.stackval && func && !is_fentry_call(insn) &&
-+			if (opts.stackval && func && !is_special_call(insn) &&
- 			    !has_valid_stack_frame(&state)) {
- 				WARN_INSN(insn, "call without frame pointer save/setup");
- 				return 1;
+ SYM_START(srso_safe_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
+
+but it obviously gets fixed by commit a3fd3ac0a605 ("x86/cpu: Rename
+srso_(.*)_alias to srso_alias_\1") so it is probably fine. I only
+noticed it because I cherry-picked the first five changes to my patched
+-next tree.
+
+Cheers,
+Nathan
