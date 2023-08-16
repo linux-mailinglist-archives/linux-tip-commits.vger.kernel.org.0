@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FB5377DB71
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Aug 2023 09:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9135577DB74
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Aug 2023 09:56:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242552AbjHPHzb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Aug 2023 03:55:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49090 "EHLO
+        id S242561AbjHPHzd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Aug 2023 03:55:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242617AbjHPHzV (ORCPT
+        with ESMTP id S242631AbjHPHzX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 16 Aug 2023 03:55:21 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DBE226B1;
-        Wed, 16 Aug 2023 00:55:18 -0700 (PDT)
-Date:   Wed, 16 Aug 2023 07:55:16 -0000
+        Wed, 16 Aug 2023 03:55:23 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65B826A1;
+        Wed, 16 Aug 2023 00:55:21 -0700 (PDT)
+Date:   Wed, 16 Aug 2023 07:55:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1692172516;
+        s=2020; t=1692172518;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fsza7fQflCgmLOcSu239/ilGIcA1R8KI1OkfU5qjr5o=;
-        b=RWtR2TUsI0JN1xErJVAAgsVKT7JQp8NN1KffMcuEbi6e1LeS/M8yNgTQDn09r+wfAH+VLq
-        gIdq91Mffgqo6bonGtzTq49YLce5ry/UB4ELtwVz8qCOzWOQHg9nxBcYC2lKpaMZPOP/rD
-        9DIa7+HgLK8+VQlqfD4cI8MBQHsPXjGV92fZKO1PXibiBmOHLeKZEdr3mHdVDR5TkSfHU0
-        cInkIM737yJ6NWpE74XSsLTsMQBD/tSXzOdz3IwrEQ3X/ER6/8pV7s+J56irKtugglgvGS
-        zafO0OyIWdrsNF+OI0UI9zbcl4ExcXEh8TOiiHNmgr+wUWAAeQCHOCLrPW33Nw==
+        bh=PPwInwUPbJs6xWHesfZ0ofrfjIhEKh5ZCEFbjCeaqW8=;
+        b=y9SVSA7vPQN6ocYVj5Cg7NeFegwbc6P+xT5zuL0RpAni8mmh0g46fyUZdNEP887zI/tbMe
+        9YfYvq+ftLZLAnQg1maUvLSGSJ8Hh811EgBqDCLPJ93ieNnUcoNn1+dSeKr+4/gxb0KqaS
+        Y1/Teyhpx4Q6J2OF8k/4IXqw8rDptOtLMDprMZnqIERmcLouwQf7eIhHIjeusFP2CBhY6r
+        H+8wTCaLHjxOT5g75pJZ2Ff0QJSrxN57YswnnYEAcRSfao0HBAiuhJVHyVTy9ZCYOOx7aJ
+        uTrm1HFZutfnkKMvoHICZyxhSrXh1Ns8avGzM4iwWRMpCt3euzVNPTd2nARGdw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1692172516;
+        s=2020e; t=1692172518;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fsza7fQflCgmLOcSu239/ilGIcA1R8KI1OkfU5qjr5o=;
-        b=6ZrY7eNJ+S72BiETeDkgQL0X3oGdJ++9qKCU+BsR0kDtbdJbjGwTd04xTolzYz88WtuCnk
-        8YsGXNgKhQdG7EDA==
+        bh=PPwInwUPbJs6xWHesfZ0ofrfjIhEKh5ZCEFbjCeaqW8=;
+        b=kP34LGbhfaW8DL9mQgFc4cxUtSxsRlgPJGEJ6+e0NdkpqMSKShrekzhAzp2LefRBuWQUr3
+        n1NLPa3PDD42BODg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Rename original retbleed methods
-Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/urgent] objtool/x86: Fix SRSO mess
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230814121148.909378169@infradead.org>
-References: <20230814121148.909378169@infradead.org>
+In-Reply-To: <20230814121148.704502245@infradead.org>
+References: <20230814121148.704502245@infradead.org>
 MIME-Version: 1.0
-Message-ID: <169217251614.27769.7335657133513787701.tip-bot2@tip-bot2>
+Message-ID: <169217251760.27769.15304146275480287222.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,197 +67,162 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     24ed3c4c42c326a3054f68008aa4e54fa000a400
-Gitweb:        https://git.kernel.org/tip/24ed3c4c42c326a3054f68008aa4e54fa000a400
+Commit-ID:     4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40
+Gitweb:        https://git.kernel.org/tip/4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 14 Aug 2023 13:44:32 +02:00
+AuthorDate:    Mon, 14 Aug 2023 13:44:29 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
 CommitterDate: Wed, 16 Aug 2023 09:39:16 +02:00
 
-x86/cpu: Rename original retbleed methods
+objtool/x86: Fix SRSO mess
 
-Rename the original retbleed return thunk and untrain_ret to
-retbleed_return_thunk() and retbleed_untrain_ret().
+Objtool --rethunk does two things:
 
-No functional changes.
+ - it collects all (tail) call's of __x86_return_thunk and places them
+   into .return_sites. These are typically compiler generated, but
+   RET also emits this same.
 
-Suggested-by: Josh Poimboeuf <jpoimboe@kernel.org>
+ - it fudges the validation of the __x86_return_thunk symbol; because
+   this symbol is inside another instruction, it can't actually find
+   the instruction pointed to by the symbol offset and gets upset.
+
+Because these two things pertained to the same symbol, there was no
+pressing need to separate these two separate things.
+
+However, alas, along comes SRSO and more crazy things to deal with
+appeared.
+
+The SRSO patch itself added the following symbol names to identify as
+rethunk:
+
+  'srso_untrain_ret', 'srso_safe_ret' and '__ret'
+
+Where '__ret' is the old retbleed return thunk, 'srso_safe_ret' is a
+new similarly embedded return thunk, and 'srso_untrain_ret' is
+completely unrelated to anything the above does (and was only included
+because of that INT3 vs UD2 issue fixed previous).
+
+Clear things up by adding a second category for the embedded instruction
+thing.
+
+Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.909378169@infradead.org
+Link: https://lore.kernel.org/r/20230814121148.704502245@infradead.org
 ---
- arch/x86/include/asm/nospec-branch.h |  8 +++----
- arch/x86/kernel/cpu/bugs.c           |  2 +-
- arch/x86/kernel/vmlinux.lds.S        |  2 +-
- arch/x86/lib/retpoline.S             | 30 +++++++++++++--------------
- tools/objtool/arch/x86/decode.c      |  2 +-
- tools/objtool/check.c                |  2 +-
- 6 files changed, 23 insertions(+), 23 deletions(-)
+ tools/objtool/arch/x86/decode.c      | 11 +++++++----
+ tools/objtool/check.c                | 24 ++++++++++++++++++++++--
+ tools/objtool/include/objtool/arch.h |  1 +
+ tools/objtool/include/objtool/elf.h  |  1 +
+ 4 files changed, 31 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 5ed78ad..8a0d4c5 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -272,7 +272,7 @@
- .endm
- 
- #ifdef CONFIG_CPU_UNRET_ENTRY
--#define CALL_ZEN_UNTRAIN_RET	"call zen_untrain_ret"
-+#define CALL_ZEN_UNTRAIN_RET	"call retbleed_untrain_ret"
- #else
- #define CALL_ZEN_UNTRAIN_RET	""
- #endif
-@@ -282,7 +282,7 @@
-  * return thunk isn't mapped into the userspace tables (then again, AMD
-  * typically has NO_MELTDOWN).
-  *
-- * While zen_untrain_ret() doesn't clobber anything but requires stack,
-+ * While retbleed_untrain_ret() doesn't clobber anything but requires stack,
-  * entry_ibpb() will clobber AX, CX, DX.
-  *
-  * As such, this must be placed after every *SWITCH_TO_KERNEL_CR3 at a point
-@@ -347,11 +347,11 @@ extern void __x86_return_thunk(void);
- static inline void __x86_return_thunk(void) {}
- #endif
- 
--extern void zen_return_thunk(void);
-+extern void retbleed_return_thunk(void);
- extern void srso_return_thunk(void);
- extern void srso_alias_return_thunk(void);
- 
--extern void zen_untrain_ret(void);
-+extern void retbleed_untrain_ret(void);
- extern void srso_untrain_ret(void);
- extern void srso_untrain_ret_alias(void);
- 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 56cf250..bbbbda9 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1043,7 +1043,7 @@ do_cmd_auto:
- 		setup_force_cpu_cap(X86_FEATURE_UNRET);
- 
- 		if (IS_ENABLED(CONFIG_RETHUNK))
--			x86_return_thunk = zen_return_thunk;
-+			x86_return_thunk = retbleed_return_thunk;
- 
- 		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
- 		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index d3b02d6..7c0e2b4 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -521,7 +521,7 @@ INIT_PER_CPU(irq_stack_backing_store);
- #endif
- 
- #ifdef CONFIG_RETHUNK
--. = ASSERT((zen_return_thunk & 0x3f) == 0, "zen_return_thunk not cacheline-aligned");
-+. = ASSERT((retbleed_return_thunk & 0x3f) == 0, "retbleed_return_thunk not cacheline-aligned");
- . = ASSERT((srso_safe_ret & 0x3f) == 0, "srso_safe_ret not cacheline-aligned");
- #endif
- 
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index fb81895..2cf7c51 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -188,32 +188,32 @@ SYM_CODE_END(srso_alias_return_thunk)
- 
- /*
-  * Safety details here pertain to the AMD Zen{1,2} microarchitecture:
-- * 1) The RET at zen_return_thunk must be on a 64 byte boundary, for
-+ * 1) The RET at retbleed_return_thunk must be on a 64 byte boundary, for
-  *    alignment within the BTB.
-- * 2) The instruction at zen_untrain_ret must contain, and not
-+ * 2) The instruction at retbleed_untrain_ret must contain, and not
-  *    end with, the 0xc3 byte of the RET.
-  * 3) STIBP must be enabled, or SMT disabled, to prevent the sibling thread
-  *    from re-poisioning the BTB prediction.
-  */
- 	.align 64
--	.skip 64 - (zen_return_thunk - zen_untrain_ret), 0xcc
--SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
-+	.skip 64 - (retbleed_return_thunk - retbleed_untrain_ret), 0xcc
-+SYM_START(retbleed_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	ANNOTATE_NOENDBR
- 	/*
--	 * As executed from zen_untrain_ret, this is:
-+	 * As executed from retbleed_untrain_ret, this is:
- 	 *
- 	 *   TEST $0xcc, %bl
- 	 *   LFENCE
--	 *   JMP zen_return_thunk
-+	 *   JMP retbleed_return_thunk
- 	 *
- 	 * Executing the TEST instruction has a side effect of evicting any BTB
- 	 * prediction (potentially attacker controlled) attached to the RET, as
--	 * zen_return_thunk + 1 isn't an instruction boundary at the moment.
-+	 * retbleed_return_thunk + 1 isn't an instruction boundary at the moment.
- 	 */
- 	.byte	0xf6
- 
- 	/*
--	 * As executed from zen_return_thunk, this is a plain RET.
-+	 * As executed from retbleed_return_thunk, this is a plain RET.
- 	 *
- 	 * As part of the TEST above, RET is the ModRM byte, and INT3 the imm8.
- 	 *
-@@ -225,13 +225,13 @@ SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	 * With SMT enabled and STIBP active, a sibling thread cannot poison
- 	 * RET's prediction to a type of its choice, but can evict the
- 	 * prediction due to competitive sharing. If the prediction is
--	 * evicted, zen_return_thunk will suffer Straight Line Speculation
-+	 * evicted, retbleed_return_thunk will suffer Straight Line Speculation
- 	 * which will be contained safely by the INT3.
- 	 */
--SYM_INNER_LABEL(zen_return_thunk, SYM_L_GLOBAL)
-+SYM_INNER_LABEL(retbleed_return_thunk, SYM_L_GLOBAL)
- 	ret
- 	int3
--SYM_CODE_END(zen_return_thunk)
-+SYM_CODE_END(retbleed_return_thunk)
- 
- 	/*
- 	 * Ensure the TEST decoding / BTB invalidation is complete.
-@@ -242,13 +242,13 @@ SYM_CODE_END(zen_return_thunk)
- 	 * Jump back and execute the RET in the middle of the TEST instruction.
- 	 * INT3 is for SLS protection.
- 	 */
--	jmp zen_return_thunk
-+	jmp retbleed_return_thunk
- 	int3
--SYM_FUNC_END(zen_untrain_ret)
--__EXPORT_THUNK(zen_untrain_ret)
-+SYM_FUNC_END(retbleed_untrain_ret)
-+__EXPORT_THUNK(retbleed_untrain_ret)
- 
- /*
-- * SRSO untraining sequence for Zen1/2, similar to zen_untrain_ret()
-+ * SRSO untraining sequence for Zen1/2, similar to retbleed_untrain_ret()
-  * above. On kernel entry, srso_untrain_ret() is executed which is a
-  *
-  * movabs $0xccccc30824648d48,%rax
 diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index c55f3bb..c0f25d0 100644
+index 2d51fa8..cba8a7b 100644
 --- a/tools/objtool/arch/x86/decode.c
 +++ b/tools/objtool/arch/x86/decode.c
-@@ -829,6 +829,6 @@ bool arch_is_rethunk(struct symbol *sym)
+@@ -824,8 +824,11 @@ bool arch_is_retpoline(struct symbol *sym)
  
- bool arch_is_embedded_insn(struct symbol *sym)
+ bool arch_is_rethunk(struct symbol *sym)
  {
--	return !strcmp(sym->name, "zen_return_thunk") ||
-+	return !strcmp(sym->name, "retbleed_return_thunk") ||
- 	       !strcmp(sym->name, "srso_safe_ret");
+-	return !strcmp(sym->name, "__x86_return_thunk") ||
+-	       !strcmp(sym->name, "srso_untrain_ret") ||
+-	       !strcmp(sym->name, "srso_safe_ret") ||
+-	       !strcmp(sym->name, "__ret");
++	return !strcmp(sym->name, "__x86_return_thunk");
++}
++
++bool arch_is_embedded_insn(struct symbol *sym)
++{
++	return !strcmp(sym->name, "__ret") ||
++	       !strcmp(sym->name, "srso_safe_ret");
  }
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 191656e..7a9aaf4 100644
+index e2ee10c..191656e 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -1593,7 +1593,7 @@ static int add_jump_destinations(struct objtool_file *file)
- 			struct symbol *sym = find_symbol_by_offset(dest_sec, dest_off);
+@@ -455,7 +455,7 @@ static int decode_instructions(struct objtool_file *file)
+ 				return -1;
+ 			}
  
- 			/*
--			 * This is a special case for zen_untrain_ret().
-+			 * This is a special case for retbleed_untrain_ret().
- 			 * It jumps to __x86_return_thunk(), but objtool
- 			 * can't find the thunk's starting RET
- 			 * instruction, because the RET is also in the
+-			if (func->return_thunk || func->alias != func)
++			if (func->embedded_insn || func->alias != func)
+ 				continue;
+ 
+ 			if (!find_insn(file, sec, func->offset)) {
+@@ -1288,16 +1288,33 @@ static int add_ignore_alternatives(struct objtool_file *file)
+ 	return 0;
+ }
+ 
++/*
++ * Symbols that replace INSN_CALL_DYNAMIC, every (tail) call to such a symbol
++ * will be added to the .retpoline_sites section.
++ */
+ __weak bool arch_is_retpoline(struct symbol *sym)
+ {
+ 	return false;
+ }
+ 
++/*
++ * Symbols that replace INSN_RETURN, every (tail) call to such a symbol
++ * will be added to the .return_sites section.
++ */
+ __weak bool arch_is_rethunk(struct symbol *sym)
+ {
+ 	return false;
+ }
+ 
++/*
++ * Symbols that are embedded inside other instructions, because sometimes crazy
++ * code exists. These are mostly ignored for validation purposes.
++ */
++__weak bool arch_is_embedded_insn(struct symbol *sym)
++{
++	return false;
++}
++
+ static struct reloc *insn_reloc(struct objtool_file *file, struct instruction *insn)
+ {
+ 	struct reloc *reloc;
+@@ -1583,7 +1600,7 @@ static int add_jump_destinations(struct objtool_file *file)
+ 			 * middle of another instruction.  Objtool only
+ 			 * knows about the outer instruction.
+ 			 */
+-			if (sym && sym->return_thunk) {
++			if (sym && sym->embedded_insn) {
+ 				add_return_call(file, insn, false);
+ 				continue;
+ 			}
+@@ -2502,6 +2519,9 @@ static int classify_symbols(struct objtool_file *file)
+ 		if (arch_is_rethunk(func))
+ 			func->return_thunk = true;
+ 
++		if (arch_is_embedded_insn(func))
++			func->embedded_insn = true;
++
+ 		if (arch_ftrace_match(func->name))
+ 			func->fentry = true;
+ 
+diff --git a/tools/objtool/include/objtool/arch.h b/tools/objtool/include/objtool/arch.h
+index 2b6d2ce..0b303eb 100644
+--- a/tools/objtool/include/objtool/arch.h
++++ b/tools/objtool/include/objtool/arch.h
+@@ -90,6 +90,7 @@ int arch_decode_hint_reg(u8 sp_reg, int *base);
+ 
+ bool arch_is_retpoline(struct symbol *sym);
+ bool arch_is_rethunk(struct symbol *sym);
++bool arch_is_embedded_insn(struct symbol *sym);
+ 
+ int arch_rewrite_retpolines(struct objtool_file *file);
+ 
+diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
+index c532d70..9f71e98 100644
+--- a/tools/objtool/include/objtool/elf.h
++++ b/tools/objtool/include/objtool/elf.h
+@@ -66,6 +66,7 @@ struct symbol {
+ 	u8 fentry            : 1;
+ 	u8 profiling_func    : 1;
+ 	u8 warned	     : 1;
++	u8 embedded_insn     : 1;
+ 	struct list_head pv_target;
+ 	struct reloc *relocs;
+ };
