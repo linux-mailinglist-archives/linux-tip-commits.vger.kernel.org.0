@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47F2F77DB73
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Aug 2023 09:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBD5277DB78
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Aug 2023 09:56:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242550AbjHPHzb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Aug 2023 03:55:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49048 "EHLO
+        id S242564AbjHPHzd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Aug 2023 03:55:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242613AbjHPHzU (ORCPT
+        with ESMTP id S242630AbjHPHzX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 16 Aug 2023 03:55:20 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D97F726A1;
-        Wed, 16 Aug 2023 00:55:17 -0700 (PDT)
-Date:   Wed, 16 Aug 2023 07:55:15 -0000
+        Wed, 16 Aug 2023 03:55:23 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61FB268A;
+        Wed, 16 Aug 2023 00:55:20 -0700 (PDT)
+Date:   Wed, 16 Aug 2023 07:55:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1692172516;
+        s=2020; t=1692172517;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=55Jh0MrkTz5DCcgQvAdncjOCmSQAWM9BmgxuV5GOht0=;
-        b=s7a41yTYUikK0j9vlMxhJ5PoJYt6/xAAgw3ZVqxj0cqStWt24Jn853agIe81lgQ6dKEbwa
-        2potQuMnqMOh8k4pnqnbCAA7qMIQ1Z8HSiKh3TzyaKG1jfqZFpsipSFAth/gWMFMDb/VE3
-        be2X1iYg2hxE1vmEylNKl/LtaOuEmter4wJBl+D9GCPpC1LOBiubfP2ScBWdFFa77qmNsF
-        59TU1euoIn3ftrXgueU98pt+GebZXpYy7juRNJQHRCgUHt+f44Z7IVTLqW7Ky2PRLodFja
-        em5Na8aFdKwwFc2/dqJKreB9dAbHQgtUQtnrfMlMHyYCqZEaG/iPItGawEwhKw==
+        bh=Fyc3d6aYAD6J0rDOZn12nFyNTUXI1zAgu73Sb0HlbDY=;
+        b=zn+irq9zaViNn0fu68Bhh41K9cgT7EqmDRX5sQjLZk80njS3tch56Hs6DaBY4/8QlLHxgS
+        jamWG/1pS6UfLbsPwnGXo7Caw/FUPmDEmmhaeWyG0fOmP90nL8x00xEKz1xaZffyChlCZT
+        HUyfXYPjLFiD33yGlvxEf64ImtOE06Gvz+h9kP+u0I+Zt5U751oHWs+cVI1VWkUi2SNMtf
+        aDth6QUs/nuHxqH3YvS3MDUQuwjniEKEEkuDZRThoGDAfJxwpnsVWUBIyuSvWsVhsWmtti
+        dXxmC5A6CsvNitEZZiVHGvzJOcT6IfRpkvWcH1pd6ID5eRGvUmwmb8XN2q5X9Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1692172516;
+        s=2020e; t=1692172517;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=55Jh0MrkTz5DCcgQvAdncjOCmSQAWM9BmgxuV5GOht0=;
-        b=kA5ehOf8XML/hj3VyLT31WLThIc+clFecTmGIHtblxySO2EsmhrZI0eTzpIHzV3vmvlrhK
-        TBoIpZTQkOwDTsBg==
+        bh=Fyc3d6aYAD6J0rDOZn12nFyNTUXI1zAgu73Sb0HlbDY=;
+        b=yAxX3pa6yMrzpkKEY4Y1OCNEJVn+iqx6jwsAlL6bXd4uaJpt7TfpNWnlxLuv3iV+FcF1oE
+        Y8K8TjGo9qe1yqDw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Rename srso_(.*)_alias to srso_alias_\1
+Subject: [tip: x86/urgent] x86/cpu: Clean up SRSO return thunk mess
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230814121148.976236447@infradead.org>
-References: <20230814121148.976236447@infradead.org>
+In-Reply-To: <20230814121148.842775684@infradead.org>
+References: <20230814121148.842775684@infradead.org>
 MIME-Version: 1.0
-Message-ID: <169217251568.27769.3504995608480815585.tip-bot2@tip-bot2>
+Message-ID: <169217251663.27769.14430226618442726061.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,173 +67,328 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     a3fd3ac0a605e27484b1e8aaa9560972800e6706
-Gitweb:        https://git.kernel.org/tip/a3fd3ac0a605e27484b1e8aaa9560972800e6706
+Commit-ID:     9010e01a8efffa0d14972b79fbe87bd329d79bfd
+Gitweb:        https://git.kernel.org/tip/9010e01a8efffa0d14972b79fbe87bd329d79bfd
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 14 Aug 2023 13:44:33 +02:00
+AuthorDate:    Mon, 14 Aug 2023 13:44:31 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
 CommitterDate: Wed, 16 Aug 2023 09:39:16 +02:00
 
-x86/cpu: Rename srso_(.*)_alias to srso_alias_\1
+x86/cpu: Clean up SRSO return thunk mess
 
-For a more consistent namespace.
+Use the existing configurable return thunk. There is absolute no
+justification for having created this __x86_return_thunk alternative.
 
-  [ bp: Fixup names in the doc too. ]
+To clarify, the whole thing looks like:
 
+Zen3/4 does:
+
+  srso_alias_untrain_ret:
+	  nop2
+	  lfence
+	  jmp srso_alias_return_thunk
+	  int3
+
+  srso_alias_safe_ret: // aliasses srso_alias_untrain_ret just so
+	  add $8, %rsp
+	  ret
+	  int3
+
+  srso_alias_return_thunk:
+	  call srso_alias_safe_ret
+	  ud2
+
+While Zen1/2 does:
+
+  srso_untrain_ret:
+	  movabs $foo, %rax
+	  lfence
+	  call srso_safe_ret           (jmp srso_return_thunk ?)
+	  int3
+
+  srso_safe_ret: // embedded in movabs instruction
+	  add $8,%rsp
+          ret
+          int3
+
+  srso_return_thunk:
+	  call srso_safe_ret
+	  ud2
+
+While retbleed does:
+
+  zen_untrain_ret:
+	  test $0xcc, %bl
+	  lfence
+	  jmp zen_return_thunk
+          int3
+
+  zen_return_thunk: // embedded in the test instruction
+	  ret
+          int3
+
+Where Zen1/2 flush the BTB entry using the instruction decoder trick
+(test,movabs) Zen3/4 use BTB aliasing. SRSO adds a return sequence
+(srso_safe_ret()) which forces the function return instruction to
+speculate into a trap (UD2).  This RET will then mispredict and
+execution will continue at the return site read from the top of the
+stack.
+
+Pick one of three options at boot (evey function can only ever return
+once).
+
+  [ bp: Fixup commit message uarch details and add them in a comment in
+    the code too. Add a comment about the srso_select_mitigation()
+    dependency on retbleed_select_mitigation(). Add moar ifdeffery for
+    32-bit builds. Add a dummy srso_untrain_ret_alias() definition for
+    32-bit alternatives needing the symbol. ]
+
+Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.976236447@infradead.org
+Link: https://lore.kernel.org/r/20230814121148.842775684@infradead.org
 ---
- Documentation/admin-guide/hw-vuln/srso.rst |  4 ++--
- arch/x86/include/asm/nospec-branch.h       |  6 ++---
- arch/x86/kernel/vmlinux.lds.S              |  8 +++----
- arch/x86/lib/retpoline.S                   | 24 ++++++++++-----------
- 4 files changed, 21 insertions(+), 21 deletions(-)
+ arch/x86/include/asm/nospec-branch.h |  5 ++-
+ arch/x86/kernel/cpu/bugs.c           | 15 ++++++-
+ arch/x86/kernel/vmlinux.lds.S        |  2 +-
+ arch/x86/lib/retpoline.S             | 58 +++++++++++++++++++--------
+ tools/objtool/arch/x86/decode.c      |  2 +-
+ 5 files changed, 62 insertions(+), 20 deletions(-)
 
-diff --git a/Documentation/admin-guide/hw-vuln/srso.rst b/Documentation/admin-guide/hw-vuln/srso.rst
-index af59a93..b6cfb51 100644
---- a/Documentation/admin-guide/hw-vuln/srso.rst
-+++ b/Documentation/admin-guide/hw-vuln/srso.rst
-@@ -141,8 +141,8 @@ sequence.
- To ensure the safety of this mitigation, the kernel must ensure that the
- safe return sequence is itself free from attacker interference.  In Zen3
- and Zen4, this is accomplished by creating a BTB alias between the
--untraining function srso_untrain_ret_alias() and the safe return
--function srso_safe_ret_alias() which results in evicting a potentially
-+untraining function srso_alias_untrain_ret() and the safe return
-+function srso_alias_safe_ret() which results in evicting a potentially
- poisoned BTB entry and using that safe one for all function returns.
- 
- In older Zen1 and Zen2, this is accomplished using a reinterpretation
 diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 8a0d4c5..f7c3375 100644
+index b3625cc..5ed78ad 100644
 --- a/arch/x86/include/asm/nospec-branch.h
 +++ b/arch/x86/include/asm/nospec-branch.h
-@@ -300,7 +300,7 @@
- 
- #ifdef CONFIG_CPU_SRSO
- 	ALTERNATIVE_2 "", "call srso_untrain_ret", X86_FEATURE_SRSO, \
--			  "call srso_untrain_ret_alias", X86_FEATURE_SRSO_ALIAS
-+			  "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
+@@ -347,9 +347,14 @@ extern void __x86_return_thunk(void);
+ static inline void __x86_return_thunk(void) {}
  #endif
- .endm
  
-@@ -316,7 +316,7 @@
- 
- #ifdef CONFIG_CPU_SRSO
- 	ALTERNATIVE_2 "", "call srso_untrain_ret", X86_FEATURE_SRSO, \
--			  "call srso_untrain_ret_alias", X86_FEATURE_SRSO_ALIAS
-+			  "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
- #endif
- .endm
- 
-@@ -353,7 +353,7 @@ extern void srso_alias_return_thunk(void);
- 
- extern void retbleed_untrain_ret(void);
++extern void zen_return_thunk(void);
++extern void srso_return_thunk(void);
++extern void srso_alias_return_thunk(void);
++
+ extern void zen_untrain_ret(void);
  extern void srso_untrain_ret(void);
--extern void srso_untrain_ret_alias(void);
-+extern void srso_alias_untrain_ret(void);
- 
+ extern void srso_untrain_ret_alias(void);
++
  extern void entry_ibpb(void);
  
+ extern void (*x86_return_thunk)(void);
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 3bc0d14..56cf250 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -167,6 +167,11 @@ void __init cpu_select_mitigations(void)
+ 	md_clear_select_mitigation();
+ 	srbds_select_mitigation();
+ 	l1d_flush_select_mitigation();
++
++	/*
++	 * srso_select_mitigation() depends and must run after
++	 * retbleed_select_mitigation().
++	 */
+ 	srso_select_mitigation();
+ 	gds_select_mitigation();
+ }
+@@ -1037,6 +1042,9 @@ do_cmd_auto:
+ 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
+ 		setup_force_cpu_cap(X86_FEATURE_UNRET);
+ 
++		if (IS_ENABLED(CONFIG_RETHUNK))
++			x86_return_thunk = zen_return_thunk;
++
+ 		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
+ 		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
+ 			pr_err(RETBLEED_UNTRAIN_MSG);
+@@ -2453,10 +2461,13 @@ static void __init srso_select_mitigation(void)
+ 			 */
+ 			setup_force_cpu_cap(X86_FEATURE_RETHUNK);
+ 
+-			if (boot_cpu_data.x86 == 0x19)
++			if (boot_cpu_data.x86 == 0x19) {
+ 				setup_force_cpu_cap(X86_FEATURE_SRSO_ALIAS);
+-			else
++				x86_return_thunk = srso_alias_return_thunk;
++			} else {
+ 				setup_force_cpu_cap(X86_FEATURE_SRSO);
++				x86_return_thunk = srso_return_thunk;
++			}
+ 			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
+ 		} else {
+ 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
 diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index 7c0e2b4..83d41c2 100644
+index 8e2a306..d3b02d6 100644
 --- a/arch/x86/kernel/vmlinux.lds.S
 +++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -147,10 +147,10 @@ SECTIONS
- 
- #ifdef CONFIG_CPU_SRSO
- 		/*
--		 * See the comment above srso_untrain_ret_alias()'s
-+		 * See the comment above srso_alias_untrain_ret()'s
- 		 * definition.
- 		 */
--		. = srso_untrain_ret_alias | (1 << 2) | (1 << 8) | (1 << 14) | (1 << 20);
-+		. = srso_alias_untrain_ret | (1 << 2) | (1 << 8) | (1 << 14) | (1 << 20);
- 		*(.text..__x86.rethunk_safe)
+@@ -521,7 +521,7 @@ INIT_PER_CPU(irq_stack_backing_store);
  #endif
- 		ALIGN_ENTRY_TEXT_END
-@@ -536,8 +536,8 @@ INIT_PER_CPU(irq_stack_backing_store);
-  * Instead do: (A | B) - (A & B) in order to compute the XOR
-  * of the two function addresses:
-  */
--. = ASSERT(((ABSOLUTE(srso_untrain_ret_alias) | srso_safe_ret_alias) -
--		(ABSOLUTE(srso_untrain_ret_alias) & srso_safe_ret_alias)) == ((1 << 2) | (1 << 8) | (1 << 14) | (1 << 20)),
-+. = ASSERT(((ABSOLUTE(srso_alias_untrain_ret) | srso_alias_safe_ret) -
-+		(ABSOLUTE(srso_alias_untrain_ret) & srso_alias_safe_ret)) == ((1 << 2) | (1 << 8) | (1 << 14) | (1 << 20)),
- 		"SRSO function pair won't alias");
+ 
+ #ifdef CONFIG_RETHUNK
+-. = ASSERT((__ret & 0x3f) == 0, "__ret not cacheline-aligned");
++. = ASSERT((zen_return_thunk & 0x3f) == 0, "zen_return_thunk not cacheline-aligned");
+ . = ASSERT((srso_safe_ret & 0x3f) == 0, "srso_safe_ret not cacheline-aligned");
  #endif
  
 diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index 2cf7c51..d37e5ab 100644
+index a478eb5..fb81895 100644
 --- a/arch/x86/lib/retpoline.S
 +++ b/arch/x86/lib/retpoline.S
-@@ -133,56 +133,56 @@ SYM_CODE_END(__x86_indirect_jump_thunk_array)
- #ifdef CONFIG_RETHUNK
- 
- /*
-- * srso_untrain_ret_alias() and srso_safe_ret_alias() are placed at
-+ * srso_alias_untrain_ret() and srso_alias_safe_ret() are placed at
-  * special addresses:
-  *
-- * - srso_untrain_ret_alias() is 2M aligned
-- * - srso_safe_ret_alias() is also in the same 2M page but bits 2, 8, 14
-+ * - srso_alias_untrain_ret() is 2M aligned
-+ * - srso_alias_safe_ret() is also in the same 2M page but bits 2, 8, 14
-  * and 20 in its virtual address are set (while those bits in the
-- * srso_untrain_ret_alias() function are cleared).
-+ * srso_alias_untrain_ret() function are cleared).
-  *
-  * This guarantees that those two addresses will alias in the branch
-  * target buffer of Zen3/4 generations, leading to any potential
-  * poisoned entries at that BTB slot to get evicted.
-  *
-- * As a result, srso_safe_ret_alias() becomes a safe return.
-+ * As a result, srso_alias_safe_ret() becomes a safe return.
-  */
- #ifdef CONFIG_CPU_SRSO
+@@ -151,22 +151,27 @@ SYM_CODE_END(__x86_indirect_jump_thunk_array)
  	.section .text..__x86.rethunk_untrain
  
--SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
-+SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	UNWIND_HINT_FUNC
+ SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
++	UNWIND_HINT_FUNC
  	ANNOTATE_NOENDBR
  	ASM_NOP2
  	lfence
- 	jmp srso_alias_return_thunk
--SYM_FUNC_END(srso_untrain_ret_alias)
--__EXPORT_THUNK(srso_untrain_ret_alias)
-+SYM_FUNC_END(srso_alias_untrain_ret)
-+__EXPORT_THUNK(srso_alias_untrain_ret)
+-	jmp __x86_return_thunk
++	jmp srso_alias_return_thunk
+ SYM_FUNC_END(srso_untrain_ret_alias)
+ __EXPORT_THUNK(srso_untrain_ret_alias)
  
  	.section .text..__x86.rethunk_safe
- #else
- /* dummy definition for alternatives */
--SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
-+SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	ANNOTATE_UNRET_SAFE
- 	ret
- 	int3
- SYM_FUNC_END(srso_alias_untrain_ret)
++#else
++/* dummy definition for alternatives */
++SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
++	ANNOTATE_UNRET_SAFE
++	ret
++	int3
++SYM_FUNC_END(srso_alias_untrain_ret)
  #endif
  
--SYM_START(srso_safe_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
-+SYM_START(srso_alias_safe_ret, SYM_L_GLOBAL, SYM_A_NONE)
+-/* Needs a definition for the __x86_return_thunk alternative below. */
+ SYM_START(srso_safe_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
+-#ifdef CONFIG_CPU_SRSO
  	lea 8(%_ASM_SP), %_ASM_SP
  	UNWIND_HINT_FUNC
+-#endif
  	ANNOTATE_UNRET_SAFE
  	ret
  	int3
--SYM_FUNC_END(srso_safe_ret_alias)
-+SYM_FUNC_END(srso_alias_safe_ret)
+@@ -174,9 +179,16 @@ SYM_FUNC_END(srso_safe_ret_alias)
  
  	.section .text..__x86.return_thunk
  
- SYM_CODE_START(srso_alias_return_thunk)
++SYM_CODE_START(srso_alias_return_thunk)
++	UNWIND_HINT_FUNC
++	ANNOTATE_NOENDBR
++	call srso_safe_ret_alias
++	ud2
++SYM_CODE_END(srso_alias_return_thunk)
++
+ /*
+  * Safety details here pertain to the AMD Zen{1,2} microarchitecture:
+- * 1) The RET at __x86_return_thunk must be on a 64 byte boundary, for
++ * 1) The RET at zen_return_thunk must be on a 64 byte boundary, for
+  *    alignment within the BTB.
+  * 2) The instruction at zen_untrain_ret must contain, and not
+  *    end with, the 0xc3 byte of the RET.
+@@ -184,7 +196,7 @@ SYM_FUNC_END(srso_safe_ret_alias)
+  *    from re-poisioning the BTB prediction.
+  */
+ 	.align 64
+-	.skip 64 - (__ret - zen_untrain_ret), 0xcc
++	.skip 64 - (zen_return_thunk - zen_untrain_ret), 0xcc
+ SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	ANNOTATE_NOENDBR
+ 	/*
+@@ -192,16 +204,16 @@ SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	 *
+ 	 *   TEST $0xcc, %bl
+ 	 *   LFENCE
+-	 *   JMP __x86_return_thunk
++	 *   JMP zen_return_thunk
+ 	 *
+ 	 * Executing the TEST instruction has a side effect of evicting any BTB
+ 	 * prediction (potentially attacker controlled) attached to the RET, as
+-	 * __x86_return_thunk + 1 isn't an instruction boundary at the moment.
++	 * zen_return_thunk + 1 isn't an instruction boundary at the moment.
+ 	 */
+ 	.byte	0xf6
+ 
+ 	/*
+-	 * As executed from __x86_return_thunk, this is a plain RET.
++	 * As executed from zen_return_thunk, this is a plain RET.
+ 	 *
+ 	 * As part of the TEST above, RET is the ModRM byte, and INT3 the imm8.
+ 	 *
+@@ -213,13 +225,13 @@ SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	 * With SMT enabled and STIBP active, a sibling thread cannot poison
+ 	 * RET's prediction to a type of its choice, but can evict the
+ 	 * prediction due to competitive sharing. If the prediction is
+-	 * evicted, __x86_return_thunk will suffer Straight Line Speculation
++	 * evicted, zen_return_thunk will suffer Straight Line Speculation
+ 	 * which will be contained safely by the INT3.
+ 	 */
+-SYM_INNER_LABEL(__ret, SYM_L_GLOBAL)
++SYM_INNER_LABEL(zen_return_thunk, SYM_L_GLOBAL)
+ 	ret
+ 	int3
+-SYM_CODE_END(__ret)
++SYM_CODE_END(zen_return_thunk)
+ 
+ 	/*
+ 	 * Ensure the TEST decoding / BTB invalidation is complete.
+@@ -230,7 +242,7 @@ SYM_CODE_END(__ret)
+ 	 * Jump back and execute the RET in the middle of the TEST instruction.
+ 	 * INT3 is for SLS protection.
+ 	 */
+-	jmp __ret
++	jmp zen_return_thunk
+ 	int3
+ SYM_FUNC_END(zen_untrain_ret)
+ __EXPORT_THUNK(zen_untrain_ret)
+@@ -251,11 +263,18 @@ SYM_START(srso_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	ANNOTATE_NOENDBR
+ 	.byte 0x48, 0xb8
+ 
++/*
++ * This forces the function return instruction to speculate into a trap
++ * (UD2 in srso_return_thunk() below).  This RET will then mispredict
++ * and execution will continue at the return site read from the top of
++ * the stack.
++ */
+ SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLOBAL)
+ 	lea 8(%_ASM_SP), %_ASM_SP
+ 	ret
+ 	int3
+ 	int3
++	/* end of movabs */
+ 	lfence
+ 	call srso_safe_ret
+ 	ud2
+@@ -263,12 +282,19 @@ SYM_CODE_END(srso_safe_ret)
+ SYM_FUNC_END(srso_untrain_ret)
+ __EXPORT_THUNK(srso_untrain_ret)
+ 
+-SYM_CODE_START(__x86_return_thunk)
++SYM_CODE_START(srso_return_thunk)
  	UNWIND_HINT_FUNC
  	ANNOTATE_NOENDBR
--	call srso_safe_ret_alias
-+	call srso_alias_safe_ret
+-	ALTERNATIVE_2 "jmp __ret", "call srso_safe_ret", X86_FEATURE_SRSO, \
+-			"call srso_safe_ret_alias", X86_FEATURE_SRSO_ALIAS
++	call srso_safe_ret
  	ud2
- SYM_CODE_END(srso_alias_return_thunk)
++SYM_CODE_END(srso_return_thunk)
++
++SYM_CODE_START(__x86_return_thunk)
++	UNWIND_HINT_FUNC
++	ANNOTATE_NOENDBR
++	ANNOTATE_UNRET_SAFE
++	ret
++	int3
+ SYM_CODE_END(__x86_return_thunk)
+ EXPORT_SYMBOL(__x86_return_thunk)
  
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index cba8a7b..c55f3bb 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -829,6 +829,6 @@ bool arch_is_rethunk(struct symbol *sym)
+ 
+ bool arch_is_embedded_insn(struct symbol *sym)
+ {
+-	return !strcmp(sym->name, "__ret") ||
++	return !strcmp(sym->name, "zen_return_thunk") ||
+ 	       !strcmp(sym->name, "srso_safe_ret");
+ }
