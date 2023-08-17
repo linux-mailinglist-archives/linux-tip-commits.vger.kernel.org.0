@@ -2,120 +2,159 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D97A77F59C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Aug 2023 13:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A95177FA7E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Aug 2023 17:15:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241535AbjHQLr4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 17 Aug 2023 07:47:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46268 "EHLO
+        id S236923AbjHQPPW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 17 Aug 2023 11:15:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350546AbjHQLrw (ORCPT
+        with ESMTP id S1353077AbjHQPPI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 17 Aug 2023 07:47:52 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA91B359F;
-        Thu, 17 Aug 2023 04:47:33 -0700 (PDT)
-Date:   Thu, 17 Aug 2023 11:47:26 -0000
+        Thu, 17 Aug 2023 11:15:08 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD915106;
+        Thu, 17 Aug 2023 08:15:06 -0700 (PDT)
+Date:   Thu, 17 Aug 2023 15:10:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1692272847;
+        s=2020; t=1692285005;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1ZNm0+YhzoKEbhcNneMVVsLgitVZJn187VVdpZJuX9w=;
-        b=qwvv9gaK5dnrkKopP1S0zQdb/JiKgBLs5CXVxXB84vS9pEZcRHvkYHUgpdKbPykzw12YHT
-        7PsFGPkjK7aQehNHY02XCVK6rj6ZcX6DonBJ7uWg3It3A6SIAIxMhGBAGdaOgFyUxdVLuF
-        VvEr3NRqcMjgvdWsf6w2lGvzMobwVA7YJ6e4G0o9ymKM1sRSKr8FM28GBv2MgYo+n0RupJ
-        7/74fznYWsJrMcqGBozaqYRZttKK4ZcOGATZYw2xzT/W69R3hQbXOYy9PP1v+KGskM9+pC
-        GtVpjtWZznzvkVuNTWRPdIdVff2QS9vTrIBYSTVzbPFoBrAy6J6lpOI92lLwsw==
+        bh=Bl4tuELdnwhWhw9COM1jykQ/2VZSxuG3aWQeB4RDFjQ=;
+        b=oZHrC27+2xYK6dfNhzv1puq3+JqY1jAlmGNXfrPSr6mUSFHIQWUxwrtz/Y/HIsMi8O2uGv
+        UAYa1fSkWWV6wrjuN5iX4LnN7PItZYz3fcY4+oPyzp1l9z3AH6Rzq/4KP//woxrEmbqdvh
+        ygfzK/vuOr/0qM/EWhEf9mKlsiZn4h3stzVW2FGCTDJDu181CrbZzsRwfg9FwCQaq9SqZq
+        0/XFwdNdzTpx8EuwtLQ+qKlejAsZPqaa5VHi90AwnNn/reJ6parM7W8+S27jWgpcVosCqC
+        DIHGS5Rg/ZQ9C5icRbDb+OcAgkUIbXSLLCxDvfnJs5zmM6EDqOMraG/qozYgYg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1692272847;
+        s=2020e; t=1692285005;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1ZNm0+YhzoKEbhcNneMVVsLgitVZJn187VVdpZJuX9w=;
-        b=ELOfG4J9ZwyKNxSuoEvAOkfVpK6XpBF0OZh4Z37CTKtshPFHUHoMzswCkj/U28nj+nZeHs
-        UUzksgFZmRBCQ3BQ==
+        bh=Bl4tuELdnwhWhw9COM1jykQ/2VZSxuG3aWQeB4RDFjQ=;
+        b=6GibWP7Aiz1K9pvRlKMOOpjiR+/KCghKAz/U/jFmTLdIjtAsr1WFYAtf2A26Grisl4drgI
+        pCt+dqeoLaUPprDA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/static_call: Fix __static_call_fixup()
-Cc:     Christian Bricart <christian@bricart.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/eevdf: Curb wakeup-preemption
+Cc:     Mike Galbraith <umgwanakikbuti@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230816104419.GA982867@hirez.programming.kicks-ass.net>
-References: <20230816104419.GA982867@hirez.programming.kicks-ass.net>
+In-Reply-To: <20230816134059.GC982867@hirez.programming.kicks-ass.net>
+References: <20230816134059.GC982867@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <169227284649.27769.26954089938187197.tip-bot2@tip-bot2>
+Message-ID: <169228500414.27769.13366308319134164264.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     54097309620ef0dc2d7083783dc521c6a5fef957
-Gitweb:        https://git.kernel.org/tip/54097309620ef0dc2d7083783dc521c6a5fef957
+Commit-ID:     63304558ba5dcaaff9e052ee43cfdcc7f9c29e85
+Gitweb:        https://git.kernel.org/tip/63304558ba5dcaaff9e052ee43cfdcc7f9c29e85
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 16 Aug 2023 12:44:19 +02:00
+AuthorDate:    Wed, 16 Aug 2023 15:40:59 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 17 Aug 2023 13:24:09 +02:00
+CommitterDate: Thu, 17 Aug 2023 17:07:07 +02:00
 
-x86/static_call: Fix __static_call_fixup()
+sched/eevdf: Curb wakeup-preemption
 
-Christian reported spurious module load crashes after some of Song's
-module memory layout patches.
+Mike and others noticed that EEVDF does like to over-schedule quite a
+bit -- which does hurt performance of a number of benchmarks /
+workloads.
 
-Turns out that if the very last instruction on the very last page of the
-module is a 'JMP __x86_return_thunk' then __static_call_fixup() will
-trip a fault and die.
+In particular, what seems to cause over-scheduling is that when lag is
+of the same order (or larger) than the request / slice then placement
+will not only cause the task to be placed left of current, but also
+with a smaller deadline than current, which causes immediate
+preemption.
 
-And while the module rework made this slightly more likely to happen,
-it's always been possible.
+[ notably, lag bounds are relative to HZ ]
 
-Fixes: ee88d363d156 ("x86,static_call: Use alternative RET encoding")
-Reported-by: Christian Bricart <christian@bricart.de>
+Mike suggested we stick to picking 'current' for as long as it's
+eligible to run, giving it uninterrupted runtime until it reaches
+parity with the pack.
+
+Augment Mike's suggestion by only allowing it to exhaust it's initial
+request.
+
+One random data point:
+
+echo NO_RUN_TO_PARITY > /debug/sched/features
+perf stat -a -e context-switches --repeat 10 -- perf bench sched messaging -g 20 -t -l 5000
+
+	3,723,554        context-switches      ( +-  0.56% )
+	9.5136 +- 0.0394 seconds time elapsed  ( +-  0.41% )
+
+echo RUN_TO_PARITY > /debug/sched/features
+perf stat -a -e context-switches --repeat 10 -- perf bench sched messaging -g 20 -t -l 5000
+
+	2,556,535        context-switches      ( +-  0.51% )
+	9.2427 +- 0.0302 seconds time elapsed  ( +-  0.33% )
+
+Suggested-by: Mike Galbraith <umgwanakikbuti@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lkml.kernel.org/r/20230816104419.GA982867@hirez.programming.kicks-ass.net
+Link: https://lkml.kernel.org/r/20230816134059.GC982867@hirez.programming.kicks-ass.net
 ---
- arch/x86/kernel/static_call.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ kernel/sched/fair.c     | 12 ++++++++++++
+ kernel/sched/features.h |  1 +
+ 2 files changed, 13 insertions(+)
 
-diff --git a/arch/x86/kernel/static_call.c b/arch/x86/kernel/static_call.c
-index b70670a..77a9316 100644
---- a/arch/x86/kernel/static_call.c
-+++ b/arch/x86/kernel/static_call.c
-@@ -186,6 +186,19 @@ EXPORT_SYMBOL_GPL(arch_static_call_transform);
-  */
- bool __static_call_fixup(void *tramp, u8 op, void *dest)
- {
-+	unsigned long addr = (unsigned long)tramp;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index f496cef..0b7445c 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -873,6 +873,13 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
+ 	if (curr && (!curr->on_rq || !entity_eligible(cfs_rq, curr)))
+ 		curr = NULL;
+ 
 +	/*
-+	 * Not all .return_sites are a static_call trampoline (most are not).
-+	 * Check if the 3 bytes after the return are still kernel text, if not,
-+	 * then this definitely is not a trampoline and we need not worry
-+	 * further.
-+	 *
-+	 * This avoids the memcmp() below tripping over pagefaults etc..
++	 * Once selected, run a task until it either becomes non-eligible or
++	 * until it gets a new slice. See the HACK in set_next_entity().
 +	 */
-+	if (((addr >> PAGE_SHIFT) != ((addr + 7) >> PAGE_SHIFT)) &&
-+	    !kernel_text_address(addr + 7))
-+		return false;
++	if (sched_feat(RUN_TO_PARITY) && curr && curr->vlag == curr->deadline)
++		return curr;
 +
- 	if (memcmp(tramp+5, tramp_ud, 3)) {
- 		/* Not a trampoline site, not our problem. */
- 		return false;
+ 	while (node) {
+ 		struct sched_entity *se = __node_2_se(node);
+ 
+@@ -5167,6 +5174,11 @@ set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ 		update_stats_wait_end_fair(cfs_rq, se);
+ 		__dequeue_entity(cfs_rq, se);
+ 		update_load_avg(cfs_rq, se, UPDATE_TG);
++		/*
++		 * HACK, stash a copy of deadline at the point of pick in vlag,
++		 * which isn't used until dequeue.
++		 */
++		se->vlag = se->deadline;
+ 	}
+ 
+ 	update_stats_curr_start(cfs_rq, se);
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 61bcbf5..f770168 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -6,6 +6,7 @@
+  */
+ SCHED_FEAT(PLACE_LAG, true)
+ SCHED_FEAT(PLACE_DEADLINE_INITIAL, true)
++SCHED_FEAT(RUN_TO_PARITY, true)
+ 
+ /*
+  * Prefer to schedule the task we woke last (assuming it failed
