@@ -2,57 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFC91787925
+	by mail.lfdr.de (Postfix) with ESMTP id 5CA6C787924
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Aug 2023 22:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243182AbjHXUNI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S243431AbjHXUNI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 24 Aug 2023 16:13:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39014 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243464AbjHXUMj (ORCPT
+        with ESMTP id S243472AbjHXUM4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 24 Aug 2023 16:12:39 -0400
+        Thu, 24 Aug 2023 16:12:56 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 598B91BF1;
-        Thu, 24 Aug 2023 13:12:36 -0700 (PDT)
-Date:   Thu, 24 Aug 2023 20:12:34 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A67B41BCD;
+        Thu, 24 Aug 2023 13:12:54 -0700 (PDT)
+Date:   Thu, 24 Aug 2023 20:12:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1692907955;
+        s=2020; t=1692907973;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=X9zq1WZ2DCe9jjiBg6LsVIHzpgwgz+1ksLTOAXXF0I4=;
-        b=GNsq/kADCHasr8jGZJYhSu7Qnp3g0Y34zSbIBqIRkbmdb6DpQ6c3iG3AcclZFmg5I1ExME
-        Uge+CvnpVZWfS4Gd95y+IcX/Wk+y9rzsKardZjfnP0FHzxhbIR0I8cpgA2qZBa8ISVSmeA
-        WQDBeLEXxI+zjMZfLheURYKIV4SuYNN++WWUPUIfxOsvdRs9yjnj8fhWUUWy7LzghNyY2L
-        luxnIFqk7c7fm0GhvJtKDoAwCXRInJa2P7D+01PGs+jjV2t27EVNfKrKgtR9raUXd0O5Nt
-        w1V/HekDhlH0WRJGchhJD2ZlgwpDRS2+qaq4O3DLscyNSVkiXbKBZz99s9UTYg==
+        bh=oXTQ2wqGEq8Pz6yTwF/JEdPBqKNqe6nRDvBoVDyPzTQ=;
+        b=4Z7clyBSL7da6Yggng7uxjBXzvwVfRWuPzqQyd3TlC1rz4xD2pNMQ85vPKBspx9TdyKmK3
+        1/vF2Zgs0Sm2Q0FO8yGpJ8OGgMJ4miSiswBvYVqG3vRFIrMavhRdNggiEPXwdDLWkUuomO
+        +hlhAjpFkopRtK1Zs+RM9j0QtFhawsBfveqvLLTTNGEXs/yYT3dALSoMdSx2Zyu1zgYpAJ
+        DJXbw/q+Prj5PBTOG7RHZmvrjLByLAmvswEtt+qdY/go+w5xdwDv57Uvawds9Y3g4u617c
+        G4CrvqrKp5/B7E8hqTTrFZCae3QLtF2gS46+JrxVhY/iRqb/45bSaXvZst3j1A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1692907955;
+        s=2020e; t=1692907973;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=X9zq1WZ2DCe9jjiBg6LsVIHzpgwgz+1ksLTOAXXF0I4=;
-        b=enCGiJHW/09Wb6RkBKgL+C2aFMf2gJ46/dWS9RM0+HCsfolojSmKHfFLBiSPvrOOovSQyw
-        1sALOYUbgKTPdADw==
-From:   "tip-bot2 for Shrikanth Hegde" <tip-bot2@linutronix.de>
+        bh=oXTQ2wqGEq8Pz6yTwF/JEdPBqKNqe6nRDvBoVDyPzTQ=;
+        b=kXd+GBrW+zDPcxYKvbwTBEl2R4cy5iP+IgLywRn3r9yS174VivPTicuDMjvLWNRuHiIFG3
+        jutIaJfXUdEySkAA==
+From:   "tip-bot2 for Justin Stitt" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/eevdf/doc: Modify the documented knob to
- base_slice_ns as well
-Cc:     Shrikanth Hegde <sshegde@linux.vnet.ibm.com>,
+Subject: [tip: x86/cleanups] x86/platform/uv: Refactor code using deprecated
+ strncpy() interface to use strscpy()
+Cc:     Justin Stitt <justinstitt@google.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Dimitri Sivanich <sivanich@hpe.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230824080342.543396-1-sshegde@linux.vnet.ibm.com>
-References: <20230824080342.543396-1-sshegde@linux.vnet.ibm.com>
+In-Reply-To: =?utf-8?q?=3C20230822-strncpy-arch-x86-kernel-apic-x2apic=5Fu?=
+ =?utf-8?q?v=5Fx-v1-1-91d681d0b3f3=40google=2Ecom=3E?=
+References: =?utf-8?q?=3C20230822-strncpy-arch-x86-kernel-apic-x2apic=5Fuv?=
+ =?utf-8?q?=5Fx-v1-1-91d681d0b3f3=40google=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <169290795445.27769.10094416642854950152.tip-bot2@tip-bot2>
+Message-ID: <169290797270.27769.5277467952297102028.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,43 +70,66 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     2f88c8e802c8b128a155976631f4eb2ce4f3c805
-Gitweb:        https://git.kernel.org/tip/2f88c8e802c8b128a155976631f4eb2ce4f3c805
-Author:        Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
-AuthorDate:    Thu, 24 Aug 2023 13:33:42 +05:30
+Commit-ID:     212f07a21622cbd4bb271b558b2d3ae0652e9875
+Gitweb:        https://git.kernel.org/tip/212f07a21622cbd4bb271b558b2d3ae0652e9875
+Author:        Justin Stitt <justinstitt@google.com>
+AuthorDate:    Tue, 22 Aug 2023 22:05:30 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 24 Aug 2023 21:31:57 +02:00
+CommitterDate: Thu, 24 Aug 2023 21:22:50 +02:00
 
-sched/eevdf/doc: Modify the documented knob to base_slice_ns as well
+x86/platform/uv: Refactor code using deprecated strncpy() interface to use strscpy()
 
-After committing the scheduler to EEVDF, we renamed the 'min_granularity_ns'
-sysctl to 'base_slice_ns':
+`strncpy` is deprecated for use on NUL-terminated destination strings [1].
 
-   e4ec3318a17f ("sched/debug: Rename sysctl_sched_min_granularity to sysctl_sched_base_slice")
+A suitable replacement is `strscpy` [2] due to the fact that it
+guarantees NUL-termination on its destination buffer argument which is
+_not_ the case for `strncpy`!
 
-... but we forgot to rename it in the documentation. Do that now.
+In this case, it means we can drop the `...-1` from:
+|       strncpy(to, from, len-1);
 
-Fixes: e4ec3318a17f ("sched/debug: Rename sysctl_sched_min_granularity to sysctl_sched_base_slice")
-Signed-off-by: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
+as well as remove the comment mentioning NUL-termination as `strscpy`
+implicitly grants us this behavior.
+
+There should be no functional change as I don't believe the padding from
+`strncpy` is needed here. If it turns out that the padding is necessary
+we should use `strscpy_pad` as a direct replacement.
+
+Signed-off-by: Justin Stitt <justinstitt@google.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230824080342.543396-1-sshegde@linux.vnet.ibm.com
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Dimitri Sivanich <sivanich@hpe.com>
+Link: www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings[1]
+Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
+Link: https://github.com/KSPP/linux/issues/90
+Link: https://lore.kernel.org/r/20230822-strncpy-arch-x86-kernel-apic-x2apic_uv_x-v1-1-91d681d0b3f3@google.com
 ---
- Documentation/scheduler/sched-design-CFS.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/scheduler/sched-design-CFS.rst b/Documentation/scheduler/sched-design-CFS.rst
-index 03db555..f689198 100644
---- a/Documentation/scheduler/sched-design-CFS.rst
-+++ b/Documentation/scheduler/sched-design-CFS.rst
-@@ -94,7 +94,7 @@ other HZ detail.  Thus the CFS scheduler has no notion of "timeslices" in the
- way the previous scheduler had, and has no heuristics whatsoever.  There is
- only one central tunable (you have to switch on CONFIG_SCHED_DEBUG):
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index d9384d5..b524dee 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -294,8 +294,7 @@ static void __init early_get_apic_socketid_shift(void)
  
--   /sys/kernel/debug/sched/min_granularity_ns
-+   /sys/kernel/debug/sched/base_slice_ns
+ static void __init uv_stringify(int len, char *to, char *from)
+ {
+-	/* Relies on 'to' being NULL chars so result will be NULL terminated */
+-	strncpy(to, from, len-1);
++	strscpy(to, from, len);
  
- which can be used to tune the scheduler from "desktop" (i.e., low latencies) to
- "server" (i.e., good batching) workloads.  It defaults to a setting suitable
+ 	/* Trim trailing spaces */
+ 	(void)strim(to);
+@@ -1013,7 +1012,7 @@ static void __init calc_mmioh_map(enum mmioh_arch index,
+ 
+ 	/* One (UV2) mapping */
+ 	if (index == UV2_MMIOH) {
+-		strncpy(id, "MMIOH", sizeof(id));
++		strscpy(id, "MMIOH", sizeof(id));
+ 		max_io = max_pnode;
+ 		mapped = 0;
+ 		goto map_exit;
