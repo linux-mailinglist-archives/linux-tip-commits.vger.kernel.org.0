@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F367884BC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Aug 2023 12:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 437A57884C1
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Aug 2023 12:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244400AbjHYKUk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 25 Aug 2023 06:20:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35142 "EHLO
+        id S244445AbjHYKUn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 25 Aug 2023 06:20:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244408AbjHYKUK (ORCPT
+        with ESMTP id S244411AbjHYKUK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 25 Aug 2023 06:20:10 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 538211991;
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8622E2109;
         Fri, 25 Aug 2023 03:19:51 -0700 (PDT)
-Date:   Fri, 25 Aug 2023 10:19:30 -0000
+Date:   Fri, 25 Aug 2023 10:19:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1692958770;
+        s=2020; t=1692958772;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gs+nfbqvXhUtUiEFQXU91vgz+E370ySbDByaeTGkzmY=;
-        b=oTLUIKViADBO+Pat29pSx84DDdy8XEAVrM0TwF+16wvb202LGS/lZPPt+BtjYFSfrNlUfL
-        QM1z+wUOjKguuXUygAd/vixAFreKqn2+YmO7qeGIHpzh3EXU8vmoyWmSfYrtRSIUvQOrB6
-        g0QGVnxdcEHSmDUIz1O9gcQDS4knN6T8VVYO2pe7FaiJYvCQK7but5YLc8NNLnIABgyfbr
-        BzV4h/xmHZkDlBlKVSOWjwV0C0veqPBwkg8kc3HYhNlGzWT4YUCDdncXo4yUisrxX94pV0
-        5y41U1LhLq755AMkzIt+7ycuRVQxknP3DxuM36wiYPCGBBGiyrYqn2YoxrVr3A==
+        bh=tHkizebMsECbcTe74PA3ogCCbvgICRT0m+8IAmbfh2U=;
+        b=n6BhbZBF4F8dDftEJxbIRd7eVtDz+fZpMvURfseu+yv0mE95DieK4cBfoaPgsBsHIMQbqp
+        GfQf88GjCojyuwnEveUAxN5rUMbZhCDcwXPYPE53cEDjRVdZriYJDLrekCsArIh7+Pn5m2
+        FkXpHSNV2ohaWFtqrvxtDBOTsnp1pvZUCH6vQDkx3QUSvtika8bw4ozZ9fUyjRixfnXVnm
+        2uEgzgxw/hZ3FGT8j4Khx6DGnkxMazve8aZFoJvSUd7A9XPsnMfX2QdSpG+yjLymDpuZ4t
+        i/ooDRSpQ9usk16/khOLoTb2/YgYzF/+8Ha2hX7usRuTGPtihmhM10t55v3x9w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1692958770;
+        s=2020e; t=1692958772;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gs+nfbqvXhUtUiEFQXU91vgz+E370ySbDByaeTGkzmY=;
-        b=ob/eNiKJUGfocCK3kNuBlzh9uK0PwpFFDxKZ0XNMW+zHT5dWbeHhfspbz5Afzxx9iB8aJw
-        lpj1WOKzkrOux/AA==
+        bh=tHkizebMsECbcTe74PA3ogCCbvgICRT0m+8IAmbfh2U=;
+        b=AZiMy243d5SHrXJC+xtsSYuRnwYh8t1Ql5BeBfKvz74HsCAxLSjisNQAr/Si9UakoglCFx
+        cjNS5Pjkuq0cO/Dw==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/srso: Remove 'pred_cmd' label
+Subject: [tip: x86/bugs] x86/alternatives: Remove faulty optimization
 Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <ec18b04787fc21874303f29746a49847751eddd6.1692919072.git.jpoimboe@kernel.org>
-References: <ec18b04787fc21874303f29746a49847751eddd6.1692919072.git.jpoimboe@kernel.org>
+In-Reply-To: <ca76a2e94217d6fc8e007d2ca79fee219f3168f8.1692919072.git.jpoimboe@kernel.org>
+References: <ca76a2e94217d6fc8e007d2ca79fee219f3168f8.1692919072.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169295877026.27769.9258274335954143778.tip-bot2@tip-bot2>
+Message-ID: <169295877160.27769.14262638853493570689.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,80 +66,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     2685c96f0cd51e56a1bad4d08d41eddf8f0f5890
-Gitweb:        https://git.kernel.org/tip/2685c96f0cd51e56a1bad4d08d41eddf8f0f5890
+Commit-ID:     4f643529501794ef9baabfe65612da8a2a8eff5b
+Gitweb:        https://git.kernel.org/tip/4f643529501794ef9baabfe65612da8a2a8eff5b
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Fri, 25 Aug 2023 00:01:46 -07:00
+AuthorDate:    Fri, 25 Aug 2023 00:01:43 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 25 Aug 2023 11:22:00 +02:00
 
-x86/srso: Remove 'pred_cmd' label
+x86/alternatives: Remove faulty optimization
 
-SBPB is only enabled in two distinct cases:
+The following commit:
 
-  1) when SRSO has been disabled with srso=off
+  095b8303f383 ("x86/alternative: Make custom return thunk unconditional")
 
-  2) when SRSO has been fixed (in future HW)
+made '__x86_return_thunk' a placeholder value.  All code setting
+X86_FEATURE_RETHUNK also changes the value of 'x86_return_thunk'.  So
+the optimization at the beginning of apply_returns() is dead code.
 
-Simplify the control flow by getting rid of the 'pred_cmd' label and
-moving the SBPB enablement check to the two corresponding code sites.
-This makes it more clear when exactly SBPB gets enabled.
+Also, before the above-mentioned commit, the optimization actually had a
+bug It bypassed __static_call_fixup(), causing some raw returns to
+remain unpatched in static call trampolines.  Thus the 'Fixes' tag.
 
+Fixes: d2408e043e72 ("x86/alternative: Optimize returns patching")
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/ec18b04787fc21874303f29746a49847751eddd6.1692919072.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/ca76a2e94217d6fc8e007d2ca79fee219f3168f8.1692919072.git.jpoimboe@kernel.org
 ---
- arch/x86/kernel/cpu/bugs.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ arch/x86/kernel/alternative.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index d883d1c..3c7f634 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2410,13 +2410,21 @@ static void __init srso_select_mitigation(void)
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 099d58d..34be5fb 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -720,14 +720,6 @@ void __init_or_module noinline apply_returns(s32 *start, s32 *end)
  {
- 	bool has_microcode = boot_cpu_has(X86_FEATURE_IBPB_BRTYPE);
+ 	s32 *s;
  
--	if (!boot_cpu_has_bug(X86_BUG_SRSO) || cpu_mitigations_off())
--		goto pred_cmd;
-+	if (cpu_mitigations_off())
-+		return;
-+
-+	if (!boot_cpu_has_bug(X86_BUG_SRSO)) {
-+		if (boot_cpu_has(X86_FEATURE_SBPB))
-+			x86_pred_cmd = PRED_CMD_SBPB;
-+		return;
-+	}
- 
- 	if (has_microcode) {
- 		/*
- 		 * Zen1/2 with SMT off aren't vulnerable after the right
- 		 * IBPB microcode has been applied.
-+		 *
-+		 * Zen1/2 don't have SBPB, no need to try to enable it here.
- 		 */
- 		if (boot_cpu_data.x86 < 0x19 && !cpu_smt_possible()) {
- 			setup_force_cpu_cap(X86_FEATURE_SRSO_NO);
-@@ -2439,7 +2447,9 @@ static void __init srso_select_mitigation(void)
- 
- 	switch (srso_cmd) {
- 	case SRSO_CMD_OFF:
--		goto pred_cmd;
-+		if (boot_cpu_has(X86_FEATURE_SBPB))
-+			x86_pred_cmd = PRED_CMD_SBPB;
-+		return;
- 
- 	case SRSO_CMD_MICROCODE:
- 		if (has_microcode) {
-@@ -2501,11 +2511,6 @@ static void __init srso_select_mitigation(void)
- 
- out:
- 	pr_info("%s%s\n", srso_strings[srso_mitigation], has_microcode ? "" : ", no microcode");
+-	/*
+-	 * Do not patch out the default return thunks if those needed are the
+-	 * ones generated by the compiler.
+-	 */
+-	if (cpu_feature_enabled(X86_FEATURE_RETHUNK) &&
+-	    (x86_return_thunk == __x86_return_thunk))
+-		return;
 -
--pred_cmd:
--	if ((!boot_cpu_has_bug(X86_BUG_SRSO) || srso_cmd == SRSO_CMD_OFF) &&
--	     boot_cpu_has(X86_FEATURE_SBPB))
--		x86_pred_cmd = PRED_CMD_SBPB;
- }
- 
- #undef pr_fmt
+ 	for (s = start; s < end; s++) {
+ 		void *dest = NULL, *addr = (void *)s + *s;
+ 		struct insn insn;
