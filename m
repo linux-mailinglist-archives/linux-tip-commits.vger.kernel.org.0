@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F4727884A2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Aug 2023 12:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C1107884A5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Aug 2023 12:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242375AbjHYKT7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 25 Aug 2023 06:19:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43532 "EHLO
+        id S241531AbjHYKT6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 25 Aug 2023 06:19:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244414AbjHYKTv (ORCPT
+        with ESMTP id S244413AbjHYKTu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 25 Aug 2023 06:19:51 -0400
+        Fri, 25 Aug 2023 06:19:50 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4472211E;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A93211B;
         Fri, 25 Aug 2023 03:19:29 -0700 (PDT)
-Date:   Fri, 25 Aug 2023 10:19:26 -0000
+Date:   Fri, 25 Aug 2023 10:19:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1692958767;
+        s=2020; t=1692958768;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AS/NZLtGjOnSN7l1BI6KnBP7o6XtvU424G4ZBXw2FEA=;
-        b=LY43jpWOMqWy/Ad0fHxbsaOLrCGFf3JQX54u7lts0fNuZHuE7ni57etLXYZcal33T+sFY4
-        wjWsh5BzcTC38swIZXSQ7Vl1m6INilt/eh+NxIa/GKpHl4+3323lXMkxQelYVX6cN2EXNU
-        1Y4yWtJK5G8LMTuc2EbbkeNpFjf3IVyWaD9qAN+pO+Hyr40me+fweCYzrNOCzsO4UQzX/p
-        xWQqIfVYQyhWlL4bLqi7YWo1ynJc2FjIEDAgsKE5IazmNnBaOa24CBKXm9FCPCxr+oiCDs
-        LjvPxU8K/JrnRW6U7BgQYNH9eX3xbKYSgh3i3wqPtAb3AqXLm4+aMupy6V5J2g==
+        bh=yGnbo0UCy1jiV63yTKGTInHYBSyWoZfSHCRypChFJiA=;
+        b=VCWUWbFOCoVA8D6vURHzaMT5ibRrnE2RqtkTEYJo6gBdesmq7KuB4OYox4AX6xWy8jYmG3
+        seWrK9+EDdqsoTI5HCLfXiAc7DJpM7inLx9veCjsN0obK94FUJIVPq7w0Te/D0MINRajN2
+        3HLSUbzB2cotoukaRTmOvLXaQbs3dUfztphV7FPv4Z3roDSzhmsHi09ox+aWqszSnkb1wP
+        72yYRlSGbR4LI9FCa9RYDCQk5FsHXpoyQJjYlq2zB2CvvJizWKGuzJCA/fgv6kM7+WBcpg
+        1ke1ADexI0GduYamK5V2abU+udaAW2GHc76AfmSFiT9s4vJvMchVXEFiLukfLw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1692958767;
+        s=2020e; t=1692958768;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AS/NZLtGjOnSN7l1BI6KnBP7o6XtvU424G4ZBXw2FEA=;
-        b=Eas8DGv+ewU+ddsVB1pbAM9g08S8kGNR8ZkHXA7vX67LlPakwNO7krtcH/J4EQICVCTz9P
-        ZA9K7ppK2CZSSDCg==
+        bh=yGnbo0UCy1jiV63yTKGTInHYBSyWoZfSHCRypChFJiA=;
+        b=J+wE5Hl92Jlg3xXMYjKWtkGbCvY6hhzhVAlOZG/DT7NfZIZGBIFA4RB+aMy1Jz5lFnU9nT
+        2/uldypyXjx6CbAA==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/calldepth: Rename __x86_return_skl() to
- call_depth_return_thunk()
+Subject: [tip: x86/bugs] x86/retpoline: Remove .text..__x86.return_thunk section
 Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <c8a6f5e4e62300d30c829af28789a958e10277ba.1692919072.git.jpoimboe@kernel.org>
-References: <c8a6f5e4e62300d30c829af28789a958e10277ba.1692919072.git.jpoimboe@kernel.org>
+In-Reply-To: <34947acf1c8a1be2d3ba9a4d0dd8a3001ae3c0db.1692919072.git.jpoimboe@kernel.org>
+References: <34947acf1c8a1be2d3ba9a4d0dd8a3001ae3c0db.1692919072.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169295876665.27769.9522370779816831169.tip-bot2@tip-bot2>
+Message-ID: <169295876766.27769.14642045062732796018.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,94 +66,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     8e6dc5f993a23b40dac1f26abab6a980913c1d24
-Gitweb:        https://git.kernel.org/tip/8e6dc5f993a23b40dac1f26abab6a980913c1d24
+Commit-ID:     dc184c7c1fe9670148fd74d9d5d7cf8894a65e64
+Gitweb:        https://git.kernel.org/tip/dc184c7c1fe9670148fd74d9d5d7cf8894a65e64
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Fri, 25 Aug 2023 00:01:54 -07:00
+AuthorDate:    Fri, 25 Aug 2023 00:01:52 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 25 Aug 2023 11:22:02 +02:00
 
-x86/calldepth: Rename __x86_return_skl() to call_depth_return_thunk()
+x86/retpoline: Remove .text..__x86.return_thunk section
 
-For consistency with the other return thunks, rename __x86_return_skl()
-to call_depth_return_thunk().
+The '.text..__x86.return_thunk' section has no purpose.  Remove it and
+let the return thunk code live in '.text..__x86.indirect_thunk'.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/c8a6f5e4e62300d30c829af28789a958e10277ba.1692919072.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/34947acf1c8a1be2d3ba9a4d0dd8a3001ae3c0db.1692919072.git.jpoimboe@kernel.org
 ---
- arch/x86/include/asm/nospec-branch.h | 13 ++++---------
- arch/x86/kernel/cpu/bugs.c           |  3 ++-
- arch/x86/lib/retpoline.S             |  4 ++--
- 3 files changed, 8 insertions(+), 12 deletions(-)
+ arch/x86/kernel/vmlinux.lds.S | 3 ---
+ arch/x86/lib/retpoline.S      | 2 --
+ 2 files changed, 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index dcc7847..14cd3cd 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -358,12 +358,7 @@ extern void entry_ibpb(void);
- extern void (*x86_return_thunk)(void);
- 
- #ifdef CONFIG_CALL_DEPTH_TRACKING
--extern void __x86_return_skl(void);
--
--static inline void x86_set_skl_return_thunk(void)
--{
--	x86_return_thunk = &__x86_return_skl;
--}
-+extern void call_depth_return_thunk(void);
- 
- #define CALL_DEPTH_ACCOUNT					\
- 	ALTERNATIVE("",						\
-@@ -376,12 +371,12 @@ DECLARE_PER_CPU(u64, __x86_ret_count);
- DECLARE_PER_CPU(u64, __x86_stuffs_count);
- DECLARE_PER_CPU(u64, __x86_ctxsw_count);
- #endif
--#else
--static inline void x86_set_skl_return_thunk(void) {}
-+#else /* !CONFIG_CALL_DEPTH_TRACKING */
- 
-+static inline void call_depth_return_thunk(void) {}
- #define CALL_DEPTH_ACCOUNT ""
- 
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 9188834..f1c3516 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -132,10 +132,7 @@ SECTIONS
+ 		LOCK_TEXT
+ 		KPROBES_TEXT
+ 		SOFTIRQENTRY_TEXT
+-#ifdef CONFIG_RETPOLINE
+ 		*(.text..__x86.indirect_thunk)
+-		*(.text..__x86.return_thunk)
 -#endif
-+#endif /* CONFIG_CALL_DEPTH_TRACKING */
+ 		STATIC_CALL_TEXT
  
- #ifdef CONFIG_RETPOLINE
- 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 0ebdaa7..d538043 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1059,7 +1059,8 @@ do_cmd_auto:
- 	case RETBLEED_MITIGATION_STUFF:
- 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
- 		setup_force_cpu_cap(X86_FEATURE_CALL_DEPTH);
--		x86_set_skl_return_thunk();
-+
-+		x86_return_thunk = call_depth_return_thunk;
- 		break;
- 
- 	default:
+ 		ALIGN_ENTRY_TEXT_BEGIN
 diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index 49f2be7..6376d01 100644
+index 415521d..49f2be7 100644
 --- a/arch/x86/lib/retpoline.S
 +++ b/arch/x86/lib/retpoline.S
-@@ -321,7 +321,7 @@ __EXPORT_THUNK(entry_untrain_ret)
- #ifdef CONFIG_CALL_DEPTH_TRACKING
+@@ -129,8 +129,6 @@ SYM_CODE_END(__x86_indirect_jump_thunk_array)
  
- 	.align 64
--SYM_FUNC_START(__x86_return_skl)
-+SYM_FUNC_START(call_depth_return_thunk)
- 	ANNOTATE_NOENDBR
- 	/*
- 	 * Keep the hotpath in a 16byte I-fetch for the non-debug
-@@ -348,7 +348,7 @@ SYM_FUNC_START(__x86_return_skl)
- 	ANNOTATE_UNRET_SAFE
- 	ret
- 	int3
--SYM_FUNC_END(__x86_return_skl)
-+SYM_FUNC_END(call_depth_return_thunk)
+ #ifdef CONFIG_RETHUNK
  
- #endif /* CONFIG_CALL_DEPTH_TRACKING */
+-	.section .text..__x86.return_thunk
+-
+ #ifdef CONFIG_CPU_SRSO
  
+ /*
