@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 014E378968D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 26 Aug 2023 14:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EFBE789862
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 26 Aug 2023 19:18:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232047AbjHZMKu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 26 Aug 2023 08:10:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33596 "EHLO
+        id S230430AbjHZRSF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 26 Aug 2023 13:18:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232802AbjHZMKf (ORCPT
+        with ESMTP id S230429AbjHZRRu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 26 Aug 2023 08:10:35 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A58CE58;
-        Sat, 26 Aug 2023 05:10:31 -0700 (PDT)
-Date:   Sat, 26 Aug 2023 12:10:17 -0000
+        Sat, 26 Aug 2023 13:17:50 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21248BD;
+        Sat, 26 Aug 2023 10:17:48 -0700 (PDT)
+Date:   Sat, 26 Aug 2023 17:17:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1693051818;
+        s=2020; t=1693070265;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Msth3dkf8X2kA7WZxZWOV6C1fFS+oM8EFs6QwZc88Fw=;
-        b=t0wnYIoDZ4rkcji6FOkdnULS5Eb+KUFEb0xppxmUqeKrhJCPyZsQbSyBQgT7I7aXHg6LXx
-        4O1/dFujonzNThiAD01TzOfFWhFgFkY7zsTVR0XwlubmlKq0BAoj5QuK//dJsnWChY3Epe
-        M8WIFv7c1kqzXUymannfUHP/8EPe/rOL2XWGs+MsBaRIia/iCovv8YtcqRl1e0VBqTnl/Z
-        aajTYZwCuT9D6opAopZsjpji+VPuOGDz994XciO5q4WSc7N5hmmwXY9UilsEUAB10bmI7T
-        da/vwxE+m+hqI3QI/BMdqEXkrTnWHvyg+rnFqoGpPjIlsDuDEgdRib0NSVVFpA==
+        bh=+884pQb4+uM3VSCP17PeDZpxzYCrz0VcKPEgLZbdQpo=;
+        b=Lu1lL36Nz9jRS7B5hO/tzxVnJgKM++j8DWWWEpmP9sa1gmfblokk+WYPEXtHJMsbKdO1Hj
+        vQjGM2M2lMEd8EyhFWBHwhsozo+QDHzetmcTYyL/XhisUqb3+UFJLlGEYBjZHNw2OynV7S
+        fkx+Ck4c2Y/3Mh3pk7oYTrfeczP1hXdQE1zpm+Q11GyzuKU4Xyl0eFQxj7I4N+2qKhK++s
+        H2JkUBiyrPS+Wr1Ccubd0DAnB+lPb4m/6jXEY83ikVAjFA9NDxkCWn8LSteCXRuWZClIfi
+        NNHym/JBjI7KuhoDKrADJ4k3VMwUz0E3fd7fpfOaN7Kyo0YK0mE3D7S01JO8Tw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1693051818;
+        s=2020e; t=1693070265;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Msth3dkf8X2kA7WZxZWOV6C1fFS+oM8EFs6QwZc88Fw=;
-        b=EGm6rA+JfMmSBQTypf4IRraKsAM7C6s6XjFtwc3XvEd4hTKWRKtohCTGoQx9aDs2h8OH+Y
-        kv0YS+p3FA7OHfAA==
-From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
+        bh=+884pQb4+uM3VSCP17PeDZpxzYCrz0VcKPEgLZbdQpo=;
+        b=UlLdrZQaYVdL49WD44eR/JFrWSyXz2Z6TntPOuQ6PqGvwMU9nua7yhfCY6w/ZAS8A2X0Sa
+        bCTTCNONrA6IsKAg==
+From:   "tip-bot2 for Johan Hovold" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode: Remove remaining references to
- CONFIG_MICROCODE_AMD
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: irq/urgent] genirq: Fix software resend lockup and nested resend
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230825141226.13566-1-lukas.bulwahn@gmail.com>
-References: <20230825141226.13566-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20230826154004.1417-1-johan+linaro@kernel.org>
+References: <20230826154004.1417-1-johan+linaro@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169305181746.27769.8171958719830211744.tip-bot2@tip-bot2>
+Message-ID: <169307026499.27769.17332757460481689557.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,76 +65,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     4d2b748305e96fb76202a0d1072a285b1500bff3
-Gitweb:        https://git.kernel.org/tip/4d2b748305e96fb76202a0d1072a285b1500bff3
-Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-AuthorDate:    Fri, 25 Aug 2023 16:12:26 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 26 Aug 2023 13:37:55 +02:00
+Commit-ID:     9f5deb551655a4cff04b21ecffdcdab75112da3a
+Gitweb:        https://git.kernel.org/tip/9f5deb551655a4cff04b21ecffdcdab75112da3a
+Author:        Johan Hovold <johan+linaro@kernel.org>
+AuthorDate:    Sat, 26 Aug 2023 17:40:04 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sat, 26 Aug 2023 19:14:31 +02:00
 
-x86/microcode: Remove remaining references to CONFIG_MICROCODE_AMD
+genirq: Fix software resend lockup and nested resend
 
-Commit e6bcfdd75d53 ("x86/microcode: Hide the config knob") removed the
-MICROCODE_AMD config, but left some references in defconfigs and comments,
-that have no effect on any kernel build around.
+The switch to using hlist for managing software resend of interrupts
+broke resend in at least two ways:
 
-Clean up those remaining config references. No functional change.
+First, unconditionally adding interrupt descriptors to the resend list can
+corrupt the list when the descriptor in question has already been
+added. This causes the resend tasklet to loop indefinitely with interrupts
+disabled as was recently reported with the Lenovo ThinkPad X13s after
+threaded NAPI was disabled in the ath11k WiFi driver.
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230825141226.13566-1-lukas.bulwahn@gmail.com
+This bug is easily fixed by restoring the old semantics of irq_sw_resend()
+so that it can be called also for descriptors that have already been marked
+for resend.
+
+Second, the offending commit also broke software resend of nested
+interrupts by simply discarding the code that made sure that such
+interrupts are retriggered using the parent interrupt.
+
+Add back the corresponding code that adds the parent descriptor to the
+resend list.
+
+Fixes: bc06a9e08742 ("genirq: Use hlist for managing resend handlers")
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/lkml/20230809073432.4193-1-johan+linaro@kernel.org/
+Link: https://lore.kernel.org/r/20230826154004.1417-1-johan+linaro@kernel.org
+
 ---
- arch/x86/configs/i386_defconfig          | 1 -
- arch/x86/configs/x86_64_defconfig        | 1 -
- arch/x86/kernel/cpu/microcode/internal.h | 4 ++--
- 3 files changed, 2 insertions(+), 4 deletions(-)
+ kernel/irq/resend.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
-index 3cf3491..c33250f 100644
---- a/arch/x86/configs/i386_defconfig
-+++ b/arch/x86/configs/i386_defconfig
-@@ -33,7 +33,6 @@ CONFIG_HYPERVISOR_GUEST=y
- CONFIG_PARAVIRT=y
- CONFIG_NR_CPUS=8
- CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
--CONFIG_MICROCODE_AMD=y
- CONFIG_X86_MSR=y
- CONFIG_X86_CPUID=y
- CONFIG_X86_CHECK_BIOS_CORRUPTION=y
-diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
-index 2775923..2aae0c0 100644
---- a/arch/x86/configs/x86_64_defconfig
-+++ b/arch/x86/configs/x86_64_defconfig
-@@ -31,7 +31,6 @@ CONFIG_SMP=y
- CONFIG_HYPERVISOR_GUEST=y
- CONFIG_PARAVIRT=y
- CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
--CONFIG_MICROCODE_AMD=y
- CONFIG_X86_MSR=y
- CONFIG_X86_CPUID=y
- CONFIG_NUMA=y
-diff --git a/arch/x86/kernel/cpu/microcode/internal.h b/arch/x86/kernel/cpu/microcode/internal.h
-index 8ee9392..bf883aa 100644
---- a/arch/x86/kernel/cpu/microcode/internal.h
-+++ b/arch/x86/kernel/cpu/microcode/internal.h
-@@ -104,7 +104,7 @@ int save_microcode_in_initrd_amd(unsigned int family);
- void reload_ucode_amd(unsigned int cpu);
- struct microcode_ops *init_amd_microcode(void);
- void exit_amd_microcode(void);
--#else /* CONFIG_MICROCODE_AMD */
-+#else /* CONFIG_CPU_SUP_AMD */
- static inline void load_ucode_amd_bsp(unsigned int family) { }
- static inline void load_ucode_amd_ap(unsigned int family) { }
- static inline void load_ucode_amd_early(unsigned int family) { }
-@@ -112,7 +112,7 @@ static inline int save_microcode_in_initrd_amd(unsigned int family) { return -EI
- static inline void reload_ucode_amd(unsigned int cpu) { }
- static inline struct microcode_ops *init_amd_microcode(void) { return NULL; }
- static inline void exit_amd_microcode(void) { }
--#endif /* !CONFIG_MICROCODE_AMD */
-+#endif /* !CONFIG_CPU_SUP_AMD */
+diff --git a/kernel/irq/resend.c b/kernel/irq/resend.c
+index edec335..5f2c668 100644
+--- a/kernel/irq/resend.c
++++ b/kernel/irq/resend.c
+@@ -68,11 +68,16 @@ static int irq_sw_resend(struct irq_desc *desc)
+ 		 */
+ 		if (!desc->parent_irq)
+ 			return -EINVAL;
++
++		desc = irq_to_desc(desc->parent_irq);
++		if (!desc)
++			return -EINVAL;
+ 	}
  
- #ifdef CONFIG_CPU_SUP_INTEL
- void load_ucode_intel_bsp(void);
+ 	/* Add to resend_list and activate the softirq: */
+ 	raw_spin_lock(&irq_resend_lock);
+-	hlist_add_head(&desc->resend_node, &irq_resend_list);
++	if (hlist_unhashed(&desc->resend_node))
++		hlist_add_head(&desc->resend_node, &irq_resend_list);
+ 	raw_spin_unlock(&irq_resend_lock);
+ 	tasklet_schedule(&resend_tasklet);
+ 	return 0;
