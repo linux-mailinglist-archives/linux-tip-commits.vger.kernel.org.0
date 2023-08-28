@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EFBE789862
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 26 Aug 2023 19:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6509578A90F
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Aug 2023 11:41:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230430AbjHZRSF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 26 Aug 2023 13:18:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54174 "EHLO
+        id S229441AbjH1Jkc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 28 Aug 2023 05:40:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230429AbjHZRRu (ORCPT
+        with ESMTP id S230202AbjH1JkQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 26 Aug 2023 13:17:50 -0400
+        Mon, 28 Aug 2023 05:40:16 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21248BD;
-        Sat, 26 Aug 2023 10:17:48 -0700 (PDT)
-Date:   Sat, 26 Aug 2023 17:17:44 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF51FF;
+        Mon, 28 Aug 2023 02:40:13 -0700 (PDT)
+Date:   Mon, 28 Aug 2023 09:40:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1693070265;
+        s=2020; t=1693215611;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+884pQb4+uM3VSCP17PeDZpxzYCrz0VcKPEgLZbdQpo=;
-        b=Lu1lL36Nz9jRS7B5hO/tzxVnJgKM++j8DWWWEpmP9sa1gmfblokk+WYPEXtHJMsbKdO1Hj
-        vQjGM2M2lMEd8EyhFWBHwhsozo+QDHzetmcTYyL/XhisUqb3+UFJLlGEYBjZHNw2OynV7S
-        fkx+Ck4c2Y/3Mh3pk7oYTrfeczP1hXdQE1zpm+Q11GyzuKU4Xyl0eFQxj7I4N+2qKhK++s
-        H2JkUBiyrPS+Wr1Ccubd0DAnB+lPb4m/6jXEY83ikVAjFA9NDxkCWn8LSteCXRuWZClIfi
-        NNHym/JBjI7KuhoDKrADJ4k3VMwUz0E3fd7fpfOaN7Kyo0YK0mE3D7S01JO8Tw==
+        bh=kjCX1gnoWv74QX7La4W2uptIUiRuAQXYPBr6ClP0S4w=;
+        b=G+kdvNeGh1cI+x9s8qv1mEdCuDIfodtScI5q8EbSyFKnCGMQ8YaXbt2lru5yspewqZwd3e
+        hwkSiVt69yGU6q3C9KgdPub8Cvd5zsaJgvmaNRL9plPRhxixuUvHHgscrAw7uuXifkWYht
+        497l0TZEyzEpdoQVIVhEJgT9eWwGXVn+MxK2iVd6To60UbbQfev4NHymOs5iYCMqIka3bw
+        1DxBj/+UX4z8fC4BjdFPiK3BNHZ+9APPb7g8Y22b9MMh80Eabq0pE1eC06j3QPckkD6a6/
+        QKZqdIcKzD6h8x+uuT1x2AkuJLKiCcR45JVi5vHfaBQusbEuqXUUJw2iuLiapA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1693070265;
+        s=2020e; t=1693215611;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+884pQb4+uM3VSCP17PeDZpxzYCrz0VcKPEgLZbdQpo=;
-        b=UlLdrZQaYVdL49WD44eR/JFrWSyXz2Z6TntPOuQ6PqGvwMU9nua7yhfCY6w/ZAS8A2X0Sa
-        bCTTCNONrA6IsKAg==
-From:   "tip-bot2 for Johan Hovold" <tip-bot2@linutronix.de>
+        bh=kjCX1gnoWv74QX7La4W2uptIUiRuAQXYPBr6ClP0S4w=;
+        b=KaYkwh4bBA1wamfRvehwF/NBq/QgTT3FEMZEr3XGkU3biTbvLh17hEoI5/Ym0A7Sc3TcHQ
+        7p4+kKPOeXSvsGAQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq: Fix software resend lockup and nested resend
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230826154004.1417-1-johan+linaro@kernel.org>
-References: <20230826154004.1417-1-johan+linaro@kernel.org>
+Subject: [tip: irq/core] Merge tag 'irqchip-6.6' of
+ git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20230828091543.4001857-1-maz@kernel.org>
+References: <20230828091543.4001857-1-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169307026499.27769.17332757460481689557.tip-bot2@tip-bot2>
+Message-ID: <169321561088.27769.2768788814854169199.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,67 +63,32 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     9f5deb551655a4cff04b21ecffdcdab75112da3a
-Gitweb:        https://git.kernel.org/tip/9f5deb551655a4cff04b21ecffdcdab75112da3a
-Author:        Johan Hovold <johan+linaro@kernel.org>
-AuthorDate:    Sat, 26 Aug 2023 17:40:04 +02:00
+Commit-ID:     02362c9a99b69aa956f015fa93025221b887684b
+Gitweb:        https://git.kernel.org/tip/02362c9a99b69aa956f015fa93025221b887684b
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 28 Aug 2023 11:33:03 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 26 Aug 2023 19:14:31 +02:00
+CommitterDate: Mon, 28 Aug 2023 11:33:03 +02:00
 
-genirq: Fix software resend lockup and nested resend
+Merge tag 'irqchip-6.6' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
 
-The switch to using hlist for managing software resend of interrupts
-broke resend in at least two ways:
+Pull irqchip updates from Marc Zyngier:
 
-First, unconditionally adding interrupt descriptors to the resend list can
-corrupt the list when the descriptor in question has already been
-added. This causes the resend tasklet to loop indefinitely with interrupts
-disabled as was recently reported with the Lenovo ThinkPad X13s after
-threaded NAPI was disabled in the ath11k WiFi driver.
+  - Fix for Loongsoon eiointc init error handling
 
-This bug is easily fixed by restoring the old semantics of irq_sw_resend()
-so that it can be called also for descriptors that have already been marked
-for resend.
+  - Fix a bunch of warning showing up when -Wmissing-prototypes is set
 
-Second, the offending commit also broke software resend of nested
-interrupts by simply discarding the code that made sure that such
-interrupts are retriggered using the parent interrupt.
+  - A set of fixes for drivers checking for 0 as a potential return
+    value from platform_get_irq()
 
-Add back the corresponding code that adds the parent descriptor to the
-resend list.
+  - Another set of patches converting existing code to the use of helpers
+    such as of_address_count() and devm_platform_get_and_ioremap_resource()
 
-Fixes: bc06a9e08742 ("genirq: Use hlist for managing resend handlers")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/lkml/20230809073432.4193-1-johan+linaro@kernel.org/
-Link: https://lore.kernel.org/r/20230826154004.1417-1-johan+linaro@kernel.org
+  - A tree-wide cleanup of drivers including of_*.h without discrimination
 
+  - Added support for the Amlogic C3 SoCs
+
+Link: https://lore.kernel.org/lkml/20230828091543.4001857-1-maz@kernel.org
 ---
- kernel/irq/resend.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/irq/resend.c b/kernel/irq/resend.c
-index edec335..5f2c668 100644
---- a/kernel/irq/resend.c
-+++ b/kernel/irq/resend.c
-@@ -68,11 +68,16 @@ static int irq_sw_resend(struct irq_desc *desc)
- 		 */
- 		if (!desc->parent_irq)
- 			return -EINVAL;
-+
-+		desc = irq_to_desc(desc->parent_irq);
-+		if (!desc)
-+			return -EINVAL;
- 	}
- 
- 	/* Add to resend_list and activate the softirq: */
- 	raw_spin_lock(&irq_resend_lock);
--	hlist_add_head(&desc->resend_node, &irq_resend_list);
-+	if (hlist_unhashed(&desc->resend_node))
-+		hlist_add_head(&desc->resend_node, &irq_resend_list);
- 	raw_spin_unlock(&irq_resend_lock);
- 	tasklet_schedule(&resend_tasklet);
- 	return 0;
