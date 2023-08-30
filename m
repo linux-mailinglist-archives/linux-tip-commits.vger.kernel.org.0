@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED5F878DC77
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Aug 2023 20:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0E2D78DC75
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Aug 2023 20:49:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237705AbjH3Spv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Aug 2023 14:45:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56196 "EHLO
+        id S233818AbjH3Spu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Aug 2023 14:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242383AbjH3IUn (ORCPT
+        with ESMTP id S243246AbjH3KaE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Aug 2023 04:20:43 -0400
+        Wed, 30 Aug 2023 06:30:04 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5790E113;
-        Wed, 30 Aug 2023 01:20:41 -0700 (PDT)
-Date:   Wed, 30 Aug 2023 08:20:39 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3BB8C0;
+        Wed, 30 Aug 2023 03:30:00 -0700 (PDT)
+Date:   Wed, 30 Aug 2023 10:29:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1693383640;
+        s=2020; t=1693391399;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1LgpB6lUy9BBrNA13ykHRK7OS54efrRlg6fHBFykZhA=;
-        b=NiZYEZMD1KZun+Q2GuG3pIZL9sVLKbmxif2PcdN4iw5sbrAweBh32DWgVGKeo3Se2ludjE
-        D8UAf1CVRRtFfxqgCsJetG3n3Sa6OUMlxBWtrZGyb6g7/h83l4B+VQQAFuBXNbKpnfQMpP
-        UknmKUz7h5esQhI2CXtdDbsFIfoD2H/dLSuZTdePUUIGCqZDz5Xiak+z4177irYdo8lDXG
-        qcPTUIiWQEu7ERZrgz6kiKVmAfBtEc2OOpbllt/D1g8MACDSwe0Zze8xORML1PlCnLxcHM
-        m4F0c1k43MM1Py53IG1hXxPj1dvALlvNZFYTrD9toUrTyg1jQ2Sc3mIqsaAyog==
+        bh=qiHeCeWMqDfMSLrY6Ovkw5z04+RV1jb4Pn6ptsA182g=;
+        b=C7zeWOUFsIxIOmrcGuA8IfFFwpcUzR2rVivjQI4/pT4xX9yEq6w5+H5ODHp/6EQujgdV80
+        CodiI1EZdivpvPRUGqjLf4/pgJ5Av9Ta6tgGMM30VdTaWu1v2kXd+FVaX/VzQ3IjepvLMc
+        TdoZKaRA5MuMu9qB3RaPonvBcs2NaGtmvv6KJE3GNLPGBGwejWarKv7mDm/7/qb7kG6fvv
+        MzNqqau1d6NUZBqCfKkjPOy980SVmgRWw9ay8yrnxvyC8cGjM3QUoxrFpKtF7gfEkQiYkk
+        TGQDsBCl8XknJYvq/WVOWTnlNaBU+UG4Ic49nkqDCTy6Lk4Ngs+csvLD5AmJXw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1693383640;
+        s=2020e; t=1693391399;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1LgpB6lUy9BBrNA13ykHRK7OS54efrRlg6fHBFykZhA=;
-        b=70fYGegJyfZrxco/lHJbxV2Aj66jlbD+ko2dK1odHK+08/ChMEyWcw06EVYCOt2AicDBcM
-        NoOf2ZgP3cCVcvAQ==
-From:   "tip-bot2 for Justin Stitt" <tip-bot2@linutronix.de>
+        bh=qiHeCeWMqDfMSLrY6Ovkw5z04+RV1jb4Pn6ptsA182g=;
+        b=CvDNKDlmsb+IHEd3R72G0w2INwWC9axP1vaDZvpoeUlOA0ojqtGDxJ975TiP8Zsi1Y+5y0
+        vqo+XOIrEc9aYnCA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/audit: Fix -Wmissing-variable-declarations
- warning for ia32_xyz_class
-Cc:     Justin Stitt <justinstitt@google.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: smp/urgent] cpu/hotplug: Prevent self deadlock on CPU hot-unplug
+Cc:     Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Yu Liao <liaoyu15@huawei.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230829-missingvardecl-audit-v1-1-34efeb7f3539@google.com>
-References: <20230829-missingvardecl-audit-v1-1-34efeb7f3539@google.com>
+In-Reply-To: <8e785777-03aa-99e1-d20e-e956f5685be6@huawei.com>
+References: <8e785777-03aa-99e1-d20e-e956f5685be6@huawei.com>
 MIME-Version: 1.0
-Message-ID: <169338363913.27769.13139550857281132494.tip-bot2@tip-bot2>
+Message-ID: <169339139819.27769.17621875462076784482.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,112 +67,99 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the smp/urgent branch of tip:
 
-Commit-ID:     e8f13e061d75ed0eeaaf599532a6b197f195d5f3
-Gitweb:        https://git.kernel.org/tip/e8f13e061d75ed0eeaaf599532a6b197f195d5f3
-Author:        Justin Stitt <justinstitt@google.com>
-AuthorDate:    Tue, 29 Aug 2023 22:33:16 
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 30 Aug 2023 10:11:16 +02:00
+Commit-ID:     2b8272ff4a70b866106ae13c36be7ecbef5d5da2
+Gitweb:        https://git.kernel.org/tip/2b8272ff4a70b866106ae13c36be7ecbef5d5da2
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 23 Aug 2023 10:47:02 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 30 Aug 2023 12:24:22 +02:00
 
-x86/audit: Fix -Wmissing-variable-declarations warning for ia32_xyz_class
+cpu/hotplug: Prevent self deadlock on CPU hot-unplug
 
-When building x86 defconfig with Clang-18 I get the following warnings:
+Xiongfeng reported and debugged a self deadlock of the task which initiates
+and controls a CPU hot-unplug operation vs. the CFS bandwidth timer.
 
-  | arch/x86/ia32/audit.c:6:10: warning: no previous extern declaration for non-static variable 'ia32_dir_class' [-Wmissing-variable-declarations]
-  |     6 | unsigned ia32_dir_class[] = {
-  | arch/x86/ia32/audit.c:11:10: warning: no previous extern declaration for non-static variable 'ia32_chattr_class' [-Wmissing-variable-declarations]
-  |    11 | unsigned ia32_chattr_class[] = {
-  | arch/x86/ia32/audit.c:16:10: warning: no previous extern declaration for non-static variable 'ia32_write_class' [-Wmissing-variable-declarations]
-  |    16 | unsigned ia32_write_class[] = {
-  | arch/x86/ia32/audit.c:21:10: warning: no previous extern declaration for non-static variable 'ia32_read_class' [-Wmissing-variable-declarations]
-  |    21 | unsigned ia32_read_class[] = {
-  | arch/x86/ia32/audit.c:26:10: warning: no previous extern declaration for non-static variable 'ia32_signal_class' [-Wmissing-variable-declarations]
-  |    26 | unsigned ia32_signal_class[] = {
+    CPU1      			                 	 CPU2
 
-These warnings occur due to their respective extern declarations being
-scoped inside of audit_classes_init as well as only being enabled with
-`CONFIG_IA32_EMULATION=y`:
+T1 sets cfs_quota
+   starts hrtimer cfs_bandwidth 'period_timer'
+T1 is migrated to CPU2				
+						T1 initiates offlining of CPU1
+Hotplug operation starts
+  ...
+'period_timer' expires and is re-enqueued on CPU1
+  ...
+take_cpu_down()
+  CPU1 shuts down and does not handle timers
+  anymore. They have to be migrated in the
+  post dead hotplug steps by the control task.
 
-  | static int __init audit_classes_init(void)
-  | {
-  | #ifdef CONFIG_IA32_EMULATION
-  |	extern __u32 ia32_dir_class[];
-  |	extern __u32 ia32_write_class[];
-  |	extern __u32 ia32_read_class[];
-  |	extern __u32 ia32_chattr_class[];
-  |	audit_register_class(AUDIT_CLASS_WRITE_32, ia32_write_class);
-  |	audit_register_class(AUDIT_CLASS_READ_32, ia32_read_class);
-  |	audit_register_class(AUDIT_CLASS_DIR_WRITE_32, ia32_dir_class);
-  |	audit_register_class(AUDIT_CLASS_CHATTR_32, ia32_chattr_class);
-  | #endif
-  |	audit_register_class(AUDIT_CLASS_WRITE, write_class);
-  |	audit_register_class(AUDIT_CLASS_READ, read_class);
-  |	audit_register_class(AUDIT_CLASS_DIR_WRITE, dir_class);
-  |	audit_register_class(AUDIT_CLASS_CHATTR, chattr_class);
-  |	return 0;
-  | }
+						T1 runs the post dead offline operation
+					      	T1 is scheduled out
+						T1 waits for 'period_timer' to expire
 
-Lift the extern declarations to their own header and resolve scoping
-issues (and thus fix the warnings).
+T1 waits there forever if it is scheduled out before it can execute the hrtimer
+offline callback hrtimers_dead_cpu().
 
-Moreover, change __u32 to unsigned so that we match the definitions:
+Cure this by delegating the hotplug control operation to a worker thread on
+an online CPU. This takes the initiating user space task, which might be
+affected by the bandwidth timer, completely out of the picture.
 
-  | unsigned ia32_dir_class[] = {
-  | #include <asm-generic/audit_dir_write.h>
-  | ~0U
-  | };
-  |
-  | unsigned ia32_chattr_class[] = {
-  | #include <asm-generic/audit_change_attr.h>
-  | ~0U
-  | };
-  | ...
+Reported-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Yu Liao <liaoyu15@huawei.com>
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/lkml/8e785777-03aa-99e1-d20e-e956f5685be6@huawei.com
+Link: https://lore.kernel.org/r/87h6oqdq0i.ffs@tglx
 
-This patch is similar to commit:
-
-  0e5e3d4461a22d73 ("x86/audit: Fix a -Wmissing-prototypes warning for ia32_classify_syscall()") [1]
-
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/all/20200516123816.2680-1-b.thiel@posteo.de/ [1]
-Link: https://github.com/ClangBuiltLinux/linux/issues/1920
-Link: https://lore.kernel.org/r/20230829-missingvardecl-audit-v1-1-34efeb7f3539@google.com
 ---
- arch/x86/include/asm/audit.h | 7 +++++++
- arch/x86/kernel/audit_64.c   | 5 -----
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ kernel/cpu.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/audit.h b/arch/x86/include/asm/audit.h
-index 36aec57..fa918f0 100644
---- a/arch/x86/include/asm/audit.h
-+++ b/arch/x86/include/asm/audit.h
-@@ -4,4 +4,11 @@
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index f6811c8..6de7c6b 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1487,8 +1487,22 @@ out:
+ 	return ret;
+ }
  
- int ia32_classify_syscall(unsigned int syscall);
- 
-+extern unsigned ia32_dir_class[];
-+extern unsigned ia32_write_class[];
-+extern unsigned ia32_read_class[];
-+extern unsigned ia32_chattr_class[];
-+extern unsigned ia32_signal_class[];
++struct cpu_down_work {
++	unsigned int		cpu;
++	enum cpuhp_state	target;
++};
 +
++static long __cpu_down_maps_locked(void *arg)
++{
++	struct cpu_down_work *work = arg;
 +
- #endif /* _ASM_X86_AUDIT_H */
-diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
-index 44c3601..190c120 100644
---- a/arch/x86/kernel/audit_64.c
-+++ b/arch/x86/kernel/audit_64.c
-@@ -63,11 +63,6 @@ int audit_classify_syscall(int abi, unsigned syscall)
- static int __init audit_classes_init(void)
++	return _cpu_down(work->cpu, 0, work->target);
++}
++
+ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
  {
- #ifdef CONFIG_IA32_EMULATION
--	extern __u32 ia32_dir_class[];
--	extern __u32 ia32_write_class[];
--	extern __u32 ia32_read_class[];
--	extern __u32 ia32_chattr_class[];
--	extern __u32 ia32_signal_class[];
- 	audit_register_class(AUDIT_CLASS_WRITE_32, ia32_write_class);
- 	audit_register_class(AUDIT_CLASS_READ_32, ia32_read_class);
- 	audit_register_class(AUDIT_CLASS_DIR_WRITE_32, ia32_dir_class);
++	struct cpu_down_work work = { .cpu = cpu, .target = target, };
++
+ 	/*
+ 	 * If the platform does not support hotplug, report it explicitly to
+ 	 * differentiate it from a transient offlining failure.
+@@ -1497,7 +1511,15 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
+ 		return -EOPNOTSUPP;
+ 	if (cpu_hotplug_disabled)
+ 		return -EBUSY;
+-	return _cpu_down(cpu, 0, target);
++
++	/*
++	 * Ensure that the control task does not run on the to be offlined
++	 * CPU to prevent a deadlock against cfs_b->period_timer.
++	 */
++	cpu = cpumask_any_but(cpu_online_mask, cpu);
++	if (cpu >= nr_cpu_ids)
++		return -EBUSY;
++	return work_on_cpu(cpu, __cpu_down_maps_locked, &work);
+ }
+ 
+ static int cpu_down(unsigned int cpu, enum cpuhp_state target)
