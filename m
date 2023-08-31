@@ -2,58 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8678C78E45A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Aug 2023 03:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AE5778E45D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Aug 2023 03:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231926AbjHaBbh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Aug 2023 21:31:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44990 "EHLO
+        id S1344263AbjHaBbi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Aug 2023 21:31:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238107AbjHaBbg (ORCPT
+        with ESMTP id S239703AbjHaBbg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 30 Aug 2023 21:31:36 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED849CC9;
-        Wed, 30 Aug 2023 18:31:31 -0700 (PDT)
-Date:   Thu, 31 Aug 2023 01:31:29 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 320DACD6;
+        Wed, 30 Aug 2023 18:31:32 -0700 (PDT)
+Date:   Thu, 31 Aug 2023 01:31:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1693445489;
+        s=2020; t=1693445490;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xRN44fMksxAydgdcP62P7opSGfW66a4FkW/NtbSw/KA=;
-        b=ozvEaufVuOvnqaUdj22mgj4/k4a7AlA2q9fYS1W7wIfO2UMJ0dTEGwBpDjwmjhEjgiRv6l
-        PH1HG9YHk/XRNJVOMKStF3ApHpQe/hQsbaQbswmwGJ22TWMkfoiSb/Ia4NQ9019mwfv4ws
-        /y2kSINmoHRXalRhGOeOLID/NzLZ8ljjYhVglzeIAb88CBJ9/DIIBq9g1yDYxLuk3LYmrK
-        g2lm9BQEQ9s5T996EQXIWxhSaA19qUxGs2eG/K3cd419s7OJ0dHuFuSCe7RKc5UCpUkeOM
-        8HtMK+hJZsMSaCtUv/Xc5b3onwGRUjbVSlqkTKZCmmd4lKv5jGptqgg6KaOPkA==
+        bh=mSdUeIp4zb+qf55Z3dx9SUYRwucZQ+YbIBsw5eObgCk=;
+        b=XNtRKAdbEnnuGCRCjF+8rtkWzJ7iWhglvXR8puW5/pTkDfd+e8xw8fNpc97it91crpjcJi
+        cPPNKEpILtLZ67Kl6r4wrFGXtyuRWw7FGpn0f/swlYxhfgsJiIZQ9HX5ldf3MwI6XwN+oA
+        QMeZEtjiK58WF5DItVO+4aWH1Bu2nkz8bVRcpAkuoIopt45vcY2bP9CGz93QJ+vyVAmS1t
+        qYApNzab5/pFxmA2+mo73E4kcY1zfMyFOU8nFLETLXxbku+3kcKIjThFZvrg3wgASbX2zz
+        tNWoeKbGIr8rd3Eg8uYILPwSRlIUXQ20kUqPqHBGNT7ZMVWtcHyYHq2TLx/xDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1693445489;
+        s=2020e; t=1693445490;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xRN44fMksxAydgdcP62P7opSGfW66a4FkW/NtbSw/KA=;
-        b=egu2OwU3Jpe/7gkO87KoWk7ZhbwI5Qaa0Sci6YUpoxG8scJ07AGF5IF3+we1hSYNGuZT5P
-        LuytOWT4S9SFTEAA==
+        bh=mSdUeIp4zb+qf55Z3dx9SUYRwucZQ+YbIBsw5eObgCk=;
+        b=ZlOtmaEmqT9tHfpDRaG0l1eLRkVmoWPPDNpG5qs78AwoUFvRwN2W8d6C4ycPhDQ+2vWNvr
+        L1ogtmKVlGel5cDw==
 From:   "tip-bot2 for Mans Rullgard" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/sun5i: Convert to platform
- device driver
+Subject: [tip: timers/core] clocksource/drivers/sun5i: Remove duplication of
+ code and data
 Cc:     Mans Rullgard <mans@mansr.com>,
         Jernej Skrabec <jernej.skrabec@gmail.com>,
         Maxime Ripard <mripard@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230630201800.16501-4-mans@mansr.com>
-References: <20230630201800.16501-4-mans@mansr.com>
+In-Reply-To: <20230630201800.16501-2-mans@mansr.com>
+References: <20230630201800.16501-2-mans@mansr.com>
 MIME-Version: 1.0
-Message-ID: <169344548923.27769.18272995599299715403.tip-bot2@tip-bot2>
+Message-ID: <169344549021.27769.3314639356865529963.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,242 +69,390 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7e5bac610d2fd4d270adfd2d70ce766df1711bf8
-Gitweb:        https://git.kernel.org/tip/7e5bac610d2fd4d270adfd2d70ce766df1711bf8
+Commit-ID:     7ded803873162f0edfa8570b28605dfcb67fb486
+Gitweb:        https://git.kernel.org/tip/7ded803873162f0edfa8570b28605dfcb67fb486
 Author:        Mans Rullgard <mans@mansr.com>
-AuthorDate:    Fri, 30 Jun 2023 21:01:28 +01:00
+AuthorDate:    Fri, 30 Jun 2023 21:01:26 +01:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Fri, 18 Aug 2023 12:15:22 +02:00
+CommitterDate: Fri, 18 Aug 2023 12:15:06 +02:00
 
-clocksource/drivers/sun5i: Convert to platform device driver
+clocksource/drivers/sun5i: Remove duplication of code and data
 
-Convert the sun5i hstimer driver to a platform device driver.
-This makes it work again on A20 and other systems where the
-clock is provided by a platform device driver.
+Move the clocksource and clock_event_device structs into the main
+struct sun5i_timer, and update the code for the new layout.  This
+removes a lot of duplication of both code and data.
 
-Fixes: 7ec03b588d22 ("clk: sunxi-ng: Convert early providers to platform drivers")
 Signed-off-by: Mans Rullgard <mans@mansr.com>
 Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 Acked-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230630201800.16501-4-mans@mansr.com
+Link: https://lore.kernel.org/r/20230630201800.16501-2-mans@mansr.com
 ---
- drivers/clocksource/timer-sun5i.c | 121 ++++++++++++++++-------------
- 1 file changed, 69 insertions(+), 52 deletions(-)
+ drivers/clocksource/timer-sun5i.c | 206 ++++++++++-------------------
+ 1 file changed, 76 insertions(+), 130 deletions(-)
 
 diff --git a/drivers/clocksource/timer-sun5i.c b/drivers/clocksource/timer-sun5i.c
-index 3ca427e..69fee35 100644
+index 7d5fa90..e0ca97c 100644
 --- a/drivers/clocksource/timer-sun5i.c
 +++ b/drivers/clocksource/timer-sun5i.c
-@@ -16,9 +16,7 @@
- #include <linux/irqreturn.h>
- #include <linux/reset.h>
- #include <linux/slab.h>
--#include <linux/of.h>
--#include <linux/of_address.h>
--#include <linux/of_irq.h>
-+#include <linux/platform_device.h>
+@@ -35,31 +35,26 @@
  
- #define TIMER_IRQ_EN_REG		0x00
- #define TIMER_IRQ_EN(val)			BIT(val)
-@@ -171,10 +169,10 @@ static int sun5i_rate_cb(struct notifier_block *nb,
- 	return NOTIFY_DONE;
+ #define TIMER_SYNC_TICKS	3
+ 
+-struct sun5i_timer {
++/* Pointless struct to minimise diff */
++struct _sun5i_timer {
+ 	void __iomem		*base;
+ 	struct clk		*clk;
+ 	struct notifier_block	clk_rate_cb;
+ 	u32			ticks_per_jiffy;
+ };
+ 
+-#define to_sun5i_timer(x) \
+-	container_of(x, struct sun5i_timer, clk_rate_cb)
+-
+-struct sun5i_timer_clksrc {
+-	struct sun5i_timer	timer;
++struct sun5i_timer {
++	struct _sun5i_timer	timer;
+ 	struct clocksource	clksrc;
+-};
+-
+-#define to_sun5i_timer_clksrc(x) \
+-	container_of(x, struct sun5i_timer_clksrc, clksrc)
+-
+-struct sun5i_timer_clkevt {
+-	struct sun5i_timer		timer;
+ 	struct clock_event_device	clkevt;
+ };
+ 
+-#define to_sun5i_timer_clkevt(x) \
+-	container_of(x, struct sun5i_timer_clkevt, clkevt)
++#define nb_to_sun5i_timer(x) \
++	container_of(x, struct sun5i_timer, timer.clk_rate_cb)
++#define clksrc_to_sun5i_timer(x) \
++	container_of(x, struct sun5i_timer, clksrc)
++#define clkevt_to_sun5i_timer(x) \
++	container_of(x, struct sun5i_timer, clkevt)
+ 
+ /*
+  * When we disable a timer, we need to wait at least for 2 cycles of
+@@ -67,7 +62,7 @@ struct sun5i_timer_clkevt {
+  * that is already setup and runs at the same frequency than the other
+  * timers, and we never will be disabled.
+  */
+-static void sun5i_clkevt_sync(struct sun5i_timer_clkevt *ce)
++static void sun5i_clkevt_sync(struct sun5i_timer *ce)
+ {
+ 	u32 old = readl(ce->timer.base + TIMER_CNTVAL_LO_REG(1));
+ 
+@@ -75,7 +70,7 @@ static void sun5i_clkevt_sync(struct sun5i_timer_clkevt *ce)
+ 		cpu_relax();
  }
  
--static int __init sun5i_setup_clocksource(struct device_node *node,
--					  struct sun5i_timer *cs,
--					  unsigned long rate)
-+static int sun5i_setup_clocksource(struct platform_device *pdev,
-+				   unsigned long rate)
+-static void sun5i_clkevt_time_stop(struct sun5i_timer_clkevt *ce, u8 timer)
++static void sun5i_clkevt_time_stop(struct sun5i_timer *ce, u8 timer)
  {
-+	struct sun5i_timer *cs = platform_get_drvdata(pdev);
- 	void __iomem *base = cs->base;
+ 	u32 val = readl(ce->timer.base + TIMER_CTL_REG(timer));
+ 	writel(val & ~TIMER_CTL_ENABLE, ce->timer.base + TIMER_CTL_REG(timer));
+@@ -83,12 +78,12 @@ static void sun5i_clkevt_time_stop(struct sun5i_timer_clkevt *ce, u8 timer)
+ 	sun5i_clkevt_sync(ce);
+ }
+ 
+-static void sun5i_clkevt_time_setup(struct sun5i_timer_clkevt *ce, u8 timer, u32 delay)
++static void sun5i_clkevt_time_setup(struct sun5i_timer *ce, u8 timer, u32 delay)
+ {
+ 	writel(delay, ce->timer.base + TIMER_INTVAL_LO_REG(timer));
+ }
+ 
+-static void sun5i_clkevt_time_start(struct sun5i_timer_clkevt *ce, u8 timer, bool periodic)
++static void sun5i_clkevt_time_start(struct sun5i_timer *ce, u8 timer, bool periodic)
+ {
+ 	u32 val = readl(ce->timer.base + TIMER_CTL_REG(timer));
+ 
+@@ -103,7 +98,7 @@ static void sun5i_clkevt_time_start(struct sun5i_timer_clkevt *ce, u8 timer, boo
+ 
+ static int sun5i_clkevt_shutdown(struct clock_event_device *clkevt)
+ {
+-	struct sun5i_timer_clkevt *ce = to_sun5i_timer_clkevt(clkevt);
++	struct sun5i_timer *ce = clkevt_to_sun5i_timer(clkevt);
+ 
+ 	sun5i_clkevt_time_stop(ce, 0);
+ 	return 0;
+@@ -111,7 +106,7 @@ static int sun5i_clkevt_shutdown(struct clock_event_device *clkevt)
+ 
+ static int sun5i_clkevt_set_oneshot(struct clock_event_device *clkevt)
+ {
+-	struct sun5i_timer_clkevt *ce = to_sun5i_timer_clkevt(clkevt);
++	struct sun5i_timer *ce = clkevt_to_sun5i_timer(clkevt);
+ 
+ 	sun5i_clkevt_time_stop(ce, 0);
+ 	sun5i_clkevt_time_start(ce, 0, false);
+@@ -120,7 +115,7 @@ static int sun5i_clkevt_set_oneshot(struct clock_event_device *clkevt)
+ 
+ static int sun5i_clkevt_set_periodic(struct clock_event_device *clkevt)
+ {
+-	struct sun5i_timer_clkevt *ce = to_sun5i_timer_clkevt(clkevt);
++	struct sun5i_timer *ce = clkevt_to_sun5i_timer(clkevt);
+ 
+ 	sun5i_clkevt_time_stop(ce, 0);
+ 	sun5i_clkevt_time_setup(ce, 0, ce->timer.ticks_per_jiffy);
+@@ -131,7 +126,7 @@ static int sun5i_clkevt_set_periodic(struct clock_event_device *clkevt)
+ static int sun5i_clkevt_next_event(unsigned long evt,
+ 				   struct clock_event_device *clkevt)
+ {
+-	struct sun5i_timer_clkevt *ce = to_sun5i_timer_clkevt(clkevt);
++	struct sun5i_timer *ce = clkevt_to_sun5i_timer(clkevt);
+ 
+ 	sun5i_clkevt_time_stop(ce, 0);
+ 	sun5i_clkevt_time_setup(ce, 0, evt - TIMER_SYNC_TICKS);
+@@ -142,7 +137,7 @@ static int sun5i_clkevt_next_event(unsigned long evt,
+ 
+ static irqreturn_t sun5i_timer_interrupt(int irq, void *dev_id)
+ {
+-	struct sun5i_timer_clkevt *ce = dev_id;
++	struct sun5i_timer *ce = dev_id;
+ 
+ 	writel(0x1, ce->timer.base + TIMER_IRQ_ST_REG);
+ 	ce->clkevt.event_handler(&ce->clkevt);
+@@ -152,17 +147,16 @@ static irqreturn_t sun5i_timer_interrupt(int irq, void *dev_id)
+ 
+ static u64 sun5i_clksrc_read(struct clocksource *clksrc)
+ {
+-	struct sun5i_timer_clksrc *cs = to_sun5i_timer_clksrc(clksrc);
++	struct sun5i_timer *cs = clksrc_to_sun5i_timer(clksrc);
+ 
+ 	return ~readl(cs->timer.base + TIMER_CNTVAL_LO_REG(1));
+ }
+ 
+-static int sun5i_rate_cb_clksrc(struct notifier_block *nb,
+-				unsigned long event, void *data)
++static int sun5i_rate_cb(struct notifier_block *nb,
++			 unsigned long event, void *data)
+ {
+ 	struct clk_notifier_data *ndata = data;
+-	struct sun5i_timer *timer = to_sun5i_timer(nb);
+-	struct sun5i_timer_clksrc *cs = container_of(timer, struct sun5i_timer_clksrc, timer);
++	struct sun5i_timer *cs = nb_to_sun5i_timer(nb);
+ 
+ 	switch (event) {
+ 	case PRE_RATE_CHANGE:
+@@ -171,6 +165,8 @@ static int sun5i_rate_cb_clksrc(struct notifier_block *nb,
+ 
+ 	case POST_RATE_CHANGE:
+ 		clocksource_register_hz(&cs->clksrc, ndata->new_rate);
++		clockevents_update_freq(&cs->clkevt, ndata->new_rate);
++		cs->timer.ticks_per_jiffy = DIV_ROUND_UP(ndata->new_rate, HZ);
+ 		break;
+ 
+ 	default:
+@@ -181,41 +177,12 @@ static int sun5i_rate_cb_clksrc(struct notifier_block *nb,
+ }
+ 
+ static int __init sun5i_setup_clocksource(struct device_node *node,
+-					  void __iomem *base,
+-					  struct clk *clk, int irq)
++					  struct sun5i_timer *cs,
++					  unsigned long rate)
+ {
+-	struct sun5i_timer_clksrc *cs;
+-	unsigned long rate;
++	void __iomem *base = cs->timer.base;
  	int ret;
  
-@@ -182,7 +180,7 @@ static int __init sun5i_setup_clocksource(struct device_node *node,
- 	writel(TIMER_CTL_ENABLE | TIMER_CTL_RELOAD,
- 	       base + TIMER_CTL_REG(1));
- 
--	cs->clksrc.name = node->name;
-+	cs->clksrc.name = pdev->dev.of_node->name;
- 	cs->clksrc.rating = 340;
- 	cs->clksrc.read = sun5i_clksrc_read;
- 	cs->clksrc.mask = CLOCKSOURCE_MASK(32);
-@@ -190,22 +188,23 @@ static int __init sun5i_setup_clocksource(struct device_node *node,
- 
- 	ret = clocksource_register_hz(&cs->clksrc, rate);
- 	if (ret) {
--		pr_err("Couldn't register clock source.\n");
-+		dev_err(&pdev->dev, "Couldn't register clock source.\n");
- 		return ret;
- 	}
- 
- 	return 0;
- }
- 
--static int __init sun5i_setup_clockevent(struct device_node *node,
--					 struct sun5i_timer *ce,
--					 unsigned long rate, int irq)
-+static int sun5i_setup_clockevent(struct platform_device *pdev,
-+				  unsigned long rate, int irq)
- {
-+	struct device *dev = &pdev->dev;
-+	struct sun5i_timer *ce = platform_get_drvdata(pdev);
- 	void __iomem *base = ce->base;
- 	int ret;
- 	u32 val;
- 
--	ce->clkevt.name = node->name;
-+	ce->clkevt.name = dev->of_node->name;
- 	ce->clkevt.features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT;
- 	ce->clkevt.set_next_event = sun5i_clkevt_next_event;
- 	ce->clkevt.set_state_shutdown = sun5i_clkevt_shutdown;
-@@ -223,18 +222,20 @@ static int __init sun5i_setup_clockevent(struct device_node *node,
- 	clockevents_config_and_register(&ce->clkevt, rate,
- 					TIMER_SYNC_TICKS, 0xffffffff);
- 
--	ret = request_irq(irq, sun5i_timer_interrupt, IRQF_TIMER | IRQF_IRQPOLL,
--			  "sun5i_timer0", ce);
-+	ret = devm_request_irq(dev, irq, sun5i_timer_interrupt,
-+			       IRQF_TIMER | IRQF_IRQPOLL,
-+			       "sun5i_timer0", ce);
- 	if (ret) {
--		pr_err("Unable to register interrupt\n");
-+		dev_err(dev, "Unable to register interrupt\n");
- 		return ret;
- 	}
- 
- 	return 0;
- }
- 
--static int __init sun5i_timer_init(struct device_node *node)
-+static int sun5i_timer_probe(struct platform_device *pdev)
- {
-+	struct device *dev = &pdev->dev;
- 	struct sun5i_timer *st;
- 	struct reset_control *rstc;
- 	void __iomem *timer_base;
-@@ -242,39 +243,34 @@ static int __init sun5i_timer_init(struct device_node *node)
- 	unsigned long rate;
- 	int irq, ret;
- 
--	st = kzalloc(sizeof(*st), GFP_KERNEL);
-+	st = devm_kzalloc(dev, sizeof(*st), GFP_KERNEL);
- 	if (!st)
- 		return -ENOMEM;
- 
--	timer_base = of_io_request_and_map(node, 0, of_node_full_name(node));
-+	platform_set_drvdata(pdev, st);
-+
-+	timer_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(timer_base)) {
--		pr_err("Can't map registers\n");
-+		dev_err(dev, "Can't map registers\n");
- 		return PTR_ERR(timer_base);
- 	}
- 
--	irq = irq_of_parse_and_map(node, 0);
--	if (irq <= 0) {
--		pr_err("Can't parse IRQ\n");
--		return -EINVAL;
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(dev, "Can't get IRQ\n");
-+		return irq;
- 	}
- 
--	clk = of_clk_get(node, 0);
-+	clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(clk)) {
--		pr_err("Can't get timer clock\n");
-+		dev_err(dev, "Can't get timer clock\n");
- 		return PTR_ERR(clk);
- 	}
- 
+-	cs = kzalloc(sizeof(*cs), GFP_KERNEL);
+-	if (!cs)
+-		return -ENOMEM;
+-
 -	ret = clk_prepare_enable(clk);
 -	if (ret) {
 -		pr_err("Couldn't enable parent clock\n");
 -		goto err_free;
 -	}
 -
- 	rate = clk_get_rate(clk);
- 	if (!rate) {
+-	rate = clk_get_rate(clk);
+-	if (!rate) {
 -		pr_err("Couldn't get parent clock rate\n");
 -		ret = -EINVAL;
 -		goto err_disable_clk;
-+		dev_err(dev, "Couldn't get parent clock rate\n");
-+		return -EINVAL;
- 	}
- 
- 	st->base = timer_base;
-@@ -283,31 +279,52 @@ static int __init sun5i_timer_init(struct device_node *node)
- 	st->clk_rate_cb.notifier_call = sun5i_rate_cb;
- 	st->clk_rate_cb.next = NULL;
- 
--	ret = clk_notifier_register(clk, &st->clk_rate_cb);
-+	ret = devm_clk_notifier_register(dev, clk, &st->clk_rate_cb);
- 	if (ret) {
+-	}
+-
+-	cs->timer.base = base;
+-	cs->timer.clk = clk;
+-	cs->timer.clk_rate_cb.notifier_call = sun5i_rate_cb_clksrc;
+-	cs->timer.clk_rate_cb.next = NULL;
+-
+-	ret = clk_notifier_register(clk, &cs->timer.clk_rate_cb);
+-	if (ret) {
 -		pr_err("Unable to register clock notifier.\n");
 -		goto err_disable_clk;
-+		dev_err(dev, "Unable to register clock notifier.\n");
+-	}
+-
+ 	writel(~0, base + TIMER_INTVAL_LO_REG(1));
+ 	writel(TIMER_CTL_ENABLE | TIMER_CTL_RELOAD,
+ 	       base + TIMER_CTL_REG(1));
+@@ -229,72 +196,20 @@ static int __init sun5i_setup_clocksource(struct device_node *node,
+ 	ret = clocksource_register_hz(&cs->clksrc, rate);
+ 	if (ret) {
+ 		pr_err("Couldn't register clock source.\n");
+-		goto err_remove_notifier;
 +		return ret;
  	}
  
--	rstc = of_reset_control_get(node, NULL);
--	if (!IS_ERR(rstc))
-+	rstc = devm_reset_control_get_optional_exclusive(dev, NULL);
-+	if (rstc)
- 		reset_control_deassert(rstc);
- 
--	ret = sun5i_setup_clocksource(node, st, rate);
-+	ret = sun5i_setup_clocksource(pdev, rate);
-+	if (ret)
-+		return ret;
-+
-+	ret = sun5i_setup_clockevent(pdev, rate, irq);
- 	if (ret)
--		goto err_remove_notifier;
-+		goto err_unreg_clocksource;
- 
--	return sun5i_setup_clockevent(node, st, rate, irq);
-+	return 0;
- 
+ 	return 0;
+-
 -err_remove_notifier:
--	clk_notifier_unregister(clk, &st->clk_rate_cb);
+-	clk_notifier_unregister(clk, &cs->timer.clk_rate_cb);
 -err_disable_clk:
 -	clk_disable_unprepare(clk);
 -err_free:
--	kfree(st);
-+err_unreg_clocksource:
-+	clocksource_unregister(&st->clksrc);
- 	return ret;
+-	kfree(cs);
+-	return ret;
+-}
+-
+-static int sun5i_rate_cb_clkevt(struct notifier_block *nb,
+-				unsigned long event, void *data)
+-{
+-	struct clk_notifier_data *ndata = data;
+-	struct sun5i_timer *timer = to_sun5i_timer(nb);
+-	struct sun5i_timer_clkevt *ce = container_of(timer, struct sun5i_timer_clkevt, timer);
+-
+-	if (event == POST_RATE_CHANGE) {
+-		clockevents_update_freq(&ce->clkevt, ndata->new_rate);
+-		ce->timer.ticks_per_jiffy = DIV_ROUND_UP(ndata->new_rate, HZ);
+-	}
+-
+-	return NOTIFY_DONE;
  }
--TIMER_OF_DECLARE(sun5i_a13, "allwinner,sun5i-a13-hstimer",
--			   sun5i_timer_init);
--TIMER_OF_DECLARE(sun7i_a20, "allwinner,sun7i-a20-hstimer",
--			   sun5i_timer_init);
+ 
+-static int __init sun5i_setup_clockevent(struct device_node *node, void __iomem *base,
+-					 struct clk *clk, int irq)
++static int __init sun5i_setup_clockevent(struct device_node *node,
++					 struct sun5i_timer *ce,
++					 unsigned long rate, int irq)
+ {
+-	struct sun5i_timer_clkevt *ce;
+-	unsigned long rate;
++	void __iomem *base = ce->timer.base;
+ 	int ret;
+ 	u32 val;
+ 
+-	ce = kzalloc(sizeof(*ce), GFP_KERNEL);
+-	if (!ce)
+-		return -ENOMEM;
+-
+-	ret = clk_prepare_enable(clk);
+-	if (ret) {
+-		pr_err("Couldn't enable parent clock\n");
+-		goto err_free;
+-	}
+-
+-	rate = clk_get_rate(clk);
+-	if (!rate) {
+-		pr_err("Couldn't get parent clock rate\n");
+-		ret = -EINVAL;
+-		goto err_disable_clk;
+-	}
+-
+-	ce->timer.base = base;
+-	ce->timer.ticks_per_jiffy = DIV_ROUND_UP(rate, HZ);
+-	ce->timer.clk = clk;
+-	ce->timer.clk_rate_cb.notifier_call = sun5i_rate_cb_clkevt;
+-	ce->timer.clk_rate_cb.next = NULL;
+-
+-	ret = clk_notifier_register(clk, &ce->timer.clk_rate_cb);
+-	if (ret) {
+-		pr_err("Unable to register clock notifier.\n");
+-		goto err_disable_clk;
+-	}
+-
+ 	ce->clkevt.name = node->name;
+ 	ce->clkevt.features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT;
+ 	ce->clkevt.set_next_event = sun5i_clkevt_next_event;
+@@ -317,27 +232,25 @@ static int __init sun5i_setup_clockevent(struct device_node *node, void __iomem 
+ 			  "sun5i_timer0", ce);
+ 	if (ret) {
+ 		pr_err("Unable to register interrupt\n");
+-		goto err_remove_notifier;
++		return ret;
+ 	}
+ 
+ 	return 0;
+-
+-err_remove_notifier:
+-	clk_notifier_unregister(clk, &ce->timer.clk_rate_cb);
+-err_disable_clk:
+-	clk_disable_unprepare(clk);
+-err_free:
+-	kfree(ce);
+-	return ret;
+ }
+ 
+ static int __init sun5i_timer_init(struct device_node *node)
+ {
++	struct sun5i_timer *st;
+ 	struct reset_control *rstc;
+ 	void __iomem *timer_base;
+ 	struct clk *clk;
++	unsigned long rate;
+ 	int irq, ret;
+ 
++	st = kzalloc(sizeof(*st), GFP_KERNEL);
++	if (!st)
++		return -ENOMEM;
 +
-+static void sun5i_timer_remove(struct platform_device *pdev)
-+{
-+	struct sun5i_timer *st = platform_get_drvdata(pdev);
+ 	timer_base = of_io_request_and_map(node, 0, of_node_full_name(node));
+ 	if (IS_ERR(timer_base)) {
+ 		pr_err("Can't map registers\n");
+@@ -356,15 +269,48 @@ static int __init sun5i_timer_init(struct device_node *node)
+ 		return PTR_ERR(clk);
+ 	}
+ 
++	ret = clk_prepare_enable(clk);
++	if (ret) {
++		pr_err("Couldn't enable parent clock\n");
++		goto err_free;
++	}
 +
-+	clocksource_unregister(&st->clksrc);
-+}
++	rate = clk_get_rate(clk);
++	if (!rate) {
++		pr_err("Couldn't get parent clock rate\n");
++		ret = -EINVAL;
++		goto err_disable_clk;
++	}
 +
-+static const struct of_device_id sun5i_timer_of_match[] = {
-+	{ .compatible = "allwinner,sun5i-a13-hstimer" },
-+	{ .compatible = "allwinner,sun7i-a20-hstimer" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, sun5i_timer_of_match);
++	st->timer.base = timer_base;
++	st->timer.ticks_per_jiffy = DIV_ROUND_UP(rate, HZ);
++	st->timer.clk = clk;
++	st->timer.clk_rate_cb.notifier_call = sun5i_rate_cb;
++	st->timer.clk_rate_cb.next = NULL;
 +
-+static struct platform_driver sun5i_timer_driver = {
-+	.probe		= sun5i_timer_probe,
-+	.remove_new	= sun5i_timer_remove,
-+	.driver	= {
-+		.name	= "sun5i-timer",
-+		.of_match_table = sun5i_timer_of_match,
-+		.suppress_bind_attrs = true,
-+	},
-+};
-+module_platform_driver(sun5i_timer_driver);
++	ret = clk_notifier_register(clk, &st->timer.clk_rate_cb);
++	if (ret) {
++		pr_err("Unable to register clock notifier.\n");
++		goto err_disable_clk;
++	}
++
+ 	rstc = of_reset_control_get(node, NULL);
+ 	if (!IS_ERR(rstc))
+ 		reset_control_deassert(rstc);
+ 
+-	ret = sun5i_setup_clocksource(node, timer_base, clk, irq);
++	ret = sun5i_setup_clocksource(node, st, rate);
+ 	if (ret)
+-		return ret;
++		goto err_remove_notifier;
+ 
+-	return sun5i_setup_clockevent(node, timer_base, clk, irq);
++	return sun5i_setup_clockevent(node, st, rate, irq);
++
++err_remove_notifier:
++	clk_notifier_unregister(clk, &st->timer.clk_rate_cb);
++err_disable_clk:
++	clk_disable_unprepare(clk);
++err_free:
++	kfree(st);
++	return ret;
+ }
+ TIMER_OF_DECLARE(sun5i_a13, "allwinner,sun5i-a13-hstimer",
+ 			   sun5i_timer_init);
