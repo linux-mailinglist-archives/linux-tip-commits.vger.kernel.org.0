@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA34D78F298
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Aug 2023 20:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1873B78F2E9
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 31 Aug 2023 20:52:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230019AbjHaS3l (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 31 Aug 2023 14:29:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53308 "EHLO
+        id S238162AbjHaSwy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 31 Aug 2023 14:52:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244704AbjHaS3l (ORCPT
+        with ESMTP id S230504AbjHaSwy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 31 Aug 2023 14:29:41 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F05BE69;
-        Thu, 31 Aug 2023 11:29:37 -0700 (PDT)
-Date:   Thu, 31 Aug 2023 18:29:34 -0000
+        Thu, 31 Aug 2023 14:52:54 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABA67FB;
+        Thu, 31 Aug 2023 11:52:51 -0700 (PDT)
+Date:   Thu, 31 Aug 2023 18:52:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1693506575;
+        s=2020; t=1693507969;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=CxxkCCKN7zkzoUmSJWbQ/w3K6kG8rTUbbFDU2aM6cCA=;
-        b=GGutSrbND0NZF379PiLyMiK2amiKt6/jshQZm87GM6HBqfz8zpivcxRSCMZuIuKKIfAbDV
-        NTTjyPmHIU+FijKLqvj7kxbi9cGZLuMsyrjXHLx1LohZAOsi5Q0atRsZ8Vdu1sVNlEBkWO
-        c9aWxesGmYrU7SwLL1q5FNJfhNuxDyY+8na/R+eTvoCqAbLRU0a643sFuuSGaJzyDxirv7
-        1ZwBD1gqrp+KIHKUrdVTKqj757q0kmdllWZdm3EPsuLJYifshc/N/TbH/ANpqCpDPgJOZk
-        NyfqfTuG1r+uIJnkx4hXBScpztvuoaRVU/zsOHVZ4rsbvxaxykrolwr1fGO90w==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6tnclre8+qm6bY1pvrIO0AjJQzVjzGd+iNy32siCDyM=;
+        b=wi4JKK4B7lMG8cpqYyjhjdFpGoVDep1LigSJYuhLVEdrn09gtmMRIbCo+a/DJofF3QPjD/
+        fBdqtXXvKoI2f8ByGiqnW9w2lgeiB3qGIg/Q06jUE9ORFHdEkRK8V2dipYSCgttMXeOKWh
+        QjbOPLA5ZtnRat14OCCbHHuTAb9XT1ZyitJ6kXCVImwXjLyvIaqkdiD624pduuiM7NgOQe
+        8vwxqfbg2KEXW3SjpxSs/HmNQzb5G+KByf0nR8isuYwE8e5mnpxZumw9bqN/an+BF7BrbI
+        wkrsoBgPNycUndZkE5GqgwM514wPb1J7UPP3PZWs98IV8xnZTJHdtiO/PNeA8w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1693506575;
+        s=2020e; t=1693507969;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=CxxkCCKN7zkzoUmSJWbQ/w3K6kG8rTUbbFDU2aM6cCA=;
-        b=4+kgQahPqwfKsnd2ASEYMIuK5b11qxHacgr/LPKQ9hhMobyuvzY2LktfYbBpvBACK/sT7A
-        uhg5gxsdyyxZ+VBQ==
-From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6tnclre8+qm6bY1pvrIO0AjJQzVjzGd+iNy32siCDyM=;
+        b=Fpzht2Gl7n/op9zd3o+jK9FrekoPxaISEghQaBRjaBU1ZaIhbqvbzRGrvBnHMBJOZAwSWh
+        zUWo5ooJvqv5y0AA==
+From:   "tip-bot2 for Vincenzo Palazzo" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/speculation: Mark all Skylake CPUs as vulnerable to GDS
-Cc:     Michael Zhivich <mzhivich@akamai.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/irq/i8259: Fix kernel-doc annotation warning
+Cc:     Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20230830131211.88226-1-vincenzopalazzodev@gmail.com>
+References: <20230830131211.88226-1-vincenzopalazzodev@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169350657484.27769.4550404713182382438.tip-bot2@tip-bot2>
+Message-ID: <169350796885.27769.16966802994476082698.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,75 +66,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     c9f4c45c8ec3f07f4f083f9750032a1ec3eab6b2
-Gitweb:        https://git.kernel.org/tip/c9f4c45c8ec3f07f4f083f9750032a1ec3eab6b2
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Tue, 29 Aug 2023 08:07:25 -07:00
+Commit-ID:     d87e89c2735772fbed933be0d19e032c1910a51f
+Gitweb:        https://git.kernel.org/tip/d87e89c2735772fbed933be0d19e032c1910a51f
+Author:        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+AuthorDate:    Wed, 30 Aug 2023 15:12:09 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 31 Aug 2023 20:20:31 +02:00
+CommitterDate: Thu, 31 Aug 2023 20:43:30 +02:00
 
-x86/speculation: Mark all Skylake CPUs as vulnerable to GDS
+x86/irq/i8259: Fix kernel-doc annotation warning
 
-The Gather Data Sampling (GDS) vulnerability is common to all Skylake
-processors.  However, the "client" Skylakes* are now in this list:
+Fix this warning:
 
-	https://www.intel.com/content/www/us/en/support/articles/000022396/processors.html
+  arch/x86/kernel/i8259.c:235: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+   * ELCR registers (0x4d0, 0x4d1) control edge/level of IRQ
+    CC      arch/x86/kernel/irqinit.o
 
-which means they are no longer included for new vulnerabilities here:
-
-	https://www.intel.com/content/www/us/en/developer/topic-technology/software-security-guidance/processors-affected-consolidated-product-cpu-model.html
-
-or in other GDS documentation.  Thus, they were not included in the
-original GDS mitigation patches.
-
-Mark SKYLAKE and SKYLAKE_L as vulnerable to GDS to match all the
-other Skylake CPUs (which include Kaby Lake).  Also group the CPUs
-so that the ones that share the exact same vulnerabilities are next
-to each other.
-
-Last, move SRBDS to the end of each line.  This makes it clear at a
-glance that SKYLAKE_X is unique.  Of the five Skylakes, it is the
-only "server" CPU and has a different implementation from the
-clients of the "special register" hardware, making it immune to SRBDS.
-
-This makes the diff much harder to read, but the resulting table is
-worth it.
-
-I very much appreciate the report from Michael Zhivich about this
-issue.  Despite what level of support a hardware vendor is providing,
-the kernel very much needs an accurate and up-to-date list of
-vulnerable CPUs.  More reports like this are very welcome.
-
-* Client Skylakes are CPUID 406E3/506E3 which is family 6, models
-  0x4E and 0x5E, aka INTEL_FAM6_SKYLAKE and INTEL_FAM6_SKYLAKE_L.
-
-Reported-by: Michael Zhivich <mzhivich@akamai.com>
-Fixes: 8974eb588283 ("x86/speculation: Add Gather Data Sampling mitigation")
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20230830131211.88226-1-vincenzopalazzodev@gmail.com
 ---
- arch/x86/kernel/cpu/common.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/i8259.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index e3a65e9..00f043a 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1265,11 +1265,11 @@ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
- 	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
- 	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED),
- 	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED | GDS),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
- 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
- 	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
- 	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
+diff --git a/arch/x86/kernel/i8259.c b/arch/x86/kernel/i8259.c
+index 4d8aff0..30a5520 100644
+--- a/arch/x86/kernel/i8259.c
++++ b/arch/x86/kernel/i8259.c
+@@ -231,9 +231,7 @@ struct irq_chip i8259A_chip = {
+ };
+ 
+ static char irq_trigger[2];
+-/**
+- * ELCR registers (0x4d0, 0x4d1) control edge/level of IRQ
+- */
++/* ELCR registers (0x4d0, 0x4d1) control edge/level of IRQ */
+ static void restore_ELCR(char *trigger)
+ {
+ 	outb(trigger[0], PIC_ELCR1);
