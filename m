@@ -2,115 +2,130 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D08D790327
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Sep 2023 23:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89FB6790766
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Sep 2023 12:46:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350808AbjIAVq1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 Sep 2023 17:46:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50506 "EHLO
+        id S1352000AbjIBKqN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 2 Sep 2023 06:46:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350801AbjIAVmu (ORCPT
+        with ESMTP id S234809AbjIBKqN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 Sep 2023 17:42:50 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 673D32101;
-        Fri,  1 Sep 2023 14:39:37 -0700 (PDT)
-Date:   Fri, 01 Sep 2023 21:39:34 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1693604375;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=r1rbe0+qLjSIdXob5RQEh6hDPQoTXLohm3YDfo90QS8=;
-        b=hJFaRRL2vfHw+TVmYRkeQXZcsI6a5HhWTuiQOAcLAnDYHqVaq2NFeZz35gqCZcCMadZNOD
-        aTrXIDOKzCyKjQqqLbu7DcO2tVLnvePEPx4SQ93tj1bI/ZNWr0cVTGbit8GfgvjYV0zceU
-        LQ7o1eTEfRUXN06dXukciSOo8ynUQ3l4dYlIFh4WliAZT/uJ8zo6bX/74KioeWafG6w5kA
-        q4UkA6fyK07NQN07Z1Dt9WQ6GbGHRlTahdP/ne6R/KrJRVy7GNxkt6WNbVStU7vG75MK+x
-        bRGIoYd3e8D5xRSZ6FBVQCJr3twIzNyIuVTafyRd1wsqdKI+wTSJmC8KyyA2FA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1693604375;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=r1rbe0+qLjSIdXob5RQEh6hDPQoTXLohm3YDfo90QS8=;
-        b=e8PSjHwxEbW17Hb3oBKDdzO8090MMf3IGAyVmvKsDj/nGNzCrZnBQb2eX5o9O069dE2fVm
-        N/J7hSdeRVGMguCg==
-From:   "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] selftests/x86: Update map_shadow_stack syscall nr
-Cc:     Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
+        Sat, 2 Sep 2023 06:46:13 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20574F3;
+        Sat,  2 Sep 2023 03:46:10 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-401b0d97850so28868995e9.2;
+        Sat, 02 Sep 2023 03:46:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693651568; x=1694256368; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6Kh1VI1LcjsBnupdfTnq6KlXv8yLyvgvRnkwgnm5o6U=;
+        b=sZsMF9f9fM3ZZxDYfqNZgBIUDZl2rBQ7jfaXEYG/LF04lX6Nw4K98qyFX1MVBpaG2R
+         2Tbxy84+TVepePpo3labnL3rPhrbOYS88cDXQz/0/KABtD6J8g1HL/9yhuOBJQizwf/5
+         DD2PeBlyHbXjlChhJ31uEAksnQKmjrDI0JTmZbA8bpROXGTFZ+m2Y+0PB8bY0kwqKvcQ
+         LJJh81rP5tp22wzap9Y0pATpmFFALQWWWXY8nMjbfzsv4abbtz6/TBK+Kpb24wY/HbCC
+         feTfwH6ogBx8n/k0wwDSwEd4Lb4EHOklWH44a347nJbPAjoRCniiu8lMoXKJkJlGQMPn
+         Rg4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693651568; x=1694256368;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6Kh1VI1LcjsBnupdfTnq6KlXv8yLyvgvRnkwgnm5o6U=;
+        b=KrjhPaUhZBKVYA810e+YRw9S+s7rC2Ib0yaMGqOiEGPWhn7JTNRJRAuIl5+7a0pUz5
+         QMOBkFzjwEHGWe90c7lmGr/UKEVhj4T8ZVoACaSBAP/YYh/6OycRfglw6rE0jwmbKEAe
+         ou8EVda5U/Xu0zluytlrpRgvd4Z6NPrYW45uYX1YStEF0UbjE5Yjm4+e2NPQFwKYdUvW
+         oBM2axJQG238ZNw4ywOHXHbsshtEwmK1ZmKLHuwDfo6yWtuuq7ZmixMujI6UnhTiRG3s
+         h8lhBqGJ47tF5Xn4Ou47ttja6CAOdH4qJ7XlpvtsqaEc9Sj39Uk+yrUqzowK52TUArrS
+         RRIw==
+X-Gm-Message-State: AOJu0YzX7Q9p9kgpWnFwR2hMLVDoIblPA5AR4i+lJiLWOGV2r1WbnmNe
+        oIrr/A+ufYqiW7UsiNC+4l8=
+X-Google-Smtp-Source: AGHT+IGw3MfYy/uixXGIijRnylwpNaNUbgKvyqvZnK8GYnTifW1QIar7BFthAZ79YlDJ9ikGvECA5A==
+X-Received: by 2002:a1c:4b08:0:b0:3fb:b3aa:1c8a with SMTP id y8-20020a1c4b08000000b003fbb3aa1c8amr3400357wma.16.1693651568188;
+        Sat, 02 Sep 2023 03:46:08 -0700 (PDT)
+Received: from gmail.com (1F2EF6A2.nat.pool.telekom.hu. [31.46.246.162])
+        by smtp.gmail.com with ESMTPSA id y3-20020adfe6c3000000b00317909f9985sm8107077wrm.113.2023.09.02.03.46.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Sep 2023 03:46:07 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Sat, 2 Sep 2023 12:46:05 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
+        linux-tip-commits@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230901181652.2583861-1-rick.p.edgecombe@intel.com>
-References: <20230901181652.2583861-1-rick.p.edgecombe@intel.com>
+Subject: Re: [tip: x86/bugs] x86/srso: Fix vulnerability reporting for
+ missing microcode
+Message-ID: <ZPMSbabIw5ZtTqbo@gmail.com>
+References: <65556eeb1bf7cb9bd7db8662ef115dd73191db84.1692919072.git.jpoimboe@kernel.org>
+ <169295877252.27769.17888941552572030723.tip-bot2@tip-bot2>
+ <20230901094053.GDZPGxpcG56GwE0LyG@fat_crate.local>
 MIME-Version: 1.0
-Message-ID: <169360437465.27769.16274321384160860209.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230901094053.GDZPGxpcG56GwE0LyG@fat_crate.local>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     6ea7bb00c1ba180f8bf8320b8d59b532501c5271
-Gitweb:        https://git.kernel.org/tip/6ea7bb00c1ba180f8bf8320b8d59b532501c5271
-Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
-AuthorDate:    Fri, 01 Sep 2023 11:16:52 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 01 Sep 2023 23:34:13 +02:00
+* Borislav Petkov <bp@alien8.de> wrote:
 
-selftests/x86: Update map_shadow_stack syscall nr
+> On Fri, Aug 25, 2023 at 10:19:32AM -0000, tip-bot2 for Josh Poimboeuf wrote:
+> > The following commit has been merged into the x86/bugs branch of tip:
+> > 
+> > Commit-ID:     b3be1397be0340b2c30b2dcd7339dbfaa5563e2b
+> > Gitweb:        https://git.kernel.org/tip/b3be1397be0340b2c30b2dcd7339dbfaa5563e2b
+> > Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+> > AuthorDate:    Fri, 25 Aug 2023 00:01:41 -07:00
+> > Committer:     Ingo Molnar <mingo@kernel.org>
+> > CommitterDate: Fri, 25 Aug 2023 11:21:59 +02:00
+> > 
+> > x86/srso: Fix vulnerability reporting for missing microcode
+> > 
+> > The SRSO default safe-ret mitigation is reported as "mitigated" even if
+> > microcode hasn't been updated.  That's wrong because userspace may still
+> > be vulnerable to SRSO attacks due to IBPB not flushing branch type
+> > predictions.
+> > 
+> > Report the safe-ret + !microcode case as vulnerable.
+> > 
+> > Also report the microcode-only case as vulnerable as it leaves the
+> > kernel open to attacks.
+> > 
+> > Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+> > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> > Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> > Link: https://lore.kernel.org/r/65556eeb1bf7cb9bd7db8662ef115dd73191db84.1692919072.git.jpoimboe@kernel.org
+> > ---
+> >  Documentation/admin-guide/hw-vuln/srso.rst | 22 ++++++++++----
+> >  arch/x86/kernel/cpu/bugs.c                 | 34 ++++++++++++---------
+> >  2 files changed, 37 insertions(+), 19 deletions(-)
+> 
+> This is still unfixed:
+> 
+> https://lore.kernel.org/r/20230825072542.GFZOhXdgXpUidW51lC@fat_crate.local
+> 
+> mingo, do you want fixes ontop or do you wanna rebase this branch?
 
-Shadow stack's selftest utilizes the map_shadow_stack syscall. The
-syscall is new with the feature, but the selftests cannot automatically
-find the headers for the kernel source tree they are located in. This
-resulted in the shadow stack test failing to build until the brand new
-headers were installed.
+Since these are fixes that are supposed to be fully correct,
+I'd suggest we rebase it.
 
-To avoid this, a copy of the new uapi defines needed by the test were
-included in the selftest (see link for discussion). When shadow stack was
-merged the syscall number was changed, but the copy in the selftest was
-not updated.
+Josh, mind sending a v3 SRSO series, as a replacement for x86/bugs,
+with Boris's review & testing feedback addressed?
 
-So update the copy of the syscall number define used when the required
-headers are not installed, to have the final syscall number from the
-merge.
+[ Feel free to send it as a delta series against v2 in x86/bugs and I'll 
+  backmerge it all. ]
 
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/lkml/Y%2FijdXoTAATt0+Ct@zn.tnic/
-Link: https://lore.kernel.org/r/20230901181652.2583861-1-rick.p.edgecombe@intel.com
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Fixes: df57721f9a63 ("Merge tag 'x86_shstk_for_6.6-rc1' of [...]")
----
- tools/testing/selftests/x86/test_shadow_stack.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
 
-diff --git a/tools/testing/selftests/x86/test_shadow_stack.c b/tools/testing/selftests/x86/test_shadow_stack.c
-index 2188968..757e652 100644
---- a/tools/testing/selftests/x86/test_shadow_stack.c
-+++ b/tools/testing/selftests/x86/test_shadow_stack.c
-@@ -40,7 +40,7 @@
-  * without building the headers.
-  */
- #ifndef __NR_map_shadow_stack
--#define __NR_map_shadow_stack	452
-+#define __NR_map_shadow_stack	453
- 
- #define SHADOW_STACK_SET_TOKEN	(1ULL << 0)
- 
+	Ingo
