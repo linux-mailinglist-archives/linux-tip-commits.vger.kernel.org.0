@@ -2,110 +2,111 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FB9F791919
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Sep 2023 15:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE74A7928D4
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Sep 2023 18:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349862AbjIDNsa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Sep 2023 09:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51812 "EHLO
+        id S1349622AbjIEQY2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Sep 2023 12:24:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347747AbjIDNs3 (ORCPT
+        with ESMTP id S1349788AbjIEE5l (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 Sep 2023 09:48:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F04E170D;
-        Mon,  4 Sep 2023 06:48:23 -0700 (PDT)
-Date:   Mon, 04 Sep 2023 13:48:20 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1693835301;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=otnQIUtjVCVy162nyXJjyBsoULeNjLd2WaaoV4qD1E4=;
-        b=E/4wsoDLUQYfn94n5PU5r7MC4TzqOekYuRFjJc2yvBMn+upA9Qi6tYGA++E4Rv37K1yt5x
-        Z1Sxe/4zKTLEyhiOS6RQd23ghSAWh1V2sGo8aV20613EcYlSUEXdaiFcC0t3sBLVwLggTh
-        rB253pDoKxQgB824MXWvk/SinLJ4BB48Hxbin+dwhr1jh1b+mqyMo+ADgrgyrNo3sYrdS1
-        yrpF/jDN5rVggCyv96yfR2QXp0QPlwJvqLmUjS3JompVkQepYbcvMW/YJjd9A24NSvJo1W
-        E/vUGTYzqUrNUeYvVIsQd7tTdYaqbYj5TWs4kyZJu8eRK0Huo6qcgPzxF4CVXw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1693835301;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=otnQIUtjVCVy162nyXJjyBsoULeNjLd2WaaoV4qD1E4=;
-        b=mUC3z74yTsE1qrM/ICGdAcB953ORs0A2xYbuau9qAMTciFHmhR+Rg3bCnOHsO8beYvr2LO
-        irbhi167ZedvipCA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/smp: Don't send INIT to non-present and non-booted CPUs
-Cc:     Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasant Hegde <vasant.hegde@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <87cyzwjbff.ffs@tglx>
-References: <87cyzwjbff.ffs@tglx>
+        Tue, 5 Sep 2023 00:57:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C01D0CC5;
+        Mon,  4 Sep 2023 21:57:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F8246121E;
+        Tue,  5 Sep 2023 04:57:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677BAC433C8;
+        Tue,  5 Sep 2023 04:57:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693889855;
+        bh=JIP++cPVdN4nK3wcHg3sRFafmL9acf1KxQP/30bEbZ4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BfxU8DmDHYvBQ5L1+iQFw3IbyQocEjxrHCCnJzwrPA2XPKbDIHPvt5y6+b797wLia
+         jJ00w09VMHovvemGQvOANj5vCTBg1/ESHuJotjKx3bseYPHEBYS8of0u0kyiGPFCt7
+         inmX63wH7bAuWWqIWp+s/rIpbDVVAZxXtz2tVS9RiYuxoj5fn6yOvgtlvh5s3vIExD
+         dJht24iJ4ZfKymIGu19DjkSw+dwq1BjSQ5EGGCRaMdAIKn3tYOn0aUwu2eUHAV0mXB
+         TGCyIThhe2kMYtJvDrvrIOEr/I60Mg6wa6gbZTcBq0FFKWJ0qJ1Xz3Ece32rWh2+Bz
+         mj8Phk/ngB93w==
+Date:   Mon, 4 Sep 2023 21:57:33 -0700
+From:   Josh Poimboeuf <jpoimboe@kernel.org>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     Borislav Petkov <bp@alien8.de>, linux-tip-commits@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [tip: x86/bugs] x86/srso: Fix vulnerability reporting for
+ missing microcode
+Message-ID: <20230905045733.tcr7f4x6lxy7djsv@treble>
+References: <65556eeb1bf7cb9bd7db8662ef115dd73191db84.1692919072.git.jpoimboe@kernel.org>
+ <169295877252.27769.17888941552572030723.tip-bot2@tip-bot2>
+ <20230901094053.GDZPGxpcG56GwE0LyG@fat_crate.local>
+ <ZPMSbabIw5ZtTqbo@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169383530091.27769.15770168191921146668.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZPMSbabIw5ZtTqbo@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Sat, Sep 02, 2023 at 12:46:05PM +0200, Ingo Molnar wrote:
+> 
+> * Borislav Petkov <bp@alien8.de> wrote:
+> 
+> > On Fri, Aug 25, 2023 at 10:19:32AM -0000, tip-bot2 for Josh Poimboeuf wrote:
+> > > The following commit has been merged into the x86/bugs branch of tip:
+> > > 
+> > > Commit-ID:     b3be1397be0340b2c30b2dcd7339dbfaa5563e2b
+> > > Gitweb:        https://git.kernel.org/tip/b3be1397be0340b2c30b2dcd7339dbfaa5563e2b
+> > > Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+> > > AuthorDate:    Fri, 25 Aug 2023 00:01:41 -07:00
+> > > Committer:     Ingo Molnar <mingo@kernel.org>
+> > > CommitterDate: Fri, 25 Aug 2023 11:21:59 +02:00
+> > > 
+> > > x86/srso: Fix vulnerability reporting for missing microcode
+> > > 
+> > > The SRSO default safe-ret mitigation is reported as "mitigated" even if
+> > > microcode hasn't been updated.  That's wrong because userspace may still
+> > > be vulnerable to SRSO attacks due to IBPB not flushing branch type
+> > > predictions.
+> > > 
+> > > Report the safe-ret + !microcode case as vulnerable.
+> > > 
+> > > Also report the microcode-only case as vulnerable as it leaves the
+> > > kernel open to attacks.
+> > > 
+> > > Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+> > > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> > > Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> > > Link: https://lore.kernel.org/r/65556eeb1bf7cb9bd7db8662ef115dd73191db84.1692919072.git.jpoimboe@kernel.org
+> > > ---
+> > >  Documentation/admin-guide/hw-vuln/srso.rst | 22 ++++++++++----
+> > >  arch/x86/kernel/cpu/bugs.c                 | 34 ++++++++++++---------
+> > >  2 files changed, 37 insertions(+), 19 deletions(-)
+> > 
+> > This is still unfixed:
+> > 
+> > https://lore.kernel.org/r/20230825072542.GFZOhXdgXpUidW51lC@fat_crate.local
+> > 
+> > mingo, do you want fixes ontop or do you wanna rebase this branch?
+> 
+> Since these are fixes that are supposed to be fully correct,
+> I'd suggest we rebase it.
+> 
+> Josh, mind sending a v3 SRSO series, as a replacement for x86/bugs,
+> with Boris's review & testing feedback addressed?
 
-Commit-ID:     3f874c9b2aae8e30463efc1872bea4baa9ed25dc
-Gitweb:        https://git.kernel.org/tip/3f874c9b2aae8e30463efc1872bea4baa9ed25dc
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 09 Aug 2023 20:52:20 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 04 Sep 2023 15:41:42 +02:00
+Ok, I'll post a v3 (with Boris' comments integrated).
 
-x86/smp: Don't send INIT to non-present and non-booted CPUs
-
-Vasant reported that kexec() can hang or reset the machine when it tries to
-park CPUs via INIT. This happens when the kernel is using extended APIC,
-but the present mask has APIC IDs >= 0x100 enumerated.
-
-As extended APIC can only handle 8 bit of APIC ID sending INIT to APIC ID
-0x100 sends INIT to APIC ID 0x0. That's the boot CPU which is special on
-x86 and INIT causes the system to hang or resets the machine.
-
-Prevent this by sending INIT only to those CPUs which have been booted
-once.
-
-Fixes: 45e34c8af58f ("x86/smp: Put CPUs into INIT on shutdown if possible")
-Reported-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/87cyzwjbff.ffs@tglx
----
- arch/x86/kernel/smpboot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index d7667a2..4e45ff4 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -1250,7 +1250,7 @@ bool smp_park_other_cpus_in_init(void)
- 	if (this_cpu)
- 		return false;
- 
--	for_each_present_cpu(cpu) {
-+	for_each_cpu_and(cpu, &cpus_booted_once_mask, cpu_present_mask) {
- 		if (cpu == this_cpu)
- 			continue;
- 		apicid = apic->cpu_present_to_apicid(cpu);
+-- 
+Josh
