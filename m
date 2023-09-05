@@ -2,58 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68A7D7928CA
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Sep 2023 18:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 496B9792F5C
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Sep 2023 21:54:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346807AbjIEQYN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Sep 2023 12:24:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52358 "EHLO
+        id S231822AbjIETyV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Sep 2023 15:54:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354207AbjIEKJq (ORCPT
+        with ESMTP id S229872AbjIETyU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Sep 2023 06:09:46 -0400
+        Tue, 5 Sep 2023 15:54:20 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DDC21B4;
-        Tue,  5 Sep 2023 03:09:42 -0700 (PDT)
-Date:   Tue, 05 Sep 2023 10:09:40 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6694D90;
+        Tue,  5 Sep 2023 12:54:17 -0700 (PDT)
+Date:   Tue, 05 Sep 2023 19:54:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1693908581;
+        s=2020; t=1693943655;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/zAW1sY8y/CFtmVQ3AG6AXSgo3LrJt8x+AHQltKYCTY=;
-        b=Ui+aKj/JzK2cMg4MxPGpkxlrvNygtE5vTNZR+4YM12pTK0J9wlgYXuOWDo6onf+FfPcZpO
-        BHbnKU/6zBdrYSrAkts88x5KuPoyevb+RRMLDOlVfW54Rlj8perTSdhvMMiMcZfqe0KmBj
-        kT3lbpMSh5STT43eL6MvOPPUQXLQPmMnMhp3/gwmPCzKFBgcB9WdmCqNfgFBuaukHUTmDv
-        nRrY743bYLHLgwWtm7NYafPgFyHtdXJ+bH3LRfZS6s8kNxcGXRlR1gXxCMbvQgskYsPNco
-        QBM1fruQwxp17xNTIFWwGucIqcOZ+Pb2ge3bA7s9GXInkeWD8oiSSMeb8Yktsg==
+        bh=DkEetIisgDsoAN0EDB2ay2IemWPkTr4JCEuUj1SOB4o=;
+        b=yD1z7IHRXyGx2FhfHigqqIE4Ve3y9DOtK9HrNsCDAEFS0Mlhwn6JxAXZgEJhqhL5KOblqm
+        CHFCXuuGABB5Nsji6ewRWM3rrioEGYk3vsaHpQ6LuYi3nXSgZlmN34LYq+Eenos5VS1QFl
+        Yl2Bpy5OKmA2iTrxrkk0DadTkxrUmZJ9oWM1WHBX4ZS9XK3H9O+t9ciPfkJDMW0W39DZrk
+        j+HEjGE4/PdqOHcEHRuTIZ3a8sf5LVTq3N1NB5T8dNCsXSDbHL6yqYtTSrMWTimjPBm6Me
+        EmeoE13Hh5SAyZWpy4d2k09eiX+siov7M2Pe4y4uTe+VbYbXghtnUqovqB4uHw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1693908581;
+        s=2020e; t=1693943655;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/zAW1sY8y/CFtmVQ3AG6AXSgo3LrJt8x+AHQltKYCTY=;
-        b=AR5hYpX5E5PURkPVwBHMNeD7J3HwKqaPtgClIz0OauPsZEdhNf5SLCZTnU0Q9LQeFVtAMq
-        kJFift+lrTQxrECg==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=DkEetIisgDsoAN0EDB2ay2IemWPkTr4JCEuUj1SOB4o=;
+        b=bCqsyZoY4AzGiKbsQRg0Pyzm9FSQnIc/qRgj/SM03A75PU0n1FBSyzsJPyOWXBsc6GQoTq
+        xyMmCeiYyOLnCTBg==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/srso: Set CPUID feature bits independently of bug
- or mitigation status
-Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Nikolay Borisov <nik.borisov@suse.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/x86/uncore: Correct the number of CHAs on EMR
+Cc:     Stephane Eranian <eranian@google.com>,
+        Yunying Sun <yunying.sun@intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <869a1709abfe13b673bdd10c2f4332ca253a40bc.1693889988.git.jpoimboe@kernel.org>
-References: <869a1709abfe13b673bdd10c2f4332ca253a40bc.1693889988.git.jpoimboe@kernel.org>
+In-Reply-To: <20230905134248.496114-1-kan.liang@linux.intel.com>
+References: <20230905134248.496114-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <169390858054.27769.11564324626267743244.tip-bot2@tip-bot2>
+Message-ID: <169394365430.27769.1939660142897168829.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,135 +66,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/bugs branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     2ab15814d800b8c4526eda2750bf33b58555b86b
-Gitweb:        https://git.kernel.org/tip/2ab15814d800b8c4526eda2750bf33b58555b86b
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 04 Sep 2023 22:04:46 -07:00
+Commit-ID:     6f7f984fa85b305799076a1bcec941b9377587de
+Gitweb:        https://git.kernel.org/tip/6f7f984fa85b305799076a1bcec941b9377587de
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Tue, 05 Sep 2023 06:42:48 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 05 Sep 2023 12:05:06 +02:00
+CommitterDate: Tue, 05 Sep 2023 21:50:21 +02:00
 
-x86/srso: Set CPUID feature bits independently of bug or mitigation status
+perf/x86/uncore: Correct the number of CHAs on EMR
 
-Booting with mitigations=off incorrectly prevents the
-X86_FEATURE_{IBPB_BRTYPE,SBPB} CPUID bits from getting set.
+Starting from SPR, the basic uncore PMON information is retrieved from
+the discovery table (resides in an MMIO space populated by BIOS). It is
+called the discovery method. The existing value of the type->num_boxes
+is from the discovery table.
 
-Also, future CPUs without X86_BUG_SRSO might still have IBPB with branch
-type prediction flushing, in which case SBPB should be used instead of
-IBPB.  The current code doesn't allow for that.
+On some SPR variants, there is a firmware bug that makes the value from the
+discovery table incorrect. We use the value from the
+SPR_MSR_UNC_CBO_CONFIG MSR to replace the one from the discovery table:
 
-Also, cpu_has_ibpb_brtype_microcode() has some surprising side effects
-and the setting of these feature bits really doesn't belong in the
-mitigation code anyway.  Move it to earlier.
+   38776cc45eb7 ("perf/x86/uncore: Correct the number of CHAs on SPR")
 
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Unfortunately, the SPR_MSR_UNC_CBO_CONFIG isn't available for the EMR
+XCC (Always returns 0), but the above firmware bug doesn't impact the
+EMR XCC.
+
+Don't let the value from the MSR replace the existing value from the
+discovery table.
+
+Fixes: 38776cc45eb7 ("perf/x86/uncore: Correct the number of CHAs on SPR")
+Reported-by: Stephane Eranian <eranian@google.com>
+Reported-by: Yunying Sun <yunying.sun@intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/869a1709abfe13b673bdd10c2f4332ca253a40bc.1693889988.git.jpoimboe@kernel.org
+Tested-by: Yunying Sun <yunying.sun@intel.com>
+Link: https://lore.kernel.org/r/20230905134248.496114-1-kan.liang@linux.intel.com
 ---
- arch/x86/include/asm/processor.h |  2 --
- arch/x86/kernel/cpu/amd.c        | 28 +++++++++-------------------
- arch/x86/kernel/cpu/bugs.c       | 13 +------------
- 3 files changed, 10 insertions(+), 33 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 0086920..a3669a7 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -683,13 +683,11 @@ extern u16 get_llc_id(unsigned int cpu);
- #ifdef CONFIG_CPU_SUP_AMD
- extern u32 amd_get_nodes_per_socket(void);
- extern u32 amd_get_highest_perf(void);
--extern bool cpu_has_ibpb_brtype_microcode(void);
- extern void amd_clear_divider(void);
- extern void amd_check_microcode(void);
- #else
- static inline u32 amd_get_nodes_per_socket(void)	{ return 0; }
- static inline u32 amd_get_highest_perf(void)		{ return 0; }
--static inline bool cpu_has_ibpb_brtype_microcode(void)	{ return false; }
- static inline void amd_clear_divider(void)		{ }
- static inline void amd_check_microcode(void)		{ }
- #endif
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index dd8379d..afacc48 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -766,6 +766,15 @@ static void early_init_amd(struct cpuinfo_x86 *c)
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index 4d34998..8250f0f 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -6474,8 +6474,18 @@ void spr_uncore_cpu_init(void)
  
- 	if (cpu_has(c, X86_FEATURE_TOPOEXT))
- 		smp_num_siblings = ((cpuid_ebx(0x8000001e) >> 8) & 0xff) + 1;
-+
-+	if (!cpu_has(c, X86_FEATURE_IBPB_BRTYPE)) {
-+		if (c->x86 == 0x17 && boot_cpu_has(X86_FEATURE_AMD_IBPB))
-+			setup_force_cpu_cap(X86_FEATURE_IBPB_BRTYPE);
-+		else if (c->x86 >= 0x19 && !wrmsrl_safe(MSR_IA32_PRED_CMD, PRED_CMD_SBPB)) {
-+			setup_force_cpu_cap(X86_FEATURE_IBPB_BRTYPE);
-+			setup_force_cpu_cap(X86_FEATURE_SBPB);
-+		}
-+	}
+ 	type = uncore_find_type_by_id(uncore_msr_uncores, UNCORE_SPR_CHA);
+ 	if (type) {
++		/*
++		 * The value from the discovery table (stored in the type->num_boxes
++		 * of UNCORE_SPR_CHA) is incorrect on some SPR variants because of a
++		 * firmware bug. Using the value from SPR_MSR_UNC_CBO_CONFIG to replace it.
++		 */
+ 		rdmsrl(SPR_MSR_UNC_CBO_CONFIG, num_cbo);
+-		type->num_boxes = num_cbo;
++		/*
++		 * The MSR doesn't work on the EMR XCC, but the firmware bug doesn't impact
++		 * the EMR XCC. Don't let the value from the MSR replace the existing value.
++		 */
++		if (num_cbo)
++			type->num_boxes = num_cbo;
+ 	}
+ 	spr_uncore_iio_free_running.num_boxes = uncore_type_max_boxes(uncore_msr_uncores, UNCORE_SPR_IIO);
  }
- 
- static void init_amd_k8(struct cpuinfo_x86 *c)
-@@ -1301,25 +1310,6 @@ void amd_check_microcode(void)
- 	on_each_cpu(zenbleed_check_cpu, NULL, 1);
- }
- 
--bool cpu_has_ibpb_brtype_microcode(void)
--{
--	switch (boot_cpu_data.x86) {
--	/* Zen1/2 IBPB flushes branch type predictions too. */
--	case 0x17:
--		return boot_cpu_has(X86_FEATURE_AMD_IBPB);
--	case 0x19:
--		/* Poke the MSR bit on Zen3/4 to check its presence. */
--		if (!wrmsrl_safe(MSR_IA32_PRED_CMD, PRED_CMD_SBPB)) {
--			setup_force_cpu_cap(X86_FEATURE_SBPB);
--			return true;
--		} else {
--			return false;
--		}
--	default:
--		return false;
--	}
--}
--
- /*
-  * Issue a DIV 0/1 insn to clear any division data from previous DIV
-  * operations.
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index bdd3e29..b0ae985 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2404,27 +2404,16 @@ early_param("spec_rstack_overflow", srso_parse_cmdline);
- 
- static void __init srso_select_mitigation(void)
- {
--	bool has_microcode;
-+	bool has_microcode = boot_cpu_has(X86_FEATURE_IBPB_BRTYPE);
- 
- 	if (!boot_cpu_has_bug(X86_BUG_SRSO) || cpu_mitigations_off())
- 		goto pred_cmd;
- 
--	/*
--	 * The first check is for the kernel running as a guest in order
--	 * for guests to verify whether IBPB is a viable mitigation.
--	 */
--	has_microcode = boot_cpu_has(X86_FEATURE_IBPB_BRTYPE) || cpu_has_ibpb_brtype_microcode();
- 	if (!has_microcode) {
- 		pr_warn("IBPB-extending microcode not applied!\n");
- 		pr_warn(SRSO_NOTICE);
- 	} else {
- 		/*
--		 * Enable the synthetic (even if in a real CPUID leaf)
--		 * flags for guests.
--		 */
--		setup_force_cpu_cap(X86_FEATURE_IBPB_BRTYPE);
--
--		/*
- 		 * Zen1/2 with SMT off aren't vulnerable after the right
- 		 * IBPB microcode has been applied.
- 		 */
