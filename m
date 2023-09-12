@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3876279C6DA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Sep 2023 08:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4731D79C833
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Sep 2023 09:31:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbjILGWg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Sep 2023 02:22:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44270 "EHLO
+        id S231577AbjILHbp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Sep 2023 03:31:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbjILGWg (ORCPT
+        with ESMTP id S229766AbjILHbo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Sep 2023 02:22:36 -0400
+        Tue, 12 Sep 2023 03:31:44 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA60AF;
-        Mon, 11 Sep 2023 23:22:32 -0700 (PDT)
-Date:   Tue, 12 Sep 2023 06:22:29 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB3DB9;
+        Tue, 12 Sep 2023 00:31:40 -0700 (PDT)
+Date:   Tue, 12 Sep 2023 07:31:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694499750;
+        s=2020; t=1694503898;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zIKe3BGZAvYyd6OF2U38OylY1u4o8nivsPg6ghqA7go=;
-        b=wwZTh3Kd7DOhT+nfic9ynlU3jnAuNf7c0W0mEDrN4uKEcWbKRrkKQj/PDAUdV5/JAcehSb
-        CcstLCoh5lj93q6FjyckVnqeSTeJsYSaHLEUxofQnTM3DdUZjmBrr9QD6dx39xoRTJsTat
-        7A6YBHeXekcq+K4vzPpgECeAlBEVvnIsejh24xuOZ/5lvZphw89cl8ZBNeqTw8fGx0YT6a
-        u+9fXADOc9zMqT1X4VghGN/cKQEkAGvEiz8/AwODfX/Ly3SZb7jPMpaSFM5lo/VYGY4we3
-        kdFYpZvK4WGomkdR0h8hNzFbO4/hJhx2/CBFXWRX6Vtmbicv3XiCR6d0mGZhmA==
+        bh=/1XdMFAWkhhn5/7eom8PbEM0SQHenQhaogqbW4MERog=;
+        b=DbW/ayJcNHYkHPdqGQnCddZVED0bMQZe4Nb3Is1ZC7Gw6iAWgzdttKyTHc4IlW/rSAggOV
+        xJ40dWJ/5v1f1oSfAdwkIMwf0I4jTxdOpVQBJvkvDAdHHw8WeJGhLVwvCvlztTHP7CbVRH
+        gYe62HfiYAiEqA7EasTBy/xHPtSQCEfxPCmEBixwS4x1/emSwhq3HBRmp+Cn2pR9bJDFAb
+        U8JYnjkp9uNqeW5Wq1gCvT1+RI9KF/EM+R1Xt6EVCiSUbGD71mjXGO5FeBESJKpDqbUHSw
+        hpmC8/B1wEqIvMGWCEDAvsptK1nzbx2dh2SprJK9KuhaPcxNzHYgbhEpxm6d8A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694499750;
+        s=2020e; t=1694503898;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zIKe3BGZAvYyd6OF2U38OylY1u4o8nivsPg6ghqA7go=;
-        b=3539uvpMEJOIkXB25Vmqmz78+g6XjsGzHwJrdWOtHu0fDN70yBXWJkDyB4oEIc7xefxE8n
-        hndvcTXNlFQbhaAQ==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=/1XdMFAWkhhn5/7eom8PbEM0SQHenQhaogqbW4MERog=;
+        b=OOoGIp8cHFEQuj3TV4A333ybaJKAjV+FZ3SWCH8HjD7iYaghOr/bQh386VJLl5/XHxYFjt
+        dSYeJ9/cO5vqcICQ==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: Fix _THIS_IP_ detection for cold functions
-Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
+Subject: [tip: perf/core] perf/x86/intel: Extend the ref-cycles event to GP counters
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <d8f1ab6a23a6105bc023c132b105f245c7976be6.1694476559.git.jpoimboe@kernel.org>
-References: <d8f1ab6a23a6105bc023c132b105f245c7976be6.1694476559.git.jpoimboe@kernel.org>
+In-Reply-To: <20230911144139.2354015-1-kan.liang@linux.intel.com>
+References: <20230911144139.2354015-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <169449974941.27769.5966361475129342374.tip-bot2@tip-bot2>
+Message-ID: <169450389765.27769.14626010672569075307.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,59 +59,91 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     72178d5d1a38dd185d1db15f177f2d122ef10d9b
-Gitweb:        https://git.kernel.org/tip/72178d5d1a38dd185d1db15f177f2d122ef10d9b
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 11 Sep 2023 16:56:13 -07:00
+Commit-ID:     ffbe4ab0beda55b5c467aa3d95ca14db75a84717
+Gitweb:        https://git.kernel.org/tip/ffbe4ab0beda55b5c467aa3d95ca14db75a84717
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Mon, 11 Sep 2023 07:41:38 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 12 Sep 2023 08:16:54 +02:00
+CommitterDate: Tue, 12 Sep 2023 08:22:24 +02:00
 
-objtool: Fix _THIS_IP_ detection for cold functions
+perf/x86/intel: Extend the ref-cycles event to GP counters
 
-Cold functions and their non-cold counterparts can use _THIS_IP_ to
-reference each other.  Don't warn about !ENDBR in that case.
+The current ref-cycles event is only available on the fixed counter 2.
+Starting from the GLC and GRT core, the architectural UnHalted Reference
+Cycles event (0x013c) which is available on general-purpose counters
+can collect the exact same events as the fixed counter 2.
 
-Note that for GCC this is currently irrelevant in light of the following
-commit
+Update the mapping of ref-cycles to 0x013c. So the ref-cycles can be
+available on both fixed counter 2 and general-purpose counters.
 
-  c27cd083cfb9 ("Compiler attributes: GCC cold function alignment workarounds")
-
-which disabled cold functions in the kernel.  However this may still be
-possible with Clang.
-
-Fixes several warnings like the following:
-
-  drivers/scsi/bnx2i/bnx2i.prelink.o: warning: objtool: bnx2i_hw_ep_disconnect+0x19d: relocation to !ENDBR: bnx2i_hw_ep_disconnect.cold+0x0
-  drivers/net/ipvlan/ipvlan.prelink.o: warning: objtool: ipvlan_addr4_event.cold+0x28: relocation to !ENDBR: ipvlan_addr4_event+0xda
-  drivers/net/ipvlan/ipvlan.prelink.o: warning: objtool: ipvlan_addr6_event.cold+0x26: relocation to !ENDBR: ipvlan_addr6_event+0xb7
-  drivers/net/ethernet/broadcom/tg3.prelink.o: warning: objtool: tg3_set_ringparam.cold+0x17: relocation to !ENDBR: tg3_set_ringparam+0x115
-  drivers/net/ethernet/broadcom/tg3.prelink.o: warning: objtool: tg3_self_test.cold+0x17: relocation to !ENDBR: tg3_self_test+0x2e1
-  drivers/target/iscsi/cxgbit/cxgbit.prelink.o: warning: objtool: __cxgbit_free_conn.cold+0x24: relocation to !ENDBR: __cxgbit_free_conn+0xfb
-  net/can/can.prelink.o: warning: objtool: can_rx_unregister.cold+0x2c: relocation to !ENDBR: can_rx_unregister+0x11b
-  drivers/net/ethernet/qlogic/qed/qed.prelink.o: warning: objtool: qed_spq_post+0xc0: relocation to !ENDBR: qed_spq_post.cold+0x9a
-  drivers/net/ethernet/qlogic/qed/qed.prelink.o: warning: objtool: qed_iwarp_ll2_comp_syn_pkt.cold+0x12f: relocation to !ENDBR: qed_iwarp_ll2_comp_syn_pkt+0x34b
-  net/tipc/tipc.prelink.o: warning: objtool: tipc_nametbl_publish.cold+0x21: relocation to !ENDBR: tipc_nametbl_publish+0xa6
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/d8f1ab6a23a6105bc023c132b105f245c7976be6.1694476559.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/20230911144139.2354015-1-kan.liang@linux.intel.com
 ---
- tools/objtool/check.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/core.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 1384090..e308d1b 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -4333,7 +4333,8 @@ static int validate_ibt_insn(struct objtool_file *file, struct instruction *insn
- 			continue;
- 		}
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index e1543d6..a08f794 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -211,6 +211,14 @@ static struct event_constraint intel_slm_event_constraints[] __read_mostly =
+ 	EVENT_CONSTRAINT_END
+ };
  
--		if (insn_func(dest) && insn_func(dest) == insn_func(insn)) {
-+		if (insn_func(dest) && insn_func(insn) &&
-+		    insn_func(dest)->pfunc == insn_func(insn)->pfunc) {
- 			/*
- 			 * Anything from->to self is either _THIS_IP_ or
- 			 * IRET-to-self.
++static struct event_constraint intel_grt_event_constraints[] __read_mostly = {
++	FIXED_EVENT_CONSTRAINT(0x00c0, 0), /* INST_RETIRED.ANY */
++	FIXED_EVENT_CONSTRAINT(0x003c, 1), /* CPU_CLK_UNHALTED.CORE */
++	FIXED_EVENT_CONSTRAINT(0x0300, 2), /* pseudo CPU_CLK_UNHALTED.REF */
++	FIXED_EVENT_CONSTRAINT(0x013c, 2), /* CPU_CLK_UNHALTED.REF_TSC_P */
++	EVENT_CONSTRAINT_END
++};
++
+ static struct event_constraint intel_skl_event_constraints[] = {
+ 	FIXED_EVENT_CONSTRAINT(0x00c0, 0),	/* INST_RETIRED.ANY */
+ 	FIXED_EVENT_CONSTRAINT(0x003c, 1),	/* CPU_CLK_UNHALTED.CORE */
+@@ -314,6 +322,7 @@ static struct event_constraint intel_glc_event_constraints[] = {
+ 	FIXED_EVENT_CONSTRAINT(0x0100, 0),	/* INST_RETIRED.PREC_DIST */
+ 	FIXED_EVENT_CONSTRAINT(0x003c, 1),	/* CPU_CLK_UNHALTED.CORE */
+ 	FIXED_EVENT_CONSTRAINT(0x0300, 2),	/* CPU_CLK_UNHALTED.REF */
++	FIXED_EVENT_CONSTRAINT(0x013c, 2),	/* CPU_CLK_UNHALTED.REF_TSC_P */
+ 	FIXED_EVENT_CONSTRAINT(0x0400, 3),	/* SLOTS */
+ 	METRIC_EVENT_CONSTRAINT(INTEL_TD_METRIC_RETIRING, 0),
+ 	METRIC_EVENT_CONSTRAINT(INTEL_TD_METRIC_BAD_SPEC, 1),
+@@ -5983,6 +5992,12 @@ static __always_inline int intel_pmu_init_hybrid(enum hybrid_pmu_type pmus)
+ 	return 0;
+ }
+ 
++static __always_inline void intel_pmu_ref_cycles_ext(void)
++{
++	if (!(x86_pmu.events_maskl & (INTEL_PMC_MSK_FIXED_REF_CYCLES >> INTEL_PMC_IDX_FIXED)))
++		intel_perfmon_event_map[PERF_COUNT_HW_REF_CPU_CYCLES] = 0x013c;
++}
++
+ static __always_inline void intel_pmu_init_glc(struct pmu *pmu)
+ {
+ 	x86_pmu.late_ack = true;
+@@ -6005,6 +6020,8 @@ static __always_inline void intel_pmu_init_glc(struct pmu *pmu)
+ 	memcpy(hybrid_var(pmu, hw_cache_extra_regs), glc_hw_cache_extra_regs, sizeof(hw_cache_extra_regs));
+ 	hybrid(pmu, event_constraints) = intel_glc_event_constraints;
+ 	hybrid(pmu, pebs_constraints) = intel_glc_pebs_event_constraints;
++
++	intel_pmu_ref_cycles_ext();
+ }
+ 
+ static __always_inline void intel_pmu_init_grt(struct pmu *pmu)
+@@ -6021,9 +6038,11 @@ static __always_inline void intel_pmu_init_grt(struct pmu *pmu)
+ 	memcpy(hybrid_var(pmu, hw_cache_event_ids), glp_hw_cache_event_ids, sizeof(hw_cache_event_ids));
+ 	memcpy(hybrid_var(pmu, hw_cache_extra_regs), tnt_hw_cache_extra_regs, sizeof(hw_cache_extra_regs));
+ 	hybrid_var(pmu, hw_cache_event_ids)[C(ITLB)][C(OP_READ)][C(RESULT_ACCESS)] = -1;
+-	hybrid(pmu, event_constraints) = intel_slm_event_constraints;
++	hybrid(pmu, event_constraints) = intel_grt_event_constraints;
+ 	hybrid(pmu, pebs_constraints) = intel_grt_pebs_event_constraints;
+ 	hybrid(pmu, extra_regs) = intel_grt_extra_regs;
++
++	intel_pmu_ref_cycles_ext();
+ }
+ 
+ __init int intel_pmu_init(void)
