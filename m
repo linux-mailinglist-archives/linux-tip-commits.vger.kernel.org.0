@@ -2,51 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B38979DCD1
+	by mail.lfdr.de (Postfix) with ESMTP id A943679DCD2
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Sep 2023 01:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236923AbjILXo0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S237871AbjILXo0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 12 Sep 2023 19:44:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37770 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232228AbjILXoZ (ORCPT
+        with ESMTP id S234366AbjILXoZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 12 Sep 2023 19:44:25 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4853E10C7;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D32B1704;
         Tue, 12 Sep 2023 16:44:21 -0700 (PDT)
-Date:   Tue, 12 Sep 2023 23:44:18 -0000
+Date:   Tue, 12 Sep 2023 23:44:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1694562259;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=kXbqWErxXz6HynjOh5PrAyEXAn6+RL5mAVEAtPI9i8g=;
-        b=wv/3mRqjqLeS+MzIKKfceksXQSzZvCcohScfQoWXcEOIz6XKIZSZztC4d6yf+HNxk+8JOw
-        pmhn/Bnfq+L0lCvAcpxJlreq/eS+EMLVuZOtwwjfcqiJhKUy46FlImvSTiE7gL+oZeQtTP
-        ADJFCD+wV3BD8f7AZ4tB1w0xMgQsrBcflDEyI0fGp5igpBDAunVhR182tt0sYJUHRZuH8O
-        2dqP3yaeYZU3RKWvBoUpzZu4YQWZEmNmjOoNGGKpIa9J0wOwPkOpzsFbjGvNyVkKZmXsCr
-        T++BP7lqqH+GFtEYdOJfBw9r2TjpsxjaxM4G7Rd1gNUeXY6JlMk0b+XniTgfjQ==
+        bh=1t279XtwDUnmPy7ug/Cle94fwl3qpfmej2l+HGTQNhc=;
+        b=P8MW9i6PW9yWA4R2ft5LBxusnXGBcZgsioDOvCEJol1Cuk0KJovWoBP2iLBq2q/Wer8qDb
+        T42EoufPIN1b5zdkaVvp20eUyahY6FjIVqrf02Zjc0vCLTowaodtQJxCN1QPrnpe0ZSdRz
+        w7YFtVB8raEGUKVezm7Vy8tA11Q/yr+Ug1rIG+xXA64VWiMyVGdjhRHXACmudmQIKi2vm0
+        K0URfExZcCJ+6nWY9YiWaiGxRMVCiNX++18JJjxzGkkkMTCywBmmFWpVreOVtJ4aWt+e9j
+        jAP0GQw7yX0eCQb9Qo91tZLEN2Aiuy3qdmSHPNgGjEPK0EraWVeO897cpCQJYA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1694562259;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=kXbqWErxXz6HynjOh5PrAyEXAn6+RL5mAVEAtPI9i8g=;
-        b=j/01CRdR7wRBFYTTszPwZVj0Xvbh4Xp5nTN+8OTdYGxQMBK+kBxUI/jhC99JW8gvbWC7ls
-        JTKoGUiDdehaAzCw==
+        bh=1t279XtwDUnmPy7ug/Cle94fwl3qpfmej2l+HGTQNhc=;
+        b=Hg44kiKRcDEivVeRUIDatISrSsEAgEHZyhI9fI++M7xfB3pFmcmzWUE0t0azZj5i6TdLyL
+        78cWDjAveBjjggBQ==
 From:   "tip-bot2 for Kai Huang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/virt/tdx: Make TDX_MODULE_CALL handle SEAMCALL #UD and #GP
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Kai Huang <kai.huang@intel.com>,
+Subject: [tip: x86/tdx] x86/virt/tdx: Wire up basic SEAMCALL functions
+Cc:     Kai Huang <kai.huang@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Isaku Yamahata <isaku.yamahata@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169456225874.27769.17806373724246951694.tip-bot2@tip-bot2>
+Message-ID: <169456225924.27769.10034121733735537314.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,119 +58,204 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/tdx branch of tip:
 
-Commit-ID:     7b804135d4d1f0a2b9dda69c6303d3f2dcbe9d37
-Gitweb:        https://git.kernel.org/tip/7b804135d4d1f0a2b9dda69c6303d3f2dcbe9d37
+Commit-ID:     c33621b4c5ad5b6b8b245754013cc506f9ded2b8
+Gitweb:        https://git.kernel.org/tip/c33621b4c5ad5b6b8b245754013cc506f9ded2b8
 Author:        Kai Huang <kai.huang@intel.com>
-AuthorDate:    Tue, 15 Aug 2023 23:02:05 +12:00
+AuthorDate:    Tue, 15 Aug 2023 23:02:04 +12:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Tue, 12 Sep 2023 16:30:27 -07:00
 
-x86/virt/tdx: Make TDX_MODULE_CALL handle SEAMCALL #UD and #GP
+x86/virt/tdx: Wire up basic SEAMCALL functions
 
-SEAMCALL instruction causes #UD if the CPU isn't in VMX operation.
-Currently the TDX_MODULE_CALL assembly doesn't handle #UD, thus making
-SEAMCALL when VMX is disabled would cause Oops.
+Intel Trust Domain Extensions (TDX) protects guest VMs from malicious
+host and certain physical attacks.  A CPU-attested software module
+called 'the TDX module' runs inside a new isolated memory range as a
+trusted hypervisor to manage and run protected VMs.
 
-Unfortunately, there are legal cases that SEAMCALL can be made when VMX
-is disabled.  For instance, VMX can be disabled due to emergency reboot
-while there are still TDX guests running.
+TDX introduces a new CPU mode: Secure Arbitration Mode (SEAM).  This
+mode runs only the TDX module itself or other code to load the TDX
+module.
 
-Extend the TDX_MODULE_CALL assembly to return an error code for #UD to
-handle this case gracefully, e.g., KVM can then quietly eat all SEAMCALL
-errors caused by emergency reboot.
+The host kernel communicates with SEAM software via a new SEAMCALL
+instruction.  This is conceptually similar to a guest->host hypercall,
+except it is made from the host to SEAM software instead.  The TDX
+module establishes a new SEAMCALL ABI which allows the host to
+initialize the module and to manage VMs.
 
-SEAMCALL instruction also causes #GP when TDX isn't enabled by the BIOS.
-Use _ASM_EXTABLE_FAULT() to catch both exceptions with the trap number
-recorded, and define two new error codes by XORing the trap number to
-the TDX_SW_ERROR.  This opportunistically handles #GP too while using
-the same simple assembly code.
+The SEAMCALL ABI is very similar to the TDCALL ABI and leverages much
+TDCALL infrastructure.  Wire up basic functions to make SEAMCALLs for
+the basic support of running TDX guests: __seamcall(), __seamcall_ret(),
+and __seamcall_saved_ret() for TDH.VP.ENTER.  All SEAMCALLs involved in
+the basic TDX support don't use "callee-saved" registers as input and
+output, except the TDH.VP.ENTER.
 
-A bonus is when kernel mistakenly calls SEAMCALL when CPU isn't in VMX
-operation, or when TDX isn't enabled by the BIOS, or when the BIOS is
-buggy, the kernel can get a nicer error code rather than a less
-understandable Oops.
+To start to support TDX, create a new arch/x86/virt/vmx/tdx/tdx.c for
+TDX host kernel support.  Add a new Kconfig option CONFIG_INTEL_TDX_HOST
+to opt-in TDX host kernel support (to distinguish with TDX guest kernel
+support).  So far only KVM uses TDX.  Make the new config option depend
+on KVM_INTEL.
 
-This is basically based on Peter's code.
-
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/de975832a367f476aab2d0eb0d9de66019a16b54.1692096753.git.kai.huang%40intel.com
+Tested-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Link: https://lore.kernel.org/all/4db7c3fc085e6af12acc2932294254ddb3d320b3.1692096753.git.kai.huang%40intel.com
 ---
- arch/x86/include/asm/tdx.h      |  4 ++++
- arch/x86/virt/vmx/tdx/tdxcall.S | 19 +++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ arch/x86/Kconfig                 | 12 ++++++-
+ arch/x86/Makefile                |  2 +-
+ arch/x86/include/asm/tdx.h       |  7 ++++-
+ arch/x86/virt/Makefile           |  2 +-
+ arch/x86/virt/vmx/Makefile       |  2 +-
+ arch/x86/virt/vmx/tdx/Makefile   |  2 +-
+ arch/x86/virt/vmx/tdx/seamcall.S | 61 +++++++++++++++++++++++++++++++-
+ 7 files changed, 88 insertions(+)
+ create mode 100644 arch/x86/virt/Makefile
+ create mode 100644 arch/x86/virt/vmx/Makefile
+ create mode 100644 arch/x86/virt/vmx/tdx/Makefile
+ create mode 100644 arch/x86/virt/vmx/tdx/seamcall.S
 
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 982b777..3b3594f 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1939,6 +1939,18 @@ config X86_USER_SHADOW_STACK
+ 
+ 	  If unsure, say N.
+ 
++config INTEL_TDX_HOST
++	bool "Intel Trust Domain Extensions (TDX) host support"
++	depends on CPU_SUP_INTEL
++	depends on X86_64
++	depends on KVM_INTEL
++	help
++	  Intel Trust Domain Extensions (TDX) protects guest VMs from malicious
++	  host and certain physical attacks.  This option enables necessary TDX
++	  support in the host kernel to run confidential VMs.
++
++	  If unsure, say N.
++
+ config EFI
+ 	bool "EFI runtime service support"
+ 	depends on ACPI
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 5bfe5ca..d43981a 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -252,6 +252,8 @@ archheaders:
+ 
+ libs-y  += arch/x86/lib/
+ 
++core-y += arch/x86/virt/
++
+ # drivers-y are linked after core-y
+ drivers-$(CONFIG_MATH_EMULATION) += arch/x86/math-emu/
+ drivers-$(CONFIG_PCI)            += arch/x86/pci/
 diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index a69bb7d..adcbe3f 100644
+index 603e6d1..a69bb7d 100644
 --- a/arch/x86/include/asm/tdx.h
 +++ b/arch/x86/include/asm/tdx.h
-@@ -8,6 +8,7 @@
- 
- #include <asm/errno.h>
- #include <asm/ptrace.h>
-+#include <asm/trapnr.h>
- #include <asm/shared/tdx.h>
- 
- /*
-@@ -20,6 +21,9 @@
- #define TDX_SW_ERROR			(TDX_ERROR | GENMASK_ULL(47, 40))
- #define TDX_SEAMCALL_VMFAILINVALID	(TDX_SW_ERROR | _UL(0xFFFF0000))
- 
-+#define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
-+#define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
+@@ -72,5 +72,12 @@ static inline long tdx_kvm_hypercall(unsigned int nr, unsigned long p1,
+ 	return -ENODEV;
+ }
+ #endif /* CONFIG_INTEL_TDX_GUEST && CONFIG_KVM_GUEST */
 +
- #ifndef __ASSEMBLY__
- 
- /*
-diff --git a/arch/x86/virt/vmx/tdx/tdxcall.S b/arch/x86/virt/vmx/tdx/tdxcall.S
-index 3f0b83a..016a2a1 100644
---- a/arch/x86/virt/vmx/tdx/tdxcall.S
-+++ b/arch/x86/virt/vmx/tdx/tdxcall.S
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #include <asm/asm-offsets.h>
- #include <asm/frame.h>
-+#include <asm/asm.h>
- #include <asm/tdx.h>
- 
- /*
-@@ -85,6 +86,7 @@
- .endif	/* \saved */
- 
- .if \host
-+.Lseamcall\@:
- 	seamcall
- 	/*
- 	 * SEAMCALL instruction is essentially a VMExit from VMX root
-@@ -191,11 +193,28 @@
- .if \host
- .Lseamcall_vmfailinvalid\@:
- 	mov $TDX_SEAMCALL_VMFAILINVALID, %rax
-+	jmp .Lseamcall_fail\@
++#ifdef CONFIG_INTEL_TDX_HOST
++u64 __seamcall(u64 fn, struct tdx_module_args *args);
++u64 __seamcall_ret(u64 fn, struct tdx_module_args *args);
++u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
++#endif	/* CONFIG_INTEL_TDX_HOST */
 +
-+.Lseamcall_trap\@:
-+	/*
-+	 * SEAMCALL caused #GP or #UD.  By reaching here RAX contains
-+	 * the trap number.  Convert the trap number to the TDX error
-+	 * code by setting TDX_SW_ERROR to the high 32-bits of RAX.
-+	 *
-+	 * Note cannot OR TDX_SW_ERROR directly to RAX as OR instruction
-+	 * only accepts 32-bit immediate at most.
-+	 */
-+	movq $TDX_SW_ERROR, %rdi
-+	orq  %rdi, %rax
+ #endif /* !__ASSEMBLY__ */
+ #endif /* _ASM_X86_TDX_H */
+diff --git a/arch/x86/virt/Makefile b/arch/x86/virt/Makefile
+new file mode 100644
+index 0000000..1e36502
+--- /dev/null
++++ b/arch/x86/virt/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-y	+= vmx/
+diff --git a/arch/x86/virt/vmx/Makefile b/arch/x86/virt/vmx/Makefile
+new file mode 100644
+index 0000000..feebda2
+--- /dev/null
++++ b/arch/x86/virt/vmx/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-$(CONFIG_INTEL_TDX_HOST)	+= tdx/
+diff --git a/arch/x86/virt/vmx/tdx/Makefile b/arch/x86/virt/vmx/tdx/Makefile
+new file mode 100644
+index 0000000..46ef8f7
+--- /dev/null
++++ b/arch/x86/virt/vmx/tdx/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-y += seamcall.o
+diff --git a/arch/x86/virt/vmx/tdx/seamcall.S b/arch/x86/virt/vmx/tdx/seamcall.S
+new file mode 100644
+index 0000000..5b1f228
+--- /dev/null
++++ b/arch/x86/virt/vmx/tdx/seamcall.S
+@@ -0,0 +1,61 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#include <linux/linkage.h>
++#include <asm/frame.h>
 +
-+.Lseamcall_fail\@:
- .if \ret && \saved
- 	/* pop the unused structure pointer back to RSI */
- 	popq %rsi
- .endif
- 	jmp .Lout\@
++#include "tdxcall.S"
 +
-+	_ASM_EXTABLE_FAULT(.Lseamcall\@, .Lseamcall_trap\@)
- .endif	/* \host */
- 
- .endm
++/*
++ * __seamcall() - Host-side interface functions to SEAM software
++ * (the P-SEAMLDR or the TDX module).
++ *
++ * __seamcall() function ABI:
++ *
++ * @fn   (RDI)  - SEAMCALL Leaf number, moved to RAX
++ * @args (RSI)  - struct tdx_module_args for input
++ *
++ * Only RCX/RDX/R8-R11 are used as input registers.
++ *
++ * Return (via RAX) TDX_SEAMCALL_VMFAILINVALID if the SEAMCALL itself
++ * fails, or the completion status of the SEAMCALL leaf function.
++ */
++SYM_FUNC_START(__seamcall)
++	TDX_MODULE_CALL host=1
++SYM_FUNC_END(__seamcall)
++
++/*
++ * __seamcall_ret() - Host-side interface functions to SEAM software
++ * (the P-SEAMLDR or the TDX module), with saving output registers to
++ * the 'struct tdx_module_args' used as input.
++ *
++ * __seamcall_ret() function ABI:
++ *
++ * @fn   (RDI)  - SEAMCALL Leaf number, moved to RAX
++ * @args (RSI)  - struct tdx_module_args for input and output
++ *
++ * Only RCX/RDX/R8-R11 are used as input/output registers.
++ *
++ * Return (via RAX) TDX_SEAMCALL_VMFAILINVALID if the SEAMCALL itself
++ * fails, or the completion status of the SEAMCALL leaf function.
++ */
++SYM_FUNC_START(__seamcall_ret)
++	TDX_MODULE_CALL host=1 ret=1
++SYM_FUNC_END(__seamcall_ret)
++
++/*
++ * __seamcall_saved_ret() - Host-side interface functions to SEAM software
++ * (the P-SEAMLDR or the TDX module), with saving output registers to the
++ * 'struct tdx_module_args' used as input.
++ *
++ * __seamcall_saved_ret() function ABI:
++ *
++ * @fn   (RDI)  - SEAMCALL Leaf number, moved to RAX
++ * @args (RSI)  - struct tdx_module_args for input and output
++ *
++ * All registers in @args are used as input/output registers.
++ *
++ * Return (via RAX) TDX_SEAMCALL_VMFAILINVALID if the SEAMCALL itself
++ * fails, or the completion status of the SEAMCALL leaf function.
++ */
++SYM_FUNC_START(__seamcall_saved_ret)
++	TDX_MODULE_CALL host=1 ret=1 saved=1
++SYM_FUNC_END(__seamcall_saved_ret)
