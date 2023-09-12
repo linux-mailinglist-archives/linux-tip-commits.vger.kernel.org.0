@@ -2,53 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01BEC79C403
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Sep 2023 05:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3876279C6DA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Sep 2023 08:22:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232802AbjILDUD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 Sep 2023 23:20:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36588 "EHLO
+        id S229812AbjILGWg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Sep 2023 02:22:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241850AbjILDPJ (ORCPT
+        with ESMTP id S229538AbjILGWg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 Sep 2023 23:15:09 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A694D7BE1C;
-        Mon, 11 Sep 2023 18:49:51 -0700 (PDT)
-Date:   Mon, 11 Sep 2023 23:23:59 -0000
+        Tue, 12 Sep 2023 02:22:36 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA60AF;
+        Mon, 11 Sep 2023 23:22:32 -0700 (PDT)
+Date:   Tue, 12 Sep 2023 06:22:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694474641;
+        s=2020; t=1694499750;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=RKNzrKDbxp6SlnBJWYyLW20AScpNUCzY5NycfewQzU8=;
-        b=T84vweB+R9x28If2gtHm/pUig49hiZyfrUG48s04aidCB5GWg+fE6WHgKXfvC+sl5svqdJ
-        /UCbijN39KxYkIa4D83T1/JULWErvvtDa+PwMq1p/iQ0RO4u79yvJzhP6ynhkjJ7L06lUK
-        j+FjvrkL0fMbnUueccvw6/1wLwPh+sB9QEYqXu1CQCFB908CdBmlhCqBRXQxjLxJ2BzLHB
-        6CA5hH+mVROQMKyld+kie3zLRvmx7QKi70ivzUDK9r9pfWEr5ic6yCzsjcrAoMzVK6wXO0
-        PrDAsdZ6B2OKzS/BdR1gcEN/9zmQ0mdJEu4JT2lqZU+ImCTgER/+nI7SF3E4eA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zIKe3BGZAvYyd6OF2U38OylY1u4o8nivsPg6ghqA7go=;
+        b=wwZTh3Kd7DOhT+nfic9ynlU3jnAuNf7c0W0mEDrN4uKEcWbKRrkKQj/PDAUdV5/JAcehSb
+        CcstLCoh5lj93q6FjyckVnqeSTeJsYSaHLEUxofQnTM3DdUZjmBrr9QD6dx39xoRTJsTat
+        7A6YBHeXekcq+K4vzPpgECeAlBEVvnIsejh24xuOZ/5lvZphw89cl8ZBNeqTw8fGx0YT6a
+        u+9fXADOc9zMqT1X4VghGN/cKQEkAGvEiz8/AwODfX/Ly3SZb7jPMpaSFM5lo/VYGY4we3
+        kdFYpZvK4WGomkdR0h8hNzFbO4/hJhx2/CBFXWRX6Vtmbicv3XiCR6d0mGZhmA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694474641;
+        s=2020e; t=1694499750;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=RKNzrKDbxp6SlnBJWYyLW20AScpNUCzY5NycfewQzU8=;
-        b=BMuE6VGZZh8pEvc7QfpQ6uaw3NoPXQkW9C91xu4FyIVlNpGM4lzB2gKhrXgtmuqQXBzRq0
-        uITxsGU+lI6MUKCQ==
-From:   "tip-bot2 for Dexuan Cui" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zIKe3BGZAvYyd6OF2U38OylY1u4o8nivsPg6ghqA7go=;
+        b=3539uvpMEJOIkXB25Vmqmz78+g6XjsGzHwJrdWOtHu0fDN70yBXWJkDyB4oEIc7xefxE8n
+        hndvcTXNlFQbhaAQ==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/tdx: Retry partially-completed page conversion hypercalls
-Cc:     Dexuan Cui <decui@microsoft.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: objtool/urgent] objtool: Fix _THIS_IP_ detection for cold functions
+Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <d8f1ab6a23a6105bc023c132b105f245c7976be6.1694476559.git.jpoimboe@kernel.org>
+References: <d8f1ab6a23a6105bc023c132b105f245c7976be6.1694476559.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169447463987.27769.8924490797849833894.tip-bot2@tip-bot2>
+Message-ID: <169449974941.27769.5966361475129342374.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,142 +59,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/tdx branch of tip:
+The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     019b383d1132e4051de0d2e43254454b86538cf4
-Gitweb:        https://git.kernel.org/tip/019b383d1132e4051de0d2e43254454b86538cf4
-Author:        Dexuan Cui <decui@microsoft.com>
-AuthorDate:    Thu, 10 Aug 2023 19:12:45 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 11 Sep 2023 16:19:33 -07:00
+Commit-ID:     72178d5d1a38dd185d1db15f177f2d122ef10d9b
+Gitweb:        https://git.kernel.org/tip/72178d5d1a38dd185d1db15f177f2d122ef10d9b
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Mon, 11 Sep 2023 16:56:13 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 12 Sep 2023 08:16:54 +02:00
 
-x86/tdx: Retry partially-completed page conversion hypercalls
+objtool: Fix _THIS_IP_ detection for cold functions
 
-TDX guest memory is private by default and the VMM may not access it.
-However, in cases where the guest needs to share data with the VMM,
-the guest and the VMM can coordinate to make memory shared between
-them.
+Cold functions and their non-cold counterparts can use _THIS_IP_ to
+reference each other.  Don't warn about !ENDBR in that case.
 
-The guest side of this protocol includes the "MapGPA" hypercall.  This
-call takes a guest physical address range.  The hypercall spec (aka.
-the GHCI) says that the MapGPA call is allowed to return partial
-progress in mapping this range and indicate that fact with a special
-error code.  A guest that sees such partial progress is expected to
-retry the operation for the portion of the address range that was not
-completed.
+Note that for GCC this is currently irrelevant in light of the following
+commit
 
-Hyper-V does this partial completion dance when set_memory_decrypted()
-is called to "decrypt" swiotlb bounce buffers that can be up to 1GB
-in size.  It is evidently the only VMM that does this, which is why
-nobody noticed this until now.
+  c27cd083cfb9 ("Compiler attributes: GCC cold function alignment workarounds")
 
-[ dhansen: rewrite changelog ]
+which disabled cold functions in the kernel.  However this may still be
+possible with Clang.
 
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/all/20230811021246.821-2-decui%40microsoft.com
+Fixes several warnings like the following:
+
+  drivers/scsi/bnx2i/bnx2i.prelink.o: warning: objtool: bnx2i_hw_ep_disconnect+0x19d: relocation to !ENDBR: bnx2i_hw_ep_disconnect.cold+0x0
+  drivers/net/ipvlan/ipvlan.prelink.o: warning: objtool: ipvlan_addr4_event.cold+0x28: relocation to !ENDBR: ipvlan_addr4_event+0xda
+  drivers/net/ipvlan/ipvlan.prelink.o: warning: objtool: ipvlan_addr6_event.cold+0x26: relocation to !ENDBR: ipvlan_addr6_event+0xb7
+  drivers/net/ethernet/broadcom/tg3.prelink.o: warning: objtool: tg3_set_ringparam.cold+0x17: relocation to !ENDBR: tg3_set_ringparam+0x115
+  drivers/net/ethernet/broadcom/tg3.prelink.o: warning: objtool: tg3_self_test.cold+0x17: relocation to !ENDBR: tg3_self_test+0x2e1
+  drivers/target/iscsi/cxgbit/cxgbit.prelink.o: warning: objtool: __cxgbit_free_conn.cold+0x24: relocation to !ENDBR: __cxgbit_free_conn+0xfb
+  net/can/can.prelink.o: warning: objtool: can_rx_unregister.cold+0x2c: relocation to !ENDBR: can_rx_unregister+0x11b
+  drivers/net/ethernet/qlogic/qed/qed.prelink.o: warning: objtool: qed_spq_post+0xc0: relocation to !ENDBR: qed_spq_post.cold+0x9a
+  drivers/net/ethernet/qlogic/qed/qed.prelink.o: warning: objtool: qed_iwarp_ll2_comp_syn_pkt.cold+0x12f: relocation to !ENDBR: qed_iwarp_ll2_comp_syn_pkt+0x34b
+  net/tipc/tipc.prelink.o: warning: objtool: tipc_nametbl_publish.cold+0x21: relocation to !ENDBR: tipc_nametbl_publish+0xa6
+
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/d8f1ab6a23a6105bc023c132b105f245c7976be6.1694476559.git.jpoimboe@kernel.org
 ---
- arch/x86/coco/tdx/tdx.c           | 64 ++++++++++++++++++++++++------
- arch/x86/include/asm/shared/tdx.h |  2 +-
- 2 files changed, 54 insertions(+), 12 deletions(-)
+ tools/objtool/check.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 1d6b863..746075d 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -703,14 +703,15 @@ static bool tdx_cache_flush_required(void)
- }
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 1384090..e308d1b 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -4333,7 +4333,8 @@ static int validate_ibt_insn(struct objtool_file *file, struct instruction *insn
+ 			continue;
+ 		}
  
- /*
-- * Inform the VMM of the guest's intent for this physical page: shared with
-- * the VMM or private to the guest.  The VMM is expected to change its mapping
-- * of the page in response.
-+ * Notify the VMM about page mapping conversion. More info about ABI
-+ * can be found in TDX Guest-Host-Communication Interface (GHCI),
-+ * section "TDG.VP.VMCALL<MapGPA>".
-  */
--static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
-+static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
- {
--	phys_addr_t start = __pa(vaddr);
--	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
-+	/* Retrying the hypercall a second time should succeed; use 3 just in case */
-+	const int max_retries_per_page = 3;
-+	int retry_count = 0;
- 
- 	if (!enc) {
- 		/* Set the shared (decrypted) bits: */
-@@ -718,12 +719,51 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- 		end   |= cc_mkdec(0);
- 	}
- 
--	/*
--	 * Notify the VMM about page mapping conversion. More info about ABI
--	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
--	 * section "TDG.VP.VMCALL<MapGPA>"
--	 */
--	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
-+	while (retry_count < max_retries_per_page) {
-+		struct tdx_hypercall_args args = {
-+			.r10 = TDX_HYPERCALL_STANDARD,
-+			.r11 = TDVMCALL_MAP_GPA,
-+			.r12 = start,
-+			.r13 = end - start };
-+
-+		u64 map_fail_paddr;
-+		u64 ret = __tdx_hypercall_ret(&args);
-+
-+		if (ret != TDVMCALL_STATUS_RETRY)
-+			return !ret;
-+		/*
-+		 * The guest must retry the operation for the pages in the
-+		 * region starting at the GPA specified in R11. R11 comes
-+		 * from the untrusted VMM. Sanity check it.
-+		 */
-+		map_fail_paddr = args.r11;
-+		if (map_fail_paddr < start || map_fail_paddr >= end)
-+			return false;
-+
-+		/* "Consume" a retry without forward progress */
-+		if (map_fail_paddr == start) {
-+			retry_count++;
-+			continue;
-+		}
-+
-+		start = map_fail_paddr;
-+		retry_count = 0;
-+	}
-+
-+	return false;
-+}
-+
-+/*
-+ * Inform the VMM of the guest's intent for this physical page: shared with
-+ * the VMM or private to the guest.  The VMM is expected to change its mapping
-+ * of the page in response.
-+ */
-+static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
-+{
-+	phys_addr_t start = __pa(vaddr);
-+	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
-+
-+	if (!tdx_map_gpa(start, end, enc))
- 		return false;
- 
- 	/* shared->private conversion requires memory to be accepted before use */
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 7513b3b..22ee23a 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -24,6 +24,8 @@
- #define TDVMCALL_MAP_GPA		0x10001
- #define TDVMCALL_REPORT_FATAL_ERROR	0x10003
- 
-+#define TDVMCALL_STATUS_RETRY		1
-+
- #ifndef __ASSEMBLY__
- 
- /*
+-		if (insn_func(dest) && insn_func(dest) == insn_func(insn)) {
++		if (insn_func(dest) && insn_func(insn) &&
++		    insn_func(dest)->pfunc == insn_func(insn)->pfunc) {
+ 			/*
+ 			 * Anything from->to self is either _THIS_IP_ or
+ 			 * IRET-to-self.
