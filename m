@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EE1179CE65
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Sep 2023 12:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13A4E79CE7F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Sep 2023 12:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234262AbjILKec (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Sep 2023 06:34:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52576 "EHLO
+        id S234340AbjILKhe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Sep 2023 06:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234412AbjILKal (ORCPT
+        with ESMTP id S233873AbjILKhK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Sep 2023 06:30:41 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C563172E;
-        Tue, 12 Sep 2023 03:29:14 -0700 (PDT)
-Date:   Tue, 12 Sep 2023 10:29:11 -0000
+        Tue, 12 Sep 2023 06:37:10 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 158FD26A9;
+        Tue, 12 Sep 2023 03:36:34 -0700 (PDT)
+Date:   Tue, 12 Sep 2023 10:36:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694514552;
+        s=2020; t=1694514992;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qSTpSrieMYYei/p3i3nYakKSSiVAaI8GD9vPF6ZcBTk=;
-        b=OUn1XN7trdAjCfAQTr0J9/0TkfwMOP49MpONFLMkxrhEJVQAEpmohDO2ewU2LJzelrR095
-        jE50D/7XR9gjAYk8Ai+lPTeUNIIlCU0gZ+wMMx1HL7LPkJIGQfy78TlbyOYhfi3/2wLY8m
-        9i/7wmQ7kJr5c8ZAa8FKLbEpg4zXaRDpuBUlav4b8+c37tWK3IMWZzxuW1316LDsa6+BaH
-        1VezQ8JuT2BoNCCSbEwdFay/oH24nIXDjIkXo3ihlxN2VT/p/YjA5MvwwHNMUcTfim4gDp
-        wmJvLfRAGGKdphVRrLG/uuKtmI75FOtMeTpZqUzLXofhW3lwWzAux6pCic0JFA==
+        bh=am+Un2OqmW2Loepn8y4t8ZkGjNdfoKTvcEiRMqelg0M=;
+        b=fhTkufp6UE56eD+60KBBsTVgb9JUQNGf+SJe0nsedTCsm38j5UX2b4wc6AV3bLv51eyD7x
+        118fyEm3wAkR6pE9p9gIPpiC6xHvRNaQDwYP2LrKGfKUB1iR8RpbJGA8JM4PdGmdiMtNev
+        4SpwwsesGrLetor2GTvYYRPf1Uuk+PvKczoqRth/PrUKYzyZf002yiKh+RB8AewTM1cVj9
+        uNlhnulLE3j163cl2VwD8yfCx4+4r/JfNHw5DT0bEAe5NIqAwMIiYUhtUmXZJHwoaAzyLn
+        0CLDvXK1GGwfDxQhJysE/evaBGJ72G04IJ9Ghi23wNl6geVzyUU5NEUxXo6Ong==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694514552;
+        s=2020e; t=1694514992;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qSTpSrieMYYei/p3i3nYakKSSiVAaI8GD9vPF6ZcBTk=;
-        b=ej+VoaXoCxgNVeQeGrcnJBRsMgSvyjSbWrz/Hbs7o3dtgo27XkX7VBcW85aCBW13hLZMqI
-        sLyvlF0xkEUok1CQ==
-From:   "tip-bot2 for Leonardo Bras" <tip-bot2@linutronix.de>
+        bh=am+Un2OqmW2Loepn8y4t8ZkGjNdfoKTvcEiRMqelg0M=;
+        b=j4gQluExe9atJWySglxGy9jOpSOZD0VHYZgc3rWi8ImNgRu6MZTE0ZjPrDhnGJKO4sf7vc
+        9zmKe8XilTn1XICg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] smp: Change function signatures to use call_single_data_t
-Cc:     Leonardo Bras <leobras@redhat.com>, Guo Ren <guoren@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/core] cleanup: Make no_free_ptr() __must_check
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230831063129.335425-1-leobras@redhat.com>
-References: <20230831063129.335425-1-leobras@redhat.com>
+In-Reply-To: <20230816103102.GF980931@hirez.programming.kicks-ass.net>
+References: <20230816103102.GF980931@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <169451455186.27769.4378639911951319029.tip-bot2@tip-bot2>
+Message-ID: <169451499208.27769.5856056754166699857.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,215 +58,108 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     c3ba53a7f6ddcdd08562f609237c587e2ae13bbb
-Gitweb:        https://git.kernel.org/tip/c3ba53a7f6ddcdd08562f609237c587e2ae13bbb
-Author:        Leonardo Bras <leobras@redhat.com>
-AuthorDate:    Thu, 31 Aug 2023 03:31:28 -03:00
+Commit-ID:     68373ebb9d61985e05574313a356f751ef9911ab
+Gitweb:        https://git.kernel.org/tip/68373ebb9d61985e05574313a356f751ef9911ab
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 15 Aug 2023 12:52:04 +02:00
 Committer:     root <root@noisy.programming.kicks-ass.net>
-CommitterDate: Sat, 09 Sep 2023 15:10:30 +02:00
+CommitterDate: Sat, 09 Sep 2023 15:10:27 +02:00
 
-smp: Change function signatures to use call_single_data_t
+cleanup: Make no_free_ptr() __must_check
 
-call_single_data_t is a size-aligned typedef of struct __call_single_data.
+recent discussion brought about the realization that it makes sense for
+no_free_ptr() to have __must_check semantics in order to avoid leaking
+the resource.
 
-This alignment is desirable in order to have smp_call_function*() avoid
-bouncing an extra cacheline in case of an unaligned csd, given this
-would hurt performance.
+Additionally, add a few comments to clarify why/how things work.
 
-Since the removal of struct request->csd in commit 660e802c76c8
-("blk-mq: use percpu csd to remote complete instead of per-rq csd") there
-are no current users of smp_call_function*() with unaligned csd.
+All credit to Linus on how to combine __must_check and the
+stmt-expression.
 
-Change every 'struct __call_single_data' function parameter to
-'call_single_data_t', so we have warnings if any new code tries to
-introduce an smp_call_function*() call with unaligned csd.
-
-Signed-off-by: Leonardo Bras <leobras@redhat.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230831063129.335425-1-leobras@redhat.com
+Link: https://lkml.kernel.org/r/20230816103102.GF980931@hirez.programming.kicks-ass.net
 ---
- include/linux/smp.h        |  2 +-
- include/trace/events/csd.h |  8 ++++----
- kernel/smp.c               | 26 +++++++++++++-------------
- kernel/up.c                |  2 +-
- 4 files changed, 19 insertions(+), 19 deletions(-)
+ include/linux/cleanup.h | 39 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/smp.h b/include/linux/smp.h
-index 91ea4a6..e87520d 100644
---- a/include/linux/smp.h
-+++ b/include/linux/smp.h
-@@ -53,7 +53,7 @@ int smp_call_function_single(int cpuid, smp_call_func_t func, void *info,
- void on_each_cpu_cond_mask(smp_cond_func_t cond_func, smp_call_func_t func,
- 			   void *info, bool wait, const struct cpumask *mask);
- 
--int smp_call_function_single_async(int cpu, struct __call_single_data *csd);
-+int smp_call_function_single_async(int cpu, call_single_data_t *csd);
- 
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index 53f1a7a..9f1a9c4 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -7,8 +7,9 @@
  /*
-  * Cpus stopping functions in panic. All have default weak definitions.
-diff --git a/include/trace/events/csd.h b/include/trace/events/csd.h
-index 67e9d01..58cc83b 100644
---- a/include/trace/events/csd.h
-+++ b/include/trace/events/csd.h
-@@ -12,7 +12,7 @@ TRACE_EVENT(csd_queue_cpu,
- 	TP_PROTO(const unsigned int cpu,
- 		unsigned long callsite,
- 		smp_call_func_t func,
--		struct __call_single_data *csd),
-+		call_single_data_t *csd),
- 
- 	TP_ARGS(cpu, callsite, func, csd),
- 
-@@ -39,7 +39,7 @@ TRACE_EVENT(csd_queue_cpu,
-  */
- DECLARE_EVENT_CLASS(csd_function,
- 
--	TP_PROTO(smp_call_func_t func, struct __call_single_data *csd),
-+	TP_PROTO(smp_call_func_t func, call_single_data_t *csd),
- 
- 	TP_ARGS(func, csd),
- 
-@@ -57,12 +57,12 @@ DECLARE_EVENT_CLASS(csd_function,
- );
- 
- DEFINE_EVENT(csd_function, csd_function_entry,
--	TP_PROTO(smp_call_func_t func, struct __call_single_data *csd),
-+	TP_PROTO(smp_call_func_t func, call_single_data_t *csd),
- 	TP_ARGS(func, csd)
- );
- 
- DEFINE_EVENT(csd_function, csd_function_exit,
--	TP_PROTO(smp_call_func_t func, struct __call_single_data *csd),
-+	TP_PROTO(smp_call_func_t func, call_single_data_t *csd),
- 	TP_ARGS(func, csd)
- );
- 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index 385179d..822fabb 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -125,7 +125,7 @@ send_call_function_ipi_mask(struct cpumask *mask)
- }
- 
- static __always_inline void
--csd_do_func(smp_call_func_t func, void *info, struct __call_single_data *csd)
-+csd_do_func(smp_call_func_t func, void *info, call_single_data_t *csd)
- {
- 	trace_csd_function_entry(func, csd);
- 	func(info);
-@@ -172,7 +172,7 @@ module_param(csd_lock_timeout, ulong, 0444);
- static atomic_t csd_bug_count = ATOMIC_INIT(0);
- 
- /* Record current CSD work for current CPU, NULL to erase. */
--static void __csd_lock_record(struct __call_single_data *csd)
-+static void __csd_lock_record(call_single_data_t *csd)
- {
- 	if (!csd) {
- 		smp_mb(); /* NULL cur_csd after unlock. */
-@@ -187,13 +187,13 @@ static void __csd_lock_record(struct __call_single_data *csd)
- 		  /* Or before unlock, as the case may be. */
- }
- 
--static __always_inline void csd_lock_record(struct __call_single_data *csd)
-+static __always_inline void csd_lock_record(call_single_data_t *csd)
- {
- 	if (static_branch_unlikely(&csdlock_debug_enabled))
- 		__csd_lock_record(csd);
- }
- 
--static int csd_lock_wait_getcpu(struct __call_single_data *csd)
-+static int csd_lock_wait_getcpu(call_single_data_t *csd)
- {
- 	unsigned int csd_type;
- 
-@@ -208,7 +208,7 @@ static int csd_lock_wait_getcpu(struct __call_single_data *csd)
-  * the CSD_TYPE_SYNC/ASYNC types provide the destination CPU,
-  * so waiting on other types gets much less information.
-  */
--static bool csd_lock_wait_toolong(struct __call_single_data *csd, u64 ts0, u64 *ts1, int *bug_id)
-+static bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, int *bug_id)
- {
- 	int cpu = -1;
- 	int cpux;
-@@ -272,7 +272,7 @@ static bool csd_lock_wait_toolong(struct __call_single_data *csd, u64 ts0, u64 *
-  * previous function call. For multi-cpu calls its even more interesting
-  * as we'll have to ensure no other cpu is observing our csd.
-  */
--static void __csd_lock_wait(struct __call_single_data *csd)
-+static void __csd_lock_wait(call_single_data_t *csd)
- {
- 	int bug_id = 0;
- 	u64 ts0, ts1;
-@@ -286,7 +286,7 @@ static void __csd_lock_wait(struct __call_single_data *csd)
- 	smp_acquire__after_ctrl_dep();
- }
- 
--static __always_inline void csd_lock_wait(struct __call_single_data *csd)
-+static __always_inline void csd_lock_wait(call_single_data_t *csd)
- {
- 	if (static_branch_unlikely(&csdlock_debug_enabled)) {
- 		__csd_lock_wait(csd);
-@@ -296,17 +296,17 @@ static __always_inline void csd_lock_wait(struct __call_single_data *csd)
- 	smp_cond_load_acquire(&csd->node.u_flags, !(VAL & CSD_FLAG_LOCK));
- }
- #else
--static void csd_lock_record(struct __call_single_data *csd)
-+static void csd_lock_record(call_single_data_t *csd)
- {
- }
- 
--static __always_inline void csd_lock_wait(struct __call_single_data *csd)
-+static __always_inline void csd_lock_wait(call_single_data_t *csd)
- {
- 	smp_cond_load_acquire(&csd->node.u_flags, !(VAL & CSD_FLAG_LOCK));
- }
- #endif
- 
--static __always_inline void csd_lock(struct __call_single_data *csd)
-+static __always_inline void csd_lock(call_single_data_t *csd)
- {
- 	csd_lock_wait(csd);
- 	csd->node.u_flags |= CSD_FLAG_LOCK;
-@@ -319,7 +319,7 @@ static __always_inline void csd_lock(struct __call_single_data *csd)
- 	smp_wmb();
- }
- 
--static __always_inline void csd_unlock(struct __call_single_data *csd)
-+static __always_inline void csd_unlock(call_single_data_t *csd)
- {
- 	WARN_ON(!(csd->node.u_flags & CSD_FLAG_LOCK));
- 
-@@ -372,7 +372,7 @@ void __smp_call_single_queue(int cpu, struct llist_node *node)
-  * for execution on the given CPU. data must already have
-  * ->func, ->info, and ->flags set.
-  */
--static int generic_exec_single(int cpu, struct __call_single_data *csd)
-+static int generic_exec_single(int cpu, call_single_data_t *csd)
- {
- 	if (cpu == smp_processor_id()) {
- 		smp_call_func_t func = csd->func;
-@@ -658,7 +658,7 @@ EXPORT_SYMBOL(smp_call_function_single);
+  * DEFINE_FREE(name, type, free):
+  *	simple helper macro that defines the required wrapper for a __free()
+- *	based cleanup function. @free is an expression using '_T' to access
+- *	the variable.
++ *	based cleanup function. @free is an expression using '_T' to access the
++ *	variable. @free should typically include a NULL test before calling a
++ *	function, see the example below.
   *
-  * Return: %0 on success or negative errno value on error
+  * __free(name):
+  *	variable attribute to add a scoped based cleanup to the variable.
+@@ -17,6 +18,9 @@
+  *	like a non-atomic xchg(var, NULL), such that the cleanup function will
+  *	be inhibited -- provided it sanely deals with a NULL value.
+  *
++ *	NOTE: this has __must_check semantics so that it is harder to accidentally
++ *	leak the resource.
++ *
+  * return_ptr(p):
+  *	returns p while inhibiting the __free().
+  *
+@@ -24,6 +28,8 @@
+  *
+  * DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
+  *
++ * void *alloc_obj(...)
++ * {
+  *	struct obj *p __free(kfree) = kmalloc(...);
+  *	if (!p)
+  *		return NULL;
+@@ -32,6 +38,24 @@
+  *		return NULL;
+  *
+  *	return_ptr(p);
++ * }
++ *
++ * NOTE: the DEFINE_FREE()'s @free expression includes a NULL test even though
++ * kfree() is fine to be called with a NULL value. This is on purpose. This way
++ * the compiler sees the end of our alloc_obj() function as:
++ *
++ *	tmp = p;
++ *	p = NULL;
++ *	if (p)
++ *		kfree(p);
++ *	return tmp;
++ *
++ * And through the magic of value-propagation and dead-code-elimination, it
++ * eliminates the actual cleanup call and compiles into:
++ *
++ *	return p;
++ *
++ * Without the NULL test it turns into a mess and the compiler can't help us.
   */
--int smp_call_function_single_async(int cpu, struct __call_single_data *csd)
-+int smp_call_function_single_async(int cpu, call_single_data_t *csd)
- {
- 	int err = 0;
  
-diff --git a/kernel/up.c b/kernel/up.c
-index a38b8b0..df50828 100644
---- a/kernel/up.c
-+++ b/kernel/up.c
-@@ -25,7 +25,7 @@ int smp_call_function_single(int cpu, void (*func) (void *info), void *info,
- }
- EXPORT_SYMBOL(smp_call_function_single);
+ #define DEFINE_FREE(_name, _type, _free) \
+@@ -39,8 +63,17 @@
  
--int smp_call_function_single_async(int cpu, struct __call_single_data *csd)
-+int smp_call_function_single_async(int cpu, call_single_data_t *csd)
- {
- 	unsigned long flags;
+ #define __free(_name)	__cleanup(__free_##_name)
+ 
++#define __get_and_null_ptr(p) \
++	({ __auto_type __ptr = &(p); \
++	   __auto_type __val = *__ptr; \
++	   *__ptr = NULL;  __val; })
++
++static inline __must_check
++const volatile void * __must_check_fn(const volatile void *val)
++{ return val; }
++
+ #define no_free_ptr(p) \
+-	({ __auto_type __ptr = (p); (p) = NULL; __ptr; })
++	((typeof(p)) __must_check_fn(__get_and_null_ptr(p)))
+ 
+ #define return_ptr(p)	return no_free_ptr(p)
  
