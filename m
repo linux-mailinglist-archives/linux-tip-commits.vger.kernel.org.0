@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6E3F79CE54
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Sep 2023 12:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0F2C79CE56
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Sep 2023 12:33:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234279AbjILKcb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Sep 2023 06:32:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33850 "EHLO
+        id S234373AbjILKc5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Sep 2023 06:32:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234384AbjILKag (ORCPT
+        with ESMTP id S234385AbjILKah (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Sep 2023 06:30:36 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3CBA1721;
-        Tue, 12 Sep 2023 03:28:59 -0700 (PDT)
-Date:   Tue, 12 Sep 2023 10:28:57 -0000
+        Tue, 12 Sep 2023 06:30:37 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45041723;
+        Tue, 12 Sep 2023 03:29:00 -0700 (PDT)
+Date:   Tue, 12 Sep 2023 10:28:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694514538;
+        s=2020; t=1694514539;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=xW3uHBe4EVpDKpMR5ruXEoKnvBzEJaz6nuKa3rYSCWg=;
-        b=az9gPPXGEbv1gWAxMo78KFFQ3SfVir2dhFukdfKaukFaIIH+2VnWfjn5vmU75JLAsSn2Wj
-        lUPD0onwBDpoOU90Htxwp4VPvfei3eI/hB16WhjVOR9tZKnrGWQchq8GMzFGWx47Wc5M4l
-        kOEVw2wXatFGivt8ZoPJgVLfWzQKHO8ipe/3lGcG26zDvTkGhyVyvV3JSd+n1cf6pxLE9J
-        B9l9F3WYULv6a1ifhb+Y2irWUol7OxOYmPqi78W6jgubHlbQeIg926XBjGXq3HsOAAxZxH
-        0lJudRwu7gZeDnup93/MJuJ/rQG1rdaM9PnGsIcotM8UeAMGm+DKy0oMC5llVQ==
+        bh=9/c5WAScPORoGVq2FSiwIsh38H/zaJClHn7ZgyVDpdw=;
+        b=Aa7aIz7+RULKnXj50xg3WkDkp4ZsuQg7lmRDuXit0NZpFiJywvJJnenfztW9ymrPzIKEfV
+        mxBFjYrHtzVOwkFwxh0DTgs4t7rFkMtpvXfmF7kdHneHkuovulTP7zkL+IWJVay5FS7pt5
+        /PjdJiuvptsbaUq1plWIpo9g7rx7ifCHJ1COohEr61m8JwBNX81r833dSNKT/zlZqtaoxY
+        tbAQgV+oiaUHvPhgVjxsLca3gXHAaQsU7f9HherGA+OH+QOFKBplp6xlSMDWVDySsEpUUA
+        lPwuZfETo5Gnj8bgme/bizlaYQYC1/1QOI1Y7czcDfQzSqrqD3QhDf2Pq2wAhA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694514538;
+        s=2020e; t=1694514539;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=xW3uHBe4EVpDKpMR5ruXEoKnvBzEJaz6nuKa3rYSCWg=;
-        b=lsaYGDpRqK1pfiMNTzqsqcg11HkI+NyeweBPeibkFurL8AQCLnomb/SH21E4tdP7itUbO+
-        6WwXMCXc0NEznsAQ==
+        bh=9/c5WAScPORoGVq2FSiwIsh38H/zaJClHn7ZgyVDpdw=;
+        b=gIslnSMuU/6KDZEZVzo/l0EAU/CG2LL6gktjhWZWNIjw1JDwgCkt1bVoWNUynQzJmAvkOu
+        OPyk6PxJHNWTtRBw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Simplify sched_move_task()
+Subject: [tip: sched/core] sched: Simplify yield_to()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169451453771.27769.16417895756640508965.tip-bot2@tip-bot2>
+Message-ID: <169451453874.27769.1812735099642835156.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,55 +54,108 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     3840155df4460200584624c7ce71be8e9c9d4f6a
-Gitweb:        https://git.kernel.org/tip/3840155df4460200584624c7ce71be8e9c9d4f6a
+Commit-ID:     a5a9d756c80f46cda38952d9ccd4e810b8bdb9d7
+Gitweb:        https://git.kernel.org/tip/a5a9d756c80f46cda38952d9ccd4e810b8bdb9d7
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 09 Jun 2023 20:41:09 +02:00
+AuthorDate:    Fri, 09 Jun 2023 16:58:23 +02:00
 Committer:     root <root@noisy.programming.kicks-ass.net>
-CommitterDate: Sat, 09 Sep 2023 15:10:17 +02:00
+CommitterDate: Sat, 09 Sep 2023 15:10:16 +02:00
 
-sched: Simplify sched_move_task()
+sched: Simplify yield_to()
 
 Use guards to reduce gotos and simplify control flow.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- kernel/sched/core.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ kernel/sched/core.c | 67 +++++++++++++++++++-------------------------
+ 1 file changed, 29 insertions(+), 38 deletions(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index acaab2d..bcae6e3 100644
+index a9b9fa9..e825839 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -10438,17 +10438,18 @@ void sched_move_task(struct task_struct *tsk)
- 	int queued, running, queue_flags =
- 		DEQUEUE_SAVE | DEQUEUE_MOVE | DEQUEUE_NOCLOCK;
- 	struct task_group *group;
--	struct rq_flags rf;
- 	struct rq *rq;
+@@ -8889,55 +8889,46 @@ int __sched yield_to(struct task_struct *p, bool preempt)
+ {
+ 	struct task_struct *curr = current;
+ 	struct rq *rq, *p_rq;
+-	unsigned long flags;
+ 	int yielded = 0;
  
--	rq = task_rq_lock(tsk, &rf);
-+	CLASS(task_rq_lock, rq_guard)(tsk);
-+	rq = rq_guard.rq;
-+
- 	/*
- 	 * Esp. with SCHED_AUTOGROUP enabled it is possible to get superfluous
- 	 * group changes.
- 	 */
- 	group = sched_get_task_group(tsk);
- 	if (group == tsk->sched_task_group)
--		goto unlock;
-+		return;
+-	local_irq_save(flags);
+-	rq = this_rq();
++	scoped_guard (irqsave) {
++		rq = this_rq();
  
- 	update_rq_clock(rq);
+ again:
+-	p_rq = task_rq(p);
+-	/*
+-	 * If we're the only runnable task on the rq and target rq also
+-	 * has only one task, there's absolutely no point in yielding.
+-	 */
+-	if (rq->nr_running == 1 && p_rq->nr_running == 1) {
+-		yielded = -ESRCH;
+-		goto out_irq;
+-	}
++		p_rq = task_rq(p);
++		/*
++		 * If we're the only runnable task on the rq and target rq also
++		 * has only one task, there's absolutely no point in yielding.
++		 */
++		if (rq->nr_running == 1 && p_rq->nr_running == 1)
++			return -ESRCH;
  
-@@ -10473,9 +10474,6 @@ void sched_move_task(struct task_struct *tsk)
- 		 */
- 		resched_curr(rq);
+-	double_rq_lock(rq, p_rq);
+-	if (task_rq(p) != p_rq) {
+-		double_rq_unlock(rq, p_rq);
+-		goto again;
+-	}
++		guard(double_rq_lock)(rq, p_rq);
++		if (task_rq(p) != p_rq)
++			goto again;
+ 
+-	if (!curr->sched_class->yield_to_task)
+-		goto out_unlock;
++		if (!curr->sched_class->yield_to_task)
++			return 0;
+ 
+-	if (curr->sched_class != p->sched_class)
+-		goto out_unlock;
++		if (curr->sched_class != p->sched_class)
++			return 0;
+ 
+-	if (task_on_cpu(p_rq, p) || !task_is_running(p))
+-		goto out_unlock;
++		if (task_on_cpu(p_rq, p) || !task_is_running(p))
++			return 0;
+ 
+-	yielded = curr->sched_class->yield_to_task(rq, p);
+-	if (yielded) {
+-		schedstat_inc(rq->yld_count);
+-		/*
+-		 * Make p's CPU reschedule; pick_next_entity takes care of
+-		 * fairness.
+-		 */
+-		if (preempt && rq != p_rq)
+-			resched_curr(p_rq);
++		yielded = curr->sched_class->yield_to_task(rq, p);
++		if (yielded) {
++			schedstat_inc(rq->yld_count);
++			/*
++			 * Make p's CPU reschedule; pick_next_entity
++			 * takes care of fairness.
++			 */
++			if (preempt && rq != p_rq)
++				resched_curr(p_rq);
++		}
  	}
--
--unlock:
--	task_rq_unlock(rq, tsk, &rf);
- }
  
- static inline struct task_group *css_tg(struct cgroup_subsys_state *css)
+-out_unlock:
+-	double_rq_unlock(rq, p_rq);
+-out_irq:
+-	local_irq_restore(flags);
+-
+-	if (yielded > 0)
++	if (yielded)
+ 		schedule();
+ 
+ 	return yielded;
