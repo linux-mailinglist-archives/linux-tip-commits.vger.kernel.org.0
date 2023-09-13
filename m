@@ -2,49 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D29B479E8C0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Sep 2023 15:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D7C679E8BD
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Sep 2023 15:11:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240697AbjIMNLU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S240189AbjIMNLU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 13 Sep 2023 09:11:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35036 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240767AbjIMNLQ (ORCPT
+        with ESMTP id S240781AbjIMNLR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 Sep 2023 09:11:16 -0400
+        Wed, 13 Sep 2023 09:11:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9260519BB;
-        Wed, 13 Sep 2023 06:11:12 -0700 (PDT)
-Date:   Wed, 13 Sep 2023 13:11:10 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2995619B4;
+        Wed, 13 Sep 2023 06:11:13 -0700 (PDT)
+Date:   Wed, 13 Sep 2023 13:11:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1694610671;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=K1u9XhqGdD8iDt6tL76z5B6EdFl2w7DNvw3G7mMcyyk=;
-        b=gXZA4wC/8jjGIu2jay+Kq0xN+4E6ykuHTuNO+Rg1WwzbX97+5oYVCNNJXj3NxR/jFvfYAy
-        wbdUsLztKCiCxKmywvw5KUxkiutQzbIaykxQOK+sjlacglVDosE4IAbfQ2rmMQvqQgW5wo
-        kMOZcyWS/g1olPmw5MfJ2PNgYS3n7N92lvnQexWQOIETCltTXbOp7DJn2hsZEmGybhDuba
-        1kDnX5P/XkRUTYIf+ltRI3q98xPEFiU0Elo2N8Xnxb0agptb3w+ns5VVjSg1S+183LA2rP
-        9wV0O20QO7qnm7fCr6pm/kNTf5Y5CEBF/Jwx0YcsWwXBVv58Md7Q7g+j4xZJ3w==
+        bh=6SEKQAKI17rOlG36fSIZP4oQp/6j7GYXmu+VY5njL/E=;
+        b=Rpge5bezC6ApMrOqp8olKPNvBLXWHdxTafs7vE6woi06tNG73zwdRTamJBQJalBgKjSJ4+
+        XiHDcAz+cXeycbvS8KN/GTgDTW0WxfQyZR2V8B3qHMG57ztNcMW5w4KVzIGX5PpRUk4gx8
+        Q6tMskjdGmxJmEgEOI/fO0uui7mICn3P0cSb/ZkgRhkA0s/cL2QoNdKUAWcwpBckWv6Fb0
+        B2fkBEcBxSxFKjynhEnyjf7MbXOcZ8EGjOa2A+WoX0PPtW9xnxKr39Ex+XyYQVn4VypPi+
+        z3zQr6j4nwDjmDx/4DJo0UN1Vrk1rfsRc/YNppMJ8cdJcXFbH84xFTmWyM4RBg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1694610671;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=K1u9XhqGdD8iDt6tL76z5B6EdFl2w7DNvw3G7mMcyyk=;
-        b=xxHBIZ6rFBE+itkgLDAvW6oAlw+r06NVIh9sGrZLL3cLRJC6kn5JWC0VTsekGILXD74yX+
-        xDEkw6BIsSkqhoAQ==
+        bh=6SEKQAKI17rOlG36fSIZP4oQp/6j7GYXmu+VY5njL/E=;
+        b=lUcdwMyhxHvEpQzezgAU0AG7a/4usUVaCnNc0TiaMhWCBaBWdG2UZmq5k2QWrvlom5/fv7
+        xOWjMwuSOjPXzDAg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Simplify tg_set_cfs_bandwidth()
+Subject: [tip: sched/core] sched: Simplify sched_move_task()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169461067069.27769.2758619210925283697.tip-bot2@tip-bot2>
+Message-ID: <169461067118.27769.14953901261043740127.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,109 +55,56 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     6fb45460615358157a6d3c990e74f9c1395247e2
-Gitweb:        https://git.kernel.org/tip/6fb45460615358157a6d3c990e74f9c1395247e2
+Commit-ID:     fa614b4feb5a246474ac71b45e520a8ddefc809c
+Gitweb:        https://git.kernel.org/tip/fa614b4feb5a246474ac71b45e520a8ddefc809c
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 09 Jun 2023 20:45:16 +02:00
+AuthorDate:    Fri, 09 Jun 2023 20:41:09 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 13 Sep 2023 15:01:42 +02:00
+CommitterDate: Wed, 13 Sep 2023 15:01:38 +02:00
 
-sched: Simplify tg_set_cfs_bandwidth()
+sched: Simplify sched_move_task()
 
 Use guards to reduce gotos and simplify control flow.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- include/linux/cpu.h |  2 ++
- kernel/sched/core.c | 38 +++++++++++++++++++-------------------
- 2 files changed, 21 insertions(+), 19 deletions(-)
+ kernel/sched/core.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index 0abd60a..f19f565 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -153,6 +153,8 @@ static inline int remove_cpu(unsigned int cpu) { return -EPERM; }
- static inline void smp_shutdown_nonboot_cpus(unsigned int primary_cpu) { }
- #endif	/* !CONFIG_HOTPLUG_CPU */
- 
-+DEFINE_LOCK_GUARD_0(cpus_read_lock, cpus_read_lock(), cpus_read_unlock())
-+
- #ifdef CONFIG_PM_SLEEP_SMP
- extern int freeze_secondary_cpus(int primary);
- extern void thaw_secondary_cpus(void);
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index a3f4fb8..5d9f363 100644
+index d298176..a3f4fb8 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -10802,11 +10802,12 @@ static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota,
- 	 * Prevent race between setting of cfs_rq->runtime_enabled and
- 	 * unthrottle_offline_cfs_rqs().
- 	 */
--	cpus_read_lock();
--	mutex_lock(&cfs_constraints_mutex);
-+	guard(cpus_read_lock)();
-+	guard(mutex)(&cfs_constraints_mutex);
+@@ -10437,17 +10437,18 @@ void sched_move_task(struct task_struct *tsk)
+ 	int queued, running, queue_flags =
+ 		DEQUEUE_SAVE | DEQUEUE_MOVE | DEQUEUE_NOCLOCK;
+ 	struct task_group *group;
+-	struct rq_flags rf;
+ 	struct rq *rq;
+ 
+-	rq = task_rq_lock(tsk, &rf);
++	CLASS(task_rq_lock, rq_guard)(tsk);
++	rq = rq_guard.rq;
 +
- 	ret = __cfs_schedulable(tg, period, quota);
- 	if (ret)
--		goto out_unlock;
-+		return ret;
- 
- 	runtime_enabled = quota != RUNTIME_INF;
- 	runtime_was_enabled = cfs_b->quota != RUNTIME_INF;
-@@ -10816,39 +10817,38 @@ static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota,
+ 	/*
+ 	 * Esp. with SCHED_AUTOGROUP enabled it is possible to get superfluous
+ 	 * group changes.
  	 */
- 	if (runtime_enabled && !runtime_was_enabled)
- 		cfs_bandwidth_usage_inc();
--	raw_spin_lock_irq(&cfs_b->lock);
--	cfs_b->period = ns_to_ktime(period);
--	cfs_b->quota = quota;
--	cfs_b->burst = burst;
+ 	group = sched_get_task_group(tsk);
+ 	if (group == tsk->sched_task_group)
+-		goto unlock;
++		return;
  
--	__refill_cfs_bandwidth_runtime(cfs_b);
-+	scoped_guard (raw_spinlock_irq, &cfs_b->lock) {
-+		cfs_b->period = ns_to_ktime(period);
-+		cfs_b->quota = quota;
-+		cfs_b->burst = burst;
+ 	update_rq_clock(rq);
  
--	/* Restart the period timer (if active) to handle new period expiry: */
--	if (runtime_enabled)
--		start_cfs_bandwidth(cfs_b);
-+		__refill_cfs_bandwidth_runtime(cfs_b);
- 
--	raw_spin_unlock_irq(&cfs_b->lock);
-+		/*
-+		 * Restart the period timer (if active) to handle new
-+		 * period expiry:
-+		 */
-+		if (runtime_enabled)
-+			start_cfs_bandwidth(cfs_b);
-+	}
- 
- 	for_each_online_cpu(i) {
- 		struct cfs_rq *cfs_rq = tg->cfs_rq[i];
- 		struct rq *rq = cfs_rq->rq;
--		struct rq_flags rf;
- 
--		rq_lock_irq(rq, &rf);
-+		guard(rq_lock_irq)(rq);
- 		cfs_rq->runtime_enabled = runtime_enabled;
- 		cfs_rq->runtime_remaining = 0;
- 
- 		if (cfs_rq->throttled)
- 			unthrottle_cfs_rq(cfs_rq);
--		rq_unlock_irq(rq, &rf);
+@@ -10472,9 +10473,6 @@ void sched_move_task(struct task_struct *tsk)
+ 		 */
+ 		resched_curr(rq);
  	}
-+
- 	if (runtime_was_enabled && !runtime_enabled)
- 		cfs_bandwidth_usage_dec();
--out_unlock:
--	mutex_unlock(&cfs_constraints_mutex);
--	cpus_read_unlock();
- 
--	return ret;
-+	return 0;
+-
+-unlock:
+-	task_rq_unlock(rq, tsk, &rf);
  }
  
- static int tg_set_cfs_quota(struct task_group *tg, long cfs_quota_us)
+ static inline struct task_group *css_tg(struct cgroup_subsys_state *css)
