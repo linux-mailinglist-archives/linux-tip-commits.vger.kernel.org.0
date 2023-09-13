@@ -2,49 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8234979E8C4
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Sep 2023 15:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FD8E79E8D3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Sep 2023 15:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240775AbjIMNLW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 Sep 2023 09:11:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35140 "EHLO
+        id S240189AbjIMNLi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Sep 2023 09:11:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240713AbjIMNLU (ORCPT
+        with ESMTP id S240817AbjIMNLb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 Sep 2023 09:11:20 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AB7619B9;
-        Wed, 13 Sep 2023 06:11:16 -0700 (PDT)
-Date:   Wed, 13 Sep 2023 13:11:14 -0000
+        Wed, 13 Sep 2023 09:11:31 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F19A11BD3;
+        Wed, 13 Sep 2023 06:11:25 -0700 (PDT)
+Date:   Wed, 13 Sep 2023 13:11:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694610674;
+        s=2020; t=1694610684;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=jjhk2NOlcOekS+9KNZbWh/C2ynHVx5QcKV0wX5xUGqg=;
-        b=JpLoIuafpG6wlsZAlyygKEsq3o8LUqUnVBJIA1KktQUNiDvbtfZC2w8wIzWe/tfY5aUvKa
-        LWQUnQe0mr3npdMcNZhEkAhA2kArZDaO7vm24aE9E0C7PId9qQ+Y0gD8NVuwdUxLNqnaeU
-        dKMitLDsQ8lB5RNQYfNw49aU885yydzXsLXEoJ9HCqtGFfI0M5X6vsv0WWhJW0q4p43JPZ
-        Z3qc4U2iAo0Pl1skif2wr7yxx0rwh2BZmJMSXnjCaE+VfYl4MMNrx5hmoYuWhJROZIBUwI
-        RPeJZlzHfnIJTWc7JMryOMobK4zHtOUCb25MrW08vacetBMe2qWbyFIy533zcA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5Lbr+GREXFEIWdqi56FKOM82bPUrS1DfjkzuftxKpOU=;
+        b=bI4ynV4KCRDLsAecFpDqPzz0YhKoNzcIhTNMOezL7aw/qy0EdAoDnEHEEE1X8JK0cEb7Rt
+        WQXdeQM1jpx7mntwuo9n3fAtxlMUXqxxDEShPPRyVXMdewZ5rM2CwmmGquAZjjqbAU1NTy
+        haLymHLPzftO3U2hBfv1j8ol9PePj4sbmFaZYufFJVSIjDSiPBhhcRnO1EiEPnZg/O2owT
+        hDRXFqPjid1eAaLqg/QggqMdU2N+rtD5Q5o9bohT39rr6P8Eq+icYr2pG+rsMiQtwiapDo
+        qUqwqmt6uNtpfRuXkndn1bhFaGpDUeI4iDheYE3jkFr8glgakuesEYbc015XCw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694610674;
+        s=2020e; t=1694610684;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=jjhk2NOlcOekS+9KNZbWh/C2ynHVx5QcKV0wX5xUGqg=;
-        b=CNnzyjUFXMnwWN387i793lndxYBeU0NIdau+Jq+XrV7VhVrmABQTjfPRVxsNEbbVDu7FeK
-        SrmVXPXC04z9VlCA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5Lbr+GREXFEIWdqi56FKOM82bPUrS1DfjkzuftxKpOU=;
+        b=bZ0OadvV9qyxjH665056/IZzyjAwF117+HzrQCi2ftQBoc+vGd5VVkTWCWZOQs9gn1PBg+
+        n3ggAGYJHxvpjBDA==
+From:   "tip-bot2 for Tim Chen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Simplify set_user_nice()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: sched/urgent] sched/fair: Fix SMT4 group_smt_balance handling
+Cc:     Shrikanth Hegde <sshegde@linux.vnet.ibm.com>,
+        Tim Chen <tim.c.chen@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <6cd1633036bb6b651af575c32c2a9608a106702c.camel@linux.intel.com>
+References: <6cd1633036bb6b651af575c32c2a9608a106702c.camel@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <169461067423.27769.1239931915350058927.tip-bot2@tip-bot2>
+Message-ID: <169461068361.27769.13031358982665213840.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,86 +61,70 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     94b548a15e8ec47dfbf6925bdfb64bb5657dce0c
-Gitweb:        https://git.kernel.org/tip/94b548a15e8ec47dfbf6925bdfb64bb5657dce0c
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 09 Jun 2023 20:52:55 +02:00
+Commit-ID:     450e749707bc1755f22b505d9cd942d4869dc535
+Gitweb:        https://git.kernel.org/tip/450e749707bc1755f22b505d9cd942d4869dc535
+Author:        Tim Chen <tim.c.chen@linux.intel.com>
+AuthorDate:    Thu, 07 Sep 2023 10:42:21 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 13 Sep 2023 15:01:14 +02:00
+CommitterDate: Wed, 13 Sep 2023 15:03:06 +02:00
 
-sched: Simplify set_user_nice()
+sched/fair: Fix SMT4 group_smt_balance handling
 
-Use guards to reduce gotos and simplify control flow.
+For SMT4, any group with more than 2 tasks will be marked as
+group_smt_balance. Retain the behaviour of group_has_spare by marking
+the busiest group as the group which has the least number of idle_cpus.
 
+Also, handle rounding effect of adding (ncores_local + ncores_busy) when
+the local is fully idle and busy group imbalance is less than 2 tasks.
+Local group should try to pull at least 1 task in this case so imbalance
+should be set to 2 instead.
+
+Fixes: fee1759e4f04 ("sched/fair: Determine active load balance for SMT sched groups")
+Acked-by: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
+Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: http://lkml.kernel.org/r/6cd1633036bb6b651af575c32c2a9608a106702c.camel@linux.intel.com
 ---
- kernel/sched/core.c  | 13 ++++++-------
- kernel/sched/sched.h |  5 +++++
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ kernel/sched/fair.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 2299a5c..fa57a56 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7187,9 +7187,8 @@ static inline int rt_effective_prio(struct task_struct *p, int prio)
- void set_user_nice(struct task_struct *p, long nice)
- {
- 	bool queued, running;
--	int old_prio;
--	struct rq_flags rf;
- 	struct rq *rq;
-+	int old_prio;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 33a2b6b..cb22592 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -9580,7 +9580,7 @@ static inline long sibling_imbalance(struct lb_env *env,
+ 	imbalance /= ncores_local + ncores_busiest;
  
- 	if (task_nice(p) == nice || nice < MIN_NICE || nice > MAX_NICE)
- 		return;
-@@ -7197,7 +7196,9 @@ void set_user_nice(struct task_struct *p, long nice)
- 	 * We have to be careful, if called from sys_setpriority(),
- 	 * the task might be in the middle of scheduling on another CPU.
- 	 */
--	rq = task_rq_lock(p, &rf);
-+	CLASS(task_rq_lock, rq_guard)(p);
-+	rq = rq_guard.rq;
+ 	/* Take advantage of resource in an empty sched group */
+-	if (imbalance == 0 && local->sum_nr_running == 0 &&
++	if (imbalance <= 1 && local->sum_nr_running == 0 &&
+ 	    busiest->sum_nr_running > 1)
+ 		imbalance = 2;
+ 
+@@ -9768,6 +9768,15 @@ static bool update_sd_pick_busiest(struct lb_env *env,
+ 		break;
+ 
+ 	case group_smt_balance:
++		/*
++		 * Check if we have spare CPUs on either SMT group to
++		 * choose has spare or fully busy handling.
++		 */
++		if (sgs->idle_cpus != 0 || busiest->idle_cpus != 0)
++			goto has_spare;
 +
- 	update_rq_clock(rq);
- 
- 	/*
-@@ -7208,8 +7209,9 @@ void set_user_nice(struct task_struct *p, long nice)
- 	 */
- 	if (task_has_dl_policy(p) || task_has_rt_policy(p)) {
- 		p->static_prio = NICE_TO_PRIO(nice);
--		goto out_unlock;
-+		return;
- 	}
++		fallthrough;
 +
- 	queued = task_on_rq_queued(p);
- 	running = task_current(rq, p);
- 	if (queued)
-@@ -7232,9 +7234,6 @@ void set_user_nice(struct task_struct *p, long nice)
- 	 * lowered its priority, then reschedule its CPU:
- 	 */
- 	p->sched_class->prio_changed(rq, p, old_prio);
--
--out_unlock:
--	task_rq_unlock(rq, p, &rf);
- }
- EXPORT_SYMBOL(set_user_nice);
+ 	case group_fully_busy:
+ 		/*
+ 		 * Select the fully busy group with highest avg_load. In
+@@ -9807,6 +9816,7 @@ static bool update_sd_pick_busiest(struct lb_env *env,
+ 			else
+ 				return true;
+ 		}
++has_spare:
  
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 0484627..68768f4 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1658,6 +1658,11 @@ task_rq_unlock(struct rq *rq, struct task_struct *p, struct rq_flags *rf)
- 	raw_spin_unlock_irqrestore(&p->pi_lock, rf->flags);
- }
- 
-+DEFINE_LOCK_GUARD_1(task_rq_lock, struct task_struct,
-+		    _T->rq = task_rq_lock(_T->lock, &_T->rf),
-+		    task_rq_unlock(_T->rq, _T->lock, &_T->rf),
-+		    struct rq *rq; struct rq_flags rf)
-+
- static inline void
- rq_lock_irqsave(struct rq *rq, struct rq_flags *rf)
- 	__acquires(rq->lock)
+ 		/*
+ 		 * Select not overloaded group with lowest number of idle cpus
