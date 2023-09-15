@@ -2,138 +2,101 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 423C07A23D7
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 18:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BAA37A2710
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 21:19:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231349AbjIOQpq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Sep 2023 12:45:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33156 "EHLO
+        id S236447AbjIOTTa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Sep 2023 15:19:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235089AbjIOQpl (ORCPT
+        with ESMTP id S232230AbjIOTTA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Sep 2023 12:45:41 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86188AC
-        for <linux-tip-commits@vger.kernel.org>; Fri, 15 Sep 2023 09:45:36 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-31ff2ce9d4cso835232f8f.0
-        for <linux-tip-commits@vger.kernel.org>; Fri, 15 Sep 2023 09:45:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1694796335; x=1695401135; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bJwjiYuT81Vygr2N0E8vRZWFku28/3vgWmNofvmCcbw=;
-        b=Zsf17i2BHOg2bqX/csLCyCR4KncD6guhNdeey+swDy2GajbCyni0b9CyCekbnyCxct
-         fZukDkB7bS2yeF3CazzZV2xOrO6qWw5SR/Zo9nrfdBhjdkucHrYY2rWwwh5wRqb7KTrr
-         oADYr704P5ISNQXfYxGVF1n0jZtF0UmJFC6Qw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694796335; x=1695401135;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bJwjiYuT81Vygr2N0E8vRZWFku28/3vgWmNofvmCcbw=;
-        b=pqVFzZcMG0qeCC4bhjh23P/XXHDycVVgktV3byZl+NzFpy9Q5zJ8FrMUkqLrHfhGCa
-         9XXCtz4utEDyiRvsgYNhk0BLib7EXsC3Qy8MQo/iXals87lP03R12i7dQjj4t4WJ0sFx
-         y4hjVMIPzBsmfg7v9FBJLcx4FV4+EJyOnmLgOzIemnRMlruX9KkPGWlYvvJx2Q/tHwyW
-         WmJ9dMbm7QOd7aSG2J+Xqoee+3n9c/7isHhqEYiJMXUMEgHe2nFSvQaDvUkuHwrRr1pv
-         lx1yFL93aMeI05oRDv5N+XladQ1Geq+gen3LCvysdVv+vXlaB+Ivv4Cyr8g34rgBIMRZ
-         ALtQ==
-X-Gm-Message-State: AOJu0YwQd/PGWZKYeGbBd6SRyFA6Cgn0m7yrASJjvJBZVwD+PwyxByZd
-        v+O8BMgZ40M49EiZSRtp5fqlAa4AVPqUDIX14YA=
-X-Google-Smtp-Source: AGHT+IHDuR7Zf6mrv0LsNNVC95pM18wH0ciO9xHLhcRx4qwrhckuRFYXMc+c7FMCHl8tlCGbc4DpRQ==
-X-Received: by 2002:adf:a3c4:0:b0:31f:f664:d87 with SMTP id m4-20020adfa3c4000000b0031ff6640d87mr1655321wrb.20.1694796334668;
-        Fri, 15 Sep 2023 09:45:34 -0700 (PDT)
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com. [209.85.218.47])
-        by smtp.gmail.com with ESMTPSA id z11-20020aa7d40b000000b005255f5735adsm2506885edq.24.2023.09.15.09.45.33
-        for <linux-tip-commits@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Sep 2023 09:45:33 -0700 (PDT)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-9ad8d47ef2fso289147166b.1
-        for <linux-tip-commits@vger.kernel.org>; Fri, 15 Sep 2023 09:45:33 -0700 (PDT)
-X-Received: by 2002:a17:906:300e:b0:9a6:6c5b:ae0c with SMTP id
- 14-20020a170906300e00b009a66c5bae0cmr2000660ejz.23.1694796333328; Fri, 15 Sep
- 2023 09:45:33 -0700 (PDT)
+        Fri, 15 Sep 2023 15:19:00 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8F3998;
+        Fri, 15 Sep 2023 12:18:55 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 19:18:53 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1694805534;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dOfLNwr5j5+nJMGu7UeiBp6F7Fcv0BHbYEyKt/sJX2Y=;
+        b=4pzu5s7WM3EW2Hzz2c0RJ+K/QMODb813YMXMIhDokiN3L6Bnw67hdqUNE55kj4tVytUcfU
+        EfrcATWUDXWmlHNohsxVSmXSiPWnH/piV3h+gS632cJhPdNBenp3kHf9Y6PGbCvpESfDxa
+        Mlnj8MXMNh/o1TIxDFRBVqgyGS4p/4THQfd1T9n7wFLbw/pmqPioffQJWT6EExUBypAMFB
+        Fhzy+U1TYbbUk7sOJAaOYcgFvHP0oOZlmFMtieXjHa1qPyaZF6Fv6LM+YIXnMl/v6XteL1
+        8ToOrOJ6wa9s2ZtSZINSXKJOkeyScaQS83DTQjZtVeEv/L6EcgqQsJ7TmXrCRw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1694805534;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dOfLNwr5j5+nJMGu7UeiBp6F7Fcv0BHbYEyKt/sJX2Y=;
+        b=s4yU4NEXgNalQ5C3mJDaN7wvET4+j30XT17+opQiwAGCBbKPjxJr4fZWuBIY6ClsjKizrU
+        XG61V/KgSFFmCLDA==
+From:   "tip-bot2 for Olaf Hering" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: smp/core] cpu/hotplug: Remove unused cpuhp_state
+ CPUHP_AP_X86_VDSO_VMA_ONLINE
+Cc:     Olaf Hering <olaf@aepfle.de>, Thomas Gleixner <tglx@linutronix.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230904121350.18055-1-olaf@aepfle.de>
+References: <20230904121350.18055-1-olaf@aepfle.de>
 MIME-Version: 1.0
-References: <20230906185941.53527-1-ubizjak@gmail.com> <169477710252.27769.14094735545135203449.tip-bot2@tip-bot2>
-In-Reply-To: <169477710252.27769.14094735545135203449.tip-bot2@tip-bot2>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 15 Sep 2023 09:45:16 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiOH-VK8XLUBU-=kzPij9X=m7HwnviXF-o8X54Z=Ey_xw@mail.gmail.com>
-Message-ID: <CAHk-=wiOH-VK8XLUBU-=kzPij9X=m7HwnviXF-o8X54Z=Ey_xw@mail.gmail.com>
-Subject: Re: [tip: x86/asm] x86/percpu: Define {raw,this}_cpu_try_cmpxchg{64,128}
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Uros Bizjak <ubizjak@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Message-ID: <169480553346.27769.4159995992587319133.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, 15 Sept 2023 at 04:25, tip-bot2 for Uros Bizjak
-<tip-bot2@linutronix.de> wrote:
->
-> Several places in mm/slub.o improve from e.g.:
->
-[...]
->
-> to:
->
->     53bc:       48 8d 4a 40             lea    0x40(%rdx),%rcx
->     53c0:       49 8b 1c 07             mov    (%r15,%rax,1),%rbx
->     53c4:       4c 89 f8                mov    %r15,%rax
->     53c7:       48 8d 37                lea    (%rdi),%rsi
->     53ca:       e8 00 00 00 00          call   53cf <...>
->                         53cb: R_X86_64_PLT32     this_cpu_cmpxchg16b_emu-0x4
->     53cf:       75 bb                   jne    538c <...>
+The following commit has been merged into the smp/core branch of tip:
 
-Honestly, if y ou care deeply about this code sequence, I think you
-should also move the "lea" out of the inline asm.
+Commit-ID:     32e4fa37fa667fdf53499b9de92737dc75199d8e
+Gitweb:        https://git.kernel.org/tip/32e4fa37fa667fdf53499b9de92737dc75199d8e
+Author:        Olaf Hering <olaf@aepfle.de>
+AuthorDate:    Mon, 04 Sep 2023 14:13:50 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 15 Sep 2023 21:13:13 +02:00
 
-Both
+cpu/hotplug: Remove unused cpuhp_state CPUHP_AP_X86_VDSO_VMA_ONLINE
 
-    call this_cpu_cmpxchg16b_emu
+Commit b2e2ba578e01 ("x86/vdso: Initialize the CPU/node NR segment
+descriptor earlier") removed the single user of this constant.
 
-and
+Remove it to reduce the size of cpuhp_hp_states[].
 
-    cmpxchg16b %gs:(%rsi)
+Signed-off-by: Olaf Hering <olaf@aepfle.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230904121350.18055-1-olaf@aepfle.de
 
-are 5 bytes, and I suspect it's easiest to just always put the address
-in %rsi - whether you call the function or not.
+---
+ include/linux/cpuhotplug.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-It doesn't really make the code generation for the non-call sequence
-worse, and it gives the compiler more information (ie instead of
-clobbering %rsi, the compiler knows what %rsi contains).
-
-IOW, something like this:
-
--       asm qual (ALTERNATIVE("leaq %P[var], %%rsi; call
-this_cpu_cmpxchg16b_emu", \
-+       asm qual (ALTERNATIVE("call this_cpu_cmpxchg16b_emu",           \
-...
--                   "c" (new__.high)                                    \
--                 : "memory", "rsi");                                   \
-+                   "c" (new__.high),                                   \
-+                   "S" (&_var)                                   \
-+                 : "memory");                                          \
-
-should do it.
-
-Note that I think this is particularly true of the slub code, because
-afaik, the slub code will *only* use the slow call-out.
-
-Why? Because if the CPU actually supports the cmpxchgb16 instruction,
-then the slub code won't even take this path at all - it will do the
-__CMPXCHG_DOUBLE path, which does an unconditional locked cmpxchg16b.
-
-Maybe I'm misreading it. And no, none of this matters. But since I saw
-the patch fly by, and slub.o mentioned, I thought I'd point out how
-silly this all is. It's optimizing a code-path that is basically never
-taken, and when it *is* taken, it can be improved further, I think.
-
-                   Linus
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index 06dda85..cd8bd6e 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -205,7 +205,6 @@ enum cpuhp_state {
+ 	CPUHP_AP_KVM_ONLINE,
+ 	CPUHP_AP_SCHED_WAIT_EMPTY,
+ 	CPUHP_AP_SMPBOOT_THREADS,
+-	CPUHP_AP_X86_VDSO_VMA_ONLINE,
+ 	CPUHP_AP_IRQ_AFFINITY_ONLINE,
+ 	CPUHP_AP_BLK_MQ_ONLINE,
+ 	CPUHP_AP_ARM_MVEBU_SYNC_CLOCKS,
