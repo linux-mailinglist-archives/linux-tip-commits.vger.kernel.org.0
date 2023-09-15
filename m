@@ -2,127 +2,124 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B8CE7A18FD
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 10:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD0DF7A1AA6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 11:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232109AbjIOIgh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Sep 2023 04:36:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59458 "EHLO
+        id S233371AbjIOJgd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Sep 2023 05:36:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233057AbjIOIgf (ORCPT
+        with ESMTP id S233117AbjIOJgd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Sep 2023 04:36:35 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0807E7E;
-        Fri, 15 Sep 2023 01:36:28 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 08:36:26 -0000
+        Fri, 15 Sep 2023 05:36:33 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4744171C;
+        Fri, 15 Sep 2023 02:36:26 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 09:36:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694766987;
+        s=2020; t=1694770584;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gblbQos8VTNNdUR5WR/h70J7iw2C+0i404bkbVCQRoI=;
-        b=KQVFclS0QKWzqEXxbT+1qkip+4o6d3/VMsLrND60Zo3g32lWCHscjOl8YkWhKxKZKSpjKU
-        MSiPedACt1Uc3xP2/oq0mxGeueNYlBORmP6VcL9S6xrn2e42shi39ieDT2w5ngI0bfPkC8
-        OGCS+pLNH4PrIo+g6cGLNzgFElEjNq3Df21VuTQ0Wg/F1y7WM4+5UThiFchGK9Bxt/SRZl
-        cCBoWfqJtWHBGjdndvCwAWTOqh2OdNYQxBTengPCy9HNs2J3Qe5cV+RVXcjoMyNPt3zoaF
-        YgayGYGCdlQgfnp8UG+ZIBsSwZOzgr6fEUVDDFkOf+3I74id7wnLbv7M2ymCSg==
+        bh=UFxc2R4QX3SL6qKcyTQop/43MwcshPy66p2kRtRIxKc=;
+        b=p0EiLuh6t09J8EmNaD7SQJRVmcG+YZ6GUWswNIUMiipyySKFp1AoW1BfnDWUfIiltKeZBd
+        d6n4JNYVZN2CcozrXuLA0NW5qS85ctrVU51NBdeacmBrB6XkBa6DbuTuN6ccXaIEJ6Vr3i
+        HICxcO5hujpPwzgl1S4ni6YbGVvWUrQY5lH21ZslTcoai9Piyd0ktaNl509MCCi22Iz91v
+        US1df2IVcec9CSRX3Jl8Hk/XW9DLdXHn8JbHb09KY+ytjC6+N/knHctk4ud9UK32ZLq8DF
+        p6TMHmK/Fy8Geq7SSuULIsaHhnMY9ba4h/K5WslkxfJC5aXL+uGNrZh0kd3x1Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694766987;
+        s=2020e; t=1694770584;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gblbQos8VTNNdUR5WR/h70J7iw2C+0i404bkbVCQRoI=;
-        b=oc2zV1Oj+U9a3vg/XiC8NJIdfJ7jt5ZTPK0ixXHC6Y1xndJZLrl7ji/ts2JPV5sgmK6/Xy
-        vMe452etrsSp7mBw==
-From:   "tip-bot2 for Song Liu" <tip-bot2@linutronix.de>
+        bh=UFxc2R4QX3SL6qKcyTQop/43MwcshPy66p2kRtRIxKc=;
+        b=iOyHCMeM7XpKke5X81o3PnfrvhS+RPJmhECKpWGDY2PDvCI1RSM3grSFtiliiNp36AoSFz
+        6N2y7wWt1uhjaaBw==
+From:   "tip-bot2 for Lukas Wunner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/purgatory: Remove LTO flags
-Cc:     Song Liu <song@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Sami Tolvanen <samitolvanen@google.com>, x86@kernel.org,
+Subject: [tip: core/urgent] panic: Reenable preemption in WARN slowpath
+Cc:     Lukas Wunner <lukas@wunner.de>, Ingo Molnar <mingo@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230914170138.995606-1-song@kernel.org>
-References: <20230914170138.995606-1-song@kernel.org>
+In-Reply-To: <3ec48fde01e4ee6505f77908ba351bad200ae3d1.1694763684.git.lukas@wunner.de>
+References: <3ec48fde01e4ee6505f77908ba351bad200ae3d1.1694763684.git.lukas@wunner.de>
 MIME-Version: 1.0
-Message-ID: <169476698697.27769.6321588484141795759.tip-bot2@tip-bot2>
+Message-ID: <169477058360.27769.17772363826818333894.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     f7d2101197488fdd2106ca21346733562f398765
-Gitweb:        https://git.kernel.org/tip/f7d2101197488fdd2106ca21346733562f398765
-Author:        Song Liu <song@kernel.org>
-AuthorDate:    Thu, 14 Sep 2023 10:01:38 -07:00
+Commit-ID:     cccd32816506cbac3a4c65d9dff51b3125ef1a03
+Gitweb:        https://git.kernel.org/tip/cccd32816506cbac3a4c65d9dff51b3125ef1a03
+Author:        Lukas Wunner <lukas@wunner.de>
+AuthorDate:    Fri, 15 Sep 2023 09:55:39 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 15 Sep 2023 10:31:26 +02:00
+CommitterDate: Fri, 15 Sep 2023 11:28:08 +02:00
 
-x86/purgatory: Remove LTO flags
+panic: Reenable preemption in WARN slowpath
 
--flto* implies -ffunction-sections. With LTO enabled, ld.lld generates
-multiple .text sections for purgatory.ro:
+Commit:
 
-  $ readelf -S purgatory.ro  | grep " .text"
-    [ 1] .text             PROGBITS         0000000000000000  00000040
-    [ 7] .text.purgatory   PROGBITS         0000000000000000  000020e0
-    [ 9] .text.warn        PROGBITS         0000000000000000  000021c0
-    [13] .text.sha256_upda PROGBITS         0000000000000000  000022f0
-    [15] .text.sha224_upda PROGBITS         0000000000000000  00002be0
-    [17] .text.sha256_fina PROGBITS         0000000000000000  00002bf0
-    [19] .text.sha224_fina PROGBITS         0000000000000000  00002cc0
+  5a5d7e9badd2 ("cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG")
 
-This causes WARNING from kexec_purgatory_setup_sechdrs():
+amended warn_slowpath_fmt() to disable preemption until the WARN splat
+has been emitted.
 
-  WARNING: CPU: 26 PID: 110894 at kernel/kexec_file.c:919
-  kexec_load_purgatory+0x37f/0x390
+However the commit neglected to reenable preemption in the !fmt codepath,
+i.e. when a WARN splat is emitted without additional format string.
 
-Fix this by disabling LTO for purgatory.
+One consequence is that users may see more splats than intended.  E.g. a
+WARN splat emitted in a work item results in at least two extra splats:
 
-[ AFAICT, x86 is the only arch that supports LTO and purgatory. ]
+  BUG: workqueue leaked lock or atomic
+  (emitted by process_one_work())
 
-We could also fix this with an explicit linker script to rejoin .text.*
-sections back into .text. However, given the benefit of LTOing purgatory
-is small, simply disable the production of more .text.* sections for now.
+  BUG: scheduling while atomic
+  (emitted by worker_thread() -> schedule())
 
-Fixes: b33fff07e3e3 ("x86, build: allow LTO to be selected")
-Signed-off-by: Song Liu <song@kernel.org>
+Ironically the point of the commit was to *avoid* extra splats. ;)
+
+Fix it.
+
+Fixes: 5a5d7e9badd2 ("cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Link: https://lore.kernel.org/r/20230914170138.995606-1-song@kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/3ec48fde01e4ee6505f77908ba351bad200ae3d1.1694763684.git.lukas@wunner.de
 ---
- arch/x86/purgatory/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/panic.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index c2a29be..08aa0f2 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -19,6 +19,10 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS -D__NO_FORTIFY
- # optimization flags.
- KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
+diff --git a/kernel/panic.c b/kernel/panic.c
+index 07239d4..ffa037f 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -697,6 +697,7 @@ void warn_slowpath_fmt(const char *file, int line, unsigned taint,
+ 	if (!fmt) {
+ 		__warn(file, line, __builtin_return_address(0), taint,
+ 		       NULL, NULL);
++		warn_rcu_exit(rcu);
+ 		return;
+ 	}
  
-+# When LTO is enabled, llvm emits many text sections, which is not supported
-+# by kexec. Remove -flto=* flags.
-+KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_LTO),$(KBUILD_CFLAGS))
-+
- # When linking purgatory.ro with -r unresolved symbols are not checked,
- # also link a purgatory.chk binary without -r to check for unresolved symbols.
- PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
