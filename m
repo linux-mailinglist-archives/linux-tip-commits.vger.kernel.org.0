@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A2237A1E2C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 14:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFA607A1EAF
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 14:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234018AbjIOMLy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Sep 2023 08:11:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38238 "EHLO
+        id S234842AbjIOM1J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Sep 2023 08:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234485AbjIOMLw (ORCPT
+        with ESMTP id S234903AbjIOM1I (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Sep 2023 08:11:52 -0400
+        Fri, 15 Sep 2023 08:27:08 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04765CD8;
-        Fri, 15 Sep 2023 05:11:45 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 12:11:43 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4E52120;
+        Fri, 15 Sep 2023 05:27:01 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 12:26:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694779904;
+        s=2020; t=1694780819;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sf8+ipFIGW8lCMat0xw/XNdWAC1viewZcVtxmsp/x0U=;
-        b=mUC2Qel3sltvmLOTXakJ715eK7xB5znCGAWQ5alD8hpvazzAKnIwi8XyGQ7ReQKluuFTmj
-        EJOWzynOWpGniunNp63nxCFX3oD4FjBw7IQpV3uNHQdJ+2IyJpTys/FQo65t6V4nxWsN+M
-        Iv9VycxNaUR3pu3s7lgY3Dc0S/j1aE9MD377+HuuIYPxE9H4bEZY4IGzzAEjLmY8/DG1Be
-        sEC4+OTdLwHha2gGPEtGZvpwAW/9TZY7E7/7IzqfwChbIPSToC1J6DwwXZ759q50rrZ3xm
-        Q4+E254tpdV32vHPHM7GxgynoU8dF/sKmjhh8I3ossQvqvA+9YlyBfQJvRN5CA==
+        bh=/+vWFyP7OLMXcdpfdgf7/35HLZDxH06nBm9Y+bQWqeo=;
+        b=JPvV6yCYVt/1BQ9FikRMMf+EgfMFd9p1Km6+5LTt9XmzDWzMnIoXFDI0gDod9oyAjIXLaA
+        pEosRwZovzKHMc++VsmV0M8aYneknncou1GF7eU5+eqxGrGLJYNpHTdlLNYcXHZEknWz0+
+        8vqv+ULs7CpL8uAHeTIrLx4m5KPDw3hEm1+KG5bQpJzd2SoUsnt3eEe3jVL9fCUZL0+yIS
+        jUtpDTDgiRzPBNOqC+UGwJMGhDUz6qJqrCcVHbcGqZZz8LN5/ehgJpEP5pBmaWWJCy3cil
+        rX336XHWsqL7a+G7vweY/r+qb9ppHLvSqPmn9km6s0zKxY8t4KvEU90PnOaS0A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694779904;
+        s=2020e; t=1694780819;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sf8+ipFIGW8lCMat0xw/XNdWAC1viewZcVtxmsp/x0U=;
-        b=ubhbxdYpUF9veLWJkUDWIEM5wNvO5KDRSyz+iD0cMDkCIybzYUFg/aaWXHdJEi0choVLAg
-        WSzvwT4O+mhSl3CQ==
-From:   "tip-bot2 for Jo Van Bulck" <tip-bot2@linutronix.de>
+        bh=/+vWFyP7OLMXcdpfdgf7/35HLZDxH06nBm9Y+bQWqeo=;
+        b=5Bt1E/1RGu6XtvHgWS3t3VG3IB3XJIRUCCV8/pgccNdj7D/WTo4vENkOfjgiVb3R78M8TE
+        GKe2AaAjkSomomDQ==
+From:   "tip-bot2 for Chengming Zhou" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/pti: Fix kernel warnings for pti= and nopti
- cmdline options
-Cc:     Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+Subject: [tip: sched/core] sched/fair: Fix cfs_rq_is_decayed() on !SMP
+Cc:     "Leo Yu-Chi Liang" <ycliang@andestech.com>,
+        Chengming Zhou <zhouchengming@bytedance.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
+        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be>
-References: <20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be>
+In-Reply-To: <20230913132031.2242151-1-chengming.zhou@linux.dev>
+References: <20230913132031.2242151-1-chengming.zhou@linux.dev>
 MIME-Version: 1.0
-Message-ID: <169477990384.27769.14353312621627606791.tip-bot2@tip-bot2>
+Message-ID: <169478081914.27769.11548694919151227611.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,120 +66,48 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/bugs branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9fa4dc9797f2118a1e54e8df7f28a7fcc681cca9
-Gitweb:        https://git.kernel.org/tip/9fa4dc9797f2118a1e54e8df7f28a7fcc681cca9
-Author:        Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
-AuthorDate:    Sat, 19 Aug 2023 10:09:21 +02:00
+Commit-ID:     c0490bc9bb62d9376f3dd4ec28e03ca0fef97152
+Gitweb:        https://git.kernel.org/tip/c0490bc9bb62d9376f3dd4ec28e03ca0fef97152
+Author:        Chengming Zhou <zhouchengming@bytedance.com>
+AuthorDate:    Wed, 13 Sep 2023 13:20:31 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 15 Sep 2023 14:01:59 +02:00
+CommitterDate: Fri, 15 Sep 2023 14:24:00 +02:00
 
-x86/pti: Fix kernel warnings for pti= and nopti cmdline options
+sched/fair: Fix cfs_rq_is_decayed() on !SMP
 
-Parse the pti= and nopti cmdline options using early_param to fix 'Unknown
-kernel command line parameters "nopti", will be passed to user space'
-warnings in the kernel log when nopti or pti= are passed to the kernel
-cmdline on x86 platforms.
+We don't need to maintain per-queue leaf_cfs_rq_list on !SMP, since
+it's used for cfs_rq load tracking & balancing on SMP.
 
-Additionally allow the kernel to warn for malformed pti= options.
+But sched debug interface uses it to print per-cfs_rq stats.
 
-Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+This patch fixes the !SMP version of cfs_rq_is_decayed(), so the
+per-queue leaf_cfs_rq_list is also maintained correctly on !SMP,
+to fix the warning in assert_list_leaf_cfs_rq().
+
+Fixes: 0a00a354644e ("sched/fair: Delete useless condition in tg_unthrottle_up()")
+Reported-by: Leo Yu-Chi Liang <ycliang@andestech.com>
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Link: https://lore.kernel.org/r/20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be
+Tested-by: Leo Yu-Chi Liang <ycliang@andestech.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Closes: https://lore.kernel.org/all/ZN87UsqkWcFLDxea@swlinux02/
+Link: https://lore.kernel.org/r/20230913132031.2242151-1-chengming.zhou@linux.dev
 ---
- arch/x86/mm/pti.c | 58 +++++++++++++++++++++++-----------------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 78414c6..5dd7339 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -69,6 +69,7 @@ static void __init pti_print_if_secure(const char *reason)
- 		pr_info("%s\n", reason);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 41cfd61..c893721 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4866,7 +4866,7 @@ static inline void update_misfit_status(struct task_struct *p, struct rq *rq)
+ 
+ static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
+ {
+-	return true;
++	return !cfs_rq->nr_running;
  }
  
-+/* Assume mode is auto unless overridden via cmdline below. */
- static enum pti_mode {
- 	PTI_AUTO = 0,
- 	PTI_FORCE_OFF,
-@@ -77,50 +78,49 @@ static enum pti_mode {
- 
- void __init pti_check_boottime_disable(void)
- {
--	char arg[5];
--	int ret;
--
--	/* Assume mode is auto unless overridden. */
--	pti_mode = PTI_AUTO;
--
- 	if (hypervisor_is_type(X86_HYPER_XEN_PV)) {
- 		pti_mode = PTI_FORCE_OFF;
- 		pti_print_if_insecure("disabled on XEN PV.");
- 		return;
- 	}
- 
--	ret = cmdline_find_option(boot_command_line, "pti", arg, sizeof(arg));
--	if (ret > 0)  {
--		if (ret == 3 && !strncmp(arg, "off", 3)) {
--			pti_mode = PTI_FORCE_OFF;
--			pti_print_if_insecure("disabled on command line.");
--			return;
--		}
--		if (ret == 2 && !strncmp(arg, "on", 2)) {
--			pti_mode = PTI_FORCE_ON;
--			pti_print_if_secure("force enabled on command line.");
--			goto enable;
--		}
--		if (ret == 4 && !strncmp(arg, "auto", 4)) {
--			pti_mode = PTI_AUTO;
--			goto autosel;
--		}
--	}
--
--	if (cmdline_find_option_bool(boot_command_line, "nopti") ||
--	    cpu_mitigations_off()) {
-+	if (cpu_mitigations_off())
- 		pti_mode = PTI_FORCE_OFF;
-+	if (pti_mode == PTI_FORCE_OFF) {
- 		pti_print_if_insecure("disabled on command line.");
- 		return;
- 	}
- 
--autosel:
--	if (!boot_cpu_has_bug(X86_BUG_CPU_MELTDOWN))
-+	if (pti_mode == PTI_FORCE_ON)
-+		pti_print_if_secure("force enabled on command line.");
-+
-+	if (pti_mode == PTI_AUTO && !boot_cpu_has_bug(X86_BUG_CPU_MELTDOWN))
- 		return;
--enable:
-+
- 	setup_force_cpu_cap(X86_FEATURE_PTI);
- }
- 
-+static int __init pti_parse_cmdline(char *arg)
-+{
-+	if (!strcmp(arg, "off"))
-+		pti_mode = PTI_FORCE_OFF;
-+	else if (!strcmp(arg, "on"))
-+		pti_mode = PTI_FORCE_ON;
-+	else if (!strcmp(arg, "auto"))
-+		pti_mode = PTI_AUTO;
-+	else
-+		return -EINVAL;
-+	return 0;
-+}
-+early_param("pti", pti_parse_cmdline);
-+
-+static int __init pti_parse_cmdline_nopti(char *arg)
-+{
-+	pti_mode = PTI_FORCE_OFF;
-+	return 0;
-+}
-+early_param("nopti", pti_parse_cmdline_nopti);
-+
- pgd_t __pti_set_user_pgtbl(pgd_t *pgdp, pgd_t pgd)
- {
- 	/*
+ #define UPDATE_TG	0x0
