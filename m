@@ -2,109 +2,138 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D32837A223A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 17:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 423C07A23D7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 18:46:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235892AbjIOPWS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Sep 2023 11:22:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60760 "EHLO
+        id S231349AbjIOQpq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Sep 2023 12:45:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236037AbjIOPWS (ORCPT
+        with ESMTP id S235089AbjIOQpl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Sep 2023 11:22:18 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3764CE50;
-        Fri, 15 Sep 2023 08:22:13 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 15:22:10 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694791331;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zXvk3r4eLfALSMQsQXt7D31XO209Sjvfg9W6OVxL00Y=;
-        b=TKOctj+wZW5aTodcgygciapIBZh6z8M9ECyEP/toI6je8uMfhZPXDEdvBmZ7u5MaCBOZNL
-        8kANfr+t5If1wl7e/HZZENrYRSBA9+4tivIzs8FvzvAPL0Ejt9hvbiK8H0f3dtYBqkhykL
-        KLYO1T5jTWrWQZeMfG2bESIqnU9hWZ82RxOkSMTkGZXwfjqPajntGwFsWegoINE2gKelin
-        XLbEg5Y+sGmeQcrxw9NDb4cu4L9E2kXv4fHpRcfcB7Aj3FQFP8qTnn495s4U1q8EFE26oS
-        3yu6oK4BThawd6oIcY1LxIJoXmDt1Q0uvbXwPaUiaDpCazGbRGQk+IdbwN0q2A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694791331;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zXvk3r4eLfALSMQsQXt7D31XO209Sjvfg9W6OVxL00Y=;
-        b=MvbgZo/17ICWpSQAxkv/ZBbScLpfwRbgpQtoA/uQCvzt9y8ShPEZtF0pblM0so5uU54UYk
-        Ue/gkCHA9vWjDPDA==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/core: Use do-while instead of for loop in
- set_nr_if_polling()
-Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230228161426.4508-1-ubizjak@gmail.com>
-References: <20230228161426.4508-1-ubizjak@gmail.com>
+        Fri, 15 Sep 2023 12:45:41 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86188AC
+        for <linux-tip-commits@vger.kernel.org>; Fri, 15 Sep 2023 09:45:36 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-31ff2ce9d4cso835232f8f.0
+        for <linux-tip-commits@vger.kernel.org>; Fri, 15 Sep 2023 09:45:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1694796335; x=1695401135; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bJwjiYuT81Vygr2N0E8vRZWFku28/3vgWmNofvmCcbw=;
+        b=Zsf17i2BHOg2bqX/csLCyCR4KncD6guhNdeey+swDy2GajbCyni0b9CyCekbnyCxct
+         fZukDkB7bS2yeF3CazzZV2xOrO6qWw5SR/Zo9nrfdBhjdkucHrYY2rWwwh5wRqb7KTrr
+         oADYr704P5ISNQXfYxGVF1n0jZtF0UmJFC6Qw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694796335; x=1695401135;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bJwjiYuT81Vygr2N0E8vRZWFku28/3vgWmNofvmCcbw=;
+        b=pqVFzZcMG0qeCC4bhjh23P/XXHDycVVgktV3byZl+NzFpy9Q5zJ8FrMUkqLrHfhGCa
+         9XXCtz4utEDyiRvsgYNhk0BLib7EXsC3Qy8MQo/iXals87lP03R12i7dQjj4t4WJ0sFx
+         y4hjVMIPzBsmfg7v9FBJLcx4FV4+EJyOnmLgOzIemnRMlruX9KkPGWlYvvJx2Q/tHwyW
+         WmJ9dMbm7QOd7aSG2J+Xqoee+3n9c/7isHhqEYiJMXUMEgHe2nFSvQaDvUkuHwrRr1pv
+         lx1yFL93aMeI05oRDv5N+XladQ1Geq+gen3LCvysdVv+vXlaB+Ivv4Cyr8g34rgBIMRZ
+         ALtQ==
+X-Gm-Message-State: AOJu0YwQd/PGWZKYeGbBd6SRyFA6Cgn0m7yrASJjvJBZVwD+PwyxByZd
+        v+O8BMgZ40M49EiZSRtp5fqlAa4AVPqUDIX14YA=
+X-Google-Smtp-Source: AGHT+IHDuR7Zf6mrv0LsNNVC95pM18wH0ciO9xHLhcRx4qwrhckuRFYXMc+c7FMCHl8tlCGbc4DpRQ==
+X-Received: by 2002:adf:a3c4:0:b0:31f:f664:d87 with SMTP id m4-20020adfa3c4000000b0031ff6640d87mr1655321wrb.20.1694796334668;
+        Fri, 15 Sep 2023 09:45:34 -0700 (PDT)
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com. [209.85.218.47])
+        by smtp.gmail.com with ESMTPSA id z11-20020aa7d40b000000b005255f5735adsm2506885edq.24.2023.09.15.09.45.33
+        for <linux-tip-commits@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Sep 2023 09:45:33 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-9ad8d47ef2fso289147166b.1
+        for <linux-tip-commits@vger.kernel.org>; Fri, 15 Sep 2023 09:45:33 -0700 (PDT)
+X-Received: by 2002:a17:906:300e:b0:9a6:6c5b:ae0c with SMTP id
+ 14-20020a170906300e00b009a66c5bae0cmr2000660ejz.23.1694796333328; Fri, 15 Sep
+ 2023 09:45:33 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <169479133040.27769.13340324338034270661.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230906185941.53527-1-ubizjak@gmail.com> <169477710252.27769.14094735545135203449.tip-bot2@tip-bot2>
+In-Reply-To: <169477710252.27769.14094735545135203449.tip-bot2@tip-bot2>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 15 Sep 2023 09:45:16 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiOH-VK8XLUBU-=kzPij9X=m7HwnviXF-o8X54Z=Ey_xw@mail.gmail.com>
+Message-ID: <CAHk-=wiOH-VK8XLUBU-=kzPij9X=m7HwnviXF-o8X54Z=Ey_xw@mail.gmail.com>
+Subject: Re: [tip: x86/asm] x86/percpu: Define {raw,this}_cpu_try_cmpxchg{64,128}
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, Uros Bizjak <ubizjak@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+On Fri, 15 Sept 2023 at 04:25, tip-bot2 for Uros Bizjak
+<tip-bot2@linutronix.de> wrote:
+>
+> Several places in mm/slub.o improve from e.g.:
+>
+[...]
+>
+> to:
+>
+>     53bc:       48 8d 4a 40             lea    0x40(%rdx),%rcx
+>     53c0:       49 8b 1c 07             mov    (%r15,%rax,1),%rbx
+>     53c4:       4c 89 f8                mov    %r15,%rax
+>     53c7:       48 8d 37                lea    (%rdi),%rsi
+>     53ca:       e8 00 00 00 00          call   53cf <...>
+>                         53cb: R_X86_64_PLT32     this_cpu_cmpxchg16b_emu-0x4
+>     53cf:       75 bb                   jne    538c <...>
 
-Commit-ID:     4ff34ad3d39377d9f6953f3606ccf611ce636767
-Gitweb:        https://git.kernel.org/tip/4ff34ad3d39377d9f6953f3606ccf611ce636767
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Tue, 28 Feb 2023 17:14:26 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 15 Sep 2023 17:18:02 +02:00
+Honestly, if y ou care deeply about this code sequence, I think you
+should also move the "lea" out of the inline asm.
 
-sched/core: Use do-while instead of for loop in set_nr_if_polling()
+Both
 
-Use equivalent do-while loop instead of infinite for loop.
+    call this_cpu_cmpxchg16b_emu
 
-There are no asm code changes.
+and
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230228161426.4508-1-ubizjak@gmail.com
----
- kernel/sched/core.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+    cmpxchg16b %gs:(%rsi)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 76662d8..f39482d 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -919,14 +919,13 @@ static bool set_nr_if_polling(struct task_struct *p)
- 	struct thread_info *ti = task_thread_info(p);
- 	typeof(ti->flags) val = READ_ONCE(ti->flags);
- 
--	for (;;) {
-+	do {
- 		if (!(val & _TIF_POLLING_NRFLAG))
- 			return false;
- 		if (val & _TIF_NEED_RESCHED)
- 			return true;
--		if (try_cmpxchg(&ti->flags, &val, val | _TIF_NEED_RESCHED))
--			break;
--	}
-+	} while (!try_cmpxchg(&ti->flags, &val, val | _TIF_NEED_RESCHED));
-+
- 	return true;
- }
- 
+are 5 bytes, and I suspect it's easiest to just always put the address
+in %rsi - whether you call the function or not.
+
+It doesn't really make the code generation for the non-call sequence
+worse, and it gives the compiler more information (ie instead of
+clobbering %rsi, the compiler knows what %rsi contains).
+
+IOW, something like this:
+
+-       asm qual (ALTERNATIVE("leaq %P[var], %%rsi; call
+this_cpu_cmpxchg16b_emu", \
++       asm qual (ALTERNATIVE("call this_cpu_cmpxchg16b_emu",           \
+...
+-                   "c" (new__.high)                                    \
+-                 : "memory", "rsi");                                   \
++                   "c" (new__.high),                                   \
++                   "S" (&_var)                                   \
++                 : "memory");                                          \
+
+should do it.
+
+Note that I think this is particularly true of the slub code, because
+afaik, the slub code will *only* use the slow call-out.
+
+Why? Because if the CPU actually supports the cmpxchgb16 instruction,
+then the slub code won't even take this path at all - it will do the
+__CMPXCHG_DOUBLE path, which does an unconditional locked cmpxchg16b.
+
+Maybe I'm misreading it. And no, none of this matters. But since I saw
+the patch fly by, and slub.o mentioned, I thought I'd point out how
+silly this all is. It's optimizing a code-path that is basically never
+taken, and when it *is* taken, it can be improved further, I think.
+
+                   Linus
