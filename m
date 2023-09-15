@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD0DF7A1AA6
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 11:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D237A1ABB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 11:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233371AbjIOJgd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Sep 2023 05:36:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35558 "EHLO
+        id S233440AbjIOJiM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Sep 2023 05:38:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233117AbjIOJgd (ORCPT
+        with ESMTP id S233471AbjIOJiM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Sep 2023 05:36:33 -0400
+        Fri, 15 Sep 2023 05:38:12 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4744171C;
-        Fri, 15 Sep 2023 02:36:26 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 09:36:23 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0693D210A;
+        Fri, 15 Sep 2023 02:37:48 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 09:37:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694770584;
+        s=2020; t=1694770666;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UFxc2R4QX3SL6qKcyTQop/43MwcshPy66p2kRtRIxKc=;
-        b=p0EiLuh6t09J8EmNaD7SQJRVmcG+YZ6GUWswNIUMiipyySKFp1AoW1BfnDWUfIiltKeZBd
-        d6n4JNYVZN2CcozrXuLA0NW5qS85ctrVU51NBdeacmBrB6XkBa6DbuTuN6ccXaIEJ6Vr3i
-        HICxcO5hujpPwzgl1S4ni6YbGVvWUrQY5lH21ZslTcoai9Piyd0ktaNl509MCCi22Iz91v
-        US1df2IVcec9CSRX3Jl8Hk/XW9DLdXHn8JbHb09KY+ytjC6+N/knHctk4ud9UK32ZLq8DF
-        p6TMHmK/Fy8Geq7SSuULIsaHhnMY9ba4h/K5WslkxfJC5aXL+uGNrZh0kd3x1Q==
+        bh=SOPVTewIEsdJFEdGxeIXrxTA0ujLRVLPJN1kHfZ4fqc=;
+        b=C07p3FS6Q6cg7DFbkQCpwtH4JoozO7AQvOmfWYBFu6zbh/VOR0/EjuFBEJpJnITomY22pS
+        yPS8GSpCVWkD2XEebFo24hY63r2GFYMZQ5QJ4GspsxAzFbw523DSz0gHm6Nt6i/S6SAPWn
+        xlKnS+2sqszz3pN59+n3YWDZc+pewqdogN9gnitc0wSACCfs1o0X9RyBh4aJ2krubEOOkk
+        z2AZB5RS/3MIj+uNSroqGjAN/+3iKvwe79tbruc6gMtZ8bGZcl5Wlrejfjwd4mBJVyjynP
+        WSzewe6qzPtKfWfyihpMlyW2rtmZtl5pSNQJ16sWXrWVNW+HAynQ2v95XhjaKw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694770584;
+        s=2020e; t=1694770666;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UFxc2R4QX3SL6qKcyTQop/43MwcshPy66p2kRtRIxKc=;
-        b=iOyHCMeM7XpKke5X81o3PnfrvhS+RPJmhECKpWGDY2PDvCI1RSM3grSFtiliiNp36AoSFz
-        6N2y7wWt1uhjaaBw==
-From:   "tip-bot2 for Lukas Wunner" <tip-bot2@linutronix.de>
+        bh=SOPVTewIEsdJFEdGxeIXrxTA0ujLRVLPJN1kHfZ4fqc=;
+        b=DQEgUkr7/pZLTpcEvXF5vBx0qHZmTGPh49AkU/8RInL/+NNSoh0+JusRvTFY7Rv6Lbn7rc
+        vdpMRu3qlQdk1uDA==
+From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/urgent] panic: Reenable preemption in WARN slowpath
-Cc:     Lukas Wunner <lukas@wunner.de>, Ingo Molnar <mingo@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <3ec48fde01e4ee6505f77908ba351bad200ae3d1.1694763684.git.lukas@wunner.de>
-References: <3ec48fde01e4ee6505f77908ba351bad200ae3d1.1694763684.git.lukas@wunner.de>
+Subject: [tip: x86/boot] x86/boot: Define setup size in linker script
+Cc:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230912090051.4014114-27-ardb@google.com>
+References: <20230912090051.4014114-27-ardb@google.com>
 MIME-Version: 1.0
-Message-ID: <169477058360.27769.17772363826818333894.tip-bot2@tip-bot2>
+Message-ID: <169477066609.27769.6739184359715822628.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,60 +63,99 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/urgent branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     cccd32816506cbac3a4c65d9dff51b3125ef1a03
-Gitweb:        https://git.kernel.org/tip/cccd32816506cbac3a4c65d9dff51b3125ef1a03
-Author:        Lukas Wunner <lukas@wunner.de>
-AuthorDate:    Fri, 15 Sep 2023 09:55:39 +02:00
+Commit-ID:     988b52b207a9fe74c3699bda8c2256714926b94b
+Gitweb:        https://git.kernel.org/tip/988b52b207a9fe74c3699bda8c2256714926b94b
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Tue, 12 Sep 2023 09:01:01 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 15 Sep 2023 11:28:08 +02:00
+CommitterDate: Fri, 15 Sep 2023 11:18:42 +02:00
 
-panic: Reenable preemption in WARN slowpath
+x86/boot: Define setup size in linker script
 
-Commit:
+The setup block contains the real mode startup code that is used when
+booting from a legacy BIOS, along with the boot_params/setup_data that
+is used by legacy x86 bootloaders to pass the command line and initial
+ramdisk parameters, among other things.
 
-  5a5d7e9badd2 ("cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG")
+The setup block also contains the PE/COFF header of the entire combined
+image, which includes the compressed kernel image, the decompressor and
+the EFI stub.
 
-amended warn_slowpath_fmt() to disable preemption until the WARN splat
-has been emitted.
+This PE header describes the layout of the executable image in memory,
+and currently, the fact that the setup block precedes it makes it rather
+fiddly to get the right values into the right place in the final image.
 
-However the commit neglected to reenable preemption in the !fmt codepath,
-i.e. when a WARN splat is emitted without additional format string.
+Let's make things a bit easier by defining the setup_size in the linker
+script so it can be referenced from the asm code directly, rather than
+having to rely on the build tool to calculate it. For the time being,
+add 64 bytes of fixed padding for the .reloc and .compat sections - this
+will be removed in a subsequent patch after the PE/COFF header has been
+reorganized.
 
-One consequence is that users may see more splats than intended.  E.g. a
-WARN splat emitted in a work item results in at least two extra splats:
+This change has no impact on the resulting bzImage binary when
+configured with CONFIG_EFI_MIXED=y.
 
-  BUG: workqueue leaked lock or atomic
-  (emitted by process_one_work())
-
-  BUG: scheduling while atomic
-  (emitted by worker_thread() -> schedule())
-
-Ironically the point of the commit was to *avoid* extra splats. ;)
-
-Fix it.
-
-Fixes: 5a5d7e9badd2 ("cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/3ec48fde01e4ee6505f77908ba351bad200ae3d1.1694763684.git.lukas@wunner.de
+Link: https://lore.kernel.org/r/20230912090051.4014114-27-ardb@google.com
 ---
- kernel/panic.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/boot/header.S      | 2 +-
+ arch/x86/boot/setup.ld      | 4 ++++
+ arch/x86/boot/tools/build.c | 6 ------
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/panic.c b/kernel/panic.c
-index 07239d4..ffa037f 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -697,6 +697,7 @@ void warn_slowpath_fmt(const char *file, int line, unsigned taint,
- 	if (!fmt) {
- 		__warn(file, line, __builtin_return_address(0), taint,
- 		       NULL, NULL);
-+		warn_rcu_exit(rcu);
- 		return;
+diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+index 6059f87..36011b2 100644
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -231,7 +231,7 @@ sentinel:	.byte 0xff, 0xff        /* Used to detect broken loaders */
+ 
+ 	.globl	hdr
+ hdr:
+-setup_sects:	.byte 0			/* Filled in by build.c */
++		.byte setup_sects - 1
+ root_flags:	.word ROOT_RDONLY
+ syssize:	.long 0			/* Filled in by build.c */
+ ram_size:	.word 0			/* Obsolete */
+diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
+index b11c45b..f125f17 100644
+--- a/arch/x86/boot/setup.ld
++++ b/arch/x86/boot/setup.ld
+@@ -39,6 +39,10 @@ SECTIONS
+ 	.signature	: {
+ 		setup_sig = .;
+ 		LONG(0x5a5aaa55)
++
++		/* Reserve some extra space for the reloc and compat sections */
++		setup_size = ABSOLUTE(ALIGN(. + 64, 512));
++		setup_sects = ABSOLUTE(setup_size / 512);
  	}
  
+ 
+diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
+index 10b0207..bcbae88 100644
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -48,12 +48,7 @@ typedef unsigned int   u32;
+ u8 buf[SETUP_SECT_MAX*512];
+ 
+ #define PECOFF_RELOC_RESERVE 0x20
+-
+-#ifdef CONFIG_EFI_MIXED
+ #define PECOFF_COMPAT_RESERVE 0x20
+-#else
+-#define PECOFF_COMPAT_RESERVE 0x0
+-#endif
+ 
+ static unsigned long efi32_stub_entry;
+ static unsigned long efi64_stub_entry;
+@@ -413,7 +408,6 @@ int main(int argc, char ** argv)
+ #endif
+ 
+ 	/* Patch the setup code with the appropriate size parameters */
+-	buf[0x1f1] = setup_sectors-1;
+ 	put_unaligned_le32(sys_size, &buf[0x1f4]);
+ 
+ 	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
