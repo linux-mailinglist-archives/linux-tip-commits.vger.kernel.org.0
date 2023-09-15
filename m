@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4019D7A1ABC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 11:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B56F07A1AC1
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 11:38:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233768AbjIOJiO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Sep 2023 05:38:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38244 "EHLO
+        id S233791AbjIOJiS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Sep 2023 05:38:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233707AbjIOJiN (ORCPT
+        with ESMTP id S233779AbjIOJiQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Sep 2023 05:38:13 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DCD12119;
-        Fri, 15 Sep 2023 02:37:48 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 09:37:46 -0000
+        Fri, 15 Sep 2023 05:38:16 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D58772121;
+        Fri, 15 Sep 2023 02:37:49 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 09:37:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694770667;
+        s=2020; t=1694770668;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tG76X2i5DB/SROipWcWTkvhga5GJZ6cKkuw+MFh6Aqo=;
-        b=Rqgo+MDGa6i2Apua5VasLJW7xD4IUj78vzKY0FcOGPCHEln5M1LRmBPHBEUmBuuFAc/XbP
-        NvIteanqBStDv427N916Xa4QJwQD0m0HKwfph0aO76NOZMqVIyMmUULY3jsDbbCLsv4Gzu
-        i9j1zLnv58BCPAuB9INF7aKUJqg3s/L/L1NWgu1nxvQh2YosU0+az4sonWlS1qHtMI5RVr
-        24kfzIr3gZceCqmuFDibFPFNRTB54mLOanjFmTN3HHtA/1lZcZHbnWBrpn98NGG0eNhjJ6
-        QkeWMZKv+CitAxnxcYHLw53ZftdEXaNhZRo8JOjZijVlMFHIp5o/xwmmECH3nQ==
+        bh=02CNNYdQjVfmj16GKHZtFnohxkv6LTnS13rVtwj3by8=;
+        b=Xbqfen0LUvyCYp0eYT79H7LUhDwbh0ZlGygp6KogUPTQSfwx1hR1KTghu9OoJo+uDXUPPJ
+        qE23DCX99XyyV8VxbLtAWcS3k6t42lvB/vN7IuCHY5NbRDyQSVH1NXgp/sgPWZQgWGCoum
+        DmwKQd5kqs9hUl8mOVzGi43MRlYh/+r1rWBUWYYk+Q5ALtv7rXen/T5WevFl2kuBGZL7vL
+        Q5HVVYJmAerpUMiyq5JJLH6YxwLPwuy5yrJBwGt/UT7m/a2njXiCYyVDoicQ/8AczVWncY
+        cTvIDgGehPFTfO/cP0l2Q5kHE8mPLhw67ounbLHFVO5f4bCJgTRLEwHcTFbwxQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694770667;
+        s=2020e; t=1694770668;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tG76X2i5DB/SROipWcWTkvhga5GJZ6cKkuw+MFh6Aqo=;
-        b=AqAwXnqBDfw00r1zj7Dfx9tCS9YTGOGuBATbwUUpJ6XTYGeymBZmlNBA8IvvE3BTFMmlC3
-        Aaf3H7j13BIUNICw==
+        bh=02CNNYdQjVfmj16GKHZtFnohxkv6LTnS13rVtwj3by8=;
+        b=wD8FyGhcPZ3ohclfdo6szcTy4S825eWyf1Ou8uUO+GXp9Eoqj5uXnzN5Q4Hvdjir55wv3w
+        jVKtdnk6xxnpbKDQ==
 From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Drop references to startup_64
+Subject: [tip: x86/boot] x86/boot: Omit compression buffer from PE/COFF image
+ memory footprint
 Cc:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230912090051.4014114-25-ardb@google.com>
-References: <20230912090051.4014114-25-ardb@google.com>
+In-Reply-To: <20230912090051.4014114-22-ardb@google.com>
+References: <20230912090051.4014114-22-ardb@google.com>
 MIME-Version: 1.0
-Message-ID: <169477066668.27769.18211226993970606618.tip-bot2@tip-bot2>
+Message-ID: <169477066777.27769.18147290809049651725.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,67 +66,157 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     b618d31f112bea3d2daea19190d63e567f32a4db
-Gitweb:        https://git.kernel.org/tip/b618d31f112bea3d2daea19190d63e567f32a4db
+Commit-ID:     8eace5b3555606e684739bef5bcdfcfe68235257
+Gitweb:        https://git.kernel.org/tip/8eace5b3555606e684739bef5bcdfcfe68235257
 Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Tue, 12 Sep 2023 09:00:59 
+AuthorDate:    Tue, 12 Sep 2023 09:00:56 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 15 Sep 2023 11:18:42 +02:00
+CommitterDate: Fri, 15 Sep 2023 11:18:41 +02:00
 
-x86/boot: Drop references to startup_64
+x86/boot: Omit compression buffer from PE/COFF image memory footprint
 
-The x86 boot image generation tool assign a default value to startup_64
-and subsequently parses the actual value from zoffset.h but it never
-actually uses the value anywhere. So remove this code.
-
-This change has no impact on the resulting bzImage binary.
+Now that the EFI stub decompresses the kernel and hands over to the
+decompressed image directly, there is no longer a need to provide a
+decompression buffer as part of the .BSS allocation of the PE/COFF
+image. It also means the PE/COFF image can be loaded anywhere in memory,
+and setting the preferred image base is unnecessary. So drop the
+handling of this from the header and from the build tool.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230912090051.4014114-25-ardb@google.com
+Link: https://lore.kernel.org/r/20230912090051.4014114-22-ardb@google.com
 ---
- arch/x86/boot/Makefile      | 2 +-
- arch/x86/boot/tools/build.c | 3 ---
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ arch/x86/boot/header.S      |  6 +---
+ arch/x86/boot/tools/build.c | 50 ++++--------------------------------
+ 2 files changed, 8 insertions(+), 48 deletions(-)
 
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index f33e45e..0e98bc5 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -89,7 +89,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
+diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+index b24fa50..a87d913 100644
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -90,12 +90,10 @@ optional_header:
+ #endif
  
- SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
- 
--sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
-+sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
- 
- quiet_cmd_zoffset = ZOFFSET $@
-       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
+ extra_header_fields:
+-	# PE specification requires ImageBase to be 64k aligned
+-	.set	image_base, (LOAD_PHYSICAL_ADDR + 0xffff) & ~0xffff
+ #ifdef CONFIG_X86_32
+-	.long	image_base			# ImageBase
++	.long	0				# ImageBase
+ #else
+-	.quad	image_base			# ImageBase
++	.quad	0				# ImageBase
+ #endif
+ 	.long	0x20				# SectionAlignment
+ 	.long	0x20				# FileAlignment
 diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index efa4e9c..10b0207 100644
+index bd24769..0354c22 100644
 --- a/arch/x86/boot/tools/build.c
 +++ b/arch/x86/boot/tools/build.c
-@@ -60,7 +60,6 @@ static unsigned long efi64_stub_entry;
- static unsigned long efi_pe_entry;
+@@ -65,7 +65,6 @@ static unsigned long efi_pe_entry;
  static unsigned long efi32_pe_entry;
  static unsigned long kernel_info;
--static unsigned long startup_64;
+ static unsigned long startup_64;
+-static unsigned long _ehead;
  static unsigned long _end;
  
  /*----------------------------------------------------------------------*/
-@@ -264,7 +263,6 @@ static void efi_stub_defaults(void)
- 	efi_pe_entry = 0x10;
- #else
- 	efi_pe_entry = 0x210;
--	startup_64 = 0x200;
+@@ -229,35 +228,22 @@ static void update_pecoff_setup_and_reloc(unsigned int size)
  #endif
  }
  
-@@ -340,7 +338,6 @@ static void parse_zoffset(char *fname)
- 		PARSE_ZOFS(p, efi_pe_entry);
+-static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
+-			       unsigned int init_sz)
++static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
+ {
+ 	unsigned int pe_header;
+ 	unsigned int text_sz = file_sz - text_start;
+-	unsigned int bss_sz = init_sz - file_sz;
++	unsigned int bss_sz = _end - text_sz;
+ 
+ 	pe_header = get_unaligned_le32(&buf[0x3c]);
+ 
+ 	/*
+-	 * The PE/COFF loader may load the image at an address which is
+-	 * misaligned with respect to the kernel_alignment field in the setup
+-	 * header.
+-	 *
+-	 * In order to avoid relocating the kernel to correct the misalignment,
+-	 * add slack to allow the buffer to be aligned within the declared size
+-	 * of the image.
+-	 */
+-	bss_sz	+= CONFIG_PHYSICAL_ALIGN;
+-	init_sz	+= CONFIG_PHYSICAL_ALIGN;
+-
+-	/*
+ 	 * Size of code: Subtract the size of the first sector (512 bytes)
+ 	 * which includes the header.
+ 	 */
+ 	put_unaligned_le32(file_sz - 512 + bss_sz, &buf[pe_header + 0x1c]);
+ 
+ 	/* Size of image */
+-	put_unaligned_le32(init_sz, &buf[pe_header + 0x50]);
++	put_unaligned_le32(file_sz + bss_sz, &buf[pe_header + 0x50]);
+ 
+ 	/*
+ 	 * Address of entry point for PE/COFF executable
+@@ -308,8 +294,7 @@ static void efi_stub_entry_update(void)
+ 
+ static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
+ static inline void update_pecoff_text(unsigned int text_start,
+-				      unsigned int file_sz,
+-				      unsigned int init_sz) {}
++				      unsigned int file_sz) {}
+ static inline void efi_stub_defaults(void) {}
+ static inline void efi_stub_entry_update(void) {}
+ 
+@@ -360,7 +345,6 @@ static void parse_zoffset(char *fname)
  		PARSE_ZOFS(p, efi32_pe_entry);
  		PARSE_ZOFS(p, kernel_info);
--		PARSE_ZOFS(p, startup_64);
+ 		PARSE_ZOFS(p, startup_64);
+-		PARSE_ZOFS(p, _ehead);
  		PARSE_ZOFS(p, _end);
  
  		p = strchr(p, '\n');
+@@ -371,7 +355,7 @@ static void parse_zoffset(char *fname)
+ 
+ int main(int argc, char ** argv)
+ {
+-	unsigned int i, sz, setup_sectors, init_sz;
++	unsigned int i, sz, setup_sectors;
+ 	int c;
+ 	u32 sys_size;
+ 	struct stat sb;
+@@ -442,31 +426,9 @@ int main(int argc, char ** argv)
+ 	buf[0x1f1] = setup_sectors-1;
+ 	put_unaligned_le32(sys_size, &buf[0x1f4]);
+ 
+-	init_sz = get_unaligned_le32(&buf[0x260]);
+-#ifdef CONFIG_EFI_STUB
+-	/*
+-	 * The decompression buffer will start at ImageBase. When relocating
+-	 * the compressed kernel to its end, we must ensure that the head
+-	 * section does not get overwritten.  The head section occupies
+-	 * [i, i + _ehead), and the destination is [init_sz - _end, init_sz).
+-	 *
+-	 * At present these should never overlap, because 'i' is at most 32k
+-	 * because of SETUP_SECT_MAX, '_ehead' is less than 1k, and the
+-	 * calculation of INIT_SIZE in boot/header.S ensures that
+-	 * 'init_sz - _end' is at least 64k.
+-	 *
+-	 * For future-proofing, increase init_sz if necessary.
+-	 */
+-
+-	if (init_sz - _end < i + _ehead) {
+-		init_sz = (i + _ehead + _end + 4095) & ~4095;
+-		put_unaligned_le32(init_sz, &buf[0x260]);
+-	}
+-#endif
+-	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16), init_sz);
++	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
+ 
+ 	efi_stub_entry_update();
+-
+ 	/* Update kernel_info offset. */
+ 	put_unaligned_le32(kernel_info, &buf[0x268]);
+ 
