@@ -2,177 +2,135 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E58E67A1ACA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 11:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 431FE7A1B1E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 11:46:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233879AbjIOJie (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Sep 2023 05:38:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57102 "EHLO
+        id S233825AbjIOJqa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Sep 2023 05:46:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233849AbjIOJi3 (ORCPT
+        with ESMTP id S233671AbjIOJqL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Sep 2023 05:38:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 893081FFE;
-        Fri, 15 Sep 2023 02:38:09 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 09:37:49 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694770670;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gqu6Nk4eu/qbxmuvCEJNwbWI36cRFH74ZZtWhng7yLM=;
-        b=g3GmNPs5p7zwUln2W5QWbSkyPKcO7j/JKkACe/V8gO9oNYNalq8hSw4dV/uTRM+7gF7P1O
-        PgRhtgmDJO7WEU/Y3aDeacRWqzp8+wRpeJKhFHOujUbyQNDrZlvx6oZH3hMMKlCjZG+tYG
-        KZei0AkRG9PjK+dGVFwKlq+MApnilDRtz7gQqDNxAHh3PNjmAlp2i8luJw9LwYdnAqlxi2
-        mGf+1lHDGSOIZe6XlrryCR6lFUmc6T9TIMuZipWmWhU0uUIERgr6H1Lcn+k35zvOv9v0Z7
-        MhhjEv9ZJAK/z7xyBF/3Y760F1k8NSdZKdvJWR0pMVDjDqhIOFmKdgU1GegN3A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694770670;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gqu6Nk4eu/qbxmuvCEJNwbWI36cRFH74ZZtWhng7yLM=;
-        b=+neiJaCHJdlJEp5bVOAKtIjTb5xvZy38WYeuLaA5YDLnntU1DKlKVU/yCOXFJbE3iVYApg
-        O9jy76pxdalKtYDg==
-From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/efi: Disregard setup header of loaded image
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230912090051.4014114-19-ardb@google.com>
-References: <20230912090051.4014114-19-ardb@google.com>
+        Fri, 15 Sep 2023 05:46:11 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 611794202;
+        Fri, 15 Sep 2023 02:45:07 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-401ec23be82so20118245e9.0;
+        Fri, 15 Sep 2023 02:45:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1694771105; x=1695375905; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PcHdcbwkyI2KBO66Ajq1JQVmk6ciemJsAbh2k4h4Zc0=;
+        b=N9hYy2uOjSthXWglg4pTfeUTbG+jCKxp8keTbwFLx7m3nKI7FBD6un6c0oMU2fOQWU
+         XEKP3koUDqkoNY6Cc0YpRP/ahWpNMb1LE1riolUoqQ2FWlva9iTMnYljEDWOMRIlqW2Z
+         sktGkuLC0e1PkzUbfVu9OMO4kT81Hckefpj3S8zeNYAzp3735VMw5xqEvyF935gEGfCT
+         HI3mb9sgFD0mJBBdE74BJvzhWJMo7mSQG16lVFGs/EVRC8AX+Zra8P0VNQT4FaBKn2sX
+         Jzck3FOFGwJL2flW4c4Uc8hMCmGTgAoyp0bXrPBD4iVkWYdPx3Sid6E6WIATBBXTXpr2
+         dRrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694771105; x=1695375905;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PcHdcbwkyI2KBO66Ajq1JQVmk6ciemJsAbh2k4h4Zc0=;
+        b=Ql4NU+qP9Rz1df9Q5zcNI41DIki+eEiWhoGLXPHtFfXcHLAGkJ604TmzrEBPyUsGi4
+         LLWW+mz3fZ9Fa3vFkfs2FTok7ySpPksZOe1R0HfdMWnhnur6+IG8f6srwBh6rCl4/WbV
+         rUrQcbTcYDINBGhR3s7rRzuD7TZL3QZa/L1lYNAWIQVyFZuCUysmRe6/NVZhhzCgB5/C
+         Qe0NMG5ETKG2GwX5KT4GkBg3EKM25aJvOiicnkPvlv/Ynfz6Vo0Ggrew6lgkmZjRUcjA
+         j1nr99WD2h7KWVLWq1YPfkgHeADPko0aIf+vhsRpyi2yHGe14JA/UhoLPU9gpuW+yXUU
+         5S7w==
+X-Gm-Message-State: AOJu0YyAx6wDBs/NhkKIFARhYblCC3Dv7yCujL+Bkh9MYoAPi73BfAqc
+        9zkXIiHe1RoVsx6g85bxTYv7OTrHXAE=
+X-Google-Smtp-Source: AGHT+IHcAxY3KBswu7vLyAhTnyF5CMfsR313J8qut93P5wn/eA3roirSWTQYJC2OZs/RmjPjholv9w==
+X-Received: by 2002:a5d:604e:0:b0:31f:9501:fc0c with SMTP id j14-20020a5d604e000000b0031f9501fc0cmr826673wrt.45.1694771104913;
+        Fri, 15 Sep 2023 02:45:04 -0700 (PDT)
+Received: from gmail.com (1F2EF265.nat.pool.telekom.hu. [31.46.242.101])
+        by smtp.gmail.com with ESMTPSA id p6-20020a7bcc86000000b003fbdbd0a7desm6954127wma.27.2023.09.15.02.45.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Sep 2023 02:45:04 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Fri, 15 Sep 2023 11:45:02 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, Lukas Wunner <lukas@wunner.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+        Borislav Petkov <bp@alien8.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [tip: core/urgent] panic: Reenable preemption in WARN slowpath
+Message-ID: <ZQQnnjzxbTwpn61F@gmail.com>
+References: <3ec48fde01e4ee6505f77908ba351bad200ae3d1.1694763684.git.lukas@wunner.de>
+ <169477058360.27769.17772363826818333894.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <169477066941.27769.15794634265281433984.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <169477058360.27769.17772363826818333894.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     7e50262229faad0c7b8c54477cd1c883f31cc4a7
-Gitweb:        https://git.kernel.org/tip/7e50262229faad0c7b8c54477cd1c883f31cc4a7
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Tue, 12 Sep 2023 09:00:53 
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 15 Sep 2023 11:18:40 +02:00
+* tip-bot2 for Lukas Wunner <tip-bot2@linutronix.de> wrote:
 
-x86/efi: Disregard setup header of loaded image
+> The following commit has been merged into the core/urgent branch of tip:
+> 
+> Commit-ID:     cccd32816506cbac3a4c65d9dff51b3125ef1a03
+> Gitweb:        https://git.kernel.org/tip/cccd32816506cbac3a4c65d9dff51b3125ef1a03
+> Author:        Lukas Wunner <lukas@wunner.de>
+> AuthorDate:    Fri, 15 Sep 2023 09:55:39 +02:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Fri, 15 Sep 2023 11:28:08 +02:00
+> 
+> panic: Reenable preemption in WARN slowpath
+> 
+> Commit:
+> 
+>   5a5d7e9badd2 ("cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG")
+> 
+> amended warn_slowpath_fmt() to disable preemption until the WARN splat
+> has been emitted.
+> 
+> However the commit neglected to reenable preemption in the !fmt codepath,
+> i.e. when a WARN splat is emitted without additional format string.
+> 
+> One consequence is that users may see more splats than intended.  E.g. a
+> WARN splat emitted in a work item results in at least two extra splats:
+> 
+>   BUG: workqueue leaked lock or atomic
+>   (emitted by process_one_work())
+> 
+>   BUG: scheduling while atomic
+>   (emitted by worker_thread() -> schedule())
+> 
+> Ironically the point of the commit was to *avoid* extra splats. ;)
+> 
+> Fix it.
 
-The native EFI entrypoint does not take a struct boot_params from the
-loader, but instead, it constructs one from scratch, using the setup
-header data placed at the start of the image.
+> diff --git a/kernel/panic.c b/kernel/panic.c
+> index 07239d4..ffa037f 100644
+> --- a/kernel/panic.c
+> +++ b/kernel/panic.c
+> @@ -697,6 +697,7 @@ void warn_slowpath_fmt(const char *file, int line, unsigned taint,
+>  	if (!fmt) {
+>  		__warn(file, line, __builtin_return_address(0), taint,
+>  		       NULL, NULL);
+> +		warn_rcu_exit(rcu);
+>  		return;
 
-This setup header is placed in a way that permits legacy loaders to
-manipulate the contents (i.e., to pass the kernel command line or the
-address and size of an initial ramdisk), but EFI boot does not use it in
-that way - it only copies the contents that were placed there at build
-time, but EFI loaders will not (and should not) manipulate the setup
-header to configure the boot. (Commit 63bf28ceb3ebbe76 "efi: x86: Wipe
-setup_data on pure EFI boot" deals with some of the fallout of using
-setup_data in a way that breaks EFI boot.)
+BTW., one more thing we might want to consider here is to re-enable 
+preemption in warn_rcu_exit() a bit more gently, without forcing a
+pending reschedule, ie. preempt_enable_no_resched() or so?
 
-Given that none of the non-zero values that are copied from the setup
-header into the EFI stub's struct boot_params are relevant to the boot
-now that the EFI stub no longer enters via the legacy decompressor, the
-copy can be omitted altogether.
+Thanks,
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230912090051.4014114-19-ardb@google.com
----
- drivers/firmware/efi/libstub/x86-stub.c | 46 +++---------------------
- 1 file changed, 6 insertions(+), 40 deletions(-)
-
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 2fee52e..3bfc596 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -449,9 +449,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 				   efi_system_table_t *sys_table_arg)
- {
--	struct boot_params *boot_params;
--	struct setup_header *hdr;
--	void *image_base;
-+	static struct boot_params boot_params __page_aligned_bss;
-+	struct setup_header *hdr = &boot_params.hdr;
- 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
- 	int options_size = 0;
- 	efi_status_t status;
-@@ -469,30 +468,9 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 		efi_exit(handle, status);
- 	}
- 
--	image_base = efi_table_attr(image, image_base);
--
--	status = efi_allocate_pages(sizeof(struct boot_params),
--				    (unsigned long *)&boot_params, ULONG_MAX);
--	if (status != EFI_SUCCESS) {
--		efi_err("Failed to allocate lowmem for boot params\n");
--		efi_exit(handle, status);
--	}
--
--	memset(boot_params, 0x0, sizeof(struct boot_params));
--
--	hdr = &boot_params->hdr;
--
--	/* Copy the setup header from the second sector to boot_params */
--	memcpy(&hdr->jump, image_base + 512,
--	       sizeof(struct setup_header) - offsetof(struct setup_header, jump));
--
--	/*
--	 * Fill out some of the header fields ourselves because the
--	 * EFI firmware loader doesn't load the first sector.
--	 */
-+	/* Assign the setup_header fields that the kernel actually cares about */
- 	hdr->root_flags	= 1;
- 	hdr->vid_mode	= 0xffff;
--	hdr->boot_flag	= 0xAA55;
- 
- 	hdr->type_of_loader = 0x21;
- 
-@@ -501,25 +479,13 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	if (!cmdline_ptr)
- 		goto fail;
- 
--	efi_set_u64_split((unsigned long)cmdline_ptr,
--			  &hdr->cmd_line_ptr, &boot_params->ext_cmd_line_ptr);
--
--	hdr->ramdisk_image = 0;
--	hdr->ramdisk_size = 0;
--
--	/*
--	 * Disregard any setup data that was provided by the bootloader:
--	 * setup_data could be pointing anywhere, and we have no way of
--	 * authenticating or validating the payload.
--	 */
--	hdr->setup_data = 0;
-+	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
-+			  &boot_params.ext_cmd_line_ptr);
- 
--	efi_stub_entry(handle, sys_table_arg, boot_params);
-+	efi_stub_entry(handle, sys_table_arg, &boot_params);
- 	/* not reached */
- 
- fail:
--	efi_free(sizeof(struct boot_params), (unsigned long)boot_params);
--
- 	efi_exit(handle, status);
- }
- 
+	Ingo
