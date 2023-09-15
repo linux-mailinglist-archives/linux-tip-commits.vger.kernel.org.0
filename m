@@ -2,150 +2,154 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B99FB7A1D2F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 13:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83AB27A1D64
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 13:25:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231221AbjIOLNg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Sep 2023 07:13:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39188 "EHLO
+        id S234325AbjIOLZM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Sep 2023 07:25:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbjIOLNf (ORCPT
+        with ESMTP id S234347AbjIOLZL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Sep 2023 07:13:35 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7B43101;
-        Fri, 15 Sep 2023 04:13:29 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-40434d284f7so19388295e9.3;
-        Fri, 15 Sep 2023 04:13:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694776408; x=1695381208; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CisjoQlNizklEH7NF94JE2kh7VYoSvf5CMxswh9s23k=;
-        b=CrovmuKDfcGvk1Z+vUZq/D/vOlpZDxA1pYFZxOI+JScnxzuaERA4/k2BQZOCJEXeO/
-         qswprGpDtHuotwjcln8lXhOXUaeP2PuW/kAvGnHlJk0PvYnGaT05kvpq59Q3vGs65Em9
-         vU0z0Qm6t3fkzFdMb2sqQAYF5ZFoYNxk1sE8L5fnIbKrsFg28DRaDYp5K4X2dldMAtSw
-         Rw9JDcjxAfNGzSmQCOZVXhn6/xCl8sWQ8JjwC+dKr0tfxr+3/dlaUEu68Ed5CP0SlvXR
-         qDq4qeuVkKJkWSlRXn+wC7SKQRfqLHNfGFef7gqQkZLMfgPJGRvYm8lcOZ0VmQJZl3NZ
-         nyjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694776408; x=1695381208;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CisjoQlNizklEH7NF94JE2kh7VYoSvf5CMxswh9s23k=;
-        b=LBSny7Fa2N37g0eLecV7u1+ffNxrUSCkl5yIumN+u4wGnd0UeIND2xv/Jjeuo+P+an
-         wzViOfGGmukZazVuw4H8Y2Jpx6e5WLsU/bh9NVW68U6a37gmrFwWh7zmvTzFxMRvCNnS
-         L2tVXo4PriXAOLLaiGecSq6QMtCcnG7Cxicw8uHAUfRj7Nk9CQquvKFl3sZeFZAJiv/F
-         7R1117jcSUqjgEeVV3BKCPsbKSXlKzyhkOCEBAQZ9WUAGZPVJq4VwzqUKclhI03896EO
-         AVxIf2N5s12Fu95vPwjy+x7KYb79HO444Vve73b5erht3X/ncQnsKr7uabOcwy7vFlNt
-         BODQ==
-X-Gm-Message-State: AOJu0Yyti9o+MnkQpbVavJdCc+Mgdohx6WT7sn8uezuKy6Y3ukSEeYEP
-        OuGPTDxOmL831EGCi2M3ycxdMPbduGw=
-X-Google-Smtp-Source: AGHT+IHpu14WW2T1XA6i7u/lcJ4jYs2usVWQ211sZQoOlaktsYXUhgfJpwoFShR10D2go/1ilQoh1Q==
-X-Received: by 2002:a05:600c:287:b0:402:bcac:5773 with SMTP id 7-20020a05600c028700b00402bcac5773mr1257018wmk.38.1694776407984;
-        Fri, 15 Sep 2023 04:13:27 -0700 (PDT)
-Received: from gmail.com (1F2EF265.nat.pool.telekom.hu. [31.46.242.101])
-        by smtp.gmail.com with ESMTPSA id k21-20020a05600c0b5500b003fbe791a0e8sm4357737wmr.0.2023.09.15.04.13.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Sep 2023 04:13:27 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Fri, 15 Sep 2023 13:13:25 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Lukas Wunner <lukas@wunner.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
-        Borislav Petkov <bp@alien8.de>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [tip: core/urgent] panic: Reenable preemption in WARN slowpath
-Message-ID: <ZQQ8VZdWbj9U/AuB@gmail.com>
-References: <3ec48fde01e4ee6505f77908ba351bad200ae3d1.1694763684.git.lukas@wunner.de>
- <169477058360.27769.17772363826818333894.tip-bot2@tip-bot2>
- <ZQQnnjzxbTwpn61F@gmail.com>
- <20230915103512.GC6721@noisy.programming.kicks-ass.net>
+        Fri, 15 Sep 2023 07:25:11 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C9E71B1;
+        Fri, 15 Sep 2023 04:25:04 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 11:25:01 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1694777102;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=u/ouAHMy0z5FMxazVqTNkA5KNv/eBXdXO68JiIIQxpg=;
+        b=W+gunOOwKsaIQU99f1bUR8e7wi9zChtZ5RY1JsA84oQRM6bwwZ/dqvvQ38MHMkKDKxMKcK
+        d7i5fGlgZStkk5e5pNj+ZsrWJzDj4HYr99Hht40B7hJUQVAdm5g0QEpdHYA8UIjMrqb4n8
+        b2m/r1KSgx96HRpmZnSy3DBCtkQVU2ccTjsD7X+clZSoi16q/P1dm+TWYDrug1kE0nxHT4
+        LOlj5UQVZ24GKgcWVEmGPeq3ezRcLO4xhQmugKT03aMLY0pFpZl3L7aEzw0akpu/kVdAND
+        Ese4+IdK3RmR1mEgsxTQwJX5CSdi6bUoIfnoHL/iP13EvNVmCD8jP7d2vlHe9w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1694777102;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=u/ouAHMy0z5FMxazVqTNkA5KNv/eBXdXO68JiIIQxpg=;
+        b=uqm+XEA91+TIWX8qsKH5kjjcpb8JafPnHYDbW2RTI6B4Ml8u6ssgnoCFMvWgUY39+rv0du
+        Ow4pgxuEZffQ/AAQ==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/asm] x86/percpu: Define raw_cpu_try_cmpxchg and
+ this_cpu_try_cmpxchg()
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230830151623.3900-1-ubizjak@gmail.com>
+References: <20230830151623.3900-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230915103512.GC6721@noisy.programming.kicks-ass.net>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Message-ID: <169477710197.27769.9358331675930285966.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the x86/asm branch of tip:
 
-* Peter Zijlstra <peterz@infradead.org> wrote:
+Commit-ID:     5f863897d964e834a0da35b1e483b5bb8faca522
+Gitweb:        https://git.kernel.org/tip/5f863897d964e834a0da35b1e483b5bb8faca522
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Wed, 30 Aug 2023 17:13:56 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 15 Sep 2023 13:18:23 +02:00
 
-> > > panic: Reenable preemption in WARN slowpath
-> > > 
-> > > Commit:
-> > > 
-> > >   5a5d7e9badd2 ("cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG")
-> > > 
-> > > amended warn_slowpath_fmt() to disable preemption until the WARN splat
-> > > has been emitted.
-> > > 
-> > > However the commit neglected to reenable preemption in the !fmt codepath,
-> > > i.e. when a WARN splat is emitted without additional format string.
-> > > 
-> > > One consequence is that users may see more splats than intended.  E.g. a
-> > > WARN splat emitted in a work item results in at least two extra splats:
-> > > 
-> > >   BUG: workqueue leaked lock or atomic
-> > >   (emitted by process_one_work())
-> > > 
-> > >   BUG: scheduling while atomic
-> > >   (emitted by worker_thread() -> schedule())
-> > > 
-> > > Ironically the point of the commit was to *avoid* extra splats. ;)
-> > > 
-> > > Fix it.
-> > 
-> > > diff --git a/kernel/panic.c b/kernel/panic.c
-> > > index 07239d4..ffa037f 100644
-> > > --- a/kernel/panic.c
-> > > +++ b/kernel/panic.c
-> > > @@ -697,6 +697,7 @@ void warn_slowpath_fmt(const char *file, int line, unsigned taint,
-> > >  	if (!fmt) {
-> > >  		__warn(file, line, __builtin_return_address(0), taint,
-> > >  		       NULL, NULL);
-> > > +		warn_rcu_exit(rcu);
-> > >  		return;
-> > 
-> > BTW., one more thing we might want to consider here is to re-enable 
-> > preemption in warn_rcu_exit() a bit more gently, without forcing a
-> > pending reschedule, ie. preempt_enable_no_resched() or so?
-> 
-> nah, it's a warn, if that triggers you get to keep the pieces.
+x86/percpu: Define raw_cpu_try_cmpxchg and this_cpu_try_cmpxchg()
 
-But but ... my overall point is that since we just WARN()ed, we are facing 
-some sort of kernel bug, and scheduling policies are only a secondary 
-concern, debuggability & getting the bug fixed is the primary concern.
+Define target-specific raw_cpu_try_cmpxchg_N() and
+this_cpu_try_cmpxchg_N() macros. These definitions override
+the generic fallback definitions and enable target-specific
+optimized implementations.
 
-So the scheduler should switch to a debugging-friendlier behavior:
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230830151623.3900-1-ubizjak@gmail.com
+---
+ arch/x86/include/asm/percpu.h | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-  'Schedule tasks around as little as possible, to keep the debug output 
-   tidy & to keep things working a bit better even if it's all broken 
-   already'.
-
-... or so. My suggestion was a small subset of that principle.
-
-> [...] Also preempt_enable_no_resched() isn't exported because its a 
-> horribly dangerous function.
-
-Special exception for RCU debugging only, or so - it's a core kernel 
-facility after all.
-
-No strong feelings either way though.
-
-Thanks,
-
-	Ingo
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index 4c36419..a87db61 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -210,6 +210,25 @@ do {									\
+ 	(typeof(_var))(unsigned long) pco_old__;			\
+ })
+ 
++#define percpu_try_cmpxchg_op(size, qual, _var, _ovalp, _nval)		\
++({									\
++	bool success;							\
++	__pcpu_type_##size *pco_oval__ = (__pcpu_type_##size *)(_ovalp); \
++	__pcpu_type_##size pco_old__ = *pco_oval__;			\
++	__pcpu_type_##size pco_new__ = __pcpu_cast_##size(_nval);	\
++	asm qual (__pcpu_op2_##size("cmpxchg", "%[nval]",		\
++				    __percpu_arg([var]))		\
++		  CC_SET(z)						\
++		  : CC_OUT(z) (success),				\
++		    [oval] "+a" (pco_old__),				\
++		    [var] "+m" (_var)					\
++		  : [nval] __pcpu_reg_##size(, pco_new__)		\
++		  : "memory");						\
++	if (unlikely(!success))						\
++		*pco_oval__ = pco_old__;				\
++	likely(success);						\
++})
++
+ #if defined(CONFIG_X86_32) && !defined(CONFIG_UML)
+ #define percpu_cmpxchg64_op(size, qual, _var, _oval, _nval)		\
+ ({									\
+@@ -410,6 +429,9 @@ do {									\
+ #define raw_cpu_cmpxchg_1(pcp, oval, nval)	percpu_cmpxchg_op(1, , pcp, oval, nval)
+ #define raw_cpu_cmpxchg_2(pcp, oval, nval)	percpu_cmpxchg_op(2, , pcp, oval, nval)
+ #define raw_cpu_cmpxchg_4(pcp, oval, nval)	percpu_cmpxchg_op(4, , pcp, oval, nval)
++#define raw_cpu_try_cmpxchg_1(pcp, ovalp, nval)	percpu_try_cmpxchg_op(1, , pcp, ovalp, nval)
++#define raw_cpu_try_cmpxchg_2(pcp, ovalp, nval)	percpu_try_cmpxchg_op(2, , pcp, ovalp, nval)
++#define raw_cpu_try_cmpxchg_4(pcp, ovalp, nval)	percpu_try_cmpxchg_op(4, , pcp, ovalp, nval)
+ 
+ #define this_cpu_add_return_1(pcp, val)		percpu_add_return_op(1, volatile, pcp, val)
+ #define this_cpu_add_return_2(pcp, val)		percpu_add_return_op(2, volatile, pcp, val)
+@@ -417,6 +439,9 @@ do {									\
+ #define this_cpu_cmpxchg_1(pcp, oval, nval)	percpu_cmpxchg_op(1, volatile, pcp, oval, nval)
+ #define this_cpu_cmpxchg_2(pcp, oval, nval)	percpu_cmpxchg_op(2, volatile, pcp, oval, nval)
+ #define this_cpu_cmpxchg_4(pcp, oval, nval)	percpu_cmpxchg_op(4, volatile, pcp, oval, nval)
++#define this_cpu_try_cmpxchg_1(pcp, ovalp, nval)	percpu_try_cmpxchg_op(1, volatile, pcp, ovalp, nval)
++#define this_cpu_try_cmpxchg_2(pcp, ovalp, nval)	percpu_try_cmpxchg_op(2, volatile, pcp, ovalp, nval)
++#define this_cpu_try_cmpxchg_4(pcp, ovalp, nval)	percpu_try_cmpxchg_op(4, volatile, pcp, ovalp, nval)
+ 
+ /*
+  * Per cpu atomic 64 bit operations are only available under 64 bit.
+@@ -431,6 +456,7 @@ do {									\
+ #define raw_cpu_add_return_8(pcp, val)		percpu_add_return_op(8, , pcp, val)
+ #define raw_cpu_xchg_8(pcp, nval)		raw_percpu_xchg_op(pcp, nval)
+ #define raw_cpu_cmpxchg_8(pcp, oval, nval)	percpu_cmpxchg_op(8, , pcp, oval, nval)
++#define raw_cpu_try_cmpxchg_8(pcp, ovalp, nval)	percpu_try_cmpxchg_op(8, , pcp, ovalp, nval)
+ 
+ #define this_cpu_read_8(pcp)			percpu_from_op(8, volatile, "mov", pcp)
+ #define this_cpu_write_8(pcp, val)		percpu_to_op(8, volatile, "mov", (pcp), val)
+@@ -440,6 +466,7 @@ do {									\
+ #define this_cpu_add_return_8(pcp, val)		percpu_add_return_op(8, volatile, pcp, val)
+ #define this_cpu_xchg_8(pcp, nval)		percpu_xchg_op(8, volatile, pcp, nval)
+ #define this_cpu_cmpxchg_8(pcp, oval, nval)	percpu_cmpxchg_op(8, volatile, pcp, oval, nval)
++#define this_cpu_try_cmpxchg_8(pcp, ovalp, nval)	percpu_try_cmpxchg_op(8, volatile, pcp, ovalp, nval)
+ #endif
+ 
+ static __always_inline bool x86_this_cpu_constant_test_bit(unsigned int nr,
