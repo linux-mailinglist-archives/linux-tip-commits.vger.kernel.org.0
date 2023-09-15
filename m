@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17DDF7A1D65
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 13:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 939997A1E10
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Sep 2023 14:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234359AbjIOLZN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Sep 2023 07:25:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48556 "EHLO
+        id S234510AbjIOMGB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Sep 2023 08:06:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234349AbjIOLZL (ORCPT
+        with ESMTP id S234600AbjIOMGA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Sep 2023 07:25:11 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92FDDCC8;
-        Fri, 15 Sep 2023 04:25:04 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 11:25:02 -0000
+        Fri, 15 Sep 2023 08:06:00 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA492D68;
+        Fri, 15 Sep 2023 05:03:29 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 12:03:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694777103;
+        s=2020; t=1694779407;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9J21HuhWXljN+jXTdAk29WG1MDKeiqVwqZ9TxVbomng=;
-        b=LMlX6Toxx7Q1vxs3t5ydLNVNMin45taaBUfxXOvsKMtAZO9uh6nFhWqmJHfNF1oVfY22O8
-        dXr3iUCAaFSertTJbfxwMjRRGEnh0nh6w9BVzYzDg9yKY/nAsbSS9S6EsnrZUIe0hzwmHG
-        en8+d51zW12pNormq5jvFI6vRDhrj51jkREY5ZuZ2PNtGjcx14sBusxNFWbyK8rWzuzsOU
-        SRosXR5UWp/wtr9FO5MvElFxyX7mmS6wfIT+9yAkqQQbjJ8jzTMy2fqWiKIbLwVraAgZzm
-        9rF7+WTdXM807R0Wgch53PFsZbqYGzfVm6JJj2TsMEpr5JP+10Dr24c5rGXn3w==
+        bh=n91F6OwJCEQx/AxwlimYmmS9ThSoGKd78npqs+cy3MU=;
+        b=xnKujZeRswTQjFHSGYwpZOpNdumo2jCw3MXaxc82wIAZVyMbZukdWeo/7jI57PKlGgOHcO
+        u3f+mTZJYioffDuVw62URgYGH43wFeL4zaqK9JiC/pwyjT6x5wam7/2bDWjiaNCYuWxX0f
+        1tzTMMMQNUjJLIhaSDc4T9aHY3luvhatvRTnSGItlzvKmtRx+1R8vkMc2iPHXk89r2euNh
+        F5TavRTJEHmAT8jq/1RAmGJkGUDk257C3RoZjbcv+waUFdAQ6Z0kt9P5X0FvXkY19HrjGK
+        T7CtoGzssFpPNrfAVit2DM+sTxHJ0TvjBTQcNIOut1+W8vtR4DXT72Z37Sunvg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694777103;
+        s=2020e; t=1694779407;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9J21HuhWXljN+jXTdAk29WG1MDKeiqVwqZ9TxVbomng=;
-        b=EeooppuNQPAxP/cVjKRXBsjgytBF6dvzFT0DezyrOfGumL/LBTTNwAn5pqqZ7ccHpu5NoH
-        +F/j9dtnQkQ/oaBQ==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+        bh=n91F6OwJCEQx/AxwlimYmmS9ThSoGKd78npqs+cy3MU=;
+        b=1sG/SWopaK+p8X7dtqKUk29q9DNDAg/LsABEQaS0yAdfNm1SV9ZSkDV9dXEsyP0XejyGdJ
+        G2BpDEpX+76WQ3Bw==
+From:   "tip-bot2 for Yury Norov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/percpu: Define {raw,this}_cpu_try_cmpxchg{64,128}
-Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/topology: Fix sched_numa_find_nth_cpu() comment
+Cc:     Yury Norov <yury.norov@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        Mel Gorman <mgorman@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230906185941.53527-1-ubizjak@gmail.com>
-References: <20230906185941.53527-1-ubizjak@gmail.com>
+In-Reply-To: <20230819141239.287290-7-yury.norov@gmail.com>
+References: <20230819141239.287290-7-yury.norov@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169477710252.27769.14094735545135203449.tip-bot2@tip-bot2>
+Message-ID: <169477940678.27769.11961724945556415025.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,149 +64,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     54cd971c6f4461fb6b178579751788bf4f64dfca
-Gitweb:        https://git.kernel.org/tip/54cd971c6f4461fb6b178579751788bf4f64dfca
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Wed, 06 Sep 2023 20:58:44 +02:00
+Commit-ID:     6d08ad2166f7770341ea56afad45fa41cd16ae62
+Gitweb:        https://git.kernel.org/tip/6d08ad2166f7770341ea56afad45fa41cd16ae62
+Author:        Yury Norov <yury.norov@gmail.com>
+AuthorDate:    Sat, 19 Aug 2023 07:12:38 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 15 Sep 2023 13:16:35 +02:00
+CommitterDate: Fri, 15 Sep 2023 13:48:11 +02:00
 
-x86/percpu: Define {raw,this}_cpu_try_cmpxchg{64,128}
+sched/topology: Fix sched_numa_find_nth_cpu() comment
 
-Define target-specific {raw,this}_cpu_try_cmpxchg64() and
-{raw,this}_cpu_try_cmpxchg128() macros. These definitions override
-the generic fallback definitions and enable target-specific
-optimized implementations.
+Reword sched_numa_find_nth_cpu() comment and make it kernel-doc compatible.
 
-Several places in mm/slub.o improve from e.g.:
-
-    53bc:	48 8d 4f 40          	lea    0x40(%rdi),%rcx
-    53c0:	48 89 fa             	mov    %rdi,%rdx
-    53c3:	49 8b 5c 05 00       	mov    0x0(%r13,%rax,1),%rbx
-    53c8:	4c 89 e8             	mov    %r13,%rax
-    53cb:	49 8d 30             	lea    (%r8),%rsi
-    53ce:	e8 00 00 00 00       	call   53d3 <...>
-			53cf: R_X86_64_PLT32	this_cpu_cmpxchg16b_emu-0x4
-    53d3:	48 31 d7             	xor    %rdx,%rdi
-    53d6:	4c 31 e8             	xor    %r13,%rax
-    53d9:	48 09 c7             	or     %rax,%rdi
-    53dc:	75 ae                	jne    538c <...>
-
-to:
-
-    53bc:	48 8d 4a 40          	lea    0x40(%rdx),%rcx
-    53c0:	49 8b 1c 07          	mov    (%r15,%rax,1),%rbx
-    53c4:	4c 89 f8             	mov    %r15,%rax
-    53c7:	48 8d 37             	lea    (%rdi),%rsi
-    53ca:	e8 00 00 00 00       	call   53cf <...>
-			53cb: R_X86_64_PLT32	this_cpu_cmpxchg16b_emu-0x4
-    53cf:	75 bb                	jne    538c <...>
-
-reducing the size of mm/slub.o by 80 bytes:
-
-   text    data     bss     dec     hex filename
-  39758    5337    4208   49303    c097 slub-new.o
-  39838    5337    4208   49383    c0e7 slub-old.o
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230906185941.53527-1-ubizjak@gmail.com
+Cc: Mel Gorman <mgorman@suse.de>
+Link: https://lore.kernel.org/r/20230819141239.287290-7-yury.norov@gmail.com
 ---
- arch/x86/include/asm/percpu.h | 67 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 67 insertions(+)
+ kernel/sched/topology.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
-index 34734d7..4c36419 100644
---- a/arch/x86/include/asm/percpu.h
-+++ b/arch/x86/include/asm/percpu.h
-@@ -237,12 +237,47 @@ do {									\
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index a60ecf4..a7b50bb 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -2112,13 +2112,15 @@ static int hop_cmp(const void *a, const void *b)
+ 	return -1;
+ }
  
- #define raw_cpu_cmpxchg64(pcp, oval, nval)	percpu_cmpxchg64_op(8,         , pcp, oval, nval)
- #define this_cpu_cmpxchg64(pcp, oval, nval)	percpu_cmpxchg64_op(8, volatile, pcp, oval, nval)
-+
-+#define percpu_try_cmpxchg64_op(size, qual, _var, _ovalp, _nval)	\
-+({									\
-+	bool success;							\
-+	u64 *_oval = (u64 *)(_ovalp);					\
-+	union {								\
-+		u64 var;						\
-+		struct {						\
-+			u32 low, high;					\
-+		};							\
-+	} old__, new__;							\
-+									\
-+	old__.var = *_oval;						\
-+	new__.var = _nval;						\
-+									\
-+	asm qual (ALTERNATIVE("leal %P[var], %%esi; call this_cpu_cmpxchg8b_emu", \
-+			      "cmpxchg8b " __percpu_arg([var]), X86_FEATURE_CX8) \
-+		  CC_SET(z)						\
-+		  : CC_OUT(z) (success),				\
-+		    [var] "+m" (_var),					\
-+		    "+a" (old__.low),					\
-+		    "+d" (old__.high)					\
-+		  : "b" (new__.low),					\
-+		    "c" (new__.high)					\
-+		  : "memory", "esi");					\
-+	if (unlikely(!success))						\
-+		*_oval = old__.var;					\
-+	likely(success);						\
-+})
-+
-+#define raw_cpu_try_cmpxchg64(pcp, ovalp, nval)		percpu_try_cmpxchg64_op(8,         , pcp, ovalp, nval)
-+#define this_cpu_try_cmpxchg64(pcp, ovalp, nval)	percpu_try_cmpxchg64_op(8, volatile, pcp, ovalp, nval)
- #endif
- 
- #ifdef CONFIG_X86_64
- #define raw_cpu_cmpxchg64(pcp, oval, nval)	percpu_cmpxchg_op(8,         , pcp, oval, nval);
- #define this_cpu_cmpxchg64(pcp, oval, nval)	percpu_cmpxchg_op(8, volatile, pcp, oval, nval);
- 
-+#define raw_cpu_try_cmpxchg64(pcp, ovalp, nval)		percpu_try_cmpxchg_op(8,         , pcp, ovalp, nval);
-+#define this_cpu_try_cmpxchg64(pcp, ovalp, nval)	percpu_try_cmpxchg_op(8, volatile, pcp, ovalp, nval);
-+
- #define percpu_cmpxchg128_op(size, qual, _var, _oval, _nval)		\
- ({									\
- 	union {								\
-@@ -269,6 +304,38 @@ do {									\
- 
- #define raw_cpu_cmpxchg128(pcp, oval, nval)	percpu_cmpxchg128_op(16,         , pcp, oval, nval)
- #define this_cpu_cmpxchg128(pcp, oval, nval)	percpu_cmpxchg128_op(16, volatile, pcp, oval, nval)
-+
-+#define percpu_try_cmpxchg128_op(size, qual, _var, _ovalp, _nval)	\
-+({									\
-+	bool success;							\
-+	u128 *_oval = (u128 *)(_ovalp);					\
-+	union {								\
-+		u128 var;						\
-+		struct {						\
-+			u64 low, high;					\
-+		};							\
-+	} old__, new__;							\
-+									\
-+	old__.var = *_oval;						\
-+	new__.var = _nval;						\
-+									\
-+	asm qual (ALTERNATIVE("leaq %P[var], %%rsi; call this_cpu_cmpxchg16b_emu", \
-+			      "cmpxchg16b " __percpu_arg([var]), X86_FEATURE_CX16) \
-+		  CC_SET(z)						\
-+		  : CC_OUT(z) (success),				\
-+		    [var] "+m" (_var),					\
-+		    "+a" (old__.low),					\
-+		    "+d" (old__.high)					\
-+		  : "b" (new__.low),					\
-+		    "c" (new__.high)					\
-+		  : "memory", "rsi");					\
-+	if (unlikely(!success))						\
-+		*_oval = old__.var;					\
-+	likely(success);						\
-+})
-+
-+#define raw_cpu_try_cmpxchg128(pcp, ovalp, nval)	percpu_try_cmpxchg128_op(16,         , pcp, ovalp, nval)
-+#define this_cpu_try_cmpxchg128(pcp, ovalp, nval)	percpu_try_cmpxchg128_op(16, volatile, pcp, ovalp, nval)
- #endif
- 
- /*
+-/*
+- * sched_numa_find_nth_cpu() - given the NUMA topology, find the Nth next cpu
+- *                             closest to @cpu from @cpumask.
+- * cpumask: cpumask to find a cpu from
+- * cpu: Nth cpu to find
+- *
+- * returns: cpu, or nr_cpu_ids when nothing found.
++/**
++ * sched_numa_find_nth_cpu() - given the NUMA topology, find the Nth closest CPU
++ *                             from @cpus to @cpu, taking into account distance
++ *                             from a given @node.
++ * @cpus: cpumask to find a cpu from
++ * @cpu: CPU to start searching
++ * @node: NUMA node to order CPUs by distance
++ *
++ * Return: cpu, or nr_cpu_ids when nothing found.
+  */
+ int sched_numa_find_nth_cpu(const struct cpumask *cpus, int cpu, int node)
+ {
