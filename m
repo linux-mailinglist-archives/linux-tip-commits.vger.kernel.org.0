@@ -2,280 +2,312 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B51CA7A372B
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 17 Sep 2023 20:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 430477A4307
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Sep 2023 09:42:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbjIQSeA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 17 Sep 2023 14:34:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45086 "EHLO
+        id S238389AbjIRHmP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 18 Sep 2023 03:42:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237641AbjIQSdo (ORCPT
+        with ESMTP id S240171AbjIRHlu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 17 Sep 2023 14:33:44 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A9B94;
-        Sun, 17 Sep 2023 11:33:37 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b9d07a8d84so60295021fa.3;
-        Sun, 17 Sep 2023 11:33:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694975616; x=1695580416; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=94+/FxvYRL5z0MINdWqlWoO6PcgiG12ebXRGY2RbA3c=;
-        b=YpWlv62CotP85BRriZex1MK/cjaUKO37bJQR2FYvD+cWq0u5Ho2MNaz7V0X3fC9w3X
-         N5ETBWlk7O/lhzL5v3HPLwBo/jNhWOq5lSJ/zST/jzE40vLPLbOJV5pGwW3Nb5RqISj0
-         Ek6gmpu5EDvM+pLVPnyNvkGwZlKP7J9a5DcGC7Nxq7v0r8GnKaqPNXClwxgbHKiMfNaK
-         PpTbaEsR5GQcM0S3x3A11NfGqrq8udREDPsj+LQ7HUQoVYmUO9u3Ml5L5dkCcbdUpjHG
-         A655A1sdelqndzOK5DXKMzG04GG92BTNxJVP6R2y6s97NhZ6reAFyohmUhHwXQY/b+v2
-         DwPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694975616; x=1695580416;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=94+/FxvYRL5z0MINdWqlWoO6PcgiG12ebXRGY2RbA3c=;
-        b=gCi0oyKGX33g50EtBGYgZs9Nj4M43nO1w/LtQvEvczaFRphrIjApT786qTHiJnSDOY
-         OWhmEdwNH8jpQ5WC1yttHsaiVkCxZBI9qq0Mc9uWOaDBYOFwMYEC4zK5XB7IoIzQq4vI
-         KaW7RCiK6e9T5irZ/CIoshYBlVv/8eN5hbMA9DMEkJZBcZRn/NHv3thDg2NN1JqNUT2Y
-         jzQcwdy9gM3DxrdfH6cQ9g45b7r5M3c/fiVhXL1iTImoac6csEkLaceoNEg+urqqH/KH
-         GQ+0IDIqUXMiBXNXQCJsBNz7HTceIsmjTnYpwJyglIh0f5zGxTZRQa+rnK5phrO3HHHR
-         QdUQ==
-X-Gm-Message-State: AOJu0YxqAaiPyqd5JZe2Gf1SJAXxX5wDIgQHU52WF5jQ0ntv6A2KYl6u
-        pujbEufZ8MXiCcy6mi9MtlQtUUAJ0KxjWjpavZU=
-X-Google-Smtp-Source: AGHT+IEAqVCO24/yV3IOBUR7EBJjELoeuQrlITDjnfmVUmHEVhh/76YbH+5KZqgPraartsrbcFHr4FVs2E3Isx9+q0I=
-X-Received: by 2002:a05:6512:39c9:b0:501:c996:1996 with SMTP id
- k9-20020a05651239c900b00501c9961996mr7721960lfu.67.1694975615672; Sun, 17 Sep
- 2023 11:33:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230906185941.53527-1-ubizjak@gmail.com> <169477710252.27769.14094735545135203449.tip-bot2@tip-bot2>
- <CAHk-=wiOH-VK8XLUBU-=kzPij9X=m7HwnviXF-o8X54Z=Ey_xw@mail.gmail.com> <CAFULd4YLzRWmXG2DHeRHYY33FrX+wNOVfQFyms5Mki1mmn0VZA@mail.gmail.com>
-In-Reply-To: <CAFULd4YLzRWmXG2DHeRHYY33FrX+wNOVfQFyms5Mki1mmn0VZA@mail.gmail.com>
-From:   Uros Bizjak <ubizjak@gmail.com>
-Date:   Sun, 17 Sep 2023 20:33:24 +0200
-Message-ID: <CAFULd4baw7wC7hemfqcGirkFVHihcnG+_a9RRQGga+CatpEagA@mail.gmail.com>
-Subject: Re: [tip: x86/asm] x86/percpu: Define {raw,this}_cpu_try_cmpxchg{64,128}
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Mon, 18 Sep 2023 03:41:50 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B5ED170D;
+        Mon, 18 Sep 2023 00:38:14 -0700 (PDT)
+Date:   Mon, 18 Sep 2023 06:21:22 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1695022692;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ifDIpIeokB6phVtS5ilxDHQ0vg3820UzqC9/Ocq+NZI=;
+        b=qYpAQ8ZKcmKRRba1kUEMjWqQaBbBWxo+Y+quB6QOnLNKE2nnw8RkBhTVUXWtghm5WlB1jr
+        7wSfPNUU61yXXw8U0Q70mpGNc+yQgj3efNcjn9qZK88QvHzE9NkQt+78bfBKIziNj0VWbU
+        2xH+IZw1AQBlxsy69kQixZ7xQ+IpfNP6wbEvOdDi5mcH/P+tYQafQMkFMO8ncWdHzpoDl0
+        +gvMdRDOJwXTY0MHtfhCTq+Svl2JyyQR7RXf1GtTGDl5UBOoVmy0oP7+/qWM3UtPMT2r+W
+        j2gI+Z8bIpSPDJ6LczkH4dEUblwwYeO82KNcrjIpB+hbA+TteUcvUGyHYtkzrg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1695022692;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ifDIpIeokB6phVtS5ilxDHQ0vg3820UzqC9/Ocq+NZI=;
+        b=XDhu9yzbmDO1nKzhS/SiZykcuQDBTuztDN1zYj44TG7L+6hWbtZWGtWbs0iMf52MQf0A7P
+        aO7xNqv877HaifAw==
+From:   "tip-bot2 for Aaron Lu" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] sched/fair: Ratelimit update to tg->load_avg
+Cc:     Nitin Tekchandani <nitin.tekchandani@intel.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Aaron Lu <aaron.lu@intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
-Content-Type: multipart/mixed; boundary="0000000000007a68fa06059243b2"
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        David Vernet <void@manifault.com>,
+        Swapnil Sapkal <Swapnil.Sapkal@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230912065808.2530-2-aaron.lu@intel.com>
+References: <20230912065808.2530-2-aaron.lu@intel.com>
+MIME-Version: 1.0
+Message-ID: <169501808279.27769.6827304555334200206.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
---0000000000007a68fa06059243b2
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The following commit has been merged into the sched/core branch of tip:
 
-Now also with the patch attached.
+Commit-ID:     1528c661c24b407e92194426b0adbb43de859ce0
+Gitweb:        https://git.kernel.org/tip/1528c661c24b407e92194426b0adbb43de8=
+59ce0
+Author:        Aaron Lu <aaron.lu@intel.com>
+AuthorDate:    Tue, 12 Sep 2023 14:58:08 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 18 Sep 2023 08:14:45 +02:00
 
-Uros.
+sched/fair: Ratelimit update to tg->load_avg
 
-On Sun, Sep 17, 2023 at 8:31=E2=80=AFPM Uros Bizjak <ubizjak@gmail.com> wro=
-te:
->
-> On Fri, Sep 15, 2023 at 6:45=E2=80=AFPM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > On Fri, 15 Sept 2023 at 04:25, tip-bot2 for Uros Bizjak
-> > <tip-bot2@linutronix.de> wrote:
-> > >
-> > > Several places in mm/slub.o improve from e.g.:
-> > >
-> > [...]
-> > >
-> > > to:
-> > >
-> > >     53bc:       48 8d 4a 40             lea    0x40(%rdx),%rcx
-> > >     53c0:       49 8b 1c 07             mov    (%r15,%rax,1),%rbx
-> > >     53c4:       4c 89 f8                mov    %r15,%rax
-> > >     53c7:       48 8d 37                lea    (%rdi),%rsi
-> > >     53ca:       e8 00 00 00 00          call   53cf <...>
-> > >                         53cb: R_X86_64_PLT32     this_cpu_cmpxchg16b_=
-emu-0x4
-> > >     53cf:       75 bb                   jne    538c <...>
-> >
-> > Honestly, if y ou care deeply about this code sequence, I think you
-> > should also move the "lea" out of the inline asm.
->
-> I have to say that the above asm code was shown mostly as an example
-> of the improvement, to illustrate how the compare sequence at the end
-> of the cmpxchg loop gets eliminated. Being a fairly mechanical change,
-> I didn't put much thought in the surrounding code.
->
-> > Both
-> >
-> >     call this_cpu_cmpxchg16b_emu
-> >
-> > and
-> >
-> >     cmpxchg16b %gs:(%rsi)
-> >
-> > are 5 bytes, and I suspect it's easiest to just always put the address
-> > in %rsi - whether you call the function or not.
-> >
-> > It doesn't really make the code generation for the non-call sequence
-> > worse, and it gives the compiler more information (ie instead of
-> > clobbering %rsi, the compiler knows what %rsi contains).
-> >
-> > IOW, something like this:
-> >
-> > -       asm qual (ALTERNATIVE("leaq %P[var], %%rsi; call
-> > this_cpu_cmpxchg16b_emu", \
-> > +       asm qual (ALTERNATIVE("call this_cpu_cmpxchg16b_emu",          =
- \
-> > ...
-> > -                   "c" (new__.high)                                   =
- \
-> > -                 : "memory", "rsi");                                  =
- \
-> > +                   "c" (new__.high),                                  =
- \
-> > +                   "S" (&_var)                                   \
-> > +                 : "memory");                                         =
- \
-> >
-> > should do it.
->
-> Yes, and the above change improves slub.o assembly from (current tip
-> tree with try_cmpxchg patch applied):
->
->     53b3:    41 8b 44 24 28           mov    0x28(%r12),%eax
->     53b8:    49 8b 3c 24              mov    (%r12),%rdi
->     53bc:    48 8d 4a 40              lea    0x40(%rdx),%rcx
->     53c0:    49 8b 1c 07              mov    (%r15,%rax,1),%rbx
->     53c4:    4c 89 f8                 mov    %r15,%rax
->     53c7:    48 8d 37                 lea    (%rdi),%rsi
->     53ca:    e8 00 00 00 00           call   53cf <kmem_cache_alloc+0x9f>
->             53cb: R_X86_64_PLT32    this_cpu_cmpxchg16b_emu-0x4
->     53cf:    75 bb                    jne    538c <kmem_cache_alloc+0x5c>
->
-> to:
->
->     53b3:    41 8b 44 24 28           mov    0x28(%r12),%eax
->     53b8:    49 8b 34 24              mov    (%r12),%rsi
->     53bc:    48 8d 4a 40              lea    0x40(%rdx),%rcx
->     53c0:    49 8b 1c 07              mov    (%r15,%rax,1),%rbx
->     53c4:    4c 89 f8                 mov    %r15,%rax
->     53c7:    e8 00 00 00 00           call   53cc <kmem_cache_alloc+0x9c>
->             53c8: R_X86_64_PLT32    this_cpu_cmpxchg16b_emu-0x4
->     53cc:    75 be                    jne    538c <kmem_cache_alloc+0x5c>
->
-> where an effective reg-reg move "lea (%rdi), %rsi" at 537c gets
-> removed. And indeed, GCC figures out that %rsi holds the address of
-> the variable and emits:
->
->    5:    65 48 0f c7 0e           cmpxchg16b %gs:(%rsi)
->
-> alternative replacement.
->
-> Now, here comes the best part: We can get rid of the %P modifier. With
-> named address spaces (__seg_gs), older GCCs had some problems with %P
-> and emitted "%gs:foo" instead of foo, resulting in "Warning: segment
-> override on `lea' is ineffectual" assembly warning. With the proposed
-> change, we use:
->
-> --cut here--
-> int __seg_gs g;
->
-> void foo (void)
-> {
->   asm ("%0 %1" :: "m"(g), "S"(&g));
-> }
-> --cut here--
->
-> and get the desired assembly:
->
->        movl    $g, %esi
->        %gs:g(%rip) %rsi
->
-> The above is also in line with [1], where it is said that
-> "[__seg_gs/__seg_fs] address spaces are not considered to be subspaces
-> of the generic (flat) address space." So, cmpxchg16b_emu.S must use
-> %gs to apply segment base offset, which it does.
->
-> > Note that I think this is particularly true of the slub code, because
-> > afaik, the slub code will *only* use the slow call-out.
-> >
-> > Why? Because if the CPU actually supports the cmpxchgb16 instruction,
-> > then the slub code won't even take this path at all - it will do the
-> > __CMPXCHG_DOUBLE path, which does an unconditional locked cmpxchg16b.
-> >
-> > Maybe I'm misreading it. And no, none of this matters. But since I saw
-> > the patch fly by, and slub.o mentioned, I thought I'd point out how
-> > silly this all is. It's optimizing a code-path that is basically never
-> > taken, and when it *is* taken, it can be improved further, I think.
->
-> True, but as mentioned above, the slub.o code was used to illustrate
-> the effect of the patch. The new locking primitive should be usable in
-> a general way and could be also used in other places.
->
-> [1] https://gcc.gnu.org/onlinedocs/gcc/Named-Address-Spaces.html#x86-Name=
-d-Address-Spaces
->
-> Uros.
+When using sysbench to benchmark Postgres in a single docker instance
+with sysbench's nr_threads set to nr_cpu, it is observed there are times
+update_cfs_group() and update_load_avg() shows noticeable overhead on
+a 2sockets/112core/224cpu Intel Sapphire Rapids(SPR):
 
---0000000000007a68fa06059243b2
-Content-Type: text/plain; charset="US-ASCII"; name="p.diff.txt"
-Content-Disposition: attachment; filename="p.diff.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_lmnsp9lt0>
-X-Attachment-Id: f_lmnsp9lt0
+    13.75%    13.74%  [kernel.vmlinux]           [k] update_cfs_group
+    10.63%    10.04%  [kernel.vmlinux]           [k] update_load_avg
 
-ZGlmZiAtLWdpdCBhL2FyY2gveDg2L2luY2x1ZGUvYXNtL3BlcmNwdS5oIGIvYXJjaC94ODYvaW5j
-bHVkZS9hc20vcGVyY3B1LmgKaW5kZXggYTg3ZGI2MTQwZmUyLi4zMzFhOWQ0ZGNlODIgMTAwNjQ0
-Ci0tLSBhL2FyY2gveDg2L2luY2x1ZGUvYXNtL3BlcmNwdS5oCisrKyBiL2FyY2gveDg2L2luY2x1
-ZGUvYXNtL3BlcmNwdS5oCkBAIC0yNDIsMTQgKzI0MiwxNSBAQCBkbyB7CQkJCQkJCQkJXAogCW9s
-ZF9fLnZhciA9IF9vdmFsOwkJCQkJCVwKIAluZXdfXy52YXIgPSBfbnZhbDsJCQkJCQlcCiAJCQkJ
-CQkJCQlcCi0JYXNtIHF1YWwgKEFMVEVSTkFUSVZFKCJsZWFsICVQW3Zhcl0sICUlZXNpOyBjYWxs
-IHRoaXNfY3B1X2NtcHhjaGc4Yl9lbXUiLCBcCisJYXNtIHF1YWwgKEFMVEVSTkFUSVZFKCJjYWxs
-IHRoaXNfY3B1X2NtcHhjaGc4Yl9lbXUiLAkJXAogCQkJICAgICAgImNtcHhjaGc4YiAiIF9fcGVy
-Y3B1X2FyZyhbdmFyXSksIFg4Nl9GRUFUVVJFX0NYOCkgXAogCQkgIDogW3Zhcl0gIittIiAoX3Zh
-ciksCQkJCQlcCiAJCSAgICAiK2EiIChvbGRfXy5sb3cpLAkJCQkJXAogCQkgICAgIitkIiAob2xk
-X18uaGlnaCkJCQkJCVwKIAkJICA6ICJiIiAobmV3X18ubG93KSwJCQkJCVwKLQkJICAgICJjIiAo
-bmV3X18uaGlnaCkJCQkJCVwKLQkJICA6ICJtZW1vcnkiLCAiZXNpIik7CQkJCQlcCisJCSAgICAi
-YyIgKG5ld19fLmhpZ2gpLAkJCQkJXAorCQkgICAgIlMiICgmX3ZhcikJCQkJCQlcCisJCSAgOiAi
-bWVtb3J5Iik7CQkJCQkJXAogCQkJCQkJCQkJXAogCW9sZF9fLnZhcjsJCQkJCQkJXAogfSkKQEAg
-LTI3MSw3ICsyNzIsNyBAQCBkbyB7CQkJCQkJCQkJXAogCW9sZF9fLnZhciA9ICpfb3ZhbDsJCQkJ
-CQlcCiAJbmV3X18udmFyID0gX252YWw7CQkJCQkJXAogCQkJCQkJCQkJXAotCWFzbSBxdWFsIChB
-TFRFUk5BVElWRSgibGVhbCAlUFt2YXJdLCAlJWVzaTsgY2FsbCB0aGlzX2NwdV9jbXB4Y2hnOGJf
-ZW11IiwgXAorCWFzbSBxdWFsIChBTFRFUk5BVElWRSgiY2FsbCB0aGlzX2NwdV9jbXB4Y2hnOGJf
-ZW11IiwJCVwKIAkJCSAgICAgICJjbXB4Y2hnOGIgIiBfX3BlcmNwdV9hcmcoW3Zhcl0pLCBYODZf
-RkVBVFVSRV9DWDgpIFwKIAkJICBDQ19TRVQoeikJCQkJCQlcCiAJCSAgOiBDQ19PVVQoeikgKHN1
-Y2Nlc3MpLAkJCQlcCkBAIC0yNzksOCArMjgwLDkgQEAgZG8gewkJCQkJCQkJCVwKIAkJICAgICIr
-YSIgKG9sZF9fLmxvdyksCQkJCQlcCiAJCSAgICAiK2QiIChvbGRfXy5oaWdoKQkJCQkJXAogCQkg
-IDogImIiIChuZXdfXy5sb3cpLAkJCQkJXAotCQkgICAgImMiIChuZXdfXy5oaWdoKQkJCQkJXAot
-CQkgIDogIm1lbW9yeSIsICJlc2kiKTsJCQkJCVwKKwkJICAgICJjIiAobmV3X18uaGlnaCksCQkJ
-CQlcCisJCSAgICAiUyIgKCZfdmFyKQkJCQkJCVwKKwkJICA6ICJtZW1vcnkiKTsJCQkJCQlcCiAJ
-aWYgKHVubGlrZWx5KCFzdWNjZXNzKSkJCQkJCQlcCiAJCSpfb3ZhbCA9IG9sZF9fLnZhcjsJCQkJ
-CVwKIAlsaWtlbHkoc3VjY2Vzcyk7CQkJCQkJXApAQCAtMzA5LDE0ICszMTEsMTUgQEAgZG8gewkJ
-CQkJCQkJCVwKIAlvbGRfXy52YXIgPSBfb3ZhbDsJCQkJCQlcCiAJbmV3X18udmFyID0gX252YWw7
-CQkJCQkJXAogCQkJCQkJCQkJXAotCWFzbSBxdWFsIChBTFRFUk5BVElWRSgibGVhcSAlUFt2YXJd
-LCAlJXJzaTsgY2FsbCB0aGlzX2NwdV9jbXB4Y2hnMTZiX2VtdSIsIFwKKwlhc20gcXVhbCAoQUxU
-RVJOQVRJVkUoImNhbGwgdGhpc19jcHVfY21weGNoZzE2Yl9lbXUiLAkJXAogCQkJICAgICAgImNt
-cHhjaGcxNmIgIiBfX3BlcmNwdV9hcmcoW3Zhcl0pLCBYODZfRkVBVFVSRV9DWDE2KSBcCiAJCSAg
-OiBbdmFyXSAiK20iIChfdmFyKSwJCQkJCVwKIAkJICAgICIrYSIgKG9sZF9fLmxvdyksCQkJCQlc
-CiAJCSAgICAiK2QiIChvbGRfXy5oaWdoKQkJCQkJXAogCQkgIDogImIiIChuZXdfXy5sb3cpLAkJ
-CQkJXAotCQkgICAgImMiIChuZXdfXy5oaWdoKQkJCQkJXAotCQkgIDogIm1lbW9yeSIsICJyc2ki
-KTsJCQkJCVwKKwkJICAgICJjIiAobmV3X18uaGlnaCksCQkJCQlcCisJCSAgICAiUyIgKCZfdmFy
-KQkJCQkJCVwKKwkJICA6ICJtZW1vcnkiKTsJCQkJCQlcCiAJCQkJCQkJCQlcCiAJb2xkX18udmFy
-OwkJCQkJCQlcCiB9KQpAQCAtMzM4LDcgKzM0MSw3IEBAIGRvIHsJCQkJCQkJCQlcCiAJb2xkX18u
-dmFyID0gKl9vdmFsOwkJCQkJCVwKIAluZXdfXy52YXIgPSBfbnZhbDsJCQkJCQlcCiAJCQkJCQkJ
-CQlcCi0JYXNtIHF1YWwgKEFMVEVSTkFUSVZFKCJsZWFxICVQW3Zhcl0sICUlcnNpOyBjYWxsIHRo
-aXNfY3B1X2NtcHhjaGcxNmJfZW11IiwgXAorCWFzbSBxdWFsIChBTFRFUk5BVElWRSgiY2FsbCB0
-aGlzX2NwdV9jbXB4Y2hnMTZiX2VtdSIsCQlcCiAJCQkgICAgICAiY21weGNoZzE2YiAiIF9fcGVy
-Y3B1X2FyZyhbdmFyXSksIFg4Nl9GRUFUVVJFX0NYMTYpIFwKIAkJICBDQ19TRVQoeikJCQkJCQlc
-CiAJCSAgOiBDQ19PVVQoeikgKHN1Y2Nlc3MpLAkJCQlcCkBAIC0zNDYsOCArMzQ5LDkgQEAgZG8g
-ewkJCQkJCQkJCVwKIAkJICAgICIrYSIgKG9sZF9fLmxvdyksCQkJCQlcCiAJCSAgICAiK2QiIChv
-bGRfXy5oaWdoKQkJCQkJXAogCQkgIDogImIiIChuZXdfXy5sb3cpLAkJCQkJXAotCQkgICAgImMi
-IChuZXdfXy5oaWdoKQkJCQkJXAotCQkgIDogIm1lbW9yeSIsICJyc2kiKTsJCQkJCVwKKwkJICAg
-ICJjIiAobmV3X18uaGlnaCksCQkJCQlcCisJCSAgICAiUyIgKCZfdmFyKQkJCQkJCVwKKwkJICA6
-ICJtZW1vcnkiKTsJCQkJCQlcCiAJaWYgKHVubGlrZWx5KCFzdWNjZXNzKSkJCQkJCQlcCiAJCSpf
-b3ZhbCA9IG9sZF9fLnZhcjsJCQkJCVwKIAlsaWtlbHkoc3VjY2Vzcyk7CQkJCQkJXAo=
---0000000000007a68fa06059243b2--
+Annotate shows the cycles are mostly spent on accessing tg->load_avg
+with update_load_avg() being the write side and update_cfs_group() being
+the read side. tg->load_avg is per task group and when different tasks
+of the same taskgroup running on different CPUs frequently access
+tg->load_avg, it can be heavily contended.
+
+E.g. when running postgres_sysbench on a 2sockets/112cores/224cpus Intel
+Sappire Rapids, during a 5s window, the wakeup number is 14millions and
+migration number is 11millions and with each migration, the task's load
+will transfer from src cfs_rq to target cfs_rq and each change involves
+an update to tg->load_avg. Since the workload can trigger as many wakeups
+and migrations, the access(both read and write) to tg->load_avg can be
+unbound. As a result, the two mentioned functions showed noticeable
+overhead. With netperf/nr_client=3Dnr_cpu/UDP_RR, the problem is worse:
+during a 5s window, wakeup number is 21millions and migration number is
+14millions; update_cfs_group() costs ~25% and update_load_avg() costs ~16%.
+
+Reduce the overhead by limiting updates to tg->load_avg to at most once
+per ms. The update frequency is a tradeoff between tracking accuracy and
+overhead. 1ms is chosen because PELT window is roughly 1ms and it
+delivered good results for the tests that I've done. After this change,
+the cost of accessing tg->load_avg is greatly reduced and performance
+improved. Detailed test results below.
+
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+  postgres_sysbench on SPR:
+  25%
+  base:   42382=C2=B119.8%
+  patch:  50174=C2=B19.5%  (noise)
+
+  50%
+  base:   67626=C2=B11.3%
+  patch:  67365=C2=B13.1%  (noise)
+
+  75%
+  base:   100216=C2=B11.2%
+  patch:  112470=C2=B10.1% +12.2%
+
+  100%
+  base:    93671=C2=B10.4%
+  patch:  113563=C2=B10.2% +21.2%
+
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+  hackbench on ICL:
+  group=3D1
+  base:    114912=C2=B15.2%
+  patch:   117857=C2=B12.5%  (noise)
+
+  group=3D4
+  base:    359902=C2=B11.6%
+  patch:   361685=C2=B12.7%  (noise)
+
+  group=3D8
+  base:    461070=C2=B10.8%
+  patch:   491713=C2=B10.3% +6.6%
+
+  group=3D16
+  base:    309032=C2=B15.0%
+  patch:   378337=C2=B11.3% +22.4%
+
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+  hackbench on SPR:
+  group=3D1
+  base:    100768=C2=B12.9%
+  patch:   103134=C2=B12.9%  (noise)
+
+  group=3D4
+  base:    413830=C2=B112.5%
+  patch:   378660=C2=B116.6% (noise)
+
+  group=3D8
+  base:    436124=C2=B10.6%
+  patch:   490787=C2=B13.2% +12.5%
+
+  group=3D16
+  base:    457730=C2=B13.2%
+  patch:   680452=C2=B11.3% +48.8%
+
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+  netperf/udp_rr on ICL
+  25%
+  base:    114413=C2=B10.1%
+  patch:   115111=C2=B10.0% +0.6%
+
+  50%
+  base:    86803=C2=B10.5%
+  patch:   86611=C2=B10.0%  (noise)
+
+  75%
+  base:    35959=C2=B15.3%
+  patch:   49801=C2=B10.6% +38.5%
+
+  100%
+  base:    61951=C2=B16.4%
+  patch:   70224=C2=B10.8% +13.4%
+
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+  netperf/udp_rr on SPR
+  25%
+  base:   104954=C2=B11.3%
+  patch:  107312=C2=B12.8%  (noise)
+
+  50%
+  base:    55394=C2=B14.6%
+  patch:   54940=C2=B17.4%  (noise)
+
+  75%
+  base:    13779=C2=B13.1%
+  patch:   36105=C2=B11.1% +162%
+
+  100%
+  base:     9703=C2=B13.7%
+  patch:   28011=C2=B10.2% +189%
+
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  netperf/tcp_stream on ICL (all in noise range)
+  25%
+  base:    43092=C2=B10.1%
+  patch:   42891=C2=B10.5%
+
+  50%
+  base:    19278=C2=B114.9%
+  patch:   22369=C2=B17.2%
+
+  75%
+  base:    16822=C2=B13.0%
+  patch:   17086=C2=B12.3%
+
+  100%
+  base:    18216=C2=B10.6%
+  patch:   18078=C2=B12.9%
+
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  netperf/tcp_stream on SPR (all in noise range)
+  25%
+  base:    34491=C2=B10.3%
+  patch:   34886=C2=B10.5%
+
+  50%
+  base:    19278=C2=B114.9%
+  patch:   22369=C2=B17.2%
+
+  75%
+  base:    16822=C2=B13.0%
+  patch:   17086=C2=B12.3%
+
+  100%
+  base:    18216=C2=B10.6%
+  patch:   18078=C2=B12.9%
+
+Reported-by: Nitin Tekchandani <nitin.tekchandani@intel.com>
+Suggested-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Aaron Lu <aaron.lu@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Reviewed-by: David Vernet <void@manifault.com>
+Tested-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Tested-by: Swapnil Sapkal <Swapnil.Sapkal@amd.com>
+Link: https://lkml.kernel.org/r/20230912065808.2530-2-aaron.lu@intel.com
+---
+ kernel/sched/fair.c  | 13 ++++++++++++-
+ kernel/sched/sched.h |  1 +
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index c893721..d087787 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3876,7 +3876,8 @@ static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs=
+_rq)
+  */
+ static inline void update_tg_load_avg(struct cfs_rq *cfs_rq)
+ {
+-	long delta =3D cfs_rq->avg.load_avg - cfs_rq->tg_load_avg_contrib;
++	long delta;
++	u64 now;
+=20
+ 	/*
+ 	 * No need to update load_avg for root_task_group as it is not used.
+@@ -3884,9 +3885,19 @@ static inline void update_tg_load_avg(struct cfs_rq *c=
+fs_rq)
+ 	if (cfs_rq->tg =3D=3D &root_task_group)
+ 		return;
+=20
++	/*
++	 * For migration heavy workloads, access to tg->load_avg can be
++	 * unbound. Limit the update rate to at most once per ms.
++	 */
++	now =3D sched_clock_cpu(cpu_of(rq_of(cfs_rq)));
++	if (now - cfs_rq->last_update_tg_load_avg < NSEC_PER_MSEC)
++		return;
++
++	delta =3D cfs_rq->avg.load_avg - cfs_rq->tg_load_avg_contrib;
+ 	if (abs(delta) > cfs_rq->tg_load_avg_contrib / 64) {
+ 		atomic_long_add(delta, &cfs_rq->tg->load_avg);
+ 		cfs_rq->tg_load_avg_contrib =3D cfs_rq->avg.load_avg;
++		cfs_rq->last_update_tg_load_avg =3D now;
+ 	}
+ }
+=20
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 68768f4..887468c 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -594,6 +594,7 @@ struct cfs_rq {
+ 	} removed;
+=20
+ #ifdef CONFIG_FAIR_GROUP_SCHED
++	u64			last_update_tg_load_avg;
+ 	unsigned long		tg_load_avg_contrib;
+ 	long			propagate;
+ 	long			prop_runnable_sum;
