@@ -2,98 +2,107 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1509D7A4281
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Sep 2023 09:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB72A7A436A
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Sep 2023 09:49:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233657AbjIRHb6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 18 Sep 2023 03:31:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43030 "EHLO
+        id S234354AbjIRHtM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 18 Sep 2023 03:49:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240252AbjIRHbh (ORCPT
+        with ESMTP id S240446AbjIRHss (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 18 Sep 2023 03:31:37 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA03212C;
-        Mon, 18 Sep 2023 00:31:11 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-40472c3faadso40589055e9.2;
-        Mon, 18 Sep 2023 00:31:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695022270; x=1695627070; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W/9MjO3R8I5ALb/BaTl3sTvaDPPou8ZUyKXxeS+MJr8=;
-        b=GCIMc5HJKsgSczGIs+Zasp12t87vqfEq/uspPaNJvHSGSCuHnrHQYOaiMqfrQ7v2Kr
-         CvsDU+IGUu3BLyKMMzY6r2jm0AqCZOFvmXX/QDMAoNLv6Jbb4cgzrqSUlwE6HNOumy4j
-         6+N7+5zq9mgwIN8o13pdl5wvkzbAwrkQEjr3d3qAUtoHpzqYcBTHJ1tdBWR75J2Ozi1m
-         j0DPpBKOlVKaDRV+UMPHXFldOUAmwZ/Rg360tVYLQl/HgmmsoEpMC9VaP+rK/ETatFwK
-         u4tGyr5S+2Q5RGULOeapTtVKTHQb4zgOxaSoEGy3uGoNaEKG8+xbD7u6IUN+eQp5V0zF
-         +ebA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695022270; x=1695627070;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W/9MjO3R8I5ALb/BaTl3sTvaDPPou8ZUyKXxeS+MJr8=;
-        b=HbNOJH2oSa6Y9UbfOUlxLqjaeDFvb4V5JnEASGnwMT+bXyRtjTIpZMV9XYdwC9kxtP
-         Uf6jZ2uGHlEpqyytt1oSQGweUsMlXIbc2dpuQLsiaYGDTCEhhWEnMF9n9qh0Tr8/9jiS
-         4XAmcJLW6IDaBqWgGNHyiKmPTfsWctG2M9r+qAk/Z+kcP7X+wpFeVSUZuaB4WmMJsMvW
-         T5CMqfI28nR1ve6J6+ZMojOr3xGhrqKHG2+2HjAfkhIrWKvS5Slk1HKMvcR2xSXXgwAe
-         bNfrb5VK44BQwDZ9HG//v5J0jBx0l4m+9TLdMxuYhd1b7JULqfB7J1N/3Zatg4z0mESz
-         tqfw==
-X-Gm-Message-State: AOJu0Yyo1dtKNYJD63YM5CbvwUWrHZ5UV2gF4pEHK6WXEYiizvAwrSsD
-        PCRsU5lup2HG/xRfK+y2TTHwewck9O8=
-X-Google-Smtp-Source: AGHT+IFunwts3zDprHoCiXSrDd6TYFaUZHQrgvp3PKpzYYBESQlbqLxbMv0Prg7W5pj5KnWX2o0xXQ==
-X-Received: by 2002:a5d:6dcd:0:b0:313:e971:53af with SMTP id d13-20020a5d6dcd000000b00313e97153afmr5971377wrz.32.1695022269970;
-        Mon, 18 Sep 2023 00:31:09 -0700 (PDT)
-Received: from gmail.com (1F2EF265.nat.pool.telekom.hu. [31.46.242.101])
-        by smtp.gmail.com with ESMTPSA id e25-20020a5d5959000000b003143c9beeaesm11861797wri.44.2023.09.18.00.31.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 00:31:09 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Mon, 18 Sep 2023 09:31:07 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Uros Bizjak <ubizjak@gmail.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
-Subject: Re: [tip: x86/asm] x86/percpu: Define
- {raw,this}_cpu_try_cmpxchg{64,128}
-Message-ID: <ZQf8u327SUDag/zd@gmail.com>
-References: <20230906185941.53527-1-ubizjak@gmail.com>
- <169477710252.27769.14094735545135203449.tip-bot2@tip-bot2>
- <CAHk-=wiOH-VK8XLUBU-=kzPij9X=m7HwnviXF-o8X54Z=Ey_xw@mail.gmail.com>
- <CAFULd4YLzRWmXG2DHeRHYY33FrX+wNOVfQFyms5Mki1mmn0VZA@mail.gmail.com>
- <CAFULd4baw7wC7hemfqcGirkFVHihcnG+_a9RRQGga+CatpEagA@mail.gmail.com>
+        Mon, 18 Sep 2023 03:48:48 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2E8191;
+        Mon, 18 Sep 2023 00:45:47 -0700 (PDT)
+Date:   Mon, 18 Sep 2023 07:45:42 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1695023144;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zUb2/FWSHOkypAisRqXH49SPDxQ0fESsbVzSr5ZK9sY=;
+        b=Uc1lrIHlM0yRMPZNphkJQsS+OxPlF9cd2TJibdgJILlHFpZhzeEgQFyjiwdV/kSh4a3Fob
+        gKTFVKxpLUWpK3wWvJkEh+wQHKr4qlyaT9Vs3S79vmwyCcJDU3ltWwNBGdMI2zIGAO/wAm
+        RARPdFaeRYLLzZJEbA32eyIaStsOcSR87smCJXxJzMI+gvLhdMhkwDvkEnVY5HZf2tMP5W
+        u8i9idx4ShJufhGhmqR78Jxk/8dRo8a/1+jzmiSm+lrKIMaTOS5LH1GC2E93XanpBd7csD
+        QIKVfiHaE2ic8CPPh5tCvwtTIChOxq/sGrDiIHy0FsaoqfpXulGL/ZCJsx3mJA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1695023144;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zUb2/FWSHOkypAisRqXH49SPDxQ0fESsbVzSr5ZK9sY=;
+        b=mFQMZPvBsYcX+nKU0r+7SzJg8NqFtpWicztE9sxCsULXvTW5fOFxFkjcNUao+N5tpXffas
+        OVke34XzWj9e45DQ==
+From:   "tip-bot2 for GUO Zihua" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] sched/headers: Remove duplicated includes in
+ kernel/sched/sched.h
+Cc:     GUO Zihua <guozihua@huawei.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230818015633.18370-1-guozihua@huawei.com>
+References: <20230818015633.18370-1-guozihua@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFULd4baw7wC7hemfqcGirkFVHihcnG+_a9RRQGga+CatpEagA@mail.gmail.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Message-ID: <169502314296.27769.160204530264678474.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the sched/core branch of tip:
 
-* Uros Bizjak <ubizjak@gmail.com> wrote:
+Commit-ID:     7ad0354d18ae05e9c8885251e234cbcf141f8972
+Gitweb:        https://git.kernel.org/tip/7ad0354d18ae05e9c8885251e234cbcf141f8972
+Author:        GUO Zihua <guozihua@huawei.com>
+AuthorDate:    Fri, 18 Aug 2023 09:56:33 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 18 Sep 2023 09:41:37 +02:00
 
-> Now also with the patch attached.
-> 
-> Uros.
+sched/headers: Remove duplicated includes in kernel/sched/sched.h
 
-> diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
-> index a87db6140fe2..331a9d4dce82 100644
-> --- a/arch/x86/include/asm/percpu.h
-> +++ b/arch/x86/include/asm/percpu.h
+Remove duplicated includes of linux/cgroup.h and linux/psi.h. Both of
+these includes are included regardless of the config and they are all
+protected by ifndef, so no point including them again.
 
-Assuming it boots & works, mind sending a fully changelogged patch with a 
-SOB and a 'Suggested-by: Linus' tag or so? Looks like a nice v6.7 addition.
+Signed-off-by: GUO Zihua <guozihua@huawei.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230818015633.18370-1-guozihua@huawei.com
+---
+ kernel/sched/sched.h |  9 ---------
+ 1 file changed, 9 deletions(-)
 
-Thanks,
-
-	Ingo
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 887468c..5f217b1 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -74,15 +74,6 @@
+ 
+ #include "../workqueue_internal.h"
+ 
+-#ifdef CONFIG_CGROUP_SCHED
+-#include <linux/cgroup.h>
+-#include <linux/psi.h>
+-#endif
+-
+-#ifdef CONFIG_SCHED_DEBUG
+-# include <linux/static_key.h>
+-#endif
+-
+ #ifdef CONFIG_PARAVIRT
+ # include <asm/paravirt.h>
+ # include <asm/paravirt_api_clock.h>
