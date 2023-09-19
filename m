@@ -2,50 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CDDA7A5EA8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Sep 2023 11:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CA6C7A5EAB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Sep 2023 11:53:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231660AbjISJxD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Sep 2023 05:53:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55806 "EHLO
+        id S231786AbjISJxZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Sep 2023 05:53:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231631AbjISJw7 (ORCPT
+        with ESMTP id S231792AbjISJxR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Sep 2023 05:52:59 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 527B39E;
-        Tue, 19 Sep 2023 02:52:53 -0700 (PDT)
-Date:   Tue, 19 Sep 2023 09:52:51 -0000
+        Tue, 19 Sep 2023 05:53:17 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B8CD198;
+        Tue, 19 Sep 2023 02:53:10 -0700 (PDT)
+Date:   Tue, 19 Sep 2023 09:53:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695117171;
+        s=2020; t=1695117188;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=cEFNR0Ukbl7IOypHbZewrDZRApycDVjloKVSyI5Hom4=;
-        b=Vo4imZs04ubjsuMDrGCXarD3cQxO0w63RNPvvcY7qQo+BVxV7jiWWsa2F3ooJ8BmBJNQOG
-        Q5Rlhx6v0aS2Dta1GkjY1h5pN6xGKqBBGPdWyI/pdcFIAwRVT2/VrS0P1ffpViXtHgstt0
-        K7naZEPrsKnODRpqkREAGbMLED61kJf2bhkF6fdKTKkeZfughf531UbgMCCLQYAACfN3gg
-        2EXVnrJ+E9Canlt8wt+qaSxyuXlI3yEypvTkNP3/TSLm5tN0ThCYwvkYrSEUSJFQvno6v4
-        X2tf8xbZ863DW3gQsqzqXMfo65bE8aLBfMC881wfd88JFQ2hHntF8Un7Oq+oMA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZzgA9F8IwwfNo7xjrqDlG248CoeZfGOO7kNYjMLnXRo=;
+        b=gBe2BZmrnTAitWIhmuAglpi7IW7t9ffhaA0E5GYV+C48R4VVB/idFanyMjI2qLGo5Oeg/7
+        V0EWH7d5ngj2d1oEo7ZXyk6s0CwQgMLYNUUlF4+XgN4XxhPL9ZVkpLs26qhtfRTMUvwRNM
+        YHYWJz4Q3OTmrd/wwnl5PCGm5O2Kdp14mzX1fefGL2IOUUgMqeFwa+53CAJTUXCu8bFfCZ
+        yS+3jKRoxQNOADJI6VITMHcVDUpdym9izlV905WcEVpQX4UcSulShl0voUqS7jGUOtc4/z
+        EpTdvpsB77kB8BPIw8za0gVa+ciAU7qGDHQg5kdwPKEjFzso0LnxAubz9WKkzw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695117171;
+        s=2020e; t=1695117188;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=cEFNR0Ukbl7IOypHbZewrDZRApycDVjloKVSyI5Hom4=;
-        b=G+oVv1Fip/kh2ykCwlkxTglerDyC8SfHn0zbG4M8Hmyx58YykU5Mo7JtQdoBwyccJP5/Qj
-        q+fuupET9Oze6RDQ==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZzgA9F8IwwfNo7xjrqDlG248CoeZfGOO7kNYjMLnXRo=;
+        b=XVRxcuYJX3i92obM/6IHAnWHTUrGLxoTppR9JbZwdMbITrKy4sZMeQEbA9qaszs6D+lxfy
+        k6K0uUADD/8fbEDA==
+From:   "tip-bot2 for Jo Van Bulck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Rename check_preempt_wakeup() to
- check_preempt_wakeup_fair()
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/bugs] x86/pti: Fix kernel warnings for pti= and nopti
+ cmdline options
+Cc:     Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+        Ingo Molnar <mingo@kernel.org>,
+        Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be>
+References: <20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be>
 MIME-Version: 1.0
-Message-ID: <169511717117.27769.11799364824084021498.tip-bot2@tip-bot2>
+Message-ID: <169511718771.27769.15019317036773813903.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,45 +66,120 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     82845683ca6a15fe8c7912c6264bb0e84ec6f5fb
-Gitweb:        https://git.kernel.org/tip/82845683ca6a15fe8c7912c6264bb0e84ec6f5fb
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Tue, 19 Sep 2023 10:31:15 +02:00
+Commit-ID:     f75a0e70ed379019b209cdb591ffbfe2fbf4342f
+Gitweb:        https://git.kernel.org/tip/f75a0e70ed379019b209cdb591ffbfe2fbf4342f
+Author:        Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+AuthorDate:    Sat, 19 Aug 2023 10:09:21 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 19 Sep 2023 10:32:15 +02:00
+CommitterDate: Tue, 19 Sep 2023 11:42:48 +02:00
 
-sched/fair: Rename check_preempt_wakeup() to check_preempt_wakeup_fair()
+x86/pti: Fix kernel warnings for pti= and nopti cmdline options
 
-Other scheduling classes already postfix their similar methods
-with the class name.
+Parse the pti= and nopti cmdline options using early_param to fix 'Unknown
+kernel command line parameters "nopti", will be passed to user space'
+warnings in the kernel log when nopti or pti= are passed to the kernel
+cmdline on x86 platforms.
 
+Additionally allow the kernel to warn for malformed pti= options.
+
+Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Link: https://lore.kernel.org/r/20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be
 ---
- kernel/sched/fair.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/mm/pti.c | 58 +++++++++++++++++++++++-----------------------
+ 1 file changed, 29 insertions(+), 29 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index d087787..aeaf31e 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7994,7 +7994,7 @@ static void set_next_buddy(struct sched_entity *se)
- /*
-  * Preempt the current task with a newly woken task if needed:
-  */
--static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_flags)
-+static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int wake_flags)
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index 78414c6..5dd7339 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -69,6 +69,7 @@ static void __init pti_print_if_secure(const char *reason)
+ 		pr_info("%s\n", reason);
+ }
+ 
++/* Assume mode is auto unless overridden via cmdline below. */
+ static enum pti_mode {
+ 	PTI_AUTO = 0,
+ 	PTI_FORCE_OFF,
+@@ -77,50 +78,49 @@ static enum pti_mode {
+ 
+ void __init pti_check_boottime_disable(void)
  {
- 	struct task_struct *curr = rq->curr;
- 	struct sched_entity *se = &curr->se, *pse = &p->se;
-@@ -12830,7 +12830,7 @@ DEFINE_SCHED_CLASS(fair) = {
- 	.yield_task		= yield_task_fair,
- 	.yield_to_task		= yield_to_task_fair,
+-	char arg[5];
+-	int ret;
+-
+-	/* Assume mode is auto unless overridden. */
+-	pti_mode = PTI_AUTO;
+-
+ 	if (hypervisor_is_type(X86_HYPER_XEN_PV)) {
+ 		pti_mode = PTI_FORCE_OFF;
+ 		pti_print_if_insecure("disabled on XEN PV.");
+ 		return;
+ 	}
  
--	.check_preempt_curr	= check_preempt_wakeup,
-+	.check_preempt_curr	= check_preempt_wakeup_fair,
+-	ret = cmdline_find_option(boot_command_line, "pti", arg, sizeof(arg));
+-	if (ret > 0)  {
+-		if (ret == 3 && !strncmp(arg, "off", 3)) {
+-			pti_mode = PTI_FORCE_OFF;
+-			pti_print_if_insecure("disabled on command line.");
+-			return;
+-		}
+-		if (ret == 2 && !strncmp(arg, "on", 2)) {
+-			pti_mode = PTI_FORCE_ON;
+-			pti_print_if_secure("force enabled on command line.");
+-			goto enable;
+-		}
+-		if (ret == 4 && !strncmp(arg, "auto", 4)) {
+-			pti_mode = PTI_AUTO;
+-			goto autosel;
+-		}
+-	}
+-
+-	if (cmdline_find_option_bool(boot_command_line, "nopti") ||
+-	    cpu_mitigations_off()) {
++	if (cpu_mitigations_off())
+ 		pti_mode = PTI_FORCE_OFF;
++	if (pti_mode == PTI_FORCE_OFF) {
+ 		pti_print_if_insecure("disabled on command line.");
+ 		return;
+ 	}
  
- 	.pick_next_task		= __pick_next_task_fair,
- 	.put_prev_task		= put_prev_task_fair,
+-autosel:
+-	if (!boot_cpu_has_bug(X86_BUG_CPU_MELTDOWN))
++	if (pti_mode == PTI_FORCE_ON)
++		pti_print_if_secure("force enabled on command line.");
++
++	if (pti_mode == PTI_AUTO && !boot_cpu_has_bug(X86_BUG_CPU_MELTDOWN))
+ 		return;
+-enable:
++
+ 	setup_force_cpu_cap(X86_FEATURE_PTI);
+ }
+ 
++static int __init pti_parse_cmdline(char *arg)
++{
++	if (!strcmp(arg, "off"))
++		pti_mode = PTI_FORCE_OFF;
++	else if (!strcmp(arg, "on"))
++		pti_mode = PTI_FORCE_ON;
++	else if (!strcmp(arg, "auto"))
++		pti_mode = PTI_AUTO;
++	else
++		return -EINVAL;
++	return 0;
++}
++early_param("pti", pti_parse_cmdline);
++
++static int __init pti_parse_cmdline_nopti(char *arg)
++{
++	pti_mode = PTI_FORCE_OFF;
++	return 0;
++}
++early_param("nopti", pti_parse_cmdline_nopti);
++
+ pgd_t __pti_set_user_pgtbl(pgd_t *pgdp, pgd_t pgd)
+ {
+ 	/*
