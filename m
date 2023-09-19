@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CA6C7A5EAB
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Sep 2023 11:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5483F7A5EAE
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Sep 2023 11:53:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231786AbjISJxZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Sep 2023 05:53:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40724 "EHLO
+        id S231802AbjISJx0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Sep 2023 05:53:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231792AbjISJxR (ORCPT
+        with ESMTP id S231795AbjISJxR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 19 Sep 2023 05:53:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B8CD198;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B77771A4;
         Tue, 19 Sep 2023 02:53:10 -0700 (PDT)
-Date:   Tue, 19 Sep 2023 09:53:07 -0000
+Date:   Tue, 19 Sep 2023 09:53:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1695117188;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZzgA9F8IwwfNo7xjrqDlG248CoeZfGOO7kNYjMLnXRo=;
-        b=gBe2BZmrnTAitWIhmuAglpi7IW7t9ffhaA0E5GYV+C48R4VVB/idFanyMjI2qLGo5Oeg/7
-        V0EWH7d5ngj2d1oEo7ZXyk6s0CwQgMLYNUUlF4+XgN4XxhPL9ZVkpLs26qhtfRTMUvwRNM
-        YHYWJz4Q3OTmrd/wwnl5PCGm5O2Kdp14mzX1fefGL2IOUUgMqeFwa+53CAJTUXCu8bFfCZ
-        yS+3jKRoxQNOADJI6VITMHcVDUpdym9izlV905WcEVpQX4UcSulShl0voUqS7jGUOtc4/z
-        EpTdvpsB77kB8BPIw8za0gVa+ciAU7qGDHQg5kdwPKEjFzso0LnxAubz9WKkzw==
+        bh=YpmnxUA3J/kZvK2oFq9pHqu4fm4lfN0LSPO3hLVJ34c=;
+        b=ri5z4gfN9a6B/MbG8Jf/6b7rqHiD/H9w76+5TB+J9bdSzkBGBZ7DN2gtK9nPaq21idUAeZ
+        TWvQqXATX1IKCGW7CqK89HsEndwopZ5VZCt4weirRKtdIC/KHBb4XnqWkriavzX1p64eGi
+        3+1lONKanMf/Xxf/bwTMoj78cebHL1kPjjs+PHgmUrM7FyfPp9y3CtMYEmGfSCEXO/2msW
+        MDokt6fw4ld4uVez2PBCk0UX7zlybEVhczw3YaLESwx6BNrW/1eCoVj5odW4gzIaeDtgGE
+        EiZs8O3UmkD4gG7gb29c3zkmcDT9YkcGw+tes1gEiKKz4GvFkMeDDVmhVefprg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1695117188;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZzgA9F8IwwfNo7xjrqDlG248CoeZfGOO7kNYjMLnXRo=;
-        b=XVRxcuYJX3i92obM/6IHAnWHTUrGLxoTppR9JbZwdMbITrKy4sZMeQEbA9qaszs6D+lxfy
-        k6K0uUADD/8fbEDA==
-From:   "tip-bot2 for Jo Van Bulck" <tip-bot2@linutronix.de>
+        bh=YpmnxUA3J/kZvK2oFq9pHqu4fm4lfN0LSPO3hLVJ34c=;
+        b=oJ3XJT6G4d2WxqCoIKGciLOPEY8dI/ZjAG+rSSPxKKEZSWdJVMaZRVHPHcp0dr6Q8MWO9T
+        ekAG9zeESlhptVDw==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/pti: Fix kernel warnings for pti= and nopti
- cmdline options
-Cc:     Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+Subject: [tip: x86/bugs] x86/calldepth: Rename __x86_return_skl() to
+ call_depth_return_thunk()
+Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
         Ingo Molnar <mingo@kernel.org>,
-        Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be>
-References: <20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be>
+In-Reply-To: <ae44e9f9976934e3b5b47a458d523ccb15867561.1693889988.git.jpoimboe@kernel.org>
+References: <ae44e9f9976934e3b5b47a458d523ccb15867561.1693889988.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169511718771.27769.15019317036773813903.tip-bot2@tip-bot2>
+Message-ID: <169511718822.27769.15576635469531405035.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,118 +68,95 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     f75a0e70ed379019b209cdb591ffbfe2fbf4342f
-Gitweb:        https://git.kernel.org/tip/f75a0e70ed379019b209cdb591ffbfe2fbf4342f
-Author:        Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
-AuthorDate:    Sat, 19 Aug 2023 10:09:21 +02:00
+Commit-ID:     01e1e86d8d206c2e34e66ff03d0bd5ce49675265
+Gitweb:        https://git.kernel.org/tip/01e1e86d8d206c2e34e66ff03d0bd5ce49675265
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Mon, 04 Sep 2023 22:05:04 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 19 Sep 2023 11:42:48 +02:00
 
-x86/pti: Fix kernel warnings for pti= and nopti cmdline options
+x86/calldepth: Rename __x86_return_skl() to call_depth_return_thunk()
 
-Parse the pti= and nopti cmdline options using early_param to fix 'Unknown
-kernel command line parameters "nopti", will be passed to user space'
-warnings in the kernel log when nopti or pti= are passed to the kernel
-cmdline on x86 platforms.
+For consistency with the other return thunks, rename __x86_return_skl()
+to call_depth_return_thunk().
 
-Additionally allow the kernel to warn for malformed pti= options.
-
-Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Link: https://lore.kernel.org/r/20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/ae44e9f9976934e3b5b47a458d523ccb15867561.1693889988.git.jpoimboe@kernel.org
 ---
- arch/x86/mm/pti.c | 58 +++++++++++++++++++++++-----------------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+ arch/x86/include/asm/nospec-branch.h | 13 ++++---------
+ arch/x86/kernel/cpu/bugs.c           |  3 ++-
+ arch/x86/lib/retpoline.S             |  4 ++--
+ 3 files changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 78414c6..5dd7339 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -69,6 +69,7 @@ static void __init pti_print_if_secure(const char *reason)
- 		pr_info("%s\n", reason);
- }
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index dcc7847..14cd3cd 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -358,12 +358,7 @@ extern void entry_ibpb(void);
+ extern void (*x86_return_thunk)(void);
  
-+/* Assume mode is auto unless overridden via cmdline below. */
- static enum pti_mode {
- 	PTI_AUTO = 0,
- 	PTI_FORCE_OFF,
-@@ -77,50 +78,49 @@ static enum pti_mode {
- 
- void __init pti_check_boottime_disable(void)
- {
--	char arg[5];
--	int ret;
+ #ifdef CONFIG_CALL_DEPTH_TRACKING
+-extern void __x86_return_skl(void);
 -
--	/* Assume mode is auto unless overridden. */
--	pti_mode = PTI_AUTO;
--
- 	if (hypervisor_is_type(X86_HYPER_XEN_PV)) {
- 		pti_mode = PTI_FORCE_OFF;
- 		pti_print_if_insecure("disabled on XEN PV.");
- 		return;
- 	}
+-static inline void x86_set_skl_return_thunk(void)
+-{
+-	x86_return_thunk = &__x86_return_skl;
+-}
++extern void call_depth_return_thunk(void);
  
--	ret = cmdline_find_option(boot_command_line, "pti", arg, sizeof(arg));
--	if (ret > 0)  {
--		if (ret == 3 && !strncmp(arg, "off", 3)) {
--			pti_mode = PTI_FORCE_OFF;
--			pti_print_if_insecure("disabled on command line.");
--			return;
--		}
--		if (ret == 2 && !strncmp(arg, "on", 2)) {
--			pti_mode = PTI_FORCE_ON;
--			pti_print_if_secure("force enabled on command line.");
--			goto enable;
--		}
--		if (ret == 4 && !strncmp(arg, "auto", 4)) {
--			pti_mode = PTI_AUTO;
--			goto autosel;
--		}
--	}
--
--	if (cmdline_find_option_bool(boot_command_line, "nopti") ||
--	    cpu_mitigations_off()) {
-+	if (cpu_mitigations_off())
- 		pti_mode = PTI_FORCE_OFF;
-+	if (pti_mode == PTI_FORCE_OFF) {
- 		pti_print_if_insecure("disabled on command line.");
- 		return;
- 	}
+ #define CALL_DEPTH_ACCOUNT					\
+ 	ALTERNATIVE("",						\
+@@ -376,12 +371,12 @@ DECLARE_PER_CPU(u64, __x86_ret_count);
+ DECLARE_PER_CPU(u64, __x86_stuffs_count);
+ DECLARE_PER_CPU(u64, __x86_ctxsw_count);
+ #endif
+-#else
+-static inline void x86_set_skl_return_thunk(void) {}
++#else /* !CONFIG_CALL_DEPTH_TRACKING */
  
--autosel:
--	if (!boot_cpu_has_bug(X86_BUG_CPU_MELTDOWN))
-+	if (pti_mode == PTI_FORCE_ON)
-+		pti_print_if_secure("force enabled on command line.");
-+
-+	if (pti_mode == PTI_AUTO && !boot_cpu_has_bug(X86_BUG_CPU_MELTDOWN))
- 		return;
--enable:
-+
- 	setup_force_cpu_cap(X86_FEATURE_PTI);
- }
++static inline void call_depth_return_thunk(void) {}
+ #define CALL_DEPTH_ACCOUNT ""
  
-+static int __init pti_parse_cmdline(char *arg)
-+{
-+	if (!strcmp(arg, "off"))
-+		pti_mode = PTI_FORCE_OFF;
-+	else if (!strcmp(arg, "on"))
-+		pti_mode = PTI_FORCE_ON;
-+	else if (!strcmp(arg, "auto"))
-+		pti_mode = PTI_AUTO;
-+	else
-+		return -EINVAL;
-+	return 0;
-+}
-+early_param("pti", pti_parse_cmdline);
+-#endif
++#endif /* CONFIG_CALL_DEPTH_TRACKING */
+ 
+ #ifdef CONFIG_RETPOLINE
+ 
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 9731e81..016a326 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1059,7 +1059,8 @@ do_cmd_auto:
+ 	case RETBLEED_MITIGATION_STUFF:
+ 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
+ 		setup_force_cpu_cap(X86_FEATURE_CALL_DEPTH);
+-		x86_set_skl_return_thunk();
 +
-+static int __init pti_parse_cmdline_nopti(char *arg)
-+{
-+	pti_mode = PTI_FORCE_OFF;
-+	return 0;
-+}
-+early_param("nopti", pti_parse_cmdline_nopti);
-+
- pgd_t __pti_set_user_pgtbl(pgd_t *pgdp, pgd_t pgd)
- {
++		x86_return_thunk = call_depth_return_thunk;
+ 		break;
+ 
+ 	default:
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index 49f2be7..6376d01 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -321,7 +321,7 @@ __EXPORT_THUNK(entry_untrain_ret)
+ #ifdef CONFIG_CALL_DEPTH_TRACKING
+ 
+ 	.align 64
+-SYM_FUNC_START(__x86_return_skl)
++SYM_FUNC_START(call_depth_return_thunk)
+ 	ANNOTATE_NOENDBR
  	/*
+ 	 * Keep the hotpath in a 16byte I-fetch for the non-debug
+@@ -348,7 +348,7 @@ SYM_FUNC_START(__x86_return_skl)
+ 	ANNOTATE_UNRET_SAFE
+ 	ret
+ 	int3
+-SYM_FUNC_END(__x86_return_skl)
++SYM_FUNC_END(call_depth_return_thunk)
+ 
+ #endif /* CONFIG_CALL_DEPTH_TRACKING */
+ 
