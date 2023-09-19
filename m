@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8F267A5EB3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Sep 2023 11:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E438F7A5EBA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Sep 2023 11:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbjISJxc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Sep 2023 05:53:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40876 "EHLO
+        id S231661AbjISJxd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Sep 2023 05:53:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231622AbjISJxV (ORCPT
+        with ESMTP id S231835AbjISJxV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 19 Sep 2023 05:53:21 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1291F5;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCAE8CCE;
         Tue, 19 Sep 2023 02:53:14 -0700 (PDT)
-Date:   Tue, 19 Sep 2023 09:53:11 -0000
+Date:   Tue, 19 Sep 2023 09:53:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695117191;
+        s=2020; t=1695117193;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=v1jbTjBfDbK1CWObm4ygyLtd0LzPx++Vwq+bD8WxJMc=;
-        b=sFhg1vYR6bZTj3u3VQ3MlJBxMc84weEQVTKgFa1ypwnI8+uZJEIWYpnndfOxjTKA+raClK
-        b2qQuYxmIaCYn1Yiu66PymSp9Opd5gAIyI7+ey6PDBS0birUoWvWHbMMA0bGf/WpCbAF0q
-        dwH22SagmLykxpzT4eDxAI0yrys1km9cFIuTBaiHM/kk8axnBCjZHJzPUJNoAwYsSKu/Hb
-        MrK4wQQKKuejZyFaOBHQ5If6pwIUwDhpEMEVq4l0QhOM63QoQMA4WzrRjde6MVSz7MVZzS
-        9NT8iPwiAoQ6L4T5PxfCe/8wB8BIrVGJi03I84mNtGWmFr7MOfUknw22hxEAqg==
+        bh=AciVSB1c/O8v/KJdkdF318d6t4wpRj6CKrTHEVii/8k=;
+        b=nsVmhmZ9suJXlNQ3ed4Kut1ddYFesNtcxwAcjMbBQSi9WKKIWUuxfsuzQofN5TM9ys1OsO
+        t+czCswW9BRwZTtkREcj5i1IWn6qJ6aL6YPEZYKj9poVx13d6HcTLfHL7GXXJI8Lgg5IEc
+        I6XKq4X8a33I1oADlnr7D+1TP7PCTLSLXzti+qOdJFMN5+frkHwzl4ZgwwH0F5JAIRasHa
+        q9VARiiMWp2tU91z4a31+aYtZuv2K35WElFvJaDyCL/R33TtyCAOswZ82eNQBeHkwi1poq
+        KLBGSQ8qKw77Zgy4/79HkPVSQgMM6t476qGnGhBKL/QfcIWkbE2qpiP6OHiy6A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695117191;
+        s=2020e; t=1695117193;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=v1jbTjBfDbK1CWObm4ygyLtd0LzPx++Vwq+bD8WxJMc=;
-        b=067mdyfxCpC5P8m7YFkGEvwriqohRHPIe3fXhweWptMzBMskrDuSod2UTIjJF/qJS2ekyZ
-        1TTOD9CiDzK+WGCA==
+        bh=AciVSB1c/O8v/KJdkdF318d6t4wpRj6CKrTHEVii/8k=;
+        b=6YcfN5GS541EUyhV8yj9PIkL9f6bl105ZQagVhlR93PhqUTpREM1Dw8L/A1OaxXUh40Jej
+        VCRw/BDWRkorMTDQ==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/bugs: Remove default case for fully switched enums
+Subject: [tip: x86/bugs] x86/srso: Improve i-cache locality for alias mitigation
 Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
         Ingo Molnar <mingo@kernel.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <fcf6feefab991b72e411c2aed688b18e65e06aed.1693889988.git.jpoimboe@kernel.org>
-References: <fcf6feefab991b72e411c2aed688b18e65e06aed.1693889988.git.jpoimboe@kernel.org>
+In-Reply-To: <eadaf5530b46a7ae8b936522da45ae555d2b3393.1693889988.git.jpoimboe@kernel.org>
+References: <eadaf5530b46a7ae8b936522da45ae555d2b3393.1693889988.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169511719111.27769.6185412152878380724.tip-bot2@tip-bot2>
+Message-ID: <169511719256.27769.1212265500162415596.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,88 +67,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     44bd14590309118cb0103b51f7681f369cfca6d9
-Gitweb:        https://git.kernel.org/tip/44bd14590309118cb0103b51f7681f369cfca6d9
+Commit-ID:     da3bd8872ee00f23b58c7f62dfd403dcc83e074b
+Gitweb:        https://git.kernel.org/tip/da3bd8872ee00f23b58c7f62dfd403dcc83e074b
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 04 Sep 2023 22:04:58 -07:00
+AuthorDate:    Mon, 04 Sep 2023 22:04:55 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 19 Sep 2023 11:42:48 +02:00
+CommitterDate: Tue, 19 Sep 2023 11:42:47 +02:00
 
-x86/bugs: Remove default case for fully switched enums
+x86/srso: Improve i-cache locality for alias mitigation
 
-For enum switch statements which handle all possible cases, remove the
-default case so a compiler warning gets printed if one of the enums gets
-accidentally omitted from the switch statement.
+Move srso_alias_return_thunk() to the same section as
+srso_alias_safe_ret() so they can share a cache line.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/fcf6feefab991b72e411c2aed688b18e65e06aed.1693889988.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/eadaf5530b46a7ae8b936522da45ae555d2b3393.1693889988.git.jpoimboe@kernel.org
 ---
- arch/x86/kernel/cpu/bugs.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ arch/x86/lib/retpoline.S | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 4f1ad23..941ac94 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1019,7 +1019,6 @@ static void __init retbleed_select_mitigation(void)
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index cd86aeb..9ab634f 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -177,15 +177,14 @@ SYM_START(srso_alias_safe_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	int3
+ SYM_FUNC_END(srso_alias_safe_ret)
  
- do_cmd_auto:
- 	case RETBLEED_CMD_AUTO:
--	default:
- 		if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
- 		    boot_cpu_data.x86_vendor == X86_VENDOR_HYGON) {
- 			if (IS_ENABLED(CONFIG_CPU_UNRET_ENTRY))
-@@ -1290,6 +1289,8 @@ spectre_v2_user_select_mitigation(void)
- 
- 		spectre_v2_user_ibpb = mode;
- 		switch (cmd) {
-+		case SPECTRE_V2_USER_CMD_NONE:
-+			break;
- 		case SPECTRE_V2_USER_CMD_FORCE:
- 		case SPECTRE_V2_USER_CMD_PRCTL_IBPB:
- 		case SPECTRE_V2_USER_CMD_SECCOMP_IBPB:
-@@ -1301,8 +1302,6 @@ spectre_v2_user_select_mitigation(void)
- 		case SPECTRE_V2_USER_CMD_SECCOMP:
- 			static_branch_enable(&switch_mm_cond_ibpb);
- 			break;
--		default:
--			break;
- 		}
- 
- 		pr_info("mitigation: Enabling %s Indirect Branch Prediction Barrier\n",
-@@ -2160,6 +2159,10 @@ static int l1d_flush_prctl_get(struct task_struct *task)
- static int ssb_prctl_get(struct task_struct *task)
- {
- 	switch (ssb_mode) {
-+	case SPEC_STORE_BYPASS_NONE:
-+		if (boot_cpu_has_bug(X86_BUG_SPEC_STORE_BYPASS))
-+			return PR_SPEC_ENABLE;
-+		return PR_SPEC_NOT_AFFECTED;
- 	case SPEC_STORE_BYPASS_DISABLE:
- 		return PR_SPEC_DISABLE;
- 	case SPEC_STORE_BYPASS_SECCOMP:
-@@ -2171,11 +2174,8 @@ static int ssb_prctl_get(struct task_struct *task)
- 		if (task_spec_ssb_disable(task))
- 			return PR_SPEC_PRCTL | PR_SPEC_DISABLE;
- 		return PR_SPEC_PRCTL | PR_SPEC_ENABLE;
--	default:
--		if (boot_cpu_has_bug(X86_BUG_SPEC_STORE_BYPASS))
--			return PR_SPEC_ENABLE;
--		return PR_SPEC_NOT_AFFECTED;
- 	}
-+	BUG();
- }
- 
- static int ib_prctl_get(struct task_struct *task)
-@@ -2504,9 +2504,6 @@ static void __init srso_select_mitigation(void)
- 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
-                 }
- 		break;
+-	.section .text..__x86.return_thunk
 -
--	default:
--		break;
- 	}
+-SYM_CODE_START(srso_alias_return_thunk)
++SYM_CODE_START_NOALIGN(srso_alias_return_thunk)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
+ 	call srso_alias_safe_ret
+ 	ud2
+ SYM_CODE_END(srso_alias_return_thunk)
  
- out:
++	.section .text..__x86.return_thunk
+ /*
+  * Some generic notes on the untraining sequences:
+  *
