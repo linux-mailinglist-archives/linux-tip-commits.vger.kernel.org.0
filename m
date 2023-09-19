@@ -2,109 +2,96 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 935287A5E74
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Sep 2023 11:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F2117A5E89
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Sep 2023 11:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231570AbjISJpS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Sep 2023 05:45:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51522 "EHLO
+        id S231465AbjISJsr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Sep 2023 05:48:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231527AbjISJpP (ORCPT
+        with ESMTP id S231459AbjISJsq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Sep 2023 05:45:15 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D52116;
-        Tue, 19 Sep 2023 02:45:08 -0700 (PDT)
-Date:   Tue, 19 Sep 2023 09:45:06 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695116707;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=leWaSycILSS4X4zeyzKjCPrPTlKDGdOvZhfx2wmeabs=;
-        b=yX5AdUwECepPDFIwnzAi7ZU5hWrVBwX1p27QR8FMdY9ALfF0JSKKv4rDrpM/ck7E2AJQHK
-        lVYQDYqNZ53TOMplGHsyAvaiWaEyFOtV3E/g6wB9zKr0nRRUkR9UFJP/n+QCGMTzhNRc8n
-        tnoaiRe/BhKaYSYpK2k+Q1Uq7DvOZMoMy4/X+/oRC2BInTeXHW6sc0fXJBG8fgdHs6duhU
-        LqMvZwjPNqDFcT2/5vgqH0ksiN2A1IoOypX1Hi2SnF8KGpTFMSDwU4C/YjlyrbTVi8+Hju
-        bbPbQ+Tx83Jrw94oiOH/zSS/wMpBcoSblxTMgQCUZe4ZT1qVhagZpM3p0OIPyA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695116707;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=leWaSycILSS4X4zeyzKjCPrPTlKDGdOvZhfx2wmeabs=;
-        b=lvBRSwrcT/cQrMdNlpLncGf5gy+38kHNZHOXfDrQ1kWihzmGQYJbl+Rn7I0MthfGxm3Xlh
-        Sh04OaRKvx1FltDQ==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/srso: Fix srso_show_state() side effect
-Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <27d128899cb8aee9eb2b57ddc996742b0c1d776b.1693889988.git.jpoimboe@kernel.org>
-References: <27d128899cb8aee9eb2b57ddc996742b0c1d776b.1693889988.git.jpoimboe@kernel.org>
+        Tue, 19 Sep 2023 05:48:46 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB1AF3;
+        Tue, 19 Sep 2023 02:48:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+ t=1695116900; x=1695721700; i=efault@gmx.de;
+ bh=ZJ0CgXWPtEvjyvQFwxbEyIEcvT/VDsVXiQlXbHd5pEc=;
+ h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
+ b=HYSRC5c05Qp57QIX19iejfZsAqywzcQiKoja6o/cWD9YGZ2DOhu08krF/plnRTDEH2YlAdz3MIy
+ fwXcd1b90fmn/+8G+BFkyy7Ls8tN06ilCxOVjPsRC8iNKm9WCPYiuzSGKEitJ5XlkctjS1JmbfMTM
+ KzISoTFd9I1e0JA4qwCDeBFH0sP73MscYWU7D/uDs5+M1ftKS4aQsI1Wqan5BYDMazblXLMMefllt
+ wKvJylYU8RBSTo4OFLJXRbcQD6cWGU22kWel9MxLbhbIm2N3nV2wbXBJF/casOeizlGRkqi6yx0aN
+ 7o/DTwh4KFcj7yLjeoI/nJgQtP/3Gm9R/1Tw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from homer.fritz.box ([185.146.50.104]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MLzBj-1qznD03cqf-00I0Vb; Tue, 19
+ Sep 2023 11:48:19 +0200
+Message-ID: <eb6313e5fb4bdb45df20351967694ebdd105ee2a.camel@gmx.de>
+Subject: Re: [PATCH] sched/fair: Do not wakeup-preempt same-prio SCHED_OTHER
+ tasks
+From:   Mike Galbraith <efault@gmx.de>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     K Prateek Nayak <kprateek.nayak@amd.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        x86@kernel.org, Chen Yu <yu.c.chen@intel.com>,
+        Gautham Shenoy <gautham.shenoy@amd.com>
+Date:   Tue, 19 Sep 2023 11:48:18 +0200
+In-Reply-To: <ZQljoiSBhZLEFI/G@gmail.com>
+References: <20230816134059.GC982867@hirez.programming.kicks-ass.net>
+         <169228500414.27769.13366308319134164264.tip-bot2@tip-bot2>
+         <21f3d376-17d6-8fb6-5f35-507ea931c0d3@amd.com>
+         <02f6a15f094adb3c8d9957b031941d6bd10c2e43.camel@gmx.de>
+         <f0859f35-39ec-e5dc-b77a-79162516de31@amd.com>
+         <0e153dd25900af70f91e4a73f960320e6daf3c6a.camel@gmx.de>
+         <ZQljoiSBhZLEFI/G@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
-Message-ID: <169511670668.27769.1658034763935646312.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:jf/XS+uy31pNwDB1WpOQAbU5X4oJevQUkU0y/cd7aonWjMKNZbg
+ w80zwerv1j+SFocsJYJlU9DDbaHPS+pHlr6iWj2Ko9vCWIsP6YlbXi/P4EJadQbltsp4eyy
+ 9Uw5X9ywqiMxLb82nZh7TekYiBcxYmnVqsU4AYcbAwWzze9eMwzYi1aeltj0/exb/5bBl7i
+ 7OJo6+FIVISC764rbx3qA==
+UI-OutboundReport: notjunk:1;M01:P0:APciL2NUABU=;Oi5zvvD3gtCH2LA/eaFz4SMzUjX
+ yANLWNIRRdBvbl8Iptd35btU9qjLijPtjnfGA3jHNkgZh4c7KZL5Rxj3RTZJojVtXT9tyStRV
+ q0273oGPnssf3cFdBS6IZiaAM15uTgs66zwS6JpLryppY3yjudtu8UDDrxWNK4TPsxCCPepyj
+ 2P5IY64DP72F9D/YpB8lUSBTurupqLbTBq2fTi76tD6wD7U8zvUcm7bGGkyRBjmEOfA9VU/qa
+ bRGVmjhrGumn1GnWd+KVL0BR/p+TtLC/qB5KVeGQ8fTrHMeMCZzausyRM1/1d+z7QEsOukJVy
+ GydAGzHYE7u9L4VdFd1mRLPlVeHkCqRbvf8N8uVsT5kywENFPUC2lJV6bzckxY+2H0Z8eqFpc
+ LS+z4AlkLPrGrcxFAlkSD/L9vPeQog3RBGESYqfBBsQ2m//LZyGXJklBvt0vOqpilNbJmROyV
+ KjhFfYHv1yu9s61JBgiyAUpbdORVIScJpLwUXRk1AqtvtdPMSpCBFs2/ZvL8LTdUVRQocLBOY
+ uFRSv/cPJHuC+9u/4mEorCluNiMia6owYTMVIR28mccSEZHcOCGEXWvoaq+oA8I2EW1Xm6r4L
+ lWMnssXoiEyBoEAhYGj6hVaHF1JExwR65a9ClArXWfVAoMultWKj5FtCJGoXypg6qv5y64Us+
+ hZdBaYXW2RTcbDFVbkcVcBMhsOY5r0q6J/L8/ONrc4pNR9CQb3QHb63KGO5wdJ23nBnjWPCDS
+ IOdPe8WE+2jSOXfrvUVp07MnXPZaPQK8QJsapYU+19IQpfkYO+RwA8j9wheFQukgy9v+g+Zn9
+ K/FLHvU1ZnK7kv0TG14t5CTWYxfhQZJqTx8sKdDgk4dA0VY0mMISXp5X1NPE+25Fi/Nfd1py2
+ r6wIAA1ICSMcwX4Nu+1s21B0pYZQFZ8U2OTZwDY4Gl5DNKJPqBAFBkv+MThAl99sOX8K7JIRg
+ 6kLBmfuiZ9gkd22BY/L24c0+kLY=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Tue, 2023-09-19 at 11:02 +0200, Ingo Molnar wrote:
+>
+> BTW., if overscheduling is still an issue...
 
-Commit-ID:     a8cf700c17d9ca6cb8ee7dc5c9330dbac3948237
-Gitweb:        https://git.kernel.org/tip/a8cf700c17d9ca6cb8ee7dc5c9330dbac3948237
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 04 Sep 2023 22:04:45 -07:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 19 Sep 2023 10:53:34 +02:00
+The trouble I had with overscheduling was mostly about annoying insta-
+preempt creating useless overhead, and that the RUN_TO_PARITY thing
+ended. All I see now is the expected 60/40 indeed !=3D 50/50, so things
+are gonna shift a bit.
 
-x86/srso: Fix srso_show_state() side effect
+Most of the testing I've done lately has been due to fretting over the
+desktop perhaps getting the short end of that shift, but after much
+poking and prodding, everything seems just fine here.
 
-Reading the 'spec_rstack_overflow' sysfs file can trigger an unnecessary
-MSR write, and possibly even a (handled) exception if the microcode
-hasn't been updated.
+	-Mike
 
-Avoid all that by just checking X86_FEATURE_IBPB_BRTYPE instead, which
-gets set by srso_select_mitigation() if the updated microcode exists.
-
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/27d128899cb8aee9eb2b57ddc996742b0c1d776b.1693889988.git.jpoimboe@kernel.org
----
- arch/x86/kernel/cpu/bugs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index f081d26..bdd3e29 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2717,7 +2717,7 @@ static ssize_t srso_show_state(char *buf)
- 
- 	return sysfs_emit(buf, "%s%s\n",
- 			  srso_strings[srso_mitigation],
--			  (cpu_has_ibpb_brtype_microcode() ? "" : ", no microcode"));
-+			  boot_cpu_has(X86_FEATURE_IBPB_BRTYPE) ? "" : ", no microcode");
- }
- 
- static ssize_t gds_show_state(char *buf)
