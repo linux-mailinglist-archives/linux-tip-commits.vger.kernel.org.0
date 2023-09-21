@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E81347A9D35
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Sep 2023 21:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5389D7A9949
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Sep 2023 20:12:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229769AbjIUT3r (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Sep 2023 15:29:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43528 "EHLO
+        id S229723AbjIUSMr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Sep 2023 14:12:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230290AbjIUT3T (ORCPT
+        with ESMTP id S230493AbjIUSM2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Sep 2023 15:29:19 -0400
+        Thu, 21 Sep 2023 14:12:28 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69ACC72BA;
-        Thu, 21 Sep 2023 10:10:10 -0700 (PDT)
-Date:   Thu, 21 Sep 2023 07:43:05 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8FD551017;
+        Thu, 21 Sep 2023 10:15:29 -0700 (PDT)
+Date:   Thu, 21 Sep 2023 08:21:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695282186;
+        s=2020; t=1695284464;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bsjysVzURheAf6GJ2EjLUVnFxyqQ+3pm+FArm8UVtFc=;
-        b=ovejVn/ntq+H77sRf+Idb7wq1Kke+/kMhMdslWBV33lBg5HjglzXZRl+WhIA2GnVHwSGQN
-        4zPLfo9qdkG1dCYQTefuO1pYhtH26WWwKI8uBZZqer8awtq1Wyzh3upc1jmrvzu9vZayMx
-        Od8roZLZfs2pV3JegiiXpQ2tYfwSOEW2fCKlgq/aUsaWVXDtXANBEUPhUXSs577dhaYndw
-        q1CeyksCdlOEqF0y+nkaoTdS71qlK2UIgdZRyRbK8e2ODtdYy8HcDTBW44fKqpFZNoHhQk
-        P4aeAN/p4UjGJmmPrdX4Y6AMkK/pr4BlWYshUYoeyz1bWWbuCZY/hUqdzKld9Q==
+        bh=wiigUf4+jV0yAF+Zmw7mPWMC69tUoz6kH5ojPyKhrv8=;
+        b=ZOvmRcTt7EpDy0oaAAiRjC62np4g/P8zNuyvJvyUQl9MArMWMvc5NSarBmvczIPfW+vCPy
+        EkuBd9UdxHXH5dNT+Bjo+m5xgzI0ItmfB84sEUgEd7kKNFYoBLhHab5p+0IARIvpjq/Saj
+        g0CzySsuzCckutq5ohPzh6PHnGcIfy+OUN8gcYzbq4/OaGoLTGZfw6H7Jks137xkqkiPzk
+        SuATBJg+K9056WfKPwNp5aoOGYmwTjZroHodw0ep9M7ovcyxRmYeJdgZxYHpy1yQWBUMMH
+        fTjunoY3vdxV7ax1+VvtAVgoQV8E1rbjzH5oCZGdmtQHhcjerXoneXjSfKRFrg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695282186;
+        s=2020e; t=1695284464;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bsjysVzURheAf6GJ2EjLUVnFxyqQ+3pm+FArm8UVtFc=;
-        b=23v1i2C+5mC7Dz2KVXJfsWAqy4yaKx73w7l9q9Vo9N7zKGsWr0/6TcVubz5jOmsPWcSmoI
-        UEH0atg1gg8g/pCg==
-From:   "tip-bot2 for Finn Thain" <tip-bot2@linutronix.de>
+        bh=wiigUf4+jV0yAF+Zmw7mPWMC69tUoz6kH5ojPyKhrv8=;
+        b=/FNGDqgDPriMlRRWDBCrnBTBYd2N7ljHrxjJU2PpmxI+7MqR9DVBzDssCgj3EHZEu++onC
+        aL6baZyXJK4DPMDA==
+From:   "tip-bot2 for Guo Ren" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/core: Optimize in_task() and in_interrupt() a bit
-Cc:     Finn Thain <fthain@linux-m68k.org>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C0a403120a682a525e6db2d81d1a3ffcc137c3742=2E16947?=
- =?utf-8?q?56831=2Egit=2Efthain=40linux-m68k=2Eorg=3E?=
-References: =?utf-8?q?=3C0a403120a682a525e6db2d81d1a3ffcc137c3742=2E169475?=
- =?utf-8?q?6831=2Egit=2Efthain=40linux-m68k=2Eorg=3E?=
+Subject: [tip: locking/core] asm-generic: ticket-lock: Optimize
+ arch_spin_value_unlocked()
+Cc:     Guo Ren <guoren@kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Waiman Long <longman@redhat.com>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230908154339.3250567-1-guoren@kernel.org>
+References: <20230908154339.3250567-1-guoren@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169528218521.27769.16373979341489585519.tip-bot2@tip-bot2>
+Message-ID: <169528446324.27769.8480622781969702147.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,101 +68,93 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     87c3a5893e865739ce78aa7192d36011022e0af7
-Gitweb:        https://git.kernel.org/tip/87c3a5893e865739ce78aa7192d36011022e0af7
-Author:        Finn Thain <fthain@linux-m68k.org>
-AuthorDate:    Fri, 15 Sep 2023 15:47:11 +10:00
+Commit-ID:     c6f4a90022524d06f6d9de323b1757031dcf0c26
+Gitweb:        https://git.kernel.org/tip/c6f4a90022524d06f6d9de323b1757031dcf0c26
+Author:        Guo Ren <guoren@linux.alibaba.com>
+AuthorDate:    Fri, 08 Sep 2023 11:43:39 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 21 Sep 2023 09:40:30 +02:00
+CommitterDate: Thu, 21 Sep 2023 10:17:00 +02:00
 
-sched/core: Optimize in_task() and in_interrupt() a bit
+asm-generic: ticket-lock: Optimize arch_spin_value_unlocked()
 
-Except on x86, preempt_count is always accessed with READ_ONCE().
-Repeated invocations in macros like irq_count() produce repeated loads.
-These redundant instructions appear in various fast paths. In the one
-shown below, for example, irq_count() is evaluated during kernel entry
-if !tick_nohz_full_cpu(smp_processor_id()).
+The arch_spin_value_unlocked() of ticket-lock would cause the compiler to
+generate inefficient asm code in riscv architecture because of
+unnecessary memory access to the contended value.
 
-0001ed0a <irq_enter_rcu>:
-   1ed0a:       4e56 0000       linkw %fp,#0
-   1ed0e:       200f            movel %sp,%d0
-   1ed10:       0280 ffff e000  andil #-8192,%d0
-   1ed16:       2040            moveal %d0,%a0
-   1ed18:       2028 0008       movel %a0@(8),%d0
-   1ed1c:       0680 0001 0000  addil #65536,%d0
-   1ed22:       2140 0008       movel %d0,%a0@(8)
-   1ed26:       082a 0001 000f  btst #1,%a2@(15)
-   1ed2c:       670c            beqs 1ed3a <irq_enter_rcu+0x30>
-   1ed2e:       2028 0008       movel %a0@(8),%d0
-   1ed32:       2028 0008       movel %a0@(8),%d0
-   1ed36:       2028 0008       movel %a0@(8),%d0
-   1ed3a:       4e5e            unlk %fp
-   1ed3c:       4e75            rts
+Before the patch:
 
-This patch doesn't prevent the pointless btst and beqs instructions
-above, but it does eliminate 2 of the 3 pointless move instructions
-here and elsewhere.
+	void lockref_get(struct lockref *lockref)
+	{
+	  78:   fd010113                add     sp,sp,-48
+	  7c:   02813023                sd      s0,32(sp)
+	  80:   02113423                sd      ra,40(sp)
+	  84:   03010413                add     s0,sp,48
 
-On x86, preempt_count is per-cpu data and the problem does not arise
-presumably because the compiler is free to optimize more effectively.
+	0000000000000088 <.LBB296>:
+		CMPXCHG_LOOP(
+	  88:   00053783                ld      a5,0(a0)
 
-This patch was tested on m68k and x86. I was expecting no changes
-to object code for x86 and mostly that's what I saw. However, there
-were a few places where code generation was perturbed for some reason.
+After the patch:
 
-The performance issue addressed here is minor on uniprocessor m68k. I
-got a 0.01% improvement from this patch for a simple "find /sys -false"
-benchmark. For architectures and workloads susceptible to cache line bounce
-the improvement is expected to be larger. The only SMP architecture I have
-is x86, and as x86 unaffected I have not done any further measurements.
+	void lockref_get(struct lockref *lockref)
+	{
+		CMPXCHG_LOOP(
+	  78:   00053783                ld      a5,0(a0)
 
-Fixes: 15115830c887 ("preempt: Cleanup the macro maze a bit")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+After the patch, the lockref_get() could get in a fast path instead of the
+function's prologue. This is because ticket lock complex logic would
+limit compiler optimization for the spinlock fast path, and qspinlock
+won't.
+
+The caller of arch_spin_value_unlocked() could benefit from this
+change. Currently, the only caller is lockref.
+
+Signed-off-by: Guo Ren <guoren@kernel.org>
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/0a403120a682a525e6db2d81d1a3ffcc137c3742.1694756831.git.fthain@linux-m68k.org
+Acked-by: Waiman Long <longman@redhat.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20230908154339.3250567-1-guoren@kernel.org
 ---
- include/linux/preempt.h | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ include/asm-generic/spinlock.h | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-index 1424670..9aa6358 100644
---- a/include/linux/preempt.h
-+++ b/include/linux/preempt.h
-@@ -99,14 +99,21 @@ static __always_inline unsigned char interrupt_context_level(void)
- 	return level;
+diff --git a/include/asm-generic/spinlock.h b/include/asm-generic/spinlock.h
+index fdfebcb..90803a8 100644
+--- a/include/asm-generic/spinlock.h
++++ b/include/asm-generic/spinlock.h
+@@ -68,11 +68,18 @@ static __always_inline void arch_spin_unlock(arch_spinlock_t *lock)
+ 	smp_store_release(ptr, (u16)val + 1);
  }
  
-+/*
-+ * These macro definitions avoid redundant invocations of preempt_count()
-+ * because such invocations would result in redundant loads given that
-+ * preempt_count() is commonly implemented with READ_ONCE().
-+ */
++static __always_inline int arch_spin_value_unlocked(arch_spinlock_t lock)
++{
++	u32 val = lock.counter;
 +
- #define nmi_count()	(preempt_count() & NMI_MASK)
- #define hardirq_count()	(preempt_count() & HARDIRQ_MASK)
- #ifdef CONFIG_PREEMPT_RT
- # define softirq_count()	(current->softirq_disable_cnt & SOFTIRQ_MASK)
-+# define irq_count()		((preempt_count() & (NMI_MASK | HARDIRQ_MASK)) | softirq_count())
- #else
- # define softirq_count()	(preempt_count() & SOFTIRQ_MASK)
-+# define irq_count()		(preempt_count() & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_MASK))
- #endif
--#define irq_count()	(nmi_count() | hardirq_count() | softirq_count())
++	return ((val >> 16) == (val & 0xffff));
++}
++
+ static __always_inline int arch_spin_is_locked(arch_spinlock_t *lock)
+ {
+-	u32 val = atomic_read(lock);
++	arch_spinlock_t val = READ_ONCE(*lock);
  
- /*
-  * Macros to retrieve the current execution context:
-@@ -119,7 +126,11 @@ static __always_inline unsigned char interrupt_context_level(void)
- #define in_nmi()		(nmi_count())
- #define in_hardirq()		(hardirq_count())
- #define in_serving_softirq()	(softirq_count() & SOFTIRQ_OFFSET)
--#define in_task()		(!(in_nmi() | in_hardirq() | in_serving_softirq()))
-+#ifdef CONFIG_PREEMPT_RT
-+# define in_task()		(!((preempt_count() & (NMI_MASK | HARDIRQ_MASK)) | in_serving_softirq()))
-+#else
-+# define in_task()		(!(preempt_count() & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET)))
-+#endif
+-	return ((val >> 16) != (val & 0xffff));
++	return !arch_spin_value_unlocked(val);
+ }
  
- /*
-  * The following macros are deprecated and should not be used in new code:
+ static __always_inline int arch_spin_is_contended(arch_spinlock_t *lock)
+@@ -82,11 +89,6 @@ static __always_inline int arch_spin_is_contended(arch_spinlock_t *lock)
+ 	return (s16)((val >> 16) - (val & 0xffff)) > 1;
+ }
+ 
+-static __always_inline int arch_spin_value_unlocked(arch_spinlock_t lock)
+-{
+-	return !arch_spin_is_locked(&lock);
+-}
+-
+ #include <asm/qrwlock.h>
+ 
+ #endif /* __ASM_GENERIC_SPINLOCK_H */
