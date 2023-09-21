@@ -2,108 +2,68 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5689C7A9884
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Sep 2023 19:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEC827A98DA
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Sep 2023 19:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229495AbjIURtJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Sep 2023 13:49:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38106 "EHLO
+        id S229769AbjIURx5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Sep 2023 13:53:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbjIURs7 (ORCPT
+        with ESMTP id S229923AbjIURxl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Sep 2023 13:48:59 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C87A2DEB7;
-        Thu, 21 Sep 2023 10:25:10 -0700 (PDT)
-Date:   Thu, 21 Sep 2023 06:49:23 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695278964;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=9F0spGRPHXeTOxcSn6yRhRnx9hV6elwlzOuk+huTzII=;
-        b=olFseMA6x0YTdVgUnhzm0IinaAVEn5Ws7+ciwzOobGpplL+3kuf7OWzFgiijDONrjL+LsH
-        SyjQDCRxbYAIGj6ss6mT4dxk3rhm5CgcZ2BdAiVdXoLQG8L2kkTQ5/0HwGow0t8mjoMbXp
-        e/1ZU9EXuZQz8kSP4DrRYaPPRZtBRYMN0++mLqrV+SQgFncT4sx0g0g+YEl42QWtji7pHD
-        5KojP/gN8VWcO0hcNSqQIvUZnwA18vgYQ4+1hvnC8sy30suIVKENoT/fHnSl9vp8iIRk/E
-        99tZOjpDXx+gQ91GlfOqwJuP40YbslIkWrORC6s4hvTfxAqCTrxVaequZyfe8Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695278964;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=9F0spGRPHXeTOxcSn6yRhRnx9hV6elwlzOuk+huTzII=;
-        b=w/Td7f0L/wsrN0rqirurJggSYSzW7au0VZeD16dq/iyVXDljTsVfmF8oPce4wDpSUFsYYf
-        9yAYyIF/PwvwLtDw==
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/unwind/orc: Remove redundant initialization
- of 'mid' pointer in __orc_find()
-Cc:     Colin Ian King <colin.i.king@gmail.com>,
+        Thu, 21 Sep 2023 13:53:41 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C937AF78;
+        Thu, 21 Sep 2023 10:34:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=+HobwbyhRrL+DiXWq60cCXmq0rRh6Myw3iz3VvCnh1Q=; b=ANHfhAIbaIS5IlcKDZ3DCQU3ew
+        ZjjThTQm43SxXnljgJR34XhuheNewSfW9afdLy9gSgNGZKcplc3/I7/T1IqjlStPMOvPHv4WsNm1/
+        c6YyKradLp5SG8uTQD4J9x00hOxYkHvIVLtk3JSPwFKSq5ySEp+pZESCPLGQBrJH7J5eIP/GhDz8T
+        1ilB2ROeoYbroMSSoRhMOeJXYNBGZpSgjJh3pzTHRkhCyRC5RuwL1H2waNgPKh5WJwlzvVNBPtXq6
+        pnqo3BSBqa0JUcGDm3hTu/hRAd11i6oU2S56j08ho2IrTqAGMwcqvEIeVgnwTF+nbhZ+w2ewBR6zi
+        KuyDdgFQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qjE5l-00FCMX-1g;
+        Thu, 21 Sep 2023 07:27:19 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id A2BC93002E3; Thu, 21 Sep 2023 09:27:18 +0200 (CEST)
+Date:   Thu, 21 Sep 2023 09:27:18 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Fangrui Song <maskray@google.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230920114141.118919-1-colin.i.king@gmail.com>
-References: <20230920114141.118919-1-colin.i.king@gmail.com>
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org
+Subject: Re: [tip: objtool/core] x86/speculation, objtool: Use absolute
+ relocations for annotations
+Message-ID: <20230921072718.GB14803@noisy.programming.kicks-ass.net>
+References: <20230920001728.1439947-1-maskray@google.com>
+ <169528034747.27769.14777306686927534953.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <169527896379.27769.3655940245811968387.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <169528034747.27769.14777306686927534953.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+On Thu, Sep 21, 2023 at 07:12:27AM -0000, tip-bot2 for Fangrui Song wrote:
+> The following commit has been merged into the objtool/core branch of tip:
+> 
+> Commit-ID:     0ca0043d89930cb162070598e7e4a9ed3fe57795
+> Gitweb:        https://git.kernel.org/tip/0ca0043d89930cb162070598e7e4a9ed3fe57795
+> Author:        Fangrui Song <maskray@google.com>
+> AuthorDate:    Tue, 19 Sep 2023 17:17:28 -07:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Thu, 21 Sep 2023 08:42:38 +02:00
 
-Commit-ID:     fef44ebaf61b57a71ab818058926a3f9a0ac81e6
-Gitweb:        https://git.kernel.org/tip/fef44ebaf61b57a71ab818058926a3f9a0ac81e6
-Author:        Colin Ian King <colin.i.king@gmail.com>
-AuthorDate:    Wed, 20 Sep 2023 12:41:41 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 21 Sep 2023 08:41:23 +02:00
-
-x86/unwind/orc: Remove redundant initialization of 'mid' pointer in __orc_find()
-
-The 'mid' pointer is being initialized with a value that is never read,
-it is being re-assigned and used inside a for-loop. Remove the
-redundant initialization.
-
-Cleans up clang scan build warning:
-
-  arch/x86/kernel/unwind_orc.c:88:7: warning: Value stored to 'mid' during its initialization is never read [deadcode.DeadStores]
-
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20230920114141.118919-1-colin.i.king@gmail.com
----
- arch/x86/kernel/unwind_orc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
-index 7e574cf..d00c28a 100644
---- a/arch/x86/kernel/unwind_orc.c
-+++ b/arch/x86/kernel/unwind_orc.c
-@@ -85,7 +85,7 @@ static struct orc_entry *__orc_find(int *ip_table, struct orc_entry *u_table,
- {
- 	int *first = ip_table;
- 	int *last = ip_table + num_entries - 1;
--	int *mid = first, *found = first;
-+	int *mid, *found = first;
- 
- 	if (!num_entries)
- 		return NULL;
+Ingo, can we please make this patch go away until further clarified?
