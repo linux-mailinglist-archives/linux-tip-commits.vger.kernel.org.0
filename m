@@ -2,98 +2,97 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F24487A9795
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Sep 2023 19:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E79D87A979D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Sep 2023 19:26:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229564AbjIURZy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Sep 2023 13:25:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60596 "EHLO
+        id S229747AbjIUR0O (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Sep 2023 13:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbjIURZ2 (ORCPT
+        with ESMTP id S229660AbjIUR0D (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Sep 2023 13:25:28 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62ACA46DF1;
-        Thu, 21 Sep 2023 10:14:01 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-50435a9f800so124477e87.2;
-        Thu, 21 Sep 2023 10:14:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695316439; x=1695921239; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZOwo8hyrebGgO2V/Dzr5eBCz1cH8hJCbHTwIz3ASbYA=;
-        b=WG79ZtiOEq5G7EL/My5+3TpG6xS39BVsVYYFb+vIPTyyd2nc/j5Pj2RmIeYnRGFfvL
-         iQ9VNpGl+ePQJ1JLJxq4qwtDwd6VzmTBLfhtJIYP6SR+tvBigk01v9j9jhN0UFTndF0k
-         RxVcduAbfEo9fcmDiGTGUGOM8dxHgf4Ml+oWZWrorR1bnK+WphVyq9ZJcU5gQN/LU4ub
-         Jn+7Lw6nQjPBzCIiAhgTdR9XSxzY+ur1odFKORVsCXDRGCQN4xzxazYV8Ma4BRbHSdJT
-         Ro+NFdn2rjOvVxeqDB+Ii7NbkK/EsL/VnWeC7wk/xcDmL+X0e2VhCvdCZiGf7AbxvOF0
-         g1SQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695316439; x=1695921239;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZOwo8hyrebGgO2V/Dzr5eBCz1cH8hJCbHTwIz3ASbYA=;
-        b=ImyVc6xx/eOfPm6SA6U9PdMhxfkB4kheI7U7m0HMegGRUcHcPyjkN86L7tzgbI6XBm
-         NbMcwxKiqG7G48H9oV29ji5PKvRm4YRjc+8SLZqL5lxv7jELSfANKBGkj4nl9EbBS1ud
-         3bdPbj3K9+1nQZQ4PhWkJTvXV1aJC9ZVL2gvkq3Afbu2VkOXu9dY5lYWUVwT+r0Qps2A
-         NS0WejEG98Rk7QL+KnZPJ8oicxAuKiTmiT4IQRaQzSKJ2n/ck5hVQZO0iJtkLWxYU4GO
-         mQZiGfn7ZNCqheYpzX8nA1WxumUD7jAYyK4boF/+S5m08yUZOIc1vqCzKiHcgL4Z8BjR
-         S+6A==
-X-Gm-Message-State: AOJu0YyDbGOaJYvZHw+0tRBM34zBtVFxdnTxu2mvudzZVJNt1KpAECwl
-        QFFHshHwxHB2O74UlZ0ttxx/tmMJO7k=
-X-Google-Smtp-Source: AGHT+IHy75Zw/oHT0QdpQwOljvDOvgsSgRY8twuD810TBRpptwH+Vwig1RUsv4xZTTyAb+3v4IpDXg==
-X-Received: by 2002:a05:600c:4708:b0:405:36d7:4577 with SMTP id v8-20020a05600c470800b0040536d74577mr380727wmo.26.1695283431095;
-        Thu, 21 Sep 2023 01:03:51 -0700 (PDT)
-Received: from gmail.com (1F2EF265.nat.pool.telekom.hu. [31.46.242.101])
-        by smtp.gmail.com with ESMTPSA id m5-20020a05600c280500b003feeb082a9fsm1198206wmb.3.2023.09.21.01.03.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Sep 2023 01:03:47 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Thu, 21 Sep 2023 10:03:45 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Fangrui Song <maskray@google.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org
-Subject: Re: [tip: objtool/core] x86/speculation, objtool: Use absolute
- relocations for annotations
-Message-ID: <ZQv44cT8Fj7HAWa3@gmail.com>
-References: <20230920001728.1439947-1-maskray@google.com>
- <169528034747.27769.14777306686927534953.tip-bot2@tip-bot2>
- <20230921072718.GB14803@noisy.programming.kicks-ass.net>
+        Thu, 21 Sep 2023 13:26:03 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C12D2DEB4;
+        Thu, 21 Sep 2023 10:25:10 -0700 (PDT)
+Date:   Thu, 21 Sep 2023 08:29:44 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1695284985;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=SAGt/qwNIFdIGEzhI11MBn4XRza5k0JE5+9/NISOHhY=;
+        b=ScnTURpN16vW6iwjSl16CC96C1l+22AaY6cRbnp8qyfUH0udrcr3dV7dn0vYoHFUv1YTG3
+        BQgYwCpZo6EvQmuJHJJLtDdU/BEt+G1SaZR7/2yjoViIbIgwynfRHevrsKmbvOvReozM3e
+        xp3nAFzfdANYMptQjGozgbVrfbnzWzAehRkgRALCGEQ7XXtYz+1PJRUy4h+QEARDwStzdV
+        Fp/O0H8ug1y9aIPJJkik7V860wH3IvSKQ/BDZsZSP0fOiOt6yAFmDzwI+LhzvU7Rcqvkp0
+        sUrUrGxVp/Y+23lZ7W6Enm0TOp48yv7GOUvES36+J1CcofoJz056xWbpTsLm1Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1695284985;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=SAGt/qwNIFdIGEzhI11MBn4XRza5k0JE5+9/NISOHhY=;
+        b=0qsK5BczhH73fXFQm2OWE/klFiV7+Nje1amRzOnzbSdKBFa476s9txvOBlfLokJOwt6TMF
+        QrrgNYYhZrE/3zBQ==
+From:   "tip-bot2 for Yang Li" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/apic] x86/platform/uv/apic: Clean up inconsistent indenting
+Cc:     Yang Li <yang.lee@linux.alibaba.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230816003842.116574-1-yang.lee@linux.alibaba.com>
+References: <20230816003842.116574-1-yang.lee@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230921072718.GB14803@noisy.programming.kicks-ass.net>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Message-ID: <169528498468.27769.16255395394299387993.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the x86/apic branch of tip:
 
-* Peter Zijlstra <peterz@infradead.org> wrote:
+Commit-ID:     57baabe36573c1dc22a53a9ceed748d3e28fe910
+Gitweb:        https://git.kernel.org/tip/57baabe36573c1dc22a53a9ceed748d3e28fe910
+Author:        Yang Li <yang.lee@linux.alibaba.com>
+AuthorDate:    Wed, 16 Aug 2023 08:38:42 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 21 Sep 2023 10:22:13 +02:00
 
-> On Thu, Sep 21, 2023 at 07:12:27AM -0000, tip-bot2 for Fangrui Song wrote:
-> > The following commit has been merged into the objtool/core branch of tip:
-> > 
-> > Commit-ID:     0ca0043d89930cb162070598e7e4a9ed3fe57795
-> > Gitweb:        https://git.kernel.org/tip/0ca0043d89930cb162070598e7e4a9ed3fe57795
-> > Author:        Fangrui Song <maskray@google.com>
-> > AuthorDate:    Tue, 19 Sep 2023 17:17:28 -07:00
-> > Committer:     Ingo Molnar <mingo@kernel.org>
-> > CommitterDate: Thu, 21 Sep 2023 08:42:38 +02:00
-> 
-> Ingo, can we please make this patch go away until further clarified?
+x86/platform/uv/apic: Clean up inconsistent indenting
 
-Yeah, already gone.
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230816003842.116574-1-yang.lee@linux.alibaba.com
+---
+ arch/x86/kernel/apic/x2apic_uv_x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-
-	Ingo
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index 205cee5..7d304ef 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -110,7 +110,7 @@ static void __init early_get_pnodeid(void)
+ 	} else if (UVH_RH_GAM_ADDR_MAP_CONFIG) {
+ 		union uvh_rh_gam_addr_map_config_u  m_n_config;
+ 
+-	m_n_config.v = uv_early_read_mmr(UVH_RH_GAM_ADDR_MAP_CONFIG);
++		m_n_config.v = uv_early_read_mmr(UVH_RH_GAM_ADDR_MAP_CONFIG);
+ 		uv_cpuid.n_skt = m_n_config.s.n_skt;
+ 		if (is_uv(UV3))
+ 			uv_cpuid.m_skt = m_n_config.s3.m_skt;
