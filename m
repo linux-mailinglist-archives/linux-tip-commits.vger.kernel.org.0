@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 933807AA22A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Sep 2023 23:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E53887AA243
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Sep 2023 23:14:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbjIUVNI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Sep 2023 17:13:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42384 "EHLO
+        id S232350AbjIUVOA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Sep 2023 17:14:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231717AbjIUVMZ (ORCPT
+        with ESMTP id S232473AbjIUVNJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Sep 2023 17:12:25 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5898B98A45;
-        Thu, 21 Sep 2023 10:56:48 -0700 (PDT)
-Date:   Thu, 21 Sep 2023 06:41:07 -0000
+        Thu, 21 Sep 2023 17:13:09 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A6C72BD;
+        Thu, 21 Sep 2023 10:10:10 -0700 (PDT)
+Date:   Thu, 21 Sep 2023 07:43:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695278467;
+        s=2020; t=1695282201;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=g44M9hKvXEDwyXwCGx4cA7u2mkZTmo3YlGxVozqTY0Q=;
-        b=sv+cMhSArTF4tfQ+u7e+XFTDJWvDXKk8BR7Q3LRxuVePUFrxoxIEXlE9E+8nDDpvvda83T
-        c3VsXlOHmtrDHLyp1PxZFp72OCwQMS2rgpwyMIwAPba1Fry80RllcKCaNFAxsfjUXITymC
-        G2uNzFQFdc2UjKOC74ljSjr/VTUVDV7GAiVaOJhXfdcaaW4lhdD/6pbJd99v6VGTQyVsOC
-        cBMMAknGmwNcZQUA9NQ8Lxj7pPR9DdmpZv0j5IsDtNH4/K+7wNGJJDNfkITG6yQYqDfRtV
-        Y+LaIpREC4f7jZK6I9Za1aMVtnKCxkqYYie+YGGINQLYJL+Fvnr8lfPeG5rbpQ==
+        bh=mcSH7dNMTsPoxRqHg8T2+Oqlqdr6DZoNM17pqKOJ7vY=;
+        b=JPVR3y7Rq1Wo4PtnSNVIDuf+Y5kDJapsQWQZpmCRR7gO31to7nSAI2WLd4JCD8gphpBbdX
+        07dMI+npwIQbZVZYhtqEsmWy1XlP79N/whTqGX91mViu5A7qblabL9/nX1UZVtyvqYxoBp
+        QT2S6kiQGdvDJS7nmaUw7bPbQZxqBlnwcNPG/5lRAGKMnZ91JJI8IISwMw8ela8Ng361vv
+        bJbfOSCkjAdpDGn0YvyO95U/vq+EYOBRjXnlNbhZo17qFygAFfNFu3A3FpzIMwdWyDp/5f
+        ihk2rZU75feTOmhhs2lrCdgnu/ZBI2UTtTbs/QkCezUd/FYBPNT3/Sr3iJGrGQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695278467;
+        s=2020e; t=1695282201;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=g44M9hKvXEDwyXwCGx4cA7u2mkZTmo3YlGxVozqTY0Q=;
-        b=B3sACAN4d9PwM+tihDtaf6VrEDYJN+PxevT78CKXLLDD93MpKoRlwIs+UIUvKOz1vkBHsq
-        hl22DDYJpiHABJAA==
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+        bh=mcSH7dNMTsPoxRqHg8T2+Oqlqdr6DZoNM17pqKOJ7vY=;
+        b=btQl7vz4LqnyqMbuA9uHFaYhmZD57myb0sC1KuipEXd/exO36itWDn5HC+uYbGlAVsn+2T
+        GsrtvbYe0aamtZAg==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] locking/seqlock: Do the lockdep annotation
- before locking in do_write_seqcount_begin_nested()
-Cc:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+Subject: [tip: x86/asm] x86/percpu: Do not clobber %rsi in
+ percpu_{try_,}cmpxchg{64,128}_op
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Uros Bizjak <ubizjak@gmail.com>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230920104627._DTHgPyA@linutronix.de>
-References: <20230920104627._DTHgPyA@linutronix.de>
+In-Reply-To: <20230918151452.62344-1-ubizjak@gmail.com>
+References: <20230918151452.62344-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169527846710.27769.2808849894554476760.tip-bot2@tip-bot2>
+Message-ID: <169528220128.27769.15672114308825684343.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,59 +67,146 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     41b43b6c6e30a832c790b010a06772e793bca193
-Gitweb:        https://git.kernel.org/tip/41b43b6c6e30a832c790b010a06772e793bca193
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Wed, 20 Sep 2023 12:46:27 +02:00
+Commit-ID:     7c097ca50d2ba7f7989f01175f366151256bfa10
+Gitweb:        https://git.kernel.org/tip/7c097ca50d2ba7f7989f01175f366151256bfa10
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Mon, 18 Sep 2023 17:14:10 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 21 Sep 2023 08:37:44 +02:00
+CommitterDate: Thu, 21 Sep 2023 09:35:50 +02:00
 
-locking/seqlock: Do the lockdep annotation before locking in do_write_seqcount_begin_nested()
+x86/percpu: Do not clobber %rsi in percpu_{try_,}cmpxchg{64,128}_op
 
-It was brought up by Tetsuo that the following sequence:
+The fallback alternative uses %rsi register to manually load pointer
+to the percpu variable before the call to the emulation function.
+This is unoptimal, because the load is hidden from the compiler.
 
-   write_seqlock_irqsave()
-   printk_deferred_enter()
+Move the load of %rsi outside inline asm, so the compiler can
+reuse the value. The code in slub.o improves from:
 
-could lead to a deadlock if the lockdep annotation within
-write_seqlock_irqsave() triggers.
+    55ac:	49 8b 3c 24          	mov    (%r12),%rdi
+    55b0:	48 8d 4a 40          	lea    0x40(%rdx),%rcx
+    55b4:	49 8b 1c 07          	mov    (%r15,%rax,1),%rbx
+    55b8:	4c 89 f8             	mov    %r15,%rax
+    55bb:	48 8d 37             	lea    (%rdi),%rsi
+    55be:	e8 00 00 00 00       	callq  55c3 <...>
+			55bf: R_X86_64_PLT32	this_cpu_cmpxchg16b_emu-0x4
+    55c3:	75 a3                	jne    5568 <...>
+    55c5:	...
 
-The problem is that the sequence counter is incremented before the lockdep
-annotation is performed. The lockdep splat would then attempt to invoke
-printk() but the reader side, of the same seqcount, could have a
-tty_port::lock acquired waiting for the sequence number to become even again.
+ 0000000000000000 <.altinstr_replacement>:
+   5:	65 48 0f c7 0f       	cmpxchg16b %gs:(%rdi)
 
-The other lockdep annotations come before the actual locking because "we
-want to see the locking error before it happens". There is no reason why
-seqcount should be different here.
+to:
 
-Do the lockdep annotation first then perform the locking operation (the
-sequence increment).
+    55ac:	49 8b 34 24          	mov    (%r12),%rsi
+    55b0:	48 8d 4a 40          	lea    0x40(%rdx),%rcx
+    55b4:	49 8b 1c 07          	mov    (%r15,%rax,1),%rbx
+    55b8:	4c 89 f8             	mov    %r15,%rax
+    55bb:	e8 00 00 00 00       	callq  55c0 <...>
+			55bc: R_X86_64_PLT32	this_cpu_cmpxchg16b_emu-0x4
+    55c0:	75 a6                	jne    5568 <...>
+    55c2:	...
 
-Fixes: 1ca7d67cf5d5a ("seqcount: Add lockdep functionality to seqcount/seqlock structures")
-Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Where the alternative replacement instruction now uses %rsi:
+
+ 0000000000000000 <.altinstr_replacement>:
+   5:	65 48 0f c7 0e       	cmpxchg16b %gs:(%rsi)
+
+The instruction (effectively a reg-reg move) at 55bb: in the original
+assembly is removed. Also, both the CALL and replacement CMPXCHG16B
+are 5 bytes long, removing the need for NOPs in the asm code.
+
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230920104627._DTHgPyA@linutronix.de
-
-Closes: https://lore.kernel.org/20230621130641.-5iueY1I@linutronix.de
+Link: https://lore.kernel.org/r/20230918151452.62344-1-ubizjak@gmail.com
 ---
- include/linux/seqlock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/percpu.h | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 987a59d..e9bd2f6 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -512,8 +512,8 @@ do {									\
- 
- static inline void do_write_seqcount_begin_nested(seqcount_t *s, int subclass)
- {
--	do_raw_write_seqcount_begin(s);
- 	seqcount_acquire(&s->dep_map, subclass, 0, _RET_IP_);
-+	do_raw_write_seqcount_begin(s);
- }
- 
- /**
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index a87db61..20624b8 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -242,14 +242,15 @@ do {									\
+ 	old__.var = _oval;						\
+ 	new__.var = _nval;						\
+ 									\
+-	asm qual (ALTERNATIVE("leal %P[var], %%esi; call this_cpu_cmpxchg8b_emu", \
++	asm qual (ALTERNATIVE("call this_cpu_cmpxchg8b_emu",		\
+ 			      "cmpxchg8b " __percpu_arg([var]), X86_FEATURE_CX8) \
+ 		  : [var] "+m" (_var),					\
+ 		    "+a" (old__.low),					\
+ 		    "+d" (old__.high)					\
+ 		  : "b" (new__.low),					\
+-		    "c" (new__.high)					\
+-		  : "memory", "esi");					\
++		    "c" (new__.high),					\
++		    "S" (&(_var))					\
++		  : "memory");						\
+ 									\
+ 	old__.var;							\
+ })
+@@ -271,7 +272,7 @@ do {									\
+ 	old__.var = *_oval;						\
+ 	new__.var = _nval;						\
+ 									\
+-	asm qual (ALTERNATIVE("leal %P[var], %%esi; call this_cpu_cmpxchg8b_emu", \
++	asm qual (ALTERNATIVE("call this_cpu_cmpxchg8b_emu",		\
+ 			      "cmpxchg8b " __percpu_arg([var]), X86_FEATURE_CX8) \
+ 		  CC_SET(z)						\
+ 		  : CC_OUT(z) (success),				\
+@@ -279,8 +280,9 @@ do {									\
+ 		    "+a" (old__.low),					\
+ 		    "+d" (old__.high)					\
+ 		  : "b" (new__.low),					\
+-		    "c" (new__.high)					\
+-		  : "memory", "esi");					\
++		    "c" (new__.high),					\
++		    "S" (&(_var))					\
++		  : "memory");						\
+ 	if (unlikely(!success))						\
+ 		*_oval = old__.var;					\
+ 	likely(success);						\
+@@ -309,14 +311,15 @@ do {									\
+ 	old__.var = _oval;						\
+ 	new__.var = _nval;						\
+ 									\
+-	asm qual (ALTERNATIVE("leaq %P[var], %%rsi; call this_cpu_cmpxchg16b_emu", \
++	asm qual (ALTERNATIVE("call this_cpu_cmpxchg16b_emu",		\
+ 			      "cmpxchg16b " __percpu_arg([var]), X86_FEATURE_CX16) \
+ 		  : [var] "+m" (_var),					\
+ 		    "+a" (old__.low),					\
+ 		    "+d" (old__.high)					\
+ 		  : "b" (new__.low),					\
+-		    "c" (new__.high)					\
+-		  : "memory", "rsi");					\
++		    "c" (new__.high),					\
++		    "S" (&(_var))					\
++		  : "memory");						\
+ 									\
+ 	old__.var;							\
+ })
+@@ -338,7 +341,7 @@ do {									\
+ 	old__.var = *_oval;						\
+ 	new__.var = _nval;						\
+ 									\
+-	asm qual (ALTERNATIVE("leaq %P[var], %%rsi; call this_cpu_cmpxchg16b_emu", \
++	asm qual (ALTERNATIVE("call this_cpu_cmpxchg16b_emu",		\
+ 			      "cmpxchg16b " __percpu_arg([var]), X86_FEATURE_CX16) \
+ 		  CC_SET(z)						\
+ 		  : CC_OUT(z) (success),				\
+@@ -346,8 +349,9 @@ do {									\
+ 		    "+a" (old__.low),					\
+ 		    "+d" (old__.high)					\
+ 		  : "b" (new__.low),					\
+-		    "c" (new__.high)					\
+-		  : "memory", "rsi");					\
++		    "c" (new__.high),					\
++		    "S" (&(_var))					\
++		  : "memory");						\
+ 	if (unlikely(!success))						\
+ 		*_oval = old__.var;					\
+ 	likely(success);						\
