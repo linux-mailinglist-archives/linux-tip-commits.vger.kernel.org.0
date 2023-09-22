@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C47F97AAC3B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 10:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64D587AAC3D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 10:17:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232330AbjIVIMG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Sep 2023 04:12:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50938 "EHLO
+        id S232569AbjIVIMF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Sep 2023 04:12:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232482AbjIVILq (ORCPT
+        with ESMTP id S232491AbjIVILq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 22 Sep 2023 04:11:46 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA46BE4B;
-        Fri, 22 Sep 2023 01:11:39 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 08:11:37 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA8CE6C;
+        Fri, 22 Sep 2023 01:11:40 -0700 (PDT)
+Date:   Fri, 22 Sep 2023 08:11:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1695370298;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FZqsvjjlEWZGBL4cgJ2JxgAJVbdahw8bEqqnuOXhUxc=;
-        b=tb+Qqq9JnLV863K0PuaWNgk7/nrLIQ4fTVxh8YzJOTAKznP4a+nfPHWz43NGLlnaCUhrjW
-        zgsoyiSBlVDmKgJXmtYlOr5P/OdVDAfJYtmh5v+ng9lf5NqnDYcp4to79yloGraKqczZkg
-        dMYLirHQn6cnDnrtqE6yI917N+7+lRnHljfCyFhu3OaLzap19r0MbO7XaHo7HkJT4L5v+p
-        KJKSZ6AAJcMh3W2V3+JsmfgmcfO/YmUXdx6sCS3Vbjh0nXHJR0lWJ25Wt7aew95Lh1qcBP
-        5WI8YcDBqGikRvlUao3iwgyT7KqLmkpGe4cBTlzeBfEixcNoHiGwK0zcsIpGSQ==
+        bh=1p8WzcJOAWfYeWI6UQE2QRNFJdJzCKra8K3fwBKeWYE=;
+        b=ojpQtcDn+LyAKsQwFJpccq0mc9T+icQ5zwJAy9mD/mDkYxbA1wgwN/MTi/sp3f3UKvGShQ
+        CnMEMhN74yG1GEis2wJtbsKBgeDOB3Qo6cMqfkegHFgQvUc1t3rO+ltXRUzrsr/HdTA+vU
+        paVOSSfPn7n+r0tnYJwEdVsJVcj1DYDLhPt2Jfm+mobAxuZGEziyAfFC0yrSeKjmQRCCeJ
+        DOjfgu1wKEZZUPFTKJck5if23NNo5FF/P3KfwkbDHuyjya2HwJ7wtpCSsAFulB4YbG6jGI
+        /frecf0xMVgafYkAK0CK9y+jDlCE9bPw3hmZXj8DWEnao2E4QICTNNyBZqGHJg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1695370298;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FZqsvjjlEWZGBL4cgJ2JxgAJVbdahw8bEqqnuOXhUxc=;
-        b=hSUvho8pyGAJcA9ZiZns7v977eVto5De55HjK5ate/H+iZQ5khb/xso39TEdNZ4EGtkFq1
-        02EGbC28jJfgz4DQ==
+        bh=1p8WzcJOAWfYeWI6UQE2QRNFJdJzCKra8K3fwBKeWYE=;
+        b=byVsDRShUDXLgoVlAO8FzCm+vF3pcbOix7HsbYe9bdUyp/q4TjX3cegaOVr+lbUErZcrph
+        0EyvoRTRRiq/72Bw==
 From:   "tip-bot2 for John Stultz" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/ww_mutex/test: Fix potential workqueue corruption
+Subject: [tip: locking/core] locking/ww_mutex/test: Use prng instead of rng to
+ avoid hangs at bootup
 Cc:     John Stultz <jstultz@google.com>, Ingo Molnar <mingo@kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230922043616.19282-3-jstultz@google.com>
-References: <20230922043616.19282-3-jstultz@google.com>
+In-Reply-To: <20230922043616.19282-2-jstultz@google.com>
+References: <20230922043616.19282-2-jstultz@google.com>
 MIME-Version: 1.0
-Message-ID: <169537029753.27769.15529645927257680234.tip-bot2@tip-bot2>
+Message-ID: <169537029801.27769.5775811116918279412.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,118 +66,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     bccdd808902f8c677317cec47c306e42b93b849e
-Gitweb:        https://git.kernel.org/tip/bccdd808902f8c677317cec47c306e42b93b849e
+Commit-ID:     4812c54dc0498c4b757cbc7f41c1999b5a1c9f67
+Gitweb:        https://git.kernel.org/tip/4812c54dc0498c4b757cbc7f41c1999b5a1c9f67
 Author:        John Stultz <jstultz@google.com>
-AuthorDate:    Fri, 22 Sep 2023 04:36:00 
+AuthorDate:    Fri, 22 Sep 2023 04:35:59 
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 22 Sep 2023 09:43:40 +02:00
 
-locking/ww_mutex/test: Fix potential workqueue corruption
+locking/ww_mutex/test: Use prng instead of rng to avoid hangs at bootup
 
-In some cases running with the test-ww_mutex code, I was seeing
-odd behavior where sometimes it seemed flush_workqueue was
-returning before all the work threads were finished.
+Booting w/ qemu without kvm, and with 64 cpus, I noticed we'd
+sometimes hung task watchdog splats in get_random_u32_below()
+when using the test-ww_mutex stress test.
 
-Often this would cause strange crashes as the mutexes would be
-freed while they were being used.
+While entropy exhaustion is no longer an issue, the RNG may be
+slower early in boot. The test-ww_mutex code will spawn off
+128 threads (2x cpus) and each thread will call
+get_random_u32_below() a number of times to generate a random
+order of the 16 locks.
 
-Looking at the code, there is a lifetime problem as the
-controlling thread that spawns the work allocates the
-"struct stress" structures that are passed to the workqueue
-threads. Then when the workqueue threads are finished,
-they free the stress struct that was passed to them.
+This intense use takes time and without kvm, qemu can be slow
+enough that we trip the hung task watchdogs.
 
-Unfortunately the workqueue work_struct node is in the stress
-struct. Which means the work_struct is freed before the work
-thread returns and while flush_workqueue is waiting.
+For this test, we don't need true randomness, just mixed up
+orders for testing ww_mutex lock acquisitions, so it changes
+the logic to use the prng instead, which takes less time
+and avoids the watchdgos.
 
-It seems like a better idea to have the controlling thread
-both allocate and free the stress structures, so that we can
-be sure we don't corrupt the workqueue by freeing the structure
-prematurely.
-
-So this patch reworks the test to do so, and with this change
-I no longer see the early flush_workqueue returns.
+Feedback would be appreciated!
 
 Signed-off-by: John Stultz <jstultz@google.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230922043616.19282-3-jstultz@google.com
+Link: https://lore.kernel.org/r/20230922043616.19282-2-jstultz@google.com
 ---
- kernel/locking/test-ww_mutex.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ kernel/locking/test-ww_mutex.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
-index 9bceba6..358d661 100644
+index 93cca6e..9bceba6 100644
 --- a/kernel/locking/test-ww_mutex.c
 +++ b/kernel/locking/test-ww_mutex.c
-@@ -479,7 +479,6 @@ retry:
- 	} while (!time_after(jiffies, stress->timeout));
+@@ -9,7 +9,7 @@
+ #include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/module.h>
+-#include <linux/random.h>
++#include <linux/prandom.h>
+ #include <linux/slab.h>
+ #include <linux/ww_mutex.h>
  
- 	kfree(order);
--	kfree(stress);
- }
+@@ -386,6 +386,19 @@ struct stress {
+ 	int nlocks;
+ };
  
- struct reorder_lock {
-@@ -544,7 +543,6 @@ out:
- 	list_for_each_entry_safe(ll, ln, &locks, link)
- 		kfree(ll);
- 	kfree(order);
--	kfree(stress);
- }
- 
- static void stress_one_work(struct work_struct *work)
-@@ -565,8 +563,6 @@ static void stress_one_work(struct work_struct *work)
- 			break;
- 		}
- 	} while (!time_after(jiffies, stress->timeout));
--
--	kfree(stress);
- }
- 
- #define STRESS_INORDER BIT(0)
-@@ -577,15 +573,24 @@ static void stress_one_work(struct work_struct *work)
- static int stress(int nlocks, int nthreads, unsigned int flags)
- {
- 	struct ww_mutex *locks;
--	int n;
-+	struct stress *stress_array;
-+	int n, count;
- 
- 	locks = kmalloc_array(nlocks, sizeof(*locks), GFP_KERNEL);
- 	if (!locks)
- 		return -ENOMEM;
- 
-+	stress_array = kmalloc_array(nthreads, sizeof(*stress_array),
-+				     GFP_KERNEL);
-+	if (!stress_array) {
-+		kfree(locks);
-+		return -ENOMEM;
-+	}
++struct rnd_state rng;
++DEFINE_SPINLOCK(rng_lock);
 +
- 	for (n = 0; n < nlocks; n++)
- 		ww_mutex_init(&locks[n], &ww_class);
++static inline u32 prandom_u32_below(u32 ceil)
++{
++	u32 ret;
++
++	spin_lock(&rng_lock);
++	ret = prandom_u32_state(&rng) % ceil;
++	spin_unlock(&rng_lock);
++	return ret;
++}
++
+ static int *get_random_order(int count)
+ {
+ 	int *order;
+@@ -399,7 +412,7 @@ static int *get_random_order(int count)
+ 		order[n] = n;
  
-+	count = 0;
- 	for (n = 0; nthreads; n++) {
- 		struct stress *stress;
- 		void (*fn)(struct work_struct *work);
-@@ -609,9 +614,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
- 		if (!fn)
- 			continue;
+ 	for (n = count - 1; n > 1; n--) {
+-		r = get_random_u32_below(n + 1);
++		r = prandom_u32_below(n + 1);
+ 		if (r != n) {
+ 			tmp = order[n];
+ 			order[n] = order[r];
+@@ -625,6 +638,8 @@ static int __init test_ww_mutex_init(void)
  
--		stress = kmalloc(sizeof(*stress), GFP_KERNEL);
--		if (!stress)
--			break;
-+		stress = &stress_array[count++];
+ 	printk(KERN_INFO "Beginning ww mutex selftests\n");
  
- 		INIT_WORK(&stress->work, fn);
- 		stress->locks = locks;
-@@ -626,6 +629,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
- 
- 	for (n = 0; n < nlocks; n++)
- 		ww_mutex_destroy(&locks[n]);
-+	kfree(stress_array);
- 	kfree(locks);
- 
- 	return 0;
++	prandom_seed_state(&rng, get_random_u64());
++
+ 	wq = alloc_workqueue("test-ww_mutex", WQ_UNBOUND, 0);
+ 	if (!wq)
+ 		return -ENOMEM;
