@@ -2,155 +2,162 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAA887AAF47
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 12:14:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1732F7AAF72
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 12:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229654AbjIVKOt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Sep 2023 06:14:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56420 "EHLO
+        id S229532AbjIVK0U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Sep 2023 06:26:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbjIVKOt (ORCPT
+        with ESMTP id S229449AbjIVK0U (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Sep 2023 06:14:49 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B5D794;
-        Fri, 22 Sep 2023 03:14:43 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 10:14:40 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695377681;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=m6oKo80YM1jv6r3dEtqSy8VqmOuvE51r2r/UpE6b6WA=;
-        b=XPIFrP7gCRpEGWyLDNuWxXA0sCne93JpjTdyp6BU1husnrxfvU6Kbz5oIg5R3X5zdp34mS
-        AXncqMNEEVBMiHEU9NsmTf64xhU1L95n29i8eZqd9oKpQLxgm6q2rpoi2yFQRDvgR3xMrg
-        Cq/vO2kf97yDh5tF349Y3rIb2+uetemGzvjyoyX0dQ1WXbk4D2nApUG0yyIs+Mex2JxZ8v
-        MYgFCkbZznmDd7O7xAP1KZI4o4zyb9UNu4slsjp1IHuzso8Vob78M352XMR782ts6cOAvQ
-        jvT4FRVi4h/QWNjmBQetcdebcFJDjR6VT5Pz1IoPa9DQp3VgNqQQQOy6lanZbA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695377681;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=m6oKo80YM1jv6r3dEtqSy8VqmOuvE51r2r/UpE6b6WA=;
-        b=F2pDuttEpQX0/SnFCJ72XshohTQdxryFfALtK+b7dk1lnSfdR+c8jzttptWTYDHdMJi92p
-        d5B8zkLuepYDMxAQ==
-From:   "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/amd/core: Fix overflow reset on hotplug
-Cc:     Sandipan Das <sandipan.das@amd.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C882a87511af40792ba69bb0e9026f19a2e71e8a3=2E16946?=
- =?utf-8?q?96888=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3C882a87511af40792ba69bb0e9026f19a2e71e8a3=2E169469?=
- =?utf-8?q?6888=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
+        Fri, 22 Sep 2023 06:26:20 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D153BA9;
+        Fri, 22 Sep 2023 03:26:13 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-405361bb93bso15057605e9.3;
+        Fri, 22 Sep 2023 03:26:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695378372; x=1695983172; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P/Yn3YU3xUZyWUWNBFaFLjez0LaX2XHNQTW5YI4iTAM=;
+        b=R3rYn8BymfNcpPuFJ9/lOJxvrpsDZLp9iYrgv1vol8Og8wAbjgZ5ust5cTs/iiSsV3
+         PpdSR/YRo++/PynlSRdtlQjmbwCinQ6PUSZxs0F2sPUhfaEcYkiMCHjMrC5ipmQg3AZa
+         mcv3uPiAdMmFLeEQEINDQ+t9BALlRe5+4HhvlTEPFMwClCxKnNKB53C0rvmvkLanAhzM
+         xl7kyFitNrDnGcz6h31XquOxYiK30TDl/pwMyzjuy2MXPKXi8BaRIlWrsDMA35LE/gox
+         dlce0jumMN/iUISdFn13wIhL4g5l/sAgxAkhMwv/6tOCryCJ+JJKKv+myAaCc3taSO7L
+         gkFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695378372; x=1695983172;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P/Yn3YU3xUZyWUWNBFaFLjez0LaX2XHNQTW5YI4iTAM=;
+        b=Vuf2TdRn5BpHWxANH0MUhy7kq8cUNGshX/UrUzxnCy6TifzkALdNAaNd3+IU0RVlYl
+         v/+U/LrDyCpMFjGrFUHBXh9GLw15eliOhikGzS8U1bjyCAU7Gk/81sMkd9jTy+RPEeG0
+         K4HjQ/bEzgFEuzNRSeyGN+1kRysEXe9QI2S5VlKJEk4Uj/Ny0o3JHgxhvC38ErNk8GuK
+         IE7/6gJX4c+6MSo3W8/I6gVbOScm8myP841I+wsDA6aQhcdM9P8HmaT476qoyxnweA3g
+         4WYH2WZEVAZqXbMZQxCHiIov0iSgTPs3Zi0KS4ZPcJXilkXzSv2S1gcMmah7+5Pwdeg0
+         cBPA==
+X-Gm-Message-State: AOJu0Yw9pDKKf+Y+FIglwh0LkQ02zFqB592ZoRfQAJRLgrvco3aIyDp+
+        dVzAxQQMuj2yxHbjaeKXZ5aXkzZtMCQ=
+X-Google-Smtp-Source: AGHT+IFr6IwDElU+t8cV3b4z/Qh4wnwXP2FNweVW0w74ZKltuI2oSSvyjxAK6xtm710AX693ep1ufw==
+X-Received: by 2002:a05:600c:1da0:b0:405:3e92:76db with SMTP id p32-20020a05600c1da000b004053e9276dbmr1127667wms.5.1695378371800;
+        Fri, 22 Sep 2023 03:26:11 -0700 (PDT)
+Received: from gmail.com (1F2EF49C.nat.pool.telekom.hu. [31.46.244.156])
+        by smtp.gmail.com with ESMTPSA id 7-20020a05600c028700b00402c0a8a084sm7094849wmk.17.2023.09.22.03.26.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Sep 2023 03:26:11 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Fri, 22 Sep 2023 12:26:09 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org
+Subject: Re: [tip: x86/cpu] x86/cpu: Clear SVM feature if disabled by BIOS
+Message-ID: <ZQ1rwSJsO7A4HR8O@gmail.com>
+References: <20230921114940.957141-1-pbonzini@redhat.com>
+ <169537583818.27769.18320521458994415527.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <169537768083.27769.536098722468135960.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <169537583818.27769.18320521458994415527.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     23d2626b841c2adccdeb477665313c02dff02dc3
-Gitweb:        https://git.kernel.org/tip/23d2626b841c2adccdeb477665313c02dff02dc3
-Author:        Sandipan Das <sandipan.das@amd.com>
-AuthorDate:    Thu, 14 Sep 2023 19:36:04 +05:30
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 22 Sep 2023 12:05:14 +02:00
+* tip-bot2 for Paolo Bonzini <tip-bot2@linutronix.de> wrote:
 
-perf/x86/amd/core: Fix overflow reset on hotplug
+> --- a/arch/x86/kernel/cpu/amd.c
+> +++ b/arch/x86/kernel/cpu/amd.c
+> @@ -1031,6 +1031,8 @@ static void zenbleed_check(struct cpuinfo_x86 *c)
+>  
+>  static void init_amd(struct cpuinfo_x86 *c)
+>  {
+> +	u64 vm_cr;
+> +
+>  	early_init_amd(c);
+>  
+>  	/*
+> @@ -1082,6 +1084,14 @@ static void init_amd(struct cpuinfo_x86 *c)
+>  
+>  	init_amd_cacheinfo(c);
+>  
+> +	if (cpu_has(c, X86_FEATURE_SVM)) {
+> +		rdmsrl(MSR_VM_CR, vm_cr);
+> +		if (vm_cr & SVM_VM_CR_SVM_DIS_MASK) {
+> +			pr_notice_once("SVM disabled (by BIOS) in MSR_VM_CR\n");
+> +			clear_cpu_cap(c, X86_FEATURE_SVM);
+> +		}
+> +	}
+> +
+>  	if (!cpu_has(c, X86_FEATURE_LFENCE_RDTSC) && cpu_has(c, X86_FEATURE_XMM2)) {
+>  		/*
+>  		 * Use LFENCE for execution serialization.  On families which
+> diff --git a/arch/x86/kernel/cpu/hygon.c b/arch/x86/kernel/cpu/hygon.c
+> index defdc59..16f3463 100644
+> --- a/arch/x86/kernel/cpu/hygon.c
+> +++ b/arch/x86/kernel/cpu/hygon.c
+> @@ -290,6 +290,8 @@ static void early_init_hygon(struct cpuinfo_x86 *c)
+>  
+>  static void init_hygon(struct cpuinfo_x86 *c)
+>  {
+> +	u64 vm_cr;
+> +
+>  	early_init_hygon(c);
+>  
+>  	/*
+> @@ -320,6 +322,14 @@ static void init_hygon(struct cpuinfo_x86 *c)
+>  
+>  	init_hygon_cacheinfo(c);
+>  
+> +	if (cpu_has(c, X86_FEATURE_SVM)) {
+> +		rdmsrl(MSR_VM_CR, vm_cr);
+> +		if (vm_cr & SVM_VM_CR_SVM_DIS_MASK) {
+> +			pr_notice_once("SVM disabled (by BIOS) in MSR_VM_CR\n");
+> +			clear_cpu_cap(c, X86_FEATURE_SVM);
+> +		}
+> +	}
+> +
 
-Kernels older than v5.19 do not support PerfMonV2 and the PMI handler
-does not clear the overflow bits of the PerfCntrGlobalStatus register.
-Because of this, loading a recent kernel using kexec from an older
-kernel can result in inconsistent register states on Zen 4 systems.
+1)
 
-The PMI handler of the new kernel gets confused and shows a warning when
-an overflow occurs because some of the overflow bits are set even if the
-corresponding counters are inactive. These are remnants from overflows
-that were handled by the older kernel.
+It's a bit sad that we are duplicating identical code.
 
-During CPU hotplug, the PerfCntrGlobalCtl and PerfCntrGlobalStatus
-registers should always be cleared for PerfMonV2-capable processors.
-However, a condition used for NB event constaints applicable only to
-older processors currently prevents this from happening. Move the reset
-sequence to an appropriate place and also clear the LBR Freeze bit.
+2)
 
-Fixes: 21d59e3e2c40 ("perf/x86/amd/core: Detect PerfMonV2 support")
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/882a87511af40792ba69bb0e9026f19a2e71e8a3.1694696888.git.sandipan.das@amd.com
----
- arch/x86/events/amd/core.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+We are doing it in other cases as well: for example nearby_node() is 
+duplicated between arch/x86/kernel/cpu/amd.c and 
+arch/x86/kernel/cpu/hygon.c too.
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index abadd5f..ed626bf 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -534,8 +534,12 @@ static void amd_pmu_cpu_reset(int cpu)
- 	/* Clear enable bits i.e. PerfCntrGlobalCtl.PerfCntrEn */
- 	wrmsrl(MSR_AMD64_PERF_CNTR_GLOBAL_CTL, 0);
- 
--	/* Clear overflow bits i.e. PerfCntrGLobalStatus.PerfCntrOvfl */
--	wrmsrl(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR, amd_pmu_global_cntr_mask);
-+	/*
-+	 * Clear freeze and overflow bits i.e. PerfCntrGLobalStatus.LbrFreeze
-+	 * and PerfCntrGLobalStatus.PerfCntrOvfl
-+	 */
-+	wrmsrl(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR,
-+	       GLOBAL_STATUS_LBRS_FROZEN | amd_pmu_global_cntr_mask);
- }
- 
- static int amd_pmu_cpu_prepare(int cpu)
-@@ -570,6 +574,7 @@ static void amd_pmu_cpu_starting(int cpu)
- 	int i, nb_id;
- 
- 	cpuc->perf_ctr_virt_mask = AMD64_EVENTSEL_HOSTONLY;
-+	amd_pmu_cpu_reset(cpu);
- 
- 	if (!x86_pmu.amd_nb_constraints)
- 		return;
-@@ -591,8 +596,6 @@ static void amd_pmu_cpu_starting(int cpu)
- 
- 	cpuc->amd_nb->nb_id = nb_id;
- 	cpuc->amd_nb->refcnt++;
--
--	amd_pmu_cpu_reset(cpu);
- }
- 
- static void amd_pmu_cpu_dead(int cpu)
-@@ -601,6 +604,7 @@ static void amd_pmu_cpu_dead(int cpu)
- 
- 	kfree(cpuhw->lbr_sel);
- 	cpuhw->lbr_sel = NULL;
-+	amd_pmu_cpu_reset(cpu);
- 
- 	if (!x86_pmu.amd_nb_constraints)
- 		return;
-@@ -613,8 +617,6 @@ static void amd_pmu_cpu_dead(int cpu)
- 
- 		cpuhw->amd_nb = NULL;
- 	}
--
--	amd_pmu_cpu_reset(cpu);
- }
- 
- static inline void amd_pmu_set_global_ctl(u64 ctl)
+3)
+
+BTW., while look at this code I noticed that the 'Author' copyright
+tag in arch/x86/kernel/cpu/hygon.c seems to be inaccurate:
+
+ // SPDX-License-Identifier: GPL-2.0+
+ /*
+  * Hygon Processor Support for Linux
+  *
+  * Copyright (C) 2018 Chengdu Haiguang IC Design Co., Ltd.
+  *
+  * Author: Pu Wen <puwen@hygon.cn>
+  */     
+
+... as for example the nearby_node() was clearly copied & derived from 
+arch/x86/kernel/cpu/amd.c, which does not appear to be accurately reflected 
+in this copyright notice?
+
+Thanks,
+
+	Ingo
