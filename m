@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C38C27AAECC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 11:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 338027AAEFE
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 11:59:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229726AbjIVJwA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Sep 2023 05:52:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56036 "EHLO
+        id S233017AbjIVJ7f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Sep 2023 05:59:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjIVJwA (ORCPT
+        with ESMTP id S229533AbjIVJ7e (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Sep 2023 05:52:00 -0400
+        Fri, 22 Sep 2023 05:59:34 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17556192;
-        Fri, 22 Sep 2023 02:51:54 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 09:51:51 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E638F;
+        Fri, 22 Sep 2023 02:59:28 -0700 (PDT)
+Date:   Fri, 22 Sep 2023 09:59:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695376312;
+        s=2020; t=1695376767;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZpjFuO3kpiiRuhS3uCerH9ELrQfzhc9H6B9pLwV5SGs=;
-        b=2Hqy11VPsKyGPCH5XHyDoo7oM2X0pwaFlmSU4vCYL7GMZ8E52TxkhhkaRTWXTrqJlhUDoB
-        4iHLOhwvirobikr+j9hcf7Py/4SkHM9Pv8q7PbewqQbQX2xY80fRXcJFfkKLsqnKy4ghzv
-        Qxn7X7UTF79p75tfBqtsy5SksasgmxmPeI/bwJx+7rQbYL/v4L4wupU/QMiPdlfyy7EXCe
-        ZYfm8SmAYhoBhdY30ycFeBA1CB4IjlYkXQ01kC0Zvr8wfaMlfEpyJsBduWIsqg06zcOZh7
-        WHRjzoJ8kRdz/E00dZDNyIFNCOz49F9duYYo3Kbt3QfIkMg8jQFEeohjpG21uQ==
+        bh=+xSQafXNxgQJP26IJtLUKRX4XIhQKDG5RuHCBFnIp8g=;
+        b=jaNcmnthuYPSol5qKOD/vsvFaFB1k3oFRmtHE8VJUKjhnHuqdTDY0GxIu9aDeeYjG9C4oI
+        DYdc8Cz4jHdvftno+lFAkRZyLEM/I/VbgN3nCguEAdPqmxOXvP94mxyIl/DBz8Na73/xpn
+        si0r+Y0F16bbB4gqJUlXKtM6SZ5GQHUGfCBzKRVQ16GLzOCw7dV80mdJiB79Xp95HfrUS/
+        gNX4PibS/e6yjXN0SKe7v4zmSoEyPOIRmBhAOoQ5UEhM5Sj1UadYnnSURbplEZ/ZftASaE
+        eNfhmsrMzo7F+J9FbUXfkRvpJVHenOjZVBg5NuA0Pl/cTtkgmnFwV76Q0X36Eg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695376312;
+        s=2020e; t=1695376767;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZpjFuO3kpiiRuhS3uCerH9ELrQfzhc9H6B9pLwV5SGs=;
-        b=DrJyloPynzJbN7llHszpoQESUQkxcT5a5g6Qs9J4JRjGoHUpt7Ic6CWGSKRxtPxFBqf4qC
-        AsEXkxZaHW1p1LCg==
-From:   "tip-bot2 for Fangrui Song" <tip-bot2@linutronix.de>
+        bh=+xSQafXNxgQJP26IJtLUKRX4XIhQKDG5RuHCBFnIp8g=;
+        b=bZ2Ho3YNt4nes4giczcw+3ZiOUbBjic66y6k6H2H38rplboWIBR2Z8Kj9iSR/R5i8i5Ngw
+        uikxrHL9j+MWRKCA==
+From:   "tip-bot2 for Liming Wu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/speculation, objtool: Use absolute
- relocations for annotations
-Cc:     Fangrui Song <maskray@google.com>, Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+Subject: [tip: sched/core] sched/debug: Avoid checking in_atomic_preempt_off()
+ twice in schedule_debug()
+Cc:     Liming Wu <liming.wu@jaguarmicro.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230920001728.1439947-1-maskray@google.com>
-References: <20230920001728.1439947-1-maskray@google.com>
+In-Reply-To: <20230825023501.1848-1-liming.wu@jaguarmicro.com>
+References: <20230825023501.1848-1-liming.wu@jaguarmicro.com>
 MIME-Version: 1.0
-Message-ID: <169537631186.27769.11892799557376863263.tip-bot2@tip-bot2>
+Message-ID: <169537676655.27769.432100540285605722.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,140 +65,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     b8ec60e1186cdcfce41e7db4c827cb107e459002
-Gitweb:        https://git.kernel.org/tip/b8ec60e1186cdcfce41e7db4c827cb107e459002
-Author:        Fangrui Song <maskray@google.com>
-AuthorDate:    Tue, 19 Sep 2023 17:17:28 -07:00
+Commit-ID:     dc461c48deda8a2d243fbaf49e276d555eb833d8
+Gitweb:        https://git.kernel.org/tip/dc461c48deda8a2d243fbaf49e276d555eb833d8
+Author:        Liming Wu <liming.wu@jaguarmicro.com>
+AuthorDate:    Fri, 25 Aug 2023 10:35:00 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 22 Sep 2023 11:41:24 +02:00
+CommitterDate: Fri, 22 Sep 2023 11:50:49 +02:00
 
-x86/speculation, objtool: Use absolute relocations for annotations
+sched/debug: Avoid checking in_atomic_preempt_off() twice in schedule_debug()
 
-.discard.retpoline_safe sections do not have the SHF_ALLOC flag.  These
-sections referencing text sections' STT_SECTION symbols with PC-relative
-relocations like R_386_PC32 [0] is conceptually not suitable.  Newer
-LLD will report warnings for REL relocations even for relocatable links [1]:
+in_atomic_preempt_off() already gets called in schedule_debug() once,
+which is the only caller of __schedule_bug().
 
-    ld.lld: warning: vmlinux.a(drivers/i2c/busses/i2c-i801.o):(.discard.retpoline_safe+0x120): has non-ABS relocation R_386_PC32 against symbol ''
+Skip the second call within __schedule_bug(), it should always be true
+at this point.
 
-Switch to absolute relocations instead, which indicate link-time
-addresses.  In a relocatable link, these addresses are also output
-section offsets, used by checks in tools/objtool/check.c.  When linking
-vmlinux, these .discard.* sections will be discarded, therefore it is
-not a problem that R_X86_64_32 cannot represent a kernel address.
+[ mingo: Clarified the changelog. ]
 
-Alternatively, we could set the SHF_ALLOC flag for .discard.* sections,
-but I think non-SHF_ALLOC for sections to be discarded makes more sense.
-
-Note: if we decide to never support REL architectures (e.g. arm, i386),
-we can utilize R_*_NONE relocations (.reloc ., BFD_RELOC_NONE, sym),
-making .discard.* sections zero-sized.  That said, the section content
-waste is 4 bytes per entry, much smaller than sizeof(Elf{32,64}_Rel).
-
-  [0] commit 1c0c1faf5692 ("objtool: Use relative pointers for annotations")
-  [1] https://github.com/ClangBuiltLinux/linux/issues/1937
-
-Signed-off-by: Fangrui Song <maskray@google.com>
+Signed-off-by: Liming Wu <liming.wu@jaguarmicro.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20230920001728.1439947-1-maskray@google.com
+Link: https://lore.kernel.org/r/20230825023501.1848-1-liming.wu@jaguarmicro.com
 ---
- arch/x86/include/asm/alternative.h   |  4 ++--
- arch/x86/include/asm/nospec-branch.h |  4 ++--
- include/linux/objtool.h              | 10 +++++-----
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ kernel/sched/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
-index 9c4da69..65f7909 100644
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -58,7 +58,7 @@
- #define ANNOTATE_IGNORE_ALTERNATIVE				\
- 	"999:\n\t"						\
- 	".pushsection .discard.ignore_alts\n\t"			\
--	".long 999b - .\n\t"					\
-+	".long 999b\n\t"					\
- 	".popsection\n\t"
- 
- /*
-@@ -352,7 +352,7 @@ static inline int alternatives_text_reserved(void *start, void *end)
- .macro ANNOTATE_IGNORE_ALTERNATIVE
- 	.Lannotate_\@:
- 	.pushsection .discard.ignore_alts
--	.long .Lannotate_\@ - .
-+	.long .Lannotate_\@
- 	.popsection
- .endm
- 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index c55cc24..4952b73 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -196,7 +196,7 @@
- .macro ANNOTATE_RETPOLINE_SAFE
- .Lhere_\@:
- 	.pushsection .discard.retpoline_safe
--	.long .Lhere_\@ - .
-+	.long .Lhere_\@
- 	.popsection
- .endm
- 
-@@ -334,7 +334,7 @@
- #define ANNOTATE_RETPOLINE_SAFE					\
- 	"999:\n\t"						\
- 	".pushsection .discard.retpoline_safe\n\t"		\
--	".long 999b - .\n\t"					\
-+	".long 999b\n\t"					\
- 	".popsection\n\t"
- 
- typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
-diff --git a/include/linux/objtool.h b/include/linux/objtool.h
-index 03f82c2..6f6da95 100644
---- a/include/linux/objtool.h
-+++ b/include/linux/objtool.h
-@@ -48,13 +48,13 @@
- #define ANNOTATE_NOENDBR					\
- 	"986: \n\t"						\
- 	".pushsection .discard.noendbr\n\t"			\
--	".long 986b - .\n\t"					\
-+	".long 986b\n\t"					\
- 	".popsection\n\t"
- 
- #define ASM_REACHABLE							\
- 	"998:\n\t"							\
- 	".pushsection .discard.reachable\n\t"				\
--	".long 998b - .\n\t"						\
-+	".long 998b\n\t"						\
- 	".popsection\n\t"
- 
- #else /* __ASSEMBLY__ */
-@@ -66,7 +66,7 @@
- #define ANNOTATE_INTRA_FUNCTION_CALL				\
- 	999:							\
- 	.pushsection .discard.intra_function_calls;		\
--	.long 999b - .;						\
-+	.long 999b;						\
- 	.popsection;
- 
- /*
-@@ -118,7 +118,7 @@
- .macro ANNOTATE_NOENDBR
- .Lhere_\@:
- 	.pushsection .discard.noendbr
--	.long	.Lhere_\@ - .
-+	.long	.Lhere_\@
- 	.popsection
- .endm
- 
-@@ -141,7 +141,7 @@
- .macro REACHABLE
- .Lhere_\@:
- 	.pushsection .discard.reachable
--	.long	.Lhere_\@ - .
-+	.long	.Lhere_\@
- 	.popsection
- .endm
- 
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 52ceb85..1074934 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5899,8 +5899,7 @@ static noinline void __schedule_bug(struct task_struct *prev)
+ 	print_modules();
+ 	if (irqs_disabled())
+ 		print_irqtrace_events(prev);
+-	if (IS_ENABLED(CONFIG_DEBUG_PREEMPT)
+-	    && in_atomic_preempt_off()) {
++	if (IS_ENABLED(CONFIG_DEBUG_PREEMPT)) {
+ 		pr_err("Preemption disabled at:");
+ 		print_ip_sym(KERN_ERR, preempt_disable_ip);
+ 	}
