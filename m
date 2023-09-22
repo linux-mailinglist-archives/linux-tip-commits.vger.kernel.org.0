@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 338027AAEFE
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 11:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAA887AAF47
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 12:14:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233017AbjIVJ7f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Sep 2023 05:59:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33872 "EHLO
+        id S229654AbjIVKOt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Sep 2023 06:14:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbjIVJ7e (ORCPT
+        with ESMTP id S229538AbjIVKOt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Sep 2023 05:59:34 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E638F;
-        Fri, 22 Sep 2023 02:59:28 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 09:59:26 -0000
+        Fri, 22 Sep 2023 06:14:49 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B5D794;
+        Fri, 22 Sep 2023 03:14:43 -0700 (PDT)
+Date:   Fri, 22 Sep 2023 10:14:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695376767;
+        s=2020; t=1695377681;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+xSQafXNxgQJP26IJtLUKRX4XIhQKDG5RuHCBFnIp8g=;
-        b=jaNcmnthuYPSol5qKOD/vsvFaFB1k3oFRmtHE8VJUKjhnHuqdTDY0GxIu9aDeeYjG9C4oI
-        DYdc8Cz4jHdvftno+lFAkRZyLEM/I/VbgN3nCguEAdPqmxOXvP94mxyIl/DBz8Na73/xpn
-        si0r+Y0F16bbB4gqJUlXKtM6SZ5GQHUGfCBzKRVQ16GLzOCw7dV80mdJiB79Xp95HfrUS/
-        gNX4PibS/e6yjXN0SKe7v4zmSoEyPOIRmBhAOoQ5UEhM5Sj1UadYnnSURbplEZ/ZftASaE
-        eNfhmsrMzo7F+J9FbUXfkRvpJVHenOjZVBg5NuA0Pl/cTtkgmnFwV76Q0X36Eg==
+        bh=m6oKo80YM1jv6r3dEtqSy8VqmOuvE51r2r/UpE6b6WA=;
+        b=XPIFrP7gCRpEGWyLDNuWxXA0sCne93JpjTdyp6BU1husnrxfvU6Kbz5oIg5R3X5zdp34mS
+        AXncqMNEEVBMiHEU9NsmTf64xhU1L95n29i8eZqd9oKpQLxgm6q2rpoi2yFQRDvgR3xMrg
+        Cq/vO2kf97yDh5tF349Y3rIb2+uetemGzvjyoyX0dQ1WXbk4D2nApUG0yyIs+Mex2JxZ8v
+        MYgFCkbZznmDd7O7xAP1KZI4o4zyb9UNu4slsjp1IHuzso8Vob78M352XMR782ts6cOAvQ
+        jvT4FRVi4h/QWNjmBQetcdebcFJDjR6VT5Pz1IoPa9DQp3VgNqQQQOy6lanZbA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695376767;
+        s=2020e; t=1695377681;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+xSQafXNxgQJP26IJtLUKRX4XIhQKDG5RuHCBFnIp8g=;
-        b=bZ2Ho3YNt4nes4giczcw+3ZiOUbBjic66y6k6H2H38rplboWIBR2Z8Kj9iSR/R5i8i5Ngw
-        uikxrHL9j+MWRKCA==
-From:   "tip-bot2 for Liming Wu" <tip-bot2@linutronix.de>
+        bh=m6oKo80YM1jv6r3dEtqSy8VqmOuvE51r2r/UpE6b6WA=;
+        b=F2pDuttEpQX0/SnFCJ72XshohTQdxryFfALtK+b7dk1lnSfdR+c8jzttptWTYDHdMJi92p
+        d5B8zkLuepYDMxAQ==
+From:   "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/debug: Avoid checking in_atomic_preempt_off()
- twice in schedule_debug()
-Cc:     Liming Wu <liming.wu@jaguarmicro.com>,
+Subject: [tip: perf/urgent] perf/x86/amd/core: Fix overflow reset on hotplug
+Cc:     Sandipan Das <sandipan.das@amd.com>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230825023501.1848-1-liming.wu@jaguarmicro.com>
-References: <20230825023501.1848-1-liming.wu@jaguarmicro.com>
+In-Reply-To: =?utf-8?q?=3C882a87511af40792ba69bb0e9026f19a2e71e8a3=2E16946?=
+ =?utf-8?q?96888=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
+References: =?utf-8?q?=3C882a87511af40792ba69bb0e9026f19a2e71e8a3=2E169469?=
+ =?utf-8?q?6888=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <169537676655.27769.432100540285605722.tip-bot2@tip-bot2>
+Message-ID: <169537768083.27769.536098722468135960.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,43 +66,91 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     dc461c48deda8a2d243fbaf49e276d555eb833d8
-Gitweb:        https://git.kernel.org/tip/dc461c48deda8a2d243fbaf49e276d555eb833d8
-Author:        Liming Wu <liming.wu@jaguarmicro.com>
-AuthorDate:    Fri, 25 Aug 2023 10:35:00 +08:00
+Commit-ID:     23d2626b841c2adccdeb477665313c02dff02dc3
+Gitweb:        https://git.kernel.org/tip/23d2626b841c2adccdeb477665313c02dff02dc3
+Author:        Sandipan Das <sandipan.das@amd.com>
+AuthorDate:    Thu, 14 Sep 2023 19:36:04 +05:30
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 22 Sep 2023 11:50:49 +02:00
+CommitterDate: Fri, 22 Sep 2023 12:05:14 +02:00
 
-sched/debug: Avoid checking in_atomic_preempt_off() twice in schedule_debug()
+perf/x86/amd/core: Fix overflow reset on hotplug
 
-in_atomic_preempt_off() already gets called in schedule_debug() once,
-which is the only caller of __schedule_bug().
+Kernels older than v5.19 do not support PerfMonV2 and the PMI handler
+does not clear the overflow bits of the PerfCntrGlobalStatus register.
+Because of this, loading a recent kernel using kexec from an older
+kernel can result in inconsistent register states on Zen 4 systems.
 
-Skip the second call within __schedule_bug(), it should always be true
-at this point.
+The PMI handler of the new kernel gets confused and shows a warning when
+an overflow occurs because some of the overflow bits are set even if the
+corresponding counters are inactive. These are remnants from overflows
+that were handled by the older kernel.
 
-[ mingo: Clarified the changelog. ]
+During CPU hotplug, the PerfCntrGlobalCtl and PerfCntrGlobalStatus
+registers should always be cleared for PerfMonV2-capable processors.
+However, a condition used for NB event constaints applicable only to
+older processors currently prevents this from happening. Move the reset
+sequence to an appropriate place and also clear the LBR Freeze bit.
 
-Signed-off-by: Liming Wu <liming.wu@jaguarmicro.com>
+Fixes: 21d59e3e2c40 ("perf/x86/amd/core: Detect PerfMonV2 support")
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230825023501.1848-1-liming.wu@jaguarmicro.com
+Link: https://lore.kernel.org/r/882a87511af40792ba69bb0e9026f19a2e71e8a3.1694696888.git.sandipan.das@amd.com
 ---
- kernel/sched/core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/events/amd/core.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 52ceb85..1074934 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5899,8 +5899,7 @@ static noinline void __schedule_bug(struct task_struct *prev)
- 	print_modules();
- 	if (irqs_disabled())
- 		print_irqtrace_events(prev);
--	if (IS_ENABLED(CONFIG_DEBUG_PREEMPT)
--	    && in_atomic_preempt_off()) {
-+	if (IS_ENABLED(CONFIG_DEBUG_PREEMPT)) {
- 		pr_err("Preemption disabled at:");
- 		print_ip_sym(KERN_ERR, preempt_disable_ip);
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index abadd5f..ed626bf 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -534,8 +534,12 @@ static void amd_pmu_cpu_reset(int cpu)
+ 	/* Clear enable bits i.e. PerfCntrGlobalCtl.PerfCntrEn */
+ 	wrmsrl(MSR_AMD64_PERF_CNTR_GLOBAL_CTL, 0);
+ 
+-	/* Clear overflow bits i.e. PerfCntrGLobalStatus.PerfCntrOvfl */
+-	wrmsrl(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR, amd_pmu_global_cntr_mask);
++	/*
++	 * Clear freeze and overflow bits i.e. PerfCntrGLobalStatus.LbrFreeze
++	 * and PerfCntrGLobalStatus.PerfCntrOvfl
++	 */
++	wrmsrl(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR,
++	       GLOBAL_STATUS_LBRS_FROZEN | amd_pmu_global_cntr_mask);
+ }
+ 
+ static int amd_pmu_cpu_prepare(int cpu)
+@@ -570,6 +574,7 @@ static void amd_pmu_cpu_starting(int cpu)
+ 	int i, nb_id;
+ 
+ 	cpuc->perf_ctr_virt_mask = AMD64_EVENTSEL_HOSTONLY;
++	amd_pmu_cpu_reset(cpu);
+ 
+ 	if (!x86_pmu.amd_nb_constraints)
+ 		return;
+@@ -591,8 +596,6 @@ static void amd_pmu_cpu_starting(int cpu)
+ 
+ 	cpuc->amd_nb->nb_id = nb_id;
+ 	cpuc->amd_nb->refcnt++;
+-
+-	amd_pmu_cpu_reset(cpu);
+ }
+ 
+ static void amd_pmu_cpu_dead(int cpu)
+@@ -601,6 +604,7 @@ static void amd_pmu_cpu_dead(int cpu)
+ 
+ 	kfree(cpuhw->lbr_sel);
+ 	cpuhw->lbr_sel = NULL;
++	amd_pmu_cpu_reset(cpu);
+ 
+ 	if (!x86_pmu.amd_nb_constraints)
+ 		return;
+@@ -613,8 +617,6 @@ static void amd_pmu_cpu_dead(int cpu)
+ 
+ 		cpuhw->amd_nb = NULL;
  	}
+-
+-	amd_pmu_cpu_reset(cpu);
+ }
+ 
+ static inline void amd_pmu_set_global_ctl(u64 ctl)
