@@ -2,49 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A922D7AAC5E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 10:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E27DC7AAE3D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 11:36:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232646AbjIVIOM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Sep 2023 04:14:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51872 "EHLO
+        id S232375AbjIVJgj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Sep 2023 05:36:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232046AbjIVIN6 (ORCPT
+        with ESMTP id S231794AbjIVJgi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Sep 2023 04:13:58 -0400
+        Fri, 22 Sep 2023 05:36:38 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B9310CE;
-        Fri, 22 Sep 2023 01:12:55 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 08:12:53 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 322EACE;
+        Fri, 22 Sep 2023 02:36:32 -0700 (PDT)
+Date:   Fri, 22 Sep 2023 09:36:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695370374;
+        s=2020; t=1695375390;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=1bPKF4uXOWTIoSsqQJPw+pS2Gpmo355eDwJrUxOtjwg=;
-        b=xhk+63Cch3cU+uADvC7IlKAW251DYefsBjQKhB36n+0f+s9hGNNL8CJ8PZAsuAyXG79kvS
-        PBgqDAtVuPyuLvshILyqxY4+nauqbn76tvuy8BR9Xut7VdIaURnAvcsBpccLCd6FVa7+eI
-        TybtSMBNNDTYAjt7dm3/ep/3WFTtlFSC6RXjygdKX3DK1fmTDNJtv7St12frs8pXtjHd+X
-        nN0GhK5D9rCxaLjGSMxgKhD8dEnuxRRD3g9v+lju4tvz8mUshzK/atXlrIFtvcc4InucZz
-        Eb93rkDKfS7kIvZEmdpz9sYfRTu93Vlr9j5fOYZBGrP2qwZSdg85sK92vtl27g==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=677/MbUSA6vCYD0fUVtSForcHcp5I5+1QRye0EZZ3Gg=;
+        b=b13Yz4vadWLPOgeIw0hY8ArL4B9roL5H6IDVglX17JsONYNwS3p1X3QJdWnaR2YjxGTFos
+        msB0jO6Cy0S61ipxT/DGxjqd4QaZDIWL0Dk7lnA1uAE6RE5Su84sDb9k+G8C4V90F34Wjm
+        KoYomWntJmCxnftAeIW/7CKwn/fw6iNS5j5ztAHkWasEea6O7AknhAd/Taauk6FZe5vhTM
+        Ud9+qzMNpqxw2+jMqBlRo08tkH6iCiFh2qWPFMfLOYYi2mC2oDBqMhDgHPjQje5K3xjAgI
+        EnUwyZWtjp6j1RXLH2l8X+Jq1sSoEhf+U010KdmLauSHuKtcguf9BjQF8svRGQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695370374;
+        s=2020e; t=1695375390;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=1bPKF4uXOWTIoSsqQJPw+pS2Gpmo355eDwJrUxOtjwg=;
-        b=ze/9UF+wpgyZYw2ONIWYn5fw3d5ljqxSZyOkg7xFD8WJEhE6qu8VEY+zntInDYMve+HdNQ
-        c0711NAZvSCtjeBA==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=677/MbUSA6vCYD0fUVtSForcHcp5I5+1QRye0EZZ3Gg=;
+        b=atnUJ0o5liXp3EQu3OE2EFz2YGCLGJc3ma/2zQL0Qa1yn1DSVN+tQIIDA+zlNVzhU9LJzo
+        fpgtRFuL/X3S2kCw==
+From:   "tip-bot2 for Jianlin Li" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Move arch_memory_failure() and
- arch_is_platform_page() definitions from <asm/processor.h> to <asm/pgtable.h>
-Cc:     Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
-        x86@kernel.org
+Subject: [tip: x86/mm] x86/sev/docs: Update document URL in amd-memory-encryption.rst
+Cc:     Jianlin Li <ljianlin99@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230922082547.522689-1-ljianlin99@gmail.com>
+References: <20230922082547.522689-1-ljianlin99@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169537037363.27769.8863382611473061727.tip-bot2@tip-bot2>
+Message-ID: <169537538957.27769.16136549034466194421.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,67 +65,32 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     d73a105586434ca919a1a487a467e5664f9300c4
-Gitweb:        https://git.kernel.org/tip/d73a105586434ca919a1a487a467e5664f9300c4
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 22 Sep 2023 09:29:59 +02:00
+Commit-ID:     bad0524e242012ec626c766f4ea2d8e4d67347be
+Gitweb:        https://git.kernel.org/tip/bad0524e242012ec626c766f4ea2d8e4d67347be
+Author:        Jianlin Li <ljianlin99@gmail.com>
+AuthorDate:    Fri, 22 Sep 2023 16:25:47 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 22 Sep 2023 09:32:03 +02:00
+CommitterDate: Fri, 22 Sep 2023 11:29:23 +02:00
 
-x86/mm: Move arch_memory_failure() and arch_is_platform_page() definitions from <asm/processor.h> to <asm/pgtable.h>
+x86/sev/docs: Update document URL in amd-memory-encryption.rst
 
-<linux/mm.h> relies on these definitions being included first,
-which is true currently due to historic header spaghetti,
-but in the future <asm/processor.h> will not guaranteed to be
-included by the MM code.
+The previous link to AMD programmer's manual is no longer available,
+replace it with the new one.
 
-Move these definitions over into a suitable MM header.
-
-This is a preparatory patch for x86 header dependency simplifications
-and reductions.
-
+Signed-off-by: Jianlin Li <ljianlin99@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org
+Link: https://lore.kernel.org/r/20230922082547.522689-1-ljianlin99@gmail.com
 ---
- arch/x86/include/asm/pgtable.h   | 8 ++++++++
- arch/x86/include/asm/processor.h | 8 --------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ Documentation/arch/x86/amd-memory-encryption.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index d6ad98c..1e12e61 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -1708,6 +1708,14 @@ static inline bool pud_user_accessible_page(pud_t pud)
- }
- #endif
+diff --git a/Documentation/arch/x86/amd-memory-encryption.rst b/Documentation/arch/x86/amd-memory-encryption.rst
+index 934310c..07caa8f 100644
+--- a/Documentation/arch/x86/amd-memory-encryption.rst
++++ b/Documentation/arch/x86/amd-memory-encryption.rst
+@@ -130,4 +130,4 @@ SNP feature support.
  
-+#ifdef CONFIG_X86_SGX
-+int arch_memory_failure(unsigned long pfn, int flags);
-+#define arch_memory_failure arch_memory_failure
-+
-+bool arch_is_platform_page(u64 paddr);
-+#define arch_is_platform_page arch_is_platform_page
-+#endif
-+
- #endif	/* __ASSEMBLY__ */
+ More details in AMD64 APM[1] Vol 2: 15.34.10 SEV_STATUS MSR
  
- #endif /* _ASM_X86_PGTABLE_H */
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 0086920..1b2b138 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -726,14 +726,6 @@ enum mds_mitigations {
- 	MDS_MITIGATION_VMWERV,
- };
- 
--#ifdef CONFIG_X86_SGX
--int arch_memory_failure(unsigned long pfn, int flags);
--#define arch_memory_failure arch_memory_failure
--
--bool arch_is_platform_page(u64 paddr);
--#define arch_is_platform_page arch_is_platform_page
--#endif
--
- extern bool gds_ucode_mitigated(void);
- 
- #endif /* _ASM_X86_PROCESSOR_H */
+-[1] https://www.amd.com/system/files/TechDocs/40332.pdf
++[1] https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24593.pdf
