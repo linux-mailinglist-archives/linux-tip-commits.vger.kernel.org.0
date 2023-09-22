@@ -2,106 +2,102 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71C767AAF99
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 12:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C0F47AB078
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 13:20:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230156AbjIVKhY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Sep 2023 06:37:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54206 "EHLO
+        id S233647AbjIVLTT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Sep 2023 07:19:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229664AbjIVKhX (ORCPT
+        with ESMTP id S233536AbjIVLTO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Sep 2023 06:37:23 -0400
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFF7F99;
-        Fri, 22 Sep 2023 03:37:16 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7A48C40E01A1;
-        Fri, 22 Sep 2023 10:37:12 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-        header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id hhcnoopnkRlS; Fri, 22 Sep 2023 10:37:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1695379029; bh=WpeoT8PnLL6SFV8kCiTwvistzGDQLcoEMqAKzHK7MK8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZNms5fH/n47cbkjX3Yfe/XS6JV3yljLikSpZ4rtlK8A455lhRYblRAdTkcsv4lUAi
-         Sqk4i6AtD8tsdSunDUkMH7/UuToLcNADjc2RU6rolSRli9SiILcdFAbH05nKJEYZ01
-         kVIFE1GHJy8IjePM0jhJi5EWK/APbJd4kTdqwJ7XEb4iDLLbF2tSRT+uzf+aiISwsn
-         zM9KVtFpQwPVWEhhluA4ZC1BwU2C8V2+hlCeIhwnM11V+1ljQKlBat+j0BZfx1UsCJ
-         NAUn71A+ggJtWpRLOHMtePeHC9MH6q88bDr2tS05XUQwuer+KGdziqK3qfYuYU52dk
-         xGr4HFFwJW4gm6nfg6zTHcUAyT9H/jD1useDSyXlneSDA/GFnXSmZRRxIA0wFOyX/c
-         QATWPRlr4/nnhle61/o96X2/znL174SLX+33zP1Y7YKM09h8g/LykCgv9RQZTIR9ED
-         2aK+DjUh/LJr7S+8AaOABnEz4KM5AWI/3QJRAEqrrukwIIdLp7b84JwmAVHCZbr/hH
-         4gTq1zeOemaTKcAY284W/lUmXgYWQVoXoGROaylsKwTnzLKpVm00+ExUdby25xoI8w
-         pY+b2iPn99wyrb9szXGE1tDl/kouC6wufaOtRFw057CQCbDVhDVJAusiYUgo4vHGHb
-         4IZMh8MCtoTXqOCSdNZLwM+0=
-Received: from zn.tnic (pd953036a.dip0.t-ipconnect.de [217.83.3.106])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-        (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4B5B940E014B;
-        Fri, 22 Sep 2023 10:37:04 +0000 (UTC)
-Date:   Fri, 22 Sep 2023 12:36:59 +0200
-From:   Borislav Petkov <bp@alien8.de>
+        Fri, 22 Sep 2023 07:19:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDCE3102
+        for <linux-tip-commits@vger.kernel.org>; Fri, 22 Sep 2023 04:18:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695381504;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GiW7xPy++se+q6i0olY89hLKZg8oY2P2U269iGcbHgc=;
+        b=Ix8hjxU+S9Va6ICSIM23qKpZU+x/UF031ZMdqBG5jl4BFqN/8IbDMEzVzeQWSLp7wb9ptV
+        6PnORp7dPe1MqnwAPYOSC83I6utqEdBVq85q5K+sDq6rK0x+BwkLEPCoLix81ZqWLWL89C
+        9V6feB/Q/+nxJFlcyleekNeAy2gGkQU=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-98-PUFsTxA6PjCp06ZFJXSHXA-1; Fri, 22 Sep 2023 07:18:22 -0400
+X-MC-Unique: PUFsTxA6PjCp06ZFJXSHXA-1
+Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-45289b05c67so860405137.2
+        for <linux-tip-commits@vger.kernel.org>; Fri, 22 Sep 2023 04:18:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695381501; x=1695986301;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GiW7xPy++se+q6i0olY89hLKZg8oY2P2U269iGcbHgc=;
+        b=ftJU8b+4F/kNkh0iYlCVEO7vL4NGL9yhNywtk2ywsAQgfSseOPsx1+D6JFeni5rsxU
+         BjPFVIpeHBzRTi0fKPTP446wGoIypDEDz2cXe+9fDIHofhlNfQ+SaaEvWHwqK90IHuUm
+         omOCLo/3VGELWmJlS89ros5IVK0oSmb3QFpWsS0AmVE4medW5CJpiWYQrdIBZmLVreZh
+         bmi3uk+J13MMfte4PprJu9rwQcGqXVU95Vwa6YNYQUMXGNMwjL40wv1hrWVc9RCVXt83
+         GD70x9x92qO/7LMH1G59iU8H2gYy+pTnVZ34/Xe/PwYbHBqGaQPQoaQfDC+geDkSLF0X
+         XXKQ==
+X-Gm-Message-State: AOJu0YwJENOAlftUTLuQRqMOcVb+5LjvOka25DLJ23Qs2Pqy2ACMVy0O
+        8i3NjTi6fBEpoHhC+b7TbTI3jmG2i1fYL0sUJyw0rivT5pue5yJybjoKoTFHg/uo1tx4PerfPNb
+        aGMDAAus4aHUQlnw+Wb4tJ6OsyfGdT0WtsKz2TX467nQb1L0vKAWaBAlVrA==
+X-Received: by 2002:a05:6102:24d:b0:44d:626b:94da with SMTP id a13-20020a056102024d00b0044d626b94damr7897839vsq.32.1695381501548;
+        Fri, 22 Sep 2023 04:18:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECd8EeaqAfIOTvpZu2YbNzYrM6BT+Exh7ByejQWuxuzmBp6EbQZln1Ql6a1cLmCSI0wvZNFC0ZMF1t7Of9NDg=
+X-Received: by 2002:a05:6102:24d:b0:44d:626b:94da with SMTP id
+ a13-20020a056102024d00b0044d626b94damr7897831vsq.32.1695381501312; Fri, 22
+ Sep 2023 04:18:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230921114940.957141-1-pbonzini@redhat.com> <169537583818.27769.18320521458994415527.tip-bot2@tip-bot2>
+ <ZQ1rwSJsO7A4HR8O@gmail.com>
+In-Reply-To: <ZQ1rwSJsO7A4HR8O@gmail.com>
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Date:   Fri, 22 Sep 2023 13:18:09 +0200
+Message-ID: <CABgObfbiO5Jm-S_1TVi-NdO4GxMsJeagaEHYEFBJ_6ABFdhicg@mail.gmail.com>
+Subject: Re: [tip: x86/cpu] x86/cpu: Clear SVM feature if disabled by BIOS
 To:     Ingo Molnar <mingo@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org
-Subject: Re: [tip: x86/cpu] x86/cpu: Clear SVM feature if disabled by BIOS
-Message-ID: <20230922103659.GCZQ1uS2VOlG82DVAs@fat_crate.local>
-References: <20230921114940.957141-1-pbonzini@redhat.com>
- <169537583818.27769.18320521458994415527.tip-bot2@tip-bot2>
- <ZQ1rwSJsO7A4HR8O@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZQ1rwSJsO7A4HR8O@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Sep 22, 2023 at 12:26:09PM +0200, Ingo Molnar wrote:
+On Fri, Sep 22, 2023 at 12:26=E2=80=AFPM Ingo Molnar <mingo@kernel.org> wro=
+te:
 > It's a bit sad that we are duplicating identical code.
-> 
-> 2)
-> 
-> We are doing it in other cases as well: for example nearby_node() is 
-> duplicated between arch/x86/kernel/cpu/amd.c and 
+> We are doing it in other cases as well: for example nearby_node() is
+> duplicated between arch/x86/kernel/cpu/amd.c and
 > arch/x86/kernel/cpu/hygon.c too.
 
-We could do a unification pass at some point. At the moment is not worth
-the effort, IMO, for only a handful of small functions.
+It is sad, and yeah I looked at nearby_node() to see if that was neverthele=
+ss
+expected.
 
-> BTW., while look at this code I noticed that the 'Author' copyright
-> tag in arch/x86/kernel/cpu/hygon.c seems to be inaccurate:
-> 
->  // SPDX-License-Identifier: GPL-2.0+
->  /*
->   * Hygon Processor Support for Linux
->   *
->   * Copyright (C) 2018 Chengdu Haiguang IC Design Co., Ltd.
->   *
->   * Author: Pu Wen <puwen@hygon.cn>
->   */     
-> 
-> ... as for example the nearby_node() was clearly copied & derived from 
-> arch/x86/kernel/cpu/amd.c, which does not appear to be accurately reflected 
-> in this copyright notice?
+AMD and Hygon pretend that they are different, and use different families
+for what is effectively the same processor, and that's silly. In fact back =
+in
+2018 (https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1741155.=
+html)
+I complained that if AMD and Hygon are organizing the family numbers so
+that there's never going to be a conflict, it makes no sense to have a
+separate vendor at all.
 
-Perhaps it should say "copied from amd.c and adjusted" or so. That whole
-file has pretty-much copied parts of amd.c AFAICT.
+Yes it's not a lot of code but sooner or later some change will be applied
+only to amd.c, because honestly who even thinks of Hygon...
 
-Thx.
+Paolo
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
