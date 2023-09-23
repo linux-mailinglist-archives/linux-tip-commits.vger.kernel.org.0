@@ -2,87 +2,184 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B09357AB103
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Sep 2023 13:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BD0B7AC1D4
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Sep 2023 14:20:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233720AbjIVLiT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Sep 2023 07:38:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37714 "EHLO
+        id S231624AbjIWMUR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Sep 2023 08:20:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233713AbjIVLiR (ORCPT
+        with ESMTP id S231607AbjIWMUQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Sep 2023 07:38:17 -0400
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 239A6AF
-        for <linux-tip-commits@vger.kernel.org>; Fri, 22 Sep 2023 04:38:12 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0C01640E01A1;
-        Fri, 22 Sep 2023 11:38:07 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-        header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id SRsyE2Cjq-7Y; Fri, 22 Sep 2023 11:38:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1695382684; bh=AQm9yEr8BqT/+PpZ1JkB7PoF3iVB8b0Q+lcbIZC+9I8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PsoL/Xd3aXEytaiM5hbYYyQxAwky4c3qr5n8GYtd3Jnj8GkdfQw2lDlSvdryi+vXZ
-         7ALrIttDSEXdaXag70Hg8xxRygRRtjwccwVA1rnDXZbBurTBKzBBpHBehLM5/8VD2d
-         UCR3SRVFm18lEMZJLEFOpSGrtLAZ8F48uSumXYkIDs4WkAPtq/K+xZ4jVf4eW39AAj
-         A0BRXlGSCsxUI9oC7Hii1sXC4VyAYwUAcrmv67sVGiFyEUIJduv+8gnTjuTW8iG2S/
-         RZE5mI8HICPK96x16WGBi8IiBDl1VulVn764iDQNu57OkfpB9f/d2/MDP9aF+F79zQ
-         Hse5CkVG8s7+WE1FfCI0y80lSKQr0QidWEUFEggH9fLSFxR5FsHIm1h4H0OmaqqFiG
-         R0Ol1F5DLhygZrRrgXoHllfXAcyNz6PeTHbNsnw3kSHGfiK3VZCvW/9CNb1teJFieY
-         2urbThpswRMCRAOq7Vz/2ZWLWrrtfETQPGKEC8CBpokM/gxeXsi2AmmZk1Et9B1Lbr
-         /HvcsAh8KM42JgYKS0ntLfX719JlEOlidpUSyMWM9HHHHbKny6FzJ46jBme6Qn9E7U
-         DKGjLxM0sMaYGMA2WJWYyDA7+zC7slzolZVecKp6vcEIKMWXfMj8wAX6LzU3TiAXqe
-         0ALgfsCP507ZTb29hq+Ne7ok=
-Received: from zn.tnic (pd953036a.dip0.t-ipconnect.de [217.83.3.106])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-        (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6F5B040E0176;
-        Fri, 22 Sep 2023 11:37:59 +0000 (UTC)
-Date:   Fri, 22 Sep 2023 13:37:54 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-Cc:     Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-tip-commits@vger.kernel.org, x86@kernel.org
-Subject: Re: [tip: x86/cpu] x86/cpu: Clear SVM feature if disabled by BIOS
-Message-ID: <20230922113754.GEZQ18kuTDSB8W8epS@fat_crate.local>
-References: <20230921114940.957141-1-pbonzini@redhat.com>
- <169537583818.27769.18320521458994415527.tip-bot2@tip-bot2>
- <ZQ1rwSJsO7A4HR8O@gmail.com>
- <CABgObfbiO5Jm-S_1TVi-NdO4GxMsJeagaEHYEFBJ_6ABFdhicg@mail.gmail.com>
+        Sat, 23 Sep 2023 08:20:16 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6DA719F;
+        Sat, 23 Sep 2023 05:20:08 -0700 (PDT)
+Date:   Sat, 23 Sep 2023 12:20:04 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1695471605;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YaH82Qg0REdS/rhhkNFax1UzkciLIXMxnC2+Hqyy6PY=;
+        b=VMKaaScBFtXP0vV1h3Jz/Z7vdCJkXHbpeA501n8oxrDfYKYW/bHo0c/RwqTbrAhB7Jn6kU
+        qjenwCfzYThssBm2Kc5zFRTgUtUY/M7icHWK6ns17oc7u4k7oU5e9RRVTlWWesCDaWdT0A
+        Eoivh308YgWGVYnUgNv9SJqpxXcxa6WtyzWJ2b3Gdgmq1aOTxM6paVSb6PvFKQ1dJukx8B
+        pIFEWYuLsAm3Z5XLAMtdlJd2qt1fagzfxcQWJFwBaj2/Ok5N9R5ZT+srZ2nMc8LWSCl5Kq
+        sg+fI2r4e/RmhehyQnHyqDiBylG94e4wNhGDZMa9GatmrHW+g3qhMpYIy8cgVg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1695471605;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YaH82Qg0REdS/rhhkNFax1UzkciLIXMxnC2+Hqyy6PY=;
+        b=krEAHnwTw07aarUVT9jWjGLXO/PUCufUgEz4AJrmZAoXk7A3Wmkxaq1XXLsGpfKZ7Ocigm
+        xx+XPN70tq3ggfAg==
+From:   "tip-bot2 for Jo Van Bulck" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/bugs] x86/pti: Fix kernel warnings for pti= and nopti
+ cmdline options
+Cc:     Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+        Ingo Molnar <mingo@kernel.org>,
+        Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be>
+References: <20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CABgObfbiO5Jm-S_1TVi-NdO4GxMsJeagaEHYEFBJ_6ABFdhicg@mail.gmail.com>
+Message-ID: <169547160485.27769.7181650143283871949.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Sep 22, 2023 at 01:18:09PM +0200, Paolo Bonzini wrote:
-> AMD and Hygon pretend that they are different, and use different families
-> for what is effectively the same processor, and that's silly.
+The following commit has been merged into the x86/bugs branch of tip:
 
-Not entirely true. Off and on they come with enablement which is close
-but then a bit different and it is either ifdeffery or do their own
-functions.  For simplicity, we've done "do their own functions" as we
-cannot test the common code on Hygon.
+Commit-ID:     e2efc8e7d36a38e0a1f7724e74ff7c885963e7ca
+Gitweb:        https://git.kernel.org/tip/e2efc8e7d36a38e0a1f7724e74ff7c885963e7ca
+Author:        Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+AuthorDate:    Sat, 19 Aug 2023 10:09:21 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 23 Sep 2023 14:13:03 +02:00
 
-> ... because honestly who even thinks of Hygon...
+x86/pti: Fix kernel warnings for pti= and nopti cmdline options
 
-There's that too.
+Parse the pti= and nopti cmdline options using early_param to fix 'Unknown
+kernel command line parameters "nopti", will be passed to user space'
+warnings in the kernel log when nopti or pti= are passed to the kernel
+cmdline on x86 platforms.
 
--- 
-Regards/Gruss,
-    Boris.
+Additionally allow the kernel to warn for malformed pti= options.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Link: https://lore.kernel.org/r/20230819080921.5324-2-jo.vanbulck@cs.kuleuven.be
+---
+ arch/x86/mm/pti.c | 58 +++++++++++++++++++++++-----------------------
+ 1 file changed, 29 insertions(+), 29 deletions(-)
+
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index 78414c6..5dd7339 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -69,6 +69,7 @@ static void __init pti_print_if_secure(const char *reason)
+ 		pr_info("%s\n", reason);
+ }
+ 
++/* Assume mode is auto unless overridden via cmdline below. */
+ static enum pti_mode {
+ 	PTI_AUTO = 0,
+ 	PTI_FORCE_OFF,
+@@ -77,50 +78,49 @@ static enum pti_mode {
+ 
+ void __init pti_check_boottime_disable(void)
+ {
+-	char arg[5];
+-	int ret;
+-
+-	/* Assume mode is auto unless overridden. */
+-	pti_mode = PTI_AUTO;
+-
+ 	if (hypervisor_is_type(X86_HYPER_XEN_PV)) {
+ 		pti_mode = PTI_FORCE_OFF;
+ 		pti_print_if_insecure("disabled on XEN PV.");
+ 		return;
+ 	}
+ 
+-	ret = cmdline_find_option(boot_command_line, "pti", arg, sizeof(arg));
+-	if (ret > 0)  {
+-		if (ret == 3 && !strncmp(arg, "off", 3)) {
+-			pti_mode = PTI_FORCE_OFF;
+-			pti_print_if_insecure("disabled on command line.");
+-			return;
+-		}
+-		if (ret == 2 && !strncmp(arg, "on", 2)) {
+-			pti_mode = PTI_FORCE_ON;
+-			pti_print_if_secure("force enabled on command line.");
+-			goto enable;
+-		}
+-		if (ret == 4 && !strncmp(arg, "auto", 4)) {
+-			pti_mode = PTI_AUTO;
+-			goto autosel;
+-		}
+-	}
+-
+-	if (cmdline_find_option_bool(boot_command_line, "nopti") ||
+-	    cpu_mitigations_off()) {
++	if (cpu_mitigations_off())
+ 		pti_mode = PTI_FORCE_OFF;
++	if (pti_mode == PTI_FORCE_OFF) {
+ 		pti_print_if_insecure("disabled on command line.");
+ 		return;
+ 	}
+ 
+-autosel:
+-	if (!boot_cpu_has_bug(X86_BUG_CPU_MELTDOWN))
++	if (pti_mode == PTI_FORCE_ON)
++		pti_print_if_secure("force enabled on command line.");
++
++	if (pti_mode == PTI_AUTO && !boot_cpu_has_bug(X86_BUG_CPU_MELTDOWN))
+ 		return;
+-enable:
++
+ 	setup_force_cpu_cap(X86_FEATURE_PTI);
+ }
+ 
++static int __init pti_parse_cmdline(char *arg)
++{
++	if (!strcmp(arg, "off"))
++		pti_mode = PTI_FORCE_OFF;
++	else if (!strcmp(arg, "on"))
++		pti_mode = PTI_FORCE_ON;
++	else if (!strcmp(arg, "auto"))
++		pti_mode = PTI_AUTO;
++	else
++		return -EINVAL;
++	return 0;
++}
++early_param("pti", pti_parse_cmdline);
++
++static int __init pti_parse_cmdline_nopti(char *arg)
++{
++	pti_mode = PTI_FORCE_OFF;
++	return 0;
++}
++early_param("nopti", pti_parse_cmdline_nopti);
++
+ pgd_t __pti_set_user_pgtbl(pgd_t *pgdp, pgd_t pgd)
+ {
+ 	/*
