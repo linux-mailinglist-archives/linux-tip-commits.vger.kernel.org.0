@@ -2,118 +2,104 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B6E77AC1E4
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Sep 2023 14:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF83C7AC727
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Sep 2023 10:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231740AbjIWMUe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Sep 2023 08:20:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37940 "EHLO
+        id S229529AbjIXIv4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 24 Sep 2023 04:51:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231689AbjIWMU3 (ORCPT
+        with ESMTP id S229449AbjIXIv4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 23 Sep 2023 08:20:29 -0400
+        Sun, 24 Sep 2023 04:51:56 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56EE01B3;
-        Sat, 23 Sep 2023 05:20:14 -0700 (PDT)
-Date:   Sat, 23 Sep 2023 12:20:12 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E19F6AF;
+        Sun, 24 Sep 2023 01:51:49 -0700 (PDT)
+Date:   Sun, 24 Sep 2023 08:51:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695471613;
+        s=2020; t=1695545508;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7WhUjWOTYtXHh/5KhjL7Q0CvVvEnG8Xg2ak54ziNto8=;
-        b=Tr8u3MAM+IBgtbsOF014ujH90WT/L5x01937BGxmkOQTkkA0QHgE7x9byEUmy29SBwtYZ3
-        wUWWSoNSv0VKJhPFU1wTH7tBWPg5Em5RPzZn5iagxH2yKjlrcUMa9tM1bekzbqMasC3WIO
-        FnbBGe1/HmnBEHiSr3s5yJJHqQtpqvOhU8LaroacFNcVVLz6OmW6TVlMr9UQRn1SsPWHb1
-        JJGytv7bw5drOXz5SRL8+2GOY04q8LIu3Vohb4uqNUJ/CW7QrJBUAPBxGJ5kYS55Rn4jMR
-        rMK4Mxe8jSCC9uFtg1e4cZDgbMJDOJ9fBHZdkbczhcTcRQExTXCDPkVRKtTaAw==
+        bh=nsukY5lpS0m62Ya1g66/8kwo2fAp8RTtZtzXiRkR5lg=;
+        b=jKVOuHssSJTMLPj/E1enpO3kKMv89SjRsxPKu2vUjc2COTNUHKRZWNtnVadqkj5qGMLr+b
+        vHlqvYmsXRT0C4tjZ3rSsKdshWZsUvdDsRZCEEWTJViwd4q1EOIVCfXfEydxYruqTulCcv
+        +0eOqflTcBd+sRVNmSo0xhgaj9SxW4L6kX8weWkrVk0cT3jRF2DdLsty7l3lWpHWud8k97
+        zwWliOqXDJdt/RAq2eRvlY9PPPh4t+hUbWr7RFDiDyUbUrC4lHlSiLBUU3g1j3lCmeVqOf
+        3NiUPBi3ku8Yz/TYlfippZ4ex0VOi1cEztDEkRM2YZgnru1X7cz5pJeeO1MkcA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695471613;
+        s=2020e; t=1695545508;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7WhUjWOTYtXHh/5KhjL7Q0CvVvEnG8Xg2ak54ziNto8=;
-        b=udgNR4OcwMV9Vi8yceYxkgr4FRJAJttzgg4jA8LSKox4DCJE9eujGS26ORa97rqTZAbscM
-        maUT3OVROUe3MbDA==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=nsukY5lpS0m62Ya1g66/8kwo2fAp8RTtZtzXiRkR5lg=;
+        b=PuJ1IihydV7Waot1d+eYUZmXi/URkfKB/v7MLYLFiLLhWKS6lK2CuUnhI9MQYP5X3KOysA
+        vR5LNTsxQ5IUleCg==
+From:   "tip-bot2 for Christophe JAILLET" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/srso: Print actual mitigation if requested
- mitigation isn't possible
-Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/kgdb: Fix a kerneldoc warning when build with W=1
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <7e7a12ea9d85a9f76ca16a3efb71f262dee46ab1.1693889988.git.jpoimboe@kernel.org>
-References: <7e7a12ea9d85a9f76ca16a3efb71f262dee46ab1.1693889988.git.jpoimboe@kernel.org>
+In-Reply-To: =?utf-8?q?=3Caad659537c1d4ebd86912a6f0be458676c8e69af=2E16954?=
+ =?utf-8?q?01178=2Egit=2Echristophe=2Ejaillet=40wanadoo=2Efr=3E?=
+References: =?utf-8?q?=3Caad659537c1d4ebd86912a6f0be458676c8e69af=2E169540?=
+ =?utf-8?q?1178=2Egit=2Echristophe=2Ejaillet=40wanadoo=2Efr=3E?=
 MIME-Version: 1.0
-Message-ID: <169547161243.27769.14468505492181595370.tip-bot2@tip-bot2>
+Message-ID: <169554550743.27769.9849615917462717503.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/bugs branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     f9548addc12d02ee731ccd4a91ae55657e819d7d
-Gitweb:        https://git.kernel.org/tip/f9548addc12d02ee731ccd4a91ae55657e819d7d
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 04 Sep 2023 22:04:50 -07:00
+Commit-ID:     841b8c99395c576d4585f443e38e8e9cc0db9e9e
+Gitweb:        https://git.kernel.org/tip/841b8c99395c576d4585f443e38e8e9cc0db9e9e
+Author:        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+AuthorDate:    Fri, 22 Sep 2023 18:46:49 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 23 Sep 2023 14:13:02 +02:00
+CommitterDate: Sun, 24 Sep 2023 10:46:54 +02:00
 
-x86/srso: Print actual mitigation if requested mitigation isn't possible
+x86/kgdb: Fix a kerneldoc warning when build with W=1
 
-If the kernel wasn't compiled to support the requested option, print the
-actual option that ends up getting used.
+When compiled with W=1, the following warning is generated:
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+  arch/x86/kernel/kgdb.c:698: warning: Cannot understand  *
+   on line 698 - I thought it was a doc line
+
+Remove the corresponding empty comment line to fix the warning.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/7e7a12ea9d85a9f76ca16a3efb71f262dee46ab1.1693889988.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/aad659537c1d4ebd86912a6f0be458676c8e69af.1695401178.git.christophe.jaillet@wanadoo.fr
 ---
- arch/x86/kernel/cpu/bugs.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/x86/kernel/kgdb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 2859a54..235c0e0 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2461,7 +2461,6 @@ static void __init srso_select_mitigation(void)
- 			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
- 		} else {
- 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
--			goto pred_cmd;
- 		}
- 		break;
+diff --git a/arch/x86/kernel/kgdb.c b/arch/x86/kernel/kgdb.c
+index 3a43a2d..9c9faa1 100644
+--- a/arch/x86/kernel/kgdb.c
++++ b/arch/x86/kernel/kgdb.c
+@@ -695,7 +695,6 @@ void kgdb_arch_exit(void)
+ }
  
-@@ -2473,7 +2472,6 @@ static void __init srso_select_mitigation(void)
- 			}
- 		} else {
- 			pr_err("WARNING: kernel not compiled with CPU_IBPB_ENTRY.\n");
--			goto pred_cmd;
- 		}
- 		break;
- 
-@@ -2485,7 +2483,6 @@ static void __init srso_select_mitigation(void)
- 			}
- 		} else {
- 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
--			goto pred_cmd;
-                 }
- 		break;
- 
+ /**
+- *
+  *	kgdb_skipexception - Bail out of KGDB when we've been triggered.
+  *	@exception: Exception vector number
+  *	@regs: Current &struct pt_regs.
