@@ -2,112 +2,260 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BD2D7AC7B5
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Sep 2023 13:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36B737AD3DA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Sep 2023 10:55:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbjIXLdg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 24 Sep 2023 07:33:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56432 "EHLO
+        id S232217AbjIYIzW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 25 Sep 2023 04:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjIXLdf (ORCPT
+        with ESMTP id S233081AbjIYIzV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 24 Sep 2023 07:33:35 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97870DA;
-        Sun, 24 Sep 2023 04:33:29 -0700 (PDT)
-Date:   Sun, 24 Sep 2023 11:33:26 -0000
+        Mon, 25 Sep 2023 04:55:21 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1986EFB;
+        Mon, 25 Sep 2023 01:55:13 -0700 (PDT)
+Date:   Mon, 25 Sep 2023 08:55:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695555207;
+        s=2020; t=1695632111;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sQ5Vz++03aAd/jaHF9EEyceiSFGpFYiJ8gae6ba/jkk=;
-        b=xOKb5Mq3gRkg3ndXQ6fZWQAu45wTHvR2LbJIssb2RJcFLDhlq7k1OkDDabvEQxQtNH0DNv
-        N1wtuU4ZJPiqocHQ7kds4OZyo7FBgor4QF9R1oMrSnQ5l8ULaO/bAfrU3fr1nQkl9QXjvk
-        IWrGGMKmnM9zrMC1NsTJpILoJ559lLmeqfSLovhEGu4SaGbtMrfqp317MG1aT3sfLF5SbI
-        MFBMd2yZ/kRK8AK+lIG8bZxqOD62sA4PTfP4lJaWAvF78/915c/QCavK+/aTmdb1hSfqGp
-        PfGewSoKpSuKyvYN3LCuOPlkeiO9PvTLgL1lsDZJLOrWqbmvx5/sZhRzjQaLiw==
+        bh=q31cEdcsxiFRVVBHu5LL3//ICViWhol4VLKuQGmofH8=;
+        b=GlCGcm1iw8uExGjEiYsFzZaUXf2ioEJzvKmXeS4hZfXawEdjF4CLGtTcEo8e9Z4vZhxz6b
+        sH0HrO0NQyk5u6R41dYP/57YGbUDmn4nYZ6ft4RW4v89cExoj3mNmcUFoEev9A3JcSYFPn
+        K8ENDKO1rOc3WvS9vCuKbFyU84Xo+OQqMLy0MmYAHErPxsEjl3euVTW51A7TAHCxN73fV8
+        mZDu431mb33mc3Ix6UOm2MFm5LiBTMan5mPcvj0S8vnlWQY20htFmBmRPHWLuSPmrw9kh/
+        KDcRWw9UIa+QPyAiUkJfGuYw646etTfHd4AG9REeaQ2+2SR1+ewskcK9tu2WOQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695555207;
+        s=2020e; t=1695632111;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sQ5Vz++03aAd/jaHF9EEyceiSFGpFYiJ8gae6ba/jkk=;
-        b=y3CLop16d3hRurJ7gbKT94OsI/gA7mpgdeusZPL56h5jM89wDX7CIOTrR0/+JJQRZ1SHPA
-        ML1pr0RUKbFEt+DA==
-From:   "tip-bot2 for Hugh Dickins" <tip-bot2@linutronix.de>
+        bh=q31cEdcsxiFRVVBHu5LL3//ICViWhol4VLKuQGmofH8=;
+        b=LwnK6evj+GYUw8aZZ0EJtBUJOgegJvptQ0LTmW4D4ERzbM3QLRHreLENXbttOU54uUCxJ8
+        FsxnIMsPDnRhnJBA==
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86_64: Show CR4.PSE on auxiliaries like on BSP
-Cc:     Hugh Dickins <hughd@google.com>, Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/rt: Make rt_rq->pushable_tasks updates drive rto_mask
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Valentin Schneider <vschneid@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <103ad03a-8c93-c3e2-4226-f79af4d9a074@google.com>
-References: <103ad03a-8c93-c3e2-4226-f79af4d9a074@google.com>
+In-Reply-To: <20230811112044.3302588-1-vschneid@redhat.com>
+References: <20230811112044.3302588-1-vschneid@redhat.com>
 MIME-Version: 1.0
-Message-ID: <169555520691.27769.2960713930630159681.tip-bot2@tip-bot2>
+Message-ID: <169563211069.27769.17070510461354463740.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     f4c5ca9850124fb5715eff06cffb1beed837500c
-Gitweb:        https://git.kernel.org/tip/f4c5ca9850124fb5715eff06cffb1beed837500c
-Author:        Hugh Dickins <hughd@google.com>
-AuthorDate:    Mon, 14 Aug 2023 19:53:18 -07:00
+Commit-ID:     612f769edd06a6e42f7cd72425488e68ddaeef0a
+Gitweb:        https://git.kernel.org/tip/612f769edd06a6e42f7cd72425488e68ddaeef0a
+Author:        Valentin Schneider <vschneid@redhat.com>
+AuthorDate:    Fri, 11 Aug 2023 12:20:44 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 24 Sep 2023 13:23:54 +02:00
+CommitterDate: Mon, 25 Sep 2023 10:25:29 +02:00
 
-x86_64: Show CR4.PSE on auxiliaries like on BSP
+sched/rt: Make rt_rq->pushable_tasks updates drive rto_mask
 
-Set CR4.PSE in secondary_startup_64: the Intel SDM is clear that it does
-not matter whether it's 0 or 1 when 4-level-pts are enabled, but it's
-distracting to find CR4 different on BSP and auxiliaries - on x86_64,
-BSP alone got to add the PSE bit, in probe_page_size_mask().
+Sebastian noted that the rto_push_work IRQ work can be queued for a CPU
+that has an empty pushable_tasks list, which means nothing useful will be
+done in the IPI other than queue the work for the next CPU on the rto_mask.
 
-Peter Zijlstra adds:
+rto_push_irq_work_func() only operates on tasks in the pushable_tasks list,
+but the conditions for that irq_work to be queued (and for a CPU to be
+added to the rto_mask) rely on rq_rt->nr_migratory instead.
 
-   "I think the point is that PSE bit is completely without
-    meaning in long mode.
+nr_migratory is increased whenever an RT task entity is enqueued and it has
+nr_cpus_allowed > 1. Unlike the pushable_tasks list, nr_migratory includes a
+rt_rq's current task. This means a rt_rq can have a migratible current, N
+non-migratible queued tasks, and be flagged as overloaded / have its CPU
+set in the rto_mask, despite having an empty pushable_tasks list.
 
-    But yes, having the same CR4 bits set across BSP and APs is
-    definitely sane."
+Make an rt_rq's overload logic be driven by {enqueue,dequeue}_pushable_task().
+Since rt_rq->{rt_nr_migratory,rt_nr_total} become unused, remove them.
 
-Signed-off-by: Hugh Dickins <hughd@google.com>
+Note that the case where the current task is pushed away to make way for a
+migration-disabled task remains unchanged: the migration-disabled task has
+to be in the pushable_tasks list in the first place, which means it has
+nr_cpus_allowed > 1.
+
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/103ad03a-8c93-c3e2-4226-f79af4d9a074@google.com
+Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20230811112044.3302588-1-vschneid@redhat.com
 ---
- arch/x86/kernel/head_64.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/debug.c |  3 +--
+ kernel/sched/rt.c    | 70 ++++++-------------------------------------
+ kernel/sched/sched.h |  2 +-
+ 3 files changed, 10 insertions(+), 65 deletions(-)
 
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index ea69959..3ddce02 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -180,8 +180,8 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	movl	$0, %ecx
- #endif
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 5e34a8c..c4253bd 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -724,9 +724,6 @@ void print_rt_rq(struct seq_file *m, int cpu, struct rt_rq *rt_rq)
+ 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", #x, SPLIT_NS(rt_rq->x))
  
--	/* Enable PAE mode, PGE and LA57 */
--	orl	$(X86_CR4_PAE | X86_CR4_PGE), %ecx
-+	/* Enable PAE mode, PSE, PGE and LA57 */
-+	orl	$(X86_CR4_PAE | X86_CR4_PSE | X86_CR4_PGE), %ecx
- #ifdef CONFIG_X86_5LEVEL
- 	testl	$1, __pgtable_l5_enabled(%rip)
- 	jz	1f
+ 	PU(rt_nr_running);
+-#ifdef CONFIG_SMP
+-	PU(rt_nr_migratory);
+-#endif
+ 	P(rt_throttled);
+ 	PN(rt_time);
+ 	PN(rt_runtime);
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 3e442fa..3b627ab 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -143,7 +143,6 @@ void init_rt_rq(struct rt_rq *rt_rq)
+ #if defined CONFIG_SMP
+ 	rt_rq->highest_prio.curr = MAX_RT_PRIO-1;
+ 	rt_rq->highest_prio.next = MAX_RT_PRIO-1;
+-	rt_rq->rt_nr_migratory = 0;
+ 	rt_rq->overloaded = 0;
+ 	plist_head_init(&rt_rq->pushable_tasks);
+ #endif /* CONFIG_SMP */
+@@ -358,53 +357,6 @@ static inline void rt_clear_overload(struct rq *rq)
+ 	cpumask_clear_cpu(rq->cpu, rq->rd->rto_mask);
+ }
+ 
+-static void update_rt_migration(struct rt_rq *rt_rq)
+-{
+-	if (rt_rq->rt_nr_migratory && rt_rq->rt_nr_total > 1) {
+-		if (!rt_rq->overloaded) {
+-			rt_set_overload(rq_of_rt_rq(rt_rq));
+-			rt_rq->overloaded = 1;
+-		}
+-	} else if (rt_rq->overloaded) {
+-		rt_clear_overload(rq_of_rt_rq(rt_rq));
+-		rt_rq->overloaded = 0;
+-	}
+-}
+-
+-static void inc_rt_migration(struct sched_rt_entity *rt_se, struct rt_rq *rt_rq)
+-{
+-	struct task_struct *p;
+-
+-	if (!rt_entity_is_task(rt_se))
+-		return;
+-
+-	p = rt_task_of(rt_se);
+-	rt_rq = &rq_of_rt_rq(rt_rq)->rt;
+-
+-	rt_rq->rt_nr_total++;
+-	if (p->nr_cpus_allowed > 1)
+-		rt_rq->rt_nr_migratory++;
+-
+-	update_rt_migration(rt_rq);
+-}
+-
+-static void dec_rt_migration(struct sched_rt_entity *rt_se, struct rt_rq *rt_rq)
+-{
+-	struct task_struct *p;
+-
+-	if (!rt_entity_is_task(rt_se))
+-		return;
+-
+-	p = rt_task_of(rt_se);
+-	rt_rq = &rq_of_rt_rq(rt_rq)->rt;
+-
+-	rt_rq->rt_nr_total--;
+-	if (p->nr_cpus_allowed > 1)
+-		rt_rq->rt_nr_migratory--;
+-
+-	update_rt_migration(rt_rq);
+-}
+-
+ static inline int has_pushable_tasks(struct rq *rq)
+ {
+ 	return !plist_head_empty(&rq->rt.pushable_tasks);
+@@ -438,6 +390,11 @@ static void enqueue_pushable_task(struct rq *rq, struct task_struct *p)
+ 	/* Update the highest prio pushable task */
+ 	if (p->prio < rq->rt.highest_prio.next)
+ 		rq->rt.highest_prio.next = p->prio;
++
++	if (!rq->rt.overloaded) {
++		rt_set_overload(rq);
++		rq->rt.overloaded = 1;
++	}
+ }
+ 
+ static void dequeue_pushable_task(struct rq *rq, struct task_struct *p)
+@@ -451,6 +408,11 @@ static void dequeue_pushable_task(struct rq *rq, struct task_struct *p)
+ 		rq->rt.highest_prio.next = p->prio;
+ 	} else {
+ 		rq->rt.highest_prio.next = MAX_RT_PRIO-1;
++
++		if (rq->rt.overloaded) {
++			rt_clear_overload(rq);
++			rq->rt.overloaded = 0;
++		}
+ 	}
+ }
+ 
+@@ -464,16 +426,6 @@ static inline void dequeue_pushable_task(struct rq *rq, struct task_struct *p)
+ {
+ }
+ 
+-static inline
+-void inc_rt_migration(struct sched_rt_entity *rt_se, struct rt_rq *rt_rq)
+-{
+-}
+-
+-static inline
+-void dec_rt_migration(struct sched_rt_entity *rt_se, struct rt_rq *rt_rq)
+-{
+-}
+-
+ static inline void rt_queue_push_tasks(struct rq *rq)
+ {
+ }
+@@ -1281,7 +1233,6 @@ void inc_rt_tasks(struct sched_rt_entity *rt_se, struct rt_rq *rt_rq)
+ 	rt_rq->rr_nr_running += rt_se_rr_nr_running(rt_se);
+ 
+ 	inc_rt_prio(rt_rq, prio);
+-	inc_rt_migration(rt_se, rt_rq);
+ 	inc_rt_group(rt_se, rt_rq);
+ }
+ 
+@@ -1294,7 +1245,6 @@ void dec_rt_tasks(struct sched_rt_entity *rt_se, struct rt_rq *rt_rq)
+ 	rt_rq->rr_nr_running -= rt_se_rr_nr_running(rt_se);
+ 
+ 	dec_rt_prio(rt_rq, rt_se_prio(rt_se));
+-	dec_rt_migration(rt_se, rt_rq);
+ 	dec_rt_group(rt_se, rt_rq);
+ }
+ 
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 96f8ab7..41d760d 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -663,8 +663,6 @@ struct rt_rq {
+ 	} highest_prio;
+ #endif
+ #ifdef CONFIG_SMP
+-	unsigned int		rt_nr_migratory;
+-	unsigned int		rt_nr_total;
+ 	int			overloaded;
+ 	struct plist_head	pushable_tasks;
+ 
