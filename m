@@ -2,147 +2,155 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 483257AD4AD
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Sep 2023 11:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 567677AD58D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Sep 2023 12:12:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbjIYJk4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 25 Sep 2023 05:40:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57968 "EHLO
+        id S231502AbjIYKMG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 25 Sep 2023 06:12:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjIYJk4 (ORCPT
+        with ESMTP id S231346AbjIYKL4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 25 Sep 2023 05:40:56 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32AABBE;
-        Mon, 25 Sep 2023 02:40:49 -0700 (PDT)
-Date:   Mon, 25 Sep 2023 09:40:47 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695634847;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=89QGxiAnkMO5e/O0iPpXiUamYcNaTnIQNHMFTNCzS/Y=;
-        b=qWDCdjV18rDyY4ZwhIaDaTewkCKoGNRyPDEYy15NWOpjDMJZFijDWPL3llArYzxtXtJsF5
-        LeIWS8sVoT9n8Dcf1xERqa7X7Ur6HoxJdXzhK//Lx97rl5TV8VwWcO/UjI2sFmYSWWEuCM
-        plHtvWtMmfnUC3yUHK9YIrgcbZuuTQRRm5n/f3vOd8Zmbs5WvzsXIExbXhcWBdU4jJ/4pU
-        02XgGwVOd3Xa52yCVbUnBAVMaTGyZ27KrxlKuXYhyKF7Sh1jealA1ECM71DyFSE0CiTCS5
-        QD1XfTLFvGa9q1mq4Ws79LKuDN/IJ0qe/a1QXcVQrjl1f6DouJYflMkqDU1q5w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695634847;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=89QGxiAnkMO5e/O0iPpXiUamYcNaTnIQNHMFTNCzS/Y=;
-        b=BLlQjiQrJHeC5ajKDREQOuW9idwblwEvgfToLIasQp5UBT5uGfx+DfywDFXNBYlaWD8QBc
-        +yF78+JeZXhSwxDQ==
-From:   "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/amd: Do not WARN() on every IRQ
-Cc:     Jirka Hladky <jhladky@redhat.com>,
-        Breno Leitao <leitao@debian.org>,
-        Sandipan Das <sandipan.das@amd.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Mon, 25 Sep 2023 06:11:56 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBADE1719;
+        Mon, 25 Sep 2023 03:11:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=ea4HtJ5aKLbBQfzI8DSRMzTkrWboV+0wvCLo5Ac7A3A=; b=teHJXWkhqXRNWI2ShWLJQWPjnQ
+        UpE1ZYJs59OGfH9p6dgSO0hQ7MQo9pf5YNaO98ZZMJjTHGR0SlNFCP3mseC82/LnlnHqBDTGPP/oQ
+        PB+alGXaWkwYLiWIZ1oiAtjYMmUJvnVi2rhrs+sMfij2vM2SLyK0UDTNIHj6wq2iNguvVj7kMxt24
+        mk6/y6SsqbnKUoQFwd5qhdo3jk3jZZj5M/ZQG4fSSuvy1oE3xEsqWfM6tURvJnO9fpWsOvhefDMDV
+        gNR+M7LVXsQpTmgrpCt14GFyiTlmy5rQWz2vbDVFVTDjpqG3e8EdAj1BKwk8CdvMxtds0E/QyaFP1
+        Dh7I5/Rg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qkiYp-000rMm-I5; Mon, 25 Sep 2023 10:11:27 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 3CC9430031B; Mon, 25 Sep 2023 12:11:27 +0200 (CEST)
+Date:   Mon, 25 Sep 2023 12:11:27 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Valentin Schneider <vschneid@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org
+Subject: Re: [tip: sched/core] sched/rt: Make rt_rq->pushable_tasks updates
+ drive rto_mask
+Message-ID: <20230925101127.GB31921@noisy.programming.kicks-ass.net>
+References: <20230811112044.3302588-1-vschneid@redhat.com>
+ <169563211069.27769.17070510461354463740.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <169563484702.27769.17534862657597994839.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <169563211069.27769.17070510461354463740.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+On Mon, Sep 25, 2023 at 08:55:10AM -0000, tip-bot2 for Valentin Schneider wrote:
+> The following commit has been merged into the sched/core branch of tip:
+> 
+> Commit-ID:     612f769edd06a6e42f7cd72425488e68ddaeef0a
+> Gitweb:        https://git.kernel.org/tip/612f769edd06a6e42f7cd72425488e68ddaeef0a
+> Author:        Valentin Schneider <vschneid@redhat.com>
+> AuthorDate:    Fri, 11 Aug 2023 12:20:44 +01:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Mon, 25 Sep 2023 10:25:29 +02:00
+> 
+> sched/rt: Make rt_rq->pushable_tasks updates drive rto_mask
+> 
+> Sebastian noted that the rto_push_work IRQ work can be queued for a CPU
+> that has an empty pushable_tasks list, which means nothing useful will be
+> done in the IPI other than queue the work for the next CPU on the rto_mask.
+> 
+> rto_push_irq_work_func() only operates on tasks in the pushable_tasks list,
+> but the conditions for that irq_work to be queued (and for a CPU to be
+> added to the rto_mask) rely on rq_rt->nr_migratory instead.
+> 
+> nr_migratory is increased whenever an RT task entity is enqueued and it has
+> nr_cpus_allowed > 1. Unlike the pushable_tasks list, nr_migratory includes a
+> rt_rq's current task. This means a rt_rq can have a migratible current, N
+> non-migratible queued tasks, and be flagged as overloaded / have its CPU
+> set in the rto_mask, despite having an empty pushable_tasks list.
+> 
+> Make an rt_rq's overload logic be driven by {enqueue,dequeue}_pushable_task().
+> Since rt_rq->{rt_nr_migratory,rt_nr_total} become unused, remove them.
+> 
+> Note that the case where the current task is pushed away to make way for a
+> migration-disabled task remains unchanged: the migration-disabled task has
+> to be in the pushable_tasks list in the first place, which means it has
+> nr_cpus_allowed > 1.
+> 
+> Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Link: https://lore.kernel.org/r/20230811112044.3302588-1-vschneid@redhat.com
+> ---
+>  kernel/sched/debug.c |  3 +--
+>  kernel/sched/rt.c    | 70 ++++++-------------------------------------
+>  kernel/sched/sched.h |  2 +-
+>  3 files changed, 10 insertions(+), 65 deletions(-)
+> 
 
-Commit-ID:     599522d9d2e19d6240e4312577f1c5f3ffca22f6
-Gitweb:        https://git.kernel.org/tip/599522d9d2e19d6240e4312577f1c5f3ffc=
-a22f6
-Author:        Breno Leitao <leitao@debian.org>
-AuthorDate:    Thu, 14 Sep 2023 19:58:40 +05:30
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 25 Sep 2023 11:30:31 +02:00
+> @@ -358,53 +357,6 @@ static inline void rt_clear_overload(struct rq *rq)
+>  	cpumask_clear_cpu(rq->cpu, rq->rd->rto_mask);
+>  }
+>  
+> -static void update_rt_migration(struct rt_rq *rt_rq)
+> -{
+> -	if (rt_rq->rt_nr_migratory && rt_rq->rt_nr_total > 1) {
+> -		if (!rt_rq->overloaded) {
+> -			rt_set_overload(rq_of_rt_rq(rt_rq));
+> -			rt_rq->overloaded = 1;
+> -		}
+> -	} else if (rt_rq->overloaded) {
+> -		rt_clear_overload(rq_of_rt_rq(rt_rq));
+> -		rt_rq->overloaded = 0;
+> -	}
+> -}
+> -
+> -static void inc_rt_migration(struct sched_rt_entity *rt_se, struct rt_rq *rt_rq)
+> -{
+> -	struct task_struct *p;
+> -
+> -	if (!rt_entity_is_task(rt_se))
+> -		return;
+> -
+> -	p = rt_task_of(rt_se);
+> -	rt_rq = &rq_of_rt_rq(rt_rq)->rt;
+> -
+> -	rt_rq->rt_nr_total++;
+> -	if (p->nr_cpus_allowed > 1)
+> -		rt_rq->rt_nr_migratory++;
+> -
+> -	update_rt_migration(rt_rq);
+> -}
+> -
+> -static void dec_rt_migration(struct sched_rt_entity *rt_se, struct rt_rq *rt_rq)
+> -{
+> -	struct task_struct *p;
+> -
+> -	if (!rt_entity_is_task(rt_se))
+> -		return;
+> -
+> -	p = rt_task_of(rt_se);
+> -	rt_rq = &rq_of_rt_rq(rt_rq)->rt;
+> -
+> -	rt_rq->rt_nr_total--;
+> -	if (p->nr_cpus_allowed > 1)
+> -		rt_rq->rt_nr_migratory--;
+> -
+> -	update_rt_migration(rt_rq);
+> -}
 
-perf/x86/amd: Do not WARN() on every IRQ
-
-Zen 4 systems running buggy microcode can hit a WARN_ON() in the PMI
-handler, as shown below, several times while perf runs. A simple
-`perf top` run is enough to render the system unusable:
-
-  WARNING: CPU: 18 PID: 20608 at arch/x86/events/amd/core.c:944 amd_pmu_v2_ha=
-ndle_irq+0x1be/0x2b0
-
-This happens because the Performance Counter Global Status Register
-(PerfCntGlobalStatus) has one or more bits set which are considered
-reserved according to the "AMD64 Architecture Programmer=E2=80=99s Manual,
-Volume 2: System Programming, 24593":
-
-  https://www.amd.com/system/files/TechDocs/24593.pdf
-
-To make this less intrusive, warn just once if any reserved bit is set
-and prompt the user to update the microcode. Also sanitize the value to
-what the code is handling, so that the overflow events continue to be
-handled for the number of counters that are known to be sane.
-
-Going forward, the following microcode patch levels are recommended
-for Zen 4 processors in order to avoid such issues with reserved bits:
-
-  Family=3D0x19 Model=3D0x11 Stepping=3D0x01: Patch=3D0x0a10113e
-  Family=3D0x19 Model=3D0x11 Stepping=3D0x02: Patch=3D0x0a10123e
-  Family=3D0x19 Model=3D0xa0 Stepping=3D0x01: Patch=3D0x0aa00116
-  Family=3D0x19 Model=3D0xa0 Stepping=3D0x02: Patch=3D0x0aa00212
-
-Commit f2eb058afc57 ("linux-firmware: Update AMD cpu microcode") from
-the linux-firmware tree has binaries that meet the minimum required
-patch levels.
-
-  [ sandipan: - add message to prompt users to update microcode
-              - rework commit message and call out required microcode levels ]
-
-Fixes: 7685665c390d ("perf/x86/amd/core: Add PerfMonV2 overflow handling")
-Reported-by: Jirka Hladky <jhladky@redhat.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/all/3540f985652f41041e54ee82aa53e7dbd55739ae.16=
-94696888.git.sandipan.das@amd.com/
----
- arch/x86/events/amd/core.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index ed626bf..e249765 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -886,7 +886,7 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- 	struct hw_perf_event *hwc;
- 	struct perf_event *event;
- 	int handled =3D 0, idx;
--	u64 status, mask;
-+	u64 reserved, status, mask;
- 	bool pmu_enabled;
-=20
- 	/*
-@@ -911,6 +911,14 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- 		status &=3D ~GLOBAL_STATUS_LBRS_FROZEN;
- 	}
-=20
-+	reserved =3D status & ~amd_pmu_global_cntr_mask;
-+	if (reserved)
-+		pr_warn_once("Reserved PerfCntrGlobalStatus bits are set (0x%llx), please =
-consider updating microcode\n",
-+			     reserved);
-+
-+	/* Clear any reserved bits set by buggy microcode */
-+	status &=3D amd_pmu_global_cntr_mask;
-+
- 	for (idx =3D 0; idx < x86_pmu.num_counters; idx++) {
- 		if (!test_bit(idx, cpuc->active_mask))
- 			continue;
+sched/deadline.c has something very similar, does that need updating
+too?
