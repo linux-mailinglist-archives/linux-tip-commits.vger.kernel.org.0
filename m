@@ -2,189 +2,75 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B58657AD7E9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Sep 2023 14:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E21F7ADB1B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Sep 2023 17:14:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231366AbjIYMW6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 25 Sep 2023 08:22:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51766 "EHLO
+        id S232702AbjIYPOg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 25 Sep 2023 11:14:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjIYMW6 (ORCPT
+        with ESMTP id S232556AbjIYPOg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 25 Sep 2023 08:22:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9CCFFC
-        for <linux-tip-commits@vger.kernel.org>; Mon, 25 Sep 2023 05:22:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695644521;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=1MNhm+1XFFpfJQTCT/N4z0tkrQ5TUIHd0V4r09cSckw=;
-        b=H6R+RRQ41w56WGAPBOaIOc052rKtRFr8FWdocc08AHblW0FeDzN+y3KXP+DKKSSjK7rUFr
-        OBCckzMrwQyTzPuRKM9x4HST/bPYjb2LBKKohDckihH3nmm0BlIq1x2Q5rMNSSumjXhtQX
-        NhNsO+R+/KocThsIhCTmjBO1K/ZawHA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-ngm0gLPaO5uaMDG1CIplCA-1; Mon, 25 Sep 2023 08:21:59 -0400
-X-MC-Unique: ngm0gLPaO5uaMDG1CIplCA-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-32001e60fb3so3798787f8f.1
-        for <linux-tip-commits@vger.kernel.org>; Mon, 25 Sep 2023 05:21:59 -0700 (PDT)
+        Mon, 25 Sep 2023 11:14:36 -0400
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 199B310A
+        for <linux-tip-commits@vger.kernel.org>; Mon, 25 Sep 2023 08:14:29 -0700 (PDT)
+Received: by mail-vs1-xe42.google.com with SMTP id ada2fe7eead31-45260b91a29so2935853137.2
+        for <linux-tip-commits@vger.kernel.org>; Mon, 25 Sep 2023 08:14:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=happybizdata-com.20230601.gappssmtp.com; s=20230601; t=1695654868; x=1696259668; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BtNfrxgf4X+cTsDMONzKl75qRElkb7tAwQe0Ph+Ar2Q=;
+        b=j4+1lOKQ75Eteyh3mYqAyulI5GJlyRFQpsBL2yBKWMLLGcf7Nb/I7hdZsguNApdfDt
+         rqeZSBiexuk1yh83iBi+uNIsWm0MZ763QD5dQgOMttnfNsxdbVv++xlQyitQXpdiN/p7
+         Dc5yozavczGK0Gl0GkFK1iFKMzXCKLqzINCixYXmCdv8R6fdILdfGcoNCxJpIzhDpo2Z
+         AUtBUsgjzCu11bNqil8hpXgEFGmSYx56yz5mRltmJBAMvpe8DZZWaLy/2AXEepBtZ24S
+         71KB4AI3pTR6oZZ3r7tiNd/ODzvNAzaaHF4yZbPbjNVUH9WwrQC8VMcDsGBzEabFZsAw
+         zmDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695644518; x=1696249318;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1MNhm+1XFFpfJQTCT/N4z0tkrQ5TUIHd0V4r09cSckw=;
-        b=Oe+gcOsijoFJVIqT+4iudEPKVLpl9cIiOy4VwUxSVnZ7wKnJng7HOF99Cl2vFNV/v5
-         dsp7sgsDLdnhy7W/xi98esELb+ibKUZjeKm0MScPpC0PYi6pVsvhpa7XY705+9UbWeR5
-         YgImdQE+I+DmhLn85J723WMOssMI/d9qWcWmm3BB0Fgsn230TWOHDUHMWijKpQg/u4dP
-         fv+m3geEwsjVtU2ULtNXe0FUNwsxsAqjOkU6jx+8WBmYKOfFQxBMOWbytCSNSQoa+Skh
-         BAuZFh259JPogWuOn86B4QlBTntghGHT3fClSBYdRIr+8eYIwQTMg3b5dpXEKa4egxru
-         mqEA==
-X-Gm-Message-State: AOJu0YwWGxu8sef+ikgLaE2y9sFHrY5joORklp0SQ1y8OdNOWZoHueqn
-        tyK0ylemJVBKjiytRkvL2flKWTEpTcKsO+KqzlI8iRh5JqGHpGsgHlSHhKAlT9/tW2OebBQ6wum
-        SKbPikbzzScTe9fHe4LDfvo5OzRU3N+g=
-X-Received: by 2002:adf:e3ce:0:b0:317:dadc:4a63 with SMTP id k14-20020adfe3ce000000b00317dadc4a63mr6997869wrm.8.1695644518706;
-        Mon, 25 Sep 2023 05:21:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHAm4ifKXpzDtyUPhGIDZDGdGBDvG3dNyF9RNLXRMXlOTPyatpeH0NuSCukQ0AYeGIPawefuA==
-X-Received: by 2002:adf:e3ce:0:b0:317:dadc:4a63 with SMTP id k14-20020adfe3ce000000b00317dadc4a63mr6997860wrm.8.1695644518330;
-        Mon, 25 Sep 2023 05:21:58 -0700 (PDT)
-Received: from vschneid.remote.csb ([80.214.159.242])
-        by smtp.gmail.com with ESMTPSA id bw10-20020a0560001f8a00b0032326908972sm3230747wrb.17.2023.09.25.05.21.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Sep 2023 05:21:57 -0700 (PDT)
-From:   Valentin Schneider <vschneid@redhat.com>
-To:     Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org
-Subject: Re: [tip: sched/core] sched/rt: Make rt_rq->pushable_tasks updates
- drive rto_mask
-In-Reply-To: <20230925101127.GB31921@noisy.programming.kicks-ass.net>
-References: <20230811112044.3302588-1-vschneid@redhat.com>
- <169563211069.27769.17070510461354463740.tip-bot2@tip-bot2>
- <20230925101127.GB31921@noisy.programming.kicks-ass.net>
-Date:   Mon, 25 Sep 2023 14:21:56 +0200
-Message-ID: <xhsmh1qemv3x7.mognet@vschneid.remote.csb>
+        d=1e100.net; s=20230601; t=1695654868; x=1696259668;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BtNfrxgf4X+cTsDMONzKl75qRElkb7tAwQe0Ph+Ar2Q=;
+        b=NxHJfYpZjX2irGbDP5Sf4uDz6yoQSqoTvEE99GPJ3JFw84tOSwLQyjxZuvoovF7Tdt
+         7pjAqHmRUDkkgkY3ZO7xKy/EhuWsUgrMfUbMii2iDrs4alhAEUKHKVYabNJvm7R63Iv3
+         BCOhszKmaGa/eYlr+8mOUAcmbiX/mufkjxPvwMikD01bdAe+1Z0rsjhYH39mmfB5SFkc
+         Pk9tC3l8ax29noBPvkiUcf7rTYnmTp8pGLWr4krm+4hdn4JFUXp2+CBwcPDUmHHZdxb+
+         DCtRaBgHhCUtcnunuzehrNNWg+NaxKEcEDKna10px6ihD4+LkCV3EE3OEVd18Zduoy9g
+         XXxQ==
+X-Gm-Message-State: AOJu0Yw2YnoVHTNjksSdi3vbXFE0SSHsA5+dAB4sl9sAB0u7KO9K2YWc
+        x05+ENBY1GMC522fV//hK6ngIz2lTIJddwv1JaL2cQ==
+X-Google-Smtp-Source: AGHT+IExQPiZeST6UBNLhESqww9YHARUad58911NAde7hcBWx2F6ERBPJHqYcyUSazR13vV6oN3kFh0eB9Fgb/bu72c=
+X-Received: by 2002:a67:f842:0:b0:452:5c6d:78c9 with SMTP id
+ b2-20020a67f842000000b004525c6d78c9mr4218569vsp.12.1695654868281; Mon, 25 Sep
+ 2023 08:14:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   Sofia Gonzales <sofia@happybizdata.com>
+Date:   Mon, 25 Sep 2023 10:14:15 -0500
+Message-ID: <CAMh3ZMJ_yEt0YCimcbJ+BwwJSX+PGktO6dGS1gmSQ1snAUqVpg@mail.gmail.com>
+Subject: RE: HIMSS Global Health Conference Email List 2023
+To:     Sofia Gonzales <sofia@happybizdata.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 25/09/23 12:11, Peter Zijlstra wrote:
-> On Mon, Sep 25, 2023 at 08:55:10AM -0000, tip-bot2 for Valentin Schneider wrote:
->> The following commit has been merged into the sched/core branch of tip:
->> 
->> Commit-ID:     612f769edd06a6e42f7cd72425488e68ddaeef0a
->> Gitweb:        https://git.kernel.org/tip/612f769edd06a6e42f7cd72425488e68ddaeef0a
->> Author:        Valentin Schneider <vschneid@redhat.com>
->> AuthorDate:    Fri, 11 Aug 2023 12:20:44 +01:00
->> Committer:     Ingo Molnar <mingo@kernel.org>
->> CommitterDate: Mon, 25 Sep 2023 10:25:29 +02:00
->> 
->> sched/rt: Make rt_rq->pushable_tasks updates drive rto_mask
->> 
->> Sebastian noted that the rto_push_work IRQ work can be queued for a CPU
->> that has an empty pushable_tasks list, which means nothing useful will be
->> done in the IPI other than queue the work for the next CPU on the rto_mask.
->> 
->> rto_push_irq_work_func() only operates on tasks in the pushable_tasks list,
->> but the conditions for that irq_work to be queued (and for a CPU to be
->> added to the rto_mask) rely on rq_rt->nr_migratory instead.
->> 
->> nr_migratory is increased whenever an RT task entity is enqueued and it has
->> nr_cpus_allowed > 1. Unlike the pushable_tasks list, nr_migratory includes a
->> rt_rq's current task. This means a rt_rq can have a migratible current, N
->> non-migratible queued tasks, and be flagged as overloaded / have its CPU
->> set in the rto_mask, despite having an empty pushable_tasks list.
->> 
->> Make an rt_rq's overload logic be driven by {enqueue,dequeue}_pushable_task().
->> Since rt_rq->{rt_nr_migratory,rt_nr_total} become unused, remove them.
->> 
->> Note that the case where the current task is pushed away to make way for a
->> migration-disabled task remains unchanged: the migration-disabled task has
->> to be in the pushable_tasks list in the first place, which means it has
->> nr_cpus_allowed > 1.
->> 
->> Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
->> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
->> Signed-off-by: Ingo Molnar <mingo@kernel.org>
->> Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
->> Link: https://lore.kernel.org/r/20230811112044.3302588-1-vschneid@redhat.com
->> ---
->>  kernel/sched/debug.c |  3 +--
->>  kernel/sched/rt.c    | 70 ++++++-------------------------------------
->>  kernel/sched/sched.h |  2 +-
->>  3 files changed, 10 insertions(+), 65 deletions(-)
->> 
->
->> @@ -358,53 +357,6 @@ static inline void rt_clear_overload(struct rq *rq)
->>  	cpumask_clear_cpu(rq->cpu, rq->rd->rto_mask);
->>  }
->>  
->> -static void update_rt_migration(struct rt_rq *rt_rq)
->> -{
->> -	if (rt_rq->rt_nr_migratory && rt_rq->rt_nr_total > 1) {
->> -		if (!rt_rq->overloaded) {
->> -			rt_set_overload(rq_of_rt_rq(rt_rq));
->> -			rt_rq->overloaded = 1;
->> -		}
->> -	} else if (rt_rq->overloaded) {
->> -		rt_clear_overload(rq_of_rt_rq(rt_rq));
->> -		rt_rq->overloaded = 0;
->> -	}
->> -}
->> -
->> -static void inc_rt_migration(struct sched_rt_entity *rt_se, struct rt_rq *rt_rq)
->> -{
->> -	struct task_struct *p;
->> -
->> -	if (!rt_entity_is_task(rt_se))
->> -		return;
->> -
->> -	p = rt_task_of(rt_se);
->> -	rt_rq = &rq_of_rt_rq(rt_rq)->rt;
->> -
->> -	rt_rq->rt_nr_total++;
->> -	if (p->nr_cpus_allowed > 1)
->> -		rt_rq->rt_nr_migratory++;
->> -
->> -	update_rt_migration(rt_rq);
->> -}
->> -
->> -static void dec_rt_migration(struct sched_rt_entity *rt_se, struct rt_rq *rt_rq)
->> -{
->> -	struct task_struct *p;
->> -
->> -	if (!rt_entity_is_task(rt_se))
->> -		return;
->> -
->> -	p = rt_task_of(rt_se);
->> -	rt_rq = &rq_of_rt_rq(rt_rq)->rt;
->> -
->> -	rt_rq->rt_nr_total--;
->> -	if (p->nr_cpus_allowed > 1)
->> -		rt_rq->rt_nr_migratory--;
->> -
->> -	update_rt_migration(rt_rq);
->> -}
->
-> sched/deadline.c has something very similar, does that need updating
-> too?
+Hi,
 
-Hm I think so yes:
-- push_dl_task() is an obvious noop if the pushable tree is empty
-- pull_dl_task() can be kicked if !rq->dl.overloaded, which similarly to rt
-  is driven by nr_migratory but could be boiled down to having pushable
-  tasks (due to the nr_cpus_allowed > 1 constraint).
+Would you be interested in acquiring the Healthcare Information and
+Management Systems Society Email List?
 
-Lemme poke at it.
+Number of Contacts: 45,486
+Cost: $1,918
 
+Interested? Email me back; I would love to provide more information on the list.
+
+Kind Regards,
+Sofia Gonzales
+Marketing Coordinator
