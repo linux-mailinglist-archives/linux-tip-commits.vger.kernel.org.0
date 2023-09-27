@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A035A7AFD88
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Sep 2023 10:04:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80D517AFDF1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Sep 2023 10:14:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230015AbjI0IEb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 Sep 2023 04:04:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54664 "EHLO
+        id S230367AbjI0IOc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Sep 2023 04:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229993AbjI0IEa (ORCPT
+        with ESMTP id S230371AbjI0IOM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 Sep 2023 04:04:30 -0400
+        Wed, 27 Sep 2023 04:14:12 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300F5BF;
-        Wed, 27 Sep 2023 01:04:28 -0700 (PDT)
-Date:   Wed, 27 Sep 2023 08:04:26 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBBDC2D59;
+        Wed, 27 Sep 2023 01:11:59 -0700 (PDT)
+Date:   Wed, 27 Sep 2023 08:11:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695801867;
+        s=2020; t=1695802315;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6y4/x56gepc6BHyqsAM4Ueox9yfbDdfnwV5Rb7kalmc=;
-        b=ed1X0SRmdE5ubj1DS54klTu122q/zgYbeX1W55si6TaDBwdI/rvds6+UO3UsuslblxlIRU
-        18SnbTLBbsT0if4pxP9NJNNJF3N9FLjvjDo/T41Mv8amwLf4EUivSOQEoGIFx3dmSIuwot
-        a1O469gVVXjNHZfBzQZZ8f6qsooX0KLV9qcbzbJRBgtK60tS+CFUsAl8fBd18JOUZPoKol
-        irCkWkSY89aeHD8Z0HDuDBBKTTmMtNtae6gfzC6eYmSwPcwUDe/cR2mr/jFO5hEwmPEeyH
-        bqi4aGGVcPageakXg13v6OM1WIoCpNhh9sv7neFrLzKj8hww5TgZhd6ww3J9XQ==
+        bh=F2YEJv2i0yEIX+nDdMm0jTyutLcuZK+A6tHuXZ9sFuo=;
+        b=gYav+X/CT9oUiDukPAMDaUeAnQ/1zx7xd6BuGh0n3Ccql1f+MFwP0NMo5jMcPtCz7pW7r/
+        CWiyYb9mJNtLyaxWpLvZry5ioWc0yA53uPS3j4QyZIlbPsuXMrKqzuyN73sSBcPMWZBBv7
+        dmhRf/Eh8oyMc/yi6dveyweiGklTwg6eDrMQ7qDQBJD/4GcixRf/1LinOl4XDdGQMXKd6R
+        ZEAUsyILAPmchOOOwHetyrsCjqyJI0BjZyWUeVwiFAwShb8l5TjLTKcPAVIiMmSc2FwaeA
+        0tBCKBWtq7zS0HXi8inr0d+Qd9S+cUuBA4/7tBErjRZQZ5HJS66YAw/bThRziw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695801867;
+        s=2020e; t=1695802315;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6y4/x56gepc6BHyqsAM4Ueox9yfbDdfnwV5Rb7kalmc=;
-        b=1ASpo4EyjBRB36zgcBSEfxUNjzEW24Npry1n3o38gHzKClv53g9MIb990wTgZdDd327zIN
-        DI9+p8skCQpF9gCg==
-From:   "tip-bot2 for Muralidhara M K" <tip-bot2@linutronix.de>
+        bh=F2YEJv2i0yEIX+nDdMm0jTyutLcuZK+A6tHuXZ9sFuo=;
+        b=QH8ZmU0adiZ6oDaGu6UpL2zA6Pkeq6usTO7PZ40XXhxKviBttOIkZI2bMMhh6VYQ0c5eQd
+        n2a1qG+Ghcay42AQ==
+From:   "tip-bot2 for Xin Li (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/amd_nb: Add AMD Family MI300 PCI IDs
-Cc:     Muralidhara M K <muralidhara.mk@amd.com>,
-        Suma Hegde <suma.hegde@amd.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, x86@kernel.org,
+Subject: [tip: x86/asm] x86/entry: Fix typos in comments
+Cc:     "Xin Li (Intel)" <xin@zytor.com>, Ingo Molnar <mingo@kernel.org>,
+        "H. Peter Anvin (Intel)" <hpa@zytor.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230926051932.193239-1-suma.hegde@amd.com>
-References: <20230926051932.193239-1-suma.hegde@amd.com>
+In-Reply-To: <20230926061319.1929127-1-xin@zytor.com>
+References: <20230926061319.1929127-1-xin@zytor.com>
 MIME-Version: 1.0
-Message-ID: <169580186617.27769.8445368377007522193.tip-bot2@tip-bot2>
+Message-ID: <169580231502.27769.3298035050053680158.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,83 +64,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     24775700eaa93ff83b2a0f1e005879cdf186cdd9
-Gitweb:        https://git.kernel.org/tip/24775700eaa93ff83b2a0f1e005879cdf186cdd9
-Author:        Muralidhara M K <muralidhara.mk@amd.com>
-AuthorDate:    Tue, 26 Sep 2023 05:19:32 
+Commit-ID:     1882366217757d3549e48a833bf9a5799b172251
+Gitweb:        https://git.kernel.org/tip/1882366217757d3549e48a833bf9a5799b172251
+Author:        Xin Li (Intel) <xin@zytor.com>
+AuthorDate:    Mon, 25 Sep 2023 23:13:19 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 27 Sep 2023 09:53:23 +02:00
+CommitterDate: Wed, 27 Sep 2023 10:05:04 +02:00
 
-x86/amd_nb: Add AMD Family MI300 PCI IDs
+x86/entry: Fix typos in comments
 
-Add new Root, Device 18h Function 3, and Function 4 PCI IDS
-for AMD F19h Model 90h-9fh (MI300A).
+Fix 2 typos in the comments.
 
-Signed-off-by: Muralidhara M K <muralidhara.mk@amd.com>
-Signed-off-by: Suma Hegde <suma.hegde@amd.com>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/20230926051932.193239-1-suma.hegde@amd.com
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20230926061319.1929127-1-xin@zytor.com
 ---
- arch/x86/kernel/amd_nb.c | 5 +++++
- include/linux/pci_ids.h  | 1 +
- 2 files changed, 6 insertions(+)
+ arch/x86/entry/entry_64.S | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 356de95..10c2a3c 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -27,6 +27,7 @@
- #define PCI_DEVICE_ID_AMD_1AH_M00H_ROOT		0x153a
- #define PCI_DEVICE_ID_AMD_1AH_M20H_ROOT		0x1507
- #define PCI_DEVICE_ID_AMD_MI200_ROOT		0x14bb
-+#define PCI_DEVICE_ID_AMD_MI300_ROOT		0x14f8
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index fb8dd56..b940e92 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -1163,8 +1163,8 @@ SYM_CODE_START(asm_exc_nmi)
+ 	 * anyway.
+ 	 *
+ 	 * To handle this case we do the following:
+-	 *  Check the a special location on the stack that contains
+-	 *  a variable that is set when NMIs are executing.
++	 *  Check a special location on the stack that contains a
++	 *  variable that is set when NMIs are executing.
+ 	 *  The interrupted task's stack is also checked to see if it
+ 	 *  is an NMI stack.
+ 	 *  If the variable is not set and the stack is not the NMI
+@@ -1294,8 +1294,8 @@ SYM_CODE_START(asm_exc_nmi)
+ 	 * end_repeat_nmi, then we are a nested NMI.  We must not
+ 	 * modify the "iret" frame because it's being written by
+ 	 * the outer NMI.  That's okay; the outer NMI handler is
+-	 * about to about to call exc_nmi() anyway, so we can just
+-	 * resume the outer NMI.
++	 * about to call exc_nmi() anyway, so we can just resume
++	 * the outer NMI.
+ 	 */
  
- #define PCI_DEVICE_ID_AMD_17H_DF_F4		0x1464
- #define PCI_DEVICE_ID_AMD_17H_M10H_DF_F4	0x15ec
-@@ -43,6 +44,7 @@
- #define PCI_DEVICE_ID_AMD_19H_M78H_DF_F4	0x12fc
- #define PCI_DEVICE_ID_AMD_1AH_M00H_DF_F4	0x12c4
- #define PCI_DEVICE_ID_AMD_MI200_DF_F4		0x14d4
-+#define PCI_DEVICE_ID_AMD_MI300_DF_F4		0x152c
- 
- /* Protect the PCI config register pairs used for SMN. */
- static DEFINE_MUTEX(smn_mutex);
-@@ -62,6 +64,7 @@ static const struct pci_device_id amd_root_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M00H_ROOT) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M20H_ROOT) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_ROOT) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI300_ROOT) },
- 	{}
- };
- 
-@@ -93,6 +96,7 @@ static const struct pci_device_id amd_nb_misc_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M00H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M20H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_DF_F3) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI300_DF_F3) },
- 	{}
- };
- 
-@@ -115,6 +119,7 @@ static const struct pci_device_id amd_nb_link_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M00H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_DF_F4) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI300_DF_F4) },
- 	{}
- };
- 
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 5fb3d4c..91b457d 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -579,6 +579,7 @@
- #define PCI_DEVICE_ID_AMD_1AH_M00H_DF_F3 0x12c3
- #define PCI_DEVICE_ID_AMD_1AH_M20H_DF_F3 0x16fb
- #define PCI_DEVICE_ID_AMD_MI200_DF_F3	0x14d3
-+#define PCI_DEVICE_ID_AMD_MI300_DF_F3	0x152b
- #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
- #define PCI_DEVICE_ID_AMD_LANCE		0x2000
- #define PCI_DEVICE_ID_AMD_LANCE_HOME	0x2001
+ 	movq	$repeat_nmi, %rdx
