@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4ED37AFEF0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Sep 2023 10:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A20307B077E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Sep 2023 17:01:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229958AbjI0Iud (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 Sep 2023 04:50:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49692 "EHLO
+        id S232284AbjI0PBi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Sep 2023 11:01:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230000AbjI0Iuc (ORCPT
+        with ESMTP id S232269AbjI0PBg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 Sep 2023 04:50:32 -0400
+        Wed, 27 Sep 2023 11:01:36 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 696DA95;
-        Wed, 27 Sep 2023 01:50:30 -0700 (PDT)
-Date:   Wed, 27 Sep 2023 08:50:27 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDDD9F4;
+        Wed, 27 Sep 2023 08:01:33 -0700 (PDT)
+Date:   Wed, 27 Sep 2023 15:01:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695804628;
+        s=2020; t=1695826890;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=e1tHVIYqE+sMaIp+HZXJZahZO0rDZZ9msFdB3oXvodU=;
-        b=PTnWb0JXmCt3bGUd/C5hCnGTrPitCe8BS44PR/op1m0y/gbhb5DpmCzn1JG0wBOzGii5ur
-        uZOI9+xotnj3IcTtxcOIMeodA1lmMf9VzukeentvPdD/YN/M+/aAQwm3c4aX6x9DZtY2Pu
-        SEYiSfbAXcb9+Fmhe50p4V5eyTto7GYqofk0FoFhMDI5rDAN/OvLY24FA06zmPmuED7ZqL
-        P3DsElOYsWk9mNZjXnEV6V7r4qMP/fjGbFPIgDbkArfn7a/1IZhS8QOUMwztzY5OAvHQb0
-        MQcGnsKFB0TsS7a14FVUbTyTf+XW9ovYOs16Lte7yzsGJDa0kKpDF7340F0+Jg==
+        bh=xmgklms1sORVG0m4r7Iw/uVIkEo/q5qKTO88tbyXacw=;
+        b=MBqkKIZE8BznqJ17Vs8uXLDxq39LBwlNsT24VjzKkunXaS7UUkJZ8ILV5TVvEK0j+tX8iP
+        Cw1XjcuY4GbBixpNAEFj2bQ3SelBqMPUCGaKYw9KeR5zeJObxAywHuTVcdCVPzxOnOAdi1
+        10VFXP1C6RU0ztSTgK9md/zBUKhclv/mp22zRSIdloc/sZnSw9hU2OcU1kE2LXRFRnqdsL
+        GbA28Z8MrElztVIktnyvAy9NI0DUHap2aT37xlrO/APaLGcPAfxlO1sEoA1SRKMw816XwN
+        U4fxJFmSZLPix1CDsZkP6gCnRonTx4LlZr3JRPcyeFzWupGeN+jxXh4tecG+4A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695804628;
+        s=2020e; t=1695826890;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=e1tHVIYqE+sMaIp+HZXJZahZO0rDZZ9msFdB3oXvodU=;
-        b=NbSdLbhlLhiFWAwf5xNHCcP6bY/y9EjwlFlynk+Cd23JCF7aMQl6hBzCiL7ybet5pjgzr6
-        lxy7Y5plkylZC2BA==
-From:   "tip-bot2 for Alexey Kardashevskiy" <tip-bot2@linutronix.de>
+        bh=xmgklms1sORVG0m4r7Iw/uVIkEo/q5qKTO88tbyXacw=;
+        b=2MG4+dJqbOyKxOr9vZ5IbFkF3fyQ4MU4wCTcp4UowC2WWZrgKQgH/99LXZXEcmy3TTMj5m
+        fFqC6C4v0EEpLxDg==
+From:   "tip-bot2 for Xueshi Hu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/sev: Reduce #VC nesting for intercepted CPUID for
- SEV-SNP guest, to fix nesting crash
-Cc:     Alexey Kardashevskiy <aik@amd.com>, Ingo Molnar <mingo@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
+Subject: [tip: timers/core] tick/nohz: Remove unused
+ tick_nohz_idle_stop_tick_protected()
+Cc:     Xueshi Hu <xueshi.hu@smartx.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230926040526.957240-1-aik@amd.com>
-References: <20230926040526.957240-1-aik@amd.com>
+In-Reply-To: <20230912104406.312185-5-frederic@kernel.org>
+References: <20230912104406.312185-5-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169580462768.27769.7125064834981635334.tip-bot2@tip-bot2>
+Message-ID: <169582688984.27769.10942448414199361460.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,114 +66,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     00541d61e7c68071fa589bdb045e7f5024f67713
-Gitweb:        https://git.kernel.org/tip/00541d61e7c68071fa589bdb045e7f5024f67713
-Author:        Alexey Kardashevskiy <aik@amd.com>
-AuthorDate:    Tue, 26 Sep 2023 14:05:26 +10:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 27 Sep 2023 10:46:22 +02:00
+Commit-ID:     c02a427f7b64ed5b840a0720a6cee5a17a1e7e07
+Gitweb:        https://git.kernel.org/tip/c02a427f7b64ed5b840a0720a6cee5a17a1e7e07
+Author:        Xueshi Hu <xueshi.hu@smartx.com>
+AuthorDate:    Tue, 12 Sep 2023 12:44:05 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 27 Sep 2023 16:58:11 +02:00
 
-x86/sev: Reduce #VC nesting for intercepted CPUID for SEV-SNP guest, to fix nesting crash
+tick/nohz: Remove unused tick_nohz_idle_stop_tick_protected()
 
-For certain intercepts an SNP guest uses the GHCB protocol to talk to
-the hypervisor from the #VC handler. The protocol requires a shared page so
-there is one per vCPU. In case NMI arrives in a middle of #VC or the NMI
-handler triggers a #VC, there is another "backup" GHCB page which stores
-the content of the first one while SVM_VMGEXIT_NMI_COMPLETE is sent.
-The vc_raw_handle_exception() handler manages main and backup GHCB pages
-via __sev_get_ghcb/__sev_put_ghcb.
+All the caller has been removed since commit 336f560a8917 ("x86/xen: don't
+let xen_pv_play_dead() return")
 
-This works fine for #VC and occasional NMIs. This does not work so fine if
-the #VC handler causes intercept + another #VC, if NMI arrives during
-the second #VC, there are no more pages for SVM_VMGEXIT_NMI_COMPLETE.
-The problem place is the #VC CPUID handler. Running perf in the SNP guest
-crashes with:
+Signed-off-by: Xueshi Hu <xueshi.hu@smartx.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230912104406.312185-5-frederic@kernel.org
 
-  Kernel panic - not syncing: Unable to handle #VC exception! GHCB and Backup GHCB are already in use
-
-  vc_raw_handle_exception #1: exit_code 72 (CPUID) eax d ecx 1
-
-We lock the main GHCB and while it is locked we get to
-snp_cpuid_postprocess() which executes "rdmsr" of MSR_IA32_XSS==0xda0 which
-triggers:
-
-  vc_raw_handle_exception #2: exit_code 7c (MSR) ecx da0
-
-Here we lock the backup ghcb.
-
-And then PMC NMI comes which cannot complete as there is no GHCB page left
-to use:
-
-  CPU: 5 PID: 566 Comm: touch Not tainted 6.5.0-rc2-aik-ad9c-g7413e71d3dcf-dirty #27
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown unknown
-  Call Trace:
-   <NMI>
-   dump_stack_lvl+0x44/0x60
-   panic+0x222/0x310
-   ____sev_get_ghcb+0x21e/0x220
-   __sev_es_nmi_complete+0x28/0xf0
-   exc_nmi+0x1ac/0x1c0
-   end_repeat_nmi+0x16/0x67
-  ...
-   </NMI>
-   <TASK>
-   vc_raw_handle_exception+0x9e/0x2c0
-   kernel_exc_vmm_communication+0x4d/0xa0
-   asm_exc_vmm_communication+0x31/0x60
-  RIP: 0010:snp_cpuid+0x2ad/0x420
-
-Add a helper similar to rdmsr_safe() for making a direct hypercall in the SEV-ES
-environment. Use the new helper instead of the raw "rdmsr" to avoid the extra
- #VC event.
-
-Fixes: ee0bfa08a345 ("x86/compressed/64: Add support for SEV-SNP CPUID table in #VC handlers")
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20230926040526.957240-1-aik@amd.com
 ---
- arch/x86/include/asm/svm.h   | 14 ++++++++++++++
- arch/x86/kernel/sev-shared.c |  5 +++--
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ include/linux/tick.h | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index 19bf955..4416a8b 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -679,4 +679,18 @@ DEFINE_GHCB_ACCESSORS(sw_exit_info_2)
- DEFINE_GHCB_ACCESSORS(sw_scratch)
- DEFINE_GHCB_ACCESSORS(xcr0)
+diff --git a/include/linux/tick.h b/include/linux/tick.h
+index 9459fef..716d17f 100644
+--- a/include/linux/tick.h
++++ b/include/linux/tick.h
+@@ -140,14 +140,6 @@ extern unsigned long tick_nohz_get_idle_calls(void);
+ extern unsigned long tick_nohz_get_idle_calls_cpu(int cpu);
+ extern u64 get_cpu_idle_time_us(int cpu, u64 *last_update_time);
+ extern u64 get_cpu_iowait_time_us(int cpu, u64 *last_update_time);
+-
+-static inline void tick_nohz_idle_stop_tick_protected(void)
+-{
+-	local_irq_disable();
+-	tick_nohz_idle_stop_tick();
+-	local_irq_enable();
+-}
+-
+ #else /* !CONFIG_NO_HZ_COMMON */
+ #define tick_nohz_enabled (0)
+ static inline int tick_nohz_tick_stopped(void) { return 0; }
+@@ -170,8 +162,6 @@ static inline ktime_t tick_nohz_get_sleep_length(ktime_t *delta_next)
+ }
+ static inline u64 get_cpu_idle_time_us(int cpu, u64 *unused) { return -1; }
+ static inline u64 get_cpu_iowait_time_us(int cpu, u64 *unused) { return -1; }
+-
+-static inline void tick_nohz_idle_stop_tick_protected(void) { }
+ #endif /* !CONFIG_NO_HZ_COMMON */
  
-+/* Paravirt SEV-ES rdmsr which avoids extra #VC event */
-+#define rdmsr_safe_GHCB(msr, low, high, ghcb, ctxt) ({				\
-+	int __ret;								\
-+										\
-+	ghcb_set_rcx((ghcb), (msr));						\
-+	__ret = sev_es_ghcb_hv_call((ghcb), (ctxt), SVM_EXIT_MSR, 0, 0);	\
-+	if (__ret == ES_OK) {							\
-+		low  = (ghcb)->save.rax;					\
-+		high = (ghcb)->save.rdx;					\
-+		/* Invalidate qwords for likely another following GHCB call */	\
-+		vc_ghcb_invalidate(ghcb);					\
-+	}									\
-+	__ret; })
-+
- #endif
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 2eabccd..31f79da 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -439,8 +439,9 @@ static int snp_cpuid_postprocess(struct cpuid_leaf *leaf)
- 			if (leaf->eax & BIT(3)) {
- 				unsigned long lo, hi;
- 
--				asm volatile("rdmsr" : "=a" (lo), "=d" (hi)
--						     : "c" (MSR_IA32_XSS));
-+				if (rdmsr_safe_GHCB(MSR_IA32_XSS, lo, hi, ghcb, ctxt) != ES_OK)
-+					return -EINVAL;
-+
- 				xss = (hi << 32) | lo;
- 			}
- 
+ #ifdef CONFIG_NO_HZ_FULL
