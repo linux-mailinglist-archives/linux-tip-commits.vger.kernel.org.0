@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8B0F7B077B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Sep 2023 17:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB60C7B0784
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Sep 2023 17:01:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232278AbjI0PBh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 Sep 2023 11:01:37 -0400
+        id S232289AbjI0PBl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Sep 2023 11:01:41 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232274AbjI0PBg (ORCPT
+        with ESMTP id S232067AbjI0PBg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 27 Sep 2023 11:01:36 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE139193;
-        Wed, 27 Sep 2023 08:01:33 -0700 (PDT)
-Date:   Wed, 27 Sep 2023 15:01:31 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F5D1196;
+        Wed, 27 Sep 2023 08:01:34 -0700 (PDT)
+Date:   Wed, 27 Sep 2023 15:01:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695826891;
+        s=2020; t=1695826892;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qBwhxxJMOLljiDx3QNMdAK4fQ8y/xjVjglmseFlax20=;
-        b=OWEQY6NCvaC3mN0row2lS9YWKn1AbGNShLxZkt9VdKLIA7Tu977Sl5hLDZjq7xElPYsAGo
-        +o1psGaG+PcssqFy4f3zhmYRXv0laTXS+p8Nt/ArVbbTZVIGO2IiQ92B0m0NCOtQjRhT7D
-        did3UxZARlUlgo7eSVoXDL1jDlh75fejQQWXYCb00H3Gjtn8yXQ0ZikpVfSWXOGj1z4pWH
-        qXdbv3gj44fFJCsbQLYFDgR5NdbI0qQgr/o1ZWd819saYoqg92SJKdBbG2upoOo3pBAVdX
-        ore1+00BQ576f4bf0oT/k5OpR7s2eZ2rTXjxgp1bW388RB2NM6ySlkvxLPddeA==
+        bh=0ZhjOmSStMre4n+1d7k4HxOZCTiNq9yelwWAhe5xHFM=;
+        b=VksODYStvXKNho2lLF7tELW2L0FHJBbGSlP/9czDTTXsLak4fQ/9QpR71/T/8hRZbo5Vyk
+        ISpBA0pJt8jcso+qVeStMv1RkxDmZotu7J5aygVwydcTslp0D7YZYfcT3YN8AmtLIYBfcR
+        8kmez+zK3xXTSr7leYS+gV9SMPsugZ1CUwwjB5B8GWlB+CE/YnQrRPeUAfahdNZN1WxoWS
+        YfnmR4U5hx8Xg9AZbemQ/Lx6j0InEoHvsbaQcpKblOh0pS7NJbtyOtXvhf906SOCJG/kfQ
+        FjiEIeD33T97hOqnGAvZw6xsZI0F3mc8eUH6WvZexl4iiZGJM7hOGGN5VBw/pg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695826891;
+        s=2020e; t=1695826892;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qBwhxxJMOLljiDx3QNMdAK4fQ8y/xjVjglmseFlax20=;
-        b=vwIsXdF6O4ytXpnIlsHfpMKP9Aq0jtOBblVFqpf+2AVrAQEcZkxOsCIdQgQzzhLKavCWn7
-        f2pT2GUPETYnpSAw==
+        bh=0ZhjOmSStMre4n+1d7k4HxOZCTiNq9yelwWAhe5xHFM=;
+        b=4ifXXgSQSnqb1Ezd+9cuijaif3i3PdydetiSXEXVNJpsbwZFFERwJ2WnA0gSAcQHB8F/Su
+        1KTG02d/4zI9rLCw==
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] tick/nohz: Update obsolete comments
+Subject: [tip: timers/core] timers: Tag (hr)timer softirq as hotplug safe
 Cc:     Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230912104406.312185-3-frederic@kernel.org>
-References: <20230912104406.312185-3-frederic@kernel.org>
+In-Reply-To: <20230912104406.312185-6-frederic@kernel.org>
+References: <20230912104406.312185-6-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169582689118.27769.11953848930688373230.tip-bot2@tip-bot2>
+Message-ID: <169582689232.27769.17167363673386375890.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,99 +68,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     822deeed3a6a3fdf0cd899d3b403ecbb12fb6c7a
-Gitweb:        https://git.kernel.org/tip/822deeed3a6a3fdf0cd899d3b403ecbb12fb6c7a
+Commit-ID:     1a6a464774947920dcedcf7409be62495c7cedd0
+Gitweb:        https://git.kernel.org/tip/1a6a464774947920dcedcf7409be62495c7cedd0
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Tue, 12 Sep 2023 12:44:03 +02:00
+AuthorDate:    Tue, 12 Sep 2023 12:44:06 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 27 Sep 2023 16:58:10 +02:00
+CommitterDate: Wed, 27 Sep 2023 16:54:03 +02:00
 
-tick/nohz: Update obsolete comments
+timers: Tag (hr)timer softirq as hotplug safe
 
-Some comments are obsolete enough to assume that IRQ exit restarts the
-tick in idle or RCU is turned on at the same time as the tick, among
-other details.
+Specific stress involving frequent CPU-hotplug operations, such as
+running rcutorture for example, may trigger the following message:
 
-Update them and add more.
+  NOHZ tick-stop error: local softirq work is pending, handler #02!!!"
 
+This happens in the CPU-down hotplug process, after
+CPUHP_AP_SMPBOOT_THREADS whose teardown callback parks ksoftirqd, and
+before the target CPU shuts down through CPUHP_AP_IDLE_DEAD. In this
+fragile intermediate state, softirqs waiting for threaded handling may be
+forever ignored and eventually reported by the idle task as in the above
+example.
+
+However some vectors are known to be safe as long as the corresponding
+subsystems have teardown callbacks handling the migration of their
+events. The above error message reports pending timers softirq although
+this vector can be considered as hotplug safe because the
+CPUHP_TIMERS_PREPARE teardown callback performs the necessary migration
+of timers after the death of the CPU. Hrtimers also have a similar
+hotplug handling.
+
+Therefore this error message, as far as (hr-)timers are concerned, can
+be considered spurious and the relevant softirq vectors can be marked as
+hotplug safe.
+
+Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230912104406.312185-3-frederic@kernel.org
-
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230912104406.312185-6-frederic@kernel.org
 ---
- kernel/time/tick-sched.c | 46 ++++++++++++++++++++++++++++++---------
- 1 file changed, 36 insertions(+), 10 deletions(-)
+ include/linux/interrupt.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index b66dd0f..95a8d1d 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1175,12 +1175,23 @@ void tick_nohz_idle_enter(void)
- }
- 
- /**
-- * tick_nohz_irq_exit - update next tick event from interrupt exit
-+ * tick_nohz_irq_exit - Notify the tick about IRQ exit
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index a92bce4..4a1dc88 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -569,8 +569,12 @@ enum
+  * 	2) rcu_report_dead() reports the final quiescent states.
   *
-- * When an interrupt fires while we are idle and it doesn't cause
-- * a reschedule, it may still add, modify or delete a timer, enqueue
-- * an RCU callback, etc...
-- * So we need to re-calculate and reprogram the next tick event.
-+ * A timer may have been added/modified/deleted either by the current IRQ,
-+ * or by another place using this IRQ as a notification. This IRQ may have
-+ * also updated the RCU callback list. These events may require a
-+ * re-evaluation of the next tick. Depending on the context:
+  * _ IRQ_POLL: irq_poll_cpu_dead() migrates the queue
 + *
-+ * 1) If the CPU is idle and no resched is pending, just proceed with idle
-+ *    time accounting. The next tick will be re-evaluated on the next idle
-+ *    loop iteration.
-+ *
-+ * 2) If the CPU is nohz_full:
-+ *
-+ *    2.1) If there is any tick dependency, restart the tick if stopped.
-+ *
-+ *    2.2) If there is no tick dependency, (re-)evaluate the next tick and
-+ *         stop/update it accordingly.
++ * _ (HR)TIMER_SOFTIRQ: (hr)timers_dead_cpu() migrates the queue
   */
- void tick_nohz_irq_exit(void)
- {
-@@ -1330,11 +1341,20 @@ static void tick_nohz_idle_update_tick(struct tick_sched *ts, ktime_t now)
- }
+-#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(RCU_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ))
++#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(TIMER_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ) |\
++				   BIT(HRTIMER_SOFTIRQ) | BIT(RCU_SOFTIRQ))
++
  
- /**
-- * tick_nohz_idle_exit - restart the idle tick from the idle task
-+ * tick_nohz_idle_exit - Update the tick upon idle task exit
-+ *
-+ * When the idle task exits, update the tick depending on the
-+ * following situations:
-+ *
-+ * 1) If the CPU is not in nohz_full mode (most cases), then
-+ *    restart the tick.
-+ *
-+ * 2) If the CPU is in nohz_full mode (corner case):
-+ *   2.1) If the tick can be kept stopped (no tick dependencies)
-+ *        then re-eavaluate the next tick and try to keep it stopped
-+ *        as long as possible.
-+ *   2.2) If the tick has dependencies, restart the tick.
-  *
-- * Restart the idle tick when the CPU is woken up from idle
-- * This also exit the RCU extended quiescent state. The CPU
-- * can use RCU again after this function is called.
-  */
- void tick_nohz_idle_exit(void)
- {
-@@ -1364,7 +1384,13 @@ void tick_nohz_idle_exit(void)
- }
- 
- /*
-- * The nohz low res interrupt handler
-+ * In low-resolution mode, the tick handler must be implemented directly
-+ * at the clockevent level. hrtimer can't be used instead because its
-+ * infrastructure actually relies on the tick itself as a backend in
-+ * low-resolution mode (see hrtimer_run_queues()).
-+ *
-+ * This low-resolution handler still makes use of some hrtimer APIs meanwhile
-+ * for commodity with expiration calculation and forwarding.
-  */
- static void tick_nohz_lowres_handler(struct clock_event_device *dev)
- {
+ /* map softirq index to softirq name. update 'softirq_to_name' in
+  * kernel/softirq.c when adding a new softirq.
