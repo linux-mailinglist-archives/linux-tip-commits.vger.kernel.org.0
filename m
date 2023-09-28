@@ -2,55 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43B667B2794
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Sep 2023 23:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F324E7B28DF
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Sep 2023 01:38:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231322AbjI1Ve7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Sep 2023 17:34:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35752 "EHLO
+        id S229794AbjI1XiV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 28 Sep 2023 19:38:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230325AbjI1Ve6 (ORCPT
+        with ESMTP id S229541AbjI1XiU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Sep 2023 17:34:58 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43D7DF3;
-        Thu, 28 Sep 2023 14:34:57 -0700 (PDT)
-Date:   Thu, 28 Sep 2023 21:34:55 -0000
+        Thu, 28 Sep 2023 19:38:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF22195;
+        Thu, 28 Sep 2023 16:38:18 -0700 (PDT)
+Date:   Thu, 28 Sep 2023 23:38:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695936896;
+        s=2020; t=1695944296;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UXcf9j5duowdCJmXyGkOIvtZ8RYMFnwjC9B4CpJMimQ=;
-        b=QOFiEDIhrjXJoupgnvXj5owFU+2LDhzVV0iQLm6R6M9cV8e8wvV6DL1+emi8PmRrTQ6n8Y
-        uM4l7Er9m0yccvKOKGA2KgjI9nEGxNGcsxi7Qj+G2xXC6B2LC2h1CCKzbamCEEif3wB0oj
-        TOwYnzQg4FjAVkidbsMW12KvhjaBTrb3w+lowf0WzeY//XF/E7eHywWLV+euGCaUubG15j
-        tOWmfocgf7rCzk+aQGlY70X5Z42Dv48BCiebprfsCpfn2zjKjpCDyf7ijPPx7eEeeKKwv5
-        qkbUKBPxJYF40yYJc5SsfHEeieG+ZjJF9EZJvCJiaQ5pkCzSENSjSYP3fszP+Q==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=8CmroMhSfWyOMfTzhtju1lshDiYJj149VGMIuDkgZ5o=;
+        b=kNrvUWMfxPrZZHUDBxt6XnyuP8wSYOvBWORu5yUGfVdwlKSomdhFLRX4VoKCBqnN6cMlkJ
+        w9WtUhOuP7MvBARKsMcuaFvd102RI16a6ePVBCzZ2DNbNzi9ekjxSmkzHg4Aj6As6enfdu
+        P+GUONCf0fhiVxrzhKfLnz0EDlUidrRAO7sjKlFgdbPKWrUMW2Gm0tQi/q2FiplW0cm6TC
+        7G7Zuvm3Z5gMZ4/BfV5KeRcddCapCqI05wvoBPkrNpig7vATJFCCyZNGpjq48HfLTKaghk
+        JV5k2zrgdRbVQP01PdqP+RaryqAq4knD+bmhOeRzNr51RekeGR0VtHyuc8piVg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695936896;
+        s=2020e; t=1695944296;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UXcf9j5duowdCJmXyGkOIvtZ8RYMFnwjC9B4CpJMimQ=;
-        b=gLR4ovGG04dQjR3ZxJfmSSAhqXDMq7h/mVKO6RVuG75ywnwvy7xBTOiBe5F3e4A4pDVw35
-        rtwa/j3pjck9KoBQ==
-From:   "tip-bot2 for Yang Li" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=8CmroMhSfWyOMfTzhtju1lshDiYJj149VGMIuDkgZ5o=;
+        b=8/RiImtIhpcTEQ7NvznRc3ZMrnIvYqF4VMN3Y2vW/EKXVTEy3zkyhC8Vavn0pbGtv9IPkr
+        KtfoSwnz4hi5S9Cg==
+From:   "tip-bot2 for Haitao Huang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/srso: Remove unnecessary semicolon
-Cc:     Yang Li <yang.lee@linux.alibaba.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/sgx: Resolves SECS reclaim vs. page fault for EAUG race
+Cc:     Haitao Huang <haitao.huang@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Kai Huang <kai.huang@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230810010550.25733-1-yang.lee@linux.alibaba.com>
-References: <20230810010550.25733-1-yang.lee@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <169593689515.27769.18026785773995918589.tip-bot2@tip-bot2>
+Message-ID: <169594429559.27769.15062614937556087965.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,38 +62,118 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/bugs branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     5c44836dd1451c754c58cea5179d2fa5cbd9fc85
-Gitweb:        https://git.kernel.org/tip/5c44836dd1451c754c58cea5179d2fa5cbd9fc85
-Author:        Yang Li <yang.lee@linux.alibaba.com>
-AuthorDate:    Thu, 10 Aug 2023 09:05:50 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 28 Sep 2023 23:28:21 +02:00
+Commit-ID:     c6c2adcba50c2622ed25ba5d5e7f05f584711358
+Gitweb:        https://git.kernel.org/tip/c6c2adcba50c2622ed25ba5d5e7f05f584711358
+Author:        Haitao Huang <haitao.huang@linux.intel.com>
+AuthorDate:    Thu, 27 Jul 2023 22:10:24 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 28 Sep 2023 16:16:40 -07:00
 
-x86/srso: Remove unnecessary semicolon
+x86/sgx: Resolves SECS reclaim vs. page fault for EAUG race
 
-scripts/coccinelle/misc/semicolon.cocci reports:
+The SGX EPC reclaimer (ksgxd) may reclaim the SECS EPC page for an
+enclave and set secs.epc_page to NULL. The SECS page is used for EAUG
+and ELDU in the SGX page fault handler. However, the NULL check for
+secs.epc_page is only done for ELDU, not EAUG before being used.
 
-  arch/x86/kernel/cpu/bugs.c:713:2-3: Unneeded semicolon
+Fix this by doing the same NULL check and reloading of the SECS page as
+needed for both EAUG and ELDU.
 
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230810010550.25733-1-yang.lee@linux.alibaba.com
+The SECS page holds global enclave metadata. It can only be reclaimed
+when there are no other enclave pages remaining. At that point,
+virtually nothing can be done with the enclave until the SECS page is
+paged back in.
+
+An enclave can not run nor generate page faults without a resident SECS
+page. But it is still possible for a #PF for a non-SECS page to race
+with paging out the SECS page: when the last resident non-SECS page A
+triggers a #PF in a non-resident page B, and then page A and the SECS
+both are paged out before the #PF on B is handled.
+
+Hitting this bug requires that race triggered with a #PF for EAUG.
+Following is a trace when it happens.
+
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+RIP: 0010:sgx_encl_eaug_page+0xc7/0x210
+Call Trace:
+ ? __kmem_cache_alloc_node+0x16a/0x440
+ ? xa_load+0x6e/0xa0
+ sgx_vma_fault+0x119/0x230
+ __do_fault+0x36/0x140
+ do_fault+0x12f/0x400
+ __handle_mm_fault+0x728/0x1110
+ handle_mm_fault+0x105/0x310
+ do_user_addr_fault+0x1ee/0x750
+ ? __this_cpu_preempt_check+0x13/0x20
+ exc_page_fault+0x76/0x180
+ asm_exc_page_fault+0x27/0x30
+
+Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized enclave")
+Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20230728051024.33063-1-haitao.huang%40linux.intel.com
 ---
- arch/x86/kernel/cpu/bugs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/sgx/encl.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 016a326..bb0ab84 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -717,7 +717,7 @@ void update_gds_msr(void)
- 	case GDS_MITIGATION_UCODE_NEEDED:
- 	case GDS_MITIGATION_HYPERVISOR:
- 		return;
--	};
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 91fa70e..279148e 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -235,6 +235,21 @@ static struct sgx_epc_page *sgx_encl_eldu(struct sgx_encl_page *encl_page,
+ 	return epc_page;
+ }
+ 
++/*
++ * Ensure the SECS page is not swapped out.  Must be called with encl->lock
++ * to protect the enclave states including SECS and ensure the SECS page is
++ * not swapped out again while being used.
++ */
++static struct sgx_epc_page *sgx_encl_load_secs(struct sgx_encl *encl)
++{
++	struct sgx_epc_page *epc_page = encl->secs.epc_page;
++
++	if (!epc_page)
++		epc_page = sgx_encl_eldu(&encl->secs, NULL);
++
++	return epc_page;
++}
++
+ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
+ 						  struct sgx_encl_page *entry)
+ {
+@@ -248,11 +263,9 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
+ 		return entry;
+ 	}
+ 
+-	if (!(encl->secs.epc_page)) {
+-		epc_page = sgx_encl_eldu(&encl->secs, NULL);
+-		if (IS_ERR(epc_page))
+-			return ERR_CAST(epc_page);
+-	}
++	epc_page = sgx_encl_load_secs(encl);
++	if (IS_ERR(epc_page))
++		return ERR_CAST(epc_page);
+ 
+ 	epc_page = sgx_encl_eldu(entry, encl->secs.epc_page);
+ 	if (IS_ERR(epc_page))
+@@ -339,6 +352,13 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
+ 
+ 	mutex_lock(&encl->lock);
+ 
++	epc_page = sgx_encl_load_secs(encl);
++	if (IS_ERR(epc_page)) {
++		if (PTR_ERR(epc_page) == -EBUSY)
++			vmret = VM_FAULT_NOPAGE;
++		goto err_out_unlock;
 +	}
- 
- 	wrmsrl(MSR_IA32_MCU_OPT_CTRL, mcu_ctrl);
- 
++
+ 	epc_page = sgx_alloc_epc_page(encl_page, false);
+ 	if (IS_ERR(epc_page)) {
+ 		if (PTR_ERR(epc_page) == -EBUSY)
