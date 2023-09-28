@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3056A7B157A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Sep 2023 10:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC187B15D6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Sep 2023 10:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230250AbjI1IBD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Sep 2023 04:01:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57262 "EHLO
+        id S231247AbjI1IQy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 28 Sep 2023 04:16:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbjI1IBC (ORCPT
+        with ESMTP id S229539AbjI1IQr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Sep 2023 04:01:02 -0400
+        Thu, 28 Sep 2023 04:16:47 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560D492;
-        Thu, 28 Sep 2023 01:01:01 -0700 (PDT)
-Date:   Thu, 28 Sep 2023 08:00:58 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D44B198;
+        Thu, 28 Sep 2023 01:16:45 -0700 (PDT)
+Date:   Thu, 28 Sep 2023 08:16:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695888059;
+        s=2020; t=1695889004;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=y8b9q38myYZXgEZ8xuimBDP6RUNofjH0Ic81MrIcnGE=;
-        b=JtEx1TwmMZq11ZYN8Lhi08+7TqyGq/JC92AyNl1TJZF5cDd0Trly4sBV9O3qlg4EdzDe0h
-        BE+z8TxbaFpFz0ADQV2SlXmVjudJvblbhla6kKRGMepPEd2U/FrdqKc1sulXI2VFjjzG4d
-        Euw+tQLDtmTGdsSXQhTEKseBExvYTXJoyW0ZVqE8ClO0YemjpNKRPE0+fuoXW3erY/J50e
-        v6lGF9BcLl5JXvT9f02WAId0UqIpYiNaWEcSETFYfX++48zPmtlWgaE9sPjydiLg7CQa4S
-        WO72lYtE6y9NbTXINZV4goBCwxiRaVzUXtKKK3KJ4Y5WxDfDp9Ua5oEvzbtuIw==
+        bh=C0StuuUvChvgWlQD+lOagXYdDLAMj9WWMQTI2JI1PDU=;
+        b=k7aCSQ0kZYZwseKsFYAPIrCEqhKdcNc8rW8/JgL/b3rPwoWkE3U8/LFEO3D/So2qyYlpMp
+        DxvnBYV5gsxG+1P2JDrdmrDF6br+Sdcnvr03fDs1MS8zZSiI1ka9YPBFcqRMfdSAV50B9g
+        Q9U6O5qLSdsbemXXQ3poKFg0Qeb+P/9twyd4LfvTw+iYjyo4MUmaP3TAXdQBPBgGjfF6cy
+        1tleD2T/QM+R0FoRF8us4W/fLs8uKw6A6Jd3aLR7/C8X/yQHQOYa55rn8QLQI+5Tbtuu4w
+        drt0u8W7RIox0KogKkXFPex1EZsWiSSvLngVJZ7OK2LBVIUJe2WSxtUxYIxS3w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695888059;
+        s=2020e; t=1695889004;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=y8b9q38myYZXgEZ8xuimBDP6RUNofjH0Ic81MrIcnGE=;
-        b=bsIj1MwN1I9uphbtoUNGV/CTJTryqfFfS7mnk99gQsJV6VBRhSYWM25FBMf7hU/0xLnwKR
-        vohvaSsIrUdaTpDg==
-From:   "tip-bot2 for Pu Wen" <tip-bot2@linutronix.de>
+        bh=C0StuuUvChvgWlQD+lOagXYdDLAMj9WWMQTI2JI1PDU=;
+        b=aQEFGGI1rVM3Aey3RhTzUeQxdWuoF0t/ZU347KwSwkC9yMCdL3xfCL7Upo0U4P3VQSCtfr
+        ZV9j1PSCXzDMfVBA==
+From:   "tip-bot2 for Alexey Dobriyan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/srso: Add SRSO mitigation for Hygon processors
-Cc:     Pu Wen <puwen@hygon.cn>, Ingo Molnar <mingo@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, <stable@vger.kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <tencent_4A14812842F104E93AA722EC939483CEFF05@qq.com>
-References: <tencent_4A14812842F104E93AA722EC939483CEFF05@qq.com>
+Subject: [tip: x86/boot] x86/boot: Compile boot code with -std=gnu11 too
+Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "H. Peter Anvin (Intel)" <hpa@zytor.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <2058761e-12a4-4b2f-9690-3c3c1c9902a5@p183>
+References: <2058761e-12a4-4b2f-9690-3c3c1c9902a5@p183>
 MIME-Version: 1.0
-Message-ID: <169588805808.27769.603081620807141672.tip-bot2@tip-bot2>
+Message-ID: <169588900363.27769.15241050401538537889.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,39 +65,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     a5ef7d68cea1344cf524f04981c2b3f80bedbb0d
-Gitweb:        https://git.kernel.org/tip/a5ef7d68cea1344cf524f04981c2b3f80bedbb0d
-Author:        Pu Wen <puwen@hygon.cn>
-AuthorDate:    Thu, 28 Sep 2023 14:59:16 +08:00
+Commit-ID:     b3bee1e7c3f2b1b77182302c7b2131c804175870
+Gitweb:        https://git.kernel.org/tip/b3bee1e7c3f2b1b77182302c7b2131c804175870
+Author:        Alexey Dobriyan <adobriyan@gmail.com>
+AuthorDate:    Wed, 27 Sep 2023 18:42:11 +03:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 28 Sep 2023 09:57:07 +02:00
+CommitterDate: Thu, 28 Sep 2023 10:11:27 +02:00
 
-x86/srso: Add SRSO mitigation for Hygon processors
+x86/boot: Compile boot code with -std=gnu11 too
 
-Add mitigation for the speculative return stack overflow vulnerability
-which exists on Hygon processors too.
+Use -std=gnu11 for consistency with main kernel code.
 
-Signed-off-by: Pu Wen <puwen@hygon.cn>
+It doesn't seem to change anything in vmlinux.
+
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/tencent_4A14812842F104E93AA722EC939483CEFF05@qq.com
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Link: https://lore.kernel.org/r/2058761e-12a4-4b2f-9690-3c3c1c9902a5@p183
 ---
- arch/x86/kernel/cpu/common.c | 2 +-
+ arch/x86/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 382d4e6..4e5ffc8 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1303,7 +1303,7 @@ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_AMD(0x15, RETBLEED),
- 	VULNBL_AMD(0x16, RETBLEED),
- 	VULNBL_AMD(0x17, RETBLEED | SMT_RSB | SRSO),
--	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB),
-+	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB | SRSO),
- 	VULNBL_AMD(0x19, SRSO),
- 	{}
- };
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 5bfe5ca..776331f 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -43,7 +43,7 @@ endif
+ 
+ # How to compile the 16-bit code.  Note we always compile for -march=i386;
+ # that way we can complain to the user if the CPU is insufficient.
+-REALMODE_CFLAGS	:= -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
++REALMODE_CFLAGS	:= -std=gnu11 -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
+ 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
+ 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
+ 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
