@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07E407B2729
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Sep 2023 23:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78CC57B272D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Sep 2023 23:11:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231322AbjI1VKW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Sep 2023 17:10:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60638 "EHLO
+        id S231322AbjI1VLQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 28 Sep 2023 17:11:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230325AbjI1VKW (ORCPT
+        with ESMTP id S232052AbjI1VLP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Sep 2023 17:10:22 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1DE4F3;
-        Thu, 28 Sep 2023 14:10:19 -0700 (PDT)
-Date:   Thu, 28 Sep 2023 21:10:17 -0000
+        Thu, 28 Sep 2023 17:11:15 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A101A2;
+        Thu, 28 Sep 2023 14:11:12 -0700 (PDT)
+Date:   Thu, 28 Sep 2023 21:11:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695935418;
+        s=2020; t=1695935470;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=77afw0i6mpY2aGIKdmNyBfPjlx58NITlKelMTNshHZU=;
-        b=hLhq0xFTs+S6r9aP+UkMTN0NXO8d1/QXIyHoYtHIBHPc+UekifEUpmZti+ohq+8XbsZ0bt
-        lcoVAKsnrghIgLAwc2aZmPFLJzsJXnEL0Ep8Kb4aIb0tGBDb3pEaMmjEA/Z2HxA4ccwUrH
-        j+rbEH6o0lXPaOGcv1Fhcn+aD5z/0sGiEASEbCELjkpKFML3AUytX3DKJH5ku6fwPcttez
-        B1sc5ZRwxH1tsb8JMl5uzS1D95ZzDmLRNwyNMSqbK9QA4OGLmn8keI5yHMI1Tk45w6PAI9
-        UfMXhmBauUDADmcTMvgUllklOWTfw6bieElEMczH0HFszldhzsXgiIM2tUyI8w==
+        bh=oe1hnQ8O830GEjIaYbkhYp049qinjisAloma8VEM6yo=;
+        b=n1L6U/qBJfah3tECd9qQQtOPJ+fbVsqTdcwU2zV/XnQ7PJhm1HpvstxL/bdNGrvU3LpLCp
+        0Z7j3OTQWQA+ZdcNE9qlqci2n1BvGRz7c9kPeACQ5F4G+WUdTEqJYKlkLlwIVORZ8VFaUV
+        j3NZmYknkZI/JpUmrtKTMeEefd/fAGtdv8s9u+IYGY4+U3ZwDJ2RDXZx71kO25ykOTlacS
+        e5sE7ZQ5roOsoKMIIVU1ZqoEUeg2lAK+t+nDL2Jyb63UYQ88HPbCv02sH2Ej/2f6e2S6FB
+        54thRvmJ9AmxP6z36/UMP/S8fjHY2mhqHukHyprqtLLKBfFuPE1kkZEECfUh3w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695935418;
+        s=2020e; t=1695935470;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=77afw0i6mpY2aGIKdmNyBfPjlx58NITlKelMTNshHZU=;
-        b=yOHtKbUgwS3lTMkCLB/jsalNKxve0TGZweICn6F/B3nND4a7eqoyR1byK8hx7V1tHwpj9S
-        lToo2iRezzkXwhBw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=oe1hnQ8O830GEjIaYbkhYp049qinjisAloma8VEM6yo=;
+        b=sI/kCc2n9pPftBQJdDM20sOsXVUVhVgFlQ3QPrc5vTCLEJTzlwu5PNMezk5JTeugJIViH6
+        bH12Y2/z35QR52Dw==
+From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] Merge tag 'irqchip-fixes-6.6-1' of
- git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into
- irq/urgent
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20230924094105.2361754-1-maz@kernel.org>
-References: <20230924094105.2361754-1-maz@kernel.org>
+Subject: [tip: sched/urgent] sched/rt: Fix live lock between
+ select_fallback_rq() and RT push
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230923011409.3522762-1-joel@joelfernandes.org>
+References: <20230923011409.3522762-1-joel@joelfernandes.org>
 MIME-Version: 1.0
-Message-ID: <169593541756.27769.14546547060373396545.tip-bot2@tip-bot2>
+Message-ID: <169593547011.27769.15927547566549866294.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,24 +66,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     9cd847ee4d64c10b52f26f18d19eb6462ba7d2fe
-Gitweb:        https://git.kernel.org/tip/9cd847ee4d64c10b52f26f18d19eb6462ba7d2fe
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 28 Sep 2023 23:04:13 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 28 Sep 2023 23:04:13 +02:00
+Commit-ID:     fc09027786c900368de98d03d40af058bcb01ad9
+Gitweb:        https://git.kernel.org/tip/fc09027786c900368de98d03d40af058bcb01ad9
+Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
+AuthorDate:    Sat, 23 Sep 2023 01:14:08 
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 28 Sep 2023 22:58:13 +02:00
 
-Merge tag 'irqchip-fixes-6.6-1' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/urgent
+sched/rt: Fix live lock between select_fallback_rq() and RT push
 
-Pull irqchip fixes from Marc Zygnier:
+During RCU-boost testing with the TREE03 rcutorture config, I found that
+after a few hours, the machine locks up.
 
-  - Fix QC PDC v3.2 support by working around broken firmware tables
+On tracing, I found that there is a live lock happening between 2 CPUs.
+One CPU has an RT task running, while another CPU is being offlined
+which also has an RT task running.  During this offlining, all threads
+are migrated. The migration thread is repeatedly scheduled to migrate
+actively running tasks on the CPU being offlined. This results in a live
+lock because select_fallback_rq() keeps picking the CPU that an RT task
+is already running on only to get pushed back to the CPU being offlined.
 
-  - Fix rzg2l-irqc missing #interrupt-cells description in the DT binding
+It is anyway pointless to pick CPUs for pushing tasks to if they are
+being offlined only to get migrated away to somewhere else. This could
+also add unwanted latency to this task.
 
-  - Fix rzg2l-irqc interrupt masking
+Fix these issues by not selecting CPUs in RT if they are not 'active'
+for scheduling, using the cpu_active_mask. Other parts in core.c already
+use cpu_active_mask to prevent tasks from being put on CPUs going
+offline.
 
-Link: https://lore.kernel.org/lkml/20230924094105.2361754-1-maz@kernel.org
+With this fix I ran the tests for days and could not reproduce the
+hang. Without the patch, I hit it in a few hours.
+
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230923011409.3522762-1-joel@joelfernandes.org
 ---
+ kernel/sched/cpupri.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
+index a286e72..42c40cf 100644
+--- a/kernel/sched/cpupri.c
++++ b/kernel/sched/cpupri.c
+@@ -101,6 +101,7 @@ static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
+ 
+ 	if (lowest_mask) {
+ 		cpumask_and(lowest_mask, &p->cpus_mask, vec->mask);
++		cpumask_and(lowest_mask, lowest_mask, cpu_active_mask);
+ 
+ 		/*
+ 		 * We have to ensure that we have at least one bit
