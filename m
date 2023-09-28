@@ -2,93 +2,109 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC6D67B16E2
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Sep 2023 11:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 507B17B184A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Sep 2023 12:32:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231475AbjI1JMB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Sep 2023 05:12:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43054 "EHLO
+        id S231296AbjI1Kcn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 28 Sep 2023 06:32:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231415AbjI1JMA (ORCPT
+        with ESMTP id S231277AbjI1Kcm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Sep 2023 05:12:00 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9487BAC;
-        Thu, 28 Sep 2023 02:11:58 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-533df112914so10959889a12.0;
-        Thu, 28 Sep 2023 02:11:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695892317; x=1696497117; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Brc/POnVljwtPzRtlqMvgIaGf84HfKdQiP/5OunVW6c=;
-        b=Gbilb24IS6Df6CizuMC9ol13s1M+rZRwDw67OyDvf0+3wh2C/53GGi8yCku7qIwHHp
-         trv0sU6vn4Ha9HoxrLDlK6J4ICIvCpQ3gjAswgVs7Qt8JuqMBC8BPEryyFmYGYeOBqnw
-         fzgM3QS93uX3I1koOu/UAcKip1TicobNNV5KcsErA/uuKA1fiEskRcObihXxPvdoYr+n
-         6RMKKObGroabvnEFxV/Aun5kASX6Yb1neQn9uK2P6klpOx6IkQY4fzo2SV5Fz3I06Rq/
-         fEnlkASsA9PPmiWqoUTVksF2G6YYQkZ7yd8cigBbFrVupQ5ZZWPcbDECrTxW10rGr9Rm
-         jwbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695892317; x=1696497117;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Brc/POnVljwtPzRtlqMvgIaGf84HfKdQiP/5OunVW6c=;
-        b=U0yVR16TeMNiNzIng7HVNZkochJD6QXOiqiZMUoe6ybYbUPR1HRWE758N/8K+vAeao
-         gOqgunR6WGCvqIqMsHJ2Anag7O/ac5ETotwoujjOtiOx+0UhlvILuB66F0oKb+fBWtfv
-         7S1r+sZQbhdKjlcPavYFL7LUiRZHYSkI0ltIS3WHv2LEIBf2fVddc5g9RIjiQN+cKon9
-         SjgsSMHxeiVAJWs02Ak1ZnVscybbw08/L54ebaGzEWRjl6Zs0lgjG/yQg3p3CmYoJfIW
-         ndi8ftzJ0Q9T9hNqiNNQNDF/YalZ0Zu2ovkTpHXeOAq3tT9cd4WJJofnmcgTONqFgDHK
-         O9Ng==
-X-Gm-Message-State: AOJu0Yx0H+lEYTOBhW2v8P/3V/D1IWbjKJ/lqw4HkjBrTNZvIrkSUR12
-        nKlXIDlUiK0Rb+W+Q2SwXTkIIe7jCEw=
-X-Google-Smtp-Source: AGHT+IGYmPodVsPFAEXVbZmP3yNwy6N7YT1n3pbkCv4euWCuA5NpfvbgVHSd1DTJT5srjSEpvjwvEw==
-X-Received: by 2002:a05:6402:1850:b0:522:1d23:a1f8 with SMTP id v16-20020a056402185000b005221d23a1f8mr592910edy.26.1695892316632;
-        Thu, 28 Sep 2023 02:11:56 -0700 (PDT)
-Received: from gmail.com (1F2EF49C.nat.pool.telekom.hu. [31.46.244.156])
-        by smtp.gmail.com with ESMTPSA id q6-20020aa7da86000000b005307e75d24dsm9296894eds.17.2023.09.28.02.11.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Sep 2023 02:11:56 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Thu, 28 Sep 2023 11:11:54 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     linux-kernel@vger.kernel.org,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-tip-commits@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH] tick/nohz: Update comments some more
-Message-ID: <ZRVDWtcltu+QUW4+@gmail.com>
-References: <20230912104406.312185-3-frederic@kernel.org>
- <169582689118.27769.11953848930688373230.tip-bot2@tip-bot2>
- <ZRVCNeMcSQcXS36N@gmail.com>
+        Thu, 28 Sep 2023 06:32:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F3C7122;
+        Thu, 28 Sep 2023 03:32:41 -0700 (PDT)
+Date:   Thu, 28 Sep 2023 10:32:38 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1695897159;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tYmau7IMl7WD2vSqAsJO1NOZjklCa/Lh+h32BSGKsfg=;
+        b=dq9tZ/c6tKrFbBdurzccbRSM4NT/LiWfOSNApkP0hxdWF5JtgR45DwlWSGedTwqs/4Myen
+        WyGMQ1doOG9XCSGZ+pyTgE+BMxVj0jwKtb1ZkOyoFcRmKwaXTwMKuz6IRmMzCpZxbW7br8
+        9BXdzsGkx+VNbogDftJS2RjvcNGWA3FINyftTEJYYBvJ6VSxZSe6Y4BJ/2mXUiXCcGCEzx
+        0bBz30V44qkdENThcfGvXw889e5HMm65HMI1SSXohhyZP/JRWc9FA3BslqLuxc4mmcNtZE
+        fF1uglxixSvwOz3xWOfrAjNJ+kyJ0B58/RuRytz7PukYzxFANKFtz0U3VvpmVA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1695897159;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tYmau7IMl7WD2vSqAsJO1NOZjklCa/Lh+h32BSGKsfg=;
+        b=OjLa2oqg288XV6d2qE/rfOCJsuuRZ0uUWotWLBBFxO+3qqDn6HGauMKpbRa5MelEocOIfG
+        p6ZXKRB/UAyiHyDg==
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] irqdomain: Annotate struct irq_domain with __counted_by
+Cc:     Kees Cook <keescook@chromium.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20230922175127.work.214-kees@kernel.org>
+References: <20230922175127.work.214-kees@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZRVCNeMcSQcXS36N@gmail.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Message-ID: <169589715833.27769.918219900124749489.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the irq/core branch of tip:
 
-* Ingo Molnar <mingo@kernel.org> wrote:
+Commit-ID:     6260ecd04594360ae2af104fb2641317728a66e4
+Gitweb:        https://git.kernel.org/tip/6260ecd04594360ae2af104fb2641317728a66e4
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Fri, 22 Sep 2023 10:51:27 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 28 Sep 2023 12:25:31 +02:00
 
-> > + * infrastructure actually relies on the tick itself as a backend in
-> > + * low-resolution mode (see hrtimer_run_queues()).
-> > + *
-> > + * This low-resolution handler still makes use of some hrtimer APIs meanwhile
-> > + * for commodity with expiration calculation and forwarding.
-> 
-> commodity?
+irqdomain: Annotate struct irq_domain with __counted_by
 
-I presume 'commonality' was intended here?
+Prepare for the coming implementation by GCC and Clang of the __counted_by
+attribute. Flexible array members annotated with __counted_by can have
+their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
+(for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
+functions).
 
-Thanks,
+As found with Coccinelle[1], add __counted_by for struct irq_domain.
 
-	Ingo
+[1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
+
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20230922175127.work.214-kees@kernel.org
+
+---
+ include/linux/irqdomain.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index 51c254b..ee0a82c 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -174,7 +174,7 @@ struct irq_domain {
+ 	irq_hw_number_t			hwirq_max;
+ 	unsigned int			revmap_size;
+ 	struct radix_tree_root		revmap_tree;
+-	struct irq_data __rcu		*revmap[];
++	struct irq_data __rcu		*revmap[] __counted_by(revmap_size);
+ };
+ 
+ /* Irq domain flags */
