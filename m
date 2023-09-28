@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78CC57B272D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Sep 2023 23:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB2287B2736
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Sep 2023 23:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231322AbjI1VLQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Sep 2023 17:11:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45624 "EHLO
+        id S229478AbjI1VLu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 28 Sep 2023 17:11:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232052AbjI1VLP (ORCPT
+        with ESMTP id S232476AbjI1VLr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Sep 2023 17:11:15 -0400
+        Thu, 28 Sep 2023 17:11:47 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A101A2;
-        Thu, 28 Sep 2023 14:11:12 -0700 (PDT)
-Date:   Thu, 28 Sep 2023 21:11:10 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 847051A4;
+        Thu, 28 Sep 2023 14:11:45 -0700 (PDT)
+Date:   Thu, 28 Sep 2023 21:11:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695935470;
+        s=2020; t=1695935504;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oe1hnQ8O830GEjIaYbkhYp049qinjisAloma8VEM6yo=;
-        b=n1L6U/qBJfah3tECd9qQQtOPJ+fbVsqTdcwU2zV/XnQ7PJhm1HpvstxL/bdNGrvU3LpLCp
-        0Z7j3OTQWQA+ZdcNE9qlqci2n1BvGRz7c9kPeACQ5F4G+WUdTEqJYKlkLlwIVORZ8VFaUV
-        j3NZmYknkZI/JpUmrtKTMeEefd/fAGtdv8s9u+IYGY4+U3ZwDJ2RDXZx71kO25ykOTlacS
-        e5sE7ZQ5roOsoKMIIVU1ZqoEUeg2lAK+t+nDL2Jyb63UYQ88HPbCv02sH2Ej/2f6e2S6FB
-        54thRvmJ9AmxP6z36/UMP/S8fjHY2mhqHukHyprqtLLKBfFuPE1kkZEECfUh3w==
+        bh=p7sigFB184YC/SX6XMhV2FIvnc162HpcpbCQDua+9fg=;
+        b=WMQg8b6c5ytFhetly6y2zJQaK8TbQgHm8Z3IpIJ0kjaTwNdYBoYHOAqgVA9X5VZXcXkrY/
+        RpIGvPGTpFwdCwGfJs4grr1O8qXZRMbmcv7bzHkMCZqBzVBN6NLXf7zHcrhRMmlY1d5Hf3
+        dpzyt+ypyJnu4MBqupDCbYCpdYYz33X39UoJfRADOVso7fibsrYg3/ch3Cob7hS8OvHjHT
+        9PmlbvDUwdgPyvEm1X8aieiCoqYoY1v9PIQpC/OMkQXwYcxFCBxNjc0N18Wt4QlkfjbN7o
+        8N4W6G/lcXcIdRaooeQNf04m45WCCXxthPetqagr3ova+53DDoM1qJsx7QJ52g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695935470;
+        s=2020e; t=1695935504;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oe1hnQ8O830GEjIaYbkhYp049qinjisAloma8VEM6yo=;
-        b=sI/kCc2n9pPftBQJdDM20sOsXVUVhVgFlQ3QPrc5vTCLEJTzlwu5PNMezk5JTeugJIViH6
-        bH12Y2/z35QR52Dw==
-From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
+        bh=p7sigFB184YC/SX6XMhV2FIvnc162HpcpbCQDua+9fg=;
+        b=TQ4WV/LfFYDQk+s7osTutVt3WhmoBZ587ugS5qniCb7jFYp2vgc86wKaY0yUyq8yMDvMiD
+        ZkZrp7D9h9bM5/Dg==
+From:   "tip-bot2 for Adam Dunlap" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/rt: Fix live lock between
- select_fallback_rq() and RT push
-Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org,
+Subject: [tip: x86/mm] x86/sev-es: Allow copy_from_kernel_nofault() in earlier boot
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Adam Dunlap <acdunlap@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jacob Xu <jacobhxu@google.com>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230923011409.3522762-1-joel@joelfernandes.org>
-References: <20230923011409.3522762-1-joel@joelfernandes.org>
+In-Reply-To: <20230912002703.3924521-2-acdunlap@google.com>
+References: <20230912002703.3924521-2-acdunlap@google.com>
 MIME-Version: 1.0
-Message-ID: <169593547011.27769.15927547566549866294.tip-bot2@tip-bot2>
+Message-ID: <169593550362.27769.15603585869717433478.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,58 +65,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     fc09027786c900368de98d03d40af058bcb01ad9
-Gitweb:        https://git.kernel.org/tip/fc09027786c900368de98d03d40af058bcb01ad9
-Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
-AuthorDate:    Sat, 23 Sep 2023 01:14:08 
+Commit-ID:     f79936545fb122856bd78b189d3c7ee59928c751
+Gitweb:        https://git.kernel.org/tip/f79936545fb122856bd78b189d3c7ee59928c751
+Author:        Adam Dunlap <acdunlap@google.com>
+AuthorDate:    Mon, 11 Sep 2023 17:27:02 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 28 Sep 2023 22:58:13 +02:00
+CommitterDate: Thu, 28 Sep 2023 22:49:35 +02:00
 
-sched/rt: Fix live lock between select_fallback_rq() and RT push
+x86/sev-es: Allow copy_from_kernel_nofault() in earlier boot
 
-During RCU-boost testing with the TREE03 rcutorture config, I found that
-after a few hours, the machine locks up.
+Previously, if copy_from_kernel_nofault() was called before
+boot_cpu_data.x86_virt_bits was set up, then it would trigger undefined
+behavior due to a shift by 64.
 
-On tracing, I found that there is a live lock happening between 2 CPUs.
-One CPU has an RT task running, while another CPU is being offlined
-which also has an RT task running.  During this offlining, all threads
-are migrated. The migration thread is repeatedly scheduled to migrate
-actively running tasks on the CPU being offlined. This results in a live
-lock because select_fallback_rq() keeps picking the CPU that an RT task
-is already running on only to get pushed back to the CPU being offlined.
+This ended up causing boot failures in the latest version of ubuntu2204
+in the gcp project when using SEV-SNP.
 
-It is anyway pointless to pick CPUs for pushing tasks to if they are
-being offlined only to get migrated away to somewhere else. This could
-also add unwanted latency to this task.
+Specifically, this function is called during an early #VC handler which
+is triggered by a CPUID to check if NX is implemented.
 
-Fix these issues by not selecting CPUs in RT if they are not 'active'
-for scheduling, using the cpu_active_mask. Other parts in core.c already
-use cpu_active_mask to prevent tasks from being put on CPUs going
-offline.
-
-With this fix I ran the tests for days and could not reproduce the
-hang. Without the patch, I hit it in a few hours.
-
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Fixes: 1aa9aa8ee517 ("x86/sev-es: Setup GHCB-based boot #VC handler")
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Adam Dunlap <acdunlap@google.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230923011409.3522762-1-joel@joelfernandes.org
+Tested-by: Jacob Xu <jacobhxu@google.com>
+Link: https://lore.kernel.org/r/20230912002703.3924521-2-acdunlap@google.com
 ---
- kernel/sched/cpupri.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/mm/maccess.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
-index a286e72..42c40cf 100644
---- a/kernel/sched/cpupri.c
-+++ b/kernel/sched/cpupri.c
-@@ -101,6 +101,7 @@ static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
+diff --git a/arch/x86/mm/maccess.c b/arch/x86/mm/maccess.c
+index 5a53c2c..6993f02 100644
+--- a/arch/x86/mm/maccess.c
++++ b/arch/x86/mm/maccess.c
+@@ -9,12 +9,21 @@ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
+ 	unsigned long vaddr = (unsigned long)unsafe_src;
  
- 	if (lowest_mask) {
- 		cpumask_and(lowest_mask, &p->cpus_mask, vec->mask);
-+		cpumask_and(lowest_mask, lowest_mask, cpu_active_mask);
- 
- 		/*
- 		 * We have to ensure that we have at least one bit
+ 	/*
+-	 * Range covering the highest possible canonical userspace address
+-	 * as well as non-canonical address range. For the canonical range
+-	 * we also need to include the userspace guard page.
++	 * Do not allow userspace addresses.  This disallows
++	 * normal userspace and the userspace guard page:
+ 	 */
+-	return vaddr >= TASK_SIZE_MAX + PAGE_SIZE &&
+-	       __is_canonical_address(vaddr, boot_cpu_data.x86_virt_bits);
++	if (vaddr < TASK_SIZE_MAX + PAGE_SIZE)
++		return false;
++
++	/*
++	 * Allow everything during early boot before 'x86_virt_bits'
++	 * is initialized.  Needed for instruction decoding in early
++	 * exception handlers.
++	 */
++	if (!boot_cpu_data.x86_virt_bits)
++		return true;
++
++	return __is_canonical_address(vaddr, boot_cpu_data.x86_virt_bits);
+ }
+ #else
+ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
