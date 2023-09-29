@@ -2,60 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 206AE7B2F2F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Sep 2023 11:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03A6D7B30F4
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Sep 2023 12:58:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232950AbjI2Jcq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 29 Sep 2023 05:32:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54270 "EHLO
+        id S233090AbjI2K6Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 29 Sep 2023 06:58:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232915AbjI2Jcp (ORCPT
+        with ESMTP id S233102AbjI2K6X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 29 Sep 2023 05:32:45 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D6FB195;
-        Fri, 29 Sep 2023 02:32:43 -0700 (PDT)
-Date:   Fri, 29 Sep 2023 09:32:41 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695979961;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3/uIN1it0W3Eg412WINyJjgbanaVu7oqFOS2ToQ1k1I=;
-        b=oPDlZe4EuEBJHu7RD8eXfYDqAq8Ky5aVJ4eAsVYD97sZNRueh6YGOwao7x8en3nuDXqUKU
-        KeTw9CLhRyMCuR/GxcqzJpstPluTSTUHsamrcIUPZrqUunlU9Z/7jJ6FJxIWj0HlaPRUID
-        tDDFhzI1iqHupi06YRMhJOv++cok1FUSJJhW1hybqNTMwagaMRVt3ds/XdClzg5rfXOIXm
-        ER2y86QFPElwmqtHqzJkTmKlvmgNzyx9ksRbJwcHGKdov7ISQ10bW+xgdLw1L1SUQcfgRP
-        1mrs7ot1GtPYg3xp9T6pmEVbtNxl9JLrVfkmN+osLYKFpdTSD9AvA4ex/9kP7Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695979961;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3/uIN1it0W3Eg412WINyJjgbanaVu7oqFOS2ToQ1k1I=;
-        b=T0gwaieTwhQ1cUQJdwVlYJdqFCzQ/hiiqNyQBwRtFwFAHpn9ZzDVTl9BMmFls0QVVQ0bXS
-        VSEHqw15nSP+UsDw==
-From:   "tip-bot2 for Baolin Liu" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu/amd: Remove redundant 'break' statement
-Cc:     Baolin Liu <liubaolin@kylinos.cn>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <396ba14d.2726.189d957b74b.Coremail.liubaolin12138@163.com>
-References: <396ba14d.2726.189d957b74b.Coremail.liubaolin12138@163.com>
+        Fri, 29 Sep 2023 06:58:23 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE2D71726;
+        Fri, 29 Sep 2023 03:57:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07BBC433C9;
+        Fri, 29 Sep 2023 10:57:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695985076;
+        bh=tBcW+9T0Szmsb/1uixa8Q/j6hm71o84nD60FwoEkhH8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VfED/xp0larnQprtl8/AJHIjIQ5WKq8CituNwRnF/ciSa1IXFip6G0sL55biLGAPX
+         phgZ1SBF2Mvp1nVHidSZH/yXV2mXqIY4ocGPwCoaUxBIwv8Ko3PS0YgUanPE8L/N81
+         YPsAFDouUVolZMv5A4STCfndiNg/Mn5rxIbS/Awt5hTP/oyk1P05QYTScO+bVZccrl
+         rFZZRI+Sxw4Cr5kd4xo2jaV5ERjDeOF3mtCxYcFUbfRDtzooXcQN1h+Z+QEaV2rV1f
+         fUiiNeD8hYMXqQBAcpCyii+rc6Kk0tsVnQQVz2EUIi4nULPbHooaa93slA1Jgy2ja3
+         5cfVAKnTQwaMA==
+Date:   Fri, 29 Sep 2023 12:57:53 +0200
+From:   Frederic Weisbecker <frederic@kernel.org>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        linux-tip-commits@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH] tick/nohz: Update comments some more
+Message-ID: <ZRatsTz1mQRFJ0sW@lothringen>
+References: <20230912104406.312185-3-frederic@kernel.org>
+ <169582689118.27769.11953848930688373230.tip-bot2@tip-bot2>
+ <ZRVCNeMcSQcXS36N@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169597996101.27769.5754143943416979953.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZRVCNeMcSQcXS36N@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,36 +50,79 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+On Thu, Sep 28, 2023 at 11:07:01AM +0200, Ingo Molnar wrote:
+> > + * infrastructure actually relies on the tick itself as a backend in
+> > + * low-resolution mode (see hrtimer_run_queues()).
+> > + *
+> > + * This low-resolution handler still makes use of some hrtimer APIs meanwhile
+> > + * for commodity with expiration calculation and forwarding.
+> 
+> commodity?
 
-Commit-ID:     b5034c63858d8cb44587bb1ce5a0790a1b4e4a05
-Gitweb:        https://git.kernel.org/tip/b5034c63858d8cb44587bb1ce5a0790a1b4e4a05
-Author:        Baolin Liu <liubaolin@kylinos.cn>
-AuthorDate:    Wed, 09 Aug 2023 16:09:11 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 29 Sep 2023 11:24:09 +02:00
+I meant 'convenience', my usual frenglish issues...
 
-x86/cpu/amd: Remove redundant 'break' statement
+> 
+> >   */
+> >  static void tick_nohz_lowres_handler(struct clock_event_device *dev)
+> >  {
+> 
+> As well-deserved penace for my nitpicking, I've fixed these on top of
+> tip:timers/core, and have also done a full scan of kernel/time/tick-sched.c
+> for spelling, consistency of style and readability of comments - see
+> the patch below.
+> 
+> Thanks,
+> 
+> 	Ingo
+> 
+> ===========================>
+> From: Ingo Molnar <mingo@kernel.org>
+> Date: Thu, 28 Sep 2023 10:45:54 +0200
+> Subject: [PATCH] tick/nohz: Update comments some more
+> 
+> Inspired by recent enhancements to comments in kernel/time/tick-sched.c,
+> go through the entire file and fix/unify its comments:
+> 
+>  - Fix over a dozen typos, spelling mistakes & cases of bad grammar.
+> 
+>  - Re-phrase sentences that I needed to read three times to understand.
+> 
+>     [ I used the following arbitrary rule-of-thumb:
+>        - if I had to read a comment twice, it was usually my fault,
+>        - if I had to read it a third time, it was the comment's fault. ]
+> 
+>  - Comma updates:
+> 
+>     - Add commas where needed
+> 
+>     - Remove commas where not needed
+> 
+>     - In cases where a comma is optional, choose one variant and try to
+>       standardize it over similar sentences in the file.   
+> 
+>  - Standardize on standalone 'NOHZ' spelling in free-flowing comments:
+> 
+>       s/nohz/NOHZ
+>       s/no idle tick/NOHZ
+> 
+>    Still keep 'dynticks' as a popular synonym.
+> 
+>  - Standardize on referring to variable names within free-flowing
+>    comments with the "'var'" nomenclature, and function names as
+>    "function_name()".
+> 
+>  - Standardize on '64-bit' and '32-bit':
+>      s/32bit/32-bit
+>      s/64bit/64-bit
+> 
+>  - Standardize on 'IRQ work':
+>      s/irq work/IRQ work
+> 
+>  - A few other tidyups I probably missed to list.
+> 
+> No change in functionality intended - other than one small change to
+> a syslog output string.
+> 
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
 
-This break is after the return statement, so it is redundant & confusing,
-and should be deleted.
-
-Signed-off-by: Baolin Liu <liubaolin@kylinos.cn>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/396ba14d.2726.189d957b74b.Coremail.liubaolin12138@163.com
----
- arch/x86/kernel/cpu/amd.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 1011ce2..c3cb69e 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1001,7 +1001,6 @@ static bool cpu_has_zenbleed_microcode(void)
- 
- 	default:
- 		return false;
--		break;
- 	}
- 
- 	if (boot_cpu_data.microcode < good_rev)
+Looks good, thanks!
