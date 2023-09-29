@@ -2,53 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F324E7B28DF
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Sep 2023 01:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C16077B2DB9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Sep 2023 10:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbjI1XiV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Sep 2023 19:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48024 "EHLO
+        id S229754AbjI2IXX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 29 Sep 2023 04:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbjI1XiU (ORCPT
+        with ESMTP id S231429AbjI2IXW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Sep 2023 19:38:20 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF22195;
-        Thu, 28 Sep 2023 16:38:18 -0700 (PDT)
-Date:   Thu, 28 Sep 2023 23:38:15 -0000
+        Fri, 29 Sep 2023 04:23:22 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283431A7;
+        Fri, 29 Sep 2023 01:23:20 -0700 (PDT)
+Date:   Fri, 29 Sep 2023 08:23:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695944296;
+        s=2020; t=1695975796;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=8CmroMhSfWyOMfTzhtju1lshDiYJj149VGMIuDkgZ5o=;
-        b=kNrvUWMfxPrZZHUDBxt6XnyuP8wSYOvBWORu5yUGfVdwlKSomdhFLRX4VoKCBqnN6cMlkJ
-        w9WtUhOuP7MvBARKsMcuaFvd102RI16a6ePVBCzZ2DNbNzi9ekjxSmkzHg4Aj6As6enfdu
-        P+GUONCf0fhiVxrzhKfLnz0EDlUidrRAO7sjKlFgdbPKWrUMW2Gm0tQi/q2FiplW0cm6TC
-        7G7Zuvm3Z5gMZ4/BfV5KeRcddCapCqI05wvoBPkrNpig7vATJFCCyZNGpjq48HfLTKaghk
-        JV5k2zrgdRbVQP01PdqP+RaryqAq4knD+bmhOeRzNr51RekeGR0VtHyuc8piVg==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qe51nWXzQO1uA4LEpD9VWuQ83YMo2vME02AfE+lfYRw=;
+        b=dWz4FWyDLISmtoyDyHGbxdgNTO1mK3NbqapC1sCkn4Kq4q2Kjyk5lEbT78bjnBllRH3IbS
+        XorNmOhEoI5RDooRS2yqZkYAbyszeByBrgZ+QGdN8PXeb0FsqqoiEdyCmvsSiTcCXXixId
+        CQFPBrNpCZDXs46N+iNr7wY4QBBWk7qjH/k2zBeDUEPHCWggJCMiPjWml1iLcObxAKckGF
+        FDvMfvZ2erVR7uI77yCG5drXSD2RkjBHD5DwIjHo0XJGSmdw8z5pdg4Eh/2pgb3QsToQ97
+        i14CyE5xdPn7+PFzwBjITh1E0EQ6xP27yn04mFstj7OqgCFYtDevt2P6zGdQQQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695944296;
+        s=2020e; t=1695975796;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=8CmroMhSfWyOMfTzhtju1lshDiYJj149VGMIuDkgZ5o=;
-        b=8/RiImtIhpcTEQ7NvznRc3ZMrnIvYqF4VMN3Y2vW/EKXVTEy3zkyhC8Vavn0pbGtv9IPkr
-        KtfoSwnz4hi5S9Cg==
-From:   "tip-bot2 for Haitao Huang" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qe51nWXzQO1uA4LEpD9VWuQ83YMo2vME02AfE+lfYRw=;
+        b=Q0rOQo3UA0+GRZ63+2lqN9ht7n7fhpY4/TO0/fDT/6J45U/ztOKsslfxgtBsw6xIw1MYWL
+        6clv1eUJoYqQfrDQ==
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sgx: Resolves SECS reclaim vs. page fault for EAUG race
-Cc:     Haitao Huang <haitao.huang@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kai Huang <kai.huang@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: sched/core] sched/deadline: Make dl_rq->pushable_dl_tasks
+ update drive dl_rq->overloaded
+Cc:     Valentin Schneider <vschneid@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Juri Lelli <juri.lelli@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20230928150251.463109-1-vschneid@redhat.com>
+References: <20230928150251.463109-1-vschneid@redhat.com>
 MIME-Version: 1.0
-Message-ID: <169594429559.27769.15062614937556087965.tip-bot2@tip-bot2>
+Message-ID: <169597579563.27769.9947547101047504573.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,118 +66,191 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c6c2adcba50c2622ed25ba5d5e7f05f584711358
-Gitweb:        https://git.kernel.org/tip/c6c2adcba50c2622ed25ba5d5e7f05f584711358
-Author:        Haitao Huang <haitao.huang@linux.intel.com>
-AuthorDate:    Thu, 27 Jul 2023 22:10:24 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 28 Sep 2023 16:16:40 -07:00
+Commit-ID:     5fe7765997b139e2d922b58359dea181efe618f9
+Gitweb:        https://git.kernel.org/tip/5fe7765997b139e2d922b58359dea181efe618f9
+Author:        Valentin Schneider <vschneid@redhat.com>
+AuthorDate:    Thu, 28 Sep 2023 17:02:51 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 29 Sep 2023 10:20:21 +02:00
 
-x86/sgx: Resolves SECS reclaim vs. page fault for EAUG race
+sched/deadline: Make dl_rq->pushable_dl_tasks update drive dl_rq->overloaded
 
-The SGX EPC reclaimer (ksgxd) may reclaim the SECS EPC page for an
-enclave and set secs.epc_page to NULL. The SECS page is used for EAUG
-and ELDU in the SGX page fault handler. However, the NULL check for
-secs.epc_page is only done for ELDU, not EAUG before being used.
+dl_rq->dl_nr_migratory is increased whenever a DL entity is enqueued and it has
+nr_cpus_allowed > 1. Unlike the pushable_dl_tasks tree, dl_rq->dl_nr_migratory
+includes a dl_rq's current task. This means a dl_rq can have a migratable
+current, N non-migratable queued tasks, and be flagged as overloaded and have
+its CPU set in the dlo_mask, despite having an empty pushable_tasks tree.
 
-Fix this by doing the same NULL check and reloading of the SECS page as
-needed for both EAUG and ELDU.
+Make an dl_rq's overload logic be driven by {enqueue,dequeue}_pushable_dl_task(),
+in other words make DL RQs only be flagged as overloaded if they have at
+least one runnable-but-not-current migratable task.
 
-The SECS page holds global enclave metadata. It can only be reclaimed
-when there are no other enclave pages remaining. At that point,
-virtually nothing can be done with the enclave until the SECS page is
-paged back in.
+ o push_dl_task() is unaffected, as it is a no-op if there are no pushable
+   tasks.
 
-An enclave can not run nor generate page faults without a resident SECS
-page. But it is still possible for a #PF for a non-SECS page to race
-with paging out the SECS page: when the last resident non-SECS page A
-triggers a #PF in a non-resident page B, and then page A and the SECS
-both are paged out before the #PF on B is handled.
+ o pull_dl_task() now no longer scans runqueues whose sole migratable task is
+   their current one, which it can't do anything about anyway.
+   It may also now pull tasks to a DL RQ with dl_nr_running > 1 if only its
+   current task is migratable.
 
-Hitting this bug requires that race triggered with a #PF for EAUG.
-Following is a trace when it happens.
+Since dl_rq->dl_nr_migratory becomes unused, remove it.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-RIP: 0010:sgx_encl_eaug_page+0xc7/0x210
-Call Trace:
- ? __kmem_cache_alloc_node+0x16a/0x440
- ? xa_load+0x6e/0xa0
- sgx_vma_fault+0x119/0x230
- __do_fault+0x36/0x140
- do_fault+0x12f/0x400
- __handle_mm_fault+0x728/0x1110
- handle_mm_fault+0x105/0x310
- do_user_addr_fault+0x1ee/0x750
- ? __this_cpu_preempt_check+0x13/0x20
- exc_page_fault+0x76/0x180
- asm_exc_page_fault+0x27/0x30
+RT had the exact same mechanism (rt_rq->rt_nr_migratory) which was dropped
+in favour of relying on rt_rq->pushable_tasks, see:
 
-Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized enclave")
-Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20230728051024.33063-1-haitao.huang%40linux.intel.com
+  612f769edd06 ("sched/rt: Make rt_rq->pushable_tasks updates drive rto_mask")
+
+Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lore.kernel.org/r/20230928150251.463109-1-vschneid@redhat.com
 ---
- arch/x86/kernel/cpu/sgx/encl.c | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ kernel/sched/deadline.c | 57 +++++++++-------------------------------
+ kernel/sched/debug.c    |  1 +-
+ kernel/sched/sched.h    |  1 +-
+ 3 files changed, 14 insertions(+), 45 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index 91fa70e..279148e 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -235,6 +235,21 @@ static struct sgx_epc_page *sgx_encl_eldu(struct sgx_encl_page *encl_page,
- 	return epc_page;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index fb1996a..d98408a 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -509,7 +509,6 @@ void init_dl_rq(struct dl_rq *dl_rq)
+ 	/* zero means no -deadline tasks */
+ 	dl_rq->earliest_dl.curr = dl_rq->earliest_dl.next = 0;
+ 
+-	dl_rq->dl_nr_migratory = 0;
+ 	dl_rq->overloaded = 0;
+ 	dl_rq->pushable_dl_tasks_root = RB_ROOT_CACHED;
+ #else
+@@ -553,39 +552,6 @@ static inline void dl_clear_overload(struct rq *rq)
+ 	cpumask_clear_cpu(rq->cpu, rq->rd->dlo_mask);
  }
  
-+/*
-+ * Ensure the SECS page is not swapped out.  Must be called with encl->lock
-+ * to protect the enclave states including SECS and ensure the SECS page is
-+ * not swapped out again while being used.
-+ */
-+static struct sgx_epc_page *sgx_encl_load_secs(struct sgx_encl *encl)
+-static void update_dl_migration(struct dl_rq *dl_rq)
+-{
+-	if (dl_rq->dl_nr_migratory && dl_rq->dl_nr_running > 1) {
+-		if (!dl_rq->overloaded) {
+-			dl_set_overload(rq_of_dl_rq(dl_rq));
+-			dl_rq->overloaded = 1;
+-		}
+-	} else if (dl_rq->overloaded) {
+-		dl_clear_overload(rq_of_dl_rq(dl_rq));
+-		dl_rq->overloaded = 0;
+-	}
+-}
+-
+-static void inc_dl_migration(struct sched_dl_entity *dl_se, struct dl_rq *dl_rq)
+-{
+-	struct task_struct *p = dl_task_of(dl_se);
+-
+-	if (p->nr_cpus_allowed > 1)
+-		dl_rq->dl_nr_migratory++;
+-
+-	update_dl_migration(dl_rq);
+-}
+-
+-static void dec_dl_migration(struct sched_dl_entity *dl_se, struct dl_rq *dl_rq)
+-{
+-	struct task_struct *p = dl_task_of(dl_se);
+-
+-	if (p->nr_cpus_allowed > 1)
+-		dl_rq->dl_nr_migratory--;
+-
+-	update_dl_migration(dl_rq);
+-}
+-
+ #define __node_2_pdl(node) \
+ 	rb_entry((node), struct task_struct, pushable_dl_tasks)
+ 
+@@ -594,6 +560,11 @@ static inline bool __pushable_less(struct rb_node *a, const struct rb_node *b)
+ 	return dl_entity_preempt(&__node_2_pdl(a)->dl, &__node_2_pdl(b)->dl);
+ }
+ 
++static inline int has_pushable_dl_tasks(struct rq *rq)
 +{
-+	struct sgx_epc_page *epc_page = encl->secs.epc_page;
-+
-+	if (!epc_page)
-+		epc_page = sgx_encl_eldu(&encl->secs, NULL);
-+
-+	return epc_page;
++	return !RB_EMPTY_ROOT(&rq->dl.pushable_dl_tasks_root.rb_root);
 +}
 +
- static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
- 						  struct sgx_encl_page *entry)
- {
-@@ -248,11 +263,9 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
- 		return entry;
- 	}
- 
--	if (!(encl->secs.epc_page)) {
--		epc_page = sgx_encl_eldu(&encl->secs, NULL);
--		if (IS_ERR(epc_page))
--			return ERR_CAST(epc_page);
--	}
-+	epc_page = sgx_encl_load_secs(encl);
-+	if (IS_ERR(epc_page))
-+		return ERR_CAST(epc_page);
- 
- 	epc_page = sgx_encl_eldu(entry, encl->secs.epc_page);
- 	if (IS_ERR(epc_page))
-@@ -339,6 +352,13 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
- 
- 	mutex_lock(&encl->lock);
- 
-+	epc_page = sgx_encl_load_secs(encl);
-+	if (IS_ERR(epc_page)) {
-+		if (PTR_ERR(epc_page) == -EBUSY)
-+			vmret = VM_FAULT_NOPAGE;
-+		goto err_out_unlock;
-+	}
+ /*
+  * The list of pushable -deadline task is not a plist, like in
+  * sched_rt.c, it is an rb-tree with tasks ordered by deadline.
+@@ -609,6 +580,11 @@ static void enqueue_pushable_dl_task(struct rq *rq, struct task_struct *p)
+ 				 __pushable_less);
+ 	if (leftmost)
+ 		rq->dl.earliest_dl.next = p->dl.deadline;
 +
- 	epc_page = sgx_alloc_epc_page(encl_page, false);
- 	if (IS_ERR(epc_page)) {
- 		if (PTR_ERR(epc_page) == -EBUSY)
++	if (!rq->dl.overloaded) {
++		dl_set_overload(rq);
++		rq->dl.overloaded = 1;
++	}
+ }
+ 
+ static void dequeue_pushable_dl_task(struct rq *rq, struct task_struct *p)
+@@ -625,11 +601,11 @@ static void dequeue_pushable_dl_task(struct rq *rq, struct task_struct *p)
+ 		dl_rq->earliest_dl.next = __node_2_pdl(leftmost)->dl.deadline;
+ 
+ 	RB_CLEAR_NODE(&p->pushable_dl_tasks);
+-}
+ 
+-static inline int has_pushable_dl_tasks(struct rq *rq)
+-{
+-	return !RB_EMPTY_ROOT(&rq->dl.pushable_dl_tasks_root.rb_root);
++	if (!has_pushable_dl_tasks(rq) && rq->dl.overloaded) {
++		dl_clear_overload(rq);
++		rq->dl.overloaded = 0;
++	}
+ }
+ 
+ static int push_dl_task(struct rq *rq);
+@@ -1504,7 +1480,6 @@ void inc_dl_tasks(struct sched_dl_entity *dl_se, struct dl_rq *dl_rq)
+ 	add_nr_running(rq_of_dl_rq(dl_rq), 1);
+ 
+ 	inc_dl_deadline(dl_rq, deadline);
+-	inc_dl_migration(dl_se, dl_rq);
+ }
+ 
+ static inline
+@@ -1518,7 +1493,6 @@ void dec_dl_tasks(struct sched_dl_entity *dl_se, struct dl_rq *dl_rq)
+ 	sub_nr_running(rq_of_dl_rq(dl_rq), 1);
+ 
+ 	dec_dl_deadline(dl_rq, dl_se->deadline);
+-	dec_dl_migration(dl_se, dl_rq);
+ }
+ 
+ static inline bool __dl_less(struct rb_node *a, const struct rb_node *b)
+@@ -2291,9 +2265,6 @@ static int push_dl_task(struct rq *rq)
+ 	struct rq *later_rq;
+ 	int ret = 0;
+ 
+-	if (!rq->dl.overloaded)
+-		return 0;
+-
+ 	next_task = pick_next_pushable_dl_task(rq);
+ 	if (!next_task)
+ 		return 0;
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index c4253bd..4580a45 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -745,7 +745,6 @@ void print_dl_rq(struct seq_file *m, int cpu, struct dl_rq *dl_rq)
+ 
+ 	PU(dl_nr_running);
+ #ifdef CONFIG_SMP
+-	PU(dl_nr_migratory);
+ 	dl_bw = &cpu_rq(cpu)->rd->dl_bw;
+ #else
+ 	dl_bw = &dl_rq->dl_bw;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 41d760d..649eb9e 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -707,7 +707,6 @@ struct dl_rq {
+ 		u64		next;
+ 	} earliest_dl;
+ 
+-	unsigned int		dl_nr_migratory;
+ 	int			overloaded;
+ 
+ 	/*
