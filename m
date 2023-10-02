@@ -2,54 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAE767B5ACC
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Oct 2023 21:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BAD17B5B73
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Oct 2023 21:42:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229732AbjJBTCc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Oct 2023 15:02:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35532 "EHLO
+        id S238928AbjJBTlL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Oct 2023 15:41:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbjJBTCc (ORCPT
+        with ESMTP id S229623AbjJBTlK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Oct 2023 15:02:32 -0400
+        Mon, 2 Oct 2023 15:41:10 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FD4AAC;
-        Mon,  2 Oct 2023 12:02:29 -0700 (PDT)
-Date:   Mon, 02 Oct 2023 19:02:27 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A63A9;
+        Mon,  2 Oct 2023 12:41:05 -0700 (PDT)
+Date:   Mon, 02 Oct 2023 19:41:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696273347;
+        s=2020; t=1696275664;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9kykBRle4YMK7mud01a1hYzMlSj6W5nGXFWJBDbOBmY=;
-        b=p+vQGxcSM58OSSCcFE3oDZ5+j4OyScgJjZPScYZN+b437pQbfkb3VqwTQ1OqOG4Rr0f5jy
-        llUUJoJpgg0AAKwOdB3fTghwhi6e7NmQlUwe4V4PbJ1ueA1fOjew9au3RJXpSx+MfzILur
-        triwqY/SxNbN4D41Rz4l3LbXlC2tKveJkeT6tC4WFF51qPRv/dfMB7XH2RBeGU3Soyq2d8
-        HsrTdmmhKs4FXPMgUbiDPaEzzl0QEZXio364/tX+4UsztbxSH6FYjihmrqAixLRxIjeefj
-        9srBknaf2nJrR8HE6CLUeoiqlhC7eewyvHfJCPKOSEY1I0wCLZtFq+tkVy+SNg==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=TA8px2Gs5zicIf3ntSyEajmuGJx7VXeR5XlyhlMdO4o=;
+        b=v6zqlENEQnGO4kWR/9Nx7ejWOe62pY6AYBvpPLgKiY1qucegi+0N2uZF+Is82M49QFzE91
+        rJeAYp7L5yMD1akzeocaobLysn+sBNZMYA1mhXNjAFy9p4e0lu1sm+GZit7Pr6PnBSCddM
+        Cf6eqrImQXmMwAHZrqFCGh43+QPd2gYjnpO3NXIDB1UfFawDYkVRRI9pXVbGkOJviIhPZZ
+        ei9DNuRaw3YtATxMmcmKFmOxI6aNqr1AOMarEs+ZYUm+xrC0AUJ31bXiAuI/mjQjGSH+n0
+        O3mflOHRq2zomivmyJPzcrMj2hmFSaG1miW28mkEGuLTjzCK5OYZO0j7Yg535A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696273347;
+        s=2020e; t=1696275664;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9kykBRle4YMK7mud01a1hYzMlSj6W5nGXFWJBDbOBmY=;
-        b=Yl8KGZUjz4bE/sSLu8cjn7TsmZ91ClBmJmPA+QmapRRQlsqU83VAPW9knoSYmZ1aKqbc/n
-        9cvNlPbu7zQbwzAw==
-From:   "tip-bot2 for Zhiquan Li" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=TA8px2Gs5zicIf3ntSyEajmuGJx7VXeR5XlyhlMdO4o=;
+        b=DnHtqKhIrFeqqu+r+mohesOs43Edd0brDinvYpKAwy12DQD+D3Wxvk3wkJ8rKVvgd7NMwl
+        j9Jyy8mH9Su5onDw==
+From:   "tip-bot2 for Saurabh Sengar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mce: Set PG_hwpoison page flag to avoid the capture
- kernel panic
-Cc:     Youquan Song <youquan.song@intel.com>,
-        Zhiquan Li <zhiquan1.li@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
+Subject: [tip: x86/platform] x86/numa: Add Devicetree support
+Cc:     Saurabh Sengar <ssengar@linux.microsoft.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Naoya Horiguchi <naoya.horiguchi@nec.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1692949657-16446-2-git-send-email-ssengar@linux.microsoft.com>
+References: <1692949657-16446-2-git-send-email-ssengar@linux.microsoft.com>
 MIME-Version: 1.0
-Message-ID: <169627334714.3135.12336854585078188172.tip-bot2@tip-bot2>
+Message-ID: <169627566214.3135.17645034772157973524.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,77 +65,63 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     cb17fd1dcdaea8f6508844c690b3ffd5da484800
-Gitweb:        https://git.kernel.org/tip/cb17fd1dcdaea8f6508844c690b3ffd5da484800
-Author:        Zhiquan Li <zhiquan1.li@intel.com>
-AuthorDate:    Thu, 14 Sep 2023 11:05:39 +08:00
+Commit-ID:     0c436a58292d0ca1af213ede75b2508995c8af0b
+Gitweb:        https://git.kernel.org/tip/0c436a58292d0ca1af213ede75b2508995c8af0b
+Author:        Saurabh Sengar <ssengar@linux.microsoft.com>
+AuthorDate:    Fri, 25 Aug 2023 00:47:37 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 02 Oct 2023 20:26:13 +02:00
+CommitterDate: Mon, 02 Oct 2023 21:30:20 +02:00
 
-x86/mce: Set PG_hwpoison page flag to avoid the capture kernel panic
+x86/numa: Add Devicetree support
 
-Kdump can exclude the HWPoison page to avoid touching the error page
-again, the prerequisite is the PG_hwpoison page flag is set.
+Hyper-V has usecases where it needs to fetch NUMA information from
+Devicetree. Currently, it is not possible to extract the NUMA information
+from Devicetree for the x86 arch.
 
-However, for some MCE fatal error cases, there is no opportunity
-to queue a task for calling memory_failure(), and as a result,
-the capture kernel touches the error page again and panics.
+Add support for Devicetree in the x86_numa_init() function, allowing the
+retrieval of NUMA node information from the Devicetree.
 
-Add the mce_set_page_hwpoison_now() function, which marks a page as
-HWPoison before kernel panic() for MCE error, so that the dump
-program can check and skip the error page and prevent the capture
-kernel panic.
-
-[ Tony: Changed TestSetPageHWPoison() to SetPageHWPoison() ]
-[ mingo: Fixed the comments & changelog ]
-
-Co-developed-by: Youquan Song <youquan.song@intel.com>
-Signed-off-by: Youquan Song <youquan.song@intel.com>
-Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Link: https://lore.kernel.org/all/20230719211625.298785-1-tony.luck@intel.com/#t
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/1692949657-16446-2-git-send-email-ssengar@linux.microsoft.com
 ---
- arch/x86/kernel/cpu/mce/core.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/x86/Kconfig   | 1 +
+ arch/x86/mm/numa.c | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 6f35f72..1a14e82 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -156,6 +156,22 @@ void mce_unregister_decode_chain(struct notifier_block *nb)
- }
- EXPORT_SYMBOL_GPL(mce_unregister_decode_chain);
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 66bfaba..aab5e32 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1534,6 +1534,7 @@ config NUMA
+ 	depends on X86_64 || (X86_32 && HIGHMEM64G && X86_BIGSMP)
+ 	default y if X86_BIGSMP
+ 	select USE_PERCPU_NUMA_NODE_ID
++	select OF_NUMA if OF
+ 	help
+ 	  Enable NUMA (Non-Uniform Memory Access) support.
  
-+/*
-+ * Kdump can exclude the HWPoison page to avoid touching the error page again,
-+ * the prerequisite is that the PG_hwpoison page flag is set. However, for some
-+ * MCE fatal error cases, there is no opportunity to queue a task
-+ * for calling memory_failure(), and as a result, the capture kernel panics.
-+ * This function marks the page as HWPoison before kernel panic() for MCE.
-+ */
-+static void mce_set_page_hwpoison_now(unsigned long pfn)
-+{
-+	struct page *p;
-+
-+	p = pfn_to_online_page(pfn);
-+	if (p)
-+		SetPageHWPoison(p);
-+}
-+
- static void __print_mce(struct mce *m)
- {
- 	pr_emerg(HW_ERR "CPU %d: Machine Check%s: %Lx Bank %d: %016Lx\n",
-@@ -286,6 +302,8 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
- 	if (!fake_panic) {
- 		if (panic_timeout == 0)
- 			panic_timeout = mca_cfg.panic_timeout;
-+		if (final && (final->status & MCI_STATUS_ADDRV))
-+			mce_set_page_hwpoison_now(final->addr >> PAGE_SHIFT);
- 		panic(msg);
- 	} else
- 		pr_emerg(HW_ERR "Fake kernel panic: %s\n", msg);
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 2aadb20..c79f12e 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -3,6 +3,7 @@
+ #include <linux/acpi.h>
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
++#include <linux/of.h>
+ #include <linux/string.h>
+ #include <linux/init.h>
+ #include <linux/memblock.h>
+@@ -733,6 +734,8 @@ void __init x86_numa_init(void)
+ 		if (!numa_init(amd_numa_init))
+ 			return;
+ #endif
++		if (acpi_disabled && !numa_init(of_numa_init))
++			return;
+ 	}
+ 
+ 	numa_init(dummy_numa_init);
