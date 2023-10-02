@@ -2,62 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7019B7B5AB0
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Oct 2023 21:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAE767B5ACC
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Oct 2023 21:04:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjJBTBy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Oct 2023 15:01:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49000 "EHLO
+        id S229732AbjJBTCc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Oct 2023 15:02:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbjJBTBy (ORCPT
+        with ESMTP id S229696AbjJBTCc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Oct 2023 15:01:54 -0400
+        Mon, 2 Oct 2023 15:02:32 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EA75B3;
-        Mon,  2 Oct 2023 12:01:50 -0700 (PDT)
-Date:   Mon, 02 Oct 2023 19:01:47 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FD4AAC;
+        Mon,  2 Oct 2023 12:02:29 -0700 (PDT)
+Date:   Mon, 02 Oct 2023 19:02:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696273308;
+        s=2020; t=1696273347;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=J5JVuozAWsvYoCCJ91LTdlldPKoE+8ohqohFARoyNwo=;
-        b=h8XkvrNMlxZ8jPuDgfBEDxnScR1jtOn/WjRkutzFG66wB332lkBYS9UDLLZY9qkVCaQuEW
-        LCAZyoy6NS8W5aSj9Mpkn5TadkNUBMEZPqQi3nbPb5cE8puRUAuOHoScyGIpgK1Flhnw8s
-        u7/jKst+/84DlX84OLmm/EkLwi5blkih55DCqJQ2wFZsiQ4MFvR5vyF1oWW5z0zmQUhTz3
-        TsMQAl3YgE11/34SEbjwO7IXLrUMPpG5DbkAmsvZlYp/w3hVXQmQyjrLVSyOOAeCsdFzJS
-        fv5t42qTFZ69vfgPUkhOYxuVpoO7S+W064hRESIyKN9pj9olQHVa7WRpf3soYw==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=9kykBRle4YMK7mud01a1hYzMlSj6W5nGXFWJBDbOBmY=;
+        b=p+vQGxcSM58OSSCcFE3oDZ5+j4OyScgJjZPScYZN+b437pQbfkb3VqwTQ1OqOG4Rr0f5jy
+        llUUJoJpgg0AAKwOdB3fTghwhi6e7NmQlUwe4V4PbJ1ueA1fOjew9au3RJXpSx+MfzILur
+        triwqY/SxNbN4D41Rz4l3LbXlC2tKveJkeT6tC4WFF51qPRv/dfMB7XH2RBeGU3Soyq2d8
+        HsrTdmmhKs4FXPMgUbiDPaEzzl0QEZXio364/tX+4UsztbxSH6FYjihmrqAixLRxIjeefj
+        9srBknaf2nJrR8HE6CLUeoiqlhC7eewyvHfJCPKOSEY1I0wCLZtFq+tkVy+SNg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696273308;
+        s=2020e; t=1696273347;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=J5JVuozAWsvYoCCJ91LTdlldPKoE+8ohqohFARoyNwo=;
-        b=FBt+lmTWi0C4QAfLx2kJaieFps1629b+dnsCPXex9mOE87mDvw0BR2K2eF2AxAAMy6tHBc
-        Qj05AMx56uWwhYBQ==
-From:   "tip-bot2 for Kir Kolyshkin" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=9kykBRle4YMK7mud01a1hYzMlSj6W5nGXFWJBDbOBmY=;
+        b=Yl8KGZUjz4bE/sSLu8cjn7TsmZ91ClBmJmPA+QmapRRQlsqU83VAPW9knoSYmZ1aKqbc/n
+        9cvNlPbu7zQbwzAw==
+From:   "tip-bot2 for Zhiquan Li" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/headers: Move 'struct sched_param' out of
- uapi, to work around glibc/musl breakage
-Cc:     Kir Kolyshkin <kolyshkin@gmail.com>,
+Subject: [tip: x86/mm] x86/mce: Set PG_hwpoison page flag to avoid the capture
+ kernel panic
+Cc:     Youquan Song <youquan.song@intel.com>,
+        Zhiquan Li <zhiquan1.li@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+        Naoya Horiguchi <naoya.horiguchi@nec.com>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230808030357.1213829-1-kolyshkin@gmail.com>
-References: <20230808030357.1213829-1-kolyshkin@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169627330795.3135.16650166898816781742.tip-bot2@tip-bot2>
+Message-ID: <169627334714.3135.12336854585078188172.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -67,117 +63,77 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     d844fe65f0957024c3e1b0bf2a0615246184d9bc
-Gitweb:        https://git.kernel.org/tip/d844fe65f0957024c3e1b0bf2a061524618=
-4d9bc
-Author:        Kir Kolyshkin <kolyshkin@gmail.com>
-AuthorDate:    Mon, 07 Aug 2023 20:03:57 -07:00
+Commit-ID:     cb17fd1dcdaea8f6508844c690b3ffd5da484800
+Gitweb:        https://git.kernel.org/tip/cb17fd1dcdaea8f6508844c690b3ffd5da484800
+Author:        Zhiquan Li <zhiquan1.li@intel.com>
+AuthorDate:    Thu, 14 Sep 2023 11:05:39 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 02 Oct 2023 20:48:16 +02:00
+CommitterDate: Mon, 02 Oct 2023 20:26:13 +02:00
 
-sched/headers: Move 'struct sched_param' out of uapi, to work around glibc/mu=
-sl breakage
+x86/mce: Set PG_hwpoison page flag to avoid the capture kernel panic
 
-Both glibc and musl define 'struct sched_param' in sched.h, while kernel
-has it in uapi/linux/sched/types.h, making it cumbersome to use
-sched_getattr(2) or sched_setattr(2) from userspace.
+Kdump can exclude the HWPoison page to avoid touching the error page
+again, the prerequisite is the PG_hwpoison page flag is set.
 
-For example, something like this:
+However, for some MCE fatal error cases, there is no opportunity
+to queue a task for calling memory_failure(), and as a result,
+the capture kernel touches the error page again and panics.
 
-	#include <sched.h>
-	#include <linux/sched/types.h>
+Add the mce_set_page_hwpoison_now() function, which marks a page as
+HWPoison before kernel panic() for MCE error, so that the dump
+program can check and skip the error page and prevent the capture
+kernel panic.
 
-	struct sched_attr sa;
+[ Tony: Changed TestSetPageHWPoison() to SetPageHWPoison() ]
+[ mingo: Fixed the comments & changelog ]
 
-will result in "error: redefinition of =E2=80=98struct sched_param=E2=80=99" =
-(note the
-code doesn't need sched_param at all -- it needs struct sched_attr
-plus some stuff from sched.h).
-
-The situation is, glibc is not going to provide a wrapper for
-sched_{get,set}attr, thus the need to include linux/sched_types.h
-directly, which leads to the above problem.
-
-Thus, the userspace is left with a few sub-par choices when it wants to
-use e.g. sched_setattr(2), such as maintaining a copy of struct
-sched_attr definition, or using some other ugly tricks.
-
-OTOH, 'struct sched_param' is well known, defined in POSIX, and it won't
-be ever changed (as that would break backward compatibility).
-
-So, while 'struct sched_param' is indeed part of the kernel uapi,
-exposing it the way it's done now creates an issue, and hiding it
-(like this patch does) fixes that issue, hopefully without creating
-another one: common userspace software rely on libc headers, and as
-for "special" software (like libc), it looks like glibc and musl
-do not rely on kernel headers for 'struct sched_param' definition
-(but let's Cc their mailing lists in case it's otherwise).
-
-The alternative to this patch would be to move struct sched_attr to,
-say, linux/sched.h, or linux/sched/attr.h (the new file).
-
-Oh, and here is the previous attempt to fix the issue:
-
-  https://lore.kernel.org/all/20200528135552.GA87103@google.com/
-
-While I support Linus arguments, the issue is still here
-and needs to be fixed.
-
-[ mingo: Linus is right, this shouldn't be needed - but on the other
-         hand I agree that this header is not really helpful to
-	 user-space as-is. So let's pretend that
-	 <uapi/linux/sched/types.h> is only about sched_attr, and
-	 call this commit a workaround for user-space breakage
-	 that it in reality is ... Also, remove the Fixes tag. ]
-
-Signed-off-by: Kir Kolyshkin <kolyshkin@gmail.com>
+Co-developed-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230808030357.1213829-1-kolyshkin@gmail.com
+Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Link: https://lore.kernel.org/all/20230719211625.298785-1-tony.luck@intel.com/#t
 ---
- include/linux/sched.h            | 5 ++++-
- include/uapi/linux/sched/types.h | 4 ----
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index dc37ae7..e4235bb 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -63,7 +63,6 @@ struct robust_list_head;
- struct root_domain;
- struct rq;
- struct sched_attr;
--struct sched_param;
- struct seq_file;
- struct sighand_struct;
- struct signal_struct;
-@@ -370,6 +369,10 @@ extern struct root_domain def_root_domain;
- extern struct mutex sched_domains_mutex;
- #endif
-=20
-+struct sched_param {
-+	int sched_priority;
-+};
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 6f35f72..1a14e82 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -156,6 +156,22 @@ void mce_unregister_decode_chain(struct notifier_block *nb)
+ }
+ EXPORT_SYMBOL_GPL(mce_unregister_decode_chain);
+ 
++/*
++ * Kdump can exclude the HWPoison page to avoid touching the error page again,
++ * the prerequisite is that the PG_hwpoison page flag is set. However, for some
++ * MCE fatal error cases, there is no opportunity to queue a task
++ * for calling memory_failure(), and as a result, the capture kernel panics.
++ * This function marks the page as HWPoison before kernel panic() for MCE.
++ */
++static void mce_set_page_hwpoison_now(unsigned long pfn)
++{
++	struct page *p;
 +
- struct sched_info {
- #ifdef CONFIG_SCHED_INFO
- 	/* Cumulative counters: */
-diff --git a/include/uapi/linux/sched/types.h b/include/uapi/linux/sched/type=
-s.h
-index f2c4589..9066238 100644
---- a/include/uapi/linux/sched/types.h
-+++ b/include/uapi/linux/sched/types.h
-@@ -4,10 +4,6 @@
-=20
- #include <linux/types.h>
-=20
--struct sched_param {
--	int sched_priority;
--};
--
- #define SCHED_ATTR_SIZE_VER0	48	/* sizeof first published struct */
- #define SCHED_ATTR_SIZE_VER1	56	/* add: util_{min,max} */
-=20
++	p = pfn_to_online_page(pfn);
++	if (p)
++		SetPageHWPoison(p);
++}
++
+ static void __print_mce(struct mce *m)
+ {
+ 	pr_emerg(HW_ERR "CPU %d: Machine Check%s: %Lx Bank %d: %016Lx\n",
+@@ -286,6 +302,8 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
+ 	if (!fake_panic) {
+ 		if (panic_timeout == 0)
+ 			panic_timeout = mca_cfg.panic_timeout;
++		if (final && (final->status & MCI_STATUS_ADDRV))
++			mce_set_page_hwpoison_now(final->addr >> PAGE_SHIFT);
+ 		panic(msg);
+ 	} else
+ 		pr_emerg(HW_ERR "Fake kernel panic: %s\n", msg);
