@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2CB57B642A
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 10:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DB607B6480
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 10:40:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239289AbjJCIbi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Oct 2023 04:31:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58654 "EHLO
+        id S230435AbjJCIkE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Oct 2023 04:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239188AbjJCIbg (ORCPT
+        with ESMTP id S230441AbjJCIkD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Oct 2023 04:31:36 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0384A3;
-        Tue,  3 Oct 2023 01:31:17 -0700 (PDT)
-Date:   Tue, 03 Oct 2023 08:31:15 -0000
+        Tue, 3 Oct 2023 04:40:03 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C1B97;
+        Tue,  3 Oct 2023 01:40:00 -0700 (PDT)
+Date:   Tue, 03 Oct 2023 08:39:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696321876;
+        s=2020; t=1696322398;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DuTf4zBzupu3tS5EJOcDKJ82yoQ1Iej1IAmwDpUABmg=;
-        b=wrwrzpsZKEqYpRdzSVhQidSUl3Jetb3IEbEMYmxzYeFRhJQFBd2gyHsoxrZg7cmLAWJ4PT
-        ScsZzByrWBkOVD/CPx8c74ip0WGhyQoZUdx+T6vJzVkpQy5dRO7f8FkwiOHmm8Ka7Al2yF
-        hgHqAqbC9IYH9izDhYiCh1UZlJyK8Oo68ouKLG39tEMO7BFps5f33igKO2Kl0NdOVj7tl7
-        UpxVZC4L0/D+5kcsNm3oOsD7PHNxCG8I7R85FaSv/nmIVFCfldBFhlk9t1gwI2lQk6tNK+
-        AjW84G2/bzoUA6CNsCc6En9k3sYa8MkpHEFdv0quDQEvb/ocKTVDi9oyZZvJ3g==
+        bh=qh+KBuPKg3zOxbyl3qdxgTFuvx+rQ61ZCEuRvw4p5qA=;
+        b=DAN3eu7UVcKi68fFPvkfSkxMb7MC7WvcakDcRMGxLl7NFqKr9Sdgs/zXZrhYAv8mo5Jpgz
+        fTNvmM4hM145DfG6D0QTVEucM/L/9JYzQzz7CGfyCMsY0Uw08eLCjPB67CLhetc5pvEixy
+        ra6vS6NqBwtLfFUUf9pzz6LAxB/kLqivSWQRRmXI7wUmFUt+LzPHNRWRolfhZk19q7AKaV
+        Zu7U5KiowlFi+tpc9HlEXF622AN4KnsxuYBwE9Xg7sEGh+5fF6dYvIoH7uHqttF8ZyaUZi
+        UIpKsKWWVtFHsAvfz6sNHL5m8PGuMyYWvYgdV3SARCMnGBK36V8XZl/eYyR+wg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696321876;
+        s=2020e; t=1696322398;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DuTf4zBzupu3tS5EJOcDKJ82yoQ1Iej1IAmwDpUABmg=;
-        b=jjalq+DWKAVGnFvffD8pGgDRGJQOQKpkj4LifgvVKSVn3t9j2b0Z5ZDgr7G0ciXNHR4EyJ
-        GuejQ9T93BG4pVBA==
-From:   "tip-bot2 for Atul Kumar Pant" <tip-bot2@linutronix.de>
+        bh=qh+KBuPKg3zOxbyl3qdxgTFuvx+rQ61ZCEuRvw4p5qA=;
+        b=JEb8DR3EE0vc3TPb3DJ5rsYyYRUq1+4Dr2YvH4YHwwstDKrtYhVjsnVXlRS2UxKr0sXvTG
+        45YSowApvpodFwDA==
+From:   "tip-bot2 for Yuntao Wang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/debug: Fix debugfs API return value
- checks to use IS_ERR()
-Cc:     Atul Kumar Pant <atulpant.linux@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Waiman Long <longman@redhat.com>, x86@kernel.org,
+Subject: [tip: x86/boot] x86/boot: Fix incorrect startup_gdt_descr.size
+Cc:     Yuntao Wang <ytcoode@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230807121834.7438-1-atulpant.linux@gmail.com>
-References: <20230807121834.7438-1-atulpant.linux@gmail.com>
+In-Reply-To: <20230807084547.217390-1-ytcoode@gmail.com>
+References: <20230807084547.217390-1-ytcoode@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169632187534.3135.6452660777810427626.tip-bot2@tip-bot2>
+Message-ID: <169632239730.3135.5499875554711156270.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,57 +64,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     8788c6c2feb3600ba1a2f84ac5d258af4a284cea
-Gitweb:        https://git.kernel.org/tip/8788c6c2feb3600ba1a2f84ac5d258af4a284cea
-Author:        Atul Kumar Pant <atulpant.linux@gmail.com>
-AuthorDate:    Mon, 07 Aug 2023 17:48:34 +05:30
+Commit-ID:     001470fed5959d01faecbd57fcf2f60294da0de1
+Gitweb:        https://git.kernel.org/tip/001470fed5959d01faecbd57fcf2f60294da0de1
+Author:        Yuntao Wang <ytcoode@gmail.com>
+AuthorDate:    Mon, 07 Aug 2023 16:45:47 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Oct 2023 10:11:25 +02:00
+CommitterDate: Tue, 03 Oct 2023 10:28:29 +02:00
 
-locking/debug: Fix debugfs API return value checks to use IS_ERR()
+x86/boot: Fix incorrect startup_gdt_descr.size
 
-Update the checking of return values from debugfs_create_file()
-and debugfs_create_dir() to use IS_ERR().
+Since the size value is added to the base address to yield the last valid
+byte address of the GDT, the current size value of startup_gdt_descr is
+incorrect (too large by one), fix it.
 
-Signed-off-by: Atul Kumar Pant <atulpant.linux@gmail.com>
+[ mingo: This probably never mattered, because startup_gdt[] is only used
+         in a very controlled fashion - but make it consistent nevertheless. ]
+
+Fixes: 866b556efa12 ("x86/head/64: Install startup GDT")
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/20230807121834.7438-1-atulpant.linux@gmail.com
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20230807084547.217390-1-ytcoode@gmail.com
 ---
- kernel/locking/lock_events.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/head64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/locking/lock_events.c b/kernel/locking/lock_events.c
-index fa2c2f9..e68d820 100644
---- a/kernel/locking/lock_events.c
-+++ b/kernel/locking/lock_events.c
-@@ -146,7 +146,7 @@ static int __init init_lockevent_counts(void)
- 	struct dentry *d_counts = debugfs_create_dir(LOCK_EVENTS_DIR, NULL);
- 	int i;
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 49f7629..bbc2179 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -80,7 +80,7 @@ static struct desc_struct startup_gdt[GDT_ENTRIES] = {
+  * while the kernel still uses a direct mapping.
+  */
+ static struct desc_ptr startup_gdt_descr = {
+-	.size = sizeof(startup_gdt),
++	.size = sizeof(startup_gdt)-1,
+ 	.address = 0,
+ };
  
--	if (!d_counts)
-+	if (IS_ERR(d_counts))
- 		goto out;
- 
- 	/*
-@@ -159,14 +159,14 @@ static int __init init_lockevent_counts(void)
- 	for (i = 0; i < lockevent_num; i++) {
- 		if (skip_lockevent(lockevent_names[i]))
- 			continue;
--		if (!debugfs_create_file(lockevent_names[i], 0400, d_counts,
--					 (void *)(long)i, &fops_lockevent))
-+		if (IS_ERR(debugfs_create_file(lockevent_names[i], 0400, d_counts,
-+					 (void *)(long)i, &fops_lockevent)))
- 			goto fail_undo;
- 	}
- 
--	if (!debugfs_create_file(lockevent_names[LOCKEVENT_reset_cnts], 0200,
-+	if (IS_ERR(debugfs_create_file(lockevent_names[LOCKEVENT_reset_cnts], 0200,
- 				 d_counts, (void *)(long)LOCKEVENT_reset_cnts,
--				 &fops_lockevent))
-+				 &fops_lockevent)))
- 		goto fail_undo;
- 
- 	return 0;
