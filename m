@@ -2,54 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8DE07B71D7
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 21:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A65C07B7208
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 21:51:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240884AbjJCTfN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Oct 2023 15:35:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34730 "EHLO
+        id S240895AbjJCTvW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Oct 2023 15:51:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240863AbjJCTfN (ORCPT
+        with ESMTP id S240878AbjJCTvV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Oct 2023 15:35:13 -0400
+        Tue, 3 Oct 2023 15:51:21 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2991AC;
-        Tue,  3 Oct 2023 12:35:09 -0700 (PDT)
-Date:   Tue, 03 Oct 2023 19:35:07 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B459FA1;
+        Tue,  3 Oct 2023 12:51:18 -0700 (PDT)
+Date:   Tue, 03 Oct 2023 19:51:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696361708;
+        s=2020; t=1696362676;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/l4G+biN+V3AM4d7wOYKSw2LMeg2qO6SavzJZSqjzOc=;
-        b=pOYlLhoG3yOIEGlhKrP/cXxn+jbWhrTNtddqhdRG/Ccu08QNydZvyBbe6eQ/xZ0dXpdwye
-        69QGYRnZar+SrSH7w+sW/ilwm6X3CfSmWGSV7OBoXqIks5TQY6R/nNxaAF5/O5zPWfgIk+
-        DWZLhamYb7NIUdj1IYGTG4wJB4QTL3GfbUtAcrtEJEooUJbyAVeCDHxdJXFHZ9kS91613e
-        m6JSZEXMWwJ/PjLiAUlOz7+xFTdtQp53I09nHp32g8G3YKkbf7ACiE5QnEA556mCR02Unn
-        jKOXaJb7YKQu9Uboy3ucMgOkBWyECZavd9bPNKqz5Cdi/653NVoud4V7egQuYQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=ZXCjKAMJ43Hx8H2yxrjCWOCM50v4ZybjcsaCrgUcl6s=;
+        b=xBxOwRqvn1zqhred2g4OZxj0ojfsvth4zakJRZ1s75XvsfRfFPGevfvoYJEF+ZLlQ9lc3v
+        s+Wfb0R/YULEtN+j8NUw/Le6sSfiX9JUwkG5R1yigpegm+7NsG/Pahn5pno3LCxJGE5nvK
+        DoZzbieOTRz22KJa3dAIrvQmzEcPnWXJi5w7+oD75JSspIn34GSOhDzI9B15aM0TAqZ2i1
+        0ROTJSbMB104VMFC5C1NeLqNcA9W06KMJuucI6tt7rLiwxjZLdqZ2JM3sV3kupX7rnQM4I
+        RxwQu2fntJ6rjnpTX+JuaU6qAImfncSyzeOUytMFg71YSMsaNAuGzGl4MERugg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696361708;
+        s=2020e; t=1696362676;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/l4G+biN+V3AM4d7wOYKSw2LMeg2qO6SavzJZSqjzOc=;
-        b=iwxgdqwXmwRZMhqOvLV5/m+Z7d8RfAF/+gCKn5O7ie8eOr3HOQeNjDJmpwICNV3xntfF5t
-        E0W5pASVG3fYhXAg==
-From:   "tip-bot2 for Yu Liao" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=ZXCjKAMJ43Hx8H2yxrjCWOCM50v4ZybjcsaCrgUcl6s=;
+        b=7bp6B8eJIcCtkEtCX48v/oz87RB/Txi8KtRRp2e3IAzy7PybQRDWn9l3UjLIqS+meyha6P
+        fsVxg6WnUXhhYICg==
+From:   "tip-bot2 for Ruan Jinjie" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/headers: Remove duplicate header inclusions
-Cc:     Yu Liao <liaoyu15@huawei.com>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230802021501.2511569-1-liaoyu15@huawei.com>
-References: <20230802021501.2511569-1-liaoyu15@huawei.com>
+Subject: [tip: objtool/core] objtool: Use 'the fallthrough' pseudo-keyword
+Cc:     Ruan Jinjie <ruanjinjie@huawei.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org, x86@kernel.org
 MIME-Version: 1.0
-Message-ID: <169636170770.3135.292145012976825156.tip-bot2@tip-bot2>
+Message-ID: <169636267584.3135.4440528386397949914.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,49 +60,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     d4d6596b43868a1e05fe5b047e73c3aff96444c6
-Gitweb:        https://git.kernel.org/tip/d4d6596b43868a1e05fe5b047e73c3aff96444c6
-Author:        Yu Liao <liaoyu15@huawei.com>
-AuthorDate:    Wed, 02 Aug 2023 10:15:01 +08:00
+Commit-ID:     758a74306f1076b50cb9872af18cb900bafd9497
+Gitweb:        https://git.kernel.org/tip/758a74306f1076b50cb9872af18cb900bafd9497
+Author:        Ruan Jinjie <ruanjinjie@huawei.com>
+AuthorDate:    Tue, 01 Aug 2023 11:52:30 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Oct 2023 21:27:55 +02:00
+CommitterDate: Tue, 03 Oct 2023 21:37:35 +02:00
 
-sched/headers: Remove duplicate header inclusions
+objtool: Use 'the fallthrough' pseudo-keyword
 
-<linux/psi.h> and "autogroup.h" are included twice, remove the duplicate header
-inclusion.
+Replace the existing /* fallthrough */ comments with the
+new 'fallthrough' pseudo-keyword macro:
 
-Signed-off-by: Yu Liao <liaoyu15@huawei.com>
+  https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
+
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230802021501.2511569-1-liaoyu15@huawei.com
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: linux-kernel@vger.kernel.org
 ---
- kernel/sched/build_utility.c | 1 -
- kernel/sched/core.c          | 1 -
- 2 files changed, 2 deletions(-)
+ tools/objtool/arch/x86/decode.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/build_utility.c b/kernel/sched/build_utility.c
-index 99bdd96..80a3df4 100644
---- a/kernel/sched/build_utility.c
-+++ b/kernel/sched/build_utility.c
-@@ -34,7 +34,6 @@
- #include <linux/nospec.h>
- #include <linux/proc_fs.h>
- #include <linux/psi.h>
--#include <linux/psi.h>
- #include <linux/ptrace_api.h>
- #include <linux/sched_clock.h>
- #include <linux/security.h>
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 324980e..27aff98 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -85,7 +85,6 @@
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index c0f25d0..e327cd8 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -291,7 +291,7 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+ 		switch (modrm_reg & 7) {
+ 		case 5:
+ 			imm = -imm;
+-			/* fallthrough */
++			fallthrough;
+ 		case 0:
+ 			/* add/sub imm, %rsp */
+ 			ADD_OP(op) {
+@@ -375,7 +375,7 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+ 			break;
+ 		}
  
- #include "sched.h"
- #include "stats.h"
--#include "autogroup.h"
+-		/* fallthrough */
++		fallthrough;
+ 	case 0x88:
+ 		if (!rex_w)
+ 			break;
+@@ -656,7 +656,7 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+ 			break;
+ 		}
  
- #include "autogroup.h"
- #include "pelt.h"
+-		/* fallthrough */
++		fallthrough;
+ 
+ 	case 0xca: /* retf */
+ 	case 0xcb: /* retf */
