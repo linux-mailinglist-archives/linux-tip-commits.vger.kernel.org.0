@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F4757B6591
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 11:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E164B7B6595
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 11:34:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231626AbjJCJeA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Oct 2023 05:34:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56722 "EHLO
+        id S231797AbjJCJe1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Oct 2023 05:34:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231199AbjJCJeA (ORCPT
+        with ESMTP id S231199AbjJCJe0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Oct 2023 05:34:00 -0400
+        Tue, 3 Oct 2023 05:34:26 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA83B90;
-        Tue,  3 Oct 2023 02:33:56 -0700 (PDT)
-Date:   Tue, 03 Oct 2023 09:33:53 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D344090;
+        Tue,  3 Oct 2023 02:34:23 -0700 (PDT)
+Date:   Tue, 03 Oct 2023 09:34:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696325634;
+        s=2020; t=1696325662;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kFjy5OAkqj+RcMJ8GorPj2rGPTj6R6wFhYpPtVDM/ig=;
-        b=MB1c/FrRYTpoNm8LHOYN1vTZN/22oh39zopdQ3MTBWz8FnZsB6L3ZejKDoQKnhoRty7VIG
-        AqHgTHIyxgKEqSYGueCa81vqG0SNWok27V7qaF/vHfMAZ3TXxWMbeQ68nCoNTjAFAG0K2U
-        GNPuyaMyDF8zVMrI0vfpKZHy6qthSgeE5nkYzEcnrQzWyZXWFA6tl3gFR1f1YNU3G+jQWC
-        4WhN9qvcflRon5CfuSpNO8JF8y2+huhZivTKSsRjCLnmkCfcG6UTxj3nZLVkCEyDkkiP9c
-        6e5Rr2TKqaw7LUcdCI5znNs1/GKZE2HMZsgDM9K1znCsyV/KeD+dFHNDeNYjBQ==
+        bh=wiaEifUQZM+72IROgiZLrf+fS5npBuehugw6N+3/MPA=;
+        b=4IaB+AD9kQCJZoD8zsu8wudfovUnF5pDakpY2OOYNqQgt74qSQ+r81471OiDjFazbBt1YL
+        yVAEA5YWqQmq1AWw42qbIJxW2LC2q7pW9wKXn5xTOIhbtS+cdIu8LMDLjFc2TUjSVGy5dp
+        WDeUmK9li7dJ7OnhpFmXpyCZ7qm1SwEgBegj1Zf3PVN9VZiXbCRQV/oaRVMvh26BffTVYS
+        AtDYtKQRKKe8bHatXNrL6+VMqPTPRSDBi3LwH91X29aBO4ZimdsQzF8/axkxCFTJxIANGA
+        +pidHH2c13rQg7Nd7LsBWG5nmo5CScuoc2zRAsoDvY77sUjWSMXDPZqt2DIFkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696325634;
+        s=2020e; t=1696325662;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kFjy5OAkqj+RcMJ8GorPj2rGPTj6R6wFhYpPtVDM/ig=;
-        b=sqow5UEuSw/w4wIXtAU6L8kmNMQ5QI2JvftOhHeRyVgTXZH4yI2dPSCW+lP0wkdkKwv5QV
-        7xwczprWLX4vcTCA==
-From:   "tip-bot2 for Wang Jinchao" <tip-bot2@linutronix.de>
+        bh=wiaEifUQZM+72IROgiZLrf+fS5npBuehugw6N+3/MPA=;
+        b=oJZ9AFF/qSaT1hMHEkpp0RC3cviUkFlExRZmV7XLQmKxMfsw+VUma9g/DEYq1pU4fx4PM9
+        v8g6FR8oZWYqORCA==
+From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Harmonize the style of array-type parameter
- for fixup_pointer() calls
-Cc:     Wang Jinchao <wangjinchao@xfusion.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <ZMt24BGEX9IhPSY6@fedora>
-References: <ZMt24BGEX9IhPSY6@fedora>
+Subject: [tip: x86/platform] x86/amd_nb: Use Family 19h Models 60h-7Fh Function 4 IDs
+Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
+        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230803150430.3542854-1-yazen.ghannam@amd.com>
+References: <20230803150430.3542854-1-yazen.ghannam@amd.com>
 MIME-Version: 1.0
-Message-ID: <169632563389.3135.2507712498774997414.tip-bot2@tip-bot2>
+Message-ID: <169632566187.3135.7497896905004308037.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,59 +64,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     9f76d606269be7bd1ee5942b7c9c21bb0b43825f
-Gitweb:        https://git.kernel.org/tip/9f76d606269be7bd1ee5942b7c9c21bb0b43825f
-Author:        Wang Jinchao <wangjinchao@xfusion.com>
-AuthorDate:    Thu, 03 Aug 2023 17:44:00 +08:00
+Commit-ID:     2a565258b3f4bbdc7a3c09cd02082cb286a7bffc
+Gitweb:        https://git.kernel.org/tip/2a565258b3f4bbdc7a3c09cd02082cb286a7bffc
+Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+AuthorDate:    Thu, 03 Aug 2023 10:04:30 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Oct 2023 11:28:38 +02:00
+CommitterDate: Tue, 03 Oct 2023 11:25:01 +02:00
 
-x86/boot: Harmonize the style of array-type parameter for fixup_pointer() calls
+x86/amd_nb: Use Family 19h Models 60h-7Fh Function 4 IDs
 
-The usage of '&' before the array parameter is redundant because '&array'
-is equivalent to 'array'. Therefore, there is no need to include '&'
-before the array parameter. In fact, using '&' can cause more confusion,
-especially for individuals who are not familiar with the address-of
-operation for arrays. They might mistakenly believe that one is different
-from the other and spend additional time realizing that they are actually
-the same.
+Three PCI IDs for DF Function 4 were defined but not used.
 
-Harmonizing the style by removing the unnecessary '&' would save time for
-those individuals.
+Add them to the "link" list.
 
-Signed-off-by: Wang Jinchao <wangjinchao@xfusion.com>
+Fixes: f8faf3496633 ("x86/amd_nb: Add AMD PCI IDs for SMN communication")
+Fixes: 23a5b8bb022c ("x86/amd_nb: Add PCI ID for family 19h model 78h")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/ZMt24BGEX9IhPSY6@fedora
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230803150430.3542854-1-yazen.ghannam@amd.com
 ---
- arch/x86/kernel/head64.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/amd_nb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index bbc2179..d6ca9c5 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -211,7 +211,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 
- 	/* Fixup the physical addresses in the page table */
- 
--	pgd = fixup_pointer(&early_top_pgt, physaddr);
-+	pgd = fixup_pointer(early_top_pgt, physaddr);
- 	p = pgd + pgd_index(__START_KERNEL_map);
- 	if (la57)
- 		*p = (unsigned long)level4_kernel_pgt;
-@@ -220,11 +220,11 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	*p += _PAGE_TABLE_NOENC - __START_KERNEL_map + load_delta;
- 
- 	if (la57) {
--		p4d = fixup_pointer(&level4_kernel_pgt, physaddr);
-+		p4d = fixup_pointer(level4_kernel_pgt, physaddr);
- 		p4d[511] += load_delta;
- 	}
- 
--	pud = fixup_pointer(&level3_kernel_pgt, physaddr);
-+	pud = fixup_pointer(level3_kernel_pgt, physaddr);
- 	pud[510] += load_delta;
- 	pud[511] += load_delta;
- 
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 10c2a3c..43238ac 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -116,6 +116,9 @@ static const struct pci_device_id amd_nb_link_ids[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M10H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M40H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M50H_DF_F4) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M60H_DF_F4) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M70H_DF_F4) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M78H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M00H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_DF_F4) },
