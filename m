@@ -2,62 +2,63 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DB607B6480
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 10:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F4757B6591
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 11:33:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230435AbjJCIkE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Oct 2023 04:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55432 "EHLO
+        id S231626AbjJCJeA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Oct 2023 05:34:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230441AbjJCIkD (ORCPT
+        with ESMTP id S231199AbjJCJeA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Oct 2023 04:40:03 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C1B97;
-        Tue,  3 Oct 2023 01:40:00 -0700 (PDT)
-Date:   Tue, 03 Oct 2023 08:39:57 -0000
+        Tue, 3 Oct 2023 05:34:00 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA83B90;
+        Tue,  3 Oct 2023 02:33:56 -0700 (PDT)
+Date:   Tue, 03 Oct 2023 09:33:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696322398;
+        s=2020; t=1696325634;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qh+KBuPKg3zOxbyl3qdxgTFuvx+rQ61ZCEuRvw4p5qA=;
-        b=DAN3eu7UVcKi68fFPvkfSkxMb7MC7WvcakDcRMGxLl7NFqKr9Sdgs/zXZrhYAv8mo5Jpgz
-        fTNvmM4hM145DfG6D0QTVEucM/L/9JYzQzz7CGfyCMsY0Uw08eLCjPB67CLhetc5pvEixy
-        ra6vS6NqBwtLfFUUf9pzz6LAxB/kLqivSWQRRmXI7wUmFUt+LzPHNRWRolfhZk19q7AKaV
-        Zu7U5KiowlFi+tpc9HlEXF622AN4KnsxuYBwE9Xg7sEGh+5fF6dYvIoH7uHqttF8ZyaUZi
-        UIpKsKWWVtFHsAvfz6sNHL5m8PGuMyYWvYgdV3SARCMnGBK36V8XZl/eYyR+wg==
+        bh=kFjy5OAkqj+RcMJ8GorPj2rGPTj6R6wFhYpPtVDM/ig=;
+        b=MB1c/FrRYTpoNm8LHOYN1vTZN/22oh39zopdQ3MTBWz8FnZsB6L3ZejKDoQKnhoRty7VIG
+        AqHgTHIyxgKEqSYGueCa81vqG0SNWok27V7qaF/vHfMAZ3TXxWMbeQ68nCoNTjAFAG0K2U
+        GNPuyaMyDF8zVMrI0vfpKZHy6qthSgeE5nkYzEcnrQzWyZXWFA6tl3gFR1f1YNU3G+jQWC
+        4WhN9qvcflRon5CfuSpNO8JF8y2+huhZivTKSsRjCLnmkCfcG6UTxj3nZLVkCEyDkkiP9c
+        6e5Rr2TKqaw7LUcdCI5znNs1/GKZE2HMZsgDM9K1znCsyV/KeD+dFHNDeNYjBQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696322398;
+        s=2020e; t=1696325634;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qh+KBuPKg3zOxbyl3qdxgTFuvx+rQ61ZCEuRvw4p5qA=;
-        b=JEb8DR3EE0vc3TPb3DJ5rsYyYRUq1+4Dr2YvH4YHwwstDKrtYhVjsnVXlRS2UxKr0sXvTG
-        45YSowApvpodFwDA==
-From:   "tip-bot2 for Yuntao Wang" <tip-bot2@linutronix.de>
+        bh=kFjy5OAkqj+RcMJ8GorPj2rGPTj6R6wFhYpPtVDM/ig=;
+        b=sqow5UEuSw/w4wIXtAU6L8kmNMQ5QI2JvftOhHeRyVgTXZH4yI2dPSCW+lP0wkdkKwv5QV
+        7xwczprWLX4vcTCA==
+From:   "tip-bot2 for Wang Jinchao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Fix incorrect startup_gdt_descr.size
-Cc:     Yuntao Wang <ytcoode@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+Subject: [tip: x86/boot] x86/boot: Harmonize the style of array-type parameter
+ for fixup_pointer() calls
+Cc:     Wang Jinchao <wangjinchao@xfusion.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230807084547.217390-1-ytcoode@gmail.com>
-References: <20230807084547.217390-1-ytcoode@gmail.com>
+In-Reply-To: <ZMt24BGEX9IhPSY6@fedora>
+References: <ZMt24BGEX9IhPSY6@fedora>
 MIME-Version: 1.0
-Message-ID: <169632239730.3135.5499875554711156270.tip-bot2@tip-bot2>
+Message-ID: <169632563389.3135.2507712498774997414.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -66,41 +67,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     001470fed5959d01faecbd57fcf2f60294da0de1
-Gitweb:        https://git.kernel.org/tip/001470fed5959d01faecbd57fcf2f60294da0de1
-Author:        Yuntao Wang <ytcoode@gmail.com>
-AuthorDate:    Mon, 07 Aug 2023 16:45:47 +08:00
+Commit-ID:     9f76d606269be7bd1ee5942b7c9c21bb0b43825f
+Gitweb:        https://git.kernel.org/tip/9f76d606269be7bd1ee5942b7c9c21bb0b43825f
+Author:        Wang Jinchao <wangjinchao@xfusion.com>
+AuthorDate:    Thu, 03 Aug 2023 17:44:00 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Oct 2023 10:28:29 +02:00
+CommitterDate: Tue, 03 Oct 2023 11:28:38 +02:00
 
-x86/boot: Fix incorrect startup_gdt_descr.size
+x86/boot: Harmonize the style of array-type parameter for fixup_pointer() calls
 
-Since the size value is added to the base address to yield the last valid
-byte address of the GDT, the current size value of startup_gdt_descr is
-incorrect (too large by one), fix it.
+The usage of '&' before the array parameter is redundant because '&array'
+is equivalent to 'array'. Therefore, there is no need to include '&'
+before the array parameter. In fact, using '&' can cause more confusion,
+especially for individuals who are not familiar with the address-of
+operation for arrays. They might mistakenly believe that one is different
+from the other and spend additional time realizing that they are actually
+the same.
 
-[ mingo: This probably never mattered, because startup_gdt[] is only used
-         in a very controlled fashion - but make it consistent nevertheless. ]
+Harmonizing the style by removing the unnecessary '&' would save time for
+those individuals.
 
-Fixes: 866b556efa12 ("x86/head/64: Install startup GDT")
-Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+Signed-off-by: Wang Jinchao <wangjinchao@xfusion.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20230807084547.217390-1-ytcoode@gmail.com
+Link: https://lore.kernel.org/r/ZMt24BGEX9IhPSY6@fedora
 ---
- arch/x86/kernel/head64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/head64.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index 49f7629..bbc2179 100644
+index bbc2179..d6ca9c5 100644
 --- a/arch/x86/kernel/head64.c
 +++ b/arch/x86/kernel/head64.c
-@@ -80,7 +80,7 @@ static struct desc_struct startup_gdt[GDT_ENTRIES] = {
-  * while the kernel still uses a direct mapping.
-  */
- static struct desc_ptr startup_gdt_descr = {
--	.size = sizeof(startup_gdt),
-+	.size = sizeof(startup_gdt)-1,
- 	.address = 0,
- };
+@@ -211,7 +211,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
+ 
+ 	/* Fixup the physical addresses in the page table */
+ 
+-	pgd = fixup_pointer(&early_top_pgt, physaddr);
++	pgd = fixup_pointer(early_top_pgt, physaddr);
+ 	p = pgd + pgd_index(__START_KERNEL_map);
+ 	if (la57)
+ 		*p = (unsigned long)level4_kernel_pgt;
+@@ -220,11 +220,11 @@ unsigned long __head __startup_64(unsigned long physaddr,
+ 	*p += _PAGE_TABLE_NOENC - __START_KERNEL_map + load_delta;
+ 
+ 	if (la57) {
+-		p4d = fixup_pointer(&level4_kernel_pgt, physaddr);
++		p4d = fixup_pointer(level4_kernel_pgt, physaddr);
+ 		p4d[511] += load_delta;
+ 	}
+ 
+-	pud = fixup_pointer(&level3_kernel_pgt, physaddr);
++	pud = fixup_pointer(level3_kernel_pgt, physaddr);
+ 	pud[510] += load_delta;
+ 	pud[511] += load_delta;
  
