@@ -2,58 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B686E7B71A0
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 21:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61A4B7B71D5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 21:35:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240909AbjJCTTO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Oct 2023 15:19:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33560 "EHLO
+        id S231952AbjJCTfA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Oct 2023 15:35:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240870AbjJCTTN (ORCPT
+        with ESMTP id S240962AbjJCTe7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Oct 2023 15:19:13 -0400
+        Tue, 3 Oct 2023 15:34:59 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0276DAC;
-        Tue,  3 Oct 2023 12:19:08 -0700 (PDT)
-Date:   Tue, 03 Oct 2023 19:19:06 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AC05BF;
+        Tue,  3 Oct 2023 12:34:56 -0700 (PDT)
+Date:   Tue, 03 Oct 2023 19:34:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696360747;
+        s=2020; t=1696361695;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JLggR4hP0YNeCfk8Z90Zu+QllYjvLO9T0uR23xEQClA=;
-        b=bQnmu4hYKw7J3LyK+af2GK9vmsSRkKqrzcR7+ueJHK3LTpZf9gfPpqNARp0n2IZ+yW3V2s
-        ZGUBYx/0BCz1QW6+cLK2cW3ryrqUxkGpW0jg4mrkR1VL3kuNlbosEbUNWAitKumKRKg+9M
-        FCWYNKaQjBjmRTq7axGt4o987Ia0RWUJVT6CONLbFh41cS8H9TqKdCoZ2kYcSJMFqaorp+
-        WEDZ8MBjjuA6oOS8WqdDTRzjrBbjhbNmEzOnamFiUw9S16JM80QNrZ6uJ2H9M1q/JSOIAs
-        Af4S/8BbXw91CqEBViDduhO3ItYUV+n6Rzjy663DhUiamjCnvgSisErFWhhesA==
+        bh=sMSuIBX68wCUaN9OMC0iJXW11FBBQZmVSrB0umTnwnA=;
+        b=kX+EjTk5lvv2J8+GRWmzKd/T0sTYU/rHd9Il0MzWQH4JCu23KFdZWICShuTXL0c5G4QZgm
+        zsgNF1YBEXWHV6JJleulLkOuebXcTScPAnZQVuzyVKeKg593YO8Hh1zySahb8NOsJd1Jjg
+        tECnLLlJxnbdrjrBLyE9vZ3HZ0TXNYq4LKtOpnRVsCt/qwOY86H56QSHZGhPa50v4u7E2w
+        C/rschhnluYDdDKGUkz2aFZ7DDmGqrRCIpkwPkNmg/MwO3h/mlAoCt+U1Rr/glSnZNbYl0
+        o/kbt2UX+LZqHt7an8UIZmj/8qa2x7zjUlQFmpFuHQ48njKHt4RJyZQ00lSTmw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696360747;
+        s=2020e; t=1696361695;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JLggR4hP0YNeCfk8Z90Zu+QllYjvLO9T0uR23xEQClA=;
-        b=+lPAcBN0DeKMgCmg54FuSJ8XFGdE38Ex5WRl1B0CjnTACt8RqwufKhnmhXNwTQzM4Q5Y/0
-        oci6aN9kH2IPvrDw==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+        bh=sMSuIBX68wCUaN9OMC0iJXW11FBBQZmVSrB0umTnwnA=;
+        b=RU3to7Rf32EWwrVEtaqin8qdVuk7WNTMCDNvlA+e/plT06k+aG8as7ilH0dpgsveP4X01n
+        q0mnsScVJoESvNDg==
+From:   "tip-bot2 for David Reaver" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/rapl: Stop doing cpu_relax() in the
- local64_cmpxchg() loop in rapl_event_update()
-Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230807145134.3176-1-ubizjak@gmail.com>
-References: <20230807145134.3176-1-ubizjak@gmail.com>
+Subject: [tip: perf/core] perf/x86/rapl: Fix "Using plain integer as NULL
+ pointer" Sparse warning
+Cc:     David Reaver <me@davidreaver.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230801155651.108076-1-me@davidreaver.com>
+References: <20230801155651.108076-1-me@davidreaver.com>
 MIME-Version: 1.0
-Message-ID: <169636074660.3135.17644433006738661044.tip-bot2@tip-bot2>
+Message-ID: <169636169438.3135.16959912732564389921.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,49 +66,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1ce19bf90bd55bf54f9ed75d594029db63d395b0
-Gitweb:        https://git.kernel.org/tip/1ce19bf90bd55bf54f9ed75d594029db63d395b0
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Mon, 07 Aug 2023 16:51:14 +02:00
+Commit-ID:     618e77d77494bfd6273256d43eafe4368445c745
+Gitweb:        https://git.kernel.org/tip/618e77d77494bfd6273256d43eafe4368445c745
+Author:        David Reaver <me@davidreaver.com>
+AuthorDate:    Tue, 01 Aug 2023 08:56:51 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Oct 2023 21:13:23 +02:00
+CommitterDate: Tue, 03 Oct 2023 21:25:56 +02:00
 
-perf/x86/rapl: Stop doing cpu_relax() in the local64_cmpxchg() loop in rapl_event_update()
+perf/x86/rapl: Fix "Using plain integer as NULL pointer" Sparse warning
 
-According to the following commit:
+Change 0 to NULL when initializing the test field of perf_msr structs to
+avoid the following sparse warnings:
 
-   f5fe24ef17b5 ("lockref: stop doing cpu_relax in the cmpxchg loop")
+  make C=2 arch/x86/events/rapl.o
 
-   "On the x86-64 architecture even a failing cmpxchg grants exclusive
-    access to the cacheline, making it preferable to retry the failed op
-    immediately instead of stalling with the pause instruction."
+  CHECK   arch/x86/events/rapl.c
+  ...
+  arch/x86/events/rapl.c:540:59: warning: Using plain integer as NULL pointer
+  arch/x86/events/rapl.c:542:59: warning: Using plain integer as NULL pointer
+  arch/x86/events/rapl.c:543:59: warning: Using plain integer as NULL pointer
+  arch/x86/events/rapl.c:544:59: warning: Using plain integer as NULL pointer
 
-Based on the above observation, remove cpu_relax() from the
-local64_cmpxchg() loop of rapl_event_update().
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: David Reaver <me@davidreaver.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20230807145134.3176-1-ubizjak@gmail.com
+Link: https://lore.kernel.org/r/20230801155651.108076-1-me@davidreaver.com
 ---
- arch/x86/events/rapl.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/x86/events/rapl.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
-index 1579429..e8f53b2 100644
+index 6d3e738..c2c37fb 100644
 --- a/arch/x86/events/rapl.c
 +++ b/arch/x86/events/rapl.c
-@@ -184,10 +184,8 @@ again:
- 	rdmsrl(event->hw.event_base, new_raw_count);
+@@ -533,11 +533,11 @@ static struct perf_msr intel_rapl_spr_msrs[] = {
+  * - want to use same event codes across both architectures
+  */
+ static struct perf_msr amd_rapl_msrs[] = {
+-	[PERF_RAPL_PP0]  = { 0, &rapl_events_cores_group, 0, false, 0 },
++	[PERF_RAPL_PP0]  = { 0, &rapl_events_cores_group, NULL, false, 0 },
+ 	[PERF_RAPL_PKG]  = { MSR_AMD_PKG_ENERGY_STATUS,  &rapl_events_pkg_group,   test_msr, false, RAPL_MSR_MASK },
+-	[PERF_RAPL_RAM]  = { 0, &rapl_events_ram_group,   0, false, 0 },
+-	[PERF_RAPL_PP1]  = { 0, &rapl_events_gpu_group,   0, false, 0 },
+-	[PERF_RAPL_PSYS] = { 0, &rapl_events_psys_group,  0, false, 0 },
++	[PERF_RAPL_RAM]  = { 0, &rapl_events_ram_group,   NULL, false, 0 },
++	[PERF_RAPL_PP1]  = { 0, &rapl_events_gpu_group,   NULL, false, 0 },
++	[PERF_RAPL_PSYS] = { 0, &rapl_events_psys_group,  NULL, false, 0 },
+ };
  
- 	if (local64_cmpxchg(&hwc->prev_count, prev_raw_count,
--			    new_raw_count) != prev_raw_count) {
--		cpu_relax();
-+			    new_raw_count) != prev_raw_count)
- 		goto again;
--	}
- 
- 	/*
- 	 * Now we have the new raw value and have updated the prev
+ static int rapl_cpu_offline(unsigned int cpu)
