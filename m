@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8BD7B6297
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 09:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 077437B62B1
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Oct 2023 09:46:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230402AbjJCHiz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Oct 2023 03:38:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47056 "EHLO
+        id S229835AbjJCHqD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Oct 2023 03:46:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230359AbjJCHiy (ORCPT
+        with ESMTP id S230355AbjJCHqC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Oct 2023 03:38:54 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB45290;
-        Tue,  3 Oct 2023 00:38:51 -0700 (PDT)
-Date:   Tue, 03 Oct 2023 07:38:48 -0000
+        Tue, 3 Oct 2023 03:46:02 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE83A9;
+        Tue,  3 Oct 2023 00:45:56 -0700 (PDT)
+Date:   Tue, 03 Oct 2023 07:45:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696318729;
+        s=2020; t=1696319155;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rgSGq3Z6E3846QpBwJ+wxMSZWZxgv5W9g5Ebek0aVvE=;
-        b=RdYF3n1z6ztLNQitGrdJUUMuarthGXZKpoYQHQTaRLDwE3fPdIGSz1jUdDx7yyXO0Xaqw8
-        yuxhYDNAvfx/4wzZYg2JIIk9Sg5EvQRm/bG/NbWQXdkIaMisIr8KlkjPy1P6jFBFHud71c
-        VzsAmbMCL9oNXktSb3kW38q4lg3ROXQJsSDp+c160etF9KC9LV5YGWleSuT+K2XW3h9eWg
-        EGtAoawtSnwWCmq0MUpTIyx3CLKq1UM6AE4wIfP/WmCWvaZrdFewHyY0nPQB4gjiuzXOj7
-        8gjhLZpYPqCSU/Nx0UfVVDnXnQYOpSh+F9fW3lz+WIPXwJtFEwoJ1Z6HtWQWyg==
+        bh=upHOqm9ZlfS4CRKOxbhW/yLyTqSD3syqj4fBx15H5dQ=;
+        b=itovq23DX9jPAAdl6M1L/+1rfnV0il1nCuesJjXCxeX5IDS77YqJlAqTluq9OQLAdgLSjv
+        23rL5702xxnCRNRZ4aEhQ16eKbcNNmLK3MCi/Pm22M5DjiIYgSECuv5Ntak9Zsvd/gFVRp
+        7f+tSprGYrE6/pt3rAH0h9gGsnSDPrgtO3uL0GFKrBGoKbnyotfDsIBFA5phyL41C/u5lm
+        77qM0Lhh5B/dJrg0wULxq3tjWnIEHls14AdPklQsc1CTiil6b/TbtmJUuvAMSUAtvIRKLk
+        hq39cQ4OJqt4eaYg86icNnscCUD4dSIfu9GYtGEW+MXn0z9LqlnXCZB5gynEmA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696318729;
+        s=2020e; t=1696319155;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rgSGq3Z6E3846QpBwJ+wxMSZWZxgv5W9g5Ebek0aVvE=;
-        b=KdSWxw6jsHelXvChuerF23cJXNwgH5uUCRXXy6shPNT6KP+kWEpKCLMiGZaw/Qu2oul2nW
-        3WcqEMcGCr/GsbAA==
-From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+        bh=upHOqm9ZlfS4CRKOxbhW/yLyTqSD3syqj4fBx15H5dQ=;
+        b=6jRj2UFeMs7XXcEZOTelpNioWeoXE5zwYzcQUccJuI+wvZTHdzlLtrAa7wagXW2F+/aHOp
+        GdI+ubWCuEQA+aAQ==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/boot: Move x86_cache_alignment initialization to
- correct spot
-Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231002220045.1014760-1-dave.hansen@linux.intel.com>
-References: <20231002220045.1014760-1-dave.hansen@linux.intel.com>
+Subject: [tip: perf/core] perf/x86/rapl: Use local64_try_cmpxchg in
+ rapl_event_update()
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230807145134.3176-2-ubizjak@gmail.com>
+References: <20230807145134.3176-2-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169631872850.3135.7519973576478959373.tip-bot2@tip-bot2>
+Message-ID: <169631915427.3135.14176807779791264532.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,62 +64,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     3e32552652917f10c0aa8ac75cdc8f0b8d257dec
-Gitweb:        https://git.kernel.org/tip/3e32552652917f10c0aa8ac75cdc8f0b8d257dec
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Mon, 02 Oct 2023 15:00:45 -07:00
+Commit-ID:     df60e18058bb6792c85e4ede43876c1df44f5b9a
+Gitweb:        https://git.kernel.org/tip/df60e18058bb6792c85e4ede43876c1df44f5b9a
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Mon, 07 Aug 2023 16:51:15 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Oct 2023 09:27:12 +02:00
+CommitterDate: Tue, 03 Oct 2023 09:36:18 +02:00
 
-x86/boot: Move x86_cache_alignment initialization to correct spot
+perf/x86/rapl: Use local64_try_cmpxchg in rapl_event_update()
 
-c->x86_cache_alignment is initialized from c->x86_clflush_size.
-However, commit fbf6449f84bf moved c->x86_clflush_size initialization
-to later in boot without moving the c->x86_cache_alignment assignment:
+Use local64_try_cmpxchg() instead of local64_cmpxchg(*ptr, old, new) == old.
 
-  fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct value straight away, instead of a two-phase approach")
+X86 CMPXCHG instruction returns success in ZF flag, so this change saves a
+compare after CMPXCHG (and related move instruction in front of CMPXCHG).
 
-This presumably left c->x86_cache_alignment set to zero for longer
-than it should be.
+Also, try_cmpxchg() implicitly assigns old *ptr value to "old" when CMPXCHG
+fails. There is no need to re-read the value in the loop.
 
-The result was an oops on 32-bit kernels while accessing a pointer
-at 0x20.  The 0x20 came from accessing a structure member at offset
-0x10 (buffer->cpumask) from a ZERO_SIZE_PTR=0x10.  kmalloc() can
-evidently return ZERO_SIZE_PTR when it's given 0 as its alignment
-requirement.
+No functional change intended.
 
-Move the c->x86_cache_alignment initialization to be after
-c->x86_clflush_size has an actual value.
-
-Fixes: fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct value straight away, instead of a two-phase approach")
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20231002220045.1014760-1-dave.hansen@linux.intel.com
----
- arch/x86/kernel/cpu/common.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Link: https://lore.kernel.org/r/20230807145134.3176-2-ubizjak@gmail.com
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 8d7063e..9c51ad5 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1141,6 +1141,7 @@ void get_cpu_address_sizes(struct cpuinfo_x86 *c)
- 		}
- 	}
- 	c->x86_cache_bits = c->x86_phys_bits;
-+	c->x86_cache_alignment = c->x86_clflush_size;
- }
+Cc. "H. Peter Anvin" <hpa@zytor.com>
+---
+ arch/x86/events/rapl.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
+index e8f53b2..6d3e738 100644
+--- a/arch/x86/events/rapl.c
++++ b/arch/x86/events/rapl.c
+@@ -179,13 +179,11 @@ static u64 rapl_event_update(struct perf_event *event)
+ 	s64 delta, sdelta;
+ 	int shift = RAPL_CNTR_WIDTH;
  
- static void identify_cpu_without_cpuid(struct cpuinfo_x86 *c)
-@@ -1594,8 +1595,6 @@ static void __init cpu_parse_early_param(void)
-  */
- static void __init early_identify_cpu(struct cpuinfo_x86 *c)
- {
--	c->x86_cache_alignment = c->x86_clflush_size;
+-again:
+ 	prev_raw_count = local64_read(&hwc->prev_count);
+-	rdmsrl(event->hw.event_base, new_raw_count);
 -
- 	memset(&c->x86_capability, 0, sizeof(c->x86_capability));
- 	c->extended_cpuid_level = 0;
+-	if (local64_cmpxchg(&hwc->prev_count, prev_raw_count,
+-			    new_raw_count) != prev_raw_count)
+-		goto again;
++	do {
++		rdmsrl(event->hw.event_base, new_raw_count);
++	} while (!local64_try_cmpxchg(&hwc->prev_count,
++				      &prev_raw_count, new_raw_count));
  
+ 	/*
+ 	 * Now we have the new raw value and have updated the prev
