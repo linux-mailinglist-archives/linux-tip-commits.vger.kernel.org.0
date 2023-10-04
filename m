@@ -2,58 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CC0A7B7C96
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Oct 2023 11:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D71A7B8402
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Oct 2023 17:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232852AbjJDJuQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 Oct 2023 05:50:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47308 "EHLO
+        id S233693AbjJDPqm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 Oct 2023 11:46:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232889AbjJDJuP (ORCPT
+        with ESMTP id S233567AbjJDPqm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 Oct 2023 05:50:15 -0400
+        Wed, 4 Oct 2023 11:46:42 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26734B4;
-        Wed,  4 Oct 2023 02:50:12 -0700 (PDT)
-Date:   Wed, 04 Oct 2023 09:50:10 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE8DB9E;
+        Wed,  4 Oct 2023 08:46:37 -0700 (PDT)
+Date:   Wed, 04 Oct 2023 15:46:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696413010;
+        s=2020; t=1696434396;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bvb8b/giLe1+Ig6ztHhXVSzK4lYodlkVlqCESw+5lJk=;
-        b=PfJpwrDAF5lPyLxRmRCB86YssF3ZIV5sMrER0muv9YSmqNydIJ0iIb1rvyp2vSUx+LQSdd
-        sFLqSI719wZHqEA0F5BaxfJ6hzXyE6VcEiLKmQ4r06egOPNAOCupmEzX6wNzWqLdGLWXr3
-        KxpZGpMOLybSPf0Vo5zKhZEDu6ikvsSUSrBPC93Di/DurL7QHH1PErFUOYyGKRPdnIwB9v
-        UGdpwQmrVVQa+Y8U3BUWE+jx+VFJk1InS+o6QHamG7Sv3UIEEdvKVHTgrCiA7oUdHwRcJi
-        /EVYzMZl5Ug8lbs5E+MXZK5q+fONJYQhEi8DOjv+BZzxbP5RcBReXmS9TOTNOg==
+        bh=CHk6/fMFBCJekUniiqNZc91KS/ATUE8I9h6xGyYTE3g=;
+        b=rQDJQC0N8/4hCLN36pERrLQoLZM70YoNq77I2EO2Y20EJvZbX6+oPi8WAC5yIvSHnQOZFD
+        zvG5TtG9WEybfBYXlGbN/XYeGTMBrXl9mr1KTeKg/idGmu3qbrJMkO6PzdBbOMj54/OPt8
+        Dwk2QJSpckpydHliW+/34azw/ZNfQqtfV1seMxMdhdcyPD+psDIL/tU8gyP5uRrQdObm/o
+        LFND3B+WNKnH9W5bWCp+urTiuIZL5dAaBFpwbelAYJskx6kNkgj+OUT6aA868wbPNbrP+7
+        Oht5ws01onso/hu1rJ7MI9wOOo2YtXmuyXXDdgcTElLMgbBChUVa95xke5iKsg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696413010;
+        s=2020e; t=1696434396;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bvb8b/giLe1+Ig6ztHhXVSzK4lYodlkVlqCESw+5lJk=;
-        b=S0twSuhVr0q6fHhplA+dqmy7oYPPafIYVCDxviNTKtEjz1Z/bjn1hrXysufVvI5qvK1kDq
-        FfFzHzIbF0hpbyAQ==
-From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
+        bh=CHk6/fMFBCJekUniiqNZc91KS/ATUE8I9h6xGyYTE3g=;
+        b=riQqRqvRU6KvXMhjP8DZZar/0mHvRCrb0HOPoMWXYkPYN8ei5YRVYucNJgFl24OlclDv3d
+        /h4nUCUFKklK56Cw==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev: Change npages to unsigned long in
- snp_accept_memory()
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, <stable@kernel.org>,
+Subject: [tip: locking/core] locking/local, arch: Rewrite local_add_unless()
+ as a static inline function
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C6d511c25576494f682063c9fb6c705b526a3757e=2E16874?=
- =?utf-8?q?41505=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3C6d511c25576494f682063c9fb6c705b526a3757e=2E168744?=
- =?utf-8?q?1505=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
+In-Reply-To: <20230731084458.28096-1-ubizjak@gmail.com>
+References: <20230731084458.28096-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169641301005.3135.2308946231716648881.tip-bot2@tip-bot2>
+Message-ID: <169643439535.3135.5571885434602858806.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,42 +65,248 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     62d5e970d022ef4bde18948dd67247c3194384c1
-Gitweb:        https://git.kernel.org/tip/62d5e970d022ef4bde18948dd67247c3194384c1
-Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Thu, 22 Jun 2023 08:45:05 -05:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 02 Oct 2023 14:55:41 +02:00
+Commit-ID:     5e0eb67974e88dbaded765278a3ffe7af33e3b22
+Gitweb:        https://git.kernel.org/tip/5e0eb67974e88dbaded765278a3ffe7af33e3b22
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Mon, 31 Jul 2023 10:42:23 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 04 Oct 2023 11:38:11 +02:00
 
-x86/sev: Change npages to unsigned long in snp_accept_memory()
+locking/local, arch: Rewrite local_add_unless() as a static inline function
 
-In snp_accept_memory(), the npages variables value is calculated from
-phys_addr_t variables but is an unsigned int. A very large range passed
-into snp_accept_memory() could lead to truncating npages to zero. This
-doesn't happen at the moment but let's be prepared.
+Rewrite local_add_unless() as a static inline function with boolean
+return value, similar to the arch_atomic_add_unless() arch fallbacks.
 
-Fixes: 6c3211796326 ("x86/sev: Add SNP-specific unaccepted memory support")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/6d511c25576494f682063c9fb6c705b526a3757e.1687441505.git.thomas.lendacky@amd.com
+The function is currently unused.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230731084458.28096-1-ubizjak@gmail.com
 ---
- arch/x86/kernel/sev.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/alpha/include/asm/local.h     | 33 ++++++++++++++---------------
+ arch/loongarch/include/asm/local.h | 27 ++++++++++++++----------
+ arch/mips/include/asm/local.h      | 27 ++++++++++++++----------
+ arch/powerpc/include/asm/local.h   | 12 +++++------
+ arch/x86/include/asm/local.h       | 33 ++++++++++++++---------------
+ 5 files changed, 70 insertions(+), 62 deletions(-)
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 2787826..d8c1e3b 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -868,8 +868,7 @@ void snp_set_memory_private(unsigned long vaddr, unsigned long npages)
+diff --git a/arch/alpha/include/asm/local.h b/arch/alpha/include/asm/local.h
+index 0fcaad6..88eb398 100644
+--- a/arch/alpha/include/asm/local.h
++++ b/arch/alpha/include/asm/local.h
+@@ -65,28 +65,27 @@ static __inline__ bool local_try_cmpxchg(local_t *l, long *old, long new)
+ #define local_xchg(l, n) (xchg_local(&((l)->a.counter), (n)))
  
- void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+ /**
+- * local_add_unless - add unless the number is a given value
++ * local_add_unless - add unless the number is already a given value
+  * @l: pointer of type local_t
+  * @a: the amount to add to l...
+  * @u: ...unless l is equal to u.
+  *
+- * Atomically adds @a to @l, so long as it was not @u.
+- * Returns non-zero if @l was not @u, and zero otherwise.
++ * Atomically adds @a to @l, if @v was not already @u.
++ * Returns true if the addition was done.
+  */
+-#define local_add_unless(l, a, u)				\
+-({								\
+-	long c, old;						\
+-	c = local_read(l);					\
+-	for (;;) {						\
+-		if (unlikely(c == (u)))				\
+-			break;					\
+-		old = local_cmpxchg((l), c, c + (a));	\
+-		if (likely(old == c))				\
+-			break;					\
+-		c = old;					\
+-	}							\
+-	c != (u);						\
+-})
++static __inline__ bool
++local_add_unless(local_t *l, long a, long u)
++{
++	long c = local_read(l);
++
++	do {
++		if (unlikely(c == u))
++			return false;
++	} while (!local_try_cmpxchg(l, &c, c + a));
++
++	return true;
++}
++
+ #define local_inc_not_zero(l) local_add_unless((l), 1, 0)
+ 
+ #define local_add_negative(a, l) (local_add_return((a), (l)) < 0)
+diff --git a/arch/loongarch/include/asm/local.h b/arch/loongarch/include/asm/local.h
+index c496758..f53ea65 100644
+--- a/arch/loongarch/include/asm/local.h
++++ b/arch/loongarch/include/asm/local.h
+@@ -70,22 +70,27 @@ static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
+ #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
+ 
+ /**
+- * local_add_unless - add unless the number is a given value
++ * local_add_unless - add unless the number is already a given value
+  * @l: pointer of type local_t
+  * @a: the amount to add to l...
+  * @u: ...unless l is equal to u.
+  *
+- * Atomically adds @a to @l, so long as it was not @u.
+- * Returns non-zero if @l was not @u, and zero otherwise.
++ * Atomically adds @a to @l, if @v was not already @u.
++ * Returns true if the addition was done.
+  */
+-#define local_add_unless(l, a, u)				\
+-({								\
+-	long c, old;						\
+-	c = local_read(l);					\
+-	while (c != (u) && (old = local_cmpxchg((l), c, c + (a))) != c) \
+-		c = old;					\
+-	c != (u);						\
+-})
++static inline bool
++local_add_unless(local_t *l, long a, long u)
++{
++	long c = local_read(l);
++
++	do {
++		if (unlikely(c == u))
++			return false;
++	} while (!local_try_cmpxchg(l, &c, c + a));
++
++	return true;
++}
++
+ #define local_inc_not_zero(l) local_add_unless((l), 1, 0)
+ 
+ #define local_dec_return(l) local_sub_return(1, (l))
+diff --git a/arch/mips/include/asm/local.h b/arch/mips/include/asm/local.h
+index e6ae3df..86fc240 100644
+--- a/arch/mips/include/asm/local.h
++++ b/arch/mips/include/asm/local.h
+@@ -108,22 +108,27 @@ static __inline__ bool local_try_cmpxchg(local_t *l, long *old, long new)
+ #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
+ 
+ /**
+- * local_add_unless - add unless the number is a given value
++ * local_add_unless - add unless the number is already a given value
+  * @l: pointer of type local_t
+  * @a: the amount to add to l...
+  * @u: ...unless l is equal to u.
+  *
+- * Atomically adds @a to @l, so long as it was not @u.
+- * Returns non-zero if @l was not @u, and zero otherwise.
++ * Atomically adds @a to @l, if @v was not already @u.
++ * Returns true if the addition was done.
+  */
+-#define local_add_unless(l, a, u)				\
+-({								\
+-	long c, old;						\
+-	c = local_read(l);					\
+-	while (c != (u) && (old = local_cmpxchg((l), c, c + (a))) != c) \
+-		c = old;					\
+-	c != (u);						\
+-})
++static __inline__ bool
++local_add_unless(local_t *l, long a, long u)
++{
++	long c = local_read(l);
++
++	do {
++		if (unlikely(c == u))
++			return false;
++	} while (!local_try_cmpxchg(l, &c, c + a));
++
++	return true;
++}
++
+ #define local_inc_not_zero(l) local_add_unless((l), 1, 0)
+ 
+ #define local_dec_return(l) local_sub_return(1, (l))
+diff --git a/arch/powerpc/include/asm/local.h b/arch/powerpc/include/asm/local.h
+index 45492fb..ec6ced6 100644
+--- a/arch/powerpc/include/asm/local.h
++++ b/arch/powerpc/include/asm/local.h
+@@ -115,23 +115,23 @@ static __inline__ long local_xchg(local_t *l, long n)
+ }
+ 
+ /**
+- * local_add_unless - add unless the number is a given value
++ * local_add_unless - add unless the number is already a given value
+  * @l: pointer of type local_t
+  * @a: the amount to add to v...
+  * @u: ...unless v is equal to u.
+  *
+- * Atomically adds @a to @l, so long as it was not @u.
+- * Returns non-zero if @l was not @u, and zero otherwise.
++ * Atomically adds @a to @l, if @v was not already @u.
++ * Returns true if the addition was done.
+  */
+-static __inline__ int local_add_unless(local_t *l, long a, long u)
++static __inline__ bool local_add_unless(local_t *l, long a, long u)
  {
--	unsigned long vaddr;
--	unsigned int npages;
-+	unsigned long vaddr, npages;
+ 	unsigned long flags;
+-	int ret = 0;
++	bool ret = false;
  
- 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
- 		return;
+ 	powerpc_local_irq_pmu_save(flags);
+ 	if (l->v != u) {
+ 		l->v += a;
+-		ret = 1;
++		ret = true;
+ 	}
+ 	powerpc_local_irq_pmu_restore(flags);
+ 
+diff --git a/arch/x86/include/asm/local.h b/arch/x86/include/asm/local.h
+index 635132a..73dba8b 100644
+--- a/arch/x86/include/asm/local.h
++++ b/arch/x86/include/asm/local.h
+@@ -135,28 +135,27 @@ static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
+ #define local_xchg(l, n) (xchg(&((l)->a.counter), (n)))
+ 
+ /**
+- * local_add_unless - add unless the number is a given value
++ * local_add_unless - add unless the number is already a given value
+  * @l: pointer of type local_t
+  * @a: the amount to add to l...
+  * @u: ...unless l is equal to u.
+  *
+- * Atomically adds @a to @l, so long as it was not @u.
+- * Returns non-zero if @l was not @u, and zero otherwise.
++ * Atomically adds @a to @l, if @v was not already @u.
++ * Returns true if the addition was done.
+  */
+-#define local_add_unless(l, a, u)				\
+-({								\
+-	long c, old;						\
+-	c = local_read((l));					\
+-	for (;;) {						\
+-		if (unlikely(c == (u)))				\
+-			break;					\
+-		old = local_cmpxchg((l), c, c + (a));		\
+-		if (likely(old == c))				\
+-			break;					\
+-		c = old;					\
+-	}							\
+-	c != (u);						\
+-})
++static __always_inline bool
++local_add_unless(local_t *l, long a, long u)
++{
++	long c = local_read(l);
++
++	do {
++		if (unlikely(c == u))
++			return false;
++	} while (!local_try_cmpxchg(l, &c, c + a));
++
++	return true;
++}
++
+ #define local_inc_not_zero(l) local_add_unless((l), 1, 0)
+ 
+ /* On x86_32, these are no better than the atomic variants.
