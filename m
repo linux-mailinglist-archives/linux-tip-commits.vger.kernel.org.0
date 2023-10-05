@@ -2,61 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E17E07B9F95
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Oct 2023 16:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ED3E7B9F3C
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Oct 2023 16:21:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233933AbjJEOZW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 5 Oct 2023 10:25:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42898 "EHLO
+        id S230520AbjJEOUD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 5 Oct 2023 10:20:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234663AbjJEOX2 (ORCPT
+        with ESMTP id S232358AbjJEORx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 5 Oct 2023 10:23:28 -0400
+        Thu, 5 Oct 2023 10:17:53 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72A488A6E;
-        Thu,  5 Oct 2023 01:28:41 -0700 (PDT)
-Date:   Thu, 05 Oct 2023 08:28:36 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5B19003;
+        Thu,  5 Oct 2023 01:36:08 -0700 (PDT)
+Date:   Thu, 05 Oct 2023 08:36:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696494517;
+        s=2020; t=1696494964;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=evv78FngNWctCCQEqys9FY9hmwWT89p4vAJNsmIFnPQ=;
-        b=aObYPq5udMMfdIGZTa6kExWAL97kTfvpDf0PUvExGbpnJItcBgr3hihVemDnGJs2xKylUO
-        Ewj5jkyhwpEcOkzfar04mYCplHjOSK/gwOqCh8Jje9a97Js/NiI2HMpJ7FqaUvzL8easUk
-        HCjsyQH/LoJv91BcCcQfg5jLxmp7+R+5GClvXtpJFT/zbGapevsuWuu69uv1/0aKHhp/lZ
-        +81Xv/3T2I7lRKMvQyGDOFYO596MYw0GoAWiL7PLjkA1AVxJAuHiT+vhJaw5wRwp2i7sKz
-        3KN3xkbJi6Ed6pvQWO7MBxZ//2b9PmM7sHIg/8Jl1y5z/FXKnQgqPsAyZgpjlg==
+        bh=ooaRt6cPAJOEWZihUCK19vSVmC89ZgrQXgZH5+YgVmQ=;
+        b=30URau9nD9DRgr/eTus/cduE+vwu3JLLp/Rerq1dDn3yar14kx82uDrQlcN5qD5bIF9NBh
+        r+jin1kgVrp8Sjd/7WgHUzdfUpYlQ5K3Zdg2esI9fHKullgPFzUI1tLNAXzuG1+ZWWOrT1
+        6k+UskT63zP+aUnpJUch5hua7VISRwytAMbkleV9zVoslyJZtxEM9BGO/z7VTdJ/yQLaFG
+        Ihc/dgyIbKJp7EPlDVsts+nCqaVd9bYffXYYzoWq5ygECGHz83rrr/AmbhCDjy7wu4cDvg
+        Wrz31Qmsm4pgprlfisO5Ic6oFGjaw2FKq6qacP6w3cxtCo3e0DFd3nrX+B3Kog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696494517;
+        s=2020e; t=1696494964;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=evv78FngNWctCCQEqys9FY9hmwWT89p4vAJNsmIFnPQ=;
-        b=5olFckmS8ifLH2QY1VVYjppNKgUwC/cjygXTXciZV4oXgZmwdU3XCFU8qI/omCPK6myLNi
-        qi1YS26NDE8n40Cg==
-From:   "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
+        bh=ooaRt6cPAJOEWZihUCK19vSVmC89ZgrQXgZH5+YgVmQ=;
+        b=idzLrwU6B6tL0+Cy9XTdGcVN8bSN9hQuaMNz4/d7H75I9k0+4Zzi5yEwqVqcdbgkNQ5ia/
+        QHNPj3wNz62HvgCw==
+From:   "tip-bot2 for Xiu Jianfeng" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/64: Remove obsolete comment on tracing vs. SYSRET
-Cc:     Brian Gerst <brgerst@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Denys Vlasenko <dvlasenk@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+Subject: [tip: perf/core] perf/core: Rename perf_proc_update_handler() ->
+ perf_event_max_sample_rate_handler(), for readability
+Cc:     Xiu Jianfeng <xiujianfeng@huawei.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230721161018.50214-2-brgerst@gmail.com>
-References: <20230721161018.50214-2-brgerst@gmail.com>
+In-Reply-To: <20230721090607.172002-1-xiujianfeng@huawei.com>
+References: <20230721090607.172002-1-xiujianfeng@huawei.com>
 MIME-Version: 1.0
-Message-ID: <169649451666.3135.702628742900040217.tip-bot2@tip-bot2>
+Message-ID: <169649496396.3135.9256203796815906807.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,65 +65,66 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/entry branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     eb43c9b1517b48e2ff0d3a584aca197338987d7b
-Gitweb:        https://git.kernel.org/tip/eb43c9b1517b48e2ff0d3a584aca197338987d7b
-Author:        Brian Gerst <brgerst@gmail.com>
-AuthorDate:    Fri, 21 Jul 2023 12:10:12 -04:00
+Commit-ID:     e6814ec3ba1994561db9b1c05a80227d30cc18fa
+Gitweb:        https://git.kernel.org/tip/e6814ec3ba1994561db9b1c05a80227d30cc18fa
+Author:        Xiu Jianfeng <xiujianfeng@huawei.com>
+AuthorDate:    Fri, 21 Jul 2023 09:06:07 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 05 Oct 2023 10:06:42 +02:00
+CommitterDate: Thu, 05 Oct 2023 10:26:50 +02:00
 
-x86/entry/64: Remove obsolete comment on tracing vs. SYSRET
+perf/core: Rename perf_proc_update_handler() -> perf_event_max_sample_rate_handler(), for readability
 
-This comment comes from a time when the kernel attempted to use SYSRET
-on all returns to userspace, including interrupts and exceptions.  Ever
-since commit fffbb5dc ("Move opportunistic sysret code to syscall code
-path"), SYSRET is only used for returning from system calls. The
-specific tracing issue listed in this comment is not possible anymore.
+Follow the naming pattern of the other sysctl handlers in perf.
 
-Signed-off-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Denys Vlasenko <dvlasenk@redhat.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20230721161018.50214-2-brgerst@gmail.com
+Link: https://lore.kernel.org/r/20230721090607.172002-1-xiujianfeng@huawei.com
 ---
- arch/x86/entry/entry_64.S | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ include/linux/perf_event.h | 2 +-
+ kernel/events/core.c       | 4 ++--
+ kernel/sysctl.c            | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index f71664d..7574639 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -166,22 +166,9 @@ SYM_INNER_LABEL(entry_SYSCALL_64_after_hwframe, SYM_L_GLOBAL)
- 	jne	swapgs_restore_regs_and_return_to_usermode
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index e85cd1c..f31f962 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -1573,7 +1573,7 @@ extern int sysctl_perf_cpu_time_max_percent;
  
- 	/*
--	 * SYSCALL clears RF when it saves RFLAGS in R11 and SYSRET cannot
--	 * restore RF properly. If the slowpath sets it for whatever reason, we
--	 * need to restore it correctly.
--	 *
--	 * SYSRET can restore TF, but unlike IRET, restoring TF results in a
--	 * trap from userspace immediately after SYSRET.  This would cause an
--	 * infinite loop whenever #DB happens with register state that satisfies
--	 * the opportunistic SYSRET conditions.  For example, single-stepping
--	 * this user code:
--	 *
--	 *           movq	$stuck_here, %rcx
--	 *           pushfq
--	 *           popq %r11
--	 *   stuck_here:
--	 *
--	 * would never get past 'stuck_here'.
-+	 * SYSRET cannot restore RF.  It can restore TF, but unlike IRET,
-+	 * restoring TF results in a trap from userspace immediately after
-+	 * SYSRET.
- 	 */
- 	testq	$(X86_EFLAGS_RF|X86_EFLAGS_TF), %r11
- 	jnz	swapgs_restore_regs_and_return_to_usermode
+ extern void perf_sample_event_took(u64 sample_len_ns);
+ 
+-int perf_proc_update_handler(struct ctl_table *table, int write,
++int perf_event_max_sample_rate_handler(struct ctl_table *table, int write,
+ 		void *buffer, size_t *lenp, loff_t *ppos);
+ int perf_cpu_time_max_percent_handler(struct ctl_table *table, int write,
+ 		void *buffer, size_t *lenp, loff_t *ppos);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 4c72a41..af56919 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -449,8 +449,8 @@ static void update_perf_cpu_limits(void)
+ 
+ static bool perf_rotate_context(struct perf_cpu_pmu_context *cpc);
+ 
+-int perf_proc_update_handler(struct ctl_table *table, int write,
+-		void *buffer, size_t *lenp, loff_t *ppos)
++int perf_event_max_sample_rate_handler(struct ctl_table *table, int write,
++				       void *buffer, size_t *lenp, loff_t *ppos)
+ {
+ 	int ret;
+ 	int perf_cpu = sysctl_perf_cpu_time_max_percent;
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 354a2d2..2b65857 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -1983,7 +1983,7 @@ static struct ctl_table kern_table[] = {
+ 		.data		= &sysctl_perf_event_sample_rate,
+ 		.maxlen		= sizeof(sysctl_perf_event_sample_rate),
+ 		.mode		= 0644,
+-		.proc_handler	= perf_proc_update_handler,
++		.proc_handler	= perf_event_max_sample_rate_handler,
+ 		.extra1		= SYSCTL_ONE,
+ 	},
+ 	{
