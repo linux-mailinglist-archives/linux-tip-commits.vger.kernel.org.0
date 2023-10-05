@@ -2,101 +2,136 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 345EC7BA45F
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Oct 2023 18:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C5EC7BAB66
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Oct 2023 22:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240017AbjJEQFQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 5 Oct 2023 12:05:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58100 "EHLO
+        id S229726AbjJEUXz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 5 Oct 2023 16:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231828AbjJEQEE (ORCPT
+        with ESMTP id S229588AbjJEUXy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 5 Oct 2023 12:04:04 -0400
+        Thu, 5 Oct 2023 16:23:54 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D21900F;
-        Thu,  5 Oct 2023 01:43:36 -0700 (PDT)
-Date:   Thu, 05 Oct 2023 08:43:31 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC4793;
+        Thu,  5 Oct 2023 13:23:53 -0700 (PDT)
+Date:   Thu, 05 Oct 2023 20:23:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696495412;
+        s=2020; t=1696537431;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4Why89xGUoWOIAZvg8yO7eUDaamP8MAGHF/fgD1DVeE=;
-        b=L69SFh45gNYbqrg6ArjOm4fybA7XahxtSmu6oMuRCe6B2tkO9XMUCFa2rFlnp0j5ckxUPC
-        3I20TJHDevlgCDwVrpjpzqS8tbJCk+hdD8oFFJi/ZvltNSTx+HEy3RjLWAALU3bOZKZLdy
-        SX7mtj3pNAq9Bb/+Pcv1bC55fb0Qn26hcDjJGSxvY8a2uAkIPxVnam6ZL2tlw1kI6rRMod
-        ZUPVjyqa9Lfwp0NsIqm+fga3wv6HfVJqBUaJkMsmdrsQD/LElQNugEv07Mcz2dr3lceyxO
-        3I5J5+TrW5QRXsMfcTqzY6+gISS5QJBV6kW2HvPWJ2XW2dCiSmOB1s2+To+8HA==
+        bh=dO+aKjhk4MAL25uH/UDuHKKSgxIuG2Di9bAh6yHtAtY=;
+        b=qzODLAM65gHT7XOAF4prJ2MxALLHdLauoBwxL/18hpY2PlRuqC3iwno4KARSiS/uViv43Y
+        Khv1KPOjoFj7zoGP6SgibCQiu/jWMHxydbojZlAeHBS4ABAP6nNlt3kmTPTxp8YjOCjQ+X
+        FV8hkhpm0GTs/owSjSwRaw4E7bvvbgSNpbr6knYFZ12fV4ePOtiQ0XeB44w+auGQJWjOk5
+        ydyyA19uXdhK/k5pnEgkRasjvJXBS6Q+Fw4LZGpOLanp4auoPr0YQE4gthmvDGM1q3dg7H
+        ERPOhXWmMHaSXsRdt/IzGj1dpLRJXkxnNpElWOSNAcm+T5u5+cFbuHxgFOekoQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696495412;
+        s=2020e; t=1696537431;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4Why89xGUoWOIAZvg8yO7eUDaamP8MAGHF/fgD1DVeE=;
-        b=+AtvaRgOOgfcn8FbE9kutqLaQcDCzJYPCn1vX9sUv0cMiGLLHlMCgaOv6/jRQ7xvtJ182E
-        w0vvq62tvww88PDA==
-From:   "tip-bot2 for pangzizhen001@208suo.com" <tip-bot2@linutronix.de>
+        bh=dO+aKjhk4MAL25uH/UDuHKKSgxIuG2Di9bAh6yHtAtY=;
+        b=HER3RGNv7/z1f8iemBfj2zHxnBLR/rX3QQag4LD9u2AFl6uaELwdbYR3fU7r71kB8L8Iks
+        s9AhEtytLiRUkZBQ==
+From:   "tip-bot2 for Xuewen Yan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/seqlock: Fix typo in comment
-Cc:     Zizhen Pang <pangzizhen001@208suo.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: sched/urgent] cpufreq: schedutil: Update next_freq when
+ cpufreq_limits change
+Cc:     Xuewen Yan <xuewen.yan@unisoc.com>,
+        Guohua Yan <guohua.yan@unisoc.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <70293ecd5bb7a1cd370fd4d95c35f936@208suo.com>
-References: <70293ecd5bb7a1cd370fd4d95c35f936@208suo.com>
+In-Reply-To: <20230719130527.8074-1-xuewen.yan@unisoc.com>
+References: <20230719130527.8074-1-xuewen.yan@unisoc.com>
 MIME-Version: 1.0
-Message-ID: <169649541111.3135.17358619656028452700.tip-bot2@tip-bot2>
+Message-ID: <169653743031.3135.15393242028236328719.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     0cff993e08a7578e2c1df93a95fc5059f447e7ae
-Gitweb:        https://git.kernel.org/tip/0cff993e08a7578e2c1df93a95fc5059f447e7ae
-Author:        pangzizhen001@208suo.com <pangzizhen001@208suo.com>
-AuthorDate:    Thu, 20 Jul 2023 23:45:39 +08:00
+Commit-ID:     9e0bc36ab07c550d791bf17feeb479f1dfc42d89
+Gitweb:        https://git.kernel.org/tip/9e0bc36ab07c550d791bf17feeb479f1dfc42d89
+Author:        Xuewen Yan <xuewen.yan@unisoc.com>
+AuthorDate:    Wed, 19 Jul 2023 21:05:27 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 05 Oct 2023 10:39:44 +02:00
+CommitterDate: Thu, 05 Oct 2023 22:09:50 +02:00
 
-locking/seqlock: Fix typo in comment
+cpufreq: schedutil: Update next_freq when cpufreq_limits change
 
-s/the the
- /the
+When cpufreq's policy is 'single', there is a scenario that will
+cause sg_policy's next_freq to be unable to update.
 
-[ mingo: Cleaned up the changelog. ]
+When the CPU's util is always max, the cpufreq will be max,
+and then if we change the policy's scaling_max_freq to be a
+lower freq, indeed, the sg_policy's next_freq need change to
+be the lower freq, however, because the cpu_is_busy, the next_freq
+would keep the max_freq.
 
-Signed-off-by: Zizhen Pang <pangzizhen001@208suo.com>
+For example:
+
+The cpu7 is a single CPU:
+
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # while true;do done& [1] 4737
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # taskset -p 80 4737
+  pid 4737's current affinity mask: ff
+  pid 4737's new affinity mask: 80
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # cat scaling_max_freq
+  2301000
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # cat scaling_cur_freq
+  2301000
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # echo 2171000 > scaling_max_freq
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # cat scaling_max_freq
+  2171000
+
+At this time, the sg_policy's next_freq would stay at 2301000, which
+is wrong.
+
+To fix this, add a check for the ->need_freq_update flag.
+
+[ mingo: Clarified the changelog. ]
+
+Co-developed-by: Guohua Yan <guohua.yan@unisoc.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Signed-off-by: Guohua Yan <guohua.yan@unisoc.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/70293ecd5bb7a1cd370fd4d95c35f936@208suo.com
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Link: https://lore.kernel.org/r/20230719130527.8074-1-xuewen.yan@unisoc.com
 ---
- include/linux/seqlock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/cpufreq_schedutil.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 987a59d..ea7a582 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -864,7 +864,7 @@ static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
- }
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index 4492608..458d359 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -350,7 +350,8 @@ static void sugov_update_single_freq(struct update_util_data *hook, u64 time,
+ 	 * Except when the rq is capped by uclamp_max.
+ 	 */
+ 	if (!uclamp_rq_is_capped(cpu_rq(sg_cpu->cpu)) &&
+-	    sugov_cpu_is_busy(sg_cpu) && next_f < sg_policy->next_freq) {
++	    sugov_cpu_is_busy(sg_cpu) && next_f < sg_policy->next_freq &&
++	    !sg_policy->need_freq_update) {
+ 		next_f = sg_policy->next_freq;
  
- /*
-- * For all seqlock_t write side functions, use the the internal
-+ * For all seqlock_t write side functions, use the internal
-  * do_write_seqcount_begin() instead of generic write_seqcount_begin().
-  * This way, no redundant lockdep_assert_held() checks are added.
-  */
+ 		/* Restore cached freq as next_freq has changed */
