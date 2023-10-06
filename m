@@ -2,145 +2,93 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 454E27BB5E2
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Oct 2023 13:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC7F07BB60A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Oct 2023 13:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231901AbjJFLFn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Oct 2023 07:05:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44196 "EHLO
+        id S231992AbjJFLMd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Oct 2023 07:12:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231916AbjJFLFm (ORCPT
+        with ESMTP id S231915AbjJFLMd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Oct 2023 07:05:42 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B8D4CA;
-        Fri,  6 Oct 2023 04:05:41 -0700 (PDT)
-Received: from [192.168.100.7] (unknown [39.34.184.141])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: usama.anjum)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id C417366125F2;
-        Fri,  6 Oct 2023 12:05:36 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1696590340;
-        bh=Br2dDU51tDwN159y1nk0DEOvOinELT3kcnJgVWVZ96I=;
-        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-        b=NWC7KZpOJ4vkunO0YgdxRWPlEeQUuzQvdd6SZ0K/qb0ynsFvQfWHCRLd+dgdVauJH
-         Cjl+eEaglVWwNTl452zEBtgYkyE+0k1Or7Ae1ucJY5EZNm1EIlmBJHhzjFDuJkVkYO
-         Bj97ga7KPDpVUWaNS4LjV39nUUH0Vc6Zn4fsYuCi3HGQ2+anTakmBLCZe4w8eOJ4u8
-         ZpRHAk3Mz8zbqTT2lD0JEJ6gqk9I3n17rNKJf47lvLHkMAWzvFUFLKovFmAiUGIsYi
-         GKq0FtPCIScbeL5zyNQ97UAKM/5YaFnsxHmFafx2CpOToqyffk37jvJ9FhZYnYct6u
-         TgZ0P2EXklAYQ==
-Message-ID: <1b9a4e52-cfa3-4f56-b259-41c94abed362@collabora.com>
-Date:   Fri, 6 Oct 2023 16:05:31 +0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [tip: locking/core] locking/futex/selftests: Remove duplicate ABI
- defines
-Content-Language: en-US
-To:     Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
+        Fri, 6 Oct 2023 07:12:33 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84BDEF0;
+        Fri,  6 Oct 2023 04:12:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=2id1/+9flOvIccMuyVXeYT1CBOnL0U83OznUMHRoXl0=; b=aknUV9/slsQKLvyMXTeYIafutn
+        d6ts337l+E35PCRYrfxMyaPlytpaEPSfH0BmQkP1wZlNOo5t5sYO8CoXdyHATlbNvmGfM+9GjnjP+
+        bm2ibTmEaLSUSwVmndCxEyV0qUb5maBUkbulCo9gFYOwD2hOS+0E858Jc6IiCsjk4sF+Nq51Ct7ib
+        SQDgcsFzCtKzJdqmgOnTcgov2/b3I3J6U/UXdHcjKqVbJWQkwdpZr4POZmQLAWNbNCAK7UUAf2Xnx
+        BMFwlKcp9T3Bqp7GbxxPH/ojJFZ4NTqRpXHlB7XFYzaBUAT5VtC+G8qU1t0ZGk4Z1wnxKhA8wejo7
+        brKVy4kQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qoiku-00EzA1-NW; Fri, 06 Oct 2023 11:12:28 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 6301D300392; Fri,  6 Oct 2023 13:12:28 +0200 (CEST)
+Date:   Fri, 6 Oct 2023 13:12:28 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc:     Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-tip-commits@vger.kernel.org, x86@kernel.org
+Subject: Re: [tip: locking/core] locking/futex/selftests: Remove duplicate
+ ABI defines
+Message-ID: <20231006111228.GD36277@noisy.programming.kicks-ass.net>
 References: <20231006095539.1601385-1-usama.anjum@collabora.com>
  <169658834039.3135.4395839213523782496.tip-bot2@tip-bot2>
  <20231006104325.GC36277@noisy.programming.kicks-ass.net>
- <ZR/oKYY7R52wKYC5@gmail.com> <ZR/ptQMWKxHCeXyp@gmail.com>
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <ZR/ptQMWKxHCeXyp@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ <ZR/oKYY7R52wKYC5@gmail.com>
+ <ZR/ptQMWKxHCeXyp@gmail.com>
+ <1b9a4e52-cfa3-4f56-b259-41c94abed362@collabora.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <1b9a4e52-cfa3-4f56-b259-41c94abed362@collabora.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 10/6/23 4:04 PM, Ingo Molnar wrote:
-> 
-> * Ingo Molnar <mingo@kernel.org> wrote:
-> 
->>
->> * Peter Zijlstra <peterz@infradead.org> wrote:
->>
->>> On Fri, Oct 06, 2023 at 10:32:20AM -0000, tip-bot2 for Muhammad Usama Anjum wrote:
->>>> The following commit has been merged into the locking/core branch of tip:
->>>>
->>>> Commit-ID:     d351a9e56cc90a9ff694550e4b3bcaf51a391525
->>>> Gitweb:        https://git.kernel.org/tip/d351a9e56cc90a9ff694550e4b3bcaf51a391525
->>>> Author:        Muhammad Usama Anjum <usama.anjum@collabora.com>
->>>> AuthorDate:    Fri, 06 Oct 2023 14:55:37 +05:00
->>>> Committer:     Ingo Molnar <mingo@kernel.org>
->>>> CommitterDate: Fri, 06 Oct 2023 12:29:45 +02:00
->>>>
->>>> locking/futex/selftests: Remove duplicate ABI defines
->>>>
->>>> Kselftests are kernel tests that are built with kernel headers
->>>> from the same source version. The kernel headers, which includes
->>>> current ABI definitions, are already being included correctly
->>>> in the futex selftest Makefile with the help of KHDR_INCLUDE,
->>>> no need to define them again.
->>>>
->>>> Remove duplicate ABI definitions, which is effectively dead code.
->>>>
->>>> No functional changes intended.
->>>
->>> so.. as it happens I recently built these things as stand-alone, and
->>> then you ver much end up using the system headers.
->>>
->>> Also see 20230922205449.808782861@infradead.org where I add more of
->>> this.
->>>
->>> Specifically, if one does:
->>>
->>> cd tools/testing/selftests/futex/functional; make
->>>
->>> You don't get kernel headers and stuff does not build.
->>
->> Hm, I did this after applying the patch, and it does work,
->> but maybe I missed that those definitions were picked up
->> from system headers...
->>
->> So how about we make sure current kernel headers are applied
->> correctly in a 'standalone' build? There's no reason they
->> shouldn't be.
-> 
-> Anyway, I've removed this patch from tip:locking/core until
-> this is cleared up, as your usecase is obviously a valid one ...
+On Fri, Oct 06, 2023 at 04:05:31PM +0500, Muhammad Usama Anjum wrote:
 
-These days a error should appear if the kernel headers aren't found at
-build time of kselftests. After building headers, kselftests should be build.
+>     cd /linux_mainline/tools/testing/selftests/../../..
 
-➜  functional (06bc8fe4bfc4b) ✗ pwd
-/linux_mainline/tools/testing/selftests/futex/functional
-➜  functional (06bc8fe4bfc4b) ✗ make
+That's very odd way of writing:
 
--e error: missing kernel header files.
-Please run this and try again:
+ cd /linux_mainline/
 
-    cd /linux_mainline/tools/testing/selftests/../../..
-    make headers
+>     make headers
 
-make: *** [../../lib.mk:81: kernel_header_files] Error 1
-➜  functional (06bc8fe4bfc4b) ✗ (cd $mainline && make headers) > /dev/null
-➜  functional (06bc8fe4bfc4b) ✗ make
-gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../
-futex_wait_timeout.c -lpthread -lrt -o
-/linux_mainline/tools/testing/selftests/futex/functional/futex_wait_timeout
+This does a build without O=, I can't do that. 
 
-Before and after applying this patch the behavior is same. I'm doing
-testing on next-20231005.
+As in, one must not mix O= and non O= builds, and since I have a ton of
+O= output dirs on, I simply can't do this.
 
-> 
-> Thanks,
-> 
-> 	Ingo
+> make: *** [../../lib.mk:81: kernel_header_files] Error 1
+> ➜  functional (06bc8fe4bfc4b) ✗ (cd $mainline && make headers) > /dev/null
+> ➜  functional (06bc8fe4bfc4b) ✗ make
+> gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../
+> futex_wait_timeout.c -lpthread -lrt -o
+> /linux_mainline/tools/testing/selftests/futex/functional/futex_wait_timeout
 
--- 
-BR,
-Muhammad Usama Anjum
+root@noisy:/usr/src/linux-2.6# cd tools/testing/selftests/futex/functional/
+root@noisy:/usr/src/linux-2.6/tools/testing/selftests/futex/functional# make
+gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../       futex_wait_timeout.c -lpthread -lrt -o /mnt/hirez/usr/src/linux-2.6/tools/testing/selftests/futex/functional/futex_wait_timeout
+In file included from futex_wait_timeout.c:20:
+../include/futex2test.h:18:47: warning: ‘struct futex_waitv’ declared inside parameter list will not be visible outside of this definition or declaration
+18 | static inline int futex_waitv(volatile struct futex_waitv *waiters, unsigned long nr_waiters,
+
+
+Because noisy runs a really old userspace (buster)..
+
+
+
