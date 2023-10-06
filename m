@@ -2,73 +2,135 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12AF77BB633
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Oct 2023 13:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 894A67BBD7B
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Oct 2023 19:09:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231981AbjJFLRG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Oct 2023 07:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38062 "EHLO
+        id S232198AbjJFRJs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Oct 2023 13:09:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230232AbjJFLRE (ORCPT
+        with ESMTP id S232947AbjJFRJr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Oct 2023 07:17:04 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2DC6DB;
-        Fri,  6 Oct 2023 04:17:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=Gm+VgLFmfaUcxePYZphxP5D8oIaodpLSUc8xz+s6lsE=; b=GOPGExPOcy3kKnpip8nne7bOai
-        +qMF1We5bmweWVtGrxSGiPbssfmnPgxcOpHTNiXp9+/Xy5F0AbTnmREu+liB7Umfdd+G6XaHYBSs7
-        B/Dqg9N+hpIN50kYFTx/eQ+RrVPVrTwAdhYs9evcO4Fw1yJB9pi0quBn2Jj1OtsRIjYFm1+Amy9PA
-        hqO6Yhhqpsw3Obr15F9Ze+EV4iQSD26LZNYRswCijxn6o57ub0Vj3Lj80RO//PlU5J8rIA/V6rXV2
-        dK7SlOrUlBfJjaacGHdcjSV6jMKIY3eqRY3zBgTPG6tgq+7VOPwoVMq4ZnYJjE8WUEcwPCKulT0jV
-        rhF0RXKw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qoipI-00CZi9-0L;
-        Fri, 06 Oct 2023 11:17:01 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 3566B300392; Fri,  6 Oct 2023 13:17:01 +0200 (CEST)
-Date:   Fri, 6 Oct 2023 13:17:01 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc:     Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-tip-commits@vger.kernel.org, x86@kernel.org
-Subject: Re: [tip: locking/core] locking/futex/selftests: Remove duplicate
- ABI defines
-Message-ID: <20231006111701.GF36277@noisy.programming.kicks-ass.net>
-References: <20231006095539.1601385-1-usama.anjum@collabora.com>
- <169658834039.3135.4395839213523782496.tip-bot2@tip-bot2>
- <20231006104325.GC36277@noisy.programming.kicks-ass.net>
- <ZR/oKYY7R52wKYC5@gmail.com>
- <ZR/ptQMWKxHCeXyp@gmail.com>
- <1b9a4e52-cfa3-4f56-b259-41c94abed362@collabora.com>
+        Fri, 6 Oct 2023 13:09:47 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C282ED6;
+        Fri,  6 Oct 2023 10:09:45 -0700 (PDT)
+Date:   Fri, 06 Oct 2023 17:09:42 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1696612183;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=D/T1SE2RZgkOb3wpa/nFU1nXcIAWzxDzhnuzBmYadWg=;
+        b=Y2p2Eu53v+tG2dB2XWqPMIzBm0vMjL5aZYQ87LSbLZ5oh4Jt4O0+R+m4IpZrSLTJ0mQIFm
+        Ca5sYcX5pCbKTJ0DGhVgWlL6+0hn7Ur/vkLUFfzOhLmd5/K7F2eU32dJAj8rPw7tDY3jDz
+        VTziY6z1oZHyMw++eSufqQ9Mtf0gOm9W2ZzEeWLuAAnVUSF5maK5YkJJmpX2XgYpnx5TWl
+        YGvixg2b3Qir4YL9mLj+vaCUJ0/mnnF+sMslnVnrm6mrAVpGflPd0C+/MGAmYgJJNLcfWQ
+        3bkkKFvojDqfvngTJccmPnk1GIOyYVKt0oA+ESSYKL0rmF3QpN7g+ULc1ll1MA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1696612183;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=D/T1SE2RZgkOb3wpa/nFU1nXcIAWzxDzhnuzBmYadWg=;
+        b=CB8qQdGeH6YX+/DcYvcbxlCtritv0BSkvY9i0S7bOukgReept2iYFlN74YxY8GEcWxgdkb
+        SdsA8DMcsQQbdjCQ==
+From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/tdx] x86/tdx: Mark TSC reliable
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Erdem Aktas <erdemaktas@google.com>,
+        Isaku Yamahata <isaku.yamahata@intel.com>,
+        Kai Huang <kai.huang@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1b9a4e52-cfa3-4f56-b259-41c94abed362@collabora.com>
+Message-ID: <169661218292.3135.7318812818696091080.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Oct 06, 2023 at 04:05:31PM +0500, Muhammad Usama Anjum wrote:
+The following commit has been merged into the x86/tdx branch of tip:
 
-> These days a error should appear if the kernel headers aren't found at
-> build time of kselftests. After building headers, kselftests should be build.
-> 
-> ➜  functional (06bc8fe4bfc4b) ✗ pwd
-> /linux_mainline/tools/testing/selftests/futex/functional
-> ➜  functional (06bc8fe4bfc4b) ✗ make
-> 
-> -e error: missing kernel header files.
+Commit-ID:     9ee4318c157b9802589b746cc340bae3142d984c
+Gitweb:        https://git.kernel.org/tip/9ee4318c157b9802589b746cc340bae3142=
+d984c
+Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+AuthorDate:    Fri, 06 Oct 2023 17:45:49 +03:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Fri, 06 Oct 2023 10:00:04 -07:00
 
-Obviously I don't see that. And I would consider this a regression.
-Since it means I can't build tests anymore.
+x86/tdx: Mark TSC reliable
+
+In x86 virtualization environments, including TDX, RDTSC instruction is
+handled without causing a VM exit, resulting in minimal overhead and
+jitters. On the other hand, other clock sources (such as HPET, ACPI
+timer, APIC, etc.) necessitate VM exits to implement, resulting in more
+fluctuating measurements compared to TSC. Thus, those clock sources are
+not effective for calibrating TSC.
+
+As a foundation, the host TSC is guaranteed to be invariant on any
+system which enumerates TDX support.
+
+TDX guests and the TDX module build on that foundation by enforcing:
+
+  - Virtual TSC is monotonously incrementing for any single VCPU;
+  - Virtual TSC values are consistent among all the TD=E2=80=99s VCPUs at the
+    level supported by the CPU:
+    + VMM is required to set the same TSC_ADJUST;
+    + VMM must not modify from initial value of TSC_ADJUST before
+      SEAMCALL;
+  - The frequency is determined by TD configuration:
+    + Virtual TSC frequency is specified by VMM on TDH.MNG.INIT;
+    + Virtual TSC starts counting from 0 at TDH.MNG.INIT;
+
+The result is that a reliable TSC is a TDX architectural guarantee.
+
+Use the TSC as the only reliable clock source in TD guests, bypassing
+unstable calibration.
+
+This is similar to what the kernel already does in some VMWare and
+HyperV environments.
+
+[ dhansen: changelog tweaks ]
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.int=
+el.com>
+Reviewed-by: Erdem Aktas <erdemaktas@google.com>
+Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/all/20231006144549.2633-1-kirill.shutemov%40lin=
+ux.intel.com
+---
+ arch/x86/coco/tdx/tdx.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 3e6dbd2..2f27ae1 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -816,6 +816,9 @@ void __init tdx_early_init(void)
+=20
+ 	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
+=20
++	/* TSC is the only reliable clock in TDX guest */
++	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
++
+ 	cc_vendor =3D CC_VENDOR_INTEL;
+ 	tdx_parse_tdinfo(&cc_mask);
+ 	cc_set_mask(cc_mask);
