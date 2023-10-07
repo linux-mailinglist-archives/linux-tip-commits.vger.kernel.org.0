@@ -2,58 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 894A67BBD7B
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Oct 2023 19:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09B337BC939
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Oct 2023 19:11:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232198AbjJFRJs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Oct 2023 13:09:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47000 "EHLO
+        id S1344054AbjJGRLC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 7 Oct 2023 13:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232947AbjJFRJr (ORCPT
+        with ESMTP id S1344021AbjJGRLB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Oct 2023 13:09:47 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C282ED6;
-        Fri,  6 Oct 2023 10:09:45 -0700 (PDT)
-Date:   Fri, 06 Oct 2023 17:09:42 -0000
+        Sat, 7 Oct 2023 13:11:01 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E579C;
+        Sat,  7 Oct 2023 10:11:00 -0700 (PDT)
+Date:   Sat, 07 Oct 2023 17:10:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696612183;
+        s=2020; t=1696698657;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=D/T1SE2RZgkOb3wpa/nFU1nXcIAWzxDzhnuzBmYadWg=;
-        b=Y2p2Eu53v+tG2dB2XWqPMIzBm0vMjL5aZYQ87LSbLZ5oh4Jt4O0+R+m4IpZrSLTJ0mQIFm
-        Ca5sYcX5pCbKTJ0DGhVgWlL6+0hn7Ur/vkLUFfzOhLmd5/K7F2eU32dJAj8rPw7tDY3jDz
-        VTziY6z1oZHyMw++eSufqQ9Mtf0gOm9W2ZzEeWLuAAnVUSF5maK5YkJJmpX2XgYpnx5TWl
-        YGvixg2b3Qir4YL9mLj+vaCUJ0/mnnF+sMslnVnrm6mrAVpGflPd0C+/MGAmYgJJNLcfWQ
-        3bkkKFvojDqfvngTJccmPnk1GIOyYVKt0oA+ESSYKL0rmF3QpN7g+ULc1ll1MA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+qxOsyzNLULe8IX+kSDd7OdRreRx580qotjDMWlV34o=;
+        b=VUHZhGMWeLmW9dA8Q3AEjzkfV5RLnKsOPZtTxqdPzhaJzjhM6kIGfvEeRQgeqVTzIi6Chy
+        TModgjsVCmHGwus2Yx0h7tsbYh5mghSB/yhWz+XTkXWlsx9Dec1WDOQiDVRo6N2EwH8d+P
+        6+UzwXRgvxav9ZCGEOr8Woonse+yA6Ev9WI99PVigJI44yQOlNsQ09fVl6VQnXDb8RrpIV
+        mxGFdrugvnddvdr6o4WbmIGALgEvLrhtV/Xu1vz1QUrlpQMIBuRo20ywcwbVYPr5sPGnfE
+        Ul5r+v78pKvi/PzmzB/TpDddd58LO7RIKvjf9rpl6CQYkndHK0pAVdojyYZjFA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696612183;
+        s=2020e; t=1696698657;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=D/T1SE2RZgkOb3wpa/nFU1nXcIAWzxDzhnuzBmYadWg=;
-        b=CB8qQdGeH6YX+/DcYvcbxlCtritv0BSkvY9i0S7bOukgReept2iYFlN74YxY8GEcWxgdkb
-        SdsA8DMcsQQbdjCQ==
-From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+qxOsyzNLULe8IX+kSDd7OdRreRx580qotjDMWlV34o=;
+        b=ISS+PjGbbvhVaYABbIl1noWYZ5RhUB/tVshyItdLWHbPwUyPetzvyfAa6rULEASMlR+cX6
+        dUmn+626UF6zJaBw==
+From:   "tip-bot2 for Yajun Deng" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/tdx: Mark TSC reliable
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Erdem Aktas <erdemaktas@google.com>,
-        Isaku Yamahata <isaku.yamahata@intel.com>,
-        Kai Huang <kai.huang@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: sched/core] sched/debug: Print 'tgid' in sched_show_task()
+Cc:     Yajun Deng <yajun.deng@linux.dev>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230720080516.1515297-1-yajun.deng@linux.dev>
+References: <20230720080516.1515297-1-yajun.deng@linux.dev>
 MIME-Version: 1.0
-Message-ID: <169661218292.3135.7318812818696091080.tip-bot2@tip-bot2>
+Message-ID: <169669865669.3135.10220410461181815312.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -63,74 +63,44 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/tdx branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9ee4318c157b9802589b746cc340bae3142d984c
-Gitweb:        https://git.kernel.org/tip/9ee4318c157b9802589b746cc340bae3142=
-d984c
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Fri, 06 Oct 2023 17:45:49 +03:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 06 Oct 2023 10:00:04 -07:00
+Commit-ID:     bc87127a45928de5fdf0ec39d7a86e1edd0e179e
+Gitweb:        https://git.kernel.org/tip/bc87127a45928de5fdf0ec39d7a86e1edd0e179e
+Author:        Yajun Deng <yajun.deng@linux.dev>
+AuthorDate:    Thu, 20 Jul 2023 16:05:16 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 07 Oct 2023 11:33:28 +02:00
 
-x86/tdx: Mark TSC reliable
+sched/debug: Print 'tgid' in sched_show_task()
 
-In x86 virtualization environments, including TDX, RDTSC instruction is
-handled without causing a VM exit, resulting in minimal overhead and
-jitters. On the other hand, other clock sources (such as HPET, ACPI
-timer, APIC, etc.) necessitate VM exits to implement, resulting in more
-fluctuating measurements compared to TSC. Thus, those clock sources are
-not effective for calibrating TSC.
+Multiple blocked tasks are printed when the system hangs. They may have
+the same parent pid, but belong to different task groups.
 
-As a foundation, the host TSC is guaranteed to be invariant on any
-system which enumerates TDX support.
+Printing tgid lets users better know whether these tasks are from the same
+task group or not.
 
-TDX guests and the TDX module build on that foundation by enforcing:
-
-  - Virtual TSC is monotonously incrementing for any single VCPU;
-  - Virtual TSC values are consistent among all the TD=E2=80=99s VCPUs at the
-    level supported by the CPU:
-    + VMM is required to set the same TSC_ADJUST;
-    + VMM must not modify from initial value of TSC_ADJUST before
-      SEAMCALL;
-  - The frequency is determined by TD configuration:
-    + Virtual TSC frequency is specified by VMM on TDH.MNG.INIT;
-    + Virtual TSC starts counting from 0 at TDH.MNG.INIT;
-
-The result is that a reliable TSC is a TDX architectural guarantee.
-
-Use the TSC as the only reliable clock source in TD guests, bypassing
-unstable calibration.
-
-This is similar to what the kernel already does in some VMWare and
-HyperV environments.
-
-[ dhansen: changelog tweaks ]
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.int=
-el.com>
-Reviewed-by: Erdem Aktas <erdemaktas@google.com>
-Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/all/20231006144549.2633-1-kirill.shutemov%40lin=
-ux.intel.com
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230720080516.1515297-1-yajun.deng@linux.dev
 ---
- arch/x86/coco/tdx/tdx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/sched/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 3e6dbd2..2f27ae1 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -816,6 +816,9 @@ void __init tdx_early_init(void)
-=20
- 	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
-=20
-+	/* TSC is the only reliable clock in TDX guest */
-+	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
-+
- 	cc_vendor =3D CC_VENDOR_INTEL;
- 	tdx_parse_tdinfo(&cc_mask);
- 	cc_set_mask(cc_mask);
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index f5783cb..cf6d3fd 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9089,9 +9089,9 @@ void sched_show_task(struct task_struct *p)
+ 	if (pid_alive(p))
+ 		ppid = task_pid_nr(rcu_dereference(p->real_parent));
+ 	rcu_read_unlock();
+-	pr_cont(" stack:%-5lu pid:%-5d ppid:%-6d flags:0x%08lx\n",
+-		free, task_pid_nr(p), ppid,
+-		read_task_thread_flags(p));
++	pr_cont(" stack:%-5lu pid:%-5d tgid:%-5d ppid:%-6d flags:0x%08lx\n",
++		free, task_pid_nr(p), task_tgid_nr(p),
++		ppid, read_task_thread_flags(p));
+ 
+ 	print_worker_info(KERN_INFO, p);
+ 	print_stop_info(KERN_INFO, p);
