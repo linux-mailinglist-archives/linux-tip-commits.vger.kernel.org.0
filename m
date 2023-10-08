@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 928A27BCD9F
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Oct 2023 11:52:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B37637BCDC2
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Oct 2023 12:22:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344569AbjJHJwd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 8 Oct 2023 05:52:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48612 "EHLO
+        id S230426AbjJHKWm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 8 Oct 2023 06:22:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343527AbjJHJwc (ORCPT
+        with ESMTP id S230412AbjJHKWm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 8 Oct 2023 05:52:32 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38CB7B6;
-        Sun,  8 Oct 2023 02:52:31 -0700 (PDT)
-Date:   Sun, 08 Oct 2023 09:52:28 -0000
+        Sun, 8 Oct 2023 06:22:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15DDB9D;
+        Sun,  8 Oct 2023 03:22:41 -0700 (PDT)
+Date:   Sun, 08 Oct 2023 10:22:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696758749;
+        s=2020; t=1696760559;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=b6MlXoe96JWyM6gHh38vzeZaUjP/cVbpZxqfXw9dQ/o=;
-        b=T51m2NxbfbfbRt+/B0+xu2v9fAKiAPr3MZ7axCkMCrpw3XqISP0A0YPhWGGiDLYcYMrInk
-        QohgUPywpYv6owA2pYj9XzeomYKx/vKrlZHfkGAsjBEP5EqCGrswsbVu0txrQLEbctsuYz
-        A/8Ic+tIw6PPadRkSkLlCxqh+OHWo4dXULTJJGbd3mHAU4PDcRuHxJHlS655hP758IaoOQ
-        LA99if7J6wqiwnguSvUxkGD9iOhhcIOEkp9X08ss2IXh64QmuYeZYFdCV/i34d/QgwMOEP
-        fVh2f7hxxSFIy8iLU26Mp+0XhDO3V174O4SwebS9L2l0XMzSm3p61Qs1xJ8u1w==
+        bh=RQ8CXIzdONq2HHeXMTEKjhbOGr0Vv4BDo04JkSJZsG4=;
+        b=tQjWHfod7Qu9DywJJBOUFbAYDiDqfPPoXVLhpDHFf9vYWF6RMeqIWEYAz4iHC4G+0UDX93
+        EBUssKAXWddXMS3M+MjVGYWdOXrCNrTRyll419Kdg6ecPCktgREdwR7eshUQdQc3+cTnRz
+        b9k1mfqkX1GZlct5MwRys13KntzJ03CGLxe2NmqnOCBzTH9D/updqFIQ1hRJsMRMK6CN9H
+        ZlQwk25vpMcz1vPwCx3isju8p1TVbnCnlRUiSD4Wpf02F4V8tHQvNdKZNMIztjEinTVzse
+        hDjHAoQ1E1BJP3r0K01BWsxU7tvrGQN04NnG3sLTxu/ZFfks/xLwVfi2XQ8IKw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696758749;
+        s=2020e; t=1696760559;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=b6MlXoe96JWyM6gHh38vzeZaUjP/cVbpZxqfXw9dQ/o=;
-        b=eMh2OmzzjJxmZ+Kbn7ZkcFr7MC/DMASPVshvFEoap/Zh7XwrKcY3FGAbhc/e+GF2DtjanE
-        HHkTfGM1SK2p4xDg==
-From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+        bh=RQ8CXIzdONq2HHeXMTEKjhbOGr0Vv4BDo04JkSJZsG4=;
+        b=0EDofpKHNcpcZS8Z1ZrTdv7b0fBKN4u21QIEegof7nuBGikSsF2uHFy+GX04luxSEbyPhZ
+        ZkjwFTXON4uprqDw==
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/resctrl: Fix kernel-doc warnings
-Cc:     kernel test robot <lkp@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/rapl: Annotate 'struct rapl_pmus' with __counted_by
+Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231006235132.16227-1-rdunlap@infradead.org>
-References: <20231006235132.16227-1-rdunlap@infradead.org>
+In-Reply-To: <20231006201754.work.473-kees@kernel.org>
+References: <20231006201754.work.473-kees@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169675874835.3135.5688248795172710200.tip-bot2@tip-bot2>
+Message-ID: <169676055888.3135.18089597086363215333.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,67 +64,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     025d5ac978cc3b47874cc1c03ab096a78b49f278
-Gitweb:        https://git.kernel.org/tip/025d5ac978cc3b47874cc1c03ab096a78b49f278
-Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Fri, 06 Oct 2023 16:51:32 -07:00
+Commit-ID:     a56d5551e1993ca84dd0c69df5a3d8223d13fb5f
+Gitweb:        https://git.kernel.org/tip/a56d5551e1993ca84dd0c69df5a3d8223d13fb5f
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Fri, 06 Oct 2023 13:17:54 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 08 Oct 2023 11:45:16 +02:00
+CommitterDate: Sun, 08 Oct 2023 12:18:17 +02:00
 
-x86/resctrl: Fix kernel-doc warnings
+perf/x86/rapl: Annotate 'struct rapl_pmus' with __counted_by
 
-The kernel test robot reported kernel-doc warnings here:
+Prepare for the coming implementation by GCC and Clang of the __counted_by
+attribute. Flexible array members annotated with __counted_by can have
+their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS=y (for
+array indexing) and CONFIG_FORTIFY_SOURCE=y (for strcpy/memcpy-family
+functions).
 
-  monitor.c:34: warning: Cannot understand  * @rmid_free_lru    A least recently used list of free RMIDs on line 34 - I thought it was a doc line
-  monitor.c:41: warning: Cannot understand  * @rmid_limbo_count     count of currently unused but (potentially) on line 41 - I thought it was a doc line
-  monitor.c:50: warning: Cannot understand  * @rmid_entry - The entry in the limbo and free lists.  on line 50 - I thought it was a doc line
+Found with Coccinelle:
 
-We don't have a syntax for documenting individual data items via
-kernel-doc, so remove the "/**" kernel-doc markers and add a hyphen
-for consistency.
+  https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci [1]
 
-Fixes: 6a445edce657 ("x86/intel_rdt/cqm: Add RDT monitoring initialization")
-Fixes: 24247aeeabe9 ("x86/intel_rdt/cqm: Improve limbo list processing")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Add __counted_by for 'struct rapl_pmus'.
+
+No change in functionality intended.
+
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231006235132.16227-1-rdunlap@infradead.org
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20231006201754.work.473-kees@kernel.org
 ---
- arch/x86/kernel/cpu/resctrl/monitor.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/events/rapl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-index ded1fc7..f136ac0 100644
---- a/arch/x86/kernel/cpu/resctrl/monitor.c
-+++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-@@ -30,15 +30,15 @@ struct rmid_entry {
- 	struct list_head		list;
+diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
+index c2c37fb..8d98d46 100644
+--- a/arch/x86/events/rapl.c
++++ b/arch/x86/events/rapl.c
+@@ -115,7 +115,7 @@ struct rapl_pmu {
+ struct rapl_pmus {
+ 	struct pmu		pmu;
+ 	unsigned int		maxdie;
+-	struct rapl_pmu		*pmus[];
++	struct rapl_pmu		*pmus[] __counted_by(maxdie);
  };
  
--/**
-- * @rmid_free_lru    A least recently used list of free RMIDs
-+/*
-+ * @rmid_free_lru - A least recently used list of free RMIDs
-  *     These RMIDs are guaranteed to have an occupancy less than the
-  *     threshold occupancy
-  */
- static LIST_HEAD(rmid_free_lru);
- 
--/**
-- * @rmid_limbo_count     count of currently unused but (potentially)
-+/*
-+ * @rmid_limbo_count - count of currently unused but (potentially)
-  *     dirty RMIDs.
-  *     This counts RMIDs that no one is currently using but that
-  *     may have a occupancy value > resctrl_rmid_realloc_threshold. User can
-@@ -46,7 +46,7 @@ static LIST_HEAD(rmid_free_lru);
-  */
- static unsigned int rmid_limbo_count;
- 
--/**
-+/*
-  * @rmid_entry - The entry in the limbo and free lists.
-  */
- static struct rmid_entry	*rmid_ptrs;
+ enum rapl_unit_quirk {
