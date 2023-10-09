@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16CBA7BE554
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Oct 2023 17:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9DD17BE8A8
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Oct 2023 19:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376789AbjJIPsz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 9 Oct 2023 11:48:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54768 "EHLO
+        id S1377964AbjJIRtO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 9 Oct 2023 13:49:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377008AbjJIPsw (ORCPT
+        with ESMTP id S1377976AbjJIRtN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 9 Oct 2023 11:48:52 -0400
+        Mon, 9 Oct 2023 13:49:13 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8979F;
-        Mon,  9 Oct 2023 08:48:50 -0700 (PDT)
-Date:   Mon, 09 Oct 2023 15:48:48 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0FA8CC;
+        Mon,  9 Oct 2023 10:49:09 -0700 (PDT)
+Date:   Mon, 09 Oct 2023 17:49:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696866529;
+        s=2020; t=1696873748;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=X+oVfTqC76j1KleFzCRJpniXRpnWmOtaWGkOw3CLm40=;
-        b=fWgVwznJNgeb84FfDdHd94HRXiUBq0xYEEt0oszfFWhUYRWaUgpDt2XWwWymndEwNn+9Ww
-        0A54jIrPgv1iY3w0VeIkT4ZyE3bcYf7tfNABXRN2uSESargfl+qrwMVQs8wQEB4wu/Sjpr
-        Ky0qnszVHHk7WQ7ZGz7BqFicf4VS3hSCgm7s7YVPX3abWZx1I9uwkBy8LoRTUwiOytN3L3
-        IVJcXPUvrdmPFbewpeEGag8dtrfddxWToCfz31NyHF5FJTTWSqca4cCc4DLNyGe9NVh5rE
-        MDLePgdICsD+wTBV6KwyX+qos7LmVkBbxRUoLoRSDOfE5BjqJUoe/qTx4oZ6dg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=PbsKPCrGLp//NWnC934vWGHzzWfrPxMe6zPNAPbsNRc=;
+        b=bkCmsVTqKfbcML0UCN4uLY3QbFochbywPeu4P5Shaa7DRXjFZ2pKCRp1dyMGWCpMwb6FdP
+        byull2QiF+a5CEj8KaihoHLBREQy7KbpBRqVzJlzvZRoyM3538UjheXJWws5B+LThXFfcU
+        L/RmHzDEgbLQF1WnZ51BBuYNiP4OpcGOTK4JvmV3MUgkzIshiCyWeGmI14HJ2GAPspwmt+
+        dXRlUpBrmTsjBxE/vLBUELvRoNNg7650qukLbGL58wV9FNIaHLIZfYHkAC8fbhIQzFJfdy
+        hsk1J46EipGjGZHK0aiNsxL/P3osWm7Dcv2zPpp5DNuNTINSlwbb/QzBYAbOtw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696866529;
+        s=2020e; t=1696873748;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=X+oVfTqC76j1KleFzCRJpniXRpnWmOtaWGkOw3CLm40=;
-        b=hy+xM6zhPbLTGo3aOxhEEYGNSFGnFR3S2eZS930IepxoEgSOhnUx00fK3w7RP2QYBu2XVd
-        UO2bL9+lFiRLXQAQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=PbsKPCrGLp//NWnC934vWGHzzWfrPxMe6zPNAPbsNRc=;
+        b=GBOUG/64USpbcusFPR48TcWbsO+8YI4b277wV+Lt9vmrnSK1t11ZIA0hHKsCb/QmyFUVQ7
+        Pld/y9t7pTG2MGBg==
 From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/percpu] x86/percpu: Disable named address spaces for KASAN
-Cc:     kernel test robot <oliver.sang@intel.com>,
-        Uros Bizjak <ubizjak@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231009151409.53656-1-ubizjak@gmail.com>
-References: <20231009151409.53656-1-ubizjak@gmail.com>
+Subject: [tip: locking/core] locking/atomic, xen: Use sync_try_cmpxchg()
+ instead of sync_cmpxchg()
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        Juergen Gross <jgross@suse.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, x86@kernel.org
 MIME-Version: 1.0
-Message-ID: <169686652860.3135.1102963688830441762.tip-bot2@tip-bot2>
+Message-ID: <169687374726.3135.10624349103335300582.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,64 +63,135 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/percpu branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     a3c7a64f9b764e200338130253dfe4488db03f4f
-Gitweb:        https://git.kernel.org/tip/a3c7a64f9b764e200338130253dfe4488db03f4f
+Commit-ID:     ad0a2e4c2f20510d7e3f2bc110cf74f8578547f0
+Gitweb:        https://git.kernel.org/tip/ad0a2e4c2f20510d7e3f2bc110cf74f8578547f0
 Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Mon, 09 Oct 2023 17:13:48 +02:00
+AuthorDate:    Mon, 10 Jul 2023 21:01:27 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 09 Oct 2023 17:45:05 +02:00
+CommitterDate: Mon, 09 Oct 2023 18:14:34 +02:00
 
-x86/percpu: Disable named address spaces for KASAN
+locking/atomic, xen: Use sync_try_cmpxchg() instead of sync_cmpxchg()
 
--fsanitize=kernel-address (KASAN) is at the moment incompatible
-with named address spaces - see GCC PR sanitizer/111736:
+Use sync_try_cmpxchg() instead of sync_cmpxchg(*ptr, old, new) == old
+in clear_masked_cond(), clear_linked() and
+gnttab_end_foreign_access_ref_v1(). x86 CMPXCHG instruction returns
+success in ZF flag, so this change saves a compare after cmpxchg
+(and related move instruction in front of cmpxchg), improving the
+cmpxchg loop in gnttab_end_foreign_access_ref_v1() from:
 
-  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111736
+     174:	eb 0e                	jmp    184 <...>
+     176:	89 d0                	mov    %edx,%eax
+     178:	f0 66 0f b1 31       	lock cmpxchg %si,(%rcx)
+     17d:	66 39 c2             	cmp    %ax,%dx
+     180:	74 11                	je     193 <...>
+     182:	89 c2                	mov    %eax,%edx
+     184:	89 d6                	mov    %edx,%esi
+     186:	66 83 e6 18          	and    $0x18,%si
+     18a:	74 ea                	je     176 <...>
 
-GCC is doing a KASAN check on a percpu address which it shouldn't do,
-and didn't used to do because we did the access using inline asm.
+to:
 
-But now that GCC does the accesses as normal (albeit special address
-space) memory accesses, the KASAN code triggers on them too, and it
-all goes to hell in a handbasket very quickly.
+     614:	89 c1                	mov    %eax,%ecx
+     616:	66 83 e1 18          	and    $0x18,%cx
+     61a:	75 11                	jne    62d <...>
+     61c:	f0 66 0f b1 0a       	lock cmpxchg %cx,(%rdx)
+     621:	75 f1                	jne    614 <...>
 
-Those percpu accessor functions need to disable any KASAN
-checking or other sanitizer checking. Not on the percpu address,
-because that's not a "real" address, it's obviously just the offset
-from the segment register.
+No functional change intended.
 
-And GCC should probably not have generated such code in the first
-place, so arguably this is a bug with -fsanitize=kernel-address.
-
-The patch also removes a stale dependency on CONFIG_SMP.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
 Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231009151409.53656-1-ubizjak@gmail.com
-
-Closes: https://lore.kernel.org/oe-lkp/202310071301.a5113890-oliver.sang@intel.com
+Acked-by: Juergen Gross <jgross@suse.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org
 ---
- arch/x86/Kconfig | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/xen/events/events_fifo.c | 26 ++++++++++++--------------
+ drivers/xen/grant-table.c        | 10 ++++------
+ 2 files changed, 16 insertions(+), 20 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index ecb2569..54e79d3 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2393,7 +2393,12 @@ config CC_HAS_NAMED_AS
+diff --git a/drivers/xen/events/events_fifo.c b/drivers/xen/events/events_fifo.c
+index ad9fe51..655775d 100644
+--- a/drivers/xen/events/events_fifo.c
++++ b/drivers/xen/events/events_fifo.c
+@@ -226,21 +226,20 @@ static bool evtchn_fifo_is_masked(evtchn_port_t port)
+  */
+ static bool clear_masked_cond(volatile event_word_t *word)
+ {
+-	event_word_t new, old, w;
++	event_word_t new, old;
  
- config USE_X86_SEG_SUPPORT
- 	def_bool y
--	depends on CC_HAS_NAMED_AS && SMP
-+	depends on CC_HAS_NAMED_AS
-+	#
-+	# -fsanitize=kernel-address (KASAN) is at the moment incompatible
-+	# with named address spaces - see GCC PR sanitizer/111736.
-+	#
-+	depends on !KASAN
+-	w = *word;
++	old = *word;
  
- config CC_HAS_SLS
- 	def_bool $(cc-option,-mharden-sls=all)
+ 	do {
+-		if (!(w & (1 << EVTCHN_FIFO_MASKED)))
++		if (!(old & (1 << EVTCHN_FIFO_MASKED)))
+ 			return true;
+ 
+-		if (w & (1 << EVTCHN_FIFO_PENDING))
++		if (old & (1 << EVTCHN_FIFO_PENDING))
+ 			return false;
+ 
+-		old = w & ~(1 << EVTCHN_FIFO_BUSY);
++		old = old & ~(1 << EVTCHN_FIFO_BUSY);
+ 		new = old & ~(1 << EVTCHN_FIFO_MASKED);
+-		w = sync_cmpxchg(word, old, new);
+-	} while (w != old);
++	} while (!sync_try_cmpxchg(word, &old, new));
+ 
+ 	return true;
+ }
+@@ -259,17 +258,16 @@ static void evtchn_fifo_unmask(evtchn_port_t port)
+ 
+ static uint32_t clear_linked(volatile event_word_t *word)
+ {
+-	event_word_t new, old, w;
++	event_word_t new, old;
+ 
+-	w = *word;
++	old = *word;
+ 
+ 	do {
+-		old = w;
+-		new = (w & ~((1 << EVTCHN_FIFO_LINKED)
+-			     | EVTCHN_FIFO_LINK_MASK));
+-	} while ((w = sync_cmpxchg(word, old, new)) != old);
++		new = (old & ~((1 << EVTCHN_FIFO_LINKED)
++			       | EVTCHN_FIFO_LINK_MASK));
++	} while (!sync_try_cmpxchg(word, &old, new));
+ 
+-	return w & EVTCHN_FIFO_LINK_MASK;
++	return old & EVTCHN_FIFO_LINK_MASK;
+ }
+ 
+ static void consume_one_event(unsigned cpu, struct evtchn_loop_ctrl *ctrl,
+diff --git a/drivers/xen/grant-table.c b/drivers/xen/grant-table.c
+index 35659bf..04a6b47 100644
+--- a/drivers/xen/grant-table.c
++++ b/drivers/xen/grant-table.c
+@@ -427,16 +427,14 @@ EXPORT_SYMBOL_GPL(gnttab_grant_foreign_access);
+ 
+ static int gnttab_end_foreign_access_ref_v1(grant_ref_t ref)
+ {
+-	u16 flags, nflags;
+-	u16 *pflags;
++	u16 *pflags = &gnttab_shared.v1[ref].flags;
++	u16 flags;
+ 
+-	pflags = &gnttab_shared.v1[ref].flags;
+-	nflags = *pflags;
++	flags = *pflags;
+ 	do {
+-		flags = nflags;
+ 		if (flags & (GTF_reading|GTF_writing))
+ 			return 0;
+-	} while ((nflags = sync_cmpxchg(pflags, flags, 0)) != flags);
++	} while (!sync_try_cmpxchg(pflags, &flags, 0));
+ 
+ 	return 1;
+ }
