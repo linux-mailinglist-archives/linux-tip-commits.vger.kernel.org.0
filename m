@@ -2,134 +2,216 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D6447BCDCB
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  8 Oct 2023 12:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3D917BD4B8
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Oct 2023 09:53:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234311AbjJHKaj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 8 Oct 2023 06:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41484 "EHLO
+        id S234372AbjJIHxc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 9 Oct 2023 03:53:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230412AbjJHKai (ORCPT
+        with ESMTP id S1345456AbjJIHx3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 8 Oct 2023 06:30:38 -0400
+        Mon, 9 Oct 2023 03:53:29 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3792EC6;
-        Sun,  8 Oct 2023 03:30:36 -0700 (PDT)
-Date:   Sun, 08 Oct 2023 10:30:33 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80422AB;
+        Mon,  9 Oct 2023 00:53:25 -0700 (PDT)
+Date:   Mon, 09 Oct 2023 07:53:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696761034;
+        s=2020; t=1696838003;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=RFcgvCwtBkHjmjC5Kv59Tho8cI5sB4+dK7KBM8mjgEo=;
-        b=kwiLjNQmuwlGGMi4EdsYkoz71pGXXZ0BIeUR/pN0bHENed0HdVB5+vK3OF7d+KDAAoCEUI
-        Whqe2DtedUA5cOuGrJPI2iJlkIWFwVa66lWwv9z8LcybXPAzzWLUbRYR9Df7zgEO9j7ZAM
-        sDf6+Oa16Tnkk/xwVb70G00/wvx0HzrmyQoqtsRKTYz80CyJy8jBYt0wdEEuC35UedBXPI
-        xStItsIqbw+xG/xqkUtPCPM1o7JPCmaPw1H6r/OaTPhysn7YE9MdfXb2gZqZsXaXvxJxS7
-        Ze2teRbhAUuDpCTxuSGrCMSSjh14BhtUT8oY68E3mD3lxF6vHYftgJrmgZjvXQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+dwhAdu+dK6gdMFGQDF0djpFFjXv4g52ZJN2XbmiTL0=;
+        b=sD12rEYhuqhyCQE6K1Ze0W6+TA5nm3zqajxPIPfGWCIiMr8eG0F3kOFLD2zIjrdDXB6pmU
+        VG1bvYz8W5cEKOdhW2t7omJJnJzRImIx1xODknyGGbmF+pWHo/MVKhvfvH8f8ZBdZetXwB
+        z+ZR37LhZb1KhFVCbvBlZD5lS2QjvSRMSLftzI8LxSLgN1AewSuF33TuXGu9AYGlyuJUMX
+        h2GPHh9qJuNsUTqyUYjDOToiVQ7DEhz25Tn7jKaD5V+uzU+UFNjri+ZNTCW1LczdQOD+yO
+        NRW4HdmXXgEYQmBSJsxIkmFpnrwp+vvOzJD+dtzr8kguvuNrgbuv40MVUeeIpg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696761034;
+        s=2020e; t=1696838003;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=RFcgvCwtBkHjmjC5Kv59Tho8cI5sB4+dK7KBM8mjgEo=;
-        b=5SsDrl6Fd6RtNGDTB9P4PsIR2dJg2M//yECJsaid/TgeB4fr3GRxMotUyQpq8FXQP6/eoW
-        BcWllE6zz6s4WcCA==
-From:   "tip-bot2 for JP Kobryn" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+dwhAdu+dK6gdMFGQDF0djpFFjXv4g52ZJN2XbmiTL0=;
+        b=McCohBNg0bAVP/iFTocI4n/mgV7GIBb5+LwXn3swbcYir0c3JW/tsAtbhzOyOTB4ccfd8o
+        m45QGO9hyqlGuWAQ==
+From:   "tip-bot2 for Benjamin Segall" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/lbr: Filter vsyscall addresses
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        JP Kobryn <inwardvessel@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: sched/urgent] sched/eevdf: Fix pick_eevdf()
+Cc:     Ben Segall <bsegall@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <xm261qego72d.fsf_-_@google.com>
+References: <xm261qego72d.fsf_-_@google.com>
 MIME-Version: 1.0
-Message-ID: <169676103391.3135.1323905069105939036.tip-bot2@tip-bot2>
+Message-ID: <169683800234.3135.15770408392571000845.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     e53899771a02f798d436655efbd9d4b46c0f9265
-Gitweb:        https://git.kernel.org/tip/e53899771a02f798d436655efbd9d4b46c0f9265
-Author:        JP Kobryn <inwardvessel@gmail.com>
-AuthorDate:    Fri, 06 Oct 2023 11:57:26 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 08 Oct 2023 12:25:18 +02:00
+Commit-ID:     b01db23d5923a35023540edc4f0c5f019e11ac7d
+Gitweb:        https://git.kernel.org/tip/b01db23d5923a35023540edc4f0c5f019e11ac7d
+Author:        Benjamin Segall <bsegall@google.com>
+AuthorDate:    Fri, 29 Sep 2023 17:09:30 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 09 Oct 2023 09:48:33 +02:00
 
-perf/x86/lbr: Filter vsyscall addresses
+sched/eevdf: Fix pick_eevdf()
 
-We found that a panic can occur when a vsyscall is made while LBR sampling
-is active. If the vsyscall is interrupted (NMI) for perf sampling, this
-call sequence can occur (most recent at top):
+The old pick_eevdf() could fail to find the actual earliest eligible
+deadline when it descended to the right looking for min_deadline, but
+it turned out that that min_deadline wasn't actually eligible. In that
+case we need to go back and search through any left branches we
+skipped looking for the actual best _eligible_ min_deadline.
 
-    __insn_get_emulate_prefix()
-    insn_get_emulate_prefix()
-    insn_get_prefixes()
-    insn_get_opcode()
-    decode_branch_type()
-    get_branch_type()
-    intel_pmu_lbr_filter()
-    intel_pmu_handle_irq()
-    perf_event_nmi_handler()
+This is more expensive, but still O(log n), and at worst should only
+involve descending two branches of the rbtree.
 
-Within __insn_get_emulate_prefix() at frame 0, a macro is called:
+I've run this through a userspace stress test (thank you
+tools/lib/rbtree.c), so hopefully this implementation doesn't miss any
+corner cases.
 
-    peek_nbyte_next(insn_byte_t, insn, i)
-
-Within this macro, this dereference occurs:
-
-    (insn)->next_byte
-
-Inspecting registers at this point, the value of the next_byte field is the
-address of the vsyscall made, for example the location of the vsyscall
-version of gettimeofday() at 0xffffffffff600000. The access to an address
-in the vsyscall region will trigger an oops due to an unhandled page fault.
-
-To fix the bug, filtering for vsyscalls can be done when
-determining the branch type. This patch will return
-a "none" branch if a kernel address if found to lie in the
-vsyscall region.
-
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
+Fixes: 147f3efaa241 ("sched/fair: Implement an EEVDF-like scheduling policy")
+Signed-off-by: Ben Segall <bsegall@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/xm261qego72d.fsf_-_@google.com
 ---
- arch/x86/events/utils.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c | 72 +++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 58 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/events/utils.c b/arch/x86/events/utils.c
-index 76b1f8b..dab4ed1 100644
---- a/arch/x86/events/utils.c
-+++ b/arch/x86/events/utils.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <asm/insn.h>
-+#include <linux/mm.h>
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index a4b904a..061a30a 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -872,14 +872,16 @@ struct sched_entity *__pick_first_entity(struct cfs_rq *cfs_rq)
+  *
+  * Which allows an EDF like search on (sub)trees.
+  */
+-static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
++static struct sched_entity *__pick_eevdf(struct cfs_rq *cfs_rq)
+ {
+ 	struct rb_node *node = cfs_rq->tasks_timeline.rb_root.rb_node;
+ 	struct sched_entity *curr = cfs_rq->curr;
+ 	struct sched_entity *best = NULL;
++	struct sched_entity *best_left = NULL;
  
- #include "perf_event.h"
+ 	if (curr && (!curr->on_rq || !entity_eligible(cfs_rq, curr)))
+ 		curr = NULL;
++	best = curr;
  
-@@ -132,9 +133,9 @@ static int get_branch_type(unsigned long from, unsigned long to, int abort,
- 		 * The LBR logs any address in the IP, even if the IP just
- 		 * faulted. This means userspace can control the from address.
- 		 * Ensure we don't blindly read any address by validating it is
--		 * a known text address.
-+		 * a known text address and not a vsyscall address.
+ 	/*
+ 	 * Once selected, run a task until it either becomes non-eligible or
+@@ -900,33 +902,75 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
+ 		}
+ 
+ 		/*
+-		 * If this entity has an earlier deadline than the previous
+-		 * best, take this one. If it also has the earliest deadline
+-		 * of its subtree, we're done.
++		 * Now we heap search eligible trees for the best (min_)deadline
  		 */
--		if (kernel_text_address(from)) {
-+		if (kernel_text_address(from) && !in_gate_area_no_mm(from)) {
- 			addr = (void *)from;
- 			/*
- 			 * Assume we can get the maximum possible size
+-		if (!best || deadline_gt(deadline, best, se)) {
++		if (!best || deadline_gt(deadline, best, se))
+ 			best = se;
+-			if (best->deadline == best->min_deadline)
+-				break;
+-		}
+ 
+ 		/*
+-		 * If the earlest deadline in this subtree is in the fully
+-		 * eligible left half of our space, go there.
++		 * Every se in a left branch is eligible, keep track of the
++		 * branch with the best min_deadline
+ 		 */
++		if (node->rb_left) {
++			struct sched_entity *left = __node_2_se(node->rb_left);
++
++			if (!best_left || deadline_gt(min_deadline, best_left, left))
++				best_left = left;
++
++			/*
++			 * min_deadline is in the left branch. rb_left and all
++			 * descendants are eligible, so immediately switch to the second
++			 * loop.
++			 */
++			if (left->min_deadline == se->min_deadline)
++				break;
++		}
++
++		/* min_deadline is at this node, no need to look right */
++		if (se->deadline == se->min_deadline)
++			break;
++
++		/* else min_deadline is in the right branch. */
++		node = node->rb_right;
++	}
++
++	/*
++	 * We ran into an eligible node which is itself the best.
++	 * (Or nr_running == 0 and both are NULL)
++	 */
++	if (!best_left || (s64)(best_left->min_deadline - best->deadline) > 0)
++		return best;
++
++	/*
++	 * Now best_left and all of its children are eligible, and we are just
++	 * looking for deadline == min_deadline
++	 */
++	node = &best_left->run_node;
++	while (node) {
++		struct sched_entity *se = __node_2_se(node);
++
++		/* min_deadline is the current node */
++		if (se->deadline == se->min_deadline)
++			return se;
++
++		/* min_deadline is in the left branch */
+ 		if (node->rb_left &&
+ 		    __node_2_se(node->rb_left)->min_deadline == se->min_deadline) {
+ 			node = node->rb_left;
+ 			continue;
+ 		}
+ 
++		/* else min_deadline is in the right branch */
+ 		node = node->rb_right;
+ 	}
++	return NULL;
++}
+ 
+-	if (!best || (curr && deadline_gt(deadline, best, curr)))
+-		best = curr;
++static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
++{
++	struct sched_entity *se = __pick_eevdf(cfs_rq);
+ 
+-	if (unlikely(!best)) {
++	if (!se) {
+ 		struct sched_entity *left = __pick_first_entity(cfs_rq);
+ 		if (left) {
+ 			pr_err("EEVDF scheduling fail, picking leftmost\n");
+@@ -934,7 +978,7 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
+ 		}
+ 	}
+ 
+-	return best;
++	return se;
+ }
+ 
+ #ifdef CONFIG_SCHED_DEBUG
