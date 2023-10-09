@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 495FA7BD875
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Oct 2023 12:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E23A27BD8B1
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Oct 2023 12:33:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233034AbjJIK0R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 9 Oct 2023 06:26:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40014 "EHLO
+        id S1345535AbjJIKd6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 9 Oct 2023 06:33:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345615AbjJIK0Q (ORCPT
+        with ESMTP id S1345759AbjJIKdz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 9 Oct 2023 06:26:16 -0400
+        Mon, 9 Oct 2023 06:33:55 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B886A9D;
-        Mon,  9 Oct 2023 03:26:13 -0700 (PDT)
-Date:   Mon, 09 Oct 2023 10:26:11 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D440C9C;
+        Mon,  9 Oct 2023 03:33:53 -0700 (PDT)
+Date:   Mon, 09 Oct 2023 10:33:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696847172;
+        s=2020; t=1696847632;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vrLEqPl6gk4LRSSeKr3UyEVVQOqyZX8dfC8LmvBOxj4=;
-        b=VFXDLDhZ+vmfeKMyUG0c975KoujXKrNya4d0lsIif4QmHl+YNIiw9IkB8oL0ICtyvkg1aG
-        ZLPMRpsy8SZ5DXkRDs/p1lKnBNpAx+3erHgAkfbw9505+LF+VBoRS+cSPVoV/TEF9b+hG7
-        GncqI2xSDB6FdnBnyg7lrPVLiT6KcyBxYYMM4HpG42pVg6eV6dO5aczL7eH7UhKIfdQnXy
-        SMusEza9E2jAhcrsQSA5sWjP0YzPaI2WIRZxiTbkzGue7mlq1veLAcu28eU4cPNwl++M2C
-        4bFR3tuqV6bj8b10ddiFQ2cHNNvk0m/a+fhfspcPIrRZ876AwS1lexg8TcrO7g==
+        bh=ED3Q9EjTvFOqHf0F/fp3lKmzOsY2Fj8/fhVP6Rz/qq8=;
+        b=1O76TzngN6JMYbkBMKcuu6QxC9AtzdG5Iyh43yjtaKxyYJjHhtI8vH/JIytigD+hlgVtRa
+        R7tRpKBiCm0lyYPIBHxEITQsiXj/9+WylbqYSiBRIEfxnYGbqkOEAMvH3lijyhpwPQgE7b
+        MSXn9Q4Zz9cp9sOQ1ciMuZpiHkSGT5REHkuXyz2+jRhg1Ko2BUPMWn36Eyq9Q0JxftY+f9
+        MlIRIdGOeMmYJDyoR2cP3sebccRtlYoJe3co3J0lnPKMe1OiIjQEUiu+AMje4U6pY7gLrf
+        BxHCop0u5fdr4WECYVcsKBQejpdABWONHcOmjUCq9IkFYP8n/2fofyZG1dUPhw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696847172;
+        s=2020e; t=1696847632;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vrLEqPl6gk4LRSSeKr3UyEVVQOqyZX8dfC8LmvBOxj4=;
-        b=ORhAzzM7z79cy5CpYWAbJTP1U6JlBJzcRRn7/d2bZsn5nufg6DEXN7RPSPEKyWZlNI9YPc
-        9q0I+s6AlHFHLZCw==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+        bh=ED3Q9EjTvFOqHf0F/fp3lKmzOsY2Fj8/fhVP6Rz/qq8=;
+        b=Zochh8pnIHQzxrmzxfltO7ruWbcxrZGQE0Mdu2vPuJ3oiLcEgDpzx30nEMb+AfQ5JfVa30
+        NyV3lP+fwYK2SzDA==
+From:   "tip-bot2 for Lucy Mielke" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/nohz: Update idle load-balancing (ILB) comments
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/intel/pt: Fix kernel-doc comments
+Cc:     Lucy Mielke <lucymielke@icloud.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231006102518.2452758-2-mingo@kernel.org>
-References: <20231006102518.2452758-2-mingo@kernel.org>
+In-Reply-To: <ZSOjQW3e2nJR4bAo@fedora.fritz.box>
+References: <ZSOjQW3e2nJR4bAo@fedora.fritz.box>
 MIME-Version: 1.0
-Message-ID: <169684717152.3135.18417702830973056064.tip-bot2@tip-bot2>
+Message-ID: <169684763154.3135.4873019894270877876.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,111 +64,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     7ef7145a2b26b172ac6885c4cf3272a38bc0979a
-Gitweb:        https://git.kernel.org/tip/7ef7145a2b26b172ac6885c4cf3272a38bc0979a
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 06 Oct 2023 12:25:16 +02:00
+Commit-ID:     38cd5b6a875adc877681faf8e3ad47fdbd6eceb5
+Gitweb:        https://git.kernel.org/tip/38cd5b6a875adc877681faf8e3ad47fdbd6eceb5
+Author:        Lucy Mielke <lucymielke@icloud.com>
+AuthorDate:    Mon, 09 Oct 2023 08:54:54 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 09 Oct 2023 12:21:23 +02:00
+CommitterDate: Mon, 09 Oct 2023 12:26:22 +02:00
 
-sched/nohz: Update idle load-balancing (ILB) comments
+perf/x86/intel/pt: Fix kernel-doc comments
 
- - Fix incorrect/misleading comments,
+Some parameters or return codes were either wrong or missing,
+update them.
 
- - clarify some others,
-
- - fix typos & grammar,
-
- - and use more consistent style throughout.
-
+Signed-off-by: Lucy Mielke <lucymielke@icloud.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Link: https://lore.kernel.org/r/20231006102518.2452758-2-mingo@kernel.org
+Link: https://lore.kernel.org/r/ZSOjQW3e2nJR4bAo@fedora.fritz.box
 ---
- kernel/sched/fair.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ arch/x86/events/intel/pt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 52c498f..2b63a14 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -11503,14 +11503,15 @@ static inline int on_null_domain(struct rq *rq)
- 
- #ifdef CONFIG_NO_HZ_COMMON
- /*
-- * idle load balancing details
-- * - When one of the busy CPUs notice that there may be an idle rebalancing
-+ * NOHZ idle load balancing (ILB) details:
+diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+index 42a5579..8e2a122 100644
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -736,6 +736,7 @@ static bool topa_table_full(struct topa *topa)
+ /**
+  * topa_insert_pages() - create a list of ToPA tables
+  * @buf:	PT buffer being initialized.
++ * @cpu:	CPU on which to allocate.
+  * @gfp:	Allocation flags.
+  *
+  * This initializes a list of ToPA tables with entries from
+@@ -1207,8 +1208,11 @@ static void pt_buffer_fini_topa(struct pt_buffer *buf)
+ /**
+  * pt_buffer_init_topa() - initialize ToPA table for pt buffer
+  * @buf:	PT buffer.
+- * @size:	Total size of all regions within this ToPA.
++ * @cpu:	CPU on which to allocate.
++ * @nr_pages:	No. of pages to allocate.
+  * @gfp:	Allocation flags.
 + *
-+ * - When one of the busy CPUs notices that there may be an idle rebalancing
-  *   needed, they will kick the idle load balancer, which then does idle
-  *   load balancing for all the idle CPUs.
-- * - HK_TYPE_MISC CPUs are used for this task, because HK_TYPE_SCHED not set
-+ *
-+ * - HK_TYPE_MISC CPUs are used for this task, because HK_TYPE_SCHED is not set
-  *   anywhere yet.
++ * Return:	0 on success or error code.
   */
--
- static inline int find_new_ilb(void)
- {
- 	int ilb;
-@@ -11531,8 +11532,10 @@ static inline int find_new_ilb(void)
- }
+ static int pt_buffer_init_topa(struct pt_buffer *buf, int cpu,
+ 			       unsigned long nr_pages, gfp_t gfp)
+@@ -1281,7 +1285,7 @@ out:
  
- /*
-- * Kick a CPU to do the nohz balancing, if it is time for it. We pick any
-- * idle CPU in the HK_TYPE_MISC housekeeping set (if there is one).
-+ * Kick a CPU to do the NOHZ balancing, if it is time for it, via a cross-CPU
-+ * SMP function call (IPI).
-+ *
-+ * We pick the first idle CPU in the HK_TYPE_MISC housekeeping set (if there is one).
-  */
- static void kick_ilb(unsigned int flags)
- {
-@@ -11560,7 +11563,7 @@ static void kick_ilb(unsigned int flags)
- 
- 	/*
- 	 * This way we generate an IPI on the target CPU which
--	 * is idle. And the softirq performing nohz idle load balance
-+	 * is idle, and the softirq performing NOHZ idle load balancing
- 	 * will be run before returning from the IPI.
- 	 */
- 	smp_call_function_single_async(ilb_cpu, &cpu_rq(ilb_cpu)->nohz_csd);
-@@ -11589,7 +11592,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 
- 	/*
- 	 * None are in tickless mode and hence no need for NOHZ idle load
--	 * balancing.
-+	 * balancing:
- 	 */
- 	if (likely(!atomic_read(&nohz.nr_cpus)))
- 		return;
-@@ -11611,9 +11614,8 @@ static void nohz_balancer_kick(struct rq *rq)
- 	sd = rcu_dereference(rq->sd);
- 	if (sd) {
- 		/*
--		 * If there's a CFS task and the current CPU has reduced
--		 * capacity; kick the ILB to see if there's a better CPU to run
--		 * on.
-+		 * If there's a runnable CFS task and the current CPU has reduced
-+		 * capacity, kick the ILB to see if there's a better CPU to run on:
- 		 */
- 		if (rq->cfs.h_nr_running >= 1 && check_cpu_capacity(rq, sd)) {
- 			flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
-@@ -11665,11 +11667,11 @@ static void nohz_balancer_kick(struct rq *rq)
- 	if (sds) {
- 		/*
- 		 * If there is an imbalance between LLC domains (IOW we could
--		 * increase the overall cache use), we need some less-loaded LLC
--		 * domain to pull some load. Likewise, we may need to spread
-+		 * increase the overall cache utilization), we need a less-loaded LLC
-+		 * domain to pull some load from. Likewise, we may need to spread
- 		 * load within the current LLC domain (e.g. packed SMT cores but
- 		 * other CPUs are idle). We can't really know from here how busy
--		 * the others are - so just get a nohz balance going if it looks
-+		 * the others are - so just get a NOHZ balance going if it looks
- 		 * like this LLC domain has tasks we could move.
- 		 */
- 		nr_busy = atomic_read(&sds->nr_busy_cpus);
+ /**
+  * pt_buffer_setup_aux() - set up topa tables for a PT buffer
+- * @cpu:	Cpu on which to allocate, -1 means current.
++ * @event:	Performance event
+  * @pages:	Array of pointers to buffer pages passed from perf core.
+  * @nr_pages:	Number of pages in the buffer.
+  * @snapshot:	If this is a snapshot/overwrite counter.
