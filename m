@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E28517BF58E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Oct 2023 10:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8130C7BF5CB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Oct 2023 10:27:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442733AbjJJITg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Oct 2023 04:19:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36932 "EHLO
+        id S1442885AbjJJI1P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Oct 2023 04:27:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442725AbjJJITf (ORCPT
+        with ESMTP id S1442824AbjJJI1K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Oct 2023 04:19:35 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCD03A9;
-        Tue, 10 Oct 2023 01:19:33 -0700 (PDT)
-Date:   Tue, 10 Oct 2023 08:19:31 -0000
+        Tue, 10 Oct 2023 04:27:10 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C40FB107;
+        Tue, 10 Oct 2023 01:27:07 -0700 (PDT)
+Date:   Tue, 10 Oct 2023 08:27:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696925972;
+        s=2020; t=1696926425;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=k6rlJO7jKfEeTJGrCffSHZTc4ADy0SMEFm72FV6q9wc=;
-        b=phZcPISKaniNp8ieTKzoDHPsF7jAlMnGUkI1Cv3TFhq3ua16NMM7BWYv7OAk3RAfkArO9r
-        9DcGKSMra7+CDmHcDsyBrxLMZxYIDIv03Rx1y23EUsVoWt7weAGcX+3oDVxyA6zmY8D34f
-        NhSAi1oHF1/3YYYTbfY5Zkb8n5YW7pP990WBRLei4Zvo+oyDXUoIfUzUZ7yk8OSg3eTTQp
-        SxHi4um+uIqcc1+GJhYG8QJ1xhFgvHT0l6i0bP+qaurDrKsk6tnnsBmE/2RSK+r3JGwr0R
-        JQV3f4kr/jJX5Q4SljewIquxnI91tE9fC7c4X4zYt/3ElVvBnCLO7J8zgurqmg==
+        bh=pNbc6lLzsql6snug0HQa1mxk/kzC8m7f+xiIcj20Lyo=;
+        b=jjk/Std83BJkeIWWgFLY87BoVtjAp+nGXoKw+esUF7jh9w0xLYWuD71Aovoqwz+3zCKBFd
+        ae6xwOCeTLh5m9ROVQEPH97PMAqxfGbOEAcwV60UjqB35cDnBlq3hR9AAi94tn2kj7XHON
+        vHbzJlTWRoBtVsqTUxZGFgdGSp1R77dzhRg9oOn71ArhVfXNEIv4MOA1k3dLYP8DAHDHK1
+        e4MAuHCrKOr9TyxmFjDx1jiMtSxM0RHwvr5fLHZCT0ADIsf53U0RJMQWAdH5aF/VI8+ngA
+        GoU1QT9Vm+3E6qd/mlzPwqEc2r+spydF3M0lmXalLK1Ca8TWBMF/Ovc2PmOUtA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696925972;
+        s=2020e; t=1696926425;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=k6rlJO7jKfEeTJGrCffSHZTc4ADy0SMEFm72FV6q9wc=;
-        b=w4Uqkj93Z/opO6jGRDXWF/WxHGKzxcJRvhuhjx1+g15M2Yd3Nz9ojXc2bUTm3exgPdNKdX
-        wmyO9AqGylX7JXAg==
-From:   "tip-bot2 for Tero Kristo" <tip-bot2@linutronix.de>
+        bh=pNbc6lLzsql6snug0HQa1mxk/kzC8m7f+xiIcj20Lyo=;
+        b=o8q/0BKhL6U+WadtrCgQLm20NqhAKcrWI58CKcS0uoxHu08QrdEMyOYDygQR0IHgkP2n05
+        VuuBOkVB1gQgvbCg==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/cstate: Allow reading the package
- statistics from local CPU
-Cc:     Kan Liang <kan.liang@intel.com>,
-        Tero Kristo <tero.kristo@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/core] locking/atomics: Use atomic_try_cmpxchg_release()
+ to micro-optimize rcuref_put_slowpath()
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230912124432.3616761-2-tero.kristo@linux.intel.com>
-References: <20230912124432.3616761-2-tero.kristo@linux.intel.com>
+In-Reply-To: <20230509150255.3691-1-ubizjak@gmail.com>
+References: <20230509150255.3691-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169692597189.3135.6821303889491635231.tip-bot2@tip-bot2>
+Message-ID: <169692642491.3135.15300727916265365839.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,41 +67,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     05276d4831fe023b6674a72bd6b8c5b39796e690
-Gitweb:        https://git.kernel.org/tip/05276d4831fe023b6674a72bd6b8c5b39796e690
-Author:        Tero Kristo <tero.kristo@linux.intel.com>
-AuthorDate:    Tue, 12 Sep 2023 15:44:31 +03:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 09 Oct 2023 16:12:22 +02:00
+Commit-ID:     4fbf8b136ded943f8661cf48270482ad1f5ce7bd
+Gitweb:        https://git.kernel.org/tip/4fbf8b136ded943f8661cf48270482ad1f5ce7bd
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Tue, 09 May 2023 17:02:55 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 10 Oct 2023 10:14:27 +02:00
 
-perf/x86/cstate: Allow reading the package statistics from local CPU
+locking/atomics: Use atomic_try_cmpxchg_release() to micro-optimize rcuref_put_slowpath()
 
-The MSR registers for reading the package residency counters are
-available on every CPU of the package. To avoid doing unnecessary SMP
-calls to read the values for these from the various CPUs inside a
-package, allow reading them from any CPU of the package.
+Use atomic_try_cmpxchg() instead of atomic_cmpxchg(*ptr, old, new) == old
+in rcuref_put_slowpath(). On x86 the CMPXCHG instruction returns success in the
+ZF flag, so this change saves a compare after CMPXCHG.  Additionaly,
+the compiler reorders some code blocks to follow likely/unlikely
+annotations in the atomic_try_cmpxchg() macro, improving the code from:
 
-Suggested-by: Kan Liang <kan.liang@intel.com>
-Signed-off-by: Tero Kristo <tero.kristo@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230912124432.3616761-2-tero.kristo@linux.intel.com
+  9a:	f0 0f b1 0b          	lock cmpxchg %ecx,(%rbx)
+  9e:	83 f8 ff             	cmp    $0xffffffff,%eax
+  a1:	74 04                	je     a7 <rcuref_put_slowpath+0x27>
+  a3:	31 c0                	xor    %eax,%eax
+
+to:
+
+  9a:	f0 0f b1 0b          	lock cmpxchg %ecx,(%rbx)
+  9e:	75 4c                	jne    ec <rcuref_put_slowpath+0x6c>
+  a0:	b0 01                	mov    $0x1,%al
+
+No functional change intended.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20230509150255.3691-1-ubizjak@gmail.com
 ---
- arch/x86/events/intel/cstate.c | 3 +++
- 1 file changed, 3 insertions(+)
+ lib/rcuref.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
-index 96fffb2..cbeb6d2 100644
---- a/arch/x86/events/intel/cstate.c
-+++ b/arch/x86/events/intel/cstate.c
-@@ -336,6 +336,9 @@ static int cstate_pmu_event_init(struct perf_event *event)
- 		cfg = array_index_nospec((unsigned long)cfg, PERF_CSTATE_PKG_EVENT_MAX);
- 		if (!(pkg_msr_mask & (1 << cfg)))
- 			return -EINVAL;
-+
-+		event->event_caps |= PERF_EV_CAP_READ_ACTIVE_PKG;
-+
- 		event->hw.event_base = pkg_msr[cfg].msr;
- 		cpu = cpumask_any_and(&cstate_pkg_cpu_mask,
- 				      topology_die_cpumask(event->cpu));
+diff --git a/lib/rcuref.c b/lib/rcuref.c
+index 5ec00a4..97f300e 100644
+--- a/lib/rcuref.c
++++ b/lib/rcuref.c
+@@ -248,7 +248,7 @@ bool rcuref_put_slowpath(rcuref_t *ref)
+ 		 * require a retry. If this fails the caller is not
+ 		 * allowed to deconstruct the object.
+ 		 */
+-		if (atomic_cmpxchg_release(&ref->refcnt, RCUREF_NOREF, RCUREF_DEAD) != RCUREF_NOREF)
++		if (!atomic_try_cmpxchg_release(&ref->refcnt, &cnt, RCUREF_DEAD))
+ 			return false;
+ 
+ 		/*
