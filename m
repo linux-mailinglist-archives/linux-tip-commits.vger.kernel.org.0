@@ -2,249 +2,377 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70AC57BE8AA
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Oct 2023 19:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26C387BF581
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Oct 2023 10:19:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377997AbjJIRtP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 9 Oct 2023 13:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47572 "EHLO
+        id S1442719AbjJJITe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Oct 2023 04:19:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377937AbjJIRtO (ORCPT
+        with ESMTP id S1379444AbjJJITd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 9 Oct 2023 13:49:14 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21450A3;
-        Mon,  9 Oct 2023 10:49:11 -0700 (PDT)
-Date:   Mon, 09 Oct 2023 17:49:08 -0000
+        Tue, 10 Oct 2023 04:19:33 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AEEEA9;
+        Tue, 10 Oct 2023 01:19:30 -0700 (PDT)
+Date:   Tue, 10 Oct 2023 08:19:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696873749;
+        s=2020; t=1696925968;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=AWNPjlwwdK1lk4c+xJcA60ZLb6nJMrrz1GEMuSFR7G8=;
-        b=ZHscMiMQnF93wFaJzBe56PlLgnZrp9ihOJzU+UIDK3HXiAAfWx4nOVRuSTsRguGjoKBXDE
-        9Qmk2wtk6IL9zrH5e5qWJ6frQQ+QUeNFPZkg1mE6veGesYWEwIbGmlQhITZdXz9hn6qhN4
-        4xrTZWKcb2c3g8LSPbMAwk7QOm7sZmj1jvKypKDxUxsZ+IvrVgUhfSHt0sgJd0JkDqwcoT
-        Wnh6RvewZ3pUAGyuaOPBVb5tDcZZZaIZOSyxEg9Fq74NfSQ49t6lqnS0BfOH18RaTRetvs
-        S3NHt9DXItG63sCQ57KmYAPjpoHbXBXS6VeAJND1N9F5r27JQB3ei1pYlvfcVQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RtkVgkLll/d9ejAB1g4YDHnl46DXCdr4YKF0fTOqSb8=;
+        b=gZJfXEA68oTUFnA1qM+/1MV3fISrC6QcVJKrAuy5+hlfxsz/z9WD7Di57NPDqLhk9yJhPD
+        8uACfRCGoO4sPZh2BmJiOoYcwcAO7h9k+15BoAX/DL/BGtDruC/kPq4xJCxIA8N33oXzoE
+        o76qVgTgyLmkHOicezTXcypFkUAa5neQBXj8jtExWsI3if4d+c9W24ZMAfOaPeDTsZwTlr
+        FC4cX2wZ5urm2wz/jIivsu63OavEaO2OY7f7t8x0ZM87p05dQMPao1PhTCjQMBiR0Rgm14
+        ta22JYAgGPVNtqfcSCXPmcz2P9EJs9XuNcbQD1ursjasFU0MsgGKFWL/0b7L+g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696873749;
+        s=2020e; t=1696925968;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=AWNPjlwwdK1lk4c+xJcA60ZLb6nJMrrz1GEMuSFR7G8=;
-        b=7tTIJ6OTk7Ky84tUX3lp1hT/76pM7LGerab4LXyQvaPTaTC37UroLbpzIUrVt4XVYTOaWq
-        2cVdMo0p5JnWtBDQ==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RtkVgkLll/d9ejAB1g4YDHnl46DXCdr4YKF0fTOqSb8=;
+        b=8mex7i4tQo4J3FdRFF1nzZFEphpVnihH/D0r3TobhwRIktjapN/RwMmXojr6Hu8tP4lg7C
+        FeXj2cKq1RCAnjCg==
+From:   "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/atomic: Add generic support for
- sync_try_cmpxchg() and its fallback
-Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, x86@kernel.org
+Subject: [tip: perf/core] perf/x86/amd/uncore: Add memory controller support
+Cc:     Sandipan Das <sandipan.das@amd.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3Cb25f391205c22733493abec1ed850b71784edc5f=2E16964?=
+ =?utf-8?q?25185=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
+References: =?utf-8?q?=3Cb25f391205c22733493abec1ed850b71784edc5f=2E169642?=
+ =?utf-8?q?5185=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <169687374861.3135.9482250979449813044.tip-bot2@tip-bot2>
+Message-ID: <169692596798.3135.7702003073388693455.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e01cc1e8c2ad73cebb980878ede5584e0f2688f7
-Gitweb:        https://git.kernel.org/tip/e01cc1e8c2ad73cebb980878ede5584e0f2688f7
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Mon, 25 Sep 2023 16:50:23 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 09 Oct 2023 18:14:15 +02:00
+Commit-ID:     25e56847821f7375bdee7dae1027c7917d07ce4b
+Gitweb:        https://git.kernel.org/tip/25e56847821f7375bdee7dae1027c7917d07ce4b
+Author:        Sandipan Das <sandipan.das@amd.com>
+AuthorDate:    Thu, 05 Oct 2023 10:53:15 +05:30
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 09 Oct 2023 16:12:25 +02:00
 
-locking/atomic: Add generic support for sync_try_cmpxchg() and its fallback
+perf/x86/amd/uncore: Add memory controller support
 
-Provide the generic sync_try_cmpxchg() function from the
-raw_ prefixed version, also adding explicit instrumentation.
+Unified Memory Controller (UMC) events were introduced with Zen 4 as a
+part of the Performance Monitoring Version 2 (PerfMonV2) enhancements.
+An event is specified using the EventSelect bits and the RdWrMask bits
+can be used for additional filtering of read and write requests.
 
-The patch amends existing scripts to generate sync_try_cmpxchg()
-locking primitive and its raw_sync_try_cmpxchg() fallback, while
-leaving existing macros from the try_cmpxchg() family unchanged.
+As of now, a maximum of 12 channels of DDR5 are available on each socket
+and each channel is controlled by a dedicated UMC. Each UMC, in turn,
+has its own set of performance monitoring counters.
 
-The target can define its own arch_sync_try_cmpxchg() to override the
-generic version of raw_sync_try_cmpxchg(). This allows the target
-to generate more optimal assembly than the generic version.
+Since the MSR address space for the UMC PERF_CTL and PERF_CTR registers
+are reused across sockets, uncore groups are created on the basis of
+socket IDs. Hence, group exclusivity is mandatory while opening events
+so that events for an UMC can only be opened on CPUs which are on the
+same socket as the corresponding memory channel.
 
-Additionally, the patch renames two scripts to better reflect
-whet they really do.
+For each socket, the total number of available UMC counters and active
+memory channels are determined from CPUID leaf 0x80000022 EBX and ECX
+respectively. Usually, on Zen 4, each UMC has four counters.
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org
+MSR assignments are determined on the basis of active UMCs. E.g. if
+UMCs 1, 4 and 9 are active for a given socket, then
+
+  * UMC 1 gets MSRs 0xc0010800 to 0xc0010807 as PERF_CTLs and PERF_CTRs
+  * UMC 4 gets MSRs 0xc0010808 to 0xc001080f as PERF_CTLs and PERF_CTRs
+  * UMC 9 gets MSRs 0xc0010810 to 0xc0010817 as PERF_CTLs and PERF_CTRs
+
+If there are sockets without any online CPUs when the amd_uncore driver
+is loaded, UMCs for such sockets will not be discoverable since the
+mechanism relies on executing the CPUID instruction on an online CPU
+from the socket.
+
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/b25f391205c22733493abec1ed850b71784edc5f.1696425185.git.sandipan.das@amd.com
 ---
- include/linux/atomic/atomic-arch-fallback.h | 15 ++++++++-
- include/linux/atomic/atomic-instrumented.h  | 10 +++++-
- scripts/atomic/gen-atomic-fallback.sh       | 33 ++++++++++----------
- scripts/atomic/gen-atomic-instrumented.sh   |  3 +-
- 4 files changed, 43 insertions(+), 18 deletions(-)
+ arch/x86/events/amd/uncore.c      | 156 ++++++++++++++++++++++++++++-
+ arch/x86/include/asm/msr-index.h  |   4 +-
+ arch/x86/include/asm/perf_event.h |   9 ++-
+ 3 files changed, 168 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/atomic/atomic-arch-fallback.h b/include/linux/atomic/atomic-arch-fallback.h
-index b83ef19..5e95faa 100644
---- a/include/linux/atomic/atomic-arch-fallback.h
-+++ b/include/linux/atomic/atomic-arch-fallback.h
-@@ -428,6 +428,19 @@ extern void raw_cmpxchg128_relaxed_not_implemented(void);
+diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
+index 3189829..9b444ce 100644
+--- a/arch/x86/events/amd/uncore.c
++++ b/arch/x86/events/amd/uncore.c
+@@ -55,6 +55,7 @@ struct amd_uncore_pmu {
+ enum {
+ 	UNCORE_TYPE_DF,
+ 	UNCORE_TYPE_L3,
++	UNCORE_TYPE_UMC,
  
- #define raw_sync_cmpxchg arch_sync_cmpxchg
+ 	UNCORE_TYPE_MAX
+ };
+@@ -286,7 +287,7 @@ static struct device_attribute format_attr_##_var =			\
+ DEFINE_UNCORE_FORMAT_ATTR(event12,	event,		"config:0-7,32-35");
+ DEFINE_UNCORE_FORMAT_ATTR(event14,	event,		"config:0-7,32-35,59-60"); /* F17h+ DF */
+ DEFINE_UNCORE_FORMAT_ATTR(event14v2,	event,		"config:0-7,32-37");	   /* PerfMonV2 DF */
+-DEFINE_UNCORE_FORMAT_ATTR(event8,	event,		"config:0-7");		   /* F17h+ L3 */
++DEFINE_UNCORE_FORMAT_ATTR(event8,	event,		"config:0-7");		   /* F17h+ L3, PerfMonV2 UMC */
+ DEFINE_UNCORE_FORMAT_ATTR(umask8,	umask,		"config:8-15");
+ DEFINE_UNCORE_FORMAT_ATTR(umask12,	umask,		"config:8-15,24-27");	   /* PerfMonV2 DF */
+ DEFINE_UNCORE_FORMAT_ATTR(coreid,	coreid,		"config:42-44");	   /* F19h L3 */
+@@ -296,6 +297,7 @@ DEFINE_UNCORE_FORMAT_ATTR(threadmask2,	threadmask,	"config:56-57");	   /* F19h L
+ DEFINE_UNCORE_FORMAT_ATTR(enallslices,	enallslices,	"config:46");		   /* F19h L3 */
+ DEFINE_UNCORE_FORMAT_ATTR(enallcores,	enallcores,	"config:47");		   /* F19h L3 */
+ DEFINE_UNCORE_FORMAT_ATTR(sliceid,	sliceid,	"config:48-50");	   /* F19h L3 */
++DEFINE_UNCORE_FORMAT_ATTR(rdwrmask,	rdwrmask,	"config:8-9");		   /* PerfMonV2 UMC */
  
-+#ifdef arch_sync_try_cmpxchg
-+#define raw_sync_try_cmpxchg arch_sync_try_cmpxchg
-+#else
-+#define raw_sync_try_cmpxchg(_ptr, _oldp, _new) \
-+({ \
-+	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
-+	___r = raw_sync_cmpxchg((_ptr), ___o, (_new)); \
-+	if (unlikely(___r != ___o)) \
-+		*___op = ___r; \
-+	likely(___r == ___o); \
-+})
-+#endif
+ /* Common DF and NB attributes */
+ static struct attribute *amd_uncore_df_format_attr[] = {
+@@ -312,6 +314,13 @@ static struct attribute *amd_uncore_l3_format_attr[] = {
+ 	NULL,
+ };
+ 
++/* Common UMC attributes */
++static struct attribute *amd_uncore_umc_format_attr[] = {
++	&format_attr_event8.attr,       /* event */
++	&format_attr_rdwrmask.attr,     /* rdwrmask */
++	NULL,
++};
 +
- /**
-  * raw_atomic_read() - atomic load with relaxed ordering
-  * @v: pointer to atomic_t
-@@ -4649,4 +4662,4 @@ raw_atomic64_dec_if_positive(atomic64_t *v)
- }
+ /* F17h unique L3 attributes */
+ static struct attribute *amd_f17h_uncore_l3_format_attr[] = {
+ 	&format_attr_slicemask.attr,	/* slicemask */
+@@ -349,6 +358,11 @@ static struct attribute_group amd_f19h_uncore_l3_format_group = {
+ 	.is_visible = amd_f19h_uncore_is_visible,
+ };
  
- #endif /* _LINUX_ATOMIC_FALLBACK_H */
--// 2fdd6702823fa842f9cea57a002e6e4476ae780c
-+// eec048affea735b8464f58e6d96992101f8f85f1
-diff --git a/include/linux/atomic/atomic-instrumented.h b/include/linux/atomic/atomic-instrumented.h
-index d401b40..54d7bbe 100644
---- a/include/linux/atomic/atomic-instrumented.h
-+++ b/include/linux/atomic/atomic-instrumented.h
-@@ -4998,6 +4998,14 @@ atomic_long_dec_if_positive(atomic_long_t *v)
- 	raw_try_cmpxchg128_local(__ai_ptr, __ai_oldp, __VA_ARGS__); \
- })
- 
-+#define sync_try_cmpxchg(ptr, ...) \
-+({ \
-+	typeof(ptr) __ai_ptr = (ptr); \
-+	kcsan_mb(); \
-+	instrument_atomic_read_write(__ai_ptr, sizeof(*__ai_ptr)); \
-+	raw_sync_try_cmpxchg(__ai_ptr, __VA_ARGS__); \
-+})
++static struct attribute_group amd_uncore_umc_format_group = {
++	.name = "format",
++	.attrs = amd_uncore_umc_format_attr,
++};
 +
+ static const struct attribute_group *amd_uncore_df_attr_groups[] = {
+ 	&amd_uncore_attr_group,
+ 	&amd_uncore_df_format_group,
+@@ -367,6 +381,12 @@ static const struct attribute_group *amd_uncore_l3_attr_update[] = {
+ 	NULL,
+ };
  
- #endif /* _LINUX_ATOMIC_INSTRUMENTED_H */
--// 1568f875fef72097413caab8339120c065a39aa4
-+// 2cc4bc990fef44d3836ec108f11b610f3f438184
-diff --git a/scripts/atomic/gen-atomic-fallback.sh b/scripts/atomic/gen-atomic-fallback.sh
-index a45154c..f80d69c 100755
---- a/scripts/atomic/gen-atomic-fallback.sh
-+++ b/scripts/atomic/gen-atomic-fallback.sh
-@@ -223,14 +223,15 @@ gen_xchg_fallbacks()
- 
- gen_try_cmpxchg_fallback()
++static const struct attribute_group *amd_uncore_umc_attr_groups[] = {
++	&amd_uncore_attr_group,
++	&amd_uncore_umc_format_group,
++	NULL,
++};
++
+ static __always_inline
+ int amd_uncore_ctx_cid(struct amd_uncore *uncore, unsigned int cpu)
  {
-+	local prefix="$1"; shift
- 	local cmpxchg="$1"; shift;
--	local order="$1"; shift;
-+	local suffix="$1"; shift;
- 
- cat <<EOF
--#define raw_try_${cmpxchg}${order}(_ptr, _oldp, _new) \\
-+#define raw_${prefix}try_${cmpxchg}${suffix}(_ptr, _oldp, _new) \\
- ({ \\
- 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \\
--	___r = raw_${cmpxchg}${order}((_ptr), ___o, (_new)); \\
-+	___r = raw_${prefix}${cmpxchg}${suffix}((_ptr), ___o, (_new)); \\
- 	if (unlikely(___r != ___o)) \\
- 		*___op = ___r; \\
- 	likely(___r == ___o); \\
-@@ -259,11 +260,11 @@ gen_try_cmpxchg_order_fallback()
- 	fi
- 
- 	printf "#else\n"
--	gen_try_cmpxchg_fallback "${cmpxchg}" "${order}"
-+	gen_try_cmpxchg_fallback "" "${cmpxchg}" "${order}"
- 	printf "#endif\n\n"
+@@ -835,6 +855,133 @@ done:
+ 	return amd_uncore_ctx_init(uncore, cpu);
  }
  
--gen_try_cmpxchg_fallbacks()
-+gen_try_cmpxchg_order_fallbacks()
- {
- 	local cmpxchg="$1"; shift;
++static int amd_uncore_umc_event_init(struct perf_event *event)
++{
++	struct hw_perf_event *hwc = &event->hw;
++	int ret = amd_uncore_event_init(event);
++
++	if (ret)
++		return ret;
++
++	hwc->config = event->attr.config & AMD64_PERFMON_V2_RAW_EVENT_MASK_UMC;
++
++	return 0;
++}
++
++static void amd_uncore_umc_start(struct perf_event *event, int flags)
++{
++	struct hw_perf_event *hwc = &event->hw;
++
++	if (flags & PERF_EF_RELOAD)
++		wrmsrl(hwc->event_base, (u64)local64_read(&hwc->prev_count));
++
++	hwc->state = 0;
++	wrmsrl(hwc->config_base, (hwc->config | AMD64_PERFMON_V2_ENABLE_UMC));
++	perf_event_update_userpage(event);
++}
++
++static
++void amd_uncore_umc_ctx_scan(struct amd_uncore *uncore, unsigned int cpu)
++{
++	union cpuid_0x80000022_ebx ebx;
++	union amd_uncore_info info;
++	unsigned int eax, ecx, edx;
++
++	if (pmu_version < 2)
++		return;
++
++	cpuid(EXT_PERFMON_DEBUG_FEATURES, &eax, &ebx.full, &ecx, &edx);
++	info.split.aux_data = ecx;	/* stash active mask */
++	info.split.num_pmcs = ebx.split.num_umc_pmc;
++	info.split.gid = topology_die_id(cpu);
++	info.split.cid = topology_die_id(cpu);
++	*per_cpu_ptr(uncore->info, cpu) = info;
++}
++
++static
++int amd_uncore_umc_ctx_init(struct amd_uncore *uncore, unsigned int cpu)
++{
++	DECLARE_BITMAP(gmask, UNCORE_GROUP_MAX) = { 0 };
++	u8 group_num_pmus[UNCORE_GROUP_MAX] = { 0 };
++	u8 group_num_pmcs[UNCORE_GROUP_MAX] = { 0 };
++	union amd_uncore_info info;
++	struct amd_uncore_pmu *pmu;
++	int index = 0, gid, i;
++
++	if (pmu_version < 2)
++		return 0;
++
++	/* Run just once */
++	if (uncore->init_done)
++		return amd_uncore_ctx_init(uncore, cpu);
++
++	/* Find unique groups */
++	for_each_online_cpu(i) {
++		info = *per_cpu_ptr(uncore->info, i);
++		gid = info.split.gid;
++		if (test_bit(gid, gmask))
++			continue;
++
++		__set_bit(gid, gmask);
++		group_num_pmus[gid] = hweight32(info.split.aux_data);
++		group_num_pmcs[gid] = info.split.num_pmcs;
++		uncore->num_pmus += group_num_pmus[gid];
++	}
++
++	uncore->pmus = kzalloc(sizeof(*uncore->pmus) * uncore->num_pmus,
++			       GFP_KERNEL);
++	if (!uncore->pmus) {
++		uncore->num_pmus = 0;
++		goto done;
++	}
++
++	for_each_set_bit(gid, gmask, UNCORE_GROUP_MAX) {
++		for (i = 0; i < group_num_pmus[gid]; i++) {
++			pmu = &uncore->pmus[index];
++			snprintf(pmu->name, sizeof(pmu->name), "amd_umc_%d", index);
++			pmu->num_counters = group_num_pmcs[gid] / group_num_pmus[gid];
++			pmu->msr_base = MSR_F19H_UMC_PERF_CTL + i * pmu->num_counters * 2;
++			pmu->rdpmc_base = -1;
++			pmu->group = gid;
++
++			pmu->ctx = alloc_percpu(struct amd_uncore_ctx *);
++			if (!pmu->ctx)
++				goto done;
++
++			pmu->pmu = (struct pmu) {
++				.task_ctx_nr	= perf_invalid_context,
++				.attr_groups	= amd_uncore_umc_attr_groups,
++				.name		= pmu->name,
++				.event_init	= amd_uncore_umc_event_init,
++				.add		= amd_uncore_add,
++				.del		= amd_uncore_del,
++				.start		= amd_uncore_umc_start,
++				.stop		= amd_uncore_stop,
++				.read		= amd_uncore_read,
++				.capabilities	= PERF_PMU_CAP_NO_EXCLUDE | PERF_PMU_CAP_NO_INTERRUPT,
++				.module		= THIS_MODULE,
++			};
++
++			if (perf_pmu_register(&pmu->pmu, pmu->pmu.name, -1)) {
++				free_percpu(pmu->ctx);
++				pmu->ctx = NULL;
++				goto done;
++			}
++
++			pr_info("%d %s counters detected\n", pmu->num_counters,
++				pmu->pmu.name);
++
++			index++;
++		}
++	}
++
++done:
++	uncore->num_pmus = index;
++	uncore->init_done = true;
++
++	return amd_uncore_ctx_init(uncore, cpu);
++}
++
+ static struct amd_uncore uncores[UNCORE_TYPE_MAX] = {
+ 	/* UNCORE_TYPE_DF */
+ 	{
+@@ -850,6 +997,13 @@ static struct amd_uncore uncores[UNCORE_TYPE_MAX] = {
+ 		.move = amd_uncore_ctx_move,
+ 		.free = amd_uncore_ctx_free,
+ 	},
++	/* UNCORE_TYPE_UMC */
++	{
++		.scan = amd_uncore_umc_ctx_scan,
++		.init = amd_uncore_umc_ctx_init,
++		.move = amd_uncore_ctx_move,
++		.free = amd_uncore_ctx_free,
++	},
+ };
  
-@@ -272,15 +273,17 @@ gen_try_cmpxchg_fallbacks()
- 	done
- }
+ static int __init amd_uncore_init(void)
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 1d11135..dc159ac 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -637,6 +637,10 @@
+ /* AMD Last Branch Record MSRs */
+ #define MSR_AMD64_LBR_SELECT			0xc000010e
  
--gen_cmpxchg_local_fallbacks()
-+gen_def_and_try_cmpxchg_fallback()
- {
-+	local prefix="$1"; shift
- 	local cmpxchg="$1"; shift
-+	local suffix="$1"; shift
++/* Fam 19h MSRs */
++#define MSR_F19H_UMC_PERF_CTL		0xc0010800
++#define MSR_F19H_UMC_PERF_CTR		0xc0010801
++
+ /* Fam 17h MSRs */
+ #define MSR_F17H_IRPERF			0xc00000e9
  
--	printf "#define raw_${cmpxchg} arch_${cmpxchg}\n\n"
--	printf "#ifdef arch_try_${cmpxchg}\n"
--	printf "#define raw_try_${cmpxchg} arch_try_${cmpxchg}\n"
-+	printf "#define raw_${prefix}${cmpxchg}${suffix} arch_${prefix}${cmpxchg}${suffix}\n\n"
-+	printf "#ifdef arch_${prefix}try_${cmpxchg}${suffix}\n"
-+	printf "#define raw_${prefix}try_${cmpxchg}${suffix} arch_${prefix}try_${cmpxchg}${suffix}\n"
- 	printf "#else\n"
--	gen_try_cmpxchg_fallback "${cmpxchg}" ""
-+	gen_try_cmpxchg_fallback "${prefix}" "${cmpxchg}" "${suffix}"
- 	printf "#endif\n\n"
- }
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 85a9fd5..2618ec7 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -112,6 +112,13 @@
+ 	(AMD64_PERFMON_V2_EVENTSEL_EVENT_NB	|	\
+ 	 AMD64_PERFMON_V2_EVENTSEL_UMASK_NB)
  
-@@ -302,15 +305,15 @@ for xchg in "xchg" "cmpxchg" "cmpxchg64" "cmpxchg128"; do
- done
- 
- for cmpxchg in "cmpxchg" "cmpxchg64" "cmpxchg128"; do
--	gen_try_cmpxchg_fallbacks "${cmpxchg}"
-+	gen_try_cmpxchg_order_fallbacks "${cmpxchg}"
- done
- 
--for cmpxchg in "cmpxchg_local" "cmpxchg64_local" "cmpxchg128_local"; do
--	gen_cmpxchg_local_fallbacks "${cmpxchg}" ""
-+for cmpxchg in "cmpxchg" "cmpxchg64" "cmpxchg128"; do
-+	gen_def_and_try_cmpxchg_fallback "" "${cmpxchg}" "_local"
- done
- 
--for cmpxchg in "sync_cmpxchg"; do
--	printf "#define raw_${cmpxchg} arch_${cmpxchg}\n\n"
-+for cmpxchg in "cmpxchg"; do
-+	gen_def_and_try_cmpxchg_fallback "sync_" "${cmpxchg}" ""
- done
- 
- grep '^[a-z]' "$1" | while read name meta args; do
-diff --git a/scripts/atomic/gen-atomic-instrumented.sh b/scripts/atomic/gen-atomic-instrumented.sh
-index 8f8f8e3..592f3ec 100755
---- a/scripts/atomic/gen-atomic-instrumented.sh
-+++ b/scripts/atomic/gen-atomic-instrumented.sh
-@@ -169,7 +169,8 @@ for xchg in "xchg" "cmpxchg" "cmpxchg64" "cmpxchg128" "try_cmpxchg" "try_cmpxchg
- 	done
- done
- 
--for xchg in "cmpxchg_local" "cmpxchg64_local" "cmpxchg128_local" "sync_cmpxchg" "try_cmpxchg_local" "try_cmpxchg64_local" "try_cmpxchg128_local"; do
-+for xchg in "cmpxchg_local" "cmpxchg64_local" "cmpxchg128_local" "sync_cmpxchg" \
-+	    "try_cmpxchg_local" "try_cmpxchg64_local" "try_cmpxchg128_local" "sync_try_cmpxchg"; do
- 	gen_xchg "${xchg}" ""
- 	printf "\n"
- done
++#define AMD64_PERFMON_V2_ENABLE_UMC			BIT_ULL(31)
++#define AMD64_PERFMON_V2_EVENTSEL_EVENT_UMC		GENMASK_ULL(7, 0)
++#define AMD64_PERFMON_V2_EVENTSEL_RDWRMASK_UMC		GENMASK_ULL(9, 8)
++#define AMD64_PERFMON_V2_RAW_EVENT_MASK_UMC		\
++	(AMD64_PERFMON_V2_EVENTSEL_EVENT_UMC	|	\
++	 AMD64_PERFMON_V2_EVENTSEL_RDWRMASK_UMC)
++
+ #define AMD64_NUM_COUNTERS				4
+ #define AMD64_NUM_COUNTERS_CORE				6
+ #define AMD64_NUM_COUNTERS_NB				4
+@@ -232,6 +239,8 @@ union cpuid_0x80000022_ebx {
+ 		unsigned int	lbr_v2_stack_sz:6;
+ 		/* Number of Data Fabric Counters */
+ 		unsigned int	num_df_pmc:6;
++		/* Number of Unified Memory Controller Counters */
++		unsigned int	num_umc_pmc:6;
+ 	} split;
+ 	unsigned int		full;
+ };
