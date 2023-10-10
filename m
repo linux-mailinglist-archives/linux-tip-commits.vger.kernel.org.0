@@ -2,64 +2,63 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C0647BF7A7
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Oct 2023 11:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 985107C429B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Oct 2023 23:32:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230403AbjJJJoA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Oct 2023 05:44:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46554 "EHLO
+        id S1344090AbjJJVcS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Oct 2023 17:32:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230281AbjJJJnw (ORCPT
+        with ESMTP id S1344087AbjJJVcS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Oct 2023 05:43:52 -0400
+        Tue, 10 Oct 2023 17:32:18 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 005A1A7;
-        Tue, 10 Oct 2023 02:43:50 -0700 (PDT)
-Date:   Tue, 10 Oct 2023 09:43:49 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12CAB91;
+        Tue, 10 Oct 2023 14:32:15 -0700 (PDT)
+Date:   Tue, 10 Oct 2023 21:32:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696931029;
+        s=2020; t=1696973532;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iyvEi/UnAEHOtb09vPDToguMbxB7zsoDMoxkBd3H05I=;
-        b=FF5s2ajC+4Yr74T0IpqzYZHFZ7wXpDUuwb4mgVF/QW8U3kBTPfvyOS6oQyzp3Q87e5B7Od
-        q+8t+q+caoI7TCMhJFxyRYY2uW6uEaVza3TqQ1lVwOyiGQVBhy35r942nrBSVZLZXpfx4Z
-        k9FA/LJ6Pfi0RvmgD9SI5nSCPz45763/HvJzD+h4dH9uXdbmDiMV+8UC3dG1ryH6dOLWtY
-        4tULzcB0cxpuyDtwqNBvgIRsZ/qU/QFksNmE0EOlI50NmmWCJYPr8GHuJoF/Qubc01BeqY
-        824pO3zZ3d8JfCOW+Eb1PK4XHLYPi1yYRwgdGkBSEJnkRZCr305KF8VWCk6oeQ==
+        bh=hOaQfM4zFioarw34bWIjQOu6eQpt07BKCOQkpjNG9r8=;
+        b=PYSiKtNstte8R/RCpZtq8kaX4lhprkTkC/uhuKLips74D9adcWR3pM6mvscoEHARSWH8sr
+        joDZp9g1kFop3C467V9pZlvg0V8E5B8/1TbIPLsOjEkzm+TJBsIkxptMGHc+gFwMwNetgv
+        BVk61iWySuoWXE8J7u7uSJ4lohOjo578+yPGCXvqiMlLxKxlBweuRQwCWgLKDycViiAinL
+        u0jJuG2JC77zh333oSjrcr4OgixWEBOa0fsSJrxst7boiIhkKuqHO3vozSGZz1tn3UF9YK
+        E9xLPYaN4ag7N/e+4ZWbMWUx+bqjKeUHonYlZHhVN99gqAot5IWURlz6NVmVuQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696931029;
+        s=2020e; t=1696973532;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iyvEi/UnAEHOtb09vPDToguMbxB7zsoDMoxkBd3H05I=;
-        b=g99sw+KgSRDeNrENDbd0lI+erYPbt1xcTXrjKv4n2jHNQfyoDrUnh63K/gWTSYcrN+hfr3
-        WoxviWmh8uI5aMCQ==
-From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
+        bh=hOaQfM4zFioarw34bWIjQOu6eQpt07BKCOQkpjNG9r8=;
+        b=9ypB397RKJp/1beiZP02ejGrWpyMof0/7TL6u7wbGpCxtidEvNr4gnM+iBBWEmfa2gQ9sd
+        cP7jfjmC3Au8bODQ==
+From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/numa: Rename vma_numab_state::access_pids[]
- => ::pids_active[], ::next_pid_reset => ::pids_active_reset
-Cc:     Mel Gorman <mgorman@techsingularity.net>,
+Subject: [tip: sched/core] sched/headers: Remove comment referring to
+ rq::cpu_load, since this has been removed
+Cc:     Colin Ian King <colin.i.king@gmail.com>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231010083143.19593-3-mgorman@techsingularity.net>
-References: <20231010083143.19593-3-mgorman@techsingularity.net>
+In-Reply-To: <20231010155744.1381065-1-colin.i.king@gmail.com>
+References: <20231010155744.1381065-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Message-ID: <169693102905.3135.18177490895667484755.tip-bot2@tip-bot2>
+Message-ID: <169697353142.3135.4470853579884082496.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -68,106 +67,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     f3a6c97940fbd25d6c84c2d5642338fc99a9b35b
-Gitweb:        https://git.kernel.org/tip/f3a6c97940fbd25d6c84c2d5642338fc99a9b35b
-Author:        Mel Gorman <mgorman@techsingularity.net>
-AuthorDate:    Tue, 10 Oct 2023 09:31:39 +01:00
+Commit-ID:     2616fdce9b8c7815d5578b28aea98595ebd0f290
+Gitweb:        https://git.kernel.org/tip/2616fdce9b8c7815d5578b28aea98595ebd0f290
+Author:        Colin Ian King <colin.i.king@gmail.com>
+AuthorDate:    Tue, 10 Oct 2023 16:57:44 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 10 Oct 2023 11:10:00 +02:00
+CommitterDate: Tue, 10 Oct 2023 23:29:14 +02:00
 
-sched/numa: Rename vma_numab_state::access_pids[] => ::pids_active[], ::next_pid_reset => ::pids_active_reset
+sched/headers: Remove comment referring to rq::cpu_load, since this has been removed
 
-The access_pids[] field name is somewhat ambiguous as no PIDs are accessed.
-Similarly, it's not clear that next_pid_reset is related to access_pids[].
-Rename the fields to more accurately reflect their purpose.
+There is a comment that refers to cpu_load, however, this cpu_load was
+removed with:
 
-[ mingo: Rename in the comments too. ]
+  55627e3cd22c ("sched/core: Remove rq->cpu_load[]")
 
-Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+... back in 2019. The comment does not make sense with respect to this
+removed array, so remove the comment.
+
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231010083143.19593-3-mgorman@techsingularity.net
+Link: https://lore.kernel.org/r/20231010155744.1381065-1-colin.i.king@gmail.com
 ---
- include/linux/mm.h       |  4 ++--
- include/linux/mm_types.h |  6 +++---
- kernel/sched/fair.c      | 12 ++++++------
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ kernel/sched/sched.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index bf5d0b1..19fc73b 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1726,8 +1726,8 @@ static inline void vma_set_access_pid_bit(struct vm_area_struct *vma)
- 	unsigned int pid_bit;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index faf9031..65cad0e 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -948,10 +948,6 @@ struct rq {
+ 	/* runqueue lock: */
+ 	raw_spinlock_t		__lock;
  
- 	pid_bit = hash_32(current->pid, ilog2(BITS_PER_LONG));
--	if (vma->numab_state && !test_bit(pid_bit, &vma->numab_state->access_pids[1])) {
--		__set_bit(pid_bit, &vma->numab_state->access_pids[1]);
-+	if (vma->numab_state && !test_bit(pid_bit, &vma->numab_state->pids_active[1])) {
-+		__set_bit(pid_bit, &vma->numab_state->pids_active[1]);
- 	}
- }
- #else /* !CONFIG_NUMA_BALANCING */
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index d7f042e..e7571ec 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -559,10 +559,10 @@ struct vma_numab_state {
- 	unsigned long next_scan;
- 
- 	/*
--	 * Time in jiffies when access_pids[] is reset to
-+	 * Time in jiffies when pids_active[] is reset to
- 	 * detect phase change behaviour:
- 	 */
--	unsigned long next_pid_reset;
-+	unsigned long pids_active_reset;
- 
- 	/*
- 	 * Approximate tracking of PIDs that trapped a NUMA hinting
-@@ -574,7 +574,7 @@ struct vma_numab_state {
- 	 * Window moves after next_pid_reset has expired approximately
- 	 * every VMA_PID_RESET_PERIOD jiffies:
- 	 */
--	unsigned long access_pids[2];
-+	unsigned long pids_active[2];
- };
- 
- /*
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index e7c1baf..6b47edc 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3125,7 +3125,7 @@ static bool vma_is_accessed(struct vm_area_struct *vma)
- 	if (READ_ONCE(current->mm->numa_scan_seq) < 2)
- 		return true;
- 
--	pids = vma->numab_state->access_pids[0] | vma->numab_state->access_pids[1];
-+	pids = vma->numab_state->pids_active[0] | vma->numab_state->pids_active[1];
- 	return test_bit(hash_32(current->pid, ilog2(BITS_PER_LONG)), &pids);
- }
- 
-@@ -3241,7 +3241,7 @@ static void task_numa_work(struct callback_head *work)
- 				msecs_to_jiffies(sysctl_numa_balancing_scan_delay);
- 
- 			/* Reset happens after 4 times scan delay of scan start */
--			vma->numab_state->next_pid_reset =  vma->numab_state->next_scan +
-+			vma->numab_state->pids_active_reset =  vma->numab_state->next_scan +
- 				msecs_to_jiffies(VMA_PID_RESET_PERIOD);
- 		}
- 
-@@ -3262,11 +3262,11 @@ static void task_numa_work(struct callback_head *work)
- 		 * vma for recent access to avoid clearing PID info before access..
- 		 */
- 		if (mm->numa_scan_seq &&
--				time_after(jiffies, vma->numab_state->next_pid_reset)) {
--			vma->numab_state->next_pid_reset = vma->numab_state->next_pid_reset +
-+				time_after(jiffies, vma->numab_state->pids_active_reset)) {
-+			vma->numab_state->pids_active_reset = vma->numab_state->pids_active_reset +
- 				msecs_to_jiffies(VMA_PID_RESET_PERIOD);
--			vma->numab_state->access_pids[0] = READ_ONCE(vma->numab_state->access_pids[1]);
--			vma->numab_state->access_pids[1] = 0;
-+			vma->numab_state->pids_active[0] = READ_ONCE(vma->numab_state->pids_active[1]);
-+			vma->numab_state->pids_active[1] = 0;
- 		}
- 
- 		do {
+-	/*
+-	 * nr_running and cpu_load should be in the same cacheline because
+-	 * remote CPUs use both these fields when doing load calculation.
+-	 */
+ 	unsigned int		nr_running;
+ #ifdef CONFIG_NUMA_BALANCING
+ 	unsigned int		nr_numa_running;
