@@ -2,58 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 707477C4E77
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Oct 2023 11:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6F317C5407
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Oct 2023 14:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230454AbjJKJXw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Oct 2023 05:23:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57110 "EHLO
+        id S231549AbjJKMek (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 Oct 2023 08:34:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230351AbjJKJXv (ORCPT
+        with ESMTP id S231327AbjJKMej (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Oct 2023 05:23:51 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045E391;
-        Wed, 11 Oct 2023 02:23:50 -0700 (PDT)
-Date:   Wed, 11 Oct 2023 09:23:47 -0000
+        Wed, 11 Oct 2023 08:34:39 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA71D98;
+        Wed, 11 Oct 2023 05:34:37 -0700 (PDT)
+Date:   Wed, 11 Oct 2023 12:34:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697016228;
+        s=2020; t=1697027676;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=poaexBJUv5tu6Pccgx/fYMMioEDwrLiYM+aMqFLGujY=;
-        b=I5mk5tc4rhfKWaTKbJbVwrme7b6ip/Rw3Wyx5dl4zHCh1wy3a/nt8h2TpvT0vRyqhdVxnu
-        0TGK8iV6a1T8ggh7kmGE254V99aHZZdMEAFYcLyKvpgRhQOqcs9NWJYuGcPxkDh5akO0lB
-        MfMyr23TSmKzQF56VaKh1UXw7ndudZUiZbanw9vnDceqStLwU2m4ysllm68fzDvorJmaVd
-        CrF9PUAyR6HzCggouTOr6bZ63Ii32LJ3qbsQN/EwrcNZHykBGBaA0LhD5SMxElNqxi0Neb
-        EerSXjolMegquXE2uVy/NAH2IHLViKNkbJ94pizU5xly8+TmKQQq1BvtoBXlag==
+        bh=lRLz5u7rlrapgnDTjt3gDSupwa+PRH+Rw4WNxZmPyb0=;
+        b=n4QIALyduIPB0kM7M3PRjriO1TAVy74sewCk4A4ETc2hHgTmEcyC1J7avZJ01NxM/Qvi7e
+        bxxnCg1QP26BET9dQN9VJsMuHPYXry+MvXGAaq94f+d6UjzGgmLmb3E2ZkacxQkOnIXo/A
+        KMVnsK1XjJDGkXWI19Fg2Q3zi1w5JOvPBZcg9b+6//le3OioYh/JxAYJH4evUVHNXlT4ZX
+        CfrLdEAeRbps1Pas6uRMlX1vmsje/XyhP5UnwDS4MXa9aSjdPwPblsNsNhak/76eL0Ui9p
+        Dbc+s2eY8a9mZx7xeqqwEQ1l519L1vTH3JIm0JYT+S9VoWsNuI8nWRaS97Fwqg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697016228;
+        s=2020e; t=1697027676;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=poaexBJUv5tu6Pccgx/fYMMioEDwrLiYM+aMqFLGujY=;
-        b=1NxAwDFMIjeExXeJ+w3tuQ83drBiocue8T3hcUht4eEofmL6GoV7rjjQyCXUDXvsl76yd1
-        17q4UZ8BETr5pEBQ==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=lRLz5u7rlrapgnDTjt3gDSupwa+PRH+Rw4WNxZmPyb0=;
+        b=WiuildRm7y+0w0UUy4xm6Jab8uTEDXZvt9ZMJ82ds0BNHaMNc0EvhQDaRmoSdeTKRHylPR
+        262tShZ5j7Rn4CCA==
+From:   "tip-bot2 for Russell King (Oracle)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Fix AMD erratum #1485 on Zen4-based CPUs
-Cc:     rene@exactcode.de, "Borislav Petkov (AMD)" <bp@alien8.de>,
-        <stable@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <D99589F4-BC5D-430B-87B2-72C20370CF57@exactcode.com>
-References: <D99589F4-BC5D-430B-87B2-72C20370CF57@exactcode.com>
+Subject: [tip: smp/urgent] cpu-hotplug: Provide prototypes for arch CPU registration
+Cc:     "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk>
+References: <E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk>
 MIME-Version: 1.0
-Message-ID: <169701622768.3135.17489375930381616520.tip-bot2@tip-bot2>
+Message-ID: <169702767511.3135.14022878103064178933.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -64,81 +65,134 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the smp/urgent branch of tip:
 
-Commit-ID:     f454b18e07f518bcd0c05af17a2239138bff52de
-Gitweb:        https://git.kernel.org/tip/f454b18e07f518bcd0c05af17a2239138bf=
-f52de
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Sat, 07 Oct 2023 12:57:02 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 11 Oct 2023 11:00:11 +02:00
+Commit-ID:     c4dd854f740c21ae8dd9903fc67969c5497cb14b
+Gitweb:        https://git.kernel.org/tip/c4dd854f740c21ae8dd9903fc67969c5497cb14b
+Author:        Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+AuthorDate:    Mon, 25 Sep 2023 17:28:39 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 11 Oct 2023 14:27:37 +02:00
 
-x86/cpu: Fix AMD erratum #1485 on Zen4-based CPUs
+cpu-hotplug: Provide prototypes for arch CPU registration
 
-Fix erratum #1485 on Zen4 parts where running with STIBP disabled can
-cause an #UD exception. The performance impact of the fix is negligible.
+Provide common prototypes for arch_register_cpu() and
+arch_unregister_cpu(). These are called by acpi_processor.c, with weak
+versions, so the prototype for this is already set. It is generally not
+necessary for function prototypes to be conditional on preprocessor macros.
 
-Reported-by: Ren=C3=A9 Rebe <rene@exactcode.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Ren=C3=A9 Rebe <rene@exactcode.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/D99589F4-BC5D-430B-87B2-72C20370CF57@exactcod=
-e.com
+Some architectures (e.g. Loongarch) are missing the prototype for this, and
+rather than add it to Loongarch's asm/cpu.h, do the job once for everyone.
+
+Since this covers everyone, remove the now unnecessary prototypes in
+asm/cpu.h, and therefore remove the 'static' from one of ia64's
+arch_register_cpu() definitions.
+
+[ tglx: Bring back the ia64 part and remove the ACPI prototypes ]
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk
+
 ---
- arch/x86/include/asm/msr-index.h |  9 +++++++--
- arch/x86/kernel/cpu/amd.c        |  8 ++++++++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ arch/ia64/include/asm/cpu.h   | 5 -----
+ arch/ia64/kernel/topology.c   | 2 +-
+ arch/x86/include/asm/cpu.h    | 2 --
+ arch/x86/kernel/topology.c    | 2 +-
+ drivers/acpi/acpi_processor.c | 1 +
+ include/acpi/processor.h      | 5 -----
+ include/linux/cpu.h           | 2 ++
+ 7 files changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-inde=
-x.h
-index 1d11135..b37abb5 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -637,12 +637,17 @@
- /* AMD Last Branch Record MSRs */
- #define MSR_AMD64_LBR_SELECT			0xc000010e
-=20
--/* Fam 17h MSRs */
--#define MSR_F17H_IRPERF			0xc00000e9
-+/* Zen4 */
-+#define MSR_ZEN4_BP_CFG			0xc001102e
-+#define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
-=20
-+/* Zen 2 */
- #define MSR_ZEN2_SPECTRAL_CHICKEN	0xc00110e3
- #define MSR_ZEN2_SPECTRAL_CHICKEN_BIT	BIT_ULL(1)
-=20
-+/* Fam 17h MSRs */
-+#define MSR_F17H_IRPERF			0xc00000e9
-+
- /* Fam 16h MSRs */
- #define MSR_F16H_L2I_PERF_CTL		0xc0010230
- #define MSR_F16H_L2I_PERF_CTR		0xc0010231
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 03ef962..ece2b5b 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -80,6 +80,10 @@ static const int amd_div0[] =3D
- 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x00, 0x0, 0x2f, 0xf),
- 			   AMD_MODEL_RANGE(0x17, 0x50, 0x0, 0x5f, 0xf));
-=20
-+static const int amd_erratum_1485[] =3D
-+	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x19, 0x10, 0x0, 0x1f, 0xf),
-+			   AMD_MODEL_RANGE(0x19, 0x60, 0x0, 0xaf, 0xf));
-+
- static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
- {
- 	int osvw_id =3D *erratum++;
-@@ -1149,6 +1153,10 @@ static void init_amd(struct cpuinfo_x86 *c)
- 		pr_notice_once("AMD Zen1 DIV0 bug detected. Disable SMT for full protectio=
-n.\n");
- 		setup_force_cpu_bug(X86_BUG_DIV0);
- 	}
-+
-+	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) &&
-+	     cpu_has_amd_erratum(c, amd_erratum_1485))
-+		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT);
+diff --git a/arch/ia64/include/asm/cpu.h b/arch/ia64/include/asm/cpu.h
+index db125df..642d716 100644
+--- a/arch/ia64/include/asm/cpu.h
++++ b/arch/ia64/include/asm/cpu.h
+@@ -15,9 +15,4 @@ DECLARE_PER_CPU(struct ia64_cpu, cpu_devices);
+ 
+ DECLARE_PER_CPU(int, cpu_state);
+ 
+-#ifdef CONFIG_HOTPLUG_CPU
+-extern int arch_register_cpu(int num);
+-extern void arch_unregister_cpu(int);
+-#endif
+-
+ #endif /* _ASM_IA64_CPU_H_ */
+diff --git a/arch/ia64/kernel/topology.c b/arch/ia64/kernel/topology.c
+index 94a848b..741863a 100644
+--- a/arch/ia64/kernel/topology.c
++++ b/arch/ia64/kernel/topology.c
+@@ -59,7 +59,7 @@ void __ref arch_unregister_cpu(int num)
  }
-=20
- #ifdef CONFIG_X86_32
+ EXPORT_SYMBOL(arch_unregister_cpu);
+ #else
+-static int __init arch_register_cpu(int num)
++int __init arch_register_cpu(int num)
+ {
+ 	return register_cpu(&sysfs_cpus[num].cpu, num);
+ }
+diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
+index 3a233eb..25050d9 100644
+--- a/arch/x86/include/asm/cpu.h
++++ b/arch/x86/include/asm/cpu.h
+@@ -28,8 +28,6 @@ struct x86_cpu {
+ };
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+-extern int arch_register_cpu(int num);
+-extern void arch_unregister_cpu(int);
+ extern void soft_restart_cpu(void);
+ #endif
+ 
+diff --git a/arch/x86/kernel/topology.c b/arch/x86/kernel/topology.c
+index ca004e2..0bab031 100644
+--- a/arch/x86/kernel/topology.c
++++ b/arch/x86/kernel/topology.c
+@@ -54,7 +54,7 @@ void arch_unregister_cpu(int num)
+ EXPORT_SYMBOL(arch_unregister_cpu);
+ #else /* CONFIG_HOTPLUG_CPU */
+ 
+-static int __init arch_register_cpu(int num)
++int __init arch_register_cpu(int num)
+ {
+ 	return register_cpu(&per_cpu(cpu_devices, num).cpu, num);
+ }
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index c711db8..0f5218e 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -12,6 +12,7 @@
+ #define pr_fmt(fmt) "ACPI: " fmt
+ 
+ #include <linux/acpi.h>
++#include <linux/cpu.h>
+ #include <linux/device.h>
+ #include <linux/dmi.h>
+ #include <linux/kernel.h>
+diff --git a/include/acpi/processor.h b/include/acpi/processor.h
+index 94181fe..3f34ebb 100644
+--- a/include/acpi/processor.h
++++ b/include/acpi/processor.h
+@@ -465,9 +465,4 @@ extern int acpi_processor_ffh_lpi_probe(unsigned int cpu);
+ extern int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi);
+ #endif
+ 
+-#ifdef CONFIG_ACPI_HOTPLUG_CPU
+-extern int arch_register_cpu(int cpu);
+-extern void arch_unregister_cpu(int cpu);
+-#endif
+-
+ #endif
+diff --git a/include/linux/cpu.h b/include/linux/cpu.h
+index 0abd60a..eb768a8 100644
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -80,6 +80,8 @@ extern __printf(4, 5)
+ struct device *cpu_device_create(struct device *parent, void *drvdata,
+ 				 const struct attribute_group **groups,
+ 				 const char *fmt, ...);
++extern int arch_register_cpu(int cpu);
++extern void arch_unregister_cpu(int cpu);
+ #ifdef CONFIG_HOTPLUG_CPU
+ extern void unregister_cpu(struct cpu *cpu);
+ extern ssize_t arch_cpu_probe(const char *, size_t);
