@@ -2,59 +2,66 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6F317C5407
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Oct 2023 14:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03E007C5E2D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Oct 2023 22:18:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231549AbjJKMek (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Oct 2023 08:34:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57108 "EHLO
+        id S235129AbjJKUSY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 Oct 2023 16:18:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231327AbjJKMej (ORCPT
+        with ESMTP id S233360AbjJKUSX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Oct 2023 08:34:39 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA71D98;
-        Wed, 11 Oct 2023 05:34:37 -0700 (PDT)
-Date:   Wed, 11 Oct 2023 12:34:35 -0000
+        Wed, 11 Oct 2023 16:18:23 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7C569D;
+        Wed, 11 Oct 2023 13:18:21 -0700 (PDT)
+Date:   Wed, 11 Oct 2023 20:18:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697027676;
+        s=2020; t=1697055499;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lRLz5u7rlrapgnDTjt3gDSupwa+PRH+Rw4WNxZmPyb0=;
-        b=n4QIALyduIPB0kM7M3PRjriO1TAVy74sewCk4A4ETc2hHgTmEcyC1J7avZJ01NxM/Qvi7e
-        bxxnCg1QP26BET9dQN9VJsMuHPYXry+MvXGAaq94f+d6UjzGgmLmb3E2ZkacxQkOnIXo/A
-        KMVnsK1XjJDGkXWI19Fg2Q3zi1w5JOvPBZcg9b+6//le3OioYh/JxAYJH4evUVHNXlT4ZX
-        CfrLdEAeRbps1Pas6uRMlX1vmsje/XyhP5UnwDS4MXa9aSjdPwPblsNsNhak/76eL0Ui9p
-        Dbc+s2eY8a9mZx7xeqqwEQ1l519L1vTH3JIm0JYT+S9VoWsNuI8nWRaS97Fwqg==
+        bh=zaCIBCsVd4Wuoa1RVMA712obRlLRCJv6Yp3ESSZPfQE=;
+        b=SrK3Bu0AuSLhwfcHf5PkuU+XP+Wfa41vbVSSBoiBRQVaH8dbfnYcIJvGuuSGNjC6BoD2hc
+        HP1TZD6G8U18b4SCn/phm6mioPlmm+NM74uEhuWZH+1kapTlDNDCSC7sIXaj9P/sAqlFni
+        O8XCTLUEqld89Oyj/jIgjn0DtPlQHiFdZCbFIXT5xvGxxPDvMZF0N4n7cSSnjPC48kGes/
+        1z6/vNcZjUAFJHGoHLEsRmVv4TYvukHb/qYwg4GfF5CUPD9F2di3XezCJ7UpMYAtZhZ0oV
+        fwdVS03mvUvJc3spMFhqMjToyI+KZTqlOPfVPde5j2b27aH7V6PQ8Vdno+4rAA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697027676;
+        s=2020e; t=1697055499;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lRLz5u7rlrapgnDTjt3gDSupwa+PRH+Rw4WNxZmPyb0=;
-        b=WiuildRm7y+0w0UUy4xm6Jab8uTEDXZvt9ZMJ82ds0BNHaMNc0EvhQDaRmoSdeTKRHylPR
-        262tShZ5j7Rn4CCA==
-From:   "tip-bot2 for Russell King (Oracle)" <tip-bot2@linutronix.de>
+        bh=zaCIBCsVd4Wuoa1RVMA712obRlLRCJv6Yp3ESSZPfQE=;
+        b=+f31mnosN5M6K6qjw7mCTKzXQ+57p90O3wJYfonSTf+DMBRP7rGDZCvNUU1Wk6psokaMBL
+        tJeMOHnN7deYOQBA==
+From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/urgent] cpu-hotplug: Provide prototypes for arch CPU registration
-Cc:     "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/cache] Documentation/x86: Document resctrl's new sparse_masks
+Cc:     Fenghua Yu <fenghua.yu@intel.com>,
+        "Maciej Wieczor-Retman" <maciej.wieczor-retman@intel.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        ilpo.jarvinen@linux.intel.com,
+        Peter Newman <peternewman@google.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Babu Moger <babu.moger@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk>
-References: <E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk>
+In-Reply-To: =?utf-8?q?=3C3e9610997164f648e15c5c2e90d4944ce36504fe=2E16969?=
+ =?utf-8?q?34091=2Egit=2Emaciej=2Ewieczor-retman=40intel=2Ecom=3E?=
+References: =?utf-8?q?=3C3e9610997164f648e15c5c2e90d4944ce36504fe=2E169693?=
+ =?utf-8?q?4091=2Egit=2Emaciej=2Ewieczor-retman=40intel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <169702767511.3135.14022878103064178933.tip-bot2@tip-bot2>
+Message-ID: <169705549883.3135.3621026076011072533.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -65,134 +72,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/urgent branch of tip:
+The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     c4dd854f740c21ae8dd9903fc67969c5497cb14b
-Gitweb:        https://git.kernel.org/tip/c4dd854f740c21ae8dd9903fc67969c5497cb14b
-Author:        Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-AuthorDate:    Mon, 25 Sep 2023 17:28:39 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 11 Oct 2023 14:27:37 +02:00
+Commit-ID:     aaa5fa35743ab9f0726568611a85e3e15349b9bf
+Gitweb:        https://git.kernel.org/tip/aaa5fa35743ab9f0726568611a85e3e1534=
+9b9bf
+Author:        Fenghua Yu <fenghua.yu@intel.com>
+AuthorDate:    Tue, 10 Oct 2023 12:42:39 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 11 Oct 2023 21:52:10 +02:00
 
-cpu-hotplug: Provide prototypes for arch CPU registration
+Documentation/x86: Document resctrl's new sparse_masks
 
-Provide common prototypes for arch_register_cpu() and
-arch_unregister_cpu(). These are called by acpi_processor.c, with weak
-versions, so the prototype for this is already set. It is generally not
-necessary for function prototypes to be conditional on preprocessor macros.
+The documentation mentions that non-contiguous bit masks are not
+supported in Intel Cache Allocation Technology (CAT).
 
-Some architectures (e.g. Loongarch) are missing the prototype for this, and
-rather than add it to Loongarch's asm/cpu.h, do the job once for everyone.
+Update the documentation on how to determine if sparse bit masks are
+allowed in L2 and L3 CAT.
 
-Since this covers everyone, remove the now unnecessary prototypes in
-asm/cpu.h, and therefore remove the 'static' from one of ia64's
-arch_register_cpu() definitions.
-
-[ tglx: Bring back the ia64 part and remove the ACPI prototypes ]
-
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk
-
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Peter Newman <peternewman@google.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Babu Moger <babu.moger@amd.com>
+Tested-by: Peter Newman <peternewman@google.com>
+Link: https://lore.kernel.org/r/3e9610997164f648e15c5c2e90d4944ce36504fe.1696=
+934091.git.maciej.wieczor-retman@intel.com
 ---
- arch/ia64/include/asm/cpu.h   | 5 -----
- arch/ia64/kernel/topology.c   | 2 +-
- arch/x86/include/asm/cpu.h    | 2 --
- arch/x86/kernel/topology.c    | 2 +-
- drivers/acpi/acpi_processor.c | 1 +
- include/acpi/processor.h      | 5 -----
- include/linux/cpu.h           | 2 ++
- 7 files changed, 5 insertions(+), 14 deletions(-)
+ Documentation/arch/x86/resctrl.rst | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/ia64/include/asm/cpu.h b/arch/ia64/include/asm/cpu.h
-index db125df..642d716 100644
---- a/arch/ia64/include/asm/cpu.h
-+++ b/arch/ia64/include/asm/cpu.h
-@@ -15,9 +15,4 @@ DECLARE_PER_CPU(struct ia64_cpu, cpu_devices);
- 
- DECLARE_PER_CPU(int, cpu_state);
- 
--#ifdef CONFIG_HOTPLUG_CPU
--extern int arch_register_cpu(int num);
--extern void arch_unregister_cpu(int);
--#endif
--
- #endif /* _ASM_IA64_CPU_H_ */
-diff --git a/arch/ia64/kernel/topology.c b/arch/ia64/kernel/topology.c
-index 94a848b..741863a 100644
---- a/arch/ia64/kernel/topology.c
-+++ b/arch/ia64/kernel/topology.c
-@@ -59,7 +59,7 @@ void __ref arch_unregister_cpu(int num)
- }
- EXPORT_SYMBOL(arch_unregister_cpu);
- #else
--static int __init arch_register_cpu(int num)
-+int __init arch_register_cpu(int num)
- {
- 	return register_cpu(&sysfs_cpus[num].cpu, num);
- }
-diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
-index 3a233eb..25050d9 100644
---- a/arch/x86/include/asm/cpu.h
-+++ b/arch/x86/include/asm/cpu.h
-@@ -28,8 +28,6 @@ struct x86_cpu {
- };
- 
- #ifdef CONFIG_HOTPLUG_CPU
--extern int arch_register_cpu(int num);
--extern void arch_unregister_cpu(int);
- extern void soft_restart_cpu(void);
- #endif
- 
-diff --git a/arch/x86/kernel/topology.c b/arch/x86/kernel/topology.c
-index ca004e2..0bab031 100644
---- a/arch/x86/kernel/topology.c
-+++ b/arch/x86/kernel/topology.c
-@@ -54,7 +54,7 @@ void arch_unregister_cpu(int num)
- EXPORT_SYMBOL(arch_unregister_cpu);
- #else /* CONFIG_HOTPLUG_CPU */
- 
--static int __init arch_register_cpu(int num)
-+int __init arch_register_cpu(int num)
- {
- 	return register_cpu(&per_cpu(cpu_devices, num).cpu, num);
- }
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index c711db8..0f5218e 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -12,6 +12,7 @@
- #define pr_fmt(fmt) "ACPI: " fmt
- 
- #include <linux/acpi.h>
-+#include <linux/cpu.h>
- #include <linux/device.h>
- #include <linux/dmi.h>
- #include <linux/kernel.h>
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index 94181fe..3f34ebb 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -465,9 +465,4 @@ extern int acpi_processor_ffh_lpi_probe(unsigned int cpu);
- extern int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi);
- #endif
- 
--#ifdef CONFIG_ACPI_HOTPLUG_CPU
--extern int arch_register_cpu(int cpu);
--extern void arch_unregister_cpu(int cpu);
--#endif
--
- #endif
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index 0abd60a..eb768a8 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -80,6 +80,8 @@ extern __printf(4, 5)
- struct device *cpu_device_create(struct device *parent, void *drvdata,
- 				 const struct attribute_group **groups,
- 				 const char *fmt, ...);
-+extern int arch_register_cpu(int cpu);
-+extern void arch_unregister_cpu(int cpu);
- #ifdef CONFIG_HOTPLUG_CPU
- extern void unregister_cpu(struct cpu *cpu);
- extern ssize_t arch_cpu_probe(const char *, size_t);
+diff --git a/Documentation/arch/x86/resctrl.rst b/Documentation/arch/x86/resc=
+trl.rst
+index cb05d90..4c6421e 100644
+--- a/Documentation/arch/x86/resctrl.rst
++++ b/Documentation/arch/x86/resctrl.rst
+@@ -124,6 +124,13 @@ related to allocation:
+ 			"P":
+ 			      Corresponding region is pseudo-locked. No
+ 			      sharing allowed.
++"sparse_masks":
++		Indicates if non-contiguous 1s value in CBM is supported.
++
++			"0":
++			      Only contiguous 1s value in CBM is supported.
++			"1":
++			      Non-contiguous 1s value in CBM is supported.
+=20
+ Memory bandwidth(MB) subdirectory contains the following files
+ with respect to allocation:
+@@ -445,12 +452,13 @@ For cache resources we describe the portion of the cach=
+e that is available
+ for allocation using a bitmask. The maximum value of the mask is defined
+ by each cpu model (and may be different for different cache levels). It
+ is found using CPUID, but is also provided in the "info" directory of
+-the resctrl file system in "info/{resource}/cbm_mask". Intel hardware
++the resctrl file system in "info/{resource}/cbm_mask". Some Intel hardware
+ requires that these masks have all the '1' bits in a contiguous block. So
+ 0x3, 0x6 and 0xC are legal 4-bit masks with two bits set, but 0x5, 0x9
+-and 0xA are not.  On a system with a 20-bit mask each bit represents 5%
+-of the capacity of the cache. You could partition the cache into four
+-equal parts with masks: 0x1f, 0x3e0, 0x7c00, 0xf8000.
++and 0xA are not. Check /sys/fs/resctrl/info/{resource}/sparse_masks
++if non-contiguous 1s value is supported. On a system with a 20-bit mask
++each bit represents 5% of the capacity of the cache. You could partition
++the cache into four equal parts with masks: 0x1f, 0x3e0, 0x7c00, 0xf8000.
+=20
+ Memory bandwidth Allocation and monitoring
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
