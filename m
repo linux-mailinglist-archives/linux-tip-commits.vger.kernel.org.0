@@ -2,137 +2,433 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E7737C66EB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Oct 2023 09:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14F367C74E8
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Oct 2023 19:37:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347218AbjJLHlv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Oct 2023 03:41:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38934 "EHLO
+        id S1379637AbjJLRhu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Oct 2023 13:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347221AbjJLHl0 (ORCPT
+        with ESMTP id S1347448AbjJLRhi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Oct 2023 03:41:26 -0400
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA012192;
-        Thu, 12 Oct 2023 00:41:08 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4F53E40E01AE;
-        Thu, 12 Oct 2023 07:41:06 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-        header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id iEwd9QEY93se; Thu, 12 Oct 2023 07:41:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1697096464; bh=jJUZbzlswPXGZoXPc17PlkAB4TzsPozIWmI2f9OwXCM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=A+q11BTQwE+t099woHPw3xGFHvdM6FZzpHuueaY02wRAHmWaocNOlz9MLAs4r45M9
-         W2FJ9y8iuKWnbTE9wFRU5dGCOUNQhnAB3x+MF0yDzCNgLZC1ZmDM9CORtOTQ4AzuJ8
-         lw3BMilA0StdChbHNQqXIZo/Wa2P087TioOdMD7nYxDoZ5duN7WNlFFZBNE1UU1VIi
-         RFHA19UlsyhElmCV+pHQUCFicsfId5nBNDpXfZpsi9gInlB9Gzq3bXXrGzIOVnCBG4
-         /tfyWx8J8SaW2XhL7PTDCISib7LYu4Ci9aOkdkj4TIdm3C0SBCV2jW30ONGHuSuuzV
-         kaJYO9yOHBjE9qYI4YOCj5dm1cKfK/iQziBI+JPYe78ICClZiTu2TkE9YJxooUaEEx
-         9WkFjg4wmE1XDBi1hnNMOwKLcjNkENDreWoD3RUqJdSPjwXhPUfJ07iWXlaQB650JA
-         SYV4+YWz/gGJJFOEXPHw7dYV8F1yreQVekQklmFjD5y82rxiRjmtRTySVOf2g2dtC5
-         6s/HEV4NKDbZ0qZUT9FryiUv9kB4M5sTj5Gb8xDPTLRGbTgiweUVbAXNhbUdoMgNHA
-         YAXEZQCzyZdqtMWXT0om3eKklAaZy8ZMHMm8lk4p8sAwQTvZWWeVkq6SM1WJSsdOKr
-         MBsFOh6iai13E7qntj7NPmfo=
-Received: from zn.tnic (pd953036a.dip0.t-ipconnect.de [217.83.3.106])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-        (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E177840E01AA;
-        Thu, 12 Oct 2023 07:40:57 +0000 (UTC)
-Date:   Thu, 12 Oct 2023 09:40:51 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        rene@exactcode.de, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [tip: x86/urgent] x86/cpu: Fix AMD erratum #1485 on Zen4-based
- CPUs
-Message-ID: <20231012074051.GBZSejA6bTV53638DE@fat_crate.local>
-References: <D99589F4-BC5D-430B-87B2-72C20370CF57@exactcode.com>
- <169701622768.3135.17489375930381616520.tip-bot2@tip-bot2>
- <ZScTem8iF8CUZqf6@gmail.com>
+        Thu, 12 Oct 2023 13:37:38 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69766EA;
+        Thu, 12 Oct 2023 10:34:37 -0700 (PDT)
+Date:   Thu, 12 Oct 2023 17:34:34 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1697132075;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yvwOrUFWrpu9Nc3ylQ7uW/c3OdgBaPqsHxReckC4MJU=;
+        b=dppdalZeKL4r9LTF75yvb9l0BbN5GAeUD/CVtO9GZ1W1W/Pb63QNlbjyf8Crc8T+1Reug7
+        h4j3VDvq+IymV0WCFWF1MmXgagagUYF+WxWGAs+T2pD8KAcfywKCSQyuU7SANUrg5yJ4sW
+        jxAo5lvF6mUSfpfa1diArHmhq4BNAcpDyDgxEN7T6vQPUveHi/vstRox93PMbLOGI393y5
+        owI+eAsW17OpvtLs0u/i2iwlQAIu2awoZlqjQWrTCKz+IYFtB0NDLSV2PZVeVO04pW6WWu
+        HUPZSZ0RGT8mT8zgQLx7+ejx2gJeslMazcnYAxuhoBW7L+fwVJjL6Sak0CIPqQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1697132075;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yvwOrUFWrpu9Nc3ylQ7uW/c3OdgBaPqsHxReckC4MJU=;
+        b=3bp2R36+JyL8QSRtZ9YLfVPCLpjINNDuTms8Wf2wzXmmkVhIIhkZ09LO8fBJ1bqp8ZV2/P
+        ZlXqHdaDHoRSMNCA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/core] perf: Optimize perf_cgroup_switch()
+Cc:     Namhyung Kim <namhyung@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20231009210425.GC6307@noisy.programming.kicks-ass.net>
+References: <20231009210425.GC6307@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZScTem8iF8CUZqf6@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <169713207414.3135.17659480704085791106.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Oct 11, 2023 at 11:28:26PM +0200, Ingo Molnar wrote:
-> While in reality:
-> 
->    Zen 2 == Fam 17h
->    Zen 4 == Fam 19h
+The following commit has been merged into the perf/core branch of tip:
 
-If only were that easy...
+Commit-ID:     f06cc667f79909e9175460b167c277b7c64d3df0
+Gitweb:        https://git.kernel.org/tip/f06cc667f79909e9175460b167c277b7c64d3df0
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 09 Oct 2023 23:04:25 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 12 Oct 2023 19:28:38 +02:00
 
-family 0x17 is Zen1 and 2, family 0x19 is spread around Zen 3 and 4.
+perf: Optimize perf_cgroup_switch()
 
-> 
-> So it's confusing to list these separately and out of order.
-> 
-> So in resolving the conflict in perf/core I updated this section to read:
-> 
->   /* Fam 19h (Zen 4) MSRs */
+Namhyung reported that bd2756811766 ("perf: Rewrite core context handling")
+regresses context switch overhead when perf-cgroup is in use together
+with 'slow' PMUs like uncore.
 
-That's wrong.
+Specifically, perf_cgroup_switch()'s perf_ctx_disable() /
+ctx_sched_out() etc.. all iterate the full list of active PMUs for
+that CPU, even if they don't have cgroup events.
 
->   #define MSR_F19H_UMC_PERF_CTL		0xc0010800
->   #define MSR_F19H_UMC_PERF_CTR		0xc0010801
-> 
->   #define MSR_ZEN4_BP_CFG		0xc001102e
->   #define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
-> 
->   /* Fam 17h (Zen 2) MSRs */
+Previously there was cgrp_cpuctx_list which linked the relevant PMUs
+together, but that got lost in the rework. Instead of re-instruducing
+a similar list, let the perf_event_pmu_context iteration skip those
+that do not have cgroup events. This avoids growing multiple versions
+of the perf_event_pmu_context iteration.
 
-Ditto.
+Measured performance (on a slightly different patch):
 
-> This doesn't change the definitions themselves, only merges the comments 
-> and the sections, (to keep the Git conflict resolution non-evil), but 
-> arguably once perf/core goes upstream, we should probably unify the naming 
-> to follow the existing nomenclature, which is, starting at around F15H, the 
-> following:
-> 
->    MSR_F15H_
->    MSR_F16H_
->    MSR_F17H_
->    MSR_F19H_
-> 
-> Or are the MSRs named ZEN2 and ZEN4 in AMD SDMs, which we should follow?
+Before)
 
-See above. The MSRs are per Zen generation while the family is per
-family. Yes, it is confusing. :-\
+  $ taskset -c 0 ./perf bench sched pipe -l 10000 -G AAA,BBB
+  # Running 'sched/pipe' benchmark:
+  # Executed 10000 pipe operations between two processes
 
-IOW, you want to have this as the end product:
+       Total time: 0.901 [sec]
 
-/* Zen4 */
-#define MSR_ZEN4_BP_CFG                 0xc001102e
-#define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
+        90.128700 usecs/op
+            11095 ops/sec
 
-/* Fam 19h MSRs */
-#define MSR_F19H_UMC_PERF_CTL           0xc0010800
-#define MSR_F19H_UMC_PERF_CTR           0xc0010801
+After)
 
-/* Zen 2 */
-#define MSR_ZEN2_SPECTRAL_CHICKEN       0xc00110e3
-#define MSR_ZEN2_SPECTRAL_CHICKEN_BIT   BIT_ULL(1)
+  $ taskset -c 0 ./perf bench sched pipe -l 10000 -G AAA,BBB
+  # Running 'sched/pipe' benchmark:
+  # Executed 10000 pipe operations between two processes
 
-/* Fam 17h MSRs */
-#define MSR_F17H_IRPERF			0xc00000e9
+       Total time: 0.065 [sec]
 
--- 
-Regards/Gruss,
-    Boris.
+         6.560100 usecs/op
+           152436 ops/sec
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Fixes: bd2756811766 ("perf: Rewrite core context handling")
+Reported-by: Namhyung Kim <namhyung@kernel.org>
+Debugged-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20231009210425.GC6307@noisy.programming.kicks-ass.net
+---
+ include/linux/perf_event.h |   1 +-
+ kernel/events/core.c       | 115 ++++++++++++++++++------------------
+ 2 files changed, 61 insertions(+), 55 deletions(-)
+
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index f31f962..0367d74 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -878,6 +878,7 @@ struct perf_event_pmu_context {
+ 	unsigned int			embedded : 1;
+ 
+ 	unsigned int			nr_events;
++	unsigned int			nr_cgroups;
+ 
+ 	atomic_t			refcount; /* event <-> epc */
+ 	struct rcu_head			rcu_head;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 708d474..3eb26c2 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -375,6 +375,7 @@ enum event_type_t {
+ 	EVENT_TIME = 0x4,
+ 	/* see ctx_resched() for details */
+ 	EVENT_CPU = 0x8,
++	EVENT_CGROUP = 0x10,
+ 	EVENT_ALL = EVENT_FLEXIBLE | EVENT_PINNED,
+ };
+ 
+@@ -684,20 +685,26 @@ do {									\
+ 	___p;								\
+ })
+ 
+-static void perf_ctx_disable(struct perf_event_context *ctx)
++static void perf_ctx_disable(struct perf_event_context *ctx, bool cgroup)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx;
+ 
+-	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
+ 		perf_pmu_disable(pmu_ctx->pmu);
++	}
+ }
+ 
+-static void perf_ctx_enable(struct perf_event_context *ctx)
++static void perf_ctx_enable(struct perf_event_context *ctx, bool cgroup)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx;
+ 
+-	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
+ 		perf_pmu_enable(pmu_ctx->pmu);
++	}
+ }
+ 
+ static void ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type);
+@@ -856,9 +863,9 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 		return;
+ 
+ 	perf_ctx_lock(cpuctx, cpuctx->task_ctx);
+-	perf_ctx_disable(&cpuctx->ctx);
++	perf_ctx_disable(&cpuctx->ctx, true);
+ 
+-	ctx_sched_out(&cpuctx->ctx, EVENT_ALL);
++	ctx_sched_out(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
+ 	/*
+ 	 * must not be done before ctxswout due
+ 	 * to update_cgrp_time_from_cpuctx() in
+@@ -870,9 +877,9 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 	 * perf_cgroup_set_timestamp() in ctx_sched_in()
+ 	 * to not have to pass task around
+ 	 */
+-	ctx_sched_in(&cpuctx->ctx, EVENT_ALL);
++	ctx_sched_in(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
+ 
+-	perf_ctx_enable(&cpuctx->ctx);
++	perf_ctx_enable(&cpuctx->ctx, true);
+ 	perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
+ }
+ 
+@@ -965,6 +972,8 @@ perf_cgroup_event_enable(struct perf_event *event, struct perf_event_context *ct
+ 	if (!is_cgroup_event(event))
+ 		return;
+ 
++	event->pmu_ctx->nr_cgroups++;
++
+ 	/*
+ 	 * Because cgroup events are always per-cpu events,
+ 	 * @ctx == &cpuctx->ctx.
+@@ -985,6 +994,8 @@ perf_cgroup_event_disable(struct perf_event *event, struct perf_event_context *c
+ 	if (!is_cgroup_event(event))
+ 		return;
+ 
++	event->pmu_ctx->nr_cgroups--;
++
+ 	/*
+ 	 * Because cgroup events are always per-cpu events,
+ 	 * @ctx == &cpuctx->ctx.
+@@ -2677,9 +2688,9 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
+ 
+ 	event_type &= EVENT_ALL;
+ 
+-	perf_ctx_disable(&cpuctx->ctx);
++	perf_ctx_disable(&cpuctx->ctx, false);
+ 	if (task_ctx) {
+-		perf_ctx_disable(task_ctx);
++		perf_ctx_disable(task_ctx, false);
+ 		task_ctx_sched_out(task_ctx, event_type);
+ 	}
+ 
+@@ -2697,9 +2708,9 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
+ 
+ 	perf_event_sched_in(cpuctx, task_ctx);
+ 
+-	perf_ctx_enable(&cpuctx->ctx);
++	perf_ctx_enable(&cpuctx->ctx, false);
+ 	if (task_ctx)
+-		perf_ctx_enable(task_ctx);
++		perf_ctx_enable(task_ctx, false);
+ }
+ 
+ void perf_pmu_resched(struct pmu *pmu)
+@@ -3244,6 +3255,9 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
+ 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	struct perf_event_pmu_context *pmu_ctx;
+ 	int is_active = ctx->is_active;
++	bool cgroup = event_type & EVENT_CGROUP;
++
++	event_type &= ~EVENT_CGROUP;
+ 
+ 	lockdep_assert_held(&ctx->lock);
+ 
+@@ -3290,8 +3304,11 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
+ 
+ 	is_active ^= ctx->is_active; /* changed bits */
+ 
+-	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
+ 		__pmu_ctx_sched_out(pmu_ctx, is_active);
++	}
+ }
+ 
+ /*
+@@ -3482,7 +3499,7 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
+ 		raw_spin_lock_nested(&next_ctx->lock, SINGLE_DEPTH_NESTING);
+ 		if (context_equiv(ctx, next_ctx)) {
+ 
+-			perf_ctx_disable(ctx);
++			perf_ctx_disable(ctx, false);
+ 
+ 			/* PMIs are disabled; ctx->nr_pending is stable. */
+ 			if (local_read(&ctx->nr_pending) ||
+@@ -3502,7 +3519,7 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
+ 			perf_ctx_sched_task_cb(ctx, false);
+ 			perf_event_swap_task_ctx_data(ctx, next_ctx);
+ 
+-			perf_ctx_enable(ctx);
++			perf_ctx_enable(ctx, false);
+ 
+ 			/*
+ 			 * RCU_INIT_POINTER here is safe because we've not
+@@ -3526,13 +3543,13 @@ unlock:
+ 
+ 	if (do_switch) {
+ 		raw_spin_lock(&ctx->lock);
+-		perf_ctx_disable(ctx);
++		perf_ctx_disable(ctx, false);
+ 
+ inside_switch:
+ 		perf_ctx_sched_task_cb(ctx, false);
+ 		task_ctx_sched_out(ctx, EVENT_ALL);
+ 
+-		perf_ctx_enable(ctx);
++		perf_ctx_enable(ctx, false);
+ 		raw_spin_unlock(&ctx->lock);
+ 	}
+ }
+@@ -3818,47 +3835,32 @@ static int merge_sched_in(struct perf_event *event, void *data)
+ 	return 0;
+ }
+ 
+-static void ctx_pinned_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
++static void pmu_groups_sched_in(struct perf_event_context *ctx,
++				struct perf_event_groups *groups,
++				struct pmu *pmu)
+ {
+-	struct perf_event_pmu_context *pmu_ctx;
+ 	int can_add_hw = 1;
+-
+-	if (pmu) {
+-		visit_groups_merge(ctx, &ctx->pinned_groups,
+-				   smp_processor_id(), pmu,
+-				   merge_sched_in, &can_add_hw);
+-	} else {
+-		list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
+-			can_add_hw = 1;
+-			visit_groups_merge(ctx, &ctx->pinned_groups,
+-					   smp_processor_id(), pmu_ctx->pmu,
+-					   merge_sched_in, &can_add_hw);
+-		}
+-	}
++	visit_groups_merge(ctx, groups, smp_processor_id(), pmu,
++			   merge_sched_in, &can_add_hw);
+ }
+ 
+-static void ctx_flexible_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
++static void ctx_groups_sched_in(struct perf_event_context *ctx,
++				struct perf_event_groups *groups,
++				bool cgroup)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx;
+-	int can_add_hw = 1;
+ 
+-	if (pmu) {
+-		visit_groups_merge(ctx, &ctx->flexible_groups,
+-				   smp_processor_id(), pmu,
+-				   merge_sched_in, &can_add_hw);
+-	} else {
+-		list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
+-			can_add_hw = 1;
+-			visit_groups_merge(ctx, &ctx->flexible_groups,
+-					   smp_processor_id(), pmu_ctx->pmu,
+-					   merge_sched_in, &can_add_hw);
+-		}
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
++		pmu_groups_sched_in(ctx, groups, pmu_ctx->pmu);
+ 	}
+ }
+ 
+-static void __pmu_ctx_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
++static void __pmu_ctx_sched_in(struct perf_event_context *ctx,
++			       struct pmu *pmu)
+ {
+-	ctx_flexible_sched_in(ctx, pmu);
++	pmu_groups_sched_in(ctx, &ctx->flexible_groups, pmu);
+ }
+ 
+ static void
+@@ -3866,6 +3868,9 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
+ {
+ 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	int is_active = ctx->is_active;
++	bool cgroup = event_type & EVENT_CGROUP;
++
++	event_type &= ~EVENT_CGROUP;
+ 
+ 	lockdep_assert_held(&ctx->lock);
+ 
+@@ -3898,11 +3903,11 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
+ 	 * in order to give them the best chance of going on.
+ 	 */
+ 	if (is_active & EVENT_PINNED)
+-		ctx_pinned_sched_in(ctx, NULL);
++		ctx_groups_sched_in(ctx, &ctx->pinned_groups, cgroup);
+ 
+ 	/* Then walk through the lower prio flexible groups */
+ 	if (is_active & EVENT_FLEXIBLE)
+-		ctx_flexible_sched_in(ctx, NULL);
++		ctx_groups_sched_in(ctx, &ctx->flexible_groups, cgroup);
+ }
+ 
+ static void perf_event_context_sched_in(struct task_struct *task)
+@@ -3917,11 +3922,11 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 
+ 	if (cpuctx->task_ctx == ctx) {
+ 		perf_ctx_lock(cpuctx, ctx);
+-		perf_ctx_disable(ctx);
++		perf_ctx_disable(ctx, false);
+ 
+ 		perf_ctx_sched_task_cb(ctx, true);
+ 
+-		perf_ctx_enable(ctx);
++		perf_ctx_enable(ctx, false);
+ 		perf_ctx_unlock(cpuctx, ctx);
+ 		goto rcu_unlock;
+ 	}
+@@ -3934,7 +3939,7 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 	if (!ctx->nr_events)
+ 		goto unlock;
+ 
+-	perf_ctx_disable(ctx);
++	perf_ctx_disable(ctx, false);
+ 	/*
+ 	 * We want to keep the following priority order:
+ 	 * cpu pinned (that don't need to move), task pinned,
+@@ -3944,7 +3949,7 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 	 * events, no need to flip the cpuctx's events around.
+ 	 */
+ 	if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree)) {
+-		perf_ctx_disable(&cpuctx->ctx);
++		perf_ctx_disable(&cpuctx->ctx, false);
+ 		ctx_sched_out(&cpuctx->ctx, EVENT_FLEXIBLE);
+ 	}
+ 
+@@ -3953,9 +3958,9 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 	perf_ctx_sched_task_cb(cpuctx->task_ctx, true);
+ 
+ 	if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree))
+-		perf_ctx_enable(&cpuctx->ctx);
++		perf_ctx_enable(&cpuctx->ctx, false);
+ 
+-	perf_ctx_enable(ctx);
++	perf_ctx_enable(ctx, false);
+ 
+ unlock:
+ 	perf_ctx_unlock(cpuctx, ctx);
