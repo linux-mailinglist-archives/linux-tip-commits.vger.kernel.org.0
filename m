@@ -2,61 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB1827C750F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Oct 2023 19:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CC37C7512
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Oct 2023 19:50:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379647AbjJLRuV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Oct 2023 13:50:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52842 "EHLO
+        id S1379549AbjJLRul (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Oct 2023 13:50:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379627AbjJLRuU (ORCPT
+        with ESMTP id S1379666AbjJLRuk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Oct 2023 13:50:20 -0400
+        Thu, 12 Oct 2023 13:50:40 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B4CBB;
-        Thu, 12 Oct 2023 10:50:18 -0700 (PDT)
-Date:   Thu, 12 Oct 2023 17:50:16 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 354ADBB;
+        Thu, 12 Oct 2023 10:50:38 -0700 (PDT)
+Date:   Thu, 12 Oct 2023 17:50:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697133017;
+        s=2020; t=1697133036;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xoKlNZgjdrqPYu+DbG75XGlYO3OTTy8TALc2nVbhlaQ=;
-        b=yrWl93Ox9a2k5CgXeTw6z0LqM0Cla9scqnZLOEuNvdZrsgz+glTkZ5hDkrFkeGDGpPnL2z
-        yKgJstm/b7SMOLOFErd9LLo1Zz2Q2cuug7p+7821m5ETbaEWCF5N/gW2EAv4XJb7Br6udT
-        IoVRo5ukUvzeEtcj2PJzIgGanCR1VdIDyspkvgwBMJVWKRAXe0vvqAtSh3pCb4jaeO8Ipb
-        srTlFbUX5+pU2O5/BgdWJBRg6JHGoHO3vNgGjlJ43oAw0Cm0UW7OT6ZXv4I4xNJbLW7Wru
-        6IutHwdo7KFHCoD7AgaXbhzIkH0DIc1rZNywfS4gqDofIkbCO1sQyVB6/4hGDA==
+        bh=IFxajUsa9FTTUCqjV6kFt+MmxG7sRnqRbV03Tf5QmSg=;
+        b=G27L8g81QXJ0Nw7WnkBAjE7UiVbFXS+sbY613+GwywcUE7ddFpRN2uk6ZI7Mk6tH0IQ/58
+        DXq3L3hvWj7aeUS5u1DEqbCcVOBYQeo7vMqHHWP2xL8m3tun5/eGeO7GhOF646YTTZaQZW
+        OXcf9fFVflj0uNlxXruQ+M8wNlmpfireUtVQWGrvbi2UuaOgs6L6u7doBO8ENfR9qh18Em
+        EdZNNnadShfHTKKtgNOEHElumWjMT3P9kC2jVzmi4G/okwetHwoxgd/ScH7CNKooqTxz2D
+        XE5kAqzgItfT019iISeANY3kEe+O4/KoX1bm7qL4tOspXG0Q77OQijrX7S4u2w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697133017;
+        s=2020e; t=1697133036;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xoKlNZgjdrqPYu+DbG75XGlYO3OTTy8TALc2nVbhlaQ=;
-        b=6oZUi3lQccefEf3BXBEk+9rchc1oqaC9Ad6vTUoUGIzwOSJengBUDx2hIhlUzXlNkOaW+A
-        3KrKiWd85JdSdmBQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=IFxajUsa9FTTUCqjV6kFt+MmxG7sRnqRbV03Tf5QmSg=;
+        b=M/xcXtbU1GuWoz+MgWoxyLUQY5q7DW6ozBwTHaFXYOgeuYx+WiqVlSHIVQ/n4L12FxgfIG
+        bv1VEScAFB5QMzBw==
+From:   "tip-bot2 for David Kaplan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/topology: Rename 'DIE' domain to 'PKG'
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/bugs] x86/vdso: Run objtool on vdso32-setup.o
+Cc:     David Kaplan <david.kaplan@amd.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230712141056.GI3100107@hirez.programming.kicks-ass.net>
-References: <20230712141056.GI3100107@hirez.programming.kicks-ass.net>
+In-Reply-To: <20231010171020.462211-3-david.kaplan@amd.com>
+References: <20231010171020.462211-3-david.kaplan@amd.com>
 MIME-Version: 1.0
-Message-ID: <169713301636.3135.8978091401376991190.tip-bot2@tip-bot2>
+Message-ID: <169713303595.3135.9716744359353391644.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,147 +66,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     f577cd57bfaa889cf0718e30e92c08c7f78c9d85
-Gitweb:        https://git.kernel.org/tip/f577cd57bfaa889cf0718e30e92c08c7f78c9d85
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 12 Jul 2023 16:10:56 +02:00
+Commit-ID:     99b5bf0276d4ae5028ab9743053c6d16044009ea
+Gitweb:        https://git.kernel.org/tip/99b5bf0276d4ae5028ab9743053c6d16044009ea
+Author:        David Kaplan <david.kaplan@amd.com>
+AuthorDate:    Tue, 10 Oct 2023 12:10:19 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 12 Oct 2023 09:38:16 +02:00
+CommitterDate: Thu, 12 Oct 2023 19:44:07 +02:00
 
-sched/topology: Rename 'DIE' domain to 'PKG'
+x86/vdso: Run objtool on vdso32-setup.o
 
-While reworking the x86 topology code Thomas tripped over creating a 'DIE' domain
-for the package mask. :-)
+vdso32-setup.c is part of the main kernel image and should not be
+excluded from objtool.  Objtool is necessary in part for ensuring that
+returns in this file are correctly patched to the appropriate return
+thunk at runtime.
 
-Since these names are CONFIG_SCHED_DEBUG=y only, rename them to make the
-name less ambiguous.
-
-[ Shrikanth Hegde: rename on s390 as well. ]
-[ Valentin Schneider: also rename it in the comments. ]
-[ mingo: port to recent kernels & find all remaining occurances. ]
-
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: David Kaplan <david.kaplan@amd.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Valentin Schneider <vschneid@redhat.com>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Acked-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20230712141056.GI3100107@hirez.programming.kicks-ass.net
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231010171020.462211-3-david.kaplan@amd.com
 ---
- arch/powerpc/kernel/smp.c   | 4 ++--
- arch/s390/kernel/topology.c | 2 +-
- arch/x86/kernel/smpboot.c   | 4 ++--
- kernel/sched/fair.c         | 2 +-
- kernel/sched/topology.c     | 8 ++++----
- 5 files changed, 10 insertions(+), 10 deletions(-)
+ arch/x86/entry/vdso/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 5826f51..4e48700 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1051,7 +1051,7 @@ static struct sched_domain_topology_level powerpc_topology[] = {
- #endif
- 	{ shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
- 	{ cpu_mc_mask, SD_INIT_NAME(MC) },
--	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
-+	{ cpu_cpu_mask, SD_INIT_NAME(PKG) },
- 	{ NULL, },
- };
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index 6a1821b..83c0afb 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -42,7 +42,8 @@ vdso_img-$(VDSO64-y)		+= 64
+ vdso_img-$(VDSOX32-y)		+= x32
+ vdso_img-$(VDSO32-y)		+= 32
  
-@@ -1595,7 +1595,7 @@ static void add_cpu_to_masks(int cpu)
- 	/* Skip all CPUs already part of current CPU core mask */
- 	cpumask_andnot(mask, cpu_online_mask, cpu_core_mask(cpu));
+-obj-$(VDSO32-y)			+= vdso32-setup.o
++obj-$(VDSO32-y)				 += vdso32-setup.o
++OBJECT_FILES_NON_STANDARD_vdso32-setup.o := n
  
--	/* If chip_id is -1; limit the cpu_core_mask to within DIE*/
-+	/* If chip_id is -1; limit the cpu_core_mask to within PKG */
- 	if (chip_id == -1)
- 		cpumask_and(mask, mask, cpu_cpu_mask(cpu));
- 
-diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
-index 68adf1d..66bda6a 100644
---- a/arch/s390/kernel/topology.c
-+++ b/arch/s390/kernel/topology.c
-@@ -522,7 +522,7 @@ static struct sched_domain_topology_level s390_topology[] = {
- 	{ cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
- 	{ cpu_book_mask, SD_INIT_NAME(BOOK) },
- 	{ cpu_drawer_mask, SD_INIT_NAME(DRAWER) },
--	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
-+	{ cpu_cpu_mask, SD_INIT_NAME(PKG) },
- 	{ NULL, },
- };
- 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 02765d9..e3b3e80 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -641,13 +641,13 @@ static void __init build_sched_topology(void)
- 	};
- #endif
- 	/*
--	 * When there is NUMA topology inside the package skip the DIE domain
-+	 * When there is NUMA topology inside the package skip the PKG domain
- 	 * since the NUMA domains will auto-magically create the right spanning
- 	 * domains based on the SLIT.
- 	 */
- 	if (!x86_has_numa_in_package) {
- 		x86_topology[i++] = (struct sched_domain_topology_level){
--			cpu_cpu_mask, x86_die_flags, SD_INIT_NAME(DIE)
-+			cpu_cpu_mask, x86_die_flags, SD_INIT_NAME(PKG)
- 		};
- 	}
- 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 9229051..a751e55 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9555,7 +9555,7 @@ static bool sched_use_asym_prio(struct sched_domain *sd, int cpu)
-  * can only do it if @group is an SMT group and has exactly on busy CPU. Larger
-  * imbalances in the number of CPUS are dealt with in find_busiest_group().
-  *
-- * If we are balancing load within an SMT core, or at DIE domain level, always
-+ * If we are balancing load within an SMT core, or at PKG domain level, always
-  * proceed.
-  *
-  * Return: true if @env::dst_cpu can do with asym_packing load balance. False
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index d950861..a63729f 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1119,7 +1119,7 @@ fail:
-  *
-  *  - Simultaneous multithreading (SMT)
-  *  - Multi-Core Cache (MC)
-- *  - Package (DIE)
-+ *  - Package (PKG)
-  *
-  * Where the last one more or less denotes everything up to a NUMA node.
-  *
-@@ -1141,13 +1141,13 @@ fail:
-  *
-  * CPU   0   1   2   3   4   5   6   7
-  *
-- * DIE  [                             ]
-+ * PKG  [                             ]
-  * MC   [             ] [             ]
-  * SMT  [     ] [     ] [     ] [     ]
-  *
-  *  - or -
-  *
-- * DIE  0-7 0-7 0-7 0-7 0-7 0-7 0-7 0-7
-+ * PKG  0-7 0-7 0-7 0-7 0-7 0-7 0-7 0-7
-  * MC	0-3 0-3 0-3 0-3 4-7 4-7 4-7 4-7
-  * SMT  0-1 0-1 2-3 2-3 4-5 4-5 6-7 6-7
-  *
-@@ -1681,7 +1681,7 @@ static struct sched_domain_topology_level default_topology[] = {
- #ifdef CONFIG_SCHED_MC
- 	{ cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
- #endif
--	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
-+	{ cpu_cpu_mask, SD_INIT_NAME(PKG) },
- 	{ NULL, },
- };
- 
+ vobjs := $(foreach F,$(vobjs-y),$(obj)/$F)
+ vobjs32 := $(foreach F,$(vobjs32-y),$(obj)/$F)
