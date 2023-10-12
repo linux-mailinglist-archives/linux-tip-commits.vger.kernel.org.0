@@ -2,66 +2,64 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2F87C7511
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Oct 2023 19:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B20247C7513
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Oct 2023 19:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379624AbjJLRuk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Oct 2023 13:50:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49724 "EHLO
+        id S1379655AbjJLRum (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Oct 2023 13:50:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379651AbjJLRuj (ORCPT
+        with ESMTP id S1379676AbjJLRuk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Oct 2023 13:50:39 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D504D6;
-        Thu, 12 Oct 2023 10:50:37 -0700 (PDT)
-Date:   Thu, 12 Oct 2023 17:50:35 -0000
+        Thu, 12 Oct 2023 13:50:40 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7F7CF;
+        Thu, 12 Oct 2023 10:50:39 -0700 (PDT)
+Date:   Thu, 12 Oct 2023 17:50:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697133036;
+        s=2020; t=1697133037;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=u1tRzLxcoMbWxvG+mukyL8m7+kfZ7rIvBFU2zqRdBCY=;
-        b=FmPglg7N3Aq85KxQQgdo5HL3aSPu7ftnaFGkOOGFO2xC602jFOlZ+PhVxCo64AgWP9rSRg
-        eIbmngOwHh9UgO4YURmni+ZJD4yaskMTyB7NeAsWzFX41NmWMC2tvLTh+KtBnIOzQdwPwd
-        VsDpU0QgW7R7tTThZa2KLMuIjX8SnsS7hqzFZteTcFyFugswI01WGKnJg3X4NoAAhQN/VZ
-        /tveEwAnhjGA3jsBtfPDixagLq3x8TMOiyOJHbW6xWVBHtTI0FSXb+7qQWEGgbOgt4MDjJ
-        S88k937aVijiM6vGrRvi2GsWiz94Sq9vxDTdJIGkiEhB8vfedrk8L9A88Lw11Q==
+        bh=ZsTxEDhbaIphlw0jzXT8l5TRWd+hq/UI1Z+VXihjkW0=;
+        b=2Jtdq7HSABAAUZk6N8frXHwXVnTlsX3gqQxpS0nAf6Lc3YCyHYEkcsTQR3LcSee0zewOhk
+        3TcUaIJQsUlu1Cu7PXzYCd1/m43e8vcObJVwbVo7EB4quD1BMqEb3c2SV7mSEXH9ADWoNd
+        5t/u/PpbpBsOXQy4PbOODLuxI6/63sLl8B3P2Pfre7puGX+zEX8kpAFUw8FzIEHkdumJwM
+        3SlALlLqncsMKg07biAy2fkgDjscqVcIiDq4+ydjkMonD0z5d6pJBgOJMRNwGtewmy3eOZ
+        BwLTCQFtIiR3o9OwVIxWuDtgJZrPtbdl0wtP1wv4MXwKdc5rk/CgF2gwXFN6xw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697133036;
+        s=2020e; t=1697133037;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=u1tRzLxcoMbWxvG+mukyL8m7+kfZ7rIvBFU2zqRdBCY=;
-        b=FhqAUCdVyd07m193GPDhmDCWLsDA7wnltmxS0XPHKrZjQaq93+DmqQfn5COEKlCZ5eajat
-        /bOnQV6hfVO6EcDQ==
-From:   "tip-bot2 for David Kaplan" <tip-bot2@linutronix.de>
+        bh=ZsTxEDhbaIphlw0jzXT8l5TRWd+hq/UI1Z+VXihjkW0=;
+        b=RBYd5SsvwAcFbUISugZ6tbNxK7+D/f393O+/niDm+iafq8yfyJ+9uKRSGmufSQR1cvdMEM
+        9zbw2AWmltcA+CDA==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't used
- at runtime
+Subject: [tip: x86/bugs] objtool: Fix return thunk patching in retpolines
 Cc:     David Kaplan <david.kaplan@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Ingo Molnar <mingo@kernel.org>,
         Josh Poimboeuf <jpoimboe@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231012141031.GHZSf+V1NjjUJTc9a9@fat_crate.local>
-References: <20231012141031.GHZSf+V1NjjUJTc9a9@fat_crate.local>
+In-Reply-To: <20231012024737.eg5phclogp67ik6x@treble>
+References: <20231012024737.eg5phclogp67ik6x@treble>
 MIME-Version: 1.0
-Message-ID: <169713303534.3135.10558074245117750218.tip-bot2@tip-bot2>
+Message-ID: <169713303673.3135.1345736146578099050.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -70,58 +68,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     91174087dcc7565d8bf0d576544e42d5b1de6f39
-Gitweb:        https://git.kernel.org/tip/91174087dcc7565d8bf0d576544e42d5b1de6f39
-Author:        David Kaplan <david.kaplan@amd.com>
-AuthorDate:    Thu, 12 Oct 2023 16:10:31 +02:00
+Commit-ID:     eadbe6606a85610c63e6cfaa9257dc7e3bbb901c
+Gitweb:        https://git.kernel.org/tip/eadbe6606a85610c63e6cfaa9257dc7e3bbb901c
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Wed, 11 Oct 2023 19:47:37 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 12 Oct 2023 19:44:34 +02:00
+CommitterDate: Thu, 12 Oct 2023 19:43:51 +02:00
 
-x86/retpoline: Ensure default return thunk isn't used at runtime
+objtool: Fix return thunk patching in retpolines
 
-All CPU bugs that require a return thunk define a special return thunk
-to use (e.g., srso_return_thunk).  The default thunk,
-__x86_return_thunk, should never be used after apply_returns()
-completes.  Otherwise this could lead to potential speculation holes.
+With CONFIG_RETHUNK enabled, the compiler replaces every RET with a tail
+call to a return thunk ('JMP __x86_return_thunk').  Objtool annotates
+all such return sites so they can be patched during boot by
+apply_returns().
 
-Enforce this by replacing this thunk with a ud2 when alternatives are
-applied.  Alternative instructions are applied after apply_returns().
+The implementation of __x86_return_thunk() is just a bare RET.  It's
+only meant to be used temporarily until apply_returns() patches all
+return sites with either a JMP to another return thunk or an actual RET.
 
-The default thunk is only used during kernel boot, it is not used during
-module init since that occurs after apply_returns().
+The following commit:
 
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+  e92626af3234 ("x86/retpoline: Remove .text..__x86.return_thunk section")
+
+broke objtool's detection of return sites in retpolines.  Since
+retpolines and return thunks are now in the same section, the compiler
+no longer uses relocations for the intra-section jumps between the
+retpolines and the return thunk, causing objtool to overlook them.
+
+As a result, none of the retpolines' return sites get patched.  Each one
+stays at 'JMP __x86_return_thunk', effectively a bare RET.
+
+Fix it by teaching objtool to detect when a non-relocated jump target is
+a return thunk (or retpoline).
+
+Fixes: e92626af3234 ("x86/retpoline: Remove .text..__x86.return_thunk section")
+Reported-by: David Kaplan <david.kaplan@amd.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231012141031.GHZSf+V1NjjUJTc9a9@fat_crate.local
+Link: https://lore.kernel.org/r/20231012024737.eg5phclogp67ik6x@treble
 ---
- arch/x86/lib/retpoline.S | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tools/objtool/check.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index 6376d01..fe05c13 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -356,15 +356,17 @@ SYM_FUNC_END(call_depth_return_thunk)
-  * This function name is magical and is used by -mfunction-return=thunk-extern
-  * for the compiler to generate JMPs to it.
-  *
-- * This code is only used during kernel boot or module init.  All
-+ * This code is only used during kernel boot.  All
-  * 'JMP __x86_return_thunk' sites are changed to something else by
-  * apply_returns().
-+ *
-+ * This thunk is turned into a ud2 to ensure it is never used at runtime.
-+ * Alternative instructions are applied after apply_returns().
-  */
- SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
--	ANNOTATE_UNRET_SAFE
--	ret
-+	ALTERNATIVE __stringify(ANNOTATE_UNRET_SAFE;ret),"ud2", X86_FEATURE_ALWAYS
- 	int3
- SYM_CODE_END(__x86_return_thunk)
- EXPORT_SYMBOL(__x86_return_thunk)
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index e308d1b..e94756e 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1611,6 +1611,22 @@ static int add_jump_destinations(struct objtool_file *file)
+ 		}
+ 
+ 		/*
++		 * An intra-TU jump in retpoline.o might not have a relocation
++		 * for its jump dest, in which case the above
++		 * add_{retpoline,return}_call() didn't happen.
++		 */
++		if (jump_dest->sym && jump_dest->offset == jump_dest->sym->offset) {
++			if (jump_dest->sym->retpoline_thunk) {
++				add_retpoline_call(file, insn);
++				continue;
++			}
++			if (jump_dest->sym->return_thunk) {
++				add_return_call(file, insn, true);
++				continue;
++			}
++		}
++
++		/*
+ 		 * Cross-function jump.
+ 		 */
+ 		if (insn_func(insn) && insn_func(jump_dest) &&
