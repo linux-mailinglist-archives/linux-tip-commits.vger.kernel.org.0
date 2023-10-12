@@ -2,59 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EDEE7C7607
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Oct 2023 20:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7598C7C7617
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Oct 2023 20:44:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379700AbjJLSgz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Oct 2023 14:36:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50800 "EHLO
+        id S1441943AbjJLSnw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Oct 2023 14:43:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379714AbjJLSgu (ORCPT
+        with ESMTP id S1441821AbjJLSnw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Oct 2023 14:36:50 -0400
+        Thu, 12 Oct 2023 14:43:52 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2A53E8;
-        Thu, 12 Oct 2023 11:36:48 -0700 (PDT)
-Date:   Thu, 12 Oct 2023 18:36:46 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABC1283;
+        Thu, 12 Oct 2023 11:43:50 -0700 (PDT)
+Date:   Thu, 12 Oct 2023 18:43:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697135807;
+        s=2020; t=1697136229;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Pw7es2hh7qvHHY9PDbdAV77XkoPYW54NCoEKygSaPGA=;
-        b=obEgyN14FSYqYZ4k/o0BZYWyv892Xc8mH1ru52uWXOufIYANZm4Khh9yQ/PAwXKg1LW99v
-        JQHhxR74Um9OVmAzGQ7/S9ejMMjKb9/OTotrMYynzQs+DRx6jqwQGJoWmh3S3/klWAKbBI
-        usf9u2ZS7sAqr1+phY0ngH1HcE4kllUd8lFybyXcnnIwztvhEbvFOKg/68oGc1p5X9ByJR
-        InHWHJv7WS+w5tZuqj5e4BK+LZM8XDrgch1oiWIvYGJZGemMZklNQwr3sp6klKSVZB6Uhy
-        nPBd0h0QfLfMyxLU59Jn4dILqZlnpw1dnUoWsaEKMWxtoeIexGPcxjm6UmgI3g==
+        bh=p4IJk1jfPpuOdOgu2MQ79rc62trZiN8Vjveo+Rkj3n8=;
+        b=AKlfPe08Yy4RsKr4WM2S3srzCwWroJ9Ia6/m7q+ozav+tOhuh0An18eiiAA3++NnikGsS7
+        eDkPnmV6JbElCr0+/nTuiQvEqZjrUaEQ/X1ol7gg2g+TCHh54NPkrNX+zadgYNJOe50BxY
+        kDrdQJQIfLiPqnsvR1XzD1dTOsPQK+hfVtT5KinupYLJjUwoOqU429EURKbvTn3Er5Lfph
+        fdqgLFHttslPMO7rqJK2rjRIPu/Z1TjmyQ+MUtToqB6daT/veQA4Eu8cGHb4LA9Ynvk6K9
+        senVMjyAGQi146PI3lVFrRbtfBJ0uUzXvuFYB/GXWtK8wirmOSsl562Cxj5yvg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697135807;
+        s=2020e; t=1697136229;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Pw7es2hh7qvHHY9PDbdAV77XkoPYW54NCoEKygSaPGA=;
-        b=BK9Fm3pbkZP3Z70AdYJks9gghRogBj730FV1St1XIfoS3wM5MmF9E0CxWFujwqnltexNdV
-        CVxUzeY+odCHAyAA==
-From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
+        bh=p4IJk1jfPpuOdOgu2MQ79rc62trZiN8Vjveo+Rkj3n8=;
+        b=uXdWhs3zJjoS98UVypG+XxK78H+hUwUtvjLaiD9BP4FqE3mdi97hDK2KO7/ia7Z7MMA4vt
+        U9VJD2muECZ6goAA==
+From:   "tip-bot2 for Lucy Mielke" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/alternatives: Disable KASAN in apply_alternatives()
-Cc:     Fei Yang <fei.yang@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: locking/core] locking/lockdep: Fix string sizing bug that
+ triggers a format-truncation compiler-warning
+Cc:     Lucy Mielke <lucymielke@icloud.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231012100424.1456-1-kirill.shutemov@linux.intel.com>
-References: <20231012100424.1456-1-kirill.shutemov@linux.intel.com>
+In-Reply-To: <ZSfOEHRkZAWaQr3U@fedora.fritz.box>
+References: <ZSfOEHRkZAWaQr3U@fedora.fritz.box>
 MIME-Version: 1.0
-Message-ID: <169713580687.3135.7724105544670888547.tip-bot2@tip-bot2>
+Message-ID: <169713622853.3135.11510940240910538539.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,82 +65,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     d35652a5fc9944784f6f50a5c979518ff8dacf61
-Gitweb:        https://git.kernel.org/tip/d35652a5fc9944784f6f50a5c979518ff8dacf61
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Thu, 12 Oct 2023 13:04:24 +03:00
+Commit-ID:     ac8b60be078abebc3ab8836f3f0ecac6980e0b4f
+Gitweb:        https://git.kernel.org/tip/ac8b60be078abebc3ab8836f3f0ecac6980e0b4f
+Author:        Lucy Mielke <lucymielke@icloud.com>
+AuthorDate:    Thu, 12 Oct 2023 12:44:32 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 12 Oct 2023 20:27:16 +02:00
+CommitterDate: Thu, 12 Oct 2023 20:37:59 +02:00
 
-x86/alternatives: Disable KASAN in apply_alternatives()
+locking/lockdep: Fix string sizing bug that triggers a format-truncation compiler-warning
 
-Fei has reported that KASAN triggers during apply_alternatives() on
-a 5-level paging machine:
+On an allyesconfig, with "treat warnings as errors" unset, GCC emits
+these warnings:
 
-	BUG: KASAN: out-of-bounds in rcu_is_watching()
-	Read of size 4 at addr ff110003ee6419a0 by task swapper/0/0
-	...
-	__asan_load4()
-	rcu_is_watching()
-	trace_hardirqs_on()
-	text_poke_early()
-	apply_alternatives()
-	...
+	kernel/locking/lockdep_proc.c:438:32: Warning: Format specifier '%lld' may
+		be truncated when writing 1 to 17 bytes into a region
+		of size 15 [-Wformat-truncation=]
 
-On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
-gets patched. It includes KASAN code, where KASAN_SHADOW_START depends on
-__VIRTUAL_MASK_SHIFT, which is defined with cpu_feature_enabled().
+	kernel/locking/lockdep_proc.c:438:31: Note: Format directive argument is
+		in the range [-9223372036854775, 9223372036854775]
 
-KASAN gets confused when apply_alternatives() patches the
-KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
-static, by replacing __VIRTUAL_MASK_SHIFT with 56, works around the issue.
+	kernel/locking/lockdep_proc.c:438:9: Note: 'snprintf' has output
+		between 5 and 22 bytes into a target of size 15
 
-Fix it for real by disabling KASAN while the kernel is patching alternatives.
+In seq_time(), the longest s64 is "-9223372036854775808"-ish, which
+converted to the fixed-point float format is "-9223372036854775.80": 21 bytes,
+plus termination is another byte: 22. Therefore, a larger buffer size
+of 22 is needed here - not 15. The code was safe due to the snprintf().
 
-[ mingo: updated the changelog ]
+Fix it.
 
-Fixes: 6657fca06e3f ("x86/mm: Allow to boot without LA57 if CONFIG_X86_5LEVEL=y")
-Reported-by: Fei Yang <fei.yang@intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Lucy Mielke <lucymielke@icloud.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231012100424.1456-1-kirill.shutemov@linux.intel.com
+Link: https://lore.kernel.org/r/ZSfOEHRkZAWaQr3U@fedora.fritz.box
 ---
- arch/x86/kernel/alternative.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ kernel/locking/lockdep_proc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 517ee01..73be393 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -403,6 +403,17 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
- 	u8 insn_buff[MAX_PATCH_LEN];
+diff --git a/kernel/locking/lockdep_proc.c b/kernel/locking/lockdep_proc.c
+index 15fdc7f..e2bfb1d 100644
+--- a/kernel/locking/lockdep_proc.c
++++ b/kernel/locking/lockdep_proc.c
+@@ -440,7 +440,7 @@ static void snprint_time(char *buf, size_t bufsiz, s64 nr)
  
- 	DPRINTK(ALT, "alt table %px, -> %px", start, end);
-+
-+	/*
-+	 * In the case CONFIG_X86_5LEVEL=y, KASAN_SHADOW_START is defined using
-+	 * cpu_feature_enabled(X86_FEATURE_LA57) and is therefore patched here.
-+	 * During the process, KASAN becomes confused seeing partial LA57
-+	 * conversion and triggers a false-positive out-of-bound report.
-+	 *
-+	 * Disable KASAN until the patching is complete.
-+	 */
-+	kasan_disable_current();
-+
- 	/*
- 	 * The scan order should be from start to end. A later scanned
- 	 * alternative code can overwrite previously scanned alternative code.
-@@ -452,6 +463,8 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
+ static void seq_time(struct seq_file *m, s64 time)
+ {
+-	char num[15];
++	char num[22];
  
- 		text_poke_early(instr, insn_buff, insn_buff_sz);
- 	}
-+
-+	kasan_enable_current();
- }
- 
- static inline bool is_jcc32(struct insn *insn)
+ 	snprint_time(num, sizeof(num), time);
+ 	seq_printf(m, " %14s", num);
