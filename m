@@ -2,144 +2,178 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A85437C5F16
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Oct 2023 23:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8CF27C658A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Oct 2023 08:26:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233519AbjJKV2f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Oct 2023 17:28:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44060 "EHLO
+        id S1347076AbjJLG0V (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Oct 2023 02:26:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233339AbjJKV2e (ORCPT
+        with ESMTP id S235349AbjJLG0H (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Oct 2023 17:28:34 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF739E;
-        Wed, 11 Oct 2023 14:28:33 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-9ae75ece209so45193566b.3;
-        Wed, 11 Oct 2023 14:28:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697059711; x=1697664511; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xi4hRupYAPdxlVps7j6FmsE6VUo3wpqHYU7pBZ7s4FY=;
-        b=D0lUgLaEkPd/jkyrZZmb9i+AgShrUinX2P6HRBoYzkXIzFjpuja6471IetqIH4U5Uu
-         cbcP+lFq82tXGVP1P0yrxGCcdJwCSC2LXM5suvS56lx+I41/E3E3XCb4DZ5gTcCtEzpT
-         u0zfiGSdofiNunlZ8VoSEMgkYqsou6fOmq6ApMy6cCfIcEVOrE8IN1Abeqlwxf9dEeRd
-         1QwoKOMprD/hU7r2rU7yzoPMP63O4HBwLzcfGJFwfuCdOC7ZVwhlfPxtcCrPoipzeTUC
-         bkZyXs96n4GpGcay9cY3eIwbiyFm531AhOREF3GL2+hxh62zPKai/eGQo6EQ/Ym4gVMR
-         86BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697059711; x=1697664511;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xi4hRupYAPdxlVps7j6FmsE6VUo3wpqHYU7pBZ7s4FY=;
-        b=idSl33bHc5aw8PBrawJUcfG3mGloYGZfgFSTmLa9FoF0TENBT+SdonC//s7G85aKuX
-         C5KtaIkQxjg7iaJdUWE9OLImWZX660Z9MDzNxsrLHtaSJcThgLr+2upB2fh2SQzx8E1j
-         PtTnMawEhTkxoPqB3xWEGsrw4j/etYd9O8T5AqC3hB5ePhkRCPcBOtOuRrMloGnHbn0d
-         D/qsrq9VUIFOKcv6RbnAxxVVyKrhwsxfZfuuw1CbfId8htLMwrHhDSOfa4250ZSsWrLG
-         Li5uvdhkeo/IyLKYUzgfdgsfF7TKT64hkezPaMKpGUhglexCmAZQ8t5DIsEDhvz6Sx/C
-         Y8gw==
-X-Gm-Message-State: AOJu0Yza/H+yLRcD4VVHLo9LJDtmY3WiFNyAj3c3JwLocNm+ofvAwM3I
-        2+uERL8dGwv7qeZQbqpMg0Is/iyHGa4=
-X-Google-Smtp-Source: AGHT+IGirQ45rifXF7Dl5gS6nTPB+N42nlq3bwmEJ9/mSZMAxKhMJ6M7VSarm1Kr6NLuGDlU6fF8fg==
-X-Received: by 2002:a17:907:6c14:b0:9ae:588e:142 with SMTP id rl20-20020a1709076c1400b009ae588e0142mr19669529ejc.67.1697059711038;
-        Wed, 11 Oct 2023 14:28:31 -0700 (PDT)
-Received: from gmail.com (1F2EF405.nat.pool.telekom.hu. [31.46.244.5])
-        by smtp.gmail.com with ESMTPSA id o6-20020a17090611c600b009ad875d12d7sm10157553eja.210.2023.10.11.14.28.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Oct 2023 14:28:28 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Wed, 11 Oct 2023 23:28:26 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, rene@exactcode.de,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [tip: x86/urgent] x86/cpu: Fix AMD erratum #1485 on Zen4-based
- CPUs
-Message-ID: <ZScTem8iF8CUZqf6@gmail.com>
-References: <D99589F4-BC5D-430B-87B2-72C20370CF57@exactcode.com>
- <169701622768.3135.17489375930381616520.tip-bot2@tip-bot2>
+        Thu, 12 Oct 2023 02:26:07 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73623101;
+        Wed, 11 Oct 2023 23:25:37 -0700 (PDT)
+Date:   Thu, 12 Oct 2023 06:25:34 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1697091935;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5DIwPHfjDKni4ULexliWOMEADdnbFFYA528qpHWmc1U=;
+        b=0uxylyqQ0pX4K9PljaQwLuBstfxCLZMXfmI9XIYw195vNTFg3SkG8IUV/y5vKP0G+yzqHL
+        1h5OZy5FFI0t1v+xVNrlSzrsRRx7xPlCw9cUXI/dVgoiFJiclh7zGdvTM/NXVqxqZAfAK/
+        wN4PtBNZ+G+7oUZcItyDc2g1O2CBdfu6JFBjjUDoJiIa/fRa4Tk2/eHABVbjUEuXpfVHzJ
+        AY0gUw878ZECRHMLqL1pqTo2ScDio9lc8klSbLqrOC+v3NF+NZyyWTGxbDHGGuhyqNBj5p
+        2f+L5JZ9AW4f7/Ph6O3VHCIK/T2lM3AOQmtTd3Thzn5IgeJiw+mqP9c4fRC0Jw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1697091935;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5DIwPHfjDKni4ULexliWOMEADdnbFFYA528qpHWmc1U=;
+        b=Rx/39lipNDxxNymOslNgiQCbJEQOem7AeQa7ZNENUAA9OXQ0bSquN5en/9GTuE6VlXcyyY
+        22kHYyNyxfN4jnAQ==
+From:   "tip-bot2 for Lu Yao" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/apic] x86/msi: Fix compile error caused by
+ CONFIG_GENERIC_MSI_IRQ=y && !CONFIG_X86_LOCAL_APIC
+Cc:     kernel test robot <lkp@intel.com>, Lu Yao <yaolu@kylinos.cn>,
+        Ingo Molnar <mingo@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20231012032659.323251-1-yaolu@kylinos.cn>
+References: <20231012032659.323251-1-yaolu@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <169701622768.3135.17489375930381616520.tip-bot2@tip-bot2>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Message-ID: <169709193403.3135.8043258061582152833.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the x86/apic branch of tip:
 
-* tip-bot2 for Borislav Petkov (AMD) <tip-bot2@linutronix.de> wrote:
+Commit-ID:     441ccc351256533b6381e86a5648dbfe04b74286
+Gitweb:        https://git.kernel.org/tip/441ccc351256533b6381e86a5648dbfe04b=
+74286
+Author:        Lu Yao <yaolu@kylinos.cn>
+AuthorDate:    Thu, 12 Oct 2023 11:26:59 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 12 Oct 2023 08:13:27 +02:00
 
->  /* AMD Last Branch Record MSRs */
->  #define MSR_AMD64_LBR_SELECT			0xc000010e
->  
-> +/* Zen4 */
-> +#define MSR_ZEN4_BP_CFG			0xc001102e
-> +#define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
->  
-> +/* Zen 2 */
->  #define MSR_ZEN2_SPECTRAL_CHICKEN	0xc00110e3
->  #define MSR_ZEN2_SPECTRAL_CHICKEN_BIT	BIT_ULL(1)
->  
-> +/* Fam 17h MSRs */
-> +#define MSR_F17H_IRPERF			0xc00000e9
+x86/msi: Fix compile error caused by CONFIG_GENERIC_MSI_IRQ=3Dy && !CONFIG_X8=
+6_LOCAL_APIC
 
-Yeah, so these latest AMD MSR definitions in <asm/msr-index.h> are pretty 
-confused, they list MSRs in the following order:
+When compiling the x86 kernel, if X86_LOCAL_APIC is not enabled but
+GENERIC_MSI_IRQ is selected in '.config', the following compilation
+error will occur:
 
-   Zen 4
-   Zen 2
-   Fam 19h         // resolution in tip:master
-   Fam 17h
+  include/linux/gpio/driver.h:38:19: error:
+    field 'msiinfo' has incomplete type
 
-where perf/core added a Fam 19h section a couple of days ago ...
+  kernel/irq/msi.c:752:5: error: invalid use of incomplete typedef
+    'msi_alloc_info_t' {aka 'struct irq_alloc_info'}
 
-While in reality:
+  kernel/irq/msi.c:740:1: error: control reaches end of non-void function
 
-   Zen 2 == Fam 17h
-   Zen 4 == Fam 19h
+This is because file such as 'kernel/irq/msi.c' only depends on
+'GENERIC_MSI_IRQ', and uses 'struct msi_alloc_info_t'. However,
+this struct depends on 'X86_LOCAL_APIC'.
 
-So it's confusing to list these separately and out of order.
+When enable 'GENERIC_MSI_IRQ' or 'X86_LOCAL_APIC' will select
+'IRQ_DOMAIN_HIERARCHY', so exposing this struct using
+'IRQ_DOMAIN_HIERARCHY' rather than 'X86_LOCAL_APIC'.
 
-So in resolving the conflict in perf/core I updated this section to read:
+Under the above conditions, if 'HPET_TIMER' is selected, the following
+compilation error will occur:
 
-  /* Fam 19h (Zen 4) MSRs */
-  #define MSR_F19H_UMC_PERF_CTL		0xc0010800
-  #define MSR_F19H_UMC_PERF_CTR		0xc0010801
+  arch/x86/kernel/hpet.c:550:13: error: =E2=80=98x86_vector_domain=E2=80=99 u=
+ndeclared
 
-  #define MSR_ZEN4_BP_CFG		0xc001102e
-  #define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
+  arch/x86/kernel/hpet.c:600:9: error: implicit declaration of
+    function =E2=80=98init_irq_alloc_info=E2=80=99
 
-  /* Fam 17h (Zen 2) MSRs */
-  #define MSR_F17H_IRPERF		0xc00000e9
+This is because 'x86_vector_domain' is defined in 'kernel/apic/vector.c'
+which is compiled only when 'X86_LOCAL_APIC' is enabled. Besides,
+function 'msi_domain_set_affinity' is defined in 'include/linux/msi.h'
+which depends on 'GENERIC_MSI_IRQ'. So use 'X86_LOCAL_APIC' and
+'GENERIC_MSI_IRQ' to expose these code.
 
-  #define MSR_ZEN2_SPECTRAL_CHICKEN	0xc00110e3
-  #define MSR_ZEN2_SPECTRAL_CHICKEN_BIT	BIT_ULL(1)
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Lu Yao <yaolu@kylinos.cn>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20231012032659.323251-1-yaolu@kylinos.cn
+---
+ arch/x86/include/asm/hw_irq.h | 6 +++---
+ arch/x86/kernel/hpet.c        | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-This doesn't change the definitions themselves, only merges the comments 
-and the sections, (to keep the Git conflict resolution non-evil), but 
-arguably once perf/core goes upstream, we should probably unify the naming 
-to follow the existing nomenclature, which is, starting at around F15H, the 
-following:
-
-   MSR_F15H_
-   MSR_F16H_
-   MSR_F17H_
-   MSR_F19H_
-
-Or are the MSRs named ZEN2 and ZEN4 in AMD SDMs, which we should follow?
-
-Anyway, something to keep in mind.
-
-Thanks,
-
-	Ingo
+diff --git a/arch/x86/include/asm/hw_irq.h b/arch/x86/include/asm/hw_irq.h
+index 5518298..b02c3cd 100644
+--- a/arch/x86/include/asm/hw_irq.h
++++ b/arch/x86/include/asm/hw_irq.h
+@@ -28,7 +28,7 @@
+ #include <asm/irq.h>
+ #include <asm/sections.h>
+=20
+-#ifdef	CONFIG_X86_LOCAL_APIC
++#ifdef	CONFIG_IRQ_DOMAIN_HIERARCHY
+ struct irq_data;
+ struct pci_dev;
+ struct msi_desc;
+@@ -105,10 +105,10 @@ static inline void irq_complete_move(struct irq_cfg *c)=
+ { }
+ #endif
+=20
+ extern void apic_ack_edge(struct irq_data *data);
+-#else	/*  CONFIG_X86_LOCAL_APIC */
++#else	/*  CONFIG_IRQ_DOMAIN_HIERARCHY */
+ static inline void lock_vector_lock(void) {}
+ static inline void unlock_vector_lock(void) {}
+-#endif	/* CONFIG_X86_LOCAL_APIC */
++#endif	/* CONFIG_IRQ_DOMAIN_HIERARCHY */
+=20
+ /* Statistics */
+ extern atomic_t irq_err_count;
+diff --git a/arch/x86/kernel/hpet.c b/arch/x86/kernel/hpet.c
+index 1648aa0..41eecf1 100644
+--- a/arch/x86/kernel/hpet.c
++++ b/arch/x86/kernel/hpet.c
+@@ -52,7 +52,7 @@ unsigned long				hpet_address;
+ u8					hpet_blockid; /* OS timer block num */
+ bool					hpet_msi_disable;
+=20
+-#ifdef CONFIG_GENERIC_MSI_IRQ
++#if defined(CONFIG_X86_LOCAL_APIC) && defined(CONFIG_GENERIC_MSI_IRQ)
+ static DEFINE_PER_CPU(struct hpet_channel *, cpu_hpet_channel);
+ static struct irq_domain		*hpet_domain;
+ #endif
+@@ -469,7 +469,7 @@ static void __init hpet_legacy_clockevent_register(struct=
+ hpet_channel *hc)
+ /*
+  * HPET MSI Support
+  */
+-#ifdef CONFIG_GENERIC_MSI_IRQ
++#if defined(CONFIG_X86_LOCAL_APIC) && defined(CONFIG_GENERIC_MSI_IRQ)
+ static void hpet_msi_unmask(struct irq_data *data)
+ {
+ 	struct hpet_channel *hc =3D irq_data_get_irq_handler_data(data);
