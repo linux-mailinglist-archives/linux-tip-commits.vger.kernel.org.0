@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F7907C8241
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 11:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A0DC7C8310
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 12:31:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231374AbjJMJiZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Oct 2023 05:38:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52940 "EHLO
+        id S230120AbjJMKbZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Oct 2023 06:31:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231285AbjJMJiR (ORCPT
+        with ESMTP id S229921AbjJMKbY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Oct 2023 05:38:17 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 313F3DA;
-        Fri, 13 Oct 2023 02:38:16 -0700 (PDT)
-Date:   Fri, 13 Oct 2023 09:38:14 -0000
+        Fri, 13 Oct 2023 06:31:24 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EAFCC9;
+        Fri, 13 Oct 2023 03:31:21 -0700 (PDT)
+Date:   Fri, 13 Oct 2023 10:31:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697189894;
+        s=2020; t=1697193079;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2Tdn9YzZqvXLzEj18H/HtmAGqNqRPcJ+Ga59SnQmz6o=;
-        b=BXbdsGSowodu3hAWxSP8kCy0/apsBjQKrYaIxUEge1PHG58p+zEHDMR8qrabG/jS1r3uNn
-        /XY2+l3hOFVR+ghivBFFAAiHiULTJX4Dl/r8MNE13pUzWuj+oZ9zpxwU/LJueJqTzdzb8r
-        1bMr6ApVcLVd2ZPTmuce/+5FOF4/VI4XudSaJX3dyYOO229YGdzBJ48HRGoQa9SZwQgbmH
-        esN2ffsJj1mPARiVYN/Ra0bzWJTcveM6JzFAEdkNVitl4hYJrnfuNE/HGE2uSV0hQc40im
-        Bce96eb5x9JphOaUlOpZb2+dTYroigO79zYWStQX8JXAee0qmyY/SaSv5bfXQA==
+        bh=eiMqyvH/SAwqIv54YCSZ66WUTpxVNkQwTX5nFDus+DU=;
+        b=zSHkVen/LqOYL0LzA0Ua2hZuEg5+qWJocxg2yxTroCy3CREUi19ju1sYaQhFPMuHWrHM9x
+        bXhxdsPZIlMO5MFZmoM0SqIr1ZoR/Os8WH3vsDeyBUGUIKNvpomdA8jmyX4mo0EoYGf7f2
+        3dTr9baTM4KNtOMT8/KmPJpYgyisyPK3h9MvG34pR9fJWFuGgRH5PZigtRlhuVrbEXO2h0
+        ubShTPttufSg/h9h7UOjlExdcyuRc1v1LSJ8qskxHC6j44RTJ33Cb30ZeP673C0GZuY9ea
+        ZjCM4Oo+iMEbQwkLW+RxHHLCWkX//rvGMHt0mC2jzOh3ZFY/RH/ldZ0n5QspRA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697189894;
+        s=2020e; t=1697193079;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2Tdn9YzZqvXLzEj18H/HtmAGqNqRPcJ+Ga59SnQmz6o=;
-        b=PwP3o0WEqKmuLbJWVEmMYTMg39RMPKFOhpuMya5GATkLVwdGAk782BRfMoeWBsTo6yQM1Z
-        ktkJ6ufKsk2HH/Cg==
-From:   "tip-bot2 for Pu Wen" <tip-bot2@linutronix.de>
+        bh=eiMqyvH/SAwqIv54YCSZ66WUTpxVNkQwTX5nFDus+DU=;
+        b=XRLB4yYJl/5Pmr0qyez3ZPVpFaNXBADMoE2cira/pULVHwKLFCLgRvY5pn1RMEmOeW0T8N
+        dzjXxgybMz+AiBCA==
+From:   "tip-bot2 for Lad Prabhakar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/cpu/hygon: Fix the CPU topology evaluation for real
-Cc:     Pu Wen <puwen@hygon.cn>, Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        <stable@vger.kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <tencent_594804A808BD93A4EBF50A994F228E3A7F07@qq.com>
-References: <tencent_594804A808BD93A4EBF50A994F228E3A7F07@qq.com>
+Subject: [tip: irq/core] irqchip/renesas-rzg2l: Enhance driver to support
+ interrupt affinity setting
+Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20231011195324.66807-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20231011195324.66807-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 MIME-Version: 1.0
-Message-ID: <169718989416.3135.5181697052679641742.tip-bot2@tip-bot2>
+Message-ID: <169719307895.3135.8684120215424738195.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,48 +65,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     ee545b94d39a00c93dc98b1dbcbcf731d2eadeb4
-Gitweb:        https://git.kernel.org/tip/ee545b94d39a00c93dc98b1dbcbcf731d2eadeb4
-Author:        Pu Wen <puwen@hygon.cn>
-AuthorDate:    Mon, 14 Aug 2023 10:18:26 +02:00
+Commit-ID:     f881feb180fd0563809b62faa3f7da234e81d42b
+Gitweb:        https://git.kernel.org/tip/f881feb180fd0563809b62faa3f7da234e81d42b
+Author:        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+AuthorDate:    Wed, 11 Oct 2023 20:53:24 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 10 Oct 2023 14:38:16 +02:00
+CommitterDate: Fri, 13 Oct 2023 12:25:31 +02:00
 
-x86/cpu/hygon: Fix the CPU topology evaluation for real
+irqchip/renesas-rzg2l: Enhance driver to support interrupt affinity setting
 
-Hygon processors with a model ID > 3 have CPUID leaf 0xB correctly
-populated and don't need the fixed package ID shift workaround. The fixup
-is also incorrect when running in a guest.
+Add support to set the affinity of the IRQC interrupt by implementing
+the irq_set_affinity callback via the parent interrupt chip.
 
-Fixes: e0ceeae708ce ("x86/CPU/hygon: Fix phys_proc_id calculation logic for multi-die processors")
-Signed-off-by: Pu Wen <puwen@hygon.cn>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/tencent_594804A808BD93A4EBF50A994F228E3A7F07@qq.com
-Link: https://lore.kernel.org/r/20230814085112.089607918@linutronix.de
----
- arch/x86/kernel/cpu/hygon.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Link: https://lore.kernel.org/r/20231011195324.66807-1-prabhakar.mahadev-lad.rj@bp.renesas.com
 
-diff --git a/arch/x86/kernel/cpu/hygon.c b/arch/x86/kernel/cpu/hygon.c
-index defdc59..a7b3ef4 100644
---- a/arch/x86/kernel/cpu/hygon.c
-+++ b/arch/x86/kernel/cpu/hygon.c
-@@ -87,8 +87,12 @@ static void hygon_get_topology(struct cpuinfo_x86 *c)
- 		if (!err)
- 			c->x86_coreid_bits = get_count_order(c->x86_max_cores);
- 
--		/* Socket ID is ApicId[6] for these processors. */
--		c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
-+		/*
-+		 * Socket ID is ApicId[6] for the processors with model <= 0x3
-+		 * when running on host.
-+		 */
-+		if (!boot_cpu_has(X86_FEATURE_HYPERVISOR) && c->x86_model <= 0x3)
-+			c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
- 
- 		cacheinfo_hygon_init_llc_id(c, cpu);
- 	} else if (cpu_has(c, X86_FEATURE_NODEID_MSR)) {
+---
+ drivers/irqchip/irq-renesas-rzg2l.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 4bbfa2b..e3029dd 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -247,6 +247,7 @@ static const struct irq_chip irqc_chip = {
+ 	.irq_set_irqchip_state	= irq_chip_set_parent_state,
+ 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+ 	.irq_set_type		= rzg2l_irqc_set_type,
++	.irq_set_affinity	= irq_chip_set_affinity_parent,
+ 	.flags			= IRQCHIP_MASK_ON_SUSPEND |
+ 				  IRQCHIP_SET_TYPE_MASKED |
+ 				  IRQCHIP_SKIP_SET_WAKE,
