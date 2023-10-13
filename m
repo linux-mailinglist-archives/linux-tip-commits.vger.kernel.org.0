@@ -2,117 +2,102 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7598C7C7617
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Oct 2023 20:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D6C37C7EC3
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 09:43:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1441943AbjJLSnw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Oct 2023 14:43:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60870 "EHLO
+        id S229688AbjJMHnO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Oct 2023 03:43:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1441821AbjJLSnw (ORCPT
+        with ESMTP id S229740AbjJMHnN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Oct 2023 14:43:52 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABC1283;
-        Thu, 12 Oct 2023 11:43:50 -0700 (PDT)
-Date:   Thu, 12 Oct 2023 18:43:48 -0000
+        Fri, 13 Oct 2023 03:43:13 -0400
+Received: from galois.linutronix.de (unknown [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021D6B8;
+        Fri, 13 Oct 2023 00:43:10 -0700 (PDT)
+Date:   Fri, 13 Oct 2023 07:42:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697136229;
+        s=2020; t=1697182974;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=p4IJk1jfPpuOdOgu2MQ79rc62trZiN8Vjveo+Rkj3n8=;
-        b=AKlfPe08Yy4RsKr4WM2S3srzCwWroJ9Ia6/m7q+ozav+tOhuh0An18eiiAA3++NnikGsS7
-        eDkPnmV6JbElCr0+/nTuiQvEqZjrUaEQ/X1ol7gg2g+TCHh54NPkrNX+zadgYNJOe50BxY
-        kDrdQJQIfLiPqnsvR1XzD1dTOsPQK+hfVtT5KinupYLJjUwoOqU429EURKbvTn3Er5Lfph
-        fdqgLFHttslPMO7rqJK2rjRIPu/Z1TjmyQ+MUtToqB6daT/veQA4Eu8cGHb4LA9Ynvk6K9
-        senVMjyAGQi146PI3lVFrRbtfBJ0uUzXvuFYB/GXWtK8wirmOSsl562Cxj5yvg==
+        bh=iXCw9IkWlk0gd+BE15eTwbCAJMYeblimrkybqcODQ5A=;
+        b=vOWQZ2HVJve7Q7G4FKO1RF4VhTJw5c2C2c4o+mA5cSrJ4HsAU6GKQL52NIHC4XAahlT7g2
+        yD3xWSymfAPFXqMWMrwJk5S2ia1FDBnMslyJ5m3kw/GAdQFONsjU51DYTbckxYGkAyZlz9
+        EHJxBfnpVMI5zcoGfs+NAiF46KSzYQIqHAi4jII3owqvtki+c4pU6S0oiJuS5F+kYzRGqX
+        G9vyMDgtB+Hh7Xx8TwMT2dzQli/kxZthtJFHdRx5692MkI98ojB3uo2AcZ+icKrCpnt/oG
+        t+sDHrTyvrPGoHteshZRL43IfGtvyy4qKunXrcBQ3I08ar9wJTloV/x0ZFvWKw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697136229;
+        s=2020e; t=1697182974;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=p4IJk1jfPpuOdOgu2MQ79rc62trZiN8Vjveo+Rkj3n8=;
-        b=uXdWhs3zJjoS98UVypG+XxK78H+hUwUtvjLaiD9BP4FqE3mdi97hDK2KO7/ia7Z7MMA4vt
-        U9VJD2muECZ6goAA==
-From:   "tip-bot2 for Lucy Mielke" <tip-bot2@linutronix.de>
+        bh=iXCw9IkWlk0gd+BE15eTwbCAJMYeblimrkybqcODQ5A=;
+        b=R9PsJqevuuCjd/Jh1qHhsJfbFTxS+V00pb8yqFn+XNEgFAMwwImUU3re+L2vlyetAM6xA3
+        SKFEzJ+WCQN03SDQ==
+From:   "tip-bot2 for Dan Carpenter" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/lockdep: Fix string sizing bug that
- triggers a format-truncation compiler-warning
-Cc:     Lucy Mielke <lucymielke@icloud.com>,
+Subject: [tip: perf/core] perf/x86/amd/uncore: Fix uninitialized return value
+ in amd_uncore_init()
+Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <ZSfOEHRkZAWaQr3U@fedora.fritz.box>
-References: <ZSfOEHRkZAWaQr3U@fedora.fritz.box>
+In-Reply-To: <cec62eba-c4b8-4cb7-9671-58894dd4b974@moroto.mountain>
+References: <cec62eba-c4b8-4cb7-9671-58894dd4b974@moroto.mountain>
 MIME-Version: 1.0
-Message-ID: <169713622853.3135.11510940240910538539.tip-bot2@tip-bot2>
+Message-ID: <169718297336.3135.15401455533118971114.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     ac8b60be078abebc3ab8836f3f0ecac6980e0b4f
-Gitweb:        https://git.kernel.org/tip/ac8b60be078abebc3ab8836f3f0ecac6980e0b4f
-Author:        Lucy Mielke <lucymielke@icloud.com>
-AuthorDate:    Thu, 12 Oct 2023 12:44:32 +02:00
+Commit-ID:     7543365739a4ff61d40ad53ab68c17d2e7dfb0c9
+Gitweb:        https://git.kernel.org/tip/7543365739a4ff61d40ad53ab68c17d2e7dfb0c9
+Author:        Dan Carpenter <dan.carpenter@linaro.org>
+AuthorDate:    Fri, 13 Oct 2023 10:18:12 +03:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 12 Oct 2023 20:37:59 +02:00
+CommitterDate: Fri, 13 Oct 2023 09:32:50 +02:00
 
-locking/lockdep: Fix string sizing bug that triggers a format-truncation compiler-warning
+perf/x86/amd/uncore: Fix uninitialized return value in amd_uncore_init()
 
-On an allyesconfig, with "treat warnings as errors" unset, GCC emits
-these warnings:
+Some of the error paths in this function return don't initialize the
+error code.  Return -ENODEV by default.
 
-	kernel/locking/lockdep_proc.c:438:32: Warning: Format specifier '%lld' may
-		be truncated when writing 1 to 17 bytes into a region
-		of size 15 [-Wformat-truncation=]
-
-	kernel/locking/lockdep_proc.c:438:31: Note: Format directive argument is
-		in the range [-9223372036854775, 9223372036854775]
-
-	kernel/locking/lockdep_proc.c:438:9: Note: 'snprintf' has output
-		between 5 and 22 bytes into a target of size 15
-
-In seq_time(), the longest s64 is "-9223372036854775808"-ish, which
-converted to the fixed-point float format is "-9223372036854775.80": 21 bytes,
-plus termination is another byte: 22. Therefore, a larger buffer size
-of 22 is needed here - not 15. The code was safe due to the snprintf().
-
-Fix it.
-
-Signed-off-by: Lucy Mielke <lucymielke@icloud.com>
+Fixes: d6389d3ccc13 ("perf/x86/amd/uncore: Refactor uncore management")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/ZSfOEHRkZAWaQr3U@fedora.fritz.box
+Link: https://lore.kernel.org/r/cec62eba-c4b8-4cb7-9671-58894dd4b974@moroto.mountain
 ---
- kernel/locking/lockdep_proc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/amd/uncore.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/locking/lockdep_proc.c b/kernel/locking/lockdep_proc.c
-index 15fdc7f..e2bfb1d 100644
---- a/kernel/locking/lockdep_proc.c
-+++ b/kernel/locking/lockdep_proc.c
-@@ -440,7 +440,7 @@ static void snprint_time(char *buf, size_t bufsiz, s64 nr)
- 
- static void seq_time(struct seq_file *m, s64 time)
+diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
+index 9b444ce..a389828 100644
+--- a/arch/x86/events/amd/uncore.c
++++ b/arch/x86/events/amd/uncore.c
+@@ -1009,7 +1009,8 @@ static struct amd_uncore uncores[UNCORE_TYPE_MAX] = {
+ static int __init amd_uncore_init(void)
  {
--	char num[15];
-+	char num[22];
+ 	struct amd_uncore *uncore;
+-	int ret, i;
++	int ret = -ENODEV;
++	int i;
  
- 	snprint_time(num, sizeof(num), time);
- 	seq_printf(m, " %14s", num);
+ 	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
+ 	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
