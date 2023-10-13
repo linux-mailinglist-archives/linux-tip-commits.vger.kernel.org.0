@@ -2,49 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D44B7C8229
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 11:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7951C7C822C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 11:38:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231189AbjJMJiJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Oct 2023 05:38:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52754 "EHLO
+        id S231231AbjJMJiN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Oct 2023 05:38:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230512AbjJMJiI (ORCPT
+        with ESMTP id S231202AbjJMJiK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Oct 2023 05:38:08 -0400
+        Fri, 13 Oct 2023 05:38:10 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 578BEBE;
-        Fri, 13 Oct 2023 02:38:05 -0700 (PDT)
-Date:   Fri, 13 Oct 2023 09:38:03 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29E73C2;
+        Fri, 13 Oct 2023 02:38:06 -0700 (PDT)
+Date:   Fri, 13 Oct 2023 09:38:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697189884;
+        s=2020; t=1697189885;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wvykBSg8m0Q1xA5BZ7F/jqR4FIzxpwGYfb6UZQ016/0=;
-        b=ogvC0Ii/A9JdjRoEHABoWKkyShDYaPc6kHMKTT/4OTwqcqpExBdwp+81MTazfcyBl+IkHQ
-        +dIGwD9FHRRsFsAM+6DthQphJ9lbKGXl/rHpLFqmptKnWZwmy8NdvsL4kPuuV4FKEjDYmS
-        p4lySpLg/OMJ8TD3hCoWuyMChKxU53NwI5sI7YIzOwBzpXMZgYE35+coITUupiP08nvXX0
-        O1IskfDTe85xAqjCXd1jMJxSnB4fBidyrxLWs3DHNzTmC+FHOtdBL22Og9qicW5j5ewRig
-        MAWadzl/QIKHuf6CuIa7cmDhetN49MerldxbQvq3FXHVo9Ow/XncerAiaf2Teg==
+        bh=WlULN2FKNj+uBtc62O1xBJqn2scubroxbISi5Ot1+3o=;
+        b=AmXvQec0TV6w4xRPeX5UvoNsLP/fUY2qef4prxOObyA8Cbz8vQtjZf6EmFris0Hzfrx8uG
+        9u2JItIiPOsN338k/1yOhAEC8OS+WNZm8zayMbE9L7du0IcNeXLcCW86MeLquzU5EQMCqg
+        dAGQlQxk9Z89an4gXDD1pFxPXcStJsWPZasfE6JzHRZ3EtzPmXy+X1GZhaHRHn22T0HvN5
+        EEui1MI12IGR/XpAXzyOlLbQI1rQI+E79R0urX4VaYC3jy03HGg+w+BkMF+yt2DOu3/K8E
+        enXqdm4fTwuB5jeupBpLj40fhwexTmc79AXi6u0C2s9769l/KwOXw2cpagERtw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697189884;
+        s=2020e; t=1697189885;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wvykBSg8m0Q1xA5BZ7F/jqR4FIzxpwGYfb6UZQ016/0=;
-        b=oGPC7omCb1GCJMaFBZRaNSfZ40MYbe4OYx3trhbjMcCGHSHtQHC7LsKz7lkf4lkS2kP9os
-        O9icP0JcxM3zm+Dg==
+        bh=WlULN2FKNj+uBtc62O1xBJqn2scubroxbISi5Ot1+3o=;
+        b=AXlpz1Fd1oj22dxDvsgk8eNbZLmsuKvOcDD+9yk6dA7oYVCWmL/GDNlrRoU3fSQiT7MPdR
+        mbKRiGBQiyGcGmCQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/cpu/topology: Cure the abuse of cpuinfo for
- persisting logical ids
+Subject: [tip: x86/core] x86/apic: Use u32 for [gs]et_apic_id()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>,
         Sohil Mehta <sohil.mehta@intel.com>,
@@ -52,10 +51,10 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Zhang Rui <rui.zhang@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230814085113.292947071@linutronix.de>
-References: <20230814085113.292947071@linutronix.de>
+In-Reply-To: <20230814085113.172569282@linutronix.de>
+References: <20230814085113.172569282@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <169718988316.3135.12947465467392664307.tip-bot2@tip-bot2>
+Message-ID: <169718988453.3135.9797978967950225698.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,27 +70,20 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     90781f0c4c41a41043e39d9acbc66cc3644769ba
-Gitweb:        https://git.kernel.org/tip/90781f0c4c41a41043e39d9acbc66cc3644769ba
+Commit-ID:     59f7928cd46316371bee71b0cb34e133567e5b35
+Gitweb:        https://git.kernel.org/tip/59f7928cd46316371bee71b0cb34e133567e5b35
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 14 Aug 2023 10:18:46 +02:00
+AuthorDate:    Mon, 14 Aug 2023 10:18:44 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 10 Oct 2023 14:38:19 +02:00
 
-x86/cpu/topology: Cure the abuse of cpuinfo for persisting logical ids
+x86/apic: Use u32 for [gs]et_apic_id()
 
-Per CPU cpuinfo is used to persist the logical package and die IDs. That's
-really not the right place simply because cpuinfo is subject to be
-reinitialized when a CPU goes through an offline/online cycle.
+APIC IDs are used with random data types u16, u32, int, unsigned int,
+unsigned long.
 
-This works by chance today, but that's far from correct and neither obvious
-nor documented.
-
-Add a per cpu datastructure which persists those logical IDs, which allows
-to cleanup the CPUID evaluation code.
-
-This is a temporary workaround until the larger topology management is in
-place, which makes all of this logical management mechanics obsolete.
+Make it all consistently use u32 because that reflects the hardware
+register width.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Juergen Gross <jgross@suse.com>
@@ -100,81 +92,220 @@ Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Zhang Rui <rui.zhang@intel.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230814085113.292947071@linutronix.de
+Link: https://lore.kernel.org/r/20230814085113.172569282@linutronix.de
 
 ---
- arch/x86/kernel/smpboot.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ arch/x86/include/asm/apic.h          | 14 ++------------
+ arch/x86/kernel/apic/apic_flat_64.c  |  4 ++--
+ arch/x86/kernel/apic/apic_noop.c     |  2 +-
+ arch/x86/kernel/apic/apic_numachip.c |  8 ++++----
+ arch/x86/kernel/apic/bigsmp_32.c     |  2 +-
+ arch/x86/kernel/apic/local.h         |  4 ++--
+ arch/x86/kernel/apic/probe_32.c      | 10 ++++++++++
+ arch/x86/kernel/apic/x2apic_phys.c   |  4 ++--
+ arch/x86/kernel/apic/x2apic_uv_x.c   |  2 +-
+ arch/x86/xen/apic.c                  |  4 ++--
+ 10 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 04a1136..54541a1 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -124,7 +124,20 @@ struct mwait_cpu_dead {
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index 0788c46..e7b45f2 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -298,8 +298,8 @@ struct apic {
+ 	u32	(*cpu_present_to_apicid)(int mps_cpu);
+ 	u32	(*phys_pkg_id)(u32 cpuid_apic, int index_msb);
+ 
+-	u32	(*get_apic_id)(unsigned long x);
+-	u32	(*set_apic_id)(unsigned int id);
++	u32	(*get_apic_id)(u32 id);
++	u32	(*set_apic_id)(u32 apicid);
+ 
+ 	/* wakeup_secondary_cpu */
+ 	int	(*wakeup_secondary_cpu)(int apicid, unsigned long start_eip);
+@@ -493,16 +493,6 @@ static inline bool lapic_vector_set_in_irr(unsigned int vector)
+ 	return !!(irr & (1U << (vector % 32)));
+ }
+ 
+-static inline unsigned default_get_apic_id(unsigned long x)
+-{
+-	unsigned int ver = GET_APIC_VERSION(apic_read(APIC_LVR));
+-
+-	if (APIC_XAPIC(ver) || boot_cpu_has(X86_FEATURE_EXTD_APICID))
+-		return (x >> 24) & 0xFF;
+-	else
+-		return (x >> 24) & 0x0F;
+-}
+-
+ /*
+  * Warm reset vector position:
   */
- static DEFINE_PER_CPU_ALIGNED(struct mwait_cpu_dead, mwait_cpu_dead);
+diff --git a/arch/x86/kernel/apic/apic_flat_64.c b/arch/x86/kernel/apic/apic_flat_64.c
+index ca05aca..37daa3f 100644
+--- a/arch/x86/kernel/apic/apic_flat_64.c
++++ b/arch/x86/kernel/apic/apic_flat_64.c
+@@ -56,12 +56,12 @@ flat_send_IPI_mask_allbutself(const struct cpumask *cpumask, int vector)
+ 	_flat_send_IPI_mask(mask, vector);
+ }
  
--/* Logical package management. We might want to allocate that dynamically */
-+/* Logical package management. */
-+struct logical_maps {
-+	u32	phys_pkg_id;
-+	u32	phys_die_id;
-+	u32	logical_pkg_id;
-+	u32	logical_die_id;
-+};
+-static unsigned int flat_get_apic_id(unsigned long x)
++static u32 flat_get_apic_id(u32 x)
+ {
+ 	return (x >> 24) & 0xFF;
+ }
+ 
+-static u32 set_apic_id(unsigned int id)
++static u32 set_apic_id(u32 id)
+ {
+ 	return (id & 0xFF) << 24;
+ }
+diff --git a/arch/x86/kernel/apic/apic_noop.c b/arch/x86/kernel/apic/apic_noop.c
+index 28ea342..f111486 100644
+--- a/arch/x86/kernel/apic/apic_noop.c
++++ b/arch/x86/kernel/apic/apic_noop.c
+@@ -30,7 +30,7 @@ static void noop_apic_icr_write(u32 low, u32 id) { }
+ static int noop_wakeup_secondary_cpu(int apicid, unsigned long start_eip) { return -1; }
+ static u64 noop_apic_icr_read(void) { return 0; }
+ static u32 noop_phys_pkg_id(u32 cpuid_apic, int index_msb) { return 0; }
+-static unsigned int noop_get_apic_id(unsigned long x) { return 0; }
++static u32 noop_get_apic_id(u32 apicid) { return 0; }
+ static void noop_apic_eoi(void) { }
+ 
+ static u32 noop_apic_read(u32 reg)
+diff --git a/arch/x86/kernel/apic/apic_numachip.c b/arch/x86/kernel/apic/apic_numachip.c
+index c35181c..af350b4 100644
+--- a/arch/x86/kernel/apic/apic_numachip.c
++++ b/arch/x86/kernel/apic/apic_numachip.c
+@@ -25,7 +25,7 @@ static const struct apic apic_numachip1;
+ static const struct apic apic_numachip2;
+ static void (*numachip_apic_icr_write)(int apicid, unsigned int val) __read_mostly;
+ 
+-static unsigned int numachip1_get_apic_id(unsigned long x)
++static u32 numachip1_get_apic_id(u32 x)
+ {
+ 	unsigned long value;
+ 	unsigned int id = (x >> 24) & 0xff;
+@@ -38,12 +38,12 @@ static unsigned int numachip1_get_apic_id(unsigned long x)
+ 	return id;
+ }
+ 
+-static u32 numachip1_set_apic_id(unsigned int id)
++static u32 numachip1_set_apic_id(u32 id)
+ {
+ 	return (id & 0xff) << 24;
+ }
+ 
+-static unsigned int numachip2_get_apic_id(unsigned long x)
++static u32 numachip2_get_apic_id(u32 x)
+ {
+ 	u64 mcfg;
+ 
+@@ -51,7 +51,7 @@ static unsigned int numachip2_get_apic_id(unsigned long x)
+ 	return ((mcfg >> (28 - 8)) & 0xfff00) | (x >> 24);
+ }
+ 
+-static u32 numachip2_set_apic_id(unsigned int id)
++static u32 numachip2_set_apic_id(u32 id)
+ {
+ 	return id << 24;
+ }
+diff --git a/arch/x86/kernel/apic/bigsmp_32.c b/arch/x86/kernel/apic/bigsmp_32.c
+index 3c95e0b..7ee3c48 100644
+--- a/arch/x86/kernel/apic/bigsmp_32.c
++++ b/arch/x86/kernel/apic/bigsmp_32.c
+@@ -13,7 +13,7 @@
+ 
+ #include "local.h"
+ 
+-static unsigned bigsmp_get_apic_id(unsigned long x)
++static u32 bigsmp_get_apic_id(u32 x)
+ {
+ 	return (x >> 24) & 0xFF;
+ }
+diff --git a/arch/x86/kernel/apic/local.h b/arch/x86/kernel/apic/local.h
+index 2bf0d1c..9ea6186 100644
+--- a/arch/x86/kernel/apic/local.h
++++ b/arch/x86/kernel/apic/local.h
+@@ -15,8 +15,8 @@
+ 
+ /* X2APIC */
+ void __x2apic_send_IPI_dest(unsigned int apicid, int vector, unsigned int dest);
+-unsigned int x2apic_get_apic_id(unsigned long id);
+-u32 x2apic_set_apic_id(unsigned int id);
++u32 x2apic_get_apic_id(u32 id);
++u32 x2apic_set_apic_id(u32 id);
+ u32 x2apic_phys_pkg_id(u32 initial_apicid, int index_msb);
+ 
+ void x2apic_send_IPI_all(int vector);
+diff --git a/arch/x86/kernel/apic/probe_32.c b/arch/x86/kernel/apic/probe_32.c
+index 2867fa6..5eb3fbe 100644
+--- a/arch/x86/kernel/apic/probe_32.c
++++ b/arch/x86/kernel/apic/probe_32.c
+@@ -23,6 +23,16 @@ static u32 default_phys_pkg_id(u32 cpuid_apic, int index_msb)
+ 	return cpuid_apic >> index_msb;
+ }
+ 
++static u32 default_get_apic_id(u32 x)
++{
++	unsigned int ver = GET_APIC_VERSION(apic_read(APIC_LVR));
 +
-+/* Temporary workaround until the full topology mechanics is in place */
-+static DEFINE_PER_CPU_READ_MOSTLY(struct logical_maps, logical_maps) = {
-+	.phys_pkg_id	= U32_MAX,
-+	.phys_die_id	= U32_MAX,
-+};
++	if (APIC_XAPIC(ver) || boot_cpu_has(X86_FEATURE_EXTD_APICID))
++		return (x >> 24) & 0xFF;
++	else
++		return (x >> 24) & 0x0F;
++}
 +
- unsigned int __max_logical_packages __read_mostly;
- EXPORT_SYMBOL(__max_logical_packages);
- static unsigned int logical_packages __read_mostly;
-@@ -337,10 +350,8 @@ int topology_phys_to_logical_pkg(unsigned int phys_pkg)
- 	int cpu;
+ /* should be called last. */
+ static int probe_default(void)
+ {
+diff --git a/arch/x86/kernel/apic/x2apic_phys.c b/arch/x86/kernel/apic/x2apic_phys.c
+index 55cbcec..7c9fe28 100644
+--- a/arch/x86/kernel/apic/x2apic_phys.c
++++ b/arch/x86/kernel/apic/x2apic_phys.c
+@@ -124,12 +124,12 @@ static int x2apic_phys_probe(void)
+ 	return apic == &apic_x2apic_phys;
+ }
  
- 	for_each_possible_cpu(cpu) {
--		struct cpuinfo_x86 *c = &cpu_data(cpu);
--
--		if (c->initialized && c->topo.pkg_id == phys_pkg)
--			return c->topo.logical_pkg_id;
-+		if (per_cpu(logical_maps.phys_pkg_id, cpu) == phys_pkg)
-+			return per_cpu(logical_maps.logical_pkg_id, cpu);
- 	}
- 	return -1;
+-unsigned int x2apic_get_apic_id(unsigned long id)
++u32 x2apic_get_apic_id(u32 id)
+ {
+ 	return id;
  }
-@@ -358,11 +369,9 @@ static int topology_phys_to_logical_die(unsigned int die_id, unsigned int cur_cp
- 	int cpu, proc_id = cpu_data(cur_cpu).topo.pkg_id;
  
- 	for_each_possible_cpu(cpu) {
--		struct cpuinfo_x86 *c = &cpu_data(cpu);
--
--		if (c->initialized && c->topo.die_id == die_id &&
--		    c->topo.pkg_id == proc_id)
--			return c->topo.logical_die_id;
-+		if (per_cpu(logical_maps.phys_pkg_id, cpu) == proc_id &&
-+		    per_cpu(logical_maps.phys_die_id, cpu) == die_id)
-+			return per_cpu(logical_maps.logical_die_id, cpu);
- 	}
- 	return -1;
+-u32 x2apic_set_apic_id(unsigned int id)
++u32 x2apic_set_apic_id(u32 id)
+ {
+ 	return id;
  }
-@@ -387,6 +396,8 @@ int topology_update_package_map(unsigned int pkg, unsigned int cpu)
- 			cpu, pkg, new);
- 	}
- found:
-+	per_cpu(logical_maps.phys_pkg_id, cpu) = pkg;
-+	per_cpu(logical_maps.logical_pkg_id, cpu) = new;
- 	cpu_data(cpu).topo.logical_pkg_id = new;
- 	return 0;
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index 3589ab6..46d4de2 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -779,7 +779,7 @@ static void uv_send_IPI_all(int vector)
+ 	uv_send_IPI_mask(cpu_online_mask, vector);
  }
-@@ -410,6 +421,8 @@ int topology_update_die_map(unsigned int die, unsigned int cpu)
- 			cpu, die, new);
- 	}
- found:
-+	per_cpu(logical_maps.phys_die_id, cpu) = die;
-+	per_cpu(logical_maps.logical_die_id, cpu) = new;
- 	cpu_data(cpu).topo.logical_die_id = new;
- 	return 0;
+ 
+-static u32 set_apic_id(unsigned int id)
++static u32 set_apic_id(u32 id)
+ {
+ 	return id;
+ }
+diff --git a/arch/x86/xen/apic.c b/arch/x86/xen/apic.c
+index 40538b2..9dd5490 100644
+--- a/arch/x86/xen/apic.c
++++ b/arch/x86/xen/apic.c
+@@ -33,13 +33,13 @@ static unsigned int xen_io_apic_read(unsigned apic, unsigned reg)
+ 	return 0xfd;
+ }
+ 
+-static u32 xen_set_apic_id(unsigned int x)
++static u32 xen_set_apic_id(u32 x)
+ {
+ 	WARN_ON(1);
+ 	return x;
+ }
+ 
+-static unsigned int xen_get_apic_id(unsigned long x)
++static u32 xen_get_apic_id(u32 x)
+ {
+ 	return ((x)>>24) & 0xFFu;
  }
