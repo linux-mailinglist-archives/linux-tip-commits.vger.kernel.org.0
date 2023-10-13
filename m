@@ -2,102 +2,103 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D6C37C7EC3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 09:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C76EE7C7F71
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 10:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjJMHnO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Oct 2023 03:43:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60948 "EHLO
+        id S229940AbjJMIGR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Oct 2023 04:06:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229740AbjJMHnN (ORCPT
+        with ESMTP id S229879AbjJMIGQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Oct 2023 03:43:13 -0400
-Received: from galois.linutronix.de (unknown [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021D6B8;
-        Fri, 13 Oct 2023 00:43:10 -0700 (PDT)
-Date:   Fri, 13 Oct 2023 07:42:53 -0000
+        Fri, 13 Oct 2023 04:06:16 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEB22BE;
+        Fri, 13 Oct 2023 01:06:13 -0700 (PDT)
+Date:   Fri, 13 Oct 2023 08:06:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697182974;
+        s=2020; t=1697184372;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iXCw9IkWlk0gd+BE15eTwbCAJMYeblimrkybqcODQ5A=;
-        b=vOWQZ2HVJve7Q7G4FKO1RF4VhTJw5c2C2c4o+mA5cSrJ4HsAU6GKQL52NIHC4XAahlT7g2
-        yD3xWSymfAPFXqMWMrwJk5S2ia1FDBnMslyJ5m3kw/GAdQFONsjU51DYTbckxYGkAyZlz9
-        EHJxBfnpVMI5zcoGfs+NAiF46KSzYQIqHAi4jII3owqvtki+c4pU6S0oiJuS5F+kYzRGqX
-        G9vyMDgtB+Hh7Xx8TwMT2dzQli/kxZthtJFHdRx5692MkI98ojB3uo2AcZ+icKrCpnt/oG
-        t+sDHrTyvrPGoHteshZRL43IfGtvyy4qKunXrcBQ3I08ar9wJTloV/x0ZFvWKw==
+        bh=WVkVHSk6yXaW8A0Pth63XEOGYs5GXYV28ITDfyv0A3g=;
+        b=OUXwZCKhYsuX9XtN67aBn/0Kx+I9i9KNzbqMYkzXSZl2I+rqhObKlcRwVb/pbsQHyNc10s
+        JMRmYIxczpcLJg2ndK6SPx1Eve24zFcIwId7mPwT226bXCvG51MGTvzzQX0PNJCQbQLCt5
+        EUqUwlYLzHzAlNQhpHuqndPhzxyv710cwBbvy3LS2/VrpnjA5yC4cKjCGbP5Jm+hZQpW1R
+        LMH37nT4vy2qeOjSVqF0rKFHNianOCB+gXXL+wEmYeL++rb52iR1fJi9qknyosMGr3mjmX
+        M685h4pB0MXGsUBLtxMEJDzSQGXornoPzWx4N/zxqdIzOmFrULNkNT45AwFr0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697182974;
+        s=2020e; t=1697184372;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iXCw9IkWlk0gd+BE15eTwbCAJMYeblimrkybqcODQ5A=;
-        b=R9PsJqevuuCjd/Jh1qHhsJfbFTxS+V00pb8yqFn+XNEgFAMwwImUU3re+L2vlyetAM6xA3
-        SKFEzJ+WCQN03SDQ==
-From:   "tip-bot2 for Dan Carpenter" <tip-bot2@linutronix.de>
+        bh=WVkVHSk6yXaW8A0Pth63XEOGYs5GXYV28ITDfyv0A3g=;
+        b=1nKYlqZyyP6uo/odnEaeRqQowOi3UqcEx51ocaQbMa0ABsqAp2dIDjiE85poUic3uY/itQ
+        5bSjKW22MGkkfuCA==
+From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/amd/uncore: Fix uninitialized return value
- in amd_uncore_init()
-Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched: Make PELT acronym definition searchable
+Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <cec62eba-c4b8-4cb7-9671-58894dd4b974@moroto.mountain>
-References: <cec62eba-c4b8-4cb7-9671-58894dd4b974@moroto.mountain>
+In-Reply-To: <20231012125824.1260774-1-mathieu.desnoyers@efficios.com>
+References: <20231012125824.1260774-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Message-ID: <169718297336.3135.15401455533118971114.tip-bot2@tip-bot2>
+Message-ID: <169718437144.3135.18167310232938119222.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     7543365739a4ff61d40ad53ab68c17d2e7dfb0c9
-Gitweb:        https://git.kernel.org/tip/7543365739a4ff61d40ad53ab68c17d2e7dfb0c9
-Author:        Dan Carpenter <dan.carpenter@linaro.org>
-AuthorDate:    Fri, 13 Oct 2023 10:18:12 +03:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 13 Oct 2023 09:32:50 +02:00
+Commit-ID:     1b8a955dd338dfbf39831d4687c25263e885a9cb
+Gitweb:        https://git.kernel.org/tip/1b8a955dd338dfbf39831d4687c25263e885a9cb
+Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+AuthorDate:    Thu, 12 Oct 2023 08:58:24 -04:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 13 Oct 2023 09:56:30 +02:00
 
-perf/x86/amd/uncore: Fix uninitialized return value in amd_uncore_init()
+sched: Make PELT acronym definition searchable
 
-Some of the error paths in this function return don't initialize the
-error code.  Return -ENODEV by default.
+The PELT acronym definition can be found right at the top of
+kernel/sched/pelt.c (of course), but it cannot be found through use of
 
-Fixes: d6389d3ccc13 ("perf/x86/amd/uncore: Refactor uncore management")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/cec62eba-c4b8-4cb7-9671-58894dd4b974@moroto.mountain
+grep -r PELT kernel/sched/
+
+Add the acronym "(PELT)" after "Per Entity Load Tracking" at the top of
+the source file.
+
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20231012125824.1260774-1-mathieu.desnoyers@efficios.com
 ---
- arch/x86/events/amd/uncore.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/sched/pelt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
-index 9b444ce..a389828 100644
---- a/arch/x86/events/amd/uncore.c
-+++ b/arch/x86/events/amd/uncore.c
-@@ -1009,7 +1009,8 @@ static struct amd_uncore uncores[UNCORE_TYPE_MAX] = {
- static int __init amd_uncore_init(void)
- {
- 	struct amd_uncore *uncore;
--	int ret, i;
-+	int ret = -ENODEV;
-+	int i;
- 
- 	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
- 	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
+diff --git a/kernel/sched/pelt.c b/kernel/sched/pelt.c
+index 0f31076..63b6cf8 100644
+--- a/kernel/sched/pelt.c
++++ b/kernel/sched/pelt.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * Per Entity Load Tracking
++ * Per Entity Load Tracking (PELT)
+  *
+  *  Copyright (C) 2007 Red Hat, Inc., Ingo Molnar <mingo@redhat.com>
+  *
