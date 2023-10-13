@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B61437C8232
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 11:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28FCB7C823B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 11:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231278AbjJMJiR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S231196AbjJMJiR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 13 Oct 2023 05:38:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52872 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231224AbjJMJiM (ORCPT
+        with ESMTP id S231230AbjJMJiM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 13 Oct 2023 05:38:12 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66679C9;
-        Fri, 13 Oct 2023 02:38:10 -0700 (PDT)
-Date:   Fri, 13 Oct 2023 09:38:08 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5525CC0;
+        Fri, 13 Oct 2023 02:38:11 -0700 (PDT)
+Date:   Fri, 13 Oct 2023 09:38:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697189889;
+        s=2020; t=1697189890;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=p5yLutIQPnUf+mNNxzq24/4l8BXttTsKaO4NbA7slGE=;
-        b=fKsgRkbHLswMqN0E00y9DNP3xmp7hARLWM4EPoZ7Hs4E+bil8nvsYcPGzEpEguhozr7GYW
-        G5imlgKtZRYRdV+WiMYpOaUsZUd3ZtBkDNfUti3zCNPDIRrWNP+i21dciox1xBYHzUNC2n
-        NCuLz41e2HSaHew5FhAjFRlKSF7Uu4c1CbEmDYfLkTJJx+yTHuJaO8/oqLFhH8NTKr8Ohi
-        ZiX+12A+c40/X07Rmgt7q3Hh/LXJ0gzVzB3kwYc8GujYw6Flx0dR0iUj73vPDZaGtQmakL
-        WupmFln3hiVQjYqiJV228CqTlmd2qCknm8espxg0kJXwhovHs3xo4yPFauJwZg==
+        bh=Kqf/BoUJZcJ2Xcq4Hb3P58umHenSlBTPeLgsifWCH0k=;
+        b=GMIl3yCs81eubRDr7siFSyGE1I0vg7D6d9IAsUW541bytt3sK4jabiYIDNhHeltkSZz0Kj
+        J+yPUP2kyMBrJrq3cLPrcyPMxD3zCjI2S7yjp8IE1/GDpKlL4CizzlttdW2k0xkWIzu7b6
+        JZ/5AA7DxuOGQkKvNzdZvXy8QjqEtjvBYedj3tbOMS+16k/ygREXIO9m/lwSyNHOcIXsfy
+        /aNDhbU42RFKkF1oZzA4IhfMhz2P640Ag+Uvw8bbgF2Myfe2f91gkFxd4X2NTLPGvSNWo4
+        I71KfrKc5H5z9pWCf6bpo7ZEgq1c1DJnFYPA1MwugQoRucQoTvpiRZxoEKj6xA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697189889;
+        s=2020e; t=1697189890;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=p5yLutIQPnUf+mNNxzq24/4l8BXttTsKaO4NbA7slGE=;
-        b=0feIaNZPnCt9OdT6e2tabClXh6etzhAygxNQTpPsheHK/Zn5iXGIZjPVXECyqZOySWWONt
-        yM72FpoVlaORRHBQ==
+        bh=Kqf/BoUJZcJ2Xcq4Hb3P58umHenSlBTPeLgsifWCH0k=;
+        b=jpNnYOz2FhkaKmJJoJwNE0vLKwUNOrMyFh4W0RKHhVIH5uXI0qUG6yT09qJSwGrNoU244l
+        Ijk9whjMWbKyZEBA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/cpu: Move logical package and die IDs into topology info
+Subject: [tip: x86/core] x86/cpu: Move cu_id into topology info
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>,
         Sohil Mehta <sohil.mehta@intel.com>,
@@ -51,10 +51,10 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Zhang Rui <rui.zhang@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230814085112.745139505@linutronix.de>
-References: <20230814085112.745139505@linutronix.de>
+In-Reply-To: <20230814085112.628405546@linutronix.de>
+References: <20230814085112.628405546@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <169718988833.3135.1156832342181364377.tip-bot2@tip-bot2>
+Message-ID: <169718988942.3135.7810611573349152830.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,17 +70,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     22dc9631625352426cd665f4e3f8fe0d793b2bf5
-Gitweb:        https://git.kernel.org/tip/22dc9631625352426cd665f4e3f8fe0d793b2bf5
+Commit-ID:     e3c0c5d52ad34ab2c97f93ca4a0c2e9ca2fdc06b
+Gitweb:        https://git.kernel.org/tip/e3c0c5d52ad34ab2c97f93ca4a0c2e9ca2fdc06b
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 14 Aug 2023 10:18:37 +02:00
+AuthorDate:    Mon, 14 Aug 2023 10:18:35 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 10 Oct 2023 14:38:18 +02:00
 
-x86/cpu: Move logical package and die IDs into topology info
-
-Yet another topology related data pair. Rename logical_proc_id to
-logical_pkg_id so it fits the common naming conventions.
+x86/cpu: Move cu_id into topology info
 
 No functional change.
 
@@ -91,135 +88,77 @@ Tested-by: Michael Kelley <mikelley@microsoft.com>
 Tested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Zhang Rui <rui.zhang@intel.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230814085112.745139505@linutronix.de
+Link: https://lore.kernel.org/r/20230814085112.628405546@linutronix.de
 
 ---
- Documentation/arch/x86/topology.rst | 2 +-
- arch/x86/events/intel/uncore.c      | 2 +-
- arch/x86/include/asm/processor.h    | 8 ++++----
- arch/x86/include/asm/topology.h     | 4 ++--
- arch/x86/kernel/cpu/common.c        | 2 +-
- arch/x86/kernel/smpboot.c           | 8 ++++----
- 6 files changed, 13 insertions(+), 13 deletions(-)
+ arch/x86/include/asm/processor.h | 4 +++-
+ arch/x86/kernel/cpu/amd.c        | 2 +-
+ arch/x86/kernel/cpu/common.c     | 2 +-
+ arch/x86/kernel/smpboot.c        | 6 +++---
+ 4 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/arch/x86/topology.rst b/Documentation/arch/x86/topology.rst
-index ff36e52..88f29ba 100644
---- a/Documentation/arch/x86/topology.rst
-+++ b/Documentation/arch/x86/topology.rst
-@@ -67,7 +67,7 @@ Package-related topology information in the kernel:
-     Modern systems use this value for the socket. There may be multiple
-     packages within a socket. This value may differ from topo.die_id.
- 
--  - cpuinfo_x86.logical_proc_id:
-+  - cpuinfo_x86.topo.logical_pkg_id:
- 
-     The logical ID of the package. As we do not trust BIOSes to enumerate the
-     packages in a consistent way, we introduced the concept of logical package
-diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
-index 69043e0..01023aa 100644
---- a/arch/x86/events/intel/uncore.c
-+++ b/arch/x86/events/intel/uncore.c
-@@ -74,7 +74,7 @@ int uncore_device_to_die(struct pci_dev *dev)
- 		struct cpuinfo_x86 *c = &cpu_data(cpu);
- 
- 		if (c->initialized && cpu_to_node(cpu) == node)
--			return c->logical_die_id;
-+			return c->topo.logical_die_id;
- 	}
- 
- 	return -1;
 diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 517d0bc..b2cf309 100644
+index a637602..517d0bc 100644
 --- a/arch/x86/include/asm/processor.h
 +++ b/arch/x86/include/asm/processor.h
-@@ -95,6 +95,10 @@ struct cpuinfo_topology {
+@@ -90,6 +90,9 @@ struct cpuinfo_topology {
+ 	// Physical die ID on AMD, Relative on Intel
+ 	u32			die_id;
  
++	// Compute unit ID - AMD specific
++	u32			cu_id;
++
  	// Core ID relative to the package
  	u32			core_id;
-+
-+	// Logical ID mappings
-+	u32			logical_pkg_id;
-+	u32			logical_die_id;
  };
+@@ -110,7 +113,6 @@ struct cpuinfo_x86 {
+ 	__u8			x86_phys_bits;
+ 	/* CPUID returned core id bits: */
+ 	__u8			x86_coreid_bits;
+-	__u8			cu_id;
+ 	/* Max extended CPUID function supported: */
+ 	__u32			extended_cpuid_level;
+ 	/* Maximum supported CPUID level, -1=no CPUID: */
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 66bb929..a744d8d 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -413,7 +413,7 @@ static void amd_get_topology(struct cpuinfo_x86 *c)
+ 		c->topo.die_id  = ecx & 0xff;
  
- struct cpuinfo_x86 {
-@@ -145,10 +149,6 @@ struct cpuinfo_x86 {
- 	u16			x86_clflush_size;
- 	/* number of cores as seen by the OS: */
- 	u16			booted_cores;
--	/* Logical processor id: */
--	u16			logical_proc_id;
--	/* Core id: */
--	u16			logical_die_id;
- 	/* Index into per_cpu list: */
- 	u16			cpu_index;
- 	/*  Is SMT active on this core? */
-diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
-index 7fa567c..ac0c274 100644
---- a/arch/x86/include/asm/topology.h
-+++ b/arch/x86/include/asm/topology.h
-@@ -105,9 +105,9 @@ static inline void setup_node_to_cpumask_map(void) { }
- extern const struct cpumask *cpu_coregroup_mask(int cpu);
- extern const struct cpumask *cpu_clustergroup_mask(int cpu);
+ 		if (c->x86 == 0x15)
+-			c->cu_id = ebx & 0xff;
++			c->topo.cu_id = ebx & 0xff;
  
--#define topology_logical_package_id(cpu)	(cpu_data(cpu).logical_proc_id)
-+#define topology_logical_package_id(cpu)	(cpu_data(cpu).topo.logical_pkg_id)
- #define topology_physical_package_id(cpu)	(cpu_data(cpu).topo.pkg_id)
--#define topology_logical_die_id(cpu)		(cpu_data(cpu).logical_die_id)
-+#define topology_logical_die_id(cpu)		(cpu_data(cpu).topo.logical_die_id)
- #define topology_die_id(cpu)			(cpu_data(cpu).topo.die_id)
- #define topology_core_id(cpu)			(cpu_data(cpu).topo.core_id)
- #define topology_ppin(cpu)			(cpu_data(cpu).ppin)
+ 		if (c->x86 >= 0x17) {
+ 			c->topo.core_id = ebx & 0xff;
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 106b27f..052bd79 100644
+index 4147665..106b27f 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
-@@ -1810,7 +1810,7 @@ static void validate_apic_and_package_id(struct cpuinfo_x86 *c)
- 	BUG_ON(topology_update_package_map(c->topo.pkg_id, cpu));
- 	BUG_ON(topology_update_die_map(c->topo.die_id, cpu));
- #else
--	c->logical_proc_id = 0;
-+	c->topo.logical_pkg_id = 0;
- #endif
- }
- 
+@@ -1829,7 +1829,7 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+ 	c->x86_model_id[0] = '\0';  /* Unset */
+ 	c->x86_max_cores = 1;
+ 	c->x86_coreid_bits = 0;
+-	c->cu_id = 0xff;
++	c->topo.cu_id = 0xff;
+ #ifdef CONFIG_X86_64
+ 	c->x86_clflush_size = 64;
+ 	c->x86_phys_bits = 36;
 diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 17b86f4..82a30d0 100644
+index 7ab9224..17b86f4 100644
 --- a/arch/x86/kernel/smpboot.c
 +++ b/arch/x86/kernel/smpboot.c
-@@ -340,7 +340,7 @@ int topology_phys_to_logical_pkg(unsigned int phys_pkg)
- 		struct cpuinfo_x86 *c = &cpu_data(cpu);
+@@ -482,9 +482,9 @@ static bool match_smt(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
+ 			if (c->topo.core_id == o->topo.core_id)
+ 				return topology_sane(c, o, "smt");
  
- 		if (c->initialized && c->topo.pkg_id == phys_pkg)
--			return c->logical_proc_id;
-+			return c->topo.logical_pkg_id;
- 	}
- 	return -1;
- }
-@@ -362,7 +362,7 @@ static int topology_phys_to_logical_die(unsigned int die_id, unsigned int cur_cp
- 
- 		if (c->initialized && c->topo.die_id == die_id &&
- 		    c->topo.pkg_id == proc_id)
--			return c->logical_die_id;
-+			return c->topo.logical_die_id;
- 	}
- 	return -1;
- }
-@@ -387,7 +387,7 @@ int topology_update_package_map(unsigned int pkg, unsigned int cpu)
- 			cpu, pkg, new);
- 	}
- found:
--	cpu_data(cpu).logical_proc_id = new;
-+	cpu_data(cpu).topo.logical_pkg_id = new;
- 	return 0;
- }
- /**
-@@ -410,7 +410,7 @@ int topology_update_die_map(unsigned int die, unsigned int cpu)
- 			cpu, die, new);
- 	}
- found:
--	cpu_data(cpu).logical_die_id = new;
-+	cpu_data(cpu).topo.logical_die_id = new;
- 	return 0;
- }
+-			if ((c->cu_id != 0xff) &&
+-			    (o->cu_id != 0xff) &&
+-			    (c->cu_id == o->cu_id))
++			if ((c->topo.cu_id != 0xff) &&
++			    (o->topo.cu_id != 0xff) &&
++			    (c->topo.cu_id == o->topo.cu_id))
+ 				return topology_sane(c, o, "smt");
+ 		}
  
