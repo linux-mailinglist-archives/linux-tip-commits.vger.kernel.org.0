@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 409797C830F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 12:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 140727C831F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Oct 2023 12:32:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230041AbjJMKbZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Oct 2023 06:31:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43052 "EHLO
+        id S230179AbjJMKcW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Oct 2023 06:32:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229794AbjJMKbY (ORCPT
+        with ESMTP id S230193AbjJMKcU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Oct 2023 06:31:24 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB9A6CA;
-        Fri, 13 Oct 2023 03:31:21 -0700 (PDT)
-Date:   Fri, 13 Oct 2023 10:31:19 -0000
+        Fri, 13 Oct 2023 06:32:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5377C0;
+        Fri, 13 Oct 2023 03:32:18 -0700 (PDT)
+Date:   Fri, 13 Oct 2023 10:32:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697193080;
+        s=2020; t=1697193137;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hob1pPMiTCm3R6nB1NIaTX7kXJllqZiibswxfoVZ4uY=;
-        b=nZBku9abSMRq9jgjupGcxGjrEQ8/dGMNkvmQBBus1/vHko+hiEmCpNkrsuEkOruJ+2P+k+
-        AzbXu+MIwlFIsjCIBdBp0q2+8PFme2vScIUasxDleSPGoFtJPs/EKteawgVyfIuVnJsW9B
-        P/CM2lJHqTVwwa9YFVXTh9gD0zg6u8HQaHHFmKWAOeZWE4c++AZ6uZeO455pH6u6fUI7PG
-        bh5Uf/Wwzh46lJw6pugCqZkwa0GjYZGnQApMmw+MUn+JXRaS45z7Yf5Fjz5dwSwE5aYp/q
-        2aPjVP61ZJrNR1fGexIRiytiRqH6z6oXKOIJxFws7Nej6qdoavL21oadty7Dug==
+        bh=8GqFWLwKpBTs9NmQk+Iig1hSCyVU4NpiAHXus0C4MYY=;
+        b=C9xkqxnkOPfo8XMwxlWuc1XAQDG9/H4lYI2e5ErusY6y4gw2296g/tqhdhYn2m2USH977n
+        UhDoFRgKS9vVFOH1fkMxsaaMuzQ5D3zTARNKBkUB8MUHZpweINzxZa3hOu4I5loA7mUKC7
+        kwQLs4fd44ih3kaFAp37VuDhpDpaKsco9hnb40N6fp3HjOp53TgafstJIQOanpTcd3ZUZU
+        Cas6JOCsAPDE7SLIOuf9ZQsg0SwjU6NALFUUZ7iZ/pFsQp8ut7Wm1IFwER30qvOuhKDl/j
+        rZkTor6Vt3UWRbBApwX+kNSNoKzjJ+cg2Ig0p120BvV4PymRLPQm3Ew+ZUSAdA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697193080;
+        s=2020e; t=1697193137;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hob1pPMiTCm3R6nB1NIaTX7kXJllqZiibswxfoVZ4uY=;
-        b=OfWI2O4obWmqEuIwGijGjzk2YcUFbKEvFU6I28PoEkYr+S+KvxatOnh6EK8ZqotC31zEt4
-        5UX9ewcWCxfvzuAA==
-From:   "tip-bot2 for Keguang Zhang" <tip-bot2@linutronix.de>
+        bh=8GqFWLwKpBTs9NmQk+Iig1hSCyVU4NpiAHXus0C4MYY=;
+        b=iZRw9O5fftztFdFP0XV6JtFZcbG7KQ+5+50BZC69hgsZkzJTQOH+rqKFPgEynIIZarPHTW
+        Bw8xuy47xSd18kAQ==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/generic-chip: Fix the irq_chip name for
- /proc/interrupts
-Cc:     Keguang Zhang <keguang.zhang@gmail.com>,
+Subject: [tip: x86/core] x86/apic, x86/hyperv: Use u32 in hv_snp_boot_ap() too
+Cc:     Ingo Molnar <mingo@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20230925121734.93017-1-keguang.zhang@gmail.com>
-References: <20230925121734.93017-1-keguang.zhang@gmail.com>
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230814085113.233274223@linutronix.de>
+References: <20230814085113.233274223@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <169719307970.3135.13937631733550216078.tip-bot2@tip-bot2>
+Message-ID: <169719313683.3135.11702474908875768918.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,49 +64,66 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     021a8ca2ba23c01487a98ad23b68ac062e14cf32
-Gitweb:        https://git.kernel.org/tip/021a8ca2ba23c01487a98ad23b68ac062e14cf32
-Author:        Keguang Zhang <keguang.zhang@gmail.com>
-AuthorDate:    Mon, 25 Sep 2023 20:17:34 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 13 Oct 2023 12:25:31 +02:00
+Commit-ID:     92fe9bb77b0c9fade150350fdb0629a662f0923f
+Gitweb:        https://git.kernel.org/tip/92fe9bb77b0c9fade150350fdb0629a662f0923f
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Fri, 13 Oct 2023 12:14:27 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 13 Oct 2023 12:26:58 +02:00
 
-genirq/generic-chip: Fix the irq_chip name for /proc/interrupts
+x86/apic, x86/hyperv: Use u32 in hv_snp_boot_ap() too
 
-irq_init_generic_chip() only sets the name for the first chip type, which
-leads to empty names for other chip types.  Eventually, these names will be
-shown as "-" /proc/interrupts.
+The data type for APIC IDs was standardized to 'u32' in the
+following recent commit:
 
-Set the name for all chip types by default.
+   db4a4086a223 ("x86/apic: Use u32 for wakeup_secondary_cpu[_64]()")
 
-Signed-off-by: Keguang Zhang <keguang.zhang@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230925121734.93017-1-keguang.zhang@gmail.com
+Which changed the function arguments type signature of the
+apic->wakeup_secondary_cpu() APIC driver function.
 
+Propagate this to hv_snp_boot_ap() as well, which also addresses a
+'assignment from incompatible pointer type' build warning that triggers
+under the -Werror=incompatible-pointer-types GCC warning.
+
+Fixes: db4a4086a223 ("x86/apic: Use u32 for wakeup_secondary_cpu[_64]()")
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230814085113.233274223@linutronix.de
 ---
- kernel/irq/generic-chip.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/hyperv/ivm.c           | 2 +-
+ arch/x86/include/asm/mshyperv.h | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/irq/generic-chip.c b/kernel/irq/generic-chip.c
-index c653cd3..81ecca0 100644
---- a/kernel/irq/generic-chip.c
-+++ b/kernel/irq/generic-chip.c
-@@ -219,11 +219,15 @@ void irq_init_generic_chip(struct irq_chip_generic *gc, const char *name,
- 			   int num_ct, unsigned int irq_base,
- 			   void __iomem *reg_base, irq_flow_handler_t handler)
- {
-+	struct irq_chip_type *ct = gc->chip_types;
-+	int i;
-+
- 	raw_spin_lock_init(&gc->lock);
- 	gc->num_ct = num_ct;
- 	gc->irq_base = irq_base;
- 	gc->reg_base = reg_base;
--	gc->chip_types->chip.name = name;
-+	for (i = 0; i < num_ct; i++)
-+		ct[i].chip.name = name;
- 	gc->chip_types->handler = handler;
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index 8c6bf07..c6edde1 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -288,7 +288,7 @@ static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa)
+ 		free_page((unsigned long)vmsa);
  }
  
+-int hv_snp_boot_ap(int cpu, unsigned long start_ip)
++int hv_snp_boot_ap(u32 cpu, unsigned long start_ip)
+ {
+ 	struct sev_es_save_area *vmsa = (struct sev_es_save_area *)
+ 		__get_free_page(GFP_KERNEL | __GFP_ZERO);
+diff --git a/arch/x86/include/asm/mshyperv.h b/arch/x86/include/asm/mshyperv.h
+index 033b53f..a9630e9 100644
+--- a/arch/x86/include/asm/mshyperv.h
++++ b/arch/x86/include/asm/mshyperv.h
+@@ -276,11 +276,11 @@ int hv_unmap_ioapic_interrupt(int ioapic_id, struct hv_interrupt_entry *entry);
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ bool hv_ghcb_negotiate_protocol(void);
+ void __noreturn hv_ghcb_terminate(unsigned int set, unsigned int reason);
+-int hv_snp_boot_ap(int cpu, unsigned long start_ip);
++int hv_snp_boot_ap(u32 cpu, unsigned long start_ip);
+ #else
+ static inline bool hv_ghcb_negotiate_protocol(void) { return false; }
+ static inline void hv_ghcb_terminate(unsigned int set, unsigned int reason) {}
+-static inline int hv_snp_boot_ap(int cpu, unsigned long start_ip) { return 0; }
++static inline int hv_snp_boot_ap(u32 cpu, unsigned long start_ip) { return 0; }
+ #endif
+ 
+ #if defined(CONFIG_AMD_MEM_ENCRYPT) || defined(CONFIG_INTEL_TDX_GUEST)
