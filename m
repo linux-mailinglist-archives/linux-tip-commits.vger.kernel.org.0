@@ -2,51 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA1327C9716
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 15 Oct 2023 00:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C3F87CA472
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Oct 2023 11:44:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229735AbjJNWkj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 14 Oct 2023 18:40:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60964 "EHLO
+        id S229668AbjJPJok (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 16 Oct 2023 05:44:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229733AbjJNWkj (ORCPT
+        with ESMTP id S229621AbjJPJoj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 14 Oct 2023 18:40:39 -0400
+        Mon, 16 Oct 2023 05:44:39 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55400D6;
-        Sat, 14 Oct 2023 15:40:37 -0700 (PDT)
-Date:   Sat, 14 Oct 2023 22:40:34 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485FD97;
+        Mon, 16 Oct 2023 02:44:38 -0700 (PDT)
+Date:   Mon, 16 Oct 2023 09:44:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697323235;
+        s=2020; t=1697449476;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=a+HMQisxfJN8kCZQ+kN/QA80dgdEzqffBqO13ivJvd8=;
-        b=w+kGdM4QeePPkk5R2VXF/QNunRiRFDyZsFNqvbLdY4IUPj7lxNxKBuXGEv0oV3dzVzCvJH
-        i1mt8uy93DSqFqLkPimq1uHx9CKBUii/Q9sD98a6kL6EJWgEFxKxtNM8UWZ2sA8WWJa1TX
-        EKbYL4LipQHjWfT53UfSbFmnkw+xCAa45gGSs0dKOPtMeFrqqc95f9Pq9lszvtN6RtfF6F
-        GhAsNiLkCv/LUCnRppSxBuaRZ+xsKPLVINf2ZlLXO2ObRCcE0usjgRXe0JbDAgRNfZH4VE
-        eAbbqhnudZwvW9eGUBBr36hdLae+5ab5pjrjjw2A5/hM4CLhHjkVzdmiZpSBAg==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XZ41LTcQ/jhuvm71U7Pu2C5REKXKw1uT35nBnDHvCi0=;
+        b=f8Sx9bhieAcZyI5hq4fhl7cuSmF9vLGDtZFIINgWszInLTzC/pHyCgkrMWBt3YvHYri/UQ
+        Zy+ihVWq7sm8tY/lFxgL+R61QVrH4Ho0xYabvvdNUCHIxRPP+rIy8QCTLxTl5Y7gLootYn
+        HNxSd5qwqtc/QxFonAK9//XEUw8oXSFtElEsQiJZ8L6M8dPNOwldqr9JPTbHGmc6GmqYEt
+        uc1XwEx+o4q831QoIu/bqREiUWx6qmZBCZbBTbh78lhh1d9XfAvUMAApIIwgx6hOiM53F6
+        Sz1uG8bA6sBUWd9ro6Vh8R9l9CLpKtPCUfmD8a2dbGXEn8aRthgLovnQPEvdgg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697323235;
+        s=2020e; t=1697449476;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=a+HMQisxfJN8kCZQ+kN/QA80dgdEzqffBqO13ivJvd8=;
-        b=VLZ/diafTO0wa53DZwCdgg0f7neT2v85I7EtcUMjNih1hyWzOYoJWiJTdS49AK9hVSmk0A
-        5L8GCqmNnUcEJBBw==
-From:   "tip-bot2 for Alexey Dobriyan" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XZ41LTcQ/jhuvm71U7Pu2C5REKXKw1uT35nBnDHvCi0=;
+        b=YOzmN1AeiqI03bRgedwEgMEnFx/eR/QGwRsv0tHSAPG0/kavTeLjFo7GnD967fJAU6Ns9z
+        J21pziET1LAWDyAw==
+From:   "tip-bot2 for Binbin Wu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/callthunks: Delete unused "struct thunk_desc"
-Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
+Subject: [tip: x86/mm] selftests/x86/lam: Zero out buffer for readlink()
+Cc:     Binbin Wu <binbin.wu@linux.intel.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, x86@kernel.org
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231016062446.695-1-binbin.wu@linux.intel.com>
+References: <20231016062446.695-1-binbin.wu@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <169732323407.3135.7538979097197206726.tip-bot2@tip-bot2>
+Message-ID: <169744947512.3135.5098809828724848406.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,41 +65,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/bugs branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     5f51ef7fe994a91dcae36119a83961f6b143371d
-Gitweb:        https://git.kernel.org/tip/5f51ef7fe994a91dcae36119a83961f6b143371d
-Author:        Alexey Dobriyan <adobriyan@gmail.com>
-AuthorDate:    Sat, 14 Oct 2023 19:05:28 +03:00
+Commit-ID:     29060633411a02f6f2dd9d5245919385d69d81f0
+Gitweb:        https://git.kernel.org/tip/29060633411a02f6f2dd9d5245919385d69d81f0
+Author:        Binbin Wu <binbin.wu@linux.intel.com>
+AuthorDate:    Mon, 16 Oct 2023 14:24:46 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 15 Oct 2023 00:30:30 +02:00
+CommitterDate: Mon, 16 Oct 2023 11:39:57 +02:00
 
-x86/callthunks: Delete unused "struct thunk_desc"
+selftests/x86/lam: Zero out buffer for readlink()
 
-It looks like it was never used.
+Zero out the buffer for readlink() since readlink() does not append a
+terminating null byte to the buffer.  Also change the buffer length
+passed to readlink() to 'PATH_MAX - 1' to ensure the resulting string
+is always null terminated.
 
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Fixes: 833c12ce0f430 ("selftests/x86/lam: Add inherit test cases for linear-address masking")
+Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lore.kernel.org/r/20231016062446.695-1-binbin.wu@linux.intel.com
 ---
- arch/x86/kernel/callthunks.c | 5 -----
- 1 file changed, 5 deletions(-)
+ tools/testing/selftests/x86/lam.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/callthunks.c b/arch/x86/kernel/callthunks.c
-index faa9f22..e9ad518 100644
---- a/arch/x86/kernel/callthunks.c
-+++ b/arch/x86/kernel/callthunks.c
-@@ -48,11 +48,6 @@ EXPORT_SYMBOL_GPL(__x86_call_count);
+diff --git a/tools/testing/selftests/x86/lam.c b/tools/testing/selftests/x86/lam.c
+index eb0e469..8f9b06d 100644
+--- a/tools/testing/selftests/x86/lam.c
++++ b/tools/testing/selftests/x86/lam.c
+@@ -573,7 +573,7 @@ int do_uring(unsigned long lam)
+ 	char path[PATH_MAX] = {0};
  
- extern s32 __call_sites[], __call_sites_end[];
+ 	/* get current process path */
+-	if (readlink("/proc/self/exe", path, PATH_MAX) <= 0)
++	if (readlink("/proc/self/exe", path, PATH_MAX - 1) <= 0)
+ 		return 1;
  
--struct thunk_desc {
--	void		*template;
--	unsigned int	template_size;
--};
--
- struct core_text {
- 	unsigned long	base;
- 	unsigned long	end;
+ 	int file_fd = open(path, O_RDONLY);
+@@ -680,14 +680,14 @@ static int handle_execve(struct testcases *test)
+ 		perror("Fork failed.");
+ 		ret = 1;
+ 	} else if (pid == 0) {
+-		char path[PATH_MAX];
++		char path[PATH_MAX] = {0};
+ 
+ 		/* Set LAM mode in parent process */
+ 		if (set_lam(lam) != 0)
+ 			return 1;
+ 
+ 		/* Get current binary's path and the binary was run by execve */
+-		if (readlink("/proc/self/exe", path, PATH_MAX) <= 0)
++		if (readlink("/proc/self/exe", path, PATH_MAX - 1) <= 0)
+ 			exit(-1);
+ 
+ 		/* run binary to get LAM mode and return to parent process */
