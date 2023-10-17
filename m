@@ -2,60 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDEAD7CC2CF
+	by mail.lfdr.de (Postfix) with ESMTP id 469747CC2CE
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Oct 2023 14:18:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233345AbjJQMSD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Oct 2023 08:18:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57660 "EHLO
+        id S229848AbjJQMSC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Oct 2023 08:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232580AbjJQMSC (ORCPT
+        with ESMTP id S232577AbjJQMSC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 17 Oct 2023 08:18:02 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4893E12B;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 789C0195;
         Tue, 17 Oct 2023 05:18:00 -0700 (PDT)
-Date:   Tue, 17 Oct 2023 12:17:57 -0000
+Date:   Tue, 17 Oct 2023 12:17:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697545078;
+        s=2020; t=1697545079;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=o70cCE9g0ryKQI1VtXZcY2oshzLla63ENfUv/mZxCFs=;
-        b=HSs+Q5YGMpzW7Z/7K1iNjriHd09moX/9Bq8zg3jYRMm10aiKJvzrM+5EAzCR7gjEOVMm2n
-        jfbBLfzbKpEzuT6GhsvayxNbfWr6gbldBdtX4X9cv+9PqO6W4Z8+snxG8awy7zh+lM/VEH
-        YqbEjKCskI2rendN4ik7+Z1SfnPBMduYU2vCVIiDD6iRup9UN+O5EHuXUiQgHdlI2bkLpD
-        Szwp8ozlMfBfIgkV7r7t8hB1A3Z94cG3qXEkTNOMh36vvp2GRYhZo2zzK0D0ZeYWM7SVfG
-        ZeBvKgJaYnQxIJny+IId3Nkz/GrFt8UXAPboDUoW9KaxFg2T3x00s8QdovgYkw==
+        bh=kmcQE5lRmLwcJo5cQwSR++3r6UQhsrhv/OAurZwBPg0=;
+        b=sXkO+DS7ApDqGac3QgVoQWgzhfMsbE/c+Z1hFv4XDBHaF1XQrXjBDx00ouCpgRCoUQytf3
+        dOtfF3qbW7fM6JcVB5ysamsObIdD7FLOhXLNaSaWyaPxa17dZ4F5vaSEBfvcmLcrHLYenT
+        gZ9uJukmZNkaNmou4i8ZicfsFZYWuH1ySBHWE5JoGb9q3xi1FbD+Iefo2eRgqHXFFJMtj4
+        ZsviT/BD/rfgO9MTXPCyWwZ1ZqnNrAVzxjNNF6v3GEKGLC/G1YxnzMleCgZg6dptf5Ojrh
+        w68aE0ZKwqvgjMSna47BHODpINIVqHhJpC2n5OPSs+7O5Lpnp+IEoV/D6L6AFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697545078;
+        s=2020e; t=1697545079;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=o70cCE9g0ryKQI1VtXZcY2oshzLla63ENfUv/mZxCFs=;
-        b=x9nMaxkY/JFGv5+59crpscrBlclKMo6klOSvuhnCcclQ7MRgu3rLm76F6GpGSN9p32Agfs
-        A7lx8IyDDKv9JnBQ==
+        bh=kmcQE5lRmLwcJo5cQwSR++3r6UQhsrhv/OAurZwBPg0=;
+        b=cYBm75hFY1fLrsgQzBO66saFQq1lO6QP/vgsFWqx7bHhQFRPdMoAigWCTjW2HUk+KtubPR
+        HaX2j48GosKtfxAg==
 From:   "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Display RMID of resource group
+Subject: [tip: x86/cache] x86/resctrl: Add support for the files of MON groups only
 Cc:     Babu Moger <babu.moger@amd.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
         Peter Newman <peternewman@google.com>,
         Tan Shaopeng <tan.shaopeng@jp.fujitsu.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        ilpo.jarvinen@linux.intel.com, x86@kernel.org,
+        ilpo.jarvinen@linux.intel.com,
+        Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231017002308.134480-10-babu.moger@amd.com>
-References: <20231017002308.134480-10-babu.moger@amd.com>
+In-Reply-To: <20231017002308.134480-9-babu.moger@amd.com>
+References: <20231017002308.134480-9-babu.moger@amd.com>
 MIME-Version: 1.0
-Message-ID: <169754507762.3135.4057525266393369343.tip-bot2@tip-bot2>
+Message-ID: <169754507834.3135.8385571109591338616.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,119 +71,93 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     4cee14bcb14881aae81d60f106a335c68553ac1f
-Gitweb:        https://git.kernel.org/tip/4cee14bcb14881aae81d60f106a335c6855=
-3ac1f
+Commit-ID:     918f211b5e4e709e91acf856967a850569c96b71
+Gitweb:        https://git.kernel.org/tip/918f211b5e4e709e91acf856967a850569c=
+96b71
 Author:        Babu Moger <babu.moger@amd.com>
-AuthorDate:    Mon, 16 Oct 2023 19:23:08 -05:00
+AuthorDate:    Mon, 16 Oct 2023 19:23:07 -05:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 17 Oct 2023 14:05:40 +02:00
+CommitterDate: Tue, 17 Oct 2023 14:05:24 +02:00
 
-x86/resctrl: Display RMID of resource group
+x86/resctrl: Add support for the files of MON groups only
 
-In x86, hardware uses RMID to identify a monitoring group. When a user
-creates a monitor group these details are not visible. These details
-can help resctrl debugging.
+Files unique to monitoring groups have the RFTYPE_MON flag. When a new
+monitoring group is created the resctrl files with flags RFTYPE_BASE
+(files common to all resource groups) and RFTYPE_MON (files unique to
+monitoring groups) are created to support interacting with the new
+monitoring group.
 
-Add RMID(mon_hw_id) to the monitor groups display in the resctrl interface.
-Users can see these details when resctrl is mounted with "-o debug" option.
+A resource group can support both monitoring and control, also termed
+a CTRL_MON resource group. CTRL_MON groups should get both monitoring
+and control resctrl files but that is not the case. Only the
+RFTYPE_BASE and RFTYPE_CTRL files are created for CTRL_MON groups.
 
-Add RFTYPE_MON_BASE that complements existing RFTYPE_CTRL_BASE and
-represents files belonging to monitoring groups.
-
-Other architectures do not use "RMID". Use the name mon_hw_id to refer
-to "RMID" in an effort to keep the naming generic.
-
-For example:
-  $cat /sys/fs/resctrl/mon_groups/mon_grp1/mon_hw_id
-  3
+Ensure that files with the RFTYPE_MON flag are created for CTRL_MON groups.
 
 Signed-off-by: Babu Moger <babu.moger@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Peter Newman <peternewman@google.com>
 Reviewed-by: Tan Shaopeng <tan.shaopeng@jp.fujitsu.com>
 Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Tested-by: Peter Newman <peternewman@google.com>
 Tested-by: Tan Shaopeng <tan.shaopeng@jp.fujitsu.com>
-Link: https://lore.kernel.org/r/20231017002308.134480-10-babu.moger@amd.com
+Link: https://lore.kernel.org/r/20231017002308.134480-9-babu.moger@amd.com
 ---
- Documentation/arch/x86/resctrl.rst     |  4 ++++
- arch/x86/kernel/cpu/resctrl/internal.h |  1 +
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 23 +++++++++++++++++++++++
- 3 files changed, 28 insertions(+)
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/arch/x86/resctrl.rst b/Documentation/arch/x86/resc=
-trl.rst
-index 7412252..a6279df 100644
---- a/Documentation/arch/x86/resctrl.rst
-+++ b/Documentation/arch/x86/resctrl.rst
-@@ -376,6 +376,10 @@ When monitoring is enabled all MON groups will also cont=
-ain:
- 	the sum for all tasks in the CTRL_MON group and all tasks in
- 	MON groups. Please see example section for more details on usage.
-=20
-+"mon_hw_id":
-+	Available only with debug option. The identifier used by hardware
-+	for the monitor group. On x86 this is the RMID.
-+
- Resource allocation rules
- -------------------------
-=20
-diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/res=
-ctrl/internal.h
-index b816b90..a4f1aa1 100644
---- a/arch/x86/kernel/cpu/resctrl/internal.h
-+++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -254,6 +254,7 @@ struct rdtgroup {
- #define RFTYPE_MON_INFO			(RFTYPE_INFO | RFTYPE_MON)
- #define RFTYPE_TOP_INFO			(RFTYPE_INFO | RFTYPE_TOP)
- #define RFTYPE_CTRL_BASE		(RFTYPE_BASE | RFTYPE_CTRL)
-+#define RFTYPE_MON_BASE			(RFTYPE_BASE | RFTYPE_MON)
-=20
- /* List of all resource groups */
- extern struct list_head rdt_all_groups;
 diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/res=
 ctrl/rdtgroup.c
-index 5f6d6ba..69a1de9 100644
+index 5814a0b..5f6d6ba 100644
 --- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
 +++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -795,6 +795,22 @@ static int rdtgroup_closid_show(struct kernfs_open_file =
-*of,
- 	return ret;
- }
+@@ -2551,6 +2551,7 @@ static void schemata_list_destroy(void)
+ static int rdt_get_tree(struct fs_context *fc)
+ {
+ 	struct rdt_fs_context *ctx =3D rdt_fc2context(fc);
++	unsigned long flags =3D RFTYPE_CTRL_BASE;
+ 	struct rdt_domain *dom;
+ 	struct rdt_resource *r;
+ 	int ret;
+@@ -2581,7 +2582,10 @@ static int rdt_get_tree(struct fs_context *fc)
 =20
-+static int rdtgroup_rmid_show(struct kernfs_open_file *of,
-+			      struct seq_file *s, void *v)
-+{
-+	struct rdtgroup *rdtgrp;
-+	int ret =3D 0;
-+
-+	rdtgrp =3D rdtgroup_kn_lock_live(of->kn);
-+	if (rdtgrp)
-+		seq_printf(s, "%u\n", rdtgrp->mon.rmid);
-+	else
-+		ret =3D -ENOENT;
-+	rdtgroup_kn_unlock(of->kn);
-+
-+	return ret;
-+}
-+
- #ifdef CONFIG_PROC_CPU_RESCTRL
+ 	closid_init();
 =20
- /*
-@@ -1868,6 +1884,13 @@ static struct rftype res_common_files[] =3D {
- 		.fflags		=3D RFTYPE_BASE,
- 	},
- 	{
-+		.name		=3D "mon_hw_id",
-+		.mode		=3D 0444,
-+		.kf_ops		=3D &rdtgroup_kf_single_ops,
-+		.seq_show	=3D rdtgroup_rmid_show,
-+		.fflags		=3D RFTYPE_MON_BASE | RFTYPE_DEBUG,
-+	},
-+	{
- 		.name		=3D "schemata",
- 		.mode		=3D 0644,
- 		.kf_ops		=3D &rdtgroup_kf_single_ops,
+-	ret =3D rdtgroup_add_files(rdtgroup_default.kn, RFTYPE_CTRL_BASE);
++	if (rdt_mon_capable)
++		flags |=3D RFTYPE_MON;
++
++	ret =3D rdtgroup_add_files(rdtgroup_default.kn, flags);
+ 	if (ret)
+ 		goto out_schemata_free;
+=20
+@@ -3271,8 +3275,8 @@ static int mkdir_rdt_prepare(struct kernfs_node *parent=
+_kn,
+ 			     enum rdt_group_type rtype, struct rdtgroup **r)
+ {
+ 	struct rdtgroup *prdtgrp, *rdtgrp;
++	unsigned long files =3D 0;
+ 	struct kernfs_node *kn;
+-	uint files =3D 0;
+ 	int ret;
+=20
+ 	prdtgrp =3D rdtgroup_kn_lock_live(parent_kn);
+@@ -3324,10 +3328,13 @@ static int mkdir_rdt_prepare(struct kernfs_node *pare=
+nt_kn,
+ 		goto out_destroy;
+ 	}
+=20
+-	if (rtype =3D=3D RDTCTRL_GROUP)
++	if (rtype =3D=3D RDTCTRL_GROUP) {
+ 		files =3D RFTYPE_BASE | RFTYPE_CTRL;
+-	else
++		if (rdt_mon_capable)
++			files |=3D RFTYPE_MON;
++	} else {
+ 		files =3D RFTYPE_BASE | RFTYPE_MON;
++	}
+=20
+ 	ret =3D rdtgroup_add_files(kn, files);
+ 	if (ret) {
