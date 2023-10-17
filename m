@@ -2,57 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53D3D7CC1CB
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Oct 2023 13:32:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDEAD7CC2CF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Oct 2023 14:18:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232644AbjJQLcQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Oct 2023 07:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37442 "EHLO
+        id S233345AbjJQMSD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Oct 2023 08:18:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232134AbjJQLcQ (ORCPT
+        with ESMTP id S232580AbjJQMSC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Oct 2023 07:32:16 -0400
+        Tue, 17 Oct 2023 08:18:02 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C54F9F;
-        Tue, 17 Oct 2023 04:32:14 -0700 (PDT)
-Date:   Tue, 17 Oct 2023 11:32:12 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4893E12B;
+        Tue, 17 Oct 2023 05:18:00 -0700 (PDT)
+Date:   Tue, 17 Oct 2023 12:17:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697542333;
+        s=2020; t=1697545078;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DSan9rdpM1NsI5fi39iHRLxEWkH6cCBOnQsKNslXLTQ=;
-        b=A2K9rBNYKdhhbfHtC451hSTyhS/EUvAO0yCQHnwW/uqCWvS3yEI/9Lz5RaoMIy/b2aSfa+
-        caqH6TtIJWhSr+eyjbwFpWuKuUBT++ndYCNoAuUq/n7KNT259sPcFcVarS5kwAU8EookKw
-        b5YmFJ1rzJV9PCxUcU2RWVPZMdMQLeWJ0RgkoP8Z1wFxTakInY1e6hC2YDS6s7kPUb9fy5
-        3l0DyniWmMYKXXbAnEDlEaHkiSMWqyRcOlFwwzficGGzYGY3gJO7ybXqgxMkmXP8CkL4d+
-        fNqyuRqecI1Q7lKvquKh/k8eeWdvm7VcZz+lrLXo4i9vYpTHEIq1X7ADo0ieBw==
+        bh=o70cCE9g0ryKQI1VtXZcY2oshzLla63ENfUv/mZxCFs=;
+        b=HSs+Q5YGMpzW7Z/7K1iNjriHd09moX/9Bq8zg3jYRMm10aiKJvzrM+5EAzCR7gjEOVMm2n
+        jfbBLfzbKpEzuT6GhsvayxNbfWr6gbldBdtX4X9cv+9PqO6W4Z8+snxG8awy7zh+lM/VEH
+        YqbEjKCskI2rendN4ik7+Z1SfnPBMduYU2vCVIiDD6iRup9UN+O5EHuXUiQgHdlI2bkLpD
+        Szwp8ozlMfBfIgkV7r7t8hB1A3Z94cG3qXEkTNOMh36vvp2GRYhZo2zzK0D0ZeYWM7SVfG
+        ZeBvKgJaYnQxIJny+IId3Nkz/GrFt8UXAPboDUoW9KaxFg2T3x00s8QdovgYkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697542333;
+        s=2020e; t=1697545078;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DSan9rdpM1NsI5fi39iHRLxEWkH6cCBOnQsKNslXLTQ=;
-        b=xKCggJm2nu7sbyAsna9cLmJ1zLcdD0JIwuJEsLT+v628AjuQMPy6+/3sMX3ZnRNgqFHkyo
-        fX9a1izSBzudKdDA==
-From:   "tip-bot2 for Paolo Bonzini" <tip-bot2@linutronix.de>
+        bh=o70cCE9g0ryKQI1VtXZcY2oshzLla63ENfUv/mZxCFs=;
+        b=x9nMaxkY/JFGv5+59crpscrBlclKMo6klOSvuhnCcclQ7MRgu3rLm76F6GpGSN9p32Agfs
+        A7lx8IyDDKv9JnBQ==
+From:   "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/amd: Fix snprintf() format string
- warning in W=1 build
-Cc:     kernel test robot <lkp@intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/cache] x86/resctrl: Display RMID of resource group
+Cc:     Babu Moger <babu.moger@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Peter Newman <peternewman@google.com>,
+        Tan Shaopeng <tan.shaopeng@jp.fujitsu.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        ilpo.jarvinen@linux.intel.com, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231016224858.2829248-1-pbonzini@redhat.com>
-References: <20231016224858.2829248-1-pbonzini@redhat.com>
+In-Reply-To: <20231017002308.134480-10-babu.moger@amd.com>
+References: <20231017002308.134480-10-babu.moger@amd.com>
 MIME-Version: 1.0
-Message-ID: <169754233234.3135.10781923610428898414.tip-bot2@tip-bot2>
+Message-ID: <169754507762.3135.4057525266393369343.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,57 +69,121 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     41a3e409e3e69892e9884b16b2fb6925e726f511
-Gitweb:        https://git.kernel.org/tip/41a3e409e3e69892e9884b16b2fb6925e72=
-6f511
-Author:        Paolo Bonzini <pbonzini@redhat.com>
-AuthorDate:    Mon, 16 Oct 2023 18:48:58 -04:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 17 Oct 2023 13:22:26 +02:00
+Commit-ID:     4cee14bcb14881aae81d60f106a335c68553ac1f
+Gitweb:        https://git.kernel.org/tip/4cee14bcb14881aae81d60f106a335c6855=
+3ac1f
+Author:        Babu Moger <babu.moger@amd.com>
+AuthorDate:    Mon, 16 Oct 2023 19:23:08 -05:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 17 Oct 2023 14:05:40 +02:00
 
-x86/microcode/amd: Fix snprintf() format string warning in W=3D1 build
+x86/resctrl: Display RMID of resource group
 
-Building with GCC 11.x results in the following warning:
+In x86, hardware uses RMID to identify a monitoring group. When a user
+creates a monitor group these details are not visible. These details
+can help resctrl debugging.
 
-  arch/x86/kernel/cpu/microcode/amd.c: In function =E2=80=98find_blobs_in_con=
-tainers=E2=80=99:
-  arch/x86/kernel/cpu/microcode/amd.c:504:58: error: =E2=80=98h.bin=E2=80=99 =
-directive output may be truncated writing 5 bytes into a region of size betwe=
-en 1 and 7 [-Werror=3Dformat-truncation=3D]
-  arch/x86/kernel/cpu/microcode/amd.c:503:17: note: =E2=80=98snprintf=E2=80=
-=99 output between 35 and 41 bytes into a destination of size 36
+Add RMID(mon_hw_id) to the monitor groups display in the resctrl interface.
+Users can see these details when resctrl is mounted with "-o debug" option.
 
-The issue is that GCC does not know that the family can only be a byte
-(it ultimately comes from CPUID).  Suggest the right size to the compiler
-by marking the argument as char-size ("hh").  While at it, instead of
-using the slightly more obscure precision specifier use the width with
-zero padding (over 23000 occurrences in kernel sources, vs 500 for
-the idiom using the precision).
+Add RFTYPE_MON_BASE that complements existing RFTYPE_CTRL_BASE and
+represents files belonging to monitoring groups.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Closes: https://lore.kernel.org/oe-kbuild-all/202308252255.2HPJ6x5Q-lkp@intel=
-.com/
-Link: https://lore.kernel.org/r/20231016224858.2829248-1-pbonzini@redhat.com
+Other architectures do not use "RMID". Use the name mon_hw_id to refer
+to "RMID" in an effort to keep the naming generic.
+
+For example:
+  $cat /sys/fs/resctrl/mon_groups/mon_grp1/mon_hw_id
+  3
+
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Peter Newman <peternewman@google.com>
+Reviewed-by: Tan Shaopeng <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Peter Newman <peternewman@google.com>
+Tested-by: Tan Shaopeng <tan.shaopeng@jp.fujitsu.com>
+Link: https://lore.kernel.org/r/20231017002308.134480-10-babu.moger@amd.com
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/arch/x86/resctrl.rst     |  4 ++++
+ arch/x86/kernel/cpu/resctrl/internal.h |  1 +
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c | 23 +++++++++++++++++++++++
+ 3 files changed, 28 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microc=
-ode/amd.c
-index 8baa8ce..f3d0f99 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -485,7 +485,7 @@ static bool get_builtin_microcode(struct cpio_data *cp, u=
-nsigned int family)
+diff --git a/Documentation/arch/x86/resctrl.rst b/Documentation/arch/x86/resc=
+trl.rst
+index 7412252..a6279df 100644
+--- a/Documentation/arch/x86/resctrl.rst
++++ b/Documentation/arch/x86/resctrl.rst
+@@ -376,6 +376,10 @@ When monitoring is enabled all MON groups will also cont=
+ain:
+ 	the sum for all tasks in the CTRL_MON group and all tasks in
+ 	MON groups. Please see example section for more details on usage.
 =20
- 	if (family >=3D 0x15)
- 		snprintf(fw_name, sizeof(fw_name),
--			 "amd-ucode/microcode_amd_fam%.2xh.bin", family);
-+			 "amd-ucode/microcode_amd_fam%02hhxh.bin", family);
++"mon_hw_id":
++	Available only with debug option. The identifier used by hardware
++	for the monitor group. On x86 this is the RMID.
++
+ Resource allocation rules
+ -------------------------
 =20
- 	if (firmware_request_builtin(&fw, fw_name)) {
- 		cp->size =3D fw.size;
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/res=
+ctrl/internal.h
+index b816b90..a4f1aa1 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -254,6 +254,7 @@ struct rdtgroup {
+ #define RFTYPE_MON_INFO			(RFTYPE_INFO | RFTYPE_MON)
+ #define RFTYPE_TOP_INFO			(RFTYPE_INFO | RFTYPE_TOP)
+ #define RFTYPE_CTRL_BASE		(RFTYPE_BASE | RFTYPE_CTRL)
++#define RFTYPE_MON_BASE			(RFTYPE_BASE | RFTYPE_MON)
+=20
+ /* List of all resource groups */
+ extern struct list_head rdt_all_groups;
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/res=
+ctrl/rdtgroup.c
+index 5f6d6ba..69a1de9 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -795,6 +795,22 @@ static int rdtgroup_closid_show(struct kernfs_open_file =
+*of,
+ 	return ret;
+ }
+=20
++static int rdtgroup_rmid_show(struct kernfs_open_file *of,
++			      struct seq_file *s, void *v)
++{
++	struct rdtgroup *rdtgrp;
++	int ret =3D 0;
++
++	rdtgrp =3D rdtgroup_kn_lock_live(of->kn);
++	if (rdtgrp)
++		seq_printf(s, "%u\n", rdtgrp->mon.rmid);
++	else
++		ret =3D -ENOENT;
++	rdtgroup_kn_unlock(of->kn);
++
++	return ret;
++}
++
+ #ifdef CONFIG_PROC_CPU_RESCTRL
+=20
+ /*
+@@ -1868,6 +1884,13 @@ static struct rftype res_common_files[] =3D {
+ 		.fflags		=3D RFTYPE_BASE,
+ 	},
+ 	{
++		.name		=3D "mon_hw_id",
++		.mode		=3D 0444,
++		.kf_ops		=3D &rdtgroup_kf_single_ops,
++		.seq_show	=3D rdtgroup_rmid_show,
++		.fflags		=3D RFTYPE_MON_BASE | RFTYPE_DEBUG,
++	},
++	{
+ 		.name		=3D "schemata",
+ 		.mode		=3D 0644,
+ 		.kf_ops		=3D &rdtgroup_kf_single_ops,
