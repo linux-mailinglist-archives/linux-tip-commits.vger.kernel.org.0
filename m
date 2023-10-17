@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 757787CC2D0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Oct 2023 14:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F31F77CC2D2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Oct 2023 14:18:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233640AbjJQMSE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Oct 2023 08:18:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57696 "EHLO
+        id S232580AbjJQMSG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Oct 2023 08:18:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232804AbjJQMSD (ORCPT
+        with ESMTP id S233549AbjJQMSF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Oct 2023 08:18:03 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A54EDF2;
-        Tue, 17 Oct 2023 05:18:01 -0700 (PDT)
-Date:   Tue, 17 Oct 2023 12:17:58 -0000
+        Tue, 17 Oct 2023 08:18:05 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 801BC12F;
+        Tue, 17 Oct 2023 05:18:02 -0700 (PDT)
+Date:   Tue, 17 Oct 2023 12:17:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697545079;
+        s=2020; t=1697545080;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tRii31kzoOkxgXH61iIPFY76NO+CH3zPM7DZu/1Zwk8=;
-        b=PneOKyJGVIgKTQZWtRM75n4ER7fffExek+XmAGakg20zhvjyn6sI0pqYkOFr1nDiZzeO/Y
-        5MLU2ILgdn9oauCNTsravWx1Ze7PhVea3nK1CSbGcYknkKhL+nYrT5FtUCK1C/uW0JxhRK
-        fRqhhUDNzVOXuWvtmPjOjWH2Cb0MiCbsz1ZGHPBlw0hZxbyp8r45tnDLaYZC0Lu4XO7EsA
-        pcmL42oyDKRoWsrPirtYtz/Vn1DOi1E0coH70Ht6lSZm1qXUPQQSf06fTLGpoIQpdnf6ye
-        DXMTxiBe54D/per7GoVUxaRHxn36k8TqsJXmiBRlwjn7dUbcDdbmfEBYCDo73g==
+        bh=0JU3NqWjgwykZxeiRbyFGvYyb+ANvfSQfxPKkBi3l0w=;
+        b=urnxCNelCbDcmdmG5882YuploNlv1LOaVbKOsTkHcvSbN3ylO7lQuCQeKk6+8C5XaqnuJA
+        I1BIKuhR89JBVXN7XtqYf8+1NC8rpmtPdprzTyxzYEXWcLVHK/P2NJikGC25f6cYhpRAVr
+        gEIarPHiSfOiUidI8F0vuEn/8Oo0LyaDA4fo3r4YospRWn4Eld8YGVRAjQ5SJJVt3q/HIj
+        MVk5zUBVzzU2Ji+4T4lmJQx8ym8pkWV/LqY3MYojtWRyaVfQ5RErglYCPHRnomdO7oVa1C
+        a0rSPUtHL4kwTuIfrn2CUFHMMM7U+AnTmQmSd9BjHwmL6tRPIZGVll5U7wwxIg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697545079;
+        s=2020e; t=1697545080;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tRii31kzoOkxgXH61iIPFY76NO+CH3zPM7DZu/1Zwk8=;
-        b=rQaGNMKk4ildL9Baw/2SDksVrWQ3S/2Dgp4Y/k10MawKOQt2mNTwH/l4GwyhP+J/HQjtrZ
-        NBQRcIpFuXLeN2Bw==
+        bh=0JU3NqWjgwykZxeiRbyFGvYyb+ANvfSQfxPKkBi3l0w=;
+        b=tD5TP2Bgkn7yNWhHOeVZVscjKmJslmwdAWjx7FN1hcy9bFwGHOiIvYUcWZvop7BGVTlWsq
+        +gAvSu6NjOJS+XCA==
 From:   "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Display CLOSID for resource group
+Subject: [tip: x86/cache] x86/resctrl: Introduce "-o debug" mount option
 Cc:     Babu Moger <babu.moger@amd.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
         Peter Newman <peternewman@google.com>,
@@ -52,17 +52,17 @@ Cc:     Babu Moger <babu.moger@amd.com>,
         Reinette Chatre <reinette.chatre@intel.com>,
         ilpo.jarvinen@linux.intel.com, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231017002308.134480-8-babu.moger@amd.com>
-References: <20231017002308.134480-8-babu.moger@amd.com>
+In-Reply-To: <20231017002308.134480-7-babu.moger@amd.com>
+References: <20231017002308.134480-7-babu.moger@amd.com>
 MIME-Version: 1.0
-Message-ID: <169754507899.3135.1095916049785753629.tip-bot2@tip-bot2>
+Message-ID: <169754507967.3135.11415385807971392786.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -71,30 +71,19 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     ca8dad225e237493f19b1c5d4a8531f13a9b078f
-Gitweb:        https://git.kernel.org/tip/ca8dad225e237493f19b1c5d4a8531f13a9=
-b078f
+Commit-ID:     cb07d71f01017b7c2885ed629da9b973cb56b1d2
+Gitweb:        https://git.kernel.org/tip/cb07d71f01017b7c2885ed629da9b973cb5=
+6b1d2
 Author:        Babu Moger <babu.moger@amd.com>
-AuthorDate:    Mon, 16 Oct 2023 19:23:06 -05:00
+AuthorDate:    Mon, 16 Oct 2023 19:23:05 -05:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 17 Oct 2023 14:05:14 +02:00
+CommitterDate: Tue, 17 Oct 2023 13:07:17 +02:00
 
-x86/resctrl: Display CLOSID for resource group
+x86/resctrl: Introduce "-o debug" mount option
 
-In x86, hardware uses CLOSID to identify a control group. When a user
-creates a control group this information is not visible to the user. It
-can help resctrl debugging.
-
-Add CLOSID(ctrl_hw_id) to the control groups display in the resctrl
-interface. Users can see this detail when resctrl is mounted with the
-"-o debug" option.
-
-Other architectures do not use "CLOSID". Use the names ctrl_hw_id to refer
-to "CLOSID" in an effort to keep the naming generic.
-
-For example:
-  $cat /sys/fs/resctrl/ctrl_grp1/ctrl_hw_id
-  1
+Add "-o debug" option to mount resctrl filesystem in debug mode.  When
+in debug mode resctrl displays files that have the new RFTYPE_DEBUG flag
+to help resctrl debugging.
 
 Signed-off-by: Babu Moger <babu.moger@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
@@ -105,69 +94,139 @@ Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
 Tested-by: Peter Newman <peternewman@google.com>
 Tested-by: Tan Shaopeng <tan.shaopeng@jp.fujitsu.com>
-Link: https://lore.kernel.org/r/20231017002308.134480-8-babu.moger@amd.com
+Link: https://lore.kernel.org/r/20231017002308.134480-7-babu.moger@amd.com
 ---
- Documentation/arch/x86/resctrl.rst     |  4 ++++
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 23 +++++++++++++++++++++++
- 2 files changed, 27 insertions(+)
+ Documentation/arch/x86/resctrl.rst     |  5 ++++-
+ arch/x86/kernel/cpu/resctrl/internal.h |  2 ++
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c | 18 ++++++++++++++++++
+ 3 files changed, 24 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/arch/x86/resctrl.rst b/Documentation/arch/x86/resc=
 trl.rst
-index 68f1161..7412252 100644
+index 178ab1d..68f1161 100644
 --- a/Documentation/arch/x86/resctrl.rst
 +++ b/Documentation/arch/x86/resctrl.rst
-@@ -359,6 +359,10 @@ When control is enabled all CTRL_MON groups will also co=
-ntain:
- 	file. On successful pseudo-locked region creation the mode will
- 	automatically change to "pseudo-locked".
+@@ -35,7 +35,7 @@ about the feature from resctrl's info directory.
 =20
-+"ctrl_hw_id":
-+	Available only with debug option. The identifier used by hardware
-+	for the control group. On x86 this is the CLOSID.
-+
- When monitoring is enabled all MON groups will also contain:
+ To use the feature mount the file system::
 =20
- "mon_data":
+- # mount -t resctrl resctrl [-o cdp[,cdpl2][,mba_MBps]] /sys/fs/resctrl
++ # mount -t resctrl resctrl [-o cdp[,cdpl2][,mba_MBps][,debug]] /sys/fs/resc=
+trl
+=20
+ mount options are:
+=20
+@@ -46,6 +46,9 @@ mount options are:
+ "mba_MBps":
+ 	Enable the MBA Software Controller(mba_sc) to specify MBA
+ 	bandwidth in MBps
++"debug":
++	Make debug files accessible. Available debug files are annotated with
++	"Available only with debug option".
+=20
+ L2 and L3 CDP are controlled separately.
+=20
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/res=
+ctrl/internal.h
+index ba46111..b816b90 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -59,6 +59,7 @@ struct rdt_fs_context {
+ 	bool				enable_cdpl2;
+ 	bool				enable_cdpl3;
+ 	bool				enable_mba_mbps;
++	bool				enable_debug;
+ };
+=20
+ static inline struct rdt_fs_context *rdt_fc2context(struct fs_context *fc)
+@@ -248,6 +249,7 @@ struct rdtgroup {
+ #define RFTYPE_TOP			BIT(6)
+ #define RFTYPE_RES_CACHE		BIT(8)
+ #define RFTYPE_RES_MB			BIT(9)
++#define RFTYPE_DEBUG			BIT(10)
+ #define RFTYPE_CTRL_INFO		(RFTYPE_INFO | RFTYPE_CTRL)
+ #define RFTYPE_MON_INFO			(RFTYPE_INFO | RFTYPE_MON)
+ #define RFTYPE_TOP_INFO			(RFTYPE_INFO | RFTYPE_TOP)
 diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/res=
 ctrl/rdtgroup.c
-index 84e0f45..5814a0b 100644
+index 55da93b..84e0f45 100644
 --- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
 +++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -779,6 +779,22 @@ static int rdtgroup_tasks_show(struct kernfs_open_file *=
-of,
- 	return ret;
+@@ -59,6 +59,8 @@ static void rdtgroup_destroy_root(void);
+=20
+ struct dentry *debugfs_resctrl;
+=20
++static bool resctrl_debug;
++
+ void rdt_last_cmd_clear(void)
+ {
+ 	lockdep_assert_held(&rdtgroup_mutex);
+@@ -1892,6 +1894,9 @@ static int rdtgroup_add_files(struct kernfs_node *kn, u=
+nsigned long fflags)
+=20
+ 	lockdep_assert_held(&rdtgroup_mutex);
+=20
++	if (resctrl_debug)
++		fflags |=3D RFTYPE_DEBUG;
++
+ 	for (rft =3D rfts; rft < rfts + len; rft++) {
+ 		if (rft->fflags && ((fflags & rft->fflags) =3D=3D rft->fflags)) {
+ 			ret =3D rdtgroup_add_file(kn, rft);
+@@ -2395,6 +2400,8 @@ static void rdt_disable_ctx(void)
+ 	resctrl_arch_set_cdp_enabled(RDT_RESOURCE_L3, false);
+ 	resctrl_arch_set_cdp_enabled(RDT_RESOURCE_L2, false);
+ 	set_mba_sc(false);
++
++	resctrl_debug =3D false;
  }
 =20
-+static int rdtgroup_closid_show(struct kernfs_open_file *of,
-+				struct seq_file *s, void *v)
-+{
-+	struct rdtgroup *rdtgrp;
-+	int ret =3D 0;
-+
-+	rdtgrp =3D rdtgroup_kn_lock_live(of->kn);
-+	if (rdtgrp)
-+		seq_printf(s, "%u\n", rdtgrp->closid);
-+	else
-+		ret =3D -ENOENT;
-+	rdtgroup_kn_unlock(of->kn);
-+
-+	return ret;
-+}
-+
- #ifdef CONFIG_PROC_CPU_RESCTRL
+ static int rdt_enable_ctx(struct rdt_fs_context *ctx)
+@@ -2419,6 +2426,9 @@ static int rdt_enable_ctx(struct rdt_fs_context *ctx)
+ 			goto out_cdpl3;
+ 	}
 =20
- /*
-@@ -1881,6 +1897,13 @@ static struct rftype res_common_files[] =3D {
- 		.seq_show	=3D rdt_has_sparse_bitmasks_show,
- 		.fflags		=3D RFTYPE_CTRL_INFO | RFTYPE_RES_CACHE,
- 	},
-+	{
-+		.name		=3D "ctrl_hw_id",
-+		.mode		=3D 0444,
-+		.kf_ops		=3D &rdtgroup_kf_single_ops,
-+		.seq_show	=3D rdtgroup_closid_show,
-+		.fflags		=3D RFTYPE_CTRL_BASE | RFTYPE_DEBUG,
-+	},
++	if (ctx->enable_debug)
++		resctrl_debug =3D true;
++
+ 	return 0;
 =20
+ out_cdpl3:
+@@ -2623,6 +2633,7 @@ enum rdt_param {
+ 	Opt_cdp,
+ 	Opt_cdpl2,
+ 	Opt_mba_mbps,
++	Opt_debug,
+ 	nr__rdt_params
  };
+=20
+@@ -2630,6 +2641,7 @@ static const struct fs_parameter_spec rdt_fs_parameters=
+[] =3D {
+ 	fsparam_flag("cdp",		Opt_cdp),
+ 	fsparam_flag("cdpl2",		Opt_cdpl2),
+ 	fsparam_flag("mba_MBps",	Opt_mba_mbps),
++	fsparam_flag("debug",		Opt_debug),
+ 	{}
+ };
+=20
+@@ -2655,6 +2667,9 @@ static int rdt_parse_param(struct fs_context *fc, struc=
+t fs_parameter *param)
+ 			return -EINVAL;
+ 		ctx->enable_mba_mbps =3D true;
+ 		return 0;
++	case Opt_debug:
++		ctx->enable_debug =3D true;
++		return 0;
+ 	}
+=20
+ 	return -EINVAL;
+@@ -3723,6 +3738,9 @@ static int rdtgroup_show_options(struct seq_file *seq, =
+struct kernfs_root *kf)
+ 	if (is_mba_sc(&rdt_resources_all[RDT_RESOURCE_MBA].r_resctrl))
+ 		seq_puts(seq, ",mba_MBps");
+=20
++	if (resctrl_debug)
++		seq_puts(seq, ",debug");
++
+ 	return 0;
+ }
 =20
