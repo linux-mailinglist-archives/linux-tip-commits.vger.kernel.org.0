@@ -2,90 +2,96 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C772B7CC951
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Oct 2023 18:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DECC57CCA2A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Oct 2023 19:52:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231569AbjJQQ7v (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Oct 2023 12:59:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41174 "EHLO
+        id S232208AbjJQRwc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Oct 2023 13:52:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232593AbjJQQ7u (ORCPT
+        with ESMTP id S232025AbjJQRwc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Oct 2023 12:59:50 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E854AAB;
-        Tue, 17 Oct 2023 09:59:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B373C433C7;
-        Tue, 17 Oct 2023 16:59:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697561988;
-        bh=geQXKRC2Jvb636FBZET9oMZ/p3D7F0Z9S0YyA2XEv1I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nc9rTl4PB8xxDCMVkyK3df1khEKShyJ57b6NDmta0G2eJU2ZvclP44qA/XiusW0S5
-         D97OnJZLlKyg2zbwoGWPg/rWGjKiNb1x1F9oe2tXplNWGfr4dPS7Q5573kYwlt5er8
-         B/2QMqCcZFyNoFMP2NVxLLJBEPLbasPIapHFS3r/2Y6mlFhOGrgVgbOb2yjqfnixnE
-         T/YFYT+970Fl3Yk//lRN4LSeVvjJUtrtQ8U+VMJfvbfUQ4rv7kk6sP2dZMn1Uoi2KS
-         AtX9jeMJCLQGrQds3DPLPzAeOgk8FbMvPkvnif0xghx5KCMhapfwIhjffbMKd38kEi
-         jiQdkUSdfBRtA==
-Date:   Tue, 17 Oct 2023 09:59:46 -0700
-From:   Josh Poimboeuf <jpoimboe@kernel.org>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     "Kaplan, David" <David.Kaplan@amd.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "llvm@lists.linux.dev" <llvm@lists.linux.dev>
-Subject: [PATCH] x86/srso: Fix panic in return thunk during boot
-Message-ID: <20231017165946.v4i2d4exyqwqq3bx@treble>
-References: <20231012141031.GHZSf+V1NjjUJTc9a9@fat_crate.local>
- <169713303534.3135.10558074245117750218.tip-bot2@tip-bot2>
- <20231016211040.GA3789555@dev-arch.thelio-3990X>
- <20231016212944.GGZS2rSCbIsViqZBDe@fat_crate.local>
- <20231016214810.GA3942238@dev-arch.thelio-3990X>
- <SN6PR12MB270273A7D1AF5D59B920C94194D6A@SN6PR12MB2702.namprd12.prod.outlook.com>
- <20231017052834.v53regh66hspv45n@treble>
- <20231017153222.GA707258@dev-arch.thelio-3990X>
+        Tue, 17 Oct 2023 13:52:32 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDD7190;
+        Tue, 17 Oct 2023 10:52:30 -0700 (PDT)
+Date:   Tue, 17 Oct 2023 17:52:27 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1697565148;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6QO7THutm9DbzDFqvBo8CeUszTWk5DcsXoee7Ok6T8A=;
+        b=oPfwVabj4mW8EPgc5AFNhLZFbW0ejqgqBMimVX7IJc56hO1syU0gQrIgpGGhhHHqBCeDUp
+        3cTNVxAzWyXbnuWF7RWuEYf9wj38rVTLio4mVKuPyF5Iog+ddyYbplcrrsVeBxqUYfDgnQ
+        b+dMu7jnaH4E408vOwF2zD+TjvZrJ9borL2b6xcM7SB0W2uPlMPJFjW0Lhu/5mT2p6QihK
+        Tbukq3QF/+AgphxyQZX8gWEI8/LqCtg2RLIM6QqnA281cgUAu9SCiP+zmGgObochO/dlpx
+        yCXTaJ8yacQMaz9ANA2kUwYwY4cY7zzwccXkyqFiIj6Vxa+J3lk6D1AKlvZh8w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1697565148;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6QO7THutm9DbzDFqvBo8CeUszTWk5DcsXoee7Ok6T8A=;
+        b=Y/BqD6PeQzzmg4hdzlsMQ+V3wbWrXeoNcMwBQsMYiTInE/hpKu49yAZLIeXe3qLo13q+Hk
+        HUgd6aA42rG7UJCA==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/bugs] x86/retpoline: Make sure there are no unconverted
+ return thunks due to KCSAN
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Marco Elver <elver@google.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20231017165946.v4i2d4exyqwqq3bx@treble>
+References: <20231017165946.v4i2d4exyqwqq3bx@treble>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231017153222.GA707258@dev-arch.thelio-3990X>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <169756514789.3135.9006141912388432463.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Enabling CONFIG_KCSAN causes a panic during boot due to an "invalid
-opcode" in __x86_return_thunk():
+The following commit has been merged into the x86/bugs branch of tip:
 
-  invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.0-rc2-00316-g91174087dcc7 #1
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-14-g1e1da7a96300-prebuilt.qemu.org 04/01/2014
-  RIP: 0010:__x86_return_thunk+0x0/0x10
-  Code: e8 01 00 00 00 cc e8 01 00 00 00 cc 48 81 c4 80 00 00 00 65 48 c7 04 25 d0 ac 02 00 ff ff ff ff c3 cc 0f 1f 84 00 00 00 00 00 <0f> 0b cc cc cc cc cc cc cc cc cc cc cc cc cc cc e9 db 8c 8e fe 0f
-  RSP: 0018:ffffaef1c0013ed0 EFLAGS: 00010246
-  RAX: ffffffffa0e80eb0 RBX: ffffffffa0f05240 RCX: 0001ffffffffffff
-  RDX: 0000000000000551 RSI: ffffffffa0dcc64e RDI: ffffffffa0f05238
-  RBP: ffff8f93c11708e0 R08: ffffffffa1387280 R09: 0000000000000000
-  R10: 0000000000000282 R11: 0001ffffa0f05238 R12: 0000000000000002
-  R13: 0000000000000282 R14: 0000000000000001 R15: 0000000000000000
-  FS:  0000000000000000(0000) GS:ffff8f93df000000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: ffff8f93d6c01000 CR3: 0000000015c2e000 CR4: 0000000000350ef0
+Commit-ID:     28860182b7d88e5be76f332c34377288ad08e87a
+Gitweb:        https://git.kernel.org/tip/28860182b7d88e5be76f332c34377288ad08e87a
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Tue, 17 Oct 2023 09:59:46 -07:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 17 Oct 2023 19:46:04 +02:00
 
-The panic is triggered by the UD2 instruction which gets patched into
-__x86_return_thunk() when alternatives are applied.  After that point,
-the default return thunk should no longer be used.
+x86/retpoline: Make sure there are no unconverted return thunks due to KCSAN
 
-As David Kaplan describes, the issue is caused by a couple of
-KCSAN-generated constructors which aren't processed by objtool:
+Enabling CONFIG_KCSAN causes the undefined opcode exception diagnostic
+added by
+
+  91174087dcc7 ("x86/retpoline: Ensure default return thunk isn't used at runtime")
+
+which is supposed to catch unconverted, default return thunks, to fire.
+The resulting panic is triggered by the UD2 instruction which gets
+patched into __x86_return_thunk() when alternatives are applied.  After
+that point, the default return thunk should no longer be used.
+
+As David Kaplan describes in his debugging of the issue, it is caused by
+a couple of KCSAN-generated constructors which aren't processed by
+objtool:
 
   "When KCSAN is enabled, GCC generates lots of constructor functions
   named _sub_I_00099_0 which call __tsan_init and then return.  The
@@ -110,21 +116,24 @@ Fix it by disabling KCSAN on version-timestamp.o and .vmlinux.export.o
 so the extra functions don't get generated.  KASAN and GCOV are already
 disabled for those files.
 
+  [ bp: Massage commit message. ]
+
 Fixes: 91174087dcc7 ("x86/retpoline: Ensure default return thunk isn't used at runtime")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
 Closes: https://lore.kernel.org/lkml/20231016214810.GA3942238@dev-arch.thelio-3990X/
-Debugged-by: David Kaplan <David.Kaplan@amd.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 Acked-by: Marco Elver <elver@google.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20231017165946.v4i2d4exyqwqq3bx@treble
 ---
  init/Makefile            | 1 +
  scripts/Makefile.vmlinux | 1 +
  2 files changed, 2 insertions(+)
 
 diff --git a/init/Makefile b/init/Makefile
-index ec557ada3c12..cbac576c57d6 100644
+index ec557ad..cbac576 100644
 --- a/init/Makefile
 +++ b/init/Makefile
 @@ -60,4 +60,5 @@ include/generated/utsversion.h: FORCE
@@ -134,7 +143,7 @@ index ec557ada3c12..cbac576c57d6 100644
 +KCSAN_SANITIZE_version-timestamp.o := n
  GCOV_PROFILE_version-timestamp.o := n
 diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-index 3cd6ca15f390..c9f3e03124d7 100644
+index 3cd6ca1..c9f3e03 100644
 --- a/scripts/Makefile.vmlinux
 +++ b/scripts/Makefile.vmlinux
 @@ -19,6 +19,7 @@ quiet_cmd_cc_o_c = CC      $@
@@ -145,6 +154,3 @@ index 3cd6ca15f390..c9f3e03124d7 100644
  GCOV_PROFILE_.vmlinux.export.o := n
  targets += .vmlinux.export.o
  vmlinux: .vmlinux.export.o
--- 
-2.41.0
-
