@@ -2,58 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37D497CBA23
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Oct 2023 07:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E69A87CC1C9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Oct 2023 13:31:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233654AbjJQF2k (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Oct 2023 01:28:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37128 "EHLO
+        id S232134AbjJQLbD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Oct 2023 07:31:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234341AbjJQF2j (ORCPT
+        with ESMTP id S232644AbjJQLbD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Oct 2023 01:28:39 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AAEBF2;
-        Mon, 16 Oct 2023 22:28:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57768C433C7;
-        Tue, 17 Oct 2023 05:28:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697520516;
-        bh=cd+YCcvaHShnXv8nfPjDdkeIq4Z59L04bYAn6IBtZqw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ntF7ZIGwmlpol29wyVdJbpc8ID4cq0mtwqrWBDTeXAskry0rMCdoEruNogvmNsU+t
-         NqQxKvSGs75U5msvpeYdfieKunLtc052QQH4DU0a1YqSij6JKj9AjYwiUx6IJF+vx7
-         3hB2jykjVWnSdGmbbsidS3PKfrMzY2XXRKAyV3YNzG/4pjrrbMOWhmgZSVxAIMb1g8
-         pl21yGph/khjwE3zcQaY+r6QNKk3FbGILEtQcXNPrSm5LeBHiMpU9qNdbVOBCSBiFI
-         IXqh9/KduF32ZjkJiSMiVWKflbBYScyvvDDo4TgBsQLWoenLVAbzi/Zc4K0CCIrqDV
-         +TNT6LtjCrf8g==
-Date:   Mon, 16 Oct 2023 22:28:34 -0700
-From:   Josh Poimboeuf <jpoimboe@kernel.org>
-To:     "Kaplan, David" <David.Kaplan@amd.com>
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "llvm@lists.linux.dev" <llvm@lists.linux.dev>
-Subject: Re: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't
- used at runtime
-Message-ID: <20231017052834.v53regh66hspv45n@treble>
-References: <20231012141031.GHZSf+V1NjjUJTc9a9@fat_crate.local>
- <169713303534.3135.10558074245117750218.tip-bot2@tip-bot2>
- <20231016211040.GA3789555@dev-arch.thelio-3990X>
- <20231016212944.GGZS2rSCbIsViqZBDe@fat_crate.local>
- <20231016214810.GA3942238@dev-arch.thelio-3990X>
- <SN6PR12MB270273A7D1AF5D59B920C94194D6A@SN6PR12MB2702.namprd12.prod.outlook.com>
+        Tue, 17 Oct 2023 07:31:03 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5820EA;
+        Tue, 17 Oct 2023 04:31:01 -0700 (PDT)
+Date:   Tue, 17 Oct 2023 11:30:57 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1697542258;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8VsSLdFpc/PxeSRQjP+bqFWYb+ZOMba2A5yv3BN4Ntc=;
+        b=dN9Hs9gc5eTj1DpWxdv/ygfF9Ca1bGFGDqbInmo9W7mCZcHMlwemY+q/F03T2K1KboC/P7
+        pYHbi7YqyGjrqhTMEoequqLS22c0DWvZyKN/np8BVP2wcRrHG6eD/V8Uz0WPSipm5J1N2d
+        6NLt69DyhOGDY7J8f+JruHEyvZeWs+ZrIQ6Q9RWzjDsLh73YHFnUC9KywwCgHUgxozwUPJ
+        lSgdhijegRgZ2grmw75r9eWAW0MNXhtBOeEBZag8ab3MyDIwt4tErto6XriHd6EHs+3UVF
+        3cEQn5oniYw/Ks6KcSyn2J+B/bQ6gUKwEzm+5fQk/D+dh/adybXh9NNQycFE/g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1697542258;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8VsSLdFpc/PxeSRQjP+bqFWYb+ZOMba2A5yv3BN4Ntc=;
+        b=Qw5Y5LAWf5581R0D5BpClUx2nMfCxL+W4QQ4hXAOQBdZ2gYvfYAzkKA1w5dgFOt7l+Pe+w
+        ckVtLBK5f0dnwqAQ==
+From:   "tip-bot2 for Cuda-Chen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/core] locking/seqlock: Fix grammar in comment
+Cc:     "Cuda-Chen" <clh960524@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231017053703.11312-1-clh960524@gmail.com>
+References: <20231017053703.11312-1-clh960524@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <SN6PR12MB270273A7D1AF5D59B920C94194D6A@SN6PR12MB2702.namprd12.prod.outlook.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Message-ID: <169754225791.3135.5867616537224142334.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,42 +63,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, Oct 17, 2023 at 04:31:09AM +0000, Kaplan, David wrote:
-> I think I found the problem, although I'm not sure the best way to fix it.
-> 
-> When KCSAN is enabled, GCC generates lots of constructor functions named _sub_I_00099_0 which call __tsan_init and then return.  The returns in these are generally annotated normally by objtool and fixed up at runtime.  But objtool runs on vmlinux.o and vmlinux.o does not include a couple of object files that are in vmlinux, like init/version-timestamp.o and .vmlinux.export.o, both of which contain _sub_I_00099_0 functions.  As a result, the returns in these functions are not annotated, and the panic occurs when we call one of them in do_ctors and it uses the default return thunk.
-> 
-> This difference can be seen by counting the number of these functions in the object files:
-> $ objdump -d vmlinux.o|grep -c "<_sub_I_00099_0>:"
-> 2601
-> $ objdump -d vmlinux|grep -c "<_sub_I_00099_0>:"
-> 2603
-> 
-> If these functions are only run during kernel boot, there is no speculation concern.  My first thought is that these two object files perhaps should be built without -mfunction-return=thunk-extern.  The use of that flag requires objtool to have the intended behavior and objtool isn't seeing these files.
-> 
-> Perhaps another option would be to not compile these two files with KCSAN, as they are already excluded from KASAN and GCOV it looks like.
+The following commit has been merged into the locking/core branch of tip:
 
-I think the latter would be the easy fix, does this make it go away?
+Commit-ID:     184fdf9fc7ae6ae7155768faa48fc609d1a24b7e
+Gitweb:        https://git.kernel.org/tip/184fdf9fc7ae6ae7155768faa48fc609d1a24b7e
+Author:        Cuda-Chen <clh960524@gmail.com>
+AuthorDate:    Tue, 17 Oct 2023 13:37:03 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 17 Oct 2023 13:28:12 +02:00
 
-diff --git a/init/Makefile b/init/Makefile
-index ec557ada3c12..cbac576c57d6 100644
---- a/init/Makefile
-+++ b/init/Makefile
-@@ -60,4 +60,5 @@ include/generated/utsversion.h: FORCE
- $(obj)/version-timestamp.o: include/generated/utsversion.h
- CFLAGS_version-timestamp.o := -include include/generated/utsversion.h
- KASAN_SANITIZE_version-timestamp.o := n
-+KCSAN_SANITIZE_version-timestamp.o := n
- GCOV_PROFILE_version-timestamp.o := n
-diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-index 3cd6ca15f390..c9f3e03124d7 100644
---- a/scripts/Makefile.vmlinux
-+++ b/scripts/Makefile.vmlinux
-@@ -19,6 +19,7 @@ quiet_cmd_cc_o_c = CC      $@
- 
- ifdef CONFIG_MODULES
- KASAN_SANITIZE_.vmlinux.export.o := n
-+KCSAN_SANITIZE_.vmlinux.export.o := n
- GCOV_PROFILE_.vmlinux.export.o := n
- targets += .vmlinux.export.o
- vmlinux: .vmlinux.export.o
+locking/seqlock: Fix grammar in comment
+
+The "neither writes before and after ..." for the description
+of do_write_seqcount_end() should be "neither writes before nor after".
+
+Signed-off-by: Cuda-Chen <clh960524@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20231017053703.11312-1-clh960524@gmail.com
+---
+ include/linux/seqlock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index 80f21d2..e92f9d5 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -584,7 +584,7 @@ static inline void do_write_seqcount_end(seqcount_t *s)
+  * via WRITE_ONCE): a) to ensure the writes become visible to other threads
+  * atomically, avoiding compiler optimizations; b) to document which writes are
+  * meant to propagate to the reader critical section. This is necessary because
+- * neither writes before and after the barrier are enclosed in a seq-writer
++ * neither writes before nor after the barrier are enclosed in a seq-writer
+  * critical section that would ensure readers are aware of ongoing writes::
+  *
+  *	seqcount_t seq;
