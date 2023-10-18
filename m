@@ -2,56 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAA667CD6BE
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Oct 2023 10:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30D4E7CD950
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Oct 2023 12:34:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229984AbjJRIjj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Oct 2023 04:39:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39742 "EHLO
+        id S229717AbjJRKeW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Oct 2023 06:34:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229985AbjJRIji (ORCPT
+        with ESMTP id S229690AbjJRKeV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Oct 2023 04:39:38 -0400
+        Wed, 18 Oct 2023 06:34:21 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18CDEEA;
-        Wed, 18 Oct 2023 01:39:35 -0700 (PDT)
-Date:   Wed, 18 Oct 2023 08:39:32 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDE69BA;
+        Wed, 18 Oct 2023 03:34:19 -0700 (PDT)
+Date:   Wed, 18 Oct 2023 10:34:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697618373;
+        s=2020; t=1697625257;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=FxJ214tTC3Ga4e8z0UB3atScPcX1trtpBjOv5omanQQ=;
-        b=bKusSB4Czmphn3Fpo9v1dpysTmF4UemtmDl3LiG8PjYT/PXmwTrzmHT2hxSSh0CCBR1FnB
-        KBbfwhEgBhU3U9aGLzqa9mjGPW7DxkhI9UR+zdWKit/akybcf6HrVD92Aou+mL7lP+NisR
-        25azMZxzxiTqZXQ4Lu+BdgxdwXRMivplI5kSRV+cFNe5v6CVE0fkSOZvrmgNyTEuYtWDCp
-        Xvq5s1aX3jK7uMjWN5KTBJovcTE8NHRCs9VBDz8jtXk72ShaBuxyIttXS8qk/mr1+BhDSm
-        3mQPfgLXoGisN7CNhyGRXsfl5prxIif1Fe1w1CzfsmILl8HKw08DJSxauykFkg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=zAT0k8uV4B1VaziPHHllpGl9vbj2hwXI5RmgJXRf8gY=;
+        b=tyme8N1wKOL3zq4Q8j7udJYUK26F4YyEcD5tnwTPqVGIMG/gvj2OhTN66uDEVU67kCXGeE
+        7lD63wp2IZmNJpHmwPfe1ZxFy90Pa89MyRNzj+VaQX8zir01KCjYd53tedvzZhr3mxUmk9
+        zUhvTlMs12vfk4GRtI6Z225JE8ew8lWjyRCP0lHhCi7V8U+rLlUGxtSzVQ5We/ZBhi7g8q
+        4r5cvlR6Dv/RHGWmNNLfuarvRPxvY8qUuRgEV8OIfaQB5wrInu7ZCDeiLp9uuYdI6s3pEh
+        H8PgLfsQJYjnG1ioUCYKcucZ8A1NV5tHTjGqyzSQ52Kv/FGO/tZkdF59b551pg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697618373;
+        s=2020e; t=1697625257;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=FxJ214tTC3Ga4e8z0UB3atScPcX1trtpBjOv5omanQQ=;
-        b=aX5YLFIQujRc368nJMfQ+PNKMZjeRCAHG9sT8EEEXiprU/PAEZweFkhyVb7YfOv7mzp5J8
-        eW/eeUx+t/6RWlAg==
-From:   "tip-bot2 for Jiapeng Chong" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=zAT0k8uV4B1VaziPHHllpGl9vbj2hwXI5RmgJXRf8gY=;
+        b=98KCdelaADEX8bKHz5g+ChhpEdc4r/X7v+YEEgFlRQdRRKFc4BMN1cTAMHG5O/oqPjn8fz
+        1E8/i4BbcRxerTBQ==
+From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Remove duplicate #include
-Cc:     Abaci Robot <abaci@linux.alibaba.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231018062759.44375-1-jiapeng.chong@linux.alibaba.com>
-References: <20231018062759.44375-1-jiapeng.chong@linux.alibaba.com>
+Subject: [tip: x86/boot] x86/boot: efistub: Assign global boot_params variable
+Cc:     Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        linux-kernel@vger.kernel.org, x86@kernel.org
 MIME-Version: 1.0
-Message-ID: <169761837272.3135.2661780509672715179.tip-bot2@tip-bot2>
+Message-ID: <169762525684.3135.6443175198415541833.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,39 +57,38 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     1b7ef2d94ff4cb0b1186a224a97349864820c606
-Gitweb:        https://git.kernel.org/tip/1b7ef2d94ff4cb0b1186a224a97349864820c606
-Author:        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-AuthorDate:    Wed, 18 Oct 2023 14:27:59 +08:00
+Commit-ID:     50dcc2e0d62e3c4a54f39673c4dc3dcde7c74d52
+Gitweb:        https://git.kernel.org/tip/50dcc2e0d62e3c4a54f39673c4dc3dcde7c74d52
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Tue, 17 Oct 2023 15:25:13 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 18 Oct 2023 10:32:31 +02:00
+CommitterDate: Wed, 18 Oct 2023 12:03:04 +02:00
 
-sched/fair: Remove duplicate #include
+x86/boot: efistub: Assign global boot_params variable
 
-./kernel/sched/fair.c: linux/sched/cond_resched.h is included more than once.
+Now that the x86 EFI stub calls into some APIs exposed by the
+decompressor (e.g., kaslr_get_random_long()), it is necessary to ensure
+that the global boot_params variable is set correctly before doing so.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231018062759.44375-1-jiapeng.chong@linux.alibaba.com
-
-Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=6907
+Cc: linux-kernel@vger.kernel.org
 ---
- kernel/sched/fair.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 38d757c..9ae2208 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -51,8 +51,6 @@
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 3bfc596..76cc0d0 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -818,6 +818,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 	unsigned long kernel_entry;
+ 	efi_status_t status;
  
- #include <asm/switch_to.h>
- 
--#include <linux/sched/cond_resched.h>
--
- #include "sched.h"
- #include "stats.h"
- #include "autogroup.h"
++	boot_params_ptr = boot_params;
++
+ 	efi_system_table = sys_table_arg;
+ 	/* Check if we were booted by the EFI firmware */
+ 	if (efi_system_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
