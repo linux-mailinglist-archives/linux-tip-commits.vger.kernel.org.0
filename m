@@ -2,49 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B62D7CE873
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Oct 2023 22:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53E9E7CE922
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Oct 2023 22:38:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231636AbjJRUEe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Oct 2023 16:04:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40362 "EHLO
+        id S231145AbjJRUiC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Oct 2023 16:38:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229697AbjJRUEd (ORCPT
+        with ESMTP id S229726AbjJRUiB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Oct 2023 16:04:33 -0400
+        Wed, 18 Oct 2023 16:38:01 -0400
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A3E7A4;
-        Wed, 18 Oct 2023 13:04:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427C2A4;
+        Wed, 18 Oct 2023 13:38:00 -0700 (PDT)
 Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9758E40E01AA;
-        Wed, 18 Oct 2023 20:04:29 +0000 (UTC)
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7FEE040E01AF;
+        Wed, 18 Oct 2023 20:37:58 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
         header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
         by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id gwCJkFbKXrzr; Wed, 18 Oct 2023 20:04:28 +0000 (UTC)
+        with ESMTP id YUPvjayGgkMM; Wed, 18 Oct 2023 20:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1697659467; bh=t53snlM/FS4FjefjycEZq7XirObB48/d4Bvth4n8Fng=;
+        t=1697661476; bh=Pm4YziE+m+355hgaPXWCNbxGtS+NNwjyA12sofw3mNg=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hnsFtV4+lHloRtYmDjnHOKoekKLGeEfLvkZ7YBHa4h1tl4N2cnIwZHU7A37I3kShS
-         5uIeOUQyu4YTUzcmS+qb2EmRPxGgnVBc6RQSzD7640EsQgAituALRTP9u1vXc+5sKN
-         ilAyWncKwYRqMZPr1g0KenNZbPnCoq5K/bD0H2DBY4pLFwCK1Q0yyJ1x1+o1ZYlhon
-         DXzDX4JrXCAkYHwtXIQ4FdwTerMT+f2MGQ5YhXMDIxgSKqJdOFvTIqtMy54S0xv+MH
-         uSob638OlDlBsvGXRx2owHeXUKLettnv2tXbR0SiACaFa/k1Mmw9TdEdy2UNA27cNB
-         dMSXj9YTU9zLiKwx4IpyUhX2+nhICRL4Z6ZQQ5McFAh1Yussp1drd8okaYhlc5Xjc8
-         Lvl6Dlh0x2KY5Y+ajMx8IXR4JN9fnzC5rW1q3oWZ5CFwIY2h1zdbz4Jk3j67YboUhv
-         yk3/3cFnaoLSE9HpyE3mq7msLy/uGBnXYquX/0QppMasD/rxzSMvupqfCVQwpKzuPm
-         kWc4BoJojZzkdOItbvwau4WjxXoa6Ea0LVVxLMNgMuaqKIQXHaN8gQZs//7kcTLEgP
-         lj2g0lRHZmOP+Ghs29x/YNg3P8qM4JGtRQMzo+Od89R+56pWC9z+LOEIiFhCPWElO7
-         pFpDBKBya6qmSjYtfzwL3NKE=
+        b=EdmGecDgTAXRw4mZx51qBJTV+XDxNBhWlpCwZvoSCw/PfR0gTsJOWAtNPor1mabaf
+         WBv2KPTCEyiA9kvoTXOM4eIklFh2ktN7BGwC0lUq97eXXL7bGCldr6sAaIS75nhtUv
+         LaC5GYLQFgbkJMk3FwpMm2KHYio3zywxCXWPaxMoB5CffLOEmkZEznKJBRARmqh9PN
+         aHPg/aBvqp6GwHYf7YqRPNX2Lur6FOuU1GrRDF4ozXjtykOVsFvyMNBqcgoqNjHMQ0
+         wKAUSL5ewCKClSGHDCJhxjL+Vh0xXh443F5+hd6okzLIU7UWHbbuzRhmSupGXlNCaU
+         1jLcoS60m5XCMFV675+lbESkeMoE3vo5fASodY1BgUq3hwlunEksL7z1xcSp27nlN8
+         PBHr87DzSRx5xeOgDbosquwa9tK9BoLZ8Y8/UDF/6Da1CTI4tYHiJnY++l2c6fT5zC
+         aflX7q1XRwG4QHbcb7Km5HgOPFsvuoeIEBr03KsF6si3uqux715F7cQ1Kl3DzDLYu4
+         dI249bYR8Ma2BXCgGLBNhyxsVuXl8qyqbV7363T31Ddc0deprt6Pf6jP9PkGQAzEMu
+         JyGbUJ9LjOlC9ImeQ4lr+0uhAnoF2br+5mONC102lghRQquXLMxFkSFvSeNG2p75qD
+         +ISRj56aOPYHN/VCaeOX+VS8=
 Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
         (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 87D7640E0193;
-        Wed, 18 Oct 2023 20:04:19 +0000 (UTC)
-Date:   Wed, 18 Oct 2023 22:04:14 +0200
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9FCBA40E0196;
+        Wed, 18 Oct 2023 20:37:48 +0000 (UTC)
+Date:   Wed, 18 Oct 2023 22:37:47 +0200
 From:   Borislav Petkov <bp@alien8.de>
 To:     Josh Poimboeuf <jpoimboe@kernel.org>
 Cc:     Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
@@ -54,21 +54,18 @@ Cc:     Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
         David Howells <dhowells@redhat.com>
 Subject: Re: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't
  used at runtime
-Message-ID: <20231018200414.GHZTA6Pq8UE4rK0Yk5@fat_crate.local>
-References: <20231018132352.GBZS/caGJ8Wk9kmTbg@fat_crate.local>
+Message-ID: <20231018203747.GJZTBCG7mv5HL4w6CC@fat_crate.local>
+References: <20231012141031.GHZSf+V1NjjUJTc9a9@fat_crate.local>
+ <169713303534.3135.10558074245117750218.tip-bot2@tip-bot2>
+ <20231018132352.GBZS/caGJ8Wk9kmTbg@fat_crate.local>
  <ZS/f8DeEIWhBtBeb@gmail.com>
  <20231018151245.GCZS/17QhDGe7q6K+w@fat_crate.local>
  <20231018155433.z4auwckr5s27wnig@treble>
  <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
- <20231018181431.skre6i6vzrxsprck@treble>
- <20231018182223.GFZTAiX4BJ6FT8bHzz@fat_crate.local>
- <20231018183915.xwamzzqjf6gehaou@treble>
- <20231018184431.GGZTAnj8V/R54S5KK9@fat_crate.local>
- <20231018191407.n4ys6vefbio7z3sn@treble>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231018191407.n4ys6vefbio7z3sn@treble>
+In-Reply-To: <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -78,22 +75,63 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Oct 18, 2023 at 12:14:07PM -0700, Josh Poimboeuf wrote:
-> There are a lot of warnings which could become security concerns.
+On Wed, Oct 18, 2023 at 07:55:31PM +0200, Borislav Petkov wrote:
+> And that happens because for whatever reason apply_returns() can't find
+> that last jmp __x86_return_thunk for %r15 and it barfs.
 
-Not "could become" - this one *is* a security issue because it means we're
-not mitigating with the RET thunks properly.
+Some more info on why it happens:
 
-> By definition, a warning means something is seriously wrong.  If it's
-> ignored, all bets are off.  That's why we taint the kernel.
+something with gcc-13 or this config of whatever ends up generating
+this:
 
-If I could, I'd cripple the kernel just enough so that it issues the
-warning and then stops so that the users are not exposed, but show why
-it stopped. And we know that panicking doesn't provide that.
+ffffffff81d71200 <__x86_indirect_thunk_r14>:
+ffffffff81d71200:       e8 01 00 00 00          call   ffffffff81d71206 <__x86_indirect_thunk_r14+0x6>
+ffffffff81d71205:       cc                      int3
+ffffffff81d71206:       4c 89 34 24             mov    %r14,(%rsp)
+ffffffff81d7120a:       e9 91 00 00 00          jmp    ffffffff81d712a0 <__x86_return_thunk>
+^^^^^^^^^
 
-David suggested earlier that perhaps we should warn and then mark the
-kernel as vulnerable to those mitigations. That could be a more
-realistic thing to do...
+ffffffff81d7120f:       66 66 2e 0f 1f 84 00    data16 cs nopw 0x0(%rax,%rax,1)
+ffffffff81d71216:       00 00 00 00 
+ffffffff81d7121a:       66 0f 1f 44 00 00       nopw   0x0(%rax,%rax,1)
+
+ffffffff81d71220 <__x86_indirect_thunk_r15>:
+ffffffff81d71220:       e8 01 00 00 00          call   ffffffff81d71226 <__x86_indirect_thunk_r15+0x6>
+ffffffff81d71225:       cc                      int3
+ffffffff81d71226:       4c 89 3c 24             mov    %r15,(%rsp)
+ffffffff81d7122a:       eb 74                   jmp    ffffffff81d712a0 <__x86_return_thunk>
+^^^^^^^^^^
+
+notice the two JMP opcodes there.
+
+Now look at the code in apply_returns:
+
+                if (op == JMP32_INSN_OPCODE)
+                        dest = addr + insn.length + insn.immediate.value;
+
+with
+
+#define JMP32_INSN_OPCODE       0xE9
+
+And here's the fix:
+
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 73be3931e4f0..50d64f5226f4 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -748,14 +748,20 @@ void __init_or_module noinline apply_returns(s32 *start, s32 *end)
+                        continue;
+ 
+                op = insn.opcode.bytes[0];
+-               if (op == JMP32_INSN_OPCODE)
++               if (op == JMP32_INSN_OPCODE || op == JMP8_INSN_OPCODE)
+                        dest = addr + insn.length + insn.immediate.value;
+ 
+
+I'd still prefer the revert, though, that close to the MW. We can work
+at those things later, at leisure.
+
+Thx.
 
 -- 
 Regards/Gruss,
