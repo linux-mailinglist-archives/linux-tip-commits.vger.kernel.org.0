@@ -2,100 +2,137 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 506127CDD80
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Oct 2023 15:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CD8B7CDDB5
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Oct 2023 15:45:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344689AbjJRNjI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Oct 2023 09:39:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36834 "EHLO
+        id S231741AbjJRNpE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Oct 2023 09:45:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344723AbjJRNjG (ORCPT
+        with ESMTP id S231562AbjJRNpD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Oct 2023 09:39:06 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 126EA10F;
-        Wed, 18 Oct 2023 06:39:01 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-9be3b66f254so731386266b.3;
-        Wed, 18 Oct 2023 06:39:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697636339; x=1698241139; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2pm6XMnF0LkLiGv//V6H7WXNTlx5q7g2HU2tHJ2BwW4=;
-        b=l2/7NsbSg174PJNclPIcVsTDKCPtl2gAdC6DV3NWDsd3alf1Y1S2Te6AtBFRbpo2Hu
-         cFa+9V9m6XumETo+wGp0c32Mff3crXQxvZFMShP9VkNSppIKX0yPZ/SOWp3F32wASpyF
-         SbTN5SeIpIVQIvXZf3wJC9jR2oNHPktiIX2RI/DTgdp2LcTjPeYfO3FnOcjoCnirc9nP
-         oiwOqVZWJ042DQxz8OfaoBReJ4FbGdq2w7YAZBdMowBxRVJD2gGUFRvHqlhvBRpKpX4r
-         DuZR/4GPkhCPVeB8mEclp0neFZwwC9ZToIDgOdKcJb22VLPD5P3c6lZrjlPX8FhTfwm1
-         YEzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697636339; x=1698241139;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2pm6XMnF0LkLiGv//V6H7WXNTlx5q7g2HU2tHJ2BwW4=;
-        b=Omw9EGpDmJ7SrEyUQznRJjEE/qKEQrQiZpBaJOKLtmarY3C099zM88Jt2kBOqhvDEV
-         AeJkFFsTUzycsnIuZQkxM46AHaEMmfPD9xpj6PLJYq+J0xgumUnN4zvf+ySksYRRTdTN
-         KzqgCBZ+BFRRxNK95lspANrXVlEUiEwUZcsq58/yT0cMechWp5eG1qm6uWxX+J9d81Js
-         AvpMAEWmTkhtjz6v4VUQFR/EplZ42t0uiQXpEewc8M64k9e2tAAMf6KdjEgaaFCXy8HA
-         +TLrhs2K//YD8KmJnb87oYRep+W5lC8QyNvD3gH4Mwwo3bJLBQkROvSEH6xSrKXgE0p5
-         s+uA==
-X-Gm-Message-State: AOJu0YxI6QdOb3uHUPR+ASnG5DUYRe9MW3MVtZL+DyB0RWEJCNSmjX45
-        9VyrK45YQNa7tv71XA/a+2ylVgvQQhs=
-X-Google-Smtp-Source: AGHT+IFDqfZgAY2jM1OJYiTRT4h2u9L2KclhpnC2f5LMyn2k1W2N08R04lVtmG4J3ddx3rkdU8uY7g==
-X-Received: by 2002:a17:907:1ca0:b0:9c1:9b3a:4cd1 with SMTP id nb32-20020a1709071ca000b009c19b3a4cd1mr3925459ejc.3.1697636339234;
-        Wed, 18 Oct 2023 06:38:59 -0700 (PDT)
-Received: from gmail.com (1F2EF7B2.nat.pool.telekom.hu. [31.46.247.178])
-        by smtp.gmail.com with ESMTPSA id bn4-20020a170906c0c400b0099cb0a7098dsm1749327ejb.19.2023.10.18.06.38.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 06:38:58 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Wed, 18 Oct 2023 15:38:56 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        David Kaplan <david.kaplan@amd.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org
-Subject: Re: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't
- used at runtime
-Message-ID: <ZS/f8DeEIWhBtBeb@gmail.com>
-References: <20231012141031.GHZSf+V1NjjUJTc9a9@fat_crate.local>
- <169713303534.3135.10558074245117750218.tip-bot2@tip-bot2>
- <20231018132352.GBZS/caGJ8Wk9kmTbg@fat_crate.local>
+        Wed, 18 Oct 2023 09:45:03 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9571595;
+        Wed, 18 Oct 2023 06:45:01 -0700 (PDT)
+Date:   Wed, 18 Oct 2023 13:44:59 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1697636700;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Mn1R1D8LCZyXRyc+VdxbsLSJ9bsUZqepc3iAJQINwx0=;
+        b=mCxibk6xYxt62iYT5CvrcV5a7mbDgwEAK5eJIFczKY/JTy8hgdWGDNVYFBR6KWDcNqbzZS
+        nMacdn6vrBh4aCZdo1bNgSNcsdcCdaHrE+AZk0jJFoIafgzJxq/ppa7NsWUhlH/ejXP3vM
+        3ijHemP0528A4eyaHk+fuK6wFZsmtaXT7RcgdEvua5b5rB3oN+LLiw9LQGj02BDfaxHwsA
+        y/xKnr8DjRyU/Qn5GEysfaEKKAK5avbhPxo1++CgyaYWJ/MiPsZ/u8em6+BPQ+JbvxAUhH
+        EfBbACl85PrrDZ0RCYv8SkTpunU3YrWSyjcZ24Uo82v/12A6yXD7tqV6Tk7hxw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1697636700;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Mn1R1D8LCZyXRyc+VdxbsLSJ9bsUZqepc3iAJQINwx0=;
+        b=aZH7NdcWIn71zvYYPCvDu1x/dNBna/ir9tGipZUunernAdQu26L03P8423FxD/2T1Tn+Nw
+        ZetpclpinhBsTjCQ==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/percpu] x86/percpu: Use the correct asm operand modifier in
+ percpu_stable_op()
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Brian Gerst <brgerst@gmail.com>,
+        Denys Vlasenko <dvlasenk@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Sean Christopherson <seanjc@google.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20231016200755.287403-1-ubizjak@gmail.com>
+References: <20231016200755.287403-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231018132352.GBZS/caGJ8Wk9kmTbg@fat_crate.local>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Message-ID: <169763669910.3135.5711813859163110694.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the x86/percpu branch of tip:
 
-* Borislav Petkov <bp@alien8.de> wrote:
+Commit-ID:     e39828d2c1c0781ccfcf742791daf88fdfa481ea
+Gitweb:        https://git.kernel.org/tip/e39828d2c1c0781ccfcf742791daf88fdfa481ea
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Mon, 16 Oct 2023 22:07:30 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 18 Oct 2023 14:09:16 +02:00
 
-> diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-> index bb0ab8466b91..e4b2dfbf3de5 100644
-> --- a/arch/x86/kernel/cpu/bugs.c
-> +++ b/arch/x86/kernel/cpu/bugs.c
-> @@ -2849,3 +2849,8 @@ ssize_t cpu_show_gds(struct device *dev, struct device_attribute *attr, char *bu
->  	return cpu_show_common(dev, attr, buf, X86_BUG_GDS);
->  }
->  #endif
-> +
-> +void check_thunks(void)
-> +{
-> +	WARN(1, "Unconverted return thunk\n");
+x86/percpu: Use the correct asm operand modifier in percpu_stable_op()
 
-If then WARN_ONCE().
+The "P" asm operand modifier is a x86 target-specific modifier.
 
-Thanks,
+When used for a constant, it drops all syntax-specific prefixes and
+issues the bare constant. This modifier is not correct for address
+handling, in this case a generic "a" operand modifier should be used.
 
-	Ingo
+The "a" asm operand modifier substitutes a memory reference, with the
+actual operand treated as address.  For x86_64, when a symbol is
+provided, the "a" modifier emits "sym(%rip)" instead of "sym",
+enabling shorter %rip-relative addressing.
+
+Clang allows only "i" and "r" operand constraints with an "a" modifier,
+so the patch normalizes the modifier/constraint pair to "a"/"i"
+which is consistent between both compilers.
+
+The patch reduces code size of a test build by 4072 bytes:
+
+   text            data     bss    dec             hex     filename
+   25523268        4388300  808452 30720020        1d4c014 vmlinux-old.o
+   25519196        4388300  808452 30715948        1d4b02c vmlinux-new.o
+
+[ mingo: Changelog clarity. ]
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Denys Vlasenko <dvlasenk@redhat.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20231016200755.287403-1-ubizjak@gmail.com
+---
+ arch/x86/include/asm/percpu.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index 5474690..ac3220a 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -194,9 +194,9 @@ do {									\
+ #define percpu_stable_op(size, op, _var)				\
+ ({									\
+ 	__pcpu_type_##size pfo_val__;					\
+-	asm(__pcpu_op2_##size(op, __force_percpu_arg(P[var]), "%[val]")	\
++	asm(__pcpu_op2_##size(op, __force_percpu_arg(a[var]), "%[val]")	\
+ 	    : [val] __pcpu_reg_##size("=", pfo_val__)			\
+-	    : [var] "p" (&(_var)));					\
++	    : [var] "i" (&(_var)));					\
+ 	(typeof(_var))(unsigned long) pfo_val__;			\
+ })
+ 
