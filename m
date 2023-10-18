@@ -2,49 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E7D7CD68C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Oct 2023 10:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAA667CD6BE
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Oct 2023 10:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344683AbjJRIbz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Oct 2023 04:31:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46838 "EHLO
+        id S229984AbjJRIjj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Oct 2023 04:39:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344664AbjJRIbx (ORCPT
+        with ESMTP id S229985AbjJRIji (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Oct 2023 04:31:53 -0400
+        Wed, 18 Oct 2023 04:39:38 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC9F7BA;
-        Wed, 18 Oct 2023 01:31:51 -0700 (PDT)
-Date:   Wed, 18 Oct 2023 08:31:49 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18CDEEA;
+        Wed, 18 Oct 2023 01:39:35 -0700 (PDT)
+Date:   Wed, 18 Oct 2023 08:39:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697617910;
+        s=2020; t=1697618373;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=p1eHh83Sg5uz33qMvHr/Qg2yAhdWF/K7xokZDEP7HJM=;
-        b=qHNxPEK8a8M+NaT/1mAM4eDzdD5BZJvbi9C+kk/yOZ7AsiRw/YWc6A08x75cTMOca8wd6G
-        +SUCKqdkj4LnabgzZqPbLZL1enDiEHLpM+KUQ+kqvK+YLBGAi2/px3VD2pVP5wJph52OuQ
-        mbeEnkNRsWVnQSXUYkTS5cSNmzjdwOgXRg7mvgoLmclx8dvmj/uClFpVEHmvIzXwyBZWqA
-        qFKUZW/dMO7f2cqON6HCIGt+zo84OKs7BQxLqrF9pcyyy2qeDhuCOK8FbtGhLhF5V3uFUy
-        hDHsI89cHmyrVJnl7yWiXQFXvw9V/GicwvLimwzF2Vk8rfnuo4QwPUjKjOAgGQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FxJ214tTC3Ga4e8z0UB3atScPcX1trtpBjOv5omanQQ=;
+        b=bKusSB4Czmphn3Fpo9v1dpysTmF4UemtmDl3LiG8PjYT/PXmwTrzmHT2hxSSh0CCBR1FnB
+        KBbfwhEgBhU3U9aGLzqa9mjGPW7DxkhI9UR+zdWKit/akybcf6HrVD92Aou+mL7lP+NisR
+        25azMZxzxiTqZXQ4Lu+BdgxdwXRMivplI5kSRV+cFNe5v6CVE0fkSOZvrmgNyTEuYtWDCp
+        Xvq5s1aX3jK7uMjWN5KTBJovcTE8NHRCs9VBDz8jtXk72ShaBuxyIttXS8qk/mr1+BhDSm
+        3mQPfgLXoGisN7CNhyGRXsfl5prxIif1Fe1w1CzfsmILl8HKw08DJSxauykFkg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697617910;
+        s=2020e; t=1697618373;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=p1eHh83Sg5uz33qMvHr/Qg2yAhdWF/K7xokZDEP7HJM=;
-        b=9r7v6E9ExhnkSmMK3sOvJSkBTewahkkGEu8jYR1JubHMLh1LbAj+fTF0WfXJzmh34kVrD7
-        p0hWgRmxAgp/hgBA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FxJ214tTC3Ga4e8z0UB3atScPcX1trtpBjOv5omanQQ=;
+        b=aX5YLFIQujRc368nJMfQ+PNKMZjeRCAHG9sT8EEEXiprU/PAEZweFkhyVb7YfOv7mzp5J8
+        eW/eeUx+t/6RWlAg==
+From:   "tip-bot2 for Jiapeng Chong" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/eevdf: Fix heap corruption more
-Cc:     0599jiangyc@gmail.com, Dmitry Safonov <0x7f454c46@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: Remove duplicate #include
+Cc:     Abaci Robot <abaci@linux.alibaba.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20231018062759.44375-1-jiapeng.chong@linux.alibaba.com>
+References: <20231018062759.44375-1-jiapeng.chong@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <169761790955.3135.2302450117444631157.tip-bot2@tip-bot2>
+Message-ID: <169761837272.3135.2661780509672715179.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,43 +65,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d2929762cc3f85528b0ca12f6f63c2a714f24778
-Gitweb:        https://git.kernel.org/tip/d2929762cc3f85528b0ca12f6f63c2a714f24778
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 17 Oct 2023 16:59:47 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 18 Oct 2023 10:22:13 +02:00
+Commit-ID:     1b7ef2d94ff4cb0b1186a224a97349864820c606
+Gitweb:        https://git.kernel.org/tip/1b7ef2d94ff4cb0b1186a224a97349864820c606
+Author:        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+AuthorDate:    Wed, 18 Oct 2023 14:27:59 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 18 Oct 2023 10:32:31 +02:00
 
-sched/eevdf: Fix heap corruption more
+sched/fair: Remove duplicate #include
 
-Because someone is a flaming idiot... and forgot we have current as
-se->on_rq but not actually in the tree itself, and walking rb_parent()
-on an entry not in the tree is 'funky' and KASAN complains.
+./kernel/sched/fair.c: linux/sched/cond_resched.h is included more than once.
 
-Fixes: 8dafa9d0eb1a ("sched/eevdf: Fix min_deadline heap integrity")
-Reported-by: 0599jiangyc@gmail.com
-Reported-by: Dmitry Safonov <0x7f454c46@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Dmitry Safonov <0x7f454c46@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218020
-Link: https://lkml.kernel.org/r/CAJwJo6ZGXO07%3DQvW4fgQfbsDzQPs9xj5sAQ1zp%3DmAyPMNbHYww%40mail.gmail.com
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20231018062759.44375-1-jiapeng.chong@linux.alibaba.com
+
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=6907
 ---
- kernel/sched/fair.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 061a30a..df348aa 100644
+index 38d757c..9ae2208 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -3657,7 +3657,8 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
- 		 */
- 		deadline = div_s64(deadline * old_weight, weight);
- 		se->deadline = se->vruntime + deadline;
--		min_deadline_cb_propagate(&se->run_node, NULL);
-+		if (se != cfs_rq->curr)
-+			min_deadline_cb_propagate(&se->run_node, NULL);
- 	}
+@@ -51,8 +51,6 @@
  
- #ifdef CONFIG_SMP
+ #include <asm/switch_to.h>
+ 
+-#include <linux/sched/cond_resched.h>
+-
+ #include "sched.h"
+ #include "stats.h"
+ #include "autogroup.h"
