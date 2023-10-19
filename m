@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCD997CF272
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Oct 2023 10:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97F637CF42E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Oct 2023 11:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235278AbjJSIYK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Oct 2023 04:24:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59244 "EHLO
+        id S1345008AbjJSJku (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Oct 2023 05:40:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235308AbjJSIYF (ORCPT
+        with ESMTP id S229660AbjJSJks (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Oct 2023 04:24:05 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15014182;
-        Thu, 19 Oct 2023 01:24:03 -0700 (PDT)
-Date:   Thu, 19 Oct 2023 08:23:59 -0000
+        Thu, 19 Oct 2023 05:40:48 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BB56B8;
+        Thu, 19 Oct 2023 02:40:46 -0700 (PDT)
+Date:   Thu, 19 Oct 2023 09:40:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697703840;
+        s=2020; t=1697708444;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ATmV+shENxojKtOgLX8bX5Ko5VODxesMS6F+xBHm3TA=;
-        b=IYCjluzwcIrVVHp6/It2Clz1236LclJy3xsuqgHEfrN1dWRCv/kqQFJAlLWQ9gXwQvogmG
-        c2l19LdpXDT4L4MtKJ9WlezYgKV9q3ocCG9dBQSuXV1/FOdO7v6NHiNO92pKhbEMQGi6c3
-        iCbDN9e3cGG0GiAt8ujYnljzVDx1LC07OtzTDy437bUmFwdurDVNxEymCBRY3K67/P6OYs
-        tNcoaGPaDg3hc0pO91sbayQ/cxgpgT25P14vyeBcFq0ak0g8KtS0MyAtzg7iI4bbxaL9vh
-        DXBPb6Vrjkpco3/ePc20HwVntP56rasFUlL0yVbFh5e2kJSvgOSNF9+q+8YCKQ==
+        bh=yUJTtqQy8fxReyCCLvdrNXSV2ZMQEboWT57HId+dVGE=;
+        b=GVsg1dGe2b5VqgRj8oOnpSoxwVcc4fUyoxTH6aK82wRyJbigYF2CbmxqxwibTExKCC1UOy
+        hCaROgeG5utE114eJUhlilEQ11Xe0P4ndEh70LW79pm9LW4rvLF5dQQSB5ppgNgZzPz7D4
+        Za3AsBmftO1S3kcvg2nmLNjndtnLoU88IOgwvHn5ZXi5P7+1Yf3ggYrV2SONgxAzSZjcFN
+        H56Fl5w3CoQb99rG5wWRgNDaWxVICkzbk3IqHTlzFzNs/Z8V9Qcy1oOjorVKag/+DHtXKE
+        aatsRpL45IklnWsQU/2ej0lqP3Q/0W7XydHMPGBINT3e+lCwxssiuiiv8WL8Gg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697703840;
+        s=2020e; t=1697708444;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ATmV+shENxojKtOgLX8bX5Ko5VODxesMS6F+xBHm3TA=;
-        b=HHMawuVsLa5nSxJr+aRXzbbpTudgOMa5mvW5AigGl424YCceLV00ZfI+FFax9oQ3uKup0m
-        vSFUQS/cgGfUweAQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=yUJTtqQy8fxReyCCLvdrNXSV2ZMQEboWT57HId+dVGE=;
+        b=OxQf2vEeXbrfrcCTSabG30/pepop5YpP2nMyiL10w1ldPbi7ZKvPtFAoXeC9s5AZzFB6wx
+        l7nxghLbpd0OnFBA==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf: Disallow mis-matched inherited group reads
-Cc:     Budimir Markovic <markovicbudimir@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/bugs] Revert "x86/retpoline: Remove
+ .text..__x86.return_thunk section"
+Cc:     David Howells <dhowells@redhat.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231018115654.GK33217@noisy.programming.kicks-ass.net>
-References: <20231018115654.GK33217@noisy.programming.kicks-ass.net>
+In-Reply-To: <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
+References: <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
 MIME-Version: 1.0
-Message-ID: <169770383951.3135.17771457264387517954.tip-bot2@tip-bot2>
+Message-ID: <169770844297.3135.7611435585309229027.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,150 +67,103 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     32671e3799ca2e4590773fd0e63aaa4229e50c06
-Gitweb:        https://git.kernel.org/tip/32671e3799ca2e4590773fd0e63aaa4229e50c06
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 18 Oct 2023 13:56:54 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 19 Oct 2023 10:09:42 +02:00
+Commit-ID:     59e6ce1eaaa2d9b2f9c89a108ce3fc7510bcd7ea
+Gitweb:        https://git.kernel.org/tip/59e6ce1eaaa2d9b2f9c89a108ce3fc7510bcd7ea
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Thu, 19 Oct 2023 11:09:41 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 19 Oct 2023 11:25:19 +02:00
 
-perf: Disallow mis-matched inherited group reads
+Revert "x86/retpoline: Remove .text..__x86.return_thunk section"
 
-Because group consistency is non-atomic between parent (filedesc) and children
-(inherited) events, it is possible for PERF_FORMAT_GROUP read() to try and sum
-non-matching counter groups -- with non-sensical results.
+This reverts commit e92626af3234708fe30f53b269d210d202b95206.
 
-Add group_generation to distinguish the case where a parent group removes and
-adds an event and thus has the same number, but a different configuration of
-events as inherited groups.
+David Howells reported his box freezing without being able to see
+a panic. However, it managed to issue a warning beforehand:
 
-This became a problem when commit fa8c269353d5 ("perf/core: Invert
-perf_read_group() loops") flipped the order of child_list and sibling_list.
-Previously it would iterate the group (sibling_list) first, and for each
-sibling traverse the child_list. In this order, only the group composition of
-the parent is relevant. By flipping the order the group composition of the
-child (inherited) events becomes an issue and the mis-match in group
-composition becomes evident.
+  missing return thunk: __x86_indirect_thunk_r15+0xa/0x5f-0x0: eb 74 66 66 2e
+  WARNING: CPU: 0 PID: 0 at arch/x86/kernel/alternative.c:755 apply_returns+0xca/0x247
+  Modules linked in:
+  CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.6.0-rc5-next-20231013-build3+ #3044
+  Hardware name: ASUS All Series/H97-PLUS, BIOS 2306 10/09/2014
+  RIP: 0010:apply_returns+0xca/0x247
 
-That said; even prior to this commit, while reading of a group that is not
-equally inherited was not broken, it still made no sense.
+this happened with linux-next and with gcc 13. Looking at the compiler
+output and particularly paying attention to the two JMP instructions:
 
-(Ab)use ECHILD as error return to indicate issues with child process group
-composition.
+  <__x86_indirect_thunk_r14>:
+         e8 01 00 00 00          call   ffffffff81d71206 <__x86_indirect_thunk_r14+0x6>
+         cc                      int3
+         4c 89 34 24             mov    %r14,(%rsp)
+         e9 91 00 00 00          jmp    ffffffff81d712a0 <__x86_return_thunk>
+         66 66 2e 0f 1f 84 00    data16 cs nopw 0x0(%rax,%rax,1)
+         00 00 00 00
+         66 0f 1f 44 00 00       nopw   0x0(%rax,%rax,1)
 
-Fixes: fa8c269353d5 ("perf/core: Invert perf_read_group() loops")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20231018115654.GK33217@noisy.programming.kicks-ass.net
+  <__x86_indirect_thunk_r15>:
+         e8 01 00 00 00          call   ffffffff81d71226 <__x86_indirect_thunk_r15+0x6>
+         cc                      int3
+         4c 89 3c 24             mov    %r15,(%rsp)
+         eb 74                   jmp    ffffffff81d712a0 <__x86_return_thunk>
+
+the second JMP is a short JMP one. This is likely some new gcc
+optimization to size the JMP offsets and generate a small one if it
+fits.
+
+However, the apply_returns() logic does not expect a short JMP:
+
+  if (op == JMP32_INSN_OPCODE)
+        dest = addr + insn.length + insn.immediate.value;
+
+and that JMP32_INSN_OPCODE is 0xe9.
+
+Now, if __x86_return_thunk is in another section, the compiler cannot do
+those shortcuts and will have to generate a JMP with a s32 offset.
+
+As a matter of fact, the removal of the section  broke another case, see
+
+  https://lore.kernel.org/r/20231010171020.462211-2-david.kaplan@amd.com
+
+so revert for now until all the possible code generation issues have
+been assessed, addressed and verified properly.
+
+Reported-by: David Howells <dhowells@redhat.com>
+Tested-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local
 ---
- include/linux/perf_event.h |  1 +-
- kernel/events/core.c       | 39 +++++++++++++++++++++++++++++++------
- 2 files changed, 34 insertions(+), 6 deletions(-)
+ arch/x86/kernel/vmlinux.lds.S | 3 +++
+ arch/x86/lib/retpoline.S      | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index e85cd1c..7b5406e 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -704,6 +704,7 @@ struct perf_event {
- 	/* The cumulative AND of all event_caps for events in this group. */
- 	int				group_caps;
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 9cdb1a7..54a5596 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -132,7 +132,10 @@ SECTIONS
+ 		LOCK_TEXT
+ 		KPROBES_TEXT
+ 		SOFTIRQENTRY_TEXT
++#ifdef CONFIG_RETPOLINE
+ 		*(.text..__x86.indirect_thunk)
++		*(.text..__x86.return_thunk)
++#endif
+ 		STATIC_CALL_TEXT
  
-+	unsigned int			group_generation;
- 	struct perf_event		*group_leader;
- 	/*
- 	 * event->pmu will always point to pmu in which this event belongs.
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 4c72a41..d0663b9 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1954,6 +1954,7 @@ static void perf_group_attach(struct perf_event *event)
+ 		ALIGN_ENTRY_TEXT_BEGIN
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index 6376d01..d410aba 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -129,6 +129,8 @@ SYM_CODE_END(__x86_indirect_jump_thunk_array)
  
- 	list_add_tail(&event->sibling_list, &group_leader->sibling_list);
- 	group_leader->nr_siblings++;
-+	group_leader->group_generation++;
+ #ifdef CONFIG_RETHUNK
  
- 	perf_event__header_size(group_leader);
++	.section .text..__x86.return_thunk
++
+ #ifdef CONFIG_CPU_SRSO
  
-@@ -2144,6 +2145,7 @@ static void perf_group_detach(struct perf_event *event)
- 	if (leader != event) {
- 		list_del_init(&event->sibling_list);
- 		event->group_leader->nr_siblings--;
-+		event->group_leader->group_generation++;
- 		goto out;
- 	}
- 
-@@ -5440,7 +5442,7 @@ static int __perf_read_group_add(struct perf_event *leader,
- 					u64 read_format, u64 *values)
- {
- 	struct perf_event_context *ctx = leader->ctx;
--	struct perf_event *sub;
-+	struct perf_event *sub, *parent;
- 	unsigned long flags;
- 	int n = 1; /* skip @nr */
- 	int ret;
-@@ -5450,6 +5452,33 @@ static int __perf_read_group_add(struct perf_event *leader,
- 		return ret;
- 
- 	raw_spin_lock_irqsave(&ctx->lock, flags);
-+	/*
-+	 * Verify the grouping between the parent and child (inherited)
-+	 * events is still in tact.
-+	 *
-+	 * Specifically:
-+	 *  - leader->ctx->lock pins leader->sibling_list
-+	 *  - parent->child_mutex pins parent->child_list
-+	 *  - parent->ctx->mutex pins parent->sibling_list
-+	 *
-+	 * Because parent->ctx != leader->ctx (and child_list nests inside
-+	 * ctx->mutex), group destruction is not atomic between children, also
-+	 * see perf_event_release_kernel(). Additionally, parent can grow the
-+	 * group.
-+	 *
-+	 * Therefore it is possible to have parent and child groups in a
-+	 * different configuration and summing over such a beast makes no sense
-+	 * what so ever.
-+	 *
-+	 * Reject this.
-+	 */
-+	parent = leader->parent;
-+	if (parent &&
-+	    (parent->group_generation != leader->group_generation ||
-+	     parent->nr_siblings != leader->nr_siblings)) {
-+		ret = -ECHILD;
-+		goto unlock;
-+	}
- 
- 	/*
- 	 * Since we co-schedule groups, {enabled,running} times of siblings
-@@ -5483,8 +5512,9 @@ static int __perf_read_group_add(struct perf_event *leader,
- 			values[n++] = atomic64_read(&sub->lost_samples);
- 	}
- 
-+unlock:
- 	raw_spin_unlock_irqrestore(&ctx->lock, flags);
--	return 0;
-+	return ret;
- }
- 
- static int perf_read_group(struct perf_event *event,
-@@ -5503,10 +5533,6 @@ static int perf_read_group(struct perf_event *event,
- 
- 	values[0] = 1 + leader->nr_siblings;
- 
--	/*
--	 * By locking the child_mutex of the leader we effectively
--	 * lock the child list of all siblings.. XXX explain how.
--	 */
- 	mutex_lock(&leader->child_mutex);
- 
- 	ret = __perf_read_group_add(leader, read_format, values);
-@@ -13346,6 +13372,7 @@ static int inherit_group(struct perf_event *parent_event,
- 		    !perf_get_aux_event(child_ctr, leader))
- 			return -EINVAL;
- 	}
-+	leader->group_generation = parent_event->group_generation;
- 	return 0;
- }
- 
+ /*
