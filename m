@@ -2,60 +2,74 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5CDF7CF42D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Oct 2023 11:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8209C7CFC41
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Oct 2023 16:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344920AbjJSJkt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Oct 2023 05:40:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53266 "EHLO
+        id S1345795AbjJSOPh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Oct 2023 10:15:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjJSJks (ORCPT
+        with ESMTP id S1345672AbjJSOPf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Oct 2023 05:40:48 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BC0E106;
-        Thu, 19 Oct 2023 02:40:46 -0700 (PDT)
-Date:   Thu, 19 Oct 2023 09:40:43 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697708444;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oVvf4IZfAG/kVntUqjLXAm4xY2Be5dfXjuNFxnML5Eo=;
-        b=bT4zmeB3ff6jv54U6GrVtsRadIxzg1As6Ply5BYKa1gTCSutgK83f9nVyodHIxO6x+OarV
-        rqI+ss6sgMlGmYTkf9WQNP67WN+Xc52YlIolE2vffdJzVhQOcPmnZu+kW+B3w6LV6XbBRR
-        QyNJGOVWUvC+Ks1PkiTvUYD6ainEbOMFcfTeTXoKF6WX7f7gUY/QdY8ZJF1nAoJnhlUTuz
-        Tqamh6olyIEF12UEzUZ89hz4imKaxsJ69hetVYiJql2SCUCdfAf4v/Rq0yWUWIX5npKjo3
-        amDSVHb2ZAV/4V6PXuS/wUuskf+EoWpPM1JvJIGUrRLVLtzqF1ABts/VD4sCSw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697708444;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oVvf4IZfAG/kVntUqjLXAm4xY2Be5dfXjuNFxnML5Eo=;
-        b=hq52O4YsMZP/S2cgmTJitAsPWwQXZpQSMttdBbpHFwgptSxmFyZwM9FTXDd/0NvyD2UMF/
-        MN1gdg13qOUmsCDg==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] Revert "x86/retpoline: Ensure default return thunk
- isn't used at runtime"
-Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>,
-        David Kaplan <david.kaplan@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
-References: <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
+        Thu, 19 Oct 2023 10:15:35 -0400
+X-Greylist: delayed 71571 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 19 Oct 2023 07:15:32 PDT
+Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC843126;
+        Thu, 19 Oct 2023 07:15:32 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AB51C40E01B1;
+        Thu, 19 Oct 2023 14:15:30 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+        header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id yc603s0_Sao9; Thu, 19 Oct 2023 14:15:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+        t=1697724928; bh=AvTen/Ml62tmp1Mem7EkFWKLUmw/SFRMP/MUyGnMe9g=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HePWEr8ratskmxLmxjDUBwmb08QxisK8uWR2d/H5KInbJN7W2FsE+NQ4U++nrVRRg
+         veCuoIUyFsI8j4+fF1KLimIhctX1o+ng/xFN9RajYP0O5H4oeo8W5vfdgvvXhATfph
+         yNO/xgiCLH6voylP8XQfeIG8xMyNCaedsVcNiGsErVMVylpZtOluqSC6W6dFGHbMvr
+         BqAhAzexrnQuK/1j2Sd8+wCwKt3TUEizI/Mn2KfaodihT3Sx10T4Hotm/RjH5b9fhN
+         ECAMDY84eF/HX3ALFfTVtdSXvDZucuLYdiY8veFIHS7k1xdkIgEex5oaiSOF/8R1LA
+         7sqOaM0mQHK391seRHJljQUCGVRJtj0rt5CAzXYEdy484afIJOXq7rZjH00oakTNDC
+         M8NoOjOggbOdbea/tsMRHUO3PtRfwhPquPpsehoLQvUvwbm2BqmaPul23NtjIJyBIl
+         0mu97YMUKJvEfX6KjppHQLI3FCvk9MF0eSBNKXK5h5X3aCdUL4lshdsIGmExVzK8jN
+         NI6RWB5XWcrxLYgHKl5P5VT/QJBC6jP5GMOu5vH64F/6NX3QI775AsD6GsrOGMiSON
+         /L1PHi3czxH7s2Jvz8f4OgUZ8tehxO+X9er0ix16KS9n50D9uMyqBwFvJvz4fDmw1e
+         frs/VbH800iqRQEzq69AnGiw=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+        (No client certificate requested)
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 034BD40E0196;
+        Thu, 19 Oct 2023 14:15:19 +0000 (UTC)
+Date:   Thu, 19 Oct 2023 16:15:14 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Josh Poimboeuf <jpoimboe@kernel.org>
+Cc:     Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-tip-commits@vger.kernel.org,
+        David Kaplan <david.kaplan@amd.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        David Howells <dhowells@redhat.com>
+Subject: Re: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't
+ used at runtime
+Message-ID: <20231019141514.GCZTE58qPOvcJCiBp3@fat_crate.local>
+References: <20231012141031.GHZSf+V1NjjUJTc9a9@fat_crate.local>
+ <169713303534.3135.10558074245117750218.tip-bot2@tip-bot2>
+ <20231018132352.GBZS/caGJ8Wk9kmTbg@fat_crate.local>
+ <ZS/f8DeEIWhBtBeb@gmail.com>
+ <20231018151245.GCZS/17QhDGe7q6K+w@fat_crate.local>
+ <20231018155433.z4auwckr5s27wnig@treble>
+ <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
+ <20231018203747.GJZTBCG7mv5HL4w6CC@fat_crate.local>
+ <20231019063527.iwgyioxi2gznnshp@treble>
+ <20231019065928.mrvhtfaya22p2uzw@treble>
 MIME-Version: 1.0
-Message-ID: <169770844376.3135.9436969789797102205.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231019065928.mrvhtfaya22p2uzw@treble>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -66,57 +80,38 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/bugs branch of tip:
+On Wed, Oct 18, 2023 at 11:59:28PM -0700, Josh Poimboeuf wrote:
+> One last idea, since the return thunk is used everywhere (even non-ABI
+> compliant functions) it might be possible the "call check_thunks" (and
+> its call to warn_printk) is clobbering some registers which some code
+> (exception handling entry code?) doesn't appreciate.
 
-Commit-ID:     08ec7e82c1e3ebcd79ab8d2d0d11faad0f07e71c
-Gitweb:        https://git.kernel.org/tip/08ec7e82c1e3ebcd79ab8d2d0d11faad0f07e71c
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Thu, 19 Oct 2023 11:04:27 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 19 Oct 2023 11:08:22 +02:00
+Yeah, that is still unclean, I'd say. gcc doesn't know that we patch in
+a CALL insn in the alternative. What should work is to have
 
-Revert "x86/retpoline: Ensure default return thunk isn't used at runtime"
+	alternative_call
 
-This reverts commit 91174087dcc7565d8bf0d576544e42d5b1de6f39.
+there which alternates between two calls and gcc knows there's a call so
+it can act accordingly wrt callee-* regs.
 
-It turns out that raising an undefined opcode exception due to unpatched
-return thunks is not visible to users in every possible scenario (not
-being able to catch dmesg, slow console, etc.).
+Considering how __x86_return_thunk is there only until alternatives have
+run, we could do something like
 
-Thus, it is not very friendly to them when the box explodes without even
-saying why.
+	ALTERNATIVE_CALL nop, check_thunks
 
-Revert for now until a better solution has been devised.
+where nop is a function which doesn't do anything.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: David Kaplan <david.kaplan@amd.com>
-Link: https://lore.kernel.org/r/20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local
----
- arch/x86/lib/retpoline.S | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+I say "ALTERNATIVE_CALL" because we don't have a _CALL asm macro yet.
 
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index fe05c13..6376d01 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -356,17 +356,15 @@ SYM_FUNC_END(call_depth_return_thunk)
-  * This function name is magical and is used by -mfunction-return=thunk-extern
-  * for the compiler to generate JMPs to it.
-  *
-- * This code is only used during kernel boot.  All
-+ * This code is only used during kernel boot or module init.  All
-  * 'JMP __x86_return_thunk' sites are changed to something else by
-  * apply_returns().
-- *
-- * This thunk is turned into a ud2 to ensure it is never used at runtime.
-- * Alternative instructions are applied after apply_returns().
-  */
- SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
--	ALTERNATIVE __stringify(ANNOTATE_UNRET_SAFE;ret),"ud2", X86_FEATURE_ALWAYS
-+	ANNOTATE_UNRET_SAFE
-+	ret
- 	int3
- SYM_CODE_END(__x86_return_thunk)
- EXPORT_SYMBOL(__x86_return_thunk)
+And then in check_thunks() we can do all kinds of screaming, tainting
+and setting mitigation status to vulnerable, etc.
+
+Anyway something along those lines.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
