@@ -2,52 +2,35 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30BD37CFCFF
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Oct 2023 16:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA5C07CFDB8
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Oct 2023 17:21:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346006AbjJSOkG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 Oct 2023 10:40:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40742 "EHLO
+        id S1346277AbjJSPU6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 Oct 2023 11:20:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346140AbjJSOkG (ORCPT
+        with ESMTP id S1346191AbjJSPU5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 Oct 2023 10:40:06 -0400
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D492D13D;
-        Thu, 19 Oct 2023 07:40:03 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DC77040E0187;
-        Thu, 19 Oct 2023 14:40:01 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-        header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id GAEMYLTle8OJ; Thu, 19 Oct 2023 14:40:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1697726400; bh=cZwK9x89mo9GWD6pGRjp0GF65LecA8F0ra0gDgvQOAE=;
+        Thu, 19 Oct 2023 11:20:57 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C184012A;
+        Thu, 19 Oct 2023 08:20:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE0FC433C7;
+        Thu, 19 Oct 2023 15:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697728854;
+        bh=lQaE1qMfGaNQfTwIe5gsMhygImrbmEJBUzXnM8oRqOU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PJC66fvVWHut2ol07FMXyRKJ30GGYSEgxoNT4iYGoeqk0EFqrvLPTlQ2U+eixE7Wz
-         KTvzaYeiDipWe1D0F2ARjjaSwtOmPluZ/UEc6AwtbDC9xTf2+PuiUQGZPcS+T0TpfZ
-         osJlGC/GLswi1keBwHKflD2N1PQ+tb4Jg3JBhfo2QGoj4qFyMMMr1q8KPj8aJcxJMx
-         jSALpIEmCzhLdCZAvzpWv7ffUcZz3aXqZticBt10z1JD0qAVXbLpeYYkaGzULC54Op
-         D21XiBY482pLXOtIu/3QYtF4tAHka/5R3erPKl/aDqoo0SsqH/Dak2bXhkyGgOJN8E
-         qH7xIKBgPUzwaDGz+syM/3sf9aFjmchP8BPSGAwPvCQxlDeUqNUbrZnPNsKs0XRE8Z
-         3/oKekt1F0T3UGwOtMvlfSRlPSPwpVwu/g5I3dFzgAAYk0NKmLYF658guhi7TQ44Rf
-         CvtSb2t+mmfj9ACjMjdAKfwApuakt1LQMAMy1f22e28x7oLXk0mpUJqOp/kOlgHyTO
-         ge7unMgtnetlVRct5LNSC3EoyHMkTdsQHV0RspGcG/PsrLI3MstNjPIZMQaTfKDoTI
-         MCkrXK+CZXYg0tEONO62SsAC4Xk01JtscHpPpsAYGpAJP1704gfef44KVhEeekSzaQ
-         MOeH4IrhBFV4n2bus4t7EIg4=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-        (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E505940E01AF;
-        Thu, 19 Oct 2023 14:39:51 +0000 (UTC)
-Date:   Thu, 19 Oct 2023 16:39:51 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Kaplan, David" <David.Kaplan@amd.com>
-Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
+        b=aAMrYUfqy9YtSKcNVGNUHSqvs4ZS62SLGOSZp38atMXAvaTU/HDW+d6H6WCP/jkkx
+         NJHM/afUfi6Mrn3RSjK4NEjCBypDfmty0FHKTsf+mXc+Boa3z40aSNxLjiwKUer2Lj
+         E9ypcEZrhVgJntVbZJ4ZAgCQjKKjEaHTSuLCn0rJ8iwQXwc9ZRajahgmDAg8BF/Ifx
+         QONpNAq65QWE3mGq0w+pLVFYINauYl+81D9ANQh4UGKEwFKuvBCY/IxwWZ3iZrjuQh
+         ujEg5+FNEEeG6E35/bwkdz8TOjcs1dAHNChhwF5GHxWZ3nBUTpGyzVpQv4P8wF2ULu
+         k5c1Vule/NLNA==
+Date:   Thu, 19 Oct 2023 08:20:51 -0700
+From:   Josh Poimboeuf <jpoimboe@kernel.org>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     "Kaplan, David" <David.Kaplan@amd.com>,
         Ingo Molnar <mingo@kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-tip-commits@vger.kernel.org" 
@@ -57,9 +40,8 @@ Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
         David Howells <dhowells@redhat.com>
 Subject: Re: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't
  used at runtime
-Message-ID: <20231019143951.GEZTE/t/wECKBxMSjl@fat_crate.local>
-References: <20231018132352.GBZS/caGJ8Wk9kmTbg@fat_crate.local>
- <ZS/f8DeEIWhBtBeb@gmail.com>
+Message-ID: <20231019152051.4u5xwhopbdisy6zl@treble>
+References: <ZS/f8DeEIWhBtBeb@gmail.com>
  <20231018151245.GCZS/17QhDGe7q6K+w@fat_crate.local>
  <20231018155433.z4auwckr5s27wnig@treble>
  <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
@@ -68,48 +50,109 @@ References: <20231018132352.GBZS/caGJ8Wk9kmTbg@fat_crate.local>
  <20231019065928.mrvhtfaya22p2uzw@treble>
  <20231019141514.GCZTE58qPOvcJCiBp3@fat_crate.local>
  <SN6PR12MB2702AC3C27D25414FE4260F994D4A@SN6PR12MB2702.namprd12.prod.outlook.com>
+ <20231019143951.GEZTE/t/wECKBxMSjl@fat_crate.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <SN6PR12MB2702AC3C27D25414FE4260F994D4A@SN6PR12MB2702.namprd12.prod.outlook.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20231019143951.GEZTE/t/wECKBxMSjl@fat_crate.local>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Oct 19, 2023 at 02:21:40PM +0000, Kaplan, David wrote:
-> The return thunk is used for all functions though, including assembly
-> coded functions which may use non-standard calling conventions and
-> aren't visible to gcc.  I think the only safe thing would be to
-> preserve all GPRs across the call to check_thunks.  Something like
-> PUSH_REGS/call check_thunks/POP_REGS.
+On Thu, Oct 19, 2023 at 04:39:51PM +0200, Borislav Petkov wrote:
+> On Thu, Oct 19, 2023 at 02:21:40PM +0000, Kaplan, David wrote:
+> > The return thunk is used for all functions though, including assembly
+> > coded functions which may use non-standard calling conventions and
+> > aren't visible to gcc.  I think the only safe thing would be to
+> > preserve all GPRs across the call to check_thunks.  Something like
+> > PUSH_REGS/call check_thunks/POP_REGS.
+> 
+> That call nop will be inside the return thunk. I.e., something like
+> this:
+> 
+> SYM_CODE_START(__x86_return_thunk)
+>         UNWIND_HINT_FUNC
+>         ANNOTATE_NOENDBR
+>         ANNOTATE_UNRET_SAFE
+> 	ALTERNATIVE CALL nop, check_thunks, X86_FEATURE_ALWAYS
+> 	ret
+> 	int3
+> SYM_CODE_END(__x86_return_thunk)
+> EXPORT_SYMBOL(__x86_return_thunk)
+> 
+> I suspect that gcc doesn't know that there is a function call in the asm
+> there, which is also what you hint at - I need to ask a compiler guy.
+> 
+> But yeah, if it doesn't, then we'll need to push/pop regs as you
+> suggest.
 
-That call nop will be inside the return thunk. I.e., something like
-this:
+GCC doesn't read asm.  Even if it did that wouldn't fix things for
+callers of custom-ABI return-thunk-using functions.
 
-SYM_CODE_START(__x86_return_thunk)
-        UNWIND_HINT_FUNC
-        ANNOTATE_NOENDBR
-        ANNOTATE_UNRET_SAFE
-	ALTERNATIVE CALL nop, check_thunks, X86_FEATURE_ALWAYS
-	ret
-	int3
-SYM_CODE_END(__x86_return_thunk)
-EXPORT_SYMBOL(__x86_return_thunk)
+The below seems to work.
 
-I suspect that gcc doesn't know that there is a function call in the asm
-there, which is also what you hint at - I need to ask a compiler guy.
+diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
+index 27b5da2111ac..54c043e010f9 100644
+--- a/arch/x86/entry/thunk_64.S
++++ b/arch/x86/entry/thunk_64.S
+@@ -46,3 +46,5 @@ THUNK preempt_schedule_thunk, preempt_schedule
+ THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
+ EXPORT_SYMBOL(preempt_schedule_thunk)
+ EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
++
++THUNK warn_thunk_thunk, __warn_thunk
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 14cd3cd5f85a..315e3f9410b2 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -357,6 +357,8 @@ extern void entry_ibpb(void);
+ 
+ extern void (*x86_return_thunk)(void);
+ 
++extern void __warn_thunk(void);
++
+ #ifdef CONFIG_CALL_DEPTH_TRACKING
+ extern void call_depth_return_thunk(void);
+ 
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index bb0ab8466b91..7d89fe7a2e69 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2849,3 +2849,8 @@ ssize_t cpu_show_gds(struct device *dev, struct device_attribute *attr, char *bu
+ 	return cpu_show_common(dev, attr, buf, X86_BUG_GDS);
+ }
+ #endif
++
++void __warn_thunk(void)
++{
++	WARN_ONCE(1, "unpatched return thunk");
++}
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index fe05c139db48..389662b88e19 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -360,13 +360,14 @@ SYM_FUNC_END(call_depth_return_thunk)
+  * 'JMP __x86_return_thunk' sites are changed to something else by
+  * apply_returns().
+  *
+- * This thunk is turned into a ud2 to ensure it is never used at runtime.
+- * Alternative instructions are applied after apply_returns().
++ * The RET is replaced with a WARN_ONCE() to ensure it is never used at
++ * runtime.  Alternative instructions are applied after apply_returns().
+  */
+ SYM_CODE_START(__x86_return_thunk)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
+-	ALTERNATIVE __stringify(ANNOTATE_UNRET_SAFE;ret),"ud2", X86_FEATURE_ALWAYS
++	ALTERNATIVE __stringify(ANNOTATE_UNRET_SAFE; ret), \
++		   "jmp warn_thunk_thunk", X86_FEATURE_ALWAYS
+ 	int3
+ SYM_CODE_END(__x86_return_thunk)
+ EXPORT_SYMBOL(__x86_return_thunk)
 
-But yeah, if it doesn't, then we'll need to push/pop regs as you
-suggest.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
