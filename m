@@ -2,57 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF7617D0BFB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 11:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A1397D0D15
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 12:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376682AbjJTJfj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Oct 2023 05:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53972 "EHLO
+        id S1376776AbjJTK3A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Oct 2023 06:29:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376679AbjJTJff (ORCPT
+        with ESMTP id S1376715AbjJTK27 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Oct 2023 05:35:35 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B29D5F;
-        Fri, 20 Oct 2023 02:35:33 -0700 (PDT)
-Date:   Fri, 20 Oct 2023 09:35:30 -0000
+        Fri, 20 Oct 2023 06:28:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DEF5114;
+        Fri, 20 Oct 2023 03:28:57 -0700 (PDT)
+Date:   Fri, 20 Oct 2023 10:28:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697794531;
+        s=2020; t=1697797735;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=VJBidDb/QtN17wByyp8wJnXKcC34UkVDm+skWkkNe8g=;
-        b=M1xpLQHRaA+9Da5H4q3J22KQkindPDPefJ9qK4JWl+GtRgP2OQIS7b/afKCwu/sRjVR6nj
-        rUESx+kImYF2HdkcRwM3OIBOd27GDpg/SMozwAD1iBO3OS496Nknx/uYV2/8VBRgTrSl6w
-        DgqdpQVTE5QYCUHdLFeFhvhmrMWZeyM81AB04tKod4vqpcgInRNiBFGub34dKx/0L8Hdo5
-        1V4pdUG3b/xllKiH97S+v/9VbI5fUwNX/pZz4ZUDBxgwxsFxK8aYXRiU97+zxeJdsa7HoK
-        anfqq86BCEUpYyltIcMhuGwgSiCxtF/q3M2/BrGdYBZOrH4aLfGj7++aHwVH1A==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=RFHrA0nC1vueE8CtrHSfUQFbCQe9USd3Emg1LagU1lU=;
+        b=F4RKXSo79c0qG+n0bR/rDCn+YFyDZlKsRsaFfovnaKGQS533pjYSCvbSZR/p+YQesWMzPi
+        5fz3hAJEOcxNYMRCsLa//y4ZbIQFLUWtKJ1oF/6y2XFJdhJ4Pi+Gfy0hRlxQBGD3/dot08
+        2xOmKa6aPlPdvolBRdBiiHZL+WtVIz018C8XbIVlValtwzqFnunMWE3rdtYWDS9GIPTU7s
+        Ld0ymXylftCqNY0/qCI3ICzMZlCgXKkTEkNehxG+XqFMtR0FdWXTY9WEWhmddA/UoZodNx
+        /UC6LXGKive9uycaNAI4hh4hElSklKH96lB/8jNUdTkr2Awsy+w0si3fWu1tlg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697794531;
+        s=2020e; t=1697797735;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=VJBidDb/QtN17wByyp8wJnXKcC34UkVDm+skWkkNe8g=;
-        b=u6ymRRUn934Pg4b36Iue8E+RkbOgxLyUB9JRXyYyI1AvHsRSCX4Hl7BgOBi00LZQER2Bdo
-        oFurvsjEx43pGaBg==
-From:   "tip-bot2 for Linus Torvalds" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=RFHrA0nC1vueE8CtrHSfUQFbCQe9USd3Emg1LagU1lU=;
+        b=EBR0GD43x6le+KsvK1EnVnPkT+ZneDugWPVL9I5ygDnY9Ytv2bMzTswPCZ7MXsDxmaqxwx
+        TvRzxr5OvDVzZoDw==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/percpu] x86/fpu: Clean up FPU switching in the middle of
- task switching
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Uros Bizjak <ubizjak@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231018184227.446318-1-ubizjak@gmail.com>
-References: <20231018184227.446318-1-ubizjak@gmail.com>
+Subject: [tip: x86/percpu] x86/percpu: Introduce %rip-relative addressing to
+ PER_CPU_VAR()
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        linux-kernel@vger.kernel.org, Brian Gerst <brgerst@gmail.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sean Christopherson <seanjc@google.com>, x86@kernel.org
 MIME-Version: 1.0
-Message-ID: <169779453061.3135.15807882372245530063.tip-bot2@tip-bot2>
+Message-ID: <169779773451.3135.17158280311222053497.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,142 +63,177 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/percpu branch of tip:
 
-Commit-ID:     24b8a23638cbf92449c353f828b1d309548c78f4
-Gitweb:        https://git.kernel.org/tip/24b8a23638cbf92449c353f828b1d309548c78f4
-Author:        Linus Torvalds <torvalds@linux-foundation.org>
-AuthorDate:    Wed, 18 Oct 2023 20:41:58 +02:00
+Commit-ID:     59bec00ace28d565ae0a68b23063ef3b961d82d5
+Gitweb:        https://git.kernel.org/tip/59bec00ace28d565ae0a68b23063ef3b961d82d5
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Tue, 17 Oct 2023 18:27:34 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 20 Oct 2023 11:24:22 +02:00
+CommitterDate: Fri, 20 Oct 2023 12:19:51 +02:00
 
-x86/fpu: Clean up FPU switching in the middle of task switching
+x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()
 
-It happens to work, but it's very very wrong, because our 'current'
-macro is magic that is supposedly loading a stable value.
+Introduce x86_64 %rip-relative addressing to the PER_CPU_VAR() macro.
+Instructions using %rip-relative address operand are one byte shorter
+than their absolute address counterparts and are also compatible with
+position independent executable (-fpie) builds. The patch reduces
+code size of a test kernel build by 150 bytes.
 
-It just happens to be not quite stable enough and the compilers
-re-load the value enough for this code to work.  But it's wrong.
+The PER_CPU_VAR() macro is intended to be applied to a symbol and should
+not be used with register operands. Introduce the new __percpu macro and
+use it in cmpxchg{8,16}b_emu.S instead.
 
-The whole
+Also add a missing function comment to this_cpu_cmpxchg8b_emu().
 
-        struct fpu *prev_fpu = &prev->fpu;
+No functional changes intended.
 
-thing in __switch_to() is pretty ugly. There's no reason why we
-should look at that 'prev_fpu' pointer there, or pass it down.
-
-And it only generates worse code, in how it loads 'current' when
-__switch_to() has the right task pointers.
-
-The attached patch not only cleans this up, it actually
-generates better code too:
-
- (a) it removes one push/pop pair at entry/exit because there's one
-     less register used (no 'current')
-
- (b) it removes that pointless load of 'current' because it just uses
-     the right argument:
-
-	-       movq    %gs:pcpu_hot(%rip), %r12
-	-       testq   $16384, (%r12)
-	+       testq   $16384, (%rdi)
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231018184227.446318-1-ubizjak@gmail.com
+Cc: linux-kernel@vger.kernel.org
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/fpu/sched.h | 10 ++++++----
- arch/x86/kernel/process_32.c     |  7 +++----
- arch/x86/kernel/process_64.c     |  7 +++----
- 3 files changed, 12 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/percpu.h | 12 ++++++++----
+ arch/x86/lib/cmpxchg16b_emu.S | 12 ++++++------
+ arch/x86/lib/cmpxchg8b_emu.S  | 30 +++++++++++++++++++++---------
+ 3 files changed, 35 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/include/asm/fpu/sched.h b/arch/x86/include/asm/fpu/sched.h
-index ca6e5e5..c485f19 100644
---- a/arch/x86/include/asm/fpu/sched.h
-+++ b/arch/x86/include/asm/fpu/sched.h
-@@ -37,10 +37,12 @@ extern void fpu_flush_thread(void);
-  * The FPU context is only stored/restored for a user task and
-  * PF_KTHREAD is used to distinguish between kernel and user threads.
-  */
--static inline void switch_fpu_prepare(struct fpu *old_fpu, int cpu)
-+static inline void switch_fpu_prepare(struct task_struct *old, int cpu)
- {
- 	if (cpu_feature_enabled(X86_FEATURE_FPU) &&
--	    !(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
-+	    !(old->flags & (PF_KTHREAD | PF_USER_WORKER))) {
-+		struct fpu *old_fpu = &old->thread.fpu;
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index ac3220a..bbcc1ca 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -4,17 +4,21 @@
+ 
+ #ifdef CONFIG_X86_64
+ #define __percpu_seg		gs
++#define __percpu_rel		(%rip)
+ #else
+ #define __percpu_seg		fs
++#define __percpu_rel
+ #endif
+ 
+ #ifdef __ASSEMBLY__
+ 
+ #ifdef CONFIG_SMP
+-#define PER_CPU_VAR(var)	%__percpu_seg:var
+-#else /* ! SMP */
+-#define PER_CPU_VAR(var)	var
+-#endif	/* SMP */
++#define __percpu		%__percpu_seg:
++#else
++#define __percpu
++#endif
 +
- 		save_fpregs_to_fpstate(old_fpu);
- 		/*
- 		 * The save operation preserved register state, so the
-@@ -60,10 +62,10 @@ static inline void switch_fpu_prepare(struct fpu *old_fpu, int cpu)
-  * Delay loading of the complete FPU state until the return to userland.
-  * PKRU is handled separately.
-  */
--static inline void switch_fpu_finish(void)
-+static inline void switch_fpu_finish(struct task_struct *new)
- {
- 	if (cpu_feature_enabled(X86_FEATURE_FPU))
--		set_thread_flag(TIF_NEED_FPU_LOAD);
-+		set_tsk_thread_flag(new, TIF_NEED_FPU_LOAD);
- }
++#define PER_CPU_VAR(var)	__percpu(var)__percpu_rel
  
- #endif /* _ASM_X86_FPU_SCHED_H */
-diff --git a/arch/x86/kernel/process_32.c b/arch/x86/kernel/process_32.c
-index 708c87b..0917c7f 100644
---- a/arch/x86/kernel/process_32.c
-+++ b/arch/x86/kernel/process_32.c
-@@ -156,13 +156,12 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
- {
- 	struct thread_struct *prev = &prev_p->thread,
- 			     *next = &next_p->thread;
--	struct fpu *prev_fpu = &prev->fpu;
- 	int cpu = smp_processor_id();
+ #ifdef CONFIG_X86_64_SMP
+ #define INIT_PER_CPU_VAR(var)  init_per_cpu__##var
+diff --git a/arch/x86/lib/cmpxchg16b_emu.S b/arch/x86/lib/cmpxchg16b_emu.S
+index 6962df3..4fb4489 100644
+--- a/arch/x86/lib/cmpxchg16b_emu.S
++++ b/arch/x86/lib/cmpxchg16b_emu.S
+@@ -23,14 +23,14 @@ SYM_FUNC_START(this_cpu_cmpxchg16b_emu)
+ 	cli
  
- 	/* never put a printk in __switch_to... printk() calls wake_up*() indirectly */
+ 	/* if (*ptr == old) */
+-	cmpq	PER_CPU_VAR(0(%rsi)), %rax
++	cmpq	__percpu (%rsi), %rax
+ 	jne	.Lnot_same
+-	cmpq	PER_CPU_VAR(8(%rsi)), %rdx
++	cmpq	__percpu 8(%rsi), %rdx
+ 	jne	.Lnot_same
  
--	if (!test_thread_flag(TIF_NEED_FPU_LOAD))
--		switch_fpu_prepare(prev_fpu, cpu);
-+	if (!test_tsk_thread_flag(prev_p, TIF_NEED_FPU_LOAD))
-+		switch_fpu_prepare(prev_p, cpu);
+ 	/* *ptr = new */
+-	movq	%rbx, PER_CPU_VAR(0(%rsi))
+-	movq	%rcx, PER_CPU_VAR(8(%rsi))
++	movq	%rbx, __percpu (%rsi)
++	movq	%rcx, __percpu 8(%rsi)
  
- 	/*
- 	 * Save away %gs. No need to save %fs, as it was saved on the
-@@ -209,7 +208,7 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
+ 	/* set ZF in EFLAGS to indicate success */
+ 	orl	$X86_EFLAGS_ZF, (%rsp)
+@@ -42,8 +42,8 @@ SYM_FUNC_START(this_cpu_cmpxchg16b_emu)
+ 	/* *ptr != old */
  
- 	raw_cpu_write(pcpu_hot.current_task, next_p);
+ 	/* old = *ptr */
+-	movq	PER_CPU_VAR(0(%rsi)), %rax
+-	movq	PER_CPU_VAR(8(%rsi)), %rdx
++	movq	__percpu (%rsi), %rax
++	movq	__percpu 8(%rsi), %rdx
  
--	switch_fpu_finish();
-+	switch_fpu_finish(next_p);
+ 	/* clear ZF in EFLAGS to indicate failure */
+ 	andl	$(~X86_EFLAGS_ZF), (%rsp)
+diff --git a/arch/x86/lib/cmpxchg8b_emu.S b/arch/x86/lib/cmpxchg8b_emu.S
+index 4980525..8632d7d 100644
+--- a/arch/x86/lib/cmpxchg8b_emu.S
++++ b/arch/x86/lib/cmpxchg8b_emu.S
+@@ -24,12 +24,12 @@ SYM_FUNC_START(cmpxchg8b_emu)
+ 	pushfl
+ 	cli
  
- 	/* Load the Intel cache allocation PQR MSR. */
- 	resctrl_sched_in(next_p);
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 33b2687..1553e19 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -562,14 +562,13 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
- {
- 	struct thread_struct *prev = &prev_p->thread;
- 	struct thread_struct *next = &next_p->thread;
--	struct fpu *prev_fpu = &prev->fpu;
- 	int cpu = smp_processor_id();
+-	cmpl	0(%esi), %eax
++	cmpl	(%esi), %eax
+ 	jne	.Lnot_same
+ 	cmpl	4(%esi), %edx
+ 	jne	.Lnot_same
  
- 	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ENTRY) &&
- 		     this_cpu_read(pcpu_hot.hardirq_stack_inuse));
+-	movl	%ebx, 0(%esi)
++	movl	%ebx, (%esi)
+ 	movl	%ecx, 4(%esi)
  
--	if (!test_thread_flag(TIF_NEED_FPU_LOAD))
--		switch_fpu_prepare(prev_fpu, cpu);
-+	if (!test_tsk_thread_flag(prev_p, TIF_NEED_FPU_LOAD))
-+		switch_fpu_prepare(prev_p, cpu);
+ 	orl	$X86_EFLAGS_ZF, (%esp)
+@@ -38,7 +38,7 @@ SYM_FUNC_START(cmpxchg8b_emu)
+ 	RET
  
- 	/* We must save %fs and %gs before load_TLS() because
- 	 * %fs and %gs may be cleared by load_TLS().
-@@ -623,7 +622,7 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
- 	raw_cpu_write(pcpu_hot.current_task, next_p);
- 	raw_cpu_write(pcpu_hot.top_of_stack, task_top_of_stack(next_p));
+ .Lnot_same:
+-	movl	0(%esi), %eax
++	movl	(%esi), %eax
+ 	movl	4(%esi), %edx
  
--	switch_fpu_finish();
-+	switch_fpu_finish(next_p);
+ 	andl	$(~X86_EFLAGS_ZF), (%esp)
+@@ -53,18 +53,30 @@ EXPORT_SYMBOL(cmpxchg8b_emu)
  
- 	/* Reload sp0. */
- 	update_task_stack(next_p);
+ #ifndef CONFIG_UML
+ 
++/*
++ * Emulate 'cmpxchg8b %fs:(%rsi)'
++ *
++ * Inputs:
++ * %esi : memory location to compare
++ * %eax : low 32 bits of old value
++ * %edx : high 32 bits of old value
++ * %ebx : low 32 bits of new value
++ * %ecx : high 32 bits of new value
++ *
++ * Notably this is not LOCK prefixed and is not safe against NMIs
++ */
+ SYM_FUNC_START(this_cpu_cmpxchg8b_emu)
+ 
+ 	pushfl
+ 	cli
+ 
+-	cmpl	PER_CPU_VAR(0(%esi)), %eax
++	cmpl	__percpu (%esi), %eax
+ 	jne	.Lnot_same2
+-	cmpl	PER_CPU_VAR(4(%esi)), %edx
++	cmpl	__percpu 4(%esi), %edx
+ 	jne	.Lnot_same2
+ 
+-	movl	%ebx, PER_CPU_VAR(0(%esi))
+-	movl	%ecx, PER_CPU_VAR(4(%esi))
++	movl	%ebx, __percpu (%esi)
++	movl	%ecx, __percpu 4(%esi)
+ 
+ 	orl	$X86_EFLAGS_ZF, (%esp)
+ 
+@@ -72,8 +84,8 @@ SYM_FUNC_START(this_cpu_cmpxchg8b_emu)
+ 	RET
+ 
+ .Lnot_same2:
+-	movl	PER_CPU_VAR(0(%esi)), %eax
+-	movl	PER_CPU_VAR(4(%esi)), %edx
++	movl	__percpu (%esi), %eax
++	movl	__percpu 4(%esi), %edx
+ 
+ 	andl	$(~X86_EFLAGS_ZF), (%esp)
+ 
