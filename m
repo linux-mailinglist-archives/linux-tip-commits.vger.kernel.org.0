@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D8A7D0D17
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 12:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2480E7D0E9C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 13:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376851AbjJTK3B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Oct 2023 06:29:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39994 "EHLO
+        id S1377189AbjJTLhY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Oct 2023 07:37:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376843AbjJTK3A (ORCPT
+        with ESMTP id S1377166AbjJTLhU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Oct 2023 06:29:00 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B0CD53;
-        Fri, 20 Oct 2023 03:28:58 -0700 (PDT)
-Date:   Fri, 20 Oct 2023 10:28:55 -0000
+        Fri, 20 Oct 2023 07:37:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6510D4C;
+        Fri, 20 Oct 2023 04:37:18 -0700 (PDT)
+Date:   Fri, 20 Oct 2023 11:37:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697797736;
+        s=2020; t=1697801837;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=ryI+sETQfH56NeQ9taaTVEPrYa8hd8IGX1KE8MVorwE=;
-        b=1WV+HfZpH5662UaeVeD9KsqGvZ13OqZucDjRDqt1/W554Lx16VOTIpPnWYhZeGQhGnzYCy
-        l8hsXEO90NBCmNuLa7fCzCc8RzcX5IIRc7q086BZJQ6Azz4pk4XayMzyj9zJ2eekKGt0Uy
-        LE7frxOixwnBjWRjtrVHbwcyGeFf5RzqnpwfRkSgk7HU2eFMS+Jm/iiniwt2KMvWyYkmPR
-        CGf5InUcTwFyOIhYPsIrBcI3zCzvfJ4wZAKV1gbBeZ3hit46lon6krRruKMzFAc8RIxmka
-        mwn1/nCzeZVb1arqdNiBH6MF45WGQaEoQUbIF9Kr6Cj0dzbyNRXMQ4tMt8RDsQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tW7YSgvT1sIejWKhmFk87XKju2fsmJGO/qsh36cwBFg=;
+        b=dRNM0VnUet/tRImlmov45zmlUUj76ZIVDZR3f/n1pChP+I7dw32LGM7uCfQj1tIKgkuV0v
+        qTpADEd6yfebor2/2oS/ghuMt+y363GXiIU06StPuSgGs0pzf7EHf9pFJ0NOpZIXLK9+Sa
+        /qtDpE5N7wrfAv1OA47jJS2j/2W4N3uEOtyvL1DPPe8FCtqo3iHAOr2gBqBkSX3GmMsvi+
+        qnCBfj3kPMd6Y42fwaSmTGRJ5xhO4aSHXfmOU/th5vDcZ/iQ2CCPFApThrhN7Qbou0PcqP
+        eLIz4tgkoeKHJVWl3SHzCyQx2HZ4B49TwOowslie7dI/WtRhk5QvCYt4Q0Gd5A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697797736;
+        s=2020e; t=1697801837;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=ryI+sETQfH56NeQ9taaTVEPrYa8hd8IGX1KE8MVorwE=;
-        b=L1nmvbQ2ryEmmdgEKbWvTPcH/BYqJR9vexF4CQZVVi6KwClTLPCg2Pa0+NZhqVDZ3ecoJQ
-        uvf5qNkHzkjv4LDw==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tW7YSgvT1sIejWKhmFk87XKju2fsmJGO/qsh36cwBFg=;
+        b=itJR1fpxYCK3P6ny2rzPYxaBGcwfOzrZqo4rol5pC2czz+8+Xke3BcQTb+53KjAlrDklNn
+        wGL/rVasFM5YSNDA==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/percpu] x86/percpu: Correct PER_CPU_VAR() usage to include
- symbol and its addend
-Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        linux-kernel@vger.kernel.org, Brian Gerst <brgerst@gmail.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sean Christopherson <seanjc@google.com>, x86@kernel.org
+Subject: [tip: x86/bugs] x86/retpoline: Document some thunk handling aspects
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20231010171020.462211-1-david.kaplan@amd.com>
+References: <20231010171020.462211-1-david.kaplan@amd.com>
 MIME-Version: 1.0
-Message-ID: <169779773584.3135.2298093434527491915.tip-bot2@tip-bot2>
+Message-ID: <169780183267.3135.3911908270721154685.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,86 +64,62 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/percpu branch of tip:
+The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     39d64ee59ceee0fb61243eab3c4b7b4492f80df2
-Gitweb:        https://git.kernel.org/tip/39d64ee59ceee0fb61243eab3c4b7b4492f80df2
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Tue, 17 Oct 2023 18:27:32 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 20 Oct 2023 12:19:51 +02:00
+Commit-ID:     9d9c22cc444af01ce254872b729af26864c43a3a
+Gitweb:        https://git.kernel.org/tip/9d9c22cc444af01ce254872b729af26864c43a3a
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Fri, 20 Oct 2023 13:17:14 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 20 Oct 2023 13:17:14 +02:00
 
-x86/percpu: Correct PER_CPU_VAR() usage to include symbol and its addend
+x86/retpoline: Document some thunk handling aspects
 
-The PER_CPU_VAR() macro should be applied to a symbol and its addend.
-Inconsistent usage is currently harmless, but needs to be corrected
-before %rip-relative addressing is introduced to the PER_CPU_VAR() macro.
+After a lot of experimenting (see thread Link points to) document for
+now the issues and requirements for future improvements to the thunk
+handling and potential issuing of a diagnostic when the default thunk
+hasn't been patched out.
 
-No functional changes intended.
+This documentation is only temporary and that close before the merge
+window it is only a placeholder for those future improvements.
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Sean Christopherson <seanjc@google.com>
+Suggested-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231010171020.462211-1-david.kaplan@amd.com
 ---
- arch/x86/entry/calling.h  | 2 +-
- arch/x86/entry/entry_32.S | 2 +-
- arch/x86/entry/entry_64.S | 2 +-
- arch/x86/kernel/head_64.S | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/lib/retpoline.S | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index f690762..47368ab 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -173,7 +173,7 @@ For 32-bit we have the following conventions - kernel is built with
- .endm
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index d410aba..a48077c 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -129,6 +129,13 @@ SYM_CODE_END(__x86_indirect_jump_thunk_array)
  
- #define THIS_CPU_user_pcid_flush_mask   \
--	PER_CPU_VAR(cpu_tlbstate) + TLB_STATE_user_pcid_flush_mask
-+	PER_CPU_VAR(cpu_tlbstate + TLB_STATE_user_pcid_flush_mask)
+ #ifdef CONFIG_RETHUNK
  
- .macro SWITCH_TO_USER_CR3_NOSTACK scratch_reg:req scratch_reg2:req
- 	ALTERNATIVE "jmp .Lend_\@", "", X86_FEATURE_PTI
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index 6e6af42..d4e094b 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -305,7 +305,7 @@
- .macro CHECK_AND_APPLY_ESPFIX
- #ifdef CONFIG_X86_ESPFIX32
- #define GDT_ESPFIX_OFFSET (GDT_ENTRY_ESPFIX_SS * 8)
--#define GDT_ESPFIX_SS PER_CPU_VAR(gdt_page) + GDT_ESPFIX_OFFSET
-+#define GDT_ESPFIX_SS PER_CPU_VAR(gdt_page + GDT_ESPFIX_OFFSET)
++/*
++ * Be careful here: that label cannot really be removed because in
++ * some configurations and toolchains, the JMP __x86_return_thunk the
++ * compiler issues is either a short one or the compiler doesn't use
++ * relocations for same-section JMPs and that breaks the returns
++ * detection logic in apply_returns() and in objtool.
++ */
+ 	.section .text..__x86.return_thunk
  
- 	ALTERNATIVE	"jmp .Lend_\@", "", X86_BUG_ESPFIX
- 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index b940e92..6d23665 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -252,7 +252,7 @@ SYM_FUNC_START(__switch_to_asm)
- 
- #ifdef CONFIG_STACKPROTECTOR
- 	movq	TASK_stack_canary(%rsi), %rbx
--	movq	%rbx, PER_CPU_VAR(fixed_percpu_data) + FIXED_stack_canary
-+	movq	%rbx, PER_CPU_VAR(fixed_percpu_data + FIXED_stack_canary)
- #endif
- 
- 	/*
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index ea69959..bfe5ec2 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -449,7 +449,7 @@ SYM_CODE_START(soft_restart_cpu)
- 	UNWIND_HINT_END_OF_STACK
- 
- 	/* Find the idle task stack */
--	movq	PER_CPU_VAR(pcpu_hot) + X86_current_task, %rcx
-+	movq	PER_CPU_VAR(pcpu_hot + X86_current_task), %rcx
- 	movq	TASK_threadsp(%rcx), %rsp
- 
- 	jmp	.Ljump_to_C_code
+ #ifdef CONFIG_CPU_SRSO
+@@ -361,6 +368,14 @@ SYM_FUNC_END(call_depth_return_thunk)
+  * This code is only used during kernel boot or module init.  All
+  * 'JMP __x86_return_thunk' sites are changed to something else by
+  * apply_returns().
++ *
++ * This should be converted eventually to call a warning function which
++ * should scream loudly when the default return thunk is called after
++ * alternatives have been applied.
++ *
++ * That warning function cannot BUG() because the bug splat cannot be
++ * displayed in all possible configurations, leading to users not really
++ * knowing why the machine froze.
+  */
+ SYM_CODE_START(__x86_return_thunk)
+ 	UNWIND_HINT_FUNC
