@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 382557D0E8B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 13:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10E377D0E96
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 13:37:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377147AbjJTLhT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Oct 2023 07:37:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58996 "EHLO
+        id S1377172AbjJTLhW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Oct 2023 07:37:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377114AbjJTLhT (ORCPT
+        with ESMTP id S1377156AbjJTLhU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Oct 2023 07:37:19 -0400
+        Fri, 20 Oct 2023 07:37:20 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62DBC1A8;
-        Fri, 20 Oct 2023 04:37:17 -0700 (PDT)
-Date:   Fri, 20 Oct 2023 11:37:15 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF9D1A8;
+        Fri, 20 Oct 2023 04:37:18 -0700 (PDT)
+Date:   Fri, 20 Oct 2023 11:37:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697801836;
+        s=2020; t=1697801837;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jJnp6L74tmGqCejbAYRKbVqqHPi90ERl9GbDM4NVOWI=;
-        b=wqU9UI3ZNrIdCev4GBnjWCe8mSwXkMYIG50BTgrr5sjv2Pl5Sn4fmAm3F9sJTBfwV8vP1e
-        fS/ENPtI4UtXXZ1AsF+bzil/iHM8RkRqrkp4HhL3qVCYn/BUZN/VlJmGF4pizAjEKVlhS3
-        r4wP50FnuYEif1NF0LJgUGCCk37Q0rHq5LZwOhav4oLpv4mtDyb6HUiP/AY1+6Ooau2D5q
-        /05jH6a3gdXlb4mB0ST0m0aYshe6NwgdoaT8MG8y8oOPAAR1n56VEGojInUIeOlyAiPTlY
-        xoxALECoNz67HMV/UYIbNUpCdBusdpOXt9xkxuNyCzVzARDYOodC/qT6O9RcBA==
+        bh=3N8mxmLa8dOmxbqulhmE5Th6dhPdFQ5ly250T9T4JZk=;
+        b=mJhqng+tZQ5vWjAq2ftmskPURNmm3qyYljAZuJ1y1N87MPO8rut+TQGV4mEKrBGss3E+2P
+        n+xH4r1/QSLnexgCymPaWFFU3L9rrCCEGLMv6ro8kRmaasmAOGKoLIxoGsbDh2bKeM4eq/
+        6AqPL806XZ5S0G1MYrkPMa/+lUHLKUg18zFfH3bJwK9xokzB80QB0coesWV6THMPw6roSf
+        nRwMXu1kiaoywpx9jiiio3CsqymHURF7dD0PQrPe7Ni0YXLgyPqwmFxlZmszAxVglv/T0+
+        q9xiviNIM5hW31RKyQCiNow4Unwlfa2vLkjkitf2ubTmBKk8UD8E7Cy0lMytSw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697801836;
+        s=2020e; t=1697801837;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jJnp6L74tmGqCejbAYRKbVqqHPi90ERl9GbDM4NVOWI=;
-        b=5dWgngRfZDj/TyoIFhWwxBYob9lKKAgh8oG0jaI4qsR3Aj7T/EzaNnP4wgKa7ZvQ2DASTE
-        m27zYFteyERySYDw==
-From:   "tip-bot2 for Yang Li" <tip-bot2@linutronix.de>
+        bh=3N8mxmLa8dOmxbqulhmE5Th6dhPdFQ5ly250T9T4JZk=;
+        b=6WmsRVHpROrHfzhyc5YkOy882Hczbt0+N9VMlpB5222HRSwcAnTnTE+Qd3OPzGvNEZRdVr
+        daL3rQUWjeKtdUAQ==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/srso: Remove unnecessary semicolon
-Cc:     Yang Li <yang.lee@linux.alibaba.com>,
+Subject: [tip: x86/bugs] x86/calldepth: Rename __x86_return_skl() to
+ call_depth_return_thunk()
+Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
         Ingo Molnar <mingo@kernel.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230810010550.25733-1-yang.lee@linux.alibaba.com>
-References: <20230810010550.25733-1-yang.lee@linux.alibaba.com>
+In-Reply-To: <ae44e9f9976934e3b5b47a458d523ccb15867561.1693889988.git.jpoimboe@kernel.org>
+References: <ae44e9f9976934e3b5b47a458d523ccb15867561.1693889988.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169780183542.3135.6411016213557318844.tip-bot2@tip-bot2>
+Message-ID: <169780183655.3135.5210163814604862919.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,37 +68,96 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     904e1ddd0b31dc341f6af09e1558589f50b3d04d
-Gitweb:        https://git.kernel.org/tip/904e1ddd0b31dc341f6af09e1558589f50b3d04d
-Author:        Yang Li <yang.lee@linux.alibaba.com>
-AuthorDate:    Thu, 10 Aug 2023 09:05:50 +08:00
+Commit-ID:     99ee56c7657f939eecc4e8ac96e0aa0cd6ea7cbd
+Gitweb:        https://git.kernel.org/tip/99ee56c7657f939eecc4e8ac96e0aa0cd6ea7cbd
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Mon, 04 Sep 2023 22:05:04 -07:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 20 Oct 2023 12:50:35 +02:00
+CommitterDate: Fri, 20 Oct 2023 12:45:48 +02:00
 
-x86/srso: Remove unnecessary semicolon
+x86/calldepth: Rename __x86_return_skl() to call_depth_return_thunk()
 
-scripts/coccinelle/misc/semicolon.cocci reports:
+For consistency with the other return thunks, rename __x86_return_skl()
+to call_depth_return_thunk().
 
-  arch/x86/kernel/cpu/bugs.c:713:2-3: Unneeded semicolon
-
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230810010550.25733-1-yang.lee@linux.alibaba.com
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/ae44e9f9976934e3b5b47a458d523ccb15867561.1693889988.git.jpoimboe@kernel.org
 ---
- arch/x86/kernel/cpu/bugs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h | 13 ++++---------
+ arch/x86/kernel/cpu/bugs.c           |  3 ++-
+ arch/x86/lib/retpoline.S             |  4 ++--
+ 3 files changed, 8 insertions(+), 12 deletions(-)
 
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index dcc7847..14cd3cd 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -358,12 +358,7 @@ extern void entry_ibpb(void);
+ extern void (*x86_return_thunk)(void);
+ 
+ #ifdef CONFIG_CALL_DEPTH_TRACKING
+-extern void __x86_return_skl(void);
+-
+-static inline void x86_set_skl_return_thunk(void)
+-{
+-	x86_return_thunk = &__x86_return_skl;
+-}
++extern void call_depth_return_thunk(void);
+ 
+ #define CALL_DEPTH_ACCOUNT					\
+ 	ALTERNATIVE("",						\
+@@ -376,12 +371,12 @@ DECLARE_PER_CPU(u64, __x86_ret_count);
+ DECLARE_PER_CPU(u64, __x86_stuffs_count);
+ DECLARE_PER_CPU(u64, __x86_ctxsw_count);
+ #endif
+-#else
+-static inline void x86_set_skl_return_thunk(void) {}
++#else /* !CONFIG_CALL_DEPTH_TRACKING */
+ 
++static inline void call_depth_return_thunk(void) {}
+ #define CALL_DEPTH_ACCOUNT ""
+ 
+-#endif
++#endif /* CONFIG_CALL_DEPTH_TRACKING */
+ 
+ #ifdef CONFIG_RETPOLINE
+ 
 diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 016a326..bb0ab84 100644
+index 9731e81..016a326 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -717,7 +717,7 @@ void update_gds_msr(void)
- 	case GDS_MITIGATION_UCODE_NEEDED:
- 	case GDS_MITIGATION_HYPERVISOR:
- 		return;
--	};
-+	}
+@@ -1059,7 +1059,8 @@ do_cmd_auto:
+ 	case RETBLEED_MITIGATION_STUFF:
+ 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
+ 		setup_force_cpu_cap(X86_FEATURE_CALL_DEPTH);
+-		x86_set_skl_return_thunk();
++
++		x86_return_thunk = call_depth_return_thunk;
+ 		break;
  
- 	wrmsrl(MSR_IA32_MCU_OPT_CTRL, mcu_ctrl);
+ 	default:
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index 415521d..d410aba 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -323,7 +323,7 @@ __EXPORT_THUNK(entry_untrain_ret)
+ #ifdef CONFIG_CALL_DEPTH_TRACKING
+ 
+ 	.align 64
+-SYM_FUNC_START(__x86_return_skl)
++SYM_FUNC_START(call_depth_return_thunk)
+ 	ANNOTATE_NOENDBR
+ 	/*
+ 	 * Keep the hotpath in a 16byte I-fetch for the non-debug
+@@ -350,7 +350,7 @@ SYM_FUNC_START(__x86_return_skl)
+ 	ANNOTATE_UNRET_SAFE
+ 	ret
+ 	int3
+-SYM_FUNC_END(__x86_return_skl)
++SYM_FUNC_END(call_depth_return_thunk)
+ 
+ #endif /* CONFIG_CALL_DEPTH_TRACKING */
  
