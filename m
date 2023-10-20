@@ -2,63 +2,63 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13ECB7D0EE6
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 13:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 732AE7D0EF7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 13:42:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377148AbjJTLlK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Oct 2023 07:41:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52812 "EHLO
+        id S1377281AbjJTLm1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Oct 2023 07:42:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377466AbjJTLkr (ORCPT
+        with ESMTP id S1377274AbjJTLmG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Oct 2023 07:40:47 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B456E10CB;
-        Fri, 20 Oct 2023 04:39:00 -0700 (PDT)
-Date:   Fri, 20 Oct 2023 11:38:04 -0000
+        Fri, 20 Oct 2023 07:42:06 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF9E1BD8;
+        Fri, 20 Oct 2023 04:39:01 -0700 (PDT)
+Date:   Fri, 20 Oct 2023 11:38:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697801885;
+        s=2020; t=1697801886;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ATsUGzvnesAyW0GiLV/+K8CQ+agfx0W24nsA90MKCak=;
-        b=IodEItzd361aRjvd1F2E9A+hUkwlnhzKJ+rmCsAF94tVeAZFvr3Pgu/TQMfZ/qX5IcxuGV
-        BM4koP4WrRWOSm3pJvTaABjxEugGMEPpzD7n4ZuLr2FcFKoHhpAnGFn0h5ps178BWEdjoR
-        r4qpoRxdDjv1valQ2YQ+IpTCzh7vugrBbWlKDqbkaqdeT/1b9NrnsbGjOAcgCO6cRCfii6
-        MR6pMnb38+L/r9f06TCOloAWWBYiL4dKhBCYCCNdaQfr+rPKjQSImQRozM8+I47qOb95tq
-        8OSb7ZQMthyO1Qw7ixSHLyF0CYFv5ZTHEQIs1ho6qqVglcaMSccNDJRsmRuANQ==
+        bh=/r6TKfAIPF4DGJsQq1QWq5Z7B0tfCqdwYnDmLEgikdw=;
+        b=Tp5Rah7f6feNE2r4Oj3mkhFPPjRsjoJdGkkt4V/0Dr92ZQMO3OdLRttMQU8z0o3XFAwE6+
+        01zfnIH56+tpFzvFK1kp8gVVd7Ksw1Gr54n1JxBikQ848pg1JlUuslhKjhe9D13GM0bxKP
+        avhfXLZ6qDHSo5P7XCZpNZoKqij/o3wWLdz8fE4HTAG+ZKdD4VZDhYAsTELciwxcmPmrG2
+        r8dGAYQLK5aCa5EML5+6R598Pb6jzhuaEFncif2fH4+DXNIm/4qrEd/o3iLeYQQvw7Zu0p
+        0lach3D1StsrbDdjSYMEA/9Lw23iSHbWNtPZV1clvbkoKMrD7Q86vE+S8KAaYQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697801885;
+        s=2020e; t=1697801886;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ATsUGzvnesAyW0GiLV/+K8CQ+agfx0W24nsA90MKCak=;
-        b=VrF0BoCK8vcxAqAfM/x2xldMLjuyam8w//Vsy+emZZvrjxUDq52gxzyN6tn1zlbdL5sCz+
-        nzqOBkE5AL942ADQ==
+        bh=/r6TKfAIPF4DGJsQq1QWq5Z7B0tfCqdwYnDmLEgikdw=;
+        b=KvxXJTJXy4FouC170ttL2MVUGbzZ0drlbwj1hlP7xYVw3LNFLV2+ZoJAIorT5wrXa0Am6n
+        MwysuABAG2BytsBw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/boot/32: De-uglify the 2/3 level paging
- difference in mk_early_pgtbl_32()
+Subject: [tip: x86/microcode] x86/boot/32: Disable stackprotector and tracing
+ for mk_early_pgtbl_32()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231017211722.111059491@linutronix.de>
-References: <20231017211722.111059491@linutronix.de>
+In-Reply-To: <20231002115902.156063939@linutronix.de>
+References: <20231002115902.156063939@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <169780188492.3135.16075004518464321952.tip-bot2@tip-bot2>
+Message-ID: <169780188598.3135.13135735219422593841.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -67,105 +67,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     a62f4ca106fd250e9247decd100f3905131fc1fe
-Gitweb:        https://git.kernel.org/tip/a62f4ca106fd250e9247decd100f3905131fc1fe
+Commit-ID:     242db7589460ca94e28c51ffbddd621756f97e11
+Gitweb:        https://git.kernel.org/tip/242db7589460ca94e28c51ffbddd621756f97e11
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 17 Oct 2023 23:23:26 +02:00
+AuthorDate:    Mon, 02 Oct 2023 13:59:36 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 18 Oct 2023 18:27:30 +02:00
+CommitterDate: Wed, 18 Oct 2023 11:11:43 +02:00
 
-x86/boot/32: De-uglify the 2/3 level paging difference in mk_early_pgtbl_32()
+x86/boot/32: Disable stackprotector and tracing for mk_early_pgtbl_32()
 
-Move the ifdeffery out of the function and use proper typedefs to make it
-work for both 2 and 3 level paging.
+Stackprotector cannot work before paging is enabled. The read from the per
+CPU variable __stack_chk_guard is always accessing the virtual address
+either directly on UP or via FS on SMP. In physical address mode this
+results in an access to memory above 3GB.
 
-No functional change.
+So this works by chance as the hardware returns the same value when there
+is no RAM at this physical address. When there is RAM populated above 3G
+then the read is by chance the same as nothing changes that memory during
+the very early boot stage.
 
-  [ bp: Move mk_early_pgtbl_32() declaration into a header. ]
+Stop relying on pure luck and disable the stack protector for the only C
+function which is called during early boot before paging is enabled.
+
+Remove function tracing from the whole source file as there is no way to
+trace this at all, but in case of CONFIG_DYNAMIC_FTRACE=n
+mk_early_pgtbl_32() would access global function tracer variables in
+physical address mode which again might work by chance.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231017211722.111059491@linutronix.de
+Link: https://lore.kernel.org/r/20231002115902.156063939@linutronix.de
 ---
- arch/x86/include/asm/setup.h |  1 +-
- arch/x86/kernel/head32.c     | 38 ++++++++++++++++++-----------------
- 2 files changed, 21 insertions(+), 18 deletions(-)
+ arch/x86/kernel/Makefile | 1 +
+ arch/x86/kernel/head32.c | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
-index f349562..bf483fc 100644
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -126,6 +126,7 @@ void clear_bss(void);
- #ifdef __i386__
- 
- asmlinkage void __init __noreturn i386_start_kernel(void);
-+void __init mk_early_pgtbl_32(void);
- 
- #else
- asmlinkage void __init __noreturn x86_64_start_kernel(char *real_mode);
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index 3269a0e..0000325 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -16,6 +16,7 @@ CFLAGS_REMOVE_kvmclock.o = -pg
+ CFLAGS_REMOVE_ftrace.o = -pg
+ CFLAGS_REMOVE_early_printk.o = -pg
+ CFLAGS_REMOVE_head64.o = -pg
++CFLAGS_REMOVE_head32.o = -pg
+ CFLAGS_REMOVE_sev.o = -pg
+ CFLAGS_REMOVE_rethook.o = -pg
+ endif
 diff --git a/arch/x86/kernel/head32.c b/arch/x86/kernel/head32.c
-index 8fe0dd3..2b65998 100644
+index 246a609..bf678d6 100644
 --- a/arch/x86/kernel/head32.c
 +++ b/arch/x86/kernel/head32.c
-@@ -69,41 +69,43 @@ asmlinkage __visible void __init __noreturn i386_start_kernel(void)
-  * to the first kernel PMD. Note the upper half of each PMD or PTE are
+@@ -70,7 +70,8 @@ asmlinkage __visible void __init __noreturn i386_start_kernel(void)
   * always zero at this stage.
   */
--void __init mk_early_pgtbl_32(void);
-+#ifdef CONFIG_X86_PAE
-+typedef pmd_t			pl2_t;
-+#define pl2_base		initial_pg_pmd
-+#define SET_PL2(val)		{ .pmd = (val), }
-+#else
-+typedef pgd_t			pl2_t;
-+#define pl2_base		initial_page_table
-+#define SET_PL2(val)		{ .pgd = (val), }
-+#endif
- 
- void __init __no_stack_protector mk_early_pgtbl_32(void)
+ void __init mk_early_pgtbl_32(void);
+-void __init mk_early_pgtbl_32(void)
++
++void __init __no_stack_protector mk_early_pgtbl_32(void)
  {
--	pte_t pte, *ptep;
--	int i;
--	unsigned long *ptr;
- 	/* Enough space to fit pagetables for the low memory linear map */
- 	const unsigned long limit = __pa_nodebug(_end) +
- 		(PAGE_TABLE_SIZE(LOWMEM_PAGES) << PAGE_SHIFT);
--#ifdef CONFIG_X86_PAE
--	pmd_t pl2, *pl2p = (pmd_t *)__pa_nodebug(initial_pg_pmd);
--#define SET_PL2(pl2, val)    { (pl2).pmd = (val); }
--#else
--	pgd_t pl2, *pl2p = (pgd_t *)__pa_nodebug(initial_page_table);
--#define SET_PL2(pl2, val)   { (pl2).pgd = (val); }
--#endif
-+	pte_t pte, *ptep = (pte_t *)__pa_nodebug(__brk_base);
-+	pl2_t *pl2p = (pl2_t *)__pa_nodebug(pl2_base);
-+	unsigned long *ptr;
-+	int i;
- 
--	ptep = (pte_t *)__pa_nodebug(__brk_base);
- 	pte.pte = PTE_IDENT_ATTR;
- 
- 	while ((pte.pte & PTE_PFN_MASK) < limit) {
-+		pl2_t pl2 = SET_PL2((unsigned long)ptep | PDE_IDENT_ATTR);
- 
--		SET_PL2(pl2, (unsigned long)ptep | PDE_IDENT_ATTR);
- 		*pl2p = pl2;
--#ifndef CONFIG_X86_PAE
--		/* Kernel PDE entry */
--		*(pl2p +  ((PAGE_OFFSET >> PGDIR_SHIFT))) = pl2;
--#endif
-+
-+		if (!IS_ENABLED(CONFIG_X86_PAE)) {
-+			/* Kernel PDE entry */
-+			*(pl2p +  ((PAGE_OFFSET >> PGDIR_SHIFT))) = pl2;
-+		}
-+
- 		for (i = 0; i < PTRS_PER_PTE; i++) {
- 			*ptep = pte;
- 			pte.pte += PAGE_SIZE;
- 			ptep++;
- 		}
--
- 		pl2p++;
- 	}
- 
+ #ifdef __pa
+ #undef __pa
