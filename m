@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F9837D0E9A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 13:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C09567D0EA3
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 13:37:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377237AbjJTLhd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Oct 2023 07:37:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59062 "EHLO
+        id S1377251AbjJTLhf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Oct 2023 07:37:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377201AbjJTLh1 (ORCPT
+        with ESMTP id S1377207AbjJTLh1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 20 Oct 2023 07:37:27 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E664D60;
-        Fri, 20 Oct 2023 04:37:23 -0700 (PDT)
-Date:   Fri, 20 Oct 2023 11:37:21 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6BF9D6B;
+        Fri, 20 Oct 2023 04:37:24 -0700 (PDT)
+Date:   Fri, 20 Oct 2023 11:37:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697801841;
+        s=2020; t=1697801843;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Jwgrd907MJF0rWbpAM7WU3Q9N1KJwdZxQq0QxjY+oy8=;
-        b=axZVygzi3YwvUxS0tacL4XSp2h3d4/4hdifXWCdf0ScJwfpj0zmXIf9pJpA6kB/QguIVqu
-        EQhUfAuue2WUqBX3a549FGcQ/XIU+z8hGj+BPRujxdcR+8EH/4cKg4uiRWPqlgjZDcPr3H
-        X2MTItQKEKQQutnddJbNR2Tid6Wlo82GqQL1FlmTexNzE5e/t5iWoqROnLofllulE3E8lK
-        7I3oFyNLUS9Vt0WuslTf65tFFFxEM8K+b25gOlcKGLXsGqbW8EP0EXy0tVAeP3UbLi65BJ
-        EppF/Sf+XhtVpAIHvGkSwFB771kzSextG4i+ObMyFULQY7xrf5m3V208+JhjOA==
+        bh=GKRFnRVzgEzMPWvDP4LSHe3bjQoMjL8CrAeIorpqOn4=;
+        b=f0Y+724mPL51jpbXry56wLrtCfocMhUsCVexH46x8XUE2cFdvIg1W2UJ8/LOipyP2vmen6
+        2SOyIYMUH/PAPn414PbKWV+w+vPDU4bJJjdzC+csTOe186yAkSaAG3xstgq8ckTG7nxCU9
+        1FGzYYyC9ID05+gReUuktsQI8XUlKDMTn7QS1086ebJ1aR+2bqqL7HItUMJOtRtOXfooTR
+        KFkU9FfABTUQuGQFpUbBMKrKMOa0DTopmJglMIRlyWsvMHYrJ9AJfc/ODzOS7bW+tct4aR
+        GTe+KCCUaQIyFunFWQhIv3iWXWeXI5+VzMIeHRdRLABWt86jh3XuEOsn4Ld+Tw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697801841;
+        s=2020e; t=1697801843;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Jwgrd907MJF0rWbpAM7WU3Q9N1KJwdZxQq0QxjY+oy8=;
-        b=4rIT8eU3BWn3b+P/pExHcmYfFQszB83SNxtQsc15iQAK9mp2dMfzN6dUYySc37197Lm49I
-        WfJ9iaJcttc81oAQ==
+        bh=GKRFnRVzgEzMPWvDP4LSHe3bjQoMjL8CrAeIorpqOn4=;
+        b=07jNoivWysCvwm4g/Aqf+dKJGVGmWPCN4v4EwBKwCagrH2wZU9LEpccuv0b47Mu9FY68qz
+        uYnOTPDPvfCuhaBg==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/srso: Fix unret validation dependencies
+Subject: [tip: x86/bugs] x86/srso: Print actual mitigation if requested
+ mitigation isn't possible
 Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
         Ingo Molnar <mingo@kernel.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <299fb7740174d0f2335e91c58af0e9c242b4bac1.1693889988.git.jpoimboe@kernel.org>
-References: <299fb7740174d0f2335e91c58af0e9c242b4bac1.1693889988.git.jpoimboe@kernel.org>
+In-Reply-To: <7e7a12ea9d85a9f76ca16a3efb71f262dee46ab1.1693889988.git.jpoimboe@kernel.org>
+References: <7e7a12ea9d85a9f76ca16a3efb71f262dee46ab1.1693889988.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <169780184131.3135.15040541825670995118.tip-bot2@tip-bot2>
+Message-ID: <169780184291.3135.9499525750020085275.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,79 +68,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     eeb9f34df065f42f0c9195b322ba6df420c9fc92
-Gitweb:        https://git.kernel.org/tip/eeb9f34df065f42f0c9195b322ba6df420c9fc92
+Commit-ID:     3fc7b28e831f15274a5526197b54a73a88620584
+Gitweb:        https://git.kernel.org/tip/3fc7b28e831f15274a5526197b54a73a88620584
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 04 Sep 2023 22:04:53 -07:00
+AuthorDate:    Mon, 04 Sep 2023 22:04:50 -07:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 20 Oct 2023 11:46:59 +02:00
+CommitterDate: Fri, 20 Oct 2023 11:44:26 +02:00
 
-x86/srso: Fix unret validation dependencies
+x86/srso: Print actual mitigation if requested mitigation isn't possible
 
-CONFIG_CPU_SRSO isn't dependent on CONFIG_CPU_UNRET_ENTRY (AMD
-Retbleed), so the two features are independently configurable.  Fix
-several issues for the (presumably rare) case where CONFIG_CPU_SRSO is
-enabled but CONFIG_CPU_UNRET_ENTRY isn't.
+If the kernel wasn't compiled to support the requested option, print the
+actual option that ends up getting used.
 
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
 Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/299fb7740174d0f2335e91c58af0e9c242b4bac1.1693889988.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/7e7a12ea9d85a9f76ca16a3efb71f262dee46ab1.1693889988.git.jpoimboe@kernel.org
 ---
- arch/x86/include/asm/nospec-branch.h | 4 ++--
- include/linux/objtool.h              | 3 ++-
- scripts/Makefile.vmlinux_o           | 3 ++-
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index c55cc24..197ff4f 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -271,7 +271,7 @@
- .Lskip_rsb_\@:
- .endm
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 2859a54..235c0e0 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2461,7 +2461,6 @@ static void __init srso_select_mitigation(void)
+ 			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
+ 		} else {
+ 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
+-			goto pred_cmd;
+ 		}
+ 		break;
  
--#ifdef CONFIG_CPU_UNRET_ENTRY
-+#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_SRSO)
- #define CALL_UNTRAIN_RET	"call entry_untrain_ret"
- #else
- #define CALL_UNTRAIN_RET	""
-@@ -312,7 +312,7 @@
+@@ -2473,7 +2472,6 @@ static void __init srso_select_mitigation(void)
+ 			}
+ 		} else {
+ 			pr_err("WARNING: kernel not compiled with CPU_IBPB_ENTRY.\n");
+-			goto pred_cmd;
+ 		}
+ 		break;
  
- .macro UNTRAIN_RET_FROM_CALL
- #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
--	defined(CONFIG_CALL_DEPTH_TRACKING)
-+	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
- 	VALIDATE_UNRET_END
- 	ALTERNATIVE_3 "",						\
- 		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
-diff --git a/include/linux/objtool.h b/include/linux/objtool.h
-index 03f82c2..b5440e7 100644
---- a/include/linux/objtool.h
-+++ b/include/linux/objtool.h
-@@ -130,7 +130,8 @@
-  * it will be ignored.
-  */
- .macro VALIDATE_UNRET_BEGIN
--#if defined(CONFIG_NOINSTR_VALIDATION) && defined(CONFIG_CPU_UNRET_ENTRY)
-+#if defined(CONFIG_NOINSTR_VALIDATION) && \
-+	(defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_SRSO))
- .Lhere_\@:
- 	.pushsection .discard.validate_unret
- 	.long	.Lhere_\@ - .
-diff --git a/scripts/Makefile.vmlinux_o b/scripts/Makefile.vmlinux_o
-index 0edfdb4..25b3b58 100644
---- a/scripts/Makefile.vmlinux_o
-+++ b/scripts/Makefile.vmlinux_o
-@@ -37,7 +37,8 @@ objtool-enabled := $(or $(delay-objtool),$(CONFIG_NOINSTR_VALIDATION))
- 
- vmlinux-objtool-args-$(delay-objtool)			+= $(objtool-args-y)
- vmlinux-objtool-args-$(CONFIG_GCOV_KERNEL)		+= --no-unreachable
--vmlinux-objtool-args-$(CONFIG_NOINSTR_VALIDATION)	+= --noinstr $(if $(CONFIG_CPU_UNRET_ENTRY), --unret)
-+vmlinux-objtool-args-$(CONFIG_NOINSTR_VALIDATION)	+= --noinstr \
-+							   $(if $(or $(CONFIG_CPU_UNRET_ENTRY),$(CONFIG_CPU_SRSO)), --unret)
- 
- objtool-args = $(vmlinux-objtool-args-y) --link
+@@ -2485,7 +2483,6 @@ static void __init srso_select_mitigation(void)
+ 			}
+ 		} else {
+ 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
+-			goto pred_cmd;
+                 }
+ 		break;
  
