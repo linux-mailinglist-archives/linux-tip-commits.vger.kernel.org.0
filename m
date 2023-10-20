@@ -2,59 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 119F77D0E93
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 13:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CE617D0E89
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Oct 2023 13:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377196AbjJTLh0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Oct 2023 07:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59042 "EHLO
+        id S1377053AbjJTLhS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Oct 2023 07:37:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377175AbjJTLhW (ORCPT
+        with ESMTP id S1377043AbjJTLhS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Oct 2023 07:37:22 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668C1D49;
-        Fri, 20 Oct 2023 04:37:19 -0700 (PDT)
-Date:   Fri, 20 Oct 2023 11:37:13 -0000
+        Fri, 20 Oct 2023 07:37:18 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CBB4D49;
+        Fri, 20 Oct 2023 04:37:16 -0700 (PDT)
+Date:   Fri, 20 Oct 2023 11:37:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697801837;
+        s=2020; t=1697801835;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oIxhgitY3DVGRO2TVqbcuzDD70qUWz8bzmagVZWhTS4=;
-        b=eVtZVok+8EOrucYHFkqIF0MIA+yGlZTBP8g70BGQtYRhlEbMR7D2CLhtbN1aypRv640rTf
-        2ZAf+P9P+26e1OQtuE45oszz5SqZDQXs/P74CflDyh+RXEB2AUV84mF/N7/F+sC9ibXayr
-        vnZ2OPBbhdXVgrvt9TMexmoLa6XzSulehisqPCY9jFdkUoMijQZ899mDJca8MR1wBL3hvN
-        Sr3LB/OAJezg/51BG++oeDa4HcPMiNW02xJzzCVVkMRdjqFAaa4Ra6/4MtKVfvTsiySVuY
-        +8EY/x1JthQh/f6zJtHv2MSRDZpca1HHVswpLT2I9yntGWow6Cq3dejksfCARQ==
+        bh=Oxp3oWmcGVFMqwfRiRPU/lknufhrrZQDAJne/2r8wOg=;
+        b=PvaQyMeyUFM/eN8VEJot3l7iNSkxxPqN/CclPPDeZScNgJI7IFLosYGHVj+usgvxM4Myth
+        5jSVXo6+fEvBenjgjNE37oZraD73rZKtln8QpKf3q3F9+YbmNlLeVjO06KfQBmgNhqIB9k
+        i/GC3xI/UyGdgZ9u/oW7DAOWPlkExxOQedHGOes52i5W//7hQC96eDJKbwPMPRo83e1KTS
+        o/2wHXD3gg0iv2toOG56oR+K5l0PTd1VyFGEt0KxvBQLuYE6NgshpQTn9BiVykDKjj491A
+        maX8NYsJgSQZpy6lvN1KReJoyG5eYWnMVOkYNOvkoj3L8RWMj5fxhNdpMNia9Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697801837;
+        s=2020e; t=1697801835;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oIxhgitY3DVGRO2TVqbcuzDD70qUWz8bzmagVZWhTS4=;
-        b=mzPR8C587mlqU8x1WXnUcaB51pePxNfFSGiUWT1SqymzPquUq321ZruqLBY7DR/DUlR60V
-        hALGlDeu5YUrhJAg==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=Oxp3oWmcGVFMqwfRiRPU/lknufhrrZQDAJne/2r8wOg=;
+        b=0UXrhkq62t2zhL0b/WF43wN2gw538xjmLZS2uik952ZV7D5WgBbK3dyDJYLhUTrqdZqyq9
+        Z1bHZrV1JS4pahDg==
+From:   "tip-bot2 for David Kaplan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/retpoline: Make sure there are no unconverted
- return thunks due to KCSAN
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
+Subject: [tip: x86/bugs] x86/vdso: Run objtool on vdso32-setup.o
+Cc:     David Kaplan <david.kaplan@amd.com>,
+        Ingo Molnar <mingo@kernel.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Marco Elver <elver@google.com>, x86@kernel.org,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231017165946.v4i2d4exyqwqq3bx@treble>
-References: <20231017165946.v4i2d4exyqwqq3bx@treble>
+In-Reply-To: <20231010171020.462211-3-david.kaplan@amd.com>
+References: <20231010171020.462211-3-david.kaplan@amd.com>
 MIME-Version: 1.0
-Message-ID: <169780183325.3135.17534481806232148373.tip-bot2@tip-bot2>
+Message-ID: <169780183431.3135.3111084432260817314.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,79 +68,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     2d7ce49f58dc95495b3e22e45d2be7de909b2c63
-Gitweb:        https://git.kernel.org/tip/2d7ce49f58dc95495b3e22e45d2be7de909b2c63
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Tue, 17 Oct 2023 09:59:46 -07:00
+Commit-ID:     b587fef124f98f3ab1322dba8e37cdff660acd8c
+Gitweb:        https://git.kernel.org/tip/b587fef124f98f3ab1322dba8e37cdff660acd8c
+Author:        David Kaplan <david.kaplan@amd.com>
+AuthorDate:    Tue, 10 Oct 2023 12:10:19 -05:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 20 Oct 2023 13:02:23 +02:00
+CommitterDate: Fri, 20 Oct 2023 12:58:27 +02:00
 
-x86/retpoline: Make sure there are no unconverted return thunks due to KCSAN
+x86/vdso: Run objtool on vdso32-setup.o
 
-Enabling CONFIG_KCSAN leads to unconverted, default return thunks to
-remain after patching.
+vdso32-setup.c is part of the main kernel image and should not be
+excluded from objtool.  Objtool is necessary in part for ensuring that
+returns in this file are correctly patched to the appropriate return
+thunk at runtime.
 
-As David Kaplan describes in his debugging of the issue, it is caused by
-a couple of KCSAN-generated constructors which aren't processed by
-objtool:
-
-  "When KCSAN is enabled, GCC generates lots of constructor functions
-  named _sub_I_00099_0 which call __tsan_init and then return.  The
-  returns in these are generally annotated normally by objtool and fixed
-  up at runtime.  But objtool runs on vmlinux.o and vmlinux.o does not
-  include a couple of object files that are in vmlinux, like
-  init/version-timestamp.o and .vmlinux.export.o, both of which contain
-  _sub_I_00099_0 functions.  As a result, the returns in these functions
-  are not annotated, and the panic occurs when we call one of them in
-  do_ctors and it uses the default return thunk.
-
-  This difference can be seen by counting the number of these functions in the object files:
-  $ objdump -d vmlinux.o|grep -c "<_sub_I_00099_0>:"
-  2601
-  $ objdump -d vmlinux|grep -c "<_sub_I_00099_0>:"
-  2603
-
-  If these functions are only run during kernel boot, there is no
-  speculation concern."
-
-Fix it by disabling KCSAN on version-timestamp.o and .vmlinux.export.o
-so the extra functions don't get generated.  KASAN and GCOV are already
-disabled for those files.
-
-  [ bp: Massage commit message. ]
-
-Closes: https://lore.kernel.org/lkml/20231016214810.GA3942238@dev-arch.thelio-3990X/
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: David Kaplan <david.kaplan@amd.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Marco Elver <elver@google.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20231017165946.v4i2d4exyqwqq3bx@treble
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231010171020.462211-3-david.kaplan@amd.com
 ---
- init/Makefile            | 1 +
- scripts/Makefile.vmlinux | 1 +
- 2 files changed, 2 insertions(+)
+ arch/x86/entry/vdso/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/init/Makefile b/init/Makefile
-index ec557ad..cbac576 100644
---- a/init/Makefile
-+++ b/init/Makefile
-@@ -60,4 +60,5 @@ include/generated/utsversion.h: FORCE
- $(obj)/version-timestamp.o: include/generated/utsversion.h
- CFLAGS_version-timestamp.o := -include include/generated/utsversion.h
- KASAN_SANITIZE_version-timestamp.o := n
-+KCSAN_SANITIZE_version-timestamp.o := n
- GCOV_PROFILE_version-timestamp.o := n
-diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-index 3cd6ca1..c9f3e03 100644
---- a/scripts/Makefile.vmlinux
-+++ b/scripts/Makefile.vmlinux
-@@ -19,6 +19,7 @@ quiet_cmd_cc_o_c = CC      $@
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index 6a1821b..83c0afb 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -42,7 +42,8 @@ vdso_img-$(VDSO64-y)		+= 64
+ vdso_img-$(VDSOX32-y)		+= x32
+ vdso_img-$(VDSO32-y)		+= 32
  
- ifdef CONFIG_MODULES
- KASAN_SANITIZE_.vmlinux.export.o := n
-+KCSAN_SANITIZE_.vmlinux.export.o := n
- GCOV_PROFILE_.vmlinux.export.o := n
- targets += .vmlinux.export.o
- vmlinux: .vmlinux.export.o
+-obj-$(VDSO32-y)			+= vdso32-setup.o
++obj-$(VDSO32-y)				 += vdso32-setup.o
++OBJECT_FILES_NON_STANDARD_vdso32-setup.o := n
+ 
+ vobjs := $(foreach F,$(vobjs-y),$(obj)/$F)
+ vobjs32 := $(foreach F,$(vobjs32-y),$(obj)/$F)
