@@ -2,62 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAF977D58DD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Oct 2023 18:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A582D7D599D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Oct 2023 19:19:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232214AbjJXQlN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Oct 2023 12:41:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60930 "EHLO
+        id S1343846AbjJXRTV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Oct 2023 13:19:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234835AbjJXQlM (ORCPT
+        with ESMTP id S234497AbjJXRTU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Oct 2023 12:41:12 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 648E793;
-        Tue, 24 Oct 2023 09:41:10 -0700 (PDT)
-Date:   Tue, 24 Oct 2023 16:41:07 -0000
+        Tue, 24 Oct 2023 13:19:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8A0E118;
+        Tue, 24 Oct 2023 10:19:18 -0700 (PDT)
+Date:   Tue, 24 Oct 2023 17:19:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1698165668;
+        s=2020; t=1698167957;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=laq+UrGh8ZQrJHWzngdcpAFroi+8VGjdjHZdPUy/rNc=;
-        b=SKLfJl/XCVbAGj4FN1wg6swQ4y4pyaNVbeQ3njqyLTXClJyyE2CRdGTK/Ru+hFfuNYO4sm
-        No8xCe4IKvxZjzM3WB/5mvgOIxFQVn/DIB2TXCdQMnLqk7ERXzsTzoEXzBhkIuyPqQ7kas
-        bA7rGS5+NnXHJTXD1XXv0ucVfuaCj/tl93T+ky+VJckNHwDTskbcRSxurel63exj8Vwm0s
-        /hTp2Bxvpkk/Cr/zs5t2O1crbi4hBhFBy+pGUXSBLShgubB9fKepVV+V/AumqBWnZzO70G
-        ZhTgf/cqhGo1MRA79OkLitkhGnfiZXakpSwwez8Sup9SCfgakei2Odi9MEIgFQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=T36xLw+jZlKdVBpAh9HUGlDtM7FrIarSDa4uGv1Q9cY=;
+        b=gchgNzLsjlRrmYmzAxHjcr5EObdu2Y0XiPfmqpFPGd6ug4PZx0xro9mAlUSwErrOZ6hzZ9
+        6LMSzHQ5lAHSfoGVDuQ/22BMz9F39sP+dnSEItC1YE5JKRL6OSS6iICaEOfyhZjiRsRmUi
+        UqWEgIQpSYFBCntJNhA7ZfHOatYyVvc/dXWIVgv+zALBKlKX1OVF5fWK34va5cqKxN253a
+        TpnCJXm07DEffv9DYauST0nQmW2BYPs5ucF4nUvbS9fNxNKPK8VCHETVyjD2efiu0qb0eL
+        WXs0LLY3ZD+gw/e6LWSV+uJUdjuzJzdyNai9crMFy5peW8WTjdx5wSqAaowieg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1698165668;
+        s=2020e; t=1698167957;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=laq+UrGh8ZQrJHWzngdcpAFroi+8VGjdjHZdPUy/rNc=;
-        b=Oy/VfzM+3UvS3YODWU8p4NWDzguDmXnzlRRpAlxLxGU6KVvalDtpnOLVf6n0Gm9+GSkk7o
-        tnQYKKcquRNGqaAA==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=T36xLw+jZlKdVBpAh9HUGlDtM7FrIarSDa4uGv1Q9cY=;
+        b=SB/bvDwjZqKQWHmivF02ByakQlmDjDt5ejAH4WrodKbzGFJXxBeWEuW+xLMUsV/oxlWuG7
+        Vul69DpTHnBitADg==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/percpu] x86/percpu: Return correct variable from
- current_top_of_stack()
-Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Brian Gerst <brgerst@gmail.com>,
-        Denys Vlasenko <dvlasenk@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Sean Christopherson <seanjc@google.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231024142830.3226-1-ubizjak@gmail.com>
-References: <20231024142830.3226-1-ubizjak@gmail.com>
+Subject: [tip: x86/build] x86/defconfig: Enable CONFIG_DEBUG_ENTRY=y
+Cc:     Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
+        x86@kernel.org
 MIME-Version: 1.0
-Message-ID: <169816566737.3135.2199759283838640174.tip-bot2@tip-bot2>
+Message-ID: <169816795612.3135.14520921782886876664.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,46 +57,44 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/percpu branch of tip:
+The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     0548eb067ed664b93043e033295ca71e3e706245
-Gitweb:        https://git.kernel.org/tip/0548eb067ed664b93043e033295ca71e3e706245
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Tue, 24 Oct 2023 16:28:14 +02:00
+Commit-ID:     70c8dc9104275037a39ab0b2a4ed6eaacac39e32
+Gitweb:        https://git.kernel.org/tip/70c8dc9104275037a39ab0b2a4ed6eaacac39e32
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Tue, 24 Oct 2023 19:09:17 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 24 Oct 2023 18:37:20 +02:00
+CommitterDate: Tue, 24 Oct 2023 19:12:37 +02:00
 
-x86/percpu: Return correct variable from current_top_of_stack()
+x86/defconfig: Enable CONFIG_DEBUG_ENTRY=y
 
-current_top_of_stack() should return variable from _seg_gs
-qualified named address space when CONFIG_USE_X86_SEG_SUPPORT=y
-is enbled.
+A bug was recently found via CONFIG_DEBUG_ENTRY=y, and the x86
+tree kinda is the main source of changes to the x86 entry code,
+so enable this debug option by default in our defconfigs.
 
-Fixes: ed2f752e0e0a ("x86/percpu: Introduce const-qualified const_pcpu_hot to micro-optimize code generation")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231024142830.3226-1-ubizjak@gmail.com
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Denys Vlasenko <dvlasenk@redhat.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
+Cc: linux-kernel@vger.kernel.org
 ---
- arch/x86/include/asm/processor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/configs/i386_defconfig   | 1 +
+ arch/x86/configs/x86_64_defconfig | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index b47a997..f20e876 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -519,7 +519,7 @@ static __always_inline unsigned long current_top_of_stack(void)
- 	 *  entry trampoline.
- 	 */
- 	if (IS_ENABLED(CONFIG_USE_X86_SEG_SUPPORT))
--		return pcpu_hot.top_of_stack;
-+		return const_pcpu_hot.top_of_stack;
- 
- 	return this_cpu_read_stable(pcpu_hot.top_of_stack);
- }
+diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
+index 1b411bb..73abbbd 100644
+--- a/arch/x86/configs/i386_defconfig
++++ b/arch/x86/configs/i386_defconfig
+@@ -281,4 +281,5 @@ CONFIG_PROVIDE_OHCI1394_DMA_INIT=y
+ CONFIG_EARLY_PRINTK_DBGP=y
+ CONFIG_DEBUG_BOOT_PARAMS=y
+ CONFIG_UNWINDER_FRAME_POINTER=y
++CONFIG_DEBUG_ENTRY=y
+ # CONFIG_64BIT is not set
+diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
+index 409e918..61e25f6 100644
+--- a/arch/x86/configs/x86_64_defconfig
++++ b/arch/x86/configs/x86_64_defconfig
+@@ -276,3 +276,4 @@ CONFIG_BLK_DEV_IO_TRACE=y
+ CONFIG_PROVIDE_OHCI1394_DMA_INIT=y
+ CONFIG_EARLY_PRINTK_DBGP=y
+ CONFIG_DEBUG_BOOT_PARAMS=y
++CONFIG_DEBUG_ENTRY=y
