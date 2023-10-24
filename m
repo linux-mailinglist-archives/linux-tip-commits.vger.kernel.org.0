@@ -2,57 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D94AC7D4B09
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Oct 2023 10:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21CEA7D4DA6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Oct 2023 12:24:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233979AbjJXIxS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Oct 2023 04:53:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44320 "EHLO
+        id S234316AbjJXKYV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Oct 2023 06:24:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234089AbjJXIxE (ORCPT
+        with ESMTP id S234342AbjJXKYU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Oct 2023 04:53:04 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18BFA1734;
-        Tue, 24 Oct 2023 01:52:47 -0700 (PDT)
-Date:   Tue, 24 Oct 2023 08:52:45 -0000
+        Tue, 24 Oct 2023 06:24:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E54C109;
+        Tue, 24 Oct 2023 03:24:18 -0700 (PDT)
+Date:   Tue, 24 Oct 2023 10:24:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1698137566;
+        s=2020; t=1698143056;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Pe8R6tL57OmCbabwVfsjoHgMDSqyr8YzIfgc2ok6lis=;
-        b=jpA+oeNtcblDgDLtEEnWh84yO8nGthWce3K0Vzc4iylQ+ARW2EswUd5JmNOHHIeEapuIge
-        HYckkMqc48ggJkuo4kXoQGw/6aHDphSsrlYbSXEA8UlpG84YNFTfpdjm2L5HvDU+34j6O+
-        xbdYmRGU1mzJCnLGCg8zzymH2AwJuO+N27vat+XxwyZHpsJNsikRf7oOkR6V/m6Oag40S4
-        57dLgzlocJNNnTAIvXEK0PGj+Tt+/a4I3dNcyP6Tvz5IRYUBbkxrTBdB7wTnIf41TTnKM7
-        l9TJ2X+wdDh8NpiL9T/i+RFSCFEOrVUpU8ks1s9yX7DLgItcCCwnxL7QlctK0Q==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=28aCRziD+yYu6Y2lzKh3gDPEavBxokK82RLhoT7NNw0=;
+        b=k0j4X3y0RWj8F8IZfJzspiSy22wT9AtOeRwUc2Gdo0hQDKVsvUyU1ijt6GNQ+Ve+mNQwHU
+        Q2tpu9/HOqli7hBVCPwglmVhisiskrtj6lu8EuO+MPNRBNly/KyGIooWkGdR1relQrpO/b
+        MlhPY/sPZJfvYYwQ8DcvZMgZjGhthUzUQEIfj8WV7NNuYO150UVLVhxhRXMO5AcjxdXuN6
+        6jhRqH2G7dGeACtH3foMjuXFjQYms1ayu5kfPOlJ8st5azQU/FWmAGkNRxvUftfjm755dR
+        bccTpoY/zVDJ3tz6JbyyfSa3G4XRGr7PeckjLkzhDKqwEIqsJJvu6jfwa84UfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1698137566;
+        s=2020e; t=1698143056;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Pe8R6tL57OmCbabwVfsjoHgMDSqyr8YzIfgc2ok6lis=;
-        b=h6W66AFtUD4w6UlENqo1KAS9J2joEYxMLIRW+tBsEZyWU0ekLrxR4tqWAcYnjhJSjWK6om
-        jj6vmdpA3UtQe9BQ==
-From:   "tip-bot2 for Aaron Plattner" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=28aCRziD+yYu6Y2lzKh3gDPEavBxokK82RLhoT7NNw0=;
+        b=AHNaJxUx0HOXnZm6Ab6cfR/0xHMsawNipE4JRLeg1BB4njUhJ5jgXuWR8eqQ/rTBemxIbM
+        0yNIn+7AexaI2/Cw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Propagate early errors
-Cc:     Aaron Plattner <aplattner@nvidia.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/core: Fix potential NULL deref
+Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Ccb6a28832d24b2ebfafd26da9abb95f874c83045=2E16963?=
- =?utf-8?q?55111=2Egit=2Eaplattner=40nvidia=2Ecom=3E?=
-References: =?utf-8?q?=3Ccb6a28832d24b2ebfafd26da9abb95f874c83045=2E169635?=
- =?utf-8?q?5111=2Egit=2Eaplattner=40nvidia=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <169813756572.3135.10008415743628852325.tip-bot2@tip-bot2>
+Message-ID: <169814305576.3135.13128124905427948151.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,42 +59,38 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     e959c279d391c10b35ce300fb4b0fe3b98e86bd2
-Gitweb:        https://git.kernel.org/tip/e959c279d391c10b35ce300fb4b0fe3b98e86bd2
-Author:        Aaron Plattner <aplattner@nvidia.com>
-AuthorDate:    Wed, 04 Oct 2023 17:08:18 -07:00
-Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Thu, 05 Oct 2023 17:01:11 -07:00
+Commit-ID:     a71ef31485bb51b846e8db8b3a35e432cc15afb5
+Gitweb:        https://git.kernel.org/tip/a71ef31485bb51b846e8db8b3a35e432cc15afb5
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 24 Oct 2023 11:42:21 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 24 Oct 2023 12:15:12 +02:00
 
-objtool: Propagate early errors
+perf/core: Fix potential NULL deref
 
-If objtool runs into a problem that causes it to exit early, the overall
-tool still returns a status code of 0, which causes the build to
-continue as if nothing went wrong.
+Smatch is awesome.
 
-Note this only affects early errors, as later errors are still ignored
-by check().
-
-Fixes: b51277eb9775 ("objtool: Ditch subcommands")
-Signed-off-by: Aaron Plattner <aplattner@nvidia.com>
-Link: https://lore.kernel.org/r/cb6a28832d24b2ebfafd26da9abb95f874c83045.1696355111.git.aplattner@nvidia.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Fixes: 32671e3799ca ("perf: Disallow mis-matched inherited group reads")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- tools/objtool/objtool.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/events/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/objtool/objtool.c b/tools/objtool/objtool.c
-index c54f723..f40febd 100644
---- a/tools/objtool/objtool.c
-+++ b/tools/objtool/objtool.c
-@@ -146,7 +146,5 @@ int main(int argc, const char **argv)
- 	exec_cmd_init("objtool", UNUSED, UNUSED, UNUSED);
- 	pager_init(UNUSED);
- 
--	objtool_run(argc, argv);
--
--	return 0;
-+	return objtool_run(argc, argv);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index d0663b9..a2f2a95 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -13372,7 +13372,8 @@ static int inherit_group(struct perf_event *parent_event,
+ 		    !perf_get_aux_event(child_ctr, leader))
+ 			return -EINVAL;
+ 	}
+-	leader->group_generation = parent_event->group_generation;
++	if (leader)
++		leader->group_generation = parent_event->group_generation;
+ 	return 0;
  }
+ 
