@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 467F37D5187
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Oct 2023 15:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E54607D5186
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Oct 2023 15:22:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234735AbjJXNWH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Oct 2023 09:22:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55978 "EHLO
+        id S234727AbjJXNWG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Oct 2023 09:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234657AbjJXNVe (ORCPT
+        with ESMTP id S234654AbjJXNVe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 24 Oct 2023 09:21:34 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B86710C3;
-        Tue, 24 Oct 2023 06:20:59 -0700 (PDT)
-Date:   Tue, 24 Oct 2023 13:20:57 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60DCF171B;
+        Tue, 24 Oct 2023 06:21:01 -0700 (PDT)
+Date:   Tue, 24 Oct 2023 13:20:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1698153658;
+        s=2020; t=1698153659;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P0B1onYPx/zWujIVOqOF9ipNOpGTapQQJ4X2Do4IsIY=;
-        b=oLphATLf0K0IBlImvKZNNnQ8bwk6CKNdzM2nhdvewddMpI0Fwlz0cYKT5+2xZzelG+RIE1
-        WcN6ADB3PwfgvAKMhDnzOVCqJLxDlmRrsCPNvSjO7xXfb0dRyGklRdd9Ne6RaqvXGTynKN
-        MZvufmSJnEhzCvBxABoP6CLHiTFRQEHD+p9T4MizyR93T3Sb5aIE9m9iDFBkeawKY/rYR0
-        HS9MqNlBj7+qNvFDA+hQf9wvPJyieogz7qDexqFu4OI5RCE37ESrUQGHVLlLkEB4xFdQg4
-        WXl10fR0y+v6AeJSVs6Cmer+D+WSbobaADpo5hgU0UXgjOTc08+AeUZSsf3hdg==
+        bh=V4ecj8dTDYA1IyyMtmPGKsFad/wZPBOHhKIZjfIhAss=;
+        b=kqMZnmQAKka1MOgTfUpoTbsLu7GyCjaTUAf/DTlm033XKs+1ueJgXeIbmr+NGJRVNXtRti
+        YjlUtePpX3uTuNzwYS/UysaodCs0n7Wv/WOpkhUOpLezyvD4xoL2dkeCrUeQU7InYVhNxJ
+        LyTzUjXrwVRANmGHAmEyOG/VIZiJMU3y1DKxHSJsANVLSUPo4KXD53sMXGWF/Q/BYh4G+A
+        W1t1+4156YkmT0//sVkLEJJScFn9OctNQ9c/z6DA+qaaoTu4K0kCdxxV5l85nw6GT4puhj
+        SXar7c/AEAN/dMNU040I2SOPl2iVIgD/jAgGIj4f+6CWj0XhHtBGqIbBBMygNg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1698153658;
+        s=2020e; t=1698153659;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P0B1onYPx/zWujIVOqOF9ipNOpGTapQQJ4X2Do4IsIY=;
-        b=f7BqA4HoTIdKgu+kCrCs9VovDzkGekdhZ7n+My0+scGfp3tGZs8kezS+DO/n44s5rxkxv1
-        BuadGo0xT7WPkmCA==
+        bh=V4ecj8dTDYA1IyyMtmPGKsFad/wZPBOHhKIZjfIhAss=;
+        b=CS5UoPjnWSxDzWNc4Ki91CtZ5kjnUeK7lRVUGYdfXf06+a7tKSFTOGZmCdz1hc4sNFXKWB
+        Kno7Qx2gEHxHByAg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode: Handle "nosmt" correctly
+Subject: [tip: x86/microcode] x86/microcode: Get rid of the schedule work indirection
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231002115903.087472735@linutronix.de>
-References: <20231002115903.087472735@linutronix.de>
+In-Reply-To: <20231017211723.354748138@linutronix.de>
+References: <20231017211723.354748138@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <169815365740.3135.1874085620815851781.tip-bot2@tip-bot2>
+Message-ID: <169815365881.3135.12389169576692651192.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,177 +66,80 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     634ac23ad609b3ddd9e0e478bd5afbf49d3a2556
-Gitweb:        https://git.kernel.org/tip/634ac23ad609b3ddd9e0e478bd5afbf49d3a2556
+Commit-ID:     2e1997335ceb6fc819862804f51d4fe83593c138
+Gitweb:        https://git.kernel.org/tip/2e1997335ceb6fc819862804f51d4fe83593c138
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 02 Oct 2023 13:59:56 +02:00
+AuthorDate:    Tue, 17 Oct 2023 23:23:58 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
 CommitterDate: Tue, 24 Oct 2023 15:05:54 +02:00
 
-x86/microcode: Handle "nosmt" correctly
+x86/microcode: Get rid of the schedule work indirection
 
-On CPUs where microcode loading is not NMI-safe the SMT siblings which
-are parked in one of the play_dead() variants still react to NMIs.
-
-So if an NMI hits while the primary thread updates the microcode the
-resulting behaviour is undefined. The default play_dead() implementation on
-modern CPUs is using MWAIT which is not guaranteed to be safe against
-a microcode update which affects MWAIT.
-
-Take the cpus_booted_once_mask into account to detect this case and
-refuse to load late if the vendor specific driver does not advertise
-that late loading is NMI safe.
-
-AMD stated that this is safe, so mark the AMD driver accordingly.
-
-This requirement will be partially lifted in later changes.
+Scheduling work on all CPUs to collect the microcode information is just
+another extra step for no value. Let the CPU hotplug callback registration
+do it.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115903.087472735@linutronix.de
+Link: https://lore.kernel.org/r/20231017211723.354748138@linutronix.de
 ---
- arch/x86/Kconfig                         |  2 +-
- arch/x86/kernel/cpu/microcode/amd.c      |  9 ++--
- arch/x86/kernel/cpu/microcode/core.c     | 51 ++++++++++++++---------
- arch/x86/kernel/cpu/microcode/internal.h | 13 ++----
- 4 files changed, 44 insertions(+), 31 deletions(-)
+ arch/x86/kernel/cpu/microcode/core.c | 29 +++++++++------------------
+ 1 file changed, 10 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 011cb7f..db75120 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1320,7 +1320,7 @@ config MICROCODE_INITRD32
- config MICROCODE_LATE_LOADING
- 	bool "Late microcode loading (DANGEROUS)"
- 	default n
--	depends on MICROCODE
-+	depends on MICROCODE && SMP
- 	help
- 	  Loading microcode late, when the system is up and executing instructions
- 	  is a tricky business and should be avoided if possible. Just the sequence
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index 99aa5a8..102aebc 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -917,10 +917,11 @@ static void microcode_fini_cpu_amd(int cpu)
- }
- 
- static struct microcode_ops microcode_amd_ops = {
--	.request_microcode_fw             = request_microcode_amd,
--	.collect_cpu_info                 = collect_cpu_info_amd,
--	.apply_microcode                  = apply_microcode_amd,
--	.microcode_fini_cpu               = microcode_fini_cpu_amd,
-+	.request_microcode_fw	= request_microcode_amd,
-+	.collect_cpu_info	= collect_cpu_info_amd,
-+	.apply_microcode	= apply_microcode_amd,
-+	.microcode_fini_cpu	= microcode_fini_cpu_amd,
-+	.nmi_safe		= true,
- };
- 
- struct microcode_ops * __init init_amd_microcode(void)
 diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index e306fee..7af1b60 100644
+index 37145cf..0ed96d2 100644
 --- a/arch/x86/kernel/cpu/microcode/core.c
 +++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -254,23 +254,6 @@ static struct platform_device	*microcode_pdev;
-  */
- #define SPINUNIT 100 /* 100 nsec */
+@@ -481,8 +481,16 @@ static struct syscore_ops mc_syscore_ops = {
  
--static int check_online_cpus(void)
--{
--	unsigned int cpu;
--
--	/*
--	 * Make sure all CPUs are online.  It's fine for SMT to be disabled if
--	 * all the primary threads are still online.
--	 */
--	for_each_present_cpu(cpu) {
--		if (topology_is_primary_thread(cpu) && !cpu_online(cpu)) {
--			pr_err("Not all CPUs online, aborting microcode update.\n");
--			return -EINVAL;
--		}
--	}
--
--	return 0;
--}
+ static int mc_cpu_online(unsigned int cpu)
+ {
++	struct ucode_cpu_info *uci = ucode_cpu_info + cpu;
+ 	struct device *dev = get_cpu_device(cpu);
  
- static atomic_t late_cpus_in;
- static atomic_t late_cpus_out;
-@@ -387,6 +370,35 @@ static int microcode_reload_late(void)
- 	return ret;
++	memset(uci, 0, sizeof(*uci));
++
++	microcode_ops->collect_cpu_info(cpu, &uci->cpu_sig);
++	cpu_data(cpu).microcode = uci->cpu_sig.rev;
++	if (!cpu)
++		boot_cpu_data.microcode = uci->cpu_sig.rev;
++
+ 	if (sysfs_create_group(&dev->kobj, &mc_attr_group))
+ 		pr_err("Failed to create group for CPU%d\n", cpu);
+ 	return 0;
+@@ -503,20 +511,6 @@ static int mc_cpu_down_prep(unsigned int cpu)
+ 	return 0;
  }
  
-+/*
-+ *  Ensure that all required CPUs which are present and have been booted
-+ *  once are online.
-+ *
-+ *    To pass this check, all primary threads must be online.
-+ *
-+ *    If the microcode load is not safe against NMI then all SMT threads
-+ *    must be online as well because they still react to NMIs when they are
-+ *    soft-offlined and parked in one of the play_dead() variants. So if a
-+ *    NMI hits while the primary thread updates the microcode the resulting
-+ *    behaviour is undefined. The default play_dead() implementation on
-+ *    modern CPUs uses MWAIT, which is also not guaranteed to be safe
-+ *    against a microcode update which affects MWAIT.
-+ */
-+static bool ensure_cpus_are_online(void)
-+{
-+	unsigned int cpu;
-+
-+	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
-+		if (!cpu_online(cpu)) {
-+			if (topology_is_primary_thread(cpu) || !microcode_ops->nmi_safe) {
-+				pr_err("CPU %u not online\n", cpu);
-+				return false;
-+			}
-+		}
-+	}
-+	return true;
-+}
-+
- static ssize_t reload_store(struct device *dev,
- 			    struct device_attribute *attr,
- 			    const char *buf, size_t size)
-@@ -402,9 +414,10 @@ static ssize_t reload_store(struct device *dev,
- 
- 	cpus_read_lock();
- 
--	ret = check_online_cpus();
--	if (ret)
-+	if (!ensure_cpus_are_online()) {
-+		ret = -EBUSY;
- 		goto put;
-+	}
- 
- 	tmp_ret = microcode_ops->request_microcode_fw(bsp, &microcode_pdev->dev);
- 	if (tmp_ret != UCODE_NEW)
-diff --git a/arch/x86/kernel/cpu/microcode/internal.h b/arch/x86/kernel/cpu/microcode/internal.h
-index 4bef216..07aa5f8 100644
---- a/arch/x86/kernel/cpu/microcode/internal.h
-+++ b/arch/x86/kernel/cpu/microcode/internal.h
-@@ -20,18 +20,17 @@ enum ucode_state {
- 
- struct microcode_ops {
- 	enum ucode_state (*request_microcode_fw)(int cpu, struct device *dev);
+-static void setup_online_cpu(struct work_struct *work)
+-{
+-	int cpu = smp_processor_id();
+-	struct ucode_cpu_info *uci = ucode_cpu_info + cpu;
 -
- 	void (*microcode_fini_cpu)(int cpu);
+-	memset(uci, 0, sizeof(*uci));
+-
+-	microcode_ops->collect_cpu_info(cpu, &uci->cpu_sig);
+-	cpu_data(cpu).microcode = uci->cpu_sig.rev;
+-	if (!cpu)
+-		boot_cpu_data.microcode = uci->cpu_sig.rev;
+-	mc_cpu_online(cpu);
+-}
+-
+ static struct attribute *cpu_root_microcode_attrs[] = {
+ #ifdef CONFIG_MICROCODE_LATE_LOADING
+ 	&dev_attr_reload.attr,
+@@ -562,12 +556,9 @@ static int __init microcode_init(void)
+ 		}
+ 	}
  
- 	/*
--	 * The generic 'microcode_core' part guarantees that
--	 * the callbacks below run on a target cpu when they
--	 * are being called.
-+	 * The generic 'microcode_core' part guarantees that the callbacks
-+	 * below run on a target CPU when they are being called.
- 	 * See also the "Synchronization" section in microcode_core.c.
- 	 */
--	enum ucode_state (*apply_microcode)(int cpu);
--	int (*collect_cpu_info)(int cpu, struct cpu_signature *csig);
--	void (*finalize_late_load)(int result);
-+	enum ucode_state	(*apply_microcode)(int cpu);
-+	int			(*collect_cpu_info)(int cpu, struct cpu_signature *csig);
-+	void			(*finalize_late_load)(int result);
-+	unsigned int		nmi_safe	: 1;
- };
+-	/* Do per-CPU setup */
+-	schedule_on_each_cpu(setup_online_cpu);
+-
+ 	register_syscore_ops(&mc_syscore_ops);
+-	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "x86/microcode:online",
+-				  mc_cpu_online, mc_cpu_down_prep);
++	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/microcode:online",
++			  mc_cpu_online, mc_cpu_down_prep);
  
- extern struct ucode_cpu_info ucode_cpu_info[];
+ 	pr_info("Microcode Update Driver: v%s.", DRIVER_VERSION);
+ 
