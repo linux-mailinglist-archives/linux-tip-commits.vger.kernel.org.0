@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C734A7D997F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Oct 2023 15:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0228B7D9981
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Oct 2023 15:16:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345842AbjJ0NQ5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Oct 2023 09:16:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58748 "EHLO
+        id S1345868AbjJ0NQ6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Oct 2023 09:16:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231305AbjJ0NQz (ORCPT
+        with ESMTP id S1345787AbjJ0NQ5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Oct 2023 09:16:55 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17B25C2;
-        Fri, 27 Oct 2023 06:16:52 -0700 (PDT)
-Date:   Fri, 27 Oct 2023 13:16:50 -0000
+        Fri, 27 Oct 2023 09:16:57 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E59718A;
+        Fri, 27 Oct 2023 06:16:54 -0700 (PDT)
+Date:   Fri, 27 Oct 2023 13:16:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1698412611;
+        s=2020; t=1698412612;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jwt9hayn6vPrZcnYrZKtCafofLuWqxGIW6u1vLVnfqw=;
-        b=Iwgz/+oK17eCxS4aiBIBOsriJEXa5rwVGqszG7FwC2Mwz4BJSgJwMRjEEOzPcfjiVzaV0J
-        hoUpqDhTEYtqIgn8l8EIx3JPmMOiF8wB5zLnEMFkxkH0nd1efvlRDy8kjKPvkfHlfrJSbO
-        xU3KKhQC7445PmCZXXS+2k8ToM93S5FposJhKCflZZ/vmQjRH25/laXLKJnfRZLNbhy1MI
-        uWhdW16zKxgfDijveNj6/e1qSI9fZqX3pwuGhAS7pzffktB0zwwgKGOATSNbZFoEe94F46
-        L+OVCwS+ArfQUH/uruo1PyL/5qNdZ+EFyTYUXjUR19Bq7jwshrzEBwsUX0he7A==
+        bh=MBRiQg+l4N0pzNZaLuy2B/7ch/Ow44J63/npJzjB+c8=;
+        b=MFUiNYF3gYEBwep4zqCy0ktNN71fF2wPCmjNDozjRstGtvVRQdtIXMdiLaMdjkQIbzhqmH
+        orOe7GUpx0O4O5MjdK+d1nhptVhR0+c/WwksDWOMaazgkTnVfWtl8ON2b0c+qyh3sIasEw
+        rorjkzvuq/bTib/iwobABY7RWKRYmawXjeXgU9crdFiwUJUDsdbiTIa7WI/7Wmvg5Q7u3x
+        ZvYCP/9fb0g2rXra+OW6DegjzEtjFfEhJr8E/1F4G9JdHU33PJOsnYahNv/J8VDbxpFbC7
+        IJLeomPK2OwX+asNKsFwamA3bqcuwXAb6eBOyAIqxQk+1V/Us4axjmYjMrj9bw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1698412611;
+        s=2020e; t=1698412612;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jwt9hayn6vPrZcnYrZKtCafofLuWqxGIW6u1vLVnfqw=;
-        b=s35mDTwvw0LlKVIdhgporScUKzdR1r+raO7yMW1v2UlZxqv+FbLgGQJd5SE95eSu5GBoeV
-        v4cA8afz2anyfEAQ==
+        bh=MBRiQg+l4N0pzNZaLuy2B/7ch/Ow44J63/npJzjB+c8=;
+        b=AwyR5kGBiVm8qgzDTMF4o5rYuWBZOZA629qV8k9wV5IIE2kDII5dYSjXupMjxlF9m1Rh+h
+        /gTED8FejY8ApGBQ==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Add branch_sample_call_stack
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf: Add branch stack counters
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231025201626.3000228-3-kan.liang@linux.intel.com>
-References: <20231025201626.3000228-3-kan.liang@linux.intel.com>
+In-Reply-To: <20231025201626.3000228-1-kan.liang@linux.intel.com>
+References: <20231025201626.3000228-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <169841261085.3135.9502675795859035116.tip-bot2@tip-bot2>
+Message-ID: <169841261197.3135.15297996753672595080.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,53 +67,248 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1f2376cd03dd3b965d130ed46a7c92769d614ba1
-Gitweb:        https://git.kernel.org/tip/1f2376cd03dd3b965d130ed46a7c92769d614ba1
+Commit-ID:     571d91dcadfa3cef499010b4eddb9b58b0da4d24
+Gitweb:        https://git.kernel.org/tip/571d91dcadfa3cef499010b4eddb9b58b0da4d24
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 25 Oct 2023 13:16:21 -07:00
+AuthorDate:    Wed, 25 Oct 2023 13:16:19 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 27 Oct 2023 15:05:09 +02:00
+CommitterDate: Fri, 27 Oct 2023 15:05:08 +02:00
 
-perf: Add branch_sample_call_stack
+perf: Add branch stack counters
 
-Add a helper function to check call stack sample type.
+Currently, the additional information of a branch entry is stored in a
+u64 space. With more and more information added, the space is running
+out. For example, the information of occurrences of events will be added
+for each branch.
 
-The later patch will invoke the function in several places.
+Two places were suggested to append the counters.
+https://lore.kernel.org/lkml/20230802215814.GH231007@hirez.programming.kicks-ass.net/
+One place is right after the flags of each branch entry. It changes the
+existing struct perf_branch_entry. The later ARCH specific
+implementation has to be really careful to consistently pick
+the right struct.
+The other place is right after the entire struct perf_branch_stack.
+The disadvantage is that the pointer of the extra space has to be
+recorded. The common interface perf_sample_save_brstack() has to be
+updated.
 
+The latter is much straightforward, and should be easily understood and
+maintained. It is implemented in the patch.
+
+Add a new branch sample type, PERF_SAMPLE_BRANCH_COUNTERS, to indicate
+the event which is recorded in the branch info.
+
+The "u64 counters" may store the occurrences of several events. The
+information regarding the number of events/counters and the width of
+each counter should be exposed via sysfs as a reference for the perf
+tool. Define the branch_counter_nr and branch_counter_width ABI here.
+The support will be implemented later in the Intel-specific patch.
+
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20231025201626.3000228-3-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/20231025201626.3000228-1-kan.liang@linux.intel.com
 ---
- arch/x86/events/core.c     | 2 +-
- include/linux/perf_event.h | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ Documentation/ABI/testing/sysfs-bus-event_source-devices-caps |  6 ++-
+ arch/powerpc/perf/core-book3s.c                               |  2 +-
+ arch/x86/events/amd/core.c                                    |  2 +-
+ arch/x86/events/core.c                                        |  2 +-
+ arch/x86/events/intel/core.c                                  |  2 +-
+ arch/x86/events/intel/ds.c                                    |  4 +-
+ include/linux/perf_event.h                                    | 17 ++++++-
+ include/uapi/linux/perf_event.h                               | 10 ++++-
+ kernel/events/core.c                                          |  8 +++-
+ 9 files changed, 46 insertions(+), 7 deletions(-)
 
+diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-caps b/Documentation/ABI/testing/sysfs-bus-event_source-devices-caps
+index 8757dcf..a5f506f 100644
+--- a/Documentation/ABI/testing/sysfs-bus-event_source-devices-caps
++++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-caps
+@@ -16,3 +16,9 @@ Description:
+ 		Example output in powerpc:
+ 		grep . /sys/bus/event_source/devices/cpu/caps/*
+ 		/sys/bus/event_source/devices/cpu/caps/pmu_name:POWER9
++
++		The "branch_counter_nr" in the supported platform exposes the
++		maximum number of counters which can be shown in the u64 counters
++		of PERF_SAMPLE_BRANCH_COUNTERS, while the "branch_counter_width"
++		exposes the width of each counter. Both of them can be used by
++		the perf tool to parse the logged counters in each branch.
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 8c1f7de..3c14596 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2313,7 +2313,7 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 			struct cpu_hw_events *cpuhw;
+ 			cpuhw = this_cpu_ptr(&cpu_hw_events);
+ 			power_pmu_bhrb_read(event, cpuhw);
+-			perf_sample_save_brstack(&data, event, &cpuhw->bhrb_stack);
++			perf_sample_save_brstack(&data, event, &cpuhw->bhrb_stack, NULL);
+ 		}
+ 
+ 		if (event->attr.sample_type & PERF_SAMPLE_DATA_SRC &&
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index e249765..4ee6390 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -940,7 +940,7 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
+ 			continue;
+ 
+ 		if (has_branch_stack(event))
+-			perf_sample_save_brstack(&data, event, &cpuc->lbr_stack);
++			perf_sample_save_brstack(&data, event, &cpuc->lbr_stack, NULL);
+ 
+ 		if (perf_event_overflow(event, &data, regs))
+ 			x86_pmu_stop(event, 0);
 diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 40c9af1..0905064 100644
+index 40ad142..40c9af1 100644
 --- a/arch/x86/events/core.c
 +++ b/arch/x86/events/core.c
-@@ -601,7 +601,7 @@ int x86_pmu_hw_config(struct perf_event *event)
+@@ -1702,7 +1702,7 @@ int x86_pmu_handle_irq(struct pt_regs *regs)
+ 		perf_sample_data_init(&data, 0, event->hw.last_period);
+ 
+ 		if (has_branch_stack(event))
+-			perf_sample_save_brstack(&data, event, &cpuc->lbr_stack);
++			perf_sample_save_brstack(&data, event, &cpuc->lbr_stack, NULL);
+ 
+ 		if (perf_event_overflow(event, &data, regs))
+ 			x86_pmu_stop(event, 0);
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index a08f794..41a1647 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3047,7 +3047,7 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
+ 		perf_sample_data_init(&data, 0, event->hw.last_period);
+ 
+ 		if (has_branch_stack(event))
+-			perf_sample_save_brstack(&data, event, &cpuc->lbr_stack);
++			perf_sample_save_brstack(&data, event, &cpuc->lbr_stack, NULL);
+ 
+ 		if (perf_event_overflow(event, &data, regs))
+ 			x86_pmu_stop(event, 0);
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index bf97ab9..cb3f329 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -1755,7 +1755,7 @@ static void setup_pebs_fixed_sample_data(struct perf_event *event,
+ 		setup_pebs_time(event, data, pebs->tsc);
+ 
+ 	if (has_branch_stack(event))
+-		perf_sample_save_brstack(data, event, &cpuc->lbr_stack);
++		perf_sample_save_brstack(data, event, &cpuc->lbr_stack, NULL);
+ }
+ 
+ static void adaptive_pebs_save_regs(struct pt_regs *regs,
+@@ -1912,7 +1912,7 @@ static void setup_pebs_adaptive_sample_data(struct perf_event *event,
+ 
+ 		if (has_branch_stack(event)) {
+ 			intel_pmu_store_pebs_lbrs(lbr);
+-			perf_sample_save_brstack(data, event, &cpuc->lbr_stack);
++			perf_sample_save_brstack(data, event, &cpuc->lbr_stack, NULL);
  		}
  	}
  
--	if (event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_CALL_STACK)
-+	if (branch_sample_call_stack(event))
- 		event->attach_state |= PERF_ATTACH_TASK_DATA;
- 
- 	/*
 diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 7897ef0..ac1a59c 100644
+index 0367d74..7897ef0 100644
 --- a/include/linux/perf_event.h
 +++ b/include/linux/perf_event.h
-@@ -1144,6 +1144,11 @@ static inline bool branch_sample_counters(const struct perf_event *event)
- 	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_COUNTERS;
+@@ -1139,6 +1139,10 @@ static inline bool branch_sample_priv(const struct perf_event *event)
+ 	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_PRIV_SAVE;
  }
  
-+static inline bool branch_sample_call_stack(const struct perf_event *event)
++static inline bool branch_sample_counters(const struct perf_event *event)
 +{
-+	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_CALL_STACK;
++	return event->attr.branch_sample_type & PERF_SAMPLE_BRANCH_COUNTERS;
 +}
-+
+ 
  struct perf_sample_data {
  	/*
- 	 * Fields set by perf_sample_data_init() unconditionally,
+@@ -1173,6 +1177,7 @@ struct perf_sample_data {
+ 	struct perf_callchain_entry	*callchain;
+ 	struct perf_raw_record		*raw;
+ 	struct perf_branch_stack	*br_stack;
++	u64				*br_stack_cntr;
+ 	union perf_sample_weight	weight;
+ 	union  perf_mem_data_src	data_src;
+ 	u64				txn;
+@@ -1250,7 +1255,8 @@ static inline void perf_sample_save_raw_data(struct perf_sample_data *data,
+ 
+ static inline void perf_sample_save_brstack(struct perf_sample_data *data,
+ 					    struct perf_event *event,
+-					    struct perf_branch_stack *brs)
++					    struct perf_branch_stack *brs,
++					    u64 *brs_cntr)
+ {
+ 	int size = sizeof(u64); /* nr */
+ 
+@@ -1258,7 +1264,16 @@ static inline void perf_sample_save_brstack(struct perf_sample_data *data,
+ 		size += sizeof(u64);
+ 	size += brs->nr * sizeof(struct perf_branch_entry);
+ 
++	/*
++	 * The extension space for counters is appended after the
++	 * struct perf_branch_stack. It is used to store the occurrences
++	 * of events of each branch.
++	 */
++	if (brs_cntr)
++		size += brs->nr * sizeof(u64);
++
+ 	data->br_stack = brs;
++	data->br_stack_cntr = brs_cntr;
+ 	data->dyn_size += size;
+ 	data->sample_flags |= PERF_SAMPLE_BRANCH_STACK;
+ }
+diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
+index 39c6a25..4461f38 100644
+--- a/include/uapi/linux/perf_event.h
++++ b/include/uapi/linux/perf_event.h
+@@ -204,6 +204,8 @@ enum perf_branch_sample_type_shift {
+ 
+ 	PERF_SAMPLE_BRANCH_PRIV_SAVE_SHIFT	= 18, /* save privilege mode */
+ 
++	PERF_SAMPLE_BRANCH_COUNTERS_SHIFT	= 19, /* save occurrences of events on a branch */
++
+ 	PERF_SAMPLE_BRANCH_MAX_SHIFT		/* non-ABI */
+ };
+ 
+@@ -235,6 +237,8 @@ enum perf_branch_sample_type {
+ 
+ 	PERF_SAMPLE_BRANCH_PRIV_SAVE	= 1U << PERF_SAMPLE_BRANCH_PRIV_SAVE_SHIFT,
+ 
++	PERF_SAMPLE_BRANCH_COUNTERS	= 1U << PERF_SAMPLE_BRANCH_COUNTERS_SHIFT,
++
+ 	PERF_SAMPLE_BRANCH_MAX		= 1U << PERF_SAMPLE_BRANCH_MAX_SHIFT,
+ };
+ 
+@@ -982,6 +986,12 @@ enum perf_event_type {
+ 	 *	{ u64                   nr;
+ 	 *	  { u64	hw_idx; } && PERF_SAMPLE_BRANCH_HW_INDEX
+ 	 *        { u64 from, to, flags } lbr[nr];
++	 *        #
++	 *        # The format of the counters is decided by the
++	 *        # "branch_counter_nr" and "branch_counter_width",
++	 *        # which are defined in the ABI.
++	 *        #
++	 *        { u64 counters; } cntr[nr] && PERF_SAMPLE_BRANCH_COUNTERS
+ 	 *      } && PERF_SAMPLE_BRANCH_STACK
+ 	 *
+ 	 * 	{ u64			abi; # enum perf_sample_regs_abi
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 3eb26c2..d27ffd8 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7341,6 +7341,14 @@ void perf_output_sample(struct perf_output_handle *handle,
+ 			if (branch_sample_hw_index(event))
+ 				perf_output_put(handle, data->br_stack->hw_idx);
+ 			perf_output_copy(handle, data->br_stack->entries, size);
++			/*
++			 * Add the extension space which is appended
++			 * right after the struct perf_branch_stack.
++			 */
++			if (data->br_stack_cntr) {
++				size = data->br_stack->nr * sizeof(u64);
++				perf_output_copy(handle, data->br_stack_cntr, size);
++			}
+ 		} else {
+ 			/*
+ 			 * we always store at least the value of nr
