@@ -2,101 +2,135 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29B537D8BEF
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Oct 2023 00:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BECA97D8FAE
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Oct 2023 09:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232094AbjJZW4c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Oct 2023 18:56:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50226 "EHLO
+        id S232306AbjJ0HYE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Oct 2023 03:24:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232276AbjJZW4c (ORCPT
+        with ESMTP id S229590AbjJ0HYE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Oct 2023 18:56:32 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59C4C19A7;
-        Thu, 26 Oct 2023 15:56:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698360970; x=1729896970;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Mc7kQfl3lsKa9cHbrKVWe9ASJRPZQ1HJXSWoLjPrDt8=;
-  b=Kn4jIAJqvvYG4SeRZ0rBiZKCdLMntuHabAXm3Xltp5gHhHTrSFqL/pr4
-   rtP9zqEXb43ntwFqPWnYnv3JWf+gKkFsANW1iWgK8nxqzpH30jftdDHdB
-   P+QkTINaYnQWe1GRcQ76GOJIetdHqVwFsMApCqdpKZsS/aebWrD5h5Qvp
-   9N8TelZvwJw0XYifG8E1B7LRBDwZyTv3DEtrsPtXvkaWwsFo/Q81hkOs+
-   Txry+60R36VkoOcDmHv8sEtHqCzxkTign90vfFJyzzKddZjhI/lT+mQ7a
-   3Yy+4rentjSqPet6NnQgCe/0X1EijNJRykU5ICE2KafkQon+HjjgVVz0M
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="367012866"
-X-IronPort-AV: E=Sophos;i="6.03,254,1694761200"; 
-   d="scan'208";a="367012866"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 15:56:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="752917106"
-X-IronPort-AV: E=Sophos;i="6.03,254,1694761200"; 
-   d="scan'208";a="752917106"
-Received: from b4969161e530.jf.intel.com ([10.165.56.46])
-  by orsmga007.jf.intel.com with ESMTP; 26 Oct 2023 15:56:09 -0700
-From:   Haitao Huang <haitao.huang@linux.intel.com>
-To:     tip-bot2@linutronix.de
-Cc:     #@tip-bot2.tec.linutronix.de, haitao.huang@linux.intel.com,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        mingo@kernel.org, stable@vger.kernel.org,
-        v6.0+@tip-bot2.tec.linutronix.de, x86@kernel.org
-Subject: [PATCH] Revert "x86/sgx: Return VM_FAULT_SIGBUS instead of VM_FAULT_OOM for EPC exhaustion"
-Date:   Thu, 26 Oct 2023 15:55:28 -0700
-Message-Id: <20231026225528.5738-1-haitao.huang@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <169778941056.3135.14169781154210769341.tip-bot2@tip-bot2>
-References: <169778941056.3135.14169781154210769341.tip-bot2@tip-bot2>
+        Fri, 27 Oct 2023 03:24:04 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE66E116;
+        Fri, 27 Oct 2023 00:24:01 -0700 (PDT)
+Date:   Fri, 27 Oct 2023 07:23:59 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1698391440;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=O//1fsnSIZl/qZYdPGy7Kgy5AC0iiFOxPF2WMdZrKEg=;
+        b=VbnGo70cgtk7inlZGoUs8cHI7wppwyITCaDRuQaXsoKv48ZF9OwO9UCSc3RBOfK6kYRlGy
+        DcYQZRXQbWg+To9s5i+R+Tc4BKHTPeGN5URvuiSsFmm893OqRacMvbjlBwhCDZs5AssjyY
+        9yAuUlV7yPk4qx47GqvZ57QP5VT8uv8Y0wJIO6KZ0rLvbsEfMSevpOGJ1crz14kgrwKHJw
+        3aX/ozdzhRutX7XzvWS7qa7fXkzDB+FdltVm3xkttmDzU0o5F5Hk5i08IL3/TqPAAsCwIx
+        LMlrSDxSMN4H9MPLHuBoCOKIMYTeNUSFZPRgv0qj+nmM4Cgj+MazHU3YMhmr3A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1698391440;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=O//1fsnSIZl/qZYdPGy7Kgy5AC0iiFOxPF2WMdZrKEg=;
+        b=3WY3Xh5Uf2Ai/4uJVd12SOBNAH5SAXxOoVgbPKaelLzS30uZcnbVu2YnoB15kEUsb/mye7
+        ArdxiDIJgQY48kAg==
+From:   "tip-bot2 for Rob Herring" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] irqchip/ls-scfg-msi: Use device_get_match_data()
+Cc:     Rob Herring <robh@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20231020130255.2954415-3-robh@kernel.org>
+References: <20231020130255.2954415-3-robh@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <169839143971.3135.1761692121713696071.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-This reverts commit 6b7b71a70af6d75e0a9eddf4b01e4383a78b8a5e.
-That patch was a mistake.
+The following commit has been merged into the irq/core branch of tip:
 
-link: https://lore.kernel.org/all/op.2dfkbh2iwjvjmi@hhuan26-mobl.amr.corp.intel.com/
+Commit-ID:     08d4c174828d868d314d2475fbcaa1393f0bbba9
+Gitweb:        https://git.kernel.org/tip/08d4c174828d868d314d2475fbcaa1393f0bbba9
+Author:        Rob Herring <robh@kernel.org>
+AuthorDate:    Fri, 20 Oct 2023 08:02:56 -05:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 27 Oct 2023 09:15:44 +02:00
 
-Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
+irqchip/ls-scfg-msi: Use device_get_match_data()
+
+Use preferred device_get_match_data() instead of of_match_device() to
+get the driver match data in a single step without the unnecessary
+intermediate match pointer.
+
+With this, adjust the includes to explicitly include the correct
+headers. That also serves as preparation to remove implicit includes within
+the DT headers.  of_platform.h currently includes platform_device.h among
+others.
+
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20231020130255.2954415-3-robh@kernel.org
+
 ---
-Sorry for the trouble. Please use this to revert or drop it from the
-the tip/x86/urgent branch.
----
- arch/x86/kernel/cpu/sgx/encl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-ls-scfg-msi.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index d13b7e4ad0f5..279148e72459 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -322,7 +322,7 @@ struct sgx_encl_page *sgx_encl_load_page(struct sgx_encl *encl,
-  * ENCLS[EAUG] instruction.
-  *
-  * Returns: Appropriate vm_fault_t: VM_FAULT_NOPAGE when PTE was installed
-- * successfully, VM_FAULT_SIGBUS as error otherwise.
-+ * successfully, VM_FAULT_SIGBUS or VM_FAULT_OOM as error otherwise.
-  */
- static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
- 				     struct sgx_encl *encl, unsigned long addr)
-@@ -348,7 +348,7 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
- 	secinfo_flags = SGX_SECINFO_R | SGX_SECINFO_W | SGX_SECINFO_X;
- 	encl_page = sgx_encl_page_alloc(encl, addr - encl->base, secinfo_flags);
- 	if (IS_ERR(encl_page))
--		return VM_FAULT_SIGBUS;
-+		return VM_FAULT_OOM;
+diff --git a/drivers/irqchip/irq-ls-scfg-msi.c b/drivers/irqchip/irq-ls-scfg-msi.c
+index f31a262..15cf80b 100644
+--- a/drivers/irqchip/irq-ls-scfg-msi.c
++++ b/drivers/irqchip/irq-ls-scfg-msi.c
+@@ -17,7 +17,8 @@
+ #include <linux/irqdomain.h>
+ #include <linux/of_irq.h>
+ #include <linux/of_pci.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/spinlock.h>
  
- 	mutex_lock(&encl->lock);
+ #define MSI_IRQS_PER_MSIR	32
+@@ -334,20 +335,17 @@ MODULE_DEVICE_TABLE(of, ls_scfg_msi_id);
  
--- 
-2.25.1
-
+ static int ls_scfg_msi_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *match;
+ 	struct ls_scfg_msi *msi_data;
+ 	struct resource *res;
+ 	int i, ret;
+ 
+-	match = of_match_device(ls_scfg_msi_id, &pdev->dev);
+-	if (!match)
+-		return -ENODEV;
+-
+ 	msi_data = devm_kzalloc(&pdev->dev, sizeof(*msi_data), GFP_KERNEL);
+ 	if (!msi_data)
+ 		return -ENOMEM;
+ 
+-	msi_data->cfg = (struct ls_scfg_msi_cfg *) match->data;
++	msi_data->cfg = (struct ls_scfg_msi_cfg *)device_get_match_data(&pdev->dev);
++	if (!msi_data->cfg)
++		return -ENODEV;
+ 
+ 	msi_data->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(msi_data->regs)) {
