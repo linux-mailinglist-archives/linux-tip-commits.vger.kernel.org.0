@@ -2,149 +2,119 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 422967D9980
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Oct 2023 15:16:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A03A27D9ECD
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Oct 2023 19:21:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345866AbjJ0NQ5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Oct 2023 09:16:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58760 "EHLO
+        id S232482AbjJ0RVu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Oct 2023 13:21:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231685AbjJ0NQ4 (ORCPT
+        with ESMTP id S232430AbjJ0RVs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Oct 2023 09:16:56 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 777CBC4;
-        Fri, 27 Oct 2023 06:16:53 -0700 (PDT)
-Date:   Fri, 27 Oct 2023 13:16:51 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1698412612;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=T/39ktFhwdPeEfTfccsuAt5wKzh2w/3VDMlvZhp7o4k=;
-        b=e+2fFQOaQix0c+iUlW97KH4cyBvg1/OFvLia6NwSbKs+HODWk4gIyiNMqbFHFZc+hTZBtT
-        Q49kZpGU9+CoffM8/PkYOg11WHkU+zUfvxjZzV3yy4cMz9LwbmPTXCIK0pTMQKqqyJi0kf
-        65kbz0MXNvmkvl+b8et/Hlo4PyItfRAEo/lpxQJsdMCW40wydHjohcLr0MVFkJTQ4nd2JQ
-        EVtlvBVkolcVeTxB61JHB6Rtq3wl673zixL69H2HgSrM9r7h+sd5YyQkNz6kISWFNEUHB7
-        RV943QkW/PZds66yLp5T+kNvn8W1Syu0xeCaU88dxkRSFkVV0n4gEr5DkLI6Yg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1698412612;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=T/39ktFhwdPeEfTfccsuAt5wKzh2w/3VDMlvZhp7o4k=;
-        b=+dlLZktxHE+zscb3ONpjYezHlYfjgwJQm5DP+/tHQAs1qhGQ4aBz0uwCtpYZkN83B5gDhm
-        zsFgIYasXflSxFDg==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86: Add PERF_X86_EVENT_NEEDS_BRANCH_STACK flag
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231025201626.3000228-2-kan.liang@linux.intel.com>
-References: <20231025201626.3000228-2-kan.liang@linux.intel.com>
+        Fri, 27 Oct 2023 13:21:48 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 156D4E1;
+        Fri, 27 Oct 2023 10:21:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698427307; x=1729963307;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=H7xOLD2Hogt9S+FXMD5KTrQ35AjEboEp2zKDa0PtJFQ=;
+  b=ThhBZVpNCADSkXDA1Nx+jgFr17Rmb0W/J3J62EGodMvhHt/0/xJ17AEM
+   Q8GrKsnrLSBYeviGfnABmXlP0K9m7yRzMjrRGtIjwQa5XK/pny0pPvaXa
+   g+orOfOD8CLLQ5K3jV0y8dkXh00wxY4tLOiJwMP7eAJxbbbI4/Tm0drdR
+   3/FGmSetjGHPD6bLMMGofJwad2dLRpS/h7qPRP1x6HYLK1x8Ce3/XxGOi
+   o3dSaNWmoJdHS1DLrftJKttd4JLogPzfDogBtaTSHl7Bb1EMr95A53bgj
+   UBZ1RKbjrD2PEVn7+ZF7/blsZmMjZ3IRjCu2/yJ0B8QqHVh0/vvEY3OeE
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="386706934"
+X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
+   d="scan'208";a="386706934"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 10:21:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="709471287"
+X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
+   d="scan'208";a="709471287"
+Received: from hannahwo-mobl1.amr.corp.intel.com (HELO [10.209.35.60]) ([10.209.35.60])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 10:21:46 -0700
+Message-ID: <6c8716b2-39d3-4b4f-9d27-f34d2373f536@intel.com>
+Date:   Fri, 27 Oct 2023 10:21:46 -0700
 MIME-Version: 1.0
-Message-ID: <169841261141.3135.2527427059573800876.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "x86/sgx: Return VM_FAULT_SIGBUS instead of
+ VM_FAULT_OOM for EPC exhaustion"
+Content-Language: en-US
+To:     Haitao Huang <haitao.huang@linux.intel.com>, tip-bot2@linutronix.de
+Cc:     #@tip-bot2.tec.linutronix.de, linux-kernel@vger.kernel.org,
+        linux-tip-commits@vger.kernel.org, mingo@kernel.org,
+        stable@vger.kernel.org, v6.0+@tip-bot2.tec.linutronix.de,
+        x86@kernel.org
+References: <169778941056.3135.14169781154210769341.tip-bot2@tip-bot2>
+ <20231026225528.5738-1-haitao.huang@linux.intel.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20231026225528.5738-1-haitao.huang@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+On 10/26/23 15:55, Haitao Huang wrote:
+> This reverts commit 6b7b71a70af6d75e0a9eddf4b01e4383a78b8a5e. That patch
+> was a mistake. link:
+> https://lore.kernel.org/all/op.2dfkbh2iwjvjmi@hhuan26-mobl.amr.corp.intel.com/
 
-Commit-ID:     85846b27072defc7ab3dcee7ff36563a040079dc
-Gitweb:        https://git.kernel.org/tip/85846b27072defc7ab3dcee7ff36563a040079dc
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 25 Oct 2023 13:16:20 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 27 Oct 2023 15:05:09 +02:00
-
-perf/x86: Add PERF_X86_EVENT_NEEDS_BRANCH_STACK flag
-
-Currently, branch_sample_type !=0 is used to check whether a branch
-stack setup is required. But it doesn't check the sample type,
-unnecessary branch stack setup may be done for a counting event. E.g.,
-perf record -e "{branch-instructions,branch-misses}:S" -j any
-Also, the event only with the new PERF_SAMPLE_BRANCH_COUNTERS branch
-sample type may not require a branch stack setup either.
-
-Add a new flag NEEDS_BRANCH_STACK to indicate whether the event requires
-a branch stack setup. Replace the needs_branch_stack() by checking the
-new flag.
-
-The counting event check is implemented here. The later patch will take
-the new PERF_SAMPLE_BRANCH_COUNTERS into account.
-
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20231025201626.3000228-2-kan.liang@linux.intel.com
----
- arch/x86/events/intel/core.c       | 14 +++++++++++---
- arch/x86/events/perf_event_flags.h |  1 +
- 2 files changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 41a1647..a99449c 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2527,9 +2527,14 @@ static void intel_pmu_assign_event(struct perf_event *event, int idx)
- 		perf_report_aux_output_id(event, idx);
- }
- 
-+static __always_inline bool intel_pmu_needs_branch_stack(struct perf_event *event)
-+{
-+	return event->hw.flags & PERF_X86_EVENT_NEEDS_BRANCH_STACK;
-+}
-+
- static void intel_pmu_del_event(struct perf_event *event)
- {
--	if (needs_branch_stack(event))
-+	if (intel_pmu_needs_branch_stack(event))
- 		intel_pmu_lbr_del(event);
- 	if (event->attr.precise_ip)
- 		intel_pmu_pebs_del(event);
-@@ -2820,7 +2825,7 @@ static void intel_pmu_add_event(struct perf_event *event)
- {
- 	if (event->attr.precise_ip)
- 		intel_pmu_pebs_add(event);
--	if (needs_branch_stack(event))
-+	if (intel_pmu_needs_branch_stack(event))
- 		intel_pmu_lbr_add(event);
- }
- 
-@@ -3897,7 +3902,10 @@ static int intel_pmu_hw_config(struct perf_event *event)
- 			x86_pmu.pebs_aliases(event);
- 	}
- 
--	if (needs_branch_stack(event)) {
-+	if (needs_branch_stack(event) && is_sampling_event(event))
-+		event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
-+
-+	if (intel_pmu_needs_branch_stack(event)) {
- 		ret = intel_pmu_setup_lbr_filter(event);
- 		if (ret)
- 			return ret;
-diff --git a/arch/x86/events/perf_event_flags.h b/arch/x86/events/perf_event_flags.h
-index 1dc19b9..a168598 100644
---- a/arch/x86/events/perf_event_flags.h
-+++ b/arch/x86/events/perf_event_flags.h
-@@ -20,3 +20,4 @@ PERF_ARCH(TOPDOWN,		0x04000) /* Count Topdown slots/metrics events */
- PERF_ARCH(PEBS_STLAT,		0x08000) /* st+stlat data address sampling */
- PERF_ARCH(AMD_BRS,		0x10000) /* AMD Branch Sampling */
- PERF_ARCH(PEBS_LAT_HYBRID,	0x20000) /* ld and st lat for hybrid */
-+PERF_ARCH(NEEDS_BRANCH_STACK,	0x40000) /* require branch stack setup */
+Thanks for the patch.  There was only one trivial commit on top, so I
+just dropped your commit and effectively rebased the other single one
+instead of applying a revert.
