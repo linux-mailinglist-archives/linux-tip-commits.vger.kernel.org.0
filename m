@@ -2,171 +2,219 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AF307DA09A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Oct 2023 20:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 785B07DA0E1
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Oct 2023 20:46:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235291AbjJ0Sgw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Oct 2023 14:36:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40230 "EHLO
+        id S1346384AbjJ0Sqw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 Oct 2023 14:46:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235239AbjJ0Sgh (ORCPT
+        with ESMTP id S1346393AbjJ0Sqh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Oct 2023 14:36:37 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F8A62D59;
-        Fri, 27 Oct 2023 11:23:48 -0700 (PDT)
-Date:   Fri, 27 Oct 2023 18:23:14 -0000
+        Fri, 27 Oct 2023 14:46:37 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B97DD64;
+        Fri, 27 Oct 2023 11:46:34 -0700 (PDT)
+Date:   Fri, 27 Oct 2023 18:46:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1698430994;
+        s=2020; t=1698432392;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EDpOKTGssvtlgulzL3UG8va0ENAs6cD4R4PLxN1EhHg=;
-        b=1nNdkb34AYxs9/HSYiW2eq+VTgZ/4XWgML8FqVi7iUI155g7GK4uFBvgSYB6+oQ58WsGso
-        tUG0wNS+Qdd7B3hu9N0Qdm2ngdEKCwdCoYVqGo3cQRuNIhGzPGcQtF/ZZDqF5nhBXyRl+W
-        X9u0OXGVYdmjpQ6zRXKPtUadk+v/LZ0+niSI/NOXYo73MYxOiQybKu0ctMqEFPYPH1D3dG
-        w24IWeX92zlkE4CZ4pBYO3mWKXx58nM2q6tk/q2PcQrl/Sy+2hWhyFg7L3UchzRmL9Sp2R
-        jLqJ9yj11h+C1AG7nuEbN8Jof+/ztnjbD+ZuynbApmtZGuO3liW/MSFFhzEokw==
+        bh=Md4gd9s5tpLbWsHux4o16pXnsroMWe4JjJyoBD7SUKw=;
+        b=g8BRZ0V1/5Bnhk/ix83s2gYCe4EWGtCal3YC97eZcP8pVrT8JMzgQ06CgcSAA7jqkVZUQP
+        D4GxHwVVJQvhK7SbtNPEFCfnxJQVCChxLS3znDNVFHJXVPsTgZ/WLKKnSdhGWHr1GX9Aas
+        oDkHVeaPmFnewqeQx27kkj8/NyLvZp1cMSbc/PUYgHtZCeHDbNDm8gElPgBQm1Myc3rEvv
+        I1GcNp+pvUv5KNFkFaxbvqjYhvWpumzHJF+zhlk836oesH6qs8izDy+95n99x5Dv+eqQ3S
+        tRyvaoXx8fhwOpoOI5zFo06bnAP41jaERnLxiIPYu5aG8SmOp8+WuHV8lNnlzQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1698430994;
+        s=2020e; t=1698432392;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EDpOKTGssvtlgulzL3UG8va0ENAs6cD4R4PLxN1EhHg=;
-        b=1q3Wd+qS3kFXWSC1eIbfjv4zWx7I5T5cmxBx4iMpkwwtqMHx2ZaAG5533ZzqGoTukVMnAY
-        cTZ7BN3gVJhzF4CQ==
-From:   "tip-bot2 for Biju Das" <tip-bot2@linutronix.de>
+        bh=Md4gd9s5tpLbWsHux4o16pXnsroMWe4JjJyoBD7SUKw=;
+        b=qFgsd2vHGavKteH2w7+7SkNfDO8J9A/PpdwlPW7GYiwnHiPrXNgsOi+cufS1TUxCvyz5lT
+        aBod3D9DnNYB9aDQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] dt-bindings: timer: renesas,rz-mtu3: Improve documentation
-Cc:     Pavel Machek <pavel@denx.de>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/i8259: Skip probing when ACPI/MADT advertises
+ PCAT compatibility
+Cc:     David Lazar <dlazar@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20230727081848.100834-3-biju.das.jz@bp.renesas.com>
-References: <20230727081848.100834-3-biju.das.jz@bp.renesas.com>
+In-Reply-To: <875y2u5s8g.ffs@tglx>
+References: <875y2u5s8g.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <169843099400.3135.4989763347351372533.tip-bot2@tip-bot2>
+Message-ID: <169843239181.3135.14432177110076341391.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     b121e7881b8975cf8dc24d9bd71a5af81ed8a6b1
-Gitweb:        https://git.kernel.org/tip/b121e7881b8975cf8dc24d9bd71a5af81ed8a6b1
-Author:        Biju Das <biju.das.jz@bp.renesas.com>
-AuthorDate:    Thu, 27 Jul 2023 09:18:45 +01:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Wed, 11 Oct 2023 09:03:54 +02:00
+Commit-ID:     128b0c9781c9f2651bea163cb85e52a6c7be0f9e
+Gitweb:        https://git.kernel.org/tip/128b0c9781c9f2651bea163cb85e52a6c7be0f9e
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 25 Oct 2023 23:04:15 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 27 Oct 2023 20:36:49 +02:00
 
-dt-bindings: timer: renesas,rz-mtu3: Improve documentation
+x86/i8259: Skip probing when ACPI/MADT advertises PCAT compatibility
 
-Fix the documentation issues pointed by Pavel while backporting
-it to 6.1.y-cip.
- - Replace '32- bit'->'32-bit'
- - Consistently remove '.' at the end of line for the specifications
- - Replace '          (excluding MTU8)'-> '(excluding MTU8)'
+David and a few others reported that on certain newer systems some legacy
+interrupts fail to work correctly.
 
-Reported-by: Pavel Machek <pavel@denx.de>
-Closes: https://lore.kernel.org/all/ZH79%2FUjgYg+0Ruiu@duo.ucw.cz
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230727081848.100834-3-biju.das.jz@bp.renesas.com
+Debugging revealed that the BIOS of these systems leaves the legacy PIC in
+uninitialized state which makes the PIC detection fail and the kernel
+switches to a dummy implementation.
+
+Unfortunately this fallback causes quite some code to fail as it depends on
+checks for the number of legacy PIC interrupts or the availability of the
+real PIC.
+
+In theory there is no reason to use the PIC on any modern system when
+IO/APIC is available, but the dependencies on the related checks cannot be
+resolved trivially and on short notice. This needs lots of analysis and
+rework.
+
+The PIC detection has been added to avoid quirky checks and force selection
+of the dummy implementation all over the place, especially in VM guest
+scenarios. So it's not an option to revert the relevant commit as that
+would break a lot of other scenarios.
+
+One solution would be to try to initialize the PIC on detection fail and
+retry the detection, but that puts the burden on everything which does not
+have a PIC.
+
+Fortunately the ACPI/MADT table header has a flag field, which advertises
+in bit 0 that the system is PCAT compatible, which means it has a legacy
+8259 PIC.
+
+Evaluate that bit and if set avoid the detection routine and keep the real
+PIC installed, which then gets initialized (for nothing) and makes the rest
+of the code with all the dependencies work again.
+
+Fixes: e179f6914152 ("x86, irq, pic: Probe for legacy PIC and set legacy_pic appropriately")
+Reported-by: David Lazar <dlazar@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: David Lazar <dlazar@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218003
+Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
+
 ---
- Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml | 28 +++----
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ arch/x86/include/asm/i8259.h |  2 ++-
+ arch/x86/kernel/acpi/boot.c  |  3 +++-
+ arch/x86/kernel/i8259.c      | 38 +++++++++++++++++++++++++++--------
+ 3 files changed, 35 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
-index fbac40b..670a2eb 100644
---- a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
-+++ b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
-@@ -11,8 +11,8 @@ maintainers:
+diff --git a/arch/x86/include/asm/i8259.h b/arch/x86/include/asm/i8259.h
+index 637fa1d..c715097 100644
+--- a/arch/x86/include/asm/i8259.h
++++ b/arch/x86/include/asm/i8259.h
+@@ -69,6 +69,8 @@ struct legacy_pic {
+ 	void (*make_irq)(unsigned int irq);
+ };
  
- description: |
-   This hardware block consists of eight 16-bit timer channels and one
--  32- bit timer channel. It supports the following specifications:
--    - Pulse input/output: 28 lines max.
-+  32-bit timer channel. It supports the following specifications:
-+    - Pulse input/output: 28 lines max
-     - Pulse input 3 lines
-     - Count clock 11 clocks for each channel (14 clocks for MTU0, 12 clocks
-       for MTU2, and 10 clocks for MTU5, four clocks for MTU1-MTU2 combination
-@@ -23,11 +23,11 @@ description: |
-         - Input capture function (noise filter setting available)
-         - Counter-clearing operation
-         - Simultaneous writing to multiple timer counters (TCNT)
--          (excluding MTU8).
-+          (excluding MTU8)
-         - Simultaneous clearing on compare match or input capture
--          (excluding MTU8).
-+          (excluding MTU8)
-         - Simultaneous input and output to registers in synchronization with
--          counter operations           (excluding MTU8).
-+          counter operations (excluding MTU8)
-         - Up to 12-phase PWM output in combination with synchronous operation
-           (excluding MTU8)
-     - [MTU0 MTU3, MTU4, MTU6, MTU7, and MTU8]
-@@ -40,26 +40,26 @@ description: |
-     - [MTU3, MTU4, MTU6, and MTU7]
-         - Through interlocked operation of MTU3/4 and MTU6/7, the positive and
-           negative signals in six phases (12 phases in total) can be output in
--          complementary PWM and reset-synchronized PWM operation.
-+          complementary PWM and reset-synchronized PWM operation
-         - In complementary PWM mode, values can be transferred from buffer
-           registers to temporary registers at crests and troughs of the timer-
-           counter values or when the buffer registers (TGRD registers in MTU4
--          and MTU7) are written to.
--        - Double-buffering selectable in complementary PWM mode.
-+          and MTU7) are written to
-+        - Double-buffering selectable in complementary PWM mode
-     - [MTU3 and MTU4]
-         - Through interlocking with MTU0, a mode for driving AC synchronous
-           motors (brushless DC motors) by using complementary PWM output and
-           reset-synchronized PWM output is settable and allows the selection
--          of two types of waveform output (chopping or level).
-+          of two types of waveform output (chopping or level)
-     - [MTU5]
--        - Capable of operation as a dead-time compensation counter.
-+        - Capable of operation as a dead-time compensation counter
-     - [MTU0/MTU5, MTU1, MTU2, and MTU8]
-         - 32-bit phase counting mode specifiable by combining MTU1 and MTU2 and
--          through interlocked operation with MTU0/MTU5 and MTU8.
-+          through interlocked operation with MTU0/MTU5 and MTU8
-     - Interrupt-skipping function
-         - In complementary PWM mode, interrupts on crests and troughs of counter
-           values and triggers to start conversion by the A/D converter can be
--          skipped.
-+          skipped
-     - Interrupt sources: 43 sources.
-     - Buffer operation:
-         - Automatic transfer of register data (transfer from the buffer
-@@ -68,9 +68,9 @@ description: |
-         - A/D converter start triggers can be generated
-         - A/D converter start request delaying function enables A/D converter
-           to be started with any desired timing and to be synchronized with
--          PWM output.
-+          PWM output
-     - Low power consumption function
--        - The MTU3a can be placed in the module-stop state.
-+        - The MTU3a can be placed in the module-stop state
++void legacy_pic_pcat_compat(void);
++
+ extern struct legacy_pic *legacy_pic;
+ extern struct legacy_pic null_legacy_pic;
  
-     There are two phase counting modes. 16-bit phase counting mode in which
-     MTU1 and MTU2 operate independently, and cascade connection 32-bit phase
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 2a0ea38..c55c0ef 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -148,6 +148,9 @@ static int __init acpi_parse_madt(struct acpi_table_header *table)
+ 		pr_debug("Local APIC address 0x%08x\n", madt->address);
+ 	}
+ 
++	if (madt->flags & ACPI_MADT_PCAT_COMPAT)
++		legacy_pic_pcat_compat();
++
+ 	/* ACPI 6.3 and newer support the online capable bit. */
+ 	if (acpi_gbl_FADT.header.revision > 6 ||
+ 	    (acpi_gbl_FADT.header.revision == 6 &&
+diff --git a/arch/x86/kernel/i8259.c b/arch/x86/kernel/i8259.c
+index 30a5520..c20d183 100644
+--- a/arch/x86/kernel/i8259.c
++++ b/arch/x86/kernel/i8259.c
+@@ -32,6 +32,7 @@
+  */
+ static void init_8259A(int auto_eoi);
+ 
++static bool pcat_compat __ro_after_init;
+ static int i8259A_auto_eoi;
+ DEFINE_RAW_SPINLOCK(i8259A_lock);
+ 
+@@ -299,15 +300,32 @@ static void unmask_8259A(void)
+ 
+ static int probe_8259A(void)
+ {
++	unsigned char new_val, probe_val = ~(1 << PIC_CASCADE_IR);
+ 	unsigned long flags;
+-	unsigned char probe_val = ~(1 << PIC_CASCADE_IR);
+-	unsigned char new_val;
++
++	/*
++	 * If MADT has the PCAT_COMPAT flag set, then do not bother probing
++	 * for the PIC. Some BIOSes leave the PIC uninitialized and probing
++	 * fails.
++	 *
++	 * Right now this causes problems as quite some code depends on
++	 * nr_legacy_irqs() > 0 or has_legacy_pic() == true. This is silly
++	 * when the system has an IO/APIC because then PIC is not required
++	 * at all, except for really old machines where the timer interrupt
++	 * must be routed through the PIC. So just pretend that the PIC is
++	 * there and let legacy_pic->init() initialize it for nothing.
++	 *
++	 * Alternatively this could just try to initialize the PIC and
++	 * repeat the probe, but for cases where there is no PIC that's
++	 * just pointless.
++	 */
++	if (pcat_compat)
++		return nr_legacy_irqs();
++
+ 	/*
+-	 * Check to see if we have a PIC.
+-	 * Mask all except the cascade and read
+-	 * back the value we just wrote. If we don't
+-	 * have a PIC, we will read 0xff as opposed to the
+-	 * value we wrote.
++	 * Check to see if we have a PIC.  Mask all except the cascade and
++	 * read back the value we just wrote. If we don't have a PIC, we
++	 * will read 0xff as opposed to the value we wrote.
+ 	 */
+ 	raw_spin_lock_irqsave(&i8259A_lock, flags);
+ 
+@@ -429,5 +447,9 @@ static int __init i8259A_init_ops(void)
+ 
+ 	return 0;
+ }
+-
+ device_initcall(i8259A_init_ops);
++
++void __init legacy_pic_pcat_compat(void)
++{
++	pcat_compat = true;
++}
