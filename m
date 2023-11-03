@@ -2,39 +2,39 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19E477E0AAF
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  3 Nov 2023 22:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DD6B7E0ABA
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  3 Nov 2023 22:34:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230239AbjKCV0h (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 3 Nov 2023 17:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41702 "EHLO
+        id S230301AbjKCVep (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 3 Nov 2023 17:34:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230273AbjKCV0g (ORCPT
+        with ESMTP id S230274AbjKCVep (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 3 Nov 2023 17:26:36 -0400
+        Fri, 3 Nov 2023 17:34:45 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E164D61;
-        Fri,  3 Nov 2023 14:26:29 -0700 (PDT)
-Date:   Fri, 03 Nov 2023 21:26:26 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9CE61A8;
+        Fri,  3 Nov 2023 14:34:42 -0700 (PDT)
+Date:   Fri, 03 Nov 2023 21:34:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1699046787;
+        s=2020; t=1699047281;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=g6CNUoPwXm4wiAlTR94+rCe6WRiSTMI1vO3hJs6KyyU=;
-        b=wyTqukKZol0aXEwXD/KyO1obufUPbin4VoLvNQjsVoaFA5+DbiWPMTK5qnrhEKocYLxhbp
-        lMcop7Dp0PrgYZTITfftSlQtoYHEljazpfdfVnbXbQK3uGR0oeWvYiHihSA+3hKun3iPau
-        IVGfHypjK/QW2k6Xiwt0mvOXCj4Szdg01qQVWx2fjthe0GJkiEGU7DCLokNBUdP5P3Jo+r
-        ta/t4lSntO+R9g5fKHDu39r0xRuOUmA8hbOESHM5rT6yWYrtXHjVHMz1mM9Rs3O20v5XuJ
-        mKUpV0rUEEuMT198xGlW61SKUpWaTg7OL5hoAvTZ9QmCL+kmx8HmBzvZluPdYg==
+        bh=RiF86Be91X7P83YcrsoVRYDLjX29bzYNes83tWpsBUE=;
+        b=JydaAaPiOEAIK1y9Q2sEl0b2lHhxhGUcZYrBc5ELesED0fENOiTEtwDZO5wk4/NsEnoM/D
+        GlwjLn54ji2r+Yr8zBIAK1idzrrVBLpap7Awvbvkepdqqpv4q8z8AI2VyWVe7JR2rcVjtt
+        Pya2nPg1blKXvnNxtseGiBqlNuTueBdclGQXGklAep+1VIyJaKRkIeGRvkY50fuGq7LTX+
+        qiY9st8QGkQ97dtt3bmwTY7OObyHgS1PDQa2hdEL3GtvyNG/4kPWtORxt84laHU3C6wkGC
+        QHsive4dmNRe89gBeNgW9QLTAkS3v16VGmkBnIkqtLA3z6MRivAS/hxiG6S9+g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1699046787;
+        s=2020e; t=1699047281;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=g6CNUoPwXm4wiAlTR94+rCe6WRiSTMI1vO3hJs6KyyU=;
-        b=ZtuKSkX4equMbDNyzAHW9pJbr3+i3DpnmgtsIiea6RIVW3ph1RM5UrvJ+x3y6eDClJ1RWg
-        4EnTYZLzxqhZmPDw==
+        bh=RiF86Be91X7P83YcrsoVRYDLjX29bzYNes83tWpsBUE=;
+        b=CuM/dZzldRVGLGFyYtOIJGKTejCli52PW2rMJuVoEjrOYkLWqvAuIut8izdhE3vSBpeo2G
+        kbixNdzK/lELr9AQ==
 From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -47,7 +47,7 @@ Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
         Kai Huang <kai.huang@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <169904678660.3135.15311599992625128483.tip-bot2@tip-bot2>
+Message-ID: <169904728047.3135.10696109208721655124.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,12 +64,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     a4b883806ffe5ae5e99459d64d760e205162c729
-Gitweb:        https://git.kernel.org/tip/a4b883806ffe5ae5e99459d64d760e205162c729
+Commit-ID:     c692800cb2ef7a4f4940c68d765cd4649aff3e46
+Gitweb:        https://git.kernel.org/tip/c692800cb2ef7a4f4940c68d765cd4649aff3e46
 Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 AuthorDate:    Thu, 02 Nov 2023 02:33:14 +03:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 03 Nov 2023 14:20:37 -07:00
+CommitterDate: Fri, 03 Nov 2023 14:27:21 -07:00
 
 MAINTAINERS: Add Intel TDX entry
 
@@ -78,10 +78,10 @@ Add myself as Intel TDX maintainer.
 I drove upstreaming most of TDX code so far and I will continue
 working on TDX for foreseeable future.
 
-[ dhansen: * add myself as a reviewer too and change
+[ dhansen: * Add myself as a reviewer too
 	   * Swap Maintained=>Supported.  I double
 	     checked Kirill is still being paid
-	   * add drivers/virt/coco/tdx-guest ]
+	   * Add drivers/virt/coco/tdx-guest ]
 
 Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
