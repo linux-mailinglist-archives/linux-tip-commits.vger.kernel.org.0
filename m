@@ -2,52 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DD6B7E0ABA
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  3 Nov 2023 22:34:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFB857E1828
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Nov 2023 01:33:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230301AbjKCVep (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 3 Nov 2023 17:34:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37206 "EHLO
+        id S229974AbjKFAd5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 5 Nov 2023 19:33:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbjKCVep (ORCPT
+        with ESMTP id S230155AbjKFA3K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 3 Nov 2023 17:34:45 -0400
+        Sun, 5 Nov 2023 19:29:10 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9CE61A8;
-        Fri,  3 Nov 2023 14:34:42 -0700 (PDT)
-Date:   Fri, 03 Nov 2023 21:34:40 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AC35E0;
+        Sun,  5 Nov 2023 16:29:07 -0800 (PST)
+Date:   Mon, 06 Nov 2023 00:28:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1699047281;
+        s=2020; t=1699230545;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=RiF86Be91X7P83YcrsoVRYDLjX29bzYNes83tWpsBUE=;
-        b=JydaAaPiOEAIK1y9Q2sEl0b2lHhxhGUcZYrBc5ELesED0fENOiTEtwDZO5wk4/NsEnoM/D
-        GlwjLn54ji2r+Yr8zBIAK1idzrrVBLpap7Awvbvkepdqqpv4q8z8AI2VyWVe7JR2rcVjtt
-        Pya2nPg1blKXvnNxtseGiBqlNuTueBdclGQXGklAep+1VIyJaKRkIeGRvkY50fuGq7LTX+
-        qiY9st8QGkQ97dtt3bmwTY7OObyHgS1PDQa2hdEL3GtvyNG/4kPWtORxt84laHU3C6wkGC
-        QHsive4dmNRe89gBeNgW9QLTAkS3v16VGmkBnIkqtLA3z6MRivAS/hxiG6S9+g==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3xq+5DOBB1dI8DqvWcQNMKQaktWNVBj4yETwIhzumWk=;
+        b=0JPNS52jezPkRhpIsy+sdBlsR+IxydmPcv9GQDN1nWmSgceikJeXdzfCk5HitlyMZ5Pt/g
+        Gu9ZS4jh9qtp8mJzm9zTrs7Mssum+B1T8B8cGcKFtD/ScDJo+uGiecu8AkJnW3oQ47XM0F
+        lJzu5tcGUt8kFuxdxepbj5TzhXo4pdo8tQ2etZcbqaLfGnHJXaxB7XJxcoscGTEZOEu69y
+        fMbEsZVfusnHak4y5+27SPHytdz2I+Y5sF8SEvt1akTEJuwB9H5jPJkyUgOeI6KcQBVuvU
+        YlHLN4GuBQL/aOB0dzwG7Cx0ksvXdubXB1iA06TC+eXINYL5v5Urs6QZKaLMEg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1699047281;
+        s=2020e; t=1699230545;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=RiF86Be91X7P83YcrsoVRYDLjX29bzYNes83tWpsBUE=;
-        b=CuM/dZzldRVGLGFyYtOIJGKTejCli52PW2rMJuVoEjrOYkLWqvAuIut8izdhE3vSBpeo2G
-        kbixNdzK/lELr9AQ==
-From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3xq+5DOBB1dI8DqvWcQNMKQaktWNVBj4yETwIhzumWk=;
+        b=BXxWrGSaNdoEmZsMCeYZdHtbMthhI1C7qtnSN4G8oUkrs9YV+dGDuPb/uHt9HTx3klkfw4
+        n3IfdX6P7IrYPPDA==
+From:   "tip-bot2 for Fang Xiang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] MAINTAINERS: Add Intel TDX entry
-Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Kai Huang <kai.huang@intel.com>, x86@kernel.org,
+Subject: [tip: irq/urgent] irqchip/gic-v3-its: Flush ITS tables correctly in
+ non-coherent GIC designs
+Cc:     Marc Zyngier <maz@kernel.org>, Fang Xiang <fangxiang3@xiaomi.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20231030083256.4345-1-fangxiang3@xiaomi.com>
+References: <20231030083256.4345-1-fangxiang3@xiaomi.com>
 MIME-Version: 1.0
-Message-ID: <169904728047.3135.10696109208721655124.tip-bot2@tip-bot2>
+Message-ID: <169923053565.3135.5315727184274747802.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,60 +66,77 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     c692800cb2ef7a4f4940c68d765cd4649aff3e46
-Gitweb:        https://git.kernel.org/tip/c692800cb2ef7a4f4940c68d765cd4649aff3e46
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Thu, 02 Nov 2023 02:33:14 +03:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 03 Nov 2023 14:27:21 -07:00
+Commit-ID:     d3badb15613c14dd35d3495b1dde5c90fcd616dd
+Gitweb:        https://git.kernel.org/tip/d3badb15613c14dd35d3495b1dde5c90fcd616dd
+Author:        Fang Xiang <fangxiang3@xiaomi.com>
+AuthorDate:    Mon, 30 Oct 2023 16:32:56 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 06 Nov 2023 01:16:33 +01:00
 
-MAINTAINERS: Add Intel TDX entry
+irqchip/gic-v3-its: Flush ITS tables correctly in non-coherent GIC designs
 
-Add myself as Intel TDX maintainer.
+In non-coherent GIC designs, the ITS tables must be flushed before writing
+to the GITS_BASER<n> registers, otherwise the ITS could read dirty tables,
+which results in unpredictable behavior.
 
-I drove upstreaming most of TDX code so far and I will continue
-working on TDX for foreseeable future.
+Flush the tables right at the begin of its_setup_baser() to prevent that.
 
-[ dhansen: * Add myself as a reviewer too
-	   * Swap Maintained=>Supported.  I double
-	     checked Kirill is still being paid
-	   * Add drivers/virt/coco/tdx-guest ]
+[ tglx: Massage changelog ]
 
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/all/20231101233314.2567-1-kirill.shutemov%40linux.intel.com
+Fixes: a8707f553884 ("irqchip/gic-v3: Add Rockchip 3588001 erratum workaround")
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Fang Xiang <fangxiang3@xiaomi.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20231030083256.4345-1-fangxiang3@xiaomi.com
 ---
- MAINTAINERS | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/irqchip/irq-gic-v3-its.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dd5de54..b697020 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -23460,6 +23460,20 @@ F:	arch/x86/kernel/dumpstack.c
- F:	arch/x86/kernel/stacktrace.c
- F:	arch/x86/kernel/unwind_*.c
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index a8c89df..9a7a742 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -2379,12 +2379,12 @@ retry_baser:
+ 		break;
+ 	}
  
-+X86 TRUST DOMAIN EXTENSIONS (TDX)
-+M:	Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-+R:	Dave Hansen <dave.hansen@linux.intel.com>
-+L:	x86@kernel.org
-+L:	linux-coco@lists.linux.dev
-+S:	Supported
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/tdx
-+F:	arch/x86/boot/compressed/tdx*
-+F:	arch/x86/coco/tdx/
-+F:	arch/x86/include/asm/shared/tdx.h
-+F:	arch/x86/include/asm/tdx.h
-+F:	arch/x86/virt/vmx/tdx/
-+F:	drivers/virt/coco/tdx-guest
++	if (!shr)
++		gic_flush_dcache_to_poc(base, PAGE_ORDER_TO_SIZE(order));
 +
- X86 VDSO
- M:	Andy Lutomirski <luto@kernel.org>
- L:	linux-kernel@vger.kernel.org
+ 	its_write_baser(its, baser, val);
+ 	tmp = baser->val;
+ 
+-	if (its->flags & ITS_FLAGS_FORCE_NON_SHAREABLE)
+-		tmp &= ~GITS_BASER_SHAREABILITY_MASK;
+-
+ 	if ((val ^ tmp) & GITS_BASER_SHAREABILITY_MASK) {
+ 		/*
+ 		 * Shareability didn't stick. Just use
+@@ -2394,10 +2394,9 @@ retry_baser:
+ 		 * non-cacheable as well.
+ 		 */
+ 		shr = tmp & GITS_BASER_SHAREABILITY_MASK;
+-		if (!shr) {
++		if (!shr)
+ 			cache = GITS_BASER_nC;
+-			gic_flush_dcache_to_poc(base, PAGE_ORDER_TO_SIZE(order));
+-		}
++
+ 		goto retry_baser;
+ 	}
+ 
+@@ -2609,6 +2608,11 @@ static int its_alloc_tables(struct its_node *its)
+ 		/* erratum 24313: ignore memory access type */
+ 		cache = GITS_BASER_nCnB;
+ 
++	if (its->flags & ITS_FLAGS_FORCE_NON_SHAREABLE) {
++		cache = GITS_BASER_nC;
++		shr = 0;
++	}
++
+ 	for (i = 0; i < GITS_BASER_NR_REGS; i++) {
+ 		struct its_baser *baser = its->tables + i;
+ 		u64 val = its_read_baser(its, baser);
