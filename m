@@ -2,109 +2,124 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 218E87E2092
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Nov 2023 12:58:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49ED57E676D
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Nov 2023 11:08:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbjKFL6Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 6 Nov 2023 06:58:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57662 "EHLO
+        id S231270AbjKIKIr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Nov 2023 05:08:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231472AbjKFL6X (ORCPT
+        with ESMTP id S231443AbjKIKIq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 6 Nov 2023 06:58:23 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066EC94;
-        Mon,  6 Nov 2023 03:58:18 -0800 (PST)
-Date:   Mon, 06 Nov 2023 11:58:16 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1699271897;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Df9J214P8Zz/oGO9QrDdGXEMmj4NrRZS6MYKXAvIxCc=;
-        b=M1kghMMEkrl+K+UtS7CV8LZdbVZFYP+qnp5SDw60+zbXKl2DJq6Yu6dNw9M2J0jWFIO4EP
-        zZfxAp9bXxToG7daTUcl8AJZIq14aTLpMuecIQiRrDCJJl27B50O5rVG40HS2t1E7T+cG1
-        p9xLkC6bRNKbPWCcsYwi6qQ8MUSJEqBctcqbs80Tn1VRu30fCpC5omNi5DRI+wGZPHmTO4
-        RJ3SPeMN7cpKjHvVNSP57GTmcg/jwVUobXPF5UWyGSElVeli9U11+OejqEgOi9wcx7zD/E
-        Wc0/2wwwolPAwjNXYSLfrLhxk1qGxgaATqhaxBMd8jgciMXrnj5XcwCJGvYlzw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1699271897;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Df9J214P8Zz/oGO9QrDdGXEMmj4NrRZS6MYKXAvIxCc=;
-        b=8GEYy3ZAQlQUp4WOpr3BpHEhGgZ0drOnhm1lm+La67VYnpFcfhglpNB+oSK9/Rlt4r4JYA
-        dwx0gs8XxJxq88Cg==
-From:   "tip-bot2 for Bagas Sanjaya" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/Documentation: Indent 'note::' directive for
- protocol version number note
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231106101206.76487-2-bagasdotme@gmail.com>
-References: <20231106101206.76487-2-bagasdotme@gmail.com>
+        Thu, 9 Nov 2023 05:08:46 -0500
+X-Greylist: delayed 42167 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 09 Nov 2023 02:08:41 PST
+Received: from smtp.inaport4.co.id (smtp.inaport4.co.id [103.219.76.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E1C2D51;
+        Thu,  9 Nov 2023 02:08:41 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by smtp.inaport4.co.id (Postfix) with ESMTP id 45AF682A57A3;
+        Thu,  9 Nov 2023 00:34:59 +0800 (WITA)
+Received: from smtp.inaport4.co.id ([127.0.0.1])
+        by localhost (mta-1.inaport4.co.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id rxeK6luPxggi; Thu,  9 Nov 2023 00:34:59 +0800 (WITA)
+Received: from localhost (localhost [127.0.0.1])
+        by smtp.inaport4.co.id (Postfix) with ESMTP id E4DCD82A5798;
+        Thu,  9 Nov 2023 00:34:57 +0800 (WITA)
+DKIM-Filter: OpenDKIM Filter v2.10.3 smtp.inaport4.co.id E4DCD82A5798
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inaport4.co.id;
+        s=67133E3A-D729-11EC-9A3E-209BEC03DFB2; t=1699461298;
+        bh=Jx3dcL/IIt9T0ZSV86Zqvxv64a59Mzb0LP9gkXXwYFY=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=S05KY2qBZSDgqg5HWGTHiL7/drNeVe2s2mYkfIARt86VUbAIEph+2L3MSI5GCNeoC
+         BW6cyEsXcqGwi0iS+lgAkpFTc7aD5atlVO2KriM4AVZ0q9httZAUq4t7i7wMk2To1A
+         qlY8kBVrrbnUSvQ39NSE9qPQgV/BiojRDenjBUFZEUmMpfnvDReykhg09pR7KLNXdA
+         KQC6vgSsOLo6xKQeQ1QNKpD+hlunLeJ3IlJrBQQGFRlxpiwZJgeRIAr7h7vFredgs/
+         EiVJmUw5uG5zENJyHoQQ3k07phxdCYYFAebhzCKlFyMJACvsPA7aSXqqs0bSxdD3mT
+         QZnmdVtkXbkJg==
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+        mta-1.inaport4.co.id
+X-Virus-Scanned: amavisd-new at 
+Received: from smtp.inaport4.co.id ([127.0.0.1])
+        by localhost (mta-1.inaport4.co.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id vsQxdEPZca_w; Thu,  9 Nov 2023 00:34:57 +0800 (WITA)
+Received: from mailstore.inaport4.co.id (mailstore.inaport4.co.id [172.10.1.75])
+        by smtp.inaport4.co.id (Postfix) with ESMTP id CBBEC82A578F;
+        Thu,  9 Nov 2023 00:34:51 +0800 (WITA)
+Date:   Thu, 9 Nov 2023 00:34:51 +0800 (WITA)
+From:   =?utf-8?B?0KHQuNGB0YLQtdC80L3Ri9C5INCw0LTQvNC40L3QuNGB0YLRgNCw0YLQvtGA?= 
+        <ahmad.rifai@inaport4.co.id>
+Reply-To: sistemassadmins@mail2engineer.com
+Message-ID: <1230363519.26203.1699461291801.JavaMail.zimbra@inaport4.co.id>
+Subject: 
 MIME-Version: 1.0
-Message-ID: <169927189613.3135.13352646601079651163.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+Content-Type: text/plain; charset=utf-8
+X-Mailer: Zimbra 8.8.8_GA_3025 (zclient/8.8.8_GA_3025)
+Thread-Index: 64AUTrRcA0uEEhUjtFFIFj5uxf4EJA==
+Thread-Topic: 
+Content-Transfer-Encoding: quoted-printable
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+=D0=92=D0=9D=D0=98=D0=9C=D0=90=D0=9D=D0=98=D0=95;
 
-Commit-ID:     18216762bcf618c52b85719d3563243f80e4a2d4
-Gitweb:        https://git.kernel.org/tip/18216762bcf618c52b85719d3563243f80e4a2d4
-Author:        Bagas Sanjaya <bagasdotme@gmail.com>
-AuthorDate:    Mon, 06 Nov 2023 17:12:04 +07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 06 Nov 2023 12:53:57 +01:00
+=D0=92=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=
+=D1=89=D0=B8=D0=BA =D0=BF=D1=80=D0=B5=D0=B2=D1=8B=D1=81=D0=B8=D0=BB =D0=BE=
+=D0=B3=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =D1=85=D1=80=
+=D0=B0=D0=BD=D0=B8=D0=BB=D0=B8=D1=89=D0=B0, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=
+=D0=BE=D0=B5 =D1=81=D0=BE=D1=81=D1=82=D0=B0=D0=B2=D0=BB=D1=8F=D0=B5=D1=82=
+ 5 =D0=93=D0=91, =D0=BA=D0=B0=D0=BA =D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=
+=BB=D0=B5=D0=BD=D0=BE =D0=B0=D0=B4=D0=BC=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=
+=80=D0=B0=D1=82=D0=BE=D1=80=D0=BE=D0=BC, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=
+=8B=D0=B9 =D0=B2 =D0=BD=D0=B0=D1=81=D1=82=D0=BE=D1=8F=D1=89=D0=B5=D0=B5 =D0=
+=B2=D1=80=D0=B5=D0=BC=D1=8F =D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D0=B5=D1=
+=82 =D0=BD=D0=B0 10,9 =D0=93=D0=91, =D0=B2=D1=8B =D0=BD=D0=B5 =D1=81=D0=BC=
+=D0=BE=D0=B6=D0=B5=D1=82=D0=B5 =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=
+=D1=8F=D1=82=D1=8C =D0=B8=D0=BB=D0=B8 =D0=BF=D0=BE=D0=BB=D1=83=D1=87=D0=B0=
+=D1=82=D1=8C =D0=BD=D0=BE=D0=B2=D1=83=D1=8E =D0=BF=D0=BE=D1=87=D1=82=D1=83=
+ =D0=B4=D0=BE =D1=82=D0=B5=D1=85 =D0=BF=D0=BE=D1=80, =D0=BF=D0=BE=D0=BA=D0=
+=B0 =D0=BD=D0=B5 =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D0=B5 =D0=
+=BF=D0=BE=D1=87=D1=82=D1=83 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=BE=D0=
+=B3=D0=BE =D1=8F=D1=89=D0=B8=D0=BA=D0=B0 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=
+=80=D0=BD=D0=BE. =D0=A7=D1=82=D0=BE=D0=B1=D1=8B =D0=BF=D0=BE=D0=B2=D1=82=D0=
+=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=
+=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=
+=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D1=8C=D1=
+=82=D0=B5 =D1=81=D0=BB=D0=B5=D0=B4=D1=83=D1=8E=D1=89=D1=83=D1=8E =D0=B8=D0=
+=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BD=D0=B8=D0=B6=D0=
+=B5:
 
-x86/Documentation: Indent 'note::' directive for protocol version number note
+=D0=B8=D0=BC=D1=8F:
+=D0=98=D0=BC=D1=8F =D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=
+=D0=B5=D0=BB=D1=8F:
+=D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
+=D0=9F=D0=BE=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B8=D1=82=D0=B5 =D0=BF=
+=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
+=D0=AD=D0=BB=D0=B5=D0=BA=D1=82=D1=80=D0=BE=D0=BD=D0=BD=D0=B0=D1=8F =D0=BF=
+=D0=BE=D1=87=D1=82=D0=B0:
+=D0=A2=D0=B5=D0=BB=D0=B5=D1=84=D0=BE=D0=BD:
 
-The protocol version number note is between the protocol version table and
-the memory layout section. As such, Sphinx renders the note directive not
-only on the actual note, but until the end of doc.
+=D0=95=D1=81=D0=BB=D0=B8 =D0=B2=D1=8B =D0=BD=D0=B5 =D0=BC=D0=BE=D0=B6=D0=B5=
+=D1=82=D0=B5 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=
+=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=
+=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=B2=
+=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=
+=D0=B8=D0=BA =D0=B1=D1=83=D0=B4=D0=B5=D1=82 =D0=BE=D1=82=D0=BA=D0=BB=D1=8E=
+=D1=87=D0=B5=D0=BD!
 
-Indent the directive so that only the actual protocol version number
-note is rendered as such.
+=D0=9F=D1=80=D0=B8=D0=BD=D0=BE=D1=81=D0=B8=D0=BC =D0=B8=D0=B7=D0=B2=D0=B8=
+=D0=BD=D0=B5=D0=BD=D0=B8=D1=8F =D0=B7=D0=B0 =D0=BD=D0=B5=D1=83=D0=B4=D0=BE=
+=D0=B1=D1=81=D1=82=D0=B2=D0=B0.
+=D0=9F=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=BE=D1=87=D0=BD=D1=8B=D0=B9 =D0=BA=
+=D0=BE=D0=B4: en: WEB. =D0=90=D0=94=D0=9C=D0=98=D0=9D=D0=98=D0=A1=D0=A2=D0=
+=A0=D0=90=D0=A2=D0=9E=D0=A0=D0=90. RU006,524765 @2023
+=D0=9F=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=B0=D1=8F =D1=82=D0=B5=D1=85=D0=BD=
+=D0=B8=D1=87=D0=B5=D1=81=D0=BA=D0=B0=D1=8F =D0=BF=D0=BE=D0=B4=D0=B4=D0=B5=
+=D1=80=D0=B6=D0=BA=D0=B0 @2023
 
-Fixes: 2c33c27fd603 ("x86/boot: Introduce kernel_info")
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/20231106101206.76487-2-bagasdotme@gmail.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- Documentation/arch/x86/boot.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+=D0=A1=D0=BF=D0=B0=D1=81=D0=B8=D0=B1=D0=BE
+=D0=A1=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=BD=D1=8B=D0=B9 =D0=B0=D0=B4=D0=BC=
+=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80.
 
-diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
-index f5d2f24..22cc7a0 100644
---- a/Documentation/arch/x86/boot.rst
-+++ b/Documentation/arch/x86/boot.rst
-@@ -77,7 +77,7 @@ Protocol 2.14	BURNT BY INCORRECT COMMIT
- Protocol 2.15	(Kernel 5.5) Added the kernel_info and kernel_info.setup_type_max.
- =============	============================================================
- 
--.. note::
-+  .. note::
-      The protocol version number should be changed only if the setup header
-      is changed. There is no need to update the version number if boot_params
-      or kernel_info are changed. Additionally, it is recommended to use
+
