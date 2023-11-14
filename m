@@ -2,152 +2,125 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7D057EA238
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Nov 2023 18:41:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 808D07EB8FC
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Nov 2023 22:56:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229511AbjKMRls (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Nov 2023 12:41:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46870 "EHLO
+        id S231617AbjKNV4y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Nov 2023 16:56:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjKMRlr (ORCPT
+        with ESMTP id S229569AbjKNV4y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Nov 2023 12:41:47 -0500
-X-Greylist: delayed 160 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 13 Nov 2023 09:41:42 PST
-Received: from smtp.inaport4.co.id (smtp.inaport4.co.id [103.219.76.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA40F10E5;
-        Mon, 13 Nov 2023 09:41:42 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by smtp.inaport4.co.id (Postfix) with ESMTP id 689CF819104C;
-        Tue, 14 Nov 2023 01:13:50 +0800 (WITA)
-Received: from smtp.inaport4.co.id ([127.0.0.1])
-        by localhost (mta-1.inaport4.co.id [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id WweAvmUXDRA6; Tue, 14 Nov 2023 01:13:50 +0800 (WITA)
-Received: from localhost (localhost [127.0.0.1])
-        by smtp.inaport4.co.id (Postfix) with ESMTP id 96C3781AF182;
-        Tue, 14 Nov 2023 01:13:48 +0800 (WITA)
-DKIM-Filter: OpenDKIM Filter v2.10.3 smtp.inaport4.co.id 96C3781AF182
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inaport4.co.id;
-        s=67133E3A-D729-11EC-9A3E-209BEC03DFB2; t=1699895629;
-        bh=Jx3dcL/IIt9T0ZSV86Zqvxv64a59Mzb0LP9gkXXwYFY=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=1ogiMIL3TlOmtFifrThs3wHcvT2Uzl2sBw6Lpp41w6vE/jmxJgLIgmfcKa40Y25nm
-         +xzCuvuwz+BcAGiHwKsIP91CBgURWG97gIRRRlVp3hMsVuB8h01HyXbztPAEKk8Mpn
-         zsEvHSGjmiHiBePhAwNvxeYqjurmsbb5JaVvM1nqpPHbKYYCQX4tITZedT3fm0W1Fq
-         JvFzF6q1uYnxRa8GnqCkrIXDMnAvirJ/7Wg2mEWlg78XUpbbpyvBsDMB9rtMmD0hgv
-         QxxA7mk130xpsucz3OxSU/dMr6oQtANYlW8GcE58VqoXU6IAiYZiVwKVqrdr+HmrPu
-         aevT21VELT3/A==
-X-Amavis-Modified: Mail body modified (using disclaimer) -
-        mta-1.inaport4.co.id
-X-Virus-Scanned: amavisd-new at 
-Received: from smtp.inaport4.co.id ([127.0.0.1])
-        by localhost (mta-1.inaport4.co.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id L1PHPBztpSOx; Tue, 14 Nov 2023 01:13:48 +0800 (WITA)
-Received: from mailstore.inaport4.co.id (mailstore.inaport4.co.id [172.10.1.75])
-        by smtp.inaport4.co.id (Postfix) with ESMTP id 7F43D8191039;
-        Tue, 14 Nov 2023 01:13:43 +0800 (WITA)
-Date:   Tue, 14 Nov 2023 01:13:43 +0800 (WITA)
-From:   =?utf-8?B?0KHQuNGB0YLQtdC80L3Ri9C5INCw0LTQvNC40L3QuNGB0YLRgNCw0YLQvtGA?= 
-        <syafri@inaport4.co.id>
-Reply-To: sistemassadmins@mail2engineer.com
-Message-ID: <1641015382.368458.1699895623478.JavaMail.zimbra@inaport4.co.id>
-Subject: 
+        Tue, 14 Nov 2023 16:56:54 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B367D3;
+        Tue, 14 Nov 2023 13:56:50 -0800 (PST)
+Date:   Tue, 14 Nov 2023 21:56:46 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1699999007;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vInrZ1jYOgBJhGzvcL4J/hkNuIxeYyfms/Z6oqeyhq0=;
+        b=i27GDA64/eBNcBzluVesMvqmC0WT30/jPwHu7GLvKTfQerNr5F84dipvaCZhYFOqkriheS
+        dsjHOXzcmeyw2ZqsCrNNJq7D3xkQQ5yKXYwJVs2lxilI19nuyigv2cDD47mVb3TYCcuxHK
+        GnmvUQQ8oQAqWsVJn8YZZd9UVcRqk8xapQfFgIaoSSqd4i9V/+epw8gZLiQPo2fZVbwqf3
+        1ypHEAsWl+fcpDPt9Iynhp6WaMDFekbqpy6/ev/W6EGBGVHwfe45bLMQnf8yfodnR4iVOE
+        PisjK95PdoDEFhD4zJZkO+HIqQ13X8+qrMCnV8gJmhGLGoUsZTXDz/Ip9dOGZA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1699999007;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vInrZ1jYOgBJhGzvcL4J/hkNuIxeYyfms/Z6oqeyhq0=;
+        b=gIrSZFKsLRz2OWqUo1CVdVssIuBiNJu6VMcbF1mjNXebNM/QTPUquSu1WzTwgso4vbQ5r6
+        4rSshQRT1r04yZCA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/urgent] futex: Fix hardcoded flags
+Cc:     Xi Ruoyao <xry111@xry111.site>,
+        Florian Weimer <fweimer@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20231114201402.GA25315@noisy.programming.kicks-ass.net>
+References: <20231114201402.GA25315@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-X-Mailer: Zimbra 8.8.8_GA_3025 (zclient/8.8.8_GA_3025)
-Thread-Index: HTV6e7ZlXSd7xjmBUs6PKRpBLKin6A==
-Thread-Topic: 
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        MISSING_HEADERS,RCVD_IN_DNSWL_BLOCKED,REPLYTO_WITHOUT_TO_CC,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+Message-ID: <169999900615.391.871692364626596753.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [103.219.76.6 listed in list.dnswl.org]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  1.0 MISSING_HEADERS Missing To: header
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-=D0=92=D0=9D=D0=98=D0=9C=D0=90=D0=9D=D0=98=D0=95;
+The following commit has been merged into the locking/urgent branch of tip:
 
-=D0=92=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=
-=D1=89=D0=B8=D0=BA =D0=BF=D1=80=D0=B5=D0=B2=D1=8B=D1=81=D0=B8=D0=BB =D0=BE=
-=D0=B3=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =D1=85=D1=80=
-=D0=B0=D0=BD=D0=B8=D0=BB=D0=B8=D1=89=D0=B0, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=
-=D0=BE=D0=B5 =D1=81=D0=BE=D1=81=D1=82=D0=B0=D0=B2=D0=BB=D1=8F=D0=B5=D1=82=
- 5 =D0=93=D0=91, =D0=BA=D0=B0=D0=BA =D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=
-=BB=D0=B5=D0=BD=D0=BE =D0=B0=D0=B4=D0=BC=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=
-=80=D0=B0=D1=82=D0=BE=D1=80=D0=BE=D0=BC, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=
-=8B=D0=B9 =D0=B2 =D0=BD=D0=B0=D1=81=D1=82=D0=BE=D1=8F=D1=89=D0=B5=D0=B5 =D0=
-=B2=D1=80=D0=B5=D0=BC=D1=8F =D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D0=B5=D1=
-=82 =D0=BD=D0=B0 10,9 =D0=93=D0=91, =D0=B2=D1=8B =D0=BD=D0=B5 =D1=81=D0=BC=
-=D0=BE=D0=B6=D0=B5=D1=82=D0=B5 =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=
-=D1=8F=D1=82=D1=8C =D0=B8=D0=BB=D0=B8 =D0=BF=D0=BE=D0=BB=D1=83=D1=87=D0=B0=
-=D1=82=D1=8C =D0=BD=D0=BE=D0=B2=D1=83=D1=8E =D0=BF=D0=BE=D1=87=D1=82=D1=83=
- =D0=B4=D0=BE =D1=82=D0=B5=D1=85 =D0=BF=D0=BE=D1=80, =D0=BF=D0=BE=D0=BA=D0=
-=B0 =D0=BD=D0=B5 =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D0=B5 =D0=
-=BF=D0=BE=D1=87=D1=82=D1=83 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=BE=D0=
-=B3=D0=BE =D1=8F=D1=89=D0=B8=D0=BA=D0=B0 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=
-=80=D0=BD=D0=BE. =D0=A7=D1=82=D0=BE=D0=B1=D1=8B =D0=BF=D0=BE=D0=B2=D1=82=D0=
-=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=
-=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=
-=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=BE=D1=82=D0=BF=D1=80=D0=B0=D0=B2=D1=8C=D1=
-=82=D0=B5 =D1=81=D0=BB=D0=B5=D0=B4=D1=83=D1=8E=D1=89=D1=83=D1=8E =D0=B8=D0=
-=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BD=D0=B8=D0=B6=D0=
-=B5:
+Commit-ID:     59f3daffefbf48206dbf310af5472d6d7d7161df
+Gitweb:        https://git.kernel.org/tip/59f3daffefbf48206dbf310af5472d6d7d7161df
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 14 Nov 2023 21:36:13 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 14 Nov 2023 22:26:41 +01:00
 
-=D0=B8=D0=BC=D1=8F:
-=D0=98=D0=BC=D1=8F =D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=
-=D0=B5=D0=BB=D1=8F:
-=D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
-=D0=9F=D0=BE=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B8=D1=82=D0=B5 =D0=BF=
-=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
-=D0=AD=D0=BB=D0=B5=D0=BA=D1=82=D1=80=D0=BE=D0=BD=D0=BD=D0=B0=D1=8F =D0=BF=
-=D0=BE=D1=87=D1=82=D0=B0:
-=D0=A2=D0=B5=D0=BB=D0=B5=D1=84=D0=BE=D0=BD:
+futex: Fix hardcoded flags
 
-=D0=95=D1=81=D0=BB=D0=B8 =D0=B2=D1=8B =D0=BD=D0=B5 =D0=BC=D0=BE=D0=B6=D0=B5=
-=D1=82=D0=B5 =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=80=D0=BD=D0=BE =D0=BF=D1=80=
-=D0=BE=D0=B2=D0=B5=D1=80=D0=B8=D1=82=D1=8C =D1=81=D0=B2=D0=BE=D0=B9 =D0=BF=
-=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=D0=B8=D0=BA, =D0=B2=
-=D0=B0=D1=88 =D0=BF=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D1=8F=D1=89=
-=D0=B8=D0=BA =D0=B1=D1=83=D0=B4=D0=B5=D1=82 =D0=BE=D1=82=D0=BA=D0=BB=D1=8E=
-=D1=87=D0=B5=D0=BD!
+Xi reported that commit 5694289ce183 ("futex: Flag conversion") broke
+glibc's robust futex tests.
 
-=D0=9F=D1=80=D0=B8=D0=BD=D0=BE=D1=81=D0=B8=D0=BC =D0=B8=D0=B7=D0=B2=D0=B8=
-=D0=BD=D0=B5=D0=BD=D0=B8=D1=8F =D0=B7=D0=B0 =D0=BD=D0=B5=D1=83=D0=B4=D0=BE=
-=D0=B1=D1=81=D1=82=D0=B2=D0=B0.
-=D0=9F=D1=80=D0=BE=D0=B2=D0=B5=D1=80=D0=BE=D1=87=D0=BD=D1=8B=D0=B9 =D0=BA=
-=D0=BE=D0=B4: en: WEB. =D0=90=D0=94=D0=9C=D0=98=D0=9D=D0=98=D0=A1=D0=A2=D0=
-=A0=D0=90=D0=A2=D0=9E=D0=A0=D0=90. RU006,524765 @2023
-=D0=9F=D0=BE=D1=87=D1=82=D0=BE=D0=B2=D0=B0=D1=8F =D1=82=D0=B5=D1=85=D0=BD=
-=D0=B8=D1=87=D0=B5=D1=81=D0=BA=D0=B0=D1=8F =D0=BF=D0=BE=D0=B4=D0=B4=D0=B5=
-=D1=80=D0=B6=D0=BA=D0=B0 @2023
+This was narrowed down to the change of FLAGS_SHARED from 0x01 to
+0x10, at which point Florian noted that handle_futex_death() has a
+hardcoded flags argument of 1.
 
-=D0=A1=D0=BF=D0=B0=D1=81=D0=B8=D0=B1=D0=BE
-=D0=A1=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=BD=D1=8B=D0=B9 =D0=B0=D0=B4=D0=BC=
-=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80.
+Change this to: FLAGS_SIZE_32 | FLAGS_SHARED, matching how
+futex_to_flags() unconditionally sets FLAGS_SIZE_32 for all legacy
+futex ops.
 
+Fixes: 5694289ce183 ("futex: Flag conversion")
+Reported-by: Xi Ruoyao <xry111@xry111.site>
+Reported-by: Florian Weimer <fweimer@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20231114201402.GA25315@noisy.programming.kicks-ass.net
+---
+ kernel/futex/core.c |  9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
+diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+index 52695c5..dad981a 100644
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -700,7 +700,8 @@ retry:
+ 	owner = uval & FUTEX_TID_MASK;
+ 
+ 	if (pending_op && !pi && !owner) {
+-		futex_wake(uaddr, 1, 1, FUTEX_BITSET_MATCH_ANY);
++		futex_wake(uaddr, FLAGS_SIZE_32 | FLAGS_SHARED, 1,
++			   FUTEX_BITSET_MATCH_ANY);
+ 		return 0;
+ 	}
+ 
+@@ -752,8 +753,10 @@ retry:
+ 	 * Wake robust non-PI futexes here. The wakeup of
+ 	 * PI futexes happens in exit_pi_state():
+ 	 */
+-	if (!pi && (uval & FUTEX_WAITERS))
+-		futex_wake(uaddr, 1, 1, FUTEX_BITSET_MATCH_ANY);
++	if (!pi && (uval & FUTEX_WAITERS)) {
++		futex_wake(uaddr, FLAGS_SIZE_32 | FLAGS_SHARED, 1,
++			   FUTEX_BITSET_MATCH_ANY);
++	}
+ 
+ 	return 0;
+ }
