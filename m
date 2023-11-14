@@ -2,54 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D85C67EB8FD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Nov 2023 22:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B6837EB901
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Nov 2023 22:57:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233916AbjKNV44 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Nov 2023 16:56:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50920 "EHLO
+        id S234118AbjKNV5T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Nov 2023 16:57:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232443AbjKNV4z (ORCPT
+        with ESMTP id S233920AbjKNV5S (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Nov 2023 16:56:55 -0500
+        Tue, 14 Nov 2023 16:57:18 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70038D6;
-        Tue, 14 Nov 2023 13:56:51 -0800 (PST)
-Date:   Tue, 14 Nov 2023 21:56:49 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B93E3;
+        Tue, 14 Nov 2023 13:57:14 -0800 (PST)
+Date:   Tue, 14 Nov 2023 21:57:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1699999009;
+        s=2020; t=1699999033;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uYr1U+hqW8z8NDe7fU2P96uRXyUsLHKUNnItYoIx7xA=;
-        b=Lk1J4vqgTEn7LqP2S4wBYEPbbQihzELUr8yGdOzbWjhL8yNQcRosA8J2OJZgW14n1wOZs9
-        tkPj3eYxG68l8WRGa5zpQC4s9r57RNMwEcxD7EWFT+ojRUjMs2V34mb2CL2SNXo1YeftJe
-        5ozMosAPkdKpf8YcfRAXQvUx1Tup8WBHetvofTN50OWTCXwVQiuu1pToU4FSO9ffmpVc81
-        Gwsc+u1lQlfE2hnaiqIrziUwQgfbB1Z5QfvfBk0BY8RwVpp/kv/u3oYHsqELJMwdpOXbrM
-        xYCxol5InH7MLmTNI1sTwUxXxUl3BWJtaaBbdwj6CoAKSuT1KceUulnsADcstg==
+        bh=ZyNm6zjsHnLhgpddgvEBkRYkAW72R/W124on/N7HXhQ=;
+        b=RXqACAOycE+0B7DF0wNmMg1GIBxrOKNSMruSmAtkxpoiLhimNsrHVBqMwQ4GKqL98nCfYu
+        ZYaf2QxRi5EF7nhZwWfKIwJhASh2pTL328aqQXCzS8Q86Dd0lQd/vQuRqv3tqE+KOQssO7
+        oZed/4x6E11Jf6tSef2htk27w07W9prVy5hZnfoG3loHIV+7xuYOdxxPiy3SWr3OYMn03v
+        u04z9z8kHnaKtbrV1FiXrVY9ejQDdWrhrV/o9ypUL3LJshFNbnI4IcWrezKHieCt0upRTy
+        yyKqx0wvmZhjO+qwJk0PemSO2DLPKLtPOB5XwDLEAmgBiVWZnm5w0EHxc+Kjlg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1699999009;
+        s=2020e; t=1699999033;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uYr1U+hqW8z8NDe7fU2P96uRXyUsLHKUNnItYoIx7xA=;
-        b=VznPNdtjmX8kkobLTTTJZVUqPIkuoqY4UTRZ6S/sRXg0a7K6AWyMfGnt7KJnwkDgfa8J5p
-        MJ8LI7gE9vv9I+DQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=ZyNm6zjsHnLhgpddgvEBkRYkAW72R/W124on/N7HXhQ=;
+        b=2A+xYwJBgsmiTPqhY0xQDQLlo59Vo7phk2vpAAyUlTIWmriAAoikwD+lOcSvARC+RB6/Gu
+        RW7nCU7NM5w+k0DQ==
+From:   "tip-bot2 for Johannes Weiner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf: Fix cpuctx refcounting
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230612093539.085862001@infradead.org>
-References: <20230612093539.085862001@infradead.org>
+Subject: [tip: sched/urgent] sched: psi: fix unprivileged polling against cgroups
+Cc:     Luca Boccassi <bluca@debian.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Suren Baghdasaryan <surenb@google.com>, stable@vger.kernel.org,
+        #@tip-bot2.tec.linutronix.de, 6.5+@tip-bot2.tec.linutronix.de,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231026164114.2488682-1-hannes@cmpxchg.org>
+References: <20231026164114.2488682-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
-Message-ID: <169999900905.391.7191385772913382509.tip-bot2@tip-bot2>
+Message-ID: <169999903275.391.5317186908629148143.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,105 +68,103 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     cfaf1b99ac72d339c586d053885554dbe169d276
-Gitweb:        https://git.kernel.org/tip/cfaf1b99ac72d339c586d053885554dbe169d276
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 09 Jun 2023 12:34:46 +02:00
+Commit-ID:     8b39d20eceeda6c4eb23df1497f9ed2fffdc8f69
+Gitweb:        https://git.kernel.org/tip/8b39d20eceeda6c4eb23df1497f9ed2fffdc8f69
+Author:        Johannes Weiner <hannes@cmpxchg.org>
+AuthorDate:    Thu, 26 Oct 2023 12:41:14 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 14 Nov 2023 22:27:28 +01:00
+CommitterDate: Tue, 14 Nov 2023 22:27:00 +01:00
 
-perf: Fix cpuctx refcounting
+sched: psi: fix unprivileged polling against cgroups
 
-Audit of the refcounting turned up that perf_pmu_migrate_context()
-fails to migrate the ctx refcount.
+519fabc7aaba ("psi: remove 500ms min window size limitation for
+triggers") breaks unprivileged psi polling on cgroups.
 
-Fixes: bd2756811766 ("perf: Rewrite core context handling")
+Historically, we had a privilege check for polling in the open() of a
+pressure file in /proc, but were erroneously missing it for the open()
+of cgroup pressure files.
+
+When unprivileged polling was introduced in d82caa273565 ("sched/psi:
+Allow unprivileged polling of N*2s period"), it needed to filter
+privileges depending on the exact polling parameters, and as such
+moved the CAP_SYS_RESOURCE check from the proc open() callback to
+psi_trigger_create(). Both the proc files as well as cgroup files go
+through this during write(). This implicitly added the missing check
+for privileges required for HT polling for cgroups.
+
+When 519fabc7aaba ("psi: remove 500ms min window size limitation for
+triggers") followed right after to remove further restrictions on the
+RT polling window, it incorrectly assumed the cgroup privilege check
+was still missing and added it to the cgroup open(), mirroring what we
+used to do for proc files in the past.
+
+As a result, unprivileged poll requests that would be supported now
+get rejected when opening the cgroup pressure file for writing.
+
+Remove the cgroup open() check. psi_trigger_create() handles it.
+
+Fixes: 519fabc7aaba ("psi: remove 500ms min window size limitation for triggers")
+Reported-by: Luca Boccassi <bluca@debian.org>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230612093539.085862001@infradead.org
+Acked-by: Luca Boccassi <bluca@debian.org>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org # 6.5+
+Link: https://lore.kernel.org/r/20231026164114.2488682-1-hannes@cmpxchg.org
 ---
- include/linux/perf_event.h | 13 ++++++++-----
- kernel/events/core.c       | 17 +++++++++++++++++
- 2 files changed, 25 insertions(+), 5 deletions(-)
+ kernel/cgroup/cgroup.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 4b93ff1..d2a15c0 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -843,11 +843,11 @@ struct perf_event {
- };
- 
- /*
-- *           ,-----------------------[1:n]----------------------.
-- *           V                                                  V
-- * perf_event_context <-[1:n]-> perf_event_pmu_context <--- perf_event
-- *           ^                      ^     |                     |
-- *           `--------[1:n]---------'     `-[n:1]-> pmu <-[1:n]-'
-+ *           ,-----------------------[1:n]------------------------.
-+ *           V                                                    V
-+ * perf_event_context <-[1:n]-> perf_event_pmu_context <-[1:n]- perf_event
-+ *                                        |                       |
-+ *                                        `--[n:1]-> pmu <-[1:n]--'
-  *
-  *
-  * struct perf_event_pmu_context  lifetime is refcount based and RCU freed
-@@ -865,6 +865,9 @@ struct perf_event {
-  * ctx->mutex pinning the configuration. Since we hold a reference on
-  * group_leader (through the filedesc) it can't go away, therefore it's
-  * associated pmu_ctx must exist and cannot change due to ctx->mutex.
-+ *
-+ * perf_event holds a refcount on perf_event_context
-+ * perf_event holds a refcount on perf_event_pmu_context
-  */
- struct perf_event_pmu_context {
- 	struct pmu			*pmu;
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index ce984aa..0825098 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -4828,6 +4828,11 @@ find_get_pmu_context(struct pmu *pmu, struct perf_event_context *ctx,
- 	void *task_ctx_data = NULL;
- 
- 	if (!ctx->task) {
-+		/*
-+		 * perf_pmu_migrate_context() / __perf_pmu_install_event()
-+		 * relies on the fact that find_get_pmu_context() cannot fail
-+		 * for CPU contexts.
-+		 */
- 		struct perf_cpu_pmu_context *cpc;
- 
- 		cpc = per_cpu_ptr(pmu->cpu_pmu_context, event->cpu);
-@@ -12897,6 +12902,9 @@ static void __perf_pmu_install_event(struct pmu *pmu,
- 				     int cpu, struct perf_event *event)
- {
- 	struct perf_event_pmu_context *epc;
-+	struct perf_event_context *old_ctx = event->ctx;
-+
-+	get_ctx(ctx); /* normally find_get_context() */
- 
- 	event->cpu = cpu;
- 	epc = find_get_pmu_context(pmu, ctx, event);
-@@ -12905,6 +12913,11 @@ static void __perf_pmu_install_event(struct pmu *pmu,
- 	if (event->state >= PERF_EVENT_STATE_OFF)
- 		event->state = PERF_EVENT_STATE_INACTIVE;
- 	perf_install_in_context(ctx, event, cpu);
-+
-+	/*
-+	 * Now that event->ctx is updated and visible, put the old ctx.
-+	 */
-+	put_ctx(old_ctx);
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 1d5b9de..4b9ff41 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -3885,14 +3885,6 @@ static __poll_t cgroup_pressure_poll(struct kernfs_open_file *of,
+ 	return psi_trigger_poll(&ctx->psi.trigger, of->file, pt);
  }
  
- static void __perf_pmu_install(struct perf_event_context *ctx,
-@@ -12943,6 +12956,10 @@ void perf_pmu_migrate_context(struct pmu *pmu, int src_cpu, int dst_cpu)
- 	struct perf_event_context *src_ctx, *dst_ctx;
- 	LIST_HEAD(events);
- 
-+	/*
-+	 * Since per-cpu context is persistent, no need to grab an extra
-+	 * reference.
-+	 */
- 	src_ctx = &per_cpu_ptr(&perf_cpu_context, src_cpu)->ctx;
- 	dst_ctx = &per_cpu_ptr(&perf_cpu_context, dst_cpu)->ctx;
- 
+-static int cgroup_pressure_open(struct kernfs_open_file *of)
+-{
+-	if (of->file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
+-		return -EPERM;
+-
+-	return 0;
+-}
+-
+ static void cgroup_pressure_release(struct kernfs_open_file *of)
+ {
+ 	struct cgroup_file_ctx *ctx = of->priv;
+@@ -5299,7 +5291,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "io.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IO]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_io_pressure_show,
+ 		.write = cgroup_io_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5308,7 +5299,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "memory.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_MEM]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_memory_pressure_show,
+ 		.write = cgroup_memory_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5317,7 +5307,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "cpu.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_CPU]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_cpu_pressure_show,
+ 		.write = cgroup_cpu_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5327,7 +5316,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "irq.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IRQ]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_irq_pressure_show,
+ 		.write = cgroup_irq_pressure_write,
+ 		.poll = cgroup_pressure_poll,
