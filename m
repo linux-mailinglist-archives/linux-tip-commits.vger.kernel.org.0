@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D5F17EBBAE
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Nov 2023 04:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7C877EBF03
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Nov 2023 10:04:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234356AbjKODX5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Nov 2023 22:23:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48724 "EHLO
+        id S234691AbjKOJEz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Nov 2023 04:04:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234348AbjKODX4 (ORCPT
+        with ESMTP id S234675AbjKOJEy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Nov 2023 22:23:56 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FCDCD5;
-        Tue, 14 Nov 2023 19:23:53 -0800 (PST)
-Date:   Wed, 15 Nov 2023 03:23:50 -0000
+        Wed, 15 Nov 2023 04:04:54 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38384116;
+        Wed, 15 Nov 2023 01:04:51 -0800 (PST)
+Date:   Wed, 15 Nov 2023 09:04:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700018631;
+        s=2020; t=1700039089;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pdCBWbh2ujnjFYIEsg2mtFEUG5LGXDTFpqB0nUoHOiA=;
-        b=vkJoX7AQ367Y3jzFVsmGbaH+hcL0FsZrc1PtMBNAaisgFXgkGJQIGs3l6weRi61vxksxn1
-        YBMP2IpeduQbZBK/ZaBmQ2fS4du73NWu3thm76MIQVCrmpEJBhxsCBWh5mq01DkBQZGVzf
-        7gBX/pDXL5XaeTUxh4HdCAlta5ahBD1X7w9jxxeE4RMyA3/h5yyo2bOXFvZ0UhAF47J0ri
-        Vae0nYN9TcOwL5vOFK4aALVUXo932lk0heRdbl7mQZUNrmpHVo8StJxLWb/hUJm6MYBROi
-        SY41LjXC3vWYNxCJU3Qo30e+eHe2GZxrOY1kXQe4PyxQ3pjc+p9Eq6cJhX3oog==
+        bh=CiagETb+EIhLnlRlKgxN+Qn60M9WIRvjphEzuDjgzB8=;
+        b=2hJwdjws3Kr+gjDuD09s+jOlHs9Rp9CgB78iRIo0YqAXdNQ6ONvV9BjY7BT6dL2eGcVIQI
+        NtBM6WYo34VXG9v5MerOuHd5qY13M4R/hD0Ui7/Mv40g+85S0pAMXef8Rd5qb3C334e8L4
+        CVuvqQbRnxD6Hdc3pSwTkaXiGEalXx7mndov7ojGGh78hOEIwUZhfOd1MEbxrC8qhmRGWq
+        Abd986crt8YtZ+mtMfbvxnpZa5VDI8vS0T4AqhXHmc1Uw8pjytbqR2Kk+Yq7KbDotsih3j
+        EC7wo4a2FK8R2iboMydLfv37nELV4CXs/ZhbMJ9kcNP3SzmP1t/Z+mjZoK7m0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700018631;
+        s=2020e; t=1700039089;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pdCBWbh2ujnjFYIEsg2mtFEUG5LGXDTFpqB0nUoHOiA=;
-        b=yKxcv1WyXTEMNfaNHFL6bEwzIC4/2fMpbd2DIAuXstYaOCobpezimWbrj8MhpHluQUSUW7
-        Wh8TVJ0DPLx9dXCA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=CiagETb+EIhLnlRlKgxN+Qn60M9WIRvjphEzuDjgzB8=;
+        b=L0A82ts+pJSxc8152bNLSc3s6kkwShfbTfhTmkwTDYRiHwmabTrMfFmMBfRGANbhj6dc5+
+        nWZKeOEJv4gtfHDw==
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Fix cpuctx refcounting
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, <stable@vger.kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230612093539.085862001@infradead.org>
-References: <20230612093539.085862001@infradead.org>
+Subject: [tip: sched/core] sched/cpuidle: Comment about timers requirements VS
+ idle handler
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20231114193840.4041-2-frederic@kernel.org>
+References: <20231114193840.4041-2-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <170001863083.391.17242045529374846563.tip-bot2@tip-bot2>
+Message-ID: <170003908886.391.2109617605485917006.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,107 +67,66 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     889c58b3155ff4c8e8671c95daef63d6fabbb6b1
-Gitweb:        https://git.kernel.org/tip/889c58b3155ff4c8e8671c95daef63d6fabbb6b1
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 09 Jun 2023 12:34:46 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 15 Nov 2023 04:18:31 +01:00
+Commit-ID:     dd5403869a40595eb953f12e8cd2bb57bb88bb67
+Gitweb:        https://git.kernel.org/tip/dd5403869a40595eb953f12e8cd2bb57bb88bb67
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Tue, 14 Nov 2023 14:38:39 -05:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 15 Nov 2023 09:57:51 +01:00
 
-perf/core: Fix cpuctx refcounting
+sched/cpuidle: Comment about timers requirements VS idle handler
 
-Audit of the refcounting turned up that perf_pmu_migrate_context()
-fails to migrate the ctx refcount.
+Add missing explanation concerning IRQs re-enablement constraints in
+the cpuidle path against timers.
 
-Fixes: bd2756811766 ("perf: Rewrite core context handling")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20230612093539.085862001@infradead.org
-Cc: <stable@vger.kernel.org>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Link: https://lkml.kernel.org/r/20231114193840.4041-2-frederic@kernel.org
 ---
- include/linux/perf_event.h | 13 ++++++++-----
- kernel/events/core.c       | 17 +++++++++++++++++
- 2 files changed, 25 insertions(+), 5 deletions(-)
+ kernel/sched/idle.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index afb028c..5547ba6 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -843,11 +843,11 @@ struct perf_event {
- };
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index 565f837..3123192 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -258,6 +258,36 @@ static void do_idle(void)
+ 	while (!need_resched()) {
+ 		rmb();
  
- /*
-- *           ,-----------------------[1:n]----------------------.
-- *           V                                                  V
-- * perf_event_context <-[1:n]-> perf_event_pmu_context <--- perf_event
-- *           ^                      ^     |                     |
-- *           `--------[1:n]---------'     `-[n:1]-> pmu <-[1:n]-'
-+ *           ,-----------------------[1:n]------------------------.
-+ *           V                                                    V
-+ * perf_event_context <-[1:n]-> perf_event_pmu_context <-[1:n]- perf_event
-+ *                                        |                       |
-+ *                                        `--[n:1]-> pmu <-[1:n]--'
-  *
-  *
-  * struct perf_event_pmu_context  lifetime is refcount based and RCU freed
-@@ -865,6 +865,9 @@ struct perf_event {
-  * ctx->mutex pinning the configuration. Since we hold a reference on
-  * group_leader (through the filedesc) it can't go away, therefore it's
-  * associated pmu_ctx must exist and cannot change due to ctx->mutex.
-+ *
-+ * perf_event holds a refcount on perf_event_context
-+ * perf_event holds a refcount on perf_event_pmu_context
-  */
- struct perf_event_pmu_context {
- 	struct pmu			*pmu;
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 683dc08..b704d83 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -4828,6 +4828,11 @@ find_get_pmu_context(struct pmu *pmu, struct perf_event_context *ctx,
- 	void *task_ctx_data = NULL;
- 
- 	if (!ctx->task) {
 +		/*
-+		 * perf_pmu_migrate_context() / __perf_pmu_install_event()
-+		 * relies on the fact that find_get_pmu_context() cannot fail
-+		 * for CPU contexts.
++		 * Interrupts shouldn't be re-enabled from that point on until
++		 * the CPU sleeping instruction is reached. Otherwise an interrupt
++		 * may fire and queue a timer that would be ignored until the CPU
++		 * wakes from the sleeping instruction. And testing need_resched()
++		 * doesn't tell about pending needed timer reprogram.
++		 *
++		 * Several cases to consider:
++		 *
++		 * - SLEEP-UNTIL-PENDING-INTERRUPT based instructions such as
++		 *   "wfi" or "mwait" are fine because they can be entered with
++		 *   interrupt disabled.
++		 *
++		 * - sti;mwait() couple is fine because the interrupts are
++		 *   re-enabled only upon the execution of mwait, leaving no gap
++		 *   in-between.
++		 *
++		 * - ROLLBACK based idle handlers with the sleeping instruction
++		 *   called with interrupts enabled are NOT fine. In this scheme
++		 *   when the interrupt detects it has interrupted an idle handler,
++		 *   it rolls back to its beginning which performs the
++		 *   need_resched() check before re-executing the sleeping
++		 *   instruction. This can leak a pending needed timer reprogram.
++		 *   If such a scheme is really mandatory due to the lack of an
++		 *   appropriate CPU sleeping instruction, then a FAST-FORWARD
++		 *   must instead be applied: when the interrupt detects it has
++		 *   interrupted an idle handler, it must resume to the end of
++		 *   this idle handler so that the generic idle loop is iterated
++		 *   again to reprogram the tick.
 +		 */
- 		struct perf_cpu_pmu_context *cpc;
+ 		local_irq_disable();
  
- 		cpc = per_cpu_ptr(pmu->cpu_pmu_context, event->cpu);
-@@ -12889,6 +12894,9 @@ static void __perf_pmu_install_event(struct pmu *pmu,
- 				     int cpu, struct perf_event *event)
- {
- 	struct perf_event_pmu_context *epc;
-+	struct perf_event_context *old_ctx = event->ctx;
-+
-+	get_ctx(ctx); /* normally find_get_context() */
- 
- 	event->cpu = cpu;
- 	epc = find_get_pmu_context(pmu, ctx, event);
-@@ -12897,6 +12905,11 @@ static void __perf_pmu_install_event(struct pmu *pmu,
- 	if (event->state >= PERF_EVENT_STATE_OFF)
- 		event->state = PERF_EVENT_STATE_INACTIVE;
- 	perf_install_in_context(ctx, event, cpu);
-+
-+	/*
-+	 * Now that event->ctx is updated and visible, put the old ctx.
-+	 */
-+	put_ctx(old_ctx);
- }
- 
- static void __perf_pmu_install(struct perf_event_context *ctx,
-@@ -12935,6 +12948,10 @@ void perf_pmu_migrate_context(struct pmu *pmu, int src_cpu, int dst_cpu)
- 	struct perf_event_context *src_ctx, *dst_ctx;
- 	LIST_HEAD(events);
- 
-+	/*
-+	 * Since per-cpu context is persistent, no need to grab an extra
-+	 * reference.
-+	 */
- 	src_ctx = &per_cpu_ptr(&perf_cpu_context, src_cpu)->ctx;
- 	dst_ctx = &per_cpu_ptr(&perf_cpu_context, dst_cpu)->ctx;
- 
+ 		if (cpu_is_offline(cpu)) {
