@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F3EA7EBF77
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Nov 2023 10:29:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5FB27EC896
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Nov 2023 17:30:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234750AbjKOJ3E (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Nov 2023 04:29:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54936 "EHLO
+        id S232045AbjKOQap (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Nov 2023 11:30:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234688AbjKOJ3E (ORCPT
+        with ESMTP id S231959AbjKOQaj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Nov 2023 04:29:04 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5525D9B;
-        Wed, 15 Nov 2023 01:29:01 -0800 (PST)
-Date:   Wed, 15 Nov 2023 09:28:59 -0000
+        Wed, 15 Nov 2023 11:30:39 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE97AAB;
+        Wed, 15 Nov 2023 08:30:35 -0800 (PST)
+Date:   Wed, 15 Nov 2023 16:30:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700040540;
+        s=2020; t=1700065833;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ccZL0j9gRjBhtc4FakVMy7I3+YuzgGEEyPPs3z/zxSQ=;
-        b=SDBJhFyQm79dD0Szf2J/AGpGnNP80al77IEYdjWAZ3Q1e+CJ0XGSsS9fX9s0DoY7TZJwZq
-        KGqjsKr1Q5NIAnMFdwo4KTkqxZtUPHukoiF65d6AXSUwOgAiKFFrj79BuYAZ7BJmajIk5F
-        ELA0fAJhgUcpgXi8HX6NJXg2AqvWvmQ9FImzN3ZkZpKI0SraZvNTG7G8OUQleg0xXcn6LJ
-        yz/4JBhGA3apRM9V4zoSWnWdrgcOtJaDEwpi157GMPgd8PM+zabKoj8ZouOBIEvspCgbr0
-        kV99pB8u3zWX2W6sEdXSmYv7DyOPHOrEGGSJNSewKn9Io1yubfPUjmAoSI/HSg==
+        bh=Lv77ghejcmK3cKE1Vf2d/yMCjFLwc48hc+VxtEjCKYI=;
+        b=d4kOJKZL+RuT9rvY+3XoqUPRRHs21qIVO+5JlejD+bj0OPqLqQSs4vjMAZDSYqpzUkWnmA
+        zIwofycL6lG+vP0EZOhL7OSkAg9M/IJc1WHuL4GCyZvVuSY4otc+kp7h9QySLG/k+7t7Oe
+        k1Dm1eFr5aWRfAwV+htbmNuY4OofQRoZOUiwJ9Il3Z/HC0WhuUZBfIT4xjPscGoX0rniGC
+        ArhxzPyMzWvKN/UeT9BTj4DyfPm3nEw2yg7UciV40/zOAn6QDfa+LQ0kIeHd5dnFAoBlQy
+        6RmuTJSe2EgQ5M+J8w33Le67IrAZ3BOTVUQpWUon264rUBa24xe+85IJrqpxQw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700040540;
+        s=2020e; t=1700065833;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ccZL0j9gRjBhtc4FakVMy7I3+YuzgGEEyPPs3z/zxSQ=;
-        b=winUrXOua56iinRnHDOn7h3Votrwo90OaOoi18mI6Fs0CoeQKxYU2pCSP5q7ivdW7XBWz4
-        WjHDG/RWHADVAFDw==
-From:   "tip-bot2 for Greg KH" <tip-bot2@linutronix.de>
+        bh=Lv77ghejcmK3cKE1Vf2d/yMCjFLwc48hc+VxtEjCKYI=;
+        b=z/UgNWbyPqSD3nXPMQJLB7a85sgd/AbfI3VQgugkikiG9MQV4lFCwWIPWRMu6VPZ7e7meE
+        qwM56+XuBqtYeYAw==
+From:   "tip-bot2 for Nikolay Borisov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Fix narrow startup race when creating the
- perf nr_addr_filters sysfs file
-Cc:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: ras/core] x86/mce: Remove redundant check from mce_device_create()
+Cc:     Nikolay Borisov <nik.borisov@suse.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <2023061204-decal-flyable-6090@gregkh>
-References: <2023061204-decal-flyable-6090@gregkh>
+In-Reply-To: <20231107165529.407349-1-nik.borisov@suse.com>
+References: <20231107165529.407349-1-nik.borisov@suse.com>
 MIME-Version: 1.0
-Message-ID: <170004053915.391.15537018323305525367.tip-bot2@tip-bot2>
+Message-ID: <170006583302.391.15327031218782517108.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,82 +65,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     652ffc2104ec1f69dd4a46313888c33527145ccf
-Gitweb:        https://git.kernel.org/tip/652ffc2104ec1f69dd4a46313888c33527145ccf
-Author:        Greg KH <gregkh@linuxfoundation.org>
-AuthorDate:    Mon, 12 Jun 2023 15:09:09 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 15 Nov 2023 10:15:50 +01:00
+Commit-ID:     612905e13b8769caca7ec4194a8aceb24efa4d5c
+Gitweb:        https://git.kernel.org/tip/612905e13b8769caca7ec4194a8aceb24efa4d5c
+Author:        Nikolay Borisov <nik.borisov@suse.com>
+AuthorDate:    Tue, 07 Nov 2023 18:55:29 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 15 Nov 2023 17:19:14 +01:00
 
-perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file
+x86/mce: Remove redundant check from mce_device_create()
 
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/2023061204-decal-flyable-6090@gregkh
+mce_device_create() is called only from mce_cpu_online() which in turn
+will be called iff MCA support is available. That is, at the time of
+mce_device_create() call it's guaranteed that MCA support is available.
+No need to duplicate this check so remove it.
+
+  [ bp: Massage commit message. ]
+
+Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231107165529.407349-1-nik.borisov@suse.com
 ---
- kernel/events/core.c | 40 ++++++++++++++++++++++++++++------------
- 1 file changed, 28 insertions(+), 12 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 0825098..4f0c45a 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11408,9 +11408,32 @@ static DEVICE_ATTR_RW(perf_event_mux_interval_ms);
- static struct attribute *pmu_dev_attrs[] = {
- 	&dev_attr_type.attr,
- 	&dev_attr_perf_event_mux_interval_ms.attr,
-+	&dev_attr_nr_addr_filters.attr,
-+	NULL,
-+};
-+
-+static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int n)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct pmu *pmu = dev_get_drvdata(dev);
-+
-+	if (!pmu->nr_addr_filters)
-+		return 0;
-+
-+	return a->mode;
-+
-+	return 0;
-+}
-+
-+static struct attribute_group pmu_dev_attr_group = {
-+	.is_visible = pmu_dev_is_visible,
-+	.attrs = pmu_dev_attrs,
-+};
-+
-+static const struct attribute_group *pmu_dev_groups[] = {
-+	&pmu_dev_attr_group,
- 	NULL,
- };
--ATTRIBUTE_GROUPS(pmu_dev);
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index df8d25e..1642018 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2584,9 +2584,6 @@ static int mce_device_create(unsigned int cpu)
+ 	int err;
+ 	int i, j;
  
- static int pmu_bus_running;
- static struct bus_type pmu_bus = {
-@@ -11447,18 +11470,11 @@ static int pmu_dev_alloc(struct pmu *pmu)
- 	if (ret)
- 		goto free_dev;
- 
--	/* For PMUs with address filters, throw in an extra attribute: */
--	if (pmu->nr_addr_filters)
--		ret = device_create_file(pmu->dev, &dev_attr_nr_addr_filters);
+-	if (!mce_available(&boot_cpu_data))
+-		return -EIO;
 -
--	if (ret)
--		goto del_dev;
--
--	if (pmu->attr_update)
-+	if (pmu->attr_update) {
- 		ret = sysfs_update_groups(&pmu->dev->kobj, pmu->attr_update);
--
--	if (ret)
--		goto del_dev;
-+		if (ret)
-+			goto del_dev;
-+	}
- 
- out:
- 	return ret;
+ 	dev = per_cpu(mce_device, cpu);
+ 	if (dev)
+ 		return 0;
