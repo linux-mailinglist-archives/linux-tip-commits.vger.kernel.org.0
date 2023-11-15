@@ -2,57 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50F857EBF13
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Nov 2023 10:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 962C47EBF05
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Nov 2023 10:04:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234736AbjKOJFF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Nov 2023 04:05:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41804 "EHLO
+        id S234707AbjKOJE7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Nov 2023 04:04:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234701AbjKOJE5 (ORCPT
+        with ESMTP id S234675AbjKOJE5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 15 Nov 2023 04:04:57 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89BA0114;
-        Wed, 15 Nov 2023 01:04:53 -0800 (PST)
-Date:   Wed, 15 Nov 2023 09:04:51 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8172B11C;
+        Wed, 15 Nov 2023 01:04:54 -0800 (PST)
+Date:   Wed, 15 Nov 2023 09:04:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700039091;
+        s=2020; t=1700039093;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=FDYsmJeTGcPNQRpxou+VlALaTQpSQyDGIv5As9gc9js=;
-        b=ZHxLno14T3avnGOVyQTCdzFl0NZd4WrHfom2xm6W+LRn6s44QG/fR2s15IQTZyL/R4LVqO
-        A43uskeZlox9JOhSmeGmtPVoGd7AQWXpSbQjnQA+MfIs76pM1vX8R5W6xARsqMbNHBmMSN
-        5ApBswkP53wLdPp/ccM1FufZxBCnEyo/g+LtBiaoIlIx5pKgopv9JFA3tWH131lLqcX0yk
-        U6OAHb8uiX73W+mK011TxKW/lP3b4b6bF4UkAas8Bu6dW9yGq84+WldxvvrG6vgvt88VyF
-        XBE2cxa6kmEIntK/FjB5PCxHolb06fbot1+tL8zeiF8yY94c0sa9RZNrkZa9kg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=1oYoR9HMpWTrMNNt5tJiIV35XwNwJfCVnIk+94z5U78=;
+        b=L1vp1u3CGnHtFHevFkVvRzfzXWwyzS5b+RRHRiojmYMWnU/j+oZpOufiyvk/4Wz4IQxurX
+        rOShvr+V2+OLvDhXrChmf8+W2gpwZXIwpgr/ZvDP6VQiwlbPbu+5ONqoxnIHPciCt/0z6c
+        wotNHxYMXmtbWjJ43uHwAl4RpfH9YWjTk/7jnmOBHqOfJO5F6yzY+WN/z2JUsF1kXkTWk+
+        5zCO8OhnFMyvozDj7gvXgW5BPHTHJ+5VjiN5rLHR3H7S8atyxGiRod2nGn3OTnhraIZTRA
+        Y4BawcnG7fiPdUm0RXEMdds7JULOa7YPQmro91aY0StMwrWZ05DkCgFP4ajMrA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700039091;
+        s=2020e; t=1700039093;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=FDYsmJeTGcPNQRpxou+VlALaTQpSQyDGIv5As9gc9js=;
-        b=JABlld+YPwGieHBg10FDZpvApvNp0M2m+ruOMUGncTgXZa0gPB79foxhYO1IF6UDRMirN5
-        4l0kO/86gAGIvPBA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=1oYoR9HMpWTrMNNt5tJiIV35XwNwJfCVnIk+94z5U78=;
+        b=gMSXULWbWGqfN+qfypIUK6gxfg1GPJEUNsVtQxGmxzIKEHiQv1xMmUmvgsGWVSvoWG2Fnc
+        M10OCtYeSqhdtdAg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/deadline: Collect sched_dl_entity initialization
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Daniel Bristot de Oliveira <bristot@kernel.org>,
-        Phil Auld <pauld@redhat.com>,
-        Valentin Schneider <vschneid@redhat.com>, x86@kernel.org,
+Subject: [tip: sched/core] sched: Remove vruntime from trace_sched_stat_runtime()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <51acc695eecf0a1a2f78f9a044e11ffd9b316bcf.1699095159.git.bristot@kernel.org>
-References: <51acc695eecf0a1a2f78f9a044e11ffd9b316bcf.1699095159.git.bristot@kernel.org>
 MIME-Version: 1.0
-Message-ID: <170003909113.391.17311843360585530525.tip-bot2@tip-bot2>
+Message-ID: <170003909260.391.5473779409458503289.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,141 +60,93 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9e07d45c5210f5dd6701c00d55791983db7320fa
-Gitweb:        https://git.kernel.org/tip/9e07d45c5210f5dd6701c00d55791983db7320fa
+Commit-ID:     5fe6ec8f6ab549b6422e41551abb51802bd48bc7
+Gitweb:        https://git.kernel.org/tip/5fe6ec8f6ab549b6422e41551abb51802bd48bc7
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Sat, 04 Nov 2023 11:59:19 +01:00
+AuthorDate:    Mon, 06 Nov 2023 13:41:43 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 15 Nov 2023 09:57:50 +01:00
+CommitterDate: Wed, 15 Nov 2023 09:57:49 +01:00
 
-sched/deadline: Collect sched_dl_entity initialization
+sched: Remove vruntime from trace_sched_stat_runtime()
 
-Create a single function that initializes a sched_dl_entity.
+Tracing the runtime delta makes sense, observer can sum over time.
+Tracing the absolute vruntime makes less sense, inconsistent:
+absolute-vs-delta, but also vruntime delta can be computed from
+runtime delta.
+
+Removing the vruntime thing also makes the two tracepoint sites
+identical, allowing to unify the code in a later patch.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lkml.kernel.org/r/51acc695eecf0a1a2f78f9a044e11ffd9b316bcf.1699095159.git.bristot@kernel.org
 ---
- kernel/sched/core.c     |  5 +----
- kernel/sched/deadline.c | 22 +++++++++++++++-------
- kernel/sched/sched.h    |  5 +----
- 3 files changed, 17 insertions(+), 15 deletions(-)
+ include/trace/events/sched.h | 15 ++++++---------
+ kernel/sched/fair.c          |  5 ++---
+ 2 files changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 9d5099d..966631f 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4511,10 +4511,7 @@ static void __sched_fork(unsigned long clone_flags, struct task_struct *p)
- 	memset(&p->stats, 0, sizeof(p->stats));
- #endif
- 
--	RB_CLEAR_NODE(&p->dl.rb_node);
--	init_dl_task_timer(&p->dl);
--	init_dl_inactive_task_timer(&p->dl);
--	__dl_clear_params(p);
-+	init_dl_entity(&p->dl);
- 
- 	INIT_LIST_HEAD(&p->rt.run_list);
- 	p->rt.timeout		= 0;
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index de79719..e80bb88 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -335,6 +335,8 @@ static void dl_change_utilization(struct task_struct *p, u64 new_bw)
- 	__add_rq_bw(new_bw, &rq->dl);
- }
- 
-+static void __dl_clear_params(struct sched_dl_entity *dl_se);
-+
- /*
-  * The utilization of a task cannot be immediately removed from
-  * the rq active utilization (running_bw) when the task blocks.
-@@ -434,7 +436,7 @@ static void task_non_contending(struct task_struct *p)
- 			raw_spin_lock(&dl_b->lock);
- 			__dl_sub(dl_b, p->dl.dl_bw, dl_bw_cpus(task_cpu(p)));
- 			raw_spin_unlock(&dl_b->lock);
--			__dl_clear_params(p);
-+			__dl_clear_params(dl_se);
- 		}
- 
- 		return;
-@@ -1183,7 +1185,7 @@ unlock:
- 	return HRTIMER_NORESTART;
- }
- 
--void init_dl_task_timer(struct sched_dl_entity *dl_se)
-+static void init_dl_task_timer(struct sched_dl_entity *dl_se)
- {
- 	struct hrtimer *timer = &dl_se->dl_timer;
- 
-@@ -1389,7 +1391,7 @@ static enum hrtimer_restart inactive_task_timer(struct hrtimer *timer)
- 		raw_spin_lock(&dl_b->lock);
- 		__dl_sub(dl_b, p->dl.dl_bw, dl_bw_cpus(task_cpu(p)));
- 		raw_spin_unlock(&dl_b->lock);
--		__dl_clear_params(p);
-+		__dl_clear_params(dl_se);
- 
- 		goto unlock;
- 	}
-@@ -1405,7 +1407,7 @@ unlock:
- 	return HRTIMER_NORESTART;
- }
- 
--void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se)
-+static void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se)
- {
- 	struct hrtimer *timer = &dl_se->inactive_timer;
- 
-@@ -2957,10 +2959,8 @@ bool __checkparam_dl(const struct sched_attr *attr)
- /*
-  * This function clears the sched_dl_entity static params.
+diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
+index 6188ad0..dbb01b4 100644
+--- a/include/trace/events/sched.h
++++ b/include/trace/events/sched.h
+@@ -493,33 +493,30 @@ DEFINE_EVENT_SCHEDSTAT(sched_stat_template, sched_stat_blocked,
   */
--void __dl_clear_params(struct task_struct *p)
-+static void __dl_clear_params(struct sched_dl_entity *dl_se)
- {
--	struct sched_dl_entity *dl_se = &p->dl;
+ DECLARE_EVENT_CLASS(sched_stat_runtime,
+ 
+-	TP_PROTO(struct task_struct *tsk, u64 runtime, u64 vruntime),
++	TP_PROTO(struct task_struct *tsk, u64 runtime),
+ 
+-	TP_ARGS(tsk, __perf_count(runtime), vruntime),
++	TP_ARGS(tsk, __perf_count(runtime)),
+ 
+ 	TP_STRUCT__entry(
+ 		__array( char,	comm,	TASK_COMM_LEN	)
+ 		__field( pid_t,	pid			)
+ 		__field( u64,	runtime			)
+-		__field( u64,	vruntime			)
+ 	),
+ 
+ 	TP_fast_assign(
+ 		memcpy(__entry->comm, tsk->comm, TASK_COMM_LEN);
+ 		__entry->pid		= tsk->pid;
+ 		__entry->runtime	= runtime;
+-		__entry->vruntime	= vruntime;
+ 	),
+ 
+-	TP_printk("comm=%s pid=%d runtime=%Lu [ns] vruntime=%Lu [ns]",
++	TP_printk("comm=%s pid=%d runtime=%Lu [ns]",
+ 			__entry->comm, __entry->pid,
+-			(unsigned long long)__entry->runtime,
+-			(unsigned long long)__entry->vruntime)
++			(unsigned long long)__entry->runtime)
+ );
+ 
+ DEFINE_EVENT(sched_stat_runtime, sched_stat_runtime,
+-	     TP_PROTO(struct task_struct *tsk, u64 runtime, u64 vruntime),
+-	     TP_ARGS(tsk, runtime, vruntime));
++	     TP_PROTO(struct task_struct *tsk, u64 runtime),
++	     TP_ARGS(tsk, runtime));
+ 
+ /*
+  * Tracepoint for showing priority inheritance modifying a tasks
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 11073cf..33db70c 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1138,8 +1138,7 @@ s64 update_curr_common(struct rq *rq)
+ 	if (unlikely(delta_exec <= 0))
+ 		return delta_exec;
+ 
+-	trace_sched_stat_runtime(curr, delta_exec, 0);
 -
- 	dl_se->dl_runtime		= 0;
- 	dl_se->dl_deadline		= 0;
- 	dl_se->dl_period		= 0;
-@@ -2978,6 +2978,14 @@ void __dl_clear_params(struct task_struct *p)
- #endif
- }
++	trace_sched_stat_runtime(curr, delta_exec);
+ 	account_group_exec_runtime(curr, delta_exec);
+ 	cgroup_account_cputime(curr, delta_exec);
  
-+void init_dl_entity(struct sched_dl_entity *dl_se)
-+{
-+	RB_CLEAR_NODE(&dl_se->rb_node);
-+	init_dl_task_timer(dl_se);
-+	init_dl_inactive_task_timer(dl_se);
-+	__dl_clear_params(dl_se);
-+}
-+
- bool dl_param_changed(struct task_struct *p, const struct sched_attr *attr)
- {
- 	struct sched_dl_entity *dl_se = &p->dl;
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 6703e9e..3c62df1 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -273,8 +273,6 @@ struct rt_bandwidth {
- 	unsigned int		rt_period_active;
- };
+@@ -1168,7 +1167,7 @@ static void update_curr(struct cfs_rq *cfs_rq)
+ 	if (entity_is_task(curr)) {
+ 		struct task_struct *curtask = task_of(curr);
  
--void __dl_clear_params(struct task_struct *p);
--
- static inline int dl_bandwidth_enabled(void)
- {
- 	return sysctl_sched_rt_runtime >= 0;
-@@ -2427,8 +2425,7 @@ extern struct rt_bandwidth def_rt_bandwidth;
- extern void init_rt_bandwidth(struct rt_bandwidth *rt_b, u64 period, u64 runtime);
- extern bool sched_rt_bandwidth_account(struct rt_rq *rt_rq);
- 
--extern void init_dl_task_timer(struct sched_dl_entity *dl_se);
--extern void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se);
-+extern void init_dl_entity(struct sched_dl_entity *dl_se);
- 
- #define BW_SHIFT		20
- #define BW_UNIT			(1 << BW_SHIFT)
+-		trace_sched_stat_runtime(curtask, delta_exec, curr->vruntime);
++		trace_sched_stat_runtime(curtask, delta_exec);
+ 		cgroup_account_cputime(curtask, delta_exec);
+ 		account_group_exec_runtime(curtask, delta_exec);
+ 	}
