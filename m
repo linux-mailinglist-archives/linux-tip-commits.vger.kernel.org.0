@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 657B67EB903
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Nov 2023 22:57:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EC957EBB90
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Nov 2023 04:08:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231617AbjKNV5U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Nov 2023 16:57:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52476 "EHLO
+        id S234415AbjKODIc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Nov 2023 22:08:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233873AbjKNV5T (ORCPT
+        with ESMTP id S234416AbjKODIR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Nov 2023 16:57:19 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B211DD6;
-        Tue, 14 Nov 2023 13:57:15 -0800 (PST)
-Date:   Tue, 14 Nov 2023 21:57:13 -0000
+        Tue, 14 Nov 2023 22:08:17 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A0EA183;
+        Tue, 14 Nov 2023 19:07:49 -0800 (PST)
+Date:   Wed, 15 Nov 2023 03:07:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1699999034;
+        s=2020; t=1700017666;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CUJpXWysZAAxb9xNg7ygyvbvxjeUdaOSci8Z2b9XVsk=;
-        b=pN4oIfHA1tc9V8WVcyCOXXys4vdfCsNcas7u9CnptvQQAoa3S4+XiyuQnqPFl0yi9Bq+pR
-        EccmPt4GoVUfihsRMYfBxemZ3cPlLyp3Gu1XYdVmg7Y1BiTds22MwZlC/+6IOo3mqBSwwD
-        T5yJ14VENbN+QPt1Q899CIs1oaNgns2OiwrzrfsewjDbh3y5ctEEYDrPcDP6TYCh3gy+w5
-        cAoY2o7tTTPh4ustE55laYqPzP2vwE5Z4FAMg1wAt8JZtGhJWPYlpR+r1iSueeS0hhAsW/
-        9eDR3N6G5fAEPAWO+xxB/85wTYecKd3iXMzuAyySabLo6oEBF7lXq1elB0swpA==
+        bh=XFLN1xMKoqdzRw2wzV2uNrNhBJ7V/n9kgwDlpjXIqLk=;
+        b=Ca0uGTDMmjpfcC1TCfqlkpI9HGIsscHOkAMA/vRmncglxdPmaYQporVbZPeUNGd4PA8Ei9
+        Q3e4w1zBmjnR9pommhRAP1+SRDAIoJ1tZVpA1c4BpiJYwzMoIFhugKIf59jl+61pRrBDu8
+        BQQ9qYobeqUBUbRpipC8NsyBMm+rGqWJl4sO95SqYZM6dIK6/VRu3KI4AGMVxdNtFZOm9C
+        jXRUo6fVPQDo8snY7AKwJgewgrXEa0uRGtaFaBjw5WFRqrPJCSM+jrUimeNdn9anFuKcUD
+        c0lOAEZzmuosCKd7im/1xpO/d5NXF4neJk3m/VhJHVAXDBz9mOEv8Aw7KAajAw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1699999034;
+        s=2020e; t=1700017666;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CUJpXWysZAAxb9xNg7ygyvbvxjeUdaOSci8Z2b9XVsk=;
-        b=wDeJfjQn82EgJ89yjrwdRFjOC3A+7HHrClYa3gUlL8v6JV+qmhez76oZQ2RTMFZA34RgPP
-        S3g15P27ZdUzeUAg==
-From:   "tip-bot2 for Abel Wu" <tip-bot2@linutronix.de>
+        bh=XFLN1xMKoqdzRw2wzV2uNrNhBJ7V/n9kgwDlpjXIqLk=;
+        b=X2rtJXQAigHHtmbkEqxVigAA18G9/ZsjVHH3DFHh3D+in6ZCvAJ/YypuSaMq0DmB4nRMRG
+        Fb8OntQRFraulSBg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/eevdf: Fix vruntime adjustment on reweight
-Cc:     Abel Wu <wuyun.abel@bytedance.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231107090510.71322-2-wuyun.abel@bytedance.com>
-References: <20231107090510.71322-2-wuyun.abel@bytedance.com>
+Subject: [tip: locking/urgent] futex: Fix hardcoded flags
+Cc:     Xi Ruoyao <xry111@xry111.site>,
+        Florian Weimer <fweimer@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231114201402.GA25315@noisy.programming.kicks-ass.net>
+References: <20231114201402.GA25315@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <169999903332.391.13801155435294949562.tip-bot2@tip-bot2>
+Message-ID: <170001766579.391.5243762310659751499.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,231 +67,63 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     eab03c23c2a162085b13200d7942fc5a00b5ccc8
-Gitweb:        https://git.kernel.org/tip/eab03c23c2a162085b13200d7942fc5a00b5ccc8
-Author:        Abel Wu <wuyun.abel@bytedance.com>
-AuthorDate:    Tue, 07 Nov 2023 17:05:07 +08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 14 Nov 2023 22:27:00 +01:00
+Commit-ID:     c9bd1568d5462f4108417518ce1af7b924acfb6f
+Gitweb:        https://git.kernel.org/tip/c9bd1568d5462f4108417518ce1af7b924acfb6f
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 14 Nov 2023 21:36:13 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 15 Nov 2023 04:02:25 +01:00
 
-sched/eevdf: Fix vruntime adjustment on reweight
+futex: Fix hardcoded flags
 
-vruntime of the (on_rq && !0-lag) entity needs to be adjusted when
-it gets re-weighted, and the calculations can be simplified based
-on the fact that re-weight won't change the w-average of all the
-entities. Please check the proofs in comments.
+Xi reported that commit 5694289ce183 ("futex: Flag conversion") broke
+glibc's robust futex tests.
 
-But adjusting vruntime can also cause position change in RB-tree
-hence require re-queue to fix up which might be costly. This might
-be avoided by deferring adjustment to the time the entity actually
-leaves tree (dequeue/pick), but that will negatively affect task
-selection and probably not good enough either.
+This was narrowed down to the change of FLAGS_SHARED from 0x01 to
+0x10, at which point Florian noted that handle_futex_death() has a
+hardcoded flags argument of 1.
 
-Fixes: 147f3efaa241 ("sched/fair: Implement an EEVDF-like scheduling policy")
-Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Change this to: FLAGS_SIZE_32 | FLAGS_SHARED, matching how
+futex_to_flags() unconditionally sets FLAGS_SIZE_32 for all legacy
+futex ops.
+
+Reported-by: Xi Ruoyao <xry111@xry111.site>
+Reported-by: Florian Weimer <fweimer@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20231107090510.71322-2-wuyun.abel@bytedance.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20231114201402.GA25315@noisy.programming.kicks-ass.net
+Fixes: 5694289ce183 ("futex: Flag conversion")
+Cc: <stable@vger.kernel.org>
 ---
- kernel/sched/fair.c | 151 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 128 insertions(+), 23 deletions(-)
+ kernel/futex/core.c |  9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 2048138..025d909 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3666,41 +3666,140 @@ static inline void
- dequeue_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se) { }
- #endif
+diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+index 52695c5..dad981a 100644
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -700,7 +700,8 @@ retry:
+ 	owner = uval & FUTEX_TID_MASK;
  
-+static void reweight_eevdf(struct cfs_rq *cfs_rq, struct sched_entity *se,
-+			   unsigned long weight)
-+{
-+	unsigned long old_weight = se->load.weight;
-+	u64 avruntime = avg_vruntime(cfs_rq);
-+	s64 vlag, vslice;
-+
-+	/*
-+	 * VRUNTIME
-+	 * ========
-+	 *
-+	 * COROLLARY #1: The virtual runtime of the entity needs to be
-+	 * adjusted if re-weight at !0-lag point.
-+	 *
-+	 * Proof: For contradiction assume this is not true, so we can
-+	 * re-weight without changing vruntime at !0-lag point.
-+	 *
-+	 *             Weight	VRuntime   Avg-VRuntime
-+	 *     before    w          v            V
-+	 *      after    w'         v'           V'
-+	 *
-+	 * Since lag needs to be preserved through re-weight:
-+	 *
-+	 *	lag = (V - v)*w = (V'- v')*w', where v = v'
-+	 *	==>	V' = (V - v)*w/w' + v		(1)
-+	 *
-+	 * Let W be the total weight of the entities before reweight,
-+	 * since V' is the new weighted average of entities:
-+	 *
-+	 *	V' = (WV + w'v - wv) / (W + w' - w)	(2)
-+	 *
-+	 * by using (1) & (2) we obtain:
-+	 *
-+	 *	(WV + w'v - wv) / (W + w' - w) = (V - v)*w/w' + v
-+	 *	==> (WV-Wv+Wv+w'v-wv)/(W+w'-w) = (V - v)*w/w' + v
-+	 *	==> (WV - Wv)/(W + w' - w) + v = (V - v)*w/w' + v
-+	 *	==>	(V - v)*W/(W + w' - w) = (V - v)*w/w' (3)
-+	 *
-+	 * Since we are doing at !0-lag point which means V != v, we
-+	 * can simplify (3):
-+	 *
-+	 *	==>	W / (W + w' - w) = w / w'
-+	 *	==>	Ww' = Ww + ww' - ww
-+	 *	==>	W * (w' - w) = w * (w' - w)
-+	 *	==>	W = w	(re-weight indicates w' != w)
-+	 *
-+	 * So the cfs_rq contains only one entity, hence vruntime of
-+	 * the entity @v should always equal to the cfs_rq's weighted
-+	 * average vruntime @V, which means we will always re-weight
-+	 * at 0-lag point, thus breach assumption. Proof completed.
-+	 *
-+	 *
-+	 * COROLLARY #2: Re-weight does NOT affect weighted average
-+	 * vruntime of all the entities.
-+	 *
-+	 * Proof: According to corollary #1, Eq. (1) should be:
-+	 *
-+	 *	(V - v)*w = (V' - v')*w'
-+	 *	==>    v' = V' - (V - v)*w/w'		(4)
-+	 *
-+	 * According to the weighted average formula, we have:
-+	 *
-+	 *	V' = (WV - wv + w'v') / (W - w + w')
-+	 *	   = (WV - wv + w'(V' - (V - v)w/w')) / (W - w + w')
-+	 *	   = (WV - wv + w'V' - Vw + wv) / (W - w + w')
-+	 *	   = (WV + w'V' - Vw) / (W - w + w')
-+	 *
-+	 *	==>  V'*(W - w + w') = WV + w'V' - Vw
-+	 *	==>	V' * (W - w) = (W - w) * V	(5)
-+	 *
-+	 * If the entity is the only one in the cfs_rq, then reweight
-+	 * always occurs at 0-lag point, so V won't change. Or else
-+	 * there are other entities, hence W != w, then Eq. (5) turns
-+	 * into V' = V. So V won't change in either case, proof done.
-+	 *
-+	 *
-+	 * So according to corollary #1 & #2, the effect of re-weight
-+	 * on vruntime should be:
-+	 *
-+	 *	v' = V' - (V - v) * w / w'		(4)
-+	 *	   = V  - (V - v) * w / w'
-+	 *	   = V  - vl * w / w'
-+	 *	   = V  - vl'
-+	 */
-+	if (avruntime != se->vruntime) {
-+		vlag = (s64)(avruntime - se->vruntime);
-+		vlag = div_s64(vlag * old_weight, weight);
-+		se->vruntime = avruntime - vlag;
+ 	if (pending_op && !pi && !owner) {
+-		futex_wake(uaddr, 1, 1, FUTEX_BITSET_MATCH_ANY);
++		futex_wake(uaddr, FLAGS_SIZE_32 | FLAGS_SHARED, 1,
++			   FUTEX_BITSET_MATCH_ANY);
+ 		return 0;
+ 	}
+ 
+@@ -752,8 +753,10 @@ retry:
+ 	 * Wake robust non-PI futexes here. The wakeup of
+ 	 * PI futexes happens in exit_pi_state():
+ 	 */
+-	if (!pi && (uval & FUTEX_WAITERS))
+-		futex_wake(uaddr, 1, 1, FUTEX_BITSET_MATCH_ANY);
++	if (!pi && (uval & FUTEX_WAITERS)) {
++		futex_wake(uaddr, FLAGS_SIZE_32 | FLAGS_SHARED, 1,
++			   FUTEX_BITSET_MATCH_ANY);
 +	}
-+
-+	/*
-+	 * DEADLINE
-+	 * ========
-+	 *
-+	 * When the weight changes, the virtual time slope changes and
-+	 * we should adjust the relative virtual deadline accordingly.
-+	 *
-+	 *	d' = v' + (d - v)*w/w'
-+	 *	   = V' - (V - v)*w/w' + (d - v)*w/w'
-+	 *	   = V  - (V - v)*w/w' + (d - v)*w/w'
-+	 *	   = V  + (d - V)*w/w'
-+	 */
-+	vslice = (s64)(se->deadline - avruntime);
-+	vslice = div_s64(vslice * old_weight, weight);
-+	se->deadline = avruntime + vslice;
-+}
-+
- static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
- 			    unsigned long weight)
- {
--	unsigned long old_weight = se->load.weight;
-+	bool curr = cfs_rq->curr == se;
  
- 	if (se->on_rq) {
- 		/* commit outstanding execution time */
--		if (cfs_rq->curr == se)
-+		if (curr)
- 			update_curr(cfs_rq);
- 		else
--			avg_vruntime_sub(cfs_rq, se);
-+			__dequeue_entity(cfs_rq, se);
- 		update_load_sub(&cfs_rq->load, se->load.weight);
- 	}
- 	dequeue_load_avg(cfs_rq, se);
- 
--	update_load_set(&se->load, weight);
--
- 	if (!se->on_rq) {
- 		/*
- 		 * Because we keep se->vlag = V - v_i, while: lag_i = w_i*(V - v_i),
- 		 * we need to scale se->vlag when w_i changes.
- 		 */
--		se->vlag = div_s64(se->vlag * old_weight, weight);
-+		se->vlag = div_s64(se->vlag * se->load.weight, weight);
- 	} else {
--		s64 deadline = se->deadline - se->vruntime;
--		/*
--		 * When the weight changes, the virtual time slope changes and
--		 * we should adjust the relative virtual deadline accordingly.
--		 */
--		deadline = div_s64(deadline * old_weight, weight);
--		se->deadline = se->vruntime + deadline;
--		if (se != cfs_rq->curr)
--			min_deadline_cb_propagate(&se->run_node, NULL);
-+		reweight_eevdf(cfs_rq, se, weight);
- 	}
- 
-+	update_load_set(&se->load, weight);
-+
- #ifdef CONFIG_SMP
- 	do {
- 		u32 divider = get_pelt_divider(&se->avg);
-@@ -3712,8 +3811,17 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
- 	enqueue_load_avg(cfs_rq, se);
- 	if (se->on_rq) {
- 		update_load_add(&cfs_rq->load, se->load.weight);
--		if (cfs_rq->curr != se)
--			avg_vruntime_add(cfs_rq, se);
-+		if (!curr) {
-+			/*
-+			 * The entity's vruntime has been adjusted, so let's check
-+			 * whether the rq-wide min_vruntime needs updated too. Since
-+			 * the calculations above require stable min_vruntime rather
-+			 * than up-to-date one, we do the update at the end of the
-+			 * reweight process.
-+			 */
-+			__enqueue_entity(cfs_rq, se);
-+			update_min_vruntime(cfs_rq);
-+		}
- 	}
+ 	return 0;
  }
- 
-@@ -3857,14 +3965,11 @@ static void update_cfs_group(struct sched_entity *se)
- 
- #ifndef CONFIG_SMP
- 	shares = READ_ONCE(gcfs_rq->tg->shares);
--
--	if (likely(se->load.weight == shares))
--		return;
- #else
--	shares   = calc_group_shares(gcfs_rq);
-+	shares = calc_group_shares(gcfs_rq);
- #endif
--
--	reweight_entity(cfs_rq_of(se), se, shares);
-+	if (unlikely(se->load.weight != shares))
-+		reweight_entity(cfs_rq_of(se), se, shares);
- }
- 
- #else /* CONFIG_FAIR_GROUP_SCHED */
