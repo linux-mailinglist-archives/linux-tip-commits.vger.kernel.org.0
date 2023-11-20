@@ -2,107 +2,125 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 690817EF69C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Nov 2023 17:52:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E73487F0F0E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Nov 2023 10:28:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbjKQQwq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Nov 2023 11:52:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55438 "EHLO
+        id S232230AbjKTJ2i (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Nov 2023 04:28:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233317AbjKQQkl (ORCPT
+        with ESMTP id S232212AbjKTJ2h (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Nov 2023 11:40:41 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3C1ED4E;
-        Fri, 17 Nov 2023 08:40:38 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-53e70b0a218so3291371a12.2;
-        Fri, 17 Nov 2023 08:40:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700239237; x=1700844037; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0y+U3exdKu+bPEqFoLrVI180ee3VjcW0CVcCQ7Q/FQA=;
-        b=XS8WXVFPM/9QSIleFWu1u/JgfN8O97EV1+weGN3fCRUvA6qtZQKpwgTpWR5MUxbqm9
-         yOOKTCt74uaSOPkl798j63MvuY0yoknMzTrsUt4TAPEJ35xsuqK7tGySsCGzbjFSdjE2
-         zUZT1sf2t5PCHnvqtFUgtxl3tkYWWuKAGgK/RQd1vO6/6zAmGuaiEuNRr1+pEXAavxT+
-         sR+HUVZL3ZIgoOjbNaiRaPmpfMjyoD2B2Wp4qCHPFhvxK+z55zfh+HOaOKAeIqevllTl
-         mGzUAOhXzLWGdOI3Icm6XFjMWBGFStUUuDPJLkXhpVyQ+EDzumTs/7All+o8QDsJAvQ7
-         qePQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700239237; x=1700844037;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0y+U3exdKu+bPEqFoLrVI180ee3VjcW0CVcCQ7Q/FQA=;
-        b=wYkrWEl3ewjjHkOEYXNQE2kHfUgQw9Az7NocZVFOYksPlwNoHJ/01lVyLCJcyl2Pnd
-         j6BralPfc86wSQ3/cMRKB+QSgYSw5YfKjhljXCkfTchU4JJ2GJLtku4DDklvB4pSXOjf
-         3XtYzP0mSC++tJEozle5D79v65kAG6mG+fxOBy4adn47V+Q7f3nzW0IVuDXGDyP9gzMY
-         OJqkU0C0SHcO2Nzrr+XEw4koBhAHKiV2tSU47hZOOkUv/gDsKZQtwrzPN9Yqkv0yleQj
-         rwa43iKqcV/hJYg75bKa4DJZ3pDuhY0I+cK6joubhRjKUeiL9eLYi/+rD5LdZy9iUC9c
-         uN0A==
-X-Gm-Message-State: AOJu0YyXXJEqyvZpEgnAgublf1MrKcJ06JFk6tH814ALW0s8sZKQwwl1
-        ujnlMFInJojTUnJCDyZsn3L+IzN6JvOeu71+Ts3WM4asoCc=
-X-Google-Smtp-Source: AGHT+IFosc6dfaQi9LB55vnr/Ur7rkox2XlIFOIStxrbSdQT6Cy1BJ5lOYQODJEkfO17/vtN6rW3IThjBbWwKpiwUHA=
-X-Received: by 2002:a05:6402:26cc:b0:548:4e53:99a7 with SMTP id
- x12-20020a05640226cc00b005484e5399a7mr1564420edd.23.1700239236796; Fri, 17
- Nov 2023 08:40:36 -0800 (PST)
+        Mon, 20 Nov 2023 04:28:37 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F39DC99;
+        Mon, 20 Nov 2023 01:28:33 -0800 (PST)
+Date:   Mon, 20 Nov 2023 09:28:29 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1700472511;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AL6a3mfrD+bM/yYnjRJE4SkN/bnHM3Nv1byO+diWrh4=;
+        b=QvoF+6ycThwORS8pHiC2q2Rno8UACvNFfIYEJn3kpUIKHY8gA/Cis/7zWMrLR7yE2/JbU9
+        S/KX2R/JLyiSyuqXr2rd5eMPIbEntWc8+LNnMr+BbHACjd4BZ4uJTwGK7iees4suWXqU/u
+        IK2Sab6gljxnqEGs2/kdpns27+Lbk8GEjI+UDCDi84lEK5TMAvVI3PDWK8jnSSdmBkSW2H
+        vzbaNM1eS+9aoALPVrY/gmPulBWxRWv6eCxrNHdefSpwtD7vWjAG7blPxqwd9+5U9dC6aL
+        5zUlb7AoBWMs5AJWrb2BLMQQiDAakWZMv0l8ApWP0RGZAEKFL6LaAF+7TxMwLQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1700472511;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AL6a3mfrD+bM/yYnjRJE4SkN/bnHM3Nv1byO+diWrh4=;
+        b=J/FkAav5MVyHeobbA2Y4TFiA5DRUraDTUgDEK75vRQBvADq6TKeW8EvoKR0tND8qDNNTWh
+        9p0KgSYeezj5rtDA==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/mtrr: Document missing function parameters in
+ kernel-doc
+Cc:     kernel test robot <lkp@intel.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <202311130104.9xKAKzke-lkp@intel.com>
+References: <202311130104.9xKAKzke-lkp@intel.com>
 MIME-Version: 1.0
-References: <170023296234.391.6891224487945079423.tip-bot2@tip-bot2>
-In-Reply-To: <170023296234.391.6891224487945079423.tip-bot2@tip-bot2>
-From:   Uros Bizjak <ubizjak@gmail.com>
-Date:   Fri, 17 Nov 2023 17:40:25 +0100
-Message-ID: <CAFULd4Z3G0h_0vptZOJFy+gD7vd6296V7hvuHfNH1A7FroKNNw@mail.gmail.com>
-Subject: Re: [tip: x86/mm] x86/mm: Use %RIP-relative address in untagged_addr()
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradaed.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <170047250972.398.12119323318343960939.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Nov 17, 2023 at 3:56=E2=80=AFPM tip-bot2 for Uros Bizjak
-<tip-bot2@linutronix.de> wrote:
->
-> The following commit has been merged into the x86/mm branch of tip:
->
-> Commit-ID:     bc5607d7777423b742f5b0f7a760d074154c613f
-> Gitweb:        https://git.kernel.org/tip/bc5607d7777423b742f5b0f7a760d07=
-4154c613f
-> Author:        Uros Bizjak <ubizjak@gmail.com>
-> AuthorDate:    Thu, 16 Nov 2023 20:10:59 +01:00
-> Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-> CommitterDate: Fri, 17 Nov 2023 06:27:29 -08:00
->
-> x86/mm: Use %RIP-relative address in untagged_addr()
->
-> %RIP-relative addresses are nowadays correctly handled in alternative
-> instructions, so remove misleading comment and improve assembly to
-> use %RIP-relative address.
->
-> Also, explicitly using %gs: prefix will segfault for non-SMP builds.
-> Use macros from percpu.h which will DTRT with segment prefix register
-> as far as SMP/non-SMP builds are concerned.
->
-> Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradaed.org>
-> Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Link: https://lore.kernel.org/all/20231116191127.3446476-1-ubizjak%40gmai=
-l.com
+The following commit has been merged into the x86/cleanups branch of tip:
 
-I would just like to point out that this change depends on x86/percpu
-branch in tip. So, the x86/mm has to come after x86/percpu.
+Commit-ID:     4e15b91c5b7919c530c27f39c7f2d392bf0a95e3
+Gitweb:        https://git.kernel.org/tip/4e15b91c5b7919c530c27f39c7f2d392bf0a95e3
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Mon, 13 Nov 2023 14:52:52 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 20 Nov 2023 10:19:27 +01:00
 
-Uros.
+x86/mtrr: Document missing function parameters in kernel-doc
+
+Add text explaining what they do.
+
+No functional changes.
+
+Closes: https://lore.kernel.org/oe-kbuild-all/202311130104.9xKAKzke-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/202311130104.9xKAKzke-lkp@intel.com
+---
+ arch/x86/kernel/cpu/mtrr/generic.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
+index 2d6aa5d..d352477 100644
+--- a/arch/x86/kernel/cpu/mtrr/generic.c
++++ b/arch/x86/kernel/cpu/mtrr/generic.c
+@@ -428,6 +428,10 @@ void __init mtrr_copy_map(void)
+  * from the x86_init.hyper.init_platform() hook.  It can be called only once.
+  * The MTRR state can't be changed afterwards.  To ensure that, X86_FEATURE_MTRR
+  * is cleared.
++ *
++ * @var: MTRR variable range array to use
++ * @num_var: length of the @var array
++ * @def_type: default caching type
+  */
+ void mtrr_overwrite_state(struct mtrr_var_range *var, unsigned int num_var,
+ 			  mtrr_type def_type)
+@@ -492,13 +496,15 @@ static u8 type_merge(u8 type, u8 new_type, u8 *uniform)
+ /**
+  * mtrr_type_lookup - look up memory type in MTRR
+  *
++ * @start: Begin of the physical address range
++ * @end: End of the physical address range
++ * @uniform: output argument:
++ *  - 1: the returned MTRR type is valid for the whole region
++ *  - 0: otherwise
++ *
+  * Return Values:
+  * MTRR_TYPE_(type)  - The effective MTRR type for the region
+  * MTRR_TYPE_INVALID - MTRR is disabled
+- *
+- * Output Argument:
+- * uniform - Set to 1 when the returned MTRR type is valid for the whole
+- *	     region, set to 0 else.
+  */
+ u8 mtrr_type_lookup(u64 start, u64 end, u8 *uniform)
+ {
