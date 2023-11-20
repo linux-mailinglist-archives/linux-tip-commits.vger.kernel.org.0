@@ -2,123 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2513D7F15F2
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Nov 2023 15:44:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDFAD7F21D2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Nov 2023 00:59:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233576AbjKTOoY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Nov 2023 09:44:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57254 "EHLO
+        id S229904AbjKTX7c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Nov 2023 18:59:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232259AbjKTOoY (ORCPT
+        with ESMTP id S229492AbjKTX7b (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Nov 2023 09:44:24 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF0FCA4;
-        Mon, 20 Nov 2023 06:44:20 -0800 (PST)
-Date:   Mon, 20 Nov 2023 14:44:18 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700491459;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QnRXy1yVWCfRsNPkXtlfyjrD/wRceMj0d6uDTf+ma9g=;
-        b=0BlJ6M8fsA1cn0Saynwt3eMvOQxRRBkHxrCXEd6vWQ4O3Uk9fHbtr64pdPk99rdpHCZqAQ
-        aVO+1QGeIw6fvXD1rlAg6EtFbqZdPkpAf1Zh8wJL8w4atSc7BDVQz5tCDfs1CmEHdexqAx
-        A08cv8RQRfL1ft+ioZZAvhMuVvHoK6AWRH+SO6WUVJCuBkbn5svhB5aeRZuOOZTTuClyQb
-        OX6m56y8hiIo2Oeb+5WLWpbyVWWZzB15rJACYN4NCyKlTel1gVibTMJwj2Fjamx4G/usta
-        iFhvS1/2E9PxqHqlPbtlHO3XjFx4kPPTyj1+Z29aCpSZFs5AfdNqdqPTVO5BQg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700491459;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QnRXy1yVWCfRsNPkXtlfyjrD/wRceMj0d6uDTf+ma9g=;
-        b=/mKtkhSn9YyfjlpsCgPUYDdjiJZn+YNDOZdtk/QosgHQ1NN6ZEnpdi1fl8Mgu3nYsCM6KT
-        BpIOeoccBYBEIuDw==
-From:   "tip-bot2 for Sam James" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
+        Mon, 20 Nov 2023 18:59:31 -0500
+X-Greylist: delayed 558 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 20 Nov 2023 15:59:26 PST
+Received: from maxvgils.nl (mail.infinityframe.nl [136.144.214.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A59FB95
+        for <linux-tip-commits@vger.kernel.org>; Mon, 20 Nov 2023 15:59:26 -0800 (PST)
+Received: by mail.infinityframe.nl (Postfix, from userid 10008)
+        id BCE0AAFB86; Tue, 21 Nov 2023 00:50:04 +0100 (CET)
+Authentication-Results: mail.infinityframe.nl;
+        spf=pass (sender IP is 127.0.0.1) smtp.mailfrom=sysuser_a@maxvgils.nl smtp.helo=localhost
+Received-SPF: pass (mail.infinityframe.nl: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=sysuser_a@maxvgils.nl; helo=localhost;
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Fix calloc call for new -Walloc-size
-Cc:     Sam James <sam@gentoo.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231107205504.1470006-1-sam@gentoo.org>
-References: <20231107205504.1470006-1-sam@gentoo.org>
+Subject: Bloom Contact Form
+Date:   Mon, 20 Nov 2023 23:50:04 +0000
+From:   "[Bloom WordPress Theme]" <bloom@wordpress.com>
+Reply-To: linux-tip-commits@vger.kernel.org
+Message-ID: <g8NFIMHKD5xrYlr9N2oJPQIE0ogZ1nfCQOeBpViLW8@maxvgils.nl>
+X-Mailer: PHPMailer 6.8.1 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
-Message-ID: <170049145878.398.18419078180350195785.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Status: No, score=2.8 required=5.0 tests=BAYES_50,FSL_HAS_TINYURL,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+From: [Bloom WordPress Theme] <bloom@wordpress.com>
+Subject: Bloom Contact Form
 
-Commit-ID:     e2e13630f93d942d02f3b3f98660228a3545c60e
-Gitweb:        https://git.kernel.org/tip/e2e13630f93d942d02f3b3f98660228a354=
-5c60e
-Author:        Sam James <sam@gentoo.org>
-AuthorDate:    Tue, 07 Nov 2023 20:55:00=20
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 17 Nov 2023 10:54:50 +01:00
+Message Body:
+The Emptiness of Your Absence 
+Darling, you're the light that guides me through the dark. 
+If you get a chance, might you take a look at my page via this link: https://tinyurl.com/yrxhoup6#mAMgpR   I've posted some new photos and updates from the latest events there. It would be fantastic to catch up and share our experiences.
 
-objtool: Fix calloc call for new -Walloc-size
+--
+This e-mail was sent from a contact form on Diopter (http://demowp.cththemes.com/bloom)
 
-GCC 14 introduces a new -Walloc-size included in -Wextra which errors out
-like:
-```
-check.c: In function =E2=80=98cfi_alloc=E2=80=99:
-check.c:294:33: error: allocation of insufficient size =E2=80=981=E2=80=99 fo=
-r type =E2=80=98struct cfi_state=E2=80=99 with size =E2=80=98320=E2=80=99 [-W=
-error=3Dalloc-size]
-  294 |         struct cfi_state *cfi =3D calloc(sizeof(struct cfi_state), 1);
-      |                                 ^~~~~~
-```
-
-The calloc prototype is:
-```
-void *calloc(size_t nmemb, size_t size);
-```
-
-So, just swap the number of members and size arguments to match the prototype=
-, as
-we're initialising 1 struct of size `sizeof(struct ...)`. GCC then sees we're=
- not
-doing anything wrong.
-
-Signed-off-by: Sam James <sam@gentoo.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20231107205504.1470006-1-sam@gentoo.org
----
- tools/objtool/check.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index e94756e..548ec3c 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -291,7 +291,7 @@ static void init_insn_state(struct objtool_file *file, st=
-ruct insn_state *state,
-=20
- static struct cfi_state *cfi_alloc(void)
- {
--	struct cfi_state *cfi =3D calloc(sizeof(struct cfi_state), 1);
-+	struct cfi_state *cfi =3D calloc(1, sizeof(struct cfi_state));
- 	if (!cfi) {
- 		WARN("calloc failed");
- 		exit(1);
