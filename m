@@ -2,125 +2,141 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E73487F0F0E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Nov 2023 10:28:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EBC37F15CB
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Nov 2023 15:35:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232230AbjKTJ2i (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Nov 2023 04:28:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38148 "EHLO
+        id S233353AbjKTOfp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Nov 2023 09:35:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232212AbjKTJ2h (ORCPT
+        with ESMTP id S233451AbjKTOfo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Nov 2023 04:28:37 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F39DC99;
-        Mon, 20 Nov 2023 01:28:33 -0800 (PST)
-Date:   Mon, 20 Nov 2023 09:28:29 -0000
+        Mon, 20 Nov 2023 09:35:44 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DF65112;
+        Mon, 20 Nov 2023 06:35:40 -0800 (PST)
+Date:   Mon, 20 Nov 2023 14:35:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700472511;
+        s=2020; t=1700490939;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AL6a3mfrD+bM/yYnjRJE4SkN/bnHM3Nv1byO+diWrh4=;
-        b=QvoF+6ycThwORS8pHiC2q2Rno8UACvNFfIYEJn3kpUIKHY8gA/Cis/7zWMrLR7yE2/JbU9
-        S/KX2R/JLyiSyuqXr2rd5eMPIbEntWc8+LNnMr+BbHACjd4BZ4uJTwGK7iees4suWXqU/u
-        IK2Sab6gljxnqEGs2/kdpns27+Lbk8GEjI+UDCDi84lEK5TMAvVI3PDWK8jnSSdmBkSW2H
-        vzbaNM1eS+9aoALPVrY/gmPulBWxRWv6eCxrNHdefSpwtD7vWjAG7blPxqwd9+5U9dC6aL
-        5zUlb7AoBWMs5AJWrb2BLMQQiDAakWZMv0l8ApWP0RGZAEKFL6LaAF+7TxMwLQ==
+        bh=A7zldWwl7dHHlFIYTKVjKhMwvreh2w4NaLYmY3SinWk=;
+        b=fkCp2FPlGxZivFsHHEtrV8dbpDknBljKvECk3nVeTAwJ83yA0wztTBsgd1r2NuYsEZ8rn9
+        ngIN3IHDTlnq1zAgkZ/bg4QIPrnFYCOsPan0vt4dZOanzmaNyW5jTcIkhwEjHDfzXKaRKA
+        fsQaQuXYJRVW9nmge7Z36HyMBv/ggoR/XHguPMAJxspgd8GFjYn0FBj/GmCmUWfzJoqe2Y
+        qT7CL/kqVxH/SE2QNSnkldoHDCMqYNIzyE/I3P7PVo77rd6zs0wh0rRTuv0jh9+w8q+R1X
+        QMrBKZNV+3chGYWkMYyNHphD4TkRiHW8x6VICtjfjMZytOj/MaNpf8YLqm646w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700472511;
+        s=2020e; t=1700490939;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AL6a3mfrD+bM/yYnjRJE4SkN/bnHM3Nv1byO+diWrh4=;
-        b=J/FkAav5MVyHeobbA2Y4TFiA5DRUraDTUgDEK75vRQBvADq6TKeW8EvoKR0tND8qDNNTWh
-        9p0KgSYeezj5rtDA==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=A7zldWwl7dHHlFIYTKVjKhMwvreh2w4NaLYmY3SinWk=;
+        b=D54HCzbVlY2lrVNTpmIfaJRS6YqFvzUoCHLHyeo0c7y2rPRX/ziJDu61+4EblIOlRcEzt3
+        HUQbEjeQzaHWUpDQ==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/mtrr: Document missing function parameters in
- kernel-doc
-Cc:     kernel test robot <lkp@intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/intel/cstate: Add Grand Ridge support
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <202311130104.9xKAKzke-lkp@intel.com>
-References: <202311130104.9xKAKzke-lkp@intel.com>
+In-Reply-To: <20231116142245.1233485-4-kan.liang@linux.intel.com>
+References: <20231116142245.1233485-4-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <170047250972.398.12119323318343960939.tip-bot2@tip-bot2>
+Message-ID: <170049093761.398.5173457505104553782.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     4e15b91c5b7919c530c27f39c7f2d392bf0a95e3
-Gitweb:        https://git.kernel.org/tip/4e15b91c5b7919c530c27f39c7f2d392bf0a95e3
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Mon, 13 Nov 2023 14:52:52 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 20 Nov 2023 10:19:27 +01:00
+Commit-ID:     bbb968696d0f3442ab823598def3b756cf4735c6
+Gitweb:        https://git.kernel.org/tip/bbb968696d0f3442ab823598def3b756cf4735c6
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Thu, 16 Nov 2023 06:22:45 -08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 17 Nov 2023 10:54:53 +01:00
 
-x86/mtrr: Document missing function parameters in kernel-doc
+perf/x86/intel/cstate: Add Grand Ridge support
 
-Add text explaining what they do.
+The same as the Sierra Forest, the Grand Ridge supports core C1/C6 and
+module C6. But it doesn't support pkg C6 residency counter.
 
-No functional changes.
-
-Closes: https://lore.kernel.org/oe-kbuild-all/202311130104.9xKAKzke-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/202311130104.9xKAKzke-lkp@intel.com
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231116142245.1233485-4-kan.liang@linux.intel.com
 ---
- arch/x86/kernel/cpu/mtrr/generic.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/x86/events/intel/cstate.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-index 2d6aa5d..d352477 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -428,6 +428,10 @@ void __init mtrr_copy_map(void)
-  * from the x86_init.hyper.init_platform() hook.  It can be called only once.
-  * The MTRR state can't be changed afterwards.  To ensure that, X86_FEATURE_MTRR
-  * is cleared.
-+ *
-+ * @var: MTRR variable range array to use
-+ * @num_var: length of the @var array
-+ * @def_type: default caching type
-  */
- void mtrr_overwrite_state(struct mtrr_var_range *var, unsigned int num_var,
- 			  mtrr_type def_type)
-@@ -492,13 +496,15 @@ static u8 type_merge(u8 type, u8 new_type, u8 *uniform)
- /**
-  * mtrr_type_lookup - look up memory type in MTRR
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index 4a46ef3..4b50a3a 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -41,7 +41,7 @@
+  *	MSR_CORE_C1_RES: CORE C1 Residency Counter
+  *			 perf code: 0x00
+  *			 Available model: SLM,AMT,GLM,CNL,ICX,TNT,ADL,RPL
+- *					  MTL,SRF
++ *					  MTL,SRF,GRR
+  *			 Scope: Core (each processor core has a MSR)
+  *	MSR_CORE_C3_RESIDENCY: CORE C3 Residency Counter
+  *			       perf code: 0x01
+@@ -52,7 +52,8 @@
+  *			       perf code: 0x02
+  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
+  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
+- *						TGL,TNT,RKL,ADL,RPL,SPR,MTL,SRF
++ *						TGL,TNT,RKL,ADL,RPL,SPR,MTL,SRF,
++ *						GRR
+  *			       Scope: Core
+  *	MSR_CORE_C7_RESIDENCY: CORE C7 Residency Counter
+  *			       perf code: 0x03
+@@ -99,7 +100,7 @@
+  *			       Scope: Package (physical package)
+  *	MSR_MODULE_C6_RES_MS:  Module C6 Residency Counter.
+  *			       perf code: 0x00
+- *			       Available model: SRF
++ *			       Available model: SRF,GRR
+  *			       Scope: A cluster of cores shared L2 cache
   *
-+ * @start: Begin of the physical address range
-+ * @end: End of the physical address range
-+ * @uniform: output argument:
-+ *  - 1: the returned MTRR type is valid for the whole region
-+ *  - 0: otherwise
-+ *
-  * Return Values:
-  * MTRR_TYPE_(type)  - The effective MTRR type for the region
-  * MTRR_TYPE_INVALID - MTRR is disabled
-- *
-- * Output Argument:
-- * uniform - Set to 1 when the returned MTRR type is valid for the whole
-- *	     region, set to 0 else.
   */
- u8 mtrr_type_lookup(u64 start, u64 end, u8 *uniform)
- {
+@@ -677,6 +678,13 @@ static const struct cstate_model glm_cstates __initconst = {
+ 				  BIT(PERF_CSTATE_PKG_C10_RES),
+ };
+ 
++static const struct cstate_model grr_cstates __initconst = {
++	.core_events		= BIT(PERF_CSTATE_CORE_C1_RES) |
++				  BIT(PERF_CSTATE_CORE_C6_RES),
++
++	.module_events		= BIT(PERF_CSTATE_MODULE_C6_RES),
++};
++
+ static const struct cstate_model srf_cstates __initconst = {
+ 	.core_events		= BIT(PERF_CSTATE_CORE_C1_RES) |
+ 				  BIT(PERF_CSTATE_CORE_C6_RES),
+@@ -739,6 +747,7 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_L,	&glm_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GRACEMONT,	&adl_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_CRESTMONT_X,	&srf_cstates),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_CRESTMONT,	&grr_cstates),
+ 
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_L,		&icl_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE,		&icl_cstates),
