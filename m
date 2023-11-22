@@ -2,121 +2,93 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A7C27F4F20
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Nov 2023 19:17:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CABA67F532B
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Nov 2023 23:17:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231704AbjKVSRS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Nov 2023 13:17:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48032 "EHLO
+        id S235182AbjKVWSB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Nov 2023 17:18:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230510AbjKVSRR (ORCPT
+        with ESMTP id S235132AbjKVWSA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Nov 2023 13:17:17 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC99A4;
-        Wed, 22 Nov 2023 10:17:13 -0800 (PST)
-Date:   Wed, 22 Nov 2023 18:17:10 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700677031;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=spZGf1X2ZZQiMgpB/kpF42wNr1pNzbMMgX1NRP70Bsg=;
-        b=a5TzKAoLQ4h/B1EegFNhIcl1bL4nPyn2VjKe0sJiR/vzDzyHDLiLLeo30ZBSCqcvEWL4en
-        YaVWwM6p7a1YkWPXLigoqfwRMi8XhxQfvSmPKjlsD3DOt4HBtYIFRHAYDfAuGh70TeEhMm
-        DjBQThO4qk4QMygoyMVZgFp5Ypt8KCWE4M9Mt4Q7LzubSqkDal69ItZHLXBKdmE3TS+xMp
-        ZhWd1zQp9uI4+bKxXYp0wesqGyWpep6KWErVKewHJK1upkv53Z2ecFKtc504auBxKQzESZ
-        Kh8KkBoFAB5hhUmwdey1wGmA/asYPFWEJF4iqMkEYf8EIdLEiu/5bPBWNNI7sg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700677031;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=spZGf1X2ZZQiMgpB/kpF42wNr1pNzbMMgX1NRP70Bsg=;
-        b=vfTJDH5NKi5BVD4kiXbMphLiCFpCSjAn5dEPXVs/2/fuweycHiB53KcLYQBUx6Qe0oCKeA
-        VmuZPF25oPtno0BA==
-From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce/inject: Clear test status value
-Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231118193248.1296798-2-yazen.ghannam@amd.com>
-References: <20231118193248.1296798-2-yazen.ghannam@amd.com>
-MIME-Version: 1.0
-Message-ID: <170067703062.398.8150315880389793451.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Wed, 22 Nov 2023 17:18:00 -0500
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2941B6
+        for <linux-tip-commits@vger.kernel.org>; Wed, 22 Nov 2023 14:17:54 -0800 (PST)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-daed1e15daeso371313276.1
+        for <linux-tip-commits@vger.kernel.org>; Wed, 22 Nov 2023 14:17:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1700691474; x=1701296274; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4w9WGlpV+oKNURgCWJmbzMqmytRuxi/IH9HmVAy3vpk=;
+        b=4hjMcBVLM8zQ0o7ckWNrtY5BsbegukXIEDCvOawcAjUnR1XZjDCORBx8DRNRNpcLGJ
+         rOYRo1YK1VQ2y0xyZgScQZyb9rLYqzZOdgDtDkghSXkXdkKxJ1HtozUHmVoQlTxztPqK
+         kfOhbHSin5lmjeY12WuVf3III/SL6gBe6BSXI/YQ3KWRvnMIzEozhG1LYLLMFfbbv0Jq
+         ECkYybq5VMDleTKLyzIh94t5LKbB+K2jpi6OvcJJJrWqJhj5bT4OCTe2UNqnJgtJGYUO
+         7Jc+PqUsyTYlSgXIsMOQgTwV6uQKHFkFZagr5e5Tj13O5S9UO71JOWXdU+tIYBbkJVpA
+         bzZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700691474; x=1701296274;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4w9WGlpV+oKNURgCWJmbzMqmytRuxi/IH9HmVAy3vpk=;
+        b=uRQzg9BjM5h6dds12aEUwlBvRcq1zlwUpShJAoTAZm6cZBaMJkmT0i4JE734sJDGX2
+         k98RqA7Cy66/Rvs5Tb7JP5xVIwKFa0iVGaxi5ZP8GzOIkYy7COqyGbm1tMECRpYTOZvZ
+         rmAn39fY30ijNWKGSg2CT1ko7Qyul/SwEQfOfg/7p7JQ4H2hxwzprmyYMMwVJdh8ynwS
+         DM2argjNtbQSwwpca+ymLB1MabBdPskMbHF6NLrVYwG9HkNCLl4TwgG0/V83ToM7JPuZ
+         EKetyseJgB1M+JAm7SxuhEaJA/YyKCzk3VHZbtR42jZ15INJ944atTr1BKH1E+x7Sm2Y
+         7tAQ==
+X-Gm-Message-State: AOJu0YxiRIa2+IWjVZlQQN1XKgH0bfY5+cyoLfmSFGWCjQ/RuQbe1E+p
+        pd+yge23kqKuMi3OvQht/OxGn1H3Bsy4JE4=
+X-Google-Smtp-Source: AGHT+IEWzYwUAnR9oEjMHGBr1ZPorbK5SniZIIxjSugb5DV844aPwk+jzNuLEfBvJKKK7SIXsJ76dKbPGg3skas=
+X-Received: from jsperbeck7.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:26dc])
+ (user=jsperbeck job=sendgmr) by 2002:a25:d844:0:b0:dae:292e:68de with SMTP id
+ p65-20020a25d844000000b00dae292e68demr106468ybg.6.1700691474042; Wed, 22 Nov
+ 2023 14:17:54 -0800 (PST)
+Date:   Wed, 22 Nov 2023 22:17:52 +0000
+In-Reply-To: <169953729188.3135.6804572126118798018.tip-bot2@tip-bot2>
+Mime-Version: 1.0
+References: <169953729188.3135.6804572126118798018.tip-bot2@tip-bot2>
+X-Mailer: git-send-email 2.43.0.rc1.413.gea7ed67945-goog
+Message-ID: <20231122221752.781022-1-jsperbeck@google.com>
+Subject: [PATCH] platform/x86: intel_telemetry: Fix kernel doc descriptions
+From:   John Sperbeck <jsperbeck@google.com>
+To:     tip-bot2@linutronix.de
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        peterz@infradead.org, rui.zhang@intel.com, tglx@linutronix.de,
+        x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+I have a platform with both LOCAL_APIC and LOCAL_X2APIC entries for
+each CPU.  However, the ids for the LOCAL_APIC entries are all
+invalid ids of 255, so they have always been skipped in acpi_parse_lapic()
+by this code from f3bf1dbe64b6 ("x86/acpi: Prevent LAPIC id 0xff from being
+accounted"):
 
-Commit-ID:     6175b407756b22e7fdc771181b7d832ebdedef5c
-Gitweb:        https://git.kernel.org/tip/6175b407756b22e7fdc771181b7d832ebdedef5c
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Sat, 18 Nov 2023 13:32:29 -06:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 22 Nov 2023 19:13:38 +01:00
+    /* Ignore invalid ID */
+    if (processor->id == 0xff)
+            return 0;
 
-x86/mce/inject: Clear test status value
+With the change in this thread, the return value of 0 means that the
+'count' variable in acpi_parse_entries_array() is incremented.  The
+positive return value means that 'has_lapic_cpus' is set, even though
+no entries were actually matched.  Then, when the MADT is iterated
+with acpi_parse_x2apic(), the x2apic entries with ids less than 255
+are skipped and most of my CPUs aren't recognized.
 
-AMD systems generally allow MCA "simulation" where MCA registers can be
-written with valid data and the full MCA handling flow can be tested by
-software.
+I think the original version of this change was okay for this case in
+https://lore.kernel.org/lkml/87pm4bp54z.ffs@tglx/T/
 
-However, the platform on Scalable MCA systems, can prevent software from
-writing data to the MCA registers. There is no architectural way to
-determine this configuration. Therefore, the MCE injection module will
-check for this behavior by writing and reading back a test status value.
-This is done during module init, and the check can run on any CPU with
-any valid MCA bank.
-
-If MCA_STATUS writes are ignored by the platform, then there are no side
-effects on the hardware state.
-
-If the writes are not ignored, then the test status value will remain in
-the hardware MCA_STATUS register. It is likely that the value will not
-be overwritten by hardware or software, since the tested CPU and bank
-are arbitrary. Therefore, the user may see a spurious, synthetic MCA
-error reported whenever MCA is polled for this CPU.
-
-Clear the test value immediately after writing it. It is very unlikely
-that a valid MCA error is logged by hardware during the test. Errors
-that cause an #MC won't be affected.
-
-Fixes: 891e465a1bd8 ("x86/mce: Check whether writes to MCA_STATUS are getting ignored")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231118193248.1296798-2-yazen.ghannam@amd.com
----
- arch/x86/kernel/cpu/mce/inject.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/kernel/cpu/mce/inject.c b/arch/x86/kernel/cpu/mce/inject.c
-index 4d8d4bc..72f0695 100644
---- a/arch/x86/kernel/cpu/mce/inject.c
-+++ b/arch/x86/kernel/cpu/mce/inject.c
-@@ -746,6 +746,7 @@ static void check_hw_inj_possible(void)
- 
- 		wrmsrl_safe(mca_msr_reg(bank, MCA_STATUS), status);
- 		rdmsrl_safe(mca_msr_reg(bank, MCA_STATUS), &status);
-+		wrmsrl_safe(mca_msr_reg(bank, MCA_STATUS), 0);
- 
- 		if (!status) {
- 			hw_injection_possible = false;
+P.S. I could be convinced that the MADT for my platform is somewhat
+ill-formed and that I'm relying on pre-existing behavior.  I'm not
+well-versed enough in the topic to know for sure.
