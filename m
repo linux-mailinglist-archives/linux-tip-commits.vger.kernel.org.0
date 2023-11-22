@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7314C7F359B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Nov 2023 19:05:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54A857F4305
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Nov 2023 11:00:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234438AbjKUSFn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 21 Nov 2023 13:05:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38674 "EHLO
+        id S231174AbjKVKAb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Nov 2023 05:00:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234733AbjKUSFT (ORCPT
+        with ESMTP id S229631AbjKVKAa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 21 Nov 2023 13:05:19 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C8DE1731;
-        Tue, 21 Nov 2023 10:04:26 -0800 (PST)
-Date:   Tue, 21 Nov 2023 18:04:24 -0000
+        Wed, 22 Nov 2023 05:00:30 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862B5D4A;
+        Wed, 22 Nov 2023 02:00:25 -0800 (PST)
+Date:   Wed, 22 Nov 2023 10:00:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700589864;
+        s=2020; t=1700647223;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1NZG0oxczvr2EgyPPyAUM9PczNu44SOnBJnmbRObbZ4=;
-        b=tJLWkylBFobHtPjUcK4h4VSRnltP1SyiEN32xDKUBhyY3zQ+FiqwGqAkwPDfsvIfqTEOmW
-        zxvVoG2qsR754DVfUAg6xPCUQvCbf/nhv4wvNsg7T5l8KTgIDDQlk3CkUao9V2G/37jv46
-        SZIPImLxPOSinxX1Snlk8mSLiEoLTapFX+jh8gHO0w5TTXVRvhnw+CoCy05GB4hOzqaxAQ
-        LuwUw7QAlTpjVAEYozrgVAQ/o9srQZLX2E30LeRZ8ViVYgDvAIO8Qpp8y9Emk4CfFdzdFX
-        eV0wijoM52DbXU6nyQOCzbN0zHq/QuY0SfJOl4VOkq8etOzys9J6X+R+SSHdYw==
+        bh=c/DHVQmUQG5VLUAZjQ7Yb5Js41EBQnmAVL+B/mPHlOM=;
+        b=jg0GP3bM58CcYz+J2syvdsoUXwtOaO/na/tTWq0Ks8AZLpkvyFkVw6i6Eb/NmCqqYDIAN2
+        kiU4pmi95Bzy4nXDDTtN/gRyQGOuuhRElPDPd5/j6BuBakS2ke+kSkpYV4/Oh77XjR9aUT
+        kT5+3y32ICuOWkxqWtq6mHuGkQkzxYR22AnjSWPJwpiMKqLhFYXOVKcfH9uK81ZnCjT1gJ
+        rfvDSeRjJjqYgrj29S1+i220/9oWl+NLzsS9OaHvRukX1sW6B1vh9j6q6WAJtYVwGL0D7b
+        qwZrGiBe69KLNxld6tHDbNzCkuGcYX+e012HmHYFDtkOQNjdBV23pXZRfcD+MQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700589864;
+        s=2020e; t=1700647223;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1NZG0oxczvr2EgyPPyAUM9PczNu44SOnBJnmbRObbZ4=;
-        b=CRHQHkpyz3EwQL8Rv+SP0HytTEwnt+SgFIyXsIoMv6702lIrzrLVjnlC4JcD0qQGzU1kiR
-        HggPDrfoCxQ08lCQ==
-From:   "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
+        bh=c/DHVQmUQG5VLUAZjQ7Yb5Js41EBQnmAVL+B/mPHlOM=;
+        b=WSyyGKBdJ0rrxBx0pQkST9cAQG1yir2alPhREDWYyrADW57eFtoQ0YfNhceFUJKGAHKKy8
+        t9rutETUvaEzi/AA==
+From:   "tip-bot2 for Andrzej Hajda" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Drop apic::delivery_mode
-Cc:     Andrew Cooper <andrew.cooper3@citrix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Steve Wahl <steve.wahl@hpe.com>, x86@kernel.org,
+Subject: [tip: core/debugobjects] debugobjects: Stop accessing objects after
+ releasing hash bucket lock
+Cc:     Andrzej Hajda <andrzej.hajda@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231102-x86-apic-v1-1-bf049a2a0ed6@citrix.com>
-References: <20231102-x86-apic-v1-1-bf049a2a0ed6@citrix.com>
+In-Reply-To: <20231025-debugobjects_fix-v3-1-2bc3bf7084c2@intel.com>
+References: <20231025-debugobjects_fix-v3-1-2bc3bf7084c2@intel.com>
 MIME-Version: 1.0
-Message-ID: <170058986413.398.14166594117480586557.tip-bot2@tip-bot2>
+Message-ID: <170064722243.398.4713756833379834178.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,242 +66,408 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/apic branch of tip:
+The following commit has been merged into the core/debugobjects branch of tip:
 
-Commit-ID:     07e8f88568f558fb0f9529f49b3ab120cbe750fe
-Gitweb:        https://git.kernel.org/tip/07e8f88568f558fb0f9529f49b3ab120cbe750fe
-Author:        Andrew Cooper <andrew.cooper3@citrix.com>
-AuthorDate:    Thu, 02 Nov 2023 12:26:19 
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 21 Nov 2023 16:58:54 +01:00
+Commit-ID:     9bb6362652f3f4d74a87d572a91ee1b38e673ef6
+Gitweb:        https://git.kernel.org/tip/9bb6362652f3f4d74a87d572a91ee1b38e673ef6
+Author:        Andrzej Hajda <andrzej.hajda@intel.com>
+AuthorDate:    Wed, 25 Oct 2023 23:39:07 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 22 Nov 2023 10:41:46 +01:00
 
-x86/apic: Drop apic::delivery_mode
+debugobjects: Stop accessing objects after releasing hash bucket lock
 
-This field is set to APIC_DELIVERY_MODE_FIXED in all cases, and is read
-exactly once.  Fold the constant in uv_program_mmr() and drop the field.
+After release of the hashbucket lock the tracking object can be modified or
+freed by a concurrent thread.  Using it in such a case is error prone, even
+for printing the object state:
 
-Searching for the origin of the stale HyperV comment reveals commit
-a31e58e129f7 ("x86/apic: Switch all APICs to Fixed delivery mode") which
-notes:
+    1. T1 tries to deactivate destroyed object, debugobjects detects it,
+       hash bucket lock is released.
 
-  As a consequence of this change, the apic::irq_delivery_mode field is
-  now pointless, but this needs to be cleaned up in a separate patch.
+    2. T2 preempts T1 and frees the tracking object.
 
-6 years is long enough for this technical debt to have survived.
+    3. The freed tracking object is allocated and initialized for a
+       different to be tracked kernel object.
 
-  [ bp: Fold in
-    https://lore.kernel.org/r/20231121123034.1442059-1-andrew.cooper3@citrix.com
-  ]
+    4. T1 resumes and reports error for wrong kernel object.
 
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Create a local copy of the tracking object before releasing the hash bucket
+lock and use the local copy for reporting and fixups to prevent this.
+
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
-Link: https://lore.kernel.org/r/20231102-x86-apic-v1-1-bf049a2a0ed6@citrix.com
+Link: https://lore.kernel.org/r/20231025-debugobjects_fix-v3-1-2bc3bf7084c2@intel.com
 ---
- arch/x86/include/asm/apic.h           | 2 --
- arch/x86/kernel/apic/apic_flat_64.c   | 2 --
- arch/x86/kernel/apic/apic_noop.c      | 1 -
- arch/x86/kernel/apic/apic_numachip.c  | 2 --
- arch/x86/kernel/apic/bigsmp_32.c      | 1 -
- arch/x86/kernel/apic/probe_32.c       | 1 -
- arch/x86/kernel/apic/x2apic_cluster.c | 1 -
- arch/x86/kernel/apic/x2apic_phys.c    | 1 -
- arch/x86/kernel/apic/x2apic_uv_x.c    | 1 -
- arch/x86/platform/uv/uv_irq.c         | 2 +-
- drivers/iommu/amd/iommu.c             | 4 ++--
- drivers/iommu/intel/irq_remapping.c   | 2 +-
- drivers/pci/controller/pci-hyperv.c   | 7 -------
- 13 files changed, 4 insertions(+), 23 deletions(-)
+ lib/debugobjects.c | 200 +++++++++++++++++---------------------------
+ 1 file changed, 78 insertions(+), 122 deletions(-)
 
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index d21f48f..9d159b7 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -272,8 +272,6 @@ struct apic {
- 	void	(*send_IPI_all)(int vector);
- 	void	(*send_IPI_self)(int vector);
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 2a8e9d6..fb12a9b 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -620,9 +620,8 @@ static void debug_objects_fill_pool(void)
+ static void
+ __debug_object_init(void *addr, const struct debug_obj_descr *descr, int onstack)
+ {
+-	enum debug_obj_state state;
++	struct debug_obj *obj, o;
+ 	struct debug_bucket *db;
+-	struct debug_obj *obj;
+ 	unsigned long flags;
  
--	enum apic_delivery_modes delivery_mode;
+ 	debug_objects_fill_pool();
+@@ -643,24 +642,18 @@ __debug_object_init(void *addr, const struct debug_obj_descr *descr, int onstack
+ 	case ODEBUG_STATE_INIT:
+ 	case ODEBUG_STATE_INACTIVE:
+ 		obj->state = ODEBUG_STATE_INIT;
+-		break;
 -
- 	u32	disable_esr		: 1,
- 		dest_mode_logical	: 1,
- 		x2apic_set_max_apicid	: 1,
-diff --git a/arch/x86/kernel/apic/apic_flat_64.c b/arch/x86/kernel/apic/apic_flat_64.c
-index 7139867..b295a05 100644
---- a/arch/x86/kernel/apic/apic_flat_64.c
-+++ b/arch/x86/kernel/apic/apic_flat_64.c
-@@ -82,7 +82,6 @@ static struct apic apic_flat __ro_after_init = {
- 	.acpi_madt_oem_check		= flat_acpi_madt_oem_check,
- 	.apic_id_registered		= default_apic_id_registered,
- 
--	.delivery_mode			= APIC_DELIVERY_MODE_FIXED,
- 	.dest_mode_logical		= true,
- 
- 	.disable_esr			= 0,
-@@ -154,7 +153,6 @@ static struct apic apic_physflat __ro_after_init = {
- 	.acpi_madt_oem_check		= physflat_acpi_madt_oem_check,
- 	.apic_id_registered		= default_apic_id_registered,
- 
--	.delivery_mode			= APIC_DELIVERY_MODE_FIXED,
- 	.dest_mode_logical		= false,
- 
- 	.disable_esr			= 0,
-diff --git a/arch/x86/kernel/apic/apic_noop.c b/arch/x86/kernel/apic/apic_noop.c
-index b00d52a..9f1d553 100644
---- a/arch/x86/kernel/apic/apic_noop.c
-+++ b/arch/x86/kernel/apic/apic_noop.c
-@@ -47,7 +47,6 @@ static void noop_apic_write(u32 reg, u32 val)
- struct apic apic_noop __ro_after_init = {
- 	.name				= "noop",
- 
--	.delivery_mode			= APIC_DELIVERY_MODE_FIXED,
- 	.dest_mode_logical		= true,
- 
- 	.disable_esr			= 0,
-diff --git a/arch/x86/kernel/apic/apic_numachip.c b/arch/x86/kernel/apic/apic_numachip.c
-index 456a14c..7d0c51b 100644
---- a/arch/x86/kernel/apic/apic_numachip.c
-+++ b/arch/x86/kernel/apic/apic_numachip.c
-@@ -222,7 +222,6 @@ static const struct apic apic_numachip1 __refconst = {
- 	.probe				= numachip1_probe,
- 	.acpi_madt_oem_check		= numachip1_acpi_madt_oem_check,
- 
--	.delivery_mode			= APIC_DELIVERY_MODE_FIXED,
- 	.dest_mode_logical		= false,
- 
- 	.disable_esr			= 0,
-@@ -259,7 +258,6 @@ static const struct apic apic_numachip2 __refconst = {
- 	.probe				= numachip2_probe,
- 	.acpi_madt_oem_check		= numachip2_acpi_madt_oem_check,
- 
--	.delivery_mode			= APIC_DELIVERY_MODE_FIXED,
- 	.dest_mode_logical		= false,
- 
- 	.disable_esr			= 0,
-diff --git a/arch/x86/kernel/apic/bigsmp_32.c b/arch/x86/kernel/apic/bigsmp_32.c
-index 7ee3c48..5a0d60b 100644
---- a/arch/x86/kernel/apic/bigsmp_32.c
-+++ b/arch/x86/kernel/apic/bigsmp_32.c
-@@ -80,7 +80,6 @@ static struct apic apic_bigsmp __ro_after_init = {
- 	.name				= "bigsmp",
- 	.probe				= probe_bigsmp,
- 
--	.delivery_mode			= APIC_DELIVERY_MODE_FIXED,
- 	.dest_mode_logical		= false,
- 
- 	.disable_esr			= 1,
-diff --git a/arch/x86/kernel/apic/probe_32.c b/arch/x86/kernel/apic/probe_32.c
-index 5eb3fbe..c0f7805 100644
---- a/arch/x86/kernel/apic/probe_32.c
-+++ b/arch/x86/kernel/apic/probe_32.c
-@@ -45,7 +45,6 @@ static struct apic apic_default __ro_after_init = {
- 	.probe				= probe_default,
- 	.apic_id_registered		= default_apic_id_registered,
- 
--	.delivery_mode			= APIC_DELIVERY_MODE_FIXED,
- 	.dest_mode_logical		= true,
- 
- 	.disable_esr			= 0,
-diff --git a/arch/x86/kernel/apic/x2apic_cluster.c b/arch/x86/kernel/apic/x2apic_cluster.c
-index a830608..28a7d3f 100644
---- a/arch/x86/kernel/apic/x2apic_cluster.c
-+++ b/arch/x86/kernel/apic/x2apic_cluster.c
-@@ -227,7 +227,6 @@ static struct apic apic_x2apic_cluster __ro_after_init = {
- 	.probe				= x2apic_cluster_probe,
- 	.acpi_madt_oem_check		= x2apic_acpi_madt_oem_check,
- 
--	.delivery_mode			= APIC_DELIVERY_MODE_FIXED,
- 	.dest_mode_logical		= true,
- 
- 	.disable_esr			= 0,
-diff --git a/arch/x86/kernel/apic/x2apic_phys.c b/arch/x86/kernel/apic/x2apic_phys.c
-index 558a4a8..409815a 100644
---- a/arch/x86/kernel/apic/x2apic_phys.c
-+++ b/arch/x86/kernel/apic/x2apic_phys.c
-@@ -145,7 +145,6 @@ static struct apic apic_x2apic_phys __ro_after_init = {
- 	.probe				= x2apic_phys_probe,
- 	.acpi_madt_oem_check		= x2apic_acpi_madt_oem_check,
- 
--	.delivery_mode			= APIC_DELIVERY_MODE_FIXED,
- 	.dest_mode_logical		= false,
- 
- 	.disable_esr			= 0,
-diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 1b0d733..f1766b1 100644
---- a/arch/x86/kernel/apic/x2apic_uv_x.c
-+++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -805,7 +805,6 @@ static struct apic apic_x2apic_uv_x __ro_after_init = {
- 	.probe				= uv_probe,
- 	.acpi_madt_oem_check		= uv_acpi_madt_oem_check,
- 
--	.delivery_mode			= APIC_DELIVERY_MODE_FIXED,
- 	.dest_mode_logical		= false,
- 
- 	.disable_esr			= 0,
-diff --git a/arch/x86/platform/uv/uv_irq.c b/arch/x86/platform/uv/uv_irq.c
-index 4221259..a379501 100644
---- a/arch/x86/platform/uv/uv_irq.c
-+++ b/arch/x86/platform/uv/uv_irq.c
-@@ -35,7 +35,7 @@ static void uv_program_mmr(struct irq_cfg *cfg, struct uv_irq_2_mmr_pnode *info)
- 	mmr_value = 0;
- 	entry = (struct uv_IO_APIC_route_entry *)&mmr_value;
- 	entry->vector		= cfg->vector;
--	entry->delivery_mode	= apic->delivery_mode;
-+	entry->delivery_mode	= APIC_DELIVERY_MODE_FIXED;
- 	entry->dest_mode	= apic->dest_mode_logical;
- 	entry->polarity		= 0;
- 	entry->trigger		= 0;
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index fcc987f..b9a0523 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -3357,7 +3357,7 @@ static void irq_remapping_prepare_irte(struct amd_ir_data *data,
- 
- 	data->irq_2_irte.devid = devid;
- 	data->irq_2_irte.index = index + sub_handle;
--	iommu->irte_ops->prepare(data->entry, apic->delivery_mode,
-+	iommu->irte_ops->prepare(data->entry, APIC_DELIVERY_MODE_FIXED,
- 				 apic->dest_mode_logical, irq_cfg->vector,
- 				 irq_cfg->dest_apicid, devid);
- 
-@@ -3634,7 +3634,7 @@ int amd_iommu_deactivate_guest_mode(void *data)
- 
- 	entry->lo.fields_remap.valid       = valid;
- 	entry->lo.fields_remap.dm          = apic->dest_mode_logical;
--	entry->lo.fields_remap.int_type    = apic->delivery_mode;
-+	entry->lo.fields_remap.int_type    = APIC_DELIVERY_MODE_FIXED;
- 	entry->hi.fields.vector            = cfg->vector;
- 	entry->lo.fields_remap.destination =
- 				APICID_TO_IRTE_DEST_LO(cfg->dest_apicid);
-diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_remapping.c
-index 29b9e55..566297b 100644
---- a/drivers/iommu/intel/irq_remapping.c
-+++ b/drivers/iommu/intel/irq_remapping.c
-@@ -1112,7 +1112,7 @@ static void prepare_irte(struct irte *irte, int vector, unsigned int dest)
- 	 * irq migration in the presence of interrupt-remapping.
- 	*/
- 	irte->trigger_mode = 0;
--	irte->dlvry_mode = apic->delivery_mode;
-+	irte->dlvry_mode = APIC_DELIVERY_MODE_FIXED;
- 	irte->vector = vector;
- 	irte->dest_id = IRTE_DEST(dest);
- 	irte->redir_hint = 1;
-diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
-index 30c7dfe..1eaffff 100644
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -650,13 +650,6 @@ static void hv_arch_irq_unmask(struct irq_data *data)
- 			   PCI_FUNC(pdev->devfn);
- 	params->int_target.vector = hv_msi_get_int_vector(data);
- 
--	/*
--	 * Honoring apic->delivery_mode set to APIC_DELIVERY_MODE_FIXED by
--	 * setting the HV_DEVICE_INTERRUPT_TARGET_MULTICAST flag results in a
--	 * spurious interrupt storm. Not doing so does not seem to have a
--	 * negative effect (yet?).
--	 */
+-	case ODEBUG_STATE_ACTIVE:
+-		state = obj->state;
+-		raw_spin_unlock_irqrestore(&db->lock, flags);
+-		debug_print_object(obj, "init");
+-		debug_object_fixup(descr->fixup_init, addr, state);
+-		return;
 -
- 	if (hbus->protocol_version >= PCI_PROTOCOL_VERSION_1_2) {
- 		/*
- 		 * PCI_PROTOCOL_VERSION_1_2 supports the VP_SET version of the
+-	case ODEBUG_STATE_DESTROYED:
+ 		raw_spin_unlock_irqrestore(&db->lock, flags);
+-		debug_print_object(obj, "init");
+ 		return;
+ 	default:
+ 		break;
+ 	}
+ 
++	o = *obj;
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
++	debug_print_object(&o, "init");
++
++	if (o.state == ODEBUG_STATE_ACTIVE)
++		debug_object_fixup(descr->fixup_init, addr, o.state);
+ }
+ 
+ /**
+@@ -701,11 +694,9 @@ EXPORT_SYMBOL_GPL(debug_object_init_on_stack);
+ int debug_object_activate(void *addr, const struct debug_obj_descr *descr)
+ {
+ 	struct debug_obj o = { .object = addr, .state = ODEBUG_STATE_NOTAVAILABLE, .descr = descr };
+-	enum debug_obj_state state;
+ 	struct debug_bucket *db;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
+-	int ret;
+ 
+ 	if (!debug_objects_enabled)
+ 		return 0;
+@@ -717,49 +708,38 @@ int debug_object_activate(void *addr, const struct debug_obj_descr *descr)
+ 	raw_spin_lock_irqsave(&db->lock, flags);
+ 
+ 	obj = lookup_object_or_alloc(addr, db, descr, false, true);
+-	if (likely(!IS_ERR_OR_NULL(obj))) {
+-		bool print_object = false;
+-
++	if (unlikely(!obj)) {
++		raw_spin_unlock_irqrestore(&db->lock, flags);
++		debug_objects_oom();
++		return 0;
++	} else if (likely(!IS_ERR(obj))) {
+ 		switch (obj->state) {
+-		case ODEBUG_STATE_INIT:
+-		case ODEBUG_STATE_INACTIVE:
+-			obj->state = ODEBUG_STATE_ACTIVE;
+-			ret = 0;
+-			break;
+-
+ 		case ODEBUG_STATE_ACTIVE:
+-			state = obj->state;
+-			raw_spin_unlock_irqrestore(&db->lock, flags);
+-			debug_print_object(obj, "activate");
+-			ret = debug_object_fixup(descr->fixup_activate, addr, state);
+-			return ret ? 0 : -EINVAL;
+-
+ 		case ODEBUG_STATE_DESTROYED:
+-			print_object = true;
+-			ret = -EINVAL;
++			o = *obj;
+ 			break;
++		case ODEBUG_STATE_INIT:
++		case ODEBUG_STATE_INACTIVE:
++			obj->state = ODEBUG_STATE_ACTIVE;
++			fallthrough;
+ 		default:
+-			ret = 0;
+-			break;
++			raw_spin_unlock_irqrestore(&db->lock, flags);
++			return 0;
+ 		}
+-		raw_spin_unlock_irqrestore(&db->lock, flags);
+-		if (print_object)
+-			debug_print_object(obj, "activate");
+-		return ret;
+ 	}
+ 
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
++	debug_print_object(&o, "activate");
+ 
+-	/* If NULL the allocation has hit OOM */
+-	if (!obj) {
+-		debug_objects_oom();
+-		return 0;
++	switch (o.state) {
++	case ODEBUG_STATE_ACTIVE:
++	case ODEBUG_STATE_NOTAVAILABLE:
++		if (debug_object_fixup(descr->fixup_activate, addr, o.state))
++			return 0;
++		fallthrough;
++	default:
++		return -EINVAL;
+ 	}
+-
+-	/* Object is neither static nor tracked. It's not initialized */
+-	debug_print_object(&o, "activate");
+-	ret = debug_object_fixup(descr->fixup_activate, addr, ODEBUG_STATE_NOTAVAILABLE);
+-	return ret ? 0 : -EINVAL;
+ }
+ EXPORT_SYMBOL_GPL(debug_object_activate);
+ 
+@@ -770,10 +750,10 @@ EXPORT_SYMBOL_GPL(debug_object_activate);
+  */
+ void debug_object_deactivate(void *addr, const struct debug_obj_descr *descr)
+ {
++	struct debug_obj o = { .object = addr, .state = ODEBUG_STATE_NOTAVAILABLE, .descr = descr };
+ 	struct debug_bucket *db;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
+-	bool print_object = false;
+ 
+ 	if (!debug_objects_enabled)
+ 		return;
+@@ -785,33 +765,24 @@ void debug_object_deactivate(void *addr, const struct debug_obj_descr *descr)
+ 	obj = lookup_object(addr, db);
+ 	if (obj) {
+ 		switch (obj->state) {
++		case ODEBUG_STATE_DESTROYED:
++			break;
+ 		case ODEBUG_STATE_INIT:
+ 		case ODEBUG_STATE_INACTIVE:
+ 		case ODEBUG_STATE_ACTIVE:
+-			if (!obj->astate)
+-				obj->state = ODEBUG_STATE_INACTIVE;
+-			else
+-				print_object = true;
+-			break;
+-
+-		case ODEBUG_STATE_DESTROYED:
+-			print_object = true;
+-			break;
++			if (obj->astate)
++				break;
++			obj->state = ODEBUG_STATE_INACTIVE;
++			fallthrough;
+ 		default:
+-			break;
++			raw_spin_unlock_irqrestore(&db->lock, flags);
++			return;
+ 		}
++		o = *obj;
+ 	}
+ 
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
+-	if (!obj) {
+-		struct debug_obj o = { .object = addr,
+-				       .state = ODEBUG_STATE_NOTAVAILABLE,
+-				       .descr = descr };
+-
+-		debug_print_object(&o, "deactivate");
+-	} else if (print_object) {
+-		debug_print_object(obj, "deactivate");
+-	}
++	debug_print_object(&o, "deactivate");
+ }
+ EXPORT_SYMBOL_GPL(debug_object_deactivate);
+ 
+@@ -822,11 +793,9 @@ EXPORT_SYMBOL_GPL(debug_object_deactivate);
+  */
+ void debug_object_destroy(void *addr, const struct debug_obj_descr *descr)
+ {
+-	enum debug_obj_state state;
++	struct debug_obj *obj, o;
+ 	struct debug_bucket *db;
+-	struct debug_obj *obj;
+ 	unsigned long flags;
+-	bool print_object = false;
+ 
+ 	if (!debug_objects_enabled)
+ 		return;
+@@ -836,32 +805,31 @@ void debug_object_destroy(void *addr, const struct debug_obj_descr *descr)
+ 	raw_spin_lock_irqsave(&db->lock, flags);
+ 
+ 	obj = lookup_object(addr, db);
+-	if (!obj)
+-		goto out_unlock;
++	if (!obj) {
++		raw_spin_unlock_irqrestore(&db->lock, flags);
++		return;
++	}
+ 
+ 	switch (obj->state) {
++	case ODEBUG_STATE_ACTIVE:
++	case ODEBUG_STATE_DESTROYED:
++		break;
+ 	case ODEBUG_STATE_NONE:
+ 	case ODEBUG_STATE_INIT:
+ 	case ODEBUG_STATE_INACTIVE:
+ 		obj->state = ODEBUG_STATE_DESTROYED;
+-		break;
+-	case ODEBUG_STATE_ACTIVE:
+-		state = obj->state;
++		fallthrough;
++	default:
+ 		raw_spin_unlock_irqrestore(&db->lock, flags);
+-		debug_print_object(obj, "destroy");
+-		debug_object_fixup(descr->fixup_destroy, addr, state);
+ 		return;
+-
+-	case ODEBUG_STATE_DESTROYED:
+-		print_object = true;
+-		break;
+-	default:
+-		break;
+ 	}
+-out_unlock:
++
++	o = *obj;
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
+-	if (print_object)
+-		debug_print_object(obj, "destroy");
++	debug_print_object(&o, "destroy");
++
++	if (o.state == ODEBUG_STATE_ACTIVE)
++		debug_object_fixup(descr->fixup_destroy, addr, o.state);
+ }
+ EXPORT_SYMBOL_GPL(debug_object_destroy);
+ 
+@@ -872,9 +840,8 @@ EXPORT_SYMBOL_GPL(debug_object_destroy);
+  */
+ void debug_object_free(void *addr, const struct debug_obj_descr *descr)
+ {
+-	enum debug_obj_state state;
++	struct debug_obj *obj, o;
+ 	struct debug_bucket *db;
+-	struct debug_obj *obj;
+ 	unsigned long flags;
+ 
+ 	if (!debug_objects_enabled)
+@@ -885,24 +852,26 @@ void debug_object_free(void *addr, const struct debug_obj_descr *descr)
+ 	raw_spin_lock_irqsave(&db->lock, flags);
+ 
+ 	obj = lookup_object(addr, db);
+-	if (!obj)
+-		goto out_unlock;
++	if (!obj) {
++		raw_spin_unlock_irqrestore(&db->lock, flags);
++		return;
++	}
+ 
+ 	switch (obj->state) {
+ 	case ODEBUG_STATE_ACTIVE:
+-		state = obj->state;
+-		raw_spin_unlock_irqrestore(&db->lock, flags);
+-		debug_print_object(obj, "free");
+-		debug_object_fixup(descr->fixup_free, addr, state);
+-		return;
++		break;
+ 	default:
+ 		hlist_del(&obj->node);
+ 		raw_spin_unlock_irqrestore(&db->lock, flags);
+ 		free_object(obj);
+ 		return;
+ 	}
+-out_unlock:
++
++	o = *obj;
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
++	debug_print_object(&o, "free");
++
++	debug_object_fixup(descr->fixup_free, addr, o.state);
+ }
+ EXPORT_SYMBOL_GPL(debug_object_free);
+ 
+@@ -954,10 +923,10 @@ void
+ debug_object_active_state(void *addr, const struct debug_obj_descr *descr,
+ 			  unsigned int expect, unsigned int next)
+ {
++	struct debug_obj o = { .object = addr, .state = ODEBUG_STATE_NOTAVAILABLE, .descr = descr };
+ 	struct debug_bucket *db;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
+-	bool print_object = false;
+ 
+ 	if (!debug_objects_enabled)
+ 		return;
+@@ -970,28 +939,19 @@ debug_object_active_state(void *addr, const struct debug_obj_descr *descr,
+ 	if (obj) {
+ 		switch (obj->state) {
+ 		case ODEBUG_STATE_ACTIVE:
+-			if (obj->astate == expect)
+-				obj->astate = next;
+-			else
+-				print_object = true;
+-			break;
+-
++			if (obj->astate != expect)
++				break;
++			obj->astate = next;
++			raw_spin_unlock_irqrestore(&db->lock, flags);
++			return;
+ 		default:
+-			print_object = true;
+ 			break;
+ 		}
++		o = *obj;
+ 	}
+ 
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
+-	if (!obj) {
+-		struct debug_obj o = { .object = addr,
+-				       .state = ODEBUG_STATE_NOTAVAILABLE,
+-				       .descr = descr };
+-
+-		debug_print_object(&o, "active_state");
+-	} else if (print_object) {
+-		debug_print_object(obj, "active_state");
+-	}
++	debug_print_object(&o, "active_state");
+ }
+ EXPORT_SYMBOL_GPL(debug_object_active_state);
+ 
+@@ -999,12 +959,10 @@ EXPORT_SYMBOL_GPL(debug_object_active_state);
+ static void __debug_check_no_obj_freed(const void *address, unsigned long size)
+ {
+ 	unsigned long flags, oaddr, saddr, eaddr, paddr, chunks;
+-	const struct debug_obj_descr *descr;
+-	enum debug_obj_state state;
++	int cnt, objs_checked = 0;
++	struct debug_obj *obj, o;
+ 	struct debug_bucket *db;
+ 	struct hlist_node *tmp;
+-	struct debug_obj *obj;
+-	int cnt, objs_checked = 0;
+ 
+ 	saddr = (unsigned long) address;
+ 	eaddr = saddr + size;
+@@ -1026,12 +984,10 @@ repeat:
+ 
+ 			switch (obj->state) {
+ 			case ODEBUG_STATE_ACTIVE:
+-				descr = obj->descr;
+-				state = obj->state;
++				o = *obj;
+ 				raw_spin_unlock_irqrestore(&db->lock, flags);
+-				debug_print_object(obj, "free");
+-				debug_object_fixup(descr->fixup_free,
+-						   (void *) oaddr, state);
++				debug_print_object(&o, "free");
++				debug_object_fixup(o.descr->fixup_free, (void *)oaddr, o.state);
+ 				goto repeat;
+ 			default:
+ 				hlist_del(&obj->node);
