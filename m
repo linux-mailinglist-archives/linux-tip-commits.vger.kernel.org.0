@@ -2,57 +2,62 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AD007F5C4A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Nov 2023 11:30:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D38CB7F5C4E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Nov 2023 11:31:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234999AbjKWKa0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Nov 2023 05:30:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36860 "EHLO
+        id S229938AbjKWKbN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Nov 2023 05:31:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjKWKaZ (ORCPT
+        with ESMTP id S229477AbjKWKbM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Nov 2023 05:30:25 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857BB1A8;
-        Thu, 23 Nov 2023 02:30:31 -0800 (PST)
-Date:   Thu, 23 Nov 2023 10:30:29 -0000
+        Thu, 23 Nov 2023 05:31:12 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A74D719D;
+        Thu, 23 Nov 2023 02:31:18 -0800 (PST)
+Date:   Thu, 23 Nov 2023 10:31:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700735430;
+        s=2020; t=1700735476;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=trfyvi6MbJesxcsRP4W62yufX/0CgsLs8XGabx+92Bo=;
-        b=L6Qcn/9e7P3K926jTTlxdaenBq994wa3zCvGQmqMS0dJMgfO5s3TSJ7jFQgUv1IUPo0ui/
-        L4t1OtelGrFCjqJ60BthSoTF1jelkeMMZQUPYKFMWlH8CRIFTsU5LV6bNvQhkUfm2FnqiS
-        Roz0++Tfq9hKTgk+9HSMRTrbzXtFJAygZZcLnmZw24UnhHXSutri1OnuTXwb5KO31BQvgo
-        ztEEn5kH3SjTdNP33xSGE35MKo+X5gq4x+gq6zmExQe+JQN7aap1tjC/tMzrasQeacbgkl
-        pKCue1kqiSWEg4t3AajF5jQfEjgbk+vAgslxt4PMG96ukaFQYHsUdRARquIveg==
+        bh=lGiLDGmbqrWlSjfhkQgPnYZ8qvWq9oDF9VGMNYqyrrM=;
+        b=zDSlhhUkPXrzP8nf2RHbRQ7QC3w8aKKmUQ2PtJaeIJ3iA3F4zIDPGhGha6b7EovSNZPGNK
+        y5p+K63x+0jqu6e+kbw08RcFqVtCwwHS49EhicvTAZOutuY8FO5iifRbz4YGDt8GOaCZjB
+        z36gGiSaTR3QLylKsth6RDo5V9YS1RUJv1Z8gQ5W0VD5s9qR6ZuhjdXO6ySebxUYJKumCY
+        ao6b//fYnB2dRSFH2hkAIPnd3V3AnQctBbuY6Y/PaleKLABZb9hSEaoR/8XhuHAcsO+jcv
+        WHSovPEmtUHeREE2qwlU7KIjabCvmjDSJk/BAFMh0l2bMJFV0Xosgs+khhjLgQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700735430;
+        s=2020e; t=1700735476;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=trfyvi6MbJesxcsRP4W62yufX/0CgsLs8XGabx+92Bo=;
-        b=ptONsAgoo7+FVD6kaLTsUHcxSSLMWGbMfVAkzSFF1JY6By0ocu0G3IU4E0E34NQRFf3ly5
-        +LSW8Ew7NhZRAgDw==
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+        bh=lGiLDGmbqrWlSjfhkQgPnYZ8qvWq9oDF9VGMNYqyrrM=;
+        b=oiJLfsg/JzQBjq5/beKwYJ+STInXf6rZ9sGhMDJesGJDliSdLwI7T0izhWq7N6ndofhSYj
+        e8Hrnt0HgoxwbVDw==
+From:   "tip-bot2 for Michael Roth" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/pelt: Avoid underestimation of task utilization
-Cc:     Lukasz Luba <lukasz.luba@arm.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
+Subject: [tip: x86/mm] x86/mm: Ensure input to pfn_to_kaddr() is treated as a
+ 64-bit type
+Cc:     Dave Hansen <dave.hansen@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Michael Roth <michael.roth@amd.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Hongyan Xia <hongyan.xia2@arm.com>, x86@kernel.org,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Rik van Riel <riel@surriel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231122140119.472110-1-vincent.guittot@linaro.org>
-References: <20231122140119.472110-1-vincent.guittot@linaro.org>
+In-Reply-To: <20231122163700.400507-1-michael.roth@amd.com>
+References: <20231122163700.400507-1-michael.roth@amd.com>
 MIME-Version: 1.0
-Message-ID: <170073542912.398.8772998793614415245.tip-bot2@tip-bot2>
+Message-ID: <170073547546.398.2637807593174571076.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,79 +72,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     50181c0cff31281b9f1071575ffba8a102375ece
-Gitweb:        https://git.kernel.org/tip/50181c0cff31281b9f1071575ffba8a102375ece
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Wed, 22 Nov 2023 15:01:19 +01:00
+Commit-ID:     8e5647a723c49d73b9f108a8bb38e8c29d3948ea
+Gitweb:        https://git.kernel.org/tip/8e5647a723c49d73b9f108a8bb38e8c29d3948ea
+Author:        Michael Roth <michael.roth@amd.com>
+AuthorDate:    Wed, 22 Nov 2023 10:37:00 -06:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 23 Nov 2023 11:24:28 +01:00
+CommitterDate: Thu, 23 Nov 2023 11:13:21 +01:00
 
-sched/pelt: Avoid underestimation of task utilization
+x86/mm: Ensure input to pfn_to_kaddr() is treated as a 64-bit type
 
-Lukasz Luba reported that a thread's util_est can significantly decrease as
-a result of sharing the CPU with other threads.
+On 64-bit platforms, the pfn_to_kaddr() macro requires that the input
+value is 64 bits in order to ensure that valid address bits don't get
+lost when shifting that input by PAGE_SHIFT to calculate the physical
+address to provide a virtual address for.
 
-The use case can be easily reproduced with a periodic task TA that runs 1ms
-and sleeps 100us. When the task is alone on the CPU, its max utilization and
-its util_est is around 888. If another similar task starts to run on the
-same CPU, TA will have to share the CPU runtime and its maximum utilization
-will decrease around half the CPU capacity (512) then TA's util_est will
-follow this new maximum trend which is only the result of sharing the CPU
-with others tasks.
+One such example is in pvalidate_pages() (used by SEV-SNP guests), where
+the GFN in the struct used for page-state change requests is a 40-bit
+bit-field, so attempts to pass this GFN field directly into
+pfn_to_kaddr() ends up causing guest crashes when dealing with addresses
+above the 1TB range due to the above.
 
-Such situation can be detected with runnable_avg wich is close or
-equal to util_avg when TA is alone, but increases above util_avg when TA
-shares the CPU with other threads and wait on the runqueue.
+Fix this issue with SEV-SNP guests, as well as any similar cases that
+might cause issues in current/future code, by using an inline function,
+instead of a macro, so that the input is implicitly cast to the
+expected 64-bit input type prior to performing the shift operation.
 
-[ We prefer an util_est that overestimate rather than under estimate
-  because in 1st case we will not provide enough performance to the
-  task which will remain under-provisioned, whereas in the other case we
-  will create some idle time which will enable to reduce contention and
-  as a result reduces the util_est so the overestimate will be transient
-  whereas the underestimate will remain. ]
+While it might be argued that the issue is on the caller side, other
+archs/macros have taken similar approaches to deal with instances like
+this, such as ARM explicitly casting the input to phys_addr_t:
 
-[ mingo: Refined the changelog, added comments from the LKML discussion. ]
+  e48866647b48 ("ARM: 8396/1: use phys_addr_t in pfn_to_kaddr()")
 
-Reported-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+A C inline function is even better though.
+
+[ mingo: Refined the changelog some more & added __always_inline. ]
+
+Fixes: 6c3211796326 ("x86/sev: Add SNP-specific unaccepted memory support")
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Suggested-by: H. Peter Anvin <hpa@zytor.com>
+Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/lkml/CAKfTPtDd-HhF-YiNTtL9i5k0PfJbF819Yxu4YquzfXgwi7voyw@mail.gmail.com/#t
-Link: https://lore.kernel.org/r/20231122140119.472110-1-vincent.guittot@linaro.org
-Cc: Hongyan Xia <hongyan.xia2@arm.com>
+Link: https://lore.kernel.org/r/20231122163700.400507-1-michael.roth@amd.com
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
 ---
- kernel/sched/fair.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/x86/include/asm/page.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 07f5558..53dea95 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4774,6 +4774,11 @@ static inline unsigned long task_util(struct task_struct *p)
- 	return READ_ONCE(p->se.avg.util_avg);
- }
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index d18e5c3..1b93ff8 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -66,10 +66,14 @@ static inline void copy_user_page(void *to, void *from, unsigned long vaddr,
+  * virt_addr_valid(kaddr) returns true.
+  */
+ #define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
+-#define pfn_to_kaddr(pfn)      __va((pfn) << PAGE_SHIFT)
+ extern bool __virt_addr_valid(unsigned long kaddr);
+ #define virt_addr_valid(kaddr)	__virt_addr_valid((unsigned long) (kaddr))
  
-+static inline unsigned long task_runnable(struct task_struct *p)
++static __always_inline void *pfn_to_kaddr(unsigned long pfn)
 +{
-+	return READ_ONCE(p->se.avg.runnable_avg);
++	return __va(pfn << PAGE_SHIFT);
 +}
 +
- static inline unsigned long _task_util_est(struct task_struct *p)
+ static __always_inline u64 __canonical_address(u64 vaddr, u8 vaddr_bits)
  {
- 	struct util_est ue = READ_ONCE(p->se.avg.util_est);
-@@ -4893,6 +4898,14 @@ static inline void util_est_update(struct cfs_rq *cfs_rq,
- 		return;
- 
- 	/*
-+	 * To avoid underestimate of task utilization, skip updates of EWMA if
-+	 * we cannot grant that thread got all CPU time it wanted.
-+	 */
-+	if ((ue.enqueued + UTIL_EST_MARGIN) < task_runnable(p))
-+		goto done;
-+
-+
-+	/*
- 	 * Update Task's estimated utilization
- 	 *
- 	 * When *p completes an activation we can consolidate another sample
+ 	return ((s64)vaddr << (64 - vaddr_bits)) >> (64 - vaddr_bits);
