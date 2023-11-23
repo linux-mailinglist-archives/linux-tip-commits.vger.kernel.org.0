@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96E777F5BE0
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Nov 2023 11:06:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AD007F5C4A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Nov 2023 11:30:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234607AbjKWKGj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Nov 2023 05:06:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49690 "EHLO
+        id S234999AbjKWKa0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Nov 2023 05:30:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234988AbjKWKGi (ORCPT
+        with ESMTP id S229477AbjKWKaZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Nov 2023 05:06:38 -0500
+        Thu, 23 Nov 2023 05:30:25 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A204D48;
-        Thu, 23 Nov 2023 02:06:44 -0800 (PST)
-Date:   Thu, 23 Nov 2023 10:06:42 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857BB1A8;
+        Thu, 23 Nov 2023 02:30:31 -0800 (PST)
+Date:   Thu, 23 Nov 2023 10:30:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700734003;
+        s=2020; t=1700735430;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PWJLpr+e76xHxp+lFdVVcBgYCBwYbNunL9DUBWCjG4I=;
-        b=T13cPWhMDqzIfBShxd1T5TJm5RjAWzDQQZuKysDvEoHZQyqjXa2Z/p5LkF/EirlR+70O6B
-        qNagkG/khCuWiodNRRmK7f9n4ZJONg7/ttjXtJnAmEY4E/8rcK0/TSD5f4Fk2PHR3zDRB6
-        Akpk2Hrg8iyiK+6x1d7bOiBigniCgRAhyQ+TsJ6nRARNrcOg2i4vdSDHsA8Natza9EnQWK
-        0rUmMgPt2GeySOo8jsAGGvsmGlpYPzQlZiX7sX/0jkSnAUOH/F62pjKKwn9De8hnTCx5nT
-        QLnyo9WYupq3ygZkGHUhHRkajKgea77kfsA2o9OWjF3+yC43a8UBICgQRyFimQ==
+        bh=trfyvi6MbJesxcsRP4W62yufX/0CgsLs8XGabx+92Bo=;
+        b=L6Qcn/9e7P3K926jTTlxdaenBq994wa3zCvGQmqMS0dJMgfO5s3TSJ7jFQgUv1IUPo0ui/
+        L4t1OtelGrFCjqJ60BthSoTF1jelkeMMZQUPYKFMWlH8CRIFTsU5LV6bNvQhkUfm2FnqiS
+        Roz0++Tfq9hKTgk+9HSMRTrbzXtFJAygZZcLnmZw24UnhHXSutri1OnuTXwb5KO31BQvgo
+        ztEEn5kH3SjTdNP33xSGE35MKo+X5gq4x+gq6zmExQe+JQN7aap1tjC/tMzrasQeacbgkl
+        pKCue1kqiSWEg4t3AajF5jQfEjgbk+vAgslxt4PMG96ukaFQYHsUdRARquIveg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700734003;
+        s=2020e; t=1700735430;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PWJLpr+e76xHxp+lFdVVcBgYCBwYbNunL9DUBWCjG4I=;
-        b=zW0XOz/HtriJYbP6G2nZ2ukJkZIqr/IGEADXLwhl2vSn7uEYxfiV2aB3mbv9zcHnZtQD/b
-        uFd+qtu2MeWMU4DQ==
-From:   "tip-bot2 for Yuntao Wang" <tip-bot2@linutronix.de>
+        bh=trfyvi6MbJesxcsRP4W62yufX/0CgsLs8XGabx+92Bo=;
+        b=ptONsAgoo7+FVD6kaLTsUHcxSSLMWGbMfVAkzSFF1JY6By0ocu0G3IU4E0E34NQRFf3ly5
+        +LSW8Ew7NhZRAgDw==
+From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/io: Remove the unused 'bw' parameter from the
- BUILDIO() macro
-Cc:     Yuntao Wang <ytcoode@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231123034911.217791-1-ytcoode@gmail.com>
-References: <20231123034911.217791-1-ytcoode@gmail.com>
+Subject: [tip: sched/core] sched/pelt: Avoid underestimation of task utilization
+Cc:     Lukasz Luba <lukasz.luba@arm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Hongyan Xia <hongyan.xia2@arm.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20231122140119.472110-1-vincent.guittot@linaro.org>
+References: <20231122140119.472110-1-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <170073400251.398.4232441300253606258.tip-bot2@tip-bot2>
+Message-ID: <170073542912.398.8772998793614415245.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,51 +67,79 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     03f111710af9ea9cd5a08ecc98e456d1cc0c2284
-Gitweb:        https://git.kernel.org/tip/03f111710af9ea9cd5a08ecc98e456d1cc0c2284
-Author:        Yuntao Wang <ytcoode@gmail.com>
-AuthorDate:    Thu, 23 Nov 2023 11:49:11 +08:00
+Commit-ID:     50181c0cff31281b9f1071575ffba8a102375ece
+Gitweb:        https://git.kernel.org/tip/50181c0cff31281b9f1071575ffba8a102375ece
+Author:        Vincent Guittot <vincent.guittot@linaro.org>
+AuthorDate:    Wed, 22 Nov 2023 15:01:19 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 23 Nov 2023 10:57:36 +01:00
+CommitterDate: Thu, 23 Nov 2023 11:24:28 +01:00
 
-x86/io: Remove the unused 'bw' parameter from the BUILDIO() macro
+sched/pelt: Avoid underestimation of task utilization
 
-Commit 1e8f93e18379 ("x86: Consolidate port I/O helpers") moved some
-port I/O helpers to <asm/shared/io.h>, which caused the 'bw' parameter
-in the BUILDIO() macro to become unused. Remove it.
+Lukasz Luba reported that a thread's util_est can significantly decrease as
+a result of sharing the CPU with other threads.
 
-Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+The use case can be easily reproduced with a periodic task TA that runs 1ms
+and sleeps 100us. When the task is alone on the CPU, its max utilization and
+its util_est is around 888. If another similar task starts to run on the
+same CPU, TA will have to share the CPU runtime and its maximum utilization
+will decrease around half the CPU capacity (512) then TA's util_est will
+follow this new maximum trend which is only the result of sharing the CPU
+with others tasks.
+
+Such situation can be detected with runnable_avg wich is close or
+equal to util_avg when TA is alone, but increases above util_avg when TA
+shares the CPU with other threads and wait on the runqueue.
+
+[ We prefer an util_est that overestimate rather than under estimate
+  because in 1st case we will not provide enough performance to the
+  task which will remain under-provisioned, whereas in the other case we
+  will create some idle time which will enable to reduce contention and
+  as a result reduces the util_est so the overestimate will be transient
+  whereas the underestimate will remain. ]
+
+[ mingo: Refined the changelog, added comments from the LKML discussion. ]
+
+Reported-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231123034911.217791-1-ytcoode@gmail.com
+Link: https://lore.kernel.org/lkml/CAKfTPtDd-HhF-YiNTtL9i5k0PfJbF819Yxu4YquzfXgwi7voyw@mail.gmail.com/#t
+Link: https://lore.kernel.org/r/20231122140119.472110-1-vincent.guittot@linaro.org
+Cc: Hongyan Xia <hongyan.xia2@arm.com>
 ---
- arch/x86/include/asm/io.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/sched/fair.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
-index 7623884..3814a92 100644
---- a/arch/x86/include/asm/io.h
-+++ b/arch/x86/include/asm/io.h
-@@ -242,7 +242,7 @@ static inline void slow_down_io(void)
- 
- #endif
- 
--#define BUILDIO(bwl, bw, type)						\
-+#define BUILDIO(bwl, type)						\
- static inline void out##bwl##_p(type value, u16 port)			\
- {									\
- 	out##bwl(value, port);						\
-@@ -288,9 +288,9 @@ static inline void ins##bwl(u16 port, void *addr, unsigned long count)	\
- 	}								\
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 07f5558..53dea95 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4774,6 +4774,11 @@ static inline unsigned long task_util(struct task_struct *p)
+ 	return READ_ONCE(p->se.avg.util_avg);
  }
  
--BUILDIO(b, b, u8)
--BUILDIO(w, w, u16)
--BUILDIO(l,  , u32)
-+BUILDIO(b, u8)
-+BUILDIO(w, u16)
-+BUILDIO(l, u32)
- #undef BUILDIO
++static inline unsigned long task_runnable(struct task_struct *p)
++{
++	return READ_ONCE(p->se.avg.runnable_avg);
++}
++
+ static inline unsigned long _task_util_est(struct task_struct *p)
+ {
+ 	struct util_est ue = READ_ONCE(p->se.avg.util_est);
+@@ -4893,6 +4898,14 @@ static inline void util_est_update(struct cfs_rq *cfs_rq,
+ 		return;
  
- #define inb_p inb_p
+ 	/*
++	 * To avoid underestimate of task utilization, skip updates of EWMA if
++	 * we cannot grant that thread got all CPU time it wanted.
++	 */
++	if ((ue.enqueued + UTIL_EST_MARGIN) < task_runnable(p))
++		goto done;
++
++
++	/*
+ 	 * Update Task's estimated utilization
+ 	 *
+ 	 * When *p completes an activation we can consolidate another sample
