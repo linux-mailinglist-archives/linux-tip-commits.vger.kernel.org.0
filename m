@@ -2,114 +2,128 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02E527F626C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Nov 2023 16:14:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 875177F66D5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Nov 2023 20:00:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345988AbjKWPOR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Nov 2023 10:14:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37966 "EHLO
+        id S230092AbjKWTAr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Nov 2023 14:00:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229532AbjKWPOQ (ORCPT
+        with ESMTP id S229462AbjKWTAq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Nov 2023 10:14:16 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CDC4D48;
-        Thu, 23 Nov 2023 07:14:19 -0800 (PST)
-Date:   Thu, 23 Nov 2023 15:14:16 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700752457;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jM1G78Pb55OZs6pBQVdGZGxOr3xM0EcYWgrlIXzPnrQ=;
-        b=1JSs4nTzE5LpQ4sPT9zKJHsvx1BJxLLT8pDp8fXuGrIMfwAIX9FDRprd4tEMmaOqSEDvxO
-        S62aYPyjzB1lUzGCu7YogXabdAdaXWSKbvMeiJjYKobyBFqVwfOKKAX8bzWEbOBVc/jAoW
-        CmzlPA77JzrhlcqK4lnUc27ahZa6OIciFYNy2GAMHFQA0fu0sJZqktBEuQ77LDXbQ4nq3O
-        UScslkluHm5wmRTB9tSiM10gCPDBNspsEX5M369lkPKXbYhUL4pm/rk7jwo/P7kvC38N9S
-        GaRO4OaaivsvFddpyYfDRNE9yKwWOxOh9KADJL9NRw34gQhVHZoXJedirv7Erw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700752457;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jM1G78Pb55OZs6pBQVdGZGxOr3xM0EcYWgrlIXzPnrQ=;
-        b=TLkf1xMyk1ewKsc8YcLU9dH+6gmfXuD7ztoWBPJA2Z64jiUmMWLNaBPbH2JwK4rLVhxM0s
-        z3q1R34n48oCyqCw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Fix the nr_addr_filters fix
-Cc:     Thomas Richter <tmricht@linux.ibm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231122100756.GP8262@noisy.programming.kicks-ass.net>
-References: <20231122100756.GP8262@noisy.programming.kicks-ass.net>
+        Thu, 23 Nov 2023 14:00:46 -0500
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E99861B3
+        for <linux-tip-commits@vger.kernel.org>; Thu, 23 Nov 2023 11:00:52 -0800 (PST)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9ff26d7c0a6so167260366b.2
+        for <linux-tip-commits@vger.kernel.org>; Thu, 23 Nov 2023 11:00:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1700766051; x=1701370851; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=717qANo9IFyyNeZDc8GQKEAbOtQz1mcsrQpltrJlB1o=;
+        b=AtjHcKMuMk9H+4JzmFq3OUiO8cyl6W2zyoG6Lob8HZpWqVJdYAFMcnRAMZ05egxQny
+         EnceKK6ur76NbKGi4DTcogr1wx154r1okzMMcFyIbBOwGIbY89gd05xFn+fSAIf14JU1
+         XIgY9b50a618TUXAWPOyOmuGNHLwxXQP2UN/g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700766051; x=1701370851;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=717qANo9IFyyNeZDc8GQKEAbOtQz1mcsrQpltrJlB1o=;
+        b=CwgM/dImUdyd4w+mN86CGcuOoqegHU1aZDSajpmY/ttUGo+d0Cu/rQkmLvoqFWiqCL
+         G6BLw5vF0qjX1LoA+HES2Tcx1R8jE5KzSOA84awVj3FVkzKl1S/1MKd4VMRXy8vzbee0
+         pGMRgQDbDQNQDYw3cMsmIXJDpORRXwTW49dFUPsT7/VJ1TLu2n8hpgkW5a5DqfuPIfu9
+         NlM3zMd2dd/dkaFUm8zrIMTt5CDqFwcH9U6T9AvEda42cpQUFW/s0OVhePpd08e/M+Rx
+         6FQIU3jXZuuO87XAmZlrnae9INSD6zJ6kNWUi0l9ypFtxwMXY6PDO+L/LKgb0WwaiXiF
+         XnPA==
+X-Gm-Message-State: AOJu0YwKYSYFLYwzrnzmyU5viuNJ9tBg/uT+pMBn/wOnYNEV+X5gCDc+
+        W6R3U3stKGycFT7/Q9VNwiiPrsqpCzTGnr8x6uyFS/Uq
+X-Google-Smtp-Source: AGHT+IGw7xhoCCihbYdsoM2g7xH/v8DN9m4CoGIexAOA+QJSF6yKzQ0S1teXrmdPVBEQW5gwu2OuVg==
+X-Received: by 2002:a17:906:12:b0:9ff:7164:c1fa with SMTP id 18-20020a170906001200b009ff7164c1famr181693eja.13.1700766051107;
+        Thu, 23 Nov 2023 11:00:51 -0800 (PST)
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
+        by smtp.gmail.com with ESMTPSA id lb16-20020a170907785000b009fda665860csm1106405ejc.22.2023.11.23.11.00.50
+        for <linux-tip-commits@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Nov 2023 11:00:50 -0800 (PST)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-9fa45e75ed9so168829066b.1
+        for <linux-tip-commits@vger.kernel.org>; Thu, 23 Nov 2023 11:00:50 -0800 (PST)
+X-Received: by 2002:a17:906:6bcd:b0:a03:7de1:374f with SMTP id
+ t13-20020a1709066bcd00b00a037de1374fmr179408ejs.25.1700766050187; Thu, 23 Nov
+ 2023 11:00:50 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <170075245640.398.10957692681465500006.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20231122163700.400507-1-michael.roth@amd.com> <170073547546.398.2637807593174571076.tip-bot2@tip-bot2>
+In-Reply-To: <170073547546.398.2637807593174571076.tip-bot2@tip-bot2>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 23 Nov 2023 11:00:33 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wg=JDhLdEry=U1-iO1foL_j5T37qVE6_MEHqvj31HO1Lw@mail.gmail.com>
+Message-ID: <CAHk-=wg=JDhLdEry=U1-iO1foL_j5T37qVE6_MEHqvj31HO1Lw@mail.gmail.com>
+Subject: Re: [tip: x86/mm] x86/mm: Ensure input to pfn_to_kaddr() is treated
+ as a 64-bit type
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Dave Hansen <dave.hansen@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Rik van Riel <riel@surriel.com>, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+On Thu, 23 Nov 2023 at 02:31, tip-bot2 for Michael Roth
+<tip-bot2@linutronix.de> wrote:
+>
+> On 64-bit platforms, the pfn_to_kaddr() macro requires that the input
+> value is 64 bits in order to ensure that valid address bits don't get
+> lost when shifting that input by PAGE_SHIFT to calculate the physical
+> address to provide a virtual address for.
 
-Commit-ID:     388a1fb7da6aaa1970c7e2a7d7fcd983a87a8484
-Gitweb:        https://git.kernel.org/tip/388a1fb7da6aaa1970c7e2a7d7fcd983a87a8484
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 22 Nov 2023 11:07:56 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 23 Nov 2023 16:08:31 +01:00
+Bah. The commit is obviously fine, but can we please just get rid of
+that broken pfn_to_kaddr() thing entirely?
 
-perf: Fix the nr_addr_filters fix
+It's a bogus mis-spelling of pfn_to_virt(), and I don't know why that
+horrid thing exists. In *all* other situations we talk about "virt"
+for kernel virtual addresses, I don't know where that horrid "kaddr"
+came from (ie "virt_to_page()" and friends).
 
-Thomas reported that commit 652ffc2104ec ("perf/core: Fix narrow
-startup race when creating the perf nr_addr_filters sysfs file") made
-the entire attribute group vanish, instead of only the nr_addr_filters
-attribute.
+Most notably, we have "virt_to_pfn()" being quite commonly used. We
+don't even have that kaddr_to_pfn(), which just shows *how* bogus this
+whole "pfn_to_kaddr()" crud is.
 
-Additionally a stray return.
+The good news is that there aren't a ton of users. Anybody willing to
+just do a search-and-replace and get rid of this pointless and wrong
+thing?
 
-Insufficient coffee was involved with both writing and merging the
-patch.
+Using "pfn_to_virt()" has the added advantage that we have a generic
+implementation of it that isn't duplicated pointlessly for N
+architectures, and that didn't have this bug:
 
-Fixes: 652ffc2104ec ("perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file")
-Reported-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Link: https://lkml.kernel.org/r/20231122100756.GP8262@noisy.programming.kicks-ass.net
----
- kernel/events/core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+  static inline void *pfn_to_virt(unsigned long pfn)
+  {
+        return __va(pfn) << PAGE_SHIFT;
+  }
+  #define pfn_to_virt pfn_to_virt
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 4f0c45a..59b332c 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11417,12 +11417,10 @@ static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int
- 	struct device *dev = kobj_to_dev(kobj);
- 	struct pmu *pmu = dev_get_drvdata(dev);
- 
--	if (!pmu->nr_addr_filters)
-+	if (n == 2 && !pmu->nr_addr_filters)
- 		return 0;
- 
- 	return a->mode;
--
--	return 0;
- }
- 
- static struct attribute_group pmu_dev_attr_group = {
+Hmm?
+
+Amusingly (or sadly), we have s390 holding up the flag of sanity, and having
+
+    #define pfn_to_kaddr(pfn)  pfn_to_virt(pfn)
+
+and then we'd only need to fix the hexagon version of that macro
+(since Hexagon made its own version, with the old bug - but I guess
+Hexagon is 32-bit only and hopefully never grows 64-bit (??) so maybe
+nobody cares).
+
+           Linus
