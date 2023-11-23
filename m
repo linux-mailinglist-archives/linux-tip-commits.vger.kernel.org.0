@@ -2,440 +2,203 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D72837F5CFE
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Nov 2023 11:54:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA1E47F5F5E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Nov 2023 13:50:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344873AbjKWKyj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Nov 2023 05:54:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57142 "EHLO
+        id S1345287AbjKWMuw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Nov 2023 07:50:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344712AbjKWKyh (ORCPT
+        with ESMTP id S1345271AbjKWMuv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Nov 2023 05:54:37 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9967F1BD;
-        Thu, 23 Nov 2023 02:54:42 -0800 (PST)
-Date:   Thu, 23 Nov 2023 10:54:40 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700736881;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=6JGggGpeD1lZUn4G8SHqDv+vQD2DIJeF/08zaMfPpa8=;
-        b=lnw5NCvl6/FDKlaq0bkKTlDnSFsd0pGbnxKcmvbC2rCWzueoYEWTMgQV4fx48wcuMnw2/i
-        O2D8d18xK/Bse//Hu/dUHYGwd3D0H8Tml2U3jzioMtGoxnG8MKr0yZmTmfw7CFujDQmIKi
-        mNW//3CBg0o4SdyJEM7CNLboZoalDNSnLzpUWbEF66mB0vbL9GG4MZeB9VDChaH/VRCtBS
-        qUCdb4pXM0qxOS9uUnQB4HGZtYvFSDOLRCqzn3WV5WXPCTS+3dV3IvLYY+VdQoZUdslqro
-        s8lx4g6b5Cx+GTF4ND6hgACLD/l7cw37Apnc0PVB6U7xiYv17NtULeGeWDtUOQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700736881;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=6JGggGpeD1lZUn4G8SHqDv+vQD2DIJeF/08zaMfPpa8=;
-        b=lzTkSkHPY0Q04Bn/XMcFtgrxYmZ2oBMomWo/bYMqO16q9J3XyMPiv7VZfrpva6CiKg7FdL
-        isobqhaiR1JOJbCA==
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/cpufreq: Rework schedutil governor
- performance estimation
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231122133904.446032-2-vincent.guittot@linaro.org>
-References: <20231122133904.446032-2-vincent.guittot@linaro.org>
-MIME-Version: 1.0
-Message-ID: <170073688055.398.12687414937207369825.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+        Thu, 23 Nov 2023 07:50:51 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C9A0189;
+        Thu, 23 Nov 2023 04:50:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700743858; x=1732279858;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=jH6M9jw+JvcBQGIEgOl2wcWkD21o5BVUCbVd0JiiLUs=;
+  b=dN2UWU4EFDNbDhc4u2wkk6R9V0d465nFIcDJGJPoXbGVR7KTvLubpPbA
+   8mSPN8EQ8MyrA41N3jBVvb+RiJmSurTH5oIIBPbQyjHdrbXAXLTHsIgh3
+   P8YvYSEPDnLRZ1KuzbrEPDNwzvHu28rPyxNInUvZOt0cV0UlT1Sd68qw3
+   H/1p9D5eMVyo2rv6BYRz/mLc6ASoG9i08NObHNZgpgxKU9j/SclLagp8W
+   PXeMrlQETx0DbBaDHywltnFuzlBaQ5r57MJm0dPVPKAyIT2MkoMf0tVX6
+   ao3vKHZh/6Ckr8evaY6mxSW88XYD3gIhM3i3crLKMX7KOMHu9o4prQAMK
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="396166921"
+X-IronPort-AV: E=Sophos;i="6.04,221,1695711600"; 
+   d="scan'208";a="396166921"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2023 04:50:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,221,1695711600"; 
+   d="scan'208";a="15650289"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Nov 2023 04:50:58 -0800
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Thu, 23 Nov 2023 04:50:57 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Thu, 23 Nov 2023 04:50:57 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Thu, 23 Nov 2023 04:50:56 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nCe0T4zbkRzry7mXaJ08N1hxZPa9YwCPBT2mAAuKs89jD6/M2UPpBwqRsgmPthdCp17S40inIGgV/YZze/gFLfqCNGy0H5dtkBhv4juAtMIaDez3IJlHyv0FpX7PLYUhoHbv1R+MvmNAW9XRFCzfB1P2Zl1N2tXlpP6uK1BVNH3JM9niLJs0vtdKpicLyIWYqTPDDfGsEK6AI0WmkkqHGn6WRFhNKdBtDL5qBnjmcycXftxr0jcqJ82w5kS608zNdPJxaGwjQFQ4bSzOwadOnmvRlqiez1A+3mT8Q/XEC07b2BA/YgkGi0xj1QYBSJi0z+Ea8/d6+AxHfVz9REadgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jH6M9jw+JvcBQGIEgOl2wcWkD21o5BVUCbVd0JiiLUs=;
+ b=EJNLyK6wuGcBVT7tcF1By1Id2Pg9HanruKTTUV8JN6QOpXk5S4eVszYee+InXt/2COmm94xApPp3EZPpkR+GrOI2ya27MHhb4tuGu/SH0rJTBtWnUlFqQFc11W/QkhCzNE5/H7YzLaNnyDdZv9MjYqssn9wNiyb/wNKE8nwoaMHr9+a8vr15laKSWDUJuq8y0Yh9HJh6Xa2d6aASEex5gz9F5JF6tNjP8aNNi/5/abDrBoWiTrck3YZtP8IPx7gbsmpkz404TO0we3UcIFMCd2yP7u7OtkqhzWHIF84Z+fZCVZGzMPqGSsmceYO6BMbyW6Lm7bss3G/u2jOn8wZnsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com (2603:10b6:a03:478::6)
+ by SN7PR11MB7092.namprd11.prod.outlook.com (2603:10b6:806:29b::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.21; Thu, 23 Nov
+ 2023 12:50:48 +0000
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::e10c:91d7:d34b:aa1d]) by SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::e10c:91d7:d34b:aa1d%6]) with mapi id 15.20.7025.020; Thu, 23 Nov 2023
+ 12:50:48 +0000
+From:   "Zhang, Rui" <rui.zhang@intel.com>
+To:     "jsperbeck@google.com" <jsperbeck@google.com>,
+        "tip-bot2@linutronix.de" <tip-bot2@linutronix.de>
+CC:     "tglx@linutronix.de" <tglx@linutronix.de>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [tip: x86/urgent] x86/acpi: Ignore invalid x2APIC entries
+Thread-Topic: [tip: x86/urgent] x86/acpi: Ignore invalid x2APIC entries
+Thread-Index: AQHaExJ8HYCIhq0C9kqRsYucn9Sz1LCG/duAgADzWYA=
+Date:   Thu, 23 Nov 2023 12:50:47 +0000
+Message-ID: <1e565bb08ebdd03897580a5905d1d2de01e15add.camel@intel.com>
+References: <169953729188.3135.6804572126118798018.tip-bot2@tip-bot2>
+         <20231122221947.781812-1-jsperbeck@google.com>
+In-Reply-To: <20231122221947.781812-1-jsperbeck@google.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.44.4-0ubuntu2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6622:EE_|SN7PR11MB7092:EE_
+x-ms-office365-filtering-correlation-id: f9402a87-3fbe-4314-643e-08dbec22d0b0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: uX/ZR3vT95RgkTqdbn6TeLUWAEHC0KKLo3O9CuQQDxsicK1a+TBBvoTJnbqeexrNAf83kXPmAWwwuv65+5lkPMiasScgxDuYLHSHJoKGbLQpNjzJt7PBRSsbPdMhFGTxIoZ6v8FwHG64TlelYHqNityT3vEvClmvbOSWyPiSwdhDrijKV59MiMXOZ+65f0g3cnSYDOYo8jr9tEs/EUF8gkhLC991L2MID+kH9SK3+WHWqUTXxRBawNpADk2icwwgcymseGnudsTq/1HlIbGeP87jcYVVxUfXN/GdF1vS2rs/5k417pYt9ZDnX9Ge3qkefKuKJJIAopLUjK2MfYSthDF0mt2jkaapBSVHdPQpsn8oyTwqBeZtva/KhaoeTpdz8EQbzK6gRLwOdJcE3wBt31LgwS0FCHSGo79cpNe21CPeyJB9BN51svkodH/tRg8fBJsJ5zWEO0FM8bG/kNoajeYaA5ErheAER7CjYLGoTI15KEK2P15WT9WBFusAfrZRtfaTOC7cq/CmdCChp8pNUe2avB7btXAPQc9XMuFowE9tIiGSbQHsNZLipioSkNqr1cYhEFfKTc6RPbi08I+iCSNlQLdrjboblrlu42mh1DY=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB6622.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(346002)(136003)(39860400002)(396003)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(4001150100001)(5660300002)(8676002)(4326008)(8936002)(2906002)(41300700001)(316002)(66476007)(66556008)(66446008)(54906003)(64756008)(66946007)(76116006)(91956017)(110136005)(86362001)(966005)(38070700009)(2616005)(478600001)(6506007)(71200400001)(36756003)(6512007)(26005)(122000001)(83380400001)(38100700002)(6486002)(82960400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?THNNZU5UTHB0TXZlak9kK0VManpFQTd0RC9RQkpmVVVMd3I1WUV5ck05L1NU?=
+ =?utf-8?B?cFJHRlFBMXVhTXhmUi9KamErSTdxd0dMSEJDVDhDY0hwQkxrMS9hM0c4RUpE?=
+ =?utf-8?B?Vnd6bjVnNzRBaWlaT0EwWkY5WTE5MTJZVW5VRml1RWd3L0UrMmFMeGc1OHZR?=
+ =?utf-8?B?MTRzZ0d5MUhEbkttNWJqV0l4WGVsMU1vbVlVY2VPbVhtTmxrY0lSQ1JPNUwy?=
+ =?utf-8?B?WGdVL2NxclJ1Y1ZGblJsVkg1T1p1WHpvNXNqNDZtYnlPdEtlWDhxVDVQNTZX?=
+ =?utf-8?B?c0wxOEFGcXFwYkhFOFlnYnFoVWkyZlVYeVFpVlN5dlNIVWdzY3BUN0NqdFQ3?=
+ =?utf-8?B?cVRVRWQ5ejd0bS96QVJOY1lHaFRzenlyUHpTT0xUOWJseEQ3dENuQ0lWWEx4?=
+ =?utf-8?B?TmFmUzZLSTl6U3pnZWtCVm9LUytNaElDa3ZwWk9BWW9Qbjdab2hhbjdHck1k?=
+ =?utf-8?B?UnFyTzd5K2JLSTVPNUYydmRDeGEyNURYMFFNMU9RWHE0YTcvejVoOUJteGJM?=
+ =?utf-8?B?cnl5bGlWT2Nac0FuVTlWRXljMjRvVHNPeHkvOEZ1V3c5MVdIbFo2STluMmtj?=
+ =?utf-8?B?bGtCM211YzBiRWJWM2YyaXpMR2xDNmJ0RE5NdjlVczNwanVUQTExNXJsdjlQ?=
+ =?utf-8?B?SExKNkFPR1dnM0MzbGl4MWhheDd6RTFnS2lMcnhBWEJBekUwOVEyV1p6WFJJ?=
+ =?utf-8?B?N3l6NlRCNzJiN0FVRWlwR2J5MElFMW5iQmJ4SENLZEpsc3hnQUVwUXlaL3lJ?=
+ =?utf-8?B?L2FDd29ndW9ydmUwUUlJNmZlNnJ3SllMU3JJVVZBYnhnRU1POWVBbGE2bnlI?=
+ =?utf-8?B?cFhTZU9IZjFyN004YnNEZms4RTRVcHVLS29hNGxtZkE4MGV3UkxYL0lWZGlS?=
+ =?utf-8?B?a3JlMXVFOXBld0IzZkkwa291eEZBbmFGRXN0VzFNWDlmU3JkZE5sRjVNaDFp?=
+ =?utf-8?B?U0txcFBSekVWRkhaZEY3WitUZ2ttRGF3NUdPcFZSVVhkNzFmTlV0S0U3OFBL?=
+ =?utf-8?B?RXJwQTI4RVNuTDAray9yelliT0M2MHNMSjJYRFRwd1VBV0ROTnVBbEQzWVl5?=
+ =?utf-8?B?cWNFVEF1Zkh1ODB4MmtYWjNsZmxySzV1UHlRS3d3TTBkVXd4QW5hZUhUTlI3?=
+ =?utf-8?B?T20yREJMZ0NGaFhydnZoYTFGSWJGRXRGNWhlMFpycVZwMFRNT2M3cm9yUXZa?=
+ =?utf-8?B?cnNpbER6OThwcHU0ek44Zi9EODFjTzlvbXU1eDRZU2wrOHBuU1d1aE1pNmpk?=
+ =?utf-8?B?bHVpcHpoU3JaNDZMYlY5RitMWmJNOWU2MFUvZE84bUsvakJ6NXhnZ1d0eGF6?=
+ =?utf-8?B?UmF4bUlqczd5bjF6V1VOQ0Y2Qm9XN2RrT09Md0ExOExMK2ZMaXhUNTJLdVN6?=
+ =?utf-8?B?RXVDeXNtVjdGT1VsZmN0M0l1TzgzREQvYXZnMzYzdk8yeDZZRUFjbGY3OGpp?=
+ =?utf-8?B?NGt3VjJZUWRDTHovb1c0RGlXNWo2Q0dhQThHeENXMXV2eHZyMEZaRXNMKzdq?=
+ =?utf-8?B?ejQxOXRSV0dvREQxQ1BiamE1OExMZnc4Q1YyL0VoVHQ5eXNicGxGdUo2MkxW?=
+ =?utf-8?B?RzUwQ1UrM2wyZUFyQ1JNM2p1VFVJSUtveHJwUno0UzhLaElyN3RVdFN4MURY?=
+ =?utf-8?B?WFV1QjFlSHlFbXNKcHBVUWJRZ0ZMRXlEcVpadUo4Nkowamdsb1FvVXhvT1Vj?=
+ =?utf-8?B?YnNPdllSVUFLSk9FRlh1eXgzd1NkVkZjQzFTdi9rajcySjhvUm52WUtRMkxB?=
+ =?utf-8?B?VGlpRjdWOE9kVFdWaGtiYk5LQkJTS2dtN3crdm5zaEd5Y1F1Wkd6ZkdRZG9S?=
+ =?utf-8?B?Q1haZDJLQnB1OS9iOTBPRkZMNnBQZG1qUlcyYXUvYVFCSVZpRDZ2UVVqaXM3?=
+ =?utf-8?B?ZnEyZ3JBOGh2a0VKdXFjQ3FlNVh6R2VUbGtKTUJPTjJ4QjkvU1ltaGN1Skw5?=
+ =?utf-8?B?QjFyNWpQWUZacUxzU0JMbGxsZTM1NXc3bzRvMUFmS1NqZnk4NW9YTEdyelpq?=
+ =?utf-8?B?L2pBRWtlZEQrcTY3ZW1ITW5LbnZHTjlUUXUrRUNGQ3A0dFBSU2JHa0N4NFNN?=
+ =?utf-8?B?aHhUMFM4Z3l5N1grcHdpNmVmOXVjZTFXdHlTNHpCM3Y4TWVIdmNac2gyWUF3?=
+ =?utf-8?B?dmNDTTF3SDlDWGk3RFJJbHVnYUhGZi9Xb21CTm5oTVZLY292YnVudTZ6R3V1?=
+ =?utf-8?B?NUE9PQ==?=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-ID: <53ECFBDF4847064DB7113A2EA19658FA@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6622.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9402a87-3fbe-4314-643e-08dbec22d0b0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Nov 2023 12:50:47.6727
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: imgOYVo5DuQ+oCmBfYPquJb4O+tD8TrV1+H5IFMO7Z78vXhB5u26xm8mv988kLdCJ1Y+URIO4BTvIZq8Ymh1hg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7092
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
-
-Commit-ID:     9c0b4bb7f6303c9c4e2e34984c46f5a86478f84d
-Gitweb:        https://git.kernel.org/tip/9c0b4bb7f6303c9c4e2e34984c46f5a86478f84d
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Wed, 22 Nov 2023 14:39:03 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 23 Nov 2023 11:32:01 +01:00
-
-sched/cpufreq: Rework schedutil governor performance estimation
-
-The current method to take into account uclamp hints when estimating the
-target frequency can end in a situation where the selected target
-frequency is finally higher than uclamp hints, whereas there are no real
-needs. Such cases mainly happen because we are currently mixing the
-traditional scheduler utilization signal with the uclamp performance
-hints. By adding these 2 metrics, we loose an important information when
-it comes to select the target frequency, and we have to make some
-assumptions which can't fit all cases.
-
-Rework the interface between the scheduler and schedutil governor in order
-to propagate all information down to the cpufreq governor.
-
-effective_cpu_util() interface changes and now returns the actual
-utilization of the CPU with 2 optional inputs:
-
-- The minimum performance for this CPU; typically the capacity to handle
-  the deadline task and the interrupt pressure. But also uclamp_min
-  request when available.
-
-- The maximum targeting performance for this CPU which reflects the
-  maximum level that we would like to not exceed. By default it will be
-  the CPU capacity but can be reduced because of some performance hints
-  set with uclamp. The value can be lower than actual utilization and/or
-  min performance level.
-
-A new sugov_effective_cpu_perf() interface is also available to compute
-the final performance level that is targeted for the CPU, after applying
-some cpufreq headroom and taking into account all inputs.
-
-With these 2 functions, schedutil is now able to decide when it must go
-above uclamp hints. It now also has a generic way to get the min
-performance level.
-
-The dependency between energy model and cpufreq governor and its headroom
-policy doesn't exist anymore.
-
-eenv_pd_max_util() asks schedutil for the targeted performance after
-applying the impact of the waking task.
-
-[ mingo: Refined the changelog & C comments. ]
-
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Link: https://lore.kernel.org/r/20231122133904.446032-2-vincent.guittot@linaro.org
----
- include/linux/energy_model.h     |  1 +-
- kernel/sched/core.c              | 90 +++++++++++++------------------
- kernel/sched/cpufreq_schedutil.c | 35 ++++++++----
- kernel/sched/fair.c              | 22 ++++++--
- kernel/sched/sched.h             | 24 ++------
- 5 files changed, 89 insertions(+), 83 deletions(-)
-
-diff --git a/include/linux/energy_model.h b/include/linux/energy_model.h
-index b9caa01..adec808 100644
---- a/include/linux/energy_model.h
-+++ b/include/linux/energy_model.h
-@@ -243,7 +243,6 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
- 	scale_cpu = arch_scale_cpu_capacity(cpu);
- 	ps = &pd->table[pd->nr_perf_states - 1];
- 
--	max_util = map_util_perf(max_util);
- 	max_util = min(max_util, allowed_cpu_cap);
- 	freq = map_util_freq(max_util, ps->frequency, scale_cpu);
- 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 2de77a6..db4be49 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7467,18 +7467,13 @@ int sched_core_idle_cpu(int cpu)
-  * required to meet deadlines.
-  */
- unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
--				 enum cpu_util_type type,
--				 struct task_struct *p)
-+				 unsigned long *min,
-+				 unsigned long *max)
- {
--	unsigned long dl_util, util, irq, max;
-+	unsigned long util, irq, scale;
- 	struct rq *rq = cpu_rq(cpu);
- 
--	max = arch_scale_cpu_capacity(cpu);
--
--	if (!uclamp_is_used() &&
--	    type == FREQUENCY_UTIL && rt_rq_is_runnable(&rq->rt)) {
--		return max;
--	}
-+	scale = arch_scale_cpu_capacity(cpu);
- 
- 	/*
- 	 * Early check to see if IRQ/steal time saturates the CPU, can be
-@@ -7486,45 +7481,49 @@ unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
- 	 * update_irq_load_avg().
- 	 */
- 	irq = cpu_util_irq(rq);
--	if (unlikely(irq >= max))
--		return max;
-+	if (unlikely(irq >= scale)) {
-+		if (min)
-+			*min = scale;
-+		if (max)
-+			*max = scale;
-+		return scale;
-+	}
-+
-+	if (min) {
-+		/*
-+		 * The minimum utilization returns the highest level between:
-+		 * - the computed DL bandwidth needed with the IRQ pressure which
-+		 *   steals time to the deadline task.
-+		 * - The minimum performance requirement for CFS and/or RT.
-+		 */
-+		*min = max(irq + cpu_bw_dl(rq), uclamp_rq_get(rq, UCLAMP_MIN));
-+
-+		/*
-+		 * When an RT task is runnable and uclamp is not used, we must
-+		 * ensure that the task will run at maximum compute capacity.
-+		 */
-+		if (!uclamp_is_used() && rt_rq_is_runnable(&rq->rt))
-+			*min = max(*min, scale);
-+	}
- 
- 	/*
- 	 * Because the time spend on RT/DL tasks is visible as 'lost' time to
- 	 * CFS tasks and we use the same metric to track the effective
- 	 * utilization (PELT windows are synchronized) we can directly add them
- 	 * to obtain the CPU's actual utilization.
--	 *
--	 * CFS and RT utilization can be boosted or capped, depending on
--	 * utilization clamp constraints requested by currently RUNNABLE
--	 * tasks.
--	 * When there are no CFS RUNNABLE tasks, clamps are released and
--	 * frequency will be gracefully reduced with the utilization decay.
- 	 */
- 	util = util_cfs + cpu_util_rt(rq);
--	if (type == FREQUENCY_UTIL)
--		util = uclamp_rq_util_with(rq, util, p);
--
--	dl_util = cpu_util_dl(rq);
-+	util += cpu_util_dl(rq);
- 
- 	/*
--	 * For frequency selection we do not make cpu_util_dl() a permanent part
--	 * of this sum because we want to use cpu_bw_dl() later on, but we need
--	 * to check if the CFS+RT+DL sum is saturated (ie. no idle time) such
--	 * that we select f_max when there is no idle time.
--	 *
--	 * NOTE: numerical errors or stop class might cause us to not quite hit
--	 * saturation when we should -- something for later.
-+	 * The maximum hint is a soft bandwidth requirement, which can be lower
-+	 * than the actual utilization because of uclamp_max requirements.
- 	 */
--	if (util + dl_util >= max)
--		return max;
-+	if (max)
-+		*max = min(scale, uclamp_rq_get(rq, UCLAMP_MAX));
- 
--	/*
--	 * OTOH, for energy computation we need the estimated running time, so
--	 * include util_dl and ignore dl_bw.
--	 */
--	if (type == ENERGY_UTIL)
--		util += dl_util;
-+	if (util >= scale)
-+		return scale;
- 
- 	/*
- 	 * There is still idle time; further improve the number by using the
-@@ -7535,28 +7534,15 @@ unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
- 	 *   U' = irq + --------- * U
- 	 *                 max
- 	 */
--	util = scale_irq_capacity(util, irq, max);
-+	util = scale_irq_capacity(util, irq, scale);
- 	util += irq;
- 
--	/*
--	 * Bandwidth required by DEADLINE must always be granted while, for
--	 * FAIR and RT, we use blocked utilization of IDLE CPUs as a mechanism
--	 * to gracefully reduce the frequency when no tasks show up for longer
--	 * periods of time.
--	 *
--	 * Ideally we would like to set bw_dl as min/guaranteed freq and util +
--	 * bw_dl as requested freq. However, cpufreq is not yet ready for such
--	 * an interface. So, we only do the latter for now.
--	 */
--	if (type == FREQUENCY_UTIL)
--		util += cpu_bw_dl(rq);
--
--	return min(max, util);
-+	return min(scale, util);
- }
- 
- unsigned long sched_cpu_util(int cpu)
- {
--	return effective_cpu_util(cpu, cpu_util_cfs(cpu), ENERGY_UTIL, NULL);
-+	return effective_cpu_util(cpu, cpu_util_cfs(cpu), NULL, NULL);
- }
- #endif /* CONFIG_SMP */
- 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 5888176..f3acf2c 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -47,7 +47,7 @@ struct sugov_cpu {
- 	u64			last_update;
- 
- 	unsigned long		util;
--	unsigned long		bw_dl;
-+	unsigned long		bw_min;
- 
- 	/* The field below is for single-CPU policies only: */
- #ifdef CONFIG_NO_HZ_COMMON
-@@ -143,7 +143,6 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
- 	unsigned int freq = arch_scale_freq_invariant() ?
- 				policy->cpuinfo.max_freq : policy->cur;
- 
--	util = map_util_perf(util);
- 	freq = map_util_freq(util, freq, max);
- 
- 	if (freq == sg_policy->cached_raw_freq && !sg_policy->need_freq_update)
-@@ -153,14 +152,30 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
- 	return cpufreq_driver_resolve_freq(policy, freq);
- }
- 
-+unsigned long sugov_effective_cpu_perf(int cpu, unsigned long actual,
-+				 unsigned long min,
-+				 unsigned long max)
-+{
-+	/* Add dvfs headroom to actual utilization */
-+	actual = map_util_perf(actual);
-+	/* Actually we don't need to target the max performance */
-+	if (actual < max)
-+		max = actual;
-+
-+	/*
-+	 * Ensure at least minimum performance while providing more compute
-+	 * capacity when possible.
-+	 */
-+	return max(min, max);
-+}
-+
- static void sugov_get_util(struct sugov_cpu *sg_cpu)
- {
--	unsigned long util = cpu_util_cfs_boost(sg_cpu->cpu);
--	struct rq *rq = cpu_rq(sg_cpu->cpu);
-+	unsigned long min, max, util = cpu_util_cfs_boost(sg_cpu->cpu);
- 
--	sg_cpu->bw_dl = cpu_bw_dl(rq);
--	sg_cpu->util = effective_cpu_util(sg_cpu->cpu, util,
--					  FREQUENCY_UTIL, NULL);
-+	util = effective_cpu_util(sg_cpu->cpu, util, &min, &max);
-+	sg_cpu->bw_min = min;
-+	sg_cpu->util = sugov_effective_cpu_perf(sg_cpu->cpu, util, min, max);
- }
- 
- /**
-@@ -306,7 +321,7 @@ static inline bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu) { return false; }
-  */
- static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu)
- {
--	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_dl)
-+	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_min)
- 		sg_cpu->sg_policy->limits_changed = true;
- }
- 
-@@ -407,8 +422,8 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
- 	    sugov_cpu_is_busy(sg_cpu) && sg_cpu->util < prev_util)
- 		sg_cpu->util = prev_util;
- 
--	cpufreq_driver_adjust_perf(sg_cpu->cpu, map_util_perf(sg_cpu->bw_dl),
--				   map_util_perf(sg_cpu->util), max_cap);
-+	cpufreq_driver_adjust_perf(sg_cpu->cpu, sg_cpu->bw_min,
-+				   sg_cpu->util, max_cap);
- 
- 	sg_cpu->sg_policy->last_freq_update_time = time;
- }
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 53dea95..34fe6e9 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7793,7 +7793,7 @@ static inline void eenv_pd_busy_time(struct energy_env *eenv,
- 	for_each_cpu(cpu, pd_cpus) {
- 		unsigned long util = cpu_util(cpu, p, -1, 0);
- 
--		busy_time += effective_cpu_util(cpu, util, ENERGY_UTIL, NULL);
-+		busy_time += effective_cpu_util(cpu, util, NULL, NULL);
- 	}
- 
- 	eenv->pd_busy_time = min(eenv->pd_cap, busy_time);
-@@ -7816,7 +7816,7 @@ eenv_pd_max_util(struct energy_env *eenv, struct cpumask *pd_cpus,
- 	for_each_cpu(cpu, pd_cpus) {
- 		struct task_struct *tsk = (cpu == dst_cpu) ? p : NULL;
- 		unsigned long util = cpu_util(cpu, p, dst_cpu, 1);
--		unsigned long eff_util;
-+		unsigned long eff_util, min, max;
- 
- 		/*
- 		 * Performance domain frequency: utilization clamping
-@@ -7825,7 +7825,23 @@ eenv_pd_max_util(struct energy_env *eenv, struct cpumask *pd_cpus,
- 		 * NOTE: in case RT tasks are running, by default the
- 		 * FREQUENCY_UTIL's utilization can be max OPP.
- 		 */
--		eff_util = effective_cpu_util(cpu, util, FREQUENCY_UTIL, tsk);
-+		eff_util = effective_cpu_util(cpu, util, &min, &max);
-+
-+		/* Task's uclamp can modify min and max value */
-+		if (tsk && uclamp_is_used()) {
-+			min = max(min, uclamp_eff_value(p, UCLAMP_MIN));
-+
-+			/*
-+			 * If there is no active max uclamp constraint,
-+			 * directly use task's one, otherwise keep max.
-+			 */
-+			if (uclamp_rq_is_idle(cpu_rq(cpu)))
-+				max = uclamp_eff_value(p, UCLAMP_MAX);
-+			else
-+				max = max(max, uclamp_eff_value(p, UCLAMP_MAX));
-+		}
-+
-+		eff_util = sugov_effective_cpu_perf(cpu, eff_util, min, max);
- 		max_util = max(max_util, eff_util);
- 	}
- 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 8a70d51..c1574cd 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2994,24 +2994,14 @@ static inline void cpufreq_update_util(struct rq *rq, unsigned int flags) {}
- #endif
- 
- #ifdef CONFIG_SMP
--/**
-- * enum cpu_util_type - CPU utilization type
-- * @FREQUENCY_UTIL:	Utilization used to select frequency
-- * @ENERGY_UTIL:	Utilization used during energy calculation
-- *
-- * The utilization signals of all scheduling classes (CFS/RT/DL) and IRQ time
-- * need to be aggregated differently depending on the usage made of them. This
-- * enum is used within effective_cpu_util() to differentiate the types of
-- * utilization expected by the callers, and adjust the aggregation accordingly.
-- */
--enum cpu_util_type {
--	FREQUENCY_UTIL,
--	ENERGY_UTIL,
--};
--
- unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
--				 enum cpu_util_type type,
--				 struct task_struct *p);
-+				 unsigned long *min,
-+				 unsigned long *max);
-+
-+unsigned long sugov_effective_cpu_perf(int cpu, unsigned long actual,
-+				 unsigned long min,
-+				 unsigned long max);
-+
- 
- /*
-  * Verify the fitness of task @p to run on @cpu taking into account the
+SGksIEpvaG4sDQoNClRoYW5rcyBmb3IgY2F0Y2hpbmcgdGhpcyBpc3N1ZS4NCg0KT24gV2VkLCAy
+MDIzLTExLTIyIGF0IDIyOjE5ICswMDAwLCBKb2huIFNwZXJiZWNrIHdyb3RlOg0KPiBJIGhhdmUg
+YSBwbGF0Zm9ybSB3aXRoIGJvdGggTE9DQUxfQVBJQyBhbmQgTE9DQUxfWDJBUElDIGVudHJpZXMg
+Zm9yDQo+IGVhY2ggQ1BVLsKgIEhvd2V2ZXIsIHRoZSBpZHMgZm9yIHRoZSBMT0NBTF9BUElDIGVu
+dHJpZXMgYXJlIGFsbA0KPiBpbnZhbGlkIGlkcyBvZiAyNTUsIHNvIHRoZXkgaGF2ZSBhbHdheXMg
+YmVlbiBza2lwcGVkIGluDQo+IGFjcGlfcGFyc2VfbGFwaWMoKQ0KPiBieSB0aGlzIGNvZGUgZnJv
+bSBmM2JmMWRiZTY0YjYgKCJ4ODYvYWNwaTogUHJldmVudCBMQVBJQyBpZCAweGZmIGZyb20NCj4g
+YmVpbmcNCj4gYWNjb3VudGVkIik6DQo+IA0KPiDCoMKgwqAgLyogSWdub3JlIGludmFsaWQgSUQg
+Ki8NCj4gwqDCoMKgIGlmIChwcm9jZXNzb3ItPmlkID09IDB4ZmYpDQo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgcmV0dXJuIDA7DQo+IA0KPiBXaXRoIHRoZSBjaGFuZ2UgaW4gdGhpcyB0aHJlYWQs
+IHRoZSByZXR1cm4gdmFsdWUgb2YgMCBtZWFucyB0aGF0IHRoZQ0KPiAnY291bnQnIHZhcmlhYmxl
+IGluIGFjcGlfcGFyc2VfZW50cmllc19hcnJheSgpIGlzIGluY3JlbWVudGVkLsKgIFRoZQ0KPiBw
+b3NpdGl2ZSByZXR1cm4gdmFsdWUgbWVhbnMgdGhhdCAnaGFzX2xhcGljX2NwdXMnIGlzIHNldCwg
+ZXZlbiB0aG91Z2gNCj4gbm8gZW50cmllcyB3ZXJlIGFjdHVhbGx5IG1hdGNoZWQuDQoNClNvIGlu
+IGFjcGlfcGFyc2VfbWFkdF9sYXBpY19lbnRyaWVzLCB3aXRob3V0IHRoaXMgcGF0Y2gsDQptYWR0
+X3Byb2NbMF0uY291bnQgaXMgYSBwb3NpdGl2ZSB2YWx1ZSBvbiB0aGlzIHBsYXRmb3JtLCByaWdo
+dD8NCg0KVGhpcyBzb3VuZHMgbGlrZSBhIHBvdGVudGlhbCBpc3N1ZSBiZWNhdXNlIHRoZSBmb2xs
+b3dpbmcgY2hlY2tzIHRvIGZhbGwNCmJhY2sgdG8gTVBTIG1vZGUgY2FuIGFsc28gYnJlYWsuIChJ
+ZiBhbGwgTE9DQUxfQVBJQyBlbnRyaWVzIGhhdmUNCmFwaWNfaWQgMHhmZiBhbmQgYWxsIExPQ0FM
+X1gyQVBJQyBlbnRyaWVzIGhhdmUgYXBpY19pZCAweGZmZmZmZmZmKQ0KDQo+IMKgIFRoZW4sIHdo
+ZW4gdGhlIE1BRFQgaXMgaXRlcmF0ZWQNCj4gd2l0aCBhY3BpX3BhcnNlX3gyYXBpYygpLCB0aGUg
+eDJhcGljIGVudHJpZXMgd2l0aCBpZHMgbGVzcyB0aGFuIDI1NQ0KPiBhcmUgc2tpcHBlZCBhbmQg
+bW9zdCBvZiBteSBDUFVzIGFyZW4ndCByZWNvZ25pemVkLg0KPiANCj4gSSB0aGluayB0aGUgb3Jp
+Z2luYWwgdmVyc2lvbiBvZiB0aGlzIGNoYW5nZSB3YXMgb2theSBmb3IgdGhpcyBjYXNlIGluDQo+
+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvODdwbTRicDU0ei5mZnNAdGdseC9ULw0KDQpZ
+ZWFoLg0KDQpCdXQgaWYgd2Ugd2FudCB0byBmaXggdGhlIHBvdGVudGlhbCBpc3N1ZSBhYm92ZSwg
+d2UgbmVlZCB0byBkbw0Kc29tZXRoaW5nIG1vcmUuDQoNClNheSB3ZSBjYW4gc3RpbGwgdXNlIGFj
+cGlfdGFibGVfcGFyc2VfZW50cmllc19hcnJheSgpIGFuZCBjb252ZXJ0DQphY3BpX3BhcnNlX2xh
+cGljKCkvYWNwaV9wYXJzZV94MmFwaWMoKSB0bw0KYWNwaV9zdWJ0YWJsZV9wcm9jLmhhbmRsZXJf
+YXJnIGFuZCBzYXZlIHRoZSByZWFsIHZhbGlkIGVudHJpZXMgdmlhIHRoZQ0KcGFyYW1ldGVyLg0K
+DQpvciBjYW4gd2UganVzdCB1c2UgbnVtX3Byb2Nlc3NvcnMgJiBkaXNhYmxlZF9jcHVzIHRvIGNo
+ZWNrIGlmIHRoZXJlIGlzDQphbnkgQ1BVIHByb2JlZCB3aGVuIHBhcnNpbmcgTE9DQUxfQVBJQy9M
+T0NBTF9YMkFQSUMgZW50aXJlcz8NCg0KdGhhbmtzLA0KcnVpDQo+IA0KPiBQLlMuIEkgY291bGQg
+YmUgY29udmluY2VkIHRoYXQgdGhlIE1BRFQgZm9yIG15IHBsYXRmb3JtIGlzIHNvbWV3aGF0DQo+
+IGlsbC1mb3JtZWQgYW5kIHRoYXQgSSdtIHJlbHlpbmcgb24gcHJlLWV4aXN0aW5nIGJlaGF2aW9y
+LsKgIEknbSBub3QNCj4gd2VsbC12ZXJzZWQgZW5vdWdoIGluIHRoZSB0b3BpYyB0byBrbm93IGZv
+ciBzdXJlLg0KDQo=
