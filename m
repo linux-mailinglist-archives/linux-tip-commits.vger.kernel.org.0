@@ -2,94 +2,114 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D74E97F6116
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Nov 2023 15:08:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E527F626C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Nov 2023 16:14:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345700AbjKWOIf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Nov 2023 09:08:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45174 "EHLO
+        id S1345988AbjKWPOR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Nov 2023 10:14:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345691AbjKWOIe (ORCPT
+        with ESMTP id S229532AbjKWPOQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Nov 2023 09:08:34 -0500
-X-Greylist: delayed 1866 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 23 Nov 2023 06:08:38 PST
-Received: from email.solokkota.go.id (unknown [103.84.209.203])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13A4B91;
-        Thu, 23 Nov 2023 06:08:37 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by email.solokkota.go.id (Postfix) with ESMTP id 5E10F31E54C0;
-        Thu, 23 Nov 2023 13:30:23 +0000 (UTC)
-Received: from email.solokkota.go.id ([127.0.0.1])
- by localhost (email.solokkota.go.id [127.0.0.1]) (amavis, port 10032)
- with ESMTP id b1cvuBiAu203; Thu, 23 Nov 2023 13:30:23 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by email.solokkota.go.id (Postfix) with ESMTP id 640BD31E5331;
-        Thu, 23 Nov 2023 13:30:22 +0000 (UTC)
-X-Virus-Scanned: amavis at email.solokkota.go.id
-Received: from email.solokkota.go.id ([127.0.0.1])
- by localhost (email.solokkota.go.id [127.0.0.1]) (amavis, port 10026)
- with ESMTP id h2e_Ks1Cagui; Thu, 23 Nov 2023 13:30:22 +0000 (UTC)
-Received: from email.solokkota.go.id (email.solokkota.go.id [103.84.209.203])
-        by email.solokkota.go.id (Postfix) with ESMTP id 26D6A31E54C0;
-        Thu, 23 Nov 2023 13:30:14 +0000 (UTC)
-Date:   Thu, 23 Nov 2023 13:30:14 +0000 (UTC)
-From:   =?utf-8?B?INCh0LjRgdGC0LXQvNC90YvQuSDQsNC00LzQuNC90LjRgdGC0YDQsNGC0L7RgA==?= 
-        <dispar@solokkota.go.id>
-Reply-To: sistemassadmins@mail2engineer.com
-Message-ID: <1925319478.19206.1700746214090.JavaMail.zimbra@solokkota.go.id>
-Subject: 
+        Thu, 23 Nov 2023 10:14:16 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CDC4D48;
+        Thu, 23 Nov 2023 07:14:19 -0800 (PST)
+Date:   Thu, 23 Nov 2023 15:14:16 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1700752457;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=jM1G78Pb55OZs6pBQVdGZGxOr3xM0EcYWgrlIXzPnrQ=;
+        b=1JSs4nTzE5LpQ4sPT9zKJHsvx1BJxLLT8pDp8fXuGrIMfwAIX9FDRprd4tEMmaOqSEDvxO
+        S62aYPyjzB1lUzGCu7YogXabdAdaXWSKbvMeiJjYKobyBFqVwfOKKAX8bzWEbOBVc/jAoW
+        CmzlPA77JzrhlcqK4lnUc27ahZa6OIciFYNy2GAMHFQA0fu0sJZqktBEuQ77LDXbQ4nq3O
+        UScslkluHm5wmRTB9tSiM10gCPDBNspsEX5M369lkPKXbYhUL4pm/rk7jwo/P7kvC38N9S
+        GaRO4OaaivsvFddpyYfDRNE9yKwWOxOh9KADJL9NRw34gQhVHZoXJedirv7Erw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1700752457;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=jM1G78Pb55OZs6pBQVdGZGxOr3xM0EcYWgrlIXzPnrQ=;
+        b=TLkf1xMyk1ewKsc8YcLU9dH+6gmfXuD7ztoWBPJA2Z64jiUmMWLNaBPbH2JwK4rLVhxM0s
+        z3q1R34n48oCyqCw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/core] perf: Fix the nr_addr_filters fix
+Cc:     Thomas Richter <tmricht@linux.ibm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20231122100756.GP8262@noisy.programming.kicks-ass.net>
+References: <20231122100756.GP8262@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-X-Originating-IP: [103.84.209.203]
-X-Mailer: Zimbra 8.8.15_GA_4562 (zclient/8.8.15_GA_4562)
-Thread-Index: oLeSqT9nGw9FaIfl6l1CS9AWSmnzDQ==
-Thread-Topic: 
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: Yes, score=6.3 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,MISSING_HEADERS,RCVD_IN_DNSWL_BLOCKED,
-        RDNS_NONE,REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,TVD_SPACE_RATIO_MINFP,
-        T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [103.84.209.203 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  1.0 MISSING_HEADERS Missing To: header
-        *  0.0 T_SPF_PERMERROR SPF: test of record failed (permerror)
-        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-        *  0.0 TVD_SPACE_RATIO_MINFP Space ratio (vertical text obfuscation?)
-X-Spam-Level: ******
+Message-ID: <170075245640.398.10957692681465500006.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-ВНИМАНИЕ;
+The following commit has been merged into the perf/core branch of tip:
 
-Ваш почтовый ящик превысил ограничение хранилища, которое составляет 5 ГБ, как определено администратором, который в настоящее время работает на 10,9 ГБ, вы не сможете отправлять или получать новую почту до тех пор, пока не проверите почту почтового ящика повторно. Чтобы повторно проверить свой почтовый ящик, отправьте следующую информацию ниже:
+Commit-ID:     388a1fb7da6aaa1970c7e2a7d7fcd983a87a8484
+Gitweb:        https://git.kernel.org/tip/388a1fb7da6aaa1970c7e2a7d7fcd983a87a8484
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 22 Nov 2023 11:07:56 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 23 Nov 2023 16:08:31 +01:00
 
-имя:
-Имя пользователя:
-пароль:
-Подтвердите пароль:
-Электронная почта:
-Телефон:
+perf: Fix the nr_addr_filters fix
 
-Если вы не можете повторно проверить свой почтовый ящик, ваш почтовый ящик будет отключен!
+Thomas reported that commit 652ffc2104ec ("perf/core: Fix narrow
+startup race when creating the perf nr_addr_filters sysfs file") made
+the entire attribute group vanish, instead of only the nr_addr_filters
+attribute.
 
-Приносим извинения за неудобства.
-Проверочный код: en: WEB. АДМИНИСТРАТОРА. RU006,524765 @2023
-Почтовая техническая поддержка @2023
+Additionally a stray return.
 
-Спасибо
-Системный администратор.
+Insufficient coffee was involved with both writing and merging the
+patch.
+
+Fixes: 652ffc2104ec ("perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file")
+Reported-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lkml.kernel.org/r/20231122100756.GP8262@noisy.programming.kicks-ass.net
+---
+ kernel/events/core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 4f0c45a..59b332c 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11417,12 +11417,10 @@ static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int
+ 	struct device *dev = kobj_to_dev(kobj);
+ 	struct pmu *pmu = dev_get_drvdata(dev);
+ 
+-	if (!pmu->nr_addr_filters)
++	if (n == 2 && !pmu->nr_addr_filters)
+ 		return 0;
+ 
+ 	return a->mode;
+-
+-	return 0;
+ }
+ 
+ static struct attribute_group pmu_dev_attr_group = {
