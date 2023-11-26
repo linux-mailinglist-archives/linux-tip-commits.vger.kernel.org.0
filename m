@@ -2,103 +2,152 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B7817F7478
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Nov 2023 14:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C40417F9210
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Nov 2023 11:01:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230418AbjKXNCJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Nov 2023 08:02:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52524 "EHLO
+        id S229587AbjKZKBL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 26 Nov 2023 05:01:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229742AbjKXNCI (ORCPT
+        with ESMTP id S229437AbjKZKBG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Nov 2023 08:02:08 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74790110;
-        Fri, 24 Nov 2023 05:02:14 -0800 (PST)
-Date:   Fri, 24 Nov 2023 13:02:11 -0000
+        Sun, 26 Nov 2023 05:01:06 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D1B2FE;
+        Sun, 26 Nov 2023 02:01:12 -0800 (PST)
+Date:   Sun, 26 Nov 2023 10:01:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700830932;
+        s=2020; t=1700992869;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=2WoqphQa08ilBa/Wdt28ASnV8BgNEE4rSutt3haeXKU=;
-        b=OJcxRTylPJPUbQbDBmMf7deHJuscmSZT3NApgBlLtseA0j6ckf/VfCTWOgtR5DeFwhAQZM
-        9LAvQMs0q0ihnKl7Mni+NVKEs8KskFMnjK7SNJn5im0hGQ3NgmN08qulDA/VuHSvd7Mqxh
-        H3jJ3F6IKYxCgBwLezqwIMsILRpKtfLeBTr1dlhvmTfHnB0WIEBuuqzzqpv9S1dE6s7Yd+
-        wrTEzhwg7iN7DTTl56vJ5b/AHZQhZkgXbcEfwAG6v4ZEPRzmN0XAoKWuJMi6b2QG1XEp0h
-        AmdntZiPbgZ28ocyzIcFxD1zDhe4vxwQj8APyoPxOEr5Fo5W7PD95d6K+m5aNQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=xdIgXoiSPuI8KbNY+MTJ4fyc3kRMyU7BkyVcKl9ISg4=;
+        b=T3xVxAsHLzNXChp3J1Omas8E0M+PAXhPWXojTHKs6r9zp4KygGZreXZ01bFrfWKi+wY2Zh
+        77pZvfZFy7igGdZq5Hm2hemU3AfvVYQsNZ/IDnBuTR1iqXloXi9hf/sJVXEuNIM+bdH7tl
+        //q/61ageAeLJBwUGYf15S81uiCX8TPdaaT3fQx/4XSTyUPtScVWo41gxKroOL4J6oUQ7Q
+        j7V/Dche17tD7gviQ7nCuPNlM+JM14nle/6JHvIlPbLC1t6D06kuRd/zZ13aNzStnuiK7p
+        tQN6vN3FgUeOIfXCbZtqfTurcumDSa1CxrJMITSLOL+S5JI6NcryDonQtxOO4w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700830932;
+        s=2020e; t=1700992869;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=2WoqphQa08ilBa/Wdt28ASnV8BgNEE4rSutt3haeXKU=;
-        b=p3E/IMxHJFUhF1yAPFfRTS8JOPXurIBEfwvpfKH8/n5GeD4w0FtJQw93l0v/Du88P+8IyQ
-        DRS+45L21z2xKJDQ==
-From:   "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=xdIgXoiSPuI8KbNY+MTJ4fyc3kRMyU7BkyVcKl9ISg4=;
+        b=Bh1dCWWk+evX0j5CCresTrIyXJf6EenkVK+JVPRNOW+g5zTa7XDpUPcPSjCrhwjWPnSj0z
+        Wf+9MlGGxo9QdxAA==
+From:   "tip-bot2 for Christophe JAILLET" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu/intel_epb: Don't rely on link order
-Cc:     James Morse <james.morse@arm.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Ingo Molnar <mingo@kernel.org>, Gavin Shan <gshan@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
+Subject: [tip: locking/core] locking/lockdep: Slightly reorder 'struct
+ lock_class' to save some memory
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3C801258371fc4101f96495a5aaecef638d6cbd8d3=2E17009?=
+ =?utf-8?q?88869=2Egit=2Echristophe=2Ejaillet=40wanadoo=2Efr=3E?=
+References: =?utf-8?q?=3C801258371fc4101f96495a5aaecef638d6cbd8d3=2E170098?=
+ =?utf-8?q?8869=2Egit=2Echristophe=2Ejaillet=40wanadoo=2Efr=3E?=
 MIME-Version: 1.0
-Message-ID: <170083093117.398.8055972416269136622.tip-bot2@tip-bot2>
+Message-ID: <170099286871.398.7188234415695498800.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     5bfa0e45e9e7212b87fe1564ab45f146c7d56e5f
-Gitweb:        https://git.kernel.org/tip/5bfa0e45e9e7212b87fe1564ab45f146c7d56e5f
-Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Fri, 24 Nov 2023 09:38:53 
+Commit-ID:     51961d4c08b18e4011798bd37f44c1c2c0f9f59e
+Gitweb:        https://git.kernel.org/tip/51961d4c08b18e4011798bd37f44c1c2c0f9f59e
+Author:        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+AuthorDate:    Sun, 26 Nov 2023 09:56:29 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 24 Nov 2023 13:54:31 +01:00
+CommitterDate: Sun, 26 Nov 2023 10:56:56 +01:00
 
-x86/cpu/intel_epb: Don't rely on link order
+locking/lockdep: Slightly reorder 'struct lock_class' to save some memory
 
-intel_epb_init() is called as a subsys_initcall() to register cpuhp
-callbacks. The callbacks make use of get_cpu_device() which will return
-NULL unless register_cpu() has been called. register_cpu() is called
-from topology_init(), which is also a subsys_initcall().
+Based on pahole, 2 holes can be combined in the 'struct lock_class'. This
+saves 8 bytes in the structure on my x86_64.
 
-This is fragile. Moving the register_cpu() to a different
-subsys_initcall() leads to a NULL dereference during boot.
+On a x86_64 configured with allmodconfig, this saves ~64kb of memory in
+'kernel/locking/lockdep.o':
 
-Make intel_epb_init() a late_initcall(), user-space can't provide a
-policy before this point anyway.
+                text         data           bss           dec     filename
+  Before:    102,501    1,912,490    11,531,636    13,546,627     kernel/locking/lockdep.o
+  After:     102,181    1,912,490    11,466,100    13,480,771     kernel/locking/lockdep.o
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+because of:
+
+  struct lock_class lock_classes[MAX_LOCKDEP_KEYS];
+
+After the reorder, pahole gives:
+
+  struct lock_class {
+          struct hlist_node          hash_entry;           /*     0    16 */
+          struct list_head           lock_entry;           /*    16    16 */
+          struct list_head           locks_after;          /*    32    16 */
+          struct list_head           locks_before;         /*    48    16 */
+          /* --- cacheline 1 boundary (64 bytes) --- */
+          const struct lockdep_subclass_key  * key;        /*    64     8 */
+          lock_cmp_fn                cmp_fn;               /*    72     8 */
+          lock_print_fn              print_fn;             /*    80     8 */
+          unsigned int               subclass;             /*    88     4 */
+          unsigned int               dep_gen_id;           /*    92     4 */
+          long unsigned int          usage_mask;           /*    96     8 */
+          const struct lock_trace  * usage_traces[10];     /*   104    80 */
+          /* --- cacheline 2 boundary (128 bytes) was 56 bytes ago --- */
+          const char  *              name;                 /*   184     8 */
+          /* --- cacheline 3 boundary (192 bytes) --- */
+          int                        name_version;         /*   192     4 */
+          u8                         wait_type_inner;      /*   196     1 */
+          u8                         wait_type_outer;      /*   197     1 */
+          u8                         lock_type;            /*   198     1 */
+
+          /* XXX 1 byte hole, try to pack */
+
+          long unsigned int          contention_point[4];  /*   200    32 */
+          long unsigned int          contending_point[4];  /*   232    32 */
+
+          /* size: 264, cachelines: 5, members: 18 */
+          /* sum members: 263, holes: 1, sum holes: 1 */
+          /* last cacheline: 8 bytes */
+  };
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/801258371fc4101f96495a5aaecef638d6cbd8d3.1700988869.git.christophe.jaillet@wanadoo.fr
 ---
- arch/x86/kernel/cpu/intel_epb.c | 2 +-
+ include/linux/lockdep_types.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/intel_epb.c b/arch/x86/kernel/cpu/intel_epb.c
-index e4c3ba9..f18d35f 100644
---- a/arch/x86/kernel/cpu/intel_epb.c
-+++ b/arch/x86/kernel/cpu/intel_epb.c
-@@ -237,4 +237,4 @@ err_out_online:
- 	cpuhp_remove_state(CPUHP_AP_X86_INTEL_EPB_ONLINE);
- 	return ret;
- }
--subsys_initcall(intel_epb_init);
-+late_initcall(intel_epb_init);
+diff --git a/include/linux/lockdep_types.h b/include/linux/lockdep_types.h
+index 2ebc323..857d785 100644
+--- a/include/linux/lockdep_types.h
++++ b/include/linux/lockdep_types.h
+@@ -127,12 +127,12 @@ struct lock_class {
+ 	unsigned long			usage_mask;
+ 	const struct lock_trace		*usage_traces[LOCK_TRACE_STATES];
+ 
++	const char			*name;
+ 	/*
+ 	 * Generation counter, when doing certain classes of graph walking,
+ 	 * to ensure that we check one node only once:
+ 	 */
+ 	int				name_version;
+-	const char			*name;
+ 
+ 	u8				wait_type_inner;
+ 	u8				wait_type_outer;
