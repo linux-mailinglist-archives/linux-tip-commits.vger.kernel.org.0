@@ -2,209 +2,146 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8441F7FD086
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Nov 2023 09:19:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A4397FD439
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Nov 2023 11:33:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231366AbjK2ITO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Nov 2023 03:19:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42358 "EHLO
+        id S231626AbjK2KdT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Nov 2023 05:33:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229791AbjK2ITM (ORCPT
+        with ESMTP id S229513AbjK2KdT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Nov 2023 03:19:12 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65CD41990;
-        Wed, 29 Nov 2023 00:19:18 -0800 (PST)
-Date:   Wed, 29 Nov 2023 08:19:16 -0000
+        Wed, 29 Nov 2023 05:33:19 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69A04D54;
+        Wed, 29 Nov 2023 02:33:24 -0800 (PST)
+Date:   Wed, 29 Nov 2023 10:33:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701245957;
+        s=2020; t=1701254001;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=613qQrAItfeBdqDlIfIp86mma761JzSXjqdXNEXKyO8=;
-        b=C9xVCI8/zaLgMwcrr/L30dE0oy/MmhL+Hm1WUdnlJgyfSYc5puF2TNJyV3w4n7kSmU2ixi
-        jFTj25539WPScTGRHdaPV7KtJvUwQCSn+PQ9yFn1fsezOXP8UkU4DyovaX9PdnMltCubNA
-        3S1g838g8AjNTJ5biUYVtP4olG0vGYzuLnZqncA3T2D9+luTnfAMBYZyLN9sxAN8i4NIyD
-        ScGgu5cWSdJ70ENACkuZBA1KLOqKrc4rTk2iTSfNXtiVch3k528QeQQrT1mLPOyyYp8cpU
-        NOntObSM0UHOn6E/YjK//Xn4sG8sq6OajDdEhhOIi3G85Ntj5GmZciTFq6yFLQ==
+        bh=SCrcajcmWao+TZklXlucMF71m1PrDnK6AQeOVls3bYc=;
+        b=Ea3DqpAw0QWS/QerrwDvBT8Fa0mJ3/5LPVbBc66hO7sEHw+YnDFZ+rntHv4/7fohyAGLFD
+        3Gf/UcPXNroNBAGCwEUrPJk44N5q17hO7VFUGZG58xm6oSzPszoDLJZR39tS8Iw2GJdgH4
+        blOAKbIGJLsCnNSnUKfpebIbxmqe6GsMdo8VdlLaoYt99xVCJCLgv7GNHZGQPiHmrUjP7h
+        0za7FFjQIPkvWQmasRyfR49u5r7acuDbXc7oLfbFrX59hZcpyW88RJCIZvGpno9dMMBrxs
+        nTrP2lREtQQKStd9KUVgShpgy5GKPwOprUghesMtMyqVmjWhv0BWC2oRP7vSQw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701245957;
+        s=2020e; t=1701254001;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=613qQrAItfeBdqDlIfIp86mma761JzSXjqdXNEXKyO8=;
-        b=xC/xIssdd8sCCnMIXWWpxxV4BAwKCZdTg99FdN/JdKxSqs7vq7ytf9N9DQxMwQR8jyhgN7
-        YrAH8lgJjfZpCOAQ==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=SCrcajcmWao+TZklXlucMF71m1PrDnK6AQeOVls3bYc=;
+        b=2G04Gbj6JHW+8G7xOd8NSAbdi4Jny0Q9Pjh5RciT5gf4zfJ80yO+3WiYXcxH431cvhdM6d
+        kRS3dlYfioPrr3CQ==
+From:   "tip-bot2 for Muralidhara M K" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/uncore: Use u64 to replace unsigned for the
- uncore offsets array
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ammy Yi <ammy.yi@intel.com>, x86@kernel.org,
+Subject: [tip: ras/core] x86/MCE/AMD: Add new MA_LLC, USR_DP, and USR_CP bank types
+Cc:     Muralidhara M K <muralidhara.mk@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231117163939.2468007-2-kan.liang@linux.intel.com>
-References: <20231117163939.2468007-2-kan.liang@linux.intel.com>
+In-Reply-To: <20231102114225.2006878-3-muralimk@amd.com>
+References: <20231102114225.2006878-3-muralimk@amd.com>
 MIME-Version: 1.0
-Message-ID: <170124595632.398.8666452870830009586.tip-bot2@tip-bot2>
+Message-ID: <170125400052.398.8408207092730391634.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     b560e0cd882b11921c84307efe139f1247434c5e
-Gitweb:        https://git.kernel.org/tip/b560e0cd882b11921c84307efe139f1247434c5e
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 17 Nov 2023 08:39:36 -08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 24 Nov 2023 20:25:01 +01:00
+Commit-ID:     47b744ea5e3cf855087951a74ba9f89180fa1ba5
+Gitweb:        https://git.kernel.org/tip/47b744ea5e3cf855087951a74ba9f89180fa1ba5
+Author:        Muralidhara M K <muralidhara.mk@amd.com>
+AuthorDate:    Thu, 02 Nov 2023 11:42:23 
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 28 Nov 2023 16:26:55 +01:00
 
-perf/x86/uncore: Use u64 to replace unsigned for the uncore offsets array
+x86/MCE/AMD: Add new MA_LLC, USR_DP, and USR_CP bank types
 
-The current perf doesn't save the complete address of an uncore unit.
-The complete address of each unit is calculated by the base address +
-offset. The type of the base address is u64, while the type of offset is
-unsigned.
-In the old platforms (without the discovery table method), the base
-address and offset are hard coded in the driver. Perf can always use the
-lowest address as the base address. Everything works well.
+Add HWID and McaType values for new SMCA bank types.
 
-In the new platforms (starting from SPR), the discovery table provides
-a complete address for all uncore units. To follow the current
-framework/codes, when parsing the discovery table, the complete address
-of the first box is stored as a base address. The offset of the
-following units is calculated by the complete address of the unit minus
-the base address (the address of the first unit). On GNR, the latter
-units may have a lower address compared to the first unit. So the offset
-is a negative value. The upper 32 bits are lost when casting a negative
-u64 to an unsigned type.
-
-Use u64 to replace unsigned for the uncore offsets array to correct the
-above case. There is no functional change.
-
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Ammy Yi <ammy.yi@intel.com>
-Link: https://lore.kernel.org/r/20231117163939.2468007-2-kan.liang@linux.intel.com
+Signed-off-by: Muralidhara M K <muralidhara.mk@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231102114225.2006878-3-muralimk@amd.com
 ---
- arch/x86/events/intel/uncore.h           | 6 +++---
- arch/x86/events/intel/uncore_discovery.c | 5 +++--
- arch/x86/events/intel/uncore_discovery.h | 2 +-
- arch/x86/events/intel/uncore_nhmex.c     | 2 +-
- arch/x86/events/intel/uncore_snbep.c     | 6 +++---
- 5 files changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/include/asm/mce.h    | 3 +++
+ arch/x86/kernel/cpu/mce/amd.c | 6 ++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/arch/x86/events/intel/uncore.h b/arch/x86/events/intel/uncore.h
-index c30fb5b..7428eca 100644
---- a/arch/x86/events/intel/uncore.h
-+++ b/arch/x86/events/intel/uncore.h
-@@ -72,9 +72,9 @@ struct intel_uncore_type {
- 	unsigned single_fixed:1;
- 	unsigned pair_ctr_ctl:1;
- 	union {
--		unsigned *msr_offsets;
--		unsigned *pci_offsets;
--		unsigned *mmio_offsets;
-+		u64 *msr_offsets;
-+		u64 *pci_offsets;
-+		u64 *mmio_offsets;
- 	};
- 	unsigned *box_ids;
- 	struct event_constraint unconstrainted;
-diff --git a/arch/x86/events/intel/uncore_discovery.c b/arch/x86/events/intel/uncore_discovery.c
-index cb488e4..9a698a9 100644
---- a/arch/x86/events/intel/uncore_discovery.c
-+++ b/arch/x86/events/intel/uncore_discovery.c
-@@ -125,7 +125,8 @@ uncore_insert_box_info(struct uncore_unit_discovery *unit,
- 		       int die, bool parsed)
- {
- 	struct intel_uncore_discovery_type *type;
--	unsigned int *box_offset, *ids;
-+	unsigned int *ids;
-+	u64 *box_offset;
- 	int i;
+diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+index 4ad49af..de31183 100644
+--- a/arch/x86/include/asm/mce.h
++++ b/arch/x86/include/asm/mce.h
+@@ -311,6 +311,7 @@ enum smca_bank_types {
+ 	SMCA_PIE,	/* Power, Interrupts, etc. */
+ 	SMCA_UMC,	/* Unified Memory Controller */
+ 	SMCA_UMC_V2,
++	SMCA_MA_LLC,	/* Memory Attached Last Level Cache */
+ 	SMCA_PB,	/* Parameter Block */
+ 	SMCA_PSP,	/* Platform Security Processor */
+ 	SMCA_PSP_V2,
+@@ -326,6 +327,8 @@ enum smca_bank_types {
+ 	SMCA_SHUB,	/* System HUB Unit */
+ 	SMCA_SATA,	/* SATA Unit */
+ 	SMCA_USB,	/* USB Unit */
++	SMCA_USR_DP,	/* Ultra Short Reach Data Plane Controller */
++	SMCA_USR_CP,	/* Ultra Short Reach Control Plane Controller */
+ 	SMCA_GMI_PCS,	/* GMI PCS Unit */
+ 	SMCA_XGMI_PHY,	/* xGMI PHY Unit */
+ 	SMCA_WAFL_PHY,	/* WAFL PHY Unit */
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index f6c6c1e..2b46eb0 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -102,6 +102,7 @@ static const char * const smca_names[] = {
+ 	/* UMC v2 is separate because both of them can exist in a single system. */
+ 	[SMCA_UMC]			= "umc",
+ 	[SMCA_UMC_V2]			= "umc_v2",
++	[SMCA_MA_LLC]			= "ma_llc",
+ 	[SMCA_PB]			= "param_block",
+ 	[SMCA_PSP ... SMCA_PSP_V2]	= "psp",
+ 	[SMCA_SMU ... SMCA_SMU_V2]	= "smu",
+@@ -114,6 +115,8 @@ static const char * const smca_names[] = {
+ 	[SMCA_SHUB]			= "shub",
+ 	[SMCA_SATA]			= "sata",
+ 	[SMCA_USB]			= "usb",
++	[SMCA_USR_DP]			= "usr_dp",
++	[SMCA_USR_CP]			= "usr_cp",
+ 	[SMCA_GMI_PCS]			= "gmi_pcs",
+ 	[SMCA_XGMI_PHY]			= "xgmi_phy",
+ 	[SMCA_WAFL_PHY]			= "wafl_phy",
+@@ -164,6 +167,7 @@ static const struct smca_hwid smca_hwid_mcatypes[] = {
+ 	{ SMCA_CS,	 HWID_MCATYPE(0x2E, 0x0)	},
+ 	{ SMCA_PIE,	 HWID_MCATYPE(0x2E, 0x1)	},
+ 	{ SMCA_CS_V2,	 HWID_MCATYPE(0x2E, 0x2)	},
++	{ SMCA_MA_LLC,	 HWID_MCATYPE(0x2E, 0x4)	},
  
- 	if (!unit->ctl || !unit->ctl_offset || !unit->ctr_offset) {
-@@ -153,7 +154,7 @@ uncore_insert_box_info(struct uncore_unit_discovery *unit,
- 	if (!type)
- 		return;
- 
--	box_offset = kcalloc(type->num_boxes + 1, sizeof(unsigned int), GFP_KERNEL);
-+	box_offset = kcalloc(type->num_boxes + 1, sizeof(u64), GFP_KERNEL);
- 	if (!box_offset)
- 		return;
- 
-diff --git a/arch/x86/events/intel/uncore_discovery.h b/arch/x86/events/intel/uncore_discovery.h
-index 6ee80ad..22e769a 100644
---- a/arch/x86/events/intel/uncore_discovery.h
-+++ b/arch/x86/events/intel/uncore_discovery.h
-@@ -125,7 +125,7 @@ struct intel_uncore_discovery_type {
- 	u8		ctr_offset;	/* Counter 0 offset */
- 	u16		num_boxes;	/* number of boxes for the uncore block */
- 	unsigned int	*ids;		/* Box IDs */
--	unsigned int	*box_offset;	/* Box offset */
-+	u64		*box_offset;	/* Box offset */
- };
- 
- bool intel_uncore_has_discovery_tables(int *ignore);
-diff --git a/arch/x86/events/intel/uncore_nhmex.c b/arch/x86/events/intel/uncore_nhmex.c
-index 173e267..56eea2c 100644
---- a/arch/x86/events/intel/uncore_nhmex.c
-+++ b/arch/x86/events/intel/uncore_nhmex.c
-@@ -306,7 +306,7 @@ static const struct attribute_group nhmex_uncore_cbox_format_group = {
- };
- 
- /* msr offset for each instance of cbox */
--static unsigned nhmex_cbox_msr_offsets[] = {
-+static u64 nhmex_cbox_msr_offsets[] = {
- 	0x0, 0x80, 0x40, 0xc0, 0x20, 0xa0, 0x60, 0xe0, 0x240, 0x2c0,
- };
- 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index fc65870..344319a 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -5278,7 +5278,7 @@ void snr_uncore_mmio_init(void)
- 
- /* ICX uncore support */
- 
--static unsigned icx_cha_msr_offsets[] = {
-+static u64 icx_cha_msr_offsets[] = {
- 	0x2a0, 0x2ae, 0x2bc, 0x2ca, 0x2d8, 0x2e6, 0x2f4, 0x302, 0x310,
- 	0x31e, 0x32c, 0x33a, 0x348, 0x356, 0x364, 0x372, 0x380, 0x38e,
- 	0x3aa, 0x3b8, 0x3c6, 0x3d4, 0x3e2, 0x3f0, 0x3fe, 0x40c, 0x41a,
-@@ -5326,7 +5326,7 @@ static struct intel_uncore_type icx_uncore_chabox = {
- 	.format_group		= &snr_uncore_chabox_format_group,
- };
- 
--static unsigned icx_msr_offsets[] = {
-+static u64 icx_msr_offsets[] = {
- 	0x0, 0x20, 0x40, 0x90, 0xb0, 0xd0,
- };
- 
-@@ -6184,7 +6184,7 @@ static struct intel_uncore_type *spr_uncores[UNCORE_SPR_NUM_UNCORE_TYPES] = {
-  */
- #define SPR_UNCORE_UPI_NUM_BOXES	4
- 
--static unsigned int spr_upi_pci_offsets[SPR_UNCORE_UPI_NUM_BOXES] = {
-+static u64 spr_upi_pci_offsets[SPR_UNCORE_UPI_NUM_BOXES] = {
- 	0, 0x8000, 0x10000, 0x18000
- };
- 
+ 	/* Unified Memory Controller MCA type */
+ 	{ SMCA_UMC,	 HWID_MCATYPE(0x96, 0x0)	},
+@@ -198,6 +202,8 @@ static const struct smca_hwid smca_hwid_mcatypes[] = {
+ 	{ SMCA_SHUB,	 HWID_MCATYPE(0x80, 0x0)	},
+ 	{ SMCA_SATA,	 HWID_MCATYPE(0xA8, 0x0)	},
+ 	{ SMCA_USB,	 HWID_MCATYPE(0xAA, 0x0)	},
++	{ SMCA_USR_DP,	 HWID_MCATYPE(0x170, 0x0)	},
++	{ SMCA_USR_CP,	 HWID_MCATYPE(0x180, 0x0)	},
+ 	{ SMCA_GMI_PCS,  HWID_MCATYPE(0x241, 0x0)	},
+ 	{ SMCA_XGMI_PHY, HWID_MCATYPE(0x259, 0x0)	},
+ 	{ SMCA_WAFL_PHY, HWID_MCATYPE(0x267, 0x0)	},
