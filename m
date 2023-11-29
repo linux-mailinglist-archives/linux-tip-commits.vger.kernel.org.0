@@ -2,64 +2,63 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 971A37FD57E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Nov 2023 12:22:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C3097FD580
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Nov 2023 12:22:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232775AbjK2LWg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Nov 2023 06:22:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
+        id S232380AbjK2LWj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Nov 2023 06:22:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232454AbjK2LWb (ORCPT
+        with ESMTP id S232708AbjK2LWf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Nov 2023 06:22:31 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44CEE10DF;
-        Wed, 29 Nov 2023 03:22:34 -0800 (PST)
-Date:   Wed, 29 Nov 2023 11:22:32 -0000
+        Wed, 29 Nov 2023 06:22:35 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08FAD1BC5;
+        Wed, 29 Nov 2023 03:22:35 -0800 (PST)
+Date:   Wed, 29 Nov 2023 11:22:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701256952;
+        s=2020; t=1701256953;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KcsRdEhCEWuA2oxqFTOi/En70y4wwOfq3wTyKpaSxdY=;
-        b=4VA5GbcJQ/Mcazc+zNZiIIHd4qskZMqM99NjUntuhghFVfN/NGV0nwbDPzxYKPcNCb21pD
-        p1oYupoukW7zfHbnbRVp+9wN3qRHdfUYEXGHRMZ3cjI+ldWgZmb3pOongCkh2pUred3cqb
-        Ig0NvBJSuajDLyHCYvWLlxyzKGcjIDO8/p9P5XwHjt8VubHl7cFZapq0fom1oodTCHHUBy
-        2C0SpM79dQvdziOxzt0smjyUwTZoSLk/r+zzONB/WxTACIWmcCVyvk21K3fOr9mUo7rHcI
-        P7gwxsY6stSvai2Vo8ofPSW153z/UuefLcinNHteKUO35Vwu/5edxmJgSq+nWw==
+        bh=wRWoLYfCxb2rD35PLDvM7TDZLoRJJmNWECOPej3NnVA=;
+        b=UHCc4r0eYu/bBA5ggnGjrHpge1W6RzmZiWa0brChWDkjZp0+TFxewiPUGWmj5wJDDNl8xE
+        H87hR/AWuaomWp1uWZyYmLYPuNsYFTAYqM5EmyrAkX8XhV3tcHLwhuM99pnuXeoObjc4Aw
+        aUEHTeiRalAXKFsPSt1eJ4FE9IJbMmLYJ4Hj8g3Cvw0TLMY7aZoBnYuMeitt71yTp+DXIX
+        G7kV+eIXNJ+3/5DLv2S7hRLh2zSOUTHabC59BrLVLvXZFYJIL3EHT9u1EItt9ZaV5NpplH
+        jS6O4symOTENdt4o3fa21sIk6044PikyhXXfXt6M1P2SXAs35GxzliPkaUStxQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701256952;
+        s=2020e; t=1701256953;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KcsRdEhCEWuA2oxqFTOi/En70y4wwOfq3wTyKpaSxdY=;
-        b=2yiEqc2Gl2zGQLyLryCeRn+XPI/rYtq80s5Tr7l9eSWQm+5loY0bbta0tiuHZaES2uNAof
-        1P0qLIFIjykac2DA==
+        bh=wRWoLYfCxb2rD35PLDvM7TDZLoRJJmNWECOPej3NnVA=;
+        b=9P8DFIFDjCfoQD9SVXUfEIiga5vi+CCwtEk5WmAwaJXXFn/VstJ8SKgY5tqtZ495erII7A
+        osE+KkvkKsPQXoBA==
 From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/CPU/AMD: Move the Zen3 BTC_NO detection to the
- Zen3 init function
+Subject: [tip: x86/cpu] x86/CPU/AMD: Carve out the erratum 1386 fix
 Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>,
         Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231120104152.13740-4-bp@alien8.de>
-References: <20231120104152.13740-4-bp@alien8.de>
+In-Reply-To: <20231120104152.13740-3-bp@alien8.de>
+References: <20231120104152.13740-3-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <170125695229.398.10463194066767455972.tip-bot2@tip-bot2>
+Message-ID: <170125695303.398.11143867605692920679.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -68,56 +67,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     affc66cb96f865b3763a8e18add52e133d864f04
-Gitweb:        https://git.kernel.org/tip/affc66cb96f865b3763a8e18add52e133d864f04
+Commit-ID:     a7c32a1ae9ee43abfe884f5af376877c4301d166
+Gitweb:        https://git.kernel.org/tip/a7c32a1ae9ee43abfe884f5af376877c4301d166
 Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Wed, 01 Nov 2023 11:28:31 +01:00
+AuthorDate:    Wed, 01 Nov 2023 11:14:59 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 29 Nov 2023 12:11:44 +01:00
+CommitterDate: Wed, 29 Nov 2023 12:11:21 +01:00
 
-x86/CPU/AMD: Move the Zen3 BTC_NO detection to the Zen3 init function
+x86/CPU/AMD: Carve out the erratum 1386 fix
+
+Call it on the affected CPU generations.
 
 No functional changes.
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: http://lore.kernel.org/r/20231120104152.13740-4-bp@alien8.de
+Link: http://lore.kernel.org/r/20231120104152.13740-3-bp@alien8.de
 ---
- arch/x86/kernel/cpu/amd.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 0a499cb..3d74347 100644
+index 6aba224..0a499cb 100644
 --- a/arch/x86/kernel/cpu/amd.c
 +++ b/arch/x86/kernel/cpu/amd.c
-@@ -1031,14 +1031,6 @@ static void init_amd_zn(struct cpuinfo_x86 *c)
- 		/* Erratum 1076: CPB feature bit not being set in CPUID. */
- 		if (!cpu_has(c, X86_FEATURE_CPB))
- 			set_cpu_cap(c, X86_FEATURE_CPB);
--
--		/*
--		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
--		 * Branch Type Confusion, but predate the allocation of the
--		 * BTC_NO bit.
--		 */
--		if (c->x86 == 0x19 && !cpu_has(c, X86_FEATURE_BTC_NO))
--			set_cpu_cap(c, X86_FEATURE_BTC_NO);
- 	}
+@@ -984,6 +984,19 @@ static void init_amd_bd(struct cpuinfo_x86 *c)
+ 	clear_rdrand_cpuid_bit(c);
  }
  
-@@ -1094,6 +1086,15 @@ static void init_amd_zen2(struct cpuinfo_x86 *c)
++static void fix_erratum_1386(struct cpuinfo_x86 *c)
++{
++	/*
++	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
++	 * certain circumstances on Zen1/2 uarch, and not all parts have had
++	 * updated microcode at the time of writing (March 2023).
++	 *
++	 * Affected parts all have no supervisor XSAVE states, meaning that
++	 * the XSAVEC instruction (which works fine) is equivalent.
++	 */
++	clear_cpu_cap(c, X86_FEATURE_XSAVES);
++}
++
+ void init_spectral_chicken(struct cpuinfo_x86 *c)
+ {
+ #ifdef CONFIG_CPU_UNRET_ENTRY
+@@ -1004,15 +1017,6 @@ void init_spectral_chicken(struct cpuinfo_x86 *c)
+ 		}
+ 	}
+ #endif
+-	/*
+-	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
+-	 * certain circumstances on Zen1/2 uarch, and not all parts have had
+-	 * updated microcode at the time of writing (March 2023).
+-	 *
+-	 * Affected parts all have no supervisor XSAVE states, meaning that
+-	 * the XSAVEC instruction (which works fine) is equivalent.
+-	 */
+-	clear_cpu_cap(c, X86_FEATURE_XSAVES);
+ }
+ 
+ static void init_amd_zn(struct cpuinfo_x86 *c)
+@@ -1080,10 +1084,12 @@ static void zenbleed_check(struct cpuinfo_x86 *c)
+ 
+ static void init_amd_zen(struct cpuinfo_x86 *c)
+ {
++	fix_erratum_1386(c);
+ }
+ 
+ static void init_amd_zen2(struct cpuinfo_x86 *c)
+ {
++	fix_erratum_1386(c);
+ }
  
  static void init_amd_zen3(struct cpuinfo_x86 *c)
- {
-+	if (!cpu_has(c, X86_FEATURE_HYPERVISOR)) {
-+		/*
-+		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
-+		 * Branch Type Confusion, but predate the allocation of the
-+		 * BTC_NO bit.
-+		 */
-+		if (!cpu_has(c, X86_FEATURE_BTC_NO))
-+			set_cpu_cap(c, X86_FEATURE_BTC_NO);
-+	}
- }
- 
- static void init_amd_zen4(struct cpuinfo_x86 *c)
