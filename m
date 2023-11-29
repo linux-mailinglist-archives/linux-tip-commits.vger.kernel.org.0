@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C26587FD084
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Nov 2023 09:19:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F4577FD087
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Nov 2023 09:19:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230441AbjK2ITO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Nov 2023 03:19:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42346 "EHLO
+        id S231488AbjK2ITP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Nov 2023 03:19:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229864AbjK2ITM (ORCPT
+        with ESMTP id S229862AbjK2ITM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 29 Nov 2023 03:19:12 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3333710F0;
-        Wed, 29 Nov 2023 00:19:18 -0800 (PST)
-Date:   Wed, 29 Nov 2023 08:19:15 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19DB319B9;
+        Wed, 29 Nov 2023 00:19:19 -0800 (PST)
+Date:   Wed, 29 Nov 2023 08:19:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701245956;
+        s=2020; t=1701245957;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8qgge+FlNVmBpfaVyhYU/jwQ5H4K2/qa1aABsofXgC0=;
-        b=BqI/1I/sw4x52TtB4ZRyUNfi9UXN2vhdjhDfQAJeY59I6FOeKhwRTRcBQQJYfSjrRAjC5L
-        TtTxrcC3TQ8kjQDt/sbIXsXBffBJLu/MS/p4Ms9d3z301/iiIKN390GitLNlEH6inuBwoQ
-        Pu8vlIkuz8bacMIiTmfmLr30ZD17EDCih8ABHkIULs9ADGKsqpOg6QyGCVkUoBmYKtigwr
-        g3cT64t8TbmQhs7AQbO/KAvd0JkRJXV2AFrBSY5Slwm2RZ6aGGnqGjPdcO4OXspmfk10i3
-        hjW1GJgZIG6OD/y21LDGWzhS9EtE9asmeORO44OFwWdK/TEom+OGLT9wz2N15Q==
+        bh=mYdBB1y2w8imwSVNLrrn9soOECA16N3YfGk3g89M6vQ=;
+        b=UtcX/Hcf7jPXWc141+40L2ZXuvKBhZWrO8QRoQ6/4ypymh44JbStMItEHZzQkj2/F7BH3p
+        QTCZnPldwjw/LLiYdkvZfTpBvHWMJ6l00MDbtIjyeDvU5W0g2tRDmzEJLknrBmwXXj9not
+        gw47QosVa8yN5G+fIP4ESL2rVB5hPdZUAZaDacgO22gIxSCiTR5SOeRDowAFGmAD0KjnJS
+        G599Sh+LawMhSl1/umoLUaMEVjbXxX4gtdP1Lk2PHooX+OH31Zf2htdLQGU1CpXFGWgknL
+        ScDHccvQMQlWGCbJ0VF3ZVOxQTb3VhVF97Zi4QckJtRU3RJleXFLjaTtFme9Qw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701245956;
+        s=2020e; t=1701245957;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8qgge+FlNVmBpfaVyhYU/jwQ5H4K2/qa1aABsofXgC0=;
-        b=m2K8i7WKGgTecK9hfsdnRYto4T2f+FRdux+hTBa1WorrWUj8qqoLOCRkWod4yV1RbLjIKp
-        e8zPnFSpavQGYYBw==
+        bh=mYdBB1y2w8imwSVNLrrn9soOECA16N3YfGk3g89M6vQ=;
+        b=1+T2/IDX8RePLv3IE9GKwafkJZXMIoE5Ra3UPUVojvVAGG0Ua3tAJBw/goqMg7zq9U5YTh
+        i1NUKXa7RsqD38DQ==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Support Granite Rapids
+Subject: [tip: perf/core] perf/x86/intel/uncore: Generic uncore_get_uncores
+ and MMIO format of SPR
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ammy Yi <ammy.yi@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231117163939.2468007-3-kan.liang@linux.intel.com>
-References: <20231117163939.2468007-3-kan.liang@linux.intel.com>
+In-Reply-To: <20231117163939.2468007-1-kan.liang@linux.intel.com>
+References: <20231117163939.2468007-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <170124595576.398.12370446273177504421.tip-bot2@tip-bot2>
+Message-ID: <170124595695.398.7379358629309121857.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,184 +69,116 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     632c4bf6d007862307440b177d9fee829857e8bb
-Gitweb:        https://git.kernel.org/tip/632c4bf6d007862307440b177d9fee829857e8bb
+Commit-ID:     cf35791476fcb3230b98a42241a56242d60ebdd3
+Gitweb:        https://git.kernel.org/tip/cf35791476fcb3230b98a42241a56242d60ebdd3
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 17 Nov 2023 08:39:37 -08:00
+AuthorDate:    Fri, 17 Nov 2023 08:39:35 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 24 Nov 2023 20:25:01 +01:00
+CommitterDate: Fri, 24 Nov 2023 20:25:00 +01:00
 
-perf/x86/intel/uncore: Support Granite Rapids
+perf/x86/intel/uncore: Generic uncore_get_uncores and MMIO format of SPR
 
-The same as Sapphire Rapids, Granite Rapids also supports the discovery
-table feature. All the basic uncore PMON information can be retrieved
-from the discovery table which resides in the BIOS.
+Factor out SPR_UNCORE_MMIO_COMMON_FORMAT which can be reused by
+Granite Rapids in the following patch.
 
-There are 4 new units are added on Granite Rapids, b2cmi, b2cxl, ubox,
-and mdf_sbo. The layout of the counters is exactly the same as the
-generic uncore counters. Only add a name for the new units. All the
-details can be retrieved from the discovery table.
-The description of the new units can be found at
-https://www.intel.com/content/www/us/en/secure/content-details/772943/content-details.html
+Granite Rapids have more uncore units than Sapphire Rapids. Add new
+parameters to support adjustable uncore units.
 
-The other units, e.g., cha, iio, irp, pcu, and imc, are the same as
-Sapphire Rapids.
-
-Ignore the upi and b2upi units in the discovery table, which are broken
-for now.
+No functional change.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Ammy Yi <ammy.yi@intel.com>
-Link: https://lore.kernel.org/r/20231117163939.2468007-3-kan.liang@linux.intel.com
+Link: https://lore.kernel.org/r/20231117163939.2468007-1-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/uncore.c       | 10 +++-
- arch/x86/events/intel/uncore.h       |  4 +-
- arch/x86/events/intel/uncore_snbep.c | 87 +++++++++++++++++++++++++++-
- 3 files changed, 101 insertions(+)
+ arch/x86/events/intel/uncore_snbep.c | 34 ++++++++++++++++++---------
+ 1 file changed, 23 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
-index 01023aa..7fb1c54 100644
---- a/arch/x86/events/intel/uncore.c
-+++ b/arch/x86/events/intel/uncore.c
-@@ -1814,6 +1814,14 @@ static const struct intel_uncore_init_fun spr_uncore_init __initconst = {
- 	.uncore_units_ignore = spr_uncore_units_ignore,
- };
- 
-+static const struct intel_uncore_init_fun gnr_uncore_init __initconst = {
-+	.cpu_init = gnr_uncore_cpu_init,
-+	.pci_init = gnr_uncore_pci_init,
-+	.mmio_init = gnr_uncore_mmio_init,
-+	.use_discovery = true,
-+	.uncore_units_ignore = gnr_uncore_units_ignore,
-+};
-+
- static const struct intel_uncore_init_fun generic_uncore_init __initconst = {
- 	.cpu_init = intel_uncore_generic_uncore_cpu_init,
- 	.pci_init = intel_uncore_generic_uncore_pci_init,
-@@ -1865,6 +1873,8 @@ static const struct x86_cpu_id intel_uncore_match[] __initconst = {
- 	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE_L,	&mtl_uncore_init),
- 	X86_MATCH_INTEL_FAM6_MODEL(SAPPHIRERAPIDS_X,	&spr_uncore_init),
- 	X86_MATCH_INTEL_FAM6_MODEL(EMERALDRAPIDS_X,	&spr_uncore_init),
-+	X86_MATCH_INTEL_FAM6_MODEL(GRANITERAPIDS_X,	&gnr_uncore_init),
-+	X86_MATCH_INTEL_FAM6_MODEL(GRANITERAPIDS_D,	&gnr_uncore_init),
- 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_TREMONT_D,	&snr_uncore_init),
- 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GRACEMONT,	&adl_uncore_init),
- 	{},
-diff --git a/arch/x86/events/intel/uncore.h b/arch/x86/events/intel/uncore.h
-index 7428eca..4838502 100644
---- a/arch/x86/events/intel/uncore.h
-+++ b/arch/x86/events/intel/uncore.h
-@@ -593,6 +593,7 @@ extern struct list_head pci2phy_map_head;
- extern struct pci_extra_dev *uncore_extra_pci_dev;
- extern struct event_constraint uncore_constraint_empty;
- extern int spr_uncore_units_ignore[];
-+extern int gnr_uncore_units_ignore[];
- 
- /* uncore_snb.c */
- int snb_uncore_pci_init(void);
-@@ -634,6 +635,9 @@ void icx_uncore_mmio_init(void);
- int spr_uncore_pci_init(void);
- void spr_uncore_cpu_init(void);
- void spr_uncore_mmio_init(void);
-+int gnr_uncore_pci_init(void);
-+void gnr_uncore_cpu_init(void);
-+void gnr_uncore_mmio_init(void);
- 
- /* uncore_nhmex.c */
- void nhmex_uncore_cpu_init(void);
 diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index 344319a..ab31cda 100644
+index 8250f0f..fc65870 100644
 --- a/arch/x86/events/intel/uncore_snbep.c
 +++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -6584,3 +6584,90 @@ void spr_uncore_mmio_init(void)
+@@ -6079,13 +6079,16 @@ static struct uncore_event_desc spr_uncore_imc_events[] = {
+ 	{ /* end: all zeroes */ },
+ };
+ 
++#define SPR_UNCORE_MMIO_COMMON_FORMAT()				\
++	SPR_UNCORE_COMMON_FORMAT(),				\
++	.ops			= &spr_uncore_mmio_ops
++
+ static struct intel_uncore_type spr_uncore_imc = {
+-	SPR_UNCORE_COMMON_FORMAT(),
++	SPR_UNCORE_MMIO_COMMON_FORMAT(),
+ 	.name			= "imc",
+ 	.fixed_ctr_bits		= 48,
+ 	.fixed_ctr		= SNR_IMC_MMIO_PMON_FIXED_CTR,
+ 	.fixed_ctl		= SNR_IMC_MMIO_PMON_FIXED_CTL,
+-	.ops			= &spr_uncore_mmio_ops,
+ 	.event_descs		= spr_uncore_imc_events,
+ };
+ 
+@@ -6412,7 +6415,8 @@ static void uncore_type_customized_copy(struct intel_uncore_type *to_type,
+ 
+ static struct intel_uncore_type **
+ uncore_get_uncores(enum uncore_access_type type_id, int num_extra,
+-		    struct intel_uncore_type **extra)
++		   struct intel_uncore_type **extra, int max_num_types,
++		   struct intel_uncore_type **uncores)
+ {
+ 	struct intel_uncore_type **types, **start_types;
+ 	int i;
+@@ -6421,9 +6425,9 @@ uncore_get_uncores(enum uncore_access_type type_id, int num_extra,
+ 
+ 	/* Only copy the customized features */
+ 	for (; *types; types++) {
+-		if ((*types)->type_id >= UNCORE_SPR_NUM_UNCORE_TYPES)
++		if ((*types)->type_id >= max_num_types)
+ 			continue;
+-		uncore_type_customized_copy(*types, spr_uncores[(*types)->type_id]);
++		uncore_type_customized_copy(*types, uncores[(*types)->type_id]);
+ 	}
+ 
+ 	for (i = 0; i < num_extra; i++, types++)
+@@ -6470,7 +6474,9 @@ void spr_uncore_cpu_init(void)
+ 
+ 	uncore_msr_uncores = uncore_get_uncores(UNCORE_ACCESS_MSR,
+ 						UNCORE_SPR_MSR_EXTRA_UNCORES,
+-						spr_msr_uncores);
++						spr_msr_uncores,
++						UNCORE_SPR_NUM_UNCORE_TYPES,
++						spr_uncores);
+ 
+ 	type = uncore_find_type_by_id(uncore_msr_uncores, UNCORE_SPR_CHA);
+ 	if (type) {
+@@ -6552,7 +6558,9 @@ int spr_uncore_pci_init(void)
+ 	spr_update_device_location(UNCORE_SPR_M3UPI);
+ 	uncore_pci_uncores = uncore_get_uncores(UNCORE_ACCESS_PCI,
+ 						UNCORE_SPR_PCI_EXTRA_UNCORES,
+-						spr_pci_uncores);
++						spr_pci_uncores,
++						UNCORE_SPR_NUM_UNCORE_TYPES,
++						spr_uncores);
+ 	return 0;
  }
  
- /* end of SPR uncore support */
-+
-+/* GNR uncore support */
-+
-+#define UNCORE_GNR_NUM_UNCORE_TYPES	23
-+#define UNCORE_GNR_TYPE_15		15
-+#define UNCORE_GNR_B2UPI		18
-+#define UNCORE_GNR_TYPE_21		21
-+#define UNCORE_GNR_TYPE_22		22
-+
-+int gnr_uncore_units_ignore[] = {
-+	UNCORE_SPR_UPI,
-+	UNCORE_GNR_TYPE_15,
-+	UNCORE_GNR_B2UPI,
-+	UNCORE_GNR_TYPE_21,
-+	UNCORE_GNR_TYPE_22,
-+	UNCORE_IGNORE_END
-+};
-+
-+static struct intel_uncore_type gnr_uncore_ubox = {
-+	.name			= "ubox",
-+	.attr_update		= uncore_alias_groups,
-+};
-+
-+static struct intel_uncore_type gnr_uncore_b2cmi = {
-+	SPR_UNCORE_PCI_COMMON_FORMAT(),
-+	.name			= "b2cmi",
-+};
-+
-+static struct intel_uncore_type gnr_uncore_b2cxl = {
-+	SPR_UNCORE_MMIO_COMMON_FORMAT(),
-+	.name			= "b2cxl",
-+};
-+
-+static struct intel_uncore_type gnr_uncore_mdf_sbo = {
-+	.name			= "mdf_sbo",
-+	.attr_update		= uncore_alias_groups,
-+};
-+
-+static struct intel_uncore_type *gnr_uncores[UNCORE_GNR_NUM_UNCORE_TYPES] = {
-+	&spr_uncore_chabox,
-+	&spr_uncore_iio,
-+	&spr_uncore_irp,
-+	NULL,
-+	&spr_uncore_pcu,
-+	&gnr_uncore_ubox,
-+	&spr_uncore_imc,
-+	NULL,
-+	NULL,
-+	NULL,
-+	NULL,
-+	NULL,
-+	NULL,
-+	NULL,
-+	NULL,
-+	NULL,
-+	&gnr_uncore_b2cmi,
-+	&gnr_uncore_b2cxl,
-+	NULL,
-+	NULL,
-+	&gnr_uncore_mdf_sbo,
-+	NULL,
-+	NULL,
-+};
-+
-+void gnr_uncore_cpu_init(void)
-+{
-+	uncore_msr_uncores = uncore_get_uncores(UNCORE_ACCESS_MSR, 0, NULL,
-+						UNCORE_GNR_NUM_UNCORE_TYPES,
-+						gnr_uncores);
-+}
-+
-+int gnr_uncore_pci_init(void)
-+{
-+	uncore_pci_uncores = uncore_get_uncores(UNCORE_ACCESS_PCI, 0, NULL,
-+						UNCORE_GNR_NUM_UNCORE_TYPES,
-+						gnr_uncores);
-+	return 0;
-+}
-+
-+void gnr_uncore_mmio_init(void)
-+{
-+	uncore_mmio_uncores = uncore_get_uncores(UNCORE_ACCESS_MMIO, 0, NULL,
-+						 UNCORE_GNR_NUM_UNCORE_TYPES,
-+						 gnr_uncores);
-+}
-+
-+/* end of GNR uncore support */
+@@ -6560,12 +6568,16 @@ void spr_uncore_mmio_init(void)
+ {
+ 	int ret = snbep_pci2phy_map_init(0x3250, SKX_CPUNODEID, SKX_GIDNIDMAP, true);
+ 
+-	if (ret)
+-		uncore_mmio_uncores = uncore_get_uncores(UNCORE_ACCESS_MMIO, 0, NULL);
+-	else {
++	if (ret) {
++		uncore_mmio_uncores = uncore_get_uncores(UNCORE_ACCESS_MMIO, 0, NULL,
++							 UNCORE_SPR_NUM_UNCORE_TYPES,
++							 spr_uncores);
++	} else {
+ 		uncore_mmio_uncores = uncore_get_uncores(UNCORE_ACCESS_MMIO,
+ 							 UNCORE_SPR_MMIO_EXTRA_UNCORES,
+-							 spr_mmio_uncores);
++							 spr_mmio_uncores,
++							 UNCORE_SPR_NUM_UNCORE_TYPES,
++							 spr_uncores);
+ 
+ 		spr_uncore_imc_free_running.num_boxes = uncore_type_max_boxes(uncore_mmio_uncores, UNCORE_SPR_IMC) / 2;
+ 	}
