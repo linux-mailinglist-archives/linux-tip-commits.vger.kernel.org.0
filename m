@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A4397FD439
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Nov 2023 11:33:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A26C7FD570
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Nov 2023 12:22:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231626AbjK2KdT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Nov 2023 05:33:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33458 "EHLO
+        id S229940AbjK2LWW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Nov 2023 06:22:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229513AbjK2KdT (ORCPT
+        with ESMTP id S231634AbjK2LWV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Nov 2023 05:33:19 -0500
+        Wed, 29 Nov 2023 06:22:21 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69A04D54;
-        Wed, 29 Nov 2023 02:33:24 -0800 (PST)
-Date:   Wed, 29 Nov 2023 10:33:20 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7BFDA;
+        Wed, 29 Nov 2023 03:22:27 -0800 (PST)
+Date:   Wed, 29 Nov 2023 11:22:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701254001;
+        s=2020; t=1701256945;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SCrcajcmWao+TZklXlucMF71m1PrDnK6AQeOVls3bYc=;
-        b=Ea3DqpAw0QWS/QerrwDvBT8Fa0mJ3/5LPVbBc66hO7sEHw+YnDFZ+rntHv4/7fohyAGLFD
-        3Gf/UcPXNroNBAGCwEUrPJk44N5q17hO7VFUGZG58xm6oSzPszoDLJZR39tS8Iw2GJdgH4
-        blOAKbIGJLsCnNSnUKfpebIbxmqe6GsMdo8VdlLaoYt99xVCJCLgv7GNHZGQPiHmrUjP7h
-        0za7FFjQIPkvWQmasRyfR49u5r7acuDbXc7oLfbFrX59hZcpyW88RJCIZvGpno9dMMBrxs
-        nTrP2lREtQQKStd9KUVgShpgy5GKPwOprUghesMtMyqVmjWhv0BWC2oRP7vSQw==
+        bh=ycDmQyS/ZUYSu95nNY8Gky809ktQ/s5nNewRtZsfpwk=;
+        b=bD0lF3r7X2mKAaQ9Rr9iJCXTYnUyrCBzNEcTMBtdP5evUpqxyFPrauhKsObWjFXbvwmb3b
+        ePqi2KDu8eSS1cEfus5I8XfFED+4hBLMvzq7szSx9kSM5FAOT78prWFil2vTl9lx2dzVw1
+        6gv4JDA8xZ9ajIwEnWZXb5yqg6zILKgHiu4BCOJzvfWF+hcUlu0wURg0NBc2Ug90tfolZk
+        Y6ykBLtXzZF0RMeeU30HljfnIFR3SqprUoiAD/7SFHui+/APm+31k9mG2fx5V40vD9eiGb
+        BdV/tlk7aGk8R8v95cGiP9xSQk/U5Akx7RxeJiXc3zKiKZUI0lip2FhfrQ7RuA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701254001;
+        s=2020e; t=1701256945;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SCrcajcmWao+TZklXlucMF71m1PrDnK6AQeOVls3bYc=;
-        b=2G04Gbj6JHW+8G7xOd8NSAbdi4Jny0Q9Pjh5RciT5gf4zfJ80yO+3WiYXcxH431cvhdM6d
-        kRS3dlYfioPrr3CQ==
-From:   "tip-bot2 for Muralidhara M K" <tip-bot2@linutronix.de>
+        bh=ycDmQyS/ZUYSu95nNY8Gky809ktQ/s5nNewRtZsfpwk=;
+        b=GlpnFQ1ZgwU4Spwf/j6JI+zO56HX+A6nQ40lzTPEkVZPTPLmEAYZIuBPZTdIRV+MTmo0jX
+        XGig4eNdIg1MIpDw==
+From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/MCE/AMD: Add new MA_LLC, USR_DP, and USR_CP bank types
-Cc:     Muralidhara M K <muralidhara.mk@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: x86/cpu] x86/CPU/AMD: Drop now unused CPU erratum checking function
+Cc:     "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231102114225.2006878-3-muralimk@amd.com>
-References: <20231102114225.2006878-3-muralimk@amd.com>
+In-Reply-To: <20231120104152.13740-14-bp@alien8.de>
+References: <20231120104152.13740-14-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <170125400052.398.8408207092730391634.tip-bot2@tip-bot2>
+Message-ID: <170125694499.398.14869637705569913920.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,83 +65,90 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     47b744ea5e3cf855087951a74ba9f89180fa1ba5
-Gitweb:        https://git.kernel.org/tip/47b744ea5e3cf855087951a74ba9f89180fa1ba5
-Author:        Muralidhara M K <muralidhara.mk@amd.com>
-AuthorDate:    Thu, 02 Nov 2023 11:42:23 
+Commit-ID:     05f5f73936fa4c1bc0a852702edf53789398d278
+Gitweb:        https://git.kernel.org/tip/05f5f73936fa4c1bc0a852702edf53789398d278
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Fri, 03 Nov 2023 23:40:48 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 28 Nov 2023 16:26:55 +01:00
+CommitterDate: Wed, 29 Nov 2023 12:13:53 +01:00
 
-x86/MCE/AMD: Add new MA_LLC, USR_DP, and USR_CP bank types
+x86/CPU/AMD: Drop now unused CPU erratum checking function
 
-Add HWID and McaType values for new SMCA bank types.
+Bye bye.
 
-Signed-off-by: Muralidhara M K <muralidhara.mk@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231102114225.2006878-3-muralimk@amd.com
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: http://lore.kernel.org/r/20231120104152.13740-14-bp@alien8.de
 ---
- arch/x86/include/asm/mce.h    | 3 +++
- arch/x86/kernel/cpu/mce/amd.c | 6 ++++++
- 2 files changed, 9 insertions(+)
+ arch/x86/kernel/cpu/amd.c | 56 +--------------------------------------
+ 1 file changed, 56 deletions(-)
 
-diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
-index 4ad49af..de31183 100644
---- a/arch/x86/include/asm/mce.h
-+++ b/arch/x86/include/asm/mce.h
-@@ -311,6 +311,7 @@ enum smca_bank_types {
- 	SMCA_PIE,	/* Power, Interrupts, etc. */
- 	SMCA_UMC,	/* Unified Memory Controller */
- 	SMCA_UMC_V2,
-+	SMCA_MA_LLC,	/* Memory Attached Last Level Cache */
- 	SMCA_PB,	/* Parameter Block */
- 	SMCA_PSP,	/* Platform Security Processor */
- 	SMCA_PSP_V2,
-@@ -326,6 +327,8 @@ enum smca_bank_types {
- 	SMCA_SHUB,	/* System HUB Unit */
- 	SMCA_SATA,	/* SATA Unit */
- 	SMCA_USB,	/* USB Unit */
-+	SMCA_USR_DP,	/* Ultra Short Reach Data Plane Controller */
-+	SMCA_USR_CP,	/* Ultra Short Reach Control Plane Controller */
- 	SMCA_GMI_PCS,	/* GMI PCS Unit */
- 	SMCA_XGMI_PHY,	/* xGMI PHY Unit */
- 	SMCA_WAFL_PHY,	/* WAFL PHY Unit */
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index f6c6c1e..2b46eb0 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -102,6 +102,7 @@ static const char * const smca_names[] = {
- 	/* UMC v2 is separate because both of them can exist in a single system. */
- 	[SMCA_UMC]			= "umc",
- 	[SMCA_UMC_V2]			= "umc_v2",
-+	[SMCA_MA_LLC]			= "ma_llc",
- 	[SMCA_PB]			= "param_block",
- 	[SMCA_PSP ... SMCA_PSP_V2]	= "psp",
- 	[SMCA_SMU ... SMCA_SMU_V2]	= "smu",
-@@ -114,6 +115,8 @@ static const char * const smca_names[] = {
- 	[SMCA_SHUB]			= "shub",
- 	[SMCA_SATA]			= "sata",
- 	[SMCA_USB]			= "usb",
-+	[SMCA_USR_DP]			= "usr_dp",
-+	[SMCA_USR_CP]			= "usr_cp",
- 	[SMCA_GMI_PCS]			= "gmi_pcs",
- 	[SMCA_XGMI_PHY]			= "xgmi_phy",
- 	[SMCA_WAFL_PHY]			= "wafl_phy",
-@@ -164,6 +167,7 @@ static const struct smca_hwid smca_hwid_mcatypes[] = {
- 	{ SMCA_CS,	 HWID_MCATYPE(0x2E, 0x0)	},
- 	{ SMCA_PIE,	 HWID_MCATYPE(0x2E, 0x1)	},
- 	{ SMCA_CS_V2,	 HWID_MCATYPE(0x2E, 0x2)	},
-+	{ SMCA_MA_LLC,	 HWID_MCATYPE(0x2E, 0x4)	},
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index f8be7ac..89bbb1a 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -34,62 +34,6 @@
+  */
+ static u32 nodes_per_socket = 1;
  
- 	/* Unified Memory Controller MCA type */
- 	{ SMCA_UMC,	 HWID_MCATYPE(0x96, 0x0)	},
-@@ -198,6 +202,8 @@ static const struct smca_hwid smca_hwid_mcatypes[] = {
- 	{ SMCA_SHUB,	 HWID_MCATYPE(0x80, 0x0)	},
- 	{ SMCA_SATA,	 HWID_MCATYPE(0xA8, 0x0)	},
- 	{ SMCA_USB,	 HWID_MCATYPE(0xAA, 0x0)	},
-+	{ SMCA_USR_DP,	 HWID_MCATYPE(0x170, 0x0)	},
-+	{ SMCA_USR_CP,	 HWID_MCATYPE(0x180, 0x0)	},
- 	{ SMCA_GMI_PCS,  HWID_MCATYPE(0x241, 0x0)	},
- 	{ SMCA_XGMI_PHY, HWID_MCATYPE(0x259, 0x0)	},
- 	{ SMCA_WAFL_PHY, HWID_MCATYPE(0x267, 0x0)	},
+-/*
+- * AMD errata checking
+- *
+- * Errata are defined as arrays of ints using the AMD_LEGACY_ERRATUM() or
+- * AMD_OSVW_ERRATUM() macros. The latter is intended for newer errata that
+- * have an OSVW id assigned, which it takes as first argument. Both take a
+- * variable number of family-specific model-stepping ranges created by
+- * AMD_MODEL_RANGE().
+- *
+- * Example:
+- *
+- * const int amd_erratum_319[] =
+- *	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x10, 0x2, 0x1, 0x4, 0x2),
+- *			   AMD_MODEL_RANGE(0x10, 0x8, 0x0, 0x8, 0x0),
+- *			   AMD_MODEL_RANGE(0x10, 0x9, 0x0, 0x9, 0x0));
+- */
+-
+-#define AMD_LEGACY_ERRATUM(...)		{ -1, __VA_ARGS__, 0 }
+-#define AMD_OSVW_ERRATUM(osvw_id, ...)	{ osvw_id, __VA_ARGS__, 0 }
+-#define AMD_MODEL_RANGE(f, m_start, s_start, m_end, s_end) \
+-	((f << 24) | (m_start << 16) | (s_start << 12) | (m_end << 4) | (s_end))
+-#define AMD_MODEL_RANGE_FAMILY(range)	(((range) >> 24) & 0xff)
+-#define AMD_MODEL_RANGE_START(range)	(((range) >> 12) & 0xfff)
+-#define AMD_MODEL_RANGE_END(range)	((range) & 0xfff)
+-
+-static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
+-{
+-	int osvw_id = *erratum++;
+-	u32 range;
+-	u32 ms;
+-
+-	if (osvw_id >= 0 && osvw_id < 65536 &&
+-	    cpu_has(cpu, X86_FEATURE_OSVW)) {
+-		u64 osvw_len;
+-
+-		rdmsrl(MSR_AMD64_OSVW_ID_LENGTH, osvw_len);
+-		if (osvw_id < osvw_len) {
+-			u64 osvw_bits;
+-
+-			rdmsrl(MSR_AMD64_OSVW_STATUS + (osvw_id >> 6),
+-			    osvw_bits);
+-			return osvw_bits & (1ULL << (osvw_id & 0x3f));
+-		}
+-	}
+-
+-	/* OSVW unavailable or ID unknown, match family-model-stepping range */
+-	ms = (cpu->x86_model << 4) | cpu->x86_stepping;
+-	while ((range = *erratum++))
+-		if ((cpu->x86 == AMD_MODEL_RANGE_FAMILY(range)) &&
+-		    (ms >= AMD_MODEL_RANGE_START(range)) &&
+-		    (ms <= AMD_MODEL_RANGE_END(range)))
+-			return true;
+-
+-	return false;
+-}
+-
+ static inline int rdmsrl_amd_safe(unsigned msr, unsigned long long *p)
+ {
+ 	u32 gprs[8] = { 0 };
