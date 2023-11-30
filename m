@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F1427FDACF
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Nov 2023 16:08:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 683EF7FEB0A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 09:42:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231240AbjK2PIj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Nov 2023 10:08:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60854 "EHLO
+        id S231772AbjK3Imn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Nov 2023 03:42:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234844AbjK2Ozk (ORCPT
+        with ESMTP id S231826AbjK3Iml (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Nov 2023 09:55:40 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2045310DF;
-        Wed, 29 Nov 2023 06:55:45 -0800 (PST)
-Date:   Wed, 29 Nov 2023 14:55:43 -0000
+        Thu, 30 Nov 2023 03:42:41 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFF9610C2;
+        Thu, 30 Nov 2023 00:42:47 -0800 (PST)
+Date:   Thu, 30 Nov 2023 08:42:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701269743;
+        s=2020; t=1701333765;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=u7fdg9HsOCuKA61WgZU0Q3a150uw7ZsSmWZm77p0STY=;
-        b=3VS2nUxhbvX0YkzobvkabVg1G3ZXYUUY0jsOHrr1xGUq925nsPWUfxr+Pe+Uj1OA9ECpMP
-        YK24kCIQjXaT3FOwFPZAcWo4rIrJKB+ScNMprL93VsHStttXFHe7YUtUAFvMt2VkGDXg0S
-        hzvJitaCLYKZmqlm08WTE4ExFf0jnPbapHlxhBoslbH3bfn/7leN4hLCLxkkmovPyUVUGa
-        XE1CFmGKsNk1np+UC4Zt7ktOv2uUf4Hm/pfMQGg/ZrrL+WC10uF/8N58NRSMLqsbH8WJzd
-        VGI7eRuYv+6/HLQE4wnkFSbo/UQ9SyXJtZANpLFUpfof+q3T2jQEYf1NF4iNRA==
+        bh=gcptB3mvhSIKokDXZRJrI1xRd2c85LJPwOEmETgObR0=;
+        b=VB5YGGYXw58jLYn8NfK6UocG9lVuvAfHNxadzN1Frtx5DXdgPYQ+ufjtt9bitOi+lAixxH
+        nYUwwc6UKzpOWawyaJRSvRC27ezYZB4LzAFqED/WcB1W/2edkLrT8KFaiSxZTxlY4Bu32U
+        NW1KBZ3ub8iE44LyxUwbXdYAXJP+g8OFwn4+OwdYTy1jNote8BU7Y4KT8RF6V/IJCIV8Rn
+        8ECzIu6evfLMacEV7qYgT7v0sqWph7UzIm9iTH3XVuXxht82J0YCvyQSnRJaC0o6FIf1Ty
+        yPmwAo3rZClSwBitUwUCQEfwfXJ7f6RPC5FoHt63tXKTGoOIo8j+acGcy/2ggw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701269743;
+        s=2020e; t=1701333765;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=u7fdg9HsOCuKA61WgZU0Q3a150uw7ZsSmWZm77p0STY=;
-        b=Fp0sg0f3pICor0IYtjwps1teD4BvPlL6tKD7Z/lZmK7hU5NZggyIUwRj6UC3jpDt4XhAZY
-        TnGK6OytYQMq14DA==
-From:   "tip-bot2 for Elliot Berman" <tip-bot2@linutronix.de>
+        bh=gcptB3mvhSIKokDXZRJrI1xRd2c85LJPwOEmETgObR0=;
+        b=tx5kc+z9FF1xI1oKAljhc3gOHKWijljGrLmAa7PQFG3vmSRJoIUU3txYEM8Td1Mz72/cSp
+        hl81GXFqx/ZAlMBA==
+From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] freezer,sched: Do not restore saved_state of a
- thawed task
-Cc:     Elliot Berman <quic_eberman@quicinc.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Abhijeet Dharmapurikar <quic_adharmap@quicinc.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231120-freezer-state-multiple-thaws-v1-1-f2e1dd7ce5a2@quicinc.com>
-References: <20231120-freezer-state-multiple-thaws-v1-1-f2e1dd7ce5a2@quicinc.com>
+Subject: [tip: perf/core] perf/x86/amd: Reject branch stack for IBS events
+Cc:     Namhyung Kim <namhyung@kernel.org>,
+        Ravi Bangoria <ravi.bangoria@amd.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20231130062246.290-1-ravi.bangoria@amd.com>
+References: <20231130062246.290-1-ravi.bangoria@amd.com>
 MIME-Version: 1.0
-Message-ID: <170126974302.398.5668977195119638525.tip-bot2@tip-bot2>
+Message-ID: <170133376457.398.10426693252022090421.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,49 +66,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     23ab79e8e469e2605beec2e3ccb40d19c68dd2e0
-Gitweb:        https://git.kernel.org/tip/23ab79e8e469e2605beec2e3ccb40d19c68dd2e0
-Author:        Elliot Berman <quic_eberman@quicinc.com>
-AuthorDate:    Mon, 20 Nov 2023 09:36:31 -08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 29 Nov 2023 15:43:48 +01:00
+Commit-ID:     0f9e0d7928d8e88d57b1482effab70edb9741ce1
+Gitweb:        https://git.kernel.org/tip/0f9e0d7928d8e88d57b1482effab70edb9741ce1
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Thu, 30 Nov 2023 11:52:46 +05:30
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 30 Nov 2023 09:34:40 +01:00
 
-freezer,sched: Do not restore saved_state of a thawed task
+perf/x86/amd: Reject branch stack for IBS events
 
-It is possible for a task to be thawed multiple times when mixing the
-*legacy* cgroup freezer and system-wide freezer. To do this, freeze the
-cgroup, do system-wide freeze/thaw, then thaw the cgroup. When this
-happens, then a stale saved_state can be written to the task's state
-and cause task to hang indefinitely. Fix this by only trying to thaw
-tasks that are actually frozen.
+The AMD IBS PMU doesn't handle branch stacks, so it should not accept
+events with brstack.
 
-This change also has the marginal benefit avoiding unnecessary
-wake_up_state(p, TASK_FROZEN) if we know the task is already thawed.
-There is not possibility of time-of-compare/time-of-use race when we skip
-the wake_up_state because entering/exiting TASK_FROZEN is guarded by
-freezer_lock.
-
-Fixes: 8f0eed4a78a8 ("freezer,sched: Use saved_state to reduce some spurious wakeups")
-Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Abhijeet Dharmapurikar <quic_adharmap@quicinc.com>
-Link: https://lore.kernel.org/r/20231120-freezer-state-multiple-thaws-v1-1-f2e1dd7ce5a2@quicinc.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20231130062246.290-1-ravi.bangoria@amd.com
 ---
- kernel/freezer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/amd/ibs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/freezer.c b/kernel/freezer.c
-index c450fa8..759006a 100644
---- a/kernel/freezer.c
-+++ b/kernel/freezer.c
-@@ -201,7 +201,7 @@ void __thaw_task(struct task_struct *p)
- 	if (WARN_ON_ONCE(freezing(p)))
- 		goto unlock;
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index 6911c53..e91970b 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -287,6 +287,9 @@ static int perf_ibs_init(struct perf_event *event)
+ 	if (config & ~perf_ibs->config_mask)
+ 		return -EINVAL;
  
--	if (task_call_func(p, __restore_freezer_state, NULL))
-+	if (!frozen(p) || task_call_func(p, __restore_freezer_state, NULL))
- 		goto unlock;
- 
- 	wake_up_state(p, TASK_FROZEN);
++	if (has_branch_stack(event))
++		return -EOPNOTSUPP;
++
+ 	ret = validate_group(event);
+ 	if (ret)
+ 		return ret;
