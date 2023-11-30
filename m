@@ -2,58 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF257FEB2F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 09:51:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73E637FEB42
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 09:59:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231913AbjK3Ivc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Nov 2023 03:51:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44112 "EHLO
+        id S229643AbjK3I7m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Nov 2023 03:59:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231759AbjK3Iva (ORCPT
+        with ESMTP id S229462AbjK3I7l (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Nov 2023 03:51:30 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53BFF12C;
-        Thu, 30 Nov 2023 00:51:36 -0800 (PST)
-Date:   Thu, 30 Nov 2023 08:51:34 -0000
+        Thu, 30 Nov 2023 03:59:41 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4357BB9;
+        Thu, 30 Nov 2023 00:59:47 -0800 (PST)
+Date:   Thu, 30 Nov 2023 08:59:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701334295;
+        s=2020; t=1701334785;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=O9AjYlYAYx+oR2KXDgTbog5n4T+oR4QcI16HbOuThJQ=;
-        b=zzoZr18aSPmR5kfCWlGeDY4B2FYFk0VQU9u9msMYgexOJWsBmNt+sAQbunwtTlLNQfc7HE
-        lHy57dfNENJ4zcX8s5gHGeGdD95iVpahnBAgmbagKf5aIDXlFFoxwaPYc3TWXmmb/lUtxk
-        jloVKzF5Lkw3GfwlQdJGA0eBB7qf/NGdSDHjFSzgTLvaMg0PsOd0+lZaHM0/gXCrzBCcYU
-        TVPd978b6VklnE5Hp6WRXkFlLxN2s3omhlVFww/iyS8Nr1yrNLPy8XbYZ/criu2i+DyvIv
-        Dnh2kn0JO+56whoT2IG4UccOrGCc1PGIjNwfUHn1MJf4jlrrKam+QzqV3fDa9A==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=0LR4zPKXvm7NvzMxgz4J/hjCIAaXCpTlSh1BXJxmOgQ=;
+        b=T0yNg63kaIh0ySWe9LTnOSW7y0UMEYCrWOuMoUUI8WEXX2Wlk3NagQ99uoGvpt/291Rqq5
+        yfpU0W3d9cmdun3ZyS+J+zjZ8ItQTUFpNnCBZzmBC71LpeyWV60AaBpjSNke0V3krDjDgI
+        4v7LaJhJNAaghxP4+1olADtVnmeczaRV/2fqfH28xwEG/RcRWL8eEB2oEXEz93oy2D48Cc
+        LsaSj2yJdjqDmsojsgXiog7kYRvfYe9dBcwoY8UM4GfWmEmBcVV1TDB1p/7oCYGW20QZVn
+        aTfy7Lds82CPRn1Vp9thqjWgUIHTgN6Mu5SEdoul6szbW1KqeUCtZtpvmQJxsw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701334295;
+        s=2020e; t=1701334785;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=O9AjYlYAYx+oR2KXDgTbog5n4T+oR4QcI16HbOuThJQ=;
-        b=R2vUcqhyg5AVYswADf+2gdRAhtzHftfFoFzsbOdXAX+dJgGQLzLHGyFVtj0HH9pjVckFff
-        VdhQ//N6+G+GQYDA==
-From:   "tip-bot2 for Samuel Zeter" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=0LR4zPKXvm7NvzMxgz4J/hjCIAaXCpTlSh1BXJxmOgQ=;
+        b=tw3Z+1VdzkNrS26RMGVO4eBqvdje24+5eodyUIR8Yxf90AjmHUCbrnmkvnKIfr3uogVn1y
+        wwF3+qaUZBRb45Aw==
+From:   "tip-bot2 for Jun'ichi Nomura" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/tools: objdump_reformat.awk: Ensure regex matches fwait
-Cc:     Samuel Zeter <samuelzeter@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
+Subject: [tip: x86/boot] x86/boot: Ignore NMIs during very early boot
+Cc:     "Jun'ichi Nomura" <junichi.nomura@nec.com>,
+        Derek Barbosa <debarbos@redhat.com>,
         Ingo Molnar <mingo@kernel.org>,
         Kees Cook <keescook@chromium.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>, x86@kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20231129-objdump-reformat-llvm-v3-1-0d855e79314d@kernel.org>
-References: <20231129-objdump-reformat-llvm-v3-1-0d855e79314d@kernel.org>
 MIME-Version: 1.0
-Message-ID: <170133429425.398.12209221658096369317.tip-bot2@tip-bot2>
+Message-ID: <170133478498.398.5261666675868615202.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,61 +66,95 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     60c2ea7c89e375804171552d8ea53d9084ec3269
-Gitweb:        https://git.kernel.org/tip/60c2ea7c89e375804171552d8ea53d9084ec3269
-Author:        Samuel Zeter <samuelzeter@gmail.com>
-AuthorDate:    Wed, 29 Nov 2023 15:17:41 -07:00
+Commit-ID:     78a509fba9c9b1fcb77f95b7c6be30da3d24823a
+Gitweb:        https://git.kernel.org/tip/78a509fba9c9b1fcb77f95b7c6be30da3d24823a
+Author:        Jun'ichi Nomura <junichi.nomura@nec.com>
+AuthorDate:    Wed, 29 Nov 2023 15:44:49 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 30 Nov 2023 09:38:09 +01:00
+CommitterDate: Thu, 30 Nov 2023 09:55:40 +01:00
 
-x86/tools: objdump_reformat.awk: Ensure regex matches fwait
+x86/boot: Ignore NMIs during very early boot
 
-If there is "wait" mnemonic in the line being parsed, it is incorrectly
-handled by the script, and an extra line of "fwait" in
-objdump_reformat's output is inserted. As insn_decoder_test relies upon
-the formatted output, the test fails.
+When there are two racing NMIs on x86, the first NMI invokes NMI handler and
+the 2nd NMI is latched until IRET is executed.
 
-This is reproducible when disassembling with llvm-objdump:
+If panic on NMI and panic kexec are enabled, the first NMI triggers
+panic and starts booting the next kernel via kexec. Note that the 2nd
+NMI is still latched. During the early boot of the next kernel, once
+an IRET is executed as a result of a page fault, then the 2nd NMI is
+unlatched and invokes the NMI handler.
 
-Pre-processed lines:
+However, NMI handler is not set up at the early stage of boot, which
+results in a boot failure.
 
-  ffffffff81033e72: 9b                    wait
-  ffffffff81033e73: 48 c7 c7 89 50 42 82  movq
+Avoid such problems by setting up a NOP handler for early NMIs.
 
-After objdump_reformat.awk:
+[ mingo: Refined the changelog. ]
 
-  ffffffff81033e72:       9b      fwait
-  ffffffff81033e72:                               wait
-  ffffffff81033e73:       48 c7 c7 89 50 42 82    movq
-
-The regex match now accepts spaces or tabs, along with the "fwait"
-instruction.
-
-Signed-off-by: Samuel Zeter <samuelzeter@gmail.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Jun'ichi Nomura <junichi.nomura@nec.com>
+Signed-off-by: Derek Barbosa <debarbos@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20231129-objdump-reformat-llvm-v3-1-0d855e79314d@kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1364
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
 ---
- arch/x86/tools/objdump_reformat.awk | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/boot/compressed/ident_map_64.c    | 5 +++++
+ arch/x86/boot/compressed/idt_64.c          | 1 +
+ arch/x86/boot/compressed/idt_handlers_64.S | 1 +
+ arch/x86/boot/compressed/misc.h            | 1 +
+ 4 files changed, 8 insertions(+)
 
-diff --git a/arch/x86/tools/objdump_reformat.awk b/arch/x86/tools/objdump_reformat.awk
-index f418c91..276e572 100644
---- a/arch/x86/tools/objdump_reformat.awk
-+++ b/arch/x86/tools/objdump_reformat.awk
-@@ -12,7 +12,7 @@ BEGIN {
- 	prev_hex = ""
- 	prev_mnemonic = ""
- 	bad_expr = "(\\(bad\\)|^rex|^.byte|^rep(z|nz)$|^lock$|^es$|^cs$|^ss$|^ds$|^fs$|^gs$|^data(16|32)$|^addr(16|32|64))"
--	fwait_expr = "^9b "
-+	fwait_expr = "^9b[ \t]*fwait"
- 	fwait_str="9b\tfwait"
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index 473ba59..d040080 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -386,3 +386,8 @@ void do_boot_page_fault(struct pt_regs *regs, unsigned long error_code)
+ 	 */
+ 	kernel_add_identity_map(address, end);
  }
++
++void do_boot_nmi_trap(struct pt_regs *regs, unsigned long error_code)
++{
++	/* Empty handler to ignore NMI during early boot */
++}
+diff --git a/arch/x86/boot/compressed/idt_64.c b/arch/x86/boot/compressed/idt_64.c
+index 3cdf94b..d100284 100644
+--- a/arch/x86/boot/compressed/idt_64.c
++++ b/arch/x86/boot/compressed/idt_64.c
+@@ -61,6 +61,7 @@ void load_stage2_idt(void)
+ 	boot_idt_desc.address = (unsigned long)boot_idt;
+ 
+ 	set_idt_entry(X86_TRAP_PF, boot_page_fault);
++	set_idt_entry(X86_TRAP_NMI, boot_nmi_trap);
+ 
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ 	/*
+diff --git a/arch/x86/boot/compressed/idt_handlers_64.S b/arch/x86/boot/compressed/idt_handlers_64.S
+index 22890e1..4d03c85 100644
+--- a/arch/x86/boot/compressed/idt_handlers_64.S
++++ b/arch/x86/boot/compressed/idt_handlers_64.S
+@@ -70,6 +70,7 @@ SYM_FUNC_END(\name)
+ 	.code64
+ 
+ EXCEPTION_HANDLER	boot_page_fault do_boot_page_fault error_code=1
++EXCEPTION_HANDLER	boot_nmi_trap do_boot_nmi_trap error_code=0
+ 
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ EXCEPTION_HANDLER	boot_stage1_vc do_vc_no_ghcb		error_code=1
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index c0d502b..bc2f0f1 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -196,6 +196,7 @@ static inline void cleanup_exception_handling(void) { }
+ 
+ /* IDT Entry Points */
+ void boot_page_fault(void);
++void boot_nmi_trap(void);
+ void boot_stage1_vc(void);
+ void boot_stage2_vc(void);
  
