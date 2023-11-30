@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 859F67FFD56
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 22:16:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 858977FFD58
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 22:16:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376855AbjK3VQ1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Nov 2023 16:16:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50702 "EHLO
+        id S1376829AbjK3VQ2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Nov 2023 16:16:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376841AbjK3VQ0 (ORCPT
+        with ESMTP id S1376848AbjK3VQ1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Nov 2023 16:16:26 -0500
+        Thu, 30 Nov 2023 16:16:27 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E0910E5;
-        Thu, 30 Nov 2023 13:16:32 -0800 (PST)
-Date:   Thu, 30 Nov 2023 21:16:30 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D90C170F;
+        Thu, 30 Nov 2023 13:16:33 -0800 (PST)
+Date:   Thu, 30 Nov 2023 21:16:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1701378991;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vavI3RxrLtloE3LjQEUBpt9Crabz1GqFixWES3vlEKk=;
-        b=aVl4TBu1rzjQtgN1aiSMeuM5vbF9jPKmRH6nCb2HdvGPlcbeKQCu9XBgwxeUJIUjPp+I0j
-        WcB+NV3w017sT0TMIjBvpc3z3HWcFobD0ftQT3/j689jZO/FSQ6QfVRRCIclWm8xgESTWS
-        AwokAP74+E3Wc7b/60Wwc8T4i2UDNy2Yhn0atv6wGFVtJbW/DcDW4iSCdRS5/AmkuBXeNL
-        qosoNJPvYVU/eYlIRDWP3lFMdz8/9ToeUcMgbKbrhHvLPHoeXpPXn+5A+rZUIAU7KACR/+
-        MdClDYbKUdxLsLg78jBOFEVlxWApPwKGvHoZXpUUJ4VtmZJrC09SkurKwSEOHw==
+        bh=oQJ87u2AnKlqVOtzAOTWmogwTb6/DRmjMhXviCOIGf4=;
+        b=OVNu9j/PxfLbmXGVHiwSRKtA0P/+R+JBCCj9e+BiM0nluM1n5+pfmBGnMN2QQEPnXL9QSL
+        nqsIWySC2jBFcd4Xnwu6gWHgggBNVBHiq1z3nAhyVbriaib2LVdp1wXwXqBcn/MOsucGqd
+        JsGi7D4Ah0dpiSTdD4LNZXGOPKCaCCqYM9dxRer5FzF5uyg82csnVOGzkKopIDp01FZb0N
+        L7d/UgjbWZmmGdLdSaxu4DsOVB8xqaXOnf7GXybJEZRyfeJ1KJMVokap7iQpK0iDWW8+iH
+        ammv57S0ftJv8Ogdy5LYJuAqDJKSHAySRx3qxsfQrm5zp8dfzOEKuWm8TvUpdA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1701378991;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vavI3RxrLtloE3LjQEUBpt9Crabz1GqFixWES3vlEKk=;
-        b=+oP2G7fyRT8waiZaoPuWiUTAGQ3kR68HD9o6om0xRgr30jlaLuOVFjfICBw6l/UDmd8MyP
-        s6MFnPWLJECOXvAQ==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+        bh=oQJ87u2AnKlqVOtzAOTWmogwTb6/DRmjMhXviCOIGf4=;
+        b=1UQkAye5UH+q/QRprzMGtNKw+JHLJDW3NJ6oYws0BD2wJ9HaxYpHUpBQSDvv79tpTWfRVI
+        F/5nE/PAZvKoOiBQ==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/percpu] x86/percpu: Declare const_pcpu_hot as extern const variable
-Cc:     kernel test robot <lkp@intel.com>, Uros Bizjak <ubizjak@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231130162949.83518-1-ubizjak@gmail.com>
-References: <20231130162949.83518-1-ubizjak@gmail.com>
+Subject: [tip: x86/percpu] x86/callthunks: Mark apply_relocation() as __init_or_module
+Cc:     Ingo Molnar <mingo@kernel.org>, Uros Bizjak <ubizjak@gmail.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231105213731.1878100-3-ubizjak@gmail.com>
+References: <20231105213731.1878100-3-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <170137899052.398.2740335306554226817.tip-bot2@tip-bot2>
+Message-ID: <170137899106.398.14613676631297252898.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,40 +66,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/percpu branch of tip:
 
-Commit-ID:     4604c052b84d66407f5e68045a1939685eac401e
-Gitweb:        https://git.kernel.org/tip/4604c052b84d66407f5e68045a1939685eac401e
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Thu, 30 Nov 2023 17:27:35 +01:00
+Commit-ID:     6724ba89e0b03667d56616614f55e1f772d38fdb
+Gitweb:        https://git.kernel.org/tip/6724ba89e0b03667d56616614f55e1f772d38fdb
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Thu, 30 Nov 2023 20:15:51 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 30 Nov 2023 20:19:33 +01:00
+CommitterDate: Thu, 30 Nov 2023 20:15:51 +01:00
 
-x86/percpu: Declare const_pcpu_hot as extern const variable
+x86/callthunks: Mark apply_relocation() as __init_or_module
 
-const_pcpu_hot is aliased by linker to pcpu_hot, so there is no need
-to use the DECLARE_PER_CPU_ALIGNED() macro. Also, declare const_pcpu_hot
-as extern to avoid allocating storage space for the aliased structure.
+Do it like the rest of the methods using it.
 
-Fixes: ed2f752e0e0a ("x86/percpu: Introduce const-qualified const_pcpu_hot to micro-optimize code generation")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231130162949.83518-1-ubizjak@gmail.com
-Closes: https://lore.kernel.org/oe-kbuild-all/202311302257.tSFtZnly-lkp@intel.com/
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Link: https://lore.kernel.org/r/20231105213731.1878100-3-ubizjak@gmail.com
 ---
- arch/x86/include/asm/current.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/include/asm/text-patching.h | 2 +-
+ arch/x86/kernel/alternative.c        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/current.h b/arch/x86/include/asm/current.h
-index 0538d24..9fbd7cb 100644
---- a/arch/x86/include/asm/current.h
-+++ b/arch/x86/include/asm/current.h
-@@ -37,8 +37,7 @@ static_assert(sizeof(struct pcpu_hot) == 64);
- DECLARE_PER_CPU_ALIGNED(struct pcpu_hot, pcpu_hot);
+diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
+index ba8d900..fb338f0 100644
+--- a/arch/x86/include/asm/text-patching.h
++++ b/arch/x86/include/asm/text-patching.h
+@@ -18,7 +18,7 @@ static inline void apply_paravirt(struct paravirt_patch_site *start,
+ #define __parainstructions_end	NULL
+ #endif
  
- /* const-qualified alias to pcpu_hot, aliased by linker. */
--DECLARE_PER_CPU_ALIGNED(const struct pcpu_hot __percpu_seg_override,
--			const_pcpu_hot);
-+extern const struct pcpu_hot __percpu_seg_override const_pcpu_hot;
+-void apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len);
++extern void apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len);
  
- static __always_inline struct task_struct *get_current(void)
+ /*
+  * Currently, the max observed size in the kernel code is
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index aa86415..5052371 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -325,7 +325,7 @@ bool need_reloc(unsigned long offset, u8 *src, size_t src_len)
+ 	return (target < src || target > src + src_len);
+ }
+ 
+-void apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
++void __init_or_module apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
  {
+ 	int prev, target = 0;
+ 
