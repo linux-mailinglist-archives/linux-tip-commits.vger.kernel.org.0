@@ -2,62 +2,68 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C65AF7FEC04
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 10:39:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B414F7FECDD
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 11:34:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231799AbjK3Jj0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Nov 2023 04:39:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42984 "EHLO
+        id S231755AbjK3Kd6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Nov 2023 05:33:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235090AbjK3JjY (ORCPT
+        with ESMTP id S229462AbjK3Kd6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Nov 2023 04:39:24 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10255D40;
-        Thu, 30 Nov 2023 01:39:31 -0800 (PST)
-Date:   Thu, 30 Nov 2023 09:39:28 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701337169;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ncQYNJ4GBwdM1wndJD2ZUZuSLFmYqkvecrHz/qccbIw=;
-        b=BCaNQ5C58z8iTkTvRYakAnu/LZz0SLOCLDpBI+oKhATyGp2oWyQmRI/SI7JtNlrzmUWYkE
-        Zrh8NvKRnSjYXXJKwrcqT9xPzK+HiuMHTp4KqLprZlyMzul7XWDX+m8ndudboaYHB774CP
-        403Zap3yuDiHXtG0PG6ycHTlAx0tcOPXlj35kKkLhfPABQd5K3+tH/IrIH5eqtjDU6NkGf
-        0Kj1Kz8JsdWfVcjs6RDcl94mpbNvT9pCRoMhpf/bJpP59CRVj1B6APjWon7W8pC1BjBIli
-        4U0/l+YoK5w44E0SgRWv7t7OCQCHLDvT3qjpqrMtS0RDjIP8Pj+qovCEP2ewJg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701337169;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ncQYNJ4GBwdM1wndJD2ZUZuSLFmYqkvecrHz/qccbIw=;
-        b=lw7uxh9lW6lm5i0CJcL4tB2ETcJ6olfFsuWg+p9gyyr2wUwLk3Y9gSUfGRtHzzr40Gc7YH
-        e8O1M0yenSQQ32Cw==
-From:   "tip-bot2 for Ashwin Dayanand Kamat" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev: Fix kernel crash due to late update to
- read-only ghcb_version
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Bo Gan <bo.gan@broadcom.com>,
-        Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1701254429-18250-1-git-send-email-kashwindayan@vmware.com>
-References: <1701254429-18250-1-git-send-email-kashwindayan@vmware.com>
+        Thu, 30 Nov 2023 05:33:58 -0500
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47EB3D6C;
+        Thu, 30 Nov 2023 02:34:01 -0800 (PST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 211CF40E0239;
+        Thu, 30 Nov 2023 10:33:59 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+        header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id qDV6vmf5xhZb; Thu, 30 Nov 2023 10:33:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+        t=1701340437; bh=ZShKLR6KTqCxQjQYunnv0hUCXzw06oeZAelERVmHTQA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LUacy/IhrUmBX+T4V8uG+XUxD6xFGliuzIbVZ3B+kYG4exrusgge1fZUdK67RfTT2
+         VO7BA3K1PVpEv5J3ia+lAcqrqVNiYm+im2n8Bp4W6kWWPlxI0tpE7IclYzDF6+hak0
+         uv3muctBuSAt0+9H9Ra99lDoMGHGj63T0fi2s2cKUd/xWU1bmJLn+2wryxveFdbdhe
+         fASsgito5Rh6UIW43EPSLGkRWbgc77DB33ivrPINaBfdYpfb0CjR2NBwWeGSxzHJe0
+         xipJhkHM5FQ3x6rwiRC60YTNc/cJ7nRnYnIklCUEr9SSZPzxeN+ebD0CFMvwn+MR6x
+         YCFrduzg+1v3cSAEfMxs3OxwD5PlABBr+C4RATojzd6arNEGHsDRa/3TBhIGkneCvC
+         hNJROiUmDrC5dvf/AnFKffyPs0hLAtMGfaqNjhtH2tZtpwX/qaZoXmlvxZSBZ2ymep
+         HCyH7ByOMmY9StBJSFeaZhEI1tgNSFWI4PqE7k9+R3f1zLYI2l5aDLnnluvGiM0pzO
+         0dY2ok4Mvvy8zANHMjKS9IDh9G9nhoYDwU9q86XtjngyD1tU23jbrUYkwrihBaMvqn
+         AvsQGJ5EP9vTJwNtXoKmt36UxgG0v1qpc2r5hWMkcDQod9Z1GccV+yjkkdyxLqoMSq
+         ZCO9zh7NCiJof8jofkTMqRCU=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+        (No client certificate requested)
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C733640E01AD;
+        Thu, 30 Nov 2023 10:33:44 +0000 (UTC)
+Date:   Thu, 30 Nov 2023 11:33:39 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Jun'ichi Nomura <junichi.nomura@nec.com>,
+        Derek Barbosa <debarbos@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
+Subject: Re: [tip: x86/boot] x86/boot: Ignore NMIs during very early boot
+Message-ID: <20231130103339.GCZWhlA196uRklTMNF@fat_crate.local>
+References: <170133478498.398.5261666675868615202.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <170133716855.398.4806769836355142687.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <170133478498.398.5261666675868615202.tip-bot2@tip-bot2>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -68,94 +74,25 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Thu, Nov 30, 2023 at 08:59:44AM -0000, tip-bot2 for Jun'ichi Nomura wrote:
+> +void do_boot_nmi_trap(struct pt_regs *regs, unsigned long error_code)
+> +{
+> +	/* Empty handler to ignore NMI during early boot */
 
-Commit-ID:     27d25348d42161837be08fc63b04a2559d2e781c
-Gitweb:        https://git.kernel.org/tip/27d25348d42161837be08fc63b04a2559d2e781c
-Author:        Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-AuthorDate:    Wed, 29 Nov 2023 16:10:29 +05:30
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 30 Nov 2023 10:23:12 +01:00
+It might be good to issue something here to say that a spurious NMI got
+ignored.
 
-x86/sev: Fix kernel crash due to late update to read-only ghcb_version
+Something ala
 
-A write-access violation page fault kernel crash was observed while running
-cpuhotplug LTP testcases on SEV-ES enabled systems. The crash was
-observed during hotplug, after the CPU was offlined and the process
-was migrated to different CPU. setup_ghcb() is called again which
-tries to update ghcb_version in sev_es_negotiate_protocol(). Ideally this
-is a read_only variable which is initialised during booting.
+	error_putstr("Spurious early NMI ignored.\n");
 
-Trying to write it results in a pagefault:
+so that we at least say that we ignored an NMI and not have it disappear
+unnoticed.
 
-  BUG: unable to handle page fault for address: ffffffffba556e70
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0003) - permissions violation
-  [ ...]
-  Call Trace:
-   <TASK>
-   ? __die_body.cold+0x1a/0x1f
-   ? __die+0x2a/0x35
-   ? page_fault_oops+0x10c/0x270
-   ? setup_ghcb+0x71/0x100
-   ? __x86_return_thunk+0x5/0x6
-   ? search_exception_tables+0x60/0x70
-   ? __x86_return_thunk+0x5/0x6
-   ? fixup_exception+0x27/0x320
-   ? kernelmode_fixup_or_oops+0xa2/0x120
-   ? __bad_area_nosemaphore+0x16a/0x1b0
-   ? kernel_exc_vmm_communication+0x60/0xb0
-   ? bad_area_nosemaphore+0x16/0x20
-   ? do_kern_addr_fault+0x7a/0x90
-   ? exc_page_fault+0xbd/0x160
-   ? asm_exc_page_fault+0x27/0x30
-   ? setup_ghcb+0x71/0x100
-   ? setup_ghcb+0xe/0x100
-   cpu_init_exception_handling+0x1b9/0x1f0
+Hmmm.
 
-The fix is to call sev_es_negotiate_protocol() only in the BSP boot phase,
-and it only needs to be done once in any case.
+-- 
+Regards/Gruss,
+    Boris.
 
-[ mingo: Refined the changelog. ]
-
-Fixes: 95d33bfaa3e1 ("x86/sev: Register GHCB memory when SEV-SNP is active")
-Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Co-developed-by: Bo Gan <bo.gan@broadcom.com>
-Signed-off-by: Bo Gan <bo.gan@broadcom.com>
-Signed-off-by: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/1701254429-18250-1-git-send-email-kashwindayan@vmware.com
----
- arch/x86/kernel/sev.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 70472ee..c672858 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -1234,10 +1234,6 @@ void setup_ghcb(void)
- 	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
- 		return;
- 
--	/* First make sure the hypervisor talks a supported protocol. */
--	if (!sev_es_negotiate_protocol())
--		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
--
- 	/*
- 	 * Check whether the runtime #VC exception handler is active. It uses
- 	 * the per-CPU GHCB page which is set up by sev_es_init_vc_handling().
-@@ -1255,6 +1251,13 @@ void setup_ghcb(void)
- 	}
- 
- 	/*
-+	 * Make sure the hypervisor talks a supported protocol.
-+	 * This gets called only in the BSP boot phase.
-+	 */
-+	if (!sev_es_negotiate_protocol())
-+		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
-+
-+	/*
- 	 * Clear the boot_ghcb. The first exception comes in before the bss
- 	 * section is cleared.
- 	 */
+https://people.kernel.org/tglx/notes-about-netiquette
