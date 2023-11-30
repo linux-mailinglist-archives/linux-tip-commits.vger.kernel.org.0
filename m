@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A709E7FFD59
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 22:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 621A87FFD5E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 22:16:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376866AbjK3VQ2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Nov 2023 16:16:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50770 "EHLO
+        id S1376897AbjK3VQd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Nov 2023 16:16:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376851AbjK3VQ1 (ORCPT
+        with ESMTP id S1376869AbjK3VQ3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Nov 2023 16:16:27 -0500
+        Thu, 30 Nov 2023 16:16:29 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF4B4C4;
-        Thu, 30 Nov 2023 13:16:33 -0800 (PST)
-Date:   Thu, 30 Nov 2023 21:16:31 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2978C4;
+        Thu, 30 Nov 2023 13:16:34 -0800 (PST)
+Date:   Thu, 30 Nov 2023 21:16:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701378992;
+        s=2020; t=1701378993;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VhWz3VZ/wxhJ6SUUEHoXbRcnWDzveXaRiWv2PlqBIwM=;
-        b=zMH9ERIkkUzKp1cm8wDSSvWURBYzetOMEjn1X/sahR4ZPhOSqBC0jpJq8VdJQeri45/CzN
-        0pF6MI53aLRDsu1mTQk/oEyJszy1rJWFWZDRytkLwCvPrTsCoWcb6VG+tTsjOxPJqD2qwT
-        NudSJZ/oXLH8FwdcgBBWiBPKF/sF6jUodTtOe5FWuBwltWkBFdQBkNWaksvENs+iuRpROC
-        qmKtuwjAdV1mnNVSt14s7E1tgG+T1+oCMWU4O2PLBffgUelERzCO59o5GFEOmXu3qP15rm
-        KntRo/d8ysUKZ6XaajuTq2T7gxAxkO8npdqdxv8I8sSoOb0+eANR+fnlx84ivg==
+        bh=++ajJ8MhhDhnhvBDD8tcjV3Kz+H/QurA847J/WD+JG4=;
+        b=Og4HQ6aSGps1amGSNvwSBdQemwXe9kfgvXjreUhh/9s1FA2ssrDDV42D//kQNUDsv3AGj1
+        Fqvb2CHT9ZAo7rsK5nm0t5DZCdqBJXFpF/nefk9lC4zyyHH17mDAWEOYPXjvIgssDZdgno
+        MAJJcqoeqzd/u82ULEYeF3UerH1H1rWO1kpLpDQJj6nc7Oi2S/l7nPcTPZfLFKlyu/6EK4
+        CeTRPRICqR9R01dUcgfZMU4T5Q9Qsq67Hv194VNXGaZzlok3qFhJigLxnaMRvorOXlQ+MR
+        eG+YlazlaTvgdSVQ2MhTsZiztS9CpQjJjOUaH2WET5AydhBW8TtK4TlkJHvJfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701378992;
+        s=2020e; t=1701378993;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VhWz3VZ/wxhJ6SUUEHoXbRcnWDzveXaRiWv2PlqBIwM=;
-        b=F+VNUuuAMRy8rpf3/KtBYurYFgcbfck5k30h7l5B3NeTBE8XTC7bXFk2i/osFsKszXkMeb
-        P3vuO4IBjRrrUnAA==
+        bh=++ajJ8MhhDhnhvBDD8tcjV3Kz+H/QurA847J/WD+JG4=;
+        b=mDAYyX0SeeYalVuZbQNBCNY8otQBLvEqQPuFQfvcd9jsYgXj4fbqQvZwJfuNrp8LbL+Eav
+        r7Zu6qQQ1IyRHdCg==
 From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/percpu] x86/acpi: Use %rip-relative addressing in wakeup_64.S
+Subject: [tip: x86/percpu] x86/callthunks: Handle %rip-relative relocations in
+ call thunk template
 Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231103104900.409470-1-ubizjak@gmail.com>
-References: <20231103104900.409470-1-ubizjak@gmail.com>
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231105213731.1878100-3-ubizjak@gmail.com>
+References: <20231105213731.1878100-3-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <170137899159.398.1084765322792442893.tip-bot2@tip-bot2>
+Message-ID: <170137899278.398.5103495389558631726.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,83 +67,146 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/percpu branch of tip:
 
-Commit-ID:     0978d64f9406122c369d5f46e1eb855646f6c32c
-Gitweb:        https://git.kernel.org/tip/0978d64f9406122c369d5f46e1eb855646f6c32c
+Commit-ID:     17bce3b2ae2d52e8c5c12274ce4c3a631ce9e66b
+Gitweb:        https://git.kernel.org/tip/17bce3b2ae2d52e8c5c12274ce4c3a631ce9e66b
 Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Fri, 03 Nov 2023 11:48:22 +01:00
+AuthorDate:    Sun, 05 Nov 2023 22:34:36 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 30 Nov 2023 20:09:49 +01:00
+CommitterDate: Thu, 30 Nov 2023 20:06:17 +01:00
 
-x86/acpi: Use %rip-relative addressing in wakeup_64.S
+x86/callthunks: Handle %rip-relative relocations in call thunk template
 
-This is a "nice-to-have" change with minor code generation benefits:
+Contrary to alternatives, relocations are currently not supported in
+call thunk templates.  Re-use the existing infrastructure from
+alternative.c to allow %rip-relative relocations when copying call
+thunk template from its storage location.
 
- - Instruction with %rip-relative address operand is one byte shorter than
-   its absolute address counterpart,
+The patch allows unification of ASM_INCREMENT_CALL_DEPTH, which already
+uses PER_CPU_VAR macro, with INCREMENT_CALL_DEPTH, used in call thunk
+template, which is currently limited to use absolute address.
 
- - it is also compatible with position independent executable (-fpie) builds,
-
- - it is also consistent with what the compiler emits by default when
-   a symbol is accessed.
-
-No functional changes intended.
+Reuse existing relocation infrastructure from alternative.c.,
+as suggested by Peter Zijlstra.
 
 Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Link: https://lore.kernel.org/r/20231103104900.409470-1-ubizjak@gmail.com
+Link: https://lore.kernel.org/r/20231105213731.1878100-3-ubizjak@gmail.com
 ---
- arch/x86/kernel/acpi/wakeup_64.S | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/text-patching.h |  2 ++-
+ arch/x86/kernel/alternative.c        |  3 +--
+ arch/x86/kernel/callthunks.c         | 32 +++++++++++++++++++++------
+ 3 files changed, 28 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kernel/acpi/wakeup_64.S b/arch/x86/kernel/acpi/wakeup_64.S
-index d5d8a35..94ff83f 100644
---- a/arch/x86/kernel/acpi/wakeup_64.S
-+++ b/arch/x86/kernel/acpi/wakeup_64.S
-@@ -17,7 +17,7 @@
- 	 * Hooray, we are in Long 64-bit mode (but still running in low memory)
- 	 */
- SYM_FUNC_START(wakeup_long64)
--	movq	saved_magic, %rax
-+	movq	saved_magic(%rip), %rax
- 	movq	$0x123456789abcdef0, %rdx
- 	cmpq	%rdx, %rax
- 	je	2f
-@@ -33,14 +33,14 @@ SYM_FUNC_START(wakeup_long64)
- 	movw	%ax, %es
- 	movw	%ax, %fs
- 	movw	%ax, %gs
--	movq	saved_rsp, %rsp
-+	movq	saved_rsp(%rip), %rsp
+diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
+index 29832c3..ba8d900 100644
+--- a/arch/x86/include/asm/text-patching.h
++++ b/arch/x86/include/asm/text-patching.h
+@@ -18,6 +18,8 @@ static inline void apply_paravirt(struct paravirt_patch_site *start,
+ #define __parainstructions_end	NULL
+ #endif
  
--	movq	saved_rbx, %rbx
--	movq	saved_rdi, %rdi
--	movq	saved_rsi, %rsi
--	movq	saved_rbp, %rbp
-+	movq	saved_rbx(%rip), %rbx
-+	movq	saved_rdi(%rip), %rdi
-+	movq	saved_rsi(%rip), %rsi
-+	movq	saved_rbp(%rip), %rbp
++void apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len);
++
+ /*
+  * Currently, the max observed size in the kernel code is
+  * JUMP_LABEL_NOP_SIZE/RELATIVEJUMP_SIZE, which are 5.
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index a5ead6a..aa86415 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -325,8 +325,7 @@ bool need_reloc(unsigned long offset, u8 *src, size_t src_len)
+ 	return (target < src || target > src + src_len);
+ }
  
--	movq	saved_rip, %rax
-+	movq	saved_rip(%rip), %rax
- 	ANNOTATE_RETPOLINE_SAFE
- 	jmp	*%rax
- SYM_FUNC_END(wakeup_long64)
-@@ -72,11 +72,11 @@ SYM_FUNC_START(do_suspend_lowlevel)
+-static void __init_or_module noinline
+-apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
++void apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
+ {
+ 	int prev, target = 0;
  
- 	movq	$.Lresume_point, saved_rip(%rip)
+diff --git a/arch/x86/kernel/callthunks.c b/arch/x86/kernel/callthunks.c
+index c06bfc0..f56fa30 100644
+--- a/arch/x86/kernel/callthunks.c
++++ b/arch/x86/kernel/callthunks.c
+@@ -24,6 +24,8 @@
  
--	movq	%rsp, saved_rsp
--	movq	%rbp, saved_rbp
--	movq	%rbx, saved_rbx
--	movq	%rdi, saved_rdi
--	movq	%rsi, saved_rsi
-+	movq	%rsp, saved_rsp(%rip)
-+	movq	%rbp, saved_rbp(%rip)
-+	movq	%rbx, saved_rbx(%rip)
-+	movq	%rdi, saved_rdi(%rip)
-+	movq	%rsi, saved_rsi(%rip)
+ static int __initdata_or_module debug_callthunks;
  
- 	addq	$8, %rsp
- 	movl	$3, %edi
++#define MAX_PATCH_LEN (255-1)
++
+ #define prdbg(fmt, args...)					\
+ do {								\
+ 	if (debug_callthunks)					\
+@@ -184,10 +186,15 @@ static const u8 nops[] = {
+ static void *patch_dest(void *dest, bool direct)
+ {
+ 	unsigned int tsize = SKL_TMPL_SIZE;
++	u8 insn_buff[MAX_PATCH_LEN];
+ 	u8 *pad = dest - tsize;
+ 
++	memcpy(insn_buff, skl_call_thunk_template, tsize);
++	apply_relocation(insn_buff, tsize, pad,
++			 skl_call_thunk_template, tsize);
++
+ 	/* Already patched? */
+-	if (!bcmp(pad, skl_call_thunk_template, tsize))
++	if (!bcmp(pad, insn_buff, tsize))
+ 		return pad;
+ 
+ 	/* Ensure there are nops */
+@@ -197,9 +204,9 @@ static void *patch_dest(void *dest, bool direct)
+ 	}
+ 
+ 	if (direct)
+-		memcpy(pad, skl_call_thunk_template, tsize);
++		memcpy(pad, insn_buff, tsize);
+ 	else
+-		text_poke_copy_locked(pad, skl_call_thunk_template, tsize, true);
++		text_poke_copy_locked(pad, insn_buff, tsize, true);
+ 	return pad;
+ }
+ 
+@@ -297,20 +304,27 @@ void *callthunks_translate_call_dest(void *dest)
+ static bool is_callthunk(void *addr)
+ {
+ 	unsigned int tmpl_size = SKL_TMPL_SIZE;
+-	void *tmpl = skl_call_thunk_template;
++	u8 insn_buff[MAX_PATCH_LEN];
+ 	unsigned long dest;
++	u8 *pad;
+ 
+ 	dest = roundup((unsigned long)addr, CONFIG_FUNCTION_ALIGNMENT);
+ 	if (!thunks_initialized || skip_addr((void *)dest))
+ 		return false;
+ 
+-	return !bcmp((void *)(dest - tmpl_size), tmpl, tmpl_size);
++	*pad = dest - tmpl_size;
++
++	memcpy(insn_buff, skl_call_thunk_template, tmpl_size);
++	apply_relocation(insn_buff, tmpl_size, pad,
++			 skl_call_thunk_template, tmpl_size);
++
++	return !bcmp(pad, insn_buff, tmpl_size);
+ }
+ 
+ int x86_call_depth_emit_accounting(u8 **pprog, void *func)
+ {
+ 	unsigned int tmpl_size = SKL_TMPL_SIZE;
+-	void *tmpl = skl_call_thunk_template;
++	u8 insn_buff[MAX_PATCH_LEN];
+ 
+ 	if (!thunks_initialized)
+ 		return 0;
+@@ -319,7 +333,11 @@ int x86_call_depth_emit_accounting(u8 **pprog, void *func)
+ 	if (func && is_callthunk(func))
+ 		return 0;
+ 
+-	memcpy(*pprog, tmpl, tmpl_size);
++	memcpy(insn_buff, skl_call_thunk_template, tmpl_size);
++	apply_relocation(insn_buff, tmpl_size, *pprog,
++			 skl_call_thunk_template, tmpl_size);
++
++	memcpy(*pprog, insn_buff, tmpl_size);
+ 	*pprog += tmpl_size;
+ 	return tmpl_size;
+ }
