@@ -2,97 +2,125 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B414F7FECDD
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 11:34:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB8D7FEDA1
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 12:15:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231755AbjK3Kd6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Nov 2023 05:33:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37512 "EHLO
+        id S1345004AbjK3LPS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Nov 2023 06:15:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjK3Kd6 (ORCPT
+        with ESMTP id S231784AbjK3LPR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Nov 2023 05:33:58 -0500
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47EB3D6C;
-        Thu, 30 Nov 2023 02:34:01 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 211CF40E0239;
-        Thu, 30 Nov 2023 10:33:59 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-        header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id qDV6vmf5xhZb; Thu, 30 Nov 2023 10:33:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1701340437; bh=ZShKLR6KTqCxQjQYunnv0hUCXzw06oeZAelERVmHTQA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LUacy/IhrUmBX+T4V8uG+XUxD6xFGliuzIbVZ3B+kYG4exrusgge1fZUdK67RfTT2
-         VO7BA3K1PVpEv5J3ia+lAcqrqVNiYm+im2n8Bp4W6kWWPlxI0tpE7IclYzDF6+hak0
-         uv3muctBuSAt0+9H9Ra99lDoMGHGj63T0fi2s2cKUd/xWU1bmJLn+2wryxveFdbdhe
-         fASsgito5Rh6UIW43EPSLGkRWbgc77DB33ivrPINaBfdYpfb0CjR2NBwWeGSxzHJe0
-         xipJhkHM5FQ3x6rwiRC60YTNc/cJ7nRnYnIklCUEr9SSZPzxeN+ebD0CFMvwn+MR6x
-         YCFrduzg+1v3cSAEfMxs3OxwD5PlABBr+C4RATojzd6arNEGHsDRa/3TBhIGkneCvC
-         hNJROiUmDrC5dvf/AnFKffyPs0hLAtMGfaqNjhtH2tZtpwX/qaZoXmlvxZSBZ2ymep
-         HCyH7ByOMmY9StBJSFeaZhEI1tgNSFWI4PqE7k9+R3f1zLYI2l5aDLnnluvGiM0pzO
-         0dY2ok4Mvvy8zANHMjKS9IDh9G9nhoYDwU9q86XtjngyD1tU23jbrUYkwrihBaMvqn
-         AvsQGJ5EP9vTJwNtXoKmt36UxgG0v1qpc2r5hWMkcDQod9Z1GccV+yjkkdyxLqoMSq
-         ZCO9zh7NCiJof8jofkTMqRCU=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-        (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C733640E01AD;
-        Thu, 30 Nov 2023 10:33:44 +0000 (UTC)
-Date:   Thu, 30 Nov 2023 11:33:39 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     linux-kernel@vger.kernel.org
+        Thu, 30 Nov 2023 06:15:17 -0500
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CFDBD66;
+        Thu, 30 Nov 2023 03:15:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Znib/mlXynP7QEaUM1Vt8q5PW5YyGqKpMcVV5Eojr9w=; b=ToH+CX/UgvXhWlmi0wJzixANXZ
+        vA8DFjG6W4jwaVntxBVQUUlnv+MphluAGUPM5JC2AkJRDsYgCeEOmKlInyZXerqgbApIVB0XRPDPd
+        4pgXT/v5EAN9S37qGe75+0czR6UYDbwMiM240UtqyVPgEwon0Ve5TnFP4PSXtxaexw5Js+xuWypME
+        M4CG9eVG0XQCbTkuQC80GPa6Gb+W76sOBXa+Mm4rAL/sA3VKkh+HEdM8LkI/2Ed9T1cM45J24XeId
+        RR58j2JHrVzHyBsg9u/sMydGIO5589EY5qOTsnt0UtnpE+QdRHrwUXk7/L+qR6rYwza/F47pzLpgU
+        H5eZzCBg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1r8f0p-0012EQ-2q;
+        Thu, 30 Nov 2023 11:15:20 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 31E97300293; Thu, 30 Nov 2023 12:15:19 +0100 (CET)
+Date:   Thu, 30 Nov 2023 12:15:19 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org,
+        Andrew Cooper <Andrew.Cooper3@citrix.com>
 Cc:     linux-tip-commits@vger.kernel.org,
-        Jun'ichi Nomura <junichi.nomura@nec.com>,
-        Derek Barbosa <debarbos@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
-Subject: Re: [tip: x86/boot] x86/boot: Ignore NMIs during very early boot
-Message-ID: <20231130103339.GCZWhlA196uRklTMNF@fat_crate.local>
-References: <170133478498.398.5261666675868615202.tip-bot2@tip-bot2>
+        Frederic Weisbecker <frederic@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org
+Subject: Re: [tip: x86/core] x86: Fix CPUIDLE_FLAG_IRQ_ENABLE leaking timer
+ reprogram
+Message-ID: <20231130111519.GA20153@noisy.programming.kicks-ass.net>
+References: <20231115151325.6262-3-frederic@kernel.org>
+ <170126975511.398.12493947150541739641.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <170133478498.398.5261666675868615202.tip-bot2@tip-bot2>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <170126975511.398.12493947150541739641.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Nov 30, 2023 at 08:59:44AM -0000, tip-bot2 for Jun'ichi Nomura wrote:
-> +void do_boot_nmi_trap(struct pt_regs *regs, unsigned long error_code)
-> +{
-> +	/* Empty handler to ignore NMI during early boot */
+On Wed, Nov 29, 2023 at 02:55:55PM -0000, tip-bot2 for Peter Zijlstra wrote:
+> diff --git a/arch/x86/include/asm/mwait.h b/arch/x86/include/asm/mwait.h
+> index 341ee4f..920426d 100644
+> --- a/arch/x86/include/asm/mwait.h
+> +++ b/arch/x86/include/asm/mwait.h
+> @@ -124,8 +124,15 @@ static __always_inline void mwait_idle_with_hints(unsigned long eax, unsigned lo
+>  		}
+>  
+>  		__monitor((void *)&current_thread_info()->flags, 0, 0);
+> -		if (!need_resched())
+> -			__mwait(eax, ecx);
+> +
+> +		if (!need_resched()) {
+> +			if (ecx & 1) {
+> +				__mwait(eax, ecx);
+> +			} else {
+> +				__sti_mwait(eax, ecx);
+> +				raw_local_irq_disable();
+> +			}
+> +		}
 
-It might be good to issue something here to say that a spurious NMI got
-ignored.
+Andrew noted that this is only safe if it precludes #DB from happening
+on mwait, because #DB can wreck the STI shadow thing.
 
-Something ala
+> @@ -159,19 +160,13 @@ static __always_inline int __intel_idle(struct cpuidle_device *dev,
+>  static __cpuidle int intel_idle(struct cpuidle_device *dev,
+>  				struct cpuidle_driver *drv, int index)
+>  {
+> +	return __intel_idle(dev, drv, index, true);
+>  }
+>  
+>  static __cpuidle int intel_idle_irq(struct cpuidle_device *dev,
+>  				    struct cpuidle_driver *drv, int index)
+>  {
+> +	return __intel_idle(dev, drv, index, false);
+>  }
+>  
+>  static __cpuidle int intel_idle_ibrs(struct cpuidle_device *dev,
+> @@ -184,7 +179,7 @@ static __cpuidle int intel_idle_ibrs(struct cpuidle_device *dev,
+>  	if (smt_active)
+>  		__update_spec_ctrl(0);
+>  
+> +	ret = __intel_idle(dev, drv, index, true);
+>  
+>  	if (smt_active)
+>  		__update_spec_ctrl(spec_ctrl);
+> @@ -196,7 +191,7 @@ static __cpuidle int intel_idle_xstate(struct cpuidle_device *dev,
+>  				       struct cpuidle_driver *drv, int index)
+>  {
+>  	fpu_idle_fpregs();
+> +	return __intel_idle(dev, drv, index, true);
+>  }
 
-	error_putstr("Spurious early NMI ignored.\n");
+This is so, because all mwait users should be in __cpuidle section,
+which itself is part of the noinstr section and as such
+kprobes/hw-breakpoints etc.. are disallowed.
 
-so that we at least say that we ignored an NMI and not have it disappear
-unnoticed.
+Notable vmlinux.lds.h has:
 
-Hmmm.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+#define NOINSTR_TEXT							\
+		ALIGN_FUNCTION();					\
+		__noinstr_text_start = .;				\
+		*(.noinstr.text)					\
+		__cpuidle_text_start = .;				\
+		*(.cpuidle.text)					\
+		__cpuidle_text_end = .;					\
+		__noinstr_text_end = .;
