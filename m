@@ -2,58 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE3647FF042
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 14:36:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFE087FFD54
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 22:16:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345598AbjK3Ngg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Nov 2023 08:36:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42178 "EHLO
+        id S1376837AbjK3VQ0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Nov 2023 16:16:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345581AbjK3Ngf (ORCPT
+        with ESMTP id S1376829AbjK3VQ0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Nov 2023 08:36:35 -0500
+        Thu, 30 Nov 2023 16:16:26 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1232790;
-        Thu, 30 Nov 2023 05:36:41 -0800 (PST)
-Date:   Thu, 30 Nov 2023 13:36:39 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC40DC4;
+        Thu, 30 Nov 2023 13:16:31 -0800 (PST)
+Date:   Thu, 30 Nov 2023 21:16:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701351400;
+        s=2020; t=1701378989;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6K7kd2z3kKnUokpb+0NcJO6tvamF5TDjcjebi3KIdqc=;
-        b=iEQD2jW+DhKq7megFOrR7h4hOkpEvBpmbGC4TLamh8x5nyKYRvh4T0wM5VceYBMg/LDKqc
-        lVr/GAgVLbYsIQGKHzYmLcK5gDtBtkrt80HNC0o80Q3MjpYYkgl9KuO0CoICQNAe1laa1I
-        K1VYV47Shsa5O+3BNYT2R4NG8VsBpQ+bx0yd2p6g/azqQ4MPwY1R3nVC9AO3ZUDvdmnGyl
-        vPCf5QXUUkq51rTAoASi9qqoxZdb4kCCmFEqMBMJq0gzbSV/E57KQecxzG9MM0I0Fngu/B
-        g12XFIng4bbAeSr8HdXTVVd4QJzhvtwq3BW4FIccGf4YR2rYmxEozW0c9RsDIw==
+        bh=PtG/pJNQ7Od6jW99MrxTBwU7p8L9C5Q2DPh/DamRQNY=;
+        b=2gelQeEcnPGYDIKblA3e0q2C3luQCLUh8zslN9yEdngo/cHsxyIO1q1fAGiI93xkmjvLdG
+        RJyt18grKlYW+PO+Ws/NRoKKODfFF3q/34grzfTlBh8gt7XDfRo3RDX+3eSMWhAamy4vLN
+        pQtethRjqdhdk4JIWBRnbwC0A5QsGb2k5jKVqt0RmTEm3iL1b3PE1VyGpD4NT66Kd/Pw2y
+        j0eMTRk7CVGyJNW3UR/vJsTpjCskgVMjASXnRO0x6RVlvYaqS3OXuAg7oe26bxvtfIONVu
+        8xgSwsgkYNjckaqWkWG9v7u/R9SGs9NDa42b8SYC3T6nztACB4B7vpyu7DFYpw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701351400;
+        s=2020e; t=1701378989;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6K7kd2z3kKnUokpb+0NcJO6tvamF5TDjcjebi3KIdqc=;
-        b=fuXRn3EiFJ+BulRBIxVFbwLX6fGXfv737gRrWs7PLVCO8qv1biZrWZq2HR66EWOarAYe6u
-        L/GZwf8dKpZButDQ==
-From:   "tip-bot2 for Alexander Antonov" <tip-bot2@linutronix.de>
+        bh=PtG/pJNQ7Od6jW99MrxTBwU7p8L9C5Q2DPh/DamRQNY=;
+        b=UOv04alInXHYPKlrEmzLQUaWcsmSx+/WpEfbSE2S/3meQjCAvXJkUCpMMCXoGm3CAdMdCQ
+        1C/Uk3RTm0RHa8CA==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Fix NULL pointer dereference
- issue in upi_fill_topology()
-Cc:     Kyle Meyer <kyle.meyer@hpe.com>,
-        Alexander Antonov <alexander.antonov@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231127185246.2371939-2-alexander.antonov@linux.intel.com>
-References: <20231127185246.2371939-2-alexander.antonov@linux.intel.com>
+Subject: [tip: x86/percpu] x86/smp: Use atomic_try_cmpxchg in native_stop_other_cpus()
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231123203605.3474745-2-ubizjak@gmail.com>
+References: <20231123203605.3474745-2-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <170135139956.398.13686814243901771133.tip-bot2@tip-bot2>
+Message-ID: <170137898888.398.2140410650044568209.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,65 +64,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/percpu branch of tip:
 
-Commit-ID:     1692cf434ba13ee212495b5af795b6a07e986ce4
-Gitweb:        https://git.kernel.org/tip/1692cf434ba13ee212495b5af795b6a07e986ce4
-Author:        Alexander Antonov <alexander.antonov@linux.intel.com>
-AuthorDate:    Mon, 27 Nov 2023 10:52:45 -08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 30 Nov 2023 14:29:52 +01:00
+Commit-ID:     9e9d673b2c84719937db5d6ab1d8cbcd7d45e974
+Gitweb:        https://git.kernel.org/tip/9e9d673b2c84719937db5d6ab1d8cbcd7d45e974
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Thu, 23 Nov 2023 21:34:23 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 30 Nov 2023 20:25:09 +01:00
 
-perf/x86/intel/uncore: Fix NULL pointer dereference issue in upi_fill_topology()
+x86/smp: Use atomic_try_cmpxchg in native_stop_other_cpus()
 
-Get logical socket id instead of physical id in discover_upi_topology()
-to avoid out-of-bound access on 'upi = &type->topology[nid][idx];' line
-that leads to NULL pointer dereference in upi_fill_topology()
+Use atomic_try_cmpxchg() instead of atomic_cmpxchg(*ptr, old, new) == old.
 
-Fixes: f680b6e6062e ("perf/x86/intel/uncore: Enable UPI topology discovery for Icelake Server")
-Reported-by: Kyle Meyer <kyle.meyer@hpe.com>
-Signed-off-by: Alexander Antonov <alexander.antonov@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Tested-by: Kyle Meyer <kyle.meyer@hpe.com>
-Link: https://lore.kernel.org/r/20231127185246.2371939-2-alexander.antonov@linux.intel.com
+X86 CMPXCHG instruction returns success in ZF flag, so this change saves a
+compare after the CMPXCHG.
+
+Tested by building a native Fedora-38 kernel and rebooting
+a 12-way SMP system using "shutdown -r" command some 100 times.
+
+No functional change intended.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20231123203605.3474745-2-ubizjak@gmail.com
 ---
- arch/x86/events/intel/uncore_snbep.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/kernel/smp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index aeaa8ef..1efbacf 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -5596,7 +5596,7 @@ static int discover_upi_topology(struct intel_uncore_type *type, int ubox_did, i
- 	struct pci_dev *ubox = NULL;
- 	struct pci_dev *dev = NULL;
- 	u32 nid, gid;
--	int i, idx, ret = -EPERM;
-+	int i, idx, lgc_pkg, ret = -EPERM;
- 	struct intel_uncore_topology *upi;
- 	unsigned int devfn;
+diff --git a/arch/x86/kernel/smp.c b/arch/x86/kernel/smp.c
+index 65dd44e..1bb7952 100644
+--- a/arch/x86/kernel/smp.c
++++ b/arch/x86/kernel/smp.c
+@@ -148,15 +148,16 @@ static int register_stop_handler(void)
  
-@@ -5614,8 +5614,13 @@ static int discover_upi_topology(struct intel_uncore_type *type, int ubox_did, i
- 		for (i = 0; i < 8; i++) {
- 			if (nid != GIDNIDMAP(gid, i))
- 				continue;
-+			lgc_pkg = topology_phys_to_logical_pkg(i);
-+			if (lgc_pkg < 0) {
-+				ret = -EPERM;
-+				goto err;
-+			}
- 			for (idx = 0; idx < type->num_boxes; idx++) {
--				upi = &type->topology[nid][idx];
-+				upi = &type->topology[lgc_pkg][idx];
- 				devfn = PCI_DEVFN(dev_link0 + idx, ICX_UPI_REGS_ADDR_FUNCTION);
- 				dev = pci_get_domain_bus_and_slot(pci_domain_nr(ubox->bus),
- 								  ubox->bus->number,
-@@ -5626,6 +5631,7 @@ static int discover_upi_topology(struct intel_uncore_type *type, int ubox_did, i
- 						goto err;
- 				}
- 			}
-+			break;
- 		}
- 	}
- err:
+ static void native_stop_other_cpus(int wait)
+ {
+-	unsigned int this_cpu;
++	unsigned int old_cpu, this_cpu;
+ 	unsigned long flags, timeout;
+ 
+ 	if (reboot_force)
+ 		return;
+ 
+ 	/* Only proceed if this is the first CPU to reach this code */
++	old_cpu = -1;
+ 	this_cpu = smp_processor_id();
+-	if (atomic_cmpxchg(&stopping_cpu, -1, this_cpu) != -1)
++	if (!atomic_try_cmpxchg(&stopping_cpu, &old_cpu, this_cpu))
+ 		return;
+ 
+ 	/* For kexec, ensure that offline CPUs are out of MWAIT and in HLT */
