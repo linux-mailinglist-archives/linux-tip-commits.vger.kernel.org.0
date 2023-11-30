@@ -2,125 +2,193 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BB8D7FEDA1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 12:15:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C45B7FF018
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Nov 2023 14:28:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345004AbjK3LPS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Nov 2023 06:15:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46546 "EHLO
+        id S1345526AbjK3N2U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Nov 2023 08:28:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231784AbjK3LPR (ORCPT
+        with ESMTP id S232169AbjK3N2T (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Nov 2023 06:15:17 -0500
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CFDBD66;
-        Thu, 30 Nov 2023 03:15:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=Znib/mlXynP7QEaUM1Vt8q5PW5YyGqKpMcVV5Eojr9w=; b=ToH+CX/UgvXhWlmi0wJzixANXZ
-        vA8DFjG6W4jwaVntxBVQUUlnv+MphluAGUPM5JC2AkJRDsYgCeEOmKlInyZXerqgbApIVB0XRPDPd
-        4pgXT/v5EAN9S37qGe75+0czR6UYDbwMiM240UtqyVPgEwon0Ve5TnFP4PSXtxaexw5Js+xuWypME
-        M4CG9eVG0XQCbTkuQC80GPa6Gb+W76sOBXa+Mm4rAL/sA3VKkh+HEdM8LkI/2Ed9T1cM45J24XeId
-        RR58j2JHrVzHyBsg9u/sMydGIO5589EY5qOTsnt0UtnpE+QdRHrwUXk7/L+qR6rYwza/F47pzLpgU
-        H5eZzCBg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1r8f0p-0012EQ-2q;
-        Thu, 30 Nov 2023 11:15:20 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 31E97300293; Thu, 30 Nov 2023 12:15:19 +0100 (CET)
-Date:   Thu, 30 Nov 2023 12:15:19 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     linux-kernel@vger.kernel.org,
-        Andrew Cooper <Andrew.Cooper3@citrix.com>
-Cc:     linux-tip-commits@vger.kernel.org,
-        Frederic Weisbecker <frederic@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org
-Subject: Re: [tip: x86/core] x86: Fix CPUIDLE_FLAG_IRQ_ENABLE leaking timer
- reprogram
-Message-ID: <20231130111519.GA20153@noisy.programming.kicks-ass.net>
-References: <20231115151325.6262-3-frederic@kernel.org>
- <170126975511.398.12493947150541739641.tip-bot2@tip-bot2>
+        Thu, 30 Nov 2023 08:28:19 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24A32D6C;
+        Thu, 30 Nov 2023 05:28:25 -0800 (PST)
+Date:   Thu, 30 Nov 2023 13:28:22 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1701350903;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=mOpN8Iak2/OJw05hoCr+GK2iIlc++ht5sIA0P0Wo5cg=;
+        b=f6K4ws7QVU4nznJOytCRVktEIpwL4LNXK9dmPw7I9wNMqPLoRR4b4bCvjScWfz2BbVCzKp
+        nG+NHGAr0ma6g5RRwqcmT59JbD03TZHLUL/Xt9t7BbEHveHRtX2fyryMMmkrl6ucbGOad/
+        7Myhv1BR7dQ1Sq7ncW05PLKU/m4AhXn8FNWzfzStmgDFVWwf2dheqodf12x9D8yVgfsaHC
+        +EOlgt/97wt4KTv9xTMTx40oRaSOpoMlKSNt2O2lN+oWuFtEpkKVlIThtwfvbJkyPeTRtW
+        yVOPyq3zRZqrJV6XJDLEnexL/K032sOBQcvcHiAPJb95IElN5aTmh2VeJk0TAg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1701350903;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=mOpN8Iak2/OJw05hoCr+GK2iIlc++ht5sIA0P0Wo5cg=;
+        b=Y6PpYNDXabZvv6HzS1CME6T/8rs8zDdZnHwfvwt5iQprAaD74fqI4UUlcChCIxnMHN0ZNE
+        NEi/XFktlt3yWJBg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf: Fix perf_event_validate_size()
+Cc:     Budimir Markovic <markovicbudimir@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <170126975511.398.12493947150541739641.tip-bot2@tip-bot2>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Message-ID: <170135090300.398.16580844443906542392.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Nov 29, 2023 at 02:55:55PM -0000, tip-bot2 for Peter Zijlstra wrote:
-> diff --git a/arch/x86/include/asm/mwait.h b/arch/x86/include/asm/mwait.h
-> index 341ee4f..920426d 100644
-> --- a/arch/x86/include/asm/mwait.h
-> +++ b/arch/x86/include/asm/mwait.h
-> @@ -124,8 +124,15 @@ static __always_inline void mwait_idle_with_hints(unsigned long eax, unsigned lo
->  		}
->  
->  		__monitor((void *)&current_thread_info()->flags, 0, 0);
-> -		if (!need_resched())
-> -			__mwait(eax, ecx);
-> +
-> +		if (!need_resched()) {
-> +			if (ecx & 1) {
-> +				__mwait(eax, ecx);
-> +			} else {
-> +				__sti_mwait(eax, ecx);
-> +				raw_local_irq_disable();
-> +			}
-> +		}
+The following commit has been merged into the perf/urgent branch of tip:
 
-Andrew noted that this is only safe if it precludes #DB from happening
-on mwait, because #DB can wreck the STI shadow thing.
+Commit-ID:     382c27f4ed28f803b1f1473ac2d8db0afc795a1b
+Gitweb:        https://git.kernel.org/tip/382c27f4ed28f803b1f1473ac2d8db0afc795a1b
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 29 Nov 2023 15:24:52 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 29 Nov 2023 15:43:50 +01:00
 
-> @@ -159,19 +160,13 @@ static __always_inline int __intel_idle(struct cpuidle_device *dev,
->  static __cpuidle int intel_idle(struct cpuidle_device *dev,
->  				struct cpuidle_driver *drv, int index)
->  {
-> +	return __intel_idle(dev, drv, index, true);
->  }
->  
->  static __cpuidle int intel_idle_irq(struct cpuidle_device *dev,
->  				    struct cpuidle_driver *drv, int index)
->  {
-> +	return __intel_idle(dev, drv, index, false);
->  }
->  
->  static __cpuidle int intel_idle_ibrs(struct cpuidle_device *dev,
-> @@ -184,7 +179,7 @@ static __cpuidle int intel_idle_ibrs(struct cpuidle_device *dev,
->  	if (smt_active)
->  		__update_spec_ctrl(0);
->  
-> +	ret = __intel_idle(dev, drv, index, true);
->  
->  	if (smt_active)
->  		__update_spec_ctrl(spec_ctrl);
-> @@ -196,7 +191,7 @@ static __cpuidle int intel_idle_xstate(struct cpuidle_device *dev,
->  				       struct cpuidle_driver *drv, int index)
->  {
->  	fpu_idle_fpregs();
-> +	return __intel_idle(dev, drv, index, true);
->  }
+perf: Fix perf_event_validate_size()
 
-This is so, because all mwait users should be in __cpuidle section,
-which itself is part of the noinstr section and as such
-kprobes/hw-breakpoints etc.. are disallowed.
+Budimir noted that perf_event_validate_size() only checks the size of
+the newly added event, even though the sizes of all existing events
+can also change due to not all events having the same read_format.
 
-Notable vmlinux.lds.h has:
+When we attach the new event, perf_group_attach(), we do re-compute
+the size for all events.
 
-#define NOINSTR_TEXT							\
-		ALIGN_FUNCTION();					\
-		__noinstr_text_start = .;				\
-		*(.noinstr.text)					\
-		__cpuidle_text_start = .;				\
-		*(.cpuidle.text)					\
-		__cpuidle_text_end = .;					\
-		__noinstr_text_end = .;
+Fixes: a723968c0ed3 ("perf: Fix u16 overflows")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+---
+ kernel/events/core.c | 61 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 38 insertions(+), 23 deletions(-)
+
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index b704d83..c9d123e 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1814,31 +1814,34 @@ static inline void perf_event__state_init(struct perf_event *event)
+ 					      PERF_EVENT_STATE_INACTIVE;
+ }
+ 
+-static void __perf_event_read_size(struct perf_event *event, int nr_siblings)
++static int __perf_event_read_size(u64 read_format, int nr_siblings)
+ {
+ 	int entry = sizeof(u64); /* value */
+ 	int size = 0;
+ 	int nr = 1;
+ 
+-	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
++	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
+ 		size += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
++	if (read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
+ 		size += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_ID)
++	if (read_format & PERF_FORMAT_ID)
+ 		entry += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_LOST)
++	if (read_format & PERF_FORMAT_LOST)
+ 		entry += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_GROUP) {
++	if (read_format & PERF_FORMAT_GROUP) {
+ 		nr += nr_siblings;
+ 		size += sizeof(u64);
+ 	}
+ 
+-	size += entry * nr;
+-	event->read_size = size;
++	/*
++	 * Since perf_event_validate_size() limits this to 16k and inhibits
++	 * adding more siblings, this will never overflow.
++	 */
++	return size + nr * entry;
+ }
+ 
+ static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
+@@ -1888,8 +1891,9 @@ static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
+  */
+ static void perf_event__header_size(struct perf_event *event)
+ {
+-	__perf_event_read_size(event,
+-			       event->group_leader->nr_siblings);
++	event->read_size =
++		__perf_event_read_size(event->attr.read_format,
++				       event->group_leader->nr_siblings);
+ 	__perf_event_header_size(event, event->attr.sample_type);
+ }
+ 
+@@ -1920,24 +1924,35 @@ static void perf_event__id_header_size(struct perf_event *event)
+ 	event->id_header_size = size;
+ }
+ 
++/*
++ * Check that adding an event to the group does not result in anybody
++ * overflowing the 64k event limit imposed by the output buffer.
++ *
++ * Specifically, check that the read_size for the event does not exceed 16k,
++ * read_size being the one term that grows with groups size. Since read_size
++ * depends on per-event read_format, also (re)check the existing events.
++ *
++ * This leaves 48k for the constant size fields and things like callchains,
++ * branch stacks and register sets.
++ */
+ static bool perf_event_validate_size(struct perf_event *event)
+ {
+-	/*
+-	 * The values computed here will be over-written when we actually
+-	 * attach the event.
+-	 */
+-	__perf_event_read_size(event, event->group_leader->nr_siblings + 1);
+-	__perf_event_header_size(event, event->attr.sample_type & ~PERF_SAMPLE_READ);
+-	perf_event__id_header_size(event);
++	struct perf_event *sibling, *group_leader = event->group_leader;
+ 
+-	/*
+-	 * Sum the lot; should not exceed the 64k limit we have on records.
+-	 * Conservative limit to allow for callchains and other variable fields.
+-	 */
+-	if (event->read_size + event->header_size +
+-	    event->id_header_size + sizeof(struct perf_event_header) >= 16*1024)
++	if (__perf_event_read_size(event->attr.read_format,
++				   group_leader->nr_siblings + 1) > 16*1024)
+ 		return false;
+ 
++	if (__perf_event_read_size(group_leader->attr.read_format,
++				   group_leader->nr_siblings + 1) > 16*1024)
++		return false;
++
++	for_each_sibling_event(sibling, group_leader) {
++		if (__perf_event_read_size(sibling->attr.read_format,
++					   group_leader->nr_siblings + 1) > 16*1024)
++			return false;
++	}
++
+ 	return true;
+ }
+ 
