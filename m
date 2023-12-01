@@ -2,140 +2,72 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11AFF8008B3
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Dec 2023 11:44:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B2D2800AB3
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Dec 2023 13:18:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378309AbjLAKoI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 Dec 2023 05:44:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35476 "EHLO
+        id S1378777AbjLAMSM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 Dec 2023 07:18:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378331AbjLAKoH (ORCPT
+        with ESMTP id S1378776AbjLAMSL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 Dec 2023 05:44:07 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86281D40;
-        Fri,  1 Dec 2023 02:44:13 -0800 (PST)
-Date:   Fri, 01 Dec 2023 10:44:09 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701427450;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qPCIzTyiZpaSnXIh/BvFIvvdQAACVmWB9mApE7JKoAs=;
-        b=DvakLAApprtB0OyOTMY42r02WoLgRIQ/ta6o+V3Hwr+e8WxyucftkyCOtIs0dGreeHx/8C
-        4VexC5Qo83qvFbep6hWE5pgnqtndnXwD1uqZfG9Ph89V1FeVymawKhzsdEtGi6fzxeXQF+
-        9UH37eE3ClHq9iNqNxCIo0vWXWqk5GXRGnocuSzsZ6RWJEUXda7FsvH8qzMUfGARF/kAlM
-        mvhgYWByQPu2xsFv9NdmJi9XK8V4p7GvkF/7ESHPf8TPLB7XuFamtobukk9kqlJ55Q5SxJ
-        sCWVEHVSy1swB3tKJKXR5fr2mSZ+fhY1avsYNJoaFaRQ49fcs8tUGB4IFjGvgA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701427450;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qPCIzTyiZpaSnXIh/BvFIvvdQAACVmWB9mApE7JKoAs=;
-        b=F2lG/6euZHkXs93PwgAAg1+EU07oCX9oLV1x9G1eyAL//oYtb7ZABV7ZBBpl4zgjYNf22V
-        DWU5rgKWWP/OIUAA==
-From:   "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/mutex: Document that mutex_unlock() is non-atomic
-Cc:     Jann Horn <jannh@google.com>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231130204817.2031407-1-jannh@google.com>
+        Fri, 1 Dec 2023 07:18:11 -0500
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 946EF1B4;
+        Fri,  1 Dec 2023 04:18:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=FAas7mu+OH2ZpUNv/i/XfzAOSAkuh02Ju9j9sSGd80U=; b=D57ulvjQDCI++VntFACHyMIkYN
+        yX+n3xXk3VNW5qwCVy2GxdeSSyDeoHDSKQmLy36obgS4Z4RP0VwaBwRzIivwoErbxnj1ZKoZUKfba
+        8/m2FSeUG18nPOUP0MhBPEuctsb2QsBS1V1ZERwH5nphcSq+AMS9x5oEOAhBj3KLSmYR3Z2ecPDDV
+        zMrVqq+F2zo5O0tb8/Fim4fMDpRyXC+NWpNLtDbgq7nPPnwt3dOw1H2WSS6zMhnQ3VLrD9wf+zZXk
+        QXThbq9e41Y/JVkPbiAqMGIffmxuyUtFmpar2J6ydnxWGzpwpQ/zkdngPhg7ngjyFblX9OIT2jogA
+        nTCxCNtw==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1r92TB-002CIy-35;
+        Fri, 01 Dec 2023 12:18:11 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 958A230040C; Fri,  1 Dec 2023 13:18:08 +0100 (CET)
+Date:   Fri, 1 Dec 2023 13:18:08 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, Jann Horn <jannh@google.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org
+Subject: Re: [tip: locking/core] locking/mutex: Document that mutex_unlock()
+ is non-atomic
+Message-ID: <20231201121808.GL3818@noisy.programming.kicks-ass.net>
 References: <20231130204817.2031407-1-jannh@google.com>
+ <170142744948.398.4203675877225809071.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <170142744948.398.4203675877225809071.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <170142744948.398.4203675877225809071.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+On Fri, Dec 01, 2023 at 10:44:09AM -0000, tip-bot2 for Jann Horn wrote:
 
-Commit-ID:     a51749ab34d9e5dec548fe38ede7e01e8bb26454
-Gitweb:        https://git.kernel.org/tip/a51749ab34d9e5dec548fe38ede7e01e8bb26454
-Author:        Jann Horn <jannh@google.com>
-AuthorDate:    Thu, 30 Nov 2023 21:48:17 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 01 Dec 2023 11:27:43 +01:00
+> --- a/Documentation/locking/mutex-design.rst
+> +++ b/Documentation/locking/mutex-design.rst
+> @@ -101,6 +101,12 @@ features that make lock debugging easier and faster:
+>      - Detects multi-task circular deadlocks and prints out all affected
+>        locks and tasks (and only those tasks).
+>  
+> +Releasing a mutex is not an atomic operation: Once a mutex release operation
 
-locking/mutex: Document that mutex_unlock() is non-atomic
+I still object to this confusing usage of atomic. Also all this also
+applies to all sleeping locks, rwsem etc. I don't see why we need to
+special case mutex here.
 
-I have seen several cases of attempts to use mutex_unlock() to release an
-object such that the object can then be freed by another task.
-
-This is not safe because mutex_unlock(), in the
-MUTEX_FLAG_WAITERS && !MUTEX_FLAG_HANDOFF case, accesses the mutex
-structure after having marked it as unlocked; so mutex_unlock() requires
-its caller to ensure that the mutex stays alive until mutex_unlock()
-returns.
-
-If MUTEX_FLAG_WAITERS is set and there are real waiters, those waiters
-have to keep the mutex alive, but we could have a spurious
-MUTEX_FLAG_WAITERS left if an interruptible/killable waiter bailed
-between the points where __mutex_unlock_slowpath() did the cmpxchg
-reading the flags and where it acquired the wait_lock.
-
-( With spinlocks, that kind of code pattern is allowed and, from what I
-  remember, used in several places in the kernel. )
-
-Document this, such a semantic difference between mutexes and spinlocks
-is fairly unintuitive.
-
-[ mingo: Made the changelog a bit more assertive, refined the comments. ]
-
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231130204817.2031407-1-jannh@google.com
----
- Documentation/locking/mutex-design.rst | 6 ++++++
- kernel/locking/mutex.c                 | 5 +++++
- 2 files changed, 11 insertions(+)
-
-diff --git a/Documentation/locking/mutex-design.rst b/Documentation/locking/mutex-design.rst
-index 78540cd..7572339 100644
---- a/Documentation/locking/mutex-design.rst
-+++ b/Documentation/locking/mutex-design.rst
-@@ -101,6 +101,12 @@ features that make lock debugging easier and faster:
-     - Detects multi-task circular deadlocks and prints out all affected
-       locks and tasks (and only those tasks).
- 
-+Releasing a mutex is not an atomic operation: Once a mutex release operation
-+has begun, another context may be able to acquire the mutex before the release
-+operation has fully completed. The mutex user must ensure that the mutex is not
-+destroyed while a release operation is still in progress - in other words,
-+callers of mutex_unlock() must ensure that the mutex stays alive until
-+mutex_unlock() has returned.
- 
- Interfaces
- ----------
-diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
-index 2deeeca..cbae8c0 100644
---- a/kernel/locking/mutex.c
-+++ b/kernel/locking/mutex.c
-@@ -532,6 +532,11 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
-  * This function must not be used in interrupt context. Unlocking
-  * of a not locked mutex is not allowed.
-  *
-+ * The caller must ensure that the mutex stays alive until this function has
-+ * returned - mutex_unlock() can NOT directly be used to release an object such
-+ * that another concurrent task can free it.
-+ * Mutexes are different from spinlocks & refcounts in this aspect.
-+ *
-  * This function is similar to (but not equivalent to) up().
-  */
- void __sched mutex_unlock(struct mutex *lock)
+Also completion_done() has an explicit lock+unlock on wait.lock to
+deal with this there.
