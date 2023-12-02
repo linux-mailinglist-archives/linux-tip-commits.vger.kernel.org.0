@@ -2,74 +2,173 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9332E8017C8
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Dec 2023 00:32:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF31A801A21
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Dec 2023 03:53:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235259AbjLAXck (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 Dec 2023 18:32:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57396 "EHLO
+        id S229524AbjLBCxf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 Dec 2023 21:53:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231216AbjLAXcj (ORCPT
+        with ESMTP id S229456AbjLBCxe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 Dec 2023 18:32:39 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68AC21AD
-        for <linux-tip-commits@vger.kernel.org>; Fri,  1 Dec 2023 15:32:45 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-54744e66d27so4753a12.0
-        for <linux-tip-commits@vger.kernel.org>; Fri, 01 Dec 2023 15:32:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701473564; x=1702078364; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JV5uhcImpYZYLCdUkoeP3r7sBoYZjOiiQKMRj55t5hc=;
-        b=WGFooB6BSrh84UqezzkZ23T8tDq+GUOM9cIRIU5AguO1dDjIYmHGwqQNQbGm0Wh9u/
-         GfCYQjC7u1oisTNzu8oUbH+s7bjEIdVf8otp6ffkfeJQz7s5QH5IaBcH4cfHpbMsMyt5
-         lHBaLNZzEZL7Y0LOSLOa6n0NkzM85XFBrkuOwEltR6P4+Fvzuvm8dV/7ie/2CSlHs9Mm
-         XLs5ToNfaQDYTbFKcTVKA0fPoCWBpV4tHCt8aLshdxaR+LhbgZU7NSnPvvpdhVwwQvOq
-         J6kTHuSdL1y9Yx+7II9IV4giwK2a9R16g+ZplJCLN5/B8oAWbcj41tuenZtwsbPZPvv2
-         CgzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701473564; x=1702078364;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JV5uhcImpYZYLCdUkoeP3r7sBoYZjOiiQKMRj55t5hc=;
-        b=ZuclUbQ59rohuz6HqdaocIVMSSf1Nr2oG/EMsNOXJ/EW930gYWQXz2vTPTPzcXJMlK
-         +hzfC/UonECJalfLH1EUAWSCcnnAkNG9aDlCnqMp6YwrTnKV577NJy72ElTODQkbqF+8
-         4TbZL2eQbWYMqC8J9OSuAbfyuzHxKFRiLhhwS3Kl/rHqZBAnDFxzpBwP3QDRssOcn50R
-         pQBlIY8jTx08wLwh8Gl9TI5k5/AQZvTEjvsccKHWhM4Z8KUWmN1ItSWpm+5i0QKBvegj
-         WsEgWPD2j0Dt8zEC0X5RpSNM8B9KkkFeC4UV0I64SqgzIbezSeQjCKy7YOq2oqqDBr+l
-         ajAw==
-X-Gm-Message-State: AOJu0Yy6s5cvWbBuXutJAHDym7Tl8Gdc8JUaUiu2bMa+IbIRIv5j4I/J
-        JALzNNC7LdNv2xXzz7qquq7xY5x44P+brH5yzQ8JvQ==
-X-Google-Smtp-Source: AGHT+IHmPguEghSIYXqCsBQPQ2ZN/jm+K8ZgKbasQmFx9q4vfElB7Hw4oobr2dwU7UEE1KN+/nfIILKzHx7LZzLl3ng=
-X-Received: by 2002:a50:9514:0:b0:544:e2b8:ba6a with SMTP id
- u20-20020a509514000000b00544e2b8ba6amr193332eda.3.1701473563773; Fri, 01 Dec
- 2023 15:32:43 -0800 (PST)
-MIME-Version: 1.0
-References: <169953729188.3135.6804572126118798018.tip-bot2@tip-bot2>
- <20231122221947.781812-1-jsperbeck@google.com> <1e565bb08ebdd03897580a5905d1d2de01e15add.camel@intel.com>
- <904ce2b870b8a7f34114f93adc7c8170420869d1.camel@intel.com>
-In-Reply-To: <904ce2b870b8a7f34114f93adc7c8170420869d1.camel@intel.com>
-From:   John Sperbeck <jsperbeck@google.com>
-Date:   Fri, 1 Dec 2023 15:32:31 -0800
-Message-ID: <CAFNjLiWK-h_OSP8Q9JyoLfsoDXo=ih27AFbVVXqzzwNkPVQKTg@mail.gmail.com>
-Subject: Re: [tip: x86/urgent] x86/acpi: Ignore invalid x2APIC entries
-To:     "Zhang, Rui" <rui.zhang@intel.com>
-Cc:     "tip-bot2@linutronix.de" <tip-bot2@linutronix.de>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-tip-commits@vger.kernel.org" 
+        Fri, 1 Dec 2023 21:53:34 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E1D2D48;
+        Fri,  1 Dec 2023 18:53:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701485620; x=1733021620;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=kSgG0B/bYp43ulAEJh2eOzHdAqcccLVRtY8uoX/YBWo=;
+  b=XAeXu6QK04AVw4ZDvppOv2tfgvF6yhI86dJqGpFdVM1dN8KSbYSkpqc7
+   9ozGa/qT6+l/BJjPZ4uSzdmrKGJ/WMFWzqq28s+lKOyZWfvy3A5yPTzT0
+   CL4sZHNGXf+J0BLPMZ6tqvcgxNTkbKRcQHHVwXS+ozCH6eHSCGkfDacxx
+   R8I3KpEJrjux3bOs40TpN09Dij70rVWxhS2x2sGZrWKOCjSC1cioGwbol
+   /hXgWJE7h/jQbstIUuKRT2nuGlcv4Vk/4ON0FOMeKFAqw6Il3WEPUl/Dc
+   +auSIMZ0EHuMpUWHDKwm+IdrP8uJilin0zrNzIKBT69XSRUh35F6uz50I
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10911"; a="457896553"
+X-IronPort-AV: E=Sophos;i="6.04,243,1695711600"; 
+   d="scan'208";a="457896553"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2023 18:53:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10911"; a="746198592"
+X-IronPort-AV: E=Sophos;i="6.04,243,1695711600"; 
+   d="scan'208";a="746198592"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orsmga006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 01 Dec 2023 18:53:39 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Fri, 1 Dec 2023 18:53:39 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Fri, 1 Dec 2023 18:53:39 -0800
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Fri, 1 Dec 2023 18:53:39 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Fri, 1 Dec 2023 18:53:38 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CI+XaTRPTdKHIbRUSV+JT89fl0y3/va3ZKJFh214mHkaj8TL3mF3+R9JeY4csztn7PujXrOazFjW1Nty64YordpcQrFPzKULmkTWaG1QtRTzNza2N7J47/2LnDv4flSFRmQproAHcnDE5JYBHPM1to2hr4Nf/Pb0nWL0rCPy9FlKXdXPIQ21Oxs3CW7eiVg9/nrzeSkHqITHfxxv87Vg7QsAHRKAJ8A8Us2CfK54WWEdXqXVjtcz7RJp2GNz5mLUjur0AK1l8ukHvUc2DI3I5dBkjtXBHpXUKseENvF85TtFtJVVXsIbvc9XD7S+GEnGnYlipWjTm8TtojUMDpjwZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kSgG0B/bYp43ulAEJh2eOzHdAqcccLVRtY8uoX/YBWo=;
+ b=BytQQRAaiQ7yZ+s1R4BJgbwvlrTc537D+XV3P0cmBsN4olh8hfE+FPQYGCMyjnV5l4UuADJN1Ca1S6qfmcBSxvjFOISJidXNcCevtSDHOLrd77Pe5Z6Cn3het7LmGRuKGEuw89pOnW0ieRjhYnzNYKeBpP0z4WjVYBbALZexwr9m/5B6IEtmwY+ahsrHR+Y9JNgFG36x9vWq+ugxPTd1rPsaLkQZC5FTUampJsvsVpOvPAtxuS7lZT1KxbX+HojEpTBIAJ8dpOXk1NxmZiiNLwymbx02bOKgpiBLDVpcZex2l4d/leks3fHNp88W+VueYBXrdSoZ5c50lQJIIlqIJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com (2603:10b6:a03:478::6)
+ by IA1PR11MB8245.namprd11.prod.outlook.com (2603:10b6:208:448::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.29; Sat, 2 Dec
+ 2023 02:53:36 +0000
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::e10c:91d7:d34b:aa1d]) by SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::e10c:91d7:d34b:aa1d%6]) with mapi id 15.20.7025.022; Sat, 2 Dec 2023
+ 02:53:36 +0000
+From:   "Zhang, Rui" <rui.zhang@intel.com>
+To:     "Raj, Ashok" <ashok.raj@intel.com>
+CC:     "linux-tip-commits@vger.kernel.org" 
         <linux-tip-commits@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        "x86@kernel.org" <x86@kernel.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "jsperbeck@google.com" <jsperbeck@google.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "ashok_raj@linux.intel.com" <ashok_raj@linux.intel.com>,
+        "tip-bot2@linutronix.de" <tip-bot2@linutronix.de>
+Subject: Re: [tip: x86/urgent] x86/acpi: Ignore invalid x2APIC entries
+Thread-Topic: [tip: x86/urgent] x86/acpi: Ignore invalid x2APIC entries
+Thread-Index: AQHaExJ8HYCIhq0C9kqRsYucn9Sz1LCG/duAgADzWYCAC/TXAIAA9rMAgAAlfQCAAG0aAA==
+Date:   Sat, 2 Dec 2023 02:53:36 +0000
+Message-ID: <b5070898c96232f83ba738f6516cfc8102cb7ca8.camel@intel.com>
+References: <169953729188.3135.6804572126118798018.tip-bot2@tip-bot2>
+         <20231122221947.781812-1-jsperbeck@google.com>
+         <1e565bb08ebdd03897580a5905d1d2de01e15add.camel@intel.com>
+         <ZWlSRE6KNNFwIYyq@araj-dh-work.jf.intel.com>
+         <b561524f3378fb1d4c69451fdbf70bb5cbbb5ec9.camel@intel.com>
+         <ZWpAqAumIajbw4iK@a4bf019067fa.jf.intel.com>
+In-Reply-To: <ZWpAqAumIajbw4iK@a4bf019067fa.jf.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.44.4-0ubuntu2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6622:EE_|IA1PR11MB8245:EE_
+x-ms-office365-filtering-correlation-id: 449ff8a8-5641-4c53-8501-08dbf2e1e121
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: eklribf8Bf2jPOTFbPZ9wP2BJ1yqWmt4ebXbihn23srtz2sDaeuhzmGJl3tw4nBdHIj49sNHnQJoBpANmTCHP5ZlxyBpNutx0grMX80sYWWGj2BHKDMDZQx8X8DgAVj61tayY34Uq3/ZHhsSup1IIX9WKXql8JK4qbI8KUfxe+gvf/WxD738q9AuV4+UqxmlzuAQZ7kIbIquOCwZXai9t0/rvAc+eQkXnQ/LqvnDnD+rwwftBLzliYiNCJkHLlIuq9yjscIyHkqnkGSXpCzt0L3pqNcJyYhEWksyVFJ43fL6HbHtRFF6on0gs+9bPSPGVGn98KJDPfgwf84WxCe0WfZBrbu6UOuxGrBHQ9jFsJ+hObjyLJHCiAvC8ZajKzIY2V1LrwfruaZFujMxGFz9J8b58LQW1IhvL+dGyb0l41Jjg3Gnz0SOn30FoIQ81dfxYHrtLkwEqiFVL73vIiMjNKSEqHDka1m0xKuZEwWM54miYIu6RquExnP1JNrPkjomRdv9G6PjXCx/A2+qP8z+s2PAa/vMRg7e/haST6Std/3ATnUIk/yn3mdB2HvFA+R0t9VMQX5qpiBLKn2C5Z2AHAH/hiqsYjjmrAmZSU5en9c=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB6622.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(396003)(39860400002)(346002)(136003)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(36756003)(41300700001)(5660300002)(2906002)(86362001)(4001150100001)(38070700009)(6506007)(2616005)(6512007)(83380400001)(82960400001)(26005)(71200400001)(966005)(6486002)(478600001)(38100700002)(122000001)(316002)(4326008)(6636002)(54906003)(37006003)(66556008)(8936002)(76116006)(66446008)(64756008)(66476007)(66946007)(6862004)(91956017)(8676002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?emRTbjcvRFlnTXRtWHhJbWpQS1RMY1B4ZVNmckhYZ1NhNlcvc1ZFcTc5QytC?=
+ =?utf-8?B?NnNleHJvK0EwQkh6WGorVlYwVHZVd2FIaHl1NjlSMDJqc2Nzdkoxd08xTjgv?=
+ =?utf-8?B?eXlVMnpGN1FEYzNGSVlCdHdwVWk1MWVRaGZxWi9TY0ZMVlBxS1NzNmhoOWlH?=
+ =?utf-8?B?ejk1MU90aVJHdEs3ZHRZNGlKSk0ycGVOZmJrcTZFd1IyMUhTa1UvSk1BMGM3?=
+ =?utf-8?B?bEdaRVhwWlJFb1gyaWVmM2pIc2FrZThKcENaNWpJQ0lweVQyNjFJRDVtaCtL?=
+ =?utf-8?B?M3JPSktPOU1STHBkUjB4RjJ3VVQ4UFYvQ3p3M213NDU1WGt4MU5TaTlsSm11?=
+ =?utf-8?B?ZFpYK0g1UFNoNmFNUkw1TStxaktHOFZkeE9Wby9iK2VUaStYWFdYM3pvZzVO?=
+ =?utf-8?B?S05NNWhhNFI3bkt3M0RxaG1IMTBUdWF5U3dxdUlUU0pJa1ExU3Bld3h4cTRO?=
+ =?utf-8?B?c1RFVmRkVTVTejQ5Uml5eU5yYzdyMWQxcFp6clhvcURWeU5CV3R4VXhTMHhv?=
+ =?utf-8?B?N1I0b2NBeVk1eWQxWTFUTllJVFB6U3ZUT0liL3ExWDY3T01paHBaTWp5UEFp?=
+ =?utf-8?B?TWlJWDVzNkwvT1ZmVkU5R2pqaFFINzdUMEsxS3NnNlVjTlJHM1JXbkNjRmRE?=
+ =?utf-8?B?VzA4ell1UmM4WWc5d2xtYk5XeWpicmE5Vm9qdVQvajVIeFh1ZXMxci92dEpV?=
+ =?utf-8?B?QThHN3Fjc0ZHNlMrTXk0dy9xa1Q4RXJOcUNKV3NlMHNzL0ErZHE3ZXJYQ2M1?=
+ =?utf-8?B?SkxoQVBaM3hMdGdNeSttREp5c3dJZ09lUTNwUFBINTZCOUVjUG4yTi9ZTlh2?=
+ =?utf-8?B?Y3MxRDU2b1Z5K1RtM3htNDEvNFBEUEVCWHJQWXlxVzBXZTFrRWdaTFVGdnJ6?=
+ =?utf-8?B?MGJtaTZ3RkFoWXptbUpJc0prYkhHc1VKeWVtWVVxN2drUVQ0WjFFenNKajV0?=
+ =?utf-8?B?cUtjalN3K3BkcGsyaHVDb0t1bTBwK3E0TEtCdzFnTEdZa25Tdm5Pams0YkNW?=
+ =?utf-8?B?bFNleFErZ0pRUE1GcVU5U2VPZXpBN2pRY2U2T2tuVXBKTU41Ym1DY1VyRzhC?=
+ =?utf-8?B?YzRNLzNYN3pVSVVUc2ppU2NVdzlBdGgzOTF2aDZ4aThIOHJhd0JlK3ZvOCtE?=
+ =?utf-8?B?aHpaTDZVNVg5ZW5RVkcrakgwbkp1aWtCVnhMS2pYeUJzdEZzVXlPa0ViMEZs?=
+ =?utf-8?B?V1M2WU15czRPMVRoQ1NxbDhKbC9RS045blVuRlp0c0pLVkNkUkdRNWdsOGJF?=
+ =?utf-8?B?bzBMU0NucVhTbkpZRVROd3FyR1QwS29WeXZKbDFabytDdGFpQjRxYjNVbHhs?=
+ =?utf-8?B?aWYzajFrTzdpZkJlRGNLLzJtVHFjd2JwZXJyK2lrMzRZQ0ZwdDNrRWZ0VnZu?=
+ =?utf-8?B?WVB2SjVCM2oya2FTeDdEUXlwU0JxOEJJSngwT1ZxQ24wajFZakhGVjRKMFd5?=
+ =?utf-8?B?SkN4eXhTc2k0QnFTQzB4VUJEazVXeXVFL1VSMFJPVHVHa1dYc1RPR3Vod0ph?=
+ =?utf-8?B?ejJmajB1VnVBdGRMSjZ6bjE0b1dkNEpjMHFOdnpZdUNUQXhPUnh5T1k5WWVi?=
+ =?utf-8?B?bEQydVMvcTlJcSt6MFJ6NzgwTWNYUjRBd2RDMzU0bnFyMnlLaFhmMm5scldj?=
+ =?utf-8?B?VmdlZU9KaUJNcERjbHlqcEVnTlFLTXRBcXZmakx1b1lTSE15anM4WmdKYXJL?=
+ =?utf-8?B?ZUpweWN1b1hBYTB0ejBHSllXSGplS0xVU1RUa2ZKLzhzclYzcmNEUkNHSlpF?=
+ =?utf-8?B?eCtnSVlHTXBrUDd3aFJmK1NmODNyRFZOYWx2cmlJcWRjbVZEd1RXN3RHT1Fk?=
+ =?utf-8?B?SERHYWx1Y1JJeWs2MjM1cmJ4cmhPWU92UzhHY0JHMU9kYnFXQ2dYVXhBS3NF?=
+ =?utf-8?B?NXFuMzhnQVRHUGM3VmhLRmhWTitjVHFVeGhrSHRkYkppUG02YkN3WGE0ZkQw?=
+ =?utf-8?B?bXNlUzYrU3hyVDhxL1RwSDA5bWlkN3ptTmJ2YjU0T1FvY3NLbm9obkVWYUJz?=
+ =?utf-8?B?NStrKzk4TjRUbllmRHFYNGI5aTdpaWpPWmpnSWxEVzFRNUVGV1FDQWY3a2M0?=
+ =?utf-8?B?RExGV1dMR1ZPRTh5OVppUVRSUDBmYWdxZmxEVlIxdjNVOXczQy9qakhLS2d5?=
+ =?utf-8?B?TGFzMG94OWpWNWRnSnhMbXJHa0hFTWtRdjR5U3h2VmFEbUdHODhzcktzb2Q0?=
+ =?utf-8?B?Unc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BBED2BC8DBD722468960C3C60A066364@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6622.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 449ff8a8-5641-4c53-8501-08dbf2e1e121
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2023 02:53:36.1145
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 3rs7CKmw1oLAcUn4E8mQJ4JvmkmT54LaDAWfNKdmCHzq1d1u5Wwu7q/jAHDiy5mPapU0RAHKPGfm4GNWuTgKcA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8245
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,171 +176,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Dec 1, 2023 at 12:32=E2=80=AFAM Zhang, Rui <rui.zhang@intel.com> wr=
-ote:
->
-> On Thu, 2023-11-23 at 20:50 +0800, Exchange Online wrote:
-> > Hi, John,
-> >
-> > Thanks for catching this issue.
-> >
-> > On Wed, 2023-11-22 at 22:19 +0000, John Sperbeck wrote:
-> > > I have a platform with both LOCAL_APIC and LOCAL_X2APIC entries for
-> > > each CPU.  However, the ids for the LOCAL_APIC entries are all
-> > > invalid ids of 255, so they have always been skipped in
-> > > acpi_parse_lapic()
-> > > by this code from f3bf1dbe64b6 ("x86/acpi: Prevent LAPIC id 0xff
-> > > from
-> > > being
-> > > accounted"):
-> > >
-> > >     /* Ignore invalid ID */
-> > >     if (processor->id =3D=3D 0xff)
-> > >             return 0;
-> > >
-> > > With the change in this thread, the return value of 0 means that
-> > > the
-> > > 'count' variable in acpi_parse_entries_array() is incremented.  The
-> > > positive return value means that 'has_lapic_cpus' is set, even
-> > > though
-> > > no entries were actually matched.
-> >
-> > So in acpi_parse_madt_lapic_entries, without this patch,
-> > madt_proc[0].count is a positive value on this platform, right?
-> >
-> > This sounds like a potential issue because the following checks to
-> > fall
-> > back to MPS mode can also break. (If all LOCAL_APIC entries have
-> > apic_id 0xff and all LOCAL_X2APIC entries have apic_id 0xffffffff)
-> >
-> > >   Then, when the MADT is iterated
-> > > with acpi_parse_x2apic(), the x2apic entries with ids less than 255
-> > > are skipped and most of my CPUs aren't recognized.
-> > >
-> > > I think the original version of this change was okay for this case
-> > > in
-> > > https://lore.kernel.org/lkml/87pm4bp54z.ffs@tglx/T/
-> >
-> > Yeah.
-> >
-> > But if we want to fix the potential issue above, we need to do
-> > something more.
-> >
-> > Say we can still use acpi_table_parse_entries_array() and convert
-> > acpi_parse_lapic()/acpi_parse_x2apic() to
-> > acpi_subtable_proc.handler_arg and save the real valid entries via
-> > the
-> > parameter.
-> >
-> > or can we just use num_processors & disabled_cpus to check if there
-> > is
-> > any CPU probed when parsing LOCAL_APIC/LOCAL_X2APIC entires?
-> >
->
-> Hi, John,
->
-> As a quick fix, I'm not going to fix the "potential issue" describes
-> above because we have not seen a real problem caused by this yet.
->
-> Can you please try the below patch to confirm if the problem is gone on
-> your system?
-> This patch falls back to the previous way as sent at
-> https://lore.kernel.org/lkml/87pm4bp54z.ffs@tglx/T/
->
-> thanks,
-> rui
->
-> From bdb45e241b4fea8a12b958e490979e96b064e43d Mon Sep 17 00:00:00 2001
-> From: Zhang Rui <rui.zhang@intel.com>
-> Date: Fri, 1 Dec 2023 15:06:34 +0800
-> Subject: [PATCH] x86/acpi: Do strict X2APIC ID check only when an enabled=
- CPU
->  is enumerated via LAPIC
->
-> Commit 8e9c42d776d6 ("x86/acpi: Ignore invalid x2APIC entries") does
-> strict X2APIC ID check if LAPIC contains valid CPUs by checking the
-> acpi_table_parse_madt() return value.
->
-> This is wrong because acpi_table_parse_madt() return value only
-> represents the number of legal entries parsed. For example, LAPIC entry
-> with LAPIC ID 0xff is counted as a legal entry, but it doesn't describe
-> a valid CPU.
->
-> This causes issues on a system which has 0xff LAPIC ID in all LAPIC
-> entries. Because the code does strict X2APIC IDs check and ignores most
-> of the CPUs in X2APIC entries.
->
-> Fix the problem by doing strict X2APIC ID check less aggressively, say
-> only when an enabled CPU is enumerated via LAPIC.
->
-> Fixes: 8e9c42d776d6 ("x86/acpi: Ignore invalid x2APIC entries")
-> Link: https://lore.kernel.org/all/20231122221947.781812-1-jsperbeck@googl=
-e.com/
-> Reported-by: John Sperbeck <jsperbeck@google.com>
-> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-> ---
->  arch/x86/kernel/acpi/boot.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-> index 1a0dd80d81ac..8cc566ce486a 100644
-> --- a/arch/x86/kernel/acpi/boot.c
-> +++ b/arch/x86/kernel/acpi/boot.c
-> @@ -266,6 +266,7 @@ static int __init
->  acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned lo=
-ng end)
->  {
->         struct acpi_madt_local_apic *processor =3D NULL;
-> +       int cpu;
->
->         processor =3D (struct acpi_madt_local_apic *)header;
->
-> @@ -289,9 +290,13 @@ acpi_parse_lapic(union acpi_subtable_headers * heade=
-r, const unsigned long end)
->          * to not preallocating memory for all NR_CPUS
->          * when we use CPU hotplug.
->          */
-> -       acpi_register_lapic(processor->id,      /* APIC ID */
-> -                           processor->processor_id, /* ACPI ID */
-> -                           processor->lapic_flags & ACPI_MADT_ENABLED);
-> +       cpu =3D acpi_register_lapic(processor->id,        /* APIC ID */
-> +                                 processor->processor_id, /* ACPI ID */
-> +                                 processor->lapic_flags & ACPI_MADT_ENAB=
-LED);
-> +
-> +       /* Do strict X2APIC ID check only when an enabled CPU is enumerat=
-ed via LAPIC */
-> +       if (cpu >=3D 0 )
-> +               has_lapic_cpus =3D true;
->
->         return 0;
->  }
-> @@ -1134,7 +1139,6 @@ static int __init acpi_parse_madt_lapic_entries(voi=
-d)
->         if (!count) {
->                 count =3D acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC=
-,
->                                         acpi_parse_lapic, MAX_LOCAL_APIC)=
-;
-> -               has_lapic_cpus =3D count > 0;
->                 x2count =3D acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_X2=
-APIC,
->                                         acpi_parse_x2apic, MAX_LOCAL_APIC=
-);
->         }
-> --
-> 2.34.1
->
-
-Yes, with that patch, the problem is gone on my system.  All of the
-CPUs are recognized and active.
-
-Before the patch (only one CPU active):
-
-    # cat /proc/cpuinfo | grep '^processor' | wc -l
-    1
-
-With the patch (all CPUs active):
-
-    oxco8:~# cat /proc/cpuinfo | grep '^processor' | wc -l
-    112
+T24gRnJpLCAyMDIzLTEyLTAxIGF0IDEyOjIzIC0wODAwLCBBc2hvayBSYWogd3JvdGU6DQo+IE9u
+IEZyaSwgRGVjIDAxLCAyMDIzIGF0IDEwOjA4OjU1QU0gLTA4MDAsIFpoYW5nLCBSdWkgd3JvdGU6
+DQo+ID4gT24gVGh1LCAyMDIzLTExLTMwIGF0IDE5OjI1IC0wODAwLCBBc2hvayBSYWogd3JvdGU6
+DQo+ID4gPiBPbiBUaHUsIE5vdiAyMywgMjAyMyBhdCAxMjo1MDo0N1BNICswMDAwLCBaaGFuZyBS
+dWkgd3JvdGU6DQo+ID4gPiA+IEhpLCBKb2huLA0KPiA+ID4gPiANCj4gPiA+ID4gVGhhbmtzIGZv
+ciBjYXRjaGluZyB0aGlzIGlzc3VlLg0KPiA+ID4gPiANCj4gPiA+ID4gT24gV2VkLCAyMDIzLTEx
+LTIyIGF0IDIyOjE5ICswMDAwLCBKb2huIFNwZXJiZWNrIHdyb3RlOg0KPiA+ID4gPiA+IEkgaGF2
+ZSBhIHBsYXRmb3JtIHdpdGggYm90aCBMT0NBTF9BUElDIGFuZCBMT0NBTF9YMkFQSUMNCj4gPiA+
+ID4gPiBlbnRyaWVzDQo+ID4gPiA+ID4gZm9yDQo+ID4gPiA+ID4gZWFjaCBDUFUuwqAgSG93ZXZl
+ciwgdGhlIGlkcyBmb3IgdGhlIExPQ0FMX0FQSUMgZW50cmllcyBhcmUNCj4gPiA+ID4gPiBhbGwN
+Cj4gPiA+ID4gPiBpbnZhbGlkIGlkcyBvZiAyNTUsIHNvIHRoZXkgaGF2ZSBhbHdheXMgYmVlbiBz
+a2lwcGVkIGluDQo+ID4gPiA+ID4gYWNwaV9wYXJzZV9sYXBpYygpDQo+ID4gPiA+ID4gYnkgdGhp
+cyBjb2RlIGZyb20gZjNiZjFkYmU2NGI2ICgieDg2L2FjcGk6IFByZXZlbnQgTEFQSUMgaWQNCj4g
+PiA+ID4gPiAweGZmDQo+ID4gPiA+ID4gZnJvbQ0KPiA+ID4gPiA+IGJlaW5nDQo+ID4gPiA+ID4g
+YWNjb3VudGVkIik6DQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gwqDCoMKgIC8qIElnbm9yZSBpbnZh
+bGlkIElEICovDQo+ID4gPiA+ID4gwqDCoMKgIGlmIChwcm9jZXNzb3ItPmlkID09IDB4ZmYpDQo+
+ID4gPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gMDsNCj4gPiA+ID4gPiANCj4g
+PiA+ID4gPiBXaXRoIHRoZSBjaGFuZ2UgaW4gdGhpcyB0aHJlYWQsIHRoZSByZXR1cm4gdmFsdWUg
+b2YgMCBtZWFucw0KPiA+ID4gPiA+IHRoYXQNCj4gPiA+ID4gPiB0aGUNCj4gPiA+ID4gPiAnY291
+bnQnIHZhcmlhYmxlIGluIGFjcGlfcGFyc2VfZW50cmllc19hcnJheSgpIGlzDQo+ID4gPiA+ID4g
+aW5jcmVtZW50ZWQuwqANCj4gPiA+ID4gPiBUaGUNCj4gPiA+ID4gPiBwb3NpdGl2ZSByZXR1cm4g
+dmFsdWUgbWVhbnMgdGhhdCAnaGFzX2xhcGljX2NwdXMnIGlzIHNldCwNCj4gPiA+ID4gPiBldmVu
+DQo+ID4gPiA+ID4gdGhvdWdoDQo+ID4gPiA+ID4gbm8gZW50cmllcyB3ZXJlIGFjdHVhbGx5IG1h
+dGNoZWQuDQo+ID4gPiA+IA0KPiA+ID4gPiBTbyBpbiBhY3BpX3BhcnNlX21hZHRfbGFwaWNfZW50
+cmllcywgd2l0aG91dCB0aGlzIHBhdGNoLA0KPiA+ID4gPiBtYWR0X3Byb2NbMF0uY291bnQgaXMg
+YSBwb3NpdGl2ZSB2YWx1ZSBvbiB0aGlzIHBsYXRmb3JtLCByaWdodD8NCj4gPiA+ID4gDQo+ID4g
+PiA+IFRoaXMgc291bmRzIGxpa2UgYSBwb3RlbnRpYWwgaXNzdWUgYmVjYXVzZSB0aGUgZm9sbG93
+aW5nIGNoZWNrcw0KPiA+ID4gPiB0bw0KPiA+ID4gPiBmYWxsDQo+ID4gPiA+IGJhY2sgdG8gTVBT
+IG1vZGUgY2FuIGFsc28gYnJlYWsuIChJZiBhbGwgTE9DQUxfQVBJQyBlbnRyaWVzDQo+ID4gPiA+
+IGhhdmUNCj4gPiA+ID4gYXBpY19pZCAweGZmIGFuZCBhbGwgTE9DQUxfWDJBUElDIGVudHJpZXMg
+aGF2ZSBhcGljX2lkDQo+ID4gPiA+IDB4ZmZmZmZmZmYpDQo+ID4gPiA+IA0KPiA+ID4gPiA+IMKg
+IFRoZW4sIHdoZW4gdGhlIE1BRFQgaXMgaXRlcmF0ZWQNCj4gPiA+ID4gPiB3aXRoIGFjcGlfcGFy
+c2VfeDJhcGljKCksIHRoZSB4MmFwaWMgZW50cmllcyB3aXRoIGlkcyBsZXNzDQo+ID4gPiA+ID4g
+dGhhbg0KPiA+ID4gPiA+IDI1NQ0KPiA+ID4gPiA+IGFyZSBza2lwcGVkIGFuZCBtb3N0IG9mIG15
+IENQVXMgYXJlbid0IHJlY29nbml6ZWQuDQo+ID4gPiANCj4gPiA+IFRoaXMgc21lbGxzIHdyb25n
+LiBJZiBhIEJJT1MgaXMgcGxhY2luZyBzb21lIGluIGxhcGljIGFuZCBzb21lIGluDQo+ID4gPiB4
+MmFwaWMNCj4gPiA+IHRhYmxlLCBpdHMgcmVhbGx5IG1lc3NlZCB1cC4gDQo+ID4gPiANCj4gPiA+
+IFNob3VsZG4ndCB0aGUga2VybmVsIHNjYW4gdGhlbSBpbiBzb21lIHByaW9yaXR5IGFuZCBvbmx5
+IGNvbnNpZGVyDQo+ID4gPiBvbmUNCj4gPiA+IHNldCBvZg0KPiA+ID4gdGFibGVzPw0KPiA+ID4g
+DQo+ID4gPiBTaG91bGRuJ3QgdGhlIGNvZGUgc3RvcCBsb29raW5nIG9uY2Ugc29tZXRoaW5nIG9u
+Y2UgYSB0eXBlIGlzDQo+ID4gPiBmb3VuZD8NCj4gPiA+IA0KPiA+IA0KPiA+IEkgYWxzbyB3YW50
+IHRvIGdldCB0aGlzIGNsYXJpZmllZCBidXQgdGhlcmUgaXMgbm8gc3BlYyBzYXlpbmcgdGhpcy4N
+Cj4gPiBBbmQNCj4gPiBpbnN0ZWFkLCBhcyBtZW50aW9uZWQgaW4gdGhlIGNvbW1lbnQsIHdlIGRv
+IGhhdmUgc29tZXRoaW5nIGluDQo+ID4gaHR0cHM6Ly91ZWZpLm9yZy9zcGVjcy9BQ1BJLzYuNS8w
+NV9BQ1BJX1NvZnR3YXJlX1Byb2dyYW1taW5nX01vZGVsLmh0bWwjcHJvY2Vzc29yLWxvY2FsLXgy
+YXBpYy1zdHJ1Y3R1cmUNCj4gPiANCj4gPiAiW0NvbXBhdGliaWxpdHkgbm90ZV0gT24gc29tZSBs
+ZWdhY3kgT1NlcywgTG9naWNhbCBwcm9jZXNzb3JzIHdpdGgNCj4gPiBBUElDDQo+ID4gSUQgdmFs
+dWVzIGxlc3MgdGhhbiAyNTUgKHdoZXRoZXIgaW4gWEFQSUMgb3IgWDJBUElDIG1vZGUpIG11c3Qg
+dXNlDQo+ID4gdGhlDQo+ID4gUHJvY2Vzc29yIExvY2FsIEFQSUMgc3RydWN0dXJlIHRvIGNvbnZl
+eSB0aGVpciBBUElDIGluZm9ybWF0aW9uIHRvDQo+ID4gT1NQTSwgYW5kIHRob3NlIHByb2Nlc3Nv
+cnMgbXVzdCBiZSBkZWNsYXJlZCBpbiB0aGUgRFNEVCB1c2luZyB0aGUNCj4gPiBQcm9jZXNzb3Io
+KSBrZXl3b3JkLiBMb2dpY2FsIHByb2Nlc3NvcnMgd2l0aCBBUElDIElEIHZhbHVlcyAyNTUgYW5k
+DQo+ID4gZ3JlYXRlciBtdXN0IHVzZSB0aGUgUHJvY2Vzc29yIExvY2FsIHgyQVBJQyBzdHJ1Y3R1
+cmUgYW5kIGJlDQo+ID4gZGVjbGFyZWQNCj4gPiB1c2luZyB0aGUgRGV2aWNlKCkga2V5d29yZC4i
+DQo+ID4gDQo+ID4gc28gaXQgaXMgcG9zc2libGUgdG8gZW51bWVyYXRlIENQVXMgZnJvbSBib3Ro
+IExBUElDIGFuZCBYMkFQSUMuDQo+ID4gDQo+IA0KPiBBaCwgc28gdGhpcyBsb29rcyBsaWtlIHRo
+ZSBsZWdhY3kgY2FzZSwgb2xkIE9TIGNhbiBhdGxlYXN0IGJvb3QgdGhlDQo+IEFQSUMNCj4gZW50
+cmllcyBhbmQgbm90IHByb2Nlc3MgdGhlIHgyYXBpYyBvbmVzLiANCj4gDQo+IFNvIHlvdSBjYW4g
+cG90ZW50aWFsbHkgaGF2ZSBkdXBsaWNhdGVzDQo+IA0KPiBBUElDID0gaGFzIGFsbCBBUElDIGlk
+J3MgPCAyNTUNCj4gWDJhcGljIGhhcyBhbGwgZW50cmllcyA+IDI1NSBPUiANCj4gwqDCoMKgwqDC
+oMKgwqDCoEl0IGNhbiBjb250YWluIGV2ZXJ5dGhpbmcsIHNvIHlvdSBtaWdodCBuZWVkIHRvIHdl
+ZWQgb3V0DQo+IMKgwqDCoMKgwqDCoMKgwqBkdXBsaWNhdGVzPw0KPiANClRoYXQgaXMgd2hhdCB0
+aGlzIHBhdGNoIHRyaWVzIHRvIGRvLg0KU2F5LCBpZiB3ZSBoYXZlIHZhbGlkIENQVXMgaW4gTEFQ
+SUMsIHByb2JlIFgyQVBJQyBDUFVzIHdpdGggSUQgPj0gMjU1DQpvbmx5Lg0KDQp0aGFua3MsDQpy
+dWkNCg==
