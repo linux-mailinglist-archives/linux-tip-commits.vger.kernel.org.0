@@ -2,63 +2,62 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE3528022A6
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  3 Dec 2023 12:16:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF29A8073EF
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Dec 2023 16:46:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbjLCLPz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 3 Dec 2023 06:15:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38722 "EHLO
+        id S1379343AbjLFPq0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Dec 2023 10:46:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjLCLPz (ORCPT
+        with ESMTP id S1379288AbjLFPqZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 3 Dec 2023 06:15:55 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA3CA2;
-        Sun,  3 Dec 2023 03:16:00 -0800 (PST)
-Date:   Sun, 03 Dec 2023 11:15:56 -0000
+        Wed, 6 Dec 2023 10:46:25 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A874C9;
+        Wed,  6 Dec 2023 07:46:32 -0800 (PST)
+Date:   Wed, 06 Dec 2023 15:46:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1701602158;
+        s=2020; t=1701877590;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YQ+VBXklhmVch7Sg2vc0ARJ1AeCnK1tBH54ISC203KI=;
-        b=aCiqE0gJlIwkgJbAP7VryY/SfHO2newtiJlJsbMsBdAnC/qthTaU+JRoXoakp9XrGLjxVD
-        UnEILmt5H9vLjrjwuv/w3P572/pbDUrEx1aC6aqsWx3NMCsARcVf8No7J1Cce392F5Q89t
-        GbK2ZTyP4MzgKOewnNDxuGFQLNaxIjCH2J82hTiZQjh5Pt7UqQ1QjFAhb7mGVbBVsrX5Pd
-        8l/roLWkOqK9opU9Au0KWdgqseAbZnezB4Hchmmz75LJFsiH9sMK+Y7dbwYHPDMTUCBEo7
-        qpm4yooV0Eh0WzlflzZ03nNxibLdmfSAf7Ti6aqMiUJozc/utyPXHaYj0XMvww==
+        bh=xJX0tYjAGn3fmFE3b1w7KCi39uVImecXHrOoY8+UCxM=;
+        b=iyYKexP/+hGZ8oaSAqHfbblBJOlJ3tOp6QkFqwu/S7o0WmT8aMN+Ig9Qn4k+fG+L0dkYlE
+        gu+j59DqBbZEQUUPW7iB2uM9IUiT4We/X4aKYMVp9eO7veFjvJbn6WfFvpByldJZ0F3g5f
+        QLDGnq77vv1ZFyI4WL/VpHdM7RD4WU/+k4EWQkoE4bta3A+Ys3IJ8JDq3lg8qEyBbhIEd+
+        Pm6xG+dleVWJwagmAEmElLbSA5wCA/rfTLEFzlJAIwEHdU7vPQ22vTZzbLXJXhwtkG5MMy
+        u3hEOLv6GKKxDJv1G+e5Ef1Pp9D/iBt4AmAZyF7pPoTuNscveTokC9fNV/suyA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1701602158;
+        s=2020e; t=1701877590;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YQ+VBXklhmVch7Sg2vc0ARJ1AeCnK1tBH54ISC203KI=;
-        b=8JGd6ffJHHd6dgW56m4o+GfX6/Rt1zNYXkDBMR1PopCo2xT98Ho9XXGQBYkgWUfimrFjgN
-        nOiqMeAHSH4LWkCA==
-From:   "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+        bh=xJX0tYjAGn3fmFE3b1w7KCi39uVImecXHrOoY8+UCxM=;
+        b=/A+ku8YxTnzHCtc/3htQm5bdFSmXaDn0U1sNWyoWW95PSPqEVOvQUCHKq22iN0XgwSWgBM
+        nK9IqYLfAjawvNBg==
+From:   "tip-bot2 for Zenghui Yu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/intel: Set new revision only after
- a successful update
-Cc:     Ashok Raj <ashok.raj@intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: smp/core] cpu/hotplug: Remove unused CPU hotplug states
+Cc:     Zenghui Yu <yuzenghui@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <ZWjVt5dNRjbcvlzR@a4bf019067fa.jf.intel.com>
-References: <ZWjVt5dNRjbcvlzR@a4bf019067fa.jf.intel.com>
+In-Reply-To: <20231124121615.1604-1-yuzenghui@huawei.com>
+References: <20231124121615.1604-1-yuzenghui@huawei.com>
 MIME-Version: 1.0
-Message-ID: <170160215680.398.309337215455167122.tip-bot2@tip-bot2>
+Message-ID: <170187758879.398.12515486860339710758.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75 autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,69 +65,108 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     9c21ea53e6bd1104c637b80a0688040f184cc761
-Gitweb:        https://git.kernel.org/tip/9c21ea53e6bd1104c637b80a0688040f184cc761
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Fri, 01 Dec 2023 14:35:06 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sun, 03 Dec 2023 11:49:53 +01:00
+Commit-ID:     15bece7bec0df91a8ed1c185483d67708425ca8e
+Gitweb:        https://git.kernel.org/tip/15bece7bec0df91a8ed1c185483d67708425ca8e
+Author:        Zenghui Yu <yuzenghui@huawei.com>
+AuthorDate:    Fri, 24 Nov 2023 20:16:15 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 06 Dec 2023 16:31:03 +01:00
 
-x86/microcode/intel: Set new revision only after a successful update
+cpu/hotplug: Remove unused CPU hotplug states
 
-This was meant to be done only when early microcode got updated
-successfully. Move it into the if-branch.
+There are unused hotplug states which either have never been used or the
+removal of the usage did not remove the state constant.
 
-Also, make sure the current revision is read unconditionally and only
-once.
+Drop them to reduce the size of the cpuhp_hp_states array.
 
-Fixes: 080990aa3344 ("x86/microcode: Rework early revisions reporting")
-Reported-by: Ashok Raj <ashok.raj@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Ashok Raj <ashok.raj@intel.com>
-Link: https://lore.kernel.org/r/ZWjVt5dNRjbcvlzR@a4bf019067fa.jf.intel.com
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20231124121615.1604-1-yuzenghui@huawei.com
 ---
- arch/x86/kernel/cpu/microcode/intel.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ include/linux/cpuhotplug.h | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index 5d6ea87..857e608 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -370,14 +370,14 @@ static __init struct microcode_intel *get_microcode_blob(struct ucode_cpu_info *
- {
- 	struct cpio_data cp;
- 
-+	intel_collect_cpu_info(&uci->cpu_sig);
-+
- 	if (!load_builtin_intel_microcode(&cp))
- 		cp = find_microcode_in_initrd(ucode_path);
- 
- 	if (!(cp.data && cp.size))
- 		return NULL;
- 
--	intel_collect_cpu_info(&uci->cpu_sig);
--
- 	return scan_microcode(cp.data, cp.size, uci, save);
- }
- 
-@@ -410,13 +410,13 @@ void __init load_ucode_intel_bsp(struct early_load_data *ed)
- {
- 	struct ucode_cpu_info uci;
- 
--	ed->old_rev = intel_get_microcode_revision();
--
- 	uci.mc = get_microcode_blob(&uci, false);
--	if (uci.mc && apply_microcode_early(&uci) == UCODE_UPDATED)
--		ucode_patch_va = UCODE_BSP_LOADED;
-+	ed->old_rev = uci.cpu_sig.rev;
- 
--	ed->new_rev = uci.cpu_sig.rev;
-+	if (uci.mc && apply_microcode_early(&uci) == UCODE_UPDATED) {
-+		ucode_patch_va = UCODE_BSP_LOADED;
-+		ed->new_rev = uci.cpu_sig.rev;
-+	}
- }
- 
- void load_ucode_intel_ap(void)
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index efc0c0b..af6c21a 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -66,15 +66,12 @@ enum cpuhp_state {
+ 	CPUHP_PERF_POWER,
+ 	CPUHP_PERF_SUPERH,
+ 	CPUHP_X86_HPET_DEAD,
+-	CPUHP_X86_APB_DEAD,
+ 	CPUHP_X86_MCE_DEAD,
+ 	CPUHP_VIRT_NET_DEAD,
+ 	CPUHP_IBMVNIC_DEAD,
+ 	CPUHP_SLUB_DEAD,
+ 	CPUHP_DEBUG_OBJ_DEAD,
+ 	CPUHP_MM_WRITEBACK_DEAD,
+-	/* Must be after CPUHP_MM_VMSTAT_DEAD */
+-	CPUHP_MM_DEMOTION_DEAD,
+ 	CPUHP_MM_VMSTAT_DEAD,
+ 	CPUHP_SOFTIRQ_DEAD,
+ 	CPUHP_NET_MVNETA_DEAD,
+@@ -96,7 +93,6 @@ enum cpuhp_state {
+ 	CPUHP_NET_DEV_DEAD,
+ 	CPUHP_PCI_XGENE_DEAD,
+ 	CPUHP_IOMMU_IOVA_DEAD,
+-	CPUHP_LUSTRE_CFS_DEAD,
+ 	CPUHP_AP_ARM_CACHE_B15_RAC_DEAD,
+ 	CPUHP_PADATA_DEAD,
+ 	CPUHP_AP_DTPM_CPU_DEAD,
+@@ -118,7 +114,6 @@ enum cpuhp_state {
+ 	CPUHP_XEN_EVTCHN_PREPARE,
+ 	CPUHP_ARM_SHMOBILE_SCU_PREPARE,
+ 	CPUHP_SH_SH3X_PREPARE,
+-	CPUHP_NET_FLOW_PREPARE,
+ 	CPUHP_TOPOLOGY_PREPARE,
+ 	CPUHP_NET_IUCV_PREPARE,
+ 	CPUHP_ARM_BL_PREPARE,
+@@ -151,18 +146,14 @@ enum cpuhp_state {
+ 	CPUHP_AP_IRQ_ARMADA_XP_STARTING,
+ 	CPUHP_AP_IRQ_BCM2836_STARTING,
+ 	CPUHP_AP_IRQ_MIPS_GIC_STARTING,
+-	CPUHP_AP_IRQ_RISCV_STARTING,
+ 	CPUHP_AP_IRQ_LOONGARCH_STARTING,
+ 	CPUHP_AP_IRQ_SIFIVE_PLIC_STARTING,
+ 	CPUHP_AP_ARM_MVEBU_COHERENCY,
+-	CPUHP_AP_MICROCODE_LOADER,
+ 	CPUHP_AP_PERF_X86_AMD_UNCORE_STARTING,
+ 	CPUHP_AP_PERF_X86_STARTING,
+ 	CPUHP_AP_PERF_X86_AMD_IBS_STARTING,
+-	CPUHP_AP_PERF_X86_CQM_STARTING,
+ 	CPUHP_AP_PERF_X86_CSTATE_STARTING,
+ 	CPUHP_AP_PERF_XTENSA_STARTING,
+-	CPUHP_AP_MIPS_OP_LOONGSON3_STARTING,
+ 	CPUHP_AP_ARM_VFP_STARTING,
+ 	CPUHP_AP_ARM64_DEBUG_MONITORS_STARTING,
+ 	CPUHP_AP_PERF_ARM_HW_BREAKPOINT_STARTING,
+@@ -179,7 +170,6 @@ enum cpuhp_state {
+ 	CPUHP_AP_QCOM_TIMER_STARTING,
+ 	CPUHP_AP_TEGRA_TIMER_STARTING,
+ 	CPUHP_AP_ARMADA_TIMER_STARTING,
+-	CPUHP_AP_MARCO_TIMER_STARTING,
+ 	CPUHP_AP_MIPS_GIC_TIMER_STARTING,
+ 	CPUHP_AP_ARC_TIMER_STARTING,
+ 	CPUHP_AP_RISCV_TIMER_STARTING,
+@@ -217,9 +207,7 @@ enum cpuhp_state {
+ 	CPUHP_AP_PERF_X86_AMD_UNCORE_ONLINE,
+ 	CPUHP_AP_PERF_X86_AMD_POWER_ONLINE,
+ 	CPUHP_AP_PERF_X86_RAPL_ONLINE,
+-	CPUHP_AP_PERF_X86_CQM_ONLINE,
+ 	CPUHP_AP_PERF_X86_CSTATE_ONLINE,
+-	CPUHP_AP_PERF_X86_IDXD_ONLINE,
+ 	CPUHP_AP_PERF_S390_CF_ONLINE,
+ 	CPUHP_AP_PERF_S390_SF_ONLINE,
+ 	CPUHP_AP_PERF_ARM_CCI_ONLINE,
+@@ -252,8 +240,6 @@ enum cpuhp_state {
+ 	CPUHP_AP_BASE_CACHEINFO_ONLINE,
+ 	CPUHP_AP_ONLINE_DYN,
+ 	CPUHP_AP_ONLINE_DYN_END		= CPUHP_AP_ONLINE_DYN + 30,
+-	/* Must be after CPUHP_AP_ONLINE_DYN for node_states[N_CPU] update */
+-	CPUHP_AP_MM_DEMOTION_ONLINE,
+ 	CPUHP_AP_X86_HPET_ONLINE,
+ 	CPUHP_AP_X86_KVM_CLK_ONLINE,
+ 	CPUHP_AP_ACTIVE,
