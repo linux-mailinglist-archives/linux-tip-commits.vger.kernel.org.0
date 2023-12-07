@@ -2,191 +2,85 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D7A4808003
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Dec 2023 06:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE1AF808681
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Dec 2023 12:15:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230209AbjLGFKv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Dec 2023 00:10:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56238 "EHLO
+        id S1378905AbjLGLPS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 Dec 2023 06:15:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjLGFKn (ORCPT
+        with ESMTP id S1378884AbjLGLPQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Dec 2023 00:10:43 -0500
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 287E3D53;
-        Wed,  6 Dec 2023 21:10:41 -0800 (PST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.nyi.internal (Postfix) with ESMTP id 7F6CA5C0212;
-        Thu,  7 Dec 2023 00:10:38 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Thu, 07 Dec 2023 00:10:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
-        cc:cc:content-transfer-encoding:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-        1701925838; x=1702012238; bh=Z3Xli2pOVHMbO4d5HDdfaRwqVwxvsQsrbmu
-        GcEpy9xI=; b=gwK4x++VCHNA3TzbdtOAHjyugPMqyAupkJnWbkrbilgAV3Lf5P7
-        05722qsMcPKgmZ1dUn1e+H2mNub8rr7EfkWIBFRGNQaK1EMYY2SdAa1hGLyxwYMO
-        Svp+fQCpxmvJGv4dB4Z0ywFOCKSrQJTlLMcVOl4zpHvJj5Eu3W4oXI6dnpChiiNJ
-        eIsG42/7NYb8LyCQZCyoVIADFuNax00gBT4MgT9y3c2gLBlIMgcFFcvIVBKWeHUX
-        gh7baREcyi6M9UK+4bSLw687PD6Cllz43nqhT/9SIJjC+da2SgH679XIBDmkrRRe
-        Rw1bkG+cWWEd+N7IN86R7ApX3UUezts5dHQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1701925838; x=1702012238; bh=Z3Xli2pOVHMbO4d5HDdfaRwqVwxvsQsrbmu
-        GcEpy9xI=; b=3eGwlA49VGICR5s3rPrh6zPKV11Y+Lmas/r7XLUalIBU6dr3an3
-        k31TNCFFDOMYsUxTVzM0C32i8vp9DFBPa7npJAuEsh6hZcvkAG4m6efyEWNybtfW
-        ZiZV46PCgpqn2D5XuHuIuXGyPdihyZYJ5oBkjkAtJSQpXqfBURmb617fTbtS9+gr
-        VDrDY8TEunBtBdkO26LvA/m8ZFWqkocpLA9GdOfi6lXuHNu4/qcnp+RU+F+Lr9i5
-        KUeSsfQMDgSCOp+zwV5TpKOwT4/8ae9vv88UZALoSwn6DArFejKoIzbuwVy5uUbx
-        AnBsSvz6H/hYrhtFkK0dNxLImHRnpnGkIjA==
-X-ME-Sender: <xms:zVNxZYTlBZiQsQGMb2pG0h-iRsxvLDrr0M7DSsertsvWUCPpYsCTtg>
-    <xme:zVNxZVxtXVyckV_TA3KYIyZy7fHKPermMFHQJnTvVNJx6UmNBA8Ml4YEi5Z0xOqHV
-    nOJXj2bRfTD9SYzMA>
-X-ME-Received: <xmr:zVNxZV2QONTloWeRiqBNUmLSDEr93Z82ZfN9PKMl54ujS4VWT4lWIRQNy9tWi-oq2k5WmP_zJxSr86v2AlckBELuh7CTnML6m9-y74NllFlkZfSlVJCNsGnN8bA0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudekuddgkedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpeetnhgu
-    rhgvshcuhfhrvghunhguuceorghnughrvghssegrnhgrrhgriigvlhdruggvqeenucggtf
-    frrghtthgvrhhnpeehkefhtefhiefhtdegieeifeevfefhgeekvdevieeltedvieeuhfdv
-    ledtleejhfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghnughrvghssegrnhgrrhgriigv
-    lhdruggv
-X-ME-Proxy: <xmx:zVNxZcBxaC5DA5U56uC9b_diIRjXSwLUl4FtS2evBlprhalOzkGD7A>
-    <xmx:zVNxZRiz7jG99d-HhwcVcPtCmOT8225yPmUkQg0c1rtIT6jnvWY3rg>
-    <xmx:zVNxZYptkCKCaEFdfXUk0mSrTdqebrt4NjNxIl-ROieif63IdaNaMg>
-    <xmx:zlNxZYOCfUH7511ZfTieLj_CbCaDCDfqMsbrSIUBxCIlD-I9A2MpUw>
-Feedback-ID: id4a34324:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 7 Dec 2023 00:10:36 -0500 (EST)
-Date:   Wed, 6 Dec 2023 21:10:35 -0800
-From:   Andres Freund <andres@anarazel.de>
-To:     "Zhang, Rui" <rui.zhang@intel.com>
-Cc:     "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "jsperbeck@google.com" <jsperbeck@google.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "sashal@kernel.org" <sashal@kernel.org>,
-        "tip-bot2@linutronix.de" <tip-bot2@linutronix.de>
-Subject: Re: [tip: x86/urgent] x86/acpi: Ignore invalid x2APIC entries
-Message-ID: <20231207051035.yef3jix44uo6jlav@awork3.anarazel.de>
-References: <169953729188.3135.6804572126118798018.tip-bot2@tip-bot2>
- <20231122221947.781812-1-jsperbeck@google.com>
- <1e565bb08ebdd03897580a5905d1d2de01e15add.camel@intel.com>
- <904ce2b870b8a7f34114f93adc7c8170420869d1.camel@intel.com>
- <20231206065850.hs7k554v6wym7gw5@awork3.anarazel.de>
- <c3b064004a1748c68829f804b3da56a610fbfc8e.camel@intel.com>
+        Thu, 7 Dec 2023 06:15:16 -0500
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEC4011F;
+        Thu,  7 Dec 2023 03:15:22 -0800 (PST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E84B940E00C7;
+        Thu,  7 Dec 2023 11:15:20 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+        header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id zA3FcBYuDKzQ; Thu,  7 Dec 2023 11:15:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+        t=1701947719; bh=q/aOTK0ooA0NK+qsWb3wyUsPFtr16T+u4TTr3X/f35g=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gDp40T9RvusesPyiIKCAlH4uapzEgwCDQl4ctT4Z4WmSvHNVikoMLSVj7r3Ae5j/4
+         eVBfuqUVBHzln+anqJZViKAOXdijlxsGry9mloyFQuWW0/UbGtBpFDaKZvmBQeVJkC
+         FLj3iE1/RVlqafPE/qop5wwWHJJTksBRIPHN6BTk9yfsOaqJFeNRVH00UuV1H3pbg9
+         NYsgxhpVwyNsAnlUcrGWdlXkd2QFWL6roalHcjb1DUeOSvrEScd1nlGgqVdEhPE3ze
+         Vm2bXFbvpfyVzJJUF5GaeahOcEvolA9vbu1qtfVRGkwED745Wc7WhsFUX4v4n+LngU
+         AKwjDw+C89pTPOOMgRS/Neoe5aSC6gYoz0eHjGf7kmO6ScZk2DHKnAjPP44URE3sfi
+         eS7ylFOQ+0zfueQ79ptGocWonJp7Zi1LIdg21TBe0XxoxUcr8aCd5zYLXeTEgmgK97
+         FBX7N3BB08h3iW5MuneIvbprI8e91/yfOJxzMsbhWNoLfD1/CoJb7fJCaDhZI1oJcm
+         tLk+7gGTABLIOn2iOwqTdjAfgfo3hQP8Qui7RIYLm96cSJGn4sOuvwHRgVvxWELqN0
+         OAjgr4iB37iwRdFFF32i/YxECbXFcbg5Wr5nRimoyOawkYnjOLFEDykaJIG0oJtxlZ
+         icO8DeXM53D6ozeI6gAZlR34=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+        (No client certificate requested)
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1ADAD40E00C5;
+        Thu,  7 Dec 2023 11:15:14 +0000 (UTC)
+Date:   Thu, 7 Dec 2023 12:15:09 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Uros Bizjak <ubizjak@gmail.com>, x86@kernel.org
+Subject: Re: [tip: x86/percpu] x86/callthunks: Mark apply_relocation() as
+ __init_or_module
+Message-ID: <20231207111509.GAZXGpPVEuWO/gNfvY@fat_crate.local>
+References: <20231105213731.1878100-3-ubizjak@gmail.com>
+ <170137899106.398.14613676631297252898.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c3b064004a1748c68829f804b3da56a610fbfc8e.camel@intel.com>
+In-Reply-To: <170137899106.398.14613676631297252898.tip-bot2@tip-bot2>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi,
+On Thu, Nov 30, 2023 at 09:16:31PM -0000, tip-bot2 for Ingo Molnar wrote:
+> -void apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
+> +void __init_or_module apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
+>  {
+>  	int prev, target = 0;
 
-On 2023-12-07 02:41:34 +0000, Zhang, Rui wrote:
-> On Tue, 2023-12-05 at 22:58 -0800, Andres Freund wrote:
-> > Hi,
-> > 
-> > On 2023-12-01 08:31:48 +0000, Zhang, Rui wrote:
-> > > As a quick fix, I'm not going to fix the "potential issue"
-> > > describes
-> > > above because we have not seen a real problem caused by this yet.
-> > > 
-> > > Can you please try the below patch to confirm if the problem is
-> > > gone on
-> > > your system?
-> > > This patch falls back to the previous way as sent at
-> > > https://lore.kernel.org/lkml/87pm4bp54z.ffs@tglx/T/
-> > 
-> > 
-> > I've just spent a couple hours bisecting why upgrading to 6.7-rc4
-> > left me with
-> > just a single CPU core on my dual socket workstation.
-> > 
-> > 
-> > before:
-> > [    0.000000] Linux version 6.6.0-andres-00003-g31255e072b2e ...
-> > ...
-> > [    0.022960] ACPI: Using ACPI (MADT) for SMP configuration
-> > information
-> > ...
-> > [    0.022968] smpboot: Allowing 40 CPUs, 0 hotplug CPUs
-> > ...
-> > [    0.345921] smpboot: CPU0: Intel(R) Xeon(R) Gold 5215 CPU @
-> > 2.50GHz (family: 0x6, model: 0x55, stepping: 0x7)
-> > ...
-> > [    0.347229] .... node  #0, CPUs:        #1  #2  #3  #4  #5  #6 
-> > #7  #8  #9
-> > [    0.349082] .... node  #1, CPUs:   #10 #11 #12 #13 #14 #15 #16 #17
-> > #18 #19
-> > [    0.003190] smpboot: CPU 10 Converting physical 0 to logical die 1
-> > 
-> > [    0.361053] .... node  #0, CPUs:   #20 #21 #22 #23 #24 #25 #26 #27
-> > #28 #29
-> > [    0.363990] .... node  #1, CPUs:   #30 #31 #32 #33 #34 #35 #36 #37
-> > #38 #39
-> > ...
-> > [    0.370886] smp: Brought up 2 nodes, 40 CPUs
-> > [    0.370891] smpboot: Max logical packages: 2
-> > [    0.370896] smpboot: Total of 40 processors activated (200000.00
-> > BogoMIPS)
-> > [    0.403905] node 0 deferred pages initialised in 32ms
-> > [    0.408865] node 1 deferred pages initialised in 37ms
-> > 
-> > 
-> > after:
-> > [    0.000000] Linux version 6.6.0-andres-00004-gec9aedb2aa1a ...
-> > ...
-> > [    0.022935] ACPI: Using ACPI (MADT) for SMP configuration
-> > information
-> > ...
-> > [    0.022942] smpboot: Allowing 1 CPUs, 0 hotplug CPUs
-> > ...
-> > [    0.356424] smpboot: CPU0: Intel(R) Xeon(R) Gold 5215 CPU @
-> > 2.50GHz (family: 0x6, model: 0x55, stepping: 0x7)
-> > ...
-> > [    0.357098] smp: Bringing up secondary CPUs ...
-> > [    0.357107] smp: Brought up 2 nodes, 1 CPU
-> > [    0.357108] smpboot: Max logical packages: 1
-> > [    0.357110] smpboot: Total of 1 processors activated (5000.00
-> > BogoMIPS)
-> > [    0.726283] node 0 deferred pages initialised in 368ms
-> > [    0.774704] node 1 deferred pages initialised in 418ms
-> > 
-> > 
-> > There does seem to be something off with the ACPI data, when booting
-> > without
-> > the patch,
-> 
-> which patch are you referring to? the original patch in this thread?
+Can't do that for a CONFIG_MODULES=n build:
 
-Yes, the the original patch / the state in 6.7-rc4.
+WARNING: modpost: vmlinux: section mismatch in reference: patch_dest+0x61 (section: .text) -> apply_relocation (section: .init.text)
+ERROR: modpost: Section mismatches detected.
 
+-- 
+Regards/Gruss,
+    Boris.
 
-> Does the second patch fixes the problem? I mean the patch at
-> https://lore.kernel.org/all/904ce2b870b8a7f34114f93adc7c8170420869d1.camel@intel.com/
-
-Yes.
-
-Greetings,
-
-Andres Freund
+https://people.kernel.org/tglx/notes-about-netiquette
