@@ -2,52 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 414F180AA78
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Dec 2023 18:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A554380AA7D
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Dec 2023 18:18:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235981AbjLHRSF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 Dec 2023 12:18:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46398 "EHLO
+        id S1574474AbjLHRSJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 Dec 2023 12:18:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235950AbjLHRSB (ORCPT
+        with ESMTP id S235991AbjLHRSC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 Dec 2023 12:18:01 -0500
+        Fri, 8 Dec 2023 12:18:02 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF15119B4;
-        Fri,  8 Dec 2023 09:17:30 -0800 (PST)
-Date:   Fri, 08 Dec 2023 17:17:28 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 281151BC3;
+        Fri,  8 Dec 2023 09:17:32 -0800 (PST)
+Date:   Fri, 08 Dec 2023 17:17:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1702055849;
+        s=2020; t=1702055850;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Eiuzu+kdXHQQeo0yh16f9Iu6ApXODrsdCTQclFbsApY=;
-        b=oh0SjXkpYyoKRDqiD3sc56TSeqe29yhprZ4neb8sNGb2/DMH3M2KuxCOMaoNST+aI70FrP
-        V6FNVMmpXOh9r6SrH6oytTo7TSlrxtjR45xMYz+VV4Futg//SLuk2Waxq4sKbAPLFd2qFG
-        9K10mnOQgFkafnGfVrgjPsKkQAVSoheV3uVWEa6sw6IBbcNMvd9NPZBQlVs8BJhXpsx/Z+
-        M5KY7BtSWa6OkQri2PPIV7ZeESN0HD2/6xlBpbqVIoIyrLWo7+X7odylbagkzQahrip/kI
-        rUAduJCv8Q1q/iTa9dvmaZUFhoUgF8nfsfYkke/OhO3m53YSz5UO4C47yh9Jiw==
+        bh=9CV/95Dz+kJafe/zMAcyTIZFYP04cBNpwb7zoOnZypY=;
+        b=amNqOk+N/CVEc1VWPv0K4geuI7Hs0iPvVjq9NgHLKPCwmjX9lfSA38qtV0PwdSkx+zNsdN
+        mySL4qfiBimt6QSoR3QFgqGuL1C3btMjFQu18OIsGu4zCxd7AnsJ+/r0fopoMbfXptP6Rj
+        OzN7cnE2pypkYDjCESqg8Q4vS7cgyIXpSDHYjAipLJpojxzMo4fQl5HTPu3TEqwmtfr/Zb
+        24L35y7Ijg9n5LsjDsGgfAEbL2Rue2xNbFGyUynCFEpIbFo2DDtKMCYSNMnUwKmjIS80dI
+        e3gWMg0mLIQy4qo59fzn94lPG1ka9E/HM3+FmWm0FPrthBrwHjUGEmYCiSZOtQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1702055849;
+        s=2020e; t=1702055850;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Eiuzu+kdXHQQeo0yh16f9Iu6ApXODrsdCTQclFbsApY=;
-        b=08Wph+eB1eq063sqmljbgkEEngPYi0R198o8sHQF5ti1/IWt0/wKFK5QNkvJlRdE5UW60q
-        YZc5hyaZbjtzz3DA==
+        bh=9CV/95Dz+kJafe/zMAcyTIZFYP04cBNpwb7zoOnZypY=;
+        b=ILJVGNab4OGD7YaDCtR81z+ldbhh9vRsXMIERPD3xtFLB1UIqTXSMo0jXUWVT1yuWvUOfv
+        JQd62In6tK9LSbCw==
 From:   "tip-bot2 for Kai Huang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/virt/tdx: Handle SEAMCALL no entropy error in common code
+Subject: [tip: x86/tdx] x86/virt/tdx: Define TDX supported page sizes as macros
 Cc:     Kai Huang <kai.huang@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        "Kirill A. Shutemov" <kirll.shutemov@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>, x86@kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <170205584844.398.11207047321106370195.tip-bot2@tip-bot2>
+Message-ID: <170205584992.398.5198513170089475670.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,72 +63,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/tdx branch of tip:
 
-Commit-ID:     1e66a7e275393055d98d2306771fe1feadeb1cd6
-Gitweb:        https://git.kernel.org/tip/1e66a7e275393055d98d2306771fe1feadeb1cd6
+Commit-ID:     d623704bb23901a25bf6d6a40aa16b43a17622eb
+Gitweb:        https://git.kernel.org/tip/d623704bb23901a25bf6d6a40aa16b43a17622eb
 Author:        Kai Huang <kai.huang@intel.com>
-AuthorDate:    Fri, 08 Dec 2023 09:07:24 -08:00
+AuthorDate:    Fri, 08 Dec 2023 09:07:22 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 08 Dec 2023 09:12:06 -08:00
+CommitterDate: Fri, 08 Dec 2023 09:12:00 -08:00
 
-x86/virt/tdx: Handle SEAMCALL no entropy error in common code
+x86/virt/tdx: Define TDX supported page sizes as macros
 
-Some SEAMCALLs use the RDRAND hardware and can fail for the same reasons
-as RDRAND.  Use the kernel RDRAND retry logic for them.
+TDX supports 4K, 2M and 1G page sizes.  The corresponding values are
+defined by the TDX module spec and used as TDX module ABI.  Currently,
+they are used in try_accept_one() when the TDX guest tries to accept a
+page.  However currently try_accept_one() uses hard-coded magic values.
 
-There are three __seamcall*() variants.  Do the SEAMCALL retry in common
-code and add a wrapper for each of them.
+Define TDX supported page sizes as macros and get rid of the hard-coded
+values in try_accept_one().  TDX host support will need to use them too.
 
 Signed-off-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirll.shutemov@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20231208170740.53979-4-dave.hansen%40intel.com
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/all/20231208170740.53979-2-dave.hansen%40intel.com
 ---
- arch/x86/include/asm/tdx.h | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/x86/coco/tdx/tdx-shared.c    | 6 +++---
+ arch/x86/include/asm/shared/tdx.h | 5 +++++
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index e5dd1cb..24c0357 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -24,6 +24,11 @@
- #define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
- #define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
+diff --git a/arch/x86/coco/tdx/tdx-shared.c b/arch/x86/coco/tdx/tdx-shared.c
+index 78e4132..1655aa5 100644
+--- a/arch/x86/coco/tdx/tdx-shared.c
++++ b/arch/x86/coco/tdx/tdx-shared.c
+@@ -22,13 +22,13 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+ 	 */
+ 	switch (pg_level) {
+ 	case PG_LEVEL_4K:
+-		page_size = 0;
++		page_size = TDX_PS_4K;
+ 		break;
+ 	case PG_LEVEL_2M:
+-		page_size = 1;
++		page_size = TDX_PS_2M;
+ 		break;
+ 	case PG_LEVEL_1G:
+-		page_size = 2;
++		page_size = TDX_PS_1G;
+ 		break;
+ 	default:
+ 		return 0;
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index ccce7eb..a403614 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -55,6 +55,11 @@
+ 	(TDX_RDX | TDX_RBX | TDX_RSI | TDX_RDI | TDX_R8  | TDX_R9  | \
+ 	 TDX_R10 | TDX_R11 | TDX_R12 | TDX_R13 | TDX_R14 | TDX_R15)
  
-+/*
-+ * TDX module SEAMCALL leaf function error codes
-+ */
-+#define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
++/* TDX supported page sizes from the TDX module ABI. */
++#define TDX_PS_4K	0
++#define TDX_PS_2M	1
++#define TDX_PS_1G	2
 +
  #ifndef __ASSEMBLY__
  
- /*
-@@ -84,6 +89,27 @@ u64 __seamcall(u64 fn, struct tdx_module_args *args);
- u64 __seamcall_ret(u64 fn, struct tdx_module_args *args);
- u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
- void tdx_init(void);
-+
-+#include <asm/archrandom.h>
-+
-+typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
-+
-+static inline u64 sc_retry(sc_func_t func, u64 fn,
-+			   struct tdx_module_args *args)
-+{
-+	int retry = RDRAND_RETRY_LOOPS;
-+	u64 ret;
-+
-+	do {
-+		ret = func(fn, args);
-+	} while (ret == TDX_RND_NO_ENTROPY && --retry);
-+
-+	return ret;
-+}
-+
-+#define seamcall(_fn, _args)		sc_retry(__seamcall, (_fn), (_args))
-+#define seamcall_ret(_fn, _args)	sc_retry(__seamcall_ret, (_fn), (_args))
-+#define seamcall_saved_ret(_fn, _args)	sc_retry(__seamcall_saved_ret, (_fn), (_args))
- #else
- static inline void tdx_init(void) { }
- #endif	/* CONFIG_INTEL_TDX_HOST */
+ #include <linux/compiler_attributes.h>
