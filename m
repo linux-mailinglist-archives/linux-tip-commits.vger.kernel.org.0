@@ -1,48 +1,49 @@
 Return-Path: <linux-tip-commits+bounces-1-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DA380ABBD
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F38C80ABBB
 	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Dec 2023 19:13:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5040D1F211E9
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Dec 2023 18:13:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE122281806
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Dec 2023 18:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43C647A49;
-	Fri,  8 Dec 2023 18:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3C546B9F;
+	Fri,  8 Dec 2023 18:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FC9bfl2p";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="guD1ulod"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fZLsZDj2";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ykwsQkdM"
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4510EA3;
-	Fri,  8 Dec 2023 10:13:01 -0800 (PST)
-Date: Fri, 08 Dec 2023 18:12:59 -0000
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CC211F;
+	Fri,  8 Dec 2023 10:13:02 -0800 (PST)
+Date: Fri, 08 Dec 2023 18:13:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702059179;
+	s=2020; t=1702059181;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=dvTiWZawvnttS4+GL5aT5rzsJeSaTFYf97yFzwvhD2w=;
-	b=FC9bfl2p3ufvhmRM6DsAIM6LtcSxquBTJ+nWeRy23DK6+CaXDfI3JnUnlCJiVpKn2DtxE/
-	9ZXtaTAgITs/WVv8ue4cCuHH4CMHH0lBgLqrunqZ/mXweOQe5EeIdNYH7Izqqd5o6RbG3F
-	v9/dkNb3nBtTbCXqnre40Uxo6oFnZSuPT8riJuhkCdr7gkzxUshiYER01JxFEyOzq9fmjd
-	EVcgtCzFAJe4i5cxvZj2M+6soIu2NYkqiER3ERv8cbB5sENuVsO2LZIi1cJcN7NBNzW+YD
-	iBG4LhekqLSHxMAsSOLt5okOoccXLbT0UMvapYgna5WbOzUD4ut//YGpQuMpBA==
+	bh=yvm4+gDjc9yZRURvOF5hsHgmgIuQOiG3VThauBnHAuM=;
+	b=fZLsZDj2W6KDZXbVMq6WgFFW3z1ROEn+G8dQ0q1ZbNpvWaluEv2XEYb0ezcy1FDA2NQPrg
+	zKHaLjtpsYsbnjBE9C/iv5nJ0/wXI4EqYFnDMDiIF/YnhJXmpuumzRZL9WP3iP5ojse36s
+	Gw4FHrq3Z776a0HC0PLlSTTwpgJ+P7PfB88FakU2BhpQaSRHV4N+gEkbUg5tBjPmLIsA7k
+	9uDxsPhFgv0wd30UBh1osbtPgLCgKmPhQ5JTKK1X5HvF5bNCfXaEHCafwWMdF9t0SGaoNw
+	iJVoJeOkETctHb4W0AYdQ2JwryBTqeWIQG0CZOqKcMxBLpTQBg6qmLNHgnqCOQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702059179;
+	s=2020e; t=1702059181;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=dvTiWZawvnttS4+GL5aT5rzsJeSaTFYf97yFzwvhD2w=;
-	b=guD1ulodz8VIttw5dshTayhnKZbyGV+ft+pISwLxTYlWeoxcfQLVLtMJmPpnXTx17st7Je
-	suCoMCtXrPhWBKDA==
+	bh=yvm4+gDjc9yZRURvOF5hsHgmgIuQOiG3VThauBnHAuM=;
+	b=ykwsQkdMATCkFAftugd7iv8fmMHJDGUNWIsie3le/1SNNYWtw/+u7gb/2F9cm2+YKciZMp
+	7lfUoQUkhzZjY9Dw==
 From: "tip-bot2 for Jo Van Bulck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] selftests/sgx: Handle relocations in test enclave
+Subject: [tip: x86/sgx] selftests/sgx: Remove redundant enclave base address
+ save/restore
 Cc: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
  Dave Hansen <dave.hansen@linux.intel.com>,
  Jarkko Sakkinen <jarkko@kernel.org>, Kai Huang <kai.huang@intel.com>,
@@ -53,7 +54,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170205917924.398.6222151209323327457.tip-bot2@tip-bot2>
+Message-ID: <170205918069.398.17416852974013342906.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -63,150 +64,43 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     d06978e8e47a348c0d33462a8c2bf8f46d2b7df5
-Gitweb:        https://git.kernel.org/tip/d06978e8e47a348c0d33462a8c2bf8f46d2b7df5
+Commit-ID:     4f812df8f37463767c2a74c2bd77de94acdb2be6
+Gitweb:        https://git.kernel.org/tip/4f812df8f37463767c2a74c2bd77de94acdb2be6
 Author:        Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
-AuthorDate:    Thu, 05 Oct 2023 17:38:49 +02:00
+AuthorDate:    Thu, 05 Oct 2023 17:38:47 +02:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Fri, 08 Dec 2023 10:05:27 -08:00
 
-selftests/sgx: Handle relocations in test enclave
+selftests/sgx: Remove redundant enclave base address save/restore
 
-Static-pie binaries normally include a startup routine to perform any ELF
-relocations from .rela.dyn. Since the enclave loading process is different
-and glibc is not included, do the necessary relocation for encl_op_array
-entries manually at runtime relative to the enclave base to ensure correct
-function pointers.
-
-When keeping encl_op_array as a local variable on the stack, gcc without
-optimizations generates code that explicitly gets the right function
-addresses and stores them to create the array on the stack:
-
-encl_body:
-    /* snipped */
-    lea    do_encl_op_put_to_buf(%rip), %rax
-    mov    %rax, -0x50(%rbp)
-    lea    do_encl_op_get_from_buf(%rip), %rax
-    mov    %rax,-0x48(%rbp)
-    lea    do_encl_op_put_to_addr(%rip), %rax
-    /* snipped */
-
-However, gcc -Os or clang generate more efficient code that initializes
-encl_op_array by copying a "prepared copy" containing the absolute
-addresses of the functions (i.e., relative to the image base starting from
-0) generated by the compiler/linker:
-
-encl_body:
-    /* snipped */
-    lea    prepared_copy(%rip), %rsi
-    lea    -0x48(%rsp), %rdi
-    mov    $0x10,%ecx
-    rep movsl %ds:(%rsi),%es:(%rdi)
-    /* snipped */
-
-When building the enclave with -static-pie, the compiler/linker includes
-relocation entries for the function symbols in the "prepared copy":
-
-Relocation section '.rela.dyn' at offset 0x4000 contains 12 entries:
-  Offset          Info           Type         Symbol
-/* snipped; "prepared_copy" starts at 0x6000 */
-000000006000  000000000008 R_X86_64_RELATIVE  <do_encl_emodpe>
-000000006008  000000000008 R_X86_64_RELATIVE  <do_encl_eaccept>
-000000006010  000000000008 R_X86_64_RELATIVE  <do_encl_op_put_to_buf>
-000000006018  000000000008 R_X86_64_RELATIVE  <do_encl_op_get_from_buf>
-000000006020  000000000008 R_X86_64_RELATIVE  <do_encl_op_put_to_addr>
-000000006028  000000000008 R_X86_64_RELATIVE  <do_encl_op_get_from_addr>
-000000006030  000000000008 R_X86_64_RELATIVE  <do_encl_op_nop>
-000000006038  000000000008 R_X86_64_RELATIVE  <do_encl_init_tcs_page>
-
-Static-pie binaries normally include a glibc "_dl_relocate_static_pie"
-routine that will perform these relocations as part of the startup.
-However, since the enclave loading process is different and glibc is not
-included, we cannot rely on these relocations to be performed. Without
-relocations, the code would erroneously jump to the _absolute_ function
-address loaded from the local copy.
-
-Thus, declare "encl_op_array" as global and manually relocate the loaded
-function-pointer entries relative to the enclave base at runtime. This
-generates the following code:
-
-encl_body:
-    /* snipped */
-    lea    encl_op_array(%rip), %rcx
-    lea    __encl_base(%rip), %rax
-    add    (%rcx,%rdx,8),%rax
-    jmp    *%rax
+Remove redundant push/pop pair that stores and restores the enclave base
+address in the test enclave, as it is never used after the pop and can
+anyway be easily retrieved via the __encl_base symbol.
 
 Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 Acked-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/all/150d8ca8-2c66-60d1-f9fc-8e6279824e94@cs.kuleuven.be/
-Link: https://lore.kernel.org/all/5c22de5a-4b3b-1f38-9771-409b4ec7f96d@cs.kuleuven.be/#r
-Link: https://lore.kernel.org/all/20231005153854.25566-9-jo.vanbulck%40cs.kuleuven.be
+Link: https://lore.kernel.org/all/20231005153854.25566-7-jo.vanbulck%40cs.kuleuven.be
 ---
- tools/testing/selftests/sgx/test_encl.c | 50 ++++++++++++++++--------
- 1 file changed, 35 insertions(+), 15 deletions(-)
+ tools/testing/selftests/sgx/test_encl_bootstrap.S | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/testing/selftests/sgx/test_encl.c b/tools/testing/selftests/sgx/test_encl.c
-index ae791df..649604c 100644
---- a/tools/testing/selftests/sgx/test_encl.c
-+++ b/tools/testing/selftests/sgx/test_encl.c
-@@ -121,21 +121,41 @@ static void do_encl_op_nop(void *_op)
+diff --git a/tools/testing/selftests/sgx/test_encl_bootstrap.S b/tools/testing/selftests/sgx/test_encl_bootstrap.S
+index 03ae0f5..e0ce993 100644
+--- a/tools/testing/selftests/sgx/test_encl_bootstrap.S
++++ b/tools/testing/selftests/sgx/test_encl_bootstrap.S
+@@ -55,12 +55,9 @@ encl_entry_core:
+ 	push	%rax
  
- }
+ 	push	%rcx # push the address after EENTER
+-	push	%rbx # push the enclave base address
  
-+/*
-+ * Symbol placed at the start of the enclave image by the linker script.
-+ * Declare this extern symbol with visibility "hidden" to ensure the compiler
-+ * does not access it through the GOT and generates position-independent
-+ * addressing as __encl_base(%rip), so we can get the actual enclave base
-+ * during runtime.
-+ */
-+extern const uint8_t __attribute__((visibility("hidden"))) __encl_base;
-+
-+typedef void (*encl_op_t)(void *);
-+static const encl_op_t encl_op_array[ENCL_OP_MAX] = {
-+	do_encl_op_put_to_buf,
-+	do_encl_op_get_from_buf,
-+	do_encl_op_put_to_addr,
-+	do_encl_op_get_from_addr,
-+	do_encl_op_nop,
-+	do_encl_eaccept,
-+	do_encl_emodpe,
-+	do_encl_init_tcs_page,
-+};
-+
- void encl_body(void *rdi,  void *rsi)
- {
--	const void (*encl_op_array[ENCL_OP_MAX])(void *) = {
--		do_encl_op_put_to_buf,
--		do_encl_op_get_from_buf,
--		do_encl_op_put_to_addr,
--		do_encl_op_get_from_addr,
--		do_encl_op_nop,
--		do_encl_eaccept,
--		do_encl_emodpe,
--		do_encl_init_tcs_page,
--	};
+ 	call	encl_body
+ 
+-	pop	%rbx # pop the enclave base address
 -
--	struct encl_op_header *op = (struct encl_op_header *)rdi;
--
--	if (op->type < ENCL_OP_MAX)
--		(*encl_op_array[op->type])(op);
-+	struct encl_op_header *header = (struct encl_op_header *)rdi;
-+	encl_op_t op;
-+
-+	if (header->type >= ENCL_OP_MAX)
-+		return;
-+
-+	/*
-+	 * The enclave base address needs to be added, as this call site
-+	 * *cannot be* made rip-relative by the compiler, or fixed up by
-+	 * any other possible means.
-+	 */
-+	op = ((uint64_t)&__encl_base) + encl_op_array[header->type];
-+
-+	(*op)(header);
- }
+ 	/* Clear volatile GPRs, except RAX (EEXIT function). */
+ 	xor     %rcx, %rcx
+ 	xor     %rdx, %rdx
 
