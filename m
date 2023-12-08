@@ -2,62 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE1AF808681
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Dec 2023 12:15:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B23DE80AA5E
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Dec 2023 18:17:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378905AbjLGLPS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Dec 2023 06:15:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46088 "EHLO
+        id S233504AbjLHRRO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 Dec 2023 12:17:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378884AbjLGLPQ (ORCPT
+        with ESMTP id S232481AbjLHRRN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Dec 2023 06:15:16 -0500
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEC4011F;
-        Thu,  7 Dec 2023 03:15:22 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E84B940E00C7;
-        Thu,  7 Dec 2023 11:15:20 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-        header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id zA3FcBYuDKzQ; Thu,  7 Dec 2023 11:15:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1701947719; bh=q/aOTK0ooA0NK+qsWb3wyUsPFtr16T+u4TTr3X/f35g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gDp40T9RvusesPyiIKCAlH4uapzEgwCDQl4ctT4Z4WmSvHNVikoMLSVj7r3Ae5j/4
-         eVBfuqUVBHzln+anqJZViKAOXdijlxsGry9mloyFQuWW0/UbGtBpFDaKZvmBQeVJkC
-         FLj3iE1/RVlqafPE/qop5wwWHJJTksBRIPHN6BTk9yfsOaqJFeNRVH00UuV1H3pbg9
-         NYsgxhpVwyNsAnlUcrGWdlXkd2QFWL6roalHcjb1DUeOSvrEScd1nlGgqVdEhPE3ze
-         Vm2bXFbvpfyVzJJUF5GaeahOcEvolA9vbu1qtfVRGkwED745Wc7WhsFUX4v4n+LngU
-         AKwjDw+C89pTPOOMgRS/Neoe5aSC6gYoz0eHjGf7kmO6ScZk2DHKnAjPP44URE3sfi
-         eS7ylFOQ+0zfueQ79ptGocWonJp7Zi1LIdg21TBe0XxoxUcr8aCd5zYLXeTEgmgK97
-         FBX7N3BB08h3iW5MuneIvbprI8e91/yfOJxzMsbhWNoLfD1/CoJb7fJCaDhZI1oJcm
-         tLk+7gGTABLIOn2iOwqTdjAfgfo3hQP8Qui7RIYLm96cSJGn4sOuvwHRgVvxWELqN0
-         OAjgr4iB37iwRdFFF32i/YxECbXFcbg5Wr5nRimoyOawkYnjOLFEDykaJIG0oJtxlZ
-         icO8DeXM53D6ozeI6gAZlR34=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-        (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1ADAD40E00C5;
-        Thu,  7 Dec 2023 11:15:14 +0000 (UTC)
-Date:   Thu, 7 Dec 2023 12:15:09 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Uros Bizjak <ubizjak@gmail.com>, x86@kernel.org
-Subject: Re: [tip: x86/percpu] x86/callthunks: Mark apply_relocation() as
- __init_or_module
-Message-ID: <20231207111509.GAZXGpPVEuWO/gNfvY@fat_crate.local>
-References: <20231105213731.1878100-3-ubizjak@gmail.com>
- <170137899106.398.14613676631297252898.tip-bot2@tip-bot2>
+        Fri, 8 Dec 2023 12:17:13 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59B14AD;
+        Fri,  8 Dec 2023 09:17:19 -0800 (PST)
+Date:   Fri, 08 Dec 2023 17:17:16 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1702055837;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=/Yn6+t3whdJaatWtaZyPqOxlM5qqFAMKPg+fW99uUtk=;
+        b=Q/63yIW4XWtHFFz7HFR5EdHtbeQqJzr3WUeNSWbuP66EjWSDsV7yRIBM6/6xTXt9NgJ2Nc
+        Scgt4sTAHGtW/SG2hms5N2u/gIBdbTtSNyfCrtba/yeqikQRqVKDuf8hKCUUW3Dv3VgYSb
+        6R03MQsWRtO68jHTelyzjgRO/DwDFa9hAhCl6bFKj0Pky6QOVY1e5j/QrY30lETI7tZivL
+        w93LYPRVlu57uN3GieNdMeefwLiAv6cm31i+vJ/G5AJNG4qOBJXZQfP7MzbZ3GHtWI5oMC
+        UCg6VcYwAL1ajbHo5kMUn8D+3Nha5qNxvzcfYUAauwXcnuIb3XAPZ5VYrlSLoA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1702055837;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=/Yn6+t3whdJaatWtaZyPqOxlM5qqFAMKPg+fW99uUtk=;
+        b=K4JxApCAWVCs843dX1yawpt/OPiaDt+dQIMCgWXKpweuq8GVwtwoaptbrPnOj8nkf8YfX5
+        /32lRxyk1ridAjCA==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/tdx] x86/virt/tdx: Disable TDX host support when kexec is enabled
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <170137899106.398.14613676631297252898.tip-bot2@tip-bot2>
+Message-ID: <170205583649.398.11856254981576868481.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -68,19 +58,35 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Nov 30, 2023 at 09:16:31PM -0000, tip-bot2 for Ingo Molnar wrote:
-> -void apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
-> +void __init_or_module apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
->  {
->  	int prev, target = 0;
+The following commit has been merged into the x86/tdx branch of tip:
 
-Can't do that for a CONFIG_MODULES=n build:
+Commit-ID:     7ba6ac73f8981bd5ae463108757d0d25388affc4
+Gitweb:        https://git.kernel.org/tip/7ba6ac73f8981bd5ae463108757d0d25388affc4
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Fri, 08 Dec 2023 09:07:40 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Fri, 08 Dec 2023 09:12:56 -08:00
 
-WARNING: modpost: vmlinux: section mismatch in reference: patch_dest+0x61 (section: .text) -> apply_relocation (section: .init.text)
-ERROR: modpost: Section mismatches detected.
+x86/virt/tdx: Disable TDX host support when kexec is enabled
 
--- 
-Regards/Gruss,
-    Boris.
+TDX host support currently lacks the ability to handle kexec.  Disable TDX
+when kexec is enabled.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20231208170740.53979-20-dave.hansen%40intel.com
+---
+ arch/x86/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index e255d8a..01cdb16 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1973,6 +1973,7 @@ config INTEL_TDX_HOST
+ 	depends on X86_X2APIC
+ 	select ARCH_KEEP_MEMBLOCK
+ 	depends on CONTIG_ALLOC
++	depends on !KEXEC_CORE
+ 	help
+ 	  Intel Trust Domain Extensions (TDX) protects guest VMs from malicious
+ 	  host and certain physical attacks.  This option enables necessary TDX
