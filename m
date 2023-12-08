@@ -1,24 +1,24 @@
 Return-Path: <linux-tip-commits+bounces-1-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C066D80AEAC
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Dec 2023 22:14:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D563880AEA9
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Dec 2023 22:14:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60EB2B20A17
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Dec 2023 21:14:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E59C281AC0
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Dec 2023 21:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB00E5787E;
-	Fri,  8 Dec 2023 21:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279EF374FF;
+	Fri,  8 Dec 2023 21:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="C+IVN7fO";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="epmVXBZj"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C0251738;
-	Fri,  8 Dec 2023 13:14:41 -0800 (PST)
-Date: Fri, 08 Dec 2023 21:14:39 -0000
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xFtvVsVC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2l7lHMKF"
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F137A9;
+	Fri,  8 Dec 2023 13:14:42 -0800 (PST)
+Date: Fri, 08 Dec 2023 21:14:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1702070080;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -26,12 +26,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EDHBJQDZaX7u7SZaleE7r1usB2TuTYUPYo/RxWQVhF0=;
-	b=C+IVN7fOXZhmbTr8KoxrSK/PweN2C7Af/LVbgvJEqYvocsuqA5wb3GhDLCRwpSyBxDRjPI
-	/vAQ6fu9VWftICW14pa4qlTLxi29gVzX3MgG9jMu+1ztp7zYE1eoVJmJQ1q3zaUHnbpX0i
-	FTidnFbobCt8FxSyz30vRFuiV1qqoOvMlZ40At7gr13DnoOniTmPn5CFf6VcOpjQgIn1sV
-	vN8GOtHvH7ntburMVy2goWeqgnWcmjVWSuyKr/XXVQtJVlcsXkNLssUzuitMbxfv2QApJB
-	T/kgttceTzghMEeoiibTgF8xNtbE/rXB+wmdDuX9HG9Q+4ZcU8gn6AlO3W5xsQ==
+	bh=VCi/Mb4RGKt7MjRjPCxk9N/2FIWc3BGybyWz2LsXcdc=;
+	b=xFtvVsVCRNbwgkpmnfPj9xBWb7Tc6VYv30MG29Wjt1gJRw8GNYxNor2rMbcVMg8P4xIPRn
+	FHGAD+N39SgXOnVBYYU/ZQWRrilm8PEgs21ryKETkjwHQgOFS2fY6vjD2Mzfo/7F2aWP4t
+	0nPFmXRKUaqogks3g0NbFaE8xnhf28nXyaH7aPX21Dl2kdhyQ8zMVCZPmXd09LaTyRisal
+	7ioq/I6sGRZXfEnifeO3bKkbHNQO2Obr05DcecxWE9N1U5MWYOvXEQMcMTUSOoyIvLz8JO
+	0x3DbVGwehErosgf4T2zp3BVI3ZJ9ru0F6NAp+Twb+3k8rY4IIM3YEAjGWH+oQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1702070080;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,82 +39,267 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EDHBJQDZaX7u7SZaleE7r1usB2TuTYUPYo/RxWQVhF0=;
-	b=epmVXBZjsHSPLdK3hBsDYOvFMBYo4EbS4ctkelCDzkA2nFM48ANhtBqHvlKMZsYYZtAbQD
-	oV6nTx36dG25nCDg==
+	bh=VCi/Mb4RGKt7MjRjPCxk9N/2FIWc3BGybyWz2LsXcdc=;
+	b=2l7lHMKFe/cN8vHoK4tYCzgrva/uA4VQTish9EvaHNI+3zD2vrd9D4CKOHYNZH5tkpW/jO
+	vZA7NHws3KvSr1Cw==
 From: "tip-bot2 for Claudiu Beznea" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] dt-bindings: interrupt-controller:
- renesas,rzg2l-irqc: Document RZ/G3S
+Subject: [tip: irq/core] irqchip/renesas-rzg2l: Add support for suspend to RAM
 Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Conor Dooley <conor.dooley@microchip.com>, x86@kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20231120111820.87398-9-claudiu.beznea.uj@bp.renesas.com>
-References: <20231120111820.87398-9-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To: <20231120111820.87398-8-claudiu.beznea.uj@bp.renesas.com>
+References: <20231120111820.87398-8-claudiu.beznea.uj@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170207007935.398.16222216258719183208.tip-bot2@tip-bot2>
+Message-ID: <170207008017.398.9006634586293096788.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     7e8213bb5ded82dbc6164100fe0e80f7934e9e56
-Gitweb:        https://git.kernel.org/tip/7e8213bb5ded82dbc6164100fe0e80f7934e9e56
+Commit-ID:     e1f581386680631316611d554e71523a087d8f58
+Gitweb:        https://git.kernel.org/tip/e1f581386680631316611d554e71523a087=
+d8f58
 Author:        Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-AuthorDate:    Mon, 20 Nov 2023 13:18:19 +02:00
+AuthorDate:    Mon, 20 Nov 2023 13:18:18 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 08 Dec 2023 22:06:35 +01:00
 
-dt-bindings: interrupt-controller: renesas,rzg2l-irqc: Document RZ/G3S
+irqchip/renesas-rzg2l: Add support for suspend to RAM
 
-Document the RZ/G3S (R9108G045) interrupt controller. This has few extra
-functionalities compared with RZ/G2UL but the already existing driver
-can still be used.
+The irqchip-renesas-rzg2l driver is used on RZ/G3S SoC. RZ/G3S can go into
+deep sleep states where power to different SoC's parts is cut off and RAM
+is switched to self-refresh. The resume from these states is done with the
+help of the bootloader.
+
+The IA55 IRQ controller needs to be reconfigured when resuming from deep
+sleep state. For this the IA55 registers are cached in suspend and restored
+in resume.
+
+The IA55 IRQ controller is connected to GPIO controller and GIC as follows:
+
+                                      =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90        =
+  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=90
+                                      =E2=94=82          =E2=94=82 SPIX     =
+=E2=94=82          =E2=94=82
+                                      =E2=94=82          =E2=94=9C=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=96=BA=E2=94=82          =E2=94=82
+                                      =E2=94=82          =E2=94=82          =
+=E2=94=82          =E2=94=82
+                                      =E2=94=82          =E2=94=82          =
+=E2=94=82          =E2=94=82
+              =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=90IRQ0-7        =E2=94=82  IA55    =E2=94=82        =
+  =E2=94=82  GIC     =E2=94=82
+ Pin0 =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=
+=BA=E2=94=82        =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=
+=BA=E2=94=82          =E2=94=82          =E2=94=82          =E2=94=82
+              =E2=94=82        =E2=94=82              =E2=94=82          =E2=
+=94=82 PPIY     =E2=94=82          =E2=94=82
+ ...          =E2=94=82  GPIO  =E2=94=82              =E2=94=82          =E2=
+=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=96=BA=E2=94=82          =E2=94=82
+              =E2=94=82        =E2=94=82GPIOINT0-127  =E2=94=82          =E2=
+=94=82          =E2=94=82          =E2=94=82
+ PinN =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=
+=BA=E2=94=82        =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=
+=BA=E2=94=82          =E2=94=82          =E2=94=82          =E2=94=82
+              =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=98              =E2=94=94=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98     =
+     =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=98
+
+where:
+  - Pin0 is the first GPIO controller pin
+  - PinN is the last GPIO controller pin
+
+  - SPIX is the SPI interrupt with identifier X
+  - PPIY is the PPI interrupt with identifier Y
+
+Implement suspend/resume functionality with syscore_ops to be able to
+cache/restore the registers after/before the GPIO controller suspend/resume
+functions are invoked.
+
+As the syscore_ops suspend/resume functions do not take any argument make
+the driver private data static so it can be accessed from the
+suspend/resume functions.
+
+The IA55 interrupt controller is resumed before the GPIO controller. As
+GPIO pins could be in an a state which causes spurious interrupts, the
+reconfiguration of the interrupt controller is restricted to restore the
+interrupt type and leave them disabled.
+
+An eventually required interrupt enable operation will be done as part of
+the GPIO controller resume function after restoring the GPIO state.
+
+[ tglx: Massaged changelog ]
 
 Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20231120111820.87398-9-claudiu.beznea.uj@bp.renesas.com
+Link: https://lore.kernel.org/r/20231120111820.87398-8-claudiu.beznea.uj@bp.r=
+enesas.com
 
 ---
- Documentation/devicetree/bindings/interrupt-controller/renesas,rzg2l-irqc.yaml | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 68 +++++++++++++++++++++++-----
+ 1 file changed, 57 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/renesas,rzg2l-irqc.yaml b/Documentation/devicetree/bindings/interrupt-controller/renesas,rzg2l-irqc.yaml
-index 2ef3081..d3b5aec 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/renesas,rzg2l-irqc.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/renesas,rzg2l-irqc.yaml
-@@ -26,6 +26,7 @@ properties:
-           - renesas,r9a07g043u-irqc   # RZ/G2UL
-           - renesas,r9a07g044-irqc    # RZ/G2{L,LC}
-           - renesas,r9a07g054-irqc    # RZ/V2L
-+          - renesas,r9a08g045-irqc    # RZ/G3S
-       - const: renesas,rzg2l-irqc
- 
-   '#interrupt-cells':
-@@ -167,7 +168,9 @@ allOf:
-       properties:
-         compatible:
-           contains:
--            const: renesas,r9a07g043u-irqc
-+            enum:
-+              - renesas,r9a07g043u-irqc
-+              - renesas,r9a08g045-irqc
-     then:
-       properties:
-         interrupts:
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesa=
+s-rzg2l.c
+index 34add75..9494fc2 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -18,6 +18,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+ #include <linux/spinlock.h>
++#include <linux/syscore_ops.h>
+=20
+ #define IRQC_IRQ_START			1
+ #define IRQC_IRQ_COUNT			8
+@@ -56,16 +57,28 @@
+ #define TINT_EXTRACT_GPIOINT(x)		FIELD_GET(GENMASK(31, 16), (x))
+=20
+ /**
++ * struct rzg2l_irqc_reg_cache - registers cache (necessary for suspend/resu=
+me)
++ * @iitsr: IITSR register
++ * @titsr: TITSR registers
++ */
++struct rzg2l_irqc_reg_cache {
++	u32	iitsr;
++	u32	titsr[2];
++};
++
++/**
+  * struct rzg2l_irqc_priv - IRQ controller private data structure
+  * @base:	Controller's base address
+  * @fwspec:	IRQ firmware specific data
+  * @lock:	Lock to serialize access to hardware registers
++ * @cache:	Registers cache for suspend/resume
+  */
+-struct rzg2l_irqc_priv {
++static struct rzg2l_irqc_priv {
+ 	void __iomem			*base;
+ 	struct irq_fwspec		fwspec[IRQC_NUM_IRQ];
+ 	raw_spinlock_t			lock;
+-};
++	struct rzg2l_irqc_reg_cache	cache;
++} *rzg2l_irqc_data;
+=20
+ static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
+ {
+@@ -246,6 +259,38 @@ static int rzg2l_irqc_set_type(struct irq_data *d, unsig=
+ned int type)
+ 	return irq_chip_set_type_parent(d, IRQ_TYPE_LEVEL_HIGH);
+ }
+=20
++static int rzg2l_irqc_irq_suspend(void)
++{
++	struct rzg2l_irqc_reg_cache *cache =3D &rzg2l_irqc_data->cache;
++	void __iomem *base =3D rzg2l_irqc_data->base;
++
++	cache->iitsr =3D readl_relaxed(base + IITSR);
++	for (u8 i =3D 0; i < 2; i++)
++		cache->titsr[i] =3D readl_relaxed(base + TITSR(i));
++
++	return 0;
++}
++
++static void rzg2l_irqc_irq_resume(void)
++{
++	struct rzg2l_irqc_reg_cache *cache =3D &rzg2l_irqc_data->cache;
++	void __iomem *base =3D rzg2l_irqc_data->base;
++
++	/*
++	 * Restore only interrupt type. TSSRx will be restored at the
++	 * request of pin controller to avoid spurious interrupts due
++	 * to invalid PIN states.
++	 */
++	for (u8 i =3D 0; i < 2; i++)
++		writel_relaxed(cache->titsr[i], base + TITSR(i));
++	writel_relaxed(cache->iitsr, base + IITSR);
++}
++
++static struct syscore_ops rzg2l_irqc_syscore_ops =3D {
++	.suspend	=3D rzg2l_irqc_irq_suspend,
++	.resume		=3D rzg2l_irqc_irq_resume,
++};
++
+ static const struct irq_chip irqc_chip =3D {
+ 	.name			=3D "rzg2l-irqc",
+ 	.irq_eoi		=3D rzg2l_irqc_eoi,
+@@ -331,7 +376,6 @@ static int rzg2l_irqc_init(struct device_node *node, stru=
+ct device_node *parent)
+ 	struct irq_domain *irq_domain, *parent_domain;
+ 	struct platform_device *pdev;
+ 	struct reset_control *resetn;
+-	struct rzg2l_irqc_priv *priv;
+ 	int ret;
+=20
+ 	pdev =3D of_find_device_by_node(node);
+@@ -344,15 +388,15 @@ static int rzg2l_irqc_init(struct device_node *node, st=
+ruct device_node *parent)
+ 		return -ENODEV;
+ 	}
+=20
+-	priv =3D devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+-	if (!priv)
++	rzg2l_irqc_data =3D devm_kzalloc(&pdev->dev, sizeof(*rzg2l_irqc_data), GFP_=
+KERNEL);
++	if (!rzg2l_irqc_data)
+ 		return -ENOMEM;
+=20
+-	priv->base =3D devm_of_iomap(&pdev->dev, pdev->dev.of_node, 0, NULL);
+-	if (IS_ERR(priv->base))
+-		return PTR_ERR(priv->base);
++	rzg2l_irqc_data->base =3D devm_of_iomap(&pdev->dev, pdev->dev.of_node, 0, N=
+ULL);
++	if (IS_ERR(rzg2l_irqc_data->base))
++		return PTR_ERR(rzg2l_irqc_data->base);
+=20
+-	ret =3D rzg2l_irqc_parse_interrupts(priv, node);
++	ret =3D rzg2l_irqc_parse_interrupts(rzg2l_irqc_data, node);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "cannot parse interrupts: %d\n", ret);
+ 		return ret;
+@@ -375,17 +419,19 @@ static int rzg2l_irqc_init(struct device_node *node, st=
+ruct device_node *parent)
+ 		goto pm_disable;
+ 	}
+=20
+-	raw_spin_lock_init(&priv->lock);
++	raw_spin_lock_init(&rzg2l_irqc_data->lock);
+=20
+ 	irq_domain =3D irq_domain_add_hierarchy(parent_domain, 0, IRQC_NUM_IRQ,
+ 					      node, &rzg2l_irqc_domain_ops,
+-					      priv);
++					      rzg2l_irqc_data);
+ 	if (!irq_domain) {
+ 		dev_err(&pdev->dev, "failed to add irq domain\n");
+ 		ret =3D -ENOMEM;
+ 		goto pm_put;
+ 	}
+=20
++	register_syscore_ops(&rzg2l_irqc_syscore_ops);
++
+ 	return 0;
+=20
+ pm_put:
 
