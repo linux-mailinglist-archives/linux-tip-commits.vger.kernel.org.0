@@ -1,192 +1,102 @@
 Return-Path: <linux-tip-commits+bounces-1-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0F180B326
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Dec 2023 09:21:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C551280B535
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Dec 2023 17:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ED621F21054
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Dec 2023 08:21:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 025671C2085B
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Dec 2023 16:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F046FC9;
-	Sat,  9 Dec 2023 08:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="40QoeA05";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NnGS9SIn"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8503C122;
-	Sat,  9 Dec 2023 00:21:23 -0800 (PST)
-Date: Sat, 09 Dec 2023 08:21:20 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702110081;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FWz7AeYIHKHqsW/mXloUGmsrK7/eiI9uEX3App/Fv4g=;
-	b=40QoeA05rg4QTQYMRvO8as1Pnj3+EZkr6BLVMKSgXVFUI5FsgGh2Hrg2/PChHJi6d4TvkT
-	1x2FfcTGIjiRtCvYHj7HGgjzh0lzG0ZVVRyvNaw880cyFy8aGZZDt5u8dluSeWVisvXCm0
-	ZTXHsNHNNurT21okWFhFwDxrR5jeqY0Wsq+Q5EbXsFWGK0uEDlHXpG59c1VnKrVvlfBj/S
-	r1sUDVwpOcbyWU+lNAPo9Sx2SJnKGbkdb13BkgqMTJTYz+THysIngMz4aOQcQ66AZ71FDg
-	3tSey8OTrgptMbugqpnhf4xXHNXR0rHYEDc/BgrLTb/ciOo2NMYqmI3PtpVTMw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702110081;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FWz7AeYIHKHqsW/mXloUGmsrK7/eiI9uEX3App/Fv4g=;
-	b=NnGS9SIneIZ06pnHEBieqm0l+DqqyqlXchbE5bFNCjUR7jEITXNZ7R3OpClH9qlZVGMkew
-	X+BycAh6oi3kz6AA==
-From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] Documentation/x86: Document what /proc/cpuinfo is for
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20231129101700.28482-1-bp@alien8.de>
-References: <20231129101700.28482-1-bp@alien8.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67813171AF;
+	Sat,  9 Dec 2023 16:22:47 +0000 (UTC)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F03D5B;
+	Sat,  9 Dec 2023 08:22:43 -0800 (PST)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dbc6658fda3so501161276.3;
+        Sat, 09 Dec 2023 08:22:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702138962; x=1702743762;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zXLi8btoKJJM+Y3mbDTAiN96eN6yPzf/fqmbiitK0RI=;
+        b=vUsdZHpHpomHCWQzDmujWXh97uHAOssck5P1iGH+KCnnfiGcJ66Ld8rWL6GOtk1fvQ
+         kOt62Jf9SJB/EDaip0/suHeMQuRdoxHLlxetpoMN3c61KuBIlybRu4ZuVuWnnumzuoTz
+         XYAwt8bCVabDSgmImUuEypWfGaHnWLD8nyqDBHR0J/y9XAi+ylJleV9vtiiyDOnrEaDB
+         1LqXfO57sBZ2s7sGdZlx95LuKTuaSPtv3NZOeODEkWtCj45SRxrZsZuM/oGfnZRrYUl8
+         jYDprxr9GlrVhM3YzGG8LTwYBg+PRJLnSX1l5I3tJsBrK5YjxBNPDz1XeBuFlHnjTZQl
+         kJUQ==
+X-Gm-Message-State: AOJu0YzGKmr6d3fAKo7VIRFO0xgBxRRj/cRmI1Y/Gw+U3hWTodRgmo1p
+	TylL8WpSdAHCNMrUpsa6NeY98Uh5aiunuQ==
+X-Google-Smtp-Source: AGHT+IFCU7XFERhk9HsAv78kJrpS5GbvP2BDihMYP7wYKxRX44AUJ8Nh/X+xWa+DtpFHJqe8EgvqVw==
+X-Received: by 2002:a05:6902:147:b0:db7:dacf:6206 with SMTP id p7-20020a056902014700b00db7dacf6206mr984506ybh.88.1702138962423;
+        Sat, 09 Dec 2023 08:22:42 -0800 (PST)
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com. [209.85.128.182])
+        by smtp.gmail.com with ESMTPSA id k18-20020a258c12000000b00d9cbf2aabc6sm1344109ybl.14.2023.12.09.08.22.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 09 Dec 2023 08:22:42 -0800 (PST)
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-5cd81e76164so28977427b3.1;
+        Sat, 09 Dec 2023 08:22:42 -0800 (PST)
+X-Received: by 2002:a81:5cc5:0:b0:5d7:1940:dd83 with SMTP id
+ q188-20020a815cc5000000b005d71940dd83mr1224179ywb.89.1702138961866; Sat, 09
+ Dec 2023 08:22:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170211008011.398.14299580912908619264.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20231120111820.87398-2-claudiu.beznea.uj@bp.renesas.com> <170207008477.398.7455050423203256596.tip-bot2@tip-bot2>
+In-Reply-To: <170207008477.398.7455050423203256596.tip-bot2@tip-bot2>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Sat, 9 Dec 2023 17:22:30 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVFZvrWGbwsVAfOrLGWqgoSieKrqH_kN4rvoGmw-Fsnrg@mail.gmail.com>
+Message-ID: <CAMuHMdVFZvrWGbwsVAfOrLGWqgoSieKrqH_kN4rvoGmw-Fsnrg@mail.gmail.com>
+Subject: Re: [tip: irq/core] clk: renesas: r9a08g045: Add IA55 pclk and its reset
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-tip-commits@vger.kernel.org, 
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, maz@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/misc branch of tip:
+Hi Thomas,
 
-Commit-ID:     79c603ee43b2674fba0257803bab265147821955
-Gitweb:        https://git.kernel.org/tip/79c603ee43b2674fba0257803bab265147821955
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Fri, 08 Dec 2023 22:57:33 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sat, 09 Dec 2023 08:52:53 +01:00
+On Fri, Dec 8, 2023 at 10:14=E2=80=AFPM tip-bot2 for Claudiu Beznea
+<tip-bot2@linutronix.de> wrote:
+> The following commit has been merged into the irq/core branch of tip:
+>
+> Commit-ID:     63385748bce1ef169438c123c7e32c021c0b9409
+> Gitweb:        https://git.kernel.org/tip/63385748bce1ef169438c123c7e32c0=
+21c0b9409
+> Author:        Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> AuthorDate:    Mon, 20 Nov 2023 13:18:12 +02:00
+> Committer:     Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Fri, 08 Dec 2023 22:06:34 +01:00
+>
+> clk: renesas: r9a08g045: Add IA55 pclk and its reset
 
-Documentation/x86: Document what /proc/cpuinfo is for
+Please do not apply Renesas clock patches to your tree without an
+explicit ack (especially when there are nearby changes in flight).
+Renesas clock patches are intended to go in through the renesas-clk
+and clk trees.
 
-This has been long overdue. Write down what x86's version of
-/proc/cpuinfo is and should be used for.
+Thanks!
 
-With improvements by dhansen.
+Gr{oetje,eeting}s,
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/20231129101700.28482-1-bp@alien8.de
----
- Documentation/arch/x86/cpuinfo.rst | 89 ++++++++++++++++++++++-------
- 1 file changed, 68 insertions(+), 21 deletions(-)
+                        Geert
 
-diff --git a/Documentation/arch/x86/cpuinfo.rst b/Documentation/arch/x86/cpuinfo.rst
-index 08246e8..8895784 100644
---- a/Documentation/arch/x86/cpuinfo.rst
-+++ b/Documentation/arch/x86/cpuinfo.rst
-@@ -7,27 +7,74 @@ x86 Feature Flags
- Introduction
- ============
- 
--On x86, flags appearing in /proc/cpuinfo have an X86_FEATURE definition
--in arch/x86/include/asm/cpufeatures.h. If the kernel cares about a feature
--or KVM want to expose the feature to a KVM guest, it can and should have
--an X86_FEATURE_* defined. These flags represent hardware features as
--well as software features.
--
--If users want to know if a feature is available on a given system, they
--try to find the flag in /proc/cpuinfo. If a given flag is present, it
--means that the kernel supports it and is currently making it available.
--If such flag represents a hardware feature, it also means that the
--hardware supports it.
--
--If the expected flag does not appear in /proc/cpuinfo, things are murkier.
--Users need to find out the reason why the flag is missing and find the way
--how to enable it, which is not always easy. There are several factors that
--can explain missing flags: the expected feature failed to enable, the feature
--is missing in hardware, platform firmware did not enable it, the feature is
--disabled at build or run time, an old kernel is in use, or the kernel does
--not support the feature and thus has not enabled it. In general, /proc/cpuinfo
--shows features which the kernel supports. For a full list of CPUID flags
--which the CPU supports, use tools/arch/x86/kcpuid.
-+The list of feature flags in /proc/cpuinfo is not complete and
-+represents an ill-fated attempt from long time ago to put feature flags
-+in an easy to find place for userspace.
-+
-+However, the amount of feature flags is growing by the CPU generation,
-+leading to unparseable and unwieldy /proc/cpuinfo.
-+
-+What is more, those feature flags do not even need to be in that file
-+because userspace doesn't care about them - glibc et al already use
-+CPUID to find out what the target machine supports and what not.
-+
-+And even if it doesn't show a particular feature flag - although the CPU
-+still does have support for the respective hardware functionality and
-+said CPU supports CPUID faulting - userspace can simply probe for the
-+feature and figure out if it is supported or not, regardless of whether
-+it is being advertised somewhere.
-+
-+Furthermore, those flag strings become an ABI the moment they appear
-+there and maintaining them forever when nothing even uses them is a lot
-+of wasted effort.
-+
-+So, the current use of /proc/cpuinfo is to show features which the
-+kernel has *enabled* and *supports*. As in: the CPUID feature flag is
-+there, there's an additional setup which the kernel has done while
-+booting and the functionality is ready to use. A perfect example for
-+that is "user_shstk" where additional code enablement is present in the
-+kernel to support shadow stack for user programs.
-+
-+So, if users want to know if a feature is available on a given system,
-+they try to find the flag in /proc/cpuinfo. If a given flag is present,
-+it means that
-+
-+* the kernel knows about the feature enough to have an X86_FEATURE bit
-+
-+* the kernel supports it and is currently making it available either to
-+  userspace or some other part of the kernel
-+
-+* if the flag represents a hardware feature the hardware supports it.
-+
-+The absence of a flag in /proc/cpuinfo by itself means almost nothing to
-+an end user.
-+
-+On the one hand, a feature like "vaes" might be fully available to user
-+applications on a kernel that has not defined X86_FEATURE_VAES and thus
-+there is no "vaes" in /proc/cpuinfo.
-+
-+On the other hand, a new kernel running on non-VAES hardware would also
-+have no "vaes" in /proc/cpuinfo.  There's no way for an application or
-+user to tell the difference.
-+
-+The end result is that the flags field in /proc/cpuinfo is marginally
-+useful for kernel debugging, but not really for anything else.
-+Applications should instead use things like the glibc facilities for
-+querying CPU support.  Users should rely on tools like
-+tools/arch/x86/kcpuid and cpuid(1).
-+
-+Regarding implementation, flags appearing in /proc/cpuinfo have an
-+X86_FEATURE definition in arch/x86/include/asm/cpufeatures.h. These flags
-+represent hardware features as well as software features.
-+
-+If the kernel cares about a feature or KVM want to expose the feature to
-+a KVM guest, it should only then expose it to the guest when the guest
-+needs to parse /proc/cpuinfo. Which, as mentioned above, is highly
-+unlikely. KVM can synthesize the CPUID bit and the KVM guest can simply
-+query CPUID and figure out what the hypervisor supports and what not. As
-+already stated, /proc/cpuinfo is not a dumping ground for useless
-+feature flags.
-+
- 
- How are feature flags created?
- ==============================
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
