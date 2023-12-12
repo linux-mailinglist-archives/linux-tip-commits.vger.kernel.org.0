@@ -1,177 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-5-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5251680E930
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Dec 2023 11:33:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D525A80EDF5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Dec 2023 14:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DE912814C4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Dec 2023 10:33:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A3981F21369
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Dec 2023 13:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483DF1C2AD;
-	Tue, 12 Dec 2023 10:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4562E6ABAD;
+	Tue, 12 Dec 2023 13:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3KwgS6TH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cJuygFpD"
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 259BAA6;
-	Tue, 12 Dec 2023 02:33:20 -0800 (PST)
-Date: Tue, 12 Dec 2023 10:33:17 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702377198;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+a2nGAgihtQNR6oAJmNTsSqLsllRV9xD2+EzyHqLHp0=;
-	b=3KwgS6THwNO5qsR1XlqzEDMeWxmfnhHBw6JGgYoe4TPVGNsOH1PZHS4mNF47fnd2PqkUOv
-	tmeUvqrVWdSm4a+j5StACC0AtSIokNPf2KYFcprZFKDwYW+S2hXd4YshaoLWIFqMARkwjj
-	LlBMSMIQntdpoKU3NFWk8VvDlsX4jD0+sMm+EVNRR1KQnwTSXshQhFlbtaVzu/PBEIVgBl
-	lpP7iaj4ZE+pJpfaaBmgzE8WGKyY/BME+LJpOJEIszUTFrHWs2GrdHwAHqBN3z5EUrOQnP
-	I64lurAbMO9sB/x49dOq3H5JJKkGtCfqvE8PXhSks16oSXpNwplkMOrAbtfN5w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702377198;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+a2nGAgihtQNR6oAJmNTsSqLsllRV9xD2+EzyHqLHp0=;
-	b=cJuygFpDB8+tgVqMRDy8xfDhU7iRjm/eEUFUKUXwwgu6PSnEykqcbUt8qjSpIRtXaI3iWV
-	1ECAUazdr4J3v7BA==
-From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/CPU/AMD: Add X86_FEATURE_ZEN1
-Cc: Brian Gerst <brgerst@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <dc3835e3-0731-4230-bbb9-336bbe3d042b@amd.com>
-References: <dc3835e3-0731-4230-bbb9-336bbe3d042b@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPDizaqp"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2809961FCC
+	for <linux-tip-commits@vger.kernel.org>; Tue, 12 Dec 2023 13:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D18DC433C7;
+	Tue, 12 Dec 2023 13:47:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702388821;
+	bh=mqxh9zunvpb036JZEOLxMSrfLM8AML7StjISr8/NUDE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UPDizaqpMsgAC2wnSd8hWh+uF/U5C1z1oKAH5P9f6P0IJXDjXBHa0BJJF6i2tfiNf
+	 keSo51yS8RBVKsLDWYkEpWFsCCdadst98HelLd695zkEMwY1C3gDAvLtopVA/ECXrf
+	 uwTfxOnAkA+Pps0AKRTPrc2kB5MuacVnNE8xYlHdVjOlYFoqL6MTZvnSOlr1DY+Eov
+	 279NiCHsiGwme2XmVmu7HB0YSqUSmy6GBYMY1/3a6sQVzBpgi0xjvDo4eyRqWsmWNp
+	 CU/zAbXQznnX3/dj2e48O5Xp2boLbHWjdN1e69iGTs5k0krjDe/WMWotoLZW8Frv/M
+	 BASwnQ0dHZRuA==
+Date: Tue, 12 Dec 2023 14:46:58 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Andrew Cooper <Andrew.Cooper3@citrix.com>,
+	linux-tip-commits@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org
+Subject: Re: [tip: x86/core] x86: Fix CPUIDLE_FLAG_IRQ_ENABLE leaking timer
+ reprogram
+Message-ID: <ZXhkUshO49ldjBio@lothringen>
+References: <20231115151325.6262-3-frederic@kernel.org>
+ <170126975511.398.12493947150541739641.tip-bot2@tip-bot2>
+ <20231130111519.GA20153@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170237719725.398.5191492346336231574.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231130111519.GA20153@noisy.programming.kicks-ass.net>
 
-The following commit has been merged into the x86/cpu branch of tip:
+On Thu, Nov 30, 2023 at 12:15:19PM +0100, Peter Zijlstra wrote:
+> This is so, because all mwait users should be in __cpuidle section,
+> which itself is part of the noinstr section and as such
+> kprobes/hw-breakpoints etc.. are disallowed.
+> 
+> Notable vmlinux.lds.h has:
+> 
+> #define NOINSTR_TEXT							\
+> 		ALIGN_FUNCTION();					\
+> 		__noinstr_text_start = .;				\
+> 		*(.noinstr.text)					\
+> 		__cpuidle_text_start = .;				\
+> 		*(.cpuidle.text)					\
+> 		__cpuidle_text_end = .;					\
+> 		__noinstr_text_end = .;
 
-Commit-ID:     232afb557835d6f6859c73bf610bad308c96b131
-Gitweb:        https://git.kernel.org/tip/232afb557835d6f6859c73bf610bad308c96b131
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Sat, 02 Dec 2023 12:50:23 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 12 Dec 2023 11:17:37 +01:00
+So #DB aren't supposed to happen then, right? Or you noticed an mwait
+user that doesn't have __cpuidle?
 
-x86/CPU/AMD: Add X86_FEATURE_ZEN1
-
-Add a synthetic feature flag specifically for first generation Zen
-machines. There's need to have a generic flag for all Zen generations so
-make X86_FEATURE_ZEN be that flag.
-
-Fixes: 30fa92832f40 ("x86/CPU/AMD: Add ZenX generations flags")
-Suggested-by: Brian Gerst <brgerst@gmail.com>
-Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/dc3835e3-0731-4230-bbb9-336bbe3d042b@amd.com
----
- arch/x86/include/asm/cpufeatures.h       |  3 ++-
- arch/x86/kernel/cpu/amd.c                | 11 ++++++-----
- tools/arch/x86/include/asm/cpufeatures.h |  2 +-
- 3 files changed, 9 insertions(+), 7 deletions(-)
-
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 149cc5d..632c26c 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -218,7 +218,7 @@
- #define X86_FEATURE_IBRS		( 7*32+25) /* Indirect Branch Restricted Speculation */
- #define X86_FEATURE_IBPB		( 7*32+26) /* Indirect Branch Prediction Barrier */
- #define X86_FEATURE_STIBP		( 7*32+27) /* Single Thread Indirect Branch Predictors */
--#define X86_FEATURE_ZEN			( 7*32+28) /* "" CPU based on Zen microarchitecture */
-+#define X86_FEATURE_ZEN			( 7*32+28) /* "" Generic flag for all Zen and newer */
- #define X86_FEATURE_L1TF_PTEINV		( 7*32+29) /* "" L1TF workaround PTE inversion */
- #define X86_FEATURE_IBRS_ENHANCED	( 7*32+30) /* Enhanced IBRS */
- #define X86_FEATURE_MSR_IA32_FEAT_CTL	( 7*32+31) /* "" MSR IA32_FEAT_CTL configured */
-@@ -315,6 +315,7 @@
- #define X86_FEATURE_ZEN2		(11*32+28) /* "" CPU based on Zen2 microarchitecture */
- #define X86_FEATURE_ZEN3		(11*32+29) /* "" CPU based on Zen3 microarchitecture */
- #define X86_FEATURE_ZEN4		(11*32+30) /* "" CPU based on Zen4 microarchitecture */
-+#define X86_FEATURE_ZEN1		(11*32+31) /* "" CPU based on Zen1 microarchitecture */
- 
- /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
- #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* AVX VNNI instructions */
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 89bbb1a..3395863 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -542,7 +542,7 @@ static void bsp_init_amd(struct cpuinfo_x86 *c)
- 		switch (c->x86_model) {
- 		case 0x00 ... 0x2f:
- 		case 0x50 ... 0x5f:
--			setup_force_cpu_cap(X86_FEATURE_ZEN);
-+			setup_force_cpu_cap(X86_FEATURE_ZEN1);
- 			break;
- 		case 0x30 ... 0x4f:
- 		case 0x60 ... 0x7f:
-@@ -948,12 +948,13 @@ void init_spectral_chicken(struct cpuinfo_x86 *c)
- 
- static void init_amd_zen_common(void)
- {
-+	setup_force_cpu_cap(X86_FEATURE_ZEN);
- #ifdef CONFIG_NUMA
- 	node_reclaim_distance = 32;
- #endif
- }
- 
--static void init_amd_zen(struct cpuinfo_x86 *c)
-+static void init_amd_zen1(struct cpuinfo_x86 *c)
- {
- 	init_amd_zen_common();
- 	fix_erratum_1386(c);
-@@ -1075,8 +1076,8 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	case 0x16: init_amd_jg(c); break;
- 	}
- 
--	if (boot_cpu_has(X86_FEATURE_ZEN))
--		init_amd_zen(c);
-+	if (boot_cpu_has(X86_FEATURE_ZEN1))
-+		init_amd_zen1(c);
- 	else if (boot_cpu_has(X86_FEATURE_ZEN2))
- 		init_amd_zen2(c);
- 	else if (boot_cpu_has(X86_FEATURE_ZEN3))
-@@ -1143,7 +1144,7 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	 * Counter May Be Inaccurate".
- 	 */
- 	if (cpu_has(c, X86_FEATURE_IRPERF) &&
--	    (boot_cpu_has(X86_FEATURE_ZEN) && c->x86_model > 0x2f))
-+	    (boot_cpu_has(X86_FEATURE_ZEN1) && c->x86_model > 0x2f))
- 		msr_set_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
- 
- 	check_null_seg_clears_base(c);
-diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
-index 798e60b..845a402 100644
---- a/tools/arch/x86/include/asm/cpufeatures.h
-+++ b/tools/arch/x86/include/asm/cpufeatures.h
-@@ -219,7 +219,7 @@
- #define X86_FEATURE_IBRS		( 7*32+25) /* Indirect Branch Restricted Speculation */
- #define X86_FEATURE_IBPB		( 7*32+26) /* Indirect Branch Prediction Barrier */
- #define X86_FEATURE_STIBP		( 7*32+27) /* Single Thread Indirect Branch Predictors */
--#define X86_FEATURE_ZEN			(7*32+28) /* "" CPU based on Zen microarchitecture */
-+#define X86_FEATURE_ZEN			( 7*32+28) /* "" Generic flag for all Zen and newer */
- #define X86_FEATURE_L1TF_PTEINV		( 7*32+29) /* "" L1TF workaround PTE inversion */
- #define X86_FEATURE_IBRS_ENHANCED	( 7*32+30) /* Enhanced IBRS */
- #define X86_FEATURE_MSR_IA32_FEAT_CTL	( 7*32+31) /* "" MSR IA32_FEAT_CTL configured */
+Thanks.
 
