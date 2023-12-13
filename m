@@ -1,114 +1,93 @@
-Return-Path: <linux-tip-commits+bounces-25-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-26-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 520EB811238
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Dec 2023 14:00:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA20581153B
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Dec 2023 15:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 083D31F2143C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Dec 2023 13:00:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C23F2820F9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Dec 2023 14:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A222C1B9;
-	Wed, 13 Dec 2023 13:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811D32EAF7;
+	Wed, 13 Dec 2023 14:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NLSslS5I";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ycDsrcYy"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C046FE;
-	Wed, 13 Dec 2023 05:00:04 -0800 (PST)
-Date: Wed, 13 Dec 2023 13:00:01 -0000
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xMCS46Rk";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XZ+HChB4"
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B3B993;
+	Wed, 13 Dec 2023 06:51:02 -0800 (PST)
+From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702472402;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=2020; t=1702479060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S+IhSpyWTQ/axW+CWLsdfkEGbDn1Jz0prTjI1ZqS1To=;
-	b=NLSslS5ICLrIG0BxDdoCbbqWBzKURefiIdkAqp6AELB3x5kzY4lWsUyRN7BicbAdIU3P5r
-	aeFGCVmK3Md/cgpu/PO2HltA7v6oi0PU5hWwao0rvj18HBA6yctmmpeKjIq4A3XJ6vXde0
-	DEQuAKfPyKuwUMBsM34WdojmVhTp5X/8WjsrODHpRJEkkJfOypVwGuYYhMuacU857nR5tT
-	K+LP6/YxDFTHdAGvXLTTm4F2N/amBoBlnmQDGq//NofKk+oSgmU4Hh8kzKw42WXyeeQLAC
-	aiRIq3LUSFICZrBAFqisMau5uGVjs6BDccWjQhDcG3w72hQb+7qR9ngoDjjK7Q==
+	bh=JHe6ZT6IqHXuvZfN2Kkv8LYZ39KD28BsElvHGdR2yLk=;
+	b=xMCS46RkFqf5k2sd7I0D5MPvvAB63Omcbg8KLgVk2SQU7Ghd1CZw/ElA3/FOQt9X1UGnJn
+	6U+4YO70gazL6yuOO8oelZ79FjJU6HDxDAqifYzSuEtPn3skyg0kJqCOEGOmX5bZqoQebL
+	0VvVtQ/34lXz5afr0fWZWMYVBt4P1veJqfSC0Bodins7HhOHyETaQ9eXNzl1tUrCGxsbuR
+	wl4HpmKpDljPQ6ZLzQmmxnPZOxb+n4i1Ia1Wl3GQZzuN8S39tpZv3TKuV4kCjv/mZPr8b8
+	RBp7hXsGw+M3j83dEIXn4bmn9S6zM4KEQ7EOhOLSigCXc11Wx1096MrpFysiyA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702472402;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=2020e; t=1702479060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S+IhSpyWTQ/axW+CWLsdfkEGbDn1Jz0prTjI1ZqS1To=;
-	b=ycDsrcYyqZcAmxl5g3k2nWUHrcDtAlf3ykcleR3oWS7Olx3enzWBCxQmyj8+7/DezZ37So
-	uPg3HAvwqWdZQCDA==
-From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/head_64: Use TESTB instead of TESTL in
- secondary_startup_64_no_verify()
-Cc: Uros Bizjak <ubizjak@gmail.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231109201032.4439-1-ubizjak@gmail.com>
-References: <20231109201032.4439-1-ubizjak@gmail.com>
+	bh=JHe6ZT6IqHXuvZfN2Kkv8LYZ39KD28BsElvHGdR2yLk=;
+	b=XZ+HChB4RPHfbor4Q/YW7pwBZoCQviihzZCHu8++ftZ3wCiy3NX7Or9ivo25GQwo8/o5hP
+	sapuqCrsi4G2GLCw==
+To: "Zhang, Rui" <rui.zhang@intel.com>, "jsperbeck@google.com"
+ <jsperbeck@google.com>, "tip-bot2@linutronix.de" <tip-bot2@linutronix.de>
+Cc: "andres@anarazel.de" <andres@anarazel.de>, "peterz@infradead.org"
+ <peterz@infradead.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-tip-commits@vger.kernel.org"
+ <linux-tip-commits@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [tip: x86/urgent] x86/acpi: Ignore invalid x2APIC entries
+In-Reply-To: <c1d7e60329a62a9f6d70ffa664632db8db668efe.camel@intel.com>
+References: <87ttonpbnr.ffs@tglx>
+ <c1d7e60329a62a9f6d70ffa664632db8db668efe.camel@intel.com>
+Date: Wed, 13 Dec 2023 15:51:00 +0100
+Message-ID: <878r5yp357.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170247240126.398.13145604902928035582.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-The following commit has been merged into the x86/cleanups branch of tip:
+On Wed, Dec 13 2023 at 07:39, Zhang, Rui wrote:
+> Yeah, I agree.
+>
+> I have posted a patch to do more strict check
+> https://lore.kernel.org/all/20231210143925.38722-1-rui.zhang@intel.com/
+> in case there are some weird cases that LAPIC fails to probe any
+> enabled CPU and we also lose the X2APIC cpus.
 
-Commit-ID:     7d28365a06af74cee015a448d32ab6e98cd05cfb
-Gitweb:        https://git.kernel.org/tip/7d28365a06af74cee015a448d32ab6e98cd05cfb
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Thu, 09 Nov 2023 21:09:56 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 13 Dec 2023 13:35:38 +01:00
+The return value of acpi_register_lapic() is not really useful.
 
-x86/head_64: Use TESTB instead of TESTL in secondary_startup_64_no_verify()
+It returns an error if
 
-There is no need to use TESTL when checking the least-significant bit
-with a TEST instruction. Use TESTB, which is three bytes shorter:
+  1) the number of registered CPUs reached the limit.
+  2) the APIC entry is not enabled
 
-   f6 05 00 00 00 00 01    testb  $0x1,0x0(%rip)
+#1: any further X2APIC CPU will be ignored
 
-vs:
+#2: the return value is bogus as the CPU is accounted for as disabled
+    and will eventually lead to #1
 
-   f7 05 00 00 00 00 01    testl  $0x1,0x0(%rip)
-   00 00 00
+    In fact even 'disabled' entries are valid as they can be brought
+    in later (that's what "physical" hotplug uses)
 
-for the same effect.
+The topology evaluation rework gets rid of this return value completely,
+so I really don't want to add an dependency on it.
 
-No functional changes intended.
+Thanks,
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231109201032.4439-1-ubizjak@gmail.com
----
- arch/x86/kernel/head_64.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+        tglx
 
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index 086a2c3..1f79d80 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -182,7 +182,7 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	/* Enable PAE mode, PSE, PGE and LA57 */
- 	orl	$(X86_CR4_PAE | X86_CR4_PSE | X86_CR4_PGE), %ecx
- #ifdef CONFIG_X86_5LEVEL
--	testl	$1, __pgtable_l5_enabled(%rip)
-+	testb	$1, __pgtable_l5_enabled(%rip)
- 	jz	1f
- 	orl	$X86_CR4_LA57, %ecx
- 1:
+
+
 
