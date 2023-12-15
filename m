@@ -1,95 +1,127 @@
-Return-Path: <linux-tip-commits+bounces-44-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-45-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09616814EF2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 18:37:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E85814F7D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 19:10:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A77C1C23DD2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 17:37:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF271F21D37
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 18:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D813130119;
-	Fri, 15 Dec 2023 17:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A02E3012A;
+	Fri, 15 Dec 2023 18:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jHJfNHKo"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1TzQ1dA8";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yt5bl1GU"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDBD30108;
-	Fri, 15 Dec 2023 17:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8147940E00C6;
-	Fri, 15 Dec 2023 17:37:28 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Rb52ClGutCPv; Fri, 15 Dec 2023 17:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1702661845; bh=L/eQchWNcZ+GPbxxL6Z1CyW4o2naLvFk2gMbKMczlLs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jHJfNHKoPxhrxJahFXjpcEdTG+QLB74z64Lwg5u3qdBPRe50hzFIBz/BXqUpvbSLx
-	 P+dA8fwi7PU63uOpq0hUxFY6BrUlZh/7SPmdYoFC6e7mu5jd3W26LooHdsIwIsj3sG
-	 qIOwGMk6x7dlOY1RLJZqJ7wqmKqRjcyFInQDOQzWTUh0YPdylZIUPQh+KdDOG9Hgxe
-	 S/tRuTHhh4nABOFxqOFWzHEMDe6CfinpW8x1IYzCghewSnXfSMLDp32a+dxiwtxvHB
-	 aGhWt6W3ecFgfOvQ6JvGcef4g9oVGQHAs4mfa0O+984LrGBa2MKNTLX0nBMxw+DSuU
-	 aFfkFhsuCRSh4fKmWDI7uU5UDAPizhv9YxuHr+Y9SjZnxAm/sx8kPHVea1mh9kqR15
-	 MeVcsXlaNh+88GwcYBJl9SvVpIY+6i6jRMonYdczmyEVNnZ0oKC7VM8MmXxs0aoiD9
-	 7hOW2L+mIf0XSFMi+MmqQPqryK0aqC07kBhy0kklNREKiDgLuLCGBzOjXZ384wMUfG
-	 5ifzB5vLQIY+dWsEJ4m1noRxpq5050SQUV6hDRF7sbLm+OuAlFou77lVgkQdevDdJk
-	 VvNiqY/rMBlq7Qj01GDxO8wNeovL5TS0qPFozkNNB5zGnNXtuNYgmtQX/OizQW6Bj9
-	 41gVlQncpOKLrvsS7B7RYv64=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E22F840E00A9;
-	Fri, 15 Dec 2023 17:37:20 +0000 (UTC)
-Date: Fri, 15 Dec 2023 18:37:14 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "Luck, Tony" <tony.luck@intel.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [tip: ras/core] x86/mce: Handle Intel threshold interrupt storms
-Message-ID: <20231215173714.GBZXyOymaUEB5tvMYP@fat_crate.local>
-References: <20231115195450.12963-4-tony.luck@intel.com>
- <170265660288.398.1352223643373155784.tip-bot2@tip-bot2>
- <SJ1PR11MB6083E1B502165AA27D685AB7FC93A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EB630129;
+	Fri, 15 Dec 2023 18:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 15 Dec 2023 18:09:58 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1702663799;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=g6WxWSr9My4EqInVfw9NRhqNdCjVoy5l5OLWMaXqDD4=;
+	b=1TzQ1dA85+4kXIccjiUhT2CD2sLuibuO8rAnwABdyM5uGkYyvDDPQ7UsOJgBiiV83y81yu
+	MfN5XqzzIG6vpd/n6QqMk7Fz+xJ8vuwuLRjCtGWY7S3QGk/mLA+mx2ri1Pcibiw6i1GtDb
+	flh7brcXNIGJ50Zzk72nq095hGBM1HcTdxovGeaQj3fwAWPhuz85qQXoKlo78sYjXMy8qJ
+	2oEnDKFp8LyALbK4rf2FFK8V4STh/ATvQQGdydXewMY1XGeUxsJVB6nuYmwY9eplamKteR
+	Efu5CReik8e2lgMlhH3voWIEnwZ+ivs5lweM5uncpS93K+oR+mVr+s+ZAgcWTA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1702663799;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=g6WxWSr9My4EqInVfw9NRhqNdCjVoy5l5OLWMaXqDD4=;
+	b=yt5bl1GUlWg7Ua7cgwSDwh7sHBFs6smKzoMyxuY2fhBnrI/3qGMxr850jjS29FUDe/j7UH
+	6o2TLcZTHw7axXDQ==
+From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/mm] x86/percpu: Use %RIP-relative address in untagged_addr()
+Cc: Uros Bizjak <ubizjak@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradaed.org>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <SJ1PR11MB6083E1B502165AA27D685AB7FC93A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Message-ID: <170266379864.398.7891451489965815897.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 15, 2023 at 05:21:12PM +0000, Luck, Tony wrote:
-> > The following commit has been merged into the ras/core branch of tip:
-> >
-> > Commit-ID:     1f68ce2a027250aeeb1756391110cdc4dc97c797
-> > Gitweb:        https://git.kernel.org/tip/1f68ce2a027250aeeb1756391110cdc4dc97c797
-> > Author:        Tony Luck <tony.luck@intel.com>
-> > AuthorDate:    Wed, 15 Nov 2023 11:54:50 -08:00
-> > Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-> > CommitterDate: Fri, 15 Dec 2023 14:53:42 +01:00
-> 
-> Early X-Mas present for me!  Thanks Boris.
+The following commit has been merged into the x86/mm branch of tip:
 
-:-)
+Commit-ID:     91c17d7b04498ffb52939a18eb7e28fd23c9b654
+Gitweb:        https://git.kernel.org/tip/91c17d7b04498ffb52939a18eb7e28fd23c9b654
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Wed, 13 Dec 2023 16:03:15 +01:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Fri, 15 Dec 2023 09:50:14 -08:00
 
-You're welcome - thanks for answering my silly questions.
+x86/percpu: Use %RIP-relative address in untagged_addr()
 
--- 
-Regards/Gruss,
-    Boris.
+%RIP-relative addresses are nowadays correctly handled in alternative
+instructions, so remove misleading comment and improve assembly to
+use %RIP-relative address.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Also, explicitly using %gs: prefix will segfault for non-SMP builds.
+Use macros from percpu.h which will DTRT with segment prefix register
+as far as SMP/non-SMP builds are concerned.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradaed.org>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lore.kernel.org/all/20231213150357.5942-1-ubizjak%40gmail.com
+---
+ arch/x86/include/asm/uaccess_64.h | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
+index f2c02e4..01455c0 100644
+--- a/arch/x86/include/asm/uaccess_64.h
++++ b/arch/x86/include/asm/uaccess_64.h
+@@ -11,6 +11,7 @@
+ #include <asm/alternative.h>
+ #include <asm/cpufeatures.h>
+ #include <asm/page.h>
++#include <asm/percpu.h>
+ 
+ #ifdef CONFIG_ADDRESS_MASKING
+ /*
+@@ -18,14 +19,10 @@
+  */
+ static inline unsigned long __untagged_addr(unsigned long addr)
+ {
+-	/*
+-	 * Refer tlbstate_untag_mask directly to avoid RIP-relative relocation
+-	 * in alternative instructions. The relocation gets wrong when gets
+-	 * copied to the target place.
+-	 */
+ 	asm (ALTERNATIVE("",
+-			 "and %%gs:tlbstate_untag_mask, %[addr]\n\t", X86_FEATURE_LAM)
+-	     : [addr] "+r" (addr) : "m" (tlbstate_untag_mask));
++			 "and " __percpu_arg([mask]) ", %[addr]", X86_FEATURE_LAM)
++	     : [addr] "+r" (addr)
++	     : [mask] "m" (__my_cpu_var(tlbstate_untag_mask)));
+ 
+ 	return addr;
+ }
 
