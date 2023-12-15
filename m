@@ -1,105 +1,401 @@
-Return-Path: <linux-tip-commits+bounces-39-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-40-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64475814A5A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 15:20:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 398FC814C85
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 17:10:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96E081C23806
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 14:20:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2850288771
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 16:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB4E30D0B;
-	Fri, 15 Dec 2023 14:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4042C3A8D8;
+	Fri, 15 Dec 2023 16:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=anarazel.de header.i=@anarazel.de header.b="PhCzasCn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jMKVAUcd"
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mD1TDwEm";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bizR7pGn"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5A130FAC;
-	Fri, 15 Dec 2023 14:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=anarazel.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=anarazel.de
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.west.internal (Postfix) with ESMTP id 6592B3200A7D;
-	Fri, 15 Dec 2023 09:20:24 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Fri, 15 Dec 2023 09:20:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1702650023; x=1702736423; bh=18qEFRKK3O
-	e9XW5rui6ep0d3REKALWXbfxoaAU0FUvc=; b=PhCzasCnYa3AllDgNpCHNZahtL
-	Nk4oMW2LkzSd5s2HU9cNeIpcgyCM9pMaCXChkEVp42BdPBkpCwXLkhgr1JRxqZnN
-	s7wS23fcp3Pj9Jkk4ncDO0b9RadVi2Wn6dCAj3FqPIOhMiHtD2V5DQzRLy5gZokm
-	x1emDEBQCOPbtFG2MDXkB9FTh05exrSxyTMJxP2JC54HpxEUDuNmN4aCnDpzIlIE
-	5I3nlTcDOfXfMfdFjm+W3QPiugiix4Hn+QbzUBrwpDcC1SpnpdgVG6CEpjSiFkQU
-	JMAHw+wkd3bv26L2WHnoGaEX3ugvbkHMrbHWYM+R+bhTDRhCGcAVtifwutUw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1702650023; x=1702736423; bh=18qEFRKK3Oe9XW5rui6ep0d3REKA
-	LWXbfxoaAU0FUvc=; b=jMKVAUcdNIqSIkPxQ5iRLCI+fvYvX6Y32OzQkRa/n1Pb
-	N1X4QQK6X6lcoypDWPrzXjukjDX75WIeHq8Ybx60QQqZNnYTHs5n25TTw4WLbB3D
-	TZVWCTu1Bm3iEf6rVlaq54cRWf1eKaF99iR0dVV5acy5W5ApNEphTM+ZTyDVZVR6
-	3Wqi5UPb2p+3vYV6ryBiQjXCX+FLO3Vk6PFOC4A20EWEShG0rblGbnLtWOEexbbp
-	Xwtj9pIp+XN4cU98Ko6Tft0eZclRLKqXCLANmqSMYdzu+iNN+LIrr6P93/3FVBV2
-	xhS9mbDs5cnvT3gmpcgmw1rQrpnaiRgk9YLSMPOETg==
-X-ME-Sender: <xms:p2B8ZQAjhymlw8GI3RkHMUA9yahWLtN9jq-dgbwSX_vZc-0eOJHDeQ>
-    <xme:p2B8ZSgD8qMH450MpY3LVNLWKStnm1KlvXFKOMGRqM81ZHJwk2SRCw2c5573a5Ied
-    xqDBICoVFyBxVtfCw>
-X-ME-Received: <xmr:p2B8ZTmgIc1IqEO9PEvpaziGfRdYILjGBk06nIjLGaOcx64H_134HE6R166hYkEppIcItar-grZU8JMXlMVXnhPRI_Mlu-JUaLqWJ1usIuIkqERjarrwSRY9-Kzm>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtvddgieefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehnughr
-    vghsucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuggftrf
-    grthhtvghrnhepvdfffeevhfetveffgeeiteefhfdtvdffjeevhfeuteegleduheetvedu
-    ieettddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    eprghnughrvghssegrnhgrrhgriigvlhdruggv
-X-ME-Proxy: <xmx:p2B8ZWzas_Rxowb2kRWcufhFlu0hRO3s8poBLv8BRsl1EpCQfr42VQ>
-    <xmx:p2B8ZVTMpAao1GXJMTpuuNqpOoKFLdzi_oN-IlfDewWjK0VC0HJW2A>
-    <xmx:p2B8ZRYUFZpb01_T4PrvR9DdfkTFuoAi1FdDThH4XQxJ1meGpa4O2w>
-    <xmx:p2B8ZUFIAyH77oPkH-CjkPMXq9JkhDt_W5MdInR6At-k0LZ3btaTaw>
-Feedback-ID: id4a34324:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 15 Dec 2023 09:20:22 -0500 (EST)
-Date: Fri, 15 Dec 2023 06:20:19 -0800
-From: Andres Freund <andres@anarazel.de>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: "Zhang, Rui" <rui.zhang@intel.com>,
-	"jsperbeck@google.com" <jsperbeck@google.com>,
-	"tip-bot2@linutronix.de" <tip-bot2@linutronix.de>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [tip: x86/urgent] x86/acpi: Ignore invalid x2APIC entries
-Message-ID: <20231215142019.uvih3wlstacqut6o@alap3.anarazel.de>
-References: <1e565bb08ebdd03897580a5905d1d2de01e15add.camel@intel.com>
- <87ttonpbnr.ffs@tglx>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F6236AE0;
+	Fri, 15 Dec 2023 16:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 15 Dec 2023 16:10:02 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1702656603;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7Btt23pwddYep2IfeXogsp96qqv8TKfBas9gLu9BeYs=;
+	b=mD1TDwEmGij3yEgSEPgH+KNswa+3FOuWu1YIoeoCrATSxNnaYJGts8G7EOqGd9iW9bvmvt
+	/FxsS3Niua9xlJUpZr77NyjUgSiyDd1QyksURAwXHdqaHbBCD6FvH5ba98yWCYLesA/qLK
+	LCwoO/+x38iVshBIhVz0L2iXabu4PRP6PVc6zMxhW7iNtZocuKKL3rEMrAarKfDsP+XVtC
+	MVdLj3osr94OpMjTPwZYt062lsHac4l+hStsFHBSPQccL9dO1zDATjQCQBSRGxXIFNcy01
+	bjwN0OAFp8tGHQU+wzbmJ5rwYzvgRLAjZcPZePUN0uMRaJ4AuHoEoZ513HQaFQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1702656603;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7Btt23pwddYep2IfeXogsp96qqv8TKfBas9gLu9BeYs=;
+	b=bizR7pGnDHGVu/qdgzLBceDZg8kqxnGYE1lEAyghJTrt50jXm4r0OczJZ87CWJwdfiQvKt
+	ndfk5NELzPNI9+BA==
+From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: ras/core] x86/mce: Handle Intel threshold interrupt storms
+Cc: Tony Luck <tony.luck@intel.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231115195450.12963-4-tony.luck@intel.com>
+References: <20231115195450.12963-4-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ttonpbnr.ffs@tglx>
+Message-ID: <170265660288.398.1352223643373155784.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Hi,
+The following commit has been merged into the ras/core branch of tip:
 
-On 2023-12-12 18:34:48 +0100, Thomas Gleixner wrote:
-> The simple change below should do the trick.
+Commit-ID:     1f68ce2a027250aeeb1756391110cdc4dc97c797
+Gitweb:        https://git.kernel.org/tip/1f68ce2a027250aeeb1756391110cdc4dc97c797
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Wed, 15 Nov 2023 11:54:50 -08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 15 Dec 2023 14:53:42 +01:00
 
-Yep, can confirm that that suffices to boot with all CPUs brought up.
+x86/mce: Handle Intel threshold interrupt storms
 
-Greetings,
+Add an Intel specific hook into machine_check_poll() to keep track of
+per-CPU, per-bank corrected error logs (with a stub for the
+CONFIG_MCE_INTEL=n case).
 
-Andres Freund
+When a storm is observed the rate of interrupts is reduced by setting
+a large threshold value for this bank in IA32_MCi_CTL2. This bank is
+added to the bitmap of banks for this CPU to poll. The polling rate is
+increased to once per second.
+
+When a storm ends reset the threshold in IA32_MCi_CTL2 back to 1, remove
+the bank from the bitmap for polling, and change the polling rate back
+to the default.
+
+If a CPU with banks in storm mode is taken offline, the new CPU that
+inherits ownership of those banks takes over management of storm(s) in
+the inherited bank(s).
+
+The cmci_discover() function was already very large. These changes
+pushed it well over the top. Refactor with three helper functions to
+bring it back under control.
+
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231115195450.12963-4-tony.luck@intel.com
+---
+ arch/x86/kernel/cpu/mce/intel.c     | 205 ++++++++++++++++++++-------
+ arch/x86/kernel/cpu/mce/internal.h  |   2 +-
+ arch/x86/kernel/cpu/mce/threshold.c |   3 +-
+ 3 files changed, 160 insertions(+), 50 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/intel.c
+index fc4ffc4..399b62e 100644
+--- a/arch/x86/kernel/cpu/mce/intel.c
++++ b/arch/x86/kernel/cpu/mce/intel.c
+@@ -54,8 +54,27 @@ static DEFINE_RAW_SPINLOCK(cmci_discover_lock);
+  */
+ static DEFINE_SPINLOCK(cmci_poll_lock);
+ 
++/* Linux non-storm CMCI threshold (may be overridden by BIOS) */
+ #define CMCI_THRESHOLD		1
+ 
++/*
++ * MCi_CTL2 threshold for each bank when there is no storm.
++ * Default value for each bank may have been set by BIOS.
++ */
++static u16 cmci_threshold[MAX_NR_BANKS];
++
++/*
++ * High threshold to limit CMCI rate during storms. Max supported is
++ * 0x7FFF. Use this slightly smaller value so it has a distinctive
++ * signature when some asks "Why am I not seeing all corrected errors?"
++ * A high threshold is used instead of just disabling CMCI for a
++ * bank because both corrected and uncorrected errors may be logged
++ * in the same bank and signalled with CMCI. The threshold only applies
++ * to corrected errors, so keeping CMCI enabled means that uncorrected
++ * errors will still be processed in a timely fashion.
++ */
++#define CMCI_STORM_THRESHOLD	32749
++
+ static int cmci_supported(int *banks)
+ {
+ 	u64 cap;
+@@ -111,6 +130,31 @@ static bool lmce_supported(void)
+ }
+ 
+ /*
++ * Set a new CMCI threshold value. Preserve the state of the
++ * MCI_CTL2_CMCI_EN bit in case this happens during a
++ * cmci_rediscover() operation.
++ */
++static void cmci_set_threshold(int bank, int thresh)
++{
++	unsigned long flags;
++	u64 val;
++
++	raw_spin_lock_irqsave(&cmci_discover_lock, flags);
++	rdmsrl(MSR_IA32_MCx_CTL2(bank), val);
++	val &= ~MCI_CTL2_CMCI_THRESHOLD_MASK;
++	wrmsrl(MSR_IA32_MCx_CTL2(bank), val | thresh);
++	raw_spin_unlock_irqrestore(&cmci_discover_lock, flags);
++}
++
++void mce_intel_handle_storm(int bank, bool on)
++{
++	if (on)
++		cmci_set_threshold(bank, CMCI_STORM_THRESHOLD);
++	else
++		cmci_set_threshold(bank, cmci_threshold[bank]);
++}
++
++/*
+  * The interrupt handler. This is called on every event.
+  * Just call the poller directly to log any events.
+  * This could in theory increase the threshold under high load,
+@@ -122,71 +166,129 @@ static void intel_threshold_interrupt(void)
+ }
+ 
+ /*
++ * Check all the reasons why current CPU cannot claim
++ * ownership of a bank.
++ * 1: CPU already owns this bank
++ * 2: BIOS owns this bank
++ * 3: Some other CPU owns this bank
++ */
++static bool cmci_skip_bank(int bank, u64 *val)
++{
++	unsigned long *owned = (void *)this_cpu_ptr(&mce_banks_owned);
++
++	if (test_bit(bank, owned))
++		return true;
++
++	/* Skip banks in firmware first mode */
++	if (test_bit(bank, mce_banks_ce_disabled))
++		return true;
++
++	rdmsrl(MSR_IA32_MCx_CTL2(bank), *val);
++
++	/* Already owned by someone else? */
++	if (*val & MCI_CTL2_CMCI_EN) {
++		clear_bit(bank, owned);
++		__clear_bit(bank, this_cpu_ptr(mce_poll_banks));
++		return true;
++	}
++
++	return false;
++}
++
++/*
++ * Decide which CMCI interrupt threshold to use:
++ * 1: If this bank is in storm mode from whichever CPU was
++ *    the previous owner, stay in storm mode.
++ * 2: If ignoring any threshold set by BIOS, set Linux default
++ * 3: Try to honor BIOS threshold (unless buggy BIOS set it at zero).
++ */
++static u64 cmci_pick_threshold(u64 val, int *bios_zero_thresh)
++{
++	if ((val & MCI_CTL2_CMCI_THRESHOLD_MASK) == CMCI_STORM_THRESHOLD)
++		return val;
++
++	if (!mca_cfg.bios_cmci_threshold) {
++		val &= ~MCI_CTL2_CMCI_THRESHOLD_MASK;
++		val |= CMCI_THRESHOLD;
++	} else if (!(val & MCI_CTL2_CMCI_THRESHOLD_MASK)) {
++		/*
++		 * If bios_cmci_threshold boot option was specified
++		 * but the threshold is zero, we'll try to initialize
++		 * it to 1.
++		 */
++		*bios_zero_thresh = 1;
++		val |= CMCI_THRESHOLD;
++	}
++
++	return val;
++}
++
++/*
++ * Try to claim ownership of a bank.
++ */
++static void cmci_claim_bank(int bank, u64 val, int bios_zero_thresh, int *bios_wrong_thresh)
++{
++	struct mca_storm_desc *storm = this_cpu_ptr(&storm_desc);
++
++	val |= MCI_CTL2_CMCI_EN;
++	wrmsrl(MSR_IA32_MCx_CTL2(bank), val);
++	rdmsrl(MSR_IA32_MCx_CTL2(bank), val);
++
++	/* If the enable bit did not stick, this bank should be polled. */
++	if (!(val & MCI_CTL2_CMCI_EN)) {
++		WARN_ON(!test_bit(bank, this_cpu_ptr(mce_poll_banks)));
++		storm->banks[bank].poll_only = true;
++		return;
++	}
++
++	/* This CPU successfully set the enable bit. */
++	set_bit(bank, (void *)this_cpu_ptr(&mce_banks_owned));
++
++	if ((val & MCI_CTL2_CMCI_THRESHOLD_MASK) == CMCI_STORM_THRESHOLD) {
++		pr_notice("CPU%d BANK%d CMCI inherited storm\n", smp_processor_id(), bank);
++		mce_inherit_storm(bank);
++		cmci_storm_begin(bank);
++	} else {
++		__clear_bit(bank, this_cpu_ptr(mce_poll_banks));
++	}
++
++	/*
++	 * We are able to set thresholds for some banks that
++	 * had a threshold of 0. This means the BIOS has not
++	 * set the thresholds properly or does not work with
++	 * this boot option. Note down now and report later.
++	 */
++	if (mca_cfg.bios_cmci_threshold && bios_zero_thresh &&
++	    (val & MCI_CTL2_CMCI_THRESHOLD_MASK))
++		*bios_wrong_thresh = 1;
++
++	/* Save default threshold for each bank */
++	if (cmci_threshold[bank] == 0)
++		cmci_threshold[bank] = val & MCI_CTL2_CMCI_THRESHOLD_MASK;
++}
++
++/*
+  * Enable CMCI (Corrected Machine Check Interrupt) for available MCE banks
+  * on this CPU. Use the algorithm recommended in the SDM to discover shared
+- * banks.
++ * banks. Called during initial bootstrap, and also for hotplug CPU operations
++ * to rediscover/reassign machine check banks.
+  */
+ static void cmci_discover(int banks)
+ {
+-	unsigned long *owned = (void *)this_cpu_ptr(&mce_banks_owned);
++	int bios_wrong_thresh = 0;
+ 	unsigned long flags;
+ 	int i;
+-	int bios_wrong_thresh = 0;
+ 
+ 	raw_spin_lock_irqsave(&cmci_discover_lock, flags);
+ 	for (i = 0; i < banks; i++) {
+ 		u64 val;
+ 		int bios_zero_thresh = 0;
+ 
+-		if (test_bit(i, owned))
+-			continue;
+-
+-		/* Skip banks in firmware first mode */
+-		if (test_bit(i, mce_banks_ce_disabled))
++		if (cmci_skip_bank(i, &val))
+ 			continue;
+ 
+-		rdmsrl(MSR_IA32_MCx_CTL2(i), val);
+-
+-		/* Already owned by someone else? */
+-		if (val & MCI_CTL2_CMCI_EN) {
+-			clear_bit(i, owned);
+-			__clear_bit(i, this_cpu_ptr(mce_poll_banks));
+-			continue;
+-		}
+-
+-		if (!mca_cfg.bios_cmci_threshold) {
+-			val &= ~MCI_CTL2_CMCI_THRESHOLD_MASK;
+-			val |= CMCI_THRESHOLD;
+-		} else if (!(val & MCI_CTL2_CMCI_THRESHOLD_MASK)) {
+-			/*
+-			 * If bios_cmci_threshold boot option was specified
+-			 * but the threshold is zero, we'll try to initialize
+-			 * it to 1.
+-			 */
+-			bios_zero_thresh = 1;
+-			val |= CMCI_THRESHOLD;
+-		}
+-
+-		val |= MCI_CTL2_CMCI_EN;
+-		wrmsrl(MSR_IA32_MCx_CTL2(i), val);
+-		rdmsrl(MSR_IA32_MCx_CTL2(i), val);
+-
+-		/* Did the enable bit stick? -- the bank supports CMCI */
+-		if (val & MCI_CTL2_CMCI_EN) {
+-			set_bit(i, owned);
+-			__clear_bit(i, this_cpu_ptr(mce_poll_banks));
+-			/*
+-			 * We are able to set thresholds for some banks that
+-			 * had a threshold of 0. This means the BIOS has not
+-			 * set the thresholds properly or does not work with
+-			 * this boot option. Note down now and report later.
+-			 */
+-			if (mca_cfg.bios_cmci_threshold && bios_zero_thresh &&
+-					(val & MCI_CTL2_CMCI_THRESHOLD_MASK))
+-				bios_wrong_thresh = 1;
+-		} else {
+-			WARN_ON(!test_bit(i, this_cpu_ptr(mce_poll_banks)));
+-		}
++		val = cmci_pick_threshold(val, &bios_zero_thresh);
++		cmci_claim_bank(i, val, bios_zero_thresh, &bios_wrong_thresh);
+ 	}
+ 	raw_spin_unlock_irqrestore(&cmci_discover_lock, flags);
+ 	if (mca_cfg.bios_cmci_threshold && bios_wrong_thresh) {
+@@ -225,6 +327,9 @@ static void __cmci_disable_bank(int bank)
+ 	val &= ~MCI_CTL2_CMCI_EN;
+ 	wrmsrl(MSR_IA32_MCx_CTL2(bank), val);
+ 	__clear_bit(bank, this_cpu_ptr(mce_banks_owned));
++
++	if ((val & MCI_CTL2_CMCI_THRESHOLD_MASK) == CMCI_STORM_THRESHOLD)
++		cmci_storm_end(bank);
+ }
+ 
+ /*
+diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
+index 157b2f2..01f8f03 100644
+--- a/arch/x86/kernel/cpu/mce/internal.h
++++ b/arch/x86/kernel/cpu/mce/internal.h
+@@ -41,6 +41,7 @@ struct dentry *mce_get_debugfs_dir(void);
+ extern mce_banks_t mce_banks_ce_disabled;
+ 
+ #ifdef CONFIG_X86_MCE_INTEL
++void mce_intel_handle_storm(int bank, bool on);
+ void cmci_disable_bank(int bank);
+ void intel_init_cmci(void);
+ void intel_init_lmce(void);
+@@ -48,6 +49,7 @@ void intel_clear_lmce(void);
+ bool intel_filter_mce(struct mce *m);
+ bool intel_mce_usable_address(struct mce *m);
+ #else
++static inline void mce_intel_handle_storm(int bank, bool on) { }
+ static inline void cmci_disable_bank(int bank) { }
+ static inline void intel_init_cmci(void) { }
+ static inline void intel_init_lmce(void) { }
+diff --git a/arch/x86/kernel/cpu/mce/threshold.c b/arch/x86/kernel/cpu/mce/threshold.c
+index 0e19884..89e31e1 100644
+--- a/arch/x86/kernel/cpu/mce/threshold.c
++++ b/arch/x86/kernel/cpu/mce/threshold.c
+@@ -60,6 +60,9 @@ void mce_set_storm_mode(bool storm)
+ static void mce_handle_storm(unsigned int bank, bool on)
+ {
+ 	switch (boot_cpu_data.x86_vendor) {
++	case X86_VENDOR_INTEL:
++		mce_intel_handle_storm(bank, on);
++		break;
+ 	}
+ }
+ 
 
