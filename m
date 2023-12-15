@@ -1,109 +1,105 @@
-Return-Path: <linux-tip-commits+bounces-38-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-39-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EA0814A4E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 15:19:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64475814A5A
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 15:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA6292824F5
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 14:19:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96E081C23806
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 14:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90AD03067E;
-	Fri, 15 Dec 2023 14:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB4E30D0B;
+	Fri, 15 Dec 2023 14:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ofh53ErB";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="38+mkE00"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=anarazel.de header.i=@anarazel.de header.b="PhCzasCn";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jMKVAUcd"
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F322E65C;
-	Fri, 15 Dec 2023 14:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702649973;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s+ur53cIUdj33ok3eBL+Esj2uZivDHkdKlUPrUz0hIA=;
-	b=Ofh53ErBL17sEf0hiRZv9yXnchYe2Spj4pmB6hfISduS6dhb+CSrrrnKQJkM1Ne++UXOaW
-	SUUOENQLXQgkFy89HZ4DTEJZFdkeAVkvm9xwD+ZVv1yy4xRUnMs0H85YVhiftwF4UV4VKZ
-	3OtuDhC85EtERbAqdwAT4FJlOogUB0VRqOi6YMv2vHwBFBfbjNT8PYcySnJsGhFLKltjGm
-	uqNhUkGbXSlt7QIzHP9Ry5D1zEalVBJwjO7yNjPS7nnhHg95QcCblXTXpoA68eWTY9Sm4N
-	fuyU5rVqNOtyxSD9yfIccenA3gcebJNrjVibBwZq4vi8mBNHKCLQ2XcfAxX0uA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702649973;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s+ur53cIUdj33ok3eBL+Esj2uZivDHkdKlUPrUz0hIA=;
-	b=38+mkE00xZtcq4NGXsFNW0cII7dp6Qgxd09zOo2CsTyeh9NZkjcbF7CO00zjkCEHBdhVZv
-	rJ26/eWdmwPnIaCg==
-To: "Zhang, Rui" <rui.zhang@intel.com>, "jsperbeck@google.com"
- <jsperbeck@google.com>, "tip-bot2@linutronix.de" <tip-bot2@linutronix.de>
-Cc: "peterz@infradead.org" <peterz@infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, Andres Freund <andres@anarazel.de>
-Subject: [PATCH] x86/acpi: Handle bogus MADT APIC tables gracefully
-In-Reply-To: <87ttonpbnr.ffs@tglx>
-References: <87ttonpbnr.ffs@tglx>
-Date: Fri, 15 Dec 2023 15:19:32 +0100
-Message-ID: <8734w3o8ej.ffs@tglx>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5A130FAC;
+	Fri, 15 Dec 2023 14:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=anarazel.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=anarazel.de
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.west.internal (Postfix) with ESMTP id 6592B3200A7D;
+	Fri, 15 Dec 2023 09:20:24 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Fri, 15 Dec 2023 09:20:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1702650023; x=1702736423; bh=18qEFRKK3O
+	e9XW5rui6ep0d3REKALWXbfxoaAU0FUvc=; b=PhCzasCnYa3AllDgNpCHNZahtL
+	Nk4oMW2LkzSd5s2HU9cNeIpcgyCM9pMaCXChkEVp42BdPBkpCwXLkhgr1JRxqZnN
+	s7wS23fcp3Pj9Jkk4ncDO0b9RadVi2Wn6dCAj3FqPIOhMiHtD2V5DQzRLy5gZokm
+	x1emDEBQCOPbtFG2MDXkB9FTh05exrSxyTMJxP2JC54HpxEUDuNmN4aCnDpzIlIE
+	5I3nlTcDOfXfMfdFjm+W3QPiugiix4Hn+QbzUBrwpDcC1SpnpdgVG6CEpjSiFkQU
+	JMAHw+wkd3bv26L2WHnoGaEX3ugvbkHMrbHWYM+R+bhTDRhCGcAVtifwutUw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1702650023; x=1702736423; bh=18qEFRKK3Oe9XW5rui6ep0d3REKA
+	LWXbfxoaAU0FUvc=; b=jMKVAUcdNIqSIkPxQ5iRLCI+fvYvX6Y32OzQkRa/n1Pb
+	N1X4QQK6X6lcoypDWPrzXjukjDX75WIeHq8Ybx60QQqZNnYTHs5n25TTw4WLbB3D
+	TZVWCTu1Bm3iEf6rVlaq54cRWf1eKaF99iR0dVV5acy5W5ApNEphTM+ZTyDVZVR6
+	3Wqi5UPb2p+3vYV6ryBiQjXCX+FLO3Vk6PFOC4A20EWEShG0rblGbnLtWOEexbbp
+	Xwtj9pIp+XN4cU98Ko6Tft0eZclRLKqXCLANmqSMYdzu+iNN+LIrr6P93/3FVBV2
+	xhS9mbDs5cnvT3gmpcgmw1rQrpnaiRgk9YLSMPOETg==
+X-ME-Sender: <xms:p2B8ZQAjhymlw8GI3RkHMUA9yahWLtN9jq-dgbwSX_vZc-0eOJHDeQ>
+    <xme:p2B8ZSgD8qMH450MpY3LVNLWKStnm1KlvXFKOMGRqM81ZHJwk2SRCw2c5573a5Ied
+    xqDBICoVFyBxVtfCw>
+X-ME-Received: <xmr:p2B8ZTmgIc1IqEO9PEvpaziGfRdYILjGBk06nIjLGaOcx64H_134HE6R166hYkEppIcItar-grZU8JMXlMVXnhPRI_Mlu-JUaLqWJ1usIuIkqERjarrwSRY9-Kzm>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtvddgieefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehnughr
+    vghsucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuggftrf
+    grthhtvghrnhepvdfffeevhfetveffgeeiteefhfdtvdffjeevhfeuteegleduheetvedu
+    ieettddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghnughrvghssegrnhgrrhgriigvlhdruggv
+X-ME-Proxy: <xmx:p2B8ZWzas_Rxowb2kRWcufhFlu0hRO3s8poBLv8BRsl1EpCQfr42VQ>
+    <xmx:p2B8ZVTMpAao1GXJMTpuuNqpOoKFLdzi_oN-IlfDewWjK0VC0HJW2A>
+    <xmx:p2B8ZRYUFZpb01_T4PrvR9DdfkTFuoAi1FdDThH4XQxJ1meGpa4O2w>
+    <xmx:p2B8ZUFIAyH77oPkH-CjkPMXq9JkhDt_W5MdInR6At-k0LZ3btaTaw>
+Feedback-ID: id4a34324:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 15 Dec 2023 09:20:22 -0500 (EST)
+Date: Fri, 15 Dec 2023 06:20:19 -0800
+From: Andres Freund <andres@anarazel.de>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: "Zhang, Rui" <rui.zhang@intel.com>,
+	"jsperbeck@google.com" <jsperbeck@google.com>,
+	"tip-bot2@linutronix.de" <tip-bot2@linutronix.de>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [tip: x86/urgent] x86/acpi: Ignore invalid x2APIC entries
+Message-ID: <20231215142019.uvih3wlstacqut6o@alap3.anarazel.de>
+References: <1e565bb08ebdd03897580a5905d1d2de01e15add.camel@intel.com>
+ <87ttonpbnr.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ttonpbnr.ffs@tglx>
 
-The recent fix to ignore invalid x2APIC entries inadvertently broke systems
-with creative MADT APIC tables. The affected systems have APIC MADT tables
-where all entries have invalid APIC IDs (0xFF), which means they register
-exactly zero CPUs.
+Hi,
 
-But the condition to ignore the entries of APIC IDs < 255 in the X2APIC
-MADT table is solely based on the count of MADT APIC table entries.
+On 2023-12-12 18:34:48 +0100, Thomas Gleixner wrote:
+> The simple change below should do the trick.
 
-As a consequence the affected machines enumerate no secondary CPUs at
-all because the APIC table has entries and therefore the X2APIC table
-entries with APIC IDs < 255 are ignored.
+Yep, can confirm that that suffices to boot with all CPUs brought up.
 
-Change the condition so that the APIC table preference for APIC IDs <
-255 only becomes effective when the APIC table has valid APIC ID
-entries. IOW a APIC table full of invalid APIC IDs is considered to be
-empty which in consequence enables the X2APIC table entries with a APIC
-ID < 255 and restores the expected behaviour.
+Greetings,
 
-Fixes: ec9aedb2aa1a ("x86/acpi: Ignore invalid x2APIC entries")
-Reported-by: John Sperbeck <jsperbeck@google.com>
-Reported-by: Andres Freund <andres@anarazel.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
----
- arch/x86/kernel/acpi/boot.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -293,6 +293,7 @@ acpi_parse_lapic(union acpi_subtable_hea
- 			    processor->processor_id, /* ACPI ID */
- 			    processor->lapic_flags & ACPI_MADT_ENABLED);
- 
-+	has_lapic_cpus = true;
- 	return 0;
- }
- 
-@@ -1134,7 +1135,6 @@ static int __init acpi_parse_madt_lapic_
- 	if (!count) {
- 		count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC,
- 					acpi_parse_lapic, MAX_LOCAL_APIC);
--		has_lapic_cpus = count > 0;
- 		x2count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_X2APIC,
- 					acpi_parse_x2apic, MAX_LOCAL_APIC);
- 	}
+Andres Freund
 
