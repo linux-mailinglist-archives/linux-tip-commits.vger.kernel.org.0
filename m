@@ -1,64 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-45-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-46-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E85814F7D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 19:10:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C313A81591E
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 Dec 2023 13:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF271F21D37
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Dec 2023 18:10:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FFB9282F6F
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 Dec 2023 12:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A02E3012A;
-	Fri, 15 Dec 2023 18:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAF918ED7;
+	Sat, 16 Dec 2023 12:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1TzQ1dA8";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yt5bl1GU"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IdnFIlEC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oQjA0Sjj"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EB630129;
-	Fri, 15 Dec 2023 18:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D1714005;
+	Sat, 16 Dec 2023 12:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 15 Dec 2023 18:09:58 -0000
+Date: Sat, 16 Dec 2023 12:58:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702663799;
+	s=2020; t=1702731531;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=g6WxWSr9My4EqInVfw9NRhqNdCjVoy5l5OLWMaXqDD4=;
-	b=1TzQ1dA85+4kXIccjiUhT2CD2sLuibuO8rAnwABdyM5uGkYyvDDPQ7UsOJgBiiV83y81yu
-	MfN5XqzzIG6vpd/n6QqMk7Fz+xJ8vuwuLRjCtGWY7S3QGk/mLA+mx2ri1Pcibiw6i1GtDb
-	flh7brcXNIGJ50Zzk72nq095hGBM1HcTdxovGeaQj3fwAWPhuz85qQXoKlo78sYjXMy8qJ
-	2oEnDKFp8LyALbK4rf2FFK8V4STh/ATvQQGdydXewMY1XGeUxsJVB6nuYmwY9eplamKteR
-	Efu5CReik8e2lgMlhH3voWIEnwZ+ivs5lweM5uncpS93K+oR+mVr+s+ZAgcWTA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sWTL02ik7kDn5fM6Msulg+dYgLYIyO6t+MXOT8Sr/W8=;
+	b=IdnFIlEC6v6C7RRP9xecw1o+PryswOcAbnAskqkESHXpAed6is9xeU039qlvGF5cEku/0E
+	HoI5GOD4K+N39H5mMB1KIhYwxI9X9t8uIt2zMuQxLDQ0pCLytwI7UzCEvGekClSGSDcvQA
+	sOlZz9wpDOo9G3Dtqb/QdtfBGYQkghrN1T4iDroRVMaCIEBABzqaQgrPLIv/a+ysHT+osY
+	TOBItk8peGjt2LCPsduw3pLACzj05DVLoVyaMYRi29aZD6MTcDbZt1MRJvAVio3+uB6/9Y
+	yDJYk7mn7AyKAuDwKQRHJUUgWtaQPRP67yHwiH5IdETvv+HXzImxpvVlE7b3hg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702663799;
+	s=2020e; t=1702731531;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=g6WxWSr9My4EqInVfw9NRhqNdCjVoy5l5OLWMaXqDD4=;
-	b=yt5bl1GUlWg7Ua7cgwSDwh7sHBFs6smKzoMyxuY2fhBnrI/3qGMxr850jjS29FUDe/j7UH
-	6o2TLcZTHw7axXDQ==
-From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sWTL02ik7kDn5fM6Msulg+dYgLYIyO6t+MXOT8Sr/W8=;
+	b=oQjA0SjjJtI+Nvrq2ZFz/P4fCf0+YgBobOxrBxi9oVtjjD/r2vdMxnFGcPbeoexDxspnUr
+	CqczHNmVZoZG/9DQ==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/mm] x86/percpu: Use %RIP-relative address in untagged_addr()
-Cc: Uros Bizjak <ubizjak@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradaed.org>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+Subject: [tip: x86/urgent] x86/alternatives: Disable interrupts and sync when
+ optimizing NOPs in place
+Cc: Paul Gortmaker <paul.gortmaker@windriver.com>,
+ Thomas Gleixner <tglx@linutronix.de>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <ZT6narvE%2BLxX%2B7Be@windriver.com>
+References: <ZT6narvE%2BLxX%2B7Be@windriver.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170266379864.398.7891451489965815897.tip-bot2@tip-bot2>
+Message-ID: <170273153061.398.13274192737128400603.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -66,62 +72,85 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     91c17d7b04498ffb52939a18eb7e28fd23c9b654
-Gitweb:        https://git.kernel.org/tip/91c17d7b04498ffb52939a18eb7e28fd23c9b654
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Wed, 13 Dec 2023 16:03:15 +01:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 15 Dec 2023 09:50:14 -08:00
+Commit-ID:     2dc4196138055eb0340231aecac4d78c2ec2bea5
+Gitweb:        https://git.kernel.org/tip/2dc4196138055eb0340231aecac4d78c2ec2bea5
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 07 Dec 2023 20:49:26 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 15 Dec 2023 19:34:42 +01:00
 
-x86/percpu: Use %RIP-relative address in untagged_addr()
+x86/alternatives: Disable interrupts and sync when optimizing NOPs in place
 
-%RIP-relative addresses are nowadays correctly handled in alternative
-instructions, so remove misleading comment and improve assembly to
-use %RIP-relative address.
+apply_alternatives() treats alternatives with the ALT_FLAG_NOT flag set
+special as it optimizes the existing NOPs in place.
 
-Also, explicitly using %gs: prefix will segfault for non-SMP builds.
-Use macros from percpu.h which will DTRT with segment prefix register
-as far as SMP/non-SMP builds are concerned.
+Unfortunately, this happens with interrupts enabled and does not provide any
+form of core synchronization.
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradaed.org>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/all/20231213150357.5942-1-ubizjak%40gmail.com
+So an interrupt hitting in the middle of the update and using the affected code
+path will observe a half updated NOP and crash and burn. The following
+3 NOP sequence was observed to expose this crash halfway reliably under QEMU
+  32bit:
+
+   0x90 0x90 0x90
+
+which is replaced by the optimized 3 byte NOP:
+
+   0x8d 0x76 0x00
+
+So an interrupt can observe:
+
+   1) 0x90 0x90 0x90		nop nop nop
+   2) 0x8d 0x90 0x90		undefined
+   3) 0x8d 0x76 0x90		lea    -0x70(%esi),%esi
+   4) 0x8d 0x76 0x00		lea     0x0(%esi),%esi
+
+Where only #1 and #4 are true NOPs. The same problem exists for 64bit obviously.
+
+Disable interrupts around this NOP optimization and invoke sync_core()
+before re-enabling them.
+
+Fixes: 270a69c4485d ("x86/alternative: Support relocations in alternatives")
+Reported-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/ZT6narvE%2BLxX%2B7Be@windriver.com
 ---
- arch/x86/include/asm/uaccess_64.h | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ arch/x86/kernel/alternative.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
-index f2c02e4..01455c0 100644
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -11,6 +11,7 @@
- #include <asm/alternative.h>
- #include <asm/cpufeatures.h>
- #include <asm/page.h>
-+#include <asm/percpu.h>
- 
- #ifdef CONFIG_ADDRESS_MASKING
- /*
-@@ -18,14 +19,10 @@
-  */
- static inline unsigned long __untagged_addr(unsigned long addr)
- {
--	/*
--	 * Refer tlbstate_untag_mask directly to avoid RIP-relative relocation
--	 * in alternative instructions. The relocation gets wrong when gets
--	 * copied to the target place.
--	 */
- 	asm (ALTERNATIVE("",
--			 "and %%gs:tlbstate_untag_mask, %[addr]\n\t", X86_FEATURE_LAM)
--	     : [addr] "+r" (addr) : "m" (tlbstate_untag_mask));
-+			 "and " __percpu_arg([mask]) ", %[addr]", X86_FEATURE_LAM)
-+	     : [addr] "+r" (addr)
-+	     : [mask] "m" (__my_cpu_var(tlbstate_untag_mask)));
- 
- 	return addr;
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index fd44739..aae7456 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -255,6 +255,16 @@ static void __init_or_module noinline optimize_nops(u8 *instr, size_t len)
+ 	}
  }
+ 
++static void __init_or_module noinline optimize_nops_inplace(u8 *instr, size_t len)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	optimize_nops(instr, len);
++	sync_core();
++	local_irq_restore(flags);
++}
++
+ /*
+  * In this context, "source" is where the instructions are placed in the
+  * section .altinstr_replacement, for example during kernel build by the
+@@ -438,7 +448,7 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
+ 		 *   patch if feature is *NOT* present.
+ 		 */
+ 		if (!boot_cpu_has(a->cpuid) == !(a->flags & ALT_FLAG_NOT)) {
+-			optimize_nops(instr, a->instrlen);
++			optimize_nops_inplace(instr, a->instrlen);
+ 			continue;
+ 		}
+ 
 
