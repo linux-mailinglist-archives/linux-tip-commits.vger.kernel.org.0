@@ -1,67 +1,68 @@
-Return-Path: <linux-tip-commits+bounces-50-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-51-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C9B81872C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Dec 2023 13:13:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFB08188B0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Dec 2023 14:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87F711C2347E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Dec 2023 12:13:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EE6B28496A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Dec 2023 13:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CD218627;
-	Tue, 19 Dec 2023 12:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216D91945B;
+	Tue, 19 Dec 2023 13:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iarpM3as";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ApkdsmIH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="imOW/Kw1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Yh1ORP8r"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99F418622;
-	Tue, 19 Dec 2023 12:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866621945A;
+	Tue, 19 Dec 2023 13:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 19 Dec 2023 12:13:44 -0000
+Date: Tue, 19 Dec 2023 13:33:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702988025;
+	s=2020; t=1702992819;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ieRxvbVOAAUwrLCnIlp5XXn4QEhh9FonQZk2Ux2ZoSw=;
-	b=iarpM3aszYJEwPUpnnc6do7JKNLqlWyW0kSeuaoDKSJ3ME9VgB91M0vtgun9Qtpw0EvQPa
-	szAUN6aqUw+v6DHrMcp/U6oycGIyzvlwKmgBUDqJ329Q0HC6Q1WTDBa2W2e8UFHjTEOwRB
-	VoimAdIsvfXo7t7ce3n4JijTyocMwXCL1oyhkD0mfzk741gyOXbKiSxu/+PgbD/AVMJLEg
-	RQGWry7xyBw2O+z31HHo7UVorkOI6EYfiQbtj1TPxsRS3RdR9GyGzW8oy20yMU6atzYD3g
-	Sc8yA8BTkcwIQvfFC3JETsSixUhkIjndiFOWuR32IMWpFbMYKXW4UFSRceLdqA==
+	bh=wZu7+f4jqN8y26ObwbxjE93jUOV36LfTZnAHKob9k4E=;
+	b=imOW/Kw1Cwl4ft0SmPPotxwsLhzNtOJYRjZA6zXjpcqzXHoys1seC77an5JxyBoR2yXahc
+	bVGh6jcLXJI3JmwloAyAHp6eqqt9TST6km1Ow4MrXNI2EIP9Bz4HcRqZUdOCjz790hHCtC
+	6hjdulJNDmjUZloDSgp01skI6GuuFfj0ErzDa8q5B6rJx1PysLfJ76NhumvYuf/X8p4UHR
+	Aj6G6qC+B6s8Ts6E4ekadE3Emg6CAeG64s4/wY0+TdTQ3YTMIFCPuErHsQtW7C3I63Doru
+	9YYmTzPkvlQB0a/H+GkM7fRmN3S3YTnXJH6/M5QznVDEcI9BLUBD92Cn2iOAzg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702988025;
+	s=2020e; t=1702992819;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ieRxvbVOAAUwrLCnIlp5XXn4QEhh9FonQZk2Ux2ZoSw=;
-	b=ApkdsmIHREwh0Mx5crau0pUE/uq1t2AkyVoq2orMzcCVsSw+5HP2nSsOxgPNqPn8AVHoH7
-	V4BL768K5e1nKTCw==
+	bh=wZu7+f4jqN8y26ObwbxjE93jUOV36LfTZnAHKob9k4E=;
+	b=Yh1ORP8rnd+BcBQzUcb0Rf5akvwDcI9uEr6uHBLzPWCSrKbDtQ8Z5B0Ka3vD7M9OSBKbfl
+	UbilJhA2v4m5yJDg==
 From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/Kconfig: Rework CONFIG_X86_PAE dependency
-Cc: Arnd Bergmann <arnd@arndb.de>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231204084722.3789473-2-arnd@kernel.org>
-References: <20231204084722.3789473-2-arnd@kernel.org>
+Subject: [tip: x86/percpu] x86/alternatives: Move apply_relocation() out of
+ init section
+Cc: Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
+ Uros Bizjak <ubizjak@gmail.com>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231204072856.1033621-1-arnd@kernel.org>
+References: <20231204072856.1033621-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170298802432.398.10812365302883561661.tip-bot2@tip-bot2>
+Message-ID: <170299281805.398.14125432177983046398.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -69,78 +70,73 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the x86/percpu branch of tip:
 
-Commit-ID:     88a2b4edda3d0709727be53f4423b0b832d91de3
-Gitweb:        https://git.kernel.org/tip/88a2b4edda3d0709727be53f4423b0b832d91de3
+Commit-ID:     86ed430cf5296ca97a66f1f37e30b7dfe47cd36f
+Gitweb:        https://git.kernel.org/tip/86ed430cf5296ca97a66f1f37e30b7dfe47cd36f
 Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Mon, 04 Dec 2023 09:47:02 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 19 Dec 2023 13:03:06 +01:00
+AuthorDate:    Mon, 04 Dec 2023 08:28:41 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 19 Dec 2023 14:21:49 +01:00
 
-x86/Kconfig: Rework CONFIG_X86_PAE dependency
+x86/alternatives: Move apply_relocation() out of init section
 
-While looking at a Xen Kconfig dependency issue, I tried to understand the
-exact dependencies for CONFIG_X86_PAE, which is selected by CONFIG_HIGHMEM64G
-but can also be enabled manually.
+This function is now called from a few places that are no __init_or_module,
+resulting a link time warning:
 
-Apparently the dependencies for CONFIG_HIGHMEM64G are strictly about CPUs
-that do support PAE, but the actual feature can be incorrectly enabled on
-older CPUs as well. The CONFIG_X86_CMPXCHG64 dependencies on the other hand
-include X86_PAE because cmpxchg8b is requried for PAE to work.
+  WARNING: modpost: vmlinux: section mismatch in reference: patch_dest+0x8a (section: .text) -> apply_relocation (section: .init.text)
 
-Rework this for readability and correctness, using a positive list of CPUs
-that support PAE in a new X86_HAVE_PAE symbol that can serve as a dependency
-for both X86_PAE and HIGHMEM64G as well as simplify the X86_CMPXCHG64
-dependency list.
+Remove the annotation here.
 
+[ mingo: Also sync up add_nop() with these changes. ]
+
+Fixes: 17bce3b2ae2d ("x86/callthunks: Handle %rip-relative relocations in call thunk template")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231204084722.3789473-2-arnd@kernel.org
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Link: https://lore.kernel.org/r/20231204072856.1033621-1-arnd@kernel.org
 ---
- arch/x86/Kconfig     | 4 ++--
- arch/x86/Kconfig.cpu | 6 +++++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ arch/x86/kernel/alternative.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 3762f41..4692380 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1415,7 +1415,7 @@ config HIGHMEM4G
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 5052371..1781e02 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -44,7 +44,7 @@ EXPORT_SYMBOL_GPL(alternatives_patched);
+ #define DA_ENDBR	0x08
+ #define DA_SMP		0x10
  
- config HIGHMEM64G
- 	bool "64GB"
--	depends on !M486SX && !M486 && !M586 && !M586TSC && !M586MMX && !MGEODE_LX && !MGEODEGX1 && !MCYRIXIII && !MELAN && !MWINCHIPC6 && !MWINCHIP3D && !MK6
-+	depends on X86_HAVE_PAE
- 	select X86_PAE
- 	help
- 	  Select this if you have a 32-bit processor and more than 4
-@@ -1472,7 +1472,7 @@ config HIGHMEM
+-static unsigned int __initdata_or_module debug_alternative;
++static unsigned int debug_alternative;
  
- config X86_PAE
- 	bool "PAE (Physical Address Extension) Support"
--	depends on X86_32 && !HIGHMEM4G
-+	depends on X86_32 && X86_HAVE_PAE
- 	select PHYS_ADDR_T_64BIT
- 	select SWIOTLB
- 	help
-diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
-index 00468ad..b9224cf 100644
---- a/arch/x86/Kconfig.cpu
-+++ b/arch/x86/Kconfig.cpu
-@@ -362,9 +362,13 @@ config X86_TSC
- 	def_bool y
- 	depends on (MWINCHIP3D || MCRUSOE || MEFFICEON || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || MK8 || MVIAC3_2 || MVIAC7 || MGEODEGX1 || MGEODE_LX || MCORE2 || MATOM) || X86_64
+ static int __init debug_alt(char *str)
+ {
+@@ -132,7 +132,7 @@ const unsigned char * const x86_nops[ASM_NOP_MAX+1] =
+  * each single-byte NOPs). If @len to fill out is > ASM_NOP_MAX, pad with INT3 and
+  * *jump* over instead of executing long and daft NOPs.
+  */
+-static void __init_or_module add_nop(u8 *instr, unsigned int len)
++static void add_nop(u8 *instr, unsigned int len)
+ {
+ 	u8 *target = instr + len;
  
-+config X86_HAVE_PAE
-+	def_bool y
-+	depends on MCRUSOE || MEFFICEON || MCYRIXIII || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MK8 || MVIAC7 || MCORE2 || MATOM || X86_64
-+
- config X86_CMPXCHG64
- 	def_bool y
--	depends on X86_PAE || X86_64 || MCORE2 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || M586TSC || M586MMX || MATOM || MGEODE_LX || MGEODEGX1 || MK6 || MK7 || MK8
-+	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7
+@@ -206,7 +206,7 @@ static int skip_nops(u8 *instr, int offset, int len)
+  * Optimize a sequence of NOPs, possibly preceded by an unconditional jump
+  * to the end of the NOP sequence into a single NOP.
+  */
+-static bool __init_or_module
++static bool
+ __optimize_nops(u8 *instr, size_t len, struct insn *insn, int *next, int *prev, int *target)
+ {
+ 	int i = *next - insn->length;
+@@ -325,7 +325,7 @@ bool need_reloc(unsigned long offset, u8 *src, size_t src_len)
+ 	return (target < src || target > src + src_len);
+ }
  
- # this should be set for all -march=.. options where the compiler
- # generates cmov.
+-void __init_or_module apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
++void apply_relocation(u8 *buf, size_t len, u8 *dest, u8 *src, size_t src_len)
+ {
+ 	int prev, target = 0;
+ 
 
