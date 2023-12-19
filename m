@@ -1,68 +1,67 @@
-Return-Path: <linux-tip-commits+bounces-49-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-50-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE7F81716B
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Dec 2023 14:57:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C9B81872C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Dec 2023 13:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E383D282617
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Dec 2023 13:57:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87F711C2347E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Dec 2023 12:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6C81D123;
-	Mon, 18 Dec 2023 13:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CD218627;
+	Tue, 19 Dec 2023 12:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Koy+b1tW";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L1HYhKO1"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iarpM3as";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ApkdsmIH"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50201D12D;
-	Mon, 18 Dec 2023 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99F418622;
+	Tue, 19 Dec 2023 12:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 18 Dec 2023 13:57:30 -0000
+Date: Tue, 19 Dec 2023 12:13:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702907851;
+	s=2020; t=1702988025;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yKPUIu+lrMG4DdNJrTfiWU7oV+1Ny7jpFBIodEJ0jHU=;
-	b=Koy+b1tWCioaVB26LsGUFhpec+L3stlEEs/vVbfrkEg0DlnmeO28o3N6DYUSKgmOR/Ujxg
-	tUHI9UAPghpOakAbnr1wZWKQA2wpiH+JRYIYez6xpznmzztskSeMQZZJ9iYxQnTkpCI+kt
-	iUG/vB9fvVvJtt5P2j6acuuj/tIfsiqaQTAPYaGQFo3XuT+UA3zv6gZY+xal6N03xlRhgp
-	Ec4m8iVo3Mg5JLabWjiJu9J9f9y6GkCr1cktnClqfKpA73Vwupv1Vb1rU5V0N2MVIQaBpn
-	cF7HPphuSRcsop0dBMJiFJRbkUACXyNDVMfcMWrTbXKjrMZ7KwlrlNEvYN0O5Q==
+	bh=ieRxvbVOAAUwrLCnIlp5XXn4QEhh9FonQZk2Ux2ZoSw=;
+	b=iarpM3aszYJEwPUpnnc6do7JKNLqlWyW0kSeuaoDKSJ3ME9VgB91M0vtgun9Qtpw0EvQPa
+	szAUN6aqUw+v6DHrMcp/U6oycGIyzvlwKmgBUDqJ329Q0HC6Q1WTDBa2W2e8UFHjTEOwRB
+	VoimAdIsvfXo7t7ce3n4JijTyocMwXCL1oyhkD0mfzk741gyOXbKiSxu/+PgbD/AVMJLEg
+	RQGWry7xyBw2O+z31HHo7UVorkOI6EYfiQbtj1TPxsRS3RdR9GyGzW8oy20yMU6atzYD3g
+	Sc8yA8BTkcwIQvfFC3JETsSixUhkIjndiFOWuR32IMWpFbMYKXW4UFSRceLdqA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702907851;
+	s=2020e; t=1702988025;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yKPUIu+lrMG4DdNJrTfiWU7oV+1Ny7jpFBIodEJ0jHU=;
-	b=L1HYhKO1IYKtcqT3JOxxA710NVhz9JwcIehqqr0VaLPuQd5sRs9WPi9fBiyP4TdwRA0OnE
-	90xp/KMQFj9iN1Aw==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=ieRxvbVOAAUwrLCnIlp5XXn4QEhh9FonQZk2Ux2ZoSw=;
+	b=ApkdsmIHREwh0Mx5crau0pUE/uq1t2AkyVoq2orMzcCVsSw+5HP2nSsOxgPNqPn8AVHoH7
+	V4BL768K5e1nKTCw==
+From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/acpi: Handle bogus MADT APIC tables gracefully
-Cc: John Sperbeck <jsperbeck@google.com>, Andres Freund <andres@anarazel.de>,
- Thomas Gleixner <tglx@linutronix.de>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+Subject: [tip: x86/build] x86/Kconfig: Rework CONFIG_X86_PAE dependency
+Cc: Arnd Bergmann <arnd@arndb.de>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <169953729188.3135.6804572126118798018.tip-bot2@tip-bot2>
-References: <169953729188.3135.6804572126118798018.tip-bot2@tip-bot2>
+In-Reply-To: <20231204084722.3789473-2-arnd@kernel.org>
+References: <20231204084722.3789473-2-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170290785069.398.7593700357199640901.tip-bot2@tip-bot2>
+Message-ID: <170298802432.398.10812365302883561661.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -70,65 +69,78 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     d5a10b976ecb77fa49b95f3f1016ca2997c122cb
-Gitweb:        https://git.kernel.org/tip/d5a10b976ecb77fa49b95f3f1016ca2997c122cb
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 15 Dec 2023 15:19:32 +01:00
+Commit-ID:     88a2b4edda3d0709727be53f4423b0b832d91de3
+Gitweb:        https://git.kernel.org/tip/88a2b4edda3d0709727be53f4423b0b832d91de3
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Mon, 04 Dec 2023 09:47:02 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 18 Dec 2023 14:21:44 +01:00
+CommitterDate: Tue, 19 Dec 2023 13:03:06 +01:00
 
-x86/acpi: Handle bogus MADT APIC tables gracefully
+x86/Kconfig: Rework CONFIG_X86_PAE dependency
 
-The recent fix to ignore invalid x2APIC entries inadvertently broke
-systems with creative MADT APIC tables. The affected systems have APIC
-MADT tables where all entries have invalid APIC IDs (0xFF), which means
-they register exactly zero CPUs.
+While looking at a Xen Kconfig dependency issue, I tried to understand the
+exact dependencies for CONFIG_X86_PAE, which is selected by CONFIG_HIGHMEM64G
+but can also be enabled manually.
 
-But the condition to ignore the entries of APIC IDs < 255 in the X2APIC
-MADT table is solely based on the count of MADT APIC table entries.
+Apparently the dependencies for CONFIG_HIGHMEM64G are strictly about CPUs
+that do support PAE, but the actual feature can be incorrectly enabled on
+older CPUs as well. The CONFIG_X86_CMPXCHG64 dependencies on the other hand
+include X86_PAE because cmpxchg8b is requried for PAE to work.
 
-As a consequence, the affected machines enumerate no secondary CPUs at
-all because the APIC table has entries and therefore the X2APIC table
-entries with APIC IDs < 255 are ignored.
+Rework this for readability and correctness, using a positive list of CPUs
+that support PAE in a new X86_HAVE_PAE symbol that can serve as a dependency
+for both X86_PAE and HIGHMEM64G as well as simplify the X86_CMPXCHG64
+dependency list.
 
-Change the condition so that the APIC table preference for APIC IDs <
-255 only becomes effective when the APIC table has valid APIC ID
-entries.
-
-IOW, an APIC table full of invalid APIC IDs is considered to be empty
-which in consequence enables the X2APIC table entries with a APIC ID
-< 255 and restores the expected behaviour.
-
-Fixes: ec9aedb2aa1a ("x86/acpi: Ignore invalid x2APIC entries")
-Reported-by: John Sperbeck <jsperbeck@google.com>
-Reported-by: Andres Freund <andres@anarazel.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/169953729188.3135.6804572126118798018.tip-bot2@tip-bot2
+Link: https://lore.kernel.org/r/20231204084722.3789473-2-arnd@kernel.org
 ---
- arch/x86/kernel/acpi/boot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/Kconfig     | 4 ++--
+ arch/x86/Kconfig.cpu | 6 +++++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 1a0dd80..85a3ce2 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -293,6 +293,7 @@ acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
- 			    processor->processor_id, /* ACPI ID */
- 			    processor->lapic_flags & ACPI_MADT_ENABLED);
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 3762f41..4692380 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1415,7 +1415,7 @@ config HIGHMEM4G
  
-+	has_lapic_cpus = true;
- 	return 0;
- }
+ config HIGHMEM64G
+ 	bool "64GB"
+-	depends on !M486SX && !M486 && !M586 && !M586TSC && !M586MMX && !MGEODE_LX && !MGEODEGX1 && !MCYRIXIII && !MELAN && !MWINCHIPC6 && !MWINCHIP3D && !MK6
++	depends on X86_HAVE_PAE
+ 	select X86_PAE
+ 	help
+ 	  Select this if you have a 32-bit processor and more than 4
+@@ -1472,7 +1472,7 @@ config HIGHMEM
  
-@@ -1134,7 +1135,6 @@ static int __init acpi_parse_madt_lapic_entries(void)
- 	if (!count) {
- 		count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC,
- 					acpi_parse_lapic, MAX_LOCAL_APIC);
--		has_lapic_cpus = count > 0;
- 		x2count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_X2APIC,
- 					acpi_parse_x2apic, MAX_LOCAL_APIC);
- 	}
+ config X86_PAE
+ 	bool "PAE (Physical Address Extension) Support"
+-	depends on X86_32 && !HIGHMEM4G
++	depends on X86_32 && X86_HAVE_PAE
+ 	select PHYS_ADDR_T_64BIT
+ 	select SWIOTLB
+ 	help
+diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
+index 00468ad..b9224cf 100644
+--- a/arch/x86/Kconfig.cpu
++++ b/arch/x86/Kconfig.cpu
+@@ -362,9 +362,13 @@ config X86_TSC
+ 	def_bool y
+ 	depends on (MWINCHIP3D || MCRUSOE || MEFFICEON || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || MK8 || MVIAC3_2 || MVIAC7 || MGEODEGX1 || MGEODE_LX || MCORE2 || MATOM) || X86_64
+ 
++config X86_HAVE_PAE
++	def_bool y
++	depends on MCRUSOE || MEFFICEON || MCYRIXIII || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MK8 || MVIAC7 || MCORE2 || MATOM || X86_64
++
+ config X86_CMPXCHG64
+ 	def_bool y
+-	depends on X86_PAE || X86_64 || MCORE2 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || M586TSC || M586MMX || MATOM || MGEODE_LX || MGEODEGX1 || MK6 || MK7 || MK8
++	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7
+ 
+ # this should be set for all -march=.. options where the compiler
+ # generates cmov.
 
