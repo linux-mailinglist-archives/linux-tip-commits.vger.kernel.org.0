@@ -1,68 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-58-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-59-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18BDC81A2C2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Dec 2023 16:35:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F7D81A36E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Dec 2023 17:00:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C404A1F258A3
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Dec 2023 15:35:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC941280551
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Dec 2023 16:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23DB3FB0B;
-	Wed, 20 Dec 2023 15:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD5B4778C;
+	Wed, 20 Dec 2023 15:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ejQ2PFPu";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3Irkd7Gr"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bkAfuWde";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hoRBxrVf"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779183FB04;
-	Wed, 20 Dec 2023 15:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EBD47771;
+	Wed, 20 Dec 2023 15:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 20 Dec 2023 15:35:08 -0000
+Date: Wed, 20 Dec 2023 15:59:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1703086509;
+	s=2020; t=1703087945;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Nwb3TBF8ZkmmGchbIYHoNeOIl9Lz8S3txVTK+sa+eW0=;
-	b=ejQ2PFPu/OLQocj56zGeoqvAIN8yuELzXuIYDdIg6gh0vQKM97WEZqEZYlaOYqolBf4JwT
-	LDcx0GAbCSFRMYWKrJpBApjMeqTs0+LLes3b6ad87cjxQ80SCMBueg+Xo2vqq5VX5t3wIf
-	Q0eHWOhjV+3WFtRQvv1ct2yi2CTTDcZLAnkKfuSpjwvOi5WiWWXmEhNEgLfxj4HNoIJrVd
-	W4HULw6Dmrw+zqoFTedSH4skjg11Bkem8MMpI0le9ILUyzfXsmbtsAFcIz60NpBT5dGE+3
-	bajhh8DCkmggv01+dvbHJlXutJDruvJVIsc+Wc0tQm0uNgZq8SGcBclbkPslvQ==
+	bh=jP3aAkdQoWZVpNzAO+LKKTgDZR1ZVplKuZ3SA3WwaZo=;
+	b=bkAfuWde2N5yyQWYJg/wuoHTAPyOyAz2x5tWJzLpqUfhmERmYvvxV617PNanmjszHLfoue
+	ZUwOuIfb4ZdLHLi1igfil8tze6Yhw5pwYb1f31MWVYezAp6iA/tkhXyyBawE59hWwCYApV
+	l5JT0XVUjUvRK/lVovrO1xbeGATQrIMHfET/gQunRffUvYLwU+PyLRi/ARo1ZYzb3GWqgS
+	lYsQTezGjDXJ6rkBKzCFktXwkkFmENbCGvNXSD+KBpsJomKqOGHr6utNQokVemCOjhfs0l
+	k9P3z9Cpz4+payiKs6D+a9ODURI6UsY8sE5sgh+JXH+BrZcNSacLQ1Ato14nKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1703086509;
+	s=2020e; t=1703087945;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Nwb3TBF8ZkmmGchbIYHoNeOIl9Lz8S3txVTK+sa+eW0=;
-	b=3Irkd7Gr+cCWaRx1wpmZS/NSRKDOvJf6vZxWrH+EBHdSZCiIc8HNqkvfLi+ukhmi/No2ds
-	Y8erMO1+OOehysCg==
-From: "tip-bot2 for xiaoming Wang" <tip-bot2@linutronix.de>
+	bh=jP3aAkdQoWZVpNzAO+LKKTgDZR1ZVplKuZ3SA3WwaZo=;
+	b=hoRBxrVfuMNPWo9bY6kKteNO97p85VVsGxGa+KAGY7FL9eSsfrW/MbrS07n2xZv3m4KMqF
+	h8Hgqd0WUWhcAnAQ==
+From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] cpu/hotplug: Increase the number of dynamic states
-Cc: Xiaoming Wang <xiaoming.wang@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject:
+ [tip: timers/core] timers: Fix nextevt calculation when no timers are pending
+Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20231219033411.816100-1-xiaoming.wang@intel.com>
-References: <20231219033411.816100-1-xiaoming.wang@intel.com>
+In-Reply-To: <20231201092654.34614-13-anna-maria@linutronix.de>
+References: <20231201092654.34614-13-anna-maria@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170308650830.398.5666378578181413090.tip-bot2@tip-bot2>
+Message-ID: <170308794496.398.15842990234534147833.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -70,43 +72,82 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     fe22944cf05ede8e6f841cfecdb7093a53a3d9b3
-Gitweb:        https://git.kernel.org/tip/fe22944cf05ede8e6f841cfecdb7093a53a3d9b3
-Author:        xiaoming Wang <xiaoming.wang@intel.com>
-AuthorDate:    Tue, 19 Dec 2023 11:34:11 +08:00
+Commit-ID:     da65f29dada7f7cbbf0d6375b88a0316f5f7d6f5
+Gitweb:        https://git.kernel.org/tip/da65f29dada7f7cbbf0d6375b88a0316f5f7d6f5
+Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
+AuthorDate:    Fri, 01 Dec 2023 10:26:34 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 20 Dec 2023 16:25:15 +01:00
+CommitterDate: Wed, 20 Dec 2023 16:49:39 +01:00
 
-cpu/hotplug: Increase the number of dynamic states
+timers: Fix nextevt calculation when no timers are pending
 
-The dynamically allocatable hotplug state space can be exhausted by
-the existing drivers and infrastructure which install CPU hotplug
-states dynamically. That prevents new drivers and infrastructure from
-installing dynamically allocated states.
+When no timer is queued into an empty timer base, the next_expiry will not
+be updated. It was originally calculated as
 
-Increase the size of the CPUHP_AP_ONLINE_DYN state by 10 to make
-room.
+  base->clk + NEXT_TIMER_MAX_DELTA
 
-Signed-off-by: Xiaoming Wang <xiaoming.wang@intel.com>
+When the timer base stays empty long enough (> NEXT_TIMER_MAX_DELTA), the
+next_expiry value of the empty base suggests that there is a timer pending
+soon. This might be more a kind of a theoretical problem, but the fix
+doesn't hurt.
+
+Use only base->next_expiry value as nextevt when timers are
+pending. Otherwise nextevt will be jiffies + NEXT_TIMER_MAX_DELTA. As all
+information is in place, update base->next_expiry value of the empty timer
+base as well.
+
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20231219033411.816100-1-xiaoming.wang@intel.com
----
- include/linux/cpuhotplug.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20231201092654.34614-13-anna-maria@linutronix.de
 
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index af6c21a..8bd454d 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -239,7 +239,7 @@ enum cpuhp_state {
- 	CPUHP_AP_RCUTREE_ONLINE,
- 	CPUHP_AP_BASE_CACHEINFO_ONLINE,
- 	CPUHP_AP_ONLINE_DYN,
--	CPUHP_AP_ONLINE_DYN_END		= CPUHP_AP_ONLINE_DYN + 30,
-+	CPUHP_AP_ONLINE_DYN_END		= CPUHP_AP_ONLINE_DYN + 40,
- 	CPUHP_AP_X86_HPET_ONLINE,
- 	CPUHP_AP_X86_KVM_CLK_ONLINE,
- 	CPUHP_AP_ACTIVE,
+---
+ kernel/time/timer.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index cf51655..352b161 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1922,8 +1922,8 @@ static u64 cmp_next_hrtimer_event(u64 basem, u64 expires)
+ u64 get_next_timer_interrupt(unsigned long basej, u64 basem)
+ {
+ 	struct timer_base *base = this_cpu_ptr(&timer_bases[BASE_STD]);
++	unsigned long nextevt = basej + NEXT_TIMER_MAX_DELTA;
+ 	u64 expires = KTIME_MAX;
+-	unsigned long nextevt;
+ 	bool was_idle;
+ 
+ 	/*
+@@ -1936,7 +1936,6 @@ u64 get_next_timer_interrupt(unsigned long basej, u64 basem)
+ 	raw_spin_lock(&base->lock);
+ 	if (base->next_expiry_recalc)
+ 		next_expiry_recalc(base);
+-	nextevt = base->next_expiry;
+ 
+ 	/*
+ 	 * We have a fresh next event. Check whether we can forward the
+@@ -1945,10 +1944,20 @@ u64 get_next_timer_interrupt(unsigned long basej, u64 basem)
+ 	__forward_timer_base(base, basej);
+ 
+ 	if (base->timers_pending) {
++		nextevt = base->next_expiry;
++
+ 		/* If we missed a tick already, force 0 delta */
+ 		if (time_before(nextevt, basej))
+ 			nextevt = basej;
+ 		expires = basem + (u64)(nextevt - basej) * TICK_NSEC;
++	} else {
++		/*
++		 * Move next_expiry for the empty base into the future to
++		 * prevent a unnecessary raise of the timer softirq when the
++		 * next_expiry value will be reached even if there is no timer
++		 * pending.
++		 */
++		base->next_expiry = nextevt;
+ 	}
+ 
+ 	/*
 
