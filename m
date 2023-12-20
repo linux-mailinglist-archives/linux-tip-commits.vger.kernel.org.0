@@ -1,69 +1,68 @@
-Return-Path: <linux-tip-commits+bounces-56-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-57-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448A9819C17
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Dec 2023 11:06:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54ECD819C82
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Dec 2023 11:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F062D283100
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Dec 2023 10:06:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 791141C20DE3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Dec 2023 10:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764C822319;
-	Wed, 20 Dec 2023 10:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895EB20B2E;
+	Wed, 20 Dec 2023 10:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="x40x382o";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3FH2bF+u"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GK8YwXgW";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fmHVrzKM"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C9E21345;
-	Wed, 20 Dec 2023 10:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F40D20B03;
+	Wed, 20 Dec 2023 10:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 20 Dec 2023 10:04:02 -0000
+Date: Wed, 20 Dec 2023 10:11:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1703066643;
+	s=2020; t=1703067119;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7VzmfdKzmIIeJFMa69SW3KqMV+93FR+A/BnSieEDQi0=;
-	b=x40x382oJBs9+zQVwzgza+EDnpln+NIRqnKB9ifTcds5JUsLSQiFGldG9NswlnNrYzYwpn
-	0nkw5fGaRPidULY/k+2bgh0jySA/0yGING08lMY7Vi3rs6adRz3Tz93jpsXs9VGPokgiry
-	jelgVD6fecUV7WnOKidnSBndKbgUV4EI1bVVe4GDkac+0OflvP+QG4Z2M+SJacLj2xeDAY
-	cVFT1RiQ4rR/PiFbAzRqhNGWibFGaJCFIF0CBEb5JDTfiyRMyDm3ls/kDu6/xs2w0aOZ5m
-	mT5b4jhqziHGurvTzHVxFzHJkpCWizLxekGGEgkhorByYlibfyyQSCHk0ILt8A==
+	bh=H6hwmAWQKjMEl12UtoecaxvFXwVUb9+J4SBmMUc4vPU=;
+	b=GK8YwXgWgW4n2bBFQZEQlJwIXmhTdQ+2/QWlHs55owmgnfP50smqY5A4EvhHmUKAeUxtsA
+	+cU+eB8mkCq1lzygE46rcCJwl1CXJ7j55LdOXDYBWn+kVi18IuG010kZSGudVROxAMlJwQ
+	HLy3OhQUwiF0QqducoKl916BxwodpEMfDTk/QMpJ1XCEzcDgluqCre+whGvzF/CjBdMDtf
+	uNt2wStV4bUsIpjVFqXvOzUTBLy1RyvTJT5NVwhjR7LoUZ3Yu/lAsxaqPke2iLULFl18od
+	4m2gS7kmRAqvZykJzsAo4tlihGP9q/wS0nCJwzz2DHGfmxQwA1Vhmwzkv6e5Ug==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1703066643;
+	s=2020e; t=1703067119;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7VzmfdKzmIIeJFMa69SW3KqMV+93FR+A/BnSieEDQi0=;
-	b=3FH2bF+u9haJFGEb6UIlLvv3pDEGhchpZURoP/5D0vzJfu+nmxPFjI7AeSuhu2+Y7DGtqu
-	OPhsKkBHkRFw4DBg==
-From: "tip-bot2 for Vegard Nossum" <tip-bot2@linutronix.de>
+	bh=H6hwmAWQKjMEl12UtoecaxvFXwVUb9+J4SBmMUc4vPU=;
+	b=fmHVrzKMEr54qo/fQo97gUsJ3vkPqWxJTnEDqRQLZsI1R35FTPMYuagsAJHOQ6Ka2boFvr
+	vG0uoA+9AgPR91Cw==
+From: "tip-bot2 for Shrikanth Hegde" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/asm] x86/asm: Provide new infrastructure for GDT descriptors
-Cc: Vegard Nossum <vegard.nossum@oracle.com>, Ingo Molnar <mingo@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20231219151200.2878271-2-vegard.nossum@oracle.com>
-References: <20231219151200.2878271-2-vegard.nossum@oracle.com>
+Subject: [tip: sched/core] sched/fair: Use existing helper functions to access
+ ->avg_rt and ->avg_dl
+Cc: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>,
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231220065522.351915-1-sshegde@linux.vnet.ibm.com>
+References: <20231220065522.351915-1-sshegde@linux.vnet.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170306664229.398.6552245814527928380.tip-bot2@tip-bot2>
+Message-ID: <170306711877.398.11023074478817453654.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -71,163 +70,70 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     016919c1f2e5b7ea3436abe6db0b73dbabd36682
-Gitweb:        https://git.kernel.org/tip/016919c1f2e5b7ea3436abe6db0b73dbabd36682
-Author:        Vegard Nossum <vegard.nossum@oracle.com>
-AuthorDate:    Tue, 19 Dec 2023 16:11:56 +01:00
+Commit-ID:     6b5943af9198d21b4fdb1ce14ee11d11119cc709
+Gitweb:        https://git.kernel.org/tip/6b5943af9198d21b4fdb1ce14ee11d11119cc709
+Author:        Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
+AuthorDate:    Wed, 20 Dec 2023 12:25:22 +05:30
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 20 Dec 2023 10:56:04 +01:00
+CommitterDate: Wed, 20 Dec 2023 11:04:05 +01:00
 
-x86/asm: Provide new infrastructure for GDT descriptors
+sched/fair: Use existing helper functions to access ->avg_rt and ->avg_dl
 
-Linus suggested replacing the magic numbers in the GDT descriptors
-using preprocessor macros. Designing the interface properly is actually
-pretty hard -- there are several constraints:
+This is a minor code simplification. There are helper functions called
+cpu_util_dl() and cpu_util_rt() which gives the average utilization of DL
+and RT respectively. But there are few places in code where these
+variables are open-coded.
 
-- you want the final expressions to be readable at a glance; something
-  like GDT_ENTRY_FLAGS(5, 1, 0, 1, 0, 1, 1, 0) isn't because you need
-  to visit the definition to understand what each parameter represents
-  and then match up parameters in the user and the definition (which is
-  hard when there are so many of them)
+Instead use the helper function so that code becomes simpler and easier to
+maintain later on.
 
-- you want the final expressions to be fairly short/information-dense;
-  something like GDT_ENTRY_PRESENT | GDT_ENTRY_DATA_WRITABLE |
-  GDT_ENTRY_SYSTEM | GDT_ENTRY_DB | GDT_ENTRY_GRANULARITY_4K is a bit
-  too verbose to write out every time and is actually hard to read as
-  well because of all the repetition
+No change in functionality intended.
 
-- you may want to assume defaults for some things (e.g. entries are
-  DPL-0 a.k.a. kernel segments by default) and allow the user to
-  override the default -- but this works best if you can OR in the
-  override; if you want DPL-3 by default and override with DPL-0 you
-  would need to start masking off bits instead of OR-ing them in and
-  that just becomes harder to read
-
-- you may want to parameterize some things (e.g. CODE vs. DATA or
-  KERNEL vs. USER) since both values are used and you don't really
-  want prefer either one by default -- or DPL, which is always some
-  value that is always specified
-
-This patch tries to balance these requirements and has two layers of
-definitions -- low-level and high-level:
-
-- the low-level defines are the mapping between human-readable names
-  and the actual bit numbers
-
-- the high-level defines are the mapping from high-level intent to
-  combinations of low-level flags, representing roughly a tuple
-  (data/code/tss, 64/32/16-bits) plus an override for DPL-3 (= USER),
-  since that's relatively rare but still very important to mark
-  properly for those segments.
-
-- we have *_BIOS variants for 32-bit code and data segments that don't
-  have the G flag set and give the limit in terms of bytes instead of
-  pages
-
-[ mingo: Improved readability bit more. ]
-
-Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+Signed-off-by: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20231219151200.2878271-2-vegard.nossum@oracle.com
+Link: https://lore.kernel.org/r/20231220065522.351915-1-sshegde@linux.vnet.ibm.com
 ---
- arch/x86/include/asm/desc_defs.h | 76 +++++++++++++++++++++++++------
- 1 file changed, 63 insertions(+), 13 deletions(-)
+ kernel/sched/fair.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/desc_defs.h b/arch/x86/include/asm/desc_defs.h
-index f7e7099..7c08cbf 100644
---- a/arch/x86/include/asm/desc_defs.h
-+++ b/arch/x86/include/asm/desc_defs.h
-@@ -8,6 +8,56 @@
-  * archs.
-  */
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index bcea3d5..0263106 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -9212,19 +9212,17 @@ static inline bool cfs_rq_has_blocked(struct cfs_rq *cfs_rq)
  
-+/*
-+ * Low-level interface mapping flags/field names to bits
-+ */
-+
-+/* Flags for _DESC_S (non-system) descriptors */
-+#define _DESC_ACCESSED		0x0001
-+#define _DESC_DATA_WRITABLE	0x0002
-+#define _DESC_CODE_READABLE	0x0002
-+#define _DESC_DATA_EXPAND_DOWN	0x0004
-+#define _DESC_CODE_CONFORMING	0x0004
-+#define _DESC_CODE_EXECUTABLE	0x0008
-+
-+/* Common flags */
-+#define _DESC_S			0x0010
-+#define _DESC_DPL(dpl)		((dpl) << 5)
-+#define _DESC_PRESENT		0x0080
-+
-+#define _DESC_LONG_CODE		0x2000
-+#define _DESC_DB		0x4000
-+#define _DESC_GRANULARITY_4K	0x8000
-+
-+/* System descriptors have a numeric "type" field instead of flags */
-+#define _DESC_SYSTEM(code)	(code)
-+
-+/*
-+ * High-level interface mapping intended usage to low-level combinations
-+ * of flags
-+ */
-+
-+#define _DESC_DATA		(_DESC_S | _DESC_PRESENT | \
-+				 _DESC_DATA_WRITABLE)
-+#define _DESC_CODE		(_DESC_S | _DESC_PRESENT | \
-+				 _DESC_CODE_READABLE | _DESC_CODE_EXECUTABLE)
-+
-+#define DESC_DATA16		(_DESC_DATA)
-+#define DESC_CODE16		(_DESC_CODE)
-+
-+#define DESC_DATA32		(_DESC_DATA | _DESC_GRANULARITY_4K | _DESC_DB)
-+#define DESC_DATA32_BIOS	(_DESC_DATA | _DESC_DB)
-+
-+#define DESC_CODE32		(_DESC_CODE | _DESC_GRANULARITY_4K | _DESC_DB)
-+#define DESC_CODE32_BIOS	(_DESC_CODE | _DESC_DB)
-+
-+#define DESC_TSS32		(_DESC_SYSTEM(9) | _DESC_PRESENT)
-+
-+#define DESC_DATA64		(_DESC_DATA | _DESC_GRANULARITY_4K | _DESC_DB)
-+#define DESC_CODE64		(_DESC_CODE | _DESC_GRANULARITY_4K | _DESC_LONG_CODE)
-+
-+#define DESC_USER		(_DESC_DPL(3))
-+
- #ifndef __ASSEMBLY__
+ static inline bool others_have_blocked(struct rq *rq)
+ {
+-	if (READ_ONCE(rq->avg_rt.util_avg))
++	if (cpu_util_rt(rq))
+ 		return true;
  
- #include <linux/types.h>
-@@ -22,19 +72,19 @@ struct desc_struct {
+-	if (READ_ONCE(rq->avg_dl.util_avg))
++	if (cpu_util_dl(rq))
+ 		return true;
  
- #define GDT_ENTRY_INIT(flags, base, limit)			\
- 	{							\
--		.limit0		= (u16) (limit),		\
--		.limit1		= ((limit) >> 16) & 0x0F,	\
--		.base0		= (u16) (base),			\
--		.base1		= ((base) >> 16) & 0xFF,	\
--		.base2		= ((base) >> 24) & 0xFF,	\
--		.type		= (flags & 0x0f),		\
--		.s		= (flags >> 4) & 0x01,		\
--		.dpl		= (flags >> 5) & 0x03,		\
--		.p		= (flags >> 7) & 0x01,		\
--		.avl		= (flags >> 12) & 0x01,		\
--		.l		= (flags >> 13) & 0x01,		\
--		.d		= (flags >> 14) & 0x01,		\
--		.g		= (flags >> 15) & 0x01,		\
-+		.limit0		= ((limit) >>  0) & 0xFFFF,	\
-+		.limit1		= ((limit) >> 16) & 0x000F,	\
-+		.base0		= ((base)  >>  0) & 0xFFFF,	\
-+		.base1		= ((base)  >> 16) & 0x00FF,	\
-+		.base2		= ((base)  >> 24) & 0x00FF,	\
-+		.type		= ((flags) >>  0) & 0x000F,	\
-+		.s		= ((flags) >>  4) & 0x0001,	\
-+		.dpl		= ((flags) >>  5) & 0x0003,	\
-+		.p		= ((flags) >>  7) & 0x0001,	\
-+		.avl		= ((flags) >> 12) & 0x0001,	\
-+		.l		= ((flags) >> 13) & 0x0001,	\
-+		.d		= ((flags) >> 14) & 0x0001,	\
-+		.g		= ((flags) >> 15) & 0x0001,	\
- 	}
+ 	if (thermal_load_avg(rq))
+ 		return true;
  
- enum {
+-#ifdef CONFIG_HAVE_SCHED_AVG_IRQ
+-	if (READ_ONCE(rq->avg_irq.util_avg))
++	if (cpu_util_irq(rq))
+ 		return true;
+-#endif
+ 
+ 	return false;
+ }
+@@ -9481,8 +9479,8 @@ static unsigned long scale_rt_capacity(int cpu)
+ 	 * avg_thermal.load_avg tracks thermal pressure and the weighted
+ 	 * average uses the actual delta max capacity(load).
+ 	 */
+-	used = READ_ONCE(rq->avg_rt.util_avg);
+-	used += READ_ONCE(rq->avg_dl.util_avg);
++	used = cpu_util_rt(rq);
++	used += cpu_util_dl(rq);
+ 	used += thermal_load_avg(rq);
+ 
+ 	if (unlikely(used >= max))
 
