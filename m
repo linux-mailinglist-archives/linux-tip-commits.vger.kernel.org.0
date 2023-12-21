@@ -1,68 +1,68 @@
-Return-Path: <linux-tip-commits+bounces-71-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-72-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C04F81A813
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Dec 2023 22:32:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB0281C0E7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Dec 2023 23:20:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 947532857A3
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Dec 2023 21:32:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE7CB1C2368D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Dec 2023 22:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F7C495C4;
-	Wed, 20 Dec 2023 21:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C4177F18;
+	Thu, 21 Dec 2023 22:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KM5mJvai";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="s9yrPcUg"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xtbMQ6JL";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wGZV6Vhn"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBF3495C1;
-	Wed, 20 Dec 2023 21:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A973558224;
+	Thu, 21 Dec 2023 22:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 20 Dec 2023 21:32:16 -0000
+Date: Thu, 21 Dec 2023 22:19:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1703107937;
+	s=2020; t=1703197193;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=U/OsDjhXqr/1LDHw58uXvplzo2hKo0Qi2ivibH7zQ8U=;
-	b=KM5mJvaiDQsqwO7XPgAUsfws1QdC+cs3q6BgEVvnOBn1Goygjq1qBOKlvcJHE8DZHxE3jk
-	wkLC9gK360cMWtOP3d/4YYmAdlNLJZvALEw92YlHH1JlCqf4N1PaqVF2xvVw3/qhyDM97z
-	2KNmhB8oIDgBk1k+rO9uP1Xr1EPl+ggTbwreZJ5r2TWuwSev3/qrAMGB1jqNR0N2WSrOpx
-	nZippK4Th8JZlCMqjAUbbX8kdCWdVt9cAtdGPPztNEUpLcrCKqnBWjarYaOIAoWTfYU7ZU
-	7N8NmAYScRu5dGlbdN5lzWNgDYUwX0SO0miiy757P3sf3AFGI/7zjhSbaW9Ybw==
+	bh=SVIfz86zLwDDAzvuPStrRVhoyaKHOi+EzjyorsIZCvQ=;
+	b=xtbMQ6JLFZD/a2qE3T6a5X0bo4rYX6Ks3svUmkpNIwzN08WaUHmOGLoJlxX/vyCuyFgku9
+	W0Ek2Tc90jOzh2VsS7wpzO3VkdZa17hvbWUCVRF2k2Unz88Xumojc+nByw4YkitxcyaSn+
+	MFyT2xMNFhct56DIj9smUrkTLbYZ8eM/1X2jbcvSkxPGntIaCwCBjPlEqXxjwtkyfp0ky1
+	zB4Bu8KO7ma6sJVFQDcMW/JVSNxtK4TQvpGPPIYJaGLCI8JNPXs//OJFrBOpX1T9i+t08b
+	cl8iAZuXxt5/4Uxn1p4ETb9zOqUESPajw3O4yK58VH0D3j5OelnheGnZciPBHw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1703107937;
+	s=2020e; t=1703197193;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=U/OsDjhXqr/1LDHw58uXvplzo2hKo0Qi2ivibH7zQ8U=;
-	b=s9yrPcUgmdGNbnGIYtS/xf+2iT541w1NtRzNMnWUczo9ioD4IlXxRQ39TRLZ45GLt/UjkF
-	cwS0O+JTyEgdWJCQ==
-From: "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+	bh=SVIfz86zLwDDAzvuPStrRVhoyaKHOi+EzjyorsIZCvQ=;
+	b=wGZV6VhnaCh9whg69nG1wneAfIrErtGfosChpxm08s5xfUsnEk2USmqMkXgvsXQg3+dtX2
+	X9yJTDI5SDPMLsBg==
+From: "tip-bot2 for Sven Schnelle" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Remove redundant initialization of the
- 'delta' variable in strcmp()
-Cc: Colin Ian King <colin.i.king@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+Subject:
+ [tip: core/entry] entry: Move syscall_enter_from_user_mode() to header file
+Cc: Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231219141304.367200-1-colin.i.king@gmail.com>
-References: <20231219141304.367200-1-colin.i.king@gmail.com>
+In-Reply-To: <20231218074520.1998026-4-svens@linux.ibm.com>
+References: <20231218074520.1998026-4-svens@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170310793651.398.15795585015869596291.tip-bot2@tip-bot2>
+Message-ID: <170319719260.398.4829837604529644212.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -70,40 +70,129 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the core/entry branch of tip:
 
-Commit-ID:     257ca14f4d780e27a0605fd68053d2cc3178a232
-Gitweb:        https://git.kernel.org/tip/257ca14f4d780e27a0605fd68053d2cc3178a232
-Author:        Colin Ian King <colin.i.king@gmail.com>
-AuthorDate:    Tue, 19 Dec 2023 14:13:04 
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 20 Dec 2023 22:23:33 +01:00
+Commit-ID:     221a164035fd8b554a44bd7c4bf8e7715a497561
+Gitweb:        https://git.kernel.org/tip/221a164035fd8b554a44bd7c4bf8e7715a497561
+Author:        Sven Schnelle <svens@linux.ibm.com>
+AuthorDate:    Mon, 18 Dec 2023 08:45:20 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 21 Dec 2023 23:12:18 +01:00
 
-x86/boot: Remove redundant initialization of the 'delta' variable in strcmp()
+entry: Move syscall_enter_from_user_mode() to header file
 
-The 'delta' variable is zero-initialized, but never
-read before the real initialization happens.
+To allow inlining of syscall_enter_from_user_mode(), move it
+to entry-common.h.
 
-The assignment is redundant and can be removed.
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20231218074520.1998026-4-svens@linux.ibm.com
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231219141304.367200-1-colin.i.king@gmail.com
 ---
- arch/x86/boot/string.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/entry-common.h | 27 +++++++++++++++++++++++++--
+ kernel/entry/common.c        | 32 +-------------------------------
+ 2 files changed, 26 insertions(+), 33 deletions(-)
 
-diff --git a/arch/x86/boot/string.c b/arch/x86/boot/string.c
-index 1c8541a..c23f3b9 100644
---- a/arch/x86/boot/string.c
-+++ b/arch/x86/boot/string.c
-@@ -49,7 +49,7 @@ int strcmp(const char *str1, const char *str2)
- {
- 	const unsigned char *s1 = (const unsigned char *)str1;
- 	const unsigned char *s2 = (const unsigned char *)str2;
--	int delta = 0;
-+	int delta;
+diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
+index c420539..b0fb775 100644
+--- a/include/linux/entry-common.h
++++ b/include/linux/entry-common.h
+@@ -134,6 +134,9 @@ static __always_inline void enter_from_user_mode(struct pt_regs *regs)
+  */
+ void syscall_enter_from_user_mode_prepare(struct pt_regs *regs);
  
- 	while (*s1 || *s2) {
- 		delta = *s1 - *s2;
++long syscall_trace_enter(struct pt_regs *regs, long syscall,
++			 unsigned long work);
++
+ /**
+  * syscall_enter_from_user_mode_work - Check and handle work before invoking
+  *				       a syscall
+@@ -157,7 +160,15 @@ void syscall_enter_from_user_mode_prepare(struct pt_regs *regs);
+  *     ptrace_report_syscall_entry(), __secure_computing(), trace_sys_enter()
+  *  2) Invocation of audit_syscall_entry()
+  */
+-long syscall_enter_from_user_mode_work(struct pt_regs *regs, long syscall);
++static __always_inline long syscall_enter_from_user_mode_work(struct pt_regs *regs, long syscall)
++{
++	unsigned long work = READ_ONCE(current_thread_info()->syscall_work);
++
++	if (work & SYSCALL_WORK_ENTER)
++		syscall = syscall_trace_enter(regs, syscall, work);
++
++	return syscall;
++}
+ 
+ /**
+  * syscall_enter_from_user_mode - Establish state and check and handle work
+@@ -176,7 +187,19 @@ long syscall_enter_from_user_mode_work(struct pt_regs *regs, long syscall);
+  * Returns: The original or a modified syscall number. See
+  * syscall_enter_from_user_mode_work() for further explanation.
+  */
+-long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall);
++static __always_inline long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall)
++{
++	long ret;
++
++	enter_from_user_mode(regs);
++
++	instrumentation_begin();
++	local_irq_enable();
++	ret = syscall_enter_from_user_mode_work(regs, syscall);
++	instrumentation_end();
++
++	return ret;
++}
+ 
+ /**
+  * local_irq_enable_exit_to_user - Exit to user variant of local_irq_enable()
+diff --git a/kernel/entry/common.c b/kernel/entry/common.c
+index 0616f23..88cb3c8 100644
+--- a/kernel/entry/common.c
++++ b/kernel/entry/common.c
+@@ -25,7 +25,7 @@ static inline void syscall_enter_audit(struct pt_regs *regs, long syscall)
+ 	}
+ }
+ 
+-static long syscall_trace_enter(struct pt_regs *regs, long syscall,
++long syscall_trace_enter(struct pt_regs *regs, long syscall,
+ 				unsigned long work)
+ {
+ 	long ret = 0;
+@@ -65,36 +65,6 @@ static long syscall_trace_enter(struct pt_regs *regs, long syscall,
+ 	return ret ? : syscall;
+ }
+ 
+-static __always_inline long
+-__syscall_enter_from_user_work(struct pt_regs *regs, long syscall)
+-{
+-	unsigned long work = READ_ONCE(current_thread_info()->syscall_work);
+-
+-	if (work & SYSCALL_WORK_ENTER)
+-		syscall = syscall_trace_enter(regs, syscall, work);
+-
+-	return syscall;
+-}
+-
+-long syscall_enter_from_user_mode_work(struct pt_regs *regs, long syscall)
+-{
+-	return __syscall_enter_from_user_work(regs, syscall);
+-}
+-
+-noinstr long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall)
+-{
+-	long ret;
+-
+-	enter_from_user_mode(regs);
+-
+-	instrumentation_begin();
+-	local_irq_enable();
+-	ret = __syscall_enter_from_user_work(regs, syscall);
+-	instrumentation_end();
+-
+-	return ret;
+-}
+-
+ noinstr void syscall_enter_from_user_mode_prepare(struct pt_regs *regs)
+ {
+ 	enter_from_user_mode(regs);
 
