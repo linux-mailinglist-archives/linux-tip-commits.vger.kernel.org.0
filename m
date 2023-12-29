@@ -1,51 +1,51 @@
-Return-Path: <linux-tip-commits+bounces-86-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-87-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A17681D54D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Dec 2023 18:29:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B48A481FF6C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Dec 2023 13:29:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DF041C20CCC
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Dec 2023 17:29:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 218D11F24668
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Dec 2023 12:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1515F15EB9;
-	Sat, 23 Dec 2023 17:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40A01119F;
+	Fri, 29 Dec 2023 12:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wIpVLx4K";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QY9sr8Bq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2vnLVg+E";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="az6qwdc1"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1022412E6D;
-	Sat, 23 Dec 2023 17:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26D911194;
+	Fri, 29 Dec 2023 12:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 23 Dec 2023 17:29:01 -0000
+Date: Fri, 29 Dec 2023 12:29:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1703352542;
+	s=2020; t=1703852950;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=57852/RyeExSa3CSC+4dHYGnI/fRBA7UxuXhHFEaUA4=;
-	b=wIpVLx4KhQTa3WSJrFOBz6I4+KXasLMTtqM9YXSbMJSdmSTuxkFeFCkINZmCUFMmYjAIHl
-	TE/ucTL+rrVtuNpNGjZs76LsO7UhRX++Hih6o+xtCPIhUEu7X7HLm7xLO4X8OmkAFWBWds
-	uI3Mcoor25pwmLHp5NLI/9eM/VflbcYFYVpCBwix92A8MKUAh+bkdxaNpXIjedYz41/YAw
-	IVzrG1Jvfy/vyqDKefcHo3uqgHlk2mPKvBGqVWbK9WsXlOlPBBKtWWFlxUD8NXVk3B13xj
-	bEgsDJe8BwPySgoT+Eb3Rr+bJC2iGnVC5MbcshlTOwnOyDZJrt7Iox+coItmrQ==
+	bh=d7iw5J69JNIg0jg0PpftxKrv+J7HCN9qpztlt7NAF90=;
+	b=2vnLVg+E0aUnFhPz8cd5BuiQVP5PKCqOpO24xeEU9Ee2UqTJRB73tqp4dYLAhgtFTe87tc
+	fEXzHUTV40qHNSF2uQWCEZC5V6TjqS/wg6xEO51YO414ZYTq/Pg9t4ZV9tnN39RUXgHK4H
+	H5FphMOhMMXEDRsb+Ab0jrAkiRRVR1jNtH5ZhKKWbg6QSKoS3HzS0GVTQkcxxizOX0RGHk
+	afmkFWUq/bcVTNmPElzSPJLxAxHQ2Yi4N3l4qJJLL281QQJByvzAtJjAaUpPDc2n5p/Hyo
+	KAXqbMdwlEPL+FhxKBEcRibqqemZHhMakeRsitHch/JM7zK853zr6T/aW/RCkQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1703352542;
+	s=2020e; t=1703852950;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=57852/RyeExSa3CSC+4dHYGnI/fRBA7UxuXhHFEaUA4=;
-	b=QY9sr8BqswB0rjaHksPHXzAsrNsxzlk3BNfbHdJfEITl+5qVdKFwqpZsjCQtm6RpTi8I1b
-	hKe7P62+DDP9O0CA==
+	bh=d7iw5J69JNIg0jg0PpftxKrv+J7HCN9qpztlt7NAF90=;
+	b=az6qwdc1PBuaL6C9YK5CLX8xPdWqfoszhQVJU0EeGKnWaDqeN6xQoM3MkFKEAA+tTomUBU
+	bgctsRV5+pkArTAA==
 From: "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -53,17 +53,17 @@ To: linux-tip-commits@vger.kernel.org
 Subject: [tip: sched/urgent] sched/fair: Fix tg->load when offlining a CPU
 Cc: Imran Khan <imran.f.khan@oracle.com>, Aaron Lu <aaron.lu@intel.com>,
  Vincent Guittot <vincent.guittot@linaro.org>, Ingo Molnar <mingo@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20231221164014.447122-1-vincent.guittot@linaro.org>
-References: <20231221164014.447122-1-vincent.guittot@linaro.org>
+ Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231223111545.62135-1-vincent.guittot@linaro.org>
+References: <20231223111545.62135-1-vincent.guittot@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170335254181.398.10370700376177082379.tip-bot2@tip-bot2>
+Message-ID: <170385294882.398.15127942014439138238.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,12 +73,12 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     4c0a74642c4260bd8e5b6eb4d029a390435ac8eb
-Gitweb:        https://git.kernel.org/tip/4c0a74642c4260bd8e5b6eb4d029a390435ac8eb
+Commit-ID:     f60a631ab9ed5df15e446269ea515f2b8948ba0c
+Gitweb:        https://git.kernel.org/tip/f60a631ab9ed5df15e446269ea515f2b8948ba0c
 Author:        Vincent Guittot <vincent.guittot@linaro.org>
 AuthorDate:    Thu, 21 Dec 2023 17:40:14 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 23 Dec 2023 17:16:14 +01:00
+CommitterDate: Fri, 29 Dec 2023 13:22:03 +01:00
 
 sched/fair: Fix tg->load when offlining a CPU
 
@@ -255,14 +255,16 @@ Tested-by: Imran Khan <imran.f.khan@oracle.com>
 Tested-by: Aaron Lu <aaron.lu@intel.com>
 Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Imran Khan <imran.f.khan@oracle.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231221164014.447122-1-vincent.guittot@linaro.org
+Cc: Borislav Petkov <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231223111545.62135-1-vincent.guittot@linaro.org
 ---
- kernel/sched/fair.c | 50 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 50 insertions(+)
+ kernel/sched/fair.c | 52 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 52 insertions(+)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index d7a3c63..cda7726 100644
+index d7a3c63..43c1216 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
 @@ -4096,6 +4096,10 @@ static inline void update_tg_load_avg(struct cfs_rq *cfs_rq)
@@ -326,7 +328,16 @@ index d7a3c63..cda7726 100644
  /*
   * Called within set_task_rq() right before setting a task's CPU. The
   * caller only guarantees p->pi_lock is held; no other assumptions,
-@@ -12413,6 +12460,9 @@ static void rq_offline_fair(struct rq *rq)
+@@ -4408,6 +4455,8 @@ static inline bool skip_blocked_update(struct sched_entity *se)
+ 
+ static inline void update_tg_load_avg(struct cfs_rq *cfs_rq) {}
+ 
++static inline void clear_tg_offline_cfs_rqs(struct rq *rq) {}
++
+ static inline int propagate_entity_load_avg(struct sched_entity *se)
+ {
+ 	return 0;
+@@ -12413,6 +12462,9 @@ static void rq_offline_fair(struct rq *rq)
  
  	/* Ensure any throttled groups are reachable by pick_next_task */
  	unthrottle_offline_cfs_rqs(rq);
