@@ -1,69 +1,67 @@
-Return-Path: <linux-tip-commits+bounces-87-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-88-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48A481FF6C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Dec 2023 13:29:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D70E82049B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 Dec 2023 12:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 218D11F24668
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Dec 2023 12:29:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E05CA1F21818
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 Dec 2023 11:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40A01119F;
-	Fri, 29 Dec 2023 12:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53D87488;
+	Sat, 30 Dec 2023 11:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2vnLVg+E";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="az6qwdc1"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3ECxP8U6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aBHPInxp"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26D911194;
-	Fri, 29 Dec 2023 12:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0441A7487;
+	Sat, 30 Dec 2023 11:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 29 Dec 2023 12:29:08 -0000
+Date: Sat, 30 Dec 2023 11:31:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1703852950;
+	s=2020; t=1703935883;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d7iw5J69JNIg0jg0PpftxKrv+J7HCN9qpztlt7NAF90=;
-	b=2vnLVg+E0aUnFhPz8cd5BuiQVP5PKCqOpO24xeEU9Ee2UqTJRB73tqp4dYLAhgtFTe87tc
-	fEXzHUTV40qHNSF2uQWCEZC5V6TjqS/wg6xEO51YO414ZYTq/Pg9t4ZV9tnN39RUXgHK4H
-	H5FphMOhMMXEDRsb+Ab0jrAkiRRVR1jNtH5ZhKKWbg6QSKoS3HzS0GVTQkcxxizOX0RGHk
-	afmkFWUq/bcVTNmPElzSPJLxAxHQ2Yi4N3l4qJJLL281QQJByvzAtJjAaUpPDc2n5p/Hyo
-	KAXqbMdwlEPL+FhxKBEcRibqqemZHhMakeRsitHch/JM7zK853zr6T/aW/RCkQ==
+	bh=5YekaI+XSXzVudCa+DmlL/evq5KrMF9TXWnC3KY0bLQ=;
+	b=3ECxP8U6giePTZVmturwNcYulTP+uV0UjbT0pGvUNxHoaYaCLZP1/mdIp5SpJoNm6A73rc
+	eLNrZbwLRhX0h0bTzH0RPNHQNqL7G+nSiV46RynPrXxhn8Z2F8EjLfPKEO2djjaaNDgoCs
+	GAGwZdZtLBf2tLPW/SzU4oPTIp52dmtLML62Qt6LzVzU0VJ56TRFLA2OPvKs4LjPDkEKA2
+	9pTHD579KvPQKY/3BBR3OIxonxKoGYmad7mVQeELOkKfbubVrJJPbr/iYp6wAvAkaNCXpG
+	obLg+sql0CSY8+D3fuBVBiK+agRDWwDFEsz3xCAKfFZh26HV/N2ShCLi2MHwxw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1703852950;
+	s=2020e; t=1703935883;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d7iw5J69JNIg0jg0PpftxKrv+J7HCN9qpztlt7NAF90=;
-	b=az6qwdc1PBuaL6C9YK5CLX8xPdWqfoszhQVJU0EeGKnWaDqeN6xQoM3MkFKEAA+tTomUBU
-	bgctsRV5+pkArTAA==
-From: "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+	bh=5YekaI+XSXzVudCa+DmlL/evq5KrMF9TXWnC3KY0bLQ=;
+	b=aBHPInxpfgK/+hOHdOxeLwNb+dNyKN6/xkja7EtxbnXaqwrRzqxlfRe4ymHzol/jYbXuRm
+	tgt3OJyEIJLc1QCQ==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Fix tg->load when offlining a CPU
-Cc: Imran Khan <imran.f.khan@oracle.com>, Aaron Lu <aaron.lu@intel.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Ingo Molnar <mingo@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231223111545.62135-1-vincent.guittot@linaro.org>
-References: <20231223111545.62135-1-vincent.guittot@linaro.org>
+Subject: [tip: x86/paravirt] x86/alternative: Correct feature bit debug output
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20231206110636.GBZXBVvCWj2IDjVk4c@fat_crate.local>
+References: <20231206110636.GBZXBVvCWj2IDjVk4c@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170385294882.398.15127942014439138238.tip-bot2@tip-bot2>
+Message-ID: <170393588213.398.4263924144760280684.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -71,280 +69,53 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/paravirt branch of tip:
 
-Commit-ID:     f60a631ab9ed5df15e446269ea515f2b8948ba0c
-Gitweb:        https://git.kernel.org/tip/f60a631ab9ed5df15e446269ea515f2b8948ba0c
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Thu, 21 Dec 2023 17:40:14 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 29 Dec 2023 13:22:03 +01:00
+Commit-ID:     7991ed43587d1106315208cc289c851d6915d4a3
+Gitweb:        https://git.kernel.org/tip/7991ed43587d1106315208cc289c851d6915d4a3
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Sat, 30 Dec 2023 12:20:04 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Sat, 30 Dec 2023 12:25:55 +01:00
 
-sched/fair: Fix tg->load when offlining a CPU
+x86/alternative: Correct feature bit debug output
 
-When a CPU is taken offline, the contribution of its cfs_rqs to task_groups'
-load may remain and will negatively impact the calculation of the share of
-the online CPUs.
+In
 
-To fix this bug, clear the contribution of an offlining CPU to task groups'
-load and skip its contribution while it is inactive.
+  https://lore.kernel.org/r/20231206110636.GBZXBVvCWj2IDjVk4c@fat_crate.local
 
-Here's the reproducer of the anomaly, by Imran Khan:
+I wanted to adjust the alternative patching debug output to the new
+changes introduced by
 
-	"So far I have encountered only one rather lengthy way of reproducing this issue,
-	which is as follows:
+  da0fe6e68e10 ("x86/alternative: Add indirect call patching")
 
-	1. Take a KVM guest (booted with 4 CPUs and can be scaled up to 124 CPUs) and
-	   create 2 custom cgroups: /sys/fs/cgroup/cpu/test_group_1 and /sys/fs/cgroup/
-	   cpu/test_group_2
+but removed the '*' which denotes the ->x86_capability word. The correct
+output should be, for example:
 
-	2. Assign a CPU intensive workload to each of these cgroups and start the
-	   workload.
+  [    0.230071] SMP alternatives: feat: 11*32+15, old: (entry_SYSCALL_64_after_hwframe+0x5a/0x77 (ffffffff81c000c2) len: 16), repl: (ffffffff89ae896a, len: 5) flags: 0x0
 
-	For my tests I am using following app:
+while the incorrect one says "... 1132+15" currently.
 
-	int main(int argc, char *argv[])
-	{
-		unsigned long count, i, val;
-		if (argc != 2) {
-		      printf("usage: ./a.out <number of random nums to generate> \n");
-		      return 0;
-		}
+Add back the '*'.
 
-		count = strtoul(argv[1], NULL, 10);
-
-		printf("Generating %lu random numbers \n", count);
-		for (i = 0; i < count; i++) {
-			val = rand();
-			val = val % 2;
-			//usleep(1);
-		}
-		printf("Generated %lu random numbers \n", count);
-		return 0;
-	}
-
-	Also since the system is booted with 4 CPUs, in order to completely load the
-	system I am also launching 4 instances of same test app under:
-
-	   /sys/fs/cgroup/cpu/
-
-	3. We can see that both of the cgroups get similar CPU time:
-
-        # systemd-cgtop --depth 1
-	Path                                 Tasks    %CPU  Memory  Input/s    Output/s
-	/                                      659      -     5.5G        -        -
-	/system.slice                            -      -     5.7G        -        -
-	/test_group_1                            4      -        -        -        -
-	/test_group_2                            3      -        -        -        -
-	/user.slice                             31      -    56.5M        -        -
-
-	Path                                 Tasks   %CPU   Memory  Input/s    Output/s
-	/                                      659  394.6     5.5G        -        -
-	/test_group_2                            3   65.7        -        -        -
-	/user.slice                             29   55.1    48.0M        -        -
-	/test_group_1                            4   47.3        -        -        -
-	/system.slice                            -    2.2     5.7G        -        -
-
-	Path                                 Tasks  %CPU    Memory  Input/s    Output/s
-	/                                      659  394.8     5.5G        -        -
-	/test_group_1                            4   62.9        -        -        -
-	/user.slice                             28   44.9    54.2M        -        -
-	/test_group_2                            3   44.7        -        -        -
-	/system.slice                            -    0.9     5.7G        -        -
-
-	Path                                 Tasks  %CPU    Memory  Input/s     Output/s
-	/                                      659  394.4     5.5G        -        -
-	/test_group_2                            3   58.8        -        -        -
-	/test_group_1                            4   51.9        -        -        -
-	/user.slice                              30   39.3    59.6M        -        -
-	/system.slice                            -    1.9     5.7G        -        -
-
-	Path                                 Tasks  %CPU     Memory  Input/s    Output/s
-	/                                      659  394.7     5.5G        -        -
-	/test_group_1                            4   60.9        -        -        -
-	/test_group_2                            3   57.9        -        -        -
-	/user.slice                             28   43.5    36.9M        -        -
-	/system.slice                            -    3.0     5.7G        -        -
-
-	Path                                 Tasks  %CPU     Memory  Input/s     Output/s
-	/                                      659  395.0     5.5G        -        -
-	/test_group_1                            4   66.8        -        -        -
-	/test_group_2                            3   56.3        -        -        -
-	/user.slice                             29   43.1    51.8M        -        -
-	/system.slice                            -    0.7     5.7G        -        -
-
-	4. Now move systemd-udevd to one of these test groups, say test_group_1, and
-	   perform scale up to 124 CPUs followed by scale down back to 4 CPUs from the
-	   host side.
-
-	5. Run the same workload i.e 4 instances of CPU hogger under /sys/fs/cgroup/cpu
-	   and one instance of  CPU hogger each in /sys/fs/cgroup/cpu/test_group_1 and
-	   /sys/fs/cgroup/test_group_2.
-
-	It can be seen that test_group_1 (the one where systemd-udevd was moved) is getting
-	much less CPU time than the test_group_2, even though at this point of time both of
-	these groups have only CPU hogger running:
-
-        # systemd-cgtop --depth 1
-	Path                                   Tasks   %CPU   Memory  Input/s   Output/s
-	/                                      1219     -     5.4G        -        -
-	/system.slice                           -       -     5.6G        -        -
-	/test_group_1                           4       -        -        -        -
-	/test_group_2                           3       -        -        -        -
-	/user.slice                            26       -    91.3M        -        -
-
-	Path                                   Tasks  %CPU     Memory  Input/s   Output/s
-	/                                      1221  394.3     5.4G        -        -
-	/test_group_2                             3   82.7        -        -        -
-	/test_group_1                             4   14.3        -        -        -
-	/system.slice                             -    0.8     5.6G        -        -
-	/user.slice                              26    0.4    91.2M        -        -
-
-	Path                                   Tasks  %CPU    Memory  Input/s    Output/s
-	/                                      1221  394.6     5.4G        -        -
-	/test_group_2                             3   67.4        -        -        -
-	/system.slice                             -   24.6     5.6G        -        -
-	/test_group_1                             4   12.5        -        -        -
-	/user.slice                              26    0.4    91.2M        -        -
-
-	Path                                  Tasks  %CPU    Memory  Input/s    Output/s
-	/                                     1221  395.2     5.4G        -        -
-	/test_group_2                            3   60.9        -        -        -
-	/system.slice                            -   27.9     5.6G        -        -
-	/test_group_1                            4   12.2        -        -        -
-	/user.slice                             26    0.4    91.2M        -        -
-
-	Path                                  Tasks  %CPU    Memory  Input/s    Output/s
-	/                                     1221  395.2     5.4G        -        -
-	/test_group_2                            3   69.4        -        -        -
-	/test_group_1                            4   13.9        -        -        -
-	/user.slice                             28    1.6    92.0M        -        -
-	/system.slice                            -    1.0     5.6G        -        -
-
-	Path                                  Tasks  %CPU    Memory  Input/s    Output/s
-	/                                      1221  395.6     5.4G        -        -
-	/test_group_2                             3   59.3        -        -        -
-	/test_group_1                             4   14.1        -        -        -
-	/user.slice                              28    1.3    92.2M        -        -
-	/system.slice                             -    0.7     5.6G        -        -
-
-	Path                                  Tasks  %CPU    Memory  Input/s    Output/s
-	/                                      1221  395.5     5.4G        -        -
-	/test_group_2                            3   67.2        -        -        -
-	/test_group_1                            4   11.5        -        -        -
-	/user.slice                             28    1.3    92.5M        -        -
-	/system.slice                            -    0.6     5.6G        -        -
-
-	Path                                  Tasks  %CPU    Memory  Input/s    Output/s
-	/                                      1221  395.1     5.4G        -        -
-	/test_group_2                             3   76.8        -        -        -
-	/test_group_1                             4   12.9        -        -        -
-	/user.slice                              28    1.3    92.8M        -        -
-	/system.slice                             -    1.2     5.6G        -        -
-
-	From sched_debug data it can be seen that in bad case the load.weight of per-CPU
-	sched entities corresponding to test_group_1 has reduced significantly and
-	also load_avg of test_group_1 remains much higher than that of test_group_2,
-	even though systemd-udevd stopped running long time back and at this point of
-	time both cgroups just have the CPU hogger app as running entity."
-
-[ mingo: Added details from the original discussion, plus minor edits to the patch. ]
-
-Reported-by: Imran Khan <imran.f.khan@oracle.com>
-Tested-by: Imran Khan <imran.f.khan@oracle.com>
-Tested-by: Aaron Lu <aaron.lu@intel.com>
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Imran Khan <imran.f.khan@oracle.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231223111545.62135-1-vincent.guittot@linaro.org
+Fixes: da0fe6e68e10 ("x86/alternative: Add indirect call patching")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231206110636.GBZXBVvCWj2IDjVk4c@fat_crate.local
 ---
- kernel/sched/fair.c | 52 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 52 insertions(+)
+ arch/x86/kernel/alternative.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index d7a3c63..43c1216 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4096,6 +4096,10 @@ static inline void update_tg_load_avg(struct cfs_rq *cfs_rq)
- 	if (cfs_rq->tg == &root_task_group)
- 		return;
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index f26983a..f7ea108 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -498,7 +498,7 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
+ 			continue;
+ 		}
  
-+	/* rq has been offline and doesn't contribute to the share anymore: */
-+	if (!cpu_active(cpu_of(rq_of(cfs_rq))))
-+		return;
-+
- 	/*
- 	 * For migration heavy workloads, access to tg->load_avg can be
- 	 * unbound. Limit the update rate to at most once per ms.
-@@ -4112,6 +4116,49 @@ static inline void update_tg_load_avg(struct cfs_rq *cfs_rq)
- 	}
- }
- 
-+static inline void clear_tg_load_avg(struct cfs_rq *cfs_rq)
-+{
-+	long delta;
-+	u64 now;
-+
-+	/*
-+	 * No need to update load_avg for root_task_group, as it is not used.
-+	 */
-+	if (cfs_rq->tg == &root_task_group)
-+		return;
-+
-+	now = sched_clock_cpu(cpu_of(rq_of(cfs_rq)));
-+	delta = 0 - cfs_rq->tg_load_avg_contrib;
-+	atomic_long_add(delta, &cfs_rq->tg->load_avg);
-+	cfs_rq->tg_load_avg_contrib = 0;
-+	cfs_rq->last_update_tg_load_avg = now;
-+}
-+
-+/* CPU offline callback: */
-+static void __maybe_unused clear_tg_offline_cfs_rqs(struct rq *rq)
-+{
-+	struct task_group *tg;
-+
-+	lockdep_assert_rq_held(rq);
-+
-+	/*
-+	 * The rq clock has already been updated in
-+	 * set_rq_offline(), so we should skip updating
-+	 * the rq clock again in unthrottle_cfs_rq().
-+	 */
-+	rq_clock_start_loop_update(rq);
-+
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(tg, &task_groups, list) {
-+		struct cfs_rq *cfs_rq = tg->cfs_rq[cpu_of(rq)];
-+
-+		clear_tg_load_avg(cfs_rq);
-+	}
-+	rcu_read_unlock();
-+
-+	rq_clock_stop_loop_update(rq);
-+}
-+
- /*
-  * Called within set_task_rq() right before setting a task's CPU. The
-  * caller only guarantees p->pi_lock is held; no other assumptions,
-@@ -4408,6 +4455,8 @@ static inline bool skip_blocked_update(struct sched_entity *se)
- 
- static inline void update_tg_load_avg(struct cfs_rq *cfs_rq) {}
- 
-+static inline void clear_tg_offline_cfs_rqs(struct rq *rq) {}
-+
- static inline int propagate_entity_load_avg(struct sched_entity *se)
- {
- 	return 0;
-@@ -12413,6 +12462,9 @@ static void rq_offline_fair(struct rq *rq)
- 
- 	/* Ensure any throttled groups are reachable by pick_next_task */
- 	unthrottle_offline_cfs_rqs(rq);
-+
-+	/* Ensure that we remove rq contribution to group share: */
-+	clear_tg_offline_cfs_rqs(rq);
- }
- 
- #endif /* CONFIG_SMP */
+-		DPRINTK(ALT, "feat: %d32+%d, old: (%pS (%px) len: %d), repl: (%px, len: %d) flags: 0x%x",
++		DPRINTK(ALT, "feat: %d*32+%d, old: (%pS (%px) len: %d), repl: (%px, len: %d) flags: 0x%x",
+ 			a->cpuid >> 5,
+ 			a->cpuid & 0x1f,
+ 			instr, instr, a->instrlen,
 
