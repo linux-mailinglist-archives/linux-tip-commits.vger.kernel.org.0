@@ -1,56 +1,56 @@
-Return-Path: <linux-tip-commits+bounces-96-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-97-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E6982427D
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Jan 2024 14:12:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2615D8242A6
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Jan 2024 14:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1064B23242
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Jan 2024 13:12:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1F02286A9E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Jan 2024 13:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781D022305;
-	Thu,  4 Jan 2024 13:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DB52230B;
+	Thu,  4 Jan 2024 13:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Rj+iS860"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="gC3AUGCe"
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C532230C;
-	Thu,  4 Jan 2024 13:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243D62111F;
+	Thu,  4 Jan 2024 13:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 25D9740E0177;
-	Thu,  4 Jan 2024 13:12:27 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B74A740E01FE;
+	Thu,  4 Jan 2024 13:25:03 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id w3--VQFIp462; Thu,  4 Jan 2024 13:12:25 +0000 (UTC)
+	with ESMTP id r1x95oXWB4s5; Thu,  4 Jan 2024 13:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1704373944; bh=qQuqXJZL7aDM3EdHFv033v3MUj6t+i7wMVqmM1OonM0=;
+	t=1704374699; bh=mW8/6WyhqJjhljxP6XhSRhYts0OpZuRp9cBGzL263HU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rj+iS860nEcddAPwD0TQAFDwf+sq6ZVMSL3z+bjEp8oD6qqxyxKvHLcJoDtIo+R9w
-	 ajm1JTz0Y9tw3zSmnUByOdxKKde9ZZ8Ai6uLrDawZkkgi8byVqUuta9fujR+8aPofz
-	 HyaycQOHJUzFnrHe0UlwO91f+3lVdBjXkLWxe8YoOCtEOsLSNL2idX8fdDixOsxT5l
-	 o2kmrAe8OBKA3mFOhCwZikz/rd1OGN8/QCiWEBlk5oVS7s9ovyCAL7s4IuZNN09Gp6
-	 J46Z2AEC+9VaR5f+rrQ+aqsu0OqHpOJ05TDE6HYSuDykDPH41yzrOYft/OTN2BnElt
-	 sXrf7o0qQttF7lCbCkiYkVBeiZaR8nChgTnLXsshl0oveoifZhmq4zoeUOHN/HvR5m
-	 MAhIw58w6d5nT5LvFPao9C+bgxisLYNFhYzbuUn21tihcjzxr3NJ9ZELlVrrAErQcO
-	 i76w4mUTH5VINlPDsBzGW8mLKD267+1PVmLTskJyZdMzP/Z2u67TB1qD+9rq4gGUu9
-	 OVtlLqkxdQhTbIXksF6JwkyqpcGSfk6dycNSfydgadlOhQWb0z3lML2VxNTDchUnkY
-	 u2DFX+7TJaWHJg2LRvjAbRCmmVQlTONviMHiNp6j3jBrT+LlLpphkZzyHcWRjSw6CH
-	 C2lIqGk+jQk4WzfABD2sbwZU=
+	b=gC3AUGCeh2V6Qlk7v0bFHouNTHyUTP9DK5IQ222OI9i7D4EA8cTw36MT8rjsBtUYb
+	 g3ddR1v1McA9zwhZWZ3AqGzMaECEB9X1wa0BnQeAcMJUJmh4bFGEqW9de+F1K7iPRU
+	 njUb6IxNARfnWfbjr+e6dQWR9M+0l5nVENqRDxdETxXHXUE1+nwqFIrQawX4vvKR5/
+	 wqjc/IXixH8mm57Bb5nsjfEo77kua/i8Dghurz+gcwUest3CutLTcE13xp5PdLrfHi
+	 a4xKPdIehWD3Xz7+Ard/sBiumZ1qsv7WrsiGcOxZZ9lGf3ITiQdHvXvItRfsKRtvQ3
+	 jtXQn0uHfPf7r2jJ3d2AhSzKDb1o91lhXzaNt4vzMFpHLDHMcN8KAtmNC8dZEJgf8t
+	 tJdUrI5QsBGvkoW+ZZWHqjz2NU9cATrCqCIzMzAzEaFDa+Yxi/EH4WNhhFYtgpVFJ0
+	 4m0W4NzkDB0KCJTBCxsuPxUmriQXFygco+DZvZl5Vk8Cx/ZjMbDk+MECcnKa47a1AY
+	 XXSMhZRHcwaRz0fNk3LNv2hDDvr9nMp6rmG1hCmH4EbTnW2yxLfnaixqnZ0MTrMmHZ
+	 8Ig28dff1Z18zR1GwzzwdgsCGVaT/8Jd+wEiqBLKttzQh3dVo/Qnns9nd5KyhtEgfl
+	 ZlmkU7NjFgA3pAKx/OvRqL44=
 Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C768E40E00C5;
-	Thu,  4 Jan 2024 13:12:16 +0000 (UTC)
-Date: Thu, 4 Jan 2024 14:12:10 +0100
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 89C8E40E0177;
+	Thu,  4 Jan 2024 13:24:51 +0000 (UTC)
+Date: Thu, 4 Jan 2024 14:24:46 +0100
 From: Borislav Petkov <bp@alien8.de>
 To: Josh Poimboeuf <jpoimboe@kernel.org>
 Cc: "Kaplan, David" <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
@@ -59,11 +59,10 @@ Cc: "Kaplan, David" <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	"x86@kernel.org" <x86@kernel.org>,
 	David Howells <dhowells@redhat.com>
-Subject: Re: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't
- used at runtime
-Message-ID: <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
-References: <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
- <20231018203747.GJZTBCG7mv5HL4w6CC@fat_crate.local>
+Subject: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't used at
+ runtime
+Message-ID: <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
+References: <20231018203747.GJZTBCG7mv5HL4w6CC@fat_crate.local>
  <20231019063527.iwgyioxi2gznnshp@treble>
  <20231019065928.mrvhtfaya22p2uzw@treble>
  <20231019141514.GCZTE58qPOvcJCiBp3@fat_crate.local>
@@ -72,6 +71,7 @@ References: <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
  <20231019152051.4u5xwhopbdisy6zl@treble>
  <20231024201913.GHZTgmwf6QMkX8BGbo@fat_crate.local>
  <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
+ <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
@@ -80,68 +80,210 @@ List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
+In-Reply-To: <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
 
-On Wed, Jan 03, 2024 at 07:46:56PM +0100, Borislav Petkov wrote:
-> If only I can remember now how we did trigger the warning in the first
-> place in order to test it...
+Thoughts? Complaints?
 
-Ok, got tired of trying to make it use the default thunk - it seems
-kinda hard to do - which is good - or I simply can't think of a good way
-to trigger it.
+---
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+Date: Wed, 3 Jan 2024 19:36:26 +0100
 
-So I went and replaced the jump to the actual thunk:
+Make sure the default return thunk is not used after all return
+instructions have been patched by the alternatives because the default
+return thunk is insufficient when it comes to mitigating Retbleed or
+SRSO.
 
-Dump of assembler code for function default_idle_call:
-   0xffffffff8197bda0 <+0>:     nopw   (%rax)
-   0xffffffff8197bda4 <+4>:     nop
-   ...
-   0xffffffff8197bdda <+58>:    xchg   %ax,%ax
-   0xffffffff8197bddc <+60>:    sti
-   0xffffffff8197bddd <+61>:    nop
-   0xffffffff8197bdde <+62>:    jmp    0xffffffff81988420 <srso_return_thunk>
+Fix based on a earlier version by David Kaplan <david.kaplan@amd.com>.
 
-to what it is at build time. I.e., what should *not* happen after
-patch_returns() as run:
+  [ bp: Use the big-fat "NOTICE NOTICE" banner and fix the compilation
+    error of warn_thunk_thunk being an invisible symbol. ]
 
-Dump of assembler code for function default_idle_call:
-   0xffffffff8197bda0 <+0>:     nopw   (%rax)
-   0xffffffff8197bda4 <+4>:     nop
-   ...
-   0xffffffff8197bdda <+58>:    xchg   %ax,%ax
-   0xffffffff8197bddc <+60>:    sti
-   0xffffffff8197bddd <+61>:    nop
-   0xffffffff8197bdde <+62>:    jmp    0xffffffff819884a0 <__x86_return_thunk>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Co-developed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231010171020.462211-4-david.kaplan@amd.com
+---
+ arch/x86/entry/calling.h             | 33 ++++++++++++++++++++++++++++
+ arch/x86/entry/entry.S               |  4 ++++
+ arch/x86/entry/thunk_64.S            | 33 ----------------------------
+ arch/x86/include/asm/nospec-branch.h |  2 ++
+ arch/x86/kernel/cpu/bugs.c           | 16 ++++++++++++++
+ arch/x86/lib/retpoline.S             | 15 +++++--------
+ 6 files changed, 61 insertions(+), 42 deletions(-)
 
-and yap, it fires as expected:
-
-[  209.051694] **********************************************************
-[  209.053200] **   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
-[  209.054435] **                                                      **
-[  209.055687] **   unpatched return thunk in use. This should not     **
-[  209.056911] **   on a production kernel. Please report this to      **
-[  209.058133] **   x86@kernel.org.                                    **
-[  209.059367] **                                                      **
-[  209.060587] **   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
-[  209.061808] **********************************************************
-[  209.063064] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W          6.7.0-rc8+ #15
-[  209.064527] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-[  209.066086] Call Trace:
-[  209.066569]  <TASK>
-[  209.066975]  dump_stack_lvl+0x36/0x50
-[  209.067675]  warn_thunk_thunk+0x1a/0x30
-[  209.068405]  do_idle+0x1a5/0x1e0
-[  209.069403]  cpu_startup_entry+0x29/0x30
-[  209.070147]  rest_init+0xc5/0xd0
-[  209.070775]  arch_call_rest_init+0xe/0x20
-[  209.071537]  start_kernel+0x425/0x680
-[  209.072235]  ? set_init_arg+0x80/0x80
-[  209.072931]  x86_64_start_reservations+0x18/0x30
-[  209.073803]  x86_64_start_kernel+0xb7/0xc0
-[  209.074590]  secondary_startup_64_no_verify+0x175/0x17b
-[  209.075584]  </TASK>
-
-Lemme write a proper patch.
+diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
+index e59d3073e7cf..a4679e8f30ad 100644
+--- a/arch/x86/entry/calling.h
++++ b/arch/x86/entry/calling.h
+@@ -426,3 +426,36 @@ For 32-bit we have the following conventions - kernel is built with
+ .endm
+ 
+ #endif /* CONFIG_SMP */
++
++/* rdi:	arg1 ... normal C conventions. rax is saved/restored. */
++.macro THUNK name, func
++SYM_FUNC_START(\name)
++	pushq %rbp
++	movq %rsp, %rbp
++
++	pushq %rdi
++	pushq %rsi
++	pushq %rdx
++	pushq %rcx
++	pushq %rax
++	pushq %r8
++	pushq %r9
++	pushq %r10
++	pushq %r11
++
++	call \func
++
++	popq %r11
++	popq %r10
++	popq %r9
++	popq %r8
++	popq %rax
++	popq %rcx
++	popq %rdx
++	popq %rsi
++	popq %rdi
++	popq %rbp
++	RET
++SYM_FUNC_END(\name)
++	_ASM_NOKPROBE(\name)
++.endm
+diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+index 8c8d38f0cb1d..582731f74dc8 100644
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -7,6 +7,8 @@
+ #include <linux/linkage.h>
+ #include <asm/msr-index.h>
+ 
++#include "calling.h"
++
+ .pushsection .noinstr.text, "ax"
+ 
+ SYM_FUNC_START(entry_ibpb)
+@@ -20,3 +22,5 @@ SYM_FUNC_END(entry_ibpb)
+ EXPORT_SYMBOL_GPL(entry_ibpb);
+ 
+ .popsection
++
++THUNK warn_thunk_thunk, __warn_thunk
+diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
+index 416b400f39db..119ebdc3d362 100644
+--- a/arch/x86/entry/thunk_64.S
++++ b/arch/x86/entry/thunk_64.S
+@@ -9,39 +9,6 @@
+ #include "calling.h"
+ #include <asm/asm.h>
+ 
+-	/* rdi:	arg1 ... normal C conventions. rax is saved/restored. */
+-	.macro THUNK name, func
+-SYM_FUNC_START(\name)
+-	pushq %rbp
+-	movq %rsp, %rbp
+-
+-	pushq %rdi
+-	pushq %rsi
+-	pushq %rdx
+-	pushq %rcx
+-	pushq %rax
+-	pushq %r8
+-	pushq %r9
+-	pushq %r10
+-	pushq %r11
+-
+-	call \func
+-
+-	popq %r11
+-	popq %r10
+-	popq %r9
+-	popq %r8
+-	popq %rax
+-	popq %rcx
+-	popq %rdx
+-	popq %rsi
+-	popq %rdi
+-	popq %rbp
+-	RET
+-SYM_FUNC_END(\name)
+-	_ASM_NOKPROBE(\name)
+-	.endm
+-
+ THUNK preempt_schedule_thunk, preempt_schedule
+ THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
+ EXPORT_SYMBOL(preempt_schedule_thunk)
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 691ff1ef701b..64b175f03cdb 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -348,6 +348,8 @@ extern void entry_ibpb(void);
+ 
+ extern void (*x86_return_thunk)(void);
+ 
++extern void __warn_thunk(void);
++
+ #ifdef CONFIG_CALL_DEPTH_TRACKING
+ extern void call_depth_return_thunk(void);
+ 
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index bb0ab8466b91..b96483551299 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2849,3 +2849,19 @@ ssize_t cpu_show_gds(struct device *dev, struct device_attribute *attr, char *bu
+ 	return cpu_show_common(dev, attr, buf, X86_BUG_GDS);
+ }
+ #endif
++
++void __warn_thunk(void)
++{
++	pr_warn_once("\n");
++	pr_warn_once("**********************************************************\n");
++	pr_warn_once("**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **\n");
++	pr_warn_once("**                                                      **\n");
++	pr_warn_once("**   Unpatched return thunk in use. This should not     **\n");
++	pr_warn_once("**   happen on a production kernel. Please report this  **\n");
++	pr_warn_once("**   to x86@kernel.org.                                 **\n");
++	pr_warn_once("**                                                      **\n");
++	pr_warn_once("**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **\n");
++	pr_warn_once("**********************************************************\n");
++
++	dump_stack();
++}
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index 7b2589877d06..5ed0c22f5351 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -369,19 +369,16 @@ SYM_FUNC_END(call_depth_return_thunk)
+  * 'JMP __x86_return_thunk' sites are changed to something else by
+  * apply_returns().
+  *
+- * This should be converted eventually to call a warning function which
+- * should scream loudly when the default return thunk is called after
+- * alternatives have been applied.
+- *
+- * That warning function cannot BUG() because the bug splat cannot be
+- * displayed in all possible configurations, leading to users not really
+- * knowing why the machine froze.
++ * The ALTERNATIVE below adds a really loud warning to catch the case
++ * where the insufficient default return thunk ends up getting used for
++ * whatever reason like miscompilation or failure of
++ * objtool/alternatives/etc to patch all the return sites.
+  */
+ SYM_CODE_START(__x86_return_thunk)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
+-	ANNOTATE_UNRET_SAFE
+-	ret
++	ALTERNATIVE __stringify(ANNOTATE_UNRET_SAFE; ret), \
++		   "jmp warn_thunk_thunk", X86_FEATURE_ALWAYS
+ 	int3
+ SYM_CODE_END(__x86_return_thunk)
+ EXPORT_SYMBOL(__x86_return_thunk)
+-- 
+2.42.0.rc0.25.ga82fb66fed25
 
 -- 
 Regards/Gruss,
