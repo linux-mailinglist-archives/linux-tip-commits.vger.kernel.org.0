@@ -1,127 +1,151 @@
-Return-Path: <linux-tip-commits+bounces-95-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-96-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D59823EB9
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Jan 2024 10:34:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E6982427D
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Jan 2024 14:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FF5928761E
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Jan 2024 09:34:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1064B23242
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Jan 2024 13:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D8F208AD;
-	Thu,  4 Jan 2024 09:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781D022305;
+	Thu,  4 Jan 2024 13:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K3Jo2mzl";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+89tdcqF"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Rj+iS860"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6A2208A8;
-	Thu,  4 Jan 2024 09:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 04 Jan 2024 09:34:34 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1704360875;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m1dzXWXtanidcRqNf7pTgZuB9sg4I7BIsO8RkysnZBw=;
-	b=K3Jo2mzlh1Gs6VdSKUEBt4LtQBVZhzHKhk+lGH1oJ8JTxQOwqot9fy4wKZlwP+U59HGCdU
-	bomWoxj5ANQLBT0SbxI9ON2v57T7JrHMA5mk+ZrUmie+pGRHMsyzGOWXcI+Q5nd7Xxnt2o
-	EN17oJPDYyVr5Q6ChkEp2vsLepMpbFQsfs+TZ8s+z/MsPUltTzreOqNYH51rOgr8rHaWhi
-	wb85hQGzKd3pJTO+5LjsBSejdnAF82sIi6dJ+MmLi/k3QtZj9hDmjhYNyEqjieZ09KKoym
-	TwLUFlkanPLOwU5TqMPEDp2s+IyPMunWIVnhkSs1mATXyH4ts3n7OWWgr+GRsg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1704360875;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m1dzXWXtanidcRqNf7pTgZuB9sg4I7BIsO8RkysnZBw=;
-	b=+89tdcqFGh+FegbQyTYTbSesmePm3gWHWURr+SRydv3MD/FHxethgIgSXbHGWJaRRvypmA
-	5IWukeLB/OIZ6CDw==
-From: "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/tools: objdump_reformat.awk: Skip bad
- instructions from llvm-objdump
-Cc: Nathan Chancellor <nathan@kernel.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C20231205-objdump=5Freformat-awk-handle-llvm-objdum?=
- =?utf-8?q?p-bad=5Fexpr-v1-1-b4a74f39396f=40kernel=2Eorg=3E?=
-References: =?utf-8?q?=3C20231205-objdump=5Freformat-awk-handle-llvm-objdump?=
- =?utf-8?q?-bad=5Fexpr-v1-1-b4a74f39396f=40kernel=2Eorg=3E?=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C532230C;
+	Thu,  4 Jan 2024 13:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 25D9740E0177;
+	Thu,  4 Jan 2024 13:12:27 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id w3--VQFIp462; Thu,  4 Jan 2024 13:12:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1704373944; bh=qQuqXJZL7aDM3EdHFv033v3MUj6t+i7wMVqmM1OonM0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rj+iS860nEcddAPwD0TQAFDwf+sq6ZVMSL3z+bjEp8oD6qqxyxKvHLcJoDtIo+R9w
+	 ajm1JTz0Y9tw3zSmnUByOdxKKde9ZZ8Ai6uLrDawZkkgi8byVqUuta9fujR+8aPofz
+	 HyaycQOHJUzFnrHe0UlwO91f+3lVdBjXkLWxe8YoOCtEOsLSNL2idX8fdDixOsxT5l
+	 o2kmrAe8OBKA3mFOhCwZikz/rd1OGN8/QCiWEBlk5oVS7s9ovyCAL7s4IuZNN09Gp6
+	 J46Z2AEC+9VaR5f+rrQ+aqsu0OqHpOJ05TDE6HYSuDykDPH41yzrOYft/OTN2BnElt
+	 sXrf7o0qQttF7lCbCkiYkVBeiZaR8nChgTnLXsshl0oveoifZhmq4zoeUOHN/HvR5m
+	 MAhIw58w6d5nT5LvFPao9C+bgxisLYNFhYzbuUn21tihcjzxr3NJ9ZELlVrrAErQcO
+	 i76w4mUTH5VINlPDsBzGW8mLKD267+1PVmLTskJyZdMzP/Z2u67TB1qD+9rq4gGUu9
+	 OVtlLqkxdQhTbIXksF6JwkyqpcGSfk6dycNSfydgadlOhQWb0z3lML2VxNTDchUnkY
+	 u2DFX+7TJaWHJg2LRvjAbRCmmVQlTONviMHiNp6j3jBrT+LlLpphkZzyHcWRjSw6CH
+	 C2lIqGk+jQk4WzfABD2sbwZU=
+Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C768E40E00C5;
+	Thu,  4 Jan 2024 13:12:16 +0000 (UTC)
+Date: Thu, 4 Jan 2024 14:12:10 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: "Kaplan, David" <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	David Howells <dhowells@redhat.com>
+Subject: Re: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't
+ used at runtime
+Message-ID: <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
+References: <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
+ <20231018203747.GJZTBCG7mv5HL4w6CC@fat_crate.local>
+ <20231019063527.iwgyioxi2gznnshp@treble>
+ <20231019065928.mrvhtfaya22p2uzw@treble>
+ <20231019141514.GCZTE58qPOvcJCiBp3@fat_crate.local>
+ <SN6PR12MB2702AC3C27D25414FE4260F994D4A@SN6PR12MB2702.namprd12.prod.outlook.com>
+ <20231019143951.GEZTE/t/wECKBxMSjl@fat_crate.local>
+ <20231019152051.4u5xwhopbdisy6zl@treble>
+ <20231024201913.GHZTgmwf6QMkX8BGbo@fat_crate.local>
+ <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170436087400.398.10481270651479609667.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
 
-The following commit has been merged into the x86/build branch of tip:
+On Wed, Jan 03, 2024 at 07:46:56PM +0100, Borislav Petkov wrote:
+> If only I can remember now how we did trigger the warning in the first
+> place in order to test it...
 
-Commit-ID:     bcf7ef56daca2eacf836d22eee23c66f7cd96a65
-Gitweb:        https://git.kernel.org/tip/bcf7ef56daca2eacf836d22eee23c66f7cd96a65
-Author:        Nathan Chancellor <nathan@kernel.org>
-AuthorDate:    Tue, 05 Dec 2023 12:53:08 -07:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 04 Jan 2024 10:04:02 +01:00
+Ok, got tired of trying to make it use the default thunk - it seems
+kinda hard to do - which is good - or I simply can't think of a good way
+to trigger it.
 
-x86/tools: objdump_reformat.awk: Skip bad instructions from llvm-objdump
+So I went and replaced the jump to the actual thunk:
 
-When running the instruction decoder selftest with LLVM=1 and
-CONFIG_PVH=y, there is a series of warnings:
+Dump of assembler code for function default_idle_call:
+   0xffffffff8197bda0 <+0>:     nopw   (%rax)
+   0xffffffff8197bda4 <+4>:     nop
+   ...
+   0xffffffff8197bdda <+58>:    xchg   %ax,%ax
+   0xffffffff8197bddc <+60>:    sti
+   0xffffffff8197bddd <+61>:    nop
+   0xffffffff8197bdde <+62>:    jmp    0xffffffff81988420 <srso_return_thunk>
 
-  arch/x86/tools/insn_decoder_test: warning: Found an x86 instruction decoder bug, please report this.
-  arch/x86/tools/insn_decoder_test: warning: ffffffff81000050     ea                      <unknown>
-  arch/x86/tools/insn_decoder_test: warning: objdump says 1 bytes, but insn_get_length() says 7
-  arch/x86/tools/insn_decoder_test: warning: Decoded and checked 7214721 instructions with 1 failures
+to what it is at build time. I.e., what should *not* happen after
+patch_returns() as run:
 
-GNU objdump outputs "(bad)" instead of "<unknown>", which is already
-handled in the bad_expr regex, so there is no warning.
+Dump of assembler code for function default_idle_call:
+   0xffffffff8197bda0 <+0>:     nopw   (%rax)
+   0xffffffff8197bda4 <+4>:     nop
+   ...
+   0xffffffff8197bdda <+58>:    xchg   %ax,%ax
+   0xffffffff8197bddc <+60>:    sti
+   0xffffffff8197bddd <+61>:    nop
+   0xffffffff8197bdde <+62>:    jmp    0xffffffff819884a0 <__x86_return_thunk>
 
-  $ objdump -d arch/x86/platform/pvh/head.o | grep -E '50:\s+ea'
-  50:   ea                      (bad)
+and yap, it fires as expected:
 
-  $ llvm-objdump -d arch/x86/platform/pvh/head.o | grep -E '50:\s+ea'
-        50: ea                            <unknown>
+[  209.051694] **********************************************************
+[  209.053200] **   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
+[  209.054435] **                                                      **
+[  209.055687] **   unpatched return thunk in use. This should not     **
+[  209.056911] **   on a production kernel. Please report this to      **
+[  209.058133] **   x86@kernel.org.                                    **
+[  209.059367] **                                                      **
+[  209.060587] **   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
+[  209.061808] **********************************************************
+[  209.063064] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W          6.7.0-rc8+ #15
+[  209.064527] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+[  209.066086] Call Trace:
+[  209.066569]  <TASK>
+[  209.066975]  dump_stack_lvl+0x36/0x50
+[  209.067675]  warn_thunk_thunk+0x1a/0x30
+[  209.068405]  do_idle+0x1a5/0x1e0
+[  209.069403]  cpu_startup_entry+0x29/0x30
+[  209.070147]  rest_init+0xc5/0xd0
+[  209.070775]  arch_call_rest_init+0xe/0x20
+[  209.071537]  start_kernel+0x425/0x680
+[  209.072235]  ? set_init_arg+0x80/0x80
+[  209.072931]  x86_64_start_reservations+0x18/0x30
+[  209.073803]  x86_64_start_kernel+0xb7/0xc0
+[  209.074590]  secondary_startup_64_no_verify+0x175/0x17b
+[  209.075584]  </TASK>
 
-Add "<unknown>" to the bad_expr regex to clear up the warning, allowing
-the instruction decoder selftest to fully pass with llvm-objdump.
+Lemme write a proper patch.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231205-objdump_reformat-awk-handle-llvm-objdump-bad_expr-v1-1-b4a74f39396f@kernel.org
----
- arch/x86/tools/objdump_reformat.awk | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-- 
+Regards/Gruss,
+    Boris.
 
-diff --git a/arch/x86/tools/objdump_reformat.awk b/arch/x86/tools/objdump_reformat.awk
-index a4120d9..20b08a6 100644
---- a/arch/x86/tools/objdump_reformat.awk
-+++ b/arch/x86/tools/objdump_reformat.awk
-@@ -11,7 +11,7 @@ BEGIN {
- 	prev_addr = ""
- 	prev_hex = ""
- 	prev_mnemonic = ""
--	bad_expr = "(\\(bad\\)|^rex|^.byte|^rep(z|nz)$|^lock$|^es$|^cs$|^ss$|^ds$|^fs$|^gs$|^data(16|32)$|^addr(16|32|64))"
-+	bad_expr = "(\\(bad\\)|<unknown>|^rex|^.byte|^rep(z|nz)$|^lock$|^es$|^cs$|^ss$|^ds$|^fs$|^gs$|^data(16|32)$|^addr(16|32|64))"
- 	fwait_expr = "^9b[ \t]*fwait"
- 	fwait_str="9b\tfwait"
- }
+https://people.kernel.org/tglx/notes-about-netiquette
 
