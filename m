@@ -1,108 +1,128 @@
-Return-Path: <linux-tip-commits+bounces-102-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-103-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8B2826C2F
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jan 2024 12:09:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 521F982731A
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jan 2024 16:29:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 856431C22206
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jan 2024 11:09:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F9701C22C3C
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jan 2024 15:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7942D25766;
-	Mon,  8 Jan 2024 11:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDB451008;
+	Mon,  8 Jan 2024 15:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mVE7S4Y/"
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L8XvTMFz"
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E292575B;
-	Mon,  8 Jan 2024 11:08:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-40e4582ed74so10018025e9.1;
-        Mon, 08 Jan 2024 03:08:11 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FF951019
+	for <linux-tip-commits@vger.kernel.org>; Mon,  8 Jan 2024 15:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5534180f0e9so13974a12.1
+        for <linux-tip-commits@vger.kernel.org>; Mon, 08 Jan 2024 07:28:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704712090; x=1705316890; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=47u96KtdzEvbIpKBaQmivqY/mxW7t8J2PKKE9/Wcn3U=;
-        b=mVE7S4Y/3pFCsUzFSvdf4XgZz6CUGkQaoudC5XTRfT0McHt/Fs2dXWQQ93S9SASvhG
-         xxXN9AdRMv7f6/JkGgncLnbS0w0kM/HbqcRzkBFS4JMNvXOQRU975V+E52yGVB0duAXd
-         hkMVm3dNf10EUBDFdnavZzpS/FUYINS2XxbNYNcIxTHeKLfgS7dKUqAPjG4bYVT7lO3p
-         PH/0asJiK7ZHUDl5vECwfDQRFnWEIFEaEhAXINNNpWMOK7g15QcL9XBMvFiRpdrER0f1
-         SOctbG7Uef0RF5ispRcKCXCHREN89IXfDYAm6nfJOi2fCwf6v03fNeozxCCs7baZudJ3
-         GJdA==
+        d=google.com; s=20230601; t=1704727729; x=1705332529; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Isb5ut/bgR2/r/5F9YVy69h9kXC52tbAkHmnKiVEMAY=;
+        b=L8XvTMFz+FqT5IYD+cdWuhRKyF3Ar0k6TDArT+GP5KsonDmtexmzwyMVYZLMEln0Qd
+         YUVRsk8BPr0gNjDIugXnsoaKxr7zRz1WKiqjixe5jEMU42V+FjfpRflOXURylYL+yOq4
+         0uVk4gxuSV5203Rp9qIWFrEie8slfuDjbArzC7G/T4RJfSL24MF8A68ZLuPB4ky9wXlI
+         SjiBjlFOYshvPC5P2K/JKpMUsqTwrGIi0SwCZhmSMeCCynu1XrDe6eXOH5nA0CANshNr
+         tHwWIW+deNMZCtLdpG0siNJdojg7hT+Y+wrzguNBKOJrwqkBPCTIXe+qcIEAxLcKii+G
+         6BtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704712090; x=1705316890;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1704727729; x=1705332529;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=47u96KtdzEvbIpKBaQmivqY/mxW7t8J2PKKE9/Wcn3U=;
-        b=bDQEh2rPjyET8m6jjz+bCNkupk3cE10lD3tfb1xTLQzpXkGOEkxorJc+2IAaze5ym2
-         fkvc2oC+Mccwhf43kCP9CqkzjyfrIpXXvYuFjiv8tIiIvlDZK2gTAEgMqFdm8KGpj9sQ
-         fJk7pmkX1fpK5GxfLMn3BrGdAm3eDt3lM45EhWMiShmY9lb88be1m6ZWYpxEcjvuF2ru
-         IEYUc2Bp+5cOGZJ4lBf+bX+XgOKPEkwnR1bZHKD778ZO+NihKTX+bqQ0H9LwtNMog4Ff
-         SnzzIEAUQLPRCbhAc2fczSf/GvEqYmvmW9k8wI5dKJUqNQyIKccDcU68TJKRUtwXQmkn
-         vHBA==
-X-Gm-Message-State: AOJu0YwtMMZSlwkZnhLoNNJLzBEqgaGWXcDay0fV/asMbmssblISLrts
-	Ol/9+YVho2LIrlUYL23DbjCY1Yk2Azg=
-X-Google-Smtp-Source: AGHT+IGljMzclHKVfoI+sXkPb2zICLcFM1DoUK59Ef+y09I+psVm/Oh8UmBC8uDStHQXnZLH0LCwnQ==
-X-Received: by 2002:a05:600c:358d:b0:40e:3d34:3e77 with SMTP id p13-20020a05600c358d00b0040e3d343e77mr972856wmq.44.1704712089757;
-        Mon, 08 Jan 2024 03:08:09 -0800 (PST)
-Received: from gmail.com (1F2EF3FE.nat.pool.telekom.hu. [31.46.243.254])
-        by smtp.gmail.com with ESMTPSA id c12-20020a05600c0a4c00b0040c11fbe581sm10556031wmq.27.2024.01.08.03.08.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jan 2024 03:08:09 -0800 (PST)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date: Mon, 8 Jan 2024 12:08:07 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Jun'ichi Nomura <junichi.nomura@nec.com>,
-	Derek Barbosa <debarbos@redhat.com>,
-	Kees Cook <keescook@chromium.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
-Subject: Re: [tip: x86/boot] x86/boot: Ignore NMIs during very early boot
-Message-ID: <ZZvXlyW8Khmr805c@gmail.com>
-References: <170133478498.398.5261666675868615202.tip-bot2@tip-bot2>
- <20231130103339.GCZWhlA196uRklTMNF@fat_crate.local>
+        bh=Isb5ut/bgR2/r/5F9YVy69h9kXC52tbAkHmnKiVEMAY=;
+        b=sFjvKUz4SrUauxaID8+ugMO4Fl2yjIKOPd3a12r9LmeY2w8ScspVRaT5kU5Zz//jqx
+         tNPpRZQ4eS23TEnWISs7JP/RJ121Dh/Vh6IPiXKkUjthGc4CCP3xkE66/Ts0pmazMRXX
+         lugMMWI9yTFkSn+Qhk/5SXJFCYIbH5Bxd9YhCJJIK6GmsK5miGgvXrRmZfKpd6Isdtez
+         OVx0pfHXek+5fJ6wjWnr2vAPIZZ7d6RZHp+wXkq1IDQhgvC3Qc24PVEZY4uxkZtdwPqs
+         +apv2ph1nzDxaUvGyY1DK7tqs8r9XuFeBcT6xJCe8ZYGrM1H4cmSyZ+wo7usKjnsu4hd
+         03VA==
+X-Gm-Message-State: AOJu0YzzFYrTPa07QR0oCeVmQg4egrEVXF0DJXkxzZtNMyKdBVoIbTvO
+	fhDQgPZXgF7kfAPMjLoUW7Y86pYCL44d2LFEQjs3bZrA/JMGivDtKhYb9RMw3yuv
+X-Google-Smtp-Source: AGHT+IHj/hq+6ybdQUvW8IbBNJtuct1zKTEIHf3ZIq7kIXyUg1Av9/t8o646IQy69IltOXBD+zdKfjnHF7CGKOGeBPI=
+X-Received: by 2002:a50:8a93:0:b0:554:2501:cc8e with SMTP id
+ j19-20020a508a93000000b005542501cc8emr282070edj.6.1704727728768; Mon, 08 Jan
+ 2024 07:28:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231130103339.GCZWhlA196uRklTMNF@fat_crate.local>
+References: <20231130204817.2031407-1-jannh@google.com> <170142744948.398.4203675877225809071.tip-bot2@tip-bot2>
+ <20231201121808.GL3818@noisy.programming.kicks-ass.net> <ZZu2F8KNygWzWVY7@gmail.com>
+In-Reply-To: <ZZu2F8KNygWzWVY7@gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 8 Jan 2024 16:28:11 +0100
+Message-ID: <CAG48ez0pO9sfNfW35q5qjoWr+_s5_16t=gTC+kU-j1LGkA-SMQ@mail.gmail.com>
+Subject: Re: [PATCH] locking/mutex: Clarify that mutex_unlock(), and most
+ other sleeping locks, cannot be used to reference-count objects
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, 
+	linux-tip-commits@vger.kernel.org, x86@kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Jan 8, 2024 at 9:45=E2=80=AFAM Ingo Molnar <mingo@kernel.org> wrote=
+:
+> * Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> > On Fri, Dec 01, 2023 at 10:44:09AM -0000, tip-bot2 for Jann Horn wrote:
+> >
+> > > --- a/Documentation/locking/mutex-design.rst
+> > > +++ b/Documentation/locking/mutex-design.rst
+> > > @@ -101,6 +101,12 @@ features that make lock debugging easier and fas=
+ter:
+> > >      - Detects multi-task circular deadlocks and prints out all affec=
+ted
+> > >        locks and tasks (and only those tasks).
+> > >
+> > > +Releasing a mutex is not an atomic operation: Once a mutex release o=
+peration
+> >
+> > I still object to this confusing usage of atomic. Also all this also
+> > applies to all sleeping locks, rwsem etc. I don't see why we need to
+> > special case mutex here.
+> >
+> > Also completion_done() has an explicit lock+unlock on wait.lock to
+> > deal with this there.
+>
+> Fair enough - but Jan's original observation stands: mutexes are the
+> sleeping locks most similar to spinlocks, so the locking & object lifetim=
+e
+> pattern that works under spinlocks cannot be carried over to mutexes in a=
+ll
+> cases, and it's fair to warn about this pitfall.
+>
+> We single out mutex_lock(), because they are the most similar in behavior
+> to spinlocks, and because this concern isn't hypothethical, it has been
+> observed in the wild with mutex users.
+>
+> How about the language in the attached patch?
 
-* Borislav Petkov <bp@alien8.de> wrote:
+In case you missed it, I sent this rewritten documentation patch in
+response to the feedback I got, intended to replace the patch that is
+now sitting in the tip tree (but I don't know how that works
+procedurally for something that's already in the tip tree, whether
+you'd want to just swap out the patch with a forced update, or revert
+out the old version, or something else):
+<https://lore.kernel.org/all/20231204132259.112152-1-jannh@google.com/>
 
-> On Thu, Nov 30, 2023 at 08:59:44AM -0000, tip-bot2 for Jun'ichi Nomura wrote:
-> > +void do_boot_nmi_trap(struct pt_regs *regs, unsigned long error_code)
-> > +{
-> > +	/* Empty handler to ignore NMI during early boot */
-> 
-> It might be good to issue something here to say that a spurious NMI got
-> ignored.
-> 
-> Something ala
-> 
-> 	error_putstr("Spurious early NMI ignored.\n");
-> 
-> so that we at least say that we ignored an NMI and not have it disappear
-> unnoticed.
-
-That makes sense. Jun'ichi-san, could you please send a patch for this?
-
-Thanks,
-
-	Ingo
+Since there were comments on how this is really a more general rule
+than a mutex-specific one, that version doesn't touch
+Documentation/locking/mutex-design.rst and instead documents the rule
+in Documentation/locking/locktypes.rst; and then it adds comments
+above some of the most common unlock-type functions that would be
+affected.
 
