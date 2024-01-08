@@ -1,118 +1,86 @@
-Return-Path: <linux-tip-commits+bounces-100-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-101-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E53826A03
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jan 2024 10:00:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A59C0826A0C
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jan 2024 10:01:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30F361C22DE5
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jan 2024 09:00:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C79D1F24B05
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jan 2024 09:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E5811716;
-	Mon,  8 Jan 2024 09:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65D912B74;
+	Mon,  8 Jan 2024 09:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cCi0nvJS"
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1Y+cn/bo";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XqA4yX00"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272DE1170D;
-	Mon,  8 Jan 2024 09:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a28fb463a28so143515366b.3;
-        Mon, 08 Jan 2024 01:00:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704704415; x=1705309215; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8tWRPiEm6SRTvxIeaeOoy7OGjCFGwYUaCN6NMlRQxRU=;
-        b=cCi0nvJS9+0/TGeMSRfF77taxvLdGS3OGBq3CFCsoIt7dSZWweLhjhp7Wm1htAtONQ
-         dSR4aVm4sqIxaeqEsvfTavO69UD7ReAGwRgBUWJMyuwMmTvcJO6v9Clu5bsAnFJqmHwz
-         fXSf7ltySn7o6KZ/LL6hm94+MMZ2jnbc8GNjlIK80qW3k1xdd2dEVreDjC2oKYrPBrhw
-         4YbofS1DUQpCQom4nd3bJVjr1Wt6FtBbY3VCoZnJKykj4vvtsEjZjL02RPngHBN71gDS
-         fwf6HDxmm7SRRZwiqJFXu/Dt0sM/MPAnwkvqN1gcfbqapKPNxzDTRujx9F8v2YWyczGZ
-         giHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704704415; x=1705309215;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8tWRPiEm6SRTvxIeaeOoy7OGjCFGwYUaCN6NMlRQxRU=;
-        b=N1mwoFcmnrsNZHvlnXoQj/taq6qDr4VWBTI5Yle57p3xLVdVcKpqoIbeqPqlZo/hAB
-         wFEkt1CqRSNqeuGjJ7sXO6FelmEg5Uxx+RC0pVFYOiZvNxF7YvWwigpBREAwHO8XMVGz
-         q2UFxibeKn/1+GJDy5MeJzZ5jzoUynbDOyQNYEkJidMypx+IZHCo3Y6IpmGE/aJ8V31j
-         GkIfhS7uvydeLLY644bRRrpEGKC4pvuSD651do/KpSIbjvVdpjHH5UFqLdHWqi7LtqF9
-         L0d7s56US5pHC+sktSti1aVWBcLbTMdnchTX6kEabDu2eGiccaBG2aMaJrdvLYWSBEry
-         +nxw==
-X-Gm-Message-State: AOJu0Yz4TdjQO12tY924PEWFMq3DQbQW4E97h2wPlZwsnMRfy5z56ngA
-	dtDt3ZoUqVEIYyHoKniZ5mObtp5HMZY=
-X-Google-Smtp-Source: AGHT+IGqMdc0eJe9zjiO5NCSLk2qAhKaqOUTkBdU7bxcTKreIFBETZvTDPnDFjJkTDLFzRdhBocIMg==
-X-Received: by 2002:a17:906:3d42:b0:a27:e0ae:99a8 with SMTP id q2-20020a1709063d4200b00a27e0ae99a8mr1194698ejf.145.1704704415315;
-        Mon, 08 Jan 2024 01:00:15 -0800 (PST)
-Received: from gmail.com (1F2EF3FE.nat.pool.telekom.hu. [31.46.243.254])
-        by smtp.gmail.com with ESMTPSA id jw17-20020a170906e95100b00a29bd8f9edbsm2650748ejb.72.2024.01.08.01.00.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jan 2024 01:00:14 -0800 (PST)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date: Mon, 8 Jan 2024 10:00:12 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Jann Horn <jannh@google.com>, x86@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH -v2] locking/mutex: Clarify that mutex_unlock(), and most
- other sleeping locks, can still use the lock object after it's unlocked
-Message-ID: <ZZu5nBicXKwgYrsg@gmail.com>
-References: <20231130204817.2031407-1-jannh@google.com>
- <170142744948.398.4203675877225809071.tip-bot2@tip-bot2>
- <20231201121808.GL3818@noisy.programming.kicks-ass.net>
- <ZZu2F8KNygWzWVY7@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D4912B71;
+	Mon,  8 Jan 2024 09:01:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 08 Jan 2024 09:01:03 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1704704464;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Dyxas6APHfzo9ugShPXhkzsrATg+NmwaWDa+0Gt9Lvs=;
+	b=1Y+cn/boN8dLNVv6zEVb2/BLwzKX1Ba441831wXTIv14c7UPHuYm/fEWS2ZSZiaCRyPAyY
+	99uSvUWOLLyMXjk4TF0R0fImIXgZeBjMmhMjN6FYx5ak+KYXKlSmYhLmrZ1MofCBais9k6
+	CTAEhFj6wMUFbqK/AWuZIk3OTsyYX1W25+D522YISeNkWr56Y+aSyS9yjVSVbeDSZNhBi9
+	YEh4XW+8SIqgM88WP0ayK2trl8dZNBVH0e17lKhZ/HyquJm5NlvuafwwIRluBU+Bs+3Y+D
+	qX+oBZkPK3mc1dFydIhytme7FOKrmxusEDYO0L7+EHnDcTCLgsHRW30gg+3CCQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1704704464;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Dyxas6APHfzo9ugShPXhkzsrATg+NmwaWDa+0Gt9Lvs=;
+	b=XqA4yX00ob9xNMGUC5ctqwURGJ0GqxO2lRTH8ia/9KRYTTT7bsxPIbZg5CxT3qoVp6W7Z4
+	frG4HssbHuKuj1CA==
+From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/core] locking/mutex: Clarify that mutex_unlock(), and
+ most other sleeping locks, can still use the lock object after it's unlocked
+Cc: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Jann Horn <jannh@google.com>, Linus Torvalds <torvalds@linux-foundation.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231201121808.GL3818@noisy.programming.kicks-ass.net>
+References: <20231201121808.GL3818@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZZu2F8KNygWzWVY7@gmail.com>
+Message-ID: <170470446336.398.8996133670425061216.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the locking/core branch of tip:
 
-* Ingo Molnar <mingo@kernel.org> wrote:
+Commit-ID:     2b9d9e0a9ba0e24cb9c78336481f0ed8b2bc1ff2
+Gitweb:        https://git.kernel.org/tip/2b9d9e0a9ba0e24cb9c78336481f0ed8b2bc1ff2
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Mon, 08 Jan 2024 09:31:16 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 08 Jan 2024 09:55:31 +01:00
 
-> > > +Releasing a mutex is not an atomic operation: Once a mutex release operation
-> > 
-> > I still object to this confusing usage of atomic. Also all this also 
-> > applies to all sleeping locks, rwsem etc. I don't see why we need to 
-> > special case mutex here.
-> > 
-> > Also completion_done() has an explicit lock+unlock on wait.lock to deal 
-> > with this there.
-> 
-> Fair enough - but Jan's original observation stands: mutexes are the 
-> sleeping locks most similar to spinlocks, so the locking & object 
-> lifetime pattern that works under spinlocks cannot be carried over to 
-> mutexes in all cases, and it's fair to warn about this pitfall.
-> 
-> We single out mutex_lock(), because they are the most similar in behavior 
-> to spinlocks, and because this concern isn't hypothethical, it has been 
-> observed in the wild with mutex users.
-> 
-> How about the language in the attached patch?
-
-Refined the language a bit more in the -v2 patch below.
-
-Thanks,
-
-	Ingo
-
-=============>
-From: Ingo Molnar <mingo@kernel.org>
-Date: Mon, 8 Jan 2024 09:31:16 +0100
-Subject: [PATCH] locking/mutex: Clarify that mutex_unlock(), and most other sleeping locks, can still use the lock object after it's unlocked
+locking/mutex: Clarify that mutex_unlock(), and most other sleeping locks, can still use the lock object after it's unlocked
 
 Clarify the mutex lock lifetime rules a bit more.
 
@@ -126,7 +94,7 @@ Link: https://lore.kernel.org/r/20231201121808.GL3818@noisy.programming.kicks-as
  1 file changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/Documentation/locking/mutex-design.rst b/Documentation/locking/mutex-design.rst
-index 7572339b2f12..7c30b4aa5e28 100644
+index 7572339..7c30b4a 100644
 --- a/Documentation/locking/mutex-design.rst
 +++ b/Documentation/locking/mutex-design.rst
 @@ -101,12 +101,24 @@ features that make lock debugging easier and faster:
