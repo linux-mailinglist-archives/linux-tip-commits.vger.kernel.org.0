@@ -1,107 +1,164 @@
-Return-Path: <linux-tip-commits+bounces-98-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-99-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C258242AA
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Jan 2024 14:26:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28058269B9
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jan 2024 09:45:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 232C01F24A73
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Jan 2024 13:26:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EA981C21985
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jan 2024 08:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7963122328;
-	Thu,  4 Jan 2024 13:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92ADDBA4B;
+	Mon,  8 Jan 2024 08:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ahn/3crK"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OUoVk1SL"
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC5E2230B;
-	Thu,  4 Jan 2024 13:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B86E740E01B2;
-	Thu,  4 Jan 2024 13:26:34 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ZqTtG1JNcLTX; Thu,  4 Jan 2024 13:26:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1704374792; bh=1Bga3Oc0/FfATWs4xOTtGXjtDFgHK1/H9XT5vBXq0cE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ahn/3crK6bA90TIXsgmAC6I23fk+n+mUEHzdiLHFWF5R1eFbbFkndV/xK0AEhLpOM
-	 m5ONnFOgbLyRce01Gj6d0TzD/MsGqieMJWM0hhHkz/t49Y7Z1zOpcQWsn12UVd4TlA
-	 JK533nXJ1zANet8Em44kke+XiE/CtkgRozU0MnQrNSCf1yjBT+M+yxJhK0mgYfIKS1
-	 v2Vw2+lxDwhLIHt44wi56r7RQeb/oktUoH3EEg8lnSpJdCtc8dCqpm1tvngkHD+bP0
-	 6HQTPXedQiG321pxNj+OHgbywnYOXb2F6VgGasaifJS74eCAYQ7yzxTK+Zz0LX1/Q1
-	 RFq7oodSYfJgM33W9h9MpCuGPSX+K2jGE9Z7buELhlr0KzducieGGYxcOfht1gsUnJ
-	 cVKAIAcFJtP2dhxz9aho8nD8IwF/l283bX0io/qo1B520jEP1Wx+GnXoxajCP7LHZA
-	 sfjluUFw84ScRjvZcEr8xkcC6ygJoXmPdJi5zqquQjJdSc9cbjdXj5adlQ4R+ndYSR
-	 nwkUkjqPzzMS90d1RHzHV3bIy3aH11A6osGmutZuZT2Qm0Zz1+yxLD6Cm7C2XWEHOO
-	 UsaKyOoV1jEcPDJ+S/SiQ/+/OjTMNULy6tfpujXWnfuPvCB07hoFoLSgzfGTRbYJbD
-	 f0tW+IGJuY/BC7YoAracVf8w=
-Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 998A540E0196;
-	Thu,  4 Jan 2024 13:26:24 +0000 (UTC)
-Date: Thu, 4 Jan 2024 14:26:23 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: "Kaplan, David" <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't
- used at runtime
-Message-ID: <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
-References: <20231019063527.iwgyioxi2gznnshp@treble>
- <20231019065928.mrvhtfaya22p2uzw@treble>
- <20231019141514.GCZTE58qPOvcJCiBp3@fat_crate.local>
- <SN6PR12MB2702AC3C27D25414FE4260F994D4A@SN6PR12MB2702.namprd12.prod.outlook.com>
- <20231019143951.GEZTE/t/wECKBxMSjl@fat_crate.local>
- <20231019152051.4u5xwhopbdisy6zl@treble>
- <20231024201913.GHZTgmwf6QMkX8BGbo@fat_crate.local>
- <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
- <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
- <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A8310A19;
+	Mon,  8 Jan 2024 08:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-40d4a7f0c4dso18348255e9.1;
+        Mon, 08 Jan 2024 00:45:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704703514; x=1705308314; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jzg4HzfPcWhfRiLrivgKIlyEbM/OTkAKrGpME537imM=;
+        b=OUoVk1SLuhTrJfmssWYNCL+n2B72hL+KtnpxksgIvWYm2bEUf33wFAL0glk+5o3hm/
+         iVlC7eDb15rY1inzway4MrVBHrFgoGkm6ys1gmJLqwo/ixzZcOoBNuQWe/F7ILJ+UtPC
+         UO1jp8n5sDfcu56ZkIQyX9wdNay/d1TiR7mv68NHdU6xlk/TapNA9225I596eK/ZLncw
+         M+VzZKa7QAWcfi5eZfAfgildslL8Pp6qv0zaOuEcjHh/F0knSLnsxUnjQNDAcwJitqIJ
+         avz35GTlU8z/+ze1vEhgoTRKM9dp1IiEwbwEZkYBngAarYIgSD7v2L648MBnamWuCJs4
+         J1nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704703514; x=1705308314;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jzg4HzfPcWhfRiLrivgKIlyEbM/OTkAKrGpME537imM=;
+        b=fLMOFiOq+WomA743SNmXiFAhEVgRLW3xVbApcn1OhVlXiey9yX5Jr/q/7OuOwKeZDY
+         6ZoyCdhlw+SagHy1WdumKbyaXB93HjPUWsQuYBPEemHtKjk4Q/ey9VPOk583TFYy5Zjr
+         pFN9vBoduBYKTmxb5SlViQX556c78IdaEGxkTLA+5QvIoXs/L+qxQhaJDx8/vWzkCR9/
+         /z96hEZUBZbeK5yn23Y3nmFNY3bj/mP/fXtCf2IdMHA2O7eicXd/8so8m+wrVcWHMZnh
+         zqvHA31yALNZUwelDgpIBebyRa1xGQtSMS8bmFfsrvNxRmMtBl06SzG9g4Nze6j61yeh
+         wmIQ==
+X-Gm-Message-State: AOJu0Yx8bpV39yQmfrkvKA62CVDnGBMn3btMlcrTI7+qNDdCYpgO9gtd
+	IGHuco+nqavOD9DQJOC1eog=
+X-Google-Smtp-Source: AGHT+IFMLGmSbCjUFO+IBcZAPlZAVuir8TFgJhtrxznRO3uQG3ahegbc1LmBIuwgivVsCJJBEfg7pg==
+X-Received: by 2002:a05:600c:a42:b0:40d:8f82:79bb with SMTP id c2-20020a05600c0a4200b0040d8f8279bbmr1779956wmq.182.1704703513816;
+        Mon, 08 Jan 2024 00:45:13 -0800 (PST)
+Received: from gmail.com (1F2EF3FE.nat.pool.telekom.hu. [31.46.243.254])
+        by smtp.gmail.com with ESMTPSA id u14-20020a05600c19ce00b0040d5ae2906esm10256913wmq.30.2024.01.08.00.45.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jan 2024 00:45:13 -0800 (PST)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date: Mon, 8 Jan 2024 09:45:11 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Jann Horn <jannh@google.com>, x86@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH] locking/mutex: Clarify that mutex_unlock(), and most other
+ sleeping locks, cannot be used to reference-count objects
+Message-ID: <ZZu2F8KNygWzWVY7@gmail.com>
+References: <20231130204817.2031407-1-jannh@google.com>
+ <170142744948.398.4203675877225809071.tip-bot2@tip-bot2>
+ <20231201121808.GL3818@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
+In-Reply-To: <20231201121808.GL3818@noisy.programming.kicks-ass.net>
 
-On Thu, Jan 04, 2024 at 02:24:46PM +0100, Borislav Petkov wrote:
-> +void __warn_thunk(void)
-> +{
-> +	pr_warn_once("\n");
-> +	pr_warn_once("**********************************************************\n");
-> +	pr_warn_once("**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **\n");
-> +	pr_warn_once("**                                                      **\n");
-> +	pr_warn_once("**   Unpatched return thunk in use. This should not     **\n");
-> +	pr_warn_once("**   happen on a production kernel. Please report this  **\n");
-> +	pr_warn_once("**   to x86@kernel.org.                                 **\n");
 
-I'm not yet sure here whether this should say "upstream kernels" because
-otherwise we'll get a bunch of distro or whatnot downstream kernels
-reports where we can't really do anything about...
+* Peter Zijlstra <peterz@infradead.org> wrote:
 
-Hmmm.
+> On Fri, Dec 01, 2023 at 10:44:09AM -0000, tip-bot2 for Jann Horn wrote:
+> 
+> > --- a/Documentation/locking/mutex-design.rst
+> > +++ b/Documentation/locking/mutex-design.rst
+> > @@ -101,6 +101,12 @@ features that make lock debugging easier and faster:
+> >      - Detects multi-task circular deadlocks and prints out all affected
+> >        locks and tasks (and only those tasks).
+> >  
+> > +Releasing a mutex is not an atomic operation: Once a mutex release operation
+> 
+> I still object to this confusing usage of atomic. Also all this also
+> applies to all sleeping locks, rwsem etc. I don't see why we need to
+> special case mutex here.
+> 
+> Also completion_done() has an explicit lock+unlock on wait.lock to
+> deal with this there.
 
--- 
-Regards/Gruss,
-    Boris.
+Fair enough - but Jan's original observation stands: mutexes are the 
+sleeping locks most similar to spinlocks, so the locking & object lifetime 
+pattern that works under spinlocks cannot be carried over to mutexes in all 
+cases, and it's fair to warn about this pitfall.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+We single out mutex_lock(), because they are the most similar in behavior 
+to spinlocks, and because this concern isn't hypothethical, it has been 
+observed in the wild with mutex users.
+
+How about the language in the attached patch?
+
+Thanks,
+
+	Ingo
+
+================>
+From: Ingo Molnar <mingo@kernel.org>
+Date: Mon, 8 Jan 2024 09:31:16 +0100
+Subject: [PATCH] locking/mutex: Clarify that mutex_unlock(), and most other sleeping locks, cannot be used to reference-count objects
+
+Clarify the mutex_unlock() lock lifetime rules a bit more.
+
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20231201121808.GL3818@noisy.programming.kicks-ass.net
+---
+ Documentation/locking/mutex-design.rst | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/Documentation/locking/mutex-design.rst b/Documentation/locking/mutex-design.rst
+index 7572339b2f12..f5270323cf0b 100644
+--- a/Documentation/locking/mutex-design.rst
++++ b/Documentation/locking/mutex-design.rst
+@@ -101,12 +101,21 @@ features that make lock debugging easier and faster:
+     - Detects multi-task circular deadlocks and prints out all affected
+       locks and tasks (and only those tasks).
+ 
+-Releasing a mutex is not an atomic operation: Once a mutex release operation
+-has begun, another context may be able to acquire the mutex before the release
+-operation has fully completed. The mutex user must ensure that the mutex is not
+-destroyed while a release operation is still in progress - in other words,
+-callers of mutex_unlock() must ensure that the mutex stays alive until
+-mutex_unlock() has returned.
++A mutex - and most other sleeping locks like rwsems - do not provide an
++implicit refcount for the memory they occupy, which could then be released
++with mutex_unlock().
++
++[ This is in contrast with spin_unlock() [or completion_done()], which APIs can
++  be used to guarantee that the memory is not touched by the lock implementation
++  after spin_unlock() releases the lock. ]
++
++Once a mutex release operation has begun within mutex_unlock(), another context
++may be able to acquire the mutex before the release operation has fully completed,
++and it's not safe to free the object then.
++
++The mutex user must ensure that the mutex is not destroyed while a release operation
++is still in progress - in other words, callers of mutex_unlock() must ensure that
++the mutex stays alive until mutex_unlock() has returned.
+ 
+ Interfaces
+ ----------
 
