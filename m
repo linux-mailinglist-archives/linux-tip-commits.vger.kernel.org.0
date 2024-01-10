@@ -1,66 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-105-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-107-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D87828268
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Jan 2024 09:47:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA958296ED
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jan 2024 11:10:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29489B27272
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Jan 2024 08:47:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96B4F1F278F9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jan 2024 10:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEFC360A4;
-	Tue,  9 Jan 2024 08:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BF13F8FA;
+	Wed, 10 Jan 2024 10:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lCTKaDwW";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q5QN0I8h"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jDj/QlC2";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2OEY4SS5"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECD9BA38;
-	Tue,  9 Jan 2024 08:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618C73F8E6;
+	Wed, 10 Jan 2024 10:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 09 Jan 2024 08:44:50 -0000
+Date: Wed, 10 Jan 2024 10:09:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1704789891;
+	s=2020; t=1704881388;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=GNNKALJWGEQ+WL9sfA5PJJAOcKbXtkYS0Lz2+98RA60=;
-	b=lCTKaDwWEm6t+oYnJFz/+KOmUt/aCVJCIJAnEDqo/y+/3+yDNpIQeDtFsWzN+JNlXZiuLP
-	x//t940TJd61ywLZWgpEInDwjmV4X6mKGAsXIUJ3ACqXTNObzG6nJz+tiek0/XWNqneCfP
-	wkKsGQZepGJDAaPC8dFeuvt2HDlKXAi19C3+x7ht8zdE61QbLUbjJRNKWCiwwFqmZ5ZVt4
-	iXtWu2TX8HuGBvHPVUbfNuGneiwb1xvB2+9fMo+f+rBmRA6FEg8gFit1+HVE6zJglJp+KF
-	QU3I2f9mELw7C2qxNCVGnrygx99xR1sQIVzUyXhc+HKh83I594cB3A+bLCqrNA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WQU4AoIpE47h+/6BR8vQhTT7YyjWb0gG2HZ6Ye8eBg8=;
+	b=jDj/QlC2vhDr5inqxa9qWVgpzx5a50lgDEzL84WMvaqLqM0TD90niujlJohoQtLI2aq++c
+	gq30kToUnm5RU/urecwqGooJ3gVmaA6mnjR9yoHbRRBRjRL9/6YkeTwS/1ee2SAtV0dgFk
+	CzLN9lar8kpig52KEHRKhNN9wvRbjuHMGcuI6yHFC6+wofVgx6N1W0IGHKP62oG1R6nGoC
+	Zz9i+YorOEm9DZ/rULEB65n9/q1CZJTwucrA5n3lB8dkPwW2fZo5ME+aQ9pfbQZ7BtNGfY
+	ickuK7EavkRzy5C95ZwC7sENMLTO3OtLvgDOCWZonKM63skp7U8nOzmWh9KNfg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1704789891;
+	s=2020e; t=1704881388;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=GNNKALJWGEQ+WL9sfA5PJJAOcKbXtkYS0Lz2+98RA60=;
-	b=Q5QN0I8hftQOOq+S70hrlOs+2OeJUoISVCqBWKbYUFdimldljpUVOCIGM+4mr1VIkyPpqi
-	WAQHaTlM/GxTSBCg==
-From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WQU4AoIpE47h+/6BR8vQhTT7YyjWb0gG2HZ6Ye8eBg8=;
+	b=2OEY4SS59ggQZmJ4172VJOlHZZ8PgRQ+Y+fo3qtfCBMmtylI0XC0uQ3V9GtxHT5rfbKxXJ
+	sF8gU7vRshTly4Cg==
+From: "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: x86/percpu] x86/percpu: Use %RIP-relative address in untagged_addr()
-Cc: Uros Bizjak <ubizjak@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ [tip: x86/bugs] x86/bugs: Rename CONFIG_RETHUNK => CONFIG_MITIGATION_RETHUNK
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Breno Leitao <leitao@debian.org>,
  Ingo Molnar <mingo@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradaed.org>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
+In-Reply-To: <20231121160740.1249350-11-leitao@debian.org>
+References: <20231121160740.1249350-11-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170478989066.398.5617937863599879172.tip-bot2@tip-bot2>
+Message-ID: <170488138781.398.14001450538077237141.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -68,64 +72,270 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/percpu branch of tip:
+The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     de8c6a352131f642b82474abe0cbb5dd26a7e081
-Gitweb:        https://git.kernel.org/tip/de8c6a352131f642b82474abe0cbb5dd26a7e081
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Wed, 13 Dec 2023 16:03:15 +01:00
+Commit-ID:     0911b8c52c4d68c57d02f172daa55a42bce703f0
+Gitweb:        https://git.kernel.org/tip/0911b8c52c4d68c57d02f172daa55a42bce703f0
+Author:        Breno Leitao <leitao@debian.org>
+AuthorDate:    Tue, 21 Nov 2023 08:07:37 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 09 Jan 2024 09:39:15 +01:00
+CommitterDate: Wed, 10 Jan 2024 10:52:29 +01:00
 
-x86/percpu: Use %RIP-relative address in untagged_addr()
+x86/bugs: Rename CONFIG_RETHUNK              => CONFIG_MITIGATION_RETHUNK
 
-%RIP-relative addresses are nowadays correctly handled in alternative
-instructions, so remove misleading comment and improve assembly to
-use %RIP-relative address.
+Step 10/10 of the namespace unification of CPU mitigations related Kconfig options.
 
-Also, explicitly using %gs: prefix will segfault for non-SMP builds.
-Use macros from percpu.h which will DTRT with segment prefix register
-as far as SMP/non-SMP builds are concerned.
+[ mingo: Added one more case. ]
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Suggested-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradaed.org>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/all/20231213150357.5942-1-ubizjak%40gmail.com
+Link: https://lore.kernel.org/r/20231121160740.1249350-11-leitao@debian.org
 ---
- arch/x86/include/asm/uaccess_64.h | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ arch/x86/Kconfig                               | 8 ++++----
+ arch/x86/Makefile                              | 2 +-
+ arch/x86/configs/i386_defconfig                | 2 +-
+ arch/x86/include/asm/disabled-features.h       | 2 +-
+ arch/x86/include/asm/linkage.h                 | 4 ++--
+ arch/x86/include/asm/nospec-branch.h           | 4 ++--
+ arch/x86/include/asm/static_call.h             | 2 +-
+ arch/x86/kernel/alternative.c                  | 4 ++--
+ arch/x86/kernel/static_call.c                  | 2 +-
+ arch/x86/lib/retpoline.S                       | 4 ++--
+ scripts/Makefile.lib                           | 2 +-
+ tools/arch/x86/include/asm/disabled-features.h | 2 +-
+ tools/objtool/check.c                          | 2 +-
+ 13 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
-index f2c02e4..01455c0 100644
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -11,6 +11,7 @@
- #include <asm/alternative.h>
- #include <asm/cpufeatures.h>
- #include <asm/page.h>
-+#include <asm/percpu.h>
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index a2743b7..0a9fea3 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2462,7 +2462,7 @@ config FINEIBT
  
- #ifdef CONFIG_ADDRESS_MASKING
- /*
-@@ -18,14 +19,10 @@
+ config HAVE_CALL_THUNKS
+ 	def_bool y
+-	depends on CC_HAS_ENTRY_PADDING && RETHUNK && OBJTOOL
++	depends on CC_HAS_ENTRY_PADDING && MITIGATION_RETHUNK && OBJTOOL
+ 
+ config CALL_THUNKS
+ 	def_bool n
+@@ -2505,7 +2505,7 @@ config MITIGATION_RETPOLINE
+ 	  branches. Requires a compiler with -mindirect-branch=thunk-extern
+ 	  support for full protection. The kernel may run slower.
+ 
+-config RETHUNK
++config MITIGATION_RETHUNK
+ 	bool "Enable return-thunks"
+ 	depends on MITIGATION_RETPOLINE && CC_HAS_RETURN_THUNK
+ 	select OBJTOOL if HAVE_OBJTOOL
+@@ -2518,7 +2518,7 @@ config RETHUNK
+ 
+ config MITIGATION_UNRET_ENTRY
+ 	bool "Enable UNRET on kernel entry"
+-	depends on CPU_SUP_AMD && RETHUNK && X86_64
++	depends on CPU_SUP_AMD && MITIGATION_RETHUNK && X86_64
+ 	default y
+ 	help
+ 	  Compile the kernel with support for the retbleed=unret mitigation.
+@@ -2572,7 +2572,7 @@ config MITIGATION_IBRS_ENTRY
+ 
+ config MITIGATION_SRSO
+ 	bool "Mitigate speculative RAS overflow on AMD"
+-	depends on CPU_SUP_AMD && X86_64 && RETHUNK
++	depends on CPU_SUP_AMD && X86_64 && MITIGATION_RETHUNK
+ 	default y
+ 	help
+ 	  Enable the SRSO mitigation needed on AMD Zen1-4 machines.
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 5ce8c30..ba046af 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -22,7 +22,7 @@ RETPOLINE_VDSO_CFLAGS	:= -mretpoline
+ endif
+ RETPOLINE_CFLAGS	+= $(call cc-option,-mindirect-branch-cs-prefix)
+ 
+-ifdef CONFIG_RETHUNK
++ifdef CONFIG_MITIGATION_RETHUNK
+ RETHUNK_CFLAGS		:= -mfunction-return=thunk-extern
+ RETPOLINE_CFLAGS	+= $(RETHUNK_CFLAGS)
+ endif
+diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
+index 73abbbd..9180113 100644
+--- a/arch/x86/configs/i386_defconfig
++++ b/arch/x86/configs/i386_defconfig
+@@ -42,7 +42,7 @@ CONFIG_EFI_STUB=y
+ CONFIG_HZ_1000=y
+ CONFIG_KEXEC=y
+ CONFIG_CRASH_DUMP=y
+-# CONFIG_RETHUNK is not set
++# CONFIG_MITIGATION_RETHUNK is not set
+ CONFIG_HIBERNATION=y
+ CONFIG_PM_DEBUG=y
+ CONFIG_PM_TRACE_RTC=y
+diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
+index 151f0d5..36d0c1e 100644
+--- a/arch/x86/include/asm/disabled-features.h
++++ b/arch/x86/include/asm/disabled-features.h
+@@ -57,7 +57,7 @@
+ 				 (1 << (X86_FEATURE_RETPOLINE_LFENCE & 31)))
+ #endif
+ 
+-#ifdef CONFIG_RETHUNK
++#ifdef CONFIG_MITIGATION_RETHUNK
+ # define DISABLE_RETHUNK	0
+ #else
+ # define DISABLE_RETHUNK	(1 << (X86_FEATURE_RETHUNK & 31))
+diff --git a/arch/x86/include/asm/linkage.h b/arch/x86/include/asm/linkage.h
+index 09e2d02..dc31b13 100644
+--- a/arch/x86/include/asm/linkage.h
++++ b/arch/x86/include/asm/linkage.h
+@@ -40,7 +40,7 @@
+ 
+ #ifdef __ASSEMBLY__
+ 
+-#if defined(CONFIG_RETHUNK) && !defined(__DISABLE_EXPORTS) && !defined(BUILD_VDSO)
++#if defined(CONFIG_MITIGATION_RETHUNK) && !defined(__DISABLE_EXPORTS) && !defined(BUILD_VDSO)
+ #define RET	jmp __x86_return_thunk
+ #else /* CONFIG_MITIGATION_RETPOLINE */
+ #ifdef CONFIG_MITIGATION_SLS
+@@ -52,7 +52,7 @@
+ 
+ #else /* __ASSEMBLY__ */
+ 
+-#if defined(CONFIG_RETHUNK) && !defined(__DISABLE_EXPORTS) && !defined(BUILD_VDSO)
++#if defined(CONFIG_MITIGATION_RETHUNK) && !defined(__DISABLE_EXPORTS) && !defined(BUILD_VDSO)
+ #define ASM_RET	"jmp __x86_return_thunk\n\t"
+ #else /* CONFIG_MITIGATION_RETPOLINE */
+ #ifdef CONFIG_MITIGATION_SLS
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 94c7083..2c0679e 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -289,7 +289,7 @@
+  * where we have a stack but before any RET instruction.
   */
- static inline unsigned long __untagged_addr(unsigned long addr)
- {
--	/*
--	 * Refer tlbstate_untag_mask directly to avoid RIP-relative relocation
--	 * in alternative instructions. The relocation gets wrong when gets
--	 * copied to the target place.
--	 */
- 	asm (ALTERNATIVE("",
--			 "and %%gs:tlbstate_untag_mask, %[addr]\n\t", X86_FEATURE_LAM)
--	     : [addr] "+r" (addr) : "m" (tlbstate_untag_mask));
-+			 "and " __percpu_arg([mask]) ", %[addr]", X86_FEATURE_LAM)
-+	     : [addr] "+r" (addr)
-+	     : [mask] "m" (__my_cpu_var(tlbstate_untag_mask)));
+ .macro __UNTRAIN_RET ibpb_feature, call_depth_insns
+-#if defined(CONFIG_RETHUNK) || defined(CONFIG_MITIGATION_IBPB_ENTRY)
++#if defined(CONFIG_MITIGATION_RETHUNK) || defined(CONFIG_MITIGATION_IBPB_ENTRY)
+ 	VALIDATE_UNRET_END
+ 	ALTERNATIVE_3 "",						\
+ 		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+@@ -328,7 +328,7 @@ extern retpoline_thunk_t __x86_indirect_thunk_array[];
+ extern retpoline_thunk_t __x86_indirect_call_thunk_array[];
+ extern retpoline_thunk_t __x86_indirect_jump_thunk_array[];
  
- 	return addr;
+-#ifdef CONFIG_RETHUNK
++#ifdef CONFIG_MITIGATION_RETHUNK
+ extern void __x86_return_thunk(void);
+ #else
+ static inline void __x86_return_thunk(void) {}
+diff --git a/arch/x86/include/asm/static_call.h b/arch/x86/include/asm/static_call.h
+index 343b722..125c407 100644
+--- a/arch/x86/include/asm/static_call.h
++++ b/arch/x86/include/asm/static_call.h
+@@ -46,7 +46,7 @@
+ #define ARCH_DEFINE_STATIC_CALL_TRAMP(name, func)			\
+ 	__ARCH_DEFINE_STATIC_CALL_TRAMP(name, ".byte 0xe9; .long " #func " - (. + 4)")
+ 
+-#ifdef CONFIG_RETHUNK
++#ifdef CONFIG_MITIGATION_RETHUNK
+ #define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)			\
+ 	__ARCH_DEFINE_STATIC_CALL_TRAMP(name, "jmp __x86_return_thunk")
+ #else
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index f5442d0..df91abe 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -769,7 +769,7 @@ void __init_or_module noinline apply_retpolines(s32 *start, s32 *end)
+ 	}
  }
+ 
+-#ifdef CONFIG_RETHUNK
++#ifdef CONFIG_MITIGATION_RETHUNK
+ 
+ /*
+  * Rewrite the compiler generated return thunk tail-calls.
+@@ -842,7 +842,7 @@ void __init_or_module noinline apply_returns(s32 *start, s32 *end)
+ }
+ #else
+ void __init_or_module noinline apply_returns(s32 *start, s32 *end) { }
+-#endif /* CONFIG_RETHUNK */
++#endif /* CONFIG_MITIGATION_RETHUNK */
+ 
+ #else /* !CONFIG_MITIGATION_RETPOLINE || !CONFIG_OBJTOOL */
+ 
+diff --git a/arch/x86/kernel/static_call.c b/arch/x86/kernel/static_call.c
+index 77a9316..4eefaac 100644
+--- a/arch/x86/kernel/static_call.c
++++ b/arch/x86/kernel/static_call.c
+@@ -172,7 +172,7 @@ void arch_static_call_transform(void *site, void *tramp, void *func, bool tail)
+ }
+ EXPORT_SYMBOL_GPL(arch_static_call_transform);
+ 
+-#ifdef CONFIG_RETHUNK
++#ifdef CONFIG_MITIGATION_RETHUNK
+ /*
+  * This is called by apply_returns() to fix up static call trampolines,
+  * specifically ARCH_DEFINE_STATIC_CALL_NULL_TRAMP which is recorded as
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index 67b52cb..0045153 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -127,7 +127,7 @@ SYM_CODE_END(__x86_indirect_jump_thunk_array)
+ #undef GEN
+ #endif
+ 
+-#ifdef CONFIG_RETHUNK
++#ifdef CONFIG_MITIGATION_RETHUNK
+ 
+ /*
+  * Be careful here: that label cannot really be removed because in
+@@ -386,4 +386,4 @@ SYM_CODE_START(__x86_return_thunk)
+ SYM_CODE_END(__x86_return_thunk)
+ EXPORT_SYMBOL(__x86_return_thunk)
+ 
+-#endif /* CONFIG_RETHUNK */
++#endif /* CONFIG_MITIGATION_RETHUNK */
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index b272ca6..c3f4cac 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -263,7 +263,7 @@ objtool-args-$(CONFIG_HAVE_OBJTOOL_NOP_MCOUNT)		+= --mnop
+ endif
+ objtool-args-$(CONFIG_UNWINDER_ORC)			+= --orc
+ objtool-args-$(CONFIG_MITIGATION_RETPOLINE)		+= --retpoline
+-objtool-args-$(CONFIG_RETHUNK)				+= --rethunk
++objtool-args-$(CONFIG_MITIGATION_RETHUNK)		+= --rethunk
+ objtool-args-$(CONFIG_MITIGATION_SLS)			+= --sls
+ objtool-args-$(CONFIG_STACK_VALIDATION)			+= --stackval
+ objtool-args-$(CONFIG_HAVE_STATIC_CALL_INLINE)		+= --static-call
+diff --git a/tools/arch/x86/include/asm/disabled-features.h b/tools/arch/x86/include/asm/disabled-features.h
+index 151f0d5..36d0c1e 100644
+--- a/tools/arch/x86/include/asm/disabled-features.h
++++ b/tools/arch/x86/include/asm/disabled-features.h
+@@ -57,7 +57,7 @@
+ 				 (1 << (X86_FEATURE_RETPOLINE_LFENCE & 31)))
+ #endif
+ 
+-#ifdef CONFIG_RETHUNK
++#ifdef CONFIG_MITIGATION_RETHUNK
+ # define DISABLE_RETHUNK	0
+ #else
+ # define DISABLE_RETHUNK	(1 << (X86_FEATURE_RETHUNK & 31))
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 84067f0..8440b7b 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3980,7 +3980,7 @@ static int validate_retpoline(struct objtool_file *file)
+ 
+ 		if (insn->type == INSN_RETURN) {
+ 			if (opts.rethunk) {
+-				WARN_INSN(insn, "'naked' return found in RETHUNK build");
++				WARN_INSN(insn, "'naked' return found in MITIGATION_RETHUNK build");
+ 			} else
+ 				continue;
+ 		} else {
 
