@@ -1,57 +1,57 @@
-Return-Path: <linux-tip-commits+bounces-116-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-117-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA63082AD28
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Jan 2024 12:14:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D2482B64B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Jan 2024 21:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F29E71C21A40
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Jan 2024 11:14:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01C1B1F212EE
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Jan 2024 20:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF53154AA;
-	Thu, 11 Jan 2024 11:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96055786A;
+	Thu, 11 Jan 2024 20:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aoo04vf5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K81EZiqd"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="A+Junh4Q";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jB2On499"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E00154A7;
-	Thu, 11 Jan 2024 11:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC2D56759;
+	Thu, 11 Jan 2024 20:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 11 Jan 2024 11:14:27 -0000
+Date: Thu, 11 Jan 2024 20:55:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1704971669;
+	s=2020; t=1705006553;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YgWimBfCghmvTyej1VSylfdgr36MT18JiOhaIZ+vP9g=;
-	b=aoo04vf5YQiEhfoKRfSHf1cStpanEZXiF4LSOT/E1/8Jv6iBnJgWnJgCBfRg8PzTOOauZG
-	WSpvJU6/k/tcQIH5P8NeFQlDketRv6yDJZWzij+gulViqdqwRJv4O/czMQcZ+NHdD3qB4A
-	9HnRNiz1+PjtjJ5d8PIeT/QC6EyTsNWTDA4Ixi3M7TLBr8hSDTH4pWgjcu6Axg4WMbMM8W
-	UMJiQS/L9hev6z7c64MSTtxlkbflE+4yJNZgF1MawippJHcjlP65eHjGzbIWBKUxyVssAQ
-	Cn/Wh3iOcjpKnkFYHGlKll+2yFJPUdHcCazTuIe60lCkJOym8iAuUQYgKD19Fw==
+	bh=Ew8ynsOxol/v9waaBF0d1CRM/05/wdsVBj8lJ/MPY0Q=;
+	b=A+Junh4Q3BcCHInz5PMKRBEjtnWHBjd6xRBALJkrRhej8Oh9t6VBK/jMb9QNvhQndPgr+R
+	su6lnf+nOkSQjshbGMhgzX7X454HiSyROkeGb8fgNsxmxyCTSdyoqkf+a2i1MeEWEVrgZq
+	E/PRAL16GZJ8TBy1FA01iU8GTtfe76V/aDd/lW1bWPKcSxYjqYEMMJol6Hn2lBvCXq1gcA
+	/ybAor7Lt5fkzjX9BHAsbrFjCRpeV2G1sfFbVjDh4RXCeIxMB5anwo1XFvy52ckSiwKJaa
+	IfgoG/ii4nkc5g7rqHmds7/RZV1aO/tYhF9767MF5CEYejveHlMIviwpT+Arqw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1704971669;
+	s=2020e; t=1705006553;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YgWimBfCghmvTyej1VSylfdgr36MT18JiOhaIZ+vP9g=;
-	b=K81EZiqd+fPowBHzEVvvhVnfAP54ONL3MX6uI4gZ1CLLNbbj6Bw7TgyXqDLYQPC88FW9Yq
-	wMd+MyOhNLbBrKAw==
+	bh=Ew8ynsOxol/v9waaBF0d1CRM/05/wdsVBj8lJ/MPY0Q=;
+	b=jB2On4992/JiFaRuG5RQErm0zfbUU8wG9g7X3AjAPBb/e1539vHJr4Le7j5XQV3zfJfQ56
+	93ywwGMKSRiqjZCg==
 From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject: [tip: sched/urgent] Revert "sched/cpufreq: Rework schedutil governor
- performance estimation" and dependent commits
+ performance estimation" and dependent commit
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  Ingo Molnar <mingo@kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
@@ -65,7 +65,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170497166812.398.7952345082738260965.tip-bot2@tip-bot2>
+Message-ID: <170500655188.398.4921277065850419418.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -75,18 +75,17 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     250ce3c1169743f3575cc5937fccd72380052795
-Gitweb:        https://git.kernel.org/tip/250ce3c1169743f3575cc5937fccd72380052795
+Commit-ID:     60ee1706bd11669b0530efb4e92526854b9a6364
+Gitweb:        https://git.kernel.org/tip/60ee1706bd11669b0530efb4e92526854b9a6364
 Author:        Ingo Molnar <mingo@kernel.org>
 AuthorDate:    Thu, 11 Jan 2024 11:45:17 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 11 Jan 2024 11:51:10 +01:00
+CommitterDate: Thu, 11 Jan 2024 21:42:42 +01:00
 
-Revert "sched/cpufreq: Rework schedutil governor performance estimation" and dependent commits
+Revert "sched/cpufreq: Rework schedutil governor performance estimation" and dependent commit
 
 This reverts the following commits:
 
-  b3edde44e5d450 ("cpufreq/schedutil: Use a fixed reference frequency")
   f12560779f9d73 ("sched/cpufreq: Rework iowait boost")
   9c0b4bb7f6303c ("sched/cpufreq: Rework schedutil governor performance estimation")
 
@@ -96,7 +95,7 @@ kernel build took from 22 to 44 seconds (and can be similarly
 measured in full builds as well) - and bisected it back to 9c0b4bb7f6303c.
 
 Until we have a proper fix, revert the broken commit and its
-dependent commits.
+dependent commit.
 
 Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
 Bisected-by: Linus Torvalds <torvalds@linux-foundation.org>
@@ -106,10 +105,10 @@ Link: https://lore.kernel.org/r/CAHk-=wgWcYX2oXKtgvNN2LLDXP7kXkbo-xTfumEjmPbjSer
 ---
  include/linux/energy_model.h     |  1 +-
  kernel/sched/core.c              | 90 +++++++++++++++++--------------
- kernel/sched/cpufreq_schedutil.c | 90 +++++++++----------------------
+ kernel/sched/cpufreq_schedutil.c | 64 ++++++++--------------
  kernel/sched/fair.c              | 22 +-------
  kernel/sched/sched.h             | 84 ++++++++++++++++++++++++++---
- 5 files changed, 160 insertions(+), 127 deletions(-)
+ 5 files changed, 158 insertions(+), 103 deletions(-)
 
 diff --git a/include/linux/energy_model.h b/include/linux/energy_model.h
 index 88d91e0..c19e7ef 100644
@@ -124,10 +123,10 @@ index 88d91e0..c19e7ef 100644
  	freq = map_util_freq(max_util, ref_freq, scale_cpu);
  
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index db4be49..2de77a6 100644
+index 9116bcc..038eeaf 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -7467,13 +7467,18 @@ int sched_core_idle_cpu(int cpu)
+@@ -7468,13 +7468,18 @@ int sched_core_idle_cpu(int cpu)
   * required to meet deadlines.
   */
  unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
@@ -150,7 +149,7 @@ index db4be49..2de77a6 100644
  
  	/*
  	 * Early check to see if IRQ/steal time saturates the CPU, can be
-@@ -7481,49 +7486,45 @@ unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
+@@ -7482,49 +7487,45 @@ unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
  	 * update_irq_load_avg().
  	 */
  	irq = cpu_util_irq(rq);
@@ -227,7 +226,7 @@ index db4be49..2de77a6 100644
  
  	/*
  	 * There is still idle time; further improve the number by using the
-@@ -7534,15 +7535,28 @@ unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
+@@ -7535,15 +7536,28 @@ unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
  	 *   U' = irq + --------- * U
  	 *                 max
  	 */
@@ -260,7 +259,7 @@ index db4be49..2de77a6 100644
  #endif /* CONFIG_SMP */
  
 diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 95c3c09..5888176 100644
+index 95c3c09..5f8729c 100644
 --- a/kernel/sched/cpufreq_schedutil.c
 +++ b/kernel/sched/cpufreq_schedutil.c
 @@ -47,7 +47,7 @@ struct sugov_cpu {
@@ -272,62 +271,31 @@ index 95c3c09..5888176 100644
  
  	/* The field below is for single-CPU policies only: */
  #ifdef CONFIG_NO_HZ_COMMON
-@@ -115,28 +115,6 @@ static void sugov_deferred_update(struct sugov_policy *sg_policy)
- }
- 
- /**
-- * get_capacity_ref_freq - get the reference frequency that has been used to
-- * correlate frequency and compute capacity for a given cpufreq policy. We use
-- * the CPU managing it for the arch_scale_freq_ref() call in the function.
-- * @policy: the cpufreq policy of the CPU in question.
-- *
-- * Return: the reference CPU frequency to compute a capacity.
-- */
--static __always_inline
--unsigned long get_capacity_ref_freq(struct cpufreq_policy *policy)
--{
--	unsigned int freq = arch_scale_freq_ref(policy->cpu);
--
--	if (freq)
--		return freq;
--
--	if (arch_scale_freq_invariant())
--		return policy->cpuinfo.max_freq;
--
--	return policy->cur;
--}
--
--/**
-  * get_next_freq - Compute a new frequency for a given cpufreq policy.
-  * @sg_policy: schedutil policy object to compute the new frequency for.
-  * @util: Current CPU utilization.
-@@ -162,9 +140,10 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
- 				  unsigned long util, unsigned long max)
- {
+@@ -164,6 +164,7 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
  	struct cpufreq_policy *policy = sg_policy->policy;
--	unsigned int freq;
-+	unsigned int freq = arch_scale_freq_invariant() ?
-+				policy->cpuinfo.max_freq : policy->cur;
+ 	unsigned int freq;
  
--	freq = get_capacity_ref_freq(policy);
 +	util = map_util_perf(util);
+ 	freq = get_capacity_ref_freq(policy);
  	freq = map_util_freq(util, freq, max);
  
- 	if (freq == sg_policy->cached_raw_freq && !sg_policy->need_freq_update)
-@@ -174,31 +153,14 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
+@@ -174,31 +175,14 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
  	return cpufreq_driver_resolve_freq(policy, freq);
  }
  
 -unsigned long sugov_effective_cpu_perf(int cpu, unsigned long actual,
 -				 unsigned long min,
 -				 unsigned long max)
--{
++static void sugov_get_util(struct sugov_cpu *sg_cpu)
+ {
 -	/* Add dvfs headroom to actual utilization */
 -	actual = map_util_perf(actual);
 -	/* Actually we don't need to target the max performance */
 -	if (actual < max)
 -		max = actual;
--
++	unsigned long util = cpu_util_cfs_boost(sg_cpu->cpu);
++	struct rq *rq = cpu_rq(sg_cpu->cpu);
+ 
 -	/*
 -	 * Ensure at least minimum performance while providing more compute
 -	 * capacity when possible.
@@ -336,12 +304,9 @@ index 95c3c09..5888176 100644
 -}
 -
 -static void sugov_get_util(struct sugov_cpu *sg_cpu, unsigned long boost)
-+static void sugov_get_util(struct sugov_cpu *sg_cpu)
- {
+-{
 -	unsigned long min, max, util = cpu_util_cfs_boost(sg_cpu->cpu);
-+	unsigned long util = cpu_util_cfs_boost(sg_cpu->cpu);
-+	struct rq *rq = cpu_rq(sg_cpu->cpu);
- 
+-
 -	util = effective_cpu_util(sg_cpu->cpu, util, &min, &max);
 -	util = max(util, boost);
 -	sg_cpu->bw_min = min;
@@ -352,7 +317,7 @@ index 95c3c09..5888176 100644
  }
  
  /**
-@@ -289,16 +251,18 @@ static void sugov_iowait_boost(struct sugov_cpu *sg_cpu, u64 time,
+@@ -289,16 +273,18 @@ static void sugov_iowait_boost(struct sugov_cpu *sg_cpu, u64 time,
   * This mechanism is designed to boost high frequently IO waiting tasks, while
   * being more conservative on tasks which does sporadic IO operations.
   */
@@ -374,7 +339,7 @@ index 95c3c09..5888176 100644
  
  	if (!sg_cpu->iowait_boost_pending) {
  		/*
-@@ -307,7 +271,7 @@ static unsigned long sugov_iowait_apply(struct sugov_cpu *sg_cpu, u64 time,
+@@ -307,7 +293,7 @@ static unsigned long sugov_iowait_apply(struct sugov_cpu *sg_cpu, u64 time,
  		sg_cpu->iowait_boost >>= 1;
  		if (sg_cpu->iowait_boost < IOWAIT_BOOST_MIN) {
  			sg_cpu->iowait_boost = 0;
@@ -383,7 +348,7 @@ index 95c3c09..5888176 100644
  		}
  	}
  
-@@ -317,7 +281,10 @@ static unsigned long sugov_iowait_apply(struct sugov_cpu *sg_cpu, u64 time,
+@@ -317,7 +303,10 @@ static unsigned long sugov_iowait_apply(struct sugov_cpu *sg_cpu, u64 time,
  	 * sg_cpu->util is already in capacity scale; convert iowait_boost
  	 * into the same scale so we can compare.
  	 */
@@ -395,7 +360,7 @@ index 95c3c09..5888176 100644
  }
  
  #ifdef CONFIG_NO_HZ_COMMON
-@@ -339,7 +306,7 @@ static inline bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu) { return false; }
+@@ -339,7 +328,7 @@ static inline bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu) { return false; }
   */
  static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu)
  {
@@ -404,7 +369,7 @@ index 95c3c09..5888176 100644
  		sg_cpu->sg_policy->limits_changed = true;
  }
  
-@@ -347,8 +314,6 @@ static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
+@@ -347,8 +336,6 @@ static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
  					      u64 time, unsigned long max_cap,
  					      unsigned int flags)
  {
@@ -413,7 +378,7 @@ index 95c3c09..5888176 100644
  	sugov_iowait_boost(sg_cpu, time, flags);
  	sg_cpu->last_update = time;
  
-@@ -357,8 +322,8 @@ static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
+@@ -357,8 +344,8 @@ static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
  	if (!sugov_should_update_freq(sg_cpu->sg_policy, time))
  		return false;
  
@@ -424,7 +389,7 @@ index 95c3c09..5888176 100644
  
  	return true;
  }
-@@ -442,8 +407,8 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
+@@ -442,8 +429,8 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
  	    sugov_cpu_is_busy(sg_cpu) && sg_cpu->util < prev_util)
  		sg_cpu->util = prev_util;
  
@@ -435,7 +400,7 @@ index 95c3c09..5888176 100644
  
  	sg_cpu->sg_policy->last_freq_update_time = time;
  }
-@@ -459,10 +424,9 @@ static unsigned int sugov_next_freq_shared(struct sugov_cpu *sg_cpu, u64 time)
+@@ -459,10 +446,9 @@ static unsigned int sugov_next_freq_shared(struct sugov_cpu *sg_cpu, u64 time)
  
  	for_each_cpu(j, policy->cpus) {
  		struct sugov_cpu *j_sg_cpu = &per_cpu(sugov_cpu, j);
@@ -449,7 +414,7 @@ index 95c3c09..5888176 100644
  		util = max(j_sg_cpu->util, util);
  	}
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index b803030..f43021f 100644
+index 533547e..f2bb836 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
 @@ -7820,7 +7820,7 @@ static inline void eenv_pd_busy_time(struct energy_env *eenv,
@@ -496,10 +461,10 @@ index b803030..f43021f 100644
  	}
  
 diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index e58a54b..8a70d51 100644
+index 001fe04..eb7e07a 100644
 --- a/kernel/sched/sched.h
 +++ b/kernel/sched/sched.h
-@@ -2994,14 +2994,24 @@ static inline void cpufreq_update_util(struct rq *rq, unsigned int flags) {}
+@@ -3005,14 +3005,24 @@ static inline void cpufreq_update_util(struct rq *rq, unsigned int flags) {}
  #endif
  
  #ifdef CONFIG_SMP
@@ -531,7 +496,7 @@ index e58a54b..8a70d51 100644
  
  /*
   * Verify the fitness of task @p to run on @cpu taking into account the
-@@ -3058,6 +3068,59 @@ static inline bool uclamp_rq_is_idle(struct rq *rq)
+@@ -3069,6 +3079,59 @@ static inline bool uclamp_rq_is_idle(struct rq *rq)
  	return rq->uclamp_flags & UCLAMP_FLAG_IDLE;
  }
  
@@ -591,7 +556,7 @@ index e58a54b..8a70d51 100644
  /* Is the rq being capped/throttled by uclamp_max? */
  static inline bool uclamp_rq_is_capped(struct rq *rq)
  {
-@@ -3095,6 +3158,13 @@ static inline unsigned long uclamp_eff_value(struct task_struct *p,
+@@ -3106,6 +3169,13 @@ static inline unsigned long uclamp_eff_value(struct task_struct *p,
  	return SCHED_CAPACITY_SCALE;
  }
  
