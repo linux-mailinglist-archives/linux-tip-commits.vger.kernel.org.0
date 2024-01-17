@@ -1,137 +1,120 @@
-Return-Path: <linux-tip-commits+bounces-119-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-120-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB02382EC8C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jan 2024 11:08:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88DC282FFF3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Jan 2024 06:52:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79EBC1F2344C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Jan 2024 10:08:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A67851C22BB8
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Jan 2024 05:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC65134B7;
-	Tue, 16 Jan 2024 10:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C23079CC;
+	Wed, 17 Jan 2024 05:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Iin3idrR";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IP5KSt3E"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=utah.edu header.i=@utah.edu header.b="i2+RB0Uk"
+Received: from ipo4.cc.utah.edu (ipo4.cc.utah.edu [155.97.144.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26E6134A3;
-	Tue, 16 Jan 2024 10:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 16 Jan 2024 10:08:20 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1705399701;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/Awifqxg6eOBMIPHwm/f2jqMJMZMe9tEsWAtoE0BA5w=;
-	b=Iin3idrR5MZ/nYHs+cYEsV+nEIlY6DHvv2qPF2ngONsM98z0snV5Y2/CfdNjbcpNLu480W
-	qdntxcOkNVC5Yhx6bGrnqpSRO2E6arjUNGDhL2AfTnu30764nYzgnBEpWRLuQDNc/xWGzT
-	mBMjciieIvAaxgrTgxajtDziN69N7D2DiOKWF3WqdN0ComW2ucwVuhgVvSEYFLnmfYC4+O
-	q8NY/vbl3qBPeGZfBi9QZKqKSsc1weB0RrnQIfIvxy77GozjPoC9cNbUjYkJ/Pscd4k4JV
-	jv/5AryD7oG8OCJqCLA7zHi3scL5x9ad0FbLldIX63omB9BJ8pP0qhmvXkqHWA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1705399701;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/Awifqxg6eOBMIPHwm/f2jqMJMZMe9tEsWAtoE0BA5w=;
-	b=IP5KSt3ELERRE2YEvC1Ydl8wwWpVpWNiLC0dT6a1jo7G/ywSa/YSKcO5bWzk1jSmF4zA4o
-	4VzZtEmakW8noeDA==
-From: "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30EB79C2
+	for <linux-tip-commits@vger.kernel.org>; Wed, 17 Jan 2024 05:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.97.144.24
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705470754; cv=none; b=uiOMxS+jj7VJKXpMRQx6KPhAfsDDH7ne623LspRbGTvihMRzyC9dyul2JdT7uVo/lEI7iGdGFiYLNv6Hx+9XFAyrJKApG3bg/WKpA5cg6Sk6jnUp9qlgwMTgLdTi6ljKZ9BcwIGR661EUyitW9GQEKVYHsEJsPufyiIWHgM0r4c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705470754; c=relaxed/simple;
+	bh=Rc5afSePQkgg2hpaGIpxB75jFXM3f1FkyY83dDyDgew=;
+	h=DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:X-IronPort-AV:
+	 Received:Received:Subject:From:Reply-To:In-Reply-To:References:
+	 Message-ID:X-RT-Loop-Prevention:X-RT-Ticket:X-Managed-BY:
+	 X-RT-Originator:Auto-Submitted:To:Content-Type:
+	 X-RT-Original-Encoding:Precedence:Date:MIME-Version:
+	 Content-Transfer-Encoding; b=SRfvlfWKd1FD0168yXJCutzH/ekpMtjfwTphPnyZ9RTK/Ib7hpYleYsDvsl4JO8Vv0ivbra76WngvqMiiPoTT+XBsUNSdyAvzzYrkN2D5GuCvja07ww9VM0L7ZvwSE69kugA8MFY4hEqG1ZzcDbrZsCaGLVMhjfTvA3havPnkag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lists.nhmu.utah.edu; spf=none smtp.mailfrom=umnh.utah.edu; dkim=pass (2048-bit key) header.d=utah.edu header.i=@utah.edu header.b=i2+RB0Uk; arc=none smtp.client-ip=155.97.144.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lists.nhmu.utah.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=umnh.utah.edu
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=utah.edu; i=@utah.edu; q=dns/txt; s=UniversityOfUtah;
+  t=1705470753; x=1737006753;
+  h=subject:from:reply-to:in-reply-to:references:message-id:
+   to:date:mime-version:content-transfer-encoding;
+  bh=Rc5afSePQkgg2hpaGIpxB75jFXM3f1FkyY83dDyDgew=;
+  b=i2+RB0UkwtyqSjJ22vw6zQD57DIwCzBnSCyDVBborcwmcy6rHYObvbkO
+   0LnhTdlN3iB0ngfUz8TUKzRWkjm0BrODqEvUgQeeKgYyi2oBxTXok96a7
+   TwsB/9L+xhrSi7lIheos3RpwvznK+2ens2KKwa0csmR7AS++0VraTMaqc
+   jUsRgoSiOjYBc1fyfLjhprD0VjADuq2kaXrmTsAhWWBOtHTKHgf8U6fqG
+   5jhbWNdomt1jaNUPHnwbqn0s3l9/RYLD2cwm9bL039qiIIo55mroNqE/K
+   bfkq13XRE3xhF3iFBuSmYZB0/AjCg3MzrhEwSdAwhExU/RudAQbaDkNO6
+   A==;
+X-CSE-ConnectionGUID: WgsfoORLT8G2yUKKibiDEQ==
+X-CSE-MsgGUID: zlaVovjgSxyZLXmhAe8EyA==
+X-IronPort-AV: E=Sophos;i="6.05,200,1701154800"; 
+   d="scan'208";a="165836124"
+Received: from rt.umnh.utah.edu (HELO nhmu-rt) ([10.79.5.165])
+  by ipo4smtp.cc.utah.edu with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 22:51:25 -0700
+Received: from www-data by nhmu-rt with local (Exim 4.89)
+	(envelope-from <www-data@rt.umnh.utah.edu>)
+	id 1rPypg-000UIJ-IN
+	for linux-tip-commits@vger.kernel.org; Tue, 16 Jan 2024 22:51:24 -0700
+Subject: [online-sales #84640] AutoReply: Webform submission from: ContactUsForm > Body
+From: "Online Tickets Sales  via RT" <online-sales@lists.nhmu.utah.edu>
+Reply-To: online-sales@lists.nhmu.utah.edu
+In-Reply-To: <l90Ow5ijpAWPEmZJnt3lupkitWYgeoiJ08p6SG6FtZ8@nhmu.utah.edu>
+References: <RT-Ticket-84640@rt.umnh.utah.edu>
+ <l90Ow5ijpAWPEmZJnt3lupkitWYgeoiJ08p6SG6FtZ8@nhmu.utah.edu>
+Message-ID: <rt-4.4.1-3+deb9u4-44181-1705470684-1663.84640-3-0@rt.umnh.utah.edu>
+X-RT-Loop-Prevention: RequestTracker.rt.umnh.utah.edu
+X-RT-Ticket: RequestTracker.rt.umnh.utah.edu #84640
+X-Managed-BY: RT 4.4.1-3+deb9u4 (http://www.bestpractical.com/rt/)
+X-RT-Originator: linux-tip-commits@vger.kernel.org
+Auto-Submitted: auto-replied
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Fix frequency selection for
- non-invariant case
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Wyes Karny <wkarny@gmail.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240114183600.135316-1-vincent.guittot@linaro.org>
-References: <20240114183600.135316-1-vincent.guittot@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+X-RT-Original-Encoding: utf-8
+Precedence: bulk
+Date: Tue, 16 Jan 2024 22:51:24 -0700
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170539970061.398.16662091173685476681.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     e37617c8e53a1f7fcba6d5e1041f4fd8a2425c27
-Gitweb:        https://git.kernel.org/tip/e37617c8e53a1f7fcba6d5e1041f4fd8a2425c27
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Sun, 14 Jan 2024 19:36:00 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 16 Jan 2024 10:41:25 +01:00
+Greetings,
 
-sched/fair: Fix frequency selection for non-invariant case
+This message has been automatically generated in response to the
+creation of a trouble ticket regarding:
+	"Webform submission from: ContactUsForm > Body", 
+a summary of which appears below.
 
-Linus reported a ~50% performance regression on single-threaded
-workloads on his AMD Ryzen system, and bisected it to:
+There is no need to reply to this message right now.  Your ticket has been
+assigned an ID of [online-sales #84640].
 
-  9c0b4bb7f630 ("sched/cpufreq: Rework schedutil governor performance estimation")
+Please include the string:
 
-When frequency invariance is not enabled, get_capacity_ref_freq(policy)
-is supposed to return the current frequency and the performance margin
-applied by map_util_perf(), enabling the utilization to go above the
-maximum compute capacity and to select a higher frequency than the current one.
+         [online-sales #84640]
 
-After the changes in 9c0b4bb7f630, the performance margin was applied
-earlier in the path to take into account utilization clampings and
-we couldn't get a utilization higher than the maximum compute capacity,
-and the CPU remained 'stuck' at lower frequencies.
+in the subject line of all future correspondence about this issue. To do so, 
+you may reply to this message.
 
-To fix this, we must use a frequency above the current frequency to
-get a chance to select a higher OPP when the current one becomes fully used.
-Apply the same margin and return a frequency 25% higher than the current
-one in order to switch to the next OPP before we fully use the CPU
-at the current one.
+                        Thank you,
+                        online-sales@lists.nhmu.utah.edu
 
-[ mingo: Clarified the changelog. ]
+-------------------------------------------------------------------------
+Submitted on Tue, 01/16/2024 - 22:51
+Submitted by: Anonymous
 
-Fixes: 9c0b4bb7f630 ("sched/cpufreq: Rework schedutil governor performance estimation")
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Bisected-by: Linus Torvalds <torvalds@linux-foundation.org>
-Reported-by: Wyes Karny <wkarny@gmail.com>
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Wyes Karny <wkarny@gmail.com>
-Link: https://lore.kernel.org/r/20240114183600.135316-1-vincent.guittot@linaro.org
----
- kernel/sched/cpufreq_schedutil.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Submitted values are:
+Your Name: Pladiago
+Your E-mail Address: linux-tip-commits@vger.kernel.org
+Subject: Yearning for Your Love and Closeness
+Message:
+Our Communication Needs Improvement 
+My heart beats in harmony with your love. 
+Whenever you can, might you check out my page through this link: https://tinyurl.com/yl687co3#J11w0R   I've shared some new photos and updates from recent events there. It would be wonderful to catch up and share our experiences.
 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 95c3c09..eece624 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -133,7 +133,11 @@ unsigned long get_capacity_ref_freq(struct cpufreq_policy *policy)
- 	if (arch_scale_freq_invariant())
- 		return policy->cpuinfo.max_freq;
- 
--	return policy->cur;
-+	/*
-+	 * Apply a 25% margin so that we select a higher frequency than
-+	 * the current one before the CPU is fully busy:
-+	 */
-+	return policy->cur + (policy->cur >> 2);
- }
- 
- /**
+
 
