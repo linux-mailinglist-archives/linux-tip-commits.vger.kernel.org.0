@@ -1,81 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-127-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-128-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D602831FAA
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Jan 2024 20:24:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A75183295B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Jan 2024 13:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4666128705E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Jan 2024 19:24:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9A68B21DBC
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Jan 2024 12:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0E031753;
-	Thu, 18 Jan 2024 19:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21334F1F8;
+	Fri, 19 Jan 2024 12:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="A/ijTayi";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E/z0jsuu"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HTUXwQsf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5m0FZKR8"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313FD2E832;
-	Thu, 18 Jan 2024 19:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF7A24B5E;
+	Fri, 19 Jan 2024 12:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705605844; cv=none; b=I72QnYFvwmxPPHzu7ju5reqlpKI2M3nm3DiHrjraI7mjCySzTHNN6preicMm69b7E9qsDuUp1L7EF1OL1yjA2DDKSFXqWH2EFrv8nj8tXBjNUd1Omhql+ut15BOc6a5lhx7L6cAI7tDgJhc1w/dtNLgdYb/ZSmOl0jsLzvPMfGY=
+	t=1705666027; cv=none; b=Al+GDUT2bJi+cBTSgVIrPCAUL9pdBEyhemvGoV0ah6Wi81MVxqlpoeeUcmttnPZ2D+VMIBRWXswC/mxcsFbVbSWrhi4hEqb1rKDhgkFJ3vohRGA9MXxIzeg1XaSyNHWzbL2GeYtX3n5RMPDKQpqSRFZPK+kOs7Gw7two3iyXOOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705605844; c=relaxed/simple;
-	bh=wP5Wrn4a/8wi5EeJ3JeICAz0VKsExEbvVLAHP/rqCMI=;
+	s=arc-20240116; t=1705666027; c=relaxed/simple;
+	bh=+29CDlKuajfqGksTzlVhNvMqTuiT8XOUwD2uJoy9moU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=sVrrREcX455HInUqvRCqN7MsflW3WODwa7j/bO73iPUEkFHQnkz+4ayXAGXFjgxfVSdE7LZQE4kdpuxqNenCEThBLzc2ygRccupRV6TxyDBjTaSYs1efOl9ymFo/B5iBgExfvdKCLnKW5OcjY2rvqcvx+mdp55p3FNxBRi1WJU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=A/ijTayi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E/z0jsuu; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=TF2Owndmjz673T1xbRk8xdHkG+8m3yRkBYXOW+2tM/s+B1dSNVQmjOD71hJcmJQwfI5KhpIMw8nUAJt886O/faD5Y6tN3XrJgVKGOuBHFUU0VE1KMznWqXsQNIWiRaBZ3vHAfq6XowEMAgJdg7PyszfW28F38ZXZMp+s3AHxI9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HTUXwQsf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5m0FZKR8; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 18 Jan 2024 19:24:00 -0000
+Date: Fri, 19 Jan 2024 12:06:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1705605840;
+	s=2020; t=1705666017;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tdl2s+9NwYcKnnAd00gG4XMdcYjPnAG0lfCcq8Er7PA=;
-	b=A/ijTayiKu5oQpJFk1UGFjTkz1yRq7dHmGdJVZUBZKW8qIQNzrMGfaMZZJYzWEJZItDTY9
-	zxWYcRysrc6Zxt5j5tYTdraOX7NUaqz7VXqyStrDomPHRK4ohryAfcWE/7SzLw/H99QrAH
-	dK7ik6fIN5XewZCY9JuOHvTBKwo6bTa6Fc6CU4IcnNrdYGXUFk0PMT3Fn4IhJM4/adsJKY
-	s3OAUH0KiZmfg5YkwCGCoxZekZEDHp99pPyjNYQfPhcWZWpqUX3KnUKlNZkOhtGzc4tvSo
-	4xvuPwfaN5cniKRqGgWV9X7z68ojiMPeIReZEdvKdrCzAXfgPJMHfBMcoRkfVw==
+	bh=2+V4QgH1BuYPBrs95fl76vL2gGCoC++TEKPMnLkodhc=;
+	b=HTUXwQsfyAJnn5Sf/f7/aK80qCFKCOjQeWFNrHTdYGc7JbqQelN3bUqTCZyA/N6bVXnvp9
+	0VAMD3j4jQi9EDuNFZikkOuE3zo3SuPSoN/6EmI9+BGY29Vz3Y6y5AR8ss8ueQy7+9Jr+H
+	pGyctxcYZL/MJ/soBon4SNayFc80pefStpTGW1OyNLbKPWbQx+WyiBVt2yoaz4DEfN938p
+	lMJSEKUs1rQi57sZutiX5RX1UTZ0UKTUWab1nRp+KOG6aNCg9Xgz1ZI36SqNQbmtU4VKnu
+	EaUh2UaVuFWCU+Bc9o27HMqCjXM71u1zYpFaPvqBvrmVHd+cGMFC0En1drcNnA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1705605840;
+	s=2020e; t=1705666017;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tdl2s+9NwYcKnnAd00gG4XMdcYjPnAG0lfCcq8Er7PA=;
-	b=E/z0jsuuIFyYPcf/aCIg7WpYaVR75G8fu5swmU9FVJc6wB1VSEFWmGY+OaT43lyYri4Ud1
-	tD3ocGYjvL1q2JAA==
-From: "tip-bot2 for Inochi Amaoto" <tip-bot2@linutronix.de>
+	bh=2+V4QgH1BuYPBrs95fl76vL2gGCoC++TEKPMnLkodhc=;
+	b=5m0FZKR8WWZwfclKJAabjzCBzFO+9HLnmmsSiMxQU334sPOrDND4f+0U3etI0XQjCBnL/h
+	WlHL3RH/8CmQWCAQ==
+From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] dt-bindings: timer: thead,c900-aclint-mtimer:
- separate mtime and mtimecmp regs
-Cc: Inochi Amaoto <inochiama@outlook.com>, Guo Ren <guoren@kernel.org>,
- Conor Dooley <conor.dooley@microchip.com>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
+Subject: [tip: locking/urgent] futex: Prevent the reuse of stale pi_state
+Cc: Jiri Slaby <jirislaby@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3CIA1PR20MB49531ED1BCC00D6B265C2D10BB86A=40IA1PR20MB?=
- =?utf-8?q?4953=2Enamprd20=2Eprod=2Eoutlook=2Ecom=3E?=
-References: =?utf-8?q?=3CIA1PR20MB49531ED1BCC00D6B265C2D10BB86A=40IA1PR20M?=
- =?utf-8?q?B4953=2Enamprd20=2Eprod=2Eoutlook=2Ecom=3E?=
+In-Reply-To: <20240118115451.0TkD_ZhB@linutronix.de>
+References: <20240118115451.0TkD_ZhB@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170560584017.398.2135823212972486075.tip-bot2@tip-bot2>
+Message-ID: <170566601687.398.7239390403231385135.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,80 +80,138 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     b91cf01cf3e63a627b3b65f4284dcf9a4deb80f9
-Gitweb:        https://git.kernel.org/tip/b91cf01cf3e63a627b3b65f4284dcf9a4deb80f9
-Author:        Inochi Amaoto <inochiama@outlook.com>
-AuthorDate:    Mon, 04 Dec 2023 17:51:08 +08:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Wed, 27 Dec 2023 15:37:11 +01:00
+Commit-ID:     e626cb02ee8399fd42c415e542d031d185783903
+Gitweb:        https://git.kernel.org/tip/e626cb02ee8399fd42c415e542d031d185783903
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Thu, 18 Jan 2024 12:54:51 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 19 Jan 2024 12:58:17 +01:00
 
-dt-bindings: timer: thead,c900-aclint-mtimer: separate mtime and mtimecmp regs
+futex: Prevent the reuse of stale pi_state
 
-The timer registers of aclint don't follow the clint layout and can
-be mapped on any different offset. As sg2042 uses separated timer
-and mswi for its clint, it should follow the aclint spec and have
-separated registers.
+Jiri Slaby reported a futex state inconsistency resulting in -EINVAL during
+a lock operation for a PI futex. It requires that the a lock process is
+interrupted by a timeout or signal:
 
-The previous patch introduced a new type of T-HEAD aclint timer which
-has clint timer layout. Although it has the clint timer layout, it
-should follow the aclint spec and uses the separated mtime and mtimecmp
-regs. So a ABI change is needed to make the timer fit the aclint spec.
+  T1 Owns the futex in user space.
 
-To make T-HEAD aclint timer more closer to the aclint spec, use
-regs-names to represent the mtimecmp register, which can avoid hack
-for unsupport mtime register of T-HEAD aclint timer.
+  T2 Tries to acquire the futex in kernel (futex_lock_pi()). Allocates a
+     pi_state and attaches itself to it.
 
-Also, as T-HEAD aclint only supports mtimecmp, it is unnecessary to
-implement the whole aclint spec. To make this binding T-HEAD specific,
-only add reg-name for existed register. For details, see the discussion
-in the last link.
+  T2 Times out and removes its rt_waiter from the rt_mutex. Drops the
+     rtmutex lock and tries to acquire the hash bucket lock to remove
+     the futex_q. The lock is contended and T2 schedules out.
 
-Signed-off-by: Inochi Amaoto <inochiama@outlook.com>
-Fixes: 4734449f7311 ("dt-bindings: timer: Add Sophgo sg2042 CLINT timer")
-Link: https://lists.infradead.org/pipermail/opensbi/2023-October/005693.html
-Link: https://github.com/riscv/riscv-aclint/blob/main/riscv-aclint.adoc
-Link: https://lore.kernel.org/all/IA1PR20MB4953F9D77FFC76A9D236922DBBB6A@IA1PR20MB4953.namprd20.prod.outlook.com/
-Acked-by: Guo Ren <guoren@kernel.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/IA1PR20MB49531ED1BCC00D6B265C2D10BB86A@IA1PR20MB4953.namprd20.prod.outlook.com
+  T1 Unlocks the futex (futex_unlock_pi()). Finds a futex_q but no
+     rt_waiter. Unlocks the futex (do_uncontended) and makes it available
+     to user space.
+
+  T3 Acquires the futex in user space.
+
+  T4 Tries to acquire the futex in kernel (futex_lock_pi()). Finds the
+     existing futex_q of T2 and tries to attach itself to the existing
+     pi_state.  This (attach_to_pi_state()) fails with -EINVAL because uval
+     contains the TID of T3 but pi_state points to T1.
+
+It's incorrect to unlock the futex and make it available for user space to
+acquire as long as there is still an existing state attached to it in the
+kernel.
+
+T1 cannot hand over the futex to T2 because T2 already gave up and started
+to clean up and is blocked on the hash bucket lock, so T2's futex_q with
+the pi_state pointing to T1 is still queued.
+
+T2 observes the futex_q, but ignores it as there is no waiter on the
+corresponding rt_mutex and takes the uncontended path which allows the
+subsequent caller of futex_lock_pi() (T4) to observe that stale state.
+
+To prevent this the unlock path must dequeue all futex_q entries which
+point to the same pi_state when there is no waiter on the rt mutex. This
+requires obviously to make the dequeue conditional in the locking path to
+prevent a double dequeue. With that it's guaranteed that user space cannot
+observe an uncontended futex which has kernel state attached.
+
+Fixes: fbeb558b0dd0d ("futex/pi: Fix recursive rt_mutex waiter state")
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20240118115451.0TkD_ZhB@linutronix.de
+Closes: https://lore.kernel.org/all/4611bcf2-44d0-4c34-9b84-17406f881003@kernel.org
 ---
- Documentation/devicetree/bindings/timer/thead,c900-aclint-mtimer.yaml |  9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/futex/core.c | 15 ++++++++++++---
+ kernel/futex/pi.c   | 11 ++++++++---
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/timer/thead,c900-aclint-mtimer.yaml b/Documentation/devicetree/bindings/timer/thead,c900-aclint-mtimer.yaml
-index fbd2356..2e92bcd 100644
---- a/Documentation/devicetree/bindings/timer/thead,c900-aclint-mtimer.yaml
-+++ b/Documentation/devicetree/bindings/timer/thead,c900-aclint-mtimer.yaml
-@@ -17,7 +17,12 @@ properties:
-       - const: thead,c900-aclint-mtimer
+diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+index e0e8534..1e78ef2 100644
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -627,12 +627,21 @@ retry:
+ }
  
-   reg:
--    maxItems: 1
-+    items:
-+      - description: MTIMECMP Registers
-+
-+  reg-names:
-+    items:
-+      - const: mtimecmp
+ /*
+- * PI futexes can not be requeued and must remove themselves from the
+- * hash bucket. The hash bucket lock (i.e. lock_ptr) is held.
++ * PI futexes can not be requeued and must remove themselves from the hash
++ * bucket. The hash bucket lock (i.e. lock_ptr) is held.
+  */
+ void futex_unqueue_pi(struct futex_q *q)
+ {
+-	__futex_unqueue(q);
++	/*
++	 * If the lock was not acquired (due to timeout or signal) then the
++	 * rt_waiter is removed before futex_q is. If this is observed by
++	 * an unlocker after dropping the rtmutex wait lock and before
++	 * acquiring the hash bucket lock, then the unlocker dequeues the
++	 * futex_q from the hash bucket list to guarantee consistent state
++	 * vs. userspace. Therefore the dequeue here must be conditional.
++	 */
++	if (!plist_node_empty(&q->list))
++		__futex_unqueue(q);
  
-   interrupts-extended:
-     minItems: 1
-@@ -28,6 +33,7 @@ additionalProperties: false
- required:
-   - compatible
-   - reg
-+  - reg-names
-   - interrupts-extended
+ 	BUG_ON(!q->pi_state);
+ 	put_pi_state(q->pi_state);
+diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
+index 90e5197..5722467 100644
+--- a/kernel/futex/pi.c
++++ b/kernel/futex/pi.c
+@@ -1135,6 +1135,7 @@ retry:
  
- examples:
-@@ -39,5 +45,6 @@ examples:
-                             <&cpu3intc 7>,
-                             <&cpu4intc 7>;
-       reg = <0xac000000 0x00010000>;
-+      reg-names = "mtimecmp";
-     };
- ...
+ 	hb = futex_hash(&key);
+ 	spin_lock(&hb->lock);
++retry_hb:
+ 
+ 	/*
+ 	 * Check waiters first. We do not trust user space values at
+@@ -1177,12 +1178,17 @@ retry:
+ 		/*
+ 		 * Futex vs rt_mutex waiter state -- if there are no rt_mutex
+ 		 * waiters even though futex thinks there are, then the waiter
+-		 * is leaving and the uncontended path is safe to take.
++		 * is leaving. The entry needs to be removed from the list so a
++		 * new futex_lock_pi() is not using this stale PI-state while
++		 * the futex is available in user space again.
++		 * There can be more than one task on its way out so it needs
++		 * to retry.
+ 		 */
+ 		rt_waiter = rt_mutex_top_waiter(&pi_state->pi_mutex);
+ 		if (!rt_waiter) {
++			__futex_unqueue(top_waiter);
+ 			raw_spin_unlock_irq(&pi_state->pi_mutex.wait_lock);
+-			goto do_uncontended;
++			goto retry_hb;
+ 		}
+ 
+ 		get_pi_state(pi_state);
+@@ -1217,7 +1223,6 @@ retry:
+ 		return ret;
+ 	}
+ 
+-do_uncontended:
+ 	/*
+ 	 * We have no kernel internal state, i.e. no waiters in the
+ 	 * kernel. Waiters which are about to queue themselves are stuck
 
