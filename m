@@ -1,80 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-137-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-138-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18EFD839362
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Jan 2024 16:44:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D4B5839932
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Jan 2024 20:10:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 369CA1C256D0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Jan 2024 15:44:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F9E9B2C21A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Jan 2024 19:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56819605B3;
-	Tue, 23 Jan 2024 15:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF0D85C50;
+	Tue, 23 Jan 2024 19:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AZt+NvkO";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/r8C8Z68"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zJWzPdi3";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+Dz7bE2t"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093645FBA6;
-	Tue, 23 Jan 2024 15:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9FD7FBB5;
+	Tue, 23 Jan 2024 19:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706024211; cv=none; b=mnaPvsVloR1JWL6rWhcOt4H1dUGhh+Y2wQt3qeDOQsKBnAmLY07Rai5QdgkHKwQR4OfKhx9zG0olffyqtGLLX3jZx1PW5Bvl4a88ckCKVHTDqN0uB/TWoV5MbQt+r1I7lN3gALXsTRzZqlre9p+q3byA6/ujadzhueRO5dBAhlM=
+	t=1706036473; cv=none; b=Embd1FZmkuHH+6bhLXNnwuDJieFxv0OB0ez59LMPidWcIOPzRYtT2IPZr2a2JInQ4iQZb+lmTIGBOsEiPuPQYLcU20zR6ZI5xs+H3V/9vaHXCWH5xrWtLZAy4g+hhcXlRvSscbm5VsVtCFhCed76d9Su0kD/URXB+O4JIb6mSNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706024211; c=relaxed/simple;
-	bh=VFgK83r6eoNutpLWcAkVqsC2L9t4AKlcxFeiUozXTXA=;
+	s=arc-20240116; t=1706036473; c=relaxed/simple;
+	bh=HOc90YBHmrRGvy080ff3wBCG+qxyZsoScBH6Z0w7o/M=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=LeQ7inUnVtoPaq07rEcFi+LOp1lVzTKLUQRechBcxZvD16Mn9kQAZDMjb6yhLaHITy2dBX4crzp2rofSqB2QbINku5pPTlgDeTjL0GINE3Th5hW54aG7JzDC3IwMQlOe82DwVmjOuXjbIcGE179NMniOsQ/6p606XlRyKG9NTp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AZt+NvkO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/r8C8Z68; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=suTjJYnJHRu4yufgFHf9gXEQSjxIK0PpEhpulx+M9fijWXtUVds4ZsEiVbl2+5JU23RMCwBb/nnXunRZiyAVzLIgkcovWf3FskzjkPbnwGdNnQKEVK24lLMeyAsXYJWTg++FsvqmEZfhMxk7P3kg8uxg0qsl2En0jYlywv9fPOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zJWzPdi3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+Dz7bE2t; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 23 Jan 2024 15:36:46 -0000
+Date: Tue, 23 Jan 2024 19:01:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706024206;
+	s=2020; t=1706036469;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d86NwgS8OBa5LM5tX4uFn5K56SW++QkcJmeXelRoGKc=;
-	b=AZt+NvkOYBYYcA6ZnWsgkFwwX2xYhfV6YX/jLXKP0FTo4Cw/r/8OyN0lz0jasSZfFF44mk
-	pwOcXl/bdbS1aoF/uJI1rEYD3kFc0BkW/F2kYYEl5wrIsHxXV+IR0tTpEV8Z7UScFpcQRe
-	NvN7zwXSo5PTIzeM+p+k5Re5IzUL11QJdMAsq8dT2Mjw6pm5xDE+CHAE6uGSrlMZsouRmo
-	L5LOXmn7/StUx3Wye6lpeSfiW6BmbsJn7eGmPRIbcYsUFQ+WjfRrP/0RP7xtsjvX7GqsYg
-	1Eef5yuqf2nXVrLX5SqwnzmLpLO9GR1pK5wJhdnzV0ph4RNwA/RXV7C+PULA5A==
+	bh=6eUyX0zjICeqO/1o5Aw5V5Tn9qzErub5OCFL5qwEz5A=;
+	b=zJWzPdi3kXjCo11vbCN5md1kubkqkxDjGZ4ORLqDFF7xfxoeL3I05gJVAqJGQ633S20143
+	NVreIfoJErgA/6tQpHbz6fv4u2Iq8PcEBgEglmJ8k2l8tYIBLbZThkOioe7N38Ksy2g6vW
+	8jyOO6tGdI8ptuv1xwGV0BdeIi5+89C63aicdhfzebykFM26/ekgUZm2fJftdAXdFKyP7F
+	FeaziwQUn6LYfej8tH7/6bHJczglzNnPkq1lbpcom8EqhFZmizbvlFT1/Z5nv2UJO6f/2N
+	qny2vw0yWIApAsdnIRiDDP4bQJVddhIPc8STCf5+FeLFDkQTIUGxy/smseP7Vg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706024206;
+	s=2020e; t=1706036469;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d86NwgS8OBa5LM5tX4uFn5K56SW++QkcJmeXelRoGKc=;
-	b=/r8C8Z68n59lEt1lpcFxzTGROHwHi5NGhnNzBwgEIARm1ncikkxHu8hhvzIU46s6mZdYE5
-	TrZZTbfmlpdXj0Ag==
-From: "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
+	bh=6eUyX0zjICeqO/1o5Aw5V5Tn9qzErub5OCFL5qwEz5A=;
+	b=+Dz7bE2tcMPdATsIYPDX+lVWf6s3f2tqMx2dyVFKmP2P3sLTMLvFhDKbye9H9daWr/7aXY
+	qbq1tNwQauvv77Cw==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cache] x86/resctrl: Remove hard-coded memory bandwidth limit
-Cc: Babu Moger <babu.moger@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
+Subject: [tip: x86/misc] Documentation/kernel-parameters: Add
+ spec_rstack_overflow to mitigations=off
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To:
- <c26a8ca79d399ed076cf8bf2e9fbc58048808289.1705359148.git.babu.moger@amd.com>
-References:
- <c26a8ca79d399ed076cf8bf2e9fbc58048808289.1705359148.git.babu.moger@amd.com>
+In-Reply-To: <20240118163600.17857-1-bp@alien8.de>
+References: <20240118163600.17857-1-bp@alien8.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170602420610.398.10595146977994857056.tip-bot2@tip-bot2>
+Message-ID: <170603646864.398.8199127435495135105.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,81 +79,35 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cache branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     0976783bb123f30981bc1e7a14d9626a6f63aeac
-Gitweb:        https://git.kernel.org/tip/0976783bb123f30981bc1e7a14d9626a6f63aeac
-Author:        Babu Moger <babu.moger@amd.com>
-AuthorDate:    Mon, 15 Jan 2024 16:52:27 -06:00
+Commit-ID:     49527ca264341f9b6278089e274012a2db367ebf
+Gitweb:        https://git.kernel.org/tip/49527ca264341f9b6278089e274012a2db367ebf
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Thu, 18 Jan 2024 17:36:00 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 23 Jan 2024 16:22:51 +01:00
+CommitterDate: Tue, 23 Jan 2024 19:52:53 +01:00
 
-x86/resctrl: Remove hard-coded memory bandwidth limit
+Documentation/kernel-parameters: Add spec_rstack_overflow to mitigations=off
 
-The QOS Memory Bandwidth Enforcement Limit is reported by
-CPUID_Fn80000020_EAX_x01 and CPUID_Fn80000020_EAX_x02:
+mitigations=off disables the SRSO mitigation too. Add it to the list.
 
-  Bits	 Description
-  31:0	 BW_LEN: Size of the QOS Memory Bandwidth Enforcement Limit.
-
-Newer processors can support higher bandwidth limit than the current
-hard-coded value. Remove latter and detect using CPUID instead. Also,
-update the register variables eax and edx to match the AMD CPUID
-definition.
-
-The CPUID details are documented in the Processor Programming Reference
-(PPR) Vol 1.1 for AMD Family 19h Model 11h B1 - 55901 Rev 0.25 in the
-Link tag below.
-
-Fixes: 4d05bf71f157 ("x86/resctrl: Introduce AMD QOS feature")
-Signed-off-by: Babu Moger <babu.moger@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
-Link: https://lore.kernel.org/r/c26a8ca79d399ed076cf8bf2e9fbc58048808289.1705359148.git.babu.moger@amd.com
+Link: https://lore.kernel.org/r/20240118163600.17857-1-bp@alien8.de
 ---
- arch/x86/kernel/cpu/resctrl/core.c     | 10 ++++------
- arch/x86/kernel/cpu/resctrl/internal.h |  1 -
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index d29ebe3..aa9810a 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -231,9 +231,7 @@ static bool __get_mem_config_intel(struct rdt_resource *r)
- static bool __rdt_get_mem_config_amd(struct rdt_resource *r)
- {
- 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
--	union cpuid_0x10_3_eax eax;
--	union cpuid_0x10_x_edx edx;
--	u32 ebx, ecx, subleaf;
-+	u32 eax, ebx, ecx, edx, subleaf;
- 
- 	/*
- 	 * Query CPUID_Fn80000020_EDX_x01 for MBA and
-@@ -241,9 +239,9 @@ static bool __rdt_get_mem_config_amd(struct rdt_resource *r)
- 	 */
- 	subleaf = (r->rid == RDT_RESOURCE_SMBA) ? 2 :  1;
- 
--	cpuid_count(0x80000020, subleaf, &eax.full, &ebx, &ecx, &edx.full);
--	hw_res->num_closid = edx.split.cos_max + 1;
--	r->default_ctrl = MAX_MBA_BW_AMD;
-+	cpuid_count(0x80000020, subleaf, &eax, &ebx, &ecx, &edx);
-+	hw_res->num_closid = edx + 1;
-+	r->default_ctrl = 1 << eax;
- 
- 	/* AMD does not use delay */
- 	r->membw.delay_linear = false;
-diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
-index a4f1aa1..d297974 100644
---- a/arch/x86/kernel/cpu/resctrl/internal.h
-+++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -18,7 +18,6 @@
- #define MBM_OVERFLOW_INTERVAL		1000
- #define MAX_MBA_BW			100u
- #define MBA_IS_LINEAR			0x4
--#define MAX_MBA_BW_AMD			0x800
- #define MBM_CNTR_WIDTH_OFFSET_AMD	20
- 
- #define RMID_VAL_ERROR			BIT_ULL(63)
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 31b3a25..64960f5 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3399,6 +3399,7 @@
+ 					       nospectre_v1 [X86,PPC]
+ 					       nospectre_v2 [X86,PPC,S390,ARM64]
+ 					       retbleed=off [X86]
++					       spec_rstack_overflow=off [X86]
+ 					       spec_store_bypass_disable=off [X86,PPC]
+ 					       spectre_v2_user=off [X86]
+ 					       srbds=off [X86,INTEL]
 
