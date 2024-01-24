@@ -1,78 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-146-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-147-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF4183B141
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Jan 2024 19:37:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7C583B424
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Jan 2024 22:38:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA8AA1F211DC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Jan 2024 18:37:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7047283FF0
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Jan 2024 21:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C36C13172C;
-	Wed, 24 Jan 2024 18:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EDC135413;
+	Wed, 24 Jan 2024 21:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2FzSXLks";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Cxhsx3KW"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cptojg5V";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iaTBekRT"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6134A13175C;
-	Wed, 24 Jan 2024 18:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59C9131E26;
+	Wed, 24 Jan 2024 21:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706121398; cv=none; b=rc5dU2mDuavS/D3Eoigz6At6EqIYmMpjSPHftXrMkR/Nt76olPpTg/CTwhskskVp+GLswDyqMbJRKYeKGezXSbCJzB43QyVDIJa7sAMFiVn2sFJma7o298f/EYGI0XW4wAAcRDGKxAAbiSKfeOBoH5G2BeOUcQVk9o2y/ybmdg8=
+	t=1706132278; cv=none; b=USt9KO5FzNF8vwLb+0bATSPQ+CQiZVpSxE78SwLvhEA/LUfZVXLpdhSK44UKD+7O7XLsVD0e8NEKz8j6eChqi4IbeVZQzebHwZ9sTMEWkljrsHVrDeShKdfTzmH/i2MqMawqmVIsi+ENua2ZwfGWvztizE3PNbIRgW6gKkLAhZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706121398; c=relaxed/simple;
-	bh=S0060BCNkgD/6+5KStlu3aunKCqgkSKd/qKdUlSOX/U=;
+	s=arc-20240116; t=1706132278; c=relaxed/simple;
+	bh=v5JsH8tHWjq5Q0A+2MP2G+hmruLvrSRUbQVVzJNqX3Y=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=V7FDPxuTJGbaHE9tAWQPhGjjRtSSpIdkhRBPTiYrHz4X+yw9qnGyYBt7jTcHtWqaqX7QZO1owb1yVMSRRDWnca7GlE4mLau4dZKksgvpYd4TXYGJ1WUN6Mz4xhJLRL4CDu1nEknmVhU6dynCiNaKwxCpZ+30j9XmIwrmErcH6KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2FzSXLks; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Cxhsx3KW; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=nYA91oZ/WuMugDOducDoD+3U9O9e6b02DGP/xaIly1ynHxvUG9BEqdj8L4b80KPqB+2Gae7i2chkBfslmha0rqCQr56nk2i/J8s5pAa/9OGDyTaiQ+xC4GeLQ7J9fH3Nuo3OUc54QhSMNliEzwMR2XA8KUz5CfmSV0Z47ifapIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cptojg5V; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iaTBekRT; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 24 Jan 2024 18:36:33 -0000
+Date: Wed, 24 Jan 2024 21:37:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706121394;
+	s=2020; t=1706132274;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WtsUkb213D4WAWpjwUUDVaqRdypDbLMljnco/bfd2E4=;
-	b=2FzSXLksfYXEZpuMbcDv6kyvNVEkYHz4c6vK8RRvSR4s30d1EIGyb9DxYnl6mzBgUo0rXL
-	6woFng9Y1ugn9TApSWi6mv0MKTH22UfA7jFdYW+QFbeRBxo4kTVaT4DOLN9KwszLK0Dxd0
-	zuMc6Jw2eurVlFGWlnI2HKtEAjjSeqpeSKnDEDBfpRpyrxKnJuIkkg73CLsgcLAoBYDhoh
-	Z1GGMpM+rHBocZKqYae037EiWWgTC6JAQXXZ1KnGWGoFl5Xhyh3blJXlCcBLU5u0+0UIOM
-	qqj2l7ZGe0I0mEi/eLR5J+30vewHEL5VDu9RNf6iIBPXLydpo2MlyMwpKkTsmA==
+	bh=k8xWwnsrfWs37M4gapdLyCA1xFMKKptPVYI5zbGOyaM=;
+	b=cptojg5VytT6aBmBMog0FoqeJsr9+gIpQwmiF8CyL7ogX50MEbblOmntYj30wt9KLkW0h8
+	SGUnrk0P4pUJPRbbPqolV2caS9LxQlnc704eV/+L0UB38l7z19HLbgd8n4F76Xnei2a+iW
+	6HzZRRe9l9uyo7ir6o93OHtaNIQwaysGaSCdS+32vgOYhli3tcEX27oVf0NquJvOISNcAa
+	V3t/HFkEN1nfTc5yMTJl9hnBLiIGe6CjWVoJshYHqpFjJMqpbSzHtyZUztshuwi09aF4eC
+	ku0sQSsjq2LCgvfekc6zJQkoFoJikTe+Jg54byAIG3u1e2NIJcMsxb4eFkq0Jw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706121394;
+	s=2020e; t=1706132274;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WtsUkb213D4WAWpjwUUDVaqRdypDbLMljnco/bfd2E4=;
-	b=Cxhsx3KWHmc+bQNDE7Kf3D/uzlMC6hb0ouRFtizBdzW4EWncSllzUZ1YZE5O6sYcOwvSfb
-	fojz9u8gOVHv0GDw==
-From: "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
+	bh=k8xWwnsrfWs37M4gapdLyCA1xFMKKptPVYI5zbGOyaM=;
+	b=iaTBekRTv8MEJQb6V8NZNd/gDbMA1IaUL8n24HO82817Ww2E7gmOKbOWgGtgroFuW0i2nz
+	zWzPm1wgfpEil1CA==
+From: "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/entry] x86/entry: Avoid redundant CR3 write on paranoid returns
-Cc: Lai Jiangshan <laijs@linux.alibaba.com>,
- Brendan Jackman <jackmanb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/sev] x86/mm: Fix memory encryption features advertisement
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Kai Huang <kai.huang@intel.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240108113950.360438-1-jackmanb@google.com>
-References: <20240108113950.360438-1-jackmanb@google.com>
+In-Reply-To: <20240124140217.533748-1-kirill.shutemov@linux.intel.com>
+References: <20240124140217.533748-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170612139384.398.13715690088153668463.tip-bot2@tip-bot2>
+Message-ID: <170613227352.398.393464651879909773.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,142 +82,113 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/entry branch of tip:
+The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     bb998361999e79bc87dae1ebe0f5bf317f632585
-Gitweb:        https://git.kernel.org/tip/bb998361999e79bc87dae1ebe0f5bf317f632585
-Author:        Lai Jiangshan <laijs@linux.alibaba.com>
-AuthorDate:    Mon, 08 Jan 2024 11:39:50 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 24 Jan 2024 13:57:59 +01:00
+Commit-ID:     0410516aaef4bf08030845547fb94f4ff989fac0
+Gitweb:        https://git.kernel.org/tip/0410516aaef4bf08030845547fb94f4ff989fac0
+Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+AuthorDate:    Wed, 24 Jan 2024 16:02:16 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 24 Jan 2024 22:27:59 +01:00
 
-x86/entry: Avoid redundant CR3 write on paranoid returns
+x86/mm: Fix memory encryption features advertisement
 
-The CR3 restore happens in:
+When memory encryption is enabled, the kernel prints the encryption
+flavor that the system supports.
 
-  1. #NMI return.
-  2. paranoid_exit() (i.e. #MCE, #VC, #DB and #DF return)
+The check assumes that everything is AMD SME/SEV if it doesn't have
+the TDX CPU feature set.
 
-Contrary to the implication in commit 21e94459110252 ("x86/mm: Optimize
-RESTORE_CR3"), the kernel never modifies CR3 in any of these exceptions,
-except for switching from user to kernel pagetables under PTI. That
-means that most of the time when returning from an exception that
-interrupted the kernel no CR3 restore is necessary. Writing CR3 is
-expensive on some machines.
+Hyper-V vTOM sets cc_vendor to CC_VENDOR_INTEL when it runs as L2 guest
+on top of TDX, but not X86_FEATURE_TDX_GUEST. Hyper-V only needs memory
+encryption enabled for I/O without the rest of CoCo enabling.
 
-Most of the time because the interrupt might have come during kernel entry
-before the user to kernel CR3 switch or the during exit after the kernel to
-user switch. In the former case skipping the restore would be correct, but
-definitely not for the latter.
+To avoid confusion, check the cc_vendor directly.
 
-So check the saved CR3 value and restore it only, if it is a user CR3.
+  [ bp: Massage commit message. ]
 
-Give the macro a new name to clarify its usage, and remove a comment that
-was describing the original behaviour along with the not longer needed jump
-label.
-
-Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240108113950.360438-1-jackmanb@google.com
-
-[Rewrote commit message; responded to review comments]
-Change-Id: I6e56978c4753fb943a7897ff101f519514fa0827
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/r/20240124140217.533748-1-kirill.shutemov@linux.intel.com
 ---
- arch/x86/entry/calling.h  | 26 ++++++++++----------------
- arch/x86/entry/entry_64.S |  7 +++----
- 2 files changed, 13 insertions(+), 20 deletions(-)
+ arch/x86/mm/mem_encrypt.c | 56 ++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index 9f1d947..92dca4a 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -239,17 +239,19 @@ For 32-bit we have the following conventions - kernel is built with
- .Ldone_\@:
- .endm
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index c290c55..d035bce 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -42,38 +42,42 @@ bool force_dma_unencrypted(struct device *dev)
  
--.macro RESTORE_CR3 scratch_reg:req save_reg:req
-+/* Restore CR3 from a kernel context. May restore a user CR3 value. */
-+.macro PARANOID_RESTORE_CR3 scratch_reg:req save_reg:req
- 	ALTERNATIVE "jmp .Lend_\@", "", X86_FEATURE_PTI
+ static void print_mem_encrypt_feature_info(void)
+ {
+-	pr_info("Memory Encryption Features active:");
++	pr_info("Memory Encryption Features active: ");
  
--	ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
+-	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+-		pr_cont(" Intel TDX\n");
+-		return;
+-	}
 -
- 	/*
--	 * KERNEL pages can always resume with NOFLUSH as we do
--	 * explicit flushes.
-+	 * If CR3 contained the kernel page tables at the paranoid exception
-+	 * entry, then there is nothing to restore as CR3 is not modified while
-+	 * handling the exception.
- 	 */
- 	bt	$PTI_USER_PGTABLE_BIT, \save_reg
--	jnc	.Lnoflush_\@
-+	jnc	.Lend_\@
+-	pr_cont(" AMD");
++	switch (cc_vendor) {
++	case CC_VENDOR_INTEL:
++		pr_cont("Intel TDX\n");
++		break;
++	case CC_VENDOR_AMD:
++		pr_cont("AMD");
+ 
+-	/* Secure Memory Encryption */
+-	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
++		/* Secure Memory Encryption */
++		if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+ 		/*
+ 		 * SME is mutually exclusive with any of the SEV
+ 		 * features below.
+-		 */
+-		pr_cont(" SME\n");
+-		return;
++		*/
++			pr_cont(" SME\n");
++			return;
++		}
 +
-+	ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
- 
- 	/*
- 	 * Check if there's a pending flush for the user ASID we're
-@@ -257,20 +259,12 @@ For 32-bit we have the following conventions - kernel is built with
- 	 */
- 	movq	\save_reg, \scratch_reg
- 	andq	$(0x7FF), \scratch_reg
--	bt	\scratch_reg, THIS_CPU_user_pcid_flush_mask
--	jnc	.Lnoflush_\@
++		/* Secure Encrypted Virtualization */
++		if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
++			pr_cont(" SEV");
++
++		/* Encrypted Register State */
++		if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
++			pr_cont(" SEV-ES");
++
++		/* Secure Nested Paging */
++		if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++			pr_cont(" SEV-SNP");
++
++		pr_cont("\n");
++		break;
++	default:
++		pr_cont("Unknown\n");
+ 	}
 -
- 	btr	\scratch_reg, THIS_CPU_user_pcid_flush_mask
--	jmp	.Lwrcr3_\@
-+	jc	.Lwrcr3_\@
+-	/* Secure Encrypted Virtualization */
+-	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+-		pr_cont(" SEV");
+-
+-	/* Encrypted Register State */
+-	if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+-		pr_cont(" SEV-ES");
+-
+-	/* Secure Nested Paging */
+-	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+-		pr_cont(" SEV-SNP");
+-
+-	pr_cont("\n");
+ }
  
--.Lnoflush_\@:
- 	SET_NOFLUSH_BIT \save_reg
- 
- .Lwrcr3_\@:
--	/*
--	 * The CR3 write could be avoided when not changing its value,
--	 * but would require a CR3 read *and* a scratch register.
--	 */
- 	movq	\save_reg, %cr3
- .Lend_\@:
- .endm
-@@ -285,7 +279,7 @@ For 32-bit we have the following conventions - kernel is built with
- .endm
- .macro SAVE_AND_SWITCH_TO_KERNEL_CR3 scratch_reg:req save_reg:req
- .endm
--.macro RESTORE_CR3 scratch_reg:req save_reg:req
-+.macro PARANOID_RESTORE_CR3 scratch_reg:req save_reg:req
- .endm
- 
- #endif
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index c40f89a..aedd169 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -968,14 +968,14 @@ SYM_CODE_START_LOCAL(paranoid_exit)
- 	IBRS_EXIT save_reg=%r15
- 
- 	/*
--	 * The order of operations is important. RESTORE_CR3 requires
-+	 * The order of operations is important. PARANOID_RESTORE_CR3 requires
- 	 * kernel GSBASE.
- 	 *
- 	 * NB to anyone to try to optimize this code: this code does
- 	 * not execute at all for exceptions from user mode. Those
- 	 * exceptions go through error_return instead.
- 	 */
--	RESTORE_CR3	scratch_reg=%rax save_reg=%r14
-+	PARANOID_RESTORE_CR3 scratch_reg=%rax save_reg=%r14
- 
- 	/* Handle the three GSBASE cases */
- 	ALTERNATIVE "jmp .Lparanoid_exit_checkgs", "", X86_FEATURE_FSGSBASE
-@@ -1404,8 +1404,7 @@ end_repeat_nmi:
- 	/* Always restore stashed SPEC_CTRL value (see paranoid_entry) */
- 	IBRS_EXIT save_reg=%r15
- 
--	/* Always restore stashed CR3 value (see paranoid_entry) */
--	RESTORE_CR3 scratch_reg=%r15 save_reg=%r14
-+	PARANOID_RESTORE_CR3 scratch_reg=%r15 save_reg=%r14
- 
- 	/*
- 	 * The above invocation of paranoid_entry stored the GSBASE
+ /* Architecture __weak replacement functions */
 
