@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-157-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-158-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3AE83CABB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 19:22:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE24283CABD
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 19:22:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C674B25C92
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 18:22:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8061F2147D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 18:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06E81350E8;
-	Thu, 25 Jan 2024 18:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D369136675;
+	Thu, 25 Jan 2024 18:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DB6gZpaF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8r4xDEi6"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fyYFkb2a";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UJAK4lbY"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261811339BA;
-	Thu, 25 Jan 2024 18:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A7F1339B3;
+	Thu, 25 Jan 2024 18:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706206888; cv=none; b=BiW/OMIerPlYEc/j5LjtKnIYHBKcyFaEYIG40juxM1Gz1BhnpuXyBFopWylMtgXzTTVQbPXnkr/3ziWMAEaqqR3Dv0QnsrXBN4/d3HGhfqZ7cM1QPl6GFhnYl79VCGPHpMt5BxmF18CtEfDBG85xpI8AphlUOwZH96yzxb7kVu8=
+	t=1706206890; cv=none; b=fW+im07xnrPvc86yLQng0QoCKDpBIOvJMmWL50OeYzN9H+FuB+hYf+XU5jB3C6+7fkeZ1Ch3GBZ/CN4rvemQWh459QJMkYZdlc54e73D2W2eVk/OpQUcQSc0ujCSUVcUOShRLSXKXWVzxoEw3ndzcT9qqn/34VYHMVXJxiIs3y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706206888; c=relaxed/simple;
-	bh=DTGg0oQnEsGMMJS2Yv0INqB56wI/aNOCoqNCNAlzcKo=;
+	s=arc-20240116; t=1706206890; c=relaxed/simple;
+	bh=UxDDlR2z5AY7SvptNlGAU/vMC2pOYN9KgWH/l153KWA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JSM9upWZXK9qhcfF1r4jnrDAFxzTI2hhZ9UM40ZgOey0NChMBlV8qIVV51i/P+liJSfZg3xFzeOqOD2GbEPY2AsApcYvpuBIL4RhcfO0ySIBlDCBIWNGxrGvt+9ORtNg2Xd4J/LeyXyUoRUJBL733nSx7WrJlW89qto9W/fAcZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DB6gZpaF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8r4xDEi6; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=gOVC/eCtgTSza8n5w5StcV96mYdr7O8mY4ixIiKN42eVn9uww6a0JMCi22dfB7MSkvSlv3MCCLWc8F+7sZvL86hB3GgmxTBnj/u+92QC6QTQmD3TfpwWf6/7T0B10ol0MWv+0/7lY8RuQYJhpW/ymLTUpg2wamhfdgrbZX6j0YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fyYFkb2a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UJAK4lbY; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Jan 2024 18:21:17 -0000
+Date: Thu, 25 Jan 2024 18:21:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1706206878;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FthTOXA9eejXL3xMmaYhS0l/niDguCOngnNTBeQ+r2w=;
-	b=DB6gZpaFoGY4R9nRZyfw7d/qSx9PAqdjpMgOkr4edtxseBgWyIToZIyynp0MgYqo+JlIlC
-	Sc0jGTAxfY4no14nGBIVP7XTF3TsYmHP/AuML3X24+a4VTLMtX/K2nSVJ2KxzP7aiv3WAT
-	Pl3vA9gJccP7FE4D0mTYMGVbYssl8iYLg0Bq4ZmoGVkwlKbEQyFn5Esdj9hlShCCi1Walh
-	e0Ausa4rWUw+WGJ63KzmGNb4ozxq37cyA5ZUkWsmv3g5Qi+srM5MNDjSpmpf8XPwhU9/IC
-	OS3TqCnYuEhL6lH+3KJKV++KXDI1ZEfOcGz3AzUUSdaZ7Ee6aGp1ShdcUk5JFA==
+	bh=1hUlY3EST9IjvwQzc1dDjjNYJjeGjsK9DgloKu2C1Es=;
+	b=fyYFkb2aPRFKYIY61o2eJVYAKW29xKE2krIfNbNn9I2j9TYGOpVlT/HZS6o5hRc0eOSaPQ
+	4btnclLjQZBza9sILq8jZXor/E+2Py6JxwSlY8OF6WMYf2Z8bYnW/kBkU8M11N2ZBHNVL/
+	8lZujenAC0WwUdCIIyvWfQu35frL+VvJe5u9fXEqyz0/eWd1HzDNQE7XcZ6RMO2fTat9YR
+	f5EFL5owWll0jK8UiRatXw2/cZm18d+RBRIISVIUUFKar2GArj43I3dcnMx4c0ofIfv41f
+	F3R9zS9AMNthdUoOvCVEi1GTP/bYGyr65kvWkesD7ngCx4q163oc39KE5EeIcA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1706206878;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,27 +52,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FthTOXA9eejXL3xMmaYhS0l/niDguCOngnNTBeQ+r2w=;
-	b=8r4xDEi66wLeBXDAI6yuDdd987jQtBxuUjDsKuEm41x57iFFAlyjBPypr36VbbAEnkYhXM
-	KpbqMIkkdLFUdpBQ==
-From: "tip-bot2 for Xin Li" <tip-bot2@linutronix.de>
+	bh=1hUlY3EST9IjvwQzc1dDjjNYJjeGjsK9DgloKu2C1Es=;
+	b=UJAK4lbYC/agviFUVjizXKpZmDISyNWzr7H8sWCr3wywC3PTrMe85aN2t3WYVasH0jPkkW
+	2tvCSmc6SPd/vhCg==
+From: "tip-bot2 for Peter Zijlstra (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fred] x86/entry: Add fred_entry_from_kvm() for VMX to
- handle IRQ/NMI
-Cc: Sean Christopherson <seanjc@google.com>,
- Thomas Gleixner <tglx@linutronix.de>, Xin Li <xin3.li@intel.com>,
+Subject: [tip: x86/fred] x86/entry/calling: Allow PUSH_AND_CLEAR_REGS being
+ used beyond actual entry code
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Xin Li <xin3.li@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
  Shan Kang <shan.kang@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231205105030.8698-32-xin3.li@intel.com>
-References: <20231205105030.8698-32-xin3.li@intel.com>
+In-Reply-To: <20231205105030.8698-31-xin3.li@intel.com>
+References: <20231205105030.8698-31-xin3.li@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170620687731.398.5663831974471176573.tip-bot2@tip-bot2>
+Message-ID: <170620687817.398.17653307848383085841.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,191 +82,82 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/fred branch of tip:
 
-Commit-ID:     9a823c61c212a9f076abc4b95ca2cbc328fbed01
-Gitweb:        https://git.kernel.org/tip/9a823c61c212a9f076abc4b95ca2cbc328fbed01
-Author:        Xin Li <xin3.li@intel.com>
-AuthorDate:    Tue, 05 Dec 2023 02:50:20 -08:00
+Commit-ID:     eea48ae4c9c766ba24fda42a0b3387c942240bba
+Gitweb:        https://git.kernel.org/tip/eea48ae4c9c766ba24fda42a0b3387c942240bba
+Author:        Peter Zijlstra (Intel) <peterz@infradead.org>
+AuthorDate:    Tue, 05 Dec 2023 02:50:19 -08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 25 Jan 2024 19:10:33 +01:00
 
-x86/entry: Add fred_entry_from_kvm() for VMX to handle IRQ/NMI
+x86/entry/calling: Allow PUSH_AND_CLEAR_REGS being used beyond actual entry code
 
-In IRQ/NMI induced VM exits, KVM VMX needs to execute the respective
-handlers, which requires the software to create a FRED stack frame,
-and use it to invoke the handlers. Add fred_irq_entry_from_kvm() for
-this job.
+PUSH_AND_CLEAR_REGS could be used besides actual entry code; in that case
+%rbp shouldn't be cleared (otherwise the frame pointer is destroyed) and
+UNWIND_HINT shouldn't be added.
 
-Export fred_entry_from_kvm() because VMX can be compiled as a module.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Shan Kang <shan.kang@intel.com>
-Link: https://lore.kernel.org/r/20231205105030.8698-32-xin3.li@intel.com
+Link: https://lore.kernel.org/r/20231205105030.8698-31-xin3.li@intel.com
 
 ---
- arch/x86/entry/entry_64_fred.S | 77 +++++++++++++++++++++++++++++++++-
- arch/x86/entry/entry_fred.c    | 14 ++++++-
- arch/x86/include/asm/fred.h    | 18 ++++++++-
- 3 files changed, 109 insertions(+)
+ arch/x86/entry/calling.h | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64_fred.S b/arch/x86/entry/entry_64_fred.S
-index d1c2fc4..eedf98d 100644
---- a/arch/x86/entry/entry_64_fred.S
-+++ b/arch/x86/entry/entry_64_fred.S
-@@ -3,8 +3,11 @@
-  * The actual FRED entry points.
+diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
+index 9f1d947..3ff925b 100644
+--- a/arch/x86/entry/calling.h
++++ b/arch/x86/entry/calling.h
+@@ -65,7 +65,7 @@ For 32-bit we have the following conventions - kernel is built with
+  * for assembly code:
   */
  
-+#include <linux/export.h>
+-.macro PUSH_REGS rdx=%rdx rcx=%rcx rax=%rax save_ret=0
++.macro PUSH_REGS rdx=%rdx rcx=%rcx rax=%rax save_ret=0 unwind_hint=1
+ 	.if \save_ret
+ 	pushq	%rsi		/* pt_regs->si */
+ 	movq	8(%rsp), %rsi	/* temporarily store the return address in %rsi */
+@@ -87,14 +87,17 @@ For 32-bit we have the following conventions - kernel is built with
+ 	pushq	%r13		/* pt_regs->r13 */
+ 	pushq	%r14		/* pt_regs->r14 */
+ 	pushq	%r15		/* pt_regs->r15 */
 +
- #include <asm/asm.h>
- #include <asm/fred.h>
-+#include <asm/segment.h>
++	.if \unwind_hint
+ 	UNWIND_HINT_REGS
++	.endif
  
- #include "calling.h"
+ 	.if \save_ret
+ 	pushq	%rsi		/* return address on top of stack */
+ 	.endif
+ .endm
  
-@@ -54,3 +57,77 @@ SYM_CODE_START_NOALIGN(asm_fred_entrypoint_kernel)
- 	FRED_EXIT
- 	ERETS
- SYM_CODE_END(asm_fred_entrypoint_kernel)
-+
-+#if IS_ENABLED(CONFIG_KVM_INTEL)
-+SYM_FUNC_START(asm_fred_entry_from_kvm)
-+	push %rbp
-+	mov %rsp, %rbp
-+
-+	UNWIND_HINT_SAVE
-+
-+	/*
-+	 * Both IRQ and NMI from VMX can be handled on current task stack
-+	 * because there is no need to protect from reentrancy and the call
-+	 * stack leading to this helper is effectively constant and shallow
-+	 * (relatively speaking). Do the same when FRED is active, i.e., no
-+	 * need to check current stack level for a stack switch.
-+	 *
-+	 * Emulate the FRED-defined redzone and stack alignment.
-+	 */
-+	sub $(FRED_CONFIG_REDZONE_AMOUNT << 6), %rsp
-+	and $FRED_STACK_FRAME_RSP_MASK, %rsp
-+
-+	/*
-+	 * Start to push a FRED stack frame, which is always 64 bytes:
-+	 *
-+	 * +--------+-----------------+
-+	 * | Bytes  | Usage           |
-+	 * +--------+-----------------+
-+	 * | 63:56  | Reserved        |
-+	 * | 55:48  | Event Data      |
-+	 * | 47:40  | SS + Event Info |
-+	 * | 39:32  | RSP             |
-+	 * | 31:24  | RFLAGS          |
-+	 * | 23:16  | CS + Aux Info   |
-+	 * |  15:8  | RIP             |
-+	 * |   7:0  | Error Code      |
-+	 * +--------+-----------------+
-+	 */
-+	push $0				/* Reserved, must be 0 */
-+	push $0				/* Event data, 0 for IRQ/NMI */
-+	push %rdi			/* fred_ss handed in by the caller */
-+	push %rbp
-+	pushf
-+	mov $__KERNEL_CS, %rax
-+	push %rax
-+
-+	/*
-+	 * Unlike the IDT event delivery, FRED _always_ pushes an error code
-+	 * after pushing the return RIP, thus the CALL instruction CANNOT be
-+	 * used here to push the return RIP, otherwise there is no chance to
-+	 * push an error code before invoking the IRQ/NMI handler.
-+	 *
-+	 * Use LEA to get the return RIP and push it, then push an error code.
-+	 */
-+	lea 1f(%rip), %rax
-+	push %rax				/* Return RIP */
-+	push $0					/* Error code, 0 for IRQ/NMI */
-+
-+	PUSH_AND_CLEAR_REGS clear_bp=0 unwind_hint=0
-+	movq %rsp, %rdi				/* %rdi -> pt_regs */
-+	call __fred_entry_from_kvm		/* Call the C entry point */
-+	POP_REGS
-+	ERETS
-+1:
-+	/*
-+	 * Objtool doesn't understand what ERETS does, this hint tells it that
-+	 * yes, we'll reach here and with what stack state. A save/restore pair
-+	 * isn't strictly needed, but it's the simplest form.
-+	 */
-+	UNWIND_HINT_RESTORE
-+	pop %rbp
-+	RET
-+
-+SYM_FUNC_END(asm_fred_entry_from_kvm)
-+EXPORT_SYMBOL_GPL(asm_fred_entry_from_kvm);
-+#endif
-diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
-index ed2146d..76aefe0 100644
---- a/arch/x86/entry/entry_fred.c
-+++ b/arch/x86/entry/entry_fred.c
-@@ -255,3 +255,17 @@ __visible noinstr void fred_entry_from_kernel(struct pt_regs *regs)
+-.macro CLEAR_REGS
++.macro CLEAR_REGS clear_bp=1
+ 	/*
+ 	 * Sanitize registers of values that a speculation attack might
+ 	 * otherwise want to exploit. The lower registers are likely clobbered
+@@ -109,7 +112,9 @@ For 32-bit we have the following conventions - kernel is built with
+ 	xorl	%r10d, %r10d	/* nospec r10 */
+ 	xorl	%r11d, %r11d	/* nospec r11 */
+ 	xorl	%ebx,  %ebx	/* nospec rbx */
++	.if \clear_bp
+ 	xorl	%ebp,  %ebp	/* nospec rbp */
++	.endif
+ 	xorl	%r12d, %r12d	/* nospec r12 */
+ 	xorl	%r13d, %r13d	/* nospec r13 */
+ 	xorl	%r14d, %r14d	/* nospec r14 */
+@@ -117,9 +122,9 @@ For 32-bit we have the following conventions - kernel is built with
  
- 	return fred_bad_type(regs, error_code);
- }
-+
-+#if IS_ENABLED(CONFIG_KVM_INTEL)
-+__visible noinstr void __fred_entry_from_kvm(struct pt_regs *regs)
-+{
-+	switch (regs->fred_ss.type) {
-+	case EVENT_TYPE_EXTINT:
-+		return fred_extint(regs);
-+	case EVENT_TYPE_NMI:
-+		return fred_exc_nmi(regs);
-+	default:
-+		WARN_ON_ONCE(1);
-+	}
-+}
-+#endif
-diff --git a/arch/x86/include/asm/fred.h b/arch/x86/include/asm/fred.h
-index 16a64ff..2fa9f34 100644
---- a/arch/x86/include/asm/fred.h
-+++ b/arch/x86/include/asm/fred.h
-@@ -9,6 +9,7 @@
- #include <linux/const.h>
+ .endm
  
- #include <asm/asm.h>
-+#include <asm/trapnr.h>
+-.macro PUSH_AND_CLEAR_REGS rdx=%rdx rcx=%rcx rax=%rax save_ret=0
+-	PUSH_REGS rdx=\rdx, rcx=\rcx, rax=\rax, save_ret=\save_ret
+-	CLEAR_REGS
++.macro PUSH_AND_CLEAR_REGS rdx=%rdx rcx=%rcx rax=%rax save_ret=0 clear_bp=1 unwind_hint=1
++	PUSH_REGS rdx=\rdx, rcx=\rcx, rax=\rax, save_ret=\save_ret unwind_hint=\unwind_hint
++	CLEAR_REGS clear_bp=\clear_bp
+ .endm
  
- /*
-  * FRED event return instruction opcodes for ERET{S,U}; supported in
-@@ -62,12 +63,29 @@ static __always_inline unsigned long fred_event_data(struct pt_regs *regs)
- 
- void asm_fred_entrypoint_user(void);
- void asm_fred_entrypoint_kernel(void);
-+void asm_fred_entry_from_kvm(struct fred_ss);
- 
- __visible void fred_entry_from_user(struct pt_regs *regs);
- __visible void fred_entry_from_kernel(struct pt_regs *regs);
-+__visible void __fred_entry_from_kvm(struct pt_regs *regs);
-+
-+/* Can be called from noinstr code, thus __always_inline */
-+static __always_inline void fred_entry_from_kvm(unsigned int type, unsigned int vector)
-+{
-+	struct fred_ss ss = {
-+		.ss     =__KERNEL_DS,
-+		.type   = type,
-+		.vector = vector,
-+		.nmi    = type == EVENT_TYPE_NMI,
-+		.lm     = 1,
-+	};
-+
-+	asm_fred_entry_from_kvm(ss);
-+}
- 
- #else /* CONFIG_X86_FRED */
- static __always_inline unsigned long fred_event_data(struct pt_regs *regs) { return 0; }
-+static __always_inline void fred_entry_from_kvm(unsigned int type, unsigned int vector) { }
- #endif /* CONFIG_X86_FRED */
- #endif /* !__ASSEMBLY__ */
- 
+ .macro POP_REGS pop_rdi=1
 
