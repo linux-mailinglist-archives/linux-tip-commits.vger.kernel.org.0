@@ -1,77 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-179-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-181-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AA983CAE7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 19:25:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A836283CAEE
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 19:26:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60A80298314
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 18:25:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 325D2B26A79
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 18:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF42F13D4EC;
-	Thu, 25 Jan 2024 18:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2320813DBBD;
+	Thu, 25 Jan 2024 18:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cSfjDHE1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cC9wotL/"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PJNOljaJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wDK5TCeG"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BA613B786;
-	Thu, 25 Jan 2024 18:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF71313BE98;
+	Thu, 25 Jan 2024 18:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706206898; cv=none; b=G13u98RU2KCeCa1hNHbw2mVY0tr1VHqYfBd8Zq4t625z2yrosZGGhf99FXpr7f8flQtQFkHRQRg/qdaDAx6ihZg846wGCmOO7wUAidD135WPqaf+zoDXLeHYVLto65Ze+yQveaDZgxWaK9FPc56doL+zFJGn5ubAxYTI+j2SVao=
+	t=1706206900; cv=none; b=V15cyOYxzsADhpbezQ9x2W5qGVshQLeCCyVAaTrzlOpazrellJVv4Hgt/Fb8qVBhJCmu+a9KP7JCNi/rTB02pLl0lfytj4vvQfO9ZbEPOeWuISSbbbFBl5yTxiZCYsnR/yJiLWrT5RizWE+zL499wbjNH/qpeipdi9dqIaveORk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706206898; c=relaxed/simple;
-	bh=/aaKbGn19uI0EKDnx/0AbnQIYzj5YEJT7IeUUVLhT2U=;
+	s=arc-20240116; t=1706206900; c=relaxed/simple;
+	bh=V9cSUwT+VGk+A6Ux1blRgQ4N12B0F9vHolcuscPdx/I=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=AqY9+HgYtm/jRi9k1hkRjATO2nL9GhKh/38PtfgLCKvEOnT2iCZ/s1xlgHw0c9jZioLoszB+jjLU1ws3URGos01p6/V8RFtNsCF44xAGP/gfx6adlDxisaee+vrnM5mWeZ5YxZPxhEiF+z50S5agajYMEDokj65hKRqyhre2u6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cSfjDHE1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cC9wotL/; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=KrrmQ8dHx5EU9Ois635td9UsjfFpTw/2Zk9JfyljjDXGpULKvVm5C37kitcNzLukwmy6QeeQGXUVwX8Bj4xJeXS5UWM9X9ZQEmi0jKtjfzsYCCOeBFrDCHZKsn0/V1eQtbh4IEEd/v9glSU1frPWyESPqochIHmPPiPkLMHnp9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PJNOljaJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wDK5TCeG; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Jan 2024 18:21:34 -0000
+Date: Thu, 25 Jan 2024 18:21:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706206894;
+	s=2020; t=1706206896;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WAns/H3cdr5O84K7fAoURzvtY40Ehfid4EFVStwf8qs=;
-	b=cSfjDHE1JqHdZOCmzJFi8oRxKiRzXAzGDK7qAq3U9Qpk/sztIkiZXoA8ZmQTXwwFe8Ea6y
-	07HUUL/7xXy5McDC2zZZq9nXSjJxiRBg9T3hzjU4gj+8Yv8MlbmAUZ65GKsHBMBhvYXVGH
-	oCA4Heata1xZk4R+S8ZLpY9STkdJ1KX4vbf0cmxQ+lZ/QwDmI33AlBGnIIParAg0/62xR6
-	uyjaoAXom1Ygo/JFoNpS8l51AUfFLb7xTtVfdg9mH/dZVEdb0ajdaFizTpgnHsqn/GwBrd
-	DmWf8eMZQLCE0/uhgh3UuWPTvzxrrYM/bVSH75Dd01kW7PXJMoJRr0ZsPcHffQ==
+	bh=wHtsBYfUeADAj+UUq1y6wKXx5FxG+y3myG9XqCvyKoM=;
+	b=PJNOljaJw9BZ9DiMslfnhmvUlS4xiM++Tj5IegDGLa7ggQKDLsWyH0PbW5JnQLg/R1ll78
+	t5bh+i1WcYVijfqftLpHXezWzVUL/Yj6hD4WSlYOQF8zzycSM6FxNpUA5Vd/+clcWFSMXD
+	w63mpBCNOeGld9b6ZE9RiKp5nh7oMiiAarHMNGcfGrTqpbtEAyfbO7rzUmvfSlRIgtLZ5C
+	OxgVrGtHqCfYciF4F5rknp+p8fLkLc6vFkCrrT/e6Gj8nJCO2zVQuKt2nVZkE6+WRnbsWB
+	M6RRqGLmfofjwtJMOlP3QpScYamzewlVKZdI0Yd/AoLCXupcfxRMk8+e5u4RHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706206894;
+	s=2020e; t=1706206896;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WAns/H3cdr5O84K7fAoURzvtY40Ehfid4EFVStwf8qs=;
-	b=cC9wotL/QnYmII0LAHIIW/362bxawSdqTBcQGwbevp21PEP1EFc9oUNaxeXWk3sVbl7FPy
-	NKY0pbqdcbQ2ehCA==
-From: "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
+	bh=wHtsBYfUeADAj+UUq1y6wKXx5FxG+y3myG9XqCvyKoM=;
+	b=wDK5TCeGFIeWlhiG1qlFs3JMMK6Jkrfk4QD5IKssIo2y29aPZud1OrydZSwgKf9mGtIQqB
+	t8TVqoyHqTWDgwDg==
+From: "tip-bot2 for Xin Li" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fred] x86/objtool: Teach objtool about ERET[US]
-Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>, Xin Li <xin3.li@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Shan Kang <shan.kang@intel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231205105030.8698-11-xin3.li@intel.com>
-References: <20231205105030.8698-11-xin3.li@intel.com>
+Subject: [tip: x86/fred] x86/fred: Disable FRED by default in its early stage
+Cc: Xin Li <xin3.li@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Shan Kang <shan.kang@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231205105030.8698-9-xin3.li@intel.com>
+References: <20231205105030.8698-9-xin3.li@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170620689420.398.17722955062117352928.tip-bot2@tip-bot2>
+Message-ID: <170620689542.398.3437920556925908485.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,56 +80,53 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/fred branch of tip:
 
-Commit-ID:     12c4be1f0ed9bcdc2f2f578f6101e6f4af2ee039
-Gitweb:        https://git.kernel.org/tip/12c4be1f0ed9bcdc2f2f578f6101e6f4af2ee039
-Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
-AuthorDate:    Tue, 05 Dec 2023 02:49:59 -08:00
+Commit-ID:     7a1d75084df087dcae703d70a49274a3982e3681
+Gitweb:        https://git.kernel.org/tip/7a1d75084df087dcae703d70a49274a3982e3681
+Author:        Xin Li <xin3.li@intel.com>
+AuthorDate:    Tue, 05 Dec 2023 02:49:57 -08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 25 Jan 2024 19:10:30 +01:00
 
-x86/objtool: Teach objtool about ERET[US]
+x86/fred: Disable FRED by default in its early stage
 
-Update the objtool decoder to know about the ERET[US] instructions
-(type INSN_CONTEXT_SWITCH).
+To enable FRED, a new kernel command line option "fred" needs to be added.
 
-Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Shan Kang <shan.kang@intel.com>
-Link: https://lore.kernel.org/r/20231205105030.8698-11-xin3.li@intel.com
+Link: https://lore.kernel.org/r/20231205105030.8698-9-xin3.li@intel.com
 
 ---
- tools/objtool/arch/x86/decode.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt | 3 +++
+ arch/x86/kernel/cpu/common.c                    | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index e327cd8..3a1d80a 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -509,11 +509,20 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 31b3a25..c6c1a2c 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -1539,6 +1539,9 @@
+ 			Warning: use of this parameter will taint the kernel
+ 			and may cause unknown problems.
  
- 		if (op2 == 0x01) {
++	fred		[X86-64]
++			Enable flexible return and event delivery
++
+ 	ftrace=[tracer]
+ 			[FTRACE] will set and start the specified tracer
+ 			as early as possible in order to facilitate early
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 0b97bcd..2121ec6 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1484,6 +1484,9 @@ static void __init cpu_parse_early_param(void)
+ 	char *argptr = arg, *opt;
+ 	int arglen, taint = 0;
  
--			if (modrm == 0xca)
--				insn->type = INSN_CLAC;
--			else if (modrm == 0xcb)
--				insn->type = INSN_STAC;
--
-+			switch (insn_last_prefix_id(&ins)) {
-+			case INAT_PFX_REPE:
-+			case INAT_PFX_REPNE:
-+				if (modrm == 0xca)
-+					/* eretu/erets */
-+					insn->type = INSN_CONTEXT_SWITCH;
-+				break;
-+			default:
-+				if (modrm == 0xca)
-+					insn->type = INSN_CLAC;
-+				else if (modrm == 0xcb)
-+					insn->type = INSN_STAC;
-+				break;
-+			}
- 		} else if (op2 >= 0x80 && op2 <= 0x8f) {
- 
- 			insn->type = INSN_JUMP_CONDITIONAL;
++	if (!cmdline_find_option_bool(boot_command_line, "fred"))
++		setup_clear_cpu_cap(X86_FEATURE_FRED);
++
+ #ifdef CONFIG_X86_32
+ 	if (cmdline_find_option_bool(boot_command_line, "no387"))
+ #ifdef CONFIG_MATH_EMULATION
 
