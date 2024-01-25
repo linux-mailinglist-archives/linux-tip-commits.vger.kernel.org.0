@@ -1,76 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-159-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-172-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8D583CABE
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 19:22:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF55D83CADA
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 19:24:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C95B1F214A6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 18:22:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991F729789A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 18:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EBB136678;
-	Thu, 25 Jan 2024 18:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CF413AA5A;
+	Thu, 25 Jan 2024 18:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f3S1+a/T";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SQWH+9TS"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wixx07Ur";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="alYtOhTn"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144DE1339A9;
-	Thu, 25 Jan 2024 18:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905681350E4;
+	Thu, 25 Jan 2024 18:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706206890; cv=none; b=b6zYTLo60wyHc5YBgsnsWpqogSd8M0BxTXTMA++kxivxEZEHcyAlnMDDam19cvs22/xE3RHNovSPqdqHhZqd3qx/q+dnigyRBNb5BEY0lVdb+EIprclhQNJT4ZBnPMs286nY3MLhGh3VIzK+kAh8phF2ija+VRKc7RoFEc8f8vc=
+	t=1706206896; cv=none; b=O3Gdw4XV75swIf4NPtlXyrURhfE0wyY9H1N75wv5M/6TUuuMir6M4nHMtPqnsg14aJzY2dRx0t8mUP9aJxeDdKCtY0LilyWYPqoAemJYPkzbJ8ewcNeIuWK9KqW3YK4x3vTwFRC6u7dY44nj+KNSwlcaoVs7iXbMbM1OpYcux44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706206890; c=relaxed/simple;
-	bh=wKvOQw1uszeL6VYYEJrbAlMBJOc3QxqgYRWGjkv4gH8=;
+	s=arc-20240116; t=1706206896; c=relaxed/simple;
+	bh=KHPb5CgivpgI79uEl585HOhoLg2EnMZ4JXgvvm96Vao=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JExCPG7mVlDlyiUGEtoiSmhL+4255xB6QcoekqARZfHkORaimjtJVodcCwOjfbmfKLfGnKe6diEPMYfA0peCAggqOtH8lfpVIBAR2bCL9xkpjIqZRzFYBnlse+P0V5WWkseejfnOhZ1KPDOvXlNvUh2EO+qnMvejQq+LKSaEdRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f3S1+a/T; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SQWH+9TS; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=qREmDPcAc9vA4WaB82ZteEKhQBkiZNWhQbwSCRG57m4uvPI8L9i8UPimi21CY9J3+w/IAp9QlgI3VLkb3dqHXt55VDYjUlFdQsMxxes1uL5Ck1UEpFv2UuDfy/MPvTJejHcuaCgmLHhS0LEmozSgPW7f353zqPo+01rAhvR04P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wixx07Ur; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=alYtOhTn; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Jan 2024 18:21:22 -0000
+Date: Thu, 25 Jan 2024 18:21:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706206883;
+	s=2020; t=1706206884;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=m8u+Msm+yv8ypCZfws1Dj3v3kPTNmCH1FJ/UI6VO4YA=;
-	b=f3S1+a/THtYtHTb61nB9F2MX+h9YaIamEDMIOi4D9GGS6z2oIvCweru0ecks+816VhvG2S
-	pGiszvbldPXWcqGmUcs6cXDkq3NUKgeAQbVj4qXlM+4yIJjrRDzgV8rxZaXCjr7SraR5pb
-	NXrthADy1ovrkBdd1VYeDXYlI4uGxhYwTnXkj0Gc/HbJYFHxe531O7j/0ui49UZHxagg5T
-	dCdTKBVywGTq4gDi4+dq7snUmErDSkLuaInRfOAZr134jjU42TC42zmgG3DR9SZuXZRS1b
-	QRnn8kPhcFf1FWyDkG3sEJhc+xEBUSIeBXWGPMbUXQ0oXxCwFVbC2vCttQ1XIg==
+	bh=JXVjcsJdNSBAy+AJdD8Wi18htPiGpdpHfDYRqypez2M=;
+	b=wixx07UrO4bqNWy7NuZN9nMorpoo0cIRghWad0K1BK+GdKA431QGI16QXavshXxgk7cBsA
+	LUZJE2jcDb5nPMlBOvFLBSLX5HEkGom4tnEA/z+Ie0a/C8kOmrTOzFzvYd9ic4LOrhuiQ3
+	Kc9GXfworU7EbFTQ6opBpB0vnaS9pdAajkGQ7JaJVAg/XiHZuCg3BxCZWN+0CfNjR9pE9J
+	QPkRU7tslwV5lvSczBNhxhIoMp/ooHx07xucFLwA3U/TnWFx2XY+Sldchk08F8qlNuJXPi
+	2FG9LmmOqwIFEmu2Qgw+SMzAGHMHfHmuy3niq1JR0edoOv1xpoKL6nE/3pVAxw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706206883;
+	s=2020e; t=1706206884;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=m8u+Msm+yv8ypCZfws1Dj3v3kPTNmCH1FJ/UI6VO4YA=;
-	b=SQWH+9TScnwKyeI+2HUXIdCJ+hnwI/21Bhj6H8Mh+FLsrOUD3o3T7tMppa4c34uoVjgmJs
-	YJ1B0B/rzztn1yAw==
-From: "tip-bot2 for Xin Li" <tip-bot2@linutronix.de>
+	bh=JXVjcsJdNSBAy+AJdD8Wi18htPiGpdpHfDYRqypez2M=;
+	b=alYtOhTnGjAyxOxnfnNBmOcLbA9jR5UHS5UrHKJALrvNU5MXFlARPRvOVncrwyfQVJsrhM
+	UAX74FwEHjdlHADQ==
+From: "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fred] x86/fred: Add a machine check entry stub for FRED
-Cc: Xin Li <xin3.li@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Shan Kang <shan.kang@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231205105030.8698-26-xin3.li@intel.com>
-References: <20231205105030.8698-26-xin3.li@intel.com>
+Subject: [tip: x86/fred] x86/fred: Add a debug fault entry stub for FRED
+Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>, Xin Li <xin3.li@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Shan Kang <shan.kang@intel.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231205105030.8698-24-xin3.li@intel.com>
+References: <20231205105030.8698-24-xin3.li@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170620688226.398.1635592939916863509.tip-bot2@tip-bot2>
+Message-ID: <170620688384.398.17984833643981967432.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,75 +81,129 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/fred branch of tip:
 
-Commit-ID:     4aa4dce58fb07380c5a63c1993d0478f7ee195d1
-Gitweb:        https://git.kernel.org/tip/4aa4dce58fb07380c5a63c1993d0478f7ee195d1
-Author:        Xin Li <xin3.li@intel.com>
-AuthorDate:    Tue, 05 Dec 2023 02:50:14 -08:00
+Commit-ID:     cae371b3f6ab203fda6faeb3de5a04481ebb85d3
+Gitweb:        https://git.kernel.org/tip/cae371b3f6ab203fda6faeb3de5a04481ebb85d3
+Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
+AuthorDate:    Tue, 05 Dec 2023 02:50:12 -08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 25 Jan 2024 19:10:32 +01:00
 
-x86/fred: Add a machine check entry stub for FRED
+x86/fred: Add a debug fault entry stub for FRED
 
-Like #DB, when occurred on different ring level, i.e., from user or kernel
-context, #MCE needs to be handled on different stack: User #MCE on current
-task stack, while kernel #MCE on a dedicated stack.
+When occurred on different ring level, i.e., from user or kernel context,
+#DB needs to be handled on different stack: User #DB on current task
+stack, while kernel #DB on a dedicated stack. This is exactly how FRED
+event delivery invokes an exception handler: ring 3 event on level 0
+stack, i.e., current task stack; ring 0 event on the #DB dedicated stack
+specified in the IA32_FRED_STKLVLS MSR. So unlike IDT, the FRED debug
+exception entry stub doesn't do stack switch.
 
-This is exactly how FRED event delivery invokes an exception handler: ring
-3 event on level 0 stack, i.e., current task stack; ring 0 event on the
-#MCE dedicated stack specified in the IA32_FRED_STKLVLS MSR. So unlike IDT,
-the FRED machine check entry stub doesn't do stack switch.
+On a FRED system, the debug trap status information (DR6) is passed on
+the stack, to avoid the problem of transient state. Furthermore, FRED
+transitions avoid a lot of ugly corner cases the handling of which can,
+and should be, skipped.
 
+The FRED debug trap status information saved on the stack differs from
+DR6 in both stickiness and polarity; it is exactly in the format which
+debug_read_clear_dr6() returns for the IDT entry points.
+
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Shan Kang <shan.kang@intel.com>
-Link: https://lore.kernel.org/r/20231205105030.8698-26-xin3.li@intel.com
+Link: https://lore.kernel.org/r/20231205105030.8698-24-xin3.li@intel.com
 
 ---
- arch/x86/kernel/cpu/mce/core.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/x86/kernel/traps.c | 43 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 38 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index bc39252..04acdc3 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -46,6 +46,7 @@
- #include <linux/hardirq.h>
- #include <linux/kexec.h>
- 
-+#include <asm/fred.h>
- #include <asm/intel-family.h>
- #include <asm/processor.h>
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index c3b2f86..a03c233 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -51,6 +51,7 @@
+ #include <asm/ftrace.h>
  #include <asm/traps.h>
-@@ -2166,6 +2167,31 @@ DEFINE_IDTENTRY_MCE_USER(exc_machine_check)
- 	exc_machine_check_user(regs);
+ #include <asm/desc.h>
++#include <asm/fred.h>
+ #include <asm/fpu/api.h>
+ #include <asm/cpu.h>
+ #include <asm/cpu_entry_area.h>
+@@ -935,8 +936,7 @@ static bool notify_debug(struct pt_regs *regs, unsigned long *dr6)
+ 	return false;
+ }
+ 
+-static __always_inline void exc_debug_kernel(struct pt_regs *regs,
+-					     unsigned long dr6)
++static noinstr void exc_debug_kernel(struct pt_regs *regs, unsigned long dr6)
+ {
+ 	/*
+ 	 * Disable breakpoints during exception handling; recursive exceptions
+@@ -948,6 +948,11 @@ static __always_inline void exc_debug_kernel(struct pt_regs *regs,
+ 	 *
+ 	 * Entry text is excluded for HW_BP_X and cpu_entry_area, which
+ 	 * includes the entry stack is excluded for everything.
++	 *
++	 * For FRED, nested #DB should just work fine. But when a watchpoint or
++	 * breakpoint is set in the code path which is executed by #DB handler,
++	 * it results in an endless recursion and stack overflow. Thus we stay
++	 * with the IDT approach, i.e., save DR7 and disable #DB.
+ 	 */
+ 	unsigned long dr7 = local_db_save();
+ 	irqentry_state_t irq_state = irqentry_nmi_enter(regs);
+@@ -977,7 +982,8 @@ static __always_inline void exc_debug_kernel(struct pt_regs *regs,
+ 	 * Catch SYSENTER with TF set and clear DR_STEP. If this hit a
+ 	 * watchpoint at the same time then that will still be handled.
+ 	 */
+-	if ((dr6 & DR_STEP) && is_sysenter_singlestep(regs))
++	if (!cpu_feature_enabled(X86_FEATURE_FRED) &&
++	    (dr6 & DR_STEP) && is_sysenter_singlestep(regs))
+ 		dr6 &= ~DR_STEP;
+ 
+ 	/*
+@@ -1009,8 +1015,7 @@ out:
  	local_db_restore(dr7);
+ }
+ 
+-static __always_inline void exc_debug_user(struct pt_regs *regs,
+-					   unsigned long dr6)
++static noinstr void exc_debug_user(struct pt_regs *regs, unsigned long dr6)
+ {
+ 	bool icebp;
+ 
+@@ -1094,6 +1099,34 @@ DEFINE_IDTENTRY_DEBUG_USER(exc_debug)
+ {
+ 	exc_debug_user(regs, debug_read_clear_dr6());
  }
 +
 +#ifdef CONFIG_X86_FRED
 +/*
 + * When occurred on different ring level, i.e., from user or kernel
-+ * context, #MCE needs to be handled on different stack: User #MCE
-+ * on current task stack, while kernel #MCE on a dedicated stack.
++ * context, #DB needs to be handled on different stack: User #DB on
++ * current task stack, while kernel #DB on a dedicated stack.
 + *
 + * This is exactly how FRED event delivery invokes an exception
 + * handler: ring 3 event on level 0 stack, i.e., current task stack;
-+ * ring 0 event on the #MCE dedicated stack specified in the
-+ * IA32_FRED_STKLVLS MSR. So unlike IDT, the FRED machine check entry
-+ * stub doesn't do stack switch.
++ * ring 0 event on the #DB dedicated stack specified in the
++ * IA32_FRED_STKLVLS MSR. So unlike IDT, the FRED debug exception
++ * entry stub doesn't do stack switch.
 + */
-+DEFINE_FREDENTRY_MCE(exc_machine_check)
++DEFINE_FREDENTRY_DEBUG(exc_debug)
 +{
-+	unsigned long dr7;
++	/*
++	 * FRED #DB stores DR6 on the stack in the format which
++	 * debug_read_clear_dr6() returns for the IDT entry points.
++	 */
++	unsigned long dr6 = fred_event_data(regs);
 +
-+	dr7 = local_db_save();
 +	if (user_mode(regs))
-+		exc_machine_check_user(regs);
++		exc_debug_user(regs, dr6);
 +	else
-+		exc_machine_check_kernel(regs);
-+	local_db_restore(dr7);
++		exc_debug_kernel(regs, dr6);
 +}
-+#endif
++#endif /* CONFIG_X86_FRED */
++
  #else
- /* 32bit unified entry point */
- DEFINE_IDTENTRY_RAW(exc_machine_check)
+ /* 32 bit does not have separate entry points. */
+ DEFINE_IDTENTRY_RAW(exc_debug)
 
