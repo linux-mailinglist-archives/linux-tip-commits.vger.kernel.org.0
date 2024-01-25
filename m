@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-165-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-171-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6026683CACE
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 19:23:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997B483CAD4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 19:24:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 931E61C25F2C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 18:23:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12403B27159
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 18:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A451713A25F;
-	Thu, 25 Jan 2024 18:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5694413AA27;
+	Thu, 25 Jan 2024 18:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rVh6kEfl";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2EC/AIlv"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uwm7EttF";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ti2OQ1Yz"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90524133994;
-	Thu, 25 Jan 2024 18:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEAD1339AF;
+	Thu, 25 Jan 2024 18:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706206894; cv=none; b=kxe4jUpvBOPapgy4Yjni6XB5sNLDLQft1RWhTAu1skIxY5SHywYMapAgMrP7eXosVrbx6n0UbCdG3XzkaacrjjJ63vo9zYyeJRt2dD07mfP4NMZJewfzoSKUCTauBqkLVP0r9O5YgGH2j+fG5b454TB0EI0oyCwz2u7cGMHFF9s=
+	t=1706206895; cv=none; b=CZd2zNNsWRDFS8CxPBiZ9trOD+oZLHZRmvnYqG3TeRl/kitvQJQqZqpGQPK3Gn6urYBO3VGuB5gY4EwNxQlEHBr4cVThsFXhGYPgleXbbQwZylpyu11SP6DVgdx2NehKRQZqGaOV75cGP9BGJ1OBmMsZNcJps/R/dxWi4GqBFRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706206894; c=relaxed/simple;
-	bh=hlKPIQWs+nqz5n/JkEUGsWDTrg6fotPLGd5Uav6GkOs=;
+	s=arc-20240116; t=1706206895; c=relaxed/simple;
+	bh=z56MymlTZ5Kpk5/Uc1bXfsROakZRaYIo1NokNtFZ6Zo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=pecoeMAjeQsRZ4Vo5gUCmmrsZxG3sV2Gx1uIXTIyMdMwyjHL3FSJoAq+obKSSI3H1p2mkWMngZUXBmq9JJ8mDsQm03nr3ZYgx/EZHD/lMn70NblWlRZA+cj00emzCVjrvZJ5HqW/pEsskKM/obN5hV7qsFDcwYLOXworsUx+04o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rVh6kEfl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2EC/AIlv; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=P2AEj8Ydpnndd/ZO0HPZOVUrXZ6ZONx4Gz96ZfZe+ghR8bnY8yxMm5RxEBbBut6o9Hmy4/EkQo5vEaKfK2b+PlWnRjeprxsYnGsoDE1PBI3HAuZU40huEBbQfuM7GT7bVb1fFNJWs+ITMxJAQzj/vlUnYLFRc7aKhKn/p6PAzdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uwm7EttF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ti2OQ1Yz; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Jan 2024 18:21:23 -0000
+Date: Thu, 25 Jan 2024 18:21:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706206883;
+	s=2020; t=1706206885;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zsxTmJZoA59sY8kUufCOH3e/7llLXUJeKT/WAF1bOjs=;
-	b=rVh6kEflRVGuo1UfLXHnSXXAxpm5GY6iFaDhWgLsCX02gdf/uDdake0LGRB/ViLHnycpLd
-	UT/pJ7LM/oSdG44baau1PcO2mK5R91kbbtBY/VjY2a8zuWMZEK4E9YYLNjmBuP3byC5r6x
-	tph6bEeuRNV6L8zFQMD1DBiIeyf7lWJbcMz2z0Dv/8VomqkzaNA7Gr2CTzs9/Ws9ub7dcD
-	eNDv2112Src4pj/Mnd+U4iYio9KLHqUFF9NR4t7JtuJpQ8Gs1h8f8YswNYVtpcLslLxtIZ
-	5gU+Xs8xnIgj1vJn3Wmyp2BOsPkJ/CNAF1a/xM7ksL4Tz4HTLUbn7jF8aXKcjA==
+	bh=gZoA4FxosOnc/2SH0r1X97bBp8PoE6MXH6T4TfvX8r4=;
+	b=uwm7EttF57GHZzr4nMKSS1eM9e95SWUJP+1Q9M2j0T94hRF6+hc6i6hqb7gX+q+O7W7kc+
+	t+WpGFo6XIDWawaA/grMN74IoNoP+cpU/uu8mJKDr9DFpoKy/bSEH5fIPONP+wcigXTCDC
+	quKG2Mx/5G1FHD2VWd9yqFNo8bPRErXYdu8N37XnfKxQjXoXwk0HCq/GUI6P2b84l0oidC
+	SXpeOHrJQXQH22Mp/fZwgwcoz+6LYnppLg20+z8hNbQNCGpQcrsNSyTHhGud+rM4wrGIrC
+	+NoN0AcvTXAqfJ3vQnQUMWDbzCCGdNIIUbCqFPXYnnmVkZYwn/YkMTCFXwqm/Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706206883;
+	s=2020e; t=1706206885;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zsxTmJZoA59sY8kUufCOH3e/7llLXUJeKT/WAF1bOjs=;
-	b=2EC/AIlvlcI/FVhanLXfgLX036xiaXP9n5WWovyN5oNjY3dM6Rgz5HPFeYayJO8eD7yKgy
-	Gg/6XqBEZ24N/2Ag==
-From: "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
+	bh=gZoA4FxosOnc/2SH0r1X97bBp8PoE6MXH6T4TfvX8r4=;
+	b=Ti2OQ1YzqYX2b3GA3oET2P01/pULhUD8YlBfZWSPf/pwuiAy7U7xtGJlISlABMAknTxrDl
+	9dUNHnOAX5n+iPAg==
+From: "tip-bot2 for Xin Li" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fred] x86/fred: Add a NMI entry stub for FRED
-Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>, Xin Li <xin3.li@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Shan Kang <shan.kang@intel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231216063139.25567-1-xin3.li@intel.com>
-References: <20231216063139.25567-1-xin3.li@intel.com>
+Subject: [tip: x86/fred] x86/idtentry: Incorporate definitions/declarations of
+ the FRED entries
+Cc: Thomas Gleixner <tglx@linutronix.de>, Xin Li <xin3.li@intel.com>,
+ Shan Kang <shan.kang@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231205105030.8698-23-xin3.li@intel.com>
+References: <20231205105030.8698-23-xin3.li@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170620688304.398.9423671583132761035.tip-bot2@tip-bot2>
+Message-ID: <170620688459.398.2668113334618463685.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,89 +81,223 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/fred branch of tip:
 
-Commit-ID:     994f75798425ca0865b54dcc7bbe13bba5e4cfe4
-Gitweb:        https://git.kernel.org/tip/994f75798425ca0865b54dcc7bbe13bba5e4cfe4
-Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
-AuthorDate:    Fri, 15 Dec 2023 22:31:39 -08:00
+Commit-ID:     e1896be71c38e5b531578fe59de8b48c0f667cc7
+Gitweb:        https://git.kernel.org/tip/e1896be71c38e5b531578fe59de8b48c0f667cc7
+Author:        Xin Li <xin3.li@intel.com>
+AuthorDate:    Tue, 05 Dec 2023 02:50:11 -08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 25 Jan 2024 19:10:32 +01:00
 
-x86/fred: Add a NMI entry stub for FRED
+x86/idtentry: Incorporate definitions/declarations of the FRED entries
 
-On a FRED system, NMIs nest both with themselves and faults, transient
-information is saved into the stack frame, and NMI unblocking only
-happens when the stack frame indicates that so should happen.
+FRED and IDT can share most of the definitions and declarations so
+that in the majority of cases the actual handler implementation is the
+same.
 
-Thus, the NMI entry stub for FRED is really quite small...
+The differences are the exceptions where FRED stores exception related
+information on the stack and the sysvec implementations as FRED can
+handle irqentry/exit() in the dispatcher instead of having it in each
+handler.
 
-Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Also add stub defines for vectors which are not used due to Kconfig
+decisions to spare the ifdeffery in the actual FRED dispatch code.
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Shan Kang <shan.kang@intel.com>
-Link: https://lore.kernel.org/r/20231216063139.25567-1-xin3.li@intel.com
+Link: https://lore.kernel.org/r/20231205105030.8698-23-xin3.li@intel.com
 
 ---
- arch/x86/kernel/nmi.c | 42 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+)
+ arch/x86/include/asm/idtentry.h | 71 ++++++++++++++++++++++++++++----
+ 1 file changed, 63 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index 17e955a..3130a66 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -35,6 +35,7 @@
- #include <asm/nospec-branch.h>
- #include <asm/microcode.h>
- #include <asm/sev.h>
-+#include <asm/fred.h>
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index e9f71b3..570f286 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -13,15 +13,18 @@
  
- #define CREATE_TRACE_POINTS
- #include <trace/events/nmi.h>
-@@ -651,6 +652,47 @@ void nmi_backtrace_stall_check(const struct cpumask *btp)
+ #include <asm/irq_stack.h>
  
++typedef void (*idtentry_t)(struct pt_regs *regs);
++
+ /**
+  * DECLARE_IDTENTRY - Declare functions for simple IDT entry points
+  *		      No error code pushed by hardware
+  * @vector:	Vector number (ignored for C)
+  * @func:	Function name of the entry point
+  *
+- * Declares three functions:
++ * Declares four functions:
+  * - The ASM entry point: asm_##func
+  * - The XEN PV trap entry point: xen_##func (maybe unused)
++ * - The C handler called from the FRED event dispatcher (maybe unused)
+  * - The C handler called from the ASM entry point
+  *
+  * Note: This is the C variant of DECLARE_IDTENTRY(). As the name says it
+@@ -31,6 +34,7 @@
+ #define DECLARE_IDTENTRY(vector, func)					\
+ 	asmlinkage void asm_##func(void);				\
+ 	asmlinkage void xen_asm_##func(void);				\
++	void fred_##func(struct pt_regs *regs);				\
+ 	__visible void func(struct pt_regs *regs)
+ 
+ /**
+@@ -138,6 +142,17 @@ static __always_inline void __##func(struct pt_regs *regs,		\
+ __visible noinstr void func(struct pt_regs *regs)
+ 
+ /**
++ * DEFINE_FREDENTRY_RAW - Emit code for raw FRED entry points
++ * @func:	Function name of the entry point
++ *
++ * @func is called from the FRED event dispatcher with interrupts disabled.
++ *
++ * See @DEFINE_IDTENTRY_RAW for further details.
++ */
++#define DEFINE_FREDENTRY_RAW(func)					\
++noinstr void fred_##func(struct pt_regs *regs)
++
++/**
+  * DECLARE_IDTENTRY_RAW_ERRORCODE - Declare functions for raw IDT entry points
+  *				    Error code pushed by hardware
+  * @vector:	Vector number (ignored for C)
+@@ -233,17 +248,27 @@ static noinline void __##func(struct pt_regs *regs, u32 vector)
+ #define DEFINE_IDTENTRY_SYSVEC(func)					\
+ static void __##func(struct pt_regs *regs);				\
+ 									\
++static __always_inline void instr_##func(struct pt_regs *regs)		\
++{									\
++	kvm_set_cpu_l1tf_flush_l1d();					\
++	run_sysvec_on_irqstack_cond(__##func, regs);			\
++}									\
++									\
+ __visible noinstr void func(struct pt_regs *regs)			\
+ {									\
+ 	irqentry_state_t state = irqentry_enter(regs);			\
+ 									\
+ 	instrumentation_begin();					\
+-	kvm_set_cpu_l1tf_flush_l1d();					\
+-	run_sysvec_on_irqstack_cond(__##func, regs);			\
++	instr_##func (regs);						\
+ 	instrumentation_end();						\
+ 	irqentry_exit(regs, state);					\
+ }									\
+ 									\
++void fred_##func(struct pt_regs *regs)					\
++{									\
++	instr_##func (regs);						\
++}									\
++									\
+ static noinline void __##func(struct pt_regs *regs)
+ 
+ /**
+@@ -260,19 +285,29 @@ static noinline void __##func(struct pt_regs *regs)
+ #define DEFINE_IDTENTRY_SYSVEC_SIMPLE(func)				\
+ static __always_inline void __##func(struct pt_regs *regs);		\
+ 									\
+-__visible noinstr void func(struct pt_regs *regs)			\
++static __always_inline void instr_##func(struct pt_regs *regs)		\
+ {									\
+-	irqentry_state_t state = irqentry_enter(regs);			\
+-									\
+-	instrumentation_begin();					\
+ 	__irq_enter_raw();						\
+ 	kvm_set_cpu_l1tf_flush_l1d();					\
+ 	__##func (regs);						\
+ 	__irq_exit_raw();						\
++}									\
++									\
++__visible noinstr void func(struct pt_regs *regs)			\
++{									\
++	irqentry_state_t state = irqentry_enter(regs);			\
++									\
++	instrumentation_begin();					\
++	instr_##func (regs);						\
+ 	instrumentation_end();						\
+ 	irqentry_exit(regs, state);					\
+ }									\
+ 									\
++void fred_##func(struct pt_regs *regs)					\
++{									\
++	instr_##func (regs);						\
++}									\
++									\
+ static __always_inline void __##func(struct pt_regs *regs)
+ 
+ /**
+@@ -410,15 +445,18 @@ __visible noinstr void func(struct pt_regs *regs,			\
+ /* C-Code mapping */
+ #define DECLARE_IDTENTRY_NMI		DECLARE_IDTENTRY_RAW
+ #define DEFINE_IDTENTRY_NMI		DEFINE_IDTENTRY_RAW
++#define DEFINE_FREDENTRY_NMI		DEFINE_FREDENTRY_RAW
+ 
+ #ifdef CONFIG_X86_64
+ #define DECLARE_IDTENTRY_MCE		DECLARE_IDTENTRY_IST
+ #define DEFINE_IDTENTRY_MCE		DEFINE_IDTENTRY_IST
+ #define DEFINE_IDTENTRY_MCE_USER	DEFINE_IDTENTRY_NOIST
++#define DEFINE_FREDENTRY_MCE		DEFINE_FREDENTRY_RAW
+ 
+ #define DECLARE_IDTENTRY_DEBUG		DECLARE_IDTENTRY_IST
+ #define DEFINE_IDTENTRY_DEBUG		DEFINE_IDTENTRY_IST
+ #define DEFINE_IDTENTRY_DEBUG_USER	DEFINE_IDTENTRY_NOIST
++#define DEFINE_FREDENTRY_DEBUG		DEFINE_FREDENTRY_RAW
  #endif
  
-+#ifdef CONFIG_X86_FRED
-+/*
-+ * With FRED, CR2/DR6 is pushed to #PF/#DB stack frame during FRED
-+ * event delivery, i.e., there is no problem of transient states.
-+ * And NMI unblocking only happens when the stack frame indicates
-+ * that so should happen.
-+ *
-+ * Thus, the NMI entry stub for FRED is really straightforward and
-+ * as simple as most exception handlers. As such, #DB is allowed
-+ * during NMI handling.
-+ */
-+DEFINE_FREDENTRY_NMI(exc_nmi)
-+{
-+	irqentry_state_t irq_state;
-+
-+	if (arch_cpu_is_offline(smp_processor_id())) {
-+		if (microcode_nmi_handler_enabled())
-+			microcode_offline_nmi_handler();
-+		return;
-+	}
-+
-+	/*
-+	 * Save CR2 for eventual restore to cover the case where the NMI
-+	 * hits the VMENTER/VMEXIT region where guest CR2 is life. This
-+	 * prevents guest state corruption in case that the NMI handler
-+	 * takes a page fault.
-+	 */
-+	this_cpu_write(nmi_cr2, read_cr2());
-+
-+	irq_state = irqentry_nmi_enter(regs);
-+
-+	inc_irq_stat(__nmi_count);
-+	default_do_nmi(regs);
-+
-+	irqentry_nmi_exit(regs, irq_state);
-+
-+	if (unlikely(this_cpu_read(nmi_cr2) != read_cr2()))
-+		write_cr2(this_cpu_read(nmi_cr2));
-+}
-+#endif
-+
- void stop_nmi(void)
- {
- 	ignore_nmis++;
+ #else /* !__ASSEMBLY__ */
+@@ -655,23 +693,36 @@ DECLARE_IDTENTRY(RESCHEDULE_VECTOR,			sysvec_reschedule_ipi);
+ DECLARE_IDTENTRY_SYSVEC(REBOOT_VECTOR,			sysvec_reboot);
+ DECLARE_IDTENTRY_SYSVEC(CALL_FUNCTION_SINGLE_VECTOR,	sysvec_call_function_single);
+ DECLARE_IDTENTRY_SYSVEC(CALL_FUNCTION_VECTOR,		sysvec_call_function);
++#else
++# define fred_sysvec_reschedule_ipi			NULL
++# define fred_sysvec_reboot				NULL
++# define fred_sysvec_call_function_single		NULL
++# define fred_sysvec_call_function			NULL
+ #endif
+ 
+ #ifdef CONFIG_X86_LOCAL_APIC
+ # ifdef CONFIG_X86_MCE_THRESHOLD
+ DECLARE_IDTENTRY_SYSVEC(THRESHOLD_APIC_VECTOR,		sysvec_threshold);
++# else
++# define fred_sysvec_threshold				NULL
+ # endif
+ 
+ # ifdef CONFIG_X86_MCE_AMD
+ DECLARE_IDTENTRY_SYSVEC(DEFERRED_ERROR_VECTOR,		sysvec_deferred_error);
++# else
++# define fred_sysvec_deferred_error			NULL
+ # endif
+ 
+ # ifdef CONFIG_X86_THERMAL_VECTOR
+ DECLARE_IDTENTRY_SYSVEC(THERMAL_APIC_VECTOR,		sysvec_thermal);
++# else
++# define fred_sysvec_thermal				NULL
+ # endif
+ 
+ # ifdef CONFIG_IRQ_WORK
+ DECLARE_IDTENTRY_SYSVEC(IRQ_WORK_VECTOR,		sysvec_irq_work);
++# else
++# define fred_sysvec_irq_work				NULL
+ # endif
+ #endif
+ 
+@@ -679,12 +730,16 @@ DECLARE_IDTENTRY_SYSVEC(IRQ_WORK_VECTOR,		sysvec_irq_work);
+ DECLARE_IDTENTRY_SYSVEC(POSTED_INTR_VECTOR,		sysvec_kvm_posted_intr_ipi);
+ DECLARE_IDTENTRY_SYSVEC(POSTED_INTR_WAKEUP_VECTOR,	sysvec_kvm_posted_intr_wakeup_ipi);
+ DECLARE_IDTENTRY_SYSVEC(POSTED_INTR_NESTED_VECTOR,	sysvec_kvm_posted_intr_nested_ipi);
++#else
++# define fred_sysvec_kvm_posted_intr_ipi		NULL
++# define fred_sysvec_kvm_posted_intr_wakeup_ipi		NULL
++# define fred_sysvec_kvm_posted_intr_nested_ipi		NULL
+ #endif
+ 
+ #if IS_ENABLED(CONFIG_HYPERV)
+ DECLARE_IDTENTRY_SYSVEC(HYPERVISOR_CALLBACK_VECTOR,	sysvec_hyperv_callback);
+ DECLARE_IDTENTRY_SYSVEC(HYPERV_REENLIGHTENMENT_VECTOR,	sysvec_hyperv_reenlightenment);
+-DECLARE_IDTENTRY_SYSVEC(HYPERV_STIMER0_VECTOR,	sysvec_hyperv_stimer0);
++DECLARE_IDTENTRY_SYSVEC(HYPERV_STIMER0_VECTOR,		sysvec_hyperv_stimer0);
+ #endif
+ 
+ #if IS_ENABLED(CONFIG_ACRN_GUEST)
 
