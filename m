@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-148-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-149-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D03C83B5BC
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 00:50:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEE283BBA1
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 09:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF50328737C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Jan 2024 23:50:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C01B1C21EB4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 08:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E3C136648;
-	Wed, 24 Jan 2024 23:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F58175BC;
+	Thu, 25 Jan 2024 08:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DTKytzZm";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UImZUpaa"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3K8roo9V";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZFxAVwdQ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A64135407;
-	Wed, 24 Jan 2024 23:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74AA17727;
+	Thu, 25 Jan 2024 08:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706140233; cv=none; b=WChWUqMEQgK8rxThY1Ms620Vj199U4+ix+BNlMhB3Uc618O8Of/dySLBZgbTV5KcWaZACY7a9ds2XaILFuU86OQGBmw+4x2fdxSNIL1wb4jrhHg+59C2Jw/nn+YxKFGXhLLzBj7fI4eF210lMLlDAOfwX6AJF7SJ20H+9HqCSoY=
+	t=1706170636; cv=none; b=bRb2yrrDszxQwR6IBCPi7ZwySgvRTXcz7UHp2b5wYVzkoLCX2PlhFoqAPCV9tf0u7PvIiobJ9rrHsHZQ23/I8jP1v5NLZjt0DiS0+ziOw2Zp4WTO+aFts+rVFy5bXflZsE2QPuT0C4fGQSc4sYL9HA8VHm3y/1PsELe5mu9A2+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706140233; c=relaxed/simple;
-	bh=28oyuCWqOzuiUre2BYd/XpqNp2z9rDAea2r+BqtLB6U=;
+	s=arc-20240116; t=1706170636; c=relaxed/simple;
+	bh=V40nGmNyn/o+KifX8TIh7H+eBEDTtw080ETaLnTfvlw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=b1PQVsFwUhpl/WRYmIy8IDoFpMOqvYRBomRjsk53q/ZahquQayQrvJsyv4whU2zHF85j+2rbXFxgG6N43xFS4zoMa8Y/7C8/RHOVRQIZ9rltjI/KWncGWeJ2ywPOchlnZUr35Qicfo25yL18j2/EdhH3hLRThTQ6SRtvqUD6rU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DTKytzZm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UImZUpaa; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Kh95Yk3kx5a/K2SgxITSsSVDN/yaUa9NkbCIIaA8/DOjW4G/SdwsHYGYMBElgNiQvMtghdbz5RacZZhiNNC9xu2+S6RB74KkH8o/D7PhOKM2dprFRir8B7VVF3u7y7cnO8+iKCppWk2kDS2ftJg9/Wf3WYmw1e6R908rs2G1Zgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3K8roo9V; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZFxAVwdQ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 24 Jan 2024 23:50:26 -0000
+Date: Thu, 25 Jan 2024 08:17:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706140228;
+	s=2020; t=1706170632;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Nqtun/gfSuSGqOJXigUbaoDPBPqs2SxC2sefNXP0Rlg=;
-	b=DTKytzZmHaG0uo7rcCbsvJIXJq4TetR2hbwLaj/CJIYTT34weeAuN21OFgPTozDhgEp1by
-	sZ766xOq03HmfDGtv6DLQJXfOxe7wmgrAZ6RNTMsHVOXrxsJxXXr8+rl6xR29gdrfLTgrE
-	f6gkvINMU1egezBuwD3d+6y/aTE6nxT+fJRABM8YofDWlz4mSq/WqKwb+EPgmwYLlsZeJX
-	d4s0uUXKmuQkub1xB73q8pklfCt+d1M+ejikh245uI9sHihdNLkMLbXObQBEbmNUxZlmXv
-	ILuA7q2X+ZluwmobXP+L327K6kJ6yTxQhf5/yS3KBdSxBACbbizog4kMrmZIcA==
+	bh=lER7lrtQRjwXWHDXcRnYjUURbFjjl0xhPeP2jwJSCh0=;
+	b=3K8roo9VnCsxY9bM39p5ipaVPiNN/T+OcU2IohiF4fwXmNoLh4txb2NNyQyF3FedUlN1UW
+	aXYrY2aiwJdPD7y/ESE+t2UNUJPGdQS+i6MnUdOIvFo7eAX9qyg97rzO8V61E3JOkm5DTN
+	lq3oLEGQRpJ9iz7rpJ06Sv/zSmQgY3kqumV5JoBCecTxS5rdxU7L7CkMbOP9HWrXs0tcli
+	GMJXoG3pJIlDcdFMx4BGuMJSwa6iN2+RjGYUkvcuwFI1X04kVV3TcDJuyMBi+gJx1EIwJA
+	PH8eeqdd5DPNXlV7gN1+LJifPgAuIt5g6HoPz/FFJ/+tqe8uaH7zxD1mtWHQew==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706140228;
+	s=2020e; t=1706170632;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Nqtun/gfSuSGqOJXigUbaoDPBPqs2SxC2sefNXP0Rlg=;
-	b=UImZUpaa85vE6/qjQH+2zGu+1jwryq0Wp1qHzWsMjQ3HCf9R1ULAdo6yvvFkKQBf9QH1a5
-	gcEHwTC+LrfmC2Cw==
-From: "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
+	bh=lER7lrtQRjwXWHDXcRnYjUURbFjjl0xhPeP2jwJSCh0=;
+	b=ZFxAVwdQ4y5d3WPqsD+czAFmGV0hSkhhN13id3D5/v+bOU7ZrX8ouS/Qv/uYSuucsjkRqE
+	WCGuuAYWf5PwWwDA==
+From: "tip-bot2 for Jiri Wiesner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Remove redundant variable in
- mbm_config_write_domain()
-Cc: kernel test robot <lkp@intel.com>, Babu Moger <babu.moger@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>,
- Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <202401241810.jbd8Ipa1-lkp@intel.com>
-References: <202401241810.jbd8Ipa1-lkp@intel.com>
+Subject: [tip: timers/urgent] clocksource: Skip watchdog check for large
+ watchdog intervals
+Cc: Feng Tang <feng.tang@intel.com>, Jiri Wiesner <jwiesner@suse.de>,
+ Thomas Gleixner <tglx@linutronix.de>, "Paul E. McKenney" <paulmck@kernel.org>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240122172350.GA740@incl>
+References: <20240122172350.GA740@incl>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170614022689.398.12396173216201868713.tip-bot2@tip-bot2>
+Message-ID: <170617063191.398.1061031038655031575.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,100 +80,143 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cache branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     fc747eebef734563cf68a512f57937c8f231834a
-Gitweb:        https://git.kernel.org/tip/fc747eebef734563cf68a512f57937c8f231834a
-Author:        Babu Moger <babu.moger@amd.com>
-AuthorDate:    Wed, 24 Jan 2024 11:52:56 -06:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 25 Jan 2024 00:41:59 +01:00
+Commit-ID:     644649553508b9bacf0fc7a5bdc4f9e0165576a5
+Gitweb:        https://git.kernel.org/tip/644649553508b9bacf0fc7a5bdc4f9e0165576a5
+Author:        Jiri Wiesner <jwiesner@suse.de>
+AuthorDate:    Mon, 22 Jan 2024 18:23:50 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 25 Jan 2024 09:13:16 +01:00
 
-x86/resctrl: Remove redundant variable in mbm_config_write_domain()
+clocksource: Skip watchdog check for large watchdog intervals
 
-The kernel test robot reported the following warning after commit
+There have been reports of the watchdog marking clocksources unstable on
+machines with 8 NUMA nodes:
 
-  54e35eb8611c ("x86/resctrl: Read supported bandwidth sources from CPUID").
+  clocksource: timekeeping watchdog on CPU373:
+  Marking clocksource 'tsc' as unstable because the skew is too large:
+  clocksource:   'hpet' wd_nsec: 14523447520
+  clocksource:   'tsc'  cs_nsec: 14524115132
 
-even though the issue is present even in the original commit
+The measured clocksource skew - the absolute difference between cs_nsec
+and wd_nsec - was 668 microseconds:
 
-  92bd5a139033 ("x86/resctrl: Add interface to write mbm_total_bytes_config")
+  cs_nsec - wd_nsec = 14524115132 - 14523447520 = 667612
 
-which added this function. The reported warning is:
+The kernel used 200 microseconds for the uncertainty_margin of both the
+clocksource and watchdog, resulting in a threshold of 400 microseconds (the
+md variable). Both the cs_nsec and the wd_nsec value indicate that the
+readout interval was circa 14.5 seconds.  The observed behaviour is that
+watchdog checks failed for large readout intervals on 8 NUMA node
+machines. This indicates that the size of the skew was directly proportinal
+to the length of the readout interval on those machines. The measured
+clocksource skew, 668 microseconds, was evaluated against a threshold (the
+md variable) that is suited for readout intervals of roughly
+WATCHDOG_INTERVAL, i.e. HZ >> 1, which is 0.5 second.
 
-  $ make C=1 CHECK=scripts/coccicheck arch/x86/kernel/cpu/resctrl/rdtgroup.o
-  ...
-  arch/x86/kernel/cpu/resctrl/rdtgroup.c:1621:5-8: Unneeded variable: "ret". Return "0" on line 1655
+The intention of 2e27e793e280 ("clocksource: Reduce clocksource-skew
+threshold") was to tighten the threshold for evaluating skew and set the
+lower bound for the uncertainty_margin of clocksources to twice
+WATCHDOG_MAX_SKEW. Later in c37e85c135ce ("clocksource: Loosen clocksource
+watchdog constraints"), the WATCHDOG_MAX_SKEW constant was increased to
+125 microseconds to fit the limit of NTP, which is able to use a
+clocksource that suffers from up to 500 microseconds of skew per second.
+Both the TSC and the HPET use default uncertainty_margin. When the
+readout interval gets stretched the default uncertainty_margin is no
+longer a suitable lower bound for evaluating skew - it imposes a limit
+that is far stricter than the skew with which NTP can deal.
 
-Remove the local variable 'ret'.
+The root causes of the skew being directly proportinal to the length of
+the readout interval are:
 
-  [ bp: Massage commit message, make mbm_config_write_domain() void. ]
+  * the inaccuracy of the shift/mult pairs of clocksources and the watchdog
+  * the conversion to nanoseconds is imprecise for large readout intervals
 
-Fixes: 92bd5a139033 ("x86/resctrl: Add interface to write mbm_total_bytes_config")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401241810.jbd8Ipa1-lkp@intel.com/
-Signed-off-by: Babu Moger <babu.moger@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lore.kernel.org/r/202401241810.jbd8Ipa1-lkp@intel.com
+Prevent this by skipping the current watchdog check if the readout
+interval exceeds 2 * WATCHDOG_INTERVAL. Considering the maximum readout
+interval of 2 * WATCHDOG_INTERVAL, the current default uncertainty margin
+(of the TSC and HPET) corresponds to a limit on clocksource skew of 250
+ppm (microseconds of skew per second).  To keep the limit imposed by NTP
+(500 microseconds of skew per second) for all possible readout intervals,
+the margins would have to be scaled so that the threshold value is
+proportional to the length of the actual readout interval.
+
+As for why the readout interval may get stretched: Since the watchdog is
+executed in softirq context the expiration of the watchdog timer can get
+severely delayed on account of a ksoftirqd thread not getting to run in a
+timely manner. Surely, a system with such belated softirq execution is not
+working well and the scheduling issue should be looked into but the
+clocksource watchdog should be able to deal with it accordingly.
+
+Fixes: 2e27e793e280 ("clocksource: Reduce clocksource-skew threshold")
+Suggested-by: Feng Tang <feng.tang@intel.com>
+Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Feng Tang <feng.tang@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240122172350.GA740@incl
 ---
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ kernel/time/clocksource.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 2b69e56..aa24343 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -1614,11 +1614,10 @@ static void mon_event_config_write(void *info)
- 	wrmsr(MSR_IA32_EVT_CFG_BASE + index, mon_info->mon_config, 0);
- }
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index c108ed8..3052b1f 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -99,6 +99,7 @@ static u64 suspend_start;
+  * Interval: 0.5sec.
+  */
+ #define WATCHDOG_INTERVAL (HZ >> 1)
++#define WATCHDOG_INTERVAL_MAX_NS ((2 * WATCHDOG_INTERVAL) * (NSEC_PER_SEC / HZ))
  
--static int mbm_config_write_domain(struct rdt_resource *r,
--				   struct rdt_domain *d, u32 evtid, u32 val)
-+static void mbm_config_write_domain(struct rdt_resource *r,
-+				    struct rdt_domain *d, u32 evtid, u32 val)
+ /*
+  * Threshold: 0.0312s, when doubled: 0.0625s.
+@@ -134,6 +135,7 @@ static DECLARE_WORK(watchdog_work, clocksource_watchdog_work);
+ static DEFINE_SPINLOCK(watchdog_lock);
+ static int watchdog_running;
+ static atomic_t watchdog_reset_pending;
++static int64_t watchdog_max_interval;
+ 
+ static inline void clocksource_watchdog_lock(unsigned long *flags)
  {
- 	struct mon_config_info mon_info = {0};
--	int ret = 0;
+@@ -399,8 +401,8 @@ static inline void clocksource_reset_watchdog(void)
+ static void clocksource_watchdog(struct timer_list *unused)
+ {
+ 	u64 csnow, wdnow, cslast, wdlast, delta;
++	int64_t wd_nsec, cs_nsec, interval;
+ 	int next_cpu, reset_pending;
+-	int64_t wd_nsec, cs_nsec;
+ 	struct clocksource *cs;
+ 	enum wd_read_status read_ret;
+ 	unsigned long extra_wait = 0;
+@@ -470,6 +472,27 @@ static void clocksource_watchdog(struct timer_list *unused)
+ 		if (atomic_read(&watchdog_reset_pending))
+ 			continue;
  
- 	/*
- 	 * Read the current config value first. If both are the same then
-@@ -1627,7 +1626,7 @@ static int mbm_config_write_domain(struct rdt_resource *r,
- 	mon_info.evtid = evtid;
- 	mondata_config_read(d, &mon_info);
- 	if (mon_info.mon_config == val)
--		goto out;
-+		return;
- 
- 	mon_info.mon_config = val;
- 
-@@ -1650,9 +1649,6 @@ static int mbm_config_write_domain(struct rdt_resource *r,
- 	 * mbm_local and mbm_total counts for all the RMIDs.
- 	 */
- 	resctrl_arch_reset_rmid_all(r, d);
--
--out:
--	return ret;
- }
- 
- static int mon_config_write(struct rdt_resource *r, char *tok, u32 evtid)
-@@ -1661,7 +1657,6 @@ static int mon_config_write(struct rdt_resource *r, char *tok, u32 evtid)
- 	char *dom_str = NULL, *id_str;
- 	unsigned long dom_id, val;
- 	struct rdt_domain *d;
--	int ret = 0;
- 
- next:
- 	if (!tok || tok[0] == '\0')
-@@ -1690,9 +1685,7 @@ next:
- 
- 	list_for_each_entry(d, &r->domains, list) {
- 		if (d->id == dom_id) {
--			ret = mbm_config_write_domain(r, d, evtid, val);
--			if (ret)
--				return -EINVAL;
-+			mbm_config_write_domain(r, d, evtid, val);
- 			goto next;
- 		}
- 	}
++		/*
++		 * The processing of timer softirqs can get delayed (usually
++		 * on account of ksoftirqd not getting to run in a timely
++		 * manner), which causes the watchdog interval to stretch.
++		 * Skew detection may fail for longer watchdog intervals
++		 * on account of fixed margins being used.
++		 * Some clocksources, e.g. acpi_pm, cannot tolerate
++		 * watchdog intervals longer than a few seconds.
++		 */
++		interval = max(cs_nsec, wd_nsec);
++		if (unlikely(interval > WATCHDOG_INTERVAL_MAX_NS)) {
++			if (system_state > SYSTEM_SCHEDULING &&
++			    interval > 2 * watchdog_max_interval) {
++				watchdog_max_interval = interval;
++				pr_warn("Long readout interval, skipping watchdog check: cs_nsec: %lld wd_nsec: %lld\n",
++					cs_nsec, wd_nsec);
++			}
++			watchdog_timer.expires = jiffies;
++			continue;
++		}
++
+ 		/* Check the deviation from the watchdog clocksource. */
+ 		md = cs->uncertainty_margin + watchdog->uncertainty_margin;
+ 		if (abs(cs_nsec - wd_nsec) > md) {
 
