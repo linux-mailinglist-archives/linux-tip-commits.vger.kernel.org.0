@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-153-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-154-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4578883C883
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 17:47:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC4983CAB5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 19:21:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793531C20D91
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 16:47:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9F701C238DE
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 18:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0148C13A274;
-	Thu, 25 Jan 2024 16:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94471339B9;
+	Thu, 25 Jan 2024 18:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iUkcoNPZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BAKL2yrv"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NZUtpDRq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v7bqEtTd"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4221F1386C9;
-	Thu, 25 Jan 2024 16:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC735133994;
+	Thu, 25 Jan 2024 18:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706201022; cv=none; b=rObEg3jA2j6Fu6xPILfKrGPnDA582yhABgn8TzFzR9QPkkoKJ+uTv0a9Vq/5RmCMkGR3JPrIOq8mkl6xwUG4IJsGKAL+/d+ec1LNADAGTh7hmelh/YvF6oIH4wtjdNeUlqfKPfs1Y0jNrSsF9CDYtYDt3UIJHrVnH4e0M4cp6V8=
+	t=1706206878; cv=none; b=nCCCVpxQOwVQjVgX+euKryWmO3N1oypdYs28uu++n7AONWVgbXrKpAIOxmFe2ExmXyN0rQFOMI4JfUCSnv7sr3amV1jFTrSaKrjYFCMl22ifUh0T/fryi4XATmJWmDqw+1d5OTgBwUoJ+A6SCZyOQ0Zzlfr1s5DOuS5dJ6rMayI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706201022; c=relaxed/simple;
-	bh=qlZenJyIstVYdWiJcRf04ZXU4wRC9pZX/QYgGL3c40s=;
+	s=arc-20240116; t=1706206878; c=relaxed/simple;
+	bh=+gYbRRNF8VL4AUO+/s19Tp8vjrP5BmpHxwfIE0dYgUI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Tc7EKb8Tsw8go/y50X+KoaNL14quOlpb5Fux+Sdh2cUrKE8sxeW+l128IM4irSFylkOVqOJ/4Bt+015WH0R0spfxiJ2LvIaPPlcjfQ0rcakebZTV5gN8DLdJ0rw7w5RZCEHNfE+1hegwK4kcMZi81fbF7ILY6dq3XFU8ZWJCywE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iUkcoNPZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BAKL2yrv; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=o8PNBCiv1DlxQYZAdYHNUHUrdAb5Aj70Oj/ayRvpuZpooeQ/YRWezg5FZCyLsGtGbA5obtU86NHbQH7dGSX8F17f5QP4tFh2vknEVoa/PkpX6zK+gi2HlEjgmZMMA2/5mWA277aEWrgPpDR19M5EUdbSIXg61D/MwhlBV4ZT8H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NZUtpDRq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v7bqEtTd; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Jan 2024 16:43:37 -0000
+Date: Thu, 25 Jan 2024 18:21:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706201018;
+	s=2020; t=1706206874;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/9alz6IhoFeSBeq+RLDCT53ipn+PBG+CbCy5oS/MiWY=;
-	b=iUkcoNPZdZW6zaapgJmGPJ5/7NO5k0g7nklK/z6nyl/fymgi+O4kWTC0xDzIUWFHE1lLNl
-	n3EDLrBeycJ25IZ0A/pAJ0pu490FPo4lHMR2UFm6Gp8uOoIIm4M50m8A+MYkv465oA9ZAV
-	VkHxVy4MWsRKTfe52HLXRgwqKhdSPO8XR1JFEyEIR3QoM0XUBEngYHxO8kILXquZEHWUn8
-	dcMNbsiteT5kX9J8htlj+EhOWBX1skQd83kvZ+bswnwpgdzw+7Hh1VowjXas/yBt3wTc4R
-	gwIcrm61wlXS5ebN4i7Ec9TXzXNPh4/rOmQ+jUwGM0L6N1ZUUJ8rzjsAJTYmkA==
+	bh=MEO2pBTBit5Kauaudc9uk4cBNZqTpRTvXqnfWiOO+LQ=;
+	b=NZUtpDRqtLfRKx5rqVRM0TnzzdDMeUVIQbO/bXLQQbjEGjNehWSeqvOyAlo5cbz3skPu9t
+	nRWYfyBLfl+Kry3NvuyMaZmnmp2uShqlRSUrRIz+bemE6k4FQD/i6HRxk3oesxxWfhpiRp
+	g9FDYmnhQUKqjuq8EYWtwRULeXzXFUT08xR2Mdu0g+nnJvcPN6fxqqA8zVaGwJEc41J2H8
+	2paRPILmbth0gK4+Fvp2fvgbQ8kkCwByy4dTk61lrUffu3Jx3v465OE91ExfVP04KkZVvq
+	FwBpNaEIkpJCVp1OJ821IIljaoXWlbpFALdMl7Gv43+17+5k5nFSyzcTUgZS8Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706201018;
+	s=2020e; t=1706206874;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/9alz6IhoFeSBeq+RLDCT53ipn+PBG+CbCy5oS/MiWY=;
-	b=BAKL2yrvb8IMgsso1FevVA91cagHzwlhEKA193ldPCDd7zaCjlsKUniYQkgUmusU+qL1cy
-	CWs2HFdsn6/yt1Cg==
-From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+	bh=MEO2pBTBit5Kauaudc9uk4cBNZqTpRTvXqnfWiOO+LQ=;
+	b=v7bqEtTds46SzjPMzx0VjmwJaP1ne5xmKXZLU/0TPlYNPq78KqPaw3oWhvWu+vufzWXBTJ
+	jUwHdu6V3+7K0IDA==
+From: "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] Documentation/maintainer-tip: Add Closes tag
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240124205442.GAZbF5EmOB8LpKqlSc@fat_crate.local>
-References: <20240124205442.GAZbF5EmOB8LpKqlSc@fat_crate.local>
+Subject:
+ [tip: x86/fred] x86/fred: Invoke FRED initialization code to enable FRED
+Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>, Xin Li <xin3.li@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Shan Kang <shan.kang@intel.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231205105030.8698-36-xin3.li@intel.com>
+References: <20231205105030.8698-36-xin3.li@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170620101796.398.15398694905540241969.tip-bot2@tip-bot2>
+Message-ID: <170620687375.398.11388384121726676497.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,45 +80,127 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/fred branch of tip:
 
-Commit-ID:     b37bf5ef177a1aae937451f2e272943a9333dd5c
-Gitweb:        https://git.kernel.org/tip/b37bf5ef177a1aae937451f2e272943a9333dd5c
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Wed, 24 Jan 2024 21:51:50 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 25 Jan 2024 17:31:17 +01:00
+Commit-ID:     a9f26154bf5478fc155309fc69128415f3a1be08
+Gitweb:        https://git.kernel.org/tip/a9f26154bf5478fc155309fc69128415f3a1be08
+Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
+AuthorDate:    Tue, 05 Dec 2023 02:50:24 -08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 25 Jan 2024 19:10:33 +01:00
 
-Documentation/maintainer-tip: Add Closes tag
+x86/fred: Invoke FRED initialization code to enable FRED
 
-Document where Closes: lands in the tag ordering.
+Let cpu_init_exception_handling() call cpu_init_fred_exceptions() to
+initialize FRED. However if FRED is unavailable or disabled, it falls
+back to set up TSS IST and initialize IDT.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240124205442.GAZbF5EmOB8LpKqlSc@fat_crate.local
+Co-developed-by: Xin Li <xin3.li@intel.com>
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Xin Li <xin3.li@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Shan Kang <shan.kang@intel.com>
+Link: https://lore.kernel.org/r/20231205105030.8698-36-xin3.li@intel.com
+
 ---
- Documentation/process/maintainer-tip.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/common.c | 22 +++++++++++++++++-----
+ arch/x86/kernel/irqinit.c    |  7 ++++++-
+ arch/x86/kernel/traps.c      |  5 ++++-
+ 3 files changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/process/maintainer-tip.rst b/Documentation/process/maintainer-tip.rst
-index 08dd0f8..7993592 100644
---- a/Documentation/process/maintainer-tip.rst
-+++ b/Documentation/process/maintainer-tip.rst
-@@ -304,13 +304,15 @@ following tag ordering scheme:
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 399f0d0..5ed968c 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -61,6 +61,7 @@
+ #include <asm/microcode.h>
+ #include <asm/intel-family.h>
+ #include <asm/cpu_device_id.h>
++#include <asm/fred.h>
+ #include <asm/uv/uv.h>
+ #include <asm/ia32.h>
+ #include <asm/set_memory.h>
+@@ -2110,7 +2111,15 @@ void syscall_init(void)
+ 	/* The default user and kernel segments */
+ 	wrmsr(MSR_STAR, 0, (__USER32_CS << 16) | __KERNEL_CS);
  
-  - Reported-by: ``Reporter <reporter@mail>``
+-	idt_syscall_init();
++	/*
++	 * Except the IA32_STAR MSR, there is NO need to setup SYSCALL and
++	 * SYSENTER MSRs for FRED, because FRED uses the ring 3 FRED
++	 * entrypoint for SYSCALL and SYSENTER, and ERETU is the only legit
++	 * instruction to return to ring 3 (both sysexit and sysret cause
++	 * #UD when FRED is enabled).
++	 */
++	if (!cpu_feature_enabled(X86_FEATURE_FRED))
++		idt_syscall_init();
+ }
  
-+ - Closes: ``URL or Message-ID of the bug report this is fixing``
+ #else	/* CONFIG_X86_64 */
+@@ -2216,8 +2225,9 @@ void cpu_init_exception_handling(void)
+ 	/* paranoid_entry() gets the CPU number from the GDT */
+ 	setup_getcpu(cpu);
+ 
+-	/* IST vectors need TSS to be set up. */
+-	tss_setup_ist(tss);
++	/* For IDT mode, IST vectors need to be set in TSS. */
++	if (!cpu_feature_enabled(X86_FEATURE_FRED))
++		tss_setup_ist(tss);
+ 	tss_setup_io_bitmap(tss);
+ 	set_tss_desc(cpu, &get_cpu_entry_area(cpu)->tss.x86_tss);
+ 
+@@ -2226,8 +2236,10 @@ void cpu_init_exception_handling(void)
+ 	/* GHCB needs to be setup to handle #VC. */
+ 	setup_ghcb();
+ 
+-	/* Finally load the IDT */
+-	load_current_idt();
++	if (cpu_feature_enabled(X86_FEATURE_FRED))
++		cpu_init_fred_exceptions();
++	else
++		load_current_idt();
+ }
+ 
+ /*
+diff --git a/arch/x86/kernel/irqinit.c b/arch/x86/kernel/irqinit.c
+index c683666..f79c5ed 100644
+--- a/arch/x86/kernel/irqinit.c
++++ b/arch/x86/kernel/irqinit.c
+@@ -28,6 +28,7 @@
+ #include <asm/setup.h>
+ #include <asm/i8259.h>
+ #include <asm/traps.h>
++#include <asm/fred.h>
+ #include <asm/prom.h>
+ 
+ /*
+@@ -96,7 +97,11 @@ void __init native_init_IRQ(void)
+ 	/* Execute any quirks before the call gates are initialised: */
+ 	x86_init.irqs.pre_vector_init();
+ 
+-	idt_setup_apic_and_irq_gates();
++	if (cpu_feature_enabled(X86_FEATURE_FRED))
++		fred_complete_exception_setup();
++	else
++		idt_setup_apic_and_irq_gates();
 +
-  - Originally-by: ``Original author <original-author@mail>``
+ 	lapic_assign_system_vectors();
  
-  - Suggested-by: ``Suggester <suggester@mail>``
+ 	if (!acpi_ioapic && !of_ioapic && nr_legacy_irqs()) {
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index a03c233..cf198d9 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -1412,7 +1412,10 @@ void __init trap_init(void)
  
-  - Co-developed-by: ``Co-author <co-author@mail>``
- 
--   Signed-off: ``Co-author <co-author@mail>``
-+   Signed-off-by: ``Co-author <co-author@mail>``
- 
-    Note, that Co-developed-by and Signed-off-by of the co-author(s) must
-    come in pairs.
+ 	/* Initialize TSS before setting up traps so ISTs work */
+ 	cpu_init_exception_handling();
++
+ 	/* Setup traps as cpu_init() might #GP */
+-	idt_setup_traps();
++	if (!cpu_feature_enabled(X86_FEATURE_FRED))
++		idt_setup_traps();
++
+ 	cpu_init();
+ }
 
