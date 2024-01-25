@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-150-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-151-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F8B83BC6D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 09:58:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 600E083C19F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 13:06:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 239EF1C2390D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 08:58:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 138691F22FD3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 12:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032291B94F;
-	Thu, 25 Jan 2024 08:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07EE1CA83;
+	Thu, 25 Jan 2024 12:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jKrMpwSS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="73zPb6ER"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="R7ouKmoa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MDUzv9m5"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6721B1BC26;
-	Thu, 25 Jan 2024 08:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FB33589C;
+	Thu, 25 Jan 2024 12:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706173092; cv=none; b=Gi0Imwp+jaipQfApLLkg83B3B4wFnw6XB+yv5BHktziTGb5e4NvgbTzSkf8E7n10koxS8pwJNUlLnlHOEq4ha8+9LW40xRa/Pm7rzGQ1b1H1F4WuaWn0Dj+469KShVHSJLL/0Wu4jTD+2zzZdAtkBeM+UAQBYSLzgoYV9zT+wQM=
+	t=1706184360; cv=none; b=AksamffxEJOYoUae1MPMMRtIqLG1jMkj2VEofSS+1b6jUpZpPGL2fmMaIO4BuErQu5qS4ejuBrhy8JUFkwpJoyFUxLiPUB2iczhVNCK2Gi9CCKqf2ZmIFftUc5OzML9v3/WheNuegGtbHQhEkZWTuNnHUBVdV4ObiPtgXFGPEGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706173092; c=relaxed/simple;
-	bh=9W0rHMo1PmIbSLpl2yzt5yWUJKRIEZKegqCU/kJoaDM=;
+	s=arc-20240116; t=1706184360; c=relaxed/simple;
+	bh=lt+OF+4UNnZg1c3qaRm5E/ZAZAx+EIVd0cV2DOcXNZ4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=DcpTx6qaSV8DJ4zC95KfJCr0to2b9iUASsY8+ZGyYNz1jVgQvPElB98NnrWez4Taqgs6m8p80krKHDNSAmZKU2BOVlvSg/MM6tHYwB4Ty3a6cq9/8nwttU9aaTJ2gtMTx7su9t0CbSEN6b8RhJOkvOH/L5eezsn/F1UQN4xdEYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jKrMpwSS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=73zPb6ER; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=T8J5WVMo28YP94nCyximnx829tdGn3CqM9z+Ul9MVbTONIPbwSoPSfwIRT+y8mtrzYnzjE8eDPzhnv4WsCK243FScQkwnRpvEYF1BOvgU0SymqyUGiEShhTCCBGdBXGOqe2fhhya5FJYwzh/coM6KFsCf7YVV871WIR9r/Xqg1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=R7ouKmoa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MDUzv9m5; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Jan 2024 08:58:08 -0000
+Date: Thu, 25 Jan 2024 12:05:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706173089;
+	s=2020; t=1706184355;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WObzDTHXTDPa3dmfW8P5dQHGpAZC4IP5d5HH0veMj0U=;
-	b=jKrMpwSS0vJ+enxX/UUdSXvZofeoh25ExNB30G4Gh0m29UyfX6Q5gghqGaSjrkomtLd5qp
-	DCyKtaFJmwGKBeyQD5KD4rBbwok5ARPbVaJb3jG1JHUVkT2DOl/yN5+UsKfo6h+aErEReb
-	hySSvzXGi8Ul0I3yQ689TEx6vRSpXoY2IGe58FZcRbbKDI06w/jdtfPJEEuvajj9HoG7bP
-	hMnT50J1iA9ltXVQmwpM3ecd6z7pX97USGZO4OByOm9kUOs/8veBNK3WT06tFvuCTxWwcO
-	KuEdIp1KMmc2hAVymLBwywK2uO0iNfo3h8gqV59Ij5jBosyvtcnM5kld1HlBFQ==
+	bh=YBPORmsO/XzimUu2HpctLujPcqLI8Zbxm+wJVG80IR8=;
+	b=R7ouKmoaORvaGV0EUGxsXrCzX7ETh2LMVltYP0pEJgElR+QioFqCBCvovI3peI8GbD654f
+	yPRjTbE7/x++D04DsdN0OvpLDXn3g0De/NJoSUxd44FyoKbWIk1M/VrHLubOSDU2rxqLRe
+	oAojh0jAkLIDdw2NCEjrj2N8T+5SdJRxMVxhAJkcpWfcyrnDQ9KWlozGQorD9bYyCrHB6T
+	tquvLd++ISJ7ZpQ9bCP/kBqNkQzeLStIMLiKqg6a5aDbZvrPempX5M+CX7DWDnjzYIJyyp
+	C+ZjTpCyevxgK2+t+H6E8EEEDZ0uFv/EaYXRMz0yByoMqpC1p4tfaakhZIs5Dw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706173089;
+	s=2020e; t=1706184355;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WObzDTHXTDPa3dmfW8P5dQHGpAZC4IP5d5HH0veMj0U=;
-	b=73zPb6ERvA0LkZs/xmqJ61qIAudzbirFxV2ZgrnG4t39t2TZhOnApLSX4krcFxOkNGcWZr
-	FUx7VlfUDuSnpJDg==
-From: "tip-bot2 for Tim Chen" <tip-bot2@linutronix.de>
+	bh=YBPORmsO/XzimUu2HpctLujPcqLI8Zbxm+wJVG80IR8=;
+	b=MDUzv9m5x2Kr+285kw2jOuSaV4gvWK/0unFRpjcgxst/CAG9nBdvul3iTg8ubjTya3KUQJ
+	4d4sTXuAIaESZhDA==
+From: "tip-bot2 for Mario Limonciello" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] tick/sched: Preserve number of idle sleeps
- across CPU hotplug events
-Cc: Tim Chen <tim.c.chen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/CPU/AMD: Add more models to X86_FEATURE_ZEN5
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240122233534.3094238-1-tim.c.chen@linux.intel.com>
-References: <20240122233534.3094238-1-tim.c.chen@linux.intel.com>
+In-Reply-To: <20240124220749.2983-1-mario.limonciello@amd.com>
+References: <20240124220749.2983-1-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170617308836.398.11235504689824871790.tip-bot2@tip-bot2>
+Message-ID: <170618435416.398.10999476782072696923.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,59 +79,39 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     9a574ea9069be30b835a3da772c039993c43369b
-Gitweb:        https://git.kernel.org/tip/9a574ea9069be30b835a3da772c039993c43369b
-Author:        Tim Chen <tim.c.chen@linux.intel.com>
-AuthorDate:    Mon, 22 Jan 2024 15:35:34 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 25 Jan 2024 09:52:40 +01:00
+Commit-ID:     b9328fd636bd50da89e792e135b234ba8e6fe59f
+Gitweb:        https://git.kernel.org/tip/b9328fd636bd50da89e792e135b234ba8e6fe59f
+Author:        Mario Limonciello <mario.limonciello@amd.com>
+AuthorDate:    Wed, 24 Jan 2024 16:07:49 -06:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 25 Jan 2024 12:26:21 +01:00
 
-tick/sched: Preserve number of idle sleeps across CPU hotplug events
+x86/CPU/AMD: Add more models to X86_FEATURE_ZEN5
 
-Commit 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs
-CPU hotplug") preserved total idle sleep time and iowait sleeptime across
-CPU hotplug events.
+Add model ranges starting at 0x20, 0x40 and 0x70 to the synthetic
+feature flag X86_FEATURE_ZEN5.
 
-Similar reasoning applies to the number of idle calls and idle sleeps to
-get the proper average of sleep time per idle invocation.
-
-Preserve those fields too.
-
-Fixes: 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug")
-Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240122233534.3094238-1-tim.c.chen@linux.intel.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240124220749.2983-1-mario.limonciello@amd.com
 ---
- kernel/time/tick-sched.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kernel/cpu/amd.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index d250167..01fb50c 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1577,6 +1577,7 @@ void tick_cancel_sched_timer(int cpu)
- {
- 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
- 	ktime_t idle_sleeptime, iowait_sleeptime;
-+	unsigned long idle_calls, idle_sleeps;
- 
- # ifdef CONFIG_HIGH_RES_TIMERS
- 	if (ts->sched_timer.base)
-@@ -1585,9 +1586,13 @@ void tick_cancel_sched_timer(int cpu)
- 
- 	idle_sleeptime = ts->idle_sleeptime;
- 	iowait_sleeptime = ts->iowait_sleeptime;
-+	idle_calls = ts->idle_calls;
-+	idle_sleeps = ts->idle_sleeps;
- 	memset(ts, 0, sizeof(*ts));
- 	ts->idle_sleeptime = idle_sleeptime;
- 	ts->iowait_sleeptime = iowait_sleeptime;
-+	ts->idle_calls = idle_calls;
-+	ts->idle_sleeps = idle_sleeps;
- }
- #endif
- 
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index bc49e3b..f3abca3 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -573,6 +573,9 @@ static void bsp_init_amd(struct cpuinfo_x86 *c)
+ 	case 0x1a:
+ 		switch (c->x86_model) {
+ 		case 0x00 ... 0x0f:
++		case 0x20 ... 0x2f:
++		case 0x40 ... 0x4f:
++		case 0x70 ... 0x7f:
+ 			setup_force_cpu_cap(X86_FEATURE_ZEN5);
+ 			break;
+ 		default:
 
