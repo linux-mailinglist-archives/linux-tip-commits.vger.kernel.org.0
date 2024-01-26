@@ -1,130 +1,183 @@
-Return-Path: <linux-tip-commits+bounces-196-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-197-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C99C83E025
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 18:32:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7764A83E399
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 22:05:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3050B21577
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 17:32:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16D861F26A45
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 21:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48AC200BA;
-	Fri, 26 Jan 2024 17:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711112420C;
+	Fri, 26 Jan 2024 21:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BBTQ2bGE";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aUM9LzSF"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KJnBLjFi"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59D81F604;
-	Fri, 26 Jan 2024 17:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAA017BCC;
+	Fri, 26 Jan 2024 21:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706290344; cv=none; b=K1PHWTq1ONXHmnoTOL2SSYbWhaAZ9d47Kvg7zGstk1AnI6GJ9o01TbmaNUXoc9NfTT6vb9rE5dVz552YZVrEGM7Dk7XSlafjc04/o4UdZGV3vAkQFi/k1ioRybOHzC1rj6d7Zdnb1hlOWYZhowx3WstvB0hnbESzjxjaOuTjkGw=
+	t=1706303112; cv=none; b=QF+J1XWU7CZUKFhdvpkm1jePbp5ypDQ05Y9qtX3khIEVY635S5c5j1iXVIT87New7amFcvHGaamaZEHYJPDA78iw8TB1pb5wDUbtP7o2YM3nVSlu1vkOZyAY1J+Ld+RPXgiNykuiwhjyUVuOYAw4EY79uSUOqakx79P32SUfzFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706290344; c=relaxed/simple;
-	bh=QFSl57GoT1mnNeJ/HMxVSCJPvVRimquz48qqqG2TeqE=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Cjz0iGc/WxVPdsJbD66KlsLl2WMDALcmOAwT/S4xBb0pyzcV77BUdTdZRu52gP5maR5x9j35SVkTZcYbnH9EnRWZpFGgSDWiNXi8/uU8CyRHPdevljrs2cimbRYhnzcbQ4RGsyIViOjIscu25Kq34/ah7NjQ8Ayyqa6IoyPSW8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BBTQ2bGE; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aUM9LzSF; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 26 Jan 2024 17:32:20 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706290341;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QejlsgoBDr6NwQEmZk8veFSYKUKfp91Ic69JmCreQ2w=;
-	b=BBTQ2bGEWvP9n0T31XVoV/OEvBAO/PcGAKJ5KrtD7r6sI2pkQnBQOr9vmmFndKTwCuefAF
-	iWGUgEDHVHJM1SoqtEPjhTBtpiozOZ58D9u1TJBNs0y+AmTA8Yqk+34qcIg1jPOsk9rsU/
-	O5I19D47QJz5VpZHdacm98wUEJSYefniEVspVmn5438g4AwPqeaFdetxnfIOolP9HQODcb
-	saYDTssjxezrK3f+/cY9xf1wUr9uQLzsapPI3lXQpfrJY8XEOllCZjqtA86Wx78+bQdQxz
-	B+76u5o1SurdxL10yaTkciN7dWih33Xo1W62w1lAVZKVIfoYFhXhsLMZho9+0Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706290341;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QejlsgoBDr6NwQEmZk8veFSYKUKfp91Ic69JmCreQ2w=;
-	b=aUM9LzSFzs/BlA8FSZkGEtDPIyDtCQd6xipZJj0bxOvGK29m9rWnqrgMM11LYoUrQ7jcMh
-	ZPRwwAerHaaZU8CA==
-From: "tip-bot2 for Li Zhijian" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] kernel/cpu: Convert snprintf() to sysfs_emit()
-Cc: Li Zhijian <lizhijian@fujitsu.com>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240116045151.3940401-40-lizhijian@fujitsu.com>
-References: <20240116045151.3940401-40-lizhijian@fujitsu.com>
+	s=arc-20240116; t=1706303112; c=relaxed/simple;
+	bh=D6TN0ph7simZRtQn/9n/ECn1Cli8KS1dvnZhjYqIRsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qjKtHBIS9CB4o1TsWuJ/YVTPcmYtXFWW8W99QKC5DDT3/bnjc4u6xrIkwncy9JOUqltt7u59MvtotAGW0OuQbDr2bHBaT7ZJnIAT2dCXo+29Npp9yhIjk2RCX6AZDDgvX7xhEN92l38IMNSxA6Rg8U0D7DaVonj1iv0Bbfb4xgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KJnBLjFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEDAC433F1;
+	Fri, 26 Jan 2024 21:05:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706303111;
+	bh=D6TN0ph7simZRtQn/9n/ECn1Cli8KS1dvnZhjYqIRsk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KJnBLjFiv0ZZ9w1YfnJNh/w9sPS+Om2XiWO0XI5w5WUQoCExWuDBBvU4IEwYFnceI
+	 zxReKXCNUErdfsc5UCnl0WuESEfbbY/p4KysyTEZRHa3FS7Kwnzx1Ww9d9Vzol03tf
+	 MrMNFFbE2xbio6KHM4rkSiJbKcBffaLHKbbHMlxNXhqWky1ZOXH9eaY269MvEdjKjK
+	 l++ni2vQu09irNzor2Ib+vZ9lEMfKUa6g0wcYqFdg/obsw3Su7aDjHFPabdXuI4wlv
+	 0DXAzSqOcq5QP81T4P95kge+dteXdWcU8MiSZope6JBCYZj9SJ9VjaDrMyiKca83Vj
+	 hR32nPoYswLBQ==
+Date: Fri, 26 Jan 2024 14:05:09 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org
+Cc: linux-tip-commits@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	maz@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [tip: irq/core] genirq/irq_sim: Shrink code by using cleanup
+ helpers
+Message-ID: <20240126210509.GA1212219@dev-arch.thelio-3990X>
+References: <20240122124243.44002-5-brgl@bgdev.pl>
+ <170627361652.398.12825437185563577604.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170629034015.398.17590522685927916785.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <170627361652.398.12825437185563577604.tip-bot2@tip-bot2>
 
-The following commit has been merged into the smp/core branch of tip:
+On Fri, Jan 26, 2024 at 12:53:36PM -0000, tip-bot2 for Bartosz Golaszewski wrote:
+> The following commit has been merged into the irq/core branch of tip:
+> 
+> Commit-ID:     590610d72a790458431cbbebc71ee24521533b5e
+> Gitweb:        https://git.kernel.org/tip/590610d72a790458431cbbebc71ee24521533b5e
+> Author:        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> AuthorDate:    Mon, 22 Jan 2024 13:42:43 +01:00
+> Committer:     Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Fri, 26 Jan 2024 13:44:48 +01:00
+> 
+> genirq/irq_sim: Shrink code by using cleanup helpers
+> 
+> Use the new __free() mechanism to remove all gotos and simplify the error
+> paths.
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Link: https://lore.kernel.org/r/20240122124243.44002-5-brgl@bgdev.pl
+> 
+> ---
+>  kernel/irq/irq_sim.c | 25 ++++++++++---------------
+>  1 file changed, 10 insertions(+), 15 deletions(-)
+> 
+> diff --git a/kernel/irq/irq_sim.c b/kernel/irq/irq_sim.c
+> index b0d50b4..fe8fd30 100644
+> --- a/kernel/irq/irq_sim.c
+> +++ b/kernel/irq/irq_sim.c
+> @@ -4,6 +4,7 @@
+>   * Copyright (C) 2020 Bartosz Golaszewski <bgolaszewski@baylibre.com>
+>   */
+>  
+> +#include <linux/cleanup.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/irq.h>
+>  #include <linux/irq_sim.h>
+> @@ -163,33 +164,27 @@ static const struct irq_domain_ops irq_sim_domain_ops = {
+>  struct irq_domain *irq_domain_create_sim(struct fwnode_handle *fwnode,
+>  					 unsigned int num_irqs)
+>  {
+> -	struct irq_sim_work_ctx *work_ctx;
+> +	struct irq_sim_work_ctx *work_ctx __free(kfree) = kmalloc(sizeof(*work_ctx), GFP_KERNEL);
+> +	unsigned long *pending;
+>  
+> -	work_ctx = kmalloc(sizeof(*work_ctx), GFP_KERNEL);
+>  	if (!work_ctx)
+> -		goto err_out;
+> +		return ERR_PTR(-ENOMEM);
+>  
+> -	work_ctx->pending = bitmap_zalloc(num_irqs, GFP_KERNEL);
+> -	if (!work_ctx->pending)
+> -		goto err_free_work_ctx;
+> +	pending = __free(bitmap) = bitmap_zalloc(num_irqs, GFP_KERNEL);
 
-Commit-ID:     effe6d278e06f85289b6ada0402a6d16ebc149a5
-Gitweb:        https://git.kernel.org/tip/effe6d278e06f85289b6ada0402a6d16ebc149a5
-Author:        Li Zhijian <lizhijian@fujitsu.com>
-AuthorDate:    Tue, 16 Jan 2024 12:51:51 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 26 Jan 2024 18:25:16 +01:00
+Apologies if this has already been reported elsewhere. This does not
+match what was sent and it causes the build to break with both GCC:
 
-kernel/cpu: Convert snprintf() to sysfs_emit()
+  In file included from include/linux/compiler_types.h:89,
+                   from <command-line>:
+  kernel/irq/irq_sim.c: In function 'irq_domain_create_sim':
+  include/linux/compiler_attributes.h:76:41: error: expected expression before '__attribute__'
+     76 | #define __cleanup(func)                 __attribute__((__cleanup__(func)))
+        |                                         ^~~~~~~~~~~~~
+  include/linux/cleanup.h:64:25: note: in expansion of macro '__cleanup'
+     64 | #define __free(_name)   __cleanup(__free_##_name)
+        |                         ^~~~~~~~~
+  kernel/irq/irq_sim.c:173:19: note: in expansion of macro '__free'
+    173 |         pending = __free(bitmap) = bitmap_zalloc(num_irqs, GFP_KERNEL);
+        |                   ^~~~~~
 
-Per filesystems/sysfs.rst, show() should only use sysfs_emit()
-or sysfs_emit_at() when formatting the value to be returned to user space.
+and Clang:
 
-coccinelle complains that there are still a couple of functions that use
-snprintf(). Convert them to sysfs_emit().
+  kernel/irq/irq_sim.c:173:12: error: expected expression
+    173 |         pending = __free(bitmap) = bitmap_zalloc(num_irqs, GFP_KERNEL);
+        |                   ^
+  include/linux/cleanup.h:64:23: note: expanded from macro '__free'
+     64 | #define __free(_name)   __cleanup(__free_##_name)
+        |                         ^
+  include/linux/compiler-clang.h:15:25: note: expanded from macro '__cleanup'
+     15 | #define __cleanup(func) __maybe_unused __attribute__((__cleanup__(func)))
+        |                         ^
+  include/linux/compiler_attributes.h:344:41: note: expanded from macro '__maybe_unused'
+    344 | #define __maybe_unused                  __attribute__((__unused__))
+        |                                         ^
+  1 error generated.
 
-No functional change intended.
+This was initially noticed by our CI:
 
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240116045151.3940401-40-lizhijian@fujitsu.com
+https://github.com/ClangBuiltLinux/continuous-integration2/actions/runs/7671789235/job/20915505965
+https://storage.tuxsuite.com/public/clangbuiltlinux/continuous-integration2/builds/2bVGKZUmat8fRr582Nh8hNA6FXD/build.log
 
----
- kernel/cpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Cheers,
+Nathan
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index f059375..ad7d0b0 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -3004,7 +3004,7 @@ static ssize_t control_show(struct device *dev,
- 		return sysfs_emit(buf, "%d\n", cpu_smt_num_threads);
- #endif
- 
--	return snprintf(buf, PAGE_SIZE - 2, "%s\n", state);
-+	return sysfs_emit(buf, "%s\n", state);
- }
- 
- static ssize_t control_store(struct device *dev, struct device_attribute *attr,
-@@ -3017,7 +3017,7 @@ static DEVICE_ATTR_RW(control);
- static ssize_t active_show(struct device *dev,
- 			   struct device_attribute *attr, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE - 2, "%d\n", sched_smt_active());
-+	return sysfs_emit(buf, "%d\n", sched_smt_active());
- }
- static DEVICE_ATTR_RO(active);
- 
+> +	if (!pending)
+> +		return ERR_PTR(-ENOMEM);
+>  
+>  	work_ctx->domain = irq_domain_create_linear(fwnode, num_irqs,
+>  						    &irq_sim_domain_ops,
+>  						    work_ctx);
+>  	if (!work_ctx->domain)
+> -		goto err_free_bitmap;
+> +		return ERR_PTR(-ENOMEM);
+>  
+>  	work_ctx->irq_count = num_irqs;
+>  	work_ctx->work = IRQ_WORK_INIT_HARD(irq_sim_handle_irq);
+> +	work_ctx->pending = no_free_ptr(pending);
+>  
+> -	return work_ctx->domain;
+> -
+> -err_free_bitmap:
+> -	bitmap_free(work_ctx->pending);
+> -err_free_work_ctx:
+> -	kfree(work_ctx);
+> -err_out:
+> -	return ERR_PTR(-ENOMEM);
+> +	return no_free_ptr(work_ctx)->domain;
+>  }
+>  EXPORT_SYMBOL_GPL(irq_domain_create_sim);
+>  
 
