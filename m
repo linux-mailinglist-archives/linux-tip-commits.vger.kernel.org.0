@@ -1,82 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-189-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-191-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6831583D92F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 12:19:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C713783DA57
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 13:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BA91B39BE2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 10:17:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8313A29294F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 12:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0946BB56;
-	Fri, 26 Jan 2024 09:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300A31B7EB;
+	Fri, 26 Jan 2024 12:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vtwIJfrR";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SsMjlvWF"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I8tRvKpc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yMoVsEeE"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56CD6A340;
-	Fri, 26 Jan 2024 09:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845E11B7E1;
+	Fri, 26 Jan 2024 12:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706261961; cv=none; b=uQ/GioFzYstJVa61Yo8eXcIt3G+G26dfrUm1upGAxT+0tZ6NABOlKF7VkiVgDyUA8UGBToCcfQFPbnJczoqnXlsdO60BfzyTUgkMlRpZxDUf21FzfnXUelcW+BofTS66ie6ptMtgt8WXcZsy67YAbYcvwgn7RNAXW+Ej6S1idw8=
+	t=1706273621; cv=none; b=UY9sdOScZ3fsAmjcFVxZ62qpNdEcpe2eVIKM3a7M1TBJGL7JDesLlEKcCxdVuYofvcVATxQTmBb5MU3M/dlB7+zfbsQc1m4W9hIUE+1Duk45Otwn9qLGAPhoTzB9TdBqWnzGKH8+LnrsGNRKqBa6Qmu/tV6iha49h6T2I3OWU9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706261961; c=relaxed/simple;
-	bh=8/nGVc25hEsrpaBi3vcfC0ze3rFc+5uJq/40Iyl91Xg=;
+	s=arc-20240116; t=1706273621; c=relaxed/simple;
+	bh=iWrPdyaty4Qhj3iNIhG/aBV7WxECmUEMFOQ4WgUrXkI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JBbpsZ8GbaXll/AO6vj6s02KEngTf98YaI/ievdoMtdIIbm3aCb50G74UKtOaovKLx2ZsrmswcSKB02iugqcErToHK7RBm6ddKdU2cjXIipti42BdA7gbZnR2NA5Y2sy0tedo747U96ENIDGJsv3q6YayUc/vIQEqMACFmFbAjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vtwIJfrR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SsMjlvWF; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=WH1UNf6KTNXSz4Z2Mc9A3/PKMH8MCT1+tXdi8sqL5mje9v8jCH/cd4GJgf4CNbyPD0xA62JIXL5z9oU8sjvArg7+KLQA62vTG/d2ZS/+rB3Ez5wXRKzjG40GfbSt7bOdhQlXkxzxfkLkqYg5iQzp2HrlqmjU0crohw27lAYzlaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I8tRvKpc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yMoVsEeE; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 26 Jan 2024 09:39:11 -0000
+Date: Fri, 26 Jan 2024 12:53:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706261952;
+	s=2020; t=1706273617;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/kptBAk4WpxQXuqRz6AFSlDXWJzh5Pf1EtgT7ZTLVJY=;
-	b=vtwIJfrRDWFMvNnG76AyALe2O9fv0z5oPDVBCUavXX+cvvCFS8MxOQVHjBI43TH4qmJsd9
-	2oScwKTDMDsobsWiRV2r1/nvfwyRhIHDXJfKGpXl6Fi/poHg0DcE7Fa8+mxe78pmxKYNu2
-	qNWENxgZKQG8mn3NA9sJ4/zErPa8SX4NVTGS7xW4zJ8iCcOljwr3zcMHUifObYtAKrDTkq
-	l/iwQiDeBcF9LqMtKcZa46m1/NfyFMc0dBNEC/Q3ZH+6X3htG8A+RhGB3JYS03Ar5/mSbm
-	xHiwGoFzNJZOg3ra0PpOi9AcV8FaFBNkO+wQ63eonHC5P7WM1tOm7BZcAkSIUA==
+	bh=imNQGpxCfZzxXKHa8c0ZjGv5PSBz4kBsS94bs6102ZY=;
+	b=I8tRvKpcA/HG6rl48lTS2e0LIlTiJRRaV6+t0T723nkyrC93YQJRd5tI8R/5B3ibGKHctB
+	xobxpkHaM5pQrHrDTAylIuoefhR7tAk74J+Yd42BT3lXGa5nECfMwDVHt3yPCQZqfhKqte
+	pCaTLE0tvgbcvPmT8FKpgm3+j6ztf41ukPd7mQtr6/5aUulNYIy5SiMiZ4ts7iB/ktExuv
+	0RA8umgOPWUtPRaW5DscFLsgXi9EBdAUHBKrklIru9iORVWCY8RwLUlA/ZNSmyqcJRFKtM
+	p+PT1iaqe8Mndup19cyfJe6cnR+4rIMmvy5oPzCAgiSpb9r/+nJKBafN8Fn82A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706261952;
+	s=2020e; t=1706273617;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/kptBAk4WpxQXuqRz6AFSlDXWJzh5Pf1EtgT7ZTLVJY=;
-	b=SsMjlvWFAIHic/Vbg1uBsR0+hgBQcTAiIlLX2TuCFW4UG8P8ypARN89MBIjY1DGZ0ggBKR
-	0RRV+uwsn3YzdvCg==
-From: "tip-bot2 for Linus Torvalds" <tip-bot2@linutronix.de>
+	bh=imNQGpxCfZzxXKHa8c0ZjGv5PSBz4kBsS94bs6102ZY=;
+	b=yMoVsEeEMd0WwSWlfhlePUnpEoBYLv/+XpdR0Gz4ibdbKwKBq+Dcb1AzwtVLUhrWo97Ikb
+	cnQlsmIYVOMvjwAw==
+From: "tip-bot2 for Bartosz Golaszewski" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Get rid of conditional IF flag handling in page
- fault path
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>,
- Denys Vlasenko <dvlasenk@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
- Sean Christopherson <seanjc@google.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240125173457.1281880-1-torvalds@linux-foundation.org>
-References: <20240125173457.1281880-1-torvalds@linux-foundation.org>
+Subject: [tip: irq/core] genirq/irq_sim: Shrink code by using cleanup helpers
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240122124243.44002-5-brgl@bgdev.pl>
+References: <20240122124243.44002-5-brgl@bgdev.pl>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170626195136.398.16499632195121642580.tip-bot2@tip-bot2>
+Message-ID: <170627361652.398.12825437185563577604.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,120 +79,81 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     8f588afe6256c50b3d1f8a671828fc4aab421c05
-Gitweb:        https://git.kernel.org/tip/8f588afe6256c50b3d1f8a671828fc4aab421c05
-Author:        Linus Torvalds <torvalds@linux-foundation.org>
-AuthorDate:    Thu, 25 Jan 2024 09:34:57 -08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 26 Jan 2024 10:27:54 +01:00
+Commit-ID:     590610d72a790458431cbbebc71ee24521533b5e
+Gitweb:        https://git.kernel.org/tip/590610d72a790458431cbbebc71ee24521533b5e
+Author:        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+AuthorDate:    Mon, 22 Jan 2024 13:42:43 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 26 Jan 2024 13:44:48 +01:00
 
-x86/mm: Get rid of conditional IF flag handling in page fault path
+genirq/irq_sim: Shrink code by using cleanup helpers
 
-We had this nonsensical code that would happily handle kernel page
-faults with interrupts disabled, which makes no sense at all.
+Use the new __free() mechanism to remove all gotos and simplify the error
+paths.
 
-It turns out that this is legacy code that _used_ to make sense, back
-when we enabled IRQs as early as possible, and we used to have this code
-sequence essentially immediately after reading the faulting address from
-the %cr2 register.
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240122124243.44002-5-brgl@bgdev.pl
 
-Back then, we could have kernel page faults to populate the vmalloc area
-with interrupts disabled, and they would need to stay disabled for that
-case.
-
-However, the code in question has been moved down in the page fault
-handling, and is now in the "handle faults in user addresses" section,
-and apparently nobody ever noticed that it no longer makes sense to
-handle these page faults with interrupts conditionally disabled.
-
-So replace the conditional IRQ enable:
-
-        if (regs->flags & X86_EFLAGS_IF)
-                local_irq_enable();
-
-with an unconditional one, and add a temporary WARN_ON_ONCE() if some
-codepath actually does do page faults with interrupts disabled (without
-also doing a pagefault_disable(), of course).
-
-NOTE! We used to allow user space to disable interrupts with iopl(3).
-That is no longer true since commits:
-
- a24ca9976843 ("x86/iopl: Remove legacy IOPL option")
- b968e84b509d ("x86/iopl: Fake iopl(3) CLI/STI usage")
-
-so the WARN_ON_ONCE() is valid for both the kernel and user situation.
-
-For some of the history relevant to this code, see particularly commit
-8c914cb704a1 ("x86_64: actively synchronize vmalloc area when
-registering certain callbacks"), which moved this below the vmalloc fault
-handling.
-
-Now that the user_mode() check is irrelevant, we can also move the
-FAULT_FLAG_USER flag setting down to where the other flag settings are
-done.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Denys Vlasenko <dvlasenk@redhat.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Uros Bizjak <ubizjak@gmail.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20240125173457.1281880-1-torvalds@linux-foundation.org
 ---
- arch/x86/mm/fault.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ kernel/irq/irq_sim.c | 25 ++++++++++---------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 679b09c..150e002 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -1302,21 +1302,14 @@ void do_user_addr_fault(struct pt_regs *regs,
- 		return;
- 	}
+diff --git a/kernel/irq/irq_sim.c b/kernel/irq/irq_sim.c
+index b0d50b4..fe8fd30 100644
+--- a/kernel/irq/irq_sim.c
++++ b/kernel/irq/irq_sim.c
+@@ -4,6 +4,7 @@
+  * Copyright (C) 2020 Bartosz Golaszewski <bgolaszewski@baylibre.com>
+  */
  
--	/*
--	 * It's safe to allow irq's after cr2 has been saved and the
--	 * vmalloc fault has been handled.
--	 *
--	 * User-mode registers count as a user access even for any
--	 * potential system fault or CPU buglet:
--	 */
--	if (user_mode(regs)) {
--		local_irq_enable();
--		flags |= FAULT_FLAG_USER;
--	} else {
--		if (regs->flags & X86_EFLAGS_IF)
--			local_irq_enable();
-+	/* Legacy check - remove this after verifying that it doesn't trigger */
-+	if (WARN_ON_ONCE(!(regs->flags & X86_EFLAGS_IF))) {
-+		bad_area_nosemaphore(regs, error_code, address);
-+		return;
- 	}
++#include <linux/cleanup.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+ #include <linux/irq_sim.h>
+@@ -163,33 +164,27 @@ static const struct irq_domain_ops irq_sim_domain_ops = {
+ struct irq_domain *irq_domain_create_sim(struct fwnode_handle *fwnode,
+ 					 unsigned int num_irqs)
+ {
+-	struct irq_sim_work_ctx *work_ctx;
++	struct irq_sim_work_ctx *work_ctx __free(kfree) = kmalloc(sizeof(*work_ctx), GFP_KERNEL);
++	unsigned long *pending;
  
-+	local_irq_enable();
-+
- 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
+-	work_ctx = kmalloc(sizeof(*work_ctx), GFP_KERNEL);
+ 	if (!work_ctx)
+-		goto err_out;
++		return ERR_PTR(-ENOMEM);
  
- 	/*
-@@ -1332,6 +1325,14 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	if (error_code & X86_PF_INSTR)
- 		flags |= FAULT_FLAG_INSTRUCTION;
+-	work_ctx->pending = bitmap_zalloc(num_irqs, GFP_KERNEL);
+-	if (!work_ctx->pending)
+-		goto err_free_work_ctx;
++	pending = __free(bitmap) = bitmap_zalloc(num_irqs, GFP_KERNEL);
++	if (!pending)
++		return ERR_PTR(-ENOMEM);
  
-+	/*
-+	 * We set FAULT_FLAG_USER based on the register state, not
-+	 * based on X86_PF_USER. User space accesses that cause
-+	 * system page faults are still user accesses.
-+	 */
-+	if (user_mode(regs))
-+		flags |= FAULT_FLAG_USER;
-+
- #ifdef CONFIG_X86_64
- 	/*
- 	 * Faults in the vsyscall page might need emulation.  The
+ 	work_ctx->domain = irq_domain_create_linear(fwnode, num_irqs,
+ 						    &irq_sim_domain_ops,
+ 						    work_ctx);
+ 	if (!work_ctx->domain)
+-		goto err_free_bitmap;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	work_ctx->irq_count = num_irqs;
+ 	work_ctx->work = IRQ_WORK_INIT_HARD(irq_sim_handle_irq);
++	work_ctx->pending = no_free_ptr(pending);
+ 
+-	return work_ctx->domain;
+-
+-err_free_bitmap:
+-	bitmap_free(work_ctx->pending);
+-err_free_work_ctx:
+-	kfree(work_ctx);
+-err_out:
+-	return ERR_PTR(-ENOMEM);
++	return no_free_ptr(work_ctx)->domain;
+ }
+ EXPORT_SYMBOL_GPL(irq_domain_create_sim);
+ 
 
