@@ -1,205 +1,113 @@
-Return-Path: <linux-tip-commits+bounces-188-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-190-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34AFC83CAFE
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 19:29:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ABE683D806
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 11:26:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8BD529B07B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Jan 2024 18:29:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C8071C275B9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 10:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A1D1420BA;
-	Thu, 25 Jan 2024 18:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0DCCA47;
+	Fri, 26 Jan 2024 10:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J4Ez8YzM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bEYvgHUM"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="b4fW+oHU"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04932140768;
-	Thu, 25 Jan 2024 18:21:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FB612B92;
+	Fri, 26 Jan 2024 10:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706206904; cv=none; b=W6fFwhjInGl0YvS9rDG9ShqmHYtYFjfc/+0cOGiAZKC6v0Z2XTzcgPj+ENjFrx5Hxu5b0Rb4fI4ryLK8YJ63IVUEjxIuOs22nSOZA/8OIujWUEq/7kJZaSnZJNKutc/xMmYDV5ncoD/isBbd7gRZJp2e0TrOncBUJAe1Uf0EnXk=
+	t=1706263274; cv=none; b=Yz3BAfFAWMQTGZRkZX4ojv58JLSCTxAYMkaubqH7ZSCMFyFdNtjt/XVhykmW8tmaMQ6Kme+ZfXWhmv5GTMQH8UZhoszHlwZR/wA/eeWi/Xchmu7/XsdGR1bhmWLc9HPCF0/vGr8ziaL+joxzXDlkmDXz0Ni07+gtL3cLQvKbOPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706206904; c=relaxed/simple;
-	bh=EhqCSlCs+nFqSs5SFZ96QFNLmlgWStSluZNfkpHERxI=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=B/PIqeezdHxADDtTqv7suUQLT4ifSDRIkTd51ryx5Ri2BqndDC27cyQOJGCGoxdZ2vpNJj89AaQwEkIEcy2JClZHsuG7LmtOEZwAHphT+51LhmxFrzMi2UpQmwiGhPxZWVqeN9bewesR20H0WP+dGfj7S+hV+vUHn9yhYvXw12g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J4Ez8YzM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bEYvgHUM; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Jan 2024 18:21:39 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706206900;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q5KHAWE3vDLVa1vlc6fc+ULPLLryNpy1gDxxoXtsKTU=;
-	b=J4Ez8YzMo8fceYQMPRvesURforIyZJmm6ESPY4BRTdcif6ENbDJisGwF+DK9aIHZG4MaNI
-	XL/tOjB5jCyGGpYc3DK5felYSmAjpiDJRFzJ5aGLMRK1xoqlqLgaa+w4DZcSl8G1E9QnmZ
-	z4NEMHG0bFxmt1nyecid8wgSLCFhhuyq+TnOjzuaehY6xmG/C6Pt3rbGkWGktEaF+JicaS
-	qPdNUYs6s4LNKwHkHJscNURBeM/X+jisMVZbZy/WKFTQoykZdQfbuCeAOmzZ8NW0scOJeO
-	x6nGjsdNV8UHymQsVowb08Vo0Q0BYl3Oya/e4aCAbxN3xYOYlahxQp4dAHt77A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706206900;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q5KHAWE3vDLVa1vlc6fc+ULPLLryNpy1gDxxoXtsKTU=;
-	b=bEYvgHUMvkd25IfW8YNzpShvGmtlOXVDJ4mQLUweCkyIyCvce6iN1LhCx+HP8Lzx76gqYW
-	E8J2podxzjye35Ag==
-From: "tip-bot2 for Xin Li" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fred] x86/cpufeatures,opcode,msr: Add the WRMSRNS
- instruction support
-Cc: Xin Li <xin3.li@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Shan Kang <shan.kang@intel.com>,
- "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20231205105030.8698-2-xin3.li@intel.com>
-References: <20231205105030.8698-2-xin3.li@intel.com>
+	s=arc-20240116; t=1706263274; c=relaxed/simple;
+	bh=eECiJReyNwvw/rXT1QSmi5UWyyWO8uENzGjBer4GzuQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t/NADbQyihaN4vwaW+EDLHJWeenyqj6RspwX0zFxDtQv6v8fJg1wvt355qqizA5OXonE81abrcYwbmdV8KEY1tpNJGDGX22qslZzt23G7cVgu8oMxNeJyB+xw/9HdI+m+YSXOfhFm/aLSkiQO3miXiMn2lUVf8UkK57bUqEj/QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=b4fW+oHU; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 39B3B40E01BB;
+	Fri, 26 Jan 2024 10:01:08 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id eTt1M-NrNSY1; Fri, 26 Jan 2024 10:01:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1706263265; bh=Hj9EgFz52qo2AnW945Th7wBHJu1vxTENf6ob5caQoc4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b4fW+oHUAd+zOJPLNRrv3SaUoakkduIucAMrU5NKfUCvweQt9A9yZRB/4zioVY/6o
+	 MeYg+dD4Eu4uhK+ua1URvNgaJe/p5JjBL25wq4vlysTjlca1meCB9E/9TX0/yxMY2t
+	 N5G2Tld+W4QaBVFU9WGlnOIh+T2uQMFud6XfLt1zfIhiOV+Vy4Y2VSvTSdWYi8BHxz
+	 pTNhqXo/FqbNgDMb8titja9gvv2ATHyK9+JMVKJQxkabGGM5sUU4O0S9T/FOil21tU
+	 557BG/MO4BJV7jSDdhJSed5HKN38eEQGrNlxWC07+tkhO1lovbzUK44jVH7JYLhJYE
+	 jIuujPfK+mQSlb+X+WQ+vGbiXX0/ho4drWuFHYqg7P2V2Hg0K+VpiT+ancq3P6qtpq
+	 6ErAzZhPBLb/E1DBJvhgKw5FtOkgGlBCC9yqeXOYe64rTZ8A4tJX0W12S714BgMNpG
+	 HncIG5snKwRBywYZv/c+eKHY+V93k4n4wVGyWer9WokT5s+tqBXByWEA5gUdeffngA
+	 O+M1ov3sRxMnookvuYR0pTZCJ10eZlpe1bGSqcHY2Ee1WNC7FG5fHQ/GqlXPiKhkJh
+	 BqNL8Vchi5NDQFL6+LpB946AZflDkLAQZnfRGhrLuIoCKoxE5Uu9ZIESWanCcNGAaV
+	 7PXkI1+/fdJHg9Albkyre3Ao=
+Received: from zn.tnic (pd953033e.dip0.t-ipconnect.de [217.83.3.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E897740E01AE;
+	Fri, 26 Jan 2024 10:00:56 +0000 (UTC)
+Date: Fri, 26 Jan 2024 11:00:50 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "H. Peter Anvin (Intel)" <hpa@zytor.com>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Megha Dey <megha.dey@intel.com>, Xin Li <xin3.li@intel.com>,
+	Shan Kang <shan.kang@intel.com>, x86@kernel.org
+Subject: Re: [tip: x86/fred] x86/fred: FRED entry/exit and dispatch code
+Message-ID: <20240126100050.GAZbOC0g3Rlr6otZcT@fat_crate.local>
+References: <20231209214214.2932-1-xin3.li@intel.com>
+ <170620688145.398.5328359433342649832.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170620689975.398.11199510172533245378.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <170620688145.398.5328359433342649832.tip-bot2@tip-bot2>
 
-The following commit has been merged into the x86/fred branch of tip:
+On Thu, Jan 25, 2024 at 06:21:21PM -0000, tip-bot2 for H. Peter Anvin (Intel) wrote:
+> +SYM_CODE_START_NOALIGN(asm_fred_entrypoint_user)
+> +	FRED_ENTER
+> +	call	fred_entry_from_user
+> +	FRED_EXIT
+> +	ERETU
+> +SYM_CODE_END(asm_fred_entrypoint_user)
+> +
+> +.fill asm_fred_entrypoint_kernel - ., 1, 0xcc
 
-Commit-ID:     a4cb5ece145828cae35503857debf3d49c9d1c5f
-Gitweb:        https://git.kernel.org/tip/a4cb5ece145828cae35503857debf3d49c9d1c5f
-Author:        Xin Li <xin3.li@intel.com>
-AuthorDate:    Tue, 05 Dec 2023 02:49:50 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 25 Jan 2024 19:10:29 +01:00
+me compiler no likey:
 
-x86/cpufeatures,opcode,msr: Add the WRMSRNS instruction support
+/tmp/entry_64_fred-de6f10.s:896:7: error: expected assembly-time absolute expression
+fill asm_fred_entrypoint_kernel - ., 1, 0xcc
+      ^
+make[4]: *** [scripts/Makefile.build:361: arch/x86/entry/entry_64_fred.o] Error 1
+make[4]: *** Waiting for unfinished jobs....
+make[3]: *** [scripts/Makefile.build:481: arch/x86/entry] Error 2
+make[3]: *** Waiting for unfinished jobs....
 
-WRMSRNS is an instruction that behaves exactly like WRMSR, with
-the only difference being that it is not a serializing instruction
-by default. Under certain conditions, WRMSRNS may replace WRMSR to
-improve performance.
+config is x86_64 allmodconfig, compiler is
 
-Add its CPU feature bit, opcode to the x86 opcode map, and an
-always inline API __wrmsrns() to embed WRMSRNS into the code.
+$ clang --version
+Ubuntu clang version 14.0.0-1ubuntu1.1
 
-Signed-off-by: Xin Li <xin3.li@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Shan Kang <shan.kang@intel.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231205105030.8698-2-xin3.li@intel.com
+-- 
+Regards/Gruss,
+    Boris.
 
----
- arch/x86/include/asm/cpufeatures.h       |  1 +
- arch/x86/include/asm/msr.h               | 18 ++++++++++++++++++
- arch/x86/lib/x86-opcode-map.txt          |  2 +-
- tools/arch/x86/include/asm/cpufeatures.h |  1 +
- tools/arch/x86/lib/x86-opcode-map.txt    |  2 +-
- 5 files changed, 22 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 29cb275..bd05c75 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -327,6 +327,7 @@
- #define X86_FEATURE_FSRS		(12*32+11) /* "" Fast short REP STOSB */
- #define X86_FEATURE_FSRC		(12*32+12) /* "" Fast short REP {CMPSB,SCASB} */
- #define X86_FEATURE_LKGS		(12*32+18) /* "" Load "kernel" (userspace) GS */
-+#define X86_FEATURE_WRMSRNS		(12*32+19) /* "" Non-serializing WRMSR */
- #define X86_FEATURE_AMX_FP16		(12*32+21) /* "" AMX fp16 Support */
- #define X86_FEATURE_AVX_IFMA            (12*32+23) /* "" Support for VPMADD52[H,L]UQ */
- #define X86_FEATURE_LAM			(12*32+26) /* Linear Address Masking */
-diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
-index 65ec196..c284ff9 100644
---- a/arch/x86/include/asm/msr.h
-+++ b/arch/x86/include/asm/msr.h
-@@ -97,6 +97,19 @@ static __always_inline void __wrmsr(unsigned int msr, u32 low, u32 high)
- 		     : : "c" (msr), "a"(low), "d" (high) : "memory");
- }
- 
-+/*
-+ * WRMSRNS behaves exactly like WRMSR with the only difference being
-+ * that it is not a serializing instruction by default.
-+ */
-+static __always_inline void __wrmsrns(u32 msr, u32 low, u32 high)
-+{
-+	/* Instruction opcode for WRMSRNS; supported in binutils >= 2.40. */
-+	asm volatile("1: .byte 0x0f,0x01,0xc6\n"
-+		     "2:\n"
-+		     _ASM_EXTABLE_TYPE(1b, 2b, EX_TYPE_WRMSR)
-+		     : : "c" (msr), "a"(low), "d" (high));
-+}
-+
- #define native_rdmsr(msr, val1, val2)			\
- do {							\
- 	u64 __val = __rdmsr((msr));			\
-@@ -297,6 +310,11 @@ do {							\
- 
- #endif	/* !CONFIG_PARAVIRT_XXL */
- 
-+static __always_inline void wrmsrns(u32 msr, u64 val)
-+{
-+	__wrmsrns(msr, val, val >> 32);
-+}
-+
- /*
-  * 64-bit version of wrmsr_safe():
-  */
-diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
-index 5168ee0..1efe1d9 100644
---- a/arch/x86/lib/x86-opcode-map.txt
-+++ b/arch/x86/lib/x86-opcode-map.txt
-@@ -1051,7 +1051,7 @@ GrpTable: Grp6
- EndTable
- 
- GrpTable: Grp7
--0: SGDT Ms | VMCALL (001),(11B) | VMLAUNCH (010),(11B) | VMRESUME (011),(11B) | VMXOFF (100),(11B) | PCONFIG (101),(11B) | ENCLV (000),(11B)
-+0: SGDT Ms | VMCALL (001),(11B) | VMLAUNCH (010),(11B) | VMRESUME (011),(11B) | VMXOFF (100),(11B) | PCONFIG (101),(11B) | ENCLV (000),(11B) | WRMSRNS (110),(11B)
- 1: SIDT Ms | MONITOR (000),(11B) | MWAIT (001),(11B) | CLAC (010),(11B) | STAC (011),(11B) | ENCLS (111),(11B)
- 2: LGDT Ms | XGETBV (000),(11B) | XSETBV (001),(11B) | VMFUNC (100),(11B) | XEND (101)(11B) | XTEST (110)(11B) | ENCLU (111),(11B)
- 3: LIDT Ms
-diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
-index f4542d2..8792841 100644
---- a/tools/arch/x86/include/asm/cpufeatures.h
-+++ b/tools/arch/x86/include/asm/cpufeatures.h
-@@ -322,6 +322,7 @@
- #define X86_FEATURE_FSRS		(12*32+11) /* "" Fast short REP STOSB */
- #define X86_FEATURE_FSRC		(12*32+12) /* "" Fast short REP {CMPSB,SCASB} */
- #define X86_FEATURE_LKGS		(12*32+18) /* "" Load "kernel" (userspace) GS */
-+#define X86_FEATURE_WRMSRNS		(12*32+19) /* "" Non-serializing WRMSR */
- #define X86_FEATURE_AMX_FP16		(12*32+21) /* "" AMX fp16 Support */
- #define X86_FEATURE_AVX_IFMA            (12*32+23) /* "" Support for VPMADD52[H,L]UQ */
- #define X86_FEATURE_LAM			(12*32+26) /* Linear Address Masking */
-diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
-index 5168ee0..1efe1d9 100644
---- a/tools/arch/x86/lib/x86-opcode-map.txt
-+++ b/tools/arch/x86/lib/x86-opcode-map.txt
-@@ -1051,7 +1051,7 @@ GrpTable: Grp6
- EndTable
- 
- GrpTable: Grp7
--0: SGDT Ms | VMCALL (001),(11B) | VMLAUNCH (010),(11B) | VMRESUME (011),(11B) | VMXOFF (100),(11B) | PCONFIG (101),(11B) | ENCLV (000),(11B)
-+0: SGDT Ms | VMCALL (001),(11B) | VMLAUNCH (010),(11B) | VMRESUME (011),(11B) | VMXOFF (100),(11B) | PCONFIG (101),(11B) | ENCLV (000),(11B) | WRMSRNS (110),(11B)
- 1: SIDT Ms | MONITOR (000),(11B) | MWAIT (001),(11B) | CLAC (010),(11B) | STAC (011),(11B) | ENCLS (111),(11B)
- 2: LGDT Ms | XGETBV (000),(11B) | XSETBV (001),(11B) | VMFUNC (100),(11B) | XEND (101)(11B) | XTEST (110)(11B) | ENCLU (111),(11B)
- 3: LIDT Ms
+https://people.kernel.org/tglx/notes-about-netiquette
 
