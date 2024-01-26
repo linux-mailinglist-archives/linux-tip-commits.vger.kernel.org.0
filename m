@@ -1,79 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-194-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-195-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDD383DA5C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 13:53:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF56083DF2E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 17:51:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E7DAB24BDB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 12:53:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AC3228A43C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jan 2024 16:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C993F1B812;
-	Fri, 26 Jan 2024 12:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11E91E883;
+	Fri, 26 Jan 2024 16:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YRvivAIC";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WKmwjGIa"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c2Gm97MS";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UEq5gEWc"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3661B7E8;
-	Fri, 26 Jan 2024 12:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1264A1E874;
+	Fri, 26 Jan 2024 16:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706273622; cv=none; b=Ir2hlDBjo2Cy0EEr/UpY0OKXyyTpSk86Ku9hVEOGnclAH0+0Sp27Qy8MY82O6kzTcr1j2yXyNh/dvjHcJl+W8ed4ZotMiYu6h38V2mj9a8x5s1sV5aFCf4CllnXIiY3cr4LnMeWlh7XFXrUGRSJJtDTRov+47Mm0Z4fWDs2YNDQ=
+	t=1706287886; cv=none; b=mbSw3xniirBGljelhxJG48Y66xHndZmvsVbEqIRkXcmpfJETXGfZEyw1SJMlPomjWbaVjplsJW1KoE815SyLO44UKL2S5E2SYEP8SYj9/LYgyovKFa+yaXmpgwEVWHgF0zX42HxTWKz3quke+o83p64zB2AKNQtkqXliMpwHW50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706273622; c=relaxed/simple;
-	bh=crEkeVj7Bs+xMpRjnPknM/Yqxm8h3ndBVuH6Jl7K/Mw=;
+	s=arc-20240116; t=1706287886; c=relaxed/simple;
+	bh=/PLgagZn9nOuTVK0PNZmw9Mm96mPvdJXqXG++W+3M44=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YK7rv/ySP3YVirAbqvbSpSSKTg9e6KZRdisstnU4/iT4ZFQNW8cIajAnsF2yOg/e7BXae2a0nR0whD16hj60uOYb5iRyz27D24DyLCXFCvPRS2mkCbHCsxj171u+N95JuHSRx205vY9Rssf1YqVYJS3hgWKgey9ZG/QVtK53EcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YRvivAIC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WKmwjGIa; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=s5L2PHJcR8JphSFPwaqwFDDf+Tkedc5aQ6TAUxwV1q+Lz9FLJO3PJeGA9AoSgYIYJytwDu+QUN40dF4uXMf15X3fPyiPBKAXNWyU6d3pG6xoARDm7R7u8gqZlOUn0zXYoO24rstqKmSFjhlhVdsilyOeLEJxBswNlCBpr+pBt88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c2Gm97MS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UEq5gEWc; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 26 Jan 2024 12:53:38 -0000
+Date: Fri, 26 Jan 2024 16:51:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706273619;
+	s=2020; t=1706287882;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ft2WJzQF+PY1zHfzprvk0m7UItI04v5JPkKm6TXQoS0=;
-	b=YRvivAIC9E+lnCavi2pAnhQC5O1opjJYoWW9rjsrffB6j6n8CaXK7x8OH+m/RoNkwM08ko
-	X2gLmZZAFz/q+sLKtn+0SYNNhSiG1diBoZzLR9X+zINDSLCDB+hkXKmne7CnAS2HEVJ0lI
-	tdSRsBimswNdGQPJN3fG8+FT2piyX9TP8VJbF56gDPsfrLjBIouGTFz4lff6GlkYDZkTSU
-	/8MzajJD8oxl/HeuIWJMidu3CRGvissYfW6fbEPK0KAuxeEtGqcQqwmdMUDw2aJLb86bYU
-	5G7251Ky1mr+yRcabiYzAsrkXHJvyoCxTR1HUVSUYXPFpr7yeZsXn59Q2HDm3Q==
+	bh=IyEoPBNnkA+0kfiIvKmnK5SI/FCEFBFxu+ykIPEqzpU=;
+	b=c2Gm97MSpYevqIFaweggMCjlZxaD52mJZVfSRjMGqqugWh9OFhFL0AIDsid4/nBaWhcaxq
+	4YNAO95akq0NvVg0myxzbI/5LSGXqx3ad+m13j3gFKSBr7ZgoRbJCINa9vhJaMQVY1r64O
+	6J5Dfw2OuVrwOHkklnZCXLRl6mZ9kTZag/sMVlYlMgn0wUtmXbnNElRnBgOPd5GkTVVTBJ
+	8g1Yd1pox7unc9jPntEUctPCrOGFwPH3YupzQzZp257TyQBQREfKJ4S5d8bj1tHWirmMWK
+	447lxg3sQkWh5OtkuU8i+vBMXhnrwynGA5TcLJCD3NptMbytFDbx3pJfq5k8Iw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706273619;
+	s=2020e; t=1706287882;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ft2WJzQF+PY1zHfzprvk0m7UItI04v5JPkKm6TXQoS0=;
-	b=WKmwjGIawcCS3ps325F5cdDRwZjH/Su37OChK1NyyBWfR+xNg6dvEb004qQBOt57bMsULs
-	EZSUqR9t447VCPDA==
-From: "tip-bot2 for Bartosz Golaszewski" <tip-bot2@linutronix.de>
+	bh=IyEoPBNnkA+0kfiIvKmnK5SI/FCEFBFxu+ykIPEqzpU=;
+	b=UEq5gEWckTp28+7XJT3a+SlpPGxox9cRmL12uTh5m+/f5o8OxfWQWc4RDk6dZSr31HFsc6
+	d6iUHqC4sSDZGtDQ==
+From: "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] bitmap: Define a cleanup function for bitmaps
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Yury Norov <yury.norov@gmail.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240122124243.44002-2-brgl@bgdev.pl>
-References: <20240122124243.44002-2-brgl@bgdev.pl>
+Subject:
+ [tip: smp/core] cpu/hotplug: Delete an extraneous kernel-doc description
+Cc: Randy Dunlap <rdunlap@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240114030615.30441-1-rdunlap@infradead.org>
+References: <20240114030615.30441-1-rdunlap@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170627361832.398.12750100629168138899.tip-bot2@tip-bot2>
+Message-ID: <170628788139.398.3295669207179067546.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,49 +79,41 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     d12a82848eac28d248e67940378fe4a72b0a8cd3
-Gitweb:        https://git.kernel.org/tip/d12a82848eac28d248e67940378fe4a72b0a8cd3
-Author:        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-AuthorDate:    Mon, 22 Jan 2024 13:42:40 +01:00
+Commit-ID:     ef7e585bf48013baabc00de1a15753dd7b626a2d
+Gitweb:        https://git.kernel.org/tip/ef7e585bf48013baabc00de1a15753dd7b626a2d
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Sat, 13 Jan 2024 19:06:15 -08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 26 Jan 2024 13:44:48 +01:00
+CommitterDate: Fri, 26 Jan 2024 17:44:42 +01:00
 
-bitmap: Define a cleanup function for bitmaps
+cpu/hotplug: Delete an extraneous kernel-doc description
 
-Add support for autopointers for bitmaps allocated with bitmap_alloc()
-et al.
+struct cpuhp_cpu_state has an extraneous kernel-doc comment for @cpu.
+There is no struct member by that name, so remove the comment to
+prevent the kernel-doc warning:
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+  kernel/cpu.c:85: warning: Excess struct member 'cpu' description in 'cpuhp_cpu_state'
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Yury Norov <yury.norov@gmail.com>
-Link: https://lore.kernel.org/r/20240122124243.44002-2-brgl@bgdev.pl
+Link: https://lore.kernel.org/r/20240114030615.30441-1-rdunlap@infradead.org
 
 ---
- include/linux/bitmap.h | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/cpu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
-index 9945143..df24c8f 100644
---- a/include/linux/bitmap.h
-+++ b/include/linux/bitmap.h
-@@ -6,6 +6,7 @@
- 
- #include <linux/align.h>
- #include <linux/bitops.h>
-+#include <linux/cleanup.h>
- #include <linux/errno.h>
- #include <linux/find.h>
- #include <linux/limits.h>
-@@ -127,6 +128,8 @@ unsigned long *bitmap_alloc_node(unsigned int nbits, gfp_t flags, int node);
- unsigned long *bitmap_zalloc_node(unsigned int nbits, gfp_t flags, int node);
- void bitmap_free(const unsigned long *bitmap);
- 
-+DEFINE_FREE(bitmap, unsigned long *, if (_T) bitmap_free(_T))
-+
- /* Managed variants of the above. */
- unsigned long *devm_bitmap_alloc(struct device *dev,
- 				 unsigned int nbits, gfp_t flags);
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index e6ec3ba..f059375 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -54,7 +54,6 @@
+  * @rollback:	Perform a rollback
+  * @single:	Single callback invocation
+  * @bringup:	Single callback bringup or teardown selector
+- * @cpu:	CPU number
+  * @node:	Remote CPU node; for multi-instance, do a
+  *		single entry callback for install/remove
+  * @last:	For multi-instance rollback, remember how far we got
 
