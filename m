@@ -1,166 +1,215 @@
-Return-Path: <linux-tip-commits+bounces-202-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-203-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47B78402E4
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jan 2024 11:37:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CCB840334
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jan 2024 11:51:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8D0F1C22051
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jan 2024 10:37:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 433381C2223F
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jan 2024 10:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F8257335;
-	Mon, 29 Jan 2024 10:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9645813B;
+	Mon, 29 Jan 2024 10:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EBKp1PZV"
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Dia79f7t";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IpOamZLE"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6560F57302
-	for <linux-tip-commits@vger.kernel.org>; Mon, 29 Jan 2024 10:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B935810D;
+	Mon, 29 Jan 2024 10:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706524671; cv=none; b=Jr3RlWoB25vZWMe4n9tIH1T9X/plbHhPYnGzIDcziTXtnSVnovQqIiH3Ma0UnbX53LgaJgx4VJ229ORtj9IA57f7xopm3mJ6da7/jyX8z5S5yaThgQcQpzkIu0ny1xcZTamw0v2Z+frLboNf8NWkbtcGTPPEGB8O3xtvvfnJba8=
+	t=1706525450; cv=none; b=GavFuotwvrAG9wUIvhXWM9DH6nRmSswT7dQ1pW6nVjOZtNrajJzQEm8tzuq1ZhVcHPm7QmT+lUJ6gZxmS+EDwqUGit9c0vf01vxTaiOanuNJtPn1+ZIdrkUlmrnWMgepD0rDU65CmrXyHDXt51CYC28uhr1ABS6WDXz41h9MMyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706524671; c=relaxed/simple;
-	bh=1wRdObldpz8Oy1Sjei4zAT/euERB6gBBuM0OId3eFno=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nbNSwSm1T3tdhr//tjuFBjDf+70BdKXU4RO8sTCHvyb+KMoVhPINQBp+D/HNUw/NPuEtwN1Gc8r5El6RlAZ9i6Vs48D8eerx3aAQhJ7svW5d8nIem13ecsh9IpOeoxTUBtEhPpnRDo9B6ZTpg/657LH3qDCMgQ1tWgTOqxgl4ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EBKp1PZV; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-5ffee6e8770so30409357b3.0
-        for <linux-tip-commits@vger.kernel.org>; Mon, 29 Jan 2024 02:37:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706524668; x=1707129468; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SN0szkxowObuhuLjknKCW5v8Er8Wqapia+3YQTLOHeI=;
-        b=EBKp1PZVxtMwI2bFqwYCSwBkt7nmeYGQaN6CO7A/8Pi8G/M0UDXjMcvtHFQQwP90Ja
-         6FaNOFqkcGkrFxj0qb6CcngE8OIr5Y0KNNQ/5qIlFEduSNVVb87xZ5zS4vCeRpUHt8hp
-         rZee9sBeVSk4St26/DwDUCoaaxFIb/mDiNqcCJnYeLXGbVcgNvWqHLbzF2c8K/qQ6Izl
-         jLlp5jTMXxh8c+qZZv2ed9v1tiMcYClfeZORDs7FCB3hNG/SO46Y7ZMftFIZpDUwa4Vb
-         1QkVZUObq3yYDu/YPE6GJn6BsAnyJGqzG30kG+0yghXnGuzZFUQX5KzkTTb3yga61qaJ
-         f8RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706524668; x=1707129468;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SN0szkxowObuhuLjknKCW5v8Er8Wqapia+3YQTLOHeI=;
-        b=ulbJ4Zq9BvDOhtvV85PXARz2Q5w1bmluRGbdKWm5s9QqCedsPe4KB30V8+lWbbTayu
-         aELKRRvUFyBAbafcakQsFrmMSIMrYmf0vQtGGv75LpiJag4Rsw016wJLdaTzJPIhNFoO
-         oCPOq60nXIpxvwqn73ayJXMjkRfERtrwZUV2PTLjJjWKiwfAl3DTG4tcst5YrRar5+Ay
-         Wj2wRcJZHWnRQzQlzOFPDyq8xKoDx0rzwP1Cf3pD1Yhk/OsxYGDdLUUvC5vAxeC9FX2C
-         RFEpBr8+/KxABR7QXmiolZfbR7OgJo2VZwlo2Trd2GpLYEO5lzKqVDIoJW1nfIWgEi20
-         6ZwA==
-X-Gm-Message-State: AOJu0YxkT6oEAwWqSdmGU4tOh2Ht9UD7mj72IvdJRXM6WxR0oSUlDbJY
-	nAqGAu5PHDfaY95yZsGcKaHIBc/XK7C6WjCnc9VkDYPwzEApXD7goatI+3hi2e8cPR6fZTZyFSZ
-	JhOYyR+xl14OkoDI4dP0yATc9Iw4U6V9XIYoAHg==
-X-Google-Smtp-Source: AGHT+IFw5UzsVwCkEa5Ebt+OpMsZ0dn0dUQgqYd+DyDP8nNB43gw/+iUEP1XFjBVYRIVBuRvpISAOxzb+vrN5SvPklc=
-X-Received: by 2002:a05:690c:d8e:b0:5e9:5538:d930 with SMTP id
- da14-20020a05690c0d8e00b005e95538d930mr5455648ywb.47.1706524668065; Mon, 29
- Jan 2024 02:37:48 -0800 (PST)
+	s=arc-20240116; t=1706525450; c=relaxed/simple;
+	bh=W/bFJTnHsEGR4cCFLWzVQay1Nw506nMdbBNrQzZUyTo=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Z/F0ghZOcpO/Gs5h8oGJaZ8hMmmTcpOYLsozxGBYVhDNIPWgRVofD7/TagyR4bLIs7T/StM50PMk1rLB3r1DU5aMuBJxbrXwNhqqq/uzoU5veGawzRYkbl9bX5aW2dmHGpkJHGU2AlFaVWK/FpjhqrPTRUC/m74y6MW2yKLvthU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Dia79f7t; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IpOamZLE; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 29 Jan 2024 10:50:45 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1706525446;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ffkKSYcj75lGpOSBioIHErCcbl/NbswiwLRlbhSqyfc=;
+	b=Dia79f7t4/Z6EPDPrbBNr5G9SfMDcyLIhXzBaDNi6EC5uiZpcji4myoa1QhOKUbN6546IE
+	OVLI4upQKbVJh6c3G7v7MquelV1h7dRsdmQmpOSI9sYC6d0DDGoELWpPYEhULhQJ7CQkgL
+	qarTjoqfqxQ5f2PRmW1PFwnnJzvZwGT0Bm9Of3H/8RTmRbfWWRKRk5cu4tHxeI7hVyxGXG
+	IB456gcWORRZWuP8uFExGAyJxQD79ZDP3QI64J8mkQLvdKaBjNfDmgj0g2bnSwW3li9/Ec
+	I47X7T0h074vaz2NvFyUdztSFAFvj3ZQcpuqP1U9vKIvwoSgRslasw2Uvkk5LQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1706525446;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ffkKSYcj75lGpOSBioIHErCcbl/NbswiwLRlbhSqyfc=;
+	b=IpOamZLE0qkraJnxLbYt+k3PwFyLjj91kiUzREuk4+y38t/EvPXP6zwBBF+vSLKDpTXq9e
+	3/3OUHcefx/oCzBQ==
+From: "tip-bot2 for Qiuxu Zhuo" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/lib: Revert to _ASM_EXTABLE_UA() for
+ {get,put}_user() fixups
+Cc: Qiuxu Zhuo <qiuxu.zhuo@intel.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,  <stable@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240129063842.61584-1-qiuxu.zhuo@intel.com>
+References: <20240129063842.61584-1-qiuxu.zhuo@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240122124243.44002-5-brgl@bgdev.pl> <170627361652.398.12825437185563577604.tip-bot2@tip-bot2>
- <20240126210509.GA1212219@dev-arch.thelio-3990X> <CACMJSesVR_3-PBt1ScricSKNMRzH5gesqtTVW3mqN=gg0-O-7w@mail.gmail.com>
- <Zbd6LPDRFxCWZnqb@gmail.com>
-In-Reply-To: <Zbd6LPDRFxCWZnqb@gmail.com>
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Mon, 29 Jan 2024 11:37:37 +0100
-Message-ID: <CACMJSet0s+FqMDucvHi7x3Q6MSexUNH7_2eE8+g-gS=Z+CXVdw@mail.gmail.com>
-Subject: Re: [tip: irq/core] genirq/irq_sim: Shrink code by using cleanup helpers
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org, 
-	linux-tip-commits@vger.kernel.org, maz@kernel.org, 
-	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <170652544552.398.565528579108985833.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Mon, 29 Jan 2024 at 11:13, Ingo Molnar <mingo@kernel.org> wrote:
->
->
-> * Bartosz Golaszewski <bartosz.golaszewski@linaro.org> wrote:
->
-> > On Fri, 26 Jan 2024 at 22:05, Nathan Chancellor <nathan@kernel.org> wrote:
-> > >
-> > > > Committer:     Thomas Gleixner <tglx@linutronix.de>
-> > > > CommitterDate: Fri, 26 Jan 2024 13:44:48 +01:00
-> > > >
-> > > > genirq/irq_sim: Shrink code by using cleanup helpers
-> > > >
-> > > > Use the new __free() mechanism to remove all gotos and simplify the error
-> > > > paths.
-> > > >
-> > > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> > > > Link: https://lore.kernel.org/r/20240122124243.44002-5-brgl@bgdev.pl
-> > > >
-> > > > ---
-> > > >  kernel/irq/irq_sim.c | 25 ++++++++++---------------
-> > > >  1 file changed, 10 insertions(+), 15 deletions(-)
-> > > >
-> > > > diff --git a/kernel/irq/irq_sim.c b/kernel/irq/irq_sim.c
-> > > > index b0d50b4..fe8fd30 100644
-> > > > --- a/kernel/irq/irq_sim.c
-> > > > +++ b/kernel/irq/irq_sim.c
-> > > > @@ -4,6 +4,7 @@
-> > > >   * Copyright (C) 2020 Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > >   */
-> > > >
-> > > > +#include <linux/cleanup.h>
-> > > >  #include <linux/interrupt.h>
-> > > >  #include <linux/irq.h>
-> > > >  #include <linux/irq_sim.h>
-> > > > @@ -163,33 +164,27 @@ static const struct irq_domain_ops irq_sim_domain_ops = {
-> > > >  struct irq_domain *irq_domain_create_sim(struct fwnode_handle *fwnode,
-> > > >                                        unsigned int num_irqs)
-> > > >  {
-> > > > -     struct irq_sim_work_ctx *work_ctx;
-> > > > +     struct irq_sim_work_ctx *work_ctx __free(kfree) = kmalloc(sizeof(*work_ctx), GFP_KERNEL);
-> > > > +     unsigned long *pending;
-> > > >
-> > > > -     work_ctx = kmalloc(sizeof(*work_ctx), GFP_KERNEL);
-> > > >       if (!work_ctx)
-> > > > -             goto err_out;
-> > > > +             return ERR_PTR(-ENOMEM);
-> > > >
-> > > > -     work_ctx->pending = bitmap_zalloc(num_irqs, GFP_KERNEL);
-> > > > -     if (!work_ctx->pending)
-> > > > -             goto err_free_work_ctx;
-> > > > +     pending = __free(bitmap) = bitmap_zalloc(num_irqs, GFP_KERNEL);
-> > >
-> > > Apologies if this has already been reported elsewhere. This does not
-> > > match what was sent and it causes the build to break with both GCC:
-> > >
-> >
-> > I did not see any other report. I don't know what happened here but
-> > this was a ninja edit as it's not what I sent. If Thomas' intention
-> > was to move the variable declaration and detach it from the assignment
-> > then 'pending' should at least be set to NULL and __free() must
-> > decorate the declaration.
-> >
-> > But the coding style of declaring variables when they're first
-> > assigned their auto-cleaned value is what Linus Torvalds explicitly
-> > asked me to do when I first started sending PRs containing uses of
-> > linux/cleanup.h.
->
-> Ok - I've rebased tip:irq/core with the original patch.
->
-> Do you have a reference to Linus's mail about C++ style definition
-> of variables? I can see the validity of the pattern in this context,
-> but it's explicitly against the kernel coding style AFAICS, which
-> I suppose prompted Thomas's edit. I'd like to have an URL handy when the
-> inevitable checkpatch 'fix' gets submitted. ;-)
->
+The following commit has been merged into the x86/urgent branch of tip:
 
-Sure, here's one rant I was the target of:
-https://lore.kernel.org/all/CAHk-=wgRHiV5VSxtfXA4S6aLUmcQYEuB67u3BJPJPtuESs1JyA@mail.gmail.com/
+Commit-ID:     8eed4e00a370b37b4e5985ed983dccedd555ea9d
+Gitweb:        https://git.kernel.org/tip/8eed4e00a370b37b4e5985ed983dccedd555ea9d
+Author:        Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+AuthorDate:    Mon, 29 Jan 2024 14:38:42 +08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 29 Jan 2024 11:40:41 +01:00
 
-Bartosz
+x86/lib: Revert to _ASM_EXTABLE_UA() for {get,put}_user() fixups
+
+During memory error injection test on kernels >= v6.4, the kernel panics
+like below. However, this issue couldn't be reproduced on kernels <= v6.3.
+
+  mce: [Hardware Error]: CPU 296: Machine Check Exception: f Bank 1: bd80000000100134
+  mce: [Hardware Error]: RIP 10:<ffffffff821b9776> {__get_user_nocheck_4+0x6/0x20}
+  mce: [Hardware Error]: TSC 411a93533ed ADDR 346a8730040 MISC 86
+  mce: [Hardware Error]: PROCESSOR 0:a06d0 TIME 1706000767 SOCKET 1 APIC 211 microcode 80001490
+  mce: [Hardware Error]: Run the above through 'mcelog --ascii'
+  mce: [Hardware Error]: Machine check: Data load in unrecoverable area of kernel
+  Kernel panic - not syncing: Fatal local machine check
+
+The MCA code can recover from an in-kernel #MC if the fixup type is
+EX_TYPE_UACCESS, explicitly indicating that the kernel is attempting to
+access userspace memory. However, if the fixup type is EX_TYPE_DEFAULT
+the only thing that is raised for an in-kernel #MC is a panic.
+
+ex_handler_uaccess() would warn if users gave a non-canonical addresses
+(with bit 63 clear) to {get, put}_user(), which was unexpected.
+
+Therefore, commit
+
+  b19b74bc99b1 ("x86/mm: Rework address range check in get_user() and put_user()")
+
+replaced _ASM_EXTABLE_UA() with _ASM_EXTABLE() for {get, put}_user()
+fixups. However, the new fixup type EX_TYPE_DEFAULT results in a panic.
+
+Commit
+
+  6014bc27561f ("x86-64: make access_ok() independent of LAM")
+
+added the check gp_fault_address_ok() right before the WARN_ONCE() in
+ex_handler_uaccess() to not warn about non-canonical user addresses due
+to LAM.
+
+With that in place, revert back to _ASM_EXTABLE_UA() for {get,put}_user()
+exception fixups in order to be able to handle in-kernel MCEs correctly
+again.
+
+  [ bp: Massage commit message. ]
+
+Fixes: b19b74bc99b1 ("x86/mm: Rework address range check in get_user() and put_user()")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240129063842.61584-1-qiuxu.zhuo@intel.com
+---
+ arch/x86/lib/getuser.S | 24 ++++++++++++------------
+ arch/x86/lib/putuser.S | 20 ++++++++++----------
+ 2 files changed, 22 insertions(+), 22 deletions(-)
+
+diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
+index 20ef350..10d5ed8 100644
+--- a/arch/x86/lib/getuser.S
++++ b/arch/x86/lib/getuser.S
+@@ -163,23 +163,23 @@ SYM_CODE_END(__get_user_8_handle_exception)
+ #endif
+ 
+ /* get_user */
+-	_ASM_EXTABLE(1b, __get_user_handle_exception)
+-	_ASM_EXTABLE(2b, __get_user_handle_exception)
+-	_ASM_EXTABLE(3b, __get_user_handle_exception)
++	_ASM_EXTABLE_UA(1b, __get_user_handle_exception)
++	_ASM_EXTABLE_UA(2b, __get_user_handle_exception)
++	_ASM_EXTABLE_UA(3b, __get_user_handle_exception)
+ #ifdef CONFIG_X86_64
+-	_ASM_EXTABLE(4b, __get_user_handle_exception)
++	_ASM_EXTABLE_UA(4b, __get_user_handle_exception)
+ #else
+-	_ASM_EXTABLE(4b, __get_user_8_handle_exception)
+-	_ASM_EXTABLE(5b, __get_user_8_handle_exception)
++	_ASM_EXTABLE_UA(4b, __get_user_8_handle_exception)
++	_ASM_EXTABLE_UA(5b, __get_user_8_handle_exception)
+ #endif
+ 
+ /* __get_user */
+-	_ASM_EXTABLE(6b, __get_user_handle_exception)
+-	_ASM_EXTABLE(7b, __get_user_handle_exception)
+-	_ASM_EXTABLE(8b, __get_user_handle_exception)
++	_ASM_EXTABLE_UA(6b, __get_user_handle_exception)
++	_ASM_EXTABLE_UA(7b, __get_user_handle_exception)
++	_ASM_EXTABLE_UA(8b, __get_user_handle_exception)
+ #ifdef CONFIG_X86_64
+-	_ASM_EXTABLE(9b, __get_user_handle_exception)
++	_ASM_EXTABLE_UA(9b, __get_user_handle_exception)
+ #else
+-	_ASM_EXTABLE(9b, __get_user_8_handle_exception)
+-	_ASM_EXTABLE(10b, __get_user_8_handle_exception)
++	_ASM_EXTABLE_UA(9b, __get_user_8_handle_exception)
++	_ASM_EXTABLE_UA(10b, __get_user_8_handle_exception)
+ #endif
+diff --git a/arch/x86/lib/putuser.S b/arch/x86/lib/putuser.S
+index 2877f59..975c9c1 100644
+--- a/arch/x86/lib/putuser.S
++++ b/arch/x86/lib/putuser.S
+@@ -133,15 +133,15 @@ SYM_CODE_START_LOCAL(__put_user_handle_exception)
+ 	RET
+ SYM_CODE_END(__put_user_handle_exception)
+ 
+-	_ASM_EXTABLE(1b, __put_user_handle_exception)
+-	_ASM_EXTABLE(2b, __put_user_handle_exception)
+-	_ASM_EXTABLE(3b, __put_user_handle_exception)
+-	_ASM_EXTABLE(4b, __put_user_handle_exception)
+-	_ASM_EXTABLE(5b, __put_user_handle_exception)
+-	_ASM_EXTABLE(6b, __put_user_handle_exception)
+-	_ASM_EXTABLE(7b, __put_user_handle_exception)
+-	_ASM_EXTABLE(9b, __put_user_handle_exception)
++	_ASM_EXTABLE_UA(1b, __put_user_handle_exception)
++	_ASM_EXTABLE_UA(2b, __put_user_handle_exception)
++	_ASM_EXTABLE_UA(3b, __put_user_handle_exception)
++	_ASM_EXTABLE_UA(4b, __put_user_handle_exception)
++	_ASM_EXTABLE_UA(5b, __put_user_handle_exception)
++	_ASM_EXTABLE_UA(6b, __put_user_handle_exception)
++	_ASM_EXTABLE_UA(7b, __put_user_handle_exception)
++	_ASM_EXTABLE_UA(9b, __put_user_handle_exception)
+ #ifdef CONFIG_X86_32
+-	_ASM_EXTABLE(8b, __put_user_handle_exception)
+-	_ASM_EXTABLE(10b, __put_user_handle_exception)
++	_ASM_EXTABLE_UA(8b, __put_user_handle_exception)
++	_ASM_EXTABLE_UA(10b, __put_user_handle_exception)
+ #endif
 
