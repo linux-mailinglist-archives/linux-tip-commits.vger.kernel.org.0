@@ -1,78 +1,72 @@
-Return-Path: <linux-tip-commits+bounces-203-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-204-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CCB840334
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jan 2024 11:51:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3ACC842828
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 16:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 433381C2223F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jan 2024 10:51:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48405281F9B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 15:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9645813B;
-	Mon, 29 Jan 2024 10:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2649B823CF;
+	Tue, 30 Jan 2024 15:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Dia79f7t";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IpOamZLE"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M+R2/Vo5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="i+/eHCyE"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B935810D;
-	Mon, 29 Jan 2024 10:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F28C823D6;
+	Tue, 30 Jan 2024 15:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706525450; cv=none; b=GavFuotwvrAG9wUIvhXWM9DH6nRmSswT7dQ1pW6nVjOZtNrajJzQEm8tzuq1ZhVcHPm7QmT+lUJ6gZxmS+EDwqUGit9c0vf01vxTaiOanuNJtPn1+ZIdrkUlmrnWMgepD0rDU65CmrXyHDXt51CYC28uhr1ABS6WDXz41h9MMyQ=
+	t=1706628968; cv=none; b=THbTZZejWUs5DDyqc04IznX3WzvaEID+AyZC2MvRZ36mrgpOsr4tjsYOYnJXJEgjniVOOxNkp1ZDB1MheklSTj6bwfR5/a5zYDklgeagce0P+tetWz1rAwwSykmZH7HeFJRhvMbjX+SmJqdKsOLbLbR+uIZJnsq/q459fZFHMmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706525450; c=relaxed/simple;
-	bh=W/bFJTnHsEGR4cCFLWzVQay1Nw506nMdbBNrQzZUyTo=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Z/F0ghZOcpO/Gs5h8oGJaZ8hMmmTcpOYLsozxGBYVhDNIPWgRVofD7/TagyR4bLIs7T/StM50PMk1rLB3r1DU5aMuBJxbrXwNhqqq/uzoU5veGawzRYkbl9bX5aW2dmHGpkJHGU2AlFaVWK/FpjhqrPTRUC/m74y6MW2yKLvthU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Dia79f7t; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IpOamZLE; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1706628968; c=relaxed/simple;
+	bh=2EGzl7M/FHI7zqdg7ywE9XuWh5LgpwPnBVChHVQOHUw=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=ElI/snunWSpnqTZgZFvD9nEp5U7vpPiZ+1prN1HuqcUl5+WOUiW1pozAS3G4lbjcjOrc5ZwMIh6bgsWILL2gJtDLqqZUzi5ASnXkA62T4oNoma4Qg1yTSt181sxeUT/zrRQ+VLmNC/JbOLe/HyizhA+Oj6xA4xbQ7dY8fRiopF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M+R2/Vo5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=i+/eHCyE; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 29 Jan 2024 10:50:45 -0000
+Date: Tue, 30 Jan 2024 15:36:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706525446;
+	s=2020; t=1706628964;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ffkKSYcj75lGpOSBioIHErCcbl/NbswiwLRlbhSqyfc=;
-	b=Dia79f7t4/Z6EPDPrbBNr5G9SfMDcyLIhXzBaDNi6EC5uiZpcji4myoa1QhOKUbN6546IE
-	OVLI4upQKbVJh6c3G7v7MquelV1h7dRsdmQmpOSI9sYC6d0DDGoELWpPYEhULhQJ7CQkgL
-	qarTjoqfqxQ5f2PRmW1PFwnnJzvZwGT0Bm9Of3H/8RTmRbfWWRKRk5cu4tHxeI7hVyxGXG
-	IB456gcWORRZWuP8uFExGAyJxQD79ZDP3QI64J8mkQLvdKaBjNfDmgj0g2bnSwW3li9/Ec
-	I47X7T0h074vaz2NvFyUdztSFAFvj3ZQcpuqP1U9vKIvwoSgRslasw2Uvkk5LQ==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=KNY97KZhyunhlbOQUhYIMP68InPWjUlWLM1nd+NbATY=;
+	b=M+R2/Vo5i/tS5qB0nz+flCPn4WK66PWkRPzXADc6omcE+z2cINlRPsVNPzomTZvGUuyXkO
+	O0i3bw7q+haUJqMU1BbDBpZcCcG+BrHOjt5fEXng8k1+QR7kUmxUxvOc+aUb5a1bAgaMBr
+	XadZ9OOn458o30XFPKdoauCmK/OhSk3EPOWWfzjGRJswaHMPrZyA5mVfZ834mslfbTVJoo
+	RhBzyg53ucpkhazcL9SdD59rY7vPzVONt1bSG2TTdDfXxpck0uTXvJ08A5frzH9o268fhD
+	JpnPS79daVhtyjdI7UxdpsXGJAJfzbA7S83FauRmveHbT9I1kixyISCJ8cGg6A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706525446;
+	s=2020e; t=1706628964;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ffkKSYcj75lGpOSBioIHErCcbl/NbswiwLRlbhSqyfc=;
-	b=IpOamZLE0qkraJnxLbYt+k3PwFyLjj91kiUzREuk4+y38t/EvPXP6zwBBF+vSLKDpTXq9e
-	3/3OUHcefx/oCzBQ==
-From: "tip-bot2 for Qiuxu Zhuo" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=KNY97KZhyunhlbOQUhYIMP68InPWjUlWLM1nd+NbATY=;
+	b=i+/eHCyE6RnR5wxNMXXw7Z0h6sU6/EO3gaA8r6J9AiZkiWX7d65EwFu6UiZHBbbm4nhvSN
+	X+52vrEKLRzw/dDw==
+From: "tip-bot2 for Andrei Vagin" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/lib: Revert to _ASM_EXTABLE_UA() for
- {get,put}_user() fixups
-Cc: Qiuxu Zhuo <qiuxu.zhuo@intel.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,  <stable@kernel.org>,
+Subject: [tip: x86/urgent] x86/fpu: Stop relying on userspace for info to
+ fault in xsave buffer
+Cc: Konstantin Bogomolov <bogomolov@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Andrei Vagin <avagin@google.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240129063842.61584-1-qiuxu.zhuo@intel.com>
-References: <20240129063842.61584-1-qiuxu.zhuo@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170652544552.398.565528579108985833.tip-bot2@tip-bot2>
+Message-ID: <170662896219.398.13546791060751128593.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,134 +76,99 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     8eed4e00a370b37b4e5985ed983dccedd555ea9d
-Gitweb:        https://git.kernel.org/tip/8eed4e00a370b37b4e5985ed983dccedd555ea9d
-Author:        Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-AuthorDate:    Mon, 29 Jan 2024 14:38:42 +08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 29 Jan 2024 11:40:41 +01:00
+Commit-ID:     d877550eaf2dc9090d782864c96939397a3c6835
+Gitweb:        https://git.kernel.org/tip/d877550eaf2dc9090d782864c96939397a3c6835
+Author:        Andrei Vagin <avagin@google.com>
+AuthorDate:    Mon, 29 Jan 2024 22:36:03 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 30 Jan 2024 07:25:48 -08:00
 
-x86/lib: Revert to _ASM_EXTABLE_UA() for {get,put}_user() fixups
+x86/fpu: Stop relying on userspace for info to fault in xsave buffer
 
-During memory error injection test on kernels >= v6.4, the kernel panics
-like below. However, this issue couldn't be reproduced on kernels <= v6.3.
+Before this change, the expected size of the user space buffer was
+taken from fx_sw->xstate_size. fx_sw->xstate_size can be changed
+from user-space, so it is possible construct a sigreturn frame where:
 
-  mce: [Hardware Error]: CPU 296: Machine Check Exception: f Bank 1: bd80000000100134
-  mce: [Hardware Error]: RIP 10:<ffffffff821b9776> {__get_user_nocheck_4+0x6/0x20}
-  mce: [Hardware Error]: TSC 411a93533ed ADDR 346a8730040 MISC 86
-  mce: [Hardware Error]: PROCESSOR 0:a06d0 TIME 1706000767 SOCKET 1 APIC 211 microcode 80001490
-  mce: [Hardware Error]: Run the above through 'mcelog --ascii'
-  mce: [Hardware Error]: Machine check: Data load in unrecoverable area of kernel
-  Kernel panic - not syncing: Fatal local machine check
+ * fx_sw->xstate_size is smaller than the size required by valid bits in
+   fx_sw->xfeatures.
+ * user-space unmaps parts of the sigrame fpu buffer so that not all of
+   the buffer required by xrstor is accessible.
 
-The MCA code can recover from an in-kernel #MC if the fixup type is
-EX_TYPE_UACCESS, explicitly indicating that the kernel is attempting to
-access userspace memory. However, if the fixup type is EX_TYPE_DEFAULT
-the only thing that is raised for an in-kernel #MC is a panic.
+In this case, xrstor tries to restore and accesses the unmapped area
+which results in a fault. But fault_in_readable succeeds because buf +
+fx_sw->xstate_size is within the still mapped area, so it goes back and
+tries xrstor again. It will spin in this loop forever.
 
-ex_handler_uaccess() would warn if users gave a non-canonical addresses
-(with bit 63 clear) to {get, put}_user(), which was unexpected.
+Instead, fault in the maximum size which can be touched by XRSTOR (taken
+from fpstate->user_size).
 
-Therefore, commit
+[ dhansen: tweak subject / changelog ]
 
-  b19b74bc99b1 ("x86/mm: Rework address range check in get_user() and put_user()")
-
-replaced _ASM_EXTABLE_UA() with _ASM_EXTABLE() for {get, put}_user()
-fixups. However, the new fixup type EX_TYPE_DEFAULT results in a panic.
-
-Commit
-
-  6014bc27561f ("x86-64: make access_ok() independent of LAM")
-
-added the check gp_fault_address_ok() right before the WARN_ONCE() in
-ex_handler_uaccess() to not warn about non-canonical user addresses due
-to LAM.
-
-With that in place, revert back to _ASM_EXTABLE_UA() for {get,put}_user()
-exception fixups in order to be able to handle in-kernel MCEs correctly
-again.
-
-  [ bp: Massage commit message. ]
-
-Fixes: b19b74bc99b1 ("x86/mm: Rework address range check in get_user() and put_user()")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240129063842.61584-1-qiuxu.zhuo@intel.com
+Fixes: fcb3635f5018 ("x86/fpu/signal: Handle #PF in the direct restore path")
+Reported-by: Konstantin Bogomolov <bogomolov@google.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240130063603.3392627-1-avagin%40google.com
 ---
- arch/x86/lib/getuser.S | 24 ++++++++++++------------
- arch/x86/lib/putuser.S | 20 ++++++++++----------
- 2 files changed, 22 insertions(+), 22 deletions(-)
+ arch/x86/kernel/fpu/signal.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
-index 20ef350..10d5ed8 100644
---- a/arch/x86/lib/getuser.S
-+++ b/arch/x86/lib/getuser.S
-@@ -163,23 +163,23 @@ SYM_CODE_END(__get_user_8_handle_exception)
- #endif
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index 558076d..247f222 100644
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -274,12 +274,13 @@ static int __restore_fpregs_from_user(void __user *buf, u64 ufeatures,
+  * Attempt to restore the FPU registers directly from user memory.
+  * Pagefaults are handled and any errors returned are fatal.
+  */
+-static bool restore_fpregs_from_user(void __user *buf, u64 xrestore,
+-				     bool fx_only, unsigned int size)
++static bool restore_fpregs_from_user(void __user *buf, u64 xrestore, bool fx_only)
+ {
+ 	struct fpu *fpu = &current->thread.fpu;
+ 	int ret;
  
- /* get_user */
--	_ASM_EXTABLE(1b, __get_user_handle_exception)
--	_ASM_EXTABLE(2b, __get_user_handle_exception)
--	_ASM_EXTABLE(3b, __get_user_handle_exception)
-+	_ASM_EXTABLE_UA(1b, __get_user_handle_exception)
-+	_ASM_EXTABLE_UA(2b, __get_user_handle_exception)
-+	_ASM_EXTABLE_UA(3b, __get_user_handle_exception)
- #ifdef CONFIG_X86_64
--	_ASM_EXTABLE(4b, __get_user_handle_exception)
-+	_ASM_EXTABLE_UA(4b, __get_user_handle_exception)
- #else
--	_ASM_EXTABLE(4b, __get_user_8_handle_exception)
--	_ASM_EXTABLE(5b, __get_user_8_handle_exception)
-+	_ASM_EXTABLE_UA(4b, __get_user_8_handle_exception)
-+	_ASM_EXTABLE_UA(5b, __get_user_8_handle_exception)
- #endif
++	/* Restore enabled features only. */
++	xrestore &= fpu->fpstate->user_xfeatures;
+ retry:
+ 	fpregs_lock();
+ 	/* Ensure that XFD is up to date */
+@@ -309,7 +310,7 @@ retry:
+ 		if (ret != X86_TRAP_PF)
+ 			return false;
  
- /* __get_user */
--	_ASM_EXTABLE(6b, __get_user_handle_exception)
--	_ASM_EXTABLE(7b, __get_user_handle_exception)
--	_ASM_EXTABLE(8b, __get_user_handle_exception)
-+	_ASM_EXTABLE_UA(6b, __get_user_handle_exception)
-+	_ASM_EXTABLE_UA(7b, __get_user_handle_exception)
-+	_ASM_EXTABLE_UA(8b, __get_user_handle_exception)
- #ifdef CONFIG_X86_64
--	_ASM_EXTABLE(9b, __get_user_handle_exception)
-+	_ASM_EXTABLE_UA(9b, __get_user_handle_exception)
- #else
--	_ASM_EXTABLE(9b, __get_user_8_handle_exception)
--	_ASM_EXTABLE(10b, __get_user_8_handle_exception)
-+	_ASM_EXTABLE_UA(9b, __get_user_8_handle_exception)
-+	_ASM_EXTABLE_UA(10b, __get_user_8_handle_exception)
- #endif
-diff --git a/arch/x86/lib/putuser.S b/arch/x86/lib/putuser.S
-index 2877f59..975c9c1 100644
---- a/arch/x86/lib/putuser.S
-+++ b/arch/x86/lib/putuser.S
-@@ -133,15 +133,15 @@ SYM_CODE_START_LOCAL(__put_user_handle_exception)
- 	RET
- SYM_CODE_END(__put_user_handle_exception)
+-		if (!fault_in_readable(buf, size))
++		if (!fault_in_readable(buf, fpu->fpstate->user_size))
+ 			goto retry;
+ 		return false;
+ 	}
+@@ -339,7 +340,6 @@ static bool __fpu_restore_sig(void __user *buf, void __user *buf_fx,
+ 	struct user_i387_ia32_struct env;
+ 	bool success, fx_only = false;
+ 	union fpregs_state *fpregs;
+-	unsigned int state_size;
+ 	u64 user_xfeatures = 0;
  
--	_ASM_EXTABLE(1b, __put_user_handle_exception)
--	_ASM_EXTABLE(2b, __put_user_handle_exception)
--	_ASM_EXTABLE(3b, __put_user_handle_exception)
--	_ASM_EXTABLE(4b, __put_user_handle_exception)
--	_ASM_EXTABLE(5b, __put_user_handle_exception)
--	_ASM_EXTABLE(6b, __put_user_handle_exception)
--	_ASM_EXTABLE(7b, __put_user_handle_exception)
--	_ASM_EXTABLE(9b, __put_user_handle_exception)
-+	_ASM_EXTABLE_UA(1b, __put_user_handle_exception)
-+	_ASM_EXTABLE_UA(2b, __put_user_handle_exception)
-+	_ASM_EXTABLE_UA(3b, __put_user_handle_exception)
-+	_ASM_EXTABLE_UA(4b, __put_user_handle_exception)
-+	_ASM_EXTABLE_UA(5b, __put_user_handle_exception)
-+	_ASM_EXTABLE_UA(6b, __put_user_handle_exception)
-+	_ASM_EXTABLE_UA(7b, __put_user_handle_exception)
-+	_ASM_EXTABLE_UA(9b, __put_user_handle_exception)
- #ifdef CONFIG_X86_32
--	_ASM_EXTABLE(8b, __put_user_handle_exception)
--	_ASM_EXTABLE(10b, __put_user_handle_exception)
-+	_ASM_EXTABLE_UA(8b, __put_user_handle_exception)
-+	_ASM_EXTABLE_UA(10b, __put_user_handle_exception)
- #endif
+ 	if (use_xsave()) {
+@@ -349,17 +349,14 @@ static bool __fpu_restore_sig(void __user *buf, void __user *buf_fx,
+ 			return false;
+ 
+ 		fx_only = !fx_sw_user.magic1;
+-		state_size = fx_sw_user.xstate_size;
+ 		user_xfeatures = fx_sw_user.xfeatures;
+ 	} else {
+ 		user_xfeatures = XFEATURE_MASK_FPSSE;
+-		state_size = fpu->fpstate->user_size;
+ 	}
+ 
+ 	if (likely(!ia32_fxstate)) {
+ 		/* Restore the FPU registers directly from user memory. */
+-		return restore_fpregs_from_user(buf_fx, user_xfeatures, fx_only,
+-						state_size);
++		return restore_fpregs_from_user(buf_fx, user_xfeatures, fx_only);
+ 	}
+ 
+ 	/*
 
