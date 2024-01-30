@@ -1,78 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-230-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-231-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050FB842946
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 17:31:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B839842949
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 17:31:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 689601F21F3E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 16:31:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ED751C247AD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 16:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DE113AA4B;
-	Tue, 30 Jan 2024 16:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8184D13BE81;
+	Tue, 30 Jan 2024 16:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wt7sjOz4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+c2h1I56"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Sacx46S6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dKv42Ukd"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FB813343E;
-	Tue, 30 Jan 2024 16:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097A2137C2B;
+	Tue, 30 Jan 2024 16:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706631978; cv=none; b=g0uf7pgGkE+jRFMYGJDznqxm6QdPz3ogYDFJ4z6Yy1OQlqnXkqu1pKgeplTW1VON4FetuBs+WSzh5tioRAOepmOKfplcJmO98vHHtxYhhS6eMeKXTzd18+Jq/wk4/D6PE74S7FQ7AqtgvpU2gom7YGPXgxVPN/wp4V/GHI5ZkDo=
+	t=1706631979; cv=none; b=KwgVpJKXQUNARSm7RnyJeMJHBhhVvMHu0gLhmSIk6c744ThDK6kmSHQ5rNYxuy1sjqr9f4aWBchOW6A1vUmN6GXrRhNNlkiyLO3cQJCl6kSxrWRNDA8fM+iS321phe0LqBQpPtlbqu6kR2NX5bbboTMEftsHvamBOfGkldwtAIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706631978; c=relaxed/simple;
-	bh=B0h6aWvGJPn004tzOVelOWQ/cqMdt1JhDKgOfQBTOuo=;
+	s=arc-20240116; t=1706631979; c=relaxed/simple;
+	bh=2Z+DqwLrOTlEZtmtvqHrOMU4bM5HdTHPDUJrj8SQZpE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JPEM/ZC3cpgBuouby/Zg0gixQESGlgcyfeGB2PMlg4e4E+kxkRq4bLguWF8I5/HJBR3YF3r6BBv44fAkpqQmL3yCnPSvg/89am32SxZxkucQWm0T34A2LfWtNGD49j1+RV6Ret+Lhx7G+PstgA6B0nXcLlclT7B86fdm9G1pjMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wt7sjOz4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+c2h1I56; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=KRppRn9zdmx/L1ZpaffFd2b6bqwPjm9d0GSMlsKlZqXLPBBMx9IRPvaNrqogHnw8vH7G3LVC/BFlqRv/8lUy6U9VJvJiDwCY6izpwQgWPIOCOxp3HfmWRjiKHWKxVeAQvjrzTEiaHpkByG+93zXHiSgemQBmAuB8jUIjg1RVddE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Sacx46S6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dKv42Ukd; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 30 Jan 2024 16:26:13 -0000
+Date: Tue, 30 Jan 2024 16:26:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706631974;
+	s=2020; t=1706631975;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mqvRhN/JExx8+Z5V9A9N5RTe7yanjkFdVmwkLfKJCYY=;
-	b=wt7sjOz4RSGQMq4opw2RDmStXFnO4RpZWZIwFK3Q0yfMbYK/T4+J2BWPxsWTJGj8GY/x6z
-	rJX1zTSejoox9aUHuOOZr+zX3hJkgC7Pr5U4xc9D6uVc+u+r186iCU8t75JIaWHn6xWQ/J
-	qssXOtisfHlV4E+8JUngc05JcpYX//fhxOUGiako1Nbt7+PDPVwyAIIfH/+Vcsav3M/+Hv
-	EktDJLe1LU3K78RHaHpn4Xq4CQMR+/aYB13021ZDjYGwdh2NnG8Wr6slDTQysAnsoPxpPz
-	6rNXvoprJa5MetbQ9nOUCtANJSNt7hg0WY49b2iVTFwN7M8n3ygNAx1CxvHPqw==
+	bh=7vlBWR4ni7gRjWjPqo2lfaQlbNasDoG4pk6ry00Cg7g=;
+	b=Sacx46S6h8jjg8rzPp6/fMBNU540s9lQwySdBoes5uxEVGSmvvUWOlo99oTJQLSavORkHl
+	aOJUrP5tRIeyqYZL0ay1juzO4ik7R8JxP7GUmJEaHvo9qp1rqZ6FBcv17dWnlzqhyAS5wl
+	s1lA2tt3t0B79QK6aIPJbqozZo8LsteMIViTw7AkA0kYJrvE93lNdNW5ifi94GRZT1Ou/W
+	Va1fdq8KBeqBqiAXkZvlAlIMQ1CovZjuF1bD9cVmYecvVYa/Mmos7C3OBcgYix3iaMRRGy
+	apihtQPkHbcjDuy1PA19y4vy/scut5wZzvQQgYg/4Bx1PJUnZ97BrW4cGU3bOA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706631974;
+	s=2020e; t=1706631975;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mqvRhN/JExx8+Z5V9A9N5RTe7yanjkFdVmwkLfKJCYY=;
-	b=+c2h1I560F8XbPlbM3fo8jXKHNptWV9wZBG4tRakwxnvnselXBVJJ2zVjyT3+LckFFzyGh
-	qF+PdMH6ZYpQelDQ==
-From: "tip-bot2 for Brijesh Singh" <tip-bot2@linutronix.de>
+	bh=7vlBWR4ni7gRjWjPqo2lfaQlbNasDoG4pk6ry00Cg7g=;
+	b=dKv42UkdRRbp0DNbrhvXJMSr8CKakpeOz9o5jf+Sq5wQc6c7R66Vqf6jbtpPjI0im6IQ8W
+	yBHhtOblKC9UXtDg==
+From: "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/cpufeatures: Add SEV-SNP CPU feature
-Cc: Brijesh Singh <brijesh.singh@amd.com>,
- Jarkko Sakkinen <jarkko@profian.com>, Ashish Kalra <Ashish.Kalra@amd.com>,
- Michael Roth <michael.roth@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+Subject: [tip: x86/sev] x86/mm: Fix memory encryption features advertisement
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Kai Huang <kai.huang@intel.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240126041126.1927228-2-michael.roth@amd.com>
-References: <20240126041126.1927228-2-michael.roth@amd.com>
+In-Reply-To: <20240124140217.533748-1-kirill.shutemov@linux.intel.com>
+References: <20240124140217.533748-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170663197324.398.18228422573623248861.tip-bot2@tip-bot2>
+Message-ID: <170663197449.398.3923766970691246483.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,110 +84,111 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     b6e0f6666f74f0794530e3557f5b0a4ce37bd556
-Gitweb:        https://git.kernel.org/tip/b6e0f6666f74f0794530e3557f5b0a4ce37bd556
-Author:        Brijesh Singh <brijesh.singh@amd.com>
-AuthorDate:    Thu, 25 Jan 2024 22:11:01 -06:00
+Commit-ID:     4cab62c058f5a150d9960c112362e5c76d204d9d
+Gitweb:        https://git.kernel.org/tip/4cab62c058f5a150d9960c112362e5c76d204d9d
+Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+AuthorDate:    Wed, 24 Jan 2024 16:02:16 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 29 Jan 2024 17:13:16 +01:00
+CommitterDate: Mon, 29 Jan 2024 17:08:27 +01:00
 
-x86/cpufeatures: Add SEV-SNP CPU feature
+x86/mm: Fix memory encryption features advertisement
 
-Add CPU feature detection for Secure Encrypted Virtualization with
-Secure Nested Paging. This feature adds a strong memory integrity
-protection to help prevent malicious hypervisor-based attacks like
-data replay, memory re-mapping, and more.
+When memory encryption is enabled, the kernel prints the encryption
+flavor that the system supports.
 
-Since enabling the SNP CPU feature imposes a number of additional
-requirements on host initialization and handling legacy firmware APIs
-for SEV/SEV-ES guests, only introduce the CPU feature bit so that the
-relevant handling can be added, but leave it disabled via a
-disabled-features mask.
+The check assumes that everything is AMD SME/SEV if it doesn't have
+the TDX CPU feature set.
 
-Once all the necessary changes needed to maintain legacy SEV/SEV-ES
-support are introduced in subsequent patches, the SNP feature bit will
-be unmasked/enabled.
+Hyper-V vTOM sets cc_vendor to CC_VENDOR_INTEL when it runs as L2 guest
+on top of TDX, but not X86_FEATURE_TDX_GUEST. Hyper-V only needs memory
+encryption enabled for I/O without the rest of CoCo enabling.
 
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@profian.com>
-Signed-off-by: Ashish Kalra <Ashish.Kalra@amd.com>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
+To avoid confusion, check the cc_vendor directly.
+
+  [ bp: Massage commit message. ]
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240126041126.1927228-2-michael.roth@amd.com
+Reviewed-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/r/20240124140217.533748-1-kirill.shutemov@linux.intel.com
 ---
- arch/x86/include/asm/cpufeatures.h       | 1 +
- arch/x86/include/asm/disabled-features.h | 4 +++-
- arch/x86/kernel/cpu/amd.c                | 5 +++--
- tools/arch/x86/include/asm/cpufeatures.h | 1 +
- 4 files changed, 8 insertions(+), 3 deletions(-)
+ arch/x86/mm/mem_encrypt.c | 56 ++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index fdf723b..0fa7026 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -440,6 +440,7 @@
- #define X86_FEATURE_SEV			(19*32+ 1) /* AMD Secure Encrypted Virtualization */
- #define X86_FEATURE_VM_PAGE_FLUSH	(19*32+ 2) /* "" VM Page Flush MSR is supported */
- #define X86_FEATURE_SEV_ES		(19*32+ 3) /* AMD Secure Encrypted Virtualization - Encrypted State */
-+#define X86_FEATURE_SEV_SNP		(19*32+ 4) /* AMD Secure Encrypted Virtualization - Secure Nested Paging */
- #define X86_FEATURE_V_TSC_AUX		(19*32+ 9) /* "" Virtual TSC_AUX */
- #define X86_FEATURE_SME_COHERENT	(19*32+10) /* "" AMD hardware-enforced cache coherency */
- #define X86_FEATURE_DEBUG_SWAP		(19*32+14) /* AMD SEV-ES full debug state swap support */
-diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
-index 702d93f..fc13bf7 100644
---- a/arch/x86/include/asm/disabled-features.h
-+++ b/arch/x86/include/asm/disabled-features.h
-@@ -117,6 +117,8 @@
- #define DISABLE_IBT	(1 << (X86_FEATURE_IBT & 31))
- #endif
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index c290c55..d035bce 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -42,38 +42,42 @@ bool force_dma_unencrypted(struct device *dev)
  
-+#define DISABLE_SEV_SNP		(1 << (X86_FEATURE_SEV_SNP & 31))
+ static void print_mem_encrypt_feature_info(void)
+ {
+-	pr_info("Memory Encryption Features active:");
++	pr_info("Memory Encryption Features active: ");
+ 
+-	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+-		pr_cont(" Intel TDX\n");
+-		return;
+-	}
+-
+-	pr_cont(" AMD");
++	switch (cc_vendor) {
++	case CC_VENDOR_INTEL:
++		pr_cont("Intel TDX\n");
++		break;
++	case CC_VENDOR_AMD:
++		pr_cont("AMD");
+ 
+-	/* Secure Memory Encryption */
+-	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
++		/* Secure Memory Encryption */
++		if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+ 		/*
+ 		 * SME is mutually exclusive with any of the SEV
+ 		 * features below.
+-		 */
+-		pr_cont(" SME\n");
+-		return;
++		*/
++			pr_cont(" SME\n");
++			return;
++		}
 +
- /*
-  * Make sure to add features to the correct mask
-  */
-@@ -141,7 +143,7 @@
- 			 DISABLE_ENQCMD)
- #define DISABLED_MASK17	0
- #define DISABLED_MASK18	(DISABLE_IBT)
--#define DISABLED_MASK19	0
-+#define DISABLED_MASK19	(DISABLE_SEV_SNP)
- #define DISABLED_MASK20	0
- #define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
- 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index f3abca3..4baba69 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -605,8 +605,8 @@ static void early_detect_mem_encrypt(struct cpuinfo_x86 *c)
- 	 *	      SME feature (set in scattered.c).
- 	 *	      If the kernel has not enabled SME via any means then
- 	 *	      don't advertise the SME feature.
--	 *   For SEV: If BIOS has not enabled SEV then don't advertise the
--	 *            SEV and SEV_ES feature (set in scattered.c).
-+	 *   For SEV: If BIOS has not enabled SEV then don't advertise SEV and
-+	 *	      any additional functionality based on it.
- 	 *
- 	 *   In all cases, since support for SME and SEV requires long mode,
- 	 *   don't advertise the feature under CONFIG_X86_32.
-@@ -641,6 +641,7 @@ clear_all:
- clear_sev:
- 		setup_clear_cpu_cap(X86_FEATURE_SEV);
- 		setup_clear_cpu_cap(X86_FEATURE_SEV_ES);
-+		setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
++		/* Secure Encrypted Virtualization */
++		if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
++			pr_cont(" SEV");
++
++		/* Encrypted Register State */
++		if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
++			pr_cont(" SEV-ES");
++
++		/* Secure Nested Paging */
++		if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++			pr_cont(" SEV-SNP");
++
++		pr_cont("\n");
++		break;
++	default:
++		pr_cont("Unknown\n");
  	}
+-
+-	/* Secure Encrypted Virtualization */
+-	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+-		pr_cont(" SEV");
+-
+-	/* Encrypted Register State */
+-	if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+-		pr_cont(" SEV-ES");
+-
+-	/* Secure Nested Paging */
+-	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+-		pr_cont(" SEV-SNP");
+-
+-	pr_cont("\n");
  }
  
-diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
-index f4542d2..e58bd69 100644
---- a/tools/arch/x86/include/asm/cpufeatures.h
-+++ b/tools/arch/x86/include/asm/cpufeatures.h
-@@ -437,6 +437,7 @@
- #define X86_FEATURE_SEV			(19*32+ 1) /* AMD Secure Encrypted Virtualization */
- #define X86_FEATURE_VM_PAGE_FLUSH	(19*32+ 2) /* "" VM Page Flush MSR is supported */
- #define X86_FEATURE_SEV_ES		(19*32+ 3) /* AMD Secure Encrypted Virtualization - Encrypted State */
-+#define X86_FEATURE_SEV_SNP		(19*32+ 4) /* AMD Secure Encrypted Virtualization - Secure Nested Paging */
- #define X86_FEATURE_V_TSC_AUX		(19*32+ 9) /* "" Virtual TSC_AUX */
- #define X86_FEATURE_SME_COHERENT	(19*32+10) /* "" AMD hardware-enforced cache coherency */
- #define X86_FEATURE_DEBUG_SWAP		(19*32+14) /* AMD SEV-ES full debug state swap support */
+ /* Architecture __weak replacement functions */
 
