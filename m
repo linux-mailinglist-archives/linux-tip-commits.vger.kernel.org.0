@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-227-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-226-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E30484293F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 17:30:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCF484293E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 17:30:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7CD0286049
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 16:30:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C977BB2A6EE
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 16:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6831339A3;
-	Tue, 30 Jan 2024 16:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3178130E4C;
+	Tue, 30 Jan 2024 16:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t98YS5KW";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rAbIqHAj"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LzLH59xf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KZPU6J5C"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F8412F58B;
-	Tue, 30 Jan 2024 16:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E05312F58E;
+	Tue, 30 Jan 2024 16:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706631975; cv=none; b=iXKIYdaHH6CQU2GbOn6x5q8xHVHhnjE3cL0lhnpgKA+1wStEw0k5GpXg0f9kPk+6SaJrKzk5z4cMs3WxLbwGOpmeJxB31Z9t6Q5TilVDGBr1U07+Dd5VmkP8CEKvFqBP8mJdQi/H1eWu7JtxXnYauVW4AC6eCZn1TPPRY2Sg6eA=
+	t=1706631975; cv=none; b=QQFxyHMwgG2aR6EaEvEFzbXWUXX0rHsuDB6gkVWkf4jXDl6t+KVTnjCmX73IS/OBg2POx5vxFE1IZA1BxI9Rc6L5rBSfn1e+hprR/aEV98kB3bvtv29MmgoHoij2enmzQtnlsONBNddZQT3lVhbtHB0HPSZN6ExsHf7jpRr8yrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1706631975; c=relaxed/simple;
-	bh=cUuqvnzPPxw/F12MtVIIFn2+TWCYnfQCdvc75QmtQDQ=;
+	bh=W4X4heo67mJNuyVqtEU9pT7jzoEm3kTpVAUFFpAYxMA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=mnOSVuSeQZpCLQkrf5TmtrOdozJ/IX7hXvxNNS2G0QukWgwfREEBLEmG85kzV+5ARRiFtdZTEHtcNWkQbvylMWKetOZbk2+TF8ub/nQtRmgfo3/hXhNYFZDN/Ul61qO895UI6KJHDLrKn4GECn5Sgfn16BOC70kIeh3LdC/gWac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t98YS5KW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rAbIqHAj; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=jbOQUxouS37JoNgGLtGSVXK1Q+r0u/8ktapDSeR4yIf+EQvTydD5K/yQvACRAULqOld8YV8UwDCnCPacWQBV8onmuOx6hpiYNXT/hJaJrlIr5QfYPErLPfzTyxHqYCxgGpcvm3tj1rR6xe4pGjOXiXzetp6ZqDGpAhIpH5V9wsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LzLH59xf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KZPU6J5C; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 30 Jan 2024 16:26:10 -0000
+Date: Tue, 30 Jan 2024 16:26:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706631971;
+	s=2020; t=1706631972;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=idLqXTe/wwQB/igBLCGOH5+FLkHEWGOuPGcVMQiKXFA=;
-	b=t98YS5KWKJV3qCOy0LT/J8IrYzh3qByi14Oo6OzpKf4uuTSTIBfNUuKiUiyuYeiN7Y1BhU
-	uZEmJlL+51k++wtJZ18EdPTtkGbS1m7OQ0xbzog0WvrCvkJaMVNo1hCAWnsyvqpAO69bMZ
-	xb8uDKY1x/p03NW8kz2LJt7kR+BSW8Nibcc52trwZMiK5+NPTmQ1fZ6JAeTliEgiiz2Et+
-	T29aafNVVEKAoOZHZUi78HVQIbICxMvOySHe3qJexY1MJTD8DXgI7joJ58Yr8tWBoCC+Xb
-	LrrEq/00zAg1Pmk55qvT2TrDPWelJMMMF8oGsxLBUDtaj75tWnE7tmot7zn8Uw==
+	bh=yd9kwnkTHyD8WsL8BHajy0+0cVpzHZ1ljZ5arZY+HDk=;
+	b=LzLH59xfvqZngEWeV7h+N+bzt/4WHsykxS/zZHVRCrt2bs+1RP2SnTUma85ql6y3yBsy5+
+	cmzkd0X5wjYdUY+iui/cI2wsOATh9gcSlJ82s7BPVykAB2kEZBTBWnocZNIbTwYi2sdvpK
+	j9WLYvtGh4TxugUb8A5SMqKeRMwhfUuyKvZqIpH7lfdHPIY5oPAvxNe383t4Kk0HrTAqNl
+	MXVar44ZWGd3tR04Zect6vsl8l9GVIBAxuG0gDcYVzZxdaEUfZNO5ti0aW9aDvjFWUwbql
+	b8oJ6T5JtrXyy6QKQg8WhG3DJtFqI0hxDQnY+8ud0UQApYgAZI3MKMi4UeO4uA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706631971;
+	s=2020e; t=1706631972;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=idLqXTe/wwQB/igBLCGOH5+FLkHEWGOuPGcVMQiKXFA=;
-	b=rAbIqHAjkdxGpiP/dpP/CSwiQPjQP1nJFtnxoYHYr2VMdHj/L0spr4nAhz0RReFHFujMDI
-	XfRib1vmF9FjQZBw==
-From: "tip-bot2 for Brijesh Singh" <tip-bot2@linutronix.de>
+	bh=yd9kwnkTHyD8WsL8BHajy0+0cVpzHZ1ljZ5arZY+HDk=;
+	b=KZPU6J5CNo8plkNPBF3LtLc8fvhjJpc9uhIhEfZ5EiBuXsmfmUMTNhM45NK/0SralstXa0
+	oyhZ4Zi7JZNW2BBQ==
+From: "tip-bot2 for Ashish Kalra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Add SEV-SNP host initialization support
-Cc: Brijesh Singh <brijesh.singh@amd.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240126041126.1927228-5-michael.roth@amd.com>
-References: <20240126041126.1927228-5-michael.roth@amd.com>
+Subject: [tip: x86/sev] iommu/amd: Don't rely on external callers to enable
+ IOMMU SNP support
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Joerg Roedel <jroedel@suse.de>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240126041126.1927228-4-michael.roth@amd.com>
+References: <20240126041126.1927228-4-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170663197063.398.16703424700997276557.tip-bot2@tip-bot2>
+Message-ID: <170663197123.398.4999236897481839603.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,384 +82,171 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     216d106c7ff7b3dcabacf2b5dc6c9c40eba7495c
-Gitweb:        https://git.kernel.org/tip/216d106c7ff7b3dcabacf2b5dc6c9c40eba7495c
-Author:        Brijesh Singh <brijesh.singh@amd.com>
-AuthorDate:    Thu, 25 Jan 2024 22:11:04 -06:00
+Commit-ID:     04d65a9dbb33e20500005e151d720acead78c539
+Gitweb:        https://git.kernel.org/tip/04d65a9dbb33e20500005e151d720acead78c539
+Author:        Ashish Kalra <ashish.kalra@amd.com>
+AuthorDate:    Thu, 25 Jan 2024 22:11:03 -06:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 29 Jan 2024 17:20:23 +01:00
+CommitterDate: Mon, 29 Jan 2024 17:19:28 +01:00
 
-x86/sev: Add SEV-SNP host initialization support
+iommu/amd: Don't rely on external callers to enable IOMMU SNP support
 
-The memory integrity guarantees of SEV-SNP are enforced through a new
-structure called the Reverse Map Table (RMP). The RMP is a single data
-structure shared across the system that contains one entry for every 4K
-page of DRAM that may be used by SEV-SNP VMs. The APM Volume 2 section
-on Secure Nested Paging (SEV-SNP) details a number of steps needed to
-detect/enable SEV-SNP and RMP table support on the host:
+Currently, the expectation is that the kernel will call
+amd_iommu_snp_enable() to perform various checks and set the
+amd_iommu_snp_en flag that the IOMMU uses to adjust its setup routines
+to account for additional requirements on hosts where SNP is enabled.
 
- - Detect SEV-SNP support based on CPUID bit
- - Initialize the RMP table memory reported by the RMP base/end MSR
-   registers and configure IOMMU to be compatible with RMP access
-   restrictions
- - Set the MtrrFixDramModEn bit in SYSCFG MSR
- - Set the SecureNestedPagingEn and VMPLEn bits in the SYSCFG MSR
- - Configure IOMMU
+This is somewhat fragile as it relies on this call being done prior to
+IOMMU setup. It is more robust to just do this automatically as part of
+IOMMU initialization, so rework the code accordingly.
 
-RMP table entry format is non-architectural and it can vary by
-processor. It is defined by the PPR document for each respective CPU
-family. Restrict SNP support to CPU models/families which are compatible
-with the current RMP table entry format to guard against any undefined
-behavior when running on other system types. Future models/support will
-handle this through an architectural mechanism to allow for broader
-compatibility.
+There is still a need to export information about whether or not the
+IOMMU is configured in a manner compatible with SNP, so relocate the
+existing amd_iommu_snp_en flag so it can be used to convey that
+information in place of the return code that was previously provided by
+calls to amd_iommu_snp_enable().
 
-SNP host code depends on CONFIG_KVM_AMD_SEV config flag which may be
-enabled even when CONFIG_AMD_MEM_ENCRYPT isn't set, so update the
-SNP-specific IOMMU helpers used here to rely on CONFIG_KVM_AMD_SEV
-instead of CONFIG_AMD_MEM_ENCRYPT.
+While here, also adjust the kernel messages related to IOMMU SNP
+enablement for consistency/grammar/clarity.
 
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
+Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Co-developed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Co-developed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Co-developed-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Michael Roth <michael.roth@amd.com>
-Link: https://lore.kernel.org/r/20240126041126.1927228-5-michael.roth@amd.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Joerg Roedel <jroedel@suse.de>
+Link: https://lore.kernel.org/r/20240126041126.1927228-4-michael.roth@amd.com
 ---
- arch/x86/Kbuild                  |   2 +-
- arch/x86/include/asm/msr-index.h |  11 +-
- arch/x86/include/asm/sev.h       |   6 +-
- arch/x86/kernel/cpu/amd.c        |  16 ++-
- arch/x86/virt/svm/Makefile       |   3 +-
- arch/x86/virt/svm/sev.c          | 216 ++++++++++++++++++++++++++++++-
- 6 files changed, 253 insertions(+), 1 deletion(-)
- create mode 100644 arch/x86/virt/svm/Makefile
- create mode 100644 arch/x86/virt/svm/sev.c
+ arch/x86/include/asm/iommu.h  |  1 +-
+ drivers/iommu/amd/amd_iommu.h |  1 +-
+ drivers/iommu/amd/init.c      | 69 +++++++++++++++-------------------
+ include/linux/amd-iommu.h     |  4 +--
+ 4 files changed, 32 insertions(+), 43 deletions(-)
 
-diff --git a/arch/x86/Kbuild b/arch/x86/Kbuild
-index 5a83da7..6a1f36d 100644
---- a/arch/x86/Kbuild
-+++ b/arch/x86/Kbuild
-@@ -28,5 +28,7 @@ obj-y += net/
+diff --git a/arch/x86/include/asm/iommu.h b/arch/x86/include/asm/iommu.h
+index 2fd52b6..3be2451 100644
+--- a/arch/x86/include/asm/iommu.h
++++ b/arch/x86/include/asm/iommu.h
+@@ -10,6 +10,7 @@ extern int force_iommu, no_iommu;
+ extern int iommu_detected;
+ extern int iommu_merge;
+ extern int panic_on_overflow;
++extern bool amd_iommu_snp_en;
  
- obj-$(CONFIG_KEXEC_FILE) += purgatory/
+ #ifdef CONFIG_SWIOTLB
+ extern bool x86_swiotlb_enable;
+diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
+index 8b3601f..c970eae 100644
+--- a/drivers/iommu/amd/amd_iommu.h
++++ b/drivers/iommu/amd/amd_iommu.h
+@@ -164,5 +164,4 @@ void amd_iommu_domain_set_pgtable(struct protection_domain *domain,
+ 				  u64 *root, int mode);
+ struct dev_table_entry *get_dev_table(struct amd_iommu *iommu);
  
-+obj-y += virt/svm/
-+
- # for cleaning
- subdir- += boot tools
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index f1bd7b9..f482bc6 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -599,6 +599,8 @@
- #define MSR_AMD64_SEV_ENABLED		BIT_ULL(MSR_AMD64_SEV_ENABLED_BIT)
- #define MSR_AMD64_SEV_ES_ENABLED	BIT_ULL(MSR_AMD64_SEV_ES_ENABLED_BIT)
- #define MSR_AMD64_SEV_SNP_ENABLED	BIT_ULL(MSR_AMD64_SEV_SNP_ENABLED_BIT)
-+#define MSR_AMD64_RMP_BASE		0xc0010132
-+#define MSR_AMD64_RMP_END		0xc0010133
- 
- /* SNP feature bits enabled by the hypervisor */
- #define MSR_AMD64_SNP_VTOM			BIT_ULL(3)
-@@ -708,8 +710,15 @@
- #define MSR_K8_TOP_MEM1			0xc001001a
- #define MSR_K8_TOP_MEM2			0xc001001d
- #define MSR_AMD64_SYSCFG		0xc0010010
--#define MSR_AMD64_SYSCFG_MEM_ENCRYPT_BIT	23
-+#define MSR_AMD64_SYSCFG_MEM_ENCRYPT_BIT 23
- #define MSR_AMD64_SYSCFG_MEM_ENCRYPT	BIT_ULL(MSR_AMD64_SYSCFG_MEM_ENCRYPT_BIT)
-+#define MSR_AMD64_SYSCFG_SNP_EN_BIT	24
-+#define MSR_AMD64_SYSCFG_SNP_EN		BIT_ULL(MSR_AMD64_SYSCFG_SNP_EN_BIT)
-+#define MSR_AMD64_SYSCFG_SNP_VMPL_EN_BIT 25
-+#define MSR_AMD64_SYSCFG_SNP_VMPL_EN	BIT_ULL(MSR_AMD64_SYSCFG_SNP_VMPL_EN_BIT)
-+#define MSR_AMD64_SYSCFG_MFDM_BIT	19
-+#define MSR_AMD64_SYSCFG_MFDM		BIT_ULL(MSR_AMD64_SYSCFG_MFDM_BIT)
-+
- #define MSR_K8_INT_PENDING_MSG		0xc0010055
- /* C1E active bits in int pending message */
- #define K8_INTP_C1E_ACTIVE_MASK		0x18000000
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 5b4a1ce..1f59d8b 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -243,4 +243,10 @@ static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
- static inline u64 sev_get_status(void) { return 0; }
+-extern bool amd_iommu_snp_en;
  #endif
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index c83bd0c..3a4eeb2 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -3221,6 +3221,36 @@ out:
+ 	return true;
+ }
  
++static void iommu_snp_enable(void)
++{
 +#ifdef CONFIG_KVM_AMD_SEV
-+bool snp_probe_rmptable_info(void);
-+#else
-+static inline bool snp_probe_rmptable_info(void) { return false; }
++	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
++		return;
++	/*
++	 * The SNP support requires that IOMMU must be enabled, and is
++	 * not configured in the passthrough mode.
++	 */
++	if (no_iommu || iommu_default_passthrough()) {
++		pr_err("SNP: IOMMU disabled or configured in passthrough mode, SNP cannot be supported.\n");
++		return;
++	}
++
++	amd_iommu_snp_en = check_feature(FEATURE_SNP);
++	if (!amd_iommu_snp_en) {
++		pr_err("SNP: IOMMU SNP feature not enabled, SNP cannot be supported.\n");
++		return;
++	}
++
++	pr_info("IOMMU SNP support enabled.\n");
++
++	/* Enforce IOMMU v1 pagetable when SNP is enabled. */
++	if (amd_iommu_pgtable != AMD_IOMMU_V1) {
++		pr_warn("Forcing use of AMD IOMMU v1 page table due to SNP.\n");
++		amd_iommu_pgtable = AMD_IOMMU_V1;
++	}
 +#endif
++}
 +
- #endif
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 4baba69..ce89281 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -20,6 +20,7 @@
- #include <asm/delay.h>
- #include <asm/debugreg.h>
- #include <asm/resctrl.h>
-+#include <asm/sev.h>
- 
- #ifdef CONFIG_X86_64
- # include <asm/mmconfig.h>
-@@ -587,6 +588,21 @@ static void bsp_init_amd(struct cpuinfo_x86 *c)
+ /****************************************************************************
+  *
+  * AMD IOMMU Initialization State Machine
+@@ -3256,6 +3286,7 @@ static int __init state_next(void)
  		break;
- 	}
+ 	case IOMMU_ENABLED:
+ 		register_syscore_ops(&amd_iommu_syscore_ops);
++		iommu_snp_enable();
+ 		ret = amd_iommu_init_pci();
+ 		init_state = ret ? IOMMU_INIT_ERROR : IOMMU_PCI_INIT;
+ 		break;
+@@ -3766,41 +3797,3 @@ int amd_iommu_pc_set_reg(struct amd_iommu *iommu, u8 bank, u8 cntr, u8 fxn, u64 
  
-+	if (cpu_has(c, X86_FEATURE_SEV_SNP)) {
-+		/*
-+		 * RMP table entry format is not architectural and it can vary by processor
-+		 * and is defined by the per-processor PPR. Restrict SNP support on the
-+		 * known CPU model and family for which the RMP table entry format is
-+		 * currently defined for.
-+		 */
-+		if (!boot_cpu_has(X86_FEATURE_ZEN3) &&
-+		    !boot_cpu_has(X86_FEATURE_ZEN4) &&
-+		    !boot_cpu_has(X86_FEATURE_ZEN5))
-+			setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
-+		else if (!snp_probe_rmptable_info())
-+			setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
-+	}
-+
- 	return;
+ 	return iommu_pc_get_set_reg(iommu, bank, cntr, fxn, value, true);
+ }
+-
+-#ifdef CONFIG_AMD_MEM_ENCRYPT
+-int amd_iommu_snp_enable(void)
+-{
+-	/*
+-	 * The SNP support requires that IOMMU must be enabled, and is
+-	 * not configured in the passthrough mode.
+-	 */
+-	if (no_iommu || iommu_default_passthrough()) {
+-		pr_err("SNP: IOMMU is disabled or configured in passthrough mode, SNP cannot be supported");
+-		return -EINVAL;
+-	}
+-
+-	/*
+-	 * Prevent enabling SNP after IOMMU_ENABLED state because this process
+-	 * affect how IOMMU driver sets up data structures and configures
+-	 * IOMMU hardware.
+-	 */
+-	if (init_state > IOMMU_ENABLED) {
+-		pr_err("SNP: Too late to enable SNP for IOMMU.\n");
+-		return -EINVAL;
+-	}
+-
+-	amd_iommu_snp_en = check_feature(FEATURE_SNP);
+-	if (!amd_iommu_snp_en)
+-		return -EINVAL;
+-
+-	pr_info("SNP enabled\n");
+-
+-	/* Enforce IOMMU v1 pagetable when SNP is enabled. */
+-	if (amd_iommu_pgtable != AMD_IOMMU_V1) {
+-		pr_warn("Force to using AMD IOMMU v1 page table due to SNP\n");
+-		amd_iommu_pgtable = AMD_IOMMU_V1;
+-	}
+-
+-	return 0;
+-}
+-#endif
+diff --git a/include/linux/amd-iommu.h b/include/linux/amd-iommu.h
+index dc7ed2f..7365be0 100644
+--- a/include/linux/amd-iommu.h
++++ b/include/linux/amd-iommu.h
+@@ -85,8 +85,4 @@ int amd_iommu_pc_get_reg(struct amd_iommu *iommu, u8 bank, u8 cntr, u8 fxn,
+ 		u64 *value);
+ struct amd_iommu *get_amd_iommu(unsigned int idx);
  
- warn:
-diff --git a/arch/x86/virt/svm/Makefile b/arch/x86/virt/svm/Makefile
-new file mode 100644
-index 0000000..ef2a31b
---- /dev/null
-+++ b/arch/x86/virt/svm/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+obj-$(CONFIG_KVM_AMD_SEV) += sev.o
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-new file mode 100644
-index 0000000..575a9ff
---- /dev/null
-+++ b/arch/x86/virt/svm/sev.c
-@@ -0,0 +1,216 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * AMD SVM-SEV Host Support.
-+ *
-+ * Copyright (C) 2023 Advanced Micro Devices, Inc.
-+ *
-+ * Author: Ashish Kalra <ashish.kalra@amd.com>
-+ *
-+ */
-+
-+#include <linux/cc_platform.h>
-+#include <linux/printk.h>
-+#include <linux/mm_types.h>
-+#include <linux/set_memory.h>
-+#include <linux/memblock.h>
-+#include <linux/kernel.h>
-+#include <linux/mm.h>
-+#include <linux/cpumask.h>
-+#include <linux/iommu.h>
-+#include <linux/amd-iommu.h>
-+
-+#include <asm/sev.h>
-+#include <asm/processor.h>
-+#include <asm/setup.h>
-+#include <asm/svm.h>
-+#include <asm/smp.h>
-+#include <asm/cpu.h>
-+#include <asm/apic.h>
-+#include <asm/cpuid.h>
-+#include <asm/cmdline.h>
-+#include <asm/iommu.h>
-+
-+/*
-+ * The RMP entry format is not architectural. The format is defined in PPR
-+ * Family 19h Model 01h, Rev B1 processor.
-+ */
-+struct rmpentry {
-+	u64	assigned	: 1,
-+		pagesize	: 1,
-+		immutable	: 1,
-+		rsvd1		: 9,
-+		gpa		: 39,
-+		asid		: 10,
-+		vmsa		: 1,
-+		validated	: 1,
-+		rsvd2		: 1;
-+	u64 rsvd3;
-+} __packed;
-+
-+/*
-+ * The first 16KB from the RMP_BASE is used by the processor for the
-+ * bookkeeping, the range needs to be added during the RMP entry lookup.
-+ */
-+#define RMPTABLE_CPU_BOOKKEEPING_SZ	0x4000
-+
-+static u64 probed_rmp_base, probed_rmp_size;
-+static struct rmpentry *rmptable __ro_after_init;
-+static u64 rmptable_max_pfn __ro_after_init;
-+
-+#undef pr_fmt
-+#define pr_fmt(fmt)	"SEV-SNP: " fmt
-+
-+static int __mfd_enable(unsigned int cpu)
-+{
-+	u64 val;
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-+		return 0;
-+
-+	rdmsrl(MSR_AMD64_SYSCFG, val);
-+
-+	val |= MSR_AMD64_SYSCFG_MFDM;
-+
-+	wrmsrl(MSR_AMD64_SYSCFG, val);
-+
-+	return 0;
-+}
-+
-+static __init void mfd_enable(void *arg)
-+{
-+	__mfd_enable(smp_processor_id());
-+}
-+
-+static int __snp_enable(unsigned int cpu)
-+{
-+	u64 val;
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-+		return 0;
-+
-+	rdmsrl(MSR_AMD64_SYSCFG, val);
-+
-+	val |= MSR_AMD64_SYSCFG_SNP_EN;
-+	val |= MSR_AMD64_SYSCFG_SNP_VMPL_EN;
-+
-+	wrmsrl(MSR_AMD64_SYSCFG, val);
-+
-+	return 0;
-+}
-+
-+static __init void snp_enable(void *arg)
-+{
-+	__snp_enable(smp_processor_id());
-+}
-+
-+#define RMP_ADDR_MASK GENMASK_ULL(51, 13)
-+
-+bool snp_probe_rmptable_info(void)
-+{
-+	u64 max_rmp_pfn, calc_rmp_sz, rmp_sz, rmp_base, rmp_end;
-+
-+	rdmsrl(MSR_AMD64_RMP_BASE, rmp_base);
-+	rdmsrl(MSR_AMD64_RMP_END, rmp_end);
-+
-+	if (!(rmp_base & RMP_ADDR_MASK) || !(rmp_end & RMP_ADDR_MASK)) {
-+		pr_err("Memory for the RMP table has not been reserved by BIOS\n");
-+		return false;
-+	}
-+
-+	if (rmp_base > rmp_end) {
-+		pr_err("RMP configuration not valid: base=%#llx, end=%#llx\n", rmp_base, rmp_end);
-+		return false;
-+	}
-+
-+	rmp_sz = rmp_end - rmp_base + 1;
-+
-+	/*
-+	 * Calculate the amount the memory that must be reserved by the BIOS to
-+	 * address the whole RAM, including the bookkeeping area. The RMP itself
-+	 * must also be covered.
-+	 */
-+	max_rmp_pfn = max_pfn;
-+	if (PHYS_PFN(rmp_end) > max_pfn)
-+		max_rmp_pfn = PHYS_PFN(rmp_end);
-+
-+	calc_rmp_sz = (max_rmp_pfn << 4) + RMPTABLE_CPU_BOOKKEEPING_SZ;
-+
-+	if (calc_rmp_sz > rmp_sz) {
-+		pr_err("Memory reserved for the RMP table does not cover full system RAM (expected 0x%llx got 0x%llx)\n",
-+		       calc_rmp_sz, rmp_sz);
-+		return false;
-+	}
-+
-+	probed_rmp_base = rmp_base;
-+	probed_rmp_size = rmp_sz;
-+
-+	pr_info("RMP table physical range [0x%016llx - 0x%016llx]\n",
-+		probed_rmp_base, probed_rmp_base + probed_rmp_size - 1);
-+
-+	return true;
-+}
-+
-+/*
-+ * Do the necessary preparations which are verified by the firmware as
-+ * described in the SNP_INIT_EX firmware command description in the SNP
-+ * firmware ABI spec.
-+ */
-+static int __init snp_rmptable_init(void)
-+{
-+	void *rmptable_start;
-+	u64 rmptable_size;
-+	u64 val;
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-+		return 0;
-+
-+	if (!amd_iommu_snp_en)
-+		return 0;
-+
-+	if (!probed_rmp_size)
-+		goto nosnp;
-+
-+	rmptable_start = memremap(probed_rmp_base, probed_rmp_size, MEMREMAP_WB);
-+	if (!rmptable_start) {
-+		pr_err("Failed to map RMP table\n");
-+		return 1;
-+	}
-+
-+	/*
-+	 * Check if SEV-SNP is already enabled, this can happen in case of
-+	 * kexec boot.
-+	 */
-+	rdmsrl(MSR_AMD64_SYSCFG, val);
-+	if (val & MSR_AMD64_SYSCFG_SNP_EN)
-+		goto skip_enable;
-+
-+	memset(rmptable_start, 0, probed_rmp_size);
-+
-+	/* Flush the caches to ensure that data is written before SNP is enabled. */
-+	wbinvd_on_all_cpus();
-+
-+	/* MtrrFixDramModEn must be enabled on all the CPUs prior to enabling SNP. */
-+	on_each_cpu(mfd_enable, NULL, 1);
-+
-+	on_each_cpu(snp_enable, NULL, 1);
-+
-+skip_enable:
-+	rmptable_start += RMPTABLE_CPU_BOOKKEEPING_SZ;
-+	rmptable_size = probed_rmp_size - RMPTABLE_CPU_BOOKKEEPING_SZ;
-+
-+	rmptable = (struct rmpentry *)rmptable_start;
-+	rmptable_max_pfn = rmptable_size / sizeof(struct rmpentry) - 1;
-+
-+	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/rmptable_init:online", __snp_enable, NULL);
-+
-+	return 0;
-+
-+nosnp:
-+	setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
-+	return -ENOSYS;
-+}
-+
-+/*
-+ * This must be called after the IOMMU has been initialized.
-+ */
-+device_initcall(snp_rmptable_init);
+-#ifdef CONFIG_AMD_MEM_ENCRYPT
+-int amd_iommu_snp_enable(void);
+-#endif
+-
+ #endif /* _ASM_X86_AMD_IOMMU_H */
 
