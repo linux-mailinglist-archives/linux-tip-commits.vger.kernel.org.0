@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-252-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-253-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095AB8437B7
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 08:24:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 581F68437B8
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 08:24:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4A211F283A0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 07:24:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE2BF1F2859E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 07:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF329745E7;
-	Wed, 31 Jan 2024 07:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A38676022;
+	Wed, 31 Jan 2024 07:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Myk1FS8D";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1K4JHwTg"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CcaPgPow";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ySMLLQFQ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C046A52F7F;
-	Wed, 31 Jan 2024 07:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6AF6DD19;
+	Wed, 31 Jan 2024 07:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706685683; cv=none; b=ZaOydPa8H03nfpiZwFX9TMOOTf1roERFZfCsu2m34e9pnhIps64KVv5KfK8AhlE2cfca6NfzL2MSPru8ZaXpy9K/Y5g7QTGZNm4nnFZcyKs+k6obdjbCfxb/dkd9PdkYgDyAAoI29YjpoHZ0XBg3vlEbqDliLFZX0EDYY1szH18=
+	t=1706685684; cv=none; b=iHKPtTUcXpDADRtIUtoRdYqMYDfV0820nCubCZJ37w0dZWMDkkdOXoynyysgaf3bKgJVYJQdyVe892nuEUgDvWioTPbdhz3z+85HZl5z8ooafScVzlHyudlnciN0Ofxrsr/ooKyFKlDjmcfWyX91kNg2E4UGyQYuq4sYqtDHyuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706685683; c=relaxed/simple;
-	bh=BVE+H4HR/ek0gZCHDa9dRrc1IIcoGkKt/+aoHxHvWJ4=;
+	s=arc-20240116; t=1706685684; c=relaxed/simple;
+	bh=lRX/Cwn5841ZQVMSLI88ekqtL5uilM05LQsWrvM1mms=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=qyHX+tSI1g3NDldJ/rVu25peJjnkwMrIHmu6AT77oX10wXSNq+OTnhFweuNvJeq0yZS7+OVHAssy8qhdfv0dglOSa4L9ipwV1XP3fCLXaW7KmLsYZB+sydrJJFhBeqfSQdaYXq/gPkjc+VJDQT624xg2wVQJWcc2cktKifpyhCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Myk1FS8D; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1K4JHwTg; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=dZ5a+WVQm0Tqj82msNJn/RR+bB9kU3tvD7zjthfrABaCa/jg7J+Jw54iHiEmF2KXUQ2eA2aP3cw9hkMX7OVghNzv+GbvJKrpFN4Ei5iTHgzFXEVG6Ik8+COYvXzyEtuxbphaDTrTyN/NFBuYreTVw27MEuvrgy+Jg9xDHGe8fXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CcaPgPow; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ySMLLQFQ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 31 Jan 2024 07:21:19 -0000
+Date: Wed, 31 Jan 2024 07:21:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706685679;
+	s=2020; t=1706685680;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zF1Go/6lOrWvy4qrZ4cIvQh0vUnrkdsyBnpdaBvTUNI=;
-	b=Myk1FS8DvXTHOUcti4rSMCnJ+k1CEiUwlivE2KHOniZ0dGV1kvCADWuXoJcK/Ku29pytbJ
-	tokVTTgBPEqngHMzVJmMvVIGwhoRWBNdLKlM3D270HZ8mF5dpQDxFzYW2eMTFWKJCLrTJ+
-	ezbuVKdRtfXc5BjDpawH2mbPdnkXCxVVA+RZ3q6POQP5c588Fm0YBYYBHXSUj2vEvn8vGU
-	e6GxfAGA88PK5iiqsASECtim/JkfspEr4wGX5MbNofPVMCJgIYyF2fviC9SpxSr1j/nKf2
-	K3s3lSLQqOp0g8Oma7vq+fVsFvnw5YQ8dnCMFB+H8dgImD+yYQpbpzsYgYu2/A==
+	bh=ZdDbI+3UdclGrdmKctpKWHGBsVC6dyLT2iD8l1QugE0=;
+	b=CcaPgPowpVr4Comr6fK3GnGsPaz6IJRx3THZ1KJJrNi6pj/tvoR5hW3+fbyaevaxuSPWgP
+	szPeseSBvNIWmtwFz/C5WCoy4E9KTqHRdHyaZlu5FErUJ0N6RpvvyYBP+qdXx5DyCww0k3
+	Ht74JrGDanZlMw12hFPXbFLKjEGXKJTLbDwGDZc1oHGoA/qU6MP8NKBK74n4nZDSvhke65
+	yLwMsHUlWwoAfi/tMiZmb9U3Zc9dhWA/8AzXZKhUlASWFUKBi3n7Fh+qEc3mr8Mf/087uk
+	Pi5h/VDv7O8IR5q0ddImCrD8h3vPgF17Q3+M1/ezTltCdNh6GcjLNhNK6sVjog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706685679;
+	s=2020e; t=1706685680;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zF1Go/6lOrWvy4qrZ4cIvQh0vUnrkdsyBnpdaBvTUNI=;
-	b=1K4JHwTgw/tW+WAI7wqrtrMuVlFExFw6KYCNYCAP1mhp0uT0IepZMNk82/PkVgPRJsCt+N
-	MgE9DXiMISEfUODA==
+	bh=ZdDbI+3UdclGrdmKctpKWHGBsVC6dyLT2iD8l1QugE0=;
+	b=ySMLLQFQ9lsOXe5oHWkGJ0Kdc0IDYzmRzJd1SfXtABhxxTlGUu+GiqESe1RvfXWP+Up6N0
+	oziiTkYcVaieVTAA==
 From: "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fred] x86/fred: Allow single-step trap and NMI when
- starting a new task
+Subject: [tip: x86/fred] x86/fred: No ESPFIX needed when FRED is enabled
 Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>, Xin Li <xin3.li@intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Shan Kang <shan.kang@intel.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231205105030.8698-21-xin3.li@intel.com>
-References: <20231205105030.8698-21-xin3.li@intel.com>
+In-Reply-To: <20231205105030.8698-20-xin3.li@intel.com>
+References: <20231205105030.8698-20-xin3.li@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170668567906.398.14619800062896956268.tip-bot2@tip-bot2>
+Message-ID: <170668568002.398.1889543253223143145.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,98 +81,52 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/fred branch of tip:
 
-Commit-ID:     f102fe126d2811eded63d700fbe27527d936af74
-Gitweb:        https://git.kernel.org/tip/f102fe126d2811eded63d700fbe27527d936af74
+Commit-ID:     d0fb796dc3475cf71d788ec960d8ed5de4d7a429
+Gitweb:        https://git.kernel.org/tip/d0fb796dc3475cf71d788ec960d8ed5de4d7a429
 Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
-AuthorDate:    Tue, 05 Dec 2023 02:50:09 -08:00
+AuthorDate:    Tue, 05 Dec 2023 02:50:08 -08:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
 CommitterDate: Tue, 30 Jan 2024 18:20:35 +01:00
 
-x86/fred: Allow single-step trap and NMI when starting a new task
+x86/fred: No ESPFIX needed when FRED is enabled
 
-Entering a new task is logically speaking a return from a system call
-(exec, fork, clone, etc.). As such, if ptrace enables single stepping
-a single step exception should be allowed to trigger immediately upon
-entering user space. This is not optional.
-
-NMI should *never* be disabled in user space. As such, this is an
-optional, opportunistic way to catch errors.
-
-Allow single-step trap and NMI when starting a new task, thus once
-the new task enters user space, single-step trap and NMI are both
-enabled immediately.
+Because FRED always restores the full value of %rsp, ESPFIX is
+no longer needed when it's enabled.
 
 Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Shan Kang <shan.kang@intel.com>
-Link: https://lore.kernel.org/r/20231205105030.8698-21-xin3.li@intel.com
+Link: https://lore.kernel.org/r/20231205105030.8698-20-xin3.li@intel.com
 
 ---
- arch/x86/kernel/process_64.c | 38 +++++++++++++++++++++++++++++------
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ arch/x86/kernel/espfix_64.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 4f87f59..c075591 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -56,6 +56,7 @@
- #include <asm/resctrl.h>
- #include <asm/unistd.h>
- #include <asm/fsgsbase.h>
-+#include <asm/fred.h>
- #ifdef CONFIG_IA32_EMULATION
- /* Not included via unistd.h */
- #include <asm/unistd_32_ia32.h>
-@@ -528,7 +529,7 @@ void x86_gsbase_write_task(struct task_struct *task, unsigned long gsbase)
- static void
- start_thread_common(struct pt_regs *regs, unsigned long new_ip,
- 		    unsigned long new_sp,
--		    unsigned int _cs, unsigned int _ss, unsigned int _ds)
-+		    u16 _cs, u16 _ss, u16 _ds)
- {
- 	WARN_ON_ONCE(regs != current_pt_regs());
+diff --git a/arch/x86/kernel/espfix_64.c b/arch/x86/kernel/espfix_64.c
+index 16f9814..6726e04 100644
+--- a/arch/x86/kernel/espfix_64.c
++++ b/arch/x86/kernel/espfix_64.c
+@@ -106,6 +106,10 @@ void __init init_espfix_bsp(void)
+ 	pgd_t *pgd;
+ 	p4d_t *p4d;
  
-@@ -545,11 +546,36 @@ start_thread_common(struct pt_regs *regs, unsigned long new_ip,
- 	loadsegment(ds, _ds);
- 	load_gs_index(0);
- 
--	regs->ip		= new_ip;
--	regs->sp		= new_sp;
--	regs->cs		= _cs;
--	regs->ss		= _ss;
--	regs->flags		= X86_EFLAGS_IF;
-+	regs->ip	= new_ip;
-+	regs->sp	= new_sp;
-+	regs->csx	= _cs;
-+	regs->ssx	= _ss;
-+	/*
-+	 * Allow single-step trap and NMI when starting a new task, thus
-+	 * once the new task enters user space, single-step trap and NMI
-+	 * are both enabled immediately.
-+	 *
-+	 * Entering a new task is logically speaking a return from a
-+	 * system call (exec, fork, clone, etc.). As such, if ptrace
-+	 * enables single stepping a single step exception should be
-+	 * allowed to trigger immediately upon entering user space.
-+	 * This is not optional.
-+	 *
-+	 * NMI should *never* be disabled in user space. As such, this
-+	 * is an optional, opportunistic way to catch errors.
-+	 *
-+	 * Paranoia: High-order 48 bits above the lowest 16 bit SS are
-+	 * discarded by the legacy IRET instruction on all Intel, AMD,
-+	 * and Cyrix/Centaur/VIA CPUs, thus can be set unconditionally,
-+	 * even when FRED is not enabled. But we choose the safer side
-+	 * to use these bits only when FRED is enabled.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
-+		regs->fred_ss.swevent	= true;
-+		regs->fred_ss.nmi	= true;
-+	}
++	/* FRED systems always restore the full value of %rsp */
++	if (cpu_feature_enabled(X86_FEATURE_FRED))
++		return;
 +
-+	regs->flags	= X86_EFLAGS_IF | X86_EFLAGS_FIXED;
- }
+ 	/* Install the espfix pud into the kernel page directory */
+ 	pgd = &init_top_pgt[pgd_index(ESPFIX_BASE_ADDR)];
+ 	p4d = p4d_alloc(&init_mm, pgd, ESPFIX_BASE_ADDR);
+@@ -129,6 +133,10 @@ void init_espfix_ap(int cpu)
+ 	void *stack_page;
+ 	pteval_t ptemask;
  
- void
++	/* FRED systems always restore the full value of %rsp */
++	if (cpu_feature_enabled(X86_FEATURE_FRED))
++		return;
++
+ 	/* We only have to do this once... */
+ 	if (likely(per_cpu(espfix_stack, cpu)))
+ 		return;		/* Already initialized */
 
