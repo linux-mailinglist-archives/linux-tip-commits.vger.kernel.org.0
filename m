@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-271-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-272-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F03844998
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 22:15:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3989844999
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 22:15:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF2F31C219E7
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 21:15:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56B151F2A162
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 21:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9803A1A7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFE23A1AC;
 	Wed, 31 Jan 2024 21:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ox6XWPw8";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5I6JyKQd"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vkBlf001";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f1FRmEVt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8823439AF9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48A739FC0;
 	Wed, 31 Jan 2024 21:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706735687; cv=none; b=FvQUdphsFCJp7GSpQaQTteIKjwTEJGvdn4xc1C1fHC3SRjxE22mIe1rtU8+7kdPsjsJrmKEAwPthitJD0xJG4z+HEa4OMOKim4PxBC+SPtSFcl2sgoiBcrWt3EDhJJDY8Jt0HU+/tsoR+6stykr3dEs2fy7lEGKMjAqShZ+MRN8=
+	t=1706735687; cv=none; b=u0zyEvSlFZchawL2dYTkfAxTpJpbX14w+Hjn5c4iknP6MZE/HjjiCceoaEV/NFd1lDusCXnxymTkYl3NpuOEeZ5xaHGsIwA+IbHrFdZL4ATgOU9Y1SOor0Oa/IRo93L81mDdOra/Q9kUY6GEzSoH0m/M69y/CeUm4DF4LhYB1U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1706735687; c=relaxed/simple;
-	bh=xVExGHuj1N8ZfmoGpd06cXvmqgfu9wl03sf2Z9kgbOs=;
+	bh=3z4c8NO4/2R13Yelyydbzr9ZVNwLoneQ4Xa1c16NM3U=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YsycBlbjiz48a2amG1XnUAnXy25ETzZ7wZGKdk4CFM8I8PJ47/fIAdBhBHajw9KUPRZQXTyRBdoLne/jayiXqYuhy8wKZMw8atRsxS453Z0YKC09Jlqf4nW14Nc1NRgKGsF9BvWxOX7O0RbH81Kttn9KSvCciKnX8g1Wm5L7MeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ox6XWPw8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5I6JyKQd; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=McqJlxcFL6xiLcX0AElcpLxXaczDnlTX3nY8HYdVMsPSPfw4/gqaSCoKHht6O4l+H4W9+d9NhHcqkUqcrmSwbiCBNE7PSfFKfkZXsmY0lHPfrpQE4PrxiaBJQAeeL0k5MGMvIKlgfQXvZH6laBikgA3d0aaq4VnGiUClzrURP6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vkBlf001; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f1FRmEVt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 31 Jan 2024 21:14:42 -0000
+Date: Wed, 31 Jan 2024 21:14:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706735682;
+	s=2020; t=1706735684;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=66CW6xX1ZQQ79gZlcKmONZg6/Zt/FcK04Don7ZD0Bbk=;
-	b=ox6XWPw8h8WFZuphVluWx7Dg3rJXG2CcJWjv+xyAC1cwJFL/uwo9QUnAXvqcnTsmXMhEw0
-	Qn+e8U0hT9jSwTPLYm7SdJ12EYmu2XbjRXB6DcNbrE1qetcPotREljkEUZuEj4jnA74jG1
-	7tClFoIwTcHOz2OejyHzWwUyUVDgfe0eEt9mA+rs/6E75wOz2yQKVQqQjYd+lSwESAyHfY
-	15jqXKTHPDohbep55aFW1DeBZJHjef/ggj4E0iXN3xUH3HK7gW4UyB3fPRlTwrA1Q5tY+S
-	ZSOz1HRpHqyYKfhZfDzWknUYLoUF7YPJeAmWHnaHzxWoHKkUeRg4AaCMbAq1xA==
+	bh=Q6qCoPTML8h57sp9oE2AUKoqeoqQdIRMSvCJ/ZD1qmw=;
+	b=vkBlf0012Qi0FmwSzpEy1H+VSBXnLrfcppB68n9ADdkK1oOThVhDCIOpi0gUYY5uME7AIG
+	J3pPfhRudXFslbD4riSmqOAZ8YfzK9e1FsQCnMR9HtyNAXCB4gbWmd7p09SYRJ7o9sW9BV
+	HbOPPTHL68Ja2MoFwPYuTmS+PEO1yoD80PrcTZFfeZEb5Pc6sh/tbM4dTBJyrjUm2S15kM
+	K85YFJ3JZ9dNaJ8qARWAav0THOFJZ9nxqhi8aJH0BzwWR4sThIj3kxJb6mlYv0Y79wMa6N
+	VdZfJvqby34jN5zgkyJ++JI4T1QJ1Y9Gkm7ZY+urX071J1ImvH903PYLxlKOHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706735682;
+	s=2020e; t=1706735684;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=66CW6xX1ZQQ79gZlcKmONZg6/Zt/FcK04Don7ZD0Bbk=;
-	b=5I6JyKQdM7xaT64pXoWaLrv6XDfYAQNDJZZs/jYkE2+HRK9bcO0JJZCmndsI810pnqIhI8
-	ZIZlzyYxX2S6KIAA==
-From: "tip-bot2 for Peter Zijlstra (Intel)" <tip-bot2@linutronix.de>
+	bh=Q6qCoPTML8h57sp9oE2AUKoqeoqQdIRMSvCJ/ZD1qmw=;
+	b=f1FRmEVtgWgdmUZwhyiGYkufPFPVY8K+Jayh6CcWRoNppBJlG3PoXpgbT8TMaLrWSDDs9/
+	EDhVYgEHpFVW50CQ==
+From: "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fred] x86/entry/calling: Allow PUSH_AND_CLEAR_REGS being
- used beyond actual entry code
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Xin Li <xin3.li@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Shan Kang <shan.kang@intel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231205105030.8698-31-xin3.li@intel.com>
-References: <20231205105030.8698-31-xin3.li@intel.com>
+Subject: [tip: x86/fred] x86/fred: Let ret_from_fork_asm() jmp to
+ asm_fred_exit_user when FRED is enabled
+Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>, Xin Li <xin3.li@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Shan Kang <shan.kang@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231205105030.8698-29-xin3.li@intel.com>
+References: <20231205105030.8698-29-xin3.li@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170673568200.398.15470962496876345856.tip-bot2@tip-bot2>
+Message-ID: <170673568329.398.1021316577676211303.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,82 +82,57 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/fred branch of tip:
 
-Commit-ID:     2333f3c473c1562633cd17ac2eb743c29c3b2d9d
-Gitweb:        https://git.kernel.org/tip/2333f3c473c1562633cd17ac2eb743c29c3b2d9d
-Author:        Peter Zijlstra (Intel) <peterz@infradead.org>
-AuthorDate:    Tue, 05 Dec 2023 02:50:19 -08:00
+Commit-ID:     51ef2a4da7ec347e3315af69a426ac36fab98a6c
+Gitweb:        https://git.kernel.org/tip/51ef2a4da7ec347e3315af69a426ac36fab98a6c
+Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
+AuthorDate:    Tue, 05 Dec 2023 02:50:17 -08:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 31 Jan 2024 22:03:09 +01:00
+CommitterDate: Wed, 31 Jan 2024 22:02:59 +01:00
 
-x86/entry/calling: Allow PUSH_AND_CLEAR_REGS being used beyond actual entry code
+x86/fred: Let ret_from_fork_asm() jmp to asm_fred_exit_user when FRED is enabled
 
-PUSH_AND_CLEAR_REGS could be used besides actual entry code; in that case
-%rbp shouldn't be cleared (otherwise the frame pointer is destroyed) and
-UNWIND_HINT shouldn't be added.
+Let ret_from_fork_asm() jmp to asm_fred_exit_user when FRED is enabled,
+otherwise the existing IDT code is chosen.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Tested-by: Shan Kang <shan.kang@intel.com>
-Link: https://lore.kernel.org/r/20231205105030.8698-31-xin3.li@intel.com
+Link: https://lore.kernel.org/r/20231205105030.8698-29-xin3.li@intel.com
 ---
- arch/x86/entry/calling.h | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ arch/x86/entry/entry_64.S      | 6 ++++++
+ arch/x86/entry/entry_64_fred.S | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index 9f1d947..3ff925b 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -65,7 +65,7 @@ For 32-bit we have the following conventions - kernel is built with
-  * for assembly code:
-  */
- 
--.macro PUSH_REGS rdx=%rdx rcx=%rcx rax=%rax save_ret=0
-+.macro PUSH_REGS rdx=%rdx rcx=%rcx rax=%rax save_ret=0 unwind_hint=1
- 	.if \save_ret
- 	pushq	%rsi		/* pt_regs->si */
- 	movq	8(%rsp), %rsi	/* temporarily store the return address in %rsi */
-@@ -87,14 +87,17 @@ For 32-bit we have the following conventions - kernel is built with
- 	pushq	%r13		/* pt_regs->r13 */
- 	pushq	%r14		/* pt_regs->r14 */
- 	pushq	%r15		/* pt_regs->r15 */
-+
-+	.if \unwind_hint
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 29ce68f..7c4b726 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -247,7 +247,13 @@ SYM_CODE_START(ret_from_fork_asm)
+ 	 * and unwind should work normally.
+ 	 */
  	UNWIND_HINT_REGS
-+	.endif
++
++#ifdef CONFIG_X86_FRED
++	ALTERNATIVE "jmp swapgs_restore_regs_and_return_to_usermode", \
++		    "jmp asm_fred_exit_user", X86_FEATURE_FRED
++#else
+ 	jmp	swapgs_restore_regs_and_return_to_usermode
++#endif
+ SYM_CODE_END(ret_from_fork_asm)
+ .popsection
  
- 	.if \save_ret
- 	pushq	%rsi		/* return address on top of stack */
- 	.endif
- .endm
- 
--.macro CLEAR_REGS
-+.macro CLEAR_REGS clear_bp=1
- 	/*
- 	 * Sanitize registers of values that a speculation attack might
- 	 * otherwise want to exploit. The lower registers are likely clobbered
-@@ -109,7 +112,9 @@ For 32-bit we have the following conventions - kernel is built with
- 	xorl	%r10d, %r10d	/* nospec r10 */
- 	xorl	%r11d, %r11d	/* nospec r11 */
- 	xorl	%ebx,  %ebx	/* nospec rbx */
-+	.if \clear_bp
- 	xorl	%ebp,  %ebp	/* nospec rbp */
-+	.endif
- 	xorl	%r12d, %r12d	/* nospec r12 */
- 	xorl	%r13d, %r13d	/* nospec r13 */
- 	xorl	%r14d, %r14d	/* nospec r14 */
-@@ -117,9 +122,9 @@ For 32-bit we have the following conventions - kernel is built with
- 
- .endm
- 
--.macro PUSH_AND_CLEAR_REGS rdx=%rdx rcx=%rcx rax=%rax save_ret=0
--	PUSH_REGS rdx=\rdx, rcx=\rcx, rax=\rax, save_ret=\save_ret
--	CLEAR_REGS
-+.macro PUSH_AND_CLEAR_REGS rdx=%rdx rcx=%rcx rax=%rax save_ret=0 clear_bp=1 unwind_hint=1
-+	PUSH_REGS rdx=\rdx, rcx=\rcx, rax=\rax, save_ret=\save_ret unwind_hint=\unwind_hint
-+	CLEAR_REGS clear_bp=\clear_bp
- .endm
- 
- .macro POP_REGS pop_rdi=1
+diff --git a/arch/x86/entry/entry_64_fred.S b/arch/x86/entry/entry_64_fred.S
+index c1ddaf6..2271a1c 100644
+--- a/arch/x86/entry/entry_64_fred.S
++++ b/arch/x86/entry/entry_64_fred.S
+@@ -32,6 +32,7 @@
+ SYM_CODE_START_NOALIGN(asm_fred_entrypoint_user)
+ 	FRED_ENTER
+ 	call	fred_entry_from_user
++SYM_INNER_LABEL(asm_fred_exit_user, SYM_L_GLOBAL)
+ 	FRED_EXIT
+ 	ERETU
+ SYM_CODE_END(asm_fred_entrypoint_user)
 
