@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-276-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-274-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852C18449A0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 22:16:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A31D784499E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 22:16:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BAC1286343
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 21:16:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D72C287234
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 21:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDFE3A8D6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAA23A8C5;
 	Wed, 31 Jan 2024 21:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gVUPDCas";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LrEThPwd"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Od6I4QRO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gGbrZd7S"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445933A1A2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FD239FE8;
 	Wed, 31 Jan 2024 21:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706735689; cv=none; b=dt6GfnDHSokx+S6w9B5xWZ6oMjquW+5UxXsCJ1kYpGOY6hPkfYmgaI/8blHi5lA/yQynYciN6mLwJ6YbGSq70IbZ4/OuxyTwWiKgsBgLAYrBUT8woiuTAy95QCKU5+adeKDB7HmXLZO5ddGNkyUASc1P8Ece7QOb0LI9TnUEQhQ=
+	t=1706735689; cv=none; b=FvFOaq79dHhuB+wkaMuvtT/5ZTnYcvfAlBsvVfwy9PIb5Jzrc6BvgJdvGqI9QswS8xqZSPg3jZh1JB0/P3Zt+w5LqPDHeekQzn1x0WnJmDOkCYrP/sSmDJSZJUwy5U2dQksUxmvSYk3Q1S6UIDZCn1eZEY2IHxLfLyUrlp6UJfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1706735689; c=relaxed/simple;
-	bh=mJaD8GaC0mUp6hp0wRV4c/oymSLAcj9ZxKnTKlbCM+w=;
+	bh=EQ3h0KqJI0VeztzhiuX55TwKT02a2BJsqMb8uW11Ffo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lFpULIbD4XcFY4OABbso+Ng9eLt6RoIbkllEKBjDw/JW54Tz0S+3xg1C3Dr9bvBwjIKQUJ4+egBYxD12LW8F42jDY4B68iIP92j98hL4cCbAF7uV+NLbjOQPLuBR9ImAggdH82mrAJEGdgNIqk/P8vJndidXYWja0/EatP/vjks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gVUPDCas; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LrEThPwd; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=DF6iIvsegxPfkAHbkitdtf8qmtGU4S0oSLDGWtO8HC+EqW/DuoGSNJo0xXkfEBFXu+pzQffaVvWFYZ8chUa6mDD8Y/m+cjRvJcv+ANSNSlPBDpqdk3jZQtS03IhS9bz5+fCzAqlDEH3t+GtivNb3YmX1CMqBkiD6uV3X9hCyHic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Od6I4QRO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gGbrZd7S; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 31 Jan 2024 21:14:43 -0000
+Date: Wed, 31 Jan 2024 21:14:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706735684;
+	s=2020; t=1706735685;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ONi4kjY46QpGYpRJoftC+0cCLeu/QLH9GHpGOpeZwis=;
-	b=gVUPDCasrbR3A8t5vHKnEqlznJe1kpDWntoRs2j993yHgvLYtA0JEMpq1IbK6X1+qIXsTJ
-	Ocv7PcrD7br0NUgujRbuIUpZb6v/9GrmIrDpoLNSaFMOfXYunRRQLrbI/I9SPzRq5aBxu8
-	EZDbZ4HAOmWAeeE4g/8nK7wmBc9GeBM76igdXCYNgkT2ColYN6+VV0ZjGzOqnHI+N+i7zw
-	d+d+WmLGn/SoiFr4cZ3VD5uXAeRAhsD9YVczfSZRIoU5/W/XDnk14kW1Q1bmpaD6XxdhSX
-	BkUj08ehOrlow1/AcbMluOrCqgewW9xNDfKoDZyxa+jq+agHNHKrPIJXZZFPaA==
+	bh=mgAXPQpJC6dtBePA+NASRbj8IoW/lR+eYWwf8aiZo1Y=;
+	b=Od6I4QRO+SIdvQkj8Ad84DZBh4KrzhmbIKTGk9U90oYIH9ymSeggm32PfJzCyMRT4doyUL
+	qTYZ04jyjAw4KslIHff1KtkvIAGPPzi+KZc6xaGXjk9s9dPWEuLfw+SaadCOV1cTfZKMzP
+	9ZEG/Cf2oRYXvdyD1NVH7+HInreyrIMp130MFWPr1IScsHy9j7u9GYpuynvLcSikOX6Nn+
+	4Hjp1JQ++zDFdGMsXsHVf34HVGgYPWuRdMv6s+NIleC7TDZyymUu9CGapLxQuWWXiEMJBL
+	HRt2xPSdYDSsB9/HXCCn3yB6GN6zkO6Iv3I6cV04S3z0UJH377Fi/CPRWHXkiA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706735684;
+	s=2020e; t=1706735685;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ONi4kjY46QpGYpRJoftC+0cCLeu/QLH9GHpGOpeZwis=;
-	b=LrEThPwdNpw6ItjQAZLvcUi8owylJquY4OYq6CO2/Y23S1SoFN2LUofnx1LOA3T0Dg3x+O
-	Qhaco7x5FBAQ/wCg==
-From: "tip-bot2 for Xin Li" <tip-bot2@linutronix.de>
+	bh=mgAXPQpJC6dtBePA+NASRbj8IoW/lR+eYWwf8aiZo1Y=;
+	b=gGbrZd7S7v4Pf0OWkjZRtoUlEaTCQGDtadiX1LB1Df28JCKYCICUSe3TdhfFcSwOhtjevV
+	M3tmkiHA7GnDuRBA==
+From: "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fred] x86/traps: Add sysvec_install() to install a system
- interrupt handler
-Cc: Xin Li <xin3.li@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/fred] x86/fred: FRED entry/exit and dispatch code
+Cc: Thomas Gleixner <tglx@linutronix.de>, Megha Dey <megha.dey@intel.com>,
+ "H. Peter Anvin (Intel)" <hpa@zytor.com>, Xin Li <xin3.li@intel.com>,
  "Borislav Petkov (AMD)" <bp@alien8.de>, Shan Kang <shan.kang@intel.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231205105030.8698-28-xin3.li@intel.com>
-References: <20231205105030.8698-28-xin3.li@intel.com>
+In-Reply-To: <20231209214214.2932-1-xin3.li@intel.com>
+References: <20231209214214.2932-1-xin3.li@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170673568387.398.1207259428456555073.tip-bot2@tip-bot2>
+Message-ID: <170673568447.398.6172257491950143273.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,188 +82,421 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/fred branch of tip:
 
-Commit-ID:     8f4a29b0e8a40d865040800684d7ff4141c1394f
-Gitweb:        https://git.kernel.org/tip/8f4a29b0e8a40d865040800684d7ff4141c1394f
-Author:        Xin Li <xin3.li@intel.com>
-AuthorDate:    Tue, 05 Dec 2023 02:50:16 -08:00
+Commit-ID:     14619d912b658ecd9573fb88400d3830a29cadcb
+Gitweb:        https://git.kernel.org/tip/14619d912b658ecd9573fb88400d3830a29cadcb
+Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
+AuthorDate:    Sat, 09 Dec 2023 13:42:14 -08:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 31 Jan 2024 22:02:36 +01:00
+CommitterDate: Wed, 31 Jan 2024 22:02:31 +01:00
 
-x86/traps: Add sysvec_install() to install a system interrupt handler
+x86/fred: FRED entry/exit and dispatch code
 
-Add sysvec_install() to install a system interrupt handler into the IDT
-or the FRED system interrupt handler table.
+The code to actually handle kernel and event entry/exit using
+FRED. It is split up into two files thus:
 
+ - entry_64_fred.S contains the actual entrypoints and exit code, and
+   saves and restores registers.
+
+ - entry_fred.c contains the two-level event dispatch code for FRED.
+   The first-level dispatch is on the event type, and the second-level
+   is on the event vector.
+
+  [ bp: Fold in an allmodconfig clang build fix:
+    https://lore.kernel.org/r/20240129064521.5168-1-xin3.li@intel.com
+    and a CONFIG_IA32_EMULATION=n build fix:
+    https://lore.kernel.org/r/20240127093728.1323-3-xin3.li@intel.com]
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Originally-by: Megha Dey <megha.dey@intel.com>
+Co-developed-by: Xin Li <xin3.li@intel.com>
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Xin Li <xin3.li@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Tested-by: Shan Kang <shan.kang@intel.com>
-Link: https://lore.kernel.org/r/20231205105030.8698-28-xin3.li@intel.com
+Link: https://lore.kernel.org/r/20231209214214.2932-1-xin3.li@intel.com
 ---
- arch/x86/entry/entry_fred.c      | 14 ++++++++++++++
- arch/x86/include/asm/desc.h      |  2 --
- arch/x86/include/asm/idtentry.h  | 15 +++++++++++++++
- arch/x86/kernel/cpu/acrn.c       |  4 ++--
- arch/x86/kernel/cpu/mshyperv.c   | 15 +++++++--------
- arch/x86/kernel/idt.c            |  4 ++--
- arch/x86/kernel/kvm.c            |  2 +-
- drivers/xen/events/events_base.c |  2 +-
- 8 files changed, 42 insertions(+), 16 deletions(-)
+ arch/x86/entry/Makefile               |   5 +-
+ arch/x86/entry/entry_64_fred.S        |  50 +++++-
+ arch/x86/entry/entry_fred.c           | 245 +++++++++++++++++++++++++-
+ arch/x86/include/asm/asm-prototypes.h |   1 +-
+ arch/x86/include/asm/fred.h           |   6 +-
+ arch/x86/include/asm/ia32.h           |   4 +-
+ 6 files changed, 308 insertions(+), 3 deletions(-)
+ create mode 100644 arch/x86/entry/entry_64_fred.S
+ create mode 100644 arch/x86/entry/entry_fred.c
 
-diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
-index 125b623..3be0269 100644
---- a/arch/x86/entry/entry_fred.c
-+++ b/arch/x86/entry/entry_fred.c
-@@ -119,6 +119,20 @@ static idtentry_t sysvec_table[NR_SYSTEM_VECTORS] __ro_after_init = {
- 	SYSVEC(POSTED_INTR_NESTED_VECTOR,	kvm_posted_intr_nested_ipi),
- };
+diff --git a/arch/x86/entry/Makefile b/arch/x86/entry/Makefile
+index ca2fe18..c93e7f5 100644
+--- a/arch/x86/entry/Makefile
++++ b/arch/x86/entry/Makefile
+@@ -18,6 +18,9 @@ obj-y				+= vdso/
+ obj-y				+= vsyscall/
  
-+static bool fred_setup_done __initdata;
+ obj-$(CONFIG_PREEMPTION)	+= thunk_$(BITS).o
++CFLAGS_entry_fred.o		+= -fno-stack-protector
++CFLAGS_REMOVE_entry_fred.o	+= -pg $(CC_FLAGS_FTRACE)
++obj-$(CONFIG_X86_FRED)		+= entry_64_fred.o entry_fred.o
 +
-+void __init fred_install_sysvec(unsigned int sysvec, idtentry_t handler)
+ obj-$(CONFIG_IA32_EMULATION)	+= entry_64_compat.o syscall_32.o
+ obj-$(CONFIG_X86_X32_ABI)	+= syscall_x32.o
+-
+diff --git a/arch/x86/entry/entry_64_fred.S b/arch/x86/entry/entry_64_fred.S
+new file mode 100644
+index 0000000..c1ddaf6
+--- /dev/null
++++ b/arch/x86/entry/entry_64_fred.S
+@@ -0,0 +1,50 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * The actual FRED entry points.
++ */
++
++#include <asm/fred.h>
++
++#include "calling.h"
++
++	.code64
++	.section .noinstr.text, "ax"
++
++.macro FRED_ENTER
++	UNWIND_HINT_END_OF_STACK
++	ENDBR
++	PUSH_AND_CLEAR_REGS
++	movq	%rsp, %rdi	/* %rdi -> pt_regs */
++.endm
++
++.macro FRED_EXIT
++	UNWIND_HINT_REGS
++	POP_REGS
++.endm
++
++/*
++ * The new RIP value that FRED event delivery establishes is
++ * IA32_FRED_CONFIG & ~FFFH for events that occur in ring 3.
++ * Thus the FRED ring 3 entry point must be 4K page aligned.
++ */
++	.align 4096
++
++SYM_CODE_START_NOALIGN(asm_fred_entrypoint_user)
++	FRED_ENTER
++	call	fred_entry_from_user
++	FRED_EXIT
++	ERETU
++SYM_CODE_END(asm_fred_entrypoint_user)
++
++/*
++ * The new RIP value that FRED event delivery establishes is
++ * (IA32_FRED_CONFIG & ~FFFH) + 256 for events that occur in
++ * ring 0, i.e., asm_fred_entrypoint_user + 256.
++ */
++	.org asm_fred_entrypoint_user + 256, 0xcc
++SYM_CODE_START_NOALIGN(asm_fred_entrypoint_kernel)
++	FRED_ENTER
++	call	fred_entry_from_kernel
++	FRED_EXIT
++	ERETS
++SYM_CODE_END(asm_fred_entrypoint_kernel)
+diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
+new file mode 100644
+index 0000000..125b623
+--- /dev/null
++++ b/arch/x86/entry/entry_fred.c
+@@ -0,0 +1,245 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * The FRED specific kernel/user entry functions which are invoked from
++ * assembly code and dispatch to the associated handlers.
++ */
++#include <linux/kernel.h>
++#include <linux/kdebug.h>
++#include <linux/nospec.h>
++
++#include <asm/desc.h>
++#include <asm/fred.h>
++#include <asm/idtentry.h>
++#include <asm/syscall.h>
++#include <asm/trapnr.h>
++#include <asm/traps.h>
++
++/* FRED EVENT_TYPE_OTHER vector numbers */
++#define FRED_SYSCALL			1
++#define FRED_SYSENTER			2
++
++static noinstr void fred_bad_type(struct pt_regs *regs, unsigned long error_code)
 +{
-+	if (WARN_ON_ONCE(sysvec < FIRST_SYSTEM_VECTOR))
-+		return;
++	irqentry_state_t irq_state = irqentry_nmi_enter(regs);
 +
-+	if (WARN_ON_ONCE(fred_setup_done))
-+		return;
++	instrumentation_begin();
 +
-+	if (!WARN_ON_ONCE(sysvec_table[sysvec - FIRST_SYSTEM_VECTOR]))
-+		 sysvec_table[sysvec - FIRST_SYSTEM_VECTOR] = handler;
++	/* Panic on events from a high stack level */
++	if (regs->fred_cs.sl > 0) {
++		pr_emerg("PANIC: invalid or fatal FRED event; event type %u "
++			 "vector %u error 0x%lx aux 0x%lx at %04x:%016lx\n",
++			 regs->fred_ss.type, regs->fred_ss.vector, regs->orig_ax,
++			 fred_event_data(regs), regs->cs, regs->ip);
++		die("invalid or fatal FRED event", regs, regs->orig_ax);
++		panic("invalid or fatal FRED event");
++	} else {
++		unsigned long flags = oops_begin();
++		int sig = SIGKILL;
++
++		pr_alert("BUG: invalid or fatal FRED event; event type %u "
++			 "vector %u error 0x%lx aux 0x%lx at %04x:%016lx\n",
++			 regs->fred_ss.type, regs->fred_ss.vector, regs->orig_ax,
++			 fred_event_data(regs), regs->cs, regs->ip);
++
++		if (__die("Invalid or fatal FRED event", regs, regs->orig_ax))
++			sig = 0;
++
++		oops_end(flags, regs, sig);
++	}
++
++	instrumentation_end();
++	irqentry_nmi_exit(regs, irq_state);
 +}
 +
- static noinstr void fred_extint(struct pt_regs *regs)
- {
- 	unsigned int vector = regs->fred_ss.vector;
-diff --git a/arch/x86/include/asm/desc.h b/arch/x86/include/asm/desc.h
-index ab97b22..ec95fe4 100644
---- a/arch/x86/include/asm/desc.h
-+++ b/arch/x86/include/asm/desc.h
-@@ -402,8 +402,6 @@ static inline void set_desc_limit(struct desc_struct *desc, unsigned long limit)
- 	desc->limit1 = (limit >> 16) & 0xf;
- }
- 
--void alloc_intr_gate(unsigned int n, const void *addr);
--
- static inline void init_idt_data(struct idt_data *data, unsigned int n,
- 				 const void *addr)
- {
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index 570f286..47d4c04 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -459,6 +459,21 @@ __visible noinstr void func(struct pt_regs *regs,			\
- #define DEFINE_FREDENTRY_DEBUG		DEFINE_FREDENTRY_RAW
- #endif
- 
-+void idt_install_sysvec(unsigned int n, const void *function);
++static noinstr void fred_intx(struct pt_regs *regs)
++{
++	switch (regs->fred_ss.vector) {
++	/* Opcode 0xcd, 0x3, NOT INT3 (opcode 0xcc) */
++	case X86_TRAP_BP:
++		return exc_int3(regs);
 +
-+#ifdef CONFIG_X86_FRED
-+void fred_install_sysvec(unsigned int vector, const idtentry_t function);
-+#else
-+static inline void fred_install_sysvec(unsigned int vector, const idtentry_t function) { }
++	/* Opcode 0xcd, 0x4, NOT INTO (opcode 0xce) */
++	case X86_TRAP_OF:
++		return exc_overflow(regs);
++
++#ifdef CONFIG_IA32_EMULATION
++	/* INT80 */
++	case IA32_SYSCALL_VECTOR:
++		if (ia32_enabled())
++			return int80_emulation(regs);
++		fallthrough;
 +#endif
 +
-+#define sysvec_install(vector, function) {				\
-+	if (cpu_feature_enabled(X86_FEATURE_FRED))			\
-+		fred_install_sysvec(vector, function);			\
-+	else								\
-+		idt_install_sysvec(vector, asm_##function);		\
++	default:
++		return exc_general_protection(regs, 0);
++	}
 +}
 +
- #else /* !__ASSEMBLY__ */
- 
- /*
-diff --git a/arch/x86/kernel/cpu/acrn.c b/arch/x86/kernel/cpu/acrn.c
-index bfeb18f..2c5b51a 100644
---- a/arch/x86/kernel/cpu/acrn.c
-+++ b/arch/x86/kernel/cpu/acrn.c
-@@ -26,8 +26,8 @@ static u32 __init acrn_detect(void)
- 
- static void __init acrn_init_platform(void)
- {
--	/* Setup the IDT for ACRN hypervisor callback */
--	alloc_intr_gate(HYPERVISOR_CALLBACK_VECTOR, asm_sysvec_acrn_hv_callback);
-+	/* Install system interrupt handler for ACRN hypervisor callback */
-+	sysvec_install(HYPERVISOR_CALLBACK_VECTOR, sysvec_acrn_hv_callback);
- 
- 	x86_platform.calibrate_tsc = acrn_get_tsc_khz;
- 	x86_platform.calibrate_cpu = acrn_get_tsc_khz;
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 01fa06d..45e0e70 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -539,19 +539,18 @@ static void __init ms_hyperv_init_platform(void)
- 	 */
- 	x86_platform.apic_post_init = hyperv_init;
- 	hyperv_setup_mmu_ops();
--	/* Setup the IDT for hypervisor callback */
--	alloc_intr_gate(HYPERVISOR_CALLBACK_VECTOR, asm_sysvec_hyperv_callback);
- 
--	/* Setup the IDT for reenlightenment notifications */
-+	/* Install system interrupt handler for hypervisor callback */
-+	sysvec_install(HYPERVISOR_CALLBACK_VECTOR, sysvec_hyperv_callback);
++static __always_inline void fred_other(struct pt_regs *regs)
++{
++	/* The compiler can fold these conditions into a single test */
++	if (likely(regs->fred_ss.vector == FRED_SYSCALL && regs->fred_ss.lm)) {
++		regs->orig_ax = regs->ax;
++		regs->ax = -ENOSYS;
++		do_syscall_64(regs, regs->orig_ax);
++		return;
++	} else if (ia32_enabled() &&
++		   likely(regs->fred_ss.vector == FRED_SYSENTER && !regs->fred_ss.lm)) {
++		regs->orig_ax = regs->ax;
++		regs->ax = -ENOSYS;
++		do_fast_syscall_32(regs);
++		return;
++	} else {
++		exc_invalid_op(regs);
++		return;
++	}
++}
 +
-+	/* Install system interrupt handler for reenlightenment notifications */
- 	if (ms_hyperv.features & HV_ACCESS_REENLIGHTENMENT) {
--		alloc_intr_gate(HYPERV_REENLIGHTENMENT_VECTOR,
--				asm_sysvec_hyperv_reenlightenment);
-+		sysvec_install(HYPERV_REENLIGHTENMENT_VECTOR, sysvec_hyperv_reenlightenment);
- 	}
++#define SYSVEC(_vector, _function) [_vector - FIRST_SYSTEM_VECTOR] = fred_sysvec_##_function
++
++static idtentry_t sysvec_table[NR_SYSTEM_VECTORS] __ro_after_init = {
++	SYSVEC(ERROR_APIC_VECTOR,		error_interrupt),
++	SYSVEC(SPURIOUS_APIC_VECTOR,		spurious_apic_interrupt),
++	SYSVEC(LOCAL_TIMER_VECTOR,		apic_timer_interrupt),
++	SYSVEC(X86_PLATFORM_IPI_VECTOR,		x86_platform_ipi),
++
++	SYSVEC(RESCHEDULE_VECTOR,		reschedule_ipi),
++	SYSVEC(CALL_FUNCTION_SINGLE_VECTOR,	call_function_single),
++	SYSVEC(CALL_FUNCTION_VECTOR,		call_function),
++	SYSVEC(REBOOT_VECTOR,			reboot),
++
++	SYSVEC(THRESHOLD_APIC_VECTOR,		threshold),
++	SYSVEC(DEFERRED_ERROR_VECTOR,		deferred_error),
++	SYSVEC(THERMAL_APIC_VECTOR,		thermal),
++
++	SYSVEC(IRQ_WORK_VECTOR,			irq_work),
++
++	SYSVEC(POSTED_INTR_VECTOR,		kvm_posted_intr_ipi),
++	SYSVEC(POSTED_INTR_WAKEUP_VECTOR,	kvm_posted_intr_wakeup_ipi),
++	SYSVEC(POSTED_INTR_NESTED_VECTOR,	kvm_posted_intr_nested_ipi),
++};
++
++static noinstr void fred_extint(struct pt_regs *regs)
++{
++	unsigned int vector = regs->fred_ss.vector;
++	unsigned int index = array_index_nospec(vector - FIRST_SYSTEM_VECTOR,
++						NR_SYSTEM_VECTORS);
++
++	if (WARN_ON_ONCE(vector < FIRST_EXTERNAL_VECTOR))
++		return;
++
++	if (likely(vector >= FIRST_SYSTEM_VECTOR)) {
++		irqentry_state_t state = irqentry_enter(regs);
++
++		instrumentation_begin();
++		sysvec_table[index](regs);
++		instrumentation_end();
++		irqentry_exit(regs, state);
++	} else {
++		common_interrupt(regs, vector);
++	}
++}
++
++static noinstr void fred_hwexc(struct pt_regs *regs, unsigned long error_code)
++{
++	/* Optimize for #PF. That's the only exception which matters performance wise */
++	if (likely(regs->fred_ss.vector == X86_TRAP_PF))
++		return exc_page_fault(regs, error_code);
++
++	switch (regs->fred_ss.vector) {
++	case X86_TRAP_DE: return exc_divide_error(regs);
++	case X86_TRAP_DB: return fred_exc_debug(regs);
++	case X86_TRAP_BR: return exc_bounds(regs);
++	case X86_TRAP_UD: return exc_invalid_op(regs);
++	case X86_TRAP_NM: return exc_device_not_available(regs);
++	case X86_TRAP_DF: return exc_double_fault(regs, error_code);
++	case X86_TRAP_TS: return exc_invalid_tss(regs, error_code);
++	case X86_TRAP_NP: return exc_segment_not_present(regs, error_code);
++	case X86_TRAP_SS: return exc_stack_segment(regs, error_code);
++	case X86_TRAP_GP: return exc_general_protection(regs, error_code);
++	case X86_TRAP_MF: return exc_coprocessor_error(regs);
++	case X86_TRAP_AC: return exc_alignment_check(regs, error_code);
++	case X86_TRAP_XF: return exc_simd_coprocessor_error(regs);
++
++#ifdef CONFIG_X86_MCE
++	case X86_TRAP_MC: return fred_exc_machine_check(regs);
++#endif
++#ifdef CONFIG_INTEL_TDX_GUEST
++	case X86_TRAP_VE: return exc_virtualization_exception(regs);
++#endif
++#ifdef CONFIG_X86_CET
++	case X86_TRAP_CP: return exc_control_protection(regs, error_code);
++#endif
++	default: return fred_bad_type(regs, error_code);
++	}
++
++}
++
++static noinstr void fred_swexc(struct pt_regs *regs, unsigned long error_code)
++{
++	switch (regs->fred_ss.vector) {
++	case X86_TRAP_BP: return exc_int3(regs);
++	case X86_TRAP_OF: return exc_overflow(regs);
++	default: return fred_bad_type(regs, error_code);
++	}
++}
++
++__visible noinstr void fred_entry_from_user(struct pt_regs *regs)
++{
++	unsigned long error_code = regs->orig_ax;
++
++	/* Invalidate orig_ax so that syscall_get_nr() works correctly */
++	regs->orig_ax = -1;
++
++	switch (regs->fred_ss.type) {
++	case EVENT_TYPE_EXTINT:
++		return fred_extint(regs);
++	case EVENT_TYPE_NMI:
++		if (likely(regs->fred_ss.vector == X86_TRAP_NMI))
++			return fred_exc_nmi(regs);
++		break;
++	case EVENT_TYPE_HWEXC:
++		return fred_hwexc(regs, error_code);
++	case EVENT_TYPE_SWINT:
++		return fred_intx(regs);
++	case EVENT_TYPE_PRIV_SWEXC:
++		if (likely(regs->fred_ss.vector == X86_TRAP_DB))
++			return fred_exc_debug(regs);
++		break;
++	case EVENT_TYPE_SWEXC:
++		return fred_swexc(regs, error_code);
++	case EVENT_TYPE_OTHER:
++		return fred_other(regs);
++	default: break;
++	}
++
++	return fred_bad_type(regs, error_code);
++}
++
++__visible noinstr void fred_entry_from_kernel(struct pt_regs *regs)
++{
++	unsigned long error_code = regs->orig_ax;
++
++	/* Invalidate orig_ax so that syscall_get_nr() works correctly */
++	regs->orig_ax = -1;
++
++	switch (regs->fred_ss.type) {
++	case EVENT_TYPE_EXTINT:
++		return fred_extint(regs);
++	case EVENT_TYPE_NMI:
++		if (likely(regs->fred_ss.vector == X86_TRAP_NMI))
++			return fred_exc_nmi(regs);
++		break;
++	case EVENT_TYPE_HWEXC:
++		return fred_hwexc(regs, error_code);
++	case EVENT_TYPE_PRIV_SWEXC:
++		if (likely(regs->fred_ss.vector == X86_TRAP_DB))
++			return fred_exc_debug(regs);
++		break;
++	case EVENT_TYPE_SWEXC:
++		return fred_swexc(regs, error_code);
++	default: break;
++	}
++
++	return fred_bad_type(regs, error_code);
++}
+diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
+index b1a98fa..076bf8d 100644
+--- a/arch/x86/include/asm/asm-prototypes.h
++++ b/arch/x86/include/asm/asm-prototypes.h
+@@ -12,6 +12,7 @@
+ #include <asm/special_insns.h>
+ #include <asm/preempt.h>
+ #include <asm/asm.h>
++#include <asm/fred.h>
+ #include <asm/gsseg.h>
  
--	/* Setup the IDT for stimer0 */
-+	/* Install system interrupt handler for stimer0 */
- 	if (ms_hyperv.misc_features & HV_STIMER_DIRECT_MODE_AVAILABLE) {
--		alloc_intr_gate(HYPERV_STIMER0_VECTOR,
--				asm_sysvec_hyperv_stimer0);
-+		sysvec_install(HYPERV_STIMER0_VECTOR, sysvec_hyperv_stimer0);
- 	}
- 
- # ifdef CONFIG_SMP
-diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
-index 660b601..0cd53fa 100644
---- a/arch/x86/kernel/idt.c
-+++ b/arch/x86/kernel/idt.c
-@@ -337,7 +337,7 @@ void idt_invalidate(void)
- 	load_idt(&idt);
+ #ifndef CONFIG_X86_CMPXCHG64
+diff --git a/arch/x86/include/asm/fred.h b/arch/x86/include/asm/fred.h
+index f514fdb..16a64ff 100644
+--- a/arch/x86/include/asm/fred.h
++++ b/arch/x86/include/asm/fred.h
+@@ -60,6 +60,12 @@ static __always_inline unsigned long fred_event_data(struct pt_regs *regs)
+ 	return fred_info(regs)->edata;
  }
  
--void __init alloc_intr_gate(unsigned int n, const void *addr)
-+void __init idt_install_sysvec(unsigned int n, const void *function)
++void asm_fred_entrypoint_user(void);
++void asm_fred_entrypoint_kernel(void);
++
++__visible void fred_entry_from_user(struct pt_regs *regs);
++__visible void fred_entry_from_kernel(struct pt_regs *regs);
++
+ #else /* CONFIG_X86_FRED */
+ static __always_inline unsigned long fred_event_data(struct pt_regs *regs) { return 0; }
+ #endif /* CONFIG_X86_FRED */
+diff --git a/arch/x86/include/asm/ia32.h b/arch/x86/include/asm/ia32.h
+index c7ef6ea..4212c00 100644
+--- a/arch/x86/include/asm/ia32.h
++++ b/arch/x86/include/asm/ia32.h
+@@ -69,7 +69,7 @@ extern void ia32_pick_mmap_layout(struct mm_struct *mm);
+ 
+ extern bool __ia32_enabled;
+ 
+-static inline bool ia32_enabled(void)
++static __always_inline bool ia32_enabled(void)
  {
- 	if (WARN_ON(n < FIRST_SYSTEM_VECTOR))
- 		return;
-@@ -346,5 +346,5 @@ void __init alloc_intr_gate(unsigned int n, const void *addr)
- 		return;
- 
- 	if (!WARN_ON(test_and_set_bit(n, system_vectors)))
--		set_intr_gate(n, addr);
-+		set_intr_gate(n, function);
+ 	return __ia32_enabled;
  }
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index dfe9945..b055579 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -829,7 +829,7 @@ static void __init kvm_guest_init(void)
+@@ -81,7 +81,7 @@ static inline void ia32_disable(void)
  
- 	if (kvm_para_has_feature(KVM_FEATURE_ASYNC_PF_INT) && kvmapf) {
- 		static_branch_enable(&kvm_async_pf_enabled);
--		alloc_intr_gate(HYPERVISOR_CALLBACK_VECTOR, asm_sysvec_kvm_asyncpf_interrupt);
-+		sysvec_install(HYPERVISOR_CALLBACK_VECTOR, sysvec_kvm_asyncpf_interrupt);
- 	}
+ #else /* !CONFIG_IA32_EMULATION */
  
- #ifdef CONFIG_SMP
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index b8cfea7..e2813ba 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -2216,7 +2216,7 @@ static __init void xen_alloc_callback_vector(void)
- 		return;
- 
- 	pr_info("Xen HVM callback vector for event delivery is enabled\n");
--	alloc_intr_gate(HYPERVISOR_CALLBACK_VECTOR, asm_sysvec_xen_hvm_callback);
-+	sysvec_install(HYPERVISOR_CALLBACK_VECTOR, sysvec_xen_hvm_callback);
+-static inline bool ia32_enabled(void)
++static __always_inline bool ia32_enabled(void)
+ {
+ 	return IS_ENABLED(CONFIG_X86_32);
  }
- #else
- void xen_setup_callback_vector(void) {}
 
