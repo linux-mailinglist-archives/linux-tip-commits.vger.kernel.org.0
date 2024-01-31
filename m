@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-236-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-237-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A44842BE9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 19:37:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51686843798
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 08:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6577B26C7A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jan 2024 18:36:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDFBF1F216DA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jan 2024 07:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DFF78B62;
-	Tue, 30 Jan 2024 18:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFB151004;
+	Wed, 31 Jan 2024 07:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w8BJrVhp";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="52+WYad/"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="s1HP0BXS";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9A7i+9mH"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5435778B42;
-	Tue, 30 Jan 2024 18:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F8A4F1E0;
+	Wed, 31 Jan 2024 07:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706639797; cv=none; b=oztshq6t1IacSs7/h5uasPRFAjLhDdmstLSia1+esKiE5HiE2ePOY5QWUEls+6TmIFhfimDVtjQc3zRiDTDmfo1ryy/QhRfCcRxixvweocAu9oc/DNM6KW0QmvHjCvpoe3O0X9WsgYxMA3qW2tgbcDyCTcelkJdYlaxT73FoHxA=
+	t=1706685670; cv=none; b=u+CVdEWsZLptxa8CSZ65hLY+WJ6nXqZTbzV5MCsOLul5v6yD6SDznytrE6lMGRRAEGIv7niiNrAMGuc4ak1cNX2YxKJoClzsgXBtj0Mrg7s1MeRHIG+a54KEQiKeK8TbUtaNebe0pwSu39Mf15G7r4mJAiQk6W/IetybWMA89sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706639797; c=relaxed/simple;
-	bh=NiNBvrR40otFTHJ097OMe57DnR7feDP4DZbaBZfGXaI=;
+	s=arc-20240116; t=1706685670; c=relaxed/simple;
+	bh=JVBiuCE5M+gXf3Sfnd1UxGuRYdOuZgAOHcK2Z6zJMzg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=U3GndbQC2JdA+OvmEn18Ywp+GIoT6cwVV25UT8K5avFbkDOQ/lWmaQRuVolAmmJQKRCLix3B5VjDS8Tde8rwaGrSi7YMrFk24thInk8yuaeDk1eGqsTFOsR7vk3w8xNScDQoqdCU8uknpfV8Fv7H/Tm8FTveppakoaSYg5NeeYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w8BJrVhp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=52+WYad/; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=nSmLUYKbeGI0iiN3AQnVGzXouuXGHwJtirzzK9xTafo0UCLMpD6DUeTn1ZFsxfdR85/6hv/P2xAEnPmnHy2Nn+TEr7UIa3PEJlejVasm0fDm047Uj+9Y8cbt2D84HtGRn4lsMM9zG98eSUZEi9guJ4C6y8ZzmznF56j9koT8Yic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=s1HP0BXS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9A7i+9mH; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 30 Jan 2024 18:36:33 -0000
+Date: Wed, 31 Jan 2024 07:21:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706639793;
+	s=2020; t=1706685666;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=toA+ptjEM+2DWWvx60arfsDl7c0WFLQQBhrY2zAl8TE=;
-	b=w8BJrVhp0sa2DflwlV5BorJcSBrONChZhwM6CjhxryeenBq6cvHyQZWwuZnRIW+tMo50zO
-	duktHWhgyuRTzS9kPS0gmhq1oqSXufefuKDYvyv+sm1yZKI3PtJBbCFzMdcg3eBh2PQ6EC
-	TO/xF2Fffi98bBU435wqIwaoAL+iDHiO0HrZDsuKCF6f5As86/0DIbJvOZh6wPL/l3DXeG
-	uueoI2qH/6kDrKqm3hkpYfcrGD4rCtm0UWGVifG0+1/v6hDzG4KCq5tOxQMry40r4Wz8O8
-	tSa075VEJ520xdtDVT/OAnkf2rUDVGoAOKDdFPKTX+df1I/s3uyAZqzOGn6JWg==
+	bh=RlKjq9jrAuFiVS25p9BnOCOg7PFYNPRinO3Roqp3A5g=;
+	b=s1HP0BXSc4fEDfoSqVX93aZX6oFfv37akKAmtgiOknkXRjw+kOY3E7gE3ylJDcpOzmO22D
+	h8EKOWHlRwWFDkmKkN0bk0IHUBBm9y8W9nEbg8Qu9zjbIKih6/PXiL5bVOrkc1jxSC/msq
+	S8no/KYQbuCCPi9cFLf2UYBTppPKNGKDRbj1Jyyfyjy37JFl06c2P/LBIOX9f8L+3Y5v2o
+	JNl3bDyADgR1KEz5G+37dUeGNFpwoAQk4Jy8Tid6kAdZ9oA4DzPE/nYLFxtetN7kB5C4Xg
+	4YMzKpgBRmDjbi/Np3QrBBuwHbSQnRupALivWLYv1UiaGJL6vxT3PYfauNUMIg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706639793;
+	s=2020e; t=1706685666;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=toA+ptjEM+2DWWvx60arfsDl7c0WFLQQBhrY2zAl8TE=;
-	b=52+WYad/8TR4cya2buyJY0onwyGV25IpH344TXtIf3wPldyWf5MVTHdZOYASVUuUMJZetz
-	Djr7EDUks9DBiMCw==
-From: "tip-bot2 for Thomas Zimmermann" <tip-bot2@linutronix.de>
+	bh=RlKjq9jrAuFiVS25p9BnOCOg7PFYNPRinO3Roqp3A5g=;
+	b=9A7i+9mH/RDNl0MGGJRvO3Gzy4P4qyLCKsMG2P1vXiAXS3T8pMNDqD7R3nVzyR+cbFXgV+
+	QsTaf7fzq8Kf4bCg==
+From: "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: x86/build] x86/setup: Move UAPI setup structures into setup_data.h
-Cc: Ard Biesheuvel <ardb@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240112095000.8952-2-tzimmermann@suse.de>
-References: <20240112095000.8952-2-tzimmermann@suse.de>
+ [tip: x86/fred] x86/fred: Invoke FRED initialization code to enable FRED
+Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>, Xin Li <xin3.li@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Shan Kang <shan.kang@intel.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231205105030.8698-36-xin3.li@intel.com>
+References: <20231205105030.8698-36-xin3.li@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170663979304.398.5831265739764610531.tip-bot2@tip-bot2>
+Message-ID: <170668566571.398.17800534215552184936.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,241 +80,127 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the x86/fred branch of tip:
 
-Commit-ID:     efd7def00406ac57400501cdc76d0d95d4691927
-Gitweb:        https://git.kernel.org/tip/efd7def00406ac57400501cdc76d0d95d4691927
-Author:        Thomas Zimmermann <tzimmermann@suse.de>
-AuthorDate:    Fri, 12 Jan 2024 10:44:36 +01:00
+Commit-ID:     b564b0111a3f03d1a92ba87c4b0f054ad1845963
+Gitweb:        https://git.kernel.org/tip/b564b0111a3f03d1a92ba87c4b0f054ad1845963
+Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
+AuthorDate:    Tue, 05 Dec 2023 02:50:24 -08:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 30 Jan 2024 15:17:06 +01:00
+CommitterDate: Tue, 30 Jan 2024 18:20:36 +01:00
 
-x86/setup: Move UAPI setup structures into setup_data.h
+x86/fred: Invoke FRED initialization code to enable FRED
 
-The type definition of struct pci_setup_rom in <asm/pci.h> requires
-struct setup_data from <asm/bootparam.h>. Many drivers include
-<linux/pci.h>, but do not use boot parameters. Changes to bootparam.h or
-its included header files could easily trigger a large, unnecessary
-rebuild of the kernel.
+Let cpu_init_exception_handling() call cpu_init_fred_exceptions() to
+initialize FRED. However if FRED is unavailable or disabled, it falls
+back to set up TSS IST and initialize IDT.
 
-Moving struct setup_data and related code into its own header file
-avoids including <asm/bootparam.h> in <asm/pci.h>. Instead include the
-new header <asm/screen_data.h> and remove the include statement for
-x86_init.h, which is unnecessary but pulls in bootparams.h.
+Co-developed-by: Xin Li <xin3.li@intel.com>
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Xin Li <xin3.li@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Shan Kang <shan.kang@intel.com>
+Link: https://lore.kernel.org/r/20231205105030.8698-36-xin3.li@intel.com
 
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20240112095000.8952-2-tzimmermann@suse.de
 ---
- arch/x86/include/asm/pci.h             |  2 +-
- arch/x86/include/uapi/asm/bootparam.h  | 72 +----------------------
- arch/x86/include/uapi/asm/setup_data.h | 83 +++++++++++++++++++++++++-
- 3 files changed, 85 insertions(+), 72 deletions(-)
- create mode 100644 arch/x86/include/uapi/asm/setup_data.h
+ arch/x86/kernel/cpu/common.c | 22 +++++++++++++++++-----
+ arch/x86/kernel/irqinit.c    |  7 ++++++-
+ arch/x86/kernel/traps.c      |  5 ++++-
+ 3 files changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
-index b40c462..f6100df 100644
---- a/arch/x86/include/asm/pci.h
-+++ b/arch/x86/include/asm/pci.h
-@@ -10,7 +10,7 @@
- #include <linux/numa.h>
- #include <asm/io.h>
- #include <asm/memtype.h>
--#include <asm/x86_init.h>
-+#include <asm/setup_data.h>
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 4f5e4aa..cf82e31 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -61,6 +61,7 @@
+ #include <asm/microcode.h>
+ #include <asm/intel-family.h>
+ #include <asm/cpu_device_id.h>
++#include <asm/fred.h>
+ #include <asm/uv/uv.h>
+ #include <asm/ia32.h>
+ #include <asm/set_memory.h>
+@@ -2107,7 +2108,15 @@ void syscall_init(void)
+ 	/* The default user and kernel segments */
+ 	wrmsr(MSR_STAR, 0, (__USER32_CS << 16) | __KERNEL_CS);
  
- struct pci_sysdata {
- 	int		domain;		/* PCI domain */
-diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-index 01d19fc..4a38e79 100644
---- a/arch/x86/include/uapi/asm/bootparam.h
-+++ b/arch/x86/include/uapi/asm/bootparam.h
-@@ -2,21 +2,7 @@
- #ifndef _ASM_X86_BOOTPARAM_H
- #define _ASM_X86_BOOTPARAM_H
+-	idt_syscall_init();
++	/*
++	 * Except the IA32_STAR MSR, there is NO need to setup SYSCALL and
++	 * SYSENTER MSRs for FRED, because FRED uses the ring 3 FRED
++	 * entrypoint for SYSCALL and SYSENTER, and ERETU is the only legit
++	 * instruction to return to ring 3 (both sysexit and sysret cause
++	 * #UD when FRED is enabled).
++	 */
++	if (!cpu_feature_enabled(X86_FEATURE_FRED))
++		idt_syscall_init();
+ }
  
--/* setup_data/setup_indirect types */
--#define SETUP_NONE			0
--#define SETUP_E820_EXT			1
--#define SETUP_DTB			2
--#define SETUP_PCI			3
--#define SETUP_EFI			4
--#define SETUP_APPLE_PROPERTIES		5
--#define SETUP_JAILHOUSE			6
--#define SETUP_CC_BLOB			7
--#define SETUP_IMA			8
--#define SETUP_RNG_SEED			9
--#define SETUP_ENUM_MAX			SETUP_RNG_SEED
--
--#define SETUP_INDIRECT			(1<<31)
--#define SETUP_TYPE_MAX			(SETUP_ENUM_MAX | SETUP_INDIRECT)
-+#include <asm/setup_data.h>
+ #else	/* CONFIG_X86_64 */
+@@ -2213,8 +2222,9 @@ void cpu_init_exception_handling(void)
+ 	/* paranoid_entry() gets the CPU number from the GDT */
+ 	setup_getcpu(cpu);
  
- /* ram_size flags */
- #define RAMDISK_IMAGE_START_MASK	0x07FF
-@@ -48,22 +34,6 @@
- #include <asm/ist.h>
- #include <video/edid.h>
+-	/* IST vectors need TSS to be set up. */
+-	tss_setup_ist(tss);
++	/* For IDT mode, IST vectors need to be set in TSS. */
++	if (!cpu_feature_enabled(X86_FEATURE_FRED))
++		tss_setup_ist(tss);
+ 	tss_setup_io_bitmap(tss);
+ 	set_tss_desc(cpu, &get_cpu_entry_area(cpu)->tss.x86_tss);
  
--/* extensible setup data list node */
--struct setup_data {
--	__u64 next;
--	__u32 type;
--	__u32 len;
--	__u8 data[];
--};
--
--/* extensible setup indirect data node */
--struct setup_indirect {
--	__u32 type;
--	__u32 reserved;  /* Reserved, must be set to zero. */
--	__u64 len;
--	__u64 addr;
--};
--
- struct setup_header {
- 	__u8	setup_sects;
- 	__u16	root_flags;
-@@ -137,50 +107,10 @@ struct efi_info {
- #define E820_MAX_ENTRIES_ZEROPAGE 128
+@@ -2223,8 +2233,10 @@ void cpu_init_exception_handling(void)
+ 	/* GHCB needs to be setup to handle #VC. */
+ 	setup_ghcb();
+ 
+-	/* Finally load the IDT */
+-	load_current_idt();
++	if (cpu_feature_enabled(X86_FEATURE_FRED))
++		cpu_init_fred_exceptions();
++	else
++		load_current_idt();
+ }
  
  /*
-- * The E820 memory region entry of the boot protocol ABI:
-- */
--struct boot_e820_entry {
--	__u64 addr;
--	__u64 size;
--	__u32 type;
--} __attribute__((packed));
--
--/*
-  * Smallest compatible version of jailhouse_setup_data required by this kernel.
-  */
- #define JAILHOUSE_SETUP_REQUIRED_VERSION	1
+diff --git a/arch/x86/kernel/irqinit.c b/arch/x86/kernel/irqinit.c
+index c683666..f79c5ed 100644
+--- a/arch/x86/kernel/irqinit.c
++++ b/arch/x86/kernel/irqinit.c
+@@ -28,6 +28,7 @@
+ #include <asm/setup.h>
+ #include <asm/i8259.h>
+ #include <asm/traps.h>
++#include <asm/fred.h>
+ #include <asm/prom.h>
  
--/*
-- * The boot loader is passing platform information via this Jailhouse-specific
-- * setup data structure.
-- */
--struct jailhouse_setup_data {
--	struct {
--		__u16	version;
--		__u16	compatible_version;
--	} __attribute__((packed)) hdr;
--	struct {
--		__u16	pm_timer_address;
--		__u16	num_cpus;
--		__u64	pci_mmconfig_base;
--		__u32	tsc_khz;
--		__u32	apic_khz;
--		__u8	standard_ioapic;
--		__u8	cpu_ids[255];
--	} __attribute__((packed)) v1;
--	struct {
--		__u32	flags;
--	} __attribute__((packed)) v2;
--} __attribute__((packed));
--
--/*
-- * IMA buffer setup data information from the previous kernel during kexec
-- */
--struct ima_setup_data {
--	__u64 addr;
--	__u64 size;
--} __attribute__((packed));
--
- /* The so-called "zeropage" */
- struct boot_params {
- 	struct screen_info screen_info;			/* 0x000 */
-diff --git a/arch/x86/include/uapi/asm/setup_data.h b/arch/x86/include/uapi/asm/setup_data.h
-new file mode 100644
-index 0000000..b111b0c
---- /dev/null
-+++ b/arch/x86/include/uapi/asm/setup_data.h
-@@ -0,0 +1,83 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#ifndef _UAPI_ASM_X86_SETUP_DATA_H
-+#define _UAPI_ASM_X86_SETUP_DATA_H
+ /*
+@@ -96,7 +97,11 @@ void __init native_init_IRQ(void)
+ 	/* Execute any quirks before the call gates are initialised: */
+ 	x86_init.irqs.pre_vector_init();
+ 
+-	idt_setup_apic_and_irq_gates();
++	if (cpu_feature_enabled(X86_FEATURE_FRED))
++		fred_complete_exception_setup();
++	else
++		idt_setup_apic_and_irq_gates();
 +
-+/* setup_data/setup_indirect types */
-+#define SETUP_NONE			0
-+#define SETUP_E820_EXT			1
-+#define SETUP_DTB			2
-+#define SETUP_PCI			3
-+#define SETUP_EFI			4
-+#define SETUP_APPLE_PROPERTIES		5
-+#define SETUP_JAILHOUSE			6
-+#define SETUP_CC_BLOB			7
-+#define SETUP_IMA			8
-+#define SETUP_RNG_SEED			9
-+#define SETUP_ENUM_MAX			SETUP_RNG_SEED
+ 	lapic_assign_system_vectors();
+ 
+ 	if (!acpi_ioapic && !of_ioapic && nr_legacy_irqs()) {
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 1b19a17..6cb31df 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -1438,7 +1438,10 @@ void __init trap_init(void)
+ 
+ 	/* Initialize TSS before setting up traps so ISTs work */
+ 	cpu_init_exception_handling();
 +
-+#define SETUP_INDIRECT			(1<<31)
-+#define SETUP_TYPE_MAX			(SETUP_ENUM_MAX | SETUP_INDIRECT)
+ 	/* Setup traps as cpu_init() might #GP */
+-	idt_setup_traps();
++	if (!cpu_feature_enabled(X86_FEATURE_FRED))
++		idt_setup_traps();
 +
-+#ifndef __ASSEMBLY__
-+
-+#include <linux/types.h>
-+
-+/* extensible setup data list node */
-+struct setup_data {
-+	__u64 next;
-+	__u32 type;
-+	__u32 len;
-+	__u8 data[];
-+};
-+
-+/* extensible setup indirect data node */
-+struct setup_indirect {
-+	__u32 type;
-+	__u32 reserved;  /* Reserved, must be set to zero. */
-+	__u64 len;
-+	__u64 addr;
-+};
-+
-+/*
-+ * The E820 memory region entry of the boot protocol ABI:
-+ */
-+struct boot_e820_entry {
-+	__u64 addr;
-+	__u64 size;
-+	__u32 type;
-+} __attribute__((packed));
-+
-+/*
-+ * The boot loader is passing platform information via this Jailhouse-specific
-+ * setup data structure.
-+ */
-+struct jailhouse_setup_data {
-+	struct {
-+		__u16	version;
-+		__u16	compatible_version;
-+	} __attribute__((packed)) hdr;
-+	struct {
-+		__u16	pm_timer_address;
-+		__u16	num_cpus;
-+		__u64	pci_mmconfig_base;
-+		__u32	tsc_khz;
-+		__u32	apic_khz;
-+		__u8	standard_ioapic;
-+		__u8	cpu_ids[255];
-+	} __attribute__((packed)) v1;
-+	struct {
-+		__u32	flags;
-+	} __attribute__((packed)) v2;
-+} __attribute__((packed));
-+
-+/*
-+ * IMA buffer setup data information from the previous kernel during kexec
-+ */
-+struct ima_setup_data {
-+	__u64 addr;
-+	__u64 size;
-+} __attribute__((packed));
-+
-+#endif /* __ASSEMBLY__ */
-+
-+#endif /* _UAPI_ASM_X86_SETUP_DATA_H */
+ 	cpu_init();
+ }
 
