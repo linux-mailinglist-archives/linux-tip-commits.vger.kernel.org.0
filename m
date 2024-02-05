@@ -1,232 +1,119 @@
-Return-Path: <linux-tip-commits+bounces-298-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-299-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CE18489CB
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  4 Feb 2024 00:53:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0098496C6
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Feb 2024 10:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84AD62851D8
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 Feb 2024 23:53:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 978FB28A303
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Feb 2024 09:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3FD16436;
-	Sat,  3 Feb 2024 23:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB6612B87;
+	Mon,  5 Feb 2024 09:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="PkoY5khO"
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Bz1oHcMX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HsvGtviM"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FA516419;
-	Sat,  3 Feb 2024 23:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40B212B82;
+	Mon,  5 Feb 2024 09:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707004379; cv=none; b=FKr+QChgmXHJIKSQWvqItiEuDsTOyNhrCs7y5kO81E85FRASQtTt5r67dndLxaSZ6EFiumEU+KzsuA7JKWDkhutAvt/qPmeCzumPfj5FKMjnrG59hTvAeoA/ifUUQS0FrYYFGYbDig08aWZcqr+82OZ/JnB6racf/WCicqVAUgE=
+	t=1707125817; cv=none; b=kAgDZNdw+QaH9jm4DVzI1/FtGaa0QdVifBOhDP4aeYCoh+ZMimDJrspuUbut+etdfkBpnWP6VHYnS5APK18NTassqpNjc4tLj53q66u/OcBYNXb9pO45P38Y7CZ+/OMs/DCG0SnwCyfiKWqkWDc7I+yO8FzHWaUc+TlZepYEuMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707004379; c=relaxed/simple;
-	bh=fz3j3T6QBp4Co5opmQJUwlfOz3/9l9WqB/vGWuczmJE=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=KYAW8r1NDCfkUde6/QRZmDJa87DxbVlnI0UDJFtubcOqJ6azbnL2hKsGqk6fou1im2zUKb8Ny2tn/jb42RtWR8+OmhulRx5/FrCs9Qp8lWyT2NIMY5MP+EcF9AF0WLR9zok4N8MwWVGf5dwo6yGwv2jv7+DIZWpI537kM9g/s5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=PkoY5khO; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 413Nq5HW1146943
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sat, 3 Feb 2024 15:52:06 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 413Nq5HW1146943
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024011201; t=1707004327;
-	bh=YF/9iFZbpkbzabBhj9h8rnC37CjWzXFTXAyjgT+GBTg=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=PkoY5khOBtvim52E7ockk/qEKs2cw2L0Ru8WUrNPV0WR3n79gOxxguuiJTMhuzvrD
-	 17dm2oobT+TtLFsVMfliXUlgyfo/KuA9iMIZynfFOVUR5KyzNdmBolfL1t0hCMS5S1
-	 9qTftaox1Pj+jWIl+ULeI1zWGdbs5bAiO06vjW51WxUz4yqO1ZtsLintORHpEPRCia
-	 7aV+xevQqi2gV8qawcrE8m6AdDzSAdCryQMntD6hFu2gzwPce4NM7RkAg3CP0iyRf/
-	 9S8c3ESa7fY0RFEWrvVxMLjxGvoZDmF+HfjcHQiIQIgkyJ31fvZBch4UXAPfRDFNNm
-	 I2KgvPuzjf13g==
-Date: Sat, 03 Feb 2024 15:52:03 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: linux-kernel@vger.kernel.org, tip-bot2 for Xin Li <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org
-CC: Thomas Gleixner <tglx@linutronix.de>, Xin Li <xin3.li@intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Shan Kang <shan.kang@intel.com>, x86@kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Btip=3A_x86/fred=5D_x86/ptrace=3A_Cleanup?= =?US-ASCII?Q?_the_definition_of_the_pt=5Fregs_structure?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <170673569232.398.15041548048531772130.tip-bot2@tip-bot2>
-References: <20231205105030.8698-14-xin3.li@intel.com> <170673569232.398.15041548048531772130.tip-bot2@tip-bot2>
-Message-ID: <2A59D51B-0AA0-4DFC-9957-67CC0C9E37B3@zytor.com>
+	s=arc-20240116; t=1707125817; c=relaxed/simple;
+	bh=/UMKKN6NxFfb8jwEkxARmuLxv9BH3T30KPLMjbBrFAo=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=TMvSVsOkpAi93xltQGTVC5LAXyAyOg6aJrAH+xcXb6ZSjgxx6JGNm/Pyke50oiIy00MX6KLrTtWFlBYvclToKg/1tUhX+j8DXab5H4ispAAVEYzX/z4MA/WGmo36f3ckHfj1dUCpz7gb1jajrLuYrq/4vFSfplqINiFXvSwteGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Bz1oHcMX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HsvGtviM; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 05 Feb 2024 09:36:53 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1707125814;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xsNGUCXik/BBdyWTHl3ig5PONF9z/OOnIimWhvQp/sA=;
+	b=Bz1oHcMX6cECLyb1tEGefhOJMvJyXfctxJ7lFZLN0nOWtPOh0HYjYmVHSlTyPrkxCnFkom
+	wltvrTLji4+aZgobBphIuHQykHbbKdGMNb/LrZo/nqKgSQO/PEDsI2xiz1gGkcDvLetAqH
+	r3rbv7yz3t7oEWJg/Gt3y3QJG4758P4gNkG9TPiEPaoW/JUMGzfSeFyDqn8GiwwCA5/pwH
+	r+6ZaVHtm/JsufvNOhbU6Ni5IROxuMd1rGcqb5oGmML4LdaP1WMlMShG5Izrme6w/0uQmD
+	o5diGei6sW9l4EqvI3SUI7tYuAe3KB2UgSch8NpAWIw8Ovwx84o3PYiwRYukfQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1707125814;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xsNGUCXik/BBdyWTHl3ig5PONF9z/OOnIimWhvQp/sA=;
+	b=HsvGtviMVhaHwTHMcBUhJ6k9Giz/pPnaqfSjfR/2n1hPUfvkOcj19rTn2CaniTO563RAb2
+	plYoIt9G/thFTBCg==
+From: "tip-bot2 for Ricardo B. Marliere" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: ras/core] x86/mce: Make mce_subsys const
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Ricardo B. Marliere" <ricardo@marliere.net>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240204-bus_cleanup-x86-v1-1-4e7171be88e8@marliere.net>
+References: <20240204-bus_cleanup-x86-v1-1-4e7171be88e8@marliere.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <170712581333.398.15127302001154058196.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On January 31, 2024 1:14:52 PM PST, tip-bot2 for Xin Li <tip-bot2@linutroni=
-x=2Ede> wrote:
->The following commit has been merged into the x86/fred branch of tip:
->
->Commit-ID:     ee63291aa8287cb7ded767d340155fe8681fc075
->Gitweb:        https://git=2Ekernel=2Eorg/tip/ee63291aa8287cb7ded767d3401=
-55fe8681fc075
->Author:        Xin Li <xin3=2Eli@intel=2Ecom>
->AuthorDate:    Tue, 05 Dec 2023 02:50:02 -08:00
->Committer:     Borislav Petkov (AMD) <bp@alien8=2Ede>
->CommitterDate: Wed, 31 Jan 2024 22:01:13 +01:00
->
->x86/ptrace: Cleanup the definition of the pt_regs structure
->
->struct pt_regs is hard to read because the member or section related
->comments are not aligned with the members=2E
->
->The 'cs' and 'ss' members of pt_regs are type of 'unsigned long' while
->in reality they are only 16-bit wide=2E This works so far as the
->remaining space is unused, but FRED will use the remaining bits for
->other purposes=2E
->
->To prepare for FRED:
->
->  - Cleanup the formatting
->  - Convert 'cs' and 'ss' to u16 and embed them into an union
->    with a u64
->  - Fixup the related printk() format strings
->
->Suggested-by: Thomas Gleixner <tglx@linutronix=2Ede>
->Originally-by: H=2E Peter Anvin (Intel) <hpa@zytor=2Ecom>
->Signed-off-by: Xin Li <xin3=2Eli@intel=2Ecom>
->Signed-off-by: Thomas Gleixner <tglx@linutronix=2Ede>
->Signed-off-by: Borislav Petkov (AMD) <bp@alien8=2Ede>
->Tested-by: Shan Kang <shan=2Ekang@intel=2Ecom>
->Link: https://lore=2Ekernel=2Eorg/r/20231205105030=2E8698-14-xin3=2Eli@in=
-tel=2Ecom
->---
-> arch/x86/entry/vsyscall/vsyscall_64=2Ec |  2 +-
-> arch/x86/include/asm/ptrace=2Eh         | 48 ++++++++++++++++++--------
-> arch/x86/kernel/process_64=2Ec          |  2 +-
-> 3 files changed, 37 insertions(+), 15 deletions(-)
->
->diff --git a/arch/x86/entry/vsyscall/vsyscall_64=2Ec b/arch/x86/entry/vsy=
-scall/vsyscall_64=2Ec
->index e0ca812=2E=2Ea3c0df1 100644
->--- a/arch/x86/entry/vsyscall/vsyscall_64=2Ec
->+++ b/arch/x86/entry/vsyscall/vsyscall_64=2Ec
->@@ -76,7 +76,7 @@ static void warn_bad_vsyscall(const char *level, struct=
- pt_regs *regs,
-> 	if (!show_unhandled_signals)
-> 		return;
->=20
->-	printk_ratelimited("%s%s[%d] %s ip:%lx cs:%lx sp:%lx ax:%lx si:%lx di:%=
-lx\n",
->+	printk_ratelimited("%s%s[%d] %s ip:%lx cs:%x sp:%lx ax:%lx si:%lx di:%l=
-x\n",
-> 			   level, current->comm, task_pid_nr(current),
-> 			   message, regs->ip, regs->cs,
-> 			   regs->sp, regs->ax, regs->si, regs->di);
->diff --git a/arch/x86/include/asm/ptrace=2Eh b/arch/x86/include/asm/ptrac=
-e=2Eh
->index f4db78b=2E=2Eb268cd2 100644
->--- a/arch/x86/include/asm/ptrace=2Eh
->+++ b/arch/x86/include/asm/ptrace=2Eh
->@@ -57,17 +57,19 @@ struct pt_regs {
-> #else /* __i386__ */
->=20
-> struct pt_regs {
->-/*
->- * C ABI says these regs are callee-preserved=2E They aren't saved on ke=
-rnel entry
->- * unless syscall needs a complete, fully filled "struct pt_regs"=2E
->- */
->+	/*
->+	 * C ABI says these regs are callee-preserved=2E They aren't saved on
->+	 * kernel entry unless syscall needs a complete, fully filled
->+	 * "struct pt_regs"=2E
->+	 */
-> 	unsigned long r15;
-> 	unsigned long r14;
-> 	unsigned long r13;
-> 	unsigned long r12;
-> 	unsigned long bp;
-> 	unsigned long bx;
->-/* These regs are callee-clobbered=2E Always saved on kernel entry=2E */
->+
->+	/* These regs are callee-clobbered=2E Always saved on kernel entry=2E *=
-/
-> 	unsigned long r11;
-> 	unsigned long r10;
-> 	unsigned long r9;
->@@ -77,18 +79,38 @@ struct pt_regs {
-> 	unsigned long dx;
-> 	unsigned long si;
-> 	unsigned long di;
->-/*
->- * On syscall entry, this is syscall#=2E On CPU exception, this is error=
- code=2E
->- * On hw interrupt, it's IRQ number:
->- */
->+
->+	/*
->+	 * orig_ax is used on entry for:
->+	 * - the syscall number (syscall, sysenter, int80)
->+	 * - error_code stored by the CPU on traps and exceptions
->+	 * - the interrupt number for device interrupts
->+	 */
-> 	unsigned long orig_ax;
->-/* Return frame for iretq */
->+
->+	/* The IRETQ return frame starts here */
-> 	unsigned long ip;
->-	unsigned long cs;
->+
->+	union {
->+		/* The full 64-bit data slot containing CS */
->+		u64		csx;
->+		/* CS selector */
->+		u16		cs;
->+	};
->+
-> 	unsigned long flags;
-> 	unsigned long sp;
->-	unsigned long ss;
->-/* top of stack page */
->+
->+	union {
->+		/* The full 64-bit data slot containing SS */
->+		u64		ssx;
->+		/* SS selector */
->+		u16		ss;
->+	};
->+
->+	/*
->+	 * Top of stack on IDT systems=2E
->+	 */
-> };
->=20
-> #endif /* !__i386__ */
->diff --git a/arch/x86/kernel/process_64=2Ec b/arch/x86/kernel/process_64=
-=2Ec
->index 33b2687=2E=2E0f78b58 100644
->--- a/arch/x86/kernel/process_64=2Ec
->+++ b/arch/x86/kernel/process_64=2Ec
->@@ -117,7 +117,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs=
-_mode mode,
->=20
-> 	printk("%sFS:  %016lx(%04x) GS:%016lx(%04x) knlGS:%016lx\n",
-> 	       log_lvl, fs, fsindex, gs, gsindex, shadowgs);
->-	printk("%sCS:  %04lx DS: %04x ES: %04x CR0: %016lx\n",
->+	printk("%sCS:  %04x DS: %04x ES: %04x CR0: %016lx\n",
-> 		log_lvl, regs->cs, ds, es, cr0);
-> 	printk("%sCR2: %016lx CR3: %016lx CR4: %016lx\n",
-> 		log_lvl, cr2, cr3, cr4);
+The following commit has been merged into the ras/core branch of tip:
 
-Incidentally, the comment about callee-saved registers is long since both =
-obsolete and is now outright wrong=2E
+Commit-ID:     a6a789165bbdb506b784f53b7467dbe0210494ad
+Gitweb:        https://git.kernel.org/tip/a6a789165bbdb506b784f53b7467dbe0210494ad
+Author:        Ricardo B. Marliere <ricardo@marliere.net>
+AuthorDate:    Sun, 04 Feb 2024 11:32:29 -03:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 05 Feb 2024 10:26:51 +01:00
 
-The next version of gcc (14 I think) will have an attribute to turn off sa=
-ving registers which we can use for top-level C functions=2E
+x86/mce: Make mce_subsys const
+
+Now that the driver core can properly handle constant struct bus_type,
+make mce_subsys a constant structure.
+
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240204-bus_cleanup-x86-v1-1-4e7171be88e8@marliere.net
+---
+ arch/x86/kernel/cpu/mce/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index bc39252..a2f78f6 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2431,7 +2431,7 @@ static void mce_enable_ce(void *all)
+ 		__mcheck_cpu_init_timer();
+ }
+ 
+-static struct bus_type mce_subsys = {
++static const struct bus_type mce_subsys = {
+ 	.name		= "machinecheck",
+ 	.dev_name	= "machinecheck",
+ };
 
