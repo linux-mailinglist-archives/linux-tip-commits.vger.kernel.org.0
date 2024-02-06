@@ -1,377 +1,172 @@
-Return-Path: <linux-tip-commits+bounces-303-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-304-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580FE84BA0A
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Feb 2024 16:46:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A71384BDCE
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Feb 2024 20:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBC091F234EB
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Feb 2024 15:46:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B208B21864
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Feb 2024 19:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FA01339A2;
-	Tue,  6 Feb 2024 15:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41141756B;
+	Tue,  6 Feb 2024 19:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TkasSpuj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MRtDDbZe"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="gAfIpztm"
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32DA13341A;
-	Tue,  6 Feb 2024 15:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183DC171CE;
+	Tue,  6 Feb 2024 19:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707234397; cv=none; b=FwDRNAsh15m4lJ6b+N1qiwsLv15KW+w2dRK477jhBGxhSWUSiiTzWCtkG4jH9X2qz0wfg3YmBzEa0bjnbGzm9A7MqChEjSjJEbb6Y6VH+RO4LLQSg9RZhgORl6wxaebJJ/zogWnYra+FwSZuFcW1lXSxR/2wzhkcwhzajy8fjpA=
+	t=1707246279; cv=none; b=MQ3cSPvf3uTel/pPw19nFuiP5ycMdmJWRWx18gZducqWUcexTFBKQVqiAjL9dya2KaKaohjeJgAkq5NicRi/Vjgp2e/QCVkKdb5QqIiPNDwawdEgJtrr4KZ5oTvHu2nH72A7+f4mVGT+AOeeDh9a0SH+6NAchJ8aPpJnwfmA/F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707234397; c=relaxed/simple;
-	bh=SEdns8smKMGR5dhngyDhyIEnCtDt7MMyHzlgKHDW3+0=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=RZSzxu9rdCzIdQBcjdeGGLJzfXGYNSp5ep1Hf7j9pUD6jlBiPpjHmoBPJAvx7vfI4mIsGrdh9sH/QcUSfRy2GN5a0UVi6ZVGzrK8p6IcM95ZizOdZpaoWHv1XZUXTA0CGnKhoD+U9wj9zlIZhfktyAcLeiJl/+g6CGVQ/AuEybA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TkasSpuj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MRtDDbZe; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 06 Feb 2024 15:46:32 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1707234393;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zM41oB1Pf2A6ttloJasxcrcys5oQ/ucDuSO7nHCkIJM=;
-	b=TkasSpujSwxYfsBjrfro6u75kefs6NY/PI+0feZzGIrWlx6p2bbcie6vjAIP1AkB59vjHR
-	v7275Ak/647+xm5yLkB+cNN70TnhEt7yM7mGp19/ufc67BIKIKXh4qKHWAyHxb4K7HzTin
-	DOrLNMVb1msnrtHb6/x4AgNFpZxAMoCssH6o0Q4iEk8IgWiwsS0P6qbFhgX78WdP+1sqfb
-	BxE1VB7YnCbHsaMnCEgtCtgLc88kQeBgTelk5p60IAHBnqxbEQPo/SNc7BYGWTUdkONXkn
-	Xqm6rrPTalxRNGo2Jtu7GV8cvaHhYdIKaNJkTqC7VO6EekhoavqgvET6jUhU7w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1707234393;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zM41oB1Pf2A6ttloJasxcrcys5oQ/ucDuSO7nHCkIJM=;
-	b=MRtDDbZeJWWVqkHxBWzrd39GejLtCJsNg7n83JH1ZIPjwwG95Iw1X9lpw4/tVqE4xlVU6D
-	WWk2580MLo7eUxCA==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Fix position dependent variable references in
- startup code
-Cc: Kevin Loughlin <kevinloughlin@google.com>,
- Ard Biesheuvel <ardb@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>,
-  <stable@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240130220845.1978329-1-kevinloughlin@google.com>
-References: <20240130220845.1978329-1-kevinloughlin@google.com>
+	s=arc-20240116; t=1707246279; c=relaxed/simple;
+	bh=buJR1N1JKmiEzwvWxz4AycboLbdgQYYGQJs4d3sTe1w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aDmgXzKGcua/1F79MJqOp4f73n4CBvyk9GlLFsTKegaBGWURp0gwdYRWtRC4JGQhIT7vMHEynZ9xALpWg8NvTv5CA8us/SfT2yl2bbYz1fsb7BL9MGBRDrIHSu7+Z++cGqwSKzqMEYga4wmyZvkjggzVBXeNGeoMLQ36IxmpbFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=gAfIpztm; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [192.168.7.187] ([71.202.196.111])
+	(authenticated bits=0)
+	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 416J4EOc2335101
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 6 Feb 2024 11:04:15 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 416J4EOc2335101
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024011201; t=1707246256;
+	bh=qyfVNWpyqoM1vvSh+tJNcbDbSOXkO0xESw6Y3a7Dsa4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gAfIpztmYC1o5qrdjt/YAnDKdO7oS46hVVBXMN9lIODYngWeQH9uN1E5JQYtUn9nX
+	 ql7LUOyqglhOwKo6aHtQtcRF+EgTpnOjDrzs0GBcQE9TbNGBZOozbmBWPpXMcpm1pD
+	 0FiYSoUSlzflbAI0yIL9h+LDWkRDp35WTgxAlcaAM3Cv6LANZ/WiMciu5T6g0BCTPX
+	 vCyYsX4fZjlkmRwK8CDx9A5yP5EzESFwqgZcSDg9uwyOqetKyWr3xXjojwztjS2tE/
+	 8+FvItOnra99oy9T3IKcQFbEKcIVhJRnPOvG+HU/S7KQKijJsZMtn62qMKgoZ3NYKc
+	 S11RCIQW5p6YA==
+Message-ID: <8f260a93-08f3-48af-81e5-8ee53246e262@zytor.com>
+Date: Tue, 6 Feb 2024 11:04:13 -0800
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170723439231.398.15349370352197964831.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [tip: x86/fred] x86/ptrace: Cleanup the definition of the pt_regs
+ structure
+To: "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+        tip-bot2 for Xin Li <tip-bot2@linutronix.de>,
+        linux-tip-commits@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Xin Li <xin3.li@intel.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Shan Kang <shan.kang@intel.com>, x86@kernel.org
+References: <20231205105030.8698-14-xin3.li@intel.com>
+ <170673569232.398.15041548048531772130.tip-bot2@tip-bot2>
+ <2A59D51B-0AA0-4DFC-9957-67CC0C9E37B3@zytor.com>
+Content-Language: en-US
+From: Xin Li <xin@zytor.com>
+Autocrypt: addr=xin@zytor.com; keydata=
+ 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
+ l75w1xInsg==
+In-Reply-To: <2A59D51B-0AA0-4DFC-9957-67CC0C9E37B3@zytor.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/sev branch of tip:
+On 2/3/2024 3:52 PM, H. Peter Anvin wrote:
+> On January 31, 2024 1:14:52 PM PST, tip-bot2 for Xin Li <tip-bot2@linutronix.de> wrote:
+>> The following commit has been merged into the x86/fred branch of tip:
+>>
+>> Commit-ID:     ee63291aa8287cb7ded767d340155fe8681fc075
+>> Gitweb:        https://git.kernel.org/tip/ee63291aa8287cb7ded767d340155fe8681fc075
+>> Author:        Xin Li <xin3.li@intel.com>
+>> AuthorDate:    Tue, 05 Dec 2023 02:50:02 -08:00
+>> Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+>> CommitterDate: Wed, 31 Jan 2024 22:01:13 +01:00
+>>
+>> x86/ptrace: Cleanup the definition of the pt_regs structure
+>>
+>> struct pt_regs is hard to read because the member or section related
+>> comments are not aligned with the members.
+>>
+>> The 'cs' and 'ss' members of pt_regs are type of 'unsigned long' while
+>> in reality they are only 16-bit wide. This works so far as the
+>> remaining space is unused, but FRED will use the remaining bits for
+>> other purposes.
+>>
+>> To prepare for FRED:
+>>
+>>   - Cleanup the formatting
+>>   - Convert 'cs' and 'ss' to u16 and embed them into an union
+>>     with a u64
+>>   - Fixup the related printk() format strings
+>>
+>> Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+>> Originally-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+>> Signed-off-by: Xin Li <xin3.li@intel.com>
+>> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+>> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+>> Tested-by: Shan Kang <shan.kang@intel.com>
+>> Link: https://lore.kernel.org/r/20231205105030.8698-14-xin3.li@intel.com
 
-Commit-ID:     1c811d403afd73f04bde82b83b24c754011bd0e8
-Gitweb:        https://git.kernel.org/tip/1c811d403afd73f04bde82b83b24c754011bd0e8
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Sat, 03 Feb 2024 13:53:06 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 06 Feb 2024 16:38:42 +01:00
+[...]
 
-x86/sev: Fix position dependent variable references in startup code
+>> diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+>> index 33b2687..0f78b58 100644
+>> --- a/arch/x86/kernel/process_64.c
+>> +++ b/arch/x86/kernel/process_64.c
+>> @@ -117,7 +117,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode,
+>>
+>> 	printk("%sFS:  %016lx(%04x) GS:%016lx(%04x) knlGS:%016lx\n",
+>> 	       log_lvl, fs, fsindex, gs, gsindex, shadowgs);
+>> -	printk("%sCS:  %04lx DS: %04x ES: %04x CR0: %016lx\n",
+>> +	printk("%sCS:  %04x DS: %04x ES: %04x CR0: %016lx\n",
+>> 		log_lvl, regs->cs, ds, es, cr0);
+>> 	printk("%sCR2: %016lx CR3: %016lx CR4: %016lx\n",
+>> 		log_lvl, cr2, cr3, cr4);
+> 
+> Incidentally, the comment about callee-saved registers is long since both obsolete and is now outright wrong.
+> 
+> The next version of gcc (14 I think) will have an attribute to turn off saving registers which we can use for top-level C functions.
+> 
 
-The early startup code executes from a 1:1 mapping of memory, which
-differs from the mapping that the code was linked and/or relocated to
-run at. The latter mapping is not active yet at this point, and so
-symbol references that rely on it will fault.
+Forgive my ignorance, do we have an official definition for "top-level C 
+functions"?
 
-Given that the core kernel is built without -fPIC, symbol references are
-typically emitted as absolute, and so any such references occuring in
-the early startup code will therefore crash the kernel.
+Thanks!
+     Xin
 
-While an attempt was made to work around this for the early SEV/SME
-startup code, by forcing RIP-relative addressing for certain global
-SEV/SME variables via inline assembly (see snp_cpuid_get_table() for
-example), RIP-relative addressing must be pervasively enforced for
-SEV/SME global variables when accessed prior to page table fixups.
-
-__startup_64() already handles this issue for select non-SEV/SME global
-variables using fixup_pointer(), which adjusts the pointer relative to a
-`physaddr` argument. To avoid having to pass around this `physaddr`
-argument across all functions needing to apply pointer fixups, introduce
-a macro RIP_RELATIVE_REF() which generates a RIP-relative reference to
-a given global variable. It is used where necessary to force
-RIP-relative accesses to global variables.
-
-For backporting purposes, this patch makes no attempt at cleaning up
-other occurrences of this pattern, involving either inline asm or
-fixup_pointer(). Those will be addressed later.
-
-  [ bp: Call it "rip_rel_ref" everywhere like other code shortens
-    "rIP-relative reference" and make the asm wrapper __always_inline. ]
-
-Co-developed-by: Kevin Loughlin <kevinloughlin@google.com>
-Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/all/20240130220845.1978329-1-kevinloughlin@google.com
----
- arch/x86/coco/core.c               |  7 +------
- arch/x86/include/asm/asm.h         | 14 ++++++++++++++
- arch/x86/include/asm/coco.h        |  8 +++++++-
- arch/x86/include/asm/mem_encrypt.h | 15 +++++++++------
- arch/x86/kernel/sev-shared.c       | 12 ++++++------
- arch/x86/kernel/sev.c              |  4 ++--
- arch/x86/mm/mem_encrypt_identity.c | 27 ++++++++++++---------------
- 7 files changed, 51 insertions(+), 36 deletions(-)
-
-diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-index eeec998..d07be9d 100644
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -14,7 +14,7 @@
- #include <asm/processor.h>
- 
- enum cc_vendor cc_vendor __ro_after_init = CC_VENDOR_NONE;
--static u64 cc_mask __ro_after_init;
-+u64 cc_mask __ro_after_init;
- 
- static bool noinstr intel_cc_platform_has(enum cc_attr attr)
- {
-@@ -148,8 +148,3 @@ u64 cc_mkdec(u64 val)
- 	}
- }
- EXPORT_SYMBOL_GPL(cc_mkdec);
--
--__init void cc_set_mask(u64 mask)
--{
--	cc_mask = mask;
--}
-diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
-index fbcfec4..ca8eed1 100644
---- a/arch/x86/include/asm/asm.h
-+++ b/arch/x86/include/asm/asm.h
-@@ -113,6 +113,20 @@
- 
- #endif
- 
-+#ifndef __ASSEMBLY__
-+#ifndef __pic__
-+static __always_inline __pure void *rip_rel_ptr(void *p)
-+{
-+	asm("leaq %c1(%%rip), %0" : "=r"(p) : "i"(p));
-+
-+	return p;
-+}
-+#define RIP_REL_REF(var)	(*(typeof(&(var)))rip_rel_ptr(&(var)))
-+#else
-+#define RIP_REL_REF(var)	(var)
-+#endif
-+#endif
-+
- /*
-  * Macros to generate condition code outputs from inline assembly,
-  * The output operand must be type "bool".
-diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
-index 6ae2d16..21940ef 100644
---- a/arch/x86/include/asm/coco.h
-+++ b/arch/x86/include/asm/coco.h
-@@ -2,6 +2,7 @@
- #ifndef _ASM_X86_COCO_H
- #define _ASM_X86_COCO_H
- 
-+#include <asm/asm.h>
- #include <asm/types.h>
- 
- enum cc_vendor {
-@@ -11,9 +12,14 @@ enum cc_vendor {
- };
- 
- extern enum cc_vendor cc_vendor;
-+extern u64 cc_mask;
- 
- #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
--void cc_set_mask(u64 mask);
-+static inline void cc_set_mask(u64 mask)
-+{
-+	RIP_REL_REF(cc_mask) = mask;
-+}
-+
- u64 cc_mkenc(u64 val);
- u64 cc_mkdec(u64 val);
- #else
-diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
-index 359ada4..b31eb9f 100644
---- a/arch/x86/include/asm/mem_encrypt.h
-+++ b/arch/x86/include/asm/mem_encrypt.h
-@@ -15,7 +15,8 @@
- #include <linux/init.h>
- #include <linux/cc_platform.h>
- 
--#include <asm/bootparam.h>
-+#include <asm/asm.h>
-+struct boot_params;
- 
- #ifdef CONFIG_X86_MEM_ENCRYPT
- void __init mem_encrypt_init(void);
-@@ -58,6 +59,11 @@ void __init mem_encrypt_free_decrypted_mem(void);
- 
- void __init sev_es_init_vc_handling(void);
- 
-+static inline u64 sme_get_me_mask(void)
-+{
-+	return RIP_REL_REF(sme_me_mask);
-+}
-+
- #define __bss_decrypted __section(".bss..decrypted")
- 
- #else	/* !CONFIG_AMD_MEM_ENCRYPT */
-@@ -89,6 +95,8 @@ early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool en
- 
- static inline void mem_encrypt_free_decrypted_mem(void) { }
- 
-+static inline u64 sme_get_me_mask(void) { return 0; }
-+
- #define __bss_decrypted
- 
- #endif	/* CONFIG_AMD_MEM_ENCRYPT */
-@@ -106,11 +114,6 @@ void add_encrypt_protection_map(void);
- 
- extern char __start_bss_decrypted[], __end_bss_decrypted[], __start_bss_decrypted_unused[];
- 
--static inline u64 sme_get_me_mask(void)
--{
--	return sme_me_mask;
--}
--
- #endif	/* __ASSEMBLY__ */
- 
- #endif	/* __X86_MEM_ENCRYPT_H__ */
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 5db24d0..ae79f95 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -560,9 +560,9 @@ static int snp_cpuid(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_le
- 		leaf->eax = leaf->ebx = leaf->ecx = leaf->edx = 0;
- 
- 		/* Skip post-processing for out-of-range zero leafs. */
--		if (!(leaf->fn <= cpuid_std_range_max ||
--		      (leaf->fn >= 0x40000000 && leaf->fn <= cpuid_hyp_range_max) ||
--		      (leaf->fn >= 0x80000000 && leaf->fn <= cpuid_ext_range_max)))
-+		if (!(leaf->fn <= RIP_REL_REF(cpuid_std_range_max) ||
-+		      (leaf->fn >= 0x40000000 && leaf->fn <= RIP_REL_REF(cpuid_hyp_range_max)) ||
-+		      (leaf->fn >= 0x80000000 && leaf->fn <= RIP_REL_REF(cpuid_ext_range_max))))
- 			return 0;
- 	}
- 
-@@ -1072,11 +1072,11 @@ static void __init setup_cpuid_table(const struct cc_blob_sev_info *cc_info)
- 		const struct snp_cpuid_fn *fn = &cpuid_table->fn[i];
- 
- 		if (fn->eax_in == 0x0)
--			cpuid_std_range_max = fn->eax;
-+			RIP_REL_REF(cpuid_std_range_max) = fn->eax;
- 		else if (fn->eax_in == 0x40000000)
--			cpuid_hyp_range_max = fn->eax;
-+			RIP_REL_REF(cpuid_hyp_range_max) = fn->eax;
- 		else if (fn->eax_in == 0x80000000)
--			cpuid_ext_range_max = fn->eax;
-+			RIP_REL_REF(cpuid_ext_range_max) = fn->eax;
- 	}
- }
- 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 002af6c..1ef7ae8 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -748,7 +748,7 @@ void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long padd
- 	 * This eliminates worries about jump tables or checking boot_cpu_data
- 	 * in the cc_platform_has() function.
- 	 */
--	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
-+	if (!(RIP_REL_REF(sev_status) & MSR_AMD64_SEV_SNP_ENABLED))
- 		return;
- 
- 	 /*
-@@ -767,7 +767,7 @@ void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr
- 	 * This eliminates worries about jump tables or checking boot_cpu_data
- 	 * in the cc_platform_has() function.
- 	 */
--	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
-+	if (!(RIP_REL_REF(sev_status) & MSR_AMD64_SEV_SNP_ENABLED))
- 		return;
- 
- 	 /* Ask hypervisor to mark the memory pages shared in the RMP table. */
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index efe9f21..0166ab1 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -304,7 +304,8 @@ void __init sme_encrypt_kernel(struct boot_params *bp)
- 	 * instrumentation or checking boot_cpu_data in the cc_platform_has()
- 	 * function.
- 	 */
--	if (!sme_get_me_mask() || sev_status & MSR_AMD64_SEV_ENABLED)
-+	if (!sme_get_me_mask() ||
-+	    RIP_REL_REF(sev_status) & MSR_AMD64_SEV_ENABLED)
- 		return;
- 
- 	/*
-@@ -541,11 +542,11 @@ void __init sme_enable(struct boot_params *bp)
- 	me_mask = 1UL << (ebx & 0x3f);
- 
- 	/* Check the SEV MSR whether SEV or SME is enabled */
--	sev_status   = __rdmsr(MSR_AMD64_SEV);
--	feature_mask = (sev_status & MSR_AMD64_SEV_ENABLED) ? AMD_SEV_BIT : AMD_SME_BIT;
-+	RIP_REL_REF(sev_status) = msr = __rdmsr(MSR_AMD64_SEV);
-+	feature_mask = (msr & MSR_AMD64_SEV_ENABLED) ? AMD_SEV_BIT : AMD_SME_BIT;
- 
- 	/* The SEV-SNP CC blob should never be present unless SEV-SNP is enabled. */
--	if (snp && !(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
-+	if (snp && !(msr & MSR_AMD64_SEV_SNP_ENABLED))
- 		snp_abort();
- 
- 	/* Check if memory encryption is enabled */
-@@ -571,7 +572,6 @@ void __init sme_enable(struct boot_params *bp)
- 			return;
- 	} else {
- 		/* SEV state cannot be controlled by a command line option */
--		sme_me_mask = me_mask;
- 		goto out;
- 	}
- 
-@@ -590,16 +590,13 @@ void __init sme_enable(struct boot_params *bp)
- 	cmdline_ptr = (const char *)((u64)bp->hdr.cmd_line_ptr |
- 				     ((u64)bp->ext_cmd_line_ptr << 32));
- 
--	if (cmdline_find_option(cmdline_ptr, cmdline_arg, buffer, sizeof(buffer)) < 0)
--		goto out;
--
--	if (!strncmp(buffer, cmdline_on, sizeof(buffer)))
--		sme_me_mask = me_mask;
-+	if (cmdline_find_option(cmdline_ptr, cmdline_arg, buffer, sizeof(buffer)) < 0 ||
-+	    strncmp(buffer, cmdline_on, sizeof(buffer)))
-+		return;
- 
- out:
--	if (sme_me_mask) {
--		physical_mask &= ~sme_me_mask;
--		cc_vendor = CC_VENDOR_AMD;
--		cc_set_mask(sme_me_mask);
--	}
-+	RIP_REL_REF(sme_me_mask) = me_mask;
-+	physical_mask &= ~me_mask;
-+	cc_vendor = CC_VENDOR_AMD;
-+	cc_set_mask(me_mask);
- }
 
