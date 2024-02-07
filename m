@@ -1,48 +1,67 @@
-Return-Path: <linux-tip-commits+bounces-310-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-311-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D840884D02E
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 18:50:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2085B84D1D5
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 19:55:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 171D31C2663D
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 17:50:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 538691C2687C
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 18:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28DA83CA1;
-	Wed,  7 Feb 2024 17:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE4084A20;
+	Wed,  7 Feb 2024 18:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdFmysLt"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="eHFEvxRN"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BDD8289E;
-	Wed,  7 Feb 2024 17:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730CA8405F;
+	Wed,  7 Feb 2024 18:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707328212; cv=none; b=Jv19meBGRiTpdAOCwW2X+6J+kQyIhKREPnXi09u2GToq+ymxegFG5QqtjqyKKuX/Je/1UV+L73k77FP3PDAQ9jk/tdnBVO41nU2Ld0BF8RaY4krfqJsyWXp9RBvP30uV9Fk9ZcOUulHwByCv5zw63wra0QowT3PYZXuZ+Qu2vnc=
+	t=1707332031; cv=none; b=XUNCxVnEKuLd05P3aBBoOpY1PrKWvDafB+WAkMfmlxOlMrSO1JoP7e2V3d8313tRmYP55TwEut+9pFX7ifzZBtUfJgTfCpAZVy4J2n7RYg6CGbfJ3PRdm5SdZ7by8hhzm2gyN213B6u/z7yU5L40XOgyCeDiVqnhDIJye0C7Q8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707328212; c=relaxed/simple;
-	bh=e4OieDXugUbycX0Ukl/FK2SvO3wPox5ygphY9IQdy/4=;
+	s=arc-20240116; t=1707332031; c=relaxed/simple;
+	bh=kIifLWZA6GB6Ap8YcVsA4bwR69kWKRSPPt5Xg/4Yjfg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=blNZlXRwM2/DiD7hydoab/BmbCrOiQCLDl+NFw7ckHvK2F5wKeafK/7cP7eeTIS6plDS98O6kQTuYLiidbwKW7AgTXzkoI2e6D7t70J/FoEuUgk4pgQyn5W6A+KVTssKc9vcSJLaGBfuUqfqIWVV/mi8BNfheWJa7JiTdMWDCXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdFmysLt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E368EC433C7;
-	Wed,  7 Feb 2024 17:50:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707328212;
-	bh=e4OieDXugUbycX0Ukl/FK2SvO3wPox5ygphY9IQdy/4=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=HdNQ50WMetiqkaCCYAQE0RDh4By0cD+wWOuCBAhDyMtVY5OdEeJ31A9YJUemTRfid4IAVbG/ROaTW3eLCYFVBE47P8zNu/JmP/rXaqHMkx3r2rBKPYQt2nU65WPBRaILFtmhRH+RaFwEbaJZ48sbCmTAIoJOXWhD5ZlEzj54TE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=eHFEvxRN; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2099B40E00B2;
+	Wed,  7 Feb 2024 18:53:46 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 0W04lBkSEDeF; Wed,  7 Feb 2024 18:53:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1707332021; bh=bQtVQeq/bovWEz/qa9RcaBKDWxWNyGWpuE8/90BtrUI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KdFmysLtNzkVSD8/E229C6W3BqAH5WboXvD96/8v0jsedBQZr102argp5QPRMjahr
-	 b17lBPt368dUPwiqTjoWl1rFoxOqx7dRoABFCifJmdrooCoIvmEXHII2wdo62JTKwo
-	 wavUmgfp8nR6zMhSH3gswUsfLPZkwLk/gRwA0wuGpKRvfjRXSc0AlqpV97uLO5hLkT
-	 ZSWWCOKVvStHIVBRl0IKv1XVOEE6Dt6EJH2me95p54P52vrmetKPIO8niywgIz2O/f
-	 u+GlpwOyyzlYVISMI29/ihAhfaJM2elSfmn6DeUkg19OyQ/JpT11c/anp3KIEeyTzs
-	 NQw/U52wn+bLQ==
-Date: Wed, 7 Feb 2024 09:50:10 -0800
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
+	b=eHFEvxRNIGiKyIntH2WMgTGrLy4nJeWuYHE7xnw+cJQqyMkQJwYclKb+Or6Q0NZEu
+	 GML7IUheRadiDS4BWAEqtyekN3U8SJVOd9QRTydXruP6M5dD+03NUeYQxIxJmWjbQ1
+	 4WQsjPRDekYevyurSk3fx0syjuR285BGu6RcGYLdJiDWMD2CNvP/pHdQA/pOlP8/y2
+	 EWJ5eHjuIyR6OjoU+MwBl6z/gC89rOFHpgsDphtAA1kqeahMv/tfUfumt+hWsuSUjQ
+	 jeIFXfmP0PVWOWDFMmzAQIvjQjVX56we0eGPdI4nib0jBb4jbi8cTj0ngLWvEGDkeS
+	 Qz3a5hYOaH3/76D2PZNyeN51OIRAjasAk7sV7HGycOJA9WGI9E2d9pdawLn/DxPGNv
+	 L+68twrtX6vTW3isudtQORAPZsuOnXN5CzlgFoZqxoRIwEF4NfNBj3W19yihTunPCY
+	 czmVdsDwkKt5rVKroI9tPXQnGqB5Fr2MDvkZ19f9y49JZyHYB+SjykoON53+SDRFBO
+	 TnS8/MIqdkcO22eNhHQ6XxG7EL3JtgrnPfjSth/MxiQqn1igIeFR2F4Gp2ivQcujdP
+	 DMinZGRDxWISYNx/Ngd3pswoLVD9ICfhPBufr/EPQ+uzO4+ibT/yjaE8MgyEupvJNs
+	 hSB2I5VSF1VytbV++Fy3m1UE=
+Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9DA6140E01BB;
+	Wed,  7 Feb 2024 18:53:33 +0000 (UTC)
+Date: Wed, 7 Feb 2024 19:53:28 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Josh Poimboeuf <jpoimboe@kernel.org>
 Cc: "Kaplan, David" <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
@@ -51,9 +70,8 @@ Cc: "Kaplan, David" <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
 	David Howells <dhowells@redhat.com>
 Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't
  used at runtime
-Message-ID: <20240207175010.nrr34b2pp3ewe3ga@treble>
-References: <20231019065928.mrvhtfaya22p2uzw@treble>
- <20231019141514.GCZTE58qPOvcJCiBp3@fat_crate.local>
+Message-ID: <20240207185328.GEZcPRqPsNInRXyNMj@fat_crate.local>
+References: <20231019141514.GCZTE58qPOvcJCiBp3@fat_crate.local>
  <SN6PR12MB2702AC3C27D25414FE4260F994D4A@SN6PR12MB2702.namprd12.prod.outlook.com>
  <20231019143951.GEZTE/t/wECKBxMSjl@fat_crate.local>
  <20231019152051.4u5xwhopbdisy6zl@treble>
@@ -62,6 +80,7 @@ References: <20231019065928.mrvhtfaya22p2uzw@treble>
  <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
  <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
  <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
+ <20240207175010.nrr34b2pp3ewe3ga@treble>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
@@ -70,39 +89,46 @@ List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
+In-Reply-To: <20240207175010.nrr34b2pp3ewe3ga@treble>
 
-On Thu, Jan 04, 2024 at 02:26:23PM +0100, Borislav Petkov wrote:
-> On Thu, Jan 04, 2024 at 02:24:46PM +0100, Borislav Petkov wrote:
-> > +void __warn_thunk(void)
-> > +{
-> > +	pr_warn_once("\n");
-> > +	pr_warn_once("**********************************************************\n");
-> > +	pr_warn_once("**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **\n");
-> > +	pr_warn_once("**                                                      **\n");
-> > +	pr_warn_once("**   Unpatched return thunk in use. This should not     **\n");
-> > +	pr_warn_once("**   happen on a production kernel. Please report this  **\n");
-> > +	pr_warn_once("**   to x86@kernel.org.                                 **\n");
-> 
-> I'm not yet sure here whether this should say "upstream kernels" because
-> otherwise we'll get a bunch of distro or whatnot downstream kernels
-> reports where we can't really do anything about...
-> 
-> Hmmm.
+On Wed, Feb 07, 2024 at 09:50:10AM -0800, Josh Poimboeuf wrote:
+> And as you say, there are many frankenkernels out there and upstream
+> doesn't want to be in the business of debugging them.
 
-At the very least, the dump_stack() should be a WARN_ON_ONCE().
-Otherwise this is actually *more* likely to be ignored since automated
-tools don't have a way to catch it: no taint, no "WARNING" string, no
-panic_on_warn, etc.
+Ok, all valid points. Diff ontop.
 
-But also, I'm not a fan of the banner.  A warning is enough IMO.
+I'll queue it now so that it has ample time of cooking in linux-next.
 
-Many/most warnings can be "security" issues.  A production server which
-ignores warnings/taints/etc would be a much bigger problem.
+Thx.
 
-And as you say, there are many frankenkernels out there and upstream
-doesn't want to be in the business of debugging them.
+---
+
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 612c9ec456ae..5a300a7bad04 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2853,16 +2853,5 @@ ssize_t cpu_show_gds(struct device *dev, struct device_attribute *attr, char *bu
+ 
+ void __warn_thunk(void)
+ {
+-	pr_warn_once("\n");
+-	pr_warn_once("**********************************************************\n");
+-	pr_warn_once("**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **\n");
+-	pr_warn_once("**                                                      **\n");
+-	pr_warn_once("**   Unpatched return thunk in use. This should not     **\n");
+-	pr_warn_once("**   happen on a production kernel. Please report this  **\n");
+-	pr_warn_once("**   to x86@kernel.org.                                 **\n");
+-	pr_warn_once("**                                                      **\n");
+-	pr_warn_once("**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **\n");
+-	pr_warn_once("**********************************************************\n");
+-
+-	dump_stack();
++	WARN_ONCE(1, "Unpatched return thunk in use. This should not happen!\n");
+ }
 
 -- 
-Josh
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
