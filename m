@@ -1,185 +1,120 @@
-Return-Path: <linux-tip-commits+bounces-306-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-307-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45C984BF0D
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Feb 2024 22:11:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9323884CC84
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 15:20:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A45C1F2430F
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Feb 2024 21:11:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BF47B25969
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 14:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8240A1B941;
-	Tue,  6 Feb 2024 21:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F17E7993D;
+	Wed,  7 Feb 2024 14:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JOAIBZD+"
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="olTokGAj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vs44pS8y"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C031B942;
-	Tue,  6 Feb 2024 21:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57077C090;
+	Wed,  7 Feb 2024 14:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707253857; cv=none; b=YjzoRWgywyt0wrleupCxul7bgvdXug+0wqyWpzkN8w9CjmKXSqHOFJb58bQ4z2sNekyYUB6XZw8sozxcz+jRRKv+blci5v3/L7yxqmcszK+xU2lhIdlRZe2Qvm9dmgLSJ500i7ETxyyc366AKQdlixqI4xSXSbuiq9KgIwpmCLk=
+	t=1707315623; cv=none; b=kaMfNKS82mSqAqaNK2f4RLh1OGGSqsqo7MCPA3EGLxDFL/bQ7F/9N3fmtOmk6eqMUHFDpaAmMPkvHVNJ+y3BXASlUuYFABTi0zsVUctNBR0LcCMYnV+WJ6xaHauq00Kn8dtpEgGhWVpuBQVbAvflZp+Beu3SteAOu7Kk5hs/nmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707253857; c=relaxed/simple;
-	bh=MwlTw10rPAhB4gGj/ejIVT9F0dRB9CnZoireiK4aYIw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ayPpRu3ifU1IZKgnQl9lBdo7H5uribWFXVefrhJ2+/6dGVuGbN8NcINs0ZAq0Q6OKqGjOsHzocoMoDeYLR6b5pQaZE/ySHXsCCp3+Eu6I+/N1wJ4x9VodPdCPwYI6dohY2IGx7CPZlCFV1PnSfhcL4US6vWRQHkAaZYSqz5DwRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JOAIBZD+; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-60484b96cd7so5331997b3.2;
-        Tue, 06 Feb 2024 13:10:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707253855; x=1707858655; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SO1bsPmumajuKPIDkj+daq+YcseSKA2zflG+/ZF7sf0=;
-        b=JOAIBZD+8Con3xj7qyYFEsyX6TCl0LuMVfaspXUuT7/oo+0TTQnkO69iTkt20vOnz3
-         kAe0xN1oTKTTE1KQmULyHKug5+vIPseXo8rT4mus/REa+YM7xvPeeVE3tpQ/keGOxR5o
-         v1hwrkHGr6sjCy00Edh7pPf+gw4ot0Xf+MIes6KZiqT+W8J98iAUYNW20TqRYxrJNXeC
-         2NXKKHA31gyaDCq45k+mSs2MFgfeH2EQm0PQM70+pHq8BYUTScClcu/bEITen2nH64hn
-         l9VsE6k+CaiOFOnM/NVgdfUHFG8sE4WBTU2Vc2Ig1G3HRdK/bluc9/ofwuGsKJsYcMyO
-         NBuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707253855; x=1707858655;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SO1bsPmumajuKPIDkj+daq+YcseSKA2zflG+/ZF7sf0=;
-        b=WLziR96sZiwMdmPnAcCWMNlKDD5PJp9sc48EJiSezQC03xpaOJDa4Bo5Lnwi/qdYeA
-         LiOR1q4JjqxEMguFSGX5zpC1EZxiVT7iLz1z7ulldy+lcmXiaJq7ZvemX7u7HlY9/6eR
-         7GLpktTKd8nBcLWumnrIyRqSnWny5BVqD7AFuJhxrI9xvRDGEADyakjOwjEi8E1V6wtl
-         dtLAtBTEF2jtxKro50oKd/qJhe35Qh/CY0LkvQ3LVW+QUMHhoFZzOQEXzSfYCpnvVIlE
-         r65nkf1d0dBBi71O1Rs6qUsJvnxcnXzjV2yRMutQOm4SKa1SyMIncRbUMB1NTR34qcBu
-         3TpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWL9AbBtYnnWYo8BN0AGxJJ47xiZj1cRurM1bescMEa9nKiKSM+Z7nT8FBuUbDMSZDOt/87/qnsa94s28yrusbEGTX1tf4yUCGpGKJTyIrEih32X35BgwxUS1sY3+vxktOFDHpp25c1yfmcJKekV3w=
-X-Gm-Message-State: AOJu0YyJ7KmGn4WEwV7QFPjWNBvOr/9tKJdBb2chiXBVHyV4tYpEtVfk
-	u3v86PisnjTlAeR64ktNzQDucb6EYf+D7HnsnsJ+29Kk3UeIyzh+LcPaC5k3BudyirsLH7T1bwj
-	Sa/32x41IlKXb2ojlXjQRYPcVyLN8aJOOc5Q=
-X-Google-Smtp-Source: AGHT+IHPzYUv7iG2mfe+GTxvQSrf4VQlKX9EmjPIaOqM80iPhazir8BocNTo5U/vWuLLZdWiljVwO39KLm8tqsnwS9k=
-X-Received: by 2002:a0d:dd51:0:b0:5ec:aaf8:39bd with SMTP id
- g78-20020a0ddd51000000b005ecaaf839bdmr2990858ywe.36.1707253854582; Tue, 06
- Feb 2024 13:10:54 -0800 (PST)
+	s=arc-20240116; t=1707315623; c=relaxed/simple;
+	bh=3Vya9ZSZxP6a3+Q0oC9Tpk7ndO1hOD6idDjI6YzgPjg=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=jfYegIPY3sMT8RzpGU6TnYZK9hEfSfLNI/bZ15L80swq3ikb2z/6VpIw6rC6i0mIHSW/ZSK1MmTUC7e8+6EooJh0YdOePrjOFERNADwZGIVp+bWHcZVlFgnqNxRcq76d84sYwFVA9KBBAF0QfSUwvJju79iZZvxVLR8zSyfJ2ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=olTokGAj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vs44pS8y; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 07 Feb 2024 14:20:18 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1707315619;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kozpYU4zhzBMEJHtumcjzPqZfIppI5+WA8tw9RJk16k=;
+	b=olTokGAjoJWsb51oXOR7CrCjfpCv5k/Sv9tEurxTTvM2/sA4OJpqFI/N3eSU9+k496+kHf
+	98L5y0A1kl5Bz4nGfPTx6WCaRNdIisOveidmx67SP5BSo2j6/PU1aSJ9OaDrGv4dA7XXhd
+	GNyg7o4ibqKLRT0nDls/0nyt/Y2cXHpkkleOdCGUMTu7C5ABdEmbripWz+vZz47q8AWW8W
+	6rc+K6x8o5FTHdvxJLw0GlWjyM65dFpzteFviUlU07mkgDv5WF/hZu6kDyWwiWUxJiE97D
+	4OAkH81hAnNXLYDN1tiLXxYsGPgVuSs3WOsYspEyN/A3j6vCzXfWyDxxDSp42A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1707315619;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kozpYU4zhzBMEJHtumcjzPqZfIppI5+WA8tw9RJk16k=;
+	b=vs44pS8yMeeroPwsFFVwXRXQoe39VhBOz1k7+OS7GNBmjy3aF950m+lgK7dXtMEJwNGtqf
+	HXLEQ52hEG55qfAw==
+From: "tip-bot2 for Ricardo B. Marliere" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] clockevents: Make clockevents_subsys const
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Ricardo B. Marliere" <ricardo@marliere.net>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240204-bus_cleanup-time-v1-2-207ec18e24b8@marliere.net>
+References: <20240204-bus_cleanup-time-v1-2-207ec18e24b8@marliere.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231205105030.8698-14-xin3.li@intel.com> <170673569232.398.15041548048531772130.tip-bot2@tip-bot2>
- <2A59D51B-0AA0-4DFC-9957-67CC0C9E37B3@zytor.com> <8f260a93-08f3-48af-81e5-8ee53246e262@zytor.com>
- <D64A7458-15DD-4B92-975A-9E4ABD96CAE2@zytor.com>
-In-Reply-To: <D64A7458-15DD-4B92-975A-9E4ABD96CAE2@zytor.com>
-From: "H.J. Lu" <hjl.tools@gmail.com>
-Date: Tue, 6 Feb 2024 13:10:18 -0800
-Message-ID: <CAMe9rOog8r_qR1PBb-W3G+ma5zUX+YDeR3QnuE-xU3mL_=ywSg@mail.gmail.com>
-Subject: Re: [tip: x86/fred] x86/ptrace: Cleanup the definition of the pt_regs structure
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Xin Li <xin@zytor.com>, linux-kernel@vger.kernel.org, 
-	tip-bot2 for Xin Li <tip-bot2@linutronix.de>, linux-tip-commits@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, "Borislav Petkov (AMD)" <bp@alien8.de>, Shan Kang <shan.kang@intel.com>, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <170731561842.398.2305673935013890574.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 6, 2024 at 12:45=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wrot=
-e:
->
-> On February 6, 2024 11:04:13 AM PST, Xin Li <xin@zytor.com> wrote:
-> >On 2/3/2024 3:52 PM, H. Peter Anvin wrote:
-> >> On January 31, 2024 1:14:52 PM PST, tip-bot2 for Xin Li <tip-bot2@linu=
-tronix.de> wrote:
-> >>> The following commit has been merged into the x86/fred branch of tip:
-> >>>
-> >>> Commit-ID:     ee63291aa8287cb7ded767d340155fe8681fc075
-> >>> Gitweb:        https://git.kernel.org/tip/ee63291aa8287cb7ded767d3401=
-55fe8681fc075
-> >>> Author:        Xin Li <xin3.li@intel.com>
-> >>> AuthorDate:    Tue, 05 Dec 2023 02:50:02 -08:00
-> >>> Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-> >>> CommitterDate: Wed, 31 Jan 2024 22:01:13 +01:00
-> >>>
-> >>> x86/ptrace: Cleanup the definition of the pt_regs structure
-> >>>
-> >>> struct pt_regs is hard to read because the member or section related
-> >>> comments are not aligned with the members.
-> >>>
-> >>> The 'cs' and 'ss' members of pt_regs are type of 'unsigned long' whil=
-e
-> >>> in reality they are only 16-bit wide. This works so far as the
-> >>> remaining space is unused, but FRED will use the remaining bits for
-> >>> other purposes.
-> >>>
-> >>> To prepare for FRED:
-> >>>
-> >>>   - Cleanup the formatting
-> >>>   - Convert 'cs' and 'ss' to u16 and embed them into an union
-> >>>     with a u64
-> >>>   - Fixup the related printk() format strings
-> >>>
-> >>> Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-> >>> Originally-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-> >>> Signed-off-by: Xin Li <xin3.li@intel.com>
-> >>> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> >>> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> >>> Tested-by: Shan Kang <shan.kang@intel.com>
-> >>> Link: https://lore.kernel.org/r/20231205105030.8698-14-xin3.li@intel.=
-com
-> >
-> >[...]
-> >
-> >>> diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_6=
-4.c
-> >>> index 33b2687..0f78b58 100644
-> >>> --- a/arch/x86/kernel/process_64.c
-> >>> +++ b/arch/x86/kernel/process_64.c
-> >>> @@ -117,7 +117,7 @@ void __show_regs(struct pt_regs *regs, enum show_=
-regs_mode mode,
-> >>>
-> >>>     printk("%sFS:  %016lx(%04x) GS:%016lx(%04x) knlGS:%016lx\n",
-> >>>            log_lvl, fs, fsindex, gs, gsindex, shadowgs);
-> >>> -   printk("%sCS:  %04lx DS: %04x ES: %04x CR0: %016lx\n",
-> >>> +   printk("%sCS:  %04x DS: %04x ES: %04x CR0: %016lx\n",
-> >>>             log_lvl, regs->cs, ds, es, cr0);
-> >>>     printk("%sCR2: %016lx CR3: %016lx CR4: %016lx\n",
-> >>>             log_lvl, cr2, cr3, cr4);
-> >>
-> >> Incidentally, the comment about callee-saved registers is long since b=
-oth obsolete and is now outright wrong.
-> >>
-> >> The next version of gcc (14 I think) will have an attribute to turn of=
-f saving registers which we can use for top-level C functions.
+The following commit has been merged into the timers/core branch of tip:
 
-__attribute__((no_callee_saved_registers))) has been added to GCC 14.
+Commit-ID:     49f1ff50d49fb8b40bc0271177de8092226396e9
+Gitweb:        https://git.kernel.org/tip/49f1ff50d49fb8b40bc0271177de8092226396e9
+Author:        Ricardo B. Marliere <ricardo@marliere.net>
+AuthorDate:    Sun, 04 Feb 2024 10:40:16 -03:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 07 Feb 2024 15:11:24 +01:00
 
-> >
-> >Forgive my ignorance, do we have an official definition for "top-level C=
- functions"?
-> >
-> >Thanks!
-> >    Xin
-> >
->
-> (Adding H.J., who did the gcc implementation of __attribute__((no_callee_=
-saved_registers))).
->
-> The top level C functions are the ones whose stack frame are immediately =
-below the exception/syscall frame, i.e. the C function called from the entr=
-y assembly code and functions tailcalled from those (unless they set up a s=
-tack frame for things like memory structures passed to the called function.=
-)
->
-> Note that the implementation should properly handle the case when calling=
- these functions from C (accidentally, or because it is a rare case that ca=
-n be validly pessimized.)
+clockevents: Make clockevents_subsys const
 
-GCC 14 should handle it properly.  If not, please open a GCC bug.
+Now that the driver core can properly handle constant struct bus_type,
+move the clockevents_subsys variable to be a constant structure as well,
+placing it into read-only memory which can not be modified at runtime.
 
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240204-bus_cleanup-time-v1-2-207ec18e24b8@marliere.net
+---
+ kernel/time/clockevents.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---=20
-H.J.
+diff --git a/kernel/time/clockevents.c b/kernel/time/clockevents.c
+index 960143b..a7ca458 100644
+--- a/kernel/time/clockevents.c
++++ b/kernel/time/clockevents.c
+@@ -659,7 +659,7 @@ void tick_cleanup_dead_cpu(int cpu)
+ #endif
+ 
+ #ifdef CONFIG_SYSFS
+-static struct bus_type clockevents_subsys = {
++static const struct bus_type clockevents_subsys = {
+ 	.name		= "clockevents",
+ 	.dev_name       = "clockevent",
+ };
 
