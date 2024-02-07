@@ -1,160 +1,108 @@
-Return-Path: <linux-tip-commits+bounces-309-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-310-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CF184CF8F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 18:13:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D840884D02E
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 18:50:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7805C28BAC8
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 17:13:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 171D31C2663D
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 17:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8191A8002F;
-	Wed,  7 Feb 2024 17:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28DA83CA1;
+	Wed,  7 Feb 2024 17:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eYg8PzWZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2mdwdsVy"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdFmysLt"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BE5823AD;
-	Wed,  7 Feb 2024 17:13:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BDD8289E;
+	Wed,  7 Feb 2024 17:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707325995; cv=none; b=B34K8IBwkEspxyxKjbY2XkKX4fqxV63/fjAv3mrdFOeabPiwOcHD6v/8OruELqMyDFqadlAWJxcOysh3A6X57VCFAwxd41urVrJBQGTJllnZFZkYEPD0mt3q0u9ycjpL2C98Y9CaCIwfnST995oaaM39mXcy8fYIEf2t2VLDdGw=
+	t=1707328212; cv=none; b=Jv19meBGRiTpdAOCwW2X+6J+kQyIhKREPnXi09u2GToq+ymxegFG5QqtjqyKKuX/Je/1UV+L73k77FP3PDAQ9jk/tdnBVO41nU2Ld0BF8RaY4krfqJsyWXp9RBvP30uV9Fk9ZcOUulHwByCv5zw63wra0QowT3PYZXuZ+Qu2vnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707325995; c=relaxed/simple;
-	bh=BVNIe1kDhE4wJLuDeON0evrTQTP1yhyS10nZ1KpN5+U=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=qknAIRA6gqtNwormYM6SBP0EROE4qd3CsoEnN7ht10LI/Xb2DmAu/p1OVevEloFCCXyg+r5FFb5CJP7N85T34YfUmpKURUKoO2MCogQtylH5PcyeD36xjIKfFvnzVUlDD7cXKT3uxUqA98MzNauYc7yMXGtk/9ULSY9g2CLGCSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eYg8PzWZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2mdwdsVy; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 07 Feb 2024 17:13:08 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1707325989;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CFsgkB1zC7/VSK3pWwrvuz6GTg2EbUcNZu4MIdsRY+w=;
-	b=eYg8PzWZqrrn4BTqvsaFzE8XsmIYBDARuAt6mbu5OX46Mdcx6kpmZs+e0NkOYuoZ7pfkty
-	iTaoorv6xO4sHHAs6ITGnr0wsdRwVdQYG7C9XbOKMtSXNufbTBDYmeGSDxKnYOAOs47BKp
-	Cjo/eUZvz1Lv6XNIFBMyTtYS9T6whhmBBqmhYzqFHTehHsq3i3LHYJZ27+fozUfpnCnfmb
-	1ee1QzQAF1FfczNyBYFD9LD5MxR0XgkG/35ST3suJ2l6RPwPEyA7/VZ2rwDuBDgRYLh5n8
-	DAnELXfp4FKKJxHnFjJyGMlkCF2aoxUJU2BSQeFqA3AfLEcWOL2uf/uwd4upvg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1707325989;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CFsgkB1zC7/VSK3pWwrvuz6GTg2EbUcNZu4MIdsRY+w=;
-	b=2mdwdsVyhaKMS9pQX9iYb03tGvt5qYpQ6EQOhNKISWkV2uKSXgsO3YmMACyA2V0oUFmUYT
-	j8TOgb0+o1mhZbBw==
-From: "tip-bot2 for Ashish Kalra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/sev] iommu/amd: Fix failure return from snp_lookup_rmpentry()
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
- Ashish Kalra <ashish.kalra@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Joerg Roedel <jroedel@suse.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240126041126.1927228-20-michael.roth@amd.com>
-References: <20240126041126.1927228-20-michael.roth@amd.com>
+	s=arc-20240116; t=1707328212; c=relaxed/simple;
+	bh=e4OieDXugUbycX0Ukl/FK2SvO3wPox5ygphY9IQdy/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=blNZlXRwM2/DiD7hydoab/BmbCrOiQCLDl+NFw7ckHvK2F5wKeafK/7cP7eeTIS6plDS98O6kQTuYLiidbwKW7AgTXzkoI2e6D7t70J/FoEuUgk4pgQyn5W6A+KVTssKc9vcSJLaGBfuUqfqIWVV/mi8BNfheWJa7JiTdMWDCXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdFmysLt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E368EC433C7;
+	Wed,  7 Feb 2024 17:50:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707328212;
+	bh=e4OieDXugUbycX0Ukl/FK2SvO3wPox5ygphY9IQdy/4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KdFmysLtNzkVSD8/E229C6W3BqAH5WboXvD96/8v0jsedBQZr102argp5QPRMjahr
+	 b17lBPt368dUPwiqTjoWl1rFoxOqx7dRoABFCifJmdrooCoIvmEXHII2wdo62JTKwo
+	 wavUmgfp8nR6zMhSH3gswUsfLPZkwLk/gRwA0wuGpKRvfjRXSc0AlqpV97uLO5hLkT
+	 ZSWWCOKVvStHIVBRl0IKv1XVOEE6Dt6EJH2me95p54P52vrmetKPIO8niywgIz2O/f
+	 u+GlpwOyyzlYVISMI29/ihAhfaJM2elSfmn6DeUkg19OyQ/JpT11c/anp3KIEeyTzs
+	 NQw/U52wn+bLQ==
+Date: Wed, 7 Feb 2024 09:50:10 -0800
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Kaplan, David" <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't
+ used at runtime
+Message-ID: <20240207175010.nrr34b2pp3ewe3ga@treble>
+References: <20231019065928.mrvhtfaya22p2uzw@treble>
+ <20231019141514.GCZTE58qPOvcJCiBp3@fat_crate.local>
+ <SN6PR12MB2702AC3C27D25414FE4260F994D4A@SN6PR12MB2702.namprd12.prod.outlook.com>
+ <20231019143951.GEZTE/t/wECKBxMSjl@fat_crate.local>
+ <20231019152051.4u5xwhopbdisy6zl@treble>
+ <20231024201913.GHZTgmwf6QMkX8BGbo@fat_crate.local>
+ <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
+ <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
+ <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
+ <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170732598872.398.2550238673926493243.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
 
-The following commit has been merged into the x86/sev branch of tip:
+On Thu, Jan 04, 2024 at 02:26:23PM +0100, Borislav Petkov wrote:
+> On Thu, Jan 04, 2024 at 02:24:46PM +0100, Borislav Petkov wrote:
+> > +void __warn_thunk(void)
+> > +{
+> > +	pr_warn_once("\n");
+> > +	pr_warn_once("**********************************************************\n");
+> > +	pr_warn_once("**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **\n");
+> > +	pr_warn_once("**                                                      **\n");
+> > +	pr_warn_once("**   Unpatched return thunk in use. This should not     **\n");
+> > +	pr_warn_once("**   happen on a production kernel. Please report this  **\n");
+> > +	pr_warn_once("**   to x86@kernel.org.                                 **\n");
+> 
+> I'm not yet sure here whether this should say "upstream kernels" because
+> otherwise we'll get a bunch of distro or whatnot downstream kernels
+> reports where we can't really do anything about...
+> 
+> Hmmm.
 
-Commit-ID:     45ba5b3c0a02949a4da74ead6e11c43e9b88bdca
-Gitweb:        https://git.kernel.org/tip/45ba5b3c0a02949a4da74ead6e11c43e9b88bdca
-Author:        Ashish Kalra <ashish.kalra@amd.com>
-AuthorDate:    Mon, 05 Feb 2024 21:06:54 
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 07 Feb 2024 17:27:03 +01:00
+At the very least, the dump_stack() should be a WARN_ON_ONCE().
+Otherwise this is actually *more* likely to be ignored since automated
+tools don't have a way to catch it: no taint, no "WARNING" string, no
+panic_on_warn, etc.
 
-iommu/amd: Fix failure return from snp_lookup_rmpentry()
+But also, I'm not a fan of the banner.  A warning is enough IMO.
 
-Commit
+Many/most warnings can be "security" issues.  A production server which
+ignores warnings/taints/etc would be a much bigger problem.
 
-  f366a8dac1b8: ("iommu/amd: Clean up RMP entries for IOMMU pages during SNP shutdown")
+And as you say, there are many frankenkernels out there and upstream
+doesn't want to be in the business of debugging them.
 
-leads to the following Smatch static checker warning:
-
-  drivers/iommu/amd/init.c:3820 iommu_page_make_shared() error: uninitialized symbol 'assigned'.
-
-Fix it.
-
-  [ bp: Address the other error cases too. ]
-
-Fixes: f366a8dac1b8 ("iommu/amd: Clean up RMP entries for IOMMU pages during SNP shutdown")
-Closes: https://lore.kernel.org/linux-iommu/1be69f6a-e7e1-45f9-9a74-b2550344f3fd@moroto.mountain
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Joerg Roedel <jroedel@suse.com>
-Link: https://lore.kernel.org/lkml/20240126041126.1927228-20-michael.roth@amd.com
----
- drivers/iommu/amd/init.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 88bb08a..480e768 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -3813,23 +3813,28 @@ static int iommu_page_make_shared(void *page)
- 		bool assigned;
- 
- 		ret = snp_lookup_rmpentry(pfn, &assigned, &level);
--		if (ret)
--			pr_warn("IOMMU PFN %lx RMP lookup failed, ret %d\n",
--				pfn, ret);
-+		if (ret) {
-+			pr_warn("IOMMU PFN %lx RMP lookup failed, ret %d\n", pfn, ret);
-+			return ret;
-+		}
- 
--		if (!assigned)
--			pr_warn("IOMMU PFN %lx not assigned in RMP table\n",
--				pfn);
-+		if (!assigned) {
-+			pr_warn("IOMMU PFN %lx not assigned in RMP table\n", pfn);
-+			return -EINVAL;
-+		}
- 
- 		if (level > PG_LEVEL_4K) {
- 			ret = psmash(pfn);
--			if (ret) {
--				pr_warn("IOMMU PFN %lx had a huge RMP entry, but attempted psmash failed, ret: %d, level: %d\n",
--					pfn, ret, level);
--			}
-+			if (!ret)
-+				goto done;
-+
-+			pr_warn("PSMASH failed for IOMMU PFN %lx huge RMP entry, ret: %d, level: %d\n",
-+				pfn, ret, level);
-+			return ret;
- 		}
- 	}
- 
-+done:
- 	return rmp_make_shared(pfn, PG_LEVEL_4K);
- }
- 
+-- 
+Josh
 
