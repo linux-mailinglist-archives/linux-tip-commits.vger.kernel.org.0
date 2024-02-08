@@ -1,115 +1,132 @@
-Return-Path: <linux-tip-commits+bounces-312-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-313-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE03684D260
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 20:49:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BE684E15A
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Feb 2024 14:05:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A17F1F2445B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Feb 2024 19:49:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98A20B2801C
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Feb 2024 13:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAB686AC3;
-	Wed,  7 Feb 2024 19:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA48777626;
+	Thu,  8 Feb 2024 13:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uOxkl5O2"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DYBW9kB0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MYw7lRvL"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323878615A;
-	Wed,  7 Feb 2024 19:49:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7677691F;
+	Thu,  8 Feb 2024 13:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707335362; cv=none; b=aWUIREUi/xR8tX+WWt8Em7guQaP/dgX+84rchixxnfCwkIlKw3jmj6Hoxq8gy2283w9hChfmOLncqO+sQdC30x3DUme/jVf2ZQMo1B05A52XpM6JqdgCgTHeN2qNyVdmVRwfEcRSRpNG1zAWn+1wEAEEB33KT0SfagGrhNkdXcQ=
+	t=1707397483; cv=none; b=keBPSVsbQ39cQZfj5bkq7fkSFwM0qQDlIk8SLtSkRc3TWasQr0JDhS6S49YRgevSZYVfGYCiskEaXs6oJbpybXOxmEIm24OXL/wdw7xHy5E7AtddfX0mlDeiuNPWTbj5yo4p82k+VXwCr7GHg9MiA+ZANYt5s9xRA3qSc+eq6aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707335362; c=relaxed/simple;
-	bh=Qgto4wYZaGAjn9+btzk8CBsRBzPuQf1xeweWZoy1n5o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NhrNaxnjUcwVQniWjfrcAmDZwJCX0Mm1DZtIpt23w3/hLvHnxDXGgtF0LdZLqHYF4FEWldr04fcg5ZxPOPWDPVluLTJrwStyH06f9kphdj8VZf6mYA8Bn5XeyFlcEYE4yVWUZI4umf3Z99YHpiTHRYq9SfSYuiCz/eNxa6XR8jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uOxkl5O2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B1CC433C7;
-	Wed,  7 Feb 2024 19:49:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707335361;
-	bh=Qgto4wYZaGAjn9+btzk8CBsRBzPuQf1xeweWZoy1n5o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uOxkl5O29VIrTO+UZmB8d8ELCYblaTLg6nl8qrRxDdQ0/bmAgR1xrODVdtIIRMV4Y
-	 baHLBj2QhOET5sbjIpQAdVGa2t0lW0WTP98mNUO5JuFlF95ypZ1Qu5gE+74IEAGph3
-	 biRfPNE+ELgkiO4KDab+JZcZnsTIdiJ40PjAYR16vQGnBlhByxRtoJxGylIqxBJ6UH
-	 eBvmm4cKpu9tXnRB13fgQs1dRxnzV1OClcqv0xkY7nGvpq4w3+jRWrArwSrtPs93jv
-	 H2dj5ceOrff3GJtF/NTIU+VFqjuYqqw9WITrDSLkiqzzDLn6c3yBb1UZmcWQ9KWScH
-	 qPw0b7RreZUBA==
-Date: Wed, 7 Feb 2024 11:49:19 -0800
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Kaplan, David" <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't
- used at runtime
-Message-ID: <20240207194919.qw4jk2ykadjn5d4e@treble>
-References: <SN6PR12MB2702AC3C27D25414FE4260F994D4A@SN6PR12MB2702.namprd12.prod.outlook.com>
- <20231019143951.GEZTE/t/wECKBxMSjl@fat_crate.local>
- <20231019152051.4u5xwhopbdisy6zl@treble>
- <20231024201913.GHZTgmwf6QMkX8BGbo@fat_crate.local>
- <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
- <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
- <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
- <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
- <20240207175010.nrr34b2pp3ewe3ga@treble>
- <20240207185328.GEZcPRqPsNInRXyNMj@fat_crate.local>
+	s=arc-20240116; t=1707397483; c=relaxed/simple;
+	bh=r0jE77rdo6Ue1DCrYWr0IcRSr6YcbHSatdaQvJjCqVU=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=dX1f6i/DZSpDQQRLphv6HFzIbnglb9QcmK5nx6KipVgBK1k56bRm3rroa7IUCFot8UDuqb62muTDDfE3zbd2CZmFxyeaRtNYqZef3vAXE8BKvbWHEuYsjYWk/JX0KG74chEHAFGV6bUORxYZ4tu0A6DqdPWZMZ3lDHCL1EWST8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DYBW9kB0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MYw7lRvL; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 08 Feb 2024 13:04:39 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1707397479;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zPbC25vg+lLa3ZBFGl4Zq+FRf4XhtPbXYIWS+Q2MVhs=;
+	b=DYBW9kB0Pg+Oni4fYFcLTUCbQ/+x1yYFKtEt9OJzNasq0GsNU8UO7rHto3voNch1fSXL8y
+	BfAuJY5JXl4kvH1cQ9u2S1vhhj1fbI5cKFs6N/AR9oK/6WSuO9/HhgcNAZ+2gKfSe55NPw
+	1r7nHxg92yFTfCQ548O6Trt2LLPslS35jgOKjeLgzaFBYdVd+YoBG+gxxQLiyzEayNjR1x
+	m7NbpSkhGfoqBBusA4eekO/cxA8zQQgqGlRlZkrwGQpHJ6KYFS2g0jjBx+EgH9dJef8DTo
+	DNG2SjHzHtxcxI1ni2U0WYGvx1WcKiSwYSv2ouUs8PhO4DBirVdbqicBtI0OeQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1707397479;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zPbC25vg+lLa3ZBFGl4Zq+FRf4XhtPbXYIWS+Q2MVhs=;
+	b=MYw7lRvLVjLyd9kEbx4+6y1RSwhqJTLW6t4LgogHqFbWBLfRobGd7MvomgGZv+9qoBkF6k
+	zKIFD22XSPnXjZAQ==
+From: "tip-bot2 for Masahiro Yamada" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/vdso] x86/vdso: Use CONFIG_COMPAT_32 to specify vdso32
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20231121235701.239606-5-masahiroy@kernel.org>
+References: <20231121235701.239606-5-masahiroy@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240207185328.GEZcPRqPsNInRXyNMj@fat_crate.local>
+Message-ID: <170739747901.398.12579593288355831715.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 07, 2024 at 07:53:28PM +0100, Borislav Petkov wrote:
-> On Wed, Feb 07, 2024 at 09:50:10AM -0800, Josh Poimboeuf wrote:
-> > And as you say, there are many frankenkernels out there and upstream
-> > doesn't want to be in the business of debugging them.
-> 
-> Ok, all valid points. Diff ontop.
-> 
-> I'll queue it now so that it has ample time of cooking in linux-next.
-> 
-> Thx.
-> 
-> ---
-> 
-> diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-> index 612c9ec456ae..5a300a7bad04 100644
-> --- a/arch/x86/kernel/cpu/bugs.c
-> +++ b/arch/x86/kernel/cpu/bugs.c
-> @@ -2853,16 +2853,5 @@ ssize_t cpu_show_gds(struct device *dev, struct device_attribute *attr, char *bu
->  
->  void __warn_thunk(void)
->  {
-> -	pr_warn_once("\n");
-> -	pr_warn_once("**********************************************************\n");
-> -	pr_warn_once("**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **\n");
-> -	pr_warn_once("**                                                      **\n");
-> -	pr_warn_once("**   Unpatched return thunk in use. This should not     **\n");
-> -	pr_warn_once("**   happen on a production kernel. Please report this  **\n");
-> -	pr_warn_once("**   to x86@kernel.org.                                 **\n");
-> -	pr_warn_once("**                                                      **\n");
-> -	pr_warn_once("**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **\n");
-> -	pr_warn_once("**********************************************************\n");
-> -
-> -	dump_stack();
-> +	WARN_ONCE(1, "Unpatched return thunk in use. This should not happen!\n");
->  }
+The following commit has been merged into the x86/vdso branch of tip:
 
-LGTM, thanks!
+Commit-ID:     289d0a475c3e5be42315376d08e0457350fb8e9c
+Gitweb:        https://git.kernel.org/tip/289d0a475c3e5be42315376d08e0457350fb8e9c
+Author:        Masahiro Yamada <masahiroy@kernel.org>
+AuthorDate:    Wed, 22 Nov 2023 08:57:01 +09:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 08 Feb 2024 13:23:14 +01:00
 
--- 
-Josh
+x86/vdso: Use CONFIG_COMPAT_32 to specify vdso32
+
+In arch/x86/Kconfig, COMPAT_32 is defined as (IA32_EMULATION || X86_32).
+Use it to eliminate redundancy in Makefile.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231121235701.239606-5-masahiroy@kernel.org
+---
+ arch/x86/Makefile            | 3 +--
+ arch/x86/entry/vdso/Makefile | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 2264db1..f2260ac 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -296,8 +296,7 @@ install:
+ 
+ vdso-install-$(CONFIG_X86_64)		+= arch/x86/entry/vdso/vdso64.so.dbg
+ vdso-install-$(CONFIG_X86_X32_ABI)	+= arch/x86/entry/vdso/vdsox32.so.dbg
+-vdso-install-$(CONFIG_X86_32)		+= arch/x86/entry/vdso/vdso32.so.dbg
+-vdso-install-$(CONFIG_IA32_EMULATION)	+= arch/x86/entry/vdso/vdso32.so.dbg
++vdso-install-$(CONFIG_COMPAT_32)	+= arch/x86/entry/vdso/vdso32.so.dbg
+ 
+ archprepare: checkbin
+ checkbin:
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index 439b527..7a97b17 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -35,8 +35,7 @@ OBJECT_FILES_NON_STANDARD_extable.o	:= n
+ # vDSO images to build
+ obj-$(CONFIG_X86_64)		+= vdso-image-64.o
+ obj-$(CONFIG_X86_X32_ABI)	+= vdso-image-x32.o
+-obj-$(CONFIG_X86_32)		+= vdso-image-32.o vdso32-setup.o
+-obj-$(CONFIG_IA32_EMULATION)	+= vdso-image-32.o vdso32-setup.o
++obj-$(CONFIG_COMPAT_32)		+= vdso-image-32.o vdso32-setup.o
+ 
+ OBJECT_FILES_NON_STANDARD_vdso32-setup.o := n
+ 
 
