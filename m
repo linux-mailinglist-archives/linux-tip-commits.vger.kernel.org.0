@@ -1,72 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-332-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-334-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2F9851CD1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Feb 2024 19:33:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9CD852241
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Feb 2024 00:03:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9F542817AE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Feb 2024 18:32:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF8342837B2
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Feb 2024 23:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A024F45975;
-	Mon, 12 Feb 2024 18:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C9D48795;
+	Mon, 12 Feb 2024 23:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Hzf5IBNa";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="612mT/gX"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CcL0TO5D";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="44lnw3ED"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C003E3F9FC;
-	Mon, 12 Feb 2024 18:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BDE50268;
+	Mon, 12 Feb 2024 23:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707762752; cv=none; b=LW8paP0vTPvRhjiJRX7Ro9X5X05jNpsWRJD85XgrE74UfKgJpaz/JCa+EgjIwetPf2tnsd/QT7iFOgRnejjbLb9WE3y46ueAV8ymKZYEXAJQ2gCaeGjECTVpZqEjsjBm8wuLl6RadqmvQfILqAAm5b7KFe6n/Bn4xEBzWpy+auY=
+	t=1707779022; cv=none; b=ZkA+8F2eI+WVR6JeqmjG4TRTzpi2YwQdxXXQX4dDg6C/88mge9daJRK6vKxOfPvDLi3odDdP96n4/23nwtLQIbt8Lix4YPRG9MAwmMVBlIF/3l8PxuAA0oZAG1rN9Cy9npsFC5KZ9nIoeQVHJs9nAFLjx7z/r52RpQNQpJT+NEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707762752; c=relaxed/simple;
-	bh=SMsCce4tjk8sm2MpzvCo/Sv1XYqjF8Lz9gGJ5eA+6N4=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=WoQanAhIetgnt+hPc+ph5TD3kR+bH6kM2TNlUKXEZYSmhI24j5y4Zen+u1dT+/j5YEUc9Ds9GdS2mnG4Olsf0eC1jqtistHM2v/f9ug4e6KAcw20T2XYVwXTWereUiuUIwzDQThnOMm7vbCYf5E6kgCyKUpIKi48BvjEQr3tNuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Hzf5IBNa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=612mT/gX; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1707779022; c=relaxed/simple;
+	bh=o00fLGDQ5IUs5ESmZiFEk2pxwiuRloTFln7XGgCfXQY=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Ru321GwyJVerNkn9Ho8h/HDcs4nO7WMIS34kvqoyou88yARQ1utO3A4GZg+m7IXRMeOt9pmjabrF500q1NFiFwvLBxmVtS6dI++orHNZCuvleJ2MKf9rhs/lpuVB5yi0wvlE61EPRvYvjGhuP4hvwALXvliOdfL2dBinejp9hAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CcL0TO5D; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=44lnw3ED; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 12 Feb 2024 18:32:28 -0000
+Date: Mon, 12 Feb 2024 23:03:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1707762748;
+	s=2020; t=1707779018;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=hij8xLV4HnzZwi4Ool9+y5V6ZjvcMpSWkf1YTInP5LU=;
-	b=Hzf5IBNayFZCIuXTbeEYDSfltck0rU+UaE7ItXBYB/zD4JQ9/dIOq9K35cXavPTb+ARl/W
-	/gKbXsD9G+x4769VLJFYbcm12E0vHaRs1G22X8BhaEtG6Y8whQU5Ap2PV8CiazVeOHrnOt
-	UCz9/imzbYmIMOQexT6B1YugrS3PGCQ/pTQ79jwz8oSLtdKa/tsnS3da38+bD0KWA0RMHC
-	cYIonzJET+g1VnFy+N8BOdi9tQd9ujI+0qDp92H7O8819dLcPtSjKpTtCrPYeRIgmcUFME
-	/4kFOhoxMXP98prZKVPZPNF5ZzhYi1DX5EBwqUWUkWZ3EE+GNVT/KkBa482Q+Q==
+	bh=eWzBm5Plzn16axCsOV4GgMj1z/Hv3hBUjuZkX+T6jRM=;
+	b=CcL0TO5DKvFDGMZMY9FPFafGngcx1eQCjGDhkzO7RskwtStDfH4f06giCUY6JZ5wb7r+Ll
+	LvlvUInlCA9taR1f06991qaBJZ2i1b4zTM4FD+xEYac1CoRE6n6HttsiAurYRut8Wd0AmE
+	f4jI/1EgHJbVLqitLLVv1eLmD0si/a2mLaxjEBlnYJwcQmG8cYDhgoujsu55t8U5yvizHy
+	fZBYXnDhESm06sBTHseqAunyPkTRmhKINEEMH4NZL1ZJmJXxrn2vmWDTeiUrD4uPUdT0c+
+	HDQcDppTZ3gqiifCMUp4T0mr4qp+dJImbIo7apKfPx6rTUGa0hWG7BakjcN8/w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1707762748;
+	s=2020e; t=1707779018;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=hij8xLV4HnzZwi4Ool9+y5V6ZjvcMpSWkf1YTInP5LU=;
-	b=612mT/gXWXFX8i7awVynNeondoBK46AlA5rYHj+0IgcxMNlfP2+7Ij6bK/FfZ6DeKHEJ2u
-	JFzEL5ir1DXp5KDg==
-From: "tip-bot2 for Pawan Gupta" <tip-bot2@linutronix.de>
+	bh=eWzBm5Plzn16axCsOV4GgMj1z/Hv3hBUjuZkX+T6jRM=;
+	b=44lnw3EDMSz+f8YcRsAs8lpng3pQTbCCDPIm7hEuYn4r8xzA00iOaIxk9OivepBIjtdRpC
+	i8u0JVDXCMcGrSCw==
+From: "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/entry_64: Add VERW just before userspace transition
-Cc: Dave Hansen <dave.hansen@intel.com>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+Subject: [tip: x86/urgent] x86/mm/ident_map: Use gbpages only where full GB
+ page should be mapped.
+Cc: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170776274810.398.12250018238635996205.tip-bot2@tip-bot2>
+Message-ID: <170777901796.398.6658653813355920802.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -76,114 +74,82 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     cbe72ed2412c1e8b6c99600c9db1f148c48fa453
-Gitweb:        https://git.kernel.org/tip/cbe72ed2412c1e8b6c99600c9db1f148c48fa453
-Author:        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-AuthorDate:    Sun, 04 Feb 2024 23:19:16 -08:00
+Commit-ID:     d794734c9bbfe22f86686dc2909c25f5ffe1a572
+Gitweb:        https://git.kernel.org/tip/d794734c9bbfe22f86686dc2909c25f5ffe1a572
+Author:        Steve Wahl <steve.wahl@hpe.com>
+AuthorDate:    Fri, 26 Jan 2024 10:48:41 -06:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 12 Feb 2024 10:25:22 -08:00
+CommitterDate: Mon, 12 Feb 2024 14:53:42 -08:00
 
-x86/entry_64: Add VERW just before userspace transition
+x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
 
-Mitigation for MDS is to use VERW instruction to clear any secrets in
-CPU Buffers. Any memory accesses after VERW execution can still remain
-in CPU buffers. It is safer to execute VERW late in return to user path
-to minimize the window in which kernel data can end up in CPU buffers.
-There are not many kernel secrets to be had after SWITCH_TO_USER_CR3.
+When ident_pud_init() uses only gbpages to create identity maps, large
+ranges of addresses not actually requested can be included in the
+resulting table; a 4K request will map a full GB.  On UV systems, this
+ends up including regions that will cause hardware to halt the system
+if accessed (these are marked "reserved" by BIOS).  Even processor
+speculation into these regions is enough to trigger the system halt.
 
-Add support for deploying VERW mitigation after user register state is
-restored. This helps minimize the chances of kernel data ending up into
-CPU buffers after executing VERW.
+Only use gbpages when map creation requests include the full GB page
+of space.  Fall back to using smaller 2M pages when only portions of a
+GB page are included in the request.
 
-Note that the mitigation at the new location is not yet enabled.
+No attempt is made to coalesce mapping requests. If a request requires
+a map entry at the 2M (pmd) level, subsequent mapping requests within
+the same 1G region will also be at the pmd level, even if adjacent or
+overlapping such requests could have been combined to map a full
+gbpage.  Existing usage starts with larger regions and then adds
+smaller regions, so this should not have any great consequence.
 
-  Corner case not handled
-  =======================
-  Interrupts returning to kernel don't clear CPUs buffers since the
-  exit-to-user path is expected to do that anyways. But, there could be
-  a case when an NMI is generated in kernel after the exit-to-user path
-  has cleared the buffers. This case is not handled and NMI returning to
-  kernel don't clear CPU buffers because:
+[ dhansen: fix up comment formatting, simplifty changelog ]
 
-  1. It is rare to get an NMI after VERW, but before returning to userspace.
-  2. For an unprivileged user, there is no known way to make that NMI
-     less rare or target it.
-  3. It would take a large number of these precisely-timed NMIs to mount
-     an actual attack.  There's presumably not enough bandwidth.
-  4. The NMI in question occurs after a VERW, i.e. when user state is
-     restored and most interesting data is already scrubbed. Whats left
-     is only the data that NMI touches, and that may or may not be of
-     any interest.
-
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240204-delay-verw-v7-2-59be2d704cb2%40linux.intel.com
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl%40hpe.com
 ---
- arch/x86/entry/entry_64.S        | 11 +++++++++++
- arch/x86/entry/entry_64_compat.S |  1 +
- 2 files changed, 12 insertions(+)
+ arch/x86/mm/ident_map.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index c40f89a..9bb4859 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -161,6 +161,7 @@ syscall_return_via_sysret:
- SYM_INNER_LABEL(entry_SYSRETQ_unsafe_stack, SYM_L_GLOBAL)
- 	ANNOTATE_NOENDBR
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	sysretq
- SYM_INNER_LABEL(entry_SYSRETQ_end, SYM_L_GLOBAL)
- 	ANNOTATE_NOENDBR
-@@ -573,6 +574,7 @@ SYM_INNER_LABEL(swapgs_restore_regs_and_return_to_usermode, SYM_L_GLOBAL)
+diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
+index 968d700..f50cc21 100644
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -26,18 +26,31 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
+ 	for (; addr < end; addr = next) {
+ 		pud_t *pud = pud_page + pud_index(addr);
+ 		pmd_t *pmd;
++		bool use_gbpage;
  
- .Lswapgs_and_iret:
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	/* Assert that the IRET frame indicates user mode. */
- 	testb	$3, 8(%rsp)
- 	jnz	.Lnative_iret
-@@ -723,6 +725,8 @@ native_irq_return_ldt:
- 	 */
- 	popq	%rax				/* Restore user RAX */
+ 		next = (addr & PUD_MASK) + PUD_SIZE;
+ 		if (next > end)
+ 			next = end;
  
-+	CLEAR_CPU_BUFFERS
+-		if (info->direct_gbpages) {
+-			pud_t pudval;
++		/* if this is already a gbpage, this portion is already mapped */
++		if (pud_large(*pud))
++			continue;
 +
- 	/*
- 	 * RSP now points to an ordinary IRET frame, except that the page
- 	 * is read-only and RSP[31:16] are preloaded with the userspace
-@@ -1450,6 +1454,12 @@ nmi_restore:
- 	movq	$0, 5*8(%rsp)		/* clear "NMI executing" */
++		/* Is using a gbpage allowed? */
++		use_gbpage = info->direct_gbpages;
  
- 	/*
-+	 * Skip CLEAR_CPU_BUFFERS here, since it only helps in rare cases like
-+	 * NMI in kernel after user state is restored. For an unprivileged user
-+	 * these conditions are hard to meet.
-+	 */
+-			if (pud_present(*pud))
+-				continue;
++		/* Don't use gbpage if it maps more than the requested region. */
++		/* at the begining: */
++		use_gbpage &= ((addr & ~PUD_MASK) == 0);
++		/* ... or at the end: */
++		use_gbpage &= ((next & ~PUD_MASK) == 0);
 +
-+	/*
- 	 * iretq reads the "iret" frame and exits the NMI stack in a
- 	 * single instruction.  We are returning to kernel mode, so this
- 	 * cannot result in a fault.  Similarly, we don't need to worry
-@@ -1466,6 +1476,7 @@ SYM_CODE_START(entry_SYSCALL32_ignore)
- 	UNWIND_HINT_END_OF_STACK
- 	ENDBR
- 	mov	$-ENOSYS, %eax
-+	CLEAR_CPU_BUFFERS
- 	sysretl
- SYM_CODE_END(entry_SYSCALL32_ignore)
++		/* Never overwrite existing mappings */
++		use_gbpage &= !pud_present(*pud);
++
++		if (use_gbpage) {
++			pud_t pudval;
  
-diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
-index de94e2e..eabf48c 100644
---- a/arch/x86/entry/entry_64_compat.S
-+++ b/arch/x86/entry/entry_64_compat.S
-@@ -270,6 +270,7 @@ SYM_INNER_LABEL(entry_SYSRETL_compat_unsafe_stack, SYM_L_GLOBAL)
- 	xorl	%r9d, %r9d
- 	xorl	%r10d, %r10d
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	sysretl
- SYM_INNER_LABEL(entry_SYSRETL_compat_end, SYM_L_GLOBAL)
- 	ANNOTATE_NOENDBR
+-			addr &= PUD_MASK;
+ 			pudval = __pud((addr - info->offset) | info->page_flag);
+ 			set_pud(pud, pudval);
+ 			continue;
 
