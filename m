@@ -1,78 +1,72 @@
-Return-Path: <linux-tip-commits+bounces-327-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-329-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE60E8516CC
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Feb 2024 15:15:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC327851CCA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Feb 2024 19:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 392271F25E80
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Feb 2024 14:15:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFAE01C22255
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Feb 2024 18:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D733A8EB;
-	Mon, 12 Feb 2024 14:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80E63F9F6;
+	Mon, 12 Feb 2024 18:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="O6M8R4K7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XNmOYAI6"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CChodpHV";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DY//IUtp"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729AC25740;
-	Mon, 12 Feb 2024 14:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6CAEEC5;
+	Mon, 12 Feb 2024 18:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707747224; cv=none; b=n1P9gGBVcx2Shht4SGMuFUSwIx5WAswVVad6e08y0tfuoRyNx6qB/mGMthInWEPxUDlzGlyhXxJEhfxkRo4fQvx89iHqT11fE6mnnkMlqnuReHs0/kZEG1SBfbMxAI1RaCynpqXSC46iwBciG3cXaDDjyCtcpFcVlK8U3joywHo=
+	t=1707762750; cv=none; b=Q2wtszxcexojSWjtxEv4FKEKSG/H3Cjfo9ZdacwhTVSFYeS3c3uTA3FUUZh5xa+sipLtF/GLHEnMLKfmces5VKoKGaAg9FnDk8s7UgAE1kOqXRStMcangTM2+9ATJZB165Lz8NQeoa9/ion7CaRArPjXFYEw9ebrWglcc32tq10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707747224; c=relaxed/simple;
-	bh=uI+LMNZYCq6kx+lc/OmKCSNQRSFIRHImLjt07bHMtxU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=uH6bNuyjShHCcvaha8RgOoxjfwfQHqB++vT98JEGppT0fdpeRS7gdVcAo6aqOFieKRrY5YmEeit392hkDQOUKxhpg8RpKIo1U2tsGPLuVMnpcH+q8wPhO0YNHo7+PMGAH770I9U/H9b6Gyg3Aw/bDpwZlBf5dJi2Lh3Dwmwu2MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=O6M8R4K7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XNmOYAI6; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1707762750; c=relaxed/simple;
+	bh=YJ1kfquzfEg3xMlggxVXNEPPrLvtBdFrSEj/fs42Plk=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=q/B+gC5G9PwrSvU+c5e+bpTfSQR63xCn8cUtPNl7H8KM1MeoSlH+PNF3b1Uy5UfYHwh2k3Ku3T2uQ2ceLG121F+jFmprh5tOkfjX1dz22+lCUmkaxmntfLL6XqJp+19n2s4Mn2RwaoQppn6im5TgdjrU3w8COahov+9psbocETc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CChodpHV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DY//IUtp; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 12 Feb 2024 14:13:39 -0000
+Date: Mon, 12 Feb 2024 18:32:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1707747220;
+	s=2020; t=1707762746;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f/btgRaaXpwyohIzAiBllWU5S3huEnjVIWuh9P97HrI=;
-	b=O6M8R4K7GoqhQdGuBgilF0r7S9P+uLX6Gz23AuksoEdBLRgKiMlvTjzxh60hcRUFuqGxl+
-	bn1VupNfEGkrEw8J4C8tziNc7nR4ADd9QED+Zpdt3HyFEFUDqf1rZxvHhZBbgQe9w2LBEK
-	+E3SRisWV60tv+iquZWjcoL7GNXjgJB/2ZGFGRdrzJReoqurCmuapUMJsn8ovcAKNSkwtF
-	TnZeRWLuPw/3g5YELthqbHcoH5SqSt5uxIvN+VMbSAmAm4dURj6arKqO0UTyU008iJkUsk
-	1kBai75n3urs2OfmF7xnRAEky68dhCfa+M1Za1PhHphx9E+N44r2qj6F/nf7Og==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZnDMX9SB2+uRk6/SPP2GaGDjf0ovHnqT/3el3m6ZSyk=;
+	b=CChodpHVxpFDbzeOT5nU7B3qeO7DCXsGl6gl4ez8GYh8d7pPFwqR+GSBExZ/CksIDYkOnF
+	R26yS+flRl0UsLlKOcihdvPt1er04y4jo7Tbj05INmkLRdZwi0sMB5rOnzTcmHI145P/NZ
+	oH8Fh5FJ+eyKf9WhTlcqWm25rbt4S2xhLI5r4uM4JUH5qJNRJ1eJApFjckb2bahxOvFxoN
+	HVGPeHKb0fsjusSXP4gttX5K0N83lFfyYD3rUA661pUzPXrAAMFQdJMru1X4ZsX/1lYRVB
+	ES8RkOhAT9NtBwLA+VQSmEn5c2iEBEPo4X+0e8UTwyYini6SQQazpD3a5hZy/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1707747220;
+	s=2020e; t=1707762746;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f/btgRaaXpwyohIzAiBllWU5S3huEnjVIWuh9P97HrI=;
-	b=XNmOYAI6LfkJI/Zi8hzjfzQ7sHypZAIPr1ojm0chKEZL7GV74G6tbAYudqsCwOk0y3b8i7
-	+fWNCyjxhdZrfACg==
-From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZnDMX9SB2+uRk6/SPP2GaGDjf0ovHnqT/3el3m6ZSyk=;
+	b=DY//IUtpQEqzpmBXQfQez7SuhGI3ds9UkfnrdM4Y+PEMw4FtOGAi5PownLr+hVmFyKArb3
+	K2KzIdhBV2OP3ABA==
+From: "tip-bot2 for Pawan Gupta" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't used
- at runtime
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject:
+ [tip: x86/urgent] KVM/VMX: Move VERW closer to VMentry for MDS mitigation
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20231010171020.462211-4-david.kaplan@amd.com>
-References: <20231010171020.462211-4-david.kaplan@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170774721951.398.8999401565129728535.tip-bot2@tip-bot2>
+Message-ID: <170776274528.398.3511446889501764521.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,273 +74,92 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/bugs branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     4461438a8405e800f90e0e40409e5f3d07eed381
-Gitweb:        https://git.kernel.org/tip/4461438a8405e800f90e0e40409e5f3d07eed381
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Wed, 03 Jan 2024 19:36:26 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 12 Feb 2024 11:42:15 +01:00
+Commit-ID:     f1423564fd426c134f00c77dd0f97e350f1d2f41
+Gitweb:        https://git.kernel.org/tip/f1423564fd426c134f00c77dd0f97e350f1d2f41
+Author:        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+AuthorDate:    Sun, 04 Feb 2024 23:20:23 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 12 Feb 2024 10:25:22 -08:00
 
-x86/retpoline: Ensure default return thunk isn't used at runtime
+KVM/VMX: Move VERW closer to VMentry for MDS mitigation
 
-Make sure the default return thunk is not used after all return
-instructions have been patched by the alternatives because the default
-return thunk is insufficient when it comes to mitigating Retbleed or
-SRSO.
+During VMentry VERW is executed to mitigate MDS. After VERW, any memory
+access like register push onto stack may put host data in MDS affected
+CPU buffers. A guest can then use MDS to sample host data.
 
-Fix based on an earlier version by David Kaplan <david.kaplan@amd.com>.
+Although likelihood of secrets surviving in registers at current VERW
+callsite is less, but it can't be ruled out. Harden the MDS mitigation
+by moving the VERW mitigation late in VMentry path.
 
-  [ bp: Fix the compilation error of warn_thunk_thunk being an invisible
-        symbol, hoist thunk macro into calling.h ]
+Note that VERW for MMIO Stale Data mitigation is unchanged because of
+the complexity of per-guest conditional VERW which is not easy to handle
+that late in asm with no GPRs available. If the CPU is also affected by
+MDS, VERW is unconditionally executed late in asm regardless of guest
+having MMIO access.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Co-developed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231010171020.462211-4-david.kaplan@amd.com
-Link: https://lore.kernel.org/r/20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/all/20240204-delay-verw-v7-6-59be2d704cb2%40linux.intel.com
 ---
- arch/x86/entry/calling.h             | 60 +++++++++++++++++++++++++++-
- arch/x86/entry/entry.S               |  4 ++-
- arch/x86/entry/thunk_32.S            | 34 +++------------
- arch/x86/entry/thunk_64.S            | 33 +---------------
- arch/x86/include/asm/nospec-branch.h |  2 +-
- arch/x86/kernel/cpu/bugs.c           |  5 ++-
- arch/x86/lib/retpoline.S             | 15 ++-----
- 7 files changed, 85 insertions(+), 68 deletions(-)
+ arch/x86/kvm/vmx/vmenter.S |  3 +++
+ arch/x86/kvm/vmx/vmx.c     | 20 ++++++++++++++++----
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index 39e069b..bd31b25 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -426,3 +426,63 @@ For 32-bit we have the following conventions - kernel is built with
- .endm
+diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
+index ef7cfba..2bfbf75 100644
+--- a/arch/x86/kvm/vmx/vmenter.S
++++ b/arch/x86/kvm/vmx/vmenter.S
+@@ -161,6 +161,9 @@ SYM_FUNC_START(__vmx_vcpu_run)
+ 	/* Load guest RAX.  This kills the @regs pointer! */
+ 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
  
- #endif /* CONFIG_SMP */
++	/* Clobbers EFLAGS.ZF */
++	CLEAR_CPU_BUFFERS
 +
-+#ifdef CONFIG_X86_64
-+
-+/* rdi:	arg1 ... normal C conventions. rax is saved/restored. */
-+.macro THUNK name, func
-+SYM_FUNC_START(\name)
-+	pushq %rbp
-+	movq %rsp, %rbp
-+
-+	pushq %rdi
-+	pushq %rsi
-+	pushq %rdx
-+	pushq %rcx
-+	pushq %rax
-+	pushq %r8
-+	pushq %r9
-+	pushq %r10
-+	pushq %r11
-+
-+	call \func
-+
-+	popq %r11
-+	popq %r10
-+	popq %r9
-+	popq %r8
-+	popq %rax
-+	popq %rcx
-+	popq %rdx
-+	popq %rsi
-+	popq %rdi
-+	popq %rbp
-+	RET
-+SYM_FUNC_END(\name)
-+	_ASM_NOKPROBE(\name)
-+.endm
-+
-+#else /* CONFIG_X86_32 */
-+
-+/* put return address in eax (arg1) */
-+.macro THUNK name, func, put_ret_addr_in_eax=0
-+SYM_CODE_START_NOALIGN(\name)
-+	pushl %eax
-+	pushl %ecx
-+	pushl %edx
-+
-+	.if \put_ret_addr_in_eax
-+	/* Place EIP in the arg1 */
-+	movl 3*4(%esp), %eax
-+	.endif
-+
-+	call \func
-+	popl %edx
-+	popl %ecx
-+	popl %eax
-+	RET
-+	_ASM_NOKPROBE(\name)
-+SYM_CODE_END(\name)
-+	.endm
-+
-+#endif
-diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
-index 8c8d38f..582731f 100644
---- a/arch/x86/entry/entry.S
-+++ b/arch/x86/entry/entry.S
-@@ -7,6 +7,8 @@
- #include <linux/linkage.h>
- #include <asm/msr-index.h>
+ 	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
+ 	jnc .Lvmlaunch
  
-+#include "calling.h"
-+
- .pushsection .noinstr.text, "ax"
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b551de3..0ec71f9 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -388,7 +388,16 @@ static __always_inline void vmx_enable_fb_clear(struct vcpu_vmx *vmx)
  
- SYM_FUNC_START(entry_ibpb)
-@@ -20,3 +22,5 @@ SYM_FUNC_END(entry_ibpb)
- EXPORT_SYMBOL_GPL(entry_ibpb);
+ static void vmx_update_fb_clear_dis(struct kvm_vcpu *vcpu, struct vcpu_vmx *vmx)
+ {
+-	vmx->disable_fb_clear = (host_arch_capabilities & ARCH_CAP_FB_CLEAR_CTRL) &&
++	/*
++	 * Disable VERW's behavior of clearing CPU buffers for the guest if the
++	 * CPU isn't affected by MDS/TAA, and the host hasn't forcefully enabled
++	 * the mitigation. Disabling the clearing behavior provides a
++	 * performance boost for guests that aren't aware that manually clearing
++	 * CPU buffers is unnecessary, at the cost of MSR accesses on VM-Entry
++	 * and VM-Exit.
++	 */
++	vmx->disable_fb_clear = !cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF) &&
++				(host_arch_capabilities & ARCH_CAP_FB_CLEAR_CTRL) &&
+ 				!boot_cpu_has_bug(X86_BUG_MDS) &&
+ 				!boot_cpu_has_bug(X86_BUG_TAA);
  
- .popsection
-+
-+THUNK warn_thunk_thunk, __warn_thunk
-diff --git a/arch/x86/entry/thunk_32.S b/arch/x86/entry/thunk_32.S
-index 0103e10..da37f42 100644
---- a/arch/x86/entry/thunk_32.S
-+++ b/arch/x86/entry/thunk_32.S
-@@ -4,33 +4,15 @@
-  * Copyright 2008 by Steven Rostedt, Red Hat, Inc
-  *  (inspired by Andi Kleen's thunk_64.S)
-  */
--	#include <linux/export.h>
--	#include <linux/linkage.h>
--	#include <asm/asm.h>
+@@ -7224,11 +7233,14 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
  
--	/* put return address in eax (arg1) */
--	.macro THUNK name, func, put_ret_addr_in_eax=0
--SYM_CODE_START_NOALIGN(\name)
--	pushl %eax
--	pushl %ecx
--	pushl %edx
-+#include <linux/export.h>
-+#include <linux/linkage.h>
-+#include <asm/asm.h>
+ 	guest_state_enter_irqoff();
  
--	.if \put_ret_addr_in_eax
--	/* Place EIP in the arg1 */
--	movl 3*4(%esp), %eax
--	.endif
-+#include "calling.h"
- 
--	call \func
--	popl %edx
--	popl %ecx
--	popl %eax
--	RET
--	_ASM_NOKPROBE(\name)
--SYM_CODE_END(\name)
--	.endm
--
--	THUNK preempt_schedule_thunk, preempt_schedule
--	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
--	EXPORT_SYMBOL(preempt_schedule_thunk)
--	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
-+THUNK preempt_schedule_thunk, preempt_schedule
-+THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
-+EXPORT_SYMBOL(preempt_schedule_thunk)
-+EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
- 
-diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
-index 416b400..119ebdc 100644
---- a/arch/x86/entry/thunk_64.S
-+++ b/arch/x86/entry/thunk_64.S
-@@ -9,39 +9,6 @@
- #include "calling.h"
- #include <asm/asm.h>
- 
--	/* rdi:	arg1 ... normal C conventions. rax is saved/restored. */
--	.macro THUNK name, func
--SYM_FUNC_START(\name)
--	pushq %rbp
--	movq %rsp, %rbp
--
--	pushq %rdi
--	pushq %rsi
--	pushq %rdx
--	pushq %rcx
--	pushq %rax
--	pushq %r8
--	pushq %r9
--	pushq %r10
--	pushq %r11
--
--	call \func
--
--	popq %r11
--	popq %r10
--	popq %r9
--	popq %r8
--	popq %rax
--	popq %rcx
--	popq %rdx
--	popq %rsi
--	popq %rdi
--	popq %rbp
--	RET
--SYM_FUNC_END(\name)
--	_ASM_NOKPROBE(\name)
--	.endm
--
- THUNK preempt_schedule_thunk, preempt_schedule
- THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
- EXPORT_SYMBOL(preempt_schedule_thunk)
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 2c0679e..5575461 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -357,6 +357,8 @@ extern void entry_ibpb(void);
- 
- extern void (*x86_return_thunk)(void);
- 
-+extern void __warn_thunk(void);
-+
- #ifdef CONFIG_MITIGATION_CALL_DEPTH_TRACKING
- extern void call_depth_return_thunk(void);
- 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index f277541..a78892b 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2850,3 +2850,8 @@ ssize_t cpu_show_gds(struct device *dev, struct device_attribute *attr, char *bu
- 	return cpu_show_common(dev, attr, buf, X86_BUG_GDS);
- }
- #endif
-+
-+void __warn_thunk(void)
-+{
-+	WARN_ONCE(1, "Unpatched return thunk in use. This should not happen!\n");
-+}
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index 0045153..721b528 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -369,19 +369,16 @@ SYM_FUNC_END(call_depth_return_thunk)
-  * 'JMP __x86_return_thunk' sites are changed to something else by
-  * apply_returns().
-  *
-- * This should be converted eventually to call a warning function which
-- * should scream loudly when the default return thunk is called after
-- * alternatives have been applied.
-- *
-- * That warning function cannot BUG() because the bug splat cannot be
-- * displayed in all possible configurations, leading to users not really
-- * knowing why the machine froze.
-+ * The ALTERNATIVE below adds a really loud warning to catch the case
-+ * where the insufficient default return thunk ends up getting used for
-+ * whatever reason like miscompilation or failure of
-+ * objtool/alternatives/etc to patch all the return sites.
-  */
- SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
--	ANNOTATE_UNRET_SAFE
--	ret
-+	ALTERNATIVE __stringify(ANNOTATE_UNRET_SAFE; ret), \
-+		   "jmp warn_thunk_thunk", X86_FEATURE_ALWAYS
- 	int3
- SYM_CODE_END(__x86_return_thunk)
- EXPORT_SYMBOL(__x86_return_thunk)
+-	/* L1D Flush includes CPU buffer clear to mitigate MDS */
++	/*
++	 * L1D Flush includes CPU buffer clear to mitigate MDS, but VERW
++	 * mitigation for MDS is done late in VMentry and is still
++	 * executed in spite of L1D Flush. This is because an extra VERW
++	 * should not matter much after the big hammer L1D Flush.
++	 */
+ 	if (static_branch_unlikely(&vmx_l1d_should_flush))
+ 		vmx_l1d_flush(vcpu);
+-	else if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF))
+-		mds_clear_cpu_buffers();
+ 	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
+ 		 kvm_arch_has_assigned_device(vcpu->kvm))
+ 		mds_clear_cpu_buffers();
 
