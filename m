@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-335-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-336-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59969852B54
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Feb 2024 09:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2ACF852C44
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Feb 2024 10:32:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16DD42838E6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Feb 2024 08:40:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EE96286EC9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Feb 2024 09:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13C51AAD0;
-	Tue, 13 Feb 2024 08:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735292232D;
+	Tue, 13 Feb 2024 09:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FqR3nORj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AQiCdoC+"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BK5pOFrw";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zn02mYTB"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0848118AED;
-	Tue, 13 Feb 2024 08:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7E82231A;
+	Tue, 13 Feb 2024 09:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707813599; cv=none; b=a5Kot4nBSZ236qLHd2olGt2dK9nL0u9IqijClLlCgZlgAzB87ta8cJP7we6lylyWRHJusr73P0smYht7pfQSaGBMZmhkrdUHbEMAS06rtfj02pSF2d0xqUiJSx5Hrswnz/PPC3MNtxkn+rNHtnjMaqLwUElh6kXqEYZI6pBNdN0=
+	t=1707816692; cv=none; b=Iu6VOeNLAZ0ZicbrOzE2qk32cuXGc9Rq/QTwiMgaQT+VoDW0aX3lQO83UCAvreCB5jiJ8d50VsWm1UZoWjf33a2fYlIhMuniBmWWd+k8PuD6EUJRNIMNps44RLhO7jBgXuVSD2/Jy1mxwfm3FHx9Fv6WUXVzGPoXuHnx5YuF9Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707813599; c=relaxed/simple;
-	bh=FUVFlKXHErfQHwVS12HqcrL/BlrR/XNwXJub9R1UUnU=;
+	s=arc-20240116; t=1707816692; c=relaxed/simple;
+	bh=CHGCrFJ5PA85vL/JAWsDwgeeH4F9vCPEVgIeTIXnBX8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=G7v+x5ePbIRzfpmjiH/NMnjre8W212Ezmb0GrFQeTiO0qVDgKCKIcWDxwjKHn/fV4K2F8Vc3NlnetDz3taVy/xJaBXK6XKjSciWXCxDcL+UIFMuJ4BBAhPL9dHfJTfGnBm8GSbVZ5Cy8PXXlGrCdg/BxLK4z0gMzvB5TiLpb/KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FqR3nORj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AQiCdoC+; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=qgOerQk5FDAwsatrOQuL4F49jUoeS2QliT8RyZajNl0DQ3jtVqP1R9xDbCekmEm5KlYoj5sNFmb9AO4T91fUzxtrpUp5lCVu8Z++ptoj427Q2Ehy8Cw5W5AyQHIMa3vFTO0VPa0COeMCmL2W0JnNE0BbwAtT4fRX+vO0HYn/H9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BK5pOFrw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zn02mYTB; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 13 Feb 2024 08:39:48 -0000
+Date: Tue, 13 Feb 2024 09:31:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1707813589;
+	s=2020; t=1707816689;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/ormm+PHwLi/CeFwP1A2naAwgJmnQBsAxeCyqCbJneM=;
-	b=FqR3nORjlwLo57t5FFCrDcJZrZ4kYwEPfnB3zBdljb27/X2S0xX2X5N9SihSn1NQc9+p9m
-	12UEu3gOC/PC2sb6lV3CuXbn8mqNt8AMMAPV3WNrfbZEI8XcwJ9zIhvPidWnUoUFqjOGuQ
-	+8U7Cm4V92KF+hRjVZgBSudaUg2Duvu0F5iiDiuXePDzd/mFQB9Jyhfid2cYIrHswjx/rD
-	hAfHK/1MqrD+uuYJ3rcd0ls5zadun6mlaxl0VtpKH1LYRHZQEibyq/5ZfSkL7rT7K12TVb
-	+ttOU/0+i2PePC6ldcfzwpvzrfj42b+AE8+Tjxg7IyrIGuVci29LO/ONtE/VTg==
+	bh=Eir1V6YU7HZRiKSbryLNbiHxrZP6CWzJqukJeVvpg2s=;
+	b=BK5pOFrwKTPm4pA52/vECVmC2uOcEea594XF/kCiDusGYlsiGYbgCOBDYS6m0qKT3ehwkz
+	skTEeYGn+D+Hfubce4927l+GdOeOUCbkUDMFRNVlxxy+lUeUTwDqbbe4JgrT+pgRAVupve
+	xPnS+mjnWYGWEZ1/R1PGyLZcaTZvNDb6X4P7buuC3nf6ZTIrEpH7g8lRiNBD5oRFZBdGan
+	AwrkI4bKmZELPQV6Fg1iHE7+p5yTKtaMV+mnL9E3pWiFZrgXvsC1aLZCPwFZLUKJ2sHt47
+	qznKhzk2F3Bf3QSJ7vjaNd3wMsYyvmdF5ox0gJ3T/KllsmoCSVPfO1BO1dpWaQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1707813589;
+	s=2020e; t=1707816689;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/ormm+PHwLi/CeFwP1A2naAwgJmnQBsAxeCyqCbJneM=;
-	b=AQiCdoC+rhHsjRbWwMJIAPgzekYzRRp3O89tm1Qz4JWgVsOPYnTU2xrjeKYHUV6+j9Tvbq
-	10p9R4wWT1wFTHBg==
-From: "tip-bot2 for Doug Berger" <tip-bot2@linutronix.de>
+	bh=Eir1V6YU7HZRiKSbryLNbiHxrZP6CWzJqukJeVvpg2s=;
+	b=zn02mYTB9+FseiixvXJae/XKOtpNSgqugbpkMbgrKLbONmoGnTp4CNR6Sts70imbLqNP3a
+	YU0X6DOF5579yIAw==
+From: "tip-bot2 for Dan Carpenter" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/irq-brcmstb-l2: Add write memory barrier
- before exit
-Cc: Doug Berger <opendmb@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Thomas Gleixner <tglx@linutronix.de>, Marc Zyngier <maz@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240210012449.3009125-1-florian.fainelli@broadcom.com>
-References: <20240210012449.3009125-1-florian.fainelli@broadcom.com>
+Subject: [tip: irq/urgent] irqchip/qcom-mpm: Fix IS_ERR() vs NULL check in
+ qcom_mpm_init()
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <22e1f4de-edce-4791-bd2d-2b2e98529492@moroto.mountain>
+References: <22e1f4de-edce-4791-bd2d-2b2e98529492@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170781358867.398.2362878690950793714.tip-bot2@tip-bot2>
+Message-ID: <170781668798.398.12651232833115648939.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,68 +83,41 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     b0344d6854d25a8b3b901c778b1728885dd99007
-Gitweb:        https://git.kernel.org/tip/b0344d6854d25a8b3b901c778b1728885dd99007
-Author:        Doug Berger <opendmb@gmail.com>
-AuthorDate:    Fri, 09 Feb 2024 17:24:49 -08:00
+Commit-ID:     8ad032cc8c499af6f3289c796f411e8874b50fdb
+Gitweb:        https://git.kernel.org/tip/8ad032cc8c499af6f3289c796f411e8874b50fdb
+Author:        Dan Carpenter <dan.carpenter@linaro.org>
+AuthorDate:    Thu, 01 Feb 2024 15:17:50 +03:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 13 Feb 2024 09:33:31 +01:00
+CommitterDate: Tue, 13 Feb 2024 10:26:15 +01:00
 
-irqchip/irq-brcmstb-l2: Add write memory barrier before exit
+irqchip/qcom-mpm: Fix IS_ERR() vs NULL check in qcom_mpm_init()
 
-It was observed on Broadcom devices that use GIC v3 architecture L1
-interrupt controllers as the parent of brcmstb-l2 interrupt controllers
-that the deactivation of the parent interrupt could happen before the
-brcmstb-l2 deasserted its output. This would lead the GIC to reactivate the
-interrupt only to find that no L2 interrupt was pending. The result was a
-spurious interrupt invoking handle_bad_irq() with its associated
-messaging. While this did not create a functional problem it is a waste of
-cycles.
+devm_ioremap() doesn't return error pointers, it returns NULL on error.
+Update the check accordingly.
 
-The hazard exists because the memory mapped bus writes to the brcmstb-l2
-registers are buffered and the GIC v3 architecture uses a very efficient
-system register write to deactivate the interrupt.
-
-Add a write memory barrier prior to invoking chained_irq_exit() to
-introduce a dsb(st) on those systems to ensure the system register write
-cannot be executed until the memory mapped writes are visible to the
-system.
-
-[ florian: Added Fixes tag ]
-
-Fixes: 7f646e92766e ("irqchip: brcmstb-l2: Add Broadcom Set Top Box  Level-2 interrupt controller")
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 221b110d87c2 ("irqchip/qcom-mpm: Support passing a slice of SRAM as reg space")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240210012449.3009125-1-florian.fainelli@broadcom.com
----
- drivers/irqchip/irq-brcmstb-l2.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/22e1f4de-edce-4791-bd2d-2b2e98529492@moroto.mountain
 
-diff --git a/drivers/irqchip/irq-brcmstb-l2.c b/drivers/irqchip/irq-brcmstb-l2.c
-index 5559c94..2b0b317 100644
---- a/drivers/irqchip/irq-brcmstb-l2.c
-+++ b/drivers/irqchip/irq-brcmstb-l2.c
-@@ -2,7 +2,7 @@
- /*
-  * Generic Broadcom Set Top Box Level 2 Interrupt controller driver
-  *
-- * Copyright (C) 2014-2017 Broadcom
-+ * Copyright (C) 2014-2024 Broadcom
-  */
- 
- #define pr_fmt(fmt)	KBUILD_MODNAME	": " fmt
-@@ -112,6 +112,9 @@ static void brcmstb_l2_intc_irq_handle(struct irq_desc *desc)
- 		generic_handle_domain_irq(b->domain, irq);
- 	} while (status);
- out:
-+	/* Don't ack parent before all device writes are done */
-+	wmb();
-+
- 	chained_irq_exit(chip, desc);
- }
- 
+---
+ drivers/irqchip/irq-qcom-mpm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/irqchip/irq-qcom-mpm.c b/drivers/irqchip/irq-qcom-mpm.c
+index cda5838..7942d8e 100644
+--- a/drivers/irqchip/irq-qcom-mpm.c
++++ b/drivers/irqchip/irq-qcom-mpm.c
+@@ -389,8 +389,8 @@ static int qcom_mpm_init(struct device_node *np, struct device_node *parent)
+ 		/* Don't use devm_ioremap_resource, as we're accessing a shared region. */
+ 		priv->base = devm_ioremap(dev, res.start, resource_size(&res));
+ 		of_node_put(msgram_np);
+-		if (IS_ERR(priv->base))
+-			return PTR_ERR(priv->base);
++		if (!priv->base)
++			return -ENOMEM;
+ 	} else {
+ 		/* Otherwise, fall back to simple MMIO. */
+ 		priv->base = devm_platform_ioremap_resource(pdev, 0);
 
