@@ -1,80 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-339-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-340-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F74D852D3A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Feb 2024 10:58:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC417852D3B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Feb 2024 10:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AD4428D241
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Feb 2024 09:58:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6574B28D200
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Feb 2024 09:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D0E321AA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E51E33989;
 	Tue, 13 Feb 2024 09:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="C0FgHTg+";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YW9SSPF1"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="s0W9Nxn3";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zIBTEQVF"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C647A2C689;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF28E2C697;
 	Tue, 13 Feb 2024 09:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707818223; cv=none; b=Y/Vs7T59cjPaN4+YmAFM43iivsRMcCVnQFm0mz54WupRjoZyAsQEcXJcGoBstEvi4rRuk2/WvuTL6C97STMH56QWdW1ntd7hAabWoBZNE8kfnHEXUfwnNj1vPk8lvT0rf5X0nT3nYPfmbVHpNBHky7JrZpsO+G/4yni4LUNNppg=
+	t=1707818223; cv=none; b=uEjzY07yvOpRxLEM3onMlAudz491E3kCyvRMTD/DxTijjP3qOBguRgQtxRx82lZIQLT/F3cJpbBtMDqi+djJp0NfHBRIHQH5eI8m6AaRBnCMyauLpCuok+/kCZ+zByPGXxyJIJWwfRQpAkdOLRQGPg+A0wO+gShLy4XTaK+Pp9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1707818223; c=relaxed/simple;
-	bh=mTaDyVMtRZwxa9j2lHhhogsZ7zwCVB9IpyeNRMzoUr0=;
+	bh=iGjPOz9dqoNts+T+448I5hUuxjj0LAiQI+tQQaJfbqc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=txnrAmDG3nbA4bWPvrq6nuLxgWcRUTQdgBOLgkJOSNX1028nNZ0oZkHJApsJ0JldEbikBmL4S1qhRXyFp9W3/mgMTVxgxhnJ3TtUWbpc0SnYsNl5r/T/Lm9sEdvhDfZgRD7mLKmjxjCnO6L14lM4LNaQHC1FoAGP1VFRLSZWrwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=C0FgHTg+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YW9SSPF1; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=uYYfG9PxdMOZsXiJEKba8eLa9UeCJ92eFeDMK6bcGbi5PGtbixtcANb3tmQavwmp+xbypygQj2k0USvb3YPIvZyIIqoLEcftBgXysmTxntndPe+mp1+egQkC/gGkEjK6KyDfPbIDopJu4n95qP2d3IRY5Mvm+qK89vzyZt2Yt1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=s0W9Nxn3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zIBTEQVF; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 13 Feb 2024 09:56:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1707818219;
+	s=2020; t=1707818220;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KTerp5HT+idSBqJrLaS8vYAD0Y7JjuxhMyXb9HEVw28=;
-	b=C0FgHTg+ZP+8PYYc4GGQUku5NsLqQHER8qUANLJn3IyRFSf1RjqkGLy33sg+wcwQ8FO75M
-	7FjF7al0g2vOJe/sv3UqZ1pts8LoAyPsViNt6zq17QiJfZ2uRkbOwwRlj+upivY3INgxVw
-	d7UTrBM0LmSchEMn9w41na9rQaeP7CP6ovPP4OFD1Ur7E6GjWPAOJdjn2qzkCyn0ftL05h
-	7MGy9bCWEg6JOHHlN2hSPUgntvFhdKg056VY+Goqesf3T+hS0Iv1J7WUdhzQtBlUmGuRnp
-	sXpc5VIVB67GKkQMNFPJHeb7yEIqmvupPas+3LHKb035+UIzkl46VyR0kvgdRg==
+	bh=Ga8gjUuHA/M7trC17sJZBov1w6L2E4sKkS4+7bQ0WlI=;
+	b=s0W9Nxn3w4Byhsclt6UgDO6x91WCX516I/C6MB212tw6OPVujyyHHEAFji0Lkpy15NVP+y
+	LgeuKFA5tYt9CLJ8oOLkRSuYakNUH4ux1p6aG7VNnUKwpFehp1gtTmC6YDhkY322dEeDJ3
+	rNlEGQ46Uf7vWgu2x/KxrzibQAJp/xLlbFANADaA0PAFOPUa3qKAL8hJ/dwg7e6mEJ7p/a
+	OX4UpT+3r9wnoSPaj0/fMoR9wJTfzKXADo5LTHd1/MtcpK5rUUhZzOFUmU5+oJz+Fma1la
+	okH7kgXJC5vB//RzTt5w0vs9VyulH/JcjDZ53gDxo64yHTaXCYKTfZfEO2YVGg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1707818219;
+	s=2020e; t=1707818220;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KTerp5HT+idSBqJrLaS8vYAD0Y7JjuxhMyXb9HEVw28=;
-	b=YW9SSPF1RC56iIkZdLFgFAU7OqFgqqLXyiu7QElYyh+J3mx3l04Q1CNS+RqGG8A7de3t79
-	IxrelQzehv4QpuDw==
-From: "tip-bot2 for Erick Archer" <tip-bot2@linutronix.de>
+	bh=Ga8gjUuHA/M7trC17sJZBov1w6L2E4sKkS4+7bQ0WlI=;
+	b=zIBTEQVFhNdyvuRldyHD98Ed7SqET24yEqT8Y7AuyTFMgzQ5EBEz2WcadP4dmcLxkFAkGp
+	mzIp85HDLfZ+pvAw==
+From: "tip-bot2 for Bibo Mao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/bcm-6345-l1: Prefer struct_size)_ over open
- coded arithmetic
-Cc: Erick Archer <erick.archer@gmx.com>, Thomas Gleixner <tglx@linutronix.de>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Kees Cook <keescook@chromium.org>,
- Florian Fainelli <florian.fainelli@broadcom.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240209181600.9472-1-erick.archer@gmx.com>
-References: <20240209181600.9472-1-erick.archer@gmx.com>
+Subject: [tip: irq/core] irqchip/loongson-eiointc: Remove explicit interrupt
+ affinity restore on resume
+Cc: Bibo Mao <maobibo@loongson.cn>, Thomas Gleixner <tglx@linutronix.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240130082722.2912576-4-maobibo@loongson.cn>
+References: <20240130082722.2912576-4-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170781821908.398.371290728146239013.tip-bot2@tip-bot2>
+Message-ID: <170781821970.398.12234224860251731939.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,56 +81,58 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     004c7a6bf43edbd4b092fb6ebba8991d56bc3428
-Gitweb:        https://git.kernel.org/tip/004c7a6bf43edbd4b092fb6ebba8991d56bc3428
-Author:        Erick Archer <erick.archer@gmx.com>
-AuthorDate:    Fri, 09 Feb 2024 19:16:00 +01:00
+Commit-ID:     83c0708719f77018cd3b98b0011c9526a3e0e2ca
+Gitweb:        https://git.kernel.org/tip/83c0708719f77018cd3b98b0011c9526a3e0e2ca
+Author:        Bibo Mao <maobibo@loongson.cn>
+AuthorDate:    Tue, 30 Jan 2024 16:27:22 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 13 Feb 2024 10:53:15 +01:00
+CommitterDate: Tue, 13 Feb 2024 10:53:14 +01:00
 
-irqchip/bcm-6345-l1: Prefer struct_size)_ over open coded arithmetic
+irqchip/loongson-eiointc: Remove explicit interrupt affinity restore on resume
 
-This is an effort to get rid of all multiplications from allocation
-functions in order to prevent integer overflows.
+During suspend all CPUs except CPU0 are hot-unpluged and all active
+interrupts are migrated to CPU0.
 
-The cpu variable is a pointer to "struct bcm6345_l1_cpu" and this structure
-ends in a flexible array:
+On resume eiointc_router_init() affines all interrupts to CPU0, so the
+subsequent explicit interrupt affinity restore is redundant.
 
-struct bcm6345_l1_cpu {
-	[...]
-	u32	enable_cache[];
-};
+Remove it.
 
-The preferred way in the kernel is to use the struct_size() helper to do
-the arithmetic instead of the argument "size + count * size" in the
-kzalloc() function.
+[ tglx: Rewrote changelog ]
 
-This way, the code is more readable and safer.
-
-Signed-off-by: Erick Archer <erick.archer@gmx.com>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20240209181600.9472-1-erick.archer@gmx.com
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
-Link: https://github.com/KSPP/linux/issues/162 [2]
-
+Link: https://lore.kernel.org/r/20240130082722.2912576-4-maobibo@loongson.cn
 ---
- drivers/irqchip/irq-bcm6345-l1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-loongson-eiointc.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/drivers/irqchip/irq-bcm6345-l1.c b/drivers/irqchip/irq-bcm6345-l1.c
-index 9745a11..eb02d20 100644
---- a/drivers/irqchip/irq-bcm6345-l1.c
-+++ b/drivers/irqchip/irq-bcm6345-l1.c
-@@ -242,7 +242,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
- 	else if (intc->n_words != n_words)
- 		return -EINVAL;
+diff --git a/drivers/irqchip/irq-loongson-eiointc.c b/drivers/irqchip/irq-loongson-eiointc.c
+index fad22e2..405f622 100644
+--- a/drivers/irqchip/irq-loongson-eiointc.c
++++ b/drivers/irqchip/irq-loongson-eiointc.c
+@@ -310,23 +310,7 @@ static int eiointc_suspend(void)
  
--	cpu = intc->cpus[idx] = kzalloc(sizeof(*cpu) + n_words * sizeof(u32),
-+	cpu = intc->cpus[idx] = kzalloc(struct_size(cpu, enable_cache, n_words),
- 					GFP_KERNEL);
- 	if (!cpu)
- 		return -ENOMEM;
+ static void eiointc_resume(void)
+ {
+-	int i, j;
+-	struct irq_desc *desc;
+-	struct irq_data *irq_data;
+-
+ 	eiointc_router_init(0);
+-
+-	for (i = 0; i < nr_pics; i++) {
+-		for (j = 0; j < eiointc_priv[0]->vec_count; j++) {
+-			desc = irq_resolve_mapping(eiointc_priv[i]->eiointc_domain, j);
+-			if (desc && desc->handle_irq && desc->handle_irq != handle_bad_irq) {
+-				raw_spin_lock(&desc->lock);
+-				irq_data = irq_domain_get_irq_data(eiointc_priv[i]->eiointc_domain, irq_desc_get_irq(desc));
+-				eiointc_set_irq_affinity(irq_data, irq_data->common->affinity, 0);
+-				raw_spin_unlock(&desc->lock);
+-			}
+-		}
+-	}
+ }
+ 
+ static struct syscore_ops eiointc_syscore_ops = {
 
