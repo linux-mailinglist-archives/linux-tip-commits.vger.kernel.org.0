@@ -1,97 +1,170 @@
-Return-Path: <linux-tip-commits+bounces-371-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-372-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D558575B2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 06:42:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB638578B8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 10:21:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6117AB23F00
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 05:42:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 268421F21A45
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 09:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE3212E75;
-	Fri, 16 Feb 2024 05:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057061B951;
+	Fri, 16 Feb 2024 09:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVw0UCQo"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CsMiAhik";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E9k5Qe05"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A6F12E63;
-	Fri, 16 Feb 2024 05:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B071B81A;
+	Fri, 16 Feb 2024 09:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708062157; cv=none; b=ZzDD1iW+s3ktkdWC/fos0Soj4YwqPWoaSkbSiEfcPjif+c3lKxYLd91rkAMvxg/IkTEd1AEmNY0qATtYs3WEH94DakFludnf2GPYXW4yutT3BTzuKxhOGMv00JulozO0HxaURk1X/VtbpnEvM0CbZiwWZ8hljv0dq1yREs1mJQ8=
+	t=1708075258; cv=none; b=BRAEMpEuoFX1NfyFuTMFEvoVWvu7Y9gu3NkyF8kQ52xnM+w/nQ16ArENN4g2FAazTEeZBYt0ueeBXNq3O5paIf75vLlWZHXPet603yjZnxR58uFzPPbHp2OI6phIopqMG7czLZDOZkOXRmhST6uVuZE9nfy2QKohZzX1phFn3eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708062157; c=relaxed/simple;
-	bh=cZ33RbXWRl7oeyYH20+M7tDKsle252OAe/cyfg297aE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RgmQMMgmDEVXW1PxHRYpTdD3NSLQ472zuvz5S11/bUtZ8iGkEwXjOotzooPBsGkjoot7NuMkqjVKBECSvPQrY4+w1C925Vy+HlSZFe3fF3OWct9qLRbiwR9dx+8f3+DJsqZaPhMsFsExE1QXfjBa1smmVvdBdp9SwdoNMj9M2L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVw0UCQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60732C433F1;
-	Fri, 16 Feb 2024 05:42:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708062157;
-	bh=cZ33RbXWRl7oeyYH20+M7tDKsle252OAe/cyfg297aE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VVw0UCQoAkNFSoG6Wg5/BqtvlTSQRfaG+ZkZ4Gcbj0+b5x2KnR74ib/lPnfYYfNQv
-	 9ofAWa1Fg0WfQLtzVibadFijfwJDV8bnCxK9e4QkAWHktCaixQPt2bKwFwb3KPn5iT
-	 Cnj+7+9uphoOR4lAU4FyOBd+E20pbvWA1tOhhKXzfpvgNQ0NsNlNx5Og25M6fLoIoq
-	 zouKKe7XCB6EOT6mdzOBvU227WB/qoJzZroGpgk+7RNGWi8SHCUfUwpwYQLtxX6fOm
-	 2dqJdQyP3qNRJbCK/nZj0S+JZ0eiCoryqYVqFvXBKYSZUwRgKAuDVBciNGgdpmrVBL
-	 Rr1NpffmUgHOg==
-Date: Thu, 15 Feb 2024 21:42:35 -0800
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Nathan Chancellor <nathan@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org, x86@kernel.org
-Subject: Re: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't
- used at runtime
-Message-ID: <20240216054235.ecpwuni2f3yphhuc@treble>
-References: <20231010171020.462211-4-david.kaplan@amd.com>
- <170774721951.398.8999401565129728535.tip-bot2@tip-bot2>
- <20240215032049.GA3944823@dev-arch.thelio-3990X>
- <20240215155349.GBZc4zjaHn8hj6xOq3@fat_crate.local>
+	s=arc-20240116; t=1708075258; c=relaxed/simple;
+	bh=RY5XxsCnyG2c3FxZcPo9EhUyfPW5xM36aDUFL59XXeg=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=QjbDXX3dfPsQMy6xOw95hfgbIjX+skUTzyFM0jQUUTknHDmeV/8NLETKaLBVD5EzwKXF2yHZs5L09VoWuyw2QA6D0aFmAYe6DKG4B3M7mY1speZbP0Fpfg37Q7XEcg92pXLQzAszwk8zf828sqYGA203GO51QlYzD0d+xz12dtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CsMiAhik; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E9k5Qe05; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 16 Feb 2024 09:20:53 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708075255;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=i0VeBzoJh9QD78pHNrI9e6Wlof8o7nvhKh2UMUiADUg=;
+	b=CsMiAhikZoErEjyDDXP2JDHdvvju5tXQTjffD5V1ldBR1xACJQ/GwMeL3K0ZWLDE1zQ08y
+	N6FzT85nTfYLir4A2Le1M8Gh9FWsaFnO6FJwX7gclvpGdaXi2NrVBASQBw/2nK5Z/PCwQV
+	FysGZnBufmjSh5UJWS2c9FheV2Lv+ydkfyh1SUoxv14vaJaS98bWVy2xZZnCr/IHakXq9q
+	8deccZird7YB3i0YoKbn6MxKpR8gI+mnvfNnrwNRcw4Umr0beI4YsKIpHzzCzgEez/GTTV
+	IdWB1G1v0Yj0LSl8IfMRHIqq+ihZO9UWyXyi3OROPaS32z2Q/mFPKxJklRxxPQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708075255;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=i0VeBzoJh9QD78pHNrI9e6Wlof8o7nvhKh2UMUiADUg=;
+	b=E9k5Qe05TWd5/SV/UqerYzNl7RBxjYk/Xj9a7dl69dpvQjW2C2w06/GZ+qKts4sd07yumW
+	V0UlWwgqCvgVvADg==
+From: "tip-bot2 for Shrikanth Hegde" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: sched/core] sched/core: Simplify code by removing duplicate #ifdefs
+Cc: Shrikanth Hegde <sshegde@linux.ibm.com>, Ingo Molnar <mingo@kernel.org>,
+ Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240216061433.535522-1-sshegde@linux.ibm.com>
+References: <20240216061433.535522-1-sshegde@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240215155349.GBZc4zjaHn8hj6xOq3@fat_crate.local>
+Message-ID: <170807525377.398.6140727129795526147.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 15, 2024 at 04:53:49PM +0100, Borislav Petkov wrote:
-> I'd tend to look in Josh's direction as to say what would be the right
-> thing to do here and more specifically, where?
-> 
-> We need to run objtool on the vdso objects which are *kernel* code.
-> I.e., that initcall thing. The vdso-image-64.c gets generated by vdso2c
-> and lands in arch/x86/entry/vdso/vdso-image-64.c, that's why objtool
-> hasn't seen it yet.
-> 
-> I mean, it is one initcall in the vdso, probably not that important and
-> if its return hasn't been patched, it won't be the end of the world but
-> still...
-> 
-> In any case, the patch works as advertized! :-)
+The following commit has been merged into the sched/core branch of tip:
 
-Right, the good news is this isn't a regression and the warning is
-working as designed.
+Commit-ID:     8cec3dd9e5930c82c6bd0af3fdb3a36bcd428310
+Gitweb:        https://git.kernel.org/tip/8cec3dd9e5930c82c6bd0af3fdb3a36bcd428310
+Author:        Shrikanth Hegde <sshegde@linux.ibm.com>
+AuthorDate:    Fri, 16 Feb 2024 11:44:33 +05:30
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 16 Feb 2024 09:37:15 +01:00
 
-This should tell the build to invoke objtool on that file:
+sched/core: Simplify code by removing duplicate #ifdefs
 
-diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-index b1b8dd1608f7..92d67379f570 100644
---- a/arch/x86/entry/vdso/Makefile
-+++ b/arch/x86/entry/vdso/Makefile
-@@ -36,6 +36,7 @@ UBSAN_SANITIZE_vma.o			:= y
- KCSAN_SANITIZE_vma.o			:= y
- OBJECT_FILES_NON_STANDARD_vma.o		:= n
- OBJECT_FILES_NON_STANDARD_extable.o	:= n
-+OBJECT_FILES_NON_STANDARD_vdso-image-64.o := n
+There's a few cases of nested #ifdefs in the scheduler code
+that can be simplified:
+
+  #ifdef DEFINE_A
+  ...code block...
+    #ifdef DEFINE_A       <-- This is a duplicate.
+    ...code block...
+    #endif
+  #else
+    #ifndef DEFINE_A     <-- This is also duplicate.
+    ...code block...
+    #endif
+  #endif
+
+More details about the script and methods used to find these code
+patterns can be found at:
+
+  https://lore.kernel.org/all/20240118080326.13137-1-sshegde@linux.ibm.com/
+
+No change in functionality intended.
+
+[ mingo: Clarified the changelog. ]
+
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20240216061433.535522-1-sshegde@linux.ibm.com
+---
+ kernel/sched/core.c | 4 +---
+ kernel/sched/fair.c | 2 --
+ 2 files changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 9116bcc..a76c709 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1792,7 +1792,6 @@ static void cpu_util_update_eff(struct cgroup_subsys_state *css);
+ #endif
  
- # vDSO images to build
- vdso_img-$(VDSO64-y)		+= 64
+ #ifdef CONFIG_SYSCTL
+-#ifdef CONFIG_UCLAMP_TASK
+ #ifdef CONFIG_UCLAMP_TASK_GROUP
+ static void uclamp_update_root_tg(void)
+ {
+@@ -1898,7 +1897,6 @@ undo:
+ 	return result;
+ }
+ #endif
+-#endif
+ 
+ static int uclamp_validate(struct task_struct *p,
+ 			   const struct sched_attr *attr)
+@@ -2065,7 +2063,7 @@ static void __init init_uclamp(void)
+ 	}
+ }
+ 
+-#else /* CONFIG_UCLAMP_TASK */
++#else /* !CONFIG_UCLAMP_TASK */
+ static inline void uclamp_rq_inc(struct rq *rq, struct task_struct *p) { }
+ static inline void uclamp_rq_dec(struct rq *rq, struct task_struct *p) { }
+ static inline int uclamp_validate(struct task_struct *p,
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 533547e..8e30e2b 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10182,10 +10182,8 @@ static int idle_cpu_without(int cpu, struct task_struct *p)
+ 	 * be computed and tested before calling idle_cpu_without().
+ 	 */
+ 
+-#ifdef CONFIG_SMP
+ 	if (rq->ttwu_pending)
+ 		return 0;
+-#endif
+ 
+ 	return 1;
+ }
 
