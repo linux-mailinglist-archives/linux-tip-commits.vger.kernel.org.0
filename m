@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-380-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-381-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320C785807C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 16:17:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51C485807D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 16:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83480B2182B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 15:17:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B513E1C2099A
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 15:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90AD312FF96;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC552130AC9;
 	Fri, 16 Feb 2024 15:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uFrX6Yc9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ECYwbaSj"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hsJ/eEh/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sjih0QiM"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB0C12FB2D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AED12FB32;
 	Fri, 16 Feb 2024 15:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708096614; cv=none; b=V7vN5xU52lPEHoRcghJXK/V/rSN2+sky83HlKGPk018hmVdg1pBC6Jn6CeW+6LFItYfDw23A//R22vtI9Qqdik2fapLjvKZycngfMqc9N5UCEx7NzDfxj6MbnfZq14fpwfnesCkfZxV0Nyl9f+XRJoRP3FC9RbWSi9gMVesHp9g=
+	t=1708096614; cv=none; b=ggF5Q1Jndm24p+HXp5ne+3WWx/EnQa+uHna2f31nDlUylZTcz6jGN4b2B9hB5kLqLJ/MMKZZS4jshTHlxUKIP0nYCPwfEjjNtwXAR9eByJ97LPnEbx2PfVYaiw2v6tfPY6CDVB1iqwwDY6m8/5sDMWzA4Jn2VzwvD1p7ZJBFq+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1708096614; c=relaxed/simple;
-	bh=ioe2GA/1+lcfLti+VlRk9lhT10z3QQ1cuSbotr0bXzY=;
+	bh=UnQ6UWZ1b78WNk1udN307W3ub9CZWBVF30hIC4t4uj8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=UA1zFB9e5q4K5Hdf9i1/4MlzcUB8jnSQnsK7Zy/g3pVhsGoj3K9SxK4Lt8PJmGOzs6cofSU2VaNkIjwZVMzxBbP+g32XxwU18DZtkb/mQ3TGoT9GAtqpJR+EkA3QNxZKl7wyAeIM7/jEi2af9DG0HfiYWB3muyRvqyFDVMLijAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uFrX6Yc9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ECYwbaSj; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=BNlEIkjPxGTMZXa4lBr/6/ig6eb2VLHjrM2jjVpXU1tUr6/CPsXksPvYRJsK5WJdaIrly04ca0Ro7IXLCqkBZulnbBkhrqaLujE/VC0ioHWK7O2DYf6RciQb1ZXLdSqd9RMOfm5VdeLi2rW7pe8mn/+TkPNedGymYxPOgP/lzzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hsJ/eEh/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sjih0QiM; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 16 Feb 2024 15:16:49 -0000
+Date: Fri, 16 Feb 2024 15:16:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708096610;
+	s=2020; t=1708096611;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KtWFXfkl1AGKFK+oSAjJDdxbIk0vfWtKmBtSsanyfDM=;
-	b=uFrX6Yc9qZNr5amXZOEtd2llG8AHi67w2pq2/bTxT2gJt7oAfhTJ8yt6uIlqL6fMO6RNiq
-	wlB1wLqXszQSrGcOwXHxaROTWwj+ryg4y4X53WXjW8AT0ed/lDTihCQ6cGTzldJIalMdDI
-	HUKVaN0BTPiuPMMTucekTnqP6J/IjCwkPLV01KMUYTif67mSmgdcuTWU01TchxmfHCOlbu
-	ezGqTwL1BAv+2ruy54P9DUCRb3oLFduuvbsVZuyWLuc9gi8VbDigmqXVE8+XuBSrZjXEGO
-	EtKz6i/OTFUVa48WZ+zJBbvQ0+ZwcF7j+JmUbv9d+ixLSsPFXBJHXZnVZRuWGg==
+	bh=pvpcHu2e3O6rmpf62lLnlHs1KftwGXwpCIWQDAfShOE=;
+	b=hsJ/eEh/1vHWuUHacMNKCfDHclqbmsPRxaRCru6mXCjKd2Ag0zOL9nCvhaFdZ3D4swXhuL
+	c6yuAq+UrtAFF4gAbgohgXeMlQkYCSoiHWiFqexmkHcqzY6wMTPsEzCltQP+d7twujMvgr
+	D92F9cmY6ALuP/9Swc+VV9p/hzRTaNPwW4LbX1VLRQRNYN6h+FrbCqEzS+XSqqGv5fcayW
+	wKR9UiJpvSCpBiQ8sSJxqzuP8NGqzyRu60gLIT/LD5vs8inCq0GwJBqd5zPdCp2zYZ9SZM
+	Kr/uZdeqbxt6G+x71teGa9UXBO8HA7+BKjrULDcoWwv+HwmuFbpWdQPmAp8Hlg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708096610;
+	s=2020e; t=1708096611;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KtWFXfkl1AGKFK+oSAjJDdxbIk0vfWtKmBtSsanyfDM=;
-	b=ECYwbaSjpI2KgQErkpKE9v0yIJiSMEK5VnJeF3SSriKRs5XIQ4N3dSS1JFcoOmy88I3CRn
-	igjLZ3SHf9wTOiCg==
+	bh=pvpcHu2e3O6rmpf62lLnlHs1KftwGXwpCIWQDAfShOE=;
+	b=sjih0QiMYbRt07h0GG9nFDZDfDSlQ9yzHo2wNmLAE2C0PfT4s2EEvZ7nJrf9gldtfYuThc
+	fHmkoW4o/GvnucAA==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/cpu/topology: Provide logical pkg/die mapping
+Subject: [tip: x86/apic] x86/cpu/topology: Simplify cpu_mark_primary_thread()
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  Michael Kelley <mhklinux@outlook.com>, Sohil Mehta <sohil.mehta@intel.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240213210252.846136196@linutronix.de>
-References: <20240213210252.846136196@linutronix.de>
+In-Reply-To: <20240213210252.791176581@linutronix.de>
+References: <20240213210252.791176581@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170809660991.398.11224403618848319747.tip-bot2@tip-bot2>
+Message-ID: <170809661071.398.6594587752889764685.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,92 +81,45 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     b7065f4f844c7876ed071b67e2ba57838152bd63
-Gitweb:        https://git.kernel.org/tip/b7065f4f844c7876ed071b67e2ba57838152bd63
+Commit-ID:     5e40fb2d4a4c7503cab4f923b7d985dbcf583581
+Gitweb:        https://git.kernel.org/tip/5e40fb2d4a4c7503cab4f923b7d985dbcf583581
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 13 Feb 2024 22:06:07 +01:00
+AuthorDate:    Tue, 13 Feb 2024 22:06:06 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 15 Feb 2024 22:07:44 +01:00
 
-x86/cpu/topology: Provide logical pkg/die mapping
+x86/cpu/topology: Simplify cpu_mark_primary_thread()
 
-With the topology bitmaps in place the logical package and die IDs can
-trivially be retrieved by determining the bitmap weight of the relevant
-topology domain level up to and including the physical ID in question.
-
-Provide a function to that effect.
+No point in creating a mask via fls(). smp_num_siblings is guaranteed to be
+a power of 2. So just using (smp_num_siblings - 1) has the same effect.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Michael Kelley <mhklinux@outlook.com>
 Tested-by: Sohil Mehta <sohil.mehta@intel.com>
-Link: https://lore.kernel.org/r/20240213210252.846136196@linutronix.de
+Link: https://lore.kernel.org/r/20240213210252.791176581@linutronix.de
 
 
 
 
 
 ---
- arch/x86/include/asm/topology.h |  9 +++++++++
- arch/x86/kernel/cpu/topology.c  | 28 ++++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+)
+ arch/x86/kernel/cpu/topology.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
-index 94ef1a6..bdd6a98 100644
---- a/arch/x86/include/asm/topology.h
-+++ b/arch/x86/include/asm/topology.h
-@@ -156,6 +156,15 @@ static inline unsigned int topology_max_die_per_package(void)
- 	return __max_dies_per_package;
- }
- 
-+#ifdef CONFIG_X86_LOCAL_APIC
-+int topology_get_logical_id(u32 apicid, enum x86_topology_domains at_level);
-+#else
-+static inline int topology_get_logical_id(u32 apicid, enum x86_topology_domains at_level)
-+{
-+	return 0;
-+}
-+#endif
-+
- #ifdef CONFIG_SMP
- #define topology_cluster_id(cpu)		(cpu_data(cpu).topo.l2c_id)
- #define topology_die_cpumask(cpu)		(per_cpu(cpu_die_map, cpu))
 diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index aea408d..29759b4 100644
+index f3397e2..aea408d 100644
 --- a/arch/x86/kernel/cpu/topology.c
 +++ b/arch/x86/kernel/cpu/topology.c
-@@ -229,6 +229,34 @@ void __init topology_register_boot_apic(u32 apic_id)
- 	topo_register_apic(apic_id, CPU_ACPIID_INVALID, true);
+@@ -76,10 +76,7 @@ bool arch_match_cpu_phys_id(int cpu, u64 phys_id)
+ #ifdef CONFIG_SMP
+ static void cpu_mark_primary_thread(unsigned int cpu, unsigned int apicid)
+ {
+-	/* Isolate the SMT bit(s) in the APICID and check for 0 */
+-	u32 mask = (1U << (fls(smp_num_siblings) - 1)) - 1;
+-
+-	if (smp_num_siblings == 1 || !(apicid & mask))
++	if (!(apicid & (smp_num_siblings - 1)))
+ 		cpumask_set_cpu(cpu, &__cpu_primary_thread_mask);
  }
- 
-+/**
-+ * topology_get_logical_id - Retrieve the logical ID at a given topology domain level
-+ * @apicid:		The APIC ID for which to lookup the logical ID
-+ * @at_level:		The topology domain level to use
-+ *
-+ * @apicid must be a full APIC ID, not the normalized variant. It's valid to have
-+ * all bits below the domain level specified by @at_level to be clear. So both
-+ * real APIC IDs and backshifted normalized APIC IDs work correctly.
-+ *
-+ * Returns:
-+ *  - >= 0:	The requested logical ID
-+ *  - -ERANGE:	@apicid is out of range
-+ *  - -ENODEV:	@apicid is not registered
-+ */
-+int topology_get_logical_id(u32 apicid, enum x86_topology_domains at_level)
-+{
-+	/* Remove the bits below @at_level to get the proper level ID of @apicid */
-+	unsigned int lvlid = topo_apicid(apicid, at_level);
-+
-+	if (lvlid >= MAX_LOCAL_APIC)
-+		return -ERANGE;
-+	if (!test_bit(lvlid, apic_maps[at_level].map))
-+		return -ENODEV;
-+	/* Get the number of set bits before @lvlid. */
-+	return bitmap_weight(apic_maps[at_level].map, lvlid);
-+}
-+EXPORT_SYMBOL_GPL(topology_get_logical_id);
-+
- #ifdef CONFIG_ACPI_HOTPLUG_CPU
- /**
-  * topology_hotplug_apic - Handle a physical hotplugged APIC after boot
+ #else
 
