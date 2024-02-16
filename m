@@ -1,133 +1,97 @@
-Return-Path: <linux-tip-commits+bounces-370-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-371-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360D7856E32
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Feb 2024 20:59:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D558575B2
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 06:42:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA3B11F2322D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Feb 2024 19:59:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6117AB23F00
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 05:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1515145FEC;
-	Thu, 15 Feb 2024 19:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE3212E75;
+	Fri, 16 Feb 2024 05:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kKQW7O9D";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="G47cNF+L"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVw0UCQo"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33184145344;
-	Thu, 15 Feb 2024 19:57:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A6F12E63;
+	Fri, 16 Feb 2024 05:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708027028; cv=none; b=Ca3+Rr1K5ZHlcCzMgF+mZUFZr/CX3g1g8Aa9fVeUwXMbxfdVJggoqv3MmdjcPKmchXAfiwaQEC7AxKR2ZDSdYE9Lx3aPbYDH12BrGhMsu7yBgjHr+cwFE+m1avb9lIROKwsXL2r0PcZ0J/u6wkj3LJUXAKbehlO4Lw5T3JStlIY=
+	t=1708062157; cv=none; b=ZzDD1iW+s3ktkdWC/fos0Soj4YwqPWoaSkbSiEfcPjif+c3lKxYLd91rkAMvxg/IkTEd1AEmNY0qATtYs3WEH94DakFludnf2GPYXW4yutT3BTzuKxhOGMv00JulozO0HxaURk1X/VtbpnEvM0CbZiwWZ8hljv0dq1yREs1mJQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708027028; c=relaxed/simple;
-	bh=sRprGE4OtoJgLdSrRq9T+Y5449jUfBBENtG+uLb5r5o=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=KKr9WLINS1dmBNmxHGRc2+sUlRUdGZ4exEbWVTJvbEdsmBH/FRlW17ObvS4Emmxnbabt1vl0+W0HZ2gRYORSFkZ6Y0RJYs69NBpv/FKP+UgO+yKg3S6EKVDAGy3t70C9j3/fUXOAt73cRF/Go/gDo5gJjU/DMcHxTFbV7SUVlvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kKQW7O9D; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=G47cNF+L; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 15 Feb 2024 19:57:04 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708027025;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uNWzmlYHTyuBRWs7MhCU34vGoL/mBld4kUDv/xrBnfk=;
-	b=kKQW7O9D9CcBq75DdPiJIzT+9I2ke0NEySKmdBDj0H6dItAjO/4cUdYISMBAQ1ZMWwf+Qt
-	L59OdbAujdhe53t62QjDappl0mRkWvZMdCBPD6JzVpc5xX0lK1aHwAG/VNqF6B3CGZMDF9
-	IpFE5Zhbsp9qaxUO3ulmeKl267zDNH9XxMQ/jl9lEPlAIR4wSC89ix2mRgR7ngxswiOgcU
-	fhFYSyUqSxtwQcLZW63NpoowHshItWVYq93t3UYysx7Wm8kYyjRJlwxztcJracvIjKxfDo
-	OHVwc4ph6vaIXFzimTJeXQ0bIU32LO4nOIwVmJ+7h3HdsjGxpb/Exvdraxdzzw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708027025;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uNWzmlYHTyuBRWs7MhCU34vGoL/mBld4kUDv/xrBnfk=;
-	b=G47cNF+L5JKViYuZPQ8dsO7hGDJefczxT//Lnek/SpVut7loFNCxYhvZtbLnkdCtraJr6T
-	zGWFBAt17aOcW1Ag==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] irqchip/gic-v3: Make gic_irq_domain_select() robust
- for zero parameter count
-Cc: Thomas Gleixner <tglx@linutronix.de>, Anup Patel <apatel@ventanamicro.com>,
- Marc Zyngier <maz@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240127161753.114685-2-apatel@ventanamicro.com>
-References: <20240127161753.114685-2-apatel@ventanamicro.com>
+	s=arc-20240116; t=1708062157; c=relaxed/simple;
+	bh=cZ33RbXWRl7oeyYH20+M7tDKsle252OAe/cyfg297aE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RgmQMMgmDEVXW1PxHRYpTdD3NSLQ472zuvz5S11/bUtZ8iGkEwXjOotzooPBsGkjoot7NuMkqjVKBECSvPQrY4+w1C925Vy+HlSZFe3fF3OWct9qLRbiwR9dx+8f3+DJsqZaPhMsFsExE1QXfjBa1smmVvdBdp9SwdoNMj9M2L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVw0UCQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60732C433F1;
+	Fri, 16 Feb 2024 05:42:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708062157;
+	bh=cZ33RbXWRl7oeyYH20+M7tDKsle252OAe/cyfg297aE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VVw0UCQoAkNFSoG6Wg5/BqtvlTSQRfaG+ZkZ4Gcbj0+b5x2KnR74ib/lPnfYYfNQv
+	 9ofAWa1Fg0WfQLtzVibadFijfwJDV8bnCxK9e4QkAWHktCaixQPt2bKwFwb3KPn5iT
+	 Cnj+7+9uphoOR4lAU4FyOBd+E20pbvWA1tOhhKXzfpvgNQ0NsNlNx5Og25M6fLoIoq
+	 zouKKe7XCB6EOT6mdzOBvU227WB/qoJzZroGpgk+7RNGWi8SHCUfUwpwYQLtxX6fOm
+	 2dqJdQyP3qNRJbCK/nZj0S+JZ0eiCoryqYVqFvXBKYSZUwRgKAuDVBciNGgdpmrVBL
+	 Rr1NpffmUgHOg==
+Date: Thu, 15 Feb 2024 21:42:35 -0800
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Nathan Chancellor <nathan@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org, x86@kernel.org
+Subject: Re: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't
+ used at runtime
+Message-ID: <20240216054235.ecpwuni2f3yphhuc@treble>
+References: <20231010171020.462211-4-david.kaplan@amd.com>
+ <170774721951.398.8999401565129728535.tip-bot2@tip-bot2>
+ <20240215032049.GA3944823@dev-arch.thelio-3990X>
+ <20240215155349.GBZc4zjaHn8hj6xOq3@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170802702482.398.14573562660062119117.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240215155349.GBZc4zjaHn8hj6xOq3@fat_crate.local>
 
-The following commit has been merged into the irq/msi branch of tip:
+On Thu, Feb 15, 2024 at 04:53:49PM +0100, Borislav Petkov wrote:
+> I'd tend to look in Josh's direction as to say what would be the right
+> thing to do here and more specifically, where?
+> 
+> We need to run objtool on the vdso objects which are *kernel* code.
+> I.e., that initcall thing. The vdso-image-64.c gets generated by vdso2c
+> and lands in arch/x86/entry/vdso/vdso-image-64.c, that's why objtool
+> hasn't seen it yet.
+> 
+> I mean, it is one initcall in the vdso, probably not that important and
+> if its return hasn't been patched, it won't be the end of the world but
+> still...
+> 
+> In any case, the patch works as advertized! :-)
 
-Commit-ID:     15137825100422c4c393c87af5aa5a8fa297b1f3
-Gitweb:        https://git.kernel.org/tip/15137825100422c4c393c87af5aa5a8fa297b1f3
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 27 Jan 2024 21:47:29 +05:30
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 15 Feb 2024 17:55:39 +01:00
+Right, the good news is this isn't a regression and the warning is
+working as designed.
 
-irqchip/gic-v3: Make gic_irq_domain_select() robust for zero parameter count
+This should tell the build to invoke objtool on that file:
 
-Currently the irqdomain select callback is only invoked when the parameter
-count of the fwspec arguments is not zero. That makes sense because then
-the match is on the firmware node and eventually on the bus_token, which is
-already handled in the core code.
-
-The upcoming support for per device MSI domains requires to do real bus
-token specific checks in the MSI parent domains with a zero parameter
-count.
-
-Make the gic-v3 select() callback handle that case.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240127161753.114685-2-apatel@ventanamicro.com
-
----
- drivers/irqchip/irq-gic-v3.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 98b0329..35b9362 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -1702,9 +1702,13 @@ static int gic_irq_domain_select(struct irq_domain *d,
- 	irq_hw_number_t hwirq;
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index b1b8dd1608f7..92d67379f570 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -36,6 +36,7 @@ UBSAN_SANITIZE_vma.o			:= y
+ KCSAN_SANITIZE_vma.o			:= y
+ OBJECT_FILES_NON_STANDARD_vma.o		:= n
+ OBJECT_FILES_NON_STANDARD_extable.o	:= n
++OBJECT_FILES_NON_STANDARD_vdso-image-64.o := n
  
- 	/* Not for us */
--        if (fwspec->fwnode != d->fwnode)
-+	if (fwspec->fwnode != d->fwnode)
- 		return 0;
- 
-+	/* Handle pure domain searches */
-+	if (!fwspec->param_count)
-+		return d->bus_token == bus_token;
-+
- 	/* If this is not DT, then we have a single domain */
- 	if (!is_of_node(fwspec->fwnode))
- 		return 1;
+ # vDSO images to build
+ vdso_img-$(VDSO64-y)		+= 64
 
