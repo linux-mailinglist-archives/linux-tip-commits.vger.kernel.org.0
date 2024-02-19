@@ -1,236 +1,260 @@
-Return-Path: <linux-tip-commits+bounces-451-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-452-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02F785A155
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 11:50:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CAB85A16E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 11:54:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D2381C219CD
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 10:50:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DB771F21CD9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 10:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A447428DCB;
-	Mon, 19 Feb 2024 10:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892F028DD0;
+	Mon, 19 Feb 2024 10:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2hEFR4fx"
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IgoWWx4r";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="02R1N3KT"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E463D28DBD
-	for <linux-tip-commits@vger.kernel.org>; Mon, 19 Feb 2024 10:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C13028DBF;
+	Mon, 19 Feb 2024 10:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708339801; cv=none; b=hTI/buKAUzEObzdLYFACRTTSEP2CXMXA28QOVRFr8NTzAnoBUx7tbTkHvvlrEO6r1wV3SHrmta/0jw0d3PcooblUazmdW96FBRAs7ilCO41Acem/Uc/tql8/SiHODaHsGdPwLk1YGblkcmJW71tv02aUU/uADjw7I9+JoiPnM50=
+	t=1708340048; cv=none; b=VW8B9KbQyX+uL+LisJKHGYq2Y2WRwJgsa+FunTq5XuB2XKuneYwYl9bBr+C/hSt5j07536SMlz9o8HYe9HjmjALzkY3oEP8rE1ZjaPKLy6AWVE7Kreirf3Cl/vm6cPImvW83MFuM4VhmHJgCffIrLLqvzSOyyoktk8LvboSL32A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708339801; c=relaxed/simple;
-	bh=3caDZanIGLjsT+cFQP8A69Yvh0OigCSpUrynDatp140=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=txucsC5e76J2x1xfAb9htMza+mIP++SjFTcGAcPoT3nnjSuI031S0y2Eki8xFJDgviUYb1C/P21WEuuM2JDSY2BQ/19dLHve1tseENA0Wqm7khQS+LmpP+oo2QjM7KGKfmHiiVSBBOY7DNDKJ+V73Y2K6dn4m8ivrKaHAVEW6qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2hEFR4fx; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-42db1baff53so444521cf.0
-        for <linux-tip-commits@vger.kernel.org>; Mon, 19 Feb 2024 02:49:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708339799; x=1708944599; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4MQJOsm12yyUfLXP8/4qqlhf10T9ODzbVu9qmdeeCKA=;
-        b=2hEFR4fxKnlsFeGEVNr/qv4PQvCyfYvC+d9/8kWNEzk6SKYxPNpWfhf5o5Q1auQyC2
-         wDgzLGB7UDtRnsjqXZPAu7gRGXLF5DS0lukmMACxeWMmesfyrH0FU5sx7s6GEWU9yZ54
-         Nx+VXV9nd/K1TFaSlAOTmbWMNdE/RHReLbQKO+XON+g3/ssXHMtxem/0Js91koXwRA+m
-         xcx9WxxpAeRYzDft2w8cJ+dMiw2Wb2CIGtZfT9Bm2R9X2aRjs9j8RseP/wdZLqGFk39K
-         be7xHTi96ld2XWpqCBivxhNBmBi+gxOeIhNRLz2gr1sg7Se4bhY0xqM/pKFngxi0PtYi
-         /Gbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708339799; x=1708944599;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4MQJOsm12yyUfLXP8/4qqlhf10T9ODzbVu9qmdeeCKA=;
-        b=SarKrOiYBu+gVSX7IZQEvWS2vl2osiQI/arLlDzckdpQQdj9vRfSJjDFrDKmMgzuKb
-         VEyhFzZv7CEJUIfJEswQzhqjnVk43OFfF4iy2mnc44PHF6wOVqFm9KZE+kmI8ENzJCG/
-         bvYQeQqQ0nYaKXnM8Ang/c6l8s1eQLQDs1IPNJQ9reUSRfVNYYbq0rCdl8vrqgOvpgj4
-         JSZeok6Hkix1U78nqGtV/RwIHf2DzFZGLZwqNGtNBi/olcX/UwCPnPHoSPMYbFrT0Swj
-         buF7oKjmIlGawWcYJFrd0JGflYbtDSewz5R/h069KqVkGgBqFNcZl4iW1+Rg37Cj/xNK
-         AWaQ==
-X-Gm-Message-State: AOJu0YzLlVMF9on+zcjprJ5+RtphIPIj6A5mBR4PCV8TWKkp66TIdoXA
-	5lefnbUk9g8vj7httzjBKL/AeQ6lYRs+3V6Nz30gO7fTVugPvZUbncXPbC0+gpt5FHv/TykQAkN
-	7R0WR1Dfa+3kSI9iMzIDGI/uysgjIE8Gg5h7m8u6a9OpsTfRgNJ/3
-X-Google-Smtp-Source: AGHT+IGQ3I/aQGWBoJspcQrSw1w3ASDBmL/gBK5tPjmFECJ/hUYGLZoPWzh2dgfJUeX1ISygd655BEwvUdSatAsRr24=
-X-Received: by 2002:ac8:5a55:0:b0:42e:16af:b149 with SMTP id
- o21-20020ac85a55000000b0042e16afb149mr112959qta.26.1708339798691; Mon, 19 Feb
- 2024 02:49:58 -0800 (PST)
+	s=arc-20240116; t=1708340048; c=relaxed/simple;
+	bh=gf3z+xntVMESYYOXqdfthNDgYasDPWbJWCxy0swxIeY=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=O0teFbKzq46sPnQ/wz3i44/VgnZv+3SdipAiveGyrJ+3EqATmVgVUEEQvyvPf994zvT/LVOB0ZljuGN4hRyO9EaCRcw90qOQ4pNf8Iq5KGMVSUDNzj0C/pL11IUwBHbObNsa8J+ir44Ugz3/hkrwpT3G0lRqrsdIUhv1Wk6AJyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IgoWWx4r; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=02R1N3KT; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 19 Feb 2024 10:54:03 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708340044;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vMr5wZHo+iJizSZtBfiMUkOCyOt32t5SxZbwNDvsiX0=;
+	b=IgoWWx4rkxSHsVUQoVxtwT8ijHI3PVMJR/HZnTQC6PxRa0Yr8MDJxTSq9n6HvUgZLboOaW
+	68lBea33yaGfBsNahwPtvJqHQXCQ1m3qBhlZ+1oM2GJyW9fYW7TUpijf6VftxYRup++bAS
+	A4Pb+nc7LeiO/YmH3Ax2UuaYYRkXUZpvXbFIlsXd5xDBL52WxkRiVm+AdAMcKsbKKvB0V4
+	HfOBc/UrHUCngfGd3m5l8L14jN+2ZDj4zbqu60ZSbQfEG3sa8IqY2MNMSpFVoHL+FHTc28
+	D5z0btesOf+9wJs8Z8avPkkH3zYhLOh706FsZKwiwV22nkxiQLbrQoipb1mkNg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708340044;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vMr5wZHo+iJizSZtBfiMUkOCyOt32t5SxZbwNDvsiX0=;
+	b=02R1N3KTQMFhQf8ZKCvrMHZtHSMGEbYYlTJBgIOGH6Y5CCoFyOo9iVCQTzbg0YW71XeNRP
+	2CklfOWwV9XQjtAA==
+From: "tip-bot2 for Crystal Wood" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] genirq: Wake interrupt threads immediately when
+ changing affinity
+Cc: Crystal Wood <crwood@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240122235353.15235-1-crwood@redhat.com>
+References: <20240122235353.15235-1-crwood@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240108113950.360438-1-jackmanb@google.com> <170612139384.398.13715690088153668463.tip-bot2@tip-bot2>
-In-Reply-To: <170612139384.398.13715690088153668463.tip-bot2@tip-bot2>
-From: Brendan Jackman <jackmanb@google.com>
-Date: Mon, 19 Feb 2024 11:49:46 +0100
-Message-ID: <CA+i-1C1OpZQTS3EQa8fEc5BTzcLNMcgrwt0b9mR_jqiY0-zV3A@mail.gmail.com>
-Subject: Re: [tip: x86/entry] x86/entry: Avoid redundant CR3 write on paranoid returns
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, Lai Jiangshan <laijs@linux.alibaba.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org, Kevin Cheng <chengkev@google.com>, 
-	Yosry Ahmed <yosryahmed@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <170834004383.398.5346093175756384370.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-[Apologies if you see this as a duplicate, accidentally sent the
-original in HTML, please disregard the other one]
+The following commit has been merged into the irq/core branch of tip:
 
-Hi Thomas,
+Commit-ID:     c99303a2d2a25ba467ebf75d3e446b58c7e7df3a
+Gitweb:        https://git.kernel.org/tip/c99303a2d2a25ba467ebf75d3e446b58c7e7df3a
+Author:        Crystal Wood <crwood@redhat.com>
+AuthorDate:    Mon, 22 Jan 2024 17:53:53 -06:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 19 Feb 2024 11:43:46 +01:00
 
-I have just noticed that the commit has disappeared from
-tip/x86/entry. Is that deliberate?
+genirq: Wake interrupt threads immediately when changing affinity
 
-Thanks,
-Brendan
+The affinity setting of interrupt threads happens in the context of the
+thread when the thread is woken up by an hard interrupt. As this can be an
+arbitrary after changing the affinity, the thread can become runnable on an
+isolated CPU and cause isolation disruption.
 
+Avoid this by checking the set affinity request in wait_for_interrupt() and
+waking the threads immediately when the affinity is modified.
 
-On Wed, 24 Jan 2024 at 19:36, tip-bot2 for Lai Jiangshan
-<tip-bot2@linutronix.de> wrote:
->
-> The following commit has been merged into the x86/entry branch of tip:
->
-> Commit-ID:     bb998361999e79bc87dae1ebe0f5bf317f632585
-> Gitweb:        https://git.kernel.org/tip/bb998361999e79bc87dae1ebe0f5bf317f632585
-> Author:        Lai Jiangshan <laijs@linux.alibaba.com>
-> AuthorDate:    Mon, 08 Jan 2024 11:39:50
-> Committer:     Thomas Gleixner <tglx@linutronix.de>
-> CommitterDate: Wed, 24 Jan 2024 13:57:59 +01:00
->
-> x86/entry: Avoid redundant CR3 write on paranoid returns
->
-> The CR3 restore happens in:
->
->   1. #NMI return.
->   2. paranoid_exit() (i.e. #MCE, #VC, #DB and #DF return)
->
-> Contrary to the implication in commit 21e94459110252 ("x86/mm: Optimize
-> RESTORE_CR3"), the kernel never modifies CR3 in any of these exceptions,
-> except for switching from user to kernel pagetables under PTI. That
-> means that most of the time when returning from an exception that
-> interrupted the kernel no CR3 restore is necessary. Writing CR3 is
-> expensive on some machines.
->
-> Most of the time because the interrupt might have come during kernel entry
-> before the user to kernel CR3 switch or the during exit after the kernel to
-> user switch. In the former case skipping the restore would be correct, but
-> definitely not for the latter.
->
-> So check the saved CR3 value and restore it only, if it is a user CR3.
->
-> Give the macro a new name to clarify its usage, and remove a comment that
-> was describing the original behaviour along with the not longer needed jump
-> label.
->
-> Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Link: https://lore.kernel.org/r/20240108113950.360438-1-jackmanb@google.com
->
-> [Rewrote commit message; responded to review comments]
-> Change-Id: I6e56978c4753fb943a7897ff101f519514fa0827
-> ---
->  arch/x86/entry/calling.h  | 26 ++++++++++----------------
->  arch/x86/entry/entry_64.S |  7 +++----
->  2 files changed, 13 insertions(+), 20 deletions(-)
->
-> diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-> index 9f1d947..92dca4a 100644
-> --- a/arch/x86/entry/calling.h
-> +++ b/arch/x86/entry/calling.h
-> @@ -239,17 +239,19 @@ For 32-bit we have the following conventions - kernel is built with
->  .Ldone_\@:
->  .endm
->
-> -.macro RESTORE_CR3 scratch_reg:req save_reg:req
-> +/* Restore CR3 from a kernel context. May restore a user CR3 value. */
-> +.macro PARANOID_RESTORE_CR3 scratch_reg:req save_reg:req
->         ALTERNATIVE "jmp .Lend_\@", "", X86_FEATURE_PTI
->
-> -       ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
-> -
->         /*
-> -        * KERNEL pages can always resume with NOFLUSH as we do
-> -        * explicit flushes.
-> +        * If CR3 contained the kernel page tables at the paranoid exception
-> +        * entry, then there is nothing to restore as CR3 is not modified while
-> +        * handling the exception.
->          */
->         bt      $PTI_USER_PGTABLE_BIT, \save_reg
-> -       jnc     .Lnoflush_\@
-> +       jnc     .Lend_\@
-> +
-> +       ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
->
->         /*
->          * Check if there's a pending flush for the user ASID we're
-> @@ -257,20 +259,12 @@ For 32-bit we have the following conventions - kernel is built with
->          */
->         movq    \save_reg, \scratch_reg
->         andq    $(0x7FF), \scratch_reg
-> -       bt      \scratch_reg, THIS_CPU_user_pcid_flush_mask
-> -       jnc     .Lnoflush_\@
-> -
->         btr     \scratch_reg, THIS_CPU_user_pcid_flush_mask
-> -       jmp     .Lwrcr3_\@
-> +       jc      .Lwrcr3_\@
->
-> -.Lnoflush_\@:
->         SET_NOFLUSH_BIT \save_reg
->
->  .Lwrcr3_\@:
-> -       /*
-> -        * The CR3 write could be avoided when not changing its value,
-> -        * but would require a CR3 read *and* a scratch register.
-> -        */
->         movq    \save_reg, %cr3
->  .Lend_\@:
->  .endm
-> @@ -285,7 +279,7 @@ For 32-bit we have the following conventions - kernel is built with
->  .endm
->  .macro SAVE_AND_SWITCH_TO_KERNEL_CR3 scratch_reg:req save_reg:req
->  .endm
-> -.macro RESTORE_CR3 scratch_reg:req save_reg:req
-> +.macro PARANOID_RESTORE_CR3 scratch_reg:req save_reg:req
->  .endm
->
->  #endif
-> diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-> index c40f89a..aedd169 100644
-> --- a/arch/x86/entry/entry_64.S
-> +++ b/arch/x86/entry/entry_64.S
-> @@ -968,14 +968,14 @@ SYM_CODE_START_LOCAL(paranoid_exit)
->         IBRS_EXIT save_reg=%r15
->
->         /*
-> -        * The order of operations is important. RESTORE_CR3 requires
-> +        * The order of operations is important. PARANOID_RESTORE_CR3 requires
->          * kernel GSBASE.
->          *
->          * NB to anyone to try to optimize this code: this code does
->          * not execute at all for exceptions from user mode. Those
->          * exceptions go through error_return instead.
->          */
-> -       RESTORE_CR3     scratch_reg=%rax save_reg=%r14
-> +       PARANOID_RESTORE_CR3 scratch_reg=%rax save_reg=%r14
->
->         /* Handle the three GSBASE cases */
->         ALTERNATIVE "jmp .Lparanoid_exit_checkgs", "", X86_FEATURE_FSGSBASE
-> @@ -1404,8 +1404,7 @@ end_repeat_nmi:
->         /* Always restore stashed SPEC_CTRL value (see paranoid_entry) */
->         IBRS_EXIT save_reg=%r15
->
-> -       /* Always restore stashed CR3 value (see paranoid_entry) */
-> -       RESTORE_CR3 scratch_reg=%r15 save_reg=%r14
-> +       PARANOID_RESTORE_CR3 scratch_reg=%r15 save_reg=%r14
->
->         /*
->          * The above invocation of paranoid_entry stored the GSBASE
+Note that this is of the most benefit on systems where the interrupt
+affinity itself does not need to be deferred to the interrupt handler, but
+even where that's not the case, the total dirsuption will be less.
+
+Signed-off-by: Crystal Wood <crwood@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240122235353.15235-1-crwood@redhat.com
+---
+ kernel/irq/manage.c | 109 +++++++++++++++++++++----------------------
+ 1 file changed, 55 insertions(+), 54 deletions(-)
+
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index 1782f90..ad3eaf2 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -192,10 +192,14 @@ void irq_set_thread_affinity(struct irq_desc *desc)
+ 	struct irqaction *action;
+ 
+ 	for_each_action_of_desc(desc, action) {
+-		if (action->thread)
++		if (action->thread) {
+ 			set_bit(IRQTF_AFFINITY, &action->thread_flags);
+-		if (action->secondary && action->secondary->thread)
++			wake_up_process(action->thread);
++		}
++		if (action->secondary && action->secondary->thread) {
+ 			set_bit(IRQTF_AFFINITY, &action->secondary->thread_flags);
++			wake_up_process(action->secondary->thread);
++		}
+ 	}
+ }
+ 
+@@ -1049,10 +1053,57 @@ static irqreturn_t irq_forced_secondary_handler(int irq, void *dev_id)
+ 	return IRQ_NONE;
+ }
+ 
+-static int irq_wait_for_interrupt(struct irqaction *action)
++#ifdef CONFIG_SMP
++/*
++ * Check whether we need to change the affinity of the interrupt thread.
++ */
++static void irq_thread_check_affinity(struct irq_desc *desc, struct irqaction *action)
++{
++	cpumask_var_t mask;
++	bool valid = false;
++
++	if (!test_and_clear_bit(IRQTF_AFFINITY, &action->thread_flags))
++		return;
++
++	__set_current_state(TASK_RUNNING);
++
++	/*
++	 * In case we are out of memory we set IRQTF_AFFINITY again and
++	 * try again next time
++	 */
++	if (!alloc_cpumask_var(&mask, GFP_KERNEL)) {
++		set_bit(IRQTF_AFFINITY, &action->thread_flags);
++		return;
++	}
++
++	raw_spin_lock_irq(&desc->lock);
++	/*
++	 * This code is triggered unconditionally. Check the affinity
++	 * mask pointer. For CPU_MASK_OFFSTACK=n this is optimized out.
++	 */
++	if (cpumask_available(desc->irq_common_data.affinity)) {
++		const struct cpumask *m;
++
++		m = irq_data_get_effective_affinity_mask(&desc->irq_data);
++		cpumask_copy(mask, m);
++		valid = true;
++	}
++	raw_spin_unlock_irq(&desc->lock);
++
++	if (valid)
++		set_cpus_allowed_ptr(current, mask);
++	free_cpumask_var(mask);
++}
++#else
++static inline void irq_thread_check_affinity(struct irq_desc *desc, struct irqaction *action) { }
++#endif
++
++static int irq_wait_for_interrupt(struct irq_desc *desc,
++				  struct irqaction *action)
+ {
+ 	for (;;) {
+ 		set_current_state(TASK_INTERRUPTIBLE);
++		irq_thread_check_affinity(desc, action);
+ 
+ 		if (kthread_should_stop()) {
+ 			/* may need to run one last time */
+@@ -1129,52 +1180,6 @@ out_unlock:
+ 	chip_bus_sync_unlock(desc);
+ }
+ 
+-#ifdef CONFIG_SMP
+-/*
+- * Check whether we need to change the affinity of the interrupt thread.
+- */
+-static void
+-irq_thread_check_affinity(struct irq_desc *desc, struct irqaction *action)
+-{
+-	cpumask_var_t mask;
+-	bool valid = true;
+-
+-	if (!test_and_clear_bit(IRQTF_AFFINITY, &action->thread_flags))
+-		return;
+-
+-	/*
+-	 * In case we are out of memory we set IRQTF_AFFINITY again and
+-	 * try again next time
+-	 */
+-	if (!alloc_cpumask_var(&mask, GFP_KERNEL)) {
+-		set_bit(IRQTF_AFFINITY, &action->thread_flags);
+-		return;
+-	}
+-
+-	raw_spin_lock_irq(&desc->lock);
+-	/*
+-	 * This code is triggered unconditionally. Check the affinity
+-	 * mask pointer. For CPU_MASK_OFFSTACK=n this is optimized out.
+-	 */
+-	if (cpumask_available(desc->irq_common_data.affinity)) {
+-		const struct cpumask *m;
+-
+-		m = irq_data_get_effective_affinity_mask(&desc->irq_data);
+-		cpumask_copy(mask, m);
+-	} else {
+-		valid = false;
+-	}
+-	raw_spin_unlock_irq(&desc->lock);
+-
+-	if (valid)
+-		set_cpus_allowed_ptr(current, mask);
+-	free_cpumask_var(mask);
+-}
+-#else
+-static inline void
+-irq_thread_check_affinity(struct irq_desc *desc, struct irqaction *action) { }
+-#endif
+-
+ /*
+  * Interrupts which are not explicitly requested as threaded
+  * interrupts rely on the implicit bh/preempt disable of the hard irq
+@@ -1312,13 +1317,9 @@ static int irq_thread(void *data)
+ 	init_task_work(&on_exit_work, irq_thread_dtor);
+ 	task_work_add(current, &on_exit_work, TWA_NONE);
+ 
+-	irq_thread_check_affinity(desc, action);
+-
+-	while (!irq_wait_for_interrupt(action)) {
++	while (!irq_wait_for_interrupt(desc, action)) {
+ 		irqreturn_t action_ret;
+ 
+-		irq_thread_check_affinity(desc, action);
+-
+ 		action_ret = handler_fn(desc, action);
+ 		if (action_ret == IRQ_WAKE_THREAD)
+ 			irq_wake_secondary(desc, action);
 
