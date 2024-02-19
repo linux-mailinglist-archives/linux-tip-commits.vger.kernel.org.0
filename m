@@ -1,131 +1,164 @@
-Return-Path: <linux-tip-commits+bounces-445-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-447-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F73F858800
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 22:28:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2073859EA2
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 09:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE37F1C2137E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Feb 2024 21:28:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1410F1C2169E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 08:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499B7135A6F;
-	Fri, 16 Feb 2024 21:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B1E224D0;
+	Mon, 19 Feb 2024 08:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HzsS66Cq"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="by1Sm/eU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pOFoaNFG"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85731E865;
-	Fri, 16 Feb 2024 21:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A8621357;
+	Mon, 19 Feb 2024 08:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708118893; cv=none; b=FZFj8ggUivRGPQi2+xLq3iPhvSZA5ejw6jhXuhVltG8ZWdCPiIj5D0hlyI6yh2C/q00N/YJ5Q5HyFI4OksvWrUIuwz+4V1eGYABEsStR9eUtIvNNdYGFYHoghEel3vCPbcyu5DPjtKjAikfuaOsOX5E/04aD6AhZY0rHUiuos00=
+	t=1708332337; cv=none; b=I0rf5wg/rsls6JtQcdANy+GnJo6Y0Kq/rFcoRM03xGDA8ouEncVrMnCwKnPLwjGj34SeYWNtV7amRKaaRPae2EWUumKInlSGkHELe5GEHsfmWp3MEfzBCx1A1dN8EGCIysh7a2x6tJOgVqnPIXRCdWIfEONi+OveHxbVFyajahA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708118893; c=relaxed/simple;
-	bh=XMtDEBRwm/nhhA+FVIRTNNGO9Tm+d6KI3nOFo2hlxL4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZcbW6fjz9wBK5KK2bIGZ9sPUwcDwkd3BprhAkxNPNdAwzRxLYCcfXmvS6Jt3LNqjzFaJnjFV/k56TiF9Q1iNdSt/6LcCvFNXvb3VJatuU/4U4nFUosjhjFmu9eCtSKYNOnGDLSgKwre0UrMFu3OyoS/66AsR4Otr5N6KMjzZcdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HzsS66Cq; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7F1C640E01A9;
-	Fri, 16 Feb 2024 21:28:00 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id MGfmZixOSE64; Fri, 16 Feb 2024 21:27:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1708118878; bh=VAh0+9UxLT1H6XK9rCU87AdZyd52PVk7MN7aqBNuBTY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HzsS66CqmlH1i53tTYIqZ/fUJ7QLhvfUmJr0mlb/M1NoCu/kKI7JJEstCTWo5tdXc
-	 K58bypHvlNHK5p6YWXri1tsUIlm20x6REqW1EJlPmezGChFbhIKqaC+wj9a1WwKAGH
-	 f1zHKxRsmwp8tiUILahXjdp53zCdx6M/mcJddbuaPAkv9dIrgaLCjhgVIdWLzn7YIB
-	 YUegvLeKFKaOtNHGNRwFJ+Yic0TiZzBF+blMlIgqC2otBOFkwOmEMwdu4QFj5V7/Q9
-	 wWLVEU1yEzIri8CpzzGd4yyWVcRhEaz7o8mo3lMOPii4nghlqRxD53kbdXZ62zqH4v
-	 218pHd2UeHvoGdvBCG9RvrppWbOyGloj06AfhtH3evXMX/FXxzxi6jAJ1IOFiDbpZZ
-	 dEUPya0MrH0f995RlkmXz645mjaLyrwfFei21Ola1JR95OXOGPy7p6gGHJWbH4xNDo
-	 X6wLA2RK+7cQ5t80OcTxUpZP6NyKbSb2w6oHI4wPvar7H74JkcjTo371K1A2EfTy9B
-	 oDQBZtOmclUOJ+YTly4+Jm2o1MbJ6pIhcuupuahLpIQgWDvb+DqD8D6r8aRx8gAG6E
-	 vM7rSYoPOHTvtMo9fbZR2DNFa730TVM98l/KNM2QBsVSiDV/KZFOlRq4HsDWzCdS0J
-	 WI30ckcoCi21w2YbKU7Vf7Us=
-Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0862B40E0192;
-	Fri, 16 Feb 2024 21:27:52 +0000 (UTC)
-Date: Fri, 16 Feb 2024 22:27:45 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org, x86@kernel.org
-Subject: Re: [tip: x86/bugs] x86/retpoline: Ensure default return thunk isn't
- used at runtime
-Message-ID: <20240216212745.GAZc_TURO0t35GjTQM@fat_crate.local>
-References: <20231010171020.462211-4-david.kaplan@amd.com>
- <170774721951.398.8999401565129728535.tip-bot2@tip-bot2>
- <20240215032049.GA3944823@dev-arch.thelio-3990X>
- <20240215155349.GBZc4zjaHn8hj6xOq3@fat_crate.local>
- <20240216054235.ecpwuni2f3yphhuc@treble>
+	s=arc-20240116; t=1708332337; c=relaxed/simple;
+	bh=dQhvt5u878Nz51soq9rQAxJ2HC1xgdldzoXDlIFFyDY=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=g+D938HeTELROx1jVi/0LXIe/Et9WTTw2C+XP18DE47xfi5Z5n6xygjviS/dbUnw06FFT0b7TCslwh6CQ3HFF0lyMop3b8xgyNLuGwF1rfWrNOvlBWHpCnodT/vjrRjCHhfH+Z32cCZqKJbaMgZZtOYxmIzfd5iyVyt5/S0igY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=by1Sm/eU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pOFoaNFG; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 19 Feb 2024 08:45:32 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708332333;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lQwp9IZkka2ZaAhWMN3EeTNgCDwS9jDJORDVtPlv+do=;
+	b=by1Sm/eUluzFQ3sBXnqTBwuzuOxonsN72Y8IopkwRjYga0GJlbP8FmMep1vI6gkGtC2jZR
+	7Yp2DFY7hLODc4o2ObACYKdMQvPSTH1pWw1tuhxp+QUDEqa6PJUl/GoIQgt4CuKSh2y5xF
+	WmLBZ8ZJPYa2PZx2klccZVufwPSLZ58iYGBb6HhY9zNfzjjsCO9TbtA8k8gbCeHoNrS9o7
+	zETGjTx+q/rIxDl064fgErSzlLaK3Pg10lBc/rdauSsdQcf/rKWENV6sUWhzmfRAcFRNSb
+	YFXC/okDnOzNqZJdkDQwMEJvhiewDw3tSDvzjOBxJfHg2/aSuQuMhSl5Vj6T8A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708332333;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lQwp9IZkka2ZaAhWMN3EeTNgCDwS9jDJORDVtPlv+do=;
+	b=pOFoaNFGs8wxHfZO/r5jn0WAxWbOaTQnH+ZxAz4FletkHLboiUMidpc+5AyGEbfV7oHO/g
+	5BZ9MzvzP/dt0CAQ==
+From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: timers/core] timers: Add struct member description for timer_base
+Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240123164702.55612-5-anna-maria@linutronix.de>
+References: <20240123164702.55612-5-anna-maria@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240216054235.ecpwuni2f3yphhuc@treble>
+Message-ID: <170833233296.398.7236151301975481128.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 15, 2024 at 09:42:35PM -0800, Josh Poimboeuf wrote:
-> Right, the good news is this isn't a regression and the warning is
-> working as designed.
-> 
-> This should tell the build to invoke objtool on that file:
-> 
-> diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-> index b1b8dd1608f7..92d67379f570 100644
-> --- a/arch/x86/entry/vdso/Makefile
-> +++ b/arch/x86/entry/vdso/Makefile
-> @@ -36,6 +36,7 @@ UBSAN_SANITIZE_vma.o			:= y
->  KCSAN_SANITIZE_vma.o			:= y
->  OBJECT_FILES_NON_STANDARD_vma.o		:= n
->  OBJECT_FILES_NON_STANDARD_extable.o	:= n
-> +OBJECT_FILES_NON_STANDARD_vdso-image-64.o := n
+The following commit has been merged into the timers/core branch of tip:
 
-Right, this should be:
+Commit-ID:     892abd357183bc663d6984d10c62f94b40bfc375
+Gitweb:        https://git.kernel.org/tip/892abd357183bc663d6984d10c62f94b40bfc375
+Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
+AuthorDate:    Tue, 23 Jan 2024 17:46:58 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 19 Feb 2024 09:38:00 +01:00
 
-diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-index c4df99aa1615..4a514cafd73e 100644
---- a/arch/x86/entry/vdso/Makefile
-+++ b/arch/x86/entry/vdso/Makefile
-@@ -36,6 +36,8 @@ UBSAN_SANITIZE_vma.o			:= y
- KCSAN_SANITIZE_vma.o			:= y
- OBJECT_FILES_NON_STANDARD_vma.o		:= n
- OBJECT_FILES_NON_STANDARD_extable.o	:= n
-+OBJECT_FILES_NON_STANDARD_vdso-image-32.o := n
-+OBJECT_FILES_NON_STANDARD_vdso-image-64.o := n
+timers: Add struct member description for timer_base
+
+timer_base struct lacks description of struct members. Important struct
+member information is sprinkled in comments or in code all over the place.
+
+Collect information and write struct description to keep track of most
+important information in a single place.
+
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240123164702.55612-5-anna-maria@linutronix.de
+
+---
+ kernel/time/timer.c | 45 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 45 insertions(+)
+
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 352b161..d44dba1 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -196,6 +196,51 @@ EXPORT_SYMBOL(jiffies_64);
+ # define BASE_DEF	0
+ #endif
  
- # vDSO images to build
- vdso_img-$(VDSO64-y)		+= 64
-
-for completeness.
-
-Lemme know if you want to write a formal patch or I should.
-
-If you do, please make sure to include the exact way to reproduce
-because we might need it in the future.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
++/**
++ * struct timer_base - Per CPU timer base (number of base depends on config)
++ * @lock:		Lock protecting the timer_base
++ * @running_timer:	When expiring timers, the lock is dropped. To make
++ *			sure not to race agains deleting/modifying a
++ *			currently running timer, the pointer is set to the
++ *			timer, which expires at the moment. If no timer is
++ *			running, the pointer is NULL.
++ * @expiry_lock:	PREEMPT_RT only: Lock is taken in softirq around
++ *			timer expiry callback execution and when trying to
++ *			delete a running timer and it wasn't successful in
++ *			the first glance. It prevents priority inversion
++ *			when callback was preempted on a remote CPU and a
++ *			caller tries to delete the running timer. It also
++ *			prevents a life lock, when the task which tries to
++ *			delete a timer preempted the softirq thread which
++ *			is running the timer callback function.
++ * @timer_waiters:	PREEMPT_RT only: Tells, if there is a waiter
++ *			waiting for the end of the timer callback function
++ *			execution.
++ * @clk:		clock of the timer base; is updated before enqueue
++ *			of a timer; during expiry, it is 1 offset ahead of
++ *			jiffies to avoid endless requeuing to current
++ *			jiffies
++ * @next_expiry:	expiry value of the first timer; it is updated when
++ *			finding the next timer and during enqueue; the
++ *			value is not valid, when next_expiry_recalc is set
++ * @cpu:		Number of CPU the timer base belongs to
++ * @next_expiry_recalc: States, whether a recalculation of next_expiry is
++ *			required. Value is set true, when a timer was
++ *			deleted.
++ * @is_idle:		Is set, when timer_base is idle. It is triggered by NOHZ
++ *			code. This state is only used in standard
++ *			base. Deferrable timers, which are enqueued remotely
++ *			never wake up an idle CPU. So no matter of supporting it
++ *			for this base.
++ * @timers_pending:	Is set, when a timer is pending in the base. It is only
++ *			reliable when next_expiry_recalc is not set.
++ * @pending_map:	bitmap of the timer wheel; each bit reflects a
++ *			bucket of the wheel. When a bit is set, at least a
++ *			single timer is enqueued in the related bucket.
++ * @vectors:		Array of lists; Each array member reflects a bucket
++ *			of the timer wheel. The list contains all timers
++ *			which are enqueued into a specific bucket.
++ */
+ struct timer_base {
+ 	raw_spinlock_t		lock;
+ 	struct timer_list	*running_timer;
 
