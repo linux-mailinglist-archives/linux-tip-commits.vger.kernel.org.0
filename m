@@ -1,351 +1,236 @@
-Return-Path: <linux-tip-commits+bounces-450-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-451-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA83859EA9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 09:46:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B02F785A155
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 11:50:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 639801C20F71
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 08:46:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D2381C219CD
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 10:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE93C23750;
-	Mon, 19 Feb 2024 08:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A447428DCB;
+	Mon, 19 Feb 2024 10:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hgTEMjRc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H4Nw45Ny"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2hEFR4fx"
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9307B224CA;
-	Mon, 19 Feb 2024 08:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E463D28DBD
+	for <linux-tip-commits@vger.kernel.org>; Mon, 19 Feb 2024 10:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708332339; cv=none; b=aCHqbVH8QRuJBlMq1KzydpN7esxT34B7MBWVuNnT1recPkJzurQx5UtUh7zNc19Z/sP/ajpK6VF1aVkzo5AtNxo1dIHfPcODIV5h/mAL21ZbQVkcdvj59CUaOJcr4vYGKw73+1BlCXNUZEWOQDPdQDxckxEVaiIAVMtOEV6M31A=
+	t=1708339801; cv=none; b=hTI/buKAUzEObzdLYFACRTTSEP2CXMXA28QOVRFr8NTzAnoBUx7tbTkHvvlrEO6r1wV3SHrmta/0jw0d3PcooblUazmdW96FBRAs7ilCO41Acem/Uc/tql8/SiHODaHsGdPwLk1YGblkcmJW71tv02aUU/uADjw7I9+JoiPnM50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708332339; c=relaxed/simple;
-	bh=aP3a2VaMCfvGZdPOvnOMG7G2bH0AyGP96msZ2vSrZv8=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Xt0dtQ8pFMkRgjVe3kz4ArHRQ9qe8E0bspuTyyxMN/zvhmk6tpg2nLSbzYR2nkmlGWKJYJcMxv1b2JJrBklQ6nH7mHtkB2Pqbh3Fa+0BJ2C/4jS1nNfZdEUJJKueAy6yDruhLd9ElSUSPYJnEOpci7t/OYR0kppY7VmVZ7XBWBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hgTEMjRc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H4Nw45Ny; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 19 Feb 2024 08:45:34 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708332335;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e79XwFm9T8JkG9FwTmyG4lbnGIMfdP83AZ1lUQhNCcM=;
-	b=hgTEMjRcTfBk7heAzFYJJ7BjV5BxyT/6hdHuEEY/4E5MiLk4Zjb1crnxdl9ar8HmtRJP6y
-	9trkwMpYDdxgtRr/1PDF+6nBPCwl1rz8gwav8LXQvrsWwF4BboODl40pkH/FsoZiuP1isL
-	FZPcFfF1TqR+czxhrVCQdrcdlC952DD0BaucaqtsW6O+bgTzB9+TjLYBO2p2JMfwwjpDrk
-	9NU/O8G0IJoX5HWNxy+xrEgvdWYPMPnHHWMJA9c/wfSD5V97EP2Mkps+X9ie4oAisdJ4Tr
-	tO5j1omgBFVyiWJ1JGutV+rx82oALejyFgJLyQISFJtQuq183a1qyRyGTPi5ng==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708332335;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e79XwFm9T8JkG9FwTmyG4lbnGIMfdP83AZ1lUQhNCcM=;
-	b=H4Nw45Nyod3IwWdtjKlKmBPJJyH6Q4b/+KraN7Tax/9+wQMlspoyAjnsVFcRO/jk76UkDV
-	bhOGS1lT5qo+/rAQ==
-From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] hrtimers: Move hrtimer base related definitions
- into hrtimer_defs.h
-Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240123164702.55612-2-anna-maria@linutronix.de>
-References: <20240123164702.55612-2-anna-maria@linutronix.de>
+	s=arc-20240116; t=1708339801; c=relaxed/simple;
+	bh=3caDZanIGLjsT+cFQP8A69Yvh0OigCSpUrynDatp140=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=txucsC5e76J2x1xfAb9htMza+mIP++SjFTcGAcPoT3nnjSuI031S0y2Eki8xFJDgviUYb1C/P21WEuuM2JDSY2BQ/19dLHve1tseENA0Wqm7khQS+LmpP+oo2QjM7KGKfmHiiVSBBOY7DNDKJ+V73Y2K6dn4m8ivrKaHAVEW6qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2hEFR4fx; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-42db1baff53so444521cf.0
+        for <linux-tip-commits@vger.kernel.org>; Mon, 19 Feb 2024 02:49:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1708339799; x=1708944599; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4MQJOsm12yyUfLXP8/4qqlhf10T9ODzbVu9qmdeeCKA=;
+        b=2hEFR4fxKnlsFeGEVNr/qv4PQvCyfYvC+d9/8kWNEzk6SKYxPNpWfhf5o5Q1auQyC2
+         wDgzLGB7UDtRnsjqXZPAu7gRGXLF5DS0lukmMACxeWMmesfyrH0FU5sx7s6GEWU9yZ54
+         Nx+VXV9nd/K1TFaSlAOTmbWMNdE/RHReLbQKO+XON+g3/ssXHMtxem/0Js91koXwRA+m
+         xcx9WxxpAeRYzDft2w8cJ+dMiw2Wb2CIGtZfT9Bm2R9X2aRjs9j8RseP/wdZLqGFk39K
+         be7xHTi96ld2XWpqCBivxhNBmBi+gxOeIhNRLz2gr1sg7Se4bhY0xqM/pKFngxi0PtYi
+         /Gbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708339799; x=1708944599;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4MQJOsm12yyUfLXP8/4qqlhf10T9ODzbVu9qmdeeCKA=;
+        b=SarKrOiYBu+gVSX7IZQEvWS2vl2osiQI/arLlDzckdpQQdj9vRfSJjDFrDKmMgzuKb
+         VEyhFzZv7CEJUIfJEswQzhqjnVk43OFfF4iy2mnc44PHF6wOVqFm9KZE+kmI8ENzJCG/
+         bvYQeQqQ0nYaKXnM8Ang/c6l8s1eQLQDs1IPNJQ9reUSRfVNYYbq0rCdl8vrqgOvpgj4
+         JSZeok6Hkix1U78nqGtV/RwIHf2DzFZGLZwqNGtNBi/olcX/UwCPnPHoSPMYbFrT0Swj
+         buF7oKjmIlGawWcYJFrd0JGflYbtDSewz5R/h069KqVkGgBqFNcZl4iW1+Rg37Cj/xNK
+         AWaQ==
+X-Gm-Message-State: AOJu0YzLlVMF9on+zcjprJ5+RtphIPIj6A5mBR4PCV8TWKkp66TIdoXA
+	5lefnbUk9g8vj7httzjBKL/AeQ6lYRs+3V6Nz30gO7fTVugPvZUbncXPbC0+gpt5FHv/TykQAkN
+	7R0WR1Dfa+3kSI9iMzIDGI/uysgjIE8Gg5h7m8u6a9OpsTfRgNJ/3
+X-Google-Smtp-Source: AGHT+IGQ3I/aQGWBoJspcQrSw1w3ASDBmL/gBK5tPjmFECJ/hUYGLZoPWzh2dgfJUeX1ISygd655BEwvUdSatAsRr24=
+X-Received: by 2002:ac8:5a55:0:b0:42e:16af:b149 with SMTP id
+ o21-20020ac85a55000000b0042e16afb149mr112959qta.26.1708339798691; Mon, 19 Feb
+ 2024 02:49:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170833233491.398.13327405048781821251.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20240108113950.360438-1-jackmanb@google.com> <170612139384.398.13715690088153668463.tip-bot2@tip-bot2>
+In-Reply-To: <170612139384.398.13715690088153668463.tip-bot2@tip-bot2>
+From: Brendan Jackman <jackmanb@google.com>
+Date: Mon, 19 Feb 2024 11:49:46 +0100
+Message-ID: <CA+i-1C1OpZQTS3EQa8fEc5BTzcLNMcgrwt0b9mR_jqiY0-zV3A@mail.gmail.com>
+Subject: Re: [tip: x86/entry] x86/entry: Avoid redundant CR3 write on paranoid returns
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, Lai Jiangshan <laijs@linux.alibaba.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org, Kevin Cheng <chengkev@google.com>, 
+	Yosry Ahmed <yosryahmed@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-The following commit has been merged into the timers/core branch of tip:
+[Apologies if you see this as a duplicate, accidentally sent the
+original in HTML, please disregard the other one]
 
-Commit-ID:     1a4729ecafc239f922d0c758bab7be0038714e88
-Gitweb:        https://git.kernel.org/tip/1a4729ecafc239f922d0c758bab7be0038714e88
-Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
-AuthorDate:    Tue, 23 Jan 2024 17:46:55 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 19 Feb 2024 09:37:59 +01:00
+Hi Thomas,
 
-hrtimers: Move hrtimer base related definitions into hrtimer_defs.h
+I have just noticed that the commit has disappeared from
+tip/x86/entry. Is that deliberate?
 
-hrtimer base related struct definitions are part of hrtimers.h as it is
-required there. With this, also the struct documentation which is for core
-code internal use, is exposed into the general api.
+Thanks,
+Brendan
 
-To prevent this, move all core internal definitions and the related
-includes into hrtimer_defs.h.
 
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240123164702.55612-2-anna-maria@linutronix.de
-
----
- include/linux/hrtimer.h      | 103 +----------------------------------
- include/linux/hrtimer_defs.h | 102 ++++++++++++++++++++++++++++++++++-
- 2 files changed, 102 insertions(+), 103 deletions(-)
-
-diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
-index 87e3bed..792a0ac 100644
---- a/include/linux/hrtimer.h
-+++ b/include/linux/hrtimer.h
-@@ -18,12 +18,8 @@
- #include <linux/list.h>
- #include <linux/percpu-defs.h>
- #include <linux/rbtree.h>
--#include <linux/seqlock.h>
- #include <linux/timer.h>
- 
--struct hrtimer_clock_base;
--struct hrtimer_cpu_base;
--
- /*
-  * Mode arguments of xxx_hrtimer functions:
-  *
-@@ -98,105 +94,6 @@ struct hrtimer_sleeper {
- 	struct task_struct *task;
- };
- 
--#ifdef CONFIG_64BIT
--# define __hrtimer_clock_base_align	____cacheline_aligned
--#else
--# define __hrtimer_clock_base_align
--#endif
--
--/**
-- * struct hrtimer_clock_base - the timer base for a specific clock
-- * @cpu_base:		per cpu clock base
-- * @index:		clock type index for per_cpu support when moving a
-- *			timer to a base on another cpu.
-- * @clockid:		clock id for per_cpu support
-- * @seq:		seqcount around __run_hrtimer
-- * @running:		pointer to the currently running hrtimer
-- * @active:		red black tree root node for the active timers
-- * @get_time:		function to retrieve the current time of the clock
-- * @offset:		offset of this clock to the monotonic base
-- */
--struct hrtimer_clock_base {
--	struct hrtimer_cpu_base	*cpu_base;
--	unsigned int		index;
--	clockid_t		clockid;
--	seqcount_raw_spinlock_t	seq;
--	struct hrtimer		*running;
--	struct timerqueue_head	active;
--	ktime_t			(*get_time)(void);
--	ktime_t			offset;
--} __hrtimer_clock_base_align;
--
--enum  hrtimer_base_type {
--	HRTIMER_BASE_MONOTONIC,
--	HRTIMER_BASE_REALTIME,
--	HRTIMER_BASE_BOOTTIME,
--	HRTIMER_BASE_TAI,
--	HRTIMER_BASE_MONOTONIC_SOFT,
--	HRTIMER_BASE_REALTIME_SOFT,
--	HRTIMER_BASE_BOOTTIME_SOFT,
--	HRTIMER_BASE_TAI_SOFT,
--	HRTIMER_MAX_CLOCK_BASES,
--};
--
--/**
-- * struct hrtimer_cpu_base - the per cpu clock bases
-- * @lock:		lock protecting the base and associated clock bases
-- *			and timers
-- * @cpu:		cpu number
-- * @active_bases:	Bitfield to mark bases with active timers
-- * @clock_was_set_seq:	Sequence counter of clock was set events
-- * @hres_active:	State of high resolution mode
-- * @in_hrtirq:		hrtimer_interrupt() is currently executing
-- * @hang_detected:	The last hrtimer interrupt detected a hang
-- * @softirq_activated:	displays, if the softirq is raised - update of softirq
-- *			related settings is not required then.
-- * @nr_events:		Total number of hrtimer interrupt events
-- * @nr_retries:		Total number of hrtimer interrupt retries
-- * @nr_hangs:		Total number of hrtimer interrupt hangs
-- * @max_hang_time:	Maximum time spent in hrtimer_interrupt
-- * @softirq_expiry_lock: Lock which is taken while softirq based hrtimer are
-- *			 expired
-- * @timer_waiters:	A hrtimer_cancel() invocation waits for the timer
-- *			callback to finish.
-- * @expires_next:	absolute time of the next event, is required for remote
-- *			hrtimer enqueue; it is the total first expiry time (hard
-- *			and soft hrtimer are taken into account)
-- * @next_timer:		Pointer to the first expiring timer
-- * @softirq_expires_next: Time to check, if soft queues needs also to be expired
-- * @softirq_next_timer: Pointer to the first expiring softirq based timer
-- * @clock_base:		array of clock bases for this cpu
-- *
-- * Note: next_timer is just an optimization for __remove_hrtimer().
-- *	 Do not dereference the pointer because it is not reliable on
-- *	 cross cpu removals.
-- */
--struct hrtimer_cpu_base {
--	raw_spinlock_t			lock;
--	unsigned int			cpu;
--	unsigned int			active_bases;
--	unsigned int			clock_was_set_seq;
--	unsigned int			hres_active		: 1,
--					in_hrtirq		: 1,
--					hang_detected		: 1,
--					softirq_activated       : 1;
--#ifdef CONFIG_HIGH_RES_TIMERS
--	unsigned int			nr_events;
--	unsigned short			nr_retries;
--	unsigned short			nr_hangs;
--	unsigned int			max_hang_time;
--#endif
--#ifdef CONFIG_PREEMPT_RT
--	spinlock_t			softirq_expiry_lock;
--	atomic_t			timer_waiters;
--#endif
--	ktime_t				expires_next;
--	struct hrtimer			*next_timer;
--	ktime_t				softirq_expires_next;
--	struct hrtimer			*softirq_next_timer;
--	struct hrtimer_clock_base	clock_base[HRTIMER_MAX_CLOCK_BASES];
--} ____cacheline_aligned;
--
- static inline void hrtimer_set_expires(struct hrtimer *timer, ktime_t time)
- {
- 	timer->node.expires = time;
-diff --git a/include/linux/hrtimer_defs.h b/include/linux/hrtimer_defs.h
-index 2d3e3c5..b12869d 100644
---- a/include/linux/hrtimer_defs.h
-+++ b/include/linux/hrtimer_defs.h
-@@ -3,6 +3,8 @@
- #define _LINUX_HRTIMER_DEFS_H
- 
- #include <linux/ktime.h>
-+#include <linux/timerqueue.h>
-+#include <linux/seqlock.h>
- 
- #ifdef CONFIG_HIGH_RES_TIMERS
- 
-@@ -24,4 +26,104 @@
- 
- #endif
- 
-+#ifdef CONFIG_64BIT
-+# define __hrtimer_clock_base_align	____cacheline_aligned
-+#else
-+# define __hrtimer_clock_base_align
-+#endif
-+
-+/**
-+ * struct hrtimer_clock_base - the timer base for a specific clock
-+ * @cpu_base:		per cpu clock base
-+ * @index:		clock type index for per_cpu support when moving a
-+ *			timer to a base on another cpu.
-+ * @clockid:		clock id for per_cpu support
-+ * @seq:		seqcount around __run_hrtimer
-+ * @running:		pointer to the currently running hrtimer
-+ * @active:		red black tree root node for the active timers
-+ * @get_time:		function to retrieve the current time of the clock
-+ * @offset:		offset of this clock to the monotonic base
-+ */
-+struct hrtimer_clock_base {
-+	struct hrtimer_cpu_base	*cpu_base;
-+	unsigned int		index;
-+	clockid_t		clockid;
-+	seqcount_raw_spinlock_t	seq;
-+	struct hrtimer		*running;
-+	struct timerqueue_head	active;
-+	ktime_t			(*get_time)(void);
-+	ktime_t			offset;
-+} __hrtimer_clock_base_align;
-+
-+enum  hrtimer_base_type {
-+	HRTIMER_BASE_MONOTONIC,
-+	HRTIMER_BASE_REALTIME,
-+	HRTIMER_BASE_BOOTTIME,
-+	HRTIMER_BASE_TAI,
-+	HRTIMER_BASE_MONOTONIC_SOFT,
-+	HRTIMER_BASE_REALTIME_SOFT,
-+	HRTIMER_BASE_BOOTTIME_SOFT,
-+	HRTIMER_BASE_TAI_SOFT,
-+	HRTIMER_MAX_CLOCK_BASES,
-+};
-+
-+/**
-+ * struct hrtimer_cpu_base - the per cpu clock bases
-+ * @lock:		lock protecting the base and associated clock bases
-+ *			and timers
-+ * @cpu:		cpu number
-+ * @active_bases:	Bitfield to mark bases with active timers
-+ * @clock_was_set_seq:	Sequence counter of clock was set events
-+ * @hres_active:	State of high resolution mode
-+ * @in_hrtirq:		hrtimer_interrupt() is currently executing
-+ * @hang_detected:	The last hrtimer interrupt detected a hang
-+ * @softirq_activated:	displays, if the softirq is raised - update of softirq
-+ *			related settings is not required then.
-+ * @nr_events:		Total number of hrtimer interrupt events
-+ * @nr_retries:		Total number of hrtimer interrupt retries
-+ * @nr_hangs:		Total number of hrtimer interrupt hangs
-+ * @max_hang_time:	Maximum time spent in hrtimer_interrupt
-+ * @softirq_expiry_lock: Lock which is taken while softirq based hrtimer are
-+ *			 expired
-+ * @timer_waiters:	A hrtimer_cancel() invocation waits for the timer
-+ *			callback to finish.
-+ * @expires_next:	absolute time of the next event, is required for remote
-+ *			hrtimer enqueue; it is the total first expiry time (hard
-+ *			and soft hrtimer are taken into account)
-+ * @next_timer:		Pointer to the first expiring timer
-+ * @softirq_expires_next: Time to check, if soft queues needs also to be expired
-+ * @softirq_next_timer: Pointer to the first expiring softirq based timer
-+ * @clock_base:		array of clock bases for this cpu
-+ *
-+ * Note: next_timer is just an optimization for __remove_hrtimer().
-+ *	 Do not dereference the pointer because it is not reliable on
-+ *	 cross cpu removals.
-+ */
-+struct hrtimer_cpu_base {
-+	raw_spinlock_t			lock;
-+	unsigned int			cpu;
-+	unsigned int			active_bases;
-+	unsigned int			clock_was_set_seq;
-+	unsigned int			hres_active		: 1,
-+					in_hrtirq		: 1,
-+					hang_detected		: 1,
-+					softirq_activated       : 1;
-+#ifdef CONFIG_HIGH_RES_TIMERS
-+	unsigned int			nr_events;
-+	unsigned short			nr_retries;
-+	unsigned short			nr_hangs;
-+	unsigned int			max_hang_time;
-+#endif
-+#ifdef CONFIG_PREEMPT_RT
-+	spinlock_t			softirq_expiry_lock;
-+	atomic_t			timer_waiters;
-+#endif
-+	ktime_t				expires_next;
-+	struct hrtimer			*next_timer;
-+	ktime_t				softirq_expires_next;
-+	struct hrtimer			*softirq_next_timer;
-+	struct hrtimer_clock_base	clock_base[HRTIMER_MAX_CLOCK_BASES];
-+} ____cacheline_aligned;
-+
-+
- #endif
+On Wed, 24 Jan 2024 at 19:36, tip-bot2 for Lai Jiangshan
+<tip-bot2@linutronix.de> wrote:
+>
+> The following commit has been merged into the x86/entry branch of tip:
+>
+> Commit-ID:     bb998361999e79bc87dae1ebe0f5bf317f632585
+> Gitweb:        https://git.kernel.org/tip/bb998361999e79bc87dae1ebe0f5bf317f632585
+> Author:        Lai Jiangshan <laijs@linux.alibaba.com>
+> AuthorDate:    Mon, 08 Jan 2024 11:39:50
+> Committer:     Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Wed, 24 Jan 2024 13:57:59 +01:00
+>
+> x86/entry: Avoid redundant CR3 write on paranoid returns
+>
+> The CR3 restore happens in:
+>
+>   1. #NMI return.
+>   2. paranoid_exit() (i.e. #MCE, #VC, #DB and #DF return)
+>
+> Contrary to the implication in commit 21e94459110252 ("x86/mm: Optimize
+> RESTORE_CR3"), the kernel never modifies CR3 in any of these exceptions,
+> except for switching from user to kernel pagetables under PTI. That
+> means that most of the time when returning from an exception that
+> interrupted the kernel no CR3 restore is necessary. Writing CR3 is
+> expensive on some machines.
+>
+> Most of the time because the interrupt might have come during kernel entry
+> before the user to kernel CR3 switch or the during exit after the kernel to
+> user switch. In the former case skipping the restore would be correct, but
+> definitely not for the latter.
+>
+> So check the saved CR3 value and restore it only, if it is a user CR3.
+>
+> Give the macro a new name to clarify its usage, and remove a comment that
+> was describing the original behaviour along with the not longer needed jump
+> label.
+>
+> Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Link: https://lore.kernel.org/r/20240108113950.360438-1-jackmanb@google.com
+>
+> [Rewrote commit message; responded to review comments]
+> Change-Id: I6e56978c4753fb943a7897ff101f519514fa0827
+> ---
+>  arch/x86/entry/calling.h  | 26 ++++++++++----------------
+>  arch/x86/entry/entry_64.S |  7 +++----
+>  2 files changed, 13 insertions(+), 20 deletions(-)
+>
+> diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
+> index 9f1d947..92dca4a 100644
+> --- a/arch/x86/entry/calling.h
+> +++ b/arch/x86/entry/calling.h
+> @@ -239,17 +239,19 @@ For 32-bit we have the following conventions - kernel is built with
+>  .Ldone_\@:
+>  .endm
+>
+> -.macro RESTORE_CR3 scratch_reg:req save_reg:req
+> +/* Restore CR3 from a kernel context. May restore a user CR3 value. */
+> +.macro PARANOID_RESTORE_CR3 scratch_reg:req save_reg:req
+>         ALTERNATIVE "jmp .Lend_\@", "", X86_FEATURE_PTI
+>
+> -       ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
+> -
+>         /*
+> -        * KERNEL pages can always resume with NOFLUSH as we do
+> -        * explicit flushes.
+> +        * If CR3 contained the kernel page tables at the paranoid exception
+> +        * entry, then there is nothing to restore as CR3 is not modified while
+> +        * handling the exception.
+>          */
+>         bt      $PTI_USER_PGTABLE_BIT, \save_reg
+> -       jnc     .Lnoflush_\@
+> +       jnc     .Lend_\@
+> +
+> +       ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
+>
+>         /*
+>          * Check if there's a pending flush for the user ASID we're
+> @@ -257,20 +259,12 @@ For 32-bit we have the following conventions - kernel is built with
+>          */
+>         movq    \save_reg, \scratch_reg
+>         andq    $(0x7FF), \scratch_reg
+> -       bt      \scratch_reg, THIS_CPU_user_pcid_flush_mask
+> -       jnc     .Lnoflush_\@
+> -
+>         btr     \scratch_reg, THIS_CPU_user_pcid_flush_mask
+> -       jmp     .Lwrcr3_\@
+> +       jc      .Lwrcr3_\@
+>
+> -.Lnoflush_\@:
+>         SET_NOFLUSH_BIT \save_reg
+>
+>  .Lwrcr3_\@:
+> -       /*
+> -        * The CR3 write could be avoided when not changing its value,
+> -        * but would require a CR3 read *and* a scratch register.
+> -        */
+>         movq    \save_reg, %cr3
+>  .Lend_\@:
+>  .endm
+> @@ -285,7 +279,7 @@ For 32-bit we have the following conventions - kernel is built with
+>  .endm
+>  .macro SAVE_AND_SWITCH_TO_KERNEL_CR3 scratch_reg:req save_reg:req
+>  .endm
+> -.macro RESTORE_CR3 scratch_reg:req save_reg:req
+> +.macro PARANOID_RESTORE_CR3 scratch_reg:req save_reg:req
+>  .endm
+>
+>  #endif
+> diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+> index c40f89a..aedd169 100644
+> --- a/arch/x86/entry/entry_64.S
+> +++ b/arch/x86/entry/entry_64.S
+> @@ -968,14 +968,14 @@ SYM_CODE_START_LOCAL(paranoid_exit)
+>         IBRS_EXIT save_reg=%r15
+>
+>         /*
+> -        * The order of operations is important. RESTORE_CR3 requires
+> +        * The order of operations is important. PARANOID_RESTORE_CR3 requires
+>          * kernel GSBASE.
+>          *
+>          * NB to anyone to try to optimize this code: this code does
+>          * not execute at all for exceptions from user mode. Those
+>          * exceptions go through error_return instead.
+>          */
+> -       RESTORE_CR3     scratch_reg=%rax save_reg=%r14
+> +       PARANOID_RESTORE_CR3 scratch_reg=%rax save_reg=%r14
+>
+>         /* Handle the three GSBASE cases */
+>         ALTERNATIVE "jmp .Lparanoid_exit_checkgs", "", X86_FEATURE_FSGSBASE
+> @@ -1404,8 +1404,7 @@ end_repeat_nmi:
+>         /* Always restore stashed SPEC_CTRL value (see paranoid_entry) */
+>         IBRS_EXIT save_reg=%r15
+>
+> -       /* Always restore stashed CR3 value (see paranoid_entry) */
+> -       RESTORE_CR3 scratch_reg=%r15 save_reg=%r14
+> +       PARANOID_RESTORE_CR3 scratch_reg=%r15 save_reg=%r14
+>
+>         /*
+>          * The above invocation of paranoid_entry stored the GSBASE
 
