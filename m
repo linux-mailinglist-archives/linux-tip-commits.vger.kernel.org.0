@@ -1,197 +1,182 @@
-Return-Path: <linux-tip-commits+bounces-487-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-488-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF28C85AB36
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 19:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1300B85AB3B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 19:42:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A63AB25A38
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 18:41:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73CBAB25DE7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 18:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AEC54747;
-	Mon, 19 Feb 2024 18:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B6854FA1;
+	Mon, 19 Feb 2024 18:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ITcQVtQu";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="r9r6QyGj"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rjcp4DqB";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v5LRbMJu"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F0853805;
-	Mon, 19 Feb 2024 18:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856C453E39;
+	Mon, 19 Feb 2024 18:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708367864; cv=none; b=Wcwhh2k1TNsejuIwGY09yDqsrE5QWR494OvsL+yLJ+hJTy/XrmW2uYq+zmvjWNLcihQGdnrJNkeYbUhCysYDmkagz2xkrEH5rDLan6fJE0tcaBLM3wW+ujoFFlIMrp+0W/G0lOxbMzaXkvZLYZJFjzpxnmC5m7+xpo6MIvech0Y=
+	t=1708367865; cv=none; b=QyJlK5nqtNcza0d7v1s/JVKm2wDyC5GIxWgO0Zm9UUQ4Aozch0AZNKKzZRMJbpilPWq1QGc7yOU0PWs8vrkHRnJsEDmtA3GG/R+Gqy4uZ9LN6LmHWo9jh4K8Hbo6itNJWCG3olaQOE6CAb74ngrK/brNgqthsc+BoXjZ6uo0pBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708367864; c=relaxed/simple;
-	bh=WCORwWdgbnnKQewSn/5SZtw1kNBcXmb3yv93ydSiP5Q=;
+	s=arc-20240116; t=1708367865; c=relaxed/simple;
+	bh=3N9P4a0i7dcdrj931WaklTIUwvtpjGdAE2hAVW5Azsc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=bFV+5jQ1GUmLy8BIO1IrRMUE1RNIPUUtVE/oJHoe1qGLUtbCVez4oHjfaKoZR1Ch/K0TC5H6VpEGTRi24GLiU+QXBvZTyX+Q0h1nlcC0P3Cd7uSBCBeVQmXwkTQKRWKcd0gNsBL8O0heczwaNxi8HCH/JNPsLDDzdJovTvb/UMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ITcQVtQu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=r9r6QyGj; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ShBzgkoT0olXp61FqFsj7EEGmE9BfnzpvAzqMbPvBP/HKjc0MvFLIftZy7qc8CxGOm/6H5gY/U1NMzOzK88oo5yxRpsBpnmmvIJMM+GJ0aw7RBiRzbFxm1e34+K9IPzHJGcadpkuxhgY86PzMghrKxrPo3ZbIDlwPF3g33nWT3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rjcp4DqB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v5LRbMJu; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 19 Feb 2024 18:37:39 -0000
+Date: Mon, 19 Feb 2024 18:37:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708367860;
+	s=2020; t=1708367861;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P8uQUEP7sHBDAE6xDrwE50fmOGZvNATtQCG6BlfpgkI=;
-	b=ITcQVtQuZQBtY+EWvSyp5Xrssk2bEtYhnU+7iKivsTzKQ6opuBZgjtSVsarIVpFRvFo4Jd
-	kLcanE8j/XOPHhrN+X7cGiQdSqWVxJRaCnNO4ucMtb33bpVhaCyF3nyPqNpfhAdsuwSl1o
-	2aVfMC3QUc1BJ7hXtmPsr7p51rhWiI7o+KDsOmISmcBSPeJe5plzx2xF/xXvE3ekqaCI5R
-	ELIOeqKHMCEa9atv9J5sLyEj9d6+f+lpeJ/RDB6EVFslPzbdm/FPc4mr4Khx2dLhoYaRlG
-	Otd45aRs+cGSXfr6fDQQCod9kHr/o+92vDtVm6xKwlJ4GltM7q3vgKFNSbLncg==
+	bh=gylPkh/GXT4spEx7pBMUKcdiEuP1e+HFpCy9X4zge8o=;
+	b=rjcp4DqBRvs/VJvmtuXOK4eG91zKp5MBRg85j6oGWAZleQYdwdwnrCclhHqq9KhIwHXg4e
+	D7e7M+miC6yYK8SrMOTGb9MEZfyIpaLimgysq1Zo9Pqu2O1RmaGKmIws4Fr0GDR76JHaf0
+	T4RXycowZquDGQI4IdF7wFujhGsmREv10xl7wdp71qfFLfEjzYClfmqDxqq28zGqcS3Psu
+	9J+vZ93WBpkmT/RvtQfpDV2HKCLAr64F8Cl1AoHmeISdURSrrY8pbRg7sp2fH8i4lNTL9c
+	c3ONQF0wFjTQMR2rM4a92XBMeRauJiQbhIDQl6n/HJq0/iSQ2VbzvX/LirWf5g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708367860;
+	s=2020e; t=1708367861;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P8uQUEP7sHBDAE6xDrwE50fmOGZvNATtQCG6BlfpgkI=;
-	b=r9r6QyGjR085Snx1JxAdIRfoM/FlHXVV1XdBp7/Wfw301CRnAntYJZb8Gf+TKWyvqx4k+8
-	WFliF8xhZbdphgDg==
+	bh=gylPkh/GXT4spEx7pBMUKcdiEuP1e+HFpCy9X4zge8o=;
+	b=v5LRbMJugSUzgxy+xCkM9TTW1y9IKLBy0QGqm1PREAWM7g7MLeCkpxnoMicVdi8zruLw4A
+	+z8LGzf79IP/J/Cg==
 From: "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Create helper for RMID allocation and
- mondata dir creation
+Subject: [tip: x86/cache] x86/resctrl: Free rmid_ptrs from resctrl_exit()
 Cc: James Morse <james.morse@arm.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Shaopeng Tan <tan.shaopeng@fujitsu.com>, ilpo.jarvinen@linux.intel.com,
- Reinette Chatre <reinette.chatre@intel.com>, Babu Moger <babu.moger@amd.com>,
- Peter Newman <peternewman@google.com>,
+ Babu Moger <babu.moger@amd.com>, Reinette Chatre <reinette.chatre@intel.com>,
  Carl Worth <carl@os.amperecomputing.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240213184438.16675-4-james.morse@arm.com>
-References: <20240213184438.16675-4-james.morse@arm.com>
+In-Reply-To: <20240213184438.16675-3-james.morse@arm.com>
+References: <20240213184438.16675-3-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170836785987.398.10687382192378795242.tip-bot2@tip-bot2>
+Message-ID: <170836786051.398.1615891156083894968.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     b1de313979af99dc0f999656fc99bbcb52559a38
-Gitweb:        https://git.kernel.org/tip/b1de313979af99dc0f999656fc99bbcb525=
-59a38
+Commit-ID:     3f7b07380d58cfbb6a2d3aa672dcc76c0f4b0745
+Gitweb:        https://git.kernel.org/tip/3f7b07380d58cfbb6a2d3aa672dcc76c0f4b0745
 Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Tue, 13 Feb 2024 18:44:17=20
+AuthorDate:    Tue, 13 Feb 2024 18:44:16 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
 CommitterDate: Fri, 16 Feb 2024 19:18:31 +01:00
 
-x86/resctrl: Create helper for RMID allocation and mondata dir creation
+x86/resctrl: Free rmid_ptrs from resctrl_exit()
 
-When monitoring is supported, each monitor and control group is allocated an
-RMID. For control groups, rdtgroup_mkdir_ctrl_mon() later goes on to allocate
-the CLOSID.
+rmid_ptrs[] is allocated from dom_data_init() but never free()d.
 
-MPAM's equivalent of RMID are not an independent number, so can't be allocated
-until the CLOSID is known. An RMID allocation for one CLOSID may fail, whereas
-another may succeed depending on how many monitor groups a control group has.
+While the exit text ends up in the linker script's DISCARD section,
+the direction of travel is for resctrl to be/have loadable modules.
 
-The RMID allocation needs to move to be after the CLOSID has been allocated.
+Add resctrl_put_mon_l3_config() to cleanup any memory allocated
+by rdt_get_mon_l3_config().
 
-Move the RMID allocation and mondata dir creation to a helper.
+There is no reason to backport this to a stable kernel.
 
 Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Shaopeng Tan <tan.shaopeng@fujitsu.com>
-Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Reviewed-by: Babu Moger <babu.moger@amd.com>
-Tested-by: Peter Newman <peternewman@google.com>
-Tested-by: Shaopeng Tan <tan.shaopeng@fujitsu.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Tested-by: Babu Moger <babu.moger@amd.com>
 Tested-by: Carl Worth <carl@os.amperecomputing.com> # arm64
-Link: https://lore.kernel.org/r/20240213184438.16675-4-james.morse@arm.com
+Link: https://lore.kernel.org/r/20240213184438.16675-3-james.morse@arm.com
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 ---
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 42 ++++++++++++++++---------
- 1 file changed, 27 insertions(+), 15 deletions(-)
+ arch/x86/kernel/cpu/resctrl/core.c     |  6 ++++++
+ arch/x86/kernel/cpu/resctrl/internal.h |  1 +
+ arch/x86/kernel/cpu/resctrl/monitor.c  | 15 +++++++++++++++
+ 3 files changed, 22 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/res=
-ctrl/rdtgroup.c
-index aa24343..4ea5a87 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -3288,6 +3288,30 @@ out:
- 	return ret;
+diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
+index aa9810a..9641c42 100644
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -990,8 +990,14 @@ late_initcall(resctrl_late_init);
+ 
+ static void __exit resctrl_exit(void)
+ {
++	struct rdt_resource *r = &rdt_resources_all[RDT_RESOURCE_L3].r_resctrl;
++
+ 	cpuhp_remove_state(rdt_online);
++
+ 	rdtgroup_exit();
++
++	if (r->mon_capable)
++		rdt_put_mon_l3_config();
  }
-=20
-+static int mkdir_rdt_prepare_rmid_alloc(struct rdtgroup *rdtgrp)
+ 
+ __exitcall(resctrl_exit);
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
+index 52e7e7d..61c7636 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -544,6 +544,7 @@ void closid_free(int closid);
+ int alloc_rmid(void);
+ void free_rmid(u32 rmid);
+ int rdt_get_mon_l3_config(struct rdt_resource *r);
++void __exit rdt_put_mon_l3_config(void);
+ bool __init rdt_cpu_has(int flag);
+ void mon_event_count(void *info);
+ int rdtgroup_mondata_show(struct seq_file *m, void *arg);
+diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
+index 3a6c069..3a73db0 100644
+--- a/arch/x86/kernel/cpu/resctrl/monitor.c
++++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+@@ -719,6 +719,16 @@ static int dom_data_init(struct rdt_resource *r)
+ 	return 0;
+ }
+ 
++static void __exit dom_data_exit(void)
 +{
-+	int ret;
++	mutex_lock(&rdtgroup_mutex);
 +
-+	if (!rdt_mon_capable)
-+		return 0;
++	kfree(rmid_ptrs);
++	rmid_ptrs = NULL;
 +
-+	ret =3D alloc_rmid();
-+	if (ret < 0) {
-+		rdt_last_cmd_puts("Out of RMIDs\n");
-+		return ret;
-+	}
-+	rdtgrp->mon.rmid =3D ret;
-+
-+	ret =3D mkdir_mondata_all(rdtgrp->kn, rdtgrp, &rdtgrp->mon.mon_data_kn);
-+	if (ret) {
-+		rdt_last_cmd_puts("kernfs subdir error\n");
-+		free_rmid(rdtgrp->mon.rmid);
-+		return ret;
-+	}
-+
-+	return 0;
++	mutex_unlock(&rdtgroup_mutex);
 +}
 +
- static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
- 			     const char *name, umode_t mode,
- 			     enum rdt_group_type rtype, struct rdtgroup **r)
-@@ -3360,20 +3384,10 @@ static int mkdir_rdt_prepare(struct kernfs_node *pare=
-nt_kn,
- 		goto out_destroy;
- 	}
-=20
--	if (rdt_mon_capable) {
--		ret =3D alloc_rmid();
--		if (ret < 0) {
--			rdt_last_cmd_puts("Out of RMIDs\n");
--			goto out_destroy;
--		}
--		rdtgrp->mon.rmid =3D ret;
-+	ret =3D mkdir_rdt_prepare_rmid_alloc(rdtgrp);
-+	if (ret)
-+		goto out_destroy;
-=20
--		ret =3D mkdir_mondata_all(kn, rdtgrp, &rdtgrp->mon.mon_data_kn);
--		if (ret) {
--			rdt_last_cmd_puts("kernfs subdir error\n");
--			goto out_idfree;
--		}
--	}
- 	kernfs_activate(kn);
-=20
- 	/*
-@@ -3381,8 +3395,6 @@ static int mkdir_rdt_prepare(struct kernfs_node *parent=
-_kn,
- 	 */
+ static struct mon_evt llc_occupancy_event = {
+ 	.name		= "llc_occupancy",
+ 	.evtid		= QOS_L3_OCCUP_EVENT_ID,
+@@ -814,6 +824,11 @@ int __init rdt_get_mon_l3_config(struct rdt_resource *r)
  	return 0;
-=20
--out_idfree:
--	free_rmid(rdtgrp->mon.rmid);
- out_destroy:
- 	kernfs_put(rdtgrp->kn);
- 	kernfs_remove(rdtgrp->kn);
+ }
+ 
++void __exit rdt_put_mon_l3_config(void)
++{
++	dom_data_exit();
++}
++
+ void __init intel_rdt_mbm_apply_quirk(void)
+ {
+ 	int cf_index;
 
