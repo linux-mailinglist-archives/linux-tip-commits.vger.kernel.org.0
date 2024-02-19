@@ -1,128 +1,140 @@
-Return-Path: <linux-tip-commits+bounces-458-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-459-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6607385A7F0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 16:57:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D24785A903
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 17:35:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05293B21BE7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 15:57:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EA0E1C20FF9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 16:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D403B786;
-	Mon, 19 Feb 2024 15:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA583F9E3;
+	Mon, 19 Feb 2024 16:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmA4Fkqp"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nAhslH5E";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7fWOQ432"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F703B190;
-	Mon, 19 Feb 2024 15:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585BA3FB21;
+	Mon, 19 Feb 2024 16:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708358221; cv=none; b=fb+2a6nNhnxmeNKv1WwRkWjlDdmDf9nZe00SpMk8TIztpFxLvPF1HTxXVREtnTSGasIOffW7ay8vRfzkG5GFfx1nPybJtWmFpoZWBRNdTzpGmd9FTdCM+oMUsvNRE+gLDHxjv2S0ZoV6PYWktDKHR3rGsHKLRO1s8ypgSaXyveQ=
+	t=1708360519; cv=none; b=QRp6k1AfntkwYpM/u7F3PC0di5pY7ilGY9wvULQI/7TGLsJBC19S6Klsyyvkd+mDNuSxJ6CrquMmjCOzCItsVNDlXgj/g1WdQhfWPRvs8J2rdh+mmz4Y2xnnyIPnJwGNXbD9cz2moxrxotDgcJIXHEWag/nBKHBGSyPgLnN79qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708358221; c=relaxed/simple;
-	bh=ViZrw86k4pjLburJCJObXL4Filt6Xa7zhElSH1BTaM0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gjr9Z55hlhetF0hs4UFYIxJBco7F0k+6i/IUJ9Q27RMUwnmtEk8atX9kIlScjlnvjP/AkY1EAH/d0x5JDd8sB1nXc3Ug/82wE0YSOfGPRr+VWWjWCqqSPo+XpfbPKAzlRHgEVAwgSFAqqdL7ygacInIWL7Eim41oWAszh3Jx+0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmA4Fkqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C44C433C7;
-	Mon, 19 Feb 2024 15:57:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708358221;
-	bh=ViZrw86k4pjLburJCJObXL4Filt6Xa7zhElSH1BTaM0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CmA4FkqprLlsrbkkuP++2cothZ3a2rLe1RDDzOzZYJGbUE+vzvqi7vXc2/azCPQfl
-	 H6LWYYmIqhUz8Xqr9Pf6aIs0Sbe7O12kVDFZXSwLZgBXTK6ND9OJ35iHSNPBCwsYB3
-	 q8zcTlVFze53LFrQa8Ho/pY+9vKgPTU7TBF922DnU7pVOovbSAzk2wxMYds55LMIeq
-	 UJxpIITaZwAz5vSAZm8JftfLF8FyRafSXO51hh6Khdddud68eiVqkIAsMREth4449L
-	 MDcQFLIL09Ep8+rcMhnXRnNLXv9kp+TLIAqWknmQ9E8Xr6CCbcvu55lv1nVVl8D/wW
-	 yjExMpDKAkcdw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1rc60o-004cv5-LP;
-	Mon, 19 Feb 2024 15:56:58 +0000
-Date: Mon, 19 Feb 2024 15:56:58 +0000
-Message-ID: <867cj04fcl.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: tip-bot2@linutronix.de,
-	apatel@ventanamicro.com,
-	linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org,
-	tglx@linutronix.de,
-	geert@linux-m68k.org,
-	linux-renesas-soc@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [tip: irq/msi] genirq/irqdomain: Remove the param count restriction from select()
-In-Reply-To: <170802702416.398.14922976721740218856.tip-bot2@tip-bot2>
-References: <170802702416.398.14922976721740218856.tip-bot2@tip-bot2>
-	<20240127161753.114685-3-apatel@ventanamicro.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1708360519; c=relaxed/simple;
+	bh=Idw1vDDtc6dcTHvMpbTfp8KxEfRv/UVvvHnfEt4KQ0Q=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=OI+qS8l1hhl/I4tt2qYYe3tD5hdW+kQ2yMk6zh4xiRNyIIEDQYACfMJXOge+R31yOiQlcbDHdffmg+w8fCzZQXrbees5hPr+5sqk3Vdbm2o7ie2kJFJPR+xlc8V9xiouW8la7L9lI7SCnwJbbuSrjxS6C9U2Ra3h23IL1F1u5YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nAhslH5E; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7fWOQ432; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 19 Feb 2024 16:35:15 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708360516;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hR2ba7cr0Kap8YHhF1/mw/Ks29O4RybZ9BPUoZmrFYk=;
+	b=nAhslH5E1ql+w5f3S5nII6zTIQgHnyDDv7rM2k+m1kMUDL9C4RP1HTyybeKl4NhcYK69Gs
+	30m8iwUl0T8uh26IfHRugC9TAi2uIU8IvBG6QUfmS4gmvqK2LH2Tch+tQYtSZ6kppiASoQ
+	o8igw8Is2VKyyqH8S9daDHoCiVZl4IfZOdXccPXQTrw6usarNm1NN0vYSUKGHD03CCDCq9
+	UfcEZIGrB5cyjyZrjnv/GNUH70IoJ5kt+/19GaHM9yGy/pnJU9EpPnRrS0G06oWyDNKA8V
+	884D5Vms08IMnsL3pxZNfZjC2ATEUCHgvX2zTz4eU3HzHzTdKzvwIuNGOrgDNw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708360516;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hR2ba7cr0Kap8YHhF1/mw/Ks29O4RybZ9BPUoZmrFYk=;
+	b=7fWOQ432qxMIkgAdXXgE7sxmHtZR4wKWksi5gew5kAEpYHmQOVemtAdVimNILyO/p8s1dl
+	puZVpQHl7ycickBQ==
+From: "tip-bot2 for Peter Hilber" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: timers/core] timekeeping: Fix cross-timestamp interpolation for non-x86
+Cc: Peter Hilber <peter.hilber@opensynergy.com>,
+ Thomas Gleixner <tglx@linutronix.de>, John Stultz <jstultz@google.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231218073849.35294-4-peter.hilber@opensynergy.com>
+References: <20231218073849.35294-4-peter.hilber@opensynergy.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: biju.das.jz@bp.renesas.com, tip-bot2@linutronix.de, apatel@ventanamicro.com, linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, tglx@linutronix.de, geert@linux-m68k.org, linux-renesas-soc@vger.kernel.org, x86@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Message-ID: <170836051538.398.6736189078796081366.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Mon, 19 Feb 2024 15:50:36 +0000,
-Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> 
-> > Now that the GIC-v3 callback can handle invocation with a fwspec parameter
-> > count of 0 lift the restriction in the core code and invoke select()
-> > unconditionally when the domain provides it.
-> 
-> This patch breaks on RZ/G2L SMARC EVK as of_phandle_args_to_fwspec count()
-> is called after irq_find_matching_fwspec() is causing fwspec->param_count=0
-> and this results in boot failure as the patch removes the check.
-> 
-> Maybe we need to revert this patch or fix the fundamental issue.
-> 
-> Cheers,
-> Biju
-> ---
->  kernel/irq/irqdomain.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-> index 0bdef4f..8fee379 100644
-> --- a/kernel/irq/irqdomain.c
-> +++ b/kernel/irq/irqdomain.c
-> @@ -448,7 +448,7 @@ struct irq_domain *irq_find_matching_fwspec(struct irq_fwspec *fwspec,
->  	 */
->  	mutex_lock(&irq_domain_mutex);
->  	list_for_each_entry(h, &irq_domain_list, link) {
-> -		if (h->ops->select && fwspec->param_count)
-> +		if (h->ops->select)
->  			rc = h->ops->select(h, fwspec, bus_token);
->  		else if (h->ops->match)
->  			rc = h->ops->match(h, to_of_node(fwnode), bus_token);
-> 
-> 
+The following commit has been merged into the timers/core branch of tip:
 
-Dmitry posted his take on this at [1], and I have suggested another
-possible fix in my reply.
+Commit-ID:     14274d0bd31b4debf28284604589f596ad2e99f2
+Gitweb:        https://git.kernel.org/tip/14274d0bd31b4debf28284604589f596ad2e99f2
+Author:        Peter Hilber <peter.hilber@opensynergy.com>
+AuthorDate:    Mon, 18 Dec 2023 08:38:41 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 19 Feb 2024 12:18:51 +01:00
 
-Could you please give both patches a go?
+timekeeping: Fix cross-timestamp interpolation for non-x86
 
-Thanks,
+So far, get_device_system_crosststamp() unconditionally passes
+system_counterval.cycles to timekeeping_cycles_to_ns(). But when
+interpolating system time (do_interp == true), system_counterval.cycles is
+before tkr_mono.cycle_last, contrary to the timekeeping_cycles_to_ns()
+expectations.
 
-	M.
+On x86, CONFIG_CLOCKSOURCE_VALIDATE_LAST_CYCLE will mitigate on
+interpolating, setting delta to 0. With delta == 0, xtstamp->sys_monoraw
+and xtstamp->sys_realtime are then set to the last update time, as
+implicitly expected by adjust_historical_crosststamp(). On other
+architectures, the resulting nonsense xtstamp->sys_monoraw and
+xtstamp->sys_realtime corrupt the xtstamp (ts) adjustment in
+adjust_historical_crosststamp().
 
-[1] https://lore.kernel.org/r/20240219-gic-fix-child-domain-v1-1-09f8fd2d9a8f@linaro.org
+Fix this by deriving xtstamp->sys_monoraw and xtstamp->sys_realtime from
+the last update time when interpolating, by using the local variable
+"cycles". The local variable already has the right value when
+interpolating, unlike system_counterval.cycles.
 
--- 
-Without deviation from the norm, progress is not possible.
+Fixes: 2c756feb18d9 ("time: Add history to cross timestamp interface supporting slower devices")
+Signed-off-by: Peter Hilber <peter.hilber@opensynergy.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: John Stultz <jstultz@google.com>
+Link: https://lore.kernel.org/r/20231218073849.35294-4-peter.hilber@opensynergy.com
+
+---
+ kernel/time/timekeeping.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 4e9f2f8..8aab7ed 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -1261,10 +1261,8 @@ int get_device_system_crosststamp(int (*get_time_fn)
+ 				      tk_core.timekeeper.offs_real);
+ 		base_raw = tk->tkr_raw.base;
+ 
+-		nsec_real = timekeeping_cycles_to_ns(&tk->tkr_mono,
+-						     system_counterval.cycles);
+-		nsec_raw = timekeeping_cycles_to_ns(&tk->tkr_raw,
+-						    system_counterval.cycles);
++		nsec_real = timekeeping_cycles_to_ns(&tk->tkr_mono, cycles);
++		nsec_raw = timekeeping_cycles_to_ns(&tk->tkr_raw, cycles);
+ 	} while (read_seqcount_retry(&tk_core.seq, seq));
+ 
+ 	xtstamp->sys_realtime = ktime_add_ns(base_real, nsec_real);
 
