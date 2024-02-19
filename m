@@ -1,110 +1,132 @@
-Return-Path: <linux-tip-commits+bounces-455-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-456-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F18685A66A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 15:51:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6105485A742
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 16:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCFF8283129
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 14:51:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 009F51F247FE
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 15:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC288381A4;
-	Mon, 19 Feb 2024 14:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739F138384;
+	Mon, 19 Feb 2024 15:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IFYqwIHE"
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Gige87Op";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6iNM42ud"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7077F381AF
-	for <linux-tip-commits@vger.kernel.org>; Mon, 19 Feb 2024 14:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88C338389;
+	Mon, 19 Feb 2024 15:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708354302; cv=none; b=Me+XtRl0FeXLmSeeDOqdDl2QN9A9V0OPDjvMU0FikebeStgKkrx72AeoClgyRwxHCei6PmvsFnK+4EYVN3oB8S3QYKXklLtBekCAlezdPvcgXbDhb8pH0iVLnNS4nfGbU6zslYtmOHEI62pIqfUqTOXV4Da5crKU4ZBlx8EiSmk=
+	t=1708356084; cv=none; b=kyrWLoL8jLYG4CNle+E0geJ5kg+D1URdx+tltlO9cyKlCO1HU6qV0Tmvxa+03aVhuYVGPo058vxWiEVL/ihQtpf5ollu/BcXXKzelZqc6y2HpQlK0hHduS43qpOKBkJKcOQ+P6ORwmO1XMSiEJVhxW64ve4dJbeWKVx3rIfQrQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708354302; c=relaxed/simple;
-	bh=6F/djHZgXfBfzDSGWN9x5OiEihGxjyv6a0kYnS8kE/4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oYsER1W26Nnnx9N3FwdlgUzbCQi6gw5Azz9W7ApTjM6sDw1NMsReA3/bvqZcwO+85VRj3mUqee3Qsuxc3KbzMC4pqhOFhUb+6+BZvbjV4z/cAgjCVXexYi+VjAqTNhdVHG4A9z59YQ9rC32eoLuDjuijx4vudsvZ+t3ivPFw/7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IFYqwIHE; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-428405a0205so596421cf.1
-        for <linux-tip-commits@vger.kernel.org>; Mon, 19 Feb 2024 06:51:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708354300; x=1708959100; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=hiB/AxVaOWtkvuxqBUitfjyPDq0yhH3V/uKmBa9nfwg=;
-        b=IFYqwIHEV+CjSFaIUzV/94dkTARPmREIWllDCwevsiGP6l3LSnT9oad3wptHdAIdU9
-         PU2Z2YCAOcHlZ8flhgWVdyF4z1hoDmQUURihjH8+JvTu2J7Jf88ZZJqiswoJM+zGOsQU
-         0oXKP+cLSmxLqztPVAfOQAbFWJ4O3sUt5BJ+xkt+A7tni2C2Zke9YMmUa9ku/sGc90Gx
-         bwSPDk0t8Hdp0doQFxrUy2G/xZ2VhploN+rtAFKRykuutiElUULfiCRM+2rkzVjXKk4t
-         q4doUGKKFG7X9TFcUkJC9L4HuhQwVJXCL0Gj89Z/KLIC8DtfsqIv3JHk1qwwTZ/z8AWU
-         TyVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708354300; x=1708959100;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hiB/AxVaOWtkvuxqBUitfjyPDq0yhH3V/uKmBa9nfwg=;
-        b=F0hu7WSJnohG8ZKMcTv5YO6vU3e3QTyHsl+XJ+p989mxWXsaH0jocPbY9awfU/ZaCS
-         NcKdBuA1AdrzW1rt69zu15ZwfBB07Dk6stX94UZdZYryyerpUYuQYIk63aOeyCzTWLg2
-         bWPcKJXXAKFsP+VEWHnmfA4uLtO9eQ36KzgF3mViPL5JnsSeBgiSjKXrn/GCyeVVDwYY
-         faA7qHSrYFVmfivF18A5MwgoFwpKox96pRtajgur0O79xJQImA/W5zxlFqr7q2Lyoajo
-         TOind+FebM2TykX2k4xtSb6nwsbVCmveMJMlBsQR9I0b3zHstSdZ8dLnxw4Z5QpqKtMD
-         18yg==
-X-Forwarded-Encrypted: i=1; AJvYcCXD1XY95SJ81jZIddVoGPQbShI1pz+jZ5t8v6pJqfBW6VhcrPTMu8gTVIUaimZ3mNsqYjiGXjwE9jPwZWYDNwKQJrQsWzvi+hIkd6gefnA62bo=
-X-Gm-Message-State: AOJu0YzWcrjWSWcl8PmnQiDwAvZQQIfDOEQIN/plMpOTPs+ZH9b7qW7i
-	CvbHQLg56f4IM1upP9K0ntKG/tWDpMuVLAJU26zImbtf2ag01WgM/P9IB3euB53fmgimFnYDMA2
-	TmJEPTkveKaWFE9wyp6maXMk1QJCttI6EyehI
-X-Google-Smtp-Source: AGHT+IG14BgRPlqHoWRK2frVMGTfyNiK7ZSClvVhXrHpa01jdr28eJjhqg93Yp47bABgxcPNtzW3mo96DWANEpBmlUQ=
-X-Received: by 2002:a05:622a:14cd:b0:42d:fe28:38e5 with SMTP id
- u13-20020a05622a14cd00b0042dfe2838e5mr329279qtx.20.1708354300330; Mon, 19 Feb
- 2024 06:51:40 -0800 (PST)
+	s=arc-20240116; t=1708356084; c=relaxed/simple;
+	bh=G2cvM0uYCACv57fHf4T3QzA7HExl9j/2O59IDZ0UxGU=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=sXy4TUb6Pb0UuaAm/8ho1KYjvLmQFHo8E70CYsmn8LgtkCGNJvADz0JyVpEQtRyF3VLgEldrsGGVV0dlQ+wfjri8Qo7R7/xnt00/zqXwcyFaONBCOkNNYbgNXtZdq2UGA+Nytaa2plI58dWDPSRkRzc1K6CaBqMn6JuEPoh8GqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Gige87Op; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6iNM42ud; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 19 Feb 2024 15:21:20 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708356081;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ltsHf1PwnnRBNn4pYqVf92/T9hGBxHrz+dtWVE8uYw=;
+	b=Gige87Opi7VjCflOt1nd0zzjShhvwRwbYbhCnE7EXdwbyP54+wahAW7LKw8z0Zt7OOXc0f
+	MYU+6AwielGbDFWcMTyM3NRYvCKIhWcCQs1EUf3RwKkeWzqa6R80Wx/q+gcNGHT9uszCyQ
+	Npx8oMDQFTJgaf/FUjmKbb4DOPfa5P+kUcUemD0+czaQ6TT3smmzDmkpZhDstLM7/FmyQq
+	Pj/S49U0+na/S8CF1O08X6CuzZLO+QWxPaEihSx/RMxPtrLTLPl6tl07BLXPPNpZxNzxg2
+	dAh16Y7J8FBkkRk74FcM1mC/KW7lCdKyEa54xN+QPZsJ0lF4Movsug46CboaSg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708356081;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ltsHf1PwnnRBNn4pYqVf92/T9hGBxHrz+dtWVE8uYw=;
+	b=6iNM42udPMh3wflw8piWHMn4tr58N9QanjUMxYRhH6e6rvF11TQWDzTzrKAajfEcx3x9OD
+	ZMY/tlabIARuBBCA==
+From: "tip-bot2 for Vidya Sagar" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: irq/urgent] PCI/MSI: Prevent MSI hardware interrupt number truncation
+Cc: Vidya Sagar <vidyas@nvidia.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240115135649.708536-1-vidyas@nvidia.com>
+References: <20240115135649.708536-1-vidyas@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240108113950.360438-1-jackmanb@google.com> <170612139384.398.13715690088153668463.tip-bot2@tip-bot2>
- <CA+i-1C1OpZQTS3EQa8fEc5BTzcLNMcgrwt0b9mR_jqiY0-zV3A@mail.gmail.com> <20240219144210.GDZdNowiz8Tr9j8acY@fat_crate.local>
-In-Reply-To: <20240219144210.GDZdNowiz8Tr9j8acY@fat_crate.local>
-From: Brendan Jackman <jackmanb@google.com>
-Date: Mon, 19 Feb 2024 15:51:27 +0100
-Message-ID: <CA+i-1C10TjwEKEYoV636PPXJZpQDvbLqETVzA=rjgsU-Dvucmw@mail.gmail.com>
-Subject: Re: [tip: x86/entry] x86/entry: Avoid redundant CR3 write on paranoid returns
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
-	Lai Jiangshan <laijs@linux.alibaba.com>, Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org, 
-	Kevin Cheng <chengkev@google.com>, Yosry Ahmed <yosryahmed@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <170835608023.398.3330290067084127851.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Ah yep, it's there. Checked my history, I was looking in the wrong
-branch. Thanks for the correction.
+The following commit has been merged into the irq/urgent branch of tip:
 
-On Mon, 19 Feb 2024 at 15:42, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Mon, Feb 19, 2024 at 11:49:46AM +0100, Brendan Jackman wrote:
-> > [Apologies if you see this as a duplicate, accidentally sent the
-> > original in HTML, please disregard the other one]
-> >
-> > Hi Thomas,
-> >
-> > I have just noticed that the commit has disappeared from
-> > tip/x86/entry. Is that deliberate?
->
-> $ git fetch tip
-> $ git log -1 --oneline tip/x86/entry
-> bb998361999e (refs/remotes/tip/x86/entry) x86/entry: Avoid redundant CR3 write on paranoid returns
->
-> Looks there to me. :)
->
-> --
-> Regards/Gruss,
->     Boris.
->
-> https://people.kernel.org/tglx/notes-about-netiquette
+Commit-ID:     db744ddd59be798c2627efbfc71f707f5a935a40
+Gitweb:        https://git.kernel.org/tip/db744ddd59be798c2627efbfc71f707f5a935a40
+Author:        Vidya Sagar <vidyas@nvidia.com>
+AuthorDate:    Mon, 15 Jan 2024 19:26:49 +05:30
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 19 Feb 2024 16:11:01 +01:00
+
+PCI/MSI: Prevent MSI hardware interrupt number truncation
+
+While calculating the hardware interrupt number for a MSI interrupt, the
+higher bits (i.e. from bit-5 onwards a.k.a domain_nr >= 32) of the PCI
+domain number gets truncated because of the shifted value casting to return
+type of pci_domain_nr() which is 'int'. This for example is resulting in
+same hardware interrupt number for devices 0019:00:00.0 and 0039:00:00.0.
+
+To address this cast the PCI domain number to 'irq_hw_number_t' before left
+shifting it to calculate the hardware interrupt number.
+
+Please note that this fixes the issue only on 64-bit systems and doesn't
+change the behavior for 32-bit systems i.e. the 32-bit systems continue to
+have the issue. Since the issue surfaces only if there are too many PCIe
+controllers in the system which usually is the case in modern server
+systems and they don't tend to run 32-bit kernels.
+
+Fixes: 3878eaefb89a ("PCI/MSI: Enhance core to support hierarchy irqdomain")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240115135649.708536-1-vidyas@nvidia.com
+---
+ drivers/pci/msi/irqdomain.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
+index c8be056..cfd84a8 100644
+--- a/drivers/pci/msi/irqdomain.c
++++ b/drivers/pci/msi/irqdomain.c
+@@ -61,7 +61,7 @@ static irq_hw_number_t pci_msi_domain_calc_hwirq(struct msi_desc *desc)
+ 
+ 	return (irq_hw_number_t)desc->msi_index |
+ 		pci_dev_id(dev) << 11 |
+-		(pci_domain_nr(dev->bus) & 0xFFFFFFFF) << 27;
++		((irq_hw_number_t)(pci_domain_nr(dev->bus) & 0xFFFFFFFF)) << 27;
+ }
+ 
+ static void pci_msi_domain_set_desc(msi_alloc_info_t *arg,
 
