@@ -1,132 +1,90 @@
-Return-Path: <linux-tip-commits+bounces-456-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-457-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6105485A742
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 16:21:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2868F85A7D6
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 16:50:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 009F51F247FE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 15:21:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16B151C20E16
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 15:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739F138384;
-	Mon, 19 Feb 2024 15:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Gige87Op";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6iNM42ud"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88C338389;
-	Mon, 19 Feb 2024 15:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8A43A1DE;
+	Mon, 19 Feb 2024 15:50:45 +0000 (UTC)
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C819638DEA;
+	Mon, 19 Feb 2024 15:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708356084; cv=none; b=kyrWLoL8jLYG4CNle+E0geJ5kg+D1URdx+tltlO9cyKlCO1HU6qV0Tmvxa+03aVhuYVGPo058vxWiEVL/ihQtpf5ollu/BcXXKzelZqc6y2HpQlK0hHduS43qpOKBkJKcOQ+P6ORwmO1XMSiEJVhxW64ve4dJbeWKVx3rIfQrQ8=
+	t=1708357845; cv=none; b=oi2qbWzYRSMbga4vj7Vb0EQFocUz2sd9/25GZNLSA7+VVCr5N2oPFl+szH55CsziXlwM8DuMygr4oX0YXQzuiv38M1ZLZhkTXuKtlEWkY4wXubsYPEyUG9WBMXvM5jdK8pjOBRCjJaI/uXbflllU1/MqgqNiQShUwQAOI3MGkMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708356084; c=relaxed/simple;
-	bh=G2cvM0uYCACv57fHf4T3QzA7HExl9j/2O59IDZ0UxGU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=sXy4TUb6Pb0UuaAm/8ho1KYjvLmQFHo8E70CYsmn8LgtkCGNJvADz0JyVpEQtRyF3VLgEldrsGGVV0dlQ+wfjri8Qo7R7/xnt00/zqXwcyFaONBCOkNNYbgNXtZdq2UGA+Nytaa2plI58dWDPSRkRzc1K6CaBqMn6JuEPoh8GqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Gige87Op; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6iNM42ud; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 19 Feb 2024 15:21:20 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708356081;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8ltsHf1PwnnRBNn4pYqVf92/T9hGBxHrz+dtWVE8uYw=;
-	b=Gige87Opi7VjCflOt1nd0zzjShhvwRwbYbhCnE7EXdwbyP54+wahAW7LKw8z0Zt7OOXc0f
-	MYU+6AwielGbDFWcMTyM3NRYvCKIhWcCQs1EUf3RwKkeWzqa6R80Wx/q+gcNGHT9uszCyQ
-	Npx8oMDQFTJgaf/FUjmKbb4DOPfa5P+kUcUemD0+czaQ6TT3smmzDmkpZhDstLM7/FmyQq
-	Pj/S49U0+na/S8CF1O08X6CuzZLO+QWxPaEihSx/RMxPtrLTLPl6tl07BLXPPNpZxNzxg2
-	dAh16Y7J8FBkkRk74FcM1mC/KW7lCdKyEa54xN+QPZsJ0lF4Movsug46CboaSg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708356081;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8ltsHf1PwnnRBNn4pYqVf92/T9hGBxHrz+dtWVE8uYw=;
-	b=6iNM42udPMh3wflw8piWHMn4tr58N9QanjUMxYRhH6e6rvF11TQWDzTzrKAajfEcx3x9OD
-	ZMY/tlabIARuBBCA==
-From: "tip-bot2 for Vidya Sagar" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/urgent] PCI/MSI: Prevent MSI hardware interrupt number truncation
-Cc: Vidya Sagar <vidyas@nvidia.com>, Thomas Gleixner <tglx@linutronix.de>,
- Shanker Donthineni <sdonthineni@nvidia.com>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240115135649.708536-1-vidyas@nvidia.com>
-References: <20240115135649.708536-1-vidyas@nvidia.com>
+	s=arc-20240116; t=1708357845; c=relaxed/simple;
+	bh=3gljEuQh4fhhlvTwEdHbLdMg7pIM+AmlQfvPws8ZqqY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Dc+aqwZnq0OnyJejVnUar3oX+sn52g0NdZ+F8l7jKtVWO0Mnc4YuP4WVatzUjOP9pZNuMmFIx2VoKwE408f4iJiQPcjmy6WxdbPV6dTyKlWcwgSehOYe32j7qNm9Vi0PyvVm56o5W+C+xwp8yMo+fineqqC5kCiFkSvAIlCY2CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+X-IronPort-AV: E=Sophos;i="6.06,170,1705330800"; 
+   d="scan'208";a="194447432"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 20 Feb 2024 00:50:41 +0900
+Received: from localhost.localdomain (unknown [10.226.92.217])
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 56E95400FFE9;
+	Tue, 20 Feb 2024 00:50:38 +0900 (JST)
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: tip-bot2@linutronix.de
+Cc: apatel@ventanamicro.com,
+	linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org,
+	tglx@linutronix.de,
+	geert@linux-m68k.org,
+	maz@kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	x86@kernel.org
+Subject: [tip: irq/msi] genirq/irqdomain: Remove the param count restriction from select()
+Date: Mon, 19 Feb 2024 15:50:36 +0000
+Message-Id: <170802702416.398.14922976721740218856.tip-bot2@tip-bot2> (raw)
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240127161753.114685-3-apatel@ventanamicro.com>
+References: <170802702416.398.14922976721740218856.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170835608023.398.3330290067084127851.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the irq/urgent branch of tip:
+> Now that the GIC-v3 callback can handle invocation with a fwspec parameter
+> count of 0 lift the restriction in the core code and invoke select()
+> unconditionally when the domain provides it.
 
-Commit-ID:     db744ddd59be798c2627efbfc71f707f5a935a40
-Gitweb:        https://git.kernel.org/tip/db744ddd59be798c2627efbfc71f707f5a935a40
-Author:        Vidya Sagar <vidyas@nvidia.com>
-AuthorDate:    Mon, 15 Jan 2024 19:26:49 +05:30
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 19 Feb 2024 16:11:01 +01:00
+This patch breaks on RZ/G2L SMARC EVK as of_phandle_args_to_fwspec count()
+is called after irq_find_matching_fwspec() is causing fwspec->param_count=0
+and this results in boot failure as the patch removes the check.
 
-PCI/MSI: Prevent MSI hardware interrupt number truncation
+Maybe we need to revert this patch or fix the fundamental issue.
 
-While calculating the hardware interrupt number for a MSI interrupt, the
-higher bits (i.e. from bit-5 onwards a.k.a domain_nr >= 32) of the PCI
-domain number gets truncated because of the shifted value casting to return
-type of pci_domain_nr() which is 'int'. This for example is resulting in
-same hardware interrupt number for devices 0019:00:00.0 and 0039:00:00.0.
-
-To address this cast the PCI domain number to 'irq_hw_number_t' before left
-shifting it to calculate the hardware interrupt number.
-
-Please note that this fixes the issue only on 64-bit systems and doesn't
-change the behavior for 32-bit systems i.e. the 32-bit systems continue to
-have the issue. Since the issue surfaces only if there are too many PCIe
-controllers in the system which usually is the case in modern server
-systems and they don't tend to run 32-bit kernels.
-
-Fixes: 3878eaefb89a ("PCI/MSI: Enhance core to support hierarchy irqdomain")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240115135649.708536-1-vidyas@nvidia.com
+Cheers,
+Biju
 ---
- drivers/pci/msi/irqdomain.c | 2 +-
+ kernel/irq/irqdomain.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
-index c8be056..cfd84a8 100644
---- a/drivers/pci/msi/irqdomain.c
-+++ b/drivers/pci/msi/irqdomain.c
-@@ -61,7 +61,7 @@ static irq_hw_number_t pci_msi_domain_calc_hwirq(struct msi_desc *desc)
- 
- 	return (irq_hw_number_t)desc->msi_index |
- 		pci_dev_id(dev) << 11 |
--		(pci_domain_nr(dev->bus) & 0xFFFFFFFF) << 27;
-+		((irq_hw_number_t)(pci_domain_nr(dev->bus) & 0xFFFFFFFF)) << 27;
- }
- 
- static void pci_msi_domain_set_desc(msi_alloc_info_t *arg,
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 0bdef4f..8fee379 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -448,7 +448,7 @@ struct irq_domain *irq_find_matching_fwspec(struct irq_fwspec *fwspec,
+ 	 */
+ 	mutex_lock(&irq_domain_mutex);
+ 	list_for_each_entry(h, &irq_domain_list, link) {
+-		if (h->ops->select && fwspec->param_count)
++		if (h->ops->select)
+ 			rc = h->ops->select(h, fwspec, bus_token);
+ 		else if (h->ops->match)
+ 			rc = h->ops->match(h, to_of_node(fwnode), bus_token);
+
 
