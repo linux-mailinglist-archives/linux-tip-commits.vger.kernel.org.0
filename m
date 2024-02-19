@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-446-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-448-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4312859EA3
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 09:45:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF211859EA5
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 09:46:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFE22B21655
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 08:45:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B424B21C96
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Feb 2024 08:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6143622325;
-	Mon, 19 Feb 2024 08:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B86224D1;
+	Mon, 19 Feb 2024 08:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dTi12h1W";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Bd/xjVox"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YrFiDScf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EpcCMYNY"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0ABD2135A;
-	Mon, 19 Feb 2024 08:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6888721362;
+	Mon, 19 Feb 2024 08:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708332337; cv=none; b=rfpqotvNzrW/w6UR/OFKB7SiZkq+RXHwIP+/mF0I9jb7fAQz+wa97bXcNnb0lEojmUQef0cMQcPz6FQemgiRJJVS4kQEG5Bi5F/dnlFCzZnLOPZRbAxd5GkSlrLRJXl+N/pWnXj0JfjVhTYsXZKv/3vmm9fW1gKz2bOCdGsuk9U=
+	t=1708332338; cv=none; b=dZAhp7XsSO7v7NKSMap4w+E+aQt5FEalFYTYY+rNpCBpUC9bj6FuQ7F22KfYPD3xKTnNBkKiH2e3+gdqxSlvbxvXBo+pd3MYQNbxsDNn3eywgxDnWbJTP9KbCkKNggb5MJ01mqsRzMAxvGMKwoqnNSxHl+MKXJ5vB1y2MpR2mKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708332337; c=relaxed/simple;
-	bh=8DF2yuQdV5gqKG8rHi9GEvERAsRsOWhC9YU+4aMwJ4c=;
+	s=arc-20240116; t=1708332338; c=relaxed/simple;
+	bh=dRQEo0B/yKjlnjrGLXR1sOoC2GhyL+3WER4H84ry1lo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=J/hQvKCIo1zUyDeyRQqTp1wIIUo4VjeaH1xjLQNLEENp1fUj8msdOPdV4eESTvz4hh2kFppaz9+3ay3rZIVuPpOZfJLVO1FSsHGPV4Dm2H6crSMvQx0ViVUDpGXzGrEPNumvpDGeuA/XAbQaQHrKXdaz9hvlr9toK+JuTHgB/L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dTi12h1W; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Bd/xjVox; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=HiXjE/eypwUJRmGIJG9TPun3YqLgORtgu9dRzEgle2R4ICVa7LmAUlqDVFMRenJ5VQ0UMz0NX2QAMiEOIyoie3eucTr4dtWnvJRoIqPr3KlJSXfO+FzeeKSc4hEsMKAf/BIDce4FCLBoH6CvHnHggEo6hTJqNqAp2C8TxXLEhQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YrFiDScf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EpcCMYNY; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 19 Feb 2024 08:45:32 -0000
+Date: Mon, 19 Feb 2024 08:45:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708332333;
+	s=2020; t=1708332334;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ta5lSvZpccXebEpA1KWrl8gTPGe/xHUHEGHA/2xdOZ8=;
-	b=dTi12h1Wtb/RULhJ+lrrB3o2JwWQs126S4UlAuQeGPn4Rt4kDsF8V/I+3dp1OzGnRGXNSh
-	gbdDvkYrcJ3Wlk/Wy8BUpf0xabQixGQ/CWJfqh4lQg5DP6YJ4hWpgQsz/2Elue2seqr4Wv
-	m7omhppmFte9hzUcrsJmXwv9L7fy2gsndm+wkNLaF/nVrzN0JlrJFdiYlRv5dtlAYk1mcl
-	29oB2voAoXk1YUXLve1/U1c4w1hpACBW+DqVGgR/5CFkiTPzRsoeRD0DwyZCtl1g8CmSKU
-	WqqjYS68P7aANvvWuOVibXH7ecSiTE//dSzWgq0Es8Dr+SC/q9CzN36cTKDXWA==
+	bh=k6yI2YSGAYOxFHAzOKGinUcGOxbUq72scA4KZncoj0o=;
+	b=YrFiDScfngNNT0bHjJxirzfz8w/Vve+Mj9H4U1DiUraZ4BXN00Dh8v9MaxJ7anUQzI0A8l
+	VABHflRbVK2vnturNc0LnWzbsYXvRJZe1Cjv9y6mQHnPLel+dfsiaHdG2CxlfSrnkbR1F0
+	+ue4cAXNJWGhq70UusbeHg1qf1LwWkoGNUP2acsaKfSibGcjzxyATNXxnr7rgYoMyHGxgW
+	G4zLMM6fB8LS3gUAjhX9QD1y1JIrUer/T+l/LVOB+PG0Lo7WXnL/s+fXhtgYdRWLF/doGQ
+	e5nxyY1+GtwU3ROjkzeacKMNsGeiA/HKl+PYceEEHeqo9yqDD0mbZ1Nk60Zhfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708332333;
+	s=2020e; t=1708332334;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ta5lSvZpccXebEpA1KWrl8gTPGe/xHUHEGHA/2xdOZ8=;
-	b=Bd/xjVoxFYb3CT7muvOs/tyauB/YMb6IBnxjiDVxoFjFcxZuohset3Upa93osyKQoUv0/7
-	Cnbj8mmfxg2bjpAw==
+	bh=k6yI2YSGAYOxFHAzOKGinUcGOxbUq72scA4KZncoj0o=;
+	b=EpcCMYNYjYQJqghWBMW6nXrnMheU23xF0eeF/dNyPSlpRD/nj46kOYAF30Zr8Bl49Rp0mD
+	58vhRa8p6+lIrqDQ==
 From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] jiffies: Transform comment about time_* functions
- into DOC block
+Subject: [tip: timers/core] tick/sched: Add function description for
+ tick_nohz_next_event()
 Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
  Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240123164702.55612-6-anna-maria@linutronix.de>
-References: <20240123164702.55612-6-anna-maria@linutronix.de>
+In-Reply-To: <20240123164702.55612-4-anna-maria@linutronix.de>
+References: <20240123164702.55612-4-anna-maria@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170833233221.398.8859472545073053578.tip-bot2@tip-bot2>
+Message-ID: <170833233361.398.7577148614843351327.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,51 +82,46 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     c92a7eb6c642812fb08851e580973c3b83e0227c
-Gitweb:        https://git.kernel.org/tip/c92a7eb6c642812fb08851e580973c3b83e0227c
+Commit-ID:     f365d05506150398fe6b035918d6fd8b62f35b9f
+Gitweb:        https://git.kernel.org/tip/f365d05506150398fe6b035918d6fd8b62f35b9f
 Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
-AuthorDate:    Tue, 23 Jan 2024 17:46:59 +01:00
+AuthorDate:    Tue, 23 Jan 2024 17:46:57 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 19 Feb 2024 09:38:00 +01:00
 
-jiffies: Transform comment about time_* functions into DOC block
+tick/sched: Add function description for tick_nohz_next_event()
 
-This general note about time_* functions is also useful to be available in
-kernel documentation. Therefore transform it into a kernel-doc DOC block
-with proper formatting.
+The return value of tick_nohz_next_event() is not obvious at the first
+glance. Add a kernel-doc compatible function description which also covers
+return values.
 
 Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240123164702.55612-6-anna-maria@linutronix.de
+Link: https://lore.kernel.org/r/20240123164702.55612-4-anna-maria@linutronix.de
 
 ---
- include/linux/jiffies.h | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ kernel/time/tick-sched.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
-index e0ae2a4..d9f1435 100644
---- a/include/linux/jiffies.h
-+++ b/include/linux/jiffies.h
-@@ -102,12 +102,15 @@ static inline u64 get_jiffies_64(void)
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 01fb50c..7c9efe3 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -799,6 +799,16 @@ static inline bool local_timer_softirq_pending(void)
+ 	return local_softirq_pending() & BIT(TIMER_SOFTIRQ);
  }
- #endif
  
--/*
-- *	These inlines deal with timer wrapping correctly. You are
-- *	strongly encouraged to use them:
-- *	1. Because people otherwise forget
-- *	2. Because if the timer wrap changes in future you won't have to
-- *	   alter your driver code.
 +/**
-+ * DOC: General information about time_* inlines
++ * tick_nohz_next_event() - return the clock monotonic based next event
++ * @ts:		pointer to tick_sched struct
++ * @cpu:	CPU number
 + *
-+ * These inlines deal with timer wrapping correctly. You are strongly encouraged
-+ * to use them:
-+ *
-+ * #. Because people otherwise forget
-+ * #. Because if the timer wrap changes in future you won't have to alter your
-+ *    driver code.
-  */
- 
- /**
++ * Return:
++ * *%0		- When the next event is a maximum of TICK_NSEC in the future
++ *		  and the tick is not stopped yet
++ * *%next_event	- Next event based on clock monotonic
++ */
+ static ktime_t tick_nohz_next_event(struct tick_sched *ts, int cpu)
+ {
+ 	u64 basemono, next_tick, delta, expires;
 
