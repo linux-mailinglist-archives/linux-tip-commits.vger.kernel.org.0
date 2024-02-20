@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-505-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-506-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299F585C566
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 21:04:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 576A785C56A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 21:05:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B3EF1C221CA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 20:04:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5011EB22AC2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 20:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA0214AD19;
-	Tue, 20 Feb 2024 20:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B7914D43F;
+	Tue, 20 Feb 2024 20:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NLFcq9UY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MGKzX5rC"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U8rhUSaG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o6gbXSOz"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7628A14A0B5;
-	Tue, 20 Feb 2024 20:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5740314AD3E;
+	Tue, 20 Feb 2024 20:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708459470; cv=none; b=TAVcfL5HrM+xnB+hVhXxVZWKTdz6UZo8In3I5Ni1/C47ZQ+dxhlFW4dO0c+lCflYn43lu3bNHz4265vG0XcS1QySLRs3Nh5EZqDih/iscTLHKY5BAXCf4wj/uAWB6x6VrRLyz3tH+C3qaabQoxplrsbg82sNtB7chQH35DOpoz0=
+	t=1708459473; cv=none; b=EWG/DP0j8Kkoc5TrOdSA6vvQt4A71Sgc52VRRvA2KTazc5wjalI3zGcHIq3YoyWWzi+bF9JQ63wPyny2FeSW4JbeMC4wdOXSypDkDnzjP0vAW8+nlzDx/uRaeJKBY04v0HJif1xRWgMGuTNwAF/8f8FdMz2C+fDX/bAhfcBThqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708459470; c=relaxed/simple;
-	bh=eGMWMOsbIiQk+1KzXbKkYShwvHFffjU2CoI4QKsgl44=;
+	s=arc-20240116; t=1708459473; c=relaxed/simple;
+	bh=2/pP++SEY3kfHt3ju6B5xWEYK2JC2jz/ghGI3gFwxZw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=HK1S5Y4FkQdPvL2cY4V5AW9F+JDkPzqmW2uiwjtZ4ewnHiLLJxFAN3q94U8JsD4Bl7eQk2UrGddoEOIh36PBaNE9D7H4fFLJtknkHS6HN/akjgYuIsaJMqtAlj68D2t4E4wCzjiGVSKlcIylRX6TwFtty+FEvHB3gHIrT7VY4WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NLFcq9UY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MGKzX5rC; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=NfeqiI2sHJS7FYQBDckJRw6xSazLx3WapKPaksKaa742Vbg3D1nyXRzwY6TbAmpRAq28PQh9rAGJNd/0yTLEmbvQ58q5OnGG7Wqjmf753JsXXgDK9yG3iQ7PzvcRJsXAsAZ2IV1io6N+wOonkR4OXlBrdKu2amoQQj3Rx9Ukixs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U8rhUSaG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o6gbXSOz; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 20 Feb 2024 20:04:26 -0000
+Date: Tue, 20 Feb 2024 20:04:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708459467;
+	s=2020; t=1708459468;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ab00n/hJfDVM2zZBWZ3OQmrpMb9AWqR6Kl/il76L52I=;
-	b=NLFcq9UYmybYAzxggbeNN7VcRK16eu/QFDwQ9doCt7fH9kUV2/URQkGPhIU2cZ6Td2gWwU
-	N4NbwAwZCxEhdMsbPhH6tht4is+X+EflFswEOA4GsO7RmqCAwg8FtrPV2jV5t/a65HzY/0
-	d5DQ94qAnbV8Y4Eb+yxNRrj5JHVfQuAIDTzph14TEcs9RpyOWcdcuGYjHgTD3ceYdMz1Ns
-	1Z76ScWAtyN4a6B4UMiA5DcTC5LEWm9xPcKvRFfU1bf4Sf5ksORW/CZo7fmOYl+AwQRPRw
-	ce9jiN0g01ycQBoMGZdcbAnTVQFX/FHrJJJPo6gQFknAA5MsOQH3dZse7ckY/A==
+	bh=sX5vxbZzENHj474/hG9iZDRw8Ls/xH+loSQrYzFxXrI=;
+	b=U8rhUSaGOPZd39hn0oCTiZ06p51fxWlLFeSbbt8EszDH3er2Au5gio9tuVyr9H/HwqltJo
+	bZWzGlHKO/0S3MXLIJtYGqSQU/nz527Ysqrd9hDNyXje62aLj048E/CqeOUTXdJ+vuLG2w
+	ATlJmNWi2xfEi1Tr2k+0vAMPCGG0nKVXpmddVNTP00V+uNbzPWBb8C9MAkDtpruVN81UtC
+	1A/2q5CZuPAI5DpBOMeKC3s5oLEIB4bBTsX64cN9BA8dTE7WOWuyNI6+jxl7LTYYGQIiN7
+	TXFBukj6fRFIbegIu09FyjyfCWl7NgESd/JoAwHfejmkYFg1gGwlzwGernj4/A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708459467;
+	s=2020e; t=1708459468;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ab00n/hJfDVM2zZBWZ3OQmrpMb9AWqR6Kl/il76L52I=;
-	b=MGKzX5rC1pFnSIo4KsvzL8GrEkbftgliTedMCCDG0SKbQDJ7WJtUK9PF2Fmrv9PqYyBuNr
-	p3hqCcAE+6/27oCQ==
+	bh=sX5vxbZzENHj474/hG9iZDRw8Ls/xH+loSQrYzFxXrI=;
+	b=o6gbXSOzpSU1ZP0n0dcJGZMTdAvW6Qx8eXxaxV7zofTmX7ocg1tl2nonCqjE51Dc/Bv+3e
+	rV21+iSJDemQHJAQ==
 From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] LoongArch: vdso: Use generic union vdso_data_store
+Subject: [tip: timers/core] s390/vdso: Use generic union vdso_data_store
 Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
  Thomas Gleixner <tglx@linutronix.de>,
  Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Kees Cook <keescook@chromium.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240219153939.75719-9-anna-maria@linutronix.de>
-References: <20240219153939.75719-9-anna-maria@linutronix.de>
+ Kees Cook <keescook@chromium.org>, Heiko Carstens <hca@linux.ibm.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240219153939.75719-8-anna-maria@linutronix.de>
+References: <20240219153939.75719-8-anna-maria@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170845946697.398.15736945127304000905.tip-bot2@tip-bot2>
+Message-ID: <170845946787.398.14130505985159382816.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,16 +83,16 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     8d87d2cd1d0136452d2afcd143e511ccad49018f
-Gitweb:        https://git.kernel.org/tip/8d87d2cd1d0136452d2afcd143e511ccad49018f
+Commit-ID:     cb3444cfdb48b7ee7d208d19c97a29dd8252d884
+Gitweb:        https://git.kernel.org/tip/cb3444cfdb48b7ee7d208d19c97a29dd8252d884
 Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
-AuthorDate:    Mon, 19 Feb 2024 16:39:37 +01:00
+AuthorDate:    Mon, 19 Feb 2024 16:39:36 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 20 Feb 2024 20:56:00 +01:00
 
-LoongArch: vdso: Use generic union vdso_data_store
+s390/vdso: Use generic union vdso_data_store
 
-There is already a generic union definition for vdso_data_store in vdso
+There is already a generic union definition for vdso_data_store in the vdso
 datapage header.
 
 Use this definition to prevent code duplication.
@@ -101,32 +101,27 @@ Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20240219153939.75719-9-anna-maria@linutronix.de
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240219153939.75719-8-anna-maria@linutronix.de
 
 ---
- arch/loongarch/kernel/vdso.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/s390/kernel/vdso.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/kernel/vdso.c b/arch/loongarch/kernel/vdso.c
-index 14941e4..90dfccb 100644
---- a/arch/loongarch/kernel/vdso.c
-+++ b/arch/loongarch/kernel/vdso.c
-@@ -21,15 +21,13 @@
- #include <asm/vdso.h>
- #include <vdso/helpers.h>
- #include <vdso/vsyscall.h>
-+#include <vdso/datapage.h>
- #include <generated/vdso-offsets.h>
+diff --git a/arch/s390/kernel/vdso.c b/arch/s390/kernel/vdso.c
+index bbaefd8..a45b3a4 100644
+--- a/arch/s390/kernel/vdso.c
++++ b/arch/s390/kernel/vdso.c
+@@ -25,10 +25,7 @@ extern char vdso32_start[], vdso32_end[];
  
- extern char vdso_start[], vdso_end[];
+ static struct vm_special_mapping vvar_mapping;
  
- /* Kernel-provided data used by the VDSO. */
 -static union {
--	u8 page[PAGE_SIZE];
--	struct vdso_data data[CS_BASES];
--} generic_vdso_data __page_aligned_data;
-+static union vdso_data_store generic_vdso_data __page_aligned_data;
+-	struct vdso_data	data[CS_BASES];
+-	u8			page[PAGE_SIZE];
+-} vdso_data_store __page_aligned_data;
++static union vdso_data_store vdso_data_store __page_aligned_data;
  
- static union {
- 	u8 page[LOONGARCH_VDSO_DATA_SIZE];
+ struct vdso_data *vdso_data = vdso_data_store.data;
+ 
 
