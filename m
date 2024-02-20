@@ -1,189 +1,171 @@
-Return-Path: <linux-tip-commits+bounces-494-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-496-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F4985B034
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 02:02:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33E885B283
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 06:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9AF01C22712
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 01:02:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44187283A8B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 05:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D8F20DD9;
-	Tue, 20 Feb 2024 01:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E8E5787B;
+	Tue, 20 Feb 2024 05:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ITYpa6SB";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dP4uBO1n"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZxiwAwk6"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAE210953;
-	Tue, 20 Feb 2024 01:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB10857872;
+	Tue, 20 Feb 2024 05:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708390931; cv=none; b=t6i+3FLXNUPwYJQfXSi19Ks5teYXYpD6a/bz7mgvKENq2axj4SYi8b76isI9NLGIuO7qX7OP3cvIjbK1htCAcSGDbLDuZZrfwAgL9skfMl8/vsgi+9Suv4/sWev5X2biR0URGFiPVtMMzT/uALaMWzxshPncyu7wv03ksRCCBC8=
+	t=1708408640; cv=none; b=cWNduBsgyc7MyEdGCWcWEHLr/KGHluS8PoZhfcKjyHOtUd2OmXIbkvuX+v6v//tZv+0LpY1KqhrVKb1eokjy2SGhGTfsTO3GsexW4S3L93ZA5F/xs9951e+ozHpMFSRHmylh8NCP3xJSIbJM7JimPWZk5hviZTrhG+Q2/LkBGOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708390931; c=relaxed/simple;
-	bh=G1+M6v3juigyiR3fQI9txWJp1oX7nPu+QZSTbto5ZrY=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=oj2vQ8KtzZXHulGYX9+TGRDeZoHuhv1KmBNf0ZcU9F5hbwBnJ6GaH05X5ToY22HkoFEiRH57ziEpaqVdsydu5QTi41F7dwSC+EdkIXj34cmnj8WJy2IspyZ/QD+PjjbhFGUX8AXlZoOv4eBowBA50xo7xIvJX2nkku0RVSRzEvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ITYpa6SB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dP4uBO1n; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 20 Feb 2024 01:02:07 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708390928;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=zBzOHUDK7yKQpAW9Mx+8ZCSEadFabIiFxnpqbFGgvno=;
-	b=ITYpa6SBpFPRiyI02/ec6Wi4ThfE3yY5tnveLH1+cvnCoq0L4GewKu85DPT5CzQQkb2qHv
-	S/156pxyY9cM/ckmBbMLaCJa1aR2DSTXgp/g4t0Lg5m9xMkozyOwywNPABVLrQOsy9SSt2
-	r1p8o3OYbEFlpDuxGZREM+njaRwYxPRlfeToKO3o2YkDiUpQFgE6xglEXrWMBuj1c1/Sd8
-	oeGR1cYgnzyTqCe5dbU9gYfCwgN4iTZmKC5lnh4Fp3t0S4eQOykFHzlCuSIHNUDkJrLJqw
-	qZxMC/6PA194fLsgcYmAS25JbvEV9Oc2uZSbd+hAUFPHBcrCgakoQ1/PHo4GHw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708390928;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=zBzOHUDK7yKQpAW9Mx+8ZCSEadFabIiFxnpqbFGgvno=;
-	b=dP4uBO1nt6RdI/SMEoHEEUVRCv+i3v9io5Fo3me0m4JaJmTVWeYLNux9e/dyiTNHFqIAL7
-	fgH94XGtsUl+bcDA==
-From: "tip-bot2 for Pawan Gupta" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/entry_64: Add VERW just before userspace transition
-Cc: Dave Hansen <dave.hansen@intel.com>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1708408640; c=relaxed/simple;
+	bh=WvokzzLHQxAh7hjD95ixAi7uyIoGuo8fqr2T3mjV6Ns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M4ZL8zS62G4GA0MbiCXzOujq/jwZuCwy6REjOIMItnWGpAdQfaynXPzO3ODqUnkvtj6qfAjPowrKxOdO3RkcdQmeo7aXulY4m3BDGKscz3E028j7NeKNztV8V23kZ0IdO1BeIE+ZZpXjyLdue/A0qbodvoJDpkqsRE0mJhFT0UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZxiwAwk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3123C433C7;
+	Tue, 20 Feb 2024 05:57:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708408640;
+	bh=WvokzzLHQxAh7hjD95ixAi7uyIoGuo8fqr2T3mjV6Ns=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZxiwAwk6veKOA6h7hDm2XNyIDzTaiwW1xAiSaTZjB4d2j4h3oKGqu4z7ajkM8Sp1z
+	 Jcvl6Yr4sHE9xMi1+Qf7RwC/gORwG0seQEH0PDSMcQ7njuOMYI9KiavlK97j/go4/H
+	 tNpCb5Fq9aHrcNQPkE3Nv9PYiLt5CybzlwawtwCm+kMZ7Nfxq3ehgp2oDygH6QV3Du
+	 3siNAoFwPLsCoR32yG/Vgg6aq5gw0T4zQPIo5DxK9ZhjR6wVckMt+QT1bDd9f8b5h2
+	 D6hs8p8gMZCJo31RI6D1iP9fqauX2zm9rqOVbO/18mc5eCkaJ2Et1p9D5ZbYmnVtSS
+	 HBkjqPZjpZ9Yw==
+Date: Mon, 19 Feb 2024 21:57:18 -0800
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Nathan Chancellor <nathan@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org, x86@kernel.org
+Subject: [PATCH] x86/vdso: Fix rethunk patching for vdso-image-{32,64}.o
+Message-ID: <20240220055718.turlqf2rfp36zsd5@treble>
+References: <20231010171020.462211-4-david.kaplan@amd.com>
+ <170774721951.398.8999401565129728535.tip-bot2@tip-bot2>
+ <20240215032049.GA3944823@dev-arch.thelio-3990X>
+ <20240215155349.GBZc4zjaHn8hj6xOq3@fat_crate.local>
+ <20240216054235.ecpwuni2f3yphhuc@treble>
+ <20240216212745.GAZc_TURO0t35GjTQM@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170839092728.398.17208840006241390266.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240216212745.GAZc_TURO0t35GjTQM@fat_crate.local>
 
-The following commit has been merged into the x86/urgent branch of tip:
+For CONFIG_RETHUNK kernels, objtool annotates all the function return
+sites so they can be patched during boot.  By design, after
+apply_returns() is called, all tail-calls to the compiler-generated
+default return thunk (__x86_return_thunk) should be patched out and
+replaced with whatever's needed for any mitigations (or lack thereof).
 
-Commit-ID:     3c7501722e6b31a6e56edd23cea5e77dbb9ffd1a
-Gitweb:        https://git.kernel.org/tip/3c7501722e6b31a6e56edd23cea5e77dbb9ffd1a
-Author:        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-AuthorDate:    Tue, 13 Feb 2024 18:21:52 -08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 19 Feb 2024 16:31:42 -08:00
+With the following commit
 
-x86/entry_64: Add VERW just before userspace transition
+  4461438a8405 ("x86/retpoline: Ensure default return thunk isn't used at runtime")
 
-Mitigation for MDS is to use VERW instruction to clear any secrets in
-CPU Buffers. Any memory accesses after VERW execution can still remain
-in CPU buffers. It is safer to execute VERW late in return to user path
-to minimize the window in which kernel data can end up in CPU buffers.
-There are not many kernel secrets to be had after SWITCH_TO_USER_CR3.
+a runtime check was added to do a WARN_ONCE() if the default return
+thunk ever gets executed after alternatives have been applied.  This
+warning is a sanity check to make sure objtool and apply_returns() are
+doing their job.
 
-Add support for deploying VERW mitigation after user register state is
-restored. This helps minimize the chances of kernel data ending up into
-CPU buffers after executing VERW.
+As Nathan reported, that check found something:
 
-Note that the mitigation at the new location is not yet enabled.
+  Unpatched return thunk in use. This should not happen!
+  WARNING: CPU: 0 PID: 1 at arch/x86/kernel/cpu/bugs.c:2856 __warn_thunk+0x27/0x40
+  Modules linked in:
+  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-01738-g4461438a8405-dirty #1
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+  RIP: 0010:__warn_thunk+0x27/0x40
+  Code: 90 90 90 80 3d 22 20 c3 01 00 74 05 e9 32 a5 eb 00 55 c6 05 13 20 c3 01 01 48 89 e5 90 48 c7 c7 80 80 50 89 e8 6a c4 03 00 90 <0f> 0b 90 90 5d e9 0f a5 eb 00 cc cc cc cc cc cc cc cc cc cc cc cc
+  RSP: 0018:ffff8ba9c0013e10 EFLAGS: 00010286
+  RAX: 0000000000000000 RBX: ffffffff89afba70 RCX: 0000000000000000
+  RDX: 0000000000000000 RSI: 00000000ffffdfff RDI: 0000000000000001
+  RBP: ffff8ba9c0013e10 R08: 00000000ffffdfff R09: ffff8ba9c0013c88
+  R10: 0000000000000001 R11: ffffffff89856ae0 R12: 0000000000000000
+  R13: ffff88c101126ac0 R14: ffff8ba9c0013e78 R15: 0000000000000000
+  FS:  0000000000000000(0000) GS:ffff88c11f000000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: ffff88c119601000 CR3: 0000000018e2c000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   ? show_regs+0x60/0x70
+   ? __warn+0x84/0x150
+   ? __warn_thunk+0x27/0x40
+   ? report_bug+0x16d/0x1a0
+   ? console_unlock+0x4f/0xe0
+   ? handle_bug+0x43/0x80
+   ? exc_invalid_op+0x18/0x70
+   ? asm_exc_invalid_op+0x1b/0x20
+   ? ia32_binfmt_init+0x40/0x40
+   ? __warn_thunk+0x27/0x40
+   warn_thunk_thunk+0x16/0x30
+   do_one_initcall+0x59/0x230
+   kernel_init_freeable+0x1a4/0x2e0
+   ? __pfx_kernel_init+0x10/0x10
+   kernel_init+0x15/0x1b0
+   ret_from_fork+0x38/0x60
+   ? __pfx_kernel_init+0x10/0x10
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
 
-  Corner case not handled
-  =======================
-  Interrupts returning to kernel don't clear CPUs buffers since the
-  exit-to-user path is expected to do that anyways. But, there could be
-  a case when an NMI is generated in kernel after the exit-to-user path
-  has cleared the buffers. This case is not handled and NMI returning to
-  kernel don't clear CPU buffers because:
+Boris debugged to find that the unpatched return site was in
+init_vdso_image_64(), and its translation unit wasn't being analyzed by
+objtool, so it never got annotated.  So it got ignored by
+apply_returns().
 
-  1. It is rare to get an NMI after VERW, but before returning to userspace.
-  2. For an unprivileged user, there is no known way to make that NMI
-     less rare or target it.
-  3. It would take a large number of these precisely-timed NMIs to mount
-     an actual attack.  There's presumably not enough bandwidth.
-  4. The NMI in question occurs after a VERW, i.e. when user state is
-     restored and most interesting data is already scrubbed. Whats left
-     is only the data that NMI touches, and that may or may not be of
-     any interest.
+This is only a minor issue, as this function is only called during boot.
+Still, objtool needs full visibility to the kernel.  Fix it by enabling
+objtool on vdso-image-{32,64}.o.
 
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-2-a6216d83edb7%40linux.intel.com
+Note this problem can only be seen with !CONFIG_X86_KERNEL_IBT, as that
+requires objtool to run individually on all translation units rather on
+vmlinux.o.
+
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Debugged-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- arch/x86/entry/entry_64.S        | 11 +++++++++++
- arch/x86/entry/entry_64_compat.S |  1 +
- 2 files changed, 12 insertions(+)
+ arch/x86/entry/vdso/Makefile | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index c40f89a..9bb4859 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -161,6 +161,7 @@ syscall_return_via_sysret:
- SYM_INNER_LABEL(entry_SYSRETQ_unsafe_stack, SYM_L_GLOBAL)
- 	ANNOTATE_NOENDBR
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	sysretq
- SYM_INNER_LABEL(entry_SYSRETQ_end, SYM_L_GLOBAL)
- 	ANNOTATE_NOENDBR
-@@ -573,6 +574,7 @@ SYM_INNER_LABEL(swapgs_restore_regs_and_return_to_usermode, SYM_L_GLOBAL)
- 
- .Lswapgs_and_iret:
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	/* Assert that the IRET frame indicates user mode. */
- 	testb	$3, 8(%rsp)
- 	jnz	.Lnative_iret
-@@ -723,6 +725,8 @@ native_irq_return_ldt:
- 	 */
- 	popq	%rax				/* Restore user RAX */
- 
-+	CLEAR_CPU_BUFFERS
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index b1b8dd1608f7..4ee59121b905 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -34,8 +34,12 @@ obj-y					+= vma.o extable.o
+ KASAN_SANITIZE_vma.o			:= y
+ UBSAN_SANITIZE_vma.o			:= y
+ KCSAN_SANITIZE_vma.o			:= y
+-OBJECT_FILES_NON_STANDARD_vma.o		:= n
+-OBJECT_FILES_NON_STANDARD_extable.o	:= n
 +
- 	/*
- 	 * RSP now points to an ordinary IRET frame, except that the page
- 	 * is read-only and RSP[31:16] are preloaded with the userspace
-@@ -1450,6 +1454,12 @@ nmi_restore:
- 	movq	$0, 5*8(%rsp)		/* clear "NMI executing" */
++OBJECT_FILES_NON_STANDARD_extable.o		:= n
++OBJECT_FILES_NON_STANDARD_vdso-image-32.o 	:= n
++OBJECT_FILES_NON_STANDARD_vdso-image-64.o 	:= n
++OBJECT_FILES_NON_STANDARD_vdso32-setup.o	:= n
++OBJECT_FILES_NON_STANDARD_vma.o			:= n
  
- 	/*
-+	 * Skip CLEAR_CPU_BUFFERS here, since it only helps in rare cases like
-+	 * NMI in kernel after user state is restored. For an unprivileged user
-+	 * these conditions are hard to meet.
-+	 */
-+
-+	/*
- 	 * iretq reads the "iret" frame and exits the NMI stack in a
- 	 * single instruction.  We are returning to kernel mode, so this
- 	 * cannot result in a fault.  Similarly, we don't need to worry
-@@ -1466,6 +1476,7 @@ SYM_CODE_START(entry_SYSCALL32_ignore)
- 	UNWIND_HINT_END_OF_STACK
- 	ENDBR
- 	mov	$-ENOSYS, %eax
-+	CLEAR_CPU_BUFFERS
- 	sysretl
- SYM_CODE_END(entry_SYSCALL32_ignore)
+ # vDSO images to build
+ vdso_img-$(VDSO64-y)		+= 64
+@@ -43,7 +47,6 @@ vdso_img-$(VDSOX32-y)		+= x32
+ vdso_img-$(VDSO32-y)		+= 32
  
-diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
-index de94e2e..eabf48c 100644
---- a/arch/x86/entry/entry_64_compat.S
-+++ b/arch/x86/entry/entry_64_compat.S
-@@ -270,6 +270,7 @@ SYM_INNER_LABEL(entry_SYSRETL_compat_unsafe_stack, SYM_L_GLOBAL)
- 	xorl	%r9d, %r9d
- 	xorl	%r10d, %r10d
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	sysretl
- SYM_INNER_LABEL(entry_SYSRETL_compat_end, SYM_L_GLOBAL)
- 	ANNOTATE_NOENDBR
+ obj-$(VDSO32-y)				 += vdso32-setup.o
+-OBJECT_FILES_NON_STANDARD_vdso32-setup.o := n
+ 
+ vobjs := $(foreach F,$(vobjs-y),$(obj)/$F)
+ vobjs32 := $(foreach F,$(vobjs32-y),$(obj)/$F)
+-- 
+2.43.0
+
 
