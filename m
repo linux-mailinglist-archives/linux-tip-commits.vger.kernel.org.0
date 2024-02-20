@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-499-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-500-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5147A85BC38
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 13:32:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB6285BDBE
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 14:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B661B1F2230C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 12:32:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 410601C23162
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 13:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CA767E95;
-	Tue, 20 Feb 2024 12:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382FF6BB45;
+	Tue, 20 Feb 2024 13:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T0ml1uRi";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VaxFvJMH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aOznktuE";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a1bQgqf9"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5BF5A7A0;
-	Tue, 20 Feb 2024 12:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6B16BB2D;
+	Tue, 20 Feb 2024 13:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708432314; cv=none; b=FW5EgRd9fnVsegjBMfawRNg5fpr6iS8Y6FHMAiFachGBtXpG6sLelf1dy9swUOin4tuhE9ja86ZZfSKB8fvuqVuwKxHUUqnC5Qpv+h2GVnqmyVDX1vSQfrUne0Wf9wnv5AsPxYaGg5pWrjJRhTS/N0iNAyWcD+y8RnoEQwoaD7c=
+	t=1708437202; cv=none; b=gDYGpCwg4hfz+8KPlesjXXChOIimKkAu1AVd2AEpoD/LECqrfTNY03hNpLFGAvnzaowZPdDHzL4G5PEf01mcI2DgPFBFg+42jSapSG+iOznR4hWfh+GCYnQ0ETfroNzNFgWxDiNVhQoO6XHELMWU/PpmlMopTsP1lWCgYMUQlrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708432314; c=relaxed/simple;
-	bh=BqN8PgniJ71+Vcwo7x0QfMXaIGIehoo59YjYvGKY3jc=;
+	s=arc-20240116; t=1708437202; c=relaxed/simple;
+	bh=F10nFbGUTPjXFdSlvkWXG5Crt8d0YCOIJtrTLvjfk30=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Z5JKPwKJ5Ijxz0uUpnuj4gBm1HlicdcsXXEHHoNFs3PjuWUGstlcJ0rAlusKdIRJCcMZG9YL1DD8s2dAmLAZ27JEEETHovME1SFpS9YooHBqcaOJz0J2oaVzY2b7R1M6Rn8dARggcWngwGmzfBcwqubfeiKYLpcNwAKG8Az028w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T0ml1uRi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VaxFvJMH; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=QDBvBVU8uc0ALvydVX8KlIs2P0hGZhfmi3BCSpkZUKFJmdp6A/3QztOP7+zv2n59xn1KRRFK5kGGHHFdyt8yapV+TTZV/Nzi6TA/KemzKOOb5BFF07qwPjh69jrH8WNH4L5egYBkaEbdFrsKCahwaMAtIi9qeVJNF+cLSKFMkgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aOznktuE; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a1bQgqf9; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 20 Feb 2024 12:31:48 -0000
+Date: Tue, 20 Feb 2024 13:53:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708432309;
+	s=2020; t=1708437198;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ObXswrodBxrGU5oQHeC85uf/NVy2j94FFoEd8MVsz0I=;
-	b=T0ml1uRiNfh+jWuPm/p/dDl+wTmqYCfjsH6Vf+9vZYsMFkzpCYRUaueW8jrXFHKWk6B4kz
-	N6X8O8z2dFErYvtQcWDQ18Gt32tMxce4ZJ1jEQU7xawvX2YG61Npn3GLSGyUlnUsgTxQ8R
-	zuuASYLHKbrhMlkgUStLEbx3hZy+0dzWq3r7VM3EAQj2KhN4DPvjnoKF2ixhrbdLLpgM1M
-	hjYudVq5DIdFTJlAUHUmOTp4q+0Zxcvzhg5HERPHvAJQLlYVmj+VlGIwcdttFTyuSIdmSp
-	hRK4JX0l+z7qCt/qPxTK+cy/WRoAPefSa4Rtj5ydWHLc+/rnw5s+rZSY4l4nsA==
+	bh=dX0qwnAkMiUZDtYX3kWdxqu2YK+FS1rZpMye7v8OPU0=;
+	b=aOznktuEu1IKcWrjPohRsN40ufcs3rWAJjYG0PEyETNUuPzFT7wqv5AaN8GVVaTU5O1c56
+	AuzPLQaqh0bQPE2q77Ltn9+ESmZ3Ygc90VHgRtzhaL2XwWjrmpVWT9A9WWKStwZtB7AC3q
+	Xe6IAUH5ZQMX+sBhg9cvgP826GDEbTzsZEt65BgnsVzhl6J7Noyu6v+grvSewdrKPKWDcs
+	9TEFitBqNcpAfzmCPP8y25fKug4w2mNqqa4QKcRTE5TKfYt3r977+3eAmbFl9lLVPm1w7R
+	C7JbUO03u82v38b49r8p9viOun1+aRqRo6FJaU7GFu5HdkoMVXn7dO0c6rgs6A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708432309;
+	s=2020e; t=1708437198;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ObXswrodBxrGU5oQHeC85uf/NVy2j94FFoEd8MVsz0I=;
-	b=VaxFvJMHPY7KaMVFZH7MUAkx5jkkHTYrT5kLDVAY9YiTWRcFVvqWQuun+kIN1kHoOUA+w0
-	tiwTSjB8M33o7OCg==
-From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+	bh=dX0qwnAkMiUZDtYX3kWdxqu2YK+FS1rZpMye7v8OPU0=;
+	b=a1bQgqf9rp6XLVtKbRf3BSsVHaveFHAXsFsH8uETq0skuEZ6n9ehx0sAMfYO7ThUYCHRqe
+	EyHQxHBz3AZ4SACQ==
+From: "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/core] x86/vdso: Fix rethunk patching for vdso-image-{32,64}.o
-Cc: Nathan Chancellor <nathan@kernel.org>,
- Josh Poimboeuf <jpoimboe@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+Subject: [tip: x86/mtrr] x86/pat: Simplify the PAT programming protocol
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Juergen Gross <jgross@suse.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240215032049.GA3944823@dev-arch.thelio-3990X>
-References: <20240215032049.GA3944823@dev-arch.thelio-3990X>
+In-Reply-To: <20240124130650.496056-1-kirill.shutemov@linux.intel.com>
+References: <20240124130650.496056-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170843230884.398.17338035419021257054.tip-bot2@tip-bot2>
+Message-ID: <170843719768.398.8004359782631430331.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,107 +79,102 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the x86/mtrr branch of tip:
 
-Commit-ID:     b388e57d4628eb22782bdad4cd5b83ca87a1b7c9
-Gitweb:        https://git.kernel.org/tip/b388e57d4628eb22782bdad4cd5b83ca87a1b7c9
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 19 Feb 2024 21:57:18 -08:00
+Commit-ID:     ffc92cf3db62443c626469ef160f9276f296f6c6
+Gitweb:        https://git.kernel.org/tip/ffc92cf3db62443c626469ef160f9276f296f6c6
+Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+AuthorDate:    Wed, 24 Jan 2024 15:06:50 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 20 Feb 2024 13:26:10 +01:00
+CommitterDate: Tue, 20 Feb 2024 14:40:51 +01:00
 
-x86/vdso: Fix rethunk patching for vdso-image-{32,64}.o
+x86/pat: Simplify the PAT programming protocol
 
-For CONFIG_RETHUNK kernels, objtool annotates all the function return
-sites so they can be patched during boot.  By design, after
-apply_returns() is called, all tail-calls to the compiler-generated
-default return thunk (__x86_return_thunk) should be patched out and
-replaced with whatever's needed for any mitigations (or lack thereof).
+The programming protocol for the PAT MSR follows the MTRR programming
+protocol. However, this protocol is cumbersome and requires disabling
+caching (CR0.CD=1), which is not possible on some platforms.
 
-The commit
+Specifically, a TDX guest is not allowed to set CR0.CD. It triggers
+a #VE exception.
 
-  4461438a8405 ("x86/retpoline: Ensure default return thunk isn't used at runtime")
+It turns out that the requirement to follow the MTRR programming
+protocol for PAT programming is unnecessarily strict. The new Intel
+Software Developer Manual (http://www.intel.com/sdm) (December 2023)
+relaxes this requirement, please refer to the section titled
+"Programming the PAT" for more information.
 
-adds a runtime check and a WARN_ONCE() if the default return thunk ever
-gets executed after alternatives have been applied.  This warning is
-a sanity check to make sure objtool and apply_returns() are doing their
-job.
+In short, this section provides an alternative PAT update sequence which
+doesn't need to disable caches around the PAT update but only to flush
+those caches and TLBs.
 
-As Nathan reported, that check found something:
+The AMD documentation does not link PAT programming to MTRR and is there
+fore, fine too.
 
-  Unpatched return thunk in use. This should not happen!
-  WARNING: CPU: 0 PID: 1 at arch/x86/kernel/cpu/bugs.c:2856 __warn_thunk+0x27/0x40
-  RIP: 0010:__warn_thunk+0x27/0x40
-  Call Trace:
-   <TASK>
-   ? show_regs
-   ? __warn
-   ? __warn_thunk
-   ? report_bug
-   ? console_unlock
-   ? handle_bug
-   ? exc_invalid_op
-   ? asm_exc_invalid_op
-   ? ia32_binfmt_init
-   ? __warn_thunk
-   warn_thunk_thunk
-   do_one_initcall
-   kernel_init_freeable
-   ? __pfx_kernel_init
-   kernel_init
-   ret_from_fork
-   ? __pfx_kernel_init
-   ret_from_fork_asm
-   </TASK>
+The kernel only needs to flush the TLB after updating the PAT MSR. The
+set_memory code already takes care of flushing the TLB and cache when
+changing the memory type of a page.
 
-Boris debugged to find that the unpatched return site was in
-init_vdso_image_64(), and its translation unit wasn't being analyzed by
-objtool, so it never got annotated.  So it got ignored by
-apply_returns().
+  [ bp: Expand commit message. ]
 
-This is only a minor issue, as this function is only called during boot.
-Still, objtool needs full visibility to the kernel.  Fix it by enabling
-objtool on vdso-image-{32,64}.o.
-
-Note this problem can only be seen with !CONFIG_X86_KERNEL_IBT, as that
-requires objtool to run individually on all translation units rather on
-vmlinux.o.
-
-  [ bp: Massage commit message. ]
-
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240215032049.GA3944823@dev-arch.thelio-3990X
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20240124130650.496056-1-kirill.shutemov@linux.intel.com
 ---
- arch/x86/entry/vdso/Makefile |  9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/cacheinfo.c |  7 ++++---
+ arch/x86/mm/pat/memtype.c       |  9 +++------
+ 2 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-index c4df99a..b80f4bb 100644
---- a/arch/x86/entry/vdso/Makefile
-+++ b/arch/x86/entry/vdso/Makefile
-@@ -34,8 +34,12 @@ obj-y					+= vma.o extable.o
- KASAN_SANITIZE_vma.o			:= y
- UBSAN_SANITIZE_vma.o			:= y
- KCSAN_SANITIZE_vma.o			:= y
--OBJECT_FILES_NON_STANDARD_vma.o		:= n
--OBJECT_FILES_NON_STANDARD_extable.o	:= n
+diff --git a/arch/x86/kernel/cpu/cacheinfo.c b/arch/x86/kernel/cpu/cacheinfo.c
+index c131c41..78afad5 100644
+--- a/arch/x86/kernel/cpu/cacheinfo.c
++++ b/arch/x86/kernel/cpu/cacheinfo.c
+@@ -1118,15 +1118,16 @@ static void cache_cpu_init(void)
+ 	unsigned long flags;
+ 
+ 	local_irq_save(flags);
+-	cache_disable();
+ 
+-	if (memory_caching_control & CACHE_MTRR)
++	if (memory_caching_control & CACHE_MTRR) {
++		cache_disable();
+ 		mtrr_generic_set_state();
++		cache_enable();
++	}
+ 
+ 	if (memory_caching_control & CACHE_PAT)
+ 		pat_cpu_init();
+ 
+-	cache_enable();
+ 	local_irq_restore(flags);
+ }
+ 
+diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
+index 0904d7e..0d72183 100644
+--- a/arch/x86/mm/pat/memtype.c
++++ b/arch/x86/mm/pat/memtype.c
+@@ -240,6 +240,8 @@ void pat_cpu_init(void)
+ 	}
+ 
+ 	wrmsrl(MSR_IA32_CR_PAT, pat_msr_val);
 +
-+OBJECT_FILES_NON_STANDARD_extable.o		:= n
-+OBJECT_FILES_NON_STANDARD_vdso-image-32.o 	:= n
-+OBJECT_FILES_NON_STANDARD_vdso-image-64.o 	:= n
-+OBJECT_FILES_NON_STANDARD_vdso32-setup.o	:= n
-+OBJECT_FILES_NON_STANDARD_vma.o			:= n
++	__flush_tlb_all();
+ }
  
- # vDSO images to build
- vdso_img-$(VDSO64-y)		+= 64
-@@ -43,7 +47,6 @@ vdso_img-$(VDSOX32-y)		+= x32
- vdso_img-$(VDSO32-y)		+= 32
- 
- obj-$(VDSO32-y)				 += vdso32-setup.o
--OBJECT_FILES_NON_STANDARD_vdso32-setup.o := n
- 
- vobjs := $(foreach F,$(vobjs-y),$(obj)/$F)
- vobjs32 := $(foreach F,$(vobjs32-y),$(obj)/$F)
+ /**
+@@ -296,13 +298,8 @@ void __init pat_bp_init(void)
+ 	/*
+ 	 * Xen PV doesn't allow to set PAT MSR, but all cache modes are
+ 	 * supported.
+-	 * When running as TDX guest setting the PAT MSR won't work either
+-	 * due to the requirement to set CR0.CD when doing so. Rely on
+-	 * firmware to have set the PAT MSR correctly.
+ 	 */
+-	if (pat_disabled ||
+-	    cpu_feature_enabled(X86_FEATURE_XENPV) ||
+-	    cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
++	if (pat_disabled || cpu_feature_enabled(X86_FEATURE_XENPV)) {
+ 		init_cache_modes(pat_msr_val);
+ 		return;
+ 	}
 
