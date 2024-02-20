@@ -1,77 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-502-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-503-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DDC85C17C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 17:33:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7775585C563
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 21:04:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E74251C22A34
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 16:33:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EC6E1F209E2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Feb 2024 20:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA877640F;
-	Tue, 20 Feb 2024 16:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CBA14A0B6;
+	Tue, 20 Feb 2024 20:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gFx8YLQU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tV0GSSnl"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wIFxmS5c";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OsBiEu+J"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D854F1E48F;
-	Tue, 20 Feb 2024 16:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE44377656;
+	Tue, 20 Feb 2024 20:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708446798; cv=none; b=sTBlnrw0dY3U9zXPFBzytj5X/7taFPlcaZgKLdKgNpwYLb83NSgdeD35AkySUEzPna3T0/tb5BYJt0npTqpBatDCxg0PJ1t6cAydWF78RbJOMw051CJ8xUi7EPyPLU7NGLF3YOUXd80ZY9B9Yjp4QvnzkKWGG61rMnAuFMlNaaE=
+	t=1708459469; cv=none; b=tzsCI4kwf9tMDae3R6ZUYQIEfoxv49qxjZwbtZoNMBHMVzyDwklCJq5BM8i3xQ3eDISOCX75a+NoL/A4IMcxlLzGBoMtQVHtDY72HjqS7jaLlmnQq5yKMn2Ch06mGkhernWUkcbe8cEyW7ZdzZDrm0aczz8buXh4wTmCarQsqzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708446798; c=relaxed/simple;
-	bh=crx0V2jmDalbGCAYJq3hX4FwWQckI1QCtvZXcYEsB5E=;
+	s=arc-20240116; t=1708459469; c=relaxed/simple;
+	bh=eHlSqloIhq0tmAe4tDKZ7xiQw+QcxGeQPTn6DD+rnig=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=nfzPhAJRbUL0r5F0r1Hep7IGmwQRclLdkUv2u8cVX01q/DS10HjeeNFtU1zbCAY/yW2jAywzIsQO8AO/+lJHYBUhTi21Fmb9D++55B4fqCgvMe8N36ojfkkSFpyuLHFRt8ww4eWemgZX9w30+aSxcm0Bkr04beMkO+22Ep32Miw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gFx8YLQU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tV0GSSnl; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=p5jhghcGbLalqlRhjNnDaK/nOKmSCR9bqF1F90oRz+Xnjt+WZ0bHkJK99iLY7wDoRxJ1GmlhKHiZBuWiFkGePgFOfcyRx4HZfGS9UykUOodev8Fizo88oqYNBpxkL8TSoAzOFHWRGwSC/wz+fYGag+Ydp2tChPI3cxZO8eB91Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wIFxmS5c; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OsBiEu+J; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 20 Feb 2024 16:33:14 -0000
+Date: Tue, 20 Feb 2024 20:04:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708446795;
+	s=2020; t=1708459466;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2G4Ce1NHXdD7vfzRk5AY1poHLo5i4hx/u9gfnKxfS5k=;
-	b=gFx8YLQUFZM7K5S0mV8EzRqV7BYLFhmma8b+DZQVKszOpld+WwgxZh7+Tm3RMux0q3Pg9b
-	1ZHNuPDkm/Op3EeB5/TdN13757DuETiXIKD7DWGzW/DmgBd45SOdP15elAn5x57GPbOLCt
-	PK7T+Jm5yttg81sehZF1DNjuOfhvX4w4pVupI+cG0y04CAbpYwbp+Eu2BbBFttB7aGlBs4
-	t+Mtzau/4SMZo/Et/ulw7cnZ9mKT64Uil7T0gok11yzxoMW1gImo8mMlMN714PS8Q1JsuF
-	pjp6oU5SdGJT+9C5ibz6uvCO11g9hRNj+zu2gyNZwUz7AatCi61OgHrVYa+Rlw==
+	bh=48pgenB3n3PaeoLPCSGxzErJYm6lQq+mkpGxA/mdBnM=;
+	b=wIFxmS5cTJcKE53r/yRHHVpS7cjYYH0kL8rTJKQQNAIt/+xh3zb5KmOiD2H42q0RHftzBB
+	xgKiwDdrf8t76jCkzX5rXLSpjYLGDyq0Ng0HPD7EWVYOBlQNRpYhtCOisNfcTK6B0BnB8a
+	HMVlIybOdi6SLUpTC1OuEVFOcax5g2poYCZHrH6yBDYyPvRUvi2reTFNvT9B09Lyfnaxbo
+	62NlcLyo8nz+EeXlg1nvqzh/J23EAAsVAH/iQnFYBDsMcSXzLxxz4DxMuicFjSLzv7eGvR
+	p5MOdPkRbkUa8dZW8CiJowhEV3R026LIJxX7CDjBYoImCZbjigm0qK1gCBypDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708446795;
+	s=2020e; t=1708459466;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2G4Ce1NHXdD7vfzRk5AY1poHLo5i4hx/u9gfnKxfS5k=;
-	b=tV0GSSnl3NEwN41db3czNKhX0njHDF/cY874G4yvBlW5vZvnmchjxV9pgINkX45Bh6/xb7
-	UnuJNqYpHjYBpSAg==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=48pgenB3n3PaeoLPCSGxzErJYm6lQq+mkpGxA/mdBnM=;
+	b=OsBiEu+JS6H8bNmPH1FERAxWwuUXmLjpYdrD1T+IJ3I/jHaSTs5Vfu/O5frcFpNM2emZiP
+	TrJXIQxSZ+WxdsDQ==
+From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/msi] irqchip/imx-intmux: Handle pure domain searches correctly
-Cc: Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <87ttm3ikok.ffs@tglx>
-References: <87ttm3ikok.ffs@tglx>
+Subject: [tip: timers/core] csky/vdso: Use generic union vdso_data_store
+Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Kees Cook <keescook@chromium.org>, Guo Ren <guoren@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240219153939.75719-11-anna-maria@linutronix.de>
+References: <20240219153939.75719-11-anna-maria@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170844679441.398.5678441273073530090.tip-bot2@tip-bot2>
+Message-ID: <170845946510.398.15647064695423653588.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,43 +81,51 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/msi branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     34da27aa8956d3a75c7556a59c9c7cfd0b3f18ab
-Gitweb:        https://git.kernel.org/tip/34da27aa8956d3a75c7556a59c9c7cfd0b3f18ab
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 20 Feb 2024 09:46:19 +01:00
+Commit-ID:     56145a0f84e8862aeb3b36d6e21349bb4dd64269
+Gitweb:        https://git.kernel.org/tip/56145a0f84e8862aeb3b36d6e21349bb4dd64269
+Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
+AuthorDate:    Mon, 19 Feb 2024 16:39:39 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 20 Feb 2024 17:30:57 +01:00
+CommitterDate: Tue, 20 Feb 2024 20:56:01 +01:00
 
-irqchip/imx-intmux: Handle pure domain searches correctly
+csky/vdso: Use generic union vdso_data_store
 
-The removal of the paremeter count restriction in the core code to allow
-pure domain token based select() decisions broke the IMX intmux select
-callback as that unconditioally expects that there is a parameter.
+There is already a generic union definition for vdso_data_store in the vdso
+datapage header.
 
-Add the missing check for zero parameter count and the token match.
+Use this definition to prevent code duplication.
 
-Fixes: de1ff306dcf4 ("genirq/irqdomain: Remove the param count restriction from select()")
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/87ttm3ikok.ffs@tglx
+Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20240219153939.75719-11-anna-maria@linutronix.de
 ---
- drivers/irqchip/irq-imx-intmux.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/csky/kernel/vdso.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-intmux.c
-index aa041e4..65084c7 100644
---- a/drivers/irqchip/irq-imx-intmux.c
-+++ b/drivers/irqchip/irq-imx-intmux.c
-@@ -166,6 +166,10 @@ static int imx_intmux_irq_select(struct irq_domain *d, struct irq_fwspec *fwspec
- 	if (fwspec->fwnode != d->fwnode)
- 		return false;
+diff --git a/arch/csky/kernel/vdso.c b/arch/csky/kernel/vdso.c
+index e74a250..2ca886e 100644
+--- a/arch/csky/kernel/vdso.c
++++ b/arch/csky/kernel/vdso.c
+@@ -15,14 +15,8 @@ extern char vdso_start[], vdso_end[];
+ static unsigned int vdso_pages;
+ static struct page **vdso_pagelist;
  
-+	/* Handle pure domain searches */
-+	if (!fwspec->param_count)
-+		return d->bus_token == bus_token;
-+
- 	return irqchip_data->chanidx == fwspec->param[1];
- }
+-/*
+- * The vDSO data page.
+- */
+-static union {
+-	struct vdso_data	data;
+-	u8			page[PAGE_SIZE];
+-} vdso_data_store __page_aligned_data;
+-struct vdso_data *vdso_data = &vdso_data_store.data;
++static union vdso_data_store vdso_data_store __page_aligned_data;
++struct vdso_data *vdso_data = vdso_data_store.data;
  
+ static int __init vdso_init(void)
+ {
 
