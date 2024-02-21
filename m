@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-517-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-518-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3154F85E73B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Feb 2024 20:26:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A838985E8F1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Feb 2024 21:22:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4D1FB28064
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Feb 2024 19:26:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25DA0B24D85
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Feb 2024 20:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9E08592D;
-	Wed, 21 Feb 2024 19:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288DB85C7C;
+	Wed, 21 Feb 2024 20:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lrxh9ShF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ON8M4ABb"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LbgD4kWu";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iDeVqb1X"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E4785941;
-	Wed, 21 Feb 2024 19:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDDA85958;
+	Wed, 21 Feb 2024 20:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708543582; cv=none; b=NPGMUXbemxvuitAaxCeL3DagKttv1cKn0SZlf3LipE+SVXS9xb9m5VZdDEagxv505WDka1NwLfMtWKL4ORNucgyzciHwYDUHt/FHoV42ZFak8s6VilnO/aS/SuwSVZibC7Oq5lz9u8IP7eH2YnyN+QcCWWRSzSxcE1tOb7acijE=
+	t=1708546921; cv=none; b=JHlpKtOeKDcAopxhanRJfbU2lYuxtv58IBc899sqi2LC9Ft3eYAU4HAgzUPL8LAHmMfOj9rM/nLlQi8N2BKKEZDkX7CdMRabqmVcwLK53kahc3Dvy6bUEcu9W0c1hg4m222rHVIo9X7fZFWxoNLxb8ob4W2lkqBrzH5FUFp3L8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708543582; c=relaxed/simple;
-	bh=t1bg75155h9kUzdm9X36sGXHqO5aEm2RneZiYY3VhnI=;
+	s=arc-20240116; t=1708546921; c=relaxed/simple;
+	bh=ImC36rMMHpLz4+5E+KQEQoxCcH+ZOWrg6nxm1kytxdU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=fregub4d8rjrBx0ke2tx5IgkPjCjV+7P5KJ1SJouLE7hLEpHkdfUvd4ps8Bco3pcGv+aAWsUtbrhDd+hxvva7f13ex/qF32ThTbeUKQfRD2WYLtJPHgg51JGDtu8yTjdbkoRoXlkPt11/xceyc5/L99cjguwFSL9l6NAnjXSE7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lrxh9ShF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ON8M4ABb; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=davt3baTd1T1N0byLQPsVXDAajVrjnxd3oKC7KD55yW7J3uyoyn/0/Vz/cn0ObNkYXec8RPaNPCXOOhchkFdBXOYZ2a2bu4mRaraUB3/Uh3/88a3toq4QlnSxeX9o/LvpXw/Wv+tXei7o+rtJLqzJgfFi81YQZe1h9Rz30Lgf9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LbgD4kWu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iDeVqb1X; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 21 Feb 2024 19:26:14 -0000
+Date: Wed, 21 Feb 2024 20:21:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708543575;
+	s=2020; t=1708546916;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LWexCxPo3VvQYcBlwHoCkpQstAhTBJYFavaPPN9gzJ0=;
-	b=lrxh9ShFCGQEw3leGvicwsxxstFMQGBWkyPG03QZodileqsOds+ige5Uzd8Mac2Z1NuU0G
-	qNcaVtej3ZO3kva/lPdO/qwDMgbirFa/R24J0HqDfHYB+sBlopdP32/68hyn+9Md/LS/E7
-	YTGtQUnmabXbezdbfGQp4gwIM99EUvGtLVzOfYiDXQXnDh8b9V1ex9wn99yzxeswqxB8/g
-	/wULReV4UHwYADEl+ya9c4l2iiInvOAOCH3weay5jRsrfNjFYg5XvsxXPpAg7QVo0vppLC
-	l7CET8NlNpS3pG8pmYnO3huxLncOK1dFygblOKs3wCIKInk1uKa9uEJs1J/DZA==
+	bh=LYXevElDZUwwcuCssk+PoziO3z76J9Zi3RvRyDyoi1s=;
+	b=LbgD4kWufpeq1TOYGRUKiQExZAnKWyLFII5hLKB2PjBeRis7FYENAIloe9k+vw2+QbB4SK
+	gGTQWL+bYEBqGCZh7uV/TqtkzSq9qxZN2oVpEBmSN6EmNpmFBpaPSU/q/dFwri7CAVFMCE
+	7k6lfdLES/RIzA2kESPD5TWWZoDsgmEURn1V17jRFBbEAFg7uHmXS3blR+sauZLTUXI/D1
+	qdrVdeqa+5PKNLYgxDCnjRcwQhXonK9RXcftuoPSeV1GKoinD4khk31AmY+hkAhUGlulf+
+	yLhbjqw4J2CIhOrI+q/sfhQedtr8RF6E8YH8JPHL5HcDCJzXsbFEYqwAFuOLLg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708543575;
+	s=2020e; t=1708546916;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LWexCxPo3VvQYcBlwHoCkpQstAhTBJYFavaPPN9gzJ0=;
-	b=ON8M4ABbyAvFuY8hYan2AV82gClvV/zxxK6QnD09vQNRV0amG0iHk9nFVSvs/4sgGIMDff
-	z83NiVTVYZ4eZyAQ==
-From: "tip-bot2 for Kunwu Chan" <tip-bot2@linutronix.de>
+	bh=LYXevElDZUwwcuCssk+PoziO3z76J9Zi3RvRyDyoi1s=;
+	b=iDeVqb1X9KcQD36OakGQakXKCEVOt0v4bcQ5UJE6B7e0pMKkkATdkpRAYENpEQ5iciA6t4
+	iu89mD3oIctU6KCw==
+From: "tip-bot2 for Oliver Upton" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cleanups] x86/apm_32: Remove dead function apm_get_battery_status()
-Cc: Kunwu Chan <chentao@kylinos.cn>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240126030824.579711-1-chentao@kylinos.cn>
-References: <20240126030824.579711-1-chentao@kylinos.cn>
+Subject: [tip: irq/urgent] irqchip/gic-v3-its: Do not assume vPE tables are
+ preallocated
+Cc: George Cherian <gcherian@marvell.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240219185809.286724-2-oliver.upton@linux.dev>
+References: <20240219185809.286724-2-oliver.upton@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170854357413.398.5881100037492734739.tip-bot2@tip-bot2>
+Message-ID: <170854691584.398.7536977527591129636.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,76 +80,62 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     e37ae6433a5eeb5fb66e3de4b97cdda68ee2c5e8
-Gitweb:        https://git.kernel.org/tip/e37ae6433a5eeb5fb66e3de4b97cdda68ee2c5e8
-Author:        Kunwu Chan <chentao@kylinos.cn>
-AuthorDate:    Fri, 26 Jan 2024 11:08:24 +08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 21 Feb 2024 19:38:03 +01:00
+Commit-ID:     ec4308ecfc887128a468f03fb66b767559c57c23
+Gitweb:        https://git.kernel.org/tip/ec4308ecfc887128a468f03fb66b767559c57c23
+Author:        Oliver Upton <oliver.upton@linux.dev>
+AuthorDate:    Mon, 19 Feb 2024 18:58:06 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 21 Feb 2024 21:11:20 +01:00
 
-x86/apm_32: Remove dead function apm_get_battery_status()
+irqchip/gic-v3-its: Do not assume vPE tables are preallocated
 
-This part was commented out 25 years ago in:
+The GIC/ITS code is designed to ensure to pick up any preallocated LPI
+tables on the redistributors, as enabling LPIs is a one-way switch. There
+is no such restriction for vLPIs, and for GICv4.1 it is expected to
+allocate a new vPE table at boot.
 
-  commit d43c43b46ebfdb437b78206fcc1992c4d2e8c15e
-  Author: linus1 <torvalds@linuxfoundation.org>
-  Date:   Tue Sep 7 11:00:00 1999 -0600
+This works as intended when initializing an ITS, however when setting up a
+redistributor in cpu_init_lpis() the early return for preallocated RD
+tables skips straight past the GICv4 setup. This all comes to a head when
+trying to kexec() into a new kernel, as the new kernel silently fails to
+set up GICv4, leading to a complete loss of SGIs and LPIs for KVM VMs.
 
-      Import 2.3.26pre1
+Slap a band-aid on the problem by ensuring its_cpu_init_lpis() always
+initializes GICv4 on the way out, even if the other RD tables were
+preallocated.
 
-and probably no one knows why. Probably it was unused even then.
-
-Just remove it.
-
-  [ bp: Expand commit message. ]
-
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240126030824.579711-1-chentao@kylinos.cn
+Fixes: 6479450f72c1 ("irqchip/gic-v4: Fix occasional VLPI drop")
+Reported-by: George Cherian <gcherian@marvell.com>
+Co-developed-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240219185809.286724-2-oliver.upton@linux.dev
 ---
- arch/x86/kernel/apm_32.c | 29 -----------------------------
- 1 file changed, 29 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apm_32.c b/arch/x86/kernel/apm_32.c
-index 76a5ced..b37ab10 100644
---- a/arch/x86/kernel/apm_32.c
-+++ b/arch/x86/kernel/apm_32.c
-@@ -1055,35 +1055,6 @@ static int apm_get_power_status(u_short *status, u_short *bat, u_short *life)
- 	return APM_SUCCESS;
- }
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 53abd47..b822752 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3181,6 +3181,7 @@ static void its_cpu_init_lpis(void)
+ 	val |= GICR_CTLR_ENABLE_LPIS;
+ 	writel_relaxed(val, rbase + GICR_CTLR);
  
--#if 0
--static int apm_get_battery_status(u_short which, u_short *status,
--				  u_short *bat, u_short *life, u_short *nbat)
--{
--	u32 eax;
--	u32 ebx;
--	u32 ecx;
--	u32 edx;
--	u32 esi;
--
--	if (apm_info.connection_version < 0x0102) {
--		/* pretend we only have one battery. */
--		if (which != 1)
--			return APM_BAD_DEVICE;
--		*nbat = 1;
--		return apm_get_power_status(status, bat, life);
--	}
--
--	if (apm_bios_call(APM_FUNC_GET_STATUS, (0x8000 | (which)), 0, &eax,
--			  &ebx, &ecx, &edx, &esi))
--		return (eax >> 8) & 0xff;
--	*status = ebx;
--	*bat = ecx;
--	*life = edx;
--	*nbat = esi;
--	return APM_SUCCESS;
--}
--#endif
--
- /**
-  *	apm_engage_power_management	-	enable PM on a device
-  *	@device: identity of device
++out:
+ 	if (gic_rdists->has_vlpis && !gic_rdists->has_rvpeid) {
+ 		void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
+ 
+@@ -3216,7 +3217,6 @@ static void its_cpu_init_lpis(void)
+ 
+ 	/* Make sure the GIC has seen the above */
+ 	dsb(sy);
+-out:
+ 	gic_data_rdist()->flags |= RD_LOCAL_LPI_ENABLED;
+ 	pr_info("GICv3: CPU%d: using %s LPI pending table @%pa\n",
+ 		smp_processor_id(),
 
