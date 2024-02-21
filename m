@@ -1,76 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-513-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-514-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD3E85E4BC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Feb 2024 18:39:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A3685E4E1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Feb 2024 18:47:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 097991C23081
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Feb 2024 17:39:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C9E2B20F42
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Feb 2024 17:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD6E84A45;
-	Wed, 21 Feb 2024 17:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B165C7BB00;
+	Wed, 21 Feb 2024 17:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3nFf1xfe";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KFUnHNkZ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CSRv2iw0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LnJAvQn3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CF784052;
-	Wed, 21 Feb 2024 17:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263E183CD2;
+	Wed, 21 Feb 2024 17:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708537162; cv=none; b=HFCL2LEjcPrrsapYZwv56NFifh4ykRl0w2mncI1OSIuhEjvjUiV7GGJCIuGPjdrvH1Nyca8r49op5q4I4C8nkDvgJfsRAhlHHwTNVfbtJPzQnWmLuYNZZ6FgfeWpMKzhJDdPrYl3tXF443Klo3oNjbRQKNy6YF4Q8w3kp6NlVHw=
+	t=1708537670; cv=none; b=qGDoSvYC2CErMw/pBNHfbgyx4M1SB/7Q0vKI8jZk+WiIqIEi54VCsMtP/drtiqUWJ/y3oICFsYXzbzaD+H05MOAhZtMpP/ZQGnMShIHHJMzGyP22/QSZFui4BTHS6kJa8nhnTrzq9kCzoVkrGys3LLCizv4/i7A3KVIzOuNrgYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708537162; c=relaxed/simple;
-	bh=fxkW9ID7GJiMhERWY8n83OqMjHTdc9vsb1OQk6j2MUw=;
+	s=arc-20240116; t=1708537670; c=relaxed/simple;
+	bh=PRauaF92682VwsAMg09wdHVxsDKlTxRn384p1w/3jJk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=G+mFghO/54Vq+IZHVawoLQ2NuEmSyJF5SzFubxmqx2viRwPOuqtFgoSPYKfAbb8XS9B7/VAAOt+rX8lTCr0GwzBSvmRLkmKmVH8vUBvZU1eVkppHRE+4OuX4iZIXKf7T/PcpkIGAfES9iWpTOwoWuV12kM09qaqypw00XVH0I0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3nFf1xfe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KFUnHNkZ; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=aOfNb7NxDq1Sj7QY5I6zQjBf0VXi9jy6IwKOTt2U/0SfnlYSkATTPsxFOzrUQac6LpeZzQIMgMvazOtHie8WMGVmAEnneEoMJC7J2Dl5yJT8kqWErec4CYW9QJP7X73LQBvHozoYo4qghou4Qw0DSi8msc6bqpuKEi/+jrF5dRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CSRv2iw0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LnJAvQn3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 21 Feb 2024 17:39:18 -0000
+Date: Wed, 21 Feb 2024 17:47:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708537159;
+	s=2020; t=1708537667;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DGaJBynUBIXtMCHxSfHxeRMycMvw4ZUn9lwGf5oGM1I=;
-	b=3nFf1xfePu+kXptdCjw8Eml/AZQYHAEpLVqEDWQigmEtd6hTO3d9Ka5itod38dFtHPsTmy
-	4Dv4FmfxnxXmACYhMD/0GYMiVszlBlMnppm0kgzDlpDEHY2nQCtAbDeUfjMgcgLoBnNAr3
-	DJc4JdH5pN9MRi/vuPZdcfckEJC7ZnAPejPWjHMsuEDtbquOVGdg0mVQ19LQtN/GHvX6bV
-	bcFJSP8JQBascIggnRZ5AP/r0Y6Fq4ISygiefl/ujJmnjv4bWYV/bJCMF5MoyErR5dRf+j
-	xlUQ9mt0gvp2FDrFkFyhggGuk2zEvf7jUJj62x9sUTpvaC4nNrohL0yCJtq1sw==
+	bh=31NN7dBlQk+cSYn0Xu5M/e75MI8J5Cmp6IemxlCIL0A=;
+	b=CSRv2iw0nAmYDmU83rlI0JrOr7g0HAw379vheiLTpZ242XXqcBfxXOIJ50eAk20TQ9D91p
+	Pejfquj83aAPOa+tF/VVo2Bel3Ehi/mCwq4XDuXzPz0rd1zIFxTcT/KbUeTZ5/qxR0abaH
+	rQarnzPkwOAYGivfT2kvyOw3UGaGtuA0mfYgPXgyU1dl0q6uqINOwYeRKhO6q5Zk+yA8jo
+	tFu1RiLTn9HO24DxHADv8vsbgAdpE4TJ86up6pdPw/7eDhRG8/Dx3eoRaO39SwXNOfyXXU
+	iJg+SXA/23T3kAkpKStrqOd3fZD26WUMAPyx7AQf/qkbK2gYKqhwnjomIRBvzQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708537159;
+	s=2020e; t=1708537667;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DGaJBynUBIXtMCHxSfHxeRMycMvw4ZUn9lwGf5oGM1I=;
-	b=KFUnHNkZU5qr7lYW5F83GHTfUINbxwFx4vJ0HxWIYTc1MbILxoL5xpBTteTsV5HzF0ghh+
-	OwzQ84alsLkXufAg==
-From: "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+	bh=31NN7dBlQk+cSYn0Xu5M/e75MI8J5Cmp6IemxlCIL0A=;
+	b=LnJAvQn3KY+kokh2F9pFI5qUHIXgfkAok5MounSHgdg/Bkb43vTi7doeRDOBSE+tqBjYJ7
+	MfucnJzk4JVvi/CA==
+From: "tip-bot2 for Chen Jun" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/vic: Fix a kernel-doc warning
-Cc: Randy Dunlap <rdunlap@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240221064104.7863-1-rdunlap@infradead.org>
-References: <20240221064104.7863-1-rdunlap@infradead.org>
+Subject: [tip: irq/urgent] irqchip/mbigen: Don't use bus_get_dev_root() to
+ find the parent
+Cc: Chen Jun <chenjun102@huawei.com>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ maz@kernel.org
+In-Reply-To: <20240220111429.110666-1-chenjun102@huawei.com>
+References: <20240220111429.110666-1-chenjun102@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170853715812.398.5557328318863303144.tip-bot2@tip-bot2>
+Message-ID: <170853766628.398.14228390574695320909.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,41 +80,71 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     eb0e1ebb1772302213f4882f5fada2b3f6362e66
-Gitweb:        https://git.kernel.org/tip/eb0e1ebb1772302213f4882f5fada2b3f6362e66
-Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Tue, 20 Feb 2024 22:41:04 -08:00
+Commit-ID:     fb33a46cd75e18773dd5a414744507d84ae90870
+Gitweb:        https://git.kernel.org/tip/fb33a46cd75e18773dd5a414744507d84ae90870
+Author:        Chen Jun <chenjun102@huawei.com>
+AuthorDate:    Tue, 20 Feb 2024 19:14:29 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 21 Feb 2024 18:31:08 +01:00
+CommitterDate: Wed, 21 Feb 2024 18:40:00 +01:00
 
-irqchip/vic: Fix a kernel-doc warning
+irqchip/mbigen: Don't use bus_get_dev_root() to find the parent
 
-Drop one extraneous struct member to quieten a warning:
+bus_get_dev_root() returns sp->dev_root which is set in subsys_register(),
+but subsys_register() is not called by platform_bus_init().
 
-drivers/irqchip/irq-vic.c:73: warning: Excess struct member 'parent_irq' description in 'vic_device'
+Therefor for the platform_bus_type, bus_get_dev_root() always returns NULL.
+This makes mbigen_of_create_domain() always return -ENODEV.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Don't try to retrieve the parent via bus_get_dev_root() and
+unconditionally hand a NULL pointer to of_platform_device_create() to
+fix this.
+
+Fixes: fea087fc291b ("irqchip/mbigen: move to use bus_get_dev_root()")
+Signed-off-by: Chen Jun <chenjun102@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240221064104.7863-1-rdunlap@infradead.org
----
- drivers/irqchip/irq-vic.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240220111429.110666-1-chenjun102@huawei.com
 
-diff --git a/drivers/irqchip/irq-vic.c b/drivers/irqchip/irq-vic.c
-index 9e3d556..ea93e72 100644
---- a/drivers/irqchip/irq-vic.c
-+++ b/drivers/irqchip/irq-vic.c
-@@ -47,9 +47,8 @@
+---
+ drivers/irqchip/irq-mbigen.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/drivers/irqchip/irq-mbigen.c b/drivers/irqchip/irq-mbigen.c
+index 5101a3f..58881d3 100644
+--- a/drivers/irqchip/irq-mbigen.c
++++ b/drivers/irqchip/irq-mbigen.c
+@@ -235,22 +235,17 @@ static const struct irq_domain_ops mbigen_domain_ops = {
+ static int mbigen_of_create_domain(struct platform_device *pdev,
+ 				   struct mbigen_device *mgn_chip)
+ {
+-	struct device *parent;
+ 	struct platform_device *child;
+ 	struct irq_domain *domain;
+ 	struct device_node *np;
+ 	u32 num_pins;
+ 	int ret = 0;
  
- /**
-  * struct vic_device - VIC PM device
-- * @parent_irq: The parent IRQ number of the VIC if cascaded, or 0.
-- * @irq: The IRQ number for the base of the VIC.
-  * @base: The register base for the VIC.
-+ * @irq: The IRQ number for the base of the VIC.
-  * @valid_sources: A bitmask of valid interrupts
-  * @resume_sources: A bitmask of interrupts for resume.
-  * @resume_irqs: The IRQs enabled for resume.
+-	parent = bus_get_dev_root(&platform_bus_type);
+-	if (!parent)
+-		return -ENODEV;
+-
+ 	for_each_child_of_node(pdev->dev.of_node, np) {
+ 		if (!of_property_read_bool(np, "interrupt-controller"))
+ 			continue;
+ 
+-		child = of_platform_device_create(np, NULL, parent);
++		child = of_platform_device_create(np, NULL, NULL);
+ 		if (!child) {
+ 			ret = -ENOMEM;
+ 			break;
+@@ -273,7 +268,6 @@ static int mbigen_of_create_domain(struct platform_device *pdev,
+ 		}
+ 	}
+ 
+-	put_device(parent);
+ 	if (ret)
+ 		of_node_put(np);
+ 
 
