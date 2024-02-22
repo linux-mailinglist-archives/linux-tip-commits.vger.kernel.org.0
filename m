@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-525-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-527-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD56485FECC
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Feb 2024 18:11:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBBD85FED4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Feb 2024 18:12:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C4BE1F290D5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Feb 2024 17:11:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FB2428B3A4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Feb 2024 17:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9807E154C11;
-	Thu, 22 Feb 2024 17:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C1615442A;
+	Thu, 22 Feb 2024 17:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ax4Em7tM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ptIvDQnD"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sy2RgHVh";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LisG/I9H"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDCB14F9FE;
-	Thu, 22 Feb 2024 17:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DE2153BF3;
+	Thu, 22 Feb 2024 17:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708621872; cv=none; b=MJrnukQAQ/RyOJ+LbcBMvNsJPHMLUU+wb+xt1LR8fRpTgQguSoltT6npz+wXvXFllrX+xwVc/s+/6GhdUFNZX050GmtQCHxg+jdcvZrUonuxDruYeU9Im6KkKCkrvjf+Yl0B7rCbzpd+yy+lCPUQoRQtcPyYSGfy4xO3awvs+p4=
+	t=1708621929; cv=none; b=PHZC5kfEEnxqvTq7n2Wp8oNje6JvHKyiodn2sGee1ATtmTMpfbuIH5tcbE0sq+OZ2F813/RkmzUHIU79juPYDZ9TRaOSJD2hMpSfw5p/Bwu7wwe8SnMjM2PlC41q3Ql7OudUFTTQ8CiGFdLZKFRFGmoMs7t/g7Y4BXGpwe2CbGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708621872; c=relaxed/simple;
-	bh=DAzeBEEdLR73MwKO48c6XGeOzopBZZgL8Uss3l1DIUU=;
+	s=arc-20240116; t=1708621929; c=relaxed/simple;
+	bh=+d1s6NzoXSIvhqGFCIpB/me2eOnsyUw1n9/OG8lv5TY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=QImWllbCtFReqnYiVtrqYrXPOGWP0Vm7Lyd/Cl+BLit+GxMUe3hio8cLHSGLSq3C1lFQL92LTDlWPHfHlMT9dPlq/U93VvOQfFjMhNiDKgSfaao3/l3jA+VA0NDWsmEYVsV/u95ptcvlO6YzoVN7rd6sZ3hpTrl/0PrPPnDNdWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ax4Em7tM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ptIvDQnD; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=AXjy03UJ6Fa96YbDRlQdHKCD6Bez4WYxO7GlACb3LrfJO9niFl49n34p/aRJj2Fajj6SE2wTtzboajyOGig4IA3gxn6plFKTYPLz2dQ7+xJtTafZ9Nxsz1Idy3Vl5HQwlYrxGVKAMEj+qDf2qmxQIHdUmRQwqIl+os2KUuihiyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sy2RgHVh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LisG/I9H; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 22 Feb 2024 17:11:08 -0000
+Date: Thu, 22 Feb 2024 17:12:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708621869;
+	s=2020; t=1708621925;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aCmJTymzCZ/OO0k5JdKI4CkPlY0ex1wcioQq1JYlB6Y=;
-	b=Ax4Em7tMDupStZU8m04Ip9fTdlf6iQCUhR6fxtZRXwD0LRCvQmO+LgXcPHPDMIQeZ6zWAr
-	/KFMc1J/wLwwVi9CowVTTonW5UixM7/20az5htwm9KlaJce0EWiIqXP/HbaqOynzoD5YO7
-	XwoeU9+oE8EJJ0vrS7McA+YhYqCLm5P0jwlskRuCfuG/Y7CWIuPR45bgUaPsZWNsOUHrlN
-	kIv5HXKpEWu+d4hpzcj0L9MkGNomgOuCcLAxjEI+spUExxN/E6ZMX31/oFCw+KpfQ8R+Ar
-	ZHx1nG1fv316wLH8sRNo0j81qb4szIPGQPA3shW7kmvJjWlJ8gChSrHsxOY0kg==
+	bh=vp70BqxKNDfBIbWJtNVYuXyPGtKICmt+kqCYReh1tMM=;
+	b=sy2RgHVhKwMCSKRTQTTLUBJx6WucO4T9o1YeM8EVsAtzRu9BaBtGf258z4MzQfTcgJcvUo
+	J9L7gmi3zeFAWwAyAQ9363sn0QZkyTdp05tyzJ196G5S0ZwgsGSdfY+IBt+DsrR8WagaUO
+	3IH/WjRY40ygauz07n6ZfmvrpLVypAeNmtKyaqa2U4B/VIVu4mPCYAAuVQhFFWEBee/fdQ
+	Q/Qhb2TB/+oSttDeijo3mlxaplAVY0HjZ/2t5IJ1PhNEcfJ4TtxvbjkDJhs9yes8HYVLN0
+	Vy0Ei3vdrwZuSR2rHm11nPYm0mwLcYWGZCjVDRlqJeTbY8yanqwCH8JyrQg47Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708621869;
+	s=2020e; t=1708621925;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aCmJTymzCZ/OO0k5JdKI4CkPlY0ex1wcioQq1JYlB6Y=;
-	b=ptIvDQnD6H1Pil5uZ5qjqLNzgXpiJT9iuy/4hxoDw7TIDAn3E73F1MyrJf0OvRsf0/UkHA
-	i3FJNmNZxcccQFAw==
-From: "tip-bot2 for Huqiang Qin" <tip-bot2@linutronix.de>
+	bh=vp70BqxKNDfBIbWJtNVYuXyPGtKICmt+kqCYReh1tMM=;
+	b=LisG/I9HUuoKxe+IGgweJamGsvlmF73QE2OcgdCrmimPxmf/GAi/ctzJV1/RhMBym/di2J
+	ZKv0XV66TO32XGDw==
+From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/meson-gpio: Add support for Amlogic-T7 SoCs
-Cc: Huqiang Qin <huqiang.qin@amlogic.com>,
+Subject: [tip: timers/core] timers: Always queue timers on the local CPU
+Cc: "Richard Cochran (linutronix GmbH)" <richardcochran@gmail.com>,
+ "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
  Thomas Gleixner <tglx@linutronix.de>,
- Neil Armstrong <neil.armstrong@linaro.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240222074640.1866284-3-huqiang.qin@amlogic.com>
-References: <20240222074640.1866284-3-huqiang.qin@amlogic.com>
+ Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240221090548.36600-21-anna-maria@linutronix.de>
+References: <20240221090548.36600-21-anna-maria@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170862186822.398.7810719484570780829.tip-bot2@tip-bot2>
+Message-ID: <170862192461.398.10613375933312669358.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,64 +81,136 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     e281bfa6f759b667357454c1d3d283f7a52871da
-Gitweb:        https://git.kernel.org/tip/e281bfa6f759b667357454c1d3d283f7a52871da
-Author:        Huqiang Qin <huqiang.qin@amlogic.com>
-AuthorDate:    Thu, 22 Feb 2024 15:46:38 +08:00
+Commit-ID:     b2cf7507e18649a30512515ec0ca89f26b2c2d0f
+Gitweb:        https://git.kernel.org/tip/b2cf7507e18649a30512515ec0ca89f26b2c2d0f
+Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
+AuthorDate:    Wed, 21 Feb 2024 10:05:48 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 22 Feb 2024 18:04:42 +01:00
+CommitterDate: Thu, 22 Feb 2024 17:52:32 +01:00
 
-irqchip/meson-gpio: Add support for Amlogic-T7 SoCs
+timers: Always queue timers on the local CPU
 
-The Amlogic-T7 SoCs support 12 GPIO IRQ lines compared with previous
-serial chips and have something different, details are as below.
+The timer pull model is in place so we can remove the heuristics which try
+to guess the best target CPU at enqueue/modification time.
 
-IRQ Number:
-- 156      1 pin  on bank TESTN
-- 155:148  8 pins on bank H
-- 147:129 19 pins on bank Y
-- 128:115 14 pins on bank M
-- 114:91  24 pins on bank T
-- 90:77   14 pins on bank Z
-- 76:70    7 pins on bank E
-- 69:57   13 pins on bank D
-- 56:40   17 pins on bank W
-- 39:20   20 pins on bank X
-- 19:13    7 pins on bank C
-- 12:0    13 pins on bank B
+All non pinned timers are queued on the local CPU in the separate storage
+and eventually pulled at expiry time to a remote CPU.
 
-Signed-off-by: Huqiang Qin <huqiang.qin@amlogic.com>
+Originally-by: Richard Cochran (linutronix GmbH) <richardcochran@gmail.com>
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240222074640.1866284-3-huqiang.qin@amlogic.com
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20240221090548.36600-21-anna-maria@linutronix.de
 
 ---
- drivers/irqchip/irq-meson-gpio.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/timer.h | 14 ++++----------
+ kernel/time/timer.c   | 36 +++++++++++++++---------------------
+ 2 files changed, 19 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/irqchip/irq-meson-gpio.c b/drivers/irqchip/irq-meson-gpio.c
-index f88df39..9a17919 100644
---- a/drivers/irqchip/irq-meson-gpio.c
-+++ b/drivers/irqchip/irq-meson-gpio.c
-@@ -154,6 +154,10 @@ static const struct meson_gpio_irq_params c3_params = {
- 	INIT_MESON_S4_COMMON_DATA(55)
- };
+diff --git a/include/linux/timer.h b/include/linux/timer.h
+index 2be8be6..14a633b 100644
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -36,16 +36,10 @@
+  * workqueue locking issues. It's not meant for executing random crap
+  * with interrupts disabled. Abuse is monitored!
+  *
+- * @TIMER_PINNED: A pinned timer will not be affected by any timer
+- * placement heuristics (like, NOHZ) and will always expire on the CPU
+- * on which the timer was enqueued.
+- *
+- * Note: Because enqueuing of timers can migrate the timer from one
+- * CPU to another, pinned timers are not guaranteed to stay on the
+- * initialy selected CPU.  They move to the CPU on which the enqueue
+- * function is invoked via mod_timer() or add_timer().  If the timer
+- * should be placed on a particular CPU, then add_timer_on() has to be
+- * used.
++ * @TIMER_PINNED: A pinned timer will always expire on the CPU on which the
++ * timer was enqueued. When a particular CPU is required, add_timer_on()
++ * has to be used. Enqueue via mod_timer() and add_timer() is always done
++ * on the local CPU.
+  */
+ #define TIMER_CPUMASK		0x0003FFFF
+ #define TIMER_MIGRATING		0x00040000
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 3ed135c..4f4930d 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -635,11 +635,16 @@ trigger_dyntick_cpu(struct timer_base *base, struct timer_list *timer)
  
-+static const struct meson_gpio_irq_params t7_params = {
-+	INIT_MESON_S4_COMMON_DATA(157)
-+};
-+
- static const struct of_device_id meson_irq_gpio_matches[] __maybe_unused = {
- 	{ .compatible = "amlogic,meson8-gpio-intc", .data = &meson8_params },
- 	{ .compatible = "amlogic,meson8b-gpio-intc", .data = &meson8b_params },
-@@ -165,6 +169,7 @@ static const struct of_device_id meson_irq_gpio_matches[] __maybe_unused = {
- 	{ .compatible = "amlogic,meson-a1-gpio-intc", .data = &a1_params },
- 	{ .compatible = "amlogic,meson-s4-gpio-intc", .data = &s4_params },
- 	{ .compatible = "amlogic,c3-gpio-intc", .data = &c3_params },
-+	{ .compatible = "amlogic,t7-gpio-intc", .data = &t7_params },
- 	{ }
- };
+ 	/*
+ 	 * We might have to IPI the remote CPU if the base is idle and the
+-	 * timer is not deferrable. If the other CPU is on the way to idle
+-	 * then it can't set base->is_idle as we hold the base lock:
++	 * timer is pinned. If it is a non pinned timer, it is only queued
++	 * on the remote CPU, when timer was running during queueing. Then
++	 * everything is handled by remote CPU anyway. If the other CPU is
++	 * on the way to idle then it can't set base->is_idle as we hold
++	 * the base lock:
+ 	 */
+-	if (base->is_idle)
++	if (base->is_idle) {
++		WARN_ON_ONCE(!(timer->flags & TIMER_PINNED));
+ 		wake_up_nohz_cpu(base->cpu);
++	}
+ }
  
+ /*
+@@ -986,17 +991,6 @@ static inline struct timer_base *get_timer_base(u32 tflags)
+ 	return get_timer_cpu_base(tflags, tflags & TIMER_CPUMASK);
+ }
+ 
+-static inline struct timer_base *
+-get_target_base(struct timer_base *base, unsigned tflags)
+-{
+-#if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
+-	if (static_branch_likely(&timers_migration_enabled) &&
+-	    !(tflags & TIMER_PINNED))
+-		return get_timer_cpu_base(tflags, get_nohz_timer_target());
+-#endif
+-	return get_timer_this_cpu_base(tflags);
+-}
+-
+ static inline void __forward_timer_base(struct timer_base *base,
+ 					unsigned long basej)
+ {
+@@ -1151,7 +1145,7 @@ __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int option
+ 	if (!ret && (options & MOD_TIMER_PENDING_ONLY))
+ 		goto out_unlock;
+ 
+-	new_base = get_target_base(base, timer->flags);
++	new_base = get_timer_this_cpu_base(timer->flags);
+ 
+ 	if (base != new_base) {
+ 		/*
+@@ -2297,7 +2291,7 @@ static inline u64 __get_next_timer_interrupt(unsigned long basej, u64 basem,
+ 		 * granularity skew (by design).
+ 		 */
+ 		if (!base_local->is_idle && time_after(nextevt, basej + 1)) {
+-			base_local->is_idle = base_global->is_idle = true;
++			base_local->is_idle = true;
+ 			trace_timer_base_idle(true, base_local->cpu);
+ 		}
+ 		*idle = base_local->is_idle;
+@@ -2363,13 +2357,13 @@ u64 timer_base_try_to_set_idle(unsigned long basej, u64 basem, bool *idle)
+ void timer_clear_idle(void)
+ {
+ 	/*
+-	 * We do this unlocked. The worst outcome is a remote enqueue sending
+-	 * a pointless IPI, but taking the lock would just make the window for
+-	 * sending the IPI a few instructions smaller for the cost of taking
+-	 * the lock in the exit from idle path.
++	 * We do this unlocked. The worst outcome is a remote pinned timer
++	 * enqueue sending a pointless IPI, but taking the lock would just
++	 * make the window for sending the IPI a few instructions smaller
++	 * for the cost of taking the lock in the exit from idle
++	 * path. Required for BASE_LOCAL only.
+ 	 */
+ 	__this_cpu_write(timer_bases[BASE_LOCAL].is_idle, false);
+-	__this_cpu_write(timer_bases[BASE_GLOBAL].is_idle, false);
+ 	trace_timer_base_idle(false, smp_processor_id());
+ 
+ 	/* Activate without holding the timer_base->lock */
 
