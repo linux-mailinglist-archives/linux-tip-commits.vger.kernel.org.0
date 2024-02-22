@@ -1,77 +1,74 @@
-Return-Path: <linux-tip-commits+bounces-547-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-548-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E7F8604B7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Feb 2024 22:24:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B26F98605D5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Feb 2024 23:46:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E7BF1C2469F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Feb 2024 21:24:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D63FE1C2115F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Feb 2024 22:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DE8131E32;
-	Thu, 22 Feb 2024 21:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE5517C77;
+	Thu, 22 Feb 2024 22:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CbPA8iko";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9V1oGtxM"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KH9Q4mCu";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZXXEV2bc"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAAB73F33;
-	Thu, 22 Feb 2024 21:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE6117BBE;
+	Thu, 22 Feb 2024 22:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708637050; cv=none; b=OZgYG/nf1L8HcRktmfv4IW44K/efOj3wuat8lasri8ET3jaj0uyQKf402wg5qr+xsS12Bon+clKhyQfAKM7IYa8ySQjl3ZdSuPYOCmxe/KtzMVbyURLoYuixNw5nENKC9SBhfev+gTxTCxLeQJB4GQpbps5ZCoylDEgiXmS5K70=
+	t=1708642015; cv=none; b=nM5p0q1R6NyeNjsPXF62h9xdAwkziMVpmqz7V24KMW4RlbGYsPQ19Tf2E43qSjBDYQ3+esvvSxOHgccnkHhUqDPu5/YNoF4xnbiFLOOWpS8vtLvaN6MTbg3iqCnd46xGJc6C4E4hmfD5jAKSxh9B4Z+JKw2ceH+3SiaRcTECZKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708637050; c=relaxed/simple;
-	bh=P/vAShnlnt4tTjBE+MfxxvVqDIWHSWlCHwALHLpLotU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=iWIurdqrD8L8RJzn+v0YutPkb2IWft/jsXzteAAb5pw1oVTjDnNyuCMoIFAwlMzihn5RyQhiJ508SFFM1InFemXomAxnb166pqTRKLtqZczrFkcpI768c9cKMMyS4FvsFLUR1fwrQWat42AEBTfEnZNG2ht601ZwevWOgR0OwMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CbPA8iko; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9V1oGtxM; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1708642015; c=relaxed/simple;
+	bh=jxUAoPY4buWx8x3wTgrDsWe+Yni+xI8fxg2cmerm4/k=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=mgYrTiGtPHl5e5GnSvdkFbY/hUYSvTarvOjj/L6sSTydnhna6ms5UfRthsx2Rgnx+vebFcvEJXMeiuhHnjTAa2wSLNn9sAU9//CnnatAtF5vpqS1pER6luO1Lqj7sUsLVq3Iw0d7kIH4pBXN7CiSeIs9HVKg14VWCrjUoHEkS4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KH9Q4mCu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZXXEV2bc; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 22 Feb 2024 21:24:06 -0000
+Date: Thu, 22 Feb 2024 22:46:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708637047;
+	s=2020; t=1708642010;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bB5ASdAOKRlBSjf6eEIPEh+eRCucZRp3Y42SIxEk/kQ=;
-	b=CbPA8ikoths2la+5P6ubxZeLP9GYnkEwpobiJIJj8E6FEf/jAUgHEYyxx/A6yJ5aWm677G
-	pwG7Vs7mLDCOztMq87uj1uUmlJpqN2nh5dd13a7RMopfaqtKqQilnqXrrSDZs23ffnRSYj
-	XZ9TBmtdweATxKmZpehyPXMNGvgOqRC4hPHHX13UYulfVNOScgVGz+n3axVaV4a/cFNCBw
-	Y1iU9mK30MIbMkvzx4TMIf89tXMHrMmSQmTLP29PB2aix6vq9Qp9Yi4pj1AP8s7SmuCT5V
-	FoiJZryJLhC8GoQ7apLlhNFC5kx8txvn8gzGwknxeYzyhdOVOd5rp6dPBfasRg==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=GIBmASRFKgbqXpLppJ9htzyrvj+vvzswJFnQGxDsbGY=;
+	b=KH9Q4mCuFermHP4Z4c537BOQTpK9vFl2fdFsyBp2oTztj6Kuf1/3Rzaflpt4FRKzuObOkR
+	5sfrxzOb3F+kyJKI5cn4kqTrHtE9UTxHbT+4YMu0z+6oTC28Ki1LTwhGpTcRbSHeXs3bDn
+	ImovSkdSD66ebPTSQInUFi41Z7BxBiNbJv7i1GQeevle5w72YPULlSdd3/MTSAWwVXTpGN
+	DPYD7YeALFDoVS15R3TESLz63Fa2ziNguI4QsjJ8eep89mksnbkzO+Dg0mxNZzxM2CHyzn
+	33rKOi3iNMxyWVUkgrGcoboKAyzBxfmfod/Qm4Vdyc8vsP7bFna/akLAEYxp6w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708637047;
+	s=2020e; t=1708642010;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bB5ASdAOKRlBSjf6eEIPEh+eRCucZRp3Y42SIxEk/kQ=;
-	b=9V1oGtxMvGaDmOwh+O4SkL2zkT0WBZi0eiYuwBcYCSDLlpwOBipMKIV7CTR06GpO7iakyd
-	RwnzxRzMm9o4faDA==
-From: "tip-bot2 for Costa Shulyupin" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=GIBmASRFKgbqXpLppJ9htzyrvj+vvzswJFnQGxDsbGY=;
+	b=ZXXEV2bc4BvzWw/hyGduraFCbm2uUjhFTFfWSDIx2VwRgoNNiXa1hXnJde1scSBXVuPmDP
+	49juRYCEpnmvSKCQ==
+From: "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] hrtimer: Select housekeeping CPU during migration
-Cc: Waiman Long <longman@redhat.com>, Costa Shulyupin <costa.shul@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/mm] x86/mm/cpa: Warn for set_memory_XXcrypted() VMM fails
+Cc: "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240222200856.569036-1-costa.shul@redhat.com>
-References: <20240222200856.569036-1-costa.shul@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170863704606.398.1106798877548525205.tip-bot2@tip-bot2>
+Message-ID: <170864200980.398.6769219282784108170.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,52 +76,99 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     56c2cb10120894be40c40a9bf0ce798da14c50f6
-Gitweb:        https://git.kernel.org/tip/56c2cb10120894be40c40a9bf0ce798da14c50f6
-Author:        Costa Shulyupin <costa.shul@redhat.com>
-AuthorDate:    Thu, 22 Feb 2024 22:08:56 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 22 Feb 2024 22:18:21 +01:00
+Commit-ID:     82ace185017fbbe48342bf7d8a9fd795f9c711cd
+Gitweb:        https://git.kernel.org/tip/82ace185017fbbe48342bf7d8a9fd795f9c711cd
+Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
+AuthorDate:    Mon, 22 Jan 2024 10:40:03 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 22 Feb 2024 14:25:41 -08:00
 
-hrtimer: Select housekeeping CPU during migration
+x86/mm/cpa: Warn for set_memory_XXcrypted() VMM fails
 
-During CPU-down hotplug, hrtimers may migrate to isolated CPUs,
-compromising CPU isolation.
+On TDX it is possible for the untrusted host to cause
+set_memory_encrypted() or set_memory_decrypted() to fail such that an
+error is returned and the resulting memory is shared. Callers need to take
+care to handle these errors to avoid returning decrypted (shared) memory to
+the page allocator, which could lead to functional or security issues.
+In terms of security, the problematic case is guest PTEs mapping the
+shared alias GFNs, since the VMM has control of the shared mapping in the
+EPT/NPT.
 
-Address this issue by masking valid CPUs for hrtimers using
-housekeeping_cpumask(HK_TYPE_TIMER).
+Such conversion errors may herald future system instability, but are
+temporarily survivable with proper handling in the caller. The kernel
+traditionally makes every effort to keep running, but it is expected that
+some coco guests may prefer to play it safe security-wise, and panic in
+this case. To accommodate both cases, warn when the arch breakouts for
+converting memory at the VMM layer return an error to CPA. Security focused
+users can rely on panic_on_warn to defend against bugs in the callers. Some
+VMMs are not known to behave in the troublesome way, so users that would
+like to terminate on any unusual behavior by the VMM around this will be
+covered as well.
 
-Suggested-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/20240222200856.569036-1-costa.shul@redhat.com
+Since the arch breakouts host the logic for handling coco implementation
+specific errors, an error returned from them means that the set_memory()
+call is out of options for handling the error internally. Make this the
+condition to warn about.
+
+It is possible that very rarely these functions could fail due to guest
+memory pressure (in the case of failing to allocate a huge page when
+splitting a page table). Don't warn in this case because it is a lot less
+likely to indicate an attack by the host and it is not clear which
+set_memory() calls should get the same treatment. That corner should be
+addressed by future work that considers the more general problem and not
+just papers over a single set_memory() variant.
+
+Suggested-by: Michael Kelley (LINUX) <mikelley@microsoft.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/all/20240122184003.129104-1-rick.p.edgecombe%40intel.com
 ---
- kernel/time/hrtimer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/mm/pat/set_memory.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 5a98b35..1fd106a 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -38,6 +38,7 @@
- #include <linux/sched/deadline.h>
- #include <linux/sched/nohz.h>
- #include <linux/sched/debug.h>
-+#include <linux/sched/isolation.h>
- #include <linux/timer.h>
- #include <linux/freezer.h>
- #include <linux/compat.h>
-@@ -2225,8 +2226,8 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index e9b448d..47af381 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -2153,7 +2153,7 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
  
- int hrtimers_cpu_dying(unsigned int dying_cpu)
- {
-+	int i, ncpu = cpumask_any_and(cpu_active_mask, housekeeping_cpumask(HK_TYPE_TIMER));
- 	struct hrtimer_cpu_base *old_base, *new_base;
--	int i, ncpu = cpumask_first(cpu_active_mask);
+ 	/* Notify hypervisor that we are about to set/clr encryption attribute. */
+ 	if (!x86_platform.guest.enc_status_change_prepare(addr, numpages, enc))
+-		return -EIO;
++		goto vmm_fail;
  
- 	tick_cancel_sched_timer(dying_cpu);
+ 	ret = __change_page_attr_set_clr(&cpa, 1);
  
+@@ -2166,13 +2166,20 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
+ 	 */
+ 	cpa_flush(&cpa, 0);
+ 
++	if (ret)
++		return ret;
++
+ 	/* Notify hypervisor that we have successfully set/clr encryption attribute. */
+-	if (!ret) {
+-		if (!x86_platform.guest.enc_status_change_finish(addr, numpages, enc))
+-			ret = -EIO;
+-	}
++	if (!x86_platform.guest.enc_status_change_finish(addr, numpages, enc))
++		goto vmm_fail;
+ 
+-	return ret;
++	return 0;
++
++vmm_fail:
++	WARN_ONCE(1, "CPA VMM failure to convert memory (addr=%p, numpages=%d) to %s.\n",
++		  (void *)addr, numpages, enc ? "private" : "shared");
++
++	return -EIO;
+ }
+ 
+ static int __set_memory_enc_dec(unsigned long addr, int numpages, bool enc)
 
