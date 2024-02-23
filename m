@@ -1,71 +1,71 @@
-Return-Path: <linux-tip-commits+bounces-563-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-564-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF3D86181D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Feb 2024 17:38:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E74AF861858
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Feb 2024 17:46:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C39531C2311A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Feb 2024 16:38:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FD632843EB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Feb 2024 16:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCB384FAF;
-	Fri, 23 Feb 2024 16:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C0A823AA;
+	Fri, 23 Feb 2024 16:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3220xFlS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N0kygYMq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uKSYtuJ2";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dbXUCI0R"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65EF1272D9;
-	Fri, 23 Feb 2024 16:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E773E12839B;
+	Fri, 23 Feb 2024 16:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708706281; cv=none; b=mxaaMVJr2c1gj/ci4fRCFiPbMGW8O0Kghe/g+mvI4eLp+/qolly6uScmjnuEEgzVDh4T/G25EDDPSs27nHbqHtE68zl+iDKZXVAWVgBkAZAiehLr975h4d1VEhrJLLbMmmkSpkwASYy8WPUBJsCyvOABSBxTHDtQ2BcGxV7Lw3k=
+	t=1708706787; cv=none; b=b+UZN+FAuBhRlaUYElOo925Aiu3piU9cIX1U7rxWEPMFXHBEtnF2dc5wSDNJBDsewNvl3ZVVgDj3+P2MKE7foLJ5xeF7iE2dFbHGjZHpvx2UDeMYat+BeZ/V7klZfh+Dql6fRDI5ozjc2q7FBPJTVSBgoEIEQG1Y6tSZpn+2J+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708706281; c=relaxed/simple;
-	bh=8F2rfIl1oXQXijAvfjLCxS4uHIpMSGYRug5N/NQxstU=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=eyv9+lUtJ1YjPc2hCaeP84yvdDAsRhdSN4yE3zD0KJxAQP1MdYUvh0XBUJ+DBhhMW9kxoes0MCYjrTCYzI4bnQ/mL5JGf7dlq4DMCZY0HLl4LxKbWNJf0AOPaY7V5loCyFh9ydhVeIhDP9uqrL6ExGbwmqYqZbHgZ/Flmc8WJ20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3220xFlS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N0kygYMq; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1708706787; c=relaxed/simple;
+	bh=/BSuq4/86RjZ2LGVk3j8gdEPLDTykbNGwxB1TAs82K0=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=PJcr3GUwlnWcjDu6avt0XdYbIQiwvDC+lilvbX24cDyuiAFGl/xFm/j3s52lKE/HYKzzGRaMOgjFJ3WOrfdxn7kK2bLYifT/4L/HTplnFN7xe1RqAGg2ZdmjjHC9VgRC+UiYplG8nC3nWO7YZx6yNRhz2Ttc95AgiWLXUy3g/2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uKSYtuJ2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dbXUCI0R; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 23 Feb 2024 16:37:56 -0000
+Date: Fri, 23 Feb 2024 16:46:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708706277;
+	s=2020; t=1708706784;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=l+yIHpDqOw5/hXaF7TeNmF5npvyBmzvP2PhHvrHPalc=;
-	b=3220xFlS5p8NWng7bY8OGd7qpqMAbCY/VwVv94QSDAEnNmVWLMVj8ecVPlxGeMne7x3rik
-	TNNh9eaIG4zloekH+XE2KNDLNJZi+yQILTEi3Tz4AOVjKzhnYnfI9YtFqS5PeN0bQrHsa7
-	tpculCxI6g2bCbnPhLpvqFv6DzLnrhQ+LAspgLvg9OcAAs/bNf1SU0nI11D8791zNa8WD4
-	ehLQoZABEXHMP9mY/laLgAen5yl/wFUvgKCd2qc9lkJYtcPK49/eYSmxfmpm85SgK3mVCW
-	ymL4ur+r524noft2ZWIRFMJ++TCniXPbJT7Xzkbcg3PdWakGxc+gioOhq7axHw==
+	bh=gYbe1yDtXUyQ0sodWy4NQ+yO4YkaKvVupNCaCp2iDBo=;
+	b=uKSYtuJ2wmHKc2fmU8RjR9p4AoeCxT7GkJk+VpoO7Uz9X6p0AAsfJbflyI4uFeHu8AIQPe
+	/ZBpfu/OWSK3yS4FJqXlSk5bsLvgcx/ce77ihm7YvmYatp//1+HBJH1n5FjaD3CzLiXTmg
+	I/Wdt4roq+BwW1XsEMIeJSdkUjd+lbIfirY97t6oe6bB2DAzWhtNaBFYoL3Pw/yIobfI8r
+	aeHRl1jPu9GK6ejbKU6ZUiN3tOReQDNSI1xzX1O7YqMK4sYVctLoixzKqXsTJNO/zj1Uz0
+	x/FTA2yAAozlXu4pDlZfDAC9V673OEKWbu/QAegQx4llFl2aPLsVYNv9EPtMNQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708706277;
+	s=2020e; t=1708706784;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=l+yIHpDqOw5/hXaF7TeNmF5npvyBmzvP2PhHvrHPalc=;
-	b=N0kygYMq2c6uF0s4aexPvMFng5DL1RhvQJ0ysZwBQjsBffCPvLM/udZAuD3IIcvycv/gWa
-	mDUdxY9/q8nguxAg==
-From: "tip-bot2 for Chris Koch" <tip-bot2@linutronix.de>
+	bh=gYbe1yDtXUyQ0sodWy4NQ+yO4YkaKvVupNCaCp2iDBo=;
+	b=dbXUCI0RawIlloYCbB7cV3VeIG7d02VmlIf8F5NBGd8YwNMGExhJNmVwHq0pZl7N0USWJ2
+	e+Zqw7iVwpU1v8AA==
+From: "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] kexec: Allocate kernel above bzImage's pref_address
-Cc: Cloud Hsu <cloudhsu@google.com>, Chris Koch <chrisko@google.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin (Intel)" <hpa@zytor.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+Subject: [tip: x86/boot] x86/trampoline: Bypass compat mode in
+ trampoline_start64() if not needed
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andi Kleen <ak@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170870627680.398.14239353324950664750.tip-bot2@tip-bot2>
+Message-ID: <170870678304.398.7107349021319622516.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -75,91 +75,101 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     43b1d3e68ee7f41c494ee5558d8def3d3d0b7f1b
-Gitweb:        https://git.kernel.org/tip/43b1d3e68ee7f41c494ee5558d8def3d3d0b7f1b
-Author:        Chris Koch <chrisko@google.com>
-AuthorDate:    Fri, 15 Dec 2023 11:05:21 -08:00
+Commit-ID:     c2cfc23f79676a9857a5a48911011bd56e23fd46
+Gitweb:        https://git.kernel.org/tip/c2cfc23f79676a9857a5a48911011bd56e23fd46
+Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+AuthorDate:    Fri, 26 Jan 2024 12:01:01 +02:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 22 Feb 2024 15:13:57 -08:00
+CommitterDate: Fri, 23 Feb 2024 08:40:29 -08:00
 
-kexec: Allocate kernel above bzImage's pref_address
+x86/trampoline: Bypass compat mode in trampoline_start64() if not needed
 
-A relocatable kernel will relocate itself to pref_address if it is
-loaded below pref_address. This means a booted kernel may be relocating
-itself to an area with reserved memory on modern systems, potentially
-clobbering arbitrary data that may be important to the system.
+The trampoline_start64() vector is used when a secondary CPU starts in
+64-bit mode. The current implementation directly enters compatibility
+mode. It is necessary to disable paging and re-enable it in the correct
+paging mode: either 4- or 5-level, depending on the configuration.
 
-This is often the case, as the default value of PHYSICAL_START is
-0x1000000 and kernels are typically loaded at 0x100000 or above by
-bootloaders like iPXE or kexec. GRUB behaves like the approach
-implemented here.
+The X86S[1] ISA does not support compatibility mode in ring 0, and
+paging cannot be disabled.
 
-Also fixes the documentation around pref_address and PHYSICAL_START to
-be accurate.
+Rework the trampoline_start64() function to only enter compatibility
+mode if it is necessary to change the paging mode. If the CPU is
+already in the desired paging mode, proceed in long mode.
 
-[ dhansen: changelog tweak ]
+This allows a secondary CPU to boot on an X86S machine as long as the
+CPU is already in the correct paging mode.
 
-Co-developed-by: Cloud Hsu <cloudhsu@google.com>
-Signed-off-by: Cloud Hsu <cloudhsu@google.com>
-Signed-off-by: Chris Koch <chrisko@google.com>
+In the future, there will be a mechanism to switch between paging modes
+without disabling paging.
+
+[1] https://www.intel.com/content/www/us/en/developer/articles/technical/envisioning-future-simplified-architecture.html
+
+[ dhansen: changelog tweaks ]
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Link: https://lore.kernel.org/all/20231215190521.3796022-1-chrisko%40google.com
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/all/20240126100101.689090-1-kirill.shutemov%40linux.intel.com
 ---
- Documentation/arch/x86/boot.rst   |  3 ++-
- arch/x86/Kconfig                  | 10 +++++-----
- arch/x86/kernel/kexec-bzimage64.c |  5 ++++-
- 3 files changed, 11 insertions(+), 7 deletions(-)
+ arch/x86/realmode/rm/trampoline_64.S | 33 ++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
-index c513855..4fd492c 100644
---- a/Documentation/arch/x86/boot.rst
-+++ b/Documentation/arch/x86/boot.rst
-@@ -878,7 +878,8 @@ Protocol:	2.10+
-   address if possible.
+diff --git a/arch/x86/realmode/rm/trampoline_64.S b/arch/x86/realmode/rm/trampoline_64.S
+index c9f76fa..14d9c7d 100644
+--- a/arch/x86/realmode/rm/trampoline_64.S
++++ b/arch/x86/realmode/rm/trampoline_64.S
+@@ -37,13 +37,15 @@
+ 	.text
+ 	.code16
  
-   A non-relocatable kernel will unconditionally move itself and to run
--  at this address.
-+  at this address. A relocatable kernel will move itself to this address if it
-+  loaded below this address.
+-.macro LOCK_AND_LOAD_REALMODE_ESP lock_pa=0
++.macro LOCK_AND_LOAD_REALMODE_ESP lock_pa=0 lock_rip=0
+ 	/*
+ 	 * Make sure only one CPU fiddles with the realmode stack
+ 	 */
+ .Llock_rm\@:
+ 	.if \lock_pa
+         lock btsl       $0, pa_tr_lock
++	.elseif \lock_rip
++        lock btsl       $0, tr_lock(%rip)
+ 	.else
+         lock btsl       $0, tr_lock
+ 	.endif
+@@ -220,6 +222,35 @@ SYM_CODE_START(trampoline_start64)
+ 	lidt	tr_idt(%rip)
+ 	lgdt	tr_gdt64(%rip)
  
- ============	=======
- Field name:	init_size
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 5edec17..1a33575 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2114,11 +2114,11 @@ config PHYSICAL_START
- 	help
- 	  This gives the physical address where the kernel is loaded.
++	/* Check if paging mode has to be changed */
++	movq	%cr4, %rax
++	xorl	tr_cr4(%rip), %eax
++	testl	$X86_CR4_LA57, %eax
++	jnz	.L_switch_paging
++
++	/* Paging mode is correct proceed in 64-bit mode */
++
++	LOCK_AND_LOAD_REALMODE_ESP lock_rip=1
++
++	movw	$__KERNEL_DS, %dx
++	movl	%edx, %ss
++	addl	$pa_real_mode_base, %esp
++	movl	%edx, %ds
++	movl	%edx, %es
++	movl	%edx, %fs
++	movl	%edx, %gs
++
++	movl	$pa_trampoline_pgd, %eax
++	movq	%rax, %cr3
++
++	pushq	$__KERNEL_CS
++	pushq	tr_start(%rip)
++	lretq
++.L_switch_paging:
++	/*
++	 * To switch between 4- and 5-level paging modes, it is necessary
++	 * to disable paging. This must be done in the compatibility mode.
++	 */
+ 	ljmpl	*tr_compat(%rip)
+ SYM_CODE_END(trampoline_start64)
  
--	  If kernel is a not relocatable (CONFIG_RELOCATABLE=n) then
--	  bzImage will decompress itself to above physical address and
--	  run from there. Otherwise, bzImage will run from the address where
--	  it has been loaded by the boot loader and will ignore above physical
--	  address.
-+	  If the kernel is not relocatable (CONFIG_RELOCATABLE=n) then bzImage
-+	  will decompress itself to above physical address and run from there.
-+	  Otherwise, bzImage will run from the address where it has been loaded
-+	  by the boot loader. The only exception is if it is loaded below the
-+	  above physical address, in which case it will relocate itself there.
- 
- 	  In normal kdump cases one does not have to set/change this option
- 	  as now bzImage can be compiled as a completely relocatable image
-diff --git a/arch/x86/kernel/kexec-bzimage64.c b/arch/x86/kernel/kexec-bzimage64.c
-index 2a422e0..cde167b 100644
---- a/arch/x86/kernel/kexec-bzimage64.c
-+++ b/arch/x86/kernel/kexec-bzimage64.c
-@@ -503,7 +503,10 @@ static void *bzImage64_load(struct kimage *image, char *kernel,
- 	kbuf.bufsz =  kernel_len - kern16_size;
- 	kbuf.memsz = PAGE_ALIGN(header->init_size);
- 	kbuf.buf_align = header->kernel_alignment;
--	kbuf.buf_min = MIN_KERNEL_LOAD_ADDR;
-+	if (header->pref_address < MIN_KERNEL_LOAD_ADDR)
-+		kbuf.buf_min = MIN_KERNEL_LOAD_ADDR;
-+	else
-+		kbuf.buf_min = header->pref_address;
- 	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
- 	ret = kexec_add_buffer(&kbuf);
- 	if (ret)
 
