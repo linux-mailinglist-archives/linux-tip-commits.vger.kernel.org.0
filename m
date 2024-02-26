@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-587-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-588-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB07E868393
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 23:24:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB20A868396
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 23:24:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24B911F24AB4
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 22:24:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6047A28A3D0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 22:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB1D132C08;
-	Mon, 26 Feb 2024 22:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF21132C3C;
+	Mon, 26 Feb 2024 22:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="z1o14nUx";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Kgo1tvv4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xKctK12h";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WIyTqlVn"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BF31CA91;
-	Mon, 26 Feb 2024 22:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2348613249C;
+	Mon, 26 Feb 2024 22:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708986272; cv=none; b=C4FtnJNMdAsFJ/KFeW8YQ4Xxpgwb+lZ5t1BddQTOsfZA7gBLObeWoaX5QXPTLwOk1dgKQqotgxGyjXhuwzgeN0tD2V+UEJxrYC+r/I3UGlGQj+o1wuLhPFhml6gronyoImwoblJATYKAG1glvUh7l83C3rkWHKWiAJgbNHs4C0E=
+	t=1708986273; cv=none; b=b9RIEG1N0H08R87aB1dMhfIEtAcPLe3PGN3So8FL5YjhHqQsiAVsNBt2Xct25TpWulLKa1o+FI2cbYNoVDbJrtqVPVPdYS+a6YYU3+lUBcehVumh4Lqis6V3aYj5/66AFjcxFcybDF+RKwYlfePbiqWBBEMlCSEDKxLryGjy8D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708986272; c=relaxed/simple;
-	bh=P+LSxAkJgCgUUp+ht2CL/CypOeU7CJvwZexFnnIv/fk=;
+	s=arc-20240116; t=1708986273; c=relaxed/simple;
+	bh=YK+gb9/jyy0d4w+W35SvBsoEycHJgPqX6bWivLKiY4s=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Y/aMRhO+8aAo+wGJEiZJ6ekRNziik+TwJDiy5FSC7yjL/5zKhoE6EJEgETGRpOaEaaTFN5CC22Vtau82e/y4N5Vn6sEoQCH+a2CRcdRSdPlIbHfzgvMpUvg0YyX7wgLiisV/M+pURcDl6Gji78ALUwe1VNlNFmEmPvg9DHLCcck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=z1o14nUx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Kgo1tvv4; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=AVs2uq581RHbBkUdtJPd6wze+eJSFXnjcQApoNk22wW9Ja0gQ0MU16PcwLiDQFfj0l3FFsNALTFc6ANZCVdF5o7dnX8zNydPGhJzF9ORNtPGRawaL3s+GobvIItN+nKxxxlQYldZgRDPSAbue6eodLGPwfIMUI47SnpK17zQMIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xKctK12h; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WIyTqlVn; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 26 Feb 2024 22:24:28 -0000
+Date: Mon, 26 Feb 2024 22:24:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708986269;
+	s=2020; t=1708986270;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rMPImZHQM5CM4wHeMA76ZPHOkb23MRJVX2X0h+q2bmA=;
-	b=z1o14nUxJKOkAzWRYRxysLpAWzS0nyqTbQd8JNvyFRInvIrvogulXToTotAyMCKCPXIO41
-	IcQQbnTa0susmze/cYct9WlkQZgBMqLm9Ky8JGq0gvjy9rdPianJ1wqm0ZKrsgRSV1oPqA
-	XbFyMhtc+zheVgzcI8nFegbdlJZTMEAKVlzxz4Kcl0GZMa+u91fIRsGv+jitcwRPYNg5BV
-	0n+tV/EXANEschFImSen+rHAq91M2Vwn6fIenJxbCQcyeOg4PtIrLG9/y0NTfTxXtnf+wz
-	4lUoLi/2mGPoTb+bPu1KIs4WmZysASqm2qwVi+pYq1Gzj34yyNEP26UdlUtDvw==
+	bh=7xTIw5tqjVZIpH35eKhPSVJAIAlEyQ7W8yT+EkIHaiU=;
+	b=xKctK12hz6sSi2+3JHUeonMCANn+ucQj+nDgM1lZU62YF4VFr+olrcY6ija4vWmqzBK6n7
+	GsloVN3IpREor1dN/e5f3SMHW+jhO2HAFiIZeTew+/93lu6fCjYbwv9epNiK157TUBIPSS
+	nXn97a5a9G9FHOL4Ancr+2xkzVKbPJBCHw59Jl3JRV1VqcBPg05Qr9exx8C1Y5q6p31nKs
+	oVbClVgPDy14BWOxZE0hA4ztryoWj7+NLZM2IuzZZVi1/TIslfqf/R+JjaIoqs1Jzmb224
+	xnZ5BUOdRM5CFa6iVCrdP4rTksdWOt2ZverryyU1BqW9fZSdK8Dxaai4BCg9eQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708986269;
+	s=2020e; t=1708986270;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rMPImZHQM5CM4wHeMA76ZPHOkb23MRJVX2X0h+q2bmA=;
-	b=Kgo1tvv4d8pEbz7jNbYdyM+cHJ2pCewooTRKTa5Xvg6RuUdQniQRuKkOTSc3rpIb8BmTjN
-	zJ4j08Zl4QIJ23Cw==
+	bh=7xTIw5tqjVZIpH35eKhPSVJAIAlEyQ7W8yT+EkIHaiU=;
+	b=WIyTqlVnIs42Jg+6nIgywv2yvw6itLiCb3YvKpw19N714FS0zWLMZVwG49s2Q2RemhVaiC
+	sxZhyoNOIXCArKBA==
 From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] tick: Assume timekeeping is correctly handed over
- upon last offline idle call
+Subject: [tip: timers/core] tick: Shut down low-res tick from dying CPU
 Cc: Frederic Weisbecker <frederic@kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240225225508.11587-16-frederic@kernel.org>
-References: <20240225225508.11587-16-frederic@kernel.org>
+In-Reply-To: <20240225225508.11587-15-frederic@kernel.org>
+References: <20240225225508.11587-15-frederic@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170898626843.398.9239239187122557870.tip-bot2@tip-bot2>
+Message-ID: <170898626934.398.2472263585670806931.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,116 +81,146 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     500f8f9bced86f0c0f2482773bd64a1b7ec9c4e1
-Gitweb:        https://git.kernel.org/tip/500f8f9bced86f0c0f2482773bd64a1b7ec9c4e1
+Commit-ID:     3f69d04e146c6e14ccdd4e7b37d93f789229202a
+Gitweb:        https://git.kernel.org/tip/3f69d04e146c6e14ccdd4e7b37d93f789229202a
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Sun, 25 Feb 2024 23:55:07 +01:00
+AuthorDate:    Sun, 25 Feb 2024 23:55:06 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 26 Feb 2024 11:37:32 +01:00
 
-tick: Assume timekeeping is correctly handed over upon last offline idle call
+tick: Shut down low-res tick from dying CPU
 
-The timekeeping duty is handed over from the outgoing CPU on stop
-machine, then the oneshot tick is stopped right after.  Therefore it's
-guaranteed that the current CPU isn't the timekeeper upon its last call
-to idle.
+The timekeeping duty is handed over from the outgoing CPU within stop
+machine. This works well if CONFIG_NO_HZ_COMMON=n or the tick is in
+high-res mode. However in low-res dynticks mode, the tick isn't
+cancelled until the clockevent is shut down, which can happen later. The
+tick may therefore fire again once IRQs are re-enabled on stop machine
+and until IRQs are disabled for good upon the last call to idle.
 
-Besides, calling tick_nohz_idle_stop_tick() while the dying CPU goes
-into idle suggests that the tick is going to be stopped while it is
-actually stopped already from the appropriate CPU hotplug state.
+That's so many opportunities for a timekeeper to go idle and the
+outgoing CPU to take over that duty. This is why
+tick_nohz_idle_stop_tick() is called one last time on idle if the CPU
+is seen offline: so that the timekeeping duty is handed over again in
+case the CPU has re-taken the duty.
 
-Remove the confusing call and the obsolete case handling and convert it
-to a sanity check that verifies the above assumption.
+This means there are two timekeeping handovers on CPU down hotplug with
+different undocumented constraints and purposes:
+
+1) A handover on stop machine for !dynticks || highres. All online CPUs
+   are guaranteed to be non-idle and the timekeeping duty can be safely
+   handed-over. The hrtimer tick is cancelled so it is guaranteed that in
+   dynticks mode the outgoing CPU won't take again the duty.
+
+2) A handover on last idle call for dynticks && lowres.  Setting the
+   duty to TICK_DO_TIMER_NONE makes sure that a CPU will take over the
+   timekeeping.
+
+Prepare for consolidating the handover to a single place (the first one)
+with shutting down the low-res tick as well from
+tick_cancel_sched_timer() as well. This will simplify the handover and
+unify the tick cancellation between high-res and low-res.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240225225508.11587-16-frederic@kernel.org
+Link: https://lore.kernel.org/r/20240225225508.11587-15-frederic@kernel.org
 
 ---
- include/linux/tick.h      |  2 ++
- kernel/cpu.c              |  1 +
- kernel/sched/idle.c       |  1 -
- kernel/time/tick-common.c |  4 ++++
- kernel/time/tick-sched.c  | 13 +------------
- 5 files changed, 8 insertions(+), 13 deletions(-)
+ kernel/time/tick-common.c |  3 ++-
+ kernel/time/tick-sched.c  | 32 +++++++++++++++++++++++++-------
+ kernel/time/tick-sched.h  |  4 ++--
+ 3 files changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/tick.h b/include/linux/tick.h
-index c7840ae..44fddfa 100644
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -29,8 +29,10 @@ static inline void tick_cleanup_dead_cpu(int cpu) { }
- 
- #if defined(CONFIG_GENERIC_CLOCKEVENTS) && defined(CONFIG_HOTPLUG_CPU)
- extern int tick_cpu_dying(unsigned int cpu);
-+extern void tick_assert_timekeeping_handover(void);
- #else
- #define tick_cpu_dying	NULL
-+static inline void tick_assert_timekeeping_handover(void) { }
- #endif
- 
- #if defined(CONFIG_GENERIC_CLOCKEVENTS) && defined(CONFIG_SUSPEND)
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 5a8ad4f..7e84a7b 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1399,6 +1399,7 @@ void cpuhp_report_idle_dead(void)
- 	struct cpuhp_cpu_state *st = this_cpu_ptr(&cpuhp_state);
- 
- 	BUG_ON(st->state != CPUHP_AP_OFFLINE);
-+	tick_assert_timekeeping_handover();
- 	rcutree_report_cpu_dead();
- 	st->state = CPUHP_AP_IDLE_DEAD;
- 	/*
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index 3123192..b15d40c 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -291,7 +291,6 @@ static void do_idle(void)
- 		local_irq_disable();
- 
- 		if (cpu_is_offline(cpu)) {
--			tick_nohz_idle_stop_tick();
- 			cpuhp_report_idle_dead();
- 			arch_cpu_idle_dead();
- 		}
 diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index 9cd09ee..fb0fdec 100644
+index 5224140..9cd09ee 100644
 --- a/kernel/time/tick-common.c
 +++ b/kernel/time/tick-common.c
-@@ -396,6 +396,10 @@ int tick_broadcast_oneshot_control(enum tick_broadcast_state state)
- EXPORT_SYMBOL_GPL(tick_broadcast_oneshot_control);
+@@ -410,7 +410,8 @@ int tick_cpu_dying(unsigned int dying_cpu)
+ 	if (tick_do_timer_cpu == dying_cpu)
+ 		tick_do_timer_cpu = cpumask_first(cpu_online_mask);
  
- #ifdef CONFIG_HOTPLUG_CPU
-+void tick_assert_timekeeping_handover(void)
-+{
-+	WARN_ON_ONCE(tick_do_timer_cpu == smp_processor_id());
-+}
- /*
-  * Stop the tick and transfer the timekeeping job away from a dying cpu.
-  */
+-	tick_cancel_sched_timer(dying_cpu);
++	/* Make sure the CPU won't try to retake the timekeeping duty */
++	tick_sched_timer_dying(dying_cpu);
+ 
+ 	/* Remove CPU from timer broadcasting */
+ 	tick_offline_cpu(dying_cpu);
 diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 89d16b8..269e215 100644
+index dcb9f03..89d16b8 100644
 --- a/kernel/time/tick-sched.c
 +++ b/kernel/time/tick-sched.c
-@@ -1160,18 +1160,7 @@ static bool report_idle_softirq(void)
+@@ -308,6 +308,14 @@ static enum hrtimer_restart tick_nohz_handler(struct hrtimer *timer)
+ 	return HRTIMER_RESTART;
+ }
  
- static bool can_stop_idle_tick(int cpu, struct tick_sched *ts)
++static void tick_sched_timer_cancel(struct tick_sched *ts)
++{
++	if (tick_sched_flag_test(ts, TS_FLAG_HIGHRES))
++		hrtimer_cancel(&ts->sched_timer);
++	else if (tick_sched_flag_test(ts, TS_FLAG_NOHZ))
++		tick_program_event(KTIME_MAX, 1);
++}
++
+ #ifdef CONFIG_NO_HZ_FULL
+ cpumask_var_t tick_nohz_full_mask;
+ EXPORT_SYMBOL_GPL(tick_nohz_full_mask);
+@@ -1040,10 +1048,7 @@ static void tick_nohz_stop_tick(struct tick_sched *ts, int cpu)
+ 	 * the tick timer.
+ 	 */
+ 	if (unlikely(expires == KTIME_MAX)) {
+-		if (tick_sched_flag_test(ts, TS_FLAG_HIGHRES))
+-			hrtimer_cancel(&ts->sched_timer);
+-		else
+-			tick_program_event(KTIME_MAX, 1);
++		tick_sched_timer_cancel(ts);
+ 		return;
+ 	}
+ 
+@@ -1598,14 +1603,27 @@ void tick_setup_sched_timer(bool hrtimer)
+ 	tick_nohz_activate(ts);
+ }
+ 
+-void tick_cancel_sched_timer(int cpu)
++/*
++ * Shut down the tick and make sure the CPU won't try to retake the timekeeping
++ * duty before disabling IRQs in idle for the last time.
++ */
++void tick_sched_timer_dying(int cpu)
  {
--	/*
--	 * If this CPU is offline and it is the one which updates
--	 * jiffies, then give up the assignment and let it be taken by
--	 * the CPU which runs the tick timer next. If we don't drop
--	 * this here, the jiffies might be stale and do_timer() never
--	 * gets invoked.
--	 */
--	if (unlikely(!cpu_online(cpu))) {
--		if (cpu == tick_do_timer_cpu)
--			tick_do_timer_cpu = TICK_DO_TIMER_NONE;
--		return false;
--	}
-+	WARN_ON_ONCE(cpu_is_offline(cpu));
++	struct tick_device *td = &per_cpu(tick_cpu_device, cpu);
+ 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
++	struct clock_event_device *dev = td->evtdev;
+ 	ktime_t idle_sleeptime, iowait_sleeptime;
+ 	unsigned long idle_calls, idle_sleeps;
  
- 	if (unlikely(!tick_sched_flag_test(ts, TS_FLAG_NOHZ)))
- 		return false;
+-	if (tick_sched_flag_test(ts, TS_FLAG_HIGHRES))
+-		hrtimer_cancel(&ts->sched_timer);
++	/* This must happen before hrtimers are migrated! */
++	tick_sched_timer_cancel(ts);
++
++	/*
++	 * If the clockevents doesn't support CLOCK_EVT_STATE_ONESHOT_STOPPED,
++	 * make sure not to call low-res tick handler.
++	 */
++	if (tick_sched_flag_test(ts, TS_FLAG_NOHZ))
++		dev->event_handler = clockevents_handle_noop;
+ 
+ 	idle_sleeptime = ts->idle_sleeptime;
+ 	iowait_sleeptime = ts->iowait_sleeptime;
+diff --git a/kernel/time/tick-sched.h b/kernel/time/tick-sched.h
+index bbe72a0..58d8d1c 100644
+--- a/kernel/time/tick-sched.h
++++ b/kernel/time/tick-sched.h
+@@ -106,9 +106,9 @@ extern struct tick_sched *tick_get_tick_sched(int cpu);
+ 
+ extern void tick_setup_sched_timer(bool hrtimer);
+ #if defined CONFIG_NO_HZ_COMMON || defined CONFIG_HIGH_RES_TIMERS
+-extern void tick_cancel_sched_timer(int cpu);
++extern void tick_sched_timer_dying(int cpu);
+ #else
+-static inline void tick_cancel_sched_timer(int cpu) { }
++static inline void tick_sched_timer_dying(int cpu) { }
+ #endif
+ 
+ #ifdef CONFIG_GENERIC_CLOCKEVENTS_BROADCAST
 
