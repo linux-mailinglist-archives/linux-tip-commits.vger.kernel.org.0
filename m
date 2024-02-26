@@ -1,234 +1,147 @@
-Return-Path: <linux-tip-commits+bounces-601-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-602-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0588683B0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 23:27:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B656D8683D8
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 23:38:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 373A81C2296B
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 22:27:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E84001C23FFB
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 22:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90140132C24;
-	Mon, 26 Feb 2024 22:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB4E135417;
+	Mon, 26 Feb 2024 22:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2QfzqHKq";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="p18jR+ua"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PBcNA6wg"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98F4135A76;
-	Mon, 26 Feb 2024 22:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6001353E5;
+	Mon, 26 Feb 2024 22:37:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708986285; cv=none; b=TIOXP6KdKcS4e7gy4wrArhywSPLH3e80wHjkSJx0W6i3QlRmGI9eM5q2mKZXiXz040hj8y8yJj2hLVo/SMwiy+2x7ZbGfqmIcZLoFR1XTEcUegA5D8EPYsI4zuoXnY4/8NDLJqeszREN9lAkKjbuuEcDAU3gPmRkcSjkDpgjzS4=
+	t=1708987075; cv=none; b=SNzHRDUQdcxEpVlpKkJD8sW0uuVNKI4Dk64BdKT+4PlLMxkB9vS0Doy0jtpiFDWgWK3DYngmDZJM7uACCZB6Gb+E1QLsL1Viq9M5rfV55jm+Itcq/3DqW4yxMygWgx5BMl6lMtqoqA3RA9cO6HiD7afhF6LCdd4J7TomEWX5V58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708986285; c=relaxed/simple;
-	bh=R0TQ3GEIDkbr8qCquKhdE15Qhnwdxh9Mav1l1xT353M=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=TLEjzeo8mTBA0a0JYZErPiNnF+XU4PijHvklpQNN+zgx+hQRFJFEGGXLFgvej0Km8lRXeZDF+DYh5dKlyvm81/35icxwnsbr3IClP2UuKo/Y6aCrTrGksYxKwCuaePihcxTCBdOQQ7CbBkSzKDH/qBwEKBi8XCQ9+More7qlkSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2QfzqHKq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=p18jR+ua; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 26 Feb 2024 22:24:41 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708986281;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o/G6C9/G4u/CPD+cxAg48KLQaWTYbj1ouXiri7BRgv4=;
-	b=2QfzqHKqYSaXW65aLO8FSPCLdqpWzj2OVwakaXJ2F8t9ky8Bq/u5smXuf0UZrpMThT1VL/
-	FTx8dtKFbFGHkmTBCZVXV4pmWm+TpGnPcZZdylFqV2VfInesj5jhPPcA/NWI1IDU74p2TT
-	pZnLvynlaRyTUmitFHiEaetxNZK03vntveiTeWi3K4PNYWUX5ztYjm86z9fPaYjCK1OYHh
-	2YbqKVbOLqXs1XK9DXTGfe8WqNS76tY4SFqgIXzHFO2cxsXUaEYpPSt/xLPV0ooc/En684
-	ocdIdiKIHTucafhAvjHwSH+n3hfKH3ECQMdRJQ6VXakxuvc32rJsLku73+FuOg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708986281;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o/G6C9/G4u/CPD+cxAg48KLQaWTYbj1ouXiri7BRgv4=;
-	b=p18jR+uadXzAlmubJCbuVk5VEvGHDz0vxZBlrbU/GXsvTR9XBuuhHk/yDBZqnfR+7pk0By
-	d86Q5pQVIh9YSjAQ==
-From: "tip-bot2 for Peng Liu" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] tick/nohz: Remove duplicate between
- tick_nohz_switch_to_nohz() and tick_setup_sched_timer()
-Cc: Peng Liu <liupeng17@lenovo.com>, Frederic Weisbecker <frederic@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240225225508.11587-2-frederic@kernel.org>
-References: <20240225225508.11587-2-frederic@kernel.org>
+	s=arc-20240116; t=1708987075; c=relaxed/simple;
+	bh=0rIYe88dI3N1pVGDAqfPwwaB3U7qPp5hPB5M6me5YNc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bkm39yPkv6nDZCR3FVds+sOrr7Nscp/8nnmwcxHU6AojzSLjNuJW7to3NnteS8sbAyBj9v9Gu0lYYaCBMTh4/VaSXD8jrd0fPkmJPiY2RpkoEZ4urSbN5MLhLjm4/eA2K7tRUryvCWUkzYLo7Wf4ruCTV5yEvB3vq49ATuc2508=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PBcNA6wg; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708987074; x=1740523074;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=0rIYe88dI3N1pVGDAqfPwwaB3U7qPp5hPB5M6me5YNc=;
+  b=PBcNA6wgsHF3iX6HuyKfY0fzldXbnLC7kR5w080vjkNATSPWhfvWkJbE
+   AC/PHt7q/7LNY7Bx3lu0wt/LMooNjYQCTwL/s2TwaewgJlR2tpw5yqPrs
+   9s5KaKmOJadPfDHCd/dxi2ELj0BOYKgkh5LLiwQsQLAa6pazrprAnSOFg
+   fWGzRohvu9Xyam3a9WhuGUvQhKBYHKj+e7d89VA6rBY+MQ+99fCYwYzQU
+   LBQt72d15q1VqjZH7IPe5tAUZsQzs1Y7yMUV3BCL8VXzrEbLjb8I77I3x
+   0EpZjD60bNPwUyPPBYw6UCnlsEPfZFWwX95V8Kiu1+dWc7Lvs9qJL+KVO
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3231820"
+X-IronPort-AV: E=Sophos;i="6.06,186,1705392000"; 
+   d="scan'208";a="3231820"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 14:37:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,186,1705392000"; 
+   d="scan'208";a="11600427"
+Received: from jhaqq-mobl1.amr.corp.intel.com (HELO desk) ([10.209.17.170])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 14:37:51 -0800
+Date: Mon, 26 Feb 2024 14:37:49 -0800
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Alyssa Milburn <alyssa.milburn@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/bugs: Add asm helpers for executing VERW
+Message-ID: <20240226223749.ennx7llri7ffps77@desk>
+References: <170839092792.398.3678407222202963581.tip-bot2@tip-bot2>
+ <6380ba8d-4e99-46e6-8d92-911d10963ba7@suse.com>
+ <20240226221059.mnuurhn6g3irys37@desk>
+ <20558f89-299b-472e-9a96-171403a83bd6@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170898628107.398.13083154575515487608.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20558f89-299b-472e-9a96-171403a83bd6@suse.com>
 
-The following commit has been merged into the timers/core branch of tip:
+On Tue, Feb 27, 2024 at 12:20:03AM +0200, Nikolay Borisov wrote:
+> 
+> 
+> On 27.02.24 г. 0:10 ч., Pawan Gupta wrote:
+> > On Mon, Feb 26, 2024 at 09:17:30AM +0200, Nikolay Borisov wrote:
+> > > > diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+> > > > index 262e655..077083e 100644
+> > > > --- a/arch/x86/include/asm/nospec-branch.h
+> > > > +++ b/arch/x86/include/asm/nospec-branch.h
+> > > > @@ -315,6 +315,17 @@
+> > > >    #endif
+> > > >    .endm
+> > > > +/*
+> > > > + * Macro to execute VERW instruction that mitigate transient data sampling
+> > > > + * attacks such as MDS. On affected systems a microcode update overloaded VERW
+> > > > + * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF.
+> > > > + *
+> > > > + * Note: Only the memory operand variant of VERW clears the CPU buffers.
+> > > > + */
+> > > > +.macro CLEAR_CPU_BUFFERS
+> > > > +	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
+> > > 
+> > > Any particular reason why this uses RIP-relative vs an absolute address
+> > > mode?
+> > 
+> > Early versions of the series had the VERW arg pointing to the macro
+> > itself, that is why relative addressing was used. That got changed in a
+> > later version with all VERW sites pointing to a single memory location.
+> > 
+> > > I know in our private exchange you said there is no significance but
+> > > for example older kernels have a missing relocation support in alternatives.
+> > > This of course can be worked around by slightly changing the logic of the
+> > > macro which means different kernels will have slightly different macros.
+> > 
+> > Do you anticipate a problem with that? If yes, I can send a patch to use
+> > fixed addressing in upstream as well.
+> 
+> I experienced crashes on older kernels before realizing that the relocation
+> wasn't resolved correctly by the alternative framework. Instead i simply
+> changed the macro to jmp 1f, where the next instruction is the verw ( I did
+> send a backport for 5.4) and it works. Recently there's been a push to make
+> as much of the kernel assembly as possible PIC so having a rip-relative
+> addressing helps. Whether that makes any material difference - I cannot say.
 
-Commit-ID:     ffb7e01c4e654d5c8bf2ce2a4830b826fa1f149e
-Gitweb:        https://git.kernel.org/tip/ffb7e01c4e654d5c8bf2ce2a4830b826fa1f149e
-Author:        Peng Liu <liupeng17@lenovo.com>
-AuthorDate:    Sun, 25 Feb 2024 23:54:53 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 26 Feb 2024 11:37:31 +01:00
+Ok, sending the patch.
 
-tick/nohz: Remove duplicate between tick_nohz_switch_to_nohz() and tick_setup_sched_timer()
+> Here's my backport version for reference:
+> 
+> https://lore.kernel.org/stable/20240226122237.198921-3-nik.borisov@suse.com/
 
-The ts->sched_timer initialization work of tick_nohz_switch_to_nohz()
-is almost the same as that of tick_setup_sched_timer(), so adjust the
-latter to get it reused by tick_nohz_switch_to_nohz().
-
-This also makes the low resolution mode sched_timer benefit from the tick
-skew boot option.
-
-Signed-off-by: Peng Liu <liupeng17@lenovo.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240225225508.11587-2-frederic@kernel.org
+Below should also solve the problem with less churn:
 
 ---
- kernel/time/hrtimer.c    |  2 +-
- kernel/time/tick-sched.c | 39 ++++++++++++++++++---------------------
- kernel/time/tick-sched.h |  2 +-
- 3 files changed, 20 insertions(+), 23 deletions(-)
-
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 1fd106a..95f1f35 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -747,7 +747,7 @@ static void hrtimer_switch_to_hres(void)
- 	base->hres_active = 1;
- 	hrtimer_resolution = HIGH_RES_NSEC;
- 
--	tick_setup_sched_timer();
-+	tick_setup_sched_timer(NOHZ_MODE_HIGHRES);
- 	/* "Retrigger" the interrupt to get things going */
- 	retrigger_next_event(NULL);
- }
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 417bb7f..d490165 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1471,9 +1471,6 @@ static inline void tick_nohz_activate(struct tick_sched *ts, int mode)
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 2aa52cab1e46..ab19c7f1167b 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -323,7 +323,7 @@
+  * Note: Only the memory operand variant of VERW clears the CPU buffers.
   */
- static void tick_nohz_switch_to_nohz(void)
- {
--	struct tick_sched *ts = this_cpu_ptr(&tick_cpu_sched);
--	ktime_t next;
--
- 	if (!tick_nohz_enabled)
- 		return;
+ .macro CLEAR_CPU_BUFFERS
+-	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
++	ALTERNATIVE "", __stringify(verw mds_verw_sel), X86_FEATURE_CLEAR_CPU_BUF
+ .endm
  
-@@ -1482,16 +1479,9 @@ static void tick_nohz_switch_to_nohz(void)
- 
- 	/*
- 	 * Recycle the hrtimer in 'ts', so we can share the
--	 * hrtimer_forward_now() function with the highres code.
-+	 * highres code.
- 	 */
--	hrtimer_init(&ts->sched_timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_HARD);
--	/* Get the next period */
--	next = tick_init_jiffy_update();
--
--	hrtimer_set_expires(&ts->sched_timer, next);
--	hrtimer_forward_now(&ts->sched_timer, TICK_NSEC);
--	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
--	tick_nohz_activate(ts, NOHZ_MODE_LOWRES);
-+	tick_setup_sched_timer(NOHZ_MODE_LOWRES);
- }
- 
- static inline void tick_nohz_irq_enter(void)
-@@ -1570,7 +1560,11 @@ static enum hrtimer_restart tick_nohz_highres_handler(struct hrtimer *timer)
- 
- 	return HRTIMER_RESTART;
- }
-+#else
-+#define tick_nohz_highres_handler NULL
-+#endif /* CONFIG_HIGH_RES_TIMERS */
- 
-+#if defined CONFIG_NO_HZ_COMMON || defined CONFIG_HIGH_RES_TIMERS
- static int sched_skew_tick;
- 
- static int __init skew_tick(char *str)
-@@ -1583,15 +1577,17 @@ early_param("skew_tick", skew_tick);
- 
- /**
-  * tick_setup_sched_timer - setup the tick emulation timer
-+ * @mode: tick_nohz_mode to setup for
-  */
--void tick_setup_sched_timer(void)
-+void tick_setup_sched_timer(int mode)
- {
- 	struct tick_sched *ts = this_cpu_ptr(&tick_cpu_sched);
--	ktime_t now = ktime_get();
- 
- 	/* Emulate tick processing via per-CPU hrtimers: */
- 	hrtimer_init(&ts->sched_timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_HARD);
--	ts->sched_timer.function = tick_nohz_highres_handler;
-+
-+	if (IS_ENABLED(CONFIG_HIGH_RES_TIMERS) && mode == NOHZ_MODE_HIGHRES)
-+		ts->sched_timer.function = tick_nohz_highres_handler;
- 
- 	/* Get the next period (per-CPU) */
- 	hrtimer_set_expires(&ts->sched_timer, tick_init_jiffy_update());
-@@ -1604,13 +1600,14 @@ void tick_setup_sched_timer(void)
- 		hrtimer_add_expires_ns(&ts->sched_timer, offset);
- 	}
- 
--	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
--	hrtimer_start_expires(&ts->sched_timer, HRTIMER_MODE_ABS_PINNED_HARD);
--	tick_nohz_activate(ts, NOHZ_MODE_HIGHRES);
-+	hrtimer_forward_now(&ts->sched_timer, TICK_NSEC);
-+	if (IS_ENABLED(CONFIG_HIGH_RES_TIMERS) && mode == NOHZ_MODE_HIGHRES)
-+		hrtimer_start_expires(&ts->sched_timer, HRTIMER_MODE_ABS_PINNED_HARD);
-+	else
-+		tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
-+	tick_nohz_activate(ts, mode);
- }
--#endif /* HIGH_RES_TIMERS */
- 
--#if defined CONFIG_NO_HZ_COMMON || defined CONFIG_HIGH_RES_TIMERS
- void tick_cancel_sched_timer(int cpu)
- {
- 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
-@@ -1632,7 +1629,7 @@ void tick_cancel_sched_timer(int cpu)
- 	ts->idle_calls = idle_calls;
- 	ts->idle_sleeps = idle_sleeps;
- }
--#endif
-+#endif /* CONFIG_NO_HZ_COMMON || CONFIG_HIGH_RES_TIMERS */
- 
- /*
-  * Async notification about clocksource changes
-diff --git a/kernel/time/tick-sched.h b/kernel/time/tick-sched.h
-index 5ed5a9d..35808bb 100644
---- a/kernel/time/tick-sched.h
-+++ b/kernel/time/tick-sched.h
-@@ -102,7 +102,7 @@ struct tick_sched {
- 
- extern struct tick_sched *tick_get_tick_sched(int cpu);
- 
--extern void tick_setup_sched_timer(void);
-+extern void tick_setup_sched_timer(int mode);
- #if defined CONFIG_NO_HZ_COMMON || defined CONFIG_HIGH_RES_TIMERS
- extern void tick_cancel_sched_timer(int cpu);
- #else
+ #else /* __ASSEMBLY__ */
 
