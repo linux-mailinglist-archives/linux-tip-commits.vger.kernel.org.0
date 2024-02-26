@@ -1,134 +1,110 @@
-Return-Path: <linux-tip-commits+bounces-582-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-583-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3307A867FF6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 19:45:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A3086837F
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 23:11:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5D751F28831
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 18:45:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89F9F1C22AB1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 22:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDB612EBE8;
-	Mon, 26 Feb 2024 18:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4461A131E2F;
+	Mon, 26 Feb 2024 22:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NIaQONGi";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="s4JGeO0/"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VEam6rVe"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AC212C522;
-	Mon, 26 Feb 2024 18:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B788F1EA72;
+	Mon, 26 Feb 2024 22:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708973099; cv=none; b=ZUFwMSohNnbf2uqMdDxI0JcKubWCTgDQeruNtS6Pne47J/jkgQfvOmqTFJW9r5fog2rpQSku4uzpiNQcpZCeWyX3uamWklQUL2oV/tFCDaqaep/CVghgoncspbwoBPfimctbHbYIw2PC21nQzoWUZQ9fxR/c4OtBPZ7p6+NsXAE=
+	t=1708985466; cv=none; b=c0fJ/n28epG+nEwlSjxFWj/EdWCTEe3TIKPqs7hBlQu6ObqJD8RShDKElQ/O+R2ijQS9Dbq91hU45hU/zotKpEwl0tnsLFqSQ0dMVap3G0UgR9MRuct9/15O2fB03xCwYowptJFyG868B93E61ToQp0cvBZcZMT5hSwrtwAlUFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708973099; c=relaxed/simple;
-	bh=GS9gp4VWJdv3Hua02gaR8hLCNcDTZXmN4IufTEOI7P8=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=qGJf/I8eqF7bRkbJBXplx/MLUw26VCExVoRmG/EAte/8tizvlezT8DE6546VPXeQb93qk3hOtLXhVsr8rpxbS5gsfOkHOtbecGT1fBFXa+gZ8/sW1PuIR98ulHxqd00pA2gLfpfeW1oxfnB/k0ZX3+CiJYh+nT5EU5baFOW+1rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NIaQONGi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=s4JGeO0/; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 26 Feb 2024 18:44:55 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708973095;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=enCiCbZJXdvA+exzx6jm5HR+LaOpH1BSeM0RAR+839A=;
-	b=NIaQONGiZrV6tvOmXJAcajmiD2Z8bk+YdO5qEII9+vm0+SI9yiDQbB/FltbsHEyw281RaL
-	0hw6HNdJtI60EAkJ02yYJOhuVBdTf1KkV6CiKr2zRynDFlijK9EMR9vx5mDAH839H9aaBs
-	HHU59FHq0FenOWZbwFS1XPMWIB58yPytfivbkIF2NBhwo5P1aQNmNagP0DaiwenYanepTi
-	iDClAVFRdHXYFPuOBT4l3uFQ4oEyQZKwgVuAvNv5JX43NHwmKoNi4HImTj5L17SYoezPSf
-	Ctlr99nPeZz21cBbzKNz27OAApxEDhGOl/MCCWdnHmXzHIW81fb5tLdGnuPJww==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708973095;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=enCiCbZJXdvA+exzx6jm5HR+LaOpH1BSeM0RAR+839A=;
-	b=s4JGeO0/CC6oNTJCYW5QKUjHgcyV4UR/caPpfsWxgLaM4C6ENE/MOaFnhbeWtBi0D6asFf
-	bjNhsAMyQ3Ej3XDQ==
-From: "tip-bot2 for Paolo Bonzini" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Allow reducing x86_phys_bits during
- early_identify_cpu()
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1708985466; c=relaxed/simple;
+	bh=aLP1wrwgND98W3fl2x4ZMt1cA9P2D4b6s5545BhBdRA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gNPrDHLktTqjVN/SiYOeu/Rh3DWE6mfsz6u92e5USIS6aP3F7X1ag8135mAqxfUtCPYTi9o6uQ88t5DOQpOD39/qi7nx/I93fc7fwXXAqXC1vLKQ1ZFvK8be4gfV8oPorQ5O5dlUgjca3BDWNCxk9iDp3nZn26VVv2dj008ycQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VEam6rVe; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708985462; x=1740521462;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aLP1wrwgND98W3fl2x4ZMt1cA9P2D4b6s5545BhBdRA=;
+  b=VEam6rVeShjbXNBpnszmCLS6L6xle8F8d5BZfdr52JMlVNRATnb+Z2th
+   9nUB5vnyZ2HtpWbN2cnPcE52ypjH/fZVyfNKNCwbWFqtVk8ISGQ7V8Mrp
+   GGP6huu9xDe1aDo+nkt9x2ukQ82lZzQCyWZOjF+y4/XP1D+9IWwudoCkR
+   9rD9Vt7tLJq9H3w5N/20p8Qa663Ac8DCOeRVoljk3TOkePbkjDKDHyf9W
+   ah3Jta+tCkNHyDWFmMSDMQIDKltraul9gN7lxvi74i8TKHrPaLCcDvMhu
+   iyixFxJjfCJHTunmdNIs34K2XnnEZmHlTrbAGpLYEupxrQq4cLSZ5ASKU
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="7119032"
+X-IronPort-AV: E=Sophos;i="6.06,186,1705392000"; 
+   d="scan'208";a="7119032"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 14:11:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,186,1705392000"; 
+   d="scan'208";a="11596128"
+Received: from jhaqq-mobl1.amr.corp.intel.com (HELO desk) ([10.209.17.170])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 14:11:01 -0800
+Date: Mon, 26 Feb 2024 14:10:59 -0800
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Alyssa Milburn <alyssa.milburn@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/bugs: Add asm helpers for executing VERW
+Message-ID: <20240226221059.mnuurhn6g3irys37@desk>
+References: <170839092792.398.3678407222202963581.tip-bot2@tip-bot2>
+ <6380ba8d-4e99-46e6-8d92-911d10963ba7@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170897309511.398.3611355957607833957.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6380ba8d-4e99-46e6-8d92-911d10963ba7@suse.com>
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Mon, Feb 26, 2024 at 09:17:30AM +0200, Nikolay Borisov wrote:
+> > diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+> > index 262e655..077083e 100644
+> > --- a/arch/x86/include/asm/nospec-branch.h
+> > +++ b/arch/x86/include/asm/nospec-branch.h
+> > @@ -315,6 +315,17 @@
+> >   #endif
+> >   .endm
+> > +/*
+> > + * Macro to execute VERW instruction that mitigate transient data sampling
+> > + * attacks such as MDS. On affected systems a microcode update overloaded VERW
+> > + * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF.
+> > + *
+> > + * Note: Only the memory operand variant of VERW clears the CPU buffers.
+> > + */
+> > +.macro CLEAR_CPU_BUFFERS
+> > +	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
+> 
+> Any particular reason why this uses RIP-relative vs an absolute address
+> mode?
 
-Commit-ID:     9a458198eba98b7207669a166e64d04b04cb651b
-Gitweb:        https://git.kernel.org/tip/9a458198eba98b7207669a166e64d04b04cb651b
-Author:        Paolo Bonzini <pbonzini@redhat.com>
-AuthorDate:    Thu, 01 Feb 2024 00:09:01 +01:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 26 Feb 2024 08:16:15 -08:00
+Early versions of the series had the VERW arg pointing to the macro
+itself, that is why relative addressing was used. That got changed in a
+later version with all VERW sites pointing to a single memory location.
 
-x86/cpu: Allow reducing x86_phys_bits during early_identify_cpu()
+> I know in our private exchange you said there is no significance but
+> for example older kernels have a missing relocation support in alternatives.
+> This of course can be worked around by slightly changing the logic of the
+> macro which means different kernels will have slightly different macros.
 
-In commit fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct
-value straight away, instead of a two-phase approach"), the initialization
-of c->x86_phys_bits was moved after this_cpu->c_early_init(c).  This is
-incorrect because early_init_amd() expected to be able to reduce the
-value according to the contents of CPUID leaf 0x8000001f.
-
-Fortunately, the bug was negated by init_amd()'s call to early_init_amd(),
-which does reduce x86_phys_bits in the end.  However, this is very
-late in the boot process and, most notably, the wrong value is used for
-x86_phys_bits when setting up MTRRs.
-
-To fix this, call get_cpu_address_sizes() as soon as X86_FEATURE_CPUID is
-set/cleared, and c->extended_cpuid_level is retrieved.
-
-Fixes: fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct value straight away, instead of a two-phase approach")
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240131230902.1867092-2-pbonzini%40redhat.com
----
- arch/x86/kernel/cpu/common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 0b97bcd..fbc4e60 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1589,6 +1589,7 @@ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
- 		get_cpu_vendor(c);
- 		get_cpu_cap(c);
- 		setup_force_cpu_cap(X86_FEATURE_CPUID);
-+		get_cpu_address_sizes(c);
- 		cpu_parse_early_param();
- 
- 		if (this_cpu->c_early_init)
-@@ -1601,10 +1602,9 @@ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
- 			this_cpu->c_bsp_init(c);
- 	} else {
- 		setup_clear_cpu_cap(X86_FEATURE_CPUID);
-+		get_cpu_address_sizes(c);
- 	}
- 
--	get_cpu_address_sizes(c);
--
- 	setup_force_cpu_cap(X86_FEATURE_ALWAYS);
- 
- 	cpu_set_bug_bits(c);
+Do you anticipate a problem with that? If yes, I can send a patch to use
+fixed addressing in upstream as well.
 
