@@ -1,147 +1,139 @@
-Return-Path: <linux-tip-commits+bounces-602-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-603-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B656D8683D8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 23:38:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4948683FE
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 23:50:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E84001C23FFB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 22:38:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C0D51C21EFE
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 22:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB4E135417;
-	Mon, 26 Feb 2024 22:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4778C13540E;
+	Mon, 26 Feb 2024 22:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PBcNA6wg"
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FMmsHU7b";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1wr0HsCM"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6001353E5;
-	Mon, 26 Feb 2024 22:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B824E1E878;
+	Mon, 26 Feb 2024 22:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708987075; cv=none; b=SNzHRDUQdcxEpVlpKkJD8sW0uuVNKI4Dk64BdKT+4PlLMxkB9vS0Doy0jtpiFDWgWK3DYngmDZJM7uACCZB6Gb+E1QLsL1Viq9M5rfV55jm+Itcq/3DqW4yxMygWgx5BMl6lMtqoqA3RA9cO6HiD7afhF6LCdd4J7TomEWX5V58=
+	t=1708987817; cv=none; b=kvDh684bTl9eJsEq1bEmCVmOpKh6GUEbS7LDnJ2oFrgwzXtxZN/lqJe1wrkq8vUs6WevWr7RfhblZ/M2wH2GoHFdYe6rDte1LH53fcS4lQIW7xJfdMftjKhOVxYOJB6mjYOi9xgmjXEGwehClEROEy8n9BNo+IB22SafXi326xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708987075; c=relaxed/simple;
-	bh=0rIYe88dI3N1pVGDAqfPwwaB3U7qPp5hPB5M6me5YNc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bkm39yPkv6nDZCR3FVds+sOrr7Nscp/8nnmwcxHU6AojzSLjNuJW7to3NnteS8sbAyBj9v9Gu0lYYaCBMTh4/VaSXD8jrd0fPkmJPiY2RpkoEZ4urSbN5MLhLjm4/eA2K7tRUryvCWUkzYLo7Wf4ruCTV5yEvB3vq49ATuc2508=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PBcNA6wg; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708987074; x=1740523074;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=0rIYe88dI3N1pVGDAqfPwwaB3U7qPp5hPB5M6me5YNc=;
-  b=PBcNA6wgsHF3iX6HuyKfY0fzldXbnLC7kR5w080vjkNATSPWhfvWkJbE
-   AC/PHt7q/7LNY7Bx3lu0wt/LMooNjYQCTwL/s2TwaewgJlR2tpw5yqPrs
-   9s5KaKmOJadPfDHCd/dxi2ELj0BOYKgkh5LLiwQsQLAa6pazrprAnSOFg
-   fWGzRohvu9Xyam3a9WhuGUvQhKBYHKj+e7d89VA6rBY+MQ+99fCYwYzQU
-   LBQt72d15q1VqjZH7IPe5tAUZsQzs1Y7yMUV3BCL8VXzrEbLjb8I77I3x
-   0EpZjD60bNPwUyPPBYw6UCnlsEPfZFWwX95V8Kiu1+dWc7Lvs9qJL+KVO
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3231820"
-X-IronPort-AV: E=Sophos;i="6.06,186,1705392000"; 
-   d="scan'208";a="3231820"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 14:37:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,186,1705392000"; 
-   d="scan'208";a="11600427"
-Received: from jhaqq-mobl1.amr.corp.intel.com (HELO desk) ([10.209.17.170])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 14:37:51 -0800
-Date: Mon, 26 Feb 2024 14:37:49 -0800
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Alyssa Milburn <alyssa.milburn@intel.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
-Subject: Re: [tip: x86/urgent] x86/bugs: Add asm helpers for executing VERW
-Message-ID: <20240226223749.ennx7llri7ffps77@desk>
-References: <170839092792.398.3678407222202963581.tip-bot2@tip-bot2>
- <6380ba8d-4e99-46e6-8d92-911d10963ba7@suse.com>
- <20240226221059.mnuurhn6g3irys37@desk>
- <20558f89-299b-472e-9a96-171403a83bd6@suse.com>
+	s=arc-20240116; t=1708987817; c=relaxed/simple;
+	bh=o7Wcn1KDPwCffzlOKpbzPY01A2cadSqrF1Y1I3x4atI=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=KwOx/PqaaUz7PbiKn9wWqj343KGzTBwA/WOfPeyG3bUXTW9uyaOR2d5eP0iFynTVkMgSh6LbOkt1RTmTLN6ErxQ7vfuPIZ83aCmcBoqTggS0SjuXfPPdlaExVrQgcdt4TD+SqTCJs5H7Rx5cCaM8dz4MB0AQuMipOcd6xan5cBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FMmsHU7b; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1wr0HsCM; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 26 Feb 2024 22:50:12 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708987814;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/h88iFjljQgpYh/U4AubUDEoroAqEk0EzYMiCox+oTM=;
+	b=FMmsHU7b2w0cZ4Suf+UwrNN4XcWUMxmIuDyc/FW0SLky6Hq87YpApK36cwhHRTLrziWEV0
+	y9GDly0itTTVGUdLRJ0Lo98ycFISfsLDmDDVVUYXdoTV3UIukSgFtTy1SwhnDjqx2rMz0I
+	xrlC1++NgkaG+UwqUe2C9EthkbSJY0tr/Vx8fOSBq8s/jApp1OPfWcYpGYosgfNgiPmpp+
+	VY33DkrHKnN7ebSgoR1kT5T9cMYDbegkmcob3DDwMjGSD5hS/stIBIJT4NZUuHgoumXM8x
+	2fzH2ALK/TtmnRbZhho5e+JY4NzJSJLz6PbMLpaNXVozYSjZyfrwn6mtG2ntkA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708987814;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/h88iFjljQgpYh/U4AubUDEoroAqEk0EzYMiCox+oTM=;
+	b=1wr0HsCMJHsbM13Jqtnnzmz75H+tD7gmBC3SztS5navJlBxj08OGmqOeOFn6IlCygKcdRO
+	oIsi4FgXZkHFDzCg==
+From: "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/misc] x86/nmi: Fix the inverse "in NMI handler" check
+Cc: Breno Leitao <leitao@debian.org>, Thomas Gleixner <tglx@linutronix.de>,
+ "Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240207165237.1048837-1-leitao@debian.org>
+References: <20240207165237.1048837-1-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20558f89-299b-472e-9a96-171403a83bd6@suse.com>
+Message-ID: <170898781297.398.379688708307726561.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 27, 2024 at 12:20:03AM +0200, Nikolay Borisov wrote:
-> 
-> 
-> On 27.02.24 г. 0:10 ч., Pawan Gupta wrote:
-> > On Mon, Feb 26, 2024 at 09:17:30AM +0200, Nikolay Borisov wrote:
-> > > > diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-> > > > index 262e655..077083e 100644
-> > > > --- a/arch/x86/include/asm/nospec-branch.h
-> > > > +++ b/arch/x86/include/asm/nospec-branch.h
-> > > > @@ -315,6 +315,17 @@
-> > > >    #endif
-> > > >    .endm
-> > > > +/*
-> > > > + * Macro to execute VERW instruction that mitigate transient data sampling
-> > > > + * attacks such as MDS. On affected systems a microcode update overloaded VERW
-> > > > + * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF.
-> > > > + *
-> > > > + * Note: Only the memory operand variant of VERW clears the CPU buffers.
-> > > > + */
-> > > > +.macro CLEAR_CPU_BUFFERS
-> > > > +	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-> > > 
-> > > Any particular reason why this uses RIP-relative vs an absolute address
-> > > mode?
-> > 
-> > Early versions of the series had the VERW arg pointing to the macro
-> > itself, that is why relative addressing was used. That got changed in a
-> > later version with all VERW sites pointing to a single memory location.
-> > 
-> > > I know in our private exchange you said there is no significance but
-> > > for example older kernels have a missing relocation support in alternatives.
-> > > This of course can be worked around by slightly changing the logic of the
-> > > macro which means different kernels will have slightly different macros.
-> > 
-> > Do you anticipate a problem with that? If yes, I can send a patch to use
-> > fixed addressing in upstream as well.
-> 
-> I experienced crashes on older kernels before realizing that the relocation
-> wasn't resolved correctly by the alternative framework. Instead i simply
-> changed the macro to jmp 1f, where the next instruction is the verw ( I did
-> send a backport for 5.4) and it works. Recently there's been a push to make
-> as much of the kernel assembly as possible PIC so having a rip-relative
-> addressing helps. Whether that makes any material difference - I cannot say.
+The following commit has been merged into the x86/misc branch of tip:
 
-Ok, sending the patch.
+Commit-ID:     d54e56f31a34fa38fcb5e91df609f9633419a79a
+Gitweb:        https://git.kernel.org/tip/d54e56f31a34fa38fcb5e91df609f9633419a79a
+Author:        Breno Leitao <leitao@debian.org>
+AuthorDate:    Wed, 07 Feb 2024 08:52:35 -08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 26 Feb 2024 23:41:30 +01:00
 
-> Here's my backport version for reference:
-> 
-> https://lore.kernel.org/stable/20240226122237.198921-3-nik.borisov@suse.com/
+x86/nmi: Fix the inverse "in NMI handler" check
 
-Below should also solve the problem with less churn:
+Commit 344da544f177 ("x86/nmi: Print reasons why backtrace NMIs are
+ignored") creates a super nice framework to diagnose NMIs.
+
+Every time nmi_exc() is called, it increments a per_cpu counter
+(nsp->idt_nmi_seq). At its exit, it also increments the same counter.  By
+reading this counter it can be seen how many times that function was called
+(dividing by 2), and, if the function is still being executed, by checking
+the idt_nmi_seq's least significant bit.
+
+On the check side (nmi_backtrace_stall_check()), that variable is queried
+to check if the NMI is still being executed, but, there is a mistake in the
+bitwise operation. That code wants to check if the least significant bit of
+the idt_nmi_seq is set or not, but does the opposite, and checks for all
+the other bits, which will always be true after the first exc_nmi()
+executed successfully.
+
+This appends the misleading string to the dump "(CPU currently in NMI
+handler function)"
+
+Fix it by checking the least significant bit, and if it is set, append the
+string.
+
+Fixes: 344da544f177 ("x86/nmi: Print reasons why backtrace NMIs are ignored")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240207165237.1048837-1-leitao@debian.org
 
 ---
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 2aa52cab1e46..ab19c7f1167b 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -323,7 +323,7 @@
-  * Note: Only the memory operand variant of VERW clears the CPU buffers.
-  */
- .macro CLEAR_CPU_BUFFERS
--	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-+	ALTERNATIVE "", __stringify(verw mds_verw_sel), X86_FEATURE_CLEAR_CPU_BUF
- .endm
- 
- #else /* __ASSEMBLY__ */
+ arch/x86/kernel/nmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index d238679..c95dc1b 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -639,7 +639,7 @@ void nmi_backtrace_stall_check(const struct cpumask *btp)
+ 			msgp = nmi_check_stall_msg[idx];
+ 			if (nsp->idt_ignored_snap != READ_ONCE(nsp->idt_ignored) && (idx & 0x1))
+ 				modp = ", but OK because ignore_nmis was set";
+-			if (nmi_seq & ~0x1)
++			if (nmi_seq & 0x1)
+ 				msghp = " (CPU currently in NMI handler function)";
+ 			else if (nsp->idt_nmi_seq_snap + 1 == nmi_seq)
+ 				msghp = " (CPU exited one NMI handler function)";
 
