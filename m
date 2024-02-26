@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-592-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-594-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A9586839D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 23:25:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E118683A1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 23:25:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20E28288AA0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 22:25:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A4EF1C236B6
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 22:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5943213398C;
-	Mon, 26 Feb 2024 22:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30DB13474C;
+	Mon, 26 Feb 2024 22:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XM7puit8";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3Deb2fBd"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zHcapkex";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KsneVIhc"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27D0133417;
-	Mon, 26 Feb 2024 22:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9BC13398F;
+	Mon, 26 Feb 2024 22:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708986277; cv=none; b=llW1DY98+SE/6jCax0MyyyNKtzzR5mWgJgiwF0d3nL5dtX+vOQF/nEb3nvZf/6kzGx9o7iRnJ4G5Z+MfPZ1H1i0s5jkXPuG9U8QYEDv2C5NJ8PaJnGLCDLj2ALbq1tx7wKlnZjjFisvo8cByv4pFjlioeJvNG1ce4TqIqc118UA=
+	t=1708986278; cv=none; b=oVD5oc57TrA8vqN1nxYtFlKx49dYnTm0U565leSibneGjD5gsQjS27pRfYCEulxIMZucVKBsrL2CrgIhxN4IpGkx1FKrfIlzZ0ipxsWkMOATsiVPj5ogVEBtzmD3DGGiBR1kZMfXQlM+5FbCcuWMGKRGLl83J1UtFGch1HIJ06k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708986277; c=relaxed/simple;
-	bh=0DolrdCThru8iBJGFDW09pdN3p4sNRZts6fqmyfWjt0=;
+	s=arc-20240116; t=1708986278; c=relaxed/simple;
+	bh=g/P8P0X+m6WFPSRX7M3TBbD2a36axlBRjg9JkTO/dzg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=DPNbQ1aI8wrqAd5+5NE2IRuhwIIHiiCxFpTkq0U84TFvqBPtF5xv7inrkwLWRxgyObDS1HnfQzUFv1RUcsvwjvw8cnxK3WY6cEt1ksJ7ll5l4KI33H0UxEOWih3dFQvO2wQoXQkbe9lufe6iPhPFB4UFrklImmccG4I5jfGatQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XM7puit8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3Deb2fBd; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=LbPz4EDMbFgYJFJKCv+zhMGYjxGC7uHE2QOovFXGH7qUlTpC4oCJX6iuO8NfriF0uFuLI+0E4fQoeOAdf+s1nbgxu5FSH0WHzBV7SWoEC1yIMMkS38aN4yL4JbBJJl+C9ZXeFi1GxCaZvBL7YriTorh1Yxn9E1FeceytpJWttmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zHcapkex; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KsneVIhc; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 26 Feb 2024 22:24:33 -0000
+Date: Mon, 26 Feb 2024 22:24:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708986273;
+	s=2020; t=1708986275;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=osppYSeV2iCM6IzfY8UpKz76QA26duWZkibTc/Re4NE=;
-	b=XM7puit8Cy/IfBtAUlsQirXA9H8MYrohLdUCUPc2TJfNJPnNVXYsuEN8TfpjWKTACwKEpY
-	AefEnWCa9VI22y7tFMBNBmKrOEthLjMlF9wOou+guAy2ytgEsFRcNmYo5tgmiFKzB7jZ4f
-	jqsKn5MFw5oS1fB2acpicbcjZFCefZg8Jb9YLlIJwvJJp8celDGXQm6Gim6g4oITyD8bE9
-	GTT2AJ4Ex/HJGkoSzkGgqftRw3ogJZDERo2t/ZKGCLlkZGxFxSGDvbHlg0wEm0NeN6E/QI
-	gEJ6GV8kfEGZXJdRF3VnzUq1a2kXwe3X4Miq6HZYr30Osp8HYsGngWMjrrwzXw==
+	bh=ji6WYWcZaLndFA++YglzMqPjmvUsGA2azQ2LS4flAvo=;
+	b=zHcapkexf+mzMPspkGzPvALaddWY0ItCnKrAK93ZvKihFsjqGxGjzo5ph+pT7xAdhKo4E3
+	cPKctWuVQhljsgNEyBgMWqXPC7+idZ45/aKc+4u0d6D9Nrr3RY7gmIYBUKRBGKY3Ik55hN
+	AQxYmc0XpomzZzRwDXPF1/+EqUJ3yTnBCKSEfLsagCLBG8LYM7sIJpVhN5BqV3RyOXemZr
+	eVgddStFbV4muYp6FVTXNdWKAOZss/K1czJCf9eGA7Y0wdFHanXAcgvKb4wa+5zJq3WEae
+	DFV65VngKfJIDTt+oAUhp8lF4FthyywxsZUzl/81VVKOxAxEaAi9IWFVDer9pg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708986273;
+	s=2020e; t=1708986275;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=osppYSeV2iCM6IzfY8UpKz76QA26duWZkibTc/Re4NE=;
-	b=3Deb2fBdY1PlZOH6dyNKjkS2dDTsSd00HPxuE6khB1F6XBCgoHiaapu/EepmJ2vLWEUHPr
-	UKMVNsP3ZF6rQ4AA==
+	bh=ji6WYWcZaLndFA++YglzMqPjmvUsGA2azQ2LS4flAvo=;
+	b=KsneVIhcJLYQ033tPYd0v8y5IftbDhazeB9I3upX3PBbPIps1ZOKNL+scRkMjA69ADbFDj
+	UjRtI8CKqLeb+4BQ==
 From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] tick: Assume the tick can't be stopped in
- NOHZ_MODE_INACTIVE mode
+Subject:
+ [tip: timers/core] tick: Move tick cancellation up to CPUHP_AP_TICK_DYING
 Cc: Frederic Weisbecker <frederic@kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240225225508.11587-11-frederic@kernel.org>
-References: <20240225225508.11587-11-frederic@kernel.org>
+In-Reply-To: <20240225225508.11587-9-frederic@kernel.org>
+References: <20240225225508.11587-9-frederic@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170898627305.398.18387562439235037420.tip-bot2@tip-bot2>
+Message-ID: <170898627487.398.4565777561745395590.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,47 +82,57 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     d9b1865c86aec7c515db5718e4820106c2c12db3
-Gitweb:        https://git.kernel.org/tip/d9b1865c86aec7c515db5718e4820106c2c12db3
+Commit-ID:     f04e51220ad5cf35540f67f3ca15c8617c1f0bef
+Gitweb:        https://git.kernel.org/tip/f04e51220ad5cf35540f67f3ca15c8617c1f0bef
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Sun, 25 Feb 2024 23:55:02 +01:00
+AuthorDate:    Sun, 25 Feb 2024 23:55:00 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 26 Feb 2024 11:37:32 +01:00
+CommitterDate: Mon, 26 Feb 2024 11:37:31 +01:00
 
-tick: Assume the tick can't be stopped in NOHZ_MODE_INACTIVE mode
+tick: Move tick cancellation up to CPUHP_AP_TICK_DYING
 
-The full-nohz update function checks if the nohz mode is active before
-proceeding. It considers one exception though: if the tick is already
-stopped even though the nohz mode is inactive, it still moves on in
-order to update/restart the tick if needed.
+The tick hrtimer is cancelled right before hrtimers are migrated. This
+is done from the hrtimer subsystem even though it shouldn't know about
+its actual users.
 
-However in order for the tick to be stopped, the nohz_mode has to be
-either NOHZ_MODE_LOWRES or NOHZ_MODE_HIGHRES. Therefore it doesn't make
-sense to test if the tick is stopped before verifying NOHZ_MODE_INACTIVE
-mode.
-
-Remove the needless related condition.
+Move instead the tick hrtimer cancellation to the relevant CPU hotplug
+state that aims at centralizing high level tick shutdown operations so
+that the related flow is easy to follow.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240225225508.11587-11-frederic@kernel.org
+Link: https://lore.kernel.org/r/20240225225508.11587-9-frederic@kernel.org
 
 ---
- kernel/time/tick-sched.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/hrtimer.c     | 2 --
+ kernel/time/tick-common.c | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index b17895d..b79f540 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1086,7 +1086,7 @@ static void tick_nohz_full_update_tick(struct tick_sched *ts)
- 	if (!tick_nohz_full_cpu(smp_processor_id()))
- 		return;
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 95f1f35..3e95474 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -2229,8 +2229,6 @@ int hrtimers_cpu_dying(unsigned int dying_cpu)
+ 	int i, ncpu = cpumask_any_and(cpu_active_mask, housekeeping_cpumask(HK_TYPE_TIMER));
+ 	struct hrtimer_cpu_base *old_base, *new_base;
  
--	if (!ts->tick_stopped && ts->nohz_mode == NOHZ_MODE_INACTIVE)
-+	if (ts->nohz_mode == NOHZ_MODE_INACTIVE)
- 		return;
+-	tick_cancel_sched_timer(dying_cpu);
+-
+ 	old_base = this_cpu_ptr(&hrtimer_bases);
+ 	new_base = &per_cpu(hrtimer_bases, ncpu);
  
- 	__tick_nohz_full_update_tick(ts, ktime_get());
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index a89ef45..b4af8c7 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -410,6 +410,8 @@ int tick_cpu_dying(unsigned int dying_cpu)
+ 	if (tick_do_timer_cpu == dying_cpu)
+ 		tick_do_timer_cpu = cpumask_first(cpu_online_mask);
+ 
++	tick_cancel_sched_timer(dying_cpu);
++
+ 	return 0;
+ }
+ 
 
