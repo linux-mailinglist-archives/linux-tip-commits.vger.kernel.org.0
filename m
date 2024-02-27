@@ -1,145 +1,155 @@
-Return-Path: <linux-tip-commits+bounces-610-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-611-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD510868C0A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Feb 2024 10:19:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1DE869D5D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Feb 2024 18:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD6471C20A1B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Feb 2024 09:19:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 891731C21365
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Feb 2024 17:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4055134CD5;
-	Tue, 27 Feb 2024 09:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762524C63D;
+	Tue, 27 Feb 2024 17:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HymjBdRT"
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iksg/yK+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9acEZk+u"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D440015D0;
-	Tue, 27 Feb 2024 09:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4612836D;
+	Tue, 27 Feb 2024 17:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709025553; cv=none; b=o44W7lp/LmM7FvJXCS94jUGyKCohMHeHMNvSIE+jRbpJqYvfkBN08rv6j7AmKfVmuCxpXJ3axKTcN6hYzekkYgLS/d1d3lvmB8/Lhnj1k+0dZOrvm/ILjPK2rudBKSHe/Uqe7W+dbgItj7aOni5mz9lxf0UsWIKFrZ+gvTZCZnI=
+	t=1709054510; cv=none; b=UAbRbeYqhgMqrTIcKaLKa/+yTvuyAZhwqBognxOWtz3qkbuKQcAVBmWvLeFTJLXNJT41I9Qvoc3+uxlLPETrZSSgGb5EgnUGOQD2jHC1VcXi7RCCrFjgHKtCiWpU3rb+t7riNVnR50hnoQI6fRxoN1TLH2npiWRmxxz3lj4g8Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709025553; c=relaxed/simple;
-	bh=2rvKWBsOe5u09Fm07C6Vhkn/eWWGe34DDiMGSkmn9Vg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VkqXJEMXDXxpAAkz1uCzwFYyP1Y3jLPjvP0v4rJRnjo6xBda17SSq5Q0mu7mH+UuK+kPCAPrvswebUT2WIkm38ew2TAx2Ad4p/LnYSh1xQQMGRj7D1BZDoEtqCfPDtEdNqzhWmgQt+cQX7IujWJgGONodLn//dnywKWK2plgZVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HymjBdRT; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-412ae376419so2028265e9.3;
-        Tue, 27 Feb 2024 01:19:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709025550; x=1709630350; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4OJtlxBTGwU2hkLw+f6HomonbgUEkZ6XExKyA+CTZ+E=;
-        b=HymjBdRT4p/Q+XTvR4eH6i/WJ1eFgCzXTuPUoYH0jibxhRNjblhSP8MTTf3eJq/m7W
-         Mt2LK1ZdkwElaVsMlbwvTHUd0ZC0o8jIVgtybMn2hhnRCQjfyYqBtMlZr7Xwq9vuSNti
-         YfhlNmWWxnhX7uXGAqyG84ga7euBgjw+DGckFFkXBE3zZ9P2G0oz0JHPT8/NsYH2PcMn
-         UpcWXn55PR3fAv/Hfz+nCUPipjuZZ3ZPaJoVFEYwbqut/tqs3uG475iN05Ji3kidhcSS
-         jV6B3WVaQ/xc4XmzbVetQ4ejgQsZV88FHOlu6syz11H222jpGKRUty4YnuaP6Pfez4Wp
-         xthA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709025550; x=1709630350;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4OJtlxBTGwU2hkLw+f6HomonbgUEkZ6XExKyA+CTZ+E=;
-        b=BHj7JFB8LG+UaDqwnfPlYGZbDF3R8B1jzmr3kDFWw2jS7ADqsCx+M0Hn/e5XaLU8Nl
-         xggs3FLwhAegTZJ0qSwxwuwH+A53rljUXsQ38nZe+kKbXJDe7xubDzXQwBg/IT1k/COz
-         T1wbRnVTGoNJUqd19SjqZ+eXki6+2MZDZyhM2VqjMgaNAgpNGOlsmfjmmgivAbWXj2Xe
-         +GAwwV+5I7rU5QQb/J97dWTmckxh8rckXpngP80Nul/SU0Z2LQ3bjmRwQOmQn+IKKv0T
-         m3fJ3Dzdeyg8AelcXiG4gVUpHR7jdrdLfK9gi8C4KsGnK25qBiJtP/HELSsCCXMeiaAg
-         GXjg==
-X-Forwarded-Encrypted: i=1; AJvYcCWeJVvyl7JrM1QXQM7SBenM/ge0gUDPh/GNaIRdUdObZoOl0ggVLgnOHJO94bJoEw0FfKJLcMJC6zAMkobo5Zm3izQqPvVBuGyKfStBkUfFdP0=
-X-Gm-Message-State: AOJu0YwXbvDrRdOJQFHQG2H94+SSmt57r26mcNsyHBehe7watc/9Boux
-	iTZmeVLDVIbYpNitXzOnWC6GrDGfA2QnPuhUaHAip29Pd0ph6EP3
-X-Google-Smtp-Source: AGHT+IHo04C8KEdcciAWhLv4DtImgXgPjfgRBYtchRH2qs/BWZhaTvu8jXxY7kHGbTjic1XqsbVm+g==
-X-Received: by 2002:a05:600c:3acf:b0:411:c329:6515 with SMTP id d15-20020a05600c3acf00b00411c3296515mr6086729wms.24.1709025549984;
-        Tue, 27 Feb 2024 01:19:09 -0800 (PST)
-Received: from gmail.com (1F2EF054.nat.pool.telekom.hu. [31.46.240.84])
-        by smtp.gmail.com with ESMTPSA id a20-20020a05600c225400b00410df4bf22esm14502533wmm.38.2024.02.27.01.19.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Feb 2024 01:19:09 -0800 (PST)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date: Tue, 27 Feb 2024 10:19:07 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org
-Subject: Re: [tip: x86/apic] smp: Provide 'setup_max_cpus' definition on UP
- too
-Message-ID: <Zd2pCxSm0FKJ8DZn@gmail.com>
-References: <170894808668.398.2149303099223176501.tip-bot2@tip-bot2>
- <20240226150234.GCZdyoCtNj8lFwViAW@fat_crate.local>
+	s=arc-20240116; t=1709054510; c=relaxed/simple;
+	bh=A1cMB+TPPPLwcjr1NhHzuL5MkmL/S48pr898cP86taM=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=iQs/mWkcEps5mjBqjbOcKYJ/sFGM0EtQsiP9olwH5yfEJnkPAvVU5dtkSWGQVNGra6AD3BJa9dGZZ3Kyyi5iIRk3xxyh2IQd4gC7FnQAJe64OlMzKlRq3sfzERyip9odvPKgsbpkfDUROrB/bwAy/dTVNJbrOlrFPPcrrC7rk7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iksg/yK+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9acEZk+u; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 27 Feb 2024 17:21:46 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1709054507;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vFoal968ggd6tjH8ED7KKl31UD4EYrF7TaI8Zw+iGIM=;
+	b=iksg/yK+FPKFBHiJwwc+jvOOeTGj/CNpEcIowg/BjifeaDA1xhEvk5TNHXbcVhz079tN8I
+	MEUe7hhIENgGlykv+sAoNKJTXTcPu9Iqzka19GCZgQ+a1BS2dfvkTGKB3bhLqjGloL1G0N
+	fskj+OjxSeWQLIeZTtfio5Nhz9gH4xP8Kejc9+r42T7q1i+vIzKJ6332OqsKW64/9niLsF
+	Zieo2ZdFl6er8AYt70/ywD/NCxzSYBK0zKb6RmEpLpHBa8o05UqkalUEFjWSwGI1rRmatZ
+	pp1b4OzWDlhVY47SbAOKQX+161Wy1UIss3MyzfTKK7Cl+hBQiifEbaxZUNWZ+Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1709054507;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vFoal968ggd6tjH8ED7KKl31UD4EYrF7TaI8Zw+iGIM=;
+	b=9acEZk+uIwwG/YMTEQoVutyvklY5TzYUbU0J226I99pSphlBCdn+ca2iL8FEW/GamfKfgT
+	t3GJKswMEGEF+gAg==
+From:
+ tip-bot2 for Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] irqchip/ts4800: Convert to
+ platform_driver::remove_new() callback
+Cc: u.kleine-koenig@pengutronix.de, Thomas Gleixner <tglx@linutronix.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: =?utf-8?q?=3C0bdce86b50e5aa50cffbc4add332cbfbad87521e=2E17032?=
+ =?utf-8?q?84359=2Egit=2Eu=2Ekleine-koenig=40pengutronix=2Ede=3E?=
+References: =?utf-8?q?=3C0bdce86b50e5aa50cffbc4add332cbfbad87521e=2E170328?=
+ =?utf-8?q?4359=2Egit=2Eu=2Ekleine-koenig=40pengutronix=2Ede=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240226150234.GCZdyoCtNj8lFwViAW@fat_crate.local>
+Message-ID: <170905450603.398.11750562948344568900.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
+The following commit has been merged into the irq/core branch of tip:
 
-* Borislav Petkov <bp@alien8.de> wrote:
+Commit-ID:     f7f56d59a3923e95bad2c49615a4d7313ed78314
+Gitweb:        https://git.kernel.org/tip/f7f56d59a3923e95bad2c49615a4d7313ed=
+78314
+Author:        Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+AuthorDate:    Fri, 22 Dec 2023 23:50:44 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 27 Feb 2024 18:12:11 +01:00
 
-> On Mon, Feb 26, 2024 at 11:48:06AM -0000, tip-bot2 for Ingo Molnar wrote:
-> > The following commit has been merged into the x86/apic branch of tip:
-> > 
-> > Commit-ID:     429bb0269058e2e1f4ab69a0d33d374933aa15b9
-> > Gitweb:        https://git.kernel.org/tip/429bb0269058e2e1f4ab69a0d33d374933aa15b9
-> > Author:        Ingo Molnar <mingo@kernel.org>
-> > AuthorDate:    Mon, 26 Feb 2024 12:07:31 +01:00
-> > Committer:     Ingo Molnar <mingo@kernel.org>
-> > CommitterDate: Mon, 26 Feb 2024 12:13:40 +01:00
-> > 
-> > smp: Provide 'setup_max_cpus' definition on UP too
-> > 
-> > This was already defined locally by init/main.c, but let's make
-> > it generic, as arch/x86/kernel/cpu/topology.c is going to make
-> > use of it to have more uniform code.
-> > 
-> > [ Keep it a C variable, not a define, because there's
-> >   some namespace overlap for the 'setup_max_cpus' token
-> >   in existing function argument names. ]
-> > 
-> > Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-> > Cc: linux-kernel@vger.kernel.org
-> > Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> > --
-> > ---
-> >  include/linux/smp.h | 2 ++
-> >  init/main.c         | 1 -
-> >  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> That one needs some work:
-> 
-> $ grep setup_max_cpus 13-37-17-randconfig-x86_64-2517.log
-> ...
-> ./include/linux/smp.h:221:27: warning: ‘setup_max_cpus’ defined but not used [-Wunused-const-variable=]
-> $ grep setup_max_cpus 13-37-17-randconfig-x86_64-2517.log  | wc -l
-> 122
-> 
-> very noisy.
+irqchip/ts4800: Convert to platform_driver::remove_new() callback
 
-Yeah, a bit sad.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-So I resolved this all with using #define and (first) fixing a namespace 
-collision that broke with the #define:
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-  4c8a49854130 smp: Avoid 'setup_max_cpus' namespace collision/shadowing
-  3c2f8859ae1c smp: Provide 'setup_max_cpus' definition on UP too
-  6be4ec29685c x86/apic: Build the x86 topology enumeration functions on UP APIC builds too
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-Thanks,
+Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/0bdce86b50e5aa50cffbc4add332cbfbad87521e.1703=
+284359.git.u.kleine-koenig@pengutronix.de
 
-	Ingo
+---
+ drivers/irqchip/irq-ts4800.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/irqchip/irq-ts4800.c b/drivers/irqchip/irq-ts4800.c
+index b2d61d4..57f610d 100644
+--- a/drivers/irqchip/irq-ts4800.c
++++ b/drivers/irqchip/irq-ts4800.c
+@@ -139,13 +139,11 @@ static int ts4800_ic_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+=20
+-static int ts4800_ic_remove(struct platform_device *pdev)
++static void ts4800_ic_remove(struct platform_device *pdev)
+ {
+ 	struct ts4800_irq_data *data =3D platform_get_drvdata(pdev);
+=20
+ 	irq_domain_remove(data->domain);
+-
+-	return 0;
+ }
+=20
+ static const struct of_device_id ts4800_ic_of_match[] =3D {
+@@ -155,11 +153,11 @@ static const struct of_device_id ts4800_ic_of_match[] =
+=3D {
+ MODULE_DEVICE_TABLE(of, ts4800_ic_of_match);
+=20
+ static struct platform_driver ts4800_ic_driver =3D {
+-	.probe  =3D ts4800_ic_probe,
+-	.remove =3D ts4800_ic_remove,
++	.probe		=3D ts4800_ic_probe,
++	.remove_new	=3D ts4800_ic_remove,
+ 	.driver =3D {
+-		.name =3D "ts4800-irqc",
+-		.of_match_table =3D ts4800_ic_of_match,
++		.name		=3D "ts4800-irqc",
++		.of_match_table	=3D ts4800_ic_of_match,
+ 	},
+ };
+ module_platform_driver(ts4800_ic_driver);
 
