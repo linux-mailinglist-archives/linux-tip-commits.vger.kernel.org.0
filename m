@@ -1,77 +1,71 @@
-Return-Path: <linux-tip-commits+bounces-605-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-606-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BCFF86849F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Feb 2024 00:31:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385DE8685A9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Feb 2024 02:19:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97A82B225AA
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Feb 2024 23:31:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D849D1F2263A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Feb 2024 01:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19772135A75;
-	Mon, 26 Feb 2024 23:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F174A31;
+	Tue, 27 Feb 2024 01:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ECOrLYuO";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="68wQGVNR"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GGq6kkVn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pIfC1t8w"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C45135A4F;
-	Mon, 26 Feb 2024 23:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADF717F8;
+	Tue, 27 Feb 2024 01:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708990306; cv=none; b=WDbx8/56nVZApB8z0A+opdhO86c2rSqarYANKbuWJidytkSp5mFyGDXVuVdFuLr9yx8gCsHcGKENGpANOmkiLqPzCba/kISZggm8L8XzT7DredAqmcp3vawuishTx1EH8f0QLhG3NUisdmI4MH4Gn8NwyYCUw/TN8cs4pkX/UfI=
+	t=1708996751; cv=none; b=E2ce0OJl4RIxJfHqcs2fUn3pYWnb5zBX+mLKQSfWW4zglVWZnQrQILWT3yM0MMW4emSD/iUCHvA79y66Hm1+UpdY4W6czOMZ6nvuXPDinqRDLfhLOKtkf+tizHAiRIKssm4y0WJx0k7l849fInJ5yvcsUkoqN50YvygAnu30Mfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708990306; c=relaxed/simple;
-	bh=z2ywbXyOOgJiYA4sntkJPE1bSwMyHyBurrDA+kDnimA=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=it7oaMYTmACyiH91hB76KpXnCathD43HNXXNpxV69qum3l+/j8pMU1+5IIKe9CMLYM4z2uFrAOxbZX4Ff8wofH7HUIXKeRCin57ChT84kv3PIgb5/yEkuDkcqpFtcjQD+Vrt11ohR43LT+hRSBFBXspSSLv5jNroqD6aefVhfeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ECOrLYuO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=68wQGVNR; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1708996751; c=relaxed/simple;
+	bh=ZD4BT/PchIrzJ5kXhkTjQJ2PhCearqf1xLE+6UKCOXc=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=ELONY7ib4JW7DiP9Pgw9GJ2cwnfnFjOhJ2OXyV+Ii3zqtpAzJVgaWxqxZQHKyZvWsCT6hZiR2Xs9k77uk44zFkwjFv+xCXiJkYrM67miRagH1ydSStA99UJA3qBtEbVzDe3vFOjlvEx/SNVxSXi6mKuMl5UX4N/n3HQSSmisVe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GGq6kkVn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pIfC1t8w; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 26 Feb 2024 23:31:41 -0000
+Date: Tue, 27 Feb 2024 01:19:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708990302;
+	s=2020; t=1708996746;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i0YfnfUMeyQNB0+7zfgcCYMBvY0vr9BLNrtqmnKo2kw=;
-	b=ECOrLYuOTaxN3vDRMdiMHFJUKbZqTnrrG+SYdLvbTE7x9sifYj3ajSsQdFeqwCOLZXFdHk
-	FWqW9lswVG5oUhJ9jRqcPTxk7QnDlIzduGragBDQLz3TQoJLu3RksIM0z4Nph/Avm7zaaX
-	6dhqZUFtewEQhSJHBmrG7TcX37wH+PJ+qIn1j23Vf7ccFBXVCFEKa2jEjE/2VAiBe0sm5w
-	hSDMYGTEl02gAc3hhS3L+fJrDtJKhYsokuzxSKjM7/F0wLZ4U9GViCuqAoD21oBYqWOUIh
-	cjaQhjaPZ6eLcmayCUBCGcoH35r9532noOR02IePb9/K12m0X8YoxzlzKbbX5w==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=9x4Y/V10TNa0eZjEcvYgTWFz/9IHlJYX81BPVAL6Iao=;
+	b=GGq6kkVnA74VoTCdqe9Pqop1xMlbryLpc1AFPmgBQR9DV4cTe1isJDy2V5xHOxaLGael7t
+	GoWVBlJeOrU9vLeWU6bi80n9atgYjQVdhQFrliBLFwAzAMJ7OJjYcnxFfnSmffss3h/d5P
+	d23O+N3K54LfmAM5/dc8tWqnWtHtoWKktTQT83Mz7wmMnLU0lw2Cxcdb0NNHkcvbVPjYcc
+	q6rQ4czR3aIesMpZ/PtvmVPuvJPN+R6JRVIrW6XvDzSw9LLjwAIX/GCrI5lr2S6iju7w53
+	ASb4FeD49EXqj35QPhW29u+KulZf7sCmUo7l/LIFI0a978yynNt32LiPuevcLA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708990302;
+	s=2020e; t=1708996746;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i0YfnfUMeyQNB0+7zfgcCYMBvY0vr9BLNrtqmnKo2kw=;
-	b=68wQGVNRc0YkbO1ys4PZIDzS4VohviBb7L9/GtGa58jZoaslNDL4dajZzMy/anMZQC3VaQ
-	9uBTKSWONUdJCbBg==
-From: "tip-bot2 for Daniel Micay" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=9x4Y/V10TNa0eZjEcvYgTWFz/9IHlJYX81BPVAL6Iao=;
+	b=pIfC1t8wY1eZaDjCVhkY+jXHTTAFqf7Zs5J8kShfLRzeBvZC3NdAzek3LKqW/FQIvcra1f
+	LXIPxu1Ss/nGFAAg==
+From: "tip-bot2 for Pawan Gupta" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/vdso: Move vDSO to mmap region
-Cc: Daniel Micay <danielmicay@gmail.com>, Kees Cook <keescook@chromium.org>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/bugs: Use fixed addressing for VERW operand
+Cc: Nikolay Borisov <nik.borisov@suse.com>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240210091827.work.233-kees@kernel.org>
-References: <20240210091827.work.233-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170899030198.398.14097946092277859696.tip-bot2@tip-bot2>
+Message-ID: <170899674562.398.6398007479766564897.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,163 +73,50 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     3c6539b4c177695aaa77893c4ce91d21dea7bb3d
-Gitweb:        https://git.kernel.org/tip/3c6539b4c177695aaa77893c4ce91d21dea7bb3d
-Author:        Daniel Micay <danielmicay@gmail.com>
-AuthorDate:    Sat, 10 Feb 2024 01:18:35 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 27 Feb 2024 00:23:55 +01:00
+Commit-ID:     8009479ee919b9a91674f48050ccbff64eafedaa
+Gitweb:        https://git.kernel.org/tip/8009479ee919b9a91674f48050ccbff64eafedaa
+Author:        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+AuthorDate:    Mon, 26 Feb 2024 15:52:33 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 26 Feb 2024 17:06:17 -08:00
 
-x86/vdso: Move vDSO to mmap region
+x86/bugs: Use fixed addressing for VERW operand
 
-The vDSO (and its initial randomization) was introduced in commit 2aae950b21e4
-("x86_64: Add vDSO for x86-64 with gettimeofday/clock_gettime/getcpu"), but
-had very low entropy. The entropy was improved in commit 394f56fe4801
-("x86_64, vdso: Fix the vdso address randomization algorithm"), but there
-is still improvement to be made.
+The macro used for MDS mitigation executes VERW with relative
+addressing for the operand. This was necessary in earlier versions of
+the series. Now it is unnecessary and creates a problem for backports
+on older kernels that don't support relocations in alternatives.
+Relocation support was added by commit 270a69c4485d ("x86/alternative:
+Support relocations in alternatives").  Also asm for fixed addressing
+is much cleaner than relative RIP addressing.
 
-In principle there should not be executable code at a low entropy offset
-from the stack, since the stack and executable code having separate
-randomization is part of what makes ASLR stronger.
+Simplify the asm by using fixed addressing for VERW operand.
 
-Remove the only executable code near the stack region and give the vDSO
-the same randomized base as other mmap mappings including the linker
-and other shared objects. This results in higher entropy being provided
-and there's little to no advantage in separating this from the existing
-executable code there. This is already how other architectures like
-arm64 handle the vDSO.
+[ dhansen: tweak changelog ]
 
-As an side, while it's sensible for userspace to reserve the initial mmap
-base as a region for executable code with a random gap for other mmap
-allocations, along with providing randomization within that region, there
-isn't much the kernel can do to help due to how dynamic linkers load the
-shared objects.
-
-This was extracted from the PaX RANDMMAP feature.
-
-[kees: updated commit log with historical details and other tweaks]
-
-Signed-off-by: Daniel Micay <danielmicay@gmail.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Closes: https://github.com/KSPP/linux/issues/280
-Link: https://lore.kernel.org/r/20240210091827.work.233-kees@kernel.org
+Closes: https://lore.kernel.org/lkml/20558f89-299b-472e-9a96-171403a83bd6@suse.com/
+Fixes: baf8361e5455 ("x86/bugs: Add asm helpers for executing VERW")
+Reported-by: Nikolay Borisov <nik.borisov@suse.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20240226-verw-arg-fix-v1-1-7b37ee6fd57d%40linux.intel.com
 ---
- arch/x86/entry/vdso/vma.c    | 57 +----------------------------------
- arch/x86/include/asm/elf.h   |  1 +-
- arch/x86/kernel/sys_x86_64.c |  7 +----
- 3 files changed, 2 insertions(+), 63 deletions(-)
+ arch/x86/include/asm/nospec-branch.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
-index 7645730..6d83ceb 100644
---- a/arch/x86/entry/vdso/vma.c
-+++ b/arch/x86/entry/vdso/vma.c
-@@ -274,59 +274,6 @@ up_fail:
- 	return ret;
- }
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 2aa52ca..ab19c7f 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -323,7 +323,7 @@
+  * Note: Only the memory operand variant of VERW clears the CPU buffers.
+  */
+ .macro CLEAR_CPU_BUFFERS
+-	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
++	ALTERNATIVE "", __stringify(verw mds_verw_sel), X86_FEATURE_CLEAR_CPU_BUF
+ .endm
  
--#ifdef CONFIG_X86_64
--/*
-- * Put the vdso above the (randomized) stack with another randomized
-- * offset.  This way there is no hole in the middle of address space.
-- * To save memory make sure it is still in the same PTE as the stack
-- * top.  This doesn't give that many random bits.
-- *
-- * Note that this algorithm is imperfect: the distribution of the vdso
-- * start address within a PMD is biased toward the end.
-- *
-- * Only used for the 64-bit and x32 vdsos.
-- */
--static unsigned long vdso_addr(unsigned long start, unsigned len)
--{
--	unsigned long addr, end;
--	unsigned offset;
--
--	/*
--	 * Round up the start address.  It can start out unaligned as a result
--	 * of stack start randomization.
--	 */
--	start = PAGE_ALIGN(start);
--
--	/* Round the lowest possible end address up to a PMD boundary. */
--	end = (start + len + PMD_SIZE - 1) & PMD_MASK;
--	if (end >= DEFAULT_MAP_WINDOW)
--		end = DEFAULT_MAP_WINDOW;
--	end -= len;
--
--	if (end > start) {
--		offset = get_random_u32_below(((end - start) >> PAGE_SHIFT) + 1);
--		addr = start + (offset << PAGE_SHIFT);
--	} else {
--		addr = start;
--	}
--
--	/*
--	 * Forcibly align the final address in case we have a hardware
--	 * issue that requires alignment for performance reasons.
--	 */
--	addr = align_vdso_addr(addr);
--
--	return addr;
--}
--
--static int map_vdso_randomized(const struct vdso_image *image)
--{
--	unsigned long addr = vdso_addr(current->mm->start_stack, image->size-image->sym_vvar_start);
--
--	return map_vdso(image, addr);
--}
--#endif
--
- int map_vdso_once(const struct vdso_image *image, unsigned long addr)
- {
- 	struct mm_struct *mm = current->mm;
-@@ -369,7 +316,7 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- 	if (!vdso64_enabled)
- 		return 0;
- 
--	return map_vdso_randomized(&vdso_image_64);
-+	return map_vdso(&vdso_image_64, 0);
- }
- 
- #ifdef CONFIG_COMPAT
-@@ -380,7 +327,7 @@ int compat_arch_setup_additional_pages(struct linux_binprm *bprm,
- 	if (x32) {
- 		if (!vdso64_enabled)
- 			return 0;
--		return map_vdso_randomized(&vdso_image_x32);
-+		return map_vdso(&vdso_image_x32, 0);
- 	}
- #endif
- #ifdef CONFIG_IA32_EMULATION
-diff --git a/arch/x86/include/asm/elf.h b/arch/x86/include/asm/elf.h
-index 1e16bd5..1fb83d4 100644
---- a/arch/x86/include/asm/elf.h
-+++ b/arch/x86/include/asm/elf.h
-@@ -392,5 +392,4 @@ struct va_alignment {
- } ____cacheline_aligned;
- 
- extern struct va_alignment va_align;
--extern unsigned long align_vdso_addr(unsigned long);
- #endif /* _ASM_X86_ELF_H */
-diff --git a/arch/x86/kernel/sys_x86_64.c b/arch/x86/kernel/sys_x86_64.c
-index c783aeb..cb9fa1d 100644
---- a/arch/x86/kernel/sys_x86_64.c
-+++ b/arch/x86/kernel/sys_x86_64.c
-@@ -52,13 +52,6 @@ static unsigned long get_align_bits(void)
- 	return va_align.bits & get_align_mask();
- }
- 
--unsigned long align_vdso_addr(unsigned long addr)
--{
--	unsigned long align_mask = get_align_mask();
--	addr = (addr + align_mask) & ~align_mask;
--	return addr | get_align_bits();
--}
--
- static int __init control_va_addr_alignment(char *str)
- {
- 	/* guard against enabling this on other CPU families */
+ #else /* __ASSEMBLY__ */
 
