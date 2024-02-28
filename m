@@ -1,77 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-634-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-635-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81C286B06F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 14:36:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AF986BA4E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 23:00:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 933011C21A5E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 13:36:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 445AB1C225CB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 22:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C858149DEA;
-	Wed, 28 Feb 2024 13:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B0972902;
+	Wed, 28 Feb 2024 22:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jffe1l4Y";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UngALnpu"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4Xl8LWtC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UW06OQNq"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671DC6CDBC;
-	Wed, 28 Feb 2024 13:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3656B86241;
+	Wed, 28 Feb 2024 22:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709127361; cv=none; b=criSwb6oGesdgNOBKO0KMhGDSxjOoc3WaK5BVwuKW+fKI2gnFfY6uucqpB1FsYhT9dfchWMybCgyxY69NAFbvO1eHoCuAXzXOWNiOCZY6fUb4ad7iHsx68CH+sgRseZSUdGNqboBvjG07AGNyw+AhuaM9Ho5Zi4H0RLbxhCEj74=
+	t=1709157615; cv=none; b=laOkWyklLPwy/wxRgWjBmO9JyxI68BHyBmw3YTHbJq35EO+/07OQZ3N/nrgCM19yMpuFzqfJ24LGkaKen2WqqKwEddRKjD2kwPBnBo4jxA9ce83JhRB5nDIKoTDakUvFXIQVToL+jJd35BBfWpkzGxjxwso990xQmwkvYjZJaGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709127361; c=relaxed/simple;
-	bh=bV7rC9AwyM7rwmPwCODY5JQR5FkAI2361fVWivOoLGU=;
+	s=arc-20240116; t=1709157615; c=relaxed/simple;
+	bh=rxsl6G8H4reZZFJiU0FVX2swHQMF4ZVarS+ieSrkHus=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=SB2HQmlJBi7UTch4wutyaI0hcQgV1O9cr7YqytXwM4CtNXMC/Tcho4hUIvjLKC43b4TKsatHzKASXVzGK0TM4m8jNGt+EqFUeFYljisVEGJFvVhDMgr+SCX7nwDa9FYi0awWU0gMc5urOsQLPvR1EanL4amHVwHeYS9acEg3Ic4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jffe1l4Y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UngALnpu; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=FJwqAB0FQd1ID0Plwfc5lMu5G1fDWCmj1Y/Icnl+QKclr1o1oYl3uMKzScBXHd0CJHRWt5sJg+/OhTxegipLZmqWqN5Q752OjxRbsthVSRl65vMYQch6iepFhcwRaCcmi9UalvSMgdmm8FmyCmFohG6xFi04m67XQr8WrtE1IuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4Xl8LWtC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UW06OQNq; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 28 Feb 2024 13:35:56 -0000
+Date: Wed, 28 Feb 2024 22:00:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709127357;
+	s=2020; t=1709157605;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3261/azcGbpm0bz+42s7atBucovQYrO3uk/Loe+guZw=;
-	b=jffe1l4YFxuIeO1TsvAoU0Vfod9XgZdPHVaq5vDjM2YyGMI8vABMVp1zsBR2xcBzJ02dh+
-	xmvKEHdFqEuAoMb+bovewxry9hRbaavzLJu7jC343B4XMH/2fsUeHBqmborh5nNU20+OUv
-	aVAf+02PEMt4SKsdtsbn4SXHo0Zn8+N+lDcMT+A9FenzIQZThSi6CzoYe1jFHlazu1Ogjs
-	s+yi6UK9NaJ2hTrRt3Z2zoSiZg0y4GwABTRLthXZEJOMDtvr6CQL41g2D4ICk0tnmOu1Mj
-	vetvwJ4wMH1ywrnKD7ovrbwhYCU6rYR1P1EV1OS0lYpTk26ngnRn6G4Kfo5c9A==
+	bh=od3s+KkUs6tXEclVji6b7Vsrc6PV+vWDb75szXQ+xmY=;
+	b=4Xl8LWtCCp75QIUVdpeKjDtrjmBzRD8I3HJGA/ZwT11wEWvRcyK3vIzJtq5OWVb6jCKspK
+	A7RZLM3rnobkhlTlFXvGJDwSjLg7QEIuWC1ptF2H1acttRnuQr2g6W7bxIzFX0VxmD8rAe
+	o3oMYOzpS7Zaldq3TilNQ5KGNHiXAJEVH+X8GeO2mMQqQVKmVhtaXc+015t7J1S+K58weu
+	NyQTJsXtm/+Gkyo00vfYOT86sddw+HFaCQ8ykaZBEYfDBZWAUUYRwze8O+AYxE9byBqCu5
+	+XgIRMoZK4BTKrxJXA2jxrcnA+5TIGkJbyvuRV5ILMrbgEv3MTeM4PBWZtoFhA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709127357;
+	s=2020e; t=1709157605;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3261/azcGbpm0bz+42s7atBucovQYrO3uk/Loe+guZw=;
-	b=UngALnpu5WnIKr0UlT7Addn9mvStlWFfdsVUj67sBrBGhYvfDZAkA8wJSizXzR515nsXUh
-	BoO/cunRrUBjDDBQ==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+	bh=od3s+KkUs6tXEclVji6b7Vsrc6PV+vWDb75szXQ+xmY=;
+	b=UW06OQNqWl5taKL8XiGYOPq1B3KniRZpRc86sdbGbFxaAjulCIMSERWLZCITHdgRQEClKC
+	u22fl0Up/AVpuFBg==
+From: "tip-bot2 for Alex Shi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] efi/x86: Set the PE/COFF header's NX compat flag
- unconditionally
-Cc: Ard Biesheuvel <ardb@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240116085347.2193966-2-ardb+git@google.com>
-References: <20240116085347.2193966-2-ardb+git@google.com>
+Subject: [tip: sched/core] sched/topology: Rename SD_SHARE_PKG_RESOURCES to
+ SD_SHARE_LLC
+Cc: Valentin Schneider <vschneid@redhat.com>, Alex Shi <alexs@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>,
+ Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+ Barry Song <baohua@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240210113924.1130448-5-alexs@kernel.org>
+References: <20240210113924.1130448-5-alexs@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170912735700.398.16561638992186941827.tip-bot2@tip-bot2>
+Message-ID: <170915760355.398.15431397062984291541.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,44 +81,214 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     891f8890a4a3663da7056542757022870b499bc1
-Gitweb:        https://git.kernel.org/tip/891f8890a4a3663da7056542757022870b499bc1
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Tue, 16 Jan 2024 09:53:48 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 28 Feb 2024 14:23:55 +01:00
+Commit-ID:     54de442747037485da1fc4eca9636287a61e97e3
+Gitweb:        https://git.kernel.org/tip/54de442747037485da1fc4eca9636287a61e97e3
+Author:        Alex Shi <alexs@kernel.org>
+AuthorDate:    Sat, 10 Feb 2024 19:39:23 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 28 Feb 2024 15:43:17 +01:00
 
-efi/x86: Set the PE/COFF header's NX compat flag unconditionally
+sched/topology: Rename SD_SHARE_PKG_RESOURCES to SD_SHARE_LLC
 
-Now that the proper section and file alignment is used, and the EFI
-memory attributes protocol to manage executable permissions where needed
-is invoked, set the NX compat flag unconditionally.
+SD_SHARE_PKG_RESOURCES is a bit of a misnomer: its naming suggests that
+it's sharing all 'package resources' - while in reality it's specifically
+for sharing the LLC only.
 
-  [ bp: Remove the "we"s. ]
+Rename it to SD_SHARE_LLC to reduce confusion.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240116085347.2193966-2-ardb+git@google.com
+[ mingo: Rewrote the confusing changelog as well. ]
+
+Suggested-by: Valentin Schneider <vschneid@redhat.com>
+Signed-off-by: Alex Shi <alexs@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Reviewed-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Link: https://lore.kernel.org/r/20240210113924.1130448-5-alexs@kernel.org
 ---
- arch/x86/boot/header.S | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/powerpc/kernel/smp.c      |  6 +++---
+ include/linux/sched/sd_flags.h |  4 ++--
+ include/linux/sched/topology.h |  6 +++---
+ kernel/sched/fair.c            |  2 +-
+ kernel/sched/topology.c        | 28 ++++++++++++++--------------
+ 5 files changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index a1bbedd..b5c79f4 100644
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -111,11 +111,7 @@ extra_header_fields:
- 	.long	salign				# SizeOfHeaders
- 	.long	0				# CheckSum
- 	.word	IMAGE_SUBSYSTEM_EFI_APPLICATION	# Subsystem (EFI application)
--#ifdef CONFIG_EFI_DXE_MEM_ATTRIBUTES
- 	.word	IMAGE_DLL_CHARACTERISTICS_NX_COMPAT	# DllCharacteristics
--#else
--	.word	0				# DllCharacteristics
--#endif
- #ifdef CONFIG_X86_32
- 	.long	0				# SizeOfStackReserve
- 	.long	0				# SizeOfStackCommit
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 693334c..a60e413 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -984,7 +984,7 @@ static bool shared_caches __ro_after_init;
+ /* cpumask of CPUs with asymmetric SMT dependency */
+ static int powerpc_smt_flags(void)
+ {
+-	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
++	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_LLC;
+ 
+ 	if (cpu_has_feature(CPU_FTR_ASYM_SMT)) {
+ 		printk_once(KERN_INFO "Enabling Asymmetric SMT scheduling\n");
+@@ -1010,9 +1010,9 @@ static __ro_after_init DEFINE_STATIC_KEY_FALSE(splpar_asym_pack);
+ static int powerpc_shared_cache_flags(void)
+ {
+ 	if (static_branch_unlikely(&splpar_asym_pack))
+-		return SD_SHARE_PKG_RESOURCES | SD_ASYM_PACKING;
++		return SD_SHARE_LLC | SD_ASYM_PACKING;
+ 
+-	return SD_SHARE_PKG_RESOURCES;
++	return SD_SHARE_LLC;
+ }
+ 
+ static int powerpc_shared_proc_flags(void)
+diff --git a/include/linux/sched/sd_flags.h b/include/linux/sched/sd_flags.h
+index a8b2864..b04a5d0 100644
+--- a/include/linux/sched/sd_flags.h
++++ b/include/linux/sched/sd_flags.h
+@@ -117,13 +117,13 @@ SD_FLAG(SD_SHARE_CPUCAPACITY, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
+ SD_FLAG(SD_CLUSTER, SDF_NEEDS_GROUPS)
+ 
+ /*
+- * Domain members share CPU package resources (i.e. caches)
++ * Domain members share CPU Last Level Caches
+  *
+  * SHARED_CHILD: Set from the base domain up until spanned CPUs no longer share
+  *               the same cache(s).
+  * NEEDS_GROUPS: Caches are shared between groups.
+  */
+-SD_FLAG(SD_SHARE_PKG_RESOURCES, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
++SD_FLAG(SD_SHARE_LLC, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
+ 
+ /*
+  * Only a single load balancing instance
+diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
+index a6e04b4..191b122 100644
+--- a/include/linux/sched/topology.h
++++ b/include/linux/sched/topology.h
+@@ -38,21 +38,21 @@ extern const struct sd_flag_debug sd_flag_debug[];
+ #ifdef CONFIG_SCHED_SMT
+ static inline int cpu_smt_flags(void)
+ {
+-	return SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
++	return SD_SHARE_CPUCAPACITY | SD_SHARE_LLC;
+ }
+ #endif
+ 
+ #ifdef CONFIG_SCHED_CLUSTER
+ static inline int cpu_cluster_flags(void)
+ {
+-	return SD_CLUSTER | SD_SHARE_PKG_RESOURCES;
++	return SD_CLUSTER | SD_SHARE_LLC;
+ }
+ #endif
+ 
+ #ifdef CONFIG_SCHED_MC
+ static inline int cpu_core_flags(void)
+ {
+-	return SD_SHARE_PKG_RESOURCES;
++	return SD_SHARE_LLC;
+ }
+ #endif
+ 
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 39781a6..6a16129 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10678,7 +10678,7 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
+ 	 */
+ 	if (local->group_type == group_has_spare) {
+ 		if ((busiest->group_type > group_fully_busy) &&
+-		    !(env->sd->flags & SD_SHARE_PKG_RESOURCES)) {
++		    !(env->sd->flags & SD_SHARE_LLC)) {
+ 			/*
+ 			 * If busiest is overloaded, try to fill spare
+ 			 * capacity. This might end up creating spare capacity
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 0b33f7b..99ea598 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -657,13 +657,13 @@ static void destroy_sched_domains(struct sched_domain *sd)
+ }
+ 
+ /*
+- * Keep a special pointer to the highest sched_domain that has
+- * SD_SHARE_PKG_RESOURCE set (Last Level Cache Domain) for this
+- * allows us to avoid some pointer chasing select_idle_sibling().
++ * Keep a special pointer to the highest sched_domain that has SD_SHARE_LLC set
++ * (Last Level Cache Domain) for this allows us to avoid some pointer chasing
++ * select_idle_sibling().
+  *
+- * Also keep a unique ID per domain (we use the first CPU number in
+- * the cpumask of the domain), this allows us to quickly tell if
+- * two CPUs are in the same cache domain, see cpus_share_cache().
++ * Also keep a unique ID per domain (we use the first CPU number in the cpumask
++ * of the domain), this allows us to quickly tell if two CPUs are in the same
++ * cache domain, see cpus_share_cache().
+  */
+ DEFINE_PER_CPU(struct sched_domain __rcu *, sd_llc);
+ DEFINE_PER_CPU(int, sd_llc_size);
+@@ -684,7 +684,7 @@ static void update_top_cache_domain(int cpu)
+ 	int id = cpu;
+ 	int size = 1;
+ 
+-	sd = highest_flag_domain(cpu, SD_SHARE_PKG_RESOURCES);
++	sd = highest_flag_domain(cpu, SD_SHARE_LLC);
+ 	if (sd) {
+ 		id = cpumask_first(sched_domain_span(sd));
+ 		size = cpumask_weight(sched_domain_span(sd));
+@@ -1554,7 +1554,7 @@ static struct cpumask		***sched_domains_numa_masks;
+  * function. For details, see include/linux/sched/sd_flags.h.
+  *
+  *   SD_SHARE_CPUCAPACITY
+- *   SD_SHARE_PKG_RESOURCES
++ *   SD_SHARE_LLC
+  *   SD_CLUSTER
+  *   SD_NUMA
+  *
+@@ -1566,7 +1566,7 @@ static struct cpumask		***sched_domains_numa_masks;
+ #define TOPOLOGY_SD_FLAGS		\
+ 	(SD_SHARE_CPUCAPACITY	|	\
+ 	 SD_CLUSTER		|	\
+-	 SD_SHARE_PKG_RESOURCES |	\
++	 SD_SHARE_LLC		|	\
+ 	 SD_NUMA		|	\
+ 	 SD_ASYM_PACKING)
+ 
+@@ -1609,7 +1609,7 @@ sd_init(struct sched_domain_topology_level *tl,
+ 					| 0*SD_BALANCE_WAKE
+ 					| 1*SD_WAKE_AFFINE
+ 					| 0*SD_SHARE_CPUCAPACITY
+-					| 0*SD_SHARE_PKG_RESOURCES
++					| 0*SD_SHARE_LLC
+ 					| 0*SD_SERIALIZE
+ 					| 1*SD_PREFER_SIBLING
+ 					| 0*SD_NUMA
+@@ -1646,7 +1646,7 @@ sd_init(struct sched_domain_topology_level *tl,
+ 	if (sd->flags & SD_SHARE_CPUCAPACITY) {
+ 		sd->imbalance_pct = 110;
+ 
+-	} else if (sd->flags & SD_SHARE_PKG_RESOURCES) {
++	} else if (sd->flags & SD_SHARE_LLC) {
+ 		sd->imbalance_pct = 117;
+ 		sd->cache_nice_tries = 1;
+ 
+@@ -1671,7 +1671,7 @@ sd_init(struct sched_domain_topology_level *tl,
+ 	 * For all levels sharing cache; connect a sched_domain_shared
+ 	 * instance.
+ 	 */
+-	if (sd->flags & SD_SHARE_PKG_RESOURCES) {
++	if (sd->flags & SD_SHARE_LLC) {
+ 		sd->shared = *per_cpu_ptr(sdd->sds, sd_id);
+ 		atomic_inc(&sd->shared->ref);
+ 		atomic_set(&sd->shared->nr_busy_cpus, sd_weight);
+@@ -2446,8 +2446,8 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
+ 		for (sd = *per_cpu_ptr(d.sd, i); sd; sd = sd->parent) {
+ 			struct sched_domain *child = sd->child;
+ 
+-			if (!(sd->flags & SD_SHARE_PKG_RESOURCES) && child &&
+-			    (child->flags & SD_SHARE_PKG_RESOURCES)) {
++			if (!(sd->flags & SD_SHARE_LLC) && child &&
++			    (child->flags & SD_SHARE_LLC)) {
+ 				struct sched_domain __rcu *top_p;
+ 				unsigned int nr_llcs;
+ 
 
