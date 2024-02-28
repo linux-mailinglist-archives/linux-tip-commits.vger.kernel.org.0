@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-638-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-639-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B8DD86BA52
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C62C86BA53
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 23:00:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D9381C22558
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E642D1F24FA4
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 22:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686EC7292E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A40972935;
 	Wed, 28 Feb 2024 22:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QW3XTz9Y";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zk5No014"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VlKeYOdg";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Lrw8SHtZ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07CD72910;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07917290F;
 	Wed, 28 Feb 2024 22:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709157617; cv=none; b=NLFEZSEg2dmu8WZaACH2wh0NEV/calkoUn1ZYwdt2QpVMNIrSiH+vNVhj0V7j16ETPBXS80IPIUCbpbA9VnXWkKH3kdRZdZz7U+ULshJi4lPoFwQ98GHKwnrdjTIsMwsP4ddYVZl/C9+irWzysrYojz03uiapjPEQwbBXacr9cA=
+	t=1709157617; cv=none; b=fIqioub60mVSEU4J89Fbjd/ADvbghhjtASkEk+dQfEmg8OghxjV8x2OkE6D1pMa9yyO/s1z1tsdPz/Jc6dWwbNfjwySOEsA4ehFG0Wl9WmLe7db6vC3sM07qkBPQQNW1fzAhLvsoafZsDGDW33tJ1xOSl+WJhZxmmDlVdvrRjRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1709157617; c=relaxed/simple;
-	bh=bckUeZ94dmzHdGIr16fUxHKXvXAKWTMpngqNvn6EkCc=;
+	bh=gaq5TYTqW08ZNeBM939Puu1SQTVAgMBneQ3qgHGe8Go=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=X9NRdvhQB/aKbPd+MrmztQeLWaSRDd6Q3BNDAlsBjf2tBy1/BDsGajz2JBsdyBttJwo12iN3DKofEcbRb5hLVRX77L39EEbm0sXRt/MBXyO11MFio/zVZ+gxQSLiNrS2FDLSMBJm1J9EzFqArG74fYwViVm96Rdklhl4C10KtdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QW3XTz9Y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zk5No014; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Zt8dq+71blhgyM+IoqeT4g4HxICrbH+uwa1f8W7R+YCe5HglRG5pl3ZFTJmjDnsWWZYU03laXYSmhuXg81Tj1sujogLz7iD6noJa7BKLHmgJ81qtz2wa1N5poSqQk444szQsm0zu5wN2d1W1rHiWvN3qyYSvZR8X6nGIdBXS9yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VlKeYOdg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Lrw8SHtZ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 28 Feb 2024 22:00:06 -0000
+Date: Wed, 28 Feb 2024 22:00:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709157607;
+	s=2020; t=1709157608;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fFahADjfQXRV37mCwED59FOVdN1jcTgP4zC0mea1W98=;
-	b=QW3XTz9YuiKCcyl3GBUeW1qz+yua7k3jAbWwguPJ3yL8Wo4VvetAyUfVr/KbbHdLCuSMMJ
-	fTdcSkTqcRVlTH3ZEdg6wuoiIeIKaTG8uA5PMa41BaTLMXXfu405kJkSj1t053+xkL1Ts5
-	nAaxywU58STv02iyBwPl1c1rnIJvAfJIq1k/DmrRG/PoIa43weK74I5QDu5ANfNYFoOuql
-	75zTlbQS2/0ft/t06duqIrJmWFJCh73eooB36S6JM99I2pLF+n0A1VeKIsWg8Hy3ZFf6Kb
-	XzAwjqbzi47YM22+eqaBtvcBiM8Q/sKh7p6NwP9RpL4eiIxHQBSAT6L+7os8kw==
+	bh=wiVaNdwW/PB2K/TUo+duWDQUE2T1VobPhccqg/kHJR0=;
+	b=VlKeYOdg2cnDGheb7WAIG+lis5CC6wY+SFHCvXSpwJoVu5x0hleJM88s4EtIpypuSo6OeQ
+	tSbdaP18kMIWE42U4VIWjM1n/TTaKXtKW86w1llNMqK9TeKm3joNuLGtgZ6ieaFHNPrwzI
+	QtJKgIoi7pGtcF8TYSOk5w4euqFWJSf7l3S71MeArUU1QUMSkMTqN4uvcEIVlFOv0bJmnu
+	3A1gmgRWaddGkDYIDRylxJi+YU9QlkR7e8HPVwXSpRlodPiZ72XGIb5eI4nNW2pFeAnSXo
+	ARX2yfiglyocy695Gc5qUkjYMOTryZFpAi5+omt0Yy6eSqYADbknGtNZ/bRbCg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709157607;
+	s=2020e; t=1709157608;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fFahADjfQXRV37mCwED59FOVdN1jcTgP4zC0mea1W98=;
-	b=zk5No014NSzQ2w1wiSzLSwFPX1XDHorf0O7bKFCioSEQIMM4cYALOK8ETxKk6DugxHcE5u
-	Ix9RJHsGXzFyu8AA==
+	bh=wiVaNdwW/PB2K/TUo+duWDQUE2T1VobPhccqg/kHJR0=;
+	b=Lrw8SHtZD/9ttqFfhheA+3QEbSOS6wCNl6eyn2DkYuBBEByt5fvPXGirsfy45/kTMqjNko
+	4vyFd/PGIcas6OCA==
 From: "tip-bot2 for Alex Shi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: sched/core] sched/fair: Remove unused parameter from sched_asym()
-Cc: Alex Shi <alexs@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+Subject: [tip: sched/core] sched/topology: Remove duplicate descriptions from
+ TOPOLOGY_SD_FLAGS
+Cc: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+ Alex Shi <alexs@kernel.org>, Ingo Molnar <mingo@kernel.org>,
  Valentin Schneider <vschneid@redhat.com>,
  Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240210113924.1130448-2-alexs@kernel.org>
-References: <20240210113924.1130448-2-alexs@kernel.org>
+In-Reply-To: <20240210113924.1130448-1-alexs@kernel.org>
+References: <20240210113924.1130448-1-alexs@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170915760695.398.1958628153932798013.tip-bot2@tip-bot2>
+Message-ID: <170915760769.398.2928849589357715130.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,57 +84,50 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     5a64983731566f3b102b4ed12445b8a1b2f46a46
-Gitweb:        https://git.kernel.org/tip/5a64983731566f3b102b4ed12445b8a1b2f46a46
+Commit-ID:     d654c8ddde84b9d1a30a40917e588b5a1e53dada
+Gitweb:        https://git.kernel.org/tip/d654c8ddde84b9d1a30a40917e588b5a1e53dada
 Author:        Alex Shi <alexs@kernel.org>
-AuthorDate:    Sat, 10 Feb 2024 19:39:20 +08:00
+AuthorDate:    Sat, 10 Feb 2024 19:39:19 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 28 Feb 2024 15:43:08 +01:00
+CommitterDate: Wed, 28 Feb 2024 15:29:21 +01:00
 
-sched/fair: Remove unused parameter from sched_asym()
+sched/topology: Remove duplicate descriptions from TOPOLOGY_SD_FLAGS
 
-The 'sds' argument is not used in the sched_asym() function anymore, remove it.
+These flags are already documented in include/linux/sched/sd_flags.h.
 
-Fixes: c9ca07886aaa ("sched/fair: Do not even the number of busy CPUs via asym_packing")
+Also, add missing SD_CLUSTER and keep the comment on SD_ASYM_PACKING
+as it is a special case.
+
+Suggested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Signed-off-by: Alex Shi <alexs@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Reviewed-by: Valentin Schneider <vschneid@redhat.com>
 Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20240210113924.1130448-2-alexs@kernel.org
+Link: https://lore.kernel.org/r/20240210113924.1130448-1-alexs@kernel.org
 ---
- kernel/sched/fair.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ kernel/sched/topology.c |  9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 51fe17f..300d1bf 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9753,7 +9753,6 @@ static bool sched_use_asym_prio(struct sched_domain *sd, int cpu)
- /**
-  * sched_asym - Check if the destination CPU can do asym_packing load balance
-  * @env:	The load balancing environment
-- * @sds:	Load-balancing data with statistics of the local group
-  * @sgs:	Load-balancing statistics of the candidate busiest group
-  * @group:	The candidate busiest group
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 10d1391..0b33f7b 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1551,11 +1551,12 @@ static struct cpumask		***sched_domains_numa_masks;
   *
-@@ -9772,8 +9771,7 @@ static bool sched_use_asym_prio(struct sched_domain *sd, int cpu)
-  * otherwise.
-  */
- static inline bool
--sched_asym(struct lb_env *env, struct sd_lb_stats *sds,  struct sg_lb_stats *sgs,
--	   struct sched_group *group)
-+sched_asym(struct lb_env *env, struct sg_lb_stats *sgs, struct sched_group *group)
- {
- 	/* Ensure that the whole local core is idle, if applicable. */
- 	if (!sched_use_asym_prio(env->sd, env->dst_cpu))
-@@ -9944,7 +9942,7 @@ static inline void update_sg_lb_stats(struct lb_env *env,
- 	/* Check if dst CPU is idle and preferred to this group */
- 	if (!local_group && env->sd->flags & SD_ASYM_PACKING &&
- 	    env->idle != CPU_NOT_IDLE && sgs->sum_h_nr_running &&
--	    sched_asym(env, sds, sgs, group)) {
-+	    sched_asym(env, sgs, group)) {
- 		sgs->group_asym_packing = 1;
- 	}
- 
+  * These flags are purely descriptive of the topology and do not prescribe
+  * behaviour. Behaviour is artificial and mapped in the below sd_init()
+- * function:
++ * function. For details, see include/linux/sched/sd_flags.h.
+  *
+- *   SD_SHARE_CPUCAPACITY   - describes SMT topologies
+- *   SD_SHARE_PKG_RESOURCES - describes shared caches
+- *   SD_NUMA                - describes NUMA topologies
++ *   SD_SHARE_CPUCAPACITY
++ *   SD_SHARE_PKG_RESOURCES
++ *   SD_CLUSTER
++ *   SD_NUMA
+  *
+  * Odd one out, which beside describing the topology has a quirk also
+  * prescribes the desired behaviour that goes along with it:
 
