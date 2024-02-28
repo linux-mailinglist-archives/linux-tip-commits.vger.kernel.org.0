@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-629-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-631-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A0F86AF78
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 13:53:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6529586AF7B
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 13:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AB481C22EC9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 12:53:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88E601C242CC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 12:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDED149001;
-	Wed, 28 Feb 2024 12:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED55C14A4FC;
+	Wed, 28 Feb 2024 12:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kqOkEQje";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Gm/t/JwN"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UEJL73yD";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="94teTech"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B78145B3F;
-	Wed, 28 Feb 2024 12:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676E1148FF4;
+	Wed, 28 Feb 2024 12:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709124805; cv=none; b=HwTM7icLyvg+32HNggbyoBmT9nYNMaBVYyBs4urpO6dv26xQ4w6fTMqegfgzA8eQRj6AVUuVDEno89Bg+YM7VAZdXqwe9bhbBaIxX5+8PM6ZLwsVXO+V82WRl7yzlZzDAULwdGIlAUXP5LL1DEcV4YVoeC2G8zoyNsqgaDeaKIo=
+	t=1709124806; cv=none; b=Z66rYL3dmxzXHHc6aJMEJVgj3ifjXce84GAhtBwHro9oVa4E9YXMFkE4jmHcUIEz8eJ5l97BNnOgdVm+h+ROeEQE290kgBPuU5ApeEfOneYcY2XZscdEJDxE+C+DTeqaGsJ2DKgxb4jTY/kX7kaBWHqiB7fJ0wVZ73xIy1mDTW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709124805; c=relaxed/simple;
-	bh=6k+f8/0gP5Urva2n7YxmF16wMkG53s7JaD2SelmsFRc=;
+	s=arc-20240116; t=1709124806; c=relaxed/simple;
+	bh=C3vOKNNRVeN2kWDi7R/yUhn0sjrmnGVWSAwCCZmLsUw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=RXyQ1EWjEK9znkXHN49pubjm/oL7CdiHM74Rqx0J95nV0iCBvrC2Qkwb/7GAdo9J3AxlX7GOdOrv9Zh8W0UCG7YjBNT4h7+UI6Uifb3EdDU09+EbqYLMhHPcwx2uCjszn3SuQhqSiq+okb6KCuzHWsnF/WVSC3EN2lDghruTBsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kqOkEQje; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Gm/t/JwN; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=s3D62EMDa2esr3dQnF4/G4h5KMcT2doT3v7/406lvl/k9MUoBECxKNy4I8Vy2na9ZyQookVbeafOHLy4C4lJv/BJuQQlmJVbma32jXqNTlzwOMlgygR99loIYp9wMQXvh8f1QW/ub471y97sMdnBnHnVkqvHJNeyhm98fGnzizA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UEJL73yD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=94teTech; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 28 Feb 2024 12:53:21 -0000
+Date: Wed, 28 Feb 2024 12:53:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709124801;
+	s=2020; t=1709124803;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2Q7xoT5JrHZ8lCIiZEHNCxpQt53U9h/XuGMGzFwQLbQ=;
-	b=kqOkEQje5dXWojyFmHDVoudsLXkouinjhHh/ONZ6M0zR2tRS/zReuXp26tn1Q362Q4SFfi
-	DKqAK9Zzu8MZys1940RSZ/1aP4FZdJpREyIjoWe9JolgEIKbftWAJkH+yqezUl9hScx1ka
-	MBO7sFElsFJMGv9PSJTmjQdSrlPIR5CYdSwQMioulpmKpk2TFTONb02e9Dl7Sn21RJZPGi
-	N+EY/4KugaHXeCfSo+g4dsqGw0ZFayuvaXT/f/sXQuI2vJxTUHyzKMBv6g3mf4eqW1gpR8
-	/vn0Jk6sUHcaREVOF5tE8jCm2CywNQbR+71U3vmgOdAjmR85c01shYbMmlloxQ==
+	bh=QkfdDJ39k9nOfQhuzJnliw8RyOAojcJmrIWCgIKx7Q4=;
+	b=UEJL73yDG/2ara8SPcY4ceh24+o+MPechCmOxbyFQ1C+b6h4BppEJ9KVpTF5m75JQHU5se
+	ki2p7n/vxItBit+ifv8ebQXlYNtsmb07Nt0KJmvMdwSEx8Ut01Ma/AqDkHagpq81DsNwYe
+	gG0sl0uIITChwTYpq4LZf1+IL8LwRRDK1bCr7Kk6yh3HkkXWSx27yjdAD+kKTSkLDRYaho
+	sIT/1b6ev62xA4z3mUo0RchQ7EK7EgrFODGBbj9nVZV1V6mz1eTU5N2igbVmL4FbQ+ig7k
+	Gr4PYtTz/tZTZH021lDhZuVnN+Q/npwJSKfQXOhw4lvFDMym4xhzm1Ks+HQH4w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709124801;
+	s=2020e; t=1709124803;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2Q7xoT5JrHZ8lCIiZEHNCxpQt53U9h/XuGMGzFwQLbQ=;
-	b=Gm/t/JwNUX09726zt4hUHQryQMiJ07JvMhs/2IoD+m2KEjDxSzKSWpTj5VhrXoG8Zi2arX
-	FKFt3giTD3fu2rAQ==
+	bh=QkfdDJ39k9nOfQhuzJnliw8RyOAojcJmrIWCgIKx7Q4=;
+	b=94teTech2HnXFs1VXoigDJD/ONMVvQF9w8+xxdgeRDFM0NKxoroat/W8+aWSCMGNbv5CPV
+	pDGnqsvWJI54PPBw==
 From: "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/rwsem: Make DEBUG_RWSEMS and PREEMPT_RT
- mutually exclusive
+Subject: [tip: locking/core] locking/mutex: Simplify <linux/mutex.h>
 Cc: Waiman Long <longman@redhat.com>, Ingo Molnar <mingo@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240222150540.79981-5-longman@redhat.com>
-References: <20240222150540.79981-5-longman@redhat.com>
+ Boqun Feng <boqun.feng@gmail.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240222150540.79981-3-longman@redhat.com>
+References: <20240222150540.79981-3-longman@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170912480104.398.12346476579749271464.tip-bot2@tip-bot2>
+Message-ID: <170912480286.398.2593451967158120773.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,49 +81,65 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     f22f71322a18e90e127f2fc2c11cc2d5191bc4c6
-Gitweb:        https://git.kernel.org/tip/f22f71322a18e90e127f2fc2c11cc2d5191bc4c6
+Commit-ID:     d6cac0b6b0115fd0a5f51a49401473626e4e4fe7
+Gitweb:        https://git.kernel.org/tip/d6cac0b6b0115fd0a5f51a49401473626e4e4fe7
 Author:        Waiman Long <longman@redhat.com>
-AuthorDate:    Thu, 22 Feb 2024 10:05:40 -05:00
+AuthorDate:    Thu, 22 Feb 2024 10:05:38 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 28 Feb 2024 13:08:38 +01:00
+CommitterDate: Wed, 28 Feb 2024 13:08:37 +01:00
 
-locking/rwsem: Make DEBUG_RWSEMS and PREEMPT_RT mutually exclusive
+locking/mutex: Simplify <linux/mutex.h>
 
-The debugging code enabled by CONFIG_DEBUG_RWSEMS=y will only be
-compiled in when CONFIG_PREEMPT_RT isn't set. There is no point to
-allow CONFIG_DEBUG_RWSEMS to be set in a kernel configuration where
-CONFIG_PREEMPT_RT is also set. Make them mutually exclusive.
+CONFIG_DEBUG_MUTEXES and CONFIG_PREEMPT_RT are mutually exclusive. They
+can't be both set at the same time.  Move up the mutex_destroy() function
+declaration and the __DEBUG_MUTEX_INITIALIZER() macro above the "#ifndef
+CONFIG_PREEMPT_RT" section to eliminate duplicated mutex_destroy()
+declaration.
+
+Also remove the duplicated mutex_trylock() function declaration in the
+CONFIG_PREEMPT_RT section.
 
 Signed-off-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240222150540.79981-5-longman@redhat.com
+Link: https://lore.kernel.org/r/20240222150540.79981-3-longman@redhat.com
 ---
- lib/Kconfig.debug | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/mutex.h | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 975a07f..cb695bc 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1303,7 +1303,7 @@ config PROVE_LOCKING
- 	select DEBUG_SPINLOCK
- 	select DEBUG_MUTEXES if !PREEMPT_RT
- 	select DEBUG_RT_MUTEXES if RT_MUTEXES
--	select DEBUG_RWSEMS
-+	select DEBUG_RWSEMS if !PREEMPT_RT
- 	select DEBUG_WW_MUTEX_SLOWPATH
- 	select DEBUG_LOCK_ALLOC
- 	select PREEMPT_COUNT if !ARCH_NO_PREEMPT
-@@ -1426,7 +1426,7 @@ config DEBUG_WW_MUTEX_SLOWPATH
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index 7e208d4..67edc4c 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -32,11 +32,9 @@
+ # define __DEP_MAP_MUTEX_INITIALIZER(lockname)
+ #endif
  
- config DEBUG_RWSEMS
- 	bool "RW Semaphore debugging: basic checks"
--	depends on DEBUG_KERNEL
-+	depends on DEBUG_KERNEL && !PREEMPT_RT
- 	help
- 	  This debugging feature allows mismatched rw semaphore locks
- 	  and unlocks to be detected and reported.
+-#ifndef CONFIG_PREEMPT_RT
+-
+ #ifdef CONFIG_DEBUG_MUTEXES
+ 
+-#define __DEBUG_MUTEX_INITIALIZER(lockname)				\
++# define __DEBUG_MUTEX_INITIALIZER(lockname)				\
+ 	, .magic = &lockname
+ 
+ extern void mutex_destroy(struct mutex *lock);
+@@ -49,6 +47,7 @@ static inline void mutex_destroy(struct mutex *lock) {}
+ 
+ #endif
+ 
++#ifndef CONFIG_PREEMPT_RT
+ /**
+  * mutex_init - initialize the mutex
+  * @mutex: the mutex to be initialized
+@@ -101,9 +100,6 @@ extern bool mutex_is_locked(struct mutex *lock);
+ 
+ extern void __mutex_rt_init(struct mutex *lock, const char *name,
+ 			    struct lock_class_key *key);
+-extern int mutex_trylock(struct mutex *lock);
+-
+-static inline void mutex_destroy(struct mutex *lock) { }
+ 
+ #define mutex_is_locked(l)	rt_mutex_base_is_locked(&(l)->rtmutex)
+ 
 
