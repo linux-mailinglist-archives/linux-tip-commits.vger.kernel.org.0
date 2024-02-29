@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-645-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-647-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC37286BA60
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 23:01:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7CA586CFAE
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Feb 2024 17:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19C881C22BF8
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Feb 2024 22:01:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99ADF28243A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Feb 2024 16:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D4D15CD64;
-	Wed, 28 Feb 2024 22:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9550A2E3E1;
+	Thu, 29 Feb 2024 16:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="i8BvkiZ1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3oCjP3Uj"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CjLc25ko";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ebeWzAvW"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC78376F0A;
-	Wed, 28 Feb 2024 22:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF41915E9C;
+	Thu, 29 Feb 2024 16:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709157620; cv=none; b=XbJp5kMfJxKeYNHADpt3LNaxz3kfsoQ2CgQkc7DH9GzW9Zoaez0Gkmeg+zcrHFXbAaX3ZSIFQ4PSTf92zCmU5pNkmabi1BWoiIpY+32m2GfDLQtM3kKC7nEeuStFYFAol8Zi778q7dphPPTOfuv0K640nwKlEjaRrNh7llQggt4=
+	t=1709225411; cv=none; b=A3nG5gWFGoCh7JkDgE3xyJ1lYplQzdQxnFV2dMjU+EWqDWZEhcUJtzwkVywbjLQHONxQUyY2D5noVAmGPGSEDWgUsviJAvbOflicrWjlsc7LU9RxPMBG0Hclz+bQR82cF/ybQ18W3xOyVDBDoUY4lDsq/CwCWCmhJj85dmgu5ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709157620; c=relaxed/simple;
-	bh=ryJpJr++JH9ILBZsDiPvJLWA6NmY2BKqhb2LWNtd2yY=;
+	s=arc-20240116; t=1709225411; c=relaxed/simple;
+	bh=rWUaseR81wvy9pQj6pxF0e93kmdFfGncVpd5MSPjsQM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=r3jU0dwYgf7zgZVCY0D5FOM2NXOnMWyIy9q0evGRKpoO48nCJqVPckHQepcnJ5dDpzNyf/mFQ4+KfAZroYfgOpq/D6/sMrR5JeazsqGRdh+7Gh3q8cYhdcSm4zerCliHQcDicHnXCU7xsBRH5Lfk+iNMCU8DHOK1UCn/OPUiyD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=i8BvkiZ1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3oCjP3Uj; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=TT57rWcJQwC4nENMsUBOG3Mja7mwVMOOZVoYlJvj/BXgRfviQwcwP7cvQzwe6mL492MkbmuVAm2ssj7SrH7Pq7PMRNtQT4xCD+ivwf1HmNFmiMJVJH/7j/HnVQcfuRL6Iw8yfbe4gNx9Btj5wzFDyLCviXSW8rEA6XGgqrEdmu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CjLc25ko; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ebeWzAvW; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 28 Feb 2024 22:00:12 -0000
+Date: Thu, 29 Feb 2024 16:50:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709157613;
+	s=2020; t=1709225406;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AqnqoMpIl5k6Jdqh1nfd2HSKhwv+pZA6RL42OGDprlA=;
-	b=i8BvkiZ1u31+7+nVv4iMK6574b+QKmFyumTA0z64UXrn9Lxia1EP6+LNgi4Wkpp+sBOoJc
-	Cfs0NMAjoF2dTbUHF98Dsx6MxShBMzv718xKpqvEy46iS8oAXSosAPccneQedYtrrD9KZi
-	TFNvotEk+nPmeEC/WWXsFa8GOOZektQ9DM0VCBDL/Ld0O8uPfXI9QYeXdAhAyRHaJ6c8en
-	ya9pU7wWsVUROVJR01WCbEWHUA6z5grEA7eydbZlJSJ6fkTpqrXhq6eYQaI/vukLVSvpw5
-	S3qrLfY2MKJ3TUJ7NazIbvUfksRI0i/LVvE2miLl+5ugGq8QnNNdMhW0Y9ctfw==
+	bh=Ntgi7xLCnL2L+zsjgEdnQnuYJbDjiVZzciWv6UBfwzk=;
+	b=CjLc25koOq2k218ZXKLPcDhBapESci+wOfZxCVMTIC0Tf/tK4RDD/FJzF9OzixNc+wOGuD
+	QBjUPbuyK+7YBhQhhZAuS61Amfp52XvQD/qg0s3g939pJWJdFv2zwXwNEoIsKnmwyzg3c4
+	ZMUHX+Jq8h+6xgiGU6Wzqu1FoazQ419eo15R+DdRDZ5Ul2SG/dSdHjh92IITWoi0DU3ePv
+	02NtsjwXjEMIzQkizRcI467qaN64v0YQMGuv4CIDqKOJ1gHvbubLtU+rkU9VRkn3sX4ElY
+	9Dbhyim7xGRzonOPbNQ0WtGyIrpc9Xbm8A1cCjEBJ/Zhg1YHMqUWKv/8suxAmQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709157613;
+	s=2020e; t=1709225406;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AqnqoMpIl5k6Jdqh1nfd2HSKhwv+pZA6RL42OGDprlA=;
-	b=3oCjP3UjNNbAHtHXbkN9aI3a1KBzXGmKO7vT/2icXl1u4ICHB9R+vxghIjdLcwEK/FaNlh
-	dMDqueWfCU2wWzAg==
-From: "tip-bot2 for Shrikanth Hegde" <tip-bot2@linutronix.de>
+	bh=Ntgi7xLCnL2L+zsjgEdnQnuYJbDjiVZzciWv6UBfwzk=;
+	b=ebeWzAvWL+RUWop5sPZWFqMnNj3S/ZcLxxHMYiPe6yYUKCgErq7hIKDkXLA7RrTBZmkaCV
+	AL+dh/OyWxM3mhAg==
+From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Use existing helper functions to access
- ->avg_rt and ->avg_dl
-Cc: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>,
- Ingo Molnar <mingo@kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>,
+Subject:
+ [tip: timers/core] tick/sched: Fix build failure for CONFIG_NO_HZ_COMMON=n
+Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240101154624.100981-2-sshegde@linux.vnet.ibm.com>
-References: <20240101154624.100981-2-sshegde@linux.vnet.ibm.com>
+In-Reply-To: <20240228123850.3499024-1-arnd@kernel.org>
+References: <20240228123850.3499024-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170915761279.398.5988378021122454655.tip-bot2@tip-bot2>
+Message-ID: <170922540581.398.14798351635404206279.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,60 +79,55 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     8b936fc1d84f7d70009ea34d66bbf6c54c09fae7
-Gitweb:        https://git.kernel.org/tip/8b936fc1d84f7d70009ea34d66bbf6c54c09fae7
-Author:        Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
-AuthorDate:    Mon, 01 Jan 2024 21:16:23 +05:30
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 28 Feb 2024 15:11:14 +01:00
+Commit-ID:     a184d9835a0a689261ea6a4a8dbc18173a031b77
+Gitweb:        https://git.kernel.org/tip/a184d9835a0a689261ea6a4a8dbc18173a031b77
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Wed, 28 Feb 2024 13:38:41 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 29 Feb 2024 17:41:29 +01:00
 
-sched/fair: Use existing helper functions to access ->avg_rt and ->avg_dl
+tick/sched: Fix build failure for CONFIG_NO_HZ_COMMON=n
 
-There are helper functions called cpu_util_dl() and cpu_util_rt() which give
-the average utilization of DL and RT respectively. But there are a few
-places in code where access to these variables is open-coded.
+In configurations with CONFIG_TICK_ONESHOT but no CONFIG_NO_HZ or
+CONFIG_HIGH_RES_TIMERS, tick_sched_timer_dying() is stubbed out,
+but still defined as a global function as well:
 
-Instead use the helper function so that code becomes simpler and easier to
-maintain later on.
+kernel/time/tick-sched.c:1599:6: error: redefinition of 'tick_sched_timer_dying'
+ 1599 | void tick_sched_timer_dying(int cpu)
+      |      ^
+kernel/time/tick-sched.h:111:20: note: previous definition is here
+  111 | static inline void tick_sched_timer_dying(int cpu) { }
+      |                    ^
 
-No functional changes intended.
+This configuration only appears with ARM CONFIG_ARCH_BCM_MOBILE,
+which should not actually select CONFIG_TICK_ONESHOT.
 
-Signed-off-by: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20240101154624.100981-2-sshegde@linux.vnet.ibm.com
+Adjust the #ifdef for the stub to match the condition for building the
+tick-sched.c file for consistency with the definition and to avoid
+the build regression.
+
+Fixes: 3aedb7fcd88a ("tick/sched: Remove useless oneshot ifdeffery")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240228123850.3499024-1-arnd@kernel.org
+
 ---
- kernel/sched/fair.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/time/tick-sched.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 8e30e2b..127e727 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9237,10 +9237,10 @@ static inline bool cfs_rq_has_blocked(struct cfs_rq *cfs_rq)
+diff --git a/kernel/time/tick-sched.h b/kernel/time/tick-sched.h
+index 58d8d1c..e11c4dc 100644
+--- a/kernel/time/tick-sched.h
++++ b/kernel/time/tick-sched.h
+@@ -105,7 +105,7 @@ struct tick_sched {
+ extern struct tick_sched *tick_get_tick_sched(int cpu);
  
- static inline bool others_have_blocked(struct rq *rq)
- {
--	if (READ_ONCE(rq->avg_rt.util_avg))
-+	if (cpu_util_rt(rq))
- 		return true;
- 
--	if (READ_ONCE(rq->avg_dl.util_avg))
-+	if (cpu_util_dl(rq))
- 		return true;
- 
- 	if (thermal_load_avg(rq))
-@@ -9506,8 +9506,8 @@ static unsigned long scale_rt_capacity(int cpu)
- 	 * avg_thermal.load_avg tracks thermal pressure and the weighted
- 	 * average uses the actual delta max capacity(load).
- 	 */
--	used = READ_ONCE(rq->avg_rt.util_avg);
--	used += READ_ONCE(rq->avg_dl.util_avg);
-+	used = cpu_util_rt(rq);
-+	used += cpu_util_dl(rq);
- 	used += thermal_load_avg(rq);
- 
- 	if (unlikely(used >= max))
+ extern void tick_setup_sched_timer(bool hrtimer);
+-#if defined CONFIG_NO_HZ_COMMON || defined CONFIG_HIGH_RES_TIMERS
++#if defined CONFIG_TICK_ONESHOT
+ extern void tick_sched_timer_dying(int cpu);
+ #else
+ static inline void tick_sched_timer_dying(int cpu) { }
 
