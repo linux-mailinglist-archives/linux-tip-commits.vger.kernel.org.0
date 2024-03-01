@@ -1,67 +1,68 @@
-Return-Path: <linux-tip-commits+bounces-654-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-655-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2580F86E803
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Mar 2024 19:12:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7460286E88B
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Mar 2024 19:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC17E28ABC1
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Mar 2024 18:12:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D2AB2882F3
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Mar 2024 18:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C47182B9;
-	Fri,  1 Mar 2024 18:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72CF25632;
+	Fri,  1 Mar 2024 18:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QWxSE209";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3UkAs8qO"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AuhXK4T4";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YKQQFxEZ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB98208A1;
-	Fri,  1 Mar 2024 18:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360DC27446;
+	Fri,  1 Mar 2024 18:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709316766; cv=none; b=aZK0ZN5aHJhVn/RR/CL1e70S8Pp+GYAbMaR4YicD5jI34hcwmOS5HaxJxQiVI8JvLfVxGxFPhd+CcFuaLFEkrHzzcz0o0D6eOg2MOOpyS1kf3QYT8KuBC/2PnxuZbGNq3pLblBJOjZ3XdlMxUa3Iz9ukBrWC8ClkE26KMAN9/Ig=
+	t=1709318243; cv=none; b=dkvNLBJ6b1a/iZF74xCj7vIrwHDomDi95le2+9buFipQsm+9IKWhH+kErLoRy6Elmg73dt5aIEpoB1j1rrSpfaXEbYk+8wpoucSkan3i1Z9pDb5rFLjpCSPxUWJC8aftfjoH12R4E6jxIaudC/dftO3EAwvDFS/llRBJq2YWtRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709316766; c=relaxed/simple;
-	bh=oueEcJRnZyhbqzXUaS1eEmNxNo1Xj9ypRxWVKIr6bmU=;
+	s=arc-20240116; t=1709318243; c=relaxed/simple;
+	bh=tLz2ila8AXbLQK+R/ALei/RIv7nTsOOt25XgvgEz+7k=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=DltOGQcwU2XSjEcRqF4JkfAfG9BrVpX8zE5nXrae5mgQcPeD19AlZjj8KYfrd+tJsNpY1pjRERWTVhn45PvLaMbHIZ2J/X/jsNaWrjFUMw4MS1HLAqS0lvAmQTYpvvzjdpWrxVcyBfvhBsj0RIr/ibm8WDLDLMbTHBx8eCKQzPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QWxSE209; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3UkAs8qO; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=r8/X+l1c6pGCUhLXkBwNlBuE3/Fo801joRLlo5RA25RVBnu4bz4XjEZnGz1DnYv87qyaMJr3EpIMvAEf7MXhS/o3JTVlVXZ7ybKesROgXpGVFwN3Ig/gaZPJXhrhRPKA58l0xD1e42IfArf5/ZPJ3BOhUfyTFTq1kKiU7g3eV8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AuhXK4T4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YKQQFxEZ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 01 Mar 2024 18:12:41 -0000
+Date: Fri, 01 Mar 2024 18:37:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709316762;
+	s=2020; t=1709318239;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sNV8KxEcY0RQYv76aLTq+vG9jJkyRHyAEpxQDWRMllQ=;
-	b=QWxSE209qu6b+3Boz1/OytqozQMaJ/vgqmgoBFnAguhhknEDs9N36w24V7UpO6FFQx03su
-	lAyMAAC+gZa7k9dMKqb+P1qNTM2k3Oavrwq9q3x5J7Cr10lyFIG7l9vvm/yAm/a87JOZlo
-	ggiJ+WJW1oIc45Iwk06oKaWuRoLFe1hPiiL/0Qd8jKRwlnVE4u/4WgI8AfYsrvd0y93cKN
-	hnC6UTcOxWDIONcYtTJ2hlRudKI0FW3zSLHvYNo2NDEuOqFvvrMtY3IhEGewmc4YEhmsoc
-	07+979NM1SXr9WUgUGGlWjYMUmI6361KNkqjiEcKYK3tHHWvzJUzxjL9JZoLQA==
+	bh=Jj4sN7cWDxyUWyuDz4KI62wudm769lIrwf7+u+SdHbg=;
+	b=AuhXK4T4F8k9ZH/br6/SEP+g1xVXojbWR8XGLQFdhY7+/y3tCYc7BSFWdmhaIbZxIXpfQA
+	VexTRGm4zOMM3WhYc2fojsCEFmSMBmifnwJnGxA6i4aGgdMSiSU3+mQUxg8h33OMUD7X/g
+	TgKs/4YG1iDz0KUP+mnaaJyFxlGZjnywpG9A61D8bvCww88K6Pp5Vn67869nZHL9wetSd7
+	SI7XJB41A8xTgQXLGoMOePC3xOHoypD3ULElg0oIHWKZW1z0IQ4mKCma4L6Py2UbvWaEbn
+	qTAHyejLC5fAvAPjkseApi9ZFpJEW6zJ1DuNUNNpN4gfyby5rRr+RcGEO0+ihg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709316762;
+	s=2020e; t=1709318239;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sNV8KxEcY0RQYv76aLTq+vG9jJkyRHyAEpxQDWRMllQ=;
-	b=3UkAs8qOiQrSyJmPDNTnpC7vQwA1lZbxyFUW6w2p1SeqdbwpclTCEehN9mLdJ1xHVSR+D5
-	eA1JE0+i5RsO05DQ==
+	bh=Jj4sN7cWDxyUWyuDz4KI62wudm769lIrwf7+u+SdHbg=;
+	b=YKQQFxEZUMqCfHu7Bj9UCi6N6EkOrqNspQi5fTja3UdBcFzVyChPsKEhv8mvlVgBLHHLNx
+	oepeoEX60EBxWBDw==
 From: "tip-bot2 for Jiri Bohac" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject: [tip: x86/urgent] x86/e820: Don't reserve SETUP_RNG_SEED in e820
 Cc: Jiri Bohac <jbohac@suse.cz>, "Borislav Petkov (AMD)" <bp@alien8.de>,
-  <stable@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+ Dave Hansen <dave.hansen@linux.intel.com>,  <stable@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 In-Reply-To: <ZbmOjKnARGiaYBd5@dwarf.suse.cz>
 References: <ZbmOjKnARGiaYBd5@dwarf.suse.cz>
 Precedence: bulk
@@ -70,7 +71,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170931676159.398.7794383342527796776.tip-bot2@tip-bot2>
+Message-ID: <170931823840.398.408977952832718323.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,12 +81,12 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     1a2cbc38b74f10c11837f88475d683c69c8503f6
-Gitweb:        https://git.kernel.org/tip/1a2cbc38b74f10c11837f88475d683c69c8503f6
+Commit-ID:     7fd817c906503b6813ea3b41f5fdf4192449a707
+Gitweb:        https://git.kernel.org/tip/7fd817c906503b6813ea3b41f5fdf4192449a707
 Author:        Jiri Bohac <jbohac@suse.cz>
 AuthorDate:    Wed, 31 Jan 2024 01:04:28 +01:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 01 Mar 2024 08:34:25 -08:00
+CommitterDate: Fri, 01 Mar 2024 10:27:20 -08:00
 
 x86/e820: Don't reserve SETUP_RNG_SEED in e820
 
@@ -105,6 +106,7 @@ as the new entries cannot be added to the e820 map.
 Fixes: 68b8e9713c8e ("x86/setup: Use rng seeds from setup_data")
 Signed-off-by: Jiri Bohac <jbohac@suse.cz>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: <stable@kernel.org>
 Link: https://lore.kernel.org/r/ZbmOjKnARGiaYBd5@dwarf.suse.cz
 ---
