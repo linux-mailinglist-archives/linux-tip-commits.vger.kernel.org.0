@@ -1,76 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-669-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-671-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60402870110
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Mar 2024 13:16:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0F887078A
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Mar 2024 17:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FED31C2143A
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Mar 2024 12:16:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09BFAB25950
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Mar 2024 16:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988043D96B;
-	Mon,  4 Mar 2024 12:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578E85C611;
+	Mon,  4 Mar 2024 16:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0RWeU0vn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZgmJISvL"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EoFG5Vy1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="p+YJXaBj"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C5A3D3A1;
-	Mon,  4 Mar 2024 12:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987B74D9FA;
+	Mon,  4 Mar 2024 16:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709554512; cv=none; b=ungOt2VJmCbyP9Bqs36N9EpDDYuw3E4SAL0wLDWlpam8DwKvZd5hkl53CZjCTFSzZ+zd2yu42BxjuOxk1vGubgNowpBEiV9TihSFl12GI5GIyfEqlxAdFgWGo4Q6j4TM4FfAenKdCasJBU41dLanUfDWzwoFsCl113Apg8bEw5E=
+	t=1709571083; cv=none; b=jcLubqYlpj8zIhHbCPHjKKW3x0qt0arg38gIErF7Owg4zCG27zN0vU5Ai+VXw5zDtAwrOwCrFMk9amib3+bAfa4I/9+9uwXtkSBg0V4Vg40xxrYZ9T3pKwgIM5Y+iknQceF+BhdUbkyl2iH22w3ZCRkUghL3sfUqd6rl+GJSa6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709554512; c=relaxed/simple;
-	bh=24gGEBD85uMJ6hyJwnGdczNqQILCUNQ6WPuUDDHuvg8=;
+	s=arc-20240116; t=1709571083; c=relaxed/simple;
+	bh=zbedetWYI+wnqCi1nmRH++kTU2cA0anbJccqB868Fq4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZsnwiEYHFGMq6jJNyg1M2h/hmsAxE8lJ/Z8eIie+Vy7DgZ29lilLGHtWQ8mWMb3opo9As1iJB1zooc0vNK5pt53jWyM3RL6ecLCb5mywRm8eMDHOggka7NZehhAdm4tFUZd1XNC3cZuD2sEUAb+SumrqAUq0fh1KEMuKAwslKkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0RWeU0vn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZgmJISvL; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=IMmKYe0tWsWkzL9NTh650heNeo4YDRVIYKQDDI0yPyIPrGfaQ0Ncn75rWPvd71/3grAjnLrActQN4RumaCbzUroP4mH252uW7EY3UiR/DFT1KQeot+4FvvHs+2qyUEiuUYhmLX+IKeem6b6mTzRHPzQ9UpLoJVWjySPJVVMLaEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EoFG5Vy1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=p+YJXaBj; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 04 Mar 2024 12:15:08 -0000
+Date: Mon, 04 Mar 2024 16:51:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709554509;
+	s=2020; t=1709571074;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PYjQL1m6PdNqMGrIubduBfk/LF9c7kH7eRNu+74sspE=;
-	b=0RWeU0vn3h32AHT/DcjLl0ONM2Iy3RY9b0W8mnHim2uSctMV63r/IR4i8plzO4YSSfjV1R
-	DBJurKo9Q5IQuPKKTs6sMWnXCgvcZ1V+rKmDkxVEV5rKQQrplzDnL4Wy7IcVCFPyWG6TY1
-	p1VTn/CKwVKDHiLcdiEAGFM7NtU+WXqjavMGfIpdVChtgpMWWdr2OPNGjB/TzEZrQNJokv
-	r/SCApn046Td/FbglVF/N+YoqGQYQSMzUg3A7+iPCHyKGQmh2C5k/2XQLfRQhlCGETkQYQ
-	v2QyWJFEgGy/oKxbLFO5BNRFs2Z6Q42JguL3slH88WAtCzkdlHjK8syDqwVKTg==
+	bh=N/oxIPCp3dJtSzJIAQ62RazA/EZBb/7hLFyOpf5dOng=;
+	b=EoFG5Vy1B1SCUUKdEpjgyXybvUBJyOyIK0O6fZeNae9audmnfFr4tOxk1pjxXPBJKoUvAg
+	tUtFKSvkG4bJ2hUcUTPY34kKmimJMljIoKHliYv3J7Y7coDUjMSFgT4jOVs2pMzWtMy31S
+	6UgDpIZCnf/bSMDhvA3p1tPc2zdXeS856olNCAFatzKfKSLiqb1TEoIWRA3Dv3pPU0nGQk
+	pv1trdd+50/ROZAnN7dNyuu4NfBCNxAjTkpFm1jIzbaA5THjPIf0mgNxd+ldhOk9/GvMo4
+	PvqnpNAnJVI2dCb0GETXQiqlExGakGXpeJh0LxWoB1suc0gmlZtlaovdBHRelQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709554509;
+	s=2020e; t=1709571074;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PYjQL1m6PdNqMGrIubduBfk/LF9c7kH7eRNu+74sspE=;
-	b=ZgmJISvLACO2cxHpEHLaaO4wAoCKCsRqyTh6tHC5YT8V8nfFFEgwaEMvu2y46h738N5A4B
-	/092ONa6HeHod1BQ==
+	bh=N/oxIPCp3dJtSzJIAQ62RazA/EZBb/7hLFyOpf5dOng=;
+	b=p+YJXaBj8embbcKurIyKwCVhaUSXwaHo3Zd8rUKZiQH4e1+Y8Jl5uSgCmTO+hgw4bf2fQr
+	KlaZzR4M8C/X8qCw==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] perf/x86/amd/uncore: Fix __percpu annotation
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240304005104.394845326@linutronix.de>
-References: <20240304005104.394845326@linutronix.de>
+Subject: [tip: x86/core] x86/idle: Select idle routine only once
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <87edcu6vaq.ffs@tglx>
+References: <87edcu6vaq.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170955450855.398.7376903454873999769.tip-bot2@tip-bot2>
+Message-ID: <170957107241.398.4180780999750222432.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,46 +79,103 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     9eae297d5d8d87738a14010af62b2b64b9d98097
-Gitweb:        https://git.kernel.org/tip/9eae297d5d8d87738a14010af62b2b64b9d98097
+Commit-ID:     35ce64922c8263448e58a2b9e8d15a64e11e9b2d
+Gitweb:        https://git.kernel.org/tip/35ce64922c8263448e58a2b9e8d15a64e11e9b2d
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 04 Mar 2024 11:12:18 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 04 Mar 2024 11:58:36 +01:00
+AuthorDate:    Wed, 28 Feb 2024 23:20:32 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 04 Mar 2024 17:39:24 +01:00
 
-perf/x86/amd/uncore: Fix __percpu annotation
+x86/idle: Select idle routine only once
 
-The __percpu annotation in struct amd_uncore is confusing Sparse:
+The idle routine selection is done on every CPU bringup operation and
+has a guard in place which is effective after the first invocation,
+which is a pointless exercise.
 
-  uncore.c:649:10: sparse: warning: incorrect type in initializer (different address spaces)
-  uncore.c:649:10: sparse:    expected void const [noderef] __percpu *__vpp_verify
-  uncore.c:649:10: sparse:    got union amd_uncore_info *
-
-The reason is that the __percpu annotation sits between the '*'
-dereferencing operator and the member name.
-
-Move it before the dereferencing operator to cure this.
+Invoke it once on the boot CPU and mark the related functions __init.
+The guard check has to stay as xen_set_default_idle() runs early.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240304005104.394845326@linutronix.de
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/87edcu6vaq.ffs@tglx
 ---
- arch/x86/events/amd/uncore.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/processor.h | 2 +-
+ arch/x86/kernel/cpu/common.c     | 4 ++--
+ arch/x86/kernel/process.c        | 8 +++++---
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
-index 5bf03c5..4ccb8fa 100644
---- a/arch/x86/events/amd/uncore.c
-+++ b/arch/x86/events/amd/uncore.c
-@@ -71,7 +71,7 @@ union amd_uncore_info {
- };
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 1188e8b..523c466 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -558,7 +558,7 @@ static inline void load_sp0(unsigned long sp0)
  
- struct amd_uncore {
--	union amd_uncore_info * __percpu info;
-+	union amd_uncore_info  __percpu *info;
- 	struct amd_uncore_pmu *pmus;
- 	unsigned int num_pmus;
- 	bool init_done;
+ unsigned long __get_wchan(struct task_struct *p);
+ 
+-extern void select_idle_routine(const struct cpuinfo_x86 *c);
++extern void select_idle_routine(void);
+ extern void amd_e400_c1e_apic_setup(void);
+ 
+ extern unsigned long		boot_option_idle_override;
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 8f367d3..5c72af1 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1938,8 +1938,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+ 	/* Init Machine Check Exception if available. */
+ 	mcheck_cpu_init(c);
+ 
+-	select_idle_routine(c);
+-
+ #ifdef CONFIG_NUMA
+ 	numa_add_cpu(smp_processor_id());
+ #endif
+@@ -2344,6 +2342,8 @@ void __init arch_cpu_finalize_init(void)
+ {
+ 	identify_boot_cpu();
+ 
++	select_idle_routine();
++
+ 	/*
+ 	 * identify_boot_cpu() initialized SMT support information, let the
+ 	 * core code know.
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index ccaacc7..f0166b3 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -853,8 +853,9 @@ void __noreturn stop_this_cpu(void *dummy)
+  * Do not prefer MWAIT if MONITOR instruction has a bug or idle=nomwait
+  * is passed to kernel commandline parameter.
+  */
+-static bool prefer_mwait_c1_over_halt(const struct cpuinfo_x86 *c)
++static __init bool prefer_mwait_c1_over_halt(void)
+ {
++	const struct cpuinfo_x86 *c = &boot_cpu_data;
+ 	u32 eax, ebx, ecx, edx;
+ 
+ 	/* If override is enforced on the command line, fall back to HALT. */
+@@ -908,7 +909,7 @@ static __cpuidle void mwait_idle(void)
+ 	__current_clr_polling();
+ }
+ 
+-void select_idle_routine(const struct cpuinfo_x86 *c)
++void __init select_idle_routine(void)
+ {
+ 	if (boot_option_idle_override == IDLE_POLL) {
+ 		if (IS_ENABLED(CONFIG_SMP) && smp_num_siblings > 1)
+@@ -916,10 +917,11 @@ void select_idle_routine(const struct cpuinfo_x86 *c)
+ 		return;
+ 	}
+ 
++	/* Required to guard against xen_set_default_idle() */
+ 	if (x86_idle_set())
+ 		return;
+ 
+-	if (prefer_mwait_c1_over_halt(c)) {
++	if (prefer_mwait_c1_over_halt()) {
+ 		pr_info("using mwait in idle threads\n");
+ 		static_call_update(x86_idle, mwait_idle);
+ 	} else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
 
