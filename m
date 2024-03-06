@@ -1,120 +1,208 @@
-Return-Path: <linux-tip-commits+bounces-685-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-686-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4B787326F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 10:23:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B57873801
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 14:43:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CD4B1C230BE
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 09:23:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 939231C20AFC
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 13:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86ED75DF03;
-	Wed,  6 Mar 2024 09:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC4412FB0F;
+	Wed,  6 Mar 2024 13:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mr6q31YU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SpZybAFY"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ku2SIWdj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8rsFia/T"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38AD5D91F;
-	Wed,  6 Mar 2024 09:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114F712D208;
+	Wed,  6 Mar 2024 13:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709716981; cv=none; b=BpQdLwV3lTqhqPNtJRZofbQmX+FwTRzgby/EfyLsFyfGNNnpD/e4gjbeFVIItK05GmWW2u0ewUbuaypVHeQk7rOaeVR1dgpsZKimuIFLeg22k9NhwMuLVZ+UIsB1npR/pkDAGXKpP0U+WxDMtWr3hTDlrcruuViFg2ZA4jzSxjA=
+	t=1709732578; cv=none; b=jwcxOn5z0XFsxastuvJFCA4KuroMXa2+3vNFx0CsqrUMnLZ9jgIFvVHBWXKEK7ofl1aO8WWPhwfybsAJwZPzvvh+oqzKOzDawRuqM4sK4KkKObeykZkDRhBtr66u/X/jj4HZDdX1Lvweu4/jwLy6VJerrUiDYWROXIdc4svXAzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709716981; c=relaxed/simple;
-	bh=ZoZAFpnXAIJuXfD4zTp2dyuISQoKk0qGZNiwVZw73xE=;
+	s=arc-20240116; t=1709732578; c=relaxed/simple;
+	bh=HVjMc8CVQ1jrgupstiVR9/S+aObbWibTgffHr+hczE0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=s0vE3rjPc/7RHanFfolduu/ZqR4jYy2LQVUKLmp9Jp+GTezFGgDGysxThv2FUMzR+XmycngLaFysyvWHye6wxCoVXC3qnoyrh7fO+Vbhq1zgcTFb+aocjTcRzawoRlcEBrcSdflil6qxiVKr5wYBmFBrk1aQxxkPiq2HqAfbLoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mr6q31YU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SpZybAFY; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=sZ7N/RF7A3BPh+SotVxlEOYfknmPFosS75TCvl+ebly2i3du6JSXltKyXyPmfCe++pRv3hXY77eZOFbLzNj8LT68rWOxo33xO2rjYBwDywgN+RVamPNYJCW1xd5maZG7wM+tRHK641PbQ9XjlGdwt5mF5/HuD1xcOuFp3vCx354=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ku2SIWdj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8rsFia/T; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 06 Mar 2024 09:22:53 -0000
+Date: Wed, 06 Mar 2024 13:42:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709716974;
+	s=2020; t=1709732575;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oCbaMdXFmHvzM3rg9VFcTTzEusauzL0ySMi6yjcgNhQ=;
-	b=Mr6q31YUxAlWI1xfEA8qHGjraDb77P2KCjJOmq8QyqrOWGCAJD9X1ONfP813NbA/uEmyfN
-	XIaxgKdJCxa68DtaBqgf5pEBXTOjke5eg4rIJztEd8JpY5gfBRSBVF7mPlS6PcxW2y6rqh
-	4lzBo2eJr+7Q6Zgzxx2WbIwjJoMfi1N1gj8vio5TRMWraolyOsPG4AixK2HkkH0bRf0No0
-	tShNDJteXFU1liJCiNPzD8C4przWc+tpoiI1yjDtZc2aW35m8B6hcpeB3FjFXR8UOczaYi
-	7kz/bEI/vF2FE88pE9p106PwGjApJb5F95fM5VQwZ3bp+Vvw9iBSIHTS1ueruw==
+	bh=Q/UQh+cWN1wv4y4EOOlV9B2v0eJnmk+ZsfSlS1RdISk=;
+	b=Ku2SIWdj4fmBTCge69/DtUPqxd3EtKDzw07ycUeRVaHxzwHZctVqWxSKL0+Td5vt2ix9Of
+	yWIVZSzt6oKpxhu8MIM1t3j4APHImKtADQDFsihf/WntKimtZoN73LmfW+0fj3ExUl9xLB
+	t7tWJ4cHdN5LJccwW1uhDxoK/51i3vfQA3xmt5RGTDXLL5r3u9jb+ImnVG0bqODnBFqYAv
+	unm4PmN8bMCeoA04y3B2JVjiTJDB90R7hC+VkFZ49Le8zQq5c8A3LcXj//MRdVxHxlj+lz
+	vBcwA//mmvd5oCjv7szufJmC2iaFt7kChtqmBt4nJBX8QRk7CU7SyqVkIrYslA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709716974;
+	s=2020e; t=1709732575;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oCbaMdXFmHvzM3rg9VFcTTzEusauzL0ySMi6yjcgNhQ=;
-	b=SpZybAFYk7aRKDh/5FSvT/APR7fGyl8+aiEake9f8gbylwNYUmzbCTWWfa3qXw2GWx2W3N
-	xLewN1lhLdHZqEDA==
-From:
- tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
+	bh=Q/UQh+cWN1wv4y4EOOlV9B2v0eJnmk+ZsfSlS1RdISk=;
+	b=8rsFia/TaIFBxCt/G/cTpGbPZaLlpWGhCIw3CNHD5UM/Aez21qVK3hUAE1NUflcsql7Mzp
+	HilJiSsLynVVBjBg==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cleanups] x86/nmi: Drop unused declaration of proc_nmi_enabled()
-Cc: linux@weissschuh.net, "Borislav Petkov (AMD)" <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240306-const-sysctl-prep-x86-v1-1-f9d1fa38dd2b@weissschuh.net>
-References: <20240306-const-sysctl-prep-x86-v1-1-f9d1fa38dd2b@weissschuh.net>
+Subject: [tip: x86/apic] x86/topology: Ignore non-present APIC IDs in a
+ present package
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <87a5nbvccx.ffs@tglx>
+References: <87a5nbvccx.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170971697378.398.205017146158091581.tip-bot2@tip-bot2>
+Message-ID: <170973257400.398.13676030407350802838.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     774a86f1c885460ade4334b901919fa1d8ae6ec6
-Gitweb:        https://git.kernel.org/tip/774a86f1c885460ade4334b901919fa1d8a=
-e6ec6
-Author:        Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-AuthorDate:    Wed, 06 Mar 2024 07:50:29 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 06 Mar 2024 10:13:33 +01:00
+Commit-ID:     f0551af021308a2a1163dc63d1f1bba3594208bd
+Gitweb:        https://git.kernel.org/tip/f0551af021308a2a1163dc63d1f1bba3594208bd
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 06 Mar 2024 12:17:02 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 06 Mar 2024 14:35:30 +01:00
 
-x86/nmi: Drop unused declaration of proc_nmi_enabled()
+x86/topology: Ignore non-present APIC IDs in a present package
 
-The declaration is unused as the definition got deleted.
+Borislav reported that one of his systems has a broken MADT table which
+advertises eight present APICs and 24 non-present APICs in the same
+package.
 
-Fixes: 5f2b0ba4d94b ("x86, nmi_watchdog: Remove the old nmi_watchdog").
-Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240306-const-sysctl-prep-x86-v1-1-f9d1fa38d=
-d2b@weissschuh.net
+The non-present ones are considered hot-pluggable by the topology
+evaluation code, which is obviously bogus as there is no way to hot-plug
+within the same package.
+
+As the topology evaluation code accounts for hot-pluggable CPUs in a
+package, the maximum number of cores per package is computed wrong, which
+in turn causes the uncore performance counter driver to access non-existing
+MSRs. It will probably confuse other entities which rely on the maximum
+number of cores and threads per package too.
+
+Cure this by ignoring hot-pluggable APIC IDs within a present package.
+
+In theory it would be reasonable to just do this unconditionally, but then
+there is this thing called reality^Wvirtualization which ruins
+everything. Virtualization is the only existing user of "physical" hotplug
+and the virtualization tools allow the above scenario. Whether that is
+actually in use or not is unknown.
+
+As it can be argued that the virtualization case is not affected by the
+issues which exposed the reported problem, allow the bogosity if the kernel
+determined that it is running in a VM for now.
+
+Fixes: 89b0f15f408f ("x86/cpu/topology: Get rid of cpuinfo::x86_max_cores")
+Reported-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/87a5nbvccx.ffs@tglx
+
 ---
- arch/x86/include/asm/nmi.h | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/x86/kernel/cpu/topology.c | 39 +++++++++++++++++++++++++--------
+ 1 file changed, 30 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/asm/nmi.h b/arch/x86/include/asm/nmi.h
-index 5c5f1e5..41a0ebb 100644
---- a/arch/x86/include/asm/nmi.h
-+++ b/arch/x86/include/asm/nmi.h
-@@ -14,9 +14,6 @@ extern void release_perfctr_nmi(unsigned int);
- extern int reserve_evntsel_nmi(unsigned int);
- extern void release_evntsel_nmi(unsigned int);
-=20
--struct ctl_table;
--extern int proc_nmi_enabled(struct ctl_table *, int ,
--			void __user *, size_t *, loff_t *);
- extern int unknown_nmi_panic;
-=20
- #endif /* CONFIG_X86_LOCAL_APIC */
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index 43650fe..3259b1d 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -27,6 +27,7 @@
+ #include <xen/xen.h>
+ 
+ #include <asm/apic.h>
++#include <asm/hypervisor.h>
+ #include <asm/io_apic.h>
+ #include <asm/mpspec.h>
+ #include <asm/smp.h>
+@@ -157,6 +158,20 @@ static __init bool check_for_real_bsp(u32 apic_id)
+ 	return true;
+ }
+ 
++static unsigned int topo_unit_count(u32 lvlid, enum x86_topology_domains at_level,
++				    unsigned long *map)
++{
++	unsigned int id, end, cnt = 0;
++
++	/* Calculate the exclusive end */
++	end = lvlid + (1U << x86_topo_system.dom_shifts[at_level]);
++
++	/* Unfortunately there is no bitmap_weight_range() */
++	for (id = find_next_bit(map, end, lvlid); id < end; id = find_next_bit(map, end, ++id))
++		cnt++;
++	return cnt;
++}
++
+ static __init void topo_register_apic(u32 apic_id, u32 acpi_id, bool present)
+ {
+ 	int cpu, dom;
+@@ -178,6 +193,20 @@ static __init void topo_register_apic(u32 apic_id, u32 acpi_id, bool present)
+ 		cpuid_to_apicid[cpu] = apic_id;
+ 		topo_set_cpuids(cpu, apic_id, acpi_id);
+ 	} else {
++		u32 pkgid = topo_apicid(apic_id, TOPO_PKG_DOMAIN);
++
++		/*
++		 * Check for present APICs in the same package when running
++		 * on bare metal. Allow the bogosity in a guest.
++		 */
++		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
++		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
++			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
++				     apic_id);
++			topo_info.nr_rejected_cpus++;
++			return;
++		}
++
+ 		topo_info.nr_disabled_cpus++;
+ 	}
+ 
+@@ -280,7 +309,6 @@ unsigned int topology_unit_count(u32 apicid, enum x86_topology_domains which_uni
+ {
+ 	/* Remove the bits below @at_level to get the proper level ID of @apicid */
+ 	unsigned int lvlid = topo_apicid(apicid, at_level);
+-	unsigned int id, end, cnt = 0;
+ 
+ 	if (lvlid >= MAX_LOCAL_APIC)
+ 		return 0;
+@@ -290,14 +318,7 @@ unsigned int topology_unit_count(u32 apicid, enum x86_topology_domains which_uni
+ 		return 0;
+ 	if (which_units == at_level)
+ 		return 1;
+-
+-	/* Calculate the exclusive end */
+-	end = lvlid + (1U << x86_topo_system.dom_shifts[at_level]);
+-	/* Unfortunately there is no bitmap_weight_range() */
+-	for (id = find_next_bit(apic_maps[which_units].map, end, lvlid);
+-	     id < end; id = find_next_bit(apic_maps[which_units].map, end, ++id))
+-		cnt++;
+-	return cnt;
++	return topo_unit_count(lvlid, at_level, apic_maps[which_units].map);
+ }
+ 
+ #ifdef CONFIG_ACPI_HOTPLUG_CPU
 
