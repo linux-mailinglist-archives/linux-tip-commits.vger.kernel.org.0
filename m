@@ -1,112 +1,120 @@
-Return-Path: <linux-tip-commits+bounces-684-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-685-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0BFC872ED5
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 07:24:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4B787326F
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 10:23:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BF4E289F1B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 06:24:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CD4B1C230BE
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 09:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AB11CA95;
-	Wed,  6 Mar 2024 06:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86ED75DF03;
+	Wed,  6 Mar 2024 09:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicklyemailsend77.com header.i=@quicklyemailsend77.com header.b="GHsx2ulC"
-Received: from quicklyemailsend77.com (quicklyemailsend77.com [57.128.172.43])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mr6q31YU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SpZybAFY"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C11A1BF2B
-	for <linux-tip-commits@vger.kernel.org>; Wed,  6 Mar 2024 06:24:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.128.172.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38AD5D91F;
+	Wed,  6 Mar 2024 09:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709706246; cv=none; b=tkLiCTQ6u8KyUNADjj7vLpYzIqkWk9xEZUlaTLw+tDbk0Qc1i0W15gWr3NzMd7FteRVUbfUQAlfMh8V4cpNyjaRIHUXM986p7/kC587+/8rYQXpnbGjcBSeC9etMvCJgYNOodXUKVKLzrAaLtI3jab2fFnMff5LEvWn2uMQdM+Y=
+	t=1709716981; cv=none; b=BpQdLwV3lTqhqPNtJRZofbQmX+FwTRzgby/EfyLsFyfGNNnpD/e4gjbeFVIItK05GmWW2u0ewUbuaypVHeQk7rOaeVR1dgpsZKimuIFLeg22k9NhwMuLVZ+UIsB1npR/pkDAGXKpP0U+WxDMtWr3hTDlrcruuViFg2ZA4jzSxjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709706246; c=relaxed/simple;
-	bh=UkCnC3hxyWUR811IY5T5PlAQFaHotSY7xhHSl4hh88I=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SDU2MMwZZ7eUb4wFSQdiPbsFEEEZsBh9ebf6X8iNRAMOAQTaS7TvVPPsuVPSfdcbQuiDOGmke7ikY8XNw/MGwsAHLC1mGsklg1iuPRH2KMeSmmF2MBuG74aECs/cI8jYQ73/SP3WC+MKqboA2aAPP/m86v2RnnC807Eu3zb+YD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicklyemailsend77.com; spf=pass smtp.mailfrom=quicklyemailsend77.com; dkim=pass (2048-bit key) header.d=quicklyemailsend77.com header.i=@quicklyemailsend77.com header.b=GHsx2ulC; arc=none smtp.client-ip=57.128.172.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicklyemailsend77.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicklyemailsend77.com
-Received: from quicklyemailsend77.com (unknown [185.255.114.95])
-	by quicklyemailsend77.com (Postfix) with ESMTPA id 66A823977A9
-	for <linux-tip-commits@vger.kernel.org>; Wed,  6 Mar 2024 03:51:48 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 quicklyemailsend77.com 66A823977A9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=quicklyemailsend77.com; s=default; t=1709697108;
-	bh=eefLZdwY5mr6nwq86b3d+rtsxGUHJntuGmXl+R35AcQ=;
-	h=Reply-To:From:To:Subject:Date:From;
-	b=GHsx2ulCA9rB0MKMwIDmjFSM2zgnOrsLMBRAD1jucsXfkj9aZsRnNX/ebuyYVb21l
-	 DnC4aVUL04SieKAzuVwKSLFNCvlBPH4xvsBPOg50KbbQRJoScKsa0RuTs1nwI+sQ0T
-	 u0DcUJ3qlJUUslJCbYYcCB1w953Vp/DaCrCADKLqwz0cIjHqJxNAA5Hel6Q+9ocOiJ
-	 iVqL/JF1DukoXRblqwmOHcy+4+pjkeOCKzYRj2TgZGxewjz+wQGGN4YyXiVqZ7waTq
-	 3FgYhIORLbqblUWUmBH+nj66eBovXHZvJzFIfAao3KBZZvOHFSqUCyM+V8yi6aKr0x
-	 9frF+zW1UmOYg==
-Reply-To: joakimlarson@skendiaelevator.com
-From: info@quicklyemailsend77.com
+	s=arc-20240116; t=1709716981; c=relaxed/simple;
+	bh=ZoZAFpnXAIJuXfD4zTp2dyuISQoKk0qGZNiwVZw73xE=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=s0vE3rjPc/7RHanFfolduu/ZqR4jYy2LQVUKLmp9Jp+GTezFGgDGysxThv2FUMzR+XmycngLaFysyvWHye6wxCoVXC3qnoyrh7fO+Vbhq1zgcTFb+aocjTcRzawoRlcEBrcSdflil6qxiVKr5wYBmFBrk1aQxxkPiq2HqAfbLoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mr6q31YU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SpZybAFY; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 06 Mar 2024 09:22:53 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1709716974;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oCbaMdXFmHvzM3rg9VFcTTzEusauzL0ySMi6yjcgNhQ=;
+	b=Mr6q31YUxAlWI1xfEA8qHGjraDb77P2KCjJOmq8QyqrOWGCAJD9X1ONfP813NbA/uEmyfN
+	XIaxgKdJCxa68DtaBqgf5pEBXTOjke5eg4rIJztEd8JpY5gfBRSBVF7mPlS6PcxW2y6rqh
+	4lzBo2eJr+7Q6Zgzxx2WbIwjJoMfi1N1gj8vio5TRMWraolyOsPG4AixK2HkkH0bRf0No0
+	tShNDJteXFU1liJCiNPzD8C4przWc+tpoiI1yjDtZc2aW35m8B6hcpeB3FjFXR8UOczaYi
+	7kz/bEI/vF2FE88pE9p106PwGjApJb5F95fM5VQwZ3bp+Vvw9iBSIHTS1ueruw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1709716974;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oCbaMdXFmHvzM3rg9VFcTTzEusauzL0ySMi6yjcgNhQ=;
+	b=SpZybAFYk7aRKDh/5FSvT/APR7fGyl8+aiEake9f8gbylwNYUmzbCTWWfa3qXw2GWx2W3N
+	xLewN1lhLdHZqEDA==
+From:
+ tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: =?UTF-8?B?7YyQ66ekIOusuOydmCAyMDI0?=
-Date: 05 Mar 2024 19:51:48 -0800
-Message-ID: <20240305195147.741079E1C907CD0C@quicklyemailsend77.com>
+Subject:
+ [tip: x86/cleanups] x86/nmi: Drop unused declaration of proc_nmi_enabled()
+Cc: linux@weissschuh.net, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240306-const-sysctl-prep-x86-v1-1-f9d1fa38dd2b@weissschuh.net>
+References: <20240306-const-sysctl-prep-x86-v1-1-f9d1fa38dd2b@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
+Message-ID: <170971697378.398.205017146158091581.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
+The following commit has been merged into the x86/cleanups branch of tip:
 
-=EC=95=88=EB=85=95=ED=95=98=EC=84=B8=EC=9A=94
-=20
-=EC=8A=A4=EC=9B=A8=EB=8D=B4 =EC=8A=A4=EC=B9=B8=EB=94=94=EC=95=84 =EC=97=98=
-=EB=A0=88=EB=B0=94=ED=86=A0(Skandia Elevato)=EC=97=90=EC=84=9C =EC=98=A8 =
-=EC=9A=94=EC=95=84=ED=82=B4 =EB=9D=BC=EB=A5=B4=EC=86=90(JOAKIM LARSSON) .
-=20
-=EC=9A=B0=EB=A6=AC=EB=8A=94 =EA=B8=B4=EA=B8=89=ED=95=98=EA=B2=8C =EA=B7=80=
-=ED=95=98=EC=9D=98 =EC=A0=9C=ED=92=88=EC=9D=84 =ED=95=84=EC=9A=94=EB=A1=9C =
-=ED=95=98=EB=A9=B0 =EA=B0=80=EB=8A=A5=ED=95=9C =ED=95=9C =EB=B9=A8=EB=A6=AC=
- =EC=8B=9C=ED=97=98 =EC=A3=BC=EB=AC=B8=EC=9D=84 =ED=95=98=EA=B3=A0 =EC=8B=
-=B6=EC=8A=B5=EB=8B=88=EB=8B=A4. 
-=20
-=EC=98=A8=EB=9D=BC=EC=9D=B8=EC=9C=BC=EB=A1=9C =EC=A0=9C=ED=92=88=EC=97=90 =
-=EB=8C=80=ED=95=9C =EC=A0=95=EB=B3=B4=EB=A5=BC =EC=88=98=EC=A7=91=ED=95=98=
-=EA=B3=A0 =EC=9E=88=EC=8A=B5=EB=8B=88=EB=8B=A4. 
-=20
-=EA=B7=B8=EB=A6=AC=EA=B3=A0 =EB=82=B4 =EB=AA=A8=EC=9E=84=EC=97=90=EC=84=9C =
-=EB=82=98=EB=8A=94 =EC=9A=B0=EB=A6=AC=EA=B0=80 =EB=8B=B9=EC=8B=A0=EC=9D=98 =
-=EC=A0=9C=ED=92=88=EC=9D=84 =EC=A3=BC=EB=AC=B8=ED=95=A0 =EA=B2=83=EC=9D=B4=
-=EB=9D=BC=EA=B3=A0 =EC=83=9D=EA=B0=81=ED=95=A9=EB=8B=88=EB=8B=A4.
-=20
-1. =EC=B5=9C=EC=8B=A0 Catalouge=EB=A5=BC =EB=B3=B4=EB=82=BC =EC=88=98 =EC=
-=9E=88=EC=8A=B5=EB=8B=88=EA=B9=8C?
-=20
-2. =EC=9A=B0=EB=A6=AC=EA=B0=80 =EC=A3=BC=EB=AC=B8=ED=95=A0 =EC=88=98 =EC=9E=
-=88=EB=8A=94 =EC=B5=9C=EC=86=8C=ED=95=9C=EC=9D=80 =EB=AC=B4=EC=97=87=EC=9D=
-=B4=EA=B3=A0 =EB=98=90=ED=95=9C =EA=B8=B0=EA=B0=84=EC=9D=84 =EB=B3=B4=EB=82=
-=B4=EC=8B=AD=EC=8B=9C=EC=98=A4=20
-=EB=B0=8F =EC=A1=B0=EA=B1=B4.
-3. =EC=9A=B0=EB=A6=AC=EA=B0=80 =EC=A3=BC=EB=AC=B8=ED=95=98=EB=8A=94 =EA=B2=
-=BD=EC=9A=B0 =EC=A7=80=EB=B6=88=EC=9D=84 =EC=96=B4=EB=96=BB=EA=B2=8C =ED=95=
-=B4=EA=B2=B0=ED=95=98=EA=B8=B0=EB=A5=BC =EC=9B=90=ED=95=98=EC=8B=AD=EB=8B=
-=88=EA=B9=8C?
-=20
-=EA=B7=80=ED=95=98=EC=9D=98 =ED=9A=8C=EC=8B=A0 =EB=8C=80=EA=B8=B0 =EC=A4=91=
+Commit-ID:     774a86f1c885460ade4334b901919fa1d8ae6ec6
+Gitweb:        https://git.kernel.org/tip/774a86f1c885460ade4334b901919fa1d8a=
+e6ec6
+Author:        Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+AuthorDate:    Wed, 06 Mar 2024 07:50:29 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 06 Mar 2024 10:13:33 +01:00
 
+x86/nmi: Drop unused declaration of proc_nmi_enabled()
 
-Mr Joakim larssonv(=EB=B6=80=EC=82=AC=EC=9E=A5/=EC=98=81=EC=97=85 =EA=B4=80=
-=EB=A6=AC=EC=9E=90)
+The declaration is unused as the definition got deleted.
 
-=EB=B0=A9=EB=AC=B8=EC=9E=90 =EC=A3=BC=EC=86=8C: Kedumsv=C3=A4gen 14, SE-534=
- 94 Vara, Sweden
+Fixes: 5f2b0ba4d94b ("x86, nmi_watchdog: Remove the old nmi_watchdog").
+Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240306-const-sysctl-prep-x86-v1-1-f9d1fa38d=
+d2b@weissschuh.net
+---
+ arch/x86/include/asm/nmi.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-=EB=B0=B0=EC=86=A1 =EC=A3=BC=EC=86=8C: Industriv=C3=A4gen, SE-534 94 Vara, =
-Sweden
-
-joakimlarson@skendiaelevator.com
-https://skandiaelevator.com
-
+diff --git a/arch/x86/include/asm/nmi.h b/arch/x86/include/asm/nmi.h
+index 5c5f1e5..41a0ebb 100644
+--- a/arch/x86/include/asm/nmi.h
++++ b/arch/x86/include/asm/nmi.h
+@@ -14,9 +14,6 @@ extern void release_perfctr_nmi(unsigned int);
+ extern int reserve_evntsel_nmi(unsigned int);
+ extern void release_evntsel_nmi(unsigned int);
+=20
+-struct ctl_table;
+-extern int proc_nmi_enabled(struct ctl_table *, int ,
+-			void __user *, size_t *, loff_t *);
+ extern int unknown_nmi_panic;
+=20
+ #endif /* CONFIG_X86_LOCAL_APIC */
 
