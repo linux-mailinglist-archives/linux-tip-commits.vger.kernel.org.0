@@ -1,183 +1,112 @@
-Return-Path: <linux-tip-commits+bounces-683-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-684-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04899870FE4
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Mar 2024 23:13:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BFC872ED5
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 07:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28D291C21C19
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Mar 2024 22:13:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BF4E289F1B
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 06:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DA18060A;
-	Mon,  4 Mar 2024 22:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AB11CA95;
+	Wed,  6 Mar 2024 06:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kdOTehSn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KA70iocv"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=quicklyemailsend77.com header.i=@quicklyemailsend77.com header.b="GHsx2ulC"
+Received: from quicklyemailsend77.com (quicklyemailsend77.com [57.128.172.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16E97FBC5;
-	Mon,  4 Mar 2024 22:09:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C11A1BF2B
+	for <linux-tip-commits@vger.kernel.org>; Wed,  6 Mar 2024 06:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.128.172.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709590149; cv=none; b=mEj1/OuQZocQX6lkJ0TkRl43k4UzLB4siMrnO+DQ4WKFKnVMx9Uh4uOVto3bPdSt1EFbmGp8L1VpuzJ2W1HM0UZuXAK/R1cJQosy9CpZhtKFInOUDi1+ROpSDMRXim044UxjO16Yf6fctqBPK2gtqzjX/2QiNEgKuY4Z4e0mjsI=
+	t=1709706246; cv=none; b=tkLiCTQ6u8KyUNADjj7vLpYzIqkWk9xEZUlaTLw+tDbk0Qc1i0W15gWr3NzMd7FteRVUbfUQAlfMh8V4cpNyjaRIHUXM986p7/kC587+/8rYQXpnbGjcBSeC9etMvCJgYNOodXUKVKLzrAaLtI3jab2fFnMff5LEvWn2uMQdM+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709590149; c=relaxed/simple;
-	bh=xCyVbzs6uHQlqTa82S68d5ETNsdVmItgKMc6XoV8gYI=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Bm27zzanm0lKzF77IyG8UThljpxKzc7+AJcRgzmi5J9EMaxFzrISW/7Zgw9Ye1E7z9KVu2ZU4LdTIYvvWEqJcWx0lI9Mao03AkuXtUB6AVsnhkcqLTYSsYn7h1YR0ari6rTl4vh1IYE8TfNOwYUuQwHd5E+m2bCTAKSLzbTv0hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kdOTehSn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KA70iocv; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 04 Mar 2024 22:09:05 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709590146;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1C4wtYgWSShlzUjRgY4KbuT32FTRtIl2ExRgRhq5Sig=;
-	b=kdOTehSnf/oZYNPE9jZ/vBTJTgYVQfxgLEAOaUO4Igrf0Cv1wiYLNdbgs2eGqM+RYdZrA3
-	GNFJt5iaT6lo4vVyhfsgEqCZ72v4gsmkEvasgphbkbLXJ8uZ7GNH3X8VVd1VLrHxvLIdbt
-	oi5X768QmUTlUNRg+0+j1+BQuttuXd642rU9BdAYboXTg7cdA5WYhudY3cH0BGRJI9YEaQ
-	8WBCDfWnN87X7aetNYJfincZuMEzTQ2JlZhAs+Uxi0v2kzPOixU3sckAhJyRdSXQ7YerXD
-	Ul9ylvGPB/gPlY4kDXnVyIGDkOQ1k7ilCPUpgTvTg9GUUgeSpvVJmcyRJzSJ5Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709590146;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1C4wtYgWSShlzUjRgY4KbuT32FTRtIl2ExRgRhq5Sig=;
-	b=KA70iocvCpyZQHJOHxGGg2io4x59T9DQ+H4eDnrgn9+wCaQgOe6bEvEqiX9hIHhD70Kb3h
-	/uT/tIk9HGr9A5Dg==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1709706246; c=relaxed/simple;
+	bh=UkCnC3hxyWUR811IY5T5PlAQFaHotSY7xhHSl4hh88I=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SDU2MMwZZ7eUb4wFSQdiPbsFEEEZsBh9ebf6X8iNRAMOAQTaS7TvVPPsuVPSfdcbQuiDOGmke7ikY8XNw/MGwsAHLC1mGsklg1iuPRH2KMeSmmF2MBuG74aECs/cI8jYQ73/SP3WC+MKqboA2aAPP/m86v2RnnC807Eu3zb+YD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicklyemailsend77.com; spf=pass smtp.mailfrom=quicklyemailsend77.com; dkim=pass (2048-bit key) header.d=quicklyemailsend77.com header.i=@quicklyemailsend77.com header.b=GHsx2ulC; arc=none smtp.client-ip=57.128.172.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicklyemailsend77.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicklyemailsend77.com
+Received: from quicklyemailsend77.com (unknown [185.255.114.95])
+	by quicklyemailsend77.com (Postfix) with ESMTPA id 66A823977A9
+	for <linux-tip-commits@vger.kernel.org>; Wed,  6 Mar 2024 03:51:48 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 quicklyemailsend77.com 66A823977A9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=quicklyemailsend77.com; s=default; t=1709697108;
+	bh=eefLZdwY5mr6nwq86b3d+rtsxGUHJntuGmXl+R35AcQ=;
+	h=Reply-To:From:To:Subject:Date:From;
+	b=GHsx2ulCA9rB0MKMwIDmjFSM2zgnOrsLMBRAD1jucsXfkj9aZsRnNX/ebuyYVb21l
+	 DnC4aVUL04SieKAzuVwKSLFNCvlBPH4xvsBPOg50KbbQRJoScKsa0RuTs1nwI+sQ0T
+	 u0DcUJ3qlJUUslJCbYYcCB1w953Vp/DaCrCADKLqwz0cIjHqJxNAA5Hel6Q+9ocOiJ
+	 iVqL/JF1DukoXRblqwmOHcy+4+pjkeOCKzYRj2TgZGxewjz+wQGGN4YyXiVqZ7waTq
+	 3FgYhIORLbqblUWUmBH+nj66eBovXHZvJzFIfAao3KBZZvOHFSqUCyM+V8yi6aKr0x
+	 9frF+zW1UmOYg==
+Reply-To: joakimlarson@skendiaelevator.com
+From: info@quicklyemailsend77.com
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/startup_64: Simplify CR4 handling in startup code
-Cc: Ard Biesheuvel <ardb@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240227151907.387873-12-ardb+git@google.com>
-References: <20240227151907.387873-12-ardb+git@google.com>
+Subject: =?UTF-8?B?7YyQ66ekIOusuOydmCAyMDI0?=
+Date: 05 Mar 2024 19:51:48 -0800
+Message-ID: <20240305195147.741079E1C907CD0C@quicklyemailsend77.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170959014519.398.9871521957540564245.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     dada8587068c820ba5e5d09b9c32d8bc28c4dbe6
-Gitweb:        https://git.kernel.org/tip/dada8587068c820ba5e5d09b9c32d8bc28c4dbe6
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Tue, 27 Feb 2024 16:19:09 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 04 Mar 2024 18:11:34 +01:00
+=EC=95=88=EB=85=95=ED=95=98=EC=84=B8=EC=9A=94
+=20
+=EC=8A=A4=EC=9B=A8=EB=8D=B4 =EC=8A=A4=EC=B9=B8=EB=94=94=EC=95=84 =EC=97=98=
+=EB=A0=88=EB=B0=94=ED=86=A0(Skandia Elevato)=EC=97=90=EC=84=9C =EC=98=A8 =
+=EC=9A=94=EC=95=84=ED=82=B4 =EB=9D=BC=EB=A5=B4=EC=86=90(JOAKIM LARSSON) .
+=20
+=EC=9A=B0=EB=A6=AC=EB=8A=94 =EA=B8=B4=EA=B8=89=ED=95=98=EA=B2=8C =EA=B7=80=
+=ED=95=98=EC=9D=98 =EC=A0=9C=ED=92=88=EC=9D=84 =ED=95=84=EC=9A=94=EB=A1=9C =
+=ED=95=98=EB=A9=B0 =EA=B0=80=EB=8A=A5=ED=95=9C =ED=95=9C =EB=B9=A8=EB=A6=AC=
+ =EC=8B=9C=ED=97=98 =EC=A3=BC=EB=AC=B8=EC=9D=84 =ED=95=98=EA=B3=A0 =EC=8B=
+=B6=EC=8A=B5=EB=8B=88=EB=8B=A4. 
+=20
+=EC=98=A8=EB=9D=BC=EC=9D=B8=EC=9C=BC=EB=A1=9C =EC=A0=9C=ED=92=88=EC=97=90 =
+=EB=8C=80=ED=95=9C =EC=A0=95=EB=B3=B4=EB=A5=BC =EC=88=98=EC=A7=91=ED=95=98=
+=EA=B3=A0 =EC=9E=88=EC=8A=B5=EB=8B=88=EB=8B=A4. 
+=20
+=EA=B7=B8=EB=A6=AC=EA=B3=A0 =EB=82=B4 =EB=AA=A8=EC=9E=84=EC=97=90=EC=84=9C =
+=EB=82=98=EB=8A=94 =EC=9A=B0=EB=A6=AC=EA=B0=80 =EB=8B=B9=EC=8B=A0=EC=9D=98 =
+=EC=A0=9C=ED=92=88=EC=9D=84 =EC=A3=BC=EB=AC=B8=ED=95=A0 =EA=B2=83=EC=9D=B4=
+=EB=9D=BC=EA=B3=A0 =EC=83=9D=EA=B0=81=ED=95=A9=EB=8B=88=EB=8B=A4.
+=20
+1. =EC=B5=9C=EC=8B=A0 Catalouge=EB=A5=BC =EB=B3=B4=EB=82=BC =EC=88=98 =EC=
+=9E=88=EC=8A=B5=EB=8B=88=EA=B9=8C?
+=20
+2. =EC=9A=B0=EB=A6=AC=EA=B0=80 =EC=A3=BC=EB=AC=B8=ED=95=A0 =EC=88=98 =EC=9E=
+=88=EB=8A=94 =EC=B5=9C=EC=86=8C=ED=95=9C=EC=9D=80 =EB=AC=B4=EC=97=87=EC=9D=
+=B4=EA=B3=A0 =EB=98=90=ED=95=9C =EA=B8=B0=EA=B0=84=EC=9D=84 =EB=B3=B4=EB=82=
+=B4=EC=8B=AD=EC=8B=9C=EC=98=A4=20
+=EB=B0=8F =EC=A1=B0=EA=B1=B4.
+3. =EC=9A=B0=EB=A6=AC=EA=B0=80 =EC=A3=BC=EB=AC=B8=ED=95=98=EB=8A=94 =EA=B2=
+=BD=EC=9A=B0 =EC=A7=80=EB=B6=88=EC=9D=84 =EC=96=B4=EB=96=BB=EA=B2=8C =ED=95=
+=B4=EA=B2=B0=ED=95=98=EA=B8=B0=EB=A5=BC =EC=9B=90=ED=95=98=EC=8B=AD=EB=8B=
+=88=EA=B9=8C?
+=20
+=EA=B7=80=ED=95=98=EC=9D=98 =ED=9A=8C=EC=8B=A0 =EB=8C=80=EA=B8=B0 =EC=A4=91=
 
-x86/startup_64: Simplify CR4 handling in startup code
 
-When paging is enabled, the CR4.PAE and CR4.LA57 control bits cannot be
-changed, and so they can simply be preserved rather than reason about
-whether or not they need to be set. CR4.MCE should be preserved unless
-the kernel was built without CONFIG_X86_MCE, in which case it must be
-cleared.
+Mr Joakim larssonv(=EB=B6=80=EC=82=AC=EC=9E=A5/=EC=98=81=EC=97=85 =EA=B4=80=
+=EB=A6=AC=EC=9E=90)
 
-CR4.PSE should be set explicitly, regardless of whether or not it was
-set before.
+=EB=B0=A9=EB=AC=B8=EC=9E=90 =EC=A3=BC=EC=86=8C: Kedumsv=C3=A4gen 14, SE-534=
+ 94 Vara, Sweden
 
-CR4.PGE is set explicitly, and then cleared and set again after
-programming CR3 in order to flush TLB entries based on global
-translations. This makes the first assignment redundant, and can
-therefore be omitted. So clear PGE by omitting it from the preserve
-mask, and set it again explicitly after switching to the new page
-tables.
+=EB=B0=B0=EC=86=A1 =EC=A3=BC=EC=86=8C: Industriv=C3=A4gen, SE-534 94 Vara, =
+Sweden
 
-  [ bp: Document the exact operation of CR4.PGE ]
+joakimlarson@skendiaelevator.com
+https://skandiaelevator.com
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20240227151907.387873-12-ardb+git@google.com
----
- arch/x86/kernel/head_64.S | 35 +++++++++++++++++------------------
- 1 file changed, 17 insertions(+), 18 deletions(-)
-
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index 86136a7..54207e7 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -185,6 +185,16 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	addq	$(init_top_pgt - __START_KERNEL_map), %rax
- 1:
- 
-+	/*
-+	 * Create a mask of CR4 bits to preserve. Omit PGE in order to flush
-+	 * global 1:1 translations from the TLBs.
-+	 *
-+	 * From the SDM:
-+	 * "If CR4.PGE is changing from 0 to 1, there were no global TLB
-+	 *  entries before the execution; if CR4.PGE is changing from 1 to 0,
-+	 *  there will be no global TLB entries after the execution."
-+	 */
-+	movl	$(X86_CR4_PAE | X86_CR4_LA57), %edx
- #ifdef CONFIG_X86_MCE
- 	/*
- 	 * Preserve CR4.MCE if the kernel will enable #MC support.
-@@ -193,20 +203,13 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	 * configured will crash the system regardless of the CR4.MCE value set
- 	 * here.
- 	 */
--	movq	%cr4, %rcx
--	andl	$X86_CR4_MCE, %ecx
--#else
--	movl	$0, %ecx
-+	orl	$X86_CR4_MCE, %edx
- #endif
-+	movq	%cr4, %rcx
-+	andl	%edx, %ecx
- 
--	/* Enable PAE mode, PSE, PGE and LA57 */
--	orl	$(X86_CR4_PAE | X86_CR4_PSE | X86_CR4_PGE), %ecx
--#ifdef CONFIG_X86_5LEVEL
--	testb	$1, __pgtable_l5_enabled(%rip)
--	jz	1f
--	orl	$X86_CR4_LA57, %ecx
--1:
--#endif
-+	/* Even if ignored in long mode, set PSE uniformly on all logical CPUs. */
-+	btsl	$X86_CR4_PSE_BIT, %ecx
- 	movq	%rcx, %cr4
- 
- 	/* Setup early boot stage 4-/5-level pagetables. */
-@@ -223,14 +226,10 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	movq	%rax, %cr3
- 
- 	/*
--	 * Do a global TLB flush after the CR3 switch to make sure the TLB
--	 * entries from the identity mapping are flushed.
-+	 * Set CR4.PGE to re-enable global translations.
- 	 */
--	movq	%cr4, %rcx
--	movq	%rcx, %rax
--	xorq	$X86_CR4_PGE, %rcx
-+	btsl	$X86_CR4_PGE_BIT, %ecx
- 	movq	%rcx, %cr4
--	movq	%rax, %cr4
- 
- 	/* Ensure I am executing from virtual addresses */
- 	movq	$1f, %rax
 
