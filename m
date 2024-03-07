@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-687-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-688-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EEEE873861
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 15:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFB7874CF1
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Mar 2024 12:05:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44F7B1F2188A
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Mar 2024 14:07:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 432091F236EE
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Mar 2024 11:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B79130E4A;
-	Wed,  6 Mar 2024 14:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2312982D91;
+	Thu,  7 Mar 2024 11:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YRgm1kv2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yII/aw7G"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wSj6yqwI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mABmpsMR"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4535612FB0F;
-	Wed,  6 Mar 2024 14:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AB9125DC;
+	Thu,  7 Mar 2024 11:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709734050; cv=none; b=dAXfqjUxObJlkQmVkEXT5vkFeA0SgQwjLVD7anaub5lpN2OkeBHN4c/o+Wp6IUt0Vo6Gl7BIvx4eWF15sbeHIFQUtcSWcj6QgW+/SBAfnUGdsWXML0oylCmwFSYTOgm0CJLqHIVEBm2wQLrJiXfSDj/+IG68mqI2noQmyNTx/ew=
+	t=1709809504; cv=none; b=MCO3oaUDf59n8VaGTZn8upgnFJgJFUOgRZIwrvttsjJA6344hfdNgdowqCLMD1Fgq/TcluMYeikn4zt9kYcOBHCeMFR2x0c+zb21c4LR9NalhfFPX9amq+p6JtgNkY0uRYZdOJiODBi1CbWs3dNepJpaspVN1cwtYng1u33fbo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709734050; c=relaxed/simple;
-	bh=9Lhxtpg5G50oKTpp0MbbL/2Egq5R9jqv5aa+7pmY/cc=;
+	s=arc-20240116; t=1709809504; c=relaxed/simple;
+	bh=F3t8FaPQ09tQDMQog6mg69yl7F1+FtKNnDjllV7epLE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=q+mwxXAP40RgPogOmN/naZSog+QXC3fTKR5BRQzZQ3s3RUE0ROy6Hss0fJAwU7z7AR9Q5MzKpL4Ticc7/enorSF2orD/DGdqwVyNZ2y/isU6fL+kB9Lvw3N4IDfu4V5gdKH/PULkXPgDfWVTT2E5eKHPi7ezLl2jHMG/zwAg39k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YRgm1kv2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yII/aw7G; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ZqQPfUxg1oAdecqRBhtrLc1YG89tXOwrFUVKUmwYgL5SbS9Gqn9F5TD6VaR90qZVM5Pr5zVs+3qwJjObI7m6GbNs/f0V5UTVEJK0MbE5FlP1CLaJLEopswblJiQiPv/uR39qC0azNUWUgxPky8g02UZOZcS48Sew2sGgSGPzubM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wSj6yqwI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mABmpsMR; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 06 Mar 2024 14:07:25 -0000
+Date: Thu, 07 Mar 2024 11:04:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709734046;
+	s=2020; t=1709809500;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0iklUqAt2hVpZsWeOoiF0VFmtNuHMivKSsp9yM7nk2Y=;
-	b=YRgm1kv2jTgqakDJHL9+z944metfOA5KfPRQU4hPJGzCrV+bIk1xPi4HglfiPTEieOVTrG
-	17w7qUDDyep7qGt7GCUc2FulfsHnlUii96wyxaiQsBP7OM+KIM7dQgeoz46wYfu92t1wzG
-	SjXS7snA81hqYd/VjwDce3AVMG6zVhP8oI8IhP6B73RVxulQ0gmxX/7X23tbElHCRGqYqW
-	UElpNHaRQWFr2zr5ROk1QGR0igChopjD2BN166WBVMlTmGzAYyITSALkbNIFqWWcVi4j25
-	6r4dnvIEdStfVCY4y9i2+3gQfROUfEOR80OKs0kOL0flWI1pXSznWeCGdNDtHw==
+	bh=vdyP2JtRhbiv6tYNm/WH+U05mCm+Ipea64ow94GYdIw=;
+	b=wSj6yqwIdwPSoQICbU0XwTTLxnHNwdTKrNg28WqGuzs8bJ2LV3StZSbabNJBmPhgFu8eTH
+	xdhGZaGGXPdqVRk7sfrsYVEBxUARyj1mQ1L/iSLVmQNTVpLNtpnJP3YO6WNy9WeJ4KvYFh
+	Do5thwA3qFWz5i2cugdZ5/NuI1Z6Ox27MSwAo6zZOiv8JGAfWeY/E3C+w0wu05AXs9pJhK
+	EpMJMUFAiDnrCmMJuifiauVAVAQtu7cjEikMAXdNCddRHimL5qxLgcsfcJitsmd+J9/8Dp
+	sUELTMwtPyz/W87mVu/7BiYM84RKwscoOizpMsMaSUm/henztfnUfIiHeTg8vA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709734046;
+	s=2020e; t=1709809500;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0iklUqAt2hVpZsWeOoiF0VFmtNuHMivKSsp9yM7nk2Y=;
-	b=yII/aw7Gd2qYX3IIffJdTDZytduSrJVIxQxm8+526x/m7kAnTGB1UmdMgSK+c4enI7vMoO
-	y7yCE66sM6C39PAg==
-From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+	bh=vdyP2JtRhbiv6tYNm/WH+U05mCm+Ipea64ow94GYdIw=;
+	b=mABmpsMRfq1/ykpXNLGyr8rSOEWH9HWQnqp9DGMDrQtrFFEo2+zj9/nGwa4jppdX9FG0JD
+	n2yExLotoYYqR5BA==
+From: "tip-bot2 for Xin Li (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: timers/core] timer/migration: Fix quick check reporting late expiry
-Cc: Frederic Weisbecker <frederic@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240305002822.18130-1-frederic@kernel.org>
-References: <20240305002822.18130-1-frederic@kernel.org>
+ [tip: x86/fred] x86/fred: Fix init_task thread stack pointer initialization
+Cc: kernel test robot <oliver.sang@intel.com>,
+ "Xin Li (Intel)" <xin@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240304083333.449322-1-xin@zytor.com>
+References: <20240304083333.449322-1-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170973404551.398.9744367892734721294.tip-bot2@tip-bot2>
+Message-ID: <170980949947.398.16492968721974685258.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,132 +80,91 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/fred branch of tip:
 
-Commit-ID:     8ca1836769d758e4fbf5851bb81e181c52193f5d
-Gitweb:        https://git.kernel.org/tip/8ca1836769d758e4fbf5851bb81e181c52193f5d
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Tue, 05 Mar 2024 01:28:22 +01:00
+Commit-ID:     c416b5bac6ad6ffe21e36225553b82ff2ec1558c
+Gitweb:        https://git.kernel.org/tip/c416b5bac6ad6ffe21e36225553b82ff2ec1558c
+Author:        Xin Li (Intel) <xin@zytor.com>
+AuthorDate:    Mon, 04 Mar 2024 00:33:33 -08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 06 Mar 2024 15:02:09 +01:00
+CommitterDate: Thu, 07 Mar 2024 11:55:36 +01:00
 
-timer/migration: Fix quick check reporting late expiry
+x86/fred: Fix init_task thread stack pointer initialization
 
-When a CPU is the last active in the hierarchy and it tries to enter
-into idle, the quick check looking up the next event towards cpuidle
-heuristics may report a too late expiry, such as in the following
-scenario:
+As TOP_OF_KERNEL_STACK_PADDING was defined as 0 on x86_64, it went
+unnoticed that the initialization of the .sp field in INIT_THREAD and some
+calculations in the low level startup code do not take the padding into
+account.
 
-                        [GRP1:0]
-                     migrator = NONE
-                     active   = NONE
-                     nextevt  = T0:0, T0:1
-                     /              \
-          [GRP0:0]                  [GRP0:1]
-       migrator = NONE           migrator = NONE
-       active   = NONE           active   = NONE
-       nextevt  = T0, T1         nextevt  = T2
-       /         \                /         \
-      0           1              2           3
-    idle       idle           idle         idle
+FRED enabled kernels require a 16 byte padding, which means that the init
+task initialization and the low level startup code use the wrong stack
+offset.
 
-0) The whole system is idle, and CPU 0 was the last migrator. CPU 0 has
-a timer (T0), CPU 1 has a timer (T1) and CPU 2 has a timer (T2). The
-expire order is T0 < T1 < T2.
+Subtract TOP_OF_KERNEL_STACK_PADDING in all affected places to adjust for
+this.
 
-                        [GRP1:0]
-                     migrator = GRP0:0
-                     active   = GRP0:0
-                     nextevt  = T0:0(i), T0:1
-                   /              \
-          [GRP0:0]                  [GRP0:1]
-       migrator = CPU0           migrator = NONE
-       active   = CPU0           active   = NONE
-       nextevt  = T0(i), T1      nextevt  = T2
-       /         \                /         \
-      0           1              2           3
-    active       idle           idle         idle
-
-1) CPU 0 becomes active. The (i) means a now ignored timer.
-
-                        [GRP1:0]
-                     migrator = GRP0:0
-                     active   = GRP0:0
-                     nextevt  = T0:1
-                     /              \
-          [GRP0:0]                  [GRP0:1]
-       migrator = CPU0           migrator = NONE
-       active   = CPU0           active   = NONE
-       nextevt  = T1             nextevt  = T2
-       /         \                /         \
-      0           1              2           3
-    active       idle           idle         idle
-
-2) CPU 0 handles remote. No timer actually expired but ignored timers
-   have been cleaned out and their sibling's timers haven't been
-   propagated. As a result the top level's next event is T2 and not T1.
-
-3) CPU 0 tries to enter idle without any global timer enqueued and calls
-   tmigr_quick_check(). The expiry of T2 is returned instead of the
-   expiry of T1.
-
-When the quick check returns an expiry that is too late, the cpuidle
-governor may pick up a C-state that is too deep. This may be result into
-undesired CPU wake up latency if the next timer is actually close enough.
-
-Fix this with assuming that expiries aren't sorted top-down while
-performing the quick check. Pick up instead the earliest encountered one
-while walking up the hierarchy.
-
-7ee988770326 ("timers: Implement the hierarchical pull model")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Fixes: 65c9cc9e2c14 ("x86/fred: Reserve space for the FRED stack frame")
+Fixes: 3adee777ad0d ("x86/smpboot: Remove initial_stack on 64-bit")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240305002822.18130-1-frederic@kernel.org
-
+Closes: https://lore.kernel.org/oe-lkp/202402262159.183c2a37-lkp@intel.com
+Link: https://lore.kernel.org/r/20240304083333.449322-1-xin@zytor.com
 ---
- kernel/time/timer_migration.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ arch/x86/include/asm/processor.h | 6 ++++--
+ arch/x86/kernel/head_64.S        | 3 ++-
+ arch/x86/xen/xen-head.S          | 2 +-
+ 3 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-index d85aa2a..8f49b6b 100644
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -1385,11 +1385,11 @@ u64 tmigr_cpu_deactivate(u64 nextexp)
-  *			  single group active on the way to top level)
-  * * nextevt		- when CPU is offline and has to handle timer on his own
-  *			  or when on the way to top in every group only a single
-- *			  child is active and but @nextevt is before next_expiry
-- *			  of top level group
-- * * next_expiry (top)	- value of top level group, when on the way to top in
-- *			  every group only a single child is active and @nextevt
-- *			  is after this value active child.
-+ *			  child is active but @nextevt is before the lowest
-+ *			  next_expiry encountered while walking up to top level.
-+ * * next_expiry	- value of lowest expiry encountered while walking groups
-+ *			  if only a single child is active on each and @nextevt
-+ *			  is after this lowest expiry.
-  */
- u64 tmigr_quick_check(u64 nextevt)
- {
-@@ -1408,10 +1408,16 @@ u64 tmigr_quick_check(u64 nextevt)
- 	do {
- 		if (!tmigr_check_lonely(group)) {
- 			return KTIME_MAX;
--		} else if (!group->parent) {
--			u64 first_global = READ_ONCE(group->next_expiry);
--
--			return min_t(u64, nextevt, first_global);
-+		} else {
-+			/*
-+			 * Since current CPU is active, events may not be sorted
-+			 * from bottom to the top because the CPU's event is ignored
-+			 * up to the top and its sibling's events not propagated upwards.
-+			 * Thus keep track of the lowest observed expiry.
-+			 */
-+			nextevt = min_t(u64, nextevt, READ_ONCE(group->next_expiry));
-+			if (!group->parent)
-+				return nextevt;
- 		}
- 		group = group->parent;
- 	} while (group);
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 26620d7..17fe819 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -664,8 +664,10 @@ static __always_inline void prefetchw(const void *x)
+ #else
+ extern unsigned long __end_init_task[];
+ 
+-#define INIT_THREAD {							    \
+-	.sp	= (unsigned long)&__end_init_task - sizeof(struct pt_regs), \
++#define INIT_THREAD {							\
++	.sp	= (unsigned long)&__end_init_task -			\
++		  TOP_OF_KERNEL_STACK_PADDING -				\
++		  sizeof(struct pt_regs),				\
+ }
+ 
+ extern unsigned long KSTK_ESP(struct task_struct *task);
+diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+index d4918d0..c38e435 100644
+--- a/arch/x86/kernel/head_64.S
++++ b/arch/x86/kernel/head_64.S
+@@ -26,6 +26,7 @@
+ #include <asm/apicdef.h>
+ #include <asm/fixmap.h>
+ #include <asm/smp.h>
++#include <asm/thread_info.h>
+ 
+ /*
+  * We are not able to switch in one step to the final KERNEL ADDRESS SPACE
+@@ -66,7 +67,7 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	mov	%rsi, %r15
+ 
+ 	/* Set up the stack for verify_cpu() */
+-	leaq	(__end_init_task - PTREGS_SIZE)(%rip), %rsp
++	leaq	(__end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE)(%rip), %rsp
+ 
+ 	leaq	_text(%rip), %rdi
+ 
+diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
+index a0ea285..04101b9 100644
+--- a/arch/x86/xen/xen-head.S
++++ b/arch/x86/xen/xen-head.S
+@@ -49,7 +49,7 @@ SYM_CODE_START(startup_xen)
+ 	ANNOTATE_NOENDBR
+ 	cld
+ 
+-	leaq	(__end_init_task - PTREGS_SIZE)(%rip), %rsp
++	leaq	(__end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE)(%rip), %rsp
+ 
+ 	/* Set up %gs.
+ 	 *
 
