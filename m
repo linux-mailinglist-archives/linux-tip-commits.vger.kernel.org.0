@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-688-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-689-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFB7874CF1
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Mar 2024 12:05:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D551875F28
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Mar 2024 09:10:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 432091F236EE
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Mar 2024 11:05:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F2F21C220E5
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Mar 2024 08:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2312982D91;
-	Thu,  7 Mar 2024 11:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D54B51C55;
+	Fri,  8 Mar 2024 08:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wSj6yqwI";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mABmpsMR"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="15ME6Br9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U6R7Rhkk"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AB9125DC;
-	Thu,  7 Mar 2024 11:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85391D699;
+	Fri,  8 Mar 2024 08:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709809504; cv=none; b=MCO3oaUDf59n8VaGTZn8upgnFJgJFUOgRZIwrvttsjJA6344hfdNgdowqCLMD1Fgq/TcluMYeikn4zt9kYcOBHCeMFR2x0c+zb21c4LR9NalhfFPX9amq+p6JtgNkY0uRYZdOJiODBi1CbWs3dNepJpaspVN1cwtYng1u33fbo0=
+	t=1709885428; cv=none; b=nJvcfgL2GX8lLtRJzW0XS7TY3xsRIi3anx2V4AOWuh1TQJKv9regu/o5JMM7+zlhVnXBxYVJzehuj9dBcsIHY/eEsl+qOaMaRFoOWoBb5fMy9vVbDN4YUOnu1aHLpeQuaO48ZNj0WrcyhJfzAzOZ5tv9t2FOdc8steq9pVJBZ5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709809504; c=relaxed/simple;
-	bh=F3t8FaPQ09tQDMQog6mg69yl7F1+FtKNnDjllV7epLE=;
+	s=arc-20240116; t=1709885428; c=relaxed/simple;
+	bh=wqYl+xABsF4/cjTLWzFqzpX2r2AzYBBqqzjPUy+lHfo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZqQPfUxg1oAdecqRBhtrLc1YG89tXOwrFUVKUmwYgL5SbS9Gqn9F5TD6VaR90qZVM5Pr5zVs+3qwJjObI7m6GbNs/f0V5UTVEJK0MbE5FlP1CLaJLEopswblJiQiPv/uR39qC0azNUWUgxPky8g02UZOZcS48Sew2sGgSGPzubM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wSj6yqwI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mABmpsMR; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=HeF+wLNkBBESEOpGieybZKYxotijp5EIwTp4HgHW6BS0YtscCiTMgC9JH/0uGWqcf3NO4pVWhxKZVNbdr4rEuBCDsQAmMJkFjgZW1e9aEtBIj/rzzzSbDWDEOemQEtIpJbVBihVDNids9qSTu2aQhNrgh2GH41clseTGuc6aIN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=15ME6Br9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U6R7Rhkk; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 07 Mar 2024 11:04:59 -0000
+Date: Fri, 08 Mar 2024 08:10:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709809500;
+	s=2020; t=1709885423;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vdyP2JtRhbiv6tYNm/WH+U05mCm+Ipea64ow94GYdIw=;
-	b=wSj6yqwIdwPSoQICbU0XwTTLxnHNwdTKrNg28WqGuzs8bJ2LV3StZSbabNJBmPhgFu8eTH
-	xdhGZaGGXPdqVRk7sfrsYVEBxUARyj1mQ1L/iSLVmQNTVpLNtpnJP3YO6WNy9WeJ4KvYFh
-	Do5thwA3qFWz5i2cugdZ5/NuI1Z6Ox27MSwAo6zZOiv8JGAfWeY/E3C+w0wu05AXs9pJhK
-	EpMJMUFAiDnrCmMJuifiauVAVAQtu7cjEikMAXdNCddRHimL5qxLgcsfcJitsmd+J9/8Dp
-	sUELTMwtPyz/W87mVu/7BiYM84RKwscoOizpMsMaSUm/henztfnUfIiHeTg8vA==
+	bh=1EE8cHk9aq8DGs6t4JRhIhoGf0zb9ZsCIwTSchrrkaA=;
+	b=15ME6Br9sCns2yhx0wmxBSUYO5AUbdgLn4RQXmXp2qfWsyITezXchXOTOflGu3KWJiqN4V
+	qs288zTCWUGbcXbErXsHp/FcHjy/dkU1jAfMICgqy9vPRSvXm+8bsTdEkg5x11oeysY08h
+	5CrZtgZ4YNuHnlNi+WsMYlNANr2mGldPN/kKXqffpcudlC/ZTCE9Ol8E4Rv34Y+HQavRj5
+	fT7x0x1r8FyogxAM5nacD/oY/ciGrGJFe1PObuF0K7jTcn52EGZvyqMWofPbzk2wIt+K/7
+	2yM9dKAfOhwWvLz4fiU81loVSBH9gP7WAxab8sDiZBnY7/Dl/Z9PaClai6FIIA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709809500;
+	s=2020e; t=1709885423;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vdyP2JtRhbiv6tYNm/WH+U05mCm+Ipea64ow94GYdIw=;
-	b=mABmpsMRfq1/ykpXNLGyr8rSOEWH9HWQnqp9DGMDrQtrFFEo2+zj9/nGwa4jppdX9FG0JD
-	n2yExLotoYYqR5BA==
-From: "tip-bot2 for Xin Li (Intel)" <tip-bot2@linutronix.de>
+	bh=1EE8cHk9aq8DGs6t4JRhIhoGf0zb9ZsCIwTSchrrkaA=;
+	b=U6R7RhkkdujFeUUxLaeI0KWQ+whSJq7mYJkHnbqpJol5pF8iwgnwsaZG6ZMLV7ccbqZADn
+	uJYfPIP/NO0t/QDQ==
+From: "tip-bot2 for Changbin Du" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/fred] x86/fred: Fix init_task thread stack pointer initialization
-Cc: kernel test robot <oliver.sang@intel.com>,
- "Xin Li (Intel)" <xin@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240304083333.449322-1-xin@zytor.com>
-References: <20240304083333.449322-1-xin@zytor.com>
+Subject: [tip: x86/sev] x86/sev: Disable KMSAN for memory encryption TUs
+Cc: Changbin Du <changbin.du@huawei.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240308044401.1120395-1-changbin.du@huawei.com>
+References: <20240308044401.1120395-1-changbin.du@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170980949947.398.16492968721974685258.tip-bot2@tip-bot2>
+Message-ID: <170988542239.398.10746491684726406217.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,91 +79,55 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/fred branch of tip:
+The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     c416b5bac6ad6ffe21e36225553b82ff2ec1558c
-Gitweb:        https://git.kernel.org/tip/c416b5bac6ad6ffe21e36225553b82ff2ec1558c
-Author:        Xin Li (Intel) <xin@zytor.com>
-AuthorDate:    Mon, 04 Mar 2024 00:33:33 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 07 Mar 2024 11:55:36 +01:00
+Commit-ID:     c0935fca6ba4799e5efc6daeee37887e84707d01
+Gitweb:        https://git.kernel.org/tip/c0935fca6ba4799e5efc6daeee37887e84707d01
+Author:        Changbin Du <changbin.du@huawei.com>
+AuthorDate:    Fri, 08 Mar 2024 12:44:01 +08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 08 Mar 2024 08:59:22 +01:00
 
-x86/fred: Fix init_task thread stack pointer initialization
+x86/sev: Disable KMSAN for memory encryption TUs
 
-As TOP_OF_KERNEL_STACK_PADDING was defined as 0 on x86_64, it went
-unnoticed that the initialization of the .sp field in INIT_THREAD and some
-calculations in the low level startup code do not take the padding into
-account.
+Instrumenting sev.c and mem_encrypt_identity.c with KMSAN will result in
+a triple-faulting kernel. Some of the code is invoked too early during
+boot, before KMSAN is ready.
 
-FRED enabled kernels require a 16 byte padding, which means that the init
-task initialization and the low level startup code use the wrong stack
-offset.
+Disable KMSAN instrumentation for the two translation units.
 
-Subtract TOP_OF_KERNEL_STACK_PADDING in all affected places to adjust for
-this.
+  [ bp: Massage commit message. ]
 
-Fixes: 65c9cc9e2c14 ("x86/fred: Reserve space for the FRED stack frame")
-Fixes: 3adee777ad0d ("x86/smpboot: Remove initial_stack on 64-bit")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Closes: https://lore.kernel.org/oe-lkp/202402262159.183c2a37-lkp@intel.com
-Link: https://lore.kernel.org/r/20240304083333.449322-1-xin@zytor.com
+Signed-off-by: Changbin Du <changbin.du@huawei.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240308044401.1120395-1-changbin.du@huawei.com
 ---
- arch/x86/include/asm/processor.h | 6 ++++--
- arch/x86/kernel/head_64.S        | 3 ++-
- arch/x86/xen/xen-head.S          | 2 +-
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ arch/x86/kernel/Makefile | 1 +
+ arch/x86/mm/Makefile     | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 26620d7..17fe819 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -664,8 +664,10 @@ static __always_inline void prefetchw(const void *x)
- #else
- extern unsigned long __end_init_task[];
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index 0000325..04591d0 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -33,6 +33,7 @@ KASAN_SANITIZE_sev.o					:= n
+ KCSAN_SANITIZE := n
+ KMSAN_SANITIZE_head$(BITS).o				:= n
+ KMSAN_SANITIZE_nmi.o					:= n
++KMSAN_SANITIZE_sev.o					:= n
  
--#define INIT_THREAD {							    \
--	.sp	= (unsigned long)&__end_init_task - sizeof(struct pt_regs), \
-+#define INIT_THREAD {							\
-+	.sp	= (unsigned long)&__end_init_task -			\
-+		  TOP_OF_KERNEL_STACK_PADDING -				\
-+		  sizeof(struct pt_regs),				\
- }
+ # If instrumentation of the following files is enabled, boot hangs during
+ # first second.
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index c80febc..6ec103b 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -16,6 +16,7 @@ KASAN_SANITIZE_pgprot.o		:= n
+ KCSAN_SANITIZE := n
+ # Avoid recursion by not calling KMSAN hooks for CEA code.
+ KMSAN_SANITIZE_cpu_entry_area.o := n
++KMSAN_SANITIZE_mem_encrypt_identity.o := n
  
- extern unsigned long KSTK_ESP(struct task_struct *task);
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index d4918d0..c38e435 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -26,6 +26,7 @@
- #include <asm/apicdef.h>
- #include <asm/fixmap.h>
- #include <asm/smp.h>
-+#include <asm/thread_info.h>
- 
- /*
-  * We are not able to switch in one step to the final KERNEL ADDRESS SPACE
-@@ -66,7 +67,7 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	mov	%rsi, %r15
- 
- 	/* Set up the stack for verify_cpu() */
--	leaq	(__end_init_task - PTREGS_SIZE)(%rip), %rsp
-+	leaq	(__end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE)(%rip), %rsp
- 
- 	leaq	_text(%rip), %rdi
- 
-diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
-index a0ea285..04101b9 100644
---- a/arch/x86/xen/xen-head.S
-+++ b/arch/x86/xen/xen-head.S
-@@ -49,7 +49,7 @@ SYM_CODE_START(startup_xen)
- 	ANNOTATE_NOENDBR
- 	cld
- 
--	leaq	(__end_init_task - PTREGS_SIZE)(%rip), %rsp
-+	leaq	(__end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE)(%rip), %rsp
- 
- 	/* Set up %gs.
- 	 *
+ ifdef CONFIG_FUNCTION_TRACER
+ CFLAGS_REMOVE_mem_encrypt.o		= -pg
 
