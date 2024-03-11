@@ -1,133 +1,146 @@
-Return-Path: <linux-tip-commits+bounces-689-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-690-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D551875F28
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Mar 2024 09:10:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A064877E7C
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Mar 2024 11:58:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F2F21C220E5
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Mar 2024 08:10:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E55341F20FAA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Mar 2024 10:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D54B51C55;
-	Fri,  8 Mar 2024 08:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870B73D980;
+	Mon, 11 Mar 2024 10:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="15ME6Br9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U6R7Rhkk"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jjTcO6QR"
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85391D699;
-	Fri,  8 Mar 2024 08:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44273D970;
+	Mon, 11 Mar 2024 10:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709885428; cv=none; b=nJvcfgL2GX8lLtRJzW0XS7TY3xsRIi3anx2V4AOWuh1TQJKv9regu/o5JMM7+zlhVnXBxYVJzehuj9dBcsIHY/eEsl+qOaMaRFoOWoBb5fMy9vVbDN4YUOnu1aHLpeQuaO48ZNj0WrcyhJfzAzOZ5tv9t2FOdc8steq9pVJBZ5A=
+	t=1710154635; cv=none; b=nR1tXoczWGuFcpA8SPcUSN9apf0YBcMSefGPD8jAqnzym8vOK0JwwfJNg8xpRp6bojwvhKmi21TnzMpfdJrXwS+rpsomxCaCIUzlYmWitDmdxwAdlOaB6e79zCcYc4yzjuXAzTZkXEaQKMeZvAiQkPkhQmCeijF6x0PmuzjYI6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709885428; c=relaxed/simple;
-	bh=wqYl+xABsF4/cjTLWzFqzpX2r2AzYBBqqzjPUy+lHfo=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=HeF+wLNkBBESEOpGieybZKYxotijp5EIwTp4HgHW6BS0YtscCiTMgC9JH/0uGWqcf3NO4pVWhxKZVNbdr4rEuBCDsQAmMJkFjgZW1e9aEtBIj/rzzzSbDWDEOemQEtIpJbVBihVDNids9qSTu2aQhNrgh2GH41clseTGuc6aIN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=15ME6Br9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U6R7Rhkk; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 08 Mar 2024 08:10:22 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709885423;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1EE8cHk9aq8DGs6t4JRhIhoGf0zb9ZsCIwTSchrrkaA=;
-	b=15ME6Br9sCns2yhx0wmxBSUYO5AUbdgLn4RQXmXp2qfWsyITezXchXOTOflGu3KWJiqN4V
-	qs288zTCWUGbcXbErXsHp/FcHjy/dkU1jAfMICgqy9vPRSvXm+8bsTdEkg5x11oeysY08h
-	5CrZtgZ4YNuHnlNi+WsMYlNANr2mGldPN/kKXqffpcudlC/ZTCE9Ol8E4Rv34Y+HQavRj5
-	fT7x0x1r8FyogxAM5nacD/oY/ciGrGJFe1PObuF0K7jTcn52EGZvyqMWofPbzk2wIt+K/7
-	2yM9dKAfOhwWvLz4fiU81loVSBH9gP7WAxab8sDiZBnY7/Dl/Z9PaClai6FIIA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709885423;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1EE8cHk9aq8DGs6t4JRhIhoGf0zb9ZsCIwTSchrrkaA=;
-	b=U6R7RhkkdujFeUUxLaeI0KWQ+whSJq7mYJkHnbqpJol5pF8iwgnwsaZG6ZMLV7ccbqZADn
-	uJYfPIP/NO0t/QDQ==
-From: "tip-bot2 for Changbin Du" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Disable KMSAN for memory encryption TUs
-Cc: Changbin Du <changbin.du@huawei.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240308044401.1120395-1-changbin.du@huawei.com>
-References: <20240308044401.1120395-1-changbin.du@huawei.com>
+	s=arc-20240116; t=1710154635; c=relaxed/simple;
+	bh=ruIbWDbGWHQyV0jlvj/gD5/cVR1JSgtm1GcHOPtzuSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sa/kNQlcyJTkQnksc2fXpkOLVzKnwwP0zidaBQRqfkSamIIHANHhwFRYP5nvUSeNN8BjBys0WeFIwCgsbNvdRLgK5ppA2/XgqNisyidEhMS5n/bqBxfCEuqnwIslmgJMvv9DdkewqsDdeCKwMTjHJmxU1v13zMj4KeT5gUyyL54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jjTcO6QR; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-513a06ef9b6so1992829e87.2;
+        Mon, 11 Mar 2024 03:57:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710154632; x=1710759432; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BuFmZeg0UoxxqK14pMwKTOeuM5ft4agwVZ8ZknCI34Y=;
+        b=jjTcO6QRT6s5kLx12JKai88EGnyh2SMmTYwpeULBPpPfHrW3SZOsQf/mnZVu7HR22C
+         pyxpXWa/p0thYodCpC5mx4wb5qgH11kV0ySM8COeEome5Vu3ooBK2vUOyhHc45zcMGSZ
+         NhVvKg/N9y3X67xI0DqryJ/KZcYlE5vO1fPnatLR5+GmLeGLdSjmldYulyos2a7WQylh
+         ounx6wsP2bshZv3oxJMxK3ml6PWcwZAeenqGIeUGFnRELoqCZLdRJ9PwefATyQfT/fDQ
+         49ysahq6w6hFzl4jfDxfEceEjg3mYRIjWXKFuFwCyyIKKi1AdBO7Fev9C+StvmfTALkx
+         3Puw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710154632; x=1710759432;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BuFmZeg0UoxxqK14pMwKTOeuM5ft4agwVZ8ZknCI34Y=;
+        b=BcYCt78xFU4UNv6ZC8YGS2FV9VOstK6r65nY1X5N88e5tovfAy1TpPydSu9QGlxnzm
+         si9GuvFvmICQM4snXf1ZSd5eP2dgH17UQPkuXIX4gNo2V2joRojPs4yBnQWER1SA7f6v
+         DbukXCQdmU7UM3iJGmgBgOFcyGp/OfRiYNX8vsIgOSNdInV68e2r/UqMIYgrPZzGSqQJ
+         Q92w6JFUeuoSA2Sl/l+IAoaSB6triVYdeCmH+byaO6uY3InmhNrzxSjx3zBZCoCtLQyT
+         lXwqHLiIduEABUCzP9ASpgZ8T/s9Hig4lK+GVoLzJIJgeMZUKm7WlOCOfSy+3mgS+5hD
+         H/Rw==
+X-Gm-Message-State: AOJu0YyXqt7dJlnj7MK2lzryWGx8/JCafezdl/x+u7nZGFo8syNVxlt4
+	D5hxNusV27l99Aqgo6JXMis6HOfM5jfGGbGOz/rLbjBYcf6KI+Uzfmj97Sn/K+M=
+X-Google-Smtp-Source: AGHT+IEqCnTuFMtLhQAghBjsehzRatxDwHgEKuLR0O/KZbhz2/rWIOKbcOzFVaDjvKq0QVg/J5/bPw==
+X-Received: by 2002:a19:3855:0:b0:512:e205:86ad with SMTP id d21-20020a193855000000b00512e20586admr3352933lfj.56.1710154631315;
+        Mon, 11 Mar 2024 03:57:11 -0700 (PDT)
+Received: from gmail.com (1F2EF295.nat.pool.telekom.hu. [31.46.242.149])
+        by smtp.gmail.com with ESMTPSA id fm9-20020a05600c0c0900b004132a34824dsm2956646wmb.41.2024.03.11.03.57.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Mar 2024 03:57:10 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date: Mon, 11 Mar 2024 11:57:08 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, kernel test robot <lkp@intel.com>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Subject: Re: [tip: locking/core] locking/qspinlock: Fix 'wait_early' set but
+ not used warning
+Message-ID: <Ze7jhCaWwAd3U0di@gmail.com>
+References: <20240222150540.79981-2-longman@redhat.com>
+ <170912480380.398.9234775487451824502.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170988542239.398.10746491684726406217.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <170912480380.398.9234775487451824502.tip-bot2@tip-bot2>
 
-The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     c0935fca6ba4799e5efc6daeee37887e84707d01
-Gitweb:        https://git.kernel.org/tip/c0935fca6ba4799e5efc6daeee37887e84707d01
-Author:        Changbin Du <changbin.du@huawei.com>
-AuthorDate:    Fri, 08 Mar 2024 12:44:01 +08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 08 Mar 2024 08:59:22 +01:00
+* tip-bot2 for Waiman Long <tip-bot2@linutronix.de> wrote:
 
-x86/sev: Disable KMSAN for memory encryption TUs
+> The following commit has been merged into the locking/core branch of tip:
+> 
+> Commit-ID:     ca4bc2e07b716509fd279d2b449bb42f4263a9c8
+> Gitweb:        https://git.kernel.org/tip/ca4bc2e07b716509fd279d2b449bb42f4263a9c8
+> Author:        Waiman Long <longman@redhat.com>
+> AuthorDate:    Thu, 22 Feb 2024 10:05:37 -05:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Wed, 28 Feb 2024 13:08:37 +01:00
+> 
+> locking/qspinlock: Fix 'wait_early' set but not used warning
+> 
+> When CONFIG_LOCK_EVENT_COUNTS is off, the wait_early variable will be
+> set but not used. This is expected. Recent compilers will not generate
+> wait_early code in this case.
+> 
+> Add the __maybe_unused attribute to wait_early for suppressing this
+> W=1 warning.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Waiman Long <longman@redhat.com>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Link: https://lore.kernel.org/r/20240222150540.79981-2-longman@redhat.com
+> 
+> Closes: https://lore.kernel.org/oe-kbuild-all/202312260422.f4pK3f9m-lkp@intel.com/
+> ---
+>  kernel/locking/qspinlock_paravirt.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/locking/qspinlock_paravirt.h b/kernel/locking/qspinlock_paravirt.h
+> index 6a0184e..ae2b12f 100644
+> --- a/kernel/locking/qspinlock_paravirt.h
+> +++ b/kernel/locking/qspinlock_paravirt.h
+> @@ -294,8 +294,8 @@ static void pv_wait_node(struct mcs_spinlock *node, struct mcs_spinlock *prev)
+>  {
+>  	struct pv_node *pn = (struct pv_node *)node;
+>  	struct pv_node *pp = (struct pv_node *)prev;
+> +	bool __maybe_unused wait_early;
+>  	int loop;
+> -	bool wait_early;
 
-Instrumenting sev.c and mem_encrypt_identity.c with KMSAN will result in
-a triple-faulting kernel. Some of the code is invoked too early during
-boot, before KMSAN is ready.
+On a second thought, shouldn't this be solved via lockevent_cond_inc()'s
+!CONFIG_LOCK_EVENT_COUNTS stub explicitly marking the variable as used, via 
+!something like:
 
-Disable KMSAN instrumentation for the two translation units.
+   #define lockevent_cond_inc(ev, c)		do { (void)(c); } while (0)
 
-  [ bp: Massage commit message. ]
+or so, instead of uglifying the usage site?
 
-Signed-off-by: Changbin Du <changbin.du@huawei.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240308044401.1120395-1-changbin.du@huawei.com
----
- arch/x86/kernel/Makefile | 1 +
- arch/x86/mm/Makefile     | 1 +
- 2 files changed, 2 insertions(+)
+Thanks,
 
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 0000325..04591d0 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -33,6 +33,7 @@ KASAN_SANITIZE_sev.o					:= n
- KCSAN_SANITIZE := n
- KMSAN_SANITIZE_head$(BITS).o				:= n
- KMSAN_SANITIZE_nmi.o					:= n
-+KMSAN_SANITIZE_sev.o					:= n
- 
- # If instrumentation of the following files is enabled, boot hangs during
- # first second.
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index c80febc..6ec103b 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -16,6 +16,7 @@ KASAN_SANITIZE_pgprot.o		:= n
- KCSAN_SANITIZE := n
- # Avoid recursion by not calling KMSAN hooks for CEA code.
- KMSAN_SANITIZE_cpu_entry_area.o := n
-+KMSAN_SANITIZE_mem_encrypt_identity.o := n
- 
- ifdef CONFIG_FUNCTION_TRACER
- CFLAGS_REMOVE_mem_encrypt.o		= -pg
+	Ingo
 
