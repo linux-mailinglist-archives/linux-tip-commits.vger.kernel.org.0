@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-693-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-694-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C55687937D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Mar 2024 13:00:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC7D87937E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Mar 2024 13:00:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB1E2B2113D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Mar 2024 12:00:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5057D1C22348
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Mar 2024 12:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A2579DC5;
-	Tue, 12 Mar 2024 12:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F50D79DDF;
+	Tue, 12 Mar 2024 12:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MhCoOfXA";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e7UrunNh"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ik00i3iG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MqA5L1Wu"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D114E79B9B;
-	Tue, 12 Mar 2024 12:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE9A79DBB;
+	Tue, 12 Mar 2024 12:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710244822; cv=none; b=rUZzbNzSQTfGcJYEUNCxmo6QFflY7vZJ4GsUdNtC+uEjRHxKR1tEpPchcLCefFc3TIrTVi8DGZEDNm8o9FVafV37d7OSg0jVt8UsuBDh1IdfT8E/z4dY2TZ5Omyqj1Y+18z8JA4OMbJX0ETREUXGLmWi4zLC6bFKoBIefnVWDw4=
+	t=1710244823; cv=none; b=qDkHmhQ4nqavYk9DxKkNsI6Hy9W1o4G0d/e4K8HvI9/ZYq4ShzDAF5zFXW+x9QiOtmAvQOT7D3UdS9z6Z8pKlUMEC42RrqLfZBXjWxL1CJm1RyEOw9iVsfEKSe6YR+2cx2BOZzT4kkZFCSF/qnwlQembzENTDQ4IBlyQMPWBbTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710244822; c=relaxed/simple;
-	bh=v0hv7sduDpVvlHwqpVb0Dpchl23luLw9eUQRFFsz2Cs=;
+	s=arc-20240116; t=1710244823; c=relaxed/simple;
+	bh=FK96rtOp3f2oT7fHvOHdFoWTeN1ZgxmZ/UprA8GS88E=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MU5ypWHid3O1/cxMfNtVmedc1eZCwIepP6SgGH4gcL1zBHbRS5kJdvnGhJ957D+Rfbjr69UliJXi9f9K/eQf9QK5ySxfaHl08AcjsSbRNnT3R6u0k71vpFF5MeXStNVoWut32Nli3jWkrXzsQuBXH6pdshECLAseMp6Z6aIhhg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MhCoOfXA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e7UrunNh; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=svG/YFWxjt/lQ53ZRJ3ukDK/2XD/PnDHyriac/43q8Vi6mcXIuAejMJbiTSIkNS15ejdOiHbzncz9G2U7YlXezA8OgcnL8AqQk8lOJZut+lfcqJ1h0rbtZmdJnVAoNZBGkOsfrxWC07ZviR3A7047CiRN/lJ5xgRSooa6oH8WwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ik00i3iG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MqA5L1Wu; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 12 Mar 2024 12:00:18 -0000
+Date: Tue, 12 Mar 2024 12:00:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1710244819;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8/XIY7++yUOkom3Z43lhbUS04fROMAoyOpQ6RGjet9E=;
-	b=MhCoOfXAESGG7aiiMhTGB/FdvbHX9x173Jx1vpeViOcJ/yXd2Qr0sI3wnm2OjUmkJcHiJG
-	L/s17HJxAoYEEp2943bsVaNEAftEkFQIPIf3OkjdF/g6EOw4hEPDWlaEJb3udENheeeDUO
-	6puTQ31ZzoI3ZsoYUz485t2BSkDQXd7jXt/yuSqqXiciZvV+0xT1I73cb9fdx2M9P1ST3F
-	9A/pf5OX54QzPaP9BopEyhbTEEmyCaVIAm9Smk8xJhbeN2at49gmNcZl9q7I2MFPSajgXC
-	nMtDF4LOCCsuLBx+U8lsK4Aip/AzqVlHsfPiTtuFoWy4dNW+SiUih7Dc58NKWQ==
+	bh=zMtvvKeZc7giSCV1W6MW6IYY/wSgBtbI9oVH762vREY=;
+	b=Ik00i3iGP0IjFPwYbUhr4YqKLObs4ZC9dFMUUmNWyTG9zIufSNcugcObq+AdHQGYn59Kml
+	U528GowSqlzUJJzJaOqXIxyzlg/LtVrdaMc37x9mQyaVTpgDSHN4PAQ9xbsC/BK41d8o45
+	hlYI8DzspRkoIB0pJpXnJnKCWoQEyLu6rwIF+fBimKaSJ0bqY/LbjfmjFF3/xRorLZRj6Y
+	4MyYO4gwo5OTSG96kczijkAfUoVuOQDNRHEwvVzCSxkhDNpJSxR5c9jbXx8fDu2V8DbpRW
+	FHDlJNv/o8gLWxYGsPctZIa/t1EXF2bIPln1i7TffvI6pemgEhsyDR5BtTzlFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1710244819;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8/XIY7++yUOkom3Z43lhbUS04fROMAoyOpQ6RGjet9E=;
-	b=e7UrunNhYXsDSA7aY1+qtROJXLDY6QJJO1ZRBfj8Dm5OqSP2Oc301tp7KkFG7Q+/K7Z921
-	pqQGKT9ckMSAW9CQ==
+	bh=zMtvvKeZc7giSCV1W6MW6IYY/wSgBtbI9oVH762vREY=;
+	b=MqA5L1WuUiY7Nid+V7fJ51aDbn8CfzgpWYXM9h6JXmEtrosqq2+NnOhG1S7v4oDu+xe42e
+	T2Hxv+fPA5s9WbDQ==
 From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/balancing: Rename find_idlest_cpu() =>
- sched_balance_find_dst_cpu()
+Subject: [tip: sched/core] sched/balancing: Rename find_idlest_group() =>
+ sched_balance_find_dst_group()
 Cc: Ingo Molnar <mingo@kernel.org>, Shrikanth Hegde <sshegde@linux.ibm.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240308111819.1101550-14-mingo@kernel.org>
-References: <20240308111819.1101550-14-mingo@kernel.org>
+In-Reply-To: <20240308111819.1101550-13-mingo@kernel.org>
+References: <20240308111819.1101550-13-mingo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171024481845.398.6678071993830758312.tip-bot2@tip-bot2>
+Message-ID: <171024481913.398.17633544271376353781.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,14 +81,14 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     686d148cbb5a1c2891914b8d11147d3c5556a29a
-Gitweb:        https://git.kernel.org/tip/686d148cbb5a1c2891914b8d11147d3c5556a29a
+Commit-ID:     a88b17080294f735c4124acccfa2d803a6a7d46f
+Gitweb:        https://git.kernel.org/tip/a88b17080294f735c4124acccfa2d803a6a7d46f
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 08 Mar 2024 12:18:19 +01:00
+AuthorDate:    Fri, 08 Mar 2024 12:18:18 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 12 Mar 2024 12:00:00 +01:00
 
-sched/balancing: Rename find_idlest_cpu() => sched_balance_find_dst_cpu()
+sched/balancing: Rename find_idlest_group() => sched_balance_find_dst_group()
 
 Standardize scheduler load-balancing function names on the
 sched_balance_() prefix.
@@ -103,40 +103,47 @@ and are never returned as long as the system is under-loaded.
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240308111819.1101550-14-mingo@kernel.org
+Link: https://lore.kernel.org/r/20240308111819.1101550-13-mingo@kernel.org
 ---
- kernel/sched/fair.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index d0c3a09..4b3c4a1 100644
+index 02ff027..d0c3a09 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -7160,7 +7160,7 @@ sched_balance_find_dst_group_cpu(struct sched_group *group, struct task_struct *
- 	return shallowest_idle_cpu != -1 ? shallowest_idle_cpu : least_loaded_cpu;
+@@ -7098,7 +7098,7 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p,
  }
  
--static inline int find_idlest_cpu(struct sched_domain *sd, struct task_struct *p,
-+static inline int sched_balance_find_dst_cpu(struct sched_domain *sd, struct task_struct *p,
- 				  int cpu, int prev_cpu, int sd_flag)
- {
- 	int new_cpu = cpu;
-@@ -7936,7 +7936,7 @@ compute_energy(struct energy_env *eenv, struct perf_domain *pd,
-  * NOTE: Forkees are not accepted in the energy-aware wake-up path because
-  * they don't have any useful utilization data yet and it's not possible to
-  * forecast their impact on energy consumption. Consequently, they will be
-- * placed by find_idlest_cpu() on the least loaded CPU, which might turn out
-+ * placed by sched_balance_find_dst_cpu() on the least loaded CPU, which might turn out
-  * to be energy-inefficient in some use-cases. The alternative would be to
-  * bias new tasks towards specific types of CPUs first, or to try to infer
-  * their util_avg from the parent task, but those heuristics could hurt
-@@ -8201,7 +8201,7 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
+ static struct sched_group *
+-find_idlest_group(struct sched_domain *sd, struct task_struct *p, int this_cpu);
++sched_balance_find_dst_group(struct sched_domain *sd, struct task_struct *p, int this_cpu);
  
- 	if (unlikely(sd)) {
- 		/* Slow path */
--		new_cpu = find_idlest_cpu(sd, p, cpu, prev_cpu, sd_flag);
-+		new_cpu = sched_balance_find_dst_cpu(sd, p, cpu, prev_cpu, sd_flag);
- 	} else if (wake_flags & WF_TTWU) { /* XXX always ? */
- 		/* Fast path */
- 		new_cpu = select_idle_sibling(p, prev_cpu, new_cpu);
+ /*
+  * sched_balance_find_dst_group_cpu - find the idlest CPU among the CPUs in the group.
+@@ -7185,7 +7185,7 @@ static inline int find_idlest_cpu(struct sched_domain *sd, struct task_struct *p
+ 			continue;
+ 		}
+ 
+-		group = find_idlest_group(sd, p, cpu);
++		group = sched_balance_find_dst_group(sd, p, cpu);
+ 		if (!group) {
+ 			sd = sd->child;
+ 			continue;
+@@ -10296,13 +10296,13 @@ static bool update_pick_idlest(struct sched_group *idlest,
+ }
+ 
+ /*
+- * find_idlest_group() finds and returns the least busy CPU group within the
++ * sched_balance_find_dst_group() finds and returns the least busy CPU group within the
+  * domain.
+  *
+  * Assumes p is allowed on at least one CPU in sd.
+  */
+ static struct sched_group *
+-find_idlest_group(struct sched_domain *sd, struct task_struct *p, int this_cpu)
++sched_balance_find_dst_group(struct sched_domain *sd, struct task_struct *p, int this_cpu)
+ {
+ 	struct sched_group *idlest = NULL, *local = NULL, *group = sd->groups;
+ 	struct sg_lb_stats local_sgs, tmp_sgs;
 
