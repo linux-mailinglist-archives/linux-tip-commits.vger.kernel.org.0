@@ -1,140 +1,130 @@
-Return-Path: <linux-tip-commits+bounces-691-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-692-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43B18780D7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Mar 2024 14:46:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898BB87937C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Mar 2024 13:00:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AE3A1F213F7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Mar 2024 13:46:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B86CA1C20A05
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Mar 2024 12:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6F03D980;
-	Mon, 11 Mar 2024 13:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE9579DBF;
+	Tue, 12 Mar 2024 12:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UcuanKhH"
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aRb4kCVc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ytpMkHWg"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F8F3D986
-	for <linux-tip-commits@vger.kernel.org>; Mon, 11 Mar 2024 13:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B933658207;
+	Tue, 12 Mar 2024 12:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710164767; cv=none; b=By7ERIxfm+nEu3DFfDIi2NkZbE1/porw7Brz53vBzroiiwU5Ydh9F6GekO7D9I6AKZVQI+RzYosDWl4H4ihxs5ybEKx5XayaHUaqaSeMes6urc22cTMVm9JqSZ1OK+NR9EUJvynt+K/xSBIszmaMxC7W39i1JG3aaTLJ5ARCWqA=
+	t=1710244822; cv=none; b=oY30JEo5kJncIGb8SXDHtg/8nuMC3kvxrTiBMaJsnv4mVWAeFYKRQzGpY8dUpxWXYXmINHAI84+sikUWOIcevL69I0uyjR9BnWY5jIk8t7K4uI9e0Y1GRvu/4xd7YRTwen+Rai14BPkQ62m9+o6yzmdcfR/HCJJ+2UYQU9SrPHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710164767; c=relaxed/simple;
-	bh=IGgikpxQA5YTN1TUXE1XFOVsILWNGyTkicWdb23T6C8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t3mxurO7ygJyq6vijPX0ViVUA2LVyeYVHOwc68Cfz1n9FW64bvrGMDNhfvpzKjOQIwZmx2svjo5tdvPV1teFgu6t8kfNOhLUvP7xZ3uNuB1x9n7WH4eGEZknaKhn/hhDIFqqfhAwX9/w4RJIHllqU5WXCFiU/pTobouS3LfKLac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UcuanKhH; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710164765;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1710244822; c=relaxed/simple;
+	bh=KM1UBwQkbdFws82BZPs7LJL/AWBztGJFkHtykBh7GUg=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=L4IlHIiYUcqUFrjlmpOg8AQUeirAcsZAsc06LVjJtUnnzmOBjImaKFTf8KTEk6eg+KPDH0ERXI/NFewBRp5/HY9rfHyPWHkN+YCsu4oCE2bR1dXkRkKfoHeph+3GyRBVVhlyC64p4EW9SqjEKP9w7Hk/JWhAiKFFEAP1LxwIwj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aRb4kCVc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ytpMkHWg; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 12 Mar 2024 12:00:17 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1710244818;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RSlrT+2IDrrNRqEUFQFgMF+IOBL1czDMXtZxeSZV+Vk=;
-	b=UcuanKhHvRybOFBWK5Dxm1FpTNCOdkrR8w+YmMLpJlD0zHPRmaV3k1VsUvAEhESbWSGmJo
-	pCI7Ajbe3KYMie2qtuBDoa/BDeWM3uC+O/M/sdG2j+8Csd21zAtZLzvXiGYMf9DIq40ph+
-	kAgLogfS2oVxhWtSOxr/e9h0GzThBNo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-313-GgAJRwTVPFWGTm2ZfP6lVQ-1; Mon,
- 11 Mar 2024 09:45:56 -0400
-X-MC-Unique: GgAJRwTVPFWGTm2ZfP6lVQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 45B0128B6AB1;
-	Mon, 11 Mar 2024 13:45:56 +0000 (UTC)
-Received: from [10.22.9.132] (unknown [10.22.9.132])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id C6716492BC4;
-	Mon, 11 Mar 2024 13:45:55 +0000 (UTC)
-Message-ID: <2e6c684b-bfbf-4850-b484-a1ace58a4c69@redhat.com>
-Date: Mon, 11 Mar 2024 09:45:55 -0400
+	bh=DZ8pXc6XEwmfIru+Hl3JIXfbLQwZTEjs/716tqLpL/o=;
+	b=aRb4kCVc2cvdabyVQZnGcdAJqjeS49m1t88ISkDOfltuP1OY+dvfA/Egt53/VlIpBe6H+p
+	kvtrvMYzsIsgwWsWti595ZYq+VefNRAxN25VAB4uBYkIAkR2Pf1f5jHol1n/yB0w+eMbPz
+	i08SyZxyWPEiSpPjsUfItIllKUgnFc+zSQjAOGpbypq6zjCVyfREZ3NsEy1XtA7NvzNYMA
+	VrPZ4V4myv1dzJj22PfTiZ0lMl3Od+FoDxcqR9bF+zX2HJgLIUWJVfTu5FrUZ9S794tOpo
+	trYRKUW0sLxR+jb+Z99c309vPk0aOtYJ7T8hja7nLC1tuZpSxNNYeLN3QvMHgQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1710244818;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DZ8pXc6XEwmfIru+Hl3JIXfbLQwZTEjs/716tqLpL/o=;
+	b=ytpMkHWg3SlGaG+bhrbdJnxm+ib0/p+JLho/swgxGjlQkOW7OkGeOxJ8kaCfK4TYx9cLeF
+	KlMManHsXIYQKXDQ==
+From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] sched/balancing: Fix a couple of outdated function
+ names in comments
+Cc: Honglei Wang <jameshongleiwang@126.com>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <5biu@gmail.com>
+References: <5biu@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [tip: locking/core] locking/qspinlock: Fix 'wait_early' set but
- not used warning
-Content-Language: en-US
-To: Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, kernel test robot <lkp@intel.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
-References: <20240222150540.79981-2-longman@redhat.com>
- <170912480380.398.9234775487451824502.tip-bot2@tip-bot2>
- <Ze7jhCaWwAd3U0di@gmail.com>
-From: Waiman Long <longman@redhat.com>
-In-Reply-To: <Ze7jhCaWwAd3U0di@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Message-ID: <171024481767.398.13644214266877553008.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 
-On 3/11/24 06:57, Ingo Molnar wrote:
-> * tip-bot2 for Waiman Long <tip-bot2@linutronix.de> wrote:
->
->> The following commit has been merged into the locking/core branch of tip:
->>
->> Commit-ID:     ca4bc2e07b716509fd279d2b449bb42f4263a9c8
->> Gitweb:        https://git.kernel.org/tip/ca4bc2e07b716509fd279d2b449bb42f4263a9c8
->> Author:        Waiman Long <longman@redhat.com>
->> AuthorDate:    Thu, 22 Feb 2024 10:05:37 -05:00
->> Committer:     Ingo Molnar <mingo@kernel.org>
->> CommitterDate: Wed, 28 Feb 2024 13:08:37 +01:00
->>
->> locking/qspinlock: Fix 'wait_early' set but not used warning
->>
->> When CONFIG_LOCK_EVENT_COUNTS is off, the wait_early variable will be
->> set but not used. This is expected. Recent compilers will not generate
->> wait_early code in this case.
->>
->> Add the __maybe_unused attribute to wait_early for suppressing this
->> W=1 warning.
->>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Signed-off-by: Waiman Long <longman@redhat.com>
->> Signed-off-by: Ingo Molnar <mingo@kernel.org>
->> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
->> Cc: Linus Torvalds <torvalds@linux-foundation.org>
->> Link: https://lore.kernel.org/r/20240222150540.79981-2-longman@redhat.com
->>
->> Closes: https://lore.kernel.org/oe-kbuild-all/202312260422.f4pK3f9m-lkp@intel.com/
->> ---
->>   kernel/locking/qspinlock_paravirt.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/kernel/locking/qspinlock_paravirt.h b/kernel/locking/qspinlock_paravirt.h
->> index 6a0184e..ae2b12f 100644
->> --- a/kernel/locking/qspinlock_paravirt.h
->> +++ b/kernel/locking/qspinlock_paravirt.h
->> @@ -294,8 +294,8 @@ static void pv_wait_node(struct mcs_spinlock *node, struct mcs_spinlock *prev)
->>   {
->>   	struct pv_node *pn = (struct pv_node *)node;
->>   	struct pv_node *pp = (struct pv_node *)prev;
->> +	bool __maybe_unused wait_early;
->>   	int loop;
->> -	bool wait_early;
-> On a second thought, shouldn't this be solved via lockevent_cond_inc()'s
-> !CONFIG_LOCK_EVENT_COUNTS stub explicitly marking the variable as used, via
-> !something like:
->
->     #define lockevent_cond_inc(ev, c)		do { (void)(c); } while (0)
->
-> or so, instead of uglifying the usage site?
+The following commit has been merged into the sched/core branch of tip:
 
-Right, that should work too. Thanks for the suggestion. I will post 
-another to do that.
+Commit-ID:     d72cf62438d67b911212f8d4cf65d6167c1541ba
+Gitweb:        https://git.kernel.org/tip/d72cf62438d67b911212f8d4cf65d6167c1541ba
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Tue, 12 Mar 2024 11:33:50 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 12 Mar 2024 12:00:01 +01:00
 
-Cheers,
-Longman
+sched/balancing: Fix a couple of outdated function names in comments
 
+The 'idle_balance()' function hasn't existed for years, and there's no
+load_balance_newidle() either - both are sched_balance_newidle() today.
+
+Reported-by: Honglei Wang <jameshongleiwang@126.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/ZfAwNufbiyt/5biu@gmail.com
+---
+ kernel/sched/fair.c | 2 +-
+ kernel/sched/pelt.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 4b3c4a1..a19ea29 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6866,7 +6866,7 @@ dequeue_throttle:
+ 
+ #ifdef CONFIG_SMP
+ 
+-/* Working cpumask for: sched_balance_rq, load_balance_newidle. */
++/* Working cpumask for: sched_balance_rq(), sched_balance_newidle(). */
+ static DEFINE_PER_CPU(cpumask_var_t, load_balance_mask);
+ static DEFINE_PER_CPU(cpumask_var_t, select_rq_mask);
+ static DEFINE_PER_CPU(cpumask_var_t, should_we_balance_tmpmask);
+diff --git a/kernel/sched/pelt.c b/kernel/sched/pelt.c
+index f80955e..3a96da2 100644
+--- a/kernel/sched/pelt.c
++++ b/kernel/sched/pelt.c
+@@ -208,7 +208,7 @@ ___update_load_sum(u64 now, struct sched_avg *sa,
+ 	 * se has been already dequeued but cfs_rq->curr still points to it.
+ 	 * This means that weight will be 0 but not running for a sched_entity
+ 	 * but also for a cfs_rq if the latter becomes idle. As an example,
+-	 * this happens during idle_balance() which calls
++	 * this happens during sched_balance_newidle() which calls
+ 	 * sched_balance_update_blocked_averages().
+ 	 *
+ 	 * Also see the comment in accumulate_sum().
 
