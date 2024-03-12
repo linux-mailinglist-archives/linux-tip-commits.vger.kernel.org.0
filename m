@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-695-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-696-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3AE879382
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Mar 2024 13:00:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD30879383
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Mar 2024 13:00:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EC951F225E2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Mar 2024 12:00:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A224B1F225E3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Mar 2024 12:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF4B7A147;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624AF7A154;
 	Tue, 12 Mar 2024 12:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ABuSb0mL";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e0jZtylr"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="p0zOV226";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ynDkCjgp"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0F279DC9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6F579DD0;
 	Tue, 12 Mar 2024 12:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710244824; cv=none; b=E+qhHuNd54OXLOjrAhEmU85XPXKqqUqkmTDDv9jh2inO8iDXb6xF7okVxqAisfXgz0JyRAc6mLHxPxLFVMtR9+42fDYYpjkooPDuyq+E8oYp851JUR1fTCEmPS1scfvOpJn/I7aHCiXuX1aEvWhvINPXh/fk5Ug8JEX/g9jsiP4=
+	t=1710244824; cv=none; b=Cjnynf55DKVkak1u0YGKA0rAkSXzJVq22ouYiuyNoJKqcB/em6UBLKSKAjys59KNEQwx336qCFJgruKC195Z5CL9Rvi248KW9m4oZqjvPTDQ2CzQli/mMu1VVnLoA6gtvJzY7xSC/XZkqHHmGWGgErfpE2C47fQKBSSbjZ6L0hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1710244824; c=relaxed/simple;
-	bh=OtN2WiBCi7+9TjZRH+mwkjsnl9BgMTcsF/1lxObfBWU=;
+	bh=b1mMbI6lID5n8qjV1S7dmie7OFUVRAPPpmbbEOPqwdU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=PTabpU7CBV2tRSDV+s45urEcg1G3vDIjiJNRvkwtfBttDONWwHcBGw5WfMeEnMye4U3SmmDUHmcmHGSF3MnGogNLzEbeERAosE8Y9NcMgkzlwxxj2ju4xXi8021Xg1xDly3OxYfsIRnCj+cgIi6R7B5jdTT0Y0Ur7WudR4HH2TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ABuSb0mL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e0jZtylr; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=X+0kWhsqyACKBOxWGCPHSFvEp0Cvl7jEvc4HytXR+rqBwjyT+rv34DSUXOlU/ogglS7Ws1G+RD11Wjy6OjdBDL05mGHQdOOvlfYp+2BKBzqXMXFXxAPhLnvSidS0eUJDAqJ2KWdyE+lDSYBZDSnjEKO6IWg0ZEwc1HNinZwCPoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=p0zOV226; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ynDkCjgp; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 12 Mar 2024 12:00:19 -0000
+Date: Tue, 12 Mar 2024 12:00:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1710244820;
+	s=2020; t=1710244821;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VYtfrPZN9iFXCDlXOhOkIYqn/H8zc/GJbSnb66ECkBs=;
-	b=ABuSb0mLF3WdM5anDPpSZhOCT7Q/Z4+KnI6qnuoCYCBLDyGU2+hm+1ZmDlkfSQxP5NCcgJ
-	lwpLwwmguzRMnC+YGpW5uStyFMhSQ968QT1T7+AJrjY1zMt8Xx35sAZ0j7Tjh9e5aif2pJ
-	lRgfnHTs0PKYPSGwTFZImuFU2q9Irg285V9/NlgFdRl63SG6c8YITBg42HxvxC+3XdIAKO
-	3FbweVa4D0rKlEWIcEtGoWbN6IZdZJVnPwzddNetIpAlSXdD87iSL/+k2EnwvIq2iQdrLr
-	4m2wDRHIUpV/J85i/fTG9+BjiK2W6xbi6OLPTK0qHJ0DiOaULvcH+LD62sZSlw==
+	bh=ElUiyIrF/PtVcYTBy1Buyncg8p/ge/E3VzM9JW4kMqY=;
+	b=p0zOV226r2K4G95nejYJch7lWeaFH6I1q08MbmCUE2c+N2UE/JPFwJlTiChDx5aXc3DGF0
+	ledIllYjSS+rIA9ysglq+yZn5kzySlNwNQuO7h6xbP9tGRyHlGVGEyNhzzxRyW1RWc2NhA
+	6IpiPrRzcEZ+0IPTy068jn0Zcz0b/nQZTome6NkOK8mKsAPVYOv6xmUbRP5W+TNCAYYdF/
+	CSoSS7pO3Q8mjdoJrUDZ+SnGU4WeAcgu4LyT/64fac5VIDrcUIXW/8NN3QnGTsY2iW+ikr
+	p0ndw6SFtyvTC1gWHy1DH/n2Ti2fPEabZ+UDwBvqRrVKSBlymK4YZedYoosEqQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1710244820;
+	s=2020e; t=1710244821;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VYtfrPZN9iFXCDlXOhOkIYqn/H8zc/GJbSnb66ECkBs=;
-	b=e0jZtylrYIxLSED9VlVv9iqNJguHoravJvtgV8z0OKyDAR3+IBMD821w1MGy0NZQNmkPW4
-	ULDyH4B+MZrn8TBg==
+	bh=ElUiyIrF/PtVcYTBy1Buyncg8p/ge/E3VzM9JW4kMqY=;
+	b=ynDkCjgpiVto7X0UupAuqE8W03ZrQW+amDx+36RdScfiL9f7V/fbW92AwAupvQFLPkcsdK
+	sWG86XpJvtDfZHDQ==
 From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/balancing: Rename find_idlest_group_cpu() =>
- sched_balance_find_dst_group_cpu()
+Subject: [tip: sched/core] sched/balancing: Rename newidle_balance() =>
+ sched_balance_newidle()
 Cc: Ingo Molnar <mingo@kernel.org>, Shrikanth Hegde <sshegde@linux.ibm.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240308111819.1101550-12-mingo@kernel.org>
-References: <20240308111819.1101550-12-mingo@kernel.org>
+In-Reply-To: <20240308111819.1101550-11-mingo@kernel.org>
+References: <20240308111819.1101550-11-mingo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171024481979.398.14006051455096223466.tip-bot2@tip-bot2>
+Message-ID: <171024482045.398.12996146036821244603.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,57 +81,94 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     646ebaf51c64c6416ca89765c20041363fc1b518
-Gitweb:        https://git.kernel.org/tip/646ebaf51c64c6416ca89765c20041363fc1b518
+Commit-ID:     7d058285cd77cc1411c91efd1b1673530bb1bee8
+Gitweb:        https://git.kernel.org/tip/7d058285cd77cc1411c91efd1b1673530bb1bee8
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 08 Mar 2024 12:18:17 +01:00
+AuthorDate:    Fri, 08 Mar 2024 12:18:16 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 12 Mar 2024 12:00:00 +01:00
 
-sched/balancing: Rename find_idlest_group_cpu() => sched_balance_find_dst_group_cpu()
+sched/balancing: Rename newidle_balance() => sched_balance_newidle()
 
 Standardize scheduler load-balancing function names on the
 sched_balance_() prefix.
 
-Also use 'dst' instead of 'idlest': while historically correct,
-today it's not really true anymore that we return the 'idlest'
-group or CPU, we sort by idle-exit latency and only return the
-idlest CPUs from the lowest-latency set of CPUs.
-
-The true 'idlest' CPUs often remain idle for a long time
-and are never returned as long as the system is under-loaded.
-
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240308111819.1101550-12-mingo@kernel.org
+Link: https://lore.kernel.org/r/20240308111819.1101550-11-mingo@kernel.org
 ---
- kernel/sched/fair.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index aa5ff0e..02ff027 100644
+index 95f7092..aa5ff0e 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -7101,10 +7101,10 @@ static struct sched_group *
- find_idlest_group(struct sched_domain *sd, struct task_struct *p, int this_cpu);
+@@ -4816,7 +4816,7 @@ static inline unsigned long cfs_rq_load_avg(struct cfs_rq *cfs_rq)
+ 	return cfs_rq->avg.load_avg;
+ }
+ 
+-static int newidle_balance(struct rq *this_rq, struct rq_flags *rf);
++static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf);
+ 
+ static inline unsigned long task_util(struct task_struct *p)
+ {
+@@ -5136,7 +5136,7 @@ attach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se) {}
+ static inline void
+ detach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se) {}
+ 
+-static inline int newidle_balance(struct rq *rq, struct rq_flags *rf)
++static inline int sched_balance_newidle(struct rq *rq, struct rq_flags *rf)
+ {
+ 	return 0;
+ }
+@@ -8253,7 +8253,7 @@ balance_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
+ 	if (rq->nr_running)
+ 		return 1;
+ 
+-	return newidle_balance(rq, rf) != 0;
++	return sched_balance_newidle(rq, rf) != 0;
+ }
+ #endif /* CONFIG_SMP */
+ 
+@@ -8505,10 +8505,10 @@ idle:
+ 	if (!rf)
+ 		return NULL;
+ 
+-	new_tasks = newidle_balance(rq, rf);
++	new_tasks = sched_balance_newidle(rq, rf);
+ 
+ 	/*
+-	 * Because newidle_balance() releases (and re-acquires) rq->lock, it is
++	 * Because sched_balance_newidle() releases (and re-acquires) rq->lock, it is
+ 	 * possible for any higher priority task to appear. In that case we
+ 	 * must re-start the pick_next_entity() loop.
+ 	 */
+@@ -11493,7 +11493,7 @@ out_one_pinned:
+ 	ld_moved = 0;
+ 
+ 	/*
+-	 * newidle_balance() disregards balance intervals, so we could
++	 * sched_balance_newidle() disregards balance intervals, so we could
+ 	 * repeatedly reach this code, which would lead to balance_interval
+ 	 * skyrocketing in a short amount of time. Skip the balance_interval
+ 	 * increase logic to avoid that.
+@@ -12277,7 +12277,7 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
+ #endif /* CONFIG_NO_HZ_COMMON */
  
  /*
-- * find_idlest_group_cpu - find the idlest CPU among the CPUs in the group.
-+ * sched_balance_find_dst_group_cpu - find the idlest CPU among the CPUs in the group.
+- * newidle_balance is called by schedule() if this_cpu is about to become
++ * sched_balance_newidle is called by schedule() if this_cpu is about to become
+  * idle. Attempts to pull tasks from other CPUs.
+  *
+  * Returns:
+@@ -12285,7 +12285,7 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
+  *     0 - failed, no new tasks
+  *   > 0 - success, new (fair) tasks present
   */
- static int
--find_idlest_group_cpu(struct sched_group *group, struct task_struct *p, int this_cpu)
-+sched_balance_find_dst_group_cpu(struct sched_group *group, struct task_struct *p, int this_cpu)
+-static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
++static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
  {
- 	unsigned long load, min_load = ULONG_MAX;
- 	unsigned int min_exit_latency = UINT_MAX;
-@@ -7191,7 +7191,7 @@ static inline int find_idlest_cpu(struct sched_domain *sd, struct task_struct *p
- 			continue;
- 		}
- 
--		new_cpu = find_idlest_group_cpu(group, p, cpu);
-+		new_cpu = sched_balance_find_dst_group_cpu(group, p, cpu);
- 		if (new_cpu == cpu) {
- 			/* Now try balancing at a lower domain level of 'cpu': */
- 			sd = sd->child;
+ 	unsigned long next_balance = jiffies + HZ;
+ 	int this_cpu = this_rq->cpu;
 
