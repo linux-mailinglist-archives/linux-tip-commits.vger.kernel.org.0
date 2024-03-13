@@ -1,79 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-720-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-721-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391ED87A5B8
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Mar 2024 11:23:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E83387A5FF
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Mar 2024 11:40:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC7881F210E9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Mar 2024 10:23:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2FE32820EC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Mar 2024 10:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F643B780;
-	Wed, 13 Mar 2024 10:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429973D386;
+	Wed, 13 Mar 2024 10:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yBapKqPQ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PfXDcVcX"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GMUkcPIQ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ya0nWvyi"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286523AC16;
-	Wed, 13 Mar 2024 10:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5D6225AD;
+	Wed, 13 Mar 2024 10:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710325361; cv=none; b=QTbNA0myKlMj5RoXfH8m/7rdyWnjbnkmAIVHK5yZzKDB7DjqabVpv0UWGF5fdZ/mWERBiDBTTW/nCD8OyQwTHSHb6WZTvvYlLUwBr8WpJRBdBYQ1gTZDvuoTdsOFP54X2Cl/T7h9pRnurrbWuxbha9jESHEmACGMyefAUqVKkdc=
+	t=1710326402; cv=none; b=AZtOl/7yvLFMEvxaBv00+rYdTs8SPbITbfiQxtX26rL72oos3PgswZQUtcInpQxLa6CT8kAJmkn0CWvPKSOCMXmwbeAqIXEcRVAgtgXKnHtzt+st7dAirj3YUL63fbq6T/E4Uo2+f6Bl9rQoan/pNHckMENaTzVvHOmrQ5q0Sm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710325361; c=relaxed/simple;
-	bh=sFfSZfnPrnmtWgEdxudp7DxQTYy/1ZbQQVvKKCQx+74=;
+	s=arc-20240116; t=1710326402; c=relaxed/simple;
+	bh=GVy6srAz078qzLw5TMfdLMD6yNhqmz1rV0HYo2eVM2c=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MqPtfRoFHBSXXqRiRIiC9qc6W3ThWKd18OG+rfKd5flWke195EE7WKaCA4gonks2Uv7iTv0fisH6ZEeD3zljKBcLZu2T1rOjL3XqdOBwyPzNfvSxrbLxjwEsqZP4oZc7PWxT0Mum8DkKh/RJ2OMiqMZX50LzB1wi91VnSWwUPew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yBapKqPQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PfXDcVcX; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Wi8OW4GHrkZ6UHJ9x/qVjGAohw+lVkXZm2dEX5PsLAZJkOtBiKPVaR5uMuIPm71Mfcznwd2LV7eycP90wPGiJrgEFpg93Ptt64zo0MvPj73hKdJGw3JxUReFWLKgSPOvg6G2BZsVG7GHJdAvzuQhtnvJa2ARJeH+YtrwiHue53A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GMUkcPIQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ya0nWvyi; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 13 Mar 2024 10:22:37 -0000
+Date: Wed, 13 Mar 2024 10:39:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1710325358;
+	s=2020; t=1710326399;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8Yk7qDMn+1Xb0f6DQG5+5LLC7rR5uLbKjcnR9tq6A28=;
-	b=yBapKqPQN7YNqYAhPDq7WbeVxZD4G+QFeV81goEbD26pykhp2FMxutYnZ31BDycasET2G1
-	CmVd5QBsvRK17o79XozNkcD2X437ccrFrJGuoIED3022BDsTk5Wt2u1iX0LU0NnMJdehH7
-	pRrKu1RTAmhluNZUAhtlr6+9FFsPIsZSnxGiu8TGsgXpF/jBsVXw1K5bzmqQyVtYjQUB4e
-	qd887kLe+tL1Bk8K4b0l3m/qU7hFthQqA3WuNiv5zyWhBW84lmK2WVlw3N69AHAS6/zbH3
-	awcuwuY1ZVC6GazekQCpRB07AzWA02C6o8Q4LlB3sSThNKnjGMP2fGQtyFpI9g==
+	bh=PBDsqCIRae9oF8BdiuyyntcNynieeZ8JqhBB5Ca3FqM=;
+	b=GMUkcPIQ9uiMybbo6mew8GLuA3zzPorsGSZXElxQgBtkii8ax1VLLSMGeCBzjK0EveWaqv
+	NLpQSr8TulnF3xpVmKiBJiMEj+PHSI0NalUKxnk9/ADLmsLxtCwAcj/12ff/vc05qtoSu9
+	VeWJbHCnEF8CB42QDkdWudUpdC/qc0esdZxXvIfjCaxsdtN2POeph/ptO0JTILzvAWYSxn
+	ZA44xzjx6+soj7fmiqPuXSKXDDQpFzbDJYuNtsCp6CMDgsMvSnWHZVG7MwTMvbzYcu0BFg
+	jq2zlYrB9qWFUsr0N5WEKcSEkNPiZJWiJsVaTmR1Hbn2A9+spJ+od1+6rbEvBQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1710325358;
+	s=2020e; t=1710326399;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8Yk7qDMn+1Xb0f6DQG5+5LLC7rR5uLbKjcnR9tq6A28=;
-	b=PfXDcVcXqCoaZQgSyW8T1nC7UyGjRBqwQMVABprqX4uv8kSt4vfwew0a6p8ELhXj2WtOtS
-	h99ji3ORd+JWbKAg==
-From: "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
+	bh=PBDsqCIRae9oF8BdiuyyntcNynieeZ8JqhBB5Ca3FqM=;
+	b=ya0nWvyi8nG2S5fA5Ytg1dAeDoo3dvNwr3jWvVFHHk+6u64JzExEgn3L/txBpWXNVx1q0b
+	xS1LBiOW7CjB+gDQ==
+From: "tip-bot2 for Wei Yang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/amd/lbr: Discard erroneous branch entries
-Cc: Sandipan Das <sandipan.das@amd.com>, Ingo Molnar <mingo@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C3ad2aa305f7396d41a40e3f054f740d464b16b7f=2E17065?=
- =?utf-8?q?26029=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3C3ad2aa305f7396d41a40e3f054f740d464b16b7f=2E170652?=
- =?utf-8?q?6029=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
+Subject: [tip: x86/build] x86/vmlinux.lds.S: Take __START_KERNEL out
+ conditional definition
+Cc: Wei Yang <richard.weiyang@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240313075839.8321-5-richard.weiyang@gmail.com>
+References: <20240313075839.8321-5-richard.weiyang@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171032535764.398.4968779200381631373.tip-bot2@tip-bot2>
+Message-ID: <171032639798.398.6782499590864932676.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,51 +79,45 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     29297ffffb0bf388778bd4b581a43cee6929ae65
-Gitweb:        https://git.kernel.org/tip/29297ffffb0bf388778bd4b581a43cee6929ae65
-Author:        Sandipan Das <sandipan.das@amd.com>
-AuthorDate:    Mon, 29 Jan 2024 16:36:25 +05:30
+Commit-ID:     9b67ce2c121fbf11c0c7b6216c08200fda23c9af
+Gitweb:        https://git.kernel.org/tip/9b67ce2c121fbf11c0c7b6216c08200fda23c9af
+Author:        Wei Yang <richard.weiyang@gmail.com>
+AuthorDate:    Wed, 13 Mar 2024 07:58:39 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 13 Mar 2024 11:01:30 +01:00
+CommitterDate: Wed, 13 Mar 2024 11:29:11 +01:00
 
-perf/x86/amd/lbr: Discard erroneous branch entries
+x86/vmlinux.lds.S: Take __START_KERNEL out conditional definition
 
-The Revision Guide for AMD Family 19h Model 10-1Fh processors declares
-Erratum 1452 which states that non-branch entries may erroneously be
-recorded in the Last Branch Record (LBR) stack with the valid and
-spec bits set.
+If CONFIG_X86_32=y, the section start address is defined to be
+"LOAD_OFFSET + LOAD_PHYSICAL_ADDR", which is the same as
+__START_KERNEL_map.
 
-Such entries can be recognized by inspecting bit 61 of the corresponding
-LastBranchStackToIp register. This bit is currently reserved but if found
-to be set, the associated branch entry should be discarded.
+Unify it with the 64-bit definition to simplify the code.
 
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://bugzilla.kernel.org/attachment.cgi?id=305518
-Link: https://lore.kernel.org/r/3ad2aa305f7396d41a40e3f054f740d464b16b7f.1706526029.git.sandipan.das@amd.com
+Link: https://lore.kernel.org/r/20240313075839.8321-5-richard.weiyang@gmail.com
 ---
- arch/x86/events/amd/lbr.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/kernel/vmlinux.lds.S | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
-index eb31f85..4a1e600 100644
---- a/arch/x86/events/amd/lbr.c
-+++ b/arch/x86/events/amd/lbr.c
-@@ -173,9 +173,11 @@ void amd_pmu_lbr_read(void)
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 88dcf93..a20409b 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -110,11 +110,10 @@ PHDRS {
  
- 		/*
- 		 * Check if a branch has been logged; if valid = 0, spec = 0
--		 * then no branch was recorded
-+		 * then no branch was recorded; if reserved = 1 then an
-+		 * erroneous branch was recorded (see Erratum 1452)
- 		 */
--		if (!entry.to.split.valid && !entry.to.split.spec)
-+		if ((!entry.to.split.valid && !entry.to.split.spec) ||
-+		    entry.to.split.reserved)
- 			continue;
+ SECTIONS
+ {
++	. = __START_KERNEL;
+ #ifdef CONFIG_X86_32
+-	. = LOAD_OFFSET + LOAD_PHYSICAL_ADDR;
+ 	phys_startup_32 = ABSOLUTE(startup_32 - LOAD_OFFSET);
+ #else
+-	. = __START_KERNEL;
+ 	phys_startup_64 = ABSOLUTE(startup_64 - LOAD_OFFSET);
+ #endif
  
- 		perf_clear_branch_entry_bitfields(br + out);
 
