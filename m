@@ -1,70 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-718-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-719-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B663D87A4BD
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Mar 2024 10:17:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5AE87A5B7
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Mar 2024 11:22:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E801D1C213D6
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Mar 2024 09:17:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D75C21F2180A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Mar 2024 10:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C7A22635;
-	Wed, 13 Mar 2024 09:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9503B182;
+	Wed, 13 Mar 2024 10:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ed6rwpt2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H2yv2z3/"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zXsrAcSI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8rTNQETu"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21012261A;
-	Wed, 13 Mar 2024 09:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9981A3A8F5;
+	Wed, 13 Mar 2024 10:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710321430; cv=none; b=NLqXghBQd3kN0VdX+fCzz7VCF7RKt4Kbverv3UYcUNtkCluUYlRfVlSKdwPUPe0LEAkK91gfn08ER4c/sie6oVXpja1mEjLygezImZFalGO6LoPF9lsbR63zdhlR+wMbAoavm46O+HARUCsI+twvbzX1I6zFxygclDELw5f09bw=
+	t=1710325361; cv=none; b=AfSj9d4Ue3PYJt/sWEG/BfEbzqzfy9vqQegfu+S5zPEgLA4r2pvJQupqDKOQqvTp+Y2KquQSQSn2a44IO50V3nN7ecRg8gOlLDoTG4Trj3mmu+lKElWHKIRo5UtlVQIPx2apPf8O9mXnEWyZpshPH/91KgDun4lSbXMq1zKIYWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710321430; c=relaxed/simple;
-	bh=R+56XbCW7VCmvc6HpQtkGngJnu7ekY4FJCSyrZVjUWk=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=FzADFu4kgdN7I/9HeTRt6J662k9trs7EfjlStImF9h7c0MdQHPUvUkOy/4tPilLGoO/VU3N6HxKDy75qfn7KQGG6BIis6SnZFk5AEb+QZ9vVAThGFoJTPwpxJB0yIllQef1a4Y8z1NnsDrn6RPqdZa6jQAXy9bzvLaTrNSaCLko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ed6rwpt2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H2yv2z3/; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1710325361; c=relaxed/simple;
+	bh=gcUWdpJM6KFXyBaEYUL06ewk+ya42ASQvejhLXp0nHs=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=GkebrXIJqxV8h6dBFBh/ZETWfib7yosPlsgpMSC0np1xekBnNDawwVD4wGa+NSVdQ6rBrCXsHc3R5gwqkPHljheufV04HRcIHfvaxMn/CxT7PEIxwOdcmckthQZJllsSmmoHwMyzklXbp5TBHFAI8z48A4V0oZrAmz0WQPLKPwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zXsrAcSI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8rTNQETu; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 13 Mar 2024 09:16:59 -0000
+Date: Wed, 13 Mar 2024 10:22:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1710321420;
+	s=2020; t=1710325357;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=rRlQGyhZFVjQ4qM9e0Ekd5/R5Rqi8++m4vJCSr26Mj8=;
-	b=Ed6rwpt2/oWdT7rO0xZi9lx7EkPuxNHLMa4QacKnOgL3C+5CJ5GygbdMlF57/7EOe6V+TE
-	5uVFEaeBnEgr/rQ8KooF7P1xHbyvIBJWYfh5x0jwkDXeuv6cb41y6Gmz7OXlELKH1/06Fl
-	Ri+PMgbX3+hQ0w1RhGKEEAXxPY8P/8chkQ5OcJJwopUVHh2z0IpUOdlItOoCyOPraKDigX
-	1FddWU8arqYM+21AMH5LUvoK2MmVivZ63O72QWQ2aRMZvZBjNtXazm6aqW2fTNqIAy3cH3
-	BCfnYUW9X3fZHbq7D6tthf90GOAthtxyhpzpvqkEp9IV99xEtOWFKQ4KBo9Ivg==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E/ncNhPA6ZIAkn7Q6/N7SXfEFiDYEuIPvqhLKjXMVuk=;
+	b=zXsrAcSIyEBajCRpZxpKT3ZSH7TG4RTNjRePEuK7ZGyq7+GSfoxWN+Qk1YZA5o6BxxMiHU
+	Lbv6mkjE6aMJRehHEDJn1f9DKKQ1lZdhuFV2no7pBVNy/KfpzF129Z2/zkkKHPV+Ry/IPe
+	0Wuhw23l73EKPVfrUcPhdE2IqlGQMp/yLSQSAjrP9sp+4ew+6K4eoIhiUcAu4jqiDlIVkI
+	OS0ORQZ+P2nlBCNIhS6GDvfm23zyBDqDSWtVZ/MBwjpADZagtPLkHDQHEpNf+A4xF87wVU
+	Yoq50BFWC4CqTQsysHOxu2vBgby3kY6U+jJI1Noi6rJlww4d7F8r+pwsMCHQNA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1710321420;
+	s=2020e; t=1710325357;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=rRlQGyhZFVjQ4qM9e0Ekd5/R5Rqi8++m4vJCSr26Mj8=;
-	b=H2yv2z3/7DlWhihI2z3Sdc6FH9ShHgabVd4m5sPaYdcmJVB02CXNkBF8idJr8HhaM7dL8s
-	rLHJ8JUZuYsPRuBw==
-From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E/ncNhPA6ZIAkn7Q6/N7SXfEFiDYEuIPvqhLKjXMVuk=;
+	b=8rTNQETuOOzTdAHpCtL2qXrLIvxlK7j9ZlahcfsG3NcUTEMNakCgmZD6xKBLvVUOZG51o7
+	3XoRUuFoEHtVoqBQ==
+From: "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: x86/urgent] Revert "x86/bugs: Use fixed addressing for VERW operand"
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+ [tip: perf/urgent] perf/x86/amd/core: Avoid register reset when CPU is dead
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+ Sandipan Das <sandipan.das@amd.com>, Ingo Molnar <mingo@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3C550a026764342cf7e5812680e3e2b91fe662b5ac=2E17065?=
+ =?utf-8?q?26029=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
+References: =?utf-8?q?=3C550a026764342cf7e5812680e3e2b91fe662b5ac=2E170652?=
+ =?utf-8?q?6029=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171032141964.398.11885459177041650089.tip-bot2@tip-bot2>
+Message-ID: <171032535648.398.6298108731990613596.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -72,44 +83,44 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     bfa5fa246c0724c2cc1bd0dfe57531aaa7f520c1
-Gitweb:        https://git.kernel.org/tip/bfa5fa246c0724c2cc1bd0dfe57531aaa7f520c1
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Tue, 12 Mar 2024 07:27:57 -07:00
+Commit-ID:     ad8c91282c95f801c37812d59d2d9eba6899b384
+Gitweb:        https://git.kernel.org/tip/ad8c91282c95f801c37812d59d2d9eba6899b384
+Author:        Sandipan Das <sandipan.das@amd.com>
+AuthorDate:    Mon, 29 Jan 2024 16:36:26 +05:30
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 13 Mar 2024 10:08:09 +01:00
+CommitterDate: Wed, 13 Mar 2024 11:01:30 +01:00
 
-Revert "x86/bugs: Use fixed addressing for VERW operand"
+perf/x86/amd/core: Avoid register reset when CPU is dead
 
-This was reverts commit 8009479ee919b9a91674f48050ccbff64eafedaa.
+When bringing a CPU online, some of the PMC and LBR related registers
+are reset. The same is done when a CPU is taken offline although that
+is unnecessary. This currently happens in the "cpu_dead" callback which
+is also incorrect as the callback runs on a control CPU instead of the
+one that is being taken offline. This also affects hibernation and
+suspend to RAM on some platforms as reported in the link below.
 
-It was originally in x86/urgent, but was deemed wrong so got zapped.
-But in the meantime, x86/urgent had been merged into x86/apic to
-resolve a conflict.  I didn't notice the merge so didn't zap it
-from x86/apic and it managed to make it up with the x86/apic
-material.
-
-The reverted commit is known to cause some KASAN problems.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Fixes: 21d59e3e2c40 ("perf/x86/amd/core: Detect PerfMonV2 support")
+Reported-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/550a026764342cf7e5812680e3e2b91fe662b5ac.1706526029.git.sandipan.das@amd.com
 ---
- arch/x86/include/asm/nospec-branch.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/amd/core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index d0b8bb7..fc3a8a3 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -314,7 +314,7 @@
-  * Note: Only the memory operand variant of VERW clears the CPU buffers.
-  */
- .macro CLEAR_CPU_BUFFERS
--	ALTERNATIVE "", __stringify(verw mds_verw_sel), X86_FEATURE_CLEAR_CPU_BUF
-+	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
- .endm
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index 69a3b02..aec16e5 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -604,7 +604,6 @@ static void amd_pmu_cpu_dead(int cpu)
  
- #else /* __ASSEMBLY__ */
+ 	kfree(cpuhw->lbr_sel);
+ 	cpuhw->lbr_sel = NULL;
+-	amd_pmu_cpu_reset(cpu);
+ 
+ 	if (!x86_pmu.amd_nb_constraints)
+ 		return;
 
