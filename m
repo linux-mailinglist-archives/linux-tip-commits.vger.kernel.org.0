@@ -1,99 +1,121 @@
-Return-Path: <linux-tip-commits+bounces-726-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-727-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0D387A828
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Mar 2024 14:18:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18ED087B5F7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Mar 2024 01:59:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24E941C2074F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Mar 2024 13:18:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC8261F23F2A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Mar 2024 00:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865973FE46;
-	Wed, 13 Mar 2024 13:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C0E6FB5;
+	Thu, 14 Mar 2024 00:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="APpn9+Y+"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X7ikHPDX"
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D132D3B798;
-	Wed, 13 Mar 2024 13:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52D56110;
+	Thu, 14 Mar 2024 00:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710335932; cv=none; b=GIfDJd06nKYr5d/9zPWF1GW293ztEUP0j1CpYssW+tCrjiYTXYNJKcPwAmPe+883LKlFVFN3bdfMOGmg12VYgBBfIwV3atie7bkZ0Gwasj7vNWrLGl2I/YSNXIQa//7uOFEhLxAKVb+d+Z4CPBuUALp4+z5XfrZI3vNNDNFd3PI=
+	t=1710377981; cv=none; b=WqHcvg97PhVqYVnBVpBKEQJFd/t/niS2UkqbcP/vplsRplTAlkjHxu9P7RYGUig4aWvVFhsvOkX/ZmcAadIRLR+2i0v3y95k+kWg2/M9grzNgyLr458Sm8EGnNIG6PjC4tfNHAmteZ9QbOOCc5y6O1+8ruH1/UcJ5qNnrjfvaR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710335932; c=relaxed/simple;
-	bh=3NI9+YRJAhyhrZYpG4leb60LatyeAaPg+2TqvSBblDw=;
+	s=arc-20240116; t=1710377981; c=relaxed/simple;
+	bh=Mpe+EKij231+2bRJa3fS0rGIHp+mvwK0Qgxgn1T1qZs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pF9bDlhLeffEADKHuI9akIpJtQbTJGGQTyhxy30IqjBBvKutx/lEBZPtn5lrtPVKFChEh5jfQQ9pE2snofdiTrxrRKhIPmPFBE5crZ5wBPejrkU4hZoqY9287ydVkIxuDuGtY3x8V1FoId9l0Ol3GELB4J/SYCfKGhXanVkJd2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=APpn9+Y+; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7B27040E0174;
-	Wed, 13 Mar 2024 13:18:41 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id dfbpo-9lhIPa; Wed, 13 Mar 2024 13:18:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1710335919; bh=Lo4vjZFvfuk+3/mkZPJ4zRgq8Ta+PGCqOM6epR06t8Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=APpn9+Y+AsljuIY1SyFmeyXdbWK0DcqsOK5MgyQ1qC7snfZ6D0CwLCWX2kxIh69Ii
-	 JqJ0xd06Zrl5FOLFCaUyfJ7w9Bopq+M0durNgoWU0bMpyzgsbY983RXGi3K9XE7CxG
-	 iFWq2wWeX+5NWs8S3Nrd1nmq0hiqPrm262FyAEbwx+WblQ39x40CKdKxey+RVGoOjO
-	 oGh9l3Eo20UCz9i+ZBVORiEN1HvMpuE3GTbJHtIQppwoRTsp/k+C5NfjIc4ieDhahK
-	 yF8jgi15sOBnhXWm2sVeiz0DuZayEZV1GefIexGug9MbCrmq07Jfc/Jf8/rq/rYD8R
-	 B6fMZMOSfftx4liP538CR2Plv1q8zRhSeM5A1loE3th5ps7/Xo64I47kHvQN8cuMwN
-	 JlEHfMr6n0Osep55A0Ox+vNAVa0SL2XrtZ4Ry/oUBCQW1fLBhIcA3s/aoKzNVx3dqd
-	 4+j3ZWYR8nREoNOHAKn+OS/bUZhdNJAD+3mPD04sIAxw9aDxRWZ2X4aOwUcNeL7ZJB
-	 0cIpvAec37BZOc9xODmI5z7phz6rR/EpmEs1tEQ+7rxw+MpWUmik0Hqa4BU5yILEMy
-	 UW9w3ftxVVtqDXTYdu9Hy3UsBYoHrtkobGLjZTHIVAnp+nYzQeDx9oQVhH6L66Ky2W
-	 QInqryLEiiXQZFfqFrxxMvLc=
-Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2C40E40E0028;
-	Wed, 13 Mar 2024 13:18:34 +0000 (UTC)
-Date: Wed, 13 Mar 2024 14:18:33 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=GlldeKK0kRFVXgu2pc5eerHu45YXQzsxBi8EeiTPM/9n6GXhdAY38PhVsXVSyOu7q4ddijyGEhwxG785s5ALoEWymbghXeKWTNiyFeLShhNYcdgmce4UJ8pmTVe3xppHyEYpSaCmTi7QjS++G/0WM0jsCzxn9tkm+hJNcpAzohg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X7ikHPDX; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a461c50deccso49352366b.0;
+        Wed, 13 Mar 2024 17:59:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710377978; x=1710982778; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GAE2QFV7Vga1Iu4j7WKP5punOUXpLOUNadClgdVRKIE=;
+        b=X7ikHPDX9/DHe8soNOE5aeHkQh/Wp78PwyWbwIL4AGQRsTnYPLn012RV5nYjXkYRLn
+         tkg7Bt8fE4/TxQtYdGGYC0S2JZWg+XCaVqSWvBsHLlJPIxFcmklZ28dWixKfJudaKVU7
+         5/svR8Ar0wqS5zALT4Dw3Ea+vq66B+42tGwQNoq50FnP6qfWLOUh2JoE4ulH247fiExX
+         yUwVTOZLY/qiL9bVEQxEYAryTZnOlGfrDm4QrN2THWSgMP9ZIVDig9HqGuN3ANAtKVNH
+         bHzU1++Jxd+xkDGLx573iAnQYrqAOFPzGVvQZzMfNOk8rBdHj8jx5vegnER68/23+ugM
+         QzpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710377978; x=1710982778;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GAE2QFV7Vga1Iu4j7WKP5punOUXpLOUNadClgdVRKIE=;
+        b=EdCNFfvEhLKc+zBkfa/YfhwQT3jP+6rMOk62jftY/uZuWYJz5BqeFPKWKicmAHEcRy
+         iXIWYLRGDa7YNEV/2Bp31L2jMhPT+YzLJBOgXzxSnD5F4TkLRi7T3Rb3R6fQn40a5t44
+         Bac8z3dOppTC04kOpjQjWCNHshl1QDnCck4Ou1uaMfB14wtRK12OI/7fpLwaIp7ulEX1
+         /pLz63PWK9z2nQp6uZae6aSb0uySPYnglDOzqFn98hKAPdJi/89C5/ycQ/IMLqMs9+88
+         yE/NL84lsfzDL/4L8S6N2WumagmpTj2+in2qHwhNI9YK5Qs4YPnFGg9umOEeijMvCh3p
+         IvdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXpTSi9Kv6Cg32O3kyH0dKBGsIIxJFhEyEwof9tqAYGp5NbJZ131XnoIcDqNtsShYennj5Ojzi1poWJ+rKYhlTdEuc7w0DbJkAIenyFA/ICf/w=
+X-Gm-Message-State: AOJu0Yyd7z03jFkgCLtJppDVzWSh946rp4YF6jVrZ2bKPvRprRLfaLam
+	4x/EEKDHetlegylithqWSxyWuPb243JJbjmT5zOlJWm5MphyQIibUMT6gx55YAA=
+X-Google-Smtp-Source: AGHT+IGHxum4OdKHPvR+1uY4RvNfEkkQslXtBxFtiZ7EGJfHnk9khamXpmgFmh4Th4KKTBlyRwy4Tw==
+X-Received: by 2002:a17:906:3414:b0:a46:29ad:5b0d with SMTP id c20-20020a170906341400b00a4629ad5b0dmr129500ejb.18.1710377977867;
+        Wed, 13 Mar 2024 17:59:37 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id dn21-20020a17090794d500b00a465ee3d2cesm149028ejc.218.2024.03.13.17.59.37
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 13 Mar 2024 17:59:37 -0700 (PDT)
+Date: Thu, 14 Mar 2024 00:59:36 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Wei Yang <richard.weiyang@gmail.com>,
 	Ingo Molnar <mingo@kernel.org>, x86@kernel.org
 Subject: Re: [tip: x86/build] x86/vmlinux.lds.S: Remove conditional
  definition of LOAD_OFFSET
-Message-ID: <20240313131833.GBZfGnqTwdhcw6twQd@fat_crate.local>
+Message-ID: <20240314005936.5j2jtl32ukzi77si@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20240313075839.8321-4-richard.weiyang@gmail.com>
  <171032639869.398.16886435468084846590.tip-bot2@tip-bot2>
+ <20240313131833.GBZfGnqTwdhcw6twQd@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <171032639869.398.16886435468084846590.tip-bot2@tip-bot2>
+In-Reply-To: <20240313131833.GBZfGnqTwdhcw6twQd@fat_crate.local>
+User-Agent: NeoMutt/20170113 (1.7.2)
 
-On Wed, Mar 13, 2024 at 10:39:58AM -0000, tip-bot2 for Wei Yang wrote:
-> -#ifdef CONFIG_X86_32
-> -#define LOAD_OFFSET __PAGE_OFFSET
-> -#else
->  #define LOAD_OFFSET __START_KERNEL_map
-> -#endif
+On Wed, Mar 13, 2024 at 02:18:33PM +0100, Borislav Petkov wrote:
+>On Wed, Mar 13, 2024 at 10:39:58AM -0000, tip-bot2 for Wei Yang wrote:
+>> -#ifdef CONFIG_X86_32
+>> -#define LOAD_OFFSET __PAGE_OFFSET
+>> -#else
+>>  #define LOAD_OFFSET __START_KERNEL_map
+>> -#endif
+>
+>And, as a next step, you can get rid of LOAD_OFFSET completely and use
+>__START_KERNEL_map everywhere.
+>
+>Even less ifdeffery.
 
-And, as a next step, you can get rid of LOAD_OFFSET completely and use
-__START_KERNEL_map everywhere.
+You mean remove the definition of LOAD_OFFSET?
 
-Even less ifdeffery.
+I have tried this, but I found this is used in vmlinux.lds.h. So I don't
+figure out a way to get rid of it.
+
+>
+>-- 
+>Regards/Gruss,
+>    Boris.
+>
+>https://people.kernel.org/tglx/notes-about-netiquette
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Wei Yang
+Help you, Help me
 
