@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-734-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-737-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACAB87E6B9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Mar 2024 11:07:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2964587E6C1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Mar 2024 11:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 819572830C9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Mar 2024 10:07:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADC9EB21C17
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Mar 2024 10:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A6B2E635;
-	Mon, 18 Mar 2024 10:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D49536AE0;
+	Mon, 18 Mar 2024 10:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1fzu7ZN0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LBxNJ6wu"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="d0w8Mu4d";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q27b6vrt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B90D2D051;
-	Mon, 18 Mar 2024 10:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43B932C6C;
+	Mon, 18 Mar 2024 10:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710756459; cv=none; b=Q0drehQlQczs5lG+EAtTw2tidZx0SjPGE4ROtPrJNxLDc6igjnNr50M56OyizCkJ93ASRjtfZ7C/CQzS7rhF0ZX+DB66dUcnm14fumcDH2408qaWKTzvrNzYj6oiliLimsBi/hAIVXJ41kJrSeJdhSfZDJTcRdU31fYkyuMzt5I=
+	t=1710756462; cv=none; b=SZuYonj3KfjY7tRuc2HpNT4Ue+zN9eaX6yCN5CB9ANi/oOYP2UbANdywD/FJ4ub9QhzbuVjAPQkeG02qaMQqSkLkbIaI1MuRJPssV0Zc0R0D4cRYXGpz/lVoSF8tIt9CghKTkduXNJ5Mh74HNBroPnMVYnCBtvOhnVnLwoh6/IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710756459; c=relaxed/simple;
-	bh=g3zP11HMNFRCFfyMRZ337vxWpIMoyBokhQ3Onmh78J8=;
+	s=arc-20240116; t=1710756462; c=relaxed/simple;
+	bh=wx8xZxU0kWpc8fw4qis3fIsPW1M9LAS6yFujUl6dI1w=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=UuvLXFm4kJWRz35sMmqnt6qOckdZFO/s/8plpc5XbnEXlbtJY6USk6ClOwaiy03xXHVI/IW7AssjT9vLYfflMPsh4BPfL2eDNw4un/H8ARKWbRgFngXZDyuGZFLCPtDv8xqPX8Npa9uiG+O9XW2K7xjgXe9m3afQ3IYJ9pywWkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1fzu7ZN0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LBxNJ6wu; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=XXgZ6J+xWkyOJGxa+xf6ANKQ54IF42QA9LTdeBsZChoHJZXKgn1YbZhboavViKNttvR/R0sn/wnFtzzzV1wPFA6d/OMOU0K8GBpv+yTwo4crttAwdjmTyhgSkpLIewkmz+h8gWvLIG7Oysmv71y3GcxE6la/mqKgkpDd1wut5sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=d0w8Mu4d; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q27b6vrt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 18 Mar 2024 10:07:35 -0000
+Date: Mon, 18 Mar 2024 10:07:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1710756456;
+	s=2020; t=1710756457;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q69fmyqDy+6siSbaAAi+nmr3gqTcldmd72nfKzVsKV4=;
-	b=1fzu7ZN0XK7dI1342W5fG9GNbnFPVfWeu407esBaWZHy+pHAhg6t9r1fuKBP9i6iEj9KtE
-	zxK4OLYdPm92NHzSUosR8aRrqU2xtCcymOANCK1AbAUBIbYTkKZ6RM/EoNb3q7m4d/EEKo
-	4FoaPVQkk5z5guBdLhbTljLD9mifbpp/dg5P4U60N6qkmexDW63YlGygejRjq8hfmOa36k
-	HtfTo2dNcN1UsWVhwE4chNkNudByl8XeHbR1rhQWB4AcUSkDtNeB1cjrepLaZKKz+cvQpK
-	WFtj7sO7umbL0uwX8DOnrXOh86GScxwpEUaXbkdwuFswfdf51VLJTaoHdTOmfA==
+	bh=R//jkAFKs8MQbcTsyjSpu9eyc9W7qHRFw4F0o5eDsDE=;
+	b=d0w8Mu4dZ16uxMvJZoLzVAegAAYvnH/4+Le+5wabKDM2NqFjbTwoIMUq2EFtsASHSqZtJ1
+	e7ArUBnK53UZYTayKFDgPSiwzDSy1sycpjf6P/zJmQW3PNddxaKWSgo5GraaT0ToF/I8Wd
+	E5fEq0quuUB1BwUqMjPBfgCSve+XSDmC8B8LPqV3gdfs0sgWYvdFh3Z7pLK1SRqisawwRK
+	+FoMCn/ZDdJXfpEvrjtkJghJ8tTiGp3vtDqbl+/iGU+AZQfkUSZl4tvyRJKdg93SRa4Dzf
+	/3ZVnMlLt7fesx7AazdFVepeJXYp1+7ixXuYDk9pYkZtLdkWm03DyiFjTyng1Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1710756456;
+	s=2020e; t=1710756457;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q69fmyqDy+6siSbaAAi+nmr3gqTcldmd72nfKzVsKV4=;
-	b=LBxNJ6wu9HkuCxWF33lwNgRWnjalCCkjQsDLSNY9iWEl0gJ+q/+Pa0GJUFB8v1hK7aO+Ho
-	KutEmYxyHEXWyvAQ==
-From: "tip-bot2 for Martin Blumenstingl" <tip-bot2@linutronix.de>
+	bh=R//jkAFKs8MQbcTsyjSpu9eyc9W7qHRFw4F0o5eDsDE=;
+	b=Q27b6vrtkXbpiq3D+s+aocU/aA4+L1KgIO8DLxyegvzAd9wkKaZT4N2wnvACUm6F9cczjJ
+	PKe1QvhU02YRm4Dw==
+From: "tip-bot2 for Sergio Paracuellos" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/arm_global_timer: Make
- gt_target_rate unsigned long
-Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+Subject:
+ [tip: timers/core] dt-bindings: timer: add Ralink SoCs system tick counter
+Cc: Rob Herring <robh@kernel.org>,
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240225151336.2728533-2-martin.blumenstingl@googlemail.com>
-References: <20240225151336.2728533-2-martin.blumenstingl@googlemail.com>
+In-Reply-To: <20231212093443.1898591-1-sergio.paracuellos@gmail.com>
+References: <20231212093443.1898591-1-sergio.paracuellos@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171075645589.12214.8632484343108151719.tip-bot2@tip-bot2>
+Message-ID: <171075645656.12214.16614619543155441564.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,37 +83,69 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     f31c204850f9d93906b5ac8c203b2066524ff245
-Gitweb:        https://git.kernel.org/tip/f31c204850f9d93906b5ac8c203b2066524ff245
-Author:        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-AuthorDate:    Sun, 25 Feb 2024 16:13:34 +01:00
+Commit-ID:     ec64db6955c5ad7e8fd03f7a52f8df84f943a9b8
+Gitweb:        https://git.kernel.org/tip/ec64db6955c5ad7e8fd03f7a52f8df84f943a9b8
+Author:        Sergio Paracuellos <sergio.paracuellos@gmail.com>
+AuthorDate:    Tue, 12 Dec 2023 10:34:43 +01:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Mon, 26 Feb 2024 10:07:25 +01:00
+CommitterDate: Fri, 23 Feb 2024 13:22:45 +01:00
 
-clocksource/drivers/arm_global_timer: Make gt_target_rate unsigned long
+dt-bindings: timer: add Ralink SoCs system tick counter
 
-Change the data type of gt_target_rate to unsigned long as this is what
-we get back from clk_get_rate().
+Add YAML doc for the system tick counter which is present on Ralink SoCs.
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240225151336.2728533-2-martin.blumenstingl@googlemail.com
+Link: https://lore.kernel.org/r/20231212093443.1898591-1-sergio.paracuellos@gmail.com
 ---
- drivers/clocksource/arm_global_timer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/timer/ralink,cevt-systick.yaml | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/timer/ralink,cevt-systick.yaml
 
-diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
-index d749dee..fd39cfa 100644
---- a/drivers/clocksource/arm_global_timer.c
-+++ b/drivers/clocksource/arm_global_timer.c
-@@ -52,7 +52,8 @@
-  */
- static void __iomem *gt_base;
- static struct notifier_block gt_clk_rate_change_nb;
--static u32 gt_psv_new, gt_psv_bck, gt_target_rate;
-+static u32 gt_psv_new, gt_psv_bck;
-+static unsigned long gt_target_rate;
- static int gt_ppi;
- static struct clock_event_device __percpu *gt_evt;
- 
+diff --git a/Documentation/devicetree/bindings/timer/ralink,cevt-systick.yaml b/Documentation/devicetree/bindings/timer/ralink,cevt-systick.yaml
+new file mode 100644
+index 0000000..59d97fe
+--- /dev/null
++++ b/Documentation/devicetree/bindings/timer/ralink,cevt-systick.yaml
+@@ -0,0 +1,38 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/timer/ralink,cevt-systick.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: System tick counter present in Ralink family SoCs
++
++maintainers:
++  - Sergio Paracuellos <sergio.paracuellos@gmail.com>
++
++properties:
++  compatible:
++    const: ralink,cevt-systick
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    systick@d00 {
++        compatible = "ralink,cevt-systick";
++        reg = <0xd00 0x10>;
++
++        interrupt-parent = <&cpuintc>;
++        interrupts = <7>;
++    };
++...
 
