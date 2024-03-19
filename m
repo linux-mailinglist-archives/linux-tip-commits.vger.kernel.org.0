@@ -1,183 +1,111 @@
-Return-Path: <linux-tip-commits+bounces-759-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-760-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EF287FD95
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Mar 2024 13:31:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E258787FDF5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Mar 2024 14:01:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6D3C1C21AA9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Mar 2024 12:31:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EE9528274F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Mar 2024 13:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF125A4D5;
-	Tue, 19 Mar 2024 12:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF713F9EC;
+	Tue, 19 Mar 2024 13:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v3Cswu0R";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0HC5NkWc"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="hXV5zmdt"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D832E400;
-	Tue, 19 Mar 2024 12:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8575440842;
+	Tue, 19 Mar 2024 13:01:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710851505; cv=none; b=A9BbrRlShl912acAakpneR6sNqcEOsA7E8ehxAB+nZFcSwbAyvViWyLNxCbTyVzwdHyQTVXsx8L0mulZNRl5EyTDbqt7z6PN23H4hTtIcqhOkTkJaq1A0V9H+YnHWMkM1tfvdi6ENGYUvkdmKa1OGf/22fwCHMz2QBD33dI99Lc=
+	t=1710853274; cv=none; b=W4jKAMyhP0gomsLX4shvWwg7zAP3gWvIpRQaoAk2CJ+kd466nDR0xRq1ixSEE7eEd04ldOuQphaxQ7XspXsrr/P0I4xqB9jNsyCgpWNtSyeLUe/nZSBVvpHRYjM3aA8y8blWDsEJDJEBa6rXNkSrCElzt1j8k8AvN/uf6qcVuFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710851505; c=relaxed/simple;
-	bh=nWsuFg+nvKimCB4J0dPbZBgLS5phK0OHmb1s7ySmek0=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=tl8Ed3mAIvSrvT7cz8Lk0B8hsQLopHNwKU2i8sYc7izOhJ8Paatc+VduxSHFt1pMuFNALc1H8Y1AvO8yIbjHLZ0jy1uiBcZhnIM8YHHdBUKI9lwIqe/5Dv67c6+8FZGvgZUy7h7NLjd2wSPqnMdxHgxRpyrearGkWZEyM2aKOi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v3Cswu0R; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0HC5NkWc; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 19 Mar 2024 12:31:41 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1710851502;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QRo7t5zANXrFccUKajJfOkGAnApTY+nXBuT6H9mcWZA=;
-	b=v3Cswu0RojObyjeAcupo+7EBP4P30Swz41yHh550dhqDzCnrbSNo12A+0DP5wRRV0PaHgX
-	Ks8bUFNZJasbICfDtkQYhX6AgsIQ+eq7WX/yxjAQCQo9wAjx7ljxTcIQFZmUGh2P8gDU1M
-	sO1dwQTN/cb+gLTmlp3H/FmzzautQR3np83pdtYRUCk8HeEduZvR9EpZB6XMXne5iLUee4
-	oaSQq1XP0TofyO+nL2yo5dlWw8HzF8l0C4VqeR1jwLVfY3rdB+Y3JlSpbesYJxCsLEOtgL
-	p8YZ7clrIcdboos7cA87LJSavWjVoTiic8LFcC7Ee2GfcByHmiWvyD+FkyRxwA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1710851502;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QRo7t5zANXrFccUKajJfOkGAnApTY+nXBuT6H9mcWZA=;
-	b=0HC5NkWcxwPf1F4YjEFEbsTSHaY2vTC178p06VgRUmFE97BjrYbAAvefAevoQ6YIEjm36V
-	3NWnXhn/AmS8WYAg==
-From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/asm: Remove %P operand modifier from altinstr asm
- templates
-Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240319104418.284519-2-ubizjak@gmail.com>
-References: <20240319104418.284519-2-ubizjak@gmail.com>
+	s=arc-20240116; t=1710853274; c=relaxed/simple;
+	bh=TgEfrvfBUBL4IVOuxBhr0pKo8YicUVFhJKL/8ekpfa4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hY14nqvSYviqnjJ34Q8PL4xw7RsQD09Cnim8H/BvbshV6ZSXN70QcXDcgpw4tritXkMvXvANqh9VowyG2E5VAHgnUQ5/3RycsZ4rzeQm/gwmPc9QDJEZH/LJafbz0mHLBv4NQkY9fwGnXDCflaMvWaNiNyc0Dowi6sBcpRZSzmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hXV5zmdt; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 61AD140E01AB;
+	Tue, 19 Mar 2024 13:01:10 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id e5CT8tOpLMEZ; Tue, 19 Mar 2024 13:01:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1710853264; bh=lae9HIcBgJTSZyyH9wjSWTukez5Rnf/xjToMCRJgt/g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hXV5zmdt0GUtQ1qGZk9LrGHR9YNUib4w40WSwWQH0b/BYDmRergqnN6OyGJnZu6JD
+	 q+RWDF9nko9QzjxBNO+Sb621CibpCuIoNdd6s25akbviXYNFodPVvpwcan8Lsfawr0
+	 DS60TSnCXwPu87GeUtzRKxS2LOnsVbOu+ADE1XD29JoTWoK/71y+YRaHry87CzpZAM
+	 hZ6L4Ueg1Y3v4+DqjEZ0Nt2rIt2k/PXeR2aHtqpK/DBs6MTtjCT8C0BQ08FN5UYryw
+	 ezJr+0M6icOOffsDGPneL7heW/oa57m5UOygNuhjJpivbVTd7OqqBaOD3NZhoqlTsd
+	 qrTdhZK7VW3CBM+8pR/2CQ6LOIkZ4X32huTdblsqZQ5++xaJUFgxeHrgUo09apc7ji
+	 lKOgPMNADZe2ijrWiD8dDtC/DQtL3Kq71ohJfJtdZV4PIQdRJCaIBHtZ/WTN02RTtm
+	 YeFyIftYXc5erVsp4MCk8yw/U7JgAQnSlOHtQbn+d16FaAhL88i4T99yxl4dMnSCI+
+	 5p97qpGfyvx0SjFsWOF6dkRTpY7lgXOZ1KvT7pgKO9XgYl2R8H7cN5EzeXkRt6Vxn7
+	 VjTX5v6qHZxl7OcwkBOylTBEsb2c/W/dcFhp7sDOHHDO6JQ8Zcmv8ezKQwxGSczJ38
+	 a+UsL0oQT45NJ8v4pWEuleQQ=
+Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9D67F40E00B2;
+	Tue, 19 Mar 2024 13:00:59 +0000 (UTC)
+Date: Tue, 19 Mar 2024 14:00:54 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Sandipan Das <sandipan.das@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Ingo Molnar <mingo@kernel.org>, x86@kernel.org
+Subject: Re: [tip: perf/urgent] x86/cpufeatures: Add dedicated feature word
+ for CPUID leaf 0x80000022[EAX]
+Message-ID: <20240319130054.GCZfmMhp-7Qa0eDaTC@fat_crate.local>
+References: <171084456107.10875.4104379273551108641.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171085150114.10875.3719610470474227640.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <171084456107.10875.4104379273551108641.tip-bot2@tip-bot2>
 
-The following commit has been merged into the x86/asm branch of tip:
+On Tue, Mar 19, 2024 at 10:36:01AM -0000, tip-bot2 for Sandipan Das wrote:
+> The following commit has been merged into the perf/urgent branch of tip:
+> 
+> Commit-ID:     f0a22ea644717fa21698a32d342fcd307e53a935
+> Gitweb:        https://git.kernel.org/tip/f0a22ea644717fa21698a32d342fcd307e53a935
+> Author:        Sandipan Das <sandipan.das@amd.com>
+> AuthorDate:    Tue, 19 Mar 2024 13:48:16 +05:30
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Tue, 19 Mar 2024 11:23:47 +01:00
+> 
+> x86/cpufeatures: Add dedicated feature word for CPUID leaf 0x80000022[EAX]
+> 
+> Move the existing scattered performance monitoring related feature bits
+> from CPUID leaf 0x80000022[EAX] into a dedicated word since additional
+> bits will be defined from the same leaf in the future. This includes
+> X86_FEATURE_PERFMON_V2 and X86_FEATURE_AMD_LBR_V2.
 
-Commit-ID:     a3ff53167cef2b5c6c8948246172d6f9279f037f
-Gitweb:        https://git.kernel.org/tip/a3ff53167cef2b5c6c8948246172d6f9279f037f
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Tue, 19 Mar 2024 11:40:12 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 19 Mar 2024 13:15:34 +01:00
+That CPUID leaf has a whopping three bits defined and the rest is
+reserved. You should do a dedicated leaf when we use at least 50% of the
+bits in the leaf. But not like this.
 
-x86/asm: Remove %P operand modifier from altinstr asm templates
+Please do simply another synthetic leaf and put your bits there.
 
-The "P" asm operand modifier is a x86 target-specific modifier.
+Thx.
 
-For x86_64, when used with a symbol reference, the "%P" modifier
-emits "sym" instead of "sym(%rip)". This property is currently
-used to prevent %RIP-relative addressing in .altinstr sections.
+-- 
+Regards/Gruss,
+    Boris.
 
-%RIP-relative addresses are nowadays correctly handled in .altinstr
-sections, so remove %P operand modifier from altinstr asm templates.
-
-Also note that unlike GCC, clang emits %rip-relative symbol
-reference with "P" asm operand modifier, so the patch also unifies
-symbol handling with both compilers.
-
-No functional changes intended.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20240319104418.284519-2-ubizjak@gmail.com
----
- arch/x86/include/asm/apic.h          | 2 +-
- arch/x86/include/asm/processor.h     | 6 +++---
- arch/x86/include/asm/special_insns.h | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 94ce0f7..fa2e424 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -91,7 +91,7 @@ static inline void native_apic_mem_write(u32 reg, u32 v)
- {
- 	volatile u32 *addr = (volatile u32 *)(APIC_BASE + reg);
- 
--	alternative_io("movl %0, %P1", "xchgl %0, %P1", X86_BUG_11AP,
-+	alternative_io("movl %0, %1", "xchgl %0, %1", X86_BUG_11AP,
- 		       ASM_OUTPUT2("=r" (v), "=m" (*addr)),
- 		       ASM_OUTPUT2("0" (v), "m" (*addr)));
- }
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 811548f..438c0c8 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -587,7 +587,7 @@ extern char			ignore_fpu_irq;
- # define BASE_PREFETCH		""
- # define ARCH_HAS_PREFETCH
- #else
--# define BASE_PREFETCH		"prefetcht0 %P1"
-+# define BASE_PREFETCH		"prefetcht0 %1"
- #endif
- 
- /*
-@@ -598,7 +598,7 @@ extern char			ignore_fpu_irq;
-  */
- static inline void prefetch(const void *x)
- {
--	alternative_input(BASE_PREFETCH, "prefetchnta %P1",
-+	alternative_input(BASE_PREFETCH, "prefetchnta %1",
- 			  X86_FEATURE_XMM,
- 			  "m" (*(const char *)x));
- }
-@@ -610,7 +610,7 @@ static inline void prefetch(const void *x)
-  */
- static __always_inline void prefetchw(const void *x)
- {
--	alternative_input(BASE_PREFETCH, "prefetchw %P1",
-+	alternative_input(BASE_PREFETCH, "prefetchw %1",
- 			  X86_FEATURE_3DNOWPREFETCH,
- 			  "m" (*(const char *)x));
- }
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index 2e9fc5c..0ee2ba5 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -182,8 +182,8 @@ static __always_inline void clflush(volatile void *__p)
- 
- static inline void clflushopt(volatile void *__p)
- {
--	alternative_io(".byte 0x3e; clflush %P0",
--		       ".byte 0x66; clflush %P0",
-+	alternative_io(".byte 0x3e; clflush %0",
-+		       ".byte 0x66; clflush %0",
- 		       X86_FEATURE_CLFLUSHOPT,
- 		       "+m" (*(volatile char __force *)__p));
- }
+https://people.kernel.org/tglx/notes-about-netiquette
 
