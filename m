@@ -1,152 +1,205 @@
-Return-Path: <linux-tip-commits+bounces-770-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-771-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5745B88125E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Mar 2024 14:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 708ED8816A4
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Mar 2024 18:38:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD5BF1F21445
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Mar 2024 13:33:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE6311F24484
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Mar 2024 17:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A5340BE5;
-	Wed, 20 Mar 2024 13:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55EC36137;
+	Wed, 20 Mar 2024 17:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GxXmnk+1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vsvWO/0c"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QF7cVlUQ"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1632340BE2;
-	Wed, 20 Mar 2024 13:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C67A1DFC6;
+	Wed, 20 Mar 2024 17:38:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710941631; cv=none; b=jcv8Cmj5cirdumJWzzEdRxxEnZ8yyzFR5V3vIjj7TYKbBGupC8fSZo5AZGaAW+WTNRmVR4GU3709npoJ3p18Kms2OFG8HL04ljCvXwFpFQAxpJ55Ilz7aQQEMLGyWIPdwJgLck2Xd0p/ycN92FMkL9FU8H4pelTATw2qkgyLFZ8=
+	t=1710956281; cv=none; b=QdX5zNX+63P07ufyKopght5QYRIROsCrNBxyawaKNQFsJn45WVeW8o99g9I879c0N7sM0XiF6Gc4C4hthViNN0PuM0Qyh2vmAdvwzRSXYXQy9nDccuXg8BdWyNe+K23aWMt3doxuIHb9eCGCDn3Er8G3JfMsS49n/ogISjtSfuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710941631; c=relaxed/simple;
-	bh=GDiJZ38CTJw7wnpOWIhwLFBfLixZL6WvagrpsS+vtAI=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=rTiYRxmgKODDjsIXFFmlcDtRsLH71yu1nw2IvOt2Lc4V2Is73fG7EWQAbHzS73AhQnG5OpWb9Citd5Qp2Fw+ka+kSy2v3CZ9wcIr0G16Fxbpjx9hsCoa41nML/0lPbMYxnXJq7KCc0Mg/iHBClT8JRFsEuNXIFtXqBZ6zS315tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GxXmnk+1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vsvWO/0c; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 20 Mar 2024 13:33:46 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1710941627;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ex8bou4kB+2rtEdHnDeTFtmRS71UnWOZIqNtXLmn0Go=;
-	b=GxXmnk+1VW3z+FpUrBibncFBWi9rlnubpnOlFnuDdW4w8fLnE1q3ZWdgRd4lgCpVjeb1z5
-	iNbOQxaq1XGaeBXsVg6XGRPf+L1gsu4Mcg+p6DXaTGfJ0svrXr/xEUeIrb78QeZNxFlxsP
-	5x2etzBWQnLV/20frZF4hVC1lpjeIMv1Qdjh0SobFrNKK95THt2K4Xy02o4M/bkFgcH+dx
-	E455cSf8QHEvovyQuIPp5Lg1jsOsbsi8UIvv9ebGfDEJpfXChRedSODLMisnEp8fbiaCOR
-	Dnk+NwJ77/RoO5jfSEYoBMHZt9QPjh9gxTGbAC5uR7GdMoGo6V/PNABktKEnLg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1710941627;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ex8bou4kB+2rtEdHnDeTFtmRS71UnWOZIqNtXLmn0Go=;
-	b=vsvWO/0cXamxFoVFVXmw5hRpskPf+D6qzK1iqzRL9m+WPD0rqliWSoKLb6vC5qCXFqVyTq
-	D9jJXGMVmBxVs4Aw==
-From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/percpu] x86/percpu: Re-enable named address spaces with
- KASAN for GCC 13.3+
-Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Andy Lutomirski <luto@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Ard Biesheuvel <ardb@kernel.org>, Jakub Jelinek <jakub@redhat.com>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Sean Christopherson <seanjc@google.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240320124603.566923-1-ubizjak@gmail.com>
-References: <20240320124603.566923-1-ubizjak@gmail.com>
+	s=arc-20240116; t=1710956281; c=relaxed/simple;
+	bh=eGsTs/M0MZ1gL7Z17waNl7v25/yUG8QyR7jEDqlU/xg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r8ZgMtGD1zZ1kV/yClr4tKga46ImjFT5NqOePgbyio1GkYjOAc6CWw8FHOIbw3eRl9aspD6koPk5QezHcvCbWD7bg/8lZkhu72EZOL1PqumbrSbOAoicDcj3wdBO/Js+39FwjHWvidaAl0+jITE9ZWEr9ug+QWlpdty5M3YpaUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QF7cVlUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ADEC43390;
+	Wed, 20 Mar 2024 17:38:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710956281;
+	bh=eGsTs/M0MZ1gL7Z17waNl7v25/yUG8QyR7jEDqlU/xg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QF7cVlUQU5HBfd1GgzNN+vS4TX49eeRAhrxROKDRHGjBHt5roIBulvIFVETxHw8qs
+	 3grk6Aife8CxoPVT9ZeZm9cCpI3aBbIfKQKIki+4NVJ/ps1PZddwGgCN2RcNrwkmyB
+	 hvfhAhbQ0XgbvLyfaEaetZBzGI2j8ZeZAdPbI4bnFR6eXxEOn2UnNgAdXqJhtA93PK
+	 plH5vyk+FToyCoq1/5xEqKc+jOVXmr++SSKlCKff7cxsCDv1Uhp2+Nb3DCIQBK8lXD
+	 qfI3hjgHYGo7Qv2dTzD7G6ToNnnSGnA8EaabVjfwT1uDyYEyzbgTF7SoiibrL+IKf6
+	 827d32BNq6uAQ==
+Date: Wed, 20 Mar 2024 10:37:58 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Uros Bizjak <ubizjak@gmail.com>
+Cc: Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+	Kees Cook <keescook@chromium.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>
+Subject: Re: [tip: x86/percpu] x86/percpu: Convert this_percpu_xchg_op() from
+ asm() to C code, to generate better code
+Message-ID: <20240320173758.GA3017166@dev-arch.thelio-3990X>
+References: <20240320083127.493250-1-ubizjak@gmail.com>
+ <171093476000.10875.14076471223590027773.tip-bot2@tip-bot2>
+ <ZfrMcyZXCBQD/sE8@gmail.com>
+ <CAFULd4bNETbtP3VTGao4o3mtfpw6d=rhcWp5N+pnzp-f3fjXAw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171094162686.10875.4624002937424858657.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFULd4bNETbtP3VTGao4o3mtfpw6d=rhcWp5N+pnzp-f3fjXAw@mail.gmail.com>
 
-The following commit has been merged into the x86/percpu branch of tip:
+On Wed, Mar 20, 2024 at 02:12:14PM +0100, Uros Bizjak wrote:
+> On Wed, Mar 20, 2024 at 12:45 PM Ingo Molnar <mingo@kernel.org> wrote:
+> > Clang claims to be compatible:
+> >
+> >   https://releases.llvm.org/9.0.0/tools/clang/docs/LanguageExtensions.html
+> >
+> >   "You can also use the GCC compatibility macros __seg_fs and __seg_gs for the
+> >    same purpose. The preprocessor symbols __SEG_FS and __SEG_GS indicate their
+> >    support."
+> >
+> > I haven't tried it yet though.
+> 
+> In the RFC submission, the support was determined by the functional
+> check [2]. Perhaps we should re-introduce this instead of checking for
+> known compiler versions:
+> 
+> +config CC_HAS_NAMED_AS
+> + def_bool $(success,echo 'int __seg_fs fs; int __seg_gs gs;' | $(CC)
+> -x c - -c -o /dev/null)
+> 
+> [2] https://lore.kernel.org/lkml/20231001131620.112484-3-ubizjak@gmail.com/
 
-Commit-ID:     f61f02d1ff788ae5ad485ef8edd88d9c93557994
-Gitweb:        https://git.kernel.org/tip/f61f02d1ff788ae5ad485ef8edd88d9c93557994
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Wed, 20 Mar 2024 13:45:49 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 20 Mar 2024 14:22:56 +01:00
+I applied this change on top of current mainline (a4145ce1e7bc) and
+built ARCH=x86_64 defconfig with LLVM 17.0.6 from [1] but it doesn't get
+too far :)
 
-x86/percpu: Re-enable named address spaces with KASAN for GCC 13.3+
+  In file included from arch/x86/kernel/asm-offsets.c:9:
+  In file included from include/linux/crypto.h:15:
+  In file included from include/linux/completion.h:12:
+  In file included from include/linux/swait.h:7:
+  In file included from include/linux/spinlock.h:56:
+  In file included from include/linux/preempt.h:79:
+  In file included from arch/x86/include/asm/preempt.h:7:
+  arch/x86/include/asm/current.h:47:10: error: multiple identical address spaces specified for type [-Werror,-Wduplicate-decl-specifier]
+     47 |                 return this_cpu_read_const(const_pcpu_hot.current_task);
+        |                        ^
+  arch/x86/include/asm/percpu.h:471:34: note: expanded from macro 'this_cpu_read_const'
+    471 | #define this_cpu_read_const(pcp)        __raw_cpu_read(, pcp)
+        |                                         ^
+  arch/x86/include/asm/percpu.h:441:30: note: expanded from macro '__raw_cpu_read'
+    441 |         *(qual __my_cpu_type(pcp) *)__my_cpu_ptr(&(pcp));               \
+        |                                     ^
+  arch/x86/include/asm/percpu.h:105:28: note: expanded from macro '__my_cpu_ptr'
+    105 | #define __my_cpu_ptr(ptr)       (__my_cpu_type(*ptr) *)(uintptr_t)(ptr)
+        |                                  ^
+  arch/x86/include/asm/percpu.h:104:40: note: expanded from macro '__my_cpu_type'
+    104 | #define __my_cpu_type(var)      typeof(var) __percpu_seg_override
+        |                                             ^
+  arch/x86/include/asm/percpu.h:45:31: note: expanded from macro '__percpu_seg_override'
+     45 | #define __percpu_seg_override   __seg_gs
+        |                                 ^
+  <built-in>:338:33: note: expanded from macro '__seg_gs'
+    338 | #define __seg_gs __attribute__((address_space(256)))
+        |                                 ^
+  In file included from arch/x86/kernel/asm-offsets.c:9:
+  In file included from include/linux/crypto.h:15:
+  In file included from include/linux/completion.h:12:
+  In file included from include/linux/swait.h:7:
+  In file included from include/linux/spinlock.h:56:
+  In file included from include/linux/preempt.h:79:
+  In file included from arch/x86/include/asm/preempt.h:7:
+  arch/x86/include/asm/current.h:47:10: error: multiple identical address spaces specified for type [-Werror,-Wduplicate-decl-specifier]
+  arch/x86/include/asm/percpu.h:471:34: note: expanded from macro 'this_cpu_read_const'
+    471 | #define this_cpu_read_const(pcp)        __raw_cpu_read(, pcp)
+        |                                         ^
+  arch/x86/include/asm/percpu.h:441:9: note: expanded from macro '__raw_cpu_read'
+    441 |         *(qual __my_cpu_type(pcp) *)__my_cpu_ptr(&(pcp));               \
+        |                ^
+  arch/x86/include/asm/percpu.h:104:40: note: expanded from macro '__my_cpu_type'
+    104 | #define __my_cpu_type(var)      typeof(var) __percpu_seg_override
+        |                                             ^
+  arch/x86/include/asm/percpu.h:45:31: note: expanded from macro '__percpu_seg_override'
+     45 | #define __percpu_seg_override   __seg_gs
+        |                                 ^
+  <built-in>:338:33: note: expanded from macro '__seg_gs'
+    338 | #define __seg_gs __attribute__((address_space(256)))
+        |                                 ^
+  In file included from arch/x86/kernel/asm-offsets.c:9:
+  In file included from include/linux/crypto.h:15:
+  In file included from include/linux/completion.h:12:
+  In file included from include/linux/swait.h:7:
+  In file included from include/linux/spinlock.h:60:
+  In file included from include/linux/thread_info.h:60:
+  In file included from arch/x86/include/asm/thread_info.h:59:
+  In file included from arch/x86/include/asm/cpufeature.h:5:
+  arch/x86/include/asm/processor.h:530:10: error: multiple identical address spaces specified for type [-Werror,-Wduplicate-decl-specifier]
+    530 |                 return this_cpu_read_const(const_pcpu_hot.top_of_stack);
+        |                        ^
+  arch/x86/include/asm/percpu.h:471:34: note: expanded from macro 'this_cpu_read_const'
+    471 | #define this_cpu_read_const(pcp)        __raw_cpu_read(, pcp)
+        |                                         ^
+  arch/x86/include/asm/percpu.h:441:30: note: expanded from macro '__raw_cpu_read'
+    441 |         *(qual __my_cpu_type(pcp) *)__my_cpu_ptr(&(pcp));               \
+        |                                     ^
+  arch/x86/include/asm/percpu.h:105:28: note: expanded from macro '__my_cpu_ptr'
+    105 | #define __my_cpu_ptr(ptr)       (__my_cpu_type(*ptr) *)(uintptr_t)(ptr)
+        |                                  ^
+  arch/x86/include/asm/percpu.h:104:40: note: expanded from macro '__my_cpu_type'
+    104 | #define __my_cpu_type(var)      typeof(var) __percpu_seg_override
+        |                                             ^
+  arch/x86/include/asm/percpu.h:45:31: note: expanded from macro '__percpu_seg_override'
+     45 | #define __percpu_seg_override   __seg_gs
+        |                                 ^
+  <built-in>:338:33: note: expanded from macro '__seg_gs'
+    338 | #define __seg_gs __attribute__((address_space(256)))
+        |                                 ^
+  In file included from arch/x86/kernel/asm-offsets.c:9:
+  In file included from include/linux/crypto.h:15:
+  In file included from include/linux/completion.h:12:
+  In file included from include/linux/swait.h:7:
+  In file included from include/linux/spinlock.h:60:
+  In file included from include/linux/thread_info.h:60:
+  In file included from arch/x86/include/asm/thread_info.h:59:
+  In file included from arch/x86/include/asm/cpufeature.h:5:
+  arch/x86/include/asm/processor.h:530:10: error: multiple identical address spaces specified for type [-Werror,-Wduplicate-decl-specifier]
+  arch/x86/include/asm/percpu.h:471:34: note: expanded from macro 'this_cpu_read_const'
+    471 | #define this_cpu_read_const(pcp)        __raw_cpu_read(, pcp)
+        |                                         ^
+  arch/x86/include/asm/percpu.h:441:9: note: expanded from macro '__raw_cpu_read'
+    441 |         *(qual __my_cpu_type(pcp) *)__my_cpu_ptr(&(pcp));               \
+        |                ^
+  arch/x86/include/asm/percpu.h:104:40: note: expanded from macro '__my_cpu_type'
+    104 | #define __my_cpu_type(var)      typeof(var) __percpu_seg_override
+        |                                             ^
+  arch/x86/include/asm/percpu.h:45:31: note: expanded from macro '__percpu_seg_override'
+     45 | #define __percpu_seg_override   __seg_gs
+        |                                 ^
+  <built-in>:338:33: note: expanded from macro '__seg_gs'
+    338 | #define __seg_gs __attribute__((address_space(256)))
+        |                                 ^
+  4 errors generated.
 
-Commit:
+[1]: https://mirrors.edge.kernel.org/pub/tools/llvm/
 
-  68fb3ca0e408 ("x86/percpu: Disable named address spaces for KASAN")
-
-.. disabled support for named address spaces with KASAN due to
-the incompatibility issue between named AS and KASAN.
-
-GCC 13.3 has fixed this issue (GCC PR sanitizer/111736) so the
-support for named address spaces can be re-enabled with KASAN
-for GCC compiler version >= 13.3.
-
-Note that the patch considers GCC 14 to be fixed - if somebody is
-using snapshots of the GCC 14 before the fix, they should upgrade.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Jakub Jelinek <jakub@redhat.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20240320124603.566923-1-ubizjak@gmail.com
----
- arch/x86/Kconfig |  9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 7aed87c..09455d9 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2435,14 +2435,17 @@ endmenu
- config CC_HAS_NAMED_AS
- 	def_bool CC_IS_GCC && GCC_VERSION >= 120100
- 
-+config CC_HAS_NAMED_AS_FIXED_ASAN
-+	def_bool CC_IS_GCC && GCC_VERSION >= 130300
-+
- config USE_X86_SEG_SUPPORT
- 	def_bool y
- 	depends on CC_HAS_NAMED_AS
- 	#
--	# -fsanitize=kernel-address (KASAN) is at the moment incompatible
--	# with named address spaces - see GCC PR sanitizer/111736.
-+	# -fsanitize=kernel-address (KASAN) is incompatible with named
-+	# address spaces with GCC < 13.3 - see GCC PR sanitizer/111736.
- 	#
--	depends on !KASAN
-+	depends on !KASAN || CC_HAS_NAMED_AS_FIXED_ASAN
- 
- config CC_HAS_SLS
- 	def_bool $(cc-option,-mharden-sls=all)
+Cheers,
+Nathan
 
