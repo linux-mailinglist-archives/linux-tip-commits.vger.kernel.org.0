@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-776-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-777-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6A18860F6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Mar 2024 20:28:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD15088613F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Mar 2024 20:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DFC21C20A9A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Mar 2024 19:28:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65B221C20961
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Mar 2024 19:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25012133426;
-	Thu, 21 Mar 2024 19:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1616013441C;
+	Thu, 21 Mar 2024 19:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J5hTRsz2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sbo62S3D"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mN6OH1DH";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NpTtFjFd"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45130383A4;
-	Thu, 21 Mar 2024 19:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746AE1339AB;
+	Thu, 21 Mar 2024 19:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711049334; cv=none; b=L2mX/wjnEKNuEzA0hnDs5ieLnO3+575z69R4ALsEtcYNGULUU6E2rk4fbzRDKAwFa4rNYfoGY2SThAeX2L24uc6qi7r5N2ZX8YV4dCO+SxSKG4tD+kSFBX3Cl5JAhoB8+NklUfNTk8xFzrUFL4y0g2JiscXxT2qTLD96jsNyuKU=
+	t=1711050319; cv=none; b=RTj2U8u29kF7FUuLYuexOcxCFcGApNg7JkldVlRs+9pc5WZxfsPMEVqBjuIEXQoZVWFtX4VBcAduXSwTB58rLG/2IyAxXPMCm15BYQcz1x4gSLsGvnsEEv/0SFbVtat3XrAsHP4hz813s0ZzQ2JyF3z/IvqjFvxAm/KCWHia7rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711049334; c=relaxed/simple;
-	bh=+HfeYKVj40c/2f1PLoMFV40ylLLkAUWKHF/jm55a6ks=;
+	s=arc-20240116; t=1711050319; c=relaxed/simple;
+	bh=NObd3l5CfBnBCW6AFvUHVZaPNsnb1nk94JtsLxVskHc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=aGadZzzsx2Dm3pphx5Pde1zMr/eq1AszT3lSoqeZj0xkVLBVaKm/9fSCQJV00XvkTashEmhnJhsvckBOADQtfOcjw2cYYazhOncJt/jqnFfFkgNqb8bi3i00IPAAp2aw20wD3OxcCtzKnVfFgKWVss3Zz75lekQ+AhT4PQRbKbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J5hTRsz2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sbo62S3D; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=us3qRRe5luz14i3nflYfbif180nK5eaGnySVsEKtoIOwBwbYL0bmiEsUPOBSPazuLFu1uVMmuHTcZ/apU0Dv+F25f0K+/54iqIotSe6eUN4UF7l6Mz0OQg2/7tJublJj8Dboqy7wUOhIkp/0Yt5aQdQpVtR/X8W0n0+XhbASh+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mN6OH1DH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NpTtFjFd; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 21 Mar 2024 19:28:48 -0000
+Date: Thu, 21 Mar 2024 19:45:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711049329;
+	s=2020; t=1711050315;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iJo4O80+v+kL2DH6Bjx3amWedhVg5KvDDDWnG1/kmDY=;
-	b=J5hTRsz232CvVoG+IeI/qQDdE0a90l1+WWyDqYYsSq6nx+8bVD9OKxtRC3IFq/bssSsQ2+
-	wX/GC+QftgbiqPtOk1m3gAGBZ7wqRoNIbncfzxmhyuXYFfZU6Tfsugl4aJesZcttIjAIRm
-	AIwBy+bml4E8gTWQ9wOa7aDBXRO0IqtqkW6MxM9DPRNU49E84XwOiwPowIUDsozQO7ofba
-	Gm0atHaN7cD2VIbphUwqmgBerA2wNePdluh9GJcvRB6uxXbXBuMpU278BOsMvSFd8g8AQF
-	84L2dsbhiDKPFrx7nj5xRvBItup3BD+tyVTQYfKhKJaKUdI9PwAsTEgdVlANaw==
+	bh=EI5/D8ujKIfjCzHQQXS5t7nEm6z7SaRdD7RwSveBEMA=;
+	b=mN6OH1DHLaxiPL9+rlByUQii1iYgcy94mKkM4SuvUsc4aELxrsp3GuYUzpK0pr0DJtLWE+
+	gLFF5n7yONrdbqaAagTAv9qNyDstpBkFCWmQiFaT+9TenTvrVPB4En5UmoAKgg/9GW9P23
+	aC9J4wCTXi2V7JsXPxnbVrVYdL/yIaKmHasqIocuAlVZMRl8miaUN4FEIHTRxXjTR1Ja5E
+	E3JpnWWfqRnxstZtMq0UydSxllJruo24ddOitE5oqbP6/HRCatZTzv+BVHydwf9kMYHOFR
+	saJf1JF0/5acM8gAziRbawp1xQc4fgxAnD63cCRQ16CA2BPN1xZJUSWsS9fkcw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711049329;
+	s=2020e; t=1711050315;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iJo4O80+v+kL2DH6Bjx3amWedhVg5KvDDDWnG1/kmDY=;
-	b=sbo62S3DnDiowNfCTMGsepGVaw+2OneGnBhGesdXxobQw17tcA4IJIpt4KZeqpquNbX49R
-	97Sw9w6DLOrTWKCw==
-From: "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
+	bh=EI5/D8ujKIfjCzHQQXS5t7nEm6z7SaRdD7RwSveBEMA=;
+	b=NpTtFjFdncR6T7n9qjZDbYiNDyDrBf9TBAGvDqtHxWbhmMQTBCTT1bJK3ZrkhyDKbR6Lps
+	5hm/n8YgafOfleBw==
+From: "tip-bot2 for Mukesh Kumar Chaurasiya" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Simplify boot stack setup
-Cc: Brian Gerst <brgerst@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Kees Cook <keescook@chromium.org>, Uros Bizjak <ubizjak@gmail.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240321180506.89030-1-brgerst@gmail.com>
-References: <20240321180506.89030-1-brgerst@gmail.com>
+Subject: [tip: sched/urgent] sched/doc: Update documentation for base_slice_ns
+ and CONFIG_HZ relation
+Cc: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>,
+ Ingo Molnar <mingo@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240320173815.927637-2-mchauras@linux.ibm.com>
+References: <20240320173815.927637-2-mchauras@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171104932866.10875.947190714531211341.tip-bot2@tip-bot2>
+Message-ID: <171105031473.10875.823907471048599597.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,121 +80,77 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     2cb16181a1d1f93a88f2b4640e7638fc0549da93
-Gitweb:        https://git.kernel.org/tip/2cb16181a1d1f93a88f2b4640e7638fc0549da93
-Author:        Brian Gerst <brgerst@gmail.com>
-AuthorDate:    Thu, 21 Mar 2024 14:05:06 -04:00
+Commit-ID:     a26979377bf34534ce5ee2712d2a46157ec61498
+Gitweb:        https://git.kernel.org/tip/a26979377bf34534ce5ee2712d2a46157ec61498
+Author:        Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+AuthorDate:    Wed, 20 Mar 2024 23:08:16 +05:30
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 21 Mar 2024 20:17:54 +01:00
+CommitterDate: Thu, 21 Mar 2024 20:34:16 +01:00
 
-x86/boot: Simplify boot stack setup
+sched/doc: Update documentation for base_slice_ns and CONFIG_HZ relation
 
-Define the symbol __top_init_kernel_stack instead of duplicating
-the offset from __end_init_task in multiple places.
+The tunable base_slice_ns is dependent on CONFIG_HZ (i.e. TICK_NSEC)
+for any significant performance improvement. The reason being the
+scheduler tick is not frequent enough to force preemption when
+base_slice expires in case of:
 
-Signed-off-by: Brian Gerst <brgerst@gmail.com>
+           base_slice_ns < TICK_NSEC
+
+The below data is of stress-ng:
+
+	Number of CPU: 1
+	Stressor threads: 4
+	Time: 30sec
+
+	On CONFIG_HZ=1000
+
+	| base_slice | avg-run (msec) | context-switches |
+	| ---------- | -------------- | ---------------- |
+	| 3ms        | 2.914          | 10342            |
+	| 6ms        | 4.857          | 6196             |
+	| 9ms        | 6.754          | 4482             |
+	| 12ms       | 7.872          | 3802             |
+	| 22ms       | 11.294         | 2710             |
+	| 32ms       | 13.425         | 2284             |
+
+	On CONFIG_HZ=100
+
+	| base_slice | avg-run (msec) | context-switches |
+	| ---------- | -------------- | ---------------- |
+	| 3ms        | 9.144          | 3337             |
+	| 6ms        | 9.113          | 3301             |
+	| 9ms        | 8.991          | 3315             |
+	| 12ms       | 12.935         | 2328             |
+	| 22ms       | 16.031         | 1915             |
+	| 32ms       | 18.608         | 1622             |
+
+	base_slice: the value of base_slice in ms
+	avg-run (msec): average time of the stressor threads got on cpu before
+	it got preempted
+	context-switches: number of context switches for the stress-ng process
+
+Signed-off-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Uros Bizjak <ubizjak@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/20240321180506.89030-1-brgerst@gmail.com
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20240320173815.927637-2-mchauras@linux.ibm.com
 ---
- arch/x86/include/asm/processor.h |  6 ++----
- arch/x86/kernel/head_32.S        | 11 +----------
- arch/x86/kernel/head_64.S        |  2 +-
- arch/x86/kernel/vmlinux.lds.S    |  3 +++
- arch/x86/xen/xen-head.S          |  2 +-
- 5 files changed, 8 insertions(+), 16 deletions(-)
+ Documentation/scheduler/sched-design-CFS.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 811548f..7fa01d9 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -636,12 +636,10 @@ static __always_inline void prefetchw(const void *x)
- #define KSTK_ESP(task)		(task_pt_regs(task)->sp)
+diff --git a/Documentation/scheduler/sched-design-CFS.rst b/Documentation/scheduler/sched-design-CFS.rst
+index 6cffffe..e030876 100644
+--- a/Documentation/scheduler/sched-design-CFS.rst
++++ b/Documentation/scheduler/sched-design-CFS.rst
+@@ -100,6 +100,9 @@ which can be used to tune the scheduler from "desktop" (i.e., low latencies) to
+ "server" (i.e., good batching) workloads.  It defaults to a setting suitable
+ for desktop workloads.  SCHED_BATCH is handled by the CFS scheduler module too.
  
- #else
--extern unsigned long __end_init_task[];
-+extern unsigned long __top_init_kernel_stack[];
- 
- #define INIT_THREAD {							\
--	.sp	= (unsigned long)&__end_init_task -			\
--		  TOP_OF_KERNEL_STACK_PADDING -				\
--		  sizeof(struct pt_regs),				\
-+	.sp	= (unsigned long)&__top_init_kernel_stack,		\
- }
- 
- extern unsigned long KSTK_ESP(struct task_struct *task);
-diff --git a/arch/x86/kernel/head_32.S b/arch/x86/kernel/head_32.S
-index b50f364..a9de527 100644
---- a/arch/x86/kernel/head_32.S
-+++ b/arch/x86/kernel/head_32.S
-@@ -44,9 +44,6 @@
- #define X86_CAPABILITY	new_cpu_data+CPUINFO_x86_capability
- #define X86_VENDOR_ID	new_cpu_data+CPUINFO_x86_vendor_id
- 
--
--#define SIZEOF_PTREGS 17*4
--
- /*
-  * Worst-case size of the kernel mapping we need to make:
-  * a relocatable kernel can live anywhere in lowmem, so we need to be able
-@@ -488,13 +485,7 @@ SYM_DATA_END(initial_page_table)
- 
- .data
- .balign 4
--/*
-- * The SIZEOF_PTREGS gap is a convention which helps the in-kernel unwinder
-- * reliably detect the end of the stack.
-- */
--SYM_DATA(initial_stack,
--		.long init_thread_union + THREAD_SIZE -
--		SIZEOF_PTREGS - TOP_OF_KERNEL_STACK_PADDING)
-+SYM_DATA(initial_stack, .long __top_init_kernel_stack)
- 
- __INITRODATA
- int_msg:
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index d8198fb..b115268 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -66,7 +66,7 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	mov	%rsi, %r15
- 
- 	/* Set up the stack for verify_cpu() */
--	leaq	(__end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE)(%rip), %rsp
-+	leaq	__top_init_kernel_stack(%rip), %rsp
- 
- 	/* Setup GSBASE to allow stack canary access for C code */
- 	movl	$MSR_GS_BASE, %ecx
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index 56451fd..91085c3 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -172,6 +172,9 @@ SECTIONS
- 		/* init_task */
- 		INIT_TASK_DATA(THREAD_SIZE)
- 
-+		/* equivalent to task_pt_regs(&init_task) */
-+		__top_init_kernel_stack = __end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE;
++In case CONFIG_HZ results in base_slice_ns < TICK_NSEC, the value of
++base_slice_ns will have little to no impact on the workloads.
 +
- #ifdef CONFIG_X86_32
- 		/* 32 bit has nosave before _edata */
- 		NOSAVE_DATA
-diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
-index 04101b9..758bcd4 100644
---- a/arch/x86/xen/xen-head.S
-+++ b/arch/x86/xen/xen-head.S
-@@ -49,7 +49,7 @@ SYM_CODE_START(startup_xen)
- 	ANNOTATE_NOENDBR
- 	cld
- 
--	leaq	(__end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE)(%rip), %rsp
-+	leaq	__top_init_kernel_stack(%rip), %rsp
- 
- 	/* Set up %gs.
- 	 *
+ Due to its design, the CFS scheduler is not prone to any of the "attacks" that
+ exist today against the heuristics of the stock scheduler: fiftyp.c, thud.c,
+ chew.c, ring-test.c, massive_intr.c all work fine and do not impact
 
