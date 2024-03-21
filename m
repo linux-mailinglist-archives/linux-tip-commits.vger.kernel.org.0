@@ -1,80 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-775-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-776-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88F58860EB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Mar 2024 20:21:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6A18860F6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Mar 2024 20:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1178E1C213FB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Mar 2024 19:21:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DFC21C20A9A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Mar 2024 19:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C51133426;
-	Thu, 21 Mar 2024 19:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25012133426;
+	Thu, 21 Mar 2024 19:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f/thp/5F";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c1iv8jqh"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J5hTRsz2";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sbo62S3D"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B7613341A;
-	Thu, 21 Mar 2024 19:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45130383A4;
+	Thu, 21 Mar 2024 19:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711048861; cv=none; b=KrlpuB/dV5Pp9CkSQZa4Ct9F7UpY9QX/A3nwxUX4nRcOZ8jp81cdAEO83kdGVjmFIVCIaebM367o4Pib5KO/cFLkoDhBcIRrEOhhjmar+kvFFPTECnvb04IpV/NEd/PkPykz0mcnsEOMwzeZKxUMsZKetSPjWcQULh9PcGV0IAQ=
+	t=1711049334; cv=none; b=L2mX/wjnEKNuEzA0hnDs5ieLnO3+575z69R4ALsEtcYNGULUU6E2rk4fbzRDKAwFa4rNYfoGY2SThAeX2L24uc6qi7r5N2ZX8YV4dCO+SxSKG4tD+kSFBX3Cl5JAhoB8+NklUfNTk8xFzrUFL4y0g2JiscXxT2qTLD96jsNyuKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711048861; c=relaxed/simple;
-	bh=atXL0Gjof7O2+DckvspFpzkt0LG8lU6zn8MpAKBl8hI=;
+	s=arc-20240116; t=1711049334; c=relaxed/simple;
+	bh=+HfeYKVj40c/2f1PLoMFV40ylLLkAUWKHF/jm55a6ks=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Mu6+PDjQcbs+XBFM0RRv9MjZwmayB7gtFmO6L4USwsev4+LFvqURq1fSzhsF2I/U+gcWumHg8gEUCmwUVMg3eMZixX5+Qm+LzRKlJcoS+jRizOGvMam1qJbgwrMq1tYakvjTO/pTF4dtcr8G3ORGfrp7kPy/i4GS2YYxira0Cfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f/thp/5F; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c1iv8jqh; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=aGadZzzsx2Dm3pphx5Pde1zMr/eq1AszT3lSoqeZj0xkVLBVaKm/9fSCQJV00XvkTashEmhnJhsvckBOADQtfOcjw2cYYazhOncJt/jqnFfFkgNqb8bi3i00IPAAp2aw20wD3OxcCtzKnVfFgKWVss3Zz75lekQ+AhT4PQRbKbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J5hTRsz2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sbo62S3D; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 21 Mar 2024 19:20:55 -0000
+Date: Thu, 21 Mar 2024 19:28:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711048857;
+	s=2020; t=1711049329;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ewl+E6trDEwiIkwR4RjKfDmS2foWpVfS4m+Kh4nbms0=;
-	b=f/thp/5Fw6NuwC6VJS1psi1LPUgl2V3rTvi5UCXJUG29/jhfsmHXEtEDK1BTiZ9b9Ct5X/
-	hCHb+e11hR2ViOKIogDQKs+b8I/A4gmU4hZkmJrBg4v/ke7YgAc+E6Ar3k4WMuYq4SI+dG
-	3h3pFe8ruiqSdch1Pzk8k0Jm5zTAaUPnud95n2ggxRwzpax9egTM10nGYYk+rXtBupNvWo
-	qP8T5+80w+OlDKyB+qMpbPfcTqvaKUAOiX5Xh8iX1nr2ay5T7kKoa8JSQpmvPKtGUMBP8c
-	nMKfd/s/osWPkFrOZrpEAJ31kK1fgX72Yqs1Ez8NrnOC1FOEg841nkVweGpwpA==
+	bh=iJo4O80+v+kL2DH6Bjx3amWedhVg5KvDDDWnG1/kmDY=;
+	b=J5hTRsz232CvVoG+IeI/qQDdE0a90l1+WWyDqYYsSq6nx+8bVD9OKxtRC3IFq/bssSsQ2+
+	wX/GC+QftgbiqPtOk1m3gAGBZ7wqRoNIbncfzxmhyuXYFfZU6Tfsugl4aJesZcttIjAIRm
+	AIwBy+bml4E8gTWQ9wOa7aDBXRO0IqtqkW6MxM9DPRNU49E84XwOiwPowIUDsozQO7ofba
+	Gm0atHaN7cD2VIbphUwqmgBerA2wNePdluh9GJcvRB6uxXbXBuMpU278BOsMvSFd8g8AQF
+	84L2dsbhiDKPFrx7nj5xRvBItup3BD+tyVTQYfKhKJaKUdI9PwAsTEgdVlANaw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711048857;
+	s=2020e; t=1711049329;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ewl+E6trDEwiIkwR4RjKfDmS2foWpVfS4m+Kh4nbms0=;
-	b=c1iv8jqhe2CnbBH6iKh4tprScOMggH2LG1oyozYS/4kj4bgQ8qUF0uhnfT+qvptnLgWWVd
-	oeiM17wvG6OVjbBw==
-From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+	bh=iJo4O80+v+kL2DH6Bjx3amWedhVg5KvDDDWnG1/kmDY=;
+	b=sbo62S3DnDiowNfCTMGsepGVaw+2OneGnBhGesdXxobQw17tcA4IJIpt4KZeqpquNbX49R
+	97Sw9w6DLOrTWKCw==
+From: "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/percpu] x86/percpu: Enable named address spaces for GCC 9.1+
-Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Andy Lutomirski <luto@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
+Subject: [tip: x86/boot] x86/boot: Simplify boot stack setup
+Cc: Brian Gerst <brgerst@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Kees Cook <keescook@chromium.org>, Uros Bizjak <ubizjak@gmail.com>,
  Linus Torvalds <torvalds@linux-foundation.org>,
- Ard Biesheuvel <ardb@kernel.org>, Kees Cook <keescook@chromium.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240321164647.289879-1-ubizjak@gmail.com>
-References: <20240321164647.289879-1-ubizjak@gmail.com>
+ Andy Lutomirski <luto@kernel.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240321180506.89030-1-brgerst@gmail.com>
+References: <20240321180506.89030-1-brgerst@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171104885594.10875.6089335444765928119.tip-bot2@tip-bot2>
+Message-ID: <171104932866.10875.947190714531211341.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,48 +81,121 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/percpu branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     b429eafe0d9f765d8626e53221ce3108b783da5e
-Gitweb:        https://git.kernel.org/tip/b429eafe0d9f765d8626e53221ce3108b783da5e
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Thu, 21 Mar 2024 17:46:41 +01:00
+Commit-ID:     2cb16181a1d1f93a88f2b4640e7638fc0549da93
+Gitweb:        https://git.kernel.org/tip/2cb16181a1d1f93a88f2b4640e7638fc0549da93
+Author:        Brian Gerst <brgerst@gmail.com>
+AuthorDate:    Thu, 21 Mar 2024 14:05:06 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 21 Mar 2024 20:16:20 +01:00
+CommitterDate: Thu, 21 Mar 2024 20:17:54 +01:00
 
-x86/percpu: Enable named address spaces for GCC 9.1+
+x86/boot: Simplify boot stack setup
 
-Enable named address spaces also for GCC 9, GCC 10 and GCC 11
-releases. These compilers all produce kernel images that boot
-without problems.
+Define the symbol __top_init_kernel_stack instead of duplicating
+the offset from __end_init_task in multiple places.
 
-GCC_VERSION cutoff is arbitrary. It is primary a risk-reduction
-cutoff, older compilers will be tested and enabled in linux 6.10
-release.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Brian Gerst <brgerst@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
 Cc: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20240321164647.289879-1-ubizjak@gmail.com
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/r/20240321180506.89030-1-brgerst@gmail.com
 ---
- arch/x86/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/processor.h |  6 ++----
+ arch/x86/kernel/head_32.S        | 11 +----------
+ arch/x86/kernel/head_64.S        |  2 +-
+ arch/x86/kernel/vmlinux.lds.S    |  3 +++
+ arch/x86/xen/xen-head.S          |  2 +-
+ 5 files changed, 8 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 09455d9..03c9d11 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2433,7 +2433,7 @@ source "kernel/livepatch/Kconfig"
- endmenu
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 811548f..7fa01d9 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -636,12 +636,10 @@ static __always_inline void prefetchw(const void *x)
+ #define KSTK_ESP(task)		(task_pt_regs(task)->sp)
  
- config CC_HAS_NAMED_AS
--	def_bool CC_IS_GCC && GCC_VERSION >= 120100
-+	def_bool CC_IS_GCC && GCC_VERSION >= 90100
+ #else
+-extern unsigned long __end_init_task[];
++extern unsigned long __top_init_kernel_stack[];
  
- config CC_HAS_NAMED_AS_FIXED_ASAN
- 	def_bool CC_IS_GCC && GCC_VERSION >= 130300
+ #define INIT_THREAD {							\
+-	.sp	= (unsigned long)&__end_init_task -			\
+-		  TOP_OF_KERNEL_STACK_PADDING -				\
+-		  sizeof(struct pt_regs),				\
++	.sp	= (unsigned long)&__top_init_kernel_stack,		\
+ }
+ 
+ extern unsigned long KSTK_ESP(struct task_struct *task);
+diff --git a/arch/x86/kernel/head_32.S b/arch/x86/kernel/head_32.S
+index b50f364..a9de527 100644
+--- a/arch/x86/kernel/head_32.S
++++ b/arch/x86/kernel/head_32.S
+@@ -44,9 +44,6 @@
+ #define X86_CAPABILITY	new_cpu_data+CPUINFO_x86_capability
+ #define X86_VENDOR_ID	new_cpu_data+CPUINFO_x86_vendor_id
+ 
+-
+-#define SIZEOF_PTREGS 17*4
+-
+ /*
+  * Worst-case size of the kernel mapping we need to make:
+  * a relocatable kernel can live anywhere in lowmem, so we need to be able
+@@ -488,13 +485,7 @@ SYM_DATA_END(initial_page_table)
+ 
+ .data
+ .balign 4
+-/*
+- * The SIZEOF_PTREGS gap is a convention which helps the in-kernel unwinder
+- * reliably detect the end of the stack.
+- */
+-SYM_DATA(initial_stack,
+-		.long init_thread_union + THREAD_SIZE -
+-		SIZEOF_PTREGS - TOP_OF_KERNEL_STACK_PADDING)
++SYM_DATA(initial_stack, .long __top_init_kernel_stack)
+ 
+ __INITRODATA
+ int_msg:
+diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+index d8198fb..b115268 100644
+--- a/arch/x86/kernel/head_64.S
++++ b/arch/x86/kernel/head_64.S
+@@ -66,7 +66,7 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	mov	%rsi, %r15
+ 
+ 	/* Set up the stack for verify_cpu() */
+-	leaq	(__end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE)(%rip), %rsp
++	leaq	__top_init_kernel_stack(%rip), %rsp
+ 
+ 	/* Setup GSBASE to allow stack canary access for C code */
+ 	movl	$MSR_GS_BASE, %ecx
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 56451fd..91085c3 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -172,6 +172,9 @@ SECTIONS
+ 		/* init_task */
+ 		INIT_TASK_DATA(THREAD_SIZE)
+ 
++		/* equivalent to task_pt_regs(&init_task) */
++		__top_init_kernel_stack = __end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE;
++
+ #ifdef CONFIG_X86_32
+ 		/* 32 bit has nosave before _edata */
+ 		NOSAVE_DATA
+diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
+index 04101b9..758bcd4 100644
+--- a/arch/x86/xen/xen-head.S
++++ b/arch/x86/xen/xen-head.S
+@@ -49,7 +49,7 @@ SYM_CODE_START(startup_xen)
+ 	ANNOTATE_NOENDBR
+ 	cld
+ 
+-	leaq	(__end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE)(%rip), %rsp
++	leaq	__top_init_kernel_stack(%rip), %rsp
+ 
+ 	/* Set up %gs.
+ 	 *
 
