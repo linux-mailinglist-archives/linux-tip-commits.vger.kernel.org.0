@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-787-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-789-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FCB288689E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Mar 2024 09:56:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF01886AC9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Mar 2024 11:58:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1C111C21AD2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Mar 2024 08:56:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CBAB1F2296D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Mar 2024 10:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D331B273;
-	Fri, 22 Mar 2024 08:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B473D978;
+	Fri, 22 Mar 2024 10:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="C/aRLcXi";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="evjIH0+y"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2ICxhai9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zR/M7qnM"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2FB199AD;
-	Fri, 22 Mar 2024 08:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0243D3BF;
+	Fri, 22 Mar 2024 10:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711097803; cv=none; b=b0ArEpMhLvYMYAhvwFDvhX0KEqBJVtsZ3KKObC7bZiHKkZZvYhAyW5bfV5izxiaSdQphDhD0mc4MLp68K0rYMFc+41FkIyfswhrleCTSrPxGf0NMgEEtP0h0qh4WDNGvHfnPphF2xlQ0OTdnwRApYgJ+6tRliBHMxpeof4OWWw4=
+	t=1711105102; cv=none; b=ZpZvKyF37rX81n1KwbFBL44V0O+LE1S4LiOzePhuhmXohd1ICzPxkGHeunEdZ6aI+V3F8P9vQPd5ohz/cfuJ0qnzjvR82gEGkJxqM+roI5i5TI29sBPI3amqPiAK8SCMmN9Scbo1Ow6EYyax9o9modIwxZk1Xfcf+UdgLX9yfI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711097803; c=relaxed/simple;
-	bh=l5AWyEgp6PdK/1b0gnmNOdKq68XsF6YlEYMS03ehOOQ=;
+	s=arc-20240116; t=1711105102; c=relaxed/simple;
+	bh=2vQGBcqfGik+DOs8/LDS6Z9Ve6JY+QDky80wYu2MJro=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=qxaPQerKcGCtD9ZPbxWyQbi9hFjPMF0gASjyb0nXX9U9TmsFlvEaTAPhsctqBYSOmYjcQ2Mr3M0KgGBqkxoZPsbh57zuyH6aixhE1bftFaZo506UZHZZEgXzphJxnZp4bFj+Wrovn4/gYSb4Ql6+s8Ls0PJEAw+oj2E67WNz9f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=C/aRLcXi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=evjIH0+y; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=M2D4xPNX8RH8spSbYpCkYBGCv1pjjYNVjbeEC2qSeh/EXjN3J4PXWQyiDt6iKn1a+Rqubw1fkdgHtNni+kRa7wJOSesyg+4GEWA/CfDK4qfL93ft65ZQfzoH9DeWzqsC3p0t60zsjMaG7ldh60fNZC2Rmd6Pm1P6Dkg/4jhFYd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2ICxhai9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zR/M7qnM; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 22 Mar 2024 08:56:39 -0000
+Date: Fri, 22 Mar 2024 10:58:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711097800;
+	s=2020; t=1711105092;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IUg5m/2/O/iajpong8vZmpJ6FdNqHdlqgbJQFwXJ1Mc=;
-	b=C/aRLcXiZ9NBuQhKDZxNC+rhlq276oq+h54pvII31JrAG2IIFi290gFwDCe7FKvYZysF4A
-	ihadBsb0EMeY8tXOewpvq7qr2qKm16UeHMBXEEYxpweP5HF3i3IzQAhlQwFPKg+wBGgys/
-	pkKYQGX58q6XJ92feMNCqHh8hPvwHhsEiKORZKJMJqDVq3DfNdLrVP8ktFdTUkprFdZXu7
-	F/5lNDEKPFSvYjNpcot9U8RaWAdJZMtvarf0BLq68sCiypNFdJ1gCglgJP01h8xH8J0nSO
-	aB+J4KVPRGvKLoAgs82P0cVyojzwJaspwpjw8vOlCNKZc3jTw5cKldbEoIwjRg==
+	bh=E91sLJTV58BG8ycNZboePzCXozLdaYveDF7FK621VAg=;
+	b=2ICxhai9NX5FBjmvBgg/aRbByYqgy0p7gFQ6r7N2dYrs5gx8uJqa83U1V0aRUxSFFGFZ1m
+	Vvn3LOD8CwHNy6E+jCYG+s7LhP9/1tqHYf6UUCe27mRHddwpedR01KGCuWFgtg9v03QNaq
+	Y8F9Y6YXa2NjTAH0CSadElXF9amOUHquw+ErExUZCUZ808oyTciJFkCmVf47Tn03TcNUcg
+	6vRMh3RYon3tcFncm83MD004sE6AUAqLoMWe+jgcvJwIhfyXxoGJBYaxtrZ1PlwlzSuxbJ
+	YtuGnOiEYEatvfQ006aOHCvHgPyHFW+8CW37+919g0Jkv/x27aPGEJwgwqxrtw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711097800;
+	s=2020e; t=1711105092;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IUg5m/2/O/iajpong8vZmpJ6FdNqHdlqgbJQFwXJ1Mc=;
-	b=evjIH0+yB9OaO0Dq3RNYJIS15/5kOzH5jAhcY/IFYyBdNZSf6Q3R+9LhRWU5iO1b42a/8h
-	EVIURWhrTLd+gWCA==
-From: "tip-bot2 for Guixiong Wei" <tip-bot2@linutronix.de>
+	bh=E91sLJTV58BG8ycNZboePzCXozLdaYveDF7FK621VAg=;
+	b=zR/M7qnMZ3FusZr8hfB+KhUMncQt+4BfZWRLTiTqFvkHSHCMVVNMXUT5pyKnWPYSv2Cf7b
+	uq375NYU6obeXIAg==
+From: "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Ignore relocations in .notes sections in
- walk_relocs() too
-Cc: Guixiong Wei <weiguixiong@bytedance.com>, Ingo Molnar <mingo@kernel.org>,
- Kees Cook <keescook@chromium.org>, x86@kernel.org,
+Subject: [tip: locking/core] x86/tsc: Make __use_tsc __ro_after_init
+Cc: Valentin Schneider <vschneid@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+ Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240317150547.24910-1-weiguixiong@bytedance.com>
-References: <20240317150547.24910-1-weiguixiong@bytedance.com>
+In-Reply-To: <20240313180106.2917308-5-vschneid@redhat.com>
+References: <20240313180106.2917308-5-vschneid@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171109779918.10875.13734920982840278468.tip-bot2@tip-bot2>
+Message-ID: <171110509171.10875.16665845920451897974.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,56 +79,39 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     76e9762d66373354b45c33b60e9a53ef2a3c5ff2
-Gitweb:        https://git.kernel.org/tip/76e9762d66373354b45c33b60e9a53ef2a3c5ff2
-Author:        Guixiong Wei <weiguixiong@bytedance.com>
-AuthorDate:    Sun, 17 Mar 2024 23:05:47 +08:00
+Commit-ID:     79a4567b2e8ae4d0282602a24f76f5e2382f5b98
+Gitweb:        https://git.kernel.org/tip/79a4567b2e8ae4d0282602a24f76f5e2382f5b98
+Author:        Valentin Schneider <vschneid@redhat.com>
+AuthorDate:    Wed, 13 Mar 2024 19:01:06 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 22 Mar 2024 09:48:59 +01:00
+CommitterDate: Fri, 22 Mar 2024 11:18:20 +01:00
 
-x86/boot: Ignore relocations in .notes sections in walk_relocs() too
+x86/tsc: Make __use_tsc __ro_after_init
 
-Commit:
+__use_tsc is only ever enabled in __init tsc_enable_sched_clock(), so mark
+it as __ro_after_init.
 
-  aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
-
-.. only started ignoring the .notes sections in print_absolute_relocs(),
-but the same logic should also by applied in walk_relocs() to avoid
-such relocations.
-
-[ mingo: Fixed various typos in the changelog, removed extra curly braces from the code. ]
-
-Fixes: aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
-Fixes: 5ead97c84fa7 ("xen: Core Xen implementation")
-Fixes: da1a679cde9b ("Add /sys/kernel/notes")
-Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20240317150547.24910-1-weiguixiong@bytedance.com
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20240313180106.2917308-5-vschneid@redhat.com
 ---
- arch/x86/tools/relocs.c |  9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/kernel/tsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
-index b029fb8..e7a44a7 100644
---- a/arch/x86/tools/relocs.c
-+++ b/arch/x86/tools/relocs.c
-@@ -746,6 +746,15 @@ static void walk_relocs(int (*process)(struct section *sec, Elf_Rel *rel,
- 		if (!(sec_applies->shdr.sh_flags & SHF_ALLOC)) {
- 			continue;
- 		}
-+
-+		/*
-+		 * Do not perform relocations in .notes sections; any
-+		 * values there are meant for pre-boot consumption (e.g.
-+		 * startup_xen).
-+		 */
-+		if (sec_applies->shdr.sh_type == SHT_NOTE)
-+			continue;
-+
- 		sh_symtab = sec_symtab->symtab;
- 		sym_strtab = sec_symtab->link->strtab;
- 		for (j = 0; j < sec->shdr.sh_size/sizeof(Elf_Rel); j++) {
+diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+index 5a69a49..0f7624e 100644
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -44,7 +44,7 @@ EXPORT_SYMBOL(tsc_khz);
+ static int __read_mostly tsc_unstable;
+ static unsigned int __initdata tsc_early_khz;
+ 
+-static DEFINE_STATIC_KEY_FALSE(__use_tsc);
++static DEFINE_STATIC_KEY_FALSE_RO(__use_tsc);
+ 
+ int tsc_clocksource_reliable;
+ 
 
