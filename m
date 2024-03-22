@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-781-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-782-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F355886188
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Mar 2024 21:19:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B8D886857
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Mar 2024 09:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352C71C2175B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Mar 2024 20:19:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3D03B245FB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Mar 2024 08:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51A3134750;
-	Thu, 21 Mar 2024 20:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F16F17541;
+	Fri, 22 Mar 2024 08:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="khFV506D";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZUi/oE7I"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="m/GzVnyx";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eyxWJYEG"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615EAF4FA;
-	Thu, 21 Mar 2024 20:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADE01BF3D;
+	Fri, 22 Mar 2024 08:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711052369; cv=none; b=Htum4848FjNd8kTV3s7TT2tADV9GWoO5z6ibK2muVFQ43zkSKAxpZivbhaRG6xCeYt6QUPimsjnvJ3wIWc9yNaBw6N76BPhJY1Y+WQuR6GBhl+3nRTy/Fk/zVuoj/S5zV5Cu4zT8LGCV8SeezIxfUC3RTln6PIjC1BoFaVX08DU=
+	t=1711096779; cv=none; b=F1EmiCmo0HDk00mpo//a/q6gpjIxrdeCPKAVNjlbVaORpS60hjJlvo12BD4XGxzG+2tWK2EiRkcmbWM9DvaBPV5VEjsRMi795FnogavUaG+pWDJ3UQJGHKHwywm/Zg0nQpc1thkjXd2eVQvTWJi2TNvuNUjV2cr2aRz7EeYfRv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711052369; c=relaxed/simple;
-	bh=0+7yLupFUJn3tZxnu2lqPHb28Vn9hA0mXxBfuZkl76Y=;
+	s=arc-20240116; t=1711096779; c=relaxed/simple;
+	bh=wjX4iW6vPhAL5Q/HrAU+Ppr//9UgV0aTcsI4QPDBVrc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=U4roXnPpNHqevaGXVV19yUTgHDiNy2s6SE20bEDfeCq52aiiSfCHGNr7upggiGxFIv0z0YBln8RcR6FJ5MKlsZDnObiSnRr/5nzKXQRngGwfyW9hM9zX/7zg/t7oiV/l1MLX9qEic8OTm8XLsZrMIBayHLJnAWA2avOsjui1Jfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=khFV506D; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZUi/oE7I; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ubRIF3OYlpakxSLq6+ecp+TyjzItRsFKyniGlmU4mEHXOh4ixKwqqFlF7lh7RHm+0DlNt1Yrq8Jl9kf8dyGc8d1o6rMfuX3KXQdIpa9MokQOSgqygjaojmLhw/Teyp9Oj0JmRm7HUYmszWlTPZJIBV1wvsGwQBxEe0gJ85GKq68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=m/GzVnyx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eyxWJYEG; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 21 Mar 2024 20:19:23 -0000
+Date: Fri, 22 Mar 2024 08:39:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711052365;
+	s=2020; t=1711096775;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=crUYMPOl/nFJOh+gZdNsIAU1wjH2L9wkVovg4jxZ6Tc=;
-	b=khFV506D8rWV3Eg9RuSurxyKn23YqfYihQFxyvVVkfDc2xHLF/4g5JnMtjEZvcRr8V1nFF
-	ppmUBkMJqXboGZA580p9dB8QjokvK9fNnXJq9idXzDdYX9PwtzoN3ZJK4t77BYg4OmPCYq
-	3QsCJ98zoVfGYO7NzA7wAnLBnRPGDlA+aFGGGpegMF9SoGnFaUQOm6sZTjfMNL/Vt5HcyA
-	TqbpTfWXOO54W9JLaPMg0eKETVEXWc1RJdSKabkAe1ySufByftDmwEr8w46MDi4ZKP/8zu
-	7uyBIbOh08rBqtmEy770b4shN82N2W7cSo1WiAm8ncUJUBIDXQzoYoHwWuok7A==
+	bh=k9H0AkpxP+aZ/46y0uyxR1w0hSG+NvlkLnsM6ltSG7w=;
+	b=m/GzVnyx3HmrMYykRUit7g28nUbrYczWnPUt/102QN9juAkIloxgBNWXfb3k3z/TmjFF3w
+	FWuV2wPglwxwqwYjFJyJpC7GzkZ3dEufsgHpgZV44277BHG987TmWH4pqal9AzN63cS98M
+	1IEQ7tSpVbjE6KTW+RU9ZpGFBRpO2Sfo0xPtbT5bTpmzJ5TitFHqkTwT5nHGczKoBfFN0A
+	5CBoiCrUAa6lj/XIAkb1YKVcOxryr4pqVoLKS+0LZnmTtPhwtfnzw1A89NMFiuir27o1OE
+	qX9ovyToJ92PntEDKsahrCMDYSQlOGKOPHv3GjqDwwTLZBjdX0AnZAweGBxslA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711052365;
+	s=2020e; t=1711096775;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=crUYMPOl/nFJOh+gZdNsIAU1wjH2L9wkVovg4jxZ6Tc=;
-	b=ZUi/oE7IS+ZyqsMIUoep38sKY73vBnGWvtnPDMAT0wSm0u0BZLMqgubMB6I/6FlRWsk9x6
-	c0aU8dHwXYCwUuBw==
-From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+	bh=k9H0AkpxP+aZ/46y0uyxR1w0hSG+NvlkLnsM6ltSG7w=;
+	b=eyxWJYEGK+hSqcisv/5T1tX55Lt53wGh4mt9uKWxpNIx++VikZ8+fSXIXK+gAoc2pVrN3Y
+	8Lxld5PthLxOzNBg==
+From: "tip-bot2 for Xin Li (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu: Get rid of an unnecessary local variable in
- get_cpu_address_sizes()
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240316120706.4352-1-bp@alien8.de>
-References: <20240316120706.4352-1-bp@alien8.de>
+Subject: [tip: x86/boot] x86: Rename __{start,end}_init_task to
+ __{start,end}_init_stack
+Cc: "Xin Li (Intel)" <xin@zytor.com>, Ingo Molnar <mingo@kernel.org>,
+ Juergen Gross <jgross@suse.com>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240322081616.3346181-1-xin@zytor.com>
+References: <20240322081616.3346181-1-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171105236391.10875.2779822144402584041.tip-bot2@tip-bot2>
+Message-ID: <171109677435.10875.4562573360831498341.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,64 +79,68 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     95bfb35269b2e85cff0dd2c957b2d42ebf95ae5f
-Gitweb:        https://git.kernel.org/tip/95bfb35269b2e85cff0dd2c957b2d42ebf95ae5f
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Sat, 16 Mar 2024 13:07:06 +01:00
+Commit-ID:     8f69cba096b5cfd09be2d06c15d08dbd4a58c9d7
+Gitweb:        https://git.kernel.org/tip/8f69cba096b5cfd09be2d06c15d08dbd4a58c9d7
+Author:        Xin Li (Intel) <xin@zytor.com>
+AuthorDate:    Fri, 22 Mar 2024 01:16:16 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 21 Mar 2024 21:13:56 +01:00
+CommitterDate: Fri, 22 Mar 2024 09:32:41 +01:00
 
-x86/cpu: Get rid of an unnecessary local variable in get_cpu_address_sizes()
+x86: Rename __{start,end}_init_task to __{start,end}_init_stack
 
-Drop 'vp_bits_from_cpuid' as it is not really needed.
+The stack of a task has been separated from the memory of a task_struct
+struture for a long time on x86, as a result __{start,end}_init_task no
+longer mark the start and end of the init_task structure, but its stack
+only.
 
-No functional changes.
+Rename __{start,end}_init_task to __{start,end}_init_stack.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Note other architectures are not affected because __{start,end}_init_task
+are used on x86 only.
+
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240316120706.4352-1-bp@alien8.de
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20240322081616.3346181-1-xin@zytor.com
 ---
- arch/x86/kernel/cpu/common.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ arch/x86/kernel/vmlinux.lds.S     | 2 +-
+ include/asm-generic/vmlinux.lds.h | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index ba8cf5e..9a34651 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1053,18 +1053,9 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
- void get_cpu_address_sizes(struct cpuinfo_x86 *c)
- {
- 	u32 eax, ebx, ecx, edx;
--	bool vp_bits_from_cpuid = true;
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 91085c3..4c04a36 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -173,7 +173,7 @@ SECTIONS
+ 		INIT_TASK_DATA(THREAD_SIZE)
  
- 	if (!cpu_has(c, X86_FEATURE_CPUID) ||
--	    (c->extended_cpuid_level < 0x80000008))
--		vp_bits_from_cpuid = false;
--
--	if (vp_bits_from_cpuid) {
--		cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
--
--		c->x86_virt_bits = (eax >> 8) & 0xff;
--		c->x86_phys_bits = eax & 0xff;
--	} else {
-+	    (c->extended_cpuid_level < 0x80000008)) {
- 		if (IS_ENABLED(CONFIG_X86_64)) {
- 			c->x86_clflush_size = 64;
- 			c->x86_phys_bits = 36;
-@@ -1078,7 +1069,13 @@ void get_cpu_address_sizes(struct cpuinfo_x86 *c)
- 			    cpu_has(c, X86_FEATURE_PSE36))
- 				c->x86_phys_bits = 36;
- 		}
-+	} else {
-+		cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
-+
-+		c->x86_virt_bits = (eax >> 8) & 0xff;
-+		c->x86_phys_bits = eax & 0xff;
- 	}
-+
- 	c->x86_cache_bits = c->x86_phys_bits;
- 	c->x86_cache_alignment = c->x86_clflush_size;
- }
+ 		/* equivalent to task_pt_regs(&init_task) */
+-		__top_init_kernel_stack = __end_init_task - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE;
++		__top_init_kernel_stack = __end_init_stack - TOP_OF_KERNEL_STACK_PADDING - PTREGS_SIZE;
+ 
+ #ifdef CONFIG_X86_32
+ 		/* 32 bit has nosave before _edata */
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index f7749d0..8708243 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -399,13 +399,13 @@
+ 
+ #define INIT_TASK_DATA(align)						\
+ 	. = ALIGN(align);						\
+-	__start_init_task = .;						\
++	__start_init_stack = .;						\
+ 	init_thread_union = .;						\
+ 	init_stack = .;							\
+ 	KEEP(*(.data..init_task))					\
+ 	KEEP(*(.data..init_thread_info))				\
+-	. = __start_init_task + THREAD_SIZE;				\
+-	__end_init_task = .;
++	. = __start_init_stack + THREAD_SIZE;				\
++	__end_init_stack = .;
+ 
+ #define JUMP_TABLE_DATA							\
+ 	. = ALIGN(8);							\
 
