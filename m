@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-803-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-805-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207288878CA
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Mar 2024 14:25:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62648878CE
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Mar 2024 14:25:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1F731F23FB4
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Mar 2024 13:25:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E87821C22897
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Mar 2024 13:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8F23C46B;
-	Sat, 23 Mar 2024 13:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0043EA95;
+	Sat, 23 Mar 2024 13:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SIJc9mK/";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uFgIIrji"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Eu4cQVQi";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/gmSf/lP"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE4E282FB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B0F376FC;
 	Sat, 23 Mar 2024 13:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711200300; cv=none; b=fAD8lRVZ+uIVxtYS8qWzgzG9boMRpof8pZmUoJt8dTj3k89RIEKoJtmTnAjWzlfw8mogthDKn3v9kLBtmg4CjtGTeyA8gdnd7QzXIav9HMO41ivXAH8WRLuouldkjizSYvnDF3RjCmNYcV4ERL+1ragTefO2Gjpu2UG7WEutWzY=
+	t=1711200301; cv=none; b=T425TXNwbrQ7LfF4sZyM8pLAwvXbvsHctY4KIDfpa3wtitCGgJYVeda30qijAMn/zR3KqypkGEBuJIEofXzuZVkkDe8ECvBBHelOKAjNPuqWN4z5p28ApcUg1GDe2YKV47m6KP6guYBrzwsdxL5txCNIyFC9EL8VUh7rRXE1roA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711200300; c=relaxed/simple;
-	bh=3+GVOAJtNE1iLOBBfL37PqCMAJwKNS2ockd4OEBRwco=;
+	s=arc-20240116; t=1711200301; c=relaxed/simple;
+	bh=giUpDOquo0wGUWB5aOiAEKwHycSE+id3YWMRG+VI7Lk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=RBpKkLNx+pw+2uDHrfHhnNUVILd+u8gxTqyu+TZ3fGvJgGEUMGz+4dxv0Oc2zyEvmFmCd8P/xdrZPxpWhYOip2iPHQa9CW5aj4V3AwM+3x+uZo4JeVnTWIcYR/0g+NHfe9NQOo1uc/dR7CUiIc1LbYQaY/RtvyfzwQE2196oYfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SIJc9mK/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uFgIIrji; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ZOyJAXSfRggr+wpmZkC4veYmer52rCUce1o+/ukmORWlAC7m0UEzrmycafgRX51NXke7nUwVnSfVvmDBEFQtt9T2JdI9laiKD47vgpfuwv3aBJ1Z0sgrJk5EVy91SXvtaOucceihqHFyMeCKRuQwkzEUhRjVNvKonaQasaalFHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Eu4cQVQi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/gmSf/lP; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 23 Mar 2024 13:24:49 -0000
+Date: Sat, 23 Mar 2024 13:24:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711200290;
+	s=2020; t=1711200291;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5M+UNP+f4UxcFh19ikQH+EYN59LPvEb9QbsNWbZnWmc=;
-	b=SIJc9mK/EK7fUZQsHGZvsO3xIy4EnFKRGeEqNn8Yxk/wsP++EkGmh+iCSuZGF5OTZsneUH
-	3/3UFQh4rtiHFQ1NlmumRGZGASzxuXUS+m7XAz/cMRSVkOgmygBlCbTyD1QDTMe1zVHbng
-	zThVAlfCrLBYepkRLHYEgj0jCeMsOuoDb25DkPsqD0rHQROlaotWMFYRlJuOXXVvivuy/P
-	5QKWak5xyVSHjJHfuNI1xOzw7WIBb31bvY88YYA95rvKGUXRaHyrI5/bGG+oTEQf6g6B9w
-	HZHjmLWDKglQnT9HAMYO90bY/PT7/unXatV6hEGu8cRlZdU+WkVVsK+SdSv5AQ==
+	bh=/Yknblz/LAqXJWfctfMltGiYL7kYAYN3zaEb0g8apq4=;
+	b=Eu4cQVQidMIDbrkyql4hSXatfIKj8zZ+7XJLa2r6eUuKuvK1Xa4GA1HevJpaMI5f3BQ5tv
+	jcb0EF1UUJB6gaSzLyukHlxaHbIpo81z/wQ9qmlP7gyfJcO86HiWW0ZKPMjdMfaPfDDUgS
+	r8Nw5m/XQbCGs/qi4CGd1RiP/eizbekA3FbhuNWbmvOUE3B4VOKjyIPLoPR7aKvDqGHKE1
+	3luC9uaJcuGsbxGRnMmVV5QjveBOJXEHr/oRDsWAIOSJLSfyJgq6k0UMIxVEeMZacYTkGO
+	bKeVH1RDN4ddmXfbl1Kj8l4AKkXL9N173wFxd/7cM90bhFq9PROtGhTy4l1q/w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711200290;
+	s=2020e; t=1711200291;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5M+UNP+f4UxcFh19ikQH+EYN59LPvEb9QbsNWbZnWmc=;
-	b=uFgIIrji09me/f2+l3v8Uu8coqPZhH5U0QErsvfoSN1FM/1MxXvTX8z9tEKCS1RbbYURwH
-	RCoZKDpLRfwRUNCQ==
+	bh=/Yknblz/LAqXJWfctfMltGiYL7kYAYN3zaEb0g8apq4=;
+	b=/gmSf/lP5LmaN9FOXYZjD8EQbb6ngg7cHYo9c9OaqPjUlkVc27erhR7ff13pZ9eYKm/qho
+	H5nVOPya/Wx+/1AQ==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/topology: Handle the !APIC case gracefully
-Cc: Guenter Roeck <linux@roeck-us.net>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240322185305.242709302@linutronix.de>
-References: <20240322185305.242709302@linutronix.de>
+Subject:
+ [tip: x86/urgent] x86/cpu: Ensure that CPU info updates are propagated on UP
+Cc: Guenter Roeck <linux@roeck-us.net>, Thomas Gleixner <tglx@linutronix.de>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240322185305.127642785@linutronix.de>
+References: <20240322185305.127642785@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171120028937.10875.10862174051522129373.tip-bot2@tip-bot2>
+Message-ID: <171120029074.10875.2828451664654889730.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,56 +82,146 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     5e25eb25dae9fa0700bbe42aff0e2f105fcd096a
-Gitweb:        https://git.kernel.org/tip/5e25eb25dae9fa0700bbe42aff0e2f105fcd096a
+Commit-ID:     c90399fbd74a0713d5972a6d931e4a9918621e88
+Gitweb:        https://git.kernel.org/tip/c90399fbd74a0713d5972a6d931e4a9918621e88
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 22 Mar 2024 19:56:38 +01:00
+AuthorDate:    Fri, 22 Mar 2024 19:56:35 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sat, 23 Mar 2024 12:35:56 +01:00
+CommitterDate: Sat, 23 Mar 2024 12:22:04 +01:00
 
-x86/topology: Handle the !APIC case gracefully
+x86/cpu: Ensure that CPU info updates are propagated on UP
 
-If there is no local APIC enumerated and registered then the topology
-bitmaps are empty. Therefore, topology_init_possible_cpus() will die with
-a division by zero exception.
+The boot sequence evaluates CPUID information twice:
 
-Prevent this by registering a fake APIC id to populate the topology
-bitmap. This also allows to use all topology query interfaces
-unconditionally. It does not affect the actual APIC code because either
-the local APIC address was not registered or no local APIC could be
-detected.
+  1) During early boot
 
-Fixes: f1f758a80516 ("x86/topology: Add a mechanism to track topology via APIC IDs")
+  2) When finalizing the early setup right before
+     mitigations are selected and alternatives are patched.
+
+In both cases the evaluation is stored in boot_cpu_data, but on UP the
+copying of boot_cpu_data to the per CPU info of the boot CPU happens
+between #1 and #2. So any update which happens in #2 is never propagated to
+the per CPU info instance.
+
+Consolidate the whole logic and copy boot_cpu_data right before applying
+alternatives as that's the point where boot_cpu_data is in it's final
+state and not supposed to change anymore.
+
+This also removes the voodoo mb() from smp_prepare_cpus_common() which
+had absolutely no purpose.
+
+Fixes: 71eb4893cfaf ("x86/percpu: Cure per CPU madness on UP")
 Reported-by: Guenter Roeck <linux@roeck-us.net>
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240322185305.242709302@linutronix.de
+Link: https://lore.kernel.org/r/20240322185305.127642785@linutronix.de
 ---
- arch/x86/kernel/cpu/topology.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/x86/kernel/cpu/common.c |  9 +++++++++
+ arch/x86/kernel/setup.c      | 10 ----------
+ arch/x86/kernel/smpboot.c    | 32 +++++---------------------------
+ 3 files changed, 14 insertions(+), 37 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index 3259b1d..aaca8d2 100644
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -415,6 +415,17 @@ void __init topology_init_possible_cpus(void)
- 	unsigned int total = assigned + disabled;
- 	u32 apicid, firstid;
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index ba8cf5e..5c1e6d6 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2307,6 +2307,8 @@ void arch_smt_update(void)
+ 
+ void __init arch_cpu_finalize_init(void)
+ {
++	struct cpuinfo_x86 *c = this_cpu_ptr(&cpu_info);
++
+ 	identify_boot_cpu();
+ 
+ 	select_idle_routine();
+@@ -2345,6 +2347,13 @@ void __init arch_cpu_finalize_init(void)
+ 	fpu__init_system();
+ 	fpu__init_cpu();
  
 +	/*
-+	 * If there was no APIC registered, then fake one so that the
-+	 * topology bitmap is populated. That ensures that the code below
-+	 * is valid and the various query interfaces can be used
-+	 * unconditionally. This does not affect the actual APIC code in
-+	 * any way because either the local APIC address has not been
-+	 * registered or the local APIC was disabled on the command line.
++	 * Ensure that access to the per CPU representation has the initial
++	 * boot CPU configuration.
 +	 */
-+	if (topo_info.boot_cpu_apic_id == BAD_APICID)
-+		topology_register_boot_apic(0);
++	*c = boot_cpu_data;
++	c->initialized = true;
 +
- 	if (!restrict_to_up()) {
- 		if (WARN_ON_ONCE(assigned > nr_cpu_ids)) {
- 			disabled += assigned - nr_cpu_ids;
+ 	alternative_instructions();
+ 
+ 	if (IS_ENABLED(CONFIG_X86_64)) {
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 3e1e96e..ef20650 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1206,16 +1206,6 @@ void __init i386_reserve_resources(void)
+ 
+ #endif /* CONFIG_X86_32 */
+ 
+-#ifndef CONFIG_SMP
+-void __init smp_prepare_boot_cpu(void)
+-{
+-	struct cpuinfo_x86 *c = &cpu_data(0);
+-
+-	*c = boot_cpu_data;
+-	c->initialized = true;
+-}
+-#endif
+-
+ static struct notifier_block kernel_offset_notifier = {
+ 	.notifier_call = dump_kernel_offset
+ };
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index fe355c8..76bb650 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -313,14 +313,6 @@ static void notrace start_secondary(void *unused)
+ 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
+ }
+ 
+-static void __init smp_store_boot_cpu_info(void)
+-{
+-	struct cpuinfo_x86 *c = &cpu_data(0);
+-
+-	*c = boot_cpu_data;
+-	c->initialized = true;
+-}
+-
+ /*
+  * The bootstrap kernel entry code has set these up. Save them for
+  * a given CPU
+@@ -1039,29 +1031,15 @@ static __init void disable_smp(void)
+ 	cpumask_set_cpu(0, topology_die_cpumask(0));
+ }
+ 
+-static void __init smp_cpu_index_default(void)
+-{
+-	int i;
+-	struct cpuinfo_x86 *c;
+-
+-	for_each_possible_cpu(i) {
+-		c = &cpu_data(i);
+-		/* mark all to hotplug */
+-		c->cpu_index = nr_cpu_ids;
+-	}
+-}
+-
+ void __init smp_prepare_cpus_common(void)
+ {
+ 	unsigned int i;
+ 
+-	smp_cpu_index_default();
+-
+-	/*
+-	 * Setup boot CPU information
+-	 */
+-	smp_store_boot_cpu_info(); /* Final full version of the data */
+-	mb();
++	/* Mark all except the boot CPU as hotpluggable */
++	for_each_possible_cpu(i) {
++		if (i)
++			per_cpu(cpu_info.cpu_index, i) = nr_cpu_ids;
++	}
+ 
+ 	for_each_possible_cpu(i) {
+ 		zalloc_cpumask_var(&per_cpu(cpu_sibling_map, i), GFP_KERNEL);
 
