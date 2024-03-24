@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-804-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-806-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A3F8878CB
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Mar 2024 14:25:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22DE887B81
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Mar 2024 04:07:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9EC31F23DE6
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Mar 2024 13:25:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D82C1C20BEA
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Mar 2024 03:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01E03D3BB;
-	Sat, 23 Mar 2024 13:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087001A38C0;
+	Sun, 24 Mar 2024 03:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RTOJHLuu";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v/n3MP7h"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3bK5VAlO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OB8GVwkw"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC2E29D11;
-	Sat, 23 Mar 2024 13:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A1817C8;
+	Sun, 24 Mar 2024 03:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711200300; cv=none; b=A56kR6ZY8hCdXJDczAljffjzyG1citPIta0eAqD8X2iBRg0nOX5QSiaRKPDkCrKIuHB606Q1tqYerRfDSDb9wtYp6nvHgZ5CvNEbjf1JZGIXPRu+a5ph0kusIvJfXJM7pGuzY4tjU0hV9KO/2vghMZV+XODzltJB5F7RBf5tIC4=
+	t=1711249642; cv=none; b=Tj5zpqUgA8uhMlb9YLbyrmNwNGxiTasTQqlwBAvYdqGm6wbsRiA95GBvPvpmG9aQLHC3kRvSXozzq9c/dvoabcVL8U1ir4Um50yiJbCUWPjpFsoGuYT4WencgLWQT6gojxbKGFrtJdiHvc2/yTrzOyGzAqWVGCKbtApromQr4OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711200300; c=relaxed/simple;
-	bh=Bo5oazztxt1fXowPqKZC6ZwoMifMXM2vCUlLYYsmv0o=;
+	s=arc-20240116; t=1711249642; c=relaxed/simple;
+	bh=8SqvdGYhJHvygOI7smYCwc3G+VPv6sH4BF+CBTZjXrw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=T0GMAsz9Ool/w7eEfETqBYAqdXU11YeJDbcN3i6xH3HZE8H6ND8sQpVVrsSpQUFJU8VSNTJxRvzoakeRZJZThL7RdOW2FXcMMwirVAafViXRP1y0ZyYKTVC6EXhzhsq6ZLxDhXJXSMaiXGmyP7DmCZJjJyGVdSJutg1Jh0/KTsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RTOJHLuu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v/n3MP7h; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=GENtqvPF7/k6l/yzGhcQ9y1dQN5uXZ8yIg0Oov+RBnx5F8BZbQthXm0lXTuizC8isAO9HpRr036b9t+bVwaD2aEUem4/pp4LaxyOpJBl1C6ak/jo0lEbSaYU39IljJRSOKl155cJ9uaCJJqFWTHDRZ24u9+W/BZZMI9FJdkZiKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3bK5VAlO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OB8GVwkw; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 23 Mar 2024 13:24:50 -0000
+Date: Sun, 24 Mar 2024 03:07:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711200290;
+	s=2020; t=1711249639;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P/D2a0K7Ztlqs8E+hSrYbqRDaG+XQYY3xqWmRcrimNg=;
-	b=RTOJHLuuN1SoEUmoHUSS+nrm1We2jo5x/7jITnLbs73z0VIk6Ajfvp4BVBYswN27Q4TlUD
-	F8KR1J1v6V+TmNNHWJnrP3Xn9i+hfKbJyoj0sqAgLPzixE1nFeQdnacYCj8zKJzGEf6P15
-	6BWGf4rt4wZoeWbMdcN4F5VICohUIUtUX2wPLBPaJlhZFCw/r0d3/+WrxgVvfnxPRhN+hO
-	OWvAM04Mh5Z5F9l08BIjBpnCy65mXoo6mHtLM5+qlb5BNXZdxKSZHg6pYyd/Yg1GvOAFzz
-	sQh7LMJsYjeN44N8AvEBWfOYf70aKqb2rJb3GkaL0TUsjwd7AkTWyO+oFvJjAw==
+	bh=j7BXDn66DR8wcemUgRzv2AAibAH17t9P9tPvKM4Ia6E=;
+	b=3bK5VAlOjluwX4Pc7rgvD9tor2Ta/U5t5lymekGba0Ju4Qp/TY3frgdzy+1KAPSnehBH+m
+	nj4JJfDaSyrSs4ZwTSMg3BzL9Ygciip5ThUahkNPlldoAJ2FZiGsV8mC8bCNMO1JoCG0iu
+	I0pH4amB6rN1rvaTcPiTCB2m6uZFJWNnluiTUssEuaOUunvF6hlZ6dEKCgncO0txnjsswS
+	OeoMW/yCc/Gvjsr5RCmPv2ZDEwlEzvYe+sEk1Bob44zIhtMg5u4Cr6iggVBbVs/DTiYb73
+	sfLxfP9vXsCrL/LV8upShQrR/Dx7kGATSOHluokxmyjzuN2Wczhm/KSd9PliwQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711200290;
+	s=2020e; t=1711249639;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P/D2a0K7Ztlqs8E+hSrYbqRDaG+XQYY3xqWmRcrimNg=;
-	b=v/n3MP7hGCeAgbhGO/ENEVLvZEh7Q6+QQFFry3ReMKxQE6zifKELKl7pcCddsFkuZgfM0p
-	XWymFZWSN83OAWCg==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=j7BXDn66DR8wcemUgRzv2AAibAH17t9P9tPvKM4Ia6E=;
+	b=OB8GVwkwUNxpaDnFpEmjTspGKapSyy2EN9Cj8wJ2Lvmp2VnrXtd8zQEBTLmm4HgY2fk0r4
+	DPi+/xcQ5++gGHDQ==
+From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/topology: Don't evaluate logical IDs during early boot
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Guenter Roeck <linux@roeck-us.net>,
+Subject: [tip: x86/urgent] Documentation/x86: Document that resctrl bandwidth
+ control units are MiB
+Cc: Tony Luck <tony.luck@intel.com>, Ingo Molnar <mingo@kernel.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240322185305.186943142@linutronix.de>
-References: <20240322185305.186943142@linutronix.de>
+In-Reply-To: <20240322182016.196544-1-tony.luck@intel.com>
+References: <20240322182016.196544-1-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171120029008.10875.1770752524543764937.tip-bot2@tip-bot2>
+Message-ID: <171124963792.10875.12035829539103388690.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,72 +81,66 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7af541cee1e0eb48c6eb439bc6309175339fa96f
-Gitweb:        https://git.kernel.org/tip/7af541cee1e0eb48c6eb439bc6309175339fa96f
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 22 Mar 2024 19:56:36 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sat, 23 Mar 2024 12:28:06 +01:00
+Commit-ID:     a8ed59a3a8de2648e69dd5936f5771ac4c92d085
+Gitweb:        https://git.kernel.org/tip/a8ed59a3a8de2648e69dd5936f5771ac4c92d085
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Fri, 22 Mar 2024 11:20:15 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 24 Mar 2024 03:58:43 +01:00
 
-x86/topology: Don't evaluate logical IDs during early boot
+Documentation/x86: Document that resctrl bandwidth control units are MiB
 
-The local APICs have not yet been enumerated so the logical ID evaluation
-from the topology bitmaps does not work and would return an error code.
+The memory bandwidth software controller uses 2^20 units rather than
+10^6. See mbm_bw_count() which computes bandwidth using the "SZ_1M"
+Linux define for 0x00100000.
 
-Skip the evaluation during the early boot CPUID evaluation and only apply
-it on the final run.
+Update the documentation to use MiB when describing this feature.
+It's too late to fix the mount option "mba_MBps" as that is now an
+established user interface.
 
-Fixes: 380414be78bf ("x86/cpu/topology: Use topology logical mapping mechanism")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240322185305.186943142@linutronix.de
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240322182016.196544-1-tony.luck@intel.com
 ---
- arch/x86/kernel/cpu/topology_common.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ Documentation/arch/x86/resctrl.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/topology_common.c b/arch/x86/kernel/cpu/topology_common.c
-index a50ae8d..9a6069e 100644
---- a/arch/x86/kernel/cpu/topology_common.c
-+++ b/arch/x86/kernel/cpu/topology_common.c
-@@ -140,7 +140,7 @@ static void parse_topology(struct topo_scan *tscan, bool early)
- 	}
- }
+diff --git a/Documentation/arch/x86/resctrl.rst b/Documentation/arch/x86/resctrl.rst
+index a6279df..3712d81 100644
+--- a/Documentation/arch/x86/resctrl.rst
++++ b/Documentation/arch/x86/resctrl.rst
+@@ -45,7 +45,7 @@ mount options are:
+ 	Enable code/data prioritization in L2 cache allocations.
+ "mba_MBps":
+ 	Enable the MBA Software Controller(mba_sc) to specify MBA
+-	bandwidth in MBps
++	bandwidth in MiBps
+ "debug":
+ 	Make debug files accessible. Available debug files are annotated with
+ 	"Available only with debug option".
+@@ -526,7 +526,7 @@ threads start using more cores in an rdtgroup, the actual bandwidth may
+ increase or vary although user specified bandwidth percentage is same.
  
--static void topo_set_ids(struct topo_scan *tscan)
-+static void topo_set_ids(struct topo_scan *tscan, bool early)
- {
- 	struct cpuinfo_x86 *c = tscan->c;
- 	u32 apicid = c->topo.apicid;
-@@ -148,8 +148,10 @@ static void topo_set_ids(struct topo_scan *tscan)
- 	c->topo.pkg_id = topo_shift_apicid(apicid, TOPO_PKG_DOMAIN);
- 	c->topo.die_id = topo_shift_apicid(apicid, TOPO_DIE_DOMAIN);
+ In order to mitigate this and make the interface more user friendly,
+-resctrl added support for specifying the bandwidth in MBps as well.  The
++resctrl added support for specifying the bandwidth in MiBps as well.  The
+ kernel underneath would use a software feedback mechanism or a "Software
+ Controller(mba_sc)" which reads the actual bandwidth using MBM counters
+ and adjust the memory bandwidth percentages to ensure::
+@@ -573,13 +573,13 @@ Memory b/w domain is L3 cache.
  
--	c->topo.logical_pkg_id = topology_get_logical_id(apicid, TOPO_PKG_DOMAIN);
--	c->topo.logical_die_id = topology_get_logical_id(apicid, TOPO_DIE_DOMAIN);
-+	if (!early) {
-+		c->topo.logical_pkg_id = topology_get_logical_id(apicid, TOPO_PKG_DOMAIN);
-+		c->topo.logical_die_id = topology_get_logical_id(apicid, TOPO_DIE_DOMAIN);
-+	}
+ 	MB:<cache_id0>=bandwidth0;<cache_id1>=bandwidth1;...
  
- 	/* Package relative core ID */
- 	c->topo.core_id = (apicid & topo_domain_mask(TOPO_PKG_DOMAIN)) >>
-@@ -187,7 +189,7 @@ void cpu_parse_topology(struct cpuinfo_x86 *c)
- 		       tscan.dom_shifts[dom], x86_topo_system.dom_shifts[dom]);
- 	}
+-Memory bandwidth Allocation specified in MBps
++Memory bandwidth Allocation specified in MiBps
+ ---------------------------------------------
  
--	topo_set_ids(&tscan);
-+	topo_set_ids(&tscan, false);
- }
+ Memory bandwidth domain is L3 cache.
+ ::
  
- void __init cpu_init_topology(struct cpuinfo_x86 *c)
-@@ -208,7 +210,7 @@ void __init cpu_init_topology(struct cpuinfo_x86 *c)
- 		x86_topo_system.dom_size[dom] = 1U << sft;
- 	}
+-	MB:<cache_id0>=bw_MBps0;<cache_id1>=bw_MBps1;...
++	MB:<cache_id0>=bw_MiBps0;<cache_id1>=bw_MiBps1;...
  
--	topo_set_ids(&tscan);
-+	topo_set_ids(&tscan, true);
- 
- 	/*
- 	 * AMD systems have Nodes per package which cannot be mapped to
+ Slow Memory Bandwidth Allocation (SMBA)
+ ---------------------------------------
 
