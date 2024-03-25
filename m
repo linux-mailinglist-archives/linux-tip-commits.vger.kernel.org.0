@@ -1,79 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-815-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-816-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6435F88A466
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 15:25:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60ABA88A47C
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 15:29:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E079D2E2993
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 14:25:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18BB22E1BE3
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 14:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C351B883A;
-	Mon, 25 Mar 2024 11:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7636D13B2A4;
+	Mon, 25 Mar 2024 11:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tPV9YT9u";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GUv6mWS+"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vLvxdGqf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zG8S5VJY"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA6F1369BA;
-	Mon, 25 Mar 2024 10:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197EE148FFB;
+	Mon, 25 Mar 2024 10:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711362566; cv=none; b=AWSIWpvIdRwtK556y87Mj5ZmCQH/E2NxXIvqbmo54MwrbKM4X752/6fSiH9a2M6HUzagOArLCIh0eoepUiCB5sVZAx6e1MbCYgWKSf55+b66mEg2Gz/QMMs0u3e3Ydors5flgQ6DxFeqEwqRy1aWujH26vvO7sxXTFHwRtmh0PA=
+	t=1711363112; cv=none; b=qh9tWqes42YWkqNAAI2q9WLqpbU0c/pnXOi5oBJV99DYTxwYK1GvFlMe01uSafATktwPxCoYTI/gMLmhi1s/k1nCBc6gr5OPkOsZsw9VsXlGTNcXXD8uPXMjbGh65+SC+QQXoHhqpl/stSEVvSjgGlfK25FUuNvIiVRg1oie6LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711362566; c=relaxed/simple;
-	bh=exsZ/RlFrlpl7+FM8gvJIdkjzrnMeECp/lur/esR3Yg=;
+	s=arc-20240116; t=1711363112; c=relaxed/simple;
+	bh=VIFtQK0XN/rUgOMv3CmvkztzHLGtAOCm/Nglv4NTnkU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=hWGae+NM0uUfo7+CqiNX04foStwRHWLs+/vOli5drhgma0H5i1KEtbA8X0JZkSAhWsUz94PTw9/Woby/kSEfxlsmI/9RPVxvVgtHFQT5W/gc87ZX9NnOObBbMTGIz54WTma2wF2smf5EPc+Zm2JzFfNSP6Wvd/G0+Mboi6fCTw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tPV9YT9u; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GUv6mWS+; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=gwKhW/ZF/8PtnlzyQB4zIv7HRl2g5dTyxXuTbGiSpKE3wcWlHgKYwUZ2zO09g19VlXQ4rFQ5tx6qu5/FDWXSBoNtYvkhESoWXgNE/+LidY/b2cCw9Ka/Yv/8D07KrRWUjMg2iP8EGElw6kgehj1z06LiSSa55p/yxRR5eh2gXOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vLvxdGqf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zG8S5VJY; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 25 Mar 2024 10:29:22 -0000
+Date: Mon, 25 Mar 2024 10:38:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711362562;
+	s=2020; t=1711363109;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pvU+bUjj4JAzflrn+dxjxcxBeNkheAqboGKDVwCtN9M=;
-	b=tPV9YT9u9uxDUlsOS2cFncAUqbtKxgrvfUh0zGfK2LwUMI8cbBITFYDXof0ttP0pLYPKks
-	Zjsh0joCyH5+JuFZfwbAElo6dPjeV0ZFZEcIOvnSxaIXk95YcXXOuaednUzqI4izTP80Rw
-	Jedujfgbc+psgE80iR3TSh0cse18YhlRX5Vj6Csk5SEIvhJWBJCAhH4/HOh0CJhfZrW6VX
-	qEiN++wUymJcF8SraUHUbPff2wr/1Ugqm29UfqajkjXGejl6Gcdp/gZrtjdFSkFMy/NBoe
-	IC/uG4PcZ0cp/JpOUgISQmSg6EdzsguLUPG63qyHthD4/JCTlo0uuVbfam+Z5w==
+	bh=FfLHiy8Np0Ojm/mylOsW6CnKsAh2WH7Zx2l6XpB1aDI=;
+	b=vLvxdGqflF3qTt2mNXtpGBjw0107DeBO6HzVN1mqUwX5MLv/gT+XZGTDFPgaaIzyc6ZxRM
+	Qn9xZAh78mN/QO67w8w3uUKUry+GTsx7Y0QYdSB6o0IMbSrBKGaxXBn8uwW6w7++lHXWZg
+	gIds1zsn7cz1q2OaL6Ptl3d9wBmSdL2ZbRBOg+He7hA+onZJPHHtg26Y0PUlXEb5lsX00W
+	rLqjtKdUvfjr6zuHgA/M0bHJCScsqi/Xj063Y+2Ku82bZ69OZm0NjocwNT1EjfwtFSdR/D
+	/E4t3xHB2OpjFOwPFpLYxvHhjc8RObgZNIdhVJ9ALOuo6NXuMqydlHhP6XHE9Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711362562;
+	s=2020e; t=1711363109;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pvU+bUjj4JAzflrn+dxjxcxBeNkheAqboGKDVwCtN9M=;
-	b=GUv6mWS+B6+KKmayIKK+DUsUaXZwwQAgYnne91TEBP758a5tkX9dZyFMuSsbcYEtkcL40/
-	jYVbyAjl/0al2pAg==
-From: "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
+	bh=FfLHiy8Np0Ojm/mylOsW6CnKsAh2WH7Zx2l6XpB1aDI=;
+	b=zG8S5VJYwkr3im2ltwzDyDoMRNY19sCdjcoWZf2EpjNloCCwYqQdk9jPzOGbBUGQ4z8JlI
+	3COrmfQpElP9XzBA==
+From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/urgent] x86/cpufeatures: Add new word for scattered features
-Cc: Sandipan Das <sandipan.das@amd.com>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C8380d2a0da469a1f0ad75b8954a79fb689599ff6=2E17110?=
- =?utf-8?q?91584=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3C8380d2a0da469a1f0ad75b8954a79fb689599ff6=2E171109?=
- =?utf-8?q?1584=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
+Subject: [tip: x86/urgent] Documentation/x86: Fix title underline length
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Ingo Molnar <mingo@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240325121750.265d655c@canb.auug.org.au>
+References: <20240325121750.265d655c@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171136256210.10875.7016666652992736521.tip-bot2@tip-bot2>
+Message-ID: <171136310847.10875.2241882307085232437.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,93 +78,40 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7f274e609f3d5f45c22b1dd59053f6764458b492
-Gitweb:        https://git.kernel.org/tip/7f274e609f3d5f45c22b1dd59053f6764458b492
-Author:        Sandipan Das <sandipan.das@amd.com>
-AuthorDate:    Mon, 25 Mar 2024 13:01:44 +05:30
+Commit-ID:     91491e5fb09624116950f9f2e1767a42e1da7868
+Gitweb:        https://git.kernel.org/tip/91491e5fb09624116950f9f2e1767a42e1da7868
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Mon, 25 Mar 2024 11:29:16 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 25 Mar 2024 11:16:54 +01:00
+CommitterDate: Mon, 25 Mar 2024 11:29:16 +01:00
 
-x86/cpufeatures: Add new word for scattered features
+Documentation/x86: Fix title underline length
 
-Add a new word for scattered features because all free bits among the
-existing Linux-defined auxiliary flags have been exhausted.
+Fix:
 
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+  Documentation/arch/x86/resctrl.rst:577: WARNING: Title underline too short.
+
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/8380d2a0da469a1f0ad75b8954a79fb689599ff6.1711091584.git.sandipan.das@amd.com
+Cc: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/20240325121750.265d655c@canb.auug.org.au
 ---
- arch/x86/include/asm/cpufeature.h        | 6 ++++--
- arch/x86/include/asm/cpufeatures.h       | 2 +-
- arch/x86/include/asm/disabled-features.h | 3 ++-
- arch/x86/include/asm/required-features.h | 3 ++-
- 4 files changed, 9 insertions(+), 5 deletions(-)
+ Documentation/arch/x86/resctrl.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/cpufeature.h b/arch/x86/include/asm/cpufeature.h
-index a127369..42157dd 100644
---- a/arch/x86/include/asm/cpufeature.h
-+++ b/arch/x86/include/asm/cpufeature.h
-@@ -91,8 +91,9 @@ extern const char * const x86_bug_flags[NBUGINTS*32];
- 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 18, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 19, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 20, feature_bit) ||	\
-+	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 21, feature_bit) ||	\
- 	   REQUIRED_MASK_CHECK					  ||	\
--	   BUILD_BUG_ON_ZERO(NCAPINTS != 21))
-+	   BUILD_BUG_ON_ZERO(NCAPINTS != 22))
+diff --git a/Documentation/arch/x86/resctrl.rst b/Documentation/arch/x86/resctrl.rst
+index 3712d81..6c24558 100644
+--- a/Documentation/arch/x86/resctrl.rst
++++ b/Documentation/arch/x86/resctrl.rst
+@@ -574,7 +574,7 @@ Memory b/w domain is L3 cache.
+ 	MB:<cache_id0>=bandwidth0;<cache_id1>=bandwidth1;...
  
- #define DISABLED_MASK_BIT_SET(feature_bit)				\
- 	 ( CHECK_BIT_IN_MASK_WORD(DISABLED_MASK,  0, feature_bit) ||	\
-@@ -116,8 +117,9 @@ extern const char * const x86_bug_flags[NBUGINTS*32];
- 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 18, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 19, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 20, feature_bit) ||	\
-+	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 21, feature_bit) ||	\
- 	   DISABLED_MASK_CHECK					  ||	\
--	   BUILD_BUG_ON_ZERO(NCAPINTS != 21))
-+	   BUILD_BUG_ON_ZERO(NCAPINTS != 22))
+ Memory bandwidth Allocation specified in MiBps
+----------------------------------------------
++----------------------------------------------
  
- #define cpu_has(c, bit)							\
- 	(__builtin_constant_p(bit) && REQUIRED_MASK_BIT_SET(bit) ? 1 :	\
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index f0337f7..4d850a7 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -13,7 +13,7 @@
- /*
-  * Defines x86 CPU feature bits
-  */
--#define NCAPINTS			21	   /* N 32-bit words worth of info */
-+#define NCAPINTS			22	   /* N 32-bit words worth of info */
- #define NBUGINTS			2	   /* N 32-bit bug flags */
- 
- /*
-diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
-index da4054f..c492bdc 100644
---- a/arch/x86/include/asm/disabled-features.h
-+++ b/arch/x86/include/asm/disabled-features.h
-@@ -155,6 +155,7 @@
- #define DISABLED_MASK18	(DISABLE_IBT)
- #define DISABLED_MASK19	(DISABLE_SEV_SNP)
- #define DISABLED_MASK20	0
--#define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
-+#define DISABLED_MASK21	0
-+#define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
- 
- #endif /* _ASM_X86_DISABLED_FEATURES_H */
-diff --git a/arch/x86/include/asm/required-features.h b/arch/x86/include/asm/required-features.h
-index 7ba1726..e9187dd 100644
---- a/arch/x86/include/asm/required-features.h
-+++ b/arch/x86/include/asm/required-features.h
-@@ -99,6 +99,7 @@
- #define REQUIRED_MASK18	0
- #define REQUIRED_MASK19	0
- #define REQUIRED_MASK20	0
--#define REQUIRED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
-+#define REQUIRED_MASK21	0
-+#define REQUIRED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
- 
- #endif /* _ASM_X86_REQUIRED_FEATURES_H */
+ Memory bandwidth domain is L3 cache.
+ ::
 
