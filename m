@@ -1,80 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-818-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-821-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C7C88A4C1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 15:38:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FED88A553
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 15:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7346D1F3CA1D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 14:38:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 662B01C35EED
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 14:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F8E13BC20;
-	Mon, 25 Mar 2024 11:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AF9152DE3;
+	Mon, 25 Mar 2024 11:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ufjKNn5a";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zXRMY86j"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aGIjHI5p";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+249sJcc"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D4F13F450;
-	Mon, 25 Mar 2024 11:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD771B676C;
+	Mon, 25 Mar 2024 11:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711365163; cv=none; b=mVYUx60RKaO7UITmNt9mPeXLmYy6OXinyOYotDsQIPXRQvoAmDTEDkYp96Agy5LMS++kJJ/xG3Zv6/Oad7VZxTKpuNmrrbV4C9sEISAq3nclWkBttfT13ilnw76Z45tUnleBypaaGu0vlenGW0t8TXKmcVHpwZiPXc62Pao1Wws=
+	t=1711366102; cv=none; b=ZpP8XESxTGoJbqdggqkLY3HRwZsHZkCcXAoHqAk8x2K0sjTLknazAgmt6AjJAK1ZF2KnoW6aTIvzkkYvIhdsKijRQaFili+MLYkuVRQjHjcKjxoCLCsUoc34HghTZMa2Ac6PoAoNnccRu4geKK1z3IsEVZXyA3bwNnbFZcDWPnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711365163; c=relaxed/simple;
-	bh=/nLbfNN0ipKFWk82Fr2MEYp8hRp7jP/GzVTL6jLAI2c=;
+	s=arc-20240116; t=1711366102; c=relaxed/simple;
+	bh=KNDp3jRDFDklfJlUKQQts+H70dIwd0ih7z/WwhczkXg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MTc6PKFldv6jOgK8iUDpfimEQwNkJsCmTzyKjYM5W2OemrYbuVr0LSEppozG7tK+R9tItHILYc5OUN0ICHFIoj2Cn3YNZZJSRuIzbNPa6lFIivUMiJvUV44aY7HkP24wPXdZ1oOgFDp88FcrY2ynU9/cJEsQnMpqV4CRRq1BNKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ufjKNn5a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zXRMY86j; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=K5P2ozS8sPFhzD7aqSbKbfSuVxsVef6BTOjbvtsiuWKodI9KhRW3NXQveqsoFIiqDBW4K2Ft5GVg2/lLq7esGEJ9nmQKjsvfiPTPOVDpyxxouCfNKgh4mGhhGnS4Xb8SdUgMgUlvAyvJCoUnvVH/ZL0+QC6QOv/wKXXcx9SJyJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aGIjHI5p; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+249sJcc; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 25 Mar 2024 11:12:37 -0000
+Date: Mon, 25 Mar 2024 11:28:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711365158;
+	s=2020; t=1711366099;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vRmVAtwJTzTwGTVTKkZMZKpyrGK3ZS86YzTVXgqpH5w=;
-	b=ufjKNn5aUQ/mTt/Che6qPAWzE9Y4We9NjtZeQl5ZHYr8fup/EVEGR33So/E/AAc0dZOght
-	+NsTBoi7KODfBLb4aDDk7r9Ol60pfaJJtuG5sZoYzOyhNZzJjsrWnOChcIYpdlTlSt5WX5
-	eCWMt5yNG+XsoLPexfH2wQDmk+ZvK2HwlEJ6UleosDsL3NoAyZJDzWMoFuzot8g/0GF+EY
-	JYVSbx3EmDWOwr5AXNrhZFqjtCAQrSCTMfNwHuaEMX86TmnwXgZLI/Z2SNPs4/lkN3UA/B
-	hYtZonH9KzYfI4ETdQ4+vqY7VF4MT6MyPz2DdlQkYlJ1VdJMsFziP21UiFo+4g==
+	bh=b0foAp6Jh3HG07zsbyZU5KG4EcvhR89BySV+yv087Pc=;
+	b=aGIjHI5p1MDcpzC9ZS30bWhZjhSFeIfCaVMDygBPVIbE6vHiuaDM3qMFO2nClQh8u3nIIc
+	fRpIs/wvTjCeMjboNJ57bBw8APER1GnqLX9LW8/hLgV9Fp3yMqGIYoHLOvjdiaOOvYWjga
+	fKOX5OCAaU64UlZr0MbBz/x40MKjcIp3xEDdvpR/4AoaGUfQ+7u0oUTXQfKwI0mGMTDtCm
+	ng4PXZRK5rRF084v8h5IUouJRNZmDFlJqyEPHEQWgXmkJ7/tbtduSwulPRSLPc/v76CevG
+	ptIQwxVdsYYqmt/KfEHR/QnEjZQe5jOE81Atzzjzo8fYpMXsUhgHHoVsJHF9Lw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711365158;
+	s=2020e; t=1711366099;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vRmVAtwJTzTwGTVTKkZMZKpyrGK3ZS86YzTVXgqpH5w=;
-	b=zXRMY86jspY49RJ+YT0zrEm68OWdowijsutkVjOszvPFfzuY1RDWz3sABfZgt/EuQTXl1i
-	dY70fZBqg0iIE1CQ==
-From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+	bh=b0foAp6Jh3HG07zsbyZU5KG4EcvhR89BySV+yv087Pc=;
+	b=+249sJccnOPbWT7s8XbRfWrYvpV2a33ZzCMe2xC0DcCqjlOJ8ygi58E0Ij38ef/4Tvo8W4
+	2Y0zWaWanK1TpXDA==
+From: "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/percpu] x86/percpu: Do not use this_cpu_read_stable_8() for
- 32-bit targets
-Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Andy Lutomirski <luto@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
+Subject:
+ [tip: sched/core] sched/topology: Remove root_domain::max_cpu_capacity
+Cc: Qais Yousef <qyousef@layalina.io>, Ingo Molnar <mingo@kernel.org>,
+ Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240324212014.310189-1-ubizjak@gmail.com>
-References: <20240324212014.310189-1-ubizjak@gmail.com>
+In-Reply-To: <20240324004552.999936-4-qyousef@layalina.io>
+References: <20240324004552.999936-4-qyousef@layalina.io>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171136515796.10875.14770508158283664685.tip-bot2@tip-bot2>
+Message-ID: <171136609892.10875.3581762872501656625.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,83 +80,74 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/percpu branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     b90169b42a6f49ff2fe2e4d4ed0bbcf17fb8f1bf
-Gitweb:        https://git.kernel.org/tip/b90169b42a6f49ff2fe2e4d4ed0bbcf17fb8f1bf
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Sun, 24 Mar 2024 22:19:45 +01:00
+Commit-ID:     fa427e8e53d8db15090af7e952a55870dc2a453f
+Gitweb:        https://git.kernel.org/tip/fa427e8e53d8db15090af7e952a55870dc2a453f
+Author:        Qais Yousef <qyousef@layalina.io>
+AuthorDate:    Sun, 24 Mar 2024 00:45:51 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 25 Mar 2024 12:03:45 +01:00
+CommitterDate: Mon, 25 Mar 2024 12:09:56 +01:00
 
-x86/percpu: Do not use this_cpu_read_stable_8() for 32-bit targets
+sched/topology: Remove root_domain::max_cpu_capacity
 
-this_cpu_read_stable() macro uses __pcpu_size_call_return()
-that unconditionally calls this_cpu_read_stable_8() also for
-32-bit targets. This usage is ivalid as it will result in the
-generation of 64-bit MOVQ instruction on 32-bit targets via
-percpu_stable_op() macro.
+The value is no longer used as we now keep track of max_allowed_capacity
+for each task instead.
 
-Since there is no generic support for this_cpu_read_stable_8() for
-32-bit targets, the patch defines this_cpu_read_stable_8() to
-BUILD_BUG() when CONFIG_X86_64 is not defined. This way, we are
-sure that this_cpu_read_stable_8() won't actually be used for
-32-bit targets, but it is still defined to prevent build failure.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Qais Yousef <qyousef@layalina.io>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20240324212014.310189-1-ubizjak@gmail.com
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20240324004552.999936-4-qyousef@layalina.io
 ---
- arch/x86/include/asm/percpu.h | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ kernel/sched/sched.h    |  2 --
+ kernel/sched/topology.c | 13 ++-----------
+ 2 files changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
-index f6ddbaa..1f6404e 100644
---- a/arch/x86/include/asm/percpu.h
-+++ b/arch/x86/include/asm/percpu.h
-@@ -423,10 +423,6 @@ do {									\
-  * actually per-thread variables implemented as per-CPU variables and
-  * thus stable for the duration of the respective task.
-  */
--#define this_cpu_read_stable_1(pcp)	percpu_stable_op(1, "mov", pcp)
--#define this_cpu_read_stable_2(pcp)	percpu_stable_op(2, "mov", pcp)
--#define this_cpu_read_stable_4(pcp)	percpu_stable_op(4, "mov", pcp)
--#define this_cpu_read_stable_8(pcp)	percpu_stable_op(8, "mov", pcp)
- #define this_cpu_read_stable(pcp)	__pcpu_size_call_return(this_cpu_read_stable_, pcp)
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index f77c00d..4f9e952 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -917,8 +917,6 @@ struct root_domain {
+ 	cpumask_var_t		rto_mask;
+ 	struct cpupri		cpupri;
  
- #ifdef CONFIG_USE_X86_SEG_SUPPORT
-@@ -495,6 +491,10 @@ do {									\
- #define this_cpu_read_const(pcp)	({ BUILD_BUG(); (typeof(pcp))0; })
- #endif /* CONFIG_USE_X86_SEG_SUPPORT */
+-	unsigned long		max_cpu_capacity;
+-
+ 	/*
+ 	 * NULL-terminated list of performance domains intersecting with the
+ 	 * CPUs of the rd. Protected by RCU.
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 44ed3d0..63aecd2 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -2514,16 +2514,9 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
+ 	/* Attach the domains */
+ 	rcu_read_lock();
+ 	for_each_cpu(i, cpu_map) {
+-		unsigned long capacity;
+-
+ 		rq = cpu_rq(i);
+ 		sd = *per_cpu_ptr(d.sd, i);
  
-+#define this_cpu_read_stable_1(pcp)	percpu_stable_op(1, "mov", pcp)
-+#define this_cpu_read_stable_2(pcp)	percpu_stable_op(2, "mov", pcp)
-+#define this_cpu_read_stable_4(pcp)	percpu_stable_op(4, "mov", pcp)
-+
- #define raw_cpu_add_1(pcp, val)		percpu_add_op(1, , (pcp), val)
- #define raw_cpu_add_2(pcp, val)		percpu_add_op(2, , (pcp), val)
- #define raw_cpu_add_4(pcp, val)		percpu_add_op(4, , (pcp), val)
-@@ -546,6 +546,8 @@ do {									\
-  * 32 bit must fall back to generic operations.
-  */
- #ifdef CONFIG_X86_64
-+#define this_cpu_read_stable_8(pcp)	percpu_stable_op(8, "mov", pcp)
-+
- #define raw_cpu_add_8(pcp, val)			percpu_add_op(8, , (pcp), val)
- #define raw_cpu_and_8(pcp, val)			percpu_to_op(8, , "and", (pcp), val)
- #define raw_cpu_or_8(pcp, val)			percpu_to_op(8, , "or", (pcp), val)
-@@ -561,6 +563,9 @@ do {									\
- #define this_cpu_xchg_8(pcp, nval)		this_percpu_xchg_op(pcp, nval)
- #define this_cpu_cmpxchg_8(pcp, oval, nval)	percpu_cmpxchg_op(8, volatile, pcp, oval, nval)
- #define this_cpu_try_cmpxchg_8(pcp, ovalp, nval)	percpu_try_cmpxchg_op(8, volatile, pcp, ovalp, nval)
-+#else
-+/* There is no generic 64 bit read stable operation for 32 bit targets. */
-+#define this_cpu_read_stable_8(pcp)    ({ BUILD_BUG(); (typeof(pcp))0; })
- #endif
+-		capacity = arch_scale_cpu_capacity(i);
+-		/* Use READ_ONCE()/WRITE_ONCE() to avoid load/store tearing: */
+-		if (capacity > READ_ONCE(d.rd->max_cpu_capacity))
+-			WRITE_ONCE(d.rd->max_cpu_capacity, capacity);
+-
+ 		cpu_attach_domain(sd, d.rd, i);
  
- static __always_inline bool x86_this_cpu_constant_test_bit(unsigned int nr,
+ 		if (lowest_flag_domain(i, SD_CLUSTER))
+@@ -2537,10 +2530,8 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
+ 	if (has_cluster)
+ 		static_branch_inc_cpuslocked(&sched_cluster_active);
+ 
+-	if (rq && sched_debug_verbose) {
+-		pr_info("root domain span: %*pbl (max cpu_capacity = %lu)\n",
+-			cpumask_pr_args(cpu_map), rq->rd->max_cpu_capacity);
+-	}
++	if (rq && sched_debug_verbose)
++		pr_info("root domain span: %*pbl\n", cpumask_pr_args(cpu_map));
+ 
+ 	ret = 0;
+ error:
 
