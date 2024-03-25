@@ -1,77 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-825-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-826-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E430688A935
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 17:28:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E2188ABF9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 18:40:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FE4D1C3ACAB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 16:28:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3EB91C3E773
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 17:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5948515990C;
-	Mon, 25 Mar 2024 14:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030F41327FE;
+	Mon, 25 Mar 2024 16:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v8O4fvRw";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8O8P4Q3P"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w3YQm72s";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZEK9NZ1D"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09AD1598F6;
-	Mon, 25 Mar 2024 14:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEFB73191;
+	Mon, 25 Mar 2024 16:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711376944; cv=none; b=sv5NWB1KFTpRxzu6xQWJvfRmJNjLztaPkFb4gUEUsKpy5Xy9hxsN6z8wBalt7qI/cFdmr00xETViIFWNlUUf3w16bxNgBM9JCcJ7teVeGU5qc5BGWph5CvcsRsCmlVyTSs3X7j4iSk2Od9QKCUJtdkws9pjLQq/abCcZspTdsaQ=
+	t=1711385209; cv=none; b=HqTFbugxhrJvf3H/qKwW6sKhNZWXZ5GW5/zq+ISWxN3ho0k0VoafqjbG6aW617zYhw7jR3W83DodwH/Qi11z6FeUDcaDNaAM+goh6jjzxUx7Ust2Ori+RNIaav6GFvlk8+zbdavOcVI4fwD7zSttEoIJdgvg50e9+Zc9cIwwlco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711376944; c=relaxed/simple;
-	bh=UxKX4UhVrOAnBC4MDQX+O6HB2KiBGEMlXPbZ39WIHiM=;
+	s=arc-20240116; t=1711385209; c=relaxed/simple;
+	bh=QAv4BR/jdL59PUXbsTS1P4f8I0AkQZMIvuLv4hNp+Zc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lBLygNgtHdhhIPNCgODUZgduVvdzuISkSvsoV9FpRhY1DMJJZPpIyNxGQkgtQcDejsG3YkWWTuWCqKjjMCMLKNHasEz5DJFm0+ZnsJyJXhccI5aD3ENlmVjtP9VAgCkmX3tntQGCtFgVRmPOrTmIyTVFWUmu0TGxOPLA0G/uLnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v8O4fvRw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8O8P4Q3P; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=FQliUzFY1RCUV+b7YayZh8jwMta/aNWi9ApM9sZrAZkQ5NpCmg2mAJDKmxqIq5th5xhDUeCXR4NbBbr7jx+ngY+cbxjPnWUzjdQe+NOL7o7kUHVJXlG2sjUcUKQHggSMzJ3eRTzoYGOHMHRZRKVUdUi3gwM6dBNcOGeRjkskjc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w3YQm72s; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZEK9NZ1D; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 25 Mar 2024 14:28:59 -0000
+Date: Mon, 25 Mar 2024 16:46:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711376940;
+	s=2020; t=1711385206;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yHsuH3Kbcge5Opsyc0uGjuVaFJ98ERBpPpFpXxaQpwU=;
-	b=v8O4fvRwF66mUjH/c1q/Q7RIp4Bv5QR/GnKVEpSGGhQA588uJaXfHfvmS25fW5J21RME3o
-	LiV6nQAvyVZXzghaCGuTspen7pm5WCkTGEegc7ZN+hXExCPrdlP2LY58gpoYkaPE8JmQrT
-	//sBjpe+c5j193/v98LvUO3XkyLpHTE9g7i5IyPLZ/YM27sTdCLXnA9z9E+2KUZ1jVIUZy
-	gfcV/9mDKDYh4+m87WQxUzzJGl8RrgxXOaCauRNLbgl4P25JIm1MTOWm+n7cpAX5xLjXgF
-	uqUi4boCu7SSIG06vqxvILpiOTQrCicp6/1kzJRu0qTngZTirL54Ow7vF9c6rw==
+	bh=8oGyPYB12iPe/M3pX5cTbA0bbTqJtN0I3MIfdCpjHi8=;
+	b=w3YQm72s46l6gjReatH4igTZQ9vB1uCDIUB0dfOR3CqGUCw/zVEjbG6sjxeBpobiCjdsg3
+	dWQoxmboroQsyfqKNoNn3olXFYJtevfDwIUIo/GrhxG4gEnd9NxYBOBZx8KFs2t2BXdvjr
+	9fTFYIeJI4VyWb8LYmuiGPGwxN3GrrsHwJJZ2mvOPtdm3aB3nvBSCXI+WdAfj+qqnzFcby
+	Oxk80gd18+eHxIS4dugOnyP1c/QOKEEPivCiQ+DhIXkiswbYVtNE8R53X8Fma+4HOf0eRh
+	87jAubPn7fOGdKmDITwb8xEFu+TMcWQO9PPgxsJSuuW17+8p6K/BpLoTJ7KNGg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711376940;
+	s=2020e; t=1711385206;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yHsuH3Kbcge5Opsyc0uGjuVaFJ98ERBpPpFpXxaQpwU=;
-	b=8O8P4Q3PovKbzM/57OUqj/KRxsk193HxrR8VOm8oH2X7F4a3RAB+k5MVrEDNk2xnthHjpO
-	lI4kHSBpjjzeN2AQ==
-From: "tip-bot2 for Yuntao Wang" <tip-bot2@linutronix.de>
+	bh=8oGyPYB12iPe/M3pX5cTbA0bbTqJtN0I3MIfdCpjHi8=;
+	b=ZEK9NZ1D55DcDfnrGYLrh7WqkSkTnKvv/m4tV79RRV6oSsspczNvtktDcaeNz7cqprxt8G
+	3B0OjmAW7uAKGGAw==
+From: "tip-bot2 for Keguang Zhang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: x86/cleanups] x86/head: Simplify relative include path to xen-head.S
-Cc: Yuntao Wang <ytcoode@gmail.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231231121904.24622-1-ytcoode@gmail.com>
-References: <20231231121904.24622-1-ytcoode@gmail.com>
+ [tip: irq/core] irqchip: Remove redundant irq_chip::name initialization
+Cc: Keguang Zhang <keguang.zhang@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240311115344.72567-1-keguang.zhang@gmail.com>
+References: <20240311115344.72567-1-keguang.zhang@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171137693961.10875.2329693946022715442.tip-bot2@tip-bot2>
+Message-ID: <171138520530.10875.4664771902622983668.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,55 +81,54 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     c3262d3d19d2d42705334e40d9c731c2a5df9eb5
-Gitweb:        https://git.kernel.org/tip/c3262d3d19d2d42705334e40d9c731c2a5df9eb5
-Author:        Yuntao Wang <ytcoode@gmail.com>
-AuthorDate:    Sun, 31 Dec 2023 20:19:04 +08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 25 Mar 2024 15:24:10 +01:00
+Commit-ID:     7b6f0f278d02de5a8f49202465c6427b56c97545
+Gitweb:        https://git.kernel.org/tip/7b6f0f278d02de5a8f49202465c6427b56c97545
+Author:        Keguang Zhang <keguang.zhang@gmail.com>
+AuthorDate:    Mon, 11 Mar 2024 19:53:44 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 25 Mar 2024 17:38:29 +01:00
 
-x86/head: Simplify relative include path to xen-head.S
+irqchip: Remove redundant irq_chip::name initialization
 
-Fix the relative path specification in the include directives adding
-xen-head.S to the kernel's head_*.S files since they both have
-"arch/x86/" as prefix.
+Since commit 021a8ca2ba23 ("genirq/generic-chip: Fix the irq_chip name for
+/proc/interrupts"), the chip name of all chip types are set to the same
+name by irq_init_generic_chip() now. So the initialization to the same
+irq_chip name are no longer needed. Drop them.
 
-  [ bp: Rewrite commit message. ]
+Signed-off-by: Keguang Zhang <keguang.zhang@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://lore.kernel.org/r/20240311115344.72567-1-keguang.zhang@gmail.com
 
-Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231231121904.24622-1-ytcoode@gmail.com
 ---
- arch/x86/kernel/head_32.S | 2 +-
- arch/x86/kernel/head_64.S | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-sunxi-nmi.c | 1 -
+ drivers/irqchip/irq-tb10x.c     | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/arch/x86/kernel/head_32.S b/arch/x86/kernel/head_32.S
-index b50f364..78a6570 100644
---- a/arch/x86/kernel/head_32.S
-+++ b/arch/x86/kernel/head_32.S
-@@ -500,7 +500,7 @@ __INITRODATA
- int_msg:
- 	.asciz "Unknown interrupt or fault at: %p %p %p\n"
+diff --git a/drivers/irqchip/irq-sunxi-nmi.c b/drivers/irqchip/irq-sunxi-nmi.c
+index e760b12..bb92fd8 100644
+--- a/drivers/irqchip/irq-sunxi-nmi.c
++++ b/drivers/irqchip/irq-sunxi-nmi.c
+@@ -192,7 +192,6 @@ static int __init sunxi_sc_nmi_irq_init(struct device_node *node,
+ 	gc->chip_types[0].regs.type		= reg_offs->ctrl;
  
--#include "../../x86/xen/xen-head.S"
-+#include "../xen/xen-head.S"
+ 	gc->chip_types[1].type			= IRQ_TYPE_EDGE_BOTH;
+-	gc->chip_types[1].chip.name		= gc->chip_types[0].chip.name;
+ 	gc->chip_types[1].chip.irq_ack		= irq_gc_ack_set_bit;
+ 	gc->chip_types[1].chip.irq_mask		= irq_gc_mask_clr_bit;
+ 	gc->chip_types[1].chip.irq_unmask	= irq_gc_mask_set_bit;
+diff --git a/drivers/irqchip/irq-tb10x.c b/drivers/irqchip/irq-tb10x.c
+index 6805863..d59bfbe 100644
+--- a/drivers/irqchip/irq-tb10x.c
++++ b/drivers/irqchip/irq-tb10x.c
+@@ -150,7 +150,6 @@ static int __init of_tb10x_init_irq(struct device_node *ictl,
+ 	gc->chip_types[0].regs.mask          = AB_IRQCTL_INT_ENABLE;
  
- /*
-  * The IDT and GDT 'descriptors' are a strange 48-bit object
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index d8198fb..2f8a594 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -720,7 +720,7 @@ SYM_DATA(smpboot_control,		.long 0)
- SYM_DATA(phys_base, .quad 0x0)
- EXPORT_SYMBOL(phys_base)
- 
--#include "../../x86/xen/xen-head.S"
-+#include "../xen/xen-head.S"
- 
- 	__PAGE_ALIGNED_BSS
- SYM_DATA_START_PAGE_ALIGNED(empty_zero_page)
+ 	gc->chip_types[1].type               = IRQ_TYPE_EDGE_BOTH;
+-	gc->chip_types[1].chip.name          = gc->chip_types[0].chip.name;
+ 	gc->chip_types[1].chip.irq_ack       = irq_gc_ack_set_bit;
+ 	gc->chip_types[1].chip.irq_mask      = irq_gc_mask_clr_bit;
+ 	gc->chip_types[1].chip.irq_unmask    = irq_gc_mask_set_bit;
 
