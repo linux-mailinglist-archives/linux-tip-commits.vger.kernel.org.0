@@ -1,72 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-817-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-818-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E6988A4B1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 15:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C7C88A4C1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 15:38:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCDAD1F3EA96
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 14:36:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7346D1F3CA1D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 14:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289D51B7CC5;
-	Mon, 25 Mar 2024 11:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F8E13BC20;
+	Mon, 25 Mar 2024 11:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="utTqlRIX";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PU+dUrX3"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ufjKNn5a";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zXRMY86j"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612321B7CD9;
-	Mon, 25 Mar 2024 11:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D4F13F450;
+	Mon, 25 Mar 2024 11:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711364617; cv=none; b=uiv4qjvwQTgUF5viGmF8et2W6b8RV/zUHZ+cTbcnEnApQdSvk7qvKaoGoZ7W5t9bo/qSkdwXIG9Lzp6J8v2SxYTzGkt8nszJoeHyu9VnV69gh8LmK+TjLbTLFY7/ZH1AD9jdCcikRnm4d1Ju6VZ/NRz7Ry3ropPN6DLr6CYp0zk=
+	t=1711365163; cv=none; b=mVYUx60RKaO7UITmNt9mPeXLmYy6OXinyOYotDsQIPXRQvoAmDTEDkYp96Agy5LMS++kJJ/xG3Zv6/Oad7VZxTKpuNmrrbV4C9sEISAq3nclWkBttfT13ilnw76Z45tUnleBypaaGu0vlenGW0t8TXKmcVHpwZiPXc62Pao1Wws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711364617; c=relaxed/simple;
-	bh=Eska4gaH7kO1mPbE3Fmc4Y9tclS/elERBgLO1sr4MYA=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=nU8/rYk6jNeyTyyhjuZJc/rXo+RcFZE8Kq0o+7RvU7XCCo0jTxJbv7yBS7B/PlbVlzN4ufe4BlAMNVwFPsfG+DlN3FoGGNHvCs1sEvkecKh2YWK1K49p3sGQhjELvDGD+4vKfgp8uc2V7TZuL6bXz1JkcC+t++1txDqCLl9wr/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=utTqlRIX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PU+dUrX3; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1711365163; c=relaxed/simple;
+	bh=/nLbfNN0ipKFWk82Fr2MEYp8hRp7jP/GzVTL6jLAI2c=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=MTc6PKFldv6jOgK8iUDpfimEQwNkJsCmTzyKjYM5W2OemrYbuVr0LSEppozG7tK+R9tItHILYc5OUN0ICHFIoj2Cn3YNZZJSRuIzbNPa6lFIivUMiJvUV44aY7HkP24wPXdZ1oOgFDp88FcrY2ynU9/cJEsQnMpqV4CRRq1BNKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ufjKNn5a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zXRMY86j; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 25 Mar 2024 11:03:33 -0000
+Date: Mon, 25 Mar 2024 11:12:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711364614;
+	s=2020; t=1711365158;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=avsc0Gio3l+bltvTrTbtMSukfJximpMb/2ZTG9DBt70=;
-	b=utTqlRIXEPHZxjkZ3YpURtaytf0cTNdBSa2MmTIUAciUKYcoTrxZRaflVZ1y4O1mzaYT9P
-	3Ns6vF4THDq9drshQuSE583YeQMqmowfde/XHqEWq3tR81SB+CdLeAm0ierDCPS9AnWIGE
-	hY/whtm3Hpw1NKkNrYOWQEhjIC9BjnPKD9BFPVQyFoEzV2LKruGfjgmkpoov5EMR30TC8P
-	73GoFzQ3An708wsUD9VmVyT/BJzjT7n+R3Yibj0Sj9fjZaZD1XUSuKYhW8RIqLd75gwLTd
-	eqb24gk0dvpobqTUUeyTi6h1t3m6mK+Dj6NieqR9XcZnO4HZNZbnO4lv1PnDKg==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vRmVAtwJTzTwGTVTKkZMZKpyrGK3ZS86YzTVXgqpH5w=;
+	b=ufjKNn5aUQ/mTt/Che6qPAWzE9Y4We9NjtZeQl5ZHYr8fup/EVEGR33So/E/AAc0dZOght
+	+NsTBoi7KODfBLb4aDDk7r9Ol60pfaJJtuG5sZoYzOyhNZzJjsrWnOChcIYpdlTlSt5WX5
+	eCWMt5yNG+XsoLPexfH2wQDmk+ZvK2HwlEJ6UleosDsL3NoAyZJDzWMoFuzot8g/0GF+EY
+	JYVSbx3EmDWOwr5AXNrhZFqjtCAQrSCTMfNwHuaEMX86TmnwXgZLI/Z2SNPs4/lkN3UA/B
+	hYtZonH9KzYfI4ETdQ4+vqY7VF4MT6MyPz2DdlQkYlJ1VdJMsFziP21UiFo+4g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711364614;
+	s=2020e; t=1711365158;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=avsc0Gio3l+bltvTrTbtMSukfJximpMb/2ZTG9DBt70=;
-	b=PU+dUrX3N2SOgNmOZAr28PIRULIT34Sn1R1sl7QguwroulxykUDCaYPsF690/bNQhQ2cRo
-	d5KuwwBoaFbAk3BQ==
-From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vRmVAtwJTzTwGTVTKkZMZKpyrGK3ZS86YzTVXgqpH5w=;
+	b=zXRMY86jspY49RJ+YT0zrEm68OWdowijsutkVjOszvPFfzuY1RDWz3sABfZgt/EuQTXl1i
+	dY70fZBqg0iIE1CQ==
+From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] Revert "x86/mm/ident_map: Use gbpages only where
- full GB page should be mapped."
-Cc: Ingo Molnar <mingo@kernel.org>,  <stable@vger.kernel.org>,
- Russ Anderson <rja@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Subject: [tip: x86/percpu] x86/percpu: Do not use this_cpu_read_stable_8() for
+ 32-bit targets
+Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Andy Lutomirski <luto@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
+In-Reply-To: <20240324212014.310189-1-ubizjak@gmail.com>
+References: <20240324212014.310189-1-ubizjak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171136461366.10875.14490329545340375710.tip-bot2@tip-bot2>
+Message-ID: <171136515796.10875.14770508158283664685.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -74,81 +82,83 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/percpu branch of tip:
 
-Commit-ID:     c567f2948f57bdc03ed03403ae0234085f376b7d
-Gitweb:        https://git.kernel.org/tip/c567f2948f57bdc03ed03403ae0234085f376b7d
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Mon, 25 Mar 2024 11:47:51 +01:00
+Commit-ID:     b90169b42a6f49ff2fe2e4d4ed0bbcf17fb8f1bf
+Gitweb:        https://git.kernel.org/tip/b90169b42a6f49ff2fe2e4d4ed0bbcf17fb8f1bf
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Sun, 24 Mar 2024 22:19:45 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 25 Mar 2024 11:54:35 +01:00
+CommitterDate: Mon, 25 Mar 2024 12:03:45 +01:00
 
-Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
+x86/percpu: Do not use this_cpu_read_stable_8() for 32-bit targets
 
-This reverts commit d794734c9bbfe22f86686dc2909c25f5ffe1a572.
+this_cpu_read_stable() macro uses __pcpu_size_call_return()
+that unconditionally calls this_cpu_read_stable_8() also for
+32-bit targets. This usage is ivalid as it will result in the
+generation of 64-bit MOVQ instruction on 32-bit targets via
+percpu_stable_op() macro.
 
-While the original change tries to fix a bug, it also unintentionally broke
-existing systems, see the regressions reported at:
+Since there is no generic support for this_cpu_read_stable_8() for
+32-bit targets, the patch defines this_cpu_read_stable_8() to
+BUILD_BUG() when CONFIG_X86_64 is not defined. This way, we are
+sure that this_cpu_read_stable_8() won't actually be used for
+32-bit targets, but it is still defined to prevent build failure.
 
-  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-
-Since d794734c9bbf was also marked for -stable, let's back it out before
-causing more damage.
-
-Note that due to another upstream change the revert was not 100% automatic:
-
-  0a845e0f6348 mm/treewide: replace pud_large() with pud_leaf()
-
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Russ Anderson <rja@hpe.com>
-Cc: Steve Wahl <steve.wahl@hpe.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20240324212014.310189-1-ubizjak@gmail.com
 ---
- arch/x86/mm/ident_map.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ arch/x86/include/asm/percpu.h | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index a204a33..968d700 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,31 +26,18 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
--		bool use_gbpage;
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index f6ddbaa..1f6404e 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -423,10 +423,6 @@ do {									\
+  * actually per-thread variables implemented as per-CPU variables and
+  * thus stable for the duration of the respective task.
+  */
+-#define this_cpu_read_stable_1(pcp)	percpu_stable_op(1, "mov", pcp)
+-#define this_cpu_read_stable_2(pcp)	percpu_stable_op(2, "mov", pcp)
+-#define this_cpu_read_stable_4(pcp)	percpu_stable_op(4, "mov", pcp)
+-#define this_cpu_read_stable_8(pcp)	percpu_stable_op(8, "mov", pcp)
+ #define this_cpu_read_stable(pcp)	__pcpu_size_call_return(this_cpu_read_stable_, pcp)
  
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
+ #ifdef CONFIG_USE_X86_SEG_SUPPORT
+@@ -495,6 +491,10 @@ do {									\
+ #define this_cpu_read_const(pcp)	({ BUILD_BUG(); (typeof(pcp))0; })
+ #endif /* CONFIG_USE_X86_SEG_SUPPORT */
  
--		/* if this is already a gbpage, this portion is already mapped */
--		if (pud_leaf(*pud))
--			continue;
--
--		/* Is using a gbpage allowed? */
--		use_gbpage = info->direct_gbpages;
--
--		/* Don't use gbpage if it maps more than the requested region. */
--		/* at the begining: */
--		use_gbpage &= ((addr & ~PUD_MASK) == 0);
--		/* ... or at the end: */
--		use_gbpage &= ((next & ~PUD_MASK) == 0);
--
--		/* Never overwrite existing mappings */
--		use_gbpage &= !pud_present(*pud);
--
--		if (use_gbpage) {
-+		if (info->direct_gbpages) {
- 			pud_t pudval;
- 
-+			if (pud_present(*pud))
-+				continue;
++#define this_cpu_read_stable_1(pcp)	percpu_stable_op(1, "mov", pcp)
++#define this_cpu_read_stable_2(pcp)	percpu_stable_op(2, "mov", pcp)
++#define this_cpu_read_stable_4(pcp)	percpu_stable_op(4, "mov", pcp)
 +
-+			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
+ #define raw_cpu_add_1(pcp, val)		percpu_add_op(1, , (pcp), val)
+ #define raw_cpu_add_2(pcp, val)		percpu_add_op(2, , (pcp), val)
+ #define raw_cpu_add_4(pcp, val)		percpu_add_op(4, , (pcp), val)
+@@ -546,6 +546,8 @@ do {									\
+  * 32 bit must fall back to generic operations.
+  */
+ #ifdef CONFIG_X86_64
++#define this_cpu_read_stable_8(pcp)	percpu_stable_op(8, "mov", pcp)
++
+ #define raw_cpu_add_8(pcp, val)			percpu_add_op(8, , (pcp), val)
+ #define raw_cpu_and_8(pcp, val)			percpu_to_op(8, , "and", (pcp), val)
+ #define raw_cpu_or_8(pcp, val)			percpu_to_op(8, , "or", (pcp), val)
+@@ -561,6 +563,9 @@ do {									\
+ #define this_cpu_xchg_8(pcp, nval)		this_percpu_xchg_op(pcp, nval)
+ #define this_cpu_cmpxchg_8(pcp, oval, nval)	percpu_cmpxchg_op(8, volatile, pcp, oval, nval)
+ #define this_cpu_try_cmpxchg_8(pcp, ovalp, nval)	percpu_try_cmpxchg_op(8, volatile, pcp, ovalp, nval)
++#else
++/* There is no generic 64 bit read stable operation for 32 bit targets. */
++#define this_cpu_read_stable_8(pcp)    ({ BUILD_BUG(); (typeof(pcp))0; })
+ #endif
+ 
+ static __always_inline bool x86_this_cpu_constant_test_bit(unsigned int nr,
 
