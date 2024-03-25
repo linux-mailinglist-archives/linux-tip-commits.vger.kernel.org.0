@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-821-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-820-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FED88A553
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 15:54:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBC588A552
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 15:54:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 662B01C35EED
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 14:54:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8000A1F385E1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 14:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AF9152DE3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD0F14D285;
 	Mon, 25 Mar 2024 11:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aGIjHI5p";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+249sJcc"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mLuHo5F2";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LiFxAY04"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD771B676C;
-	Mon, 25 Mar 2024 11:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12661B676B;
+	Mon, 25 Mar 2024 11:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711366102; cv=none; b=ZpP8XESxTGoJbqdggqkLY3HRwZsHZkCcXAoHqAk8x2K0sjTLknazAgmt6AjJAK1ZF2KnoW6aTIvzkkYvIhdsKijRQaFili+MLYkuVRQjHjcKjxoCLCsUoc34HghTZMa2Ac6PoAoNnccRu4geKK1z3IsEVZXyA3bwNnbFZcDWPnw=
+	t=1711366102; cv=none; b=kQfEzWVUMBCXpPdQibn2XaseYIj7H2I1xEODC+s7GBY+t4cRCV8RBoKj53gc49a93uy9Bbs+LKTAaDUzVShDQLUsZ5J/BLxNH6i+h1iOmLgC+0jbvVGBa2lOLHxzvExQ1HHWiAwwfbSprXjIT63HHuU270EQq8V0S0CLOepIfPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1711366102; c=relaxed/simple;
-	bh=KNDp3jRDFDklfJlUKQQts+H70dIwd0ih7z/WwhczkXg=;
+	bh=1bNu3c6oIAIlNu7eQib8QnEcV00JzsilukkdtOSM7g8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=K5P2ozS8sPFhzD7aqSbKbfSuVxsVef6BTOjbvtsiuWKodI9KhRW3NXQveqsoFIiqDBW4K2Ft5GVg2/lLq7esGEJ9nmQKjsvfiPTPOVDpyxxouCfNKgh4mGhhGnS4Xb8SdUgMgUlvAyvJCoUnvVH/ZL0+QC6QOv/wKXXcx9SJyJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aGIjHI5p; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+249sJcc; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=U+GWRzdu99469T3FLc+3vuEUZbchWt2oXyEYVfqZjuyLw27QdflJoG6aukqt52nKIy4n2lfcRqkyWJaAhs2ym53g9TPhVrKRHUtv38cLWHYxRylvPcQ9Q7s7yDIBLvSze2SemjzHWxMoux7iLz30J6x/Gcf6qTj3wwCdk45RU8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mLuHo5F2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LiFxAY04; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Mon, 25 Mar 2024 11:28:18 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=b0foAp6Jh3HG07zsbyZU5KG4EcvhR89BySV+yv087Pc=;
-	b=aGIjHI5p1MDcpzC9ZS30bWhZjhSFeIfCaVMDygBPVIbE6vHiuaDM3qMFO2nClQh8u3nIIc
-	fRpIs/wvTjCeMjboNJ57bBw8APER1GnqLX9LW8/hLgV9Fp3yMqGIYoHLOvjdiaOOvYWjga
-	fKOX5OCAaU64UlZr0MbBz/x40MKjcIp3xEDdvpR/4AoaGUfQ+7u0oUTXQfKwI0mGMTDtCm
-	ng4PXZRK5rRF084v8h5IUouJRNZmDFlJqyEPHEQWgXmkJ7/tbtduSwulPRSLPc/v76CevG
-	ptIQwxVdsYYqmt/KfEHR/QnEjZQe5jOE81Atzzjzo8fYpMXsUhgHHoVsJHF9Lw==
+	bh=CgVnApfrQVq/09F+KSgASJwhO/v/PO0sz1yF2n+2/fE=;
+	b=mLuHo5F2zqkyvjsxCDsC01VlKJVIRB4WDiV8PaupYTfvy4qN+v2iAhjacsm7sikZjsnZba
+	qg3OIQBFZ8nUEgVnazHrcWYyLrWdgdIMYdL+yfOxN2NmythYrjR6JqADzQq5CMtcCCjaXh
+	KBD9ZKCwXqMX7MzLdcq06e2gvvEUhCvV9UPK3pus8RM5AiJbwb6r+S45/nEkFPPbPpSbFG
+	ayJbiIME1UB/2S9/XlSjIMSwNn9r4gcPLFfpbeiN8UD8ukxHrCnXpk9jGOMpbc9QO0iT1a
+	b93D8HnLhrKaRPTVTx+uJQ0+5IN+RTNqLl1EnGh9vHBnLJ7dgw3TsuS9iPxsqw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1711366099;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,27 +52,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=b0foAp6Jh3HG07zsbyZU5KG4EcvhR89BySV+yv087Pc=;
-	b=+249sJccnOPbWT7s8XbRfWrYvpV2a33ZzCMe2xC0DcCqjlOJ8ygi58E0Ij38ef/4Tvo8W4
-	2Y0zWaWanK1TpXDA==
+	bh=CgVnApfrQVq/09F+KSgASJwhO/v/PO0sz1yF2n+2/fE=;
+	b=LiFxAY04g4NZQXPqHcD3CJZRPil0RvZqVn/B0tf4gkmLe9Y1JEq+ufZpRfkzPsZE/n4yZt
+	rFiQIpuKJrohMcCQ==
 From: "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: sched/core] sched/topology: Remove root_domain::max_cpu_capacity
+Subject: [tip: sched/core] sched/fair: Don't double balance_interval for
+ migrate_misfit
 Cc: Qais Yousef <qyousef@layalina.io>, Ingo Molnar <mingo@kernel.org>,
  Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240324004552.999936-4-qyousef@layalina.io>
-References: <20240324004552.999936-4-qyousef@layalina.io>
+In-Reply-To: <20240324004552.999936-5-qyousef@layalina.io>
+References: <20240324004552.999936-5-qyousef@layalina.io>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171136609892.10875.3581762872501656625.tip-bot2@tip-bot2>
+Message-ID: <171136609815.10875.4873637574056728644.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,72 +82,63 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     fa427e8e53d8db15090af7e952a55870dc2a453f
-Gitweb:        https://git.kernel.org/tip/fa427e8e53d8db15090af7e952a55870dc2a453f
+Commit-ID:     58eeb2d79b542c678c46e245dba6b66936368a99
+Gitweb:        https://git.kernel.org/tip/58eeb2d79b542c678c46e245dba6b66936368a99
 Author:        Qais Yousef <qyousef@layalina.io>
-AuthorDate:    Sun, 24 Mar 2024 00:45:51 
+AuthorDate:    Sun, 24 Mar 2024 00:45:52 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 25 Mar 2024 12:09:56 +01:00
+CommitterDate: Mon, 25 Mar 2024 12:09:57 +01:00
 
-sched/topology: Remove root_domain::max_cpu_capacity
+sched/fair: Don't double balance_interval for migrate_misfit
 
-The value is no longer used as we now keep track of max_allowed_capacity
-for each task instead.
+It is not necessarily an indication of the system being busy and
+requires a backoff of the load balancer activities. But pushing it high
+could mean generally delaying other misfit activities or other type of
+imbalances.
+
+Also don't pollute nr_balance_failed because of misfit failures. The
+value is used for enabling cache hot migration and in migrate_util/load
+types. None of which should be impacted (skewed) by misfit failures.
 
 Signed-off-by: Qais Yousef <qyousef@layalina.io>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20240324004552.999936-4-qyousef@layalina.io
+Link: https://lore.kernel.org/r/20240324004552.999936-5-qyousef@layalina.io
 ---
- kernel/sched/sched.h    |  2 --
- kernel/sched/topology.c | 13 ++-----------
- 2 files changed, 2 insertions(+), 13 deletions(-)
+ kernel/sched/fair.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index f77c00d..4f9e952 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -917,8 +917,6 @@ struct root_domain {
- 	cpumask_var_t		rto_mask;
- 	struct cpupri		cpupri;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index c47c4f2..dbf4f1c 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -11449,8 +11449,12 @@ more_balance:
+ 		 * We do not want newidle balance, which can be very
+ 		 * frequent, pollute the failure counter causing
+ 		 * excessive cache_hot migrations and active balances.
++		 *
++		 * Similarly for migration_misfit which is not related to
++		 * load/util migration, don't pollute nr_balance_failed.
+ 		 */
+-		if (idle != CPU_NEWLY_IDLE)
++		if (idle != CPU_NEWLY_IDLE &&
++		    env.migration_type != migrate_misfit)
+ 			sd->nr_balance_failed++;
  
--	unsigned long		max_cpu_capacity;
--
- 	/*
- 	 * NULL-terminated list of performance domains intersecting with the
- 	 * CPUs of the rd. Protected by RCU.
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 44ed3d0..63aecd2 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -2514,16 +2514,9 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
- 	/* Attach the domains */
- 	rcu_read_lock();
- 	for_each_cpu(i, cpu_map) {
--		unsigned long capacity;
--
- 		rq = cpu_rq(i);
- 		sd = *per_cpu_ptr(d.sd, i);
+ 		if (need_active_balance(&env)) {
+@@ -11533,8 +11537,13 @@ out_one_pinned:
+ 	 * repeatedly reach this code, which would lead to balance_interval
+ 	 * skyrocketing in a short amount of time. Skip the balance_interval
+ 	 * increase logic to avoid that.
++	 *
++	 * Similarly misfit migration which is not necessarily an indication of
++	 * the system being busy and requires lb to backoff to let it settle
++	 * down.
+ 	 */
+-	if (env.idle == CPU_NEWLY_IDLE)
++	if (env.idle == CPU_NEWLY_IDLE ||
++	    env.migration_type == migrate_misfit)
+ 		goto out;
  
--		capacity = arch_scale_cpu_capacity(i);
--		/* Use READ_ONCE()/WRITE_ONCE() to avoid load/store tearing: */
--		if (capacity > READ_ONCE(d.rd->max_cpu_capacity))
--			WRITE_ONCE(d.rd->max_cpu_capacity, capacity);
--
- 		cpu_attach_domain(sd, d.rd, i);
- 
- 		if (lowest_flag_domain(i, SD_CLUSTER))
-@@ -2537,10 +2530,8 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
- 	if (has_cluster)
- 		static_branch_inc_cpuslocked(&sched_cluster_active);
- 
--	if (rq && sched_debug_verbose) {
--		pr_info("root domain span: %*pbl (max cpu_capacity = %lu)\n",
--			cpumask_pr_args(cpu_map), rq->rd->max_cpu_capacity);
--	}
-+	if (rq && sched_debug_verbose)
-+		pr_info("root domain span: %*pbl\n", cpumask_pr_args(cpu_map));
- 
- 	ret = 0;
- error:
+ 	/* tune up the balancing interval */
 
