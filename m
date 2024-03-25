@@ -1,76 +1,72 @@
-Return-Path: <linux-tip-commits+bounces-816-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-817-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60ABA88A47C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 15:29:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E6988A4B1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 15:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18BB22E1BE3
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 14:29:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCDAD1F3EA96
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 14:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7636D13B2A4;
-	Mon, 25 Mar 2024 11:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289D51B7CC5;
+	Mon, 25 Mar 2024 11:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vLvxdGqf";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zG8S5VJY"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="utTqlRIX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PU+dUrX3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197EE148FFB;
-	Mon, 25 Mar 2024 10:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612321B7CD9;
+	Mon, 25 Mar 2024 11:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711363112; cv=none; b=qh9tWqes42YWkqNAAI2q9WLqpbU0c/pnXOi5oBJV99DYTxwYK1GvFlMe01uSafATktwPxCoYTI/gMLmhi1s/k1nCBc6gr5OPkOsZsw9VsXlGTNcXXD8uPXMjbGh65+SC+QQXoHhqpl/stSEVvSjgGlfK25FUuNvIiVRg1oie6LU=
+	t=1711364617; cv=none; b=uiv4qjvwQTgUF5viGmF8et2W6b8RV/zUHZ+cTbcnEnApQdSvk7qvKaoGoZ7W5t9bo/qSkdwXIG9Lzp6J8v2SxYTzGkt8nszJoeHyu9VnV69gh8LmK+TjLbTLFY7/ZH1AD9jdCcikRnm4d1Ju6VZ/NRz7Ry3ropPN6DLr6CYp0zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711363112; c=relaxed/simple;
-	bh=VIFtQK0XN/rUgOMv3CmvkztzHLGtAOCm/Nglv4NTnkU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=gwKhW/ZF/8PtnlzyQB4zIv7HRl2g5dTyxXuTbGiSpKE3wcWlHgKYwUZ2zO09g19VlXQ4rFQ5tx6qu5/FDWXSBoNtYvkhESoWXgNE/+LidY/b2cCw9Ka/Yv/8D07KrRWUjMg2iP8EGElw6kgehj1z06LiSSa55p/yxRR5eh2gXOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vLvxdGqf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zG8S5VJY; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1711364617; c=relaxed/simple;
+	bh=Eska4gaH7kO1mPbE3Fmc4Y9tclS/elERBgLO1sr4MYA=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=nU8/rYk6jNeyTyyhjuZJc/rXo+RcFZE8Kq0o+7RvU7XCCo0jTxJbv7yBS7B/PlbVlzN4ufe4BlAMNVwFPsfG+DlN3FoGGNHvCs1sEvkecKh2YWK1K49p3sGQhjELvDGD+4vKfgp8uc2V7TZuL6bXz1JkcC+t++1txDqCLl9wr/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=utTqlRIX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PU+dUrX3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 25 Mar 2024 10:38:28 -0000
+Date: Mon, 25 Mar 2024 11:03:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711363109;
+	s=2020; t=1711364614;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FfLHiy8Np0Ojm/mylOsW6CnKsAh2WH7Zx2l6XpB1aDI=;
-	b=vLvxdGqflF3qTt2mNXtpGBjw0107DeBO6HzVN1mqUwX5MLv/gT+XZGTDFPgaaIzyc6ZxRM
-	Qn9xZAh78mN/QO67w8w3uUKUry+GTsx7Y0QYdSB6o0IMbSrBKGaxXBn8uwW6w7++lHXWZg
-	gIds1zsn7cz1q2OaL6Ptl3d9wBmSdL2ZbRBOg+He7hA+onZJPHHtg26Y0PUlXEb5lsX00W
-	rLqjtKdUvfjr6zuHgA/M0bHJCScsqi/Xj063Y+2Ku82bZ69OZm0NjocwNT1EjfwtFSdR/D
-	/E4t3xHB2OpjFOwPFpLYxvHhjc8RObgZNIdhVJ9ALOuo6NXuMqydlHhP6XHE9Q==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=avsc0Gio3l+bltvTrTbtMSukfJximpMb/2ZTG9DBt70=;
+	b=utTqlRIXEPHZxjkZ3YpURtaytf0cTNdBSa2MmTIUAciUKYcoTrxZRaflVZ1y4O1mzaYT9P
+	3Ns6vF4THDq9drshQuSE583YeQMqmowfde/XHqEWq3tR81SB+CdLeAm0ierDCPS9AnWIGE
+	hY/whtm3Hpw1NKkNrYOWQEhjIC9BjnPKD9BFPVQyFoEzV2LKruGfjgmkpoov5EMR30TC8P
+	73GoFzQ3An708wsUD9VmVyT/BJzjT7n+R3Yibj0Sj9fjZaZD1XUSuKYhW8RIqLd75gwLTd
+	eqb24gk0dvpobqTUUeyTi6h1t3m6mK+Dj6NieqR9XcZnO4HZNZbnO4lv1PnDKg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711363109;
+	s=2020e; t=1711364614;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FfLHiy8Np0Ojm/mylOsW6CnKsAh2WH7Zx2l6XpB1aDI=;
-	b=zG8S5VJYwkr3im2ltwzDyDoMRNY19sCdjcoWZf2EpjNloCCwYqQdk9jPzOGbBUGQ4z8JlI
-	3COrmfQpElP9XzBA==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=avsc0Gio3l+bltvTrTbtMSukfJximpMb/2ZTG9DBt70=;
+	b=PU+dUrX3N2SOgNmOZAr28PIRULIT34Sn1R1sl7QguwroulxykUDCaYPsF690/bNQhQ2cRo
+	d5KuwwBoaFbAk3BQ==
 From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] Documentation/x86: Fix title underline length
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Ingo Molnar <mingo@kernel.org>,
- Tony Luck <tony.luck@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240325121750.265d655c@canb.auug.org.au>
-References: <20240325121750.265d655c@canb.auug.org.au>
+Subject: [tip: x86/urgent] Revert "x86/mm/ident_map: Use gbpages only where
+ full GB page should be mapped."
+Cc: Ingo Molnar <mingo@kernel.org>,  <stable@vger.kernel.org>,
+ Russ Anderson <rja@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171136310847.10875.2241882307085232437.tip-bot2@tip-bot2>
+Message-ID: <171136461366.10875.14490329545340375710.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,38 +76,79 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     91491e5fb09624116950f9f2e1767a42e1da7868
-Gitweb:        https://git.kernel.org/tip/91491e5fb09624116950f9f2e1767a42e1da7868
+Commit-ID:     c567f2948f57bdc03ed03403ae0234085f376b7d
+Gitweb:        https://git.kernel.org/tip/c567f2948f57bdc03ed03403ae0234085f376b7d
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Mon, 25 Mar 2024 11:29:16 +01:00
+AuthorDate:    Mon, 25 Mar 2024 11:47:51 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 25 Mar 2024 11:29:16 +01:00
+CommitterDate: Mon, 25 Mar 2024 11:54:35 +01:00
 
-Documentation/x86: Fix title underline length
+Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
 
-Fix:
+This reverts commit d794734c9bbfe22f86686dc2909c25f5ffe1a572.
 
-  Documentation/arch/x86/resctrl.rst:577: WARNING: Title underline too short.
+While the original change tries to fix a bug, it also unintentionally broke
+existing systems, see the regressions reported at:
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
+
+Since d794734c9bbf was also marked for -stable, let's back it out before
+causing more damage.
+
+Note that due to another upstream change the revert was not 100% automatic:
+
+  0a845e0f6348 mm/treewide: replace pud_large() with pud_leaf()
+
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20240325121750.265d655c@canb.auug.org.au
+Cc: <stable@vger.kernel.org>
+Cc: Russ Anderson <rja@hpe.com>
+Cc: Steve Wahl <steve.wahl@hpe.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
+Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
 ---
- Documentation/arch/x86/resctrl.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/mm/ident_map.c | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
-diff --git a/Documentation/arch/x86/resctrl.rst b/Documentation/arch/x86/resctrl.rst
-index 3712d81..6c24558 100644
---- a/Documentation/arch/x86/resctrl.rst
-+++ b/Documentation/arch/x86/resctrl.rst
-@@ -574,7 +574,7 @@ Memory b/w domain is L3 cache.
- 	MB:<cache_id0>=bandwidth0;<cache_id1>=bandwidth1;...
+diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
+index a204a33..968d700 100644
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -26,31 +26,18 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
+ 	for (; addr < end; addr = next) {
+ 		pud_t *pud = pud_page + pud_index(addr);
+ 		pmd_t *pmd;
+-		bool use_gbpage;
  
- Memory bandwidth Allocation specified in MiBps
-----------------------------------------------
-+----------------------------------------------
+ 		next = (addr & PUD_MASK) + PUD_SIZE;
+ 		if (next > end)
+ 			next = end;
  
- Memory bandwidth domain is L3 cache.
- ::
+-		/* if this is already a gbpage, this portion is already mapped */
+-		if (pud_leaf(*pud))
+-			continue;
+-
+-		/* Is using a gbpage allowed? */
+-		use_gbpage = info->direct_gbpages;
+-
+-		/* Don't use gbpage if it maps more than the requested region. */
+-		/* at the begining: */
+-		use_gbpage &= ((addr & ~PUD_MASK) == 0);
+-		/* ... or at the end: */
+-		use_gbpage &= ((next & ~PUD_MASK) == 0);
+-
+-		/* Never overwrite existing mappings */
+-		use_gbpage &= !pud_present(*pud);
+-
+-		if (use_gbpage) {
++		if (info->direct_gbpages) {
+ 			pud_t pudval;
+ 
++			if (pud_present(*pud))
++				continue;
++
++			addr &= PUD_MASK;
+ 			pudval = __pud((addr - info->offset) | info->page_flag);
+ 			set_pud(pud, pudval);
+ 			continue;
 
