@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-826-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-827-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E2188ABF9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 18:40:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F9B88ABFA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 18:40:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3EB91C3E773
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 17:40:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F1C51C3E944
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 17:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030F41327FE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE47149DFE;
 	Mon, 25 Mar 2024 16:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w3YQm72s";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZEK9NZ1D"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1Wid9Xl4";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jubHcDTH"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEFB73191;
-	Mon, 25 Mar 2024 16:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B311C12CDAA;
+	Mon, 25 Mar 2024 16:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711385209; cv=none; b=HqTFbugxhrJvf3H/qKwW6sKhNZWXZ5GW5/zq+ISWxN3ho0k0VoafqjbG6aW617zYhw7jR3W83DodwH/Qi11z6FeUDcaDNaAM+goh6jjzxUx7Ust2Ori+RNIaav6GFvlk8+zbdavOcVI4fwD7zSttEoIJdgvg50e9+Zc9cIwwlco=
+	t=1711385210; cv=none; b=I/zxepcPozkkFPGeU1G6rukzOvBzt8z0U80smVhBhKEDjDmWP3b5zMX1uhSx8oOIvc+d6WQkq5ne6ImpCHQhe9gzCJhs19eABsgFaZa9ixRO3bC/cIWS1qdyV24D3oqj2tdN+mcDiWkySgvGO4YbuTe6Jnfy+bMtSFY4fCycFLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711385209; c=relaxed/simple;
-	bh=QAv4BR/jdL59PUXbsTS1P4f8I0AkQZMIvuLv4hNp+Zc=;
+	s=arc-20240116; t=1711385210; c=relaxed/simple;
+	bh=lV8EjYYnI7M8SGGuZcGjU36lrqg84lzgsnzaGZj2pQk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=FQliUzFY1RCUV+b7YayZh8jwMta/aNWi9ApM9sZrAZkQ5NpCmg2mAJDKmxqIq5th5xhDUeCXR4NbBbr7jx+ngY+cbxjPnWUzjdQe+NOL7o7kUHVJXlG2sjUcUKQHggSMzJ3eRTzoYGOHMHRZRKVUdUi3gwM6dBNcOGeRjkskjc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w3YQm72s; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZEK9NZ1D; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=lfOg8OPrqWPGzX1xv+hY75i4n7EvptTP7m4Q/3SgxKWF3UT5/KsC1jr2llrL9ibIb8UpUwdaA7VdwbsDCelpii9fWsR/qCrSPaRNam/2gpBlwTn0wWP7m5hqbikIPfKNIu+WZv9YiQy3djMM4bsxKGZPVvrlERuopWG4oeTD298=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1Wid9Xl4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jubHcDTH; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 25 Mar 2024 16:46:45 -0000
+Date: Mon, 25 Mar 2024 16:46:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1711385206;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8oGyPYB12iPe/M3pX5cTbA0bbTqJtN0I3MIfdCpjHi8=;
-	b=w3YQm72s46l6gjReatH4igTZQ9vB1uCDIUB0dfOR3CqGUCw/zVEjbG6sjxeBpobiCjdsg3
-	dWQoxmboroQsyfqKNoNn3olXFYJtevfDwIUIo/GrhxG4gEnd9NxYBOBZx8KFs2t2BXdvjr
-	9fTFYIeJI4VyWb8LYmuiGPGwxN3GrrsHwJJZ2mvOPtdm3aB3nvBSCXI+WdAfj+qqnzFcby
-	Oxk80gd18+eHxIS4dugOnyP1c/QOKEEPivCiQ+DhIXkiswbYVtNE8R53X8Fma+4HOf0eRh
-	87jAubPn7fOGdKmDITwb8xEFu+TMcWQO9PPgxsJSuuW17+8p6K/BpLoTJ7KNGg==
+	bh=zPEH3kSnrLsGUy39ua9UsEarBkTQHPdlqYBLg238P5Q=;
+	b=1Wid9Xl4VDy5ZR5ldL/jmI39Ad/hhPiFxGnXxaZeZK7hNjYT3HDSViyeNZcwFe21KqSkDY
+	HOLiO6pVT3nZaq6k8d7/S5bGQgaaOqibSt1DzWWl5xvHhRL2I0bJLugaVyPYvrRRQ0DpWe
+	66xvfg866AbDdQCSqN4q/q9+8/ZpATrMljLrV8wsEggMmt4AwYD338jt1x9dwCTZhbwswm
+	lhlZvAKOLH9gHLi2PVv8LjcBkRX7zHOEJh7v0I03QXfdlU7PZ7ftdLpVQcK3T2ozdkqcJF
+	yMqQeBFSHjrV0Vxkt5oKr2KLxMJOuFjXJAOu80v6evV3uViJq6OO5Np6haxNUw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1711385206;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,83 +52,82 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8oGyPYB12iPe/M3pX5cTbA0bbTqJtN0I3MIfdCpjHi8=;
-	b=ZEK9NZ1D55DcDfnrGYLrh7WqkSkTnKvv/m4tV79RRV6oSsspczNvtktDcaeNz7cqprxt8G
-	3B0OjmAW7uAKGGAw==
-From: "tip-bot2 for Keguang Zhang" <tip-bot2@linutronix.de>
+	bh=zPEH3kSnrLsGUy39ua9UsEarBkTQHPdlqYBLg238P5Q=;
+	b=jubHcDTHoDPrkRlBCDR/2WhII/G+oCqB0DTMuAxW/QUly0h/r5Lmfqsm1Ldb+CWDCJW38D
+	TkaJW+XDTnDaXOCg==
+From: "tip-bot2 for Anup Patel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/core] irqchip: Remove redundant irq_chip::name initialization
-Cc: Keguang Zhang <keguang.zhang@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240311115344.72567-1-keguang.zhang@gmail.com>
-References: <20240311115344.72567-1-keguang.zhang@gmail.com>
+Subject: [tip: irq/core] MAINTAINERS: Add entry for RISC-V AIA drivers
+Cc: Anup Patel <apatel@ventanamicro.com>, Thomas Gleixner <tglx@linutronix.de>,
+ bjorn@rivosinc.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+ maz@kernel.org
+In-Reply-To: <20240307140307.646078-10-apatel@ventanamicro.com>
+References: <20240307140307.646078-10-apatel@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171138520530.10875.4664771902622983668.tip-bot2@tip-bot2>
+Message-ID: <171138520611.10875.10767264123435559459.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     7b6f0f278d02de5a8f49202465c6427b56c97545
-Gitweb:        https://git.kernel.org/tip/7b6f0f278d02de5a8f49202465c6427b56c97545
-Author:        Keguang Zhang <keguang.zhang@gmail.com>
-AuthorDate:    Mon, 11 Mar 2024 19:53:44 +08:00
+Commit-ID:     f4e116b2c5eec0dc1ab65e7105c180d4f8627b39
+Gitweb:        https://git.kernel.org/tip/f4e116b2c5eec0dc1ab65e7105c180d4f86=
+27b39
+Author:        Anup Patel <apatel@ventanamicro.com>
+AuthorDate:    Thu, 07 Mar 2024 19:33:07 +05:30
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 25 Mar 2024 17:38:29 +01:00
 
-irqchip: Remove redundant irq_chip::name initialization
+MAINTAINERS: Add entry for RISC-V AIA drivers
 
-Since commit 021a8ca2ba23 ("genirq/generic-chip: Fix the irq_chip name for
-/proc/interrupts"), the chip name of all chip types are set to the same
-name by irq_init_generic_chip() now. So the initialization to the same
-irq_chip name are no longer needed. Drop them.
+Add myself as maintainer for RISC-V AIA drivers including the
+RISC-V INTC driver which supports both AIA and non-AIA platforms.
 
-Signed-off-by: Keguang Zhang <keguang.zhang@gmail.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://lore.kernel.org/r/20240311115344.72567-1-keguang.zhang@gmail.com
+Tested-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20240307140307.646078-10-apatel@ventanamicro.=
+com
 
 ---
- drivers/irqchip/irq-sunxi-nmi.c | 1 -
- drivers/irqchip/irq-tb10x.c     | 1 -
- 2 files changed, 2 deletions(-)
+ MAINTAINERS | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/irqchip/irq-sunxi-nmi.c b/drivers/irqchip/irq-sunxi-nmi.c
-index e760b12..bb92fd8 100644
---- a/drivers/irqchip/irq-sunxi-nmi.c
-+++ b/drivers/irqchip/irq-sunxi-nmi.c
-@@ -192,7 +192,6 @@ static int __init sunxi_sc_nmi_irq_init(struct device_node *node,
- 	gc->chip_types[0].regs.type		= reg_offs->ctrl;
- 
- 	gc->chip_types[1].type			= IRQ_TYPE_EDGE_BOTH;
--	gc->chip_types[1].chip.name		= gc->chip_types[0].chip.name;
- 	gc->chip_types[1].chip.irq_ack		= irq_gc_ack_set_bit;
- 	gc->chip_types[1].chip.irq_mask		= irq_gc_mask_clr_bit;
- 	gc->chip_types[1].chip.irq_unmask	= irq_gc_mask_set_bit;
-diff --git a/drivers/irqchip/irq-tb10x.c b/drivers/irqchip/irq-tb10x.c
-index 6805863..d59bfbe 100644
---- a/drivers/irqchip/irq-tb10x.c
-+++ b/drivers/irqchip/irq-tb10x.c
-@@ -150,7 +150,6 @@ static int __init of_tb10x_init_irq(struct device_node *ictl,
- 	gc->chip_types[0].regs.mask          = AB_IRQCTL_INT_ENABLE;
- 
- 	gc->chip_types[1].type               = IRQ_TYPE_EDGE_BOTH;
--	gc->chip_types[1].chip.name          = gc->chip_types[0].chip.name;
- 	gc->chip_types[1].chip.irq_ack       = irq_gc_ack_set_bit;
- 	gc->chip_types[1].chip.irq_mask      = irq_gc_mask_clr_bit;
- 	gc->chip_types[1].chip.irq_unmask    = irq_gc_mask_set_bit;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index aa3b947..4a909b1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18922,6 +18922,20 @@ S:	Maintained
+ F:	drivers/mtd/nand/raw/r852.c
+ F:	drivers/mtd/nand/raw/r852.h
+=20
++RISC-V AIA DRIVERS
++M:	Anup Patel <anup@brainfault.org>
++L:	linux-riscv@lists.infradead.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/interrupt-controller/riscv,aplic.yaml
++F:	Documentation/devicetree/bindings/interrupt-controller/riscv,imsics.yaml
++F:	drivers/irqchip/irq-riscv-aplic-*.c
++F:	drivers/irqchip/irq-riscv-aplic-*.h
++F:	drivers/irqchip/irq-riscv-imsic-*.c
++F:	drivers/irqchip/irq-riscv-imsic-*.h
++F:	drivers/irqchip/irq-riscv-intc.c
++F:	include/linux/irqchip/riscv-aplic.h
++F:	include/linux/irqchip/riscv-imsic.h
++
+ RISC-V ARCHITECTURE
+ M:	Paul Walmsley <paul.walmsley@sifive.com>
+ M:	Palmer Dabbelt <palmer@dabbelt.com>
 
