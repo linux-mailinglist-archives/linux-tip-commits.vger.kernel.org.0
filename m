@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-844-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-845-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6FF988BDEE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 10:36:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C6588BEF3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 11:10:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A06F303F24
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 09:36:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9F592E4FCB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 10:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D3E4F890;
-	Tue, 26 Mar 2024 09:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801806BB52;
+	Tue, 26 Mar 2024 10:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dD6JKrhM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MBeym/TH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ByO5e44O";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nVr1ReUI"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A764CE09;
-	Tue, 26 Mar 2024 09:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE2E5490D;
+	Tue, 26 Mar 2024 10:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711444871; cv=none; b=olfzJ3F3qVVBO1kwMGsNx+bWLGEQHG/SRuJyGrjXG51ZvJLViWxv/sVKkCt7SmWCtys7eboEdTfqvzfk/F/UCA2pEsg3XCxcK5b8yAG7ZOFh3JWlW9uww/ZbAojVrKgeJxL/M5jGHx1J62KIYq2v2uXs84D6WpRbCeDMbMiqX4o=
+	t=1711447818; cv=none; b=SEreKRHh6iEjAdG7smZIPlcBS5UuBlv0x87h3RLONOAwgZKIlVvIuG+qVDPLf24gzyx1Jjjo2yooGEBE1oIOReAY6+1Bqh05siN2b7fNojprJ0dVx6x9H2PCTzYvn/3QkWkEFkP/VNV40B7NdVkhdweQlQeI+Vhxaul/uZWNKYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711444871; c=relaxed/simple;
-	bh=L1aGiArlPsZ+bQny3tvbhbXelHlaXT2szGwtPU5OQGw=;
+	s=arc-20240116; t=1711447818; c=relaxed/simple;
+	bh=iBFsazZw36i4AIASR6kjb8462tHYj1blnPl0qBAO7jA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=CJWuUcGlFKj4UXEJGmTmfNfzjMnZS3QRRgoHrqj73E41wyjCAQfe2KOxe2cieUxQBNZpoFgw4iu3WPiHNzgDqm+9gnQIWUAqEaHicVBbtVGrggQA3CI4uYQ8K8IDwSnziTxCilC+avQAtaffQAYkWxLSVh96UBNt0bkmY8x8PDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dD6JKrhM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MBeym/TH; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ddFZrcO+ZvJxpCLxU/RYJeYFNNuDFS8TkYktBnMCIAuA0kkqy/RNkYgXVhmeTwdvF5dAbSbc1GNS2Q1gGtADe5zjeIBAKuQabs2FJ7jvn5zn+zucO4BCd2M/1ciUKnOz8wps73dEqTUGery3TPZ8D34dHxMHUjYemyS6n+pi6lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ByO5e44O; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nVr1ReUI; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 26 Mar 2024 09:21:06 -0000
+Date: Tue, 26 Mar 2024 10:10:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711444867;
+	s=2020; t=1711447815;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2A00E/c8uqCaQHkVCU/Oq9rDbHV2kx2Rs5KES71fn6M=;
-	b=dD6JKrhM0zqXW3Lj06bAHUVyZ2AEztZI0Sk+OGTO2FkU3hzg0D0mucLMIIh3u31gNTN4Au
-	SRDmrem2P9HyUqrsIx9TnIMQgzH6ysAi9a18NfHTxqkdA0oG5GAgXqGtPOb+tTQK7OcUE8
-	bnLBTmr1z8eKC6zoCrzhEjZ3z+A1gaXEmtiTzgrdvyrRROmpTqZ3JSeX0ZWCQXeS+FTax0
-	RQN89f5jQz3BcwJQdhBSOfWBWIceTZ5fNmSk+bSQviJ7hQ3j3A7+kkqhDj4xuzSkvfvJDe
-	OckA+oo/F2/XWtkR4+K0SjckDQ1OUmK87+a2UljfTCsHe7GMqOaTA1vWRK63dQ==
+	bh=nsSjZG/174JHCYPQHQP+pkw5NzhmlrR7/I9ZO1z3fI8=;
+	b=ByO5e44OMZs2voa/XGH3LYKkF81Tr7n0CbwEXXJwYuOkU4hk/GA8VFvsxyb8i+27q9zNEZ
+	fPWIwgQ3+Aks8vUbqNcZXPdNIKKTdVeOGWQ3IiTXN+pbYustW/S9twNDTfb9107S4dX0Wc
+	eIKSRT5+0jag6abcJgx5evf+78ND3T3TgG0oGWwU8f4qjzO8cp7s9rvB0nJPPUIZ6p/FdY
+	g6HoEthNgyiNKhQATqhib7eKKz9kn+XFZlsJUXKZ+N6ZsXUMHwu0t0k2cJCO901u9ScLrK
+	SLOzKNNgaMuc2zLktCutQZU93w4IlV09CqwBaQ/FK2KFlgU4j0Hgbj9HgBAR9Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711444867;
+	s=2020e; t=1711447815;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2A00E/c8uqCaQHkVCU/Oq9rDbHV2kx2Rs5KES71fn6M=;
-	b=MBeym/THDeLwvWMPZ9s6Mc0J8IRF6UhqjjlxIr6ZdbxyHPNCDyP31o1V6uWpnXG/kd82XY
-	JEIRgm3zFgY0S/Cg==
-From: "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+	bh=nsSjZG/174JHCYPQHQP+pkw5NzhmlrR7/I9ZO1z3fI8=;
+	b=nVr1ReUIbKKFKjECyNAJpjee+66sPkv0SIKkpbbDtZxfJPeMT7FtZoFzNrF6e4liFG4t2X
+	j0S7lAtrhHCI/0CQ==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: x86/urgent] x86/nmi: Upgrade NMI backtrace stall checks & messages
-Cc: Breno Leitao <leitao@debian.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Ingo Molnar <mingo@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+ [tip: x86/urgent] x86/vdso: Fix rethunk patching for vdso-image-x32.o too
+Cc: kernel test robot <oliver.sang@intel.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <ab4d70c8-c874-42dc-b206-643018922393@paulmck-laptop>
-References: <ab4d70c8-c874-42dc-b206-643018922393@paulmck-laptop>
+In-Reply-To: <202403251454.23df6278-lkp@intel.com>
+References: <202403251454.23df6278-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171144486643.10875.13891742949847997035.tip-bot2@tip-bot2>
+Message-ID: <171144781402.10875.1003478569450333151.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,94 +82,40 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     3186b61812c007179f1852d8e63a0f0f7dd7c783
-Gitweb:        https://git.kernel.org/tip/3186b61812c007179f1852d8e63a0f0f7dd7c783
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 07 Mar 2024 17:32:15 -08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 26 Mar 2024 10:07:59 +01:00
+Commit-ID:     4969d75dd9077e19e175e60f3c5a6c7653252e63
+Gitweb:        https://git.kernel.org/tip/4969d75dd9077e19e175e60f3c5a6c7653252e63
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Tue, 26 Mar 2024 10:47:14 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 26 Mar 2024 10:47:14 +01:00
 
-x86/nmi: Upgrade NMI backtrace stall checks & messages
+x86/vdso: Fix rethunk patching for vdso-image-x32.o too
 
-The commit to improve NMI stall debuggability:
+In a similar fashion to
 
-  344da544f177 ("x86/nmi: Print reasons why backtrace NMIs are ignored")
+  b388e57d4628 ("x86/vdso: Fix rethunk patching for vdso-image-{32,64}.o")
 
-.. has shown value, but widespread use has also identified a few
-opportunities for improvement.
+annotate vdso-image-x32.o too for objtool so that it gets annotated
+properly and the unused return thunk warning doesn't fire.
 
-The systems have (as usual) shown far more creativity than that commit's
-author, demonstrating yet again that failing CPUs can do whatever they want.
-
-In addition, the current message format is less friendly than one might
-like to those attempting to use these messages to identify failing CPUs.
-
-Therefore, separately flag CPUs that, during the full time that the
-stack-backtrace request was waiting, were always in an NMI handler,
-were never in an NMI handler, or exited one NMI handler.
-
-Also, split the message identifying the CPU and the time since that CPU's
-last NMI-related activity so that a single line identifies the CPU without
-any other variable information, greatly reducing the processing overhead
-required to identify repeat-offender CPUs.
-
-Co-developed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/ab4d70c8-c874-42dc-b206-643018922393@paulmck-laptop
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202403251454.23df6278-lkp@intel.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/202403251454.23df6278-lkp@intel.com
 ---
- arch/x86/kernel/nmi.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ arch/x86/entry/vdso/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index 9a5b372..ed163c8 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -580,7 +580,7 @@ EXPORT_SYMBOL_GPL(asm_exc_nmi_kvm_vmx);
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index fd63051..3d64bcc 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -41,6 +41,7 @@ obj-$(CONFIG_X86_X32_ABI)			+= vdso-image-x32.o
+ obj-$(CONFIG_COMPAT_32)				+= vdso-image-32.o vdso32-setup.o
  
- static char *nmi_check_stall_msg[] = {
- /*									*/
--/* +--------- nsp->idt_seq_snap & 0x1: CPU is in NMI handler.		*/
-+/* +--------- nmi_seq & 0x1: CPU is currently in NMI handler.		*/
- /* | +------ cpu_is_offline(cpu)					*/
- /* | | +--- nsp->idt_calls_snap != atomic_long_read(&nsp->idt_calls):	*/
- /* | | |	NMI handler has been invoked.				*/
-@@ -628,22 +628,26 @@ void nmi_backtrace_stall_check(const struct cpumask *btp)
- 		nmi_seq = READ_ONCE(nsp->idt_nmi_seq);
- 		if (nsp->idt_nmi_seq_snap + 1 == nmi_seq && (nmi_seq & 0x1)) {
- 			msgp = "CPU entered NMI handler function, but has not exited";
--		} else if ((nsp->idt_nmi_seq_snap & 0x1) != (nmi_seq & 0x1)) {
--			msgp = "CPU is handling NMIs";
--		} else {
--			idx = ((nsp->idt_seq_snap & 0x1) << 2) |
-+		} else if (nsp->idt_nmi_seq_snap == nmi_seq ||
-+			   nsp->idt_nmi_seq_snap + 1 == nmi_seq) {
-+			idx = ((nmi_seq & 0x1) << 2) |
- 			      (cpu_is_offline(cpu) << 1) |
- 			      (nsp->idt_calls_snap != atomic_long_read(&nsp->idt_calls));
- 			msgp = nmi_check_stall_msg[idx];
- 			if (nsp->idt_ignored_snap != READ_ONCE(nsp->idt_ignored) && (idx & 0x1))
- 				modp = ", but OK because ignore_nmis was set";
--			if (nmi_seq & 0x1)
--				msghp = " (CPU currently in NMI handler function)";
--			else if (nsp->idt_nmi_seq_snap + 1 == nmi_seq)
-+			if (nsp->idt_nmi_seq_snap + 1 == nmi_seq)
- 				msghp = " (CPU exited one NMI handler function)";
-+			else if (nmi_seq & 0x1)
-+				msghp = " (CPU currently in NMI handler function)";
-+			else
-+				msghp = " (CPU was never in an NMI handler function)";
-+		} else {
-+			msgp = "CPU is handling NMIs";
- 		}
--		pr_alert("%s: CPU %d: %s%s%s, last activity: %lu jiffies ago.\n",
--			 __func__, cpu, msgp, modp, msghp, j - READ_ONCE(nsp->recv_jiffies));
-+		pr_alert("%s: CPU %d: %s%s%s\n", __func__, cpu, msgp, modp, msghp);
-+		pr_alert("%s: last activity: %lu jiffies ago.\n",
-+			 __func__, j - READ_ONCE(nsp->recv_jiffies));
- 	}
- }
+ OBJECT_FILES_NON_STANDARD_vdso-image-32.o	:= n
++OBJECT_FILES_NON_STANDARD_vdso-image-x32.o	:= n
+ OBJECT_FILES_NON_STANDARD_vdso-image-64.o	:= n
+ OBJECT_FILES_NON_STANDARD_vdso32-setup.o	:= n
  
 
