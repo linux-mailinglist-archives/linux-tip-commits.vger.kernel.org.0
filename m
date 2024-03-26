@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-838-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-839-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16EBA88B6AC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 02:16:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA7988BBEF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 09:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 488BF1C2E172
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 01:16:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34C50B23863
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 08:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76F31CAAD;
-	Tue, 26 Mar 2024 01:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE0B132811;
+	Tue, 26 Mar 2024 08:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="saMGtJH6";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RjbYUpkv"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HXjSBw9w";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BlGbDtrN"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFD7320E;
-	Tue, 26 Mar 2024 01:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7093137C36;
+	Tue, 26 Mar 2024 08:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711415789; cv=none; b=NnGwguMzscpLKoT4DSyLF7CSyyYVjzMcddBoiY7T3iiJI6ltG44WVvEW5bNWB0JxCKyQdWaFwAARQOgLD0aYZv+pLnt2FYdcqS96OjM1imdKgwviG7H/zrEjHlos5jWcu3xeV504MR9lcLBjHYShTcpebIHQUa2ODkrWlMtYre4=
+	t=1711440371; cv=none; b=ZN0cfg1GuSHduVYYlN9ykZW7gvtu9P1p1vCQeF+e8EtOqcABcO5qmJuuOh86tb4M+FNCQ0QfsZxQYOShyCEhitAG7Lq+N/UcLeJuAbD+JhgatB8dcU7SR9B8sPLfRnuUFXKx5L9J3KJ5j5TOmNTKTV1EodDxJWAvYI/ejdy+t6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711415789; c=relaxed/simple;
-	bh=9qbyq1aKY8KJ8ZZU8MRNuaJcqclapTDNQE//P+JD+og=;
+	s=arc-20240116; t=1711440371; c=relaxed/simple;
+	bh=vSvEdxKIz9TzXSPrkdufQUANPFk7q3cPvHwlx+6biNw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MW/YXs02sL9qVnqi7YC6tjebfQZtIJIEC8BZu3DMS2z0VVobe9yYeymij+z3e6D2leBbhAPG57HvFAAIgRZ5hvaCZA9uRxf+EGWPBi7l5q/WrbdikmVzzzWMt/Dx5ZlTW9iQR6sDdzuqlSWQShFwJsfndn6bYLnOaqJUUpblwyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=saMGtJH6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RjbYUpkv; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=XTbFx37lEKG3KN7z59o8r+vGfxYam8viBdBJtpI/fJ6sJTIao+BZsFDpt3V5SAJ+ulzipqDZMJiDJ+77Vfap9k/uG8NYJpPLatgxQg+6M8rLq9jvldlqquU9jggJAVI/WKPFqnlxQ5ukmLaGTWIRtR9ADsKeYyAlMgcmXsllPIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HXjSBw9w; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BlGbDtrN; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 26 Mar 2024 01:16:25 -0000
+Date: Tue, 26 Mar 2024 08:06:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711415786;
+	s=2020; t=1711440367;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u1yhUwaNgq5rxd8y5zm2NscL86JSQztLE4MRYnn+3Is=;
-	b=saMGtJH6nyqImsSq55L30EQkq2g2KNGraLnhI9LbteufzfaDqQiUKAtL44VBJNczzWrDaE
-	ghaQfJ3+VC626WpH0IJaDSq1iYaWwLRK1jSxqFmm1+D3kNiNzYduP5+Vlt7FseS5P/SuxI
-	/hBAaCdOIgec/A3DDYPTGLWiNmvZ8zDp/HhqXI8fiRk2c9FRm/jrlblKNEejlQ7VfG4SmK
-	pO8qKkCCbCm/0wLgIebm2CgA49xsRGedS3GiRLr0OxW5ppLFaEDLML31DsKEGWEUEG2o5b
-	cIcDD+N5PCMSPBGoYH+GyYg5IsFov4T03FzWKYsEOHGd9nRuwwPyGpysHAosVg==
+	bh=e3GAuMzI8LMY1gRQmXrj2pqMs5oAvjCcMJ2TlU+/O/o=;
+	b=HXjSBw9wFIi7kRaUzNhAH7cWsEQ3jr2W7fwC0092hThyxMnY+T1q3/vgXbrs2EpNdySORR
+	kuLGmYLqkpoqCh7OBe634+glSX1dThuYCWh1ub34dj/hnn3KPpwQcuph9z3lVnJipVMboM
+	hb5JZuI2oPWr8kT5GMFE349OGLD2XRbY+RkA3BUfdwQwG0uOOBMCR896shI0ri6vOYZIVs
+	k63wtQawbRxhM6Dat70rxW/OEk09VkDsV7hBanpn3Rumy96AS4/QKzuppGRB0kryz66Avz
+	GAaNymtJyB2p/0ejhWrL6CY8ms8xiHe3K20/QdJqNl1izUObvyjLRFTdHdPTfg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711415786;
+	s=2020e; t=1711440367;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u1yhUwaNgq5rxd8y5zm2NscL86JSQztLE4MRYnn+3Is=;
-	b=RjbYUpkvmRyEkXoGebA0pnF/v8GXfiP0opJxzUNVWE7pUFWFN0DGSLI2fj+MJi5HMt7dT0
-	Kd00ZTeSGinn88BQ==
-From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+	bh=e3GAuMzI8LMY1gRQmXrj2pqMs5oAvjCcMJ2TlU+/O/o=;
+	b=BlGbDtrNWCIq5a5ECeIhgyDQE7hrCphQhLzbNilL2c5Ruc7lgLxDvnapQSP2Ne7TIQJgE/
+	XbWz7R7KyAzqs7Dg==
+From: "tip-bot2 for Shrikanth Hegde" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/urgent] irqchip/armada-370-xp: Suppress unused-function warning
-Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
- Andrew Lunn <andrew@lunn.ch>, x86@kernel.org, linux-kernel@vger.kernel.org,
- maz@kernel.org
-In-Reply-To: <20240322125838.901649-1-arnd@kernel.org>
-References: <20240322125838.901649-1-arnd@kernel.org>
+Subject: [tip: sched/core] sched/fair: Introduce is_rd_overutilized() helper
+ function to access root_domain::overutilized
+Cc: Shrikanth Hegde <sshegde@linux.ibm.com>, Ingo Molnar <mingo@kernel.org>,
+ Qais Yousef <qyousef@layalina.io>,
+ Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240307085725.444486-3-sshegde@linux.ibm.com>
+References: <20240307085725.444486-3-sshegde@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171141578546.10875.4128601465784419919.tip-bot2@tip-bot2>
+Message-ID: <171144036671.10875.16006145213534278040.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,50 +81,79 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9e81e329508576b499b5c47ab106b5fa45ce96d9
-Gitweb:        https://git.kernel.org/tip/9e81e329508576b499b5c47ab106b5fa45ce96d9
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Fri, 22 Mar 2024 13:58:25 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 26 Mar 2024 02:12:16 +01:00
+Commit-ID:     d0f5d3cefc259f498456338d319098dc84393b24
+Gitweb:        https://git.kernel.org/tip/d0f5d3cefc259f498456338d319098dc84393b24
+Author:        Shrikanth Hegde <sshegde@linux.ibm.com>
+AuthorDate:    Thu, 07 Mar 2024 14:27:24 +05:30
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 26 Mar 2024 08:58:59 +01:00
 
-irqchip/armada-370-xp: Suppress unused-function warning
+sched/fair: Introduce is_rd_overutilized() helper function to access root_domain::overutilized
 
-armada_370_xp_msi_reenable_percpu() is only defined when CONFIG_PCI_MSI is
-enabled, and only called when SMP is enabled.
+The root_domain::overutilized field is READ_ONCE() accessed in
+multiple places, which could be simplified with a helper function.
 
-Without CONFIG_SMP, there are no callers, which results in a build time
-warning instead:
+This might also make it more apparent that it needs to be used
+only in case of EAS.
 
-drivers/irqchip/irq-armada-370-xp.c:319:13: error: 'armada_370_xp_msi_reenable_percpu' defined but not used [-Werror=unused-function]
-  319 | static void armada_370_xp_msi_reenable_percpu(void) {}
-      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+No change in functionality intended.
 
-Mark the function as __maybe_unused to avoid adding more complexity
-to the #ifdefs.
-
-Fixes: 8ca61cde32c1 ("irqchip/armada-370-xp: Enable MSI affinity configuration")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240322125838.901649-1-arnd@kernel.org
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20240307085725.444486-3-sshegde@linux.ibm.com
 ---
- drivers/irqchip/irq-armada-370-xp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/fair.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
-index a555284..4b021a6 100644
---- a/drivers/irqchip/irq-armada-370-xp.c
-+++ b/drivers/irqchip/irq-armada-370-xp.c
-@@ -316,7 +316,7 @@ static int armada_370_xp_msi_init(struct device_node *node,
- 	return 0;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 1afa4f8..24a7530 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6685,6 +6685,15 @@ static inline bool cpu_overutilized(int cpu)
+ 	return !util_fits_cpu(cpu_util_cfs(cpu), rq_util_min, rq_util_max, cpu);
+ }
+ 
++/*
++ * Ensure that caller can do EAS. overutilized value
++ * make sense only if EAS is enabled
++ */
++static inline int is_rd_overutilized(struct root_domain *rd)
++{
++	return READ_ONCE(rd->overutilized);
++}
++
+ static inline void set_rd_overutilized_status(struct root_domain *rd,
+ 					      unsigned int status)
+ {
+@@ -6704,7 +6713,7 @@ static inline void check_update_overutilized_status(struct rq *rq)
+ 	if (!sched_energy_enabled())
+ 		return;
+ 
+-	if (!READ_ONCE(rq->rd->overutilized) && cpu_overutilized(rq->cpu))
++	if (!is_rd_overutilized(rq->rd) && cpu_overutilized(rq->cpu))
+ 		set_rd_overutilized_status(rq->rd, SG_OVERUTILIZED);
  }
  #else
--static void armada_370_xp_msi_reenable_percpu(void) {}
-+static __maybe_unused void armada_370_xp_msi_reenable_percpu(void) {}
+@@ -7990,7 +7999,7 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
  
- static inline int armada_370_xp_msi_init(struct device_node *node,
- 					 phys_addr_t main_int_phys_base)
+ 	rcu_read_lock();
+ 	pd = rcu_dereference(rd->pd);
+-	if (!pd || READ_ONCE(rd->overutilized))
++	if (!pd || is_rd_overutilized(rd))
+ 		goto unlock;
+ 
+ 	/*
+@@ -10897,7 +10906,7 @@ static struct sched_group *sched_balance_find_src_group(struct lb_env *env)
+ 	if (sched_energy_enabled()) {
+ 		struct root_domain *rd = env->dst_rq->rd;
+ 
+-		if (rcu_dereference(rd->pd) && !READ_ONCE(rd->overutilized))
++		if (rcu_dereference(rd->pd) && !is_rd_overutilized(rd))
+ 			goto out_balanced;
+ 	}
+ 
 
