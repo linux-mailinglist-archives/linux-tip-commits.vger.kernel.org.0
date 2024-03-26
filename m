@@ -1,80 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-837-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-838-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5A888B48F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 23:55:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16EBA88B6AC
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 02:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D03FF1F6153B
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Mar 2024 22:55:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 488BF1C2E172
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 01:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F967F7F7;
-	Mon, 25 Mar 2024 22:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76F31CAAD;
+	Tue, 26 Mar 2024 01:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YvXgsTBc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Qu12Pwuo"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="saMGtJH6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RjbYUpkv"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F327640A;
-	Mon, 25 Mar 2024 22:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFD7320E;
+	Tue, 26 Mar 2024 01:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711407326; cv=none; b=TWgTuphqbtDTUA2+3qn7aCmbICLzYXZvHdwxjK6C3wI8kqbBtaSsIK/hZ0uM3LptZGE9/d32u6NOFjaJxmjRw1MOX+kJB8hgKRf/IwF4yTA7rXauVI6mr3ZZm/3d//m0ZAb3vqsQmYPiyjKSC9zeH0LVRwQWmTfCd2fgSPueXYI=
+	t=1711415789; cv=none; b=NnGwguMzscpLKoT4DSyLF7CSyyYVjzMcddBoiY7T3iiJI6ltG44WVvEW5bNWB0JxCKyQdWaFwAARQOgLD0aYZv+pLnt2FYdcqS96OjM1imdKgwviG7H/zrEjHlos5jWcu3xeV504MR9lcLBjHYShTcpebIHQUa2ODkrWlMtYre4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711407326; c=relaxed/simple;
-	bh=3r1y31v3XTJVbXsuNyo5JrJSvUfosXKWdLpQPsBInmU=;
+	s=arc-20240116; t=1711415789; c=relaxed/simple;
+	bh=9qbyq1aKY8KJ8ZZU8MRNuaJcqclapTDNQE//P+JD+og=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ufAVHcSlUrlDKv52FibX3JPs+cLbcsdmxYVP5TTt6e0LwWbU+3ySGsYeLagNccbZn98D0i7ZO9USOm3vUrhtCPsxiXGgAgDHsWRfd4G1eNAWLFUvNHbFrL/1By653SMVpc/I+2eHbZLuFAa9ZtN8WpxiPswBvnfcNW1761M5RaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YvXgsTBc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Qu12Pwuo; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=MW/YXs02sL9qVnqi7YC6tjebfQZtIJIEC8BZu3DMS2z0VVobe9yYeymij+z3e6D2leBbhAPG57HvFAAIgRZ5hvaCZA9uRxf+EGWPBi7l5q/WrbdikmVzzzWMt/Dx5ZlTW9iQR6sDdzuqlSWQShFwJsfndn6bYLnOaqJUUpblwyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=saMGtJH6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RjbYUpkv; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 25 Mar 2024 22:55:21 -0000
+Date: Tue, 26 Mar 2024 01:16:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711407322;
+	s=2020; t=1711415786;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VduUBxZAYZw86rW/+SYoj/g0yoJ8Q2ZF+JCtK4WaCKE=;
-	b=YvXgsTBcPYeDxtIB0/qQOHBYRo3nYyk1JcCuQttXEm3AqsHP01Zjw2RAtN8pWAN4wm7Enn
-	sIxWxS7PebED335ecJvwOyA7cVlDiQfJs9PKO9W9jSFovQCwKwlgDqKqAakg4e4cTA4zZ8
-	HppDCsnI8oSD48XYm8i9fFq8XAmri/O58H8h3vrKlgfGW9DdTBNKq1I31bfO+dyh08iquB
-	2S3f+0Jd0lxxNyD15ySSwruLSk4g4Gnr8QYaByeR0Z6LJq89pNv67HIRxsWp0n63OJIxOS
-	i1DW5+KD+bQiiXDQM1Rwcgv/iYm8ZjvixAb2WzskDLZ4IUgQ15z3MceM1oDMBA==
+	bh=u1yhUwaNgq5rxd8y5zm2NscL86JSQztLE4MRYnn+3Is=;
+	b=saMGtJH6nyqImsSq55L30EQkq2g2KNGraLnhI9LbteufzfaDqQiUKAtL44VBJNczzWrDaE
+	ghaQfJ3+VC626WpH0IJaDSq1iYaWwLRK1jSxqFmm1+D3kNiNzYduP5+Vlt7FseS5P/SuxI
+	/hBAaCdOIgec/A3DDYPTGLWiNmvZ8zDp/HhqXI8fiRk2c9FRm/jrlblKNEejlQ7VfG4SmK
+	pO8qKkCCbCm/0wLgIebm2CgA49xsRGedS3GiRLr0OxW5ppLFaEDLML31DsKEGWEUEG2o5b
+	cIcDD+N5PCMSPBGoYH+GyYg5IsFov4T03FzWKYsEOHGd9nRuwwPyGpysHAosVg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711407322;
+	s=2020e; t=1711415786;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VduUBxZAYZw86rW/+SYoj/g0yoJ8Q2ZF+JCtK4WaCKE=;
-	b=Qu12Pwuoitv961SrVQ/9du4ndKDOCIcATQq/V/cvmAXvHlCilOqZv+2Qf6TBrWai3pw1HX
-	KE1oqAecZgfI2hCg==
-From: "tip-bot2 for Rafael J. Wysocki" <tip-bot2@linutronix.de>
+	bh=u1yhUwaNgq5rxd8y5zm2NscL86JSQztLE4MRYnn+3Is=;
+	b=RjbYUpkvmRyEkXoGebA0pnF/v8GXfiP0opJxzUNVWE7pUFWFN0DGSLI2fj+MJi5HMt7dT0
+	Kd00ZTeSGinn88BQ==
+From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq: Introduce IRQF_COND_ONESHOT and use it in
- pinctrl-amd
-Cc: Francisco Ayala Le Brun <francisco@videowindow.eu>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Linus Walleij <linus.walleij@linaro.org>, "6.8+" <stable@vger.kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <12417336.O9o76ZdvQC@kreacher>
-References: <12417336.O9o76ZdvQC@kreacher>
+Subject:
+ [tip: irq/urgent] irqchip/armada-370-xp: Suppress unused-function warning
+Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Andrew Lunn <andrew@lunn.ch>, x86@kernel.org, linux-kernel@vger.kernel.org,
+ maz@kernel.org
+In-Reply-To: <20240322125838.901649-1-arnd@kernel.org>
+References: <20240322125838.901649-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171140732104.10875.14515495184452517144.tip-bot2@tip-bot2>
+Message-ID: <171141578546.10875.4128601465784419919.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,120 +82,48 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     c2ddeb29612f7ca84ed10c6d4f3ac99705135447
-Gitweb:        https://git.kernel.org/tip/c2ddeb29612f7ca84ed10c6d4f3ac99705135447
-Author:        Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-AuthorDate:    Mon, 25 Mar 2024 13:58:08 +01:00
+Commit-ID:     9e81e329508576b499b5c47ab106b5fa45ce96d9
+Gitweb:        https://git.kernel.org/tip/9e81e329508576b499b5c47ab106b5fa45ce96d9
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Fri, 22 Mar 2024 13:58:25 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 25 Mar 2024 23:45:21 +01:00
+CommitterDate: Tue, 26 Mar 2024 02:12:16 +01:00
 
-genirq: Introduce IRQF_COND_ONESHOT and use it in pinctrl-amd
+irqchip/armada-370-xp: Suppress unused-function warning
 
-There is a problem when a driver requests a shared interrupt line to run a
-threaded handler on it without IRQF_ONESHOT set if that flag has been set
-already for the IRQ in question by somebody else.  Namely, the request
-fails which usually leads to a probe failure even though the driver might
-have worked just fine with IRQF_ONESHOT, but it does not want to use it by
-default.  Currently, the only way to handle this is to try to request the
-IRQ without IRQF_ONESHOT, but with IRQF_PROBE_SHARED set and if this fails,
-try again with IRQF_ONESHOT set.  However, this is a bit cumbersome and not
-very clean.
+armada_370_xp_msi_reenable_percpu() is only defined when CONFIG_PCI_MSI is
+enabled, and only called when SMP is enabled.
 
-When commit 7a36b901a6eb ("ACPI: OSL: Use a threaded interrupt handler for
-SCI") switched the ACPI subsystem over to using a threaded interrupt
-handler for the SCI, it had to use IRQF_ONESHOT for it because that's
-required due to the way the SCI handler works (it needs to walk all of the
-enabled GPEs before the interrupt line can be unmasked). The SCI interrupt
-line is not shared with other users very often due to the SCI handling
-overhead, but on sone systems it is shared and when the other user of it
-attempts to install a threaded handler, a flags mismatch related to
-IRQF_ONESHOT may occur.
+Without CONFIG_SMP, there are no callers, which results in a build time
+warning instead:
 
-As it turned out, that happened to the pinctrl-amd driver and so commit
-4451e8e8415e ("pinctrl: amd: Add IRQF_ONESHOT to the interrupt request")
-attempted to address the issue by adding IRQF_ONESHOT to the interrupt
-flags in that driver, but this is now causing an IRQF_ONESHOT-related
-mismatch to occur on another system which cannot boot as a result of it.
+drivers/irqchip/irq-armada-370-xp.c:319:13: error: 'armada_370_xp_msi_reenable_percpu' defined but not used [-Werror=unused-function]
+  319 | static void armada_370_xp_msi_reenable_percpu(void) {}
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Clearly, pinctrl-amd can work with IRQF_ONESHOT if need be, but it should
-not set that flag by default, so it needs a way to indicate that to the
-interrupt subsystem.
+Mark the function as __maybe_unused to avoid adding more complexity
+to the #ifdefs.
 
-To that end, introdcuce a new interrupt flag, IRQF_COND_ONESHOT, which will
-only have effect when the IRQ line is shared and IRQF_ONESHOT has been set
-for it already, in which case it will be promoted to the latter.
-
-This is sufficient for drivers sharing the interrupt line with the SCI as
-it is requested by the ACPI subsystem before any drivers are probed, so
-they will always see IRQF_ONESHOT set for the interrupt in question.
-
-Fixes: 4451e8e8415e ("pinctrl: amd: Add IRQF_ONESHOT to the interrupt request")
-Reported-by: Francisco Ayala Le Brun <francisco@videowindow.eu>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 8ca61cde32c1 ("irqchip/armada-370-xp: Enable MSI affinity configuration")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: 6.8+ <stable@vger.kernel.org> # 6.8+
-Closes: https://lore.kernel.org/lkml/CAN-StX1HqWqi+YW=t+V52-38Mfp5fAz7YHx4aH-CQjgyNiKx3g@mail.gmail.com/
-Link: https://lore.kernel.org/r/12417336.O9o76ZdvQC@kreacher
-
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240322125838.901649-1-arnd@kernel.org
 ---
- drivers/pinctrl/pinctrl-amd.c |  2 +-
- include/linux/interrupt.h     |  3 +++
- kernel/irq/manage.c           |  9 +++++++--
- 3 files changed, 11 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-armada-370-xp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
-index 49f89b7..7f66ec7 100644
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -1159,7 +1159,7 @@ static int amd_gpio_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
+index a555284..4b021a6 100644
+--- a/drivers/irqchip/irq-armada-370-xp.c
++++ b/drivers/irqchip/irq-armada-370-xp.c
+@@ -316,7 +316,7 @@ static int armada_370_xp_msi_init(struct device_node *node,
+ 	return 0;
+ }
+ #else
+-static void armada_370_xp_msi_reenable_percpu(void) {}
++static __maybe_unused void armada_370_xp_msi_reenable_percpu(void) {}
  
- 	ret = devm_request_irq(&pdev->dev, gpio_dev->irq, amd_gpio_irq_handler,
--			       IRQF_SHARED | IRQF_ONESHOT, KBUILD_MODNAME, gpio_dev);
-+			       IRQF_SHARED | IRQF_COND_ONESHOT, KBUILD_MODNAME, gpio_dev);
- 	if (ret)
- 		goto out2;
- 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 76121c2..5c9bdd3 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -67,6 +67,8 @@
-  *                later.
-  * IRQF_NO_DEBUG - Exclude from runnaway detection for IPI and similar handlers,
-  *		   depends on IRQF_PERCPU.
-+ * IRQF_COND_ONESHOT - Agree to do IRQF_ONESHOT if already set for a shared
-+ *                 interrupt.
-  */
- #define IRQF_SHARED		0x00000080
- #define IRQF_PROBE_SHARED	0x00000100
-@@ -82,6 +84,7 @@
- #define IRQF_COND_SUSPEND	0x00040000
- #define IRQF_NO_AUTOEN		0x00080000
- #define IRQF_NO_DEBUG		0x00100000
-+#define IRQF_COND_ONESHOT	0x00200000
- 
- #define IRQF_TIMER		(__IRQF_TIMER | IRQF_NO_SUSPEND | IRQF_NO_THREAD)
- 
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index ad3eaf2..bf9ae8a 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -1643,8 +1643,13 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
- 		}
- 
- 		if (!((old->flags & new->flags) & IRQF_SHARED) ||
--		    (oldtype != (new->flags & IRQF_TRIGGER_MASK)) ||
--		    ((old->flags ^ new->flags) & IRQF_ONESHOT))
-+		    (oldtype != (new->flags & IRQF_TRIGGER_MASK)))
-+			goto mismatch;
-+
-+		if ((old->flags & IRQF_ONESHOT) &&
-+		    (new->flags & IRQF_COND_ONESHOT))
-+			new->flags |= IRQF_ONESHOT;
-+		else if ((old->flags ^ new->flags) & IRQF_ONESHOT)
- 			goto mismatch;
- 
- 		/* All handlers must agree on per-cpuness */
+ static inline int armada_370_xp_msi_init(struct device_node *node,
+ 					 phys_addr_t main_int_phys_base)
 
