@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-843-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-844-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D646988BCE6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 09:56:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6FF988BDEE
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 10:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A5ED1F349E2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 08:56:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A06F303F24
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Mar 2024 09:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3BD405DC;
-	Tue, 26 Mar 2024 08:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D3E4F890;
+	Tue, 26 Mar 2024 09:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T+8foGwJ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eycbu2vf"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dD6JKrhM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MBeym/TH"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79B43FB9B;
-	Tue, 26 Mar 2024 08:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A764CE09;
+	Tue, 26 Mar 2024 09:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711443368; cv=none; b=aooom3RSjNfSB6VP0hTQRbOppHz4/GQeF3tkaWRF3tOCJjJa+h04iu4JEsUZlQbpDSJ8ZOb7M5vfjlgt61WDV6yASm8yeHAsTk0KIOHZjkLKIVA/d9+4WOuF/U2Ft1zhkZGnwhbN50uVL+BbzuOMztgv/d4CqTmC7JkHpp8Yx74=
+	t=1711444871; cv=none; b=olfzJ3F3qVVBO1kwMGsNx+bWLGEQHG/SRuJyGrjXG51ZvJLViWxv/sVKkCt7SmWCtys7eboEdTfqvzfk/F/UCA2pEsg3XCxcK5b8yAG7ZOFh3JWlW9uww/ZbAojVrKgeJxL/M5jGHx1J62KIYq2v2uXs84D6WpRbCeDMbMiqX4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711443368; c=relaxed/simple;
-	bh=OOuwkb/GnfWXmUreRzzoRubqTHVJY1oBNP8Lkd5iLO4=;
+	s=arc-20240116; t=1711444871; c=relaxed/simple;
+	bh=L1aGiArlPsZ+bQny3tvbhbXelHlaXT2szGwtPU5OQGw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=c3CmSP2Ot4n71VN7sWWJ5HevHs/Hu3YZF0tnd3hTybu6N4pDEXZrFlOIoX6hW9pAOY/WG1IKHxqb2Ixiyvcy5MhQG8hWAI1xOXwbFNwnvnNlmabPRj1OStJC9oX8vh8BXFqGrmlSMoYE1Mo6hZTHfdBLYbFQ8yaplzXsDzUr8zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T+8foGwJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eycbu2vf; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=CJWuUcGlFKj4UXEJGmTmfNfzjMnZS3QRRgoHrqj73E41wyjCAQfe2KOxe2cieUxQBNZpoFgw4iu3WPiHNzgDqm+9gnQIWUAqEaHicVBbtVGrggQA3CI4uYQ8K8IDwSnziTxCilC+avQAtaffQAYkWxLSVh96UBNt0bkmY8x8PDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dD6JKrhM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MBeym/TH; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 26 Mar 2024 08:56:04 -0000
+Date: Tue, 26 Mar 2024 09:21:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711443365;
+	s=2020; t=1711444867;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d/9oO4IBpErftDrrfF8M+qoYDPeSaTc65GGVjFBmBts=;
-	b=T+8foGwJV//5eu55WHpnCQpyudW13T/NP9RS+6uSWAgpmFvxwmPAtlKPuQpwo7R4gs8JI8
-	6FTj2se8ZRgfO+H1BU9xuO+sZNXHc/uY2tjqYfEtQ5+uh6jmhrm0+paddaC+5nXwtv2oiQ
-	23F9Oq+qBhyskwra6QEaoto5ruCsTNUz/mZk6EF1dw8Yde3hbHSMcrz9C9Ol1X4TPfp2uO
-	T6YdO5rIJKigjVMVWQHAIij6fQMVF7dO0D/narzP3C2KWIHRUfY0VwT2Dt+f6yRP+X8Vui
-	fEIrPk7j/IdaN+CiiqZNRwTaW07IQH42EBd2/zoC7HVYA1UzU4WT24sfd/vDrQ==
+	bh=2A00E/c8uqCaQHkVCU/Oq9rDbHV2kx2Rs5KES71fn6M=;
+	b=dD6JKrhM0zqXW3Lj06bAHUVyZ2AEztZI0Sk+OGTO2FkU3hzg0D0mucLMIIh3u31gNTN4Au
+	SRDmrem2P9HyUqrsIx9TnIMQgzH6ysAi9a18NfHTxqkdA0oG5GAgXqGtPOb+tTQK7OcUE8
+	bnLBTmr1z8eKC6zoCrzhEjZ3z+A1gaXEmtiTzgrdvyrRROmpTqZ3JSeX0ZWCQXeS+FTax0
+	RQN89f5jQz3BcwJQdhBSOfWBWIceTZ5fNmSk+bSQviJ7hQ3j3A7+kkqhDj4xuzSkvfvJDe
+	OckA+oo/F2/XWtkR4+K0SjckDQ1OUmK87+a2UljfTCsHe7GMqOaTA1vWRK63dQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711443365;
+	s=2020e; t=1711444867;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d/9oO4IBpErftDrrfF8M+qoYDPeSaTc65GGVjFBmBts=;
-	b=eycbu2vfekssjfL43wdz6n6Ehq41m1zyW7Ad4lp1eYzkCc8eeLPSnCtgK8X1GjIvK7KO60
-	uTeMWXp+VIZXbgCQ==
-From: "tip-bot2 for Bingsong Si" <tip-bot2@linutronix.de>
+	bh=2A00E/c8uqCaQHkVCU/Oq9rDbHV2kx2Rs5KES71fn6M=;
+	b=MBeym/THDeLwvWMPZ9s6Mc0J8IRF6UhqjjlxIr6ZdbxyHPNCDyP31o1V6uWpnXG/kd82XY
+	JEIRgm3zFgY0S/Cg==
+From: "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: x86/cpu] x86/cpu: Clear TME feature flag if TME is not enabled by BIOS
-Cc: Bingsong Si <sibs@chinatelecom.cn>, Ingo Molnar <mingo@kernel.org>,
- "Huang, Kai" <kai.huang@intel.com>, x86@kernel.org,
+ [tip: x86/urgent] x86/nmi: Upgrade NMI backtrace stall checks & messages
+Cc: Breno Leitao <leitao@debian.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240311071938.13247-1-sibs@chinatelecom.cn>
-References: <20240311071938.13247-1-sibs@chinatelecom.cn>
+In-Reply-To: <ab4d70c8-c874-42dc-b206-643018922393@paulmck-laptop>
+References: <ab4d70c8-c874-42dc-b206-643018922393@paulmck-laptop>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171144336418.10875.2002917635921003194.tip-bot2@tip-bot2>
+Message-ID: <171144486643.10875.13891742949847997035.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,46 +81,96 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     cd2236c2f49eb46443fd7573d0ddad5373577b11
-Gitweb:        https://git.kernel.org/tip/cd2236c2f49eb46443fd7573d0ddad5373577b11
-Author:        Bingsong Si <sibs@chinatelecom.cn>
-AuthorDate:    Mon, 11 Mar 2024 15:19:37 +08:00
+Commit-ID:     3186b61812c007179f1852d8e63a0f0f7dd7c783
+Gitweb:        https://git.kernel.org/tip/3186b61812c007179f1852d8e63a0f0f7dd7c783
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Thu, 07 Mar 2024 17:32:15 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 26 Mar 2024 09:49:32 +01:00
+CommitterDate: Tue, 26 Mar 2024 10:07:59 +01:00
 
-x86/cpu: Clear TME feature flag if TME is not enabled by BIOS
+x86/nmi: Upgrade NMI backtrace stall checks & messages
 
-When TME is disabled by BIOS, the dmesg output is:
+The commit to improve NMI stall debuggability:
 
-  x86/tme: not enabled by BIOS
+  344da544f177 ("x86/nmi: Print reasons why backtrace NMIs are ignored")
 
-.. and TME functionality is not enabled by the kernel, but the TME feature
-is still shown in /proc/cpuinfo.
+.. has shown value, but widespread use has also identified a few
+opportunities for improvement.
 
-Clear it.
+The systems have (as usual) shown far more creativity than that commit's
+author, demonstrating yet again that failing CPUs can do whatever they want.
 
-[ mingo: Clarified changelog ]
+In addition, the current message format is less friendly than one might
+like to those attempting to use these messages to identify failing CPUs.
 
-Signed-off-by: Bingsong Si <sibs@chinatelecom.cn>
+Therefore, separately flag CPUs that, during the full time that the
+stack-backtrace request was waiting, were always in an NMI handler,
+were never in an NMI handler, or exited one NMI handler.
+
+Also, split the message identifying the CPU and the time since that CPU's
+last NMI-related activity so that a single line identifies the CPU without
+any other variable information, greatly reducing the processing overhead
+required to identify repeat-offender CPUs.
+
+Co-developed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "Huang, Kai" <kai.huang@intel.com>
-Link: https://lore.kernel.org/r/20240311071938.13247-1-sibs@chinatelecom.cn
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/ab4d70c8-c874-42dc-b206-643018922393@paulmck-laptop
 ---
- arch/x86/kernel/cpu/intel.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/nmi.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index be30d7f..3c3e7e5 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -228,6 +228,7 @@ static void detect_tme_early(struct cpuinfo_x86 *c)
- 	if (!TME_ACTIVATE_LOCKED(tme_activate) || !TME_ACTIVATE_ENABLED(tme_activate)) {
- 		pr_info_once("x86/tme: not enabled by BIOS\n");
- 		mktme_status = MKTME_DISABLED;
-+		clear_cpu_cap(c, X86_FEATURE_TME);
- 		return;
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index 9a5b372..ed163c8 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -580,7 +580,7 @@ EXPORT_SYMBOL_GPL(asm_exc_nmi_kvm_vmx);
+ 
+ static char *nmi_check_stall_msg[] = {
+ /*									*/
+-/* +--------- nsp->idt_seq_snap & 0x1: CPU is in NMI handler.		*/
++/* +--------- nmi_seq & 0x1: CPU is currently in NMI handler.		*/
+ /* | +------ cpu_is_offline(cpu)					*/
+ /* | | +--- nsp->idt_calls_snap != atomic_long_read(&nsp->idt_calls):	*/
+ /* | | |	NMI handler has been invoked.				*/
+@@ -628,22 +628,26 @@ void nmi_backtrace_stall_check(const struct cpumask *btp)
+ 		nmi_seq = READ_ONCE(nsp->idt_nmi_seq);
+ 		if (nsp->idt_nmi_seq_snap + 1 == nmi_seq && (nmi_seq & 0x1)) {
+ 			msgp = "CPU entered NMI handler function, but has not exited";
+-		} else if ((nsp->idt_nmi_seq_snap & 0x1) != (nmi_seq & 0x1)) {
+-			msgp = "CPU is handling NMIs";
+-		} else {
+-			idx = ((nsp->idt_seq_snap & 0x1) << 2) |
++		} else if (nsp->idt_nmi_seq_snap == nmi_seq ||
++			   nsp->idt_nmi_seq_snap + 1 == nmi_seq) {
++			idx = ((nmi_seq & 0x1) << 2) |
+ 			      (cpu_is_offline(cpu) << 1) |
+ 			      (nsp->idt_calls_snap != atomic_long_read(&nsp->idt_calls));
+ 			msgp = nmi_check_stall_msg[idx];
+ 			if (nsp->idt_ignored_snap != READ_ONCE(nsp->idt_ignored) && (idx & 0x1))
+ 				modp = ", but OK because ignore_nmis was set";
+-			if (nmi_seq & 0x1)
+-				msghp = " (CPU currently in NMI handler function)";
+-			else if (nsp->idt_nmi_seq_snap + 1 == nmi_seq)
++			if (nsp->idt_nmi_seq_snap + 1 == nmi_seq)
+ 				msghp = " (CPU exited one NMI handler function)";
++			else if (nmi_seq & 0x1)
++				msghp = " (CPU currently in NMI handler function)";
++			else
++				msghp = " (CPU was never in an NMI handler function)";
++		} else {
++			msgp = "CPU is handling NMIs";
+ 		}
+-		pr_alert("%s: CPU %d: %s%s%s, last activity: %lu jiffies ago.\n",
+-			 __func__, cpu, msgp, modp, msghp, j - READ_ONCE(nsp->recv_jiffies));
++		pr_alert("%s: CPU %d: %s%s%s\n", __func__, cpu, msgp, modp, msghp);
++		pr_alert("%s: last activity: %lu jiffies ago.\n",
++			 __func__, j - READ_ONCE(nsp->recv_jiffies));
  	}
+ }
  
 
