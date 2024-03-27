@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-849-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-850-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0616F88E4B6
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Mar 2024 15:11:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B732588E806
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Mar 2024 16:11:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B08FF2A3640
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Mar 2024 14:11:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55577B35578
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Mar 2024 14:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB19212F36F;
-	Wed, 27 Mar 2024 12:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AE4130A6A;
+	Wed, 27 Mar 2024 13:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Zj7G/oZx";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qBmX0Jpu"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U+SNVTVB";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9biMVoDr"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426661327F5;
-	Wed, 27 Mar 2024 12:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04977130A62;
+	Wed, 27 Mar 2024 13:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711543225; cv=none; b=MkdmgaKTNBlNmylyUt2bgyxJGDOcxw/Ch2xjznMPYazYhPwLRHsHcGVZ3yRnKBq4qHO3tcAHpYtMPONRXf07ZueQBHSDo9Foh4aQAlIr/aMRqG/tWBZQS3T9tpf0/soxuFU4Tq0rHAUrOkfdg6ron3/0tRFiRTGGnccNKBHgGhA=
+	t=1711547669; cv=none; b=kMxfesqfcEJUu9nA82trs97WJiEW2i6kQ5hDM2FvbpOYhwJ/xhk0jaB+jeWLXSrxGMzyGKtR4VG0szDDp46enG16s6IEn45t/H2kSR6UiacPHyvBkgmexpfWcukJ5rzjeudDNK1L9W6ZpoKy9KBeZEtxsTQSvcGqTMmgen2kHGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711543225; c=relaxed/simple;
-	bh=+sOODT5e67XLkmhCROO0EqYZhe0U9bLPRF9Y8p65EzI=;
+	s=arc-20240116; t=1711547669; c=relaxed/simple;
+	bh=Hbd3oWX03uwgOp8a2/PzaUpi1gu4Eu9ujvTUgEuMWWk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=n9Pr8LmtcVnGq9vqn2jwaSsVxFi1IxkD0KS6KRDgiX6NoooHJ78h9R2nm6Y4Lo3kUr4KhyhHnvrBi1/UcNp8Ff3UFldkSGQQxHnJLt827dzBxg5p/M16kSS803y6DCREw1/nGmB8W1mQcipO+lost6B/v70iZZ0APKkwgujr89c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Zj7G/oZx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qBmX0Jpu; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Lmcb4RCS9GTehHst8f8vNn/pEUl0dyyivXLhnmhD8HRw0Oz1BJJSnQHhM3Ez/0G7GdE9r3brUT1jMGrYyvuF1q5/CbjEh8huYZ4ZbUFw7LP/ys3SQ3JSMqgnf0Xm+pJzArx3mHedhOnokVQ4Xk+akckXV1ofaEk4fhVBMlXuv5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U+SNVTVB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9biMVoDr; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 27 Mar 2024 12:40:21 -0000
+Date: Wed, 27 Mar 2024 13:54:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711543222;
+	s=2020; t=1711547666;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kuaxQ8kBdZjvh6Sxq71CTOnMtmfdgcLXShHxS+2xNlI=;
-	b=Zj7G/oZx4wo5jAdoU5z68zbSmqhMAQWYyHVZxV+ofptMpF2cKa1/QCaGYijNRH/XJsP2/8
-	aEfHMCJh9TX19ujeZDZS7WpikcPL5FKZffqYedoGVI6eYt+jL4ORjutIoX5hf8nJQ+NCw0
-	iQev+NRSnqL8xZCPwmv6Pk2nAF2W/64oA8Le6GjCsW/LeleDyerTScMg/vazYyktlWz+iA
-	naPLVqNDxI5sUYIf/VRlp6U5UrYJ3+1FaLhjAFovR84leysafyu3ebDSmeEYwPciLwI6fF
-	BuCCNt27szyN+JX/5qJu7IFKPnV3ouX7Jjlt3MSnZatSiH7qAgudm4be8ltrIA==
+	bh=aX/b2fH59/QoshOtDLF5aBhUA82IfpCHJbAu6eh8aNA=;
+	b=U+SNVTVB+fRhWGa5kDgbn8dLUOZD0e9FXp+YWf0nysL1emuq67X7kuYwqlWFUXAG54j1e/
+	JNjCiGq92GWJ05Xyz/nyZJfZp+f76O/ZxZHQnjTRjdy14cSDcnz18MXnMPOD/eGq5qysL4
+	B5FE6QrAmNcmkSV0489EgHtJeCeUs/56ucnTJ8SyStZsVk/Txxn+QWqMVasshCH+APW+rx
+	igYJVEu1myjAmjWUlFoM+qeeR5MZloy0WR2uHZgBVS4lHoFHWLdPapW9eK5yOiD/T4RwLl
+	NcNvi0YS5PLpjrLsIaNG9Y5sSQin9QcXPauw9m2xAekwTb0kdrf+0En2UtXTuA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711543222;
+	s=2020e; t=1711547666;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kuaxQ8kBdZjvh6Sxq71CTOnMtmfdgcLXShHxS+2xNlI=;
-	b=qBmX0JpuBkmmOnnqzLRjH0EFj9uJBQf6XdyVVjG0UK0gIZANq4Zdfq6+W0bpZ4va3AM9Py
-	/K3cfVlkoccXagAA==
-From: "tip-bot2 for Alex Shi" <tip-bot2@linutronix.de>
+	bh=aX/b2fH59/QoshOtDLF5aBhUA82IfpCHJbAu6eh8aNA=;
+	b=9biMVoDrckGZfzZyN4y9kGAxlgbFb0oP7TQaIFYXPf1ZQLFXoln2tuyLpJ7Kj5r/Sy9Aep
+	b3E44xIlDOLrsUBg==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/bugs] x86/dumpstack: Use uniform "Oops: " prefix for die() messages
-Cc: Alex Shi <alexs@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+Subject: [tip: timers/urgent] MAINTAINERS: Add co-maintainers for time[rs]
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
+ "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+ Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240327024419.471433-1-alexs@kernel.org>
-References: <20240327024419.471433-1-alexs@kernel.org>
+In-Reply-To: <20240325172048.548199937@linutronix.de>
+References: <20240325172048.548199937@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171154322111.10875.11693354409974160406.tip-bot2@tip-bot2>
+Message-ID: <171154766510.10875.12229558418881097070.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,50 +80,118 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/bugs branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     f9f62a877da1e6f6e9d58bd779c1c77052eb04ab
-Gitweb:        https://git.kernel.org/tip/f9f62a877da1e6f6e9d58bd779c1c77052eb04ab
-Author:        Alex Shi <alexs@kernel.org>
-AuthorDate:    Wed, 27 Mar 2024 10:44:19 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 27 Mar 2024 08:45:19 +01:00
+Commit-ID:     1fed2f1ea62aa79e8c1df79b26e5bf5c8cf45065
+Gitweb:        https://git.kernel.org/tip/1fed2f1ea62aa79e8c1df79b26e5bf5c8cf45065
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 25 Mar 2024 18:23:17 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 27 Mar 2024 14:48:11 +01:00
 
-x86/dumpstack: Use uniform "Oops: " prefix for die() messages
+MAINTAINERS: Add co-maintainers for time[rs]
 
-panic() prints a uniform prompt: "Kernel panic - not syncing:",
-but die() messages don't have any of that, the message is the
-raw user-defined message with no prefix.
+Anna-Maria and Frederic are working in this area for years. Volunteer them
+into co-maintainer roles.
 
-There's companies that collect thousands of die() messages per week,
-but w/o a prompt in dmesg, it's hard to write scripts to collect and
-analize the reasons.
+While at it bring the file lists up to date.
 
-Add a uniform "Oops:" prefix like other architectures.
-
-[ mingo: Rewrote changelog. ]
-
-Signed-off-by: Alex Shi <alexs@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240327024419.471433-1-alexs@kernel.org
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20240325172048.548199937@linutronix.de
 ---
- arch/x86/kernel/dumpstack.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ MAINTAINERS | 35 +++++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
-index 44a91ef..a7d5626 100644
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -405,8 +405,8 @@ static void __die_header(const char *str, struct pt_regs *regs, long err)
- 		pr = IS_ENABLED(CONFIG_PREEMPT_RT) ? " PREEMPT_RT" : " PREEMPT";
+diff --git a/MAINTAINERS b/MAINTAINERS
+index aa3b947..c8c4a70 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9653,7 +9653,9 @@ L:	linux-input@vger.kernel.org
+ S:	Maintained
+ F:	drivers/hid/hid-logitech-hidpp.c
  
- 	printk(KERN_DEFAULT
--	       "%s: %04lx [#%d]%s%s%s%s%s\n", str, err & 0xffff, ++die_counter,
--	       pr,
-+	       "Oops: %s: %04lx [#%d]%s%s%s%s%s\n", str, err & 0xffff,
-+	       ++die_counter, pr,
- 	       IS_ENABLED(CONFIG_SMP)     ? " SMP"             : "",
- 	       debug_pagealloc_enabled()  ? " DEBUG_PAGEALLOC" : "",
- 	       IS_ENABLED(CONFIG_KASAN)   ? " KASAN"           : "",
+-HIGH-RESOLUTION TIMERS, CLOCKEVENTS
++HIGH-RESOLUTION TIMERS, TIMER WHEEL, CLOCKEVENTS
++M:	Anna-Maria Behnsen <anna-maria@linutronix.de>
++M:	Frederic Weisbecker <frederic@kernel.org>
+ M:	Thomas Gleixner <tglx@linutronix.de>
+ L:	linux-kernel@vger.kernel.org
+ S:	Maintained
+@@ -9661,9 +9663,13 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core
+ F:	Documentation/timers/
+ F:	include/linux/clockchips.h
+ F:	include/linux/hrtimer.h
++F:	include/linux/timer.h
+ F:	kernel/time/clockevents.c
+ F:	kernel/time/hrtimer.c
+-F:	kernel/time/timer_*.c
++F:	kernel/time/timer.c
++F:	kernel/time/timer_list.c
++F:	kernel/time/timer_migration.*
++F:	tools/testing/selftests/timers/
+ 
+ HIGH-SPEED SCC DRIVER FOR AX.25
+ L:	linux-hams@vger.kernel.org
+@@ -15627,9 +15633,10 @@ F:	drivers/misc/nsm.c
+ F:	include/uapi/linux/nsm.h
+ 
+ NOHZ, DYNTICKS SUPPORT
++M:	Anna-Maria Behnsen <anna-maria@linutronix.de>
+ M:	Frederic Weisbecker <frederic@kernel.org>
+-M:	Thomas Gleixner <tglx@linutronix.de>
+ M:	Ingo Molnar <mingo@kernel.org>
++M:	Thomas Gleixner <tglx@linutronix.de>
+ L:	linux-kernel@vger.kernel.org
+ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/nohz
+@@ -17590,15 +17597,20 @@ F:	drivers/pnp/
+ F:	include/linux/pnp.h
+ 
+ POSIX CLOCKS and TIMERS
++M:	Anna-Maria Behnsen <anna-maria@linutronix.de>
++M:	Frederic Weisbecker <frederic@kernel.org>
+ M:	Thomas Gleixner <tglx@linutronix.de>
+ L:	linux-kernel@vger.kernel.org
+ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core
+ F:	fs/timerfd.c
+ F:	include/linux/time_namespace.h
+-F:	include/linux/timer*
++F:	include/linux/timerfd.h
++F:	include/uapi/linux/time.h
++F:	include/uapi/linux/timerfd.h
+ F:	include/trace/events/timer*
+-F:	kernel/time/*timer*
++F:	kernel/time/itimer.c
++F:	kernel/time/posix-*
+ F:	kernel/time/namespace.c
+ 
+ POWER MANAGEMENT CORE
+@@ -22254,13 +22266,20 @@ S:	Supported
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core
+ F:	include/linux/clocksource.h
+ F:	include/linux/time.h
++F:	include/linux/timekeeper_internal.h
++F:	include/linux/timekeeping.h
+ F:	include/linux/timex.h
+ F:	include/uapi/linux/time.h
+ F:	include/uapi/linux/timex.h
+ F:	kernel/time/alarmtimer.c
+-F:	kernel/time/clocksource.c
+-F:	kernel/time/ntp.c
+-F:	kernel/time/time*.c
++F:	kernel/time/clocksource*
++F:	kernel/time/ntp*
++F:	kernel/time/time.c
++F:	kernel/time/timeconst.bc
++F:	kernel/time/timeconv.c
++F:	kernel/time/timecounter.c
++F:	kernel/time/timekeeping*
++F:	kernel/time/time_test.c
+ F:	tools/testing/selftests/timers/
+ 
+ TIPC NETWORK LAYER
 
