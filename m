@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-853-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-854-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64CC088FD5D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Mar 2024 11:47:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9ED88FD84
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Mar 2024 11:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04BDFB23E67
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Mar 2024 10:47:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29D6E294902
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Mar 2024 10:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F977D096;
-	Thu, 28 Mar 2024 10:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ACCD7D3FD;
+	Thu, 28 Mar 2024 10:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="i4VpQc7W";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0GQ3z+k/"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Vk7nZ8Zo";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a/3LuUBF"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F19548ED;
-	Thu, 28 Mar 2024 10:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DAB7D08A;
+	Thu, 28 Mar 2024 10:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711622860; cv=none; b=Q5gapA8fVOmtbKkXA195Y/DznYCx022AUn2dDAU6b1w1tNkW4tUkGKKx58Nz5GbIlxXTcUT5uBTIdLevOlr9Vh7FjDviZBxoNmDTXicPM4/eit/Ip0u86bkeSgQ44OCEntKgxZxqD+Kwp2O5obQFIWJJLmQUqSoLXeTD7yKsu2I=
+	t=1711623371; cv=none; b=kdwnhSkhz/ydi6lI0BwMO1ll3TJvOY+wf8bXFbBh28DXZF13hQaRxkvB61zJnwDgw1BasPvp8R+V9Fv8isatNGddRTmfIqNJSQ++fg3oRb+awjSevRwh2MY7Xx6s/pd/aq+VLclyYEwgQBbXbshLtffly5j+QD7KDw1mmPTws84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711622860; c=relaxed/simple;
-	bh=1lWqY7ww+03iHVlLjQ4XgDXJv22CG5zhP/Hot8DPtEo=;
+	s=arc-20240116; t=1711623371; c=relaxed/simple;
+	bh=SXJxnz/9fgB3shCu9Wg4h5fiFmz/MAUo2JfmHvadSpU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Zm1IksnNR48WDaFjDTSQ1j6zqJ3Ax7ZM/Kx7Xqh8QCjLvNal+lim2G4uWm7DqT9gQFyDlL3CiKKxBb6vMUkBSpKurLSPjOoRotxw/RD++M7KyaUof4ZENidl9TM0mJu0gZpiDEjHSX4FmhyTRJoLNs09GNW+s/NwhGIZLPvKm5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=i4VpQc7W; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0GQ3z+k/; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=dq0Ixk2WSpvDEBRWtgLEIfDzq7yeKxRmTy6uosUpE5LVGrUk888U0efazn0nbjmlR15EgUsxpysIqf/fPDZlkiX+wTTzmAQMFXMCKhzFyWkL0ZOrQepLm8F57IzP+PXrTnCxF6OP6kLxZ1FuLDZL7RVHZSB4vt2ABTviD/jeVBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Vk7nZ8Zo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a/3LuUBF; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 28 Mar 2024 10:47:36 -0000
+Date: Thu, 28 Mar 2024 10:56:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711622856;
+	s=2020; t=1711623367;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h2QPzRuhw07tXH8Qd2OrMZkRj3Gca3fhPoDDAvZZ/sg=;
-	b=i4VpQc7W8FE0ZzEEnnRKfvg2uPaXYGzWnEQqGfJQBe1WavSFU194KvpJxrUiaV2Ojy6rIk
-	48ss/I8uzrNSfEdxLAzOi+V+F7+FRrkLwP16n7sz+zpm7Etwuf3sgQ5TT5qX4TMQTgSVLC
-	Q9F54rleIie8L1qwHBftjaBiALgoS2ITvyNtjCPCBkMbQOXd9LnCn6DiWyop2eSBEeEdB/
-	MSnjIUeZ4P6mbxvzJrFtJA3oFPDPVfKZGf3+Vhpd0mqbFUW6A1F7LwxCI76xThl2YWxsMQ
-	9kuXgthBc6bJcAcYeXgTaCyXxsFPTWo3nval1s9oQY9kaY3LJVE3bF1nLzrYHQ==
+	bh=Ijx70PGXxDUWe1LR7/nBQ3plW6vk21x6ud6Lp8Dn8OA=;
+	b=Vk7nZ8ZoS3/7HDoqKa9legACOX8+OUM8eVABnxFCjenUZMroM03Kg1zDncPB0DxnrSW3TW
+	ISO05Z74ihXVe3S6BD7Pyrv3tlh8Qo/k5y644PRjHyxEYfc8P8S3a2IwvelLAjH4nSd5a1
+	kG6/0qnZ6ypEVdFnK1HiQstVosU458dYxlmGz1TWtgh7Fuvltx3pjUNq8FBNxPoeRtFZuV
+	3TE0gGdwA1lVsSAz/GmnhEhXe26fIHdkzUheyzXIQpo+JDEPgyjbng+tArEmbp2kuJlC+I
+	leIaNvEbCQhY//3CTkZuFI/EpdeLOmGzI1QPJlGa/gfY3Njlfxmtp1GO3YFeqg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711622856;
+	s=2020e; t=1711623367;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h2QPzRuhw07tXH8Qd2OrMZkRj3Gca3fhPoDDAvZZ/sg=;
-	b=0GQ3z+k/w7bPCJtyOBoEAIOsCHM5CyuPiwa8WtDjMBqwjK8MF2n2RJzDkurp9ASvpBLzDV
-	uJlG4ymqoU8bRFCQ==
-From: "tip-bot2 for Shrikanth Hegde" <tip-bot2@linutronix.de>
+	bh=Ijx70PGXxDUWe1LR7/nBQ3plW6vk21x6ud6Lp8Dn8OA=;
+	b=a/3LuUBFUZGx120cppZu9130rwTm8dLyzgplpHVMRMiTAqY/8QhWtHP7yc+k8y3WeeDsbO
+	v0hrSetRMDKpsHBQ==
+From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: sched/core] sched/fair: Check root_domain::overload value before update
-Cc: Shrikanth Hegde <sshegde@linux.ibm.com>, Ingo Molnar <mingo@kernel.org>,
- Qais Yousef <qyousef@layalina.io>,
- Vincent Guittot <vincent.guittot@linaro.org>, Mel Gorman <mgorman@suse.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240325054505.201995-2-sshegde@linux.ibm.com>
-References: <20240325054505.201995-2-sshegde@linux.ibm.com>
+Subject: [tip: sched/core] sched/fair: Rename SG_OVERLOAD to SG_OVERLOADED
+Cc: Ingo Molnar <mingo@kernel.org>, Qais Yousef <qyousef@layalina.io>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <ZgVHq65XKsOZpfgK@gmail.com>
+References: <ZgVHq65XKsOZpfgK@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171162285612.10875.3210405155539598767.tip-bot2@tip-bot2>
+Message-ID: <171162336698.10875.16744866913045067877.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,79 +83,81 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c628db0a6831f80e89873ee44f1b40e3ab3216c6
-Gitweb:        https://git.kernel.org/tip/c628db0a6831f80e89873ee44f1b40e3ab3216c6
-Author:        Shrikanth Hegde <sshegde@linux.ibm.com>
-AuthorDate:    Mon, 25 Mar 2024 11:15:04 +05:30
+Commit-ID:     7bda10ba7f453729f210264dd07d38989fb858d9
+Gitweb:        https://git.kernel.org/tip/7bda10ba7f453729f210264dd07d38989fb858d9
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Thu, 28 Mar 2024 11:44:16 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 28 Mar 2024 11:30:13 +01:00
+CommitterDate: Thu, 28 Mar 2024 11:44:44 +01:00
 
-sched/fair: Check root_domain::overload value before update
+sched/fair: Rename SG_OVERLOAD to SG_OVERLOADED
 
-The root_domain::overload flag is 1 when there's any rq
-in the root domain that has 2 or more running tasks. (Ie. it's overloaded.)
+Follow the rename of the root_domain::overloaded flag.
 
-The root_domain structure itself is a global structure per cpuset island.
+Note that this also matches the SG_OVERUTILIZED flag better.
 
-The ::overload flag is maintained the following way:
-
-  - Set when adding a second task to the runqueue.
-
-  - It is cleared in update_sd_lb_stats() during load balance,
-    if none of the rqs have 2 or more running tasks.
-
-This flag is used during newidle balance to see if its worth doing a full
-load balance pass, which can be an expensive operation. If it is set,
-then newidle balance will try to aggressively pull a task.
-
-Since commit:
-
-  630246a06ae2 ("sched/fair: Clean-up update_sg_lb_stats parameters")
-
-::overload is being written unconditionally, even if it has the same
-value. The change in value of this depends on the workload, but on
-typical workloads, it doesn't change all that often: a system is
-either dominantly overloaded for substantial amounts of time, or not.
-
-Extra writes to this semi-global structure cause unnecessary overhead, extra
-bus traffic, etc. - so avoid it as much as possible.
-
-Perf probe stats show that it's worth making this change (numbers are
-with patch applied):
-
-	1M    probe:sched_balance_newidle_L38
-	139   probe:update_sd_lb_stats_L53     <====== 1->0 writes
-	129K  probe:add_nr_running_L12
-	74    probe:add_nr_running_L13         <====== 0->1 writes
-	54K   probe:update_sd_lb_stats_L50     <====== reads
-
-These numbers prove that actual change in the ::overload value is (much) less
-frequent: L50 is much larger at ~54,000 accesses vs L53+L13 of 139+74.
-
-[ mingo: Rewrote the changelog. ]
-
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Qais Yousef <qyousef@layalina.io>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Link: https://lore.kernel.org/r/20240325054505.201995-2-sshegde@linux.ibm.com
+Cc: Qais Yousef <qyousef@layalina.io>
+Cc: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/ZgVHq65XKsOZpfgK@gmail.com
 ---
- kernel/sched/fair.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c  | 6 +++---
+ kernel/sched/sched.h | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 3846230..600fdde 100644
+index bf10665..839a97a 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -10657,7 +10657,8 @@ static inline void update_sd_lb_stats(struct lb_env *env, struct sd_lb_stats *sd
+@@ -9961,7 +9961,7 @@ static inline void update_sg_lb_stats(struct lb_env *env,
+ 		sgs->sum_nr_running += nr_running;
+ 
+ 		if (nr_running > 1)
+-			*sg_status |= SG_OVERLOAD;
++			*sg_status |= SG_OVERLOADED;
+ 
+ 		if (cpu_overutilized(i))
+ 			*sg_status |= SG_OVERUTILIZED;
+@@ -9986,7 +9986,7 @@ static inline void update_sg_lb_stats(struct lb_env *env,
+ 			/* Check for a misfit task on the cpu */
+ 			if (sgs->group_misfit_task_load < rq->misfit_task_load) {
+ 				sgs->group_misfit_task_load = rq->misfit_task_load;
+-				*sg_status |= SG_OVERLOAD;
++				*sg_status |= SG_OVERLOADED;
+ 			}
+ 		} else if (env->idle && sched_reduced_capacity(rq, env->sd)) {
+ 			/* Check for a task running on a CPU with reduced capacity */
+@@ -10657,7 +10657,7 @@ static inline void update_sd_lb_stats(struct lb_env *env, struct sd_lb_stats *sd
  
  	if (!env->sd->parent) {
  		/* update overload indicator if we are at root domain */
--		WRITE_ONCE(env->dst_rq->rd->overload, sg_status & SG_OVERLOAD);
-+		if (READ_ONCE(env->dst_rq->rd->overload) != (sg_status & SG_OVERLOAD))
-+			WRITE_ONCE(env->dst_rq->rd->overload, sg_status & SG_OVERLOAD);
+-		set_rd_overloaded(env->dst_rq->rd, sg_status & SG_OVERLOAD);
++		set_rd_overloaded(env->dst_rq->rd, sg_status & SG_OVERLOADED);
  
  		/* Update over-utilization (tipping point, U >= 0) indicator */
  		set_rd_overutilized_status(env->dst_rq->rd,
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index c7e7ae1..07c6669 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -851,7 +851,7 @@ struct perf_domain {
+ };
+ 
+ /* Scheduling group status flags */
+-#define SG_OVERLOAD		0x1 /* More than one runnable task on a CPU. */
++#define SG_OVERLOADED		0x1 /* More than one runnable task on a CPU. */
+ #define SG_OVERUTILIZED		0x2 /* One or more CPUs are over-utilized. */
+ 
+ /*
+@@ -2541,7 +2541,7 @@ static inline void add_nr_running(struct rq *rq, unsigned count)
+ 
+ #ifdef CONFIG_SMP
+ 	if (prev_nr < 2 && rq->nr_running >= 2) {
+-		set_rd_overloaded(rq->rd, SG_OVERLOAD);
++		set_rd_overloaded(rq->rd, SG_OVERLOADED);
+ 	}
+ #endif
+ 
 
