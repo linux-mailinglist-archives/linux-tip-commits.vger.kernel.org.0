@@ -1,177 +1,199 @@
-Return-Path: <linux-tip-commits+bounces-866-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-870-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B8C8932C2
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 31 Mar 2024 18:27:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05139893921
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Apr 2024 10:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B84B0B221DE
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 31 Mar 2024 16:27:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A932E281CE7
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Apr 2024 08:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E94145340;
-	Sun, 31 Mar 2024 16:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F045CA4A;
+	Mon,  1 Apr 2024 08:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LoG92uf8";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7Ih3gkHa"
-Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZLb1zm7q";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4sTSJedq"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3774757FB;
-	Sun, 31 Mar 2024 16:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=62.96.220.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711902365; cv=pass; b=Acjcn5/YTofP1Z09yUTvgoS3fJ6iy2Oze2jPFq2hrES2CCHFuKhfN//pHQbFMvsH8YulaMPu2G1D8O5eKy2OO8z9QGRp84H2+TxwOhezcwEm7TRhyXTTo+Avp/SJXgDYoUinAtBWqsXeThoGTQV+aXz/OgdTSni3EN6lfS6IYps=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711902365; c=relaxed/simple;
-	bh=kI2RgQKIy46E4/XMESMBolqMfp3inpi7STqcXxY3bTc=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=WlzxiA6jMOUw/45VlZpG9xCUsA84J1F02RSKfnjf6PkIhy/wVlV8BH3LJCOvNrxxHzOgLyNOFofBRE6pt1MftHoJ2q6pIMf4fOjOxEPwmElRKxfG64j8dZNAABEH3tueAfO6EINOU5x2uMgJoXR1SaCsupoM+Yie6Kj4JW/J3T4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=fail smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LoG92uf8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7Ih3gkHa; arc=none smtp.client-ip=193.142.43.55; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; arc=pass smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=linutronix.de
-Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 950472083F;
-	Sun, 31 Mar 2024 18:26:00 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from a.mx.secunet.com ([127.0.0.1])
-	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id P5ZdU86nM3RI; Sun, 31 Mar 2024 18:25:59 +0200 (CEST)
-Received: from mailout1.secunet.com (mailout1.secunet.com [62.96.220.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id C2851207C6;
-	Sun, 31 Mar 2024 18:25:59 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com C2851207C6
-Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
-	by mailout1.secunet.com (Postfix) with ESMTP id B683080004E;
-	Sun, 31 Mar 2024 18:25:59 +0200 (CEST)
-Received: from mbx-essen-01.secunet.de (10.53.40.197) by
- cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 31 Mar 2024 18:25:59 +0200
-Received: from Pickup by mbx-essen-01.secunet.de with Microsoft SMTP Server id
- 15.1.2507.17; Sun, 31 Mar 2024 16:23:52 +0000
-X-sender: <linux-kernel+bounces-125891-steffen.klassert=secunet.com@vger.kernel.org>
-X-Receiver: <steffen.klassert@secunet.com>
- ORCPT=rfc822;steffen.klassert@secunet.com NOTIFY=NEVER;
- X-ExtendedProps=BQAVABYAAgAAAAUAFAARAPDFCS25BAlDktII2g02frgPADUAAABNaWNyb3NvZnQuRXhjaGFuZ2UuVHJhbnNwb3J0LkRpcmVjdG9yeURhdGEuSXNSZXNvdXJjZQIAAAUAagAJAAEAAAAAAAAABQAWAAIAAAUAQwACAAAFAEYABwADAAAABQBHAAIAAAUAEgAPAGIAAAAvbz1zZWN1bmV0L291PUV4Y2hhbmdlIEFkbWluaXN0cmF0aXZlIEdyb3VwIChGWURJQk9IRjIzU1BETFQpL2NuPVJlY2lwaWVudHMvY249U3RlZmZlbiBLbGFzc2VydDY4YwUACwAXAL4AAACheZxkHSGBRqAcAp3ukbifQ049REI2LENOPURhdGFiYXNlcyxDTj1FeGNoYW5nZSBBZG1pbmlzdHJhdGl2ZSBHcm91cCAoRllESUJPSEYyM1NQRExUKSxDTj1BZG1pbmlzdHJhdGl2ZSBHcm91cHMsQ049c2VjdW5ldCxDTj1NaWNyb3NvZnQgRXhjaGFuZ2UsQ049U2VydmljZXMsQ049Q29uZmlndXJhdGlvbixEQz1zZWN1bmV0LERDPWRlBQAOABEABiAS9uuMOkqzwmEZDvWNNQUAHQAPAAwAAABtYngtZXNzZW4tMDIFADwAAgAADwA2AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5NYWlsUmVjaXBpZW50LkRpc3BsYXlOYW1lDwARAAAAS2xhc3NlcnQsIFN0ZWZmZW4FAAwAAgAABQBsAAIAAAUAWAAXAEoAAADwxQktuQQJQ5LSCNoNNn64Q049S2xhc3NlcnQgU3RlZmZlbixPVT1Vc2VycyxPVT1NaWdyYXRpb24sREM9c2VjdW5ldCxEQz1kZQUAJgACAAEFACIADwAxAAAAQXV0b1Jlc3BvbnNlU3VwcHJlc3M6IDANClRyYW5zbWl0SGlzdG9ye
-	TogRmFsc2UNCg8ALwAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuRXhwYW5zaW9uR3JvdXBUeXBlDwAVAAAATWVtYmVyc0dyb3VwRXhwYW5zaW9uBQAjAAIAAQ==
-X-CreatedBy: MSExchange15
-X-HeloDomain: b.mx.secunet.com
-X-ExtendedProps: BQBjAAoAgaNAQuxQ3AgFAGEACAABAAAABQA3AAIAAA8APAAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5Pcmdhbml6YXRpb25TY29wZREAAAAAAAAAAAAAAAAAAAAAAAUASQACAAEFAGIACgAzAAAAo4oAAAUABAAUIAEAAAAcAAAAc3RlZmZlbi5rbGFzc2VydEBzZWN1bmV0LmNvbQUABgACAAEFACkAAgABDwAJAAAAQ0lBdWRpdGVkAgABBQACAAcAAQAAAAUAAwAHAAAAAAAFAAUAAgABBQBkAA8AAwAAAEh1Yg==
-X-Source: SMTP:Default MBX-DRESDEN-01
-X-SourceIPAddress: 62.96.220.37
-X-EndOfInjectedXHeaders: 14673
-X-Virus-Scanned: by secunet
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=139.178.88.99; helo=sv.mirrors.kernel.org; envelope-from=linux-kernel+bounces-125891-steffen.klassert=secunet.com@vger.kernel.org; receiver=steffen.klassert@secunet.com 
-DKIM-Filter: OpenDKIM Filter v2.11.0 b.mx.secunet.com 0B65A2025D
-Authentication-Results: b.mx.secunet.com;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LoG92uf8";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7Ih3gkHa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6336EDDA7;
+	Mon,  1 Apr 2024 08:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711833791; cv=none; b=N60ZmogJcIrY2L6MU/GRXh8t0VDW9S1abCOo4sQlXFcD6zL8NQi4tuNRdBre1E0aZPSlGtcaHK/Dm/vagHxq1C1ZnVOJoBS79H4zJToADw/r0XmdLVxRdQH/3XF7SY2i60hEKYuX88gnJPfBg+SdUdNGTk/NfjscCJRY6BRN5GU=
-ARC-Message-Signature: i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711833791; c=relaxed/simple;
-	bh=kI2RgQKIy46E4/XMESMBolqMfp3inpi7STqcXxY3bTc=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=NlPsmfyHkpTTQczfzqwZ5gghbr4Yfpvy1r9m1YwJ2VfZgh2tp/yLaSxgVolRrMwsyEA601cTAlpzXTjVCGO2T5zMSVjL01QzaeLkBRvAuGhRh5V+RoxSb52hwRuJSwqmfEGacFGdETjFydSlNgc/Ha7NTiFrQD6OLu8wSg+JP6s=
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LoG92uf8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7Ih3gkHa; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711961257; cv=none; b=W7pxBSclb2jP/++eiKKWuhkUWi8f9GzuNUQYKHmXFwrN6XmGUm7twMjHbYGo4KgdhDWDwqk0sc8ADaDB1V0wdOB9HsnB8ihdCLT+0xsnCwKkup9bNNmoXYeZ+TseXyPfsFD1TYbgUO3cNnfKS+O1nEpJa318OI3o2RHGbBi5Uy4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711961257; c=relaxed/simple;
+	bh=WacFEThZdZ/CeEkhPpaOXAkvpDcAJFT5q5lXYhowVgs=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=NqwqAXWFt1wviDvYm2bu91EnfR6kJq3EeVtNP8g2UGtCV5JJF2YXjNgCqQWPz1TfyMVDQcNDVg43hmzeU7PNU0yqUmIQiE0XTjzZNHoN4aZPuiHIH9WODzpXiZHGBRkqpa6cTvBauy31AXUu7qp8aKF1izQL2tdc7gJD7hyExOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZLb1zm7q; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4sTSJedq; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 30 Mar 2024 21:23:06 -0000
+Date: Mon, 01 Apr 2024 08:47:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711833787;
+	s=2020; t=1711961247;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=cO9DAoslNiaRo5wWS5uXMV/wBejmz6LP19eIIxQWH84=;
-	b=LoG92uf8MRxCmeUIR8y99oipc+Ec0zFD01sBvcCvF4kvwqhzYticOJLJI2Imw1G5vJo48K
-	Bhf+RiMe9EgjlzZmzkGKZ82tPKRa4isU0H5U59l7Aah0dn0cZjEbtzqXVjFssNM/ZS+gTX
-	75e/I4LlhP+L2LPHGaQiQw0YW7UiJy293F51HKFjcxZPZVnTZl9+nygJ/8mnoElJP8/jRe
-	krQzC0A9e5CCsisk6s9o87MvmiS5RwCmOnay9T8/ZhxXCRdIq9GI6UnWS/2ngoR740U/xp
-	mDIfcTPjXqgRfw0MXOVBb5pnpGmIQ5GYU7ghBmVb9aLbof0ilhnTmtYYzfXUbg==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FtHh4UuqdvPc0eGJDnBaV3DpW+FpXi8pKi6HDkOgI+U=;
+	b=ZLb1zm7qZZeILP0O9tWhW2Uzv4MvEt3jYd9/IKIK+0RLM+hvPFrHsY8Mnvoanwq4xEECVF
+	uZ8lXlrr55BlGLQof8FvyiwTph0HXC1qiIRs8o7w1i0RknYuxNGSi3F+k06gtrsQoj2Uhi
+	sUEfmYlrzLqbABSOKYf5fR/DkPmp4f7aYTUjFU9CJ2F+ibrW9zrCDr+lTDEA1Y6uCHaPyw
+	QIluBaYv0h/oYvjc6eixP0XWMbnXyHl0j580QwZXrGeWsWrj5AHfVnO1MMX+TEP8X2G5tb
+	KIltXA5ebrEBHs5BirUSztnGcNwAFf5yH01jMwuhPmyRVfMkAWYB1ETeT/UzvQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711833787;
+	s=2020e; t=1711961247;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=cO9DAoslNiaRo5wWS5uXMV/wBejmz6LP19eIIxQWH84=;
-	b=7Ih3gkHaVxHnnSi5Qq66j9ZfM9NojoK8BpYL4FzLlJjZxysHt8r/Wxfv5+ofYJr/fZNw/e
-	732gzNiSePILIuAw==
-From: "tip-bot2 for Mikulas Patocka" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FtHh4UuqdvPc0eGJDnBaV3DpW+FpXi8pKi6HDkOgI+U=;
+	b=4sTSJedqEqQTPQH0PY96NTMFoogocug92cL3+n5WEbPczW1POTvJm8kMhlwRzYKoXud5Wd
+	4Hu4HyvEiY+YwXDQ==
+From: "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: Fix compile failure when using the x32
- compiler
-Cc: Mikulas Patocka <mpatocka@redhat.com>, Ingo Molnar <mingo@kernel.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org
+Subject: [tip: timers/urgent] timers: Fix text inconsistencies and spelling
+Cc: Randy Dunlap <rdunlap@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240331172652.14086-7-rdunlap@infradead.org>
+References: <20240331172652.14086-7-rdunlap@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171183378642.10875.5605747277159898590.tip-bot2@tip-bot2>
+Message-ID: <171196124670.10875.10311187024916401962.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
+Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     6205125bd326ed0153e5f9da3c4689fe60ae885a
-Gitweb:        https://git.kernel.org/tip/6205125bd326ed0153e5f9da3c4689fe60a=
-e885a
-Author:        Mikulas Patocka <mpatocka@redhat.com>
-AuthorDate:    Sat, 30 Mar 2024 20:23:08 +01:00
+Commit-ID:     9e643ab59d7ee4332994671720a9528bac62e9b7
+Gitweb:        https://git.kernel.org/tip/9e643ab59d7ee4332994671720a9528bac62e9b7
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Sun, 31 Mar 2024 10:26:52 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 30 Mar 2024 22:12:37 +01:00
+CommitterDate: Mon, 01 Apr 2024 10:36:35 +02:00
 
-objtool: Fix compile failure when using the x32 compiler
+timers: Fix text inconsistencies and spelling
 
-When compiling the v6.9-rc1 kernel with the x32 compiler, the following
-errors are reported. The reason is that we take an "unsigned long"
-variable and print it using "PRIx64" format string.
+Fix some text for consistency: s/lvl/level/ in a comment and use
+correct/full function names in comments.
 
-	In file included from check.c:16:
-	check.c: In function =E2=80=98add_dead_ends=E2=80=99:
-	/usr/src/git/linux-2.6/tools/objtool/include/objtool/warn.h:46:17: error: fo=
-rmat =E2=80=98%llx=E2=80=99 expects argument of type =E2=80=98long long unsig=
-ned int=E2=80=99, but argument 5 has type =E2=80=98long unsigned int=E2=80=99=
- [-Werror=3Dformat=3D]
-	   46 |                 "%s: warning: objtool: " format "\n",   \
-	      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
-	check.c:613:33: note: in expansion of macro =E2=80=98WARN=E2=80=99
-	  613 |                                 WARN("can't find unreachable insn at=
- %s+0x%" PRIx64,
-	      |                                 ^~~~
-	...
+Correct spelling errors as reported by codespell.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: linux-kernel@vger.kernel.org
+Link: https://lore.kernel.org/r/20240331172652.14086-7-rdunlap@infradead.org
 ---
- tools/objtool/check.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/timer.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 0b10ad0..0a33d91 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -585,7 +585,7 @@ static int add_dead_ends(struct objtool_file *file)
- 	struct section *rsec;
- 	struct reloc *reloc;
- 	struct instruction *insn;
--	unsigned long offset;
-+	uint64_t offset;
-=20
- 	/*
- 	 * Check for manually annotated dead ends.
-
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index dee29f1..3baf2fb 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -64,15 +64,15 @@ EXPORT_SYMBOL(jiffies_64);
+ 
+ /*
+  * The timer wheel has LVL_DEPTH array levels. Each level provides an array of
+- * LVL_SIZE buckets. Each level is driven by its own clock and therefor each
++ * LVL_SIZE buckets. Each level is driven by its own clock and therefore each
+  * level has a different granularity.
+  *
+- * The level granularity is:		LVL_CLK_DIV ^ lvl
++ * The level granularity is:		LVL_CLK_DIV ^ level
+  * The level clock frequency is:	HZ / (LVL_CLK_DIV ^ level)
+  *
+  * The array level of a newly armed timer depends on the relative expiry
+  * time. The farther the expiry time is away the higher the array level and
+- * therefor the granularity becomes.
++ * therefore the granularity becomes.
+  *
+  * Contrary to the original timer wheel implementation, which aims for 'exact'
+  * expiry of the timers, this implementation removes the need for recascading
+@@ -207,7 +207,7 @@ EXPORT_SYMBOL(jiffies_64);
+  * struct timer_base - Per CPU timer base (number of base depends on config)
+  * @lock:		Lock protecting the timer_base
+  * @running_timer:	When expiring timers, the lock is dropped. To make
+- *			sure not to race agains deleting/modifying a
++ *			sure not to race against deleting/modifying a
+  *			currently running timer, the pointer is set to the
+  *			timer, which expires at the moment. If no timer is
+  *			running, the pointer is NULL.
+@@ -737,7 +737,7 @@ static bool timer_is_static_object(void *addr)
+ }
+ 
+ /*
+- * fixup_init is called when:
++ * timer_fixup_init is called when:
+  * - an active object is initialized
+  */
+ static bool timer_fixup_init(void *addr, enum debug_obj_state state)
+@@ -761,7 +761,7 @@ static void stub_timer(struct timer_list *unused)
+ }
+ 
+ /*
+- * fixup_activate is called when:
++ * timer_fixup_activate is called when:
+  * - an active object is activated
+  * - an unknown non-static object is activated
+  */
+@@ -783,7 +783,7 @@ static bool timer_fixup_activate(void *addr, enum debug_obj_state state)
+ }
+ 
+ /*
+- * fixup_free is called when:
++ * timer_fixup_free is called when:
+  * - an active object is freed
+  */
+ static bool timer_fixup_free(void *addr, enum debug_obj_state state)
+@@ -801,7 +801,7 @@ static bool timer_fixup_free(void *addr, enum debug_obj_state state)
+ }
+ 
+ /*
+- * fixup_assert_init is called when:
++ * timer_fixup_assert_init is called when:
+  * - an untracked/uninit-ed object is found
+  */
+ static bool timer_fixup_assert_init(void *addr, enum debug_obj_state state)
+@@ -914,7 +914,7 @@ static void do_init_timer(struct timer_list *timer,
+  * @key: lockdep class key of the fake lock used for tracking timer
+  *       sync lock dependencies
+  *
+- * init_timer_key() must be done to a timer prior calling *any* of the
++ * init_timer_key() must be done to a timer prior to calling *any* of the
+  * other timer functions.
+  */
+ void init_timer_key(struct timer_list *timer,
+@@ -1417,7 +1417,7 @@ static int __timer_delete(struct timer_list *timer, bool shutdown)
+ 	 * If @shutdown is set then the lock has to be taken whether the
+ 	 * timer is pending or not to protect against a concurrent rearm
+ 	 * which might hit between the lockless pending check and the lock
+-	 * aquisition. By taking the lock it is ensured that such a newly
++	 * acquisition. By taking the lock it is ensured that such a newly
+ 	 * enqueued timer is dequeued and cannot end up with
+ 	 * timer->function == NULL in the expiry code.
+ 	 *
+@@ -2306,7 +2306,7 @@ static inline u64 __get_next_timer_interrupt(unsigned long basej, u64 basem,
+ 
+ 		/*
+ 		 * When timer base is not set idle, undo the effect of
+-		 * tmigr_cpu_deactivate() to prevent inconsitent states - active
++		 * tmigr_cpu_deactivate() to prevent inconsistent states - active
+ 		 * timer base but inactive timer migration hierarchy.
+ 		 *
+ 		 * When timer base was already marked idle, nothing will be
 
