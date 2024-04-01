@@ -1,76 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-871-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-872-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E934893922
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Apr 2024 10:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AFB893925
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Apr 2024 10:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98749B213E2
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Apr 2024 08:47:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1ABA7B214D2
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Apr 2024 08:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6F6DDCA;
-	Mon,  1 Apr 2024 08:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C41B67D;
+	Mon,  1 Apr 2024 08:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2d+eUc0B";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iiRtBZFg"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YaSBM0ER";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="33LvHL+c"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6334FDDA2;
-	Mon,  1 Apr 2024 08:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E462B671;
+	Mon,  1 Apr 2024 08:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711961257; cv=none; b=JteqDb08ke4llTXqS3bZUeGPiYfXcODL2MtMX+SFTmE9/cQVkiM4Ow4NAPAERIRZ07e9s9mKWWhYrdAFIpIsDtV1PVxqEz3+Q8b77A9yLx3yaQZSWXzTiXdOz7HuCDKMeKaolEJ0NEFOIrxjQR4cAhswUV6h8M4dHnniIChbXMk=
+	t=1711961258; cv=none; b=N86xbvpxYTvMEO4FpV790/i6NtsKYqHoVvJdnyYu0mjNpzmlMK/3WIaE2fHDJhTkPEc81j89fKAgKpQnQAtq+S0P3sdUukJVje9E1Ud0L2c6YPRRRwWk1o3u/bXQZhHfCoyS46wzrjDS0eIw+OgzE/RUV39dDspZVNX0I4O0oNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711961257; c=relaxed/simple;
-	bh=SB1WykvbvMaws7Jqmh3+cYaIZ7obgk8EzdX73CxxIvI=;
+	s=arc-20240116; t=1711961258; c=relaxed/simple;
+	bh=3QJiXN+S8g981brhJPz9S0dz7Cr961+cl1xWmQrsoBk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=WsVcsrw8qeYw7LMbUQDbBIz9ZT0id7w6TDejiE/6sKs0fqFe3+RIuuGy+Cv4nVQHeBbuTBwCzO+oqszOz3CFh8XWog6i1TjVWS70PDdSSyf3dy5kcHgMtH35Q24CrCz/g8N3rZ6/U9LK3XMKh4e5lxUhG+I/ysvuphIM/6p/jCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2d+eUc0B; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iiRtBZFg; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=FhgRIn6oLzASWey/WPHmHFEDbbWYssI8pNH4XSz9SWnYufInot2JSgwoXJAU1vb9BgwDQ3kul/rlUZ9btz7hzaMx0YNpWiWiHjPw3nKz8OQuD+16oDvaH6E0Wt8tonTKRHCRWHvJcBjd8HKtHCRB8nXVCQGLs6wMHCGAQW9FvcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YaSBM0ER; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=33LvHL+c; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 01 Apr 2024 08:47:27 -0000
+Date: Mon, 01 Apr 2024 08:47:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711961248;
+	s=2020; t=1711961249;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rrYrq2EJYDc3p66/DxsvOt+rTj+ZqlEcUlC9IPqdTcI=;
-	b=2d+eUc0BN6WOty6UuEJ+9Hx9ueZbIVjpaZS/zqcg5ysI62MCfH/goy1TkMRfoVmQj8o+/g
-	ExSIdDTkyz8+qml4nbJ5Hh11+A6RNzyJTkS3u1tgmmzUVBh13F0lbVe/gDjrLHuPAFg4R+
-	iCiJBY5KbuaT/k7hoPnvaUKfF6tm8nBlqN6tX8Ux93gBS0F5objNVc3y+WlGr1fjNkN6V9
-	eSH3Z21yDn9Rzjz1jnB6izxSN+NYm7zInkExRO4NITC5ISQZRLKr+NqBqbIP9OxdKmr3SY
-	zVSaVlBfgKGQuUKbT/ZERK9D/itEOQ0VfBD+jwp5hq3ecAUJn/UBMkaE9VI1zA==
+	bh=tT14vYFP0qY/qgfVqmeAifMWAGxB+rk3t3spYOi3ibU=;
+	b=YaSBM0ERcaJO4ahGOSU9Tv/WB1x1uLnUfY+QTdBfypX3//4FjDwDR00OFiZl1SkVI/migT
+	m/sP7HRCzn4wOgnxxkE4+vxx2/IU5K3rsyC5MMzAg4BtOxx+HLYrRaDW1TB/5v1LCtMh9g
+	eF7/uv7Kdrh6HAzdAGnMePOYgWBW+AfOENFjSuMUIfnFd086wrBrseqz1zwQ+Cn7y0MAUI
+	qcAPFRNHNQ1n3LKyZnsA4Hn0Hf1G4WxZbbMkEXBmyXq1G+YprVl9ZBrDvWu4rZgpzgcEkJ
+	W5K7OHvN4kJYMWoSqQi9LRTG2IfESYsZZ5CqOo4VoGQs5ZcHEcDqBifzuUQZgw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711961248;
+	s=2020e; t=1711961249;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rrYrq2EJYDc3p66/DxsvOt+rTj+ZqlEcUlC9IPqdTcI=;
-	b=iiRtBZFgvTJhuIK2GZMoXJN5OzKydU+kFjgnlNf8EDXd3H2+5Z9OBuI/zvB3UIUxqQH+1R
-	832/tq1XYJiiomAg==
+	bh=tT14vYFP0qY/qgfVqmeAifMWAGxB+rk3t3spYOi3ibU=;
+	b=33LvHL+cNPViiA/9trqnh53bA8INDTMDZYU/byKmJ7LQMgAkUNqZMyJopfWMdCBm7XEVOQ
+	me1kzHcSBdT3fPDA==
 From: "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] tick/sched: Fix struct tick_sched doc warnings
+Subject:
+ [tip: timers/urgent] timers: Fix kernel-doc format and add Return values
 Cc: Randy Dunlap <rdunlap@infradead.org>, Ingo Molnar <mingo@kernel.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240331172652.14086-6-rdunlap@infradead.org>
-References: <20240331172652.14086-6-rdunlap@infradead.org>
+In-Reply-To: <20240331172652.14086-4-rdunlap@infradead.org>
+References: <20240331172652.14086-4-rdunlap@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171196124750.10875.16713792755621842011.tip-bot2@tip-bot2>
+Message-ID: <171196124896.10875.16221502494016754442.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,39 +81,71 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     ba6ad57b803e33ed509213a5e840427dbef501d6
-Gitweb:        https://git.kernel.org/tip/ba6ad57b803e33ed509213a5e840427dbef501d6
+Commit-ID:     b87752ef5cc15b0bae04583d599e873d92dc0618
+Gitweb:        https://git.kernel.org/tip/b87752ef5cc15b0bae04583d599e873d92dc0618
 Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Sun, 31 Mar 2024 10:26:51 -07:00
+AuthorDate:    Sun, 31 Mar 2024 10:26:49 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Mon, 01 Apr 2024 10:36:35 +02:00
 
-tick/sched: Fix struct tick_sched doc warnings
+timers: Fix kernel-doc format and add Return values
 
-Fix kernel-doc warnings in struct tick_sched:
+Fix kernel-doc format and warnings:
 
-  tick-sched.h:103: warning: Function parameter or struct member 'idle_sleeptime_seq' not described in 'tick_sched'
-  tick-sched.h:104: warning: Excess struct member 'nohz_mode' description in 'tick_sched'
+  timer.h:26: warning: Cannot understand  * @TIMER_DEFERRABLE: A deferrable timer will work normally when the on line 26 - I thought it was a doc line
+  timer.h:146: warning: No description found for return value of 'timer_pending'
+  timer.h:180: warning: No description found for return value of 'del_timer_sync'
+  timer.h:193: warning: No description found for return value of 'del_timer'
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240331172652.14086-6-rdunlap@infradead.org
+Link: https://lore.kernel.org/r/20240331172652.14086-4-rdunlap@infradead.org
 ---
- kernel/time/tick-sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/timer.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/tick-sched.h b/kernel/time/tick-sched.h
-index e11c4dc..b4a7822 100644
---- a/kernel/time/tick-sched.h
-+++ b/kernel/time/tick-sched.h
-@@ -46,8 +46,8 @@ struct tick_device {
-  * @next_tick:		Next tick to be fired when in dynticks mode.
-  * @idle_jiffies:	jiffies at the entry to idle for idle time accounting
-  * @idle_waketime:	Time when the idle was interrupted
-+ * @idle_sleeptime_seq:	sequence counter for data consistency
-  * @idle_entrytime:	Time when the idle call was entered
-- * @nohz_mode:		Mode - one state of tick_nohz_mode
-  * @last_jiffies:	Base jiffies snapshot when next event was last computed
-  * @timer_expires_base:	Base time clock monotonic for @timer_expires
-  * @timer_expires:	Anticipated timer expiration time (in case sched tick is stopped)
+diff --git a/include/linux/timer.h b/include/linux/timer.h
+index 14a633b..e67ecd1 100644
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -22,7 +22,7 @@
+ #define __TIMER_LOCKDEP_MAP_INITIALIZER(_kn)
+ #endif
+ 
+-/**
++/*
+  * @TIMER_DEFERRABLE: A deferrable timer will work normally when the
+  * system is busy, but will not cause a CPU to come out of idle just
+  * to service it; instead, the timer will be serviced when the CPU
+@@ -140,7 +140,7 @@ static inline void destroy_timer_on_stack(struct timer_list *timer) { }
+  * or not. Callers must ensure serialization wrt. other operations done
+  * to this timer, eg. interrupt contexts, or other CPUs on SMP.
+  *
+- * return value: 1 if the timer is pending, 0 if not.
++ * Returns: 1 if the timer is pending, 0 if not.
+  */
+ static inline int timer_pending(const struct timer_list * timer)
+ {
+@@ -175,6 +175,10 @@ extern int timer_shutdown(struct timer_list *timer);
+  * See timer_delete_sync() for detailed explanation.
+  *
+  * Do not use in new code. Use timer_delete_sync() instead.
++ *
++ * Returns:
++ * * %0	- The timer was not pending
++ * * %1	- The timer was pending and deactivated
+  */
+ static inline int del_timer_sync(struct timer_list *timer)
+ {
+@@ -188,6 +192,10 @@ static inline int del_timer_sync(struct timer_list *timer)
+  * See timer_delete() for detailed explanation.
+  *
+  * Do not use in new code. Use timer_delete() instead.
++ *
++ * Returns:
++ * * %0	- The timer was not pending
++ * * %1	- The timer was pending and deactivated
+  */
+ static inline int del_timer(struct timer_list *timer)
+ {
 
