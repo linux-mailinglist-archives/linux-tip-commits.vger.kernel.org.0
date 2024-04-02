@@ -1,138 +1,188 @@
-Return-Path: <linux-tip-commits+bounces-882-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-883-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B37B895A7D
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Apr 2024 19:15:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75742895A6F
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Apr 2024 19:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1351B2CCB3
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Apr 2024 17:09:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 144D0280B98
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Apr 2024 17:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71353156F33;
-	Tue,  2 Apr 2024 17:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E598A14C5B0;
+	Tue,  2 Apr 2024 17:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VWviRR/q";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Zo96D1JF"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="o6TKM3p1"
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2095.outbound.protection.outlook.com [40.107.94.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B1B132C38;
-	Tue,  2 Apr 2024 17:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712077758; cv=none; b=tleRcDI99MCU7aBWM3OQToRlJGQy0yD0hGUp6WXVW15BWBHjc6uWIjQvAWIEpELYk4ASMncxOZfcNhdg3vt1cTSH9rfJ58ydNj3UAFa+86BuVPc9E7pdzcGwetb6TaQdIBv8Um1de5PqxgWw6ld2Ld1dPo4InaqGyMRH8CtJtN0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712077758; c=relaxed/simple;
-	bh=vrLrw4PZ2pbInWmXixTmINalXWw5pkUqlP1Cbc0VEPY=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=KosQISC49pUCzWtyUnOITHtVXc480Itme2+8ToUnLuDmcIXGu28OzCTa1jMJZhd8LTKcGrpQDK1YgBX9QlBw7ueVqcBnRap1puLAK8AfoOa4bpRuVoK378ZdpbwDpGYHx5Z53NC3tY0EGIDd2xkrpgVaB5NHWSjydkP6m8ggIck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VWviRR/q; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Zo96D1JF; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 02 Apr 2024 17:09:13 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712077754;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=EkUkhRyxrhRLwcnDLbcsaRp00vCMdcCteMROj6SGNos=;
-	b=VWviRR/qEUBGUkqKpn/7HJ8s3dqptv98MS16lIUCP3AtZ/n2EMV2lVRgMsoOfYQEAg7X3A
-	hFtpThU9obeTOqAWGQ7V7/e+oHl5byv5kuiBustqWfyFKO1uUfvRR/DAELvvz3VM5eNlQ6
-	daEgv4MO50BpLXd+e9tvkGi21XUSedw11/lqIrgsJBrXdN6UAno74oGqlOiXZPqu9F0a24
-	FH8GL/gEFLxF6eISuVNOKm7oot4i+RINFPE/Grz+Fe7yvecnc27cRqyeL+nw/MwMA90qmn
-	QDpqBhZdgu19ubQgTosMpKLJe7Q0Z8wncZD6ftT0lrh488Un45FiwMQQ2i/uLg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712077754;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=EkUkhRyxrhRLwcnDLbcsaRp00vCMdcCteMROj6SGNos=;
-	b=Zo96D1JFWujbWb/9U7wUUnBxL97Avj8ta2tI1DEjwlPzggn/mh/jTt0H1j4h7HKr/PJCKI
-	X4exOjuqW+9Kf7AQ==
-From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/misc] Documentation/maintainer-tip: Clarify merge window policy
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAAF132C38;
+	Tue,  2 Apr 2024 17:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712077870; cv=fail; b=O964OXvlhDdjvVUYS28yOZSvqcNGPlM8/tkHQ1J0yr/0tMuSy7TDjSwhsxBljpme75tYSJod79Kd3mTLGolTdNM74QOImjb4ZTlm9erHNmrF8BOcRK5RMt0PBSVtNk2TPPUz5U2MIXY918cfWt0gYXnnWLnHJORE9VGj0MdyfkQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712077870; c=relaxed/simple;
+	bh=S5Ht0ngUjT+5A0BjJOKhcDBxvuNQNAvF/2H+vqvm+Zw=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ty0PIHvHFiaQQtuFdPmT3nJsB2OFkX9IVwfhOEo5KLkTDUYgK9CBnV6mQQq8UKiqreOAp3cGLxGxTEhP3ZMSdQHX6Po06+vF+YdWV7eAa7BFz1U9E+/IRZ3fpgke6mRt4pu1er3BGaon9csuwpnaV9hXdMJqOggYX6Rb9jToaN0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=o6TKM3p1; arc=fail smtp.client-ip=40.107.94.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hnwI42YM+mkNmdVDn5LNT6r1FzF6C2h5eAsYIcpqVtZ2F/1AK82CpN4trwBM5u9UIX7WM+0CO/a4jVzVtSP5opxHQnQ5JtgXU4RxcVb/6lxBHT31UuGD+WrxHJmsldpKo1XMdVXDXFbOHOYf9vvYPTaVKEXhiG/Px4KPtD6EgpEbQqpt//sF7X3FNBVTQHDG/zVHRVkdnJ1UtuxxymPTIiHmPW/hq23SRx3i5S2ewczmID7kK/4+uyxZnKdStrue3xXTZ7vqJoIzIoJYtq9U/n2coYCjLGsyBNwdmxhyr72hwpFusA7zZGdVDSo7XMTjE3CId1WHM4UiwxDI5lOkPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GSTm6iB1c0p4nn/l7mWKjVa0kFYGisoFyim5qoGslXk=;
+ b=jsg+iW3DU5zKuiqksGkScwouCjlOM5SyHEZDAMkSkapVF/ozDU4OK9aixIKOpl27GC9PI8XeCu3eSEx3FMMGPk3yCGrg3rHSq7kSqAxm+0OQFlZx0gaX01RmwC7por3Dw9ysv1dWE/5ZJ1dBQWZYx1XNsEkkrRj2Gjjjnjr6EC4mY9ekTngRh+fU+DMGP9SaaJfP/3+cT5XuQSTAk0pJtINOiY87/HHgJlOmh8qn6VfiRby7wpcdwXydrMwvGEEIZv1ZQFWzb/4CDy7xwGr/8v2q/hcME8kDWzJkKA6mFKdbZ0krOBGb+DNihnTw33QHo9V+kGL1kU6y7I0hdQebEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GSTm6iB1c0p4nn/l7mWKjVa0kFYGisoFyim5qoGslXk=;
+ b=o6TKM3p1xUklwIDWXBIkySj45G6zj5IdBsmM7k9O5JlsyoRMZzjW808CNXQj9TWffInpDDXSwvh2YknHSrTVRD+DZt+4gkxezHCz7y0cXpKQhooBBhJ40D4VHJByevgDa3sr2nCA5qHU0H2F9GHSlIAFdzKbADK1VL5ls49V89g=
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by IA0PR12MB8207.namprd12.prod.outlook.com (2603:10b6:208:401::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 2 Apr
+ 2024 17:11:06 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::3cc5:f552:44ae:1f26]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::3cc5:f552:44ae:1f26%7]) with mapi id 15.20.7409.042; Tue, 2 Apr 2024
+ 17:11:05 +0000
+Message-ID: <359264a1-e4ef-438c-8f24-32848e131272@amd.com>
+Date: Tue, 2 Apr 2024 12:11:03 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/sev: Apply RMP table fixups for kexec.
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+To: bp@kernel.org, thomas.lendacky@amd.com
+Cc: bp@alien8.de, linux-kernel@vger.kernel.org,
+ linux-tip-commits@vger.kernel.org, michael.roth@amd.com, x86@kernel.org
+References: <2ab14f6f-2690-056b-cf9e-38a12dafd728@amd.com>
+ <20240402163412.19325-1-bp@kernel.org>
+ <6f0d2ccf-243c-4073-a470-21e2f404595a@amd.com>
+In-Reply-To: <6f0d2ccf-243c-4073-a470-21e2f404595a@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DS7PR06CA0024.namprd06.prod.outlook.com (2603:10b6:8:2a::8)
+ To SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171207775367.10875.7993832027274159765.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|IA0PR12MB8207:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	6s4v/18DEDvHuoQes4hDsYMS72O8OaYCIi4/pV/1zwUObl0PoQXX7xQvcnhB/MgrjW83VW/UEwQrj2Cbo2W10G8LXOILXIuLV5mWeZvdNbudLpsmT8/HXCDeTyjejRIaosOayk6tTxFdAN643Tg0cSIWa7kd1V6OoF320Xfeq+708DgMvDoUWFdyY67MHEfS5k60sBDQPiNmlCErNh1IofBMbbtZajAhaA1bsGGv5iT1YksvymGQJ/p6BFExIMKYn54QYGRf9PS7tBJgjkjHpO21Nc2KyqTdbAwfJl5cPIPuK5osBPSuYrlXs97mIYFfnS0AsLvysAkmk/Er7//9eep+q5vQwRPMIQdmJSTa9/gYyYHER9vQNgvzYqY6V9VvfIOfT1kft1G5gGD3T9TTCREZmmF1NREsrlHQe4RYjZis8Hk2greANlU/ERSKoxysSJ7RrLpmmws/TqtzyTR3iiMGJca6P94NJ/8k3q4EN1b0tHdC2pEXGnT1b91WvkqrxEX58DaVUZ6o2qMDDgSboyMySfpXFmCt/0UWDBnoQ8ZHUOUmI+moa0XTCATkNqtsudi584S2BjUWgb+JrBWWRuCzm+bns9gnKBCLfS79utA/fF3PstN3sUfJVyX1Eh9sEAGiZEt6dpzGsUKArEHianKbxbFwzpCdq1hRzRXWyYE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZGMwSXdLY0VaeXNsWDdiWUlSc3Aza09kRGluS1pjSjlkNGVMWjE0bFU3N0VS?=
+ =?utf-8?B?ekpDaG01cjlOa3BEU2tia0tuRHhPbGpoSVdMVDkyMGZkWkh3Z082Q2xPRHVH?=
+ =?utf-8?B?VVNTaDlRcWhxTFEyZnZXbm5zWjdaczA2RFpNK1lXOGt6T2NDN2xyZDdyOThw?=
+ =?utf-8?B?K2hkR3RqazltdmdEbXJGbEFTUk1qOEM1MGZuUkhqckFUaXdkaWwrNk4xWXlW?=
+ =?utf-8?B?T1gzUzVuanhNMWdxSWhxb2hhZjRzMzJDWFF4ZkpsdEMrY0dsaWdSQlJKTHZK?=
+ =?utf-8?B?V2FOT3AvY1ZoTVE3eXM5OXRCbExLNGxmdlA3dmtpRUpQcnlnUkZYeHd4RUNi?=
+ =?utf-8?B?YlZ3N29RaXBVd1U2ZHdFM1ltR2xCejIwWkdYU2Vxb3piM3AxaVN5LzZhR3lr?=
+ =?utf-8?B?TFdHeWxQcm1TdVl4SFRCZGVHcFpicnVPY1hQTUNHdWRKSS90K3Y2Sk93dlVm?=
+ =?utf-8?B?WU1wVU54ZVRMQVZQaVpYYkt4MlZ6VmkranJFclpvTHlaeWhTODNUZk05aG5B?=
+ =?utf-8?B?RXh6YmpLVUk4TERKL2cvSFdQTENXWXlRcUwyRjE3YVJjeXU5QTNrdzJmbjht?=
+ =?utf-8?B?M3U5N1l0VERyQ2VvN1VhZkpEakdPeXdSRFM1a0JYamFpL3ZsRXVhZjV3Q013?=
+ =?utf-8?B?a2dFb2lyc2VpT0ZCYkdVQi9CcFk0ZThwVEV0aEROSW5RVUY2a0NxdUM0WHBU?=
+ =?utf-8?B?LzBSdkYxWmphcFdRa09oQXBWdjFSNnIrMTF0TmFOclJ2N0xqSE1od2h5ZnFS?=
+ =?utf-8?B?V2dnZnRYRWhSUmZoVDBtOExwVVM5VmI4ejRjNk1IRlhOVWVnQTIwU21wZE5L?=
+ =?utf-8?B?Z0ZiTkV2WnNPYUQxcjNFbGJoaHNmM0lGRkU3Q2xMWkRsN1lhL0N1NEFFN2t4?=
+ =?utf-8?B?Vi9TVTFPS1JJeFlpL1RYVXlSdHNpWTZoNnI2Y1NZNExTRFNjcS9BZnZlRlNh?=
+ =?utf-8?B?Y0JzQ015OExrbzZJSHhKYUdzZjFjMm9FbUh1SGx6Qnp4SUx6NmNsSWpTYzFh?=
+ =?utf-8?B?cWZFK3gvYit3REV0dy96d1N2QXpCai9ZK1dacUFMRG1nMVgySDB5VVF4WWxm?=
+ =?utf-8?B?TDVpOXpueW41YzMzQWQzZkluaHp5dGowMFFHOVVhMW9nMk85K2tMK3FjNEl4?=
+ =?utf-8?B?cmp5ZTFuSnhqeGtMdCtQYkNhbngxR2ozOW5HQ0k1azdrU3BxYXppY0FkZzBZ?=
+ =?utf-8?B?OGtPdGl1TFhZQTUyWW02SkhMSTZQYUlLYjAwVHZaNWRpQmdYQWdVNXowY3l4?=
+ =?utf-8?B?L2w3OXVmb3c5KzQ2NHZWZFZ1QzdvRS9sd1JDMjA5NXpOczZ3Tk5vNkRxdkta?=
+ =?utf-8?B?S3I4REJQQVYvSCs5MkRpR0tUMFhvaXk2S0M1Q3IwOTZWVzQ3UlBGM2JwVFUx?=
+ =?utf-8?B?bjJnZlBLTUM5VmZKNUg4YVB5eFBxcEYvdnpmWkN0ZmJtNE9KczFkSWhGVWtH?=
+ =?utf-8?B?RGJqcmE3b1dyWjExN09CQlovcG9ZMjNub1FPK291U2lNYmdTTFlaekxlMnF2?=
+ =?utf-8?B?N21xWVU0TWppSWNXamVrbkdPeWFldzlsY1Z3dnRwSCtDcWNnb0g3OUo0QlZn?=
+ =?utf-8?B?UEY3anp1RFN2WG5oUzlGaDRneThvbE03b0NyZGtmOEJENVR6WDZkYnc0Z2xh?=
+ =?utf-8?B?QlB1RVFSUzBFY3JzQ0pDay80TFhxMzZUbVB0b3ExakV6S0pKd3RKS0tWdUh3?=
+ =?utf-8?B?eGlhTmRySFhvRFRZN1krMDZHbTZHT2I3TU9UZnJ1V0p0NkFBYWJrNUh6b2g0?=
+ =?utf-8?B?OVJjZjltRlN6TlY5M2tQakk2d0ZaeEsvV1I0RWJUSXd5eGNYTk11L3VKbExZ?=
+ =?utf-8?B?TTdRbHVuZVlLT2VOZEVSd2pBQXVhc2ltUmNnR1VWQk1VdmYxWG4xM25SN2Nu?=
+ =?utf-8?B?TURTN3FpY3VtQzRZY0FsbmJFQXZoaWF3QW82VXJ0MGVvc1RzOEVvaThwZ2di?=
+ =?utf-8?B?bTdzTlhUd1N0Q0J1bnJVMXd3bzRNVVlzOTEyQTcvdGV3Ky9FdUxaMUNLOENH?=
+ =?utf-8?B?clVheWwzV0Z3K3RIbzYwMTRxVEtES2FhbEczc1BBMG83K3lwbitYbElyY3A0?=
+ =?utf-8?B?TVpybW1PYlJ6KytGZUhIL2tIcVdPaEhPTm5lMEpKV2hOUFFWSE80T1RmR3F2?=
+ =?utf-8?Q?dCAU7CgZE8UbebkYvMlNH8cZl?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5bd7a7a0-df9c-43a0-ceb7-08dc5337e1e0
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 17:11:05.8945
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kZWBZjZ+mBofhtMkhDXcIOrHwgiYShGUqOq9jzw1iocYz0tx561uw2ETO5DNKg2Say+dmuAYH0Fc4aN9UvZLUQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8207
 
-The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     bdc42c8b9befcef6368be345004cee3da1ace955
-Gitweb:        https://git.kernel.org/tip/bdc42c8b9befcef6368be345004cee3da1ace955
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Fri, 22 Mar 2024 11:34:03 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 02 Apr 2024 09:40:23 -07:00
+On 4/2/2024 12:06 PM, Kalra, Ashish wrote:
+> On 4/2/2024 11:34 AM, bp@kernel.org wrote:
+>
+>> From: Borislav Petkov <bp@alien8.de>
+>>
+>> On Tue, Apr 02, 2024 at 10:54:50AM -0500, Tom Lendacky wrote:
+>>> There's no requirement from a hardware/RMP usage perspective that 
+>>> requires a
+>>> 2MB alignment, so BIOS is not doing anything wrong. The problem occurs
+>>> because kexec is initially using 2MB mappings that overlap the start 
+>>> and/or
+>>> end of the RMP which then results in an RMP fault when memory within 
+>>> one of
+>>> those 2MB mappings, that is not part of the RMP, is referenced.
+>> Then this explanation is misleading. And that whole bla about alignment
+>> is nonsense either.
+>>
+>>> Additionally, we have BIOSes out there since Milan that don't do 
+>>> this 2MB
+>>> alignment. And do you really trust that BIOS will do this properly 
+>>> all the
+>>> time?
+>> I don't trust the BIOS to do anything properly.
+>>
+>> So why isn't the fix for this simply to reserve the space for the RMP
+>> table to start at 2M page - even if it doesn't - and to cover the last
+>> chunk *also* with a 2M page and be done with it?
+>
+> But, it is the BIOS which reserves the space for the RMP table.
+>
+> And if you mean the reservation in the kernel page tables (directmap) 
+> then that will not help as kexec uses it's own identity mapped page 
+> tables.
+>
+>>
+>> Not this silly overriding dance.
+>
+> This overriding dance is required to fixup all the three kexec tables, 
+> as there is no interface/API available to do modifications/fixups in 
+> all the three possible kexec tables.
+>
+I meant the three e820 tables out of which two are used for kexec, the 
+e820_table_firmware and e820_table_kexec.
 
-Documentation/maintainer-tip: Clarify merge window policy
+Thanks, Ashish
 
-There are lots of maintainers "pings" during the merge window, even
-for trivial patches.
-
-Clarify that contributors should not expect progress on *any*
-non-urgent patches during the merge window.  This applies to all
-contributions, not just large ones.
-
-Clarify the language around -rc1.  Trees really are closed during the
-merge window.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/all/20240322183403.67BAEEFE%40davehans-spike.ostc.intel.com
----
- Documentation/process/maintainer-tip.rst | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/Documentation/process/maintainer-tip.rst b/Documentation/process/maintainer-tip.rst
-index 497bb39..6473996 100644
---- a/Documentation/process/maintainer-tip.rst
-+++ b/Documentation/process/maintainer-tip.rst
-@@ -409,20 +409,20 @@ See :ref:`resend_reminders`.
- Merge window
- ^^^^^^^^^^^^
- 
--Please do not expect large patch series to be handled during the merge
--window or even during the week before.  Such patches should be submitted in
--mergeable state *at* *least* a week before the merge window opens.
--Exceptions are made for bug fixes and *sometimes* for small standalone
--drivers for new hardware or minimally invasive patches for hardware
--enablement.
-+Please do not expect patches to be reviewed or merged by tip
-+maintainers around or during the merge window.  The trees are closed
-+to all but urgent fixes during this time.  They reopen once the merge
-+window closes and a new -rc1 kernel has been released.
-+
-+Large series should be submitted in mergeable state *at* *least* a week
-+before the merge window opens.  Exceptions are made for bug fixes and
-+*sometimes* for small standalone drivers for new hardware or minimally
-+invasive patches for hardware enablement.
- 
- During the merge window, the maintainers instead focus on following the
- upstream changes, fixing merge window fallout, collecting bug fixes, and
- allowing themselves a breath. Please respect that.
- 
--The release candidate -rc1 is the starting point for new patches to be
--applied which are targeted for the next merge window.
--
- So called _urgent_ branches will be merged into mainline during the
- stabilization phase of each release.
- 
+>
+>> Thx.
+>>
 
