@@ -1,138 +1,82 @@
-Return-Path: <linux-tip-commits+bounces-877-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-878-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9911F895562
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Apr 2024 15:29:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4701895768
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Apr 2024 16:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBBFE1C21A73
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Apr 2024 13:29:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568FB1F228E6
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Apr 2024 14:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123B884FA0;
-	Tue,  2 Apr 2024 13:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A690D134404;
+	Tue,  2 Apr 2024 14:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qUkzgNg/";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="n8qM02Mf"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBsZ77iU"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFFB84039;
-	Tue,  2 Apr 2024 13:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABB413175D;
+	Tue,  2 Apr 2024 14:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712064516; cv=none; b=SdvB8YBB2WRjWnp6VTYHLb4QS6vGgJ9FIsRyLb6TFVIImc0AEGgJkQUDSqSI09atyfoeFnYV3tWAtqLWSD/3yyf6i4fC/aY2ukJxNUvAiEnQrKJjOH9bKYGr+a44oVZojCbXcgMVZpBzdQWx/LNBKWY7m/lqqoGnPBRXq2np2pQ=
+	t=1712069152; cv=none; b=e182k1nsMKY8DwOdXiVOQ+KFcutT97W4sgg1JDriH8Ba2ebOAN724NlDMu2103NVMk2aTVqHD/SSyCY3LR7nG1R3GEhj0a+O3DAqpi7H3LpUE6K/Up/KIHnmKbI509mPcoLlfuBF0y+95F24xAAyyi7lS8wgQpf4IV889KbpYPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712064516; c=relaxed/simple;
-	bh=RXbAtwMy42ElQNB3HQ3sNrOz2iVr2dp/A3YxBpbmuag=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZQVDbxgAQpIdwzdpfYC08QLvIp/ovNHwnzIHxqrm0sx8Zk/PzYEZbqb22jGHdvE4NX38hklaDfSRdBr1MSI97KiIdUVH+vNYErtUVtMbcGMzCn/S7CsDSWs/sURYLZWjydX50IdVGaj83ST6KSvn2EixQHqDv7LFfCEUHVCG8A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qUkzgNg/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=n8qM02Mf; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 02 Apr 2024 13:28:29 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712064510;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HqthSyu1ONMJcVYmPNQezj+3N69fQK1nHLGRpF+ZG+M=;
-	b=qUkzgNg/utr0FzZd074xnns7LMkjKMmLXJ8+1UGEnNqtc37I0WFJC4otAVkk39NB0g5YfB
-	hrkPTzRID+UVpF8aua3Z7mArdXARnFgp9c1aVoJZ8v4p5/B6HcF9aw81iLyUC/DD/OzNhD
-	77cOddhNlopnXoz3EoGwJo5LranHp1aL5F/0FrhFmWRXjjUUTVSoJChzLBETJq2P9d3Hyt
-	GYMo++yp4Eb4TQfWlr39TGvxCGnIuOeCUz56KbhQFHr+f5C/6glalelpQrCvtU7FYH5HFS
-	m6uIhO1nT2fSeKAH5hlbO8F+0uBmLi06KIrR8cyRmXcgcEd98f2jGzLXb02UFg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712064510;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HqthSyu1ONMJcVYmPNQezj+3N69fQK1nHLGRpF+ZG+M=;
-	b=n8qM02Mf3WURARyMw8J/vEjdDkx0iC95LKTjbz+EswPyX4S+JVzNI9+FAfHKb5A92s7cNT
-	ZwLhFlbwKfhuSQDQ==
-From: "tip-bot2 for YueHaibing" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cleanups] x86/32: Remove unused IA32_STACK_TOP and two externs
-Cc: YueHaibing <yuehaibing@huawei.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230625125411.25840-1-yuehaibing@huawei.com>
-References: <20230625125411.25840-1-yuehaibing@huawei.com>
+	s=arc-20240116; t=1712069152; c=relaxed/simple;
+	bh=Oke7dPH1XW52s7l/sASmdAoJ79tX8X7qCVqa+hbu58s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qKZ2Sk2Kj8iCgmiCz0748IK66wzrGNnJFluCEhGb5WpME04R4xiDddGX495mtoRnc15IgODSinaSLmAkK74zHQ9vSZPP3Tm0iFOm8z+GpqWwQnRrrJFz5jf2YsN6yWvcWuFzDDrk6wyz00uWZ6NvBIJLZUikcmprfQALIkS6VV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBsZ77iU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568FCC433F1;
+	Tue,  2 Apr 2024 14:45:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712069152;
+	bh=Oke7dPH1XW52s7l/sASmdAoJ79tX8X7qCVqa+hbu58s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kBsZ77iUPx5k5HYeQ/ICMipaKKVdimcFnPUlDAkjyHpG74Vlkg9AAMQDuF30r1kft
+	 /uI78tkn3P8FyEu7w1efXzPpk7Cip54AW0DfE9x3Hq0/yrccOFJgRykIWQngKicpDs
+	 lE1l0JXCWfDkKjC3OxzWvtEY/msWDVF3EYirtfK4/53BxXSYZ3GBbfudlQyv+4s/gY
+	 ADri7C2kaxNU3Rh/mQ8Gx0XTF3gOEorXQGtmNx6cWk4c3iPPPh28Aq4GoOTDgCdEZz
+	 W7txwItTlgEK2yYoJtLTYq1ANNBmVd57/0UP9NFk4VHJ4aCCLy7vUMSyBvSFJAyn3y
+	 s4+vOK/UM9gGQ==
+From: bp@kernel.org
+To: ashish.kalra@amd.com,
+	Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: bp@alien8.de,
+	linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org,
+	michael.roth@amd.com,
+	thomas.lendacky@amd.com,
+	x86@kernel.org
+Subject: Re: [PATCH] x86/sev: Apply RMP table fixups for kexec.
+Date: Tue,  2 Apr 2024 16:45:47 +0200
+Message-ID: <20240402144547.18869-1-bp@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240312184757.52699-1-Ashish.Kalra@amd.com>
+References: <20240312184757.52699-1-Ashish.Kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171206450950.10875.3799270619287955319.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the x86/cleanups branch of tip:
+From: Borislav Petkov <bp@alien8.de>
 
-Commit-ID:     52b2c101b9ce3b954ebbed4c24396ec28f66fcd9
-Gitweb:        https://git.kernel.org/tip/52b2c101b9ce3b954ebbed4c24396ec28f66fcd9
-Author:        YueHaibing <yuehaibing@huawei.com>
-AuthorDate:    Sun, 25 Jun 2023 20:54:11 +08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 02 Apr 2024 15:01:40 +02:00
+On Tue, Mar 12, 2024 at 06:47:57PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> RMP table start and end physical range may not be aligned to 2MB in
+> the e820 tables
 
-x86/32: Remove unused IA32_STACK_TOP and two externs
+This already sounds fishy. Why may the range not be aligned? This is
+BIOS, right? And BIOS can be fixed to align them properly.
 
-Since
+-- 
+Regards/Gruss,
+    Boris.
 
-  32974ad4907c ("[IA64] Remove COMPAT_IA32 support")
-
-IA32_STACK_TOP and ia32_setup_arg_pages() are not used anymore.
-
-And
-
-  675a0813609f ("x86: unify mmap_{32|64}.c")
-
-left behind ia32_pick_mmap_layout() extern declaration.
-
-Remove them all.
-
-  [ bp: Massage commit message. ]
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230625125411.25840-1-yuehaibing@huawei.com
----
- arch/x86/include/asm/ia32.h | 11 -----------
- 1 file changed, 11 deletions(-)
-
-diff --git a/arch/x86/include/asm/ia32.h b/arch/x86/include/asm/ia32.h
-index 4212c00..9d69f3f 100644
---- a/arch/x86/include/asm/ia32.h
-+++ b/arch/x86/include/asm/ia32.h
-@@ -56,17 +56,6 @@ struct stat64 {
- 	unsigned long long	st_ino;
- } __attribute__((packed));
- 
--#define IA32_STACK_TOP IA32_PAGE_OFFSET
--
--#ifdef __KERNEL__
--struct linux_binprm;
--extern int ia32_setup_arg_pages(struct linux_binprm *bprm,
--				unsigned long stack_top, int exec_stack);
--struct mm_struct;
--extern void ia32_pick_mmap_layout(struct mm_struct *mm);
--
--#endif
--
- extern bool __ia32_enabled;
- 
- static __always_inline bool ia32_enabled(void)
+https://people.kernel.org/tglx/notes-about-netiquette
 
