@@ -1,169 +1,136 @@
-Return-Path: <linux-tip-commits+bounces-911-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-912-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E63D896894
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 10:28:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9F7896CD5
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 12:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF12828B82E
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 08:28:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2911C272FD
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 10:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70C6126F36;
-	Wed,  3 Apr 2024 08:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598E7136674;
+	Wed,  3 Apr 2024 10:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P3QccJmz";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1z2QVo3T"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ZZmDoIIM"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154485C909;
-	Wed,  3 Apr 2024 08:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D587317F;
+	Wed,  3 Apr 2024 10:41:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712132535; cv=none; b=tAKrZ9j+l60W6Usk5uLSWmCohSCiYGpnk9h1aHwT4WGQVc7ZYlUbyTAg9lmNMi0YOSHafxkoX7Eqjj02fP/ZeXv6St93O5MS0Y7sOI5DgSFlYE2GEyvKRusMNMT4w8iWboxh1aAYCENQCGQBciISTzWD8Wj1LegOClNhkDlOAH8=
+	t=1712140909; cv=none; b=GBN7FkYx8ujFY9YNJwUoQ6a0uuE/1yxpchAqDvyhs2w0YPTT+JLI25V95D4ZywAl0PJyeBDu45v5wZhqUvMP877tVqqFWyCcJ7QhVLml6tXJCLnTQf2mvIN6iBpSQKXqhSqJawvXvXxOy/Fls61BsUWTPNq67C4Am09u5OWcSaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712132535; c=relaxed/simple;
-	bh=5lp7AlGrGY72eH77g2/OpWl6OBQLgzTGI692i8nt878=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=gh8t3Nbu8pEhzfJrEQrcm1GXkJ/Nbr+D0cJX8jKbISLrWNPB+xDrugAgownK5qXoDhsqgkuykqPbLADOsd/OW8qwvjJsO1mb5A3S2OJKPNGmOCH5Ag/iLtPOjhyfaYHH7sflORGeU+FGimcbDG8eKC39tE3vCFBCr3fCT+CgmnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P3QccJmz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1z2QVo3T; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 03 Apr 2024 08:22:11 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712132532;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FaFmSIb4p+Gtq3fkhBTi42NY/14O9dMwtxLw7aG5c5Q=;
-	b=P3QccJmzizra30UrznPr5/VfiP5CQkj0a8LjmbbXCIl2NtBruLQedMSDa6I7gbS2Xs2Yyw
-	ftlV3tSIxDEFcu3gNS6F6zSq5+67ZIGiVPgcXQdVkhp0UjjF05auqYV/czN7CuKQpW1Jvu
-	Jrpd/ZF4lilOgWfk7Q+mpdUl/bnM8EsiBed4gRGKXnT1zrOQ8vJlhWA5UG2O4gr6izuI2y
-	OrWivX2iMa2WAJXVVU0XYJQ2wsWNp7irDWyJ1S2iJ5++LD85nl0OBF9dHYCm+0m9bjWpI1
-	BgzB0igFDZBhmRN3/YXGBicK8YhOZmSE0DmrbFW8uqm1JDjeodMIdqJQKRVmGA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712132532;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FaFmSIb4p+Gtq3fkhBTi42NY/14O9dMwtxLw7aG5c5Q=;
-	b=1z2QVo3T4c8jDKPMW56mJxeXcoZrUVuW7lmE+EJRqfFo6RHsALNLHR6w0mCZVRRg5YPAhy
-	JWf95OLv4NyU64Cw==
-From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel/ds: Don't clear ->pebs_data_cfg for
- the last PEBS event
-Cc: Stephane Eranian <eranian@google.com>,
- Kan Liang <kan.liang@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240401133320.703971-1-kan.liang@linux.intel.com>
-References: <20240401133320.703971-1-kan.liang@linux.intel.com>
+	s=arc-20240116; t=1712140909; c=relaxed/simple;
+	bh=cHoh/mCyG8gbipvFz56gKADMWpWhqnpXGRpDRvSto80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EwJ/i7kNAo3TOdNxonnJO8L3rMAaajQD1NgVjXJUGfivrQHvHGArhg87Kv0YlXfQPcmaPjLuSJMtdYgfwnJIqnUbH2q6wf3+H6xuG4Yv75rG+m1KfeJtnPASbUARIlkBITN85N9D0c4tmQJzXolxeySyhvHrvxo/X27jT066ZUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ZZmDoIIM; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 765E140E019C;
+	Wed,  3 Apr 2024 10:41:43 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id YQ_zvYeI4oPH; Wed,  3 Apr 2024 10:41:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1712140899; bh=UzSO7Jsp105welFJNWCbRP4AatEptaub1c50MMxUNFY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZZmDoIIMGNqv7EUCTpd7QdLG6HLKRWT3K3iNOjkn/oZo1Fyr2uQ2L/wM9IvjkRqCc
+	 5ykgW2lz7lQwAwsKNYc9wZOQtFN3BuleIXiN7qWsE6ggLsWPtU6bEi1VU4GDdyuN62
+	 pPK4d/CkMbM3GRSPtgUF8JBV/NXJrz2lVplv1VmcIoKyBV7n2BT3wjKexlGo97Qfy5
+	 8EWV+W1z+jYmq5C1L79SyyeCZWZzGnZwfqIvv+rpQJYpn8sFg6KBcMDcoyFaH6SU8C
+	 hjZPdnztDvR1/2q8PGHMaZTlIg5Ou3USmIS0bGPBZO+fQkYEKJnEUURQxMjmFdusoQ
+	 bL4vZm1QF8ypb+2VHAx3oft5O1YHSH8iMspV59AbfovmcAh94yk+9hvhHe4AG9LM06
+	 5LU/6BY/QTTwTLR5abHs3nv5N73pznAv9DleR1MdZhodBtcd+Ue2wPcJGtYxmDdBRF
+	 AOJ4xWKrLbZsIyNdVCacgcZEX98jz9pNpI0nW3XtOTwXWOwsjPz0yuaJ/pggaHAM9d
+	 SE4bfMeWLuQQshO3xZKOxWjtXMq9UKGBF7FUGnkg0a0t5aafj/tZxHX2imYs/tKizS
+	 d2QO3FR1DA5j94nQxhlYqIMRRnM+QavBWs9wOcSvjtJnuHHgzkqcbpZESn2sZK6Xr8
+	 rjIM/oahcos7rGLy3uLF63Kg=
+Received: from zn.tnic (p5de8ecf7.dip0.t-ipconnect.de [93.232.236.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 703FB40E019B;
+	Wed,  3 Apr 2024 10:41:25 +0000 (UTC)
+Date: Wed, 3 Apr 2024 12:41:19 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Zeng Heng <zengheng4@huawei.com>
+Cc: linux-tip-commits@vger.kernel.org,
+	Jun'ichi Nomura <junichi.nomura@nec.com>,
+	Derek Barbosa <debarbos@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, "liwei (GF)" <liwei391@huawei.com>
+Subject: Re: [tip: x86/boot] x86/boot: Ignore NMIs during very early boot
+Message-ID: <20240403104119.GAZg0yTyTAGe65FoxF@fat_crate.local>
+References: <170133478498.398.5261666675868615202.tip-bot2@tip-bot2>
+ <20231130103339.GCZWhlA196uRklTMNF@fat_crate.local>
+ <95f416eb-a0ea-acba-6427-2a38d431ba8d@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171213253103.10875.3060258964816599355.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <95f416eb-a0ea-acba-6427-2a38d431ba8d@huawei.com>
 
-The following commit has been merged into the perf/urgent branch of tip:
+Hi Zeng Heng,
 
-Commit-ID:     312be9fc2234c8acfb8148a9f4c358b70d358dee
-Gitweb:        https://git.kernel.org/tip/312be9fc2234c8acfb8148a9f4c358b70d358dee
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 01 Apr 2024 06:33:20 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 03 Apr 2024 10:19:20 +02:00
+On Wed, Apr 03, 2024 at 02:32:45PM +0800, Zeng Heng wrote:
+> Until just now, I saw your completely different responses to the same patch.
 
-perf/x86/intel/ds: Don't clear ->pebs_data_cfg for the last PEBS event
+Lemme explain how I see the situation.
 
-The MSR_PEBS_DATA_CFG MSR register is used to configure which data groups
-should be generated into a PEBS record, and it's shared among all counters.
+You sent a patch:
 
-If there are different configurations among counters, perf combines all the
-configurations.
+https://lore.kernel.org/all/20230110102745.2514694-1-zengheng4@huawei.com/
 
-The first perf command as below requires a complete PEBS record
-(including memory info, GPRs, XMMs, and LBRs). The second perf command
-only requires a basic group. However, after the second perf command is
-running, the MSR_PEBS_DATA_CFG register is cleared. Only a basic group is
-generated in a PEBS record, which is wrong. The required information
-for the first perf command is missed.
+which had a commit message which tried to explain what happens. And
+I tried to parse your commit message and understand what you're trying
+to do but there never was a clear explanation.
 
- $ perf record --intr-regs=AX,SP,XMM0 -a -C 8 -b -W -d -c 100000003 -o /dev/null -e cpu/event=0xd0,umask=0x81/upp &
- $ sleep 5
- $ perf record  --per-thread  -c 1  -e cycles:pp --no-timestamp --no-tid taskset -c 8 ./noploop 1000
+When I read "If kdump is enabled, when using mce_inject to inject
+errors..." then I think, oh great, more experiments. ;-\
 
-The first PEBS event is a system-wide PEBS event. The second PEBS event
-is a per-thread event. When the thread is scheduled out, the
-intel_pmu_pebs_del() function is invoked to update the PEBS state.
-Since the system-wide event is still available, the cpuc->n_pebs is 1.
-The cpuc->pebs_data_cfg is cleared. The data configuration for the
-system-wide PEBS event is lost.
+And no, I don't want to add code to early boot just to make some weird
+experiments happy.
 
-The (cpuc->n_pebs == 1) check was introduced in commit:
+Yeah yeah, an MCE can happen very early but until a real reproducer, I'm
+not convinced.
 
-  b6a32f023fcc ("perf/x86: Fix PEBS threshold initialization")
+Now that other patch's commit message has at least a bit more clear
+explanation how you can *actually* cause this. And I still would've
+asked how *exactly* this happens but it is kinda clear: you can run perf
+and generate an NMI storm and then have two back-to-back NMIs.
 
-At that time, it indeed didn't hurt whether the state was updated
-during the removal, because only the threshold is updated.
+And I'm still not crazy about having an empty early NMI handler either
+thus I suggested to make it at least say something so that we're aware
+that early NMIs have happened.
 
-The calculation of the threshold takes the last PEBS event into
-account.
+So if it is not clear *why* a patch is being done, then it goes nowhere.
+Because you'll go your merry way and "develop driver software based on
+arm64 features" or whatever else you get to do but the maintainers will
+be left to be dealing with your code indefinitely.
 
-However, since commit:
+I hope this makes it more clear.
 
-  b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
+Thx.
 
-we delay the threshold update, and clear the PEBS data config, which triggers
-the bug.
+-- 
+Regards/Gruss,
+    Boris.
 
-The PEBS data config update scope should not be shrunk during removal.
-
-[ mingo: Improved the changelog & comments. ]
-
-Fixes: b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
-Reported-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240401133320.703971-1-kan.liang@linux.intel.com
----
- arch/x86/events/intel/ds.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index 2641ba6..e010bfe 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -1237,11 +1237,11 @@ pebs_update_state(bool needed_cb, struct cpu_hw_events *cpuc,
- 	struct pmu *pmu = event->pmu;
- 
- 	/*
--	 * Make sure we get updated with the first PEBS
--	 * event. It will trigger also during removal, but
--	 * that does not hurt:
-+	 * Make sure we get updated with the first PEBS event.
-+	 * During removal, ->pebs_data_cfg is still valid for
-+	 * the last PEBS event. Don't clear it.
- 	 */
--	if (cpuc->n_pebs == 1)
-+	if ((cpuc->n_pebs == 1) && add)
- 		cpuc->pebs_data_cfg = PEBS_UPDATE_DS_SW;
- 
- 	if (needed_cb != pebs_needs_sched_cb(cpuc)) {
+https://people.kernel.org/tglx/notes-about-netiquette
 
