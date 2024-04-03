@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-900-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-902-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B3B896534
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 09:00:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2AC896581
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 09:10:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4CC71F23BC4
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 07:00:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8539B2392C
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 07:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A21F54914;
-	Wed,  3 Apr 2024 06:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1975478B;
+	Wed,  3 Apr 2024 07:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w2na6x6Y";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ctPNlCJ0"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BiRrgJAg";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iLxU5a6m"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B276F535D4;
-	Wed,  3 Apr 2024 06:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A7955E48;
+	Wed,  3 Apr 2024 07:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712127596; cv=none; b=qKAz2U2D0qY8b5EIdIF6s9Bybbe9tlGD1sXIJLpvmS5UE9X2UDVNr4DdzxlDeLjfGTno/ajnV+h/xNnP9M8fPqaYvf8g13/sZ8jrAhmxJWl3r4XqPqyPKGd+FjANP3LPlSHJTvzJRvz4x/wjpcAYBL3Xm1i/ftvdaY+IejUPx54=
+	t=1712128106; cv=none; b=KMxNA4YYRcPoIKR+EA1J66/HfeqJh4AAyRCE5S1fLp3xS0vRCBG7Z7Zv+D2Ecbcun4fuIvuJ9uez3hVZNjyjUgJYm7/xxu6G32UfpEv4uMp/Wo5wKM1GEdhMw7iJijQHo+KtuCUWDA+x49V3UpqJTE8zpCeBhRfmWZ4P7f7JjVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712127596; c=relaxed/simple;
-	bh=qeTbd5MJFekZa37NtjIKNSK7jfzgUjevxIwJgThJqiw=;
+	s=arc-20240116; t=1712128106; c=relaxed/simple;
+	bh=HO2R6Zgte5OrIwNwoWeYCFWOQC+vJ+7i485NdOcSlBQ=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=anJnAZ8Ja7f/7Mg1tMtVbJVVklbohk7rV5p9wc3W8JXC5UqwE7qrZAtByrg1zyPZCA1w2akqWRyocctIHxjkeMkOMNnUMqFJed5yZxmEb7CPtfx5ZzDB30CBdKUqsi+tHFB8u+PBP4qt+cNGTHGmvF26SHnC8w/5hhvxqywcm6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w2na6x6Y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ctPNlCJ0; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=WO1MkHgJtL06m01iboK6xtNrq2wifhzUydB6TXcIjimwETb679kbJ2edv/EmEulxkJDsz3+71cRxrKMbUWxn/sF41bqCtYrmRymv5hqJEMM7yc1QrRedS+P29yXnslmCp3W89hmtgof0Unr1V2M1TRXd3C37q1sFQNO9GMzb5Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BiRrgJAg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iLxU5a6m; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 03 Apr 2024 06:59:52 -0000
+Date: Wed, 03 Apr 2024 07:08:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712127592;
+	s=2020; t=1712128103;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=I5cV+3eRfsC4tI1cpqqDcLb/9DxklC4MbivUnzQa6nM=;
-	b=w2na6x6YfdEAk1J7k9NS/P3QOXJyU96QdclMMPYojHAB55LyC2i/h4x61fKW976s6s8peN
-	Q2gOI131+FtHqgbjz3enp42VNSCinUQWA2H+1Cqcvc3i/ik2Wx71730SKCmERzvjiDixAB
-	pMUUovlLxVfuJzF/tYu2oC1SZWWUirOO6/o0AV1qDOPVFm/Ssj9ZGnUftj0UdMQu5NOAdL
-	XVCmICVbkKxkkAJ3NojeXk1O8vI0K1gfeC8dh/BSN8fKDczMHjNj1boMONfpgWVdtOtPCj
-	JFBtFM7l+YoHtK55NIukaSZ4rJIxRbJEem29XNVJPlTuwHi4JERfcayY2of1EQ==
+	bh=UzPybjSUz59sHeJ0O7htp4SHQ7IKXGpZlw7VNSaBqFY=;
+	b=BiRrgJAgnkHUrUwAAIZDEwcr/4rcri19fVz/Oz02y/CDyfYiGYpz7XElZ1o6vBMG0fW2+e
+	gFoh/j88F825wL02+pfiLGNvs6XFaZIeTfOHrMCfFqvjyNxWgBbaDckngABVLLxBgCNjrh
+	/WPfiV368m13xovWTb2QTZNxHlqTQ0gZORoU0f0rIS6PYCy5nyLt0oyTNpzssZt/pQqenG
+	DouAli02cWtYyYNCBKxbYPjqu4uYmmcLgPgmxnaVru8/pEPeUNyMp2EjSSLBt+ztbUWXC8
+	W4VQNQBsfnEbh1XB+PX5qsiipMMiFL0X2Vciki0zH9p0gqnZKV1Kl/E+Y+XNaQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712127592;
+	s=2020e; t=1712128103;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=I5cV+3eRfsC4tI1cpqqDcLb/9DxklC4MbivUnzQa6nM=;
-	b=ctPNlCJ0fc9QbnZbu/PS6gx2Xewv7edBhR8aYl1yWaldvCC1Z9qs1RHWHk/DkyQBYD6j7V
-	BOeDMSb9Tsb0Q+DA==
-From: "tip-bot2 for Saurabh Sengar" <tip-bot2@linutronix.de>
+	bh=UzPybjSUz59sHeJ0O7htp4SHQ7IKXGpZlw7VNSaBqFY=;
+	b=iLxU5a6m0+TBkk98fHXQ1UCJc26Mm9JDa5gz7tW7c+xOwXrvGm2ZC0FTk7O51B8NIMQphH
+	wJwPEyM78lhCm+Cw==
+From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/of: Set the parse_smp_cfg for all the
- DeviceTree platforms by default
-Cc: Saurabh Sengar <ssengar@linux.microsoft.com>,
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <1712068830-4513-3-git-send-email-ssengar@linux.microsoft.com>
-References: <1712068830-4513-3-git-send-email-ssengar@linux.microsoft.com>
+Subject: [tip: x86/percpu] x86/percpu: Re-enable named address spaces with
+ sanitizers for GCC 13.3+
+Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240402121926.78477-1-ubizjak@gmail.com>
+References: <20240402121926.78477-1-ubizjak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171212759207.10875.3015707260030588957.tip-bot2@tip-bot2>
+Message-ID: <171212810241.10875.12705075476736178415.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,108 +80,66 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the x86/percpu branch of tip:
 
-Commit-ID:     222408cde4d0ab17e54d4db26751c2b5cab9ac2b
-Gitweb:        https://git.kernel.org/tip/222408cde4d0ab17e54d4db26751c2b5cab9ac2b
-Author:        Saurabh Sengar <ssengar@linux.microsoft.com>
-AuthorDate:    Tue, 02 Apr 2024 07:40:28 -07:00
+Commit-ID:     9ebe5500d4b25ee4cde04eec59a6764361a60709
+Gitweb:        https://git.kernel.org/tip/9ebe5500d4b25ee4cde04eec59a6764361a60709
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Tue, 02 Apr 2024 14:19:08 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 03 Apr 2024 08:46:08 +02:00
+CommitterDate: Wed, 03 Apr 2024 08:59:15 +02:00
 
-x86/of: Set the parse_smp_cfg for all the DeviceTree platforms by default
+x86/percpu: Re-enable named address spaces with sanitizers for GCC 13.3+
 
-x86_dtb_parse_smp_config() must be set by DeviceTree platform for
-parsing SMP configuration. Set the parse_smp_cfg pointer to
-x86_dtb_parse_smp_config() by default so that all the dtb platforms
-need not to assign it explicitly. Today there are only two platforms
-using DeviceTree in x86, ce4100 and hv_vtl. Remove the explicit
-assignment of x86_dtb_parse_smp_config() function from these.
+Commit:
 
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+  b6540de9b5c8 ("x86/percpu: Disable named address spaces for KASAN")
+
+.. disabled support for named address spaces with KCSAN due to
+the incompatibility issue between named AS and KCSAN.
+
+GCC 13.3 has fixed this issue (GCC PR sanitizer/111736) so the
+support for named address spaces can be re-enabled with sanitizers
+for GCC compiler version >= 13.3.
+
+[ Note that the patch considers GCC 14 to be fixed - if somebody is
+  using snapshots of the GCC 14 before the fix, they should upgrade. ]
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/1712068830-4513-3-git-send-email-ssengar@linux.microsoft.com
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240402121926.78477-1-ubizjak@gmail.com
 ---
- arch/x86/hyperv/hv_vtl.c          | 1 -
- arch/x86/include/asm/prom.h       | 7 ++-----
- arch/x86/kernel/devicetree.c      | 6 ++++--
- arch/x86/platform/ce4100/ce4100.c | 1 -
- 4 files changed, 6 insertions(+), 9 deletions(-)
+ arch/x86/Kconfig | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-index 3efd0e0..0477534 100644
---- a/arch/x86/hyperv/hv_vtl.c
-+++ b/arch/x86/hyperv/hv_vtl.c
-@@ -34,7 +34,6 @@ void __init hv_vtl_init_platform(void)
- 	/* Avoid searching for BIOS MP tables */
- 	x86_init.mpparse.find_mptable = x86_init_noop;
- 	x86_init.mpparse.early_parse_smp_cfg = x86_init_noop;
--	x86_init.mpparse.parse_smp_cfg = x86_dtb_parse_smp_config;
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index f1c020d..9332bad 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2431,19 +2431,18 @@ endmenu
+ config CC_HAS_NAMED_AS
+ 	def_bool CC_IS_GCC && GCC_VERSION >= 90100
  
- 	x86_platform.get_wallclock = get_rtc_noop;
- 	x86_platform.set_wallclock = set_rtc_noop;
-diff --git a/arch/x86/include/asm/prom.h b/arch/x86/include/asm/prom.h
-index 043758a..02644e0 100644
---- a/arch/x86/include/asm/prom.h
-+++ b/arch/x86/include/asm/prom.h
-@@ -24,18 +24,15 @@ extern u64 initial_dtb;
- extern void add_dtb(u64 data);
- void x86_of_pci_init(void);
- void x86_dtb_parse_smp_config(void);
-+void x86_flattree_get_config(void);
- #else
- static inline void add_dtb(u64 data) { }
- static inline void x86_of_pci_init(void) { }
- static inline void x86_dtb_parse_smp_config(void) { }
-+static inline void x86_flattree_get_config(void) { }
- #define of_ioapic 0
- #endif
+-config CC_HAS_NAMED_AS_FIXED_ASAN
++config CC_HAS_NAMED_AS_FIXED_SANITIZERS
+ 	def_bool CC_IS_GCC && GCC_VERSION >= 130300
  
--#ifdef CONFIG_OF_EARLY_FLATTREE
--void x86_flattree_get_config(void);
--#else
--static inline void x86_flattree_get_config(void) { }
--#endif
- extern char cmd_line[COMMAND_LINE_SIZE];
+ config USE_X86_SEG_SUPPORT
+ 	def_bool y
+ 	depends on CC_HAS_NAMED_AS
+ 	#
+-	# -fsanitize=kernel-address (KASAN) is incompatible with named
+-	# address spaces with GCC < 13.3 - see GCC PR sanitizer/111736.
++	# -fsanitize=kernel-address (KASAN) and -fsanitize=thread
++	# (KCSAN) are incompatible with named address spaces with
++	# GCC < 13.3 - see GCC PR sanitizer/111736.
+ 	#
+-	depends on !KASAN || CC_HAS_NAMED_AS_FIXED_ASAN
+-	# -fsanitize=thread (KCSAN) is also incompatible.
+-	depends on !KCSAN
++	depends on !(KASAN || KCSAN) || CC_HAS_NAMED_AS_FIXED_SANITIZERS
  
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
-index 003e029..0d3a50e 100644
---- a/arch/x86/kernel/devicetree.c
-+++ b/arch/x86/kernel/devicetree.c
-@@ -277,9 +277,9 @@ static void __init dtb_apic_setup(void)
- 	dtb_ioapic_setup();
- }
- 
--#ifdef CONFIG_OF_EARLY_FLATTREE
- void __init x86_flattree_get_config(void)
- {
-+#ifdef CONFIG_OF_EARLY_FLATTREE
- 	u32 size, map_len;
- 	void *dt;
- 
-@@ -301,8 +301,10 @@ void __init x86_flattree_get_config(void)
- 
- 	if (initial_dtb)
- 		early_memunmap(dt, map_len);
--}
- #endif
-+	if (of_have_populated_dt())
-+		x86_init.mpparse.parse_smp_cfg = x86_dtb_parse_smp_config;
-+}
- 
- void __init x86_dtb_parse_smp_config(void)
- {
-diff --git a/arch/x86/platform/ce4100/ce4100.c b/arch/x86/platform/ce4100/ce4100.c
-index f32451b..f812682 100644
---- a/arch/x86/platform/ce4100/ce4100.c
-+++ b/arch/x86/platform/ce4100/ce4100.c
-@@ -139,7 +139,6 @@ void __init x86_ce4100_early_setup(void)
- 	x86_init.resources.probe_roms		= x86_init_noop;
- 	x86_init.mpparse.find_mptable		= x86_init_noop;
- 	x86_init.mpparse.early_parse_smp_cfg	= x86_init_noop;
--	x86_init.mpparse.parse_smp_cfg		= x86_dtb_parse_smp_config;
- 	x86_init.pci.init			= ce4100_pci_init;
- 	x86_init.pci.init_irq			= sdv_pci_init;
- 
+ config CC_HAS_SLS
+ 	def_bool $(cc-option,-mharden-sls=all)
 
