@@ -1,92 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-918-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-919-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35ACE8979C3
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 22:26:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D987897A34
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 22:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E19EC281989
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 20:26:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDAE1C20990
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 20:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7061553B3;
-	Wed,  3 Apr 2024 20:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A788615697B;
+	Wed,  3 Apr 2024 20:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cxO0e2xm"
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="BySGX9+L"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B2043AB6;
-	Wed,  3 Apr 2024 20:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1A7156678;
+	Wed,  3 Apr 2024 20:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712175985; cv=none; b=reyvnkhCDBpAIPxN4qyUd5S+FPkSZs3OlpbThvb9QnddJAWW9fofdZIXki70wSS2BF39cFFkA7pUyMYbXFeCBuf/y+COFwAlCFbYpVNx7t8Wc4H3kCqfleiXq+aR+hSq/URcbXDKW5z4YGetuB6yZHW21a9G7rx5g2xJYRmf6Xc=
+	t=1712176896; cv=none; b=sZRoiz8rvKQ/5nzpsFM+xngGzddXhRjJufvbrS7ALKZZ8Uigx682PaKN9y/74jaCdEZTf9efMus7xp4WWGb7cv7mTcxrwEGZWsKP9482SW6tH8yPXSlvaSN2P0NmTS5hES6xzpGPYpyA6HabrfQmSpXUTqcWWrJVVSMNQxzZBiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712175985; c=relaxed/simple;
-	bh=U/ik6ZerHWS9g3vVLA53Xj/8Jv27CN/2MsZ0+ElQNpo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NFt3FnTRS6SEpXOCagEW0onjRwsqMpP45maJ024jOsZjhqVbE6UI/Wld55v0xbAGsqjW4KNteAGqKiT+VuiRDzW3iYhNTgw8Dc3ATBPbe7bSoc3C6sM0kqz0Yz2bBr8M1dS6DchJxtpNHc0akHgY0SStvNgAH2O9QzN9rtTxYa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cxO0e2xm; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-51381021af1so465427e87.0;
-        Wed, 03 Apr 2024 13:26:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712175982; x=1712780782; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P9vLyZapUJvAgqkHdKP2bDi5kwoB6rqIDuXTA4xWhoc=;
-        b=cxO0e2xmyd4LcBXupHHzy4BqhZ0ShwYTN4OZ+x9yJisIlccJ9lhe+IZOaPtmxNGfXX
-         ig6aUra0LvN1rAWGxc06WbzbmpdaY0fKR2Pc2Ohz8DIMWHF7Xkt95qAFkStXyqzq5vb6
-         7mP9POw2web2iNpz1FVkMADGnCiS/Z8jhwUY3KMTgADI2rpeCzcQu0xWLE8VbXqevT8y
-         OP2mGxkR86f1rkbjcJxTwiBbwrJdiFiYwn9o75oEVBfciHEjPRN9SVSKBtdmT1XEID/N
-         tm/6IKTehNQoJVy4VIx/xNPYgSXQc5QYGJ2pljF1qy4SJ+Emti2SODMJnC9zjDZzuMzt
-         KFmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712175982; x=1712780782;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P9vLyZapUJvAgqkHdKP2bDi5kwoB6rqIDuXTA4xWhoc=;
-        b=X3Pft3+RE1BkXqoXlCpzuSuyz/ruv6ORFjlQV7EcG48c1pZqJgICuLf/P6k8/UBtC2
-         wrRjtAvJVq+/y4QBG3bhQY4Z5SoQnUnYn2+52RyhzaJvBrrs4ujRbEbmkFtlAIAbPTHJ
-         KZzfqH92TgSmtYWpDOyOWkiPYj3tviRN1KBpK7WOpmrGzJWPzrDAVKD/bNp25N3Ap+7B
-         ZdCJXiy16vHptd5WRdSRSy6xviR8NljDuqgAEEKPniem1DxAwfDOJU3xnxZAGWa8nwMG
-         SGkbUlz+XbdOrZ8rAjbYLyrw9IkV9Ha9ro3T2OXUhYcLSitrgshyYFXQUC3HwlJF2MY9
-         NCXw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ58bMgWNyld7jh0P14C7WxnxOcb67Gz2heE4fpNasblyO9XWBTz2MJzU7cVgb8/8QlxppPhrJXTQ/7qXLQ3+bbiXUhDPG4qLQTdPYVdbLXKk91F5T0Ulf+PpMZDIseuvVZB4emN0lPqylKUzeXNs=
-X-Gm-Message-State: AOJu0YyfzuCwtuxEd0RYpkSHnURdubnuGJxLk8qPYHCaBdAnGNrmFFmA
-	1o6WgWjX/r7OpK8URetpkHoHgB4o7/u3sJmdzuPRk59GdtJIATlP
-X-Google-Smtp-Source: AGHT+IHcZfwsBmLESX5y8kKFaF3TXTZZFK3D8XCjEw/wMe0EJgGTWMLIC4yzVw2AIjJRBEw3K5yTVQ==
-X-Received: by 2002:a19:f812:0:b0:516:c44a:657d with SMTP id a18-20020a19f812000000b00516c44a657dmr459758lff.64.1712175981537;
-        Wed, 03 Apr 2024 13:26:21 -0700 (PDT)
-Received: from ?IPV6:2001:678:a5c:1204:59b2:75a3:6a31:61d8? (soda.int.kasm.eu. [2001:678:a5c:1204:59b2:75a3:6a31:61d8])
-        by smtp.gmail.com with ESMTPSA id x25-20020a19e019000000b005159ff27541sm2143324lfg.22.2024.04.03.13.26.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Apr 2024 13:26:21 -0700 (PDT)
-Message-ID: <f37a111b-f5c5-4337-8eaf-46a2c28f01da@gmail.com>
-Date: Wed, 3 Apr 2024 22:26:19 +0200
-Precedence: bulk
-X-Mailing-List: linux-tip-commits@vger.kernel.org
-List-Id: <linux-tip-commits.vger.kernel.org>
-List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't used
- at runtime
-To: Borislav Petkov <bp@alien8.de>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, "Kaplan, David"
- <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- "x86@kernel.org" <x86@kernel.org>, David Howells <dhowells@redhat.com>
-References: <20231024201913.GHZTgmwf6QMkX8BGbo@fat_crate.local>
- <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
- <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
+	s=arc-20240116; t=1712176896; c=relaxed/simple;
+	bh=WBi+jMy/cPJPoUYrHvBCMEz4c/n+8y/p4u1tYF4xRno=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RqqxbuK7r7HeedaDSWDa5OjMRGOyV5/Q8Gv56WWalndJf6dPKb/kc5w3CcJvDWiw4gBPBgUM33kTEKuAsaVDYfWIuQXMLOmowbykh+vVFv4UuiI8T14/QO5A9G0oc5fmiJf1fMi/R9dLEQUzsOGpqrsnRcz5v5auatjy28nuRPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=BySGX9+L; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BE54340E019C;
+	Wed,  3 Apr 2024 20:41:31 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id zNPoDRuXVeZZ; Wed,  3 Apr 2024 20:41:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1712176887; bh=SudQJGK2u0OMPdgM7lq3lvNT9ANcyHz0cK1GxOTp9BE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BySGX9+LYW3pLRDpGHmCEpj8LlqR+z//OiqByTtalHc4xBd75tW8b5V0Jr34TA/3W
+	 yjx9cCKdcBvMFuXU3C+ZU3d0CrJQnoG5nVrD8Pns+U9MMXhmfZeETmT51nvXb4DTB9
+	 j0qZKmvJnrw4uIE57DNd8oQldFYPBtIedgZDFUSCnQsRrwdrvtjn2eOHv/E1nbMSRh
+	 NdhKh630+Ly9kS2clCBCQZzJbGvhFdKIOm3d8hl0GEzZXcp1lIOILFyl7GYJ9aRsPt
+	 +j+PXD9NCDmj/8ERs111FN4tm4IPGRHXOEb1WZoljJdiljRfy6yn0sibBrlCk2gtYg
+	 qo1G76qZ9SZNgFocPNU+3unM2u2ryoMyrAIbn2K0ucnWtFjZPQmJ4gtvt57lhcwyC9
+	 9rlSzswBDovoHu+9YC5MdOjBsbA9UGVnfAtnKhii6hUIUqkUBbWRpNGU7gXqtaQ+aT
+	 JtkDXdYYpE51eecfTba+NJMpfcLdm6e4rRKeVz8t0KuW2GY/8Vrm1YZiRcSA1FAVh5
+	 MII2IBShIxaFWToN0C9aUb4IjiJOcZI4yv1gvOC0S5CZiCDV/Uuvs0uLOW9kbGxmho
+	 W6VsPS8/2tsBFKH8jP1tGZKJ146cfvI6OfRhUa6nlQzuQo3/rfJgkqi+/WLOZO0PEr
+	 DUHg+CcFLgIzLVRHRfsBCYYk=
+Received: from zn.tnic (p5de8ecf7.dip0.t-ipconnect.de [93.232.236.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6D26440E00F4;
+	Wed,  3 Apr 2024 20:41:18 +0000 (UTC)
+Date: Wed, 3 Apr 2024 22:41:13 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Klara Modin <klarasmodin@gmail.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Kaplan, David" <David.Kaplan@amd.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't
+ used at runtime
+Message-ID: <20240403204113.GLZg2-6f0nH0Ne9CQt@fat_crate.local>
+References: <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
  <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
  <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
  <20240207175010.nrr34b2pp3ewe3ga@treble>
@@ -95,22 +82,34 @@ References: <20231024201913.GHZTgmwf6QMkX8BGbo@fat_crate.local>
  <20240212104348.GCZcn2ZPr445KUyQ7k@fat_crate.local>
  <78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com>
  <20240403173059.GJZg2SUwS8MXw7CdwF@fat_crate.local>
-Content-Language: en-US, sv-SE
-From: Klara Modin <klarasmodin@gmail.com>
-In-Reply-To: <20240403173059.GJZg2SUwS8MXw7CdwF@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <f37a111b-f5c5-4337-8eaf-46a2c28f01da@gmail.com>
+Precedence: bulk
+X-Mailing-List: linux-tip-commits@vger.kernel.org
+List-Id: <linux-tip-commits.vger.kernel.org>
+List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <f37a111b-f5c5-4337-8eaf-46a2c28f01da@gmail.com>
 
-On 2024-04-03 19:30, Borislav Petkov wrote:
-> On Wed, Apr 03, 2024 at 07:10:17PM +0200, Klara Modin wrote:
->> With this patch/commit, one of my machines (older P4 Xeon, 32-bit only)
->> hangs on boot with CONFIG_RETHUNK=y / CONFIG_MITIGATION_RETHUNK=y.
-> 
-> I wanna say your old P4 heater :) is not even affected by the crap the
-> return thunks are trying to address so perhaps we should make
-> CONFIG_MITIGATION_RETHUNK depend on !X86_32...
-> 
+On Wed, Apr 03, 2024 at 10:26:19PM +0200, Klara Modin wrote:
+> Probably, I don't have much knowledge about this stuff. The machine can at
+> least be useful for testing still :)
 
-Probably, I don't have much knowledge about this stuff. The machine can 
-at least be useful for testing still :)
+I wouldn't use it if I were you as it wouldn't even justify the
+electricity wasted. No one cares about 32-bit x86 kernels anymore and we
+barely keep them alive.
+
+It'll be a lot more helpful if you'd test 64-bit kernels on 64-bit hw.
+
+:-)
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
