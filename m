@@ -1,107 +1,153 @@
-Return-Path: <linux-tip-commits+bounces-897-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-898-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C220D896491
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 08:33:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35582896530
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 09:00:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3C721C21399
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 06:33:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66E9C1C20AEB
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 07:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234FE259C;
-	Wed,  3 Apr 2024 06:33:16 +0000 (UTC)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD9A53811;
+	Wed,  3 Apr 2024 06:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HzB1vfZ+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UISgoHEs"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D4917555;
-	Wed,  3 Apr 2024 06:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA24724B23;
+	Wed,  3 Apr 2024 06:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712125996; cv=none; b=GmzOk0cUu13aKSs4K792YdahVfcv1jWKp7wBaiXlULa27QADi84lwQV25TdSec483RjRUY+EJBEwYAm1kvp8Z+o72GBCjp1+oMLR1ARBPpxLF2joQiBbXS54/oHBS3Xo44vqQaKcLG2Nb5yfnSLK1iFWOQTKqEfWHscZu7gKF4s=
+	t=1712127595; cv=none; b=iHzZP6DKIeMzz1W/y/BaI89n4C0XwgzESzaPlui+xJg9qXFBUPmMkKwat1SUldiNPZ1By3JMo3BA+1nHd/8xL97DvovrPCtdUrjIIM1yphqQCq7Z7XGGvXnpk6tPOLaQqfFkEIoH5abuIdcamFISFafRmpC1SxvbXicci/HJqEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712125996; c=relaxed/simple;
-	bh=Oegz8fvYBzWUGK86dPOUrHnnarkFjfGNwr9ygzyfZSk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=O2fF7jVa0wEy+txfq5fJD+q6T8LAFtK+6IgkLmIsyCPlRtVuiAmDq8CiCddUvAV9fYYfOEwDCFSGVzanWg84FugEPKC1E9U11Fdo8ag6818BIvCaiNjZgfzVkujzSeWSreFhNeZs+olg9mlyzWYupK2AHdxasFJFnR99AkBsH0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4V8Zcr38CZz1QCCD;
-	Wed,  3 Apr 2024 14:30:36 +0800 (CST)
-Received: from kwepemi500024.china.huawei.com (unknown [7.221.188.100])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5EC081402C7;
-	Wed,  3 Apr 2024 14:33:10 +0800 (CST)
-Received: from [10.174.179.163] (10.174.179.163) by
- kwepemi500024.china.huawei.com (7.221.188.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 3 Apr 2024 14:33:09 +0800
-Message-ID: <95f416eb-a0ea-acba-6427-2a38d431ba8d@huawei.com>
-Date: Wed, 3 Apr 2024 14:32:45 +0800
+	s=arc-20240116; t=1712127595; c=relaxed/simple;
+	bh=VlfqdKSXYefzmBxkWSQufBOo1HBjBe6rDgGlEVPW2AM=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Li8pz8KRF3DP/SJYiSiEy5/l15eK0txK+/qgp/aMcuSq8GHhLhuV1xmhFi8IZcQMdL0BgFo2cPvhMFCElcIult8Sg2FlG/QIkO6fs0A/BiEFWz70sLnXtVu3z4HYXyIbBngtGbjp2yXIGR9Go2wFHZdKAvcD9Bo4llz5UJbXPl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HzB1vfZ+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UISgoHEs; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 03 Apr 2024 06:59:50 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712127591;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WK+bCLUwJlPK0cC8dRiKU+R9qSxXMgw6f5WIvjnRYTA=;
+	b=HzB1vfZ+BH1oGnsmwWuwYzVeFzX6RsAjmJaMZUUsLpS8drGcEUvgXE0EdZHHaoSB6xbKLz
+	M8yy1ZFxaYjp9UHUhDezkQbVKXuzhpyG/AZyN3WxNTV+oYi/73hzR3P31V73qnHslLn1U/
+	2TCDVChVt2+SqgRI0eGiJS4q9Zvh0SQ3NZzxrJSay+KJXd7DapdcY+FD1I7WvX7gkxCUbA
+	BM7i7cOzJ+MF4sakbauvh9J4B7+rLygvEMkcTYKELLabjuXn+KP3saF8XM6z1D0kO+1fyJ
+	un36gQ7b+QwxnnIt4nZ8y+aMqLxmX1bUiENrJXg7K81EKvk/jtg1weeX1YjS+Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712127591;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WK+bCLUwJlPK0cC8dRiKU+R9qSxXMgw6f5WIvjnRYTA=;
+	b=UISgoHEsQaG8/GKJuYmGomFwebsIbZbNiLRUXF4NvvLMHvjztvKDMmm4Evdvt6LDLvGmHQ
+	znfzPMWhT5j2wdBA==
+From: "tip-bot2 for Saurabh Sengar" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/platform] x86/of: Change x86_dtb_parse_smp_config() to static
+Cc: Saurabh Sengar <ssengar@linux.microsoft.com>,
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1712068830-4513-5-git-send-email-ssengar@linux.microsoft.com>
+References: <1712068830-4513-5-git-send-email-ssengar@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [tip: x86/boot] x86/boot: Ignore NMIs during very early boot
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-CC: <linux-tip-commits@vger.kernel.org>, Jun'ichi Nomura
-	<junichi.nomura@nec.com>, Derek Barbosa <debarbos@redhat.com>, Ingo Molnar
-	<mingo@kernel.org>, Kees Cook <keescook@chromium.org>, Linus Torvalds
-	<torvalds@linux-foundation.org>, "Paul E. McKenney" <paulmck@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Peter
- Zijlstra <peterz@infradead.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, "liwei (GF)" <liwei391@huawei.com>
-References: <170133478498.398.5261666675868615202.tip-bot2@tip-bot2>
- <20231130103339.GCZWhlA196uRklTMNF@fat_crate.local>
-From: Zeng Heng <zengheng4@huawei.com>
-In-Reply-To: <20231130103339.GCZWhlA196uRklTMNF@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Message-ID: <171212759058.10875.1562775554694124882.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemi500024.china.huawei.com (7.221.188.100)
 
-Hi Borislav Petkov,
+The following commit has been merged into the x86/platform branch of tip:
 
+Commit-ID:     f87136c05714836f1b659365443caccc1bbfce2d
+Gitweb:        https://git.kernel.org/tip/f87136c05714836f1b659365443caccc1bbfce2d
+Author:        Saurabh Sengar <ssengar@linux.microsoft.com>
+AuthorDate:    Tue, 02 Apr 2024 07:40:30 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 03 Apr 2024 08:49:56 +02:00
 
-My main job is to develop driver software based on arm64 features. 
-Sometimes I also
+x86/of: Change x86_dtb_parse_smp_config() to static
 
-help to analyze and solve problems found by other departments on x86 
-servers, and
+x86_dtb_parse_smp_config() is called locally only, change it to static.
 
-contribute repair patches to the community.
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/1712068830-4513-5-git-send-email-ssengar@linux.microsoft.com
+---
+ arch/x86/include/asm/prom.h  |  2 --
+ arch/x86/kernel/devicetree.c | 18 +++++++++---------
+ 2 files changed, 9 insertions(+), 11 deletions(-)
 
-
-I sent you the almost same patch before
-
-(https://lore.kernel.org/all/20230110102745.2514694-1-zengheng4@huawei.com/), 
-
-
-but you kept struggling with my grammar rather than the code logic itself,
-
-and even questioned my motives for sending the patch.
-
-(https://lore.kernel.org/all/Y7174pEWZ8IzCdQ9@zn.tnic/)
-
-
-Until just now, I saw your completely different responses to the same 
-patch.
-
-I'm not pointing this out to change anything, but in the hope that other 
-people or
-
-my colleagues would avoid encountering similar things.
-
-
-Regards,
-
-Zeng Heng
-
+diff --git a/arch/x86/include/asm/prom.h b/arch/x86/include/asm/prom.h
+index 02644e0..365798c 100644
+--- a/arch/x86/include/asm/prom.h
++++ b/arch/x86/include/asm/prom.h
+@@ -23,12 +23,10 @@ extern int of_ioapic;
+ extern u64 initial_dtb;
+ extern void add_dtb(u64 data);
+ void x86_of_pci_init(void);
+-void x86_dtb_parse_smp_config(void);
+ void x86_flattree_get_config(void);
+ #else
+ static inline void add_dtb(u64 data) { }
+ static inline void x86_of_pci_init(void) { }
+-static inline void x86_dtb_parse_smp_config(void) { }
+ static inline void x86_flattree_get_config(void) { }
+ #define of_ioapic 0
+ #endif
+diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
+index b93ce8a..8e3c53b 100644
+--- a/arch/x86/kernel/devicetree.c
++++ b/arch/x86/kernel/devicetree.c
+@@ -279,6 +279,15 @@ static void __init dtb_apic_setup(void)
+ 	dtb_ioapic_setup();
+ }
+ 
++static void __init x86_dtb_parse_smp_config(void)
++{
++	if (!of_have_populated_dt())
++		return;
++
++	dtb_setup_hpet();
++	dtb_apic_setup();
++}
++
+ void __init x86_flattree_get_config(void)
+ {
+ #ifdef CONFIG_OF_EARLY_FLATTREE
+@@ -307,12 +316,3 @@ void __init x86_flattree_get_config(void)
+ 	if (of_have_populated_dt())
+ 		x86_init.mpparse.parse_smp_cfg = x86_dtb_parse_smp_config;
+ }
+-
+-void __init x86_dtb_parse_smp_config(void)
+-{
+-	if (!of_have_populated_dt())
+-		return;
+-
+-	dtb_setup_hpet();
+-	dtb_apic_setup();
+-}
 
