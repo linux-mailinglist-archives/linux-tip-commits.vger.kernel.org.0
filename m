@@ -1,174 +1,116 @@
-Return-Path: <linux-tip-commits+bounces-917-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-918-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8AE897967
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 21:56:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35ACE8979C3
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 22:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30DB1B22C35
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 19:56:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E19EC281989
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 20:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F27155388;
-	Wed,  3 Apr 2024 19:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7061553B3;
+	Wed,  3 Apr 2024 20:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kBkZOuNj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IEacnahp"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cxO0e2xm"
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EC315530D;
-	Wed,  3 Apr 2024 19:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B2043AB6;
+	Wed,  3 Apr 2024 20:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712174155; cv=none; b=c6mmheivpWpzQtlrHf/E1ToyhGSuBK7wipxRiwWSVcsRR+X7QnhG/quPs/ubwXfM+/BRa5yPGANRcAp4MfJU7KiPY1cmzND2ZE6H0e5jKP/bT3aWDUx91XsN9TQ4ONSEQGbsRzgBcFlvkS1fc7sYyPtc0vUrKBr/8QyuvL76ww8=
+	t=1712175985; cv=none; b=reyvnkhCDBpAIPxN4qyUd5S+FPkSZs3OlpbThvb9QnddJAWW9fofdZIXki70wSS2BF39cFFkA7pUyMYbXFeCBuf/y+COFwAlCFbYpVNx7t8Wc4H3kCqfleiXq+aR+hSq/URcbXDKW5z4YGetuB6yZHW21a9G7rx5g2xJYRmf6Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712174155; c=relaxed/simple;
-	bh=KS37d74OWEsLdUEIIEugWBwvMSdxG69bHALvunzttbc=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=fv3WPU8sIO9LTDsPq36kjhvde0gn8d9deJXttHr0Mi/iPitwPmDQSU5uB6qB7swWDytU9g7C6bZq0epKaPGNU6QT/Og2+ArNXUCYURK8oDZLpOPIY5y0Yk2UAjW7VvXhGJIlulhBr3h6fPzYgtZxLR9q31uGju1eSIib9Gypf3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kBkZOuNj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IEacnahp; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 03 Apr 2024 19:55:50 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712174151;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=idUDMwnOdD1GcHVrCLPrBZtu2WPcarrSRJydUdZHxkI=;
-	b=kBkZOuNjisLiR/uhLgxW63f9eRFmd9Dt+ZDdTSQoUtvZ/zqpIk02l5Zl3AFh2qxKviu0jV
-	6EomyjHxEWDxdVsag3B9Jpik8NYkp9XRjegX/UBsSzLt9Mfqhb2a2P4OLv1DHkDKBakNC7
-	Sfm8+a6xEEQtsFhmWqB4Ms0vsJ+TTZQZ+h3kBE5BWH90pDjmJtihvM/7tBVUpS491Uw6cX
-	9g1g3K2etnNHna1Og0oYJjuHltBlWmBV2ozxQIzPa7h5g8//aSabEO0ilepacvbqham+EO
-	0UFdKVq1Q8ImNgfvwfVJlF0dUbpA0qXilEXM8A3YaYapo5GZ13wP8F8wlWgpRg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712174151;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=idUDMwnOdD1GcHVrCLPrBZtu2WPcarrSRJydUdZHxkI=;
-	b=IEacnahprwmcUw4Uodu8dxqd9CH7anKU6hM4TfMOZYSliJwE+0b5D+J/yj/+xwDEVAEs3A
-	dSAI4w6eeJVjewCA==
-From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] vdso: Use CONFIG_PAGE_SHIFT in vdso/datapage.h
-Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
- Kees Cook <keescook@chromium.org>, Michael Ellerman <mpe@ellerman.id.au>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240320180228.136371-1-arnd@kernel.org>
-References: <20240320180228.136371-1-arnd@kernel.org>
+	s=arc-20240116; t=1712175985; c=relaxed/simple;
+	bh=U/ik6ZerHWS9g3vVLA53Xj/8Jv27CN/2MsZ0+ElQNpo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NFt3FnTRS6SEpXOCagEW0onjRwsqMpP45maJ024jOsZjhqVbE6UI/Wld55v0xbAGsqjW4KNteAGqKiT+VuiRDzW3iYhNTgw8Dc3ATBPbe7bSoc3C6sM0kqz0Yz2bBr8M1dS6DchJxtpNHc0akHgY0SStvNgAH2O9QzN9rtTxYa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cxO0e2xm; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-51381021af1so465427e87.0;
+        Wed, 03 Apr 2024 13:26:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712175982; x=1712780782; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P9vLyZapUJvAgqkHdKP2bDi5kwoB6rqIDuXTA4xWhoc=;
+        b=cxO0e2xmyd4LcBXupHHzy4BqhZ0ShwYTN4OZ+x9yJisIlccJ9lhe+IZOaPtmxNGfXX
+         ig6aUra0LvN1rAWGxc06WbzbmpdaY0fKR2Pc2Ohz8DIMWHF7Xkt95qAFkStXyqzq5vb6
+         7mP9POw2web2iNpz1FVkMADGnCiS/Z8jhwUY3KMTgADI2rpeCzcQu0xWLE8VbXqevT8y
+         OP2mGxkR86f1rkbjcJxTwiBbwrJdiFiYwn9o75oEVBfciHEjPRN9SVSKBtdmT1XEID/N
+         tm/6IKTehNQoJVy4VIx/xNPYgSXQc5QYGJ2pljF1qy4SJ+Emti2SODMJnC9zjDZzuMzt
+         KFmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712175982; x=1712780782;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P9vLyZapUJvAgqkHdKP2bDi5kwoB6rqIDuXTA4xWhoc=;
+        b=X3Pft3+RE1BkXqoXlCpzuSuyz/ruv6ORFjlQV7EcG48c1pZqJgICuLf/P6k8/UBtC2
+         wrRjtAvJVq+/y4QBG3bhQY4Z5SoQnUnYn2+52RyhzaJvBrrs4ujRbEbmkFtlAIAbPTHJ
+         KZzfqH92TgSmtYWpDOyOWkiPYj3tviRN1KBpK7WOpmrGzJWPzrDAVKD/bNp25N3Ap+7B
+         ZdCJXiy16vHptd5WRdSRSy6xviR8NljDuqgAEEKPniem1DxAwfDOJU3xnxZAGWa8nwMG
+         SGkbUlz+XbdOrZ8rAjbYLyrw9IkV9Ha9ro3T2OXUhYcLSitrgshyYFXQUC3HwlJF2MY9
+         NCXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ58bMgWNyld7jh0P14C7WxnxOcb67Gz2heE4fpNasblyO9XWBTz2MJzU7cVgb8/8QlxppPhrJXTQ/7qXLQ3+bbiXUhDPG4qLQTdPYVdbLXKk91F5T0Ulf+PpMZDIseuvVZB4emN0lPqylKUzeXNs=
+X-Gm-Message-State: AOJu0YyfzuCwtuxEd0RYpkSHnURdubnuGJxLk8qPYHCaBdAnGNrmFFmA
+	1o6WgWjX/r7OpK8URetpkHoHgB4o7/u3sJmdzuPRk59GdtJIATlP
+X-Google-Smtp-Source: AGHT+IHcZfwsBmLESX5y8kKFaF3TXTZZFK3D8XCjEw/wMe0EJgGTWMLIC4yzVw2AIjJRBEw3K5yTVQ==
+X-Received: by 2002:a19:f812:0:b0:516:c44a:657d with SMTP id a18-20020a19f812000000b00516c44a657dmr459758lff.64.1712175981537;
+        Wed, 03 Apr 2024 13:26:21 -0700 (PDT)
+Received: from ?IPV6:2001:678:a5c:1204:59b2:75a3:6a31:61d8? (soda.int.kasm.eu. [2001:678:a5c:1204:59b2:75a3:6a31:61d8])
+        by smtp.gmail.com with ESMTPSA id x25-20020a19e019000000b005159ff27541sm2143324lfg.22.2024.04.03.13.26.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Apr 2024 13:26:21 -0700 (PDT)
+Message-ID: <f37a111b-f5c5-4337-8eaf-46a2c28f01da@gmail.com>
+Date: Wed, 3 Apr 2024 22:26:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171217415035.10875.5390578420995891180.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't used
+ at runtime
+To: Borislav Petkov <bp@alien8.de>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, "Kaplan, David"
+ <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ "x86@kernel.org" <x86@kernel.org>, David Howells <dhowells@redhat.com>
+References: <20231024201913.GHZTgmwf6QMkX8BGbo@fat_crate.local>
+ <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
+ <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
+ <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
+ <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
+ <20240207175010.nrr34b2pp3ewe3ga@treble>
+ <20240207185328.GEZcPRqPsNInRXyNMj@fat_crate.local>
+ <20240207194919.qw4jk2ykadjn5d4e@treble>
+ <20240212104348.GCZcn2ZPr445KUyQ7k@fat_crate.local>
+ <78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com>
+ <20240403173059.GJZg2SUwS8MXw7CdwF@fat_crate.local>
+Content-Language: en-US, sv-SE
+From: Klara Modin <klarasmodin@gmail.com>
+In-Reply-To: <20240403173059.GJZg2SUwS8MXw7CdwF@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+On 2024-04-03 19:30, Borislav Petkov wrote:
+> On Wed, Apr 03, 2024 at 07:10:17PM +0200, Klara Modin wrote:
+>> With this patch/commit, one of my machines (older P4 Xeon, 32-bit only)
+>> hangs on boot with CONFIG_RETHUNK=y / CONFIG_MITIGATION_RETHUNK=y.
+> 
+> I wanna say your old P4 heater :) is not even affected by the crap the
+> return thunks are trying to address so perhaps we should make
+> CONFIG_MITIGATION_RETHUNK depend on !X86_32...
+> 
 
-Commit-ID:     cffaefd15a8f423cdee5d8eac15d267bc92de314
-Gitweb:        https://git.kernel.org/tip/cffaefd15a8f423cdee5d8eac15d267bc92de314
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Wed, 20 Mar 2024 19:02:15 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 03 Apr 2024 21:50:04 +02:00
-
-vdso: Use CONFIG_PAGE_SHIFT in vdso/datapage.h
-
-Both the vdso rework and the CONFIG_PAGE_SHIFT changes were merged during
-the v6.9 merge window, so it is now possible to use CONFIG_PAGE_SHIFT
-instead of including asm/page.h in the vdso.
-
-This avoids the workaround for arm64 - commit 8b3843ae3634 ("vdso/datapage:
-Quick fix - use asm/page-def.h for ARM64") and addresses a build warning
-for powerpc64:
-
-In file included from <built-in>:4:
-In file included from /home/arnd/arm-soc/arm-soc/lib/vdso/gettimeofday.c:5:
-In file included from ../include/vdso/datapage.h:25:
-arch/powerpc/include/asm/page.h:230:9: error: result of comparison of constant 13835058055282163712 with expression of type 'unsigned long' is always true [-Werror,-Wtautological-constant-out-of-range-compare]
-  230 |         return __pa(kaddr) >> PAGE_SHIFT;
-      |                ^~~~~~~~~~~
-arch/powerpc/include/asm/page.h:217:37: note: expanded from macro '__pa'
-  217 |         VIRTUAL_WARN_ON((unsigned long)(x) < PAGE_OFFSET);              \
-      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
-arch/powerpc/include/asm/page.h:202:73: note: expanded from macro 'VIRTUAL_WARN_ON'
-  202 | #define VIRTUAL_WARN_ON(x)      WARN_ON(IS_ENABLED(CONFIG_DEBUG_VIRTUAL) && (x))
-      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-arch/powerpc/include/asm/bug.h:88:25: note: expanded from macro 'WARN_ON'
-   88 |         int __ret_warn_on = !!(x);                              \
-      |                                ^
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Link: https://lore.kernel.org/r/20240320180228.136371-1-arnd@kernel.org
----
- arch/powerpc/include/asm/vdso/gettimeofday.h | 3 +--
- include/vdso/datapage.h                      | 8 +-------
- 2 files changed, 2 insertions(+), 9 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h b/arch/powerpc/include/asm/vdso/gettimeofday.h
-index f0a4cf0..78302f6 100644
---- a/arch/powerpc/include/asm/vdso/gettimeofday.h
-+++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
-@@ -4,7 +4,6 @@
- 
- #ifndef __ASSEMBLY__
- 
--#include <asm/page.h>
- #include <asm/vdso/timebase.h>
- #include <asm/barrier.h>
- #include <asm/unistd.h>
-@@ -95,7 +94,7 @@ const struct vdso_data *__arch_get_vdso_data(void);
- static __always_inline
- const struct vdso_data *__arch_get_timens_vdso_data(const struct vdso_data *vd)
- {
--	return (void *)vd + PAGE_SIZE;
-+	return (void *)vd + (1U << CONFIG_PAGE_SHIFT);
- }
- #endif
- 
-diff --git a/include/vdso/datapage.h b/include/vdso/datapage.h
-index 5d5c0b8..c71ddb6 100644
---- a/include/vdso/datapage.h
-+++ b/include/vdso/datapage.h
-@@ -19,12 +19,6 @@
- #include <vdso/time32.h>
- #include <vdso/time64.h>
- 
--#ifdef CONFIG_ARM64
--#include <asm/page-def.h>
--#else
--#include <asm/page.h>
--#endif
--
- #ifdef CONFIG_ARCH_HAS_VDSO_DATA
- #include <asm/vdso/data.h>
- #else
-@@ -132,7 +126,7 @@ extern struct vdso_data _timens_data[CS_BASES] __attribute__((visibility("hidden
-  */
- union vdso_data_store {
- 	struct vdso_data	data[CS_BASES];
--	u8			page[PAGE_SIZE];
-+	u8			page[1U << CONFIG_PAGE_SHIFT];
- };
- 
- /*
+Probably, I don't have much knowledge about this stuff. The machine can 
+at least be useful for testing still :)
 
