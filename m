@@ -1,123 +1,180 @@
-Return-Path: <linux-tip-commits+bounces-933-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-934-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C42C898A55
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Apr 2024 16:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76CEC898AB5
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Apr 2024 17:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1F2C1C20FCF
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Apr 2024 14:44:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 906541C23241
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Apr 2024 15:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901701BDC3;
-	Thu,  4 Apr 2024 14:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B22B1D531;
+	Thu,  4 Apr 2024 15:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="F7MiIFA2"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tEsCeRxJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yfaZbJHJ"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BFF33EE;
-	Thu,  4 Apr 2024 14:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCE18462;
+	Thu,  4 Apr 2024 15:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712241863; cv=none; b=jD4Iy2Lz076wDeVaTjH3GV/FOrueEubSjXNReN5baZJX8bkBL2KUIw+K1UQAtho/fy29xQy9qDYWZiefDwJKpphNUjwL0RapHuYy4Sl+m3byb0f0iJBS/Htgy9tGBxnPJwSSvwnUlwQiFWcCxU+Gvuuvz5Ff0HSF4aCachuGlJA=
+	t=1712243406; cv=none; b=qZ/eqYi95RI/8BmjJixcKBkaswDbs2bd8arqEDZ2Ci73A56B0YrnfuTRxxpZ4rvKBKPw+A8vPyf8pMnT68THrZUjOiQvIkwixHFJbAEmROTKHZhniQtQO5DGJSozBXJUYkF8y+YgzHOX7mfeql2OrUwxXQDptVQ8sJcTxFhdGcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712241863; c=relaxed/simple;
-	bh=LQayOTlG/JO3IHd7vRlybsoXaeGw9cHDkzFlQyFFYuY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V96Vwf9qMb8TiGXjbenznW1QGIg5fLkuMhkad2yPeUrdDVqFaXgCJmJnNzvpq2MMDA8S5W7dtyEQF2jtUU3nsD5qoF42eIKLiGMGH3ScMQbGyryRg5Cgl/tdi7wghpVNykb0yJdwfs8j7XcIczM6YsiKC2q2qCig5TTwYRfmt/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=F7MiIFA2; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B787540E016B;
-	Thu,  4 Apr 2024 14:44:18 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id wEHAaU40xhaC; Thu,  4 Apr 2024 14:44:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1712241854; bh=DiZ5mWVhrG4nPWIZ2MMsXc8US/Df9BxuZOmel4lbnRk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F7MiIFA2PKmqvFzO5iUZGENLdvyM/10LCTyLI5ufyIrEn2lge4cqYQJ4M7e0mwN/b
-	 ruR2ap2rkO4WqTa7XBOTM9614Wtb2hx+ReiE8giLbv+An2Ml7QplBCkWe8OIJzD149
-	 6JkppF0TB9B/EJEPURlyqRc7rsLitWS1oBftBVtVahEcayNr1OZ0lxcm+hA794sJ9J
-	 MkTLDK+VQeOaQlmbIfi0lZIUjpSqfgWUK/pS4OSLHQDNtt9efBYi1U1NWclhL7wLKz
-	 dttVR0uM6+h11/if5M0Yc9ghM27K0zuy2CBtESKQOumjP+bLs/OSBMdRg6Fm47gWu+
-	 D0+Iewcy57HS3EUTyOtGLNvp2Q++XNr1s41XkTPpEQgsmjrxYPIkcd0eoIt7tqIf+q
-	 g1PHACAoo5/K8Fhpwqb6h+WBhRnojBbA5DlT3l9uIQaDD1emK3B/899yZYLELNm/xQ
-	 UuIHduDqYuIRArC4gfIbUkTtnmlCGFcfdyCSJ5Ruwht8D3nmUw2rD8AyILJGDtHhYT
-	 No7nvr68dd3JkZk6fnbu/Q3MhzaBQP5YdeILjxl5tiucC6zxRq+Ex57AuFxmTR6kS8
-	 tkQM7C0NxfdiBtlrdzXbakMob36h6lNYUxteFErjZ8PcUVDujc86BPwH42ote51HZY
-	 Tg5Lypq2g7aA46R5NImQGCqk=
-Received: from zn.tnic (p5de8ecf7.dip0.t-ipconnect.de [93.232.236.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BBF9740E0177;
-	Thu,  4 Apr 2024 14:44:05 +0000 (UTC)
-Date: Thu, 4 Apr 2024 16:44:00 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Klara Modin <klarasmodin@gmail.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Kaplan, David" <David.Kaplan@amd.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't
- used at runtime
-Message-ID: <20240404144400.GEZg68sPtF1xTFmUUH@fat_crate.local>
-References: <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
- <20240207175010.nrr34b2pp3ewe3ga@treble>
- <20240207185328.GEZcPRqPsNInRXyNMj@fat_crate.local>
- <20240207194919.qw4jk2ykadjn5d4e@treble>
- <20240212104348.GCZcn2ZPr445KUyQ7k@fat_crate.local>
- <78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com>
- <20240403173059.GJZg2SUwS8MXw7CdwF@fat_crate.local>
- <f37a111b-f5c5-4337-8eaf-46a2c28f01da@gmail.com>
- <20240403204113.GLZg2-6f0nH0Ne9CQt@fat_crate.local>
- <edefa2e5-c320-4021-bf8c-c6b1adf87441@gmail.com>
+	s=arc-20240116; t=1712243406; c=relaxed/simple;
+	bh=sImcZy9gzsz7Ui+Tzrvagua+22Z8PK2Sf/87AIAuMK4=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=MEbPLTjKkkMcP+oPs10Rn5t+xj++GQoxUX5qLQPeLlxdpwIxu24yGyh/EIPel/0LE0sKk2niv9PgfPazIVp8r/Oxbb4cSvWIDagCgn5C05g5rJgP1DDAvU7Xi5vfJuLVWERhGvWaqzP8CVW7nHL6swHv1WSPSJiZimvHojZkBds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tEsCeRxJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yfaZbJHJ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 04 Apr 2024 15:09:59 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712243400;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MZKvnRETMwp3vRHbubTwJKIHeHj7/93DuJZEp8NapvE=;
+	b=tEsCeRxJ9ogbrtTv4gSSeqZ32cSN6gGo7pJ0Sw95hjPKCH46oG1XaJki8LchUKIfnjurSD
+	jxJNI04Ozuuy3AC4HlbX4lv0qsPKWaLRDJmGWtZT9jXMjUk1nx623QsrVOzRwNgnWe1p61
+	nVCS4BIDJ97sVzsgd1tXF+kTd19UY/eUFlR9mskhd7h7nHwGfi5+lPWovkX05vs12P2k+E
+	YmfEC/FsfaQx17Bk6fLu+gurMOXlnYrZSukSgmopFw8zFWtUqimg/hKDKId54AvWrdQEYd
+	VE1K7QiP9IRRniB4Tg3OppmMZ/F57ZwvGfdQcPjCeu58No5+0l7e/dYbFTgDTg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712243400;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MZKvnRETMwp3vRHbubTwJKIHeHj7/93DuJZEp8NapvE=;
+	b=yfaZbJHJOxxfQrkAJK3vepWEOKrwlj7KH083xj5JuEUrd7tD9u2UUHofhldTjvm4PoUDqR
+	z8wf1cQpozFNsaBA==
+From: "tip-bot2 for Tong Tiangen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/cleanups] x86/extable: Remove unused fixup type EX_TYPE_COPY
+Cc: Tong Tiangen <tongtiangen@huawei.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240204082627.3892816-2-tongtiangen@huawei.com>
+References: <20240204082627.3892816-2-tongtiangen@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <edefa2e5-c320-4021-bf8c-c6b1adf87441@gmail.com>
+Message-ID: <171224339947.10875.6370842297740311104.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 04, 2024 at 12:25:42AM +0200, Klara Modin wrote:
-> All the more reason to continue then, even if only for nostalgia ;)
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Here's an argument for you: please save the environment by using only
-64-bit hw. :-P
+Commit-ID:     cb517619f96718a4c3c2534a3124177633f8998d
+Gitweb:        https://git.kernel.org/tip/cb517619f96718a4c3c2534a3124177633f8998d
+Author:        Tong Tiangen <tongtiangen@huawei.com>
+AuthorDate:    Sun, 04 Feb 2024 16:26:25 +08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 04 Apr 2024 17:01:40 +02:00
 
-> Jokes aside, I do run -next kernels regularly for my daily drivers (which
-> are x86_64), but it's honestly not very often I notice bugs there that
-> affect me. They have all been pretty minor or very obvious and would
-> probably have been caught regardless, but I'll of course still report them.
+x86/extable: Remove unused fixup type EX_TYPE_COPY
 
-That's good.
+After
 
-What you could also do is build random configs on linux-next - "make
-randconfig" - and see if you catch something weird there. And maybe then
-try to boot them in a VM and see what explodes.
+  034ff37d3407 ("x86: rewrite '__copy_user_nocache' function")
 
-In general, testing linux-next is a very good idea because it helps us
-catch crap early and fix it before it hits the official releases.
+rewrote __copy_user_nocache() to use EX_TYPE_UACCESS instead of the
+EX_TYPE_COPY exception type, there are no more EX_TYPE_COPY users, so
+remove it.
 
-Thx.
+  [ bp: Massage commit message. ]
 
--- 
-Regards/Gruss,
-    Boris.
+Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240204082627.3892816-2-tongtiangen@huawei.com
+---
+ arch/x86/include/asm/asm.h                 |  3 ---
+ arch/x86/include/asm/extable_fixup_types.h |  2 +-
+ arch/x86/kernel/cpu/mce/severity.c         |  1 -
+ arch/x86/mm/extable.c                      |  9 ---------
+ 4 files changed, 1 insertion(+), 14 deletions(-)
 
-https://people.kernel.org/tglx/notes-about-netiquette
+diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
+index ca8eed1..2bec0c8 100644
+--- a/arch/x86/include/asm/asm.h
++++ b/arch/x86/include/asm/asm.h
+@@ -229,9 +229,6 @@ register unsigned long current_stack_pointer asm(_ASM_SP);
+ #define _ASM_EXTABLE_UA(from, to)				\
+ 	_ASM_EXTABLE_TYPE(from, to, EX_TYPE_UACCESS)
+ 
+-#define _ASM_EXTABLE_CPY(from, to)				\
+-	_ASM_EXTABLE_TYPE(from, to, EX_TYPE_COPY)
+-
+ #define _ASM_EXTABLE_FAULT(from, to)				\
+ 	_ASM_EXTABLE_TYPE(from, to, EX_TYPE_FAULT)
+ 
+diff --git a/arch/x86/include/asm/extable_fixup_types.h b/arch/x86/include/asm/extable_fixup_types.h
+index 7acf038..906b0d5 100644
+--- a/arch/x86/include/asm/extable_fixup_types.h
++++ b/arch/x86/include/asm/extable_fixup_types.h
+@@ -36,7 +36,7 @@
+ #define	EX_TYPE_DEFAULT			 1
+ #define	EX_TYPE_FAULT			 2
+ #define	EX_TYPE_UACCESS			 3
+-#define	EX_TYPE_COPY			 4
++/* unused, was: #define EX_TYPE_COPY	 4 */
+ #define	EX_TYPE_CLEAR_FS		 5
+ #define	EX_TYPE_FPU_RESTORE		 6
+ #define	EX_TYPE_BPF			 7
+diff --git a/arch/x86/kernel/cpu/mce/severity.c b/arch/x86/kernel/cpu/mce/severity.c
+index c447716..bca780f 100644
+--- a/arch/x86/kernel/cpu/mce/severity.c
++++ b/arch/x86/kernel/cpu/mce/severity.c
+@@ -290,7 +290,6 @@ static noinstr int error_context(struct mce *m, struct pt_regs *regs)
+ 
+ 	switch (fixup_type) {
+ 	case EX_TYPE_UACCESS:
+-	case EX_TYPE_COPY:
+ 		if (!copy_user)
+ 			return IN_KERNEL;
+ 		m->kflags |= MCE_IN_KERNEL_COPYIN;
+diff --git a/arch/x86/mm/extable.c b/arch/x86/mm/extable.c
+index b522933..51986e8 100644
+--- a/arch/x86/mm/extable.c
++++ b/arch/x86/mm/extable.c
+@@ -164,13 +164,6 @@ static bool ex_handler_uaccess(const struct exception_table_entry *fixup,
+ 	return ex_handler_default(fixup, regs);
+ }
+ 
+-static bool ex_handler_copy(const struct exception_table_entry *fixup,
+-			    struct pt_regs *regs, int trapnr)
+-{
+-	WARN_ONCE(trapnr == X86_TRAP_GP, "General protection fault in user access. Non-canonical address?");
+-	return ex_handler_fault(fixup, regs, trapnr);
+-}
+-
+ static bool ex_handler_msr(const struct exception_table_entry *fixup,
+ 			   struct pt_regs *regs, bool wrmsr, bool safe, int reg)
+ {
+@@ -341,8 +334,6 @@ int fixup_exception(struct pt_regs *regs, int trapnr, unsigned long error_code,
+ 		return ex_handler_fault(e, regs, trapnr);
+ 	case EX_TYPE_UACCESS:
+ 		return ex_handler_uaccess(e, regs, trapnr, fault_addr);
+-	case EX_TYPE_COPY:
+-		return ex_handler_copy(e, regs, trapnr);
+ 	case EX_TYPE_CLEAR_FS:
+ 		return ex_handler_clear_fs(e, regs);
+ 	case EX_TYPE_FPU_RESTORE:
 
