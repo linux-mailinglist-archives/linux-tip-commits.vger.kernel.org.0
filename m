@@ -1,126 +1,122 @@
-Return-Path: <linux-tip-commits+bounces-921-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-922-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D39897B9D
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Apr 2024 00:25:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD06D89826D
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Apr 2024 09:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A89901C21800
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Apr 2024 22:25:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8061E286B19
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Apr 2024 07:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6310156979;
-	Wed,  3 Apr 2024 22:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3BE5C61D;
+	Thu,  4 Apr 2024 07:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="acp3noKY"
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LvvJRoVv";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bB083CUy"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C29156966;
-	Wed,  3 Apr 2024 22:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0296A5C8FE;
+	Thu,  4 Apr 2024 07:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712183147; cv=none; b=WSTAkEQbrRRAfT4iLweQz8ziH+gWV0QADCenSJZHS/3BJWTTLzZCF0CgykCuMB0ek41rnF7xu0jMpuymi4b3g0NUDqym/lhWrNEYLmu0tNBOU7bY21QefbmpbpmG3sygd3j6kGZ2CvhRJIpfcV7aOHs9dJaqNyMm+qnY4Om+77Y=
+	t=1712216937; cv=none; b=STJOPSrvfhh4tTfyv7/zGQFX8f31oFCgPGI2aWNfdQNZx2lLjC67FQpKtdgcwl/u7V7X6UMZC227AU/hQj6EVPKYVFNPOOa632o+Di/SoqcmFNI30ak9XM74lTyOzSxEZR33VvAYoIk5mjbSYvcNmb4ht0iViAurip41AdWKI/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712183147; c=relaxed/simple;
-	bh=+jvrPu3Zzy3xz4f0e+F0SzQY0JxQx8mrXaA0C+/nwTw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zq0MPGtz7OvPmjmQAeGQdZkGocxVoZPLE9uImT4gf3WzRqdVjDbERaukGGGf9RE7JCtJjlDbhNk8bUPHs3Mb1/bSGsNaWefHP15LTJss0/DpO4myaPIvq4Lh0jiQxmfuoOVmaEIzj6XoLlizLmCsBH8Y2+eQIyvbk27Dnx7cXmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=acp3noKY; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-516c5c39437so389356e87.1;
-        Wed, 03 Apr 2024 15:25:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712183144; x=1712787944; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zLajy1Q9xVKBjLw8NB/zHA8NnAkziwigu3iuNpIIZ6s=;
-        b=acp3noKYj1c/V3yGlipTxnxIq8xETnEWbPpCUV4LDCZRRLf1S0dzPa3rPNdzyBkOcH
-         Npt2m/L0yVv4m5p4KEBWzrmnNOa2xw/fomUQIiMC7XNLp1+GkgDSdlHCUpviDLyYX+dZ
-         XGEIol03DRGN3ppnUssVCjFe+dBUIOFSKaIRMFR4jqVbfjxKsHpH+qnHhmjOIaaoF/rk
-         ZyToJTBl+O8Qsyrs+R1LiZz8YT9vzsRwZKE7HqPmbE79W/4kCBLTN/Q70jgGeJnilRmL
-         df9OiUoZ3sJVznvcrlAps5/D+lh74W8Qb/9LbMlvX4u6uB9yagKqeejQ6jIyvsMifnHl
-         A/ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712183144; x=1712787944;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zLajy1Q9xVKBjLw8NB/zHA8NnAkziwigu3iuNpIIZ6s=;
-        b=NaUIJt1SC8h/pdvf4wG7UrS2/JB1nqOtY8y9avtFg2oc3nG3KbfzwpvTxyBbQxArjI
-         Oa3Jtps03+MwMyqk2R07PgqE0lkiAWor7qplFkIMAZDngfCkBYyzZwwkK1FZx+SVgHXb
-         4dGtyzLzp9LTIb3zrWjrX+jE5zozFoyFwY/0DXSAo8IyJZShxlPkkdyQQUHbwPiLpykw
-         go3IIhHoT5keQceKue34I1XoCoVJuMZtc1qK8ddiy3I+xbqYulGxDHe/lqX6AFnYdp5G
-         lvyfE4egTJ70hcHssESdbHVBdsRJnd3WWiMkRQPWR3VSIIRoXm0OlHDM7Djx6z6fn3uw
-         aeWA==
-X-Forwarded-Encrypted: i=1; AJvYcCWSq9HLyJUoN/i/mMvczPw9cO4s2sQgkMCmE92dzlLuzux+0kIP7STQbNwDbW+AOu6LDAIAlPr5cwKImYTGwfi8kpckgfTs0DcRHIaV3nrUh79yTAgaOfAite44eCnUdrogxGLKtcs+hkSbN76Ut2s=
-X-Gm-Message-State: AOJu0YxPJzRJglDs3lM6Wzu39sZHiXzgBq6ygovXeaTQCDdOglWt32uN
-	owrlsv4div7rGWfJuO1AFk0oLdLlh/CDmq6UyroJWAVsE+A2zlZm
-X-Google-Smtp-Source: AGHT+IGS54h51rDaIWIxna+ijj3SuIAnNbSOCM0n2rvmjJc1n/UzM6TnNacg5wF7HX5RETuFUTrVLw==
-X-Received: by 2002:a05:6512:36d1:b0:513:ccda:bc86 with SMTP id e17-20020a05651236d100b00513ccdabc86mr444352lfs.4.1712183143962;
-        Wed, 03 Apr 2024 15:25:43 -0700 (PDT)
-Received: from ?IPV6:2001:678:a5c:1204:59b2:75a3:6a31:61d8? (soda.int.kasm.eu. [2001:678:a5c:1204:59b2:75a3:6a31:61d8])
-        by smtp.gmail.com with ESMTPSA id t22-20020a192d56000000b00516cbd3e982sm14491lft.178.2024.04.03.15.25.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Apr 2024 15:25:43 -0700 (PDT)
-Message-ID: <edefa2e5-c320-4021-bf8c-c6b1adf87441@gmail.com>
-Date: Thu, 4 Apr 2024 00:25:42 +0200
+	s=arc-20240116; t=1712216937; c=relaxed/simple;
+	bh=4EAUPzFG2L2mvsRW5ix6EYbPaLtrMIhNleJQuZKgVtw=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=ubaU0LspsghrqwND36wCOWmCeu6mVsX+BaiJu8dPFh3m578Eie0G9D+IrXXmhkVJoRKr/KaGRhjobQx+euQAKXl4Ep4wqiZGL01X/U1IJsvCk5VMT8ushGar7TdMKLWyGnb/XWATPOGX7I6jNA92Dl0FvIYh6gDl+ADCrQlqajE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LvvJRoVv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bB083CUy; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 04 Apr 2024 07:48:52 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712216933;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bZPu1FmvjKlKUWPQ6fpj69VcJu6BMsXZsD7aYmWd9w4=;
+	b=LvvJRoVvYQxRg2bRTlfDD8piqAJkjVfnfbRdkxNLrQWrNbzFjDcDoFscrSEcfBtI+4bmNw
+	qVn7/+hK+RM9dKo19zdEoWzWbhpC2p+iR90MTbsIZ9Z1V4djevRRpIGj2ermxTL5YlP97r
+	hT12G7sDGjnVWK3971ei8hxJEe92ZC8PlFT535z7RlwUNSeBGSj9K4c0aR0iMw6DBbGwLH
+	RO9vD3pnaL2LPp2FPvmKQ9OZr6A4yj/Bmz/7wySZvgEM9ERIWE+s+poIR/Jp72FS1pCyKf
+	i6q6V3dJMWpEA2JdeZlxni78tuxQj/+zBcRPHjsGppCnSqBwZh1Ewrn6O+y6Vg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712216933;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bZPu1FmvjKlKUWPQ6fpj69VcJu6BMsXZsD7aYmWd9w4=;
+	b=bB083CUyi9x4a5lLyf+tACBmbqtd5WUvlwQBYb8Jsv5lmxLW2E6LxZds9SiJn/RiLOO5H4
+	Lk29CcWW2lqGiPDA==
+From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/numa/32: Include missing <asm/pgtable_areas.h>
+Cc: Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240403202344.3463169-1-arnd@kernel.org>
+References: <20240403202344.3463169-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't used
- at runtime
-To: Borislav Petkov <bp@alien8.de>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, "Kaplan, David"
- <David.Kaplan@amd.com>, Ingo Molnar <mingo@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- "x86@kernel.org" <x86@kernel.org>, David Howells <dhowells@redhat.com>
-References: <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
- <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
- <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
- <20240207175010.nrr34b2pp3ewe3ga@treble>
- <20240207185328.GEZcPRqPsNInRXyNMj@fat_crate.local>
- <20240207194919.qw4jk2ykadjn5d4e@treble>
- <20240212104348.GCZcn2ZPr445KUyQ7k@fat_crate.local>
- <78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com>
- <20240403173059.GJZg2SUwS8MXw7CdwF@fat_crate.local>
- <f37a111b-f5c5-4337-8eaf-46a2c28f01da@gmail.com>
- <20240403204113.GLZg2-6f0nH0Ne9CQt@fat_crate.local>
-Content-Language: en-US, sv-SE
-From: Klara Modin <klarasmodin@gmail.com>
-In-Reply-To: <20240403204113.GLZg2-6f0nH0Ne9CQt@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Message-ID: <171221693236.10875.9400549582446889445.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-On 2024-04-03 22:41, Borislav Petkov wrote:
-> On Wed, Apr 03, 2024 at 10:26:19PM +0200, Klara Modin wrote:
->> Probably, I don't have much knowledge about this stuff. The machine can at
->> least be useful for testing still :)
-> 
-> I wouldn't use it if I were you as it wouldn't even justify the
-> electricity wasted. No one cares about 32-bit x86 kernels anymore and we
-> barely keep them alive.
-> 
-> It'll be a lot more helpful if you'd test 64-bit kernels on 64-bit hw.
-> 
-> :-)
-> 
-> Thx.
-> 
-All the more reason to continue then, even if only for nostalgia ;)
+The following commit has been merged into the x86/urgent branch of tip:
 
-Jokes aside, I do run -next kernels regularly for my daily drivers 
-(which are x86_64), but it's honestly not very often I notice bugs there 
-that affect me. They have all been pretty minor or very obvious and 
-would probably have been caught regardless, but I'll of course still 
-report them.
+Commit-ID:     9852b1dc6a140365977d7bfb5fa03d413b3417ad
+Gitweb:        https://git.kernel.org/tip/9852b1dc6a140365977d7bfb5fa03d413b3417ad
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Wed, 03 Apr 2024 22:23:37 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 04 Apr 2024 09:39:38 +02:00
+
+x86/numa/32: Include missing <asm/pgtable_areas.h>
+
+The __vmalloc_start_set declaration is in a header that is not included
+in numa_32.c in current linux-next:
+
+  arch/x86/mm/numa_32.c: In function 'initmem_init':
+  arch/x86/mm/numa_32.c:57:9: error: '__vmalloc_start_set' undeclared (first use in this function)
+     57 |         __vmalloc_start_set = true;
+        |         ^~~~~~~~~~~~~~~~~~~
+  arch/x86/mm/numa_32.c:57:9: note: each undeclared identifier is reported only once for each function it appears in
+
+Add an explicit #include.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240403202344.3463169-1-arnd@kernel.org
+---
+ arch/x86/mm/numa_32.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/mm/numa_32.c b/arch/x86/mm/numa_32.c
+index 1045443..025fd7e 100644
+--- a/arch/x86/mm/numa_32.c
++++ b/arch/x86/mm/numa_32.c
+@@ -24,6 +24,7 @@
+ 
+ #include <linux/memblock.h>
+ #include <linux/init.h>
++#include <asm/pgtable_areas.h>
+ 
+ #include "numa_internal.h"
+ 
 
