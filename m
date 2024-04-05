@@ -1,79 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-938-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-939-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58628899910
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Apr 2024 11:11:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9C889A6B5
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Apr 2024 23:58:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D92451F20F4B
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Apr 2024 09:11:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DB961C20D6E
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Apr 2024 21:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8211815FD04;
-	Fri,  5 Apr 2024 09:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5644A1779AD;
+	Fri,  5 Apr 2024 21:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FlI1/jS+";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GVBH6R8G"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IX5/wFFh";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7XjVV/+N"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A14415FCEE;
-	Fri,  5 Apr 2024 09:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4641779A7;
+	Fri,  5 Apr 2024 21:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712308297; cv=none; b=Z31hDmnah4oIjaIyVw01SCl4NXvZxag7nTB2IGizP+XL+jPydisuyFo2OEdBaj49YJ0S6bOCIrI4nwFcuXAGcpwkTU77tIFrrFIAErwitYljAaZryXh3NbnJVCB8mKU0TT+urpSh4oI27WeCfXFr+GFFdBHc+wuv0pMit4YnVNE=
+	t=1712353896; cv=none; b=StoporyW9SYpnKWwBs/+HRSps11m41Al0sqTZ2XApKxuPZ9FbDJ8xOU43AY02hb+Pk6c4Lb/DrKFaVHliihnCEz6Z1nyIhZvzNymymTJsNH3gsEyPPWBYgCx6gbzBDqAAHl7yuYCe8oF2SB9WGXmv11sRcfanO8AFRb4nr4QXUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712308297; c=relaxed/simple;
-	bh=YSaBmWoXfYDhvVymWb8ukujVahbY5mHH7VkkTR3FmbI=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MeDLQh6hW4nbvvCxHZf1Q75WB6c8As7072DgI9p/AOm8XRgRbDHzbQuA71Qn3SWnvz0YCJPYnzD8CzRAJh/9ae46i61C41XB5UBvF9qIk4LXbtscu06WCJAEvOZbu7OzMok6Ug4g6/qiyOUMAAM6lfgzIYnJloE28R24k0dtAm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FlI1/jS+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GVBH6R8G; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1712353896; c=relaxed/simple;
+	bh=qnPCxhijiKo1965NzfGBjF8Wk82s8pu8INodAXhOxjM=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=ICDe2Aj6d7bORWwkKfzVfjOMcUPB9HtNyFIjjpeSP4ekDFnWaNGmxRIhSFlMTpSk902o6dvuk/aPi0s06tvYs1Ty0hZm2IJEGFNezu6K+Rl0hOhOljGnILlg4OriWHceM5RdL069XGiXfsGmFzvp8N0YyouRciC3nw/mJXKrjj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IX5/wFFh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7XjVV/+N; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 05 Apr 2024 09:11:32 -0000
+Date: Fri, 05 Apr 2024 21:51:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712308293;
+	s=2020; t=1712353892;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iW/TWBRlA3pdU0u90IiI8ZFieLi9oRhVjZmHm/wce/8=;
-	b=FlI1/jS+tEjyelRKJiAJsroLcfcANIMA4xKfzjyGaC2YqoDV1gugBviisv8qNslktP11sO
-	vCsb6qHc+diLH8LEcHdjaxaorKpWdQVwG6bLbG4NACBDatP5QLxu93f0qkSh2GZMMmIku7
-	ZQZh9E0pbyBMQPHgIWMpJl3iYI6EbPoawZ12TLVif5rZ0c1s7ymJrbn6eocyPXeYj37aZr
-	icIrTKvDM9aSW1Bml4oYMUnQxeMjqcXPIsFRuKWOOr06pyDL2pdgnvLmkDBpn3Z+aVQSOv
-	Vm0asKF3h3P347+BTWto0s1w3JjoAzrr5PO9jeNef8gXxq5XpI9+QvlpeXnwag==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=h4OV17tldwjv+ugFjSZlstFzEs3BbAG5cbN8SdrUJZM=;
+	b=IX5/wFFhO88kpkABsGxmUEqqCVxui4hT6W8L+qg99G2aLT2+n83OXOsBwkh/xtyGVh0ylT
+	5QfQNF7eu/j48lQspmW6yiImriH38IxRYUyOlmv39chYxBn60pY5/9GDXPDB8cE9tolXtG
+	Yl3T2HbCWlomk+KhoiFF2DUjnv4NEW7pDF6kaTdbHrF6dGRKGxIDGK/NUl3yrSDsR75k/d
+	r4kjTq0byDh1/sPnjjbqEoolmuXqW4TWje8azdg/0MxNBCGa45jekk3ByiBNS+tXgNm4q/
+	upO3LE3bEpwVKUxWVfEiCvzREbVLzmSwmNcmG9AfZR4AOwhPc/5Yw0tkqhZJUA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712308293;
+	s=2020e; t=1712353892;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iW/TWBRlA3pdU0u90IiI8ZFieLi9oRhVjZmHm/wce/8=;
-	b=GVBH6R8G9ldAAYdi7qWESjfXTkDDlUY1OgT79q/HOR5R1Fj4zJjzyMFrx1lS7bNeeMWb8S
-	3ghI8I3usNBx87DQ==
-From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=h4OV17tldwjv+ugFjSZlstFzEs3BbAG5cbN8SdrUJZM=;
+	b=7XjVV/+N2eCWbRftGEfFqV97nEalleyjIVYq7GKsUcIZydhV4Hm8luAaySmnKw1k8JF+MG
+	DoFBBQyl7W2BogCw==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] timers/migration: Fix ignored event due to
- missing CPU update
-Cc: Frederic Weisbecker <frederic@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- "Anna-Maria Behnsen" <anna-maria@linutronix.de>, x86@kernel.org,
+Subject:
+ [tip: x86/microcode] x86/microcode/AMD: Remove unused PATCH_MAX_SIZE macro
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <Zg2Ct6M2RJAYHgCB@localhost.localdomain>
-References: <Zg2Ct6M2RJAYHgCB@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171230829261.10875.3417247022952056408.tip-bot2@tip-bot2>
+Message-ID: <171235389097.10875.3141438373262739023.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,187 +72,39 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     61f7fdf8fd00ce33d30ca3fae8d643c0850ce945
-Gitweb:        https://git.kernel.org/tip/61f7fdf8fd00ce33d30ca3fae8d643c0850ce945
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Mon, 01 Apr 2024 23:48:59 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 05 Apr 2024 11:05:16 +02:00
+Commit-ID:     3287c22957b401903e4933a81eea9191788da33b
+Gitweb:        https://git.kernel.org/tip/3287c22957b401903e4933a81eea9191788da33b
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Fri, 05 Apr 2024 23:33:08 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 05 Apr 2024 23:33:08 +02:00
 
-timers/migration: Fix ignored event due to missing CPU update
+x86/microcode/AMD: Remove unused PATCH_MAX_SIZE macro
 
-When a group event is updated with its expiry unchanged but a different
-CPU, that target change may go unnoticed and the event may be propagated
-up with a stale CPU value. The following depicts a scenario that has
-been actually observed:
+Orphaned after
 
-                       [GRP2:0]
-                   migrator = GRP1:1
-                   active   = GRP1:1
-                   nextevt  = TGRP1:0 (T0)
-                    /              \
-               [GRP1:0]           [GRP1:1]
-            migrator = NONE       [...]
-            active   = NONE
-            nextevt  = TGRP0:0 (T0)
-            /           \
-        [GRP0:0]       [...]
-      migrator = NONE
-      active   = NONE
-      nextevt  = T0
-      /         \
-    0 (T0)       1 (T1)
-    idle         idle
+  05e91e721138 ("x86/microcode/AMD: Rip out static buffers")
 
-0) The hierarchy has 3 levels. The left part (GRP1:0) is all idle,
-including CPU 0 and CPU 1 which have a timer each: T0 and T1. They have
-the same expiry value.
+No functional changes.
 
-                       [GRP2:0]
-                   migrator = GRP1:1
-                   active   = GRP1:1
-                   nextevt  = KTIME_MAX
-                    /              \
-               [GRP1:0]           [GRP1:1]
-            migrator = NONE       [...]
-            active   = NONE
-            nextevt  = TGRP0:0 (T0)
-            /           \
-        [GRP0:0]       [...]
-      migrator = NONE
-      active   = NONE
-      nextevt  = T0
-      /         \
-    0 (T0)       1 (T1)
-    idle         idle
-
-1) The migrator in GRP1:1 handles remotely T0. The event is dequeued
-from the top and T0 executed.
-
-                       [GRP2:0]
-                   migrator = GRP1:1
-                   active   = GRP1:1
-                   nextevt  = KTIME_MAX
-                    /              \
-               [GRP1:0]           [GRP1:1]
-            migrator = NONE       [...]
-            active   = NONE
-            nextevt  = TGRP0:0 (T0)
-            /           \
-        [GRP0:0]       [...]
-      migrator = NONE
-      active   = NONE
-      nextevt  = T1
-      /         \
-    0            1 (T1)
-    idle         idle
-
-2) The migrator in GRP1:1 fetches the next timer for CPU 0 and finds
-none. But it updates the events from its groups, starting with GRP0:0
-which now has T1 as its next event. So far so good.
-
-                       [GRP2:0]
-                   migrator = GRP1:1
-                   active   = GRP1:1
-                   nextevt  = KTIME_MAX
-                    /              \
-               [GRP1:0]           [GRP1:1]
-            migrator = NONE       [...]
-            active   = NONE
-            nextevt  = TGRP0:0 (T0)
-            /           \
-        [GRP0:0]       [...]
-      migrator = NONE
-      active   = NONE
-      nextevt  = T1
-      /         \
-    0            1 (T1)
-    idle         idle
-
-3) The migrator in GRP1:1 proceeds upward and updates the events in
-GRP1:0. The child event TGRP0:0 is found queued with the same expiry
-as before. And therefore it is left unchanged. However the target CPU
-is not the same but that fact is ignored so TGRP0:0 still points to
-CPU 0 when it should point to CPU 1.
-
-                       [GRP2:0]
-                   migrator = GRP1:1
-                   active   = GRP1:1
-                   nextevt  = TGRP1:0 (T0)
-                    /              \
-               [GRP1:0]           [GRP1:1]
-            migrator = NONE       [...]
-            active   = NONE
-            nextevt  = TGRP0:0 (T0)
-            /           \
-        [GRP0:0]       [...]
-      migrator = NONE
-      active   = NONE
-      nextevt  = T1
-      /         \
-    0            1 (T1)
-    idle         idle
-
-4) The propagation has reached the top level and TGRP1:0, having TGRP0:0
-as its first event, also wrongly points to CPU 0. TGRP1:0 is added to
-the top level group.
-
-                       [GRP2:0]
-                   migrator = GRP1:1
-                   active   = GRP1:1
-                   nextevt  = KTIME_MAX
-                    /              \
-               [GRP1:0]           [GRP1:1]
-            migrator = NONE       [...]
-            active   = NONE
-            nextevt  = TGRP0:0 (T0)
-            /           \
-        [GRP0:0]       [...]
-      migrator = NONE
-      active   = NONE
-      nextevt  = T1
-      /         \
-    0            1 (T1)
-    idle         idle
-
-5) The migrator in GRP1:1 dequeues the next event in top level pointing
-to CPU 0. But since it actually doesn't see any real event in CPU 0, it
-early returns.
-
-6) T1 is left unhandled until either CPU 0 or CPU 1 wake up.
-
-Some other bad scenario may involve trees with just two levels.
-
-Fix this with unconditionally updating the CPU of the child event before
-considering to early return while updating a queued event with an
-unchanged expiry value.
-
-Fixes: 7ee988770326 ("timers: Implement the hierarchical pull model")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/r/Zg2Ct6M2RJAYHgCB@localhost.localdomain
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 ---
- kernel/time/timer_migration.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/microcode/amd.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-index c63a0af..e3075e4 100644
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -762,8 +762,11 @@ bool tmigr_update_events(struct tmigr_group *group, struct tmigr_group *child,
- 	 * queue when the expiry time changed only or when it could be ignored.
- 	 */
- 	if (timerqueue_node_queued(&evt->nextevt)) {
--		if ((evt->nextevt.expires == nextexp) && !evt->ignore)
-+		if ((evt->nextevt.expires == nextexp) && !evt->ignore) {
-+			/* Make sure not to miss a new CPU event with the same expiry */
-+			evt->cpu = first_childevt->cpu;
- 			goto check_toplvl;
-+		}
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index 620f0af..c0d56c0 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -84,8 +84,6 @@ struct microcode_amd {
+ 	unsigned int			mpb[];
+ };
  
- 		if (!timerqueue_del(&group->events, &evt->nextevt))
- 			WRITE_ONCE(group->next_expiry, KTIME_MAX);
+-#define PATCH_MAX_SIZE (3 * PAGE_SIZE)
+-
+ static struct equiv_cpu_table {
+ 	unsigned int num_entries;
+ 	struct equiv_cpu_entry *entry;
 
