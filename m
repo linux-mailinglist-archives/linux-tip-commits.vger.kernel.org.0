@@ -1,76 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-967-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-968-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4894A89C6AF
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Apr 2024 16:17:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041E389C743
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Apr 2024 16:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A83481F22566
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Apr 2024 14:17:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96CF61F21110
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Apr 2024 14:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C572A8593C;
-	Mon,  8 Apr 2024 14:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9958713E8B6;
+	Mon,  8 Apr 2024 14:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3QDJlZ/n";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="enPTaBQf"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FJvj7XPN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o5hWglGe"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C951D85C6F;
-	Mon,  8 Apr 2024 14:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93E113E8A5;
+	Mon,  8 Apr 2024 14:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585806; cv=none; b=AyZBBH3mk5XqD6hxJ/4jWUV+WpBueRoJ+xR2fI/Y9jseMTmTQmoQy50V5ekgBqgfsSiiXLJwem229sBNXvTooYFAQCzhx8vi7YB/GWjvIXpEGTHnbxbO825CWtAMhMLBfpKZ2SWKmkdx/9y/TRYpd5eeq3sbSv8ZFgmAzWCTHK4=
+	t=1712587288; cv=none; b=p/R5p8NtCAf0SWEyvvC4JIUA8S2M1LtyUlVHXOXZzCx2ZSgmLSFoB0+yRATiV6AO8Ffma4R6Qurkc0El1Oj88CFbwlTAajm0cZM6CGy9v/nAecB03kEhjPazbp9i6OHmllz9pMcI1mb3Jdv8QHXt4Kbb81JTqjlrTOi1O4wR6iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585806; c=relaxed/simple;
-	bh=bh8nWSuXPbDtnBugyVIiuU1sUkbw3RyB5fyuPJeGgvA=;
+	s=arc-20240116; t=1712587288; c=relaxed/simple;
+	bh=wGLCl0UtKRYyeiLABxCw182vgu+6IzM/i6MltoJlpjM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=PslPokGPHqY2XGPhw3ktAHRQRiY2mgPEzFPLr56h7ZvfqfBWMlhef3556smDuS53O79dPdanmDJuzT8TM3t8BlcIuYOCcgSTgiJG+PTvmYrdoVADN+gx2SAFvQNjZAXc2qnZcGaIxVVb/16r8GNHkXXQxY24TlFji+N7BP0SvoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3QDJlZ/n; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=enPTaBQf; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=LFvdEQ60Oh2mYsBvBd7OCoBVjkCYaFfhdxZr2Irhv2gDXrZ8bhtykHFq7V2AbGYTcenAZT5FdOcSgshoDMrAbMqzXjFs26Jm3oVAOsqT6rt9CEwJRwZ6X/eApm39Ii4Sj/9p+SJqJbBJ6bJPqWQa74kctXyHuF5Pi0kO0j+cSa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FJvj7XPN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o5hWglGe; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 08 Apr 2024 14:16:41 -0000
+Date: Mon, 08 Apr 2024 14:41:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712585802;
+	s=2020; t=1712587285;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+MlJ5XHbN1NPPl7eX/WyHg2J+EFd1iqsdaFiPEliwt8=;
-	b=3QDJlZ/nu3I3QxaFTacN+LZXoUyV7TUDMa4E7DEKxKCc2oBxrfmpoG51Vvt31wHQ7dsZw6
-	neGdlzsxSEfdJDIEFdECvfYrcybpMSq5i9UWQH82Bfu6iLr6faYRtsarl94LMZTJBOVgYv
-	6LoXtaZ1eNf6sIylkog/BzYj5lrerVeScSrKC8U+BhVh4acASTK95SgK0u799e4HQIvja5
-	zN/byFh9RuwaHe4ujTWBl+B8xwPcw3YapwOQzvny9Z9AgtLFYKzta15XLcWEVBcBMX2tRT
-	ooHsMhlOJwUzFlyfx3dhrDAm7fwTp3ivNCCLT933GtPWPB40taGsxBZ1nVGw+A==
+	bh=E0Jncqt8D3n+3eK13S2Wr0ZgD2itn9OYxVF/OOG1ric=;
+	b=FJvj7XPN+tdj76wnRLLFSgCIg8Ulvm2O+O8xWDk1YyJh/Bthy+ta2+frwkbg0TUsdUrvPi
+	yIhUkVKPusErEKgI0O7wgZyhyYO0oLHgTn+GvVHdXFRVv56Sv6cKWi4ESWp9M/31OV40DC
+	fOtvzBIUKndNxJUdh8i19Gq55TO85jMhYsKhoJADnMOluVxxTpYNkHhI5M+gowKoywrWMC
+	L6Gdyb/MGpTFl5QkxzwyqbvD71emdBV4uvphWG8GFBDB40hxyIu5/qAG3QJTwVUqL22/H6
+	gBkk8ZcAFRI8z6/drTyx+MhNEph8cjJTkivtSAxPRGveRZJkqCHh+xJzS5k3ZQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712585802;
+	s=2020e; t=1712587285;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+MlJ5XHbN1NPPl7eX/WyHg2J+EFd1iqsdaFiPEliwt8=;
-	b=enPTaBQf12ezEGVDgbh18i7JayXf6RHCU8JxnLcYSfJ099dAciZVc2iNyC2NCavwI1EQEy
-	rIqOBM3b0zggu6BA==
+	bh=E0Jncqt8D3n+3eK13S2Wr0ZgD2itn9OYxVF/OOG1ric=;
+	b=o5hWglGexCXouQimqVgyoNiVGf0SPgq4iQNy2+vH/r7uA7GpgKrarDyqq3hQa2+fhClToc
+	J7K95O1LNICNOhDg==
 From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/math-emu: Fix function cast warnings
-Cc: Arnd Bergmann <arnd@arndb.de>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+Subject: [tip: timers/urgent] irqflags: Explicitly ignore
+ lockdep_hrtimer_exit() argument
+Cc: kernel test robot <lkp@intel.com>, Arnd Bergmann <arnd@arndb.de>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, stable@vger.kernel.org,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240213095631.454543-1-arnd@kernel.org>
-References: <20240213095631.454543-1-arnd@kernel.org>
+In-Reply-To: <20240408074609.3170807-1-arnd@kernel.org>
+References: <20240408074609.3170807-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171258580133.10875.15729476936056309317.tip-bot2@tip-bot2>
+Message-ID: <171258728424.10875.1653913152123120483.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,118 +81,47 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     e0ca9353a86c0459a9c3fc8d65f7c88e96217cea
-Gitweb:        https://git.kernel.org/tip/e0ca9353a86c0459a9c3fc8d65f7c88e96217cea
+Commit-ID:     c1d11fc2c8320871b40730991071dd0a0b405bc8
+Gitweb:        https://git.kernel.org/tip/c1d11fc2c8320871b40730991071dd0a0b405bc8
 Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Thu, 04 Apr 2024 18:17:24 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 08 Apr 2024 16:06:22 +02:00
+AuthorDate:    Mon, 08 Apr 2024 09:46:01 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 08 Apr 2024 16:34:18 +02:00
 
-x86/math-emu: Fix function cast warnings
+irqflags: Explicitly ignore lockdep_hrtimer_exit() argument
 
-clang-16 warns about casting function pointers with incompatible
-prototypes. The x86 math-emu code does this in a number of places
-to call some trivial functions that need no arguments:
+When building with 'make W=1' but CONFIG_TRACE_IRQFLAGS=n, the
+unused argument to lockdep_hrtimer_exit() causes a warning:
 
-  arch/x86/math-emu/fpu_etc.c:124:14: error: cast from 'void (*)(void)' to 'FUNC_ST0' \
-    (aka 'void (*)(struct fpu__reg *, unsigned char)') converts to incompatible function \
-    type [-Werror,-Wcast-function-type-strict]
-    124 |         fchs, fabs, (FUNC_ST0) FPU_illegal, (FUNC_ST0) FPU_illegal,
-        |                     ^~~~~~~~~~~~~~~~~~~~~~
+kernel/time/hrtimer.c:1655:14: error: variable 'expires_in_hardirq' set but not used [-Werror=unused-but-set-variable]
 
-  arch/x86/math-emu/fpu_trig.c:1634:19: error: cast from 'void (*)(void)' to 'FUNC_ST0' \
-    (aka 'void (*)(struct fpu__reg *, unsigned char)') converts to incompatible function \
-    type [-Werror,-Wcast-function-type-strict]
-   1634 |         fxtract, fprem1, (FUNC_ST0) fdecstp, (FUNC_ST0) fincstp
-        |                          ^~~~~~~~~~~~~~~~~~
+This is intentional behavior, so add a cast to void to shut up the warning.
 
-  arch/x86/math-emu/reg_constant.c:112:53: error: cast from 'void (*)(void)' to 'FUNC_RC' \
-  (aka 'void (*)(int)') converts to incompatible function \
-  type [-Werror,-Wcast-function-type-strict]
-    112 |         fld1, fldl2t, fldl2e, fldpi, fldlg2, fldln2, fldz, (FUNC_RC) FPU_illegal
-
-Change the fdecstp() and fincstp() functions to actually have the correct
-prototypes based on the caller, and add wrappers around FPU_illegal() for
-adapting those.
-
+Fixes: 73d20564e0dc ("hrtimer: Don't dereference the hrtimer pointer after the callback")
+Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/lkml/20240213095631.454543-1-arnd@kernel.org
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240408074609.3170807-1-arnd@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202311191229.55QXHVc6-lkp@intel.com/
 ---
- arch/x86/math-emu/fpu_etc.c      |  9 +++++++--
- arch/x86/math-emu/fpu_trig.c     |  6 +++---
- arch/x86/math-emu/reg_constant.c |  7 ++++++-
- 3 files changed, 16 insertions(+), 6 deletions(-)
+ include/linux/irqflags.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/math-emu/fpu_etc.c b/arch/x86/math-emu/fpu_etc.c
-index 1b118fd..39423ec 100644
---- a/arch/x86/math-emu/fpu_etc.c
-+++ b/arch/x86/math-emu/fpu_etc.c
-@@ -120,9 +120,14 @@ static void fxam(FPU_REG *st0_ptr, u_char st0tag)
- 	setcc(c);
- }
- 
-+static void FPU_ST0_illegal(FPU_REG *st0_ptr, u_char st0_tag)
-+{
-+	FPU_illegal();
-+}
-+
- static FUNC_ST0 const fp_etc_table[] = {
--	fchs, fabs, (FUNC_ST0) FPU_illegal, (FUNC_ST0) FPU_illegal,
--	ftst_, fxam, (FUNC_ST0) FPU_illegal, (FUNC_ST0) FPU_illegal
-+	fchs, fabs, FPU_ST0_illegal, FPU_ST0_illegal,
-+	ftst_, fxam, FPU_ST0_illegal, FPU_ST0_illegal,
- };
- 
- void FPU_etc(void)
-diff --git a/arch/x86/math-emu/fpu_trig.c b/arch/x86/math-emu/fpu_trig.c
-index 990d847..85daf98 100644
---- a/arch/x86/math-emu/fpu_trig.c
-+++ b/arch/x86/math-emu/fpu_trig.c
-@@ -433,13 +433,13 @@ static void fxtract(FPU_REG *st0_ptr, u_char st0_tag)
- #endif /* PARANOID */
- }
- 
--static void fdecstp(void)
-+static void fdecstp(FPU_REG *st0_ptr, u_char st0_tag)
- {
- 	clear_C1();
- 	top--;
- }
- 
--static void fincstp(void)
-+static void fincstp(FPU_REG *st0_ptr, u_char st0_tag)
- {
- 	clear_C1();
- 	top++;
-@@ -1631,7 +1631,7 @@ static void fscale(FPU_REG *st0_ptr, u_char st0_tag)
- 
- static FUNC_ST0 const trig_table_a[] = {
- 	f2xm1, fyl2x, fptan, fpatan,
--	fxtract, fprem1, (FUNC_ST0) fdecstp, (FUNC_ST0) fincstp
-+	fxtract, fprem1, fdecstp, fincstp,
- };
- 
- void FPU_triga(void)
-diff --git a/arch/x86/math-emu/reg_constant.c b/arch/x86/math-emu/reg_constant.c
-index 742619e..003a0b2 100644
---- a/arch/x86/math-emu/reg_constant.c
-+++ b/arch/x86/math-emu/reg_constant.c
-@@ -108,8 +108,13 @@ static void fldz(int rc)
- 
- typedef void (*FUNC_RC) (int);
- 
-+static void FPU_RC_illegal(int unused)
-+{
-+	FPU_illegal();
-+}
-+
- static FUNC_RC constants_table[] = {
--	fld1, fldl2t, fldl2e, fldpi, fldlg2, fldln2, fldz, (FUNC_RC) FPU_illegal
-+	fld1, fldl2t, fldl2e, fldpi, fldlg2, fldln2, fldz, FPU_RC_illegal
- };
- 
- void fconst(void)
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index 147feeb..3f003d5 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -114,7 +114,7 @@ do {						\
+ # define lockdep_softirq_enter()		do { } while (0)
+ # define lockdep_softirq_exit()			do { } while (0)
+ # define lockdep_hrtimer_enter(__hrtimer)	false
+-# define lockdep_hrtimer_exit(__context)	do { } while (0)
++# define lockdep_hrtimer_exit(__context)	do { (void)(__context); } while (0)
+ # define lockdep_posixtimer_enter()		do { } while (0)
+ # define lockdep_posixtimer_exit()		do { } while (0)
+ # define lockdep_irq_work_enter(__work)		do { } while (0)
 
