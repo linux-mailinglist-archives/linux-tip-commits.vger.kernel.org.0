@@ -1,193 +1,132 @@
-Return-Path: <linux-tip-commits+bounces-970-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-971-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FAB89CB92
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Apr 2024 20:17:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E59189CBB1
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Apr 2024 20:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44533289D38
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Apr 2024 18:17:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 170AC1C21772
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Apr 2024 18:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D45B14430A;
-	Mon,  8 Apr 2024 18:17:57 +0000 (UTC)
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9191A1448D7;
+	Mon,  8 Apr 2024 18:27:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JdE6xMQ/"
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABF71E532;
-	Mon,  8 Apr 2024 18:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B058A25753;
+	Mon,  8 Apr 2024 18:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712600276; cv=none; b=IpYvMwErpTLDkIQziL42BPX4aUFOmeXAuBPOf/dzqQkXq2vZoNOybXa/yepImAt4tz8PJQcKefJkiug2Wm/WkbS/pZWa/4gCO/vX3n37tiEOKdhes4B7aLgnPeWBXRFraFb2lwsEg7DZb8e3D5jr1EZPySINhZ6zFs3dN3JY288=
+	t=1712600876; cv=none; b=YjN54RFcLi7qAGv9UPhfKtMUTaRJoCTbjVscYrvjf0nfVlSPnu3CYeCKhYNESgSkFrp2k5LxxdPGy0WBGm1dzBLiggXOVs8d8nhaBo4izzJy9txfHQTHZFT0JQjistEF/fz2/yItqZg/yTcALrTTLhBrVhxn6nYK10sfjIQXNpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712600276; c=relaxed/simple;
-	bh=4e12wlkUU8uMJAum9MdZzs7k9xEejPaPoeShEZnr8bE=;
+	s=arc-20240116; t=1712600876; c=relaxed/simple;
+	bh=SNEAHwiZ2/SqBEx1r4aC42w+KK919cWs3IE6VdePVaI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EjbFHxbvC6jr6q+H+/SKWe0SnotkwHtZE3eWF+lSUZD8X+sn+64NBLOPeA5SL7IUIp7KnZGj/qRVstzfYVMv7G7vAZgTzqEres7KkAI9qefueOifSK9ZdrGo3wz9oSSMQi+gqi3d/12nBnzet04KCm9VqY2PKEPTWZh4L/09QUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 02A0140E00B2;
-	Mon,  8 Apr 2024 18:17:52 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id c1EzLK9bHGIi; Mon,  8 Apr 2024 18:17:46 +0000 (UTC)
-Received: from zn.tnic (p5de8ecf7.dip0.t-ipconnect.de [93.232.236.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9BE4D40E0187;
-	Mon,  8 Apr 2024 18:17:38 +0000 (UTC)
-Date: Mon, 8 Apr 2024 20:17:32 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: x86-ml <x86@kernel.org>
-Cc: linux-tip-commits@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=qDlyZVtqUejAolJIeVlOn037aru0QG6FbtKuP7MH5Y/drICCeiyCwwT8Fa9vpBOiyTvCWjpq0Y7M+jKUjYHlrhBrJV1P0HnJ0ELxlEMrUiBW7n20qvkSzXCR6btbXTJD/8HZ3NFIoLsQT4iFzAAiYymL3h/tqBfAbP+WbXSDj6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JdE6xMQ/; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-56e1baf0380so5322805a12.3;
+        Mon, 08 Apr 2024 11:27:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712600873; x=1713205673; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H87O+ieoRLaVWCX2hAH7EWkWIZKVrjyzCm9L1MBqBu8=;
+        b=JdE6xMQ/vpNJ1b1ewQrwcOdJbM2zq3X07LGlaN9PGAczxyjjAuANAWuliKEF6SLVTW
+         SuPKnLZlSETi200wdMdKjJC1Y8N2ahqtcNOVhrYlRigDCdG2ASqDedAfwPVtuPOPFQ0+
+         Ze0SqQJfmE5X+6CBifYU5jqUlsIDoZUOTBDwAjgpG9al4cyvZJ2IqjwzyrLsowf1R9gJ
+         9w3NvPuxtssH5Ce/+tJN8NESOhmg8cE7i6fFTE+JnVdgn3iHhaSMJAS4H5gNPVFMIfd6
+         Vx/mo24mMvRrl55XjgkmxOkykqJ/4SodK3XaIV88h0m/hBjYJHBHyQFnMR+Ep3g6aBAM
+         R9TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712600873; x=1713205673;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H87O+ieoRLaVWCX2hAH7EWkWIZKVrjyzCm9L1MBqBu8=;
+        b=wmq1K6CIJ/0NNbgWwfFBs9vGafpKUAgxc8HxbXlXuruxrqGoCfmPlpSaCUzd+K3MOF
+         2QhUXLAWg/MR6crowLVsYVuT8qprKGSrkyEZDxGU+cY2kfsG6fEg8/BmkJHhcpDIbmgY
+         PCKvmwqQfrk+B4ZyXqUdHYugZwCL/kG+Tkt++hNmSFd+5ACafZrHptsX+9kW3TTBaRj0
+         a9SM5oGfagWWJewBViWSJ8keBW+xQaOe6wfWXqP1Kks/n3NgwAZuWBDB/t/OwG1IQb/2
+         KLEh0JHqjgtOwlvYvYxfEJA7bBjrRJMs4/SFec5TkpRSxtmiKCzwG7PZ4/bxtsPJ++3u
+         IEnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUaEyROTanVElH9/nledmLSljciCEixSXTteBOJVOD6XBJ/wBqUruv9kUSIDVWK/FWMknveCKlET1PAMiiwFLPfNASmgrGOwxHDCf18MJ/f9GQSt075PZtxjIfHtYJ1JsaHQufOkQYt+Y7deQOokTA=
+X-Gm-Message-State: AOJu0YzaZR4U+BOILzi4rSEPO4nb179LqEpFBsQhokgEtcHQcTIzmTgL
+	h6TTs8NzpE8T/gJfXxzE4JwyzFSL9sAFV88ifNbjVHPUouBVulN+
+X-Google-Smtp-Source: AGHT+IF/A3Mn10U1WHg8e0iglxnCMNrW0sQqf3XHbJswJ+zUr3CpfOdD/50CyuCyAfJCYN68RFynGQ==
+X-Received: by 2002:a50:9e48:0:b0:56e:2464:7c4b with SMTP id z66-20020a509e48000000b0056e24647c4bmr6270548ede.10.1712600872491;
+        Mon, 08 Apr 2024 11:27:52 -0700 (PDT)
+Received: from gmail.com (1F2EF1A5.nat.pool.telekom.hu. [31.46.241.165])
+        by smtp.gmail.com with ESMTPSA id i2-20020a50fc02000000b0056e22be831dsm4326912edr.42.2024.04.08.11.27.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Apr 2024 11:27:51 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date: Mon, 8 Apr 2024 20:27:49 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: x86-ml <x86@kernel.org>, linux-tip-commits@vger.kernel.org,
 	Julian Stecklina <julian.stecklina@cyberus-technology.de>,
-	Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
-	linux-kernel@vger.kernel.org, x86@kernel.org
+	Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
 Subject: Re: [tip: x86/boot] x86/boot: Move kernel cmdline setup earlier in
  the boot process (again)
-Message-ID: <20240408181732.GCZhQ0vGSfP3Gf8tDW@fat_crate.local>
+Message-ID: <ZhQ3JSXT05Kv/RpM@gmail.com>
 References: <171169867308.10875.15117897441999380027.tip-bot2@tip-bot2>
+ <20240408181732.GCZhQ0vGSfP3Gf8tDW@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <171169867308.10875.15117897441999380027.tip-bot2@tip-bot2>
+In-Reply-To: <20240408181732.GCZhQ0vGSfP3Gf8tDW@fat_crate.local>
 
-On Fri, Mar 29, 2024 at 07:51:13AM -0000, tip-bot2 for Julian Stecklina wrote:
-> The following commit has been merged into the x86/boot branch of tip:
+
+* Borislav Petkov <bp@alien8.de> wrote:
+
+> On Fri, Mar 29, 2024 at 07:51:13AM -0000, tip-bot2 for Julian Stecklina wrote:
+> > The following commit has been merged into the x86/boot branch of tip:
+> > 
+> > Commit-ID:     4faa0e5d6d79fc4c6e1943e8b62a65744d8439a0
+> > Gitweb:        https://git.kernel.org/tip/4faa0e5d6d79fc4c6e1943e8b62a65744d8439a0
+> > Author:        Julian Stecklina <julian.stecklina@cyberus-technology.de>
+> > AuthorDate:    Thu, 28 Mar 2024 16:42:12 +01:00
+> > Committer:     Ingo Molnar <mingo@kernel.org>
+> > CommitterDate: Fri, 29 Mar 2024 08:19:12 +01:00
+> > 
+> > x86/boot: Move kernel cmdline setup earlier in the boot process (again)
 > 
-> Commit-ID:     4faa0e5d6d79fc4c6e1943e8b62a65744d8439a0
-> Gitweb:        https://git.kernel.org/tip/4faa0e5d6d79fc4c6e1943e8b62a65744d8439a0
-> Author:        Julian Stecklina <julian.stecklina@cyberus-technology.de>
-> AuthorDate:    Thu, 28 Mar 2024 16:42:12 +01:00
-> Committer:     Ingo Molnar <mingo@kernel.org>
-> CommitterDate: Fri, 29 Mar 2024 08:19:12 +01:00
+> ...
 > 
-> x86/boot: Move kernel cmdline setup earlier in the boot process (again)
-
-..
-
-> The order is now:
+> > The order is now:
+> > 
+> > 	setup_arch():
+> > 	  -> Assemble final command line:
+> > 	     boot_command_line = builtin_cmdline + boot_cmdline
+> > 
+> > 	  -> early_cpu_init()
+> > 	    -> early_identify_cpu()
+> > 	      -> sld_setup()
+> > 		-> sld_state_setup()
+> > 		  -> Looks for split_lock_detect in boot_command_line
+> > 
+> > 	  -> e820__memory_setup()
+> > 
+> > 	  -> parse_early_param()
 > 
-> 	setup_arch():
-> 	  -> Assemble final command line:
-> 	     boot_command_line = builtin_cmdline + boot_cmdline
-> 
-> 	  -> early_cpu_init()
-> 	    -> early_identify_cpu()
-> 	      -> sld_setup()
-> 		-> sld_state_setup()
-> 		  -> Looks for split_lock_detect in boot_command_line
-> 
-> 	  -> e820__memory_setup()
-> 
-> 	  -> parse_early_param()
+> So that thing. Should we do something like the silly thing below so that 
+> it catches potential issues with parsing builtin cmdline stuff too early?
 
-So that thing. Should we do something like the silly thing below so that
-it catches potential issues with parsing builtin cmdline stuff too
-early?
+Yep, that's a good idea.
 
-diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
-index e61e68d71cba..2e1d19e103e6 100644
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -7,6 +7,7 @@
- #define COMMAND_LINE_SIZE 2048
- 
- #include <linux/linkage.h>
-+
- #include <asm/page_types.h>
- #include <asm/ibt.h>
- 
-@@ -28,6 +29,8 @@
- #define NEW_CL_POINTER		0x228	/* Relative to real mode data */
- 
- #ifndef __ASSEMBLY__
-+#include <linux/cache.h>
-+
- #include <asm/bootparam.h>
- #include <asm/x86_init.h>
- 
-@@ -133,6 +136,12 @@ asmlinkage void __init __noreturn x86_64_start_reservations(char *real_mode_data
- #endif /* __i386__ */
- #endif /* _SETUP */
- 
-+#ifdef CONFIG_CMDLINE_BOOL
-+extern bool builtin_cmdline_added __ro_after_init;
-+#else
-+#define builtin_cmdline_added 0
-+#endif
-+
- #else  /* __ASSEMBLY */
- 
- .macro __RESERVE_BRK name, size
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 55a1fc332e20..a35ca100f57c 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -165,6 +165,7 @@ unsigned long saved_video_mode;
- static char __initdata command_line[COMMAND_LINE_SIZE];
- #ifdef CONFIG_CMDLINE_BOOL
- static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
-+bool builtin_cmdline_added __ro_after_init;
- #endif
- 
- #if defined(CONFIG_EDD) || defined(CONFIG_EDD_MODULE)
-@@ -765,6 +766,7 @@ void __init setup_arch(char **cmdline_p)
- 		strscpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
- 	}
- #endif
-+	builtin_cmdline_added = true;
- #endif
- 
- 	strscpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
-diff --git a/arch/x86/lib/cmdline.c b/arch/x86/lib/cmdline.c
-index 80570eb3c89b..6307cd62acd7 100644
---- a/arch/x86/lib/cmdline.c
-+++ b/arch/x86/lib/cmdline.c
-@@ -6,9 +6,12 @@
- #include <linux/kernel.h>
- #include <linux/string.h>
- #include <linux/ctype.h>
-+
- #include <asm/setup.h>
- #include <asm/cmdline.h>
- 
-+#include <asm/bug.h>
-+
- static inline int myisspace(u8 c)
- {
- 	return c <= ' ';	/* Close enough approximation */
-@@ -205,12 +208,16 @@ __cmdline_find_option(const char *cmdline, int max_cmdline_size,
- 
- int cmdline_find_option_bool(const char *cmdline, const char *option)
- {
-+	WARN_ON_ONCE(!builtin_cmdline_added);
-+
- 	return __cmdline_find_option_bool(cmdline, COMMAND_LINE_SIZE, option);
- }
- 
- int cmdline_find_option(const char *cmdline, const char *option, char *buffer,
- 			int bufsize)
- {
-+	WARN_ON_ONCE(!builtin_cmdline_added);
-+
- 	return __cmdline_find_option(cmdline, COMMAND_LINE_SIZE, option,
- 				     buffer, bufsize);
- }
+Acked-by: Ingo Molnar <mingo@kernel.org>
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+	Ingo
 
