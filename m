@@ -1,79 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-974-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-975-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3161D89D42E
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 10:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BBB89D473
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 10:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55A501C213F4
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 08:26:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A371F1C20E9A
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 08:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FD37E78B;
-	Tue,  9 Apr 2024 08:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3057D413;
+	Tue,  9 Apr 2024 08:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HB71b7lw";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Gx0dM1x6"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DDLPpozD";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TIX6bOHt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C290656454;
-	Tue,  9 Apr 2024 08:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415A713048B;
+	Tue,  9 Apr 2024 08:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712651200; cv=none; b=DGH447r4ejUgfXTq2SV8sk40CjAykFJtBM/nAb8BH5QTfBhnRK8FD/c0H5dS0jnswnR0zePOGyGyjYnaBiedkQd/ARzvn/sZrN3ORUptr9PBXJ1LeuZuqRoQK6sdoaEb4vx9tRNdJHbcvhz1VPpthG2d+kzrwVliNbrhUOtgXpM=
+	t=1712651268; cv=none; b=AnHXi4u5FynB7UbOGjK2GTcpzRkOk5ZUHwzmWZCz0nG0CYfOhry+Yt0sZWAWy2tMX/oUbGRagMtyYK691v1RP6aROw7w9Z22WAz5NlC6XIyy+KG9I3SF+4m6FGZg0Zb/DZw0PIeNDNz0QeCesaAh3yw58/6QYAN03qSoJ1MSCoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712651200; c=relaxed/simple;
-	bh=JejHKR0gHVu/eqF/L9HtuEJTVGLd0uBI/XfIBGNWRGY=;
+	s=arc-20240116; t=1712651268; c=relaxed/simple;
+	bh=/+Hi6vwrI+/azqu2PLMP1pkwyqM1tyJ2TALzPG1MuyA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=LCEqFcF5kwgjckw5r0mbJa+FnteB2XqlqCY8fco9fqpuN44NGCG2eGp2/IGCM4Zc/rfq5XEGRlylRreE6LIdONB09QYVYUD2nEk4wBuxEUS4tfMEkkO0XPcOtID2loFi/gRBMEKpvyNP5TJ+TPGXljbCLqskJEi9EwcYZ0dNGmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HB71b7lw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Gx0dM1x6; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=YmhCTiKpM73n/24HmnLV5ItNs3Y+s7o1mb+A7Spo7+Zr2kLgRQFfdtLz5O3WfOxLm46D9DvLOUZ65BH3DAP0mnjfrp6u5DtkhGRrft68Qd+4iGyqBZ5AaNg83HGVrBJoTkKN9bxSDnDolbXZRQvIVJ/k39bxI47zg/oK08akMmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DDLPpozD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TIX6bOHt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 09 Apr 2024 08:26:36 -0000
+Date: Tue, 09 Apr 2024 08:27:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712651196;
+	s=2020; t=1712651264;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=usxdulLKt5b3hOMpUquF1GHZZ707drbw5wxjSREMHLo=;
-	b=HB71b7lwNeipQN0SQp9qYDyau5WNXfuQl42ksBd8j9/3Y4ui4i5cO21iz9no6klSJDZUEG
-	BScNSbzH04NebY77Z3UIQEQApgkQEPaJmbuXfbJT946mA7k7pE32OS26RYVP35O4D2Gs9U
-	iuhv1N7N+yxjtfpQhfllEC6wiNqARVc995GxFV1x2dhFdY5zCpBt8g8K7xJH+tlBq2UH5p
-	NFpvNzeGLkCKKASzsZGtQayAEaM/HFkoQn5XXG/pGnFApKOCY9OX6hpFlGfDGvbVROZ2nY
-	a/B/NkMfSCEsvMNdLlibZaiyDrFnp5lNXLlFFWrSqAOgEDCCcp+7AJ3NgYYoCA==
+	bh=Uv3eqwvRlzTvqyKKBFLuJ5zhdqBDogQRJAanaG8Ixeg=;
+	b=DDLPpozDuuyGUMP55FuJwgxpjzCgAIwpdiGfPcZ8i+AkOvxNhaIMCXU8dIS/ErkS+Z7w9S
+	zBRQWb2XzUTlshc0WBfv1w4+Bh+mIbeMf3+7zLfzJrd5fGRgtoU4/7WqhVmqhQKO+80Cg3
+	m0OGOApjRUlJVR9QFnLMqr78BJvhIrW7cyZqUhlJzOJkkW2KfIrx4RS6/iy8RlXjjjCgkg
+	vgR9UQSrUmY+1F6jIrEBgj7s4dgAMxxz8XOanvIKrRyVj8N3++0WCSUw9OntvwJfHZODur
+	u1Z/YGNMeyWg3oThettLkSjjEi9RYqM3R9S2pMtgN2FlvKaXMZbrnsf078KNAA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712651196;
+	s=2020e; t=1712651264;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=usxdulLKt5b3hOMpUquF1GHZZ707drbw5wxjSREMHLo=;
-	b=Gx0dM1x648DdKqMCu3Co/v2nq2rVw/ZtDwaTtgj15zBYmTK6CAqPqNVTJvThzT6jMJqrn1
-	DfXbTE7MToPOaYCw==
-From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+	bh=Uv3eqwvRlzTvqyKKBFLuJ5zhdqBDogQRJAanaG8Ixeg=;
+	b=TIX6bOHtOHpk2vhI67s7+g3m+18TQCl1dsBenLUu3B8M72TaWz358Se3Jv09Mrv5pLt4Ke
+	LeAaY5u+O4Q/pxDA==
+From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/atomic/x86: Modernize x86_32
- arch_{,try_}_cmpxchg64{,_local}()
-Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240408091547.90111-3-ubizjak@gmail.com>
-References: <20240408091547.90111-3-ubizjak@gmail.com>
+Subject: [tip: x86/cpu] x86/mce: Implement recovery for errors in TDX/SEAM
+ non-root mode
+Cc: Tony Luck <tony.luck@intel.com>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240408180944.44638-1-tony.luck@intel.com>
+References: <20240408180944.44638-1-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171265119601.10875.15517936000118837045.tip-bot2@tip-bot2>
+Message-ID: <171265126376.10875.16864387954272613660.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,244 +79,147 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     7016cc5def44b9dcb28089efae4412fa0d6c78c2
-Gitweb:        https://git.kernel.org/tip/7016cc5def44b9dcb28089efae4412fa0d6c78c2
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Mon, 08 Apr 2024 11:13:57 +02:00
+Commit-ID:     7911f145de5fecbee1d67f27f73bec12f0fbc472
+Gitweb:        https://git.kernel.org/tip/7911f145de5fecbee1d67f27f73bec12f0fbc472
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Mon, 08 Apr 2024 11:09:44 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 09 Apr 2024 09:51:03 +02:00
+CommitterDate: Tue, 09 Apr 2024 09:30:36 +02:00
 
-locking/atomic/x86: Modernize x86_32 arch_{,try_}_cmpxchg64{,_local}()
+x86/mce: Implement recovery for errors in TDX/SEAM non-root mode
 
-Commit:
+Machine check SMIs (MSMI) signaled during SEAM operation (typically
+inside TDX guests), on a system with Intel eMCA enabled, might eventually
+be reported to the kernel #MC handler with the saved RIP on the stack
+pointing to the instruction in kernel code after the SEAMCALL instruction
+that entered the SEAM operation. Linux currently says that is a fatal
+error and shuts down.
 
-  b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
+There is a new bit in IA32_MCG_STATUS that, when set to 1, indicates
+that the machine check didn't originally occur at that saved RIP, but
+during SEAM non-root operation.
 
-introduced arch_{,try_}_cmpxchg128{,_local}() for x86_64 targets.
+Add new entries to the severity table to detect this for both data load
+and instruction fetch that set the severity to "AR" (action required).
 
-Modernize existing x86_32 arch_{,try_}_cmpxchg64{,_local}() definitions
-to follow the same structure as the definitions introduced by the
-above commit.
+Increase the width of the mcgmask/mcgres fields in "struct severity"
+from unsigned char to unsigned short since the new bit is in position 12.
 
-No functional changes intended.
+Action required for these errors is just mark the page as poisoned and
+return from the machine check handler.
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+HW ABI notes:
+=============
+
+The SEAM_NR bit in IA32_MCG_STATUS hasn't yet made it into the Intel
+Software Developers' Manual. But it is described in section 16.5.2
+of "Intel(R) Trust Domain Extensions (Intel(R) TDX) Module Base
+Architecture Specification" downloadable from:
+
+  https://cdrdv2.intel.com/v1/dl/getContent/733575
+
+Backport notes:
+===============
+
+Little value in backporting this patch to stable or LTS kernels as
+this is only relevant with support for TDX, which I assume won't be
+backported. But for anyone taking this to v6.1 or older, you also
+need commit:
+
+  a51cbd0d86d3 ("x86/mce: Use severity table to handle uncorrected errors in kernel")
+
+Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20240408091547.90111-3-ubizjak@gmail.com
+Link: https://lore.kernel.org/r/20240408180944.44638-1-tony.luck@intel.com
 ---
- arch/x86/include/asm/cmpxchg_32.h | 179 ++++++++++++++++-------------
- 1 file changed, 100 insertions(+), 79 deletions(-)
+ arch/x86/include/asm/mce.h         |  2 ++
+ arch/x86/kernel/cpu/mce/core.c     | 18 ++++++++++++++++++
+ arch/x86/kernel/cpu/mce/severity.c | 16 ++++++++++++++--
+ 3 files changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/cmpxchg_32.h b/arch/x86/include/asm/cmpxchg_32.h
-index b5731c5..fe40d06 100644
---- a/arch/x86/include/asm/cmpxchg_32.h
-+++ b/arch/x86/include/asm/cmpxchg_32.h
-@@ -3,103 +3,124 @@
- #define _ASM_X86_CMPXCHG_32_H
+diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+index de31183..dfd2e96 100644
+--- a/arch/x86/include/asm/mce.h
++++ b/arch/x86/include/asm/mce.h
+@@ -13,6 +13,7 @@
+ #define MCG_CTL_P		BIT_ULL(8)   /* MCG_CTL register available */
+ #define MCG_EXT_P		BIT_ULL(9)   /* Extended registers available */
+ #define MCG_CMCI_P		BIT_ULL(10)  /* CMCI supported */
++#define MCG_SEAM_NR		BIT_ULL(12)  /* MCG_STATUS_SEAM_NR supported */
+ #define MCG_EXT_CNT_MASK	0xff0000     /* Number of Extended registers */
+ #define MCG_EXT_CNT_SHIFT	16
+ #define MCG_EXT_CNT(c)		(((c) & MCG_EXT_CNT_MASK) >> MCG_EXT_CNT_SHIFT)
+@@ -25,6 +26,7 @@
+ #define MCG_STATUS_EIPV		BIT_ULL(1)   /* ip points to correct instruction */
+ #define MCG_STATUS_MCIP		BIT_ULL(2)   /* machine check in progress */
+ #define MCG_STATUS_LMCES	BIT_ULL(3)   /* LMCE signaled */
++#define MCG_STATUS_SEAM_NR	BIT_ULL(12)  /* Machine check inside SEAM non-root mode */
  
- /*
-- * Note: if you use set64_bit(), __cmpxchg64(), or their variants,
-+ * Note: if you use __cmpxchg64(), or their variants,
-  *       you need to test for the feature in boot_cpu_data.
-  */
+ /* MCG_EXT_CTL register defines */
+ #define MCG_EXT_CTL_LMCE_EN	BIT_ULL(0) /* Enable LMCE */
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 84d41be..771a9f1 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1593,6 +1593,24 @@ noinstr void do_machine_check(struct pt_regs *regs)
+ 		else
+ 			queue_task_work(&m, msg, kill_me_maybe);
  
--#ifdef CONFIG_X86_CMPXCHG64
--#define arch_cmpxchg64(ptr, o, n)					\
--	((__typeof__(*(ptr)))__cmpxchg64((ptr), (unsigned long long)(o), \
--					 (unsigned long long)(n)))
--#define arch_cmpxchg64_local(ptr, o, n)					\
--	((__typeof__(*(ptr)))__cmpxchg64_local((ptr), (unsigned long long)(o), \
--					       (unsigned long long)(n)))
--#define arch_try_cmpxchg64(ptr, po, n)					\
--	__try_cmpxchg64((ptr), (unsigned long long *)(po), \
--			(unsigned long long)(n))
--#endif
-+union __u64_halves {
-+	u64 full;
-+	struct {
-+		u32 low, high;
-+	};
-+};
++	} else if (m.mcgstatus & MCG_STATUS_SEAM_NR) {
++		/*
++		 * Saved RIP on stack makes it look like the machine check
++		 * was taken in the kernel on the instruction following
++		 * the entry to SEAM mode. But MCG_STATUS_SEAM_NR indicates
++		 * that the machine check was taken inside SEAM non-root
++		 * mode.  CPU core has already marked that guest as dead.
++		 * It is OK for the kernel to resume execution at the
++		 * apparent point of the machine check as the fault did
++		 * not occur there. Mark the page as poisoned so it won't
++		 * be added to free list when the guest is terminated.
++		 */
++		if (mce_usable_address(&m)) {
++			struct page *p = pfn_to_online_page(m.addr >> PAGE_SHIFT);
 +
-+#define __arch_cmpxchg64(_ptr, _old, _new, _lock)			\
-+({									\
-+	union __u64_halves o = { .full = (_old), },			\
-+			   n = { .full = (_new), };			\
-+									\
-+	asm volatile(_lock "cmpxchg8b %[ptr]"				\
-+		     : [ptr] "+m" (*(_ptr)),				\
-+		       "+a" (o.low), "+d" (o.high)			\
-+		     : "b" (n.low), "c" (n.high)			\
-+		     : "memory");					\
-+									\
-+	o.full;								\
-+})
- 
--static inline u64 __cmpxchg64(volatile u64 *ptr, u64 old, u64 new)
-+
-+static __always_inline u64 __cmpxchg64(volatile u64 *ptr, u64 old, u64 new)
- {
--	u64 prev;
--	asm volatile(LOCK_PREFIX "cmpxchg8b %1"
--		     : "=A" (prev),
--		       "+m" (*ptr)
--		     : "b" ((u32)new),
--		       "c" ((u32)(new >> 32)),
--		       "0" (old)
--		     : "memory");
--	return prev;
-+	return __arch_cmpxchg64(ptr, old, new, LOCK_PREFIX);
- }
- 
--static inline u64 __cmpxchg64_local(volatile u64 *ptr, u64 old, u64 new)
-+static __always_inline u64 __cmpxchg64_local(volatile u64 *ptr, u64 old, u64 new)
- {
--	u64 prev;
--	asm volatile("cmpxchg8b %1"
--		     : "=A" (prev),
--		       "+m" (*ptr)
--		     : "b" ((u32)new),
--		       "c" ((u32)(new >> 32)),
--		       "0" (old)
--		     : "memory");
--	return prev;
-+	return __arch_cmpxchg64(ptr, old, new,);
- }
- 
--static inline bool __try_cmpxchg64(volatile u64 *ptr, u64 *pold, u64 new)
-+#define __arch_try_cmpxchg64(_ptr, _oldp, _new, _lock)			\
-+({									\
-+	union __u64_halves o = { .full = *(_oldp), },			\
-+			   n = { .full = (_new), };			\
-+	bool ret;							\
-+									\
-+	asm volatile(_lock "cmpxchg8b %[ptr]"				\
-+		     CC_SET(e)						\
-+		     : CC_OUT(e) (ret),					\
-+		       [ptr] "+m" (*(_ptr)),				\
-+		       "+a" (o.low), "+d" (o.high)			\
-+		     : "b" (n.low), "c" (n.high)			\
-+		     : "memory");					\
-+									\
-+	if (unlikely(!ret))						\
-+		*(_oldp) = o.full;					\
-+									\
-+	likely(ret);							\
-+})
-+
-+static __always_inline bool __try_cmpxchg64(volatile u64 *ptr, u64 *oldp, u64 new)
- {
--	bool success;
--	u64 old = *pold;
--	asm volatile(LOCK_PREFIX "cmpxchg8b %[ptr]"
--		     CC_SET(z)
--		     : CC_OUT(z) (success),
--		       [ptr] "+m" (*ptr),
--		       "+A" (old)
--		     : "b" ((u32)new),
--		       "c" ((u32)(new >> 32))
--		     : "memory");
--
--	if (unlikely(!success))
--		*pold = old;
--	return success;
-+	return __arch_try_cmpxchg64(ptr, oldp, new, LOCK_PREFIX);
- }
- 
--#ifndef CONFIG_X86_CMPXCHG64
-+#ifdef CONFIG_X86_CMPXCHG64
-+
-+#define arch_cmpxchg64 __cmpxchg64
-+
-+#define arch_cmpxchg64_local __cmpxchg64_local
-+
-+#define arch_try_cmpxchg64 __try_cmpxchg64
-+
-+#else
-+
- /*
-  * Building a kernel capable running on 80386 and 80486. It may be necessary
-  * to simulate the cmpxchg8b on the 80386 and 80486 CPU.
-  */
- 
--#define arch_cmpxchg64(ptr, o, n)				\
--({								\
--	__typeof__(*(ptr)) __ret;				\
--	__typeof__(*(ptr)) __old = (o);				\
--	__typeof__(*(ptr)) __new = (n);				\
--	alternative_io(LOCK_PREFIX_HERE				\
--			"call cmpxchg8b_emu",			\
--			"lock; cmpxchg8b (%%esi)" ,		\
--		       X86_FEATURE_CX8,				\
--		       "=A" (__ret),				\
--		       "S" ((ptr)), "0" (__old),		\
--		       "b" ((unsigned int)__new),		\
--		       "c" ((unsigned int)(__new>>32))		\
--		       : "memory");				\
--	__ret; })
--
--
--#define arch_cmpxchg64_local(ptr, o, n)				\
--({								\
--	__typeof__(*(ptr)) __ret;				\
--	__typeof__(*(ptr)) __old = (o);				\
--	__typeof__(*(ptr)) __new = (n);				\
--	alternative_io("call cmpxchg8b_emu",			\
--		       "cmpxchg8b (%%esi)" ,			\
--		       X86_FEATURE_CX8,				\
--		       "=A" (__ret),				\
--		       "S" ((ptr)), "0" (__old),		\
--		       "b" ((unsigned int)__new),		\
--		       "c" ((unsigned int)(__new>>32))		\
--		       : "memory");				\
--	__ret; })
-+#define __arch_cmpxchg64_emu(_ptr, _old, _new)				\
-+({									\
-+	union __u64_halves o = { .full = (_old), },			\
-+			   n = { .full = (_new), };			\
-+									\
-+	asm volatile(ALTERNATIVE(LOCK_PREFIX_HERE			\
-+				 "call cmpxchg8b_emu",			\
-+				 "lock; cmpxchg8b %[ptr]", X86_FEATURE_CX8) \
-+		     : [ptr] "+m" (*(_ptr)),				\
-+		       "+a" (o.low), "+d" (o.high)			\
-+		     : "b" (n.low), "c" (n.high), "S" (_ptr)		\
-+		     : "memory");					\
-+									\
-+	o.full;								\
-+})
-+
-+static __always_inline u64 arch_cmpxchg64(volatile u64 *ptr, u64 old, u64 new)
-+{
-+	return __arch_cmpxchg64_emu(ptr, old, new);
-+}
-+#define arch_cmpxchg64 arch_cmpxchg64
-+
-+#define __arch_cmpxchg64_emu_local(_ptr, _old, _new)			\
-+({									\
-+	union __u64_halves o = { .full = (_old), },			\
-+			   n = { .full = (_new), };			\
-+									\
-+	asm volatile(ALTERNATIVE("call cmpxchg8b_emu",			\
-+				 "cmpxchg8b %[ptr]", X86_FEATURE_CX8)	\
-+		     : [ptr] "+m" (*(_ptr)),				\
-+		       "+a" (o.low), "+d" (o.high)			\
-+		     : "b" (n.low), "c" (n.high), "S" (_ptr)		\
-+		     : "memory");					\
-+									\
-+	o.full;								\
-+})
-+
-+static __always_inline u64 arch_cmpxchg64_local(volatile u64 *ptr, u64 old, u64 new)
-+{
-+	return __arch_cmpxchg64_emu_local(ptr, old, new);
-+}
-+#define arch_cmpxchg64_local arch_cmpxchg64_local
- 
- #endif
- 
++			if (p)
++				SetPageHWPoison(p);
++		}
+ 	} else {
+ 		/*
+ 		 * Handle an MCE which has happened in kernel space but from
+diff --git a/arch/x86/kernel/cpu/mce/severity.c b/arch/x86/kernel/cpu/mce/severity.c
+index c447716..fc8988c 100644
+--- a/arch/x86/kernel/cpu/mce/severity.c
++++ b/arch/x86/kernel/cpu/mce/severity.c
+@@ -39,8 +39,8 @@ static struct severity {
+ 	u64 mask;
+ 	u64 result;
+ 	unsigned char sev;
+-	unsigned char mcgmask;
+-	unsigned char mcgres;
++	unsigned short mcgmask;
++	unsigned short mcgres;
+ 	unsigned char ser;
+ 	unsigned char context;
+ 	unsigned char excp;
+@@ -174,6 +174,18 @@ static struct severity {
+ 		USER
+ 		),
+ 	MCESEV(
++		AR, "Data load error in SEAM non-root mode",
++		SER, MASK(MCI_STATUS_OVER|MCI_UC_SAR|MCI_ADDR|MCACOD, MCI_UC_SAR|MCI_ADDR|MCACOD_DATA),
++		MCGMASK(MCG_STATUS_SEAM_NR, MCG_STATUS_SEAM_NR),
++		KERNEL
++		),
++	MCESEV(
++		AR, "Instruction fetch error in SEAM non-root mode",
++		SER, MASK(MCI_STATUS_OVER|MCI_UC_SAR|MCI_ADDR|MCACOD, MCI_UC_SAR|MCI_ADDR|MCACOD_INSTR),
++		MCGMASK(MCG_STATUS_SEAM_NR, MCG_STATUS_SEAM_NR),
++		KERNEL
++		),
++	MCESEV(
+ 		PANIC, "Data load in unrecoverable area of kernel",
+ 		SER, MASK(MCI_STATUS_OVER|MCI_UC_SAR|MCI_ADDR|MCACOD, MCI_UC_SAR|MCI_ADDR|MCACOD_DATA),
+ 		KERNEL
 
