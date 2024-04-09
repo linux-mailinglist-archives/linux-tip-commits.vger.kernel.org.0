@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-972-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-973-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB8689D42C
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 10:26:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 332DE89D42F
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 10:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32CD0280FBB
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 08:26:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 943F81F21B60
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 08:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E267E578;
-	Tue,  9 Apr 2024 08:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840F27E776;
+	Tue,  9 Apr 2024 08:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F2mcTU0f";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="huHaCY7Y"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XU9/E9SO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="X0//LYRW"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204107E57F;
-	Tue,  9 Apr 2024 08:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB567D413;
+	Tue,  9 Apr 2024 08:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712651199; cv=none; b=te8OhExapjUNr+akbcMKuUwh/2fLSU5Cd9wyiLG1VeMlO/fP8ADlWQTrvkO3am9faHqcvb+dB6k7UVcZ24JNXlnfl7MG1+LFXKLJi9ODemfPvlruNlZ5oTO4cF/WHPYy1d2L7zibirR7PuYlr5jDsjJJ2rkrnIYsc0fiZtXGpv8=
+	t=1712651200; cv=none; b=VT0K7bX9bNCAnbLkav/Gq4hmYubvurW7OERsNoF/O8hx7LjcmpIbjrrEFZMf+Dk/Hc4RrTP+evvvJqL1hrAmbQo2PhJz363amM84RsPzj1dDv/abnhht5LwDBdrd4JUejU+kBKRGkkasIn2FqX3v9DsLGJnNC4J2EVCH67RrLPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712651199; c=relaxed/simple;
-	bh=y7Hdc8CIKymFFlxQ+P0ZbjSbM1SIMMlRpvkobw7V4K4=;
+	s=arc-20240116; t=1712651200; c=relaxed/simple;
+	bh=InIQp1whWwT6ydwnHGtzG5tyKecPQwqCjTApfcrLLQk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MUYVQcJW62F3XuiJ1pLuBLT3668ss0LQDpZ8qHsVZ045tkHhI+Ot9TMSSoWPl1PQjvH7TYKpK5wA3/dMJC2xalt8knJwp8+vykKNefq3KEBfKNdaNZnW5b4c2JYBpWqv46ezdiXIFF4EMProh4ditRyN0tHQfUSxj8JsnNpW2ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F2mcTU0f; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=huHaCY7Y; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=IRZitwpl+NkFGm+j+0QjG1XMH/Lc/O5sbHrLx60NZR4ZZbG2sDsxrXXtituNtkDut8jB/W+qugOHaFTvfZAPb/UeRiXtTMic6DNq1fW1e0h7UgTKbYsd4SZz7oZlHS/uq72FNX+r/vPIgzORTQjNhDrXq8OGih87oOowMo0r26A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XU9/E9SO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=X0//LYRW; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 09 Apr 2024 08:26:35 -0000
+Date: Tue, 09 Apr 2024 08:26:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712651196;
+	s=2020; t=1712651197;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EzeKglEuprUW0bEz9+MBpsvB8AZtkFzWDRLtCSu/l14=;
-	b=F2mcTU0f5mbNXDSDqGTZtc6UOVzDxiiVEm9VgBoaZL0eJXg7XarKmLq254fJmLMLEGdWoS
-	iMlvnK6BD0tiByexOEWiOEvOVDyAjarJodZhf/hM1xrc3NzbALOIF48cZGLsD7GGxJ9mVS
-	iYzuuL30oIQlunaZdAg1ddUHHyPNuMeRczahJUZPMka8kEQB3j7MUE9nfgIS8hSSkUHvJ0
-	NcVhZE790omFk8gmwexelZqenjU98+nBGSECFYC2cq6sx4eGztHvQfY1gndxY8sRnY9AzP
-	fsQ1h0Vju8qWXpM+WzcgOT0IQGsLWHcms05kA+KUH0ZSbZnZRUz8DrfZFqwttg==
+	bh=43K+m/0dcke1krUEFAUR+SeYu/GIl1D+EdDm3LrXyTs=;
+	b=XU9/E9SO5OhqZDgfR8p5FMMjS9+8D+N//7Gt+XlX5Lcvjralzm9UqNjwRH4fQkmFr1ZeJo
+	NrXLgAkbIrdLmlk6oOhHjUw1iBda8/bvC/aD5kopZmHJ0MsEC/Y5LG3wMkoIO5r7HXxFA3
+	HuV7rhibF/BiehW/ir6t4Sho7TPSo22WDLtqPLceHxcq/6tyg7/q21SZYxE+8Ylsk74oHZ
+	zbYM9ZM0s4YsvEZkdaX3bJhRFCq8OCn1UeVoff+r4ofjcYQagtEZZGKIgxZSQIew/BzKXb
+	ZLQgyV8o0tD229mhMmynYxaGba46XbIBTKOMaGQBpAVj6C7sGRKySO38/QaoBQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712651196;
+	s=2020e; t=1712651197;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EzeKglEuprUW0bEz9+MBpsvB8AZtkFzWDRLtCSu/l14=;
-	b=huHaCY7Y1I78kZG+KH2RgHPTeBKIWfHLppkCH9EzvoJ5pFeNcntY0E81LLDrlFkEmQN3O3
-	AFk+d8pxUcinIGBQ==
+	bh=43K+m/0dcke1krUEFAUR+SeYu/GIl1D+EdDm3LrXyTs=;
+	b=X0//LYRWHxRGKj8507sa43Q3aLH/dJRQ/bZtC0JMxUuzbyCmBJZt23T5XA9MHIUHEsgZCI
+	1Fo1O3/r4LQFytCw==
 From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/atomic/x86: Introduce
- arch_try_cmpxchg64() for !CONFIG_X86_CMPXCHG64
+Subject: [tip: locking/core] locking/atomic/x86: Correct the definition of
+ __arch_try_cmpxchg128()
 Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
  Linus Torvalds <torvalds@linux-foundation.org>,
  "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240408091547.90111-4-ubizjak@gmail.com>
-References: <20240408091547.90111-4-ubizjak@gmail.com>
+In-Reply-To: <20240408091547.90111-2-ubizjak@gmail.com>
+References: <20240408091547.90111-2-ubizjak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171265119516.10875.17878292059342759156.tip-bot2@tip-bot2>
+Message-ID: <171265119677.10875.17196553615087020061.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,91 +83,40 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     aef95dac9ce4f271cc43195ffc175114ed934cbe
-Gitweb:        https://git.kernel.org/tip/aef95dac9ce4f271cc43195ffc175114ed934cbe
+Commit-ID:     929ad065ba2967be238dfdc0895b79fda62c7f16
+Gitweb:        https://git.kernel.org/tip/929ad065ba2967be238dfdc0895b79fda62c7f16
 Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Mon, 08 Apr 2024 11:13:58 +02:00
+AuthorDate:    Mon, 08 Apr 2024 11:13:56 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 09 Apr 2024 09:51:03 +02:00
+CommitterDate: Tue, 09 Apr 2024 09:51:02 +02:00
 
-locking/atomic/x86: Introduce arch_try_cmpxchg64() for !CONFIG_X86_CMPXCHG64
+locking/atomic/x86: Correct the definition of __arch_try_cmpxchg128()
 
-Commit:
+Correct the definition of __arch_try_cmpxchg128(), introduced by:
 
-  6d12c8d308e68 ("percpu: Wire up cmpxchg128")
+  b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
 
-improved emulated cmpxchg8b_emu() library function to return
-success/failure in a ZF flag.
-
-Define arch_try_cmpxchg64() for !CONFIG_X86_CMPXCHG64 targets
-to override the generic archy_try_cmpxchg() with an optimized
-target specific implementation that handles ZF flag.
-
-The assembly code at the call sites improves from:
-
-   bf56d:	e8 fc ff ff ff       	call   cmpxchg8b_emu
-   bf572:	8b 74 24 28          	mov    0x28(%esp),%esi
-   bf576:	89 c3                	mov    %eax,%ebx
-   bf578:	89 d1                	mov    %edx,%ecx
-   bf57a:	8b 7c 24 2c          	mov    0x2c(%esp),%edi
-   bf57e:	89 f0                	mov    %esi,%eax
-   bf580:	89 fa                	mov    %edi,%edx
-   bf582:	31 d8                	xor    %ebx,%eax
-   bf584:	31 ca                	xor    %ecx,%edx
-   bf586:	09 d0                	or     %edx,%eax
-   bf588:	0f 84 e3 01 00 00    	je     bf771 <...>
-
-to:
-
-   bf572:	e8 fc ff ff ff       	call   cmpxchg8b_emu
-   bf577:	0f 84 b6 01 00 00    	je     bf733 <...>
-
+Fixes: b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
 Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20240408091547.90111-4-ubizjak@gmail.com
+Link: https://lore.kernel.org/r/20240408091547.90111-2-ubizjak@gmail.com
 ---
- arch/x86/include/asm/cmpxchg_32.h | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ arch/x86/include/asm/cmpxchg_64.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/cmpxchg_32.h b/arch/x86/include/asm/cmpxchg_32.h
-index fe40d06..9e0d330 100644
---- a/arch/x86/include/asm/cmpxchg_32.h
-+++ b/arch/x86/include/asm/cmpxchg_32.h
-@@ -122,6 +122,34 @@ static __always_inline u64 arch_cmpxchg64_local(volatile u64 *ptr, u64 old, u64 
- }
- #define arch_cmpxchg64_local arch_cmpxchg64_local
- 
-+#define __arch_try_cmpxchg64_emu(_ptr, _oldp, _new)			\
-+({									\
-+	union __u64_halves o = { .full = *(_oldp), },			\
-+			   n = { .full = (_new), };			\
-+	bool ret;							\
-+									\
-+	asm volatile(ALTERNATIVE(LOCK_PREFIX_HERE			\
-+				 "call cmpxchg8b_emu",			\
-+				 "lock; cmpxchg8b %[ptr]", X86_FEATURE_CX8) \
-+		     CC_SET(e)						\
-+		     : CC_OUT(e) (ret),					\
+diff --git a/arch/x86/include/asm/cmpxchg_64.h b/arch/x86/include/asm/cmpxchg_64.h
+index 44b08b5..c1d6cd5 100644
+--- a/arch/x86/include/asm/cmpxchg_64.h
++++ b/arch/x86/include/asm/cmpxchg_64.h
+@@ -62,7 +62,7 @@ static __always_inline u128 arch_cmpxchg128_local(volatile u128 *ptr, u128 old, 
+ 	asm volatile(_lock "cmpxchg16b %[ptr]"				\
+ 		     CC_SET(e)						\
+ 		     : CC_OUT(e) (ret),					\
+-		       [ptr] "+m" (*ptr),				\
 +		       [ptr] "+m" (*(_ptr)),				\
-+		       "+a" (o.low), "+d" (o.high)			\
-+		     : "b" (n.low), "c" (n.high), "S" (_ptr)		\
-+		     : "memory");					\
-+									\
-+	if (unlikely(!ret))						\
-+		*(_oldp) = o.full;					\
-+									\
-+	likely(ret);							\
-+})
-+
-+static __always_inline bool arch_try_cmpxchg64(volatile u64 *ptr, u64 *oldp, u64 new)
-+{
-+	return __arch_try_cmpxchg64_emu(ptr, oldp, new);
-+}
-+#define arch_try_cmpxchg64 arch_try_cmpxchg64
-+
- #endif
- 
- #define system_has_cmpxchg64()		boot_cpu_has(X86_FEATURE_CX8)
+ 		       "+a" (o.low), "+d" (o.high)			\
+ 		     : "b" (n.low), "c" (n.high)			\
+ 		     : "memory");					\
 
