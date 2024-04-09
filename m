@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-980-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-982-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF8489D519
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 11:08:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7986189D53F
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 11:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF8D11F22865
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 09:08:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F8122834DA
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 09:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1526C7F481;
-	Tue,  9 Apr 2024 09:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6227FBA4;
+	Tue,  9 Apr 2024 09:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cXgZv5BX";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mwdxz44z"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WJ/2kmNv";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DXJd+R0C"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881651EA74;
-	Tue,  9 Apr 2024 09:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E357F476;
+	Tue,  9 Apr 2024 09:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712653688; cv=none; b=MSjw4RKjP8rh+AzjGKQ1oQAYvmkLN/z04DUBJMgdoQbIYwaKzoQsCaLA3dZFTaJkNtvBcbdjV+wZS1qM4Ywjs5iHVKt4X4Vu7AHWS2FhBE0dlMBHcO9R8el9oLdiDJ4ScQe/YciN4yBk+ot2irZkEUNR6Av8Cs7hrn9nRIWhqG0=
+	t=1712654198; cv=none; b=lVzwFxHSd8WYEGolX6/VCtocVT4j6JbtqB71D70QbngmMnj2YLC4h1m/F+JlsGtp/khOkehulUR+jYQ/2m9CLkMcqonJy2PNNFZnpHFllQ7ix70dLLS8BV+NVSZLWSEO0Dc6xe6Z0jDH+ZlSBZRBtD3fwSApXq27ZY7VLRK3y+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712653688; c=relaxed/simple;
-	bh=wbYUhv2RKVPiJNy/1SAN3285v56XYBSZ8F4eQCdjP3M=;
+	s=arc-20240116; t=1712654198; c=relaxed/simple;
+	bh=PV3ABrpUzz7O86C+PI0/38DFjZ+AQp1PQ2wjp8NXC20=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=J4Q2RtoROj2U2YrEuI2u3qxizj7izRHGH3LWopar0b2p79OUzSyvY9s5fK65mQssocEJhNZvlx1xErBBDd3f2zO0fc605i3Tml0bBQPDiMazHX/JIWMp5SxItp8DQbK982NHZO2LDWQfg1ob0SkEm6HknN0BScVsWc5zX/Y2ntU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cXgZv5BX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mwdxz44z; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=oZpoh6IskIaDlcsLaYLWLohJDrnn9qEKdGo73oHWOUk5AQitD+enkkHIDmVvGfDU9GRa53xljwwnhzFwmU6hDzDDLBhMBmOkN1L7hXcixHFv7wmDjkTY1CV1b8dxhhAIJ4A6/92LH4QkCjEbW6j7M6jaiPlC9x5h05+5joyg+T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WJ/2kmNv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DXJd+R0C; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 09 Apr 2024 09:08:04 -0000
+Date: Tue, 09 Apr 2024 09:16:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712653684;
+	s=2020; t=1712654195;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R/nwosldwjCXQdo+Q1cGN0Zy7vpqjQ7vamZYvj/AFSo=;
-	b=cXgZv5BX/2rDeK5sHCRpj2r2rOpkEfDJZ7brHtZU/uokHMKyVnjkN6qzORuIqOeazcvm7N
-	zHMytIHRJLiDaxws3reNRtmj8iXTJisd6NBj8FeKBqVCKWoCLtvB+WCTdzRSLXH9fXYa+/
-	TtBCbcy85BuBv/MMNhJx/wnxV30G70HF4VGn48pct3urjNLglIYGQkGOz4xdG0jQ3xUkRb
-	DS8Bg4kWnt2AWnvzT25aYkvkzWV7yhEyFIRePgDVdyjF61Az4uFHIrT/6uXdVJy9InE3Ck
-	R31omrUszk+mEAJCIceo2GoB9YT9KqLcTrALH0Wm+Cx+TIAd1CQbA/GX+ZlNJw==
+	bh=iZNDVqbvbJbOp01LGO6Qp01I5l3QKdSxp5TQHKwyyzE=;
+	b=WJ/2kmNvdech/bTo5JwaomhvDsA9XcphgzOUW5vteN6bgAELkmHdldFOStnEGm0zGbkGO2
+	5N0LncVx59GJV9oeM4a4pbc/W787oqPDZ88xVHPIrkJoPUC+KDCG/9rB3qXAyVyXzuLK7s
+	ZQi/mUWpAcRQCtqmweHl5ZJoOOlzbR+oZXsYwtAEJtA2fTjNs6feXE235vUq/Uy6fAKgGn
+	/7DiMEdyEBfLU2qpov1N8pk00CMsF1kjaq2f4CE9Siuvrb2u8aGBEtG85pjN4Y0x4ftfRe
+	vk7v80bYJcPkzgEBFRtcvbrzDlnnQnSA1QADKyjRzoHCDoJx+2WbBlUES0PAYw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712653684;
+	s=2020e; t=1712654195;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R/nwosldwjCXQdo+Q1cGN0Zy7vpqjQ7vamZYvj/AFSo=;
-	b=Mwdxz44zSsqkTTefP1mSFFilfnCetbYz9X7yq8hLYcRKTdYtoEHo/l0HdxFPZqDWffn7WD
-	mLyzj5Die22AsLAQ==
-From: "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+	bh=iZNDVqbvbJbOp01LGO6Qp01I5l3QKdSxp5TQHKwyyzE=;
+	b=DXJd+R0CVeZp0YuS4yVm3Qo4pNS00MeD+sNB581mUnBFF55wnfVPl0uuamwlxAiKpxBWfi
+	Y9kLH2NHfsse7xCw==
+From: "tip-bot2 for Nianyao Tang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/riscv-aplic: Fix spelling mistake "forwared"
- -> "forwarded"
-Cc: Colin Ian King <colin.i.king@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240327110516.283738-1-colin.i.king@gmail.com>
-References: <20240327110516.283738-1-colin.i.king@gmail.com>
+Subject: [tip: irq/urgent] irqchip/gic-v3-its: Fix VSYNC referencing an
+ unmapped VPE on GIC v4.1
+Cc: Nianyao Tang <tangnianyao@huawei.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Marc Zyngier <maz@kernel.org>,
+ Zenghui Yu <yuzenghui@huawei.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240406022737.3898763-1-tangnianyao@huawei.com>
+References: <20240406022737.3898763-1-tangnianyao@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171265368406.10875.7603585287198246199.tip-bot2@tip-bot2>
+Message-ID: <171265419457.10875.5533397957548411107.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,38 +81,72 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     14ced4756458f2c7295f27f615d22c2b5912c733
-Gitweb:        https://git.kernel.org/tip/14ced4756458f2c7295f27f615d22c2b5912c733
-Author:        Colin Ian King <colin.i.king@gmail.com>
-AuthorDate:    Wed, 27 Mar 2024 11:05:16 
+Commit-ID:     80e9963fb3b5509dfcabe9652d56bf4b35542055
+Gitweb:        https://git.kernel.org/tip/80e9963fb3b5509dfcabe9652d56bf4b35542055
+Author:        Nianyao Tang <tangnianyao@huawei.com>
+AuthorDate:    Sat, 06 Apr 2024 02:27:37 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 09 Apr 2024 11:03:15 +02:00
+CommitterDate: Tue, 09 Apr 2024 11:11:18 +02:00
 
-irqchip/riscv-aplic: Fix spelling mistake "forwared" -> "forwarded"
+irqchip/gic-v3-its: Fix VSYNC referencing an unmapped VPE on GIC v4.1
 
-There is a spelling mistake in a dev_info message. Fix it.
+As per the GICv4.1 spec (Arm IHI 0069H, 5.3.19):
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+ "A VMAPP with {V, Alloc}=={0, x} is self-synchronizing, This means the ITS
+  command queue does not show the command as consumed until all of its
+  effects are completed."
+
+Furthermore, VSYNC is allowed to deliver an SError when referencing a
+non existent VPE.
+
+By these definitions, a VMAPP followed by a VSYNC is a bug, as the
+later references a VPE that has been unmapped by the former.
+
+Fix it by eliding the VSYNC in this scenario.
+
+Fixes: 64edfaa9a234 ("irqchip/gic-v4.1: Implement the v4.1 flavour of VMAPP")
+Signed-off-by: Nianyao Tang <tangnianyao@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240327110516.283738-1-colin.i.king@gmail.com
-
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Link: https://lore.kernel.org/r/20240406022737.3898763-1-tangnianyao@huawei.com
 ---
- drivers/irqchip/irq-riscv-aplic-msi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3-its.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-riscv-aplic-msi.c b/drivers/irqchip/irq-riscv-aplic-msi.c
-index 36cd04a..028444a 100644
---- a/drivers/irqchip/irq-riscv-aplic-msi.c
-+++ b/drivers/irqchip/irq-riscv-aplic-msi.c
-@@ -251,7 +251,7 @@ int aplic_msi_setup(struct device *dev, void __iomem *regs)
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index fca888b..2a537cb 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -786,6 +786,7 @@ static struct its_vpe *its_build_vmapp_cmd(struct its_node *its,
+ 					   struct its_cmd_block *cmd,
+ 					   struct its_cmd_desc *desc)
+ {
++	struct its_vpe *vpe = valid_vpe(its, desc->its_vmapp_cmd.vpe);
+ 	unsigned long vpt_addr, vconf_addr;
+ 	u64 target;
+ 	bool alloc;
+@@ -798,6 +799,11 @@ static struct its_vpe *its_build_vmapp_cmd(struct its_node *its,
+ 		if (is_v4_1(its)) {
+ 			alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
+ 			its_encode_alloc(cmd, alloc);
++			/*
++			 * Unmapping a VPE is self-synchronizing on GICv4.1,
++			 * no need to issue a VSYNC.
++			 */
++			vpe = NULL;
+ 		}
  
- 	/* Advertise the interrupt controller */
- 	pa = priv->msicfg.base_ppn << APLIC_xMSICFGADDR_PPN_SHIFT;
--	dev_info(dev, "%d interrupts forwared to MSI base %pa\n", priv->nr_irqs, &pa);
-+	dev_info(dev, "%d interrupts forwarded to MSI base %pa\n", priv->nr_irqs, &pa);
+ 		goto out;
+@@ -832,7 +838,7 @@ static struct its_vpe *its_build_vmapp_cmd(struct its_node *its,
+ out:
+ 	its_fixup_cmd(cmd);
  
- 	return 0;
+-	return valid_vpe(its, desc->its_vmapp_cmd.vpe);
++	return vpe;
  }
+ 
+ static struct its_vpe *its_build_vmapti_cmd(struct its_node *its,
 
