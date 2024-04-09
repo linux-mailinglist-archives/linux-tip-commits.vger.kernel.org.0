@@ -1,132 +1,173 @@
-Return-Path: <linux-tip-commits+bounces-971-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-972-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E59189CBB1
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Apr 2024 20:27:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB8689D42C
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 10:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 170AC1C21772
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Apr 2024 18:27:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32CD0280FBB
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Apr 2024 08:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9191A1448D7;
-	Mon,  8 Apr 2024 18:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E267E578;
+	Tue,  9 Apr 2024 08:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JdE6xMQ/"
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F2mcTU0f";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="huHaCY7Y"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B058A25753;
-	Mon,  8 Apr 2024 18:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204107E57F;
+	Tue,  9 Apr 2024 08:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712600876; cv=none; b=YjN54RFcLi7qAGv9UPhfKtMUTaRJoCTbjVscYrvjf0nfVlSPnu3CYeCKhYNESgSkFrp2k5LxxdPGy0WBGm1dzBLiggXOVs8d8nhaBo4izzJy9txfHQTHZFT0JQjistEF/fz2/yItqZg/yTcALrTTLhBrVhxn6nYK10sfjIQXNpo=
+	t=1712651199; cv=none; b=te8OhExapjUNr+akbcMKuUwh/2fLSU5Cd9wyiLG1VeMlO/fP8ADlWQTrvkO3am9faHqcvb+dB6k7UVcZ24JNXlnfl7MG1+LFXKLJi9ODemfPvlruNlZ5oTO4cF/WHPYy1d2L7zibirR7PuYlr5jDsjJJ2rkrnIYsc0fiZtXGpv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712600876; c=relaxed/simple;
-	bh=SNEAHwiZ2/SqBEx1r4aC42w+KK919cWs3IE6VdePVaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qDlyZVtqUejAolJIeVlOn037aru0QG6FbtKuP7MH5Y/drICCeiyCwwT8Fa9vpBOiyTvCWjpq0Y7M+jKUjYHlrhBrJV1P0HnJ0ELxlEMrUiBW7n20qvkSzXCR6btbXTJD/8HZ3NFIoLsQT4iFzAAiYymL3h/tqBfAbP+WbXSDj6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JdE6xMQ/; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-56e1baf0380so5322805a12.3;
-        Mon, 08 Apr 2024 11:27:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712600873; x=1713205673; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H87O+ieoRLaVWCX2hAH7EWkWIZKVrjyzCm9L1MBqBu8=;
-        b=JdE6xMQ/vpNJ1b1ewQrwcOdJbM2zq3X07LGlaN9PGAczxyjjAuANAWuliKEF6SLVTW
-         SuPKnLZlSETi200wdMdKjJC1Y8N2ahqtcNOVhrYlRigDCdG2ASqDedAfwPVtuPOPFQ0+
-         Ze0SqQJfmE5X+6CBifYU5jqUlsIDoZUOTBDwAjgpG9al4cyvZJ2IqjwzyrLsowf1R9gJ
-         9w3NvPuxtssH5Ce/+tJN8NESOhmg8cE7i6fFTE+JnVdgn3iHhaSMJAS4H5gNPVFMIfd6
-         Vx/mo24mMvRrl55XjgkmxOkykqJ/4SodK3XaIV88h0m/hBjYJHBHyQFnMR+Ep3g6aBAM
-         R9TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712600873; x=1713205673;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H87O+ieoRLaVWCX2hAH7EWkWIZKVrjyzCm9L1MBqBu8=;
-        b=wmq1K6CIJ/0NNbgWwfFBs9vGafpKUAgxc8HxbXlXuruxrqGoCfmPlpSaCUzd+K3MOF
-         2QhUXLAWg/MR6crowLVsYVuT8qprKGSrkyEZDxGU+cY2kfsG6fEg8/BmkJHhcpDIbmgY
-         PCKvmwqQfrk+B4ZyXqUdHYugZwCL/kG+Tkt++hNmSFd+5ACafZrHptsX+9kW3TTBaRj0
-         a9SM5oGfagWWJewBViWSJ8keBW+xQaOe6wfWXqP1Kks/n3NgwAZuWBDB/t/OwG1IQb/2
-         KLEh0JHqjgtOwlvYvYxfEJA7bBjrRJMs4/SFec5TkpRSxtmiKCzwG7PZ4/bxtsPJ++3u
-         IEnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUaEyROTanVElH9/nledmLSljciCEixSXTteBOJVOD6XBJ/wBqUruv9kUSIDVWK/FWMknveCKlET1PAMiiwFLPfNASmgrGOwxHDCf18MJ/f9GQSt075PZtxjIfHtYJ1JsaHQufOkQYt+Y7deQOokTA=
-X-Gm-Message-State: AOJu0YzaZR4U+BOILzi4rSEPO4nb179LqEpFBsQhokgEtcHQcTIzmTgL
-	h6TTs8NzpE8T/gJfXxzE4JwyzFSL9sAFV88ifNbjVHPUouBVulN+
-X-Google-Smtp-Source: AGHT+IF/A3Mn10U1WHg8e0iglxnCMNrW0sQqf3XHbJswJ+zUr3CpfOdD/50CyuCyAfJCYN68RFynGQ==
-X-Received: by 2002:a50:9e48:0:b0:56e:2464:7c4b with SMTP id z66-20020a509e48000000b0056e24647c4bmr6270548ede.10.1712600872491;
-        Mon, 08 Apr 2024 11:27:52 -0700 (PDT)
-Received: from gmail.com (1F2EF1A5.nat.pool.telekom.hu. [31.46.241.165])
-        by smtp.gmail.com with ESMTPSA id i2-20020a50fc02000000b0056e22be831dsm4326912edr.42.2024.04.08.11.27.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Apr 2024 11:27:51 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date: Mon, 8 Apr 2024 20:27:49 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: x86-ml <x86@kernel.org>, linux-tip-commits@vger.kernel.org,
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>,
-	Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
-Subject: Re: [tip: x86/boot] x86/boot: Move kernel cmdline setup earlier in
- the boot process (again)
-Message-ID: <ZhQ3JSXT05Kv/RpM@gmail.com>
-References: <171169867308.10875.15117897441999380027.tip-bot2@tip-bot2>
- <20240408181732.GCZhQ0vGSfP3Gf8tDW@fat_crate.local>
+	s=arc-20240116; t=1712651199; c=relaxed/simple;
+	bh=y7Hdc8CIKymFFlxQ+P0ZbjSbM1SIMMlRpvkobw7V4K4=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=MUYVQcJW62F3XuiJ1pLuBLT3668ss0LQDpZ8qHsVZ045tkHhI+Ot9TMSSoWPl1PQjvH7TYKpK5wA3/dMJC2xalt8knJwp8+vykKNefq3KEBfKNdaNZnW5b4c2JYBpWqv46ezdiXIFF4EMProh4ditRyN0tHQfUSxj8JsnNpW2ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F2mcTU0f; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=huHaCY7Y; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 09 Apr 2024 08:26:35 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712651196;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EzeKglEuprUW0bEz9+MBpsvB8AZtkFzWDRLtCSu/l14=;
+	b=F2mcTU0f5mbNXDSDqGTZtc6UOVzDxiiVEm9VgBoaZL0eJXg7XarKmLq254fJmLMLEGdWoS
+	iMlvnK6BD0tiByexOEWiOEvOVDyAjarJodZhf/hM1xrc3NzbALOIF48cZGLsD7GGxJ9mVS
+	iYzuuL30oIQlunaZdAg1ddUHHyPNuMeRczahJUZPMka8kEQB3j7MUE9nfgIS8hSSkUHvJ0
+	NcVhZE790omFk8gmwexelZqenjU98+nBGSECFYC2cq6sx4eGztHvQfY1gndxY8sRnY9AzP
+	fsQ1h0Vju8qWXpM+WzcgOT0IQGsLWHcms05kA+KUH0ZSbZnZRUz8DrfZFqwttg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712651196;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EzeKglEuprUW0bEz9+MBpsvB8AZtkFzWDRLtCSu/l14=;
+	b=huHaCY7Y1I78kZG+KH2RgHPTeBKIWfHLppkCH9EzvoJ5pFeNcntY0E81LLDrlFkEmQN3O3
+	AFk+d8pxUcinIGBQ==
+From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/core] locking/atomic/x86: Introduce
+ arch_try_cmpxchg64() for !CONFIG_X86_CMPXCHG64
+Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240408091547.90111-4-ubizjak@gmail.com>
+References: <20240408091547.90111-4-ubizjak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240408181732.GCZhQ0vGSfP3Gf8tDW@fat_crate.local>
+Message-ID: <171265119516.10875.17878292059342759156.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the locking/core branch of tip:
 
-* Borislav Petkov <bp@alien8.de> wrote:
+Commit-ID:     aef95dac9ce4f271cc43195ffc175114ed934cbe
+Gitweb:        https://git.kernel.org/tip/aef95dac9ce4f271cc43195ffc175114ed934cbe
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Mon, 08 Apr 2024 11:13:58 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 09 Apr 2024 09:51:03 +02:00
 
-> On Fri, Mar 29, 2024 at 07:51:13AM -0000, tip-bot2 for Julian Stecklina wrote:
-> > The following commit has been merged into the x86/boot branch of tip:
-> > 
-> > Commit-ID:     4faa0e5d6d79fc4c6e1943e8b62a65744d8439a0
-> > Gitweb:        https://git.kernel.org/tip/4faa0e5d6d79fc4c6e1943e8b62a65744d8439a0
-> > Author:        Julian Stecklina <julian.stecklina@cyberus-technology.de>
-> > AuthorDate:    Thu, 28 Mar 2024 16:42:12 +01:00
-> > Committer:     Ingo Molnar <mingo@kernel.org>
-> > CommitterDate: Fri, 29 Mar 2024 08:19:12 +01:00
-> > 
-> > x86/boot: Move kernel cmdline setup earlier in the boot process (again)
-> 
-> ...
-> 
-> > The order is now:
-> > 
-> > 	setup_arch():
-> > 	  -> Assemble final command line:
-> > 	     boot_command_line = builtin_cmdline + boot_cmdline
-> > 
-> > 	  -> early_cpu_init()
-> > 	    -> early_identify_cpu()
-> > 	      -> sld_setup()
-> > 		-> sld_state_setup()
-> > 		  -> Looks for split_lock_detect in boot_command_line
-> > 
-> > 	  -> e820__memory_setup()
-> > 
-> > 	  -> parse_early_param()
-> 
-> So that thing. Should we do something like the silly thing below so that 
-> it catches potential issues with parsing builtin cmdline stuff too early?
+locking/atomic/x86: Introduce arch_try_cmpxchg64() for !CONFIG_X86_CMPXCHG64
 
-Yep, that's a good idea.
+Commit:
 
-Acked-by: Ingo Molnar <mingo@kernel.org>
+  6d12c8d308e68 ("percpu: Wire up cmpxchg128")
 
-	Ingo
+improved emulated cmpxchg8b_emu() library function to return
+success/failure in a ZF flag.
+
+Define arch_try_cmpxchg64() for !CONFIG_X86_CMPXCHG64 targets
+to override the generic archy_try_cmpxchg() with an optimized
+target specific implementation that handles ZF flag.
+
+The assembly code at the call sites improves from:
+
+   bf56d:	e8 fc ff ff ff       	call   cmpxchg8b_emu
+   bf572:	8b 74 24 28          	mov    0x28(%esp),%esi
+   bf576:	89 c3                	mov    %eax,%ebx
+   bf578:	89 d1                	mov    %edx,%ecx
+   bf57a:	8b 7c 24 2c          	mov    0x2c(%esp),%edi
+   bf57e:	89 f0                	mov    %esi,%eax
+   bf580:	89 fa                	mov    %edi,%edx
+   bf582:	31 d8                	xor    %ebx,%eax
+   bf584:	31 ca                	xor    %ecx,%edx
+   bf586:	09 d0                	or     %edx,%eax
+   bf588:	0f 84 e3 01 00 00    	je     bf771 <...>
+
+to:
+
+   bf572:	e8 fc ff ff ff       	call   cmpxchg8b_emu
+   bf577:	0f 84 b6 01 00 00    	je     bf733 <...>
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20240408091547.90111-4-ubizjak@gmail.com
+---
+ arch/x86/include/asm/cmpxchg_32.h | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/arch/x86/include/asm/cmpxchg_32.h b/arch/x86/include/asm/cmpxchg_32.h
+index fe40d06..9e0d330 100644
+--- a/arch/x86/include/asm/cmpxchg_32.h
++++ b/arch/x86/include/asm/cmpxchg_32.h
+@@ -122,6 +122,34 @@ static __always_inline u64 arch_cmpxchg64_local(volatile u64 *ptr, u64 old, u64 
+ }
+ #define arch_cmpxchg64_local arch_cmpxchg64_local
+ 
++#define __arch_try_cmpxchg64_emu(_ptr, _oldp, _new)			\
++({									\
++	union __u64_halves o = { .full = *(_oldp), },			\
++			   n = { .full = (_new), };			\
++	bool ret;							\
++									\
++	asm volatile(ALTERNATIVE(LOCK_PREFIX_HERE			\
++				 "call cmpxchg8b_emu",			\
++				 "lock; cmpxchg8b %[ptr]", X86_FEATURE_CX8) \
++		     CC_SET(e)						\
++		     : CC_OUT(e) (ret),					\
++		       [ptr] "+m" (*(_ptr)),				\
++		       "+a" (o.low), "+d" (o.high)			\
++		     : "b" (n.low), "c" (n.high), "S" (_ptr)		\
++		     : "memory");					\
++									\
++	if (unlikely(!ret))						\
++		*(_oldp) = o.full;					\
++									\
++	likely(ret);							\
++})
++
++static __always_inline bool arch_try_cmpxchg64(volatile u64 *ptr, u64 *oldp, u64 new)
++{
++	return __arch_try_cmpxchg64_emu(ptr, oldp, new);
++}
++#define arch_try_cmpxchg64 arch_try_cmpxchg64
++
+ #endif
+ 
+ #define system_has_cmpxchg64()		boot_cpu_has(X86_FEATURE_CX8)
 
