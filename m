@@ -1,133 +1,86 @@
-Return-Path: <linux-tip-commits+bounces-1016-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1017-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D27889F9EA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Apr 2024 16:31:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A1189FAB9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Apr 2024 16:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 378B8282DFD
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Apr 2024 14:31:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95A6C28B5C0
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Apr 2024 14:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4AF16D30C;
-	Wed, 10 Apr 2024 14:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3C316F0EE;
+	Wed, 10 Apr 2024 14:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F2WZ5N5q";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ue1xY9Dk"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HOHWODub";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nTBZ53J9"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A3716131C;
-	Wed, 10 Apr 2024 14:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B70716F0E9;
+	Wed, 10 Apr 2024 14:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712759483; cv=none; b=RfG7Lsr80bOr7yXCxtojbfW5wgjcKhAv5H8VX74Q3TPD61IkqtYQdDio2bnb6e9fSJdGj+mCo3YpVYnAttl4DIQcGNAtuvr5fl1YbD2kl1p+4Gtkyo5gq5weA11rQco6lyylLNjZuz8hhq8Amv9vmrW/Xv9Xh6rmnqaRa/Cf9Is=
+	t=1712760878; cv=none; b=KmyZCN+MkgmmENormbkWKc8fnsfLhH4uc+e+DszH0EVZYKwXOgXls0PLZFkBY7/HlCapIivlm2RmVqcjOw7nOoSae+SNDN0pCG0zHexLM+6z5RQ2GsGocKOgsOOszx/+aAOQKEs6P9naromiVBcswHXWHEDbIPbwp6ZYdwq5r/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712759483; c=relaxed/simple;
-	bh=OGX5xmHt8QB4zrJj4PlvpFzX8zpWwHB+DHJ1mYOEqPo=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZYedL3fJXmw59u1P9bJSxSjwIJIChio8k5NM0LizLKFbqCKqwdsfQj1PRomAVd3URngkPJL5I3TLVHr3nGdBSrkir/QQ8vdPrLSqbiE89xYYhvgWMtd9hf7PuP6CT+T/IDAS/4Wx1FKye1yV2ngdLpetvauHg2S00iBV0vFHk1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F2WZ5N5q; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ue1xY9Dk; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1712760878; c=relaxed/simple;
+	bh=/wL+CsvkkMwaJAgDAaETeMNQO2L94tEPin5keiX6FVI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=A+zyQLZaUP62S5rJTGkVi7m8xyAWdviMbIrhPEyy4xwHIIuoeGRzRnKAScGMZBRNbjTVzBW0MuNOKtLwst4hq+Y9xKrJg/DrqeLFLO4W/VgdOHc7n7HmOS+ImYoPG3/Jri66yfGNJFI0V3LLx1P/DLQ1IsPgXi+4aE9vTZ62n3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HOHWODub; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nTBZ53J9; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 10 Apr 2024 14:31:19 -0000
+From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712759480;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=2020; t=1712760875;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pxVO6IH2aKWgClrF7W/S2towoDPaWd3E2DJSD4+8qmw=;
-	b=F2WZ5N5qQlnKKSeXgYTtBmsdvUXw2IwBS0VMZvXLtSY2zvQ09DIyswwZcH52FO0S5kfMPq
-	9JdLaBjeB8bUKLK7/5f0/tFDKVSVy+aToobxJer3jkqmgs1+QpHwQMJjTIpmBsjA/HqSK8
-	Ll+fMkqiWxW7j7Sc5ZEoiAGpM31zK6uWqRku1eTHESjB+HQ10ytx+7Vn3G52rbMJdU1HCb
-	HJOIUrtkrsaNHKRrRf+RZ1wIKYUsQP6WP0N52Y2idv9Z1vGeWYyWFIp5/RTBcT1Drhsvyn
-	vDC4sugs6OaLw9IjnWkhseg6HdQYTnfSNHDZUA3LJ00xyA0d5QKPsjmXAzDEDA==
+	bh=r5hhICO2Tuhg0O6s88ESY/Px6fYRxYIzb84iKPTZhY8=;
+	b=HOHWODubEITQQy3ny2ZVhXd6g6NzO7iUD+DlfezqL527zz9sNlX5C4EeXhl3z5dnq953pN
+	Rh3DlWxW3rGzM2jt9GyMvfWsUxUTUvfPGzr0v4aMq+UJ3HZ+POAqv/meIyfFKbsrjuLx0U
+	wKUAJEm6OOCa7lRatmhCcpns/6Oo1GwDqLn5jXuAGi3KOHbElrsHoVVPDhODOJUcL2gP+S
+	6gv/v669zCCwQk5YYiH/kapgxHFAYF4baJ8Y3m+dVm29oCjATORrrf8PCQ9sFffaIuNpQY
+	lemqb4oDnpP5R+SlroGgZvHeescbyQfQHz90gtChXucecWrKhpWa/hocdHuO/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712759480;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=2020e; t=1712760875;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pxVO6IH2aKWgClrF7W/S2towoDPaWd3E2DJSD4+8qmw=;
-	b=ue1xY9Dk6GYFvryU4dZFqI8uCAToeuYMjxCiVvlZwddN5+EZ3+fwxDlOu1rX/hx4r85Vs4
-	NH5mRDTw6FBm6aBg==
-From: "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Actually turn off mitigations by default
- for SPECULATION_MITIGATIONS=n
-Cc: Sean Christopherson <seanjc@google.com>, Ingo Molnar <mingo@kernel.org>,
- Daniel Sneddon <daniel.sneddon@linux.intel.com>, stable@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240409175108.1512861-2-seanjc@google.com>
-References: <20240409175108.1512861-2-seanjc@google.com>
+	bh=r5hhICO2Tuhg0O6s88ESY/Px6fYRxYIzb84iKPTZhY8=;
+	b=nTBZ53J9KKuTdWfMwgMlw5koSi2TGSLNr4GdPzI2reBz3Hwi0aVi95nuITyo9TKaI8afA2
+	Dzkji7/LaDwsV4DA==
+To: Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, Mirsad Todorovac
+ <mirsad.todorovac@alu.unizg.hr>, Sean Anderson <sean.anderson@seco.com>,
+ x86@kernel.org
+Subject: Re: [tip: timers/urgent] timekeeping: Use READ/WRITE_ONCE() for
+ tick_do_timer_cpu
+In-Reply-To: <ZhZKiKyXsgSeABvD@gmail.com>
+References: <87cyqy7rt3.ffs@tglx>
+ <171269748856.10875.3911619468870441338.tip-bot2@tip-bot2>
+ <ZhZKiKyXsgSeABvD@gmail.com>
+Date: Wed, 10 Apr 2024 16:54:34 +0200
+Message-ID: <87y19l2rpx.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171275947986.10875.18301514121591592136.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Wed, Apr 10 2024 at 10:15, Ingo Molnar wrote:
+>> @@ -232,7 +233,7 @@ static void tick_setup_device(struct tick_device *td,
+>>  						!tick_nohz_full_cpu(cpu)) {
+>>  			tick_take_do_timer_from_boot();
+>>  			tick_do_timer_boot_cpu = -1;
+>> -			WARN_ON(tick_do_timer_cpu != cpu);
+>> +			WARN_ON(READ_ON_ONCE(tick_do_timer_cpu) != cpu);
+>
+> So there's no such thing as READ_ON_ONCE() - I've amended the commit with 
+> the fix below.
 
-Commit-ID:     f337a6a21e2fd67eadea471e93d05dd37baaa9be
-Gitweb:        https://git.kernel.org/tip/f337a6a21e2fd67eadea471e93d05dd37ba=
-aa9be
-Author:        Sean Christopherson <seanjc@google.com>
-AuthorDate:    Tue, 09 Apr 2024 10:51:05 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 10 Apr 2024 16:22:47 +02:00
-
-x86/cpu: Actually turn off mitigations by default for SPECULATION_MITIGATIONS=
-=3Dn
-
-Initialize cpu_mitigations to CPU_MITIGATIONS_OFF if the kernel is built
-with CONFIG_SPECULATION_MITIGATIONS=3Dn, as the help text quite clearly
-states that disabling SPECULATION_MITIGATIONS is supposed to turn off all
-mitigations by default.
-
-  =E2=94=82 If you say N, all mitigations will be disabled. You really
-  =E2=94=82 should know what you are doing to say so.
-
-As is, the kernel still defaults to CPU_MITIGATIONS_AUTO, which results in
-some mitigations being enabled in spite of SPECULATION_MITIGATIONS=3Dn.
-
-Fixes: f43b9876e857 ("x86/retbleed: Add fine grained Kconfig knobs")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240409175108.1512861-2-seanjc@google.com
----
- kernel/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 8f6affd..07ad53b 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -3207,7 +3207,8 @@ enum cpu_mitigations {
- };
-=20
- static enum cpu_mitigations cpu_mitigations __ro_after_init =3D
--	CPU_MITIGATIONS_AUTO;
-+	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
-+						     CPU_MITIGATIONS_OFF;
-=20
- static int __init mitigations_parse_cmdline(char *arg)
- {
+Can you hand me a brown paper bag please?
 
