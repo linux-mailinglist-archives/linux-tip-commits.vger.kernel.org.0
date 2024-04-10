@@ -1,144 +1,141 @@
-Return-Path: <linux-tip-commits+bounces-1008-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1009-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1CC89F3B8
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Apr 2024 15:09:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44E789F45B
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Apr 2024 15:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D0741C24DE9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Apr 2024 13:09:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61BF11F2155E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Apr 2024 13:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA12115E7FD;
-	Wed, 10 Apr 2024 13:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75121158D6B;
+	Wed, 10 Apr 2024 13:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lt2CEBeB";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ChTsiyYm"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q8g+2dUB";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T2V3VAFr"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB82158D6B;
-	Wed, 10 Apr 2024 13:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC0215ADBF;
+	Wed, 10 Apr 2024 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712754550; cv=none; b=ZUpfV6eJ+IaH5zdRfdvS/127i7SmHkZ0QgBTZecxlDSgMI7I4ecSlziQMbEPLMqxQu8EtQksocxRDHPoYOLBtlk+pSdTYRbgPUuJlZ3hor8R6N2QXZTf5wxsBY5Nx5C2ZLd+Zcfugz4F4DedXQYGEqnN53pjNGB6RqW/tzHjxpU=
+	t=1712756001; cv=none; b=rAAGWTFT3J5GwkniIOboMWTDr3bPOKUqV5QJkh9ZKI2kR9OzFa2EZXMSYTtg6CYudqJzTjyE1IG1fUIzmAmKlfaUHPLxT+po/oxxZqFojdDmv+J68gH7ou0MpPWV1To8kkodDlZ7mQHrTLBlV5wGefaTKZaI+Ivc6KARK0Oa34s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712754550; c=relaxed/simple;
-	bh=DVsyvZznbXxXopBYa+V2X+LKRzPLEQ+gw6dR0qVmBJo=;
+	s=arc-20240116; t=1712756001; c=relaxed/simple;
+	bh=FIObw+nkd3bM6GB0vbvXE8UQ7qTFir/wKkV2t7da6Go=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=CSpDLODZDeX+IrP2qMpHfK2oGamfUs+Rz9xaw1KP6+dtkwcNwvzqL0aCPd4ssaPNmu6ir9SdOAjN+e0CKwfaHZi3dMscZGCiR4ZBwWEszJMfFB6nmiv+P0blCxkviWOzUbdOVLNfvOC5/bLHFb+HSpCPJ3tGoCPzqkA0KGzCqkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lt2CEBeB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ChTsiyYm; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=K4dV/xYlabK77fxbGKhHCYZ7/1fCGS1cy1UuMn+wNYYA5G7/vi+d4hr2pI6xqQw/Zjv0BwMQ+zsvcnyG5AIzPHH1bPeL6Txk4YalNZa5xiQ9LTQg76AUTk9BgIbmuwhXOjSk2LXHJG/WwYLLYVjyPrWdEURBzVbsHwexFb8ZydM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q8g+2dUB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T2V3VAFr; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 10 Apr 2024 13:09:06 -0000
+Date: Wed, 10 Apr 2024 13:33:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712754547;
+	s=2020; t=1712755998;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0w73FUI0UgD5Z87XACzuGpXa+SVzEAPwn4oHcXwVmi0=;
-	b=lt2CEBeBEsUD4jh6IO9nFzFXV3CKLvFuw0VgrcYVcX435bk1czZ0w6xhRNt5ZSBOY6vSh0
-	NM4on6KU3vzfZOV5zcCnzEROJb4OpR/NEM11MLz+X5icyY5DWsH9EQobf5pqTvM9Ul8ySe
-	Do8wFz/V6p5C/o+dvCU7hmItlbtNAykjT9YpCLGcz7iw3VP+Q4p1lRqWOTO6tRa7Ji6IdB
-	M6+2nN72NMZrsfuQR0/Ip04BTcHb2AJxpeDmUr2GToHWxC1bm+EbH02VXCwOzAoqR8hcEz
-	btfjT8rHAhz31uYO6QpwuaLdyrfQLAETkIxIiJBWc/TlXSD2VJ8Xem+Cd3io6Q==
+	bh=KvcjXtJHxGZvszgd21JjPouK1zZmiXf4vKLraFZNs7g=;
+	b=Q8g+2dUBle1+qFcvpD1qzY+6c1Qki3GGQ32/5t3c74xpNujXq/Xkw7qh1mI3qd+hgvUSJs
+	x2wNIEIsSLRz9PSph2hHWdrZhAGWL+OLMMUSlCUPo3i/kPQQIJXG6FmOdfmMbcThHlms81
+	YISG9qe2iJA0epKc1iuJbZBh74r5gKT64jnh94ijDzXUueipIRGXx8p1CtZLkcq6DVqILA
+	VfYSkrDh+8LIwrWScOS2caXDNsX1n0yYVksG1HC9JW9f2kpdS4+EjdnDMFQrGvJO7VHc30
+	pfcbKKysa9F3IwNEA60pMTzji/2UjcK/1CYvgYnHMAp52szTjE3w9LTC+z6O5w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712754547;
+	s=2020e; t=1712755998;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0w73FUI0UgD5Z87XACzuGpXa+SVzEAPwn4oHcXwVmi0=;
-	b=ChTsiyYmuC95SSGmWOJiWEA0cGDNY/ZjCvi9ezrEVgtObUss3XkSFsmV8ILV/asvDAcpTg
-	20aBT0WLz1Z7vYCQ==
-From:
- tip-bot2 for Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <tip-bot2@linutronix.de>
+	bh=KvcjXtJHxGZvszgd21JjPouK1zZmiXf4vKLraFZNs7g=;
+	b=T2V3VAFrsfQG28ICTD/LrSkDnoldfwsZFJSSELgYoHnUe+KUJ3iIeLdDlpsQf0cLfRwxfl
+	/cuvNwg1rdvn2rDg==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/iris: Convert to platform remove
- callback returning void
-Cc: u.kleine-koenig@pengutronix.de, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cadb9b0aca77d7aa8e54d0a664a4ee290834a60a1=2E17127?=
- =?utf-8?q?32665=2Egit=2Eu=2Ekleine-koenig=40pengutronix=2Ede=3E?=
-References: =?utf-8?q?=3Cadb9b0aca77d7aa8e54d0a664a4ee290834a60a1=2E171273?=
- =?utf-8?q?2665=2Egit=2Eu=2Ekleine-koenig=40pengutronix=2Ede=3E?=
+Subject: [tip: x86/alternatives] x86/topology: Don't update cpu_possible_map
+ in topo_set_cpuids()
+Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <87ttkc6kwx.ffs@tglx>
+References: <87ttkc6kwx.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171275454670.10875.3993795189807291031.tip-bot2@tip-bot2>
+Message-ID: <171275599725.10875.2334973841173648754.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the x86/alternatives branch of tip:
 
-Commit-ID:     bcc0403eb4c3f5f79e3bc39bc2d65ddb1c25ffdf
-Gitweb:        https://git.kernel.org/tip/bcc0403eb4c3f5f79e3bc39bc2d65ddb1c2=
-5ffdf
-Author:        Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-AuthorDate:    Wed, 10 Apr 2024 09:16:51 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 10 Apr 2024 14:59:30 +02:00
+Commit-ID:     675ae1aac0572595999e6f78a16e51351291f7aa
+Gitweb:        https://git.kernel.org/tip/675ae1aac0572595999e6f78a16e51351291f7aa
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 08 Apr 2024 15:22:01 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 10 Apr 2024 15:24:27 +02:00
 
-x86/platform/iris: Convert to platform remove callback returning void
+x86/topology: Don't update cpu_possible_map in topo_set_cpuids()
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+topo_set_cpuids() updates cpu_present_map and cpu_possible map. It is
+invoked during enumeration and "physical hotplug" operations. In the
+latter case this results in a kernel crash because cpu_possible_map is
+marked read only after init completes.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+There is no reason to update cpu_possible_map in that function. During
+enumeration cpu_possible_map is not relevant and gets fully initialized
+after enumeration completed. On "physical hotplug" the bit is already set
+because the kernel allows only CPUs to be plugged which have been
+enumerated and associated to a CPU number during early boot.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Remove the bogus update of cpu_possible_map.
 
-Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/adb9b0aca77d7aa8e54d0a664a4ee290834a60a1.1712=
-732665.git.u.kleine-koenig@pengutronix.de
+Fixes: 0e53e7b656cf ("x86/cpu/topology: Sanitize the APIC admission logic")
+Reported-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/87ttkc6kwx.ffs@tglx
+
 ---
- arch/x86/platform/iris/iris.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/topology.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/platform/iris/iris.c b/arch/x86/platform/iris/iris.c
-index b42bfda..c5f3bbd 100644
---- a/arch/x86/platform/iris/iris.c
-+++ b/arch/x86/platform/iris/iris.c
-@@ -62,11 +62,10 @@ static int iris_probe(struct platform_device *pdev)
- 	return 0;
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index aaca8d2..d17c9b7 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -123,7 +123,6 @@ static void topo_set_cpuids(unsigned int cpu, u32 apic_id, u32 acpi_id)
+ 	early_per_cpu(x86_cpu_to_apicid, cpu) = apic_id;
+ 	early_per_cpu(x86_cpu_to_acpiid, cpu) = acpi_id;
+ #endif
+-	set_cpu_possible(cpu, true);
+ 	set_cpu_present(cpu, true);
  }
-=20
--static int iris_remove(struct platform_device *pdev)
-+static void iris_remove(struct platform_device *pdev)
- {
- 	pm_power_off =3D old_pm_power_off;
- 	printk(KERN_INFO "Iris power_off handler uninstalled.\n");
--	return 0;
+ 
+@@ -210,7 +209,11 @@ static __init void topo_register_apic(u32 apic_id, u32 acpi_id, bool present)
+ 		topo_info.nr_disabled_cpus++;
+ 	}
+ 
+-	/* Register present and possible CPUs in the domain maps */
++	/*
++	 * Register present and possible CPUs in the domain
++	 * maps. cpu_possible_map will be updated in
++	 * topology_init_possible_cpus() after enumeration is done.
++	 */
+ 	for (dom = TOPO_SMT_DOMAIN; dom < TOPO_MAX_DOMAIN; dom++)
+ 		set_bit(topo_apicid(apic_id, dom), apic_maps[dom].map);
  }
-=20
- static struct platform_driver iris_driver =3D {
-@@ -74,7 +73,7 @@ static struct platform_driver iris_driver =3D {
- 		.name   =3D "iris",
- 	},
- 	.probe          =3D iris_probe,
--	.remove         =3D iris_remove,
-+	.remove_new     =3D iris_remove,
- };
-=20
- static struct resource iris_resources[] =3D {
 
