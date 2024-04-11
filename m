@@ -1,79 +1,82 @@
-Return-Path: <linux-tip-commits+bounces-1019-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1020-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93C68A0118
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Apr 2024 22:14:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3728A0B75
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Apr 2024 10:40:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C9D0285F0F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Apr 2024 20:14:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A43CB21ABF
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Apr 2024 08:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACE1181B9E;
-	Wed, 10 Apr 2024 20:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEBE140361;
+	Thu, 11 Apr 2024 08:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="k7ZalnCH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vcT1xXkr"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zKTe2y5k";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mW201AnM"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17809181B8E;
-	Wed, 10 Apr 2024 20:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88EC2EAE5;
+	Thu, 11 Apr 2024 08:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712780068; cv=none; b=lXQ/hGrRmu5f52iPW4Os1QL8iwfp4ME++3R/KyqPdG49KZ4DjqwFI+8eTQBzVCG3il5j1BDWhKF3Wpi8anHnMgKlO1B7PDfyb7fhIXMFXJVNhNxJwEiix+LEhT5k+W672DO7m4uxtGiHC9dN+MYMo5qwqH5iWKQDh8OtVFM16WU=
+	t=1712824829; cv=none; b=bwZboWriTd8/Yfa3haANnK6QB/KNeR9c3DReo6fAqInReJ3ATFOw74D2FWVctCoYpNRJfY0upxyrd4h8Wmv5zHw+3yD8tWI3LRrAQ6AjLlTPiSrH5yKV+YKtX2Xk3A5kljkkSHuwZWazLY0y/RhD2VmO+HkzWk5uvpSlnbuadFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712780068; c=relaxed/simple;
-	bh=Rqy6Xs2fyCvZ69aDntTlbG095epWeaAAKb5UV4cLrco=;
+	s=arc-20240116; t=1712824829; c=relaxed/simple;
+	bh=EKkU0vakLNZCApeEGiFYhFRmuY4Ff4FNPFAoAF64qsU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=XK7uL1Kwgg5KRueNSfPT28u1LxcPt7UhEapLPz2NVP8XNoh/GV3INZhBDHn5ERqtWjzrUKdwNZGX+tZ1KaYIldFeSkmTQjUrtyvUIfYBOc4QA9LzS+TVTEknu/SjnKVeRCm63DYuqTzWop9N+nUMMAAFQhcMQ2SNXmX7LonyaqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=k7ZalnCH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vcT1xXkr; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=rYAMStKS3AHyirFo2MAyEOPeXK/C/N2NWNEMtLbJ2tq37JBziP2NuOEJXsYcE8XmyIEfRKh+h8nV1rPFJQ28ITHvhS/xuVocMTKdmE5xSR/7FMgqhy+O37++r59n+PdBkVR5HVEIwiTpZ2NzKxjzcNb92KiaO2xjCWmkyXdyGJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zKTe2y5k; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mW201AnM; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 10 Apr 2024 20:14:24 -0000
+Date: Thu, 11 Apr 2024 08:40:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712780065;
+	s=2020; t=1712824819;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tDXuJbRR0DIfp06MkOUcJdP+NuBmCt9MmdpCM5pWau4=;
-	b=k7ZalnCHhnXHt1jKDkjyanzMFHM17hLw1h9GtCdraguNNVtQkRW5o8v1Y4TLpv90/yDbEt
-	nNzLqhvILkRmunE283kDMgkGgKz/Jf4iwiYdAG7gpnsxXyeXCmUraEFHbdZ+WhuE2C3VqK
-	Oh/XYVekXBtN3jeXKq8qtW5c65TNV1jcTPZfb8LPpkQx6Mn1X6+i6p6qFC30/u1w+ILtgL
-	zmEO4rbEY4wuGT/raDa+BD1R7t60Dyqs1VpOn/2SIeIwUJHB9++WLHkwI3Jz91rvLrQtGs
-	d4aJQWf7zTruXcihX5RUHXOxwF93JUSNA6CXMTB7XLSpyDX/JupZbp6ZNayuaA==
+	bh=TV4lGUvfwBKBZs0So2M2CaulVHj6EJWSlMyp6cjcgcs=;
+	b=zKTe2y5kGB8QpwRNs5Ps9FTgkb0bffKMJ2HXWJSJbvT6cL3oQPRhIScpjb45pug1uJn0vk
+	bR5UOdmGJWp0GnO1F1cRrPbQZvIWOYspsLGyZ8sTtqwv219IyeKsPgQBMco7cj5aYM6+JM
+	LA5unPzyrxT6J2MiKXH+24d9mVAwL+7zyFweta583iSmMsKu1TOEPwI8ur23+lmXfeyqJ6
+	5s/nJdk5HdMAGW8IOL1CSTeJZTCE/QS4sSyQQHT9a0yViSP2dyJlASXR/g1TnHM+rcyw9r
+	LXgb/uxdhq1tjtGow1tXkriwlHyFrQR/ggiM01CallAgZKKTCPXmrw/1amuY8g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712780065;
+	s=2020e; t=1712824819;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tDXuJbRR0DIfp06MkOUcJdP+NuBmCt9MmdpCM5pWau4=;
-	b=vcT1xXkrduEAlqZyXpLIc86hmMWnNZmOUVX5kHZXEv9w+l9S18gZCdgz8r9z1UER4TjPgg
-	orl0Z+PkvejFwsBw==
-From: "tip-bot2 for John Stultz" <tip-bot2@linutronix.de>
+	bh=TV4lGUvfwBKBZs0So2M2CaulVHj6EJWSlMyp6cjcgcs=;
+	b=mW201AnMK74SamCh5fAASdQEwaMEOA18SDSlTvb6HNH9a1J3FGTG44X5FUiCHkittOd23Y
+	1/Q77TxXb9FPdgAg==
+From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] selftests: timers: Fix valid-adjtimex signed
- left-shift undefined behavior
-Cc: Lee Jones <joneslee@google.com>,
- Muhammad Usama Anjum <usama.anjum@collabora.com>,
- John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240409202222.2830476-1-jstultz@google.com>
-References: <20240409202222.2830476-1-jstultz@google.com>
+Subject: [tip: x86/urgent] x86/bugs: Replace CONFIG_SPECTRE_BHI_{ON,OFF} with
+ CONFIG_MITIGATION_SPECTRE_BHI
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To:
+ <3833812ea63e7fdbe36bf8b932e63f70d18e2a2a.1712813475.git.jpoimboe@kernel.org>
+References:
+ <3833812ea63e7fdbe36bf8b932e63f70d18e2a2a.1712813475.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171278006447.10875.16088506063251759811.tip-bot2@tip-bot2>
+Message-ID: <171282481815.10875.1887182579071664403.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,140 +84,80 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     076361362122a6d8a4c45f172ced5576b2d4a50d
-Gitweb:        https://git.kernel.org/tip/076361362122a6d8a4c45f172ced5576b2d4a50d
-Author:        John Stultz <jstultz@google.com>
-AuthorDate:    Tue, 09 Apr 2024 13:22:12 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 10 Apr 2024 22:07:42 +02:00
+Commit-ID:     f3f51c5865a9ae1488a35d97338f9f3f548adfee
+Gitweb:        https://git.kernel.org/tip/f3f51c5865a9ae1488a35d97338f9f3f548adfee
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Wed, 10 Apr 2024 22:40:51 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 11 Apr 2024 10:30:34 +02:00
 
-selftests: timers: Fix valid-adjtimex signed left-shift undefined behavior
+x86/bugs: Replace CONFIG_SPECTRE_BHI_{ON,OFF} with CONFIG_MITIGATION_SPECTRE_BHI
 
-The struct adjtimex freq field takes a signed value who's units are in
-shifted (<<16) parts-per-million.
+For consistency with the other CONFIG_MITIGATION_* options, replace the
+CONFIG_SPECTRE_BHI_{ON,OFF} options with a single
+CONFIG_MITIGATION_SPECTRE_BHI option.
 
-Unfortunately for negative adjustments, the straightforward use of:
+[ mingo: Fix ]
 
-  freq = ppm << 16 trips undefined behavior warnings with clang:
-
-valid-adjtimex.c:66:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
-        -499<<16,
-        ~~~~^
-valid-adjtimex.c:67:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
-        -450<<16,
-        ~~~~^
-.
-
-Fix it by using a multiply by (1 << 16) instead of shifting negative values
-in the valid-adjtimex test case. Align the values for better readability.
-
-Reported-by: Lee Jones <joneslee@google.com>
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20240409202222.2830476-1-jstultz@google.com
-Link: https://lore.kernel.org/lkml/0c6d4f0d-2064-4444-986b-1d1ed782135f@collabora.com/
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://lore.kernel.org/r/3833812ea63e7fdbe36bf8b932e63f70d18e2a2a.1712813475.git.jpoimboe@kernel.org
 ---
- tools/testing/selftests/timers/valid-adjtimex.c | 73 +++++++---------
- 1 file changed, 36 insertions(+), 37 deletions(-)
+ arch/x86/Kconfig           | 17 +++--------------
+ arch/x86/kernel/cpu/bugs.c |  2 +-
+ 2 files changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/tools/testing/selftests/timers/valid-adjtimex.c b/tools/testing/selftests/timers/valid-adjtimex.c
-index 48b9a80..d13ebde 100644
---- a/tools/testing/selftests/timers/valid-adjtimex.c
-+++ b/tools/testing/selftests/timers/valid-adjtimex.c
-@@ -21,9 +21,6 @@
-  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  *   GNU General Public License for more details.
-  */
--
--
--
- #include <stdio.h>
- #include <stdlib.h>
- #include <time.h>
-@@ -62,45 +59,47 @@ int clear_time_state(void)
- #define NUM_FREQ_OUTOFRANGE 4
- #define NUM_FREQ_INVALID 2
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index b63b676..4474bf3 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2633,27 +2633,16 @@ config MITIGATION_RFDS
+ 	  stored in floating point, vector and integer registers.
+ 	  See also <file:Documentation/admin-guide/hw-vuln/reg-file-data-sampling.rst>
  
-+#define SHIFTED_PPM (1 << 16)
-+
- long valid_freq[NUM_FREQ_VALID] = {
--	-499<<16,
--	-450<<16,
--	-400<<16,
--	-350<<16,
--	-300<<16,
--	-250<<16,
--	-200<<16,
--	-150<<16,
--	-100<<16,
--	-75<<16,
--	-50<<16,
--	-25<<16,
--	-10<<16,
--	-5<<16,
--	-1<<16,
-+	 -499 * SHIFTED_PPM,
-+	 -450 * SHIFTED_PPM,
-+	 -400 * SHIFTED_PPM,
-+	 -350 * SHIFTED_PPM,
-+	 -300 * SHIFTED_PPM,
-+	 -250 * SHIFTED_PPM,
-+	 -200 * SHIFTED_PPM,
-+	 -150 * SHIFTED_PPM,
-+	 -100 * SHIFTED_PPM,
-+	  -75 * SHIFTED_PPM,
-+	  -50 * SHIFTED_PPM,
-+	  -25 * SHIFTED_PPM,
-+	  -10 * SHIFTED_PPM,
-+	   -5 * SHIFTED_PPM,
-+	   -1 * SHIFTED_PPM,
- 	-1000,
--	1<<16,
--	5<<16,
--	10<<16,
--	25<<16,
--	50<<16,
--	75<<16,
--	100<<16,
--	150<<16,
--	200<<16,
--	250<<16,
--	300<<16,
--	350<<16,
--	400<<16,
--	450<<16,
--	499<<16,
-+	    1 * SHIFTED_PPM,
-+	    5 * SHIFTED_PPM,
-+	   10 * SHIFTED_PPM,
-+	   25 * SHIFTED_PPM,
-+	   50 * SHIFTED_PPM,
-+	   75 * SHIFTED_PPM,
-+	  100 * SHIFTED_PPM,
-+	  150 * SHIFTED_PPM,
-+	  200 * SHIFTED_PPM,
-+	  250 * SHIFTED_PPM,
-+	  300 * SHIFTED_PPM,
-+	  350 * SHIFTED_PPM,
-+	  400 * SHIFTED_PPM,
-+	  450 * SHIFTED_PPM,
-+	  499 * SHIFTED_PPM,
+-choice
+-	prompt "Clear branch history"
++config MITIGATION_SPECTRE_BHI
++	bool "Mitigate Spectre-BHB (Branch History Injection)"
+ 	depends on CPU_SUP_INTEL
+-	default SPECTRE_BHI_ON
++	default y
+ 	help
+ 	  Enable BHI mitigations. BHI attacks are a form of Spectre V2 attacks
+ 	  where the branch history buffer is poisoned to speculatively steer
+ 	  indirect branches.
+ 	  See <file:Documentation/admin-guide/hw-vuln/spectre.rst>
+ 
+-config SPECTRE_BHI_ON
+-	bool "on"
+-	help
+-	  Equivalent to setting spectre_bhi=on command line parameter.
+-config SPECTRE_BHI_OFF
+-	bool "off"
+-	help
+-	  Equivalent to setting spectre_bhi=off command line parameter.
+-
+-endchoice
+-
+ endif
+ 
+ config ARCH_HAS_ADD_PAGES
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 0494787..25111ad 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1628,7 +1628,7 @@ enum bhi_mitigations {
  };
  
- long outofrange_freq[NUM_FREQ_OUTOFRANGE] = {
--	-1000<<16,
--	-550<<16,
--	550<<16,
--	1000<<16,
-+	-1000 * SHIFTED_PPM,
-+	 -550 * SHIFTED_PPM,
-+	  550 * SHIFTED_PPM,
-+	 1000 * SHIFTED_PPM,
- };
+ static enum bhi_mitigations bhi_mitigation __ro_after_init =
+-	IS_ENABLED(CONFIG_SPECTRE_BHI_ON) ? BHI_MITIGATION_ON : BHI_MITIGATION_OFF;
++	IS_ENABLED(CONFIG_MITIGATION_SPECTRE_BHI) ? BHI_MITIGATION_ON : BHI_MITIGATION_OFF;
  
- #define LONG_MAX (~0UL>>1)
+ static int __init spectre_bhi_parse_cmdline(char *str)
+ {
 
