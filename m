@@ -1,147 +1,212 @@
-Return-Path: <linux-tip-commits+bounces-1039-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1040-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C200D8A2B36
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Apr 2024 11:30:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5768A2B6D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Apr 2024 11:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43B30B20550
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Apr 2024 09:30:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D1361C215D9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Apr 2024 09:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FEE5027F;
-	Fri, 12 Apr 2024 09:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8645253392;
+	Fri, 12 Apr 2024 09:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N6xx9wWV";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yh8Ud/Ts"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UasBCDve"
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D0A17742;
-	Fri, 12 Apr 2024 09:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F63524B8;
+	Fri, 12 Apr 2024 09:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712914248; cv=none; b=HQdK6wr8c1jvP30c0S7bKfx6GScW19SgzbXyHdpWwrEraAeyj0m1NdJn/Kzc9rzddlBGwvdForzBskIpIYI5YuoN2//GPQ18dJnTb2hrxUwYAStPdXXPN8q7/MgJ7cCZT263j2nRb+xR773hwT7TJOMgar37xM9+jKyKMOmbHf4=
+	t=1712914960; cv=none; b=DE1RascWZR1QYk6dzlaLbWCjs9Tqt4XuWsruJ4M02fSWEUIydDFVwcpmCjOmm80qWnc3wiVhmd5iWpg+lR4VvSkv8o3/89jp5olqxLb6qj9uAjZu/oZ5tFw576wdfUnoVSODkN1yObElGR0ahaXFoRSwetcLTBVbe5cI0l3tuug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712914248; c=relaxed/simple;
-	bh=KXBKsENv3/qYMNG6XcbGWAoRgPxC+ZNfUnRYJJFEX4c=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=eAS27HYGCzQop++vBejS6Zs5YvyVDLEXGAg4FS1TgO2ldDR5nZJVbVIUO7icU3ZoJN2BSPlrWQpQEnE0kva664m0J4IIwjpQhQVfOnS2P94Ijn2roNCHIxbMJH+aYeEbl4NzKp2U7g7vrtLCwJIDuma4lvtMEVfDM9X7/XCermw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N6xx9wWV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yh8Ud/Ts; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 12 Apr 2024 09:30:42 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712914244;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hWU+2DOu8uZaUnaW9pfGZZkuf1OU8vCAAv51aFmuGkI=;
-	b=N6xx9wWV5kuHyma8pwVuJKk9rcfPkfBeaLGZ0H/DpADIFxmXVXHu6K5bTHSqbjjDzFEJbN
-	WHypUTshKg1Zb6G9XJg8OZq8hYSD9qBkd8gtlBNuekBeF5LBeFIX+4Kd96XDqLhDLptBZt
-	6rtPPSRVDj9C9lzgA7M18Ppz1tjpGyQdRvg0r9Ql2A4nu7vnmpxcrOOCNlRiugkkkx6Kgj
-	Zac0jAIO6ugrnWYectIUtKicI8Fe/fco9bRwK+OtT0cR03EjwfY3PyRhxP+hKFOFO0RE4T
-	B2HTZhUODQDl8xbDDFNXrKaKAgREYVVLEex7mVPsTTSo6x2L8kKCwRismIQoIQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712914244;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hWU+2DOu8uZaUnaW9pfGZZkuf1OU8vCAAv51aFmuGkI=;
-	b=yh8Ud/Ts44+VgUOIfF66WRUHE7+002SYmUTpcpdCIqpwJxI4aN03Ho8zRNZUz1xXsuJYYT
-	zl0jt+4AjvQ6ZGBA==
-From: "tip-bot2 for Li RongQing" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/sev: Take NUMA node into account when allocating
- memory for per-CPU SEV data
-Cc: Li RongQing <lirongqing@baidu.com>, Ingo Molnar <mingo@kernel.org>,
- Nikunj A Dadhania <nikunj@amd.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240412030130.49704-1-lirongqing@baidu.com>
-References: <20240412030130.49704-1-lirongqing@baidu.com>
+	s=arc-20240116; t=1712914960; c=relaxed/simple;
+	bh=IcWaHRJ194mVv1lnpYIKdcYMD+65IkFceSoKhHt6oVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VbstuA0ncobpjKPTyPbQsTsdxZAj6m4gxva0/7Y4kNcmfnlEfZNpOMC0CGpi6YBNlmUdxf867hqVa1eZR/H2STiQ36ZchzhvdtcSJQzGBfk15/XuaW2H/oISFcDLgDgDs1Sc1rRsL/iJNUQS2a52w0sOo7zH2hPCyQ5qsAW/4nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UasBCDve; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a523d4035d5so24469066b.1;
+        Fri, 12 Apr 2024 02:42:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712914957; x=1713519757; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3Y4xl+LqXnIux4IbsGJ7yt79kUQ+FVNm4QVmOIiIw9g=;
+        b=UasBCDve3gxek+ThE987C7j1rMGaIcDgaIEPlIqk9RPNFt/zkdRWbP/DlHH7x/UOj7
+         4XXbTM6acdpdwhtoGUY4XiSJsBW64ObRRlO0fSg2aAaoZWKWgK0KwmCTjA5mRaK91R/V
+         ySudYxNpkvav3SR5+i1I6dQ8nfcm3aajflSsd6PGcOquQaLJIMHL7+mkm4tqyW3K1gIq
+         zhCLfUTr9hNyROFGR9ZRMrtAxzB2hX+U6w8ZCwL4K2RwAe8O+UeLDCpgS8z9IfVeSd6T
+         z7CDmWphhCzMq2ELZa67DwtUN6IrxEPdcC3rBSQnxOsaX0ARhCElVvU1sPJq0OovOnRt
+         UPgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712914957; x=1713519757;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3Y4xl+LqXnIux4IbsGJ7yt79kUQ+FVNm4QVmOIiIw9g=;
+        b=VFUe4dpcB+hEICiFO3y/F5skvAXqkl6LSCEHEjQ2gf4RRHe9yggFhyDXRWavvh/nhL
+         4dboYbLWesPoYOWuIaNRag3weVDbHcc4BMAzfKG040TZ4laQWqNUDz8eS00o4rAvABq2
+         A+Ufspm5drBM96VN0lI3xFSWrZI64dVE++9loG++XVZvK6PrkGbT//FB4EJMpKwB8sYP
+         bx48FAoZBge3UpmfszJBklAPS1iLvqSQB7nWmqNEn4nd5EbzhEDlObNgZrj9bV2WmDYA
+         xbTG1tQnOd2JOtXBRKoshbnWz39rvD42Ah7qAtJmfla+vQU1G3t2SLRy/DHalEQpQl8n
+         4fwg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBkdET4i/MBDWO35hug4iUh8E9fkFw1SIK4V02uqtNLtIEvw4nYWU76S9rck+RZ6V0X2ILGecSFoWgc8OwQ1AMRzYpz5keo0SEA9VHJqi3rIQ=
+X-Gm-Message-State: AOJu0YwfT7P43pLwWZTXPSvZrqHyJlrc/lv8YtBzb/lislV6vRV6t7fb
+	Qy8G+OmHGMJkqX/NfZCX5bew2st6DjDBVa7lgSYn0O8E6sH9czcw
+X-Google-Smtp-Source: AGHT+IHDtV5J+eSh4un8o1l03+5RwVKtX4yUZYQ7+lbSNGY6IgegM/vsThlwt74aQC9QE1CcgZOw6w==
+X-Received: by 2002:a17:906:6a13:b0:a52:3eff:13f1 with SMTP id qw19-20020a1709066a1300b00a523eff13f1mr56233ejc.2.1712914956731;
+        Fri, 12 Apr 2024 02:42:36 -0700 (PDT)
+Received: from gmail.com (1F2EF1A5.nat.pool.telekom.hu. [31.46.241.165])
+        by smtp.gmail.com with ESMTPSA id q23-20020a170906a09700b00a519ec0a965sm1608439ejy.49.2024.04.12.02.42.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Apr 2024 02:42:36 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date: Fri, 12 Apr 2024 11:42:34 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Uros Bizjak <ubizjak@gmail.com>, Waiman Long <longman@redhat.com>,
+	x86@kernel.org
+Subject: [PATCH v2] locking/pvqspinlock: Use try_cmpxchg_acquire() in
+ trylock_clear_pending()
+Message-ID: <ZhkCCtzhn24tLiy+@gmail.com>
+References: <20240325140943.815051-1-ubizjak@gmail.com>
+ <171284242025.10875.1534973785149780371.tip-bot2@tip-bot2>
+ <CAHk-=wgaxi4Sau27C5yo3vty67DHz-f4L6SSOvmx1K2fQU2B_g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171291424272.10875.9437012394556385229.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgaxi4Sau27C5yo3vty67DHz-f4L6SSOvmx1K2fQU2B_g@mail.gmail.com>
 
-The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     426565279f161631cbb4b925660540bdb65f2201
-Gitweb:        https://git.kernel.org/tip/426565279f161631cbb4b925660540bdb65f2201
-Author:        Li RongQing <lirongqing@baidu.com>
-AuthorDate:    Fri, 12 Apr 2024 11:01:30 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 12 Apr 2024 11:25:26 +02:00
+* Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-x86/sev: Take NUMA node into account when allocating memory for per-CPU SEV data
+> On Thu, 11 Apr 2024 at 06:33, tip-bot2 for Uros Bizjak
+> <tip-bot2@linutronix.de> wrote:
+> >
+> > Use try_cmpxchg_acquire(*ptr, &old, new) instead of
+> > cmpxchg_relaxed(*ptr, old, new) == old in trylock_clear_pending().
+> 
+> The above commit message is horribly confusing and wrong.
+> 
+> I was going "that's not right", because it says "use acquire instead
+> of relaxed" memory ordering, and then goes on to say "No functional
+> change intended".
+> 
+> But it turns out the *code* was always acquire, and it's only the
+> commit message that is wrong, presumably due to a bit too much
+> cut-and-paste.
 
-per-CPU SEV data is dominantly accessed from their own local CPUs,
-so allocate them node-local to improve performance.
+Yeah, the replacement is cmpxchg_acquire() => try_cmpxchg_acquire(), with 
+no change to memory ordering.
 
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> But please fix the commit message, and use the right memory ordering
+> in the explanations too.
+
+Done, find below the new patch, which a hopefully better commit message.
+
+I also added your Reviewed-by tag optimistically :)
+
+Thanks,
+
+	Ingo
+
+===========================>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Mon, 25 Mar 2024 15:09:32 +0100
+Subject: [PATCH] locking/pvqspinlock: Use try_cmpxchg_acquire() in trylock_clear_pending()
+
+Replace this pattern in trylock_clear_pending():
+
+    cmpxchg_acquire(*ptr, old, new) == old
+
+.. with the simpler and faster:
+
+    try_cmpxchg_acquire(*ptr, &old, new)
+
+The x86 CMPXCHG instruction returns success in the ZF flag, so this change
+saves a compare after the CMPXCHG.
+
+Also change the return type of the function to bool and streamline
+the control flow in the _Q_PENDING_BITS == 8 variant a bit.
+
+No functional change intended.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Nikunj A Dadhania <nikunj@amd.com>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20240412030130.49704-1-lirongqing@baidu.com
+Reviewed-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240325140943.815051-1-ubizjak@gmail.com
 ---
- arch/x86/kernel/sev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/locking/qspinlock_paravirt.h | 31 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 18 deletions(-)
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 38ad066..995f944 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -938,7 +938,7 @@ static int snp_set_vmsa(void *va, bool vmsa)
- #define INIT_LDTR_ATTRIBS	(SVM_SELECTOR_P_MASK | 2)
- #define INIT_TR_ATTRIBS		(SVM_SELECTOR_P_MASK | 3)
- 
--static void *snp_alloc_vmsa_page(void)
-+static void *snp_alloc_vmsa_page(int cpu)
+diff --git a/kernel/locking/qspinlock_paravirt.h b/kernel/locking/qspinlock_paravirt.h
+index 169950fe1aad..77ba80bd95f9 100644
+--- a/kernel/locking/qspinlock_paravirt.h
++++ b/kernel/locking/qspinlock_paravirt.h
+@@ -116,11 +116,12 @@ static __always_inline void set_pending(struct qspinlock *lock)
+  * barrier. Therefore, an atomic cmpxchg_acquire() is used to acquire the
+  * lock just to be sure that it will get it.
+  */
+-static __always_inline int trylock_clear_pending(struct qspinlock *lock)
++static __always_inline bool trylock_clear_pending(struct qspinlock *lock)
  {
- 	struct page *p;
++	u16 old = _Q_PENDING_VAL;
++
+ 	return !READ_ONCE(lock->locked) &&
+-	       (cmpxchg_acquire(&lock->locked_pending, _Q_PENDING_VAL,
+-				_Q_LOCKED_VAL) == _Q_PENDING_VAL);
++	       try_cmpxchg_acquire(&lock->locked_pending, &old, _Q_LOCKED_VAL);
+ }
+ #else /* _Q_PENDING_BITS == 8 */
+ static __always_inline void set_pending(struct qspinlock *lock)
+@@ -128,27 +129,21 @@ static __always_inline void set_pending(struct qspinlock *lock)
+ 	atomic_or(_Q_PENDING_VAL, &lock->val);
+ }
  
-@@ -950,7 +950,7 @@ static void *snp_alloc_vmsa_page(void)
- 	 *
- 	 * Allocate an 8k page which is also 8k-aligned.
- 	 */
--	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
-+	p = alloc_pages_node(cpu_to_node(cpu), GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
- 	if (!p)
- 		return NULL;
- 
-@@ -1019,7 +1019,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
- 	 * #VMEXIT of that vCPU would wipe out all of the settings being done
- 	 * here.
- 	 */
--	vmsa = (struct sev_es_save_area *)snp_alloc_vmsa_page();
-+	vmsa = (struct sev_es_save_area *)snp_alloc_vmsa_page(cpu);
- 	if (!vmsa)
- 		return -ENOMEM;
- 
-@@ -1341,7 +1341,7 @@ static void __init alloc_runtime_data(int cpu)
+-static __always_inline int trylock_clear_pending(struct qspinlock *lock)
++static __always_inline bool trylock_clear_pending(struct qspinlock *lock)
  {
- 	struct sev_es_runtime_data *data;
+-	int val = atomic_read(&lock->val);
+-
+-	for (;;) {
+-		int old, new;
+-
+-		if (val  & _Q_LOCKED_MASK)
+-			break;
++	int old, new;
  
--	data = memblock_alloc(sizeof(*data), PAGE_SIZE);
-+	data = memblock_alloc_node(sizeof(*data), PAGE_SIZE, cpu_to_node(cpu));
- 	if (!data)
- 		panic("Can't allocate SEV-ES runtime data");
++	old = atomic_read(&lock->val);
++	do {
++		if (old & _Q_LOCKED_MASK)
++			return false;
+ 		/*
+ 		 * Try to clear pending bit & set locked bit
+ 		 */
+-		old = val;
+-		new = (val & ~_Q_PENDING_MASK) | _Q_LOCKED_VAL;
+-		val = atomic_cmpxchg_acquire(&lock->val, old, new);
++		new = (old & ~_Q_PENDING_MASK) | _Q_LOCKED_VAL;
++	} while (!atomic_try_cmpxchg_acquire (&lock->val, &old, new));
+ 
+-		if (val == old)
+-			return 1;
+-	}
+-	return 0;
++	return true;
+ }
+ #endif /* _Q_PENDING_BITS == 8 */
  
 
