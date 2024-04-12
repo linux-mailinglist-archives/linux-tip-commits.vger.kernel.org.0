@@ -1,79 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1043-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1044-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AF78A2B7E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Apr 2024 11:46:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7FA8A2BCB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Apr 2024 12:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AB54B21F5F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Apr 2024 09:46:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F4114B25B43
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Apr 2024 10:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A17653384;
-	Fri, 12 Apr 2024 09:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D43053384;
+	Fri, 12 Apr 2024 10:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FVJzn917";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KCe+HV/B"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fiJIP4oF";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="m8XaeSpH"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0968E51C4C;
-	Fri, 12 Apr 2024 09:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DE551C4C;
+	Fri, 12 Apr 2024 10:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712915181; cv=none; b=C0AN1M1g4I1CWGTDfJB5gUeVQTHc5Ia+o/rlsB3OIHDEqEECluUgtLbmlZ1wtminKX1/8zNAeVxgEx0YyJ3NEPn82DMpDDl3INPC+0Bgt88nDASbvmcL0GUy1S0kz5hnLoMZ/ymbFYE97EycJ1+omjEkXr2iSuRCR2UILObJSew=
+	t=1712916207; cv=none; b=shXDECikBe862MrgqrEoHwZyVv+g/Zfg/+43MQRrxgs1Tcxd0aypHszvARzT8NDSoAuqO4usHtEPtrHxKTc239mvkZm69LL4qbsl7nOE014gsQ+ahQOYGtHr3cAYI6jHMj/f9E4GmEB4nSskcFVtlXmpKeLWUYsj1r2gGga3rfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712915181; c=relaxed/simple;
-	bh=jBz/HMkvv+0sd3mP9PWjxg83skYoEgnXTTpvRUB3Uio=;
+	s=arc-20240116; t=1712916207; c=relaxed/simple;
+	bh=GE3zewDFEJy62QBcsshA51A2GHr1MK+CmGMdKwDY9ew=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=EDGCERXWLTBo1qAXXKKcHWygbtxu8HJgSwFB04hHfx1SW1bJfCQvng7zHJtf0im7q1CXeFXQtNOLHhSDhpWlJw2b5RijawBMAaldft3q+STgjeVGCMP5ie06outDlh75VHUFbkgIfaFj3vTm1e+MT4rR1lhSu2vno9ad84/kfI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FVJzn917; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KCe+HV/B; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=TdmxR39Vn09CwB1de5rmFqICKe4wFwpC5h3nxmilryS1T1v8Mtg4pwHKHrGThgRU8y13Zo1RzolTElz4ZBHlXa/KhgtIAzQAOZ1fOAxAVTC0NylYgcpvmM6LiysMwDQEHc6ONlqYxfOOi9Q7xT/9xjB+Us+MpxyPLc/Vw4an0Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fiJIP4oF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=m8XaeSpH; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 12 Apr 2024 09:46:17 -0000
+Date: Fri, 12 Apr 2024 10:03:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712915178;
+	s=2020; t=1712916202;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zGIyutRBqWNV7XA/uAedtweAqsJl0yr6qyftNGTuIhs=;
-	b=FVJzn917NS1CVQi8naX5qipSsjrMP7efbw9VJs2Fk2yzwNfWfV+qR9adtaAf2uh7uaYPxg
-	15YWRA9rqe2mQeVBeRlmWt6ajGKbXfbG3Jd1Z5NJxl9JMfZN7SaQzOyraOG2Hht4I8svPn
-	CDR2u1W2gW9hHelWJr5NX4ukGDmObrUdqU8z/JmVYPv2qpG3a9MSZxICcAy0kB+gmDzv93
-	T3oGLmaUKN9gVTPrVjlIZ8/5+dH+YKra5Q4tdc2GlLB772oVa7PBD/Dua/7PkBqXe9zNoZ
-	Efwi4PTFDu31pf1Y9j/XPyhq3b25ydyZAJWekBTg+0q1uUxIwCoLyexuW58/PQ==
+	bh=aXX4u4b55YoYWQNcUt9JRPqDtNAJ3+fmaYA8NC8A0CI=;
+	b=fiJIP4oFlhPHljGqD3623yYP5JeWPR8Sd2iBBSUw9ANwbC41GUCGYhi2UCRrBwu6+tucwl
+	dtyJyuE7wOBUHcEiMWNYYsNvv99vH/efRpYvoOQjJ7MRjHSx7AJZRGsmhvVS29X98qIKv1
+	vKPbsUrun8Y/7vJVstAd/gunbFlApdJwfZ3daI4Cm53PVtXvx6ZWJLkC52x3nWe6QFKGcg
+	D1WlcoGA/yrmn33x+frXp2FAfMMtJ/o3LdEmQxggxVNRFrAdeBeSyDplWn4e2SF0GnlsFu
+	oFq4+gPNsjyzaENFs9gsZLlvUoOGEVO/+UCVvgoBnDrKUFMFsGcF/9WaO1rDlw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712915178;
+	s=2020e; t=1712916202;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zGIyutRBqWNV7XA/uAedtweAqsJl0yr6qyftNGTuIhs=;
-	b=KCe+HV/BB4o3pjH0b/BfztkXNfIdSNEvWFPAEgFCuhOVB5rBwm1OJBsONp5jLrP/g+XuoJ
-	yj5A1xx9RUKCtFBQ==
-From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+	bh=aXX4u4b55YoYWQNcUt9JRPqDtNAJ3+fmaYA8NC8A0CI=;
+	b=m8XaeSpHmB91B5bmK20u2HKrMJEwJkFgr5XxVJdhzUAt//ompcalkQMZdWC/1kb1ScmCs3
+	796ILoqkwqmQYFDw==
+From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/pvqspinlock: Use try_cmpxchg_acquire() in
- trylock_clear_pending()
-Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Waiman Long <longman@redhat.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240325140943.815051-1-ubizjak@gmail.com>
-References: <20240325140943.815051-1-ubizjak@gmail.com>
+Subject: [tip: perf/core] perf/bpf: Change the !CONFIG_BPF_SYSCALL stubs to
+ static inlines
+Cc: Ingo Molnar <mingo@kernel.org>, Kyle Huey <me@kylehuey.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <ZhkE9F4dyfR2dH2D@gmail.com>
+References: <ZhkE9F4dyfR2dH2D@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171291517748.10875.14791822256739905706.tip-bot2@tip-bot2>
+Message-ID: <171291620188.10875.569943657110108283.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,97 +79,58 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     6a97734f2222e0352f1900e3eb3167e9069b91bb
-Gitweb:        https://git.kernel.org/tip/6a97734f2222e0352f1900e3eb3167e9069b91bb
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Mon, 25 Mar 2024 15:09:32 +01:00
+Commit-ID:     93d3fde7fd19c2e2cde7220e7986f9a75e9c5680
+Gitweb:        https://git.kernel.org/tip/93d3fde7fd19c2e2cde7220e7986f9a75e9c5680
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Fri, 12 Apr 2024 11:55:00 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 12 Apr 2024 11:40:51 +02:00
+CommitterDate: Fri, 12 Apr 2024 11:56:00 +02:00
 
-locking/pvqspinlock: Use try_cmpxchg_acquire() in trylock_clear_pending()
+perf/bpf: Change the !CONFIG_BPF_SYSCALL stubs to static inlines
 
-Replace this pattern in trylock_clear_pending():
+Otherwise the compiler will be unhappy if they go unused,
+which they do on allnoconfigs.
 
-    cmpxchg_acquire(*ptr, old, new) == old
-
-.. with the simpler and faster:
-
-    try_cmpxchg_acquire(*ptr, &old, new)
-
-The x86 CMPXCHG instruction returns success in the ZF flag, so this change
-saves a compare after the CMPXCHG.
-
-Also change the return type of the function to bool and streamline
-the control flow in the _Q_PENDING_BITS == 8 variant a bit.
-
-No functional change intended.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240325140943.815051-1-ubizjak@gmail.com
+Cc: Kyle Huey <me@kylehuey.com>
+Link: https://lore.kernel.org/r/ZhkE9F4dyfR2dH2D@gmail.com
 ---
- kernel/locking/qspinlock_paravirt.h | 31 +++++++++++-----------------
- 1 file changed, 13 insertions(+), 18 deletions(-)
+ kernel/events/core.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/locking/qspinlock_paravirt.h b/kernel/locking/qspinlock_paravirt.h
-index 169950f..77ba80b 100644
---- a/kernel/locking/qspinlock_paravirt.h
-+++ b/kernel/locking/qspinlock_paravirt.h
-@@ -116,11 +116,12 @@ static __always_inline void set_pending(struct qspinlock *lock)
-  * barrier. Therefore, an atomic cmpxchg_acquire() is used to acquire the
-  * lock just to be sure that it will get it.
-  */
--static __always_inline int trylock_clear_pending(struct qspinlock *lock)
-+static __always_inline bool trylock_clear_pending(struct qspinlock *lock)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 2212670..6708c11 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9638,21 +9638,21 @@ static void perf_event_free_bpf_handler(struct perf_event *event)
+ 	bpf_prog_put(prog);
+ }
+ #else
+-static int bpf_overflow_handler(struct perf_event *event,
+-				struct perf_sample_data *data,
+-				struct pt_regs *regs)
++static inline int bpf_overflow_handler(struct perf_event *event,
++				       struct perf_sample_data *data,
++				       struct pt_regs *regs)
  {
-+	u16 old = _Q_PENDING_VAL;
-+
- 	return !READ_ONCE(lock->locked) &&
--	       (cmpxchg_acquire(&lock->locked_pending, _Q_PENDING_VAL,
--				_Q_LOCKED_VAL) == _Q_PENDING_VAL);
-+	       try_cmpxchg_acquire(&lock->locked_pending, &old, _Q_LOCKED_VAL);
- }
- #else /* _Q_PENDING_BITS == 8 */
- static __always_inline void set_pending(struct qspinlock *lock)
-@@ -128,27 +129,21 @@ static __always_inline void set_pending(struct qspinlock *lock)
- 	atomic_or(_Q_PENDING_VAL, &lock->val);
+ 	return 1;
  }
  
--static __always_inline int trylock_clear_pending(struct qspinlock *lock)
-+static __always_inline bool trylock_clear_pending(struct qspinlock *lock)
+-static int perf_event_set_bpf_handler(struct perf_event *event,
+-				      struct bpf_prog *prog,
+-				      u64 bpf_cookie)
++static inline int perf_event_set_bpf_handler(struct perf_event *event,
++					     struct bpf_prog *prog,
++					     u64 bpf_cookie)
  {
--	int val = atomic_read(&lock->val);
--
--	for (;;) {
--		int old, new;
--
--		if (val  & _Q_LOCKED_MASK)
--			break;
-+	int old, new;
- 
-+	old = atomic_read(&lock->val);
-+	do {
-+		if (old & _Q_LOCKED_MASK)
-+			return false;
- 		/*
- 		 * Try to clear pending bit & set locked bit
- 		 */
--		old = val;
--		new = (val & ~_Q_PENDING_MASK) | _Q_LOCKED_VAL;
--		val = atomic_cmpxchg_acquire(&lock->val, old, new);
-+		new = (old & ~_Q_PENDING_MASK) | _Q_LOCKED_VAL;
-+	} while (!atomic_try_cmpxchg_acquire (&lock->val, &old, new));
- 
--		if (val == old)
--			return 1;
--	}
--	return 0;
-+	return true;
+ 	return -EOPNOTSUPP;
  }
- #endif /* _Q_PENDING_BITS == 8 */
  
+-static void perf_event_free_bpf_handler(struct perf_event *event)
++static inline void perf_event_free_bpf_handler(struct perf_event *event)
+ {
+ }
+ #endif
 
