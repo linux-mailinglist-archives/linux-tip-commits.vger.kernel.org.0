@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1068-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1070-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89428A420E
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Apr 2024 13:37:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98EBC8A4515
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Apr 2024 22:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AA75B20F38
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Apr 2024 11:37:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 897A41C20D85
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Apr 2024 20:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09B52E832;
-	Sun, 14 Apr 2024 11:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7541369A2;
+	Sun, 14 Apr 2024 20:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NIzC8sbF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MTeZcQiu"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LBvUta7C";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DN9FqJNR"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B96F1862C;
-	Sun, 14 Apr 2024 11:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B38179BD;
+	Sun, 14 Apr 2024 20:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713094650; cv=none; b=HHvz+LR9FNkyA7Q7eQr8QbbblYGWsKi0P5W+0Xz2KPrtdkwX3xx/29lmf9bPrI++Ie8GDSIysbxoaRGMKmQL6mIUh+ct4XXHg2VpZBMEo2tVRnPcFgv3UG29w3e31tBZ7G+AZbV3WSCSIUiSPMsm9qsjYCmda6YbN1QSh3Qik2w=
+	t=1713126666; cv=none; b=IHaQs9Vr6gdEiUiHUNsifucoaLy3sVoZ+Hi8DNgoGgOA+ofqIf+RuAxMA7YxWXfWEudOwAdGAlPy96eSIb+FwHh8Y1qGUT1cew5qk4TYJc5hPGJkhdkshv/xSi5G9FfH3h3mQfP3gV6a70HVNm97VlS2aWcx+jnTjGmQ+kww4ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713094650; c=relaxed/simple;
-	bh=AY5Fivk8a0Rx9jrCmv12Ek/I0yWidCC0MhU+Nz89jG0=;
+	s=arc-20240116; t=1713126666; c=relaxed/simple;
+	bh=o6IXzeU3JlDncJq0wgKgzRbREI3IG9CC/YN6ms32ZpM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=kPSpwgZAhkX6O9qaLoPZYFt/qGoAxh02MHcb+d+WV2fOMpZNyoXIfC5xI67r0mqBm1lURUCeXT17Lh/TiHTPisy3tZS87VQguB9C1ugfqVEPmgK9GcUNIrtD+RnkUnt1LHHkjZz+0e62xWmcLeWzY1USgV6+B5vhieg2HptNIm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NIzC8sbF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MTeZcQiu; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=QHjk7VIUGMeFKQkiXas0CDbgu8lDRm4bCz5LTkJMuNZo02uzv3YUeBG6VOhHmAdqk0JuQpDnyGzipdZAlnIwJ+arKKH4fg8yCL8E7urgdug3h9xD+/UurodYLCKrAb4tKCDNfPWwR19y2l4JdxCe3NRO8onGISpCKVV4BPnoO0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LBvUta7C; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DN9FqJNR; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 14 Apr 2024 11:37:20 -0000
+Date: Sun, 14 Apr 2024 20:30:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713094641;
+	s=2020; t=1713126660;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WR/76s3TsfNyIB8f1jn+YfZlCitYZdaIbEKAGruJNl0=;
-	b=NIzC8sbF5G31e+AA1g6XtpeRj3iznJQSAU43nrmni5AJNyzrIV6oosyhlMns0nn9qMBKV4
-	gFY5gmVrvS4dd7aX2LBqPlR8huADzDhnUbjxynX5aexWzOWgER5QBS4W+DdGVxsSZt7E0n
-	HIdcUI8IiFe9kOM/73zRN6t9nvjE83J/l1elb4xs5iUKiyLYfICxf4dENpuO52VUcHTI/W
-	l1+8tMQbfBY+qw4DkuOzj7Z0KaU4vCKsbxhexty40Gu6egLfpWI4X0fqCV1mWeiN0qk9mE
-	oT2ZEiwuV6UTcygMkls6JEuenKKyIjWQoERc6/HSIqvE62bNcmy9GflhaFxh/g==
+	bh=eLrfnERQ94x41+EaIQSuqj1gV6EWrsba9MRHny86r2E=;
+	b=LBvUta7C8839nn7Pm0QXF/VOW4O8K6dOq9deAj8TIJ5w0hMB8t7j9xiktzuq4uEnEWeUDE
+	vyiSVxqcZvrWG2FojqVqkOyze9BN2deFNDwR+fR8b/u/PcazusM+stim4GBogJZiIgEu9x
+	zoWjUOFRBsEP5eSO/2ihiVeYKJAjg/LA/qD0008emsk/N3no7xyw/Q8jKwP2KuPVx8QJAl
+	3k0/pXNYzU+ly0kOWlWqfDQMBDe2xveF87N9BTx+hmwMmfbFYxX5t+76LiSN6IqrJLNLDF
+	glzUaxOczblYRlq2gDNsR6SMKCtyyZfsDmDlhM4UQLFt3vqquBJzb3mrkmaL3g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713094641;
+	s=2020e; t=1713126660;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WR/76s3TsfNyIB8f1jn+YfZlCitYZdaIbEKAGruJNl0=;
-	b=MTeZcQiugw+dObMzPf52+7Cd10r9PJMXLJz5wbENn9hdOuZVRs8mJ1pVlKuEuzz14Z6UGY
-	+NSvY3cGN+3wIxDg==
-From: "tip-bot2 for Anup Patel" <tip-bot2@linutronix.de>
+	bh=eLrfnERQ94x41+EaIQSuqj1gV6EWrsba9MRHny86r2E=;
+	b=DN9FqJNRysQWo+g6iN5SO5+aYL2+oPG6W1wlS5APN1yTXBo4VWzqZ9oogBBsvFasGk1x+6
+	+kZVQ2d7V23Nl3AA==
+From: "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/riscv-imsic: Fix boot time update effective
- affinity warning
-Cc: Anup Patel <apatel@ventanamicro.com>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240413065210.315896-1-apatel@ventanamicro.com>
-References: <20240413065210.315896-1-apatel@ventanamicro.com>
+Subject: [tip: x86/mm] x86/pat: Fix W^X violation false-positives when running
+ as Xen PV guest
+Cc: Jason Andryuk <jandryuk@gmail.com>, Juergen Gross <jgross@suse.com>,
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240412151258.9171-5-jgross@suse.com>
+References: <20240412151258.9171-5-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171309464069.10875.16937650258122631172.tip-bot2@tip-bot2>
+Message-ID: <171312665911.10875.634353281532361733.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,43 +79,145 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     35d77eb7b974f62aaef5a0dc72d93ddb1ada4074
-Gitweb:        https://git.kernel.org/tip/35d77eb7b974f62aaef5a0dc72d93ddb1ada4074
-Author:        Anup Patel <apatel@ventanamicro.com>
-AuthorDate:    Sat, 13 Apr 2024 12:22:10 +05:30
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 14 Apr 2024 13:28:49 +02:00
+Commit-ID:     5bc8b0f5dac04cd4ebe47f8090a5942f2f2647ef
+Gitweb:        https://git.kernel.org/tip/5bc8b0f5dac04cd4ebe47f8090a5942f2f2647ef
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Fri, 12 Apr 2024 17:12:58 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 14 Apr 2024 22:16:30 +02:00
 
-irqchip/riscv-imsic: Fix boot time update effective affinity warning
+x86/pat: Fix W^X violation false-positives when running as Xen PV guest
 
-Currently, the following warning is observed on the QEMU virt machine:
-genirq: irq_chip APLIC-MSI-d000000.aplic did not update eff. affinity mask of irq 12
+When running as Xen PV guest in some cases W^X violation WARN()s have
+been observed. Those WARN()s are produced by verify_rwx(), which looks
+into the PTE to verify that writable kernel pages have the NX bit set
+in order to avoid code modifications of the kernel by rogue code.
 
-The above warning is because the IMSIC driver does not set the initial
-value of effective affinity in the interrupt descriptor. To address this,
-initialize the effective affinity in imsic_irq_domain_alloc().
+As the NX bits of all levels of translation entries are or-ed and the
+RW bits of all levels are and-ed, looking just into the PTE isn't enough
+for the decision that a writable page is executable, too.
 
-Fixes: 027e125acdba ("irqchip/riscv-imsic: Add device MSI domain support for platform devices")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240413065210.315896-1-apatel@ventanamicro.com
+When running as a Xen PV guest, the direct map PMDs and kernel high
+map PMDs share the same set of PTEs. Xen kernel initialization will set
+the NX bit in the direct map PMD entries, and not the shared PTEs.
 
+Fixes: 652c5bf380ad ("x86/mm: Refuse W^X violations")
+Reported-by: Jason Andryuk <jandryuk@gmail.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240412151258.9171-5-jgross@suse.com
 ---
- drivers/irqchip/irq-riscv-imsic-platform.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/mm/pat/set_memory.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq-riscv-imsic-platform.c
-index 1e6dddf..11723a7 100644
---- a/drivers/irqchip/irq-riscv-imsic-platform.c
-+++ b/drivers/irqchip/irq-riscv-imsic-platform.c
-@@ -157,6 +157,7 @@ static int imsic_irq_domain_alloc(struct irq_domain *domain, unsigned int virq,
- 			    handle_simple_irq, NULL, NULL);
- 	irq_set_noprobe(virq);
- 	irq_set_affinity(virq, cpu_online_mask);
-+	irq_data_update_effective_affinity(irq_get_irq_data(virq), cpumask_of(vec->cpu));
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 4ebccaf..19fdfbb 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -619,7 +619,8 @@ static inline pgprot_t static_protections(pgprot_t prot, unsigned long start,
+  * Validate strict W^X semantics.
+  */
+ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long start,
+-				  unsigned long pfn, unsigned long npg)
++				  unsigned long pfn, unsigned long npg,
++				  bool nx, bool rw)
+ {
+ 	unsigned long end;
  
- 	return 0;
+@@ -641,6 +642,10 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
+ 	if ((pgprot_val(new) & (_PAGE_RW | _PAGE_NX)) != _PAGE_RW)
+ 		return new;
+ 
++	/* Non-leaf translation entries can disable writing or execution. */
++	if (!rw || nx)
++		return new;
++
+ 	end = start + npg * PAGE_SIZE - 1;
+ 	WARN_ONCE(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
+ 		  (unsigned long long)pgprot_val(old),
+@@ -742,7 +747,7 @@ pte_t *lookup_address(unsigned long address, unsigned int *level)
+ EXPORT_SYMBOL_GPL(lookup_address);
+ 
+ static pte_t *_lookup_address_cpa(struct cpa_data *cpa, unsigned long address,
+-				  unsigned int *level)
++				  unsigned int *level, bool *nx, bool *rw)
+ {
+ 	pgd_t *pgd;
+ 
+@@ -751,7 +756,7 @@ static pte_t *_lookup_address_cpa(struct cpa_data *cpa, unsigned long address,
+ 	else
+ 		pgd = cpa->pgd + pgd_index(address);
+ 
+-	return lookup_address_in_pgd(pgd, address, level);
++	return lookup_address_in_pgd_attr(pgd, address, level, nx, rw);
  }
+ 
+ /*
+@@ -879,12 +884,13 @@ static int __should_split_large_page(pte_t *kpte, unsigned long address,
+ 	pgprot_t old_prot, new_prot, req_prot, chk_prot;
+ 	pte_t new_pte, *tmp;
+ 	enum pg_level level;
++	bool nx, rw;
+ 
+ 	/*
+ 	 * Check for races, another CPU might have split this page
+ 	 * up already:
+ 	 */
+-	tmp = _lookup_address_cpa(cpa, address, &level);
++	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
+ 	if (tmp != kpte)
+ 		return 1;
+ 
+@@ -995,7 +1001,8 @@ static int __should_split_large_page(pte_t *kpte, unsigned long address,
+ 	new_prot = static_protections(req_prot, lpaddr, old_pfn, numpages,
+ 				      psize, CPA_DETECT);
+ 
+-	new_prot = verify_rwx(old_prot, new_prot, lpaddr, old_pfn, numpages);
++	new_prot = verify_rwx(old_prot, new_prot, lpaddr, old_pfn, numpages,
++			      nx, rw);
+ 
+ 	/*
+ 	 * If there is a conflict, split the large page.
+@@ -1076,6 +1083,7 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
+ 	pte_t *pbase = (pte_t *)page_address(base);
+ 	unsigned int i, level;
+ 	pgprot_t ref_prot;
++	bool nx, rw;
+ 	pte_t *tmp;
+ 
+ 	spin_lock(&pgd_lock);
+@@ -1083,7 +1091,7 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
+ 	 * Check for races, another CPU might have split this page
+ 	 * up for us already:
+ 	 */
+-	tmp = _lookup_address_cpa(cpa, address, &level);
++	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
+ 	if (tmp != kpte) {
+ 		spin_unlock(&pgd_lock);
+ 		return 1;
+@@ -1624,10 +1632,11 @@ static int __change_page_attr(struct cpa_data *cpa, int primary)
+ 	int do_split, err;
+ 	unsigned int level;
+ 	pte_t *kpte, old_pte;
++	bool nx, rw;
+ 
+ 	address = __cpa_addr(cpa, cpa->curpage);
+ repeat:
+-	kpte = _lookup_address_cpa(cpa, address, &level);
++	kpte = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
+ 	if (!kpte)
+ 		return __cpa_process_fault(cpa, address, primary);
+ 
+@@ -1649,7 +1658,8 @@ repeat:
+ 		new_prot = static_protections(new_prot, address, pfn, 1, 0,
+ 					      CPA_PROTECT);
+ 
+-		new_prot = verify_rwx(old_prot, new_prot, address, pfn, 1);
++		new_prot = verify_rwx(old_prot, new_prot, address, pfn, 1,
++				      nx, rw);
+ 
+ 		new_prot = pgprot_clear_protnone_bits(new_prot);
+ 
 
