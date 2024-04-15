@@ -1,140 +1,124 @@
-Return-Path: <linux-tip-commits+bounces-1077-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1078-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD42B8A4575
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Apr 2024 22:47:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA758A5C17
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Apr 2024 22:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89863281056
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Apr 2024 20:47:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3576E282369
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Apr 2024 20:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C8513776C;
-	Sun, 14 Apr 2024 20:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SaMycIfR";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fbSKRmT8"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85FF811E7;
+	Mon, 15 Apr 2024 20:12:43 +0000 (UTC)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31511136E31;
-	Sun, 14 Apr 2024 20:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B61156652;
+	Mon, 15 Apr 2024 20:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713127635; cv=none; b=OT5GvJJkKvssxshhhfHe08gahELkRkwxudN3MfBszM3tfcn7jYSwImp3xR6Z+abq3l/HGuiRMCTrYEF1LHBPtseytHSO0kPk8y/aeG2/jR28CpioIcIGZVxv42ZmNRWOf6fqdmuf/g0+9M65TQNxctKgaONjSdoobdgMeI8rOBg=
+	t=1713211963; cv=none; b=sSUBkyTe7y8FAFgCajOZY6opGTULkyP+1rBWhfvngWbaa77AMHgbwB2guvTrrpVQRCWzxv+N0uMwjSVIQQlGk2nw2IKBQsKtxGtwWanHCEpqNewU0SKVupVn/SSwEZAMPyxn+fleVYaXEa6dj9Cl/yXC1qfsq+6n35mA2V8EO68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713127635; c=relaxed/simple;
-	bh=j8yYjNB/lwgdtj7d5dFQqesE42JDJmZZopH+iHq3GT4=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZyBjl3qOeJG7ocn7wh3gJMd4+QEuz1JE1/YOa0OXbiASUbGxaVlFpoTUXGNBcfU6LKd0DnZs2/mLXIx7E1NBtTa24C3VfwojoRXmHS2IHqFp/fnmTgvpPx4OpWY3BS05SFVtESE9yTmGNxB6atR9JWlnme6lEnafO5DEnifXDCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SaMycIfR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fbSKRmT8; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 14 Apr 2024 20:47:11 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713127632;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Kk33WvAgbOeZne4fG/MnGSoLByjT4UvbrYfIWfMtSSI=;
-	b=SaMycIfRckIeJSYfD7r4r8LwE2ArrUMjUIk/FdPZnr7vXF1IJAshtfIBhBzxopUIiu19uL
-	qTrWpTCnZSUc14wVMbw3A6u26t7d8m3TXPPjurVsj4kdOcZvIE7YZeE9LlMGdPzDyTy0VV
-	s4setirnGcQpHZOTiAxRjRqUb9GUsIeOpwVe1kYIRyeyT4wvgzrzwwqPHbEKchL8F557jC
-	MzgxankRExjXSIprJtEQ8VbIUOBAaN+NdVkbBfjarW7eKORHu85V9+47j2dpvVGDKZU6V6
-	X+7FWjFZnHU3NqlXcbdyTshiWkhWS4RlTel18L3KmtFkC750eViyR4RlKGWxeQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713127632;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Kk33WvAgbOeZne4fG/MnGSoLByjT4UvbrYfIWfMtSSI=;
-	b=fbSKRmT8TxCvy5hemdO42hFz6epxjdeF3Q3/SxedpxDDCxI3fljhvRn05JwH6z9hFDb8ag
-	mczSPa/k0YymbjDA==
-From: "tip-bot2 for Kyle Huey" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Move perf_event_fasync() to perf_event.h
-Cc: Kyle Huey <khuey@kylehuey.com>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240413141618.4160-2-khuey@kylehuey.com>
-References: <20240413141618.4160-2-khuey@kylehuey.com>
+	s=arc-20240116; t=1713211963; c=relaxed/simple;
+	bh=NuOPpB9j3aJ1Lio7+rBX0plGF9Yi2yGnbDVH1cBRp6Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YgGe/6SiehLAnMnSaq1dDdIi2XoOBZODsXMa71juaH7aGzOZhtDrOjovq+8bagjZSjY1hzIwGQnFtcvXIRDA2H/UdZU0K4L5lqw4oemzASmhBmHFH7RPYyvY8UOAayKsglM6hfDRTvsWkODQcjxDaATDCrgL84aaiEUUZ5fm+7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0FF3140E00B2;
+	Mon, 15 Apr 2024 20:12:39 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id VWcs05e6tN85; Mon, 15 Apr 2024 20:12:33 +0000 (UTC)
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0B40740E0187;
+	Mon, 15 Apr 2024 20:12:24 +0000 (UTC)
+Date: Mon, 15 Apr 2024 22:12:19 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Uros Bizjak <ubizjak@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Waiman Long <longman@redhat.com>, x86@kernel.org
+Subject: Re: [tip: locking/core] locking/atomic/x86: Introduce
+ arch_try_cmpxchg64_local()
+Message-ID: <20240415201119.GBZh2J57f3aouPE_JR@fat_crate.local>
+References: <20240414161257.49145-1-ubizjak@gmail.com>
+ <171312759954.10875.1385994404712358986.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171312763167.10875.45937385096988617.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <171312759954.10875.1385994404712358986.tip-bot2@tip-bot2>
 
-The following commit has been merged into the perf/core branch of tip:
+On Sun, Apr 14, 2024 at 08:46:39PM -0000, tip-bot2 for Uros Bizjak wrote:
+> The following commit has been merged into the locking/core branch of tip:
+> 
+> Commit-ID:     d26e46f6bf329cfcc469878709baa41d3bfc7cc3
+> Gitweb:        https://git.kernel.org/tip/d26e46f6bf329cfcc469878709baa41d3bfc7cc3
+> Author:        Uros Bizjak <ubizjak@gmail.com>
+> AuthorDate:    Sun, 14 Apr 2024 18:12:43 +02:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Sun, 14 Apr 2024 22:40:54 +02:00
+> 
+> locking/atomic/x86: Introduce arch_try_cmpxchg64_local()
+> 
+> Introduce arch_try_cmpxchg64_local() for 64-bit and 32-bit targets
+> to improve code using cmpxchg64_local().  On 64-bit targets, the
+> generated assembly improves from:
+> 
+>     3e28:	31 c0                	xor    %eax,%eax
+>     3e2a:	4d 0f b1 7d 00       	cmpxchg %r15,0x0(%r13)
+>     3e2f:	48 85 c0             	test   %rax,%rax
+>     3e32:	0f 85 9f 00 00 00    	jne    3ed7 <...>
+> 
+> to:
+> 
+>     3e28:	31 c0                	xor    %eax,%eax
+>     3e2a:	4d 0f b1 7d 00       	cmpxchg %r15,0x0(%r13)
+>     3e2f:	0f 85 9f 00 00 00    	jne    3ed4 <...>
+> 
+> where a TEST instruction after CMPXCHG is saved.  The improvements
+> for 32-bit targets are even more noticeable, because double-word
+> compare after CMPXCHG8B gets eliminated.
+> 
+> Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: Waiman Long <longman@redhat.com>
+> Link: https://lore.kernel.org/r/20240414161257.49145-1-ubizjak@gmail.com
+> ---
+>  arch/x86/include/asm/cmpxchg_32.h | 34 ++++++++++++++++++++++++++++++-
+>  arch/x86/include/asm/cmpxchg_64.h |  6 +++++-
+>  2 files changed, 40 insertions(+)
 
-Commit-ID:     4a013980666857c1eb2df6a2137817caa21d38a6
-Gitweb:        https://git.kernel.org/tip/4a013980666857c1eb2df6a2137817caa21d38a6
-Author:        Kyle Huey <me@kylehuey.com>
-AuthorDate:    Sat, 13 Apr 2024 07:16:16 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 14 Apr 2024 22:26:32 +02:00
+Ok, maybe I'm missing the point here or maybe the commit message doesn't
+explain but how does this big diffstat justify one less insn?
 
-perf: Move perf_event_fasync() to perf_event.h
+And no, 32-bit doesn't matter.
 
-This will allow it to be called from perf_output_wakeup().
+This looks like too crazy micro-optimization to me to be worth the 40
+insertions.
 
-Signed-off-by: Kyle Huey <khuey@kylehuey.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240413141618.4160-2-khuey@kylehuey.com
----
- include/linux/perf_event.h | 8 ++++++++
- kernel/events/core.c       | 8 --------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+But I could be wrong and I'd gladly read explanations for why I am.
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index d5ff0c1..a5304ae 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1686,6 +1686,14 @@ perf_event_addr_filters(struct perf_event *event)
- 	return ifh;
- }
- 
-+static inline struct fasync_struct **perf_event_fasync(struct perf_event *event)
-+{
-+	/* Only the parent has fasync state */
-+	if (event->parent)
-+		event = event->parent;
-+	return &event->fasync;
-+}
-+
- extern void perf_event_addr_filters_sync(struct perf_event *event);
- extern void perf_report_aux_output_id(struct perf_event *event, u64 hw_id);
- 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 6708c11..da9d9a1 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6703,14 +6703,6 @@ static const struct file_operations perf_fops = {
-  * to user-space before waking everybody up.
-  */
- 
--static inline struct fasync_struct **perf_event_fasync(struct perf_event *event)
--{
--	/* only the parent has fasync state */
--	if (event->parent)
--		event = event->parent;
--	return &event->fasync;
--}
--
- void perf_event_wakeup(struct perf_event *event)
- {
- 	ring_buffer_wakeup(event);
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
