@@ -1,229 +1,132 @@
-Return-Path: <linux-tip-commits+bounces-1081-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1082-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAD88A5CB3
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Apr 2024 23:09:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 803E98A671E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Apr 2024 11:27:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 455B21F23B28
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Apr 2024 21:09:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B991283085
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Apr 2024 09:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D3A156672;
-	Mon, 15 Apr 2024 21:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tKBK6JQ7"
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2086.outbound.protection.outlook.com [40.107.93.86])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB2F85289;
+	Tue, 16 Apr 2024 09:27:47 +0000 (UTC)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22FA156961;
-	Mon, 15 Apr 2024 21:09:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713215378; cv=fail; b=RiVqUMWVFYPF1ltYt8oHmRaRI8oqVQmzPSTbmJ9XkbHW1jOCKmh4mpgW3HimVu9afTtadNd1aDQyyARXic8+fwUKen4qRO4lef/MEO2RB+FDUJvoYYSE/wWwlEY8WFLyDOwqsX2DN2gAJfw2QmHM5f6SB9vEWRXM8dkU67PLBYI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713215378; c=relaxed/simple;
-	bh=Ll1Vf5zHveiSjdaoZ/MLX9MYZGlOxSCLhW2FBBNX/LU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MMQeA2/UXq7Tu4jPXavzDO5UBO1uQm+haJXev3n5rGu7C5Maa42leGdkNqUl67oGi84E+LO0I/DKjExxyeYSXoPQl9Xv/CNwlmpJYn/1nnqJFtZA/a8OtAWAZlk9fxmNWC3tOLWSDYPN2J+awSXlzFA0ikc+2vH5oZsZ5IudqLU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tKBK6JQ7; arc=fail smtp.client-ip=40.107.93.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VJnQMDj1a7QurtluceiMfrOx60dAVvQf1MKG/Sv5VyEShFQJ9DDVf0khf/sLOPqpxqF+Ji8P0uCKDkI2aWQIPMForf4C6mnS+zjOmoyb1EZlBbvJCKrWKN3bn/dusAfNoxfLeNgKvH75DlnGvTSEfM/ZmFHixN6ofk9ZoQwYNAMw8kcUf6c5WEiqWAvIHc4y8EXwXtLlL/xdjjLw4yveXGxwp/OqyelGAHWUVyvYw7RvLf4NS3NBkSZ6kZg4Hirloi70kDAB98siU9wNW0gD8o2EIxjzUuW0r4rX2AfnlGRTECN/TvgQMBX2iWTUr6rLFORbMW/Y0X6e96CGaveKTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bptdw/nRLL74gnwStM13lZRSxVVYJKyVHK0hqgFL98Y=;
- b=icQv2QvahIuPUlaI4lwZYtTQH5yE0NbYad3dKQPkrk2myN0rVJqF7C1cgE86/vaZqBmTQTDiVniLlKwiu2gtGTzrHwpFmM/TKKSCbuRRusiBeppOfsxMhmauI7cLkOPPwl1g+u9m5ML/N6SWr4OtQpymCi1SLSCmeWehXGaxFI43EAVa1YeFUIjK2tSPg1KYfqVwzL3HXykPrcCedqFVq6dzhoU1A5Z5ZSFJrBrhG1pMIyX8o7xJUCo6pR5YSIQbVsypXU2PCstJNbDmGSKExwVKSLO/2sUF4N8DubzxPtnDQvxtNxBKxfahMUa8yI0PuLg5ywItE0FdPOyRcRX8LQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bptdw/nRLL74gnwStM13lZRSxVVYJKyVHK0hqgFL98Y=;
- b=tKBK6JQ7orFlQA4gL3xaBHGGa18JbNBcT+oOe3PAx24WWJy2ruJmzs4Hr1NyduB0xwOCzoWS8mVvGHz7fnC1sgcqaCSR2ntuEki170DqMmLnQiz6BdPx1U6mDRpp6DeO2H6i4LNY8N50bHsJ+KdtBtckf5klGbpf0+S+S2yLpfc=
-Received: from BN0PR04CA0054.namprd04.prod.outlook.com (2603:10b6:408:e8::29)
- by PH7PR12MB7210.namprd12.prod.outlook.com (2603:10b6:510:205::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Mon, 15 Apr
- 2024 21:09:34 +0000
-Received: from BN1PEPF00004685.namprd03.prod.outlook.com
- (2603:10b6:408:e8:cafe::5c) by BN0PR04CA0054.outlook.office365.com
- (2603:10b6:408:e8::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.33 via Frontend
- Transport; Mon, 15 Apr 2024 21:09:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN1PEPF00004685.mail.protection.outlook.com (10.167.243.86) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7452.22 via Frontend Transport; Mon, 15 Apr 2024 21:09:33 +0000
-Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 15 Apr
- 2024 16:09:33 -0500
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <linux-tip-commits@vger.kernel.org>
-CC: <bp@alien8.de>, <thomas.lendacky@amd.com>, <michael.roth@amd.com>,
-	<x86@kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 2/2] x86/sev: Add callback to apply RMP table fixups for kexec.
-Date: Mon, 15 Apr 2024 21:09:24 +0000
-Message-ID: <96b2949cf225501d686b47070c7bbad341e160a3.1713212104.git.ashish.kalra@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1713212104.git.ashish.kalra@amd.com>
-References: <cover.1713212104.git.ashish.kalra@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D429B85272;
+	Tue, 16 Apr 2024 09:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713259667; cv=none; b=Z7Lqhx06CAIYPH3v7E6DPE6B5nPCLd57Fwe29SNXLrdFMYJt8umWe4uD4tLvv+bSMqKOh2JCIT/KBEIue4m7vZYCq4T0J5RoFXIp+SV6nPICv4Hk55bxL6vFGRlzp0SZnH47vFAIg7Fi7eRkHWPHWEzFSk0QOSbcpzaC3LEMc/Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713259667; c=relaxed/simple;
+	bh=rl7/49N7v30krDSKR0so/zjNywMJUo2Pd9g6g4AOMFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gHOemicuxIqa+SgqFkj9X92mv18UbTTxDyQGjrNE7cXK8L5zDIm3tEbKdqZXG0SXVPWyehIfMMKvMhI1A1+h+mbwrDBcMx2GuDlooPd6o6ot/C8CQM+GB7asCbhsmxropoD4SVN2HMbO6ha6aL8o9LZ5JQRUnTmjhWm2rwPAUXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 85AC540E024C;
+	Tue, 16 Apr 2024 09:27:42 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id UUDF4TFEKb9T; Tue, 16 Apr 2024 09:27:37 +0000 (UTC)
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 577B740E0177;
+	Tue, 16 Apr 2024 09:27:27 +0000 (UTC)
+Date: Tue, 16 Apr 2024 11:27:20 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Klara Modin <klarasmodin@gmail.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Kaplan, David" <David.Kaplan@amd.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't
+ used at runtime
+Message-ID: <20240416092720.GCZh5EeB3bPWVDBMoV@fat_crate.local>
+References: <20231024201913.GHZTgmwf6QMkX8BGbo@fat_crate.local>
+ <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
+ <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
+ <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
+ <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
+ <20240207175010.nrr34b2pp3ewe3ga@treble>
+ <20240207185328.GEZcPRqPsNInRXyNMj@fat_crate.local>
+ <20240207194919.qw4jk2ykadjn5d4e@treble>
+ <20240212104348.GCZcn2ZPr445KUyQ7k@fat_crate.local>
+ <78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004685:EE_|PH7PR12MB7210:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41097632-0263-4d3b-4ac8-08dc5d90598d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	PRZWcGKVKeRep9CV2lXy0ia0Cv+bvFp+VOPWhdCX6bRm5au2QqSJZogcjfB/AXKQ/4tWkk16NByw7+pDhv1VqF+Ft43mK+45JY97g2emMidizzUcHmKzcqvoX+cZrEOKlkvBVhz1WHiMO14o1bj/5ULjIGxKVDhObktLrCU/2lgmM56mr28hauQuKOe2xYhozz5whANKoCJ4Y7ivxTnBFeMUYMY/S91lWXSq9xipTRv18ghG+pousnB/IoAqKoSiGYPyRbIq3AyZxg0J6MwwKPnRqgFSutOYWtGd9AynAu4L1SaM6iFq/lCEXtSxIe9imka+8EXj5AbBsb/myl8uAhrhsCHqPGB++LNYXvyGpVjYUu9AuWP5L2ewcnDWLujVcXcUvtMoXggtg37HvVngeguuc3jHBTiQ0XUFec2XekzHz2LX9arOuPNWHHxur2pmVtRd4DdkIgvoT/6txFnztyH6twqmRi0yOS29ECxocOnliVY4UczDbjS5NbPGJn87B9s1qdRIIN6zYp2KNXyxCClPCkRrVBMeC81vxDyGPmHtfqs/fxIrWW7NqzUlWTiHAW66hvN3H9QLR7/EAofosy8G+5vXrog6dfGzp5zQkR/soVeHT1q1/+VvWEtXHknH2kZQ13B1attUAxrA82xxAEwNVyuTgxA4xuCPFV9tWuI34jk1/OraTEwdsGxxhLwz0qiBc29J07CbQxn7JxJf1At6E2kf14upCXsdZdM2CDGox1ZuRE4lPwDprKLxDmAd
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(376005)(82310400014)(1800799015);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2024 21:09:33.8404
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41097632-0263-4d3b-4ac8-08dc5d90598d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00004685.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7210
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com>
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+On Wed, Apr 03, 2024 at 07:10:17PM +0200, Klara Modin wrote:
+> With this patch/commit, one of my machines (older P4 Xeon, 32-bit only)
+> hangs on boot with CONFIG_RETHUNK=y / CONFIG_MITIGATION_RETHUNK=y.
 
-Handle cases where the RMP table placement in the BIOS is
-not 2M aligned and then the kexec kernel could try to allocate
-from within that chunk and that causes a fatal RMP fault.
-Check if RMP table start & end physical range in e820_table
-is not aligned to 2MB and in that case use e820__range_update()
-to map this range to reserved.
+Ok, this should fix it:
 
-The callback to apply these RMP table fixups needs to be called
-after the e820 tables are setup/populated and before the e820 map
-has been converted to the standard Linux memory resources and e820 map
-is no longer used and modifying it has no effect.
-
-Fixes: c3b86e61b756 ("x86/cpufeatures: Enable/unmask SEV-SNP CPU feature")
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 ---
- arch/x86/include/asm/sev.h |  2 ++
- arch/x86/mm/mem_encrypt.c  |  3 +++
- arch/x86/virt/svm/sev.c    | 44 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 49 insertions(+)
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
+Date: Mon, 15 Apr 2024 18:15:43 +0200
+Subject: [PATCH] x86/retpolines: Enable the default thunk warning only on relevant configs
 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 7f57382afee4..6600ac467cf9 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -269,6 +269,7 @@ int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, u32 asid, bool immut
- int rmp_make_shared(u64 pfn, enum pg_level level);
- void snp_leak_pages(u64 pfn, unsigned int npages);
- void kdump_sev_callback(void);
-+void snp_rmptable_e820_fixup(void);
- #else
- static inline bool snp_probe_rmptable_info(void) { return false; }
- static inline int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level) { return -ENODEV; }
-@@ -282,6 +283,7 @@ static inline int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, u32 as
- static inline int rmp_make_shared(u64 pfn, enum pg_level level) { return -ENODEV; }
- static inline void snp_leak_pages(u64 pfn, unsigned int npages) {}
- static inline void kdump_sev_callback(void) { }
-+static inline void snp_rmptable_e820_fixup(void) {}
- #endif
- 
- #endif
-diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-index 6f3b3e028718..765ce94e4b89 100644
---- a/arch/x86/mm/mem_encrypt.c
-+++ b/arch/x86/mm/mem_encrypt.c
-@@ -102,6 +102,9 @@ void __init mem_encrypt_setup_arch(void)
- 	phys_addr_t total_mem = memblock_phys_mem_size();
- 	unsigned long size;
- 
-+	if (cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-+		snp_rmptable_e820_fixup();
-+
- 	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 		return;
- 
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index ab0e8448bb6e..d999ff7f1671 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -163,6 +163,50 @@ bool snp_probe_rmptable_info(void)
- 	return true;
- }
- 
-+/*
-+ * Callback to do any RMP table fixups, needs to be called
-+ * after e820__memory_setup(), after the e820 tables are
-+ * setup/populated and before e820__reserve_resources(), before
-+ * the e820 map has been converted to the standard Linux memory
-+ * resources and e820 map is no longer used and modifying it
-+ * has no effect.
-+ */
-+void __init snp_rmptable_e820_fixup(void)
-+{
-+	u64 pa;
-+
-+	/*
-+	 * Handle cases where the RMP table placement in the BIOS is not 2M aligned
-+	 * and then the kexec kernel could try to allocate from within that chunk
-+	 * and that causes a fatal RMP fault. Check if RMP table start & end
-+	 * physical range in e820_table is not aligned to 2MB and in that case use
-+	 * e820__range_update() to map this range to reserved, e820__range_update()
-+	 * nicely handles partial range update and also merges any consecutive
-+	 * ranges of the same type.
-+	 */
-+	pa = probed_rmp_base;
-+	if (!IS_ALIGNED(pa, PMD_SIZE)) {
-+		pa = ALIGN_DOWN(pa, PMD_SIZE);
-+		if (e820__mapped_any(pa, pa + PMD_SIZE, E820_TYPE_RAM)) {
-+			pr_info("Reserving start of RMP table on a 2MB boundary [0x%016llx]\n", pa);
-+			e820__range_update(pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
-+			e820__range_update_kexec(pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
-+			e820__range_update_firmware(pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
-+		}
-+	}
-+
-+	pa = probed_rmp_base + probed_rmp_size;
-+	if (!IS_ALIGNED(pa, PMD_SIZE)) {
-+		pa = ALIGN_DOWN(pa, PMD_SIZE);
-+		if (e820__mapped_any(pa, pa + PMD_SIZE, E820_TYPE_RAM)) {
-+			pr_info("Reserving end of RMP table on a 2MB boundary [0x%016llx]\n", pa);
-+			e820__range_update(pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
-+			e820__range_update_kexec(pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
-+			e820__range_update_firmware(pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
-+		}
-+	}
-+}
-+
- /*
-  * Do the necessary preparations which are verified by the firmware as
-  * described in the SNP_INIT_EX firmware command description in the SNP
+The using-default-thunk warning check makes sense only with
+configurations which actually enable the special return thunks.
+
+Otherwise, it fires on unrelated 32-bit configs on which the special
+return thunks won't even work (they're 64-bit only) and, what is more,
+those configs even go off into the weeds when booting in the
+alternatives patching code, leading to a dead machine.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com
+Link: https://lore.kernel.org/r/20240413024956.488d474e@yea
+---
+ arch/x86/lib/retpoline.S | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index e674ccf720b9..391059b2c6fb 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -382,8 +382,15 @@ SYM_FUNC_END(call_depth_return_thunk)
+ SYM_CODE_START(__x86_return_thunk)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
++#if defined(CONFIG_MITIGATION_UNRET_ENTRY) || \
++    defined(CONFIG_MITIGATION_SRSO) || \
++    defined(CONFIG_MITIGATION_CALL_DEPTH_TRACKING)
+ 	ALTERNATIVE __stringify(ANNOTATE_UNRET_SAFE; ret), \
+ 		   "jmp warn_thunk_thunk", X86_FEATURE_ALWAYS
++#else
++	ANNOTATE_UNRET_SAFE
++	ret
++#endif
+ 	int3
+ SYM_CODE_END(__x86_return_thunk)
+ EXPORT_SYMBOL(__x86_return_thunk)
 -- 
-2.34.1
+2.43.0
 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
