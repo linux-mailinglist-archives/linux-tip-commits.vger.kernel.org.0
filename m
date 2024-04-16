@@ -1,132 +1,218 @@
-Return-Path: <linux-tip-commits+bounces-1082-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1083-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803E98A671E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Apr 2024 11:27:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 238CE8A6AF1
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Apr 2024 14:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B991283085
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Apr 2024 09:27:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A29541F21422
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Apr 2024 12:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB2F85289;
-	Tue, 16 Apr 2024 09:27:47 +0000 (UTC)
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504F73771E;
+	Tue, 16 Apr 2024 12:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ehNdWA8V";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EateKPP+"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D429B85272;
-	Tue, 16 Apr 2024 09:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE61D1E527;
+	Tue, 16 Apr 2024 12:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713259667; cv=none; b=Z7Lqhx06CAIYPH3v7E6DPE6B5nPCLd57Fwe29SNXLrdFMYJt8umWe4uD4tLvv+bSMqKOh2JCIT/KBEIue4m7vZYCq4T0J5RoFXIp+SV6nPICv4Hk55bxL6vFGRlzp0SZnH47vFAIg7Fi7eRkHWPHWEzFSk0QOSbcpzaC3LEMc/Y=
+	t=1713270666; cv=none; b=ekA8HthJZ9zS4rB5AXRbYdu7LTwEK43hshOhRWDE8V7F5qtzDrf1DvQNtf6ax1K/hgTQ9foe+xMMKkLNOlVOul0iPPxJdo6Xwl4z43CnxVHx3Esn+xeHNUnRc3MhdYqYo2DpAXQMFfNkwL0IiWt6UzxNpPiE9oKEdB+5dKp69VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713259667; c=relaxed/simple;
-	bh=rl7/49N7v30krDSKR0so/zjNywMJUo2Pd9g6g4AOMFM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gHOemicuxIqa+SgqFkj9X92mv18UbTTxDyQGjrNE7cXK8L5zDIm3tEbKdqZXG0SXVPWyehIfMMKvMhI1A1+h+mbwrDBcMx2GuDlooPd6o6ot/C8CQM+GB7asCbhsmxropoD4SVN2HMbO6ha6aL8o9LZ5JQRUnTmjhWm2rwPAUXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 85AC540E024C;
-	Tue, 16 Apr 2024 09:27:42 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id UUDF4TFEKb9T; Tue, 16 Apr 2024 09:27:37 +0000 (UTC)
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 577B740E0177;
-	Tue, 16 Apr 2024 09:27:27 +0000 (UTC)
-Date: Tue, 16 Apr 2024 11:27:20 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Klara Modin <klarasmodin@gmail.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Kaplan, David" <David.Kaplan@amd.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	David Howells <dhowells@redhat.com>
-Subject: Re: [PATCH -v2] x86/retpoline: Ensure default return thunk isn't
- used at runtime
-Message-ID: <20240416092720.GCZh5EeB3bPWVDBMoV@fat_crate.local>
-References: <20231024201913.GHZTgmwf6QMkX8BGbo@fat_crate.local>
- <20240103184656.GEZZWroPmHLJuP6y5H@fat_crate.local>
- <20240104131210.GDZZauqoeKoZGpYwDd@fat_crate.local>
- <20240104132446.GEZZaxnrIgIyat0pqf@fat_crate.local>
- <20240104132623.GFZZax/wyf5Y3rMX5G@fat_crate.local>
- <20240207175010.nrr34b2pp3ewe3ga@treble>
- <20240207185328.GEZcPRqPsNInRXyNMj@fat_crate.local>
- <20240207194919.qw4jk2ykadjn5d4e@treble>
- <20240212104348.GCZcn2ZPr445KUyQ7k@fat_crate.local>
- <78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com>
+	s=arc-20240116; t=1713270666; c=relaxed/simple;
+	bh=YjkSOnY7MOYoI4u8ZX/26NHgoThl++miHa+iTTsZVe0=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=P26yVsci+TiquarKwvv/I8svyhe1AzY/BKdp6CkyDIlMo0rf1BfDuv400U2iNr2V/z/yAr1wkrRMDtVgkAhD/GP2R/CCJfjr0FSHCTe9Z6GY1rNSLCrv2el5QtNU7bypNiGcuXPvCFhNH5+5YT9idmQPeTPgDOYe9SGJDlpS97c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ehNdWA8V; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EateKPP+; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 16 Apr 2024 12:30:54 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713270655;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GOhenMrd56U68JRoB6aXqA+Ecvh9dj00xNKDtxgfKF8=;
+	b=ehNdWA8V20neHEqejl6B6czC/R1NG/J8ugSwpj4pjPDuXnZplBhdE7MG1TLU6yydtBWeqj
+	Zyq0sWdWNaFB36tQoevaa/aOvFyzZ7hM1Gqwy7oe0EectHyo28zWyBW0c+sXEfOFgGCCQo
+	1gV2Rk8eikT84zgG6eZGMl+uAYGGWZvJThVaU6LN45MYwUl+UHshD5RacH0fbr+rwsdGBH
+	OGeQnvYbzDCX6DpUQcx5rCNxTEUWWlxK+wsdSvEm13wTANrxfcpVicsv4guK9w/5Dm1Vjk
+	qp6Fn4dZm6Uk6zYMpSHIUcZ0sLSl95imHnvcrIP+8MwvcSNaIea5BDVd4sAhUg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713270655;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GOhenMrd56U68JRoB6aXqA+Ecvh9dj00xNKDtxgfKF8=;
+	b=EateKPP+Kv/G/Oi+J3rXMvoYko+aBNaZGvPs7dqi8Bgm/KIagiKynxT/YcC7x4RdJmgSXy
+	kcHQzF+s69sDJzBQ==
+From: "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: sched/urgent] sched: Add missing memory barrier in switch_mm_cid
+Cc: "levi.yun" <yeoreum.yun@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Ingo Molnar <mingo@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,  <stable@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240415152114.59122-2-mathieu.desnoyers@efficios.com>
+References: <20240415152114.59122-2-mathieu.desnoyers@efficios.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com>
+Message-ID: <171327065441.10875.11466673774953138493.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 03, 2024 at 07:10:17PM +0200, Klara Modin wrote:
-> With this patch/commit, one of my machines (older P4 Xeon, 32-bit only)
-> hangs on boot with CONFIG_RETHUNK=y / CONFIG_MITIGATION_RETHUNK=y.
+The following commit has been merged into the sched/urgent branch of tip:
 
-Ok, this should fix it:
+Commit-ID:     fe90f3967bdb3e13f133e5f44025e15f943a99c5
+Gitweb:        https://git.kernel.org/tip/fe90f3967bdb3e13f133e5f44025e15f943a99c5
+Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+AuthorDate:    Mon, 15 Apr 2024 11:21:13 -04:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 16 Apr 2024 13:59:45 +02:00
 
+sched: Add missing memory barrier in switch_mm_cid
+
+Many architectures' switch_mm() (e.g. arm64) do not have an smp_mb()
+which the core scheduler code has depended upon since commit:
+
+    commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
+
+If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear() can
+unset the actively used cid when it fails to observe active task after it
+sets lazy_put.
+
+There *is* a memory barrier between storing to rq->curr and _return to
+userspace_ (as required by membarrier), but the rseq mm_cid has stricter
+requirements: the barrier needs to be issued between store to rq->curr
+and switch_mm_cid(), which happens earlier than:
+
+  - spin_unlock(),
+  - switch_to().
+
+So it's fine when the architecture switch_mm() happens to have that
+barrier already, but less so when the architecture only provides the
+full barrier in switch_to() or spin_unlock().
+
+It is a bug in the rseq switch_mm_cid() implementation. All architectures
+that don't have memory barriers in switch_mm(), but rather have the full
+barrier either in finish_lock_switch() or switch_to() have them too late
+for the needs of switch_mm_cid().
+
+Introduce a new smp_mb__after_switch_mm(), defined as smp_mb() in the
+generic barrier.h header, and use it in switch_mm_cid() for scheduler
+transitions where switch_mm() is expected to provide a memory barrier.
+
+Architectures can override smp_mb__after_switch_mm() if their
+switch_mm() implementation provides an implicit memory barrier.
+Override it with a no-op on x86 which implicitly provide this memory
+barrier by writing to CR3.
+
+Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
+Reported-by: levi.yun <yeoreum.yun@arm.com>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com> # for arm64
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # for x86
+Cc: <stable@vger.kernel.org> # 6.4.x
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240415152114.59122-2-mathieu.desnoyers@efficios.com
 ---
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
-Date: Mon, 15 Apr 2024 18:15:43 +0200
-Subject: [PATCH] x86/retpolines: Enable the default thunk warning only on relevant configs
+ arch/x86/include/asm/barrier.h |  3 +++
+ include/asm-generic/barrier.h  |  8 ++++++++
+ kernel/sched/sched.h           | 20 ++++++++++++++------
+ 3 files changed, 25 insertions(+), 6 deletions(-)
 
-The using-default-thunk warning check makes sense only with
-configurations which actually enable the special return thunks.
-
-Otherwise, it fires on unrelated 32-bit configs on which the special
-return thunks won't even work (they're 64-bit only) and, what is more,
-those configs even go off into the weeds when booting in the
-alternatives patching code, leading to a dead machine.
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com
-Link: https://lore.kernel.org/r/20240413024956.488d474e@yea
----
- arch/x86/lib/retpoline.S | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index e674ccf720b9..391059b2c6fb 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -382,8 +382,15 @@ SYM_FUNC_END(call_depth_return_thunk)
- SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
-+#if defined(CONFIG_MITIGATION_UNRET_ENTRY) || \
-+    defined(CONFIG_MITIGATION_SRSO) || \
-+    defined(CONFIG_MITIGATION_CALL_DEPTH_TRACKING)
- 	ALTERNATIVE __stringify(ANNOTATE_UNRET_SAFE; ret), \
- 		   "jmp warn_thunk_thunk", X86_FEATURE_ALWAYS
-+#else
-+	ANNOTATE_UNRET_SAFE
-+	ret
+diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
+index fe1e7e3..63bdc6b 100644
+--- a/arch/x86/include/asm/barrier.h
++++ b/arch/x86/include/asm/barrier.h
+@@ -79,6 +79,9 @@ do {									\
+ #define __smp_mb__before_atomic()	do { } while (0)
+ #define __smp_mb__after_atomic()	do { } while (0)
+ 
++/* Writing to CR3 provides a full memory barrier in switch_mm(). */
++#define smp_mb__after_switch_mm()	do { } while (0)
++
+ #include <asm-generic/barrier.h>
+ 
+ #endif /* _ASM_X86_BARRIER_H */
+diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
+index 0c06957..d4f581c 100644
+--- a/include/asm-generic/barrier.h
++++ b/include/asm-generic/barrier.h
+@@ -294,5 +294,13 @@ do {									\
+ #define io_stop_wc() do { } while (0)
+ #endif
+ 
++/*
++ * Architectures that guarantee an implicit smp_mb() in switch_mm()
++ * can override smp_mb__after_switch_mm.
++ */
++#ifndef smp_mb__after_switch_mm
++# define smp_mb__after_switch_mm()	smp_mb()
 +#endif
- 	int3
- SYM_CODE_END(__x86_return_thunk)
- EXPORT_SYMBOL(__x86_return_thunk)
--- 
-2.43.0
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
++
+ #endif /* !__ASSEMBLY__ */
+ #endif /* __ASM_GENERIC_BARRIER_H */
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index d224267..ae50f21 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -79,6 +79,8 @@
+ # include <asm/paravirt_api_clock.h>
+ #endif
+ 
++#include <asm/barrier.h>
++
+ #include "cpupri.h"
+ #include "cpudeadline.h"
+ 
+@@ -3445,13 +3447,19 @@ static inline void switch_mm_cid(struct rq *rq,
+ 		 * between rq->curr store and load of {prev,next}->mm->pcpu_cid[cpu].
+ 		 * Provide it here.
+ 		 */
+-		if (!prev->mm)                          // from kernel
++		if (!prev->mm) {                        // from kernel
+ 			smp_mb();
+-		/*
+-		 * user -> user transition guarantees a memory barrier through
+-		 * switch_mm() when current->mm changes. If current->mm is
+-		 * unchanged, no barrier is needed.
+-		 */
++		} else {				// from user
++			/*
++			 * user->user transition relies on an implicit
++			 * memory barrier in switch_mm() when
++			 * current->mm changes. If the architecture
++			 * switch_mm() does not have an implicit memory
++			 * barrier, it is emitted here.  If current->mm
++			 * is unchanged, no barrier is needed.
++			 */
++			smp_mb__after_switch_mm();
++		}
+ 	}
+ 	if (prev->mm_cid_active) {
+ 		mm_cid_snapshot_time(rq, prev->mm);
 
