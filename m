@@ -1,133 +1,164 @@
-Return-Path: <linux-tip-commits+bounces-1090-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1091-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 859B58A88B8
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 18:20:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 355378A88CB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 18:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B61411C21B3F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 16:20:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 588D71C20B01
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 16:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826531482E5;
-	Wed, 17 Apr 2024 16:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AEA148FE8;
+	Wed, 17 Apr 2024 16:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dhjPI/0V";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+gOervJP"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CWTqY4Ev"
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52E81411E5;
-	Wed, 17 Apr 2024 16:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF74147C9E;
+	Wed, 17 Apr 2024 16:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713370845; cv=none; b=WW1CDiQ7s/z7CklUkMuYbwxcX0tQgVYJMDaIko+fvh5Dkm7tw20lsA3ufxadPqjcOsT0NYX7qK5UvXUBd3LgtFqW+kxMiMSedMm7KPRuOuqAhWeY4/5RijfjdIAU0DHGRgqY253S/2W7Izt7abQK+mhZmFQ7uvvigdIU7AW7dfU=
+	t=1713371077; cv=none; b=pmzte0hgkIDyhT+JTsuJsAUwwqHUN3gKv2tfKnIJc24WfO0dh40LfSHO+P5EGTPK0LRhigliFqnHAHtGV3WVz6h6uulr+/8mZ3QrVaVo60QGu0l+ITOpY01wkBO92rOqwg1cvL0uqeX6zmmW2sQEpqHwtReXbm0Cmsc2oY40kng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713370845; c=relaxed/simple;
-	bh=WvRqDAOGM1jvsBeaH6GT/HasZDYxKW3jTSqaapCeaOc=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=QJ9JD8V64PdkkgL7JQzKOHmU9DPuc9syXxBv7mJGxZwuV4onEGjMzUer2EldVoGWJtNIl6OjU2kCAgqqx05fg8wqjNrLkbjJwOOztLKKkv0IBGWSbnPrpr/05j4t81xoqZM+GQ4KEoFHjGilWgwYRFpcYf3iiEnqODEO2beC1EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dhjPI/0V; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+gOervJP; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 17 Apr 2024 16:20:40 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713370842;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kwzTSJdCNy24smZLpTE4WljCedgTHM2JpxAfIkTwyt4=;
-	b=dhjPI/0VMdBSkBl5XfFat0CCFcC2C7scN+JK4fOhgFkYZ0zMSbgBQ4nRPo4Yf9UUUUsz4O
-	kA6URHBuae14lTdrU6fxY0HWnQQ7g+YHj+eJQy5T0PLHvh3WBUk/H8nt0IcNhA1uBU5K+j
-	dvPxcW7esf6UN0riWxiAHY3oNliUfofRAP9jINefZdwbdHa5WBjIJUiQgtvg22IgKCyhkO
-	ZOhSXjIOooA+/BS1YS+5nB5wzrpgHBxu61GIjRFc5I8uAv4hEicYYE1mlnSIx3x8FsfViG
-	603m0MUCwJ481c96FnuYfU1VTVZ/0a/SKnzyC89RVuEdBEYbxy5tnWbBMkVoSw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713370842;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kwzTSJdCNy24smZLpTE4WljCedgTHM2JpxAfIkTwyt4=;
-	b=+gOervJPalJBHPT1qUYoVzl4s1Niik0HwXr76RGPGP/ibokO7i6Q3yEFXIV4sHGwl1AQ6E
-	tYIizffTqQS7ctBA==
-From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/retpolines: Enable the default thunk warning
- only on relevant configs
-Cc: Klara Modin <klarasmodin@gmail.com>, Erhard Furtner <erhard_f@mailbox.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com>
-References: <78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com>
+	s=arc-20240116; t=1713371077; c=relaxed/simple;
+	bh=eFcR1ClTRCzhSOvXK9etsUGvcNigPYVMTluCVcHakAk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z4BFo5N/6VJSeOH1o5bhEEmAVpPzaDdlnLmzIaJvw4nEUO3bxVpgKmlDO36wWyVUK7+VtkCv3T7eXyUmrn7boJNo3gkJrmmoX8Ys8mf4T4ecQZri9xQdQ6wmdtRQlGoXcJk0O4GlKgo0xwE5FNWTojyXO1HuzUlhILGMVowP9NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CWTqY4Ev; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d8b4778f5fso43854811fa.3;
+        Wed, 17 Apr 2024 09:24:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713371074; x=1713975874; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3WOI+RzbMVLEsygvuyMdeIyAFatAUtSWu8oi4PGxMg4=;
+        b=CWTqY4EvmZfh0gz3nO6YYi982v2q20hZ23/oHoOn/+b3BaGNFSb3p3aRHGm7YzY59U
+         usV6xOr0E0rSRguwVtvoURd3bbfa2mA3Ug+e9KjmCtxnwwyZmpaC9FzQ4RGgTGxI+Zgr
+         +4P4kv1US9FEX3E8b8tcErpj5+2XRHnxbhIXZlBf5NgM5Qg6evyNWd0r8jA/Swyc1lcR
+         /jaGqEqUyFXDS8dUlFons6tEAGPeBIFDMnjbkzJI5mPnihedYtDym8o9sEUDpKMu+HTr
+         9fqxB1kRRupqZmNmvwBXNrCfQm8fqA2bX9lTEjxMYB8Z0fCeXR9nLgANfqXESIe4E9Hv
+         8iew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713371074; x=1713975874;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3WOI+RzbMVLEsygvuyMdeIyAFatAUtSWu8oi4PGxMg4=;
+        b=fsi2ucBI/bUv5QZoFbpxVPbddK2hbfti5ZJgt8IQaaw4PWTNTgOMuFheqJGp6A5OcG
+         gr+B0rnJMGh/yE232twVYF28PCn/DAFiqO6Es/YFXYhAQGJoymwuIT7uprZEIXnMJ3gX
+         mX9EVp7oq0+vjfAm/W7idnyKEPpGDOelrsmELMY0h5xsy+AoEse5mGMLfM6NS7JMiFrv
+         f7iVEaUSVkbD1PsUA574MCmBSheDBC4wNVfTleTmArQkVsTKZTClpAYtpT9Se2ufLiH+
+         HgM5w90GLKAk60BHr9L5FgS7IwNXhpWYSutCb3rPGn1OuIVIPABemBsACn+aEWtGch5k
+         ts9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUTNgK2ecaRinWrknp5+c1VdI5KDRO7eeNNRcEc7XbeuAv6pRh4R0E7Tds9r3vdtKAVKRTlFfJucmla8UyVMEGr31h0lm3k6FlMifbUiHAELYo=
+X-Gm-Message-State: AOJu0Yxwo0I5U1dfHz99C6o5qQShh8lCAn/XvcHjhyJ0UCkaTDAeQZO/
+	NCFDh6wAN4UpEpFiY+OdUpecJgPuwMCFs/GtD1LVMwg74FPsc7ajkxJMeOcr8PSRnmYYOyXA8Qp
+	6Zhtz51tbGu31Jwus9UgPIXOrG/c=
+X-Google-Smtp-Source: AGHT+IFQnHGsRMwv4AUxL+R7AzcZf67YjifD3w2HzOOsEdI4u6wAr+JO4jdO7/yunKcXRQ6CZYzHkIhvHuKgv1BdLgk=
+X-Received: by 2002:a2e:9c4f:0:b0:2d8:408c:3f5b with SMTP id
+ t15-20020a2e9c4f000000b002d8408c3f5bmr11619304ljj.5.1713371073507; Wed, 17
+ Apr 2024 09:24:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171337084085.10875.15469076883683682514.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20240414161257.49145-1-ubizjak@gmail.com> <171312759954.10875.1385994404712358986.tip-bot2@tip-bot2>
+ <20240415201119.GBZh2J57f3aouPE_JR@fat_crate.local>
+In-Reply-To: <20240415201119.GBZh2J57f3aouPE_JR@fat_crate.local>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Wed, 17 Apr 2024 18:24:21 +0200
+Message-ID: <CAFULd4aFSBHNxyVyVt9soPnJXDgiOu6qCCNMLoenFNXtk0W4wA@mail.gmail.com>
+Subject: Re: [tip: locking/core] locking/atomic/x86: Introduce arch_try_cmpxchg64_local()
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
+	Ingo Molnar <mingo@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Waiman Long <longman@redhat.com>, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Mon, Apr 15, 2024 at 10:12=E2=80=AFPM Borislav Petkov <bp@alien8.de> wro=
+te:
 
-Commit-ID:     6376306adde5b252ee7c73572e35d13fb13f6f18
-Gitweb:        https://git.kernel.org/tip/6376306adde5b252ee7c73572e35d13fb13f6f18
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Mon, 15 Apr 2024 18:15:43 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 17 Apr 2024 18:02:05 +02:00
+> > locking/atomic/x86: Introduce arch_try_cmpxchg64_local()
+> >
+> > Introduce arch_try_cmpxchg64_local() for 64-bit and 32-bit targets
+> > to improve code using cmpxchg64_local().  On 64-bit targets, the
+> > generated assembly improves from:
+> >
+> >     3e28:     31 c0                   xor    %eax,%eax
+> >     3e2a:     4d 0f b1 7d 00          cmpxchg %r15,0x0(%r13)
+> >     3e2f:     48 85 c0                test   %rax,%rax
+> >     3e32:     0f 85 9f 00 00 00       jne    3ed7 <...>
+> >
+> > to:
+> >
+> >     3e28:     31 c0                   xor    %eax,%eax
+> >     3e2a:     4d 0f b1 7d 00          cmpxchg %r15,0x0(%r13)
+> >     3e2f:     0f 85 9f 00 00 00       jne    3ed4 <...>
+> >
+> > where a TEST instruction after CMPXCHG is saved.  The improvements
+> > for 32-bit targets are even more noticeable, because double-word
+> > compare after CMPXCHG8B gets eliminated.
+>
+> Ok, maybe I'm missing the point here or maybe the commit message doesn't
+> explain but how does this big diffstat justify one less insn?
 
-x86/retpolines: Enable the default thunk warning only on relevant configs
+We are dealing with locking primitives, probably the hottest part of
+the kernel. For 64-bits, the patch is effectively a couple of lines,
+reusing and extending existing macros, the line count for a modern
+32-bit target is also a couple of lines, but there the saved insn
+count is much higher, around 10 instructions.
 
-The using-default-thunk warning check makes sense only with
-configurations which actually enable the special return thunks.
+What bothers you is the line count of cmpxchg8b emulation, necessary
+to handle !CONFIG_X86_CMPXCHG64 targets. They are still alive, and
+cmpxchg8b emulation code was recently improved (not by me!) to
+correctly handle the ZF flag. The added code just builds on that.
 
-Otherwise, it fires on unrelated 32-bit configs on which the special
-return thunks won't even work (they're 64-bit only) and, what is more,
-those configs even go off into the weeds when booting in the
-alternatives patching code, leading to a dead machine.
+> And no, 32-bit doesn't matter.
 
-Fixes: 4461438a8405 ("x86/retpoline: Ensure default return thunk isn't used at runtime")
-Reported-by: Klara Modin <klarasmodin@gmail.com>
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Klara Modin <klarasmodin@gmail.com>
-Link: https://lore.kernel.org/r/78e0d19c-b77a-4169-a80f-2eef91f4a1d6@gmail.com
-Link: https://lore.kernel.org/r/20240413024956.488d474e@yea
----
- arch/x86/lib/retpoline.S | 7 +++++++
- 1 file changed, 7 insertions(+)
+Really? Was this decision reached by the community consensus?
 
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index e674ccf..391059b 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -382,8 +382,15 @@ SYM_FUNC_END(call_depth_return_thunk)
- SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
-+#if defined(CONFIG_MITIGATION_UNRET_ENTRY) || \
-+    defined(CONFIG_MITIGATION_SRSO) || \
-+    defined(CONFIG_MITIGATION_CALL_DEPTH_TRACKING)
- 	ALTERNATIVE __stringify(ANNOTATE_UNRET_SAFE; ret), \
- 		   "jmp warn_thunk_thunk", X86_FEATURE_ALWAYS
-+#else
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+#endif
- 	int3
- SYM_CODE_END(__x86_return_thunk)
- EXPORT_SYMBOL(__x86_return_thunk)
+The linux kernel has many uses, and using it for servers by a big
+company, you are the voice of, is only one part of the whole picture.
+I'm sure that 32-bit is quite relevant for embedded users and more
+than relevant to a student or an enthusiast in some remote part of the
+world. As a maintainer, you should also take care of the communities
+that are somehow neglected, where unilateral decisions like the one
+above can have unwanted consequences.
+
+> This looks like too crazy micro-optimization to me to be worth the 40
+> insertions.
+
+If the line count is the problem, I can easily parametrize new and
+existing big macro descriptions in a follow-up patch. However, I was
+advised to not mix everything together in one patch, but rest assured,
+the creation and testing of the follow-up patch would take me less
+time than writing the message you are reading.
+
+> But I could be wrong and I'd gladly read explanations for why I am.
+
+I would understand if someone asked you to write some new
+functionality for a seemingly obsolete target. Everybody would
+understand your rejection. But this improvement was written by me in
+my time, and demonstrated some benefit to the existing code. The patch
+is almost trivial and it took maybe 5 minutes of the maintainer's time
+to approve it. It brings no future maintenance burden, but it perhaps
+improves someone's life a tiny bit.
+
+Last, but not least, I'm bringing some ideas from the compiler
+development community, where the attitude to redundant instructions is
+totally different. It could take weeks of effort and considerable
+rewrite of compiler functionality just to remove one instruction ;)
+Micro-optimizations add up!
+
+Thanks for reading this,
+Uros.
 
