@@ -1,72 +1,71 @@
-Return-Path: <linux-tip-commits+bounces-1086-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1085-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386F88A82C2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 14:07:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBE98A82C1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 14:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 693DD1C20B4A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 12:07:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6429A1F212D5
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 12:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F2B13D260;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419E213D25A;
 	Wed, 17 Apr 2024 12:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hQF3Xqos";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oyDLGoHA"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Nk6j0Q5B";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BmBP6X8b"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C397413CF94;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C392913CF87;
 	Wed, 17 Apr 2024 12:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713355645; cv=none; b=VS7kt9pQDUsE5UTJOnoCSNOBdSr16EOu5/agbE3mCEZ3KYWiLUS3PVcz50z++GfAgA1CHj2Z/Glt5n5T9z74I8+TRl6uGM8sX50mhN038TrxUf2SSJqkf6KXclosME+LTNl/9hHMMvZfD/Jz0TAwKmQ32eYxL8aVZb81fRarJik=
+	t=1713355645; cv=none; b=Dnf6FFT5tEUweKelYhYysRVcOrWNoh8/pC3IOJw3iUR7DXi4S2gSnrITUkvCczU5beRs7tu0Nb4ZIFcJ6l8qqBjZ4MIHKfUHPPRlRf4DUU0jGBGgd9VopEcjM46HBgeQUKFozH9iPqsKYY+CgD5+M7H02xRQpTuXWyJu+iAkPN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1713355645; c=relaxed/simple;
-	bh=24wbGBocfEvHtoYwR/79AhSigJ2aupjGUEw2K9rqts8=;
+	bh=Mld444p9FhL8wMvlmYVWtS5/xKW9ha596WOP9W2tO7c=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=oSd3+xkiAckOM8ciR02wv7elDkXVfrTFH+INsZDuyCwJMGEYoEsXEp717KEjFBR5gOw7xU6KHs/xlznouPUn3ApqaT8FBVph3I4qxSzu5a8NLuGpxUc3rvmpC+rCnlCRgtBAcPujHvZDsbG5EprLfxexMsOmVS2OOEghjLhmHf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hQF3Xqos; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oyDLGoHA; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ZVnEUHRjjuQtmc2l4CgNB2Q0+T+FquoWLswgZARmQ7YfTTw66mxROEKQ7kiUg5MNspWMXoeV1ie5ONOozOdOA7y3XLT7BAzHT5m8z4vNzi9iff6+4SU/rVy7RmtefQS6gVuEEr9XcsRcrJUxLzP2xg01GC+Jc0PwwXPVmg8zOAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Nk6j0Q5B; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BmBP6X8b; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 17 Apr 2024 12:07:19 -0000
+Date: Wed, 17 Apr 2024 12:07:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713355640;
+	s=2020; t=1713355641;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sAW4fQqopXztQJ2YMRJYU7sRqbHQFRiwyCjuZskkHkM=;
-	b=hQF3XqosQUlCSNJv1P16Df4CSOTluWIxAzniyP6kngsx47MpKELHMFL8dQnnr/dh0VdkKK
-	nbU9D/IWdVNfehDK3K5pWV7jPTrNdgXN4cyZdmPbTyl496KQKaAjwMaUni06vmIzEada6G
-	5KbTQIOA6qIc7EoYcB++bOPXL/eu7nVQgrUaXseQyuXSvtgzludSXhCY0cI/xDBSxSmYq1
-	bv+sH/JNas2zfxRAtlsvECBkOO6lM9r7Yaj5geEICh87HRIpybCx13PBZHPJOhW0NlG4HR
-	AIcvPMzlOIRaxM+RfVnMTPyqOJezlJsD549J65iBs3tpUXD1IKNTWOwLL+9tlA==
+	bh=7wsRe5sh182mnCSY3/Up7nwKIXbPH8RlWxpeXyYrMLc=;
+	b=Nk6j0Q5B9DPR3WIJsJx2mihYF1Ux+v0Dq3E8XRlXQp7cpj56LIcwzq+n6EQYmw6rgwl+i5
+	n9fynegF9nZpYiaR5uV86aUpMxbBrUlXYRN9A66tc8o/28omxsjVVanLnV2iR3pmqJmu7X
+	lEQSLUzS8NhxFu3XPZur4FBL/x/VZB/m6QMiVPHvaenYrmnqdqEyG6kIZw1OvBhLJOCRKR
+	49pvAUfN32/sdk+HuZXylFguaZWruvQl7za80TZpB7CsUg1rSNKvQhHGEbEqz1FwD+amtx
+	OB80XMtCYi31yYblT3zSN4325i2C7UQt4X4oEryh4uxCPKXbMwqwa2kIcwgMsA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713355640;
+	s=2020e; t=1713355641;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sAW4fQqopXztQJ2YMRJYU7sRqbHQFRiwyCjuZskkHkM=;
-	b=oyDLGoHAg2oY8liXX3VWcqb2jLP7J0PPMa/Wjj3AS2v+RI2fXurr6Cta+gMwcYlenpMpsM
-	fjohz9RKXwPieXAg==
+	bh=7wsRe5sh182mnCSY3/Up7nwKIXbPH8RlWxpeXyYrMLc=;
+	b=BmBP6X8b5yBK9himN7tQWEBkFKpuJ3TotSpujCgvKQX/Tm+bTEQKcLPDhxi5G+1p/B5Bol
+	Q5FCQqsvCTmKyKAQ==
 From: "tip-bot2 for Alexander Gordeev" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/vtime: Do not include <asm/vtime.h> header
+Subject: [tip: sched/core] s390/irq,nmi: Include <asm/vtime.h> header directly
 Cc: Alexander Gordeev <agordeev@linux.ibm.com>, Ingo Molnar <mingo@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, x86@kernel.org,
+ Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cf7cd245668b9ae61a55184871aec494ec9199c4a=2E17127?=
+In-Reply-To: =?utf-8?q?=3C3fb696637c0eb7e9d6ffd6cbf9e647d7c5986b3d=2E17127?=
  =?utf-8?q?60275=2Egit=2Eagordeev=40linux=2Eibm=2Ecom=3E?=
-References: =?utf-8?q?=3Cf7cd245668b9ae61a55184871aec494ec9199c4a=2E171276?=
+References: =?utf-8?q?=3C3fb696637c0eb7e9d6ffd6cbf9e647d7c5986b3d=2E171276?=
  =?utf-8?q?0275=2Egit=2Eagordeev=40linux=2Eibm=2Ecom=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
@@ -74,7 +73,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171335563971.10875.13309363611097274996.tip-bot2@tip-bot2>
+Message-ID: <171335564052.10875.11708694357063387016.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,61 +83,52 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     08a36a48544d73bf153960245aec6c5fa23960de
-Gitweb:        https://git.kernel.org/tip/08a36a48544d73bf153960245aec6c5fa23960de
+Commit-ID:     036cbbafbd1eb2a7437912c2fe5fdefc9d52c309
+Gitweb:        https://git.kernel.org/tip/036cbbafbd1eb2a7437912c2fe5fdefc9d52c309
 Author:        Alexander Gordeev <agordeev@linux.ibm.com>
-AuthorDate:    Wed, 10 Apr 2024 17:09:48 +02:00
+AuthorDate:    Wed, 10 Apr 2024 17:09:47 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 17 Apr 2024 13:37:23 +02:00
+CommitterDate: Wed, 17 Apr 2024 13:37:22 +02:00
 
-sched/vtime: Do not include <asm/vtime.h> header
+s390/irq,nmi: Include <asm/vtime.h> header directly
 
-There is no architecture-specific code or data left
-that generic <linux/vtime.h> needs to know about.
-Thus, avoid the inclusion of <asm/vtime.h> header.
+update_timer_sys() and update_timer_mcck() are inlines used for
+CPU time accounting from the interrupt and machine-check handlers.
+These routines are specific to s390 architecture, but included
+via <linux/vtime.h> header implicitly. Avoid the extra loop and
+include <asm/vtime.h> header directly.
 
 Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
-Link: https://lore.kernel.org/r/f7cd245668b9ae61a55184871aec494ec9199c4a.1712760275.git.agordeev@linux.ibm.com
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/3fb696637c0eb7e9d6ffd6cbf9e647d7c5986b3d.1712760275.git.agordeev@linux.ibm.com
 ---
- arch/powerpc/include/asm/Kbuild | 1 -
- include/asm-generic/vtime.h     | 1 -
- include/linux/vtime.h           | 4 ----
- 3 files changed, 6 deletions(-)
- delete mode 100644 include/asm-generic/vtime.h
+ arch/s390/kernel/irq.c | 1 +
+ arch/s390/kernel/nmi.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
-index 61a8d55..e5fdc33 100644
---- a/arch/powerpc/include/asm/Kbuild
-+++ b/arch/powerpc/include/asm/Kbuild
-@@ -6,5 +6,4 @@ generic-y += agp.h
- generic-y += kvm_types.h
- generic-y += mcs_spinlock.h
- generic-y += qrwlock.h
--generic-y += vtime.h
- generic-y += early_ioremap.h
-diff --git a/include/asm-generic/vtime.h b/include/asm-generic/vtime.h
-deleted file mode 100644
-index b1a4967..0000000
---- a/include/asm-generic/vtime.h
-+++ /dev/null
-@@ -1 +0,0 @@
--/* no content, but patch(1) dislikes empty files */
-diff --git a/include/linux/vtime.h b/include/linux/vtime.h
-index 593466c..29dd5b9 100644
---- a/include/linux/vtime.h
-+++ b/include/linux/vtime.h
-@@ -5,10 +5,6 @@
- #include <linux/context_tracking_state.h>
- #include <linux/sched.h>
+diff --git a/arch/s390/kernel/irq.c b/arch/s390/kernel/irq.c
+index 6f71b0c..259496f 100644
+--- a/arch/s390/kernel/irq.c
++++ b/arch/s390/kernel/irq.c
+@@ -29,6 +29,7 @@
+ #include <asm/hw_irq.h>
+ #include <asm/stacktrace.h>
+ #include <asm/softirq_stack.h>
++#include <asm/vtime.h>
+ #include "entry.h"
  
--#ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
--#include <asm/vtime.h>
--#endif
--
- /*
-  * Common vtime APIs
-  */
+ DEFINE_PER_CPU_SHARED_ALIGNED(struct irq_stat, irq_stat);
+diff --git a/arch/s390/kernel/nmi.c b/arch/s390/kernel/nmi.c
+index c77382a..230d010 100644
+--- a/arch/s390/kernel/nmi.c
++++ b/arch/s390/kernel/nmi.c
+@@ -31,6 +31,7 @@
+ #include <asm/crw.h>
+ #include <asm/asm-offsets.h>
+ #include <asm/pai.h>
++#include <asm/vtime.h>
+ 
+ struct mcck_struct {
+ 	unsigned int kill_task : 1;
 
