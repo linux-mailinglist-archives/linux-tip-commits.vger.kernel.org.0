@@ -1,164 +1,178 @@
-Return-Path: <linux-tip-commits+bounces-1091-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1092-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355378A88CB
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 18:24:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1958A8B42
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 20:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 588D71C20B01
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 16:24:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD39C2879E2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 18:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AEA148FE8;
-	Wed, 17 Apr 2024 16:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CWTqY4Ev"
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B443BE570;
+	Wed, 17 Apr 2024 18:41:13 +0000 (UTC)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF74147C9E;
-	Wed, 17 Apr 2024 16:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AC38F4A;
+	Wed, 17 Apr 2024 18:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713371077; cv=none; b=pmzte0hgkIDyhT+JTsuJsAUwwqHUN3gKv2tfKnIJc24WfO0dh40LfSHO+P5EGTPK0LRhigliFqnHAHtGV3WVz6h6uulr+/8mZ3QrVaVo60QGu0l+ITOpY01wkBO92rOqwg1cvL0uqeX6zmmW2sQEpqHwtReXbm0Cmsc2oY40kng=
+	t=1713379273; cv=none; b=IxrrPE7ZxK64qyL/JQ3wckc3/6rzedwI7sE1l2DNSZPTbhPLGfW1exHCXjYui71GHlpUThZcvmISo58awCW/Opu+M7eUcW3VOkivYyB9z5JZegFDzeJZ0lq1mSTkl+NITf9y0A84S7N/7eRaALo7f3gqEqtDi9kcGAL11yLKCAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713371077; c=relaxed/simple;
-	bh=eFcR1ClTRCzhSOvXK9etsUGvcNigPYVMTluCVcHakAk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z4BFo5N/6VJSeOH1o5bhEEmAVpPzaDdlnLmzIaJvw4nEUO3bxVpgKmlDO36wWyVUK7+VtkCv3T7eXyUmrn7boJNo3gkJrmmoX8Ys8mf4T4ecQZri9xQdQ6wmdtRQlGoXcJk0O4GlKgo0xwE5FNWTojyXO1HuzUlhILGMVowP9NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CWTqY4Ev; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d8b4778f5fso43854811fa.3;
-        Wed, 17 Apr 2024 09:24:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713371074; x=1713975874; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3WOI+RzbMVLEsygvuyMdeIyAFatAUtSWu8oi4PGxMg4=;
-        b=CWTqY4EvmZfh0gz3nO6YYi982v2q20hZ23/oHoOn/+b3BaGNFSb3p3aRHGm7YzY59U
-         usV6xOr0E0rSRguwVtvoURd3bbfa2mA3Ug+e9KjmCtxnwwyZmpaC9FzQ4RGgTGxI+Zgr
-         +4P4kv1US9FEX3E8b8tcErpj5+2XRHnxbhIXZlBf5NgM5Qg6evyNWd0r8jA/Swyc1lcR
-         /jaGqEqUyFXDS8dUlFons6tEAGPeBIFDMnjbkzJI5mPnihedYtDym8o9sEUDpKMu+HTr
-         9fqxB1kRRupqZmNmvwBXNrCfQm8fqA2bX9lTEjxMYB8Z0fCeXR9nLgANfqXESIe4E9Hv
-         8iew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713371074; x=1713975874;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3WOI+RzbMVLEsygvuyMdeIyAFatAUtSWu8oi4PGxMg4=;
-        b=fsi2ucBI/bUv5QZoFbpxVPbddK2hbfti5ZJgt8IQaaw4PWTNTgOMuFheqJGp6A5OcG
-         gr+B0rnJMGh/yE232twVYF28PCn/DAFiqO6Es/YFXYhAQGJoymwuIT7uprZEIXnMJ3gX
-         mX9EVp7oq0+vjfAm/W7idnyKEPpGDOelrsmELMY0h5xsy+AoEse5mGMLfM6NS7JMiFrv
-         f7iVEaUSVkbD1PsUA574MCmBSheDBC4wNVfTleTmArQkVsTKZTClpAYtpT9Se2ufLiH+
-         HgM5w90GLKAk60BHr9L5FgS7IwNXhpWYSutCb3rPGn1OuIVIPABemBsACn+aEWtGch5k
-         ts9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUTNgK2ecaRinWrknp5+c1VdI5KDRO7eeNNRcEc7XbeuAv6pRh4R0E7Tds9r3vdtKAVKRTlFfJucmla8UyVMEGr31h0lm3k6FlMifbUiHAELYo=
-X-Gm-Message-State: AOJu0Yxwo0I5U1dfHz99C6o5qQShh8lCAn/XvcHjhyJ0UCkaTDAeQZO/
-	NCFDh6wAN4UpEpFiY+OdUpecJgPuwMCFs/GtD1LVMwg74FPsc7ajkxJMeOcr8PSRnmYYOyXA8Qp
-	6Zhtz51tbGu31Jwus9UgPIXOrG/c=
-X-Google-Smtp-Source: AGHT+IFQnHGsRMwv4AUxL+R7AzcZf67YjifD3w2HzOOsEdI4u6wAr+JO4jdO7/yunKcXRQ6CZYzHkIhvHuKgv1BdLgk=
-X-Received: by 2002:a2e:9c4f:0:b0:2d8:408c:3f5b with SMTP id
- t15-20020a2e9c4f000000b002d8408c3f5bmr11619304ljj.5.1713371073507; Wed, 17
- Apr 2024 09:24:33 -0700 (PDT)
+	s=arc-20240116; t=1713379273; c=relaxed/simple;
+	bh=Ru7UYv/AeIgZXVSt5LnPpEnVAeH0fF5Fi5Cs5IYnadY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IZ2c9K1o6SQsMo/XRM979IRcWFUJQGbxUxN1YbcyQpACCUDmOLjHuK9YqNsJ046mAQhBDA86qYTkBdg+tvXf1ZqxlV5bm1iXGwBk0CyHhMhaIgoh1KjZ2JeFK24GV1YDKQ38fZn4QFP9Qy3Hq5hcLuL0Ggh/28PfOhJ+gyzk4fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8BCE640E024C;
+	Wed, 17 Apr 2024 18:41:02 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id GR1CM0GmmCcU; Wed, 17 Apr 2024 18:40:56 +0000 (UTC)
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 754F040E0028;
+	Wed, 17 Apr 2024 18:40:48 +0000 (UTC)
+Date: Wed, 17 Apr 2024 20:40:40 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Uros Bizjak <ubizjak@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Waiman Long <longman@redhat.com>, x86@kernel.org
+Subject: Re: [tip: locking/core] locking/atomic/x86: Introduce
+ arch_try_cmpxchg64_local()
+Message-ID: <20240417184040.GEZiAXqKvw3uRcmTJL@fat_crate.local>
+References: <20240414161257.49145-1-ubizjak@gmail.com>
+ <171312759954.10875.1385994404712358986.tip-bot2@tip-bot2>
+ <20240415201119.GBZh2J57f3aouPE_JR@fat_crate.local>
+ <CAFULd4aFSBHNxyVyVt9soPnJXDgiOu6qCCNMLoenFNXtk0W4wA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240414161257.49145-1-ubizjak@gmail.com> <171312759954.10875.1385994404712358986.tip-bot2@tip-bot2>
- <20240415201119.GBZh2J57f3aouPE_JR@fat_crate.local>
-In-Reply-To: <20240415201119.GBZh2J57f3aouPE_JR@fat_crate.local>
-From: Uros Bizjak <ubizjak@gmail.com>
-Date: Wed, 17 Apr 2024 18:24:21 +0200
-Message-ID: <CAFULd4aFSBHNxyVyVt9soPnJXDgiOu6qCCNMLoenFNXtk0W4wA@mail.gmail.com>
-Subject: Re: [tip: locking/core] locking/atomic/x86: Introduce arch_try_cmpxchg64_local()
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
-	Ingo Molnar <mingo@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Waiman Long <longman@redhat.com>, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAFULd4aFSBHNxyVyVt9soPnJXDgiOu6qCCNMLoenFNXtk0W4wA@mail.gmail.com>
 
-On Mon, Apr 15, 2024 at 10:12=E2=80=AFPM Borislav Petkov <bp@alien8.de> wro=
-te:
+On Wed, Apr 17, 2024 at 06:24:21PM +0200, Uros Bizjak wrote:
+> We are dealing with locking primitives, probably the hottest part of
+> the kernel. For 64-bits, the patch is effectively a couple of lines,
+> reusing and extending existing macros,
 
-> > locking/atomic/x86: Introduce arch_try_cmpxchg64_local()
-> >
-> > Introduce arch_try_cmpxchg64_local() for 64-bit and 32-bit targets
-> > to improve code using cmpxchg64_local().  On 64-bit targets, the
-> > generated assembly improves from:
-> >
-> >     3e28:     31 c0                   xor    %eax,%eax
-> >     3e2a:     4d 0f b1 7d 00          cmpxchg %r15,0x0(%r13)
-> >     3e2f:     48 85 c0                test   %rax,%rax
-> >     3e32:     0f 85 9f 00 00 00       jne    3ed7 <...>
-> >
-> > to:
-> >
-> >     3e28:     31 c0                   xor    %eax,%eax
-> >     3e2a:     4d 0f b1 7d 00          cmpxchg %r15,0x0(%r13)
-> >     3e2f:     0f 85 9f 00 00 00       jne    3ed4 <...>
-> >
-> > where a TEST instruction after CMPXCHG is saved.  The improvements
-> > for 32-bit targets are even more noticeable, because double-word
-> > compare after CMPXCHG8B gets eliminated.
->
-> Ok, maybe I'm missing the point here or maybe the commit message doesn't
-> explain but how does this big diffstat justify one less insn?
+Ok.
 
-We are dealing with locking primitives, probably the hottest part of
-the kernel. For 64-bits, the patch is effectively a couple of lines,
-reusing and extending existing macros, the line count for a modern
-32-bit target is also a couple of lines, but there the saved insn
-count is much higher, around 10 instructions.
+> the line count for a modern 32-bit target is also a couple of lines,
+> but there the saved insn count is much higher, around 10 instructions.
 
-What bothers you is the line count of cmpxchg8b emulation, necessary
-to handle !CONFIG_X86_CMPXCHG64 targets. They are still alive, and
-cmpxchg8b emulation code was recently improved (not by me!) to
-correctly handle the ZF flag. The added code just builds on that.
+Yah, that __arch_try_cmpxchg64_emu_local() thing with yet another
+alternative in there. So that's not a couple of lines - it is yet
+another cryptic alternative we need to pay attention to.
 
-> And no, 32-bit doesn't matter.
+> Really? Was this decision reached by the community consensus?
 
-Really? Was this decision reached by the community consensus?
+Nothing official. Unofficially, we don't care.
 
-The linux kernel has many uses, and using it for servers by a big
-company, you are the voice of, is only one part of the whole picture.
-I'm sure that 32-bit is quite relevant for embedded users and more
-than relevant to a student or an enthusiast in some remote part of the
-world. As a maintainer, you should also take care of the communities
-that are somehow neglected, where unilateral decisions like the one
-above can have unwanted consequences.
+> The linux kernel has many uses, and using it for servers by a big
+> company, you are the voice of,
 
-> This looks like too crazy micro-optimization to me to be worth the 40
-> insertions.
+No, here I'm wearing my maintainer hat.
 
-If the line count is the problem, I can easily parametrize new and
-existing big macro descriptions in a follow-up patch. However, I was
-advised to not mix everything together in one patch, but rest assured,
-the creation and testing of the follow-up patch would take me less
-time than writing the message you are reading.
+> I'm sure that 32-bit is quite relevant for embedded users and more
 
-> But I could be wrong and I'd gladly read explanations for why I am.
+People keep dangling those "embedded users" each time. Which users are
+those? I haven't seen anyone complaining about 32-bit kernels being
+broken or testing them. Because we keep breaking them and no one
+notices. Maybe that's a sign for how much they're used.
 
-I would understand if someone asked you to write some new
-functionality for a seemingly obsolete target. Everybody would
-understand your rejection. But this improvement was written by me in
-my time, and demonstrated some benefit to the existing code. The patch
-is almost trivial and it took maybe 5 minutes of the maintainer's time
-to approve it. It brings no future maintenance burden, but it perhaps
-improves someone's life a tiny bit.
+Although, I broke 32-bit recently and people caught it so there are some
+straddlers from time to time. But that's very seldom. And each time we
+tell them to switch to 64-bit.
 
-Last, but not least, I'm bringing some ideas from the compiler
-development community, where the attitude to redundant instructions is
-totally different. It could take weeks of effort and considerable
-rewrite of compiler functionality just to remove one instruction ;)
-Micro-optimizations add up!
+> than relevant to a student or an enthusiast in some remote part of the
+> world.
 
-Thanks for reading this,
-Uros.
+Trust me, they have 64-bit CPUs. Most of the 32-bit CPUs they had are
+probably dead already. Like mine.
+
+32-bit only CPUs like P4, for example, should be trashed just because
+they're contributing to global warming. :-P
+
+> As a maintainer, you should also take care of the communities
+> that are somehow neglected, where unilateral decisions like the one
+> above can have unwanted consequences.
+
+We still keep 32-bit kernels alive - no one has dropped them yet - we
+just don't add new features.
+
+> If the line count is the problem, I can easily parametrize new and
+> existing big macro descriptions in a follow-up patch. However, I was
+> advised to not mix everything together in one patch, but rest assured,
+> the creation and testing of the follow-up patch would take me less
+> time than writing the message you are reading.
+
+I'm simply making sure we're not going off the rails with
+micro-optimizing for no apparent reason.
+
+Saving a
+
+	test   %rax,%rax
+
+doesn't need fixing in my book. Because I don't think you'll be able to
+even measure it.
+
+> It brings no future maintenance burden, but it perhaps improves
+> someone's life a tiny bit.
+
+This is where you and I disagree: touching that alternative in
+__arch_try_cmpxchg64_emu_local() does as we tend to change them from
+time to time, especially in recent times.
+
+And I wouldn't mind touching it but if it is there to save 10 insns on
+32-bit - which doesn't matter - then why bother?
+
+Or do you have a relevant 32-bit workload which brings any improvement
+by this change?
+
+> Last, but not least, I'm bringing some ideas from the compiler
+> development community, where the attitude to redundant instructions is
+> totally different. It could take weeks of effort and considerable
+> rewrite of compiler functionality just to remove one instruction ;)
+> Micro-optimizations add up!
+
+I'm sure but they all need to be weighed in. Zapping a TEST REG,REG is
+not worth it. On most machines, that ALU insn executes in 1 cycle.
+
+I wanna say, such "optimizations" should be checked by benchmarks to see
+whether they even give any improvements but we can't check every patch.
+
+IOW, all the patches we're adding should answer the "Is it really worth
+the effort?" question. And don't forget that "it brings no future
+maintenance burden" is wrong. It brings a maintenance burden every time
+we refactor the kernel. And we do that all the time. So the more sites
+you have to touch, the more it adds up.
+
+So even if your patch saves 10 insns but there's not a single workload
+where it matters, then don't bother. There are other, lower hanging
+fruits we need to tackle first.
+
+> Thanks for reading this,
+
+Thanks for taking the time to explain how you're seeing it.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
