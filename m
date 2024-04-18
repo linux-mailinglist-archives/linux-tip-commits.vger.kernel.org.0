@@ -1,99 +1,140 @@
-Return-Path: <linux-tip-commits+bounces-1096-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1097-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F6A8A97F0
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Apr 2024 12:55:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF6F48A9EA6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Apr 2024 17:39:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 169572821F5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Apr 2024 10:55:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E06071C22163
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Apr 2024 15:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE9B15DBA1;
-	Thu, 18 Apr 2024 10:54:21 +0000 (UTC)
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C2A16D4C0;
+	Thu, 18 Apr 2024 15:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oXLB5sN0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oUbLhnlm"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC08715AAA5;
-	Thu, 18 Apr 2024 10:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC894D9E8;
+	Thu, 18 Apr 2024 15:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713437661; cv=none; b=p3P9iID+q4lvz/Sir8qo4+OOq2/RnjpLfaB7n1Rxvpg9LyULsJGub0SKEoIDEw6MTOqKgpKElMRcGFA9rslD4wClTLgxympEESQv0H94M2TtUypFncBaiRbirWtIX+l+8VzmRISNMnKb9wkW4W5e763tXbiz38FTxNTf0q4ojsw=
+	t=1713454742; cv=none; b=LOE2264RrTi0EwgbB2z6HCc0ownWq8TEO+15IdLPmBHynrW7RZnOYW8/ipUsEVsEeVMzdzKP7RThNVJN7KbIKJ3Ovlx4Plc5VQxpxq4lLMwnOmCs7aM1/Izaxe0R1lfmWOETrKoEbLBTRDfNq884zTyVWmbiz5IwZwCF7p5bS0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713437661; c=relaxed/simple;
-	bh=QXRpT+CBg+12o9QiybFt9P2/DxbFd4uWsWG/3lfHQs0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=e44LsdDpF1pLP75UfcxPiTyFyovo6Wwv7qZTjozQTzbG66DFpcXq76CEtomD6aus/o8BTHF4PFpGu/MpDgk80M3Dpu8OXxKx6GlZIJcvynJg4STVI2+VD0p5O2oye4PEDrrLpE6akvxgxASQgEl76Y+YjU2+iZ7gZ+iUGUNkQJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A454440E02A8;
-	Thu, 18 Apr 2024 10:54:16 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id x14-0CbjA4uj; Thu, 18 Apr 2024 10:54:12 +0000 (UTC)
-Received: from [IPv6:::1] (unknown [IPv6:2a02:3038:203:4169:60e3:2ca7:1d6e:8d5b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 77DE940E0187;
-	Thu, 18 Apr 2024 10:54:05 +0000 (UTC)
-Date: Thu, 18 Apr 2024 12:54:00 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Uros Bizjak <ubizjak@gmail.com>
-CC: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
- Ingo Molnar <mingo@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Waiman Long <longman@redhat.com>, x86@kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Btip=3A_locking/core=5D_locking/atomic/x?=
- =?US-ASCII?Q?86=3A_Introduce_arch=5Ftry=5Fcmpxchg64=5Flocal=28=29?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAFULd4b8kRgy0p3pKwheLRHx7rX+4RuY-45_Zt-CCj5sCpGjCw@mail.gmail.com>
-References: <20240414161257.49145-1-ubizjak@gmail.com> <171312759954.10875.1385994404712358986.tip-bot2@tip-bot2> <20240415201119.GBZh2J57f3aouPE_JR@fat_crate.local> <CAFULd4aFSBHNxyVyVt9soPnJXDgiOu6qCCNMLoenFNXtk0W4wA@mail.gmail.com> <20240417184040.GEZiAXqKvw3uRcmTJL@fat_crate.local> <CAFULd4b8kRgy0p3pKwheLRHx7rX+4RuY-45_Zt-CCj5sCpGjCw@mail.gmail.com>
-Message-ID: <F0416322-2D03-408E-BC77-E68F024DF3EF@alien8.de>
+	s=arc-20240116; t=1713454742; c=relaxed/simple;
+	bh=I0N7vqLgwx/ovzLroPQMJTt+Vv+sX7iT2xBPYrabm9g=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=gmFAuzUTVdMXxWG/uRfCSVMbgJZHd20n0OgJT5xYWwkFdBZfiHB70HavOwgUikWAdl8GGM3lARZLHn05mH3GrQNxtyhSWrO10gU8SwJPa9Wdj5qEpP1ca7FdzfQq4ut1UmfU9i46RAso09E1QcxignTPkF6dsjGD39gciC9JMoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oXLB5sN0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oUbLhnlm; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 18 Apr 2024 15:38:55 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713454736;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IvA/t2jivurkcDV9sAhbbUx0Y5eX5ZVHrL8eAhn+ZGA=;
+	b=oXLB5sN0DjlOz9owHsXsC++DrBVu9Lql6/WdYKQ8ao+ePVuTgM27zaN3PFxrLoZnKtvVPH
+	5igLlrcHyCl8Z2Wbfp5oDc+g9qonWyYwACWhFtD2JAK9X8evHcflOAXLv6oeEl6/Bmbj3y
+	FzGB/38eRhoqUxapRav33K1VRXTHQZ9TEv/0Q53K7PdgeOmsZfOtQClpGwMk5YncPCln2A
+	vn2M0tMxKEbs5SiWo0ZNK4OkdKUZ5UMrFJvLpLhvUCULDdsRiqLJbA06a053ekiwx+nM+c
+	6m2dAXvnn8iss5M1izHCUNi5a3h6YqVyblHZ8XkA9L5LFQpO1z+WzgjculGb0g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713454736;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IvA/t2jivurkcDV9sAhbbUx0Y5eX5ZVHrL8eAhn+ZGA=;
+	b=oUbLhnlm7boHJKXg6gAolFtjpQ+xHAFnAsCvL5LuS76rKyRPA7ndvpozRgQpgEw76Pp1pr
+	yKAIULJjE41DqFAA==
+From: "tip-bot2 for Eric Biggers" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/cpufeatures: Fix dependencies for GFNI, VAES,
+ and VPCLMULQDQ
+Cc: Eric Biggers <ebiggers@google.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240417060434.47101-1-ebiggers@kernel.org>
+References: <20240417060434.47101-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <171345473538.10875.3268830377740163335.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On April 17, 2024 9:21:29 PM GMT+02:00, Uros Bizjak <ubizjak@gmail=2Ecom> w=
-rote:
->The above is perhaps a little unfortunate example taken from
->
->if (cmpxchg64(=2E=2E=2E))
->
->where the check is against zero=2E The compiler can optimize the check
->to a TEST insn in this particular case, but otherwise CMP will be
->emitted for different usages=2E Not a big difference, but a register has
->to be kept live across cmpxchg8b=2E
->
-=2E=2E=2E
->
->There is one important issue=2E When a register (or two for double-word
->values) has to be kept live for a compare, the register pressure on
->32bit targets around cmpxchg8b goes through the roof, and when using
->the frame pointer (and maybe some fixed register, e=2Eg=2E PIC), the
->register allocator runs out of available registers=2E The number of
->spills around cmpxchg8b signals the troubles register allocator goes
->through to "fix" everything, so from the compiler PoV any relief is
->more than welcome here=2E Even in GCC internal libraries, we have had to
->take a special approach with this insn to avoid internal compiler
->errors=2E The kernel was quite lucky here ;)
+The following commit has been merged into the x86/urgent branch of tip:
 
-That would've been a lot better reason to justify the change=2E I think yo=
-u should put those things in the commit messages=2E
+Commit-ID:     9543f6e26634537997b6e909c20911b7bf4876de
+Gitweb:        https://git.kernel.org/tip/9543f6e26634537997b6e909c20911b7bf4876de
+Author:        Eric Biggers <ebiggers@google.com>
+AuthorDate:    Tue, 16 Apr 2024 23:04:34 -07:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 18 Apr 2024 17:27:52 +02:00
 
-Thx=2E
+x86/cpufeatures: Fix dependencies for GFNI, VAES, and VPCLMULQDQ
 
+Fix cpuid_deps[] to list the correct dependencies for GFNI, VAES, and
+VPCLMULQDQ.  These features don't depend on AVX512, and there exist CPUs
+that support these features but not AVX512.  GFNI actually doesn't even
+depend on AVX.
 
---=20
-Sent from a small device: formatting sucks and brevity is inevitable=2E 
+This prevents GFNI from being unnecessarily disabled if AVX is disabled
+to mitigate the GDS vulnerability.
+
+This also prevents all three features from being unnecessarily disabled
+if AVX512VL (or its dependency AVX512F) were to be disabled, but it
+looks like there isn't any case where this happens anyway.
+
+Fixes: c128dbfa0f87 ("x86/cpufeatures: Enable new SSE/AVX/AVX512 CPU features")
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240417060434.47101-1-ebiggers@kernel.org
+---
+ arch/x86/kernel/cpu/cpuid-deps.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+index b717420..946813d 100644
+--- a/arch/x86/kernel/cpu/cpuid-deps.c
++++ b/arch/x86/kernel/cpu/cpuid-deps.c
+@@ -44,7 +44,10 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_F16C,			X86_FEATURE_XMM2,     },
+ 	{ X86_FEATURE_AES,			X86_FEATURE_XMM2      },
+ 	{ X86_FEATURE_SHA_NI,			X86_FEATURE_XMM2      },
++	{ X86_FEATURE_GFNI,			X86_FEATURE_XMM2      },
+ 	{ X86_FEATURE_FMA,			X86_FEATURE_AVX       },
++	{ X86_FEATURE_VAES,			X86_FEATURE_AVX       },
++	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX       },
+ 	{ X86_FEATURE_AVX2,			X86_FEATURE_AVX,      },
+ 	{ X86_FEATURE_AVX512F,			X86_FEATURE_AVX,      },
+ 	{ X86_FEATURE_AVX512IFMA,		X86_FEATURE_AVX512F   },
+@@ -56,9 +59,6 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_AVX512VL,			X86_FEATURE_AVX512F   },
+ 	{ X86_FEATURE_AVX512VBMI,		X86_FEATURE_AVX512F   },
+ 	{ X86_FEATURE_AVX512_VBMI2,		X86_FEATURE_AVX512VL  },
+-	{ X86_FEATURE_GFNI,			X86_FEATURE_AVX512VL  },
+-	{ X86_FEATURE_VAES,			X86_FEATURE_AVX512VL  },
+-	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX512VL  },
+ 	{ X86_FEATURE_AVX512_VNNI,		X86_FEATURE_AVX512VL  },
+ 	{ X86_FEATURE_AVX512_BITALG,		X86_FEATURE_AVX512VL  },
+ 	{ X86_FEATURE_AVX512_4VNNIW,		X86_FEATURE_AVX512F   },
 
