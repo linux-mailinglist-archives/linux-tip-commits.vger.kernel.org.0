@@ -1,142 +1,138 @@
-Return-Path: <linux-tip-commits+bounces-1093-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1094-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CE48A8C07
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 21:21:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4DE8A957F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Apr 2024 10:59:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2DA2286ED5
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Apr 2024 19:21:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AF3DB2268F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Apr 2024 08:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C1F24B21;
-	Wed, 17 Apr 2024 19:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F9215AAA6;
+	Thu, 18 Apr 2024 08:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ryaf6MX2"
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K4U0P0ba";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6akd4Mxd"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542571CD38;
-	Wed, 17 Apr 2024 19:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3BF15AAA4;
+	Thu, 18 Apr 2024 08:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713381704; cv=none; b=dRssHpZmIeoPiC4BHh7Ny+3StZHXeQsXTq2C6l3U6KK8H6MHv0YVZ50Cucui9YAdGWVOKk/sSJpZznd4vel55MH1a7HXDdqJB+Nx3YMhyvTbVj+kBmr9GhOalpE4WrPBoN/X9GhoJIJlXbxNaMwCi+PviSOkO8bp1EOiXnpLztU=
+	t=1713430750; cv=none; b=fENZXcz9jHlU4bZlwgslCjowzA5CUSaXg1FN/jR7/s3ZKH6DZCLLG3WM7jWd1ER009XAiBllkyNjEVF43q5hnhnTT4AxzB+vCY84HZ6aIpwkuiXUZmBoMvfZPh4Iyz7tHb+JdJn3WRe+RBg8+GJ3c4os3rQ8W5mlijUipN7gtdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713381704; c=relaxed/simple;
-	bh=wVjPG3014MVAYdrd+COut7DaylrR6d606rWJWXDaurs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OsMKYP2dKV7FMlWP4dM5lBiXreO5OnZEtcFgoNndlRBwEKRxgMRioGncWeOySZT0S0YHMRVewl4wCI8QsxBqZDOZcn3+Ihns6gzdKADTndLIZCVff8be7TBuDGzb/lQ7khpAnw5H1TtC8N6sFGhC/ESl1BlZI91yWUQ96jjPyts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ryaf6MX2; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2db101c11feso1016291fa.0;
-        Wed, 17 Apr 2024 12:21:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713381701; x=1713986501; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cL+IxItw+NlxsTFv09kI71KrI9rXuCjstbHDz2H2mLI=;
-        b=Ryaf6MX2mtjx30OCVVkH2gfynErdhD95uR4i0JP0HwD2LvxcBnMIhzKtDzlZdg0/HB
-         RkXI4hdxosA+0iR0IYmwi9OP5iFXYifn0dODhmWln/ZFnhWNiT0hv7NanpHQe7TURvm4
-         jwG0zZAX79KikogoEjU4E2kyn58ZjVvb7Gc3atndlMNJt46+tFpxOnc8lRiZvGhGofww
-         mjMQAn0jyS9Bhb2T+r2VXeCsXiPgvA8ks19XAn0njZnUeSB/oxVMOKp9UNs9bmRDIlE6
-         iiGvf20GaRRyO9Ijd/AJz/2C+jHzi2zK72jMP1fxgqQMdrdRXbtSxcGjnKCyMeQXR++X
-         TTFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713381701; x=1713986501;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cL+IxItw+NlxsTFv09kI71KrI9rXuCjstbHDz2H2mLI=;
-        b=Eiv6aJ8gg9KvsTlchLthNLhYUe4HNK25ny+/KfPCme0z7Dfxjg5VcTSQhoSF/I/SmG
-         WBVG1WUugKP0IGoqIPy2NxPV6wjHnmiam+mEqchsBceeGPiKTVxweX+V0UHFrj+/lkKW
-         giRvf8f9aZiNuiXdqz4KFDHZ7o5+UhRxUlFj+5WbV2edOnihV1DCyP4wRG7VMqfRHknT
-         BmyJaR9pAVWWVRjrajWfFbNsm3zOZzWa4h1pKOv0zChrh1yxNiXB9qgluhOIa3TumF46
-         DQWS6YaJe8pQiCYztpM8dfB/8lSU++8eMKKuMkBKWKTo5fZaG8KqqY0f9MNz9YF6g3YN
-         9PEg==
-X-Forwarded-Encrypted: i=1; AJvYcCUxAYZ/BqguVNal9fFCc0zRS/iDvuDQSof+78n5J6TZf9Q3O/565NmEbZxrXox1CWhcBDL2Ek646pwBxiHaNrXg45k9RaAJIgmSTBhVPbThQaI=
-X-Gm-Message-State: AOJu0Yw/UcFBw0wYbOkyXg+uUTuCeqR8TP/2Xp6XNelBvuRBgeQLp+D7
-	I2mwwS3FJqs2/OC23T9Nv3isXm76P+5hzNNpnbMd+PwIyHG5JFlGxaN6t61yRrAJD9UAGkBuZZs
-	IKbm7mrrnE99omWbYal+78Q3TNTg=
-X-Google-Smtp-Source: AGHT+IE+dn1+BiC5HRFISePkl+JlKbtUp8WFd3e+zMtV4AQ006m3tGlALuUK/FOuVkyav3qxNtEic0kVPRyneibZka0=
-X-Received: by 2002:a2e:a28c:0:b0:2da:7944:9521 with SMTP id
- k12-20020a2ea28c000000b002da79449521mr10390lja.25.1713381701276; Wed, 17 Apr
- 2024 12:21:41 -0700 (PDT)
+	s=arc-20240116; t=1713430750; c=relaxed/simple;
+	bh=tkveMfw/zqlF+5IcwqNPbU5PReiD4uUyTp5l8aRY+B8=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=iv/yVSRE495cQYq0omaTDIrr7XoIHR84dyRt/ckNMLp9/vxEIzJBr2tw5xEPFaB3k1BlmXxnvmXw2hGxmXgCMqWuMvA1GE/zKOAnXTg8FFzvrtDKsIXIqbgeldvc8kn8z992E2ozFWPHjQ1mdH0YenMr6OUswtj5DX+y0BPnRF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K4U0P0ba; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6akd4Mxd; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 18 Apr 2024 08:59:06 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713430747;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sa2awveOSUbd2VDTato0L3LcO727x7iaOZh9zyeapOk=;
+	b=K4U0P0baneN3iPnitHAMt4pPOJF4GY6m4wxKeJ2CjsUvTqDTlM4A0hCbBkiH0v2WG59nPq
+	CcFdkJxxwpR00bGIdjxtryHoGS8rNME869aX2hPlbj5JO7CIYi1Dh4QDBZxWQuamkClroO
+	hjEXUosG3AX1WfAAeFYCMDrIp/f7iSz5c7KGjA9cOzY4PDKN6EfA5AlWizHNo4jXNlHw7C
+	0JP8rR2xv8yjy2yWK97zq8ei89RaqNV9WERruam9aCtySYxIJOQyMrJhd9RLC7OAd0utkZ
+	Q9j3zE4Dl8Qqo2ywcNzkZjJ6dfGHsQr3rjyMabA7foYJFJtC7MduRseTaFEy+w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713430747;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sa2awveOSUbd2VDTato0L3LcO727x7iaOZh9zyeapOk=;
+	b=6akd4MxdDPmeHGy01Prs6bHoa4/ik9NyjqKFskIxX0WkhceSQC6El3SJUYoMkGSkKIhYcC
+	PXzl4kEDGTCrA4Bw==
+From: "tip-bot2 for Hou Wenlong" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/fred: Fix incorrect error code printout in
+ fred_bad_type()
+Cc: Hou Wenlong <houwenlong.hwl@antgroup.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>,
+ "H. Peter Anvin (Intel)" <hpa@zytor.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3Cb2a8f0a41449d25240e314a2ddfbf6549511fb04=2E17133?=
+ =?utf-8?q?53612=2Egit=2Ehouwenlong=2Ehwl=40antgroup=2Ecom=3E?=
+References: =?utf-8?q?=3Cb2a8f0a41449d25240e314a2ddfbf6549511fb04=2E171335?=
+ =?utf-8?q?3612=2Egit=2Ehouwenlong=2Ehwl=40antgroup=2Ecom=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240414161257.49145-1-ubizjak@gmail.com> <171312759954.10875.1385994404712358986.tip-bot2@tip-bot2>
- <20240415201119.GBZh2J57f3aouPE_JR@fat_crate.local> <CAFULd4aFSBHNxyVyVt9soPnJXDgiOu6qCCNMLoenFNXtk0W4wA@mail.gmail.com>
- <20240417184040.GEZiAXqKvw3uRcmTJL@fat_crate.local>
-In-Reply-To: <20240417184040.GEZiAXqKvw3uRcmTJL@fat_crate.local>
-From: Uros Bizjak <ubizjak@gmail.com>
-Date: Wed, 17 Apr 2024 21:21:29 +0200
-Message-ID: <CAFULd4b8kRgy0p3pKwheLRHx7rX+4RuY-45_Zt-CCj5sCpGjCw@mail.gmail.com>
-Subject: Re: [tip: locking/core] locking/atomic/x86: Introduce arch_try_cmpxchg64_local()
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
-	Ingo Molnar <mingo@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Waiman Long <longman@redhat.com>, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <171343074601.10875.15730658639010324110.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 17, 2024 at 8:41=E2=80=AFPM Borislav Petkov <bp@alien8.de> wrot=
-e:
+The following commit has been merged into the x86/urgent branch of tip:
 
-> > If the line count is the problem, I can easily parametrize new and
-> > existing big macro descriptions in a follow-up patch. However, I was
-> > advised to not mix everything together in one patch, but rest assured,
-> > the creation and testing of the follow-up patch would take me less
-> > time than writing the message you are reading.
->
-> I'm simply making sure we're not going off the rails with
-> micro-optimizing for no apparent reason.
->
-> Saving a
->
->         test   %rax,%rax
->
-> doesn't need fixing in my book. Because I don't think you'll be able to
-> even measure it.
+Commit-ID:     a4b37f5033fa812f02f3b7bd1242393d347ba791
+Gitweb:        https://git.kernel.org/tip/a4b37f5033fa812f02f3b7bd1242393d347ba791
+Author:        Hou Wenlong <houwenlong.hwl@antgroup.com>
+AuthorDate:    Wed, 17 Apr 2024 19:34:25 +08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 18 Apr 2024 10:47:17 +02:00
 
-The above is perhaps a little unfortunate example taken from
+x86/fred: Fix incorrect error code printout in fred_bad_type()
 
-if (cmpxchg64(...))
+regs->orig_ax has been set to -1 on entry so in the printout,
+fred_bad_type() should use the passed parameter error_code.
 
-where the check is against zero. The compiler can optimize the check
-to a TEST insn in this particular case, but otherwise CMP will be
-emitted for different usages. Not a big difference, but a register has
-to be kept live across cmpxchg8b.
+Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
+Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Link: https://lore.kernel.org/r/b2a8f0a41449d25240e314a2ddfbf6549511fb04.1713353612.git.houwenlong.hwl@antgroup.com
+---
+ arch/x86/entry/entry_fred.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-> > It brings no future maintenance burden, but it perhaps improves
-> > someone's life a tiny bit.
->
-> This is where you and I disagree: touching that alternative in
-> __arch_try_cmpxchg64_emu_local() does as we tend to change them from
-> time to time, especially in recent times.
->
-> And I wouldn't mind touching it but if it is there to save 10 insns on
-> 32-bit - which doesn't matter - then why bother?
->
-> Or do you have a relevant 32-bit workload which brings any improvement
-> by this change?
-
-There is one important issue. When a register (or two for double-word
-values) has to be kept live for a compare, the register pressure on
-32bit targets around cmpxchg8b goes through the roof, and when using
-the frame pointer (and maybe some fixed register, e.g. PIC), the
-register allocator runs out of available registers. The number of
-spills around cmpxchg8b signals the troubles register allocator goes
-through to "fix" everything, so from the compiler PoV any relief is
-more than welcome here. Even in GCC internal libraries, we have had to
-take a special approach with this insn to avoid internal compiler
-errors. The kernel was quite lucky here ;)
-
-Thanks and best regards,
-Uros.
+diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
+index 9fa18b8..89c1476 100644
+--- a/arch/x86/entry/entry_fred.c
++++ b/arch/x86/entry/entry_fred.c
+@@ -28,9 +28,9 @@ static noinstr void fred_bad_type(struct pt_regs *regs, unsigned long error_code
+ 	if (regs->fred_cs.sl > 0) {
+ 		pr_emerg("PANIC: invalid or fatal FRED event; event type %u "
+ 			 "vector %u error 0x%lx aux 0x%lx at %04x:%016lx\n",
+-			 regs->fred_ss.type, regs->fred_ss.vector, regs->orig_ax,
++			 regs->fred_ss.type, regs->fred_ss.vector, error_code,
+ 			 fred_event_data(regs), regs->cs, regs->ip);
+-		die("invalid or fatal FRED event", regs, regs->orig_ax);
++		die("invalid or fatal FRED event", regs, error_code);
+ 		panic("invalid or fatal FRED event");
+ 	} else {
+ 		unsigned long flags = oops_begin();
+@@ -38,10 +38,10 @@ static noinstr void fred_bad_type(struct pt_regs *regs, unsigned long error_code
+ 
+ 		pr_alert("BUG: invalid or fatal FRED event; event type %u "
+ 			 "vector %u error 0x%lx aux 0x%lx at %04x:%016lx\n",
+-			 regs->fred_ss.type, regs->fred_ss.vector, regs->orig_ax,
++			 regs->fred_ss.type, regs->fred_ss.vector, error_code,
+ 			 fred_event_data(regs), regs->cs, regs->ip);
+ 
+-		if (__die("Invalid or fatal FRED event", regs, regs->orig_ax))
++		if (__die("Invalid or fatal FRED event", regs, error_code))
+ 			sig = 0;
+ 
+ 		oops_end(flags, regs, sig);
 
