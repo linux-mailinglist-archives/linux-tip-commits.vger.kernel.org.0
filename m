@@ -1,140 +1,101 @@
-Return-Path: <linux-tip-commits+bounces-1097-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1098-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6F48A9EA6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Apr 2024 17:39:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14E88ABB4E
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 20 Apr 2024 13:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E06071C22163
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Apr 2024 15:39:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7139E1F212AE
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 20 Apr 2024 11:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C2A16D4C0;
-	Thu, 18 Apr 2024 15:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oXLB5sN0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oUbLhnlm"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6542F2746A;
+	Sat, 20 Apr 2024 11:21:03 +0000 (UTC)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC894D9E8;
-	Thu, 18 Apr 2024 15:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EB6179A8;
+	Sat, 20 Apr 2024 11:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713454742; cv=none; b=LOE2264RrTi0EwgbB2z6HCc0ownWq8TEO+15IdLPmBHynrW7RZnOYW8/ipUsEVsEeVMzdzKP7RThNVJN7KbIKJ3Ovlx4Plc5VQxpxq4lLMwnOmCs7aM1/Izaxe0R1lfmWOETrKoEbLBTRDfNq884zTyVWmbiz5IwZwCF7p5bS0s=
+	t=1713612063; cv=none; b=jUaWhQ7sk9BDq6rt4ObnwMrF/CkwQZrX5z6WCdggkjw3Gfgr0nUZS+L35yZFG6dRcvWb3dC35s3RUj8nAucEuRS2IDnZRYDwuSGIdPK7l/eZdGVddLq8eeLw4NnMwiS52bohL8TgvCtdYSbWNnK2dDYHjpXSbI/WL9L/36XzxQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713454742; c=relaxed/simple;
-	bh=I0N7vqLgwx/ovzLroPQMJTt+Vv+sX7iT2xBPYrabm9g=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=gmFAuzUTVdMXxWG/uRfCSVMbgJZHd20n0OgJT5xYWwkFdBZfiHB70HavOwgUikWAdl8GGM3lARZLHn05mH3GrQNxtyhSWrO10gU8SwJPa9Wdj5qEpP1ca7FdzfQq4ut1UmfU9i46RAso09E1QcxignTPkF6dsjGD39gciC9JMoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oXLB5sN0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oUbLhnlm; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 18 Apr 2024 15:38:55 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713454736;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IvA/t2jivurkcDV9sAhbbUx0Y5eX5ZVHrL8eAhn+ZGA=;
-	b=oXLB5sN0DjlOz9owHsXsC++DrBVu9Lql6/WdYKQ8ao+ePVuTgM27zaN3PFxrLoZnKtvVPH
-	5igLlrcHyCl8Z2Wbfp5oDc+g9qonWyYwACWhFtD2JAK9X8evHcflOAXLv6oeEl6/Bmbj3y
-	FzGB/38eRhoqUxapRav33K1VRXTHQZ9TEv/0Q53K7PdgeOmsZfOtQClpGwMk5YncPCln2A
-	vn2M0tMxKEbs5SiWo0ZNK4OkdKUZ5UMrFJvLpLhvUCULDdsRiqLJbA06a053ekiwx+nM+c
-	6m2dAXvnn8iss5M1izHCUNi5a3h6YqVyblHZ8XkA9L5LFQpO1z+WzgjculGb0g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713454736;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IvA/t2jivurkcDV9sAhbbUx0Y5eX5ZVHrL8eAhn+ZGA=;
-	b=oUbLhnlm7boHJKXg6gAolFtjpQ+xHAFnAsCvL5LuS76rKyRPA7ndvpozRgQpgEw76Pp1pr
-	yKAIULJjE41DqFAA==
-From: "tip-bot2 for Eric Biggers" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpufeatures: Fix dependencies for GFNI, VAES,
- and VPCLMULQDQ
-Cc: Eric Biggers <ebiggers@google.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240417060434.47101-1-ebiggers@kernel.org>
-References: <20240417060434.47101-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1713612063; c=relaxed/simple;
+	bh=YYJYeIgGcTt5hjQzW0nNz8cFsId94kh4P0NQ5RLRpjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pgi2nkgjbf2PMhaTHNiCPFOZrWR7Kqij+RExCRcO4nDiaOio/py3aiboik9rPJzXy1dJaZ21cGGZ78noHal+DVmH4qRxmVeVeqFqgy/TXwQwUeVM8inIyfOAsW2wG0LXyVu++eluDEmbMLXnXPc0TJbUBzUT/HN88npxfEJxQ4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E5F1040E02A7;
+	Sat, 20 Apr 2024 11:20:59 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id sofCnBTMsFht; Sat, 20 Apr 2024 11:20:54 +0000 (UTC)
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6FA1040E00B2;
+	Sat, 20 Apr 2024 11:20:48 +0000 (UTC)
+Date: Sat, 20 Apr 2024 13:20:42 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: linux-tip-commits@vger.kernel.org, thomas.lendacky@amd.com,
+	michael.roth@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] x86/e820: Expose API to update e820 kexec and
+ firmware tables externally.
+Message-ID: <20240420112042.GMZiOlCoAguq_MHDdx@fat_crate.local>
+References: <cover.1713212104.git.ashish.kalra@amd.com>
+ <511fcdca720d26a977a427bd21c5f2d668313f65.1713212104.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171345473538.10875.3268830377740163335.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <511fcdca720d26a977a427bd21c5f2d668313f65.1713212104.git.ashish.kalra@amd.com>
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Mon, Apr 15, 2024 at 09:09:10PM +0000, Ashish Kalra wrote:
+> -static u64 __init e820__range_update_kexec(u64 start, u64 size, enum e820_type old_type, enum e820_type  new_type)
+> +u64 __init e820__range_update_firmware(u64 start, u64 size, enum e820_type old_type, enum e820_type new_type)
+> +{
+> +	return __e820__range_update(e820_table_firmware, start, size, old_type, new_type);
+> +}
+> +
+> +u64 __init e820__range_update_kexec(u64 start, u64 size, enum e820_type old_type, enum e820_type  new_type)
 
-Commit-ID:     9543f6e26634537997b6e909c20911b7bf4876de
-Gitweb:        https://git.kernel.org/tip/9543f6e26634537997b6e909c20911b7bf4876de
-Author:        Eric Biggers <ebiggers@google.com>
-AuthorDate:    Tue, 16 Apr 2024 23:04:34 -07:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 18 Apr 2024 17:27:52 +02:00
+Yah, no point in defining silly wrappers _kexec() and _firmware() if the
+actual e820 tables are already exported in asm/e820/api.h
 
-x86/cpufeatures: Fix dependencies for GFNI, VAES, and VPCLMULQDQ
+You need a single
 
-Fix cpuid_deps[] to list the correct dependencies for GFNI, VAES, and
-VPCLMULQDQ.  These features don't depend on AVX512, and there exist CPUs
-that support these features but not AVX512.  GFNI actually doesn't even
-depend on AVX.
+e820__range_update_table(struct e820_table *t, ..)
 
-This prevents GFNI from being unnecessarily disabled if AVX is disabled
-to mitigate the GDS vulnerability.
+helper and move all current and future users to it while leaving
+e820__range_update() alone which works on the e820_table.
 
-This also prevents all three features from being unnecessarily disabled
-if AVX512VL (or its dependency AVX512F) were to be disabled, but it
-looks like there isn't any case where this happens anyway.
+As a future cleanup, e820__range_update() should be changed to use the
+new e820__range_update_table() helper and then perhaps all code should
+be converted back to a new
 
-Fixes: c128dbfa0f87 ("x86/cpufeatures: Enable new SSE/AVX/AVX512 CPU features")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240417060434.47101-1-ebiggers@kernel.org
----
- arch/x86/kernel/cpu/cpuid-deps.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+e820__range_update()
 
-diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
-index b717420..946813d 100644
---- a/arch/x86/kernel/cpu/cpuid-deps.c
-+++ b/arch/x86/kernel/cpu/cpuid-deps.c
-@@ -44,7 +44,10 @@ static const struct cpuid_dep cpuid_deps[] = {
- 	{ X86_FEATURE_F16C,			X86_FEATURE_XMM2,     },
- 	{ X86_FEATURE_AES,			X86_FEATURE_XMM2      },
- 	{ X86_FEATURE_SHA_NI,			X86_FEATURE_XMM2      },
-+	{ X86_FEATURE_GFNI,			X86_FEATURE_XMM2      },
- 	{ X86_FEATURE_FMA,			X86_FEATURE_AVX       },
-+	{ X86_FEATURE_VAES,			X86_FEATURE_AVX       },
-+	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX       },
- 	{ X86_FEATURE_AVX2,			X86_FEATURE_AVX,      },
- 	{ X86_FEATURE_AVX512F,			X86_FEATURE_AVX,      },
- 	{ X86_FEATURE_AVX512IFMA,		X86_FEATURE_AVX512F   },
-@@ -56,9 +59,6 @@ static const struct cpuid_dep cpuid_deps[] = {
- 	{ X86_FEATURE_AVX512VL,			X86_FEATURE_AVX512F   },
- 	{ X86_FEATURE_AVX512VBMI,		X86_FEATURE_AVX512F   },
- 	{ X86_FEATURE_AVX512_VBMI2,		X86_FEATURE_AVX512VL  },
--	{ X86_FEATURE_GFNI,			X86_FEATURE_AVX512VL  },
--	{ X86_FEATURE_VAES,			X86_FEATURE_AVX512VL  },
--	{ X86_FEATURE_VPCLMULQDQ,		X86_FEATURE_AVX512VL  },
- 	{ X86_FEATURE_AVX512_VNNI,		X86_FEATURE_AVX512VL  },
- 	{ X86_FEATURE_AVX512_BITALG,		X86_FEATURE_AVX512VL  },
- 	{ X86_FEATURE_AVX512_4VNNIW,		X86_FEATURE_AVX512F   },
+which takes a table as a first argument.
+
+But the cleanup can go in later, after the current issue has been
+resolved.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
