@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1143-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1144-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EECA98B13F7
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 22:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E704D8B13F9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 22:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13C0F1C21348
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 20:04:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BB971C22E98
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 20:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCCE13DB99;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B16313E8B2;
 	Wed, 24 Apr 2024 20:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wz9XJv0W";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KXdqFMSE"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XzOnwIwW";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="08HiiVdH"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4784013BC19;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4779F1BF37;
 	Wed, 24 Apr 2024 20:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713989053; cv=none; b=Nvs5DSBytXS8g4X7e42pkNqqASsWFJemiN6A+q7Tivo6SKWVozvtYia3usxCEJuhVmQLuPenvTDcynPtvhi3jvamYEECk2AWCsy1hTN+AoqhCd3LqgiMx1dFbJoQxJC3yCEfu5prrVjkmuWLmi02opeuHROTfCi28ueItse7+CM=
+	t=1713989053; cv=none; b=cMhQjNBJ1/UTiTR6ELsKC7hPWyJR7pI3WgrVspVSPLDJtkY0gjVjSgRZJEHUriZ+mhblF/qgUQ9TJ9LybucBI0v8N9wb+zUb2NqxTNqn4kk0YDDYB6BdVU32P/u3wT+BHHbgSkmZWKEVYrtqtiCHJRNuE0p/jUxtrhLqU4VlM5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1713989053; c=relaxed/simple;
-	bh=MyUmZ5+g3ZI0Q0bbtPqiW4ngPJcdMwtlwYP70W2Nbu8=;
+	bh=w94XIBk0DaKqMjDZ0Eyy69eu2Ki6DxY5h6cahh+IEZw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=OEvJyfpkldJfeCY2IEXID1UMXAN6qifeBoiLeQoklEMbSRHAj20DtRD+7j5w/9iMaHjKUhN0QOndKj+JIoYQPWCiNmHLezcqcqAzX5ChJrh4RXPX673h8kKg3stjOOyg0s4aYL4PNxKbuWu9RfSf53NlNOmljz7j7dDg/TUhcts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wz9XJv0W; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KXdqFMSE; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=pU+M8jtMSfY/jHEqqOq1tfmbSOaifSKu7iASJHrX8bxCWSU7MVGRLcye8VkQjSnNa74ut/PuKW3YzGPf35kmUSzzsWklQgTc6v/HvrbqE8Gp5jej3t2fUQPJlXzvPXnA1EtmPlcYKirfojBYRqeMsvkEYOCTK9gLova06wiN5zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XzOnwIwW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=08HiiVdH; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Wed, 24 Apr 2024 20:04:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713989046;
+	s=2020; t=1713989047;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Njnox9y9KOk7ouot/auJpS7aOevCMlQLBzCeqpyhSyE=;
-	b=Wz9XJv0WsgPb3IFCYGu12mb1dXOi94auJgv0RPDZbvBzfWIicjGqTerNpTpy2KVR9To+0l
-	abfwMGnvjXWF8dkYQ9UAAXOJ1eP2bVQTArpajslQcFXuyfMIEYzq7KJTqB5AAFaK4CjEOA
-	e9ZpPHWJCnjjHHLEXyKtFzB4bBcwAJT3KaTE+VKYohQVZ3P5pviorYRbUlcG3S/4Ocppg+
-	yL19uzLVmxTRaizwHr0halOyjcgSXnibW7ih9+ntRl7PlNFgJIShKqoPReDrzjXDc977Sv
-	sVY1GcdaCZgPWoQln/l6IVa/CKWHNMF1Ece6cUj3gjp+m5FiHO2DIyQPkuSLnQ==
+	bh=7n5OD7GVj5CfbcvRy5NQoNf4Xal09VkHc+GcS0pq+Qs=;
+	b=XzOnwIwWzHZuEIqsxB6HBLWiHiSOWmnVd0D/JPOh2X+z6rMMXeBg1eFn/1iZnqk56ap1L/
+	/HaY5FDD1mvMRtiyDVg2qrov3ZrHcZF/FuBmA8NBtKYWEgcr9V70wJiOO3vZ07KYltQSSx
+	3E1NyU3jf/PNf62ZdM5c5HuaWoK+OI77jqTZf9tQdbrnfceuTS5RwoiezXHZazFAfh6vFu
+	+DyXSc4/gkTyo0TD0VWTys7ZrJ7AMWW1+Wqt7HFb9ziut+3XgNt3oDJr8pMCwSBMUiDSdN
+	42rA/fDLCYsOOKr9geRSI3SDKfXxCQAQ24FQX+blJSpJ6FLE+v8QShXGO7hX9A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713989046;
+	s=2020e; t=1713989047;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Njnox9y9KOk7ouot/auJpS7aOevCMlQLBzCeqpyhSyE=;
-	b=KXdqFMSEeybeWRPsGeziOqK2b7ZSmaxLw/1s650EkSKl8tcWo5on0Rkmui8nyEfxgSletc
-	UHKzHBaiG3mGqVCQ==
+	bh=7n5OD7GVj5CfbcvRy5NQoNf4Xal09VkHc+GcS0pq+Qs=;
+	b=08HiiVdH2lW4xB8spzUuN8zqhXaLwrYJZRYR/3W2w5KBoxxSTTO2wuNcJS0JUB7xgilBjg
+	JEnjeq6Ez5aDMoCw==
 From: "tip-bot2 for Dawei Li" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/riscv-aplic-direct: Avoid explicit cpumask
- allocation on stack
+Subject: [tip: irq/core] irqchip/gic-v3-its: Avoid explicit cpumask allocation
+ on stack
 Cc: Dawei Li <dawei.li@shingroup.cn>, Thomas Gleixner <tglx@linutronix.de>,
- Anup Patel <anup@brainfault.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240416085454.3547175-6-dawei.li@shingroup.cn>
-References: <20240416085454.3547175-6-dawei.li@shingroup.cn>
+ Marc Zyngier <maz@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240416085454.3547175-4-dawei.li@shingroup.cn>
+References: <20240416085454.3547175-4-dawei.li@shingroup.cn>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171398904657.10875.14129317895055784192.tip-bot2@tip-bot2>
+Message-ID: <171398904698.10875.9923984308673388567.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,51 +81,63 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     5d650d1eba876717888a0951ed873ef0f1d8cf61
-Gitweb:        https://git.kernel.org/tip/5d650d1eba876717888a0951ed873ef0f1d8cf61
+Commit-ID:     fcb8af4cbcd122e33ceeadd347b8866d32035af7
+Gitweb:        https://git.kernel.org/tip/fcb8af4cbcd122e33ceeadd347b8866d32035af7
 Author:        Dawei Li <dawei.li@shingroup.cn>
-AuthorDate:    Tue, 16 Apr 2024 16:54:52 +08:00
+AuthorDate:    Tue, 16 Apr 2024 16:54:50 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 24 Apr 2024 21:23:49 +02:00
 
-irqchip/riscv-aplic-direct: Avoid explicit cpumask allocation on stack
+irqchip/gic-v3-its: Avoid explicit cpumask allocation on stack
 
 In general it's preferable to avoid placing cpumasks on the stack, as
 for large values of NR_CPUS these can consume significant amounts of
 stack space and make stack overflows more likely.
 
-Use cpumask_first_and_and() to avoid the need for a temporary cpumask on
-the stack.
+Remove cpumask var on stack and use cpumask_any_and() to address it.
 
 Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20240416085454.3547175-6-dawei.li@shingroup.cn
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240416085454.3547175-4-dawei.li@shingroup.cn
 
 ---
- drivers/irqchip/irq-riscv-aplic-direct.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/irqchip/irq-riscv-aplic-direct.c b/drivers/irqchip/irq-riscv-aplic-direct.c
-index 06bace9..4a3ffe8 100644
---- a/drivers/irqchip/irq-riscv-aplic-direct.c
-+++ b/drivers/irqchip/irq-riscv-aplic-direct.c
-@@ -54,15 +54,12 @@ static int aplic_direct_set_affinity(struct irq_data *d, const struct cpumask *m
- 	struct aplic_direct *direct = container_of(priv, struct aplic_direct, priv);
- 	struct aplic_idc *idc;
- 	unsigned int cpu, val;
--	struct cpumask amask;
- 	void __iomem *target;
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index fca888b..20f9542 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3826,9 +3826,9 @@ static int its_vpe_set_affinity(struct irq_data *d,
+ 				bool force)
+ {
+ 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
+-	struct cpumask common, *table_mask;
++	unsigned int from, cpu = nr_cpu_ids;
++	struct cpumask *table_mask;
+ 	unsigned long flags;
+-	int from, cpu;
  
--	cpumask_and(&amask, &direct->lmask, mask_val);
--
- 	if (force)
--		cpu = cpumask_first(&amask);
-+		cpu = cpumask_first_and(&direct->lmask, mask_val);
- 	else
--		cpu = cpumask_any_and(&amask, cpu_online_mask);
-+		cpu = cpumask_first_and_and(&direct->lmask, mask_val, cpu_online_mask);
+ 	/*
+ 	 * Changing affinity is mega expensive, so let's be as lazy as
+@@ -3850,10 +3850,15 @@ static int its_vpe_set_affinity(struct irq_data *d,
+ 	 * If we are offered another CPU in the same GICv4.1 ITS
+ 	 * affinity, pick this one. Otherwise, any CPU will do.
+ 	 */
+-	if (table_mask && cpumask_and(&common, mask_val, table_mask))
+-		cpu = cpumask_test_cpu(from, &common) ? from : cpumask_first(&common);
+-	else
++	if (table_mask)
++		cpu = cpumask_any_and(mask_val, table_mask);
++	if (cpu < nr_cpu_ids) {
++		if (cpumask_test_cpu(from, mask_val) &&
++		    cpumask_test_cpu(from, table_mask))
++			cpu = from;
++	} else {
+ 		cpu = cpumask_first(mask_val);
++	}
  
- 	if (cpu >= nr_cpu_ids)
- 		return -EINVAL;
+ 	if (from == cpu)
+ 		goto out;
 
