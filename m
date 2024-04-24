@@ -1,76 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1127-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1128-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA1F8B0702
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 12:13:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A7F8B072E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 12:22:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9741F216C3
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 10:13:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFE551F2262D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 10:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE009159209;
-	Wed, 24 Apr 2024 10:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EEE1598E5;
+	Wed, 24 Apr 2024 10:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jFlvwx/j";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7yaGq7/d"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HAZnfvH9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ci8CzZYm"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334651591EE;
-	Wed, 24 Apr 2024 10:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C85159589;
+	Wed, 24 Apr 2024 10:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713953625; cv=none; b=agTGrnALLypriOKk+5/SPG4VM+Lw6hemLMNrEOSPrfBK+35fezt9AZQo5VFjnyMr6FyZdx//MyQM31Zsfq1gHumba6O+UNSvaKZEY3e6V/0GQpfoZS86ExZsb5XF/FEtGTHLl++dYvdlNkf5o7RIKU7FsfH4kTeGu763L8iO9hQ=
+	t=1713954138; cv=none; b=VKru2TrK4WW237UAlCxD0DW8oGHHPh2RhJ8jEyRzMZw8SZrxhw3wkHJCWl3mD7F2faKtoSS1zT8MOoGV0uQV8KmbAWFZF9Lv0QB4pJzMtmDLe6H3CPZEkHMmT2ohm/hjh0dsdlzej50fbp824vRxMJt7xL3p3uSrK9ODKclwXGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713953625; c=relaxed/simple;
-	bh=RzQ9MzmadsmJNJYdtFtfbcxu5HflTL8fbN7EYDTgeP8=;
+	s=arc-20240116; t=1713954138; c=relaxed/simple;
+	bh=c58ruGXdHBHTiN0JCnQnjfVOvlIsy4P4n7D1gbAveeM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ThymjMb5hWkslOCFgY1qLbRmjqttQCrT1HoMlsDnSadOReyxj7aAR58w38ocu1DkAKDkpMcB5TGnbmWe8ay5n2hEqR7Y5ZeAEUevdTvMkKqJoIceEZIxzAhmvBQo3Vp8aHTu/lOo/qvcv5Bq4+Xa1krRhbRw8nBOtBQlTXOTDDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jFlvwx/j; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7yaGq7/d; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=UbzgxO4wG/a8y1+z742Iazd5qa7kdTmGF/U3np0ccXbKeBJT9OORm6PFIo1/CIaivLT6IprXxcldOpmB5iCUHT/ukhRBs1CZtcldl4rAWP5e17uG0IAYFh8CNoagctOepMCnxITChGPtpqQ00IW13UbVUYulx6GcOJKamUFlBW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HAZnfvH9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ci8CzZYm; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 24 Apr 2024 10:13:41 -0000
+Date: Wed, 24 Apr 2024 10:22:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713953622;
+	s=2020; t=1713954134;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AWA8ZRYSb39tNVn89T8ZAbT0WbRmXGIzDHq2lu5jI3s=;
-	b=jFlvwx/j9xjO8M8Ke3IZpjT8O80eDzBuYxfcL0Rh+qSJsz/6TlLhwvJVpWHG+jM8Q4nyn2
-	FKR9DoX+liurcWrCAXfJZ+s4Ur68bq9pwV/IRJa04hNviHlvwn0c+z/h+S0zqJrVi22qDZ
-	fr2wiTVuNidP5IMjGBADXDesy3OcuP4wXj8yjycgyM/18PwQzarILtZ/6h+cKCQn91liX3
-	yp/1nuVGiyb4FS+eRBOT/t4BTFAJd16eB+mvPRv+ZKnIbn3GvUIiEuPHTb3TfqDzELay6D
-	6hFaUnwtwMywEzoQw3GSE3P5iwTrxI2A9Ef2ApiWWZsPJC/swtJbBR8FZ+y1JA==
+	bh=w6cTIC5+dPTqSbpBWUDyfvIYbWqBu90juHkYMhfCHuU=;
+	b=HAZnfvH9OpaUpb/HmWED6G+OAQ59vMnuVIQh29NkR4iXU/7RxatTB6Zwmz3CdpEwS80SDx
+	IwLWwNobLq7eg4/JifrHas9mzVYBPawTuvdve7bDvt3xP8aa9wR3Tr2V/PuYR4mwubxlbo
+	pUw/ykr4MQ6222WhPqexIPi7jfLTE5HYSLAUAHFmXwKwBk70/JAn6njIEpnzrbQCzcZ183
+	61s59YZxyNe2tbfBEWS9UEsKD3U7uujRXnh0Bz77TGoZ+9uL3WIyYdXeAWG6BfOXo4hBzl
+	uWa7rRbJFVzS1KTcp5SGYfT0ia2dSJ523erNm2TQH6f8rUrQ9ihHM6BgRgDrUg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713953622;
+	s=2020e; t=1713954134;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AWA8ZRYSb39tNVn89T8ZAbT0WbRmXGIzDHq2lu5jI3s=;
-	b=7yaGq7/dtPNym6lQm2H5VouGdVKQHLCRePJL0TewsB3YgxlDyzDoP8ikCGJOYwLaxmHd/J
-	JkMMsko7oc0ok+Bg==
+	bh=w6cTIC5+dPTqSbpBWUDyfvIYbWqBu90juHkYMhfCHuU=;
+	b=Ci8CzZYmlwKX6UmZgp/9OmRZLllmoMeitR5GeaapB9M34xdkbaDV3FyiCie9WR7Opjl15g
+	FfeePigvDq8v+WDg==
 From: "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Fix update of rd->sg_overutilized
+Subject: [tip: sched/core] sched/pelt: Remove shift of thermal clock
 Cc: Vincent Guittot <vincent.guittot@linaro.org>,
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240404155738.2866102-1-vincent.guittot@linaro.org>
-References: <20240404155738.2866102-1-vincent.guittot@linaro.org>
+ Ingo Molnar <mingo@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>,
+ Qais Yousef <qyousef@layalina.io>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240326091616.3696851-6-vincent.guittot@linaro.org>
+References: <20240326091616.3696851-6-vincent.guittot@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171395362163.10875.16925187350366324489.tip-bot2@tip-bot2>
+Message-ID: <171395413392.10875.3951642329310305062.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,37 +82,117 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     cd18bec668bb6221a54f03d0b645b7aed841f825
-Gitweb:        https://git.kernel.org/tip/cd18bec668bb6221a54f03d0b645b7aed841f825
+Commit-ID:     97450eb909658573dcacc1063b06d3d08642c0c1
+Gitweb:        https://git.kernel.org/tip/97450eb909658573dcacc1063b06d3d08642c0c1
 Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Thu, 04 Apr 2024 17:57:38 +02:00
+AuthorDate:    Tue, 26 Mar 2024 10:16:16 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 24 Apr 2024 12:02:51 +02:00
+CommitterDate: Wed, 24 Apr 2024 12:08:02 +02:00
 
-sched/fair: Fix update of rd->sg_overutilized
+sched/pelt: Remove shift of thermal clock
 
-sg_overloaded is used instead of sg_overutilized to update
-rd->sg_overutilized.
+The optional shift of the clock used by thermal/hw load avg has been
+introduced to handle case where the signal was not always a high frequency
+hw signal. Now that cpufreq provides a signal for firmware and
+SW pressure, we can remove this exception and always keep this PELT signal
+aligned with other signals.
+Mark sysctl_sched_migration_cost boot parameter as deprecated
 
-Fixes: 4475cd8bfd9b ("sched/balancing: Simplify the sg_status bitmask and use separate ->overloaded and ->overutilized flags")
 Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240404155738.2866102-1-vincent.guittot@linaro.org
+Tested-by: Lukasz Luba <lukasz.luba@arm.com>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://lore.kernel.org/r/20240326091616.3696851-6-vincent.guittot@linaro.org
 ---
- kernel/sched/fair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/admin-guide/kernel-parameters.txt |  1 +-
+ kernel/sched/core.c                             |  2 +-
+ kernel/sched/fair.c                             | 10 +--------
+ kernel/sched/sched.h                            | 18 +----------------
+ 4 files changed, 4 insertions(+), 27 deletions(-)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index bb884c1..3f390cc 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5807,6 +5807,7 @@
+ 			but is useful for debugging and performance tuning.
+ 
+ 	sched_thermal_decay_shift=
++			[Deprecated]
+ 			[KNL, SMP] Set a decay shift for scheduler thermal
+ 			pressure signal. Thermal pressure signal follows the
+ 			default decay period of other scheduler pelt
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 67a8302..1a91438 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5680,7 +5680,7 @@ void sched_tick(void)
+ 
+ 	update_rq_clock(rq);
+ 	hw_pressure = arch_scale_hw_pressure(cpu_of(rq));
+-	update_hw_load_avg(rq_clock_hw(rq), rq, hw_pressure);
++	update_hw_load_avg(rq_clock_task(rq), rq, hw_pressure);
+ 	curr->sched_class->task_tick(rq, curr, 0);
+ 	if (sched_feat(LATENCY_WARN))
+ 		resched_latency = cpu_resched_latency(rq);
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 1dd3716..bb1ae4e 100644
+index eef39ae..9eb6357 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -10661,7 +10661,7 @@ static inline void update_sd_lb_stats(struct lb_env *env, struct sd_lb_stats *sd
- 		set_rd_overloaded(env->dst_rq->rd, sg_overloaded);
+@@ -78,15 +78,9 @@ static unsigned int normalized_sysctl_sched_base_slice	= 750000ULL;
  
- 		/* Update over-utilization (tipping point, U >= 0) indicator */
--		set_rd_overutilized(env->dst_rq->rd, sg_overloaded);
-+		set_rd_overutilized(env->dst_rq->rd, sg_overutilized);
- 	} else if (sg_overutilized) {
- 		set_rd_overutilized(env->dst_rq->rd, sg_overutilized);
- 	}
+ const_debug unsigned int sysctl_sched_migration_cost	= 500000UL;
+ 
+-int sched_hw_decay_shift;
+ static int __init setup_sched_thermal_decay_shift(char *str)
+ {
+-	int _shift = 0;
+-
+-	if (kstrtoint(str, 0, &_shift))
+-		pr_warn("Unable to set scheduler thermal pressure decay shift parameter\n");
+-
+-	sched_hw_decay_shift = clamp(_shift, 0, 10);
++	pr_warn("Ignoring the deprecated sched_thermal_decay_shift= option\n");
+ 	return 1;
+ }
+ __setup("sched_thermal_decay_shift=", setup_sched_thermal_decay_shift);
+@@ -9367,7 +9361,7 @@ static bool __update_blocked_others(struct rq *rq, bool *done)
+ 
+ 	decayed = update_rt_rq_load_avg(now, rq, curr_class == &rt_sched_class) |
+ 		  update_dl_rq_load_avg(now, rq, curr_class == &dl_sched_class) |
+-		  update_hw_load_avg(rq_clock_hw(rq), rq, hw_pressure) |
++		  update_hw_load_avg(now, rq, hw_pressure) |
+ 		  update_irq_load_avg(rq, 0);
+ 
+ 	if (others_have_blocked(rq))
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 993edb0..cb3792c 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1550,24 +1550,6 @@ static inline u64 rq_clock_task(struct rq *rq)
+ 	return rq->clock_task;
+ }
+ 
+-/**
+- * By default the decay is the default pelt decay period.
+- * The decay shift can change the decay period in
+- * multiples of 32.
+- *  Decay shift		Decay period(ms)
+- *	0			32
+- *	1			64
+- *	2			128
+- *	3			256
+- *	4			512
+- */
+-extern int sched_hw_decay_shift;
+-
+-static inline u64 rq_clock_hw(struct rq *rq)
+-{
+-	return rq_clock_task(rq) >> sched_hw_decay_shift;
+-}
+-
+ static inline void rq_clock_skip_update(struct rq *rq)
+ {
+ 	lockdep_assert_rq_held(rq);
 
