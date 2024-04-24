@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1146-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1148-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52A98B13FE
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 22:05:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E228B1400
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 22:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6B961C22BE6
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 20:05:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D4FA28A2DD
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 20:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E866B1448E7;
-	Wed, 24 Apr 2024 20:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBBB144D07;
+	Wed, 24 Apr 2024 20:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4oHNXR2f";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hECedFK/"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DkF1Gjnk";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bDEGy2Ay"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D69143878;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD40143C48;
 	Wed, 24 Apr 2024 20:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713989055; cv=none; b=dQwK1bnIGPxE7WBLJoJ4WMtv5Sn9Z8NpuGd5Dit8qR3f5c08bkvYJ0yrwt3t9cCfwLNRR0y2lGEF+4Zwt3AauK+sKgUOgA07lpjCDyaNlQMFMGmm1PT0Wqzbo67F3r2Ng5b5AUo5wHiyC2C91GTrx5aHD2ypcC8dgTJXEoVssT0=
+	t=1713989056; cv=none; b=INEuHoTt+kCJboz0EDsWpRKlCSnrSzY+z7rgrpRiyrwJT7WNYQF5Owpc/ccWxJDDw023YoJp3/kKCPfs+FBQiwtKLitCQOX1dtAICpEHezW5raEO/gk8ETh+pg2ZwQKq/0vILCDN6mA8OAIzLTqesMlbtpdHz3qPEo50O5Domk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713989055; c=relaxed/simple;
-	bh=evdbgZzDIIuQPOxc6b5ueItS9nng/hH/QWa/LXIXMlU=;
+	s=arc-20240116; t=1713989056; c=relaxed/simple;
+	bh=nRrJjkRg9drFuw+i0mwrXAj2xhqmaRL/Kk4egBHMizk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=rZxKwN/WKEJ3Ni18qWjsXJ5vE0h0NK31ZP/TfjV2SLgXsaExupjeFacQM5UX4I8noaCLbGMkMOhgx4dojIQREpwZwdaxdkRe7okuIvSYex0Ca1flTvpgb/dyd+THlclULyNvopVj+zY2kc+9dpeBAFF26sF1CX0yCwu+QCGb28w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4oHNXR2f; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hECedFK/; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ssoWMO15h5QlirZuLtgMMhExNSLAuT/miZhNS/6btreeGatIUqcHIBbyPK5VXpYSM8PU2q/ft3zRlIWUz+XeqKEMrzdm5QydCTe16BjHWs+i/Ql/tGhZy6hcNQoPBkOTb//XhTSwjbT5p5GARa21rh+EbYGbYKUeIkVQcoSX0a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DkF1Gjnk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bDEGy2Ay; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 24 Apr 2024 20:04:07 -0000
+Date: Wed, 24 Apr 2024 20:04:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713989047;
+	s=2020; t=1713989048;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g31eNiIar8EHGpPwJvz0j6LutnAx2RKP5X0CxYEOyuw=;
-	b=4oHNXR2f8n9Rs3GxXiH4jcATSP+Js6vHbuNbS1nQFMk9Oo5F09p6FrVaPUEYcGoE+1lDpX
-	0PPS2O7sn1QilFOqiPW5P3RgI1ayKZpPPxUC9yUprJLO/EgP5rQQSVRuGYj1gdYZIiEMvr
-	sc7+YSK/Qjl5LU3fe8HigFY0HDJZOQ6egXkcMe4smduEihxslczydQb3ACAH4kLa/CCl/d
-	G2Bz2Ec0I0CrOVQgr9k8tTkf1zpyrKQfR4MrkO2UvNwX6yeeTQQ2gP+yfcfozLBtlSgAKB
-	KCaQuOoy9GE9LEdE6aS1gS7keOE6MBLtJW6ggYcdTI0YxVuk6ze2qmEQcXJ6Qg==
+	bh=PjzLpE1/cqs0qycpsxIJJenSTyqFNcqpEmV2e7YahJg=;
+	b=DkF1GjnkQfEAfVa/kzDCFxHGFIHWlRQPa//jv1BV4Fd9BUxQSyPtzN9bhQJxW07rXOUJQw
+	uaEdMK3LdxjcBFrlDmPoS/D22HWLKeNsSydZoeVENJwpQtQwkq9Skquot+Z9+gb+8X6Pmb
+	ACj6Orhaz9vPjmDbx+kTRyTWVV6e+KqgMENDQLW4im4+2nsFQbuPhUMMykkJFKkSqHjF9a
+	8AqxzYKvoyNZoiwR7uE8BwH+GyL8NJdAAluWknB74/zNWOfLO1+ut0+rHRwzNIEjR4kSKR
+	VbT7PmJLY9G1oWxzfNBKYm79sZGRtNYPMStfo9IQpI7UfgluLj0u+AAW8YmNPw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713989047;
+	s=2020e; t=1713989048;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g31eNiIar8EHGpPwJvz0j6LutnAx2RKP5X0CxYEOyuw=;
-	b=hECedFK/PE5X5ZHTH843ySnGauT5oWPUBB/gEULuuu0PzonQBGIabtI3W9l79ytiakdSW6
-	dW8uSTlJZ+ug0PBQ==
-From: "tip-bot2 for Florian Fainelli" <tip-bot2@linutronix.de>
+	bh=PjzLpE1/cqs0qycpsxIJJenSTyqFNcqpEmV2e7YahJg=;
+	b=bDEGy2Ayn6wIBxANmbWUNR7zUip48G2aGl6I5ObCw/yWVNzFi3TT2/usSXUqAOzsR0yoFT
+	ZMxvocS3H5nGZvCg==
+From: "tip-bot2 for Dongli Zhang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/irq-brcmstb-l2: Avoid saving mask on shutdown
-Cc: Tim Ross <tim.ross@broadcom.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
+Subject: [tip: irq/core] genirq/cpuhotplug: Retry with cpu_online_mask when
+ migration fails
+Cc: Dongli Zhang <dongli.zhang@oracle.com>,
  Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240424175732.1526531-1-florian.fainelli@broadcom.com>
-References: <20240424175732.1526531-1-florian.fainelli@broadcom.com>
+In-Reply-To: <20240423073413.79625-1-dongli.zhang@oracle.com>
+References: <20240423073413.79625-1-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171398904763.10875.14850183549093538755.tip-bot2@tip-bot2>
+Message-ID: <171398904802.10875.14416916087679634264.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,81 +82,70 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     c7cad38d37486668a448215fc92bace9c8cf747a
-Gitweb:        https://git.kernel.org/tip/c7cad38d37486668a448215fc92bace9c8cf747a
-Author:        Florian Fainelli <florian.fainelli@broadcom.com>
-AuthorDate:    Wed, 24 Apr 2024 10:57:32 -07:00
+Commit-ID:     88d724e2301a69c1ab805cd74fc27aa36ae529e0
+Gitweb:        https://git.kernel.org/tip/88d724e2301a69c1ab805cd74fc27aa36ae529e0
+Author:        Dongli Zhang <dongli.zhang@oracle.com>
+AuthorDate:    Tue, 23 Apr 2024 00:34:13 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 24 Apr 2024 21:11:48 +02:00
+CommitterDate: Wed, 24 Apr 2024 20:42:57 +02:00
 
-irqchip/irq-brcmstb-l2: Avoid saving mask on shutdown
+genirq/cpuhotplug: Retry with cpu_online_mask when migration fails
 
-The interrupt controller shutdown path does not need to save the mask of
-enabled interrupts because the next state the system is going to be in is
-akin to a cold boot, or a kexec'd kernel. Saving the mask only makes sense
-if the software state needs to preserve the hardware state across a system
-suspend/resume cycle.
+When a CPU goes offline, the interrupts affine to that CPU are
+re-configured.
 
-As an optimization, and given that there are systems with dozens of such
-interrupt controller, save a "slow" memory mapped I/O read in the shutdown
-path where no saving/restoring is required.
+Managed interrupts undergo either migration to other CPUs or shutdown if
+all CPUs listed in the affinity are offline. The migration of managed
+interrupts is guaranteed on x86 because there are interrupt vectors
+reserved.
 
-Reported-by: Tim Ross <tim.ross@broadcom.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Regular interrupts are migrated to a still online CPU in the affinity mask
+or if there is no online CPU to any online CPU.
+
+This works as long as the still online CPUs in the affinity mask have
+interrupt vectors available, but in case that none of those CPUs has a
+vector available the migration fails and the device interrupt becomes
+stale.
+
+This is not any different from the case where the affinity mask does not
+contain any online CPU, but there is no fallback operation for this.
+
+Instead of giving up, retry the migration attempt with the online CPU mask
+if the interrupt is not managed, as managed interrupts cannot be affected
+by this problem.
+
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240424175732.1526531-1-florian.fainelli@broadcom.com
-
+Link: https://lore.kernel.org/r/20240423073413.79625-1-dongli.zhang@oracle.com
 ---
- drivers/irqchip/irq-brcmstb-l2.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ kernel/irq/cpuhotplug.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/irqchip/irq-brcmstb-l2.c b/drivers/irqchip/irq-brcmstb-l2.c
-index 2b0b317..c988886 100644
---- a/drivers/irqchip/irq-brcmstb-l2.c
-+++ b/drivers/irqchip/irq-brcmstb-l2.c
-@@ -118,7 +118,7 @@ out:
- 	chained_irq_exit(chip, desc);
- }
- 
--static void brcmstb_l2_intc_suspend(struct irq_data *d)
-+static void __brcmstb_l2_intc_suspend(struct irq_data *d, bool save)
- {
- 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
- 	struct irq_chip_type *ct = irq_data_get_chip_type(d);
-@@ -127,7 +127,8 @@ static void brcmstb_l2_intc_suspend(struct irq_data *d)
- 
- 	irq_gc_lock_irqsave(gc, flags);
- 	/* Save the current mask */
--	b->saved_mask = irq_reg_readl(gc, ct->regs.mask);
-+	if (save)
-+		b->saved_mask = irq_reg_readl(gc, ct->regs.mask);
- 
- 	if (b->can_wake) {
- 		/* Program the wakeup mask */
-@@ -137,6 +138,16 @@ static void brcmstb_l2_intc_suspend(struct irq_data *d)
- 	irq_gc_unlock_irqrestore(gc, flags);
- }
- 
-+static void brcmstb_l2_intc_shutdown(struct irq_data *d)
-+{
-+	__brcmstb_l2_intc_suspend(d, false);
-+}
+diff --git a/kernel/irq/cpuhotplug.c b/kernel/irq/cpuhotplug.c
+index 43340e0..75cadbc 100644
+--- a/kernel/irq/cpuhotplug.c
++++ b/kernel/irq/cpuhotplug.c
+@@ -130,6 +130,22 @@ static bool migrate_one_irq(struct irq_desc *desc)
+ 	 * CPU.
+ 	 */
+ 	err = irq_do_set_affinity(d, affinity, false);
 +
-+static void brcmstb_l2_intc_suspend(struct irq_data *d)
-+{
-+	__brcmstb_l2_intc_suspend(d, true);
-+}
++	/*
++	 * If there are online CPUs in the affinity mask, but they have no
++	 * vectors left to make the migration work, try to break the
++	 * affinity by migrating to any online CPU.
++	 */
++	if (err == -ENOSPC && !irqd_affinity_is_managed(d) && affinity != cpu_online_mask) {
++		pr_debug("IRQ%u: set affinity failed for %*pbl, re-try with online CPUs\n",
++			 d->irq, cpumask_pr_args(affinity));
 +
- static void brcmstb_l2_intc_resume(struct irq_data *d)
- {
- 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
-@@ -252,7 +263,7 @@ static int __init brcmstb_l2_intc_of_init(struct device_node *np,
- 
- 	ct->chip.irq_suspend = brcmstb_l2_intc_suspend;
- 	ct->chip.irq_resume = brcmstb_l2_intc_resume;
--	ct->chip.irq_pm_shutdown = brcmstb_l2_intc_suspend;
-+	ct->chip.irq_pm_shutdown = brcmstb_l2_intc_shutdown;
- 
- 	if (data->can_wake) {
- 		/* This IRQ chip can wake the system, set all child interrupts
++		affinity = cpu_online_mask;
++		brokeaff = true;
++
++		err = irq_do_set_affinity(d, affinity, false);
++	}
++
+ 	if (err) {
+ 		pr_warn_ratelimited("IRQ%u: set affinity failed(%d).\n",
+ 				    d->irq, err);
 
