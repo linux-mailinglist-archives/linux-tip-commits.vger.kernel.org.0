@@ -1,172 +1,308 @@
-Return-Path: <linux-tip-commits+bounces-1153-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1155-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 578408B14CA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 22:41:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9F58B1FB1
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Apr 2024 12:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F6C61C22C17
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Apr 2024 20:41:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40E4B1C212A3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Apr 2024 10:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F6B1772F;
-	Wed, 24 Apr 2024 20:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E0522EFB;
+	Thu, 25 Apr 2024 10:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fcilreIO"
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QlWajjdN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U4y5qpqw"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F7715689A
-	for <linux-tip-commits@vger.kernel.org>; Wed, 24 Apr 2024 20:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F7820DC8;
+	Thu, 25 Apr 2024 10:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713991293; cv=none; b=hxi/XgkvQHCAxEaEOYsbz9VF+nFhb4ipBLmd/c+xirokpKt4WaV+Y8OJ0eLydAmBA7ONRnL5AfcdgvCTJibDB4TTOvSf5a6lfTW/sZbc+Yumd9MU17EW0ArBUhscBNKRLY4h0WLHKjgK+Fvexijzb+tNKyVgG+ElTKLEZD2/8yA=
+	t=1714042345; cv=none; b=dtvatAGUZhukRTUULB9y3+hZNmmrGQKZWruiVmIreEs5NWHFKmVjP9xcVrMdtHic6uYUdCObJsSj7uaAHcKwbMIabPGBHEJrmXBG4pihSBN1VXVtragva6BQJUbrz7RXwah+Mo2pLr2IM0L+OCgX+RA7rR6cSJbxgn/t6umG/iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713991293; c=relaxed/simple;
-	bh=buNsFbtYYVmx18JUFv8HM4y2vKkaxmf9C7mDNlja280=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A3Zd4t1rbMO3Ee+qWRlv0gym8NNyNEMK+z/rAoJ2I8kNb0tVQ1CsIloukJGcromSpr9IHiU8QexQIr3hjk61H3bnrUZJxGGMs8Hl2NKf/EZHlBJ2/mlK2iHdf3spCDNNykpKJ1xuMATrDyb7aDbohtn6Y0aG5oB11e4bjYxEnvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fcilreIO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713991291;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1714042345; c=relaxed/simple;
+	bh=Fic6qblhF901hVzLcQS+UpzL9vdMv0SYUh64qwB2vAo=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=nUj3swWTvKjSq0+sark4lDZGozBPE9S5DAkKjJBhNQe0LqeA1+WvZu1K2ArtLtdAknY/+qm63fGH/Hqvy9PwHLKdcJ7arlGtJBGCByz+HFBtzHhFnQtRlV11WUNylaLyPU++G1+iRu94uZ3Jul9jqsuOagmOX20NRgWaEwf3Z+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QlWajjdN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U4y5qpqw; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 25 Apr 2024 10:52:11 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1714042336;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oDWaGWnJakdCF6hfPJajrIOzDqbpV/2hCAui/gKGuBQ=;
-	b=fcilreIO6FdixA1kIywC294xU5HEfjWCxWY/6H0koCSFoVi4aR9NcdG3l4iJ1tOcpZ++H6
-	vVX2vwJVu0mg2bZ/hnhxdwtmA/fXot+uCf6MCmZD3Lb2W0gMZUsxebAOfns+W3ZC3qDJv8
-	YUAr+TnShtrrMuG8LgJ+7njb+8bZFjU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-Mv2ADBDyNyGMwxSxk2PyJQ-1; Wed, 24 Apr 2024 16:41:27 -0400
-X-MC-Unique: Mv2ADBDyNyGMwxSxk2PyJQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D8C580021A;
-	Wed, 24 Apr 2024 20:41:27 +0000 (UTC)
-Received: from lorien.usersys.redhat.com (unknown [10.22.8.33])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id A10E5202450D;
-	Wed, 24 Apr 2024 20:41:26 +0000 (UTC)
-Date: Wed, 24 Apr 2024 16:41:24 -0400
-From: Phil Auld <pauld@redhat.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-tip-commits@vger.kernel.org,
-	Chris von Recklinghausen <crecklin@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>, linux-kernel@vger.kernel.org,
-	Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org
-Subject: Re: [tip: sched/urgent] sched/isolation: {revent boot crash when the
- boot CPU is nohz_full
-Message-ID: <20240424204124.GA36310@lorien.usersys.redhat.com>
-References: <20240411143905.GA19288@redhat.com>
- <171398910227.10875.3649946025664504959.tip-bot2@tip-bot2>
+	bh=1iXo++Ick+NWWK7svuJ4Wi+1QnDX3j2y1rs8SOguEoM=;
+	b=QlWajjdNpdf/2gtX+lX8lP5CpUvuitR7Ok57MiQDhxPfeNKOjWlgYFahxWuBjtPYYFua3g
+	61r6vxCG9BPqgKOXDIykGMd6qzHkoOxDJpkVl7ssuabxlhH6SSwL16/DYn+guubigz2D0b
+	1Bf8Perq0WDjbGiWGZsvS1e7tgQItRFPTIzZuSL/WC1J6VwsrLIJasaBYV19BXIbvaXPlU
+	LTz6Lnup8hX6wr64wkFb2/A86apGLUhh/ccVG+XoKuk2B4UDIiuVysCHY2ThE1zpVthGXX
+	bz5z0WpK/msdOIK7k8pmHl4uZfz0g/tRlJiFRnNJAou6BqC1vr58P3+ihRZ/Lg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1714042336;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1iXo++Ick+NWWK7svuJ4Wi+1QnDX3j2y1rs8SOguEoM=;
+	b=U4y5qpqwYRAHFrxCj48j9NZ3tjfE3UKTZRb+P8iQvAuhKQsYnhOkfUdDGWBovF2ZJf2NGI
+	+Jb36zn3X7bmPJAg==
+From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cpu] x86/bugs: Switch to new Intel CPU model defines
+Cc: Tony Luck <tony.luck@intel.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240424181507.41693-1-tony.luck@intel.com>
+References: <20240424181507.41693-1-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <171398910227.10875.3649946025664504959.tip-bot2@tip-bot2>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Message-ID: <171404233152.10875.11625691068275436335.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 24, 2024 at 08:05:02PM -0000 tip-bot2 for Oleg Nesterov wrote:
-> The following commit has been merged into the sched/urgent branch of tip:
-> 
-> Commit-ID:     8e3101b38dfc20848a23525b1e6e80bd1641d44c
-> Gitweb:        https://git.kernel.org/tip/8e3101b38dfc20848a23525b1e6e80bd1641d44c
-> Author:        Oleg Nesterov <oleg@redhat.com>
-> AuthorDate:    Thu, 11 Apr 2024 16:39:05 +02:00
-> Committer:     Thomas Gleixner <tglx@linutronix.de>
-> CommitterDate: Wed, 24 Apr 2024 21:53:34 +02:00
-> 
-> sched/isolation: {revent boot crash when the boot CPU is nohz_full
->
+The following commit has been merged into the x86/cpu branch of tip:
 
-Thanks Thomas, Typo in the reworded description :)
+Commit-ID:     b24e466abf6ef1c82dac2df813551ffead832ab4
+Gitweb:        https://git.kernel.org/tip/b24e466abf6ef1c82dac2df813551ffead832ab4
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Wed, 24 Apr 2024 11:15:07 -07:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 25 Apr 2024 12:42:13 +02:00
 
+x86/bugs: Switch to new Intel CPU model defines
 
-> Documentation/timers/no_hz.rst states that the "nohz_full=" mask must not
-> include the boot CPU, which is no longer true after commit 08ae95f4fd3b
-> ("nohz_full: Allow the boot CPU to be nohz_full").
-> 
-> However after commit aae17ebb53cd ("workqueue: Avoid using isolated cpus'
-> timers on queue_delayed_work") the kernel will crash at boot time in this
-> case; housekeeping_any_cpu() returns an invalid CPU number until smp_init()
-> brings the first housekeeping CPU up.
-> 
-> Change housekeeping_any_cpu() to check the result of cpumask_any_and() and
-> return smp_processor_id() in this case.
-> 
-> This is just the simple and backportable workaround which fixes the
-> symptom, but smp_processor_id() at boot time should be safe at least for
-> type == HK_TYPE_TIMER, this more or less matches the tick_do_timer_boot_cpu
-> logic.
-> 
-> There is no worry about cpu_down(); tick_nohz_cpu_down() will not allow to
-> offline tick_do_timer_cpu (the 1st online housekeeping CPU).
-> 
-> Fixes: aae17ebb53cd ("workqueue: Avoid using isolated cpus' timers on queue_delayed_work")
-> Reported-by: Chris von Recklinghausen <crecklin@redhat.com>
-> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Reviewed-by: Phil Auld <pauld@redhat.com>
-> Acked-by: Frederic Weisbecker <frederic@kernel.org>
-> Link: https://lore.kernel.org/r/20240411143905.GA19288@redhat.com
-> Closes: https://lore.kernel.org/all/20240402105847.GA24832@redhat.com/
-> ---
->  Documentation/timers/no_hz.rst |  7 ++-----
->  kernel/sched/isolation.c       | 11 ++++++++++-
->  2 files changed, 12 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/timers/no_hz.rst b/Documentation/timers/no_hz.rst
-> index f8786be..7fe8ef9 100644
-> --- a/Documentation/timers/no_hz.rst
-> +++ b/Documentation/timers/no_hz.rst
-> @@ -129,11 +129,8 @@ adaptive-tick CPUs:  At least one non-adaptive-tick CPU must remain
->  online to handle timekeeping tasks in order to ensure that system
->  calls like gettimeofday() returns accurate values on adaptive-tick CPUs.
->  (This is not an issue for CONFIG_NO_HZ_IDLE=y because there are no running
-> -user processes to observe slight drifts in clock rate.)  Therefore, the
-> -boot CPU is prohibited from entering adaptive-ticks mode.  Specifying a
-> -"nohz_full=" mask that includes the boot CPU will result in a boot-time
-> -error message, and the boot CPU will be removed from the mask.  Note that
-> -this means that your system must have at least two CPUs in order for
-> +user processes to observe slight drifts in clock rate.) Note that this
-> +means that your system must have at least two CPUs in order for
->  CONFIG_NO_HZ_FULL=y to do anything for you.
->  
->  Finally, adaptive-ticks CPUs must have their RCU callbacks offloaded.
-> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-> index 373d42c..2a262d3 100644
-> --- a/kernel/sched/isolation.c
-> +++ b/kernel/sched/isolation.c
-> @@ -46,7 +46,16 @@ int housekeeping_any_cpu(enum hk_type type)
->  			if (cpu < nr_cpu_ids)
->  				return cpu;
->  
-> -			return cpumask_any_and(housekeeping.cpumasks[type], cpu_online_mask);
-> +			cpu = cpumask_any_and(housekeeping.cpumasks[type], cpu_online_mask);
-> +			if (likely(cpu < nr_cpu_ids))
-> +				return cpu;
-> +			/*
-> +			 * Unless we have another problem this can only happen
-> +			 * at boot time before start_secondary() brings the 1st
-> +			 * housekeeping CPU up.
-> +			 */
-> +			WARN_ON_ONCE(system_state == SYSTEM_RUNNING ||
-> +				     type != HK_TYPE_TIMER);
->  		}
->  	}
->  	return smp_processor_id();
-> 
+New CPU #defines encode vendor and family as well as model.
 
--- 
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20240424181507.41693-1-tony.luck@intel.com
+---
+ arch/x86/kernel/cpu/common.c | 154 ++++++++++++++++------------------
+ 1 file changed, 76 insertions(+), 78 deletions(-)
 
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 2e70827..cdaa795 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -114,17 +114,17 @@ static const struct x86_cpu_id ppin_cpuids[] = {
+ 	X86_MATCH_FEATURE(X86_FEATURE_INTEL_PPIN, &ppin_info[X86_VENDOR_INTEL]),
+ 
+ 	/* Legacy models without CPUID enumeration */
+-	X86_MATCH_INTEL_FAM6_MODEL(IVYBRIDGE_X, &ppin_info[X86_VENDOR_INTEL]),
+-	X86_MATCH_INTEL_FAM6_MODEL(HASWELL_X, &ppin_info[X86_VENDOR_INTEL]),
+-	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_D, &ppin_info[X86_VENDOR_INTEL]),
+-	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_X, &ppin_info[X86_VENDOR_INTEL]),
+-	X86_MATCH_INTEL_FAM6_MODEL(SKYLAKE_X, &ppin_info[X86_VENDOR_INTEL]),
+-	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X, &ppin_info[X86_VENDOR_INTEL]),
+-	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D, &ppin_info[X86_VENDOR_INTEL]),
+-	X86_MATCH_INTEL_FAM6_MODEL(SAPPHIRERAPIDS_X, &ppin_info[X86_VENDOR_INTEL]),
+-	X86_MATCH_INTEL_FAM6_MODEL(EMERALDRAPIDS_X, &ppin_info[X86_VENDOR_INTEL]),
+-	X86_MATCH_INTEL_FAM6_MODEL(XEON_PHI_KNL, &ppin_info[X86_VENDOR_INTEL]),
+-	X86_MATCH_INTEL_FAM6_MODEL(XEON_PHI_KNM, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_IVYBRIDGE_X, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_HASWELL_X, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_BROADWELL_D, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_BROADWELL_X, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_SKYLAKE_X, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_ICELAKE_X, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_ICELAKE_D, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_SAPPHIRERAPIDS_X, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_EMERALDRAPIDS_X, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_XEON_PHI_KNL, &ppin_info[X86_VENDOR_INTEL]),
++	X86_MATCH_VFM(INTEL_XEON_PHI_KNM, &ppin_info[X86_VENDOR_INTEL]),
+ 
+ 	{}
+ };
+@@ -1122,8 +1122,8 @@ static void identify_cpu_without_cpuid(struct cpuinfo_x86 *c)
+ #define VULNWL(vendor, family, model, whitelist)	\
+ 	X86_MATCH_VENDOR_FAM_MODEL(vendor, family, model, whitelist)
+ 
+-#define VULNWL_INTEL(model, whitelist)		\
+-	VULNWL(INTEL, 6, INTEL_FAM6_##model, whitelist)
++#define VULNWL_INTEL(vfm, whitelist)		\
++	X86_MATCH_VFM(vfm, whitelist)
+ 
+ #define VULNWL_AMD(family, whitelist)		\
+ 	VULNWL(AMD, family, X86_MODEL_ANY, whitelist)
+@@ -1140,32 +1140,32 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
+ 	VULNWL(VORTEX,	6, X86_MODEL_ANY,	NO_SPECULATION),
+ 
+ 	/* Intel Family 6 */
+-	VULNWL_INTEL(TIGERLAKE,			NO_MMIO),
+-	VULNWL_INTEL(TIGERLAKE_L,		NO_MMIO),
+-	VULNWL_INTEL(ALDERLAKE,			NO_MMIO),
+-	VULNWL_INTEL(ALDERLAKE_L,		NO_MMIO),
++	VULNWL_INTEL(INTEL_TIGERLAKE,		NO_MMIO),
++	VULNWL_INTEL(INTEL_TIGERLAKE_L,		NO_MMIO),
++	VULNWL_INTEL(INTEL_ALDERLAKE,		NO_MMIO),
++	VULNWL_INTEL(INTEL_ALDERLAKE_L,		NO_MMIO),
+ 
+-	VULNWL_INTEL(ATOM_SALTWELL,		NO_SPECULATION | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(ATOM_SALTWELL_TABLET,	NO_SPECULATION | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(ATOM_SALTWELL_MID,		NO_SPECULATION | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(ATOM_BONNELL,		NO_SPECULATION | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(ATOM_BONNELL_MID,		NO_SPECULATION | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_SALTWELL,	NO_SPECULATION | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_SALTWELL_TABLET, NO_SPECULATION | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_SALTWELL_MID,	NO_SPECULATION | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_BONNELL,	NO_SPECULATION | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_BONNELL_MID,	NO_SPECULATION | NO_ITLB_MULTIHIT),
+ 
+-	VULNWL_INTEL(ATOM_SILVERMONT,		NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(ATOM_SILVERMONT_D,		NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(ATOM_SILVERMONT_MID,	NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(ATOM_AIRMONT,		NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(XEON_PHI_KNL,		NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(XEON_PHI_KNM,		NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_SILVERMONT,	NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_SILVERMONT_D,	NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_SILVERMONT_MID,	NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_AIRMONT,	NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_XEON_PHI_KNL,	NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_XEON_PHI_KNM,	NO_SSB | NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
+ 
+-	VULNWL_INTEL(CORE_YONAH,		NO_SSB),
++	VULNWL_INTEL(INTEL_CORE_YONAH,		NO_SSB),
+ 
+-	VULNWL_INTEL(ATOM_AIRMONT_MID,		NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(ATOM_AIRMONT_NP,		NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_AIRMONT_MID,	NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_AIRMONT_NP,	NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT),
+ 
+-	VULNWL_INTEL(ATOM_GOLDMONT,		NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO),
+-	VULNWL_INTEL(ATOM_GOLDMONT_D,		NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO),
+-	VULNWL_INTEL(ATOM_GOLDMONT_PLUS,	NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO | NO_EIBRS_PBRSB),
++	VULNWL_INTEL(INTEL_ATOM_GOLDMONT,	NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO),
++	VULNWL_INTEL(INTEL_ATOM_GOLDMONT_D,	NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO),
++	VULNWL_INTEL(INTEL_ATOM_GOLDMONT_PLUS,	NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO | NO_EIBRS_PBRSB),
+ 
+ 	/*
+ 	 * Technically, swapgs isn't serializing on AMD (despite it previously
+@@ -1175,9 +1175,9 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
+ 	 * good enough for our purposes.
+ 	 */
+ 
+-	VULNWL_INTEL(ATOM_TREMONT,		NO_EIBRS_PBRSB),
+-	VULNWL_INTEL(ATOM_TREMONT_L,		NO_EIBRS_PBRSB),
+-	VULNWL_INTEL(ATOM_TREMONT_D,		NO_ITLB_MULTIHIT | NO_EIBRS_PBRSB),
++	VULNWL_INTEL(INTEL_ATOM_TREMONT,	NO_EIBRS_PBRSB),
++	VULNWL_INTEL(INTEL_ATOM_TREMONT_L,	NO_EIBRS_PBRSB),
++	VULNWL_INTEL(INTEL_ATOM_TREMONT_D,	NO_ITLB_MULTIHIT | NO_EIBRS_PBRSB),
+ 
+ 	/* AMD Family 0xf - 0x12 */
+ 	VULNWL_AMD(0x0f,	NO_MELTDOWN | NO_SSB | NO_L1TF | NO_MDS | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO | NO_BHI),
+@@ -1198,10 +1198,8 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
+ #define VULNBL(vendor, family, model, blacklist)	\
+ 	X86_MATCH_VENDOR_FAM_MODEL(vendor, family, model, blacklist)
+ 
+-#define VULNBL_INTEL_STEPPINGS(model, steppings, issues)		   \
+-	X86_MATCH_VENDOR_FAM_MODEL_STEPPINGS_FEATURE(INTEL, 6,		   \
+-					    INTEL_FAM6_##model, steppings, \
+-					    X86_FEATURE_ANY, issues)
++#define VULNBL_INTEL_STEPPINGS(vfm, steppings, issues)		   \
++	X86_MATCH_VFM_STEPPINGS(vfm, steppings, issues)
+ 
+ #define VULNBL_AMD(family, blacklist)		\
+ 	VULNBL(AMD, family, X86_MODEL_ANY, blacklist)
+@@ -1226,43 +1224,43 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
+ #define RFDS		BIT(7)
+ 
+ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
+-	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
+-	VULNBL_INTEL_STEPPINGS(HASWELL,		X86_STEPPING_ANY,		SRBDS),
+-	VULNBL_INTEL_STEPPINGS(HASWELL_L,	X86_STEPPING_ANY,		SRBDS),
+-	VULNBL_INTEL_STEPPINGS(HASWELL_G,	X86_STEPPING_ANY,		SRBDS),
+-	VULNBL_INTEL_STEPPINGS(HASWELL_X,	X86_STEPPING_ANY,		MMIO),
+-	VULNBL_INTEL_STEPPINGS(BROADWELL_D,	X86_STEPPING_ANY,		MMIO),
+-	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
+-	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
+-	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
+-	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+-	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+-	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+-	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+-	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS),
+-	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS),
+-	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
+-	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
+-	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
+-	VULNBL_INTEL_STEPPINGS(RAPTORLAKE_P,	X86_STEPPING_ANY,		RFDS),
+-	VULNBL_INTEL_STEPPINGS(RAPTORLAKE_S,	X86_STEPPING_ANY,		RFDS),
+-	VULNBL_INTEL_STEPPINGS(ATOM_GRACEMONT,	X86_STEPPING_ANY,		RFDS),
+-	VULNBL_INTEL_STEPPINGS(ATOM_TREMONT,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RFDS),
+-	VULNBL_INTEL_STEPPINGS(ATOM_TREMONT_D,	X86_STEPPING_ANY,		MMIO | RFDS),
+-	VULNBL_INTEL_STEPPINGS(ATOM_TREMONT_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RFDS),
+-	VULNBL_INTEL_STEPPINGS(ATOM_GOLDMONT,	X86_STEPPING_ANY,		RFDS),
+-	VULNBL_INTEL_STEPPINGS(ATOM_GOLDMONT_D,	X86_STEPPING_ANY,		RFDS),
+-	VULNBL_INTEL_STEPPINGS(ATOM_GOLDMONT_PLUS, X86_STEPPING_ANY,		RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_IVYBRIDGE,		X86_STEPPING_ANY,		SRBDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_HASWELL,		X86_STEPPING_ANY,		SRBDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_HASWELL_L,		X86_STEPPING_ANY,		SRBDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_HASWELL_G,		X86_STEPPING_ANY,		SRBDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_HASWELL_X,		X86_STEPPING_ANY,		MMIO),
++	VULNBL_INTEL_STEPPINGS(INTEL_BROADWELL_D,	X86_STEPPING_ANY,		MMIO),
++	VULNBL_INTEL_STEPPINGS(INTEL_BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
++	VULNBL_INTEL_STEPPINGS(INTEL_BROADWELL,		X86_STEPPING_ANY,		SRBDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_SKYLAKE_X,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_SKYLAKE_L,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_KABYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
++	VULNBL_INTEL_STEPPINGS(INTEL_ICELAKE_L,		X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ICELAKE_D,		X86_STEPPING_ANY,		MMIO | GDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ICELAKE_X,		X86_STEPPING_ANY,		MMIO | GDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_COMETLAKE,		X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED),
++	VULNBL_INTEL_STEPPINGS(INTEL_COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_TIGERLAKE_L,	X86_STEPPING_ANY,		GDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_TIGERLAKE,		X86_STEPPING_ANY,		GDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_LAKEFIELD,		X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
++	VULNBL_INTEL_STEPPINGS(INTEL_ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ALDERLAKE,		X86_STEPPING_ANY,		RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_RAPTORLAKE_P,	X86_STEPPING_ANY,		RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_RAPTORLAKE_S,	X86_STEPPING_ANY,		RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ATOM_GRACEMONT,	X86_STEPPING_ANY,		RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ATOM_TREMONT,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ATOM_TREMONT_D,	X86_STEPPING_ANY,		MMIO | RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ATOM_TREMONT_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ATOM_GOLDMONT,	X86_STEPPING_ANY,		RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ATOM_GOLDMONT_D,	X86_STEPPING_ANY,		RFDS),
++	VULNBL_INTEL_STEPPINGS(INTEL_ATOM_GOLDMONT_PLUS, X86_STEPPING_ANY,		RFDS),
+ 
+ 	VULNBL_AMD(0x15, RETBLEED),
+ 	VULNBL_AMD(0x16, RETBLEED),
 
