@@ -1,60 +1,61 @@
-Return-Path: <linux-tip-commits+bounces-1164-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1166-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AEBA8B273C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Apr 2024 19:10:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3748B2740
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Apr 2024 19:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 194FD1F25AE8
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Apr 2024 17:10:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FBDE1C23FBB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Apr 2024 17:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE6BD14D71B;
-	Thu, 25 Apr 2024 17:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00A614E2E7;
+	Thu, 25 Apr 2024 17:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="A7SE+Xt7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c/gJfHhG"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wNIIvOm+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E0aRqtY4"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2501214A087;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2508E14D70C;
 	Thu, 25 Apr 2024 17:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714065041; cv=none; b=URVvwNZuJZbcHGFMpSaSp3rBt4lKWxzN7dgDm5XS7OcA7sJfkNqWP9KexmXDjrhQjjNaaXnblQeQ3V+V2yehAKAz4vQQIAjDGwUwm1N0gBDGR7+rwQmPED3ZSTk1Hijv7yQiZR+FysAtz0jk9fTNFJKtBaU2wt/ozoxjoT8WJ9A=
+	t=1714065042; cv=none; b=hWCUNkK4UWq+5tCbn3BEYK+QEegCaDQy9RKujapOpXonGHrvOzuZQXzTXt/Wbn5yK0fEzUvKLAGm5Fo4Ie/NTgU1+yFk3S1KuIgs6Xd1gfimcSXFWDZ/jfTk8Fukg3Oxf7oKJomoFEhtwf98Nhr1sDzwphuCDpvdtW46cJQvIGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714065041; c=relaxed/simple;
-	bh=QKRyFG6BDsRjlzuadOI8XziTz3LtaCGqfDoi1f47NNI=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=GEEj0D2zEhMnR1eNlMavhZOJpBmATFzswtM06ptXkWwHbwzF3kCxAuwwXOLpz7qfrlwo8ZgmP0BBIImBobw2LtpAjCYTYhMnUKYlOL1gk03HhJE6dXxEWpIqziReicN1NTQS4+GLSI7A7ZcVIRg30Cn8LdR5soWYncSS6EeiD0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=A7SE+Xt7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c/gJfHhG; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1714065042; c=relaxed/simple;
+	bh=nqpKJluw1doy3y0allgcYKgIgsh/jnQXaIoFaSK7oOg=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=U5AwN4V2F/PKz9128pyg3CPAYZG5exYb5ShRV/7z0QxCHgrjqCakkz49BeVSWWHW1P+oTHqpEtyVXc3oXD/3yB/xFiB/2fA4JJtmM1/PPYTWB61Mo/vTIep4KsSFeWh4oUFTb72T1iROZIvO13CXD79S8ONybzMeCClfSs3gGhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wNIIvOm+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E0aRqtY4; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Apr 2024 17:10:35 -0000
+Date: Thu, 25 Apr 2024 17:10:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1714065036;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=6DJ48fD03NBgyHxTniWcpj9wiq5z2vgFYOHvxjnIkkI=;
-	b=A7SE+Xt7uhZF9Gspv/tDYw28OKHKd9n+0MgMR2JAet8Uh8WmuKYsJs9c9ySbXw0/VadXQ0
-	NiyrPvBeeqIw4WFA4DlALoz9LSr56krUWc6oHZPp5hLd3SW3KBWiPHkCKDel2faCMlByTJ
-	BP0ZJsEqWqfLi6HxJBOdc9xhmOCGFgJW5sEwXRPIx7U2tTv+uWXKr4f/dmwGmWZJJ+dM/L
-	b6LQCLVc7zsutFxaRoJVvh1+qmP1cBrdWml0H284nSfx2Wj4vg6jwJMRb9yieNvCPJytGw
-	hVLKjLUZA4vZoWhvCwBdKTHFtcS5v97DAWifa9myMM+G3BW5fbYxVRIpA0jKHg==
+	bh=wugknEMx6eimT+Flw8Mly0d3keuHZeLUeiEU1ZFIR0U=;
+	b=wNIIvOm+tj4cgLNEkM8MBEpxUshpJ/iYSv2PLOtpgS5Z3HbTEck4/hr4aZidrPJJ0FhRGY
+	8dgyUh8mz8tgqDPlKsbWbVMDQ0RGBC696GYUeWEB329TFjVj5C0M/jaYntgyZrDWvEEylq
+	VDXx+H8vrZw40OjxmvYvfHQmz1uNkewU57L7bMxMtXh6BBfL6JcZoV90NjYzAe+wftpp9L
+	V28hNl420QzlE9hwdXvjdLRACRnlBP8sjpgQyrCWCAIIxxcM/tcv+jxstFPpN4Rd2A4DQf
+	Ftiavrx6fYDlsUCLp6JdzTVZGLNia46Kkx5q9mujsd6Ix+cxpH3Jxpfw0OLGaQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1714065036;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=6DJ48fD03NBgyHxTniWcpj9wiq5z2vgFYOHvxjnIkkI=;
-	b=c/gJfHhGKJSVREcJ9rKkH1oZJcpxjquAtNnU4c27qTzeu1AELgV4867Niqf5xVVXZJMZh8
-	/BuEWDNN7uJ2BKDw==
+	bh=wugknEMx6eimT+Flw8Mly0d3keuHZeLUeiEU1ZFIR0U=;
+	b=E0aRqtY4Zt8fZRdSgWRVwt8U4pT2b+yLDoHO4HvS1DiVHYOV8N+v9k8l3oDA9xxdMupn2u
+	49PGDMHPFvGnpfDw==
 From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] perf/x86/msr: Switch to new Intel CPU model defines
+Subject:
+ [tip: x86/cpu] perf/x86/intel/uncore: Switch to new Intel CPU model defines
 Cc: Tony Luck <tony.luck@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
@@ -63,7 +64,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171406503537.10875.15056829708453932461.tip-bot2@tip-bot2>
+Message-ID: <171406503634.10875.16911960699005867696.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,176 +74,51 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     e8475a26a94f57f5e6c8e8799dd3f9b936647f0b
-Gitweb:        https://git.kernel.org/tip/e8475a26a94f57f5e6c8e8799dd3f9b936647f0b
+Commit-ID:     438731421a2f6dc11a7a4f0ef9a19d79f77ed75f
+Gitweb:        https://git.kernel.org/tip/438731421a2f6dc11a7a4f0ef9a19d79f77ed75f
 Author:        Tony Luck <tony.luck@intel.com>
 AuthorDate:    Wed, 24 Apr 2024 11:15:03 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 25 Apr 2024 09:04:33 -07:00
+CommitterDate: Thu, 25 Apr 2024 09:04:32 -07:00
 
-perf/x86/msr: Switch to new Intel CPU model defines
+perf/x86/intel/uncore: Switch to new Intel CPU model defines
 
 New CPU #defines encode vendor and family as well as model.
 
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240424181503.41614-1-tony.luck%40intel.com
+Link: https://lore.kernel.org/all/20240424181503.41595-1-tony.luck%40intel.com
 ---
- arch/x86/events/msr.c | 132 ++++++++++++++++++++---------------------
- 1 file changed, 66 insertions(+), 66 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/msr.c b/arch/x86/events/msr.c
-index 9e237b3..45b1866 100644
---- a/arch/x86/events/msr.c
-+++ b/arch/x86/events/msr.c
-@@ -2,7 +2,7 @@
- #include <linux/perf_event.h>
- #include <linux/sysfs.h>
- #include <linux/nospec.h>
--#include <asm/intel-family.h>
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index 2eaf0f3..74b8b21 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* SandyBridge-EP/IvyTown uncore support */
 +#include <asm/cpu_device_id.h>
- #include "probe.h"
+ #include "uncore.h"
+ #include "uncore_discovery.h"
  
- enum perf_msr_id {
-@@ -43,75 +43,75 @@ static bool test_intel(int idx, void *data)
- 	    boot_cpu_data.x86 != 6)
- 		return false;
+@@ -3285,7 +3286,7 @@ void bdx_uncore_cpu_init(void)
+ 	uncore_msr_uncores = bdx_msr_uncores;
  
--	switch (boot_cpu_data.x86_model) {
--	case INTEL_FAM6_NEHALEM:
--	case INTEL_FAM6_NEHALEM_G:
--	case INTEL_FAM6_NEHALEM_EP:
--	case INTEL_FAM6_NEHALEM_EX:
--
--	case INTEL_FAM6_WESTMERE:
--	case INTEL_FAM6_WESTMERE_EP:
--	case INTEL_FAM6_WESTMERE_EX:
--
--	case INTEL_FAM6_SANDYBRIDGE:
--	case INTEL_FAM6_SANDYBRIDGE_X:
--
--	case INTEL_FAM6_IVYBRIDGE:
--	case INTEL_FAM6_IVYBRIDGE_X:
--
--	case INTEL_FAM6_HASWELL:
--	case INTEL_FAM6_HASWELL_X:
--	case INTEL_FAM6_HASWELL_L:
--	case INTEL_FAM6_HASWELL_G:
--
--	case INTEL_FAM6_BROADWELL:
--	case INTEL_FAM6_BROADWELL_D:
--	case INTEL_FAM6_BROADWELL_G:
--	case INTEL_FAM6_BROADWELL_X:
--	case INTEL_FAM6_SAPPHIRERAPIDS_X:
--	case INTEL_FAM6_EMERALDRAPIDS_X:
--	case INTEL_FAM6_GRANITERAPIDS_X:
--	case INTEL_FAM6_GRANITERAPIDS_D:
--
--	case INTEL_FAM6_ATOM_SILVERMONT:
--	case INTEL_FAM6_ATOM_SILVERMONT_D:
--	case INTEL_FAM6_ATOM_AIRMONT:
--
--	case INTEL_FAM6_ATOM_GOLDMONT:
--	case INTEL_FAM6_ATOM_GOLDMONT_D:
--	case INTEL_FAM6_ATOM_GOLDMONT_PLUS:
--	case INTEL_FAM6_ATOM_TREMONT_D:
--	case INTEL_FAM6_ATOM_TREMONT:
--	case INTEL_FAM6_ATOM_TREMONT_L:
--
--	case INTEL_FAM6_XEON_PHI_KNL:
--	case INTEL_FAM6_XEON_PHI_KNM:
-+	switch (boot_cpu_data.x86_vfm) {
-+	case INTEL_NEHALEM:
-+	case INTEL_NEHALEM_G:
-+	case INTEL_NEHALEM_EP:
-+	case INTEL_NEHALEM_EX:
-+
-+	case INTEL_WESTMERE:
-+	case INTEL_WESTMERE_EP:
-+	case INTEL_WESTMERE_EX:
-+
-+	case INTEL_SANDYBRIDGE:
-+	case INTEL_SANDYBRIDGE_X:
-+
-+	case INTEL_IVYBRIDGE:
-+	case INTEL_IVYBRIDGE_X:
-+
-+	case INTEL_HASWELL:
-+	case INTEL_HASWELL_X:
-+	case INTEL_HASWELL_L:
-+	case INTEL_HASWELL_G:
-+
-+	case INTEL_BROADWELL:
-+	case INTEL_BROADWELL_D:
-+	case INTEL_BROADWELL_G:
-+	case INTEL_BROADWELL_X:
-+	case INTEL_SAPPHIRERAPIDS_X:
-+	case INTEL_EMERALDRAPIDS_X:
-+	case INTEL_GRANITERAPIDS_X:
-+	case INTEL_GRANITERAPIDS_D:
-+
-+	case INTEL_ATOM_SILVERMONT:
-+	case INTEL_ATOM_SILVERMONT_D:
-+	case INTEL_ATOM_AIRMONT:
-+
-+	case INTEL_ATOM_GOLDMONT:
-+	case INTEL_ATOM_GOLDMONT_D:
-+	case INTEL_ATOM_GOLDMONT_PLUS:
-+	case INTEL_ATOM_TREMONT_D:
-+	case INTEL_ATOM_TREMONT:
-+	case INTEL_ATOM_TREMONT_L:
-+
-+	case INTEL_XEON_PHI_KNL:
-+	case INTEL_XEON_PHI_KNM:
- 		if (idx == PERF_MSR_SMI)
- 			return true;
- 		break;
+ 	/* Detect systems with no SBOXes */
+-	if ((boot_cpu_data.x86_model == 86) || hswep_has_limit_sbox(BDX_PCU_DID))
++	if (boot_cpu_data.x86_vfm == INTEL_BROADWELL_D || hswep_has_limit_sbox(BDX_PCU_DID))
+ 		uncore_msr_uncores[BDX_MSR_UNCORE_SBOX] = NULL;
  
--	case INTEL_FAM6_SKYLAKE_L:
--	case INTEL_FAM6_SKYLAKE:
--	case INTEL_FAM6_SKYLAKE_X:
--	case INTEL_FAM6_KABYLAKE_L:
--	case INTEL_FAM6_KABYLAKE:
--	case INTEL_FAM6_COMETLAKE_L:
--	case INTEL_FAM6_COMETLAKE:
--	case INTEL_FAM6_ICELAKE_L:
--	case INTEL_FAM6_ICELAKE:
--	case INTEL_FAM6_ICELAKE_X:
--	case INTEL_FAM6_ICELAKE_D:
--	case INTEL_FAM6_TIGERLAKE_L:
--	case INTEL_FAM6_TIGERLAKE:
--	case INTEL_FAM6_ROCKETLAKE:
--	case INTEL_FAM6_ALDERLAKE:
--	case INTEL_FAM6_ALDERLAKE_L:
--	case INTEL_FAM6_ATOM_GRACEMONT:
--	case INTEL_FAM6_RAPTORLAKE:
--	case INTEL_FAM6_RAPTORLAKE_P:
--	case INTEL_FAM6_RAPTORLAKE_S:
--	case INTEL_FAM6_METEORLAKE:
--	case INTEL_FAM6_METEORLAKE_L:
-+	case INTEL_SKYLAKE_L:
-+	case INTEL_SKYLAKE:
-+	case INTEL_SKYLAKE_X:
-+	case INTEL_KABYLAKE_L:
-+	case INTEL_KABYLAKE:
-+	case INTEL_COMETLAKE_L:
-+	case INTEL_COMETLAKE:
-+	case INTEL_ICELAKE_L:
-+	case INTEL_ICELAKE:
-+	case INTEL_ICELAKE_X:
-+	case INTEL_ICELAKE_D:
-+	case INTEL_TIGERLAKE_L:
-+	case INTEL_TIGERLAKE:
-+	case INTEL_ROCKETLAKE:
-+	case INTEL_ALDERLAKE:
-+	case INTEL_ALDERLAKE_L:
-+	case INTEL_ATOM_GRACEMONT:
-+	case INTEL_RAPTORLAKE:
-+	case INTEL_RAPTORLAKE_P:
-+	case INTEL_RAPTORLAKE_S:
-+	case INTEL_METEORLAKE:
-+	case INTEL_METEORLAKE_L:
- 		if (idx == PERF_MSR_SMI || idx == PERF_MSR_PPERF)
- 			return true;
- 		break;
+ 	hswep_uncore_pcu.constraints = bdx_uncore_pcu_constraints;
+@@ -5394,7 +5395,7 @@ static int icx_iio_get_topology(struct intel_uncore_type *type)
+ static void icx_iio_set_mapping(struct intel_uncore_type *type)
+ {
+ 	/* Detect ICX-D system. This case is not supported */
+-	if (boot_cpu_data.x86_model == INTEL_FAM6_ICELAKE_D) {
++	if (boot_cpu_data.x86_vfm == INTEL_ICELAKE_D) {
+ 		pmu_clear_mapping_attr(type->attr_update, &icx_iio_mapping_group);
+ 		return;
+ 	}
 
