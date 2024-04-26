@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-1181-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1182-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC498B3F00
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA3C8B3F01
 	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Apr 2024 20:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41D27B24138
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Apr 2024 18:13:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6B3E1F233B4
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Apr 2024 18:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE848171679;
-	Fri, 26 Apr 2024 18:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFD8171E4B;
+	Fri, 26 Apr 2024 18:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZF78jg8G";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3D+0+37Q"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PSey554N";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ugBXJwH1"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CFD16F8FC;
-	Fri, 26 Apr 2024 18:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4950116FF4A;
+	Fri, 26 Apr 2024 18:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714155137; cv=none; b=V86/v7iYoRHPHD3vLz4GGZ/h5D5rd6Ys3RXTcveKrW7q6uWQt75t6QTEiSrCXq7H9OaGX2vaRR/jQB/FnG5GIRLyJ5txQiOVeDCtqNrDanHqVf23k+CT2/bSxbqw+3/SVwYgdkJMioJmKSgvur5FVq+0zz4ctgVor8klzTn5gHs=
+	t=1714155137; cv=none; b=m8Mf/0l3lfN5UPweDJ7UmcL94G6uWn92hSNZOFGPZOHcH5amsJPjBXsm8V09AK5+x0tUX4XwBltqNNcRzEPVft64prPXzU5NA4FF8SMG9Tb9lUj1VeZ/83z+nNwFs2TNyj7Ppei4TO5sz7bTRrr8wOmI/GS95DczPNhCPdoGwGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1714155137; c=relaxed/simple;
-	bh=jSY0nA+ROhRqTnRhQs/ve/+tyARjxDRZJy8Uj4HGnYs=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=dysJfUKrnvGqfvQT+SBkd+lAa7gJaHknGyvAhwX9P1Zj0gfjRiGFAEXY/thOJGOpjnX4cPnZtLxOaD2Ha0rKUFCMrgAcP4SQtmKC+rqDkw7xq8RHt2Kol5hkHMkCdzKI7lSXWP/gnF1hOofjZ6x66xQ05uwfAAJ9XNzWyxvPjlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZF78jg8G; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3D+0+37Q; arc=none smtp.client-ip=193.142.43.55
+	bh=iK/oQ9SUPl3EQWcpPeA3epLY9MXR30hbXyX0eJ0boSc=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=ZkCaBhKR/qXI7zQSZNeaJczu59TiewA6FfRCDmPnsG7VZ0/ZvcCmlGp8WIKlQ7mAIsF4eQa+F2KHYl64/b18nRT1XJEo0yH0HhiVUc7JIay7oHpzNPjt3WJU7t2jMrf9Q9qpvec86VKt/htc0Zuy77VakiZs8epBzC9hcEEMYL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PSey554N; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ugBXJwH1; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Fri, 26 Apr 2024 18:12:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714155131;
+	s=2020; t=1714155132;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=ycy0ZFmdvZj6/8voNpxWj0nxNZyEC+RHC/uTiGiH8fQ=;
-	b=ZF78jg8GLjrUCcsknwUzQ6r9f0N8RGtckQPHgWSQCFGf2JIR3if/z0N4oyp31Wq6aVGD5k
-	qCVwk8gq3OtvDj2BlOs7q6a229bdzto+aX3iaiPaLWio42bUXSopkbYDZKvukM91bMp2l9
-	W1wp8jNcxSpXD2S0PN+rBsK6YBRXhgG+bN54qHkrmiCN6g30MmUO2PPQMEdk+4Ih51YNJk
-	pfUsYAbqOw7kJ+w/6oF/W5Fvtfb26dbFwl2sUE4cAsC6IHRDGlsRIyRkxGsOFxOP13Ao1k
-	KE08h7T3dhbtyiyqyKTyI2+WZdDcyOZWaEM0qpvt0VrGlLP7S0e4yRuILpeVCQ==
+	bh=bVjdz7Gy4RkZPfkFiFDmeELpqJB65Gv1pm9Ngk9ZgM4=;
+	b=PSey554NDGWovvJ8kJ2/2gpfOXSXW1nzGyCkQb4vOWCmn+oHbHagNpA5ttPddZthQ4cLPz
+	N1WsnY+ZgMDYlWhKs9Rrl+RdBQz3oHkIr/Rr438okw46AclADjCPW8zeIwuh/DrAyY7srB
+	3tmeBqN/6Uflr+dEmNkgxtRTOrS6+bb3WTEzPasB0I16ynnLrAX0bDxmJPrXRULDjxi6Pm
+	mqBFfRPtMAlzPmtQ5yU7k2I4GITUM0YbuMxBjHod1nYSvFUvTnyOA+N8AzRjf9CVNfRM4V
+	D8nrxgtTrswKaE/tTE05pd6B2jrw+FotMF92S5qiDarS8G1rvdvgUngWDJ8BWg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714155131;
+	s=2020e; t=1714155132;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=ycy0ZFmdvZj6/8voNpxWj0nxNZyEC+RHC/uTiGiH8fQ=;
-	b=3D+0+37QP47isYVb1frGSRKSTNhainvlurRJ/UEsxukpyuM/g+tH80d6tcNNny+Qgp/4fa
-	j3msJerv/nm+UQDA==
+	bh=bVjdz7Gy4RkZPfkFiFDmeELpqJB65Gv1pm9Ngk9ZgM4=;
+	b=ugBXJwH1Jmf2WR6IXx3jvJrbiRmwxnKBahonQZ2EkLou7k1ee3G9DP3LoayVCE9EKvf3l6
+	n3b0L9v58L/UFECQ==
 From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/mce: Switch to new Intel CPU model defines
+Subject: [tip: x86/cpu] x86/apic: Switch to new Intel CPU model defines
 Cc: Tony Luck <tony.luck@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
@@ -63,7 +63,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171415513142.10875.5506937113869096290.tip-bot2@tip-bot2>
+Message-ID: <171415513183.10875.14797863535860070158.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,52 +73,78 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     066f54e65e47b3b35ecc79c2fe934e0867ffbe2f
-Gitweb:        https://git.kernel.org/tip/066f54e65e47b3b35ecc79c2fe934e0867ffbe2f
+Commit-ID:     22878345b4c1e9eced4b5df51ab8b5006b36e802
+Gitweb:        https://git.kernel.org/tip/22878345b4c1e9eced4b5df51ab8b5006b36e802
 Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Wed, 24 Apr 2024 11:15:11 -07:00
+AuthorDate:    Wed, 24 Apr 2024 11:15:04 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 26 Apr 2024 08:49:24 -07:00
+CommitterDate: Fri, 26 Apr 2024 08:49:23 -07:00
 
-x86/mce: Switch to new Intel CPU model defines
+x86/apic: Switch to new Intel CPU model defines
 
 New CPU #defines encode vendor and family as well as model.
 
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240424181511.41772-1-tony.luck%40intel.com
+Link: https://lore.kernel.org/all/20240424181504.41634-1-tony.luck%40intel.com
 ---
- arch/x86/kernel/cpu/mce/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/apic/apic.c | 38 ++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 771a9f1..ad0623b 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -47,7 +47,7 @@
- #include <linux/kexec.h>
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index c342c4a..f76aaf5 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -497,32 +497,32 @@ static struct clock_event_device lapic_clockevent = {
+ static DEFINE_PER_CPU(struct clock_event_device, lapic_events);
  
- #include <asm/fred.h>
--#include <asm/intel-family.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/processor.h>
- #include <asm/traps.h>
- #include <asm/tlbflush.h>
-@@ -1948,14 +1948,14 @@ static int __mcheck_cpu_apply_quirks(struct cpuinfo_x86 *c)
- 		if (c->x86 == 6 && c->x86_model <= 13 && cfg->bootlog < 0)
- 			cfg->bootlog = 0;
+ static const struct x86_cpu_id deadline_match[] __initconst = {
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(HASWELL_X, X86_STEPPINGS(0x2, 0x2), 0x3a), /* EP */
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(HASWELL_X, X86_STEPPINGS(0x4, 0x4), 0x0f), /* EX */
++	X86_MATCH_VFM_STEPPINGS(INTEL_HASWELL_X, X86_STEPPINGS(0x2, 0x2), 0x3a), /* EP */
++	X86_MATCH_VFM_STEPPINGS(INTEL_HASWELL_X, X86_STEPPINGS(0x4, 0x4), 0x0f), /* EX */
  
--		if (c->x86 == 6 && c->x86_model == 45)
-+		if (c->x86_vfm == INTEL_SANDYBRIDGE_X)
- 			mce_flags.snb_ifu_quirk = 1;
+-	X86_MATCH_INTEL_FAM6_MODEL( BROADWELL_X,	0x0b000020),
++	X86_MATCH_VFM(INTEL_BROADWELL_X,	0x0b000020),
  
- 		/*
- 		 * Skylake, Cascacde Lake and Cooper Lake require a quirk on
- 		 * rep movs.
- 		 */
--		if (c->x86 == 6 && c->x86_model == INTEL_FAM6_SKYLAKE_X)
-+		if (c->x86_vfm == INTEL_SKYLAKE_X)
- 			mce_flags.skx_repmov_quirk = 1;
- 	}
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(BROADWELL_D, X86_STEPPINGS(0x2, 0x2), 0x00000011),
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(BROADWELL_D, X86_STEPPINGS(0x3, 0x3), 0x0700000e),
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(BROADWELL_D, X86_STEPPINGS(0x4, 0x4), 0x0f00000c),
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(BROADWELL_D, X86_STEPPINGS(0x5, 0x5), 0x0e000003),
++	X86_MATCH_VFM_STEPPINGS(INTEL_BROADWELL_D, X86_STEPPINGS(0x2, 0x2), 0x00000011),
++	X86_MATCH_VFM_STEPPINGS(INTEL_BROADWELL_D, X86_STEPPINGS(0x3, 0x3), 0x0700000e),
++	X86_MATCH_VFM_STEPPINGS(INTEL_BROADWELL_D, X86_STEPPINGS(0x4, 0x4), 0x0f00000c),
++	X86_MATCH_VFM_STEPPINGS(INTEL_BROADWELL_D, X86_STEPPINGS(0x5, 0x5), 0x0e000003),
  
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(SKYLAKE_X, X86_STEPPINGS(0x3, 0x3), 0x01000136),
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(SKYLAKE_X, X86_STEPPINGS(0x4, 0x4), 0x02000014),
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(SKYLAKE_X, X86_STEPPINGS(0x5, 0xf), 0),
++	X86_MATCH_VFM_STEPPINGS(INTEL_SKYLAKE_X, X86_STEPPINGS(0x3, 0x3), 0x01000136),
++	X86_MATCH_VFM_STEPPINGS(INTEL_SKYLAKE_X, X86_STEPPINGS(0x4, 0x4), 0x02000014),
++	X86_MATCH_VFM_STEPPINGS(INTEL_SKYLAKE_X, X86_STEPPINGS(0x5, 0xf), 0),
+ 
+-	X86_MATCH_INTEL_FAM6_MODEL( HASWELL,		0x22),
+-	X86_MATCH_INTEL_FAM6_MODEL( HASWELL_L,		0x20),
+-	X86_MATCH_INTEL_FAM6_MODEL( HASWELL_G,		0x17),
++	X86_MATCH_VFM(INTEL_HASWELL,		0x22),
++	X86_MATCH_VFM(INTEL_HASWELL_L,		0x20),
++	X86_MATCH_VFM(INTEL_HASWELL_G,		0x17),
+ 
+-	X86_MATCH_INTEL_FAM6_MODEL( BROADWELL,		0x25),
+-	X86_MATCH_INTEL_FAM6_MODEL( BROADWELL_G,	0x17),
++	X86_MATCH_VFM(INTEL_BROADWELL,		0x25),
++	X86_MATCH_VFM(INTEL_BROADWELL_G,	0x17),
+ 
+-	X86_MATCH_INTEL_FAM6_MODEL( SKYLAKE_L,		0xb2),
+-	X86_MATCH_INTEL_FAM6_MODEL( SKYLAKE,		0xb2),
++	X86_MATCH_VFM(INTEL_SKYLAKE_L,		0xb2),
++	X86_MATCH_VFM(INTEL_SKYLAKE,		0xb2),
+ 
+-	X86_MATCH_INTEL_FAM6_MODEL( KABYLAKE_L,		0x52),
+-	X86_MATCH_INTEL_FAM6_MODEL( KABYLAKE,		0x52),
++	X86_MATCH_VFM(INTEL_KABYLAKE_L,		0x52),
++	X86_MATCH_VFM(INTEL_KABYLAKE,		0x52),
+ 
+ 	{},
+ };
 
