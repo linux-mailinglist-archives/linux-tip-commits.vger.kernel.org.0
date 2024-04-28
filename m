@@ -1,174 +1,115 @@
-Return-Path: <linux-tip-commits+bounces-1187-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1188-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D47B8B4AB2
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 28 Apr 2024 10:24:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC368B4BF0
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 28 Apr 2024 15:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AF04B212B3
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 28 Apr 2024 08:24:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C3471C20E03
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 28 Apr 2024 13:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E7C524BB;
-	Sun, 28 Apr 2024 08:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620016CDBC;
+	Sun, 28 Apr 2024 13:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tmUfiNAY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vQdZSX8S"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qh4mhEM3"
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF89EF9EF;
-	Sun, 28 Apr 2024 08:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C7D6BB2F
+	for <linux-tip-commits@vger.kernel.org>; Sun, 28 Apr 2024 13:18:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714292681; cv=none; b=oYHJmCnG3CuzBGxggCqW7WVNXpfdx80+aPvew8vYURYgyCMjb9fEK2Z6cwrvRyR9xyBNqlb/anwV37zEjcpHYH94B+TgAZmlS7M75EVk044CLwaK0Pk3iEVFjLM8YG4nz6r24NtZ9cPQ4QJfgJ3ZahLT89NunLUPNJMdZEvBGfQ=
+	t=1714310301; cv=none; b=akf8LdSBilyKoirbcn2Bo7xKCVHsVGPql4HYKYkoLtSR1q7EzvI4gOs9zXRn0C605hMJ8QBYBC01FF9wjgLWYQX70IeC6+0NPZ8+CMzokUPlKyIy11HdcUTKsIpH3L/z8zd61i5uDERmTzh49gTl1x0gUtFfi/hbxAm/jYFebbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714292681; c=relaxed/simple;
-	bh=Vil+BDqRYDS6LChmPe6Q6on+lguWBTWidGmONc/mXiE=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=X/6l+zWmrRq+997epiQYx0yJ55im4mSHK9F+nIBkbZE6M8AWrIdGvjdI4IxqVhp2N8jyDKzKXcEvwjlIQKo8sdg3S4yZiXh8lRsER1m3WIfTffCzkTnnXmYVVJepgiwPnK03VPmcaInTL+MoZwG+ZFSN43xyD1CPOmm39Ej9zTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tmUfiNAY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vQdZSX8S; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 28 Apr 2024 08:24:31 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714292672;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20240116; t=1714310301; c=relaxed/simple;
+	bh=CgfUEtVUVqryBOU20Pw4HvjHv8QjwbFcKFGTsksoSUQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cof9s5DigPBu1I3haBCxWfchjCk/FMOchgcTXSfr/RQVHfkMcoOG7pdSP5hGt0O2qsxrpAhqBHAFbVD+olmgeE8v/j6FU4aWtkZnjOJK0iLCytxJyTPG1gp9pvjjHcJWQ/tFXMnLOXEGryLriNxijFz/fJxtoSQHCaQmXpRL8dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qh4mhEM3; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714310298;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cQJyJVk6gQIgoeWCNjweQHoV2R23rcnn9pDzsHMahbQ=;
-	b=tmUfiNAY2Hv7ktiFWwCON7M5jMWMVHTm4QTsIYSjDM281Yc9iMjd7CyglKpyCZ1gcxZ9EP
-	+xqLhG6HqHd4xwYYHMdQOStykuRvxxzfQIeb1FYc+lPE3FiXGruW+V8WxhFYVp/64D+RZV
-	rFnPOXAILRwKUBrDKdn7kBfHslr0pqkkBUCA2K3qhzOeAUHmpRpE2mETYUm4xCT686RQ5c
-	QAw81KT7Qtq2Thlu3XYNDfCUXcrJ22Hh7TL1muGtqYDd5iqrtxWSwXPnGmnO+QWNkXeTb0
-	HxyjMjytOD2oO+QiHLJG++zehcd8GuhohbK0mC5kmFhVZf52nmpnb9QPNPgV9g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714292672;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cQJyJVk6gQIgoeWCNjweQHoV2R23rcnn9pDzsHMahbQ=;
-	b=vQdZSX8SVgiChBBDX3YfN6ICojemZl+ZwVVIuF9fVbmoY6mLopPUhBKstSF6V3NOjbZ3KN
-	3zrWks/uk3zZIrBQ==
-From: "tip-bot2 for Oleg Nesterov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/isolation: Prevent boot crash when the boot
- CPU is nohz_full
-Cc: Chris von Recklinghausen <crecklin@redhat.com>,
- Oleg Nesterov <oleg@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@kernel.org>, Phil Auld <pauld@redhat.com>,
- Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240411143905.GA19288@redhat.com>
-References: <20240411143905.GA19288@redhat.com>
+	bh=CgfUEtVUVqryBOU20Pw4HvjHv8QjwbFcKFGTsksoSUQ=;
+	b=Qh4mhEM3ndISM0Uvx5TXZpKDdIcJyTAl7wqA57HrhkHWBuW6EmK6WY+9/+Yrw+Vd30CVyH
+	cWslilGaXCRtn1EKqhI3ql9+1WARZekxssSK7UUOBQ8RkB1kubAR6t19IL6kIRm+zwcRXg
+	KLEw81hX2tDU8uLdRXmXo8MSEjk+mns=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-383-ZC-jobWDMySgLHBythwwfg-1; Sun, 28 Apr 2024 09:18:14 -0400
+X-MC-Unique: ZC-jobWDMySgLHBythwwfg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E55E98059E0;
+	Sun, 28 Apr 2024 13:18:13 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.143])
+	by smtp.corp.redhat.com (Postfix) with SMTP id 37A2040C6CB1;
+	Sun, 28 Apr 2024 13:18:11 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Sun, 28 Apr 2024 15:16:48 +0200 (CEST)
+Date: Sun, 28 Apr 2024 15:16:45 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Ingo Molnar <mingo@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>, Phil Auld <pauld@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org
+Subject: Re: [tip: sched/urgent] sched/isolation: Fix boot crash when maxcpus
+ < first housekeeping CPU
+Message-ID: <20240428131645.GA20436@redhat.com>
+References: <20240413141746.GA10008@redhat.com>
+ <171398910207.10875.4426725644764756607.tip-bot2@tip-bot2>
+ <Zi4FHsc51wNhdSW4@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171429267181.10875.2633061764782446732.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zi4FHsc51wNhdSW4@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
-The following commit has been merged into the sched/urgent branch of tip:
+On 04/28, Ingo Molnar wrote:
+>
+> * tip-bot2 for Oleg Nesterov <tip-bot2@linutronix.de> wrote:
+>
+> > Another corner case is "nohz_full=0" on a machine with a single CPU or with
+> > the maxcpus=1 kernel argument. In this case non_housekeeping_mask is empty
+> > and tick_nohz_full_setup() makes no sense. And indeed, the kernel hits the
+> > WARN_ON(tick_nohz_full_running) in tick_sched_do_timer().
+> >
+> > And how should the kernel interpret the "nohz_full=" parameter? It should
+> > be silently ignored, but currently cpulist_parse() happily returns the
+> > empty cpumask and this leads to the same problem.
+> >
+> > Change housekeeping_setup() to check cpumask_empty(non_housekeeping_mask)
+> > and do nothing in this case.
+>
+> So arguably the user meant NOHZ_FULL to be turned off - but it is de-facto
+> already turned off by the fact that there's only a single CPU available,
+> right?
 
-Commit-ID:     5097cbcb38e6e0d2627c9dde1985e91d2c9f880e
-Gitweb:        https://git.kernel.org/tip/5097cbcb38e6e0d2627c9dde1985e91d2c9f880e
-Author:        Oleg Nesterov <oleg@redhat.com>
-AuthorDate:    Thu, 11 Apr 2024 16:39:05 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 28 Apr 2024 10:07:12 +02:00
+Or the user passes the empty "nohz_full=" mask on a multi-CPU machine.
 
-sched/isolation: Prevent boot crash when the boot CPU is nohz_full
+In both cases (before this patch) housekeeping_setup() calls
+tick_nohz_full_setup(non_housekeeping_mask) which sets
+tick_nohz_full_running = true even if tick_nohz_full_mask is empty.
 
-Documentation/timers/no_hz.rst states that the "nohz_full=" mask must not
-include the boot CPU, which is no longer true after:
+This doesn't look right to me and triggers the "this should not happen"
+warning in tick_sched_do_timer().
 
-  08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full").
+But let me repeat, I know nothing about nohz/etc.
 
-However after:
+Oleg.
 
-  aae17ebb53cd ("workqueue: Avoid using isolated cpus' timers on queue_delayed_work")
-
-the kernel will crash at boot time in this case; housekeeping_any_cpu()
-returns an invalid CPU number until smp_init() brings the first
-housekeeping CPU up.
-
-Change housekeeping_any_cpu() to check the result of cpumask_any_and() and
-return smp_processor_id() in this case.
-
-This is just the simple and backportable workaround which fixes the
-symptom, but smp_processor_id() at boot time should be safe at least for
-type == HK_TYPE_TIMER, this more or less matches the tick_do_timer_boot_cpu
-logic.
-
-There is no worry about cpu_down(); tick_nohz_cpu_down() will not allow to
-offline tick_do_timer_cpu (the 1st online housekeeping CPU).
-
-Fixes: aae17ebb53cd ("workqueue: Avoid using isolated cpus' timers on queue_delayed_work")
-Reported-by: Chris von Recklinghausen <crecklin@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20240411143905.GA19288@redhat.com
-Closes: https://lore.kernel.org/all/20240402105847.GA24832@redhat.com/
----
- Documentation/timers/no_hz.rst |  7 ++-----
- kernel/sched/isolation.c       | 11 ++++++++++-
- 2 files changed, 12 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/timers/no_hz.rst b/Documentation/timers/no_hz.rst
-index f8786be..7fe8ef9 100644
---- a/Documentation/timers/no_hz.rst
-+++ b/Documentation/timers/no_hz.rst
-@@ -129,11 +129,8 @@ adaptive-tick CPUs:  At least one non-adaptive-tick CPU must remain
- online to handle timekeeping tasks in order to ensure that system
- calls like gettimeofday() returns accurate values on adaptive-tick CPUs.
- (This is not an issue for CONFIG_NO_HZ_IDLE=y because there are no running
--user processes to observe slight drifts in clock rate.)  Therefore, the
--boot CPU is prohibited from entering adaptive-ticks mode.  Specifying a
--"nohz_full=" mask that includes the boot CPU will result in a boot-time
--error message, and the boot CPU will be removed from the mask.  Note that
--this means that your system must have at least two CPUs in order for
-+user processes to observe slight drifts in clock rate.) Note that this
-+means that your system must have at least two CPUs in order for
- CONFIG_NO_HZ_FULL=y to do anything for you.
- 
- Finally, adaptive-ticks CPUs must have their RCU callbacks offloaded.
-diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-index 373d42c..2a262d3 100644
---- a/kernel/sched/isolation.c
-+++ b/kernel/sched/isolation.c
-@@ -46,7 +46,16 @@ int housekeeping_any_cpu(enum hk_type type)
- 			if (cpu < nr_cpu_ids)
- 				return cpu;
- 
--			return cpumask_any_and(housekeeping.cpumasks[type], cpu_online_mask);
-+			cpu = cpumask_any_and(housekeeping.cpumasks[type], cpu_online_mask);
-+			if (likely(cpu < nr_cpu_ids))
-+				return cpu;
-+			/*
-+			 * Unless we have another problem this can only happen
-+			 * at boot time before start_secondary() brings the 1st
-+			 * housekeeping CPU up.
-+			 */
-+			WARN_ON_ONCE(system_state == SYSTEM_RUNNING ||
-+				     type != HK_TYPE_TIMER);
- 		}
- 	}
- 	return smp_processor_id();
 
