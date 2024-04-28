@@ -1,107 +1,112 @@
-Return-Path: <linux-tip-commits+bounces-1178-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1184-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844CA8B3EFA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Apr 2024 20:13:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E488B4AAA
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 28 Apr 2024 10:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A9281F2353F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Apr 2024 18:13:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED2331C20A9B
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 28 Apr 2024 08:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58ED1171094;
-	Fri, 26 Apr 2024 18:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA58650A6D;
+	Sun, 28 Apr 2024 08:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jIHwp0rF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E3/K1pE5"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fZdDV4fD"
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CB216F8FB;
-	Fri, 26 Apr 2024 18:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6C023DE;
+	Sun, 28 Apr 2024 08:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714155137; cv=none; b=Pi9CR5689JcXLCGzxjsTPrFrmJgqYdqd5wWsm5Xep4fad9Kb7DTtwe6uqE1NIf/u2aS3P+zla+eLzPYkt+oyJesqoATkKhviet+GeExYhB8JX2e6hBb9/jeFXaVPqaQ+dRjYQ/SzuTIu1LMnBgr4ijJUS0Qr5dAwVJIrGvwJRtQ=
+	t=1714292004; cv=none; b=IN6/W8DZskR4sBwwTDsRlct/fY3LON3jE1GNrpRE6DqCEmgugmlK24ztdkKpdRCOPTajQieBoBJQPu76h/SIQ+nCcIQQCvyuSvTudnpKa0xy8E5/DLhlVkd7//lRbrJLQYnW+6rpBmcvgWK3SDhEJJ97PjhLvHAgrgIv2B8gDtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714155137; c=relaxed/simple;
-	bh=/P7MfTAlOkoCL2TJqZpojc6Jy5X+VVo52LZ4BaCkiCE=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=sB3DAsqCJStYDE9epb249u/jVY+WhjbL/s8FELxPdxn5S8kRA2OvjrqRvkCDf9VAeYmed8Md6/jLS+pET8Jh5Pi+0iCdQaJIrDWFMsP9qICtMGFx0PYd2r6JGi1DXzFwDMlaJMMw94VVYLZoaNrqfrNexOjNluO/qL7DeSFscxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jIHwp0rF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E3/K1pE5; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 26 Apr 2024 18:12:11 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714155131;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=fc1GrO0BYXxDgAEiOy4PdaY1Zm6pp4jRnSgh4FJwF2Q=;
-	b=jIHwp0rFDyPpSBtw7et9M7/P8HmeFDZ7A1QNiu+ONgyi5xkGLkrbxLwbyjofEsmqswb/V0
-	SU7bvtK7uhxiQz4JzxKwV2ISkX0MyR7ScqAKu0LUovcbMpfQrHmh1D4z5hM2SVPcl09K4s
-	5njtdctAFSJFxwa8NtfYxSO2otr7FIrcKWEhewT5pTD5Kg4NQyYPjTSk4PUijTa6i6PTTv
-	7wPbakxqiPHvP98hem6e+m/OKRCQmu+Plu1EaJZd2yxGLg2y4ErrbdG/H3wDGluWjTDdFN
-	GtMrx1PFNTSdZa9DFv+eaM2GCgjQdW1k41W4UtVAEVa3+0X7oFxaKItyJ2C0uQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714155131;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=fc1GrO0BYXxDgAEiOy4PdaY1Zm6pp4jRnSgh4FJwF2Q=;
-	b=E3/K1pE5Fmwo+Y7ayX3b/knhxlzeIbNh/mOXUfdBJ1MwqEeAoWLtKZ2zkQJ2pBptdMMNg5
-	046lP3cPXHrBTXAw==
-From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu: Switch to new Intel CPU model defines
-Cc: Tony Luck <tony.luck@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1714292004; c=relaxed/simple;
+	bh=cHNvbidJD/XF0dsQm6FL1s2RtNKPzmHuykBLedwjSl4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JUa6MAHtF/rJpg0IK7tW9IrQZZLC1IlZwpaL7i7A/ZMhlooJ6FMW3NWFvat1IA7Ngg3zjuzH0oQh1UGZx56w0HF1Dtxu9ORI5Q0nxkKrcl8qzf5wvZvUH+DqjTOg0u5cO7K0OOpB5M3TlJNKW6VC01txBmELPQxtS/zdhF4CsxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fZdDV4fD; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-347c197a464so2650616f8f.2;
+        Sun, 28 Apr 2024 01:13:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714292001; x=1714896801; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yRkNie6sOvoPrIKey0CE+VC9dg5CI8noygkEt7aEQHU=;
+        b=fZdDV4fD6rF8R0vl6xJsvqKK0k1lulZ/vUWY9GhbHOeB6c/WXkZuDdhTMkEkzOw50a
+         1jUZw623UrY6wxFUHx5a/iw84/j/O3lNbUXVv1fn7M8nCIKWe8raMWqgdoTu02uiQgpj
+         TYIvue4gsSYTd1XMNzQBFDZRRv8gvNrqdNTjZTsgZAx7/eU+88UgwaV9KQ0k2GD40W13
+         HzHYPKq4lPh9M46EqwMsnJ2satp5Hg991iB/lakJK2hl9hgqLE2xCEvybqBt5Wj28KvC
+         3QE4DhtXORxA2k6/aC6JpuSfA73TMDFRetlcl1BaxEs/UnYr4jWbSIIsezU3ZaxMjM2c
+         0W8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714292001; x=1714896801;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yRkNie6sOvoPrIKey0CE+VC9dg5CI8noygkEt7aEQHU=;
+        b=WQsl9gjSLPzP7ETii2K2wx0/XCJWWUm1jvVuiGeUca4TbyOM9TWmNCC/QFlmX11IhW
+         l76H2rC/N5RVANvSeZlBpbvr9TXLzQes+a19Eh+KlLqB9SGP1NxyIOU2zdeB5w42tULd
+         Se5aOnT766fvQ1hE3bPe6QlLrmAd4H9k44LWZ1Y2Aa2Q4+ZeTmGmI+CdexsE4pSKh89s
+         F03QnN4dvRQFjSfVr3GLYFtKPUwD68jTY2HV42xnejZzB2s5MzfPEwBi4uO3upVNn8Yc
+         t7+T/rG5+pKem8apTVjCVoMLwaW8TYmowJGjjAsHiSGjY0q/UJqrAY36Mz0H5HPEgZj0
+         rD2Q==
+X-Gm-Message-State: AOJu0YxQ8wfTgjUlFYEity/dsdReRS+rbrjOgwLlRb/96pgXOvWlJtsa
+	IRSjhuQBYejn41ab+MY1X+49f0jKNymn9P4K2dwC/IpdI6B3TIJJlntUvR+f
+X-Google-Smtp-Source: AGHT+IF4o2mDxQEZaJAQAFe0e8PuZQJsqA/5KurjSBqtod/of8BVDAjoewXRzwJxQ8gslNieBIZufg==
+X-Received: by 2002:a5d:6108:0:b0:34c:719e:67a5 with SMTP id v8-20020a5d6108000000b0034c719e67a5mr3604714wrt.9.1714292001175;
+        Sun, 28 Apr 2024 01:13:21 -0700 (PDT)
+Received: from gmail.com (1F2EF175.nat.pool.telekom.hu. [31.46.241.117])
+        by smtp.gmail.com with ESMTPSA id e37-20020a5d5965000000b0034ca55b8e61sm3202736wri.20.2024.04.28.01.13.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Apr 2024 01:13:20 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date: Sun, 28 Apr 2024 10:13:18 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Phil Auld <pauld@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org
+Subject: Re: [tip: sched/urgent] sched/isolation: Fix boot crash when maxcpus
+ < first housekeeping CPU
+Message-ID: <Zi4FHsc51wNhdSW4@gmail.com>
+References: <20240413141746.GA10008@redhat.com>
+ <171398910207.10875.4426725644764756607.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171415513152.10875.6741484193923117142.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <171398910207.10875.4426725644764756607.tip-bot2@tip-bot2>
 
-The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     34304acb329073722a2fc4859489b83a0b870753
-Gitweb:        https://git.kernel.org/tip/34304acb329073722a2fc4859489b83a0b870753
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Wed, 24 Apr 2024 11:15:11 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 26 Apr 2024 08:49:24 -07:00
+* tip-bot2 for Oleg Nesterov <tip-bot2@linutronix.de> wrote:
 
-x86/cpu: Switch to new Intel CPU model defines
+> Another corner case is "nohz_full=0" on a machine with a single CPU or with
+> the maxcpus=1 kernel argument. In this case non_housekeeping_mask is empty
+> and tick_nohz_full_setup() makes no sense. And indeed, the kernel hits the
+> WARN_ON(tick_nohz_full_running) in tick_sched_do_timer().
+> 
+> And how should the kernel interpret the "nohz_full=" parameter? It should
+> be silently ignored, but currently cpulist_parse() happily returns the
+> empty cpumask and this leads to the same problem.
+> 
+> Change housekeeping_setup() to check cpumask_empty(non_housekeeping_mask)
+> and do nothing in this case.
 
-New CPU #defines encode vendor and family as well as model.
+So arguably the user meant NOHZ_FULL to be turned off - but it is de-facto 
+already turned off by the fact that there's only a single CPU available, 
+right?
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240424181511.41753-1-tony.luck%40intel.com
----
- arch/x86/kernel/cpu/match.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
 
-diff --git a/arch/x86/kernel/cpu/match.c b/arch/x86/kernel/cpu/match.c
-index 2243083..8651643 100644
---- a/arch/x86/kernel/cpu/match.c
-+++ b/arch/x86/kernel/cpu/match.c
-@@ -25,7 +25,7 @@
-  * asm/cpu_device_id.h contains a set of useful macros which are shortcuts
-  * for various common selections. The above can be shortened to:
-  *
-- * X86_MATCH_INTEL_FAM6_MODEL(BROADWELL, NULL);
-+ * X86_MATCH_VFM(INTEL_BROADWELL, NULL);
-  *
-  * Arrays used to match for this should also be declared using
-  * MODULE_DEVICE_TABLE(x86cpu, ...)
+	Ingo
 
