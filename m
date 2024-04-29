@@ -1,102 +1,140 @@
-Return-Path: <linux-tip-commits+bounces-1212-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1213-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0658B6555
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 00:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 061AC8B658A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 00:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90535B20AE1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 22:11:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F3EEB2051F
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 22:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43A1194C72;
-	Mon, 29 Apr 2024 22:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E7A194C61;
+	Mon, 29 Apr 2024 22:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AwhPErZ3"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a3jStbhO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ALepUeQp"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84FE19069C;
-	Mon, 29 Apr 2024 22:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD54177992;
+	Mon, 29 Apr 2024 22:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714428649; cv=none; b=UnJY+xI8ETO2yRLoE4tTn+RyqrnS1T1/bmvCrJkezk8ZzqyBm6bhKI/A4IFw61rZvUOHgz7cWGDlNln9k1Fn7CKfr4EXY6gtzILhk/uw7rQArURlFCzk/He5Gx1gvUEG5LF1UGo7vCd6KIsdHpVmQuQWDjx1VvMGITNeUn5/+IE=
+	t=1714429165; cv=none; b=l327o3UpyFSVrSOuejNubElkTIzDFtDOJkuQvmizDFcr9j9lWn1+mT+xdrHKeSziIq4xdxyrLt/cK4DgTBXRjTPlPYTo/6tHiB2tHHhO8ipJsG9pEDDJC2tcHUeCbuk3B7sXkkcIupiDxXTC8V60SjallMW4hZ87z2BrC/bclm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714428649; c=relaxed/simple;
-	bh=BnORpZI96ulOL2ybGBlixNtcajQVtJLpgJmjNiq9iXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HrnPk8d4ZoqSmOo7XCFfhYU9QvCelO69Iu1981MPbur+nifPqUv1AUBrOM+oXxHcUotAUyYU4JJUKEPVL0gvR0lvlR2sRrIf+H55w9k7qxPHgNlr0qKwa5kJfFx7eJLrTsZW/GoWFZas7hyAUxceqjsY0B7jQrcPJ9bCn1CXreY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AwhPErZ3; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7291D40E00C7;
-	Mon, 29 Apr 2024 22:10:38 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7oE8v-9sJrwS; Mon, 29 Apr 2024 22:10:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1714428634; bh=Msj1Hf1pE0OzlB7eC2G079cRtumFYJCMn8TqRTaMLN4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AwhPErZ3fyhhceeJbn5Eqsp7ufWGQyJdE/K+WV3uTmuq1agttfcoFjFi1IrZU/B6n
-	 YXpeelZouhEQR1f5I01ziH1iTZT6GdEBtE398NGlsP4TGnnpufW5vqWiB+liqsq2CO
-	 dsgEN5NI2nSYqiLE79Tf2yXSP2XEjlotni7/VspBHfNH3KrxcMu1FwqYwMYLHkbAZw
-	 ixwhTBJ6oHAplgsSNXkjUGHJ1SAD+njmmkyeEe9bRQ41TQHMG57FUabzhai7mVbtLp
-	 UlYqn+Qjh1ZUZ9trQsOtUDHRcN1uRiSAE0mxrnMVuHH9qTHSWgPDZ8ptFDfet3bVVI
-	 m63ew2tUwhGelkxyMMNr1AK77LfJS1itcXUiAo+pOK85jne+XUEq0kujN9oWp8cs94
-	 hHS1RLo7tltzhPpZJFHaKdRnkwwoDg4bVTxp2pslkskeymWUsPh6aLcDmszMgI+b8w
-	 lZqIT0Qxr3VJEOVD0uD36Vw90alhCfzaE72X216D7yqb6G4qSNA4RBotUuPZw9MxsA
-	 UUvNYQYig7wbx3wFiatf2c4Sm6OR/A7Mo1hsfPS5M7VnLjYk/S92iuenqwOE1Wak9W
-	 mc45FamvCR4DR/25bs6C1AaF40hYWwL4hE69eszDly4/23o2D1+PX4mJvZOGhFgxpN
-	 4nbsB1lEJJ6RQGp2Ku6rYzgk=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CC64740E0187;
-	Mon, 29 Apr 2024 22:10:29 +0000 (UTC)
-Date: Tue, 30 Apr 2024 00:10:22 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Luck, Tony" <tony.luck@intel.com>
-Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH] x86/cpu: Fix thinko comparing x86_vfm with x86_model
-Message-ID: <20240429221022.GKZjAazoIhwQkK7-H_@fat_crate.local>
-References: <20240428183142.GHZi6WDu5nbmJJ_BcH@fat_crate.local>
- <20240429022051.63360-1-tony.luck@intel.com>
- <20240429082242.GAZi9Y0uK-e2KGWxmX@fat_crate.local>
- <SJ1PR11MB6083B53C58D36ADB74C08AABFC1B2@SJ1PR11MB6083.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1714429165; c=relaxed/simple;
+	bh=8w4f6x4HM58zOXZcFn15vnRf47Rfc2cLm2sIIgBjOaw=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=J1FUiv6kxRtXJHa7/Mfm1kWsGS8xH1AZQ9vuDX/yaZbyrR3/yM6SpYugYs0z5Vm+cETW0A/cPpAYG3Nxc9iI4k+/jQA+E7blMuIBnU0G87XVBNDCWa20skGulWnTImTbJrT/hoalx89CVMDZegv1Pxg/M24OuXFyNVbOaFfPtRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a3jStbhO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ALepUeQp; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 29 Apr 2024 22:19:20 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1714429161;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E3y+8X/qFhPSTPOYWMQ1YatuSiWkW5K5mEJAPZe9vqM=;
+	b=a3jStbhO2G4TOWQ4c4d8Y5ysivZ5kPTRzEge1/qxNr6FYrBZ4XnLKQIZQnXHNCF578YdCw
+	MFgFspOPVT5DFq4cWU4eJ34wS98yIhDUHCKf0hOPhFK8JoQicIQMi6p0LBbjiKdcss48Ls
+	v3q5J1O+eoFSAMF8Nm0CzQUVJsh4qQUkEtGpgZrvfeNGHczKcIJ8/TeFCAVviLjkAVZpVG
+	okiB8K6XtICdSQHumonvzeChJk/+12oMOwubjjFAKog/NDvZ4bzn0U4xmLhbvwzcNJo4kC
+	2nbQ8z6I7EkNIU/rUmsnjaniVQ5ttlqjOnXG/ZNhX1pQFLIVP1CkdJWTbP5Yzg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1714429161;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E3y+8X/qFhPSTPOYWMQ1YatuSiWkW5K5mEJAPZe9vqM=;
+	b=ALepUeQpdNQTHODdukgQT0IC/dtbvIHNcMjoh4D+VgFDG8ooUnuuq7AiihOafyrCTZPP2R
+	nyvcNAF5nAUnIlAw==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] clocksource: Make the int help prompt unit
+ readable in ncurses
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Thomas Gleixner <tglx@linutronix.de>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240428102143.26764-1-bp@kernel.org>
+References: <20240428102143.26764-1-bp@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <SJ1PR11MB6083B53C58D36ADB74C08AABFC1B2@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Message-ID: <171442916066.10875.8581984899215904013.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 29, 2024 at 04:05:29PM +0000, Luck, Tony wrote:
-> I made one patch per file touched (wherever possible ... there are a few patches
-> where ".h" and ".c" files needed to be bundled together).
+The following commit has been merged into the timers/core branch of tip:
 
-I figured. I think the next step would've been to group them all into
-a single patch based on the subject prefix. But we're doing that now
-anyway.
+Commit-ID:     54db412e618e9c43e5167f809a901f554e8c43e2
+Gitweb:        https://git.kernel.org/tip/54db412e618e9c43e5167f809a901f554e8=
+c43e2
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Sun, 28 Apr 2024 12:21:43 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 30 Apr 2024 00:12:22 +02:00
 
-> Thanks. I just did a "git fetch" the x86/cpu branch. It all looks good.
+clocksource: Make the int help prompt unit readable in ncurses
 
-Thx!
+When doing
 
--- 
-Regards/Gruss,
-    Boris.
+  make menuconfig
 
-https://people.kernel.org/tglx/notes-about-netiquette
+and searching for the CLOCKSOURCE_WATCHDOG_MAX_SKEW_US config item, the
+help says:
+
+  =E2=94=82 Symbol: CLOCKSOURCE_WATCHDOG_MAX_SKEW_US [=3D125]
+  =E2=94=82 Type  : integer
+  =E2=94=82 Range : [50 1000]
+  =E2=94=82 Defined at kernel/time/Kconfig:204
+  =E2=94=82   Prompt: Clocksource watchdog maximum allowable skew (in   s)
+  							      ^^^
+
+  =E2=94=82   Depends on: GENERIC_CLOCKEVENTS [=3Dy] && CLOCKSOURCE_WATCHDOG =
+[=3Dy]
+
+because on some terminals, it cannot display the '=CE=BC' char, unicode
+number 0x3bc.
+
+So simply write it out so that there's no trouble.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20240428102143.26764-1-bp@kernel.org
+---
+ kernel/time/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
+index fc3b1a0..8ebb6d5 100644
+--- a/kernel/time/Kconfig
++++ b/kernel/time/Kconfig
+@@ -202,7 +202,7 @@ config HIGH_RES_TIMERS
+ 	  the size of the kernel image.
+=20
+ config CLOCKSOURCE_WATCHDOG_MAX_SKEW_US
+-	int "Clocksource watchdog maximum allowable skew (in =CE=BCs)"
++	int "Clocksource watchdog maximum allowable skew (in microseconds)"
+ 	depends on CLOCKSOURCE_WATCHDOG
+ 	range 50 1000
+ 	default 125
 
