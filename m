@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-1200-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1202-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE7F8B53B0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 11:02:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE658B53B4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 11:03:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7023F1C21368
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 09:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 498FA281F4F
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 09:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107F8381D5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCEB3A8FF;
 	Mon, 29 Apr 2024 09:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3apCYB1m";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CTLgqw/a"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qax9COK7";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Vw8PjUUo"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E54225750;
-	Mon, 29 Apr 2024 09:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DD92C6B2;
+	Mon, 29 Apr 2024 09:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714381325; cv=none; b=QQoWeIuwBl4L0MMoo/yER9Q919QMxxPaq0V5asA8vb/aCiC54/SwYDcLGbDKo1tmvQcSwcmA6iHUfXWZ3JIlZtzMPc9ArN7kpXl8zOzVat8d+WvUGQqwZke66Q4L4hs6KKkcU1oFN+oUz0bsSlfLeHXAz7bxGbTpTWWi3l+dCYs=
+	t=1714381326; cv=none; b=Bi4FG5J3SZ3/ury54pSwTLWRjteEi0wQJ9OuoNzxP7JD0iEfB59AbnBPrkX8IMqjT76J9/4WtVgAg3qqDvVuOmkfKMkyG1cyE/ukCPGM6CDgDLGCEjjcpNdMLY6gQwdnRW7Zxiemdg8lHnLGtaUsTFEiNfnx61BcadetPSsJXqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714381325; c=relaxed/simple;
-	bh=I/lUS3ILvzQeKH/WKcIv3q5Y/VKs4bYf1oNhmDJDBvM=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=OHh5klI4n2/O9/ftQRaZ+HP4ZG7l0GYed6T7nUm2r9hpaB73f+HgMvPIgbtBIcPAZJM/KtEfK4g1LI8ndjhkXyzpzAIheDJuh3WctPSsXJx8a+52vtN2ixu3DE3ydrQ8fCvnOHlof20nnyH0fnYd3iOL7JTGP5HsOG7b+NYXJJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3apCYB1m; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CTLgqw/a; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1714381326; c=relaxed/simple;
+	bh=a+sczFimb/5C9+NvSf+2YhXCfYOKRKDXRltztQREnd8=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=fN/6R/D9NnhfBIqD8i14QYPX4Q6YqPFuArecFHI1SQz2m5EAB8CexC11An4GAgBYHY1tLihYdRay8aLb457RMMG3GzbETVqNKALoACwkBVM+X1yzgRENqa3Hw8Kl5CsT2vRND9mDnbIUvbONCW8JdFKVVrSLMI/dixr+fvum4y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qax9COK7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Vw8PjUUo; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 29 Apr 2024 09:01:54 -0000
+Date: Mon, 29 Apr 2024 09:01:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714381314;
+	s=2020; t=1714381315;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=dxmqiJY3dxPmmf73vWJWQhlFW14yQvGIrlB1SIjmOCY=;
-	b=3apCYB1mDTlDNcNJHm1VMx+roiF+SLHXz1y12PrAox9M3sE0O6joHHDo9P3/zyPvtJUJ4a
-	KMXLoYRiqV7RnxT3j0bKxd3Nx7P89g1wHrWmrsheg9MWYFP7RBD4FolGQ86JZrgcUxyjxK
-	ZBMqnNpZ54d4GYekrUZis0gAt7C+j5mphHuWA0y/Mo5ZUmQ+Yq4PQ0gIFpdKQ33H5d4rMt
-	aOx2zVsbtKAlFutqh2d7kL5idjnSk6a6vuB3QbCMy/YruDZforcqL5jDPr6F17B7BBdG2N
-	tRQFFoPfR6zRbEVMX+dsig41RoxtHEDmpFuieDlmNok0//CUNL4yaOPm9yQFGQ==
+	bh=58tYNnWmiz1o8ITV6x43tPibzrN4Iisn0nfoBt6Xs84=;
+	b=qax9COK7jGXr4d5ku9eggKLxIfNugby4aWfN1IF5fmC5nAHSlZ4MhFtZCMjHwgFzSBtybB
+	zY1BYEpHdNRq3tETQ7+zsdLkS46+DiyP0F/wUAuqpVekZokZHA5wDczBbqKqQycoiAUP+E
+	uZZBHG5ISasQPZ4rI9BhhoDAt5S3gnc61wWJgUrNo7DCpD+zEvcQI/keJQT1NJp0YhOi6z
+	YqZ+FAL9Z6EjwRVjCfgu22crQS8GgSg9OV+ZOX8DkpdinomDpYRq0kTUXuWmG8RFd9DkIQ
+	1CvDBmNyciCs1wavo2siFvlt4ic84B/HcvQQFaJNjy5OA057PdYfEY+7bLglog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714381314;
+	s=2020e; t=1714381315;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=dxmqiJY3dxPmmf73vWJWQhlFW14yQvGIrlB1SIjmOCY=;
-	b=CTLgqw/a0xxffYAtj/l7AZXcWrxlP+k6amW9w5P2ZQ0O5JZ2Q4XSdgqwIolYerqGrdQUSf
-	tsMKXoo4DNvScODg==
+	bh=58tYNnWmiz1o8ITV6x43tPibzrN4Iisn0nfoBt6Xs84=;
+	b=Vw8PjUUoDbOwZNaAtKXFzHwpAS55ZQtPF3sL26tXS+NM7HQNJG3ZLoJx0n0kedoea8h3yO
+	6nHILx7UueSeWgCQ==
 From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/mce: Switch to new Intel CPU model defines
+Subject: [tip: x86/cpu] x86/apic: Switch to new Intel CPU model defines
 Cc: Tony Luck <tony.luck@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
  "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
@@ -64,7 +64,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171438131454.10875.5005390647985843961.tip-bot2@tip-bot2>
+Message-ID: <171438131527.10875.12640613409117703901.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -74,152 +74,79 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     4a5f2dd162fd68f588784eb9b0a927e3b328736d
-Gitweb:        https://git.kernel.org/tip/4a5f2dd162fd68f588784eb9b0a927e3b328736d
+Commit-ID:     8fb5f44e5df42b0ba35f4a9c36c523cca22f357f
+Gitweb:        https://git.kernel.org/tip/8fb5f44e5df42b0ba35f4a9c36c523cca22f357f
 Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Wed, 24 Apr 2024 11:15:11 -07:00
+AuthorDate:    Wed, 24 Apr 2024 11:15:04 -07:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 29 Apr 2024 10:31:23 +02:00
+CommitterDate: Mon, 29 Apr 2024 10:31:08 +02:00
 
-x86/mce: Switch to new Intel CPU model defines
+x86/apic: Switch to new Intel CPU model defines
 
 New CPU #defines encode vendor and family as well as model.
-
-  [ bp: Squash *three* mce patches into one, fold in fix:
-    https://lore.kernel.org/r/20240429022051.63360-1-tony.luck@intel.com ]
 
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/all/20240424181511.41772-1-tony.luck%40intel.com
+Link: https://lore.kernel.org/all/20240424181504.41634-1-tony.luck%40intel.com
 ---
- arch/x86/kernel/cpu/mce/core.c     |  6 +++---
- arch/x86/kernel/cpu/mce/intel.c    | 21 ++++++++++-----------
- arch/x86/kernel/cpu/mce/severity.c | 10 +++++-----
- 3 files changed, 18 insertions(+), 19 deletions(-)
+ arch/x86/kernel/apic/apic.c | 38 ++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 771a9f1..ad0623b 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -47,7 +47,7 @@
- #include <linux/kexec.h>
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index c342c4a..f76aaf5 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -497,32 +497,32 @@ static struct clock_event_device lapic_clockevent = {
+ static DEFINE_PER_CPU(struct clock_event_device, lapic_events);
  
- #include <asm/fred.h>
--#include <asm/intel-family.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/processor.h>
- #include <asm/traps.h>
- #include <asm/tlbflush.h>
-@@ -1948,14 +1948,14 @@ static int __mcheck_cpu_apply_quirks(struct cpuinfo_x86 *c)
- 		if (c->x86 == 6 && c->x86_model <= 13 && cfg->bootlog < 0)
- 			cfg->bootlog = 0;
+ static const struct x86_cpu_id deadline_match[] __initconst = {
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(HASWELL_X, X86_STEPPINGS(0x2, 0x2), 0x3a), /* EP */
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(HASWELL_X, X86_STEPPINGS(0x4, 0x4), 0x0f), /* EX */
++	X86_MATCH_VFM_STEPPINGS(INTEL_HASWELL_X, X86_STEPPINGS(0x2, 0x2), 0x3a), /* EP */
++	X86_MATCH_VFM_STEPPINGS(INTEL_HASWELL_X, X86_STEPPINGS(0x4, 0x4), 0x0f), /* EX */
  
--		if (c->x86 == 6 && c->x86_model == 45)
-+		if (c->x86_vfm == INTEL_SANDYBRIDGE_X)
- 			mce_flags.snb_ifu_quirk = 1;
+-	X86_MATCH_INTEL_FAM6_MODEL( BROADWELL_X,	0x0b000020),
++	X86_MATCH_VFM(INTEL_BROADWELL_X,	0x0b000020),
  
- 		/*
- 		 * Skylake, Cascacde Lake and Cooper Lake require a quirk on
- 		 * rep movs.
- 		 */
--		if (c->x86 == 6 && c->x86_model == INTEL_FAM6_SKYLAKE_X)
-+		if (c->x86_vfm == INTEL_SKYLAKE_X)
- 			mce_flags.skx_repmov_quirk = 1;
- 	}
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(BROADWELL_D, X86_STEPPINGS(0x2, 0x2), 0x00000011),
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(BROADWELL_D, X86_STEPPINGS(0x3, 0x3), 0x0700000e),
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(BROADWELL_D, X86_STEPPINGS(0x4, 0x4), 0x0f00000c),
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(BROADWELL_D, X86_STEPPINGS(0x5, 0x5), 0x0e000003),
++	X86_MATCH_VFM_STEPPINGS(INTEL_BROADWELL_D, X86_STEPPINGS(0x2, 0x2), 0x00000011),
++	X86_MATCH_VFM_STEPPINGS(INTEL_BROADWELL_D, X86_STEPPINGS(0x3, 0x3), 0x0700000e),
++	X86_MATCH_VFM_STEPPINGS(INTEL_BROADWELL_D, X86_STEPPINGS(0x4, 0x4), 0x0f00000c),
++	X86_MATCH_VFM_STEPPINGS(INTEL_BROADWELL_D, X86_STEPPINGS(0x5, 0x5), 0x0e000003),
  
-diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/intel.c
-index 399b62e..f6103e6 100644
---- a/arch/x86/kernel/cpu/mce/intel.c
-+++ b/arch/x86/kernel/cpu/mce/intel.c
-@@ -13,7 +13,7 @@
- #include <linux/cpumask.h>
- #include <asm/apic.h>
- #include <asm/cpufeature.h>
--#include <asm/intel-family.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/processor.h>
- #include <asm/msr.h>
- #include <asm/mce.h>
-@@ -455,10 +455,10 @@ static void intel_imc_init(struct cpuinfo_x86 *c)
- {
- 	u64 error_control;
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(SKYLAKE_X, X86_STEPPINGS(0x3, 0x3), 0x01000136),
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(SKYLAKE_X, X86_STEPPINGS(0x4, 0x4), 0x02000014),
+-	X86_MATCH_INTEL_FAM6_MODEL_STEPPINGS(SKYLAKE_X, X86_STEPPINGS(0x5, 0xf), 0),
++	X86_MATCH_VFM_STEPPINGS(INTEL_SKYLAKE_X, X86_STEPPINGS(0x3, 0x3), 0x01000136),
++	X86_MATCH_VFM_STEPPINGS(INTEL_SKYLAKE_X, X86_STEPPINGS(0x4, 0x4), 0x02000014),
++	X86_MATCH_VFM_STEPPINGS(INTEL_SKYLAKE_X, X86_STEPPINGS(0x5, 0xf), 0),
  
--	switch (c->x86_model) {
--	case INTEL_FAM6_SANDYBRIDGE_X:
--	case INTEL_FAM6_IVYBRIDGE_X:
--	case INTEL_FAM6_HASWELL_X:
-+	switch (c->x86_vfm) {
-+	case INTEL_SANDYBRIDGE_X:
-+	case INTEL_IVYBRIDGE_X:
-+	case INTEL_HASWELL_X:
- 		if (rdmsrl_safe(MSR_ERROR_CONTROL, &error_control))
- 			return;
- 		error_control |= 2;
-@@ -484,12 +484,11 @@ bool intel_filter_mce(struct mce *m)
- 	struct cpuinfo_x86 *c = &boot_cpu_data;
+-	X86_MATCH_INTEL_FAM6_MODEL( HASWELL,		0x22),
+-	X86_MATCH_INTEL_FAM6_MODEL( HASWELL_L,		0x20),
+-	X86_MATCH_INTEL_FAM6_MODEL( HASWELL_G,		0x17),
++	X86_MATCH_VFM(INTEL_HASWELL,		0x22),
++	X86_MATCH_VFM(INTEL_HASWELL_L,		0x20),
++	X86_MATCH_VFM(INTEL_HASWELL_G,		0x17),
  
- 	/* MCE errata HSD131, HSM142, HSW131, BDM48, HSM142 and SKX37 */
--	if ((c->x86 == 6) &&
--	    ((c->x86_model == INTEL_FAM6_HASWELL) ||
--	     (c->x86_model == INTEL_FAM6_HASWELL_L) ||
--	     (c->x86_model == INTEL_FAM6_BROADWELL) ||
--	     (c->x86_model == INTEL_FAM6_HASWELL_G) ||
--	     (c->x86_model == INTEL_FAM6_SKYLAKE_X)) &&
-+	if ((c->x86_vfm == INTEL_HASWELL ||
-+	     c->x86_vfm == INTEL_HASWELL_L ||
-+	     c->x86_vfm == INTEL_BROADWELL ||
-+	     c->x86_vfm == INTEL_HASWELL_G ||
-+	     c->x86_vfm == INTEL_SKYLAKE_X) &&
- 	    (m->bank == 0) &&
- 	    ((m->status & 0xa0000000ffffffff) == 0x80000000000f0005))
- 		return true;
-diff --git a/arch/x86/kernel/cpu/mce/severity.c b/arch/x86/kernel/cpu/mce/severity.c
-index fc8988c..e7892f1 100644
---- a/arch/x86/kernel/cpu/mce/severity.c
-+++ b/arch/x86/kernel/cpu/mce/severity.c
-@@ -12,7 +12,7 @@
- #include <linux/uaccess.h>
+-	X86_MATCH_INTEL_FAM6_MODEL( BROADWELL,		0x25),
+-	X86_MATCH_INTEL_FAM6_MODEL( BROADWELL_G,	0x17),
++	X86_MATCH_VFM(INTEL_BROADWELL,		0x25),
++	X86_MATCH_VFM(INTEL_BROADWELL_G,	0x17),
  
- #include <asm/mce.h>
--#include <asm/intel-family.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/traps.h>
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
-@@ -45,14 +45,14 @@ static struct severity {
- 	unsigned char context;
- 	unsigned char excp;
- 	unsigned char covered;
--	unsigned char cpu_model;
-+	unsigned int cpu_vfm;
- 	unsigned char cpu_minstepping;
- 	unsigned char bank_lo, bank_hi;
- 	char *msg;
- } severities[] = {
- #define MCESEV(s, m, c...) { .sev = MCE_ ## s ## _SEVERITY, .msg = m, ## c }
- #define BANK_RANGE(l, h) .bank_lo = l, .bank_hi = h
--#define MODEL_STEPPING(m, s) .cpu_model = m, .cpu_minstepping = s
-+#define VFM_STEPPING(m, s) .cpu_vfm = m, .cpu_minstepping = s
- #define  KERNEL		.context = IN_KERNEL
- #define  USER		.context = IN_USER
- #define  KERNEL_RECOV	.context = IN_KERNEL_RECOV
-@@ -128,7 +128,7 @@ static struct severity {
- 	MCESEV(
- 		AO, "Uncorrected Patrol Scrub Error",
- 		SER, MASK(MCI_STATUS_UC|MCI_ADDR|0xffffeff0, MCI_ADDR|0x001000c0),
--		MODEL_STEPPING(INTEL_FAM6_SKYLAKE_X, 4), BANK_RANGE(13, 18)
-+		VFM_STEPPING(INTEL_SKYLAKE_X, 4), BANK_RANGE(13, 18)
- 	),
+-	X86_MATCH_INTEL_FAM6_MODEL( SKYLAKE_L,		0xb2),
+-	X86_MATCH_INTEL_FAM6_MODEL( SKYLAKE,		0xb2),
++	X86_MATCH_VFM(INTEL_SKYLAKE_L,		0xb2),
++	X86_MATCH_VFM(INTEL_SKYLAKE,		0xb2),
  
- 	/* ignore OVER for UCNA */
-@@ -398,7 +398,7 @@ static noinstr int mce_severity_intel(struct mce *m, struct pt_regs *regs, char 
- 			continue;
- 		if (s->excp && excp != s->excp)
- 			continue;
--		if (s->cpu_model && boot_cpu_data.x86_model != s->cpu_model)
-+		if (s->cpu_vfm && boot_cpu_data.x86_vfm != s->cpu_vfm)
- 			continue;
- 		if (s->cpu_minstepping && boot_cpu_data.x86_stepping < s->cpu_minstepping)
- 			continue;
+-	X86_MATCH_INTEL_FAM6_MODEL( KABYLAKE_L,		0x52),
+-	X86_MATCH_INTEL_FAM6_MODEL( KABYLAKE,		0x52),
++	X86_MATCH_VFM(INTEL_KABYLAKE_L,		0x52),
++	X86_MATCH_VFM(INTEL_KABYLAKE,		0x52),
+ 
+ 	{},
+ };
 
