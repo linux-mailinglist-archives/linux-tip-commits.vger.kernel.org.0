@@ -1,182 +1,139 @@
-Return-Path: <linux-tip-commits+bounces-1191-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1192-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E688B4FA7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 05:08:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE278B530D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 10:23:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73EA51C20ADD
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 03:08:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC8FE2824A8
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 08:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B179B8472;
-	Mon, 29 Apr 2024 03:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F344B1758D;
+	Mon, 29 Apr 2024 08:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tTmVinvh";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DCIbbhdV"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="kO7Du0l/"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1077490;
-	Mon, 29 Apr 2024 03:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33EC1863C;
+	Mon, 29 Apr 2024 08:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714360087; cv=none; b=n/bSjo33lTcgnj93ckTiszE96V/8xiboAwgSEDGnaxzjdSCRg2jbtP6fDlsMCzyM66g+s3rcrzQ1bch553nPRuKOC1jyiwTywKu69eEHYQXhxNf4kFx7C5mCukPnbIfQSHLKf98jKs8hPegTgjxB8WhRi3CvbvHlOu+cZ5GVFnk=
+	t=1714378986; cv=none; b=rnyy75LksIjhwZxvJIIY42CuVE/fFC7Y95EXuf7Z8Z0zSqON6RumaVcZrs1dbbUlsKEgVwS77w9E/TXm6Hs5mA8WQtghfq49OsVY3JeMNc55Nsq3K9kL75szKoYWkiTKfaUKvYXWTUmSjlIrecG4m4/7vFnhN56FIzNFBgTvrIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714360087; c=relaxed/simple;
-	bh=nNQqdSIvzSh2ESfM+ejgQAsufIActqWQxEnkE1E5Zlg=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=n78NG/UUGJtD5uIDwupTcle7T2/V+JG7FJZwRGznIxsgfEa9d6rZrT3IbCho0BVp/pJCKoDi6K4ZA2ZIccA7SJvRYHdm1qEXo/LstJIWTMnYfxpvghq0D9VpJbPY350ZDuR0eYls77vMqkr3kTa1N80E9Odn64TbIEnGhE9hbw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tTmVinvh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DCIbbhdV; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 29 Apr 2024 03:08:02 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714360083;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9tny/bqYFxNMLBGYyW1p9Exu0FP+zgAxWcwU0Hl6Bew=;
-	b=tTmVinvhOZ1arsfp52wd3igODmmtbyMIAhP7jNnF8dcJiXz7keOeRSeU+qW1SoYzVrL85N
-	Qu5SeO+dAQGAxjpoQqTzkyH+ZVrqH5WtrOzKF+ixEs2k6JWg9M5r1yD5PAw6PFslp3pqXi
-	PddugXEHnlvEIFgQRPG3YnOFSlArfQqXFPk4XG19U6wrfohl/W3wVOBVk7aa5DZsPt6/dz
-	pz3rdksrPzi7AnO3v9w+FLFcXBz9riaG+PKXqfWE5vO2vYuZXIc8soJ006FZ3pIgttxA22
-	vp5HWYyBCCeq1rdyCPTiJArVYY5Xz9GIDJhqv6e9zPElpm43CXaLct/TiYSSAQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714360083;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9tny/bqYFxNMLBGYyW1p9Exu0FP+zgAxWcwU0Hl6Bew=;
-	b=DCIbbhdVFTYw/6m1fyLdwPAz+RjBPjHQK5C8G3pwY1CxGBRKCp5GQJpwPSmad6v9uKsw2Z
-	pYsbamx0tnRt5YCg==
-From: "tip-bot2 for Zqiang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] softirq: Fix suspicious RCU usage in __do_softirq()
-Cc: syzbot+dce04ed6d1438ad69656@syzkaller.appspotmail.com,
- Thomas Gleixner <tglx@linutronix.de>, Zqiang <qiang.zhang1211@gmail.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240427102808.29356-1-qiang.zhang1211@gmail.com>
-References: <20240427102808.29356-1-qiang.zhang1211@gmail.com>
+	s=arc-20240116; t=1714378986; c=relaxed/simple;
+	bh=+85WpQFYl5jxOECZeFtQm7xTJ84MPoGsaQPHTG4VJmA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AO52Xb+Bv/W/0e4G6Ca4QkSSNPryTLc6C7HZeLLoW+T4+6fcjArCvzg4TXXHsUR1TqIdnKM9pgpI/D7YX7nl1u361tkw48cXIqaptTvR1tx3paipez9RzXVeBjpyD7Z4IU5KrH7a0TCslPydMgoSDN8FZ3lrbsmxObjWf0BDM2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=kO7Du0l/; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1C33D40E016B;
+	Mon, 29 Apr 2024 08:23:00 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 2SRr6nk-iV7S; Mon, 29 Apr 2024 08:22:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1714378975; bh=NP58FapNnZYIXLnrqE3nIwhD4uqnClm9GY/LYeDmYJI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kO7Du0l/i+rEfQypX1qV7ZvpuzErlfndUqQ6aKy1ImO6jeT6FG4qJ4Wa/pCb+/5yu
+	 ib6wQGoYcEeXA+gEa0F8DReN1y5gFx6IkK851CzC5SRzQKjl+GLSaJiO4zPpwXO9/Q
+	 L5VPqM8FU8hgMBTjKZp6V57wc5FkQhv+3KESEW7YYyqRPJnPhG0NOX2cnwDEsNiWT5
+	 utg3HDr2TAZDc3m/0XSWf67hN9fqnMEp9PNao7RI+JjclfsdeoJngCIgdr6qkkrpCb
+	 5tBSmXdSTzN7EbpQCKDLaigu43H0eAqaIm4EWBndEkpiEvxHikLk7ePz/6VXsxCIZW
+	 Z+w/pGDI2NhPX4isFDGr1b0bw+dQ5byaljox9cCfWBvrzxYrblrigHo7vg1/L0jFHS
+	 nLBhON1l4goaoWaDPpxlOVbjjjLrqA0wbQrRTHwJcap3H7TF80POvXL+iyFV16ITJz
+	 XKxjCDxARUxOjK1Wix7SECidcHdEkX7TKI6gYpED5XS6OPOw93qAq5xLUnz5DaztjX
+	 swvR1iv+BwjG0OfGzTdhT0zGpOZ9zeQSuHomd5VPW/FRyRhMD/HCpD94BDJwlfnVtx
+	 iEz2UTw4Aj05nYz4Wsh61jkPcQFKyqk9bNH+tAU0ebo8dqZLsBtzzG3R/e8FqCXnY1
+	 IrFl2CGrP9lcvOJraJOKFP3c=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7405040E00C7;
+	Mon, 29 Apr 2024 08:22:50 +0000 (UTC)
+Date: Mon, 29 Apr 2024 10:22:42 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tony Luck <tony.luck@intel.com>
+Cc: dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH] x86/cpu: Fix thinko comparing x86_vfm with x86_model
+Message-ID: <20240429082242.GAZi9Y0uK-e2KGWxmX@fat_crate.local>
+References: <20240428183142.GHZi6WDu5nbmJJ_BcH@fat_crate.local>
+ <20240429022051.63360-1-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171436008266.10875.5509449909240073046.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240429022051.63360-1-tony.luck@intel.com>
 
-The following commit has been merged into the irq/urgent branch of tip:
+On Sun, Apr 28, 2024 at 07:20:51PM -0700, Tony Luck wrote:
+> This is obviously nonsense. Fix it.
+> 
+> Fixes: 68b4c6d168c5 ("x86/mce: Switch to new Intel CPU model defines")
+> Reported-by: Borislav Petkov <bp@alien8.de>
+> Signed-off-by: Tony Luck <tony.luck@intel.com>
+> ---
+> 
+> Boris: Do you rebase x86/cpu branch in TIP? If so this could be merged
+> into the broken patch. If not then slap it on top. Risk of bisection
+> breakage is tiny as this only affects a quirk handling patrol scrub
+> errors on Skylake and Cascade lake systems.
 
-Commit-ID:     1dd1eff161bd55968d3d46bc36def62d71fb4785
-Gitweb:        https://git.kernel.org/tip/1dd1eff161bd55968d3d46bc36def62d71fb4785
-Author:        Zqiang <qiang.zhang1211@gmail.com>
-AuthorDate:    Sat, 27 Apr 2024 18:28:08 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 29 Apr 2024 05:03:51 +02:00
+Lemme try to rebase. And btw, you could've avoided the same name
+patches:
 
-softirq: Fix suspicious RCU usage in __do_softirq()
+e063b531d4e8 (refs/remotes/tip/x86/cpu) x86/mm: Switch to new Intel CPU model defines
+94eb882e9575 x86/tsc_msr: Switch to new Intel CPU model defines
+95be3ccd711c x86/tsc: Switch to new Intel CPU model defines
+7cd2e9a90299 x86/cpu: Switch to new Intel CPU model defines
+343ec8beae30 x86/resctrl: Switch to new Intel CPU model defines
+43e8e0a95a89 x86/resctrl: Switch to new Intel CPU model defines
 
-Currently, the condition "__this_cpu_read(ksoftirqd) == current" is used to
-invoke rcu_softirq_qs() in ksoftirqd tasks context for non-RT kernels.
+<--
 
-This works correctly as long as the context is actually task context but
-this condition is wrong when:
+173e856a55d0 x86/microcode/intel: Switch to new Intel CPU model defines
+68b4c6d168c5 x86/mce: Switch to new Intel CPU model defines
+8a5943977900 x86/mce: Switch to new Intel CPU model defines
+066f54e65e47 x86/mce: Switch to new Intel CPU model defines
 
-     - the current task is ksoftirqd
-     - the task is interrupted in a RCU read side critical section
-     - __do_softirq() is invoked on return from interrupt
+<---
 
-Syzkaller triggered the following scenario:
+34304acb3290 x86/cpu: Switch to new Intel CPU model defines
+77d0930acedf x86/cpu/intel_epb: Switch to new Intel CPU model defines
+a7c345216f88 x86/aperfmperf: Switch to new Intel CPU model defines
+22878345b4c1 x86/apic: Switch to new Intel CPU model defines
+e8475a26a94f perf/x86/msr: Switch to new Intel CPU model defines
+438731421a2f perf/x86/intel/uncore: Switch to new Intel CPU model defines
+d413a1955a8e perf/x86/intel/uncore: Switch to new Intel CPU model defines
+9b2583d8103e perf/x86/intel/uncore: Switch to new Intel CPU model defines
 
-  -> finish_task_switch()
-    -> put_task_struct_rcu_user()
-      -> call_rcu(&task->rcu, delayed_put_task_struct)
-        -> __kasan_record_aux_stack()
-          -> pfn_valid()
-            -> rcu_read_lock_sched()
-              <interrupt>
-                __irq_exit_rcu()
-                -> __do_softirq)()
-                   -> if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
-                     __this_cpu_read(ksoftirqd) == current)
-                     -> rcu_softirq_qs()
-                       -> RCU_LOCKDEP_WARN(lock_is_held(&rcu_sched_lock_map))
+<---
 
-The rcu quiescent state is reported in the rcu-read critical section, so
-the lockdep warning is triggered.
+a7011b852a30 perf/x86/intel/pt: Switch to new Intel CPU model defines
+0011a51d73d5 perf/x86/lbr: Switch to new Intel CPU model defines
+5ee800945a34 perf/x86/intel/cstate: Switch to new Intel CPU model defines
 
-Fix this by splitting out the inner working of __do_softirq() into a helper
-function which takes an argument to distinguish between ksoftirqd task
-context and interrupted context and invoke it from the relevant call sites
-with the proper context information and use that for the conditional
-invocation of rcu_softirq_qs().
 
-Reported-by: syzbot+dce04ed6d1438ad69656@syzkaller.appspotmail.com
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240427102808.29356-1-qiang.zhang1211@gmail.com
-Link: https://lore.kernel.org/lkml/8f281a10-b85a-4586-9586-5bbc12dc784f@paulmck-laptop/T/#mea8aba4abfcb97bbf499d169ce7f30c4cff1b0e3
----
- kernel/softirq.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+and why in the hell are there 2 or 3 patches of the same name touching
+the same thing? Why can't they be a single patch?
 
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index b315b21..0258201 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -508,7 +508,7 @@ static inline bool lockdep_softirq_start(void) { return false; }
- static inline void lockdep_softirq_end(bool in_hardirq) { }
- #endif
- 
--asmlinkage __visible void __softirq_entry __do_softirq(void)
-+static void handle_softirqs(bool ksirqd)
- {
- 	unsigned long end = jiffies + MAX_SOFTIRQ_TIME;
- 	unsigned long old_flags = current->flags;
-@@ -563,8 +563,7 @@ restart:
- 		pending >>= softirq_bit;
- 	}
- 
--	if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
--	    __this_cpu_read(ksoftirqd) == current)
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && ksirqd)
- 		rcu_softirq_qs();
- 
- 	local_irq_disable();
-@@ -584,6 +583,11 @@ restart:
- 	current_restore_flags(old_flags, PF_MEMALLOC);
- }
- 
-+asmlinkage __visible void __softirq_entry __do_softirq(void)
-+{
-+	handle_softirqs(false);
-+}
-+
- /**
-  * irq_enter_rcu - Enter an interrupt context with RCU watching
-  */
-@@ -921,7 +925,7 @@ static void run_ksoftirqd(unsigned int cpu)
- 		 * We can safely run softirq on inline stack, as we are not deep
- 		 * in the task stack here.
- 		 */
--		__do_softirq();
-+		handle_softirqs(true);
- 		ksoftirqd_run_end();
- 		cond_resched();
- 		return;
+Lemme rebase the lot.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
