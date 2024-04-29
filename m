@@ -1,112 +1,182 @@
-Return-Path: <linux-tip-commits+bounces-1190-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1191-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0BCC8B4F62
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 04:21:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E688B4FA7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 05:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 780581F2171D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 02:21:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73EA51C20ADD
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 03:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F3E7F9;
-	Mon, 29 Apr 2024 02:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B179B8472;
+	Mon, 29 Apr 2024 03:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H3SNj0ut"
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tTmVinvh";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DCIbbhdV"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5AE7F;
-	Mon, 29 Apr 2024 02:20:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1077490;
+	Mon, 29 Apr 2024 03:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714357261; cv=none; b=CVnMtqIJ/J09ri+7FqMevjAYf/vVmjqjsV6BfGH/SaNkEvtJ+P/UVqDYirm+xRLq1eI8GHfQHCRNa3QFcFBOt9A0xN6xLQ9/SiqrZ3gPAAp7NbElU7ssl+YseAYRYLZ519UdFZrwRRJtZ5vm9AY7eeBpsGl/p7tOdKkC+WGLh/s=
+	t=1714360087; cv=none; b=n/bSjo33lTcgnj93ckTiszE96V/8xiboAwgSEDGnaxzjdSCRg2jbtP6fDlsMCzyM66g+s3rcrzQ1bch553nPRuKOC1jyiwTywKu69eEHYQXhxNf4kFx7C5mCukPnbIfQSHLKf98jKs8hPegTgjxB8WhRi3CvbvHlOu+cZ5GVFnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714357261; c=relaxed/simple;
-	bh=rH54+B7qepEzsTkmzdfjQzpVNgnT3mmYkF98YkNuoqI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uN+UjKj0Zj1tGnXynvHpOwFWVQFD8Dl/wDQlP56xfLCjKtxW54FHNjWTDa0usxj8noEHhNYHSSdJDIbuefSATmFnpppD3NDc+G7opzuKRnmEIpgUbVjD1cL2qK3nEXJ7QvOvTZwSQ42eKuLYo83joIAEWf/i7Q3/lqXi8U0UE8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H3SNj0ut; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714357260; x=1745893260;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=rH54+B7qepEzsTkmzdfjQzpVNgnT3mmYkF98YkNuoqI=;
-  b=H3SNj0utJDHY3VYfqv23VhwsG4a4lU8wOEYpUe4r+oj1DXX7RbmwHHCw
-   fLJbHC2GJ+xgUngf+MYlfbbYGglkakxvSPaBVsJY7pcqZ3FADUwndZIsQ
-   iBkM7BeQiGtOVVRI+VybCHM67ESGssqE3SQHixabvzQD8jG1uAMVYUo4g
-   ohJYUajmOjRud5mVtkfYAOQF/ykACxV/a+DbvJbbBSoeSRnrgwaOxF3jT
-   QxDniFTpTnBOm4rBb98AcoYrBr5GN8xZ4q4nlOQwQoBOMaamAKujxZArY
-   aVYY6ldGS9UjUT6hIYVV7WNIFhTFO1lYrwf3VRpRQlAIVCl5H3U5XCosR
-   g==;
-X-CSE-ConnectionGUID: 570XayEmTuuqkNhQCtNnYQ==
-X-CSE-MsgGUID: F2bKKeRRQqu+0OTnY5vEHA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="9882264"
-X-IronPort-AV: E=Sophos;i="6.07,238,1708416000"; 
-   d="scan'208";a="9882264"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2024 19:20:59 -0700
-X-CSE-ConnectionGUID: nL0jTXbdRtiK/ZJL6nAgWw==
-X-CSE-MsgGUID: 0QddVH5eSTWd1y+paFc/tA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,238,1708416000"; 
-   d="scan'208";a="25837300"
-Received: from agluck-desk3.sc.intel.com ([172.25.222.105])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2024 19:20:58 -0700
-From: Tony Luck <tony.luck@intel.com>
-To: bp@alien8.de
-Cc: dave.hansen@linux.intel.com,
-	linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org,
-	tony.luck@intel.com,
-	x86@kernel.org
-Subject: [PATCH] x86/cpu: Fix thinko comparing x86_vfm with x86_model
-Date: Sun, 28 Apr 2024 19:20:51 -0700
-Message-ID: <20240429022051.63360-1-tony.luck@intel.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240428183142.GHZi6WDu5nbmJJ_BcH@fat_crate.local>
-References: <20240428183142.GHZi6WDu5nbmJJ_BcH@fat_crate.local>
+	s=arc-20240116; t=1714360087; c=relaxed/simple;
+	bh=nNQqdSIvzSh2ESfM+ejgQAsufIActqWQxEnkE1E5Zlg=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=n78NG/UUGJtD5uIDwupTcle7T2/V+JG7FJZwRGznIxsgfEa9d6rZrT3IbCho0BVp/pJCKoDi6K4ZA2ZIccA7SJvRYHdm1qEXo/LstJIWTMnYfxpvghq0D9VpJbPY350ZDuR0eYls77vMqkr3kTa1N80E9Odn64TbIEnGhE9hbw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tTmVinvh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DCIbbhdV; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 29 Apr 2024 03:08:02 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1714360083;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9tny/bqYFxNMLBGYyW1p9Exu0FP+zgAxWcwU0Hl6Bew=;
+	b=tTmVinvhOZ1arsfp52wd3igODmmtbyMIAhP7jNnF8dcJiXz7keOeRSeU+qW1SoYzVrL85N
+	Qu5SeO+dAQGAxjpoQqTzkyH+ZVrqH5WtrOzKF+ixEs2k6JWg9M5r1yD5PAw6PFslp3pqXi
+	PddugXEHnlvEIFgQRPG3YnOFSlArfQqXFPk4XG19U6wrfohl/W3wVOBVk7aa5DZsPt6/dz
+	pz3rdksrPzi7AnO3v9w+FLFcXBz9riaG+PKXqfWE5vO2vYuZXIc8soJ006FZ3pIgttxA22
+	vp5HWYyBCCeq1rdyCPTiJArVYY5Xz9GIDJhqv6e9zPElpm43CXaLct/TiYSSAQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1714360083;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9tny/bqYFxNMLBGYyW1p9Exu0FP+zgAxWcwU0Hl6Bew=;
+	b=DCIbbhdVFTYw/6m1fyLdwPAz+RjBPjHQK5C8G3pwY1CxGBRKCp5GQJpwPSmad6v9uKsw2Z
+	pYsbamx0tnRt5YCg==
+From: "tip-bot2 for Zqiang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] softirq: Fix suspicious RCU usage in __do_softirq()
+Cc: syzbot+dce04ed6d1438ad69656@syzkaller.appspotmail.com,
+ Thomas Gleixner <tglx@linutronix.de>, Zqiang <qiang.zhang1211@gmail.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240427102808.29356-1-qiang.zhang1211@gmail.com>
+References: <20240427102808.29356-1-qiang.zhang1211@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <171436008266.10875.5509449909240073046.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-This is obviously nonsense. Fix it.
+The following commit has been merged into the irq/urgent branch of tip:
 
-Fixes: 68b4c6d168c5 ("x86/mce: Switch to new Intel CPU model defines")
-Reported-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+Commit-ID:     1dd1eff161bd55968d3d46bc36def62d71fb4785
+Gitweb:        https://git.kernel.org/tip/1dd1eff161bd55968d3d46bc36def62d71fb4785
+Author:        Zqiang <qiang.zhang1211@gmail.com>
+AuthorDate:    Sat, 27 Apr 2024 18:28:08 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 29 Apr 2024 05:03:51 +02:00
+
+softirq: Fix suspicious RCU usage in __do_softirq()
+
+Currently, the condition "__this_cpu_read(ksoftirqd) == current" is used to
+invoke rcu_softirq_qs() in ksoftirqd tasks context for non-RT kernels.
+
+This works correctly as long as the context is actually task context but
+this condition is wrong when:
+
+     - the current task is ksoftirqd
+     - the task is interrupted in a RCU read side critical section
+     - __do_softirq() is invoked on return from interrupt
+
+Syzkaller triggered the following scenario:
+
+  -> finish_task_switch()
+    -> put_task_struct_rcu_user()
+      -> call_rcu(&task->rcu, delayed_put_task_struct)
+        -> __kasan_record_aux_stack()
+          -> pfn_valid()
+            -> rcu_read_lock_sched()
+              <interrupt>
+                __irq_exit_rcu()
+                -> __do_softirq)()
+                   -> if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
+                     __this_cpu_read(ksoftirqd) == current)
+                     -> rcu_softirq_qs()
+                       -> RCU_LOCKDEP_WARN(lock_is_held(&rcu_sched_lock_map))
+
+The rcu quiescent state is reported in the rcu-read critical section, so
+the lockdep warning is triggered.
+
+Fix this by splitting out the inner working of __do_softirq() into a helper
+function which takes an argument to distinguish between ksoftirqd task
+context and interrupted context and invoke it from the relevant call sites
+with the proper context information and use that for the conditional
+invocation of rcu_softirq_qs().
+
+Reported-by: syzbot+dce04ed6d1438ad69656@syzkaller.appspotmail.com
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240427102808.29356-1-qiang.zhang1211@gmail.com
+Link: https://lore.kernel.org/lkml/8f281a10-b85a-4586-9586-5bbc12dc784f@paulmck-laptop/T/#mea8aba4abfcb97bbf499d169ce7f30c4cff1b0e3
 ---
+ kernel/softirq.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Boris: Do you rebase x86/cpu branch in TIP? If so this could be merged
-into the broken patch. If not then slap it on top. Risk of bisection
-breakage is tiny as this only affects a quirk handling patrol scrub
-errors on Skylake and Cascade lake systems.
-
- arch/x86/kernel/cpu/mce/severity.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/mce/severity.c b/arch/x86/kernel/cpu/mce/severity.c
-index 7293a1c49050..e7892f11c70f 100644
---- a/arch/x86/kernel/cpu/mce/severity.c
-+++ b/arch/x86/kernel/cpu/mce/severity.c
-@@ -398,7 +398,7 @@ static noinstr int mce_severity_intel(struct mce *m, struct pt_regs *regs, char
- 			continue;
- 		if (s->excp && excp != s->excp)
- 			continue;
--		if (s->cpu_vfm && boot_cpu_data.x86_model != s->cpu_vfm)
-+		if (s->cpu_vfm && boot_cpu_data.x86_vfm != s->cpu_vfm)
- 			continue;
- 		if (s->cpu_minstepping && boot_cpu_data.x86_stepping < s->cpu_minstepping)
- 			continue;
--- 
-2.44.0
-
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index b315b21..0258201 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -508,7 +508,7 @@ static inline bool lockdep_softirq_start(void) { return false; }
+ static inline void lockdep_softirq_end(bool in_hardirq) { }
+ #endif
+ 
+-asmlinkage __visible void __softirq_entry __do_softirq(void)
++static void handle_softirqs(bool ksirqd)
+ {
+ 	unsigned long end = jiffies + MAX_SOFTIRQ_TIME;
+ 	unsigned long old_flags = current->flags;
+@@ -563,8 +563,7 @@ restart:
+ 		pending >>= softirq_bit;
+ 	}
+ 
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
+-	    __this_cpu_read(ksoftirqd) == current)
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && ksirqd)
+ 		rcu_softirq_qs();
+ 
+ 	local_irq_disable();
+@@ -584,6 +583,11 @@ restart:
+ 	current_restore_flags(old_flags, PF_MEMALLOC);
+ }
+ 
++asmlinkage __visible void __softirq_entry __do_softirq(void)
++{
++	handle_softirqs(false);
++}
++
+ /**
+  * irq_enter_rcu - Enter an interrupt context with RCU watching
+  */
+@@ -921,7 +925,7 @@ static void run_ksoftirqd(unsigned int cpu)
+ 		 * We can safely run softirq on inline stack, as we are not deep
+ 		 * in the task stack here.
+ 		 */
+-		__do_softirq();
++		handle_softirqs(true);
+ 		ksoftirqd_run_end();
+ 		cond_resched();
+ 		return;
 
