@@ -1,139 +1,115 @@
-Return-Path: <linux-tip-commits+bounces-1192-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1193-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE278B530D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 10:23:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C396D8B53A4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 11:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC8FE2824A8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 08:23:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74DB91F21B67
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 09:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F344B1758D;
-	Mon, 29 Apr 2024 08:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B8320312;
+	Mon, 29 Apr 2024 09:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="kO7Du0l/"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OB0t1lQH";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bu3I0onS"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33EC1863C;
-	Mon, 29 Apr 2024 08:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E241B809;
+	Mon, 29 Apr 2024 09:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714378986; cv=none; b=rnyy75LksIjhwZxvJIIY42CuVE/fFC7Y95EXuf7Z8Z0zSqON6RumaVcZrs1dbbUlsKEgVwS77w9E/TXm6Hs5mA8WQtghfq49OsVY3JeMNc55Nsq3K9kL75szKoYWkiTKfaUKvYXWTUmSjlIrecG4m4/7vFnhN56FIzNFBgTvrIQ=
+	t=1714381322; cv=none; b=jEGZN5qivENIn2KARoShvrbRQ052cLfWdGFi/gNJVwpDkA1g0UIXtZXjy3dZhi6J/nC9GnOAaBRHeT3vCtHdHrZLyX7a2Ka09IG9kaHtffYK+P5Mgz4z1gAJrbICztk/hSwtQ6aPUJZ7jggC+oRPmBQzxUKlwTM+5XPHC8F0WdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714378986; c=relaxed/simple;
-	bh=+85WpQFYl5jxOECZeFtQm7xTJ84MPoGsaQPHTG4VJmA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AO52Xb+Bv/W/0e4G6Ca4QkSSNPryTLc6C7HZeLLoW+T4+6fcjArCvzg4TXXHsUR1TqIdnKM9pgpI/D7YX7nl1u361tkw48cXIqaptTvR1tx3paipez9RzXVeBjpyD7Z4IU5KrH7a0TCslPydMgoSDN8FZ3lrbsmxObjWf0BDM2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=kO7Du0l/; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1C33D40E016B;
-	Mon, 29 Apr 2024 08:23:00 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 2SRr6nk-iV7S; Mon, 29 Apr 2024 08:22:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1714378975; bh=NP58FapNnZYIXLnrqE3nIwhD4uqnClm9GY/LYeDmYJI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kO7Du0l/i+rEfQypX1qV7ZvpuzErlfndUqQ6aKy1ImO6jeT6FG4qJ4Wa/pCb+/5yu
-	 ib6wQGoYcEeXA+gEa0F8DReN1y5gFx6IkK851CzC5SRzQKjl+GLSaJiO4zPpwXO9/Q
-	 L5VPqM8FU8hgMBTjKZp6V57wc5FkQhv+3KESEW7YYyqRPJnPhG0NOX2cnwDEsNiWT5
-	 utg3HDr2TAZDc3m/0XSWf67hN9fqnMEp9PNao7RI+JjclfsdeoJngCIgdr6qkkrpCb
-	 5tBSmXdSTzN7EbpQCKDLaigu43H0eAqaIm4EWBndEkpiEvxHikLk7ePz/6VXsxCIZW
-	 Z+w/pGDI2NhPX4isFDGr1b0bw+dQ5byaljox9cCfWBvrzxYrblrigHo7vg1/L0jFHS
-	 nLBhON1l4goaoWaDPpxlOVbjjjLrqA0wbQrRTHwJcap3H7TF80POvXL+iyFV16ITJz
-	 XKxjCDxARUxOjK1Wix7SECidcHdEkX7TKI6gYpED5XS6OPOw93qAq5xLUnz5DaztjX
-	 swvR1iv+BwjG0OfGzTdhT0zGpOZ9zeQSuHomd5VPW/FRyRhMD/HCpD94BDJwlfnVtx
-	 iEz2UTw4Aj05nYz4Wsh61jkPcQFKyqk9bNH+tAU0ebo8dqZLsBtzzG3R/e8FqCXnY1
-	 IrFl2CGrP9lcvOJraJOKFP3c=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7405040E00C7;
-	Mon, 29 Apr 2024 08:22:50 +0000 (UTC)
-Date: Mon, 29 Apr 2024 10:22:42 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tony Luck <tony.luck@intel.com>
-Cc: dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH] x86/cpu: Fix thinko comparing x86_vfm with x86_model
-Message-ID: <20240429082242.GAZi9Y0uK-e2KGWxmX@fat_crate.local>
-References: <20240428183142.GHZi6WDu5nbmJJ_BcH@fat_crate.local>
- <20240429022051.63360-1-tony.luck@intel.com>
+	s=arc-20240116; t=1714381322; c=relaxed/simple;
+	bh=m14jT9Ag+9nCB15ehDow7xh/XFPhAMgkmSe1oKPWlzE=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=roEFy2RPL7JcCeCHNQ7pVWX4RIRfmhHgJsgO9E7Pmd3YWqjIJzrB0jO3/MMz5FQVl9G+1ohcuHdYqBpMwt6TiGtcVlpBW2gh+/1Vv6g5igVX8dNJO5TcznvImQL3qp4xbZgIQZtIaHtPzS/F13gExIrouysNkoUYe1q9p5f5m2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OB0t1lQH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bu3I0onS; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 29 Apr 2024 09:01:53 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1714381314;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=gF9dDL5aQhTN6PfG6pYk/MFqZifBiMHFKkWX/TGaBbo=;
+	b=OB0t1lQHcVP8G5NtI/4ReWhDGjxi1jQm3btS5n4yjXOU8OJCDM+0Cfn73pUnFAkZV4KqjT
+	ZrGZ2ZvLgtH3SWgYM7aKOvDbhYAbebTrA49vTjI08Jv3C9Zx1xHVCsLd8roc+CtSRbey9u
+	oMEJICY5jux57TOwhLt+j1PDC7i2sFL7kBRbyhsb/29QeBn0TnaiO3b5N3ExTocy6Wa+xC
+	YRP4knBFynBddPXCMQ3D/XOxSnSoSi5JmJJq6FgyjFolickg3d6abi2OP6ByBd0DppABAc
+	aLriA0fYniv9wgsuWdhO7PvdYMbL5BQd3GMp0NwHhezEXqABj5pbbSWseUjW4g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1714381314;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=gF9dDL5aQhTN6PfG6pYk/MFqZifBiMHFKkWX/TGaBbo=;
+	b=bu3I0onSRcLryzTRZvKbC4sRpWrXcvnQoiOegrC1jzv1+5m8/GdZNtx76ZoyuO+GPpA1q/
+	yl7drkxz5D2HOfAg==
+From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cpu] x86/cpu: Switch to new Intel CPU model defines
+Cc: Tony Luck <tony.luck@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240429022051.63360-1-tony.luck@intel.com>
+Message-ID: <171438131399.10875.3660444097799606539.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Sun, Apr 28, 2024 at 07:20:51PM -0700, Tony Luck wrote:
-> This is obviously nonsense. Fix it.
-> 
-> Fixes: 68b4c6d168c5 ("x86/mce: Switch to new Intel CPU model defines")
-> Reported-by: Borislav Petkov <bp@alien8.de>
-> Signed-off-by: Tony Luck <tony.luck@intel.com>
-> ---
-> 
-> Boris: Do you rebase x86/cpu branch in TIP? If so this could be merged
-> into the broken patch. If not then slap it on top. Risk of bisection
-> breakage is tiny as this only affects a quirk handling patrol scrub
-> errors on Skylake and Cascade lake systems.
+The following commit has been merged into the x86/cpu branch of tip:
 
-Lemme try to rebase. And btw, you could've avoided the same name
-patches:
+Commit-ID:     4db64279bc2b1c896fa8a99ae8f4b7aa943a4938
+Gitweb:        https://git.kernel.org/tip/4db64279bc2b1c896fa8a99ae8f4b7aa943a4938
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Wed, 24 Apr 2024 11:15:16 -07:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 29 Apr 2024 10:31:30 +02:00
 
-e063b531d4e8 (refs/remotes/tip/x86/cpu) x86/mm: Switch to new Intel CPU model defines
-94eb882e9575 x86/tsc_msr: Switch to new Intel CPU model defines
-95be3ccd711c x86/tsc: Switch to new Intel CPU model defines
-7cd2e9a90299 x86/cpu: Switch to new Intel CPU model defines
-343ec8beae30 x86/resctrl: Switch to new Intel CPU model defines
-43e8e0a95a89 x86/resctrl: Switch to new Intel CPU model defines
+x86/cpu: Switch to new Intel CPU model defines
 
-<--
+New CPU #defines encode vendor and family as well as model.
 
-173e856a55d0 x86/microcode/intel: Switch to new Intel CPU model defines
-68b4c6d168c5 x86/mce: Switch to new Intel CPU model defines
-8a5943977900 x86/mce: Switch to new Intel CPU model defines
-066f54e65e47 x86/mce: Switch to new Intel CPU model defines
+[ dhansen: vertically align macro and remove stray subject / ]
 
-<---
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/all/20240424181516.41887-1-tony.luck%40intel.com
+---
+ arch/x86/kernel/smpboot.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-34304acb3290 x86/cpu: Switch to new Intel CPU model defines
-77d0930acedf x86/cpu/intel_epb: Switch to new Intel CPU model defines
-a7c345216f88 x86/aperfmperf: Switch to new Intel CPU model defines
-22878345b4c1 x86/apic: Switch to new Intel CPU model defines
-e8475a26a94f perf/x86/msr: Switch to new Intel CPU model defines
-438731421a2f perf/x86/intel/uncore: Switch to new Intel CPU model defines
-d413a1955a8e perf/x86/intel/uncore: Switch to new Intel CPU model defines
-9b2583d8103e perf/x86/intel/uncore: Switch to new Intel CPU model defines
-
-<---
-
-a7011b852a30 perf/x86/intel/pt: Switch to new Intel CPU model defines
-0011a51d73d5 perf/x86/lbr: Switch to new Intel CPU model defines
-5ee800945a34 perf/x86/intel/cstate: Switch to new Intel CPU model defines
-
-
-and why in the hell are there 2 or 3 patches of the same name touching
-the same thing? Why can't they be a single patch?
-
-Lemme rebase the lot.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index a581095..0c35207 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -438,9 +438,9 @@ static bool match_pkg(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
+  */
+ 
+ static const struct x86_cpu_id intel_cod_cpu[] = {
+-	X86_MATCH_INTEL_FAM6_MODEL(HASWELL_X, 0),	/* COD */
+-	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_X, 0),	/* COD */
+-	X86_MATCH_INTEL_FAM6_MODEL(ANY, 1),		/* SNC */
++	X86_MATCH_VFM(INTEL_HASWELL_X,	 0),	/* COD */
++	X86_MATCH_VFM(INTEL_BROADWELL_X, 0),	/* COD */
++	X86_MATCH_VFM(INTEL_ANY,	 1),	/* SNC */
+ 	{}
+ };
+ 
 
