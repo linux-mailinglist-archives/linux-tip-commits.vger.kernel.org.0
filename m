@@ -1,134 +1,102 @@
-Return-Path: <linux-tip-commits+bounces-1211-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1212-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267D98B64B6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 23:38:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0658B6555
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 00:11:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1D9F1F2234F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 21:38:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90535B20AE1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Apr 2024 22:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CDC176FDB;
-	Mon, 29 Apr 2024 21:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43A1194C72;
+	Mon, 29 Apr 2024 22:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="siBTceqN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+2nUi15d"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AwhPErZ3"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D65946C;
-	Mon, 29 Apr 2024 21:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84FE19069C;
+	Mon, 29 Apr 2024 22:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714426692; cv=none; b=cuL8RWnI827dsp9GnSP9NUvDlw+D4ysrQj5zXeF2lPqBC2j+DL0GSDuic35/Vgl4aFHUI9/JJqMUA6mEmGEWNDAA1yjyFE5bgzyLkYtGNg8uxWwwG4/HMLbpThczfdlQG91lf8IoqfwHMw6ShG7vPaKNdpAYRk75111rtWWmpoU=
+	t=1714428649; cv=none; b=UnJY+xI8ETO2yRLoE4tTn+RyqrnS1T1/bmvCrJkezk8ZzqyBm6bhKI/A4IFw61rZvUOHgz7cWGDlNln9k1Fn7CKfr4EXY6gtzILhk/uw7rQArURlFCzk/He5Gx1gvUEG5LF1UGo7vCd6KIsdHpVmQuQWDjx1VvMGITNeUn5/+IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714426692; c=relaxed/simple;
-	bh=k8g/TiU8lIU8Mibjz3VChly9XimolgFwCzPlqtxQveM=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=HkY2BWP9afGnB7BJja6ij8MD3nMMW/wJ0Alf9Wr0SZiIqvDVUsPGjjzWk0BxG+/ivOCIsNRptC+SKMIlgARUV2Uz1Kdj3+q1VM5INNAxU10EgzODkrQMmtVveYJ5cG5gsFs5L7uTIe6hLkzO0W8LXASXXeSP8U7qVgz4m0QnChA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=siBTceqN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+2nUi15d; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 29 Apr 2024 21:38:07 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714426688;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BTJ77so2WRoXGher0vupuLRohX0a5C8x4hw3nGSKDmM=;
-	b=siBTceqN18t4AkSRqy1DqWvgDyioPnO6h1gudSE5tR93CnPHdjQvrVvM8W+sPd5olhkQIZ
-	Hrze7YxMShI8YkY2LTwAA/+izT9jnbOOdSDYk5F1npQ/5FeY8sxfVEa3UGza460fOdfRqK
-	hTJwR+uCRZf1mZySPhSFwundB8UIqrgl0uU9gOMR8a2jNX1On5aqD9jy0WaAd5BYXv5u/r
-	dgbysIze0oFPkt0so4b60WFG7CoZi96BscrhOGxrnuj4Sm8a7mR2T0Q8Ux0nMcRUTFNsD4
-	d0jwkqPqpU026QeURH8DoSVfW8CnSpsaLu/w6E1ptw7JHeXhrYpZFLHT/Tucdg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714426688;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BTJ77so2WRoXGher0vupuLRohX0a5C8x4hw3nGSKDmM=;
-	b=+2nUi15dQtqXxR4ffhKiMVbLeNcXBXOeY2o+gcnERQZ4Q/MruYrKhxEBWH2OfInESyM6l9
-	6ANZK+nUvuy1+mAw==
-From: "tip-bot2 for Daniel J Blueman" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/timers] x86/tsc: Trust initial offset in architectural
- TSC-adjust MSRs
-Cc: Daniel J Blueman <daniel@quora.org>, Thomas Gleixner <tglx@linutronix.de>,
- Steffen Persvold <sp@numascale.com>,
- James Cleverdon <james.cleverdon.external@eviden.com>,
- Dimitri Sivanich <sivanich@hpe.com>, Prarit Bhargava <prarit@redhat.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240419085146.175665-1-daniel@quora.org>
-References: <20240419085146.175665-1-daniel@quora.org>
+	s=arc-20240116; t=1714428649; c=relaxed/simple;
+	bh=BnORpZI96ulOL2ybGBlixNtcajQVtJLpgJmjNiq9iXA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HrnPk8d4ZoqSmOo7XCFfhYU9QvCelO69Iu1981MPbur+nifPqUv1AUBrOM+oXxHcUotAUyYU4JJUKEPVL0gvR0lvlR2sRrIf+H55w9k7qxPHgNlr0qKwa5kJfFx7eJLrTsZW/GoWFZas7hyAUxceqjsY0B7jQrcPJ9bCn1CXreY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AwhPErZ3; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7291D40E00C7;
+	Mon, 29 Apr 2024 22:10:38 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 7oE8v-9sJrwS; Mon, 29 Apr 2024 22:10:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1714428634; bh=Msj1Hf1pE0OzlB7eC2G079cRtumFYJCMn8TqRTaMLN4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AwhPErZ3fyhhceeJbn5Eqsp7ufWGQyJdE/K+WV3uTmuq1agttfcoFjFi1IrZU/B6n
+	 YXpeelZouhEQR1f5I01ziH1iTZT6GdEBtE398NGlsP4TGnnpufW5vqWiB+liqsq2CO
+	 dsgEN5NI2nSYqiLE79Tf2yXSP2XEjlotni7/VspBHfNH3KrxcMu1FwqYwMYLHkbAZw
+	 ixwhTBJ6oHAplgsSNXkjUGHJ1SAD+njmmkyeEe9bRQ41TQHMG57FUabzhai7mVbtLp
+	 UlYqn+Qjh1ZUZ9trQsOtUDHRcN1uRiSAE0mxrnMVuHH9qTHSWgPDZ8ptFDfet3bVVI
+	 m63ew2tUwhGelkxyMMNr1AK77LfJS1itcXUiAo+pOK85jne+XUEq0kujN9oWp8cs94
+	 hHS1RLo7tltzhPpZJFHaKdRnkwwoDg4bVTxp2pslkskeymWUsPh6aLcDmszMgI+b8w
+	 lZqIT0Qxr3VJEOVD0uD36Vw90alhCfzaE72X216D7yqb6G4qSNA4RBotUuPZw9MxsA
+	 UUvNYQYig7wbx3wFiatf2c4Sm6OR/A7Mo1hsfPS5M7VnLjYk/S92iuenqwOE1Wak9W
+	 mc45FamvCR4DR/25bs6C1AaF40hYWwL4hE69eszDly4/23o2D1+PX4mJvZOGhFgxpN
+	 4nbsB1lEJJ6RQGp2Ku6rYzgk=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CC64740E0187;
+	Mon, 29 Apr 2024 22:10:29 +0000 (UTC)
+Date: Tue, 30 Apr 2024 00:10:22 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Luck, Tony" <tony.luck@intel.com>
+Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH] x86/cpu: Fix thinko comparing x86_vfm with x86_model
+Message-ID: <20240429221022.GKZjAazoIhwQkK7-H_@fat_crate.local>
+References: <20240428183142.GHZi6WDu5nbmJJ_BcH@fat_crate.local>
+ <20240429022051.63360-1-tony.luck@intel.com>
+ <20240429082242.GAZi9Y0uK-e2KGWxmX@fat_crate.local>
+ <SJ1PR11MB6083B53C58D36ADB74C08AABFC1B2@SJ1PR11MB6083.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171442668800.10875.19345624016971341.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <SJ1PR11MB6083B53C58D36ADB74C08AABFC1B2@SJ1PR11MB6083.namprd11.prod.outlook.com>
 
-The following commit has been merged into the x86/timers branch of tip:
+On Mon, Apr 29, 2024 at 04:05:29PM +0000, Luck, Tony wrote:
+> I made one patch per file touched (wherever possible ... there are a few patches
+> where ".h" and ".c" files needed to be bundled together).
 
-Commit-ID:     455f9075f14484f358b3c1d6845b4a438de198a7
-Gitweb:        https://git.kernel.org/tip/455f9075f14484f358b3c1d6845b4a438de198a7
-Author:        Daniel J Blueman <daniel@quora.org>
-AuthorDate:    Fri, 19 Apr 2024 16:51:46 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 29 Apr 2024 23:27:16 +02:00
+I figured. I think the next step would've been to group them all into
+a single patch based on the subject prefix. But we're doing that now
+anyway.
 
-x86/tsc: Trust initial offset in architectural TSC-adjust MSRs
+> Thanks. I just did a "git fetch" the x86/cpu branch. It all looks good.
 
-When the BIOS configures the architectural TSC-adjust MSRs on secondary
-sockets to correct a constant inter-chassis offset, after Linux brings the
-cores online, the TSC sync check later resets the core-local MSR to 0,
-triggering HPET fallback and leading to performance loss.
+Thx!
 
-Fix this by unconditionally using the initial adjust values read from the
-MSRs. Trusting the initial offsets in this architectural mechanism is a
-better approach than special-casing workarounds for specific platforms.
+-- 
+Regards/Gruss,
+    Boris.
 
-Signed-off-by: Daniel J Blueman <daniel@quora.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Steffen Persvold <sp@numascale.com>
-Reviewed-by: James Cleverdon <james.cleverdon.external@eviden.com>
-Reviewed-by: Dimitri Sivanich <sivanich@hpe.com>
-Reviewed-by: Prarit Bhargava <prarit@redhat.com>
-Link: https://lore.kernel.org/r/20240419085146.175665-1-daniel@quora.org
----
- arch/x86/kernel/tsc_sync.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kernel/tsc_sync.c b/arch/x86/kernel/tsc_sync.c
-index 1123ef3..4334033 100644
---- a/arch/x86/kernel/tsc_sync.c
-+++ b/arch/x86/kernel/tsc_sync.c
-@@ -193,11 +193,9 @@ bool tsc_store_and_check_tsc_adjust(bool bootcpu)
- 	cur->warned = false;
- 
- 	/*
--	 * If a non-zero TSC value for socket 0 may be valid then the default
--	 * adjusted value cannot assumed to be zero either.
-+	 * The default adjust value cannot be assumed to be zero on any socket.
- 	 */
--	if (tsc_async_resets)
--		cur->adjusted = bootval;
-+	cur->adjusted = bootval;
- 
- 	/*
- 	 * Check whether this CPU is the first in a package to come up. In
+https://people.kernel.org/tglx/notes-about-netiquette
 
