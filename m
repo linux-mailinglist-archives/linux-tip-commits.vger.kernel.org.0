@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1218-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1225-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901288B76FC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 15:28:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFBC8B7708
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 15:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45831282C83
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 13:28:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41B572837D3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 13:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9C6171675;
-	Tue, 30 Apr 2024 13:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56ABD173335;
+	Tue, 30 Apr 2024 13:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="21FiEKPs";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hDx+F4P/"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CPgUVj3F";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mc5bqhJ/"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F17171E49;
-	Tue, 30 Apr 2024 13:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DEF17276E;
+	Tue, 30 Apr 2024 13:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714483724; cv=none; b=S4zVEvgb3FWBrl+ryvS/T6knlCvCZu90PfBz1/dTBYu3n1sfzE7+VE1R7WpIdsS+IUdw/QOoNZfYXmFH2HXUQ6/Z/1Tnhv4XXFHI2REaFm1zeO27qfFreoo7LR7RYBVa9742iGfSBlXlwfoUs9IspbvtfKulapEG9m9mZOcEWzU=
+	t=1714483728; cv=none; b=lX0GqZMkFxYYsVCZ4QiWEOuNQosu9eyaYlvbnGpacH+WQl53sT5vPRcMSrvMIsdV2a+jjaBHmS76Zlh4kFGkfoiaGT8PZTuTacPrljohxY7olOYzedcFxWvqvCwcBTAp/S95bXJQAWDNUxzvx6A2zzMattSdFD+Vd0UwE5rYxFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714483724; c=relaxed/simple;
-	bh=htYB9Po1AVLCw4Jh6B2CAoEV3kz532qWQEyUEtUfCYU=;
+	s=arc-20240116; t=1714483728; c=relaxed/simple;
+	bh=FzTmC0gwits/Y/axNUIKliVRX/6D/R/7IhtCRYgJz8k=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=B2bVvbYOH9zvtSH+qle4mCTWv9fZoh78jVG8XnffFpCmJhe/CZ9JFlUaVxJYyMB3JkVdYZPhN2t/13t+rm+PbPQlOIKlullbvdcMvIYE1UjQ6+ESwlb6BPBdsjegz5YhKtMtckpneNt++CF7KVM+khpsQRpBUeJmQXy4kDSdq8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=21FiEKPs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hDx+F4P/; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=u0V3LpBDQB3+lkHTBQ8+PoDdSq6fbOaCq7Q6ZbDk+iILbTD2bh1jpibgcwgaA4rtepXW8ZZFuMO06cr5u3mcAvzFefvabw4qHG6NrTfxA+2DwApTY4HWs/GXzYVTRc0z+Em2XK2USw11CsEOuxQfvSr3zS6KDitijq7HT86o/r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CPgUVj3F; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mc5bqhJ/; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 30 Apr 2024 13:28:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714483721;
+	s=2020; t=1714483722;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VZtTmOK9NzEwgaw9REzfC1I3oQmDy6NDfONWezZRQ2w=;
-	b=21FiEKPsKasYGAutIgDdYjbl16GGLb60QNjQrLpDm/NijzbTPFaT/yvzNhArM7xEMiM2xo
-	N+3ZuzVXNIRlBb41DnmLKA3J7jb2ihiMKVVmubLAqmBdMcV2679JjLDgr0AQ64YVnoPmP+
-	T2eGXIhj4BCkkwA/T5x/veKRZ9XMOSNxF+qzkBVb0rN/S7vY2FiiGVD9YzRq+1pJkGL1hM
-	7FuNIZQY3+hEn52K0tOJ1H5xeJKiWxr+Ou7eTdFc0tmPC7+trhSe/86frX2Gm90bK6s2hn
-	ZkkPnJq7VaQV6c44PbxVtykKO6o4adz1CbFo421aaz/whoMrGZsjeYWm3cH/cA==
+	bh=VtOafhgZIH005bW/y2urO4zd4YhDeuSMSs9IBdJjJ5U=;
+	b=CPgUVj3FxBRHdTHn8q7g7mqbcdCub37anixUBO9XLAAcmgTwsjp3APmcKvmboZsHKdi43I
+	jR2cd6tCamlx5lMfvQw+YP57LfNubhYMhxkSbFXuDMbsdLUqTr7NP2bd5n7GvRUGdJh2I6
+	cbUvEBXJOviQ1QCxkwrO+r4zdtkCUtw+Bi5IvL70IUNf7/OO2Bc6Jdj4rq8L2O44BCLZUO
+	a2Fw5rfM6VEqeBbsERKOBNbQhvjHJapM4y0DVhIYN1ywp/n2JeSl5q7hHDHWcXeqG0JXfr
+	ufLcBNVzwPSy0CAeiOpXN3BdIcdF9gijtDlbX3myB6MOgdhf51YdQOX2Nk4mjA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714483721;
+	s=2020e; t=1714483722;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VZtTmOK9NzEwgaw9REzfC1I3oQmDy6NDfONWezZRQ2w=;
-	b=hDx+F4P/YBdfsZO3oNUKMJamLKRESPrx8e0vleeMTj7TBp4XCC6zB28UQTZl9Qe5qhlx24
-	somgB0fP43M21+CQ==
+	bh=VtOafhgZIH005bW/y2urO4zd4YhDeuSMSs9IBdJjJ5U=;
+	b=Mc5bqhJ/20xU0kjNB6JLqfw9+psoST/EF/1MS5gzOZUOUN8mCvGFEZxMVUJUWnZGORPzoA
+	zMNMJ0oL0QchbgCA==
 From: "tip-bot2 for Jacob Pan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/irq] x86/irq: Factor out common code for checking pending
- interrupts
-Cc: Jacob Pan <jacob.jun.pan@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject:
+ [tip: x86/irq] x86/irq: Set up per host CPU posted interrupt descriptors
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ Jacob Pan <jacob.jun.pan@linux.intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240423174114.526704-10-jacob.jun.pan@linux.intel.com>
-References: <20240423174114.526704-10-jacob.jun.pan@linux.intel.com>
+In-Reply-To: <20240423174114.526704-7-jacob.jun.pan@linux.intel.com>
+References: <20240423174114.526704-7-jacob.jun.pan@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171448372145.10875.6906928487300074547.tip-bot2@tip-bot2>
+Message-ID: <171448372198.10875.15148500798303888137.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,97 +82,123 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/irq branch of tip:
 
-Commit-ID:     fef05a078b6fa1e9047e0486f1f6daf70664fd12
-Gitweb:        https://git.kernel.org/tip/fef05a078b6fa1e9047e0486f1f6daf70664fd12
+Commit-ID:     43650dcf6d6322ec2d0938bb51f755810ffa783a
+Gitweb:        https://git.kernel.org/tip/43650dcf6d6322ec2d0938bb51f755810ffa783a
 Author:        Jacob Pan <jacob.jun.pan@linux.intel.com>
-AuthorDate:    Tue, 23 Apr 2024 10:41:11 -07:00
+AuthorDate:    Tue, 23 Apr 2024 10:41:08 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 30 Apr 2024 00:54:43 +02:00
+CommitterDate: Tue, 30 Apr 2024 00:54:42 +02:00
 
-x86/irq: Factor out common code for checking pending interrupts
+x86/irq: Set up per host CPU posted interrupt descriptors
 
-Use a common function for checking pending interrupt vector in APIC IRR
-instead of duplicated open coding them.
+To support posted MSIs, create a posted interrupt descriptor (PID) for each
+host CPU. Later on, when setting up interrupt affinity, the IOMMU's
+interrupt remapping table entry (IRTE) will point to the physical address
+of the matching CPU's PID.
 
-Additional checks for posted MSI vectors can then be contained in this
-function.
+Each PID is initialized with the owner CPU's physical APICID as the
+destination.
 
+Originally-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240423174114.526704-10-jacob.jun.pan@linux.intel.com
-
+Link: https://lore.kernel.org/r/20240423174114.526704-7-jacob.jun.pan@linux.intel.com
 ---
- arch/x86/include/asm/apic.h   | 11 +++++++++++
- arch/x86/kernel/apic/vector.c |  5 ++---
- arch/x86/kernel/irq.c         |  5 ++---
- 3 files changed, 15 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/hardirq.h     |  3 +++
+ arch/x86/include/asm/posted_intr.h |  6 ++++++
+ arch/x86/kernel/cpu/common.c       |  3 +++
+ arch/x86/kernel/irq.c              | 23 +++++++++++++++++++++++
+ 4 files changed, 35 insertions(+)
 
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index e6ab0cf..50f9781 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -500,6 +500,17 @@ static inline bool lapic_vector_set_in_irr(unsigned int vector)
- 	return !!(irr & (1U << (vector % 32)));
+diff --git a/arch/x86/include/asm/hardirq.h b/arch/x86/include/asm/hardirq.h
+index fbc7722..e7ab594 100644
+--- a/arch/x86/include/asm/hardirq.h
++++ b/arch/x86/include/asm/hardirq.h
+@@ -48,6 +48,9 @@ typedef struct {
+ 
+ DECLARE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
+ 
++#ifdef CONFIG_X86_POSTED_MSI
++DECLARE_PER_CPU_ALIGNED(struct pi_desc, posted_msi_pi_desc);
++#endif
+ #define __ARCH_IRQ_STAT
+ 
+ #define inc_irq_stat(member)	this_cpu_inc(irq_stat.member)
+diff --git a/arch/x86/include/asm/posted_intr.h b/arch/x86/include/asm/posted_intr.h
+index 20e3189..6f84f67 100644
+--- a/arch/x86/include/asm/posted_intr.h
++++ b/arch/x86/include/asm/posted_intr.h
+@@ -91,4 +91,10 @@ static inline void __pi_clear_sn(struct pi_desc *pi_desc)
+ 	pi_desc->notifications &= ~BIT(POSTED_INTR_SN);
  }
  
-+static inline bool is_vector_pending(unsigned int vector)
-+{
-+	unsigned int irr;
++#ifdef CONFIG_X86_POSTED_MSI
++extern void intel_posted_msi_init(void);
++#else
++static inline void intel_posted_msi_init(void) {};
++#endif /* X86_POSTED_MSI */
 +
-+	irr = apic_read(APIC_IRR + (vector / 32 * 0x10));
-+	if (irr  & (1 << (vector % 32)))
-+		return true;
-+
-+	return false;
-+}
-+
- /*
-  * Warm reset vector position:
-  */
-diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
-index 185738c..9eec529 100644
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -965,7 +965,7 @@ static void __vector_cleanup(struct vector_cleanup *cl, bool check_irr)
- 	lockdep_assert_held(&vector_lock);
+ #endif /* _X86_POSTED_INTR_H */
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 605c26c..25ef145 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -68,6 +68,7 @@
+ #include <asm/traps.h>
+ #include <asm/sev.h>
+ #include <asm/tdx.h>
++#include <asm/posted_intr.h>
  
- 	hlist_for_each_entry_safe(apicd, tmp, &cl->head, clist) {
--		unsigned int irr, vector = apicd->prev_vector;
-+		unsigned int vector = apicd->prev_vector;
+ #include "cpu.h"
  
- 		/*
- 		 * Paranoia: Check if the vector that needs to be cleaned
-@@ -979,8 +979,7 @@ static void __vector_cleanup(struct vector_cleanup *cl, bool check_irr)
- 		 * fixup_irqs() was just called to scan IRR for set bits and
- 		 * forward them to new destination CPUs via IPIs.
- 		 */
--		irr = check_irr ? apic_read(APIC_IRR + (vector / 32 * 0x10)) : 0;
--		if (irr & (1U << (vector % 32))) {
-+		if (check_irr && is_vector_pending(vector)) {
- 			pr_warn_once("Moved interrupt pending in old target APIC %u\n", apicd->irq);
- 			rearm = true;
- 			continue;
+@@ -2227,6 +2228,8 @@ void cpu_init(void)
+ 		barrier();
+ 
+ 		x2apic_setup();
++
++		intel_posted_msi_init();
+ 	}
+ 
+ 	mmgrab(&init_mm);
 diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-index 578e4f6..385e3a5 100644
+index 35fde01..dbb3a19 100644
 --- a/arch/x86/kernel/irq.c
 +++ b/arch/x86/kernel/irq.c
-@@ -484,7 +484,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_posted_msi_notification)
+@@ -22,6 +22,8 @@
+ #include <asm/desc.h>
+ #include <asm/traps.h>
+ #include <asm/thermal.h>
++#include <asm/posted_intr.h>
++#include <asm/irq_remapping.h>
+ 
+ #define CREATE_TRACE_POINTS
+ #include <asm/trace/irq_vectors.h>
+@@ -334,6 +336,27 @@ DEFINE_IDTENTRY_SYSVEC_SIMPLE(sysvec_kvm_posted_intr_nested_ipi)
+ }
+ #endif
+ 
++#ifdef CONFIG_X86_POSTED_MSI
++
++/* Posted Interrupt Descriptors for coalesced MSIs to be posted */
++DEFINE_PER_CPU_ALIGNED(struct pi_desc, posted_msi_pi_desc);
++
++void intel_posted_msi_init(void)
++{
++	u32 destination;
++	u32 apic_id;
++
++	this_cpu_write(posted_msi_pi_desc.nv, POSTED_MSI_NOTIFICATION_VECTOR);
++
++	/*
++	 * APIC destination ID is stored in bit 8:15 while in XAPIC mode.
++	 * VT-d spec. CH 9.11
++	 */
++	apic_id = this_cpu_read(x86_cpu_to_apicid);
++	destination = x2apic_enabled() ? apic_id : apic_id << 8;
++	this_cpu_write(posted_msi_pi_desc.ndst, destination);
++}
++#endif /* X86_POSTED_MSI */
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
  /* A cpu has been removed from cpu_online_mask.  Reset irq affinities. */
- void fixup_irqs(void)
- {
--	unsigned int irr, vector;
-+	unsigned int vector;
- 	struct irq_desc *desc;
- 	struct irq_data *data;
- 	struct irq_chip *chip;
-@@ -511,8 +511,7 @@ void fixup_irqs(void)
- 		if (IS_ERR_OR_NULL(__this_cpu_read(vector_irq[vector])))
- 			continue;
- 
--		irr = apic_read(APIC_IRR + (vector / 32 * 0x10));
--		if (irr  & (1 << (vector % 32))) {
-+		if (is_vector_pending(vector)) {
- 			desc = __this_cpu_read(vector_irq[vector]);
- 
- 			raw_spin_lock(&desc->lock);
 
