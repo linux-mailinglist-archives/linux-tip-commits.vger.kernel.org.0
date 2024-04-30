@@ -1,82 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1216-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1217-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3618C8B6A6D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 08:17:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72FF98B76FB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 15:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E084C281D48
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 06:17:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 971E81C20F47
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 13:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC3517BB4;
-	Tue, 30 Apr 2024 06:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078B317165A;
+	Tue, 30 Apr 2024 13:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qVyyusBt";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZkZ2ZP0S"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pkp8ul9m";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L7fHkwyU"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDB26FB1;
-	Tue, 30 Apr 2024 06:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25315171678;
+	Tue, 30 Apr 2024 13:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714457790; cv=none; b=ghjypSCXfelcyFYjK5qIYz9xVLbXyPv/cNsxECy6mE6/37LjeL7bnF1/Tp5T2J5z14kYdx0huGq9RXzmTXZFfPkSnYe6OQ+VrlEyOfPXmByUu6yw5La3bY/f7k+t+i3uEalsgUUoO1Drul3w0Ma7HjUtOkM6v28d9qPHEQR6cy8=
+	t=1714483724; cv=none; b=FRSkCnYwEeJzjOYSmBv/aclUwfL7Q9uH0nq13HwzT9t54fmq35oFkFqH8jl3IG4m5B7cpxRyXqe3Pf6hn0VXWFXntjYUXZAbTXSSRnga5tO2jgtoEIPNoCHDiTbXiNtqgbqnUPykfKvyj/TncbfVpye+1DpS3zJIlvqz/fujPOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714457790; c=relaxed/simple;
-	bh=w1FtgFGbKATPky80HMgAKnT9l8yQIMkdWVHQFIOZAeU=;
+	s=arc-20240116; t=1714483724; c=relaxed/simple;
+	bh=El8uqzd9yfBAApCO2YKkgMvc4gGcYHzsnRBWxFEFPyo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Y58EuFJ/dPGaBrcT74O1PN7C6BGUx+nZxnAC7Z8GY8Acd25gKMrZG75N+39KPlSmW2nAg6f+RSmiYL1m8wPnUA3gOkYHgBH54SYrL8I0Vl3wr3e8Kd+TKNEpnlxoWxO6RXxVtlcCXfLYdrOAS7SNbYvAO72jVNjQw9Fl7NSPyz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qVyyusBt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZkZ2ZP0S; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=jZ9Xb8RHv1Nql/x6JTNC0yC9lKxPk3nD8XLxBZLM8ACuUkVgAa736pFZSo6vWiqkCHrrAi/Wd8ooarJi1V9xNfmqCshPfMGX56FybCsQsM9w+Hqq/E15o5kH/bbZSDGKYC3LwBqwyRe36UNcNM45adzgwjONbEzy52JaqP1rEZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pkp8ul9m; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=L7fHkwyU; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 30 Apr 2024 06:16:25 -0000
+Date: Tue, 30 Apr 2024 13:28:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714457786;
+	s=2020; t=1714483721;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yfrut0KQA7/LT2MTh/hFrudkeTIS+9cJoSYnPXB8YII=;
-	b=qVyyusBtE9afiQOzeWux2Im959q/Wh0eWz9BVUfSeyAEVI7D/EEXGVs5+vheCGYJElQsZc
-	I1u9QwV3raojSF6skVeBKXNjoIDJgA9jYQ+J+GxdqF4mNRlO6hnfHYQc3sJNtZc3eKOV5e
-	e74Q/PJEaCTtxSjPlD4tJhhptJXHZ9iC6UsvKs71hJNNyTY6fabtw6MWDytDo6xO3rV9lP
-	Pbbt1scK06vbW9zGICTHusX6q9ORzDRiANWcMoxJ+hgbnfkytsbpDLr/9zdGarmGdmyvDP
-	QYOKJd1wA4xpQQZO4ODrrmBKiVGrSgtIasgFunDjr4yx9LvZOPurzm2tftURxg==
+	bh=uXDCHY7O/2qla6RJtoE2HY5kMHxKZdj4DTNs/8ZB2PE=;
+	b=pkp8ul9m8AtW7q8BsbWQpPPc7v9HQ2GGmio4ec+W6+kNDwmJ2e5DITLQIq1ITHYHX+JG5V
+	S+GU58Da+NLeQTUB4dClCFH1LRvDDhrnyzNbn0UP+g8udbzh2JUEPYqyDq8KbDf59+Qgvu
+	K+r0YO+EGVMXPpwCo9ZBZUBlZdZaSZgNcHF974Fj+HGzP1xvC6uiVCoyBFtklw0/+rqrfB
+	IYZ3S81UF729JVd4J6MkV3QproVQasK3lTvAZKzr8wmdxylCRM4qQ/wTGaKckfiE2Q/H9D
+	xqauymkUI3ZlFCfBS1b2zWI/f7Yz+8i24ZP6jrGoTEfcrD9j+QcBah7KxA4L0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714457786;
+	s=2020e; t=1714483721;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yfrut0KQA7/LT2MTh/hFrudkeTIS+9cJoSYnPXB8YII=;
-	b=ZkZ2ZP0SgbGk3bEVZ958dFw29DAyP04IYiw7VO3YEBz1ha1+siZw0aKUsHnfWNwCwmXixx
-	xplI+t4dEk0XTdDA==
-From: "tip-bot2 for Linus Torvalds" <tip-bot2@linutronix.de>
+	bh=uXDCHY7O/2qla6RJtoE2HY5kMHxKZdj4DTNs/8ZB2PE=;
+	b=L7fHkwyUZuJ5xHmwxpdwgoKhuaduw5FxhtSzuA8nQNkZzaP2+M3Av269UCK3Bp7GCeai2O
+	iW34pw21FbBPBiDg==
+From: "tip-bot2 for Jacob Pan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm: Remove broken vsyscall emulation code from
- the page fault code
-Cc: syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
- Andy Lutomirski <luto@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/irq] iommu/vt-d: Enable posted mode for device MSIs
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ Jacob Pan <jacob.jun.pan@linux.intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To:
- <CAHk-=wh9D6f7HUkDgZHKmDCHUQmp+Co89GP+b8+z+G56BKeyNg@mail.gmail.com>
-References:
- <CAHk-=wh9D6f7HUkDgZHKmDCHUQmp+Co89GP+b8+z+G56BKeyNg@mail.gmail.com>
+In-Reply-To: <20240423174114.526704-13-jacob.jun.pan@linux.intel.com>
+References: <20240423174114.526704-13-jacob.jun.pan@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171445778590.10875.11181834195203165765.tip-bot2@tip-bot2>
+Message-ID: <171448372075.10875.14030894984079233646.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,221 +79,237 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/irq branch of tip:
 
-Commit-ID:     c9e1dc9825319392b44d3c22493dc543075933b9
-Gitweb:        https://git.kernel.org/tip/c9e1dc9825319392b44d3c22493dc543075933b9
-Author:        Linus Torvalds <torvalds@linux-foundation.org>
-AuthorDate:    Mon, 29 Apr 2024 10:00:51 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 30 Apr 2024 08:08:30 +02:00
+Commit-ID:     ed1e48ea43703002dc202ac7f3b0b0b9981ec2f0
+Gitweb:        https://git.kernel.org/tip/ed1e48ea43703002dc202ac7f3b0b0b9981ec2f0
+Author:        Jacob Pan <jacob.jun.pan@linux.intel.com>
+AuthorDate:    Tue, 23 Apr 2024 10:41:14 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 30 Apr 2024 00:54:43 +02:00
 
-x86/mm: Remove broken vsyscall emulation code from the page fault code
+iommu/vt-d: Enable posted mode for device MSIs
 
-The syzbot-reported stack trace from hell in this discussion thread
-actually has three nested page faults:
+With posted MSI feature enabled on the CPU side, iommu interrupt
+remapping table entries (IRTEs) for device MSI/x can be allocated,
+activated, and programed in posted mode. This means that IRTEs are
+linked with their respective PIDs of the target CPU.
 
-  https://lore.kernel.org/r/000000000000d5f4fc0616e816d4@google.com
+Handlers for the posted MSI notification vector will de-multiplex
+device MSI handlers. CPU notifications are coalesced if interrupts
+arrive at a high frequency.
 
-.. and I think that's actually the important thing here:
+Posted interrupts are only used for device MSI and not for legacy devices
+(IO/APIC, HPET).
 
- - the first page fault is from user space, and triggers the vsyscall
-   emulation.
+Introduce a new irq_chip for posted MSIs, which has a dummy irq_ack()
+callback as EOI is performed in the notification handler once.
 
- - the second page fault is from __do_sys_gettimeofday(), and that should
-   just have caused the exception that then sets the return value to
-   -EFAULT
+When posted MSI is enabled, MSI domain/chip hierarchy will look like
+this example:
 
- - the third nested page fault is due to _raw_spin_unlock_irqrestore() ->
-   preempt_schedule() -> trace_sched_switch(), which then causes a BPF
-   trace program to run, which does that bpf_probe_read_compat(), which
-   causes that page fault under pagefault_disable().
+domain:  IR-PCI-MSIX-0000:50:00.0-12
+ hwirq:   0x29
+ chip:    IR-PCI-MSIX-0000:50:00.0
+  flags:   0x430
+             IRQCHIP_SKIP_SET_WAKE
+             IRQCHIP_ONESHOT_SAFE
+ parent:
+    domain:  INTEL-IR-10-13
+     hwirq:   0x2d0000
+     chip:    INTEL-IR-POST
+      flags:   0x0
+     parent:
+        domain:  VECTOR
+         hwirq:   0x77
+         chip:    APIC
 
-It's quite the nasty backtrace, and there's a lot going on.
-
-The problem is literally the vsyscall emulation, which sets
-
-        current->thread.sig_on_uaccess_err = 1;
-
-and that causes the fixup_exception() code to send the signal *despite* the
-exception being caught.
-
-And I think that is in fact completely bogus.  It's completely bogus
-exactly because it sends that signal even when it *shouldn't* be sent -
-like for the BPF user mode trace gathering.
-
-In other words, I think the whole "sig_on_uaccess_err" thing is entirely
-broken, because it makes any nested page-faults do all the wrong things.
-
-Now, arguably, I don't think anybody should enable vsyscall emulation any
-more, but this test case clearly does.
-
-I think we should just make the "send SIGSEGV" be something that the
-vsyscall emulation does on its own, not this broken per-thread state for
-something that isn't actually per thread.
-
-The x86 page fault code actually tried to deal with the "incorrect nesting"
-by having that:
-
-                if (in_interrupt())
-                        return;
-
-which ignores the sig_on_uaccess_err case when it happens in interrupts,
-but as shown by this example, these nested page faults do not need to be
-about interrupts at all.
-
-IOW, I think the only right thing is to remove that horrendously broken
-code.
-
-The attached patch looks like the ObviouslyCorrect(tm) thing to do.
-
-NOTE! This broken code goes back to this commit in 2011:
-
-  4fc3490114bb ("x86-64: Set siginfo and context on vsyscall emulation faults")
-
-.. and back then the reason was to get all the siginfo details right.
-Honestly, I do not for a moment believe that it's worth getting the siginfo
-details right here, but part of the commit says:
-
-    This fixes issues with UML when vsyscall=emulate.
-
-.. and so my patch to remove this garbage will probably break UML in this
-situation.
-
-I do not believe that anybody should be running with vsyscall=emulate in
-2024 in the first place, much less if you are doing things like UML. But
-let's see if somebody screams.
-
-Reported-and-tested-by: syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/CAHk-=wh9D6f7HUkDgZHKmDCHUQmp+Co89GP+b8+z+G56BKeyNg@mail.gmail.com
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240423174114.526704-13-jacob.jun.pan@linux.intel.com
 ---
- arch/x86/entry/vsyscall/vsyscall_64.c | 25 +-------------------
- arch/x86/include/asm/processor.h      |  1 +-
- arch/x86/mm/fault.c                   | 33 +--------------------------
- 3 files changed, 3 insertions(+), 56 deletions(-)
+ drivers/iommu/intel/irq_remapping.c | 113 ++++++++++++++++++++++++++-
+ 1 file changed, 109 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index a3c0df1..3b0f61b 100644
---- a/arch/x86/entry/vsyscall/vsyscall_64.c
-+++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -98,11 +98,6 @@ static int addr_to_vsyscall_nr(unsigned long addr)
+diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_remapping.c
+index 566297b..712ebfc 100644
+--- a/drivers/iommu/intel/irq_remapping.c
++++ b/drivers/iommu/intel/irq_remapping.c
+@@ -19,6 +19,7 @@
+ #include <asm/cpu.h>
+ #include <asm/irq_remapping.h>
+ #include <asm/pci-direct.h>
++#include <asm/posted_intr.h>
  
- static bool write_ok_or_segv(unsigned long ptr, size_t size)
+ #include "iommu.h"
+ #include "../irq_remapping.h"
+@@ -49,6 +50,7 @@ struct irq_2_iommu {
+ 	u16 sub_handle;
+ 	u8  irte_mask;
+ 	enum irq_mode mode;
++	bool posted_msi;
+ };
+ 
+ struct intel_ir_data {
+@@ -1118,6 +1120,14 @@ static void prepare_irte(struct irte *irte, int vector, unsigned int dest)
+ 	irte->redir_hint = 1;
+ }
+ 
++static void prepare_irte_posted(struct irte *irte)
++{
++	memset(irte, 0, sizeof(*irte));
++
++	irte->present = 1;
++	irte->p_pst = 1;
++}
++
+ struct irq_remap_ops intel_irq_remap_ops = {
+ 	.prepare		= intel_prepare_irq_remapping,
+ 	.enable			= intel_enable_irq_remapping,
+@@ -1126,6 +1136,47 @@ struct irq_remap_ops intel_irq_remap_ops = {
+ 	.enable_faulting	= enable_drhd_fault_handling,
+ };
+ 
++#ifdef CONFIG_X86_POSTED_MSI
++
++static phys_addr_t get_pi_desc_addr(struct irq_data *irqd)
++{
++	int cpu = cpumask_first(irq_data_get_effective_affinity_mask(irqd));
++
++	if (WARN_ON(cpu >= nr_cpu_ids))
++		return 0;
++
++	return __pa(per_cpu_ptr(&posted_msi_pi_desc, cpu));
++}
++
++static void intel_ir_reconfigure_irte_posted(struct irq_data *irqd)
++{
++	struct intel_ir_data *ir_data = irqd->chip_data;
++	struct irte *irte = &ir_data->irte_entry;
++	struct irte irte_pi;
++	u64 pid_addr;
++
++	pid_addr = get_pi_desc_addr(irqd);
++
++	if (!pid_addr) {
++		pr_warn("Failed to setup IRQ %d for posted mode", irqd->irq);
++		return;
++	}
++
++	memset(&irte_pi, 0, sizeof(irte_pi));
++
++	/* The shared IRTE already be set up as posted during alloc_irte */
++	dmar_copy_shared_irte(&irte_pi, irte);
++
++	irte_pi.pda_l = (pid_addr >> (32 - PDA_LOW_BIT)) & ~(-1UL << PDA_LOW_BIT);
++	irte_pi.pda_h = (pid_addr >> 32) & ~(-1UL << PDA_HIGH_BIT);
++
++	modify_irte(&ir_data->irq_2_iommu, &irte_pi);
++}
++
++#else
++static inline void intel_ir_reconfigure_irte_posted(struct irq_data *irqd) {}
++#endif
++
+ static void intel_ir_reconfigure_irte(struct irq_data *irqd, bool force)
  {
--	/*
--	 * XXX: if access_ok, get_user, and put_user handled
--	 * sig_on_uaccess_err, this could go away.
--	 */
--
- 	if (!access_ok((void __user *)ptr, size)) {
- 		struct thread_struct *thread = &current->thread;
+ 	struct intel_ir_data *ir_data = irqd->chip_data;
+@@ -1139,8 +1190,9 @@ static void intel_ir_reconfigure_irte(struct irq_data *irqd, bool force)
+ 	irte->vector = cfg->vector;
+ 	irte->dest_id = IRTE_DEST(cfg->dest_apicid);
  
-@@ -123,7 +118,6 @@ bool emulate_vsyscall(unsigned long error_code,
- 	struct task_struct *tsk;
- 	unsigned long caller;
- 	int vsyscall_nr, syscall_nr, tmp;
--	int prev_sig_on_uaccess_err;
- 	long ret;
- 	unsigned long orig_dx;
+-	/* Update the hardware only if the interrupt is in remapped mode. */
+-	if (force || ir_data->irq_2_iommu.mode == IRQ_REMAPPING)
++	if (ir_data->irq_2_iommu.posted_msi)
++		intel_ir_reconfigure_irte_posted(irqd);
++	else if (force || ir_data->irq_2_iommu.mode == IRQ_REMAPPING)
+ 		modify_irte(&ir_data->irq_2_iommu, irte);
+ }
  
-@@ -234,12 +228,8 @@ bool emulate_vsyscall(unsigned long error_code,
- 		goto do_ret;  /* skip requested */
+@@ -1194,7 +1246,7 @@ static int intel_ir_set_vcpu_affinity(struct irq_data *data, void *info)
+ 	struct intel_ir_data *ir_data = data->chip_data;
+ 	struct vcpu_data *vcpu_pi_info = info;
  
- 	/*
--	 * With a real vsyscall, page faults cause SIGSEGV.  We want to
--	 * preserve that behavior to make writing exploits harder.
-+	 * With a real vsyscall, page faults cause SIGSEGV.
- 	 */
--	prev_sig_on_uaccess_err = current->thread.sig_on_uaccess_err;
--	current->thread.sig_on_uaccess_err = 1;
--
- 	ret = -EFAULT;
- 	switch (vsyscall_nr) {
- 	case 0:
-@@ -262,23 +252,12 @@ bool emulate_vsyscall(unsigned long error_code,
+-	/* stop posting interrupts, back to remapping mode */
++	/* stop posting interrupts, back to the default mode */
+ 	if (!vcpu_pi_info) {
+ 		modify_irte(&ir_data->irq_2_iommu, &ir_data->irte_entry);
+ 	} else {
+@@ -1233,6 +1285,49 @@ static struct irq_chip intel_ir_chip = {
+ 	.irq_set_vcpu_affinity	= intel_ir_set_vcpu_affinity,
+ };
+ 
++/*
++ * With posted MSIs, all vectors are multiplexed into a single notification
++ * vector. Devices MSIs are then dispatched in a demux loop where
++ * EOIs can be coalesced as well.
++ *
++ * "INTEL-IR-POST" IRQ chip does not do EOI on ACK, thus the dummy irq_ack()
++ * function. Instead EOI is performed by the posted interrupt notification
++ * handler.
++ *
++ * For the example below, 3 MSIs are coalesced into one CPU notification. Only
++ * one apic_eoi() is needed.
++ *
++ * __sysvec_posted_msi_notification()
++ *	irq_enter();
++ *		handle_edge_irq()
++ *			irq_chip_ack_parent()
++ *				dummy(); // No EOI
++ *			handle_irq_event()
++ *				driver_handler()
++ *		handle_edge_irq()
++ *			irq_chip_ack_parent()
++ *				dummy(); // No EOI
++ *			handle_irq_event()
++ *				driver_handler()
++ *		handle_edge_irq()
++ *			irq_chip_ack_parent()
++ *				dummy(); // No EOI
++ *			handle_irq_event()
++ *				driver_handler()
++ *	apic_eoi()
++ *	irq_exit()
++ */
++
++static void dummy_ack(struct irq_data *d) { }
++
++static struct irq_chip intel_ir_chip_post_msi = {
++	.name			= "INTEL-IR-POST",
++	.irq_ack		= dummy_ack,
++	.irq_set_affinity	= intel_ir_set_affinity,
++	.irq_compose_msi_msg	= intel_ir_compose_msi_msg,
++	.irq_set_vcpu_affinity	= intel_ir_set_vcpu_affinity,
++};
++
+ static void fill_msi_msg(struct msi_msg *msg, u32 index, u32 subhandle)
+ {
+ 	memset(msg, 0, sizeof(*msg));
+@@ -1274,6 +1369,11 @@ static void intel_irq_remapping_prepare_irte(struct intel_ir_data *data,
  		break;
+ 	case X86_IRQ_ALLOC_TYPE_PCI_MSI:
+ 	case X86_IRQ_ALLOC_TYPE_PCI_MSIX:
++		if (posted_msi_supported()) {
++			prepare_irte_posted(irte);
++			data->irq_2_iommu.posted_msi = 1;
++		}
++
+ 		set_msi_sid(irte,
+ 			    pci_real_dma_dev(msi_desc_to_pci_dev(info->desc)));
+ 		break;
+@@ -1361,7 +1461,12 @@ static int intel_irq_remapping_alloc(struct irq_domain *domain,
+ 
+ 		irq_data->hwirq = (index << 16) + i;
+ 		irq_data->chip_data = ird;
+-		irq_data->chip = &intel_ir_chip;
++		if (posted_msi_supported() &&
++		    ((info->type == X86_IRQ_ALLOC_TYPE_PCI_MSI) ||
++		     (info->type == X86_IRQ_ALLOC_TYPE_PCI_MSIX)))
++			irq_data->chip = &intel_ir_chip_post_msi;
++		else
++			irq_data->chip = &intel_ir_chip;
+ 		intel_irq_remapping_prepare_irte(ird, irq_cfg, info, index, i);
+ 		irq_set_status_flags(virq + i, IRQ_MOVE_PCNTXT);
  	}
- 
--	current->thread.sig_on_uaccess_err = prev_sig_on_uaccess_err;
--
- check_fault:
- 	if (ret == -EFAULT) {
- 		/* Bad news -- userspace fed a bad pointer to a vsyscall. */
- 		warn_bad_vsyscall(KERN_INFO, regs,
- 				  "vsyscall fault (exploit attempt?)");
--
--		/*
--		 * If we failed to generate a signal for any reason,
--		 * generate one here.  (This should be impossible.)
--		 */
--		if (WARN_ON_ONCE(!sigismember(&tsk->pending.signal, SIGBUS) &&
--				 !sigismember(&tsk->pending.signal, SIGSEGV)))
--			goto sigsegv;
--
--		return true;  /* Don't emulate the ret. */
-+		goto sigsegv;
- 	}
- 
- 	regs->ax = ret;
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 811548f..78e51b0 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -472,7 +472,6 @@ struct thread_struct {
- 	unsigned long		iopl_emul;
- 
- 	unsigned int		iopl_warn:1;
--	unsigned int		sig_on_uaccess_err:1;
- 
- 	/*
- 	 * Protection Keys Register for Userspace.  Loaded immediately on
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 622d12e..bba4e02 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -723,39 +723,8 @@ kernelmode_fixup_or_oops(struct pt_regs *regs, unsigned long error_code,
- 	WARN_ON_ONCE(user_mode(regs));
- 
- 	/* Are we prepared to handle this kernel fault? */
--	if (fixup_exception(regs, X86_TRAP_PF, error_code, address)) {
--		/*
--		 * Any interrupt that takes a fault gets the fixup. This makes
--		 * the below recursive fault logic only apply to a faults from
--		 * task context.
--		 */
--		if (in_interrupt())
--			return;
--
--		/*
--		 * Per the above we're !in_interrupt(), aka. task context.
--		 *
--		 * In this case we need to make sure we're not recursively
--		 * faulting through the emulate_vsyscall() logic.
--		 */
--		if (current->thread.sig_on_uaccess_err && signal) {
--			sanitize_error_code(address, &error_code);
--
--			set_signal_archinfo(address, error_code);
--
--			if (si_code == SEGV_PKUERR) {
--				force_sig_pkuerr((void __user *)address, pkey);
--			} else {
--				/* XXX: hwpoison faults will set the wrong code. */
--				force_sig_fault(signal, si_code, (void __user *)address);
--			}
--		}
--
--		/*
--		 * Barring that, we can do the fixup and be happy.
--		 */
-+	if (fixup_exception(regs, X86_TRAP_PF, error_code, address))
- 		return;
--	}
- 
- 	/*
- 	 * AMD erratum #91 manifests as a spurious page fault on a PREFETCH
 
