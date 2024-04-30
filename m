@@ -1,78 +1,82 @@
-Return-Path: <linux-tip-commits+bounces-1215-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1216-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575368B6A1B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 07:59:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3618C8B6A6D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 08:17:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FABA2836F6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 05:59:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E084C281D48
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Apr 2024 06:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125CA17731;
-	Tue, 30 Apr 2024 05:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC3517BB4;
+	Tue, 30 Apr 2024 06:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Uow9lVxo";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vbHNhm3s"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qVyyusBt";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZkZ2ZP0S"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66987C2ED;
-	Tue, 30 Apr 2024 05:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDB26FB1;
+	Tue, 30 Apr 2024 06:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714456773; cv=none; b=Fyqk3IFwCwk/U0mS2AoCW44obQlHl10ejZO/71Msz6TATTS44+gmDx92E8kqTxeglxYHntWH7psTbAALXu/DrQqf/hGVE5pkrLCuE6zguTVvmerM8zCVlJZXfPOlMYbt2pc7MB2GCyBIov+txE/4k/p9P4mYGZfpJDp8hFmAPps=
+	t=1714457790; cv=none; b=ghjypSCXfelcyFYjK5qIYz9xVLbXyPv/cNsxECy6mE6/37LjeL7bnF1/Tp5T2J5z14kYdx0huGq9RXzmTXZFfPkSnYe6OQ+VrlEyOfPXmByUu6yw5La3bY/f7k+t+i3uEalsgUUoO1Drul3w0Ma7HjUtOkM6v28d9qPHEQR6cy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714456773; c=relaxed/simple;
-	bh=63pR+D8SLU0AmxY1Ig0doGdZqju8basy758ixSyNY3Q=;
+	s=arc-20240116; t=1714457790; c=relaxed/simple;
+	bh=w1FtgFGbKATPky80HMgAKnT9l8yQIMkdWVHQFIOZAeU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=nQP9FHdgaFeA2ctzfIcS7IOpbMxNwfbd2COCBjzJWKiz63p/E8XAQQhED2aZgutF9vF80lUKLYpJvNS3dkFaXTRVzsI+NL6/Pt61MgDehCotZXMYqX9jk+494/xB7b9jLSDB75TZo8W9BL/nwWpmNR0haC4RVY3c3Sz5T1mYvzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Uow9lVxo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vbHNhm3s; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Y58EuFJ/dPGaBrcT74O1PN7C6BGUx+nZxnAC7Z8GY8Acd25gKMrZG75N+39KPlSmW2nAg6f+RSmiYL1m8wPnUA3gOkYHgBH54SYrL8I0Vl3wr3e8Kd+TKNEpnlxoWxO6RXxVtlcCXfLYdrOAS7SNbYvAO72jVNjQw9Fl7NSPyz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qVyyusBt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZkZ2ZP0S; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 30 Apr 2024 05:59:28 -0000
+Date: Tue, 30 Apr 2024 06:16:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714456769;
+	s=2020; t=1714457786;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9yuvnelorU5djLDZU8ZNp9EAchmWQCIPVhuEq9kqqtw=;
-	b=Uow9lVxoZh7FPKxS/UP6fVZtcEtS7ahE9S6Bm4ahKkkxSzmyBN/gktS1yZ2ioQyHN6X/SK
-	rNwM8C75B7P4BScv+VDUtPpj4oteOXW73YTR3lgWWyP8AJqf+JJlr5VvFOu3WNvhI4olCh
-	iNd2H874WlOjLFRbw3eElCXryRGNuVa3aGWJBtjxh2WUyp3NCczGxqDei0T0lw/flADQLo
-	ZnwL/IbybwiWPejw9ZTT/KcMsSWiNSEcRPjVNCnUR255t7WLs+6o3sBWXJPY04HthMgwXj
-	MxU74oVusiK74hmqKoL6Yb02xFWDX3Z2992lm6JnMIxa72xD8ycwAnHQhAQ67w==
+	bh=yfrut0KQA7/LT2MTh/hFrudkeTIS+9cJoSYnPXB8YII=;
+	b=qVyyusBtE9afiQOzeWux2Im959q/Wh0eWz9BVUfSeyAEVI7D/EEXGVs5+vheCGYJElQsZc
+	I1u9QwV3raojSF6skVeBKXNjoIDJgA9jYQ+J+GxdqF4mNRlO6hnfHYQc3sJNtZc3eKOV5e
+	e74Q/PJEaCTtxSjPlD4tJhhptJXHZ9iC6UsvKs71hJNNyTY6fabtw6MWDytDo6xO3rV9lP
+	Pbbt1scK06vbW9zGICTHusX6q9ORzDRiANWcMoxJ+hgbnfkytsbpDLr/9zdGarmGdmyvDP
+	QYOKJd1wA4xpQQZO4ODrrmBKiVGrSgtIasgFunDjr4yx9LvZOPurzm2tftURxg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714456769;
+	s=2020e; t=1714457786;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9yuvnelorU5djLDZU8ZNp9EAchmWQCIPVhuEq9kqqtw=;
-	b=vbHNhm3sUI7fXtGfDZxgepkGXqpBYmr7OihyMaa1fC1nkyahXzWw46hiKkOGVmRwq7NmpJ
-	tFHwDfOJQ7jauQCw==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=yfrut0KQA7/LT2MTh/hFrudkeTIS+9cJoSYnPXB8YII=;
+	b=ZkZ2ZP0SgbGk3bEVZ958dFw29DAyP04IYiw7VO3YEBz1ha1+siZw0aKUsHnfWNwCwmXixx
+	xplI+t4dEk0XTdDA==
+From: "tip-bot2 for Linus Torvalds" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/apic: Don't access the APIC when disabling x2APIC
-Cc: Adrian Huang <ahuang12@lenovo.com>, Thomas Gleixner <tglx@linutronix.de>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <875xw5t6r7.ffs@tglx>
-References: <875xw5t6r7.ffs@tglx>
+Subject: [tip: x86/urgent] x86/mm: Remove broken vsyscall emulation code from
+ the page fault code
+Cc: syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+ Andy Lutomirski <luto@kernel.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To:
+ <CAHk-=wh9D6f7HUkDgZHKmDCHUQmp+Co89GP+b8+z+G56BKeyNg@mail.gmail.com>
+References:
+ <CAHk-=wh9D6f7HUkDgZHKmDCHUQmp+Co89GP+b8+z+G56BKeyNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171445676862.10875.4814911048680168343.tip-bot2@tip-bot2>
+Message-ID: <171445778590.10875.11181834195203165765.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,97 +86,219 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     720a22fd6c1cdadf691281909950c0cbc5cdf17e
-Gitweb:        https://git.kernel.org/tip/720a22fd6c1cdadf691281909950c0cbc5cdf17e
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 26 Apr 2024 00:30:36 +02:00
+Commit-ID:     c9e1dc9825319392b44d3c22493dc543075933b9
+Gitweb:        https://git.kernel.org/tip/c9e1dc9825319392b44d3c22493dc543075933b9
+Author:        Linus Torvalds <torvalds@linux-foundation.org>
+AuthorDate:    Mon, 29 Apr 2024 10:00:51 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 30 Apr 2024 07:51:34 +02:00
+CommitterDate: Tue, 30 Apr 2024 08:08:30 +02:00
 
-x86/apic: Don't access the APIC when disabling x2APIC
+x86/mm: Remove broken vsyscall emulation code from the page fault code
 
-With 'iommu=off' on the kernel command line and x2APIC enabled by the BIOS
-the code which disables the x2APIC triggers an unchecked MSR access error:
+The syzbot-reported stack trace from hell in this discussion thread
+actually has three nested page faults:
 
-  RDMSR from 0x802 at rIP: 0xffffffff94079992 (native_apic_msr_read+0x12/0x50)
+  https://lore.kernel.org/r/000000000000d5f4fc0616e816d4@google.com
 
-This is happens because default_acpi_madt_oem_check() selects an x2APIC
-driver before the x2APIC is disabled.
+.. and I think that's actually the important thing here:
 
-When the x2APIC is disabled because interrupt remapping cannot be enabled
-due to 'iommu=off' on the command line, x2apic_disable() invokes
-apic_set_fixmap() which in turn tries to read the APIC ID. This triggers
-the MSR warning because x2APIC is disabled, but the APIC driver is still
-x2APIC based.
+ - the first page fault is from user space, and triggers the vsyscall
+   emulation.
 
-Prevent that by adding an argument to apic_set_fixmap() which makes the
-APIC ID read out conditional and set it to false from the x2APIC disable
-path. That's correct as the APIC ID has already been read out during early
-discovery.
+ - the second page fault is from __do_sys_gettimeofday(), and that should
+   just have caused the exception that then sets the return value to
+   -EFAULT
 
-Fixes: d10a904435fa ("x86/apic: Consolidate boot_cpu_physical_apicid initialization sites")
-Reported-by: Adrian Huang <ahuang12@lenovo.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+ - the third nested page fault is due to _raw_spin_unlock_irqrestore() ->
+   preempt_schedule() -> trace_sched_switch(), which then causes a BPF
+   trace program to run, which does that bpf_probe_read_compat(), which
+   causes that page fault under pagefault_disable().
+
+It's quite the nasty backtrace, and there's a lot going on.
+
+The problem is literally the vsyscall emulation, which sets
+
+        current->thread.sig_on_uaccess_err = 1;
+
+and that causes the fixup_exception() code to send the signal *despite* the
+exception being caught.
+
+And I think that is in fact completely bogus.  It's completely bogus
+exactly because it sends that signal even when it *shouldn't* be sent -
+like for the BPF user mode trace gathering.
+
+In other words, I think the whole "sig_on_uaccess_err" thing is entirely
+broken, because it makes any nested page-faults do all the wrong things.
+
+Now, arguably, I don't think anybody should enable vsyscall emulation any
+more, but this test case clearly does.
+
+I think we should just make the "send SIGSEGV" be something that the
+vsyscall emulation does on its own, not this broken per-thread state for
+something that isn't actually per thread.
+
+The x86 page fault code actually tried to deal with the "incorrect nesting"
+by having that:
+
+                if (in_interrupt())
+                        return;
+
+which ignores the sig_on_uaccess_err case when it happens in interrupts,
+but as shown by this example, these nested page faults do not need to be
+about interrupts at all.
+
+IOW, I think the only right thing is to remove that horrendously broken
+code.
+
+The attached patch looks like the ObviouslyCorrect(tm) thing to do.
+
+NOTE! This broken code goes back to this commit in 2011:
+
+  4fc3490114bb ("x86-64: Set siginfo and context on vsyscall emulation faults")
+
+.. and back then the reason was to get all the siginfo details right.
+Honestly, I do not for a moment believe that it's worth getting the siginfo
+details right here, but part of the commit says:
+
+    This fixes issues with UML when vsyscall=emulate.
+
+.. and so my patch to remove this garbage will probably break UML in this
+situation.
+
+I do not believe that anybody should be running with vsyscall=emulate in
+2024 in the first place, much less if you are doing things like UML. But
+let's see if somebody screams.
+
+Reported-and-tested-by: syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Adrian Huang <ahuang12@lenovo.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/875xw5t6r7.ffs@tglx
+Tested-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/r/CAHk-=wh9D6f7HUkDgZHKmDCHUQmp+Co89GP+b8+z+G56BKeyNg@mail.gmail.com
 ---
- arch/x86/kernel/apic/apic.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ arch/x86/entry/vsyscall/vsyscall_64.c | 25 +-------------------
+ arch/x86/include/asm/processor.h      |  1 +-
+ arch/x86/mm/fault.c                   | 33 +--------------------------
+ 3 files changed, 3 insertions(+), 56 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index c342c4a..803dcfb 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1771,7 +1771,7 @@ void x2apic_setup(void)
- 	__x2apic_enable();
- }
+diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
+index a3c0df1..3b0f61b 100644
+--- a/arch/x86/entry/vsyscall/vsyscall_64.c
++++ b/arch/x86/entry/vsyscall/vsyscall_64.c
+@@ -98,11 +98,6 @@ static int addr_to_vsyscall_nr(unsigned long addr)
  
--static __init void apic_set_fixmap(void);
-+static __init void apic_set_fixmap(bool read_apic);
- 
- static __init void x2apic_disable(void)
+ static bool write_ok_or_segv(unsigned long ptr, size_t size)
  {
-@@ -1793,7 +1793,12 @@ static __init void x2apic_disable(void)
+-	/*
+-	 * XXX: if access_ok, get_user, and put_user handled
+-	 * sig_on_uaccess_err, this could go away.
+-	 */
+-
+ 	if (!access_ok((void __user *)ptr, size)) {
+ 		struct thread_struct *thread = &current->thread;
+ 
+@@ -123,7 +118,6 @@ bool emulate_vsyscall(unsigned long error_code,
+ 	struct task_struct *tsk;
+ 	unsigned long caller;
+ 	int vsyscall_nr, syscall_nr, tmp;
+-	int prev_sig_on_uaccess_err;
+ 	long ret;
+ 	unsigned long orig_dx;
+ 
+@@ -234,12 +228,8 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		goto do_ret;  /* skip requested */
+ 
+ 	/*
+-	 * With a real vsyscall, page faults cause SIGSEGV.  We want to
+-	 * preserve that behavior to make writing exploits harder.
++	 * With a real vsyscall, page faults cause SIGSEGV.
+ 	 */
+-	prev_sig_on_uaccess_err = current->thread.sig_on_uaccess_err;
+-	current->thread.sig_on_uaccess_err = 1;
+-
+ 	ret = -EFAULT;
+ 	switch (vsyscall_nr) {
+ 	case 0:
+@@ -262,23 +252,12 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		break;
  	}
  
- 	__x2apic_disable();
--	apic_set_fixmap();
-+	/*
-+	 * Don't reread the APIC ID as it was already done from
-+	 * check_x2apic() and the APIC driver still is a x2APIC variant,
-+	 * which fails to do the read after x2APIC was disabled.
-+	 */
-+	apic_set_fixmap(false);
- }
- 
- static __init void x2apic_enable(void)
-@@ -2057,13 +2062,14 @@ void __init init_apic_mappings(void)
+-	current->thread.sig_on_uaccess_err = prev_sig_on_uaccess_err;
+-
+ check_fault:
+ 	if (ret == -EFAULT) {
+ 		/* Bad news -- userspace fed a bad pointer to a vsyscall. */
+ 		warn_bad_vsyscall(KERN_INFO, regs,
+ 				  "vsyscall fault (exploit attempt?)");
+-
+-		/*
+-		 * If we failed to generate a signal for any reason,
+-		 * generate one here.  (This should be impossible.)
+-		 */
+-		if (WARN_ON_ONCE(!sigismember(&tsk->pending.signal, SIGBUS) &&
+-				 !sigismember(&tsk->pending.signal, SIGSEGV)))
+-			goto sigsegv;
+-
+-		return true;  /* Don't emulate the ret. */
++		goto sigsegv;
  	}
- }
  
--static __init void apic_set_fixmap(void)
-+static __init void apic_set_fixmap(bool read_apic)
- {
- 	set_fixmap_nocache(FIX_APIC_BASE, mp_lapic_addr);
- 	apic_mmio_base = APIC_BASE;
- 	apic_printk(APIC_VERBOSE, "mapped APIC to %16lx (%16lx)\n",
- 		    apic_mmio_base, mp_lapic_addr);
--	apic_read_boot_cpu_id(false);
-+	if (read_apic)
-+		apic_read_boot_cpu_id(false);
- }
+ 	regs->ax = ret;
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 811548f..78e51b0 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -472,7 +472,6 @@ struct thread_struct {
+ 	unsigned long		iopl_emul;
  
- void __init register_lapic_address(unsigned long address)
-@@ -2073,7 +2079,7 @@ void __init register_lapic_address(unsigned long address)
- 	mp_lapic_addr = address;
+ 	unsigned int		iopl_warn:1;
+-	unsigned int		sig_on_uaccess_err:1;
  
- 	if (!x2apic_mode)
--		apic_set_fixmap();
-+		apic_set_fixmap(true);
- }
+ 	/*
+ 	 * Protection Keys Register for Userspace.  Loaded immediately on
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 622d12e..bba4e02 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -723,39 +723,8 @@ kernelmode_fixup_or_oops(struct pt_regs *regs, unsigned long error_code,
+ 	WARN_ON_ONCE(user_mode(regs));
  
- /*
+ 	/* Are we prepared to handle this kernel fault? */
+-	if (fixup_exception(regs, X86_TRAP_PF, error_code, address)) {
+-		/*
+-		 * Any interrupt that takes a fault gets the fixup. This makes
+-		 * the below recursive fault logic only apply to a faults from
+-		 * task context.
+-		 */
+-		if (in_interrupt())
+-			return;
+-
+-		/*
+-		 * Per the above we're !in_interrupt(), aka. task context.
+-		 *
+-		 * In this case we need to make sure we're not recursively
+-		 * faulting through the emulate_vsyscall() logic.
+-		 */
+-		if (current->thread.sig_on_uaccess_err && signal) {
+-			sanitize_error_code(address, &error_code);
+-
+-			set_signal_archinfo(address, error_code);
+-
+-			if (si_code == SEGV_PKUERR) {
+-				force_sig_pkuerr((void __user *)address, pkey);
+-			} else {
+-				/* XXX: hwpoison faults will set the wrong code. */
+-				force_sig_fault(signal, si_code, (void __user *)address);
+-			}
+-		}
+-
+-		/*
+-		 * Barring that, we can do the fixup and be happy.
+-		 */
++	if (fixup_exception(regs, X86_TRAP_PF, error_code, address))
+ 		return;
+-	}
+ 
+ 	/*
+ 	 * AMD erratum #91 manifests as a spurious page fault on a PREFETCH
 
