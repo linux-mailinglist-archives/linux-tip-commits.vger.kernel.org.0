@@ -1,77 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-1233-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1235-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCA38B99F8
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 May 2024 13:26:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05FCF8B99FA
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 May 2024 13:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A2B72875E8
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 May 2024 11:26:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B85202875A4
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 May 2024 11:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F53627E2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62C264CCC;
 	Thu,  2 May 2024 11:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0jc0pwHj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BbEuJrjL"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FHcwcq2b";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QbxzdTk2"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F75604C8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAC86217D;
 	Thu,  2 May 2024 11:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714649176; cv=none; b=CsOVmBlDMDTV/2kLDvu67LiUUE3g4PIcmvK4FiF4K7iwjDftZ8GjgJJkHsaLM8Agt2EBSj6zlMifn99nQQdb/SZGCER75mnPmUn19yQBEbheRv2kqzJUC3HnOAzlFttWgpvg/AbTznbBnuz9QJjQoFMU0bI56o8LysoOJ12lPpQ=
+	t=1714649176; cv=none; b=SM2SgS3unQNwA2jUx1INIDqkw9tbmkUHz4ycZBbVedMDOMowPQALIq95LQmq6tJDCr3OaM+bX1y4O1NQyprhlU7EbMnayw1mfEO93Bfn7XTE2VUhHPUjqs90+DmyVmtpMITH59LSdjL/MEl39mvF0hR3JRDJXFqKdhiRO5PEeRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1714649176; c=relaxed/simple;
-	bh=byDbO1GGy45RU5AgUCvh5G+Sftd7hly3RcndRKNWrA4=;
+	bh=qxxfRLtdK350YmmRHNaDyLqC4+L8Z2uSdrMi9vsYzco=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=pyfpmRuzQIAwnhzxJWQfttK2P5mSaXH4Pa4tn9OtzSKbdwLJypuwWRNvDN5a7VcsKxZQf0o7PwCIZ/wO8hvTKMOTKnSmTlb6a+SaKjasN/0Yy6cJgWZPGdFTexZx/e9f8KIN9Lj0WHxjt/9vJZkHbpYhIPrTbrSScLwA64/7PGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0jc0pwHj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BbEuJrjL; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=amNXkY1CsnO/e4FxV4XfvfM+WYL00Rc8gvSoV3Oblsz/+ZnM/Q4l3hnNg2m8xJfEQv3wv6cpVrd3iN2eHOODRceHdJazz3TLGh0N9H10S+KysotcG8QEDXkPakkje6wRnbHjfXE540E3KzO+p1V7yYsR8wd6IjGf1XuUsc4Z4yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FHcwcq2b; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QbxzdTk2; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 02 May 2024 11:26:11 -0000
+Date: Thu, 02 May 2024 11:26:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714649172;
+	s=2020; t=1714649173;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KrmiZthoFSDlaA0G0Cgrt4krGHIhV/l7pAo87Ld38sk=;
-	b=0jc0pwHjnwaelx+mHSExdnwxQ1QlSCLnwfkk31AJG92GKh44WmlaHqhN2iTy19nVNilfK5
-	wmB9qNHUDkU/cVhEGWjXmcYF8czn/1BWDjOOikpwU8UKEHYjTizqGM82aGObtFCqEKoiYE
-	Exk0Tc+G84xDOOReVUIxW8oMXKVAqSnkOqSj9O0TcxBfoSbaCIjPcUNwNMqVBK+1BGSEj9
-	Xrkqzpym/6qEpCAxSy3zPXLK7JlVx5TkCXxG7oELhHHP2BP69f84Xp6g8ZvHtQ4d7BMKYe
-	fyRsUj2gITMJJxNwAoi6zfWbIEExdz4FAh4ZAo94S23z7IGlh1dCC8KssvARMA==
+	bh=f3aTZZU5/cT4g4PBMeMl7jGbRN/Txr9TxLFSY6Ty+PU=;
+	b=FHcwcq2bXoPl3IVAVwwysP1Rp4qwnFXKvORQkagFrsySxzxc1IUeCtY5ioHe/vzsFRxshj
+	ayK8OHFYhFBYz0VmMF6lRs6+cczMaWHHnWaxmteKKX/JQ4fbbtKRjiYzHT33iBlkhXTWyx
+	cXyYFc0roP1oxnp04XGx3mQXWx1ThU96TqtQgG6Q5MJIzdYTDNcBdiL8QUNb18BOT/iLUF
+	EirYA6wzGZtPq796hxm1jdeidwy9PrpjRl6Ej96nFOD8P7VJH0H11OEITBT91mOyZJWxFu
+	k8yc5ar6rz8mHTNAVOqrYuBXToxyD+JJfnS/NgUSP72jJYOYEJwvxFC6UuZ+dA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714649172;
+	s=2020e; t=1714649173;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KrmiZthoFSDlaA0G0Cgrt4krGHIhV/l7pAo87Ld38sk=;
-	b=BbEuJrjL+yZFKuziJuWo3qop5WMmBWruDY1nvgXBggygFze3zHCawt0uWDkFRMTw7/VOQR
-	V2F8fInZDK7QcnCw==
+	bh=f3aTZZU5/cT4g4PBMeMl7jGbRN/Txr9TxLFSY6Ty+PU=;
+	b=QbxzdTk2mTnIo9cRmmgzaEIoOtlp7FxeNN/hWiKBoHPwcjxEiuaWHFkQO0WvgN3J0GAubS
+	W/5DIKA4VBlo0ODg==
 From: "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] x86/insn: Add support for APX EVEX instructions to
- the opcode map
+Subject: [tip: perf/core] x86/insn: Add misc new Intel instructions
 Cc: Adrian Hunter <adrian.hunter@intel.com>, Ingo Molnar <mingo@kernel.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240502105853.5338-9-adrian.hunter@intel.com>
-References: <20240502105853.5338-9-adrian.hunter@intel.com>
+In-Reply-To: <20240502105853.5338-5-adrian.hunter@intel.com>
+References: <20240502105853.5338-5-adrian.hunter@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171464917184.10875.2417762161530362294.tip-bot2@tip-bot2>
+Message-ID: <171464917275.10875.4280124834639186610.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,263 +80,351 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     690ca3a3067f760bef92ca5db1c42490498ab5de
-Gitweb:        https://git.kernel.org/tip/690ca3a3067f760bef92ca5db1c42490498ab5de
+Commit-ID:     9dd3612895de3d967ebd607423571bd6b0854ccc
+Gitweb:        https://git.kernel.org/tip/9dd3612895de3d967ebd607423571bd6b0854ccc
 Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Thu, 02 May 2024 13:58:51 +03:00
+AuthorDate:    Thu, 02 May 2024 13:58:47 +03:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 02 May 2024 13:13:46 +02:00
+CommitterDate: Thu, 02 May 2024 13:13:43 +02:00
 
-x86/insn: Add support for APX EVEX instructions to the opcode map
+x86/insn: Add misc new Intel instructions
 
-To support APX functionality, the EVEX prefix is used to:
+The x86 instruction decoder is used not only for decoding kernel
+instructions. It is also used by perf uprobes (user space probes) and by
+perf tools Intel Processor Trace decoding. Consequently, it needs to
+support instructions executed by user space also.
 
- - promote legacy instructions
- - promote VEX instructions
- - add new instructions
+Add instructions documented in Intel Architecture Instruction Set
+Extensions and Future Features Programming Reference March 2024
+319433-052, that have not been added yet:
 
-Promoted VEX instructions require no extra annotation because the opcodes
-do not change and the permissive nature of the instruction decoder already
-allows them to have an EVEX prefix.
-
-Promoted legacy instructions and new instructions are placed in map 4 which
-has not been used before.
-
-Create a new table for map 4 and add APX instructions.
-
-Annotate SCALABLE instructions with "(es)" - refer to patch "x86/insn: Add
-support for APX EVEX to the instruction decoder logic". SCALABLE
-instructions must be represented in both no-prefix (NP) and 66 prefix
-forms.
+	AADD
+	AAND
+	AOR
+	AXOR
+	CMPccXADD
+	PBNDKB
+	RDMSRLIST
+	URDMSR
+	UWRMSR
+	VBCSTNEBF162PS
+	VBCSTNESH2PS
+	VCVTNEEBF162PS
+	VCVTNEEPH2PS
+	VCVTNEOBF162PS
+	VCVTNEOPH2PS
+	VCVTNEPS2BF16
+	VPDPB[SU,UU,SS]D[,S]
+	VPDPW[SU,US,UU]D[,S]
+	VPMADD52HUQ
+	VPMADD52LUQ
+	VSHA512MSG1
+	VSHA512MSG2
+	VSHA512RNDS2
+	VSM3MSG1
+	VSM3MSG2
+	VSM3RNDS2
+	VSM4KEY4
+	VSM4RNDS4
+	WRMSRLIST
+	TCMMIMFP16PS
+	TCMMRLFP16PS
+	TDPFP16PS
+	PREFETCHIT1
+	PREFETCHIT0
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240502105853.5338-9-adrian.hunter@intel.com
+Link: https://lore.kernel.org/r/20240502105853.5338-5-adrian.hunter@intel.com
 ---
- arch/x86/lib/x86-opcode-map.txt       | 93 ++++++++++++++++++++++++++-
- tools/arch/x86/lib/x86-opcode-map.txt | 93 ++++++++++++++++++++++++++-
- 2 files changed, 186 insertions(+)
+ arch/x86/lib/x86-opcode-map.txt       | 57 ++++++++++++++++++++------
+ tools/arch/x86/lib/x86-opcode-map.txt | 57 ++++++++++++++++++++------
+ 2 files changed, 90 insertions(+), 24 deletions(-)
 
 diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
-index 240ef71..caedb3e 100644
+index 24941b9..4e9f535 100644
 --- a/arch/x86/lib/x86-opcode-map.txt
 +++ b/arch/x86/lib/x86-opcode-map.txt
-@@ -23,6 +23,7 @@
- #
- # AVX Superscripts
- #  (ev): this opcode requires EVEX prefix.
-+#  (es): this opcode requires EVEX prefix and is SCALABALE.
- #  (evo): this opcode is changed by EVEX prefix (EVEX opcode)
- #  (v): this opcode requires VEX prefix.
- #  (v1): this opcode only supports 128bit VEX.
-@@ -929,6 +930,98 @@ df: VAESKEYGEN Vdq,Wdq,Ib (66),(v1)
- f0: RORX Gy,Ey,Ib (F2),(v) | HRESET Gv,Ib (F3),(000),(11B)
+@@ -698,8 +698,8 @@ AVXcode: 2
+ 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
+ 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
+ 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
+-50: vpdpbusd Vx,Hx,Wx (66)
+-51: vpdpbusds Vx,Hx,Wx (66)
++50: vpdpbusd Vx,Hx,Wx (66) | vpdpbssd Vx,Hx,Wx (F2),(v) | vpdpbsud Vx,Hx,Wx (F3),(v) | vpdpbuud Vx,Hx,Wx (v)
++51: vpdpbusds Vx,Hx,Wx (66) | vpdpbssds Vx,Hx,Wx (F2),(v) | vpdpbsuds Vx,Hx,Wx (F3),(v) | vpdpbuuds Vx,Hx,Wx (v)
+ 52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
+ 53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
+ 54: vpopcntb/w Vx,Wx (66),(ev)
+@@ -708,7 +708,7 @@ AVXcode: 2
+ 59: vpbroadcastq Vx,Wx (66),(v) | vbroadcasti32x2 Vx,Wx (66),(evo)
+ 5a: vbroadcasti128 Vqq,Mdq (66),(v) | vbroadcasti32x4/64x2 Vx,Wx (66),(evo)
+ 5b: vbroadcasti32x8/64x4 Vqq,Mdq (66),(ev)
+-5c: TDPBF16PS Vt,Wt,Ht (F3),(v1)
++5c: TDPBF16PS Vt,Wt,Ht (F3),(v1) | TDPFP16PS Vt,Wt,Ht (F2),(v1),(o64)
+ # Skip 0x5d
+ 5e: TDPBSSD Vt,Wt,Ht (F2),(v1) | TDPBSUD Vt,Wt,Ht (F3),(v1) | TDPBUSD Vt,Wt,Ht (66),(v1) | TDPBUUD Vt,Wt,Ht (v1)
+ # Skip 0x5f-0x61
+@@ -718,10 +718,12 @@ AVXcode: 2
+ 65: vblendmps/d Vx,Hx,Wx (66),(ev)
+ 66: vpblendmb/w Vx,Hx,Wx (66),(ev)
+ 68: vp2intersectd/q Kx,Hx,Wx (F2),(ev)
+-# Skip 0x69-0x6f
++# Skip 0x69-0x6b
++6c: TCMMIMFP16PS Vt,Wt,Ht (66),(v1),(o64) | TCMMRLFP16PS Vt,Wt,Ht (v1),(o64)
++# Skip 0x6d-0x6f
+ 70: vpshldvw Vx,Hx,Wx (66),(ev)
+ 71: vpshldvd/q Vx,Hx,Wx (66),(ev)
+-72: vcvtne2ps2bf16 Vx,Hx,Wx (F2),(ev) | vcvtneps2bf16 Vx,Wx (F3),(ev) | vpshrdvw Vx,Hx,Wx (66),(ev)
++72: vcvtne2ps2bf16 Vx,Hx,Wx (F2),(ev) | vcvtneps2bf16 Vx,Wx (F3) | vpshrdvw Vx,Hx,Wx (66),(ev)
+ 73: vpshrdvd/q Vx,Hx,Wx (66),(ev)
+ 75: vpermi2b/w Vx,Hx,Wx (66),(ev)
+ 76: vpermi2d/q Vx,Hx,Wx (66),(ev)
+@@ -777,8 +779,10 @@ ac: vfnmadd213ps/d Vx,Hx,Wx (66),(v)
+ ad: vfnmadd213ss/d Vx,Hx,Wx (66),(v),(v1)
+ ae: vfnmsub213ps/d Vx,Hx,Wx (66),(v)
+ af: vfnmsub213ss/d Vx,Hx,Wx (66),(v),(v1)
+-b4: vpmadd52luq Vx,Hx,Wx (66),(ev)
+-b5: vpmadd52huq Vx,Hx,Wx (66),(ev)
++b0: vcvtneebf162ps Vx,Mx (F3),(!11B),(v) | vcvtneeph2ps Vx,Mx (66),(!11B),(v) | vcvtneobf162ps Vx,Mx (F2),(!11B),(v) | vcvtneoph2ps Vx,Mx (!11B),(v)
++b1: vbcstnebf162ps Vx,Mw (F3),(!11B),(v) | vbcstnesh2ps Vx,Mw (66),(!11B),(v)
++b4: vpmadd52luq Vx,Hx,Wx (66)
++b5: vpmadd52huq Vx,Hx,Wx (66)
+ b6: vfmaddsub231ps/d Vx,Hx,Wx (66),(v)
+ b7: vfmsubadd231ps/d Vx,Hx,Wx (66),(v)
+ b8: vfmadd231ps/d Vx,Hx,Wx (66),(v)
+@@ -796,16 +800,35 @@ c7: Grp19 (1A)
+ c8: sha1nexte Vdq,Wdq | vexp2ps/d Vx,Wx (66),(ev)
+ c9: sha1msg1 Vdq,Wdq
+ ca: sha1msg2 Vdq,Wdq | vrcp28ps/d Vx,Wx (66),(ev)
+-cb: sha256rnds2 Vdq,Wdq | vrcp28ss/d Vx,Hx,Wx (66),(ev)
+-cc: sha256msg1 Vdq,Wdq | vrsqrt28ps/d Vx,Wx (66),(ev)
+-cd: sha256msg2 Vdq,Wdq | vrsqrt28ss/d Vx,Hx,Wx (66),(ev)
++cb: sha256rnds2 Vdq,Wdq | vrcp28ss/d Vx,Hx,Wx (66),(ev) | vsha512rnds2 Vqq,Hqq,Udq (F2),(11B),(v)
++cc: sha256msg1 Vdq,Wdq | vrsqrt28ps/d Vx,Wx (66),(ev) | vsha512msg1 Vqq,Udq (F2),(11B),(v)
++cd: sha256msg2 Vdq,Wdq | vrsqrt28ss/d Vx,Hx,Wx (66),(ev) | vsha512msg2 Vqq,Uqq (F2),(11B),(v)
+ cf: vgf2p8mulb Vx,Wx (66)
++d2: vpdpwsud Vx,Hx,Wx (F3),(v) | vpdpwusd Vx,Hx,Wx (66),(v) | vpdpwuud Vx,Hx,Wx (v)
++d3: vpdpwsuds Vx,Hx,Wx (F3),(v) | vpdpwusds Vx,Hx,Wx (66),(v) | vpdpwuuds Vx,Hx,Wx (v)
+ d8: AESENCWIDE128KL Qpi (F3),(000),(00B) | AESENCWIDE256KL Qpi (F3),(000),(10B) | AESDECWIDE128KL Qpi (F3),(000),(01B) | AESDECWIDE256KL Qpi (F3),(000),(11B)
++da: vsm3msg1 Vdq,Hdq,Udq (v1) | vsm3msg2 Vdq,Hdq,Udq (66),(v1) | vsm4key4 Vx,Hx,Wx (F3),(v) | vsm4rnds4 Vx,Hx,Wx (F2),(v)
+ db: VAESIMC Vdq,Wdq (66),(v1)
+ dc: vaesenc Vx,Hx,Wx (66) | LOADIWKEY Vx,Hx (F3) | AESENC128KL Vpd,Qpi (F3)
+ dd: vaesenclast Vx,Hx,Wx (66) | AESDEC128KL Vpd,Qpi (F3)
+ de: vaesdec Vx,Hx,Wx (66) | AESENC256KL Vpd,Qpi (F3)
+ df: vaesdeclast Vx,Hx,Wx (66) | AESDEC256KL Vpd,Qpi (F3)
++e0: CMPOXADD   My,Gy,By (66),(v1),(o64)
++e1: CMPNOXADD  My,Gy,By (66),(v1),(o64)
++e2: CMPBXADD   My,Gy,By (66),(v1),(o64)
++e3: CMPNBXADD  My,Gy,By (66),(v1),(o64)
++e4: CMPZXADD   My,Gy,By (66),(v1),(o64)
++e5: CMPNZXADD  My,Gy,By (66),(v1),(o64)
++e6: CMPBEXADD  My,Gy,By (66),(v1),(o64)
++e7: CMPNBEXADD My,Gy,By (66),(v1),(o64)
++e8: CMPSXADD   My,Gy,By (66),(v1),(o64)
++e9: CMPNSXADD  My,Gy,By (66),(v1),(o64)
++ea: CMPPXADD   My,Gy,By (66),(v1),(o64)
++eb: CMPNPXADD  My,Gy,By (66),(v1),(o64)
++ec: CMPLXADD   My,Gy,By (66),(v1),(o64)
++ed: CMPNLXADD  My,Gy,By (66),(v1),(o64)
++ee: CMPLEXADD  My,Gy,By (66),(v1),(o64)
++ef: CMPNLEXADD My,Gy,By (66),(v1),(o64)
+ f0: MOVBE Gy,My | MOVBE Gw,Mw (66) | CRC32 Gd,Eb (F2) | CRC32 Gd,Eb (66&F2)
+ f1: MOVBE My,Gy | MOVBE Mw,Gw (66) | CRC32 Gd,Ey (F2) | CRC32 Gd,Ew (66&F2)
+ f2: ANDN Gy,By,Ey (v)
+@@ -813,10 +836,11 @@ f3: Grp17 (1A)
+ f5: BZHI Gy,Ey,By (v) | PEXT Gy,By,Ey (F3),(v) | PDEP Gy,By,Ey (F2),(v) | WRUSSD/Q My,Gy (66)
+ f6: ADCX Gy,Ey (66) | ADOX Gy,Ey (F3) | MULX By,Gy,rDX,Ey (F2),(v) | WRSSD/Q My,Gy
+ f7: BEXTR Gy,Ey,By (v) | SHLX Gy,Ey,By (66),(v) | SARX Gy,Ey,By (F3),(v) | SHRX Gy,Ey,By (F2),(v)
+-f8: MOVDIR64B Gv,Mdqq (66) | ENQCMD Gv,Mdqq (F2) | ENQCMDS Gv,Mdqq (F3)
++f8: MOVDIR64B Gv,Mdqq (66) | ENQCMD Gv,Mdqq (F2) | ENQCMDS Gv,Mdqq (F3) | URDMSR Rq,Gq (F2),(11B) | UWRMSR Gq,Rq (F3),(11B)
+ f9: MOVDIRI My,Gy
+ fa: ENCODEKEY128 Ew,Ew (F3)
+ fb: ENCODEKEY256 Ew,Ew (F3)
++fc: AADD My,Gy | AAND My,Gy (66) | AOR My,Gy (F2) | AXOR My,Gy (F3)
  EndTable
  
-+Table: EVEX map 4
+ Table: 3-byte opcode 2 (0x0f 0x3a)
+@@ -896,6 +920,7 @@ c2: vcmpph Vx,Hx,Wx,Ib (ev) | vcmpsh Vx,Hx,Wx,Ib (F3),(ev)
+ cc: sha1rnds4 Vdq,Wdq,Ib
+ ce: vgf2p8affineqb Vx,Wx,Ib (66)
+ cf: vgf2p8affineinvqb Vx,Wx,Ib (66)
++de: vsm3rnds2 Vdq,Hdq,Wdq,Ib (66),(v1)
+ df: VAESKEYGEN Vdq,Wdq,Ib (66),(v1)
+ f0: RORX Gy,Ey,Ib (F2),(v) | HRESET Gv,Ib (F3),(000),(11B)
+ EndTable
+@@ -978,6 +1003,12 @@ d6: vfcmulcph Vx,Hx,Wx (F2),(ev) | vfmulcph Vx,Hx,Wx (F3),(ev)
+ d7: vfcmulcsh Vx,Hx,Wx (F2),(ev) | vfmulcsh Vx,Hx,Wx (F3),(ev)
+ EndTable
+ 
++Table: VEX map 7
 +Referrer:
-+AVXcode: 4
-+00: ADD Eb,Gb (ev)
-+01: ADD Ev,Gv (es) | ADD Ev,Gv (66),(es)
-+02: ADD Gb,Eb (ev)
-+03: ADD Gv,Ev (es) | ADD Gv,Ev (66),(es)
-+08: OR Eb,Gb (ev)
-+09: OR Ev,Gv (es) | OR Ev,Gv (66),(es)
-+0a: OR Gb,Eb (ev)
-+0b: OR Gv,Ev (es) | OR Gv,Ev (66),(es)
-+10: ADC Eb,Gb (ev)
-+11: ADC Ev,Gv (es) | ADC Ev,Gv (66),(es)
-+12: ADC Gb,Eb (ev)
-+13: ADC Gv,Ev (es) | ADC Gv,Ev (66),(es)
-+18: SBB Eb,Gb (ev)
-+19: SBB Ev,Gv (es) | SBB Ev,Gv (66),(es)
-+1a: SBB Gb,Eb (ev)
-+1b: SBB Gv,Ev (es) | SBB Gv,Ev (66),(es)
-+20: AND Eb,Gb (ev)
-+21: AND Ev,Gv (es) | AND Ev,Gv (66),(es)
-+22: AND Gb,Eb (ev)
-+23: AND Gv,Ev (es) | AND Gv,Ev (66),(es)
-+24: SHLD Ev,Gv,Ib (es) | SHLD Ev,Gv,Ib (66),(es)
-+28: SUB Eb,Gb (ev)
-+29: SUB Ev,Gv (es) | SUB Ev,Gv (66),(es)
-+2a: SUB Gb,Eb (ev)
-+2b: SUB Gv,Ev (es) | SUB Gv,Ev (66),(es)
-+2c: SHRD Ev,Gv,Ib (es) | SHRD Ev,Gv,Ib (66),(es)
-+30: XOR Eb,Gb (ev)
-+31: XOR Ev,Gv (es) | XOR Ev,Gv (66),(es)
-+32: XOR Gb,Eb (ev)
-+33: XOR Gv,Ev (es) | XOR Gv,Ev (66),(es)
-+# CCMPSCC instructions are: CCOMB, CCOMBE, CCOMF, CCOML, CCOMLE, CCOMNB, CCOMNBE, CCOMNL, CCOMNLE,
-+#			    CCOMNO, CCOMNS, CCOMNZ, CCOMO, CCOMS, CCOMT, CCOMZ
-+38: CCMPSCC Eb,Gb (ev)
-+39: CCMPSCC Ev,Gv (es) | CCMPSCC Ev,Gv (66),(es)
-+3a: CCMPSCC Gv,Ev (ev)
-+3b: CCMPSCC Gv,Ev (es) | CCMPSCC Gv,Ev (66),(es)
-+40: CMOVO   Gv,Ev (es) | CMOVO   Gv,Ev (66),(es) | CFCMOVO   Ev,Ev (es) | CFCMOVO   Ev,Ev (66),(es) | SETO   Eb (F2),(ev)
-+41: CMOVNO  Gv,Ev (es) | CMOVNO  Gv,Ev (66),(es) | CFCMOVNO  Ev,Ev (es) | CFCMOVNO  Ev,Ev (66),(es) | SETNO  Eb (F2),(ev)
-+42: CMOVB   Gv,Ev (es) | CMOVB   Gv,Ev (66),(es) | CFCMOVB   Ev,Ev (es) | CFCMOVB   Ev,Ev (66),(es) | SETB   Eb (F2),(ev)
-+43: CMOVNB  Gv,Ev (es) | CMOVNB  Gv,Ev (66),(es) | CFCMOVNB  Ev,Ev (es) | CFCMOVNB  Ev,Ev (66),(es) | SETNB  Eb (F2),(ev)
-+44: CMOVZ   Gv,Ev (es) | CMOVZ   Gv,Ev (66),(es) | CFCMOVZ   Ev,Ev (es) | CFCMOVZ   Ev,Ev (66),(es) | SETZ   Eb (F2),(ev)
-+45: CMOVNZ  Gv,Ev (es) | CMOVNZ  Gv,Ev (66),(es) | CFCMOVNZ  Ev,Ev (es) | CFCMOVNZ  Ev,Ev (66),(es) | SETNZ  Eb (F2),(ev)
-+46: CMOVBE  Gv,Ev (es) | CMOVBE  Gv,Ev (66),(es) | CFCMOVBE  Ev,Ev (es) | CFCMOVBE  Ev,Ev (66),(es) | SETBE  Eb (F2),(ev)
-+47: CMOVNBE Gv,Ev (es) | CMOVNBE Gv,Ev (66),(es) | CFCMOVNBE Ev,Ev (es) | CFCMOVNBE Ev,Ev (66),(es) | SETNBE Eb (F2),(ev)
-+48: CMOVS   Gv,Ev (es) | CMOVS   Gv,Ev (66),(es) | CFCMOVS   Ev,Ev (es) | CFCMOVS   Ev,Ev (66),(es) | SETS   Eb (F2),(ev)
-+49: CMOVNS  Gv,Ev (es) | CMOVNS  Gv,Ev (66),(es) | CFCMOVNS  Ev,Ev (es) | CFCMOVNS  Ev,Ev (66),(es) | SETNS  Eb (F2),(ev)
-+4a: CMOVP   Gv,Ev (es) | CMOVP   Gv,Ev (66),(es) | CFCMOVP   Ev,Ev (es) | CFCMOVP   Ev,Ev (66),(es) | SETP   Eb (F2),(ev)
-+4b: CMOVNP  Gv,Ev (es) | CMOVNP  Gv,Ev (66),(es) | CFCMOVNP  Ev,Ev (es) | CFCMOVNP  Ev,Ev (66),(es) | SETNP  Eb (F2),(ev)
-+4c: CMOVL   Gv,Ev (es) | CMOVL   Gv,Ev (66),(es) | CFCMOVL   Ev,Ev (es) | CFCMOVL   Ev,Ev (66),(es) | SETL   Eb (F2),(ev)
-+4d: CMOVNL  Gv,Ev (es) | CMOVNL  Gv,Ev (66),(es) | CFCMOVNL  Ev,Ev (es) | CFCMOVNL  Ev,Ev (66),(es) | SETNL  Eb (F2),(ev)
-+4e: CMOVLE  Gv,Ev (es) | CMOVLE  Gv,Ev (66),(es) | CFCMOVLE  Ev,Ev (es) | CFCMOVLE  Ev,Ev (66),(es) | SETLE  Eb (F2),(ev)
-+4f: CMOVNLE Gv,Ev (es) | CMOVNLE Gv,Ev (66),(es) | CFCMOVNLE Ev,Ev (es) | CFCMOVNLE Ev,Ev (66),(es) | SETNLE Eb (F2),(ev)
-+60: MOVBE Gv,Ev (es) | MOVBE Gv,Ev (66),(es)
-+61: MOVBE Ev,Gv (es) | MOVBE Ev,Gv (66),(es)
-+65: WRUSSD Md,Gd (66),(ev) | WRUSSQ Mq,Gq (66),(ev)
-+66: ADCX Gy,Ey (66),(ev) | ADOX Gy,Ey (F3),(ev) | WRSSD Md,Gd (ev) | WRSSQ Mq,Gq (66),(ev)
-+69: IMUL Gv,Ev,Iz (es) | IMUL Gv,Ev,Iz (66),(es)
-+6b: IMUL Gv,Ev,Ib (es) | IMUL Gv,Ev,Ib (66),(es)
-+80: Grp1 Eb,Ib (1A),(ev)
-+81: Grp1 Ev,Iz (1A),(es)
-+83: Grp1 Ev,Ib (1A),(es)
-+# CTESTSCC instructions are: CTESTB, CTESTBE, CTESTF, CTESTL, CTESTLE, CTESTNB, CTESTNBE, CTESTNL,
-+#			     CTESTNLE, CTESTNO, CTESTNS, CTESTNZ, CTESTO, CTESTS, CTESTT, CTESTZ
-+84: CTESTSCC (ev)
-+85: CTESTSCC (es) | CTESTSCC (66),(es)
-+88: POPCNT Gv,Ev (es) | POPCNT Gv,Ev (66),(es)
-+8f: POP2 Bq,Rq (000),(11B),(ev)
-+a5: SHLD Ev,Gv,CL (es) | SHLD Ev,Gv,CL (66),(es)
-+ad: SHRD Ev,Gv,CL (es) | SHRD Ev,Gv,CL (66),(es)
-+af: IMUL Gv,Ev (es) | IMUL Gv,Ev (66),(es)
-+c0: Grp2 Eb,Ib (1A),(ev)
-+c1: Grp2 Ev,Ib (1A),(es)
-+d0: Grp2 Eb,1 (1A),(ev)
-+d1: Grp2 Ev,1 (1A),(es)
-+d2: Grp2 Eb,CL (1A),(ev)
-+d3: Grp2 Ev,CL (1A),(es)
-+f0: CRC32 Gy,Eb (es) | INVEPT Gq,Mdq (F3),(ev)
-+f1: CRC32 Gy,Ey (es) | CRC32 Gy,Ey (66),(es) | INVVPID Gy,Mdq (F3),(ev)
-+f2: INVPCID Gy,Mdq (F3),(ev)
-+f4: TZCNT Gv,Ev (es) | TZCNT Gv,Ev (66),(es)
-+f5: LZCNT Gv,Ev (es) | LZCNT Gv,Ev (66),(es)
-+f6: Grp3_1 Eb (1A),(ev)
-+f7: Grp3_2 Ev (1A),(es)
-+f8: MOVDIR64B Gv,Mdqq (66),(ev) | ENQCMD Gv,Mdqq (F2),(ev) | ENQCMDS Gv,Mdqq (F3),(ev) | URDMSR Rq,Gq (F2),(11B),(ev) | UWRMSR Gq,Rq (F3),(11B),(ev)
-+f9: MOVDIRI My,Gy (ev)
-+fe: Grp4 (1A),(ev)
-+ff: Grp5 (1A),(es) | PUSH2 Bq,Rq (110),(11B),(ev)
++AVXcode: 7
++f8: URDMSR Rq,Id (F2),(v1),(11B) | UWRMSR Id,Rq (F3),(v1),(11B)
 +EndTable
 +
- Table: EVEX map 5
- Referrer:
- AVXcode: 5
+ GrpTable: Grp1
+ 0: ADD
+ 1: OR
+@@ -1054,7 +1085,7 @@ GrpTable: Grp6
+ EndTable
+ 
+ GrpTable: Grp7
+-0: SGDT Ms | VMCALL (001),(11B) | VMLAUNCH (010),(11B) | VMRESUME (011),(11B) | VMXOFF (100),(11B) | PCONFIG (101),(11B) | ENCLV (000),(11B) | WRMSRNS (110),(11B)
++0: SGDT Ms | VMCALL (001),(11B) | VMLAUNCH (010),(11B) | VMRESUME (011),(11B) | VMXOFF (100),(11B) | PCONFIG (101),(11B) | ENCLV (000),(11B) | WRMSRNS (110),(11B) | RDMSRLIST (F2),(110),(11B) | WRMSRLIST (F3),(110),(11B) | PBNDKB (111),(11B)
+ 1: SIDT Ms | MONITOR (000),(11B) | MWAIT (001),(11B) | CLAC (010),(11B) | STAC (011),(11B) | ENCLS (111),(11B) | ERETU (F3),(010),(11B) | ERETS (F2),(010),(11B)
+ 2: LGDT Ms | XGETBV (000),(11B) | XSETBV (001),(11B) | VMFUNC (100),(11B) | XEND (101)(11B) | XTEST (110)(11B) | ENCLU (111),(11B)
+ 3: LIDT Ms
+@@ -1140,6 +1171,8 @@ GrpTable: Grp16
+ 1: prefetch T0
+ 2: prefetch T1
+ 3: prefetch T2
++6: prefetch IT1
++7: prefetch IT0
+ EndTable
+ 
+ GrpTable: Grp17
 diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
-index 240ef71..caedb3e 100644
+index 24941b9..4e9f535 100644
 --- a/tools/arch/x86/lib/x86-opcode-map.txt
 +++ b/tools/arch/x86/lib/x86-opcode-map.txt
-@@ -23,6 +23,7 @@
- #
- # AVX Superscripts
- #  (ev): this opcode requires EVEX prefix.
-+#  (es): this opcode requires EVEX prefix and is SCALABALE.
- #  (evo): this opcode is changed by EVEX prefix (EVEX opcode)
- #  (v): this opcode requires VEX prefix.
- #  (v1): this opcode only supports 128bit VEX.
-@@ -929,6 +930,98 @@ df: VAESKEYGEN Vdq,Wdq,Ib (66),(v1)
- f0: RORX Gy,Ey,Ib (F2),(v) | HRESET Gv,Ib (F3),(000),(11B)
+@@ -698,8 +698,8 @@ AVXcode: 2
+ 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
+ 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
+ 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
+-50: vpdpbusd Vx,Hx,Wx (66)
+-51: vpdpbusds Vx,Hx,Wx (66)
++50: vpdpbusd Vx,Hx,Wx (66) | vpdpbssd Vx,Hx,Wx (F2),(v) | vpdpbsud Vx,Hx,Wx (F3),(v) | vpdpbuud Vx,Hx,Wx (v)
++51: vpdpbusds Vx,Hx,Wx (66) | vpdpbssds Vx,Hx,Wx (F2),(v) | vpdpbsuds Vx,Hx,Wx (F3),(v) | vpdpbuuds Vx,Hx,Wx (v)
+ 52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
+ 53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
+ 54: vpopcntb/w Vx,Wx (66),(ev)
+@@ -708,7 +708,7 @@ AVXcode: 2
+ 59: vpbroadcastq Vx,Wx (66),(v) | vbroadcasti32x2 Vx,Wx (66),(evo)
+ 5a: vbroadcasti128 Vqq,Mdq (66),(v) | vbroadcasti32x4/64x2 Vx,Wx (66),(evo)
+ 5b: vbroadcasti32x8/64x4 Vqq,Mdq (66),(ev)
+-5c: TDPBF16PS Vt,Wt,Ht (F3),(v1)
++5c: TDPBF16PS Vt,Wt,Ht (F3),(v1) | TDPFP16PS Vt,Wt,Ht (F2),(v1),(o64)
+ # Skip 0x5d
+ 5e: TDPBSSD Vt,Wt,Ht (F2),(v1) | TDPBSUD Vt,Wt,Ht (F3),(v1) | TDPBUSD Vt,Wt,Ht (66),(v1) | TDPBUUD Vt,Wt,Ht (v1)
+ # Skip 0x5f-0x61
+@@ -718,10 +718,12 @@ AVXcode: 2
+ 65: vblendmps/d Vx,Hx,Wx (66),(ev)
+ 66: vpblendmb/w Vx,Hx,Wx (66),(ev)
+ 68: vp2intersectd/q Kx,Hx,Wx (F2),(ev)
+-# Skip 0x69-0x6f
++# Skip 0x69-0x6b
++6c: TCMMIMFP16PS Vt,Wt,Ht (66),(v1),(o64) | TCMMRLFP16PS Vt,Wt,Ht (v1),(o64)
++# Skip 0x6d-0x6f
+ 70: vpshldvw Vx,Hx,Wx (66),(ev)
+ 71: vpshldvd/q Vx,Hx,Wx (66),(ev)
+-72: vcvtne2ps2bf16 Vx,Hx,Wx (F2),(ev) | vcvtneps2bf16 Vx,Wx (F3),(ev) | vpshrdvw Vx,Hx,Wx (66),(ev)
++72: vcvtne2ps2bf16 Vx,Hx,Wx (F2),(ev) | vcvtneps2bf16 Vx,Wx (F3) | vpshrdvw Vx,Hx,Wx (66),(ev)
+ 73: vpshrdvd/q Vx,Hx,Wx (66),(ev)
+ 75: vpermi2b/w Vx,Hx,Wx (66),(ev)
+ 76: vpermi2d/q Vx,Hx,Wx (66),(ev)
+@@ -777,8 +779,10 @@ ac: vfnmadd213ps/d Vx,Hx,Wx (66),(v)
+ ad: vfnmadd213ss/d Vx,Hx,Wx (66),(v),(v1)
+ ae: vfnmsub213ps/d Vx,Hx,Wx (66),(v)
+ af: vfnmsub213ss/d Vx,Hx,Wx (66),(v),(v1)
+-b4: vpmadd52luq Vx,Hx,Wx (66),(ev)
+-b5: vpmadd52huq Vx,Hx,Wx (66),(ev)
++b0: vcvtneebf162ps Vx,Mx (F3),(!11B),(v) | vcvtneeph2ps Vx,Mx (66),(!11B),(v) | vcvtneobf162ps Vx,Mx (F2),(!11B),(v) | vcvtneoph2ps Vx,Mx (!11B),(v)
++b1: vbcstnebf162ps Vx,Mw (F3),(!11B),(v) | vbcstnesh2ps Vx,Mw (66),(!11B),(v)
++b4: vpmadd52luq Vx,Hx,Wx (66)
++b5: vpmadd52huq Vx,Hx,Wx (66)
+ b6: vfmaddsub231ps/d Vx,Hx,Wx (66),(v)
+ b7: vfmsubadd231ps/d Vx,Hx,Wx (66),(v)
+ b8: vfmadd231ps/d Vx,Hx,Wx (66),(v)
+@@ -796,16 +800,35 @@ c7: Grp19 (1A)
+ c8: sha1nexte Vdq,Wdq | vexp2ps/d Vx,Wx (66),(ev)
+ c9: sha1msg1 Vdq,Wdq
+ ca: sha1msg2 Vdq,Wdq | vrcp28ps/d Vx,Wx (66),(ev)
+-cb: sha256rnds2 Vdq,Wdq | vrcp28ss/d Vx,Hx,Wx (66),(ev)
+-cc: sha256msg1 Vdq,Wdq | vrsqrt28ps/d Vx,Wx (66),(ev)
+-cd: sha256msg2 Vdq,Wdq | vrsqrt28ss/d Vx,Hx,Wx (66),(ev)
++cb: sha256rnds2 Vdq,Wdq | vrcp28ss/d Vx,Hx,Wx (66),(ev) | vsha512rnds2 Vqq,Hqq,Udq (F2),(11B),(v)
++cc: sha256msg1 Vdq,Wdq | vrsqrt28ps/d Vx,Wx (66),(ev) | vsha512msg1 Vqq,Udq (F2),(11B),(v)
++cd: sha256msg2 Vdq,Wdq | vrsqrt28ss/d Vx,Hx,Wx (66),(ev) | vsha512msg2 Vqq,Uqq (F2),(11B),(v)
+ cf: vgf2p8mulb Vx,Wx (66)
++d2: vpdpwsud Vx,Hx,Wx (F3),(v) | vpdpwusd Vx,Hx,Wx (66),(v) | vpdpwuud Vx,Hx,Wx (v)
++d3: vpdpwsuds Vx,Hx,Wx (F3),(v) | vpdpwusds Vx,Hx,Wx (66),(v) | vpdpwuuds Vx,Hx,Wx (v)
+ d8: AESENCWIDE128KL Qpi (F3),(000),(00B) | AESENCWIDE256KL Qpi (F3),(000),(10B) | AESDECWIDE128KL Qpi (F3),(000),(01B) | AESDECWIDE256KL Qpi (F3),(000),(11B)
++da: vsm3msg1 Vdq,Hdq,Udq (v1) | vsm3msg2 Vdq,Hdq,Udq (66),(v1) | vsm4key4 Vx,Hx,Wx (F3),(v) | vsm4rnds4 Vx,Hx,Wx (F2),(v)
+ db: VAESIMC Vdq,Wdq (66),(v1)
+ dc: vaesenc Vx,Hx,Wx (66) | LOADIWKEY Vx,Hx (F3) | AESENC128KL Vpd,Qpi (F3)
+ dd: vaesenclast Vx,Hx,Wx (66) | AESDEC128KL Vpd,Qpi (F3)
+ de: vaesdec Vx,Hx,Wx (66) | AESENC256KL Vpd,Qpi (F3)
+ df: vaesdeclast Vx,Hx,Wx (66) | AESDEC256KL Vpd,Qpi (F3)
++e0: CMPOXADD   My,Gy,By (66),(v1),(o64)
++e1: CMPNOXADD  My,Gy,By (66),(v1),(o64)
++e2: CMPBXADD   My,Gy,By (66),(v1),(o64)
++e3: CMPNBXADD  My,Gy,By (66),(v1),(o64)
++e4: CMPZXADD   My,Gy,By (66),(v1),(o64)
++e5: CMPNZXADD  My,Gy,By (66),(v1),(o64)
++e6: CMPBEXADD  My,Gy,By (66),(v1),(o64)
++e7: CMPNBEXADD My,Gy,By (66),(v1),(o64)
++e8: CMPSXADD   My,Gy,By (66),(v1),(o64)
++e9: CMPNSXADD  My,Gy,By (66),(v1),(o64)
++ea: CMPPXADD   My,Gy,By (66),(v1),(o64)
++eb: CMPNPXADD  My,Gy,By (66),(v1),(o64)
++ec: CMPLXADD   My,Gy,By (66),(v1),(o64)
++ed: CMPNLXADD  My,Gy,By (66),(v1),(o64)
++ee: CMPLEXADD  My,Gy,By (66),(v1),(o64)
++ef: CMPNLEXADD My,Gy,By (66),(v1),(o64)
+ f0: MOVBE Gy,My | MOVBE Gw,Mw (66) | CRC32 Gd,Eb (F2) | CRC32 Gd,Eb (66&F2)
+ f1: MOVBE My,Gy | MOVBE Mw,Gw (66) | CRC32 Gd,Ey (F2) | CRC32 Gd,Ew (66&F2)
+ f2: ANDN Gy,By,Ey (v)
+@@ -813,10 +836,11 @@ f3: Grp17 (1A)
+ f5: BZHI Gy,Ey,By (v) | PEXT Gy,By,Ey (F3),(v) | PDEP Gy,By,Ey (F2),(v) | WRUSSD/Q My,Gy (66)
+ f6: ADCX Gy,Ey (66) | ADOX Gy,Ey (F3) | MULX By,Gy,rDX,Ey (F2),(v) | WRSSD/Q My,Gy
+ f7: BEXTR Gy,Ey,By (v) | SHLX Gy,Ey,By (66),(v) | SARX Gy,Ey,By (F3),(v) | SHRX Gy,Ey,By (F2),(v)
+-f8: MOVDIR64B Gv,Mdqq (66) | ENQCMD Gv,Mdqq (F2) | ENQCMDS Gv,Mdqq (F3)
++f8: MOVDIR64B Gv,Mdqq (66) | ENQCMD Gv,Mdqq (F2) | ENQCMDS Gv,Mdqq (F3) | URDMSR Rq,Gq (F2),(11B) | UWRMSR Gq,Rq (F3),(11B)
+ f9: MOVDIRI My,Gy
+ fa: ENCODEKEY128 Ew,Ew (F3)
+ fb: ENCODEKEY256 Ew,Ew (F3)
++fc: AADD My,Gy | AAND My,Gy (66) | AOR My,Gy (F2) | AXOR My,Gy (F3)
  EndTable
  
-+Table: EVEX map 4
+ Table: 3-byte opcode 2 (0x0f 0x3a)
+@@ -896,6 +920,7 @@ c2: vcmpph Vx,Hx,Wx,Ib (ev) | vcmpsh Vx,Hx,Wx,Ib (F3),(ev)
+ cc: sha1rnds4 Vdq,Wdq,Ib
+ ce: vgf2p8affineqb Vx,Wx,Ib (66)
+ cf: vgf2p8affineinvqb Vx,Wx,Ib (66)
++de: vsm3rnds2 Vdq,Hdq,Wdq,Ib (66),(v1)
+ df: VAESKEYGEN Vdq,Wdq,Ib (66),(v1)
+ f0: RORX Gy,Ey,Ib (F2),(v) | HRESET Gv,Ib (F3),(000),(11B)
+ EndTable
+@@ -978,6 +1003,12 @@ d6: vfcmulcph Vx,Hx,Wx (F2),(ev) | vfmulcph Vx,Hx,Wx (F3),(ev)
+ d7: vfcmulcsh Vx,Hx,Wx (F2),(ev) | vfmulcsh Vx,Hx,Wx (F3),(ev)
+ EndTable
+ 
++Table: VEX map 7
 +Referrer:
-+AVXcode: 4
-+00: ADD Eb,Gb (ev)
-+01: ADD Ev,Gv (es) | ADD Ev,Gv (66),(es)
-+02: ADD Gb,Eb (ev)
-+03: ADD Gv,Ev (es) | ADD Gv,Ev (66),(es)
-+08: OR Eb,Gb (ev)
-+09: OR Ev,Gv (es) | OR Ev,Gv (66),(es)
-+0a: OR Gb,Eb (ev)
-+0b: OR Gv,Ev (es) | OR Gv,Ev (66),(es)
-+10: ADC Eb,Gb (ev)
-+11: ADC Ev,Gv (es) | ADC Ev,Gv (66),(es)
-+12: ADC Gb,Eb (ev)
-+13: ADC Gv,Ev (es) | ADC Gv,Ev (66),(es)
-+18: SBB Eb,Gb (ev)
-+19: SBB Ev,Gv (es) | SBB Ev,Gv (66),(es)
-+1a: SBB Gb,Eb (ev)
-+1b: SBB Gv,Ev (es) | SBB Gv,Ev (66),(es)
-+20: AND Eb,Gb (ev)
-+21: AND Ev,Gv (es) | AND Ev,Gv (66),(es)
-+22: AND Gb,Eb (ev)
-+23: AND Gv,Ev (es) | AND Gv,Ev (66),(es)
-+24: SHLD Ev,Gv,Ib (es) | SHLD Ev,Gv,Ib (66),(es)
-+28: SUB Eb,Gb (ev)
-+29: SUB Ev,Gv (es) | SUB Ev,Gv (66),(es)
-+2a: SUB Gb,Eb (ev)
-+2b: SUB Gv,Ev (es) | SUB Gv,Ev (66),(es)
-+2c: SHRD Ev,Gv,Ib (es) | SHRD Ev,Gv,Ib (66),(es)
-+30: XOR Eb,Gb (ev)
-+31: XOR Ev,Gv (es) | XOR Ev,Gv (66),(es)
-+32: XOR Gb,Eb (ev)
-+33: XOR Gv,Ev (es) | XOR Gv,Ev (66),(es)
-+# CCMPSCC instructions are: CCOMB, CCOMBE, CCOMF, CCOML, CCOMLE, CCOMNB, CCOMNBE, CCOMNL, CCOMNLE,
-+#			    CCOMNO, CCOMNS, CCOMNZ, CCOMO, CCOMS, CCOMT, CCOMZ
-+38: CCMPSCC Eb,Gb (ev)
-+39: CCMPSCC Ev,Gv (es) | CCMPSCC Ev,Gv (66),(es)
-+3a: CCMPSCC Gv,Ev (ev)
-+3b: CCMPSCC Gv,Ev (es) | CCMPSCC Gv,Ev (66),(es)
-+40: CMOVO   Gv,Ev (es) | CMOVO   Gv,Ev (66),(es) | CFCMOVO   Ev,Ev (es) | CFCMOVO   Ev,Ev (66),(es) | SETO   Eb (F2),(ev)
-+41: CMOVNO  Gv,Ev (es) | CMOVNO  Gv,Ev (66),(es) | CFCMOVNO  Ev,Ev (es) | CFCMOVNO  Ev,Ev (66),(es) | SETNO  Eb (F2),(ev)
-+42: CMOVB   Gv,Ev (es) | CMOVB   Gv,Ev (66),(es) | CFCMOVB   Ev,Ev (es) | CFCMOVB   Ev,Ev (66),(es) | SETB   Eb (F2),(ev)
-+43: CMOVNB  Gv,Ev (es) | CMOVNB  Gv,Ev (66),(es) | CFCMOVNB  Ev,Ev (es) | CFCMOVNB  Ev,Ev (66),(es) | SETNB  Eb (F2),(ev)
-+44: CMOVZ   Gv,Ev (es) | CMOVZ   Gv,Ev (66),(es) | CFCMOVZ   Ev,Ev (es) | CFCMOVZ   Ev,Ev (66),(es) | SETZ   Eb (F2),(ev)
-+45: CMOVNZ  Gv,Ev (es) | CMOVNZ  Gv,Ev (66),(es) | CFCMOVNZ  Ev,Ev (es) | CFCMOVNZ  Ev,Ev (66),(es) | SETNZ  Eb (F2),(ev)
-+46: CMOVBE  Gv,Ev (es) | CMOVBE  Gv,Ev (66),(es) | CFCMOVBE  Ev,Ev (es) | CFCMOVBE  Ev,Ev (66),(es) | SETBE  Eb (F2),(ev)
-+47: CMOVNBE Gv,Ev (es) | CMOVNBE Gv,Ev (66),(es) | CFCMOVNBE Ev,Ev (es) | CFCMOVNBE Ev,Ev (66),(es) | SETNBE Eb (F2),(ev)
-+48: CMOVS   Gv,Ev (es) | CMOVS   Gv,Ev (66),(es) | CFCMOVS   Ev,Ev (es) | CFCMOVS   Ev,Ev (66),(es) | SETS   Eb (F2),(ev)
-+49: CMOVNS  Gv,Ev (es) | CMOVNS  Gv,Ev (66),(es) | CFCMOVNS  Ev,Ev (es) | CFCMOVNS  Ev,Ev (66),(es) | SETNS  Eb (F2),(ev)
-+4a: CMOVP   Gv,Ev (es) | CMOVP   Gv,Ev (66),(es) | CFCMOVP   Ev,Ev (es) | CFCMOVP   Ev,Ev (66),(es) | SETP   Eb (F2),(ev)
-+4b: CMOVNP  Gv,Ev (es) | CMOVNP  Gv,Ev (66),(es) | CFCMOVNP  Ev,Ev (es) | CFCMOVNP  Ev,Ev (66),(es) | SETNP  Eb (F2),(ev)
-+4c: CMOVL   Gv,Ev (es) | CMOVL   Gv,Ev (66),(es) | CFCMOVL   Ev,Ev (es) | CFCMOVL   Ev,Ev (66),(es) | SETL   Eb (F2),(ev)
-+4d: CMOVNL  Gv,Ev (es) | CMOVNL  Gv,Ev (66),(es) | CFCMOVNL  Ev,Ev (es) | CFCMOVNL  Ev,Ev (66),(es) | SETNL  Eb (F2),(ev)
-+4e: CMOVLE  Gv,Ev (es) | CMOVLE  Gv,Ev (66),(es) | CFCMOVLE  Ev,Ev (es) | CFCMOVLE  Ev,Ev (66),(es) | SETLE  Eb (F2),(ev)
-+4f: CMOVNLE Gv,Ev (es) | CMOVNLE Gv,Ev (66),(es) | CFCMOVNLE Ev,Ev (es) | CFCMOVNLE Ev,Ev (66),(es) | SETNLE Eb (F2),(ev)
-+60: MOVBE Gv,Ev (es) | MOVBE Gv,Ev (66),(es)
-+61: MOVBE Ev,Gv (es) | MOVBE Ev,Gv (66),(es)
-+65: WRUSSD Md,Gd (66),(ev) | WRUSSQ Mq,Gq (66),(ev)
-+66: ADCX Gy,Ey (66),(ev) | ADOX Gy,Ey (F3),(ev) | WRSSD Md,Gd (ev) | WRSSQ Mq,Gq (66),(ev)
-+69: IMUL Gv,Ev,Iz (es) | IMUL Gv,Ev,Iz (66),(es)
-+6b: IMUL Gv,Ev,Ib (es) | IMUL Gv,Ev,Ib (66),(es)
-+80: Grp1 Eb,Ib (1A),(ev)
-+81: Grp1 Ev,Iz (1A),(es)
-+83: Grp1 Ev,Ib (1A),(es)
-+# CTESTSCC instructions are: CTESTB, CTESTBE, CTESTF, CTESTL, CTESTLE, CTESTNB, CTESTNBE, CTESTNL,
-+#			     CTESTNLE, CTESTNO, CTESTNS, CTESTNZ, CTESTO, CTESTS, CTESTT, CTESTZ
-+84: CTESTSCC (ev)
-+85: CTESTSCC (es) | CTESTSCC (66),(es)
-+88: POPCNT Gv,Ev (es) | POPCNT Gv,Ev (66),(es)
-+8f: POP2 Bq,Rq (000),(11B),(ev)
-+a5: SHLD Ev,Gv,CL (es) | SHLD Ev,Gv,CL (66),(es)
-+ad: SHRD Ev,Gv,CL (es) | SHRD Ev,Gv,CL (66),(es)
-+af: IMUL Gv,Ev (es) | IMUL Gv,Ev (66),(es)
-+c0: Grp2 Eb,Ib (1A),(ev)
-+c1: Grp2 Ev,Ib (1A),(es)
-+d0: Grp2 Eb,1 (1A),(ev)
-+d1: Grp2 Ev,1 (1A),(es)
-+d2: Grp2 Eb,CL (1A),(ev)
-+d3: Grp2 Ev,CL (1A),(es)
-+f0: CRC32 Gy,Eb (es) | INVEPT Gq,Mdq (F3),(ev)
-+f1: CRC32 Gy,Ey (es) | CRC32 Gy,Ey (66),(es) | INVVPID Gy,Mdq (F3),(ev)
-+f2: INVPCID Gy,Mdq (F3),(ev)
-+f4: TZCNT Gv,Ev (es) | TZCNT Gv,Ev (66),(es)
-+f5: LZCNT Gv,Ev (es) | LZCNT Gv,Ev (66),(es)
-+f6: Grp3_1 Eb (1A),(ev)
-+f7: Grp3_2 Ev (1A),(es)
-+f8: MOVDIR64B Gv,Mdqq (66),(ev) | ENQCMD Gv,Mdqq (F2),(ev) | ENQCMDS Gv,Mdqq (F3),(ev) | URDMSR Rq,Gq (F2),(11B),(ev) | UWRMSR Gq,Rq (F3),(11B),(ev)
-+f9: MOVDIRI My,Gy (ev)
-+fe: Grp4 (1A),(ev)
-+ff: Grp5 (1A),(es) | PUSH2 Bq,Rq (110),(11B),(ev)
++AVXcode: 7
++f8: URDMSR Rq,Id (F2),(v1),(11B) | UWRMSR Id,Rq (F3),(v1),(11B)
 +EndTable
 +
- Table: EVEX map 5
- Referrer:
- AVXcode: 5
+ GrpTable: Grp1
+ 0: ADD
+ 1: OR
+@@ -1054,7 +1085,7 @@ GrpTable: Grp6
+ EndTable
+ 
+ GrpTable: Grp7
+-0: SGDT Ms | VMCALL (001),(11B) | VMLAUNCH (010),(11B) | VMRESUME (011),(11B) | VMXOFF (100),(11B) | PCONFIG (101),(11B) | ENCLV (000),(11B) | WRMSRNS (110),(11B)
++0: SGDT Ms | VMCALL (001),(11B) | VMLAUNCH (010),(11B) | VMRESUME (011),(11B) | VMXOFF (100),(11B) | PCONFIG (101),(11B) | ENCLV (000),(11B) | WRMSRNS (110),(11B) | RDMSRLIST (F2),(110),(11B) | WRMSRLIST (F3),(110),(11B) | PBNDKB (111),(11B)
+ 1: SIDT Ms | MONITOR (000),(11B) | MWAIT (001),(11B) | CLAC (010),(11B) | STAC (011),(11B) | ENCLS (111),(11B) | ERETU (F3),(010),(11B) | ERETS (F2),(010),(11B)
+ 2: LGDT Ms | XGETBV (000),(11B) | XSETBV (001),(11B) | VMFUNC (100),(11B) | XEND (101)(11B) | XTEST (110)(11B) | ENCLU (111),(11B)
+ 3: LIDT Ms
+@@ -1140,6 +1171,8 @@ GrpTable: Grp16
+ 1: prefetch T0
+ 2: prefetch T1
+ 3: prefetch T2
++6: prefetch IT1
++7: prefetch IT0
+ EndTable
+ 
+ GrpTable: Grp17
 
