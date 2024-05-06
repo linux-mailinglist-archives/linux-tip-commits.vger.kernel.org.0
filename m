@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1242-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1243-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536FF8BCA63
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 May 2024 11:19:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CA18BCE74
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 May 2024 14:51:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0235F1F23121
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 May 2024 09:19:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27818B21A52
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 May 2024 12:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5559A1422C7;
-	Mon,  6 May 2024 09:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312BF3FE2A;
+	Mon,  6 May 2024 12:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YDUdk1il";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4GMSV0KV"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PEhX7xTC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fkSERiCu"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C916F2AF1B;
-	Mon,  6 May 2024 09:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4071DFED;
+	Mon,  6 May 2024 12:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714987162; cv=none; b=U2LPYtoQonFydCKJZ0EB+9PvuS4+3tH+ZKnMn9DPkuProSmlGP57Vz+Bf1w43hZBQnJndJlu6nIs9Vid38mO0gnovfTKGOl//d316l4J0S9mYy3ptC4ECWZR/lgqv0dNMSzlzsgAiU8TWHe5ceXI/6dIoqjLHLTL7qfY0Xh3h6c=
+	t=1714999872; cv=none; b=AqMDRLYoXwuFUjtDt8RNyPR/Icbo0fWFxushZd9T+1KiFIsqw0mLY6Eth76FS13yK6J1yr8BmYRwIiIe4/ur2q4HeP3oH4Jpd7/iEzTuQQLJp64Xc0HKVVDJaFGBFSSY9UE4A/4yn3VjMMhQU7u7POu/hankosdgV1sqrP2X5N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714987162; c=relaxed/simple;
-	bh=71M9w46I/cLFH+CARXBA7sjpLR5jgwQHTI1fMim/mXo=;
+	s=arc-20240116; t=1714999872; c=relaxed/simple;
+	bh=3Ao0x/m2mpxl4SFB3+8g1f7cnMl1hk4Nf58EF0zRgVM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=HLPgKUoX4HIBmOVE8m8gpD+3bAIKuHYQjtwMh749ueLq4VwHLLMsV/NL+rXVcuhMgqR4j1YM+4H7u8UvlDYv+JltKh65AP1nxG7V0zSILVOttGiXsBs7xGOnwxjI7lHHgsK69YVnoQOGMfzBlAk930wgfA0nO73bUV+pPmWDK2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YDUdk1il; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4GMSV0KV; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=nX9VnjLZPMvfrAn5IQJ1t3U7KxqEEed/+5S9Z0I2S6rxXJXRQyYIsArF8gJxsJEHb7LTutC4rVJnoxmvqNSlNG20e2/ixisuuvWp2n9ZA4dbR6bE716qoCB76m+o6PTq1fNf0elfYLfGEZVaGlVMuR4kqnxR+gw/Ms9Zw6QvrwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PEhX7xTC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fkSERiCu; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 06 May 2024 09:19:18 -0000
+Date: Mon, 06 May 2024 12:51:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714987158;
+	s=2020; t=1714999868;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KSf9tPI5EEAB+E2PKDW1X9Yflu/p927vFuEals/I3WE=;
-	b=YDUdk1ilLuQcpeKu6DfkAcf3JzffnalQZWs2Zl3JlXr4BVbwtqLzXh0i51IQsp16ahHifM
-	3BIG2NJA6saxwBzC1aHM5t2CVduvh4I2KpXZFfpzkCp5YCA9/PXEFw7Hc+LZSc7aC3lbFT
-	YKA+4y0q41QGprNLryIS5JSWaaet3sDOHKmeYnovV0bRmcbHb3NNK9pHZS5F/fKvlME425
-	CrVnPKo91cKnwOpFOH67tl/Mq3UQkim/+lwiudrxIadGVx0sGJzZJWGez8+47Rhzd9nU/9
-	KilGieONmmvl4sKSmSOa97QpEdKVTESGuGUI/Ug/WGov+/t6TM89KocDTdPC4Q==
+	bh=M1ZBY+BbMdsCz/HAj/ALR7pCIHzRHF2huH/d4Yke+r0=;
+	b=PEhX7xTCnbDcj4HNREaccKDiqbGu4CRhubokuZwBmyWLX+bof+1J4lifvnFMyfx438snHp
+	gmK+wkqzri5yMTZBrfJ+7UVC3PbD8wR/MvRqb+dqQrggSB8KqvN9H+iGVWfU5FOTxPvpql
+	1m+CRMZ0eQ4maUEEz/KynCT7U4EzgyAqfYJNcf7dRGMmrUhzKTFf1borAlPPchm67ozAeM
+	WnCpR2vIEV9sAEQXsr5Hc8UI0P7ZaRIXUrqcc3M9MpFrz565uvLz4hrxXtwhcS49wU8Igz
+	3ICbIJTjs9+HJQywWhe7ci4DUXFXgiL3pWxBqS51FCwALus/xLZXdjloJqii9A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714987158;
+	s=2020e; t=1714999868;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KSf9tPI5EEAB+E2PKDW1X9Yflu/p927vFuEals/I3WE=;
-	b=4GMSV0KVEdsaVapkL+64BDalHJbl6dK6irLQBM1EQTshOIwkW+/OFbAhy3LzDbxIPiD3z1
-	x70Xg/HHKaMCQFCA==
-From: "tip-bot2 for Dr. David Alan Gilbert" <tip-bot2@linutronix.de>
+	bh=M1ZBY+BbMdsCz/HAj/ALR7pCIHzRHF2huH/d4Yke+r0=;
+	b=fkSERiCuy1veK0BrWxmsMAZuH3y2M5J5SVM2CvyGzgxkSc5UDOQ1IUAeGALLXp/wFsqGXF
+	NnzSR8tyNPmSa4AQ==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode: Remove unused struct cpu_info_ctx
-Cc: "Dr. David Alan Gilbert" <linux@treblig.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject:
+ [tip: x86/alternatives] x86/alternatives: Remove alternative_input_2()
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240506004300.770564-1-linux@treblig.org>
-References: <20240506004300.770564-1-linux@treblig.org>
+In-Reply-To: <20240506122848.20326-1-bp@kernel.org>
+References: <20240506122848.20326-1-bp@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171498715845.10875.15059417568143881021.tip-bot2@tip-bot2>
+Message-ID: <171499986751.10875.10656752309329992312.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,42 +79,48 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the x86/alternatives branch of tip:
 
-Commit-ID:     57f6d0aed7b0a6829044c7f1cea57b1e3ddb9a47
-Gitweb:        https://git.kernel.org/tip/57f6d0aed7b0a6829044c7f1cea57b1e3ddb9a47
-Author:        Dr. David Alan Gilbert <linux@treblig.org>
-AuthorDate:    Mon, 06 May 2024 01:43:00 +01:00
+Commit-ID:     8dc8b02d707ee4167fffaf3a97003bcdac282876
+Gitweb:        https://git.kernel.org/tip/8dc8b02d707ee4167fffaf3a97003bcdac282876
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Mon, 06 May 2024 14:28:48 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 06 May 2024 11:00:57 +02:00
+CommitterDate: Mon, 06 May 2024 14:30:54 +02:00
 
-x86/microcode: Remove unused struct cpu_info_ctx
+x86/alternatives: Remove alternative_input_2()
 
-This looks unused since
+It is unused.
 
-  2071c0aeda22 ("x86/microcode: Simplify init path even more")
-
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240506004300.770564-1-linux@treblig.org
+Link: https://lore.kernel.org/r/20240506122848.20326-1-bp@kernel.org
 ---
- arch/x86/kernel/cpu/microcode/core.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/x86/include/asm/alternative.h | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 232026a..b3658d1 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -60,11 +60,6 @@ module_param(force_minrev, bool, S_IRUSR | S_IWUSR);
-  */
- struct ucode_cpu_info		ucode_cpu_info[NR_CPUS];
+diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
+index 67b68d0..c595358 100644
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -286,20 +286,6 @@ static inline int alternatives_text_reserved(void *start, void *end)
+ 	asm_inline volatile (ALTERNATIVE(oldinstr, newinstr, ft_flags)	\
+ 		: : "i" (0), ## input)
  
--struct cpu_info_ctx {
--	struct cpu_signature	*cpu_sig;
--	int			err;
--};
+-/*
+- * This is similar to alternative_input. But it has two features and
+- * respective instructions.
+- *
+- * If CPU has feature2, newinstr2 is used.
+- * Otherwise, if CPU has feature1, newinstr1 is used.
+- * Otherwise, oldinstr is used.
+- */
+-#define alternative_input_2(oldinstr, newinstr1, ft_flags1, newinstr2,	     \
+-			   ft_flags2, input...)				     \
+-	asm_inline volatile(ALTERNATIVE_2(oldinstr, newinstr1, ft_flags1,     \
+-		newinstr2, ft_flags2)					     \
+-		: : "i" (0), ## input)
 -
- /*
-  * Those patch levels cannot be updated to newer ones and thus should be final.
-  */
+ /* Like alternative_input, but with a single output argument */
+ #define alternative_io(oldinstr, newinstr, ft_flags, output, input...)	\
+ 	asm_inline volatile (ALTERNATIVE(oldinstr, newinstr, ft_flags)	\
 
