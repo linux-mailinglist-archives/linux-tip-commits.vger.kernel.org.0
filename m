@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-1273-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1275-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BF58C9ADD
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 May 2024 12:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 818F38CA9DA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 May 2024 10:21:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFAFA1F214EE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 May 2024 10:00:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E0481F21A3B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 May 2024 08:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F864D59E;
-	Mon, 20 May 2024 09:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC9354675;
+	Tue, 21 May 2024 08:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UoJDF7bD";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wol5Ib6P"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RqFt/s8n";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jvFuB72T"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B871A2D;
-	Mon, 20 May 2024 09:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDB551C4F;
+	Tue, 21 May 2024 08:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716199196; cv=none; b=nHUb4QUXLx+ajrJaf/02vaXvBfBe2yxJ5komNvhm6cKilMBiu99514b0Q6gGZCiBxtYX2ul4DEe9okdHqrSYyQXoCJMab7YcqHqZXguoi3GLi/TYSmFvx+8ksHPRnyaPk03MPUBNneeA9RlDyrRrErAlhM5MH8biiteM/okqX+E=
+	t=1716279691; cv=none; b=hLKrYyKaCveLwswFdSUN2uCOXQUGqhe+nyOiYZIbLMKoj94a2X7LnZUTtSfpaOLfdXi82KyGR4/r0vMPLqhnWsoVsNH4XybP6AGMQxbCuqp4zeZ09cf6Cz/3rdu4JY0ePF8rNV1FYQvZhQmdlA5v4nI2IfcBzrWhKgrePOfRQvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716199196; c=relaxed/simple;
-	bh=jLOdgazjiiTdRmUD81SHTdZCwonsG+vVDmIptdjPZOg=;
+	s=arc-20240116; t=1716279691; c=relaxed/simple;
+	bh=TPNf0DN9ZUALd+1/r4ahQlBuhwHVsSYRR+3/ur3Jz9U=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VRJC8EaklG1DOf1F6bbLXKC9eaR7vnowmY1yQ5414fUHQn5WKM9M8W46DMFyCc5UrtPrzDvSSWUA500EQfhXR5nm0CgN+bjXVgoa8axHO01CyHh4+tCVGRVIJm8+LAeWwpUXUrdU0z9HwAki7VUiMN6HUlKonh7wj9FPmXvC+vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UoJDF7bD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wol5Ib6P; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=hKJiNBkBc0vS3HGFNNSUjPnKavD/IFlPC0hfJkIFcY4aDwIZIpAmOlA7z6YpvsLu5R5nWN6VcP32GBZf2tkT0xEwAONMmcCcBoBhrdf6hhmlmYwMYmbXXE4eshwG7mYFpcy3tpwsGY0+qC/qTmLQ9kMvNCBlrLgnTMTmK5/VwwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RqFt/s8n; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jvFuB72T; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 20 May 2024 09:52:08 -0000
+Date: Tue, 21 May 2024 08:21:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1716198729;
+	s=2020; t=1716279687;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=C1N9+Qdwz8AdQfydLx/OfIe37pEhj7V/SohKPZyrId8=;
-	b=UoJDF7bDv5/FtV5JlQlh2f2ch/gDlxHR79KZ1DQcEtZkN+iKc1srq2bwkOy7c3ZO8XSY6N
-	a/k2O3na02tzoZ0rMYS7sOfuhFY7aijYDdcFXwd9ZPTYgsGVOaCk8mTZ3yagFmpVskO/bz
-	54olCcpu18lcg1SYDZhBjC6r2ykbiFGfmFCxD5Pr1wBm1ILogKfeZ70+/Q1mQbNCAbN7C8
-	sXTXowMdFASzhy3JReLrNS00EEqrfpPaYe0lEL6TLL78uS1L/5KfHserAgxADCdocJ3gyt
-	1jVY6/AAk0Xi0gFpyBEPTVYoKKQbH0Nd3UZZXY8wG/vSlTcNMUtKtVUFSqCU4Q==
+	bh=JqGa1COheHGNBGh5TZ+qFIrrxvZKLlcTiRfbU4RvjQA=;
+	b=RqFt/s8nvcHTGmCNNx6GOfa/r2DVlSgS2Q8c2sydrLswj5DucfLkUJMwfXuzVr7x1vs9e0
+	H9ikQHuqsx8vlYCjw/AEQvaNKQwHjV0IKrT71RkKxRIZfPk1wFe9Z3qCaj62K53+fjHPWU
+	UU7nEGQeA1xWIPODOeWUDOm5/kO2S72RKnVcTsSD+EW9dxyK5aCS0dEHYIMMul8zJYemca
+	EpTLEImhPmRE6sy7nfyC1JZTqgC92mq4flmzvDCUT0NRIxy/NhYHz9mq34DNS23a+fSxte
+	YAIU5bf/N4cP4JpZ6AV4R4m9d/2bW21lzwXKYoYccdOHyDqhSHe8/SMxa+osGA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1716198729;
+	s=2020e; t=1716279687;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=C1N9+Qdwz8AdQfydLx/OfIe37pEhj7V/SohKPZyrId8=;
-	b=Wol5Ib6PpYTls7ZdFlo24QEkkqqjcUAaUe7Ua4Jw4WxC1wIXIpiUiNvNCFXrER7FRM/A+8
-	Tu5hsrI3OhkPbVDA==
-From: "tip-bot2 for Masahiro Yamada" <tip-bot2@linutronix.de>
+	bh=JqGa1COheHGNBGh5TZ+qFIrrxvZKLlcTiRfbU4RvjQA=;
+	b=jvFuB72TAfPUSshNPIPmTP4uQnoM3sYmUkKERYWt7Vo8GhTqkFFr3x6yDmcQgcXGL5O4Ul
+	CZ/7DbhJGhD2K9Dw==
+From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/kconfig: Select ARCH_WANT_FRAME_POINTERS again
- when UNWINDER_FRAME_POINTER=y
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Josh Poimboeuf <jpoimboe@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240204122003.53795-1-masahiroy@kernel.org>
-References: <20240204122003.53795-1-masahiroy@kernel.org>
+Subject: [tip: x86/percpu] x86/percpu: Move some percpu accessors around to
+ reduce ifdeffery
+Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Andy Lutomirski <luto@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240520080951.121049-2-ubizjak@gmail.com>
+References: <20240520080951.121049-2-ubizjak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171619872839.10875.9967455502104186005.tip-bot2@tip-bot2>
+Message-ID: <171627968673.10875.680212759397687471.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,64 +81,103 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/percpu branch of tip:
 
-Commit-ID:     66ee3636eddcc82ab82b539d08b85fb5ac1dff9b
-Gitweb:        https://git.kernel.org/tip/66ee3636eddcc82ab82b539d08b85fb5ac1dff9b
-Author:        Masahiro Yamada <masahiroy@kernel.org>
-AuthorDate:    Sun, 04 Feb 2024 21:20:03 +09:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 20 May 2024 11:37:23 +02:00
+Commit-ID:     47c9dbd2fb5f98453840e18ebced9138ec8b4cc5
+Gitweb:        https://git.kernel.org/tip/47c9dbd2fb5f98453840e18ebced9138ec8b4cc5
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Mon, 20 May 2024 10:09:25 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 20 May 2024 10:25:31 +02:00
 
-x86/kconfig: Select ARCH_WANT_FRAME_POINTERS again when UNWINDER_FRAME_POINTER=y
+x86/percpu: Move some percpu accessors around to reduce ifdeffery
 
-It took me some time to understand the purpose of the tricky code at
-the end of arch/x86/Kconfig.debug.
+Move some percpu accessors around, mainly to reduce ifdeffery
+and improve readabilty by following dependencies between
+accessors.
 
-Without it, the following would be shown:
+No functional change intended.
 
-  WARNING: unmet direct dependencies detected for FRAME_POINTER
-
-because
-
-  81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
-
-removed 'select ARCH_WANT_FRAME_POINTERS'.
-
-The correct and more straightforward approach should have been to move
-it where 'select FRAME_POINTER' is located.
-
-Several architectures properly handle the conditional selection of
-ARCH_WANT_FRAME_POINTERS. For example, 'config UNWINDER_FRAME_POINTER'
-in arch/arm/Kconfig.debug.
-
-Fixes: 81d387190039 ("x86/kconfig: Consolidate unwinders into multiple choice selection")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20240204122003.53795-1-masahiroy@kernel.org
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240520080951.121049-2-ubizjak@gmail.com
 ---
- arch/x86/Kconfig.debug | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/x86/include/asm/percpu.h | 40 ++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 21 deletions(-)
 
-diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
-index c5d614d..74777a9 100644
---- a/arch/x86/Kconfig.debug
-+++ b/arch/x86/Kconfig.debug
-@@ -248,6 +248,7 @@ config UNWINDER_ORC
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index 39762fc..0f0d897 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -445,17 +445,6 @@ do {									\
+ #define this_cpu_try_cmpxchg128(pcp, ovalp, nval)	percpu_try_cmpxchg128_op(16, volatile, pcp, ovalp, nval)
+ #endif
  
- config UNWINDER_FRAME_POINTER
- 	bool "Frame pointer unwinder"
-+	select ARCH_WANT_FRAME_POINTERS
- 	select FRAME_POINTER
- 	help
- 	  This option enables the frame pointer unwinder for unwinding kernel
-@@ -271,7 +272,3 @@ config UNWINDER_GUESS
- 	  overhead.
- 
- endchoice
+-/*
+- * this_cpu_read() makes gcc load the percpu variable every time it is
+- * accessed while this_cpu_read_stable() allows the value to be cached.
+- * this_cpu_read_stable() is more efficient and can be used if its value
+- * is guaranteed to be valid across cpus.  The current users include
+- * pcpu_hot.current_task and pcpu_hot.top_of_stack, both of which are
+- * actually per-thread variables implemented as per-CPU variables and
+- * thus stable for the duration of the respective task.
+- */
+-#define this_cpu_read_stable(pcp)	__pcpu_size_call_return(this_cpu_read_stable_, pcp)
 -
--config FRAME_POINTER
--	depends on !UNWINDER_ORC && !UNWINDER_GUESS
--	bool
+ #define raw_cpu_read_1(pcp)		__raw_cpu_read(1, , pcp)
+ #define raw_cpu_read_2(pcp)		__raw_cpu_read(2, , pcp)
+ #define raw_cpu_read_4(pcp)		__raw_cpu_read(4, , pcp)
+@@ -470,16 +459,6 @@ do {									\
+ #define this_cpu_write_2(pcp, val)	__raw_cpu_write(2, volatile, pcp, val)
+ #define this_cpu_write_4(pcp, val)	__raw_cpu_write(4, volatile, pcp, val)
+ 
+-#ifdef CONFIG_X86_64
+-#define raw_cpu_read_8(pcp)		__raw_cpu_read(8, , pcp)
+-#define raw_cpu_write_8(pcp, val)	__raw_cpu_write(8, , pcp, val)
+-
+-#define this_cpu_read_8(pcp)		__raw_cpu_read(8, volatile, pcp)
+-#define this_cpu_write_8(pcp, val)	__raw_cpu_write(8, volatile, pcp, val)
+-#endif
+-
+-#define this_cpu_read_const(pcp)	__raw_cpu_read_const(pcp)
+-
+ #define this_cpu_read_stable_1(pcp)	__raw_cpu_read_stable(1, pcp)
+ #define this_cpu_read_stable_2(pcp)	__raw_cpu_read_stable(2, pcp)
+ #define this_cpu_read_stable_4(pcp)	__raw_cpu_read_stable(4, pcp)
+@@ -535,6 +514,12 @@ do {									\
+  * 32 bit must fall back to generic operations.
+  */
+ #ifdef CONFIG_X86_64
++#define raw_cpu_read_8(pcp)		__raw_cpu_read(8, , pcp)
++#define raw_cpu_write_8(pcp, val)	__raw_cpu_write(8, , pcp, val)
++
++#define this_cpu_read_8(pcp)		__raw_cpu_read(8, volatile, pcp)
++#define this_cpu_write_8(pcp, val)	__raw_cpu_write(8, volatile, pcp, val)
++
+ #define this_cpu_read_stable_8(pcp)	__raw_cpu_read_stable(8, pcp)
+ 
+ #define raw_cpu_add_8(pcp, val)			percpu_add_op(8, , (pcp), val)
+@@ -561,6 +546,19 @@ do {									\
+ #define raw_cpu_read_long(pcp)		raw_cpu_read_4(pcp)
+ #endif
+ 
++#define this_cpu_read_const(pcp)	__raw_cpu_read_const(pcp)
++
++/*
++ * this_cpu_read() makes gcc load the percpu variable every time it is
++ * accessed while this_cpu_read_stable() allows the value to be cached.
++ * this_cpu_read_stable() is more efficient and can be used if its value
++ * is guaranteed to be valid across cpus.  The current users include
++ * pcpu_hot.current_task and pcpu_hot.top_of_stack, both of which are
++ * actually per-thread variables implemented as per-CPU variables and
++ * thus stable for the duration of the respective task.
++ */
++#define this_cpu_read_stable(pcp)	__pcpu_size_call_return(this_cpu_read_stable_, pcp)
++
+ #define x86_this_cpu_constant_test_bit(_nr, _var)			\
+ ({									\
+ 	unsigned long __percpu *addr__ =				\
 
