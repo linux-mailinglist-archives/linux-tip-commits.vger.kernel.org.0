@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1287-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1288-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383868CDB2B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 May 2024 22:00:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039DB8CE482
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 May 2024 12:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E24D2281BC0
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 May 2024 20:00:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F9F71F21CF0
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 May 2024 10:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA42E53E31;
-	Thu, 23 May 2024 20:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567558595A;
+	Fri, 24 May 2024 10:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FoAqVp2+";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L3yMA4g8"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J+p5TNps";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wyrt3ETa"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66AA1401F;
-	Thu, 23 May 2024 20:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9144585956;
+	Fri, 24 May 2024 10:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716494444; cv=none; b=X0LLCTtf88THuFq6S3QAoiagcX8jvV8sj4lpJBqn6zxsLCEu62GOO2Kqz2130EENfIImAwKvtUbuakVLblrZaH2xTcbOOqPiu5oEMnPsA0OjlNhrXgqfh8X650nMmRAjhN1MoQOUEO/mpAzk6K/GRpSKUUwVbWeVsHcDbTvLJEM=
+	t=1716548268; cv=none; b=kbBFGQIqWT89qGnsNFnWMt7Jwpvqm1gNSRV/8dA85bN20dN3O5UGkYHrbYapPLY9P6NwDnkg0Tx51O67WuHplYji2tk9Q6H3+xClCCREZh5Mv8Tva7MvMyQOLY4OlHltP3Te+3QNmsMtfXx4Q6dGR3rRik0xmwsD1ee2PSCh5Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716494444; c=relaxed/simple;
-	bh=+Z1PrWAQ1YLk2vhE3D7FPwh2PjswTOFCF+DMoa6zbP0=;
+	s=arc-20240116; t=1716548268; c=relaxed/simple;
+	bh=colrypTjylwyez/3r9sQhQskA+fGLFAX5Vtn76reIsw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=cc9wzjh4Tn2Ompn+Wsbq9JBJfCrVBqZ1Dkzm885XcQ4WmdxrPGz9YBjllDESy+36Fv1XF+GGPZETBurdH4O/Igba5pv7ayW2tSa3mmYNu16W2K1G7Sr6adSo2Y165Oys/IjmOPHTdvuVs9fqh8q8UJrPOb0w9oeBZw5wFtPNbd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FoAqVp2+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=L3yMA4g8; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=IBk+ySyHK/134aWZZttRdRwqDlBUvwutEH2ekEfFewr5svqs3uIG+OAc2Uo1PSr5r2SvN+x/8jNFNeWhVKKFRzWb9/eQr1QdVzcB+38O6WHIS4OHnOyg3nqmv3Sc6IH5FX/pmBpmJC25sjETq9vXL1XcS4BOKWO2k3k6qc+6rtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J+p5TNps; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wyrt3ETa; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 23 May 2024 20:00:40 -0000
+Date: Fri, 24 May 2024 10:57:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1716494440;
+	s=2020; t=1716548264;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SbLnR8ME4559FQGhr71GY5tCTnnXpVQVuydqewO8W6I=;
-	b=FoAqVp2+PrRle09PACAGn0Z2kdU6Pga2oGmsjbVliIssgU04j55OF2dTetZJ2VZmM6CwXv
-	qgNYF/gwP6gxrM1m0OAdW0J8NCgZqMMuUToAFExUD0v4Ob4PD3nuz6ZFio0IeeFkeCrUMt
-	ezexQEuE7CACXmbcZYPHZ85yRKI1P9+jOdc2UaNW9UneRMYRhkdQ5Rs16qml4/iruPnJmK
-	j7x5lkxnMIE9e1dEM7UiKXrZyKRevn88hJ84LM7QBc97Agw21Bl+iS3qbw0zfVy97C99Fm
-	PzED6FJkIkwtODrzBMeKnel2MkOjpxdg6dGmBpWeRlu0nHDHmva8/wlKwNAfMQ==
+	bh=BLYn3FwQBwFMOl0ONyA3r9l1SvJ452A313P0X1CGLe0=;
+	b=J+p5TNpsmfs1LzuvHTrFETBpJUNc2Ow2jID0Odkui9OWA14LfyWRuQdwoZQghv3yGVqcQp
+	iFoQYQi3VOwZhVUKikSDbrQ5eclREGbuBLE7vKPUSstHlLNpl6QuMtC95rO5fEQrKhH+af
+	H7Eieono3dKrINSXXHWv5K43wDVRK6WKBxDalCckG2lwRoFHIJoE/YOlL2+y9/LnzSJpXJ
+	3Xqw9gkNHwTlSYGnDUkTqYSh/LMPNe1o/gtnECEJjmv7eE/nrxBhQWWXeyiHkrbWVkCRwe
+	RozwWzJBdKbhTvBBI5HiOks2aOxAlxBiDJwUTnvZTyW5Udrc8LnMuNW9UXap4A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1716494440;
+	s=2020e; t=1716548264;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SbLnR8ME4559FQGhr71GY5tCTnnXpVQVuydqewO8W6I=;
-	b=L3yMA4g8DFL66jYcufwZenWDHJmUOcIZtuY+O/F2Rht30ihMCQcNPHZyGc181sV5L/D0DX
-	hIFsgAKEcys0WxCw==
-From: "tip-bot2 for Dongli Zhang" <tip-bot2@linutronix.de>
+	bh=BLYn3FwQBwFMOl0ONyA3r9l1SvJ452A313P0X1CGLe0=;
+	b=Wyrt3ETaQN8tBUGYJimQo23LgMKAtNZQ0hlQiv9n7oPAun+/7GAigxd4mFzwIGd7vRnqwg
+	tTH4gAxF5U9OjNAQ==
+From: "tip-bot2 for dicken.ding" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/cpuhotplug, x86/vector: Prevent vector leak
- during CPU offline
-Cc: Dongli Zhang <dongli.zhang@oracle.com>,
+Subject: [tip: irq/urgent] genirq/irqdesc: Prevent use-after-free in
+ irq_find_at_or_after()
+Cc: "dicken.ding" <dicken.ding@mediatek.com>,
  Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240522220218.162423-1-dongli.zhang@oracle.com>
-References: <20240522220218.162423-1-dongli.zhang@oracle.com>
+In-Reply-To: <20240524091739.31611-1-dicken.ding@mediatek.com>
+References: <20240524091739.31611-1-dicken.ding@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171649444020.10875.8762231749396322984.tip-bot2@tip-bot2>
+Message-ID: <171654826399.10875.17851209724801691980.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,130 +82,68 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     a6c11c0a5235fb144a65e0cb2ffd360ddc1f6c32
-Gitweb:        https://git.kernel.org/tip/a6c11c0a5235fb144a65e0cb2ffd360ddc1f6c32
-Author:        Dongli Zhang <dongli.zhang@oracle.com>
-AuthorDate:    Wed, 22 May 2024 15:02:18 -07:00
+Commit-ID:     b84a8aba806261d2f759ccedf4a2a6a80a5e55ba
+Gitweb:        https://git.kernel.org/tip/b84a8aba806261d2f759ccedf4a2a6a80a5e55ba
+Author:        dicken.ding <dicken.ding@mediatek.com>
+AuthorDate:    Fri, 24 May 2024 17:17:39 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 23 May 2024 21:51:50 +02:00
+CommitterDate: Fri, 24 May 2024 12:49:35 +02:00
 
-genirq/cpuhotplug, x86/vector: Prevent vector leak during CPU offline
+genirq/irqdesc: Prevent use-after-free in irq_find_at_or_after()
 
-The absence of IRQD_MOVE_PCNTXT prevents immediate effectiveness of
-interrupt affinity reconfiguration via procfs. Instead, the change is
-deferred until the next instance of the interrupt being triggered on the
-original CPU.
+irq_find_at_or_after() dereferences the interrupt descriptor which is
+returned by mt_find() while neither holding sparse_irq_lock nor RCU read
+lock, which means the descriptor can be freed between mt_find() and the
+dereference:
 
-When the interrupt next triggers on the original CPU, the new affinity is
-enforced within __irq_move_irq(). A vector is allocated from the new CPU,
-but the old vector on the original CPU remains and is not immediately
-reclaimed. Instead, apicd->move_in_progress is flagged, and the reclaiming
-process is delayed until the next trigger of the interrupt on the new CPU.
+    CPU0                            CPU1
+    desc = mt_find()
+                                    delayed_free_desc(desc)
+    irq_desc_get_irq(desc)
 
-Upon the subsequent triggering of the interrupt on the new CPU,
-irq_complete_move() adds a task to the old CPU's vector_cleanup list if it
-remains online. Subsequently, the timer on the old CPU iterates over its
-vector_cleanup list, reclaiming old vectors.
+The use-after-free is reported by KASAN:
 
-However, a rare scenario arises if the old CPU is outgoing before the
-interrupt triggers again on the new CPU.
+    Call trace:
+     irq_get_next_irq+0x58/0x84
+     show_stat+0x638/0x824
+     seq_read_iter+0x158/0x4ec
+     proc_reg_read_iter+0x94/0x12c
+     vfs_read+0x1e0/0x2c8
 
-In that case irq_force_complete_move() is not invoked on the outgoing CPU
-to reclaim the old apicd->prev_vector because the interrupt isn't currently
-affine to the outgoing CPU, and irq_needs_fixup() returns false. Even
-though __vector_schedule_cleanup() is later called on the new CPU, it
-doesn't reclaim apicd->prev_vector; instead, it simply resets both
-apicd->move_in_progress and apicd->prev_vector to 0.
+    Freed by task 4471:
+     slab_free_freelist_hook+0x174/0x1e0
+     __kmem_cache_free+0xa4/0x1dc
+     kfree+0x64/0x128
+     irq_kobj_release+0x28/0x3c
+     kobject_put+0xcc/0x1e0
+     delayed_free_desc+0x14/0x2c
+     rcu_do_batch+0x214/0x720
 
-As a result, the vector remains unreclaimed in vector_matrix, leading to a
-CPU vector leak.
+Guard the access with a RCU read lock section.
 
-To address this issue, move the invocation of irq_force_complete_move()
-before the irq_needs_fixup() call to reclaim apicd->prev_vector, if the
-interrupt is currently or used to be affine to the outgoing CPU.
-
-Additionally, reclaim the vector in __vector_schedule_cleanup() as well,
-following a warning message, although theoretically it should never see
-apicd->move_in_progress with apicd->prev_cpu pointing to an offline CPU.
-
-Fixes: f0383c24b485 ("genirq/cpuhotplug: Add support for cleaning up move in progress")
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
+Signed-off-by: dicken.ding <dicken.ding@mediatek.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240522220218.162423-1-dongli.zhang@oracle.com
+Link: https://lore.kernel.org/r/20240524091739.31611-1-dicken.ding@mediatek.com
 ---
- arch/x86/kernel/apic/vector.c |  9 ++++++---
- kernel/irq/cpuhotplug.c       | 16 ++++++++--------
- 2 files changed, 14 insertions(+), 11 deletions(-)
+ kernel/irq/irqdesc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
-index 9eec529..5573181 100644
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -1035,7 +1035,8 @@ static void __vector_schedule_cleanup(struct apic_chip_data *apicd)
- 			add_timer_on(&cl->timer, cpu);
- 		}
- 	} else {
--		apicd->prev_vector = 0;
-+		pr_warn("IRQ %u schedule cleanup for offline CPU %u\n", apicd->irq, cpu);
-+		free_moved_vector(apicd);
- 	}
- 	raw_spin_unlock(&vector_lock);
- }
-@@ -1072,6 +1073,7 @@ void irq_complete_move(struct irq_cfg *cfg)
-  */
- void irq_force_complete_move(struct irq_desc *desc)
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index 88ac365..07e99c9 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -160,7 +160,10 @@ static int irq_find_free_area(unsigned int from, unsigned int cnt)
+ static unsigned int irq_find_at_or_after(unsigned int offset)
  {
-+	unsigned int cpu = smp_processor_id();
- 	struct apic_chip_data *apicd;
- 	struct irq_data *irqd;
- 	unsigned int vector;
-@@ -1096,10 +1098,11 @@ void irq_force_complete_move(struct irq_desc *desc)
- 		goto unlock;
- 
- 	/*
--	 * If prev_vector is empty, no action required.
-+	 * If prev_vector is empty or the descriptor is neither currently
-+	 * nor previously on the outgoing CPU no action required.
- 	 */
- 	vector = apicd->prev_vector;
--	if (!vector)
-+	if (!vector || (apicd->cpu != cpu && apicd->prev_cpu != cpu))
- 		goto unlock;
- 
- 	/*
-diff --git a/kernel/irq/cpuhotplug.c b/kernel/irq/cpuhotplug.c
-index 75cadbc..eb86283 100644
---- a/kernel/irq/cpuhotplug.c
-+++ b/kernel/irq/cpuhotplug.c
-@@ -70,6 +70,14 @@ static bool migrate_one_irq(struct irq_desc *desc)
- 	}
- 
- 	/*
-+	 * Complete an eventually pending irq move cleanup. If this
-+	 * interrupt was moved in hard irq context, then the vectors need
-+	 * to be cleaned up. It can't wait until this interrupt actually
-+	 * happens and this CPU was involved.
-+	 */
-+	irq_force_complete_move(desc);
+ 	unsigned long index = offset;
+-	struct irq_desc *desc = mt_find(&sparse_irqs, &index, nr_irqs);
++	struct irq_desc *desc;
 +
-+	/*
- 	 * No move required, if:
- 	 * - Interrupt is per cpu
- 	 * - Interrupt is not started
-@@ -88,14 +96,6 @@ static bool migrate_one_irq(struct irq_desc *desc)
- 	}
++	guard(rcu)();
++	desc = mt_find(&sparse_irqs, &index, nr_irqs);
  
- 	/*
--	 * Complete an eventually pending irq move cleanup. If this
--	 * interrupt was moved in hard irq context, then the vectors need
--	 * to be cleaned up. It can't wait until this interrupt actually
--	 * happens and this CPU was involved.
--	 */
--	irq_force_complete_move(desc);
--
--	/*
- 	 * If there is a setaffinity pending, then try to reuse the pending
- 	 * mask, so the last change of the affinity does not get lost. If
- 	 * there is no move pending or the pending mask does not contain
+ 	return desc ? irq_desc_get_irq(desc) : nr_irqs;
+ }
 
