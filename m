@@ -1,103 +1,125 @@
-Return-Path: <linux-tip-commits+bounces-1289-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1290-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1029B8CEE7A
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 May 2024 12:22:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A4E8CEEEE
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 May 2024 14:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E019B20F23
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 May 2024 10:22:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62D0F1C20A08
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 May 2024 12:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAC020DE7;
-	Sat, 25 May 2024 10:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6625B1E48A;
+	Sat, 25 May 2024 12:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="XZqrWqKQ"
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pNhG/m95";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="elRecitd"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9164A171CC;
-	Sat, 25 May 2024 10:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAEF101F4;
+	Sat, 25 May 2024 12:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716632550; cv=none; b=PYorbGsUeaNUurjErLRYYHBjrr5UO/WGRtXxDhLm99345u7D1cEBfzaFbjO0el8Rll5+FBkVz/Tr2huXdyobXHu86N0x+Sysdrn8GETDeFbnEh2gcUXN/JDmcWpKmzq+PbROoOM/ElEa6safTw21lgKCN6yayQxbJngB+INVpd8=
+	t=1716641136; cv=none; b=TeVRIMhfjlqHoDNU4AX0LnQIokBwT4Dye2RA7yJb97tPiCUwlJm4OxwYWvl98wKtyicME7XJOC4G8G3kwRz1nwebwb60Ypkan8bqfI8riXcv1ebacraP+29dQCWvZrv/H5cF2CeyX39I3CAtqkF0ZursSODScffLxTOjK/YTnvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716632550; c=relaxed/simple;
-	bh=YNsy0eiDe4FNlCTPePDFDDRv38WnUx+b+e1glkTNzGQ=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Z+EwB71w68P+XCtMInZsLZebffy8ixjILPI4JW+WLboQwodDqm6GgMT0u5NJEjndSJ4H4nkVx6Mbqp0CpSb9ocy3fAsSO6owD+j2C2YI9zicXB8ZyOm0EGjtsM+qul4QOUZhaNC+9DHw+K6U1dps27s+505ETRpxgbDaqTJjn9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=XZqrWqKQ; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1716632527; x=1717237327; i=markus.elfring@web.de;
-	bh=YNsy0eiDe4FNlCTPePDFDDRv38WnUx+b+e1glkTNzGQ=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=XZqrWqKQ5I+Rvo192FgMqh9MJRz0NpYsHJo9CcyUFt5ad68a6Ns+fTVVfAItVQCF
-	 ILU1VUzBkJkdivvYVZVZ4ShWDFBKrwQuXOs6d6qecu35ffaDxH+aEMVPffhl7xbkQ
-	 utoE+ZoGR1U/fSnW2+T96y6NsGiQIy7AsbBbe180VZiqtYfmMmFoiFnBS3dazu4re
-	 sm2tD+g4e0GkEX2i7uipMF456QDA2ICM+Dc5YksOnXrM6HqgdCbkITkhmm8NWm07N
-	 EbLbSKY6tbn8d+HM8B5hV9fwY7UvKRVVKBpP6r9J8ZBDe6EK+WlUGuek79JSxb2iT
-	 8sLC51Q4VIfGNo3wYw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mfc4q-1sheFj1ZbU-00qOAP; Sat, 25
- May 2024 12:22:07 +0200
-Message-ID: <ea971463-c43b-4524-bf43-ce4d05ec0db3@web.de>
-Date: Sat, 25 May 2024 12:22:06 +0200
+	s=arc-20240116; t=1716641136; c=relaxed/simple;
+	bh=eeAitaAmSAkbYaU04UOTjrZ7ojZYRcqsyQM0YGQFGjY=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=J3pVNXPlVJU8ZxrAobVbK/IESyPHG5Tb0DwmAUvDAciyb0UhtiyC48hF6pSW271Dn0ka3ltxrLAqIFs0GxNF2wzT0CYsWvK3xEuvC6aFp4Qk0lKwoV61EIlIAfGX24nTEDiGwUoXJfSYdtsy9V/knjiwpghJQSIzQJeWALFs3iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pNhG/m95; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=elRecitd; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sat, 25 May 2024 12:45:31 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1716641132;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=f9m3fQbxEulN8aOMpTnoJl+7t0n/1G78kbyvVi25U38=;
+	b=pNhG/m95mlT6/4DVXjXKgAeFd4rW3z/doo7I2lyNa6wkPx9TtOgjlA9OwzoJebyu+BCSgf
+	av5dA78KvQ4pUMHg9JGEU7o6gaoidjDJQLhdp58IEpEtvlSTxinDtWjBgfdyeJBWZCxf0x
+	pDiMBoVGtIKqTsrYTPrYUMRTtxb7QAJjEfOVl1fHA/eK99u8/p/3o9cP7PdaPcBC1ur84R
+	4zcWZBuqy6+c2KqPyw7F6VfGdlKjJLtUkiennr7KrY90ZNBwP8EgjJY2VWBmPXA/8uw8b5
+	gI0D6ge89Y570JXQqQg0u1D2UnCS2anX4kuFa5UD8o/6SjiaS9OCCygDi3ITtQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1716641132;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=f9m3fQbxEulN8aOMpTnoJl+7t0n/1G78kbyvVi25U38=;
+	b=elRecitdMgliBy2pg7Ome0/6GUl0TcR61ib2il9y/tANv6F0nL5G/DUyWN0hmPTstW3Vwd
+	4Td8S7AlYACCqGCg==
+From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: locking/urgent] cleanup: Standardize the header guard define's name
+Cc: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ linux-kernel@vger.kernel.org, x86@kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: dicken.ding@mediatek.com, tip-bot2@linutronix.de,
- linux-tip-commits@vger.kernel.org, x86@kernel.org, stable@vger.kernel.org,
- kernel-janitors@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
-Cc: LKML <linux-kernel@vger.kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <171654826399.10875.17851209724801691980.tip-bot2@tip-bot2>
-Subject: Re: [tip: irq/urgent] genirq/irqdesc: Prevent use-after-free in
- irq_find_at_or_after()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <171654826399.10875.17851209724801691980.tip-bot2@tip-bot2>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:yZlp2qNBCCyPQtANKc+yVQwq1uB7RafszQ4bA+CLIimc76fvE9j
- byliV4Ex/S8EG3wJFf2YZKIlA6AvmbeBB8sBOSIY7vtmACI7LP2xzX6E3J/NYGcLcUUaUBk
- I/TxkunGsCC+IYoEtXhLhUdy+U6/zy9l+9i335qE7Trq2AviGX1XpZQWDHFVw2W2M2Vv1W7
- pqOfzLvi+dplU/7cMdczw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:EAMcd4seoSU=;dhwW3IiT8O+SC9rWgKgYf3rBbFh
- pKdBsFNKDZ+6QSe4xEg6S0wfMKgwD7NkCGTnpgo5Oybrc0FfTMeBzjViO9cIcX8UeFkZ3dley
- NQ/lsf5OK91AZHyrfy4ifkcsXOU9DAX8G7gK8sPuLkBsgxeDBZKmB/qXwsrlycTwGllOYbzc5
- TXP8C40SkZ86iRhJ1LKgmawL+r3BU3RGyFpLYuZznA/B1c+mY+nIe/oNwqsL3/JEJbAjk6cvJ
- /Crp9GSQkRWJ1f7vRaTCb6Pj4DJz0wjRpIlMlmCGbDc7N7RCpQnOrysNoBKZrG31cXhvuOUTJ
- WRKofpxV/0FjoTiYlFQ2YSWbEjKMfayxWurvA1IF6LnZVyQSaUD4+FbkCb/n518wdyA2hs29r
- vlyoUlRyNC7FEN/Jbg+i2cc1MZ73KQenYWecXLLTA5wpyZQAuvKSDxVdXlC6WJ/o7pghQzlWC
- 1JpNDYU6YPBoBKMXHoFoHxXnOJXatBlI9KEiYc8CVbmI3bNFr/iytn/km3CU3Mdgg9EEiRfGx
- lkMLcqCuDk4xeXwZJMRpq3HODc1gtNNUvzkuNxZSnvnj4Jr9fi2aKebdC6XeNwZlaeptFU7Tl
- L1vefo04fYmOpKCO4t2ue+jLMO+mOEWoNkKrH/n9EHNQiTRPIcY1yaMsJKIPlVTGj9mm3T4Ww
- r9zDokW+79A9uZ7SoapNSRHQfK7rmPvs3RHMgQ0QQ45/K33nvcyxqmlWTun0kD8DoMCZgeycB
- QFVxwWjq277xyTbD9fo7sjAngEvEcQhzn9pDbH/ncIDVo1qrHM/jHUZKajDxk7C5aEi+afcf7
- fUuU1kqTarFTIDIkGH8UjsResSZn5v8rLux4imuUrMp7Y=
+Message-ID: <171664113181.10875.8784434350512348496.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-=E2=80=A6
-> Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor =
-management")
-> Signed-off-by: dicken.ding <dicken.ding@mediatek.com>
-=E2=80=A6
+The following commit has been merged into the locking/urgent branch of tip:
 
-Would a slightly different author name be preferred here
-according to the Developer's Certificate of Origin?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.9#n438
+Commit-ID:     fda570c8796f8fbb3285fb7ac007ace9aabbbb68
+Gitweb:        https://git.kernel.org/tip/fda570c8796f8fbb3285fb7ac007ace9aabbbb68
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Sat, 25 May 2024 13:18:17 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 25 May 2024 13:20:36 +02:00
 
-Regards,
-Markus
+cleanup: Standardize the header guard define's name
+
+At some point during early development, the <linux/cleanup.h> header
+must have been named <linux/guard.h>, as evidenced by the header
+guard name:
+
+  #ifndef __LINUX_GUARDS_H
+  #define __LINUX_GUARDS_H
+
+It ended up being <linux/cleanup.h>, but the old guard name for
+a file name that was never upstream never changed.
+
+Do that now - and while at it, also use the canonical _LINUX prefix,
+instead of the less common __LINUX prefix.
+
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: linux-kernel@vger.kernel.org
+---
+ include/linux/cleanup.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index c2d09bc..cef68e8 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef __LINUX_GUARDS_H
+-#define __LINUX_GUARDS_H
++#ifndef _LINUX_CLEANUP_H
++#define _LINUX_CLEANUP_H
+ 
+ #include <linux/compiler.h>
+ 
+@@ -247,4 +247,4 @@ __DEFINE_LOCK_GUARD_0(_name, _lock)
+ 	{ return class_##_name##_lock_ptr(_T); }
+ 
+ 
+-#endif /* __LINUX_GUARDS_H */
++#endif /* _LINUX_CLEANUP_H */
 
