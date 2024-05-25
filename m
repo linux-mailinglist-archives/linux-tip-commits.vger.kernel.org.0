@@ -1,149 +1,103 @@
-Return-Path: <linux-tip-commits+bounces-1288-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1289-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039DB8CE482
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 May 2024 12:57:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1029B8CEE7A
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 May 2024 12:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F9F71F21CF0
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 May 2024 10:57:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E019B20F23
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 May 2024 10:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567558595A;
-	Fri, 24 May 2024 10:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAC020DE7;
+	Sat, 25 May 2024 10:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J+p5TNps";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wyrt3ETa"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="XZqrWqKQ"
+Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9144585956;
-	Fri, 24 May 2024 10:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9164A171CC;
+	Sat, 25 May 2024 10:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716548268; cv=none; b=kbBFGQIqWT89qGnsNFnWMt7Jwpvqm1gNSRV/8dA85bN20dN3O5UGkYHrbYapPLY9P6NwDnkg0Tx51O67WuHplYji2tk9Q6H3+xClCCREZh5Mv8Tva7MvMyQOLY4OlHltP3Te+3QNmsMtfXx4Q6dGR3rRik0xmwsD1ee2PSCh5Ew=
+	t=1716632550; cv=none; b=PYorbGsUeaNUurjErLRYYHBjrr5UO/WGRtXxDhLm99345u7D1cEBfzaFbjO0el8Rll5+FBkVz/Tr2huXdyobXHu86N0x+Sysdrn8GETDeFbnEh2gcUXN/JDmcWpKmzq+PbROoOM/ElEa6safTw21lgKCN6yayQxbJngB+INVpd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716548268; c=relaxed/simple;
-	bh=colrypTjylwyez/3r9sQhQskA+fGLFAX5Vtn76reIsw=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IBk+ySyHK/134aWZZttRdRwqDlBUvwutEH2ekEfFewr5svqs3uIG+OAc2Uo1PSr5r2SvN+x/8jNFNeWhVKKFRzWb9/eQr1QdVzcB+38O6WHIS4OHnOyg3nqmv3Sc6IH5FX/pmBpmJC25sjETq9vXL1XcS4BOKWO2k3k6qc+6rtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J+p5TNps; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wyrt3ETa; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 24 May 2024 10:57:43 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1716548264;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BLYn3FwQBwFMOl0ONyA3r9l1SvJ452A313P0X1CGLe0=;
-	b=J+p5TNpsmfs1LzuvHTrFETBpJUNc2Ow2jID0Odkui9OWA14LfyWRuQdwoZQghv3yGVqcQp
-	iFoQYQi3VOwZhVUKikSDbrQ5eclREGbuBLE7vKPUSstHlLNpl6QuMtC95rO5fEQrKhH+af
-	H7Eieono3dKrINSXXHWv5K43wDVRK6WKBxDalCckG2lwRoFHIJoE/YOlL2+y9/LnzSJpXJ
-	3Xqw9gkNHwTlSYGnDUkTqYSh/LMPNe1o/gtnECEJjmv7eE/nrxBhQWWXeyiHkrbWVkCRwe
-	RozwWzJBdKbhTvBBI5HiOks2aOxAlxBiDJwUTnvZTyW5Udrc8LnMuNW9UXap4A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1716548264;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BLYn3FwQBwFMOl0ONyA3r9l1SvJ452A313P0X1CGLe0=;
-	b=Wyrt3ETaQN8tBUGYJimQo23LgMKAtNZQ0hlQiv9n7oPAun+/7GAigxd4mFzwIGd7vRnqwg
-	tTH4gAxF5U9OjNAQ==
-From: "tip-bot2 for dicken.ding" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/irqdesc: Prevent use-after-free in
- irq_find_at_or_after()
-Cc: "dicken.ding" <dicken.ding@mediatek.com>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240524091739.31611-1-dicken.ding@mediatek.com>
-References: <20240524091739.31611-1-dicken.ding@mediatek.com>
+	s=arc-20240116; t=1716632550; c=relaxed/simple;
+	bh=YNsy0eiDe4FNlCTPePDFDDRv38WnUx+b+e1glkTNzGQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=Z+EwB71w68P+XCtMInZsLZebffy8ixjILPI4JW+WLboQwodDqm6GgMT0u5NJEjndSJ4H4nkVx6Mbqp0CpSb9ocy3fAsSO6owD+j2C2YI9zicXB8ZyOm0EGjtsM+qul4QOUZhaNC+9DHw+K6U1dps27s+505ETRpxgbDaqTJjn9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=XZqrWqKQ; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1716632527; x=1717237327; i=markus.elfring@web.de;
+	bh=YNsy0eiDe4FNlCTPePDFDDRv38WnUx+b+e1glkTNzGQ=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=XZqrWqKQ5I+Rvo192FgMqh9MJRz0NpYsHJo9CcyUFt5ad68a6Ns+fTVVfAItVQCF
+	 ILU1VUzBkJkdivvYVZVZ4ShWDFBKrwQuXOs6d6qecu35ffaDxH+aEMVPffhl7xbkQ
+	 utoE+ZoGR1U/fSnW2+T96y6NsGiQIy7AsbBbe180VZiqtYfmMmFoiFnBS3dazu4re
+	 sm2tD+g4e0GkEX2i7uipMF456QDA2ICM+Dc5YksOnXrM6HqgdCbkITkhmm8NWm07N
+	 EbLbSKY6tbn8d+HM8B5hV9fwY7UvKRVVKBpP6r9J8ZBDe6EK+WlUGuek79JSxb2iT
+	 8sLC51Q4VIfGNo3wYw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mfc4q-1sheFj1ZbU-00qOAP; Sat, 25
+ May 2024 12:22:07 +0200
+Message-ID: <ea971463-c43b-4524-bf43-ce4d05ec0db3@web.de>
+Date: Sat, 25 May 2024 12:22:06 +0200
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171654826399.10875.17851209724801691980.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+To: dicken.ding@mediatek.com, tip-bot2@linutronix.de,
+ linux-tip-commits@vger.kernel.org, x86@kernel.org, stable@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
+Cc: LKML <linux-kernel@vger.kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <171654826399.10875.17851209724801691980.tip-bot2@tip-bot2>
+Subject: Re: [tip: irq/urgent] genirq/irqdesc: Prevent use-after-free in
+ irq_find_at_or_after()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <171654826399.10875.17851209724801691980.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:yZlp2qNBCCyPQtANKc+yVQwq1uB7RafszQ4bA+CLIimc76fvE9j
+ byliV4Ex/S8EG3wJFf2YZKIlA6AvmbeBB8sBOSIY7vtmACI7LP2xzX6E3J/NYGcLcUUaUBk
+ I/TxkunGsCC+IYoEtXhLhUdy+U6/zy9l+9i335qE7Trq2AviGX1XpZQWDHFVw2W2M2Vv1W7
+ pqOfzLvi+dplU/7cMdczw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:EAMcd4seoSU=;dhwW3IiT8O+SC9rWgKgYf3rBbFh
+ pKdBsFNKDZ+6QSe4xEg6S0wfMKgwD7NkCGTnpgo5Oybrc0FfTMeBzjViO9cIcX8UeFkZ3dley
+ NQ/lsf5OK91AZHyrfy4ifkcsXOU9DAX8G7gK8sPuLkBsgxeDBZKmB/qXwsrlycTwGllOYbzc5
+ TXP8C40SkZ86iRhJ1LKgmawL+r3BU3RGyFpLYuZznA/B1c+mY+nIe/oNwqsL3/JEJbAjk6cvJ
+ /Crp9GSQkRWJ1f7vRaTCb6Pj4DJz0wjRpIlMlmCGbDc7N7RCpQnOrysNoBKZrG31cXhvuOUTJ
+ WRKofpxV/0FjoTiYlFQ2YSWbEjKMfayxWurvA1IF6LnZVyQSaUD4+FbkCb/n518wdyA2hs29r
+ vlyoUlRyNC7FEN/Jbg+i2cc1MZ73KQenYWecXLLTA5wpyZQAuvKSDxVdXlC6WJ/o7pghQzlWC
+ 1JpNDYU6YPBoBKMXHoFoHxXnOJXatBlI9KEiYc8CVbmI3bNFr/iytn/km3CU3Mdgg9EEiRfGx
+ lkMLcqCuDk4xeXwZJMRpq3HODc1gtNNUvzkuNxZSnvnj4Jr9fi2aKebdC6XeNwZlaeptFU7Tl
+ L1vefo04fYmOpKCO4t2ue+jLMO+mOEWoNkKrH/n9EHNQiTRPIcY1yaMsJKIPlVTGj9mm3T4Ww
+ r9zDokW+79A9uZ7SoapNSRHQfK7rmPvs3RHMgQ0QQ45/K33nvcyxqmlWTun0kD8DoMCZgeycB
+ QFVxwWjq277xyTbD9fo7sjAngEvEcQhzn9pDbH/ncIDVo1qrHM/jHUZKajDxk7C5aEi+afcf7
+ fUuU1kqTarFTIDIkGH8UjsResSZn5v8rLux4imuUrMp7Y=
 
-The following commit has been merged into the irq/urgent branch of tip:
+=E2=80=A6
+> Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor =
+management")
+> Signed-off-by: dicken.ding <dicken.ding@mediatek.com>
+=E2=80=A6
 
-Commit-ID:     b84a8aba806261d2f759ccedf4a2a6a80a5e55ba
-Gitweb:        https://git.kernel.org/tip/b84a8aba806261d2f759ccedf4a2a6a80a5e55ba
-Author:        dicken.ding <dicken.ding@mediatek.com>
-AuthorDate:    Fri, 24 May 2024 17:17:39 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 24 May 2024 12:49:35 +02:00
+Would a slightly different author name be preferred here
+according to the Developer's Certificate of Origin?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.9#n438
 
-genirq/irqdesc: Prevent use-after-free in irq_find_at_or_after()
-
-irq_find_at_or_after() dereferences the interrupt descriptor which is
-returned by mt_find() while neither holding sparse_irq_lock nor RCU read
-lock, which means the descriptor can be freed between mt_find() and the
-dereference:
-
-    CPU0                            CPU1
-    desc = mt_find()
-                                    delayed_free_desc(desc)
-    irq_desc_get_irq(desc)
-
-The use-after-free is reported by KASAN:
-
-    Call trace:
-     irq_get_next_irq+0x58/0x84
-     show_stat+0x638/0x824
-     seq_read_iter+0x158/0x4ec
-     proc_reg_read_iter+0x94/0x12c
-     vfs_read+0x1e0/0x2c8
-
-    Freed by task 4471:
-     slab_free_freelist_hook+0x174/0x1e0
-     __kmem_cache_free+0xa4/0x1dc
-     kfree+0x64/0x128
-     irq_kobj_release+0x28/0x3c
-     kobject_put+0xcc/0x1e0
-     delayed_free_desc+0x14/0x2c
-     rcu_do_batch+0x214/0x720
-
-Guard the access with a RCU read lock section.
-
-Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
-Signed-off-by: dicken.ding <dicken.ding@mediatek.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240524091739.31611-1-dicken.ding@mediatek.com
----
- kernel/irq/irqdesc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 88ac365..07e99c9 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -160,7 +160,10 @@ static int irq_find_free_area(unsigned int from, unsigned int cnt)
- static unsigned int irq_find_at_or_after(unsigned int offset)
- {
- 	unsigned long index = offset;
--	struct irq_desc *desc = mt_find(&sparse_irqs, &index, nr_irqs);
-+	struct irq_desc *desc;
-+
-+	guard(rcu)();
-+	desc = mt_find(&sparse_irqs, &index, nr_irqs);
- 
- 	return desc ? irq_desc_get_irq(desc) : nr_irqs;
- }
+Regards,
+Markus
 
