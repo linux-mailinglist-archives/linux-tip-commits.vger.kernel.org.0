@@ -1,71 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1306-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1307-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E9C8D22FD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 May 2024 20:06:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A73C8D32E3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 May 2024 11:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D12801C23309
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 May 2024 18:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07CFE1F24599
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 May 2024 09:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72C1174ECD;
-	Tue, 28 May 2024 18:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3758169AD9;
+	Wed, 29 May 2024 09:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qaHC8dMy";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3ThEQsPy"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="It8emVbG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HhD0qEXL"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426E817082B;
-	Tue, 28 May 2024 18:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B11A13E8BD;
+	Wed, 29 May 2024 09:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716919513; cv=none; b=Qaphpd5WVp4DqUBDAts7zQp7NEnwTwUzYXh3B2QJwPBDMflcogNUa2uZNM6XkCgBpe1vQazyIXouQ9wS+z41YbY8lXWEsgDp0Sbek2+09T9Ykq/JNqqc2sDlSlcbNOl/3918uZUtMQPt5KiT9PZFRjwumceeGN+NWmzu4Akmrmo=
+	t=1716974752; cv=none; b=IzAcQ7ARyqBUribupaINx42hc+eHMdwYujcjkpkd9NCm6NP+zIkfab5Z1c4ECHRgzRkYViLp0P1iZRG5yuhbHOhgnhCIuelZ/dBPlKALIn/hLQBjGzq89kj1xEaUj+d4C3g2kcgVR/4gpqmQWYX53ChnxQ9qyv6biQPq9wkdMy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716919513; c=relaxed/simple;
-	bh=xw3dqRvKipl4kEur8cFjgd8oD2SF2xa6dmTmSO/FZeI=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=U/1HVz/4b0iBc4g0fgDjg83jx1Lor9uC6CS+egV1RS3uq8FoMeV5kO1meWa5duykH2jbNkCL9lf1if7hCLy7F8kjubPx5I382mtXVzGwuwIGsj0YKzU25o4ypAtCjBoKw8OuoGuz9H9pNHLEIyqYNFYw/jPFKzxOZumGaLw3ZGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qaHC8dMy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3ThEQsPy; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1716974752; c=relaxed/simple;
+	bh=G3edRpMzbg5HHY5drPrF6AcqvazAmZsmRfp8TMwv1rM=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=MS21Wb8YAKcmmW5JqWJh7e1doySQWsKKAnCFDLTSeCbQzB6W5Y2JRctSKKau0dIDapn4j9W8tBGsJT5pfZs3Gt1ar/ApWywYKwFkiDVStIBrsZmcqLiSGYDh7lGd8nQbIAieIGqd9AjoMqABuYp7rRUpQNQbnH/VvxomAbyGOXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=It8emVbG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HhD0qEXL; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 28 May 2024 18:05:07 -0000
+Date: Wed, 29 May 2024 09:25:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1716919508;
+	s=2020; t=1716974749;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=V5K6vVk5IN24s1UzTbyLTePN4kT77iSBjP/YyjG075c=;
-	b=qaHC8dMyTImbr7QOHGLT2+yznKfzSYI1kwjt1JH5fzkke93K7wirTiVhnOls3mZpk5MhZE
-	QFH5whWE0Bx/1G7J1ZarTD13ACW0U585YHeozWKnV5Sp9FMrdWZHdLGGV/QupSUAc/7V+q
-	XaEhDSzKsk2woJUfi7MKVEwfY04Mp05uzGKzGxyIdjWllHL1ibp0JhuVxJUjDXOohU0AG+
-	bEyHfGjftNHRapGJFJORLzE84hAXQjJxxTuyH+IegYHUzdfhUYIhysbCf2c32UECwWvnSl
-	19vx10Y/dslqDT5FUT8AnzqxeQfV047WMSibslfA7PR0huyEe2Ea8JGnjj7fgA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gYf6hhq55nlaV5z/0xlR1QSxXGDBh7E2b5APlc26He0=;
+	b=It8emVbGlZJ/nSR4gCgU7iDA90/u7zQLMMOUR/rnqf0ooMMLRci5/BIbH3SAw1IjuZnUys
+	iciuhVfbLrC1APxeF6v/bILif+XTO10hGbVOfBdYfq7MLZK2XkqGeGjEC9qSJHKHGpaKzJ
+	sTmB8EeabVCQsv/uYPJfKFhEsd1zcR4ujngp6vEJ8+z6p4ZC7+PAhWLTJVcqruJPjiCTCK
+	82+Wmw1085vB5Ji16wAZRIUYTwwqvO9sF8bEM5LuUsItyirqukPnFNZb1o/Wf/3EtRPsD5
+	A7XBPrRKbUGeg2478l44MAOyCUcqJvfO4kcS52iJQ5JMXviiDO7vG5adyU16dw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1716919508;
+	s=2020e; t=1716974749;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=V5K6vVk5IN24s1UzTbyLTePN4kT77iSBjP/YyjG075c=;
-	b=3ThEQsPyQRscts6AHKcTnuMg6okONbzfEalB3h5+F4S86iUrniLKilBhNPm8jU9d/wpTcb
-	jz1it68E9j/YHABQ==
-From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gYf6hhq55nlaV5z/0xlR1QSxXGDBh7E2b5APlc26He0=;
+	b=HhD0qEXLeDpOAI1XQdEvE8rEj9N9vJ7ACiB1m9rRBRAu4k/wv3lfy7ZCvf5ZVRw+TdZygw
+	Izypo9GSxbFVFBBw==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cpu] x86/platform/intel-mid: Switch to new Intel CPU model defines
-Cc: Tony Luck <tony.luck@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Shevchenko <andy@kernel.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+Subject: [tip: x86/urgent] x86/topology/amd: Evaluate SMT in CPUID leaf
+ 0x8000001e only on family 0x17 and greater
+Cc: Tim Teichmann <teichmanntim@outlook.de>,
+ Thomas Gleixner <tglx@linutronix.de>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk>
+References: <7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171691950792.10875.1205586224750520432.tip-bot2@tip-bot2>
+Message-ID: <171697474837.10875.6335609575452053884.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,52 +80,59 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     2cf615a4519b29a3ad283883d7638279ec1e6b44
-Gitweb:        https://git.kernel.org/tip/2cf615a4519b29a3ad283883d7638279ec1e6b44
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Tue, 21 May 2024 09:10:01 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 28 May 2024 10:59:02 -07:00
+Commit-ID:     76357cc192acd78b85d4c3380d07f139d906dfe8
+Gitweb:        https://git.kernel.org/tip/76357cc192acd78b85d4c3380d07f139d906dfe8
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 28 May 2024 22:21:31 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 29 May 2024 11:01:20 +02:00
 
-x86/platform/intel-mid: Switch to new Intel CPU model defines
+x86/topology/amd: Evaluate SMT in CPUID leaf 0x8000001e only on family 0x17 and greater
 
-New CPU #defines encode vendor and family as well as model.
+The new AMD/HYGON topology parser evaluates the SMT information in CPUID leaf
+0x8000001e unconditionally while the original code restricted it to CPUs with
+family 0x17 and greater.
 
-N.B. Drop Haswell. CPU model 0x3C was included by mistake
-in upstream code.
+This breaks family 0x15 CPUs which advertise that leaf and have a non-zero
+value in the SMT section. The machine boots, but the scheduler complains loudly
+about the mismatch of the core IDs:
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/all/20240521161002.12866-1-tony.luck%40intel.com
+  WARNING: CPU: 1 PID: 0 at kernel/sched/core.c:6482 sched_cpu_starting+0x183/0x250
+  WARNING: CPU: 0 PID: 1 at kernel/sched/topology.c:2408 build_sched_domains+0x76b/0x12b0
+
+Add the condition back to cure it.
+
+  [ bp: Make it actually build because grandpa is not concerned with
+    trivial stuff. :-P ]
+
+Fixes: f7fb3b2dd92c ("x86/cpu: Provide an AMD/HYGON specific topology parser")
+Closes: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/56
+Reported-by: Tim Teichmann <teichmanntim@outlook.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Tim Teichmann <teichmanntim@outlook.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk
 ---
- arch/x86/platform/intel-mid/intel-mid.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/topology_amd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/platform/intel-mid/intel-mid.c b/arch/x86/platform/intel-mid/intel-mid.c
-index 7be71c2..f83bbe0 100644
---- a/arch/x86/platform/intel-mid/intel-mid.c
-+++ b/arch/x86/platform/intel-mid/intel-mid.c
-@@ -22,6 +22,7 @@
- #include <asm/mpspec_def.h>
- #include <asm/hw_irq.h>
- #include <asm/apic.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/io_apic.h>
- #include <asm/intel-mid.h>
- #include <asm/io.h>
-@@ -55,9 +56,8 @@ static void __init intel_mid_time_init(void)
+diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topology_amd.c
+index d419dee..7d476fa 100644
+--- a/arch/x86/kernel/cpu/topology_amd.c
++++ b/arch/x86/kernel/cpu/topology_amd.c
+@@ -84,9 +84,9 @@ static bool parse_8000_001e(struct topo_scan *tscan, bool has_topoext)
  
- static void intel_mid_arch_setup(void)
- {
--	switch (boot_cpu_data.x86_model) {
--	case 0x3C:
--	case 0x4A:
-+	switch (boot_cpu_data.x86_vfm) {
-+	case INTEL_ATOM_SILVERMONT_MID:
- 		x86_platform.legacy.rtc = 1;
- 		break;
- 	default:
+ 	/*
+ 	 * If leaf 0xb is available, then the domain shifts are set
+-	 * already and nothing to do here.
++	 * already and nothing to do here. Only valid for family >= 0x17.
+ 	 */
+-	if (!has_topoext) {
++	if (!has_topoext && tscan->c->x86 >= 0x17) {
+ 		/*
+ 		 * Leaf 0x80000008 set the CORE domain shift already.
+ 		 * Update the SMT domain, but do not propagate it.
 
