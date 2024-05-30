@@ -1,55 +1,55 @@
-Return-Path: <linux-tip-commits+bounces-1314-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1315-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A8E8D4DC5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 May 2024 16:23:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C15A68D4F39
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 May 2024 17:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFF19B22E61
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 May 2024 14:23:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21ED1C229D2
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 May 2024 15:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36EA17623B;
-	Thu, 30 May 2024 14:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2708182D2F;
+	Thu, 30 May 2024 15:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="k8XiSSZW";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EQ+qXVOy"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JYxu47Zu";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PVycF0Nc"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E9E16F0E8;
-	Thu, 30 May 2024 14:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB70F182D2D;
+	Thu, 30 May 2024 15:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717078991; cv=none; b=SEigUmNf/Ne5Ygtnsfd3RKIc1BGKp/Choj/Y12gEP5TQscd4wGj449Z7nFITcP36+d5HZYnFaqAhy1WiYhs+/As1+TeeFHMyOWPVMOIz1O994ZLS/TSUFRgIFJKNjXfTq3PeKc2OsZbF4DWDTUj8pwjoOUG93Yv4MVUprDOd7tg=
+	t=1717083503; cv=none; b=ZWgdGD+5w0o3XKNM9axTNMcmVhaZM7fz3xl1PX7ypjMaCHY40nCWw38rOGSd5uFHF6P+IGRKXKVkg1fMjt8Ep5lW3x5fU5M3CY64x3GRGaKePIgjh7ihi8zxx5reg4ERqupc+/zUYtuccyyjaqjfv5DHu2u22SJ1o9hNa1CE2xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717078991; c=relaxed/simple;
-	bh=Ma2+AjcMTkp5RLd/ciOGT8prx/Hs5elb2xMQ7KCXs0w=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=d5eOVxLNFIVlynF2hWC1cKOckpj4npB8Qp1Sc6yT3RPuPTKUKB3T6BR3wZ5gd4kLZmjvMWk5zzFnxOfKXxDW1tCyCKWRO/dyVPOIgvLgAaz9F+qsHBIPM8u42k2NucMaoEpgPW1t+lIdEcn+tUC9mkmrThLvUgaCGCsTmM9DV9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=k8XiSSZW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EQ+qXVOy; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1717083503; c=relaxed/simple;
+	bh=kJUgEnnB1j6Tpeo+jUM1Mg4mIz8PPZ73v26DSU8OP/A=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=BSJRMJDsBK3Wb1XlcchCFciTpO7IY2wfX5oi/3Z81mbE17/PQCMBl9lyE6t9AFL8+WQzWefNNFhfL66fy/CsJZAEfMpGtei6+O7vmSlRpi+qSwnGlm/Wzii2/j4/zCT/dpP1x+g/TqXT0LRWUEAUARbQMBodYTzBvAIbQoXXbs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JYxu47Zu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PVycF0Nc; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 30 May 2024 14:23:08 -0000
+Date: Thu, 30 May 2024 15:38:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1717078988;
+	s=2020; t=1717083499;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=vV/t6fERSzKTZ1gs6ufW5FSStbU7Wr1/KJqbwL6JUuo=;
-	b=k8XiSSZWrClnkmcAPNM5LkIB/G0rTppK5txjMp4knRF2eiJWtei0mn+WjzFyiWggBwpvOR
-	JANQ28DnZJlBTvK0O9dyeqR8iZkv/CU1kF85QvUIHdGzH9lvj5pWvKnO3sZFc+nFtbaMtQ
-	f0MxZA1ulKCGgFsHXPFaD/34vbabBCenmMJ8YaDQ/42zTD7vUEFeiy7I5U736lZLjGXfBZ
-	/MF0XtORaeAcK7h9Far2PZgTsw1m350cIGgTIQm2fyrlX+DOyczihU4m+5kgZeIUVHEiBq
-	eghs2/yV/zDSu3Hy5iw3l2YFWZBymGNxABrxYEdZyutbIg+x/xfOSAPhjyrNVw==
+	bh=VB8BVFevT06lKaWEfV21IkEQ1bl6YGSl1ka9f+ApiMM=;
+	b=JYxu47ZuAb/NdDXUDFB5+N+fBV5Rz/B2dT8/433zltXUaufDXiRSt9pP3gi4S7pIOCKDkK
+	BjXKDr9RXSSHdSYnnRU10iWjbodzxeR4HxOaLZOKzD4SMNy1Wivmf76qmSAr/uKlp5UssV
+	dEgPeqhSHrKjJwoyUWb9EXRI48CMC5WadaYcRFgTKSQ6UUiwZXCQVmNBHGHIisx1kE1gSg
+	vVQJs8T510mOW6Auu0vKnKkTuFiBLnURf6U7bAnagof1+hQd+KAWQwfugIDe/wvSgctIDr
+	6vGMh287FtqZxtWKfqc25oAVbxLPQ+d/zDHPaYG4ETlN/QDmqTvg451T48il1w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1717078988;
+	s=2020e; t=1717083499;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=vV/t6fERSzKTZ1gs6ufW5FSStbU7Wr1/KJqbwL6JUuo=;
-	b=EQ+qXVOy09/t5qsR1C3X8uAUOKhw6nHO1IUOrbPbzLlrpsxr0KKdva7JOV3A0FJKcNMYqM
-	egU4bZ+JLhmfxJDg==
+	bh=VB8BVFevT06lKaWEfV21IkEQ1bl6YGSl1ka9f+ApiMM=;
+	b=PVycF0NcgHXIHpSH2tiFTYdCkiefL1iaQaBZmKg3kSZqXXgV3GQ41lqvp+q2kxFXujSOcB
+	nG1LEqRtwRJ3GZDg==
 From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -65,7 +65,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171707898810.10875.17950546903678321366.tip-bot2@tip-bot2>
+Message-ID: <171708349914.10875.4285177308487469311.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -75,13 +75,13 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     b9210e56d71d9deb1ad692e405f6b2394f7baa4d
-Gitweb:        https://git.kernel.org/tip/b9210e56d71d9deb1ad692e405f6b2394f7=
-baa4d
+Commit-ID:     2a38e4ca302280fdcce370ba2bee79bac16c4587
+Gitweb:        https://git.kernel.org/tip/2a38e4ca302280fdcce370ba2bee79bac16=
+c4587
 Author:        Dave Hansen <dave.hansen@linux.intel.com>
 AuthorDate:    Fri, 17 May 2024 13:05:34 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 30 May 2024 07:14:27 -07:00
+CommitterDate: Thu, 30 May 2024 08:29:45 -07:00
 
 x86/cpu: Provide default cache line size if not enumerated
 
@@ -151,18 +151,18 @@ tc.intel.com
  1 file changed, 4 insertions(+)
 
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 2b170da..373b16b 100644
+index 2b170da..e31293c 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
-@@ -1070,6 +1070,10 @@ void get_cpu_address_sizes(struct cpuinfo_x86 *c)
- 			    cpu_has(c, X86_FEATURE_PSE36))
- 				c->x86_phys_bits =3D 36;
- 		}
+@@ -1075,6 +1075,10 @@ void get_cpu_address_sizes(struct cpuinfo_x86 *c)
+=20
+ 		c->x86_virt_bits =3D (eax >> 8) & 0xff;
+ 		c->x86_phys_bits =3D eax & 0xff;
 +
 +		/* Provide a sane default if not enumerated: */
 +		if (!c->x86_clflush_size)
 +			c->x86_clflush_size =3D 32;
- 	} else {
- 		cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
+ 	}
 =20
+ 	c->x86_cache_bits =3D c->x86_phys_bits;
 
