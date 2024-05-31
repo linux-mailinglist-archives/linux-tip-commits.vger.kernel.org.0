@@ -1,168 +1,136 @@
-Return-Path: <linux-tip-commits+bounces-1315-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1317-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15A68D4F39
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 May 2024 17:38:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE4D8D5ED8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 May 2024 11:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21ED1C229D2
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 May 2024 15:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBBA3284780
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 May 2024 09:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2708182D2F;
-	Thu, 30 May 2024 15:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D7E13F44F;
+	Fri, 31 May 2024 09:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JYxu47Zu";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PVycF0Nc"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hKhGIZkA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="b0PIRp+y"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB70F182D2D;
-	Thu, 30 May 2024 15:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E078E13774B;
+	Fri, 31 May 2024 09:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717083503; cv=none; b=ZWgdGD+5w0o3XKNM9axTNMcmVhaZM7fz3xl1PX7ypjMaCHY40nCWw38rOGSd5uFHF6P+IGRKXKVkg1fMjt8Ep5lW3x5fU5M3CY64x3GRGaKePIgjh7ihi8zxx5reg4ERqupc+/zUYtuccyyjaqjfv5DHu2u22SJ1o9hNa1CE2xg=
+	t=1717149047; cv=none; b=JLBzctmL3qLuYnWibeTcqSd54oYOPr7ddjTu4PU8R46UbTqCnKcHo7aXa3cPVf5p5SCJCa6m5R4+uG5NFLDD0aZJNjo5VvcdQYpq0UFI8mMpZGi7Gy0noUi8TiEoDzNMJRJJarn+JB5RR2cntd0NoDjc/+5dpVqCfFFP13aUr4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717083503; c=relaxed/simple;
-	bh=kJUgEnnB1j6Tpeo+jUM1Mg4mIz8PPZ73v26DSU8OP/A=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=BSJRMJDsBK3Wb1XlcchCFciTpO7IY2wfX5oi/3Z81mbE17/PQCMBl9lyE6t9AFL8+WQzWefNNFhfL66fy/CsJZAEfMpGtei6+O7vmSlRpi+qSwnGlm/Wzii2/j4/zCT/dpP1x+g/TqXT0LRWUEAUARbQMBodYTzBvAIbQoXXbs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JYxu47Zu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PVycF0Nc; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1717149047; c=relaxed/simple;
+	bh=w7IMHtws+30In+oO8BQCnbuRK3FuJZUbjVB3lg6RPnQ=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=SGGDx2DwyM8uMl3ouCgH1ZAv297UqMghMKrPJjmZyxoI1c+K3ss8keT1WqtskLiA+CkGqUfMES5nVV1Flu3ph5N0hySyaKNKf9aHGwfu89780/TO52w1AFA4hs6p367eozULV/saeWcqJo8RoVFtRg5HCqXLZft81W3NC0zCGX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hKhGIZkA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=b0PIRp+y; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 30 May 2024 15:38:19 -0000
+Date: Fri, 31 May 2024 09:50:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1717083499;
+	s=2020; t=1717149043;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=VB8BVFevT06lKaWEfV21IkEQ1bl6YGSl1ka9f+ApiMM=;
-	b=JYxu47ZuAb/NdDXUDFB5+N+fBV5Rz/B2dT8/433zltXUaufDXiRSt9pP3gi4S7pIOCKDkK
-	BjXKDr9RXSSHdSYnnRU10iWjbodzxeR4HxOaLZOKzD4SMNy1Wivmf76qmSAr/uKlp5UssV
-	dEgPeqhSHrKjJwoyUWb9EXRI48CMC5WadaYcRFgTKSQ6UUiwZXCQVmNBHGHIisx1kE1gSg
-	vVQJs8T510mOW6Auu0vKnKkTuFiBLnURf6U7bAnagof1+hQd+KAWQwfugIDe/wvSgctIDr
-	6vGMh287FtqZxtWKfqc25oAVbxLPQ+d/zDHPaYG4ETlN/QDmqTvg451T48il1w==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RaJNhvi+sciJc8wWv7Is7D/W4AZtfISJw34fjJewx4c=;
+	b=hKhGIZkAZJqQFaJW9vCWmQf8Xh//Ee/VERn/q32Ps68WdcVK8CxIL6hv2iuA5hjBceS0lp
+	CGp+5xgHAmSjTejrURsj8abxZwjpxeXmW+L4EEMPixxQG2MvXvyoWZg0IQpkLpEL4w91ox
+	6+861998DXdP5t8lalkZcTuVD9aaCRpei7lNd+ZIWHgzpsKSfiToe9+BkSjvqcKVzpQsgy
+	DHtiLguqxpaxG8SvQjcaXbhcvOO1yC5YZJzzK7qv8ssPOVci6/LnNt2N3ok3M/+2U+WTbD
+	194DefDbfd4vQYcVsHOA+2AaRWcn2kCg0surfzf9RLh6zzsfLM9ConaaNbRCLw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1717083499;
+	s=2020e; t=1717149043;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=VB8BVFevT06lKaWEfV21IkEQ1bl6YGSl1ka9f+ApiMM=;
-	b=PVycF0NcgHXIHpSH2tiFTYdCkiefL1iaQaBZmKg3kSZqXXgV3GQ41lqvp+q2kxFXujSOcB
-	nG1LEqRtwRJ3GZDg==
-From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RaJNhvi+sciJc8wWv7Is7D/W4AZtfISJw34fjJewx4c=;
+	b=b0PIRp+yFAm0UzvEgkUNeLQPb/bweVxl/wuO9950+2CosEmgSnzB5FGJ9XdC1qT3Gs72mw
+	rImLsB0BZc97cbDA==
+From: "tip-bot2 for Jeff Johnson" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: x86/urgent] x86/cpu: Provide default cache line size if not enumerated
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, osmanx@heusipp.de,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+ [tip: perf/urgent] perf/x86/intel: Add missing MODULE_DESCRIPTION() lines
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, Ingo Molnar <mingo@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240530-md-arch-x86-events-intel-v1-1-8252194ed20a@quicinc.com>
+References: <20240530-md-arch-x86-events-intel-v1-1-8252194ed20a@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171708349914.10875.4285177308487469311.tip-bot2@tip-bot2>
+Message-ID: <171714904251.10875.1333569603667497289.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     2a38e4ca302280fdcce370ba2bee79bac16c4587
-Gitweb:        https://git.kernel.org/tip/2a38e4ca302280fdcce370ba2bee79bac16=
-c4587
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Fri, 17 May 2024 13:05:34 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 30 May 2024 08:29:45 -07:00
+Commit-ID:     dc8e5dfb52d56e955ad09174330252710845b8d2
+Gitweb:        https://git.kernel.org/tip/dc8e5dfb52d56e955ad09174330252710845b8d2
+Author:        Jeff Johnson <quic_jjohnson@quicinc.com>
+AuthorDate:    Thu, 30 May 2024 13:42:51 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 31 May 2024 11:41:15 +02:00
 
-x86/cpu: Provide default cache line size if not enumerated
+perf/x86/intel: Add missing MODULE_DESCRIPTION() lines
 
-tl;dr: CPUs with CPUID.80000008H but without CPUID.01H:EDX[CLFSH]
-will end up reporting cache_line_size()=3D=3D0 and bad things happen.
-Fill in a default on those to avoid the problem.
+Fix the 'make W=1 C=1' warnings:
 
-Long Story:
+  WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/events/intel/intel-uncore.o
+  WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/events/intel/intel-cstate.o
 
-The kernel dies a horrible death if c->x86_cache_alignment (aka.
-cache_line_size() is 0.  Normally, this value is populated from
-c->x86_clflush_size.
-
-Right now the code is set up to get c->x86_clflush_size from two
-places.  First, modern CPUs get it from CPUID.  Old CPUs that don't
-have leaf 0x80000008 (or CPUID at all) just get some sane defaults
-from the kernel in get_cpu_address_sizes().
-
-The vast majority of CPUs that have leaf 0x80000008 also get
-->x86_clflush_size from CPUID.  But there are oddballs.
-
-Intel Quark CPUs[1] and others[2] have leaf 0x80000008 but don't set
-CPUID.01H:EDX[CLFSH], so they skip over filling in ->x86_clflush_size:
-
-	cpuid(0x00000001, &tfms, &misc, &junk, &cap0);
-	if (cap0 & (1<<19))
-		c->x86_clflush_size =3D ((misc >> 8) & 0xff) * 8;
-
-So they: land in get_cpu_address_sizes() and see that CPUID has level
-0x80000008 and jump into the side of the if() that does not fill in
-c->x86_clflush_size.  That assigns a 0 to c->x86_cache_alignment, and
-hilarity ensues in code like:
-
-        buffer =3D kzalloc(ALIGN(sizeof(*buffer), cache_line_size()),
-                         GFP_KERNEL);
-
-To fix this, always provide a sane value for ->x86_clflush_size.
-
-Big thanks to Andy Shevchenko for finding and reporting this and also
-providing a first pass at a fix. But his fix was only partial and only
-worked on the Quark CPUs.  It would not, for instance, have worked on
-the QEMU config.
-
-1. https://raw.githubusercontent.com/InstLatx64/InstLatx64/master/GenuineInte=
-l/GenuineIntel0000590_Clanton_03_CPUID.txt
-2. You can also get this behavior if you use "-cpu 486,+clzero"
-   in QEMU.
-
-[ dhansen: remove 'vp_bits_from_cpuid' reference in changelog
-	   because bpetkov brutally murdered it recently. ]
-
-Fixes: fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct value stra=
-ight away, instead of a two-phase approach")
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: J=C3=B6rn Heusipp <osmanx@heusipp.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240516173928.3960193-1-andriy.shevchenko@=
-linux.intel.com/
-Link: https://lore.kernel.org/lkml/5e31cad3-ad4d-493e-ab07-724cfbfaba44@heusi=
-pp.de/
-Link: https://lore.kernel.org/all/20240517200534.8EC5F33E%40davehans-spike.os=
-tc.intel.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Link: https://lore.kernel.org/r/20240530-md-arch-x86-events-intel-v1-1-8252194ed20a@quicinc.com
 ---
- arch/x86/kernel/cpu/common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/events/intel/cstate.c | 1 +
+ arch/x86/events/intel/uncore.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 2b170da..e31293c 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1075,6 +1075,10 @@ void get_cpu_address_sizes(struct cpuinfo_x86 *c)
-=20
- 		c->x86_virt_bits =3D (eax >> 8) & 0xff;
- 		c->x86_phys_bits =3D eax & 0xff;
-+
-+		/* Provide a sane default if not enumerated: */
-+		if (!c->x86_clflush_size)
-+			c->x86_clflush_size =3D 32;
- 	}
-=20
- 	c->x86_cache_bits =3D c->x86_phys_bits;
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index e64eaa8..9d6e8f1 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -114,6 +114,7 @@
+ #include "../perf_event.h"
+ #include "../probe.h"
+ 
++MODULE_DESCRIPTION("Support for Intel cstate performance events");
+ MODULE_LICENSE("GPL");
+ 
+ #define DEFINE_CSTATE_FORMAT_ATTR(_var, _name, _format)		\
+diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
+index 419c517..c68f5b3 100644
+--- a/arch/x86/events/intel/uncore.c
++++ b/arch/x86/events/intel/uncore.c
+@@ -34,6 +34,7 @@ static struct event_constraint uncore_constraint_fixed =
+ struct event_constraint uncore_constraint_empty =
+ 	EVENT_CONSTRAINT(0, 0, 0);
+ 
++MODULE_DESCRIPTION("Support for Intel uncore performance events");
+ MODULE_LICENSE("GPL");
+ 
+ int uncore_pcibus_to_dieid(struct pci_bus *bus)
 
