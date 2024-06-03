@@ -1,227 +1,140 @@
-Return-Path: <linux-tip-commits+bounces-1336-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1337-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D568D822D
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Jun 2024 14:25:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1468D86D4
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Jun 2024 18:01:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB8371F217A3
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Jun 2024 12:25:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E03A1C21B28
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Jun 2024 16:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B63D12BEBE;
-	Mon,  3 Jun 2024 12:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989B327269;
+	Mon,  3 Jun 2024 16:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4bsdwNHj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TOiAYS5G"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="inVrbcEP"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D437077118;
-	Mon,  3 Jun 2024 12:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D59526AD0;
+	Mon,  3 Jun 2024 16:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717417510; cv=none; b=O3+nvXBe8rTsBCT2Jn2JAsnQ7rREv03QozMx4bcdIWWuzIgaa6f2JMcR3bGeRsNHpmboIXkPDu59e0A6HbuZ20bazJwEXaFPyQdt0T1aD9C9h9OZZNPwNMlb7WlknSrUA3YrUqq5LDH/qe9DL4nxO/o/n5928qqeqIcvcLg9Bt0=
+	t=1717430473; cv=none; b=bzSTfnFngEAhkUecHZ+x1YEk0ZWbGrEla7j/U+ppaBO/wdQHFSWiabdCuCuSCTAKfRiaotzXc8+orYy2sptfMyykIUC2JR6n/ES79mVbrh2ZIH1bAJYQh+NBBtnhKgjtumX/7NdUMu00eR+g7RPZlRgutQsj+NIX4CcJtt2OQJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717417510; c=relaxed/simple;
-	bh=UlmbVGRyQ2g8T8gjbDPF55SMl841W/T6lcIgZeShKJU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=N1WSaNJ7bEsXLaVt7VhSoadtE/6zl2/9EAizksiQdAdnMwhCEsYyQ20cjErtaDEsMwwrdVrShV/V2ecxi3mFR32rYtRVnTSqm5vQePP7xCSg+CCO8W58q2gUpH1UBbBZf+IXHqbWrJYeYCIYPXbta/Xml9tJEI9AaOoyxdBQ6PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4bsdwNHj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TOiAYS5G; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 03 Jun 2024 12:25:06 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1717417507;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fkSA7wJzHRXARTryahlZJvg0OXJiY2Vv3n352u4LYUg=;
-	b=4bsdwNHjM0IPJkSp5nGBBEj6wi/t3e9CASvCuQCEBshXXyG+CCA6idNx5rmn7MWYDf9iih
-	cjwCQ0mX+VWaoUAS5f+8oI+yAWwjfOabmncxBLKzsve8/RdPrRxdLse0WHUtD+Tx2adcDv
-	n7+/NovMkBagRMBsdVPfTa7Uopw2PgW30SFiODPwAULOe1c2vJ8IdrU0rlwjuXvIXbqvKk
-	J+OXmIVwiLs5f+Ky/Aglg7j0yr1rvOsxHy8BMRzVdH1iGo3TgJwTqPFvOU4QSVu9e6x+27
-	ejdYopLmgMp4ZI6RgI3kdnJ2NIXItGq9XnR/q31V0VHIWES9KRNdJPmwCclu6w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1717417507;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fkSA7wJzHRXARTryahlZJvg0OXJiY2Vv3n352u4LYUg=;
-	b=TOiAYS5GlmLWWyzsqUCjC6eYScCTY3QeXOm9S+vSIqVHypsrXAUR/LBYhqpbKYjpIMdiuW
-	IWEolsSuKcKnZvAQ==
-From: "tip-bot2 for Hagar Hemdan" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v3-its: Fix potential race condition in
- its_vlpi_prop_update()
-Cc: Marc Zyngier <maz@kernel.org>, Hagar Hemdan <hagarhem@amazon.com>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240531162144.28650-1-hagarhem@amazon.com>
+	s=arc-20240116; t=1717430473; c=relaxed/simple;
+	bh=Iv1Uc6RhMV8UTtYf+csBgZAea6pO/MLrB9bZpKUWHsw=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PRpj8QVif61eaXBrEWhYtZ/2mHwqASkiS50p2KJGumJIJR53NGJh4S1xBINKF6UNwqtHth175EuCFeYVo6uHN7gMz18geW8QVvJkIWLnUiJeiB0rHtKQ5M86d8B5zreweQfJ4zzc/hT68fpqgw6/eMG5kYNGi9oEddvrjsOaLIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=inVrbcEP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17E8C2BD10;
+	Mon,  3 Jun 2024 16:01:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717430472;
+	bh=Iv1Uc6RhMV8UTtYf+csBgZAea6pO/MLrB9bZpKUWHsw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=inVrbcEPSdpAHVrE7BOlBkaNG+nL0oLLR9ZPw9KHBGFHot8eCM6ep9LnM9H7WNkPM
+	 BT6Awd0gVdP2AG5W8PTk9E7B6VJKWIq0o0f7Ve/qNRGBvo8pt5xhV7d8tm+AAoaEqX
+	 447D0DasWT/TaXDLSowPzBcnN5i16DuSvy/OYrR1fReSiSp9sL1gJv1QuV5PxHnK9r
+	 VObMyOEdHQrTj09LxO2ZkzaIK0c2KAthaaOTkCCSVmeEtoof3hn0alU29hbzZSJ6qA
+	 N7/3QZCxQ4NcAYqjlZnoEA5/AvpDAovHNbSh9fm8BIM2ydVER7NbaKtoyYLQzFndp+
+	 BmsXHIRLsf0UA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sEA7S-000Hvn-Tk;
+	Mon, 03 Jun 2024 17:01:11 +0100
+Date: Mon, 03 Jun 2024 17:01:10 +0100
+Message-ID: <86h6eakoc9.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	stable@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [tip: irq/urgent] irqchip/gic-v3-its: Fix potential race condition in its_vlpi_prop_update()
+In-Reply-To: <171741750653.10875.4371546608500601999.tip-bot2@tip-bot2>
 References: <20240531162144.28650-1-hagarhem@amazon.com>
+	<171741750653.10875.4371546608500601999.tip-bot2@tip-bot2>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <171741750653.10875.4371546608500601999.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, hagarhem@amazon.com, tglx@linutronix.de, stable@vger.kernel.org, x86@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The following commit has been merged into the irq/urgent branch of tip:
+On Mon, 03 Jun 2024 13:25:06 +0100,
+"tip-bot2 for Hagar Hemdan" <tip-bot2@linutronix.de> wrote:
+> 
+> The following commit has been merged into the irq/urgent branch of tip:
+> 
+> Commit-ID:     8dd4302d37bb2fe842acb3be688d393254b4f126
+> Gitweb:        https://git.kernel.org/tip/8dd4302d37bb2fe842acb3be688d393254b4f126
+> Author:        Hagar Hemdan <hagarhem@amazon.com>
+> AuthorDate:    Fri, 31 May 2024 16:21:44 
+> Committer:     Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Mon, 03 Jun 2024 14:19:42 +02:00
+> 
+> irqchip/gic-v3-its: Fix potential race condition in its_vlpi_prop_update()
+> 
+> its_vlpi_prop_update() calls lpi_write_config() which obtains the
+> mapping information for a VLPI without lock held. So it could race
+> with its_vlpi_unmap().
+> 
+> Since all calls from its_irq_set_vcpu_affinity() require the same                                                                                                                                                                                                                                                            
+> lock to be held, hoist the locking there instead of sprinkling the
+> locking all over the place.
+> 
+> This bug was discovered using Coverity Static Analysis Security Testing
+> (SAST) by Synopsys, Inc.
+> 
+> [ tglx: Use guard() instead of goto ]
 
-Commit-ID:     8dd4302d37bb2fe842acb3be688d393254b4f126
-Gitweb:        https://git.kernel.org/tip/8dd4302d37bb2fe842acb3be688d393254b4f126
-Author:        Hagar Hemdan <hagarhem@amazon.com>
-AuthorDate:    Fri, 31 May 2024 16:21:44 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 03 Jun 2024 14:19:42 +02:00
+Good call. Except that...
 
-irqchip/gic-v3-its: Fix potential race condition in its_vlpi_prop_update()
+> 
+> Fixes: 015ec0386ab6 ("irqchip/gic-v3-its: Add VLPI configuration handling")
+> Suggested-by: Marc Zyngier <maz@kernel.org>
+> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Marc Zyngier <maz@kernel.org>
+> Link: https://lore.kernel.org/r/20240531162144.28650-1-hagarhem@amazon.com
+> ---
+>  drivers/irqchip/irq-gic-v3-its.c | 44 ++++++++-----------------------
+>  1 file changed, 12 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+> index 40ebf17..c696ac9 100644
+> --- a/drivers/irqchip/irq-gic-v3-its.c
+> +++ b/drivers/irqchip/irq-gic-v3-its.c
 
-its_vlpi_prop_update() calls lpi_write_config() which obtains the
-mapping information for a VLPI without lock held. So it could race
-with its_vlpi_unmap().
+[...]
 
-Since all calls from its_irq_set_vcpu_affinity() require the same                                                                                                                                                                                                                                                            
-lock to be held, hoist the locking there instead of sprinkling the
-locking all over the place.
+> @@ -1992,6 +1970,8 @@ static int its_irq_set_vcpu_affinity(struct irq_data *d, void *vcpu_info)
+>  	if (!is_v4(its_dev->its))
+>  		return -EINVAL;
+>  
+> +	guard(raw_spinlock_irq, &its_dev->event_map.vlpi_lock);
+> +
 
-This bug was discovered using Coverity Static Analysis Security Testing
-(SAST) by Synopsys, Inc.
+I don't think this compiles as is, due to the funky syntax required.
 
-[ tglx: Use guard() instead of goto ]
+Thanks,
 
-Fixes: 015ec0386ab6 ("irqchip/gic-v3-its: Add VLPI configuration handling")
-Suggested-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240531162144.28650-1-hagarhem@amazon.com
----
- drivers/irqchip/irq-gic-v3-its.c | 44 ++++++++-----------------------
- 1 file changed, 12 insertions(+), 32 deletions(-)
+	M.
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 40ebf17..c696ac9 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -1846,28 +1846,22 @@ static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
- 	u32 event = its_get_event_id(d);
--	int ret = 0;
- 
- 	if (!info->map)
- 		return -EINVAL;
- 
--	raw_spin_lock(&its_dev->event_map.vlpi_lock);
--
- 	if (!its_dev->event_map.vm) {
- 		struct its_vlpi_map *maps;
- 
- 		maps = kcalloc(its_dev->event_map.nr_lpis, sizeof(*maps),
- 			       GFP_ATOMIC);
--		if (!maps) {
--			ret = -ENOMEM;
--			goto out;
--		}
-+		if (!maps)
-+			return -ENOMEM;
- 
- 		its_dev->event_map.vm = info->map->vm;
- 		its_dev->event_map.vlpi_maps = maps;
- 	} else if (its_dev->event_map.vm != info->map->vm) {
--		ret = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
- 
- 	/* Get our private copy of the mapping information */
-@@ -1899,46 +1893,32 @@ static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
- 		its_dev->event_map.nr_vlpis++;
- 	}
- 
--out:
--	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
--	return ret;
-+	return 0;
- }
- 
- static int its_vlpi_get(struct irq_data *d, struct its_cmd_info *info)
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
- 	struct its_vlpi_map *map;
--	int ret = 0;
--
--	raw_spin_lock(&its_dev->event_map.vlpi_lock);
- 
- 	map = get_vlpi_map(d);
- 
--	if (!its_dev->event_map.vm || !map) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (!its_dev->event_map.vm || !map)
-+		return -EINVAL;
- 
- 	/* Copy our mapping information to the incoming request */
- 	*info->map = *map;
- 
--out:
--	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
--	return ret;
-+	return 0;
- }
- 
- static int its_vlpi_unmap(struct irq_data *d)
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
- 	u32 event = its_get_event_id(d);
--	int ret = 0;
--
--	raw_spin_lock(&its_dev->event_map.vlpi_lock);
- 
--	if (!its_dev->event_map.vm || !irqd_is_forwarded_to_vcpu(d)) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (!its_dev->event_map.vm || !irqd_is_forwarded_to_vcpu(d))
-+		return -EINVAL;
- 
- 	/* Drop the virtual mapping */
- 	its_send_discard(its_dev, event);
-@@ -1962,9 +1942,7 @@ static int its_vlpi_unmap(struct irq_data *d)
- 		kfree(its_dev->event_map.vlpi_maps);
- 	}
- 
--out:
--	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
--	return ret;
-+	return 0;
- }
- 
- static int its_vlpi_prop_update(struct irq_data *d, struct its_cmd_info *info)
-@@ -1992,6 +1970,8 @@ static int its_irq_set_vcpu_affinity(struct irq_data *d, void *vcpu_info)
- 	if (!is_v4(its_dev->its))
- 		return -EINVAL;
- 
-+	guard(raw_spinlock_irq, &its_dev->event_map.vlpi_lock);
-+
- 	/* Unmap request? */
- 	if (!info)
- 		return its_vlpi_unmap(d);
+-- 
+Without deviation from the norm, progress is not possible.
 
