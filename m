@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1327-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1331-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E018D7EC6
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Jun 2024 11:34:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0178D7ECF
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Jun 2024 11:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 738A71F28314
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Jun 2024 09:34:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE0F61C2141E
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Jun 2024 09:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1098286277;
-	Mon,  3 Jun 2024 09:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41581272B7;
+	Mon,  3 Jun 2024 09:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="163kBzHa";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0d6Jow0V"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lnTeeZOh";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LAsN47w6"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4948B85C79;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD288614B;
 	Mon,  3 Jun 2024 09:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717407015; cv=none; b=coxcPzrHs1jeiC/wrFdp9W0zsxLoQ5joOGLviPPGmXKIdk0Fqq+KQRtFXl2axn5/+SlzJXkn3jQy2kWx48MsaGZDWesfNmk1gDs5Fl1EruoWH0pqSS/NyUl2FuD6z1+Atr98rXoa3hGoZmFdQaunFKMWT91VoztQb0Q4aWwD1fU=
+	t=1717407016; cv=none; b=H2LzVxDdTR2aJbJmwIIvDJz+YyvOHqJoDqIoIbhxGvMDp6NZaIOv3RSZ0Wg14nCBis5iuVAnCRr5KBJjszN7ZcB/IhTjW9oD5mlQzBGKB4A1ZrnqERgvzIomF5Ghv1AY17iP38jWXPcAzIZ53Tj/V5R+bDPw8wpCZ7ty+d0IHbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717407015; c=relaxed/simple;
-	bh=xtqMtpGQrHB54uGZfp9VBm9z3YM1dzMnaqxTWaWCnOc=;
+	s=arc-20240116; t=1717407016; c=relaxed/simple;
+	bh=aG1NfCh/8LQ5jsHqlTBGaqbseKZewJDV3LJYRqDiOcg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MQNG22Y3F+fSfmo3/5DcBzQYKu1M9S6TuXPvYddBhi31xV62bS2lNMFHM15ekz45MHqWgPqFwnxjfOiBndezuhMOc9L82oKt4LADTXoyDDbxSEn5d540+gNv1QRTG6VbOHajIiy9+qwmvFmwdmVFxZsBKj8ubI65k/sZY6n7L/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=163kBzHa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0d6Jow0V; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=p4APaSupBglkplHipHbboJSNcRRxcUV4Z3vqr1JScW4SbHkvHqPsc6piPNm+A5NZzBa+8l5iqrQ8EFYF2upRDQ47zHZua3N91a+e2FuT+xeGE8aGnQ97pTwSqkDe4Y7eFIKWFl7pwkaha2/y9QYRjll7Een24kVGik3xzf/R+Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lnTeeZOh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LAsN47w6; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Mon, 03 Jun 2024 09:30:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1717407009;
+	s=2020; t=1717407010;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JeL1Q/NXa4GQb7N82Z1lfGHGwbb5bIh7X4xoJRM0NNM=;
-	b=163kBzHa+bwALxPF3qQLOOkexShIkxR9W7mMAgaDqj4U+CpoYY5KFlhmUqFRRXl+vRVwdt
-	q/5FNh69iifWHS3bKSykXF+/x0NapIxwv6mX4B8Q25ZGAyknSTuR72spFhD0b9IT84TRUJ
-	iy1K32aBg0RNeSfICvmrSl01f8MbnAqQfGTAMG6SvoKu7BXpTDdBf9a/Q++OTe/ihEo7G7
-	qCzLrkXgWRT2tyLqQrqqdBUWaTe18bF4a31OsjqZr6FH+6MFS7wampLHHj7xKDnAm4Vy/a
-	PcUQpjb6ZpThrMG9oF3iZfHQTyL6szmMHZ8iM21CaewTXBVAP4+4EdVr9xvWXQ==
+	bh=FGMA0MpOcINH1KkUSUBHOmwx5r6N9EJYiJPh942qPhA=;
+	b=lnTeeZOhWZYJkC1VBZnNHtBkaN+Z6AQKzWbc5GzT7ModkHRnaKctQ6FHAoxlMmUGzNNu3B
+	FNItnz7N/07Az5ce5jwrWkV4eyUHRzcnDisrC3lmlNZ2OzY64jqaah8bkajhtCK8eSW6w4
+	V2LjgEIS8DRMgxtc5YGcUL14metOWjzEHyp/jxR1K/tGVMGCO6KW3lJqo0woIXo9kzEhkm
+	VEEieJm+4GPcsJmAYsqXAtc31EpqE/a5i9nkQt4emjLvEYa6dSVnvlw2HJGvwZNrVisHWQ
+	1DHhnzZSWuaFL1qZe/yhqlWoVmdAzcFGUD8PiQabNmpUX35TJKAH2+og3SCiDg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1717407009;
+	s=2020e; t=1717407010;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JeL1Q/NXa4GQb7N82Z1lfGHGwbb5bIh7X4xoJRM0NNM=;
-	b=0d6Jow0VIwdl/arVtFx5saa6mJvToDdQRW/U+A1MYNkDhYht46V8VhtZJQ7NYtWJzsXD+T
-	UoIpSfa0WGHMEbCw==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=FGMA0MpOcINH1KkUSUBHOmwx5r6N9EJYiJPh942qPhA=;
+	b=LAsN47w6XRDUgWh+XtqenhHL3MyeThmtp211Yas8zPrrz2XnxmhCHtJ2bPuk1PqvtdAxSP
+	71oacmiy02nWrpDQ==
+From: "tip-bot2 for Jeff Johnson" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] e1000e: Replace convert_art_to_tsc()
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240513103813.5666-4-lakshmi.sowjanya.d@intel.com>
-References: <20240513103813.5666-4-lakshmi.sowjanya.d@intel.com>
+Subject:
+ [tip: timers/core] time: Add MODULE_DESCRIPTION() to time test modules
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ Thomas Gleixner <tglx@linutronix.de>, "Paul E. McKenney" <paulmck@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240510-time-md-v1-1-44a8a36ac4b0@quicinc.com>
+References: <20240510-time-md-v1-1-44a8a36ac4b0@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171740700913.10875.14681974045180514880.tip-bot2@tip-bot2>
+Message-ID: <171740700967.10875.1560404365308506128.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,44 +82,63 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     bd48b50be50ac5678a7e26c39f6779d7fadf128b
-Gitweb:        https://git.kernel.org/tip/bd48b50be50ac5678a7e26c39f6779d7fadf128b
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 13 May 2024 16:08:04 +05:30
+Commit-ID:     7cbf3b13f00c8341afff1c48ad83d11995842c40
+Gitweb:        https://git.kernel.org/tip/7cbf3b13f00c8341afff1c48ad83d11995842c40
+Author:        Jeff Johnson <quic_jjohnson@quicinc.com>
+AuthorDate:    Fri, 10 May 2024 17:24:25 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 03 Jun 2024 11:18:50 +02:00
 
-e1000e: Replace convert_art_to_tsc()
+time: Add MODULE_DESCRIPTION() to time test modules
 
-The core code now provides a mechanism to convert the ART base clock to the
-corresponding TSC value without requiring an architecture specific
-function.
+Fix the make W=1 warnings:
 
-Replace the direct conversion by filling in the required data.
+WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/time/clocksource-wdtest.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/time/test_udelay.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/time/time_test.o
 
-No functional change intended.
-
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240513103813.5666-4-lakshmi.sowjanya.d@intel.com
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20240510-time-md-v1-1-44a8a36ac4b0@quicinc.com
 
 ---
- drivers/net/ethernet/intel/e1000e/ptp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/time/clocksource-wdtest.c | 1 +
+ kernel/time/test_udelay.c        | 1 +
+ kernel/time/time_test.c          | 1 +
+ 3 files changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/ptp.c b/drivers/net/ethernet/intel/e1000e/ptp.c
-index bbcfd52..89d57dd 100644
---- a/drivers/net/ethernet/intel/e1000e/ptp.c
-+++ b/drivers/net/ethernet/intel/e1000e/ptp.c
-@@ -124,7 +124,8 @@ static int e1000e_phc_get_syncdevicetime(ktime_t *device,
- 	sys_cycles = er32(PLTSTMPH);
- 	sys_cycles <<= 32;
- 	sys_cycles |= er32(PLTSTMPL);
--	*system = convert_art_to_tsc(sys_cycles);
-+	system->cycles = sys_cycles;
-+	system->cs_id = CSID_X86_ART;
+diff --git a/kernel/time/clocksource-wdtest.c b/kernel/time/clocksource-wdtest.c
+index d06185e..62e7344 100644
+--- a/kernel/time/clocksource-wdtest.c
++++ b/kernel/time/clocksource-wdtest.c
+@@ -22,6 +22,7 @@
+ #include "tick-internal.h"
  
- 	return 0;
- }
+ MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Clocksource watchdog unit test");
+ MODULE_AUTHOR("Paul E. McKenney <paulmck@kernel.org>");
+ 
+ static int holdoff = IS_BUILTIN(CONFIG_TEST_CLOCKSOURCE_WATCHDOG) ? 10 : 0;
+diff --git a/kernel/time/test_udelay.c b/kernel/time/test_udelay.c
+index 20d5df6..783f229 100644
+--- a/kernel/time/test_udelay.c
++++ b/kernel/time/test_udelay.c
+@@ -155,5 +155,6 @@ static void __exit udelay_test_exit(void)
+ 
+ module_exit(udelay_test_exit);
+ 
++MODULE_DESCRIPTION("udelay test module");
+ MODULE_AUTHOR("David Riley <davidriley@chromium.org>");
+ MODULE_LICENSE("GPL");
+diff --git a/kernel/time/time_test.c b/kernel/time/time_test.c
+index 3e5d422..2889763 100644
+--- a/kernel/time/time_test.c
++++ b/kernel/time/time_test.c
+@@ -96,4 +96,5 @@ static struct kunit_suite time_test_suite = {
+ };
+ 
+ kunit_test_suite(time_test_suite);
++MODULE_DESCRIPTION("time unit test suite");
+ MODULE_LICENSE("GPL");
 
