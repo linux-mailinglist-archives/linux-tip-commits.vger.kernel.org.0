@@ -1,72 +1,136 @@
-Return-Path: <linux-tip-commits+bounces-1356-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1357-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FBD8FFD5A
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Jun 2024 09:41:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C362900D94
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Jun 2024 23:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5806B1C21217
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Jun 2024 07:41:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98EC71C20C9C
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Jun 2024 21:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CD7156978;
-	Fri,  7 Jun 2024 07:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EED1552ED;
+	Fri,  7 Jun 2024 21:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=comesltaly.com header.i=@comesltaly.com header.b="dn9JG5M+"
-Received: from comesltaly.com (unknown [198.46.142.169])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686071C2BE
-	for <linux-tip-commits@vger.kernel.org>; Fri,  7 Jun 2024 07:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.46.142.169
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gutMZWsm";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZC9PkiTY"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B019A1E495;
+	Fri,  7 Jun 2024 21:38:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717746108; cv=none; b=akTm5X8Aj+jHA3qpEHO2YnNvoAz5xVLDKE3qEMx1qucH4YkjyVeUrL9WqDkdMK5oh42tHeEzX8bbzTl0Iw5nW0ZRQsUA/NhnTMsuSYbrKJPQBw8B3CHfL9F6jKDA6LIcEf7qm9ocFtujNEznDXD/bRskQ0VW89J+X/GH2r49Wgo=
+	t=1717796292; cv=none; b=uJAEoqOYw9OlqvlfC7OuxeH1Bc3d6kydcB8Av2y6Ey99vBOL/lp/fwZG9jdrOhQF2Z7lZtyGZHaFpGwDPjili0XuWhVFt+WENTbpdDAlMhHY5xKpYDyKbkqgl+hPJExwQOYc6Kpq1MoSIhndZTMx4xuQo2DyK0ilOCtmoZ+aEoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717746108; c=relaxed/simple;
-	bh=xcIcXLG5CTTJlkIKljMGXKd1//0ywM1gBKg/1sk1Czw=;
-	h=Content-Type:MIME-Version:Subject:To:From:Date:Message-ID; b=mtY/qSOLfXzTgvxij1wHaDnfQ+IAZMBHskblo2sX/4YnZrPTxOD1nIxyMmgn8kTEFfQXof/sxkAgeCr0b0/ROAs9KtN0bizJV4sDTiq015GjyWO25Xd+bkl6qRExam8B3t52a6I0FLj8DDOIrRDtbSvpLWy2Ol5q7a/11i2Dd9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=comesltaly.com; spf=pass smtp.mailfrom=comesltaly.com; dkim=pass (1024-bit key) header.d=comesltaly.com header.i=@comesltaly.com header.b=dn9JG5M+; arc=none smtp.client-ip=198.46.142.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=comesltaly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=comesltaly.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/simple; d=comesltaly.com; s=vahn4;
-	bh=xcIcXLG5CTTJlkIKljMGXKd1//0ywM1gBKg/1sk1Czw=;
-	h=Message-ID:Reply-To:Date:From:To:Subject:Content-Description:
-	Content-Transfer-Encoding:MIME-Version:Content-Type; b=dn9JG5M+8yGB1+EdM5TtGU
-	Mt3N1xg6qBGc3/RKndaqzQsHBpPEit3HhWbAclZN60BgHdqPtK5hUBEd6B1pKNkDJMPlsfZBey5jo
-	w2xE0oTc8g0BoYdo+XA9j34AMNM9u5iGLjZb30r0Et2aWs82Ol/nLZQ6E+4tWpvQPtpzVJiA=
-Received: from [20.37.118.4] (account admin@comesltaly.com HELO myVm.jiy03wdx5zcuhdlxdgii1ipjkg.lx.internal.cloudapp.net)
-  by comesltaly.com (CommuniGate Pro SMTP 6.2.14 _community_)
-  with ESMTPSA id 1513769 for linux-tip-commits@vger.kernel.org; Fri, 07 Jun 2024 09:35:13 +0200
-Content-Type: text/plain; charset="iso-8859-1"
+	s=arc-20240116; t=1717796292; c=relaxed/simple;
+	bh=72gb8BM70mgsIZDMWOganiYr+lGSQ/4n7CT4a84+G8Y=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=mfS9bH9lwNDBzX2V2tMAgZF6TBHX270Eq7a9+/Cx18E+pO9WOxvmtKvmXqt+jfyabTPgmpdsk1i9m0/0TPt+Raok+EFpxRkFE9Ajva4RDDXzT65+42FGE/4ZY74UOH1rYLfZsXsgq52uHqCsU4xftlVaYhWLrpPGDJ0RuBItLtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gutMZWsm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZC9PkiTY; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 07 Jun 2024 21:38:07 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1717796288;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lo6OeiHnixowsI/O8/Q1rbGOSTTLlz3S6ItfVtnVRgI=;
+	b=gutMZWsmM+f8yUvjo13SkQccaus4/nGCt3REe0fE2vdydJIa+jDR4SQHT2iwlLM4uRhGKV
+	9o17TTZFl2RK+saemwKCbVkYFfYdQS0kIHcukI7xSA9QCiOQVGWoyBSo4O55KpnaHRB36v
+	cWPsX+iaYeME2xGNt95bcbquH36QuUN6eJP5PNEf9lgTvAJQKQzWvvsXGyNyeO5Py71+Ma
+	utAgquunezQR9h0GETAQuLGFvfHyArt73zRrmLkHlgfr3cW1CE463nlPgPk9czAxgAJ5BR
+	XoTGk0B7uJkInxYFX4mFMtGCqeO9xQi5k8ACBzGsCJECvaOP0fNEYVRp/PLL3w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1717796288;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lo6OeiHnixowsI/O8/Q1rbGOSTTLlz3S6ItfVtnVRgI=;
+	b=ZC9PkiTYOsDaUWQSr1BTD2ZPstDSXY4IJyZf0uQEDAu0rdmhbxem8RmmyzHCFQ6As9r8Ro
+	3uBNw/PlqDBIUlAQ==
+From: "tip-bot2 for Christian Heusel" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/misc] tools/x86/kcpuid: Add missing dir via Makefile
+Cc: Christian Heusel <christian@heusel.eu>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240531111757.719528-2-christian@heusel.eu>
+References: <20240531111757.719528-2-christian@heusel.eu>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: SV: Policy Notification #5610932:
-To: linux-tip-commits@vger.kernel.org
-From: "Vahn Montes" <admin@comesltaly.com>
-Date: Fri, 07 Jun 2024 07:41:45 +0000
-Reply-To: vahnmontes@legalprobates.com
-Message-ID: <auto-000001513769@comesltaly.com>
+Message-ID: <171779628813.10875.3798969892614697703.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Greetings from Vahn,
- =
+The following commit has been merged into the x86/misc branch of tip:
 
-I hope this message finds you well. =
+Commit-ID:     f6d116e080604251880b4957843f9b1f6fdfa30f
+Gitweb:        https://git.kernel.org/tip/f6d116e080604251880b4957843f9b1f6fdfa30f
+Author:        Christian Heusel <christian@heusel.eu>
+AuthorDate:    Fri, 31 May 2024 13:17:58 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 07 Jun 2024 23:30:52 +02:00
 
+tools/x86/kcpuid: Add missing dir via Makefile
 
-I hereby express my unwavering patience in awaiting your prompt response to=
- the aforementioned correspondence.
+So far the Makefile just installed the csv into $(HWDATADIR)/cpuid.csv, which
+made it unaware about $DESTDIR. Add $DESTDIR to the install command and while
+at it also create the directory, should it not exist already. This eases the
+packaging of kcpuid and allows i.e. for the install on Arch to look like this:
 
-Please confirm your availability to enable me to reach you through Phone or=
- email for a very important notice.
+  $ make BINDIR=/usr/bin DESTDIR="$pkgdir" -C tools/arch/x86/kcpuid install
 
-Best Regards,
-Vahn Montes ( LL.B, LL.M)
-Attorney at Law
-Brandschenkestrasse 24
-CH-8027 Zurich, Switzerland
+Some background on DESTDIR:
+
+DESTDIR is commonly used in packaging for staged installs (regardless of the
+used package manager):
+
+  https://www.gnu.org/prep/standards/html_node/DESTDIR.html
+
+So the package is built and installed into a directory which the package
+manager later picks up and creates some archive from it.
+
+What is specific to Arch Linux here is only the usage of $pkgdir in the
+example, DESTDIR itself is widely used.
+
+  [ bp: Extend the commit message with Christian's info on DESTDIR as a GNU
+    coding standards thing. ]
+
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240531111757.719528-2-christian@heusel.eu
+---
+ tools/arch/x86/kcpuid/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tools/arch/x86/kcpuid/Makefile b/tools/arch/x86/kcpuid/Makefile
+index 87b554f..d0b4b0e 100644
+--- a/tools/arch/x86/kcpuid/Makefile
++++ b/tools/arch/x86/kcpuid/Makefile
+@@ -19,6 +19,6 @@ clean :
+ 	@rm -f kcpuid
+ 
+ install : kcpuid
+-	install -d  $(DESTDIR)$(BINDIR)
++	install -d  $(DESTDIR)$(BINDIR) $(DESTDIR)$(HWDATADIR)
+ 	install -m 755 -p kcpuid $(DESTDIR)$(BINDIR)/kcpuid
+-	install -m 444 -p cpuid.csv $(HWDATADIR)/cpuid.csv
++	install -m 444 -p cpuid.csv $(DESTDIR)$(HWDATADIR)/cpuid.csv
 
