@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1357-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1361-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C362900D94
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Jun 2024 23:38:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D9D9027D2
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jun 2024 19:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98EC71C20C9C
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Jun 2024 21:38:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C9D31F22C4B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jun 2024 17:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EED1552ED;
-	Fri,  7 Jun 2024 21:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D36149DE8;
+	Mon, 10 Jun 2024 17:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gutMZWsm";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZC9PkiTY"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ERsMF2mz";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bJeUToxX"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B019A1E495;
-	Fri,  7 Jun 2024 21:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46EB145352;
+	Mon, 10 Jun 2024 17:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717796292; cv=none; b=uJAEoqOYw9OlqvlfC7OuxeH1Bc3d6kydcB8Av2y6Ey99vBOL/lp/fwZG9jdrOhQF2Z7lZtyGZHaFpGwDPjili0XuWhVFt+WENTbpdDAlMhHY5xKpYDyKbkqgl+hPJExwQOYc6Kpq1MoSIhndZTMx4xuQo2DyK0ilOCtmoZ+aEoE=
+	t=1718040951; cv=none; b=BLXSkj2oFZX2t5dBzBH9zHM4ITAHFekArqULgu1I0p5vfy4++zwlmOxFUZo0H8l0rBOcia22sTOVk2K8qzIbIHELmivjnGW39d4kFNhTPWL1D96Mb8ihRxwDsTIKEu0++MJHDrm2l9jEgMfpeysxXFDyVNbTHWYdfu12Wey8JWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717796292; c=relaxed/simple;
-	bh=72gb8BM70mgsIZDMWOganiYr+lGSQ/4n7CT4a84+G8Y=;
+	s=arc-20240116; t=1718040951; c=relaxed/simple;
+	bh=gEG+O/kRTGA0aqpC27gaYWrZS67zXd5MN0Rohk5FXDM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=mfS9bH9lwNDBzX2V2tMAgZF6TBHX270Eq7a9+/Cx18E+pO9WOxvmtKvmXqt+jfyabTPgmpdsk1i9m0/0TPt+Raok+EFpxRkFE9Ajva4RDDXzT65+42FGE/4ZY74UOH1rYLfZsXsgq52uHqCsU4xftlVaYhWLrpPGDJ0RuBItLtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gutMZWsm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZC9PkiTY; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=VsVYhcQ0PpX8ODwq+e+KdHDd0aO2eWAiapYgXbcWAYNLbDI7kHsaVmCpNrO6ef1/t2Jmvw4vKGnWTc20e+oy7G22+fqPb/RMk/L49wGuDaGCgyNdhXLn879dtIEuro3eLfcVpg4AQdYwDdGlPe5WB65Ka939eV+Dk+/BGCrN6jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ERsMF2mz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bJeUToxX; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 07 Jun 2024 21:38:07 -0000
+Date: Mon, 10 Jun 2024 17:35:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1717796288;
+	s=2020; t=1718040946;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lo6OeiHnixowsI/O8/Q1rbGOSTTLlz3S6ItfVtnVRgI=;
-	b=gutMZWsmM+f8yUvjo13SkQccaus4/nGCt3REe0fE2vdydJIa+jDR4SQHT2iwlLM4uRhGKV
-	9o17TTZFl2RK+saemwKCbVkYFfYdQS0kIHcukI7xSA9QCiOQVGWoyBSo4O55KpnaHRB36v
-	cWPsX+iaYeME2xGNt95bcbquH36QuUN6eJP5PNEf9lgTvAJQKQzWvvsXGyNyeO5Py71+Ma
-	utAgquunezQR9h0GETAQuLGFvfHyArt73zRrmLkHlgfr3cW1CE463nlPgPk9czAxgAJ5BR
-	XoTGk0B7uJkInxYFX4mFMtGCqeO9xQi5k8ACBzGsCJECvaOP0fNEYVRp/PLL3w==
+	bh=NffsW6uZ57Snj3nWvpu+1CVOleFQgv1NeJ/HKebzorI=;
+	b=ERsMF2mz/lluYDVRJHVIwJk8ciqS/rkHMJOUzN5gFWkEL2NqYWb3CrpBmEKbOKmtkUSn7Q
+	kERsDI4smW0H5BYjwVmyv45/rWJx4JDzFmPQ7FOAnKIMjxF2S9YG4S3Gs4scRZn7KzfzjS
+	ugNB7bJZgwlRdlVUOEXXx55IYEgTgDcC33GAAJbt+TfhH/XQimVkiHpHuXUuPNReCZMr5Y
+	Zo7ehdJURWz3TNhCN0Px7p0LXYcCU1scd1wlAznBXN4dR2yIRBRZK4Xq0TOc4Jlshqj50q
+	dJvW6m9NZs/BRS3vbZQESqR/vW/5S77Nr/lUNAhKZYNdkwqYSHdsNKzqkIYUUA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1717796288;
+	s=2020e; t=1718040946;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lo6OeiHnixowsI/O8/Q1rbGOSTTLlz3S6ItfVtnVRgI=;
-	b=ZC9PkiTYOsDaUWQSr1BTD2ZPstDSXY4IJyZf0uQEDAu0rdmhbxem8RmmyzHCFQ6As9r8Ro
-	3uBNw/PlqDBIUlAQ==
-From: "tip-bot2 for Christian Heusel" <tip-bot2@linutronix.de>
+	bh=NffsW6uZ57Snj3nWvpu+1CVOleFQgv1NeJ/HKebzorI=;
+	b=bJeUToxXjsKqkooVL/vZcw4rQ566YQ9bse9Lm4VfEOxDd4iUNDKRgNPwoFcG+QWOBGXbTn
+	LCGFKOC9C3P54sBw==
+From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] tools/x86/kcpuid: Add missing dir via Makefile
-Cc: Christian Heusel <christian@heusel.eu>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240531111757.719528-2-christian@heusel.eu>
-References: <20240531111757.719528-2-christian@heusel.eu>
+Subject: [tip: x86/cache] cpu: Move CPU hotplug function declarations into
+ their own header
+Cc: Tony Luck <tony.luck@intel.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240610003927.341707-2-tony.luck@intel.com>
+References: <20240610003927.341707-2-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171779628813.10875.3798969892614697703.tip-bot2@tip-bot2>
+Message-ID: <171804094660.10875.17112044985703584861.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,58 +79,134 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     f6d116e080604251880b4957843f9b1f6fdfa30f
-Gitweb:        https://git.kernel.org/tip/f6d116e080604251880b4957843f9b1f6fdfa30f
-Author:        Christian Heusel <christian@heusel.eu>
-AuthorDate:    Fri, 31 May 2024 13:17:58 +02:00
+Commit-ID:     195fb517ee25bfefde9c74ecd86348eccbd6d2e4
+Gitweb:        https://git.kernel.org/tip/195fb517ee25bfefde9c74ecd86348eccbd6d2e4
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Sun, 09 Jun 2024 17:39:24 -07:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 07 Jun 2024 23:30:52 +02:00
+CommitterDate: Mon, 10 Jun 2024 08:50:01 +02:00
 
-tools/x86/kcpuid: Add missing dir via Makefile
+cpu: Move CPU hotplug function declarations into their own header
 
-So far the Makefile just installed the csv into $(HWDATADIR)/cpuid.csv, which
-made it unaware about $DESTDIR. Add $DESTDIR to the install command and while
-at it also create the directory, should it not exist already. This eases the
-packaging of kcpuid and allows i.e. for the install on Arch to look like this:
+Avoid upcoming #include hell when <linux/cachinfo.h> wants to use
+lockdep_assert_cpus_held() and creates a #include loop that would
+break the build for arch/riscv.
 
-  $ make BINDIR=/usr/bin DESTDIR="$pkgdir" -C tools/arch/x86/kcpuid install
+  [ bp: s/cpu/CPU/g ]
 
-Some background on DESTDIR:
-
-DESTDIR is commonly used in packaging for staged installs (regardless of the
-used package manager):
-
-  https://www.gnu.org/prep/standards/html_node/DESTDIR.html
-
-So the package is built and installed into a directory which the package
-manager later picks up and creates some archive from it.
-
-What is specific to Arch Linux here is only the usage of $pkgdir in the
-example, DESTDIR itself is widely used.
-
-  [ bp: Extend the commit message with Christian's info on DESTDIR as a GNU
-    coding standards thing. ]
-
-Signed-off-by: Christian Heusel <christian@heusel.eu>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240531111757.719528-2-christian@heusel.eu
+Link: https://lore.kernel.org/r/20240610003927.341707-2-tony.luck@intel.com
 ---
- tools/arch/x86/kcpuid/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/cpu.h       | 33 +---------------------------
+ include/linux/cpuhplock.h | 47 ++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 48 insertions(+), 32 deletions(-)
+ create mode 100644 include/linux/cpuhplock.h
 
-diff --git a/tools/arch/x86/kcpuid/Makefile b/tools/arch/x86/kcpuid/Makefile
-index 87b554f..d0b4b0e 100644
---- a/tools/arch/x86/kcpuid/Makefile
-+++ b/tools/arch/x86/kcpuid/Makefile
-@@ -19,6 +19,6 @@ clean :
- 	@rm -f kcpuid
+diff --git a/include/linux/cpu.h b/include/linux/cpu.h
+index 861c3bf..a8926d0 100644
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -18,6 +18,7 @@
+ #include <linux/compiler.h>
+ #include <linux/cpumask.h>
+ #include <linux/cpuhotplug.h>
++#include <linux/cpuhplock.h>
+ #include <linux/cpu_smt.h>
  
- install : kcpuid
--	install -d  $(DESTDIR)$(BINDIR)
-+	install -d  $(DESTDIR)$(BINDIR) $(DESTDIR)$(HWDATADIR)
- 	install -m 755 -p kcpuid $(DESTDIR)$(BINDIR)/kcpuid
--	install -m 444 -p cpuid.csv $(HWDATADIR)/cpuid.csv
-+	install -m 444 -p cpuid.csv $(DESTDIR)$(HWDATADIR)/cpuid.csv
+ struct device;
+@@ -132,38 +133,6 @@ static inline int add_cpu(unsigned int cpu) { return 0;}
+ #endif /* CONFIG_SMP */
+ extern const struct bus_type cpu_subsys;
+ 
+-extern int lockdep_is_cpus_held(void);
+-
+-#ifdef CONFIG_HOTPLUG_CPU
+-extern void cpus_write_lock(void);
+-extern void cpus_write_unlock(void);
+-extern void cpus_read_lock(void);
+-extern void cpus_read_unlock(void);
+-extern int  cpus_read_trylock(void);
+-extern void lockdep_assert_cpus_held(void);
+-extern void cpu_hotplug_disable(void);
+-extern void cpu_hotplug_enable(void);
+-void clear_tasks_mm_cpumask(int cpu);
+-int remove_cpu(unsigned int cpu);
+-int cpu_device_down(struct device *dev);
+-extern void smp_shutdown_nonboot_cpus(unsigned int primary_cpu);
+-
+-#else /* CONFIG_HOTPLUG_CPU */
+-
+-static inline void cpus_write_lock(void) { }
+-static inline void cpus_write_unlock(void) { }
+-static inline void cpus_read_lock(void) { }
+-static inline void cpus_read_unlock(void) { }
+-static inline int  cpus_read_trylock(void) { return true; }
+-static inline void lockdep_assert_cpus_held(void) { }
+-static inline void cpu_hotplug_disable(void) { }
+-static inline void cpu_hotplug_enable(void) { }
+-static inline int remove_cpu(unsigned int cpu) { return -EPERM; }
+-static inline void smp_shutdown_nonboot_cpus(unsigned int primary_cpu) { }
+-#endif	/* !CONFIG_HOTPLUG_CPU */
+-
+-DEFINE_LOCK_GUARD_0(cpus_read_lock, cpus_read_lock(), cpus_read_unlock())
+-
+ #ifdef CONFIG_PM_SLEEP_SMP
+ extern int freeze_secondary_cpus(int primary);
+ extern void thaw_secondary_cpus(void);
+diff --git a/include/linux/cpuhplock.h b/include/linux/cpuhplock.h
+new file mode 100644
+index 0000000..386abc4
+--- /dev/null
++++ b/include/linux/cpuhplock.h
+@@ -0,0 +1,47 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * include/linux/cpuhplock.h - CPU hotplug locking
++ *
++ * Locking functions for CPU hotplug.
++ */
++#ifndef _LINUX_CPUHPLOCK_H_
++#define _LINUX_CPUHPLOCK_H_
++
++#include <linux/cleanup.h>
++#include <linux/errno.h>
++
++struct device;
++
++extern int lockdep_is_cpus_held(void);
++
++#ifdef CONFIG_HOTPLUG_CPU
++extern void cpus_write_lock(void);
++extern void cpus_write_unlock(void);
++extern void cpus_read_lock(void);
++extern void cpus_read_unlock(void);
++extern int  cpus_read_trylock(void);
++extern void lockdep_assert_cpus_held(void);
++extern void cpu_hotplug_disable(void);
++extern void cpu_hotplug_enable(void);
++void clear_tasks_mm_cpumask(int cpu);
++int remove_cpu(unsigned int cpu);
++int cpu_device_down(struct device *dev);
++extern void smp_shutdown_nonboot_cpus(unsigned int primary_cpu);
++
++#else /* CONFIG_HOTPLUG_CPU */
++
++static inline void cpus_write_lock(void) { }
++static inline void cpus_write_unlock(void) { }
++static inline void cpus_read_lock(void) { }
++static inline void cpus_read_unlock(void) { }
++static inline int  cpus_read_trylock(void) { return true; }
++static inline void lockdep_assert_cpus_held(void) { }
++static inline void cpu_hotplug_disable(void) { }
++static inline void cpu_hotplug_enable(void) { }
++static inline int remove_cpu(unsigned int cpu) { return -EPERM; }
++static inline void smp_shutdown_nonboot_cpus(unsigned int primary_cpu) { }
++#endif	/* !CONFIG_HOTPLUG_CPU */
++
++DEFINE_LOCK_GUARD_0(cpus_read_lock, cpus_read_lock(), cpus_read_unlock())
++
++#endif /* _LINUX_CPUHPLOCK_H_ */
 
