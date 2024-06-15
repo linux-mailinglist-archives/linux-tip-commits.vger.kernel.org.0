@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1392-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1396-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626C990903B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Jun 2024 18:28:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930489096E8
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Jun 2024 10:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56632B2B754
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Jun 2024 16:25:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 937271C20BB9
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Jun 2024 08:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6951192B8F;
-	Fri, 14 Jun 2024 16:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FD01BC40;
+	Sat, 15 Jun 2024 08:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KVPHDs/W";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NxWfA11p"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="D5dWJ6fC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sJyqGY0h"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D239181B83;
-	Fri, 14 Jun 2024 16:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C0C18C38;
+	Sat, 15 Jun 2024 08:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718382289; cv=none; b=XeZqlU33SpPrgrq9haL62dznrXcWN0gk/yZ4gwsXw8cccHvbHZVgXdtdp4sv71GlTgr4adQDxiB/rc9Js/2gSiCmO8fqfeZW81FXym4SEIPOjyIF1JWXp3GaPUPvVjd7E2Pz/7/wDUOvpWsCg8IIE8gLKOIuW4WEwhnbqpLBUlw=
+	t=1718439710; cv=none; b=JnjgwIrdvKV6kJ6y+8Wt4hobmOzq/xSmuTw2IBnzc1GBvainBN35kOaoJqRZ+2mSvrPhX9ZO7xT4bfXSw0wL+3iNdSjvAOYg08rT5B8EXpPMohbbkPEEvkMhjmoDu+JuXjKkDNkEEFA7BtqdKW2W/qC+Q0lxHI34wa0WT3Y8O/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718382289; c=relaxed/simple;
-	bh=EKQrL1WVhOejUZxSOfRUXFQ03K3aLjiBgaiCiz8x1JE=;
+	s=arc-20240116; t=1718439710; c=relaxed/simple;
+	bh=GeZiSYAxhp+7luu7ELIt5bApto+tep123M9FrEGb2c4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=J5JQ5yxFu7ILCtksT5B1NYcMvS/jcabk7noZTE2E51tsbORKp+3vdpCkHrDBqgbYcCHzVWLxqmUFBqMmlCytZHWc4Iw6fU//fKpvCtX9YAqttxyAN2Y0w3lK4DM8q9LtuBcvC9OyVifch4do5TNNEw2rTb1bfg/3wKScA+Yac5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KVPHDs/W; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NxWfA11p; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=BBd0rqayAIRPNpDPQ2hOhJyI46vAry5EM3q77IfgwO5XPaRCgWA1WXtJGsO2iiA8SMGIaxoagDadLdA6mbC/UqGMm+YIY6qdINtg+MX2w+ugwMEtQsVW5oSHYvfdwXaE6PNRlTgFMjze6qUoJ+QKzM1mdzjclLhV8VC8t8Kz3YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=D5dWJ6fC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sJyqGY0h; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 14 Jun 2024 16:24:45 -0000
+Date: Sat, 15 Jun 2024 08:21:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1718382286;
+	s=2020; t=1718439706;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Zi3eDCZPt1+laq1+hbEpP2aXW8/aqgek8mV2yMUgYJ4=;
-	b=KVPHDs/WkjYeXbgxOO+lW3QVsPW9vOsR8mfxFfOMRFszKYqj+CPGzL9wsWpg6AlZ7pz/Vx
-	iCrDzNxaQycW4YQekngZZ+3zI5ROWlj5zSOGf01WzxCt8g+rnO/R6WfxBgltE0oAsgBru0
-	6sPloqFtrH2+uINkjWy4gUluj4PMImjm1amu76Z4MIdHyhX6BF4Yol18EnCCfH+BjnlRpv
-	EWdQi3tHFxx7lx4d+Cei+4Z5qM+UF53uK5khd5D2q41mh0bJ7+OYWI+px9PElGoCnY9IRU
-	3aP9xkhJgGs6DxRquw3dwI5V+GzguY8RRSIHjeqM5u2jr4gpXbQdCYAuMJmaZw==
+	bh=UThsgJEoUAKebclzK/Ewr9RjGBkf7J08M+TNRnBvsdI=;
+	b=D5dWJ6fCrOzzj7PQr5oMtuq/J5u4PZWffJvgmQhTAWRPxf+N59lhP7+qOEAcfnFiz72kUC
+	rQpyXFW5jzQdc33E8zpwGmtN+Ja46+PywRr+l1bQcxRpy5Vgze8Aam2VJHyeHtgFiZ+xkY
+	DQ/NK/BmP9Hse8Fy5eyoUE4018ARHIXHUCuerNTemgq5Q+d55a6KBukkZylUmKoSshEYvd
+	YaPrGdKY015C9dNkmLgsyeW15eqHzwZesthsf+CS1bKiaUFQJ2GAM6Gyg+svolJz0m043C
+	h3CS4WJ6NRgYGs5xYYVWXg2bn5GNQfvmh+qEJM6iNSTTeKjm+2K0OrNggtZqGA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1718382286;
+	s=2020e; t=1718439706;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Zi3eDCZPt1+laq1+hbEpP2aXW8/aqgek8mV2yMUgYJ4=;
-	b=NxWfA11pYAWIQ0SfJCe0S+fOMHDIoIAXJJAsFZ/Lus26jMD816WE6H76ivXT3xv4Ms+acI
-	NEGUWv6usyiZk4Bg==
-From: "tip-bot2 for Thomas Huth" <tip-bot2@linutronix.de>
+	bh=UThsgJEoUAKebclzK/Ewr9RjGBkf7J08M+TNRnBvsdI=;
+	b=sJyqGY0h/x7cf2y73iMXHoGkR964E0OIupZzjnycXht7rW7NTIjvjqPWKOfP6jk2+qyjUA
+	a8r5REjJelA4dECg==
+From: "tip-bot2 for Alexey Makhalov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] Documentation: Remove "mfgpt_irq=" from the
- kernel-parameters.txt file
-Cc: Thomas Huth <thuth@redhat.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org,
+Subject: [tip: x86/vmware] x86/vmware: Remove legacy VMWARE_HYPERCALL* macros
+Cc: Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240614090306.561464-1-thuth@redhat.com>
-References: <20240614090306.561464-1-thuth@redhat.com>
+In-Reply-To: <20240613191650.9913-8-alexey.makhalov@broadcom.com>
+References: <20240613191650.9913-8-alexey.makhalov@broadcom.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171838228571.10875.9678006095453472995.tip-bot2@tip-bot2>
+Message-ID: <171843970568.10875.8651021210359503206.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,44 +79,61 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/vmware branch of tip:
 
-Commit-ID:     9b9eec8dc284f33f505cec48d88b42ebad4da9cc
-Gitweb:        https://git.kernel.org/tip/9b9eec8dc284f33f505cec48d88b42ebad4da9cc
-Author:        Thomas Huth <thuth@redhat.com>
-AuthorDate:    Fri, 14 Jun 2024 11:03:06 +02:00
+Commit-ID:     ff42766138ff558224a35aef0ed3c4c9cfcec4de
+Gitweb:        https://git.kernel.org/tip/ff42766138ff558224a35aef0ed3c4c9cfcec4de
+Author:        Alexey Makhalov <alexey.makhalov@broadcom.com>
+AuthorDate:    Thu, 13 Jun 2024 12:16:49 -07:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 14 Jun 2024 18:06:57 +02:00
+CommitterDate: Fri, 14 Jun 2024 18:01:21 +02:00
 
-Documentation: Remove "mfgpt_irq=" from the kernel-parameters.txt file
+x86/vmware: Remove legacy VMWARE_HYPERCALL* macros
 
-The kernel parameter mfgpt_irq has been removed in 2009 already by
+No more direct use of these macros should be allowed. The vmware_hypercallX API
+still uses the new implementation of VMWARE_HYPERCALL macro internally, but it
+is not exposed outside of the vmware.h.
 
-  c95d1e53ed89 ("cs5535: drop the Geode-specific MFGPT/GPIO code")
-
-Time to remove it from the documentation now, too.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/r/20240614090306.561464-1-thuth@redhat.com
+Link: https://lore.kernel.org/r/20240613191650.9913-8-alexey.makhalov@broadcom.com
 ---
- Documentation/admin-guide/kernel-parameters.txt | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/x86/include/asm/vmware.h | 26 --------------------------
+ 1 file changed, 26 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index b600df8..fa76802 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3429,10 +3429,6 @@
- 			deep    - Suspend-To-RAM or equivalent (if supported)
- 			See Documentation/admin-guide/pm/sleep-states.rst.
+diff --git a/arch/x86/include/asm/vmware.h b/arch/x86/include/asm/vmware.h
+index 724c8b9..d83444f 100644
+--- a/arch/x86/include/asm/vmware.h
++++ b/arch/x86/include/asm/vmware.h
+@@ -279,30 +279,4 @@ unsigned long vmware_hypercall_hb_in(unsigned long cmd, unsigned long in2,
+ #undef VMW_BP_CONSTRAINT
+ #undef VMWARE_HYPERCALL
  
--	mfgpt_irq=	[IA-32] Specify the IRQ to use for the
--			Multi-Function General Purpose Timers on AMD Geode
--			platforms.
+-/* The low bandwidth call. The low word of edx is presumed clear. */
+-#define VMWARE_HYPERCALL						\
+-	ALTERNATIVE_2("movw $" __stringify(VMWARE_HYPERVISOR_PORT) ", %%dx; " \
+-		      "inl (%%dx), %%eax",				\
+-		      "vmcall", X86_FEATURE_VMCALL,			\
+-		      "vmmcall", X86_FEATURE_VMW_VMMCALL)
 -
- 	mfgptfix	[X86-32] Fix MFGPT timers on AMD Geode platforms when
- 			the BIOS has incorrectly applied a workaround. TinyBIOS
- 			version 0.98 is known to be affected, 0.99 fixes the
+-/*
+- * The high bandwidth out call. The low word of edx is presumed to have the
+- * HB and OUT bits set.
+- */
+-#define VMWARE_HYPERCALL_HB_OUT						\
+-	ALTERNATIVE_2("movw $" __stringify(VMWARE_HYPERVISOR_PORT_HB) ", %%dx; " \
+-		      "rep outsb",					\
+-		      "vmcall", X86_FEATURE_VMCALL,			\
+-		      "vmmcall", X86_FEATURE_VMW_VMMCALL)
+-
+-/*
+- * The high bandwidth in call. The low word of edx is presumed to have the
+- * HB bit set.
+- */
+-#define VMWARE_HYPERCALL_HB_IN						\
+-	ALTERNATIVE_2("movw $" __stringify(VMWARE_HYPERVISOR_PORT_HB) ", %%dx; " \
+-		      "rep insb",					\
+-		      "vmcall", X86_FEATURE_VMCALL,			\
+-		      "vmmcall", X86_FEATURE_VMW_VMMCALL)
+ #endif
 
