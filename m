@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-1415-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1420-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28DBD90B2C4
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jun 2024 16:48:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E034890B2CF
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jun 2024 16:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF4A71F2680B
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jun 2024 14:48:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03E3D1C20925
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jun 2024 14:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1F91D5402;
-	Mon, 17 Jun 2024 13:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965441D3277;
+	Mon, 17 Jun 2024 13:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AUOyHzHz";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KuTDPtfi"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YyTkIjKe";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="A5Tv8PMp"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A6C200113;
-	Mon, 17 Jun 2024 13:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B201D5406;
+	Mon, 17 Jun 2024 13:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632278; cv=none; b=nJ7bc3TiSx+vkSYvuby8nE6WPPjMRAVJkAIaOe7ElDuDELf4o3t2a8Mz9Zb5zCEFbrj0gVdhZQSATFAQefBUgPOwrXikYadt6DIiaiXPhPNJ6N48W7Gn/CC+LSkpP35ll8hQeGhlahIGWVYBZsfAcwSCo9mV9wRsfSvn+Wa3b7E=
+	t=1718632281; cv=none; b=XMuDaFzDPQbLhx5QNhzD95y3UAAIKHYfzL73y05FUTV6kr5M26EixklVP4fWIbS89bFBGgaWsEjlkQsDFPvrmGkz9Iiss43Ms7WwB+dbmTStdsdeXK0gdTTNLbbxTUXbKJudOPbyENR0xNDxTrlKQmWjKLCFXDp4FaACtNyFR/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632278; c=relaxed/simple;
-	bh=YGHr0fBHq1X6VbqwPCnxNVJC5dGoh5maAoGxqeFyXhc=;
+	s=arc-20240116; t=1718632281; c=relaxed/simple;
+	bh=L2Wup6EGvVy1P2uNeAyPQrnnTBCFq4QOvGcPCAKjXqo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=FfA2wElAJnny90ddcwv4w/Zs1NbsYveR5AGMWJcbkfoD12XnkO0rKWgzVGfIrGbMcxabwL49IYDdDJ7LC5/CTxnIyA3ebzWAr6zocUp6COVilxyA5LKyy4zmbiA9Vh2jlJzH4yn5hO2Q31URpHRwXfWeLuvu1SM5bbelLsaa7NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AUOyHzHz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KuTDPtfi; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=YBwtQFIY3A+RrHig29iEGDcUVdsdS/yJvXb6ClXLaPZDc4UHLE3ldFrdUltkOyI5+sC0XS6AlEBkND5tBHWw4kOtJRFEKCSIkj1hhkk7ch/tzcDwi8sTiB4NmH+KrNmgTo6N/QJgWBbLr7IznJUrF9sZgbe7Z2ISWPapUo3cerU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YyTkIjKe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=A5Tv8PMp; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 17 Jun 2024 13:51:11 -0000
+Date: Mon, 17 Jun 2024 13:51:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1718632272;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rlytCrJMi8BjIN4si29WfH5a+g2VcfqrTF6aCRS7TqY=;
-	b=AUOyHzHzjwzEVCaCTSzepet3jVJc1FcNIupcFJ8JMs1jkfaKm9PmUg/opEA4+MU7u9pKGH
-	IYJmEqMiufCMYpbCx+jiAqWhw1noTrxZVFITLsCJveArPwnbecwjz+eAR9/2kdZzdvqJbF
-	dhSD6QUxnFu6jv8DaD0ajjJ7FT0zf1K69koEYnPM08ikXOw5W5rvDAAomSfISN87AKltmL
-	4pedjn47nMAcuflCxGi9JCGuPp0SaE5HdrX4ZTBkSXlLz68iMYssSTOpJXWO/s05E08C5v
-	oUb6blOnc9+dc/xeOZrHADjOjazhnNXOKBlnw9Urs5qRIIcxMbVO6vC0yHkHQg==
+	bh=onOQ6/RB4rhAEIwUfEu8vsqGTwNSgd2uCU63ADWgiWA=;
+	b=YyTkIjKe4nBDtULMe6SceCC5D4zG3X2KEBZxAtAGI+SDGA13F53lhsKHOmXQri3V9GF+Cb
+	+BQ2rbY3lCr8TUIJwb/Wyi4rOHPEzOsUVlo1JlwRTpY38S/cD+4CFrNeIuuDqQ8X+g0sf4
+	0+SilP1fDiELRDhnyh72TP4kXElWjrKHwrJmCovN383ODxmvt+Ke4iODVnYB64ved3rU7S
+	uxT0vd+IDDHdSAgP+p9f0lwNE1mX0Uh87eSM48H1CQ5axom9ADcL78z3nQosWEAL4McdnQ
+	CGZ0taFXU90QwxCc4WJg1fBmRQcsHD0WEwQ3tWnoRJCHN7iuZaHJJijG9ahgHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1718632272;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,27 +52,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rlytCrJMi8BjIN4si29WfH5a+g2VcfqrTF6aCRS7TqY=;
-	b=KuTDPtfisf4iPap6kPh42CPh9S/+vKIERV0ayF9Yv1r+NOW/KyONDQE2ASkzyq+Vul22lk
-	gTVR7XLHlNu1QKDw==
+	bh=onOQ6/RB4rhAEIwUfEu8vsqGTwNSgd2uCU63ADWgiWA=;
+	b=A5Tv8PMp+pkxv6Ehxlsyj8VWCP/5Rw7m36hsIVF7Gc/VZE0r2XFdhmKy3EuY6E6kVEeLyg
+	Zz8Rjdhkixc417Ag==
 From: "tip-bot2 for Herve Codina" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqdomain: Use irq_domain_instantiate() for hierarchy
- domain creation
-Cc: Herve Codina <herve.codina@bootlin.com>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: irq/core] irqdomain: Convert __irq_domain_create() to use
+ struct irq_domain_info
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ Herve Codina <herve.codina@bootlin.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240614173232.1184015-10-herve.codina@bootlin.com>
-References: <20240614173232.1184015-10-herve.codina@bootlin.com>
+In-Reply-To: <20240614173232.1184015-7-herve.codina@bootlin.com>
+References: <20240614173232.1184015-7-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171863227170.10875.4428200346359944530.tip-bot2@tip-bot2>
+Message-ID: <171863227259.10875.9213959710476410531.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,60 +82,132 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     b986055dd04141efd6d5dcdacd48d6b38cf320c8
-Gitweb:        https://git.kernel.org/tip/b986055dd04141efd6d5dcdacd48d6b38cf320c8
+Commit-ID:     24a4f4e48557dddf2bb722df7b01184efc92a6a7
+Gitweb:        https://git.kernel.org/tip/24a4f4e48557dddf2bb722df7b01184efc92a6a7
 Author:        Herve Codina <herve.codina@bootlin.com>
-AuthorDate:    Fri, 14 Jun 2024 19:32:10 +02:00
+AuthorDate:    Fri, 14 Jun 2024 19:32:07 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 17 Jun 2024 15:48:13 +02:00
 
-irqdomain: Use irq_domain_instantiate() for hierarchy domain creation
+irqdomain: Convert __irq_domain_create() to use struct irq_domain_info
 
-irq_domain_instantiate() handles all needs to be used in
-irq_domain_create_hierarchy()
+The existing __irq_domain_create() use a bunch of parameters to create
+an irq domain.
 
-Avoid code duplication and use directly irq_domain_instantiate() for
-hierarchy domain creation.
+With the introduction of irq_domain_info structure, these parameters are
+available in the information structure itself.
+Using directly this information structure allows future flexibility to
+add other parameters in a simple way without the need to change the
+__irq_domain_create() prototype.
 
+Convert __irq_domain_create() to use the information structure.
+
+[ tglx: Fixup struct initializer ]
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240614173232.1184015-10-herve.codina@bootlin.com
+Link: https://lore.kernel.org/r/20240614173232.1184015-7-herve.codina@bootlin.com
 
 ---
- kernel/irq/irqdomain.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ kernel/irq/irqdomain.c | 48 ++++++++++++++++++++---------------------
+ 1 file changed, 24 insertions(+), 24 deletions(-)
 
 diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 1269a81..8dc0007 100644
+index a7be776..0eda48f 100644
 --- a/kernel/irq/irqdomain.c
 +++ b/kernel/irq/irqdomain.c
-@@ -1213,23 +1213,16 @@ struct irq_domain *irq_domain_create_hierarchy(struct irq_domain *parent,
- 		.hwirq_max	= size,
- 		.ops		= ops,
- 		.host_data	= host_data,
-+		.domain_flags	= flags,
-+		.parent		= parent,
- 	};
--	struct irq_domain *domain;
-+	struct irq_domain *d;
- 
- 	if (!info.size)
- 		info.hwirq_max = ~0U;
- 
--	domain = __irq_domain_create(&info);
--	if (domain) {
--		if (parent)
--			domain->root = parent->root;
--		domain->parent = parent;
--		domain->flags |= flags;
--
--		__irq_domain_publish(domain);
--	}
--
--	return domain;
-+	d = irq_domain_instantiate(&info);
-+	return IS_ERR(d) ? NULL : d;
+@@ -179,45 +179,40 @@ static int irq_domain_set_name(struct irq_domain *domain,
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(irq_domain_create_hierarchy);
  
+-static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
+-					      unsigned int size,
+-					      irq_hw_number_t hwirq_max,
+-					      int direct_max,
+-					      const struct irq_domain_ops *ops,
+-					      void *host_data)
++static struct irq_domain *__irq_domain_create(const struct irq_domain_info *info)
+ {
+ 	struct irq_domain *domain;
+ 	int err;
+ 
+-	if (WARN_ON((size && direct_max) ||
+-		    (!IS_ENABLED(CONFIG_IRQ_DOMAIN_NOMAP) && direct_max) ||
+-		    (direct_max && direct_max != hwirq_max)))
++	if (WARN_ON((info->size && info->direct_max) ||
++		    (!IS_ENABLED(CONFIG_IRQ_DOMAIN_NOMAP) && info->direct_max) ||
++		    (info->direct_max && info->direct_max != info->hwirq_max)))
+ 		return NULL;
+ 
+-	domain = kzalloc_node(struct_size(domain, revmap, size),
+-			      GFP_KERNEL, of_node_to_nid(to_of_node(fwnode)));
++	domain = kzalloc_node(struct_size(domain, revmap, info->size),
++			      GFP_KERNEL, of_node_to_nid(to_of_node(info->fwnode)));
+ 	if (!domain)
+ 		return NULL;
+ 
+-	err = irq_domain_set_name(domain, fwnode);
++	err = irq_domain_set_name(domain, info->fwnode);
+ 	if (err) {
+ 		kfree(domain);
+ 		return NULL;
+ 	}
+ 
+-	domain->fwnode = fwnode_handle_get(fwnode);
++	domain->fwnode = fwnode_handle_get(info->fwnode);
+ 	fwnode_dev_initialized(domain->fwnode, true);
+ 
+ 	/* Fill structure */
+ 	INIT_RADIX_TREE(&domain->revmap_tree, GFP_KERNEL);
+-	domain->ops = ops;
+-	domain->host_data = host_data;
+-	domain->hwirq_max = hwirq_max;
++	domain->ops = info->ops;
++	domain->host_data = info->host_data;
++	domain->hwirq_max = info->hwirq_max;
+ 
+-	if (direct_max)
++	if (info->direct_max)
+ 		domain->flags |= IRQ_DOMAIN_FLAG_NO_MAP;
+ 
+-	domain->revmap_size = size;
++	domain->revmap_size = info->size;
+ 
+ 	/*
+ 	 * Hierarchical domains use the domain lock of the root domain
+@@ -264,8 +259,7 @@ struct irq_domain *irq_domain_instantiate(const struct irq_domain_info *info)
+ {
+ 	struct irq_domain *domain;
+ 
+-	domain = __irq_domain_create(info->fwnode, info->size, info->hwirq_max,
+-				     info->direct_max, info->ops, info->host_data);
++	domain = __irq_domain_create(info);
+ 	if (!domain)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -1204,13 +1198,19 @@ struct irq_domain *irq_domain_create_hierarchy(struct irq_domain *parent,
+ 					    const struct irq_domain_ops *ops,
+ 					    void *host_data)
+ {
++	struct irq_domain_info info = {
++		.fwnode		= fwnode,
++		.size		= size,
++		.hwirq_max	= size,
++		.ops		= ops,
++		.host_data	= host_data,
++	};
+ 	struct irq_domain *domain;
+ 
+-	if (size)
+-		domain = __irq_domain_create(fwnode, size, size, 0, ops, host_data);
+-	else
+-		domain = __irq_domain_create(fwnode, 0, ~0, 0, ops, host_data);
++	if (!info.size)
++		info.hwirq_max = ~0U;
+ 
++	domain = __irq_domain_create(&info);
+ 	if (domain) {
+ 		if (parent)
+ 			domain->root = parent->root;
 
