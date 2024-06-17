@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1429-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1422-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10EFB90B57F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jun 2024 17:58:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB18790B5CE
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jun 2024 18:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CAFB2855A8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jun 2024 15:58:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9ACFBB383FA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Jun 2024 14:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3A51474C1;
-	Mon, 17 Jun 2024 15:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2221D3285;
+	Mon, 17 Jun 2024 13:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eDGkjjsy";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WLWhpXB2"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I5Kjt+db";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hljIa/Wy"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9759C146D77;
-	Mon, 17 Jun 2024 15:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A061D0F7C;
+	Mon, 17 Jun 2024 13:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718639244; cv=none; b=Gft/LXIKWFYLXfbBu17r10y6QU6CrcV7zQSH7Qd8fli3TxljT5pEgMVNn2ZZzCsSDnlXyb4aHL4e7cq6vsG80gVHT2kdVlzoKldgN8qNSVTwb7Kzl9qFkg5CU9u0JSJhH6HFYEdfFEgXmT2sa9Fa1CsPBsHnWUXvtkCiZMIPnso=
+	t=1718632281; cv=none; b=gMMC1ebxgu7iaFNsTohKEnDH781v9410Uww7Tsu6vWBLkNEriziqDuVvJhqj77e0rpGvGRpJtgu1TD1RVIXPsO1yhHaCYSjalIPeud1A2UzJ4C0Oph+LcJD8hqtGT4E4qHImJwGYGSHXvVSOvLzIUNmKPGX8r6b4koq+8rb36bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718639244; c=relaxed/simple;
-	bh=h+oIY9z+hklgImUQF6E5P5MllMYIWwbKExLM6kJof2Q=;
+	s=arc-20240116; t=1718632281; c=relaxed/simple;
+	bh=LtF4g6ROECNNE25ziqP/kOyVwEakCdfaB0kgg8izl2U=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Y41nPceicUoNxqGnSYAk+HihRaDYRe3zPTdq7c4swpUI7iyffY2SooljYbOwCGtpBq4vrPWSdsuIZRRGBUEXmE855CDblTqk4UAhM6w8wBzmuaQvgVSQW34RqvY42nPFGKsG4SglEVdtNblaCSwLXssxg2SblUKiE3f7idNP5E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eDGkjjsy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WLWhpXB2; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=anKEvSXIRoYh6dYPEy9TTSwnWJqrcV/O6chz+hVfW+cTuhcxGitUnzwLFg74Qtjqlt6yGeaQ2yOQ66BkZYS27vN3qUcec2YjHiPt+VzARGkSDEGfnODAJn65Ad+1GvEVSAJDYS2g89d6VUMqk/yNKDsmBdWwGWwL8DOLuKxdyFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I5Kjt+db; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hljIa/Wy; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 17 Jun 2024 15:47:19 -0000
+Date: Mon, 17 Jun 2024 13:51:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1718639239;
+	s=2020; t=1718632272;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k+Cxg5aV3DrYfqRTWSUD6hzF+KYAGnJX+Bw6r4uVbfM=;
-	b=eDGkjjsyMoMX50HGfYsUbbhNsDzs7l6EuyKM9efk1vLrqn3GyH0L+IsCLKXa1s2W2kXMWh
-	YR5ILLKbQHBxNYBBJxEgq8bPoqtcuIbdJ1kD2X4NQonAHitTtWyo5FmqC9rtOGob9lFStZ
-	7tKMxIdZGzaVxJVo/0/tGMjZEDlkA2NzUbDJkbocwR/JEKCsVXZK4JZk2rPjbw2lvY5nZ3
-	4F+pySFvDkuhS/NPZtlo7hGxgkIFbqHGnfZTO0VXanCniajQv/J/P59XJ7oIXzzH1loNPD
-	EjLeaSvdYvIVtFv9zED8nPoIEFGGVmCERxEsha1CBx3S19bktsZHW6rVP/Jfpw==
+	bh=8DJpdJA4bcgAFIp89Doc6r/aZhiM2NotVs1TSAgTejQ=;
+	b=I5Kjt+dbrYmfmnKg0FuWEdQ1Z7Ztn4U+sJVmCGqgIHLw4bgdCucGM9neDhTZMnS2r4JGrb
+	hq4itBRcpOfVsN6fvoVqTYGtejdOskNPcYNjqAXXX+BHrsbkEMFZzgvuByDkhxGzLdyR9b
+	Sei7neVQ9SgFKPdDVHoZMzNuEBgFAritRIOYhU+OVpYoQA1ll8AVd795c70ONGIBtPs7Am
+	5sBy3QrsdIknzpj9raOz5FzZE+noglpt5O2/f2kp4Bt/I/Gduc/+1XEJNwSdw0tQPqITe7
+	PeKPP+j9OqZxwLjJS/aRv0s/PwviZIyxsI9kW5kMQBzLkQpq2Ua/AzrHaaz32A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1718639239;
+	s=2020e; t=1718632272;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k+Cxg5aV3DrYfqRTWSUD6hzF+KYAGnJX+Bw6r4uVbfM=;
-	b=WLWhpXB2ZofI0LIM7QreI5c+z+CtJe0QKwcgoUwrXR7rVJb7gTqalVqDiXL/TBrTlj3q1v
-	gGoHHWTB7qR+TEAg==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=8DJpdJA4bcgAFIp89Doc6r/aZhiM2NotVs1TSAgTejQ=;
+	b=hljIa/WyHo8XGbKYIZyCKzCvD7hYFAP0oY87xuvbxu5VaEAIIsaLMSx/2P/7jvA0ykmqW+
+	2RS38138MTou21Aw==
+From: "tip-bot2 for Herve Codina" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] jump_label: Fix concurrency issues in
- static_key_slow_dec()
-Cc: Yue Sun <samsun1006219@gmail.com>, Xingwei Lee <xrivendell7@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240610124406.422897838@linutronix.de>
-References: <20240610124406.422897838@linutronix.de>
+Subject: [tip: irq/core] irqdomain: Handle domain hierarchy parent in
+ irq_domain_instantiate()
+Cc: Herve Codina <herve.codina@bootlin.com>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240614173232.1184015-9-herve.codina@bootlin.com>
+References: <20240614173232.1184015-9-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171863923908.10875.16051115443404235815.tip-bot2@tip-bot2>
+Message-ID: <171863227199.10875.14552166578816704076.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,145 +80,64 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     83ab38ef0a0b2407d43af9575bb32333fdd74fb2
-Gitweb:        https://git.kernel.org/tip/83ab38ef0a0b2407d43af9575bb32333fdd74fb2
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 10 Jun 2024 14:46:36 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 11 Jun 2024 11:25:23 +02:00
+Commit-ID:     419e3778ff295c00aa158d9f2854a70b47ba1136
+Gitweb:        https://git.kernel.org/tip/419e3778ff295c00aa158d9f2854a70b47ba1136
+Author:        Herve Codina <herve.codina@bootlin.com>
+AuthorDate:    Fri, 14 Jun 2024 19:32:09 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 17 Jun 2024 15:48:13 +02:00
 
-jump_label: Fix concurrency issues in static_key_slow_dec()
+irqdomain: Handle domain hierarchy parent in irq_domain_instantiate()
 
-The commit which tried to fix the concurrency issues of concurrent
-static_key_slow_inc() failed to fix the equivalent issues
-vs. static_key_slow_dec():
+To use irq_domain_instantiate() from irq_domain_create_hierarchy(),
+irq_domain_instantiate() needs to handle the domain hierarchy parent.
 
-CPU0                     CPU1
+Add the required functionality.
 
-static_key_slow_dec()
-  static_key_slow_try_dec()
-
-	key->enabled == 1
-	val = atomic_fetch_add_unless(&key->enabled, -1, 1);
-	if (val == 1)
-	     return false;
-
-  jump_label_lock();
-  if (atomic_dec_and_test(&key->enabled)) {
-     --> key->enabled == 0
-   __jump_label_update()
-
-			 static_key_slow_dec()
-			   static_key_slow_try_dec()
-
-			     key->enabled == 0
-			     val = atomic_fetch_add_unless(&key->enabled, -1, 1);
-
-			      --> key->enabled == -1 <- FAIL
-
-There is another bug in that code, when there is a concurrent
-static_key_slow_inc() which enables the key as that sets key->enabled to -1
-so on the other CPU
-
-	val = atomic_fetch_add_unless(&key->enabled, -1, 1);
-
-will succeed and decrement to -2, which is invalid.
-
-Cure all of this by replacing the atomic_fetch_add_unless() with a
-atomic_try_cmpxchg() loop similar to static_key_fast_inc_not_disabled().
-
-[peterz: add WARN_ON_ONCE for the -1 race]
-Fixes: 4c5ea0a9cd02 ("locking/static_key: Fix concurrent static_key_slow_inc()")
-Reported-by: Yue Sun <samsun1006219@gmail.com>
-Reported-by: Xingwei Lee <xrivendell7@gmail.com>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240610124406.422897838@linutronix.de
----
- kernel/jump_label.c | 45 ++++++++++++++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 16 deletions(-)
+Link: https://lore.kernel.org/r/20240614173232.1184015-9-herve.codina@bootlin.com
 
-diff --git a/kernel/jump_label.c b/kernel/jump_label.c
-index 3218fa5..1f05a19 100644
---- a/kernel/jump_label.c
-+++ b/kernel/jump_label.c
-@@ -131,7 +131,7 @@ bool static_key_fast_inc_not_disabled(struct static_key *key)
- 	STATIC_KEY_CHECK_USE(key);
- 	/*
- 	 * Negative key->enabled has a special meaning: it sends
--	 * static_key_slow_inc() down the slow path, and it is non-zero
-+	 * static_key_slow_inc/dec() down the slow path, and it is non-zero
- 	 * so it counts as "enabled" in jump_label_update().  Note that
- 	 * atomic_inc_unless_negative() checks >= 0, so roll our own.
- 	 */
-@@ -150,7 +150,7 @@ bool static_key_slow_inc_cpuslocked(struct static_key *key)
- 	lockdep_assert_cpus_held();
+---
+ include/linux/irqdomain.h | 6 ++++++
+ kernel/irq/irqdomain.c    | 7 +++++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index 4683b66..e52fd5e 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -276,6 +276,12 @@ struct irq_domain_info {
+ 	int					direct_max;
+ 	const struct irq_domain_ops		*ops;
+ 	void					*host_data;
++#ifdef CONFIG_IRQ_DOMAIN_HIERARCHY
++	/**
++	 * @parent: Pointer to the parent irq domain used in a hierarchy domain
++	 */
++	struct irq_domain			*parent;
++#endif
+ };
  
- 	/*
--	 * Careful if we get concurrent static_key_slow_inc() calls;
-+	 * Careful if we get concurrent static_key_slow_inc/dec() calls;
- 	 * later calls must wait for the first one to _finish_ the
- 	 * jump_label_update() process.  At the same time, however,
- 	 * the jump_label_update() call below wants to see
-@@ -247,20 +247,32 @@ EXPORT_SYMBOL_GPL(static_key_disable);
+ struct irq_domain *irq_domain_instantiate(const struct irq_domain_info *info);
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 26ad1ea..1269a81 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -265,6 +265,13 @@ struct irq_domain *irq_domain_instantiate(const struct irq_domain_info *info)
  
- static bool static_key_slow_try_dec(struct static_key *key)
- {
--	int val;
--
--	val = atomic_fetch_add_unless(&key->enabled, -1, 1);
--	if (val == 1)
--		return false;
-+	int v;
+ 	domain->flags |= info->domain_flags;
  
- 	/*
--	 * The negative count check is valid even when a negative
--	 * key->enabled is in use by static_key_slow_inc(); a
--	 * __static_key_slow_dec() before the first static_key_slow_inc()
--	 * returns is unbalanced, because all other static_key_slow_inc()
--	 * instances block while the update is in progress.
-+	 * Go into the slow path if key::enabled is less than or equal than
-+	 * one. One is valid to shut down the key, anything less than one
-+	 * is an imbalance, which is handled at the call site.
-+	 *
-+	 * That includes the special case of '-1' which is set in
-+	 * static_key_slow_inc_cpuslocked(), but that's harmless as it is
-+	 * fully serialized in the slow path below. By the time this task
-+	 * acquires the jump label lock the value is back to one and the
-+	 * retry under the lock must succeed.
- 	 */
--	WARN(val < 0, "jump label: negative count!\n");
-+	v = atomic_read(&key->enabled);
-+	do {
-+		/*
-+		 * Warn about the '-1' case though; since that means a
-+		 * decrement is concurrent with a first (0->1) increment. IOW
-+		 * people are trying to disable something that wasn't yet fully
-+		 * enabled. This suggests an ordering problem on the user side.
-+		 */
-+		WARN_ON_ONCE(v < 0);
-+		if (v <= 1)
-+			return false;
-+	} while (!likely(atomic_try_cmpxchg(&key->enabled, &v, v - 1)));
++#ifdef CONFIG_IRQ_DOMAIN_HIERARCHY
++	if (info->parent) {
++		domain->root = info->parent->root;
++		domain->parent = info->parent;
++	}
++#endif
 +
- 	return true;
- }
+ 	__irq_domain_publish(domain);
  
-@@ -271,10 +283,11 @@ static void __static_key_slow_dec_cpuslocked(struct static_key *key)
- 	if (static_key_slow_try_dec(key))
- 		return;
- 
--	jump_label_lock();
--	if (atomic_dec_and_test(&key->enabled))
-+	guard(mutex)(&jump_label_mutex);
-+	if (atomic_cmpxchg(&key->enabled, 1, 0))
- 		jump_label_update(key);
--	jump_label_unlock();
-+	else
-+		WARN_ON_ONCE(!static_key_slow_try_dec(key));
- }
- 
- static void __static_key_slow_dec(struct static_key *key)
+ 	return domain;
 
