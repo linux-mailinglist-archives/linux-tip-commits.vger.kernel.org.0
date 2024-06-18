@@ -1,80 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-1439-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1446-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A19890C850
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Jun 2024 13:04:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4881290D48A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Jun 2024 16:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA23128C7EB
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Jun 2024 11:04:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A942E28563A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Jun 2024 14:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11533200064;
-	Tue, 18 Jun 2024 09:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD8E16B388;
+	Tue, 18 Jun 2024 14:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pD15Vubf";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zB0LqEQq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fAi+QEcR";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bCxfG6W1"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141DD21C183;
-	Tue, 18 Jun 2024 09:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA0416A94C;
+	Tue, 18 Jun 2024 14:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718703909; cv=none; b=cqLyh6jbJZ08ihfeVFt10EVcAjzt7CkBJ4ERVwfiMKDU9OlawVfG2ka5ToB1G+H/F0u4iFvP16MYYLcYWOfjUkAmHY8U0h+WMw04EQrGf+BaEmBAtUtV+fLSGVER49f8M57YP/MKSvmVL9ENb9kME/Wa9636SLZZkSEjW40MZQ8=
+	t=1718719309; cv=none; b=IVcga+RyPepckDjUfsz2HWUpoZKBqPvVbOdFZdkf0QenjNt0wkxwQWUR5ulbwWyhRGyCrZpUg4ev3ZC6HotEwB87DrfaICSVfSUHYCVXecrR7TFqn0uT1f00xvsKpBzIbt34EgLl4s+AY22B29ekWsjZxUNAgOCUwKNoSy/5l+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718703909; c=relaxed/simple;
-	bh=7vxvTcGfaBiVrHvJ/7N01XRBlK+N5QP6C1o5YZa5uvo=;
+	s=arc-20240116; t=1718719309; c=relaxed/simple;
+	bh=8de1Nd38MM5wN7T6XMaiBtWMZBF1JbpceyfCt2HJdRE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Q+0TS8YEd1se5eL0ygW0LvbYqTtxIIGiDY1N/FDJGU+2htSYZTynVzjbdiqEukDXwla+8EHMAJ5osbnNV0MDcllTvuIP4dshS3bmhJbmqv4oABWqRTvqwvHwGp1koTEiF1cSzQKGRI6UXIqO+0Z+6YCAO70POwnzpKzQ08aNamE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pD15Vubf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zB0LqEQq; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ux8mi3i1+xdKrsHZPc9BvdhxA3VenPeSRU/E6HmN+S6s72SbtHBzb7usUf4q/iBPFp7XwDiHFIMivq3WRIDa/HOzIuJe8KeGFMNiePNw/MGz4Ih4vCXzqdkEdqj1yIwZRuYkzo05Sm7qlC/uWU/DEG3pxMWyCeDMLeCbI8TAT2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fAi+QEcR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bCxfG6W1; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 18 Jun 2024 09:45:01 -0000
+Date: Tue, 18 Jun 2024 14:01:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1718703901;
+	s=2020; t=1718719298;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=li/ZTr2w607cWg1zaNZqovofTEt+6NiuZE7G3KtZgzQ=;
-	b=pD15VubfdZw9TgQnvyIhx7/ej0L0HrJGpC+O4lwzkNNpPAB9RyKvSnLGG2lsWi370rsYK5
-	zTOnn54CW/gYOnWhaV1Q29hpAK8Rv6AEDFdxAroSPkt4bRX9/00BJxrA9WxTTLBnHTNMrC
-	2p/cpR/aKn7HFK+RLS/yiGiUk9TDtjGfTl3Vv8qzCC7irs3n724aUOLOXhqp+ESSKs5tIy
-	D4llYPgwBPhD7O64ZNKhAqppRzss7HXAwoMONy9NgD+XnhCY0zsJijg9OOAM42VLKlFGNu
-	BW6wp0vWXdfm+k0mAchnqukA/pqtjtN7Kgn1rJrjj2oiRVdG5ssFbgKIisbH5w==
+	bh=SK7h0C0KVTLZxO68wwzEK/AcQDwtH6VNHjwCjSnaAu0=;
+	b=fAi+QEcR6U6OQzKGvgxVIM9K8rP0uf+7D6n46x/gVOydcZPVVmbGtFu+lnzWzIShaX+W2d
+	aEfeoI2eOpeAmgaEKc9pXybQ0uHU8LjuQ+KW2vAOHzMOeFHsl3Ucs+JKDVTgUWZnGsWrXl
+	zXTHV/qVK/54w3glHPoRLRXlxqwCNhsNFNEHFXKqI9DAoWCOvdWX8dZh4rLoJBg3Qjfuqz
+	lD1rRCBQ5R+A6rux6jlEaGANa4BwFKg+Phx+r08ZbBv98ZO6/7XCicvnDWPTdIHjeeRaJ5
+	kBgZc5D17yOaCFgDQs7srx7Xk48fJDRdsGN+Pbbk6b5QJs0y55V86FcY5FhZzg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1718703901;
+	s=2020e; t=1718719298;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=li/ZTr2w607cWg1zaNZqovofTEt+6NiuZE7G3KtZgzQ=;
-	b=zB0LqEQqRQIAYOvhrtJU/7godpNYAH0FtQF2CboEh5aFLIHVctis0mKhHvSELHjVdFN8Uc
-	YReGl5r/c6SMj3AA==
-From: "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
+	bh=SK7h0C0KVTLZxO68wwzEK/AcQDwtH6VNHjwCjSnaAu0=;
+	b=bCxfG6W1hSadlRqwM5cXGsc6GoElbm3jWyxMcvd9wQ0UO4tt/GWZ9zUngBSriDopPT+DuB
+	DDcPZHuVdWqZxFCg==
+From: "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/irqflags: Provide native versions of the
- local_irq_save()/restore()
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cc4c33c0d07200164a3dd8cfd6da0344f57732648=2E17176?=
- =?utf-8?q?00736=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3Cc4c33c0d07200164a3dd8cfd6da0344f57732648=2E171760?=
- =?utf-8?q?0736=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
+Subject:
+ [tip: x86/cc] ACPI: tables: Print MULTIPROC_WAKEUP when MADT is parsed
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Baoquan He <bhe@redhat.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Tao Liu <ltao@redhat.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240614095904.1345461-20-kirill.shutemov@linux.intel.com>
+References: <20240614095904.1345461-20-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171870390131.10875.13747462976569501585.tip-bot2@tip-bot2>
+Message-ID: <171871929790.10875.2508282628662679382.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,59 +83,58 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/sev branch of tip:
+The following commit has been merged into the x86/cc branch of tip:
 
-Commit-ID:     b547fc2c9927a95808ef93d7fbd5dd70679fb501
-Gitweb:        https://git.kernel.org/tip/b547fc2c9927a95808ef93d7fbd5dd70679fb501
-Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Wed, 05 Jun 2024 10:18:44 -05:00
+Commit-ID:     16df35946120fca2346c415fae429c821391eef8
+Gitweb:        https://git.kernel.org/tip/16df35946120fca2346c415fae429c821391eef8
+Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+AuthorDate:    Fri, 14 Jun 2024 12:59:04 +03:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 11 Jun 2024 07:22:46 +02:00
+CommitterDate: Mon, 17 Jun 2024 17:46:28 +02:00
 
-x86/irqflags: Provide native versions of the local_irq_save()/restore()
+ACPI: tables: Print MULTIPROC_WAKEUP when MADT is parsed
 
-Functions that need to disable IRQs, but are common to both early boot and
-post-boot execution, are unable to deal with paravirt support associated
-with local_irq_save() and local_irq_restore().
+When MADT is parsed, print MULTIPROC_WAKEUP information:
 
-Create native versions of these for use in these situations.
+  ACPI: MP Wakeup (version[1], mailbox[0x7fffd000], reset[0x7fffe068])
 
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+This debug information will be very helpful during bringup.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/c4c33c0d07200164a3dd8cfd6da0344f57732648.1717600736.git.thomas.lendacky@amd.com
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Tao Liu <ltao@redhat.com>
+Link: https://lore.kernel.org/r/20240614095904.1345461-20-kirill.shutemov@linux.intel.com
 ---
- arch/x86/include/asm/irqflags.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/acpi/tables.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
-index 8c5ae64..cf7fc2b 100644
---- a/arch/x86/include/asm/irqflags.h
-+++ b/arch/x86/include/asm/irqflags.h
-@@ -54,6 +54,26 @@ static __always_inline void native_halt(void)
- 	asm volatile("hlt": : :"memory");
- }
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index b976e5f..9e1b01c 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -198,6 +198,20 @@ void acpi_table_print_madt_entry(struct acpi_subtable_header *header)
+ 		}
+ 		break;
  
-+static __always_inline int native_irqs_disabled_flags(unsigned long flags)
-+{
-+	return !(flags & X86_EFLAGS_IF);
-+}
++	case ACPI_MADT_TYPE_MULTIPROC_WAKEUP:
++		{
++			struct acpi_madt_multiproc_wakeup *p =
++				(struct acpi_madt_multiproc_wakeup *)header;
++			u64 reset_vector = 0;
 +
-+static __always_inline unsigned long native_local_irq_save(void)
-+{
-+	unsigned long flags = native_save_fl();
++			if (p->version >= ACPI_MADT_MP_WAKEUP_VERSION_V1)
++				reset_vector = p->reset_vector;
 +
-+	native_irq_disable();
++			pr_debug("MP Wakeup (version[%d], mailbox[%#llx], reset[%#llx])\n",
++				 p->version, p->mailbox_address, reset_vector);
++		}
++		break;
 +
-+	return flags;
-+}
-+
-+static __always_inline void native_local_irq_restore(unsigned long flags)
-+{
-+	if (!native_irqs_disabled_flags(flags))
-+		native_irq_enable();
-+}
-+
- #endif
- 
- #ifdef CONFIG_PARAVIRT_XXL
+ 	case ACPI_MADT_TYPE_CORE_PIC:
+ 		{
+ 			struct acpi_madt_core_pic *p = (struct acpi_madt_core_pic *)header;
 
