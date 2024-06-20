@@ -1,156 +1,109 @@
-Return-Path: <linux-tip-commits+bounces-1473-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1474-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A04A90FF76
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Jun 2024 10:51:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DC5910321
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Jun 2024 13:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BAED1C2137C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Jun 2024 08:51:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78D551F22269
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Jun 2024 11:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790E71AAE11;
-	Thu, 20 Jun 2024 08:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="dv3k7Rea"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA992582;
-	Thu, 20 Jun 2024 08:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF591AB91A;
+	Thu, 20 Jun 2024 11:36:53 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D46439FD7;
+	Thu, 20 Jun 2024 11:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718873360; cv=none; b=jtmYYQadIG55RIQO6EoVS/gwq7IsV9YHiQgN4lTHELik7dGZLD6tznCrIZzgV8hPD9ImZVUE3lBRzjdyGEvX2l4jWFQLGaajbHpvrJEYRuwRSt43egIAH+3iyZqWF85uaNOEfq6nLHTMpPW7Tcko4JX7pP1pUQ3g3ic7I4+U1WI=
+	t=1718883413; cv=none; b=iH342SvzPN/Vhwd4SLhgYfxUJbnWLQcaaSlGzIHpHekF4X0LrDcMXWRK1DMIYwkJCbT1gOqUACGlmhlMkIXyxh5zE9qU1gZx+yzIFxsw8NWJ83P1F/WKfD+qCx0zXDSKrmiqHzppZ2xWetYzxLFqdhdAQwjflVTVWngjpQSd8s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718873360; c=relaxed/simple;
-	bh=jNfkDMRcO2oeeYKSJDzxCHJCMTTV67C3zqxJqxPPYYo=;
+	s=arc-20240116; t=1718883413; c=relaxed/simple;
+	bh=yKMdN4mgeSJWVWyiv46KXqPiWOGWA5iwguABvHUDFfw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r/tpR4dn9cjltW2pGV06epKesf0YxmHNUaKJdM8ec+7uikIRDU8VN6JX7BNRtXNpvU4azLGiZMy2lM50meftA+9hY5PpaIjPZp21iEcYg7GXRxaH5H8cS5Ws4FwZ2Fzdo/VxJgJB+4nX3HvaJ68kgDJJpf5OCiyM5y5S6FG0jXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=dv3k7Rea; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 645CA40E021A;
-	Thu, 20 Jun 2024 08:49:14 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Uv5zLkmrO5Np; Thu, 20 Jun 2024 08:49:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1718873350; bh=6EyIcoUfttVVNnxBX/AUr5QBtwGzWzGdL+5OK4EVuC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dv3k7ReanBgHyjpkkVskT8jnbh35c6C2llvNvCgDKnvCWxNqlEIEDzBCnQ/Ub2TLN
-	 GKDDKWT6DRo1EtsdPgO7lzjTjr+ZwBP/BCi5BGfrYnTI4P7sfZkrQD0ksrdTWPfhEx
-	 ArhQtF4JrfMhr6fkc2C0FaoXBT9BjxIgXX58RfiUqWn5Ie5Pmz8rTpcS3/YAPMKSfm
-	 xxBT8SIIoSuSC/vF2crSp8+d8ARufM/0KFiWnT94OPkOAn+XiY7IlMCsPVTgseo4z/
-	 Npsg9zKJ+LX6Ah6Djv7RApCNZKTuchEANiXkv2CVMnHqSTBSbr4IPtchC3kBxYDmuX
-	 oCFtMmjjhgj5S0KdP3FiW1iriC2bzBAGssXhxu6lGU+Kx5PXl+wD2lCaQodtH4QNOt
-	 WNEsDudjN7V7PO5YqNagT4qrQ8GuiqI9oYC6Bu7llRw8eTWTk/NcBOigDjTGYfzldm
-	 RuYOrhFBrlyOac7rKMSbPqHLaHMStoHz7oKa83/fmu3qAqGUWF1vWaDjZm3LN9Oalx
-	 Anu7G/KJXBv6q3x/3K947gmdEaVMMf5MAbH6qz1Hd12JkSjMx24Ax9iPMBxo5uSY67
-	 VccROMPvyeOtCyCrWMXTIgfapeJSU/J3ghYBS6NCtHRZNVjTsSatnNmjpTCxL0dNpi
-	 608HV6WbwiemcHMmWr984C9A=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 706FA40E01A5;
-	Thu, 20 Jun 2024 08:49:05 +0000 (UTC)
-Date: Thu, 20 Jun 2024 10:48:53 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, kernel test robot <lkp@intel.com>,
-	Sean Christopherson <seanjc@google.com>, x86@kernel.org
-Subject: Re: [tip: x86/alternatives] x86/alternatives, kvm: Fix a couple of
- CALLs without a frame pointer
-Message-ID: <20240620084853.GAZnPs9Q94aakywkUn@fat_crate.local>
-References: <171878639288.10875.12927337921927674667.tip-bot2@tip-bot2>
+	 Content-Type:Content-Disposition:In-Reply-To; b=QPox8iLgD85fOwk7SYAulJHvG4BeXnlFYMs6vIRupbhG3EavusdVmbIv8dUW+1EI78pktKuuShZfZ+jSG78xXzhS9vrejtdjepPLHdSRfot7CqfFGFQ+6p+kVlv0BvhGztJQxPHPDt7tOHJar8EYU9vc3DV7e8ATelcMzU2Ju+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E86A11042;
+	Thu, 20 Jun 2024 04:37:14 -0700 (PDT)
+Received: from e133380.arm.com (e133380.arm.com [10.1.197.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 755923F6A8;
+	Thu, 20 Jun 2024 04:36:49 -0700 (PDT)
+Date: Thu, 20 Jun 2024 12:36:43 +0100
+From: Dave Martin <Dave.Martin@arm.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-tip-commits@vger.kernel.org,
+	Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [tip: x86/urgent] x86/resctrl: Don't try to free nonexistent
+ RMIDs
+Message-ID: <ZnQUS+xchr13/3jk@e133380.arm.com>
+References: <20240618140152.83154-1-Dave.Martin@arm.com>
+ <171879092443.10875.1695191697085701044.tip-bot2@tip-bot2>
+ <ZnLUVtZ3oaFjcUj9@e133380.arm.com>
+ <20240619134522.GCZnLg8pgJq9MPHS8M@fat_crate.local>
+ <ZnMBN487xiPOfpRp@e133380.arm.com>
+ <20240619162124.GFZnMFhPW3wo2Avezo@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <171878639288.10875.12927337921927674667.tip-bot2@tip-bot2>
+In-Reply-To: <20240619162124.GFZnMFhPW3wo2Avezo@fat_crate.local>
 
-On Wed, Jun 19, 2024 at 08:39:52AM -0000, tip-bot2 for Borislav Petkov (AMD) wrote:
-> The following commit has been merged into the x86/alternatives branch of tip:
+Hi,
+
+On Wed, Jun 19, 2024 at 06:21:24PM +0200, Borislav Petkov wrote:
+> On Wed, Jun 19, 2024 at 05:03:03PM +0100, Dave Martin wrote:
+> > It's still a guideline, no?  (Though I admit that common sense has to
+> > apply and there are quite often good reasons to bust the limit in
+> > code.)  But commit messages are not code, and don't suffer from
+> > creeping indentation that eats up half of each line, so the rationale
+> > is not really the same.
 > 
-> Commit-ID:     93f78dadee5e56ae48aff567583d503868aa3bf2
-> Gitweb:        https://git.kernel.org/tip/93f78dadee5e56ae48aff567583d503868aa3bf2
-> Author:        Borislav Petkov (AMD) <bp@alien8.de>
-> AuthorDate:    Tue, 18 Jun 2024 21:57:27 +02:00
-> Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-> CommitterDate: Wed, 19 Jun 2024 10:33:25 +02:00
+> Just do a "git log" on mainline and marvel at all the possible "formatting".
 > 
-> x86/alternatives, kvm: Fix a couple of CALLs without a frame pointer
+> The ship on being able to read commit messages with formatting that fits what
+> you're expecting has long sailed.
+
+Well, not exactly "expecting", but unfamiliar.  I've mostly been living
+in in arch/arm{,64}/ where it's common to have lines a little shorter.
+
+> > Anyway, I was just mildly surprised, it's not a huge deal.
 > 
-> objtool complains:
+> Yeah, we don't have a strict rule. And I don't think you can make everyone
+> agree and then adhere to some rule for commit messages width. But hey... :-)
 > 
->   arch/x86/kvm/kvm.o: warning: objtool: .altinstr_replacement+0xc5: call without frame pointer save/setup
->   vmlinux.o: warning: objtool: .altinstr_replacement+0x2eb: call without frame pointer save/setup
+> > (Quoted: "Text-based e-mail should not exceed 80 columns per line of
+> > text.  Consult the documentation of your e-mail client to enable proper
+> > line breaks around column 78.".  No statement about commit messages,
+> > and "should not exceed" is not the same as "should be wrapped to".
+> > This document doesn't seem to consider how git formats text derived
+> > from emails.)
 > 
-> Make sure rSP is an output operand to the respective asm() statements.
+> See above.
 > 
-> The test_cc() hunk courtesy of peterz. Also from him add some helpful
-> debugging info to the documentation.
+> I'm willing to consider a rule for commit messages if the majority agrees on
+> some rule.
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202406141648.jO9qNGLa-lkp@intel.com/
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Acked-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/include/asm/alternative.h      |  2 +-
->  arch/x86/kernel/alternative.c           |  2 +-
->  arch/x86/kvm/emulate.c                  |  2 +-
->  tools/objtool/Documentation/objtool.txt | 19 +++++++++++++++++++
->  4 files changed, 22 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
-> index 89fa50d..8cff462 100644
-> --- a/arch/x86/include/asm/alternative.h
-> +++ b/arch/x86/include/asm/alternative.h
-> @@ -248,7 +248,7 @@ static inline int alternatives_text_reserved(void *start, void *end)
->   */
->  #define alternative_call(oldfunc, newfunc, ft_flags, output, input...)	\
->  	asm_inline volatile(ALTERNATIVE("call %c[old]", "call %c[new]", ft_flags) \
-> -		: output : [old] "i" (oldfunc), [new] "i" (newfunc), ## input)
-> +		: output, ASM_CALL_CONSTRAINT : [old] "i" (oldfunc), [new] "i" (newfunc), ## input)
+> Thx.
 
-Yeah, this doesn't fly currently:
+I guess my issue is that the "Massage commit message" seems to document
+a criticism that the author was careless, didn't follow a rule, or that
+the commit message was defective in some way, with the author having no
+right of reply (at least, not recorded in the git history).
 
-https://lore.kernel.org/r/202406200507.AXxJ6Bmw-lkp@intel.com
+I may just be being too touchy.
 
-because those atomic64_32.h macros do
+Anyway, thanks for picking up the patch -- I'm not trying to make extra
+work for anyone.
 
-        alternative_atomic64(set, /* no output */,
-                             "S" (v), "b" (low), "c" (high)
-
-so without an output, it ends up becoming:
-
-asm __inline volatile("# ALT: oldinstr\n" ... ".popsection\n" : , "+r" (current_stack_pointer) : [old] "i" ...
-
-note the preceding ",".
-
-And I can't do "output..." macro argument with ellipsis and paste with "##
-output" because "input..." already does that. :-\
-
-So I am not sure what to do here. Removing the ASM_CALL_CONSTRAINT works,
-let's see whether it passes build tests.
-
-Or add dummy output arguments to the three atomic macros which have no
-output?
-
-Hm.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Cheers
+---Dave
 
