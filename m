@@ -1,77 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-1509-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1510-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9607E913EF5
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Jun 2024 00:21:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1B2915109
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Jun 2024 16:56:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C69E21C2118E
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 23 Jun 2024 22:21:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38C4B285844
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Jun 2024 14:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F2F186296;
-	Sun, 23 Jun 2024 22:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D48919ADAC;
+	Mon, 24 Jun 2024 14:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0XtJEAu7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1ym88w3Q"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LPBd4yP1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fCihEfVt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3275FEED;
-	Sun, 23 Jun 2024 22:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B900514264F;
+	Mon, 24 Jun 2024 14:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719181256; cv=none; b=Gf/eHIX1ZZZaUokRaaMfaQ9UP/gk0kRU0KOopX0O5M9eMKgl7E/NHrRSHpihldnHlTS5BOGKuh5WUfQZ2J9RbgcnadlWON5vw97+Md1G0pGp7//Jb+FvDF4uHg+YvSt+VsZMeHCcttGiioquet/f6i5hTbVPHze7LoC56bTf/vk=
+	t=1719240649; cv=none; b=Ytija4hEZWTskUesGSrZ+u+g85Nqz4bgWV1jCaXGALgmQO0u4MpnzTm7/JZc4hjtqca9PP1qByif+1pLXjotUVWpnfj80ovOkdSD6yEl808UeEoC0vatv9IjNKvGHIbONtelwHiyweHPPj5ml4cRAOa/Ded27AL9Adi8D/C1vnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719181256; c=relaxed/simple;
-	bh=I6+M845uubDkwm0iYrOuZbOyUHHlc4YY8owuivPKnfE=;
+	s=arc-20240116; t=1719240649; c=relaxed/simple;
+	bh=wLwPE9NF20ABJP/vg3ovc25jpB10XBFHKCE03qmzCHY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=aNTYzUjXr4hPkOXKoIa0N4ONPm8PbrgDIcRqHKBixyH4lbHqY92+3Va2pWIwE4EkKRXCnSyCHDKNeUZt9btRTdhVm9rqVgen2+XIwV1FMzu8SJMf+Vym53KVEARtpswkOm2WOYaJa7Gb/031Z1NgNebrmFLxaaDl5ibCYGcVz1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0XtJEAu7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1ym88w3Q; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Fo63ZGmoyJkktIzEqQYByxqpqn6dD6q7yTN62LGFJKf3bT6zklVBRzzRUGYV/zL7tndVWN9VRGztQgJFNTD6Cx+I5X1epfqKNb01LvFPBaBhIFJ9JiEiW2OaUBBkGOGMQVU74buq+vakPNNbvRWCr661zpIRaFuGsLdNHCRGH8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LPBd4yP1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fCihEfVt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 23 Jun 2024 22:20:52 -0000
+Date: Mon, 24 Jun 2024 14:50:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1719181252;
+	s=2020; t=1719240646;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iOviPp/v7neCjMyOV3cLCNqwhnRYCcFtPK6Iar19Usk=;
-	b=0XtJEAu7m6AdawlTkS22CfKcJbyrunfFt/uHgxGtrckDl6pV9JXPY5/Rwji9sJZQX4pWwB
-	KZ2yPNN4i5s0chXiiDT9lVBu9cuWzo9jLxyQu1UTrxmUih/x6xwjitqQhdLu7QwQLwzWDv
-	j4WnynwLoi2HBN9ePxYs8O6TgS++n8zlRmFWHsEng3jtEQ5t1to9J+1i8n0BCnhxoO1LnH
-	SOyfn2t4EHq1Uiml5S055aqZkeAfvUohlgIgGx9uGlWYsLkFq7167mlRUmDo+FK6cmUQsB
-	QIvpX66rvhzDSLKFUCOERxm0Va6ZzIrWQq3U2CJqM9tjAXon9reCFilTSlYhNA==
+	bh=63fzUkIeW2/4aPq7RNSGqwIwjByR2TNEJQK8AOHj1IQ=;
+	b=LPBd4yP1DOa79vBmCbb20DmhxDsQ70CRDusuArOsrZwNEznxmXX0xw+DANEMUU1/QM3y4S
+	PgdZF+X68yQkvgCM39CkN+54c4GbP/KuEOj6UHqeJ37xW9WGjOUdypYTTJX6znZIKt3tuJ
+	/lcSJ6UlOvYIIMJ7tEJg0kNI3gcR/mTQ/1JuLXZ0iYA19r+NlDx3jsy9HZMq2kiMP/mVjH
+	7gheVZF8yvybFsjP7Wg6WIWDL2SHfj7Dz4ZWgT0HEUfQbrc9HMymrKwBhXLvjAfyxzvx0l
+	bvWiTyodcPWqi8Cv5Vrn3qUt4oI3xhjIeP4cM9iZW4l5dtPTPKu2OzxiXtnFHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1719181252;
+	s=2020e; t=1719240646;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iOviPp/v7neCjMyOV3cLCNqwhnRYCcFtPK6Iar19Usk=;
-	b=1ym88w3Qsqc5mkFh4Zj6NKbiNgrx6EKehxakJLKijJujtfRkmdWoXcNacQEWx4VTx257lV
-	oXV3YisLB6nplYAQ==
-From: "tip-bot2 for Antonio Borneo" <tip-bot2@linutronix.de>
+	bh=63fzUkIeW2/4aPq7RNSGqwIwjByR2TNEJQK8AOHj1IQ=;
+	b=fCihEfVtxKDxPpXBH9rX3HQTGkF58qwpvJX1RjvXLGFJrqtpMIFwqnal7sI9lQ3gzCc/WP
+	k1+CqYnAth8SwVCw==
+From: "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/stm32mp-exti: Allow building as module
-Cc: Antonio Borneo <antonio.borneo@foss.st.com>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240620083115.204362-7-antonio.borneo@foss.st.com>
-References: <20240620083115.204362-7-antonio.borneo@foss.st.com>
+Subject: [tip: core/debugobjects] debugobjects: Annotate racy debug variables
+Cc: Breno Leitao <leitao@debian.org>, Thomas Gleixner <tglx@linutronix.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240611091813.1189860-1-leitao@debian.org>
+References: <20240611091813.1189860-1-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171918125205.10875.15410755034870534766.tip-bot2@tip-bot2>
+Message-ID: <171924064527.10875.6526028546883683876.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,74 +78,81 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the core/debugobjects branch of tip:
 
-Commit-ID:     0be58e0553812fcbd37c0c2d89e2b5bc296f04ea
-Gitweb:        https://git.kernel.org/tip/0be58e0553812fcbd37c0c2d89e2b5bc296f04ea
-Author:        Antonio Borneo <antonio.borneo@foss.st.com>
-AuthorDate:    Thu, 20 Jun 2024 10:31:13 +02:00
+Commit-ID:     5b5baba6222255d29626f63c41f101379ec5400b
+Gitweb:        https://git.kernel.org/tip/5b5baba6222255d29626f63c41f101379ec5400b
+Author:        Breno Leitao <leitao@debian.org>
+AuthorDate:    Tue, 11 Jun 2024 02:18:12 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 24 Jun 2024 00:16:43 +02:00
+CommitterDate: Mon, 24 Jun 2024 16:46:43 +02:00
 
-irqchip/stm32mp-exti: Allow building as module
+debugobjects: Annotate racy debug variables
 
-Allow to build the driver as a module by adding the necessarily hooks in
-Kconfig and in the driver's code.
+KCSAN has identified a potential data race in debugobjects, where the
+global variable debug_objects_maxchain is accessed for both reading and
+writing simultaneously in separate and parallel data paths. This results in
+the following splat printed by KCSAN:
 
-Since all the probe dependencies linked to this driver have already been
-fixed, remove the not longer relevant 'arch_initcall'.
+  BUG: KCSAN: data-race in debug_check_no_obj_freed / debug_object_activate
 
-Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
+  write to 0xffffffff847ccfc8 of 4 bytes by task 734 on cpu 41:
+  debug_object_activate (lib/debugobjects.c:199 lib/debugobjects.c:564 lib/debugobjects.c:710)
+  call_rcu (kernel/rcu/rcu.h:227 kernel/rcu/tree.c:2719 kernel/rcu/tree.c:2838)
+  security_inode_free (security/security.c:1626)
+  __destroy_inode (./include/linux/fsnotify.h:222 fs/inode.c:287)
+  ...
+  read to 0xffffffff847ccfc8 of 4 bytes by task 384 on cpu 31:
+  debug_check_no_obj_freed (lib/debugobjects.c:1000 lib/debugobjects.c:1019)
+  kfree (mm/slub.c:2081 mm/slub.c:4280 mm/slub.c:4390)
+  percpu_ref_exit (lib/percpu-refcount.c:147)
+  css_free_rwork_fn (kernel/cgroup/cgroup.c:5357)
+  ...
+  value changed: 0x00000070 -> 0x00000071
+
+The data race is actually harmless as this is just used for debugfs
+statistics, as all other debug variables.
+
+Annotate all debug variables as racy explicitly, since these variables
+are known to be racy and harmless.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240620083115.204362-7-antonio.borneo@foss.st.com
-
+Link: https://lore.kernel.org/r/20240611091813.1189860-1-leitao@debian.org
 ---
- drivers/irqchip/Kconfig            |  8 ++++++--
- drivers/irqchip/irq-stm32mp-exti.c | 15 ++++-----------
- 2 files changed, 10 insertions(+), 13 deletions(-)
+ lib/debugobjects.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index 978639d..cbf49b6 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -405,9 +405,13 @@ config PARTITION_PERCPU
- 	bool
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index fb12a9b..7cea91e 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -78,16 +78,17 @@ static bool			obj_freeing;
+ /* The number of objs on the global free list */
+ static int			obj_nr_tofree;
  
- config STM32MP_EXTI
--	bool
--	select IRQ_DOMAIN
-+	tristate "STM32MP extended interrupts and event controller"
-+	depends on (ARCH_STM32 && !ARM_SINGLE_ARMV7M) || COMPILE_TEST
-+	default y
-+	select IRQ_DOMAIN_HIERARCHY
- 	select GENERIC_IRQ_CHIP
-+	help
-+	  Support STM32MP EXTI (extended interrupts and event) controller.
+-static int			debug_objects_maxchain __read_mostly;
+-static int __maybe_unused	debug_objects_maxchecked __read_mostly;
+-static int			debug_objects_fixups __read_mostly;
+-static int			debug_objects_warnings __read_mostly;
+-static int			debug_objects_enabled __read_mostly
+-				= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
+-static int			debug_objects_pool_size __read_mostly
+-				= ODEBUG_POOL_SIZE;
+-static int			debug_objects_pool_min_level __read_mostly
+-				= ODEBUG_POOL_MIN_LEVEL;
++static int __data_racy			debug_objects_maxchain __read_mostly;
++static int __data_racy __maybe_unused	debug_objects_maxchecked __read_mostly;
++static int __data_racy			debug_objects_fixups __read_mostly;
++static int __data_racy			debug_objects_warnings __read_mostly;
++static int __data_racy			debug_objects_enabled __read_mostly
++					= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
++static int __data_racy			debug_objects_pool_size __read_mostly
++					= ODEBUG_POOL_SIZE;
++static int __data_racy			debug_objects_pool_min_level __read_mostly
++					= ODEBUG_POOL_MIN_LEVEL;
++
+ static const struct debug_obj_descr *descr_test  __read_mostly;
+ static struct kmem_cache	*obj_cache __ro_after_init;
  
- config STM32_EXTI
- 	bool
-diff --git a/drivers/irqchip/irq-stm32mp-exti.c b/drivers/irqchip/irq-stm32mp-exti.c
-index 727859e..33e0cfd 100644
---- a/drivers/irqchip/irq-stm32mp-exti.c
-+++ b/drivers/irqchip/irq-stm32mp-exti.c
-@@ -722,15 +722,8 @@ static struct platform_driver stm32mp_exti_driver = {
- 	},
- };
- 
--static int __init stm32mp_exti_arch_init(void)
--{
--	return platform_driver_register(&stm32mp_exti_driver);
--}
--
--static void __exit stm32mp_exti_arch_exit(void)
--{
--	return platform_driver_unregister(&stm32mp_exti_driver);
--}
-+module_platform_driver(stm32mp_exti_driver);
- 
--arch_initcall(stm32mp_exti_arch_init);
--module_exit(stm32mp_exti_arch_exit);
-+MODULE_AUTHOR("Maxime Coquelin <mcoquelin.stm32@gmail.com>");
-+MODULE_DESCRIPTION("STM32MP EXTI driver");
-+MODULE_LICENSE("GPL");
 
