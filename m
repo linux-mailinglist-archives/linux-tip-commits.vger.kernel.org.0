@@ -1,76 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-1510-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1511-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1B2915109
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Jun 2024 16:56:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4355791517A
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Jun 2024 17:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38C4B285844
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Jun 2024 14:56:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDA1F28A7FB
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Jun 2024 15:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D48919ADAC;
-	Mon, 24 Jun 2024 14:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09D019B5BF;
+	Mon, 24 Jun 2024 15:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LPBd4yP1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fCihEfVt"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YLalL5v/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uuLa8da6"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B900514264F;
-	Mon, 24 Jun 2024 14:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2140D19B3DD;
+	Mon, 24 Jun 2024 15:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719240649; cv=none; b=Ytija4hEZWTskUesGSrZ+u+g85Nqz4bgWV1jCaXGALgmQO0u4MpnzTm7/JZc4hjtqca9PP1qByif+1pLXjotUVWpnfj80ovOkdSD6yEl808UeEoC0vatv9IjNKvGHIbONtelwHiyweHPPj5ml4cRAOa/Ded27AL9Adi8D/C1vnU=
+	t=1719241763; cv=none; b=O1ge/A1ThvPsCIDRb6KGsslnT2Lf+N+PnOl/rN5yT+4IOmHq8xbxRQSaeazx76JHRB3SKhXHaZbA/ZCt4rzy8yB3vNHrU1kvrARVSNrVq5mTtIU8s6pA9acvgExCrTcgmdyEeOGfEjUkREywC7QoIosSjGkyX1xDYliOc2TMWjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719240649; c=relaxed/simple;
-	bh=wLwPE9NF20ABJP/vg3ovc25jpB10XBFHKCE03qmzCHY=;
+	s=arc-20240116; t=1719241763; c=relaxed/simple;
+	bh=FILtOui0cyM143IzRiIW8gYUTvdITQCW1Bvp0fMKuNU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Fo63ZGmoyJkktIzEqQYByxqpqn6dD6q7yTN62LGFJKf3bT6zklVBRzzRUGYV/zL7tndVWN9VRGztQgJFNTD6Cx+I5X1epfqKNb01LvFPBaBhIFJ9JiEiW2OaUBBkGOGMQVU74buq+vakPNNbvRWCr661zpIRaFuGsLdNHCRGH8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LPBd4yP1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fCihEfVt; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=CBDrQEgBCT2mtB3i7Pg2ZMiQMU1AHxDF4UBNvBDm/eg+PQFXnKr47aVTkWhQszeAFANXTliqh0IeWObBfZYdWo5HXJtKRXp3b7+7tpiPvBgWaGhP/GsjUswcDGEpnKkOrO43/0ShnQ93tT/1np/Tnh5ckLhRwstbHtbCQ0FD9lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YLalL5v/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uuLa8da6; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 24 Jun 2024 14:50:45 -0000
+Date: Mon, 24 Jun 2024 15:09:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1719240646;
+	s=2020; t=1719241760;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=63fzUkIeW2/4aPq7RNSGqwIwjByR2TNEJQK8AOHj1IQ=;
-	b=LPBd4yP1DOa79vBmCbb20DmhxDsQ70CRDusuArOsrZwNEznxmXX0xw+DANEMUU1/QM3y4S
-	PgdZF+X68yQkvgCM39CkN+54c4GbP/KuEOj6UHqeJ37xW9WGjOUdypYTTJX6znZIKt3tuJ
-	/lcSJ6UlOvYIIMJ7tEJg0kNI3gcR/mTQ/1JuLXZ0iYA19r+NlDx3jsy9HZMq2kiMP/mVjH
-	7gheVZF8yvybFsjP7Wg6WIWDL2SHfj7Dz4ZWgT0HEUfQbrc9HMymrKwBhXLvjAfyxzvx0l
-	bvWiTyodcPWqi8Cv5Vrn3qUt4oI3xhjIeP4cM9iZW4l5dtPTPKu2OzxiXtnFHQ==
+	bh=6YjAmwyU2I36ExxuOlcSmwuiYuD9EafTB1DYtgEfIeY=;
+	b=YLalL5v/7yiQQ1s0ACfLFTM/KT63YEycJmZkwHcIeBYWUAQ3OPaCztS5XW5bWf6q4jTk/S
+	jUBhWXnSwUhwCBUO1ULCIxjUownTvZAcRwQaldui2Ghw13amx/w38thHKn8aLH8dnhDOx+
+	7nFpEt5v5BGhmLmGF/eJPBSN8C9uN1HqyKcLrV3NJ7pzhrVosMlZqqCi6NzLw8paYm6K54
+	klp0umRRn0xQTJBli16uTppeLmZqc6pixTI7yBNtuJDuyhsmgR0JdfiqkrD8C4R3kY+z7L
+	o6Tn6Ou6708TM03uVDc2m5STCBFv6e3w2f1hkYPZmZ+xGjbCgl4XZrEV5vdlUQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1719240646;
+	s=2020e; t=1719241760;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=63fzUkIeW2/4aPq7RNSGqwIwjByR2TNEJQK8AOHj1IQ=;
-	b=fCihEfVtxKDxPpXBH9rX3HQTGkF58qwpvJX1RjvXLGFJrqtpMIFwqnal7sI9lQ3gzCc/WP
-	k1+CqYnAth8SwVCw==
-From: "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
+	bh=6YjAmwyU2I36ExxuOlcSmwuiYuD9EafTB1DYtgEfIeY=;
+	b=uuLa8da6Y87xLqZQLlDhR361VsuCswgMnphmiujxvxVnf+oR5lTvRQWCfdCROzFhUU5wsB
+	EeGo75uBvBYYAbCw==
+From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: core/debugobjects] debugobjects: Annotate racy debug variables
-Cc: Breno Leitao <leitao@debian.org>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240611091813.1189860-1-leitao@debian.org>
-References: <20240611091813.1189860-1-leitao@debian.org>
+Subject:
+ [tip: perf/core] perf/x86/intel/uncore: Support HBM and CXL PMON counters
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Yunying Sun <yunying.sun@intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240614134631.1092359-9-kan.liang@linux.intel.com>
+References: <20240614134631.1092359-9-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171924064527.10875.6526028546883683876.tip-bot2@tip-bot2>
+Message-ID: <171924175978.10875.17391461585888154745.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,81 +81,128 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the core/debugobjects branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     5b5baba6222255d29626f63c41f101379ec5400b
-Gitweb:        https://git.kernel.org/tip/5b5baba6222255d29626f63c41f101379ec5400b
-Author:        Breno Leitao <leitao@debian.org>
-AuthorDate:    Tue, 11 Jun 2024 02:18:12 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 24 Jun 2024 16:46:43 +02:00
+Commit-ID:     f8a86a9bb5f7e65d8c4405052de062639a8783bb
+Gitweb:        https://git.kernel.org/tip/f8a86a9bb5f7e65d8c4405052de062639a8783bb
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Fri, 14 Jun 2024 06:46:31 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 17 Jun 2024 17:57:59 +02:00
 
-debugobjects: Annotate racy debug variables
+perf/x86/intel/uncore: Support HBM and CXL PMON counters
 
-KCSAN has identified a potential data race in debugobjects, where the
-global variable debug_objects_maxchain is accessed for both reading and
-writing simultaneously in separate and parallel data paths. This results in
-the following splat printed by KCSAN:
+Unknown uncore PMON types can be found in both SPR and EMR with HBM or
+CXL.
 
-  BUG: KCSAN: data-race in debug_check_no_obj_freed / debug_object_activate
+ $ls /sys/devices/ | grep type
+ uncore_type_12_16
+ uncore_type_12_18
+ uncore_type_12_2
+ uncore_type_12_4
+ uncore_type_12_6
+ uncore_type_12_8
+ uncore_type_13_17
+ uncore_type_13_19
+ uncore_type_13_3
+ uncore_type_13_5
+ uncore_type_13_7
+ uncore_type_13_9
 
-  write to 0xffffffff847ccfc8 of 4 bytes by task 734 on cpu 41:
-  debug_object_activate (lib/debugobjects.c:199 lib/debugobjects.c:564 lib/debugobjects.c:710)
-  call_rcu (kernel/rcu/rcu.h:227 kernel/rcu/tree.c:2719 kernel/rcu/tree.c:2838)
-  security_inode_free (security/security.c:1626)
-  __destroy_inode (./include/linux/fsnotify.h:222 fs/inode.c:287)
-  ...
-  read to 0xffffffff847ccfc8 of 4 bytes by task 384 on cpu 31:
-  debug_check_no_obj_freed (lib/debugobjects.c:1000 lib/debugobjects.c:1019)
-  kfree (mm/slub.c:2081 mm/slub.c:4280 mm/slub.c:4390)
-  percpu_ref_exit (lib/percpu-refcount.c:147)
-  css_free_rwork_fn (kernel/cgroup/cgroup.c:5357)
-  ...
-  value changed: 0x00000070 -> 0x00000071
+The unknown PMON types are HBM and CXL PMON. Except for the name, the
+other information regarding the HBM and CXL PMON counters can be
+retrieved via the discovery table. Add them into the uncores tables for
+SPR and EMR.
 
-The data race is actually harmless as this is just used for debugfs
-statistics, as all other debug variables.
+The event config registers for all CXL related units are 8-byte apart.
+Add SPR_UNCORE_MMIO_OFFS8_COMMON_FORMAT to specially handle it.
 
-Annotate all debug variables as racy explicitly, since these variables
-are known to be racy and harmless.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240611091813.1189860-1-leitao@debian.org
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Yunying Sun <yunying.sun@intel.com>
+Link: https://lore.kernel.org/r/20240614134631.1092359-9-kan.liang@linux.intel.com
 ---
- lib/debugobjects.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c | 55 ++++++++++++++++++++++++++-
+ 1 file changed, 53 insertions(+), 2 deletions(-)
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index fb12a9b..7cea91e 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -78,16 +78,17 @@ static bool			obj_freeing;
- /* The number of objs on the global free list */
- static int			obj_nr_tofree;
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index fde123a..a7ea221 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -6163,7 +6163,55 @@ static struct intel_uncore_type spr_uncore_mdf = {
+ 	.name			= "mdf",
+ };
  
--static int			debug_objects_maxchain __read_mostly;
--static int __maybe_unused	debug_objects_maxchecked __read_mostly;
--static int			debug_objects_fixups __read_mostly;
--static int			debug_objects_warnings __read_mostly;
--static int			debug_objects_enabled __read_mostly
--				= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
--static int			debug_objects_pool_size __read_mostly
--				= ODEBUG_POOL_SIZE;
--static int			debug_objects_pool_min_level __read_mostly
--				= ODEBUG_POOL_MIN_LEVEL;
-+static int __data_racy			debug_objects_maxchain __read_mostly;
-+static int __data_racy __maybe_unused	debug_objects_maxchecked __read_mostly;
-+static int __data_racy			debug_objects_fixups __read_mostly;
-+static int __data_racy			debug_objects_warnings __read_mostly;
-+static int __data_racy			debug_objects_enabled __read_mostly
-+					= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
-+static int __data_racy			debug_objects_pool_size __read_mostly
-+					= ODEBUG_POOL_SIZE;
-+static int __data_racy			debug_objects_pool_min_level __read_mostly
-+					= ODEBUG_POOL_MIN_LEVEL;
+-#define UNCORE_SPR_NUM_UNCORE_TYPES		12
++static void spr_uncore_mmio_offs8_init_box(struct intel_uncore_box *box)
++{
++	__set_bit(UNCORE_BOX_FLAG_CTL_OFFS8, &box->flags);
++	intel_generic_uncore_mmio_init_box(box);
++}
 +
- static const struct debug_obj_descr *descr_test  __read_mostly;
- static struct kmem_cache	*obj_cache __ro_after_init;
++static struct intel_uncore_ops spr_uncore_mmio_offs8_ops = {
++	.init_box		= spr_uncore_mmio_offs8_init_box,
++	.exit_box		= uncore_mmio_exit_box,
++	.disable_box		= intel_generic_uncore_mmio_disable_box,
++	.enable_box		= intel_generic_uncore_mmio_enable_box,
++	.disable_event		= intel_generic_uncore_mmio_disable_event,
++	.enable_event		= spr_uncore_mmio_enable_event,
++	.read_counter		= uncore_mmio_read_counter,
++};
++
++#define SPR_UNCORE_MMIO_OFFS8_COMMON_FORMAT()			\
++	SPR_UNCORE_COMMON_FORMAT(),				\
++	.ops			= &spr_uncore_mmio_offs8_ops
++
++static struct event_constraint spr_uncore_cxlcm_constraints[] = {
++	UNCORE_EVENT_CONSTRAINT(0x02, 0x0f),
++	UNCORE_EVENT_CONSTRAINT(0x05, 0x0f),
++	UNCORE_EVENT_CONSTRAINT(0x40, 0xf0),
++	UNCORE_EVENT_CONSTRAINT(0x41, 0xf0),
++	UNCORE_EVENT_CONSTRAINT(0x42, 0xf0),
++	UNCORE_EVENT_CONSTRAINT(0x43, 0xf0),
++	UNCORE_EVENT_CONSTRAINT(0x4b, 0xf0),
++	UNCORE_EVENT_CONSTRAINT(0x52, 0xf0),
++	EVENT_CONSTRAINT_END
++};
++
++static struct intel_uncore_type spr_uncore_cxlcm = {
++	SPR_UNCORE_MMIO_OFFS8_COMMON_FORMAT(),
++	.name			= "cxlcm",
++	.constraints		= spr_uncore_cxlcm_constraints,
++};
++
++static struct intel_uncore_type spr_uncore_cxldp = {
++	SPR_UNCORE_MMIO_OFFS8_COMMON_FORMAT(),
++	.name			= "cxldp",
++};
++
++static struct intel_uncore_type spr_uncore_hbm = {
++	SPR_UNCORE_COMMON_FORMAT(),
++	.name			= "hbm",
++};
++
++#define UNCORE_SPR_NUM_UNCORE_TYPES		15
+ #define UNCORE_SPR_CHA				0
+ #define UNCORE_SPR_IIO				1
+ #define UNCORE_SPR_IMC				6
+@@ -6187,6 +6235,9 @@ static struct intel_uncore_type *spr_uncores[UNCORE_SPR_NUM_UNCORE_TYPES] = {
+ 	NULL,
+ 	NULL,
+ 	&spr_uncore_mdf,
++	&spr_uncore_cxlcm,
++	&spr_uncore_cxldp,
++	&spr_uncore_hbm,
+ };
+ 
+ /*
+@@ -6656,7 +6707,7 @@ static struct intel_uncore_type gnr_uncore_b2cmi = {
+ };
+ 
+ static struct intel_uncore_type gnr_uncore_b2cxl = {
+-	SPR_UNCORE_MMIO_COMMON_FORMAT(),
++	SPR_UNCORE_MMIO_OFFS8_COMMON_FORMAT(),
+ 	.name			= "b2cxl",
+ };
  
 
