@@ -1,71 +1,74 @@
-Return-Path: <linux-tip-commits+bounces-1546-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1547-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB077917130
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Jun 2024 21:41:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24585917420
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Jun 2024 00:12:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D9B01C22556
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Jun 2024 19:41:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D27D42821C9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Jun 2024 22:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A4A17C7CD;
-	Tue, 25 Jun 2024 19:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580FF17E8EC;
+	Tue, 25 Jun 2024 22:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tFrP/vLD";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aw2oLBI5"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pBmpNcdr";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XwxQdioi"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39AE143882;
-	Tue, 25 Jun 2024 19:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCB617E8E8;
+	Tue, 25 Jun 2024 22:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719344455; cv=none; b=MehKTwTaVY89eKTmGvorE3cuJFuBCzCmu9xO3Ra7TeAUJKk+MC04BP9kSJJmPzaIdyv4FzNa/44nYe+nT49iNa+rz+PKgzkaDTc1Dr/KAxBOOTMRTjxoDwZIdhD6LCHIzhhzdjT4zbnfc7lbFtSx7BxHZ7tNB0mxreuQ3+aHG5E=
+	t=1719353544; cv=none; b=ohQH6JFEBEKwEvJJxYLxlqM4rSFzysYicwkypXHY2TOD8K9D1hfL1u+pd4jirZiRwKAvsIXPqG/nDoWBoprQv4He5tIh104Kzq4f4tW4rRQiIoOCvFmaDloL2Lzk2H7mS0b0vim5Nqtrrfh8kNFT3VDm5n3s/IBcog+zn/zLhLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719344455; c=relaxed/simple;
-	bh=fMMIPl+SPYzwOMoL8dqMiSlysIzgNns93YOy0fa+Fjw=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Pi/cubVdu2RDJMfThvGTLcppY5Cpe61PxtDOdyKtFsQmvC9g2KniqYyvqXn5sXFAI3x/wI7BnYLp/2oheiMlAzXCVUKOeQPExlCFhy+n2JWOpovTC6VW+V6JGrhXDpDrapD1z6qmC3iHsLraHeUfPE2W40T5yWi6RXt7w5z+emU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tFrP/vLD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aw2oLBI5; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1719353544; c=relaxed/simple;
+	bh=Ftu3WsTt5XKxN+pi5Lmx1LZaz7n0qjVViDvMcD4JHgc=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=AW6Tgq9FjwbE8wtzUXNnKdCMdlGzichnXzv07Wk4xUCvq6TbTF4wm9094+S5iAHlkxu4JUT4Xw3amY0aeKl0aqDCb9bgO9lTzfh56YOOlhl0dyk691BZnOeNl8gFxdF9GSlCHaro7EL0TPpntY6aYDKi9yyIFUY+T6jEsWjhMEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pBmpNcdr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XwxQdioi; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 25 Jun 2024 19:40:51 -0000
+Date: Tue, 25 Jun 2024 22:12:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1719344451;
+	s=2020; t=1719353540;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=ehh6XZSBVUDBjoPODQn4J/hu5q+WHdb+JvpPc9J45nI=;
-	b=tFrP/vLDkyXvtUA2yHOIw2WCQDMGhYrvx9BxZc5q0l66+3TNHZNEJ3ISvfEpKHH+Nazg6f
-	q/nHtQXpcbNeaIgsvrk3M5EHbPhwWcZ4/JJoFMB3oit9esL+qYqwbdBVIHY5MX/qb+z6r8
-	oR9Rx38ax4eleM2AliICfWMtzkESLJW+G3k3Ame+j/Qax3RTXPAVqSBgDYlwj+rpL8cHII
-	ovi38J8ayPmc6yPDG8ZhltuwuAKNkxESPv/qllVe0cDHfkZX7qTkZjm1tFxPs2ucRhqrwa
-	zi6nwYhk4fMN0JLfun/+uzcQuYjZoCFxW64qm6jH9FrtOnIHMzlSavAa5kOYmQ==
+	bh=XHw6rhwX8j0QHpBV2/9r5LmlHycquzQ7fMaPHli9yUo=;
+	b=pBmpNcdr3OQ+AWo7nf3nVz/jQa7Oy3unpwd5dGmjvSsVp0SnNZgpT8XG4d2Ap7NPBOYgiy
+	aK6uSpUq0kRxAbP59Yqm3mz11HxEa1aUuudoZ2SQtdVJWJcSqIW0d4k91i7fCSMIH3DbdH
+	LlT/5OkuzrayTAjw36ghAvMt01cqYd6siH9s0OVxKGtVEd8Qx0RxgRWeqFInTldWvN8b73
+	qB+Fl7GzRqc55AwPEC3m+jwgsNefATlqGZs2C4hLWC7lPwp9QxgakQ/QbX58JWgFzJT4M9
+	mvbOdw2vjL5klvR7ze+HGLWaYx9dX85BnUG6JmU5AkE/Gv6ltB4ZphLz9yTdow==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1719344451;
+	s=2020e; t=1719353540;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=ehh6XZSBVUDBjoPODQn4J/hu5q+WHdb+JvpPc9J45nI=;
-	b=aw2oLBI5ukAUjNotNIb9utc+0DXetqdN0jSzfyqQzEGTllJLhxBCt2Y1uWu3eax7ik+U+0
-	F8g7p5hb2OBooKDQ==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=XHw6rhwX8j0QHpBV2/9r5LmlHycquzQ7fMaPHli9yUo=;
+	b=XwxQdioiVdOUJM7oUcsedffzBnbjBlpcT9NFo/xuFBs8q/TU9UFw1RMBH/6SIcbj5HnxwP
+	gk8TW5Aa0aCoPcAw==
+From: "tip-bot2 for Dexuan Cui" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: irq/core] Revert "irqchip/dw-apb-ictl: Support building as module"
-Cc: Mark Brown <broonie@kernel.org>, kernel test robot <lkp@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Jisheng Zhang <jszhang@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+ [tip: x86/urgent] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Dexuan Cui <decui@microsoft.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Michael Kelley <mikelley@microsoft.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang <kai.huang@intel.com>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171934445127.2215.3526597621538197010.tip-bot2@tip-bot2>
+Message-ID: <171935353976.2215.5616750471664330747.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,70 +76,97 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     be5e5f3a1120bada0cff1bc84c2a1805da308f6e
-Gitweb:        https://git.kernel.org/tip/be5e5f3a1120bada0cff1bc84c2a1805da308f6e
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 Jun 2024 21:30:48 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 25 Jun 2024 21:30:48 +02:00
+Commit-ID:     e1b8ac3aae589bb57a2c2e49fa76235c687c4d23
+Gitweb:        https://git.kernel.org/tip/e1b8ac3aae589bb57a2c2e49fa76235c687c4d23
+Author:        Dexuan Cui <decui@microsoft.com>
+AuthorDate:    Mon, 20 May 2024 19:12:38 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 25 Jun 2024 14:45:22 -07:00
 
-Revert "irqchip/dw-apb-ictl: Support building as module"
+x86/tdx: Support vmalloc() for tdx_enc_status_changed()
 
-This reverts commit 7cc4f309c933ec5d64eea31066fe86bbf9e48819.
+When a TDX guest runs on Hyper-V, the hv_netvsc driver's netvsc_init_buf()
+allocates buffers using vzalloc(), and needs to share the buffers with the
+host OS by calling set_memory_decrypted(), which is not working for
+vmalloc() yet. Add the support by handling the pages one by one.
 
-Causes build fails.
-
-Reported-by: Mark Brown <broonie@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jisheng Zhang <jszhang@kernel.org>
-https://lore.kernel.org/oe-kbuild-all/202406250214.WZEjWnnU-lkp@intel.com/
+Co-developed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240521021238.1803-1-decui%40microsoft.com
 ---
- drivers/irqchip/Kconfig           |  2 +-
- drivers/irqchip/irq-dw-apb-ictl.c | 13 +++----------
- 2 files changed, 4 insertions(+), 11 deletions(-)
+ arch/x86/coco/tdx/tdx.c | 35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index cbf49b6..344c484 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -145,7 +145,7 @@ config DAVINCI_CP_INTC
- 	select IRQ_DOMAIN
- 
- config DW_APB_ICTL
--	tristate "DesignWare APB Interrupt Controller"
-+	bool
- 	select GENERIC_IRQ_CHIP
- 	select IRQ_DOMAIN_HIERARCHY
- 
-diff --git a/drivers/irqchip/irq-dw-apb-ictl.c b/drivers/irqchip/irq-dw-apb-ictl.c
-index 5eda6c4..d5c1c75 100644
---- a/drivers/irqchip/irq-dw-apb-ictl.c
-+++ b/drivers/irqchip/irq-dw-apb-ictl.c
-@@ -122,7 +122,7 @@ static int __init dw_apb_ictl_init(struct device_node *np,
- 	int ret, nrirqs, parent_irq, i;
- 	u32 reg;
- 
--	if (!parent && IS_BUILTIN(CONFIG_DW_APB_ICTL)) {
-+	if (!parent) {
- 		/* Used as the primary interrupt controller */
- 		parent_irq = 0;
- 		domain_ops = &dw_apb_ictl_irq_domain_ops;
-@@ -214,12 +214,5 @@ err_release:
- 	release_mem_region(r.start, resource_size(&r));
- 	return ret;
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index c1cb903..abf3cd5 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -7,6 +7,7 @@
+ #include <linux/cpufeature.h>
+ #include <linux/export.h>
+ #include <linux/io.h>
++#include <linux/mm.h>
+ #include <asm/coco.h>
+ #include <asm/tdx.h>
+ #include <asm/vmx.h>
+@@ -778,6 +779,19 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
+ 	return false;
  }
--#if IS_BUILTIN(CONFIG_DW_APB_ICTL)
--IRQCHIP_DECLARE(dw_apb_ictl, "snps,dw-apb-ictl", dw_apb_ictl_init);
--#else
--IRQCHIP_PLATFORM_DRIVER_BEGIN(dw_apb_ictl)
--IRQCHIP_MATCH("snps,dw-apb-ictl", dw_apb_ictl_init)
--IRQCHIP_PLATFORM_DRIVER_END(dw_apb_ictl)
--MODULE_DESCRIPTION("DesignWare APB Interrupt Controller");
--MODULE_LICENSE("GPL v2");
--#endif
-+IRQCHIP_DECLARE(dw_apb_ictl,
-+		"snps,dw-apb-ictl", dw_apb_ictl_init);
+ 
++static bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end,
++					bool enc)
++{
++	if (!tdx_map_gpa(start, end, enc))
++		return false;
++
++	/* shared->private conversion requires memory to be accepted before use */
++	if (enc)
++		return tdx_accept_memory(start, end);
++
++	return true;
++}
++
+ /*
+  * Inform the VMM of the guest's intent for this physical page: shared with
+  * the VMM or private to the guest.  The VMM is expected to change its mapping
+@@ -785,15 +799,22 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
+  */
+ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ {
+-	phys_addr_t start = __pa(vaddr);
+-	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
++	unsigned long start = vaddr;
++	unsigned long end = start + numpages * PAGE_SIZE;
++	unsigned long step = end - start;
++	unsigned long addr;
+ 
+-	if (!tdx_map_gpa(start, end, enc))
+-		return false;
++	/* Step through page-by-page for vmalloc() mappings */
++	if (is_vmalloc_addr((void *)vaddr))
++		step = PAGE_SIZE;
+ 
+-	/* shared->private conversion requires memory to be accepted before use */
+-	if (enc)
+-		return tdx_accept_memory(start, end);
++	for (addr = start; addr < end; addr += step) {
++		phys_addr_t start_pa = slow_virt_to_phys((void *)addr);
++		phys_addr_t end_pa   = start_pa + step;
++
++		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
++			return false;
++	}
+ 
+ 	return true;
+ }
 
