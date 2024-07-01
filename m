@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-1552-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1553-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DE491D88A
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jul 2024 09:06:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7908E91D88B
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jul 2024 09:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5E651C20D37
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jul 2024 07:06:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 032731F21068
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Jul 2024 07:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E63059160;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9935A0F5;
 	Mon,  1 Jul 2024 07:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oc4Hx/W4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3CisqMcp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o30s3wzO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mloLbHno"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992305474A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991FC5103F;
 	Mon,  1 Jul 2024 07:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719817611; cv=none; b=qq00IG1ApP9L2q/V/1nxhUCgDnkLaxgGAb4sBDAeCXZji/DvcXekFqTNK5UsyW2TfyxJ5DFaFrMWYNUtxPgj+IzqOEtGRyC5L7HzIBP2iIsllgFOMuk4BJsCnLjBN66r25ew17ykxPMDWLbT42mk/5KGXJ3+5rvrp2yLrFNa8TY=
+	t=1719817611; cv=none; b=E/cMudMf20TijmFu7IracwTQ8qAq+DumrM7CkoATNEVQpfGWZ9vmjxtZpti+Q6G1DDBC0FxToGGZYxHb88fzCCuuHVSKBLTpJvfV9eLkKB/wkM5uxVw4ftdvcUwaJSKYMnud14P08dU5vH24l8xudsWllQbIE54+zIzergt53Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1719817611; c=relaxed/simple;
-	bh=jhF0lJfvNpLOlEaZeurBYmYplAtz6JVvOZiwjNVbUn8=;
+	bh=BWFXZqAmSzv0Q1sJ2OZN6U3kExuLmmIO7zQf8nUdE6o=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Uxr/THH/ZHywcv1C/W+YVfbyq1iX2k7jmi04sU8PNq92Ff5+gJNaRTqaUbiC/f388cKk+JySNEd3fAuvmw+2L8TnFNBlfsFI/sg37bfWyFTPUaM58Xb6upPfnLgMW2fuMuqk21xnpLw+b4Riykxysp4r/UC/jv2DmLYA2jG4r6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oc4Hx/W4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3CisqMcp; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=AlVdddi9/OikRVbyd3F2HtlraNKr99ljHJLXpSG1LQDHA/ZO/fVPJjdQR82Vg+WLVi613alExCHfqvTbseaf44UsUatI7a8gbZUyWqm7mQSrw0IeOFXQzdYJCkIWoPBSIXWeKMxINu14bEqMY5W1nk0LjNkhLikwZmJEBGdqCZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o30s3wzO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mloLbHno; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Mon, 01 Jul 2024 07:06:47 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oxEnAqFCiSo+sqOvLdgvU6ZOnixf+RYcVgubN6qo+4c=;
-	b=oc4Hx/W4lrzVvS+muJKooURyud3KlxPCuMTdmevhB035X6x+ldGEpv19AUZjddvmn5wrbZ
-	2X+BkYqPBTDb+fvOBokuSp96+2AlxIACYR4LgWek7VsfqNgKcXZGlkpdKp5+k/DNmrHh8U
-	WrkltQZah26BHuDavlKWerCr/vvUiJ35icjkeBeUKRHc35DtQ4ZGS3efQEJD5lPCUKIPbq
-	LmbATR3x0gA/ypMB0zRJmc0dPcyftBfRXc8RHQXLhFg1tJp1YD7m0Z518OmrEpWYMvZSlf
-	len19MzFODYlUTd8SlGWF8IdYzyvSuqMBLxvP7hd9Gj+dncB5CXekU1E+/534Q==
+	bh=5J0YL1w12qFBWTY8LB0HMXcQSa8WsXinvAkSGzIu+BE=;
+	b=o30s3wzOEyi2/vydwT6H6+vVHKuk/4iW+Zp2QPuXSnUyLbvQNyEU5NfkkO9y7ePsHSf5NO
+	6nHnFB4J7m0D3h/SOY47US13yTkr23R/BhCMirWCX5nRujrRNNVcPMf03Tq0bsBVWs/pfK
+	oa+lcjx5nYvHjV7CPv+uwHBP3bPTRc21bSX2f19SGalcDVUnZMJEVKYZtFMBhCzt4uu6Al
+	ERznrqIGccoXrqay2oa7Rqo9WYntG4P8DFZQtjbBh1OfmnFcG4Y9dFcUB8lE9V900g5eRf
+	pLUgAj7mXzFJtYltoxNAPEXStEQCaYDY/Ua5mGahGlwUyzcd304huRMK/ayIFg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1719817607;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,28 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oxEnAqFCiSo+sqOvLdgvU6ZOnixf+RYcVgubN6qo+4c=;
-	b=3CisqMcpuN2HXSjjbi6d9KwsEHstfPY+YFoa1wMTxO9AorVFZokCa3Wm0tethWwV5HGYZ6
-	ETJGFHmJcFuPHmCA==
-From: "tip-bot2 for Wander Lairson Costa" <tip-bot2@linutronix.de>
+	bh=5J0YL1w12qFBWTY8LB0HMXcQSa8WsXinvAkSGzIu+BE=;
+	b=mloLbHnokk71Oo493mntx++P5jbOO/lgMQnfYRH0dn9te26YxQzjKn2ZIBhBD3GDqm1B4M
+	UlsamTjKxg+evlBg==
+From: "tip-bot2 for John Stultz" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/deadline: fix task_struct reference leak
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>, x86@kernel.org,
+Subject: [tip: sched/urgent] sched: Move psi_account_irqtime() out of
+ update_rq_clock_task() hotpath
+Cc: Jimmy Shiu <jimmyshiu@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ John Stultz <jstultz@google.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Qais Yousef <qyousef@layalina.io>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240620125618.11419-1-wander@redhat.com>
-References: <20240620125618.11419-1-wander@redhat.com>
+In-Reply-To: <20240618215909.4099720-1-jstultz@google.com>
+References: <20240618215909.4099720-1-jstultz@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171981760737.2215.2716487204272407636.tip-bot2@tip-bot2>
+Message-ID: <171981760706.2215.13966714897751148165.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,69 +83,197 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     a7accf658efa4fa5b04a74f21863833fd737f469
-Gitweb:        https://git.kernel.org/tip/a7accf658efa4fa5b04a74f21863833fd737f469
-Author:        Wander Lairson Costa <wander@redhat.com>
-AuthorDate:    Thu, 20 Jun 2024 09:56:17 -03:00
+Commit-ID:     45655e7bd66c78920b0a579d146aa67788545e3c
+Gitweb:        https://git.kernel.org/tip/45655e7bd66c78920b0a579d146aa67788545e3c
+Author:        John Stultz <jstultz@google.com>
+AuthorDate:    Tue, 18 Jun 2024 14:58:55 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 25 Jun 2024 10:43:41 +02:00
+CommitterDate: Tue, 25 Jun 2024 10:43:42 +02:00
 
-sched/deadline: fix task_struct reference leak
+sched: Move psi_account_irqtime() out of update_rq_clock_task() hotpath
 
-During the execution of the following stress test with linux-rt:
+It was reported that in moving to 6.1, a larger then 10%
+regression was seen in the performance of
+clock_gettime(CLOCK_THREAD_CPUTIME_ID,...).
 
-stress-ng --cyclic 30 --timeout 30 --minimize --quiet
+Using a simple reproducer, I found:
+5.10:
+100000000 calls in 24345994193 ns => 243.460 ns per call
+100000000 calls in 24288172050 ns => 242.882 ns per call
+100000000 calls in 24289135225 ns => 242.891 ns per call
 
-kmemleak frequently reported a memory leak concerning the task_struct:
+6.1:
+100000000 calls in 28248646742 ns => 282.486 ns per call
+100000000 calls in 28227055067 ns => 282.271 ns per call
+100000000 calls in 28177471287 ns => 281.775 ns per call
 
-unreferenced object 0xffff8881305b8000 (size 16136):
-  comm "stress-ng", pid 614, jiffies 4294883961 (age 286.412s)
-  object hex dump (first 32 bytes):
-    02 40 00 00 00 00 00 00 00 00 00 00 00 00 00 00  .@..............
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  debug hex dump (first 16 bytes):
-    53 09 00 00 00 00 00 00 00 00 00 00 00 00 00 00  S...............
-  backtrace:
-    [<00000000046b6790>] dup_task_struct+0x30/0x540
-    [<00000000c5ca0f0b>] copy_process+0x3d9/0x50e0
-    [<00000000ced59777>] kernel_clone+0xb0/0x770
-    [<00000000a50befdc>] __do_sys_clone+0xb6/0xf0
-    [<000000001dbf2008>] do_syscall_64+0x5d/0xf0
-    [<00000000552900ff>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+The cause of this was finally narrowed down to the addition of
+psi_account_irqtime() in update_rq_clock_task(), in commit
+52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ
+pressure").
 
-The issue occurs in start_dl_timer(), which increments the task_struct
-reference count and sets a timer. The timer callback, dl_task_timer,
-is supposed to decrement the reference count upon expiration. However,
-if enqueue_task_dl() is called before the timer expires and cancels it,
-the reference count is not decremented, leading to the leak.
+In my initial attempt to resolve this, I leaned towards moving
+all accounting work out of the clock_gettime() call path, but it
+wasn't very pretty, so it will have to wait for a later deeper
+rework. Instead, Peter shared this approach:
 
-This patch fixes the reference leak by ensuring the task_struct
-reference count is properly decremented when the timer is canceled.
+Rework psi_account_irqtime() to use its own psi_irq_time base
+for accounting, and move it out of the hotpath, calling it
+instead from sched_tick() and __schedule().
 
+In testing this, we found the importance of ensuring
+psi_account_irqtime() is run under the rq_lock, which Johannes
+Weiner helpfully explained, so also add some lockdep annotations
+to make that requirement clear.
+
+With this change the performance is back in-line with 5.10:
+6.1+fix:
+100000000 calls in 24297324597 ns => 242.973 ns per call
+100000000 calls in 24318869234 ns => 243.189 ns per call
+100000000 calls in 24291564588 ns => 242.916 ns per call
+
+Reported-by: Jimmy Shiu <jimmyshiu@google.com>
+Originally-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: John Stultz <jstultz@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lore.kernel.org/r/20240620125618.11419-1-wander@redhat.com
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Link: https://lore.kernel.org/r/20240618215909.4099720-1-jstultz@google.com
 ---
- kernel/sched/deadline.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/sched/core.c  |  7 +++++--
+ kernel/sched/psi.c   | 21 ++++++++++++++++-----
+ kernel/sched/sched.h |  1 +
+ kernel/sched/stats.h | 11 ++++++++---
+ 4 files changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index c75d130..9bedd14 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1804,8 +1804,13 @@ static void enqueue_task_dl(struct rq *rq, struct task_struct *p, int flags)
- 			 * The replenish timer needs to be canceled. No
- 			 * problem if it fires concurrently: boosted threads
- 			 * are ignored in dl_task_timer().
-+			 *
-+			 * If the timer callback was running (hrtimer_try_to_cancel == -1),
-+			 * it will eventually call put_task_struct().
- 			 */
--			hrtimer_try_to_cancel(&p->dl.dl_timer);
-+			if (hrtimer_try_to_cancel(&p->dl.dl_timer) == 1 &&
-+			    !dl_server(&p->dl))
-+				put_task_struct(p);
- 			p->dl.dl_throttled = 0;
- 		}
- 	} else if (!dl_prio(p->normal_prio)) {
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index bcf2c4c..59ce084 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -723,7 +723,6 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
+ 
+ 	rq->prev_irq_time += irq_delta;
+ 	delta -= irq_delta;
+-	psi_account_irqtime(rq->curr, irq_delta);
+ 	delayacct_irq(rq->curr, irq_delta);
+ #endif
+ #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+@@ -5665,7 +5664,7 @@ void sched_tick(void)
+ {
+ 	int cpu = smp_processor_id();
+ 	struct rq *rq = cpu_rq(cpu);
+-	struct task_struct *curr = rq->curr;
++	struct task_struct *curr;
+ 	struct rq_flags rf;
+ 	unsigned long hw_pressure;
+ 	u64 resched_latency;
+@@ -5677,6 +5676,9 @@ void sched_tick(void)
+ 
+ 	rq_lock(rq, &rf);
+ 
++	curr = rq->curr;
++	psi_account_irqtime(rq, curr, NULL);
++
+ 	update_rq_clock(rq);
+ 	hw_pressure = arch_scale_hw_pressure(cpu_of(rq));
+ 	update_hw_load_avg(rq_clock_task(rq), rq, hw_pressure);
+@@ -6737,6 +6739,7 @@ static void __sched notrace __schedule(unsigned int sched_mode)
+ 		++*switch_count;
+ 
+ 		migrate_disable_switch(rq, prev);
++		psi_account_irqtime(rq, prev, next);
+ 		psi_sched_switch(prev, next, !task_on_rq_queued(prev));
+ 
+ 		trace_sched_switch(sched_mode & SM_MASK_PREEMPT, prev, next, prev_state);
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index 7b4aa58..507d7b8 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -773,6 +773,7 @@ static void psi_group_change(struct psi_group *group, int cpu,
+ 	enum psi_states s;
+ 	u32 state_mask;
+ 
++	lockdep_assert_rq_held(cpu_rq(cpu));
+ 	groupc = per_cpu_ptr(group->pcpu, cpu);
+ 
+ 	/*
+@@ -991,22 +992,32 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ }
+ 
+ #ifdef CONFIG_IRQ_TIME_ACCOUNTING
+-void psi_account_irqtime(struct task_struct *task, u32 delta)
++void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_struct *prev)
+ {
+-	int cpu = task_cpu(task);
++	int cpu = task_cpu(curr);
+ 	struct psi_group *group;
+ 	struct psi_group_cpu *groupc;
+-	u64 now;
++	u64 now, irq;
++	s64 delta;
+ 
+ 	if (static_branch_likely(&psi_disabled))
+ 		return;
+ 
+-	if (!task->pid)
++	if (!curr->pid)
++		return;
++
++	lockdep_assert_rq_held(rq);
++	group = task_psi_group(curr);
++	if (prev && task_psi_group(prev) == group)
+ 		return;
+ 
+ 	now = cpu_clock(cpu);
++	irq = irq_time_read(cpu);
++	delta = (s64)(irq - rq->psi_irq_time);
++	if (delta < 0)
++		return;
++	rq->psi_irq_time = irq;
+ 
+-	group = task_psi_group(task);
+ 	do {
+ 		if (!group->enabled)
+ 			continue;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index a831af1..ef20c61 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1126,6 +1126,7 @@ struct rq {
+ 
+ #ifdef CONFIG_IRQ_TIME_ACCOUNTING
+ 	u64			prev_irq_time;
++	u64			psi_irq_time;
+ #endif
+ #ifdef CONFIG_PARAVIRT
+ 	u64			prev_steal_time;
+diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
+index 38f3698..b02dfc3 100644
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -110,8 +110,12 @@ __schedstats_from_se(struct sched_entity *se)
+ void psi_task_change(struct task_struct *task, int clear, int set);
+ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 		     bool sleep);
+-void psi_account_irqtime(struct task_struct *task, u32 delta);
+-
++#ifdef CONFIG_IRQ_TIME_ACCOUNTING
++void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_struct *prev);
++#else
++static inline void psi_account_irqtime(struct rq *rq, struct task_struct *curr,
++				       struct task_struct *prev) {}
++#endif /*CONFIG_IRQ_TIME_ACCOUNTING */
+ /*
+  * PSI tracks state that persists across sleeps, such as iowaits and
+  * memory stalls. As a result, it has to distinguish between sleeps,
+@@ -192,7 +196,8 @@ static inline void psi_ttwu_dequeue(struct task_struct *p) {}
+ static inline void psi_sched_switch(struct task_struct *prev,
+ 				    struct task_struct *next,
+ 				    bool sleep) {}
+-static inline void psi_account_irqtime(struct task_struct *task, u32 delta) {}
++static inline void psi_account_irqtime(struct rq *rq, struct task_struct *curr,
++				       struct task_struct *prev) {}
+ #endif /* CONFIG_PSI */
+ 
+ #ifdef CONFIG_SCHED_INFO
 
