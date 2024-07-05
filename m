@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1609-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1614-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A0C928E81
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Jul 2024 23:07:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5AF2928E88
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Jul 2024 23:08:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48A9F284A04
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Jul 2024 21:07:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EA2C1F25D2F
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Jul 2024 21:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59C4176FC9;
-	Fri,  5 Jul 2024 21:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C6E17839E;
+	Fri,  5 Jul 2024 21:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZVKmlVM0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KykAlHZQ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w9IUhUeM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WNW1uWdb"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C709116F909;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FC6176220;
 	Fri,  5 Jul 2024 21:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720213608; cv=none; b=rRm7hCDsgrR7dMGH+HmaNxEGAYjQklFwXYagz3dAGD7UcI4k9f+oXt1x59aGo6d+rnkQ1K0hgzEzqJYlys1YwsfCZO7qfAq/LO28BXDXShF5izmWVkiEOPkUzqK/y5+Q2BI7pU0GtlturSL/LOmEakkmL0Qfaj0w2wT3l3Xr2Xs=
+	t=1720213610; cv=none; b=R3NJ2tg1mmN32Ud9YwaLyiuyjvdkzWIDxy23Tl4O4TNdI4nrsXRmlszN7b7wfe5en0UzFDYtGyraoP0UsA6iMHhFPXtfyKg/TGgyzZLnVeu+prfpiV/pCZ3bGsyjcUqn4+n6IEaNJpRvy4RE8aI7AOUEKB5Iq197mjrCYfQMGx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720213608; c=relaxed/simple;
-	bh=jTWyWDQfYO0Uh1gGcrr2tXX3bOGwYp+hGxc++10HdmI=;
+	s=arc-20240116; t=1720213610; c=relaxed/simple;
+	bh=0RqY3FwLpkLsLtMGcOtgePMIryjxJnEcgowHUKp0lyE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=SkbrZXxMuu873xBii2THmkadkgEcWfKYyawHxmrStDAFo2wXE6t1EmQ+vswYwEZO4pZ2wEtRxGpYBji5dHEBQKs4rCrigM3577qYXlhKrMxFc5axbncqXRk6ZFyDzWDzhFAnngVHK+6QiC9cT5WAti7z2Rvk1+XVAjMEeHQNcAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZVKmlVM0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KykAlHZQ; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=gXATIPv1M3Y2JxLtItnNCKHR/EE5XO3xU3gjTh8PRodGAbRN1bk8KqYE51fA6fgqCM2CM/nfBw0Hw5YUcIeRWhoGrkFmM/xwqu1TCHsvnQoZYpFIUk1bIGSRutbkZJMz9KDEXHBqP5HKmIh2n9YkurysCIXvYRIMgt3g/Xo5XeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w9IUhUeM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WNW1uWdb; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 05 Jul 2024 21:06:44 -0000
+Date: Fri, 05 Jul 2024 21:06:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1720213604;
+	s=2020; t=1720213605;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vnv34jp5wWWwuZjAqqdr9QxEK7pPTVxlmYXP00PKpc4=;
-	b=ZVKmlVM0o61xUquR/hjwWTNgU43+0w7gmqE5WBy7fHfrrrh5BDyz8WsefmrQu/zZr25D1+
-	i9KB3cFvFLk95ChXdjiiggOUxyvriOZboQCgJ/r7ool5P83F9LAMO8nUOjrq2WO0dKAhSV
-	L0t2ogNkXy0bj73QSE4CUey94HJaB29HuyMz+H0FvCkcX+g8nleVXny9oEgiKvDlVUbFAm
-	uzbUcKRKCzuFrJa8HAUIBhAVm1IS/gxylRcpVB6n3LXnixaBk8+mz9Uqhct/4I/YmUNOTo
-	M+O+xNBnCJ4PieY1DEne9Y8UycUqfsiJ3tqjFzPx5W3CHxmNZ8z6aDIqoy9jxg==
+	bh=AKjupNNatHtjyUZRVKZRQelXjKCdFRKgiJDw9awryJs=;
+	b=w9IUhUeM8kLQNQbZPAp3mZFAkDrxh6WACfCvSZm8laiWb/oDf/qh7ltvF2OkPSZ8QrnArA
+	NJb+ka8gi/R75b7G+t6JycRLR4R8o8Pen/s/VEgMcYx9dEkA6mK0aUFeJW6n/AoXGMkxsA
+	ce3lc9TC7Cj5Pcd7ec4D4Mqf8x+v9Y13pfDxz3ngbOOCEGlrdtzpW43gAdklq1jtjst81H
+	YMuUdg+iDNgTqV5oyoUvgPU7QJixopIwUboUUxmn2uRpCfX3ZPe8KrnumXJZD3sYz55D57
+	Zmx8zV9q3qoUTqdpfIMkKbSVdb5K968jPWRhIHIvKmZ5UPtO83r5y6yQOEh6sA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1720213604;
+	s=2020e; t=1720213605;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vnv34jp5wWWwuZjAqqdr9QxEK7pPTVxlmYXP00PKpc4=;
-	b=KykAlHZQ6DkZKSWfEv3LBZXIvhyVeNfP1S2AAAXkV3eEmzcPJ7DR+GGzb+8BZB7s6gXReP
-	TTF07+5/vfbdPJDg==
-From: "tip-bot2 for Zhang Rui" <tip-bot2@linutronix.de>
+	bh=AKjupNNatHtjyUZRVKZRQelXjKCdFRKgiJDw9awryJs=;
+	b=WNW1uWdbFIV9Qea2bQwQjdi35/2q96+BMZ9sGx6chnvIG2n/obax9mpTUqkd6vCBQjuJss
+	YtxkpUttpxOb1dDA==
+From: "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/cstate: Add Lunarlake support
-Cc: Zhang Rui <rui.zhang@intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org,
+Subject: [tip: perf/core] perf: Make rb_alloc_aux() return an error
+ immediately if nr_pages <= 0
+Cc: Adrian Hunter <adrian.hunter@intel.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240628031758.43103-4-rui.zhang@intel.com>
-References: <20240628031758.43103-4-rui.zhang@intel.com>
+In-Reply-To: <20240624201101.60186-8-adrian.hunter@intel.com>
+References: <20240624201101.60186-8-adrian.hunter@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172021360405.2215.11274214034624879815.tip-bot2@tip-bot2>
+Message-ID: <172021360515.2215.12296641761413803609.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,109 +82,37 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     26579860fbd5129e18de9d6fa0751a48420b26b7
-Gitweb:        https://git.kernel.org/tip/26579860fbd5129e18de9d6fa0751a48420b26b7
-Author:        Zhang Rui <rui.zhang@intel.com>
-AuthorDate:    Fri, 28 Jun 2024 11:17:58 +08:00
+Commit-ID:     0ca4da2412da05fb9dd0b5d90dcc8026219f0f29
+Gitweb:        https://git.kernel.org/tip/0ca4da2412da05fb9dd0b5d90dcc8026219f0f29
+Author:        Adrian Hunter <adrian.hunter@intel.com>
+AuthorDate:    Mon, 24 Jun 2024 23:11:01 +03:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 04 Jul 2024 16:00:35 +02:00
+CommitterDate: Thu, 04 Jul 2024 16:00:23 +02:00
 
-perf/x86/intel/cstate: Add Lunarlake support
+perf: Make rb_alloc_aux() return an error immediately if nr_pages <= 0
 
-Compared with previous client platforms, PC8 is removed from Lunarlake.
-It supports CC1/CC6/CC7 and PC2/PC3/PC6/PC10 residency counters.
+rb_alloc_aux() should not be called with nr_pages <= 0. Make it more robust
+and readable by returning an error immediately in that case.
 
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20240628031758.43103-4-rui.zhang@intel.com
+Link: https://lore.kernel.org/r/20240624201101.60186-8-adrian.hunter@intel.com
 ---
- arch/x86/events/intel/cstate.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ kernel/events/ring_buffer.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
-index 9adfdf0..c729f7e 100644
---- a/arch/x86/events/intel/cstate.c
-+++ b/arch/x86/events/intel/cstate.c
-@@ -41,7 +41,7 @@
-  *	MSR_CORE_C1_RES: CORE C1 Residency Counter
-  *			 perf code: 0x00
-  *			 Available model: SLM,AMT,GLM,CNL,ICX,TNT,ADL,RPL
-- *					  MTL,SRF,GRR,ARL
-+ *					  MTL,SRF,GRR,ARL,LNL
-  *			 Scope: Core (each processor core has a MSR)
-  *	MSR_CORE_C3_RESIDENCY: CORE C3 Residency Counter
-  *			       perf code: 0x01
-@@ -53,31 +53,31 @@
-  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
-  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
-  *						TGL,TNT,RKL,ADL,RPL,SPR,MTL,SRF,
-- *						GRR,ARL
-+ *						GRR,ARL,LNL
-  *			       Scope: Core
-  *	MSR_CORE_C7_RESIDENCY: CORE C7 Residency Counter
-  *			       perf code: 0x03
-  *			       Available model: SNB,IVB,HSW,BDW,SKL,CNL,KBL,CML,
-- *						ICL,TGL,RKL,ADL,RPL,MTL,ARL
-+ *						ICL,TGL,RKL,ADL,RPL,MTL,ARL,LNL
-  *			       Scope: Core
-  *	MSR_PKG_C2_RESIDENCY:  Package C2 Residency Counter.
-  *			       perf code: 0x00
-  *			       Available model: SNB,IVB,HSW,BDW,SKL,KNL,GLM,CNL,
-  *						KBL,CML,ICL,ICX,TGL,TNT,RKL,ADL,
-- *						RPL,SPR,MTL,ARL
-+ *						RPL,SPR,MTL,ARL,LNL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C3_RESIDENCY:  Package C3 Residency Counter.
-  *			       perf code: 0x01
-  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,KNL,
-  *						GLM,CNL,KBL,CML,ICL,TGL,TNT,RKL,
-- *						ADL,RPL,MTL,ARL
-+ *						ADL,RPL,MTL,ARL,LNL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C6_RESIDENCY:  Package C6 Residency Counter.
-  *			       perf code: 0x02
-  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
-  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
-  *						TGL,TNT,RKL,ADL,RPL,SPR,MTL,SRF,
-- *						ARL
-+ *						ARL,LNL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C7_RESIDENCY:  Package C7 Residency Counter.
-  *			       perf code: 0x03
-@@ -96,7 +96,7 @@
-  *	MSR_PKG_C10_RESIDENCY: Package C10 Residency Counter.
-  *			       perf code: 0x06
-  *			       Available model: HSW ULT,KBL,GLM,CNL,CML,ICL,TGL,
-- *						TNT,RKL,ADL,RPL,MTL,ARL
-+ *						TNT,RKL,ADL,RPL,MTL,ARL,LNL
-  *			       Scope: Package (physical package)
-  *	MSR_MODULE_C6_RES_MS:  Module C6 Residency Counter.
-  *			       perf code: 0x00
-@@ -640,6 +640,17 @@ static const struct cstate_model adl_cstates __initconst = {
- 				  BIT(PERF_CSTATE_PKG_C10_RES),
- };
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index 485cf0a..8cadf97 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -682,6 +682,9 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
+ 	if (!has_aux(event))
+ 		return -EOPNOTSUPP;
  
-+static const struct cstate_model lnl_cstates __initconst = {
-+	.core_events		= BIT(PERF_CSTATE_CORE_C1_RES) |
-+				  BIT(PERF_CSTATE_CORE_C6_RES) |
-+				  BIT(PERF_CSTATE_CORE_C7_RES),
++	if (nr_pages <= 0)
++		return -EINVAL;
 +
-+	.pkg_events		= BIT(PERF_CSTATE_PKG_C2_RES) |
-+				  BIT(PERF_CSTATE_PKG_C3_RES) |
-+				  BIT(PERF_CSTATE_PKG_C6_RES) |
-+				  BIT(PERF_CSTATE_PKG_C10_RES),
-+};
-+
- static const struct cstate_model slm_cstates __initconst = {
- 	.core_events		= BIT(PERF_CSTATE_CORE_C1_RES) |
- 				  BIT(PERF_CSTATE_CORE_C6_RES),
-@@ -763,6 +774,7 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
- 	X86_MATCH_VFM(INTEL_ARROWLAKE,		&adl_cstates),
- 	X86_MATCH_VFM(INTEL_ARROWLAKE_H,	&adl_cstates),
- 	X86_MATCH_VFM(INTEL_ARROWLAKE_U,	&adl_cstates),
-+	X86_MATCH_VFM(INTEL_LUNARLAKE_M,	&lnl_cstates),
- 	{ },
- };
- MODULE_DEVICE_TABLE(x86cpu, intel_cstates_match);
+ 	if (!overwrite) {
+ 		/*
+ 		 * Watermark defaults to half the buffer, and so does the
 
