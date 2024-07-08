@@ -1,198 +1,104 @@
-Return-Path: <linux-tip-commits+bounces-1630-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1632-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D2C92A55B
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jul 2024 17:07:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FCA592A795
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jul 2024 18:49:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13252B219D8
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jul 2024 15:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 430A7281C6C
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Jul 2024 16:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3297B1422C4;
-	Mon,  8 Jul 2024 15:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8414148310;
+	Mon,  8 Jul 2024 16:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="k017nLao";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y6e1/oXj"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="VMNZywL6"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CB178C9D;
-	Mon,  8 Jul 2024 15:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12F21420DF;
+	Mon,  8 Jul 2024 16:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720451238; cv=none; b=C0gdulT4iL6AHRb3MCrEI0yjX+OELbIqFsjc9om7yyXwtwlHKnrgY3/ENeV7pAMbeFDvYgeLsapSX1Z13LpqvlixbZPNPNcncD7zp8zIhNDchXHy+FIGaRQcnqdRiyhTLEPumd8sYyT75akQXp9eQ1pVAwCnTpWPWSU8CD9whS0=
+	t=1720457345; cv=none; b=LLD+hkDPkzaE8xqZtacN5SzTeIB2zYAD2Sm/43Wik6YmoB9sFmZbK4+YF2vCxsp9AoSBQ0GeChB8gYgpmHEQBr5tyzl/7V218L0aOH+KubzCwVd17/dbMBafjRtrL7uZ14vVsUUnU5R8FT3HcJEutBMLZ+OkkYWNU9RgPmjcffI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720451238; c=relaxed/simple;
-	bh=OIcZ4yvbAqFyMbtgJuhVl5FwjY+lBaZ9k7HU+wq1Oac=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=LhZWZRq3CBEGxl98ikZ/0tyaVH3urBFoeSsgb1IwYxsrTnUGIULrWsTk3+MSX3rMWmk3bdiJY2/bUS1RbzfpSggP2IQkMeZ4mqUPH2R4Uljh02JCYF4Oq7kYKE26Nh5zrfDVhdJKqmOnDUl/39P/LCd0LXS7fBx23UZFc/sAiEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=k017nLao; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Y6e1/oXj; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 08 Jul 2024 15:07:08 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1720451229;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j1ZVjUzJvsr2xJy2juGDmmFGsxkflksjBZN9tPL+M8I=;
-	b=k017nLaoLpXX85cU3qx8qBRpi478qkZlJz3Q1aHAuuqX53FpAq0MI6MyowratmLRNkdbQx
-	qXC3S/lO0Z3APkCYT1bK0lMkMBHw9F9aYfmO37p+m/1jnqw1l1wJKIfM3enUW0cc4dRSKO
-	ryRIMSlILix6uXtc9UNyQK/BYuv3RHUoukKEDFenozOSWD2z+GxW+EG4XG63I0ORF4LiIq
-	PmEm+QWo5D98UfqTBVnjN+ryisUpCaFMKacJULR0itR31uZ4getTmf3zJ59Bt7SLUXrF5w
-	30xkBB2l1eU4Eu02GOXNN2VlxjSVJnFOhOFwxKHHDgaI+K1Tl4jmqpIzIVAN5w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1720451229;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j1ZVjUzJvsr2xJy2juGDmmFGsxkflksjBZN9tPL+M8I=;
-	b=Y6e1/oXj2M1KHyC6RIdJq+IQuvPiqP3YyLHCs/d2YGJKhKJXny6C8lxjJxoU4F2oONTwZm
-	GFFl2Boz8VrcI5Cw==
-From: "tip-bot2 for Tejun Heo" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: set_load_weight() must also call
- reweight_task() for SCHED_IDLE tasks
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Tejun Heo <tj@kernel.org>, stable@vger.kernel.org,
-	#@tip-bot2.tec.linutronix.de, v4.15+@tip-bot2.tec.linutronix.de,
-	x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240624102331.GI31592@noisy.programming.kicks-ass.net>
-References: <20240624102331.GI31592@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1720457345; c=relaxed/simple;
+	bh=dn2Naz7DgHKdIPlqUUXdQML8v/8YmmXJzyHEKsgUUkk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dw8AuZHf9QjCzvpXc17tFjWhwYVEjPiO5AFDvaOLM0cthMCbA545apz1JFZLWkJkl1NL1Ys/MxDZCKYUusBZArXPT4fT9upSaXSJ58GY+1HGFf1Rcm17RDIWsENCEB8uCsthWDz9n7tuGDVnfSY7RIwXr/7ae3NuqhoUa8J/1zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=VMNZywL6; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8875540E019D;
+	Mon,  8 Jul 2024 16:49:01 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id QCR0pN8wUZMS; Mon,  8 Jul 2024 16:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1720457338; bh=4SpgDKEgGt9WxI4KKGDZv5tcCTEy2R9UvSKhwxPW1Fs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VMNZywL6m9FSPyMeeByybJqpDsMCXpjX5av9p8sr2TjwNHDV1dv3LQyEUSvMrJoQq
+	 hF8YkjB0AfXMCPjEfF8tTPZygKs6QdnRfwgqHleqTUmON5B1HN2etgcPUHYBKgCmma
+	 k5054tLqmNq6IYlYnS9odXv+jbaIPBV7/tO8SOSLvO211zv0EWGGc7F8LrIj5Y663I
+	 mlsSrvfVUsDy2C5IjdoAgxdQs2Lsw5cIrqUDLS9KoxOIbhNV87Q0DJsVFnzycAvHMZ
+	 AzXhhaJ2QEAqJlunfOIa3Fu5rOEU35t01E6rgOtqE6toQpu7iXuj//fmmN7QRlhJdk
+	 vbrNiug8rVgBKaeQvW6G0cWHS4BA893t8d1RELv6QUKG2qlkT54W3jia8HeFXNWd5p
+	 BmskGSrhqb87veKMUFOxk1nxasS/Ns1+ZJtsh8o/kUmI4WGPvpwy54FdnWLRqfu7T8
+	 +eUvKs7ABnfvL3VOXDhaAySBuZEhr/CC6+R+dpXHdyGJgZJbPFuTcm9hVNUKD3qPD6
+	 hrlHIoogIbHRqgJyZ01w0WwGQUl1l3+6zN5jBYH4C5wvcJsCZRQ3Ld5J5PTaDeyBUc
+	 +1TsRXh06/8RsqhCLJvt29q5blOU+B3sN4osw33IDB3Qdby1YBnLDAjTCR/C2CztB3
+	 umocZt5irpesD90/uHlRJ1Z4=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EE9B840E0177;
+	Mon,  8 Jul 2024 16:48:51 +0000 (UTC)
+Date: Mon, 8 Jul 2024 18:48:46 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, kernel test robot <lkp@intel.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org
+Subject: Re: [tip: objtool/core] objtool/x86: objtool can confuse memory and
+ stack access
+Message-ID: <20240708164846.GFZowYbmQpBu2Y4GeL@fat_crate.local>
+References: <20240620144747.2524805-1-alexandre.chartre@oracle.com>
+ <172043936454.2215.16620277258416300859.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172045122848.2215.12289639638987417015.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <172043936454.2215.16620277258416300859.tip-bot2@tip-bot2>
 
-The following commit has been merged into the sched/core branch of tip:
+On Mon, Jul 08, 2024 at 11:49:24AM -0000, tip-bot2 for Alexandre Chartre wrote:
+>  4c 8b 24 25 e0 ff ff    mov    0xffffffffffffffe0,%r12
 
-Commit-ID:     d329605287020c3d1c3b0dadc63d8208e7251382
-Gitweb:        https://git.kernel.org/tip/d329605287020c3d1c3b0dadc63d8208e7251382
-Author:        Tejun Heo <tj@kernel.org>
-AuthorDate:    Tue, 25 Jun 2024 15:29:58 -10:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 04 Jul 2024 15:59:52 +02:00
+Right, this is missing a "ff" which is the 4th byte of a disp32.
 
-sched/fair: set_load_weight() must also call reweight_task() for SCHED_IDLE tasks
+I.e., ModRM=0, SIB=5 simply means that what follows is a disp32 field:
 
-When a task's weight is being changed, set_load_weight() is called with
-@update_load set. As weight changes aren't trivial for the fair class,
-set_load_weight() calls fair.c::reweight_task() for fair class tasks.
+ REX:                   0x4c { 4 [w]: 1 [r]: 1 [x]: 0 [b]: 0 }
+Opcode:                 0x8b
+ModRM:                  0x24  [mod:0b][.R:1b,reg:1100b][.B:0b,r/m:100b]
+                        register-indirect mode, offset 0
+SIB:                    0x25 [.B:0b,base:101b][.X:0b,idx:100b][scale: 0]
 
-However, set_load_weight() first tests task_has_idle_policy() on entry and
-skips calling reweight_task() for SCHED_IDLE tasks. This is buggy as
-SCHED_IDLE tasks are just fair tasks with a very low weight and they would
-incorrectly skip load, vlag and position updates.
+ MOV Gv,Ev; MOV reg{16,32,64} reg/mem{16,32,64}
+               0:       4c 8b 24 25 e0 ff ff    mov 0xffffffffffffffe0,%r12
+               7:       ff
+-- 
+Regards/Gruss,
+    Boris.
 
-Fix it by updating reweight_task() to take struct load_weight as idle weight
-can't be expressed with prio and making set_load_weight() call
-reweight_task() for SCHED_IDLE tasks too when @update_load is set.
-
-Fixes: 9059393e4ec1 ("sched/fair: Use reweight_entity() for set_user_nice()")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org # v4.15+
-Link: http://lkml.kernel.org/r/20240624102331.GI31592@noisy.programming.kicks-ass.net
----
- kernel/sched/core.c  | 23 ++++++++++-------------
- kernel/sched/fair.c  |  7 +++----
- kernel/sched/sched.h |  2 +-
- 3 files changed, 14 insertions(+), 18 deletions(-)
-
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 0935f9d..7476834 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1328,27 +1328,24 @@ int tg_nop(struct task_group *tg, void *data)
- void set_load_weight(struct task_struct *p, bool update_load)
- {
- 	int prio = p->static_prio - MAX_RT_PRIO;
--	struct load_weight *load = &p->se.load;
-+	struct load_weight lw;
- 
--	/*
--	 * SCHED_IDLE tasks get minimal weight:
--	 */
- 	if (task_has_idle_policy(p)) {
--		load->weight = scale_load(WEIGHT_IDLEPRIO);
--		load->inv_weight = WMULT_IDLEPRIO;
--		return;
-+		lw.weight = scale_load(WEIGHT_IDLEPRIO);
-+		lw.inv_weight = WMULT_IDLEPRIO;
-+	} else {
-+		lw.weight = scale_load(sched_prio_to_weight[prio]);
-+		lw.inv_weight = sched_prio_to_wmult[prio];
- 	}
- 
- 	/*
- 	 * SCHED_OTHER tasks have to update their load when changing their
- 	 * weight
- 	 */
--	if (update_load && p->sched_class == &fair_sched_class) {
--		reweight_task(p, prio);
--	} else {
--		load->weight = scale_load(sched_prio_to_weight[prio]);
--		load->inv_weight = sched_prio_to_wmult[prio];
--	}
-+	if (update_load && p->sched_class == &fair_sched_class)
-+		reweight_task(p, &lw);
-+	else
-+		p->se.load = lw;
- }
- 
- #ifdef CONFIG_UCLAMP_TASK
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 41b5838..f205e24 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3835,15 +3835,14 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
- 	}
- }
- 
--void reweight_task(struct task_struct *p, int prio)
-+void reweight_task(struct task_struct *p, const struct load_weight *lw)
- {
- 	struct sched_entity *se = &p->se;
- 	struct cfs_rq *cfs_rq = cfs_rq_of(se);
- 	struct load_weight *load = &se->load;
--	unsigned long weight = scale_load(sched_prio_to_weight[prio]);
- 
--	reweight_entity(cfs_rq, se, weight);
--	load->inv_weight = sched_prio_to_wmult[prio];
-+	reweight_entity(cfs_rq, se, lw->weight);
-+	load->inv_weight = lw->inv_weight;
- }
- 
- static inline int throttled_hierarchy(struct cfs_rq *cfs_rq);
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 62fd8bc..9ab5343 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2509,7 +2509,7 @@ extern void init_sched_dl_class(void);
- extern void init_sched_rt_class(void);
- extern void init_sched_fair_class(void);
- 
--extern void reweight_task(struct task_struct *p, int prio);
-+extern void reweight_task(struct task_struct *p, const struct load_weight *lw);
- 
- extern void resched_curr(struct rq *rq);
- extern void resched_cpu(int cpu);
+https://people.kernel.org/tglx/notes-about-netiquette
 
