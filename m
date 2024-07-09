@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-1638-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1637-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A2692B88C
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Jul 2024 13:42:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1966C92B88A
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Jul 2024 13:42:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AEEC1F2220A
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Jul 2024 11:42:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C48D12822D8
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Jul 2024 11:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D92A158A1F;
-	Tue,  9 Jul 2024 11:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5B2158A09;
+	Tue,  9 Jul 2024 11:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c2fPs86Z";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q9EeZfW8"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tL9hj3tQ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Txa1D+Yo"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7561F1586C4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F4315821A;
 	Tue,  9 Jul 2024 11:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720525319; cv=none; b=h5b0lpcHFexUpjvObCu5Ve1VgEMBW6hcwoCHd03ETCh2FrXCmImfXC2srxaTTx6Q5kDdz0L69O4/TZZkyg3G7iNUa6NUJ9440u77VXsib00tQJ+6UT3uN4xMeC0qeexza3rme5jQPanInYJDZPZGjTWptLw5XdeWIbopwIMuoOM=
+	t=1720525319; cv=none; b=KX0M0ovQzbv+gGpdJaiRS6/tuROiCv7KlY9a8ydDeQ6j6TiOzo2QjKUPCodJ9ZMZo76e9FotdVD0UzAIIBtiQcepYjPmkGwalhNX2DBADmkYL372CTwwunXcb2hwpkc5XUc6ViqLgWJGNm5oDaBLoSv6vK0g2kdb20EWC2MZssk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1720525319; c=relaxed/simple;
-	bh=KI4RKTHYnAL+XQXSsiPbfpOIsEbcNLot8g8LFEMIlz0=;
+	bh=7SYB1kdDUn3buUg2wZEG8/LJQdwEAVKy+zXhYxhDN48=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=jdBEd/3yrslghGkWSR4BYhLylb2NFmzoDLaMIr60ofIxQ+hzKv8IFGRUnZaq1uEo4eNca/a+dL6qYJSd9gaDv/uI+ZjulsA/Eb/QsZAXn+Xq7mdBRMfgQ8DyCRlDmXvrWfaGXY9Ub2aEMxjFtCLcJcSlIzGWhGcpJpOU+CVqHy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c2fPs86Z; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q9EeZfW8; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=XGZxiv0lRC++9cKU912oCxBrSUSn4whQPq7/VhpOD121NwNSHrmxFAu+7jDalwMD0jU1uX3GCSra8oNNbOeLem7dD1D2SIP3UmIwV/8rsVwv6ZCgEARjj5O/r7Mmwqeu71wCtv9W++rYHutTcpEE+/6qMyJeD1LyQCc/iONRQic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tL9hj3tQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Txa1D+Yo; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 09 Jul 2024 11:41:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1720525317;
+	s=2020; t=1720525316;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2/SgvI1wwLrqcJJkWAUEyeidhdbxH9aKtUNOnS64wP8=;
-	b=c2fPs86ZxdvYhddwV87qAcajruHLU8hGgePr1Z/epChxqKPgWdn5+wI7vNVJ0ZCKGKbkH8
-	vmmAPEaY7UeAQSSfIgpteSjEhyvtJ7GtN0DFbrUrQg1O/JGklBpUhDeFo9ssN25Q54o9OF
-	zbfJ9zYevWZWrWBu+1OrPC/5q1jbs+ywYCnNtYZcLZf9+Kg2ueeS+ZZBMYkEoa4/ihTLVZ
-	6CtHj+IVG7cCFrW5QYVWCqPEdHN7Xf2BYc5r5LYM8B1VD539bifdKe+Z1kXBWavKuShhbb
-	iUqU4y7W3NO3DyZD+kVsMfXaG1ROgr/1Egv74Nx3AlrO8hlurJb4G4qI/5w/Og==
+	bh=hIk0SFb4FtA05uKIiO3ilIbf+6k/czv9BAvhUTUZ730=;
+	b=tL9hj3tQSeCJ/XTlwdBeJViZUe4bYoNSGSSBU84DNoq4p3si5TPmu2gYIcljs99f4JRika
+	FD7mb3nyCCSP4W9m2gzYPIP2ZiSP1J5nB3HcwKiEtwMUAkRw6KemPPaa4EFs5iaRHD409+
+	yHUte80BNJNI++4/VBxccu9pFo6etjBIz2/qII49xwWF2oeg8/WveV6MepVcoyDaCDPQgK
+	3XuhzM3oiNBF5Gvv/isn5/GzbPJD8KyvVk13kIhWEak2mpJhjImi5PtgTOC32d3SSL1E7k
+	+fjhWlQjRcj56wNmGVzai2GdXKBi4U49eVvbZSv++GuT3RZTFJHhTbGu+l4cRA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1720525317;
+	s=2020e; t=1720525316;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2/SgvI1wwLrqcJJkWAUEyeidhdbxH9aKtUNOnS64wP8=;
-	b=Q9EeZfW8CqBZylcLYVkjWqZAuLQUo7qd8QLFew3ojYRoBYwdRoWRVahG4jqgGxtCLx+8bn
-	ewiBc756kyfU0hAw==
+	bh=hIk0SFb4FtA05uKIiO3ilIbf+6k/czv9BAvhUTUZ730=;
+	b=Txa1D+YocvruhTbMHHfzqInhLV80gWMFDC50PPjF4mspUAmmWsucyxDZuvOuuw8aWPZFtC
+	hCa0e5AAAU9JZMDQ==
 From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Fix the bits of the CHA
- extended umask for SPR
-Cc: Kan Liang <kan.liang@linux.intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ian Rogers <irogers@google.com>, stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/intel: Hide Topdown metrics events if the
+ feature is not enumerated
+Cc: Dongli Zhang <dongli.zhang@oracle.com>,
+ Kan Liang <kan.liang@linux.intel.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240708185524.1185505-1-kan.liang@linux.intel.com>
-References: <20240708185524.1185505-1-kan.liang@linux.intel.com>
+In-Reply-To: <20240708193336.1192217-2-kan.liang@linux.intel.com>
+References: <20240708193336.1192217-2-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172052531679.2215.16140288595428337453.tip-bot2@tip-bot2>
+Message-ID: <172052531640.2215.2187640866774751729.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,75 +83,99 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     a5a6ff3d639d088d4af7e2935e1ee0d8b4e817d4
-Gitweb:        https://git.kernel.org/tip/a5a6ff3d639d088d4af7e2935e1ee0d8b4e817d4
+Commit-ID:     556a7c039a52c21da33eaae9269984a1ef59189b
+Gitweb:        https://git.kernel.org/tip/556a7c039a52c21da33eaae9269984a1ef59189b
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 08 Jul 2024 11:55:24 -07:00
+AuthorDate:    Mon, 08 Jul 2024 12:33:34 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 09 Jul 2024 13:26:38 +02:00
 
-perf/x86/intel/uncore: Fix the bits of the CHA extended umask for SPR
+perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
 
-The perf stat errors out with UNC_CHA_TOR_INSERTS.IA_HIT_CXL_ACC_LOCAL
-event.
+The below error is observed on Ice Lake VM.
 
- $perf stat -e uncore_cha_55/event=0x35,umask=0x10c0008101/ -a -- ls
-    event syntax error: '..0x35,umask=0x10c0008101/'
-                                      \___ Bad event or PMU
+$ perf stat
+Error:
+The sys_perf_event_open() syscall returned with 22 (Invalid argument)
+for event (slots).
+/bin/dmesg | grep -i perf may provide additional information.
 
-The definition of the CHA umask is config:8-15,32-55, which is 32bit.
-However, the umask of the event is bigger than 32bit.
-This is an error in the original uncore spec.
+In a virtualization env, the Topdown metrics and the slots event haven't
+been supported yet. The guest CPUID doesn't enumerate them. However, the
+current kernel unconditionally exposes the slots event and the Topdown
+metrics events to sysfs, which misleads the perf tool and triggers the
+error.
 
-Add a new umask_ext5 for the new CHA umask range.
+Hide the perf-metrics topdown events and the slots event if the
+perf-metrics feature is not enumerated.
 
-Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server CHA support")
-Closes: https://lore.kernel.org/linux-perf-users/alpine.LRH.2.20.2401300733310.11354@Diego/
+The big core of a hybrid platform can also supports the perf-metrics
+feature. Fix the hybrid platform as well.
+
+Closes: https://lore.kernel.org/lkml/CAM9d7cj8z+ryyzUHR+P1Dcpot2jjW+Qcc4CPQpfafTXN=LEU0Q@mail.gmail.com/
+Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240708185524.1185505-1-kan.liang@linux.intel.com
+Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
+Link: https://lkml.kernel.org/r/20240708193336.1192217-2-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/uncore_snbep.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/core.c | 34 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index a7ea221..ca98744 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -462,6 +462,7 @@
- #define SPR_UBOX_DID				0x3250
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index cd8f2db..b613679 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -5830,8 +5830,22 @@ exra_is_visible(struct kobject *kobj, struct attribute *attr, int i)
+ 	return x86_pmu.version >= 2 ? attr->mode : 0;
+ }
  
- /* SPR CHA */
-+#define SPR_CHA_EVENT_MASK_EXT			0xffffffff
- #define SPR_CHA_PMON_CTL_TID_EN			(1 << 16)
- #define SPR_CHA_PMON_EVENT_MASK			(SNBEP_PMON_RAW_EVENT_MASK | \
- 						 SPR_CHA_PMON_CTL_TID_EN)
-@@ -478,6 +479,7 @@ DEFINE_UNCORE_FORMAT_ATTR(umask_ext, umask, "config:8-15,32-43,45-55");
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext2, umask, "config:8-15,32-57");
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext3, umask, "config:8-15,32-39");
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext4, umask, "config:8-15,32-55");
-+DEFINE_UNCORE_FORMAT_ATTR(umask_ext5, umask, "config:8-15,32-63");
- DEFINE_UNCORE_FORMAT_ATTR(qor, qor, "config:16");
- DEFINE_UNCORE_FORMAT_ATTR(edge, edge, "config:18");
- DEFINE_UNCORE_FORMAT_ATTR(tid_en, tid_en, "config:19");
-@@ -5959,7 +5961,7 @@ static struct intel_uncore_ops spr_uncore_chabox_ops = {
++static umode_t
++td_is_visible(struct kobject *kobj, struct attribute *attr, int i)
++{
++	/*
++	 * Hide the perf metrics topdown events
++	 * if the feature is not enumerated.
++	 */
++	if (x86_pmu.num_topdown_events)
++		return x86_pmu.intel_cap.perf_metrics ? attr->mode : 0;
++
++	return attr->mode;
++}
++
+ static struct attribute_group group_events_td  = {
+ 	.name = "events",
++	.is_visible = td_is_visible,
+ };
  
- static struct attribute *spr_uncore_cha_formats_attr[] = {
- 	&format_attr_event.attr,
--	&format_attr_umask_ext4.attr,
-+	&format_attr_umask_ext5.attr,
- 	&format_attr_tid_en2.attr,
- 	&format_attr_edge.attr,
- 	&format_attr_inv.attr,
-@@ -5995,7 +5997,7 @@ ATTRIBUTE_GROUPS(uncore_alias);
- static struct intel_uncore_type spr_uncore_chabox = {
- 	.name			= "cha",
- 	.event_mask		= SPR_CHA_PMON_EVENT_MASK,
--	.event_mask_ext		= SPR_RAW_EVENT_MASK_EXT,
-+	.event_mask_ext		= SPR_CHA_EVENT_MASK_EXT,
- 	.num_shared_regs	= 1,
- 	.constraints		= skx_uncore_chabox_constraints,
- 	.ops			= &spr_uncore_chabox_ops,
+ static struct attribute_group group_events_mem = {
+@@ -6057,9 +6071,27 @@ static umode_t hybrid_format_is_visible(struct kobject *kobj,
+ 	return (cpu >= 0) && (pmu->pmu_type & pmu_attr->pmu_type) ? attr->mode : 0;
+ }
+ 
++static umode_t hybrid_td_is_visible(struct kobject *kobj,
++				    struct attribute *attr, int i)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct x86_hybrid_pmu *pmu =
++		 container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
++
++	if (!is_attr_for_this_pmu(kobj, attr))
++		return 0;
++
++
++	/* Only the big core supports perf metrics */
++	if (pmu->pmu_type == hybrid_big)
++		return pmu->intel_cap.perf_metrics ? attr->mode : 0;
++
++	return attr->mode;
++}
++
+ static struct attribute_group hybrid_group_events_td  = {
+ 	.name		= "events",
+-	.is_visible	= hybrid_events_is_visible,
++	.is_visible	= hybrid_td_is_visible,
+ };
+ 
+ static struct attribute_group hybrid_group_events_mem = {
 
