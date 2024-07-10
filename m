@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1670-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1672-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC6C92D679
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jul 2024 18:30:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940FB92D6C1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jul 2024 18:42:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EF9EB29BE3
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jul 2024 16:30:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64321C20B45
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jul 2024 16:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56B6199EAC;
-	Wed, 10 Jul 2024 16:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713A21946C7;
+	Wed, 10 Jul 2024 16:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0bnDpGIu";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MIDpl++q"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="meNXwhjR";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ze5ice4A"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BD8194C76;
-	Wed, 10 Jul 2024 16:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D00219F9;
+	Wed, 10 Jul 2024 16:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720628759; cv=none; b=B69jJSeqb29NjYDMVN3AhcVshOedE28ZLbk2XwcKNzdTfaotp0AgJ68lWv0TwHp/fq2PX504LgTixq3U01AuPk9kvXkvgh8jkmFeZLEO6pVg+7RhNr10A9FgdnEyXEyDQh1PUT0QBUyrAep1SGAgSFolHP/J0IlxL4leYqUq/lY=
+	t=1720629772; cv=none; b=tZ5ZYsVrCr4Vn1ZOS4ruqQ0GKkthx8EHIyWbY8u7EyxG5uJdiVMKVqaRK46yVeGsF70aMkIShGZmwDCcFrDfY4dU/eBbJBtAlXYSalodVLmFOiIrhr9SEqohKYcK1MgBZQuAA8riAYGt6fsYezlo5p1sUhNjyJmJyejz4Q5F/Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720628759; c=relaxed/simple;
-	bh=mtd75yFZxtytaUaBHke0UfoZiAtqt2nehHx/5pBxF6Q=;
+	s=arc-20240116; t=1720629772; c=relaxed/simple;
+	bh=2taw60HFW7FPK28muL0TE7Qe830Anr/TT1eokb3iprk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=hBHpvDW1h0KXw6rNZvszj5QA09mZyX5BhJWLaOD3H9quKcdPrjkmb1sUIZxdvLVo0nQ1uhqQ/TKOZRQykucZ3/vB2iPEu56jQ4chXUPuwkeDlP8he7tA7/dVbk8i/b7WVVxihNqY6npSSwfj5WA6H98GF57tpLNCJsVHIYy5+cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0bnDpGIu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MIDpl++q; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=OGkpiQ/YKrwXT83gaodlCbOji+bomq99/Qh6XiTW+jZOuTQIH7JLT+SzpR9gVCs7dUMUZ7Rsyk1bjBx3Lrlx3yA+75Wa2pbAtedGabAH6WWpMYrF7NUW9ZKJFHzVwR0rzbriM4z6mRHi+UTfB2ye3Wx8oFa9LtaPx0Lg9fff6LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=meNXwhjR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ze5ice4A; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 10 Jul 2024 16:25:55 -0000
+Date: Wed, 10 Jul 2024 16:42:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1720628755;
+	s=2020; t=1720629769;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IigpQ9uWNZ2SHk72Idjeq6bdQ/CTWQ7zgTSWQi4UtCM=;
-	b=0bnDpGIumWrf9hRshCpwhvJ0213TO3isV2TWW9Q+jgbt3Nu4KYvCbg6LtfrSkkUz43lrbF
-	bdTcrXETLvuNWk7ldX8uEOwHYcWExmiBk9bb0gQ1l+Ihimz00tykWBT/9jFbGgUhumUcX7
-	3QdOekDKsEiK9D7S0FofE4mGAtsCisi0FnCLsxZvB2zg/tLK6WCDpsIVeeu40zq0a4iZyn
-	NbFG/iQJZL8ZPWGhUc1cyZb86Tt5xzs2Ou0s3pO0QMNsvNDJSpnJ3dDIZd0gw/gVxTAlQN
-	LibTroapa8b0Z1NDVY6dPbaVlJoB475jn881mNj7w6lBXxEzyazvDHN4H7AziA==
+	bh=VTQLKsdF+AFLikkI8QkPGut6kAdkNKwmeTS8CctG8BY=;
+	b=meNXwhjRH6D+BIwf0YG3guN3Vefisgst5ubC6338155QlFQxNuL80BmL+WM57Hn8/Zvx0U
+	0Yz3s7P1B5PV6l7liHCfkEllvdlf0z2q0NEgLJiztkJMh2zDIfqyN8R47srjigQORq7riO
+	rdiqcudPTXZJHKlrnfttlYbPrFJHWZzmJFSOQ+QXTABn3K4WR0Ie88KhRwilTbWtwni0QR
+	BBnpf43VHjcIpVdXGh5ORa2vrbWLNMXhuMu2ywB1Ee/SeB9ZM5aIwBOG1OoY6KiWvC8IQn
+	A2Zj3CbfaDwWLlBZnqOC57laynI7hNxln3vUaZRY3GPTuVD/MhFwv89NkUdnNQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1720628755;
+	s=2020e; t=1720629769;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IigpQ9uWNZ2SHk72Idjeq6bdQ/CTWQ7zgTSWQi4UtCM=;
-	b=MIDpl++qHQb7fkeOhSUF8I3xCIMgfgJU2/zEm4DKJN5jUWL8KejZPucSd/lpffA9QhAN+4
-	/VlHbjERcbEWehCA==
-From: "tip-bot2 for Shivamurthy Shastri" <tip-bot2@linutronix.de>
+	bh=VTQLKsdF+AFLikkI8QkPGut6kAdkNKwmeTS8CctG8BY=;
+	b=ze5ice4AKkzK3gOKoiGiypNjqvU2JNDimaYuY26CPnBkjLiTO7S37nRmYPjc5D7E16GEe2
+	q5QdgvKGm/IH/oAg==
+From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] PCI/MSI: Provide MSI_FLAG_PCI_MSI_MASK_PARENT
-Cc: Shivamurthy Shastri <shivamurthy.shastri@linutronix.de>,
- Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <87ed8j34pj.ffs@tglx>
-References: <87ed8j34pj.ffs@tglx>
+Subject:
+ [tip: irq/core] irqchip/gic-v4: Substitute vmovp_lock for a per-VM lock
+Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Nianyao Tang <tangnianyao@huawei.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240705093155.871070-3-maz@kernel.org>
+References: <20240705093155.871070-3-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172062875551.2215.8934562341098722721.tip-bot2@tip-bot2>
+Message-ID: <172062976875.2215.17731870703902999167.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,97 +82,157 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     698c86faa99ae60a19aacbb74ec1df243bc5eba6
-Gitweb:        https://git.kernel.org/tip/698c86faa99ae60a19aacbb74ec1df243bc5eba6
-Author:        Shivamurthy Shastri <shivamurthy.shastri@linutronix.de>
-AuthorDate:    Wed, 26 Jun 2024 21:05:12 +02:00
+Commit-ID:     7ae6f82a97f6f1dc32414e09e15375721c691b3d
+Gitweb:        https://git.kernel.org/tip/7ae6f82a97f6f1dc32414e09e15375721c691b3d
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Fri, 05 Jul 2024 10:31:54 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 10 Jul 2024 18:19:23 +02:00
+CommitterDate: Wed, 10 Jul 2024 18:40:09 +02:00
 
-PCI/MSI: Provide MSI_FLAG_PCI_MSI_MASK_PARENT
+irqchip/gic-v4: Substitute vmovp_lock for a per-VM lock
 
-Most ARM(64) PCI/MSI domains mask and unmask in the parent domain after or
-before the PCI mask/unmask operation takes place. So there are more than a
-dozen of the same wrapper implementation all over the place.
+vmovp_lock is abused in a number of cases to serialise updates
+to vlpi_count[] and deal with map/unmap of a VM to ITSs.
 
-Don't make the same mistake with the new per device PCI/MSI domains and
-provide a new MSI feature flag, which lets the domain implementation
-enable this sequence in the PCI/MSI code.
+Instead, provide a per-VM lock and revisit the use of vlpi_count[]
+so that it is always wrapped in this per-VM vmapp_lock.
 
-Signed-off-by: Shivamurthy Shastri <shivamurthy.shastri@linutronix.de>
+This reduces the potential contention on a concurrent VMOVP command,
+and paves the way for subsequent VPE locking that holding vmovp_lock
+actively prevents due to the lock ordering.
+
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/87ed8j34pj.ffs@tglx
+Tested-by: Nianyao Tang <tangnianyao@huawei.com>
+Link: https://lore.kernel.org/r/20240705093155.871070-3-maz@kernel.org
 
 ---
- drivers/pci/msi/irqdomain.c | 20 ++++++++++++++++++++
- include/linux/msi.h         |  2 ++
- 2 files changed, 22 insertions(+)
+ drivers/irqchip/irq-gic-v3-its.c   | 27 ++++++++++++---------------
+ include/linux/irqchip/arm-gic-v4.h |  8 ++++++++
+ 2 files changed, 20 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
-index 03d2dd2..5691257 100644
---- a/drivers/pci/msi/irqdomain.c
-+++ b/drivers/pci/msi/irqdomain.c
-@@ -148,17 +148,35 @@ static void pci_device_domain_set_desc(msi_alloc_info_t *arg, struct msi_desc *d
- 	arg->hwirq = desc->msi_index;
- }
- 
-+static __always_inline void cond_mask_parent(struct irq_data *data)
-+{
-+	struct msi_domain_info *info = data->domain->host_data;
-+
-+	if (unlikely(info->flags & MSI_FLAG_PCI_MSI_MASK_PARENT))
-+		irq_chip_mask_parent(data);
-+}
-+
-+static __always_inline void cond_unmask_parent(struct irq_data *data)
-+{
-+	struct msi_domain_info *info = data->domain->host_data;
-+
-+	if (unlikely(info->flags & MSI_FLAG_PCI_MSI_MASK_PARENT))
-+		irq_chip_unmask_parent(data);
-+}
-+
- static void pci_irq_mask_msi(struct irq_data *data)
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 8d31e4a..c85826a 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -1318,7 +1318,6 @@ static void its_send_vmovp(struct its_vpe *vpe)
  {
- 	struct msi_desc *desc = irq_data_get_msi_desc(data);
+ 	struct its_cmd_desc desc = {};
+ 	struct its_node *its;
+-	unsigned long flags;
+ 	int col_id = vpe->col_idx;
  
- 	pci_msi_mask(desc, BIT(data->irq - desc->irq));
-+	cond_mask_parent(data);
+ 	desc.its_vmovp_cmd.vpe = vpe;
+@@ -1331,6 +1330,12 @@ static void its_send_vmovp(struct its_vpe *vpe)
+ 	}
+ 
+ 	/*
++	 * Protect against concurrent updates of the mapping state on
++	 * individual VMs.
++	 */
++	guard(raw_spinlock_irqsave)(&vpe->its_vm->vmapp_lock);
++
++	/*
+ 	 * Yet another marvel of the architecture. If using the
+ 	 * its_list "feature", we need to make sure that all ITSs
+ 	 * receive all VMOVP commands in the same order. The only way
+@@ -1338,8 +1343,7 @@ static void its_send_vmovp(struct its_vpe *vpe)
+ 	 *
+ 	 * Wall <-- Head.
+ 	 */
+-	raw_spin_lock_irqsave(&vmovp_lock, flags);
+-
++	guard(raw_spinlock)(&vmovp_lock);
+ 	desc.its_vmovp_cmd.seq_num = vmovp_seq_num++;
+ 	desc.its_vmovp_cmd.its_list = get_its_list(vpe->its_vm);
+ 
+@@ -1354,8 +1358,6 @@ static void its_send_vmovp(struct its_vpe *vpe)
+ 		desc.its_vmovp_cmd.col = &its->collections[col_id];
+ 		its_send_single_vcommand(its, its_build_vmovp_cmd, &desc);
+ 	}
+-
+-	raw_spin_unlock_irqrestore(&vmovp_lock, flags);
  }
  
- static void pci_irq_unmask_msi(struct irq_data *data)
+ static void its_send_vinvall(struct its_node *its, struct its_vpe *vpe)
+@@ -1792,12 +1794,10 @@ static bool gic_requires_eager_mapping(void)
+ 
+ static void its_map_vm(struct its_node *its, struct its_vm *vm)
  {
- 	struct msi_desc *desc = irq_data_get_msi_desc(data);
+-	unsigned long flags;
+-
+ 	if (gic_requires_eager_mapping())
+ 		return;
  
-+	cond_unmask_parent(data);
- 	pci_msi_unmask(desc, BIT(data->irq - desc->irq));
+-	raw_spin_lock_irqsave(&vmovp_lock, flags);
++	guard(raw_spinlock_irqsave)(&vm->vmapp_lock);
+ 
+ 	/*
+ 	 * If the VM wasn't mapped yet, iterate over the vpes and get
+@@ -1815,19 +1815,15 @@ static void its_map_vm(struct its_node *its, struct its_vm *vm)
+ 			its_send_vinvall(its, vpe);
+ 		}
+ 	}
+-
+-	raw_spin_unlock_irqrestore(&vmovp_lock, flags);
  }
  
-@@ -195,10 +213,12 @@ static const struct msi_domain_template pci_msi_template = {
- static void pci_irq_mask_msix(struct irq_data *data)
+ static void its_unmap_vm(struct its_node *its, struct its_vm *vm)
  {
- 	pci_msix_mask(irq_data_get_msi_desc(data));
-+	cond_mask_parent(data);
+-	unsigned long flags;
+-
+ 	/* Not using the ITS list? Everything is always mapped. */
+ 	if (gic_requires_eager_mapping())
+ 		return;
+ 
+-	raw_spin_lock_irqsave(&vmovp_lock, flags);
++	guard(raw_spinlock_irqsave)(&vm->vmapp_lock);
+ 
+ 	if (!--vm->vlpi_count[its->list_nr]) {
+ 		int i;
+@@ -1835,8 +1831,6 @@ static void its_unmap_vm(struct its_node *its, struct its_vm *vm)
+ 		for (i = 0; i < vm->nr_vpes; i++)
+ 			its_send_vmapp(its, vm->vpes[i], false);
+ 	}
+-
+-	raw_spin_unlock_irqrestore(&vmovp_lock, flags);
  }
  
- static void pci_irq_unmask_msix(struct irq_data *data)
+ static int its_vlpi_map(struct irq_data *d, struct its_cmd_info *info)
+@@ -3944,6 +3938,8 @@ static void its_vpe_invall(struct its_vpe *vpe)
  {
-+	cond_unmask_parent(data);
- 	pci_msix_unmask(irq_data_get_msi_desc(data));
- }
+ 	struct its_node *its;
  
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index dc27cf3..04f33e7 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -556,6 +556,8 @@ enum {
- 	MSI_FLAG_USE_DEV_FWNODE		= (1 << 7),
- 	/* Set parent->dev into domain->pm_dev on device domain creation */
- 	MSI_FLAG_PARENT_PM_DEV		= (1 << 8),
-+	/* Support for parent mask/unmask */
-+	MSI_FLAG_PCI_MSI_MASK_PARENT	= (1 << 9),
++	guard(raw_spinlock_irqsave)(&vpe->its_vm->vmapp_lock);
++
+ 	list_for_each_entry(its, &its_nodes, entry) {
+ 		if (!is_v4(its))
+ 			continue;
+@@ -4549,6 +4545,7 @@ static int its_vpe_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+ 	vm->db_lpi_base = base;
+ 	vm->nr_db_lpis = nr_ids;
+ 	vm->vprop_page = vprop_page;
++	raw_spin_lock_init(&vm->vmapp_lock);
  
- 	/* Mask for the generic functionality */
- 	MSI_GENERIC_FLAGS_MASK		= GENMASK(15, 0),
+ 	if (gic_rdists->has_rvpeid)
+ 		irqchip = &its_vpe_4_1_irq_chip;
+diff --git a/include/linux/irqchip/arm-gic-v4.h b/include/linux/irqchip/arm-gic-v4.h
+index 2c63375..ecabed6 100644
+--- a/include/linux/irqchip/arm-gic-v4.h
++++ b/include/linux/irqchip/arm-gic-v4.h
+@@ -25,6 +25,14 @@ struct its_vm {
+ 	irq_hw_number_t		db_lpi_base;
+ 	unsigned long		*db_bitmap;
+ 	int			nr_db_lpis;
++	/*
++	 * Ensures mutual exclusion between updates to vlpi_count[]
++	 * and map/unmap when using the ITSList mechanism.
++	 *
++	 * The lock order for any sequence involving the ITSList is
++	 * vmapp_lock -> vpe_lock ->vmovp_lock.
++	 */
++	raw_spinlock_t		vmapp_lock;
+ 	u32			vlpi_count[GICv4_ITS_LIST_MAX];
+ };
+ 
 
