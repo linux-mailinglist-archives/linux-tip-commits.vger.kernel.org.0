@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-1661-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1657-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0904992D667
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jul 2024 18:28:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A6C92D661
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jul 2024 18:28:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9A0128A2EC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jul 2024 16:28:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FA5A1C20FED
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Jul 2024 16:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1781990DA;
-	Wed, 10 Jul 2024 16:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738F4198E9A;
+	Wed, 10 Jul 2024 16:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LhhMyPmv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wxgybfw0"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GBp3J+9t";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CWpIFGTJ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E691198A3B;
-	Wed, 10 Jul 2024 16:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EA4198A29;
+	Wed, 10 Jul 2024 16:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720628756; cv=none; b=kWhWJkZSYXtpqk3RV4Kxxv35jYES3jcAf0GlIpE4TdVQ0d2J4snjlrFy7QdF44nGmbCqYcRFm38sJCr2IMmSEIwBl5NpS23vxnE5ypv1iQ3cGffwfWnPL6isplxgu1mVzkm++Xz1XMYGzgMfliUPaBom1JU0JKOz8s8N0MDlw00=
+	t=1720628755; cv=none; b=lgzKq0puhatitLhxevEqYApwGbE0FsxdJ5dA08OBj0KX9VfYsvIIBk+6pOKLe+gGQgnBZ03dk+vdfLYCZCH1MUe9ocf8EppOBcMLQR10BkpAXtz1Amgmo6pULzaKr35RUTRsfLrWQ14FngcHnrJZsD2AgYqc2KsGg4I/zJ0T+w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720628756; c=relaxed/simple;
-	bh=/2zhkSZUpWJzcAKo0LuWSKXLYAR/bQcLGtf6U6KoxEQ=;
+	s=arc-20240116; t=1720628755; c=relaxed/simple;
+	bh=412zqoXaZRGt9imTb61YH76Yujv48NDtC+GPZOQBXEE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=TToAEMsbQAy39aQHADyhxpSXI+6HIOQSAalB3RvHzM8kH1STPB/vEnqZAOE0MHgTt+YOxvnOLq/H+5BTDHL0YBiEdBeHIA73HrV/kHO7FDJBWSfwTanU4rdHm4FBxxBLHbJjm+q2rGtDAkRSVCcLCJpsoeLtm3OnI6wDovIoWak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LhhMyPmv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wxgybfw0; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=LQHv6JWyOwmrMHYpoIRwLSoBD59M19VT/oBb3Byf63ToR1SrgOJwRwnonZl8LZfor2+k6kUzLSQTi7E77kZoxpK0AxKnknclGEqKdnx7Vi0ds7s66Z6e88Y+kPWuk6v8jj6EmFDaPybpiM1rCjCtF7yZnfgDJI1dFIKBlcXLeow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GBp3J+9t; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CWpIFGTJ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Wed, 10 Jul 2024 16:25:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1720628752;
+	s=2020; t=1720628751;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mPyF9CSh3NSdUxPWoPSOO5AUeRdXT1w9Ps+yNxFexus=;
-	b=LhhMyPmvVssEAIR8xu2atc8WygEAZcqoghz97Y2pwrb5SHfqIA0p/g4u8TLOJz99xrUzTc
-	BtPNJtojWr9euZWI0JHPEWg3HsSTjmKRGH1mVtaiIGrXEg0gaqJkS6/yzjcyfomej+E7E/
-	tJxVaLDutIHOQszf7JU5aOxvDc+w4Mvb1dH9xiev6iqTNiDHpOFAMZrw+EQBi+jhqWiWh1
-	tllhdlBZYJT5WYho5/Tp7cZTPLjME0JzoV+aKxy4vaWmwdM9XnrfgX3Gzp9uUNleemCqBL
-	wXM9bHcaznBu2180xMc2I67WNPAaGYkP/Q6e4/xh5AqM8EY8q9uf7Gm5D/Gvcg==
+	bh=sp8tWW8Zs+QVr2Au65yb5YwLCuszX1RwVGt/+5ceMUE=;
+	b=GBp3J+9tm3LbeH+8gnXdMIZxkevGkGGgI6WIQjRMYlt2T0137cSLapz4END0qe8paADZ/h
+	YKtwVm1CePGsDjMqCMOakBZFeM/FQkjNNs6FiuFEDkufiTuSZ06h08A0jpEj9aKTpGjZ/h
+	kAprOYdCfD6VU21dL7KdZtqrPIxDkYBp7U8+crozeUtmxUUqcZERrP1Q0tVKsjbJEq60Op
+	eqVPV69edThH5UOXJR092aWSKegINXfVms2RxFvPx43F7zfWRHAJ8yFdY5c5XNQMrUFAIL
+	JkuX5VpFVgUvQIEjCzuTpmyo/D1cbAHdRQfGtNihDDxMy18NOqLKJR3+WfZ4Iw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1720628752;
+	s=2020e; t=1720628751;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mPyF9CSh3NSdUxPWoPSOO5AUeRdXT1w9Ps+yNxFexus=;
-	b=Wxgybfw0k+15XvTaQ5yJ5///0DzB090e6tdmQHlkw4zt4cEwnTdSqIh/EvFnCMSXOOddCf
-	JOcuTTYs5Sq/r6Bw==
+	bh=sp8tWW8Zs+QVr2Au65yb5YwLCuszX1RwVGt/+5ceMUE=;
+	b=CWpIFGTJFfH2xbBE2YgBTrC0ZZm57vVUL780c8m9bTQOjxHHCFCCX67qFiQgBvQlMrPEQa
+	0QwcY5i384VNK+CQ==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/mbigen: Remove
- platform_msi_create_device_domain() fallback
+Subject:
+ [tip: irq/core] genirq/msi: Remove platform_msi_create_device_domain()
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
  Shivamurthy Shastri <shivamurthy.shastri@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240623142235.333333826@linutronix.de>
-References: <20240623142235.333333826@linutronix.de>
+In-Reply-To: <20240623142235.395577449@linutronix.de>
+References: <20240623142235.395577449@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172062875190.2215.16848075053394540342.tip-bot2@tip-bot2>
+Message-ID: <172062875147.2215.12875205380569454030.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,122 +83,40 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     b040ac38c07737eaf9a9237db07da5702ce4fe5c
-Gitweb:        https://git.kernel.org/tip/b040ac38c07737eaf9a9237db07da5702ce4fe5c
+Commit-ID:     808d004f0784dd5706bf725cadd7193cc1e4a442
+Gitweb:        https://git.kernel.org/tip/808d004f0784dd5706bf725cadd7193cc1e4a442
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 23 Jun 2024 17:18:48 +02:00
+AuthorDate:    Sun, 23 Jun 2024 17:18:50 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 10 Jul 2024 18:19:24 +02:00
 
-irqchip/mbigen: Remove platform_msi_create_device_domain() fallback
+genirq/msi: Remove platform_msi_create_device_domain()
 
-Now that ITS provides the MSI parent domain, remove the unused fallback
-code.
+No more users.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Shivamurthy Shastri <shivamurthy.shastri@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240623142235.333333826@linutronix.de
+Link: https://lore.kernel.org/r/20240623142235.395577449@linutronix.de
 
 
 
 ---
- drivers/irqchip/irq-mbigen.c | 74 +----------------------------------
- 1 file changed, 4 insertions(+), 70 deletions(-)
+ include/linux/msi.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mbigen.c b/drivers/irqchip/irq-mbigen.c
-index db0fa80..093fd42 100644
---- a/drivers/irqchip/irq-mbigen.c
-+++ b/drivers/irqchip/irq-mbigen.c
-@@ -180,64 +180,6 @@ static int mbigen_domain_translate(struct irq_domain *d, struct irq_fwspec *fwsp
- 	return -EINVAL;
- }
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index 04f33e7..4ae036d 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -660,8 +660,6 @@ __platform_msi_create_device_domain(struct device *dev,
+ 				    const struct irq_domain_ops *ops,
+ 				    void *host_data);
  
--/* The following section will go away once ITS provides a MSI parent */
--
--static struct irq_chip mbigen_irq_chip = {
--	.name =			"mbigen-v2",
--	.irq_mask =		irq_chip_mask_parent,
--	.irq_unmask =		irq_chip_unmask_parent,
--	.irq_eoi =		mbigen_eoi_irq,
--	.irq_set_type =		mbigen_set_type,
--	.irq_set_affinity =	irq_chip_set_affinity_parent,
--};
--
--static int mbigen_irq_domain_alloc(struct irq_domain *domain,
--					unsigned int virq,
--					unsigned int nr_irqs,
--					void *args)
--{
--	struct irq_fwspec *fwspec = args;
--	irq_hw_number_t hwirq;
--	unsigned int type;
--	struct mbigen_device *mgn_chip;
--	int i, err;
--
--	err = mbigen_domain_translate(domain, fwspec, &hwirq, &type);
--	if (err)
--		return err;
--
--	err = platform_msi_device_domain_alloc(domain, virq, nr_irqs);
--	if (err)
--		return err;
--
--	mgn_chip = platform_msi_get_host_data(domain);
--
--	for (i = 0; i < nr_irqs; i++)
--		irq_domain_set_hwirq_and_chip(domain, virq + i, hwirq + i,
--				      &mbigen_irq_chip, mgn_chip->base);
--
--	return 0;
--}
--
--static void mbigen_irq_domain_free(struct irq_domain *domain, unsigned int virq,
--				   unsigned int nr_irqs)
--{
--	platform_msi_device_domain_free(domain, virq, nr_irqs);
--}
--
--static const struct irq_domain_ops mbigen_domain_ops = {
--	.translate	= mbigen_domain_translate,
--	.alloc		= mbigen_irq_domain_alloc,
--	.free		= mbigen_irq_domain_free,
--};
--
--static void mbigen_write_msg(struct msi_desc *desc, struct msi_msg *msg)
--{
--	mbigen_write_msi_msg(irq_get_irq_data(desc->irq), msg);
--}
--
--/* End of to be removed section */
--
- static void mbigen_domain_set_desc(msi_alloc_info_t *arg, struct msi_desc *desc)
- {
- 	arg->desc = desc;
-@@ -268,20 +210,12 @@ static const struct msi_domain_template mbigen_msi_template = {
- static bool mbigen_create_device_domain(struct device *dev, unsigned int size,
- 					struct mbigen_device *mgn_chip)
- {
--	struct irq_domain *domain = dev->msi.domain;
--
--	if (WARN_ON_ONCE(!domain))
-+	if (WARN_ON_ONCE(!dev->msi.domain))
- 		return false;
+-#define platform_msi_create_device_domain(dev, nvec, write, ops, data)	\
+-	__platform_msi_create_device_domain(dev, nvec, false, write, ops, data)
+ #define platform_msi_create_device_tree_domain(dev, nvec, write, ops, data) \
+ 	__platform_msi_create_device_domain(dev, nvec, true, write, ops, data)
  
--	if (irq_domain_is_msi_parent(domain)) {
--		return msi_create_device_irq_domain(dev, MSI_DEFAULT_DOMAIN,
--						    &mbigen_msi_template, size,
--						    NULL, mgn_chip->base);
--	}
--
--	/* Remove once ITS provides MSI parent */
--	return !!platform_msi_create_device_domain(dev, size, mbigen_write_msg,
--						   &mbigen_domain_ops, mgn_chip);
-+	return msi_create_device_irq_domain(dev, MSI_DEFAULT_DOMAIN,
-+					    &mbigen_msi_template, size,
-+					    NULL, mgn_chip->base);
- }
- 
- static int mbigen_of_create_domain(struct platform_device *pdev,
 
