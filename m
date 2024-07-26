@@ -1,131 +1,133 @@
-Return-Path: <linux-tip-commits+bounces-1747-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1748-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB46693AFC2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Jul 2024 12:22:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C18C493D8EA
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jul 2024 21:17:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CD882816F0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Jul 2024 10:22:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06E741C21CD6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Jul 2024 19:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3404215099E;
-	Wed, 24 Jul 2024 10:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D0C39FF2;
+	Fri, 26 Jul 2024 19:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="da9s6DyW"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="40whssOM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N2URE3Hg"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0601C6A3;
-	Wed, 24 Jul 2024 10:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7AA24205;
+	Fri, 26 Jul 2024 19:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721816560; cv=none; b=gkZ+L6C2YEFvhVtbXj/Nyf4RxGJk17bDZSnPTTOEWrGCWomdnmlNgFnGGtPEp0YSBkJeJbF1qYSsY2AyenQuQDsvwtG9tkR7na7TSHWDAl1Y7OIneai8/xUlmNLgD9mSPVohr9fRIQMazuMgjooijkPhRbvUoOtygdgFnxrrKy4=
+	t=1722021434; cv=none; b=mXAQpAl04rUF3tyZ4QHe9qFDBdLKja+d0TRnpRlNZnpoxUiAnwmsZqyC0XdND5BuKSoOxML30Y0VV+4rk9PX5h9Qj5dZhOUGySL+xzq5SToeHVAt2VreSyRWwAreUIkh+i8kX3YbKpadhmie2CYjnPxAJOk6WdOP4bxLDiloqGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721816560; c=relaxed/simple;
-	bh=CpzLAX+cGc84GixEkngIF402SuS6KyhzX67cnLUe2cs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ljVhCqmmzDG7xlO6iTMOJ3wjuMOnjo6qWKOFztzBkA0YLQKJYXT+FaVmh69bOor3cr5K0+qsHsskadFKySrLrDfplh80C9rYR8Pyd0ItH6A/U9YKbmawVWf1QlLyDGq6D/sYr/mFeAs3K4XZGzcHSCJ3k8Q+v2k3UaonZqCtad8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=da9s6DyW; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CF85A40E0206;
-	Wed, 24 Jul 2024 10:22:28 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id rV94-xZHxwII; Wed, 24 Jul 2024 10:22:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1721816545; bh=aRdb5RxgRGAawN+GEjx75D5QAxiX5RIlW2M0X8Y3hpc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=da9s6DyWniKJPun4Hqa0PJw2PMQCgvTOqr1DL3Y+TWSCqeplAvBRMJoYd/Bse4Y11
-	 1zqb96+VHQOjPTYut2eNinffqCuRRfJ67J4KA52OBZTtUNVGd+wMkjIOuUz1LmW1Hs
-	 wF0Bs/ptDGVDcD1dr8T/IX3aW788ERNNkyNBDVV3OTfaDZXn8vRflpCNxU6zJlpONJ
-	 GyU8SsunIpU3mO+ZHl8KtKvaE1ffjLbWuddnaSDYBKGOl5ucrpUo6GuRYdO/6f977A
-	 5OHlXNK4xh1ZRXedazz2yFg8Qel2j/WpfXZY6s2IOJ4iUnlLN4qPjRuZDTI6bV5fNT
-	 XLqoWKy1UTO5fe0d39hYPVlV2wvMCOUgB9Svzh/+ZsRnSgPicTqg3JFRZUujRZ7SaF
-	 LmzBBun7wgLl5XBtl2o4awSM4ukMHdHtbrBKyh3fG90sCNZAP/7q0ul6e4pRhAoXXE
-	 2GNoiWjEyIvUYQLXrxKsb+eYIXM7Msu83rg7rdVvV/ND5MZXPCSqLbQHoX++8DSxIR
-	 fDT2UHy8UEFjQ83YtT3xycxjG0cm1qAfrApo9uSUG3GnyQ/twvTG/vwiusjFwLc4T5
-	 sHBoNX3psSsQZpCEuUKaGqRbGVNstQELeW6QXGUBWhZbDRw7uFKfG49KxvRIv2n9i+
-	 zT9qpC8ix/7XkbgVHGTlFNx8=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0F38E40E0185;
-	Wed, 24 Jul 2024 10:22:18 +0000 (UTC)
-Date: Wed, 24 Jul 2024 12:22:17 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Frederic Weisbecker <frederic@kernel.org>,
-	Narasimhan V <Narasimhan.V@amd.com>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org
-Subject: Re: [tip: timers/urgent] timers/migration: Move hierarchy setup into
- cpuhotplug prepare callback
-Message-ID: <20240724102217.GBZqDV2cd_wADGLJoR@fat_crate.local>
-References: <20240717094940.18687-1-anna-maria@linutronix.de>
- <172141237277.2215.9152426860884348584.tip-bot2@tip-bot2>
- <Zp5bpLJHlYsZinGj@localhost.localdomain>
+	s=arc-20240116; t=1722021434; c=relaxed/simple;
+	bh=OE8MEKsVTtFrnP50pHVinj/nPKl7CKeQdrUpdUGPmMQ=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=SP8ZihuSaQ7R1orueZyyvyG5IohkpRLRdphXWEu0rmjAW4ofbMK5ib9xTj5EmAeot4TFAH7Ka7qlxLtRJTW0C16BKk+9zXsgmBJ31leFxLOy5CXuUSlImjni/DB7AMcohuZ7YsQUKZhsHUjyxqySpDKkZZ672u2DFWcT6ic2e9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=40whssOM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N2URE3Hg; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 26 Jul 2024 19:17:10 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1722021431;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lhrAtTTu8DHRd5jfPalDcxDj16nhVoMkPMFW+VWrNTc=;
+	b=40whssOMY39Ia+uldZhW+5FRgvIg6hwTCsh8hUt8UurWVOAmqRrQcGnXBtFoBcH7266DsD
+	W6CFhv+UrXHXuKUB6KCCkgV8945KKT6ZxIXuimi3OeUbxuN20Naq4x+X7MHqDaNBwE5/jD
+	AYB+NYNtKj+3gDsj07BhJXLRrie4VQmxN8xpJblw805LaNz0TluO0mYI3TzmQUXM3frYVr
+	kaJr0b6BqJKOVm71+oTeV/Io5jVkfFRc3RWcr3t4eP5ffOdzPJ4AVMO7vMxRBLi3BVwHjV
+	ns8NwxnPbfdA5NQffz5BTLaaQH/MlHq74PylQqxJH267znlPCJydhlwLx2VkLg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1722021431;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lhrAtTTu8DHRd5jfPalDcxDj16nhVoMkPMFW+VWrNTc=;
+	b=N2URE3HgObZGW/BjIHSHPbBDl1/diTG+ZMcvlf1yrLdCfI/cXCgwf3tSo/basWgLiAY99q
+	FX5zO2L5y3ve1uCQ==
+From: "tip-bot2 for Huacai Chen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/loongarch-cpu: Fix return value of
+ lpic_gsi_to_irq()
+Cc: Miao Wang <shankerwangmiao@gmail.com>,
+ Huacai Chen <chenhuacai@loongson.cn>, Thomas Gleixner <tglx@linutronix.de>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,  <stable@vger.kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240723064508.35560-1-chenhuacai@loongson.cn>
+References: <20240723064508.35560-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Zp5bpLJHlYsZinGj@localhost.localdomain>
+Message-ID: <172202143044.2215.9209897857096931802.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 22, 2024 at 03:16:20PM +0200, Frederic Weisbecker wrote:
-> diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-> index fae04950487f..8d57f7686bb0 100644
-> --- a/kernel/time/timer_migration.c
-> +++ b/kernel/time/timer_migration.c
-> @@ -1673,6 +1673,15 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
->  
->  		lvllist = &tmigr_level_list[top];
->  		if (group->num_children == 1 && list_is_singular(lvllist)) {
-> +			/*
-> +			 * The target CPU must never do the prepare work, except
-> +			 * on early boot when the boot CPU is the target. Otherwise
-> +			 * it may spuriously activate the old top level group inside
-> +			 * the new one (nevertheless whether old top level group is
-> +			 * active or not) and/or release an uninitialized childmask.
-> +			 */
-> +			WARN_ON_ONCE(cpu == raw_smp_processor_id());
-> +
->  			lvllist = &tmigr_level_list[top - 1];
->  			list_for_each_entry(child, lvllist, list) {
->  				if (child->parent)
-> @@ -1705,14 +1714,6 @@ static int tmigr_cpu_prepare(unsigned int cpu)
->  	struct tmigr_cpu *tmc = per_cpu_ptr(&tmigr_cpu, cpu);
->  	int ret = 0;
->  
-> -	/*
-> -	 * The target CPU must never do the prepare work. Otherwise it may
-> -	 * spuriously activate the old top level group inside the new one
-> -	 * (nevertheless whether old top level group is active or not) and/or
-> -	 * release an uninitialized childmask.
-> -	 */
-> -	WARN_ON_ONCE(cpu == raw_smp_processor_id());
-> -
->  	/* Not first online attempt? */
->  	if (tmc->tmgroup)
->  		return ret;
+The following commit has been merged into the irq/urgent branch of tip:
 
-That fixes the issue as confirmed by Narasimhan.
+Commit-ID:     81a91abab1307d7725fa4620952c0767beae7753
+Gitweb:        https://git.kernel.org/tip/81a91abab1307d7725fa4620952c0767beae7753
+Author:        Huacai Chen <chenhuacai@loongson.cn>
+AuthorDate:    Tue, 23 Jul 2024 14:45:08 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 26 Jul 2024 21:08:42 +02:00
 
-Thx.
+irqchip/loongarch-cpu: Fix return value of lpic_gsi_to_irq()
 
--- 
-Regards/Gruss,
-    Boris.
+lpic_gsi_to_irq() should return a valid Linux interrupt number if
+acpi_register_gsi() succeeds, and return 0 otherwise. But lpic_gsi_to_irq()
+converts a negative return value of acpi_register_gsi() to a positive value
+silently.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Convert the return value explicitly.
+
+Fixes: e8bba72b396c ("irqchip / ACPI: Introduce ACPI_IRQ_MODEL_LPIC for LoongArch")
+Reported-by: Miao Wang <shankerwangmiao@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240723064508.35560-1-chenhuacai@loongson.cn
+---
+ drivers/irqchip/irq-loongarch-cpu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/irqchip/irq-loongarch-cpu.c b/drivers/irqchip/irq-loongarch-cpu.c
+index 9d8f2c4..b35903a 100644
+--- a/drivers/irqchip/irq-loongarch-cpu.c
++++ b/drivers/irqchip/irq-loongarch-cpu.c
+@@ -18,11 +18,13 @@ struct fwnode_handle *cpuintc_handle;
+ 
+ static u32 lpic_gsi_to_irq(u32 gsi)
+ {
++	int irq = 0;
++
+ 	/* Only pch irqdomain transferring is required for LoongArch. */
+ 	if (gsi >= GSI_MIN_PCH_IRQ && gsi <= GSI_MAX_PCH_IRQ)
+-		return acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_HIGH);
++		irq = acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_HIGH);
+ 
+-	return 0;
++	return (irq > 0) ? irq : 0;
+ }
+ 
+ static struct fwnode_handle *lpic_get_gsi_domain_id(u32 gsi)
 
