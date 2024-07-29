@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1808-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1809-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33FF593F2EA
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 12:36:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED4293F479
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 13:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3B531F22D0A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 10:36:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3C891C21FF3
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 11:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E901C146D6D;
-	Mon, 29 Jul 2024 10:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53559145FEE;
+	Mon, 29 Jul 2024 11:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rFs19L4p";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U+pyCbmD"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M4w12Jpc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bZvkKXEQ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8EB14601D;
-	Mon, 29 Jul 2024 10:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D58145B29;
+	Mon, 29 Jul 2024 11:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722249253; cv=none; b=GTLXuauLyn48qssfIougPoqfHeuuEnlb4FWHjzcK3ZYjvt8IjYHm5bUeoZCBUHoxvNypgWH/JUIiesHUwlRveE4sinltOWRE8/xJWwnM7gaCS0j84UyxgoP7Ns4+0wW8v/rIfDfUf1SEqQIQpHLPC0DNx5APK/gqp3UnAdePjqY=
+	t=1722253826; cv=none; b=KUXW66N+We9/D9RkjKDxsjCvoi15LM9+uZwg9JfAnup0qRO7zZzEi1kGQgr1wL05hmDBSZyrVU1lzVSZysht1MRWNERjAPWUDwcOWbfotdiPyDoS2/J+PXX47vz6tbhXqW/rKEP8rQG9BXLbozd+nOWujIQLL8euEVs6ONTn6N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722249253; c=relaxed/simple;
-	bh=jnPFfqor5Y2fWJUqYSVT/Uv/kXKSMMu2OTN3T3KWWAc=;
+	s=arc-20240116; t=1722253826; c=relaxed/simple;
+	bh=J2Eccw4T1gag0WKFsU8SFincbHWJtR6HfzoFPg77rU4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=eztfy0bg7niWlYftNco4vVasM6qTOInFPgZmRTJiXGdQWHDGASVPLiSCqBL69mjJZlUaA5VQHV8f4HBw5GH9T+DCQvLUqMfvDKjOF+oW9f6CCGHHqP1MDpPYWOx2GoWxfoC2QzN3mGej9leGbFlbhrdaDjcGe2hCzk8at8CR9iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rFs19L4p; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U+pyCbmD; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=OqJuLg3YC4PFZU30Dywjvim2ID+SXvAWAWmlQod+taY1dNMTbEE1kflpbEzVvokec+Epc+5axwuZ4Bg2N2ofrMB635qXpTEAMqxOg4VnewyJKJrGaBPK3EJntHSVstpsN9I2DGKS/f2MZ9idyWjsA1gjCVDcqwV8u7t1ahMM5tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M4w12Jpc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bZvkKXEQ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 29 Jul 2024 10:34:10 -0000
+Date: Mon, 29 Jul 2024 11:50:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722249250;
+	s=2020; t=1722253822;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1wI0wVWx/FBXb2r5j/O7uXzL0zD/I9X4AL+HZALiPv4=;
-	b=rFs19L4pLAm8gVkj0auJq6HpUhJNQH0CpAlINPK+pDuJMlixdrRjHwM1qrVabjVYbfhqwM
-	aRSusLl2p94pzvl4Tndo1N52epqDh6wyzdhkSrqH6FFyciuc8SAXmeLN3CiuhB1enndHqQ
-	F0xhvDNSVIicgZMl0EeGuPfRzcaAGoN0rx6WFLcYRB0uBAZ6rjQMs/essXYpdEaQAf5+YI
-	dWF340AvVGF9s8yYN0PQ0Nn520mdDBsCUPdSSD14Hucwq1HKWMGGAvMVHyLdvnSPpEzFQQ
-	v1Ft1cgDyLZxaPyKsJ5gPkiJY94wAuqjZRsvZZFCJGDnSCOjFuZE6lbtiyWgdQ==
+	bh=P8KaXeIAygttY660e5hwdVdlxik/2CXizQ2TXIi85sw=;
+	b=M4w12Jpc+ecb9ir9JxTd8+6TGwOC87Oqf7AEQkaYYB5KYsMLuXLoJv6iDrBTebsP+KXan9
+	geNd2C5QSPPI7VFZ3DogbzfoM6jQafXnzyDEAmpzNHptUTMhf0xchjcqyfUglaqlr0mE5X
+	ZX2golW1akBntEXz34pAckInGeJQAFunZTEN2WCFfAtdoicYIwWjPrIX2al+lK+0ejPtVD
+	W/d+7ZZlN0wUujGjCmFJNOxlC4W69JuuXQGB3mKqnlrmdxs9IHjpU9MTikd5p6TOufT7mZ
+	WoKE5FNZLgmMpPL2fNTVjNug5/nqIfyXeyuTQwoPy19IsYqi0/whnDFfySMqAw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722249250;
+	s=2020e; t=1722253822;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1wI0wVWx/FBXb2r5j/O7uXzL0zD/I9X4AL+HZALiPv4=;
-	b=U+pyCbmDKwMMEkOIeX32TERnJpeM85BA/FrBl5p6yljaKeq1L45vJZiP2bzkxjO9kadBTD
-	jgPBHPcHUyJ7HyDg==
-From: "tip-bot2 for Zheng Zucheng" <tip-bot2@linutronix.de>
+	bh=P8KaXeIAygttY660e5hwdVdlxik/2CXizQ2TXIi85sw=;
+	b=bZvkKXEQ8Hx0sOWpzdI9LaTAl4bdMTeJl1HXFdd28rOs4dCqAy8IYTqbtq2T8rgfI5LpO8
+	uNm13EJD78ItvVDg==
+From: "tip-bot2 for Jinjie Ruan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/cputime: Fix mul_u64_u64_div_u64() precision
- for cputime
-Cc: Zheng Zucheng <zhengzucheng@huawei.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,  <stable@vger.kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240726023235.217771-1-zhengzucheng@huawei.com>
-References: <20240726023235.217771-1-zhengzucheng@huawei.com>
+Subject: [tip: irq/core] irqchip: Remove asmlinkage for handlers registered
+ with set_handle_irq()
+Cc: Thomas Gleixner <tglx@linutronix.de>, Jinjie Ruan <ruanjinjie@huawei.com>,
+ Mark Rutland <mark.rutland@arm.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240729112606.1581732-1-ruanjinjie@huawei.com>
+References: <20240729112606.1581732-1-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172224925041.2215.18209805877269805582.tip-bot2@tip-bot2>
+Message-ID: <172225382189.2215.8398520329045355162.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,65 +80,176 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     77baa5bafcbe1b2a15ef9c37232c21279c95481c
-Gitweb:        https://git.kernel.org/tip/77baa5bafcbe1b2a15ef9c37232c21279c95481c
-Author:        Zheng Zucheng <zhengzucheng@huawei.com>
-AuthorDate:    Fri, 26 Jul 2024 02:32:35 
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 29 Jul 2024 12:22:32 +02:00
+Commit-ID:     e626fcbaa9b67e4488ea437e0e8a5657e707d5f8
+Gitweb:        https://git.kernel.org/tip/e626fcbaa9b67e4488ea437e0e8a5657e707d5f8
+Author:        Jinjie Ruan <ruanjinjie@huawei.com>
+AuthorDate:    Mon, 29 Jul 2024 19:26:06 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 29 Jul 2024 13:43:34 +02:00
 
-sched/cputime: Fix mul_u64_u64_div_u64() precision for cputime
+irqchip: Remove asmlinkage for handlers registered with set_handle_irq()
 
-In extreme test scenarios:
-the 14th field utime in /proc/xx/stat is greater than sum_exec_runtime,
-utime = 18446744073709518790 ns, rtime = 135989749728000 ns
+All architectures with use set_handle_irq() to set the root chip interrupt
+handler call that handler from C code, so there's no need for these
+handlers to be marked asmlinkage.
 
-In cputime_adjust() process, stime is greater than rtime due to
-mul_u64_u64_div_u64() precision problem.
-before call mul_u64_u64_div_u64(),
-stime = 175136586720000, rtime = 135989749728000, utime = 1416780000.
-after call mul_u64_u64_div_u64(),
-stime = 135989949653530
+Remove asmlinkage for all handlers registered with set_handle_irq().
 
-unsigned reversion occurs because rtime is less than stime.
-utime = rtime - stime = 135989749728000 - 135989949653530
-		      = -199925530
-		      = (u64)18446744073709518790
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/all/20240729112606.1581732-1-ruanjinjie@huawei.com
 
-Trigger condition:
-  1). User task run in kernel mode most of time
-  2). ARM64 architecture
-  3). TICK_CPU_ACCOUNTING=y
-      CONFIG_VIRT_CPU_ACCOUNTING_NATIVE is not set
-
-Fix mul_u64_u64_div_u64() conversion precision by reset stime to rtime
-
-Fixes: 3dc167ba5729 ("sched/cputime: Improve cputime_adjust()")
-Signed-off-by: Zheng Zucheng <zhengzucheng@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lkml.kernel.org/r/20240726023235.217771-1-zhengzucheng@huawei.com
 ---
- kernel/sched/cputime.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/irqchip/irq-atmel-aic.c       | 3 +--
+ drivers/irqchip/irq-atmel-aic5.c      | 3 +--
+ drivers/irqchip/irq-clps711x.c        | 2 +-
+ drivers/irqchip/irq-davinci-cp-intc.c | 3 +--
+ drivers/irqchip/irq-ftintc010.c       | 2 +-
+ drivers/irqchip/irq-gic-v3.c          | 2 +-
+ drivers/irqchip/irq-ixp4xx.c          | 3 +--
+ drivers/irqchip/irq-omap-intc.c       | 3 +--
+ drivers/irqchip/irq-sa11x0.c          | 3 +--
+ drivers/irqchip/irq-versatile-fpga.c  | 2 +-
+ 10 files changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index a5e0029..0bed0fa 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -582,6 +582,12 @@ void cputime_adjust(struct task_cputime *curr, struct prev_cputime *prev,
+diff --git a/drivers/irqchip/irq-atmel-aic.c b/drivers/irqchip/irq-atmel-aic.c
+index 4631f68..3839ad7 100644
+--- a/drivers/irqchip/irq-atmel-aic.c
++++ b/drivers/irqchip/irq-atmel-aic.c
+@@ -57,8 +57,7 @@
+ 
+ static struct irq_domain *aic_domain;
+ 
+-static asmlinkage void __exception_irq_entry
+-aic_handle(struct pt_regs *regs)
++static void __exception_irq_entry aic_handle(struct pt_regs *regs)
+ {
+ 	struct irq_domain_chip_generic *dgc = aic_domain->gc;
+ 	struct irq_chip_generic *gc = dgc->gc[0];
+diff --git a/drivers/irqchip/irq-atmel-aic5.c b/drivers/irqchip/irq-atmel-aic5.c
+index 145535b..c0f55dc 100644
+--- a/drivers/irqchip/irq-atmel-aic5.c
++++ b/drivers/irqchip/irq-atmel-aic5.c
+@@ -67,8 +67,7 @@
+ 
+ static struct irq_domain *aic5_domain;
+ 
+-static asmlinkage void __exception_irq_entry
+-aic5_handle(struct pt_regs *regs)
++static void __exception_irq_entry aic5_handle(struct pt_regs *regs)
+ {
+ 	struct irq_chip_generic *bgc = irq_get_domain_generic_chip(aic5_domain, 0);
+ 	u32 irqnr;
+diff --git a/drivers/irqchip/irq-clps711x.c b/drivers/irqchip/irq-clps711x.c
+index e731e07..806ebb1 100644
+--- a/drivers/irqchip/irq-clps711x.c
++++ b/drivers/irqchip/irq-clps711x.c
+@@ -69,7 +69,7 @@ static struct {
+ 	struct irq_domain_ops	ops;
+ } *clps711x_intc;
+ 
+-static asmlinkage void __exception_irq_entry clps711x_irqh(struct pt_regs *regs)
++static void __exception_irq_entry clps711x_irqh(struct pt_regs *regs)
+ {
+ 	u32 irqstat;
+ 
+diff --git a/drivers/irqchip/irq-davinci-cp-intc.c b/drivers/irqchip/irq-davinci-cp-intc.c
+index 7482c8e..f4f8e9f 100644
+--- a/drivers/irqchip/irq-davinci-cp-intc.c
++++ b/drivers/irqchip/irq-davinci-cp-intc.c
+@@ -116,8 +116,7 @@ static struct irq_chip davinci_cp_intc_irq_chip = {
+ 	.flags		= IRQCHIP_SKIP_SET_WAKE,
+ };
+ 
+-static asmlinkage void __exception_irq_entry
+-davinci_cp_intc_handle_irq(struct pt_regs *regs)
++static void __exception_irq_entry davinci_cp_intc_handle_irq(struct pt_regs *regs)
+ {
+ 	int gpir, irqnr, none;
+ 
+diff --git a/drivers/irqchip/irq-ftintc010.c b/drivers/irqchip/irq-ftintc010.c
+index 359efc1..b91c358 100644
+--- a/drivers/irqchip/irq-ftintc010.c
++++ b/drivers/irqchip/irq-ftintc010.c
+@@ -125,7 +125,7 @@ static struct irq_chip ft010_irq_chip = {
+ /* Local static for the IRQ entry call */
+ static struct ft010_irq_data firq;
+ 
+-static asmlinkage void __exception_irq_entry ft010_irqchip_handle_irq(struct pt_regs *regs)
++static void __exception_irq_entry ft010_irqchip_handle_irq(struct pt_regs *regs)
+ {
+ 	struct ft010_irq_data *f = &firq;
+ 	int irq;
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index c19083b..0efa344 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -930,7 +930,7 @@ static void __gic_handle_irq_from_irqsoff(struct pt_regs *regs)
+ 	__gic_handle_nmi(irqnr, regs);
+ }
+ 
+-static asmlinkage void __exception_irq_entry gic_handle_irq(struct pt_regs *regs)
++static void __exception_irq_entry gic_handle_irq(struct pt_regs *regs)
+ {
+ 	if (unlikely(gic_supports_nmi() && !interrupts_enabled(regs)))
+ 		__gic_handle_irq_from_irqsoff(regs);
+diff --git a/drivers/irqchip/irq-ixp4xx.c b/drivers/irqchip/irq-ixp4xx.c
+index 5fba907..f23b02f 100644
+--- a/drivers/irqchip/irq-ixp4xx.c
++++ b/drivers/irqchip/irq-ixp4xx.c
+@@ -105,8 +105,7 @@ static void ixp4xx_irq_unmask(struct irq_data *d)
  	}
+ }
  
- 	stime = mul_u64_u64_div_u64(stime, rtime, stime + utime);
-+	/*
-+	 * Because mul_u64_u64_div_u64() can approximate on some
-+	 * achitectures; enforce the constraint that: a*b/(b+c) <= a.
-+	 */
-+	if (unlikely(stime > rtime))
-+		stime = rtime;
+-static asmlinkage void __exception_irq_entry
+-ixp4xx_handle_irq(struct pt_regs *regs)
++static void __exception_irq_entry ixp4xx_handle_irq(struct pt_regs *regs)
+ {
+ 	struct ixp4xx_irq *ixi = &ixirq;
+ 	unsigned long status;
+diff --git a/drivers/irqchip/irq-omap-intc.c b/drivers/irqchip/irq-omap-intc.c
+index dc82162..ad84a2f 100644
+--- a/drivers/irqchip/irq-omap-intc.c
++++ b/drivers/irqchip/irq-omap-intc.c
+@@ -325,8 +325,7 @@ static int __init omap_init_irq(u32 base, struct device_node *node)
+ 	return ret;
+ }
  
- update:
- 	/*
+-static asmlinkage void __exception_irq_entry
+-omap_intc_handle_irq(struct pt_regs *regs)
++static void __exception_irq_entry omap_intc_handle_irq(struct pt_regs *regs)
+ {
+ 	extern unsigned long irq_err_count;
+ 	u32 irqnr;
+diff --git a/drivers/irqchip/irq-sa11x0.c b/drivers/irqchip/irq-sa11x0.c
+index 31c202a..9d0b802 100644
+--- a/drivers/irqchip/irq-sa11x0.c
++++ b/drivers/irqchip/irq-sa11x0.c
+@@ -127,8 +127,7 @@ static int __init sa1100irq_init_devicefs(void)
+ 
+ device_initcall(sa1100irq_init_devicefs);
+ 
+-static asmlinkage void __exception_irq_entry
+-sa1100_handle_irq(struct pt_regs *regs)
++static void __exception_irq_entry sa1100_handle_irq(struct pt_regs *regs)
+ {
+ 	uint32_t icip, icmr, mask;
+ 
+diff --git a/drivers/irqchip/irq-versatile-fpga.c b/drivers/irqchip/irq-versatile-fpga.c
+index 5018a06..ca471c6 100644
+--- a/drivers/irqchip/irq-versatile-fpga.c
++++ b/drivers/irqchip/irq-versatile-fpga.c
+@@ -128,7 +128,7 @@ static int handle_one_fpga(struct fpga_irq_data *f, struct pt_regs *regs)
+  * Keep iterating over all registered FPGA IRQ controllers until there are
+  * no pending interrupts.
+  */
+-static asmlinkage void __exception_irq_entry fpga_handle_irq(struct pt_regs *regs)
++static void __exception_irq_entry fpga_handle_irq(struct pt_regs *regs)
+ {
+ 	int i, handled;
+ 
 
