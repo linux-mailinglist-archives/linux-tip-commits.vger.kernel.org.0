@@ -1,82 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-1796-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1801-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679F993F2D3
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 12:35:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF22E93F2DC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 12:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AE231C20805
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 10:35:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFB4A1C203B1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 10:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4011459E4;
-	Mon, 29 Jul 2024 10:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7DD145B37;
+	Mon, 29 Jul 2024 10:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0nMbfU+v";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6+Ki79Vp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="k3qZEWkP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Of9tHNR1"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D02E144D1D;
-	Mon, 29 Jul 2024 10:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521C714532D;
+	Mon, 29 Jul 2024 10:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722249249; cv=none; b=Q0YdNNhzLvHc9B/e+4Q3vFrPUyBGxuVIIBfCCjPQStq/MLE7QTOfjDKsYm3yl/QLiQ0GeYBfXbo5fTj7+sWFrv0WGqeYlYGqrSwIAxFSS5OFqxEkFNSwwKZbCpEaxsdVEVhChfLplYkhOtAgIQ34A+Ci7nrBBFlWCYqhZUj/0WE=
+	t=1722249251; cv=none; b=uZPFMZsU+1mXpZgG4dVWeu0Jc6BY/GMA3oW+KF29B5GCq0ME0+3I7VoGQTaxAU50goRnXfLhvt1RV/ncVNV7h64Hab4JnwLHpP/rl7zz0O8v8cNG569DtBvZckRpcay0zg8esKLuJMejcb/XDBYqOh/ZBPmXwuS2FddCA6gVadw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722249249; c=relaxed/simple;
-	bh=x3BOmj98U2Hr4W8bJtFsD8RY9/ZXiPmuDUB92D0dRcY=;
+	s=arc-20240116; t=1722249251; c=relaxed/simple;
+	bh=6KRNB7s0XBKUkjQvF0uHWhhZniC64aGkAhQp8xDN/kw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=UhPv+gn3aNEtn7boe9c3qxKvYqV0ipSQTTaOUGqjtlRHU0jihBG+4Z7AYNbesocYNObcM4wKX0MYBvFA66OcjFF1dKME83VH7UWz8E+GwtMdWNMiheJg1lS3KpGfK+kc7ofI9CCSKu5VjQAId/J7onOhxMGmEesvn/Ztrt3nqjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0nMbfU+v; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6+Ki79Vp; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=F9RW1U0RzggkNy9LDeUzRdqU3wuCku6Vs0s1V91oW+LD2u0Dduac4/Nm3gjSfE960JliFqoGToy/Q2zO35OFPq6LJmphFR7//vUcQVkhPJDToVqjxECvERPY69Ky/6w7ak47/1jSmtmlPq4AV5xV9sjciPXfjPuUGuSwFe+9Mw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=k3qZEWkP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Of9tHNR1; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 29 Jul 2024 10:34:05 -0000
+Date: Mon, 29 Jul 2024 10:34:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722249245;
+	s=2020; t=1722249246;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UezuLar63I7qBCpZdF7fVz8BCAotXGuEgkXIpn1X6r8=;
-	b=0nMbfU+vbWyhnK/ULnW+Bf4LAn7w2IzeyjHsJUq2/2QUIQosjgAje21qnH2RJmAN1HLsZK
-	Iq3jsICEVYaNIlvrGcSDANoCViCjAcIlVTVY0MEgivDhQzcfDN2EjheNyDq3SrrrxXcgns
-	GBgy7IwWdXJBhWEua1IkXlAoFG5KRO9LVrRIlPvE2Y3CYqSVcXh5NnjFoTKepE+sZ9PTN5
-	AlUkfl2gvfFXKx8+XsBAaTX05SoZqZC66AXC5fQ+LBjf0p7TMlCXxDQYIZP3IxKb9d2r83
-	CKZb0c6vbvVh2auLk4OnOUE11iKqX3NLFviPrxz7S7D8xBbqqJ9tnmAiZbDELA==
+	bh=Y8a9GIUd146QY2xQn6jjhyc9q8K1xcZNbLabwnGoOl4=;
+	b=k3qZEWkPePK2rwDkL3Q4OONm+SSvyEnQWg7J/Q17TP/MTkbzI+G0VB6FiLev7psQb+KEq6
+	0pfNptcTgTlZvpRgKtLxnrghHcXI0ozjDuSCCmCKAod3PWZQt9R1lD3zHerv+8ecpAi4um
+	BsytYCHY64lqsJw7zPsMB3Ilbw7fUrFZraT+Es/tFCfujsWvsRIuNsu5ahIpJEtHJK6oZM
+	itGzBdiOo1lWdPLPrfTekXIpIllpjkdNR/FA51uIIFST5nrTv8bP5RLZzjt2/37BZoMhuJ
+	ZlA0WWP1U1koT3iuhl1LDw9izzMH/XeT2eykzeiFDmCedM5Iz9+WyZcCNqPu6g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722249245;
+	s=2020e; t=1722249246;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UezuLar63I7qBCpZdF7fVz8BCAotXGuEgkXIpn1X6r8=;
-	b=6+Ki79VpQqR2RZbNfpimwKGxUw7/y3FMN/aBH+A8KfboT00ac9X8h5eg/egEKPHWRdoHmH
-	L4qdHvnpYI1pCgCw==
-From: "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
+	bh=Y8a9GIUd146QY2xQn6jjhyc9q8K1xcZNbLabwnGoOl4=;
+	b=Of9tHNR1RGA62VmaVObuhwn4z5kOMcOJfoB0Ez/rgyQ/9KuF4u4dYvVwbWsxCElVKFcB6o
+	kD/E8+hLWr/Sk1Cw==
+From: "tip-bot2 for Tianchen Ding" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/core: Add clearing of ->dl_server in
- put_prev_task_balance()
-Cc: "Joel Fernandes (Google)" <joel@joelfernandes.org>,
- Daniel Bristot de Oliveira <bristot@kernel.org>,
+Subject: [tip: sched/core] sched/fair: Make SCHED_IDLE entity be preempted in
+ strict hierarchy
+Cc: Tianchen Ding <dtcccc@linux.alibaba.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To:
- <d184d554434bedbad0581cb34656582d78655150.1716811044.git.bristot@kernel.org>
-References:
- <d184d554434bedbad0581cb34656582d78655150.1716811044.git.bristot@kernel.org>
+ Josh Don <joshdon@google.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240626023505.1332596-1-dtcccc@linux.alibaba.com>
+References: <20240626023505.1332596-1-dtcccc@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172224924542.2215.183295537428039900.tip-bot2@tip-bot2>
+Message-ID: <172224924632.2215.7502536289804369136.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -86,62 +83,98 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c245910049d04fbfa85bb2f5acd591c24e9907c7
-Gitweb:        https://git.kernel.org/tip/c245910049d04fbfa85bb2f5acd591c24e9907c7
-Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
-AuthorDate:    Mon, 27 May 2024 14:06:48 +02:00
+Commit-ID:     faa42d29419def58d3c3e5b14ad4037f0af3b496
+Gitweb:        https://git.kernel.org/tip/faa42d29419def58d3c3e5b14ad4037f0af3b496
+Author:        Tianchen Ding <dtcccc@linux.alibaba.com>
+AuthorDate:    Wed, 26 Jun 2024 10:35:05 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 29 Jul 2024 12:22:35 +02:00
 
-sched/core: Add clearing of ->dl_server in put_prev_task_balance()
+sched/fair: Make SCHED_IDLE entity be preempted in strict hierarchy
 
-Paths using put_prev_task_balance() need to do a pick shortly
-after. Make sure they also clear the ->dl_server on prev as a
-part of that.
+Consider the following cgroup:
 
-Fixes: 63ba8422f876 ("sched/deadline: Introduce deadline servers")
-Signed-off-by: "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+                       root
+                        |
+             ------------------------
+             |                      |
+       normal_cgroup            idle_cgroup
+             |                      |
+   SCHED_IDLE task_A           SCHED_NORMAL task_B
+
+According to the cgroup hierarchy, A should preempt B. But current
+check_preempt_wakeup_fair() treats cgroup se and task separately, so B
+will preempt A unexpectedly.
+Unify the wakeup logic by {c,p}se_is_idle only. This makes SCHED_IDLE of
+a task a relative policy that is effective only within its own cgroup,
+similar to the behavior of NICE.
+
+Also fix se_is_idle() definition when !CONFIG_FAIR_GROUP_SCHED.
+
+Fixes: 304000390f88 ("sched: Cgroup SCHED_IDLE support")
+Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/d184d554434bedbad0581cb34656582d78655150.1716811044.git.bristot@kernel.org
+Reviewed-by: Josh Don <joshdon@google.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20240626023505.1332596-1-dtcccc@linux.alibaba.com
 ---
- kernel/sched/core.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ kernel/sched/fair.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 0a71050..e61da3b 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5801,6 +5801,14 @@ static void put_prev_task_balance(struct rq *rq, struct task_struct *prev,
- #endif
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 02694fc..99c80ab 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -511,7 +511,7 @@ static int cfs_rq_is_idle(struct cfs_rq *cfs_rq)
  
- 	put_prev_task(rq, prev);
-+
-+	/*
-+	 * We've updated @prev and no longer need the server link, clear it.
-+	 * Must be done before ->pick_next_task() because that can (re)set
-+	 * ->dl_server.
-+	 */
-+	if (prev->dl_server)
-+		prev->dl_server = NULL;
+ static int se_is_idle(struct sched_entity *se)
+ {
+-	return 0;
++	return task_has_idle_policy(task_of(se));
  }
  
- /*
-@@ -5844,14 +5852,6 @@ __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
- restart:
- 	put_prev_task_balance(rq, prev, rf);
+ #endif	/* CONFIG_FAIR_GROUP_SCHED */
+@@ -8381,16 +8381,7 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int 
+ 	if (test_tsk_need_resched(curr))
+ 		return;
  
--	/*
--	 * We've updated @prev and no longer need the server link, clear it.
--	 * Must be done before ->pick_next_task() because that can (re)set
--	 * ->dl_server.
--	 */
--	if (prev->dl_server)
--		prev->dl_server = NULL;
+-	/* Idle tasks are by definition preempted by non-idle tasks. */
+-	if (unlikely(task_has_idle_policy(curr)) &&
+-	    likely(!task_has_idle_policy(p)))
+-		goto preempt;
 -
- 	for_each_class(class) {
- 		p = class->pick_next_task(rq);
- 		if (p)
+-	/*
+-	 * Batch and idle tasks do not preempt non-idle tasks (their preemption
+-	 * is driven by the tick):
+-	 */
+-	if (unlikely(p->policy != SCHED_NORMAL) || !sched_feat(WAKEUP_PREEMPTION))
++	if (!sched_feat(WAKEUP_PREEMPTION))
+ 		return;
+ 
+ 	find_matching_se(&se, &pse);
+@@ -8400,7 +8391,7 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int 
+ 	pse_is_idle = se_is_idle(pse);
+ 
+ 	/*
+-	 * Preempt an idle group in favor of a non-idle group (and don't preempt
++	 * Preempt an idle entity in favor of a non-idle entity (and don't preempt
+ 	 * in the inverse case).
+ 	 */
+ 	if (cse_is_idle && !pse_is_idle)
+@@ -8408,9 +8399,14 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int 
+ 	if (cse_is_idle != pse_is_idle)
+ 		return;
+ 
++	/*
++	 * BATCH and IDLE tasks do not preempt others.
++	 */
++	if (unlikely(p->policy != SCHED_NORMAL))
++		return;
++
+ 	cfs_rq = cfs_rq_of(se);
+ 	update_curr(cfs_rq);
+-
+ 	/*
+ 	 * XXX pick_eevdf(cfs_rq) != se ?
+ 	 */
 
