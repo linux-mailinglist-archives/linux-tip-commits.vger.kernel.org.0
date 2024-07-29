@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-1809-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1810-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED4293F479
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 13:50:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E2B93F6FE
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 15:49:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3C891C21FF3
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 11:50:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7DDC280E95
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 13:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53559145FEE;
-	Mon, 29 Jul 2024 11:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C45C146D54;
+	Mon, 29 Jul 2024 13:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M4w12Jpc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bZvkKXEQ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jvYJH/v+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h6KcEOre"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D58145B29;
-	Mon, 29 Jul 2024 11:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3881E515;
+	Mon, 29 Jul 2024 13:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722253826; cv=none; b=KUXW66N+We9/D9RkjKDxsjCvoi15LM9+uZwg9JfAnup0qRO7zZzEi1kGQgr1wL05hmDBSZyrVU1lzVSZysht1MRWNERjAPWUDwcOWbfotdiPyDoS2/J+PXX47vz6tbhXqW/rKEP8rQG9BXLbozd+nOWujIQLL8euEVs6ONTn6N0=
+	t=1722260993; cv=none; b=cgT/G3VlaqFN72I4bOHGPqCfK0Xan0KBZ8SEjly5FzwRu0YM0W2xacIn0rlioEnpUVBQLYCFRq79jjg8G0SwksqIXtrnOgnCRVzHIgHHHIGvOMhtTukaYJIoRcmh2Mao/8zJLx3XT8+ZOyRzpCUFugRstYnQhOPAaCS1BukBrF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722253826; c=relaxed/simple;
-	bh=J2Eccw4T1gag0WKFsU8SFincbHWJtR6HfzoFPg77rU4=;
+	s=arc-20240116; t=1722260993; c=relaxed/simple;
+	bh=InQUFpstovCC9+CozNMQpL1aofE4McWvzqEyAI9oFNM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=OqJuLg3YC4PFZU30Dywjvim2ID+SXvAWAWmlQod+taY1dNMTbEE1kflpbEzVvokec+Epc+5axwuZ4Bg2N2ofrMB635qXpTEAMqxOg4VnewyJKJrGaBPK3EJntHSVstpsN9I2DGKS/f2MZ9idyWjsA1gjCVDcqwV8u7t1ahMM5tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M4w12Jpc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bZvkKXEQ; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Uzk/gi3pNph7/AoHMJnzjN6LFVMC/ltH0d5PdkTlPDEccGaokWlLIxv8LoLqfd4CBUiRaSvAfbpgst/X757WWl/MqZPLS/lajvjc65uTH5ee2tyjg+TBPUfrvTQfL9pvB+96ZJ/FU92FY8Cp56OKi0WH+yCvUxeu73AJMmxQq3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jvYJH/v+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h6KcEOre; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 29 Jul 2024 11:50:21 -0000
+Date: Mon, 29 Jul 2024 13:49:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722253822;
+	s=2020; t=1722260989;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P8KaXeIAygttY660e5hwdVdlxik/2CXizQ2TXIi85sw=;
-	b=M4w12Jpc+ecb9ir9JxTd8+6TGwOC87Oqf7AEQkaYYB5KYsMLuXLoJv6iDrBTebsP+KXan9
-	geNd2C5QSPPI7VFZ3DogbzfoM6jQafXnzyDEAmpzNHptUTMhf0xchjcqyfUglaqlr0mE5X
-	ZX2golW1akBntEXz34pAckInGeJQAFunZTEN2WCFfAtdoicYIwWjPrIX2al+lK+0ejPtVD
-	W/d+7ZZlN0wUujGjCmFJNOxlC4W69JuuXQGB3mKqnlrmdxs9IHjpU9MTikd5p6TOufT7mZ
-	WoKE5FNZLgmMpPL2fNTVjNug5/nqIfyXeyuTQwoPy19IsYqi0/whnDFfySMqAw==
+	bh=YIB7jSreWeng1mkbqwds0aQJSGOn6JmUe1ENkpT7nRA=;
+	b=jvYJH/v+dAdS6MMVNmU8SLJGqpYkFfC2UfZGrEi55e5/2upLp16AA5Sm0SAqC6oGZwl3ZH
+	/vyMLEkEdzKeu7AwEz/qvGK56vUDdKn85AgsE6rypUj1CoI/iHOxbkyOOuvxO6XrVDrWCS
+	vEz6EP4ezQ5kqdHM/uSBVAEVU7XUN1M6YVw42iRtSHiT9lctLtQVfKGF7K6MFK4dBfNCnL
+	R7I5xbyrY20K6LzkGIAnmioah6mI1UlAnLYmLYwJQKP0/tLr8jDZ2z4sOdva/304RYZy4d
+	OychblfsJ3mXmTT8/3ZpRYvhICU4lE0y7IVRPDaBM9wNCLmrU8T0FT4AJT8CpA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722253822;
+	s=2020e; t=1722260989;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P8KaXeIAygttY660e5hwdVdlxik/2CXizQ2TXIi85sw=;
-	b=bZvkKXEQ8Hx0sOWpzdI9LaTAl4bdMTeJl1HXFdd28rOs4dCqAy8IYTqbtq2T8rgfI5LpO8
-	uNm13EJD78ItvVDg==
-From: "tip-bot2 for Jinjie Ruan" <tip-bot2@linutronix.de>
+	bh=YIB7jSreWeng1mkbqwds0aQJSGOn6JmUe1ENkpT7nRA=;
+	b=h6KcEOreUG073VtYPPlvLqabP4a5P26LyOkrOMrn1hrOiwJ+Q/1iryDUlysA1XYUFyKeSi
+	vUJr7p2UKoCCkFAA==
+From: "tip-bot2 for Arseniy Krasnov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip: Remove asmlinkage for handlers registered
- with set_handle_irq()
-Cc: Thomas Gleixner <tglx@linutronix.de>, Jinjie Ruan <ruanjinjie@huawei.com>,
- Mark Rutland <mark.rutland@arm.com>, x86@kernel.org,
+Subject: [tip: irq/urgent] irqchip/meson-gpio: Convert
+ meson_gpio_irq_controller::lock to 'raw_spinlock_t'
+Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240729112606.1581732-1-ruanjinjie@huawei.com>
-References: <20240729112606.1581732-1-ruanjinjie@huawei.com>
+In-Reply-To: <20240729131850.3015508-1-avkrasnov@salutedevices.com>
+References: <20240729131850.3015508-1-avkrasnov@salutedevices.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172225382189.2215.8398520329045355162.tip-bot2@tip-bot2>
+Message-ID: <172226098842.2215.14904545855987442510.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,176 +80,112 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     e626fcbaa9b67e4488ea437e0e8a5657e707d5f8
-Gitweb:        https://git.kernel.org/tip/e626fcbaa9b67e4488ea437e0e8a5657e707d5f8
-Author:        Jinjie Ruan <ruanjinjie@huawei.com>
-AuthorDate:    Mon, 29 Jul 2024 19:26:06 +08:00
+Commit-ID:     f872d4af79fe8c71ae291ce8875b477e1669a6c7
+Gitweb:        https://git.kernel.org/tip/f872d4af79fe8c71ae291ce8875b477e1669a6c7
+Author:        Arseniy Krasnov <avkrasnov@salutedevices.com>
+AuthorDate:    Mon, 29 Jul 2024 16:18:50 +03:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 29 Jul 2024 13:43:34 +02:00
+CommitterDate: Mon, 29 Jul 2024 15:43:50 +02:00
 
-irqchip: Remove asmlinkage for handlers registered with set_handle_irq()
+irqchip/meson-gpio: Convert meson_gpio_irq_controller::lock to 'raw_spinlock_t'
 
-All architectures with use set_handle_irq() to set the root chip interrupt
-handler call that handler from C code, so there's no need for these
-handlers to be marked asmlinkage.
+This lock is acquired under irq_desc::lock with interrupts disabled.
 
-Remove asmlinkage for all handlers registered with set_handle_irq().
+When PREEMPT_RT is enabled, 'spinlock_t' becomes preemptible, which results
+in invalid lock acquire context;
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+  [ BUG: Invalid wait context ]
+  swapper/0/1 is trying to lock:
+  ffff0000008fed30 (&ctl->lock){....}-{3:3}, at: meson_gpio_irq_update_bits0
+  other info that might help us debug this:
+  context-{5:5}
+  3 locks held by swapper/0/1:
+   #0: ffff0000003cd0f8 (&dev->mutex){....}-{4:4}, at: __driver_attach+0x90c
+   #1: ffff000004714650 (&desc->request_mutex){+.+.}-{4:4}, at: __setup_irq0
+   #2: ffff0000047144c8 (&irq_desc_lock_class){-.-.}-{2:2}, at: __setup_irq0
+  stack backtrace:
+  CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.9-sdkernel #1
+  Call trace:
+   _raw_spin_lock_irqsave+0x60/0x88
+   meson_gpio_irq_update_bits+0x34/0x70
+   meson8_gpio_irq_set_type+0x78/0xc4
+   meson_gpio_irq_set_type+0x30/0x60
+   __irq_set_trigger+0x60/0x180
+   __setup_irq+0x30c/0x6e0
+   request_threaded_irq+0xec/0x1a4
+
+Fixes: 215f4cc0fb20 ("irqchip/meson: Add support for gpio interrupt controller")
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/all/20240729112606.1581732-1-ruanjinjie@huawei.com
-
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240729131850.3015508-1-avkrasnov@salutedevices.com
 ---
- drivers/irqchip/irq-atmel-aic.c       | 3 +--
- drivers/irqchip/irq-atmel-aic5.c      | 3 +--
- drivers/irqchip/irq-clps711x.c        | 2 +-
- drivers/irqchip/irq-davinci-cp-intc.c | 3 +--
- drivers/irqchip/irq-ftintc010.c       | 2 +-
- drivers/irqchip/irq-gic-v3.c          | 2 +-
- drivers/irqchip/irq-ixp4xx.c          | 3 +--
- drivers/irqchip/irq-omap-intc.c       | 3 +--
- drivers/irqchip/irq-sa11x0.c          | 3 +--
- drivers/irqchip/irq-versatile-fpga.c  | 2 +-
- 10 files changed, 10 insertions(+), 16 deletions(-)
+ drivers/irqchip/irq-meson-gpio.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/irqchip/irq-atmel-aic.c b/drivers/irqchip/irq-atmel-aic.c
-index 4631f68..3839ad7 100644
---- a/drivers/irqchip/irq-atmel-aic.c
-+++ b/drivers/irqchip/irq-atmel-aic.c
-@@ -57,8 +57,7 @@
- 
- static struct irq_domain *aic_domain;
- 
--static asmlinkage void __exception_irq_entry
--aic_handle(struct pt_regs *regs)
-+static void __exception_irq_entry aic_handle(struct pt_regs *regs)
- {
- 	struct irq_domain_chip_generic *dgc = aic_domain->gc;
- 	struct irq_chip_generic *gc = dgc->gc[0];
-diff --git a/drivers/irqchip/irq-atmel-aic5.c b/drivers/irqchip/irq-atmel-aic5.c
-index 145535b..c0f55dc 100644
---- a/drivers/irqchip/irq-atmel-aic5.c
-+++ b/drivers/irqchip/irq-atmel-aic5.c
-@@ -67,8 +67,7 @@
- 
- static struct irq_domain *aic5_domain;
- 
--static asmlinkage void __exception_irq_entry
--aic5_handle(struct pt_regs *regs)
-+static void __exception_irq_entry aic5_handle(struct pt_regs *regs)
- {
- 	struct irq_chip_generic *bgc = irq_get_domain_generic_chip(aic5_domain, 0);
- 	u32 irqnr;
-diff --git a/drivers/irqchip/irq-clps711x.c b/drivers/irqchip/irq-clps711x.c
-index e731e07..806ebb1 100644
---- a/drivers/irqchip/irq-clps711x.c
-+++ b/drivers/irqchip/irq-clps711x.c
-@@ -69,7 +69,7 @@ static struct {
- 	struct irq_domain_ops	ops;
- } *clps711x_intc;
- 
--static asmlinkage void __exception_irq_entry clps711x_irqh(struct pt_regs *regs)
-+static void __exception_irq_entry clps711x_irqh(struct pt_regs *regs)
- {
- 	u32 irqstat;
- 
-diff --git a/drivers/irqchip/irq-davinci-cp-intc.c b/drivers/irqchip/irq-davinci-cp-intc.c
-index 7482c8e..f4f8e9f 100644
---- a/drivers/irqchip/irq-davinci-cp-intc.c
-+++ b/drivers/irqchip/irq-davinci-cp-intc.c
-@@ -116,8 +116,7 @@ static struct irq_chip davinci_cp_intc_irq_chip = {
- 	.flags		= IRQCHIP_SKIP_SET_WAKE,
+diff --git a/drivers/irqchip/irq-meson-gpio.c b/drivers/irqchip/irq-meson-gpio.c
+index 27e30ce..cd789fa 100644
+--- a/drivers/irqchip/irq-meson-gpio.c
++++ b/drivers/irqchip/irq-meson-gpio.c
+@@ -178,7 +178,7 @@ struct meson_gpio_irq_controller {
+ 	void __iomem *base;
+ 	u32 channel_irqs[MAX_NUM_CHANNEL];
+ 	DECLARE_BITMAP(channel_map, MAX_NUM_CHANNEL);
+-	spinlock_t lock;
++	raw_spinlock_t lock;
  };
  
--static asmlinkage void __exception_irq_entry
--davinci_cp_intc_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry davinci_cp_intc_handle_irq(struct pt_regs *regs)
- {
- 	int gpir, irqnr, none;
+ static void meson_gpio_irq_update_bits(struct meson_gpio_irq_controller *ctl,
+@@ -187,14 +187,14 @@ static void meson_gpio_irq_update_bits(struct meson_gpio_irq_controller *ctl,
+ 	unsigned long flags;
+ 	u32 tmp;
  
-diff --git a/drivers/irqchip/irq-ftintc010.c b/drivers/irqchip/irq-ftintc010.c
-index 359efc1..b91c358 100644
---- a/drivers/irqchip/irq-ftintc010.c
-+++ b/drivers/irqchip/irq-ftintc010.c
-@@ -125,7 +125,7 @@ static struct irq_chip ft010_irq_chip = {
- /* Local static for the IRQ entry call */
- static struct ft010_irq_data firq;
+-	spin_lock_irqsave(&ctl->lock, flags);
++	raw_spin_lock_irqsave(&ctl->lock, flags);
  
--static asmlinkage void __exception_irq_entry ft010_irqchip_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry ft010_irqchip_handle_irq(struct pt_regs *regs)
- {
- 	struct ft010_irq_data *f = &firq;
- 	int irq;
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index c19083b..0efa344 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -930,7 +930,7 @@ static void __gic_handle_irq_from_irqsoff(struct pt_regs *regs)
- 	__gic_handle_nmi(irqnr, regs);
+ 	tmp = readl_relaxed(ctl->base + reg);
+ 	tmp &= ~mask;
+ 	tmp |= val;
+ 	writel_relaxed(tmp, ctl->base + reg);
+ 
+-	spin_unlock_irqrestore(&ctl->lock, flags);
++	raw_spin_unlock_irqrestore(&ctl->lock, flags);
  }
  
--static asmlinkage void __exception_irq_entry gic_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry gic_handle_irq(struct pt_regs *regs)
- {
- 	if (unlikely(gic_supports_nmi() && !interrupts_enabled(regs)))
- 		__gic_handle_irq_from_irqsoff(regs);
-diff --git a/drivers/irqchip/irq-ixp4xx.c b/drivers/irqchip/irq-ixp4xx.c
-index 5fba907..f23b02f 100644
---- a/drivers/irqchip/irq-ixp4xx.c
-+++ b/drivers/irqchip/irq-ixp4xx.c
-@@ -105,8 +105,7 @@ static void ixp4xx_irq_unmask(struct irq_data *d)
+ static void meson_gpio_irq_init_dummy(struct meson_gpio_irq_controller *ctl)
+@@ -244,12 +244,12 @@ meson_gpio_irq_request_channel(struct meson_gpio_irq_controller *ctl,
+ 	unsigned long flags;
+ 	unsigned int idx;
+ 
+-	spin_lock_irqsave(&ctl->lock, flags);
++	raw_spin_lock_irqsave(&ctl->lock, flags);
+ 
+ 	/* Find a free channel */
+ 	idx = find_first_zero_bit(ctl->channel_map, ctl->params->nr_channels);
+ 	if (idx >= ctl->params->nr_channels) {
+-		spin_unlock_irqrestore(&ctl->lock, flags);
++		raw_spin_unlock_irqrestore(&ctl->lock, flags);
+ 		pr_err("No channel available\n");
+ 		return -ENOSPC;
  	}
- }
+@@ -257,7 +257,7 @@ meson_gpio_irq_request_channel(struct meson_gpio_irq_controller *ctl,
+ 	/* Mark the channel as used */
+ 	set_bit(idx, ctl->channel_map);
  
--static asmlinkage void __exception_irq_entry
--ixp4xx_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry ixp4xx_handle_irq(struct pt_regs *regs)
- {
- 	struct ixp4xx_irq *ixi = &ixirq;
- 	unsigned long status;
-diff --git a/drivers/irqchip/irq-omap-intc.c b/drivers/irqchip/irq-omap-intc.c
-index dc82162..ad84a2f 100644
---- a/drivers/irqchip/irq-omap-intc.c
-+++ b/drivers/irqchip/irq-omap-intc.c
-@@ -325,8 +325,7 @@ static int __init omap_init_irq(u32 base, struct device_node *node)
- 	return ret;
- }
+-	spin_unlock_irqrestore(&ctl->lock, flags);
++	raw_spin_unlock_irqrestore(&ctl->lock, flags);
  
--static asmlinkage void __exception_irq_entry
--omap_intc_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry omap_intc_handle_irq(struct pt_regs *regs)
- {
- 	extern unsigned long irq_err_count;
- 	u32 irqnr;
-diff --git a/drivers/irqchip/irq-sa11x0.c b/drivers/irqchip/irq-sa11x0.c
-index 31c202a..9d0b802 100644
---- a/drivers/irqchip/irq-sa11x0.c
-+++ b/drivers/irqchip/irq-sa11x0.c
-@@ -127,8 +127,7 @@ static int __init sa1100irq_init_devicefs(void)
+ 	/*
+ 	 * Setup the mux of the channel to route the signal of the pad
+@@ -567,7 +567,7 @@ static int meson_gpio_irq_of_init(struct device_node *node, struct device_node *
+ 	if (!ctl)
+ 		return -ENOMEM;
  
- device_initcall(sa1100irq_init_devicefs);
+-	spin_lock_init(&ctl->lock);
++	raw_spin_lock_init(&ctl->lock);
  
--static asmlinkage void __exception_irq_entry
--sa1100_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry sa1100_handle_irq(struct pt_regs *regs)
- {
- 	uint32_t icip, icmr, mask;
- 
-diff --git a/drivers/irqchip/irq-versatile-fpga.c b/drivers/irqchip/irq-versatile-fpga.c
-index 5018a06..ca471c6 100644
---- a/drivers/irqchip/irq-versatile-fpga.c
-+++ b/drivers/irqchip/irq-versatile-fpga.c
-@@ -128,7 +128,7 @@ static int handle_one_fpga(struct fpga_irq_data *f, struct pt_regs *regs)
-  * Keep iterating over all registered FPGA IRQ controllers until there are
-  * no pending interrupts.
-  */
--static asmlinkage void __exception_irq_entry fpga_handle_irq(struct pt_regs *regs)
-+static void __exception_irq_entry fpga_handle_irq(struct pt_regs *regs)
- {
- 	int i, handled;
- 
+ 	ctl->base = of_iomap(node, 0);
+ 	if (!ctl->base) {
 
