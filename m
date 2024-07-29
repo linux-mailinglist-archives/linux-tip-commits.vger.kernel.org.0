@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1755-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1760-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD23193F194
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 11:49:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D868A93F19E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 11:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 545E61F23B22
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 09:49:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91756280F30
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Jul 2024 09:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23FE1422A8;
-	Mon, 29 Jul 2024 09:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F4E13C69A;
+	Mon, 29 Jul 2024 09:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EiPrePPS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="m7BkTN8h"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4iub74Xr";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+qskp73r"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4585E13DB9B;
-	Mon, 29 Jul 2024 09:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDC414386E;
+	Mon, 29 Jul 2024 09:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722246584; cv=none; b=GpciIwGHrUw5djHwNSobmQWlKeGu5MDxHAn7mlp18x8pgVSZ7VTt29YyGIbXZ3QJSyrH+KP+o2S1NBPSWrOWHFBnqdga1CsGrJv2BtLwqF1ESxxSD+yxFerqChHYWrwxSwYRwKiLmJ6KQENprWzQTJrmjdpYOtSOh6NDW2mkG88=
+	t=1722246588; cv=none; b=tt+XOCq/eGgnIf7dl49Kd4N9fLQCK3vuseaJP2vhNfe0TGSDHCtnGbePvF7A+v+VdnBuJQq21zCyiBsnfkkJbqfIm9191yg5A9wQ4LJJLJ4NBJmHHyGpc6T6EUGTmcwJnGn5IxnOFjlH0L1XicRowLLLGn9pw5/5QjvbHg0bGJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722246584; c=relaxed/simple;
-	bh=HOzsuRXYHehuD5SySC89EKy3uVEdNGKOZra0qMxcpco=;
+	s=arc-20240116; t=1722246588; c=relaxed/simple;
+	bh=jPQaapfGLnVP/dGdNTnpXeg+NJyqzqNVCKR8vpxv0ZQ=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MhccoqT1pFDylr6U8YAMOVHxPkHu8g+gyIXHERUKFpBuJYMxq4qFeXiHP2+v/LURr/pqIfvfhBZ2ur0AxSptnkO9cI8u2vWep8xnU0go8p8GXZgXt+8RRlGtIB1JNdPzskZiaHO5xSGNY0h9v+/JoHNZsi3Ascmy4El/k0v1cDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EiPrePPS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=m7BkTN8h; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=H0SYcKIhen0KKc4enbecIFcOzK5oLgbxMU3A8BuhvkRPsWh1oW58K8NnzoBIrrwBI4017eqxZljYNkFg21TiFWRX/3ElGaeNqg5msqAqna2MPibyu+iKtuwfChNjIJH5u/Fzk/S1IHlBfaIlfR9z8rLIiXKVmgIb4Uq1NC/YF1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4iub74Xr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+qskp73r; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 29 Jul 2024 09:49:41 -0000
+Date: Mon, 29 Jul 2024 09:49:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722246581;
+	s=2020; t=1722246582;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8I8lIq8jBDQZkIQ6mBkEWJEOGoDxUuwNPIBBESCrYGA=;
-	b=EiPrePPS/cOX2UxRR/FBqRJBB4zN9gm6EjelNLcgLBvp+iYwWmu07R6VMSXx26Q2TUp5wc
-	thD8AUnsx1R8d1bCNDyx0H2LVC4SbeFN8WrHSHbg3Ejuw2rbSneMx3oJPD8G3CqmD1NzBF
-	p/RoMyRNgB0FyWh+viYJXcDh7INtEeHcTST6gNIQ8Rbob7BzNCLSGDnE2P2sx2LOCugz8T
-	i0Qw/bDPY3qaAJCIRDju4PLlrllrfNSbfOYQosBwnoakOngS8ooVpjdAfQIuWm+jV5K3/3
-	8y4EBYQdXumpQRkEbFuwqoUIJjlNqy0eKt92KDK6XMoFWOZB2jgKa0Ss/11S1w==
+	bh=SXBoHaUyxcw++dTElBtaKwHGkxECU4VA+c9fazkhFY0=;
+	b=4iub74XrbvLSLOYrH5VksVTVScbjUKIEqLiQw437mGMY4aIdNlYbfOLPaxpZvAsDrecAx0
+	Gniw6RhLNY2u+rN1oGA5KXxcr42oI0hehsDXrNJ6l6S/4aWPVyoeiOeoBXK6CmCYLL1rCj
+	yVGsfyGlNG1FbMdPvFCbsXfTxbvyZqXCyfSZ2igegHbDw8S5eqCsEJkVJ4Vb7yk4K8Vwxi
+	jwJXwHv2pFz6qSNYDYa/4+qMQdbikcrTwLkV9bY3H5gIz23MUVkkXz0DPFlIsrX6bz5BgO
+	hHvonQfIWq1/sUJBiV4p4ikgi4UgoSEcHgkLGw0agjFtrMuJLmnRb5NrPq/K/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722246581;
+	s=2020e; t=1722246582;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8I8lIq8jBDQZkIQ6mBkEWJEOGoDxUuwNPIBBESCrYGA=;
-	b=m7BkTN8hNvKaO+7Gm6hwAETp2Phpm1Wq+1h8gkBVcZNr+q8G6tUWN5J/glFj1KYyGqT3Px
-	qcCrLwXWWw+tI9Cw==
+	bh=SXBoHaUyxcw++dTElBtaKwHGkxECU4VA+c9fazkhFY0=;
+	b=+qskp73r1SdUQa1nyeN/+CFYxFU3Ya03RQXVvnaaTskvqf4c9EQSBd+/eoIYMPJre7V5V1
+	rbOw/4SMG+OWakAw==
 From: tip-bot2 for Marek =?utf-8?q?Beh=C3=BAn?= <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/armada-370-xp: Refactor initial memory
- regions mapping
+Subject: [tip: irq/core] irqchip/armada-370-xp: Use consistent types when
+ iterating interrupts
 Cc: kabel@kernel.org, Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240711160907.31012-10-kabel@kernel.org>
-References: <20240711160907.31012-10-kabel@kernel.org>
+In-Reply-To: <20240711160907.31012-3-kabel@kernel.org>
+References: <20240711160907.31012-3-kabel@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172224658118.2215.17849198927343225043.tip-bot2@tip-bot2>
+Message-ID: <172224658253.2215.13597237998745369746.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,121 +81,109 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     732639e1d5f0f4b5135833de63ad4e4b79cbfd78
-Gitweb:        https://git.kernel.org/tip/732639e1d5f0f4b5135833de63ad4e4b79c=
-bfd78
+Commit-ID:     bb6d30540c5f6c2035c07c885f4117b33d4e549a
+Gitweb:        https://git.kernel.org/tip/bb6d30540c5f6c2035c07c885f4117b33d4=
+e549a
 Author:        Marek Beh=C3=BAn <kabel@kernel.org>
-AuthorDate:    Thu, 11 Jul 2024 18:09:06 +02:00
+AuthorDate:    Thu, 11 Jul 2024 18:08:59 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 29 Jul 2024 10:57:24 +02:00
 
-irqchip/armada-370-xp: Refactor initial memory regions mapping
+irqchip/armada-370-xp: Use consistent types when iterating interrupts
 
-Refactor the initial memory regions mapping:
-- put into its own function
-- return error numbers on failure
-- use WARN_ON() instead of BUG_ON()
+When iterating, use either the irq_hw_number_t type or the unsigned int
+type for the iterator variable, depending on whether the variable
+represents HW IRQ number or whether it is added to a IRQ number.
 
 Signed-off-by: Marek Beh=C3=BAn <kabel@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240711160907.31012-10-kabel@kernel.org
+Link: https://lore.kernel.org/all/20240711160907.31012-3-kabel@kernel.org
 
 ---
- drivers/irqchip/irq-armada-370-xp.c | 60 +++++++++++++++++++---------
- 1 file changed, 41 insertions(+), 19 deletions(-)
+ drivers/irqchip/irq-armada-370-xp.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada=
 -370-xp.c
-index 1e0f1b4..244454e 100644
+index 8f95da0..db9594b 100644
 --- a/drivers/irqchip/irq-armada-370-xp.c
 +++ b/drivers/irqchip/irq-armada-370-xp.c
-@@ -12,6 +12,7 @@
+@@ -284,7 +284,7 @@ static int mpic_msi_alloc(struct irq_domain *domain, unsi=
+gned int virq, unsigned
+ 	if (hwirq < 0)
+ 		return -ENOSPC;
 =20
- #include <linux/bitfield.h>
- #include <linux/bits.h>
-+#include <linux/err.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/init.h>
-@@ -751,29 +752,50 @@ static struct syscore_ops mpic_syscore_ops =3D {
- 	.resume		=3D mpic_resume,
- };
-=20
--static int __init mpic_of_init(struct device_node *node,
--			       struct device_node *parent)
-+static int __init mpic_map_region(struct device_node *np, int index,
-+				  void __iomem **base, phys_addr_t *phys_base)
+-	for (int i =3D 0; i < nr_irqs; i++) {
++	for (unsigned int i =3D 0; i < nr_irqs; i++) {
+ 		irq_domain_set_info(domain, virq + i, hwirq + i,
+ 				    &mpic_msi_bottom_irq_chip,
+ 				    domain->host_data, handle_simple_irq,
+@@ -429,7 +429,7 @@ static struct irq_chip mpic_ipi_irqchip =3D {
+ static int mpic_ipi_alloc(struct irq_domain *d, unsigned int virq,
+ 			  unsigned int nr_irqs, void *args)
  {
--	struct resource main_int_res, per_cpu_int_res;
--	unsigned int nr_irqs;
-+	struct resource res;
-+	int err;
-+
-+	err =3D of_address_to_resource(np, index, &res);
-+	if (WARN_ON(err))
-+		goto fail;
-+
-+	if (WARN_ON(!request_mem_region(res.start, resource_size(&res), np->full_na=
-me))) {
-+		err =3D -EBUSY;
-+		goto fail;
-+	}
-+
-+	*base =3D ioremap(res.start, resource_size(&res));
-+	if (WARN_ON(!*base)) {
-+		err =3D -ENOMEM;
-+		goto fail;
-+	}
+-	for (int i =3D 0; i < nr_irqs; i++) {
++	for (unsigned int i =3D 0; i < nr_irqs; i++) {
+ 		irq_set_percpu_devid(virq + i);
+ 		irq_domain_set_info(d, virq + i, i, &mpic_ipi_irqchip, d->host_data,
+ 				    handle_percpu_devid_irq, NULL, NULL);
+@@ -451,7 +451,7 @@ static const struct irq_domain_ops mpic_ipi_domain_ops =
+=3D {
 =20
--	BUG_ON(of_address_to_resource(node, 0, &main_int_res));
--	BUG_ON(of_address_to_resource(node, 1, &per_cpu_int_res));
-+	if (phys_base)
-+		*phys_base =3D res.start;
+ static void mpic_ipi_resume(void)
+ {
+-	for (int i =3D 0; i < IPI_DOORBELL_END; i++) {
++	for (irq_hw_number_t i =3D 0; i < IPI_DOORBELL_END; i++) {
+ 		unsigned int virq =3D irq_find_mapping(mpic_ipi_domain, i);
+ 		struct irq_data *d;
 =20
--	BUG_ON(!request_mem_region(main_int_res.start,
--				   resource_size(&main_int_res),
--				   node->full_name));
--	BUG_ON(!request_mem_region(per_cpu_int_res.start,
--				   resource_size(&per_cpu_int_res),
--				   node->full_name));
-+	return 0;
-+
-+fail:
-+	pr_err("%pOF: Unable to map resource %d: %pE\n", np, index, ERR_PTR(err));
-+	return err;
-+}
-+
-+static int __init mpic_of_init(struct device_node *node, struct device_node =
-*parent)
-+{
-+	phys_addr_t phys_base;
-+	unsigned int nr_irqs;
-+	int err;
+@@ -497,7 +497,7 @@ static int mpic_set_affinity(struct irq_data *d, const st=
+ruct cpumask *mask_val,
 =20
--	main_int_base =3D ioremap(main_int_res.start,
--				resource_size(&main_int_res));
--	BUG_ON(!main_int_base);
-+	err =3D mpic_map_region(node, 0, &main_int_base, &phys_base);
-+	if (err)
-+		return err;
+ static void mpic_smp_cpu_init(void)
+ {
+-	for (int i =3D 0; i < mpic_domain->hwirq_max; i++)
++	for (irq_hw_number_t i =3D 0; i < mpic_domain->hwirq_max; i++)
+ 		writel(i, per_cpu_int_base + MPIC_INT_SET_MASK);
 =20
--	per_cpu_int_base =3D ioremap(per_cpu_int_res.start,
--				   resource_size(&per_cpu_int_res));
--	BUG_ON(!per_cpu_int_base);
-+	err =3D mpic_map_region(node, 1, &per_cpu_int_base, NULL);
-+	if (err)
-+		return err;
+ 	if (!mpic_is_ipi_available())
+@@ -516,7 +516,7 @@ static void mpic_smp_cpu_init(void)
+ static void mpic_reenable_percpu(void)
+ {
+ 	/* Re-enable per-CPU interrupts that were enabled before suspend */
+-	for (unsigned int i =3D 0; i < MPIC_MAX_PER_CPU_IRQS; i++) {
++	for (irq_hw_number_t i =3D 0; i < MPIC_MAX_PER_CPU_IRQS; i++) {
+ 		struct irq_data *data;
+ 		unsigned int virq;
+=20
+@@ -638,7 +638,8 @@ static inline void mpic_handle_ipi_irq(void) {}
+ static void mpic_handle_cascade_irq(struct irq_desc *desc)
+ {
+ 	struct irq_chip *chip =3D irq_desc_get_chip(desc);
+-	unsigned long irqmap, i, irqsrc, cpuid;
++	unsigned long irqmap, irqsrc, cpuid;
++	irq_hw_number_t i;
+=20
+ 	chained_irq_enter(chip, desc);
+=20
+@@ -667,7 +668,8 @@ static void mpic_handle_cascade_irq(struct irq_desc *desc)
+=20
+ static void __exception_irq_entry mpic_handle_irq(struct pt_regs *regs)
+ {
+-	u32 irqstat, i;
++	irq_hw_number_t i;
++	u32 irqstat;
+=20
+ 	do {
+ 		irqstat =3D readl_relaxed(per_cpu_int_base + MPIC_CPU_INTACK);
+@@ -782,7 +784,7 @@ static int __init mpic_of_init(struct device_node *node,
 =20
  	nr_irqs =3D FIELD_GET(MPIC_INT_CONTROL_NUMINT_MASK, readl(main_int_base + M=
 PIC_INT_CONTROL));
 =20
-@@ -794,7 +816,7 @@ static int __init mpic_of_init(struct device_node *node,
- 	mpic_perf_init();
- 	mpic_smp_cpu_init();
+-	for (int i =3D 0; i < nr_irqs; i++)
++	for (irq_hw_number_t i =3D 0; i < nr_irqs; i++)
+ 		writel(i, main_int_base + MPIC_INT_CLEAR_ENABLE);
 =20
--	mpic_msi_init(node, main_int_res.start);
-+	mpic_msi_init(node, phys_base);
-=20
- 	if (parent_irq <=3D 0) {
- 		irq_set_default_host(mpic_domain);
+ 	mpic_domain =3D irq_domain_add_linear(node, nr_irqs, &mpic_irq_ops, NULL);
 
