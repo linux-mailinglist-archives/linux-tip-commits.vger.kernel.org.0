@@ -1,76 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1850-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1851-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6185941356
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jul 2024 15:41:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D38941414
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jul 2024 16:15:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A10B9281BC2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jul 2024 13:41:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13E6D28505F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jul 2024 14:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4D119F471;
-	Tue, 30 Jul 2024 13:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819D71A2570;
+	Tue, 30 Jul 2024 14:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gJ8WTKbn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cxPeI2+S"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SoQXtSlW";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rpPWi47p"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75C0173;
-	Tue, 30 Jul 2024 13:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D064C1A2557;
+	Tue, 30 Jul 2024 14:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722346860; cv=none; b=SDKIHSfVpQD0t2aJnmPWmMs6oGH0BXVpZR6A0xgBtycTTHkHU+9svveu23n2CoGHrDtomCiKYtirF86nDmCyO37DFpXhiEtxuq6i+eRKwZ3IMcd1VjJgFKG2H1eL/bCXudRVnScab613X+jbRXYasrRI0K3IzmPy+FUZUAguTdI=
+	t=1722348915; cv=none; b=SEGAX1zi71ODg16fxDgbYvaRrEZllSGyxItYbSjuYOfIXCl35cqMMM3C1zD69zmp5vUc4kUEhGbK9r08Pm/i4VqCJ6y6OY8UASmLmHh/e3re66fd+WLUUV4m1H/Si5ejIsOiJlAaaj5sdKzARhtQrnTmN3l0oG2aPOvxmk9lC6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722346860; c=relaxed/simple;
-	bh=x7qpdl0e5YyHlbLOqRN6+fb9wGNZkZq+ps94HxHCYiQ=;
+	s=arc-20240116; t=1722348915; c=relaxed/simple;
+	bh=yy+oxtEW4u+u20UdrXubdUcftABR1xACyr6VHFjJ7U8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=jpBxACdiHd3MJdPbD97kCQXUx5DOVWI5f8KK9pPBnLx1XtQBA+0ZCtG2WTJUNFg0Ln7xUZmT9nLEhjTelSfxv93mFgo8nOyY4cJHAxIbAMkHwPrXCM4TzLaxYEobHNTOJZPmBEe9UdDEWGzoAHSzX6VpNUCR7WgsC0krLz9mw6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gJ8WTKbn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cxPeI2+S; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=YBcDOD6uKY8mp3T9LyHVrqDqBJHRs2tqf1GCPGQhrmtRuaEICx3/FbymI3seB2oMJuepz1GFpQgRXnzu3uwDeHx+QKsj+KcnvB5IpDJucRIAIWoukx2Zm75s86pVh60DZfFZB+64IVkzW989v3BLTK1TxkapfoiT4I+ag8EOknM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SoQXtSlW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rpPWi47p; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 30 Jul 2024 13:40:50 -0000
+Date: Tue, 30 Jul 2024 14:15:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722346851;
+	s=2020; t=1722348912;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7M16T0WsNEv+HhzF3ICWX//dVdt3puDnvJjCfIy/+xw=;
-	b=gJ8WTKbnqcpY0Cv7pykvKgGgBnFkAG4mTWgkQydjPgOJP5kMpQLL6Ysrx8LZx9UVjiUAy3
-	v/4/iJBDxMneNOqJ8Ck81wNUVW6UGeN5NgxwupFTwrBhLAzRXKWUl80W6PxDva2C1COy4u
-	+kbpknj2LSFbkfJdMwev4+LjCjaqXvp0pttKmr9holkg/UWe594j1e87ilet1YGxeGr0mk
-	VtZKv1LtqhadN7bB22dgL9yDlvfDfSm1dIDYJbbf3uzWgJmUQTjs58Ikkiu4+g7UZSzcG7
-	xagH9qtrYSJ2UXE7qrhX7F4uHMW34Iyjr90vszVmVz80b90mWBi2wcKWgo7row==
+	bh=CcVvlovwjFygt8fuDBZmiLOMnprgD31lbY9wn5d6qJM=;
+	b=SoQXtSlWpJDDIEdudzy/C8NZZjLO91Xea6gWac0yaqD+TyB6sjRDT7b6Wf89Q9/KbhK+9x
+	xbYe85flwL+kHsiyY6ghoPmKr+Zvd2FbEGYjCOtLA/IeA4DEWPRsA+yxydts7Wrz9sWE41
+	iMq1SJO1L5KZa5nu2aXeIFSMJo7Ml40J05137ncO6uy3rVcTdaYTx/55l3AuexcTYalr3Z
+	z4uMuA4XZ3xFAHa0IoqUhTWB6PEtIa+8u32nIfaBZErIvyRlFeWlundkvcmz5L+XQqSQSy
+	QntRgde9dLD7ZfsPR0t6hmuPZmgwqczNkp4yhXmWyo07nALQ+GsQzRkaArs8Fg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722346851;
+	s=2020e; t=1722348912;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7M16T0WsNEv+HhzF3ICWX//dVdt3puDnvJjCfIy/+xw=;
-	b=cxPeI2+S2dAp6WZGaYLxd4lswRAvY5pU9OBSKzJQlr89nnPo9S5F0U3NFvIa1LWdxmwT4w
-	i/hxg86eJVvNJcBw==
-From: "tip-bot2 for Perry Yuan" <tip-bot2@linutronix.de>
+	bh=CcVvlovwjFygt8fuDBZmiLOMnprgD31lbY9wn5d6qJM=;
+	b=rpPWi47pWfqomSe+7XeM7qElartDRCT3ClBION0P8pirk5a7cGQ22iXCxK8VQ4VO/U39jP
+	tr6l3APitnqaJACw==
+From: "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/CPU/AMD: Add models 0x60-0x6f to the Zen5 range
-Cc: Perry Yuan <perry.yuan@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240729064626.24297-1-bp@kernel.org>
-References: <20240729064626.24297-1-bp@kernel.org>
+Subject: [tip: x86/bugs] x86/bugs: Remove GDS Force Kconfig option
+Cc: Borislav Petkov <bp@alien8.de>, Breno Leitao <leitao@debian.org>,
+ Daniel Sneddon <daniel.sneddon@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240729164105.554296-11-leitao@debian.org>
+References: <20240729164105.554296-11-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172234685064.2215.13246228040614263668.tip-bot2@tip-bot2>
+Message-ID: <172234891192.2215.14873791038703677473.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,39 +79,83 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     bf5641eccf71bcd13a849930e190563c3a19815d
-Gitweb:        https://git.kernel.org/tip/bf5641eccf71bcd13a849930e190563c3a19815d
-Author:        Perry Yuan <perry.yuan@amd.com>
-AuthorDate:    Mon, 29 Jul 2024 08:46:26 +02:00
+Commit-ID:     03267a534bb388acdd2ee685101084d144e8384c
+Gitweb:        https://git.kernel.org/tip/03267a534bb388acdd2ee685101084d144e8384c
+Author:        Breno Leitao <leitao@debian.org>
+AuthorDate:    Mon, 29 Jul 2024 09:40:58 -07:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 30 Jul 2024 15:22:52 +02:00
+CommitterDate: Tue, 30 Jul 2024 14:53:15 +02:00
 
-x86/CPU/AMD: Add models 0x60-0x6f to the Zen5 range
+x86/bugs: Remove GDS Force Kconfig option
 
-Add some new Zen5 models for the 0x1A family.
+Remove the MITIGATION_GDS_FORCE Kconfig option, which aggressively disables
+AVX as a mitigation for Gather Data Sampling (GDS) vulnerabilities. This
+option is not widely used by distros.
 
-  [ bp: Merge the 0x60 and 0x70 ranges. ]
+While removing the Kconfig option, retain the runtime configuration ability
+through the `gather_data_sampling=force` kernel parameter. This allows users
+to still enable this aggressive mitigation if needed, without baking it into
+the kernel configuration.
 
-Signed-off-by: Perry Yuan <perry.yuan@amd.com>
+Simplify the kernel configuration while maintaining flexibility for runtime
+mitigation choices.
+
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240729064626.24297-1-bp@kernel.org
+Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Link: https://lore.kernel.org/r/20240729164105.554296-11-leitao@debian.org
 ---
- arch/x86/kernel/cpu/amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/Kconfig           | 19 -------------------
+ arch/x86/kernel/cpu/bugs.c |  4 ----
+ 2 files changed, 23 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index be5889b..1e0fe5f 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -462,7 +462,7 @@ static void bsp_init_amd(struct cpuinfo_x86 *c)
- 		switch (c->x86_model) {
- 		case 0x00 ... 0x2f:
- 		case 0x40 ... 0x4f:
--		case 0x70 ... 0x7f:
-+		case 0x60 ... 0x7f:
- 			setup_force_cpu_cap(X86_FEATURE_ZEN5);
- 			break;
- 		default:
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2e72a07..ab5b210 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2610,25 +2610,6 @@ config MITIGATION_SLS
+ 	  against straight line speculation. The kernel image might be slightly
+ 	  larger.
+ 
+-config MITIGATION_GDS_FORCE
+-	bool "Force GDS Mitigation"
+-	depends on CPU_SUP_INTEL
+-	default n
+-	help
+-	  Gather Data Sampling (GDS) is a hardware vulnerability which allows
+-	  unprivileged speculative access to data which was previously stored in
+-	  vector registers.
+-
+-	  This option is equivalent to setting gather_data_sampling=force on the
+-	  command line. The microcode mitigation is used if present, otherwise
+-	  AVX is disabled as a mitigation. On affected systems that are missing
+-	  the microcode any userspace code that unconditionally uses AVX will
+-	  break with this option set.
+-
+-	  Setting this option on systems not vulnerable to GDS has no effect.
+-
+-	  If in doubt, say N.
+-
+ config MITIGATION_RFDS
+ 	bool "RFDS Mitigation"
+ 	depends on CPU_SUP_INTEL
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index a7f20ae..b2e752e 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -735,11 +735,7 @@ enum gds_mitigations {
+ 	GDS_MITIGATION_HYPERVISOR,
+ };
+ 
+-#if IS_ENABLED(CONFIG_MITIGATION_GDS_FORCE)
+-static enum gds_mitigations gds_mitigation __ro_after_init = GDS_MITIGATION_FORCE;
+-#else
+ static enum gds_mitigations gds_mitigation __ro_after_init = GDS_MITIGATION_FULL;
+-#endif
+ 
+ static const char * const gds_strings[] = {
+ 	[GDS_MITIGATION_OFF]		= "Vulnerable",
 
