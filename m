@@ -1,117 +1,96 @@
-Return-Path: <linux-tip-commits+bounces-1816-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1817-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED17940B39
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jul 2024 10:24:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901FE940BB3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jul 2024 10:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC67A1F237E4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jul 2024 08:24:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0FC81C22D03
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Jul 2024 08:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1051418FDA2;
-	Tue, 30 Jul 2024 08:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDE3194A56;
+	Tue, 30 Jul 2024 08:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ShivCfQm";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZQdrai36"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="OiEQeyQh"
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FA781ACA;
-	Tue, 30 Jul 2024 08:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285531922E9;
+	Tue, 30 Jul 2024 08:28:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722327884; cv=none; b=Oncs+mb/FheeprAlJbeAjwMAUaf0i2VDYfI3sa/u+wzUhclWpf69OFKDs36zIO5UGH7qInI4cX0UxAJ5ThxL7mlgxyvqzQa5meSvqvROanHOSdaOVLvPc/7xJgDmJ9lMX2NoJ5PxtP94arcdVHIYChr8yTCb33Hhgn+Svs48ZBE=
+	t=1722328101; cv=none; b=ahkzhcThHCG8M2ISOndQjAo3N8i8ATxIdLr2bRoNQgAaou8wU5lfM9bijLoFmXaTdZO7ygdv7smAcVxAfJuz9TmlIWb+Yek7ieLxrwgE3nnu0vA2LXIDqxMzzl89/z/lmFy84+BAPxXhQ8mcbso6ls04BG/VL26rHjYwL8DCAac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722327884; c=relaxed/simple;
-	bh=vh73RcD0dsNWX94i6wyPtIRpKHmSi5iNja2wPXOs5KU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=GGfCGsl3XXM34YtZKnfut2BdBnjHHCl9lXNDwzQN3ogp3I4aUTyqMMAbPqe+Nd5Gl43jB+jzY6M3sEZMlnaPg/jKqIawREPO8TBs2Eqdb84olowZ4eMYxrWCWkBrbM8ScfFzdmRB7QXO6CpHac4VZRWyy5oHCVmhH9dyolDUwQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ShivCfQm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZQdrai36; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 30 Jul 2024 08:24:39 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722327879;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=26p0U864dvAEsXPQ0l7lbm6kMNWa/GxO5A5ANvx9yaU=;
-	b=ShivCfQmqgBemucj2ONlrHTSLQKObBAV2k/KT1UXNcE0KBJepWtq+3v2XddUUFBb6lGtde
-	zPYR4KoSODh2/9h+1maKZiFQHPn7MLthRGnYcx9MxiBbteXPHp71q4j2dYhymeDjNEAXqQ
-	m+0s0UvfcRO6UrjDSX+DB5JIcSLlzFZTfMA6s3XXaFbG1PkBGy4W5CSS50wv0ANcafJd6O
-	e2Cry6ePJhOdu/87DxeNKb3OGaRk4HCAEt1FYDz+zgFHZLiwiYqkWM+RBW+doPh/6DWFDX
-	OMjZzYDaakm+7veiaxuTNGt/PzQy7xhqotXkjq9V9/DIzi6D+xnCdGmD5i/AOw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722327879;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=26p0U864dvAEsXPQ0l7lbm6kMNWa/GxO5A5ANvx9yaU=;
-	b=ZQdrai36/QCqsGzKdITqGnht4wTIpBHtakvU128PYEtuHgNiBy2vak3wmW03/tNmliB2J3
-	POjPkqiD4+pGRAAQ==
-From: "tip-bot2 for Pavan Kumar Paluri" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev: Fix __reserved field in sev_config
-Cc: Pavan Kumar Paluri <papaluri@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240729180808.366587-1-papaluri@amd.com>
-References: <20240729180808.366587-1-papaluri@amd.com>
+	s=arc-20240116; t=1722328101; c=relaxed/simple;
+	bh=4HzJuTP5aFQF0KMhr5FjOiAIlUo60YDaBpLnZ2+8RqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cAs0d5vfg2ZGifeWAuQATY4W6iQA4rdKUvKPmsXnUplY2r1Bq6jlNWqVBaZffwZkl1YxpPMQ2fZS4t4OIgUjQQcF0+sbmZvw1XoE0gIcGXXK2a739RXLdpkEP+kdB4qoA64u+9heGHdSrhKR0/81efgiSWHz4IF2xV154vux+OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=OiEQeyQh; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lbYXlDHdZgKuGNHD6Ao+K+LGPDxTFA26PTvGzDVHnLc=; b=OiEQeyQh5EITXuJN4Y1i/kwrOH
+	WE86E4kN599FlPAZfhVE7Z8nVn2+cs/m70D9h9O4PgILXQr3DvdjsC9giI7bTiMGln4mMsIkh5uc7
+	oq2yjwK+bdCj8Ju3o/MecfH16Mf8tcKyHlU/sFSqp5pG+N5H7xLY4yGGQFZUydGYo0zcr6BMPDC6q
+	zhXSQevm7lf8DhJ0Bqm932K+DLcjRzPSuDB4OZ4v9kOWdHSn+H9sYAJch14NwatDDLao9oW8IpWpc
+	eGntPIYku+561+dlejra6qSpUOacCAG9KlY9pMz+HlgPXMeWxy5EaTkYIJmeiPa+sSLm7LVNMsZKR
+	Plv4puTQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sYiDP-00000004wjS-45PM;
+	Tue, 30 Jul 2024 08:28:16 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 19B143003EA; Tue, 30 Jul 2024 10:28:15 +0200 (CEST)
+Date: Tue, 30 Jul 2024 10:28:15 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+Cc: linux-tip-commits@vger.kernel.org, Zhang Qiao <zhangqiao22@huawei.com>,
+	x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [tip: sched/core] sched: Initialize the vruntime of a new task
+ when it is first enqueued
+Message-ID: <20240730082815.GG33588@noisy.programming.kicks-ass.net>
+References: <20240627133359.1370598-1-zhangqiao22@huawei.com>
+ <172224924797.2215.1886433124274814892.tip-bot2@tip-bot2>
+ <srdvb6k4evy2dpczpzovbfb4afehbrmroutlsmids33r357azi@znkbcphlfuab>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172232787903.2215.4743307326689102334.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <srdvb6k4evy2dpczpzovbfb4afehbrmroutlsmids33r357azi@znkbcphlfuab>
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Tue, Jul 30, 2024 at 01:45:41PM +0530, Mukesh Kumar Chaurasiya wrote:
+> 
+> On Mon, Jul 29, 2024 at 10:34:07AM GMT, tip-bot2 for Zhang Qiao wrote:
+> > The following commit has been merged into the sched/core branch of tip:
+> > 
+> > Commit-ID:     c40dd90ac045fa1fdf6acc5bf9109a2315e6c92c
+> > Gitweb:        https://git.kernel.org/tip/c40dd90ac045fa1fdf6acc5bf9109a2315e6c92c
+> > Author:        Zhang Qiao <zhangqiao22@huawei.com>
+> > AuthorDate:    Thu, 27 Jun 2024 21:33:59 +08:00
+> > Committer:     Peter Zijlstra <peterz@infradead.org>
+> > CommitterDate: Mon, 29 Jul 2024 12:22:34 +02:00
+> > 
+> > 
+> > Signed-off-by: Zhang Qiao <zhangqiao22@huawei.com>
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Link: https://lkml.kernel.org/r/20240627133359.1370598-1-zhangqiao22@huawei.com
+> > ---
+> Hi Peter,
+> 
+> I just noticed that my tags were not picked, just wanted to check if it's some
+> config issue on my end or something on the tipbot side.
 
-Commit-ID:     c14e4114582c20276467226387d5bae7310a849e
-Gitweb:        https://git.kernel.org/tip/c14e4114582c20276467226387d5bae7310a849e
-Author:        Pavan Kumar Paluri <papaluri@amd.com>
-AuthorDate:    Mon, 29 Jul 2024 13:08:08 -05:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 30 Jul 2024 10:07:26 +02:00
+Could be I applied the patch before your email arrived. No harm
+intended, and I do appreciate the review effort.
 
-x86/sev: Fix __reserved field in sev_config
 
-sev_config currently has debug, ghcbs_initialized, and use_cas fields.
-However, __reserved count has not been updated. Fix this.
-
-Fixes: 34ff65901735 ("x86/sev: Use kernel provided SVSM Calling Areas")
-Signed-off-by: Pavan Kumar Paluri <papaluri@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240729180808.366587-1-papaluri@amd.com
----
- arch/x86/coco/sev/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 082d61d..de1df0c 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -163,7 +163,7 @@ struct sev_config {
- 	       */
- 	      use_cas		: 1,
- 
--	      __reserved	: 62;
-+	      __reserved	: 61;
- };
- 
- static struct sev_config sev_cfg __read_mostly;
 
