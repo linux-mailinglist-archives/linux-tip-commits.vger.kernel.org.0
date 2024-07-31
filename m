@@ -1,93 +1,185 @@
-Return-Path: <linux-tip-commits+bounces-1895-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1896-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89F7942FEE
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jul 2024 15:18:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57416943650
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jul 2024 21:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E79221C21B7C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jul 2024 13:18:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBA2E1F217D3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jul 2024 19:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B6B1AD9ED;
-	Wed, 31 Jul 2024 13:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A6E61FDF;
+	Wed, 31 Jul 2024 19:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="SCQXD0oq"
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779602233B;
-	Wed, 31 Jul 2024 13:18:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hKszDlCm";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2JKTNFnr"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294531396;
+	Wed, 31 Jul 2024 19:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722431902; cv=none; b=hMmEkrv7vUCVjXlq7+hM8bFvIga3M86HCqa5aORir/rVRlKGPvn0mWjf9PVmIM/BkAvBJq0p43QA9zOdYCq/b09Ij9ANA1XX8wxWmodGMBM++XvQzOxh9tBLMxpVz16nQizwcwhlqLVjSDNOwKgpOE+2d4FT7zyTpI3RxFLu20w=
+	t=1722453443; cv=none; b=rMK0CpB0OjMi7vOC5wkIFvvqT3YtFkZhrEv4pY9RuGqnBQ4KmTkHXn0WcA9DIxnAKkK9yJktlvuf3j3u8nUrl3osPTabiq8SWasVK/f2BmccqgbtQO96zhQuadt3n9GVhNy/ct8dwXp8UmaD1ePjJIe3h9UPh7BZwAlt0R+77Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722431902; c=relaxed/simple;
-	bh=husdTM7PKO9t72lLNKWMpa6W0Nj1EtYooEUWNFkg5P4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=mJ9gmPxuyWLPSxuaZSI9clCHDRM8JM4z+TZdnsYZ/SsmbHHsFaxoROursr8Vw4SgNokLUt55EdCfyIurjuBKce+irig6h2fHSVAN+H4Hw4f4SPQCPJXNyFoGKhx1wab3ipLdt4SSGO86ztd/UPJAI+PETpYeMZCqzJELapOwHrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=SCQXD0oq reason="signature verification failed"; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=W4BMaOM6JkyCMCqVxDTv6fLeC3/kYcRs6C/Sr9njQ7Q=; b=S
-	CQXD0oqFy5C+VTHBVimYytJrsceK1PTZg22b8aP0grv8Ses4fegPLrRBfLamrNsv
-	iU167MoiVF3XVSSWo8kMgVYutcwrMJKqiaagd2WUKkPL/0QjIHIV+Xezol2StAcv
-	yUfMXXU0P0guskTp8ORi45xmHn59hT1iRw7r4nYzAI=
-Received: from 00107082$163.com ( [111.35.189.52] ) by
- ajax-webmail-wmsvr-40-124 (Coremail) ; Wed, 31 Jul 2024 21:17:35 +0800
- (CST)
-Date: Wed, 31 Jul 2024 21:17:35 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Thomas Gleixner" <tglx@linutronix.de>
-Cc: liaoyu15@huawei.com, linux-kernel@vger.kernel.org, 
-	linux-tip-commits@vger.kernel.org, stable@vger.kernel.org, 
-	x86@kernel.org
-Subject: Re: [Regression] 6.11.0-rc1: BUG: using smp_processor_id() in
- preemptible when suspend the system
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2024 www.mailtech.cn 163com
-In-Reply-To: <87ikwm7waq.ffs@tglx>
-References: <20240730142557.4619-1-00107082@163.com> <87ikwm7waq.ffs@tglx>
-X-NTES-SC: AL_Qu2ZAPiYvkAu4ySaZ+kXn0oTju85XMCzuv8j3YJeN500kyTh9x0ZWlBJE1/m4tiCFCemnze0QglT2ul3bbRWZq4YsKQOVLysmbDjL8r4LpF+
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1722453443; c=relaxed/simple;
+	bh=nqj64kAThfczR9bdWhrT4KStOx4CZ+UF7F5m/XfLIIk=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=mgRDC9foCucokoJT05fMj3D/uh+LU8nain2Hmftsa2nkszEkSkCq3s9nAmiaO2MYeEt3b6YNVwHI343XXO5N0VC0SkrapHiPmG/tt5lZxVWI1/eXkfOTxgtiewU2yITpxkOthofmmCD2nmjinsMaq0ggp4rsNJzoAgBc8OJ/YMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hKszDlCm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2JKTNFnr; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 31 Jul 2024 19:17:18 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1722453439;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b6GS5RHz/pZ7rgdQqcinf2PakNtwOpSWpViqa7VEnqE=;
+	b=hKszDlCmgQYg/hQLEwhLWLrjJb5bG8y4SYCdMXuB+vJhi4qDGRoATJTS7feQbTx5WelcHN
+	UFkJ3kw6Ez5nivnQoGCrA1D+TGAuN0dZsaSF8l6iHb74K0DQizDcFRvL2RICTItNOSRYjW
+	TrGsTcqSfsJaU0YHaeEvSOOn3SKk4JaX4x733itRpxMQeEo3RgvpQh/2N+j+0jhw+eIsZc
+	e8SFPr3vW9in+GlD1mj3qrD0yNAv0IbBEX95LzJOIgSPlahh2tyH9fy7tavUP7nu6Qlzh6
+	dtzhp6EhDXrGe7YxclPSR5fcqHnWC8jPCEqpymb8ZJx+rO9tTLHnuSu2fyExEw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1722453439;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b6GS5RHz/pZ7rgdQqcinf2PakNtwOpSWpViqa7VEnqE=;
+	b=2JKTNFnr8hqL9ykuxB8EPDZ1Gz4EcuCZeu6/zFnkgg2gMyGsWGiVef9QNq4nPhEndM4wO+
+	iRSxyMK3cvB1XMAg==
+From: "tip-bot2 for Feng Tang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/timers] x86/tsc: Use topology_max_packages() to get package number
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Feng Tang <feng.tang@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Waiman Long <longman@redhat.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240729021202.180955-1-feng.tang@intel.com>
+References: <20240729021202.180955-1-feng.tang@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <460216e0.a699.19108f05b46.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:_____wDXvzhwOapmzpxEAA--.64302W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/1tbiqRctqmVOB4ulsQAEsO
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Message-ID: <172245343893.2215.4640869699276515381.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-SGksIAoKQXQgMjAyNC0wNy0zMCAyMzowNzo0MSwgIlRob21hcyBHbGVpeG5lciIgPHRnbHhAbGlu
-dXRyb25peC5kZT4gd3JvdGU6Cj5PbiBUdWUsIEp1bCAzMCAyMDI0IGF0IDIyOjI1LCBEYXZpZCBX
-YW5nIHdyb3RlOgo+PiBXaGVuIEkgc3VzcGVuZCBteSBzeXN0ZW0sIHZpYSBgc3lzdGVtY3RsIHN1
-c3BlbmRgLCBrZXJuZWwgQlVHIHNob3dzIHVwIGluIGxvZzoKPj4KPj4gIGtlcm5lbDogWyAxNzM0
-LjQxMjk3NF0gc21wYm9vdDogQ1BVIDIgaXMgbm93IG9mZmxpbmUKPj4gIGtlcm5lbDogWyAxNzM0
-LjQxNDk1Ml0gQlVHOiB1c2luZyBzbXBfcHJvY2Vzc29yX2lkKCkgaW4gcHJlZW1wdGlibGUgWzAw
-MDAwMDAwXSBjb2RlOiBzeXN0ZW1kLXNsZWVwLzQ2MTkKPj4gIGtlcm5lbDogWyAxNzM0LjQxNDk1
-N10gY2FsbGVyIGlzIGhvdHBsdWdfY3B1X19icm9hZGNhc3RfdGlja19wdWxsKzB4MWMvMHhjMAo+
-Cj5UaGUgYmVsb3cgc2hvdWxkIGZpeCB0aGF0Lgo+Cj5UaGFua3MsCgpJIHRob3VnaHQgdGhlIG9m
-ZmVuZGluZyBsaW5lIHdhcyBzbXBfcHJvY2Vzc29yX2lkKCkgdXNlZCBmb3IgY3B1bWFza19jbGVh
-cl9jcHUsIHNvIGNvbmZ1c2VkIGJ5IHRoaXMgcGF0Y2guLi4uIG5ldmVyIG1pbmQKClNvcnJ5IGZv
-ciB0aGUgZGVsYXksIEkgYXBwbGllZCB0aGUgcGF0Y2ggYW5kIGl0IGRvc2UgZml4IHRoZSBpc3N1
-ZS4KCkZZSQpEYXZpZCAKCj4KPiAgICAgICAgdGdseAo+LS0tCj4tLS0gYS9rZXJuZWwvdGltZS90
-aWNrLWJyb2FkY2FzdC5jCj4rKysgYi9rZXJuZWwvdGltZS90aWNrLWJyb2FkY2FzdC5jCj5AQCAt
-MTE0MSw3ICsxMTQxLDYgQEAgdm9pZCB0aWNrX2Jyb2FkY2FzdF9zd2l0Y2hfdG9fb25lc2hvdCh2
-bwo+ICNpZmRlZiBDT05GSUdfSE9UUExVR19DUFUKPiB2b2lkIGhvdHBsdWdfY3B1X19icm9hZGNh
-c3RfdGlja19wdWxsKGludCBkZWFkY3B1KQo+IHsKPi0Jc3RydWN0IHRpY2tfZGV2aWNlICp0ZCA9
-IHRoaXNfY3B1X3B0cigmdGlja19jcHVfZGV2aWNlKTsKPiAJc3RydWN0IGNsb2NrX2V2ZW50X2Rl
-dmljZSAqYmM7Cj4gCXVuc2lnbmVkIGxvbmcgZmxhZ3M7Cj4gCj5AQCAtMTE2Nyw2ICsxMTY2LDgg
-QEAgdm9pZCBob3RwbHVnX2NwdV9fYnJvYWRjYXN0X3RpY2tfcHVsbChpbgo+IAkJICogZGV2aWNl
-IHRvIGF2b2lkIHRoZSBzdGFydmF0aW9uLgo+IAkJICovCj4gCQlpZiAodGlja19jaGVja19icm9h
-ZGNhc3RfZXhwaXJlZCgpKSB7Cj4rCQkJc3RydWN0IHRpY2tfZGV2aWNlICp0ZCA9IHRoaXNfY3B1
-X3B0cigmdGlja19jcHVfZGV2aWNlKTsKPisKPiAJCQljcHVtYXNrX2NsZWFyX2NwdShzbXBfcHJv
-Y2Vzc29yX2lkKCksIHRpY2tfYnJvYWRjYXN0X2ZvcmNlX21hc2spOwo+IAkJCXRpY2tfcHJvZ3Jh
-bV9ldmVudCh0ZC0+ZXZ0ZGV2LT5uZXh0X2V2ZW50LCAxKTsKPiAJCX0K
+The following commit has been merged into the x86/timers branch of tip:
+
+Commit-ID:     b4bac279319d3082eb42f074799c7b18ba528c71
+Gitweb:        https://git.kernel.org/tip/b4bac279319d3082eb42f074799c7b18ba528c71
+Author:        Feng Tang <feng.tang@intel.com>
+AuthorDate:    Mon, 29 Jul 2024 10:12:02 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 31 Jul 2024 21:12:09 +02:00
+
+x86/tsc: Use topology_max_packages() to get package number
+
+Commit b50db7095fe0 ("x86/tsc: Disable clocksource watchdog for TSC on
+qualified platorms") was introduced to solve problem that sometimes TSC
+clocksource is wrongly judged as unstable by watchdog like 'jiffies', HPET,
+etc.
+
+In it, the hardware package number is a key factor for judging whether to
+disable the watchdog for TSC, and 'nr_online_nodes' was chosen due to, at
+that time (kernel v5.1x), it is available in early boot phase before
+registering 'tsc-early' clocksource, where all non-boot CPUs are not
+brought up yet.
+
+Dave and Rui pointed out there are many cases in which 'nr_online_nodes'
+is cheated and not accurate, like:
+
+ * SNC (sub-numa cluster) mode enabled
+ * numa emulation (numa=fake=8 etc.)
+ * numa=off
+ * platforms with CPU-less HBM nodes, CPU-less Optane memory nodes.
+ * 'maxcpus=' cmdline setup, where chopped CPUs could be onlined later
+ * 'nr_cpus=', 'possible_cpus=' cmdline setup, where chopped CPUs can
+   not be onlined after boot
+
+The SNC case is the most user-visible case, as many CSP (Cloud Service
+Provider) enable this feature in their server fleets. When SNC3 enabled, a
+2 socket machine will appear to have 6 NUMA nodes, and get impacted by the
+issue in reality.
+
+Thomas' recent patchset of refactoring x86 topology code improves
+topology_max_packages() greatly, by making it more accurate and available
+in early boot phase, which works well in most of the above cases.
+
+The only exceptions are 'nr_cpus=' and 'possible_cpus=' setup, which may
+under-estimate the package number. As during topology setup, the boot CPU
+iterates through all enumerated APIC IDs and either accepts or rejects the
+APIC ID. For accepted IDs, it figures out which bits of the ID map to the
+package number.  It tracks which package numbers have been seen in a
+bitmap.  topology_max_packages() just returns the number of bits set in
+that bitmap.
+
+'nr_cpus=' and 'possible_cpus=' can cause more APIC IDs to be rejected and
+can artificially lower the number of bits in the package bitmap and thus
+topology_max_packages().  This means that, for example, a system with 8
+physical packages might reject all the CPUs on 6 of those packages and be
+left with only 2 packages and 2 bits set in the package bitmap. It needs
+the TSC watchdog, but would disable it anyway.  This isn't ideal, but it
+only happens for debug-oriented options. This is fixable by tracking the
+package numbers for rejected CPUs.  But it's not worth the trouble for
+debugging.
+
+So use topology_max_packages() to replace nr_online_nodes().
+
+Reported-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Feng Tang <feng.tang@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/all/20240729021202.180955-1-feng.tang@intel.com
+Closes: https://lore.kernel.org/lkml/a4860054-0f16-6513-f121-501048431086@intel.com/
+---
+ arch/x86/kernel/tsc.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+index d4462fb..0ced187 100644
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -28,6 +28,7 @@
+ #include <asm/apic.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/i8259.h>
++#include <asm/topology.h>
+ #include <asm/uv/uv.h>
+ 
+ unsigned int __read_mostly cpu_khz;	/* TSC clocks / usec, not used here */
+@@ -1253,15 +1254,12 @@ static void __init check_system_tsc_reliable(void)
+ 	 *  - TSC which does not stop in C-States
+ 	 *  - the TSC_ADJUST register which allows to detect even minimal
+ 	 *    modifications
+-	 *  - not more than two sockets. As the number of sockets cannot be
+-	 *    evaluated at the early boot stage where this has to be
+-	 *    invoked, check the number of online memory nodes as a
+-	 *    fallback solution which is an reasonable estimate.
++	 *  - not more than four packages
+ 	 */
+ 	if (boot_cpu_has(X86_FEATURE_CONSTANT_TSC) &&
+ 	    boot_cpu_has(X86_FEATURE_NONSTOP_TSC) &&
+ 	    boot_cpu_has(X86_FEATURE_TSC_ADJUST) &&
+-	    nr_online_nodes <= 4)
++	    topology_max_packages() <= 4)
+ 		tsc_disable_clocksource_watchdog();
+ }
+ 
 
