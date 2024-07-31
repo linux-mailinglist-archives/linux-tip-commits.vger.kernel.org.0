@@ -1,73 +1,95 @@
-Return-Path: <linux-tip-commits+bounces-1891-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1892-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023C3942BDD
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jul 2024 12:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C860D942C35
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jul 2024 12:42:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F2CF1F24CD3
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jul 2024 10:23:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6B41F27712
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 31 Jul 2024 10:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840571A7F9B;
-	Wed, 31 Jul 2024 10:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10EC1A7F70;
+	Wed, 31 Jul 2024 10:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TOGYzi17";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MevkQt1e"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="koN49hfT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Bn6l+77Y"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5C51A8BE1;
-	Wed, 31 Jul 2024 10:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A67916D4CB;
+	Wed, 31 Jul 2024 10:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722421435; cv=none; b=LZ0GzeGgvOSJfnmo2XVppAFrDCFKrgpYNfBdOPpNLREwa7qWpQW3+W4+a6gIeP5sKXtYiTvLZ13aprYGNhujzNauwseuuzm2dTE9lb8yXaBlLvjrfuTVxMMjILlRaKuyDp7rDw1iDOuZgtRKKPIJivPJltdIgk+yvPWML6qQnGk=
+	t=1722422526; cv=none; b=mpgR8ouOwAZsPyCv4euTVuoID6cT76ASh1ykud5TuI5Oa4z50mPKRd3sBtX9tfGtLfMNtCGgPgFqmvFzhy4Tn66z9dLuY3EBlH2it6hvswwWVsaTNgDlgV1J+NhtdL4f4nXbTzWi0MwHFhXkGtRFPjWGetR/uMbifEM8U0cTEYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722421435; c=relaxed/simple;
-	bh=oGEfHtD0ToV1+zuUa0mS21L7o66T5vc+gxcW+bLl6Ho=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TArbKL1jUWLF26zmYol+l6+tX5FM6WkgXWfh48ErjSQQ2umkz2QbFn9KbwmLMyDVNnXPcsmEVrxNn3TER1c6jo4DOWFA0AIZ0/0l+aWf08QDNk9UuJBe68xk1WxItl/nHBuDSZA/P2LgU6tY3Azn8ZOpYO8r4FiVch2hOQlVHhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TOGYzi17; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MevkQt1e; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1722422526; c=relaxed/simple;
+	bh=c1PZJWTnZ77sIhB6Q/PuYa0ol3vZjIlc5O0OR+alf90=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=KtR/RlqKVDpZ5+tQW3cJ3e+MQZC/zJHo+gYLVnT9y6M/YKSEqayy8UGqCTDcss9R/lcx5zHkVPWWSglcLDDCjSDdgSO/kIs/UyPNwrfa0OftfOOfF4hsI6dFFR5ix/gUjKYyeOAw1Gd7sgift2/8j4W+NXxhc8JkWDTcefYoMXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=koN49hfT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Bn6l+77Y; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
+Date: Wed, 31 Jul 2024 10:42:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722421431;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=2020; t=1722422523;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/BwLAahx4o9JQsvQ7g49tHiHUz9DIP+4aiCErtBm2/o=;
-	b=TOGYzi17BaFYdy9jT+gZ24ydT+vkrVc3gkXxkabf67GWmBQBbO0o2D1Yy5YK2G+4cwnv/u
-	9/WUr/YDuTAqGL3G/4EmEXm7iGWRusdMuV9sToafLgliy2ao9lWQ8tAymSuli/e90LUt1x
-	R4cdjV+ipRwya7CxPwFz60ULgDk9F1AjGuFrot2vUUcG50fTGGLPRxcc4+Tp0FIh+g0sEF
-	MltIl0TS3mkV+HfC9ht6Ot8VeTFj9k7wnbNwe0dz4lq3GFgSDe+Fwbja1BzIgLvtCRAP95
-	Ru8GxFKsZ4AoV7snOwvOs73q3uu8IrHuL1dZVRoR4HZQlNWqgGM+Ojc1URNGBA==
+	bh=4xsLdUGOkXdnQjiuDxXU6QaiwEFqtg7nmTnt54WPI64=;
+	b=koN49hfTZoAcWLH2L3t3CUJMOONhPHfQbpvwIaebqzJDh0zNBK19YBf748KQSK42JBYy8n
+	3+Cg0hW5as/yTmjR85DG5T1i67fZvosMaIP/EhWsQY5D+2ew5hWcrPnBI4LJxLMeXjPQSK
+	zChsEx37IoAJEqO3kID3IjlYy7O818MpFjDXVqJybBfOhEe7oVSY6ub1tjQzNu6N4yL1rz
+	uPdnAPVOmK0dKL4FZssM7rbQkc725hPF9ZPTER8qvOkhi5Ojp/9oohbsZtuEhPZx4JdooI
+	2ntSicEqTIcg1vJ2ZtlKlh0uYmAQRpx0VsDOoCw1xg8FNh1UxrPDwX7low/ecw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722421431;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=2020e; t=1722422523;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/BwLAahx4o9JQsvQ7g49tHiHUz9DIP+4aiCErtBm2/o=;
-	b=MevkQt1eG/uoOqgz3l2TkoKsoWublOvamjLpe9TO2PZnLOm5nW6VcmVz7Hoq8dGOtIsW4S
-	0KSvt/mKIUk5+WDQ==
-To: David Wang <00107082@163.com>, liaoyu15@huawei.com
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
- stable@vger.kernel.org, x86@kernel.org, Frederic Weisbecker
- <frederic@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>
-Subject: [PATCH] tick/broadcast: Move per CPU pointer access into the atomic
- section
-In-Reply-To: <20240730142557.4619-1-00107082@163.com>
-References: <20240730142557.4619-1-00107082@163.com>
-Date: Wed, 31 Jul 2024 12:23:51 +0200
-Message-ID: <87ttg56ers.ffs@tglx>
+	bh=4xsLdUGOkXdnQjiuDxXU6QaiwEFqtg7nmTnt54WPI64=;
+	b=Bn6l+77YApqoK1b5OnItdksiN8vEx0/TbZeolFY+z8/YC9yiZNpkkfYDRm2LF79u0aRq+f
+	Z6JgTiZUWtpH28CA==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] tick/broadcast: Move per CPU pointer access into
+ the atomic section
+Cc: David Wang <00107082@163.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Yu Liao <liaoyu15@huawei.com>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <87ttg56ers.ffs@tglx>
+References: <87ttg56ers.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <172242252292.2215.8458613461295137284.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+The following commit has been merged into the timers/urgent branch of tip:
+
+Commit-ID:     6881e75237a84093d0986f56223db3724619f26e
+Gitweb:        https://git.kernel.org/tip/6881e75237a84093d0986f56223db3724619f26e
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 31 Jul 2024 12:23:51 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 31 Jul 2024 12:37:43 +02:00
+
+tick/broadcast: Move per CPU pointer access into the atomic section
 
 The recent fix for making the take over of the broadcast timer more
 reliable retrieves a per CPU pointer in preemptible context.
@@ -85,14 +107,18 @@ Move it to the actual usage site which is in a non-preemptible region.
 Fixes: f7d43dd206e7 ("tick/broadcast: Make takeover of broadcast hrtimer reliable")
 Reported-by: David Wang <00107082@163.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Yu Liao <liaoyu15@huawei.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/87ttg56ers.ffs@tglx
 ---
- kernel/time/tick-broadcast.c |    3 ++-
+ kernel/time/tick-broadcast.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
+index b484309..ed58eeb 100644
 --- a/kernel/time/tick-broadcast.c
 +++ b/kernel/time/tick-broadcast.c
-@@ -1141,7 +1141,6 @@ void tick_broadcast_switch_to_oneshot(vo
+@@ -1141,7 +1141,6 @@ void tick_broadcast_switch_to_oneshot(void)
  #ifdef CONFIG_HOTPLUG_CPU
  void hotplug_cpu__broadcast_tick_pull(int deadcpu)
  {
@@ -100,7 +126,7 @@ Cc: stable@vger.kernel.org
  	struct clock_event_device *bc;
  	unsigned long flags;
  
-@@ -1167,6 +1166,8 @@ void hotplug_cpu__broadcast_tick_pull(in
+@@ -1167,6 +1166,8 @@ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
  		 * device to avoid the starvation.
  		 */
  		if (tick_check_broadcast_expired()) {
