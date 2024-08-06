@@ -1,75 +1,75 @@
-Return-Path: <linux-tip-commits+bounces-1960-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1961-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2EF94980E
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Aug 2024 21:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E80B89498E3
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Aug 2024 22:16:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DBBC1F227DA
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Aug 2024 19:13:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A9BE1F2282E
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 Aug 2024 20:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141BE80025;
-	Tue,  6 Aug 2024 19:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DD778C8B;
+	Tue,  6 Aug 2024 20:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WHeuTKds"
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bvHJPP+S"
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDB14F8A0;
-	Tue,  6 Aug 2024 19:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABCC18D640;
+	Tue,  6 Aug 2024 20:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722971579; cv=none; b=W0pvSKQ1MN40lkNBcjQ1MNvu0WK6EATnbWEo2uVUpFZ5dsWm36nCNpRYMi0k+80sPvE4otuIgEh9Zv38ZNt+Ta4ymJGauhIH+quhuLEgme7YAeqORUjdtlXBwoRKqZ3p3PqNGciUsILxK+Grm96KkzzRIitpCeVm0/IH0BEiHDo=
+	t=1722975387; cv=none; b=GVCc3uBwdFYV/7HCENfSUFDBN5xg+eVixMXHcrUIxMIQHVLS1jvVgaasMzknD9WL/QN2mUgRDWCBOu1nVMrkeyvXEtS0l2IKpeGW5VZgDLElhFyTrxf4nV+QEi974oTxc/HkMewH3H0srMvWdxEITu2rdBileTNLw0jvp4QGAm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722971579; c=relaxed/simple;
-	bh=BlAnemvgMkABYr5n2Ue8ZbYrRjHPz//OjA8YUzffgu0=;
+	s=arc-20240116; t=1722975387; c=relaxed/simple;
+	bh=CmfzcAO0bDjMTGOtzAZt8IWk+a9YKV3azJolajiUZ/Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FOJIIzv6Bu+tQ/TmV8J92ohAXzSz+mL0zKoqhTxDuo2mHUDM7TNPXvTLBXmT9u0jINEifNPNa+0OK7Kbzabusoos7r3dVHQYVizqI0Wj25eh6oJhVI4R32k/jb2w5z6esPNQaxh+H4ieFTrPz1CjP5TcnO5iNCLkEPg027B9dKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WHeuTKds; arc=none smtp.client-ip=209.85.215.179
+	 In-Reply-To:Content-Type; b=LH/Kcvn+fIdEJd/GnM9qz9U6cuwOkU6FP1WqjukQGOjD8jX47Zp9FJcnAJ2Z/Jh4szf000dWDBVN1mCLKGh7xVV5mzygXzA2HJ4Jmy5zBj59fHRuNi1V+wwleqSZXVnPB1AHFy3Xgwcl0/GA2Y/xyJL+kqm5DabNBlDLJ2dK//8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bvHJPP+S; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7a1843b4cdbso803142a12.2;
-        Tue, 06 Aug 2024 12:12:56 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1fc5296e214so10063165ad.0;
+        Tue, 06 Aug 2024 13:16:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722971576; x=1723576376; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1722975384; x=1723580184; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fa9NdDqAtjfxdtjY1rCTBQCmLiHddHsOopyPziLCd3c=;
-        b=WHeuTKdsePzXLafKyG/fDzsP7m+dtpUZRH8PLiHdZjRGosgCrFRDELgzhSzwypKWa7
-         6erUolrBXXM+TeoE2NjpmZueobxAzWxJLyzXUeIl0z3fA8UT29AzMjwGv8sqkJutUfj+
-         czmn0Iao+YukgFt8TqTkLyzf+ElSfcUlLoNWCQ9OWB46vk3jR40lGp3kREPsPG+OLZNo
-         DacSJvaufCAf8hjYJxHV9BHkRcdzPZmvrfiVIT6shePEwaNordQQbVlSpRAK9Ejj1Adb
-         r74tRZ+DbibZGE818FuNFw4a6huttpTIa6zxT1z9DyZoo8YTWxIX/QWit0UJdO+j89mV
-         H8FA==
+        bh=wkJc0i0AzJKTp7yRuttQScFxP01WjAGbpZDcjCpC924=;
+        b=bvHJPP+SglSbXIMquio6KLwG+1Kl8Ar7w4sDAVEqsH/HzAKDMVOUuGqsYYbWGQkVk6
+         pmMdIHY3E25anwRqxrmM4tYxlQp8O3BEGpsmyQl3QRM7SL1JnDGQSCgrocdmvUfRQ/Dj
+         bBijZuGWuCU7J9XHtdmyXKs//wUcHL+Uu4vi7vBglIkiQdxMf4W+UZhcPVmEF36gqQUx
+         V/mkuard91xA95fIPoZTIhUKoO/d2SvPZNOVtsN7XR1RiKrRjMLCtLZeGipg3QSqVBgs
+         Fp78g/unmUpUXFkSQWvF9Zte271JbzsgXpSP8liRR4T943fmf3ToNTO8ag0siAyiPM5Q
+         LxVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722971576; x=1723576376;
+        d=1e100.net; s=20230601; t=1722975384; x=1723580184;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Fa9NdDqAtjfxdtjY1rCTBQCmLiHddHsOopyPziLCd3c=;
-        b=Ji6vZQ7OfASdSLfbKgPmZ9DedaRhTw/PyLvvr/4wV1rfrNKlVtqxhSAZY25khq2yoP
-         AVetqppSKD9qLWrL8xIC/oEXAfEz6ayt9eg72dNBK/yGzmmlJwGYuAL/oOvDp6FYJ7Ex
-         8lfFNXUNk1fhlWjAtESptI3TQw18zIVVEpZ8mN/jXiq0lwxJ7qzN9pcrpJzHKXbYBHPF
-         eQP1tyIBpMLfw+5VgSBALRNlXyMLu2pOuSNioU3fGKGh/mECmlDB89UZo6EhyBYrNrAB
-         TnSbOSKITw/Gp7kWWYH7mve2QioTgfNDzLhAw3yT+qW+EAlaMSaT3emMast2KpTWw6Fz
-         lF/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUl5bGgi2KRHbVeOy1gSsis3pHBu3XtVsf/aHzp536P830Rmc/QcTq0E6cnsZyuv6LFu5bl9CJtv9Dqf/+ME8taYLVRWne+CvjjSJBtKcUn56A=
-X-Gm-Message-State: AOJu0YwWxBTlKNyzsn4aPGMyvsmPWhRDppjG5pUXUxFT75+2XByzqxcX
-	mZJRfz2xTzwGc7j+VFEvIjAWAt9+VGO47EykclEFA4VGSDCrozRT
-X-Google-Smtp-Source: AGHT+IHKhx50w3/bap9H5BjmBAf0IaQhDukxPACq01j4J8EC1vaQlg3kAuxxFCIa1RbY3lRXJWzH/Q==
-X-Received: by 2002:a17:902:ecc9:b0:1fd:a769:fcaf with SMTP id d9443c01a7336-1ff574dfdcbmr199925795ad.61.1722971576049;
-        Tue, 06 Aug 2024 12:12:56 -0700 (PDT)
+        bh=wkJc0i0AzJKTp7yRuttQScFxP01WjAGbpZDcjCpC924=;
+        b=HvqYI44UJ7hqw1am05ejNZqgRQkmOHbDTBPjtGrb/5cWvzkgwz6yGR7mgEtGYbzX0E
+         vXRDM11/wpKrh9unIAKT/a9THlNZ6b+MzQMl9mHMWQZtrWDHdQgRNxkxZ7IZQ2u0oQdV
+         HQe6zXkKYbrI+gVFLOj9kW+rhxM84ufDy5TLtrdAej7kWAQbfPaBkR2u4z/Jlg0t2Fli
+         kdZ+KPjA78d6hQLFOGr11ZWDgNnh/2RSLbLYARPoMHNgGNp78nlBM/sHANIqkeHM2+fF
+         JITaCWV8NqMLunY+f5Fj7J1Bm20XHd5fIeY+JVVLfIR0Q0c6nn2F0a+xwFlEIRTOIr/h
+         XuPw==
+X-Forwarded-Encrypted: i=1; AJvYcCX7iV6ANPcxAZcawdLJHf5u/UPaS6a7cEjvHgfLvnTdRGQubkPJ4/ZQT+Wt3LWPMtSs5wBj2hdYIr4XBTRp+B2CrJnMGCjIvbfOXVYk4SHIPAA=
+X-Gm-Message-State: AOJu0YxHYLS5bwEjZCkaNRlOTWU3dJ/xmmI4U/m+GAYrt9zWTOdt42yj
+	Z4ZNLKLflEWneEJtapNKKP4T12S6iBVruzLGb8Rj+yAA35Ut18UUuoBI2g==
+X-Google-Smtp-Source: AGHT+IGb64KSBiBVQCPiazX8vTQcoNjnwNvNUMOXsTaoPKJAdGuYAFtFq7afecOAnqDzqjJQNpXtwg==
+X-Received: by 2002:a17:902:ea0c:b0:1fc:7309:9125 with SMTP id d9443c01a7336-1ff57302986mr205042195ad.34.1722975384562;
+        Tue, 06 Aug 2024 13:16:24 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff5927f161sm91101805ad.232.2024.08.06.12.12.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff58f6a540sm91735055ad.118.2024.08.06.13.16.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Aug 2024 12:12:55 -0700 (PDT)
+        Tue, 06 Aug 2024 13:16:23 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <35974667-c3b4-4c24-9806-1d6d9f42491e@roeck-us.net>
-Date: Tue, 6 Aug 2024 12:12:53 -0700
+Message-ID: <c4b2c9b0-d154-4d49-bab5-f50b53a2f9c5@roeck-us.net>
+Date: Tue, 6 Aug 2024 13:16:22 -0700
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
@@ -187,16 +187,17 @@ On 8/6/24 11:48, Peter Zijlstra wrote:
 > While I had dinner with the family, Thomas cooked up the below, which
 > seems to make it happy.
 > 
+> It basically splits the PMD on the late copy.
+> 
 
-I'll give it a try for all emulations (both x86 and x86_64), just to be sure,
-but it does indeed fix the problem for the test with the affected CPU/build.
+The patch below passes all my tests.
+
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
 Thanks!
 
 Guenter
 
-> It basically splits the PMD on the late copy.
-> 
 > ---
 > diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
 > index bfdf5f45b137..b6ebbc9c23b1 100644
