@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1981-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1986-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140FF94AE11
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2024 18:27:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4763B94AE14
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2024 18:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B56F7B23797
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2024 16:26:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC271F23B72
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2024 16:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8E913DDCC;
-	Wed,  7 Aug 2024 16:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9350814373F;
+	Wed,  7 Aug 2024 16:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Uxz+KEQn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZwkIscfx"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U3u8azpK";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NA08ODMF"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3092913BC35;
-	Wed,  7 Aug 2024 16:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B60313D61A;
+	Wed,  7 Aug 2024 16:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723047933; cv=none; b=BYl9/4Wnll6aZkCaANh7LaQ0+oKYUbqQV83PEoAZENYXTY1beeM2qcySRWN2Pbv4+Hbq64jLqtas9xMfs2F8Kt+NBCdYcwYg3xb53wfbuHuFeoVBwUxmT1Ka4Hn1+6rM65eFwmL66+OsPMltzOqi56ushSZ8FvS63O0rjPecU+8=
+	t=1723047935; cv=none; b=j5XGuuX0vCAvh51mk7OJVU3WTaw8fgq67FkXvOwkuWe+gRuDYONCjOB2eu3Zedb2SKzzD7ZWqNDOcSAwNcBkKIQG/wTKTKJDx3hK5qWw78EHijll9/SfXzJa54urT7UPjSLvYPPA8NR6qLTKPXeT/ZWDBKHqc3Ho2NJzKZ52Okw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723047933; c=relaxed/simple;
-	bh=MIbWs/87wxCmIrC/1kDGnlJFBSLDrL4nHbuOB8aqntY=;
+	s=arc-20240116; t=1723047935; c=relaxed/simple;
+	bh=cPTBiDLx4soAfss3vIxWw+sgGJ85iCHrurhzRjUpeDE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=fpyunc+wLAJXLOX8QqrxkXh9cKLEewd+x56F4OhqHivdu/8C55Cv5yWMwYK+/GeYmg5vEt3ddCE4L0t7ELWRJdnlTxyseXhlLzqFf4fPBxB38vcmm5zPvnC55r0AaWPZtLOxlvyYWwdTwG1IzFlMDI+GBF2cYp3W3AyQI7KfFiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Uxz+KEQn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZwkIscfx; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=T8nGVk1+JAZMWw511VnYVQl0WuglMqukK+Npo+vefzTfsBPraSzXTyK8hZ0t1jngxPfN6cE7SgHYY9nzXJ6GPyk4nZe406Ehs/7CSVdm98UZrihoNTezDTPUkydkE2S5NbMob+b92M0lLnWbMKfXCUKYBzL68w2uTFn9Dom0f/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U3u8azpK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NA08ODMF; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 07 Aug 2024 16:25:29 -0000
+Date: Wed, 07 Aug 2024 16:25:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1723047929;
+	s=2020; t=1723047930;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EVWL0BkJ7as0aWjZrS//Z4FPW1pQzPPqs9dzbW1BBnU=;
-	b=Uxz+KEQnfdUucgSp+EG+126gBb+wjArgm2RwmnEGNwsavr4j2kRApqw9dgF0VUt8YpNCVe
-	FfXcVlLG2h74aLOgUe99JqiGuHD+fcuLNb/IGKDSydO4XAFqMFUAfWW8EvIjT4mYWhjezD
-	lz0V57IL9bH3TrPlNXo2HG/og6VrUInGdMEVEM+oU7kNRdDN8atD9rKWyrwWCbztD1X7v8
-	9IR7E5+/TJSjMolHiP0zs73mH8/1jrJvU18PPOnsFPksoG+lCfkvxEIH5P6f4wMubjJDRi
-	UN5zagRycEpPcJ6qCtNDoFKGz4Mhj7H0u4osbx34j0PWhINmmOk234zvKmK1zQ==
+	bh=8Dsvlx9uAQMmlS5uuZi0xCoW431PNXB74bKcalN05jg=;
+	b=U3u8azpKIOBSqHyPX8+lidRCV8dCpprvUWJmzatn6dOcrf3LxUfL0uYcj7FlHc8eD8QvVu
+	JiR3DoBcnfz9hBPoGDvYK4xpT4MUmDQIOXvQHTlsdB96LFhXF/FOBNt+cNNMXsh8W5Xaac
+	1L6PYDT+tTtX++O3b7xvag7BMPjWoK7Pj04zb6IpKP5bLJc1+07TPwEnJMCuOagrNXii1n
+	TvoPRpk9PffLU2pBOJhmNY0jfWDwH21SC1kbdRSx64NXeJEg4mYbhONMMqs96mF1bXoE/s
+	KbL0tz+MEuwbieE2Y86UQCBw4ZW92cy4qr+2K2Cc/efZBfokHOgWHLKmfF2ppw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1723047929;
+	s=2020e; t=1723047930;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EVWL0BkJ7as0aWjZrS//Z4FPW1pQzPPqs9dzbW1BBnU=;
-	b=ZwkIscfxsNNAGFvjvTOeCNmkJsQztF2uy7TVDXykw82RrbbXmZk6CthygotSI7CIPSuHiC
-	bAqzbRs7OIVqfxAg==
+	bh=8Dsvlx9uAQMmlS5uuZi0xCoW431PNXB74bKcalN05jg=;
+	b=NA08ODMFsQQWt89JGTU7oxL05RjjCa03vfJqgWVLHOChvh9b0GGUqNNo2Z+IQsqDYCNXf6
+	yZYcvWaXVslf9jDA==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Cleanup apic_printk()s
-Cc: Thomas Gleixner <tglx@linutronix.de>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- Breno Leitao <leitao@debian.org>, x86@kernel.org,
+Subject: [tip: x86/apic] x86/ioapic: Handle allocation failures gracefully
+Cc: Breno Leitao <leitao@debian.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Qiuxu Zhuo <qiuxu.zhuo@intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240802155440.589821068@linutronix.de>
-References: <20240802155440.589821068@linutronix.de>
+In-Reply-To: <ZqfJmUF8sXIyuSHN@gmail.com>
+References: <ZqfJmUF8sXIyuSHN@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172304792900.2215.12452311447986487810.tip-bot2@tip-bot2>
+Message-ID: <172304793037.2215.7279123758973261566.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,243 +81,154 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     ac1c9fc1b571d5355602daa642f74288ae4b701d
-Gitweb:        https://git.kernel.org/tip/ac1c9fc1b571d5355602daa642f74288ae4b701d
+Commit-ID:     830802a0fea8fb39d3dc9fb7d6b5581e1343eb1f
+Gitweb:        https://git.kernel.org/tip/830802a0fea8fb39d3dc9fb7d6b5581e1343eb1f
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 02 Aug 2024 18:15:41 +02:00
+AuthorDate:    Fri, 02 Aug 2024 18:15:34 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 07 Aug 2024 18:13:28 +02:00
+CommitterDate: Wed, 07 Aug 2024 18:13:27 +02:00
 
-x86/apic: Cleanup apic_printk()s
+x86/ioapic: Handle allocation failures gracefully
 
-Use the new apic_pr_*() helpers and cleanup the apic_printk() maze.
+Breno observed panics when using failslab under certain conditions during
+runtime:
 
+   can not alloc irq_pin_list (-1,0,20)
+   Kernel panic - not syncing: IO-APIC: failed to add irq-pin. Can not proceed
+
+   panic+0x4e9/0x590
+   mp_irqdomain_alloc+0x9ab/0xa80
+   irq_domain_alloc_irqs_locked+0x25d/0x8d0
+   __irq_domain_alloc_irqs+0x80/0x110
+   mp_map_pin_to_irq+0x645/0x890
+   acpi_register_gsi_ioapic+0xe6/0x150
+   hpet_open+0x313/0x480
+
+That's a pointless panic which is a leftover of the historic IO/APIC code
+which panic'ed during early boot when the interrupt allocation failed.
+
+The only place which might justify panic is the PIT/HPET timer_check() code
+which tries to figure out whether the timer interrupt is delivered through
+the IO/APIC. But that code does not require to handle interrupt allocation
+failures. If the interrupt cannot be allocated then timer delivery fails
+and it either panics due to that or falls back to legacy mode.
+
+Cure this by removing the panic wrapper around __add_pin_to_irq_node() and
+making mp_irqdomain_alloc() aware of the failure condition and handle it as
+any other failure in this function gracefully.
+
+Reported-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 Tested-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/all/20240802155440.589821068@linutronix.de
+Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Link: https://lore.kernel.org/all/ZqfJmUF8sXIyuSHN@gmail.com
+Link: https://lore.kernel.org/all/20240802155440.275200843@linutronix.de
 
 ---
- arch/x86/kernel/apic/apic.c | 81 +++++++++++++++---------------------
- 1 file changed, 35 insertions(+), 46 deletions(-)
+ arch/x86/kernel/apic/io_apic.c | 46 +++++++++++++++------------------
+ 1 file changed, 22 insertions(+), 24 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 66fd4b2..1838a73 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -677,7 +677,7 @@ calibrate_by_pmtimer(u32 deltapm, long *delta, long *deltatsc)
- 	return -1;
- #endif
- 
--	apic_printk(APIC_VERBOSE, "... PM-Timer delta = %u\n", deltapm);
-+	apic_pr_verbose("... PM-Timer delta = %u\n", deltapm);
- 
- 	/* Check, if the PM timer is available */
- 	if (!deltapm)
-@@ -687,14 +687,14 @@ calibrate_by_pmtimer(u32 deltapm, long *delta, long *deltatsc)
- 
- 	if (deltapm > (pm_100ms - pm_thresh) &&
- 	    deltapm < (pm_100ms + pm_thresh)) {
--		apic_printk(APIC_VERBOSE, "... PM-Timer result ok\n");
-+		apic_pr_verbose("... PM-Timer result ok\n");
- 		return 0;
- 	}
- 
- 	res = (((u64)deltapm) *  mult) >> 22;
- 	do_div(res, 1000000);
--	pr_warn("APIC calibration not consistent "
--		"with PM-Timer: %ldms instead of 100ms\n", (long)res);
-+	pr_warn("APIC calibration not consistent with PM-Timer: %ldms instead of 100ms\n",
-+		(long)res);
- 
- 	/* Correct the lapic counter value */
- 	res = (((u64)(*delta)) * pm_100ms);
-@@ -707,9 +707,8 @@ calibrate_by_pmtimer(u32 deltapm, long *delta, long *deltatsc)
- 	if (boot_cpu_has(X86_FEATURE_TSC)) {
- 		res = (((u64)(*deltatsc)) * pm_100ms);
- 		do_div(res, deltapm);
--		apic_printk(APIC_VERBOSE, "TSC delta adjusted to "
--					  "PM-Timer: %lu (%ld)\n",
--					(unsigned long)res, *deltatsc);
-+		apic_pr_verbose("TSC delta adjusted to PM-Timer: %lu (%ld)\n",
-+				(unsigned long)res, *deltatsc);
- 		*deltatsc = (long)res;
- 	}
- 
-@@ -792,8 +791,7 @@ static int __init calibrate_APIC_clock(void)
- 	 * in the clockevent structure and return.
- 	 */
- 	if (!lapic_init_clockevent()) {
--		apic_printk(APIC_VERBOSE, "lapic timer already calibrated %d\n",
--			    lapic_timer_period);
-+		apic_pr_verbose("lapic timer already calibrated %d\n", lapic_timer_period);
- 		/*
- 		 * Direct calibration methods must have an always running
- 		 * local APIC timer, no need for broadcast timer.
-@@ -802,8 +800,7 @@ static int __init calibrate_APIC_clock(void)
- 		return 0;
- 	}
- 
--	apic_printk(APIC_VERBOSE, "Using local APIC timer interrupts.\n"
--		    "calibrating APIC timer ...\n");
-+	apic_pr_verbose("Using local APIC timer interrupts. Calibrating APIC timer ...\n");
- 
- 	/*
- 	 * There are platforms w/o global clockevent devices. Instead of
-@@ -866,7 +863,7 @@ static int __init calibrate_APIC_clock(void)
- 
- 	/* Build delta t1-t2 as apic timer counts down */
- 	delta = lapic_cal_t1 - lapic_cal_t2;
--	apic_printk(APIC_VERBOSE, "... lapic delta = %ld\n", delta);
-+	apic_pr_verbose("... lapic delta = %ld\n", delta);
- 
- 	deltatsc = (long)(lapic_cal_tsc2 - lapic_cal_tsc1);
- 
-@@ -877,22 +874,19 @@ static int __init calibrate_APIC_clock(void)
- 	lapic_timer_period = (delta * APIC_DIVISOR) / LAPIC_CAL_LOOPS;
- 	lapic_init_clockevent();
- 
--	apic_printk(APIC_VERBOSE, "..... delta %ld\n", delta);
--	apic_printk(APIC_VERBOSE, "..... mult: %u\n", lapic_clockevent.mult);
--	apic_printk(APIC_VERBOSE, "..... calibration result: %u\n",
--		    lapic_timer_period);
-+	apic_pr_verbose("..... delta %ld\n", delta);
-+	apic_pr_verbose("..... mult: %u\n", lapic_clockevent.mult);
-+	apic_pr_verbose("..... calibration result: %u\n", lapic_timer_period);
- 
- 	if (boot_cpu_has(X86_FEATURE_TSC)) {
--		apic_printk(APIC_VERBOSE, "..... CPU clock speed is "
--			    "%ld.%04ld MHz.\n",
--			    (deltatsc / LAPIC_CAL_LOOPS) / (1000000 / HZ),
--			    (deltatsc / LAPIC_CAL_LOOPS) % (1000000 / HZ));
-+		apic_pr_verbose("..... CPU clock speed is %ld.%04ld MHz.\n",
-+				(deltatsc / LAPIC_CAL_LOOPS) / (1000000 / HZ),
-+				(deltatsc / LAPIC_CAL_LOOPS) % (1000000 / HZ));
- 	}
- 
--	apic_printk(APIC_VERBOSE, "..... host bus clock speed is "
--		    "%u.%04u MHz.\n",
--		    lapic_timer_period / (1000000 / HZ),
--		    lapic_timer_period % (1000000 / HZ));
-+	apic_pr_verbose("..... host bus clock speed is %u.%04u MHz.\n",
-+			lapic_timer_period / (1000000 / HZ),
-+			lapic_timer_period % (1000000 / HZ));
- 
- 	/*
- 	 * Do a sanity check on the APIC calibration result
-@@ -911,7 +905,7 @@ static int __init calibrate_APIC_clock(void)
- 	 * available.
- 	 */
- 	if (!pm_referenced && global_clock_event) {
--		apic_printk(APIC_VERBOSE, "... verify APIC timer\n");
-+		apic_pr_verbose("... verify APIC timer\n");
- 
- 		/*
- 		 * Setup the apic timer manually
-@@ -932,11 +926,11 @@ static int __init calibrate_APIC_clock(void)
- 
- 		/* Jiffies delta */
- 		deltaj = lapic_cal_j2 - lapic_cal_j1;
--		apic_printk(APIC_VERBOSE, "... jiffies delta = %lu\n", deltaj);
-+		apic_pr_verbose("... jiffies delta = %lu\n", deltaj);
- 
- 		/* Check, if the jiffies result is consistent */
- 		if (deltaj >= LAPIC_CAL_LOOPS-2 && deltaj <= LAPIC_CAL_LOOPS+2)
--			apic_printk(APIC_VERBOSE, "... jiffies result ok\n");
-+			apic_pr_verbose("... jiffies result ok\n");
- 		else
- 			levt->features |= CLOCK_EVT_FEAT_DUMMY;
- 	}
-@@ -1221,9 +1215,8 @@ void __init sync_Arb_IDs(void)
- 	 */
- 	apic_wait_icr_idle();
- 
--	apic_printk(APIC_DEBUG, "Synchronizing Arb IDs.\n");
--	apic_write(APIC_ICR, APIC_DEST_ALLINC |
--			APIC_INT_LEVELTRIG | APIC_DM_INIT);
-+	apic_pr_debug("Synchronizing Arb IDs.\n");
-+	apic_write(APIC_ICR, APIC_DEST_ALLINC | APIC_INT_LEVELTRIG | APIC_DM_INIT);
- }
- 
- enum apic_intr_mode_id apic_intr_mode __ro_after_init;
-@@ -1409,10 +1402,10 @@ static void lapic_setup_esr(void)
- 	if (maxlvt > 3)
- 		apic_write(APIC_ESR, 0);
- 	value = apic_read(APIC_ESR);
--	if (value != oldvalue)
--		apic_printk(APIC_VERBOSE, "ESR value before enabling "
--			"vector: 0x%08x  after: 0x%08x\n",
--			oldvalue, value);
-+	if (value != oldvalue) {
-+		apic_pr_verbose("ESR value before enabling vector: 0x%08x  after: 0x%08x\n",
-+				oldvalue, value);
-+	}
- }
- 
- #define APIC_IR_REGS		APIC_ISR_NR
-@@ -1599,10 +1592,10 @@ static void setup_local_APIC(void)
- 	value = apic_read(APIC_LVT0) & APIC_LVT_MASKED;
- 	if (!cpu && (pic_mode || !value || ioapic_is_disabled)) {
- 		value = APIC_DM_EXTINT;
--		apic_printk(APIC_VERBOSE, "enabled ExtINT on CPU#%d\n", cpu);
-+		apic_pr_verbose("Enabled ExtINT on CPU#%d\n", cpu);
- 	} else {
- 		value = APIC_DM_EXTINT | APIC_LVT_MASKED;
--		apic_printk(APIC_VERBOSE, "masked ExtINT on CPU#%d\n", cpu);
-+		apic_pr_verbose("Masked ExtINT on CPU#%d\n", cpu);
- 	}
- 	apic_write(APIC_LVT0, value);
- 
-@@ -2066,8 +2059,7 @@ static __init void apic_set_fixmap(bool read_apic)
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index 477b740..d1ec1dc 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -352,27 +352,26 @@ static void ioapic_mask_entry(int apic, int pin)
+  * shared ISA-space IRQs, so we have to support them. We are super
+  * fast in the common case, and fast for shared ISA-space IRQs.
+  */
+-static int __add_pin_to_irq_node(struct mp_chip_data *data,
+-				 int node, int apic, int pin)
++static bool add_pin_to_irq_node(struct mp_chip_data *data, int node, int apic, int pin)
  {
- 	set_fixmap_nocache(FIX_APIC_BASE, mp_lapic_addr);
- 	apic_mmio_base = APIC_BASE;
--	apic_printk(APIC_VERBOSE, "mapped APIC to %16lx (%16lx)\n",
--		    apic_mmio_base, mp_lapic_addr);
-+	apic_pr_verbose("Mapped APIC to %16lx (%16lx)\n", apic_mmio_base, mp_lapic_addr);
- 	if (read_apic)
- 		apic_read_boot_cpu_id(false);
+ 	struct irq_pin_list *entry;
+ 
+-	/* don't allow duplicates */
+-	for_each_irq_pin(entry, data->irq_2_pin)
++	/* Don't allow duplicates */
++	for_each_irq_pin(entry, data->irq_2_pin) {
+ 		if (entry->apic == apic && entry->pin == pin)
+-			return 0;
++			return true;
++	}
+ 
+ 	entry = kzalloc_node(sizeof(struct irq_pin_list), GFP_ATOMIC, node);
+ 	if (!entry) {
+-		pr_err("can not alloc irq_pin_list (%d,%d,%d)\n",
+-		       node, apic, pin);
+-		return -ENOMEM;
++		pr_err("Cannot allocate irq_pin_list (%d,%d,%d)\n", node, apic, pin);
++		return false;
+ 	}
++
+ 	entry->apic = apic;
+ 	entry->pin = pin;
+ 	list_add_tail(&entry->list, &data->irq_2_pin);
+-
+-	return 0;
++	return true;
  }
-@@ -2170,18 +2162,17 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_error_interrupt)
- 	apic_eoi();
- 	atomic_inc(&irq_err_count);
  
--	apic_printk(APIC_DEBUG, KERN_DEBUG "APIC error on CPU%d: %02x",
--		    smp_processor_id(), v);
-+	apic_pr_debug("APIC error on CPU%d: %02x", smp_processor_id(), v);
- 
- 	v &= 0xff;
- 	while (v) {
- 		if (v & 0x1)
--			apic_printk(APIC_DEBUG, KERN_CONT " : %s", error_interrupt_reason[i]);
-+			apic_pr_debug_cont(" : %s", error_interrupt_reason[i]);
- 		i++;
- 		v >>= 1;
- 	}
- 
--	apic_printk(APIC_DEBUG, KERN_CONT "\n");
-+	apic_pr_debug_cont("\n");
- 
- 	trace_error_apic_exit(ERROR_APIC_VECTOR);
+ static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
+@@ -387,13 +386,6 @@ static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
+ 		}
  }
-@@ -2201,8 +2192,7 @@ static void __init connect_bsp_APIC(void)
- 		 * PIC mode, enable APIC mode in the IMCR, i.e.  connect BSP's
- 		 * local APIC to INT and NMI lines.
- 		 */
--		apic_printk(APIC_VERBOSE, "leaving PIC mode, "
--				"enabling APIC mode.\n");
-+		apic_pr_verbose("Leaving PIC mode, enabling APIC mode.\n");
- 		imcr_pic_to_apic();
- 	}
- #endif
-@@ -2227,8 +2217,7 @@ void disconnect_bsp_APIC(int virt_wire_setup)
- 		 * IPIs, won't work beyond this point!  The only exception are
- 		 * INIT IPIs.
- 		 */
--		apic_printk(APIC_VERBOSE, "disabling APIC mode, "
--				"entering PIC mode.\n");
-+		apic_pr_verbose("Disabling APIC mode, entering PIC mode.\n");
- 		imcr_apic_to_pic();
- 		return;
- 	}
+ 
+-static void add_pin_to_irq_node(struct mp_chip_data *data,
+-				int node, int apic, int pin)
+-{
+-	if (__add_pin_to_irq_node(data, node, apic, pin))
+-		panic("IO-APIC: failed to add irq-pin. Can not proceed\n");
+-}
+-
+ /*
+  * Reroute an IRQ to a different pin.
+  */
+@@ -1002,8 +994,7 @@ static int alloc_isa_irq_from_domain(struct irq_domain *domain,
+ 	if (irq_data && irq_data->parent_data) {
+ 		if (!mp_check_pin_attr(irq, info))
+ 			return -EBUSY;
+-		if (__add_pin_to_irq_node(irq_data->chip_data, node, ioapic,
+-					  info->ioapic.pin))
++		if (!add_pin_to_irq_node(irq_data->chip_data, node, ioapic, info->ioapic.pin))
+ 			return -ENOMEM;
+ 	} else {
+ 		info->flags |= X86_IRQ_ALLOC_LEGACY;
+@@ -3017,10 +3008,8 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
+ 		return -ENOMEM;
+ 
+ 	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, info);
+-	if (ret < 0) {
+-		kfree(data);
+-		return ret;
+-	}
++	if (ret < 0)
++		goto free_data;
+ 
+ 	INIT_LIST_HEAD(&data->irq_2_pin);
+ 	irq_data->hwirq = info->ioapic.pin;
+@@ -3029,7 +3018,10 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
+ 	irq_data->chip_data = data;
+ 	mp_irqdomain_get_attr(mp_pin_to_gsi(ioapic, pin), data, info);
+ 
+-	add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin);
++	if (!add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin)) {
++		ret = -ENOMEM;
++		goto free_irqs;
++	}
+ 
+ 	mp_preconfigure_entry(data);
+ 	mp_register_handler(virq, data->is_level);
+@@ -3044,6 +3036,12 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
+ 		    ioapic, mpc_ioapic_id(ioapic), pin, virq,
+ 		    data->is_level, data->active_low);
+ 	return 0;
++
++free_irqs:
++	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
++free_data:
++	kfree(data);
++	return ret;
+ }
+ 
+ void mp_irqdomain_free(struct irq_domain *domain, unsigned int virq,
 
