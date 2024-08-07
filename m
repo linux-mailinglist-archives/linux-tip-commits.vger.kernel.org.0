@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-1965-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-1966-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A7094A64B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2024 12:52:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 342B494A652
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2024 12:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85E0D280ECD
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2024 10:52:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3084FB2DE3D
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Aug 2024 10:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443421E3CD3;
-	Wed,  7 Aug 2024 10:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259F81E4EE6;
+	Wed,  7 Aug 2024 10:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="l3B5VV0F";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EKraatce"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AmPHh76n";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cAsEhBeY"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7D41E288F;
-	Wed,  7 Aug 2024 10:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEB91E289F;
+	Wed,  7 Aug 2024 10:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723027907; cv=none; b=DN2+JTKx4juWa2JvD3Tl+yuCIhZXM5KGYA7Trw7bu1brnj7vDjnND/nuomuqAXNVqoIH6uxD4LiU7ESJacaBUooiZaZEZXUcZ1BQIr+0yCQtM7OUaagsnm7GIyqpxN572t+et4a3cxeUy6utGUEIcjD56x2H/fRPQ+SpVhVYk/o=
+	t=1723027908; cv=none; b=nRTw+NAI3Lspia1sjU8b6kGo3A1qSCZBq0kL+dGgk2pWtKW5caxEA3NP5BEbiOpm21p99ADxJlhFW/whF8O1rEfIWNp9YsLJ8bzy2GrwZ609yG5nmMdBw/ximKfziKlVE+Nw9ULDfEU0egv11GofZ8wJ4DEsZPddRgvt9aB3svM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723027907; c=relaxed/simple;
-	bh=NNtkoNNV8TeR4V11Xi07UIN9jLrW77pRIC77+bhVy98=;
+	s=arc-20240116; t=1723027908; c=relaxed/simple;
+	bh=yhmqZIen4Wo7sowLFXv6x280t/84kqH/IySLeZ5Ht7Q=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=NkDnDD/NQAjFoj5vkSB+n/VNO4LjNkALx9kbVpzbjJvZJ4Fj8Mk/I2X9noZEHpWa9jkAXy21+G4mLJ5jlbViIawYgGh9Vk1wZLk4L6Qn00kKjQK8vudCZTqqTdosOHlM2fbP3SMPK1hxHaVx3p/YH1Is12zLc2oE3i5KgPk9VmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=l3B5VV0F; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EKraatce; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=cblG9z3a/njfUg9vl2zfXl1I2m5H1XoyQlYOyXSPCXe+uBBXgMZMIINdliCJQUQ9ZzKa28lPBMqxBjwP4mOqM80G+0zzULMPGh/oqqjhZaJWmc7os9kg0g54sAvZf/pQ/KWiNU1qmaXOt1fK0RKSULzSvKG/ZXNpKhdF0KfZrsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AmPHh76n; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cAsEhBeY; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 07 Aug 2024 10:51:37 -0000
+Date: Wed, 07 Aug 2024 10:51:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1723027898;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dU5JynV4laSGM/tFLk75KAOXCEVbA4FSrLdWwJ6GbrQ=;
-	b=l3B5VV0FHGf9bHA/O5/T0kBgZfMTBAVe8M6kxa85Wg2Fc/3OUdfBArAHVmiS7znU+3wn7I
-	SoMS7NGnEqkqZozBSZ90knKYjNIUT+x+xT8GtCbx2wLMq0umRdD06/DSnKe+bWzodgvYzq
-	QVHSHoJ1gE+kGzZt4g9su+kcKpJUN33EUYargXsSscKzKQUOUWbuV4W9sZEUeFUF7/oUpH
-	uo/yd3/CPBdgG2yvKlrkWpTeWensU6+OYRqTNQp5ySaqgatJyFr8a7it3v1tO3sYvQ02zJ
-	qwuZlA4yh3i1ZunOybqOB+mNCgLWXQu+Ca+vCamtkO3pDcEcoU/43iOaD+fpsA==
+	bh=xVMqYciCsTuU550u0MH95dPneDLUq1N/CwCTxxFXB4Y=;
+	b=AmPHh76nLagJ6IO3/g6VoYG9WyWFW29sZyN+dNqO5dMbsnkRAjU5Mw5Iia/H7KmcmDLNhw
+	DOtcQVuM4/R1UpS7vGwiMYVsd+3pC7oa2jINPfmfypH/nd/6kt/YJ+cEHLUFYHccKonu/3
+	2tzKFj55ZZPYvTrkLvaturb1AZil9WMKrhzIAvuB0ezE/aPKp/3kHnYKCs9s0B8QXt5G0P
+	2pux4VB9W2kpoa0YsyJ7jw5Sfc6BKA5W2wMzvA/KXvNO6ia83tvPUeli+f2YGvtVSiCug7
+	qTAwd6DHkXx6y4Ti8RvDoO8h7XEU18A6XNBbZ/RZIywCQvZJ/+fgd2Nbm4qyMg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1723027898;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dU5JynV4laSGM/tFLk75KAOXCEVbA4FSrLdWwJ6GbrQ=;
-	b=EKraatcez8w/d368qq0GJ3i542zIMeMCeaePMxOKfcZnHpGYg+e1QJCUjgxpqH9RKzl8NC
-	+Fh7PXhsB8Lo8QBQ==
+	bh=xVMqYciCsTuU550u0MH95dPneDLUq1N/CwCTxxFXB4Y=;
+	b=cAsEhBeYv+GaFisZXGzBeV9lmehrndtdaw+jyH4XcC54JNZ/nDYehlt/OA7PxxZ3E2PSpY
+	wdRoqY7Ed6wuS+Bw==
 From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Add Lunar Lake support
+Subject: [tip: perf/core] perf/x86/intel/uncore: Factor out common MMIO init
+ and ops functions
 Cc: Kan Liang <kan.liang@linux.intel.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240731141353.759643-3-kan.liang@linux.intel.com>
-References: <20240731141353.759643-3-kan.liang@linux.intel.com>
+In-Reply-To: <20240731141353.759643-2-kan.liang@linux.intel.com>
+References: <20240731141353.759643-2-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172302789796.2215.3244304551949163711.tip-bot2@tip-bot2>
+Message-ID: <172302789843.2215.6926174409123387665.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,229 +82,124 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     9bd7dfe3a5262d3b29debdc66e1410201a235019
-Gitweb:        https://git.kernel.org/tip/9bd7dfe3a5262d3b29debdc66e1410201a235019
+Commit-ID:     efb0c9c0b9f78d964fb23ec6fdebe5a493f477f3
+Gitweb:        https://git.kernel.org/tip/efb0c9c0b9f78d964fb23ec6fdebe5a493f477f3
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 31 Jul 2024 07:13:51 -07:00
+AuthorDate:    Wed, 31 Jul 2024 07:13:50 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 05 Aug 2024 16:54:46 +02:00
 
-perf/x86/intel/uncore: Add Lunar Lake support
+perf/x86/intel/uncore: Factor out common MMIO init and ops functions
 
-The uncore subsystem for Lunar Lake is similar to the previous
-Meteor Lake. The uncore PerfMon registers are located at both
-MSR and MMIO space.
+Some uncore PMON registers are located in the MMIO space. For the client
+machine, the MMIO space is usually located at D0:F0 but in a different
+BAR. For example, some uncore PMON registers are located in the SAF BAR,
+not the MCHBAR in the Lunar Lake.
 
-The ARB and iMC are kept. There is no difference from the Meteor Lake.
-Move the global control initialization to the first box of the CBOX.
+The current __uncore_imc_init_box() hard code the BAR information.
+Factor out the uncore_get_box_mmio_addr() which uses the BAR information
+as a parameter.
+The only change is the error output message. The hardcode name 'MCHBAR'
+is replaced by the offset of a BAR.
 
-The sNCU is moved to the MMIO space.
-
-The HBO is newly added and only be accessed from the MMIO space.
+Add a new macro, MMIO_UNCORE_COMMON_OPS(), since the MMIO ops functions
+are usually the same among different generations.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240731141353.759643-3-kan.liang@linux.intel.com
+Link: https://lore.kernel.org/r/20240731141353.759643-2-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/uncore.c     |   6 +-
- arch/x86/events/intel/uncore.h     |   2 +-
- arch/x86/events/intel/uncore_snb.c | 133 ++++++++++++++++++++++++++++-
- 3 files changed, 141 insertions(+)
+ arch/x86/events/intel/uncore_snb.c | 47 ++++++++++++++++++-----------
+ 1 file changed, 30 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
-index 42968ad..d98fac5 100644
---- a/arch/x86/events/intel/uncore.c
-+++ b/arch/x86/events/intel/uncore.c
-@@ -1816,6 +1816,11 @@ static const struct intel_uncore_init_fun mtl_uncore_init __initconst = {
- 	.mmio_init = adl_uncore_mmio_init,
- };
- 
-+static const struct intel_uncore_init_fun lnl_uncore_init __initconst = {
-+	.cpu_init = lnl_uncore_cpu_init,
-+	.mmio_init = lnl_uncore_mmio_init,
-+};
-+
- static const struct intel_uncore_init_fun icx_uncore_init __initconst = {
- 	.cpu_init = icx_uncore_cpu_init,
- 	.pci_init = icx_uncore_pci_init,
-@@ -1896,6 +1901,7 @@ static const struct x86_cpu_id intel_uncore_match[] __initconst = {
- 	X86_MATCH_VFM(INTEL_ARROWLAKE,		&mtl_uncore_init),
- 	X86_MATCH_VFM(INTEL_ARROWLAKE_U,	&mtl_uncore_init),
- 	X86_MATCH_VFM(INTEL_ARROWLAKE_H,	&mtl_uncore_init),
-+	X86_MATCH_VFM(INTEL_LUNARLAKE_M,	&lnl_uncore_init),
- 	X86_MATCH_VFM(INTEL_SAPPHIRERAPIDS_X,	&spr_uncore_init),
- 	X86_MATCH_VFM(INTEL_EMERALDRAPIDS_X,	&spr_uncore_init),
- 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_X,	&gnr_uncore_init),
-diff --git a/arch/x86/events/intel/uncore.h b/arch/x86/events/intel/uncore.h
-index 027ef29..79ff32e 100644
---- a/arch/x86/events/intel/uncore.h
-+++ b/arch/x86/events/intel/uncore.h
-@@ -611,10 +611,12 @@ void skl_uncore_cpu_init(void);
- void icl_uncore_cpu_init(void);
- void tgl_uncore_cpu_init(void);
- void adl_uncore_cpu_init(void);
-+void lnl_uncore_cpu_init(void);
- void mtl_uncore_cpu_init(void);
- void tgl_uncore_mmio_init(void);
- void tgl_l_uncore_mmio_init(void);
- void adl_uncore_mmio_init(void);
-+void lnl_uncore_mmio_init(void);
- int snb_pci2phy_map_init(int devid);
- 
- /* uncore_snbep.c */
 diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncore_snb.c
-index 05fe6e9..983beed 100644
+index 9462fd9..05fe6e9 100644
 --- a/arch/x86/events/intel/uncore_snb.c
 +++ b/arch/x86/events/intel/uncore_snb.c
-@@ -252,6 +252,7 @@ DEFINE_UNCORE_FORMAT_ATTR(inv, inv, "config:23");
- DEFINE_UNCORE_FORMAT_ATTR(cmask5, cmask, "config:24-28");
- DEFINE_UNCORE_FORMAT_ATTR(cmask8, cmask, "config:24-31");
- DEFINE_UNCORE_FORMAT_ATTR(threshold, threshold, "config:24-29");
-+DEFINE_UNCORE_FORMAT_ATTR(threshold2, threshold, "config:24-31");
+@@ -1481,33 +1481,35 @@ static struct pci_dev *tgl_uncore_get_mc_dev(void)
+ #define TGL_UNCORE_MMIO_IMC_MEM_OFFSET		0x10000
+ #define TGL_UNCORE_PCI_IMC_MAP_SIZE		0xe000
  
- /* Sandy Bridge uncore support */
- static void snb_uncore_msr_enable_event(struct intel_uncore_box *box, struct perf_event *event)
-@@ -746,6 +747,34 @@ void mtl_uncore_cpu_init(void)
- 	uncore_msr_uncores = mtl_msr_uncores;
+-static void __uncore_imc_init_box(struct intel_uncore_box *box,
+-				  unsigned int base_offset)
++static void
++uncore_get_box_mmio_addr(struct intel_uncore_box *box,
++			 unsigned int base_offset,
++			 int bar_offset, int step)
+ {
+ 	struct pci_dev *pdev = tgl_uncore_get_mc_dev();
+ 	struct intel_uncore_pmu *pmu = box->pmu;
+ 	struct intel_uncore_type *type = pmu->type;
+ 	resource_size_t addr;
+-	u32 mch_bar;
++	u32 bar;
+ 
+ 	if (!pdev) {
+ 		pr_warn("perf uncore: Cannot find matched IMC device.\n");
+ 		return;
+ 	}
+ 
+-	pci_read_config_dword(pdev, SNB_UNCORE_PCI_IMC_BAR_OFFSET, &mch_bar);
+-	/* MCHBAR is disabled */
+-	if (!(mch_bar & BIT(0))) {
+-		pr_warn("perf uncore: MCHBAR is disabled. Failed to map IMC free-running counters.\n");
++	pci_read_config_dword(pdev, bar_offset, &bar);
++	if (!(bar & BIT(0))) {
++		pr_warn("perf uncore: BAR 0x%x is disabled. Failed to map %s counters.\n",
++			bar_offset, type->name);
+ 		pci_dev_put(pdev);
+ 		return;
+ 	}
+-	mch_bar &= ~BIT(0);
+-	addr = (resource_size_t)(mch_bar + TGL_UNCORE_MMIO_IMC_MEM_OFFSET * pmu->pmu_idx);
++	bar &= ~BIT(0);
++	addr = (resource_size_t)(bar + step * pmu->pmu_idx);
+ 
+ #ifdef CONFIG_PHYS_ADDR_T_64BIT
+-	pci_read_config_dword(pdev, SNB_UNCORE_PCI_IMC_BAR_OFFSET + 4, &mch_bar);
+-	addr |= ((resource_size_t)mch_bar << 32);
++	pci_read_config_dword(pdev, bar_offset + 4, &bar);
++	addr |= ((resource_size_t)bar << 32);
+ #endif
+ 
+ 	addr += base_offset;
+@@ -1518,6 +1520,14 @@ static void __uncore_imc_init_box(struct intel_uncore_box *box,
+ 	pci_dev_put(pdev);
  }
  
-+static struct intel_uncore_type *lnl_msr_uncores[] = {
-+	&mtl_uncore_cbox,
-+	&mtl_uncore_arb,
-+	NULL
-+};
-+
-+#define LNL_UNC_MSR_GLOBAL_CTL			0x240e
-+
-+static void lnl_uncore_msr_init_box(struct intel_uncore_box *box)
++static void __uncore_imc_init_box(struct intel_uncore_box *box,
++				  unsigned int base_offset)
 +{
-+	if (box->pmu->pmu_idx == 0)
-+		wrmsrl(LNL_UNC_MSR_GLOBAL_CTL, SNB_UNC_GLOBAL_CTL_EN);
++	uncore_get_box_mmio_addr(box, base_offset,
++				 SNB_UNCORE_PCI_IMC_BAR_OFFSET,
++				 TGL_UNCORE_MMIO_IMC_MEM_OFFSET);
 +}
 +
-+static struct intel_uncore_ops lnl_uncore_msr_ops = {
-+	.init_box	= lnl_uncore_msr_init_box,
-+	.disable_event	= snb_uncore_msr_disable_event,
-+	.enable_event	= snb_uncore_msr_enable_event,
-+	.read_counter	= uncore_msr_read_counter,
-+};
+ static void tgl_uncore_imc_freerunning_init_box(struct intel_uncore_box *box)
+ {
+ 	__uncore_imc_init_box(box, 0);
+@@ -1612,14 +1622,17 @@ static void adl_uncore_mmio_enable_box(struct intel_uncore_box *box)
+ 	writel(0, box->io_addr + uncore_mmio_box_ctl(box));
+ }
+ 
++#define MMIO_UNCORE_COMMON_OPS()				\
++	.exit_box	= uncore_mmio_exit_box,		\
++	.disable_box	= adl_uncore_mmio_disable_box,	\
++	.enable_box	= adl_uncore_mmio_enable_box,	\
++	.disable_event	= intel_generic_uncore_mmio_disable_event,	\
++	.enable_event	= intel_generic_uncore_mmio_enable_event,	\
++	.read_counter	= uncore_mmio_read_counter,
 +
-+void lnl_uncore_cpu_init(void)
-+{
-+	mtl_uncore_cbox.num_boxes = 4;
-+	mtl_uncore_cbox.ops = &lnl_uncore_msr_ops;
-+	uncore_msr_uncores = lnl_msr_uncores;
-+}
-+
- enum {
- 	SNB_PCI_UNCORE_IMC,
+ static struct intel_uncore_ops adl_uncore_mmio_ops = {
+ 	.init_box	= adl_uncore_imc_init_box,
+-	.exit_box	= uncore_mmio_exit_box,
+-	.disable_box	= adl_uncore_mmio_disable_box,
+-	.enable_box	= adl_uncore_mmio_enable_box,
+-	.disable_event	= intel_generic_uncore_mmio_disable_event,
+-	.enable_event	= intel_generic_uncore_mmio_enable_event,
+-	.read_counter	= uncore_mmio_read_counter,
++	MMIO_UNCORE_COMMON_OPS()
  };
-@@ -1716,3 +1745,107 @@ void adl_uncore_mmio_init(void)
- }
  
- /* end of Alder Lake MMIO uncore support */
-+
-+/* Lunar Lake MMIO uncore support */
-+#define LNL_UNCORE_PCI_SAFBAR_OFFSET		0x68
-+#define LNL_UNCORE_MAP_SIZE			0x1000
-+#define LNL_UNCORE_SNCU_BASE			0xE4B000
-+#define LNL_UNCORE_SNCU_CTR			0x390
-+#define LNL_UNCORE_SNCU_CTRL			0x398
-+#define LNL_UNCORE_SNCU_BOX_CTL			0x380
-+#define LNL_UNCORE_GLOBAL_CTL			0x700
-+#define LNL_UNCORE_HBO_BASE			0xE54000
-+#define LNL_UNCORE_HBO_OFFSET			-4096
-+#define LNL_UNCORE_HBO_CTR			0x570
-+#define LNL_UNCORE_HBO_CTRL			0x550
-+#define LNL_UNCORE_HBO_BOX_CTL			0x548
-+
-+#define LNL_UNC_CTL_THRESHOLD			0xff000000
-+#define LNL_UNC_RAW_EVENT_MASK			(SNB_UNC_CTL_EV_SEL_MASK | \
-+						 SNB_UNC_CTL_UMASK_MASK | \
-+						 SNB_UNC_CTL_EDGE_DET | \
-+						 SNB_UNC_CTL_INVERT | \
-+						 LNL_UNC_CTL_THRESHOLD)
-+
-+static struct attribute *lnl_uncore_formats_attr[] = {
-+	&format_attr_event.attr,
-+	&format_attr_umask.attr,
-+	&format_attr_edge.attr,
-+	&format_attr_inv.attr,
-+	&format_attr_threshold2.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group lnl_uncore_format_group = {
-+	.name		= "format",
-+	.attrs		= lnl_uncore_formats_attr,
-+};
-+
-+static void lnl_uncore_hbo_init_box(struct intel_uncore_box *box)
-+{
-+	uncore_get_box_mmio_addr(box, LNL_UNCORE_HBO_BASE,
-+				 LNL_UNCORE_PCI_SAFBAR_OFFSET,
-+				 LNL_UNCORE_HBO_OFFSET);
-+}
-+
-+static struct intel_uncore_ops lnl_uncore_hbo_ops = {
-+	.init_box	= lnl_uncore_hbo_init_box,
-+	MMIO_UNCORE_COMMON_OPS()
-+};
-+
-+static struct intel_uncore_type lnl_uncore_hbo = {
-+	.name		= "hbo",
-+	.num_counters   = 4,
-+	.num_boxes	= 2,
-+	.perf_ctr_bits	= 64,
-+	.perf_ctr	= LNL_UNCORE_HBO_CTR,
-+	.event_ctl	= LNL_UNCORE_HBO_CTRL,
-+	.event_mask	= LNL_UNC_RAW_EVENT_MASK,
-+	.box_ctl	= LNL_UNCORE_HBO_BOX_CTL,
-+	.mmio_map_size	= LNL_UNCORE_MAP_SIZE,
-+	.ops		= &lnl_uncore_hbo_ops,
-+	.format_group	= &lnl_uncore_format_group,
-+};
-+
-+static void lnl_uncore_sncu_init_box(struct intel_uncore_box *box)
-+{
-+	uncore_get_box_mmio_addr(box, LNL_UNCORE_SNCU_BASE,
-+				 LNL_UNCORE_PCI_SAFBAR_OFFSET,
-+				 0);
-+
-+	if (box->io_addr)
-+		writel(ADL_UNCORE_IMC_CTL_INT, box->io_addr + LNL_UNCORE_GLOBAL_CTL);
-+}
-+
-+static struct intel_uncore_ops lnl_uncore_sncu_ops = {
-+	.init_box	= lnl_uncore_sncu_init_box,
-+	MMIO_UNCORE_COMMON_OPS()
-+};
-+
-+static struct intel_uncore_type lnl_uncore_sncu = {
-+	.name		= "sncu",
-+	.num_counters   = 2,
-+	.num_boxes	= 1,
-+	.perf_ctr_bits	= 64,
-+	.perf_ctr	= LNL_UNCORE_SNCU_CTR,
-+	.event_ctl	= LNL_UNCORE_SNCU_CTRL,
-+	.event_mask	= LNL_UNC_RAW_EVENT_MASK,
-+	.box_ctl	= LNL_UNCORE_SNCU_BOX_CTL,
-+	.mmio_map_size	= LNL_UNCORE_MAP_SIZE,
-+	.ops		= &lnl_uncore_sncu_ops,
-+	.format_group	= &lnl_uncore_format_group,
-+};
-+
-+static struct intel_uncore_type *lnl_mmio_uncores[] = {
-+	&adl_uncore_imc,
-+	&lnl_uncore_hbo,
-+	&lnl_uncore_sncu,
-+	NULL
-+};
-+
-+void lnl_uncore_mmio_init(void)
-+{
-+	uncore_mmio_uncores = lnl_mmio_uncores;
-+}
-+
-+/* end of Lunar Lake MMIO uncore support */
+ #define ADL_UNC_CTL_CHMASK_MASK			0x00000f00
 
