@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2001-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2003-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A2794C0B3
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 17:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE4994C0F0
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 17:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E9511F21567
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 15:14:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33C431F2214F
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 15:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A112518F2DB;
-	Thu,  8 Aug 2024 15:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC325190483;
+	Thu,  8 Aug 2024 15:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nKqw7KU1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h/uyTAWH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="b1Z6b7Ax";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uikHP2/l"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC97C18EFC8;
-	Thu,  8 Aug 2024 15:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EECD19047F;
+	Thu,  8 Aug 2024 15:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723130043; cv=none; b=s7JyZR3qyAtesubCYPCOX522sTRES95qodqzYZaXUq8HGtrI5dJrcA3RPJi473t2cYV75a0qXKwhSPdOZZExcfRLUW7c27OdrKTsb/GY6DJer8BaLcCQsMu5pbm25wl3yYgjWHiUK11VXqgBuiwwJuHde4zo7gaixe6ACUaJysY=
+	t=1723130504; cv=none; b=B2bCcIqYaNhUNZMTfU3NpY5dN4Ki4FEVOnlz5r09moNRoApL8ZvXrNnmacBBznMbMNbIWNoOj7RwEOQ5sSLPRC9wvIGdOZu5irXd3IkbCc4MxLEXiRitRpCFBIYKSP97wnZP+LJCHM+lcYCBKIljwBYwepGhy6US/hfs451uvPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723130043; c=relaxed/simple;
-	bh=cTpCsyPJ4hFjVH2XAjBl0UpnWxc2JOnEK+AxCFHtWZU=;
+	s=arc-20240116; t=1723130504; c=relaxed/simple;
+	bh=EN8gHz/lKJdh4mEVlIOvH0NU//q0JnG8gRrd60usLyg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Cvc+k8V+xlZNsUPksOFTKskR9cOY6vuegSWOEC8cLvLvjJ5FZh0ySMWeYha8o5mMalPkxbTNSTiKdL59JhoCsZJfSFa19rt/2/thCVhobjenkzwhkWpVBXOA83OojwRtOuLPDHPlqLvjbMh71a+dltqz7pz2Y8VG/1osR9ME6uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nKqw7KU1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h/uyTAWH; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=K4GPDXLWRqvnjhQpH+eIrIbqmzW/f/M1M7A139sgMYcJhtGLV9qNaAKxx2uNIkJjaK7rmcwI0bJFEkm5DahA1EjdT5xslh1dYBvSV789mQwAWdL5UU23RKEm+gfT6/AgIXPgo5suiI/EMOy3S6AvqUxM8gFDGwe/+Q03GMrrkjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=b1Z6b7Ax; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uikHP2/l; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 08 Aug 2024 15:13:59 -0000
+Date: Thu, 08 Aug 2024 15:21:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1723130040;
+	s=2020; t=1723130501;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5v+mVeSFLEeJZNFpUajBpfv5cPDXB1lVLT9xWoVzqU0=;
-	b=nKqw7KU1/6BaYSz5qHyJmun0h3rgVmPtHl1/MLNxXluGrm4kwVs6ZZLDKKsPlf3RNUmSu5
-	sAc6jChJq0bvhYDPKZGZbRJC7gR/5ggNJHUijQ1yJvX4e3n1oQ6zc8RgdMrrsKSPkujmsT
-	RhRqOSvropCZ4UYiSHeMvGNtohaxQ6QLeX9K48gday6a4bRCuXe9cigZnE4CHZ17y18vYx
-	K69YykTxjDdLF37knVMYEQQWz7r3IO3+F7fjvBVg/T3ED0/wPChvERIQ6J6SaGdi3sjCkx
-	goqUb1gjLt8dhzisHcrGneuWP1qzfkCJpatfkiK5sk+HJXYjFsKJYbjucABeuw==
+	bh=jMyJk75EHAQphehTCUJAsaxvv0zkKr3q39NfyXbjKA8=;
+	b=b1Z6b7AxIloanhVLPUpZZ5lIlcqUDexckOwaO0I1gjbsHXZdX9ENonbZKlxeifulPCnWwc
+	ysUKkdMvYModULdqLNbX4c8FD3jhstpdsQHyJHZfdaJWQtH0aAzGvY3EDQWHNZmLJ+vGhA
+	aBYVQ2ZMnKAFl+xavpz2cJo5PTbMmsa6JS4ZRAwdsCB9Pmx+hPZkooUnnungdjosLnzp43
+	yXpBQsktA5IDkueuWwDLk+wOOgSvVn5iLNQ2e4xM6PVeI3oAATOcZCM5M49Ss8joWLjO70
+	zATvLcjhleBi8KintJJ7WMWy5c0UUzml+474PSDdeEfZJ+Hdq9UTNkMFrmypiQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1723130040;
+	s=2020e; t=1723130501;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5v+mVeSFLEeJZNFpUajBpfv5cPDXB1lVLT9xWoVzqU0=;
-	b=h/uyTAWHusFXakfaQqg+oPaL5hMXF/QxkxO1e6iMrcLKyopLWX6+9foT7g/1CbgPjWfXnd
-	igq8hXJ7H7JdkUCg==
-From: "tip-bot2 for Andi Kleen" <tip-bot2@linutronix.de>
+	bh=jMyJk75EHAQphehTCUJAsaxvv0zkKr3q39NfyXbjKA8=;
+	b=uikHP2/l8Q8qv5E7n6asvcFw1NpSrZcgNc3U9iw/Q6ro2AgAiGY5UPKOB0XCjke8rm5+zv
+	jwYK8zPs2Lfr2uCQ==
+From: "tip-bot2 for Jiri Slaby (SUSE)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/mtrr: Check if fixed MTRRs exist before saving them
-Cc: Andi Kleen <ak@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240808000244.946864-1-ak@linux.intel.com>
-References: <20240808000244.946864-1-ak@linux.intel.com>
+Subject: [tip: irq/core] genirq: Remove unused irq_chip_generic::
+ {type,polarity}_cache
+Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240808104118.430670-2-jirislaby@kernel.org>
+References: <20240808104118.430670-2-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172313003942.2215.6934578007639618525.tip-bot2@tip-bot2>
+Message-ID: <172313050093.2215.13651535166311220771.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,51 +80,50 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     919f18f961c03d6694aa726c514184f2311a4614
-Gitweb:        https://git.kernel.org/tip/919f18f961c03d6694aa726c514184f2311a4614
-Author:        Andi Kleen <ak@linux.intel.com>
-AuthorDate:    Wed, 07 Aug 2024 17:02:44 -07:00
+Commit-ID:     a09cdb8f564613769142a60400bb5160864c3269
+Gitweb:        https://git.kernel.org/tip/a09cdb8f564613769142a60400bb5160864c3269
+Author:        Jiri Slaby (SUSE) <jirislaby@kernel.org>
+AuthorDate:    Thu, 08 Aug 2024 12:41:17 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 08 Aug 2024 17:03:12 +02:00
+CommitterDate: Thu, 08 Aug 2024 17:15:02 +02:00
 
-x86/mtrr: Check if fixed MTRRs exist before saving them
+genirq: Remove unused irq_chip_generic:: {type,polarity}_cache
 
-MTRRs have an obsolete fixed variant for fine grained caching control
-of the 640K-1MB region that uses separate MSRs. This fixed variant has
-a separate capability bit in the MTRR capability MSR.
+The type_cache and polarity_cache members of struct irq_chip_generic are
+unused. Remove them both along with their kernel-doc.
 
-So far all x86 CPUs which support MTRR have this separate bit set, so it
-went unnoticed that mtrr_save_state() does not check the capability bit
-before accessing the fixed MTRR MSRs.
+Found by https://github.com/jirislaby/clang-struct.
 
-Though on a CPU that does not support the fixed MTRR capability this
-results in a #GP.  The #GP itself is harmless because the RDMSR fault is
-handled gracefully, but results in a WARN_ON().
-
-Add the missing capability check to prevent this.
-
-Fixes: 2b1f6278d77c ("[PATCH] x86: Save the MTRRs of the BSP before booting an AP")
-Signed-off-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240808000244.946864-1-ak@linux.intel.com
----
- arch/x86/kernel/cpu/mtrr/mtrr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Link: https://lore.kernel.org/all/20240808104118.430670-2-jirislaby@kernel.org
 
-diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.c b/arch/x86/kernel/cpu/mtrr/mtrr.c
-index 767bf1c..2a2fc14 100644
---- a/arch/x86/kernel/cpu/mtrr/mtrr.c
-+++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
-@@ -609,7 +609,7 @@ void mtrr_save_state(void)
- {
- 	int first_cpu;
- 
--	if (!mtrr_enabled())
-+	if (!mtrr_enabled() || !mtrr_state.have_fixed)
- 		return;
- 
- 	first_cpu = cpumask_first(cpu_online_mask);
+---
+ include/linux/irq.h | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/include/linux/irq.h b/include/linux/irq.h
+index 1f5dbf1..00490d6 100644
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -1040,8 +1040,6 @@ struct irq_chip_type {
+  * @irq_base:		Interrupt base nr for this chip
+  * @irq_cnt:		Number of interrupts handled by this chip
+  * @mask_cache:		Cached mask register shared between all chip types
+- * @type_cache:		Cached type register
+- * @polarity_cache:	Cached polarity register
+  * @wake_enabled:	Interrupt can wakeup from suspend
+  * @wake_active:	Interrupt is marked as an wakeup from suspend source
+  * @num_ct:		Number of available irq_chip_type instances (usually 1)
+@@ -1068,8 +1066,6 @@ struct irq_chip_generic {
+ 	unsigned int		irq_base;
+ 	unsigned int		irq_cnt;
+ 	u32			mask_cache;
+-	u32			type_cache;
+-	u32			polarity_cache;
+ 	u32			wake_enabled;
+ 	u32			wake_active;
+ 	unsigned int		num_ct;
 
