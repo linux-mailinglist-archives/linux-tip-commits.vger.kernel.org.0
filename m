@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-1999-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2001-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B6494BB19
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 12:32:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A2794C0B3
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 17:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A645B283A75
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 10:32:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E9511F21567
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 15:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359C918B469;
-	Thu,  8 Aug 2024 10:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A112518F2DB;
+	Thu,  8 Aug 2024 15:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OC0dLCfc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="79wvOL7u"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nKqw7KU1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h/uyTAWH"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBA518A6C2;
-	Thu,  8 Aug 2024 10:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC97C18EFC8;
+	Thu,  8 Aug 2024 15:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723113132; cv=none; b=qffonAUguUTI7x64LNGtweppC2HydmXJeEOzNRv8vXx07TEKxivwNsFB30ROiOGhm2PL8x141NTRes7/nIFEnBJcpOEoTKtSCnFMu0XLD9gSEpDJJRCIj1sMu5QOGuNca/1xmZipAfDIrHWTl9BA1wn8U55BkhfZJZd1TUsxYyo=
+	t=1723130043; cv=none; b=s7JyZR3qyAtesubCYPCOX522sTRES95qodqzYZaXUq8HGtrI5dJrcA3RPJi473t2cYV75a0qXKwhSPdOZZExcfRLUW7c27OdrKTsb/GY6DJer8BaLcCQsMu5pbm25wl3yYgjWHiUK11VXqgBuiwwJuHde4zo7gaixe6ACUaJysY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723113132; c=relaxed/simple;
-	bh=SbbehJIYmGRyJsd/JIdfxgohyc2Es+WDYMd5POK4Nds=;
+	s=arc-20240116; t=1723130043; c=relaxed/simple;
+	bh=cTpCsyPJ4hFjVH2XAjBl0UpnWxc2JOnEK+AxCFHtWZU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=EkllNG9CapiJllY89LWBpHcdqeoozTx4w9HE06OFqSiRVkm2/K/xtp6Nbv7DFClIT2HvHP/LhjwA6K1vIp9lrnVVaM16w0dbiqeVLq1OmSNVsLeETtkbUnPEPhWn1h6yPelyoV/qj1lcUbt9EP1AYwDfzrbg+NxeVzJWASHHZtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OC0dLCfc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=79wvOL7u; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Cvc+k8V+xlZNsUPksOFTKskR9cOY6vuegSWOEC8cLvLvjJ5FZh0ySMWeYha8o5mMalPkxbTNSTiKdL59JhoCsZJfSFa19rt/2/thCVhobjenkzwhkWpVBXOA83OojwRtOuLPDHPlqLvjbMh71a+dltqz7pz2Y8VG/1osR9ME6uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nKqw7KU1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h/uyTAWH; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 08 Aug 2024 10:32:08 -0000
+Date: Thu, 08 Aug 2024 15:13:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1723113128;
+	s=2020; t=1723130040;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rySI8+7n/qdaXtUo0esh103dJcI+xXsHJHwFkkzQ+8k=;
-	b=OC0dLCfcek+lml7nLluGjYsqTUaIc0YwtOO9FGukjS+lSasBzjZi+CaylzrnY4E2liBe4o
-	s7Al2SkuqERebU2ALw+2AaM7L/lZna/7HR/MgGQyFvcSVYXDP0f2SO645/AWDJRhwc2ypB
-	kaByTiL5rhAthvRNXWrCicki0d9Uq+68q1S22E5LtZ2G5Zg9RUJbKSIqLitq6vgkG20IuA
-	WVYVCIb9NXmpSi+1bazUOmu+z7kgEiEuoDBQvTM+aG1bcOxj3bvH/fD7YSo/ezNcyImlY8
-	+GwG+mjZvsDvrTqPf6AaK1aMnTZTfdGlexjAr6c7qSgUM5C5PDeo5llqjbGGBg==
+	bh=5v+mVeSFLEeJZNFpUajBpfv5cPDXB1lVLT9xWoVzqU0=;
+	b=nKqw7KU1/6BaYSz5qHyJmun0h3rgVmPtHl1/MLNxXluGrm4kwVs6ZZLDKKsPlf3RNUmSu5
+	sAc6jChJq0bvhYDPKZGZbRJC7gR/5ggNJHUijQ1yJvX4e3n1oQ6zc8RgdMrrsKSPkujmsT
+	RhRqOSvropCZ4UYiSHeMvGNtohaxQ6QLeX9K48gday6a4bRCuXe9cigZnE4CHZ17y18vYx
+	K69YykTxjDdLF37knVMYEQQWz7r3IO3+F7fjvBVg/T3ED0/wPChvERIQ6J6SaGdi3sjCkx
+	goqUb1gjLt8dhzisHcrGneuWP1qzfkCJpatfkiK5sk+HJXYjFsKJYbjucABeuw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1723113128;
+	s=2020e; t=1723130040;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rySI8+7n/qdaXtUo0esh103dJcI+xXsHJHwFkkzQ+8k=;
-	b=79wvOL7uFzUdoqwzXhqdtLUvnOcO/gLO2E7GHS2QHMO49tY6S0ArkL86kKuSimfibkKccM
-	/79tenP1DihZ0pCw==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+	bh=5v+mVeSFLEeJZNFpUajBpfv5cPDXB1lVLT9xWoVzqU0=;
+	b=h/uyTAWHusFXakfaQqg+oPaL5hMXF/QxkxO1e6iMrcLKyopLWX6+9foT7g/1CbgPjWfXnd
+	igq8hXJ7H7JdkUCg==
+From: "tip-bot2 for Andi Kleen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Extract a few helpers
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Kan Liang <kan.liang@linux.intel.com>, Namhyung Kim <namhyung@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240807115550.031212518@infradead.org>
-References: <20240807115550.031212518@infradead.org>
+Subject:
+ [tip: x86/urgent] x86/mtrr: Check if fixed MTRRs exist before saving them
+Cc: Andi Kleen <ak@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240808000244.946864-1-ak@linux.intel.com>
+References: <20240808000244.946864-1-ak@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172311312847.2215.6414212556576318693.tip-bot2@tip-bot2>
+Message-ID: <172313003942.2215.6934578007639618525.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,104 +79,51 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     9a32bd9901fe5b1dcf544389dbf04f3b0a2fbab4
-Gitweb:        https://git.kernel.org/tip/9a32bd9901fe5b1dcf544389dbf04f3b0a2fbab4
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 07 Aug 2024 13:29:26 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 08 Aug 2024 12:27:31 +02:00
+Commit-ID:     919f18f961c03d6694aa726c514184f2311a4614
+Gitweb:        https://git.kernel.org/tip/919f18f961c03d6694aa726c514184f2311a4614
+Author:        Andi Kleen <ak@linux.intel.com>
+AuthorDate:    Wed, 07 Aug 2024 17:02:44 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 08 Aug 2024 17:03:12 +02:00
 
-perf: Extract a few helpers
+x86/mtrr: Check if fixed MTRRs exist before saving them
 
-The context time update code is repeated verbatim a few times.
+MTRRs have an obsolete fixed variant for fine grained caching control
+of the 640K-1MB region that uses separate MSRs. This fixed variant has
+a separate capability bit in the MTRR capability MSR.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240807115550.031212518@infradead.org
+So far all x86 CPUs which support MTRR have this separate bit set, so it
+went unnoticed that mtrr_save_state() does not check the capability bit
+before accessing the fixed MTRR MSRs.
+
+Though on a CPU that does not support the fixed MTRR capability this
+results in a #GP.  The #GP itself is harmless because the RDMSR fault is
+handled gracefully, but results in a WARN_ON().
+
+Add the missing capability check to prevent this.
+
+Fixes: 2b1f6278d77c ("[PATCH] x86: Save the MTRRs of the BSP before booting an AP")
+Signed-off-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240808000244.946864-1-ak@linux.intel.com
 ---
- kernel/events/core.c | 39 ++++++++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 17 deletions(-)
+ arch/x86/kernel/cpu/mtrr/mtrr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index dad2b9a..eb03c9a 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2330,6 +2330,24 @@ group_sched_out(struct perf_event *group_event, struct perf_event_context *ctx)
- 		event_sched_out(event, ctx);
- }
+diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.c b/arch/x86/kernel/cpu/mtrr/mtrr.c
+index 767bf1c..2a2fc14 100644
+--- a/arch/x86/kernel/cpu/mtrr/mtrr.c
++++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
+@@ -609,7 +609,7 @@ void mtrr_save_state(void)
+ {
+ 	int first_cpu;
  
-+static inline void
-+ctx_time_update(struct perf_cpu_context *cpuctx, struct perf_event_context *ctx)
-+{
-+	if (ctx->is_active & EVENT_TIME) {
-+		update_context_time(ctx);
-+		update_cgrp_time_from_cpuctx(cpuctx, false);
-+	}
-+}
-+
-+static inline void
-+ctx_time_update_event(struct perf_event_context *ctx, struct perf_event *event)
-+{
-+	if (ctx->is_active & EVENT_TIME) {
-+		update_context_time(ctx);
-+		update_cgrp_time_from_event(event);
-+	}
-+}
-+
- #define DETACH_GROUP	0x01UL
- #define DETACH_CHILD	0x02UL
- #define DETACH_DEAD	0x04UL
-@@ -2349,10 +2367,7 @@ __perf_remove_from_context(struct perf_event *event,
- 	struct perf_event_pmu_context *pmu_ctx = event->pmu_ctx;
- 	unsigned long flags = (unsigned long)info;
- 
--	if (ctx->is_active & EVENT_TIME) {
--		update_context_time(ctx);
--		update_cgrp_time_from_cpuctx(cpuctx, false);
--	}
-+	ctx_time_update(cpuctx, ctx);
- 
- 	/*
- 	 * Ensure event_sched_out() switches to OFF, at the very least
-@@ -2437,12 +2452,8 @@ static void __perf_event_disable(struct perf_event *event,
- 	if (event->state < PERF_EVENT_STATE_INACTIVE)
+-	if (!mtrr_enabled())
++	if (!mtrr_enabled() || !mtrr_state.have_fixed)
  		return;
  
--	if (ctx->is_active & EVENT_TIME) {
--		update_context_time(ctx);
--		update_cgrp_time_from_event(event);
--	}
--
- 	perf_pmu_disable(event->pmu_ctx->pmu);
-+	ctx_time_update_event(ctx, event);
- 
- 	if (event == event->group_leader)
- 		group_sched_out(event, ctx);
-@@ -4529,10 +4540,7 @@ static void __perf_event_read(void *info)
- 		return;
- 
- 	raw_spin_lock(&ctx->lock);
--	if (ctx->is_active & EVENT_TIME) {
--		update_context_time(ctx);
--		update_cgrp_time_from_event(event);
--	}
-+	ctx_time_update_event(ctx, event);
- 
- 	perf_event_update_time(event);
- 	if (data->group)
-@@ -4732,10 +4740,7 @@ again:
- 		 * May read while context is not active (e.g., thread is
- 		 * blocked), in that case we cannot update context time
- 		 */
--		if (ctx->is_active & EVENT_TIME) {
--			update_context_time(ctx);
--			update_cgrp_time_from_event(event);
--		}
-+		ctx_time_update_event(ctx, event);
- 
- 		perf_event_update_time(event);
- 		if (group)
+ 	first_cpu = cpumask_first(cpu_online_mask);
 
