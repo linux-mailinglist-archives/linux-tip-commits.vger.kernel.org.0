@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2004-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2005-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D04194C0F1
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 17:22:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1D294C0F4
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 17:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3209B1F2294A
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 15:22:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D7E72867CD
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Aug 2024 15:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF65190489;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7DF19049C;
 	Thu,  8 Aug 2024 15:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="R0GRoiaU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GVzcayA8"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tOMosMwe";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/bWIWeV8"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755CA18F2CA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D6218FC8B;
 	Thu,  8 Aug 2024 15:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723130505; cv=none; b=RHc5FI1VsJHdQbTaD2lR/20pIfe0cWsfojMTwsvAVjqRXBEj6xFBzGYbGb/bP6Rn+VExckXpce/LedT3Yc9Tt3CVUH3pX+YnMT1v1xD6LuVHLsBUUZfFC9BQ3HkaJfKe+7T82tJ1+bb5nzHtgXTGvXHM90KVPvBV5hLQ6Mw9Ttc=
+	t=1723130505; cv=none; b=iwhul0+/AujPW3VjGIJy0JdFyaYjDQ31h6rdM9ACMsvS0axreFGGiQtgkyLfoMzEoZDHIQS7Ee/EJ8zUhDlDoXNtX/OoBnEcTswP/UkM+VNUoTbwDJtgCiYcg1mzO4/roBvW7KEioCGHVW3HJDVfE+eA887HEkPV2Hicf4/ynSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1723130505; c=relaxed/simple;
-	bh=BjLsQ3L8rwBn8oLeiQjZquKDX2PcqXZcRVPTW1eFqc4=;
+	bh=sG0g6ekVzTCMIXa8He+kVFX7FIgVDP9mtwZefUrCXvA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=tkqCgl8CrfMKzpSThZ5uaxADhWHCONOHSeWq8sm5z9AI5sEz42epPf5bKe2/Xr5kQV900vSnQ67UK7HiW7uIaZH68VFQ6ViStJeysNObULTi0GZnLEvjpOrlwRkTHKo9rYDZQ5E8K4SW5ByxlGL9AGcXO95DOYJ/+l7TpbqLS9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=R0GRoiaU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GVzcayA8; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Nn6mnDgB/2PR6AIwrUImQGcIW8qzw5k9TcQ2P/HyrWlbola5NAtHJQIzSfBvW7wlN1230tVDS68IRBU08oqyDLzsaII85+tss+3y1BBdU3as+1dt4+ePM9uYjCwQB7vTbFd8BBppmIZvFsG1q7uzNsj501th9fKb7dwnou3H/vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tOMosMwe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/bWIWeV8; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Thu, 08 Aug 2024 15:21:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1723130501;
+	s=2020; t=1723130502;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uULYZBwlNQSpLxzA0VrkJtgb8xF2tMjnj2r9LV3xpIk=;
-	b=R0GRoiaUrCycu30PyXHHqmtFZB9KlrTvyWvtok6kdai5ik7zjYfqcED8qx37y1oi9H29Vf
-	WcnOgMzMeKgb5XlxxapvnMLmCymSXHxqnsHIRqC0t8hOvGe1y8x3gKuKl7/04O1IgzKqJo
-	GJPkrlJ4tqeXV+UOdZ8W5TIbrCzREfHq5yZgLz7jfC6Vkxo06jFJdNGRhqx5ecyyjuV7D2
-	Jd2RYBrXqh0ln7FyB/gy7RTiAFs7+nTW4uzNHSXCMaCiTvRtH9xCLaWrdTRFPaWx3xNM0N
-	mpdqtLiKw2Gia3Z+lL3jedxFlgsTRJmyA/yLXXeMSU8Tw6aSPpEcFFFIIZNLvQ==
+	bh=8FtOaVZT2Y6ffjfcCw+A+r0YTL28yXXFjTpwdMDTXN0=;
+	b=tOMosMweF2tRoc6z+RC7/yZkel7g+PdbRNiK2toVW3bMzy6tVl4ecrr52XRJBV+xYCRuX6
+	3bC3waErjI1yhGVfA0XWXrmiUValPbax4xFXnA+9P0wcYjcHVfioZNngoSdEezG0bFHhAl
+	Xd6YO4I3yU/nKZo5WEgAw3OmMPYYcBlVSefcNm5GwMP5qKR4sxM7wnZOYGC18To8PPY6aG
+	S5AeeTJfwU1CPFuQlvjZbCtLVeBzfiaBMdoAecrEk7V55dlTQG26tV8OrmiAc2gVyuklCs
+	vKe+iSoZg15efct9hrPu3j1BMsYEo1UHlF6p+Ajz6zS3B9f3v45TQbIzf2MacA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1723130501;
+	s=2020e; t=1723130502;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uULYZBwlNQSpLxzA0VrkJtgb8xF2tMjnj2r9LV3xpIk=;
-	b=GVzcayA8pCZjDy0yKxJSbOTlxfBZwSJfJ8hyXpUvvq+JAwootk0uGep+I4CJaa/6n2aKdk
-	uIRi4XMvu9fKi+BQ==
-From: "tip-bot2 for Jiri Slaby (SUSE)" <tip-bot2@linutronix.de>
+	bh=8FtOaVZT2Y6ffjfcCw+A+r0YTL28yXXFjTpwdMDTXN0=;
+	b=/bWIWeV8cACKuPfEvuy+Q7bZKjjwSalfR4NQbXLKtLhUA2KJS1GGeUf5MultgLtJad6wEH
+	xkrEHW8L5nqQ/FCQ==
+From: "tip-bot2 for Zhang Zekun" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/core] genirq/irq_sim: Remove unused irq_sim_work_ctx:: Irq_base
-Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, x86@kernel.org,
+Subject: [tip: irq/core] irqchip/mbigen: Simplify code logic with
+ for_each_child_of_node_scoped()
+Cc: Zhang Zekun <zhangzekun11@huawei.com>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240808104118.430670-1-jirislaby@kernel.org>
-References: <20240808104118.430670-1-jirislaby@kernel.org>
+In-Reply-To: <20240808031552.3156-1-zhangzekun11@huawei.com>
+References: <20240808031552.3156-1-zhangzekun11@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172313050140.2215.11113404153225912181.tip-bot2@tip-bot2>
+Message-ID: <172313050191.2215.8129945618349507491.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,39 +82,74 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     15e46124ec937bb0ab530634dce4550947f53133
-Gitweb:        https://git.kernel.org/tip/15e46124ec937bb0ab530634dce4550947f53133
-Author:        Jiri Slaby (SUSE) <jirislaby@kernel.org>
-AuthorDate:    Thu, 08 Aug 2024 12:41:16 +02:00
+Commit-ID:     76bee035c6add05841addc3f31b41cd726b912c4
+Gitweb:        https://git.kernel.org/tip/76bee035c6add05841addc3f31b41cd726b912c4
+Author:        Zhang Zekun <zhangzekun11@huawei.com>
+AuthorDate:    Thu, 08 Aug 2024 11:15:52 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 08 Aug 2024 17:15:01 +02:00
 
-genirq/irq_sim: Remove unused irq_sim_work_ctx:: Irq_base
+irqchip/mbigen: Simplify code logic with for_each_child_of_node_scoped()
 
-Since commit 337cbeb2c13e ("genirq/irq_sim: Simplify the API"),
-irq_sim_work_ctx::irq_base is unused. Drop it.
+for_each_child_of_node_scoped() handles the device_node automaticlly, so
+switching over to it removes the device node cleanups and allows to return
+directly from the loop.
 
-Found by https://github.com/jirislaby/clang-struct.
-
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/all/20240808104118.430670-1-jirislaby@kernel.org
+Link: https://lore.kernel.org/all/20240808031552.3156-1-zhangzekun11@huawei.com
 
 ---
- kernel/irq/irq_sim.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/irqchip/irq-mbigen.c | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/kernel/irq/irq_sim.c b/kernel/irq/irq_sim.c
-index 3d4036d..1a3d483 100644
---- a/kernel/irq/irq_sim.c
-+++ b/kernel/irq/irq_sim.c
-@@ -13,7 +13,6 @@
+diff --git a/drivers/irqchip/irq-mbigen.c b/drivers/irqchip/irq-mbigen.c
+index 093fd42..1291983 100644
+--- a/drivers/irqchip/irq-mbigen.c
++++ b/drivers/irqchip/irq-mbigen.c
+@@ -222,37 +222,27 @@ static int mbigen_of_create_domain(struct platform_device *pdev,
+ 				   struct mbigen_device *mgn_chip)
+ {
+ 	struct platform_device *child;
+-	struct device_node *np;
+ 	u32 num_pins;
+-	int ret = 0;
  
- struct irq_sim_work_ctx {
- 	struct irq_work		work;
--	int			irq_base;
- 	unsigned int		irq_count;
- 	unsigned long		*pending;
- 	struct irq_domain	*domain;
+-	for_each_child_of_node(pdev->dev.of_node, np) {
++	for_each_child_of_node_scoped(pdev->dev.of_node, np) {
+ 		if (!of_property_read_bool(np, "interrupt-controller"))
+ 			continue;
+ 
+ 		child = of_platform_device_create(np, NULL, NULL);
+-		if (!child) {
+-			ret = -ENOMEM;
+-			break;
+-		}
++		if (!child)
++			return -ENOMEM;
+ 
+ 		if (of_property_read_u32(child->dev.of_node, "num-pins",
+ 					 &num_pins) < 0) {
+ 			dev_err(&pdev->dev, "No num-pins property\n");
+-			ret = -EINVAL;
+-			break;
++			return -EINVAL;
+ 		}
+ 
+-		if (!mbigen_create_device_domain(&child->dev, num_pins, mgn_chip)) {
+-			ret = -ENOMEM;
+-			break;
+-		}
++		if (!mbigen_create_device_domain(&child->dev, num_pins, mgn_chip))
++			return -ENOMEM;
+ 	}
+ 
+-	if (ret)
+-		of_node_put(np);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ #ifdef CONFIG_ACPI
 
