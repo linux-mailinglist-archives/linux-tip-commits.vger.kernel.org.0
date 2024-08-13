@@ -1,185 +1,219 @@
-Return-Path: <linux-tip-commits+bounces-2040-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2042-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7C0950C49
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Aug 2024 20:30:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 289B3950D7B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Aug 2024 22:03:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C81EE1F24F2F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Aug 2024 18:30:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C38B1C21900
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Aug 2024 20:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539D41A3BDF;
-	Tue, 13 Aug 2024 18:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157941A3BAC;
+	Tue, 13 Aug 2024 20:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fh4aeWxF"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sJhg1jir";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uYPq5k3q"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE311A3BC4;
-	Tue, 13 Aug 2024 18:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D154A953;
+	Tue, 13 Aug 2024 20:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723573737; cv=none; b=tuvAy5McodQeMzCzWLe9/rF0eXv4rrD0LCbOpPMhkM3ESxXfLnM83FDZ4rusx8DltOd0SwMCRAQgweJlJHRSORKuFQWMz0EJ2kZiJpdjI9Z06V6B9jjK/Z8mzIVoBlIuDKt2zOa3iXzByQn01t4AV9z4MyjWdPs4S69aV5n8Pts=
+	t=1723579409; cv=none; b=M6pv00dRaStHNpy43GyzRO2RnhhGaJGWGwUoN4rM3Mao5kma2HlOKRrCB+T7gz79lvChheLyhFf1/Drat/1iL5RYSDqUpMEshtlIaZlTD1WqMu2x1nIRED4lFQLvq9olWkGQvW1Zt3SqpYj8IPbMrEfRaT2i8/R/EgCxXKJc92k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723573737; c=relaxed/simple;
-	bh=m45hRkQxiY9mOk4MhjJuLHqi9GNnmOj4babgDsDsd88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z1d9igkL/SLyGBqOrpUug/hSaxPwzYp6CMGC81lBNtaeh2LKQCyqgzTlia0TPiRIN89cuP2bvT2SEoiIZAripZpA5/EzfqOA83B/dXrnesm1j1iwvGdA+waYn61wWVGVPzAQNnf4wueaQQ80SL6FbmL4jFwNKpNdyeNGmPuAEr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fh4aeWxF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B39C4AF0B;
-	Tue, 13 Aug 2024 18:28:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723573736;
-	bh=m45hRkQxiY9mOk4MhjJuLHqi9GNnmOj4babgDsDsd88=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fh4aeWxFNx3V2q0AJ7yXjhNSTEzc9VCNu3bQiDRUd1qnbiWrKC5WbY5hP2QqAfGgH
-	 lAZDh6Nv7QadGbMO5dRlAJ08ib41yduaHpk+ySaYUgdT+aAXTw1jz9rtxZoKkiin6/
-	 gi0eWaYx3EIoWJMgiHtkMpkJzj93nOB+MAUeXMrXrkPpH8OFXiyCow6z0xwPpC3Mvw
-	 hcorIwrl8ZLlv5tdGOS/cWb7qJz191AGMBjXnP95D6S75X9V+3lYVujCthwOtO/ATZ
-	 HVWR9c0EuxG7Gii1T8PDhDnGrBtEF6CvyLMPTNV5Gcd/ipYYrXp3j+Se+JRTXlmh0z
-	 ipEZgtU2/ohRg==
-Date: Tue, 13 Aug 2024 11:28:54 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: pengfei.xu@intel.com, kan.liang@linux.intel.com,
-	linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	peterz@infradead.org, syzkaller-bugs@googlegroups.com,
-	x86@kernel.org, lkft-triage@lists.linaro.org,
-	dan.carpenter@linaro.org, anders.roxell@linaro.org, arnd@arndb.de,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Subject: Re: [tip: perf/core] perf: Fix event_function_call() locking
-Message-ID: <Zrul5kzUc-5BfWcT@google.com>
-References: <Zrq4PRAVxjlnvFnb@xpf.sh.intel.com>
- <20240813151959.99058-1-naresh.kamboju@linaro.org>
+	s=arc-20240116; t=1723579409; c=relaxed/simple;
+	bh=j4Rl5dwmzBAE8rsXPrzl+AyjmQT3LBZPtT4nr+bWkXQ=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=OVkguJvSgkXULakijGdrfKRGp1Ubo5+1YMazLtDmuLAZ7ZybVF//asaBre3YbE6Fgh6zVUQ1zg03ydzMG6a+PdANXfmhUFoidCHb9Roxg/Os4IZg4x4PStSEMOFopS66UBp5au1CvWMR6rMxfSFxAmMPH7VekBKUnzqrbF+g2S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sJhg1jir; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uYPq5k3q; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 13 Aug 2024 20:03:24 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1723579405;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pUbDTg6GBkmIIUXvz96p508+q5Wr+osrDqkyrMZmpD8=;
+	b=sJhg1jircI/uIEE6xnCu0X5KKLVn8Hl6gdD3s6hpO7MZLdhrOOwTi97kNZFMH7b4MptRfJ
+	FhRlkB8+5CX8HPWg3LxQIAOFlAFT3X7zQ6TMT1nmsJFRUF8s95ziYBPy2h+Hhk+qBsxVId
+	kQg4avht4001XjoH2dM9wWrQIAqjlPoZ9aGKsdPEVwIANmdIG6Xite4L5aCk/Xz8M4fZ1g
+	5aZPt81ZoJyp4cjJWciFm0ptLJBy06d/HSlX1QKUuTactB4NAvTqkBiDM1StAGt+ZfN5Fq
+	DhyparLf0jJV6NAK4L8NJCN35oHpFa8CPVPTkdQGvaaYFHRHXUY9yIGeeSxK0g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1723579405;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pUbDTg6GBkmIIUXvz96p508+q5Wr+osrDqkyrMZmpD8=;
+	b=uYPq5k3qstWx5hQ4nX7loqz75WBTurWYFvdWrnwcBtpu1HM17cQfqLOGHBzQ1opEV0sqkf
+	qYs+PxF4VMVNwVBw==
+From: "tip-bot2 for Xin Li (Intel)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/fred] x86/fred: Enable FRED right after init_mem_mapping()
+Cc: Hou Wenlong <houwenlong.hwl@antgroup.com>,
+ Thomas Gleixner <tglx@linutronix.de>, "Xin Li (Intel)" <xin@zytor.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240709154048.3543361-4-xin@zytor.com>
+References: <20240709154048.3543361-4-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240813151959.99058-1-naresh.kamboju@linaro.org>
+Message-ID: <172357940456.2215.3119070109667388257.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Hello,
+The following commit has been merged into the x86/fred branch of tip:
 
-On Tue, Aug 13, 2024 at 08:49:59PM +0530, Naresh Kamboju wrote:
-> While running LTP test cases splice07 and perf_event_open01 found following
-> kernel BUG running on arm64 device juno-r2 and qemu-arm64 on the Linux
-> next-20240812 and next-20240813 tag.
-> 
->   GOOD: next-20240809
->   BAD: next-20240812
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> Test log:
-> --------
-> [ 2278.760258] check_preemption_disabled: 15 callbacks suppressed
-> [ 2278.760282] BUG: using smp_processor_id() in preemptible [00000000] code: perf_event_open/111076
-> [ 2278.775032] caller is debug_smp_processor_id+0x20/0x30
-> [ 2278.780270] CPU: 5 UID: 0 PID: 111076 Comm: perf_event_open Not tainted 6.11.0-rc3-next-20240812 #1
-> [ 2278.789344] Hardware name: ARM Juno development board (r2) (DT)
-> [ 2278.795276] Call trace:
-> [ 2278.797724]  dump_backtrace+0x9c/0x128
-> [ 2278.801487]  show_stack+0x20/0x38
-> [ 2278.804812]  dump_stack_lvl+0xbc/0xd0
-> [ 2278.808487]  dump_stack+0x18/0x28
-> [ 2278.811811]  check_preemption_disabled+0xd8/0xf8
-> [ 2278.816446]  debug_smp_processor_id+0x20/0x30
-> [ 2278.820818]  event_function_call+0x54/0x168
-> [ 2278.825015]  _perf_event_enable+0x78/0xa8
-> [ 2278.829037]  perf_event_for_each_child+0x44/0xa0
-> [ 2278.833672]  _perf_ioctl+0x1bc/0xae0
-> [ 2278.837262]  perf_ioctl+0x58/0x90
-> [ 2278.840590]  __arm64_sys_ioctl+0xb4/0x100
-> [ 2278.844615]  invoke_syscall+0x50/0x120
-> [ 2278.848381]  el0_svc_common.constprop.0+0x48/0xf0
-> [ 2278.853103]  do_el0_svc+0x24/0x38
-> [ 2278.856432]  el0_svc+0x3c/0x108
-> [ 2278.859585]  el0t_64_sync_handler+0x120/0x130
-> [ 2278.863956]  el0t_64_sync+0x190/0x198
-> [ 2279.068732] BUG: using smp_processor_id() in preemptible [00000000] code: perf_event_open/111076
-> [ 2279.077570] caller is debug_smp_processor_id+0x20/0x30
-> [ 2279.082754] CPU: 1 UID: 0 PID: 111076 Comm: perf_event_open Not tainted 6.11.0-rc3-next-20240812 #1
-> [ 2279.091823] Hardware name: ARM Juno development board (r2) (DT)
-> 
-> Full test log:
-> ---------
->  - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240813/testrun/24833616/suite/log-parser-test/test/check-kernel-bug/log
->  - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240813/testrun/24833616/suite/log-parser-test/tests/
->  - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240812/testrun/24821160/suite/log-parser-test/test/check-kernel-bug-483bde618da4ec98e33eefb5e26adeb267f80cc2461569605f3166ce12b3fe82/log
-> 
-> metadata:
->   artifact-location: https://storage.tuxsuite.com/public/linaro/lkft/builds/2kXsz6nJO7pJ1nL4xGlKHYhiLx9/
->   build-url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2kXsz6nJO7pJ1nL4xGlKHYhiLx9/
->   build_name: gcc-13-lkftconfig-debug
->   git_describe: next-20240812
->   git_repo: https://gitlab.com/Linaro/lkft/mirrors/next/linux-next
->   git_sha: 9e6869691724b12e1f43655eeedc35fade38120c
->   kernel-config: https://storage.tuxsuite.com/public/linaro/lkft/builds/2kXsz6nJO7pJ1nL4xGlKHYhiLx9/config
->   kernel_version: 6.11.0-rc3
->   toolchain: gcc-13
+Commit-ID:     a97756cbec448032f84b5bbfe4e101478d1e01e0
+Gitweb:        https://git.kernel.org/tip/a97756cbec448032f84b5bbfe4e101478d1e01e0
+Author:        Xin Li (Intel) <xin@zytor.com>
+AuthorDate:    Tue, 09 Jul 2024 08:40:48 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 13 Aug 2024 21:59:21 +02:00
 
-Thanks for the report, can you please check if it solves the problem?
+x86/fred: Enable FRED right after init_mem_mapping()
 
-Thanks,
-Namhyung
+On 64-bit init_mem_mapping() relies on the minimal page fault handler
+provided by the early IDT mechanism. The real page fault handler is
+installed right afterwards into the IDT.
 
+This is problematic on CPUs which have X86_FEATURE_FRED set because the
+real page fault handler retrieves the faulting address from the FRED
+exception stack frame and not from CR2, but that does obviously not work
+when FRED is not yet enabled in the CPU.
+
+To prevent this enable FRED right after init_mem_mapping() without
+interrupt stacks. Those are enabled later in trap_init() after the CPU
+entry area is set up.
+
+[ tglx: Encapsulate the FRED details ]
+
+Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
+Reported-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240709154048.3543361-4-xin@zytor.com
 ---
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 9893ba5e98aa..85204c2376fa 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -298,13 +298,14 @@ static int event_function(void *info)
- static void event_function_call(struct perf_event *event, event_f func, void *data)
+ arch/x86/include/asm/processor.h |  3 ++-
+ arch/x86/kernel/cpu/common.c     | 15 +++++++++++++--
+ arch/x86/kernel/setup.c          |  7 ++++++-
+ arch/x86/kernel/smpboot.c        |  2 +-
+ arch/x86/kernel/traps.c          |  2 +-
+ 5 files changed, 23 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index a75a07f..399f7d1 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -582,7 +582,8 @@ extern void switch_gdt_and_percpu_base(int);
+ extern void load_direct_gdt(int);
+ extern void load_fixmap_gdt(int);
+ extern void cpu_init(void);
+-extern void cpu_init_exception_handling(void);
++extern void cpu_init_exception_handling(bool boot_cpu);
++extern void cpu_init_replace_early_idt(void);
+ extern void cr4_init(void);
+ 
+ extern void set_task_blockstep(struct task_struct *task, bool on);
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 6de12b3..a4735d9 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2176,7 +2176,7 @@ static inline void tss_setup_io_bitmap(struct tss_struct *tss)
+  * Setup everything needed to handle exceptions from the IDT, including the IST
+  * exceptions which use paranoid_entry().
+  */
+-void cpu_init_exception_handling(void)
++void cpu_init_exception_handling(bool boot_cpu)
  {
- 	struct perf_event_context *ctx = event->ctx;
--	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
-+	struct perf_cpu_context *cpuctx;
- 	struct task_struct *task = READ_ONCE(ctx->task); /* verified in event_function */
- 	struct event_function_struct efs = {
- 		.event = event,
- 		.func = func,
- 		.data = data,
- 	};
-+	unsigned long flags;
+ 	struct tss_struct *tss = this_cpu_ptr(&cpu_tss_rw);
+ 	int cpu = raw_smp_processor_id();
+@@ -2196,13 +2196,24 @@ void cpu_init_exception_handling(void)
+ 	setup_ghcb();
  
- 	if (!event->parent) {
- 		/*
-@@ -327,22 +328,27 @@ static void event_function_call(struct perf_event *event, event_f func, void *da
- 	if (!task_function_call(task, event_function, &efs))
- 		return;
- 
-+	local_irq_save(flags);
-+	cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
+-		cpu_init_fred_exceptions();
++		/* The boot CPU has enabled FRED during early boot */
++		if (!boot_cpu)
++			cpu_init_fred_exceptions();
 +
- 	perf_ctx_lock(cpuctx, ctx);
- 	/*
- 	 * Reload the task pointer, it might have been changed by
- 	 * a concurrent perf_event_context_sched_out().
- 	 */
- 	task = ctx->task;
--	if (task == TASK_TOMBSTONE) {
--		perf_ctx_unlock(cpuctx, ctx);
--		return;
--	}
-+	if (task == TASK_TOMBSTONE)
-+		goto out;
-+
- 	if (ctx->is_active) {
- 		perf_ctx_unlock(cpuctx, ctx);
-+		local_irq_restore(flags);
- 		goto again;
+ 		cpu_init_fred_rsps();
+ 	} else {
+ 		load_current_idt();
  	}
- 	func(event, NULL, ctx, data);
-+out:
- 	perf_ctx_unlock(cpuctx, ctx);
-+	local_irq_restore(flags);
  }
  
++void __init cpu_init_replace_early_idt(void)
++{
++	if (cpu_feature_enabled(X86_FEATURE_FRED))
++		cpu_init_fred_exceptions();
++	else
++		idt_setup_early_pf();
++}
++
  /*
+  * cpu_init() initializes state that is per-CPU. Some data is already
+  * initialized (naturally) in the bootstrap process, such as the GDT.  We
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 6129dc2..f1fea50 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -1039,7 +1039,12 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	init_mem_mapping();
+ 
+-	idt_setup_early_pf();
++	/*
++	 * init_mem_mapping() relies on the early IDT page fault handling.
++	 * Now either enable FRED or install the real page fault handler
++	 * for 64-bit in the IDT.
++	 */
++	cpu_init_replace_early_idt();
+ 
+ 	/*
+ 	 * Update mmu_cr4_features (and, indirectly, trampoline_cr4_features)
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 0c35207..dc4fff8 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -246,7 +246,7 @@ static void notrace start_secondary(void *unused)
+ 		__flush_tlb_all();
+ 	}
+ 
+-	cpu_init_exception_handling();
++	cpu_init_exception_handling(false);
+ 
+ 	/*
+ 	 * Load the microcode before reaching the AP alive synchronization
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 6afb41e..197d588 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -1411,7 +1411,7 @@ void __init trap_init(void)
+ 	sev_es_init_vc_handling();
+ 
+ 	/* Initialize TSS before setting up traps so ISTs work */
+-	cpu_init_exception_handling();
++	cpu_init_exception_handling(true);
+ 
+ 	/* Setup traps as cpu_init() might #GP */
+ 	if (!cpu_feature_enabled(X86_FEATURE_FRED))
 
