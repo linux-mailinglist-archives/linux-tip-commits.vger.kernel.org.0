@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-2070-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2071-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A20955B35
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Aug 2024 08:24:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AE8955B37
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Aug 2024 08:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB9D61C20FBF
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Aug 2024 06:24:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FD1C2824F8
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Aug 2024 06:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC2CDDAB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFA72940D;
 	Sun, 18 Aug 2024 06:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KPFEXWJY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JsXj5F5E"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AyQfI687";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bsD3DQIJ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5F917BBF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBB617C6C;
 	Sun, 18 Aug 2024 06:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723962195; cv=none; b=PNH0CX/feAxZ+D1neRhhniekm5bCR+iJ44WB1EmQOHIAQFewtDty/VxG8gzKU8LqtYLLXhZ2DwTT0cJmDjeN1n/18IIGhsGcwCdm3K+jF1S7iQV0O0RTi/35k6W6tn7g3G1F7CD1VyzWXQJtmaozCI+M3L4pIlODkT9Fl1Fnpj0=
+	t=1723962195; cv=none; b=hf7GZEyhTJwVrJSuUfS+/DxasyF3LqiyczeWPkO60nTVqnpk00bIl4B6c5U8OfX0fEQXhK1337MtatQNgHjVIgkyjtRcsxVuZedPCpF+TDo2h1uGumKN87grClCYiMcQ46+GS3z+aPJ6aTIoNiAINJxISRIP4TlUmxyUBlJkFCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1723962195; c=relaxed/simple;
-	bh=fvqbc/NRLvnOWt5vKGhbPVCDjAZykSbr+O9LGGcyFYw=;
+	bh=ALaMhm9ZJy//W1kSfONVyU0+Hnx5PWdOr0EVh5yssMo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=gqKQq/Khyz8VI3yITJ9e3S702woT5WoiKqR0hqXbojmRnUSryL4JhjhFdvL/rsutcqT6wfwt2N0YdKRG1P4g6IoPChbSNMzFm5MmJknxesc1WFxlMyulhQctgIz7xiJV/D+aoN7LowBjqfhjKwMY6xAxZN3L9Muj7H0OqkijGJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KPFEXWJY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JsXj5F5E; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=O1ZOuekdrLH1v5/cnqIUWIRTmR/0Eny9fSCKvZF/BWHidHhtf5FRd8IVsr1ii9/NQPKWx3i3VnSL5jm/gIuuVkGpbofKoGSt8gxva2qpjaFY7PM937y3v8c/DBfryV+w1E7HrBXBS6Pa6y34fZH0i5pnqUkxdmFPTF7ANg/GODw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AyQfI687; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bsD3DQIJ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 18 Aug 2024 06:23:09 -0000
+Date: Sun, 18 Aug 2024 06:23:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1723962190;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WphN8DQ6Df2Lkwj7Vm2tWec9+RHa6U9fXF66bZND/KI=;
-	b=KPFEXWJYaS4FZmKo8Sfrmitq/1EoOXGzUCCrpvWFUK0EuQ/JdFs+eg0Ladvuy0gWFWamll
-	lMyy6D1ysgzP7dGuSGd8TA+A3T3qMHfz5+UKzZS3lloCMR9BglT2rMmQwS7XJAJ3DPJQih
-	bTSMnNRNwL3iC+wqnYkFcAfR+M3IdT4X/biEROuHdCwHQQlDQpNYIYKwQ7dXJrUKma2ThQ
-	iVEIs6Q9FfOsZ+Z09Ur18aV3a5pbi249dFwUWtNqXIRqqrW20vs/QT29J5NHLowJG6RjLP
-	E+LO5UPB708wav5+kctQC0ufT3JR/6Ndu6Zkc3CMCtu0L+4wMOq+rOl68DRMmw==
+	bh=rwdQjbJJSd8q8nv/3dz0bcYlVhFTM80MKqeeZfqvG2s=;
+	b=AyQfI687gpBHNM6NMqgLJ/lLxBDR6T7YdpXmxcXjqYgt9IbGZJ5KWmPe8IIrYMIKXylkla
+	Y3ZgTCIkqk5Yx8/d2Z4fZcvIGuR/TAis1MuvkxMaQEgq3NRAD4P6GmCNskd1+IIeiRRMNm
+	Ooe75ksPer+j7rT9gXsISVuvMtZVdSEiE67I+3+EmUlbPJ9D4iQod9cg4v830okSGnTqu9
+	r2HQyuv9lQ2V20eY9/vLRGUIGVx0gbSkRZh+gM8Oqt9sqCYn5om57KbIbNUJ/SgmBoqxzU
+	iHADBoNJekXH4EziybKQi1g7qxvQxffbtt871DzSIBA+iwouuKIZFlnpsF3ZMg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1723962190;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,27 +52,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WphN8DQ6Df2Lkwj7Vm2tWec9+RHa6U9fXF66bZND/KI=;
-	b=JsXj5F5EOXIQNKmsWJhJh7IkTcBvhIOW8oUgPtnrZqd1zWb+iw3mOWtKLWWbKWU5A5nfXo
-	6GLmBd8NwvyQ8mCw==
+	bh=rwdQjbJJSd8q8nv/3dz0bcYlVhFTM80MKqeeZfqvG2s=;
+	b=bsD3DQIJ5xAn/00I3QypRoMNA3J0/OhA3t4R4ZmevKpZFpGUGKPngx0Nap4pkttiroL9F9
+	KTjAWdgr+/J0S9DQ==
 From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/uclamg: Handle delayed dequeue
-Cc: Luis Machado <luis.machado@arm.com>, Hongyan Xia <hongyan.xia2@arm.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: sched/core] sched: Prepare generic code for delayed dequeue
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Valentin Schneider <vschneid@redhat.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240727105029.315205425@infradead.org>
-References: <20240727105029.315205425@infradead.org>
+In-Reply-To: <20240727105029.200000445@infradead.org>
+References: <20240727105029.200000445@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172396218984.2215.18280492377096522742.tip-bot2@tip-bot2>
+Message-ID: <172396219016.2215.8323874093243356703.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,90 +81,118 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     dfa0a574cbc47bfd5f8985f74c8ea003a37fa078
-Gitweb:        https://git.kernel.org/tip/dfa0a574cbc47bfd5f8985f74c8ea003a37fa078
+Commit-ID:     abc158c82ae555078aa5dd2d8407c3df0f868904
+Gitweb:        https://git.kernel.org/tip/abc158c82ae555078aa5dd2d8407c3df0f868904
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 05 Jun 2024 12:09:11 +02:00
+AuthorDate:    Thu, 23 May 2024 10:55:59 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Sat, 17 Aug 2024 11:06:42 +02:00
 
-sched/uclamg: Handle delayed dequeue
+sched: Prepare generic code for delayed dequeue
 
-Delayed dequeue has tasks sit around on the runqueue that are not
-actually runnable -- specifically, they will be dequeued the moment
-they get picked.
+While most of the delayed dequeue code can be done inside the
+sched_class itself, there is one location where we do not have an
+appropriate hook, namely ttwu_runnable().
 
-One side-effect is that such a task can get migrated, which leads to a
-'nested' dequeue_task() scenario that messes up uclamp if we don't
-take care.
+Add an ENQUEUE_DELAYED call to the on_rq path to deal with waking
+delayed dequeue tasks.
 
-Notably, dequeue_task(DEQUEUE_SLEEP) can 'fail' and keep the task on
-the runqueue. This however will have removed the task from uclamp --
-per uclamp_rq_dec() in dequeue_task(). So far so good.
-
-However, if at that point the task gets migrated -- or nice adjusted
-or any of a myriad of operations that does a dequeue-enqueue cycle --
-we'll pass through dequeue_task()/enqueue_task() again. Without
-modification this will lead to a double decrement for uclamp, which is
-wrong.
-
-Reported-by: Luis Machado <luis.machado@arm.com>
-Reported-by: Hongyan Xia <hongyan.xia2@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Valentin Schneider <vschneid@redhat.com>
 Tested-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lkml.kernel.org/r/20240727105029.315205425@infradead.org
+Link: https://lkml.kernel.org/r/20240727105029.200000445@infradead.org
 ---
- kernel/sched/core.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ include/linux/sched.h |  1 +
+ kernel/sched/core.c   | 14 +++++++++++++-
+ kernel/sched/sched.h  |  2 ++
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 2c1b4ee..f4a648e 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -544,6 +544,7 @@ struct sched_entity {
+ 
+ 	struct list_head		group_node;
+ 	unsigned int			on_rq;
++	unsigned int			sched_delayed;
+ 
+ 	u64				exec_start;
+ 	u64				sum_exec_runtime;
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 7356464..80e639e 100644
+index 6c59548..7356464 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -1691,6 +1691,9 @@ static inline void uclamp_rq_inc(struct rq *rq, struct task_struct *p)
- 	if (unlikely(!p->sched_class->uclamp_enabled))
- 		return;
+@@ -2036,6 +2036,8 @@ void activate_task(struct rq *rq, struct task_struct *p, int flags)
  
-+	if (p->se.sched_delayed)
-+		return;
+ void deactivate_task(struct rq *rq, struct task_struct *p, int flags)
+ {
++	SCHED_WARN_ON(flags & DEQUEUE_SLEEP);
 +
- 	for_each_clamp_id(clamp_id)
- 		uclamp_rq_inc_id(rq, p, clamp_id);
+ 	WRITE_ONCE(p->on_rq, TASK_ON_RQ_MIGRATING);
+ 	ASSERT_EXCLUSIVE_WRITER(p->on_rq);
  
-@@ -1715,6 +1718,9 @@ static inline void uclamp_rq_dec(struct rq *rq, struct task_struct *p)
- 	if (unlikely(!p->sched_class->uclamp_enabled))
- 		return;
+@@ -3689,12 +3691,14 @@ static int ttwu_runnable(struct task_struct *p, int wake_flags)
  
-+	if (p->se.sched_delayed)
-+		return;
+ 	rq = __task_rq_lock(p, &rf);
+ 	if (task_on_rq_queued(p)) {
++		update_rq_clock(rq);
++		if (p->se.sched_delayed)
++			enqueue_task(rq, p, ENQUEUE_NOCLOCK | ENQUEUE_DELAYED);
+ 		if (!task_on_cpu(rq, p)) {
+ 			/*
+ 			 * When on_rq && !on_cpu the task is preempted, see if
+ 			 * it should preempt the task that is current now.
+ 			 */
+-			update_rq_clock(rq);
+ 			wakeup_preempt(rq, p, wake_flags);
+ 		}
+ 		ttwu_do_wakeup(p);
+@@ -4074,11 +4078,16 @@ int try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
+ 		 * case the whole 'p->on_rq && ttwu_runnable()' case below
+ 		 * without taking any locks.
+ 		 *
++		 * Specifically, given current runs ttwu() we must be before
++		 * schedule()'s block_task(), as such this must not observe
++		 * sched_delayed.
++		 *
+ 		 * In particular:
+ 		 *  - we rely on Program-Order guarantees for all the ordering,
+ 		 *  - we're serialized against set_special_state() by virtue of
+ 		 *    it disabling IRQs (this allows not taking ->pi_lock).
+ 		 */
++		SCHED_WARN_ON(p->se.sched_delayed);
+ 		if (!ttwu_state_match(p, state, &success))
+ 			goto out;
+ 
+@@ -4370,6 +4379,9 @@ static void __sched_fork(unsigned long clone_flags, struct task_struct *p)
+ 	p->se.slice			= sysctl_sched_base_slice;
+ 	INIT_LIST_HEAD(&p->se.group_node);
+ 
++	/* A delayed task cannot be in clone(). */
++	SCHED_WARN_ON(p->se.sched_delayed);
 +
- 	for_each_clamp_id(clamp_id)
- 		uclamp_rq_dec_id(rq, p, clamp_id);
- }
-@@ -1994,8 +2000,12 @@ void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
- 		psi_enqueue(p, (flags & ENQUEUE_WAKEUP) && !(flags & ENQUEUE_MIGRATED));
- 	}
+ #ifdef CONFIG_FAIR_GROUP_SCHED
+ 	p->se.cfs_rq			= NULL;
+ #endif
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 69ab3b0..ffca977 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2253,6 +2253,7 @@ extern const u32		sched_prio_to_wmult[40];
+ #define DEQUEUE_MOVE		0x04 /* Matches ENQUEUE_MOVE */
+ #define DEQUEUE_NOCLOCK		0x08 /* Matches ENQUEUE_NOCLOCK */
+ #define DEQUEUE_MIGRATING	0x100 /* Matches ENQUEUE_MIGRATING */
++#define DEQUEUE_DELAYED		0x200 /* Matches ENQUEUE_DELAYED */
  
--	uclamp_rq_inc(rq, p);
- 	p->sched_class->enqueue_task(rq, p, flags);
-+	/*
-+	 * Must be after ->enqueue_task() because ENQUEUE_DELAYED can clear
-+	 * ->sched_delayed.
-+	 */
-+	uclamp_rq_inc(rq, p);
+ #define ENQUEUE_WAKEUP		0x01
+ #define ENQUEUE_RESTORE		0x02
+@@ -2268,6 +2269,7 @@ extern const u32		sched_prio_to_wmult[40];
+ #endif
+ #define ENQUEUE_INITIAL		0x80
+ #define ENQUEUE_MIGRATING	0x100
++#define ENQUEUE_DELAYED		0x200
  
- 	if (sched_core_enabled(rq))
- 		sched_core_enqueue(rq, p);
-@@ -2017,6 +2027,10 @@ inline bool dequeue_task(struct rq *rq, struct task_struct *p, int flags)
- 		psi_dequeue(p, flags & DEQUEUE_SLEEP);
- 	}
+ #define RETRY_TASK		((void *)-1UL)
  
-+	/*
-+	 * Must be before ->dequeue_task() because ->dequeue_task() can 'fail'
-+	 * and mark the task ->sched_delayed.
-+	 */
- 	uclamp_rq_dec(rq, p);
- 	return p->sched_class->dequeue_task(rq, p, flags);
- }
 
