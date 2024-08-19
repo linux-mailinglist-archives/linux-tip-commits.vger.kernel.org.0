@@ -1,120 +1,151 @@
-Return-Path: <linux-tip-commits+bounces-2078-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2080-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEE8955B46
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Aug 2024 08:25:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1910595668B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Aug 2024 11:14:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AACAA2824A4
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Aug 2024 06:25:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB3FD286678
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Aug 2024 09:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CE47D405;
-	Sun, 18 Aug 2024 06:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gBeiPQkb";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="byrPGRCN"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C643D25570;
-	Sun, 18 Aug 2024 06:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FBB11586DB;
+	Mon, 19 Aug 2024 09:14:44 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF2F148FE0;
+	Mon, 19 Aug 2024 09:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723962197; cv=none; b=l3atXeCBNmZ5vTcqqDIbbLZHMMVMMiILFy5NRTUvr+RfbN3GtU5uMDkCjNnrG6Mv1Whhv5M6JdtuP2MKMOm6Usn94CCBKPSOE0GLZx8ISLhkyPSxGc+xYobpzAH88YemmsL0PQrbrVxgknTgwAkxvabHf/mW+TLm3ZO0zEuswVo=
+	t=1724058884; cv=none; b=qKCEHITrUI8/cJ5W9ri4DRaFvWL/au7gJnhzRlth6DBlxczBaArv3c26p9EnpBNkj4y61pQ+HGZ1Ui9db4aVXQP11weqCElC+Pd7yM4HXO+sFKpH4ycCcCwHsBMQKSCyXTJYT0XK14V3wT2e6eTqKEwWdx2ujKUozoIBhmG+mtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723962197; c=relaxed/simple;
-	bh=RCT1vw7GkOh44AOLZ/Rrzry2uj9NxrAN3qfjrgjN+7A=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Gc/OEe2+rgwtVCvPJw1eUlhIcHHaJISGhG6aH7vclYrtSkiTx9tNGP22jCijkwvMTort804rkXWyFtoXugbTl5z80Z86eP9TVvGpeFzZ4duCQtzKDCZK3kkEhAECPEUp+7bW+G9hXXYyvj4ZrIqNS7VENeZ7GUH+i6+S1CGoTQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gBeiPQkb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=byrPGRCN; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 18 Aug 2024 06:23:12 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1723962193;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M7UOPGAHn8IblAR5C9mHoZ01Ujbmcoae+rmg4Gp0T5M=;
-	b=gBeiPQkbd+xbUG6/LyvbY8+OaqSPeWoxffiNHN3eYsApMs0tXypc76punrgWpS9AAAhvkv
-	WP+UAVz+7zAoWz84mCTXgXOQH4jr1Zt0WTYi+Wh3Mj+7RB48oGKNJAx9RNB0w5UfQh0HX1
-	rGvzq7KHG2jSZOo10zFopEn5nqnVCVYmFquBWf7AnlQqWVpOQOIBOrAVO21rNTCPKK8rRi
-	87K2IEYY7zGYiK7xHbUWYLlZNsAUSmuHguu2mJwW/PA3SkG+RHOlaq4eFj6BUbfEFOY2pg
-	c3NgDtE3iQP4zV/t97PShaWYOF29jeuXfu+k6hf4y+0c5bd1koz/rQ249unItw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1723962193;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M7UOPGAHn8IblAR5C9mHoZ01Ujbmcoae+rmg4Gp0T5M=;
-	b=byrPGRCNe750F7R/dW9dugT2Yh++/Jb3BQu5BCUEWnkhJpnI66j4zkK+BeMB14t72uoIJK
-	FCOA+6shBDDK5SDQ==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/eevdf: Add feature comments
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Valentin Schneider <vschneid@redhat.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240727105028.287790895@infradead.org>
-References: <20240727105028.287790895@infradead.org>
+	s=arc-20240116; t=1724058884; c=relaxed/simple;
+	bh=G+wsMecrDCT8FTyXe8LseW45irGqIFo3jAoyDBcJ47w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fx+TO5FzAxDCVaQRvqomutHWyKdDEjkvymjkbVTsA1RlhwtfaguveoOlUiL2tc89b2t3IeAWe0NEarUhXex4qOat/Rvlcsvnlc9mzyvfWs9FZDuShN6eoqKHD+PhgqikcshqARquPrvl/14WuQAYyI2FgJ/x2qKsaomzRaxD1Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2EF491063;
+	Mon, 19 Aug 2024 02:15:07 -0700 (PDT)
+Received: from [10.57.49.21] (unknown [10.57.49.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 268883F73B;
+	Mon, 19 Aug 2024 02:14:40 -0700 (PDT)
+Message-ID: <d52d617f-d5c7-45c8-a543-d3ecade2adf8@arm.com>
+Date: Mon, 19 Aug 2024 10:14:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172396219256.2215.1836630580131088615.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [tip: sched/core] sched/uclamg: Handle delayed dequeue
+To: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
+Cc: Luis Machado <luis.machado@arm.com>, Hongyan Xia <hongyan.xia2@arm.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Valentin Schneider <vschneid@redhat.com>, x86@kernel.org
+References: <20240727105029.315205425@infradead.org>
+ <172396218984.2215.18280492377096522742.tip-bot2@tip-bot2>
+Content-Language: en-US
+From: Christian Loehle <christian.loehle@arm.com>
+In-Reply-To: <172396218984.2215.18280492377096522742.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the sched/core branch of tip:
+On 8/18/24 07:23, tip-bot2 for Peter Zijlstra wrote:
+> The following commit has been merged into the sched/core branch of tip:
+> 
+> Commit-ID:     dfa0a574cbc47bfd5f8985f74c8ea003a37fa078
+> Gitweb:        https://git.kernel.org/tip/dfa0a574cbc47bfd5f8985f74c8ea003a37fa078
+> Author:        Peter Zijlstra <peterz@infradead.org>
+> AuthorDate:    Wed, 05 Jun 2024 12:09:11 +02:00
+> Committer:     Peter Zijlstra <peterz@infradead.org>
+> CommitterDate: Sat, 17 Aug 2024 11:06:42 +02:00
+> 
+> sched/uclamg: Handle delayed dequeue
 
-Commit-ID:     f25b7b32b0db6d71b07b06fe8de45b0408541c2a
-Gitweb:        https://git.kernel.org/tip/f25b7b32b0db6d71b07b06fe8de45b0408541c2a
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Sat, 14 Oct 2023 23:12:20 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 17 Aug 2024 11:06:40 +02:00
+Nit, but I haven't seen the typo until now.
 
-sched/eevdf: Add feature comments
+> 
+> Delayed dequeue has tasks sit around on the runqueue that are not
+> actually runnable -- specifically, they will be dequeued the moment
+> they get picked.
+> 
+> One side-effect is that such a task can get migrated, which leads to a
+> 'nested' dequeue_task() scenario that messes up uclamp if we don't
+> take care.
+> 
+> Notably, dequeue_task(DEQUEUE_SLEEP) can 'fail' and keep the task on
+> the runqueue. This however will have removed the task from uclamp --
+> per uclamp_rq_dec() in dequeue_task(). So far so good.
+> 
+> However, if at that point the task gets migrated -- or nice adjusted
+> or any of a myriad of operations that does a dequeue-enqueue cycle --
+> we'll pass through dequeue_task()/enqueue_task() again. Without
+> modification this will lead to a double decrement for uclamp, which is
+> wrong.
+> 
+> Reported-by: Luis Machado <luis.machado@arm.com>
+> Reported-by: Hongyan Xia <hongyan.xia2@arm.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+> Tested-by: Valentin Schneider <vschneid@redhat.com>
+> Link: https://lkml.kernel.org/r/20240727105029.315205425@infradead.org
+> ---
+>  kernel/sched/core.c | 16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> index 7356464..80e639e 100644
+> --- a/kernel/sched/core.c
+> +++ b/kernel/sched/core.c
+> @@ -1691,6 +1691,9 @@ static inline void uclamp_rq_inc(struct rq *rq, struct task_struct *p)
+>  	if (unlikely(!p->sched_class->uclamp_enabled))
+>  		return;
+>  
+> +	if (p->se.sched_delayed)
+> +		return;
+> +
+>  	for_each_clamp_id(clamp_id)
+>  		uclamp_rq_inc_id(rq, p, clamp_id);
+>  
+> @@ -1715,6 +1718,9 @@ static inline void uclamp_rq_dec(struct rq *rq, struct task_struct *p)
+>  	if (unlikely(!p->sched_class->uclamp_enabled))
+>  		return;
+>  
+> +	if (p->se.sched_delayed)
+> +		return;
+> +
+>  	for_each_clamp_id(clamp_id)
+>  		uclamp_rq_dec_id(rq, p, clamp_id);
+>  }
+> @@ -1994,8 +2000,12 @@ void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
+>  		psi_enqueue(p, (flags & ENQUEUE_WAKEUP) && !(flags & ENQUEUE_MIGRATED));
+>  	}
+>  
+> -	uclamp_rq_inc(rq, p);
+>  	p->sched_class->enqueue_task(rq, p, flags);
+> +	/*
+> +	 * Must be after ->enqueue_task() because ENQUEUE_DELAYED can clear
+> +	 * ->sched_delayed.
+> +	 */
+> +	uclamp_rq_inc(rq, p);
+>  
+>  	if (sched_core_enabled(rq))
+>  		sched_core_enqueue(rq, p);
+> @@ -2017,6 +2027,10 @@ inline bool dequeue_task(struct rq *rq, struct task_struct *p, int flags)
+>  		psi_dequeue(p, flags & DEQUEUE_SLEEP);
+>  	}
+>  
+> +	/*
+> +	 * Must be before ->dequeue_task() because ->dequeue_task() can 'fail'
+> +	 * and mark the task ->sched_delayed.
+> +	 */
+>  	uclamp_rq_dec(rq, p);
+>  	return p->sched_class->dequeue_task(rq, p, flags);
+>  }
+> 
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Tested-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lkml.kernel.org/r/20240727105028.287790895@infradead.org
----
- kernel/sched/features.h | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/kernel/sched/features.h b/kernel/sched/features.h
-index 929021f..97fb2d4 100644
---- a/kernel/sched/features.h
-+++ b/kernel/sched/features.h
-@@ -5,7 +5,14 @@
-  * sleep+wake cycles. EEVDF placement strategy #1, #2 if disabled.
-  */
- SCHED_FEAT(PLACE_LAG, true)
-+/*
-+ * Give new tasks half a slice to ease into the competition.
-+ */
- SCHED_FEAT(PLACE_DEADLINE_INITIAL, true)
-+/*
-+ * Inhibit (wakeup) preemption until the current task has either matched the
-+ * 0-lag point or until is has exhausted it's slice.
-+ */
- SCHED_FEAT(RUN_TO_PARITY, true)
- 
- /*
 
