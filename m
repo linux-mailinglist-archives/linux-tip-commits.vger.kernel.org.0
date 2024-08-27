@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2125-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2127-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F831960312
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2024 09:31:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E8F9604D2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2024 10:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 308C31F215EE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2024 07:31:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 288BF1C21F3E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2024 08:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669CA1386C6;
-	Tue, 27 Aug 2024 07:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70C31991A5;
+	Tue, 27 Aug 2024 08:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="25wpZmBS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0537CsNm"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P7JnW5fk";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yDHclUla"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7886E4CB4E;
-	Tue, 27 Aug 2024 07:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C5F194AEF;
+	Tue, 27 Aug 2024 08:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724743855; cv=none; b=oSOfSMhcrU6MIf8+P3FWfOwcvlsCnP+4T0PnCaqFSgE9M8v4VtRoeGKU3kHOLLdvFYA0WnDddkGwinvx6se5dLF1TI76VDHEOymBR+An2nUouj4aLdeirZ61xWg9B5CM0IuP/BV9jCWh/s4/L7DQOXVJerPfTcIQ19L9WRHy7/Q=
+	t=1724748492; cv=none; b=gwW3dAqE5miQh3sdQhvVmgmx7ZX43As76ULDCFjvrzIoAwvvVmdqGMk39uXHjq1IEbXhSn7C1MM4lfY+urJhZSpD+xFmvdCN3piwM97COWubwrPJDPnVxzmey2YTnj/0ZMC/tMJTIV5rAWFj3Brg7y5Fb5Gudqaxv6H8OtjiGuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724743855; c=relaxed/simple;
-	bh=8Wr7BZGjfMI6smYAll4wdjlqgjfMGeH2n4+MLitHDZQ=;
+	s=arc-20240116; t=1724748492; c=relaxed/simple;
+	bh=TwDf773hXhfsiYVvV+dls2u7pbgcM7zdEocdZh2VUzM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lZDbRUqBaNXQiGhyacA25ezvyX7ZWYTzgSnzfJc+ja9MUZ6QPY0sCow22cB/EbxInTj4zoeN0xqBeCn23fa+KNKUjsg0SJTgxWH9xbmJF++RihYxStnbzTIBsYrz1f58u/PfrK6AeDs7xBCrj5GF/uQPJS+h7HK3FRA2X/JYwt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=25wpZmBS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0537CsNm; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=gW0fDDuq6dsczzXl6kEh68ZlYOGzlktu45nCCvZKFhHnmNEAgIWPdi6+vUeFOhQQnmGKYxBQ2eBPnlRaz+7LTzCPYLYA6jPluMuuUBxpP1NWNwRFJZs1cumV/Ba8jNn//zd0XeCXZwND84+VX2ziNQX0lMnCD6/4mJSkfoO951A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P7JnW5fk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yDHclUla; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 27 Aug 2024 07:30:50 -0000
+Date: Tue, 27 Aug 2024 08:48:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1724743851;
+	s=2020; t=1724748486;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BLbW1K/uWENKz/WOLceLJg4xthcdObZ8jYsBAAk9RDQ=;
-	b=25wpZmBSAnYTBBlq4VKOzjd++4Rhu61Tx5NHZElRKlpNfrmjHCFSMZpLNmGJVsXdX8zCeP
-	Ge1x105+sW2nWWXpxpbx4v91sq4GwW31wVJn+Igs3lOvFdJqhAH+QMZJcmykUuCsmLRmrb
-	zq3RqBYdlZPhuvhG2ltlMxG3zbotAERiO7iJUkXI8SqJ3V0jwR6D5k+ard7yXKWidyrsSp
-	3SPRQ2oFee0tH/rC2UnWOjuPk/ZktV9H0smKuhkxgYZIo8zJE9CjVdP/3T8OHo5vYyKAJk
-	nq+lsB3CQfso1oHJVouY+PrrDNGv4rtq8Y6udt93X2pfSelveWUgc5WdD8mvHA==
+	bh=+9m7zAe/oM8NIYedLT9hEyQfOwjL4BIqPbJsnLJv+Bc=;
+	b=P7JnW5fkM+2LHwb6kDXdptcVVMiWOv2CkVTKDAkQ+NG0r6YerCYj9AKC6lEw62cCV+nw7o
+	2r/cxO/EUnWY6eA3VrAD67baxW2x6cyMkB5SsFm3Fzlc+c4SDIyo5Ru9HMxJGntASeRatA
+	W3ovQAxR/z6CNEvZO9jydY2ovPyvjQcsqMS5mG+TTbrkWAvaJzF+NzUTAGjrsl90JEOdDY
+	m1ESH1J23OYq+PJL+TmSLDsRP+19AcppdlPgRkxA9TGuJdgBT1AZoUZmZlHCFH78u/KaY+
+	Guu2iWqVPOvWF7St4RpF5Cr9Q5eNifegi2iXNurnoLawLKcNXCJQ1zN/JH0neQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1724743851;
+	s=2020e; t=1724748486;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BLbW1K/uWENKz/WOLceLJg4xthcdObZ8jYsBAAk9RDQ=;
-	b=0537CsNmqYIP3vwXopJmOGnJEzCaULOa0kOHxdYP+LAccrEmW7A4uJyNPrIdOwvto6ul/W
-	8Tk1P7T4/i32NoCw==
-From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+	bh=+9m7zAe/oM8NIYedLT9hEyQfOwjL4BIqPbJsnLJv+Bc=;
+	b=yDHclUlawN3VbE0zKpfq4Xfp/XlJAjNBZWeT7wBA1ZJrObYz4a5a0xbOVVTNGsiGu/OpA6
+	eS7QftGg2nLG8ADA==
+From: "tip-bot2 for Nikunj A Dadhania" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] Documentation/srso: Document a method for checking
- safe RET operates properly
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: x86/sev] virt: sev-guest: Ensure the SNP guest messages do not
+ exceed a page
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240731160531.28640-1-bp@kernel.org>
-References: <20240731160531.28640-1-bp@kernel.org>
+In-Reply-To: <20240731150811.156771-5-nikunj@amd.com>
+References: <20240731150811.156771-5-nikunj@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172474385088.2215.1127927943478368007.tip-bot2@tip-bot2>
+Message-ID: <172474848574.2215.3184921045455646454.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,195 +80,64 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/bugs branch of tip:
+The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     40153505259d8dc0e4ea6889fca5e567c42b76a9
-Gitweb:        https://git.kernel.org/tip/40153505259d8dc0e4ea6889fca5e567c42b76a9
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Wed, 31 Jul 2024 18:05:31 +02:00
+Commit-ID:     2b9ac0b84c2cae91bbaceab62df4de6d503421ec
+Gitweb:        https://git.kernel.org/tip/2b9ac0b84c2cae91bbaceab62df4de6d503421ec
+Author:        Nikunj A Dadhania <nikunj@amd.com>
+AuthorDate:    Wed, 31 Jul 2024 20:37:55 +05:30
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 27 Aug 2024 09:16:35 +02:00
+CommitterDate: Tue, 27 Aug 2024 10:35:38 +02:00
 
-Documentation/srso: Document a method for checking safe RET operates properly
+virt: sev-guest: Ensure the SNP guest messages do not exceed a page
 
-Add a method to quickly verify whether safe RET operates properly on
-a given system using perf tool.
+Currently, struct snp_guest_msg includes a message header (96 bytes) and
+a payload (4000 bytes). There is an implicit assumption here that the
+SNP message header will always be 96 bytes, and with that assumption the
+payload array size has been set to 4000 bytes - a magic number. If any
+new member is added to the SNP message header, the SNP guest message
+will span more than a page.
 
-Also, add a selftest which does the same thing.
+Instead of using a magic number for the payload, declare struct
+snp_guest_msg in a way that payload plus the message header do not
+exceed a page.
 
+  [ bp: Massage. ]
+
+Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240731160531.28640-1-bp@kernel.org
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240731150811.156771-5-nikunj@amd.com
 ---
- Documentation/admin-guide/hw-vuln/srso.rst | 69 +++++++++++++++++++++-
- tools/testing/selftests/x86/Makefile       |  2 +-
- tools/testing/selftests/x86/srso.c         | 70 +++++++++++++++++++++-
- 3 files changed, 140 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/x86/srso.c
+ arch/x86/include/asm/sev.h              | 2 +-
+ drivers/virt/coco/sev-guest/sev-guest.c | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/hw-vuln/srso.rst b/Documentation/admin-guide/hw-vuln/srso.rst
-index 4bd3ce3..2ad1c05 100644
---- a/Documentation/admin-guide/hw-vuln/srso.rst
-+++ b/Documentation/admin-guide/hw-vuln/srso.rst
-@@ -158,3 +158,72 @@ poisoned BTB entry and using that safe one for all function returns.
- In older Zen1 and Zen2, this is accomplished using a reinterpretation
- technique similar to Retbleed one: srso_untrain_ret() and
- srso_safe_ret().
-+
-+Checking the safe RET mitigation actually works
-+-----------------------------------------------
-+
-+In case one wants to validate whether the SRSO safe RET mitigation works
-+on a kernel, one could use two performance counters
-+
-+* PMC_0xc8 - Count of RET/RET lw retired
-+* PMC_0xc9 - Count of RET/RET lw retired mispredicted
-+
-+and compare the number of RETs retired properly vs those retired
-+mispredicted, in kernel mode. Another way of specifying those events
-+is::
-+
-+        # perf list ex_ret_near_ret
-+
-+        List of pre-defined events (to be used in -e or -M):
-+
-+        core:
-+          ex_ret_near_ret
-+               [Retired Near Returns]
-+          ex_ret_near_ret_mispred
-+               [Retired Near Returns Mispredicted]
-+
-+Either the command using the event mnemonics::
-+
-+        # perf stat -e ex_ret_near_ret:k -e ex_ret_near_ret_mispred:k sleep 10s
-+
-+or using the raw PMC numbers::
-+
-+        # perf stat -e cpu/event=0xc8,umask=0/k -e cpu/event=0xc9,umask=0/k sleep 10s
-+
-+should give the same amount. I.e., every RET retired should be
-+mispredicted::
-+
-+        [root@brent: ~/kernel/linux/tools/perf> ./perf stat -e cpu/event=0xc8,umask=0/k -e cpu/event=0xc9,umask=0/k sleep 10s
-+
-+         Performance counter stats for 'sleep 10s':
-+
-+                   137,167      cpu/event=0xc8,umask=0/k
-+                   137,173      cpu/event=0xc9,umask=0/k
-+
-+              10.004110303 seconds time elapsed
-+
-+               0.000000000 seconds user
-+               0.004462000 seconds sys
-+
-+vs the case when the mitigation is disabled (spec_rstack_overflow=off)
-+or not functioning properly, showing usually a lot smaller number of
-+mispredicted retired RETs vs the overall count of retired RETs during
-+a workload::
-+
-+       [root@brent: ~/kernel/linux/tools/perf> ./perf stat -e cpu/event=0xc8,umask=0/k -e cpu/event=0xc9,umask=0/k sleep 10s
-+
-+        Performance counter stats for 'sleep 10s':
-+
-+                  201,627      cpu/event=0xc8,umask=0/k
-+                    4,074      cpu/event=0xc9,umask=0/k
-+
-+             10.003267252 seconds time elapsed
-+
-+              0.002729000 seconds user
-+              0.000000000 seconds sys
-+
-+Also, there is a selftest which performs the above, go to
-+tools/testing/selftests/x86/ and do::
-+
-+        make srso
-+        ./srso
-diff --git a/tools/testing/selftests/x86/Makefile b/tools/testing/selftests/x86/Makefile
-index 5c8757a..d51249f 100644
---- a/tools/testing/selftests/x86/Makefile
-+++ b/tools/testing/selftests/x86/Makefile
-@@ -77,7 +77,7 @@ all_32: $(BINARIES_32)
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 79bbe2b..ee34ab0 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -164,7 +164,7 @@ struct snp_guest_msg_hdr {
  
- all_64: $(BINARIES_64)
+ struct snp_guest_msg {
+ 	struct snp_guest_msg_hdr hdr;
+-	u8 payload[4000];
++	u8 payload[PAGE_SIZE - sizeof(struct snp_guest_msg_hdr)];
+ } __packed;
  
--EXTRA_CLEAN := $(BINARIES_32) $(BINARIES_64)
-+EXTRA_CLEAN := $(BINARIES_32) $(BINARIES_64) srso
+ struct sev_guest_platform_data {
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index 3b76cbf..89754b0 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -1092,6 +1092,8 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+ 	void __iomem *mapping;
+ 	int ret;
  
- $(BINARIES_32): $(OUTPUT)/%_32: %.c helpers.h
- 	$(CC) -m32 -o $@ $(CFLAGS) $(EXTRA_CFLAGS) $< $(EXTRA_FILES) -lrt -ldl -lm
-diff --git a/tools/testing/selftests/x86/srso.c b/tools/testing/selftests/x86/srso.c
-new file mode 100644
-index 0000000..394ec8b
---- /dev/null
-+++ b/tools/testing/selftests/x86/srso.c
-@@ -0,0 +1,70 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/perf_event.h>
-+#include <cpuid.h>
-+#include <errno.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/syscall.h>
-+#include <unistd.h>
++	BUILD_BUG_ON(sizeof(struct snp_guest_msg) > PAGE_SIZE);
 +
-+int main(void)
-+{
-+	struct perf_event_attr ret_attr, mret_attr;
-+	long long count_rets, count_rets_mispred;
-+	int rrets_fd, mrrets_fd;
-+	unsigned int cpuid1_eax, b, c, d;
-+
-+	__cpuid(1, cpuid1_eax, b, c, d);
-+
-+	if (cpuid1_eax < 0x00800f00 ||
-+	    cpuid1_eax > 0x00afffff) {
-+		fprintf(stderr, "This needs to run on a Zen[1-4] machine (CPUID(1).EAX: 0x%x). Exiting...\n", cpuid1_eax);
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	memset(&ret_attr, 0, sizeof(struct perf_event_attr));
-+	memset(&mret_attr, 0, sizeof(struct perf_event_attr));
-+
-+	ret_attr.type = mret_attr.type = PERF_TYPE_RAW;
-+	ret_attr.size = mret_attr.size = sizeof(struct perf_event_attr);
-+	ret_attr.config = 0xc8;
-+	mret_attr.config = 0xc9;
-+	ret_attr.disabled = mret_attr.disabled = 1;
-+	ret_attr.exclude_user = mret_attr.exclude_user = 1;
-+	ret_attr.exclude_hv = mret_attr.exclude_hv = 1;
-+
-+	rrets_fd = syscall(SYS_perf_event_open, &ret_attr, 0, -1, -1, 0);
-+	if (rrets_fd == -1) {
-+		perror("opening retired RETs fd");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	mrrets_fd = syscall(SYS_perf_event_open, &mret_attr, 0, -1, -1, 0);
-+	if (mrrets_fd == -1) {
-+		perror("opening retired mispredicted RETs fd");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	ioctl(rrets_fd, PERF_EVENT_IOC_RESET, 0);
-+	ioctl(mrrets_fd, PERF_EVENT_IOC_RESET, 0);
-+
-+	ioctl(rrets_fd, PERF_EVENT_IOC_ENABLE, 0);
-+	ioctl(mrrets_fd, PERF_EVENT_IOC_ENABLE, 0);
-+
-+	printf("Sleeping for 10 seconds\n");
-+	sleep(10);
-+
-+	ioctl(rrets_fd, PERF_EVENT_IOC_DISABLE, 0);
-+	ioctl(mrrets_fd, PERF_EVENT_IOC_DISABLE, 0);
-+
-+	read(rrets_fd, &count_rets, sizeof(long long));
-+	read(mrrets_fd, &count_rets_mispred, sizeof(long long));
-+
-+	printf("RETs: (%lld retired <-> %lld mispredicted)\n",
-+		count_rets, count_rets_mispred);
-+	printf("SRSO Safe-RET mitigation works correctly if both counts are almost equal.\n");
-+
-+	return 0;
-+}
+ 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+ 		return -ENODEV;
+ 
 
