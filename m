@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2132-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2133-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D34E96097A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2024 14:02:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B8A962377
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2024 11:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31CF31C20D29
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Aug 2024 12:02:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EAA7284584
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Aug 2024 09:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EB31A08C6;
-	Tue, 27 Aug 2024 12:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354D8165F08;
+	Wed, 28 Aug 2024 09:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oa/I9+Mx";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U3idW99Q"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YWl8HtX6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ek9K/nzk"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2E71A01C4;
-	Tue, 27 Aug 2024 12:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B5815A849;
+	Wed, 28 Aug 2024 09:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724760158; cv=none; b=Zu4eMDKGjeYFK4Iwf6Y2aAUPcD4LIfMCoMHcPusRuLaHhyfwHlrOZXt7mVE2qDM6Pb1T7SJxk7Ji+7FrqKhlNYloJA9cC4hr2YTo3FyaAxio54IP9nB161xG7e1jgpRXrJMKiXgOzUToYCdGBHpIQy6biNK2GXEFEfCQ9zuSafc=
+	t=1724837576; cv=none; b=GItMtd9H59cnWzVuH1lNqe/0MvZsKUcAGFDpRi7/it41JPZcvGOmqrUy6PST3dKr4/7SUoMa6TiNzVqobaEwT8KDlxBbdJeoCgH7p1ojUMSamASCxjlbqTeToDymF8oY5UFPR6YBikP3FOykKIYJJBALcrEer36sNcbvv5AsDTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724760158; c=relaxed/simple;
-	bh=4I98SlbNG6iN9Y5851enoMRbrc8v7J1YBlToWju6b+4=;
+	s=arc-20240116; t=1724837576; c=relaxed/simple;
+	bh=vZZw+ORznNMCMicLAkZ4F8SvhcJYS4ykDqDMMHy9rgE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZBwVlARIykODgMLzBMXtrX9yESKtgouzqVxdp/+Ixax9rfZ1EPsaF7keu+FIqxA/P9BI1dqRReF9xWvy9vxspAufHsfRnD7k7o0xpHeDewSIkh1chNHRFGO8R7vGER3EMmWCw10qZOtfSarITjACnuv8aPRPpZNx4b3icHTm6iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oa/I9+Mx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U3idW99Q; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=MmpyntSE5VkywRfbeVdHOvbrBxgX2MI/Ss1jqTVygdLXvurNSZWMJCQqM1WgqFWFmeAsXWa9H7eYHi0y8nF78bXNZtOp8KuxzA3wuae5R/RamD4P8W8GUSe6fDDWLmpsiaGaIvEsZnL5bABv/2iYLGyce9vHDfH2j5SenM2uxOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YWl8HtX6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ek9K/nzk; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 27 Aug 2024 12:02:34 -0000
+Date: Wed, 28 Aug 2024 09:32:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1724760155;
+	s=2020; t=1724837571;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nciwL1u0rp8c+nVNiZ8C9oNrnummWZpwLgNIL7epbNk=;
-	b=oa/I9+Mx81UiIIiAi6bbvvRfuNsSuu3cfo3ETkFAWhVIz9LBj8kXTGO3IHg83Cw4EcsVQK
-	xROcFXGegAIeEBIfmMqH6gB7307wQLig2pqzGaQNYugQaZnEgZiTSj2maxljc6R9Kz9kuf
-	KasnhF16i/akZ31xkZ5YDA/nGfZvOwRQFIFiTCMeNq4j0dCnUcV9qRoJtTWEk9UVV2h0ep
-	OKKiOslPK4ajHYHT8OMxMb6RzLxlvp3OwuxGjtT5aUSrHov30EKbZmTHRwWSq0WZ0QVdv2
-	TBLB5XOsg+iH5lAhXD/c58H1da5GVLu/ZkdDNlv2+TmTfpojraSaoof9RcgsIw==
+	bh=VsP8XsA2Ijbw1HeJVvhDCE3/EcYczzLku/tHmbCQZt0=;
+	b=YWl8HtX6OEaA1iG7wLgD6x2cPFARX/NkeAgJcLeVnCAiTIwIm0/mmGZLguoItzCljJJljf
+	KljRK5AdROq/YbSQFa6gT9qY9WFHQRFlVJtc6IeGdTExJEgCc/iqxWCYVR98MBR3q9+Hnr
+	DMK24wbXnuIKm8Az37ocCCYdPZt4uGk7jeKR1C4UhJ0JsUdjK+TRtfpB8n0VA1hb0CFdbd
+	ygMO/M/W3kz690n+uOs+Y9lbToXYSL5ybEDjHMM0PQa3jEf1/6TytIWUnKBWWqldocwg43
+	8FG3Io6BmEZwGIHECJ/cUMNCFIytjd0vvyIvQJMwENK5dgZhYKq9ttWx62pR4Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1724760155;
+	s=2020e; t=1724837571;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nciwL1u0rp8c+nVNiZ8C9oNrnummWZpwLgNIL7epbNk=;
-	b=U3idW99Qz3d2Ka3HxzfxTFPKx8Tl76NHVj55ZqmzFHUVQg4IbbLKqs0ghhOY9djfz27zZB
-	etjAfgZt7fN5DiAQ==
-From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+	bh=VsP8XsA2Ijbw1HeJVvhDCE3/EcYczzLku/tHmbCQZt0=;
+	b=ek9K/nzkMMdL0ZlNZWZtj+UwfJNApGZZOzwrcCKdPqUhPwvubWMoBg+VKYoQiwP36qlHkF
+	0qOmTn2Tkz8ILxAA==
+From: "tip-bot2 for Peter Newman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/core] genirq: Get rid of global lock in irq_do_set_affinity()
-Cc: Kunkun Jiang <jiangkunkun@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>, Marc Zyngier <maz@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240826080618.3886694-1-maz@kernel.org>
-References: <20240826080618.3886694-1-maz@kernel.org>
+Subject: [tip: x86/urgent] x86/resctrl: Fix arch_mbm_* array overrun on SNC
+Cc: Peter Newman <peternewman@google.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240822190212.1848788-1-peternewman@google.com>
+References: <20240822190212.1848788-1-peternewman@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172476015469.2215.1516167821717273436.tip-bot2@tip-bot2>
+Message-ID: <172483757117.2215.5020261219136287381.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,108 +80,87 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     64b6d1d7a84538de34c22a6fc92a7dcc2b196b64
-Gitweb:        https://git.kernel.org/tip/64b6d1d7a84538de34c22a6fc92a7dcc2b196b64
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Mon, 26 Aug 2024 09:06:18 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 27 Aug 2024 13:54:15 +02:00
+Commit-ID:     a547a5880cba6f287179135381f1b484b251be31
+Gitweb:        https://git.kernel.org/tip/a547a5880cba6f287179135381f1b484b251be31
+Author:        Peter Newman <peternewman@google.com>
+AuthorDate:    Thu, 22 Aug 2024 12:02:11 -07:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 28 Aug 2024 11:13:08 +02:00
 
-genirq: Get rid of global lock in irq_do_set_affinity()
+x86/resctrl: Fix arch_mbm_* array overrun on SNC
 
-Kunkun Jiang reports that for a workload involving the simultaneous startup
-of a large number of VMs (for a total of about 200 vcpus), a lot of CPU
-time gets spent on spinning on the tmp_mask_lock that exists as a static
-raw spinlock in irq_do_set_affinity(). This lock protects a global cpumask
-(tmp_mask) that is used as a temporary variable to compute the resulting
-affinity.
+When using resctrl on systems with Sub-NUMA Clustering enabled, monitoring
+groups may be allocated RMID values which would overrun the
+arch_mbm_{local,total} arrays.
 
-While this is triggered by KVM issuing a irq_set_affinity() call each time
-a vcpu is about to execute, it is obvious that having a single global
-resource is not very scalable.
+This is due to inconsistencies in whether the SNC-adjusted num_rmid value or
+the unadjusted value in resctrl_arch_system_num_rmid_idx() is used. The
+num_rmid value for the L3 resource is currently:
 
-Since a cpumask can be a fairly large structure on systems with a high core
-count, a stack allocation is not really appropriate.  Instead, turn the
-global cpumask into a per-CPU variable, removing the need for locking
-altogether as the code is executed with preemption and interrupts disabled.
+  resctrl_arch_system_num_rmid_idx() / snc_nodes_per_l3_cache
 
-[ tglx: Moved the per CPU variable declaration outside of the function ]
+As a simple fix, make resctrl_arch_system_num_rmid_idx() return the
+SNC-adjusted, L3 num_rmid value on x86.
 
-Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Kunkun Jiang <jiangkunkun@huawei.com>
-Link: https://lore.kernel.org/all/20240826080618.3886694-1-maz@kernel.org
-Link: https://lore.kernel.org/all/a7fc58e4-64c2-77fc-c1dc-f5eb78dbbb01@huawei.com
+Fixes: e13db55b5a0d ("x86/resctrl: Introduce snc_nodes_per_l3_cache")
+Signed-off-by: Peter Newman <peternewman@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Link: https://lore.kernel.org/r/20240822190212.1848788-1-peternewman@google.com
 ---
- kernel/irq/manage.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/resctrl.h     | 6 ------
+ arch/x86/kernel/cpu/resctrl/core.c | 8 ++++++++
+ include/linux/resctrl.h            | 1 +
+ 3 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index dd53298..f0803d6 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -218,21 +218,20 @@ static void irq_validate_effective_affinity(struct irq_data *data)
- static inline void irq_validate_effective_affinity(struct irq_data *data) { }
- #endif
+diff --git a/arch/x86/include/asm/resctrl.h b/arch/x86/include/asm/resctrl.h
+index 12dbd25..8b1b6ce 100644
+--- a/arch/x86/include/asm/resctrl.h
++++ b/arch/x86/include/asm/resctrl.h
+@@ -156,12 +156,6 @@ static inline void resctrl_sched_in(struct task_struct *tsk)
+ 		__resctrl_sched_in(tsk);
+ }
  
-+static DEFINE_PER_CPU(struct cpumask, __tmp_mask);
-+
- int irq_do_set_affinity(struct irq_data *data, const struct cpumask *mask,
- 			bool force)
+-static inline u32 resctrl_arch_system_num_rmid_idx(void)
+-{
+-	/* RMID are independent numbers for x86. num_rmid_idx == num_rmid */
+-	return boot_cpu_data.x86_cache_max_rmid + 1;
+-}
+-
+ static inline void resctrl_arch_rmid_idx_decode(u32 idx, u32 *closid, u32 *rmid)
  {
-+	struct cpumask *tmp_mask = this_cpu_ptr(&__tmp_mask);
- 	struct irq_desc *desc = irq_data_to_desc(data);
- 	struct irq_chip *chip = irq_data_get_irq_chip(data);
- 	const struct cpumask  *prog_mask;
- 	int ret;
+ 	*rmid = idx;
+diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
+index 1930fce..8591d53 100644
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -119,6 +119,14 @@ struct rdt_hw_resource rdt_resources_all[] = {
+ 	},
+ };
  
--	static DEFINE_RAW_SPINLOCK(tmp_mask_lock);
--	static struct cpumask tmp_mask;
--
- 	if (!chip || !chip->irq_set_affinity)
- 		return -EINVAL;
++u32 resctrl_arch_system_num_rmid_idx(void)
++{
++	struct rdt_resource *r = &rdt_resources_all[RDT_RESOURCE_L3].r_resctrl;
++
++	/* RMID are independent numbers for x86. num_rmid_idx == num_rmid */
++	return r->num_rmid;
++}
++
+ /*
+  * cache_alloc_hsw_probe() - Have to probe for Intel haswell server CPUs
+  * as they do not have CPUID enumeration support for Cache allocation.
+diff --git a/include/linux/resctrl.h b/include/linux/resctrl.h
+index b0875b9..d94abba 100644
+--- a/include/linux/resctrl.h
++++ b/include/linux/resctrl.h
+@@ -248,6 +248,7 @@ struct resctrl_schema {
  
--	raw_spin_lock(&tmp_mask_lock);
- 	/*
- 	 * If this is a managed interrupt and housekeeping is enabled on
- 	 * it check whether the requested affinity mask intersects with
-@@ -258,11 +257,11 @@ int irq_do_set_affinity(struct irq_data *data, const struct cpumask *mask,
+ /* The number of closid supported by this resource regardless of CDP */
+ u32 resctrl_arch_get_num_closid(struct rdt_resource *r);
++u32 resctrl_arch_system_num_rmid_idx(void);
+ int resctrl_arch_update_domains(struct rdt_resource *r, u32 closid);
  
- 		hk_mask = housekeeping_cpumask(HK_TYPE_MANAGED_IRQ);
- 
--		cpumask_and(&tmp_mask, mask, hk_mask);
--		if (!cpumask_intersects(&tmp_mask, cpu_online_mask))
-+		cpumask_and(tmp_mask, mask, hk_mask);
-+		if (!cpumask_intersects(tmp_mask, cpu_online_mask))
- 			prog_mask = mask;
- 		else
--			prog_mask = &tmp_mask;
-+			prog_mask = tmp_mask;
- 	} else {
- 		prog_mask = mask;
- 	}
-@@ -272,16 +271,14 @@ int irq_do_set_affinity(struct irq_data *data, const struct cpumask *mask,
- 	 * unless we are being asked to force the affinity (in which
- 	 * case we do as we are told).
- 	 */
--	cpumask_and(&tmp_mask, prog_mask, cpu_online_mask);
--	if (!force && !cpumask_empty(&tmp_mask))
--		ret = chip->irq_set_affinity(data, &tmp_mask, force);
-+	cpumask_and(tmp_mask, prog_mask, cpu_online_mask);
-+	if (!force && !cpumask_empty(tmp_mask))
-+		ret = chip->irq_set_affinity(data, tmp_mask, force);
- 	else if (force)
- 		ret = chip->irq_set_affinity(data, mask, force);
- 	else
- 		ret = -EINVAL;
- 
--	raw_spin_unlock(&tmp_mask_lock);
--
- 	switch (ret) {
- 	case IRQ_SET_MASK_OK:
- 	case IRQ_SET_MASK_OK_DONE:
+ /*
 
