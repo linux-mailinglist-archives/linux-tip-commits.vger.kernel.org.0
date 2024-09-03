@@ -1,77 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-2147-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2148-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682DC969916
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2024 11:34:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41158969F26
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2024 15:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC7691F251A9
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2024 09:34:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE0DB282334
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Sep 2024 13:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692EE1B985C;
-	Tue,  3 Sep 2024 09:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A434C5684;
+	Tue,  3 Sep 2024 13:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M8rWNNTC";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1ZnUdrJU"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lOGG0tUe";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T03wFJyX"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769661C9840;
-	Tue,  3 Sep 2024 09:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62E18489;
+	Tue,  3 Sep 2024 13:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725355930; cv=none; b=XAUsAHZSO3mqQhELmeYCXhvLCtHkUV7Vd75uVqBEAsfubIO/DjAAfb5ealaMAO9ZiJ2/6HB3uxuwmKJZcQjQJJufSmdWfY+Bdn5tKU2LqO00b+rXvlrVumwlOrq9J0NyTW3xLIRi1o4Svkvd3bdBMhouFfzCCYCwfvwWDIr6BFk=
+	t=1725370703; cv=none; b=hDgNYiZX+tOc1xlk4oCD2h8ulR+J5zr7EGc451mNHKssgtV11sxihXwrl/XW274YxiRVHT4YRYU+yuAIis/ZyrzhtfX0joQJSiEh5AlYBSF5rR8cNspCIlRA9+mLce7vCy/HuipfaXoyU6qqXyYRXM4YX4xqa0b7E9oluWcBsdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725355930; c=relaxed/simple;
-	bh=64xchpbFw2siCbs5GIutraMFHS46mu7+NsdP/xvrvJA=;
+	s=arc-20240116; t=1725370703; c=relaxed/simple;
+	bh=C+sgy9ygPjkKKWYikAn16K6Zatsen+TKguANslXVzuA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IdHuqW7ciG0kxDxnp4kQhh4H4XsAZYOtO07J52Kz2MgV0RjpQ//Xj3ugIzkPQKApkGxkQ52VlAMDvr9rPINP8VP4qwRwQRk1Gor1ii2fpUz1G3Uc0cjbmyS3UnFes5lmnYFTx76qz/aFLDQJ8cqCJ19Mqmq+pvEoP9ipBrK1Ga0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M8rWNNTC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1ZnUdrJU; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=CJgQ0GaOrNffm2EIVbJX38zUFhyxdilk/07Y8SzYvlXPoKA7xw+jto1mSJ8xuixfq5ijlbTqB541FxtQ7QGplEnC2f0QM9LAv7QOnL0eXJBY3asUborvhawJpz6WBgFVdw+Qmc0X2moDHx/m+5S0zNlyQ3Q8Fe2ok9lb0cXa8HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lOGG0tUe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T03wFJyX; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 03 Sep 2024 09:32:05 -0000
+Date: Tue, 03 Sep 2024 13:38:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1725355926;
+	s=2020; t=1725370699;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mHztj4Fa63Q5XQYTcl6Oz6APF6I4kXDwMU4FPyuq77g=;
-	b=M8rWNNTC/joIz8y468YdnXJB5LMe4q2TxaCzDM3FLgzqEfpHPfbG7RNiD0SbsGzvRgHBAY
-	CB1sUfWSnWsqrDM1zyvAz3Hw7Plul5+s6d/BJlMCOZL3GNGn3Ldvmf1zNDYzNkAp9aZiYR
-	lkgrFMDqnuSs+OG84zZPJYVBHr/tNieFHjdjvA/WDrB3RWORQVaxyGHZHaCu7kkkRGaJxE
-	U1In36n/PFjGlU9i9FzAETREl2hEutpEWWxIUi7GpuZR1kRKyJ7FxZG6k7DftpLJEJ+/jk
-	Kd7F7iDL/Yb2IidURRKHKkxH74+vRwxAAM5pSXO/PFPWR9LiU00GPtqIRDwW0Q==
+	bh=0ZeKejKZoUyFGInMN6zCugIaeKk50Mi219VWLIw9NRM=;
+	b=lOGG0tUet5ccZHq+A4iVUDFBTqjXS1HmwA3xQA4La9KGASZqg5LQoFXDgSsV9AlXKts+UZ
+	AEVEjgG0sOlwoAdaViHO9DMPzfVCVPw6Qdi8ZzqUpAhWvndN0ogpnSgktzRmZy9HpKjPRu
+	KoT5OHyIXrIFOl17cmibZnfd9Rshbld5Nvq6GKCs8R3Dmgpee5Pey5aUm3hDxT/WVA7egz
+	QYpJ0zIciVNwF0IcT0Bsh/5t0XVcIQuE3pUiad01/LCngEvV6kbrV65N9PeN5I1vnz0NN9
+	JD11aNfOVoDiHjyseJli+X0Do65WeXED3I5YBl1T8UDN9BJ+39EL0AbRwgLTaw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1725355926;
+	s=2020e; t=1725370699;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mHztj4Fa63Q5XQYTcl6Oz6APF6I4kXDwMU4FPyuq77g=;
-	b=1ZnUdrJUe83BoLK3HDjNmXJFINS3mIKwEWXKQGSTISFsWBXlEBkj/fmmN2RShS8zMTqNOt
-	PJTMy6TjgrQ4CyCA==
-From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+	bh=0ZeKejKZoUyFGInMN6zCugIaeKk50Mi219VWLIw9NRM=;
+	b=T03wFJyXCrJJlLgYvbrEG/+NxQzJB9WCq6ogNtjsCcDm9Rh7GHXJI/F/0s0/6tmJGDxVqU
+	5splABlI1z/+U2BA==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu/intel: Replace PAT erratum model/family magic
- numbers with symbolic IFM references
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
- Len Brown <len.brown@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240829220042.1007820-1-dave.hansen@linux.intel.com>
-References: <20240829220042.1007820-1-dave.hansen@linux.intel.com>
+Subject: [tip: sched/core] sched: Add put_prev_task(.next)
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240813224016.367421076@infradead.org>
+References: <20240813224016.367421076@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172535592591.2215.9909836777026903684.tip-bot2@tip-bot2>
+Message-ID: <172537069920.2215.6437489420063122852.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,100 +78,131 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     fd82221a59fa5ce9dc7523e11c5e995104a28cb0
-Gitweb:        https://git.kernel.org/tip/fd82221a59fa5ce9dc7523e11c5e995104a28cb0
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Thu, 29 Aug 2024 15:00:42 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Sep 2024 11:18:58 +02:00
+Commit-ID:     b2d70222dbf2a2ff7a972a685d249a5d75afa87f
+Gitweb:        https://git.kernel.org/tip/b2d70222dbf2a2ff7a972a685d249a5d75afa87f
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 14 Aug 2024 00:25:56 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 03 Sep 2024 15:26:32 +02:00
 
-x86/cpu/intel: Replace PAT erratum model/family magic numbers with symbolic IFM references
+sched: Add put_prev_task(.next)
 
-There's an erratum that prevents the PAT from working correctly:
+In order to tell the previous sched_class what the next task is, add
+put_prev_task(.next).
 
-   https://www.intel.com/content/dam/www/public/us/en/documents/specification-updates/pentium-dual-core-specification-update.pdf
-   # Document 316515 Version 010
+Notable SCX will use this to:
 
-The kernel currently disables PAT support on those CPUs, but it
-does it with some magic numbers.
+ 1) determine the next task will leave the SCX sched class and push
+    the current task to another CPU if possible.
+ 2) statistics on how often and which other classes preempt it
 
-Replace the magic numbers with the new "IFM" macros.
-
-Make the check refer to the last affected CPU (INTEL_CORE_YONAH)
-rather than the first fixed one. This makes it easier to find the
-documentation of the erratum since Intel documents where it is
-broken and not where it is fixed.
-
-I don't think the Pentium Pro (or Pentium II) is actually affected.
-But the old check included them, so it can't hurt to keep doing the
-same.  I'm also not completely sure about the "Pentium M" CPUs
-(models 0x9 and 0xd).  But, again, they were included in in the
-old checks and were close Pentium III derivatives, so are likely
-affected.
-
-While we're at it, revise the comment referring to the erratum name
-and making sure it is a quote of the language from the actual errata
-doc.  That should make it easier to find in the future when the URL
-inevitably changes.
-
-Why bother with this in the first place? It actually gets rid of one
-of the very few remaining direct references to c->x86{,_model}.
-
-No change in functionality intended.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Len Brown <len.brown@intel.com>
-Link: https://lore.kernel.org/r/20240829220042.1007820-1-dave.hansen@linux.intel.com
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240813224016.367421076@infradead.org
 ---
- arch/x86/include/asm/intel-family.h |  2 ++
- arch/x86/kernel/cpu/intel.c         | 18 ++++++++++--------
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ kernel/sched/deadline.c  | 2 +-
+ kernel/sched/fair.c      | 2 +-
+ kernel/sched/idle.c      | 2 +-
+ kernel/sched/rt.c        | 2 +-
+ kernel/sched/sched.h     | 6 +++---
+ kernel/sched/stop_task.c | 2 +-
+ 6 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index f81a851..27bdf3b 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -47,6 +47,8 @@
- /* Wildcard match for FAM6 so X86_MATCH_VFM(ANY) works */
- #define INTEL_ANY			IFM(X86_FAMILY_ANY, X86_MODEL_ANY)
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index e83b684..9ce93d0 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2436,7 +2436,7 @@ static struct task_struct *pick_task_dl(struct rq *rq)
+ 	return __pick_task_dl(rq);
+ }
  
-+#define INTEL_PENTIUM_PRO		IFM(6, 0x01)
-+
- #define INTEL_FAM6_CORE_YONAH		0x0E
- #define INTEL_CORE_YONAH		IFM(6, 0x0E)
+-static void put_prev_task_dl(struct rq *rq, struct task_struct *p)
++static void put_prev_task_dl(struct rq *rq, struct task_struct *p, struct task_struct *next)
+ {
+ 	struct sched_dl_entity *dl_se = &p->dl;
+ 	struct dl_rq *dl_rq = &rq->dl;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index f673112..d697a0a 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8869,7 +8869,7 @@ void fair_server_init(struct rq *rq)
+ /*
+  * Account for a descheduled task:
+  */
+-static void put_prev_task_fair(struct rq *rq, struct task_struct *prev)
++static void put_prev_task_fair(struct rq *rq, struct task_struct *prev, struct task_struct *next)
+ {
+ 	struct sched_entity *se = &prev->se;
+ 	struct cfs_rq *cfs_rq;
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index a343e1c..7a105a0 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -450,7 +450,7 @@ static void wakeup_preempt_idle(struct rq *rq, struct task_struct *p, int flags)
+ 	resched_curr(rq);
+ }
  
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 08b95a3..e7656cb 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -311,16 +311,18 @@ static void early_init_intel(struct cpuinfo_x86 *c)
- 	}
+-static void put_prev_task_idle(struct rq *rq, struct task_struct *prev)
++static void put_prev_task_idle(struct rq *rq, struct task_struct *prev, struct task_struct *next)
+ {
+ 	dl_server_update_idle_time(rq, prev);
+ }
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 8025f39..172c588 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1748,7 +1748,7 @@ static struct task_struct *pick_task_rt(struct rq *rq)
+ 	return p;
+ }
  
- 	/*
--	 * There is a known erratum on Pentium III and Core Solo
--	 * and Core Duo CPUs.
--	 * " Page with PAT set to WC while associated MTRR is UC
--	 *   may consolidate to UC "
--	 * Because of this erratum, it is better to stick with
--	 * setting WC in MTRR rather than using PAT on these CPUs.
-+	 * PAT is broken on early family 6 CPUs, the last of which
-+	 * is "Yonah" where the erratum is named "AN7":
- 	 *
--	 * Enable PAT WC only on P4, Core 2 or later CPUs.
-+	 * 	Page with PAT (Page Attribute Table) Set to USWC
-+	 * 	(Uncacheable Speculative Write Combine) While
-+	 * 	Associated MTRR (Memory Type Range Register) Is UC
-+	 * 	(Uncacheable) May Consolidate to UC
-+	 *
-+	 * Disable PAT and fall back to MTRR on these CPUs.
+-static void put_prev_task_rt(struct rq *rq, struct task_struct *p)
++static void put_prev_task_rt(struct rq *rq, struct task_struct *p, struct task_struct *next)
+ {
+ 	struct sched_rt_entity *rt_se = &p->rt;
+ 	struct rt_rq *rt_rq = &rq->rt;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 2a216c9..3744f16 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2314,7 +2314,7 @@ struct sched_class {
  	 */
--	if (c->x86 == 6 && c->x86_model < 15)
-+	if (c->x86_vfm >= INTEL_PENTIUM_PRO &&
-+	    c->x86_vfm <= INTEL_CORE_YONAH)
- 		clear_cpu_cap(c, X86_FEATURE_PAT);
+ 	struct task_struct *(*pick_next_task)(struct rq *rq, struct task_struct *prev);
  
- 	/*
+-	void (*put_prev_task)(struct rq *rq, struct task_struct *p);
++	void (*put_prev_task)(struct rq *rq, struct task_struct *p, struct task_struct *next);
+ 	void (*set_next_task)(struct rq *rq, struct task_struct *p, bool first);
+ 
+ #ifdef CONFIG_SMP
+@@ -2364,7 +2364,7 @@ struct sched_class {
+ static inline void put_prev_task(struct rq *rq, struct task_struct *prev)
+ {
+ 	WARN_ON_ONCE(rq->curr != prev);
+-	prev->sched_class->put_prev_task(rq, prev);
++	prev->sched_class->put_prev_task(rq, prev, NULL);
+ }
+ 
+ static inline void set_next_task(struct rq *rq, struct task_struct *next)
+@@ -2393,7 +2393,7 @@ static inline void put_prev_set_next_task(struct rq *rq,
+ 	if (next == prev)
+ 		return;
+ 
+-	prev->sched_class->put_prev_task(rq, prev);
++	prev->sched_class->put_prev_task(rq, prev, next);
+ 	next->sched_class->set_next_task(rq, next, true);
+ }
+ 
+diff --git a/kernel/sched/stop_task.c b/kernel/sched/stop_task.c
+index 0fd5352..058dd42 100644
+--- a/kernel/sched/stop_task.c
++++ b/kernel/sched/stop_task.c
+@@ -59,7 +59,7 @@ static void yield_task_stop(struct rq *rq)
+ 	BUG(); /* the stop task should never yield, its pointless. */
+ }
+ 
+-static void put_prev_task_stop(struct rq *rq, struct task_struct *prev)
++static void put_prev_task_stop(struct rq *rq, struct task_struct *prev, struct task_struct *next)
+ {
+ 	update_curr_common(rq);
+ }
 
