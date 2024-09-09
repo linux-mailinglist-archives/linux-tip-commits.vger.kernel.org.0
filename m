@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-2215-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2216-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0B2972076
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 19:27:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F66972079
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 19:27:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE8B9284FD1
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 17:27:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE2F01C237DA
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 17:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37C0179970;
-	Mon,  9 Sep 2024 17:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B1E17B4F9;
+	Mon,  9 Sep 2024 17:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1UNT2jBN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wPAZsjXo"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0mm6jS+g";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6qMKj825"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3C816EB65;
-	Mon,  9 Sep 2024 17:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6D3175D3F;
+	Mon,  9 Sep 2024 17:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725902864; cv=none; b=krI0aqRnkPB94P4AlRa0z8ykYod/p3NsYHUrTpIdGqfSkRt41oTCW9DjLJDfXBfA+WxbVRjR5m4D0QWiAWleIdB0ou9Eg8U92QmZ9CnNh+U6CYkbSNrR8tVQgvYfnk3qfZQl1bv9O3j4rwMrBtVt2gjQJKDhyEgBogB1D4VZ6f4=
+	t=1725902865; cv=none; b=qruaNS3yQRGZdqAUNfbjSZ5qh9G6qpakJmmjQ/SEf8v87VTPKgPWV5Kj8gFK+t2aKB9849XHX/oyoJmV+OeJrR5JzEJM3sw54ZaoV0pmtl3bnUqtJ8aN8exSaljr9U9ehQTMgWL2x3e8nleqfvTH/SIoQiRAlq4sKXCKkvd01is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725902864; c=relaxed/simple;
-	bh=B/73IEAPLayYpPfWqYg+q4C3ZbnnOWHkVTEAilIiyVs=;
+	s=arc-20240116; t=1725902865; c=relaxed/simple;
+	bh=cU0Gn9sCPhn27DhSoQtW5t8gUKA6yyviDF+JUxv2v+I=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=XMRYmC1VnRk4N+avCrLSQK/KDpwfjpnOR3eHDynMVA5BctL/nLPhDHPjQffV4lUmqcMx6i8poJIKBHnlr4v3O2++v1GdEjA8uMScEhH3ZtJYa/JpA/fOtOrjG9l+zn4+cjCRDmtG2J8BOkCBHto7Ekf0Pi/iZLMDZ0E9cv53yOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1UNT2jBN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wPAZsjXo; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Uw0H9kFlnI64QYBiGLlvMj0rjiuIg6WkFI86GbgMb6JsVE069asjSj/9oE5KuOV/YBNNfzy2wmsuFhC1AkvGonBrGK1nUR3fHjyHuVngUqq1uXWDFKY+TQ3AkdileXRft00w3ZG1X//kCNO54NXFbgIgbH7ObfPB898QNOVgzBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0mm6jS+g; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6qMKj825; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Mon, 09 Sep 2024 17:27:41 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h5im82oGiUFihike5/eRPnXdi7Z+l4zd4Dc6yJCIw5A=;
-	b=1UNT2jBN89H6NtJSlsRpFz1dHtA28O7yfKLw/l0c8i5C1vqEg/Q8CZ91az3gzwz+LWH+MB
-	+D4FjhhPGMAQ/3F8K93Em/RKNbgHgPCGpMhGUQpEIyV90qszMR73urpmCNp86Y16636ayJ
-	GBDHAFgLj2cfFaty1xbyoIIsK7GhhXrYsEh1b3h8B4m1H8xIAfRa4yX4+gX++zRxCVZhib
-	qboxSe7LvUsrzEMax/6N3KR5yArXi98i0PSZHkDlZFiu/crRFc83gc5KP8ZvaunJ/xzopx
-	w3wtJnr7CR1fN62Ge0ZXvoj43ElLH5ZzGPL47DQQiGFRBNHxGIdEOidgan/NYw==
+	bh=vtRAPQichhKi1fZ8OzdFVSxK1lYL64dAR8OYMwUFOnM=;
+	b=0mm6jS+g203oKebEGYO9q3QTTCeHTIhCm3OVn2xMxLUC2T96SQbjJunc9vpG4MHpLmda2Q
+	vybnSQOiJIJwUBeByxrbvshk6punU8TXHKiBQhHZg9k2II6HkeOSMaZFrLmqW6Hf7pkFRp
+	m15Lfllrp1zFIVi/qb3UE7YIjulh8x1zL2exi8uTNhQezXTtEwK7JyFFqoWTPUBzHIBnhZ
+	5RRWp57oDXpiCcLq+9gJgdxlRju7N+Ar48hm//MvtBOX8Bj8ZNcglHLJxeyCQjuzPzenwQ
+	3R67xKHEyS83mpsDi+EGs6pKBnRhfuMINvyvPKUQP0Ny65j2nFN2oSsTGHXkMg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1725902861;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h5im82oGiUFihike5/eRPnXdi7Z+l4zd4Dc6yJCIw5A=;
-	b=wPAZsjXoI8Bz5+c1hnSG0uAjzoojA0v7f7FB2NCDyeq730TPAiKYOmkMNyHRNJdn4gZ6LF
-	XsKlirdjxG05UODw==
-From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+	bh=vtRAPQichhKi1fZ8OzdFVSxK1lYL64dAR8OYMwUFOnM=;
+	b=6qMKj825GmC9Iz52D6YkkIcQmINl4Bn4U+tvX0aIQMBiUwMIl13ivYGtacWJ3hnrUAWRqn
+	4lBrbga47aL3HQAw==
+From: "tip-bot2 for Yu Liao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/rt] x86: Allow to enable PREEMPT_RT.
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240906111841.562402-2-bigeasy@linutronix.de>
-References: <20240906111841.562402-2-bigeasy@linutronix.de>
+Subject:
+ [tip: sched/rt] printk: Export match_devname_and_update_preferred_console()
+Cc: kernel test robot <lkp@intel.com>, Yu Liao <liaoyu15@huawei.com>,
+ Petr Mladek <pmladek@suse.com>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240909075652.747370-1-liaoyu15@huawei.com>
+References: <20240909075652.747370-1-liaoyu15@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172590286111.2215.4810009143872895730.tip-bot2@tip-bot2>
+Message-ID: <172590286143.2215.6212348745263745888.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,41 +81,43 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/rt branch of tip:
 
-Commit-ID:     70c5e36c0f431cab9059477c6b7d3ba02b289cd9
-Gitweb:        https://git.kernel.org/tip/70c5e36c0f431cab9059477c6b7d3ba02b289cd9
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Fri, 06 Sep 2024 12:59:04 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 09 Sep 2024 19:24:11 +02:00
+Commit-ID:     3e5b2e81f17f176a4d451c1dd1794e64644319c4
+Gitweb:        https://git.kernel.org/tip/3e5b2e81f17f176a4d451c1dd1794e64644319c4
+Author:        Yu Liao <liaoyu15@huawei.com>
+AuthorDate:    Mon, 09 Sep 2024 15:56:52 +08:00
+Committer:     Petr Mladek <pmladek@suse.com>
+CommitterDate: Mon, 09 Sep 2024 17:35:06 +02:00
 
-x86: Allow to enable PREEMPT_RT.
+printk: Export match_devname_and_update_preferred_console()
 
-It is really time.
+When building serial_base as a module, modpost fails with the following
+error message:
 
-x86 has all the required architecture related changes, that have been
-identified over time, in order to enable PREEMPT_RT. With the recent
-printk changes, the last known road block has been addressed.
+  ERROR: modpost: "match_devname_and_update_preferred_console"
+  [drivers/tty/serial/serial_base.ko] undefined!
 
-Allow to enable PREEMPT_RT on x86.
+Export the symbol to allow using it from modules.
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240906111841.562402-2-bigeasy@linutronix.de
-
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202409071312.qlwtTOS1-lkp@intel.com/
+Fixes: 12c91cec3155 ("serial: core: Add serial_base_match_and_update_preferred_console()")
+Signed-off-by: Yu Liao <liaoyu15@huawei.com>
+Link: https://lore.kernel.org/r/20240909075652.747370-1-liaoyu15@huawei.com
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 ---
- arch/x86/Kconfig | 1 +
+ kernel/printk/printk.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 007bab9..8768d38 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -122,6 +122,7 @@ config X86
- 	select ARCH_USES_CFI_TRAPS		if X86_64 && CFI_CLANG
- 	select ARCH_SUPPORTS_LTO_CLANG
- 	select ARCH_SUPPORTS_LTO_CLANG_THIN
-+	select ARCH_SUPPORTS_RT
- 	select ARCH_USE_BUILTIN_BSWAP
- 	select ARCH_USE_CMPXCHG_LOCKREF		if X86_CMPXCHG64
- 	select ARCH_USE_MEMTEST
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index c22b070..6ff8d47 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2620,6 +2620,7 @@ int match_devname_and_update_preferred_console(const char *devname,
+ 
+ 	return -ENOENT;
+ }
++EXPORT_SYMBOL_GPL(match_devname_and_update_preferred_console);
+ 
+ bool console_suspend_enabled = true;
+ EXPORT_SYMBOL(console_suspend_enabled);
 
