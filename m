@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-2255-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2251-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23F69720E0
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 19:33:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4B59720DA
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 19:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0BF61F24425
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 17:33:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47EFD283D01
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 17:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B5018CC17;
-	Mon,  9 Sep 2024 17:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D7518C34F;
+	Mon,  9 Sep 2024 17:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="G3lE4cYL";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JNixib0b"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VL9KSNq7";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pb0wzIwA"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C511218A926;
-	Mon,  9 Sep 2024 17:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD3D18B467;
+	Mon,  9 Sep 2024 17:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725902880; cv=none; b=nMmX1rlBOMMbs9G2btYc40otK1kyiwwNGcrzEKoS1SoxcjtJv5c+B2HnvKYpG1xrkoWsjWz9lge2rCUxd8v/w/yNE6/10SUHCfCfOeplWVF11CN2eyyapFrNVP942TdLKLUpfOzoOzXK1s5KRYWQw3YkpRuWtPbKO/WrDMfMzko=
+	t=1725902878; cv=none; b=Qp/+funhZZ9Zar1IUInVcb8F597byMcDX1POewZpBURagE7t55Ia5ROmCtePWIbNTzs0AHedTjrjET2iX3YG2OVqOVGzpUDr7gpA6ikjrvgqFd8u++eZtXz/ZeSG6CVzr+waPgB8v0RR/NsXD5qMXyNfo1tOMj+TC8UX3o0Srww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725902880; c=relaxed/simple;
-	bh=0L801lFbiZudXNezIm4R2QddQ2NmkUivgHbffYYQk+s=;
+	s=arc-20240116; t=1725902878; c=relaxed/simple;
+	bh=pct4dL4eaZfDblBX99WCOLwMb655gzQDQ5ViIAd12yw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IG02WmpYz9mQwOIzIWAPUf9qjKBkdWFOt6JTLq2fK1TXpzXN6ZXdIHgj78yyQe+59C2K2t8MCnPZ1IjBoySvsb1dWIQRWtOIuk8/H3Nr70FZUEVFdN+oMGY9oLGr79eQuVUbW2wGDWKVijghQ6LBnpdm5FLhm5MtD69Jx3q18wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=G3lE4cYL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JNixib0b; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Gkj7nUI1khRXD2H93OTQJPT8+9MpZJxO/J9XT1yyH2VRd40SxNk0GpPaTuDi334x9sQPFxnO/xHLCVrZT0TLSHK++qE6xNTtkV2J8SMKSsKyd45QTbLp2uvTMOjG9Vv7KwdWVYKUW/KhUCTNN5n4wFBsEWHjN48GtHde5CfvrPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VL9KSNq7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pb0wzIwA; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 09 Sep 2024 17:27:53 -0000
+Date: Mon, 09 Sep 2024 17:27:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1725902874;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FqweCNZtdFv4pHOoVXelU3v9sqhXwupBP482NQ1QmU8=;
-	b=G3lE4cYLR4roUOUNWK7Lmgj5d17anOtJlZmIfCTlgA0dpku0PMc2CinuSL1jyp1KrqxhzS
-	mxdSvYGoTwwzVwjYZe48JP3QckIh4kM7FKkWA2ZFuO/GFiz3/zaUm0wlnU9WgKoBPUlMzI
-	wWcAnqZ/Xoke3t3/hAAfGUjQ5kEppmxzgnfEBUTLNcXrSiIV8ID6HCLTENeVwbjseLaoji
-	mouQwUK+YigQO/4+A27VkXKiWGpkN5P3OTVeWoL2nrA6YSCCLWi3LYki6OYecA1ReYyJvT
-	0uPVUitJzHvfhPcwUJQW6PPnYEGvPihbRPN4KtcJy7xhJ160FWI3wkBQrEIjqw==
+	bh=Ng8i/ioIDlzNK0X/BZQQxIyDIt1yA+1O44yyaW5TxPg=;
+	b=VL9KSNq79SZr5DdWkxWmmn/meUPFBo6GHZ35wofSNeaZRLwFQrWDUy/1Nr9PVSDB7gNQGB
+	w3h4tTwNXF61oc+w0EZG5qZAob8b7pz5VDYsjOZjIUPTLfKh4nJx80bf4on4nDbW82aDCf
+	qML184VQPJXO7zOZgpz7mQ1YHjUutYVAgBcLmzdXVmSX/ETtMbG2J/HZ5uPHaJtlnpRInK
+	LP//VTdNNokPIkLqcroe2dtObQQ0PYfJ3eXlSlrEIdfEVhsS3OVWz5mIW/FWS0oh635nbt
+	FQajYDoaBG9FtkRgMhWJvcKDAExaTuI1S/Uh9ApwowhSj+sH4n55gf1qXFh84A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1725902874;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,25 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FqweCNZtdFv4pHOoVXelU3v9sqhXwupBP482NQ1QmU8=;
-	b=JNixib0bxT9S3GFpeIXZ1JL2LIzgUsbDFBCD7YaRnczf28Ag8WBU/qIXTBnDEP5oWujpgT
-	PlkDE867LJwbrsCg==
+	bh=Ng8i/ioIDlzNK0X/BZQQxIyDIt1yA+1O44yyaW5TxPg=;
+	b=pb0wzIwALTGGCKEmME9da62UmHhzZe3oXjPmRdKx01mjSAxmx4cRB47na0ol1ayHXrOB+V
+	r2RzNVqkVbv/jXCg==
 From: "tip-bot2 for John Ogness" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/rt] printk: nbcon: Add helper to assign priority based on
- CPU state
+Subject: [tip: sched/rt] printk: Add @flags argument for console_is_usable()
 Cc: John Ogness <john.ogness@linutronix.de>, Petr Mladek <pmladek@suse.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240820063001.36405-20-john.ogness@linutronix.de>
-References: <20240820063001.36405-20-john.ogness@linutronix.de>
+In-Reply-To: <20240820063001.36405-19-john.ogness@linutronix.de>
+References: <20240820063001.36405-19-john.ogness@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172590287373.2215.357602443102850406.tip-bot2@tip-bot2>
+Message-ID: <172590287405.2215.13378354005682548786.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,82 +80,80 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/rt branch of tip:
 
-Commit-ID:     06683a6649895ccf279c35ca2fb77fd7afb7a6c5
-Gitweb:        https://git.kernel.org/tip/06683a6649895ccf279c35ca2fb77fd7afb7a6c5
+Commit-ID:     fc400d5f63570afdadd718ae962cf5aa0feeace6
+Gitweb:        https://git.kernel.org/tip/fc400d5f63570afdadd718ae962cf5aa0feeace6
 Author:        John Ogness <john.ogness@linutronix.de>
-AuthorDate:    Tue, 20 Aug 2024 08:35:45 +02:06
+AuthorDate:    Tue, 20 Aug 2024 08:35:44 +02:06
 Committer:     Petr Mladek <pmladek@suse.com>
 CommitterDate: Wed, 21 Aug 2024 14:56:24 +02:00
 
-printk: nbcon: Add helper to assign priority based on CPU state
+printk: Add @flags argument for console_is_usable()
 
-Add a helper function to use the current state of the CPU to
-determine which priority to assign to the printing context.
-
-The EMERGENCY priority handling is added in a follow-up commit.
-It will use a per-CPU variable.
-
-Note: nbcon_device_try_acquire(), which is used by console
-      drivers to acquire the nbcon console for non-printing
-      activities, is hard-coded to always use NORMAL priority.
+The caller of console_is_usable() usually needs @console->flags
+for its own checks. Rather than having console_is_usable() read
+its own copy, make the caller pass in the @flags. This also
+ensures that the caller saw the same @flags value.
 
 Signed-off-by: John Ogness <john.ogness@linutronix.de>
 Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240820063001.36405-20-john.ogness@linutronix.de
+Link: https://lore.kernel.org/r/20240820063001.36405-19-john.ogness@linutronix.de
 Signed-off-by: Petr Mladek <pmladek@suse.com>
 ---
- kernel/printk/internal.h |  2 ++
- kernel/printk/nbcon.c    | 19 +++++++++++++++++++
- 2 files changed, 21 insertions(+)
+ kernel/printk/internal.h | 8 ++------
+ kernel/printk/printk.c   | 5 +++--
+ 2 files changed, 5 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
-index fe8d84d..72f2293 100644
+index 448a5fc..fe8d84d 100644
 --- a/kernel/printk/internal.h
 +++ b/kernel/printk/internal.h
-@@ -83,6 +83,7 @@ u64 nbcon_seq_read(struct console *con);
- void nbcon_seq_force(struct console *con, u64 seq);
- bool nbcon_alloc(struct console *con);
- void nbcon_free(struct console *con);
-+enum nbcon_prio nbcon_get_default_prio(void);
+@@ -89,13 +89,9 @@ void nbcon_free(struct console *con);
+  * records. Note that this function does not consider the current context,
+  * which can also play a role in deciding if @con can be used to print
+  * records.
+- *
+- * Requires the console_srcu_read_lock.
+  */
+-static inline bool console_is_usable(struct console *con)
++static inline bool console_is_usable(struct console *con, short flags)
+ {
+-	short flags = console_srcu_read_flags(con);
+-
+ 	if (!(flags & CON_ENABLED))
+ 		return false;
  
- /*
-  * Check if the given console is currently capable and allowed to print
-@@ -136,6 +137,7 @@ static inline u64 nbcon_seq_read(struct console *con) { return 0; }
- static inline void nbcon_seq_force(struct console *con, u64 seq) { }
+@@ -141,7 +137,7 @@ static inline void nbcon_seq_force(struct console *con, u64 seq) { }
  static inline bool nbcon_alloc(struct console *con) { return false; }
  static inline void nbcon_free(struct console *con) { }
-+static inline enum nbcon_prio nbcon_get_default_prio(void) { return NBCON_PRIO_NONE; }
  
- static inline bool console_is_usable(struct console *con, short flags) { return false; }
+-static inline bool console_is_usable(struct console *con) { return false; }
++static inline bool console_is_usable(struct console *con, short flags) { return false; }
  
-diff --git a/kernel/printk/nbcon.c b/kernel/printk/nbcon.c
-index e8ddcb6..c6a9aa9 100644
---- a/kernel/printk/nbcon.c
-+++ b/kernel/printk/nbcon.c
-@@ -974,6 +974,25 @@ update_con:
- }
+ #endif /* CONFIG_PRINTK */
  
- /**
-+ * nbcon_get_default_prio - The appropriate nbcon priority to use for nbcon
-+ *				printing on the current CPU
-+ *
-+ * Context:	Any context.
-+ * Return:	The nbcon_prio to use for acquiring an nbcon console in this
-+ *		context for printing.
-+ *
-+ * The function is safe for reading per-CPU data in any context because
-+ * preemption is disabled if the current CPU is in the panic state.
-+ */
-+enum nbcon_prio nbcon_get_default_prio(void)
-+{
-+	if (this_cpu_in_panic())
-+		return NBCON_PRIO_PANIC;
-+
-+	return NBCON_PRIO_NORMAL;
-+}
-+
-+/**
-  * nbcon_alloc - Allocate and init the nbcon console specific data
-  * @con:	Console to initialize
-  *
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index b9c8fff..ffb56c2 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -3012,9 +3012,10 @@ static bool console_flush_all(bool do_cond_resched, u64 *next_seq, bool *handove
+ 
+ 		cookie = console_srcu_read_lock();
+ 		for_each_console_srcu(con) {
++			short flags = console_srcu_read_flags(con);
+ 			bool progress;
+ 
+-			if (!console_is_usable(con))
++			if (!console_is_usable(con, flags))
+ 				continue;
+ 			any_usable = true;
+ 
+@@ -3925,7 +3926,7 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
+ 			 * that they make forward progress, so only increment
+ 			 * @diff for usable consoles.
+ 			 */
+-			if (!console_is_usable(c))
++			if (!console_is_usable(c, flags))
+ 				continue;
+ 
+ 			if (flags & CON_NBCON) {
 
