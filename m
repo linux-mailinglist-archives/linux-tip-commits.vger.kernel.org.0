@@ -1,116 +1,150 @@
-Return-Path: <linux-tip-commits+bounces-2209-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2210-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A258C970AEA
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 03:11:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABD2971D53
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 16:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58ED01F216BA
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 01:11:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A3FBB22A7D
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 14:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBE8B641;
-	Mon,  9 Sep 2024 01:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E40B1BBBFE;
+	Mon,  9 Sep 2024 14:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KSCOyM5y"
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="auuqNEXO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CaAOdA75"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD25A932;
-	Mon,  9 Sep 2024 01:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0E01BBBFD;
+	Mon,  9 Sep 2024 14:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725844278; cv=none; b=j8PgtpAXSk0HaFlQFJxt15q0gDtPcfxzqs2AzIPxE14jnCEtF4fzF7WKniDYufEPz/WQcSQ5E8dtUM6AKL9lTUa7QzHji8rnYYHMHLj2cvzujExlQ6xLD/GoIAcZWGYDjBUt/rD7GMJmWr12l1nQHnNd5+uliPTOtwvjHi9kBHE=
+	t=1725893966; cv=none; b=Zg3h5tHNjTYltTtsJfQO7RgZBx4iqCZTfY7L0CrqeJbZPRvjng/OzRcLwGs/u76EzsahdLBgdkTWJLhvqNUh5u5Gt1Vuu85mTqEiQAZizrHldVaFWnl73DkqrgG+fCpTh+LBfCbpdfJ3OtarAqNcOmSZIjQpNxb7F8DDcRgRAtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725844278; c=relaxed/simple;
-	bh=k8p2baZgQ5AKYcGF1mTzj6v6PsnSu2BAQLo08iDdm5Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eYloXFYHHjHXL4uOJXDediIeWbaOfGjDyF9JlDNEyNnJuz3egw8Da+mv45dlhdNRnhHYMkoLWdV7xuH+DTxn8nKs2dHxRXsMi7p8XC0jWRlhgXBPFTHV0jiQODFGJ4oxAMHp5WC5zUbGaQ3aSdtp5gsC8zcgfyszNfJzUQajaN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KSCOyM5y; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2d8881850d9so2920687a91.3;
-        Sun, 08 Sep 2024 18:11:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725844276; x=1726449076; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ODeiZaLKYg6ZviC8NyAbx2CBkhYZM5ti5OKHmAZKgOY=;
-        b=KSCOyM5ybfeoH5uVAwbEyNVqHTv6mj4XsCA352FvVcCTO8GnZ37t8fjAJ/V2xyXdHU
-         Af30WIO2Z3PTZohi/NSOaMKcyrdt2ut23SsxE0g3lQoagTICLqYbnb1wwHMkl0IqB88f
-         3k28iisgTD6uIuDpfjl3akznry4WwRh2PThuwsW9M7Y5zKVGa0dCCm6hhO4seG8NfGBS
-         WEJmgxl4vCzVSmjrKf+tRrg84A/Q4B2tqnF7ks/5iV191fSnmH683NnaNMTVrbAvuqp+
-         l8DJRbSTo+yYgZW+uzyhm8/nQ4yPx9mK6jc0nIU3QdyZ1nogLA6fsgO3HJX9BE3N9owI
-         EbQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725844276; x=1726449076;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ODeiZaLKYg6ZviC8NyAbx2CBkhYZM5ti5OKHmAZKgOY=;
-        b=DgRAG8YIREU5laRipJPe+tPMsddQzq2x7zMPb2erqi9zepOoykziEG6WBUGbBdEJ10
-         GHP4YMvOmi0gjV/6i2F+c5/oYnD1Hh8L/RJxO90md/cM66jYjtIkhBDh5AbV8RGFfEAF
-         cEzQhrBfTj1Pgnpu5Jm+tqhP/bg/K9QuFVo205yETRc3LPlb3BO1d2wIaK8lXdJwA/i7
-         ESKjMseWIpiHZeFBdqIMTH6t60JLWHeC6sug+MppCLMSbib9YudbhxF3yiVddtojTWYR
-         Zfxc2WzV60Q2VwPiJ8ZAl4c9cA/k35RciTkzp2wk7CXGXn2UjrKXdZvJd/qFEIPXMLQr
-         487w==
-X-Forwarded-Encrypted: i=1; AJvYcCUU9bW1J/DUDmuFLr3r4KGvqgi8JpFeXA7LUJnl2NWaqHwG9da9gEIkZDJ+d3oVMp0WHjc=@vger.kernel.org, AJvYcCWobBNbdqyrJAbnBBBme4PD9jIlMAA2MKfZ2MGOCUEMm4m2Dxj10yjirr2pJE2EZpHfZa9ptxSYYXhB6NwY@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSp20RxoCID9/bMVEvaTWMMPRs2Ajxk9+JcA1pycVouPSAbloJ
-	/zClVyP9cN7IUPSfUSaW3QlXfgqEJ9dKroF+SsqMn14BxpmZxNi+iIOSkjZT79pS8NBZqfue+lG
-	PWFBh2WkkkMTQBXjgueFZ76y05w4VHQ==
-X-Google-Smtp-Source: AGHT+IFKWxLQ1WT3gnv2oZYmXtcbQwFg1hwesywzl6zJX5noiX6W/DcY1AVUz0Tx+K4q0xUB+Lbj2VEwqNYyfMWKvrM=
-X-Received: by 2002:a17:90b:1c0a:b0:2da:d766:1925 with SMTP id
- 98e67ed59e1d1-2dad7661a42mr8779619a91.37.1725844275880; Sun, 08 Sep 2024
- 18:11:15 -0700 (PDT)
+	s=arc-20240116; t=1725893966; c=relaxed/simple;
+	bh=JM0dE9diSaIWxy1iMpjHTN1l6rPyxO6T3y8z7MDdK/U=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=FNk8wWw+0K+93xNwbx8fHqNm7F9Tm/96I06owpPRNQAkSdoF5gfOyf6JoP9jVvO7MFmz5P9RwltTTOCsR2KRrajPdZ3UqgYoKPx7ztxLvaygyoZYPC3V4YsEU5e34hex6OrpMV87zi3PWWaX670x769RuJMg6PjsUUvWTlznUCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=auuqNEXO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CaAOdA75; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 09 Sep 2024 14:59:21 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1725893962;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DHIF+dTwPL5+ns4F116MKpT1rNHZAMeiU5VrE/OgeOY=;
+	b=auuqNEXOw7V4qs186JyVgvU7n9wuB7qeLanuOZtTvhnbClue8Ph/XzTc7WpNlUBBtRmqn2
+	zoOUOzBZJcXrbmbYz4pr1tqNkuYkys4fGno4CpVVIQduG8u/tr0vnSPYXODRn6CKdK2JGb
+	OnRf/2zgEg+FaL2fg+FzD/H2HarhVY5PzGvsfx8dx61FwJcRm6S9Gu0wDa5SNUCHfdK+LI
+	NqirsSDvC8qA82Q7mtahUiIVhGcbIhwhNOiQqK4S+8uWEWG4VlmFWtJ/i1XgEzZHiRVyQl
+	pnT6+aTQkpg4z9LjmOOH2qRFfCKa+JBq/IQ9WfJbG5t0slZuJhP4+fLfD8lhQg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1725893962;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DHIF+dTwPL5+ns4F116MKpT1rNHZAMeiU5VrE/OgeOY=;
+	b=CaAOdA75srx8sZTaIxr4E7DzWkuU4q/oYPPsZMsaM9c1NZpNj7rQuj4pceO8wvsPFk4v2o
+	v5jtHD3WacCCvZBg==
+From: "tip-bot2 for Zhen Lei" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: core/debugobjects] debugobjects: Remove redundant checks in fill_pool()
+Cc: Zhen Lei <thunder.leizhen@huawei.com>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240904133944.2124-4-thunder.leizhen@huawei.com>
+References: <20240904133944.2124-4-thunder.leizhen@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240903174603.3554182-9-andrii@kernel.org> <172554860322.2215.10385397228202759078.tip-bot2@tip-bot2>
-In-Reply-To: <172554860322.2215.10385397228202759078.tip-bot2@tip-bot2>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Sun, 8 Sep 2024 18:11:04 -0700
-Message-ID: <CAEf4BzbytuSpro9wT7cZY2Qf98zpDz+V0hTwwKP3ZDa866s1tA@mail.gmail.com>
-Subject: Re: [tip: perf/core] uprobes: switch to RCU Tasks Trace flavor for
- better performance
-To: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc: linux-tip-commits@vger.kernel.org, Andrii Nakryiko <andrii@kernel.org>, 
-	Oleg Nesterov <oleg@redhat.com>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	"Paul E . McKenney" <paulmck@kernel.org>, bpf <bpf@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <172589396211.2215.5668953664849792936.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 5, 2024 at 8:03=E2=80=AFAM tip-bot2 for Andrii Nakryiko
-<tip-bot2@linutronix.de> wrote:
->
-> The following commit has been merged into the perf/core branch of tip:
->
-> Commit-ID:     c4d4569c41f9cda745cfd1d8089ea3d3526bafe5
-> Gitweb:        https://git.kernel.org/tip/c4d4569c41f9cda745cfd1d8089ea3d=
-3526bafe5
-> Author:        Andrii Nakryiko <andrii@kernel.org>
-> AuthorDate:    Tue, 03 Sep 2024 10:46:03 -07:00
-> Committer:     Peter Zijlstra <peterz@infradead.org>
-> CommitterDate: Thu, 05 Sep 2024 16:56:15 +02:00
->
+The following commit has been merged into the core/debugobjects branch of tip:
 
-Hm... This commit landed in perf/core, but is gone now (the rest of
-patches is still there). Any idea what happened?
+Commit-ID:     63a4a9b52c3c7f86351710739011717a36652b72
+Gitweb:        https://git.kernel.org/tip/63a4a9b52c3c7f86351710739011717a36652b72
+Author:        Zhen Lei <thunder.leizhen@huawei.com>
+AuthorDate:    Wed, 04 Sep 2024 21:39:41 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 09 Sep 2024 16:40:26 +02:00
 
-> uprobes: switch to RCU Tasks Trace flavor for better performance
->
-> This patch switches uprobes SRCU usage to RCU Tasks Trace flavor, which
-> is optimized for more lightweight and quick readers (at the expense of
-> slower writers, which for uprobes is a fine tradeof) and has better
-> performance and scalability with number of CPUs.
->
-> Similarly to baseline vs SRCU, we've benchmarked SRCU-based
-> implementation vs RCU Tasks Trace implementation.
->
+debugobjects: Remove redundant checks in fill_pool()
 
-[...]
+fill_pool() checks locklessly at the beginning whether the pool has to be
+refilled. After that it checks locklessly in a loop whether the free list
+contains objects and repeats the refill check.
+
+If both conditions are true, it acquires the pool lock and tries to move
+objects from the free list to the pool repeating the same checks again.
+
+There are two redundant issues with that:
+
+      1) The repeated check for the fill condition
+      2) The loop processing
+
+The repeated check is pointless as it was just established that fill is
+required. The condition has to be re-evaluated under the lock anyway.
+
+The loop processing is not required either because there is practically
+zero chance that a repeated attempt will succeed if the checks under the
+lock terminate the moving of objects.
+
+Remove the redundant check and replace the loop with a simple if condition.
+
+[ tglx: Massaged change log ]
+
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240904133944.2124-4-thunder.leizhen@huawei.com
+
+---
+ lib/debugobjects.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 6329a86..5ce473a 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -135,15 +135,13 @@ static void fill_pool(void)
+ 		return;
+ 
+ 	/*
+-	 * Reuse objs from the global free list; they will be reinitialized
+-	 * when allocating.
++	 * Reuse objs from the global obj_to_free list; they will be
++	 * reinitialized when allocating.
+ 	 *
+-	 * Both obj_nr_tofree and obj_pool_free are checked locklessly; the
+-	 * READ_ONCE()s pair with the WRITE_ONCE()s in pool_lock critical
+-	 * sections.
++	 * obj_nr_tofree is checked locklessly; the READ_ONCE() pairs with
++	 * the WRITE_ONCE() in pool_lock critical sections.
+ 	 */
+-	while (READ_ONCE(obj_nr_tofree) &&
+-	       READ_ONCE(obj_pool_free) < debug_objects_pool_min_level) {
++	if (READ_ONCE(obj_nr_tofree)) {
+ 		raw_spin_lock_irqsave(&pool_lock, flags);
+ 		/*
+ 		 * Recheck with the lock held as the worker thread might have
 
