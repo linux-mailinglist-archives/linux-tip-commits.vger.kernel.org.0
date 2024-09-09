@@ -1,77 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-2265-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2263-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F8D9720EF
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 19:34:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A7B9720EB
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 19:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B20A3285064
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 17:34:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3F451F2344B
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Sep 2024 17:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F3E18E748;
-	Mon,  9 Sep 2024 17:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10C618E356;
+	Mon,  9 Sep 2024 17:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dLnkrD/5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h39BybJN"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mDrPDLMJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xvRTK7/k"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC43C18C912;
-	Mon,  9 Sep 2024 17:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6C718CBF2;
+	Mon,  9 Sep 2024 17:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725902883; cv=none; b=e+xgsa5Nrwp+SqOOZt01gEaX6LaB/oKOW7g+Juj+0wfnGbMjAzYPTp3vrG1v97LwXIE8AFl8nk2mSrJumORdcxIrWwux1ygWAhhyUN45c7vFrWLFXIr9q81UP6kt05wlmrz1nsQTpKRPe751zN06ArZyMMkmNUS9DKXrVIdL8Ak=
+	t=1725902882; cv=none; b=gFoav059/oHRlKLhkcSfzgdZcq4Z/qssEiHn33/s8usTUhZyYGl8MbyyadtnUuXrPWOgTt+WwcyV4SzFHd3peg320VOU2ei/pObWxxvGTmrQOtrR6JCDI29sB71eDLWsb5f1//ADIf5PdzXtDwbnaQbeqIUorZFXFkzEB9car7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725902883; c=relaxed/simple;
-	bh=/4eSCnnJiZm84cKm55vK6xDthsneDSaEvYlRAtsjRio=;
+	s=arc-20240116; t=1725902882; c=relaxed/simple;
+	bh=BsBjefIGg148F874zJUBi201u7BTDnPdONrzNFtoprY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=SnHCQDJT3PXe7fJkYXMXXWNFiJ4LFA1GdRyr9QzsuW/iM/F8VsklSOpZK/usdt4zUH+HB7QRHNRxq8n5QXTXvsuciKjPB/EWNOZ1vWqSxYqIHwUCVlUnvxxnSsiVwL9QxPBZQilV1mMIbXKj1SO+0ymwqTLH+1dxeoJgHk5WpkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dLnkrD/5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h39BybJN; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=gtb/XobplngSqbZmc3zHjiW227sr8mHppqyMz9ef9BhiOCKkSYihICVjrCcsZ9t60NcBwBJy/4tgt0x8RawyAUDypGJMKTlIh/t1Yw6PHYzGyYm/Hj5Jgixron9v3j+A3/w7Hx8QBpVDw8C+JmXyV7KtHwKPbiW64s9sKbLfnV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mDrPDLMJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xvRTK7/k; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Mon, 09 Sep 2024 17:27:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1725902879;
+	s=2020; t=1725902878;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kcAUJQZsH8FB+wUpZp77u4ngmTJrA8+NRiSBXggEw+U=;
-	b=dLnkrD/5OTC4exRwmV84ydEsZoGz424S9fKTb9sZd+VMsbA88pjj93CsKzTvT6L2T6FFTx
-	qJi62U4617rK/yvjMUkYrbYBRO2/urwqVBGhJzh8zaQly95+EtBleQ0znkiuMbwCarOer+
-	9EgCvBJTHITFPUAnCGNXBjLsABywemojqeFhfCFpIvM9zdsCzPNQYk3oizOMTo1tQYp7z+
-	vYaGRmlSCWBybkoYgDcgiiJf/OkkFNG/y19yOfOo3cOsW1uzv70u0+YtmWhj3K7a3lWoTw
-	v/5y4U9c2silc8uqW8wvYT+m2sVPM/FHkzLXhNfdGbsPhiWYZB0mZkQK6Ks4rw==
+	bh=J600n9c6P/cx4Q/GXjW78BaZDk/+8od9zTdzNS21kiA=;
+	b=mDrPDLMJ+lVV7h1MN5ERGjLM/w0gLhRgEJeg9rNtSlE7+VmrET6v0tdRbtF6F4lFadCT7T
+	/mRDB0OX+k/rD34I36Kyivy/bwbb9ShCMQg46e0GhNNa7+yUM0eUgV9tW6F2Woi14dhE7g
+	NzWBNYshg4AUNqTs11zR8rsgOqTEQNGkZv75z1G2oXGqmDkUIm8iuHPO8DBZqKfhhLox7g
+	cki1VGOmZ3oZwnxmobT+T3MK8ODWRu3fr/8rWLtmzaXoqW+mlq2rjOYR2+NbIwsu7iMllS
+	/epm6UemjerL0NInTsXJxqVS8131FR39wZzJQpqCTMYpnjQMM7iMtI58zoJOLw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1725902879;
+	s=2020e; t=1725902878;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kcAUJQZsH8FB+wUpZp77u4ngmTJrA8+NRiSBXggEw+U=;
-	b=h39BybJNxk3UkZjauD1vn3BSkqg6NC2KQQEnP2PXjdfRG3FPfxJmVrrPHCQUwgF8siuhZL
-	OakAqMsIwtb71SAg==
+	bh=J600n9c6P/cx4Q/GXjW78BaZDk/+8od9zTdzNS21kiA=;
+	b=xvRTK7/kUztsWdHG0dgGurebnA3szLjCmYOVFkzpVkTRw9LBp94idAi2AaQuaJD4iJeucw
+	3FuncQKh5W78BWBg==
 From: "tip-bot2 for John Ogness" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: sched/rt] printk: nbcon: Clarify rules of the owner/waiter matching
+Subject: [tip: sched/rt] printk: nbcon: Add detailed doc for write_atomic()
 Cc: John Ogness <john.ogness@linutronix.de>, Petr Mladek <pmladek@suse.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240820063001.36405-6-john.ogness@linutronix.de>
-References: <20240820063001.36405-6-john.ogness@linutronix.de>
+In-Reply-To: <20240820063001.36405-8-john.ogness@linutronix.de>
+References: <20240820063001.36405-8-john.ogness@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172590287874.2215.1571832259655722622.tip-bot2@tip-bot2>
+Message-ID: <172590287808.2215.8297876638550952916.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,118 +80,84 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/rt branch of tip:
 
-Commit-ID:     8c9dab2c55ad74680728c72949971b20d70b56ca
-Gitweb:        https://git.kernel.org/tip/8c9dab2c55ad74680728c72949971b20d70b56ca
+Commit-ID:     7d56936c1e5208b5eeea2a9a2f70e85248f6da49
+Gitweb:        https://git.kernel.org/tip/7d56936c1e5208b5eeea2a9a2f70e85248f6da49
 Author:        John Ogness <john.ogness@linutronix.de>
-AuthorDate:    Tue, 20 Aug 2024 08:35:31 +02:06
+AuthorDate:    Tue, 20 Aug 2024 08:35:33 +02:06
 Committer:     Petr Mladek <pmladek@suse.com>
-CommitterDate: Wed, 21 Aug 2024 14:56:22 +02:00
+CommitterDate: Wed, 21 Aug 2024 14:56:23 +02:00
 
-printk: nbcon: Clarify rules of the owner/waiter matching
+printk: nbcon: Add detailed doc for write_atomic()
 
-The functions nbcon_owner_matches() and nbcon_waiter_matches()
-use a minimal set of data to determine if a context matches.
-The existing kerneldoc and comments were not clear enough and
-caused the printk folks to re-prove that the functions are
-indeed reliable in all cases.
-
-Update and expand the explanations so that it is clear that the
-implementations are sufficient for all cases.
+The write_atomic() callback has special requirements and is
+allowed to use special helper functions. Provide detailed
+documentation of the callback so that a developer has a
+chance of implementing it correctly.
 
 Signed-off-by: John Ogness <john.ogness@linutronix.de>
 Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240820063001.36405-6-john.ogness@linutronix.de
+Link: https://lore.kernel.org/r/20240820063001.36405-8-john.ogness@linutronix.de
 Signed-off-by: Petr Mladek <pmladek@suse.com>
 ---
- kernel/printk/nbcon.c | 56 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 46 insertions(+), 10 deletions(-)
+ include/linux/console.h | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/printk/nbcon.c b/kernel/printk/nbcon.c
-index 776746d..931b8f0 100644
---- a/kernel/printk/nbcon.c
-+++ b/kernel/printk/nbcon.c
-@@ -228,6 +228,13 @@ static int nbcon_context_try_acquire_direct(struct nbcon_context *ctxt,
- 	struct nbcon_state new;
+diff --git a/include/linux/console.h b/include/linux/console.h
+index 577b157..35c64ee 100644
+--- a/include/linux/console.h
++++ b/include/linux/console.h
+@@ -303,7 +303,7 @@ struct nbcon_write_context {
+ /**
+  * struct console - The console descriptor structure
+  * @name:		The name of the console driver
+- * @write:		Write callback to output messages (Optional)
++ * @write:		Legacy write callback to output messages (Optional)
+  * @read:		Read callback for console input (Optional)
+  * @device:		The underlying TTY device driver (Optional)
+  * @unblank:		Callback to unblank the console (Optional)
+@@ -320,7 +320,6 @@ struct nbcon_write_context {
+  * @data:		Driver private data
+  * @node:		hlist node for the console list
+  *
+- * @write_atomic:	Write callback for atomic context
+  * @nbcon_state:	State for nbcon consoles
+  * @nbcon_seq:		Sequence number of the next record for nbcon to print
+  * @pbufs:		Pointer to nbcon private buffer
+@@ -345,8 +344,34 @@ struct console {
+ 	struct hlist_node	node;
  
- 	do {
-+		/*
-+		 * Panic does not imply that the console is owned. However, it
-+		 * is critical that non-panic CPUs during panic are unable to
-+		 * acquire ownership in order to satisfy the assumptions of
-+		 * nbcon_waiter_matches(). In particular, the assumption that
-+		 * lower priorities are ignored during panic.
-+		 */
- 		if (other_cpu_in_panic())
- 			return -EPERM;
- 
-@@ -259,18 +266,29 @@ static bool nbcon_waiter_matches(struct nbcon_state *cur, int expected_prio)
- 	/*
- 	 * The request context is well defined by the @req_prio because:
- 	 *
--	 * - Only a context with a higher priority can take over the request.
-+	 * - Only a context with a priority higher than the owner can become
-+	 *   a waiter.
-+	 * - Only a context with a priority higher than the waiter can
-+	 *   directly take over the request.
- 	 * - There are only three priorities.
- 	 * - Only one CPU is allowed to request PANIC priority.
- 	 * - Lower priorities are ignored during panic() until reboot.
- 	 *
- 	 * As a result, the following scenario is *not* possible:
- 	 *
--	 * 1. Another context with a higher priority directly takes ownership.
--	 * 2. The higher priority context releases the ownership.
--	 * 3. A lower priority context takes the ownership.
--	 * 4. Another context with the same priority as this context
-+	 * 1. This context is currently a waiter.
-+	 * 2. Another context with a higher priority than this context
-+	 *    directly takes ownership.
-+	 * 3. The higher priority context releases the ownership.
-+	 * 4. Another lower priority context takes the ownership.
-+	 * 5. Another context with the same priority as this context
- 	 *    creates a request and starts waiting.
+ 	/* nbcon console specific members */
+-	void			(*write_atomic)(struct console *con,
+-						struct nbcon_write_context *wctxt);
++
++	/**
++	 * @write_atomic:
 +	 *
-+	 * Event #1 implies this context is EMERGENCY.
-+	 * Event #2 implies the new context is PANIC.
-+	 * Event #3 occurs when panic() has flushed the console.
-+	 * Events #4 and #5 are not possible due to the other_cpu_in_panic()
-+	 * check in nbcon_context_try_acquire_direct().
- 	 */
- 
- 	return (cur->req_prio == expected_prio);
-@@ -578,11 +596,29 @@ static bool nbcon_owner_matches(struct nbcon_state *cur, int expected_cpu,
- 				int expected_prio)
- {
- 	/*
--	 * Since consoles can only be acquired by higher priorities,
--	 * owning contexts are uniquely identified by @prio. However,
--	 * since contexts can unexpectedly lose ownership, it is
--	 * possible that later another owner appears with the same
--	 * priority. For this reason @cpu is also needed.
-+	 * A similar function, nbcon_waiter_matches(), only deals with
-+	 * EMERGENCY and PANIC priorities. However, this function must also
-+	 * deal with the NORMAL priority, which requires additional checks
-+	 * and constraints.
++	 * NBCON callback to write out text in any context. (Optional)
 +	 *
-+	 * For the case where preemption and interrupts are disabled, it is
-+	 * enough to also verify that the owning CPU has not changed.
++	 * This callback is called with the console already acquired. However,
++	 * a higher priority context is allowed to take it over by default.
 +	 *
-+	 * For the case where preemption or interrupts are enabled, an
-+	 * external synchronization method *must* be used. In particular,
-+	 * the driver-specific locking mechanism used in device_lock()
-+	 * (including disabling migration) should be used. It prevents
-+	 * scenarios such as:
++	 * The callback must call nbcon_enter_unsafe() and nbcon_exit_unsafe()
++	 * around any code where the takeover is not safe, for example, when
++	 * manipulating the serial port registers.
 +	 *
-+	 * 1. [Task A] owns a context with NBCON_PRIO_NORMAL on [CPU X] and
-+	 *    is scheduled out.
-+	 * 2. Another context takes over the lock with NBCON_PRIO_EMERGENCY
-+	 *    and releases it.
-+	 * 3. [Task B] acquires a context with NBCON_PRIO_NORMAL on [CPU X]
-+	 *    and is scheduled out.
-+	 * 4. [Task A] gets running on [CPU X] and sees that the console is
-+	 *    still owned by a task on [CPU X] with NBON_PRIO_NORMAL. Thus
-+	 *    [Task A] thinks it is the owner when it is not.
- 	 */
- 
- 	if (cur->prio != expected_prio)
++	 * nbcon_enter_unsafe() will fail if the context has lost the console
++	 * ownership in the meantime. In this case, the callback is no longer
++	 * allowed to go forward. It must back out immediately and carefully.
++	 * The buffer content is also no longer trusted since it no longer
++	 * belongs to the context.
++	 *
++	 * The callback should allow the takeover whenever it is safe. It
++	 * increases the chance to see messages when the system is in trouble.
++	 *
++	 * The callback can be called from any context (including NMI).
++	 * Therefore it must avoid usage of any locking and instead rely
++	 * on the console ownership for synchronization.
++	 */
++	void (*write_atomic)(struct console *con, struct nbcon_write_context *wctxt);
++
+ 	atomic_t		__private nbcon_state;
+ 	atomic_long_t		__private nbcon_seq;
+ 	struct printk_buffers	*pbufs;
 
