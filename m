@@ -1,202 +1,131 @@
-Return-Path: <linux-tip-commits+bounces-2293-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2294-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007D09736A1
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Sep 2024 14:00:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9588F9740D3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Sep 2024 19:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBFDA1F26859
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Sep 2024 12:00:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78801C2240D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Sep 2024 17:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C27D18FDB1;
-	Tue, 10 Sep 2024 11:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26101A2854;
+	Tue, 10 Sep 2024 17:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wkRrQ7pt";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kASNtcE7"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F1/WsbYn"
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CB81885BD;
-	Tue, 10 Sep 2024 11:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B23418EFCE;
+	Tue, 10 Sep 2024 17:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725969552; cv=none; b=VzgBPIrZXdYW8tqCYkIPy5j/UH7fRMS3CcQVuth6fNlSFdKLcc1t2QVhBgVxcubMjJGM/SaTx08YCuI9XyCGtvMiibJQFSw6INSV0G+e80x6Sewe51calSM3ky4ZzFcRppPLkGzYu7l7qlKHXy0/3yUMlMekwFf0L5BaB4W5oxA=
+	t=1725990007; cv=none; b=Rnz5T4KEHTO3/xUnF2BvhRIdonoouZOqWcVx9N8HVbEcpG3zyEqOuVWDtbzVlXKphEJbCSBSgaL66a+YHO/7im+WdxFIumcTrx2wvN3izqh9wskvz335vUi8t2jotBo3Hjcgw4GZ4jHunXMUTlpChYfogRKTMti+fg2T9V979qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725969552; c=relaxed/simple;
-	bh=rWo0XGDoMhkkcWWkit+Tg0Rln0w1WZIlTMmDs4yEV2w=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=OGpap/ivMigIqcUQLgwQDkVYslc43UYlhlXNEW93Ixj5Ai3yFWvax+ZYGI+bXmKRS+BayTnO8KL+zs3oIhXHNZjDOqGRMkcxA7n0I6u5Vk4bKp+gBT6EWYdhJffPw8gfRdCtd02CIHB7De0cHv8L0d0vZ2Xy83rztymFjZQT1Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wkRrQ7pt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kASNtcE7; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 10 Sep 2024 11:59:08 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1725969548;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/QfhozGlni9DREoqdZY6Z0ybsDx8Ur3D6GH/AoU7E/w=;
-	b=wkRrQ7ptuVOcF8ZuB1v+MyAmAriqtvVxHsJonu1650fWdaT4nqIBJRBWesLFv9FOwEsQBI
-	EsJK+q4Ls7aDh5L88Y8FXoyW1EngwgqGorYi0RDbYzDxf/EtN47aset7R13WZl82JjdnpD
-	H2+TWMCQO1uhY/I9kJfc4BOQ9rXBF5vaJCT6SvPP0FeqMWA1Sl1uDdfCADBuV6wljkg0H7
-	C4SZ/4DhoTFqDgmt5ptU9HJlaau8D4vgZSMi6dRvf50BINVWNILDcnkHNwyvLYjxWaXYXv
-	z6+1gehLrAJi0nRXLWlNoy3rmAILTaCJ/DY4RgsiaESDxoDV+9zTXu8pZJJAqw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1725969548;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/QfhozGlni9DREoqdZY6Z0ybsDx8Ur3D6GH/AoU7E/w=;
-	b=kASNtcE7YOF1zzKXdS+rGWdNUDVVJQA+DPGcc91RYkbIPC1E3u2RKwLbs3gmktO7fiO+QU
-	Jo2NHRGxtu+6KfDQ==
-From: "tip-bot2 for Benjamin ROBIN" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] ntp: Make sure RTC is synchronized when time goes
- backwards
-Cc: Benjamin ROBIN <dev@benjarobin.fr>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240908140836.203911-1-dev@benjarobin.fr>
-References: <20240908140836.203911-1-dev@benjarobin.fr>
+	s=arc-20240116; t=1725990007; c=relaxed/simple;
+	bh=fAdgRQqpGF7RrnEDWmOd1mWZuXS+ow/1DruDV+THMfE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SZKfIGDtFTM7RquHA0vD41GMIKFqdC9T5NsZpEVA5J9N9kxX/svxYLGG+kEBycaIKt7BNahyy6htKMH9ZOiu6bNaq29fsrc4y+LDzzJjMumax5IBehSVXHAlgkjelVeJl4B2MPYlgzqkEPDuEPMjkBbdnCp00kxIPyXXU8U6pD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F1/WsbYn; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2d8abac30ddso788390a91.0;
+        Tue, 10 Sep 2024 10:40:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725990006; x=1726594806; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6MGMSWaKWiTq5sp3rVspTPEpv9ZUFzlH0jxiAqGXIZA=;
+        b=F1/WsbYnXVj7p+rR44oIzkynACN07XQWQl0xxZpGg+Zt70F2vDY+YrPOnieK7LR8sr
+         aYLXZmlngqq1EayDFLqyC6mpYSPwDYfYw2+L9QmwkYm/FJrl3ONxZ8JIVuYRIzmykC6Y
+         D1LY0t4NNYv0W0ysDk2KiZ+NASM0HneqqiJKbrGCDL7+FqLyZkp3ynlp0Ey+IJleDQMw
+         zSyWs9VBXI7Hr1C86adIpaYYv+oqGpHRdmF+67Xca4UPjTxKZY5s7b+nE5babZaeXOdL
+         82IrvC0DN2xjSD9nxExI8l0wpMj///FcPCkjPHGw1cYb5i1dGs2seP6rjbOFbOdxWgIV
+         LfUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725990006; x=1726594806;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6MGMSWaKWiTq5sp3rVspTPEpv9ZUFzlH0jxiAqGXIZA=;
+        b=Xi+guyFcoJqiCf1X9nJuU3uXJHoUCehZSZbJf020kY7+T/26kMVH2DHuCA/ff+4IJg
+         36t+SxrjFhOY6pRp8hGbTM64Lfr5mta0F0YsDGTAf2kmE6TrisuuNTXkzlCQjCZpeL9D
+         MCrf26FsyxHstdBpTKiqW5jIUrDq2L+5kgkZ+y83PXxVniMbTxtsVlHTO7ecznN6jOtP
+         iBhMt7Ul1kPcH4KDLfTwtQQ9dxMeW8kO4QcAs8Y5/WclZmMBAst2389tT7wXir3JvWaG
+         hajAubZrXv19rEJrXiDoIFuyyVVfq90OlegRaSy6Mpot6OfwHZZeC7TUBXntXVI9o5he
+         MuMw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJ4A/KP8n+tD8ruogqNf0MOjZv6gJ9q3FrephD9a+FP1gpFoaTmTbGmreMLqe7JyIeacVW77ysXOQYPguT@vger.kernel.org, AJvYcCVAjK/CXJShrg/v4XPaC7PZVWSS4qqMIWERQ+WM1kkAf2wVxqK0cPt1ha4yqozaDqMEp2QDUZaIkOzCFmKXmcGtKQI=@vger.kernel.org, AJvYcCW/+cz1IzCDxyixCHHaPv3rLrXxlsI9jLUGwBNbUYonLwvD+IphfngiqiBETV5oCdv/0uw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3PYzcqt2cx5TyH9JhWfbIJN7lMe/UxqsOQY74UhnEyz3rfMlB
+	8EQmhIPVdnPD857ksBoT8mK9OFf4qXvbaBS0XZf+sQVw0k+PJhfXT0uoBEADHRIIp6Nj+CX0xjd
+	GHVXj3F8Pw/7WONwoqj73FUxxbKwUXg==
+X-Google-Smtp-Source: AGHT+IFwC9/bCAtbu3BnylH0CaBZ+SRVRLEkQ5XJ/W+s4bXXcz8vdJqdDoPjvCD04EyRJE9iF2bP4Zao7wQxr2ZufXs=
+X-Received: by 2002:a17:90a:66c6:b0:2d8:8252:f675 with SMTP id
+ 98e67ed59e1d1-2db83087f69mr355236a91.39.1725990005526; Tue, 10 Sep 2024
+ 10:40:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172596954822.2215.3385652199225021326.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20240903174603.3554182-9-andrii@kernel.org> <172554860322.2215.10385397228202759078.tip-bot2@tip-bot2>
+ <CAEf4BzbytuSpro9wT7cZY2Qf98zpDz+V0hTwwKP3ZDa866s1tA@mail.gmail.com> <ZuAhUHqAA-ejpN3X@gmail.com>
+In-Reply-To: <ZuAhUHqAA-ejpN3X@gmail.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Tue, 10 Sep 2024 10:39:53 -0700
+Message-ID: <CAEf4BzZihPPiReE3anhrVOzjoZW5v4vFVouK_Arm8vJexCTT4g@mail.gmail.com>
+Subject: Re: [tip: perf/core] uprobes: switch to RCU Tasks Trace flavor for
+ better performance
+To: Ingo Molnar <mingo@kernel.org>
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>, linux-tip-commits@vger.kernel.org, 
+	Andrii Nakryiko <andrii@kernel.org>, Oleg Nesterov <oleg@redhat.com>, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, "Paul E . McKenney" <paulmck@kernel.org>, 
+	bpf <bpf@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the timers/core branch of tip:
+On Tue, Sep 10, 2024 at 3:37=E2=80=AFAM Ingo Molnar <mingo@kernel.org> wrot=
+e:
+>
+>
+> * Andrii Nakryiko <andrii.nakryiko@gmail.com> wrote:
+>
+> > On Thu, Sep 5, 2024 at 8:03=E2=80=AFAM tip-bot2 for Andrii Nakryiko
+> > <tip-bot2@linutronix.de> wrote:
+> > >
+> > > The following commit has been merged into the perf/core branch of tip=
+:
+> > >
+> > > Commit-ID:     c4d4569c41f9cda745cfd1d8089ea3d3526bafe5
+> > > Gitweb:        https://git.kernel.org/tip/c4d4569c41f9cda745cfd1d8089=
+ea3d3526bafe5
+> > > Author:        Andrii Nakryiko <andrii@kernel.org>
+> > > AuthorDate:    Tue, 03 Sep 2024 10:46:03 -07:00
+> > > Committer:     Peter Zijlstra <peterz@infradead.org>
+> > > CommitterDate: Thu, 05 Sep 2024 16:56:15 +02:00
+> > >
+> >
+> > Hm... This commit landed in perf/core, but is gone now (the rest of
+> > patches is still there). Any idea what happened?
+>
+> Yeah, I'm getting this build failure:
+>
+>      kernel/events/uprobes.c:1158:9: error: implicit declaration of funct=
+ion =E2=80=98synchronize_rcu_tasks_trace=E2=80=99; did you mean =E2=80=98sy=
+nchronize_rcu_tasks=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+>
+> on x86-64 defconfig, when applied to today's perf/core.
+>
 
-Commit-ID:     35b603f8a78b0bd51566db277c4f7b56b3ff6bac
-Gitweb:        https://git.kernel.org/tip/35b603f8a78b0bd51566db277c4f7b56b3ff6bac
-Author:        Benjamin ROBIN <dev@benjarobin.fr>
-AuthorDate:    Sun, 08 Sep 2024 16:08:36 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 10 Sep 2024 13:50:40 +02:00
+I see, I need to add `select TASKS_TRACE_RCU` to UPROBES kconfig, I'll
+fix it up and send this patch separately.
 
-ntp: Make sure RTC is synchronized when time goes backwards
+Next time please let me know ASAP about issues with my patches so I
+can fix stuff like this quickly.
 
-sync_hw_clock() is normally called every 11 minutes when time is
-synchronized. This issue is that this periodic timer uses the REALTIME
-clock, so when time moves backwards (the NTP server jumps into the past),
-the timer expires late.
-
-If the timer expires late, which can be days later, the RTC will no longer
-be updated, which is an issue if the device is abruptly powered OFF during
-this period. When the device will restart (when powered ON), it will have
-the date prior to the ADJ_SETOFFSET call.
-
-A normal NTP server should not jump in the past like that, but it is
-possible... Another way of reproducing this issue is to use phc2sys to
-synchronize the REALTIME clock with, for example, an IRIG timecode with
-the source always starting at the same date (not synchronized).
-
-Also, if the time jump in the future by less than 11 minutes, the RTC may
-not be updated immediately (minor issue). Consider the following scenario:
- - Time is synchronized, and sync_hw_clock() was just called (the timer
-   expires in 11 minutes).
- - A time jump is realized in the future by a couple of minutes.
- - The time is synchronized again.
- - Users may expect that RTC to be updated as soon as possible, and not
-   after 11 minutes (for the same reason, if a power loss occurs in this
-   period).
-
-Cancel periodic timer on any time jump (ADJ_SETOFFSET) greater than or
-equal to 1s. The timer will be relaunched at the end of do_adjtimex() if
-NTP is still considered synced. Otherwise the timer will be relaunched
-later when NTP is synced. This way, when the time is synchronized again,
-the RTC is updated after less than 2 seconds.
-
-Signed-off-by: Benjamin ROBIN <dev@benjarobin.fr>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240908140836.203911-1-dev@benjarobin.fr
-
----
- kernel/time/ntp.c          | 10 +++++++++-
- kernel/time/ntp_internal.h |  4 ++--
- kernel/time/timekeeping.c  |  4 +++-
- 3 files changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
-index 8d2dd21..802b336 100644
---- a/kernel/time/ntp.c
-+++ b/kernel/time/ntp.c
-@@ -660,9 +660,17 @@ rearm:
- 	sched_sync_hw_clock(offset_nsec, res != 0);
- }
- 
--void ntp_notify_cmos_timer(void)
-+void ntp_notify_cmos_timer(bool offset_set)
- {
- 	/*
-+	 * If the time jumped (using ADJ_SETOFFSET) cancels sync timer,
-+	 * which may have been running if the time was synchronized
-+	 * prior to the ADJ_SETOFFSET call.
-+	 */
-+	if (offset_set)
-+		hrtimer_cancel(&sync_hrtimer);
-+
-+	/*
- 	 * When the work is currently executed but has not yet the timer
- 	 * rearmed this queues the work immediately again. No big issue,
- 	 * just a pointless work scheduled.
-diff --git a/kernel/time/ntp_internal.h b/kernel/time/ntp_internal.h
-index 23d1b74..5a633dc 100644
---- a/kernel/time/ntp_internal.h
-+++ b/kernel/time/ntp_internal.h
-@@ -14,9 +14,9 @@ extern int __do_adjtimex(struct __kernel_timex *txc,
- extern void __hardpps(const struct timespec64 *phase_ts, const struct timespec64 *raw_ts);
- 
- #if defined(CONFIG_GENERIC_CMOS_UPDATE) || defined(CONFIG_RTC_SYSTOHC)
--extern void ntp_notify_cmos_timer(void);
-+extern void ntp_notify_cmos_timer(bool offset_set);
- #else
--static inline void ntp_notify_cmos_timer(void) { }
-+static inline void ntp_notify_cmos_timer(bool offset_set) { }
- #endif
- 
- #endif /* _LINUX_NTP_INTERNAL_H */
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 5391e41..7e6f409 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -2553,6 +2553,7 @@ int do_adjtimex(struct __kernel_timex *txc)
- {
- 	struct timekeeper *tk = &tk_core.timekeeper;
- 	struct audit_ntp_data ad;
-+	bool offset_set = false;
- 	bool clock_set = false;
- 	struct timespec64 ts;
- 	unsigned long flags;
-@@ -2575,6 +2576,7 @@ int do_adjtimex(struct __kernel_timex *txc)
- 		if (ret)
- 			return ret;
- 
-+		offset_set = delta.tv_sec != 0;
- 		audit_tk_injoffset(delta);
- 	}
- 
-@@ -2608,7 +2610,7 @@ int do_adjtimex(struct __kernel_timex *txc)
- 	if (clock_set)
- 		clock_was_set(CLOCK_SET_WALL);
- 
--	ntp_notify_cmos_timer();
-+	ntp_notify_cmos_timer(offset_set);
- 
- 	return ret;
- }
+> Thanks,
+>
+>         Ingo
 
