@@ -1,71 +1,69 @@
-Return-Path: <linux-tip-commits+bounces-2309-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2310-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0382E987820
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Sep 2024 19:07:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96BE9878C5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Sep 2024 19:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F3681C2157E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Sep 2024 17:06:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E8A41F24C89
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Sep 2024 17:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8430C15445E;
-	Thu, 26 Sep 2024 17:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468FE1494AC;
+	Thu, 26 Sep 2024 17:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="scpKj0YS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VB9UDbw5"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UOnwgZjk";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PRjS5QTI"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47192837F;
-	Thu, 26 Sep 2024 17:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FBD535D8;
+	Thu, 26 Sep 2024 17:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727370410; cv=none; b=E1XJH2JmwXQpnEVtULnh7qkuNX2Hgu36u1hPb9SB5PxZwBv4etRrpqW6tIxRfLPQdpKEXZQKsROUdHCCJ/4eL0pUnsKKov0mkFk99ROei5b9tuxkhtakumVycOGBaG8iuiVUnaII5UDivAuzafdScy9P3XAYyKpgZ+GszHEw2Qg=
+	t=1727373581; cv=none; b=Uyh4FDNGeEyjHF8pQhSNqKOocgs3Ic8/QcQTHqz0JXt/ZBhH7qyhZ92hmjoIPmahQcjfGxma2pkx8vdYdAEyilUkTleUkWmIhQVjk0yP2fEQXMmeiK7PgETup3tpc+pJz4A+pUst2V+BwYywG2sbYcraJ3CQdjq5rfDinrQqKXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727370410; c=relaxed/simple;
-	bh=S6gwfa0nJ28dU+fH2n+ZwioN+TOwzSjwkOlo7Be0TYs=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=OeCAW980+IlHnk6EKanrpdLQQUyVYEAriCBghoi3np9Bn0XbRXIoPyd94pgHKHW0PNjF408yXo9/WgIyNQnoCf3VYz4XyX0HHA5JbDeYtLnTu3nM0xbn4Zd5xbKnOZVbUFJlOCIFpEqUjqbO/Jz7NkYIihodg0S8OAGGNF4FaMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=scpKj0YS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VB9UDbw5; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1727373581; c=relaxed/simple;
+	bh=zFKAp69MtPjHOhx4qLz8Hc7rMi1VESgUH8iYdnI0wbo=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=FmCkF/A1HYC2TIhIprnhWxGIjuCDnLDahaxiRA0BgNUblwy2V/92kqHojuGCrnKiusuZI6Af5woA5JDBn4eK+0UN81A0HZSQEZUOrsqQ4PJBnL2xnbggTTCZRAi/MxKw16dIFu96ILJ8/dr1xSxVer7irjvSLRFE0sg9R7SSDJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UOnwgZjk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PRjS5QTI; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 26 Sep 2024 17:06:45 -0000
+Date: Thu, 26 Sep 2024 17:59:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1727370406;
+	s=2020; t=1727373577;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=V6wq91clFMoxGKcuuRfOMaTBgzRsJjzuYYbe0XBMQJc=;
-	b=scpKj0YSoPUTE4plfKW+qjtw4Joli2QakKs7Y1fvKKp7tN5RhSJVR8mOfdv5ICbqBgCmk+
-	MYwYEf8OA8+YtLB7CcWRwvr2iwPkdvhgI4H1SoYo2nlPQoiv1yTg/uMlR2wEsPyKlhWD+C
-	EAGVZa3ulaIJvxdeNgcnSjg1Llk6KeSPqrBu8LpPxzUXHrJS72/6o0xaPEIifrnxGLSoYz
-	vPZqSzMmyYuN1nLCh1M1JBs6/iHlmNUTjX+XfiG4rsSABw8i/b6SGI2eSHoL2Gr2A04vRt
-	DGiozp8TL33YREYBjqIhRD7hzCceHhsTig4rU6WxOaSX8DtBFlBvPfGgUbS+Aw==
+	bh=OLMHCbmlCAKlaos9H4lq0gWWNlKDezffgL2LeRCH6z8=;
+	b=UOnwgZjk+p62Olw/biso/OFHv0JJ7zJp5mBwAyytAW0BNG39wjSkf93CYZCoWWHD16lC61
+	NR0XGwf0dd9tUH8/c2bbVz8kRI9xr0DMEvv5qdQCMXoa/mDBuDjdJDHU6KtUhI0tQ/Quv2
+	qj7jIBbdGiZmkms9skmEHhFUDG+42rCmYyWp/PZQ8uK4jkRGpU10qWrBO6Mn4rnICdhHJY
+	TtkjZ62/FqzCdECNZ2Qv6bjBL4gJ3FCMtY+bDfNLP5ojNd+keA+h5VWQ3leL/0sAhrVHTV
+	jyu9G221rOBTGD1xsTpEaIcP4QamXrlVKvfSThhon+KgaS27vD7hJZsWJuPMsQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1727370406;
+	s=2020e; t=1727373577;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=V6wq91clFMoxGKcuuRfOMaTBgzRsJjzuYYbe0XBMQJc=;
-	b=VB9UDbw5kB+EABzipXBuv3j418nuB2d+D9dIkTh2foi4HiJ9FfIglopsGROh/GAKzDEubl
-	2b26RfzvAMA68uDA==
-From: "tip-bot2 for Alexey Gladkov (Intel)" <tip-bot2@linutronix.de>
+	bh=OLMHCbmlCAKlaos9H4lq0gWWNlKDezffgL2LeRCH6z8=;
+	b=PRjS5QTIyzsI5I+vKvvvBeWxgKhgiZh7Dp189/ENbPZ1XqdArZaSWLxacGSB/bxVndQCrf
+	nWC+KuwmddUBCjCg==
+From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/tdx: Fix "in-kernel MMIO" check
-Cc: "Alexey Gladkov (Intel)" <legion@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: x86/urgent] x86/cpu: Add two Intel CPU model numbers
+Cc: Tony Luck <tony.luck@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172737040576.2215.15419153772474435232.tip-bot2@tip-bot2>
+Message-ID: <172737357624.2215.4211392863666172616.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -75,60 +73,43 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     d4fc4d01471528da8a9797a065982e05090e1d81
-Gitweb:        https://git.kernel.org/tip/d4fc4d01471528da8a9797a065982e05090e1d81
-Author:        Alexey Gladkov (Intel) <legion@kernel.org>
-AuthorDate:    Fri, 13 Sep 2024 19:05:56 +02:00
+Commit-ID:     d1fb034b75a8a96fcb4bf01a7c0e1421eef833a3
+Gitweb:        https://git.kernel.org/tip/d1fb034b75a8a96fcb4bf01a7c0e1421eef833a3
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Mon, 23 Sep 2024 10:37:50 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 26 Sep 2024 09:45:04 -07:00
+CommitterDate: Thu, 26 Sep 2024 10:47:49 -07:00
 
-x86/tdx: Fix "in-kernel MMIO" check
+x86/cpu: Add two Intel CPU model numbers
 
-TDX only supports kernel-initiated MMIO operations. The handle_mmio()
-function checks if the #VE exception occurred in the kernel and rejects
-the operation if it did not.
+Pantherlake is a mobile CPU. Diamond Rapids next generation Xeon.
 
-However, userspace can deceive the kernel into performing MMIO on its
-behalf. For example, if userspace can point a syscall to an MMIO address,
-syscall does get_user() or put_user() on it, triggering MMIO #VE. The
-kernel will treat the #VE as in-kernel MMIO.
-
-Ensure that the target MMIO address is within the kernel before decoding
-instruction.
-
-Fixes: 31d58c4e557d ("x86/tdx: Handle in-kernel MMIO")
-Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/565a804b80387970460a4ebc67c88d1380f61ad1.1726237595.git.legion%40kernel.org
+Link: https://lore.kernel.org/all/20240923173750.16874-1-tony.luck%40intel.com
 ---
- arch/x86/coco/tdx/tdx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/include/asm/intel-family.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index da8b66d..327c45c 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -16,6 +16,7 @@
- #include <asm/insn-eval.h>
- #include <asm/pgtable.h>
- #include <asm/set_memory.h>
-+#include <asm/traps.h>
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index f81a851..17d899d 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -191,6 +191,8 @@
+ #define INTEL_FAM6_LUNARLAKE_M		0xBD
+ #define INTEL_LUNARLAKE_M		IFM(6, 0xBD)
  
- /* MMIO direction */
- #define EPT_READ	0
-@@ -433,6 +434,11 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 			return -EINVAL;
- 	}
- 
-+	if (!fault_in_kernel_space(ve->gla)) {
-+		WARN_ONCE(1, "Access to userspace address is not supported");
-+		return -EINVAL;
-+	}
++#define INTEL_PANTHERLAKE_L		IFM(6, 0xCC)
 +
- 	/*
- 	 * Reject EPT violation #VEs that split pages.
- 	 *
+ /* "Small Core" Processors (Atom/E-Core) */
+ 
+ #define INTEL_FAM6_ATOM_BONNELL		0x1C /* Diamondville, Pineview */
+@@ -257,4 +259,7 @@
+ #define INTEL_FAM5_QUARK_X1000		0x09 /* Quark X1000 SoC */
+ #define INTEL_QUARK_X1000		IFM(5, 0x09) /* Quark X1000 SoC */
+ 
++/* Family 19 */
++#define INTEL_PANTHERCOVE_X		IFM(19, 0x01) /* Diamond Rapids */
++
+ #endif /* _ASM_X86_INTEL_FAMILY_H */
 
