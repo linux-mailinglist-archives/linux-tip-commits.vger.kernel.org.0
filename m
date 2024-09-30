@@ -1,69 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-2310-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2311-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96BE9878C5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Sep 2024 19:59:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C04898AB3A
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Sep 2024 19:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E8A41F24C89
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Sep 2024 17:59:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABF871F21FF7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Sep 2024 17:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468FE1494AC;
-	Thu, 26 Sep 2024 17:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DEE9192580;
+	Mon, 30 Sep 2024 17:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UOnwgZjk";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PRjS5QTI"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YOPDBfPa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zLAKOlMu"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FBD535D8;
-	Thu, 26 Sep 2024 17:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5173C18EAB;
+	Mon, 30 Sep 2024 17:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727373581; cv=none; b=Uyh4FDNGeEyjHF8pQhSNqKOocgs3Ic8/QcQTHqz0JXt/ZBhH7qyhZ92hmjoIPmahQcjfGxma2pkx8vdYdAEyilUkTleUkWmIhQVjk0yP2fEQXMmeiK7PgETup3tpc+pJz4A+pUst2V+BwYywG2sbYcraJ3CQdjq5rfDinrQqKXA=
+	t=1727717915; cv=none; b=hNGadAW4FP4moXlI5y8FwDQ7FsDlohLwocWqll7cCHwRNQBF+IGWHMuzTqfY1UKJF1N/O9UcNo/RD4EdWgQdMwZ4dRYnlt2sthpVTQbX/murQoyufz+r5Sj4LlcJLIbaus5R/gX8RGJBFYMlWKaPi623Fi12g6VfZz1fNl7eulg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727373581; c=relaxed/simple;
-	bh=zFKAp69MtPjHOhx4qLz8Hc7rMi1VESgUH8iYdnI0wbo=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=FmCkF/A1HYC2TIhIprnhWxGIjuCDnLDahaxiRA0BgNUblwy2V/92kqHojuGCrnKiusuZI6Af5woA5JDBn4eK+0UN81A0HZSQEZUOrsqQ4PJBnL2xnbggTTCZRAi/MxKw16dIFu96ILJ8/dr1xSxVer7irjvSLRFE0sg9R7SSDJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UOnwgZjk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PRjS5QTI; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1727717915; c=relaxed/simple;
+	bh=CwR/jaJJf5gRiS2tIxZMwYJTi9ewZBM0JWaufMRqG50=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=cOmxj5liemq58k/0j6pUt0HyI9N1ZUTezX32KYlG5j0InkNKP15b+EB87HcZP7vLCiUgAJPJyqk0RoEeonQpT24sdI5RTY1aL6pPRlb+d4Kwm1ttIHM9hroirtYcMfOKaiUoVIV9AVlFnyI0XFwpGA6V3cDHsmBZihxdCCzpiiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YOPDBfPa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zLAKOlMu; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 26 Sep 2024 17:59:36 -0000
+Date: Mon, 30 Sep 2024 17:38:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1727373577;
+	s=2020; t=1727717911;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=OLMHCbmlCAKlaos9H4lq0gWWNlKDezffgL2LeRCH6z8=;
-	b=UOnwgZjk+p62Olw/biso/OFHv0JJ7zJp5mBwAyytAW0BNG39wjSkf93CYZCoWWHD16lC61
-	NR0XGwf0dd9tUH8/c2bbVz8kRI9xr0DMEvv5qdQCMXoa/mDBuDjdJDHU6KtUhI0tQ/Quv2
-	qj7jIBbdGiZmkms9skmEHhFUDG+42rCmYyWp/PZQ8uK4jkRGpU10qWrBO6Mn4rnICdhHJY
-	TtkjZ62/FqzCdECNZ2Qv6bjBL4gJ3FCMtY+bDfNLP5ojNd+keA+h5VWQ3leL/0sAhrVHTV
-	jyu9G221rOBTGD1xsTpEaIcP4QamXrlVKvfSThhon+KgaS27vD7hJZsWJuPMsQ==
+	bh=qp5nwg96y87OpSLZA/vVu33PD/rs5eKJFKqagbVKAw0=;
+	b=YOPDBfPa4txdaG/FchV1pfamwQ/AUbUAeL4+JKdJ6vV0gfoOf7hOIO9PtW7DxZPoPeGpFW
+	tAMIOztUFgf1156aDypF9kE4W4xC2xvTA5ZdJYOxFAvGPdHhUb09aJTlysnl79D7wC2CQ7
+	QlKvEQgizbpXzjjLw+Jklp5g9UBU6I65hHOKSWBZUayrkH8u6PDCzP4zT1DWxOJpDBlEkq
+	imCrrhvEC8IhxZ7U0YTikiIhAvJt+Hkmj6ALeIPs80K8h8J330GL93DxYWpXj3MDbl7JVq
+	F/cILImBCYvJA+eF/vIyJ1P5LKsN3VzDebtwR4eOhiBOhOSo8ZXxjyfIQBHTMA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1727373577;
+	s=2020e; t=1727717911;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=OLMHCbmlCAKlaos9H4lq0gWWNlKDezffgL2LeRCH6z8=;
-	b=PRjS5QTIyzsI5I+vKvvvBeWxgKhgiZh7Dp189/ENbPZ1XqdArZaSWLxacGSB/bxVndQCrf
-	nWC+KuwmddUBCjCg==
-From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+	bh=qp5nwg96y87OpSLZA/vVu33PD/rs5eKJFKqagbVKAw0=;
+	b=zLAKOlMuwI/8W1zaYhVMwXrRAd19gl6cIc+2Bo6R+/1Ij+2JQxJAYemK+4R5ItwK3ZtySU
+	7fJYn1ykWS5wd8AQ==
+From: "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Add two Intel CPU model numbers
-Cc: Tony Luck <tony.luck@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: x86/misc] x86/bugs: Correct RSB terminology in Kconfig
+Cc: Breno Leitao <leitao@debian.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172737357624.2215.4211392863666172616.tip-bot2@tip-bot2>
+Message-ID: <172771790961.1365.12944524838461131424.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -71,45 +72,62 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     d1fb034b75a8a96fcb4bf01a7c0e1421eef833a3
-Gitweb:        https://git.kernel.org/tip/d1fb034b75a8a96fcb4bf01a7c0e1421eef833a3
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Mon, 23 Sep 2024 10:37:50 -07:00
+Commit-ID:     86e39b94cd71a4987f9b98dd2a7d6c826e1c5c98
+Gitweb:        https://git.kernel.org/tip/86e39b94cd71a4987f9b98dd2a7d6c826e1c5c98
+Author:        Breno Leitao <leitao@debian.org>
+AuthorDate:    Fri, 13 Sep 2024 05:27:53 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 26 Sep 2024 10:47:49 -07:00
+CommitterDate: Mon, 30 Sep 2024 10:30:54 -07:00
 
-x86/cpu: Add two Intel CPU model numbers
+x86/bugs: Correct RSB terminology in Kconfig
 
-Pantherlake is a mobile CPU. Diamond Rapids next generation Xeon.
+RSB stands for "Return Stack Buffer" in industry literature[1]. Update
+the kernel Kconfig to use this standard term instead of the current
+"Return-Speculation-Buffer".
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+This change aligns kernel documentation with widely accepted terminology.
+
+The line length reduction triggers text reformatting, but no functional
+text is altered.
+
+[1] https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/advisory-guidance/return-stack-buffer-underflow.html
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240923173750.16874-1-tony.luck%40intel.com
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20240913122754.249306-1-leitao%40debian.org
 ---
- arch/x86/include/asm/intel-family.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/Kconfig | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index f81a851..17d899d 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -191,6 +191,8 @@
- #define INTEL_FAM6_LUNARLAKE_M		0xBD
- #define INTEL_LUNARLAKE_M		IFM(6, 0xBD)
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2852fcd..2cea5f2 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2551,15 +2551,14 @@ config MITIGATION_CALL_DEPTH_TRACKING
+ 	default y
+ 	help
+ 	  Compile the kernel with call depth tracking to mitigate the Intel
+-	  SKL Return-Speculation-Buffer (RSB) underflow issue. The
+-	  mitigation is off by default and needs to be enabled on the
+-	  kernel command line via the retbleed=stuff option. For
+-	  non-affected systems the overhead of this option is marginal as
+-	  the call depth tracking is using run-time generated call thunks
+-	  in a compiler generated padding area and call patching. This
+-	  increases text size by ~5%. For non affected systems this space
+-	  is unused. On affected SKL systems this results in a significant
+-	  performance gain over the IBRS mitigation.
++	  SKL Return-Stack-Buffer (RSB) underflow issue. The mitigation is off
++	  by default and needs to be enabled on the kernel command line via the
++	  retbleed=stuff option. For non-affected systems the overhead of this
++	  option is marginal as the call depth tracking is using run-time
++	  generated call thunks in a compiler generated padding area and call
++	  patching. This increases text size by ~5%. For non affected systems
++	  this space is unused. On affected SKL systems this results in a
++	  significant performance gain over the IBRS mitigation.
  
-+#define INTEL_PANTHERLAKE_L		IFM(6, 0xCC)
-+
- /* "Small Core" Processors (Atom/E-Core) */
- 
- #define INTEL_FAM6_ATOM_BONNELL		0x1C /* Diamondville, Pineview */
-@@ -257,4 +259,7 @@
- #define INTEL_FAM5_QUARK_X1000		0x09 /* Quark X1000 SoC */
- #define INTEL_QUARK_X1000		IFM(5, 0x09) /* Quark X1000 SoC */
- 
-+/* Family 19 */
-+#define INTEL_PANTHERCOVE_X		IFM(19, 0x01) /* Diamond Rapids */
-+
- #endif /* _ASM_X86_INTEL_FAMILY_H */
+ config CALL_THUNKS_DEBUG
+ 	bool "Enable call thunks and call depth tracking debugging"
 
