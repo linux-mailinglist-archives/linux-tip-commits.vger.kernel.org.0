@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-2316-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2317-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE7398DF7B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Oct 2024 17:43:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3997998DF87
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Oct 2024 17:45:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 733701F24F99
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Oct 2024 15:43:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F2B7B26018
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Oct 2024 15:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6667E1D0E04;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71181D0E1D;
 	Wed,  2 Oct 2024 15:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="no/O8AVb";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ikPAbI7q"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sE/goZOC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kJ1enx+j"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4C41D0B9B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233ED1D0B8B;
 	Wed,  2 Oct 2024 15:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727883823; cv=none; b=QNFoob0PAnSNcR14RIgYNEIj3jalyK1ldnVVmfqkpsPTXjuMxTlQdHNINllE6TauOkkc2QEgxNcgTC8DsdqCmTlLdMZPJsixe/5Nc+eTlEaWTgVSFfTmRuN5ekIoqwrurZqvO8+cm5gEYwiZSDjmFddUw9eI7v1moGTzBE3qr5Q=
+	t=1727883823; cv=none; b=LF61g3/MKiXM1uwymzQsAxwOYsMZCGD3J9Bvb0yDVLYAImpzgG7x3j5yfHEEZGj6dOjQxN8dzfCxmuQc5boZSMFZ/9EHk1ygxA1Bxgw4Lbgo++D0FYCrS3bpSc87We9XeR0bb4Bo/PKnO2TH0KBPAwJPx12xtzZpOvYRVwFtdhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727883823; c=relaxed/simple;
-	bh=eupZP83d8Rmmq6bvh6rWw7nX5eY6CPD82pltJdGDeBo=;
+	bh=TUqlKQtMjRz2yZNXXMPbIQcnUmXJpnEwP6GwgjcQ59I=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=p54fQgFcJ6p20lysOZ5TqR0brInsYFnlEg6mq6VqMyXkEDKxpL8EbfrxBZRyH4/ckp/CBPxth3qfnAz/w/SVtA14+245NHA1zth4xnqfN2vXRZ0XN8OWBLbrLGEZsKIdcKILN+6jyZVhj85Q288vtxyt9UtkANi/+Z+B6gt2JxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=no/O8AVb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ikPAbI7q; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=qEH0gLnmjW0CdXC8Yh9ODGFAsuh3JC8SE+P9O1c/UJ5x6AkntbvpLftaj4Swhn/XtjrZjM6rwPzSu48gf69EQQc0aeuHkYWLlZrdSbTdhmUJ18rCNr+GS0ns9p3vGHmTlq63BEu2rC+mt434OXfRwS0BfQmOiH3rozhxObcQwfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sE/goZOC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kJ1enx+j; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Wed, 02 Oct 2024 15:43:39 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tB7D0Yxk4vEL7tQjeogv+MpND1wlqBrOliwrobX+fbM=;
-	b=no/O8AVbFCsgQhU9oq8Rk0xf0Ygo+GeJ7Yz1qL+O5wUPzWjMch0aTjo/yrcwv30Z2nh99B
-	/Ys/ls4sOt4R3jeuWU3I8iQv3He7f0+SZV8WQqXX1VQJcsyx2ncjt0CRi6p4zZsBKMPRXe
-	WUsaT7Y9oaHNbYwQb3xH6O7Ffxzv3AQq/7DpcQkkvgdTLfbVo4X+zeZno5ULYE2Pw1Zn/k
-	wZ+USsEhKTyR7C0YaReLGe5e+ue7YEAW0PFUpER6LamDx/VfV2aaxNPYvW2NXVAaS+h9Hj
-	U0pO4/3sukHwkpZOTiIdsD8SexR/JhZBFVDj4/XJ73J9sQsftwhG8iWEMcGyow==
+	bh=nyoVWz05nB116XbM2YkVfOhXcq3XkgRVHFjLPPbtfg8=;
+	b=sE/goZOC10aHXsKMEp+KOnMh8xEQp450HmfAiNx5oZ3nGXM35NYi0q3cwRZ5HHhEdE+Qex
+	lMbqiULt7ElFlvqpr7zMsz6DA8wGCUKB2StcqIZH1OLPwgdcXTXG+cv6v1A/6QAb01dTjv
+	ITq7cX1s9qArRN6a2/vYziYl5llIx0AnT6NN37GFGXw+qWOfLRMxda9p7EhQzoJMVApalt
+	oYNQ66WjCKbgKHRqfJZnHA6npc/1xekcHt28jK/rA5JgwsuaOW3OtD7cJ1AZfijQtAJ1Z5
+	y8ecrTjO1leyOoTem8kvhfDYhkso8Z4dvsFqpPekxBDIgW9X76V1i+oLxKHQ0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1727883820;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,31 +52,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tB7D0Yxk4vEL7tQjeogv+MpND1wlqBrOliwrobX+fbM=;
-	b=ikPAbI7qnTPctzFsnhSY9g4253M7ozKUyjTt9y+vIell59o2o/6UXY/sMCIAVr/ebK1F6O
-	qzljChUGJ8wsQZBQ==
-From: "tip-bot2 for Charlie Jenkins" <tip-bot2@linutronix.de>
+	bh=nyoVWz05nB116XbM2YkVfOhXcq3XkgRVHFjLPPbtfg8=;
+	b=kJ1enx+jjSnoBN4L2BaqB3wrRCPwsoAjlFLx22uHabQ+Bp1H9GD29ZD7d2pYFLv6pzX4Mc
+	wybQ0h+ifmmd0PBg==
+From: "tip-bot2 for Andrew Jones" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/sifive-plic: Return error code on failure
-Cc: kernel test robot <lkp@intel.com>,
- Dan Carpenter <dan.carpenter@linaro.org>,
- Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>,
- Anup Patel <anup@brainfault.org>, Alexandre Ghiti <alexghiti@rivosinc.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- maz@kernel.org
-In-Reply-To:
- <20240903-correct_error_codes_sifive_plic-v1-1-d929b79663a2@rivosinc.com>
-References:
- <20240903-correct_error_codes_sifive_plic-v1-1-d929b79663a2@rivosinc.com>
+Subject:
+ [tip: irq/urgent] irqchip/riscv-imsic: Fix output text of base address
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Anup Patel <anup@brainfault.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240909085610.46625-2-ajones@ventanamicro.com>
+References: <20240909085610.46625-2-ajones@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172788381949.1442.6238243346847777696.tip-bot2@tip-bot2>
+Message-ID: <172788381998.1442.11807110934577537569.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -86,58 +82,39 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     6eabf656048d904d961584de2e1d45bc0854f9fb
-Gitweb:        https://git.kernel.org/tip/6eabf656048d904d961584de2e1d45bc0854f9fb
-Author:        Charlie Jenkins <charlie@rivosinc.com>
-AuthorDate:    Tue, 03 Sep 2024 16:36:19 -07:00
+Commit-ID:     4a1361e9a5c5dbb5c9f647762ae0cb1a605101fa
+Gitweb:        https://git.kernel.org/tip/4a1361e9a5c5dbb5c9f647762ae0cb1a605101fa
+Author:        Andrew Jones <ajones@ventanamicro.com>
+AuthorDate:    Mon, 09 Sep 2024 10:56:11 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 02 Oct 2024 15:15:33 +02:00
+CommitterDate: Wed, 02 Oct 2024 15:12:18 +02:00
 
-irqchip/sifive-plic: Return error code on failure
+irqchip/riscv-imsic: Fix output text of base address
 
-Set error to -ENOMEM if kcalloc() fails or if irq_domain_add_linear()
-fails inside of plic_probe() instead of returning 0.
+The "per-CPU IDs ... at base ..." info log is outputting a physical
+address, not a PPN.
 
-Fixes: 4d936f10ff80 ("irqchip/sifive-plic: Probe plic driver early for Allwinner D1 platform")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+Fixes: 027e125acdba ("irqchip/riscv-imsic: Add device MSI domain support for platform devices")
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Anup Patel <anup@brainfault.org>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240903-correct_error_codes_sifive_plic-v1-1-d929b79663a2@rivosinc.com
-Closes: https://lore.kernel.org/r/202409031122.yBh8HrxA-lkp@intel.com/
----
- drivers/irqchip/irq-sifive-plic.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Link: https://lore.kernel.org/all/20240909085610.46625-2-ajones@ventanamicro.com
 
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index 2f6ef5c..0b730e3 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -626,8 +626,10 @@ static int plic_probe(struct fwnode_handle *fwnode)
- 
- 		handler->enable_save = kcalloc(DIV_ROUND_UP(nr_irqs, 32),
- 					       sizeof(*handler->enable_save), GFP_KERNEL);
--		if (!handler->enable_save)
-+		if (!handler->enable_save) {
-+			error = -ENOMEM;
- 			goto fail_cleanup_contexts;
-+		}
- done:
- 		for (hwirq = 1; hwirq <= nr_irqs; hwirq++) {
- 			plic_toggle(handler, hwirq, 0);
-@@ -639,8 +641,10 @@ done:
- 
- 	priv->irqdomain = irq_domain_create_linear(fwnode, nr_irqs + 1,
- 						   &plic_irqdomain_ops, priv);
--	if (WARN_ON(!priv->irqdomain))
-+	if (WARN_ON(!priv->irqdomain)) {
-+		error = -ENOMEM;
- 		goto fail_cleanup_contexts;
-+	}
- 
- 	/*
- 	 * We can have multiple PLIC instances so setup global state
+---
+ drivers/irqchip/irq-riscv-imsic-platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq-riscv-imsic-platform.c
+index 64905e6..c708780 100644
+--- a/drivers/irqchip/irq-riscv-imsic-platform.c
++++ b/drivers/irqchip/irq-riscv-imsic-platform.c
+@@ -341,7 +341,7 @@ int imsic_irqdomain_init(void)
+ 		imsic->fwnode, global->hart_index_bits, global->guest_index_bits);
+ 	pr_info("%pfwP: group-index-bits: %d, group-index-shift: %d\n",
+ 		imsic->fwnode, global->group_index_bits, global->group_index_shift);
+-	pr_info("%pfwP: per-CPU IDs %d at base PPN %pa\n",
++	pr_info("%pfwP: per-CPU IDs %d at base address %pa\n",
+ 		imsic->fwnode, global->nr_ids, &global->base_addr);
+ 	pr_info("%pfwP: total %d interrupts available\n",
+ 		imsic->fwnode, num_possible_cpus() * (global->nr_ids - 1));
 
