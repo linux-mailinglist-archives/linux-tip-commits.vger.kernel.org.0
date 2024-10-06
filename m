@@ -1,227 +1,196 @@
-Return-Path: <linux-tip-commits+bounces-2348-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2349-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4CC990FD8
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Oct 2024 22:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA46E992087
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Oct 2024 21:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A13011F20F00
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Oct 2024 20:09:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 253AA1F20F66
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Oct 2024 19:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D2E1DED70;
-	Fri,  4 Oct 2024 19:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB4C189F2D;
+	Sun,  6 Oct 2024 19:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="UIQ45bRO"
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="stcf2TQf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XSvGEEc4"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1704D1DD877;
-	Fri,  4 Oct 2024 19:38:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B3517DFE4;
+	Sun,  6 Oct 2024 19:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728070684; cv=none; b=QWea9CMufQPIyf4dpeTMOrTuh5KbYsTfWMZZT5kJnIep/O3Ohuzt7WaBMOELM4AFPWW46W7Wb42AYEKRGjAnIMxcC8D89+BZvpxcVm4nWyJoVygu8r01/M7tUODG0Vv/Go6VPmXXGHJaStteMdnHMfnmXz8Fe4+xcRwjDzVG4AQ=
+	t=1728241482; cv=none; b=DezgSyAlgGjyMjJeiD/E5IJJRUky8URDq7v+WveoZFH+RK6+Z2Uw/dE4+8CQSVGh7h0A96wuYjfgVklj214EdSnwbFdmZ7xk+yelpZt4oFYaM5pUmfpi8FEHWPDhMS1CNoUZnTY2v1/a50v8NOpnwU9oYafYUupV9ofVVV9Tg+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728070684; c=relaxed/simple;
-	bh=3dnulebnt36xEt7t92LjcZtY2SfY5UFlrjmJRjNwX18=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SZuNJEzLAtaa80DVhu+3o3qBETHeuChbDLVU5yDZEFpEhyMMAIufMokBXUCVVDfuKWxTwGhnGxyvQ5o5AALkytIncvSo8fusl1E6gOvPjBsAABAaDg4mKhhHuQwfeSIOgKhCdfFPOgLWHNy5ACFP5CPHI9Xm3XJgSOObgFilws4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=UIQ45bRO; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=c4d+dcl3hioQSc5gkGdG14DOVk0MLhEjcUXGDu7UaKY=; b=UIQ45bROz5p+FU7LWlRSS7Yfhw
-	rq5f624lN1fL/sXfu81FDJYAod+3Qc7jKaTMy8rtdjA/lZ9qlI5mGVEit61ZaH+0IGdArqzo2IMFs
-	J2y1RgMA6PzmXzrLmZTKLU2jWNuCmXY06zmcazKE9lNEOMrR2upUacgNmyI7rrn70fAx8pCbwIn66
-	8anzFtz2n4D4GxEhP0r8BdM7zCAqOb4ddB5d6EhaEExvQUuYgHbJ1ejsUvsGgAggwNrqlJeuva+Pv
-	4IEDYcjofZn8wosqm4HIgWxbSfjkJ0Mvt5ky0UDUicjDdjrqwH8XXQlmBev477qP4Jz4qX0V+iUAU
-	aluMkU1g==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1swo7g-0000000B9nS-1h96;
-	Fri, 04 Oct 2024 19:37:57 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 07F2A30083E; Fri,  4 Oct 2024 21:37:56 +0200 (CEST)
-Date: Fri, 4 Oct 2024 21:37:55 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	David Kaplan <david.kaplan@amd.com>, x86@kernel.org,
-	Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: Re: [tip: x86/bugs] Revert "x86/retpoline: Ensure default return
- thunk isn't used at runtime"
-Message-ID: <20241004193755.GV18071@noisy.programming.kicks-ass.net>
-References: <20231018175531.GEZTAcE2p92U1AuVp1@fat_crate.local>
- <169770844376.3135.9436969789797102205.tip-bot2@tip-bot2>
+	s=arc-20240116; t=1728241482; c=relaxed/simple;
+	bh=nP5tRJwLAZp5uiryvPK5vL1/lxHMWOI/0iH6oAWEFJk=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=FMj53+GHnKrDm+8oExLK21BO9BE29w5hVMTycF86R/Pa9fhxTgwhf3Tie7RElYxn3g/mNthk8vhbExu0QQx6/eK1rXV/8imc5owz6ePs8kDCy7V9fWn33WtpFYXqSc3SifaLWC872Mt1bNllbukheev/d8ziH5rz3jZGZeQUTi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=stcf2TQf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XSvGEEc4; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sun, 06 Oct 2024 19:04:31 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1728241472;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q6OjeNjJOp7w69Ins+HcIMamTp/DgSEVMq1TAbhU2Co=;
+	b=stcf2TQfl2m27Jy4JPpkwoluEDhgD+JecJ4GhELdjlMtf+9/aozSh7BifXsnaU+QNQ07im
+	NAtVQUgU7GcdBMe1V19oG0E6egQ+52gps9U8ZgfTsk1A/qcVUqMbTlzyXwAeQedn3i/nEa
+	+AxMTjY1Fc9vliHSYEulBvJmaZX75AquHC4Zico5+7VE9uWl/19qktat7A4C9HHSz7sJRz
+	SiwmLekStC9WFqU6R89DBVynFH+SmOAbf7E7KPmOtt57EY9gL98jN1o7NO9KROxUh2aebH
+	dw2oNJ5kqCW5KXI060yUsxUbIflz4WOdcZmwq3UgjGUOWlyU3NHqhSRizdiI8g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1728241472;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q6OjeNjJOp7w69Ins+HcIMamTp/DgSEVMq1TAbhU2Co=;
+	b=XSvGEEc47/mNvO7oh0HFq0zAgke+ho/v3PvzwVVy772fWjgDTDszeKwgUHP+C5jBEY/0oF
+	f7rsJkeTwadLcqCg==
+From: "tip-bot2 for Jeff Layton" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] timekeeping: Add percpu counter for tracking floor
+ swap events
+Cc: Jeff Layton <jlayton@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Randy Dunlap <rdunlap@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241002-mgtime-v10-2-d1c4717f5284@kernel.org>
+References: <20241002-mgtime-v10-2-d1c4717f5284@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <169770844376.3135.9436969789797102205.tip-bot2@tip-bot2>
+Message-ID: <172824147176.1442.3680169489221943386.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 19, 2023 at 09:40:43AM -0000, tip-bot2 for Borislav Petkov (AMD) wrote:
-> The following commit has been merged into the x86/bugs branch of tip:
-> 
-> Commit-ID:     08ec7e82c1e3ebcd79ab8d2d0d11faad0f07e71c
-> Gitweb:        https://git.kernel.org/tip/08ec7e82c1e3ebcd79ab8d2d0d11faad0f07e71c
-> Author:        Borislav Petkov (AMD) <bp@alien8.de>
-> AuthorDate:    Thu, 19 Oct 2023 11:04:27 +02:00
-> Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-> CommitterDate: Thu, 19 Oct 2023 11:08:22 +02:00
-> 
-> Revert "x86/retpoline: Ensure default return thunk isn't used at runtime"
-> 
-> This reverts commit 91174087dcc7565d8bf0d576544e42d5b1de6f39.
-> 
-> It turns out that raising an undefined opcode exception due to unpatched
-> return thunks is not visible to users in every possible scenario (not
-> being able to catch dmesg, slow console, etc.).
-> 
-> Thus, it is not very friendly to them when the box explodes without even
-> saying why.
+The following commit has been merged into the timers/core branch of tip:
 
-This is what we have __bug_table for...
+Commit-ID:     96f9a366ec8abe027326d7aab84d64370019f0f1
+Gitweb:        https://git.kernel.org/tip/96f9a366ec8abe027326d7aab84d64370019f0f1
+Author:        Jeff Layton <jlayton@kernel.org>
+AuthorDate:    Wed, 02 Oct 2024 17:27:17 -04:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sun, 06 Oct 2024 20:56:07 +02:00
 
-Turns out asm/bug.h doesn't currently have nice helpers for __ASSMEBLY__
-so I botched it a bit...
+timekeeping: Add percpu counter for tracking floor swap events
+
+The mgtime_floor value is a global variable for tracking the latest
+fine-grained timestamp handed out. Because it's a global, track the
+number of times that a new floor value is assigned.
+
+Add a new percpu counter to the timekeeping code to track the number of
+floor swap events that have occurred. A later patch will add a debugfs
+file to display this counter alongside other stats involving multigrain
+timestamps.
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # documentation bits
+Link: https://lore.kernel.org/all/20241002-mgtime-v10-2-d1c4717f5284@kernel.org
 
 ---
-diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
-index d9feadffa972..003379049924 100644
---- a/arch/x86/entry/entry.S
-+++ b/arch/x86/entry/entry.S
-@@ -10,8 +10,6 @@
- #include <asm/segment.h>
- #include <asm/cache.h>
- 
--#include "calling.h"
--
- .pushsection .noinstr.text, "ax"
- 
- SYM_FUNC_START(entry_ibpb)
-@@ -45,4 +43,3 @@ EXPORT_SYMBOL_GPL(mds_verw_sel);
- 
- .popsection
- 
--THUNK warn_thunk_thunk, __warn_thunk
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index ff5f1ecc7d1e..547cde3db276 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -387,8 +387,6 @@ extern void clear_bhb_loop(void);
- 
- extern void (*x86_return_thunk)(void);
- 
--extern void __warn_thunk(void);
--
- #ifdef CONFIG_MITIGATION_CALL_DEPTH_TRACKING
- extern void call_depth_return_thunk(void);
- 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index d1915427b4ff..b86048f31a0c 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -3025,8 +3025,3 @@ ssize_t cpu_show_reg_file_data_sampling(struct device *dev, struct device_attrib
- 	return cpu_show_common(dev, attr, buf, X86_BUG_RFDS);
- }
- #endif
--
--void __warn_thunk(void)
--{
--	WARN_ONCE(1, "Unpatched return thunk in use. This should not happen!\n");
--}
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index 391059b2c6fb..469bf27287a1 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -12,9 +12,39 @@
- #include <asm/percpu.h>
- #include <asm/frame.h>
- #include <asm/nops.h>
-+#include <linux/objtool.h>
- 
--	.section .text..__x86.indirect_thunk
-+// this should probably go in asm/bug.h
-+
-+#ifdef CONFIG_X86_32
-+#define __BUG_REL(val)	.long	val
-+#else
-+#define __BUG_REL(val)	.long	val - .
-+#endif
-+
-+#ifdef CONFIG_DEBUG_BUGVERBOSE
-+#define __BUG_VERBOSE()						\
-+	__BUG_REL(0) ;						\
-+	.word 0 ;
-+#else
-+#define __BUG_VERBOSE()
-+#endif
- 
-+#define _BUG_FLAGS(flags)					\
-+	1: ;							\
-+	.pushsection __bug_table, "aw" ;			\
-+	2: __BUG_REL(1b) ;					\
-+	__BUG_VERBOSE() ;					\
-+	.word flags ;						\
-+	.org 2b+(6+6*IS_ENABLED(CONFIG_DEBUG_BUGVERBOSE)) ;	\
-+	.popsection
-+
-+#define WARN_ONCE						\
-+	_BUG_FLAGS(3) ;						\
-+	ALTERNATIVE "", "ud2", X86_FEATURE_ALWAYS ;		\
-+	REACHABLE
-+
-+	.section .text..__x86.indirect_thunk
- 
- .macro POLINE reg
- 	ANNOTATE_INTRA_FUNCTION_CALL
-@@ -37,9 +67,15 @@ SYM_INNER_LABEL(__x86_indirect_thunk_\reg, SYM_L_GLOBAL)
- 	UNWIND_HINT_UNDEFINED
- 	ANNOTATE_NOENDBR
- 
-+#ifdef CONFIG_X86_32
- 	ALTERNATIVE_2 __stringify(RETPOLINE \reg), \
- 		      __stringify(lfence; ANNOTATE_RETPOLINE_SAFE; jmp *%\reg; int3), X86_FEATURE_RETPOLINE_LFENCE, \
- 		      __stringify(ANNOTATE_RETPOLINE_SAFE; jmp *%\reg), ALT_NOT(X86_FEATURE_RETPOLINE)
-+#else
-+	WARN_ONCE
-+	ANNOTATE_RETPOLINE_SAFE
-+	jmp *%\reg
-+#endif
- 
- .endm
- 
-@@ -382,16 +418,15 @@ SYM_FUNC_END(call_depth_return_thunk)
- SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
--#if defined(CONFIG_MITIGATION_UNRET_ENTRY) || \
--    defined(CONFIG_MITIGATION_SRSO) || \
--    defined(CONFIG_MITIGATION_CALL_DEPTH_TRACKING)
--	ALTERNATIVE __stringify(ANNOTATE_UNRET_SAFE; ret), \
--		   "jmp warn_thunk_thunk", X86_FEATURE_ALWAYS
--#else
-+
-+#ifdef CONFIG_X86_64
-+	WARN_ONCE
-+#endif
-+
- 	ANNOTATE_UNRET_SAFE
- 	ret
--#endif
- 	int3
-+
- SYM_CODE_END(__x86_return_thunk)
- EXPORT_SYMBOL(__x86_return_thunk)
- 
+ include/linux/timekeeping.h        |  1 +
+ kernel/time/timekeeping.c          |  1 +
+ kernel/time/timekeeping_debug.c    | 13 +++++++++++++
+ kernel/time/timekeeping_internal.h | 15 +++++++++++++++
+ 4 files changed, 30 insertions(+)
 
+diff --git a/include/linux/timekeeping.h b/include/linux/timekeeping.h
+index 7aa8524..84a035e 100644
+--- a/include/linux/timekeeping.h
++++ b/include/linux/timekeeping.h
+@@ -48,6 +48,7 @@ extern void ktime_get_coarse_real_ts64(struct timespec64 *ts);
+ /* Multigrain timestamp interfaces */
+ extern void ktime_get_coarse_real_ts64_mg(struct timespec64 *ts);
+ extern void ktime_get_real_ts64_mg(struct timespec64 *ts);
++extern unsigned long timekeeping_get_mg_floor_swaps(void);
+ 
+ void getboottime64(struct timespec64 *ts);
+ 
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 441792c..962b2a3 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -2487,6 +2487,7 @@ void ktime_get_real_ts64_mg(struct timespec64 *ts)
+ 	if (atomic64_try_cmpxchg(&mg_floor, &old, mono)) {
+ 		ts->tv_nsec = 0;
+ 		timespec64_add_ns(ts, nsecs);
++		timekeeping_inc_mg_floor_swaps();
+ 	} else {
+ 		/*
+ 		 * Another task changed mg_floor since "old" was fetched.
+diff --git a/kernel/time/timekeeping_debug.c b/kernel/time/timekeeping_debug.c
+index b73e885..badeb22 100644
+--- a/kernel/time/timekeeping_debug.c
++++ b/kernel/time/timekeeping_debug.c
+@@ -17,6 +17,9 @@
+ 
+ #define NUM_BINS 32
+ 
++/* Incremented every time mg_floor is updated */
++DEFINE_PER_CPU(unsigned long, timekeeping_mg_floor_swaps);
++
+ static unsigned int sleep_time_bin[NUM_BINS] = {0};
+ 
+ static int tk_debug_sleep_time_show(struct seq_file *s, void *data)
+@@ -53,3 +56,13 @@ void tk_debug_account_sleep_time(const struct timespec64 *t)
+ 			   (s64)t->tv_sec, t->tv_nsec / NSEC_PER_MSEC);
+ }
+ 
++unsigned long timekeeping_get_mg_floor_swaps(void)
++{
++	unsigned long sum = 0;
++	int cpu;
++
++	for_each_possible_cpu(cpu)
++		sum += data_race(per_cpu(timekeeping_mg_floor_swaps, cpu));
++
++	return sum;
++}
+diff --git a/kernel/time/timekeeping_internal.h b/kernel/time/timekeeping_internal.h
+index 4ca2787..0bbae82 100644
+--- a/kernel/time/timekeeping_internal.h
++++ b/kernel/time/timekeeping_internal.h
+@@ -10,9 +10,24 @@
+  * timekeeping debug functions
+  */
+ #ifdef CONFIG_DEBUG_FS
++
++DECLARE_PER_CPU(unsigned long, timekeeping_mg_floor_swaps);
++
++static inline void timekeeping_inc_mg_floor_swaps(void)
++{
++	this_cpu_inc(timekeeping_mg_floor_swaps);
++}
++
+ extern void tk_debug_account_sleep_time(const struct timespec64 *t);
++
+ #else
++
+ #define tk_debug_account_sleep_time(x)
++
++static inline void timekeeping_inc_mg_floor_swaps(void)
++{
++}
++
+ #endif
+ 
+ #ifdef CONFIG_CLOCKSOURCE_VALIDATE_LAST_CYCLE
 
