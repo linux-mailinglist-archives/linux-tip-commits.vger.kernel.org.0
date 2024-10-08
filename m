@@ -1,125 +1,198 @@
-Return-Path: <linux-tip-commits+bounces-2351-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2352-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CC199374A
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2024 21:25:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21979941D7
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2024 10:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FEC81F23DBF
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Oct 2024 19:25:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 188B11C21320
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2024 08:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F90F1DDA09;
-	Mon,  7 Oct 2024 19:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D212209683;
+	Tue,  8 Oct 2024 07:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="D0Jdte3a";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LQzvb2Qs"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hZ8JsLxq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OPerFbUf"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9035D13B797;
-	Mon,  7 Oct 2024 19:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A4E20B1F2;
+	Tue,  8 Oct 2024 07:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728329152; cv=none; b=qRsiCnaJ8eX2XxBgrPwBzrdnNBRY8Xwr0WFxxtmU6sYmHt0beExqQbgAS9sjQ4yZ7GlAHaidxsyj0H1hnaM1e6Tc0iIk59C0vw8MST4Fr+ue7gQSYqgwA1uFTk9QH14Dnyxa7oEQSFvIcfZftY/eSCLfhMirkYuMxU04i7Jp6uM=
+	t=1728374126; cv=none; b=SZrJuG9bFOAvhE3Y7GhDQk9CzYlQ2LEdc8xd3c3CRR1+BflIh9v9O+KiRJrkrqhFJ1lidumfoGVOLoKtTFI0VY9+kGFDXg8qc5Sp681rGk6lvshRtJ2mPq8CRcUAS1aN5c292pSOEZkpUKJO5Xnm918yqdTUzd+6v0zOuBQHNOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728329152; c=relaxed/simple;
-	bh=c8btmeMjYsYPwLqpJH85iJIWtaCIkCZf+plIlI3EOQ4=;
+	s=arc-20240116; t=1728374126; c=relaxed/simple;
+	bh=qZ2oYFYVClaM6JBAQ5HVbRen+p65QXZ6WjhQ2qPM9uM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=tIv7ZxPu3KU1kmXsV+fqE2kzjuO8J+k5wkOzL4J6oBXafI/Gn9uDl9+fksEDRGghH4PBu4h+jLdHLWgGSNo0+tzye04+fFg0uHrcjr1WrH+v9BRgPgrrXbp+ou1xvlPgiSOew/AxFNDxIXkRJL0sogylnmk7cSPI25X6qCpf4yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=D0Jdte3a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LQzvb2Qs; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=uc/P1n32mSLAIX/r0GFOR4g6aMC7hqUn3Qk8q7cQaiG0KUdCEeZeMCZAS4+02RfGWtfspz9XA8DmpflRZieaElCWlWRwkvo76pKOVSS2z778kK9WW8ey1gaYiEbCw4+P1kHotvAWLbyGSr4IiRymE2DH0nkEeB5iFsVQdyzQLl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hZ8JsLxq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OPerFbUf; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 07 Oct 2024 19:25:40 -0000
+Date: Tue, 08 Oct 2024 07:55:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728329141;
+	s=2020; t=1728374122;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Hfd22iVVDzMgiBCZz6Mh/Yyew0iF3xO2ZcDQHuJPhaU=;
-	b=D0Jdte3atUuYrp39Tu/KZjAJLTH7krWaDugwCcee4ExrtRGR8py5pHoNElQ3iNRZqudRX3
-	uvsaRedeoy+HJPPnYG1qHh38gDg7WyQ6LOwIMQ2lhp3TstBH3Uwm0HeIVLf9v2iMaBysW4
-	xgKUZjGfcIXLsg5/y5JSXhKh4af/aBCgFKrzPvi5Mx9jgifZbuMrZtSp/H8903CQhQ2d3F
-	ok4tVPTDL5Bwa0LSV3TwmY9u9aYcA3reYN7LZf+kmBlsrqBFsfRjIQlB0VC8J/J0ZLjDfh
-	rrath9o1BLFpCHANaKfXcIHcnVexmMlVw2JvpWLwFJpz6fOFa3xseua1LHaaTg==
+	bh=ocE19dZWXVQ81hBeks3BFI2at/11ecXDX0W220Ix3fU=;
+	b=hZ8JsLxqlUcVRUp4dCGpyNeT5PT28pFu1WUQzhcbUkoU6iEK6tlWpFJXkJeq9p5FNUzZIn
+	NKqr+sektzgjAmtQrIizwY0tlB5BX3vgTgy93VS40auQo7PaKkxhmmFqIpLFoAmIEsUjXV
+	0V9VIBngtGEmZHevBkzrq8/bdtDk1pUjozCDR/K4AA12ieMMlXtF6Vj2E/v6sYDfSI2DQr
+	QbTKidwK/umOLDRoVfbGvugTXz5ucVAEV2AsWskIEXmQi7pNanFcZEMI/WmehNYpyQB0ss
+	pmB6Pe4WD5ZfKhv/VGvhQW3KPPibu1QXJAw0vbWL95WtxHMbEVNaGOw4qIfgAg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728329141;
+	s=2020e; t=1728374122;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Hfd22iVVDzMgiBCZz6Mh/Yyew0iF3xO2ZcDQHuJPhaU=;
-	b=LQzvb2QsOsvrTBRGDMh85geiRhQZrHWHTyXK6BYJt4uA28E9ep2iq7fxarOlmNd3HeXBqP
-	CJ8JpkLExdfsLIAg==
-From: "tip-bot2 for Richard Gong" <tip-bot2@linutronix.de>
+	bh=ocE19dZWXVQ81hBeks3BFI2at/11ecXDX0W220Ix3fU=;
+	b=OPerFbUfUkM9cqLIHwOxqS0DmrVS9D3Vk+pg0lWmY/x/mzs7Wn/YAuAdxM4VTcCAoUtQ8K
+	6Gfp8TwaNLdcBRCQ==
+From:
+ tip-bot2 for Thomas =?utf-8?q?Hellstr=C3=B6m?= <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/amd_nb: Add new PCI ID for AMD family 1Ah model 20h
-Cc: Richard Gong <richard.gong@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Yazen Ghannam <yazen.ghannam@amd.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240913162903.649519-1-richard.gong@amd.com>
-References: <20240913162903.649519-1-richard.gong@amd.com>
+Subject: [tip: locking/core] locking/ww_mutex: Adjust to lockdep nest_lock
+ requirements
+Cc: thomas.hellstrom@linux.intel.com,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241002125611.361001-1-thomas.hellstrom@linux.intel.com>
+References: <20241002125611.361001-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172832914079.1442.3300358639052918176.tip-bot2@tip-bot2>
+Message-ID: <172837412149.1442.1382529165947446095.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     f8bc84b6096f1ffa67252f0f88d86e77f6bbe348
-Gitweb:        https://git.kernel.org/tip/f8bc84b6096f1ffa67252f0f88d86e77f6bbe348
-Author:        Richard Gong <richard.gong@amd.com>
-AuthorDate:    Fri, 13 Sep 2024 11:29:03 -05:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 07 Oct 2024 21:04:28 +02:00
+Commit-ID:     59f812dd6d95bed605c7265bf193ec8155cf6bcc
+Gitweb:        https://git.kernel.org/tip/59f812dd6d95bed605c7265bf193ec8155c=
+f6bcc
+Author:        Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+AuthorDate:    Wed, 02 Oct 2024 14:56:11 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 07 Oct 2024 09:28:35 +02:00
 
-x86/amd_nb: Add new PCI ID for AMD family 1Ah model 20h
+locking/ww_mutex: Adjust to lockdep nest_lock requirements
 
-Add new PCI ID for Device 18h and Function 4.
+When using mutex_acquire_nest() with a nest_lock, lockdep refcounts the
+number of acquired lockdep_maps of mutexes of the same class, and also
+keeps a pointer to the first acquired lockdep_map of a class. That pointer
+is then used for various comparison-, printing- and checking purposes,
+but there is no mechanism to actively ensure that lockdep_map stays in
+memory. Instead, a warning is printed if the lockdep_map is freed and
+there are still held locks of the same lock class, even if the lockdep_map
+itself has been released.
 
-Signed-off-by: Richard Gong <richard.gong@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Link: https://lore.kernel.org/r/20240913162903.649519-1-richard.gong@amd.com
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+In the context of WW/WD transactions that means that if a user unlocks
+and frees a ww_mutex from within an ongoing ww transaction, and that
+mutex happens to be the first ww_mutex grabbed in the transaction,
+such a warning is printed and there might be a risk of a UAF.
+
+Note that this is only problem when lockdep is enabled and affects only
+dereferences of struct lockdep_map.
+
+Adjust to this by adding a fake lockdep_map to the acquired context and
+make sure it is the first acquired lockdep map of the associated
+ww_mutex class. Then hold it for the duration of the WW/WD transaction.
+
+This has the side effect that trying to lock a ww mutex *without* a
+ww_acquire_context but where a such context has been acquire, we'd see
+a lockdep splat. The test-ww_mutex.c selftest attempts to do that, so
+modify that particular test to not acquire a ww_acquire_context if it
+is not going to be used.
+
+Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20241002125611.361001-1-thomas.hellstrom@linu=
+x.intel.com
 ---
- arch/x86/kernel/amd_nb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/ww_mutex.h       | 14 ++++++++++++++
+ kernel/locking/test-ww_mutex.c |  6 ++++--
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index dc5d321..9fe9972 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -44,6 +44,7 @@
- #define PCI_DEVICE_ID_AMD_19H_M70H_DF_F4	0x14f4
- #define PCI_DEVICE_ID_AMD_19H_M78H_DF_F4	0x12fc
- #define PCI_DEVICE_ID_AMD_1AH_M00H_DF_F4	0x12c4
-+#define PCI_DEVICE_ID_AMD_1AH_M20H_DF_F4	0x16fc
- #define PCI_DEVICE_ID_AMD_1AH_M60H_DF_F4	0x124c
- #define PCI_DEVICE_ID_AMD_1AH_M70H_DF_F4	0x12bc
- #define PCI_DEVICE_ID_AMD_MI200_DF_F4		0x14d4
-@@ -127,6 +128,7 @@ static const struct pci_device_id amd_nb_link_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M78H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M00H_DF_F4) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M20H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M60H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M70H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_DF_F4) },
+diff --git a/include/linux/ww_mutex.h b/include/linux/ww_mutex.h
+index bb76308..a401a2f 100644
+--- a/include/linux/ww_mutex.h
++++ b/include/linux/ww_mutex.h
+@@ -65,6 +65,16 @@ struct ww_acquire_ctx {
+ #endif
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map dep_map;
++	/**
++	 * @first_lock_dep_map: fake lockdep_map for first locked ww_mutex.
++	 *
++	 * lockdep requires the lockdep_map for the first locked ww_mutex
++	 * in a ww transaction to remain in memory until all ww_mutexes of
++	 * the transaction have been unlocked. Ensure this by keeping a
++	 * fake locked ww_mutex lockdep map between ww_acquire_init() and
++	 * ww_acquire_fini().
++	 */
++	struct lockdep_map first_lock_dep_map;
+ #endif
+ #ifdef CONFIG_DEBUG_WW_MUTEX_SLOWPATH
+ 	unsigned int deadlock_inject_interval;
+@@ -146,7 +156,10 @@ static inline void ww_acquire_init(struct ww_acquire_ctx=
+ *ctx,
+ 	debug_check_no_locks_freed((void *)ctx, sizeof(*ctx));
+ 	lockdep_init_map(&ctx->dep_map, ww_class->acquire_name,
+ 			 &ww_class->acquire_key, 0);
++	lockdep_init_map(&ctx->first_lock_dep_map, ww_class->mutex_name,
++			 &ww_class->mutex_key, 0);
+ 	mutex_acquire(&ctx->dep_map, 0, 0, _RET_IP_);
++	mutex_acquire_nest(&ctx->first_lock_dep_map, 0, 0, &ctx->dep_map, _RET_IP_);
+ #endif
+ #ifdef CONFIG_DEBUG_WW_MUTEX_SLOWPATH
+ 	ctx->deadlock_inject_interval =3D 1;
+@@ -185,6 +198,7 @@ static inline void ww_acquire_done(struct ww_acquire_ctx =
+*ctx)
+ static inline void ww_acquire_fini(struct ww_acquire_ctx *ctx)
+ {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
++	mutex_release(&ctx->first_lock_dep_map, _THIS_IP_);
+ 	mutex_release(&ctx->dep_map, _THIS_IP_);
+ #endif
+ #ifdef DEBUG_WW_MUTEXES
+diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
+index 10a5736..4c2b8b5 100644
+--- a/kernel/locking/test-ww_mutex.c
++++ b/kernel/locking/test-ww_mutex.c
+@@ -62,7 +62,8 @@ static int __test_mutex(unsigned int flags)
+ 	int ret;
+=20
+ 	ww_mutex_init(&mtx.mutex, &ww_class);
+-	ww_acquire_init(&ctx, &ww_class);
++	if (flags & TEST_MTX_CTX)
++		ww_acquire_init(&ctx, &ww_class);
+=20
+ 	INIT_WORK_ONSTACK(&mtx.work, test_mutex_work);
+ 	init_completion(&mtx.ready);
+@@ -90,7 +91,8 @@ static int __test_mutex(unsigned int flags)
+ 		ret =3D wait_for_completion_timeout(&mtx.done, TIMEOUT);
+ 	}
+ 	ww_mutex_unlock(&mtx.mutex);
+-	ww_acquire_fini(&ctx);
++	if (flags & TEST_MTX_CTX)
++		ww_acquire_fini(&ctx);
+=20
+ 	if (ret) {
+ 		pr_err("%s(flags=3D%x): mutual exclusion failure\n",
 
