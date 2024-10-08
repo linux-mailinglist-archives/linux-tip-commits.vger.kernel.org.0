@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2363-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2366-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADE79941F4
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2024 10:33:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992FC994604
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2024 13:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A4CF1F28FCA
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2024 08:33:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7792B24C2F
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2024 11:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DEF21019E;
-	Tue,  8 Oct 2024 07:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C355818C321;
+	Tue,  8 Oct 2024 11:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c9GhyhgY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q1IBcOz2"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cadpvkDU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8SLKbtsT"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841BB20CCE0;
-	Tue,  8 Oct 2024 07:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC8016FF2A;
+	Tue,  8 Oct 2024 11:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728374189; cv=none; b=d/dVrbQZUTt7IL95UAr+Zch8eqsv6XpdGrFHTeWRjdKObsDoM0IW3pA/ZeU8cAjfBd+AoH/wmrDXVfXF3o1hjehVuBVA/yD+BsiTZZ8V1DB49IHkJ9MS+fk9FgoVSon55v8T6JSWwkc92a8ZRtZM3u2BYEWGP09DwesoI5hTcgo=
+	t=1728385513; cv=none; b=otsusHqxlQIeUg0sdPXFDhc4jGhIlW8j+Q3lm/PspYuWen3KLFun2+Y4tcb9jmU2ilkuBdLtVkf1rVFUFGjwo/yZFfJ78+YVk22J7CjCsS3up3+R9Eq+xucwnKowo9ucOtF3oxlUUDUkpJm4+Yjb8AdKMvp7NAsBAGiUrBS4TLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728374189; c=relaxed/simple;
-	bh=GyiXyblQSDeuIiM9qzQzeotdhIXAer8o5OxR0ztHFH4=;
+	s=arc-20240116; t=1728385513; c=relaxed/simple;
+	bh=ZmUUuIY+lUu0Cnw3nXqrX3rD/MQoX3xHCD+2uj0VAjU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=DtWfoPlBtbZGcguyjcYpFfVUvXoV76gB0sxqp7T+nrPyreUIIgkNk3OHT7ceMWlTjo7Z0TrfzL0TGmHXzG06WDdI13yySnUFfOXP4ns3RRZehDMehkDghjj72MnXC0Uc6wd+MrY0YIfAKQ3wXtF4N3MOFiKoiR5ZuE0OqtcWfaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c9GhyhgY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q1IBcOz2; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=bRPIWU081z9kPrSDSGscTQDQUz4gVGeSMdnTUN/M5NlGWP2iRrBgvxyI9oqOlFPhENIdM4aV2DjImX3k4HpBnmENQEll/lE0hCY+x2Jix3RT6k8+IG8ZW/+bgbTPfJGK5jYXzYZZl8dX+Nx48E2I8qhMwmPqQdD0B+zacBXNgvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cadpvkDU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8SLKbtsT; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 08 Oct 2024 07:56:24 -0000
+Date: Tue, 08 Oct 2024 11:05:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728374185;
+	s=2020; t=1728385510;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2Ipuzteb/y6h9VYagSTzRvpcnt3bXfIKEoFGa5v+4TM=;
-	b=c9GhyhgYuaU73mpSvhp1OPTPTIPpZs0Sdi2ompaMV6xJxNjnUR+xBsr54j7fqEgMBns1oh
-	peCcBWZXm1yD/sQNXKZoN90lUyQnTUK0e+EQHM1HbqtmA08Vo1MZEgE5rtep7aPILx4iAZ
-	c7AaMbj9EDVYHjG/qDIEd4PiAhBuA5yrw2yXw7RjDvT6whkKe9EBelpzklcqCiJbiY+65C
-	6RAuEE2B6bQ/33LQpQLu+tnNmDEQIkKIWavtfvNKjnMedtOXAIePvSuOTPu8z45631d0/e
-	ujfVJHNTJFxhPmCDxJsqGmniXWD/GbBM6R+gEchwy+s0QT9U3A5s82uIoOoeNQ==
+	bh=98ltt3FAoq86ddFp/Hhattb2KtiU3rH6jFcEOWu9wnQ=;
+	b=cadpvkDUprv/uNMJj5DRCR+74hk+tXi5VUNUBlqpFSP7f5fnqw3OTfrK9zPjsjM/ylrOgd
+	pIVxFcAXqpvt3/bkJ4pXrUJQyW3HhAJpEvTcBOf/UyO8gI2zkmQWnnl6l3v4pA90nf8bnE
+	3JSqNNCvnjkFUUEh0MmdcOOm1Cazu+OIWrjP4q5AQO8CF927gvpPEDPXbO84kMwUrV6mY3
+	6426mwbX4VRtuyZwLWaofV80+Za2o1LzT/6HFlGnCn5vMd2Apbil9XdgltBcCieeN/1N9q
+	La65tMaX8ZD9HM5WR5fb+fmwBnj8yDowGmdNvg4OieLqJrOQjfIBuMjXM0hFNw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728374185;
+	s=2020e; t=1728385510;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2Ipuzteb/y6h9VYagSTzRvpcnt3bXfIKEoFGa5v+4TM=;
-	b=Q1IBcOz2C5bRHeCCdmaMIV+Stfj/lbS2134dZ8fGn+8AsZaseG8n5RC1By6k7RiJ4bsYs3
-	FtngSDjfcdhHQaBA==
-From: "tip-bot2 for NeilBrown" <tip-bot2@linutronix.de>
+	bh=98ltt3FAoq86ddFp/Hhattb2KtiU3rH6jFcEOWu9wnQ=;
+	b=8SLKbtsTiLCbc9JvcIvSlQLNPPu+9DFDcvxSa1tEEGPmPDYukZmdjBseNlUyICK3c2FU0u
+	Xdq1YpQH3qt0McAg==
+From: "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: change wake_up_bit() and related function to
- expect unsigned long *
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, NeilBrown <neilb@suse.de>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/amd: Warn only on new bits set
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, Breno Leitao <leitao@debian.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Sandipan Das <sandipan.das@amd.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240925053405.3960701-2-neilb@suse.de>
-References: <20240925053405.3960701-2-neilb@suse.de>
+In-Reply-To: <20241001141020.2620361-1-leitao@debian.org>
+References: <20241001141020.2620361-1-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172837418466.1442.11617718153560736412.tip-bot2@tip-bot2>
+Message-ID: <172838550950.1442.11370441097683144204.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,135 +80,72 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     2382d68d7d43873ba856baf567cab0d5c523f23b
-Gitweb:        https://git.kernel.org/tip/2382d68d7d43873ba856baf567cab0d5c523f23b
-Author:        NeilBrown <neilb@suse.de>
-AuthorDate:    Wed, 25 Sep 2024 15:31:38 +10:00
+Commit-ID:     de20037e1b3c2f2ca97b8c12b8c7bca8abd509a7
+Gitweb:        https://git.kernel.org/tip/de20037e1b3c2f2ca97b8c12b8c7bca8abd509a7
+Author:        Breno Leitao <leitao@debian.org>
+AuthorDate:    Tue, 01 Oct 2024 07:10:19 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 07 Oct 2024 09:28:37 +02:00
+CommitterDate: Mon, 07 Oct 2024 09:28:46 +02:00
 
-sched: change wake_up_bit() and related function to expect unsigned long *
+perf/x86/amd: Warn only on new bits set
 
-wake_up_bit() currently allows a "void *".  While this isn't strictly a
-problem as the address is never dereferenced, it is inconsistent with
-the corresponding wait_on_bit() which requires "unsigned long *" and
-does dereference the pointer.
+Warning at every leaking bits can cause a flood of message, triggering
+various stall-warning mechanisms to fire, including CSD locks, which
+makes the machine to be unusable.
 
-Any code that needs to wait for a change in something other than an
-unsigned long would be better served by wake_up_var()/wait_var_event().
+Track the bits that are being leaked, and only warn when a new bit is
+set.
 
-This patch changes all related "void *" to "unsigned long *".
+That said, this patch will help with the following issues:
 
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: NeilBrown <neilb@suse.de>
+1) It will tell us which bits are being set, so, it is easy to
+   communicate it back to vendor, and to do a root-cause analyzes.
+
+2) It avoid the machine to be unusable, because, worst case
+   scenario, the user gets less than 60 WARNs (one per unhandled bit).
+
+Suggested-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240925053405.3960701-2-neilb@suse.de
+Reviewed-by: Sandipan Das <sandipan.das@amd.com>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lkml.kernel.org/r/20241001141020.2620361-1-leitao@debian.org
 ---
- include/linux/wait_bit.h | 16 ++++++++--------
- kernel/sched/wait_bit.c  | 12 ++++++------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ arch/x86/events/amd/core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/wait_bit.h b/include/linux/wait_bit.h
-index 7725b75..48e1238 100644
---- a/include/linux/wait_bit.h
-+++ b/include/linux/wait_bit.h
-@@ -8,7 +8,7 @@
- #include <linux/wait.h>
- 
- struct wait_bit_key {
--	void			*flags;
-+	unsigned long		*flags;
- 	int			bit_nr;
- 	unsigned long		timeout;
- };
-@@ -23,14 +23,14 @@ struct wait_bit_queue_entry {
- 
- typedef int wait_bit_action_f(struct wait_bit_key *key, int mode);
- 
--void __wake_up_bit(struct wait_queue_head *wq_head, void *word, int bit);
-+void __wake_up_bit(struct wait_queue_head *wq_head, unsigned long *word, int bit);
- int __wait_on_bit(struct wait_queue_head *wq_head, struct wait_bit_queue_entry *wbq_entry, wait_bit_action_f *action, unsigned int mode);
- int __wait_on_bit_lock(struct wait_queue_head *wq_head, struct wait_bit_queue_entry *wbq_entry, wait_bit_action_f *action, unsigned int mode);
--void wake_up_bit(void *word, int bit);
--int out_of_line_wait_on_bit(void *word, int, wait_bit_action_f *action, unsigned int mode);
--int out_of_line_wait_on_bit_timeout(void *word, int, wait_bit_action_f *action, unsigned int mode, unsigned long timeout);
--int out_of_line_wait_on_bit_lock(void *word, int, wait_bit_action_f *action, unsigned int mode);
--struct wait_queue_head *bit_waitqueue(void *word, int bit);
-+void wake_up_bit(unsigned long *word, int bit);
-+int out_of_line_wait_on_bit(unsigned long *word, int, wait_bit_action_f *action, unsigned int mode);
-+int out_of_line_wait_on_bit_timeout(unsigned long *word, int, wait_bit_action_f *action, unsigned int mode, unsigned long timeout);
-+int out_of_line_wait_on_bit_lock(unsigned long *word, int, wait_bit_action_f *action, unsigned int mode);
-+struct wait_queue_head *bit_waitqueue(unsigned long *word, int bit);
- extern void __init wait_bit_init(void);
- 
- int wake_bit_function(struct wait_queue_entry *wq_entry, unsigned mode, int sync, void *key);
-@@ -327,7 +327,7 @@ do {									\
-  * You can use this helper if bitflags are manipulated atomically rather than
-  * non-atomically under a lock.
-  */
--static inline void clear_and_wake_up_bit(int bit, void *word)
-+static inline void clear_and_wake_up_bit(int bit, unsigned long *word)
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index 920e3a6..b4a1a25 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -943,11 +943,12 @@ static int amd_pmu_v2_snapshot_branch_stack(struct perf_branch_entry *entries, u
+ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
  {
- 	clear_bit_unlock(bit, word);
- 	/* See wake_up_bit() for which memory barrier you need to use. */
-diff --git a/kernel/sched/wait_bit.c b/kernel/sched/wait_bit.c
-index 134d711..058b0e1 100644
---- a/kernel/sched/wait_bit.c
-+++ b/kernel/sched/wait_bit.c
-@@ -9,7 +9,7 @@
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
++	static atomic64_t status_warned = ATOMIC64_INIT(0);
++	u64 reserved, status, mask, new_bits, prev_bits;
+ 	struct perf_sample_data data;
+ 	struct hw_perf_event *hwc;
+ 	struct perf_event *event;
+ 	int handled = 0, idx;
+-	u64 reserved, status, mask;
+ 	bool pmu_enabled;
  
- static wait_queue_head_t bit_wait_table[WAIT_TABLE_SIZE] __cacheline_aligned;
+ 	/*
+@@ -1012,7 +1013,12 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
+ 	 * the corresponding PMCs are expected to be inactive according to the
+ 	 * active_mask
+ 	 */
+-	WARN_ON(status > 0);
++	if (status > 0) {
++		prev_bits = atomic64_fetch_or(status, &status_warned);
++		// A new bit was set for the very first time.
++		new_bits = status & ~prev_bits;
++		WARN(new_bits, "New overflows for inactive PMCs: %llx\n", new_bits);
++	}
  
--wait_queue_head_t *bit_waitqueue(void *word, int bit)
-+wait_queue_head_t *bit_waitqueue(unsigned long *word, int bit)
- {
- 	const int shift = BITS_PER_LONG == 32 ? 5 : 6;
- 	unsigned long val = (unsigned long)word << shift | bit;
-@@ -55,7 +55,7 @@ __wait_on_bit(struct wait_queue_head *wq_head, struct wait_bit_queue_entry *wbq_
- }
- EXPORT_SYMBOL(__wait_on_bit);
- 
--int __sched out_of_line_wait_on_bit(void *word, int bit,
-+int __sched out_of_line_wait_on_bit(unsigned long *word, int bit,
- 				    wait_bit_action_f *action, unsigned mode)
- {
- 	struct wait_queue_head *wq_head = bit_waitqueue(word, bit);
-@@ -66,7 +66,7 @@ int __sched out_of_line_wait_on_bit(void *word, int bit,
- EXPORT_SYMBOL(out_of_line_wait_on_bit);
- 
- int __sched out_of_line_wait_on_bit_timeout(
--	void *word, int bit, wait_bit_action_f *action,
-+	unsigned long *word, int bit, wait_bit_action_f *action,
- 	unsigned mode, unsigned long timeout)
- {
- 	struct wait_queue_head *wq_head = bit_waitqueue(word, bit);
-@@ -108,7 +108,7 @@ __wait_on_bit_lock(struct wait_queue_head *wq_head, struct wait_bit_queue_entry 
- }
- EXPORT_SYMBOL(__wait_on_bit_lock);
- 
--int __sched out_of_line_wait_on_bit_lock(void *word, int bit,
-+int __sched out_of_line_wait_on_bit_lock(unsigned long *word, int bit,
- 					 wait_bit_action_f *action, unsigned mode)
- {
- 	struct wait_queue_head *wq_head = bit_waitqueue(word, bit);
-@@ -118,7 +118,7 @@ int __sched out_of_line_wait_on_bit_lock(void *word, int bit,
- }
- EXPORT_SYMBOL(out_of_line_wait_on_bit_lock);
- 
--void __wake_up_bit(struct wait_queue_head *wq_head, void *word, int bit)
-+void __wake_up_bit(struct wait_queue_head *wq_head, unsigned long *word, int bit)
- {
- 	struct wait_bit_key key = __WAIT_BIT_KEY_INITIALIZER(word, bit);
- 
-@@ -144,7 +144,7 @@ EXPORT_SYMBOL(__wake_up_bit);
-  * may need to use a less regular barrier, such fs/inode.c's smp_mb(),
-  * because spin_unlock() does not guarantee a memory barrier.
-  */
--void wake_up_bit(void *word, int bit)
-+void wake_up_bit(unsigned long *word, int bit)
- {
- 	__wake_up_bit(bit_waitqueue(word, bit), word, bit);
- }
+ 	/* Clear overflow and freeze bits */
+ 	amd_pmu_ack_global_status(~status);
 
