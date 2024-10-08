@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-2361-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2362-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E09EE9941EC
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2024 10:33:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FDD9941EE
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2024 10:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E7B11C2133E
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2024 08:33:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80BE828D5BB
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Oct 2024 08:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C318C20C49C;
-	Tue,  8 Oct 2024 07:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D5020CCCB;
+	Tue,  8 Oct 2024 07:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AQJIvSOA";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FMKBuLik"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gjvd5G3p";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WhmSgzCX"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5841E5034;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C551E7C35;
 	Tue,  8 Oct 2024 07:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728374186; cv=none; b=BcKDCSfAR0JG4A5TbXofs1ts0dl6L8kHY4ME+wFf2FFV3IedtUO0VExMNxRiAbWaTDB0VMTmOiqnqIBJbvzXtU5wZdu1wDMP45j3doKALPk81dD5QMG1qfBPMNiXTnHgjc0/X/BZ5+mNXqbuPRmG42teel/wwS29S6cBQd9tO8E=
+	t=1728374186; cv=none; b=O4f1qzDJBSXrijD1S+CLjqryKHUcCGwbT16MviuP+9vVXZ0xYKYTy4rXztVbUiy+p3AwzE5hpJNQz86C5lS4CMZqd+qZPvEoyYVJGIkYKN3u/YaPXf8BdVa5f7P6qlafoRyhSZR8XXPymLCTZI8gwrfzSIJ30PedLDm27/whLVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728374186; c=relaxed/simple;
-	bh=IKrEY4A+FT8yzFRweN1ui97m5I1bc/J7Xj+ILXpIu6E=;
+	bh=sY6uTHmigIpmqgUSPhA0wdIvRsGFIP2iTUCZgwU5JKU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=d3YJqnQAhJGG+oMAAxQbLJ26T6Coc8jVBu9XXL2MGMAxcaf/l+fnhGBjYMCdgaSEZvXBkT1dFwIlXnBNXIiDsKTSoCAQdYe8BbPATFEP80Q1VIleoJZTkRknjd6NJlW0cxgl0VgRl1WgwJpFZmXIsVevhwlCx+MK62fOJZ8U3VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AQJIvSOA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FMKBuLik; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Mjcfb56fvO6UFZV9w7xClg6Q64Uqa1p2C62klC5ywlH1oBxgqnoAw2rbgWCvus4bhbFay6OdsvT85AT4eH6AyuOGuXdYCkkrnC57OLmCk8HoUzylBZkVXc9sSlxC88FdD1pLpEL1mLXQqGeMapckvtB/gSN4P2CUYWEcwJyt6LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gjvd5G3p; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WhmSgzCX; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 08 Oct 2024 07:56:22 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WRYCvCTRRKmIXyhGpXmFhh9zDkqASV3gOkhyO+Brhps=;
-	b=AQJIvSOAFKUMHEj2Nt/1QWz0a4NT2Uw+JUHQ1wscU0ANxsM8s166d4xw5RcjCbTWtE+aTH
-	ejXTv20Gu1wzuwsyjcojd9GFHrr3tjcjKgtenQj5qvnz3mhLb+HRMEe+d5vJ6Nsmdm+Px9
-	6g+j3CWAZNA9+8e9dXOpbZihe1+tuABcjyN+4dGPUlEpBoUHlbTV4uIXHViVLF2KiuyObt
-	JBa64cMz4QOvv3qndZFYr9+ft4aiXoicVJwRDxygB4QcgmWZFqjsThB/KWA1r4LZ2Mi5Ve
-	THioG1/FcwqriQM5CaUpYF9H5JOcK0D6is7tj5q4YgRODc2Aw4Vf6hk/wBhA8g==
+	bh=4l8v2PRUpePxp2/Ga72fckaMJZ3LY17iafNAK1Zh+k0=;
+	b=gjvd5G3pzEOESWMCLtq1S6ov4TwXmm0vr0AdK0xcjnbUI2UMpzJ6FbDtwvjeWJGBbA+FaO
+	ktPgVRDtOSr4HOTWL9ADYvFZFOYMpkrjxQBJmi+cCOlYsgGAbyO5hGpYaMxbRvYyKOn2X/
+	UlsfwLpH/gAkwi7XLsHgxR5vxLY8vKRjZnulAVlLO5MB8lHNm8t/YS+9H23/moiozEHES3
+	+YnVfzgw811j609d6s7j625ZNxgxF36ldqtfHXcZa6AJzLbyQjdkKnQ9T8CF38vUMxxxcM
+	DW38AiBfLKINa2AOCyN/fEQRRR4EwDDL57EmnBWasid7wQUi3jMbkSNRhsH4dg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1728374183;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WRYCvCTRRKmIXyhGpXmFhh9zDkqASV3gOkhyO+Brhps=;
-	b=FMKBuLikiE9PACsYJ8Sz8zknhLhkfJvCIK5BYkE3mE1TDhuytLvCU8ORLS+uweQBpBQCA6
-	hJO4PnbYrpEqcDDQ==
+	bh=4l8v2PRUpePxp2/Ga72fckaMJZ3LY17iafNAK1Zh+k0=;
+	b=WhmSgzCXyitcuMNRHGjckTb9xguH4dHCXdCiZjiF7DS7ty2DwCoV3TErSKcrHQQuQ6rzYQ
+	rsjeqHpSjDfS7TAg==
 From: "tip-bot2 for NeilBrown" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Add wait/wake interface for variable updated
- under a lock.
+Subject: [tip: sched/core] sched: Add test_and_clear_wake_up_bit() and
+ atomic_dec_and_wake_up()
 Cc: NeilBrown <neilb@suse.de>, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240925053405.3960701-6-neilb@suse.de>
-References: <20240925053405.3960701-6-neilb@suse.de>
+In-Reply-To: <20240925053405.3960701-5-neilb@suse.de>
+References: <20240925053405.3960701-5-neilb@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172837418230.1442.3499879992875947999.tip-bot2@tip-bot2>
+Message-ID: <172837418287.1442.11736002136656262832.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,145 +81,103 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     cc2e1c82d7e474753681a38b07b63034e107e369
-Gitweb:        https://git.kernel.org/tip/cc2e1c82d7e474753681a38b07b63034e107e369
+Commit-ID:     52d633def56c10fe3e82a2c5d88c3ecb3f4e4852
+Gitweb:        https://git.kernel.org/tip/52d633def56c10fe3e82a2c5d88c3ecb3f4e4852
 Author:        NeilBrown <neilb@suse.de>
-AuthorDate:    Wed, 25 Sep 2024 15:31:42 +10:00
+AuthorDate:    Wed, 25 Sep 2024 15:31:41 +10:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 07 Oct 2024 09:28:38 +02:00
 
-sched: Add wait/wake interface for variable updated under a lock.
+sched: Add test_and_clear_wake_up_bit() and atomic_dec_and_wake_up()
 
-Sometimes we need to wait for a condition to be true which must be
-testing while holding a lock.  Correspondingly the condition is made
-true while holding the lock and the wake up is sent under the lock.
+There are common patterns in the kernel of using test_and_clear_bit()
+before wake_up_bit(), and atomic_dec_and_test() before wake_up_var().
 
-This patch provides wake and wait interfaces which can be used for this
-situation when the lock is a mutex or a spinlock, or any other lock for
-which there are foo_lock() and foo_unlock() functions.
+These combinations don't need extra barriers but sometimes include them
+unnecessarily.
+
+To help avoid the unnecessary barriers and to help discourage the
+general use of wake_up_bit/var (which is a fragile interface) introduce
+two combined functions which implement these patterns.
+
+Also add store_release_wake_up() which supports the task of simply
+setting a non-atomic variable and sending a wakeup.  This pattern
+requires barriers which are often omitted.
 
 Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240925053405.3960701-6-neilb@suse.de
+Link: https://lore.kernel.org/r/20240925053405.3960701-5-neilb@suse.de
 ---
- include/linux/wait_bit.h | 106 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 106 insertions(+)
+ include/linux/wait_bit.h | 60 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 60 insertions(+)
 
 diff --git a/include/linux/wait_bit.h b/include/linux/wait_bit.h
-index 0272629..6aea10e 100644
+index 06ec99b..0272629 100644
 --- a/include/linux/wait_bit.h
 +++ b/include/linux/wait_bit.h
-@@ -402,6 +402,112 @@ do {									\
- })
+@@ -419,4 +419,64 @@ static inline void clear_and_wake_up_bit(int bit, unsigned long *word)
+ 	wake_up_bit(word, bit);
+ }
  
- /**
-+ * wait_var_event_any_lock - wait for a variable to be updated under a lock
-+ * @var: the address of the variable being waited on
-+ * @condition: condition to wait for
-+ * @lock: the object that is locked to protect updates to the variable
-+ * @type: prefix on lock and unlock operations
-+ * @state: waiting state, %TASK_UNINTERRUPTIBLE etc.
++/**
++ * test_and_clear_wake_up_bit - clear a bit if it was set: wake up anyone waiting on that bit
++ * @bit: the bit of the word being waited on
++ * @word: the address of memory containing that bit
 + *
-+ * Wait for a condition which can only be reliably tested while holding
-+ * a lock.  The variables assessed in the condition will normal be updated
-+ * under the same lock, and the wake up should be signalled with
-+ * wake_up_var_locked() under the same lock.
++ * If the bit is set and can be atomically cleared, any tasks waiting in
++ * wait_on_bit() or similar will be woken.  This call has the same
++ * complete ordering semantics as test_and_clear_bit().  Any changes to
++ * memory made before this call are guaranteed to be visible after the
++ * corresponding wait_on_bit() completes.
 + *
-+ * This is similar to wait_var_event(), but assumes a lock is held
-+ * while calling this function and while updating the variable.
-+ *
-+ * This must be called while the given lock is held and the lock will be
-+ * dropped when schedule() is called to wait for a wake up, and will be
-+ * reclaimed before testing the condition again.  The functions used to
-+ * unlock and lock the object are constructed by appending _unlock and _lock
-+ * to @type.
-+ *
-+ * Return %-ERESTARTSYS if a signal arrives which is allowed to interrupt
-+ * the wait according to @state.
++ * Returns %true if the bit was successfully set and the wake up was sent.
 + */
-+#define wait_var_event_any_lock(var, condition, lock, type, state)	\
-+({									\
-+	int __ret = 0;							\
-+	if (!(condition))						\
-+		__ret = ___wait_var_event(var, condition, state, 0, 0,	\
-+					  type ## _unlock(lock);	\
-+					  schedule();			\
-+					  type ## _lock(lock));		\
-+	__ret;								\
-+})
++static inline bool test_and_clear_wake_up_bit(int bit, unsigned long *word)
++{
++	if (!test_and_clear_bit(bit, word))
++		return false;
++	/* no extra barrier required */
++	wake_up_bit(word, bit);
++	return true;
++}
 +
 +/**
-+ * wait_var_event_spinlock - wait for a variable to be updated under a spinlock
-+ * @var: the address of the variable being waited on
-+ * @condition: condition to wait for
-+ * @lock: the spinlock which protects updates to the variable
++ * atomic_dec_and_wake_up - decrement an atomic_t and if zero, wake up waiters
++ * @var: the variable to dec and test
 + *
-+ * Wait for a condition which can only be reliably tested while holding
-+ * a spinlock.  The variables assessed in the condition will normal be updated
-+ * under the same spinlock, and the wake up should be signalled with
-+ * wake_up_var_locked() under the same spinlock.
++ * Decrements the atomic variable and if it reaches zero, send a wake_up to any
++ * processes waiting on the variable.
 + *
-+ * This is similar to wait_var_event(), but assumes a spinlock is held
-+ * while calling this function and while updating the variable.
++ * This function has the same complete ordering semantics as atomic_dec_and_test.
 + *
-+ * This must be called while the given lock is held and the lock will be
-+ * dropped when schedule() is called to wait for a wake up, and will be
-+ * reclaimed before testing the condition again.
++ * Returns %true is the variable reaches zero and the wake up was sent.
 + */
-+#define wait_var_event_spinlock(var, condition, lock)			\
-+	wait_var_event_any_lock(var, condition, lock, spin, TASK_UNINTERRUPTIBLE)
++
++static inline bool atomic_dec_and_wake_up(atomic_t *var)
++{
++	if (!atomic_dec_and_test(var))
++		return false;
++	/* No extra barrier required */
++	wake_up_var(var);
++	return true;
++}
 +
 +/**
-+ * wait_var_event_mutex - wait for a variable to be updated under a mutex
-+ * @var: the address of the variable being waited on
-+ * @condition: condition to wait for
-+ * @mutex: the mutex which protects updates to the variable
++ * store_release_wake_up - update a variable and send a wake_up
++ * @var: the address of the variable to be updated and woken
++ * @val: the value to store in the variable.
 + *
-+ * Wait for a condition which can only be reliably tested while holding
-+ * a mutex.  The variables assessed in the condition will normal be
-+ * updated under the same mutex, and the wake up should be signalled
-+ * with wake_up_var_locked() under the same mutex.
-+ *
-+ * This is similar to wait_var_event(), but assumes a mutex is held
-+ * while calling this function and while updating the variable.
-+ *
-+ * This must be called while the given mutex is held and the mutex will be
-+ * dropped when schedule() is called to wait for a wake up, and will be
-+ * reclaimed before testing the condition again.
++ * Store the given value in the variable send a wake up to any tasks
++ * waiting on the variable.  All necessary barriers are included to ensure
++ * the task calling wait_var_event() sees the new value and all values
++ * written to memory before this call.
 + */
-+#define wait_var_event_mutex(var, condition, lock)			\
-+	wait_var_event_any_lock(var, condition, lock, mutex, TASK_UNINTERRUPTIBLE)
-+
-+/**
-+ * wake_up_var_protected - wake up waiters for a variable asserting that it is safe
-+ * @var: the address of the variable being waited on
-+ * @cond: the condition which afirms this is safe
-+ *
-+ * When waking waiters which use wait_var_event_any_lock() the waker must be
-+ * holding the reelvant lock to avoid races.  This version of wake_up_var()
-+ * asserts that the relevant lock is held and so no barrier is needed.
-+ * The @cond is only tested when CONFIG_LOCKDEP is enabled.
-+ */
-+#define wake_up_var_protected(var, cond)				\
++#define store_release_wake_up(var, val)					\
 +do {									\
-+	lockdep_assert(cond);						\
++	smp_store_release(var, val);					\
++	smp_mb();							\
 +	wake_up_var(var);						\
 +} while (0)
 +
-+/**
-+ * wake_up_var_locked - wake up waiters for a variable while holding a spinlock or mutex
-+ * @var: the address of the variable being waited on
-+ * @lock: The spinlock or mutex what protects the variable
-+ *
-+ * Send a wake up for the given variable which should be waited for with
-+ * wait_var_event_spinlock() or wait_var_event_mutex().  Unlike wake_up_var(),
-+ * no extra barriers are needed as the locking provides sufficient sequencing.
-+ */
-+#define wake_up_var_locked(var, lock)					\
-+	wake_up_var_protected(var, lockdep_is_held(lock))
-+
-+/**
-  * clear_and_wake_up_bit - clear a bit and wake up anyone waiting on that bit
-  * @bit: the bit of the word being waited on
-  * @word: the address containing the bit being waited on
+ #endif /* _LINUX_WAIT_BIT_H */
 
