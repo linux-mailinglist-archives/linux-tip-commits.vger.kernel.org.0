@@ -1,124 +1,150 @@
-Return-Path: <linux-tip-commits+bounces-2396-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2397-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A92D996C6C
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 15:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA62C996F19
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 17:01:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC1A828498B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 13:42:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2452287263
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 15:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CAB198E83;
-	Wed,  9 Oct 2024 13:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA4419ABB4;
+	Wed,  9 Oct 2024 15:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="XxG1D3iI"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oEcSSy0I"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7DBCA5B;
-	Wed,  9 Oct 2024 13:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7B719DF6A;
+	Wed,  9 Oct 2024 15:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728481354; cv=none; b=H5xBBFAf1st2MxtkvgPHX1sthkk1QxrxCLZFnk1HF5iN27yigvM63D930i87S2JrOsVPbuEJZb0j5khgboKSkueUUWkVB8vLIRSdPQ+MeduJz459jeQYwuxb4FfCoC/D7S7B6DjyBonKN2AnIvZPLxoDIAR7UEZ5jHnGj036Dzw=
+	t=1728486060; cv=none; b=szsPPGkx1eawJL+xBpGJ1ZebD4i16Wf+e7fP46ms1KKlhgd1H68MOkSVW1QeFVZjloJeZasgbd+2hga96ODgSKYghKH84ZBVl15UK9oH17CJXSSL1f9uuJIwW4e/9ZIeusIUvgoV17eGtElQEkcE6gukb+LWtRVEunroE3eRauE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728481354; c=relaxed/simple;
-	bh=fx0Mp8rbRWNM2WhXz9q3fVJkUUyUBrTj15kEVqt07po=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qeQYS/XmAnDOwWjl/aYEBJh7Jbyd0XWQOEjoHnn3yOD2Buz4y64oEpCqQpshdiz/Ls7CtNrZ4WDK85pF7XGcn3jsJJboVdS6kVpBFOz3vsv31QM50ws6lqVQvRsP8/IlaIwJa8/WZzFcpL4MaQbXzwCXGB88xH8wHij/8Wx0/kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=XxG1D3iI reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 28F9540E021E;
-	Wed,  9 Oct 2024 13:42:29 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id LiEmuf-hL5hq; Wed,  9 Oct 2024 13:42:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1728481343; bh=Q5rU6AZIyEerx2G9HImeh6tXvj76r3VtsfVrSX9a8OQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XxG1D3iIBKNCeWbyu8zK+3+dMIP3DRw9EQB8IahcEtSTtxLQFxeGW0C8R+5aCBZOo
-	 9wtxVZL2BDa1qrD8MRnOhO5IOIDztXDGzSGZtO+EWx1TNPkBHu7OYKocNV96RJIWHk
-	 qk2Vb6DM6NUYE5wKoU+452taOLoqjJrBaEaY90WAZKmQgVrPYYA14oOBSsbn8A1LYb
-	 JNH1NTkmkbVRcz/3FGCph3MA+4LK0fov/WXNlVBBG2Tu0emEgVJ+YOihJT4o+OI/pz
-	 RsobMFp2E5fOaly4X+jv+rFz/m5BXYuc/8aSo8ZEnORcM+hXurMZ5gLE+pQqMVP0nc
-	 bx0WTHk4deNEYSGygekX239jVPuy7rFgRwpmpPSLwC7ss5YHKI7VtR7gk82yx8Wk9J
-	 4GFWW8OIHD+z3vI9+Xjw4+k6C1YRPfdY5BV+No6qymYvzbzuZKYosrBLlPhdiTMN4U
-	 zMoeuMddobH4DypO9CBMz//FTSIIyLcJT7ed0pOqxTAmEU0NtDGMhbM2Ua4blzCtwk
-	 PZjvB7lW3cJHcjkMWhGPaSgo/5PX30Hf89DZfOnd6phvw60NjBk4RgljFuVMGZeKh8
-	 qTj2G/vXN4c74dOJr0Xr4RAD1SIK0u31z3569AVcpsS4B9ylQ+Me9wcnHHc9SoNnfG
-	 mtfQNNitzZs4iBBVgF7X86kA=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3FA5540E0163;
-	Wed,  9 Oct 2024 13:42:11 +0000 (UTC)
-Date: Wed, 9 Oct 2024 15:42:05 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org, Robert Gill <rtgill82@gmail.com>,
-	stable@vger.kernel.org, #@tip-bot2.tec.linutronix.de,
-	5.10+@tip-bot2.tec.linutronix.de,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Brian Gerst <brgerst@gmail.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org
-Subject: Re: [tip: x86/urgent] x86/bugs: Use code segment selector for VERW
- operand
-Message-ID: <20241009134205.GJZwaILf_bDcWuht-k@fat_crate.local>
-References: <172842753652.1442.15253433006014560776.tip-bot2@tip-bot2>
- <20241009061102.GBZwYediMceBEfSEFo@fat_crate.local>
- <20241009073437.GG17263@noisy.programming.kicks-ass.net>
- <20241009093257.GDZwZNyfIjw0lTZJqL@fat_crate.local>
- <efa42b69-13ba-40ed-99e2-431220d7dcb3@citrix.com>
+	s=arc-20240116; t=1728486060; c=relaxed/simple;
+	bh=oH0V7311o5jJFSC+Juj6Lnod0HtYmGqkFFOe/VLRi8M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fKKR09NL+h8Qhloq0i0EKKus+KIusH5TCJ4vRqDKYKV6adOdPRQqjwTt1cz3CduZUIwvfFc+jzEus8nLVOCPr6S30ITOZUGonHMklmXdZpNzK69ubNkVVMNIe8/6fBzN/pStR94xzqqG85/hxeQtr2zkryBhL5UGJ0yzxjenbE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oEcSSy0I; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728486058; x=1760022058;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=oH0V7311o5jJFSC+Juj6Lnod0HtYmGqkFFOe/VLRi8M=;
+  b=oEcSSy0I9lXZjtIIkUlynkypjgEKNdcfJC+WIB2ZHlm/jQWGzF84ZJa0
+   RqioJpyWW+yY7JPMtTzLdl9ceWIGss95v2oHhTn1SQctj6zCAgeSfhKkU
+   2hMXsHg+nr23VNmz/jn3uWW4JD4eKkN8hFykllfXkByXoRpK/d2AS9TCr
+   JRCRS0+1QuE0TV9dku1LMoM1bSvOTu4vCd6lLWFW3vTHMvticsfCPBHlr
+   5+/xPj7SE8WHvsnGgrpQXpB7BYWOp+PZ7wc9aFkrlDScnFT7nrNwBQV09
+   7nTGJnyZNBaY7pAs49CbBI1HCG4Pb+0wiG4hrHl7SYqcmLdvxy9bZSTF8
+   w==;
+X-CSE-ConnectionGUID: Fvyy5FR2QhWXP6sRwY1l1Q==
+X-CSE-MsgGUID: fTj/x2PnRRyVCOqBhVcqVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="38359327"
+X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
+   d="scan'208";a="38359327"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 08:00:58 -0700
+X-CSE-ConnectionGUID: rQ/+j2qnTnuCqvnEvu9oQg==
+X-CSE-MsgGUID: QF9a9E4aRoqX8DRMM1lSIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
+   d="scan'208";a="75880957"
+Received: from uaeoff-desk2.amr.corp.intel.com (HELO [10.124.223.14]) ([10.124.223.14])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 08:00:58 -0700
+Message-ID: <b4cae913-282a-4772-a2b0-d2638adfe486@intel.com>
+Date: Wed, 9 Oct 2024 08:00:56 -0700
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <efa42b69-13ba-40ed-99e2-431220d7dcb3@citrix.com>
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [tip: x86/urgent] x86/bugs: Use code segment selector for VERW
+ operand
+To: Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, Robert Gill <rtgill82@gmail.com>,
+ Andrew Cooper <andrew.cooper3@citrix.com>, stable@vger.kernel.org,
+ #@tip-bot2.tec.linutronix.de, 5.10+@tip-bot2.tec.linutronix.de,
+ Dave Hansen <dave.hansen@linux.intel.com>, Brian Gerst <brgerst@gmail.com>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org
+References: <172842753652.1442.15253433006014560776.tip-bot2@tip-bot2>
+ <20241009061102.GBZwYediMceBEfSEFo@fat_crate.local>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20241009061102.GBZwYediMceBEfSEFo@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 09, 2024 at 11:24:19AM +0100, Andrew Cooper wrote:
-> I'll bite.=C2=A0 Why do you think this form is is better?
+On 10/8/24 23:11, Borislav Petkov wrote:
+>>  .macro CLEAR_CPU_BUFFERS
+>> -	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
+>> +#ifdef CONFIG_X86_64
+>> +	ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
+>> +#else
+>> +	/*
+>> +	 * In 32bit mode, the memory operand must be a %cs reference. The data
+>> +	 * segments may not be usable (vm86 mode), and the stack segment may not
+>> +	 * be flat (ESPFIX32).
+>> +	 */
+>> +	ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
+>> +#endif
+> So why didn't we ifdef the "verw mds_verw_sel(%rip)" and "verw
+> %cs:mds_verw_sel" macro argument instead of adding more bigger ugly ifdeffery?
 
-Smaller, shorter ifdeffery block. An example speaks more than 1000 words:
+I'm not jumping for joy about how it looks, but I applied it because
+it's good enough and the regression was about to get its driver's
+license. ;)
 
-arch/x86/include/asm/asm.h
-
-> You've now got VERW_ARG leaking across the whole kernel, and a layer of
-> obfuscatio^W indirection in CLEAR_CPU_BUFFERS.
-
-We have that all around the kernel anyway.
-
-> Admittedly, when I wrote this fragment as a suggestion[1], the 32bit
-> comment was in the main comment because there really is no need for it
-> to be separate.
->=20
-> But abstracting away VERW_ARG like this hampers legibility/clarity,
-> rather than improving it IMO.
-
-I guess we see it differently.
-
-I don't care all that much to continue this - I'll just say that having t=
-he
-CLEAR_CPU_BUFFERS macro text simpler and putting the argument complexity
-abstracted away in macros reads better to me.
-
-Oh well.
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+I did spend some time noodling to come up with _some_ common 32/64-bit
+implementation, but 32-bit is just too special of a snowflake.
 
