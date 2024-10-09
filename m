@@ -1,70 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2391-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2392-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12006996243
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 10:19:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5330996538
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 11:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4261B1C213C1
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 08:19:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3F811C237CA
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 09:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B044617CA0B;
-	Wed,  9 Oct 2024 08:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C28B18CBF9;
+	Wed,  9 Oct 2024 09:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lM8AW9cH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ld6w2wVs"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jrr9N2Xr";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c3MT9GfG"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7880183CA7;
-	Wed,  9 Oct 2024 08:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3003189BA2;
+	Wed,  9 Oct 2024 09:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728461949; cv=none; b=NL/X44UWzW9oA+TWx8AifzFiYmDblZvIw0ddBRaCFw3zerh/AofWsNgtce5rZccO8goIwwopMoK/U4e26g3z1XgaFjm8Xy8ImXgHbDJOV4YQf7Fqv+RvC0yIoj/vFlcKaplKn1s8VFgRFiN7TsZEVqJ4OMP+IUunTSrFt83ABCI=
+	t=1728465714; cv=none; b=B1sRcCZ6pOcrUMLu5TwkhGYWfCNhB5S4B8UgLhBoe3hDPhlx3+4N2D3Gy5vvfwzAT7gKaxHPfs7dYtQsHJQmjCJ+SPImowA40Nsf6SDQIo5+kqtCZ9XGaMPRjyUh2/le2JWRpLxe+3ySsfv3K2f0laIu6EOaFHPks9U1qGsLUxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728461949; c=relaxed/simple;
-	bh=1gwGVIuimmryLZ0/PN8tLbBcO+nE++TiNXvBvW8g3gc=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=UEGWnBbhlBPlExnTwA24DhfIh359pN8uzC7Tk0alcoCjWpvyF6h59UI3UugkHU3woWxwdGbZNErqr3bDKiCWt6oHQKCwMeWMIJ7hVH3fTABTZUNw48HBzKcZ1Q5saZXkZLa/4HBqxeqIUDNZiMZRJ3JeoY3WRlLn+cCoYMqlltw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lM8AW9cH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ld6w2wVs; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1728465714; c=relaxed/simple;
+	bh=+Eu8FVQhd542cysh/WxOzlybLSHvB5lcDCwYoHePP5M=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=NZ3l1+LmxUNKMYKL+4D/yu8H7hKeenUFcQwuo2Kn4Sqa8ganwbdlpYelA1tLtIWRnDXIiVqdWWwCsmhjOWvQntVyqOiWrA2n/+Thl6gF6UZplj8zGK+KCtzx5BoBxSSRbp/h4WOHR7uf6K3zFZPJScuvjIPk5JGN/AMeZsD6JbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jrr9N2Xr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c3MT9GfG; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 09 Oct 2024 08:19:05 -0000
+Date: Wed, 09 Oct 2024 09:21:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728461946;
+	s=2020; t=1728465710;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=8wwoHAqKz/DC4cgWQpPQtbnA9eq1uGdQxciLsQJDpL4=;
-	b=lM8AW9cH4kt+oCVrNhPVjvDTx7omdJaawZKBydCzV2BHYIyB3KRg+7EAQDe35phFsrP65W
-	MPeM+HrQhuU8wOABriq3IFsw1zpq72zA8Mg03zTttKWaxtBQGMJJIve1tEt0/x9PW9Nhkk
-	um8SxZY2x8f0PJTWzAhUI8w7wW0Qp80vFhYtZsmaS9YxYR3brNPFAUpB0Y4S8at8Oj4ouE
-	sbmKBF7AoLBdxxz9Cy5LMdM2nLJRK3jtHvPGX29/7f5wpU8WDm/eZX2pE7DhIZ2KSpFdvw
-	0oeQ46yM7wQVg7oNzZ/UofJ2SIgPOVB5QHbfpT6dFPtjNDWpX/stNfn4M597IA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZDCJxJ3eCN6MJCFUBbljx0WkoRjF5PJfmH47ifNwzE4=;
+	b=jrr9N2Xrj0fpyDwZcRyrs6KS2NEz/tavjK3BO2nsYF38cb2i1FvvSQPcsgpjuRp+WhEp6E
+	348bww1NUa/k2WVy7XllTEOEaNPxR8FUS5Kn8Fpo1cQQPwWrsYF3/HN5O4qlWBNX4lpqoo
+	H1RleJ8MKxxWrb0aHYpwpyKmR3rIayn1mNKuOD39YdStoI3CMLJzCfxNLLU8LkIWPDhFIF
+	WVO//Et85AbzuvHWt2KOCMdmZHT23hcIAltOZl4BrGgZvysLdYB9bPuJQMe+jX88tjOdqL
+	SQ0vEPTPrEG2aEplWS1a59sJtpg7tELnrCQ5I64I+O8CETAYO1uqYnANq0RbnQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728461946;
+	s=2020e; t=1728465710;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=8wwoHAqKz/DC4cgWQpPQtbnA9eq1uGdQxciLsQJDpL4=;
-	b=Ld6w2wVsHKwO0kJeSc3ycr9Lr6PiH2P47hO+xWs9TZ8mZsi89q0uiqpXuQsO/CNcnxsmBW
-	J1bksgoZ+a0CW8CQ==
-From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZDCJxJ3eCN6MJCFUBbljx0WkoRjF5PJfmH47ifNwzE4=;
+	b=c3MT9GfG9qhuUQjsvk+Y4iHKrzv75x5r/k7u2Im96FRxm0Z4txizvXMKFCV3UDfKxJ38Po
+	jstsvdQhcUz/orDA==
+From: "tip-bot2 for Dr. David Alan Gilbert" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] fs/bcachefs: Fix __wait_on_freeing_inode()
- definition of waitqueue entry
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, NeilBrown <neilb@suse.de>,
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject:
+ [tip: timers/core] clocksource: Remove unused clocksource_change_rating
+Cc: "Dr. David Alan Gilbert" <linux@treblig.org>,
+ Thomas Gleixner <tglx@linutronix.de>, John Stultz <jstultz@google.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241009003032.254348-1-linux@treblig.org>
+References: <20241009003032.254348-1-linux@treblig.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172846194512.1442.15051268384195551570.tip-bot2@tip-bot2>
+Message-ID: <172846570954.1442.6028241325035117957.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -72,51 +80,74 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7266f0a6d3bb73f42ea06656d3cc48c7d0386f71
-Gitweb:        https://git.kernel.org/tip/7266f0a6d3bb73f42ea06656d3cc48c7d0386f71
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Wed, 09 Oct 2024 10:00:09 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 09 Oct 2024 10:00:09 +02:00
+Commit-ID:     5ce9bb4d5af2f5ef38f134e3cb400c873d357de7
+Gitweb:        https://git.kernel.org/tip/5ce9bb4d5af2f5ef38f134e3cb400c873d357de7
+Author:        Dr. David Alan Gilbert <linux@treblig.org>
+AuthorDate:    Wed, 09 Oct 2024 01:30:32 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 09 Oct 2024 11:14:29 +02:00
 
-fs/bcachefs: Fix __wait_on_freeing_inode() definition of waitqueue entry
+clocksource: Remove unused clocksource_change_rating
 
-The following recent commit made DEFINE_WAIT_BIT() type requirements stricter:
+clocksource_change_rating() has been unused since 2017's commit
+63ed4e0c67df ("Drivers: hv: vmbus: Consolidate all Hyper-V specific
+clocksource code")
 
-  2382d68d7d43 ("sched: change wake_up_bit() and related function to expect unsigned long *")
+Remove it.
 
-.. which results in a build failure:
-
-  > fs/bcachefs/fs.c: In function '__wait_on_freeing_inode':
-  > fs/bcachefs/fs.c:281:31: error: initialization of 'long unsigned int *' from incompatible pointer type 'u32 *' {aka 'unsigned int *'} [-Wincompatible-pointer-types]
-  >   281 |         DEFINE_WAIT_BIT(wait, &inode->v.i_state, __I_NEW);
-
-Since this code relies on the waitqueue initialization within
-inode_bit_waitqueue() anyway, the DEFINE_WAIT_BIT() initialization
-is unnecessary - we can just declare a waitqueue entry.
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Suggested-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: John Stultz <jstultz@google.com>
+Link: https://lore.kernel.org/all/20241009003032.254348-1-linux@treblig.org
 ---
- fs/bcachefs/fs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/clocksource.h |  1 -
+ kernel/time/clocksource.c   | 21 ---------------------
+ 2 files changed, 22 deletions(-)
 
-diff --git a/fs/bcachefs/fs.c b/fs/bcachefs/fs.c
-index 5bfc26d..c410133 100644
---- a/fs/bcachefs/fs.c
-+++ b/fs/bcachefs/fs.c
-@@ -183,8 +183,9 @@ static void __wait_on_freeing_inode(struct bch_fs *c,
- 				    struct bch_inode_info *inode,
- 				    subvol_inum inum)
- {
-+	struct wait_bit_queue_entry wait;
- 	wait_queue_head_t *wq;
--	DEFINE_WAIT_BIT(wait, &inode->v.i_state, __I_NEW);
-+
- 	wq = inode_bit_waitqueue(&wait, &inode->v, __I_NEW);
- 	prepare_to_wait(wq, &wait.wq_entry, TASK_UNINTERRUPTIBLE);
- 	spin_unlock(&inode->v.i_lock);
+diff --git a/include/linux/clocksource.h b/include/linux/clocksource.h
+index d35b677..ef1b16d 100644
+--- a/include/linux/clocksource.h
++++ b/include/linux/clocksource.h
+@@ -215,7 +215,6 @@ static inline s64 clocksource_cyc2ns(u64 cycles, u32 mult, u32 shift)
+ 
+ extern int clocksource_unregister(struct clocksource*);
+ extern void clocksource_touch_watchdog(void);
+-extern void clocksource_change_rating(struct clocksource *cs, int rating);
+ extern void clocksource_suspend(void);
+ extern void clocksource_resume(void);
+ extern struct clocksource * __init clocksource_default_clock(void);
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 23336ee..e041ba8 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -1262,27 +1262,6 @@ static void __clocksource_change_rating(struct clocksource *cs, int rating)
+ 	clocksource_enqueue(cs);
+ }
+ 
+-/**
+- * clocksource_change_rating - Change the rating of a registered clocksource
+- * @cs:		clocksource to be changed
+- * @rating:	new rating
+- */
+-void clocksource_change_rating(struct clocksource *cs, int rating)
+-{
+-	unsigned long flags;
+-
+-	mutex_lock(&clocksource_mutex);
+-	clocksource_watchdog_lock(&flags);
+-	__clocksource_change_rating(cs, rating);
+-	clocksource_watchdog_unlock(&flags);
+-
+-	clocksource_select();
+-	clocksource_select_watchdog(false);
+-	clocksource_suspend_select(false);
+-	mutex_unlock(&clocksource_mutex);
+-}
+-EXPORT_SYMBOL(clocksource_change_rating);
+-
+ /*
+  * Unbind clocksource @cs. Called with clocksource_mutex held
+  */
 
