@@ -1,185 +1,207 @@
-Return-Path: <linux-tip-commits+bounces-2394-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2395-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB1999672F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 12:25:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 269EB996BB1
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 15:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 213142834E7
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 10:25:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6360CB23EE5
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Oct 2024 13:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6643218FDBE;
-	Wed,  9 Oct 2024 10:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC17198A32;
+	Wed,  9 Oct 2024 13:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="b/lq8ctz"
-Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lHXxjx86";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E04UY479"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8213B18F2FB
-	for <linux-tip-commits@vger.kernel.org>; Wed,  9 Oct 2024 10:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C9D1946AA;
+	Wed,  9 Oct 2024 13:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728469466; cv=none; b=TNUBkzGFKTF2ltokiv6i216ZIPy3uVwfCJFi2C0/L74yvQv15s7LwTuRxSZVYjFz4/zdLcGgR2G3vVgV7eFZ+LhK+JKP5K8xAAY5+UzLYZHRPEkeUkuMNxQv6LNVmAoKPrfKT/9K1AABPzJ2X7OeSTjaoSjxwjZGEAPU+RImryU=
+	t=1728480022; cv=none; b=Vy1lBW4Xwk/fXE3DYL3DzcZYYxPQQqS34yPQEGZCS7tOUpsHDQEaKFSIzK0R80WKhVzLW6j1rwT6WZFHsG9WrkE+eVdDiv43UNciazyYgpBc1+XfsHfDBGVBZgPVE/QMbeL/NJifYeoDou5djqmpxryQHrCWXO/9NkQkiu9LvJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728469466; c=relaxed/simple;
-	bh=2o/UYiTxGQLpj2U3as30EOp17edcJJEmw9LgXaiqd/g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d9p4wU3ST6pPIW95fOWJzK4knuY9oNFogc225a4vqklZyJiYEshJaceQDXeWHwGePs2dgxNogtx0hdlVPasMuENKzVjYeIZS3pAC6WF1IpK5RkMCvduKiR9aDeQ2e/lCfNgujmWKbJr3YiRBs6tpAdGSWY0I6xhiaR0jES+OrWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=b/lq8ctz; arc=none smtp.client-ip=209.85.208.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
-Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-5c896b9b4e0so9612609a12.3
-        for <linux-tip-commits@vger.kernel.org>; Wed, 09 Oct 2024 03:24:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citrix.com; s=google; t=1728469463; x=1729074263; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=hm6bUgP58uGQ8bcfYdstOCga9CnzXMRzGE3Fg5u58k0=;
-        b=b/lq8ctzRRCuuXsU/F5p5w6gj/MKCSFB+YzsltaX0H5PIafxQXryfxRAQiTCFyZFIk
-         0wYSTu7s/Apuzk7Qs/0QtFO1b/OPHFaq/WDzvXX3dbXA+dOf4tB8zkuqrVcmlNL3xpLY
-         jgNm2xOv6kXneOSj5CS7/1NxvmUAvWOvOL72M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728469463; x=1729074263;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hm6bUgP58uGQ8bcfYdstOCga9CnzXMRzGE3Fg5u58k0=;
-        b=MSePlcxDRkqiiQM0+89RkZcNqL/RVyWGpCh5qXWU23LKFXKJE9Ezr53iYfEiuOOa87
-         KjCsWLMZqtmUrnzJBSawzDwIQYEo19702pOlv8g0EK2Vr2Nwk49fhdJ5Hekb+DtFmkwA
-         XwqMuBVUcV+9MfLJUhUJH5rJBJvrUUgEXkXiwQ/2E5T0O66REW6QLBVli+cj+toX3Xun
-         4zvZyLfpMezDFMdCOWTSnZJFAteFCzERl0by6LCs6+cruK857nvSC2CZehJbCZsWqhWu
-         fgl7d7/PY4x4T+IkP0CRgxF74lfcB9RxJ3jkkbJ4TkdOgqiRxohkrYTibOeSqqBmXsOz
-         9Hlg==
-X-Forwarded-Encrypted: i=1; AJvYcCWb+qUUmavhvgzjmFIPJzLUjoFf94jq1dIlu+Q9aRlZ4fnWP6414nGrKc2NXUP03sCU6BF3KiRvNsTnVdTK7HyvhA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxreprhCwwUXTynrlLupDhMEy5+PIBS2jnEnPPHOnTKCiiWSRKm
-	NdogIOcW5mCgFBgX4UFuFsknK/C/rJHSxLAzh97BKNbfOFt5qBcu5FKUj8p+y40=
-X-Google-Smtp-Source: AGHT+IEkqPqSA1NCUyjbtMkJ1oudiGimJKbkwCGCVqyQlXN0d/rqnML3tRfXMYSsb7MZT5vpiwEssw==
-X-Received: by 2002:a05:6402:2546:b0:5c5:c060:420d with SMTP id 4fb4d7f45d1cf-5c91d6faac3mr1429230a12.25.1728469462818;
-        Wed, 09 Oct 2024 03:24:22 -0700 (PDT)
-Received: from [10.125.226.166] ([185.25.67.249])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c927e4403asm404944a12.51.2024.10.09.03.24.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Oct 2024 03:24:22 -0700 (PDT)
-Message-ID: <efa42b69-13ba-40ed-99e2-431220d7dcb3@citrix.com>
-Date: Wed, 9 Oct 2024 11:24:19 +0100
+	s=arc-20240116; t=1728480022; c=relaxed/simple;
+	bh=oHNuaVKic/oAOteDuFpQyqqyIJ0/JG7gBlXQvwypzJk=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=XsATTNY35rB3FMdvSwAzTqg8iiLxylj6ETGvTtcLBKSaL/wxGV2QGp3feQmJAzT7midhc4TfBq2T36/nNPmKyZkTAjgv7x0JIpXHDfGVJtx8r+18zrJtd4+XSpjFk8ZB3YYtRh5+guW/TBUEB3PvDmk86YWdTBoahV3aI4oRiHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lHXxjx86; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E04UY479; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 09 Oct 2024 13:20:17 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1728480018;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MRIrAT20AqLIabLdRFA1CP2VKeoHlgJElvZxF9JNROU=;
+	b=lHXxjx86XGPxXA15b7AUAMoUvYFzyiK+BSRpOsai5P7fNiuE5x9N6LYbJds2pVAGPAJ6R8
+	YNEe5aLjCS664JHK1Hto+VmK1zCYJfaahRivOU97SviFXSWFzBWEyOFspN5fzBJ971IAuw
+	5baypcpbcSDklTji9d9ui35hjYIe8wsaObfJTL9bWooVOXia/B+XLN72q4ydyVmJ1krcEI
+	/A49kg9M8iOzJQLmk8B+vBSWtsizVLxO6Y2f/4PGolQVwJTyC4Q2wTjePIflxSPZGfrdhe
+	jgsrYS7PX00Vi1+AM9IahpGZow3zpO5B4UBQNLVwNlsoqWSOGJA7R+Tiv1tueg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1728480018;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MRIrAT20AqLIabLdRFA1CP2VKeoHlgJElvZxF9JNROU=;
+	b=E04UY479UJugaaTnF5KaBrfkB1o/IKTe2H1/70JI2/AazsiHXXoY2FaWliVLrywVO2az5u
+	DvdpBk9V4SZ9hXAw==
+From:
+ tip-bot2 for Thomas =?utf-8?q?Hellstr=C3=B6m?= <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/core] locking/ww_mutex: Adjust to lockdep nest_lock
+ requirements
+Cc: thomas.hellstrom@linux.intel.com,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241009092031.6356-1-thomas.hellstrom@linux.intel.com>
+References: <20241009092031.6356-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [tip: x86/urgent] x86/bugs: Use code segment selector for VERW
- operand
-To: Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
- Robert Gill <rtgill82@gmail.com>, stable@vger.kernel.org,
- #@tip-bot2.tec.linutronix.de, 5.10+@tip-bot2.tec.linutronix.de,
- Dave Hansen <dave.hansen@linux.intel.com>, Brian Gerst <brgerst@gmail.com>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org
-References: <172842753652.1442.15253433006014560776.tip-bot2@tip-bot2>
- <20241009061102.GBZwYediMceBEfSEFo@fat_crate.local>
- <20241009073437.GG17263@noisy.programming.kicks-ass.net>
- <20241009093257.GDZwZNyfIjw0lTZJqL@fat_crate.local>
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
- xsFNBFLhNn8BEADVhE+Hb8i0GV6mihnnr/uiQQdPF8kUoFzCOPXkf7jQ5sLYeJa0cQi6Penp
- VtiFYznTairnVsN5J+ujSTIb+OlMSJUWV4opS7WVNnxHbFTPYZVQ3erv7NKc2iVizCRZ2Kxn
- srM1oPXWRic8BIAdYOKOloF2300SL/bIpeD+x7h3w9B/qez7nOin5NzkxgFoaUeIal12pXSR
- Q354FKFoy6Vh96gc4VRqte3jw8mPuJQpfws+Pb+swvSf/i1q1+1I4jsRQQh2m6OTADHIqg2E
- ofTYAEh7R5HfPx0EXoEDMdRjOeKn8+vvkAwhviWXTHlG3R1QkbE5M/oywnZ83udJmi+lxjJ5
- YhQ5IzomvJ16H0Bq+TLyVLO/VRksp1VR9HxCzItLNCS8PdpYYz5TC204ViycobYU65WMpzWe
- LFAGn8jSS25XIpqv0Y9k87dLbctKKA14Ifw2kq5OIVu2FuX+3i446JOa2vpCI9GcjCzi3oHV
- e00bzYiHMIl0FICrNJU0Kjho8pdo0m2uxkn6SYEpogAy9pnatUlO+erL4LqFUO7GXSdBRbw5
- gNt25XTLdSFuZtMxkY3tq8MFss5QnjhehCVPEpE6y9ZjI4XB8ad1G4oBHVGK5LMsvg22PfMJ
- ISWFSHoF/B5+lHkCKWkFxZ0gZn33ju5n6/FOdEx4B8cMJt+cWwARAQABzSlBbmRyZXcgQ29v
- cGVyIDxhbmRyZXcuY29vcGVyM0BjaXRyaXguY29tPsLBegQTAQgAJAIbAwULCQgHAwUVCgkI
- CwUWAgMBAAIeAQIXgAUCWKD95wIZAQAKCRBlw/kGpdefoHbdD/9AIoR3k6fKl+RFiFpyAhvO
- 59ttDFI7nIAnlYngev2XUR3acFElJATHSDO0ju+hqWqAb8kVijXLops0gOfqt3VPZq9cuHlh
- IMDquatGLzAadfFx2eQYIYT+FYuMoPZy/aTUazmJIDVxP7L383grjIkn+7tAv+qeDfE+txL4
- SAm1UHNvmdfgL2/lcmL3xRh7sub3nJilM93RWX1Pe5LBSDXO45uzCGEdst6uSlzYR/MEr+5Z
- JQQ32JV64zwvf/aKaagSQSQMYNX9JFgfZ3TKWC1KJQbX5ssoX/5hNLqxMcZV3TN7kU8I3kjK
- mPec9+1nECOjjJSO/h4P0sBZyIUGfguwzhEeGf4sMCuSEM4xjCnwiBwftR17sr0spYcOpqET
- ZGcAmyYcNjy6CYadNCnfR40vhhWuCfNCBzWnUW0lFoo12wb0YnzoOLjvfD6OL3JjIUJNOmJy
- RCsJ5IA/Iz33RhSVRmROu+TztwuThClw63g7+hoyewv7BemKyuU6FTVhjjW+XUWmS/FzknSi
- dAG+insr0746cTPpSkGl3KAXeWDGJzve7/SBBfyznWCMGaf8E2P1oOdIZRxHgWj0zNr1+ooF
- /PzgLPiCI4OMUttTlEKChgbUTQ+5o0P080JojqfXwbPAyumbaYcQNiH1/xYbJdOFSiBv9rpt
- TQTBLzDKXok86M7BTQRS4TZ/ARAAkgqudHsp+hd82UVkvgnlqZjzz2vyrYfz7bkPtXaGb9H4
- Rfo7mQsEQavEBdWWjbga6eMnDqtu+FC+qeTGYebToxEyp2lKDSoAsvt8w82tIlP/EbmRbDVn
- 7bhjBlfRcFjVYw8uVDPptT0TV47vpoCVkTwcyb6OltJrvg/QzV9f07DJswuda1JH3/qvYu0p
- vjPnYvCq4NsqY2XSdAJ02HrdYPFtNyPEntu1n1KK+gJrstjtw7KsZ4ygXYrsm/oCBiVW/OgU
- g/XIlGErkrxe4vQvJyVwg6YH653YTX5hLLUEL1NS4TCo47RP+wi6y+TnuAL36UtK/uFyEuPy
- wwrDVcC4cIFhYSfsO0BumEI65yu7a8aHbGfq2lW251UcoU48Z27ZUUZd2Dr6O/n8poQHbaTd
- 6bJJSjzGGHZVbRP9UQ3lkmkmc0+XCHmj5WhwNNYjgbbmML7y0fsJT5RgvefAIFfHBg7fTY/i
- kBEimoUsTEQz+N4hbKwo1hULfVxDJStE4sbPhjbsPCrlXf6W9CxSyQ0qmZ2bXsLQYRj2xqd1
- bpA+1o1j2N4/au1R/uSiUFjewJdT/LX1EklKDcQwpk06Af/N7VZtSfEJeRV04unbsKVXWZAk
- uAJyDDKN99ziC0Wz5kcPyVD1HNf8bgaqGDzrv3TfYjwqayRFcMf7xJaL9xXedMcAEQEAAcLB
- XwQYAQgACQUCUuE2fwIbDAAKCRBlw/kGpdefoG4XEACD1Qf/er8EA7g23HMxYWd3FXHThrVQ
- HgiGdk5Yh632vjOm9L4sd/GCEACVQKjsu98e8o3ysitFlznEns5EAAXEbITrgKWXDDUWGYxd
- pnjj2u+GkVdsOAGk0kxczX6s+VRBhpbBI2PWnOsRJgU2n10PZ3mZD4Xu9kU2IXYmuW+e5KCA
- vTArRUdCrAtIa1k01sPipPPw6dfxx2e5asy21YOytzxuWFfJTGnVxZZSCyLUO83sh6OZhJkk
- b9rxL9wPmpN/t2IPaEKoAc0FTQZS36wAMOXkBh24PQ9gaLJvfPKpNzGD8XWR5HHF0NLIJhgg
- 4ZlEXQ2fVp3XrtocHqhu4UZR4koCijgB8sB7Tb0GCpwK+C4UePdFLfhKyRdSXuvY3AHJd4CP
- 4JzW0Bzq/WXY3XMOzUTYApGQpnUpdOmuQSfpV9MQO+/jo7r6yPbxT7CwRS5dcQPzUiuHLK9i
- nvjREdh84qycnx0/6dDroYhp0DFv4udxuAvt1h4wGwTPRQZerSm4xaYegEFusyhbZrI0U9tJ
- B8WrhBLXDiYlyJT6zOV2yZFuW47VrLsjYnHwn27hmxTC/7tvG3euCklmkn9Sl9IAKFu29RSo
- d5bD8kMSCYsTqtTfT6W4A3qHGvIDta3ptLYpIAOD2sY3GYq2nf3Bbzx81wZK14JdDDHUX2Rs
- 6+ahAA==
-In-Reply-To: <20241009093257.GDZwZNyfIjw0lTZJqL@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <172848001711.1442.15752580154749129748.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 09/10/2024 10:32 am, Borislav Petkov wrote:
-> On Wed, Oct 09, 2024 at 09:34:37AM +0200, Peter Zijlstra wrote:
->> You need ifdeffery either way around, either directly like this or for
->> that macro. This is simple and straight forward.
-> Nothing in this file full of macros is simple. In any case, I would've done
-> this as the ifdeffery is shorter and the macro is simpler. We have this coding
-> pattern in a lot of headers, abstracting 32-bit vs 64-bit machine details, and
-> it is a very common and familiar one:
->
-> /*
->  * In 32bit mode, the memory operand must be a %cs reference. The data
->  * segments may not be usable (vm86 mode), and the stack segment may not be
->  * flat (ESPFIX32).
->  */
-> #ifdef CONFIG_X86_64
-> #define VERW_ARG "verw mds_verw_sel(%rip)"
-> #else /* CONFIG_X86_32 */
-> #define VERW_ARG "verw %cs:mds_verw_sel"
-> #endif
->
-> /*
->  * Macro to execute VERW instruction that mitigate transient data sampling
->  * attacks such as MDS. On affected systems a microcode update overloaded VERW
->  * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF.
->  *
->  * Note: Only the memory operand variant of VERW clears the CPU buffers.
->  */
-> .macro CLEAR_CPU_BUFFERS
->         ALTERNATIVE "", VERW_ARG, X86_FEATURE_CLEAR_CPU_BUF
-> .endm
->
+The following commit has been merged into the locking/core branch of tip:
 
-I'll bite.  Why do you think this form is is better?
+Commit-ID:     823a566221a5639f6c69424897218e5d6431a970
+Gitweb:        https://git.kernel.org/tip/823a566221a5639f6c69424897218e5d643=
+1a970
+Author:        Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+AuthorDate:    Wed, 09 Oct 2024 11:20:31 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 09 Oct 2024 15:08:25 +02:00
 
-You've now got VERW_ARG leaking across the whole kernel, and a layer of
-obfuscatio^W indirection in CLEAR_CPU_BUFFERS.
+locking/ww_mutex: Adjust to lockdep nest_lock requirements
 
-Admittedly, when I wrote this fragment as a suggestion[1], the 32bit
-comment was in the main comment because there really is no need for it
-to be separate.
+When using mutex_acquire_nest() with a nest_lock, lockdep refcounts the
+number of acquired lockdep_maps of mutexes of the same class, and also
+keeps a pointer to the first acquired lockdep_map of a class. That pointer
+is then used for various comparison-, printing- and checking purposes,
+but there is no mechanism to actively ensure that lockdep_map stays in
+memory. Instead, a warning is printed if the lockdep_map is freed and
+there are still held locks of the same lock class, even if the lockdep_map
+itself has been released.
 
-But abstracting away VERW_ARG like this hampers legibility/clarity,
-rather than improving it IMO.
+In the context of WW/WD transactions that means that if a user unlocks
+and frees a ww_mutex from within an ongoing ww transaction, and that
+mutex happens to be the first ww_mutex grabbed in the transaction,
+such a warning is printed and there might be a risk of a UAF.
 
-~Andrew
+Note that this is only problem when lockdep is enabled and affects only
+dereferences of struct lockdep_map.
 
-[1]
-https://lore.kernel.org/lkml/5703f2d8-7ca0-4f01-a954-c0eb1de930b4@citrix.com/
+Adjust to this by adding a fake lockdep_map to the acquired context and
+make sure it is the first acquired lockdep map of the associated
+ww_mutex class. Then hold it for the duration of the WW/WD transaction.
+
+This has the side effect that trying to lock a ww mutex *without* a
+ww_acquire_context but where a such context has been acquire, we'd see
+a lockdep splat. The test-ww_mutex.c selftest attempts to do that, so
+modify that particular test to not acquire a ww_acquire_context if it
+is not going to be used.
+
+Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20241009092031.6356-1-thomas.hellstrom@linux.=
+intel.com
+---
+ include/linux/ww_mutex.h       | 14 ++++++++++++++
+ kernel/locking/test-ww_mutex.c |  8 +++++---
+ 2 files changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/ww_mutex.h b/include/linux/ww_mutex.h
+index bb76308..a401a2f 100644
+--- a/include/linux/ww_mutex.h
++++ b/include/linux/ww_mutex.h
+@@ -65,6 +65,16 @@ struct ww_acquire_ctx {
+ #endif
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map dep_map;
++	/**
++	 * @first_lock_dep_map: fake lockdep_map for first locked ww_mutex.
++	 *
++	 * lockdep requires the lockdep_map for the first locked ww_mutex
++	 * in a ww transaction to remain in memory until all ww_mutexes of
++	 * the transaction have been unlocked. Ensure this by keeping a
++	 * fake locked ww_mutex lockdep map between ww_acquire_init() and
++	 * ww_acquire_fini().
++	 */
++	struct lockdep_map first_lock_dep_map;
+ #endif
+ #ifdef CONFIG_DEBUG_WW_MUTEX_SLOWPATH
+ 	unsigned int deadlock_inject_interval;
+@@ -146,7 +156,10 @@ static inline void ww_acquire_init(struct ww_acquire_ctx=
+ *ctx,
+ 	debug_check_no_locks_freed((void *)ctx, sizeof(*ctx));
+ 	lockdep_init_map(&ctx->dep_map, ww_class->acquire_name,
+ 			 &ww_class->acquire_key, 0);
++	lockdep_init_map(&ctx->first_lock_dep_map, ww_class->mutex_name,
++			 &ww_class->mutex_key, 0);
+ 	mutex_acquire(&ctx->dep_map, 0, 0, _RET_IP_);
++	mutex_acquire_nest(&ctx->first_lock_dep_map, 0, 0, &ctx->dep_map, _RET_IP_);
+ #endif
+ #ifdef CONFIG_DEBUG_WW_MUTEX_SLOWPATH
+ 	ctx->deadlock_inject_interval =3D 1;
+@@ -185,6 +198,7 @@ static inline void ww_acquire_done(struct ww_acquire_ctx =
+*ctx)
+ static inline void ww_acquire_fini(struct ww_acquire_ctx *ctx)
+ {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
++	mutex_release(&ctx->first_lock_dep_map, _THIS_IP_);
+ 	mutex_release(&ctx->dep_map, _THIS_IP_);
+ #endif
+ #ifdef DEBUG_WW_MUTEXES
+diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
+index 10a5736..5d58b2c 100644
+--- a/kernel/locking/test-ww_mutex.c
++++ b/kernel/locking/test-ww_mutex.c
+@@ -62,7 +62,8 @@ static int __test_mutex(unsigned int flags)
+ 	int ret;
+=20
+ 	ww_mutex_init(&mtx.mutex, &ww_class);
+-	ww_acquire_init(&ctx, &ww_class);
++	if (flags & TEST_MTX_CTX)
++		ww_acquire_init(&ctx, &ww_class);
+=20
+ 	INIT_WORK_ONSTACK(&mtx.work, test_mutex_work);
+ 	init_completion(&mtx.ready);
+@@ -90,7 +91,8 @@ static int __test_mutex(unsigned int flags)
+ 		ret =3D wait_for_completion_timeout(&mtx.done, TIMEOUT);
+ 	}
+ 	ww_mutex_unlock(&mtx.mutex);
+-	ww_acquire_fini(&ctx);
++	if (flags & TEST_MTX_CTX)
++		ww_acquire_fini(&ctx);
+=20
+ 	if (ret) {
+ 		pr_err("%s(flags=3D%x): mutual exclusion failure\n",
+@@ -679,7 +681,7 @@ static int __init test_ww_mutex_init(void)
+ 	if (ret)
+ 		return ret;
+=20
+-	ret =3D stress(2047, hweight32(STRESS_ALL)*ncpus, STRESS_ALL);
++	ret =3D stress(2046, hweight32(STRESS_ALL)*ncpus, STRESS_ALL);
+ 	if (ret)
+ 		return ret;
+=20
 
