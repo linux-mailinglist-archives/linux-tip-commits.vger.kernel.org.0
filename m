@@ -1,77 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-2406-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2405-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA9099C143
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Oct 2024 09:28:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE56499C141
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Oct 2024 09:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A02151F2397A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Oct 2024 07:28:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31BF91F238BF
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Oct 2024 07:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF29148833;
-	Mon, 14 Oct 2024 07:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C8B147C9B;
+	Mon, 14 Oct 2024 07:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4lQx7GdE";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eKX1kyXL"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fxor0nIa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bRVYJ6G+"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A7914830A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A2E1482E9;
 	Mon, 14 Oct 2024 07:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728890929; cv=none; b=cTR2Uw1/yRGcY4Knicu69c7FLwUeHa3bpqCQG9cuPpFSlfgFbsHDfqY0KvTInyXq1j3KOgK3EXMhj3fhoChWgYuK5luBZqJZqEWgNV+GvYrUc810TbRjx8BkrUZStpM5hVJTtGRvX9tNNqIkHiDL0nqsObdVvGSul30WXrJlnZE=
+	t=1728890928; cv=none; b=FV45O8ceFonBJsR2eDuQVfc7Yqcf7/R+VAd/afzJ4Kl/PCct2fxgNJqFvjTYmqMRufMXCMs37lhKtglnDPJNmPT7jkFMmreQztn0D3ZQKIzLNdHCtv38FpCZv5yoNEmEU3voWn5ciFtwIyXS08x7bE8xNNIdrSvRPsonVmBZkG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728890929; c=relaxed/simple;
-	bh=o9edveVwNe6IQQ4YcH86irGXfYoMvqmVH52UK3XBGfI=;
+	s=arc-20240116; t=1728890928; c=relaxed/simple;
+	bh=rdWpZ4poBoiNXQwfHj0uhNaG570pcSmLR5KAcW+JAk4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VrL0FjDDQ5C3mH+sXhTPI/p2m0xVeHYHuplx1uF0DLZ3tOiCnf8gd1mhAv5WKWM0l8X0FavxTBU6/kGUu6yfyz8kaenqazJQHSOCv9NHB+YjMbaTzvVoJqRDXGm/aJdK+oosY2GBXYNaIWHlvm4Qafrmcby1Kdpel0gpi3ZkXUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4lQx7GdE; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eKX1kyXL; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=jLNBc5DTtm5td8XGgVSsWaZRlyrzWxYMkQ9uFJYSS5BNgg/m+nsydGLqL6TCmmgutD6T6C7esNHr/d2LB6X/FfJcCArTTueWoJZRE+g6Nj/Xm/5Sl5mF0fQ57Di4vsiEYGYpK0g2he8rwMMcSA/X9cCnHu3KUMYGm8YVCK8UQVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fxor0nIa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bRVYJ6G+; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 14 Oct 2024 07:28:43 -0000
+Date: Mon, 14 Oct 2024 07:28:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728890924;
+	s=2020; t=1728890925;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nkRToY+k04xXFkwWQ/SfVA6D9ssh9EPt4TbqptN0ZQs=;
-	b=4lQx7GdE54Oy/4lqVeIw4a/OADeCahN2JKwJWTWkrK7yqCCEFRzG55P0Cr59jsdLVh0H8K
-	I8x9S+gENjpXgRZGhbUD6GE2RURB+I3TRaIyMdUN/Wfnq4Dqlyg24k3QEhxtJQd8VNl20M
-	fsb3T+t3bchCYpeDCPg7m2NtgcuutlxTN/yNoaoGy9AJTgaWGZ3QwaikUz/aP6zToQjAVX
-	jhapClPQjhOWYjaSjBAEv62XG6gqHrM8sCB1uBwzrEU3oZ9Am8JgKWogaDkkZ1tg54xH9l
-	CHzuc5D6Zd9NTcI9UufzEErXFfUXS1DePuGOAPqkhAMtYoTIKrzPahgb7y8PWg==
+	bh=Oo+8SAORv6osZ/3BcFWFI6k3e8aajXQJPvY8ZoubVOk=;
+	b=fxor0nIa0gJFQHOMoecLOr2EwvjMpE9j66gAJL97wbmLADSinat5h68WispYrcteSf9kUI
+	EcZAY+BoxLzOwvrCA+wOCrPyKwZnxMEPhsPS9GgsxZd9p5C+ol/AnZbk5/X6PArTjyMIEb
+	EFgfA22G9t+lEtVl7togUiKOpX0Nx67kfqc9Nd5S+UljqGRRlYI6cCfuvnHxt4x1KL5rJB
+	AqcwgSx1QgGU/atRIPJ6iDdBTydJrjnf/GNg1/REcHuF2o4XZ5aMFi9VZgwDZrYrloB6Uh
+	YN+q+Igv9RXrIGUpqpTIVR6R8tQCXnzwQshk3y6rrFhvvqJp7hqbrY+CkdaAZg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728890924;
+	s=2020e; t=1728890925;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nkRToY+k04xXFkwWQ/SfVA6D9ssh9EPt4TbqptN0ZQs=;
-	b=eKX1kyXLTrQksz3i2pxiGK9eR+Cw493kLhpY5TM4/VrZwTlbU/sDJoLDQMOcp7EUeiGX00
-	f3bPm99UCs9mVqDQ==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+	bh=Oo+8SAORv6osZ/3BcFWFI6k3e8aajXQJPvY8ZoubVOk=;
+	b=bRVYJ6G+ckXKh2hWB0az50/OI7UzGdq180m4Y9ItkWMjHjUNwLgq9Tfx6Q0X+EkigntsHR
+	4/aHmko4mHiTU6DA==
+From: "tip-bot2 for Johannes Weiner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Fix external p->on_rq users
-Cc: Sean Christopherson <seanjc@google.com>,
+Subject: [tip: sched/urgent] sched/psi: Fix mistaken CPU pressure indication
+ after corrupted task state bug
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241010091843.GK33184@noisy.programming.kicks-ass.net>
-References: <20241010091843.GK33184@noisy.programming.kicks-ass.net>
+ Ingo Molnar <mingo@kernel.org>, K Prateek Nayak <kprateek.nayak@amd.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241010193712.GC181795@cmpxchg.org>
+References: <20241010193712.GC181795@cmpxchg.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172889092385.1442.13511131954955317922.tip-bot2@tip-bot2>
+Message-ID: <172889092458.1442.11890344300997783512.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,182 +83,179 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     cd9626e9ebc77edec33023fe95dab4b04ffc819d
-Gitweb:        https://git.kernel.org/tip/cd9626e9ebc77edec33023fe95dab4b04ffc819d
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 10 Oct 2024 11:38:10 +02:00
+Commit-ID:     c6508124193d42bbc3224571eb75bfa4c1821fbb
+Gitweb:        https://git.kernel.org/tip/c6508124193d42bbc3224571eb75bfa4c1821fbb
+Author:        Johannes Weiner <hannes@cmpxchg.org>
+AuthorDate:    Fri, 11 Oct 2024 10:49:33 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 14 Oct 2024 09:14:35 +02:00
+CommitterDate: Mon, 14 Oct 2024 09:11:42 +02:00
 
-sched/fair: Fix external p->on_rq users
+sched/psi: Fix mistaken CPU pressure indication after corrupted task state bug
 
-Sean noted that ever since commit 152e11f6df29 ("sched/fair: Implement
-delayed dequeue") KVM's preemption notifiers have started
-mis-classifying preemption vs blocking.
+Since sched_delayed tasks remain queued even after blocking, the load
+balancer can migrate them between runqueues while PSI considers them
+to be asleep. As a result, it misreads the migration requeue followed
+by a wakeup as a double queue:
 
-Notably p->on_rq is no longer sufficient to determine if a task is
-runnable or blocked -- the aforementioned commit introduces tasks that
-remain on the runqueue even through they will not run again, and
-should be considered blocked for many cases.
+  psi: inconsistent task state! task=... cpu=... psi_flags=4 clear=. set=4
 
-Add the task_is_runnable() helper to classify things and audit all
-external users of the p->on_rq state. Also add a few comments.
+First, call psi_enqueue() after p->sched_class->enqueue_task(). A
+wakeup will clear p->se.sched_delayed while a migration will not, so
+psi can use that flag to tell them apart.
 
+Then teach psi to migrate any "sleep" state when delayed-dequeue tasks
+are being migrated.
+
+Delayed-dequeue tasks can be revived by ttwu_runnable(), which will
+call down with a new ENQUEUE_DELAYED. Instead of further complicating
+the wakeup conditional in enqueue_task(), identify migration contexts
+instead and default to wakeup handling for all other cases.
+
+It's not just the warning in dmesg, the task state corruption causes a
+permanent CPU pressure indication, which messes with workload/machine
+health monitoring.
+
+Debugged-by-and-original-fix-by: K Prateek Nayak <kprateek.nayak@amd.com>
 Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue")
-Reported-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Sean Christopherson <seanjc@google.com>
+Closes: https://lore.kernel.org/lkml/20240830123458.3557-1-spasswolf@web.de/
+Closes: https://lore.kernel.org/all/cd67fbcd-d659-4822-bb90-7e8fbb40a856@molgen.mpg.de/
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20241010091843.GK33184@noisy.programming.kicks-ass.net
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Link: https://lkml.kernel.org/r/20241010193712.GC181795@cmpxchg.org
 ---
- include/linux/sched.h         |  5 +++++
- kernel/events/core.c          |  2 +-
- kernel/freezer.c              |  7 ++++++-
- kernel/rcu/tasks.h            |  9 +++++++++
- kernel/sched/core.c           | 12 +++++++++---
- kernel/time/tick-sched.c      |  6 ++++++
- kernel/trace/trace_selftest.c |  2 +-
- virt/kvm/kvm_main.c           |  2 +-
- 8 files changed, 38 insertions(+), 7 deletions(-)
+ kernel/sched/core.c  | 12 +++++------
+ kernel/sched/stats.h | 48 +++++++++++++++++++++++++++++--------------
+ 2 files changed, 39 insertions(+), 21 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index e6ee425..8a9517e 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2133,6 +2133,11 @@ static inline void set_task_cpu(struct task_struct *p, unsigned int cpu)
- 
- #endif /* CONFIG_SMP */
- 
-+static inline bool task_is_runnable(struct task_struct *p)
-+{
-+	return p->on_rq && !p->se.sched_delayed;
-+}
-+
- extern bool sched_task_on_rq(struct task_struct *p);
- extern unsigned long get_wchan(struct task_struct *p);
- extern struct task_struct *cpu_curr_snapshot(int cpu);
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index e3589c4..cdd0976 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9251,7 +9251,7 @@ static void perf_event_switch(struct task_struct *task,
- 		},
- 	};
- 
--	if (!sched_in && task->on_rq) {
-+	if (!sched_in && task_is_runnable(task)) {
- 		switch_event.event_id.header.misc |=
- 				PERF_RECORD_MISC_SWITCH_OUT_PREEMPT;
- 	}
-diff --git a/kernel/freezer.c b/kernel/freezer.c
-index 44bbd7d..8d530d0 100644
---- a/kernel/freezer.c
-+++ b/kernel/freezer.c
-@@ -109,7 +109,12 @@ static int __set_task_frozen(struct task_struct *p, void *arg)
- {
- 	unsigned int state = READ_ONCE(p->__state);
- 
--	if (p->on_rq)
-+	/*
-+	 * Allow freezing the sched_delayed tasks; they will not execute until
-+	 * ttwu() fixes them up, so it is safe to swap their state now, instead
-+	 * of waiting for them to get fully dequeued.
-+	 */
-+	if (task_is_runnable(p))
- 		return 0;
- 
- 	if (p != current && task_curr(p))
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 6333f4c..4d7ee95 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -986,6 +986,15 @@ static bool rcu_tasks_is_holdout(struct task_struct *t)
- 		return false;
- 
- 	/*
-+	 * t->on_rq && !t->se.sched_delayed *could* be considered sleeping but
-+	 * since it is a spurious state (it will transition into the
-+	 * traditional blocked state or get woken up without outside
-+	 * dependencies), not considering it such should only affect timing.
-+	 *
-+	 * Be conservative for now and not include it.
-+	 */
-+
-+	/*
- 	 * Idle tasks (or idle injection) within the idle loop are RCU-tasks
- 	 * quiescent states. But CPU boot code performed by the idle task
- 	 * isn't a quiescent state.
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 71232f8..7db711b 100644
+index 9e09140..71232f8 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -548,6 +548,11 @@ sched_core_dequeue(struct rq *rq, struct task_struct *p, int flags) { }
-  *   ON_RQ_MIGRATING state is used for migration without holding both
-  *   rq->locks. It indicates task_cpu() is not stable, see task_rq_lock().
-  *
-+ *   Additionally it is possible to be ->on_rq but still be considered not
-+ *   runnable when p->se.sched_delayed is true. These tasks are on the runqueue
-+ *   but will be dequeued as soon as they get picked again. See the
-+ *   task_is_runnable() helper.
-+ *
-  * p->on_cpu <- { 0, 1 }:
-  *
-  *   is set by prepare_task() and cleared by finish_task() such that it will be
-@@ -4317,9 +4322,10 @@ static bool __task_needs_rq_lock(struct task_struct *p)
-  * @arg: Argument to function.
-  *
-  * Fix the task in it's current state by avoiding wakeups and or rq operations
-- * and call @func(@arg) on it.  This function can use ->on_rq and task_curr()
-- * to work out what the state is, if required.  Given that @func can be invoked
-- * with a runqueue lock held, it had better be quite lightweight.
-+ * and call @func(@arg) on it.  This function can use task_is_runnable() and
-+ * task_curr() to work out what the state is, if required.  Given that @func
-+ * can be invoked with a runqueue lock held, it had better be quite
-+ * lightweight.
-  *
-  * Returns:
-  *   Whatever @func returns
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 753a184..f203f00 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -434,6 +434,12 @@ static void tick_nohz_kick_task(struct task_struct *tsk)
- 	 *   smp_mb__after_spin_lock()
- 	 *   tick_nohz_task_switch()
- 	 *     LOAD p->tick_dep_mask
-+	 *
-+	 * XXX given a task picks up the dependency on schedule(), should we
-+	 * only care about tasks that are currently on the CPU instead of all
-+	 * that are on the runqueue?
-+	 *
-+	 * That is, does this want to be: task_on_cpu() / task_curr()?
+@@ -2012,11 +2012,6 @@ void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
+ 	if (!(flags & ENQUEUE_NOCLOCK))
+ 		update_rq_clock(rq);
+ 
+-	if (!(flags & ENQUEUE_RESTORE)) {
+-		sched_info_enqueue(rq, p);
+-		psi_enqueue(p, (flags & ENQUEUE_WAKEUP) && !(flags & ENQUEUE_MIGRATED));
+-	}
+-
+ 	p->sched_class->enqueue_task(rq, p, flags);
+ 	/*
+ 	 * Must be after ->enqueue_task() because ENQUEUE_DELAYED can clear
+@@ -2024,6 +2019,11 @@ void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
  	 */
- 	if (!sched_task_on_rq(tsk))
- 		return;
-diff --git a/kernel/trace/trace_selftest.c b/kernel/trace/trace_selftest.c
-index c4ad7cd..1469dd8 100644
---- a/kernel/trace/trace_selftest.c
-+++ b/kernel/trace/trace_selftest.c
-@@ -1485,7 +1485,7 @@ trace_selftest_startup_wakeup(struct tracer *trace, struct trace_array *tr)
- 	/* reset the max latency */
- 	tr->max_latency = 0;
+ 	uclamp_rq_inc(rq, p);
  
--	while (p->on_rq) {
-+	while (task_is_runnable(p)) {
- 		/*
- 		 * Sleep to make sure the -deadline thread is asleep too.
- 		 * On virtual machines we can't rely on timings,
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 05cbb25..0c666f1 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -6387,7 +6387,7 @@ static void kvm_sched_out(struct preempt_notifier *pn,
++	if (!(flags & ENQUEUE_RESTORE)) {
++		sched_info_enqueue(rq, p);
++		psi_enqueue(p, flags & ENQUEUE_MIGRATED);
++	}
++
+ 	if (sched_core_enabled(rq))
+ 		sched_core_enqueue(rq, p);
+ }
+@@ -2041,7 +2041,7 @@ inline bool dequeue_task(struct rq *rq, struct task_struct *p, int flags)
  
- 	WRITE_ONCE(vcpu->scheduled_out, true);
- 
--	if (current->on_rq && vcpu->wants_to_run) {
-+	if (task_is_runnable(current) && vcpu->wants_to_run) {
- 		WRITE_ONCE(vcpu->preempted, true);
- 		WRITE_ONCE(vcpu->ready, true);
+ 	if (!(flags & DEQUEUE_SAVE)) {
+ 		sched_info_dequeue(rq, p);
+-		psi_dequeue(p, flags & DEQUEUE_SLEEP);
++		psi_dequeue(p, !(flags & DEQUEUE_SLEEP));
  	}
+ 
+ 	/*
+diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
+index 237780a..767e098 100644
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -119,45 +119,63 @@ static inline void psi_account_irqtime(struct rq *rq, struct task_struct *curr,
+ /*
+  * PSI tracks state that persists across sleeps, such as iowaits and
+  * memory stalls. As a result, it has to distinguish between sleeps,
+- * where a task's runnable state changes, and requeues, where a task
+- * and its state are being moved between CPUs and runqueues.
++ * where a task's runnable state changes, and migrations, where a task
++ * and its runnable state are being moved between CPUs and runqueues.
++ *
++ * A notable case is a task whose dequeue is delayed. PSI considers
++ * those sleeping, but because they are still on the runqueue they can
++ * go through migration requeues. In this case, *sleeping* states need
++ * to be transferred.
+  */
+-static inline void psi_enqueue(struct task_struct *p, bool wakeup)
++static inline void psi_enqueue(struct task_struct *p, bool migrate)
+ {
+-	int clear = 0, set = TSK_RUNNING;
++	int clear = 0, set = 0;
+ 
+ 	if (static_branch_likely(&psi_disabled))
+ 		return;
+ 
+-	if (p->in_memstall)
+-		set |= TSK_MEMSTALL_RUNNING;
+-
+-	if (!wakeup) {
++	if (p->se.sched_delayed) {
++		/* CPU migration of "sleeping" task */
++		SCHED_WARN_ON(!migrate);
+ 		if (p->in_memstall)
+ 			set |= TSK_MEMSTALL;
++		if (p->in_iowait)
++			set |= TSK_IOWAIT;
++	} else if (migrate) {
++		/* CPU migration of runnable task */
++		set = TSK_RUNNING;
++		if (p->in_memstall)
++			set |= TSK_MEMSTALL | TSK_MEMSTALL_RUNNING;
+ 	} else {
++		/* Wakeup of new or sleeping task */
+ 		if (p->in_iowait)
+ 			clear |= TSK_IOWAIT;
++		set = TSK_RUNNING;
++		if (p->in_memstall)
++			set |= TSK_MEMSTALL_RUNNING;
+ 	}
+ 
+ 	psi_task_change(p, clear, set);
+ }
+ 
+-static inline void psi_dequeue(struct task_struct *p, bool sleep)
++static inline void psi_dequeue(struct task_struct *p, bool migrate)
+ {
+ 	if (static_branch_likely(&psi_disabled))
+ 		return;
+ 
+ 	/*
++	 * When migrating a task to another CPU, clear all psi
++	 * state. The enqueue callback above will work it out.
++	 */
++	if (migrate)
++		psi_task_change(p, p->psi_flags, 0);
++
++	/*
+ 	 * A voluntary sleep is a dequeue followed by a task switch. To
+ 	 * avoid walking all ancestors twice, psi_task_switch() handles
+ 	 * TSK_RUNNING and TSK_IOWAIT for us when it moves TSK_ONCPU.
+ 	 * Do nothing here.
+ 	 */
+-	if (sleep)
+-		return;
+-
+-	psi_task_change(p, p->psi_flags, 0);
+ }
+ 
+ static inline void psi_ttwu_dequeue(struct task_struct *p)
+@@ -190,8 +208,8 @@ static inline void psi_sched_switch(struct task_struct *prev,
+ }
+ 
+ #else /* CONFIG_PSI */
+-static inline void psi_enqueue(struct task_struct *p, bool wakeup) {}
+-static inline void psi_dequeue(struct task_struct *p, bool sleep) {}
++static inline void psi_enqueue(struct task_struct *p, bool migrate) {}
++static inline void psi_dequeue(struct task_struct *p, bool migrate) {}
+ static inline void psi_ttwu_dequeue(struct task_struct *p) {}
+ static inline void psi_sched_switch(struct task_struct *prev,
+ 				    struct task_struct *next,
 
