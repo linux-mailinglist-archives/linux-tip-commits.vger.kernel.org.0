@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-2441-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2440-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CC299F226
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 17:59:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C27999F222
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 17:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3891F1F230BC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 15:59:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E01EBB2269A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 15:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C654C1F76DE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD231F76C2;
 	Tue, 15 Oct 2024 15:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="l2nPZyW8";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AMq+7YSD"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E1Gw3woC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hMq8ALNo"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4305C1F669E;
-	Tue, 15 Oct 2024 15:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B12F1F6681;
+	Tue, 15 Oct 2024 15:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729007883; cv=none; b=eRARDdra0FNyYzprDTU5p+WV6rVahqjx/gVw4JCY8EFks8Yh/cDNPa6Zv+1z8AF3e3UFTT8JY+eb3zPPF9dfyyiyk76k8WABF8cM0wEtzg96RAprt7PacrQxxpJVWGPzOVQwVymEiExXxBYtqhdIvjZmcDEIJdXPgTyGZFVDfYA=
+	t=1729007883; cv=none; b=BLv0HikdKUqsv0JuzrZELObt4zxk2WBe5Ph+/VOP0eOMuqP3TcKaB7jFRhQMPzz7MmoG9sWcVLMpDmG1dppRy+xZEozmb14QAOrqx5BapEXMfSWQPM0cKu8YlN0OTbIIsUPehjWs/RBtHC+XloZ2umSuFBazF87+okM+FPB+1ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729007883; c=relaxed/simple;
-	bh=ymK2HJjNybOgqopwdufoTdOfGygtGoM6A7L//5gjVKs=;
+	bh=O367Kz30znmQmgJkGmtmUTvCJA70lRJhasz6yVc2RQE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=uulmlh+ZN958R6U/8pCAVJ0XTMLkwv/2yuxa45QiimES1y1csNu9SjsBX6rRaemyxmbUPjsa78NONvimIbruTJOUQJQEkS1R61g0PpgJYTdJwJvvDNOmtwHNWoeJrOg9y6w5n+hL7ELjdtHMV2C/5kQMZmCGxRHQd8XeZ151yJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=l2nPZyW8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AMq+7YSD; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=J+pi0Gz6OwORP1R4rVrHM4TOtIg6mjNqX1dm3sUUS993+yzJjLfugSaMA0Vw41QjVf0Ii83Fm7jtcEa81PfL0XhYUTm89mUSDOMs+BL95DOW1IPK8fIPe5xhv0Yk5sjNMr1in1lOUb7BjHMt7VIjBuC7WwpXlxu2wd3IEU3BmdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E1Gw3woC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hMq8ALNo; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 15 Oct 2024 15:57:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729007881;
+	s=2020; t=1729007880;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fHHXyn/jWI3YSJX+MuB14rlsymWyGnorFsF1tkl75Fs=;
-	b=l2nPZyW86IoWAllbktwDIWgR/hNlurrREaV1UCHt1Y9H/6IBvpU9agvvXYtuohiShWwwhC
-	2/WR5d8PjS8V7v0v7GOsdVEDhp5VzbCProkMLuvyTks0uKRm99ynHfiCqr6WGxYAo3M63t
-	v8e6H8Mu02heNJiS36LPcPyAS1upOo6r9JjhnB/vbQnn/gZbtat0bWjECpdVWNQMxZHR70
-	jVIVDtX9RbxOKtpY76Etn3VPr+IRNZZG0GHZ0MGrKOEkVHMIiSBmlHLZYE8OJlvDx5vip8
-	X1PL8aXphOZrzWdp5+79aEe/1Z4KBJwDS+8YI0iojobLuQWhDtcDGXqfjdK/iw==
+	bh=iISszkvY6EzQUTy0I8rK0BEue6SdzjI9sm5Wro/uvW8=;
+	b=E1Gw3woCnZUPyJqpzRoTBMOYeSViTbHSaZslh2WKRfHnf1jhCtpxy63Yc72TACq/g89MVb
+	BMIMJRywsME7oV4UVuofW7IJU/yBF4CfV772mL6LPeWVyu44kjAokYHAZX+BumChFOwaM1
+	7NgRGthscr7RAe53ZIroZYtRZFvD0Y7hn9+EhddMQZt7pQhWEaO4kFtWYB0kBvp24BFcSZ
+	CALd23FQYsCfUuUZiXrNe0qSELOoJkM71Y6mCLnugTQHxIcINjrjFeDffi3PrNOLy8Zklw
+	OUcaODa+NbhwCUgyOVhWW2dwQLy7MfumrYZ9Ggk88wGlkeQro5MRFz7RoS/nVQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729007881;
+	s=2020e; t=1729007880;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fHHXyn/jWI3YSJX+MuB14rlsymWyGnorFsF1tkl75Fs=;
-	b=AMq+7YSDNn09nCtN3nYm8pIJXsh6sX/8dhaz69oYSoguHTOLZsk1vcH/gnd2zXKlLvcvrE
-	XFuVqrZKr9jP4YDA==
+	bh=iISszkvY6EzQUTy0I8rK0BEue6SdzjI9sm5Wro/uvW8=;
+	b=hMq8ALNoAnySQc2xQqElppDoD0xJBwGWpx4zPbaZVAxlGoubBZf7G+rLYHVF1hnXlxzrAE
+	2ZTp5nclCfsejrAg==
 From:
  tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/vdso] arm: vdso: Remove timekeeper includes
+Subject: [tip: timers/vdso] arm64: vdso: Remove timekeeper include
 Cc: thomas.weissschuh@linutronix.de, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+ Will Deacon <will@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
 In-Reply-To:
- <20241010-vdso-generic-arch_update_vsyscall-v1-2-7fe5a3ea4382@linutronix.de>
+ <20241010-vdso-generic-arch_update_vsyscall-v1-3-7fe5a3ea4382@linutronix.de>
 References:
- <20241010-vdso-generic-arch_update_vsyscall-v1-2-7fe5a3ea4382@linutronix.de>
+ <20241010-vdso-generic-arch_update_vsyscall-v1-3-7fe5a3ea4382@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172900787998.1442.17495041583304865480.tip-bot2@tip-bot2>
+Message-ID: <172900787937.1442.4471012513191531082.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,66 +83,39 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the timers/vdso branch of tip:
 
-Commit-ID:     d2caf94c0a94e32a0beb56beacaf380ad33124fb
-Gitweb:        https://git.kernel.org/tip/d2caf94c0a94e32a0beb56beacaf380ad33=
-124fb
+Commit-ID:     8603652569f9c10744f204466dcf527653591d1b
+Gitweb:        https://git.kernel.org/tip/8603652569f9c10744f204466dcf5276535=
+91d1b
 Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-AuthorDate:    Thu, 10 Oct 2024 17:44:45 +02:00
+AuthorDate:    Thu, 10 Oct 2024 17:44:46 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 15 Oct 2024 17:50:29 +02:00
 
-arm: vdso: Remove timekeeper includes
+arm64: vdso: Remove timekeeper include
 
 Since the generic VDSO clock mode storage is used, this header file is
 unused and can be removed.
 
-This avoids including a non-VDSO header while building the VDSO,
-which can lead to compilation errors.
-
-Also drop the comment which is out of date and in the wrong place.
-
 Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Will Deacon <will@kernel.org>
 Link: https://lore.kernel.org/all/20241010-vdso-generic-arch_update_vsyscall-=
-v1-2-7fe5a3ea4382@linutronix.de
+v1-3-7fe5a3ea4382@linutronix.de
 
 ---
- arch/arm/include/asm/vdso/vsyscall.h | 4 ----
- arch/arm/kernel/vdso.c               | 1 -
- 2 files changed, 5 deletions(-)
+ arch/arm64/kernel/vdso.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/vdso/vsyscall.h b/arch/arm/include/asm/vdso=
-/vsyscall.h
-index 47e41ae..7054147 100644
---- a/arch/arm/include/asm/vdso/vsyscall.h
-+++ b/arch/arm/include/asm/vdso/vsyscall.h
-@@ -4,16 +4,12 @@
-=20
- #ifndef __ASSEMBLY__
-=20
--#include <linux/timekeeper_internal.h>
- #include <vdso/datapage.h>
- #include <asm/cacheflush.h>
-=20
- extern struct vdso_data *vdso_data;
- extern bool cntvct_ok;
-=20
--/*
-- * Update the vDSO data page to keep in sync with kernel timekeeping.
-- */
- static __always_inline
- struct vdso_data *__arm_get_k_vdso_data(void)
- {
-diff --git a/arch/arm/kernel/vdso.c b/arch/arm/kernel/vdso.c
-index d499ad4..29dd2f3 100644
---- a/arch/arm/kernel/vdso.c
-+++ b/arch/arm/kernel/vdso.c
-@@ -14,7 +14,6 @@
- #include <linux/of.h>
- #include <linux/printk.h>
+diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
+index 706c9c3..8ef20c1 100644
+--- a/arch/arm64/kernel/vdso.c
++++ b/arch/arm64/kernel/vdso.c
+@@ -19,7 +19,6 @@
+ #include <linux/signal.h>
  #include <linux/slab.h>
+ #include <linux/time_namespace.h>
 -#include <linux/timekeeper_internal.h>
  #include <linux/vmalloc.h>
- #include <asm/arch_timer.h>
- #include <asm/barrier.h>
+ #include <vdso/datapage.h>
+ #include <vdso/helpers.h>
 
