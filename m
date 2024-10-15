@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-2428-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2430-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE5C99F185
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 17:39:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7910399F189
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 17:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BAD51C21FA7
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 15:39:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A189C1C20AB6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 15:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B53227BB9;
-	Tue, 15 Oct 2024 15:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A542281ED;
+	Tue, 15 Oct 2024 15:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="td3Kn64w";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="niRDAUyM"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UYyDTvCD";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ePjsqV1N"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A8520822B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7411FC7DD;
 	Tue, 15 Oct 2024 15:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729006590; cv=none; b=ShP6x6xuEUEUbd+p1glUJ/QWFTh2fYKO8d7+EZ5xSkcTo0kzuE9qqRErKTT3VLHglJ1Jl3yBTnAxtcZ/tUS/U+x/8FXdeXR5VsqHVN+orAw4TLzXlfbKX21HuEpyti9GILxEoC4NDpB8Bdd3VX3vr6aJzrb7S4SX1/xap2a+fbM=
+	t=1729006591; cv=none; b=BYF9wkxvJPp0SK1rYUXpgXvaXyOrRCG8PNRP5jPqBr7SJcBvl2t7PfJiXdixNqHtIRy0kzxUT5tg3p8p46SHexwY+e9A1L/ifNezKiXS+Blxp+FfruVzbZlCR5eHZEAF4e7PZaTUFukCF3nwSwOn+/H/s0suPPt7UnLv+lgXCGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729006590; c=relaxed/simple;
-	bh=MZFaRqloixscVLrvJm1KgbyFVgtR49u5AxMb/GmNlu8=;
+	s=arc-20240116; t=1729006591; c=relaxed/simple;
+	bh=28JF6r7TSR77n/aEQodJQXU0SAXd3J8s4EkNEQhwaFM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=jGehAvWMzMDF/1iRVd5+E6Q0Fxq6Kyo6k2xqQKcSpbiyY5GPa0K1zjyBA3J8g5ijGWgtivWF/w1wu3eF8c3KIpUfNpNvemqQgmac4zN7IkMdRIYeZImzal6quTOvqcgDJxcwYghSU5DPO4xxt/nhrrO3wI0D1g0eyh/cWGx17vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=td3Kn64w; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=niRDAUyM; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Jl/tZo4TkgxrQzNHVft1WMT/DINzR5tGdUiq9C2cgJP/ajI+4EFiGs0q9i1HAgw+ETckOjq04mR9irv0j24aEJVaemWoOZX0yW1bKkNFhAxgllJGOPABHSvdbSt9AE+MrwutGYRZLQklkyrkmckYfe48F627yg5pADYWcrt+6Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UYyDTvCD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ePjsqV1N; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 15 Oct 2024 15:36:26 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=csRrlzqAW/++i+GDHnLRV2kDOkMDpUefeQUIzRu//eM=;
-	b=td3Kn64wRWMmJ+JgdvwrIh/3LyXpW6iC2WAbsLCsjMBxMk7HR7b1bBQ4u5BAnMavyWa5aZ
-	NaSrJAMRrUk56eHJ6+VAbs8g4fdriSPbZADB0TJpBrmtMRZIcXdarNyBXTYh9jiRoelXnw
-	9syjGKPieE4mfvP4Jg8IbHuCo48sxc4J2Vejnx3mpSwBggVamO00pLr8a1mE3OQ2pi7ezL
-	b9LWQnJwhseN85c+13WozCfYsiuS045svZF2JUfpH2uTyZ2V/cBTfOsoTC/dwvKUqBvQ+b
-	8UT4WP5RcBggxN0E6ihsE8IiM0LXCWHApnxMwHVI9N1/jszEEkRIzMlcM8sIQQ==
+	bh=zkEmYBMnycO82SxH6a6vU8FrDeyI0Et5+8u/KooIbpo=;
+	b=UYyDTvCDFPKeK95MWIfvXWXrLMrg2mi2dmglW4nSKKUPtTdDUvvz5bxpWbUgCP4gf60zFx
+	H0RQdiM7PIxpissxFjIqomBj119/xnnq0KlnyNEbTC2D58fkem/70y6ra5q3kObWwxVWwK
+	YOGAHJ7KlYcE8YjlLU8b9QA5KnktfXGf4jymqVUIyWULzpW8p04tkktkxC0AaRbyyPMLyG
+	lGHtmqrhyLwl1Av+EskgNnluLu8wVeZZApyIGDYrIWfl/5I+JN/7odwuql1EPBJ6urXbOJ
+	OsY2iBhhg4OcRAwPBUhNKuHuUcIiNztgWQd+6j6B9BxJrJ7Hs0POw0pg4IMN4g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1729006587;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,27 +52,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=csRrlzqAW/++i+GDHnLRV2kDOkMDpUefeQUIzRu//eM=;
-	b=niRDAUyMPIfgiucMwZeqWcWLrFSVNVZmMl0ImXpihyobq+tyPAwvsB4923vf+1cP1L+pDl
-	gHRMJl7W3DOrSFDA==
+	bh=zkEmYBMnycO82SxH6a6vU8FrDeyI0Et5+8u/KooIbpo=;
+	b=ePjsqV1NxxxywkAloriZyPyDKJOiskh5RPEMdIjepcRIhohYj/M8feZhivP67whnf1INIS
+	XufC9xed1ssOk0CA==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: core/debugobjects] debugobjects: Dont free objects directly on
- CPU hotplug
+Subject: [tip: core/debugobjects] debugobjects: Reuse put_objects() on OOM
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  Zhen Lei <thunder.leizhen@huawei.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20241007164913.263960570@linutronix.de>
-References: <20241007164913.263960570@linutronix.de>
+In-Reply-To: <20241007164913.326834268@linutronix.de>
+References: <20241007164913.326834268@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172900658689.1442.6290973730707769095.tip-bot2@tip-bot2>
+Message-ID: <172900658629.1442.13518605210102205088.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,73 +81,80 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the core/debugobjects branch of tip:
 
-Commit-ID:     a2a702383e8baa22ee66ee60f1e036835a1ef42e
-Gitweb:        https://git.kernel.org/tip/a2a702383e8baa22ee66ee60f1e036835a1ef42e
+Commit-ID:     49968cf18154d6391e84c68520149232057ca62c
+Gitweb:        https://git.kernel.org/tip/49968cf18154d6391e84c68520149232057ca62c
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 07 Oct 2024 18:49:57 +02:00
+AuthorDate:    Mon, 07 Oct 2024 18:49:58 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 15 Oct 2024 17:30:30 +02:00
+CommitterDate: Tue, 15 Oct 2024 17:30:31 +02:00
 
-debugobjects: Dont free objects directly on CPU hotplug
+debugobjects: Reuse put_objects() on OOM
 
-Freeing the per CPU pool of the unplugged CPU directly is suboptimal as the
-objects can be reused in the real pool if there is room. Aside of that this
-gets the accounting wrong.
-
-Use the regular free path, which allows reuse and has the accounting correct.
+Reuse the helper function instead of having a open coded copy.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Zhen Lei <thunder.leizhen@huawei.com>
-Link: https://lore.kernel.org/all/20241007164913.263960570@linutronix.de
+Link: https://lore.kernel.org/all/20241007164913.326834268@linutronix.de
 
 ---
- lib/debugobjects.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ lib/debugobjects.c | 24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
 
 diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index 9867412..a3d4c54 100644
+index a3d4c54..2c866d0 100644
 --- a/lib/debugobjects.c
 +++ b/lib/debugobjects.c
-@@ -430,27 +430,28 @@ static void free_object(struct debug_obj *obj)
+@@ -429,7 +429,6 @@ static void free_object(struct debug_obj *obj)
+ 	}
  }
  
- #ifdef CONFIG_HOTPLUG_CPU
--static int object_cpu_offline(unsigned int cpu)
-+static void put_objects(struct hlist_head *list)
+-#ifdef CONFIG_HOTPLUG_CPU
+ static void put_objects(struct hlist_head *list)
  {
--	struct debug_percpu_free *percpu_pool;
  	struct hlist_node *tmp;
- 	struct debug_obj *obj;
--	unsigned long flags;
- 
--	/* Remote access is safe as the CPU is dead already */
--	percpu_pool = per_cpu_ptr(&percpu_obj_pool, cpu);
--	hlist_for_each_entry_safe(obj, tmp, &percpu_pool->free_objs, node) {
-+	/*
-+	 * Using free_object() puts the objects into reuse or schedules
-+	 * them for freeing and it get's all the accounting correct.
-+	 */
-+	hlist_for_each_entry_safe(obj, tmp, list, node) {
- 		hlist_del(&obj->node);
--		kmem_cache_free(obj_cache, obj);
-+		free_object(obj);
+@@ -445,6 +444,7 @@ static void put_objects(struct hlist_head *list)
  	}
-+}
+ }
  
--	raw_spin_lock_irqsave(&pool_lock, flags);
--	obj_pool_used -= percpu_pool->obj_free;
--	debug_objects_freed += percpu_pool->obj_free;
--	raw_spin_unlock_irqrestore(&pool_lock, flags);
--
--	percpu_pool->obj_free = 0;
-+static int object_cpu_offline(unsigned int cpu)
-+{
-+	/* Remote access is safe as the CPU is dead already */
-+	struct debug_percpu_free *pcp = per_cpu_ptr(&percpu_obj_pool, cpu);
- 
-+	put_objects(&pcp->free_objs);
-+	pcp->obj_free = 0;
- 	return 0;
++#ifdef CONFIG_HOTPLUG_CPU
+ static int object_cpu_offline(unsigned int cpu)
+ {
+ 	/* Remote access is safe as the CPU is dead already */
+@@ -456,31 +456,19 @@ static int object_cpu_offline(unsigned int cpu)
  }
  #endif
+ 
+-/*
+- * We run out of memory. That means we probably have tons of objects
+- * allocated.
+- */
++/* Out of memory. Free all objects from hash */
+ static void debug_objects_oom(void)
+ {
+ 	struct debug_bucket *db = obj_hash;
+-	struct hlist_node *tmp;
+ 	HLIST_HEAD(freelist);
+-	struct debug_obj *obj;
+-	unsigned long flags;
+-	int i;
+ 
+ 	pr_warn("Out of memory. ODEBUG disabled\n");
+ 
+-	for (i = 0; i < ODEBUG_HASH_SIZE; i++, db++) {
+-		raw_spin_lock_irqsave(&db->lock, flags);
+-		hlist_move_list(&db->list, &freelist);
+-		raw_spin_unlock_irqrestore(&db->lock, flags);
++	for (int i = 0; i < ODEBUG_HASH_SIZE; i++, db++) {
++		scoped_guard(raw_spinlock_irqsave, &db->lock)
++			hlist_move_list(&db->list, &freelist);
+ 
+-		/* Now free them */
+-		hlist_for_each_entry_safe(obj, tmp, &freelist, node) {
+-			hlist_del(&obj->node);
+-			free_object(obj);
+-		}
++		put_objects(&freelist);
+ 	}
+ }
+ 
 
