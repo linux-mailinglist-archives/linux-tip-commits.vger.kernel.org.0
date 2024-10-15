@@ -1,78 +1,74 @@
-Return-Path: <linux-tip-commits+bounces-2467-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2468-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA50B99FB98
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Oct 2024 00:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C87799FC4A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Oct 2024 01:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A325287760
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 22:43:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C575B28712C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 23:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1741FF029;
-	Tue, 15 Oct 2024 22:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA291F80B6;
+	Tue, 15 Oct 2024 23:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="x5VJ15Wv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Z7hkE1xB"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OgCYCei1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TlUIewWr"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D581FDFA0;
-	Tue, 15 Oct 2024 22:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98761D63EA;
+	Tue, 15 Oct 2024 23:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729032092; cv=none; b=KQ/cjyDdX2CZuT5nSWgQwC27UGuD9m6V1Yjd0ny9JwnGARmIQUJIMjL5WGwMz35sfwA8uKkaVO5FkTw/58PwZUeRnE5iD3iGq80b135mmAUkE5Ono3brcRoByORa/PL6fZnLkpMpSHJmOK33rGkSzHSzVDYmxvZ5sg6H7/Kqz9Q=
+	t=1729034262; cv=none; b=srwK77+lMcE6IgluBKa9LaI4zxHZ1ZzU2glHSbxghBels23aaz0Nt2XT07STAd6CPKXGHMhXW8NV0cjo24rVLvjHUfJOfFwR78d4XWw6l12amyJp8meGpAUmu6QEREwYGhBL5QMhwgu2IdG4nfxwl2+0XAUHq9HheNkQshibHpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729032092; c=relaxed/simple;
-	bh=oi45r7RDbVvy950VjEOBHhsGuAIpNfnKGbGEhC59dRI=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=m8PjgKE8CSu/tbn2AR8FVSDt5SleOmHc1c/xGQ4O+xFkdk6EqpHO4Th2L4n7PIEVBlP/gmNpKXUXqbMa9XQFb6ury7yr+F4Dbl6M6v7D6T7VjLpGaknonC3ZkV9qpf4O7j5xyuGFpnN2thoGWaFAQ9iwuIzhc75xpkAvX7TkNEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=x5VJ15Wv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Z7hkE1xB; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1729034262; c=relaxed/simple;
+	bh=93Qu79RPdzYWuS8VluUwYI+mQdW76BAI+YjRY05mE/s=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=T/mTDLisaypXhpT+ChCKAkZCDzgvxJsFj5Zsb6VnroFOo67iT7AZs6BSA1y9nR+AJD8x7DjhZObKa8USnWnWab1sybcUB1fT6Xcwm1q6pdOOJQJm6W3cWSrz0hw1N3csVBx6+5tQ17AYXsFgGFCnoW2p+ntHO0/yj/3jAk33ZJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OgCYCei1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TlUIewWr; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 15 Oct 2024 22:41:28 -0000
+Date: Tue, 15 Oct 2024 23:17:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729032088;
+	s=2020; t=1729034258;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZuyNZDzGrSrfg+Y8beCknm2ldT7YVd1H0qcwLg+VycY=;
-	b=x5VJ15WvJx3+1J9mRyCrxVFCJEATuxZuWO5DeJ8Hoyf2na8JaAdhys92p0Me5/7M1rJ7MA
-	Il1myulzMslYu8bQhlDq60HJBoEqOpwyJ9UJxCoMcTilkV86m4akJy4WJFYlYnYdm9Wk8s
-	9CEtn0RW5i51mutiKuBsBsUgnZ4FAzrp0a65cHUw3+F9/YfG/8reaxzCxr3kOVl7TfvXPf
-	OGYpGPgTEX05ppqX3hjyl0n88LXzFTZjEk8SoLhYhmRJwkIFleeP5lwG/tI+4Ghs9l4LiE
-	YK0V17TLYCnSs6Lta3m9EvVr4bmCG0Olcgpsi9tET315wIh8yOs8cqheFKr2jQ==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=eNy1vrS5muq8I9suz0muKX9xgO9wzg64nRRAc9865gY=;
+	b=OgCYCei1jCfw1xTKQT40QiX48LtJuBRjfFCCnVaugSrl3+t3Uabv/Vj9zqIoQF3cx2Gm6U
+	sMmK5G9HCqtXQyenUAc0yZoXSFp2Sah6pUm3RdyoKAIxa1b5Sa8xnaRY9znih57h4kwiV4
+	CNZkuzEmPMQ9wucwkFGn+7Kne08M7b944oV14NVl7GjGgbOYH1mQMhgCvyWyJ2j/7e/mdM
+	0uPTxD3FyXoXMlaeXLsTZKxUELBnx5+8Fm8rxXm89orud28lMAL/Catg58cA8eB6LzJlm8
+	L7aL2cm+fCmJRXvQhPGOb3QFcg+wXa2UKzih6wiVxSzE5lqzQdl5NY5qJ7t//g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729032088;
+	s=2020e; t=1729034258;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZuyNZDzGrSrfg+Y8beCknm2ldT7YVd1H0qcwLg+VycY=;
-	b=Z7hkE1xBAjHylP0S7elMkDi3o860H+Tbx01nXN5RTEnmao3e2fxhDDP4vwt+urzXQCrPVk
-	2GV9LXX787ZKQ4Ag==
-From: "tip-bot2 for Wang Jinchao" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=eNy1vrS5muq8I9suz0muKX9xgO9wzg64nRRAc9865gY=;
+	b=TlUIewWr1B1CW7imp63X8bIGentD8gndlb1ywct3KyoQLZ2tIKLWChyDjXZ8FLfQwDy+bS
+	lSoDk/cdSM0ohwBQ==
+From: "tip-bot2 for Zhang Rui" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] time: Remove '%' from numeric constant in
- kernel-doc comment
-Cc: Wang Jinchao <wangjinchao@xfusion.com>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject:
+ [tip: x86/urgent] x86/apic: Always explicitly disarm TSC-deadline timer
+Cc: Dave Hansen <dave.hansen@intel.com>, Zhang Rui <rui.zhang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Todd Brandt <todd.e.brandt@intel.com>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20241009022135.92400-2-wangjinchao@xfusion.com>
-References: <20241009022135.92400-2-wangjinchao@xfusion.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172903208822.1442.229181676984989871.tip-bot2@tip-bot2>
+Message-ID: <172903425753.1442.3391146920591310820.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,101 +76,80 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     a849881a9e5426cb4fa00660529bc501718ef85b
-Gitweb:        https://git.kernel.org/tip/a849881a9e5426cb4fa00660529bc501718ef85b
-Author:        Wang Jinchao <wangjinchao@xfusion.com>
-AuthorDate:    Wed, 09 Oct 2024 10:21:35 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 16 Oct 2024 00:30:26 +02:00
+Commit-ID:     ffd95846c6ec6cf1f93da411ea10d504036cab42
+Gitweb:        https://git.kernel.org/tip/ffd95846c6ec6cf1f93da411ea10d504036cab42
+Author:        Zhang Rui <rui.zhang@intel.com>
+AuthorDate:    Tue, 15 Oct 2024 14:15:22 +08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 15 Oct 2024 05:45:18 -07:00
 
-time: Remove '%' from numeric constant in kernel-doc comment
+x86/apic: Always explicitly disarm TSC-deadline timer
 
-Change %0 to 0 in kernel-doc comments. %0 is not valid.
+New processors have become pickier about the local APIC timer state
+before entering low power modes. These low power modes are used (for
+example) when you close your laptop lid and suspend. If you put your
+laptop in a bag and it is not in this low power mode, it is likely
+to get quite toasty while it quickly sucks the battery dry.
 
-Signed-off-by: Wang Jinchao <wangjinchao@xfusion.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241009022135.92400-2-wangjinchao@xfusion.com
+The problem boils down to some CPUs' inability to power down until the
+CPU recognizes that the local APIC timer is shut down. The current
+kernel code works in one-shot and periodic modes but does not work for
+deadline mode. Deadline mode has been the supported and preferred mode
+on Intel CPUs for over a decade and uses an MSR to drive the timer
+instead of an APIC register.
 
+Disable the TSC Deadline timer in lapic_timer_shutdown() by writing to
+MSR_IA32_TSC_DEADLINE when in TSC-deadline mode. Also avoid writing
+to the initial-count register (APIC_TMICT) which is ignored in
+TSC-deadline mode.
+
+Note: The APIC_LVTT|=APIC_LVT_MASKED operation should theoretically be
+enough to tell the hardware that the timer will not fire in any of the
+timer modes. But mitigating AMD erratum 411[1] also requires clearing
+out APIC_TMICT. Solely setting APIC_LVT_MASKED is also ineffective in
+practice on Intel Lunar Lake systems, which is the motivation for this
+change.
+
+1. 411 Processor May Exit Message-Triggered C1E State Without an Interrupt if Local APIC Timer Reaches Zero - https://www.amd.com/content/dam/amd/en/documents/archived-tech-docs/revision-guides/41322_10h_Rev_Gd.pdf
+
+Fixes: 279f1461432c ("x86: apic: Use tsc deadline for oneshot when available")
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Tested-by: Todd Brandt <todd.e.brandt@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241015061522.25288-1-rui.zhang%40intel.com
 ---
- kernel/time/time.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/x86/kernel/apic/apic.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index 642647f..5984d4a 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -866,7 +866,7 @@ struct timespec64 timespec64_add_safe(const struct timespec64 lhs,
-  *
-  * Handles compat or 32-bit modes.
-  *
-- * Return: %0 on success or negative errno on error
-+ * Return: 0 on success or negative errno on error
-  */
- int get_timespec64(struct timespec64 *ts,
- 		   const struct __kernel_timespec __user *uts)
-@@ -897,7 +897,7 @@ EXPORT_SYMBOL_GPL(get_timespec64);
-  * @ts: input &struct timespec64
-  * @uts: user's &struct __kernel_timespec
-  *
-- * Return: %0 on success or negative errno on error
-+ * Return: 0 on success or negative errno on error
-  */
- int put_timespec64(const struct timespec64 *ts,
- 		   struct __kernel_timespec __user *uts)
-@@ -944,7 +944,7 @@ static int __put_old_timespec32(const struct timespec64 *ts64,
-  *
-  * Handles X86_X32_ABI compatibility conversion.
-  *
-- * Return: %0 on success or negative errno on error
-+ * Return: 0 on success or negative errno on error
-  */
- int get_old_timespec32(struct timespec64 *ts, const void __user *uts)
- {
-@@ -963,7 +963,7 @@ EXPORT_SYMBOL_GPL(get_old_timespec32);
-  *
-  * Handles X86_X32_ABI compatibility conversion.
-  *
-- * Return: %0 on success or negative errno on error
-+ * Return: 0 on success or negative errno on error
-  */
- int put_old_timespec32(const struct timespec64 *ts, void __user *uts)
- {
-@@ -979,7 +979,7 @@ EXPORT_SYMBOL_GPL(put_old_timespec32);
-  * @it: destination &struct itimerspec64
-  * @uit: user's &struct __kernel_itimerspec
-  *
-- * Return: %0 on success or negative errno on error
-+ * Return: 0 on success or negative errno on error
-  */
- int get_itimerspec64(struct itimerspec64 *it,
- 			const struct __kernel_itimerspec __user *uit)
-@@ -1002,7 +1002,7 @@ EXPORT_SYMBOL_GPL(get_itimerspec64);
-  * @it: input &struct itimerspec64
-  * @uit: user's &struct __kernel_itimerspec
-  *
-- * Return: %0 on success or negative errno on error
-+ * Return: 0 on success or negative errno on error
-  */
- int put_itimerspec64(const struct itimerspec64 *it,
- 			struct __kernel_itimerspec __user *uit)
-@@ -1024,7 +1024,7 @@ EXPORT_SYMBOL_GPL(put_itimerspec64);
-  * @its: destination &struct itimerspec64
-  * @uits: user's &struct old_itimerspec32
-  *
-- * Return: %0 on success or negative errno on error
-+ * Return: 0 on success or negative errno on error
-  */
- int get_old_itimerspec32(struct itimerspec64 *its,
- 			const struct old_itimerspec32 __user *uits)
-@@ -1043,7 +1043,7 @@ EXPORT_SYMBOL_GPL(get_old_itimerspec32);
-  * @its: input &struct itimerspec64
-  * @uits: user's &struct old_itimerspec32
-  *
-- * Return: %0 on success or negative errno on error
-+ * Return: 0 on success or negative errno on error
-  */
- int put_old_itimerspec32(const struct itimerspec64 *its,
- 			struct old_itimerspec32 __user *uits)
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 6513c53..c5fb28e 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -440,7 +440,19 @@ static int lapic_timer_shutdown(struct clock_event_device *evt)
+ 	v = apic_read(APIC_LVTT);
+ 	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
+ 	apic_write(APIC_LVTT, v);
+-	apic_write(APIC_TMICT, 0);
++
++	/*
++	 * Setting APIC_LVT_MASKED (above) should be enough to tell
++	 * the hardware that this timer will never fire. But AMD
++	 * erratum 411 and some Intel CPU behavior circa 2024 say
++	 * otherwise.  Time for belt and suspenders programming: mask
++	 * the timer _and_ zero the counter registers:
++	 */
++	if (v & APIC_LVT_TIMER_TSCDEADLINE)
++		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
++	else
++		apic_write(APIC_TMICT, 0);
++
+ 	return 0;
+ }
+ 
 
