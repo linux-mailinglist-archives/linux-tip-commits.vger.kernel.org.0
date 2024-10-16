@@ -1,155 +1,131 @@
-Return-Path: <linux-tip-commits+bounces-2468-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2469-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C87799FC4A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Oct 2024 01:19:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B989A02AC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Oct 2024 09:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C575B28712C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Oct 2024 23:19:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2CAD1C24481
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Oct 2024 07:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA291F80B6;
-	Tue, 15 Oct 2024 23:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OgCYCei1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TlUIewWr"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A17418FC61;
+	Wed, 16 Oct 2024 07:35:10 +0000 (UTC)
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98761D63EA;
-	Tue, 15 Oct 2024 23:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7350433CE;
+	Wed, 16 Oct 2024 07:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729034262; cv=none; b=srwK77+lMcE6IgluBKa9LaI4zxHZ1ZzU2glHSbxghBels23aaz0Nt2XT07STAd6CPKXGHMhXW8NV0cjo24rVLvjHUfJOfFwR78d4XWw6l12amyJp8meGpAUmu6QEREwYGhBL5QMhwgu2IdG4nfxwl2+0XAUHq9HheNkQshibHpc=
+	t=1729064110; cv=none; b=OQuIKAout/E+fj7Wf2+G8dvKXfecanar41srqo+HzjHenwwBzD3p5VpyYmqpnHXcPI9MEd+4ukYrLM3WkG5j3+hEs1Za6Hrk/X0ytF46K4m3jNlReFBiUaK6fNmd6YF6pwZhmpc0XRT3IzQwIdKy5degzS2Tb/Vorr1FCn94Vgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729034262; c=relaxed/simple;
-	bh=93Qu79RPdzYWuS8VluUwYI+mQdW76BAI+YjRY05mE/s=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=T/mTDLisaypXhpT+ChCKAkZCDzgvxJsFj5Zsb6VnroFOo67iT7AZs6BSA1y9nR+AJD8x7DjhZObKa8USnWnWab1sybcUB1fT6Xcwm1q6pdOOJQJm6W3cWSrz0hw1N3csVBx6+5tQ17AYXsFgGFCnoW2p+ntHO0/yj/3jAk33ZJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OgCYCei1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TlUIewWr; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 15 Oct 2024 23:17:37 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729034258;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=eNy1vrS5muq8I9suz0muKX9xgO9wzg64nRRAc9865gY=;
-	b=OgCYCei1jCfw1xTKQT40QiX48LtJuBRjfFCCnVaugSrl3+t3Uabv/Vj9zqIoQF3cx2Gm6U
-	sMmK5G9HCqtXQyenUAc0yZoXSFp2Sah6pUm3RdyoKAIxa1b5Sa8xnaRY9znih57h4kwiV4
-	CNZkuzEmPMQ9wucwkFGn+7Kne08M7b944oV14NVl7GjGgbOYH1mQMhgCvyWyJ2j/7e/mdM
-	0uPTxD3FyXoXMlaeXLsTZKxUELBnx5+8Fm8rxXm89orud28lMAL/Catg58cA8eB6LzJlm8
-	L7aL2cm+fCmJRXvQhPGOb3QFcg+wXa2UKzih6wiVxSzE5lqzQdl5NY5qJ7t//g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729034258;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=eNy1vrS5muq8I9suz0muKX9xgO9wzg64nRRAc9865gY=;
-	b=TlUIewWr1B1CW7imp63X8bIGentD8gndlb1ywct3KyoQLZ2tIKLWChyDjXZ8FLfQwDy+bS
-	lSoDk/cdSM0ohwBQ==
-From: "tip-bot2 for Zhang Rui" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/apic: Always explicitly disarm TSC-deadline timer
-Cc: Dave Hansen <dave.hansen@intel.com>, Zhang Rui <rui.zhang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Todd Brandt <todd.e.brandt@intel.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1729064110; c=relaxed/simple;
+	bh=RmlOCU0LD+Zy7W9c/1tcj+LEr2FVQIbbuV9dw+Uv+dQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=srcxmnbQK+BrxZrQxeCxGq5Dv5MVT8igXKwEP6Gqz2VdaDKcK1XxjlP7Cjnq1P3YcVUjSwkffG8cKCJqj0Z9Z9ymNW8Jb1sSnoOlkROz+myNB72d4ySnYyFeYMJV4mwNQZaHVIKfw0jKnWvkDuADu5hJ1qS4uK/+LsQvKPrF+TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e29267b4dc4so4231444276.0;
+        Wed, 16 Oct 2024 00:35:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729064107; x=1729668907;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/QEFrE87QrYfukN9GRJXRVQgT6TniFvPYDzk8+Z0FuY=;
+        b=SBK7MUSOC+7T6nTxZX/fCoF74vwG/1AX/K/hvIoGnLwdjqRPmP7m/pLJXUy/8mWszB
+         RC83ZQZaIxBb0XXgNmGvSfwHXxrFAdFDIF+ivgcEMnSnHvpsg9aSm/8MDLaBB3w/z57Z
+         fUMeGtM1FbcPgBT3FviZefMCiTo3CFifTJmBLrswt/HVZBa8DhnTAWBbRykCzfUoq9KA
+         Fx5KL84Ruo8+ckK+S7LWknrNMJW+iJZGouKkoiehZF8bBCzUGhx2CU6yhHedBQSqmPM4
+         7ERmDFH4BX2xwo1n83Sxil7rS9BDcReD1EQIo6t+hh4E7olFYkBcrNxN6DoUrifXQf4D
+         6ATg==
+X-Forwarded-Encrypted: i=1; AJvYcCX4xVOXA/9xjMlBHSSpQfuE4bZAngoeYQP8PAPlLyQxyAS4w9oMW0Hpzc+eOxOh1UcqZQHFVr/OVS51pJY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5dO3/jnv/ObQ24xFEB7qFbdcs2PXZ59O8qj0+uwWh3kNTs63P
+	+Rmr327VVTw3W5++qO1WHjjz3U5VShA9sPzVZIgE8E73BX5uBVopuw/77N8l
+X-Google-Smtp-Source: AGHT+IHJYx8T9ce3Pf2LzWy8/7jjRdcN85q45rDbgF5HfrHbRO5ZYptii7PlGiEvuFNmYRS7sJRtcA==
+X-Received: by 2002:a05:6902:1ac1:b0:e24:a040:755c with SMTP id 3f1490d57ef6-e2931b645a8mr11001537276.34.1729064107167;
+        Wed, 16 Oct 2024 00:35:07 -0700 (PDT)
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com. [209.85.128.174])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e296cc1f09asm510155276.31.2024.10.16.00.35.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Oct 2024 00:35:06 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6e214c3d045so46580297b3.0;
+        Wed, 16 Oct 2024 00:35:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUEyalAJtzGbkc9WaiUTtZ3PxLKHlBvEWTVfAUkfIs5Flq12YZjQWOibQcjOTSJAY3rC/qtTGI9B+TDKio=@vger.kernel.org
+X-Received: by 2002:a05:690c:83:b0:6e2:313a:a01e with SMTP id
+ 00721157ae682-6e3643a5fa5mr124666197b3.32.1729064106281; Wed, 16 Oct 2024
+ 00:35:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172903425753.1442.3391146920591310820.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20241009230817.798582-4-fabrizio.castro.jz@renesas.com> <172903035374.1442.2455615035848114832.tip-bot2@tip-bot2>
+In-Reply-To: <172903035374.1442.2455615035848114832.tip-bot2@tip-bot2>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 16 Oct 2024 09:34:54 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXvvSXbCBywfxqhHU1P6MVADdJ05VY9xe2V5TfCS=Q2rA@mail.gmail.com>
+Message-ID: <CAMuHMdXvvSXbCBywfxqhHU1P6MVADdJ05VY9xe2V5TfCS=Q2rA@mail.gmail.com>
+Subject: Re: [tip: irq/core] arm64: dts: renesas: r9a09g057: Add ICU node
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-tip-commits@vger.kernel.org, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	maz@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+Hi Thomas,
 
-Commit-ID:     ffd95846c6ec6cf1f93da411ea10d504036cab42
-Gitweb:        https://git.kernel.org/tip/ffd95846c6ec6cf1f93da411ea10d504036cab42
-Author:        Zhang Rui <rui.zhang@intel.com>
-AuthorDate:    Tue, 15 Oct 2024 14:15:22 +08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 15 Oct 2024 05:45:18 -07:00
+On Wed, Oct 16, 2024 at 12:12=E2=80=AFAM tip-bot2 for Fabrizio Castro
+<tip-bot2@linutronix.de> wrote:
+> The following commit has been merged into the irq/core branch of tip:
+>
+> Commit-ID:     7607e62525b7f176db4d8115b264e3206c84d6ee
+> Gitweb:        https://git.kernel.org/tip/7607e62525b7f176db4d8115b264e32=
+06c84d6ee
+> Author:        Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+> AuthorDate:    Thu, 10 Oct 2024 00:08:17 +01:00
+> Committer:     Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Wed, 16 Oct 2024 00:01:07 +02:00
+>
+> arm64: dts: renesas: r9a09g057: Add ICU node
+>
+> Add node for the Interrupt Control Unit IP found on the Renesas
+> RZ/V2H(P) SoC, and modify the pinctrl node as its interrupt parent
+> is the ICU node.
+>
+> Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Link: https://lore.kernel.org/all/20241009230817.798582-4-fabrizio.castro=
+.jz@renesas.com
+>
+> ---
+>  arch/arm64/boot/dts/renesas/r9a09g057.dtsi | 90 +++++++++++++++++++++-
 
-x86/apic: Always explicitly disarm TSC-deadline timer
+FTR, usually Renesas DTS patches go in through the Renesas and SoC
+trees, to avoid conflicts and unmet dependencies.
+However, if no further references to the  "icu" node are to be made
+in this cycle, queueing it in the tip tree is fine.
 
-New processors have become pickier about the local APIC timer state
-before entering low power modes. These low power modes are used (for
-example) when you close your laptop lid and suspend. If you put your
-laptop in a bag and it is not in this low power mode, it is likely
-to get quite toasty while it quickly sucks the battery dry.
+Thanks!
 
-The problem boils down to some CPUs' inability to power down until the
-CPU recognizes that the local APIC timer is shut down. The current
-kernel code works in one-shot and periodic modes but does not work for
-deadline mode. Deadline mode has been the supported and preferred mode
-on Intel CPUs for over a decade and uses an MSR to drive the timer
-instead of an APIC register.
+Gr{oetje,eeting}s,
 
-Disable the TSC Deadline timer in lapic_timer_shutdown() by writing to
-MSR_IA32_TSC_DEADLINE when in TSC-deadline mode. Also avoid writing
-to the initial-count register (APIC_TMICT) which is ignored in
-TSC-deadline mode.
+                        Geert
 
-Note: The APIC_LVTT|=APIC_LVT_MASKED operation should theoretically be
-enough to tell the hardware that the timer will not fire in any of the
-timer modes. But mitigating AMD erratum 411[1] also requires clearing
-out APIC_TMICT. Solely setting APIC_LVT_MASKED is also ineffective in
-practice on Intel Lunar Lake systems, which is the motivation for this
-change.
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
-1. 411 Processor May Exit Message-Triggered C1E State Without an Interrupt if Local APIC Timer Reaches Zero - https://www.amd.com/content/dam/amd/en/documents/archived-tech-docs/revision-guides/41322_10h_Rev_Gd.pdf
-
-Fixes: 279f1461432c ("x86: apic: Use tsc deadline for oneshot when available")
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Tested-by: Todd Brandt <todd.e.brandt@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241015061522.25288-1-rui.zhang%40intel.com
----
- arch/x86/kernel/apic/apic.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 6513c53..c5fb28e 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -440,7 +440,19 @@ static int lapic_timer_shutdown(struct clock_event_device *evt)
- 	v = apic_read(APIC_LVTT);
- 	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
- 	apic_write(APIC_LVTT, v);
--	apic_write(APIC_TMICT, 0);
-+
-+	/*
-+	 * Setting APIC_LVT_MASKED (above) should be enough to tell
-+	 * the hardware that this timer will never fire. But AMD
-+	 * erratum 411 and some Intel CPU behavior circa 2024 say
-+	 * otherwise.  Time for belt and suspenders programming: mask
-+	 * the timer _and_ zero the counter registers:
-+	 */
-+	if (v & APIC_LVT_TIMER_TSCDEADLINE)
-+		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
-+	else
-+		apic_write(APIC_TMICT, 0);
-+
- 	return 0;
- }
- 
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
