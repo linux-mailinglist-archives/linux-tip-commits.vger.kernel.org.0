@@ -1,33 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-2517-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2516-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5211B9A36A8
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2024 09:10:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C85EF9A36A6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2024 09:10:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 736A01C2336B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2024 07:10:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36BD7B234E7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Oct 2024 07:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD6F18E35B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B19C18E34F;
 	Fri, 18 Oct 2024 07:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RFrZcdVe";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jOMwUGW6"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lkthiYhv";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+XsL2S7x"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A6718CC1E;
-	Fri, 18 Oct 2024 07:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CDF18CBFE;
+	Fri, 18 Oct 2024 07:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729235280; cv=none; b=FPk3FxjH2J4HxVyp9pVQ2YnRW29PVajgoSqyuBkbU5hWiPBI57nwrQcwKCF5tRcKh3M4bgjG3x229b9iA45WcRl1c2sLjOik9PRTSGoz9Jo0ujHXOtic209KOWNzBPp6YMRBl0rXYjX6izZNOQjCXbd9yUYm+O7qt+8gbppMJPg=
+	t=1729235279; cv=none; b=XV3X5PLjDc4IadQ6n0x63Uwv+bLXLyp/Q/G0AVZQvUB+JI5zbzxd/pB41+YxKbglhc6/OCx3eh/awvJ2JCnqiWtnK2D9AhflWYWzp/Ajp32SBDaJg32D6gKEFzeLTNS5aR8kB0qwIY3ybly3knXoKlq1xkHcVW1uzzqeoCJBbCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729235280; c=relaxed/simple;
-	bh=mr5/9/18uLl111agpAm1YRYi6V15bADlZpFC5E4Juuc=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=urq4dnku7Bia+jNG/+2B5px+D0lSZtDFvTd2E6KnMv37l8EsGi9/6UY9TJ+kf1/zA/WHBQXyGO2KtXtzapJFDrYmbzy/TDB9e2gT42rXMiIeW9Hrc0MFxvtc/lr0xtwx7cO0jIYex8WBslQsW2xH4unElwKDqYgp1g494DvnWug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RFrZcdVe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jOMwUGW6; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1729235279; c=relaxed/simple;
+	bh=Pqbq4whKKApIHRzt8oTVpLMwpljHybGeDUSb54ccUbM=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=nn33VyRQHxXI3ptE3pNRvFICtgkIRMeT/gel1T8MtYIJiRD87WHqKh6KDSpi4U1iqEley50HI5mT4DtlIXjFDfKzWDqzTyuak6XBdZ+kcqzuG5hFl1dGyL+PcAE0Q598JQVFBuH11Iarn+lAVj5Mzj1GQIWzlwkT2zdRRKApCcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lkthiYhv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+XsL2S7x; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Fri, 18 Oct 2024 07:07:44 -0000
@@ -35,37 +36,45 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1729235265;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=FkjCMloicva7rG2YlSWnfOeVFAXh5ujjvrvd+p6sUbM=;
-	b=RFrZcdVenCYKVc+08bk9qBIs6KNvQP29CsjWuQb4KtbQRKF4s2PEwyP246jLFcczweblmQ
-	UQfLrQHSXnx0OfOBdj5yzW9kEjiGWPaKvMFzaWEEMqrkrmMFzviaDmaZWe8ZqFU2L5iBSP
-	b1Wozh+3SWjQM9Po9nIlHm6Q9y8Lb8uu5O2QAywlLMXO6eqtOYnV+UHCfUAJSNDDJFWlyU
-	rwwa/MzM3i0pUpgULNLjRQ7jqtnWGuhfV/shoPGv87zdKFJkTHwssB0tv2nnGTZ9RPclb7
-	+xZcV7masNUIk/ceaVw1m1YQtW8Z1+xtkvupa9a58IOurw+Ly0PS4++F+/pbBA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5Wz7nCQLF83Xh77ywedI6w0prh7BmIwOmK2GmdyagRI=;
+	b=lkthiYhvNjAHdL9hgJ8Y56fRKZ2aEsveqFD5hcUoxPRbmsn+je69deECks2BrIK4LxoLQV
+	tiq/h0XyZAyap2+6gsh4aT9XXFNCWyxGW8lqnXeMGBRLzPtUR4kR8Rq7U2Ro7hLJbjLK0E
+	oKCGxqZ3MzOd4+f2N5Efbl1msBU4OHziSRzghsHp262G6oCiEVDea38Gq2gQBD1MrFdTUX
+	1VyfjXr82fUnckYFFgHuNsNsHVZQWS4EEvORG6UbIhjT11Nx4C1TF/izFHTl5RLeV/7zDt
+	hH+e0NlY/RyTMnhkWwChLuVy5Kfz/lQi/20Fpnm2ybtNNNUzw3KwxVu2AGGDWg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1729235265;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=FkjCMloicva7rG2YlSWnfOeVFAXh5ujjvrvd+p6sUbM=;
-	b=jOMwUGW6u+w9tCffbmEoaPpkhxrC2sbZBfi4xN7aPFTUlRrnIqSF9P7ZnhnGQghm/B88G/
-	pEEh/bvx0y3CT1Ag==
-From: "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5Wz7nCQLF83Xh77ywedI6w0prh7BmIwOmK2GmdyagRI=;
+	b=+XsL2S7xXD2vvIgfuA3REsRar+SdpyAR5KfwiIgZlljtwhIJ0nM5RLrEVn8YrS1avlcgBA
+	XBcY3DEIHJ+ywoBQ==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Improve cache locality of RSEQ concurrency
- IDs for intermittent workloads
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Marco Elver <elver@google.com>, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject:
+ [tip: sched/core] locking/mutex: Remove wakeups from under mutex::wait_lock
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>, John Stultz <jstultz@google.com>,
+ Metin Kaya <metin.kaya@arm.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241009235352.1614323-2-jstultz@google.com>
+References: <20241009235352.1614323-2-jstultz@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172923526494.1442.1373531333956730313.tip-bot2@tip-bot2>
+Message-ID: <172923526433.1442.2877074596289480337.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -75,512 +84,566 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     7e019dcc470f27066c98697e43d930df8d54bd9c
-Gitweb:        https://git.kernel.org/tip/7e019dcc470f27066c98697e43d930df8d54bd9c
-Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Wed, 09 Oct 2024 09:50:07 -04:00
+Commit-ID:     894d1b3db41cf7e6ae0304429a1747b3c3f390bc
+Gitweb:        https://git.kernel.org/tip/894d1b3db41cf7e6ae0304429a1747b3c3f390bc
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 09 Oct 2024 16:53:34 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 14 Oct 2024 12:52:40 +02:00
 
-sched: Improve cache locality of RSEQ concurrency IDs for intermittent workloads
+locking/mutex: Remove wakeups from under mutex::wait_lock
 
-commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
-introduced a per-mm/cpu current concurrency id (mm_cid), which keeps
-a reference to the concurrency id allocated for each CPU. This reference
-expires shortly after a 100ms delay.
+In preparation to nest mutex::wait_lock under rq::lock we need
+to remove wakeups from under it.
 
-These per-CPU references keep the per-mm-cid data cache-local in
-situations where threads are running at least once on each CPU within
-each 100ms window, thus keeping the per-cpu reference alive.
+Do this by utilizing wake_qs to defer the wakeup until after the
+lock is dropped.
 
-However, intermittent workloads behaving in bursts spaced by more than
-100ms on each CPU exhibit bad cache locality and degraded performance
-compared to purely per-cpu data indexing, because concurrency IDs are
-allocated over various CPUs and cores, therefore losing cache locality
-of the associated data.
+[Heavily changed after 55f036ca7e74 ("locking: WW mutex cleanup") and
+08295b3b5bee ("locking: Implement an algorithm choice for Wound-Wait
+mutexes")]
+[jstultz: rebased to mainline, added extra wake_up_q & init
+ to avoid hangs, similar to Connor's rework of this patch]
 
-Introduce the following changes to improve per-mm-cid cache locality:
-
-- Add a "recent_cid" field to the per-mm/cpu mm_cid structure to keep
-  track of which mm_cid value was last used, and use it as a hint to
-  attempt re-allocating the same concurrency ID the next time this
-  mm/cpu needs to allocate a concurrency ID,
-
-- Add a per-mm CPUs allowed mask, which keeps track of the union of
-  CPUs allowed for all threads belonging to this mm. This cpumask is
-  only set during the lifetime of the mm, never cleared, so it
-  represents the union of all the CPUs allowed since the beginning of
-  the mm lifetime (note that the mm_cpumask() is really arch-specific
-  and tailored to the TLB flush needs, and is thus _not_ a viable
-  approach for this),
-
-- Add a per-mm nr_cpus_allowed to keep track of the weight of the
-  per-mm CPUs allowed mask (for fast access),
-
-- Add a per-mm max_nr_cid to keep track of the highest number of
-  concurrency IDs allocated for the mm. This is used for expanding the
-  concurrency ID allocation within the upper bound defined by:
-
-    min(mm->nr_cpus_allowed, mm->mm_users)
-
-  When the next unused CID value reaches this threshold, stop trying
-  to expand the cid allocation and use the first available cid value
-  instead.
-
-  Spreading allocation to use all the cid values within the range
-
-    [ 0, min(mm->nr_cpus_allowed, mm->mm_users) - 1 ]
-
-  improves cache locality while preserving mm_cid compactness within the
-  expected user limits,
-
-- In __mm_cid_try_get, only return cid values within the range
-  [ 0, mm->nr_cpus_allowed ] rather than [ 0, nr_cpu_ids ]. This
-  prevents allocating cids above the number of allowed cpus in
-  rare scenarios where cid allocation races with a concurrent
-  remote-clear of the per-mm/cpu cid. This improvement is made
-  possible by the addition of the per-mm CPUs allowed mask,
-
-- In sched_mm_cid_migrate_to, use mm->nr_cpus_allowed rather than
-  t->nr_cpus_allowed. This criterion was really meant to compare
-  the number of mm->mm_users to the number of CPUs allowed for the
-  entire mm. Therefore, the prior comparison worked fine when all
-  threads shared the same CPUs allowed mask, but not so much in
-  scenarios where those threads have different masks (e.g. each
-  thread pinned to a single CPU). This improvement is made
-  possible by the addition of the per-mm CPUs allowed mask.
-
-* Benchmarks
-
-Each thread increments 16kB worth of 8-bit integers in bursts, with
-a configurable delay between each thread's execution. Each thread run
-one after the other (no threads run concurrently). The order of
-thread execution in the sequence is random. The thread execution
-sequence begins again after all threads have executed. The 16kB areas
-are allocated with rseq_mempool and indexed by either cpu_id, mm_cid
-(not cache-local), or cache-local mm_cid. Each thread is pinned to its
-own core.
-
-Testing configurations:
-
-8-core/1-L3:        Use 8 cores within a single L3
-24-core/24-L3:      Use 24 cores, 1 core per L3
-192-core/24-L3:     Use 192 cores (all cores in the system)
-384-thread/24-L3:   Use 384 HW threads (all HW threads in the system)
-
-Intermittent workload delays between threads: 200ms, 10ms.
-
-Hardware:
-
-CPU(s):                   384
-  On-line CPU(s) list:    0-383
-Vendor ID:                AuthenticAMD
-  Model name:             AMD EPYC 9654 96-Core Processor
-    Thread(s) per core:   2
-    Core(s) per socket:   96
-    Socket(s):            2
-Caches (sum of all):
-  L1d:                    6 MiB (192 instances)
-  L1i:                    6 MiB (192 instances)
-  L2:                     192 MiB (192 instances)
-  L3:                     768 MiB (24 instances)
-
-Each result is an average of 5 test runs. The cache-local speedup
-is calculated as: (cache-local mm_cid) / (mm_cid).
-
-Intermittent workload delay: 200ms
-
-                     per-cpu     mm_cid    cache-local mm_cid    cache-local speedup
-                         (ns)      (ns)                  (ns)
-8-core/1-L3             1374      19289                  1336            14.4x
-24-core/24-L3           2423      26721                  1594            16.7x
-192-core/24-L3          2291      15826                  2153             7.3x
-384-thread/24-L3        1874      13234                  1907             6.9x
-
-Intermittent workload delay: 10ms
-
-                     per-cpu     mm_cid    cache-local mm_cid    cache-local speedup
-                         (ns)      (ns)                  (ns)
-8-core/1-L3               662       756                   686             1.1x
-24-core/24-L3            1378      3648                  1035             3.5x
-192-core/24-L3           1439     10833                  1482             7.3x
-384-thread/24-L3         1503     10570                  1556             6.8x
-
-[ This deprecates the prior "sched: NUMA-aware per-memory-map concurrency IDs"
-  patch series with a simpler and more general approach. ]
-
-[ This patch applies on top of v6.12-rc1. ]
-
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Marco Elver <elver@google.com>
-Link: https://lore.kernel.org/lkml/20240823185946.418340-1-mathieu.desnoyers@efficios.com/
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Metin Kaya <metin.kaya@arm.com>
+Acked-by: Davidlohr Bueso <dave@stgolabs.net>
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Tested-by: Metin Kaya <metin.kaya@arm.com>
+Link: https://lore.kernel.org/r/20241009235352.1614323-2-jstultz@google.com
 ---
- fs/exec.c                |  2 +-
- include/linux/mm_types.h | 72 ++++++++++++++++++++++++++++++++++-----
- kernel/fork.c            |  2 +-
- kernel/sched/core.c      | 22 +++++++-----
- kernel/sched/sched.h     | 48 ++++++++++++++++++--------
- 5 files changed, 112 insertions(+), 34 deletions(-)
+ kernel/futex/pi.c               |  6 +++-
+ kernel/locking/mutex.c          | 16 +++++++---
+ kernel/locking/rtmutex.c        | 51 +++++++++++++++++++++++---------
+ kernel/locking/rtmutex_api.c    | 12 ++++++--
+ kernel/locking/rtmutex_common.h |  3 +-
+ kernel/locking/rwbase_rt.c      |  8 ++++-
+ kernel/locking/rwsem.c          |  4 +--
+ kernel/locking/spinlock_rt.c    |  5 +--
+ kernel/locking/ww_mutex.h       | 30 ++++++++++++-------
+ 9 files changed, 96 insertions(+), 39 deletions(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 6c53920..aaa6055 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -990,7 +990,7 @@ static int exec_mmap(struct mm_struct *mm)
- 	active_mm = tsk->active_mm;
- 	tsk->active_mm = mm;
- 	tsk->mm = mm;
--	mm_init_cid(mm);
-+	mm_init_cid(mm, tsk);
- 	/*
- 	 * This prevents preemption while active_mm is being loaded and
- 	 * it and mm are being updated, which could cause problems for
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 6e3bdf8..381d22e 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -782,6 +782,7 @@ struct vm_area_struct {
- struct mm_cid {
- 	u64 time;
- 	int cid;
-+	int recent_cid;
- };
- #endif
+diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
+index 5722467..d62cca5 100644
+--- a/kernel/futex/pi.c
++++ b/kernel/futex/pi.c
+@@ -922,6 +922,7 @@ int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int tryl
+ 	struct rt_mutex_waiter rt_waiter;
+ 	struct futex_hash_bucket *hb;
+ 	struct futex_q q = futex_q_init;
++	DEFINE_WAKE_Q(wake_q);
+ 	int res, ret;
  
-@@ -852,6 +853,27 @@ struct mm_struct {
- 		 * When the next mm_cid scan is due (in jiffies).
+ 	if (!IS_ENABLED(CONFIG_FUTEX_PI))
+@@ -1018,8 +1019,11 @@ retry_private:
+ 	 * such that futex_unlock_pi() is guaranteed to observe the waiter when
+ 	 * it sees the futex_q::pi_state.
+ 	 */
+-	ret = __rt_mutex_start_proxy_lock(&q.pi_state->pi_mutex, &rt_waiter, current);
++	ret = __rt_mutex_start_proxy_lock(&q.pi_state->pi_mutex, &rt_waiter, current, &wake_q);
++	preempt_disable();
+ 	raw_spin_unlock_irq(&q.pi_state->pi_mutex.wait_lock);
++	wake_up_q(&wake_q);
++	preempt_enable();
+ 
+ 	if (ret) {
+ 		if (ret == 1)
+diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
+index cbae8c0..6c94da0 100644
+--- a/kernel/locking/mutex.c
++++ b/kernel/locking/mutex.c
+@@ -575,6 +575,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 		    struct lockdep_map *nest_lock, unsigned long ip,
+ 		    struct ww_acquire_ctx *ww_ctx, const bool use_ww_ctx)
+ {
++	DEFINE_WAKE_Q(wake_q);
+ 	struct mutex_waiter waiter;
+ 	struct ww_mutex *ww;
+ 	int ret;
+@@ -625,7 +626,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 	 */
+ 	if (__mutex_trylock(lock)) {
+ 		if (ww_ctx)
+-			__ww_mutex_check_waiters(lock, ww_ctx);
++			__ww_mutex_check_waiters(lock, ww_ctx, &wake_q);
+ 
+ 		goto skip_wait;
+ 	}
+@@ -645,7 +646,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 		 * Add in stamp order, waking up waiters that must kill
+ 		 * themselves.
  		 */
- 		unsigned long mm_cid_next_scan;
-+		/**
-+		 * @nr_cpus_allowed: Number of CPUs allowed for mm.
-+		 *
-+		 * Number of CPUs allowed in the union of all mm's
-+		 * threads allowed CPUs.
-+		 */
-+		unsigned int nr_cpus_allowed;
-+		/**
-+		 * @max_nr_cid: Maximum number of concurrency IDs allocated.
-+		 *
-+		 * Track the highest number of concurrency IDs allocated for the
-+		 * mm.
-+		 */
-+		atomic_t max_nr_cid;
-+		/**
-+		 * @cpus_allowed_lock: Lock protecting mm cpus_allowed.
-+		 *
-+		 * Provide mutual exclusion for mm cpus_allowed and
-+		 * mm nr_cpus_allowed updates.
-+		 */
-+		raw_spinlock_t cpus_allowed_lock;
+-		ret = __ww_mutex_add_waiter(&waiter, lock, ww_ctx);
++		ret = __ww_mutex_add_waiter(&waiter, lock, ww_ctx, &wake_q);
+ 		if (ret)
+ 			goto err_early_kill;
+ 	}
+@@ -681,6 +682,10 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 		}
+ 
+ 		raw_spin_unlock(&lock->wait_lock);
++		/* Make sure we do wakeups before calling schedule */
++		wake_up_q(&wake_q);
++		wake_q_init(&wake_q);
++
+ 		schedule_preempt_disabled();
+ 
+ 		first = __mutex_waiter_is_first(lock, &waiter);
+@@ -714,7 +719,7 @@ acquired:
+ 		 */
+ 		if (!ww_ctx->is_wait_die &&
+ 		    !__mutex_waiter_is_first(lock, &waiter))
+-			__ww_mutex_check_waiters(lock, ww_ctx);
++			__ww_mutex_check_waiters(lock, ww_ctx, &wake_q);
+ 	}
+ 
+ 	__mutex_remove_waiter(lock, &waiter);
+@@ -730,6 +735,7 @@ skip_wait:
+ 		ww_mutex_lock_acquired(ww, ww_ctx);
+ 
+ 	raw_spin_unlock(&lock->wait_lock);
++	wake_up_q(&wake_q);
+ 	preempt_enable();
+ 	return 0;
+ 
+@@ -741,6 +747,7 @@ err_early_kill:
+ 	raw_spin_unlock(&lock->wait_lock);
+ 	debug_mutex_free_waiter(&waiter);
+ 	mutex_release(&lock->dep_map, ip);
++	wake_up_q(&wake_q);
+ 	preempt_enable();
+ 	return ret;
+ }
+@@ -951,9 +958,10 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
+ 	if (owner & MUTEX_FLAG_HANDOFF)
+ 		__mutex_handoff(lock, next);
+ 
++	preempt_disable();
+ 	raw_spin_unlock(&lock->wait_lock);
+-
+ 	wake_up_q(&wake_q);
++	preempt_enable();
+ }
+ 
+ #ifndef CONFIG_DEBUG_LOCK_ALLOC
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index ebebd0e..c7de80e 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -34,13 +34,15 @@
+ 
+ static inline int __ww_mutex_add_waiter(struct rt_mutex_waiter *waiter,
+ 					struct rt_mutex *lock,
+-					struct ww_acquire_ctx *ww_ctx)
++					struct ww_acquire_ctx *ww_ctx,
++					struct wake_q_head *wake_q)
+ {
+ 	return 0;
+ }
+ 
+ static inline void __ww_mutex_check_waiters(struct rt_mutex *lock,
+-					    struct ww_acquire_ctx *ww_ctx)
++					    struct ww_acquire_ctx *ww_ctx,
++					    struct wake_q_head *wake_q)
+ {
+ }
+ 
+@@ -1201,7 +1203,8 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
+ 					   struct rt_mutex_waiter *waiter,
+ 					   struct task_struct *task,
+ 					   struct ww_acquire_ctx *ww_ctx,
+-					   enum rtmutex_chainwalk chwalk)
++					   enum rtmutex_chainwalk chwalk,
++					   struct wake_q_head *wake_q)
+ {
+ 	struct task_struct *owner = rt_mutex_owner(lock);
+ 	struct rt_mutex_waiter *top_waiter = waiter;
+@@ -1245,7 +1248,10 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
+ 
+ 		/* Check whether the waiter should back out immediately */
+ 		rtm = container_of(lock, struct rt_mutex, rtmutex);
+-		res = __ww_mutex_add_waiter(waiter, rtm, ww_ctx);
++		preempt_disable();
++		res = __ww_mutex_add_waiter(waiter, rtm, ww_ctx, wake_q);
++		wake_up_q(wake_q);
++		preempt_enable();
+ 		if (res) {
+ 			raw_spin_lock(&task->pi_lock);
+ 			rt_mutex_dequeue(lock, waiter);
+@@ -1674,12 +1680,14 @@ static void __sched rt_mutex_handle_deadlock(int res, int detect_deadlock,
+  * @state:	The task state for sleeping
+  * @chwalk:	Indicator whether full or partial chainwalk is requested
+  * @waiter:	Initializer waiter for blocking
++ * @wake_q:	The wake_q to wake tasks after we release the wait_lock
+  */
+ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 				       struct ww_acquire_ctx *ww_ctx,
+ 				       unsigned int state,
+ 				       enum rtmutex_chainwalk chwalk,
+-				       struct rt_mutex_waiter *waiter)
++				       struct rt_mutex_waiter *waiter,
++				       struct wake_q_head *wake_q)
+ {
+ 	struct rt_mutex *rtm = container_of(lock, struct rt_mutex, rtmutex);
+ 	struct ww_mutex *ww = ww_container_of(rtm);
+@@ -1690,7 +1698,7 @@ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 	/* Try to acquire the lock again: */
+ 	if (try_to_take_rt_mutex(lock, current, NULL)) {
+ 		if (build_ww_mutex() && ww_ctx) {
+-			__ww_mutex_check_waiters(rtm, ww_ctx);
++			__ww_mutex_check_waiters(rtm, ww_ctx, wake_q);
+ 			ww_mutex_lock_acquired(ww, ww_ctx);
+ 		}
+ 		return 0;
+@@ -1700,7 +1708,7 @@ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 
+ 	trace_contention_begin(lock, LCB_F_RT);
+ 
+-	ret = task_blocks_on_rt_mutex(lock, waiter, current, ww_ctx, chwalk);
++	ret = task_blocks_on_rt_mutex(lock, waiter, current, ww_ctx, chwalk, wake_q);
+ 	if (likely(!ret))
+ 		ret = rt_mutex_slowlock_block(lock, ww_ctx, state, NULL, waiter);
+ 
+@@ -1708,7 +1716,7 @@ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 		/* acquired the lock */
+ 		if (build_ww_mutex() && ww_ctx) {
+ 			if (!ww_ctx->is_wait_die)
+-				__ww_mutex_check_waiters(rtm, ww_ctx);
++				__ww_mutex_check_waiters(rtm, ww_ctx, wake_q);
+ 			ww_mutex_lock_acquired(ww, ww_ctx);
+ 		}
+ 	} else {
+@@ -1730,7 +1738,8 @@ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 
+ static inline int __rt_mutex_slowlock_locked(struct rt_mutex_base *lock,
+ 					     struct ww_acquire_ctx *ww_ctx,
+-					     unsigned int state)
++					     unsigned int state,
++					     struct wake_q_head *wake_q)
+ {
+ 	struct rt_mutex_waiter waiter;
+ 	int ret;
+@@ -1739,7 +1748,7 @@ static inline int __rt_mutex_slowlock_locked(struct rt_mutex_base *lock,
+ 	waiter.ww_ctx = ww_ctx;
+ 
+ 	ret = __rt_mutex_slowlock(lock, ww_ctx, state, RT_MUTEX_MIN_CHAINWALK,
+-				  &waiter);
++				  &waiter, wake_q);
+ 
+ 	debug_rt_mutex_free_waiter(&waiter);
+ 	return ret;
+@@ -1755,6 +1764,7 @@ static int __sched rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 				     struct ww_acquire_ctx *ww_ctx,
+ 				     unsigned int state)
+ {
++	DEFINE_WAKE_Q(wake_q);
+ 	unsigned long flags;
+ 	int ret;
+ 
+@@ -1776,8 +1786,11 @@ static int __sched rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 	 * irqsave/restore variants.
+ 	 */
+ 	raw_spin_lock_irqsave(&lock->wait_lock, flags);
+-	ret = __rt_mutex_slowlock_locked(lock, ww_ctx, state);
++	ret = __rt_mutex_slowlock_locked(lock, ww_ctx, state, &wake_q);
++	preempt_disable();
+ 	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
++	wake_up_q(&wake_q);
++	preempt_enable();
+ 	rt_mutex_post_schedule();
+ 
+ 	return ret;
+@@ -1803,8 +1816,10 @@ static __always_inline int __rt_mutex_lock(struct rt_mutex_base *lock,
+ /**
+  * rtlock_slowlock_locked - Slow path lock acquisition for RT locks
+  * @lock:	The underlying RT mutex
++ * @wake_q:	The wake_q to wake tasks after we release the wait_lock
+  */
+-static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock)
++static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock,
++					   struct wake_q_head *wake_q)
+ {
+ 	struct rt_mutex_waiter waiter;
+ 	struct task_struct *owner;
+@@ -1821,7 +1836,7 @@ static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock)
+ 
+ 	trace_contention_begin(lock, LCB_F_RT);
+ 
+-	task_blocks_on_rt_mutex(lock, &waiter, current, NULL, RT_MUTEX_MIN_CHAINWALK);
++	task_blocks_on_rt_mutex(lock, &waiter, current, NULL, RT_MUTEX_MIN_CHAINWALK, wake_q);
+ 
+ 	for (;;) {
+ 		/* Try to acquire the lock again */
+@@ -1832,7 +1847,11 @@ static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock)
+ 			owner = rt_mutex_owner(lock);
+ 		else
+ 			owner = NULL;
++		preempt_disable();
+ 		raw_spin_unlock_irq(&lock->wait_lock);
++		wake_up_q(wake_q);
++		wake_q_init(wake_q);
++		preempt_enable();
+ 
+ 		if (!owner || !rtmutex_spin_on_owner(lock, &waiter, owner))
+ 			schedule_rtlock();
+@@ -1857,10 +1876,14 @@ static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock)
+ static __always_inline void __sched rtlock_slowlock(struct rt_mutex_base *lock)
+ {
+ 	unsigned long flags;
++	DEFINE_WAKE_Q(wake_q);
+ 
+ 	raw_spin_lock_irqsave(&lock->wait_lock, flags);
+-	rtlock_slowlock_locked(lock);
++	rtlock_slowlock_locked(lock, &wake_q);
++	preempt_disable();
+ 	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
++	wake_up_q(&wake_q);
++	preempt_enable();
+ }
+ 
+ #endif /* RT_MUTEX_BUILD_SPINLOCKS */
+diff --git a/kernel/locking/rtmutex_api.c b/kernel/locking/rtmutex_api.c
+index a6974d0..2bc14c0 100644
+--- a/kernel/locking/rtmutex_api.c
++++ b/kernel/locking/rtmutex_api.c
+@@ -275,6 +275,7 @@ void __sched rt_mutex_proxy_unlock(struct rt_mutex_base *lock)
+  * @lock:		the rt_mutex to take
+  * @waiter:		the pre-initialized rt_mutex_waiter
+  * @task:		the task to prepare
++ * @wake_q:		the wake_q to wake tasks after we release the wait_lock
+  *
+  * Starts the rt_mutex acquire; it enqueues the @waiter and does deadlock
+  * detection. It does not wait, see rt_mutex_wait_proxy_lock() for that.
+@@ -291,7 +292,8 @@ void __sched rt_mutex_proxy_unlock(struct rt_mutex_base *lock)
+  */
+ int __sched __rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
+ 					struct rt_mutex_waiter *waiter,
+-					struct task_struct *task)
++					struct task_struct *task,
++					struct wake_q_head *wake_q)
+ {
+ 	int ret;
+ 
+@@ -302,7 +304,7 @@ int __sched __rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
+ 
+ 	/* We enforce deadlock detection for futexes */
+ 	ret = task_blocks_on_rt_mutex(lock, waiter, task, NULL,
+-				      RT_MUTEX_FULL_CHAINWALK);
++				      RT_MUTEX_FULL_CHAINWALK, wake_q);
+ 
+ 	if (ret && !rt_mutex_owner(lock)) {
+ 		/*
+@@ -341,12 +343,16 @@ int __sched rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
+ 				      struct task_struct *task)
+ {
+ 	int ret;
++	DEFINE_WAKE_Q(wake_q);
+ 
+ 	raw_spin_lock_irq(&lock->wait_lock);
+-	ret = __rt_mutex_start_proxy_lock(lock, waiter, task);
++	ret = __rt_mutex_start_proxy_lock(lock, waiter, task, &wake_q);
+ 	if (unlikely(ret))
+ 		remove_waiter(lock, waiter);
++	preempt_disable();
+ 	raw_spin_unlock_irq(&lock->wait_lock);
++	wake_up_q(&wake_q);
++	preempt_enable();
+ 
+ 	return ret;
+ }
+diff --git a/kernel/locking/rtmutex_common.h b/kernel/locking/rtmutex_common.h
+index 1162e07..c38a2d2 100644
+--- a/kernel/locking/rtmutex_common.h
++++ b/kernel/locking/rtmutex_common.h
+@@ -83,7 +83,8 @@ extern void rt_mutex_init_proxy_locked(struct rt_mutex_base *lock,
+ extern void rt_mutex_proxy_unlock(struct rt_mutex_base *lock);
+ extern int __rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
+ 				     struct rt_mutex_waiter *waiter,
+-				     struct task_struct *task);
++				     struct task_struct *task,
++				     struct wake_q_head *);
+ extern int rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
+ 				     struct rt_mutex_waiter *waiter,
+ 				     struct task_struct *task);
+diff --git a/kernel/locking/rwbase_rt.c b/kernel/locking/rwbase_rt.c
+index 34a5956..9f4322c 100644
+--- a/kernel/locking/rwbase_rt.c
++++ b/kernel/locking/rwbase_rt.c
+@@ -69,6 +69,7 @@ static int __sched __rwbase_read_lock(struct rwbase_rt *rwb,
+ 				      unsigned int state)
+ {
+ 	struct rt_mutex_base *rtm = &rwb->rtmutex;
++	DEFINE_WAKE_Q(wake_q);
+ 	int ret;
+ 
+ 	rwbase_pre_schedule();
+@@ -110,7 +111,7 @@ static int __sched __rwbase_read_lock(struct rwbase_rt *rwb,
+ 	 * For rwlocks this returns 0 unconditionally, so the below
+ 	 * !ret conditionals are optimized out.
+ 	 */
+-	ret = rwbase_rtmutex_slowlock_locked(rtm, state);
++	ret = rwbase_rtmutex_slowlock_locked(rtm, state, &wake_q);
+ 
+ 	/*
+ 	 * On success the rtmutex is held, so there can't be a writer
+@@ -121,7 +122,12 @@ static int __sched __rwbase_read_lock(struct rwbase_rt *rwb,
+ 	 */
+ 	if (!ret)
+ 		atomic_inc(&rwb->readers);
++
++	preempt_disable();
+ 	raw_spin_unlock_irq(&rtm->wait_lock);
++	wake_up_q(&wake_q);
++	preempt_enable();
++
+ 	if (!ret)
+ 		rwbase_rtmutex_unlock(rtm);
+ 
+diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
+index 2bbb6ec..2ddb827 100644
+--- a/kernel/locking/rwsem.c
++++ b/kernel/locking/rwsem.c
+@@ -1413,8 +1413,8 @@ static inline void __downgrade_write(struct rw_semaphore *sem)
+ #define rwbase_rtmutex_lock_state(rtm, state)		\
+ 	__rt_mutex_lock(rtm, state)
+ 
+-#define rwbase_rtmutex_slowlock_locked(rtm, state)	\
+-	__rt_mutex_slowlock_locked(rtm, NULL, state)
++#define rwbase_rtmutex_slowlock_locked(rtm, state, wq)	\
++	__rt_mutex_slowlock_locked(rtm, NULL, state, wq)
+ 
+ #define rwbase_rtmutex_unlock(rtm)			\
+ 	__rt_mutex_unlock(rtm)
+diff --git a/kernel/locking/spinlock_rt.c b/kernel/locking/spinlock_rt.c
+index 38e2924..0141439 100644
+--- a/kernel/locking/spinlock_rt.c
++++ b/kernel/locking/spinlock_rt.c
+@@ -162,9 +162,10 @@ rwbase_rtmutex_lock_state(struct rt_mutex_base *rtm, unsigned int state)
+ }
+ 
+ static __always_inline int
+-rwbase_rtmutex_slowlock_locked(struct rt_mutex_base *rtm, unsigned int state)
++rwbase_rtmutex_slowlock_locked(struct rt_mutex_base *rtm, unsigned int state,
++			       struct wake_q_head *wake_q)
+ {
+-	rtlock_slowlock_locked(rtm);
++	rtlock_slowlock_locked(rtm, wake_q);
+ 	return 0;
+ }
+ 
+diff --git a/kernel/locking/ww_mutex.h b/kernel/locking/ww_mutex.h
+index 76d204b..a54bd16 100644
+--- a/kernel/locking/ww_mutex.h
++++ b/kernel/locking/ww_mutex.h
+@@ -275,7 +275,7 @@ __ww_ctx_less(struct ww_acquire_ctx *a, struct ww_acquire_ctx *b)
+  */
+ static bool
+ __ww_mutex_die(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+-	       struct ww_acquire_ctx *ww_ctx)
++	       struct ww_acquire_ctx *ww_ctx, struct wake_q_head *wake_q)
+ {
+ 	if (!ww_ctx->is_wait_die)
+ 		return false;
+@@ -284,7 +284,7 @@ __ww_mutex_die(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+ #ifndef WW_RT
+ 		debug_mutex_wake_waiter(lock, waiter);
  #endif
- #ifdef CONFIG_MMU
- 		atomic_long_t pgtables_bytes;	/* size of all page tables */
-@@ -1170,18 +1192,30 @@ static inline int mm_cid_clear_lazy_put(int cid)
- 	return cid & ~MM_CID_LAZY_PUT;
- }
- 
-+/*
-+ * mm_cpus_allowed: Union of all mm's threads allowed CPUs.
-+ */
-+static inline cpumask_t *mm_cpus_allowed(struct mm_struct *mm)
-+{
-+	unsigned long bitmap = (unsigned long)mm;
-+
-+	bitmap += offsetof(struct mm_struct, cpu_bitmap);
-+	/* Skip cpu_bitmap */
-+	bitmap += cpumask_size();
-+	return (struct cpumask *)bitmap;
-+}
-+
- /* Accessor for struct mm_struct's cidmask. */
- static inline cpumask_t *mm_cidmask(struct mm_struct *mm)
- {
--	unsigned long cid_bitmap = (unsigned long)mm;
-+	unsigned long cid_bitmap = (unsigned long)mm_cpus_allowed(mm);
- 
--	cid_bitmap += offsetof(struct mm_struct, cpu_bitmap);
--	/* Skip cpu_bitmap */
-+	/* Skip mm_cpus_allowed */
- 	cid_bitmap += cpumask_size();
- 	return (struct cpumask *)cid_bitmap;
- }
- 
--static inline void mm_init_cid(struct mm_struct *mm)
-+static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p)
- {
- 	int i;
- 
-@@ -1189,17 +1223,22 @@ static inline void mm_init_cid(struct mm_struct *mm)
- 		struct mm_cid *pcpu_cid = per_cpu_ptr(mm->pcpu_cid, i);
- 
- 		pcpu_cid->cid = MM_CID_UNSET;
-+		pcpu_cid->recent_cid = MM_CID_UNSET;
- 		pcpu_cid->time = 0;
+-		wake_up_process(waiter->task);
++		wake_q_add(wake_q, waiter->task);
  	}
-+	mm->nr_cpus_allowed = p->nr_cpus_allowed;
-+	atomic_set(&mm->max_nr_cid, 0);
-+	raw_spin_lock_init(&mm->cpus_allowed_lock);
-+	cpumask_copy(mm_cpus_allowed(mm), &p->cpus_mask);
- 	cpumask_clear(mm_cidmask(mm));
- }
  
--static inline int mm_alloc_cid_noprof(struct mm_struct *mm)
-+static inline int mm_alloc_cid_noprof(struct mm_struct *mm, struct task_struct *p)
+ 	return true;
+@@ -299,7 +299,8 @@ __ww_mutex_die(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+  */
+ static bool __ww_mutex_wound(struct MUTEX *lock,
+ 			     struct ww_acquire_ctx *ww_ctx,
+-			     struct ww_acquire_ctx *hold_ctx)
++			     struct ww_acquire_ctx *hold_ctx,
++			     struct wake_q_head *wake_q)
  {
- 	mm->pcpu_cid = alloc_percpu_noprof(struct mm_cid);
- 	if (!mm->pcpu_cid)
- 		return -ENOMEM;
--	mm_init_cid(mm);
-+	mm_init_cid(mm, p);
- 	return 0;
- }
- #define mm_alloc_cid(...)	alloc_hooks(mm_alloc_cid_noprof(__VA_ARGS__))
-@@ -1212,16 +1251,31 @@ static inline void mm_destroy_cid(struct mm_struct *mm)
+ 	struct task_struct *owner = __ww_mutex_owner(lock);
  
- static inline unsigned int mm_cid_size(void)
- {
--	return cpumask_size();
-+	return 2 * cpumask_size();	/* mm_cpus_allowed(), mm_cidmask(). */
-+}
-+
-+static inline void mm_set_cpus_allowed(struct mm_struct *mm, const struct cpumask *cpumask)
-+{
-+	struct cpumask *mm_allowed = mm_cpus_allowed(mm);
-+
-+	if (!mm)
-+		return;
-+	/* The mm_cpus_allowed is the union of each thread allowed CPUs masks. */
-+	raw_spin_lock(&mm->cpus_allowed_lock);
-+	cpumask_or(mm_allowed, mm_allowed, cpumask);
-+	WRITE_ONCE(mm->nr_cpus_allowed, cpumask_weight(mm_allowed));
-+	raw_spin_unlock(&mm->cpus_allowed_lock);
- }
- #else /* CONFIG_SCHED_MM_CID */
--static inline void mm_init_cid(struct mm_struct *mm) { }
--static inline int mm_alloc_cid(struct mm_struct *mm) { return 0; }
-+static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p) { }
-+static inline int mm_alloc_cid(struct mm_struct *mm, struct task_struct *p) { return 0; }
- static inline void mm_destroy_cid(struct mm_struct *mm) { }
-+
- static inline unsigned int mm_cid_size(void)
- {
- 	return 0;
- }
-+static inline void mm_set_cpus_allowed(struct mm_struct *mm, const struct cpumask *cpumask) { }
- #endif /* CONFIG_SCHED_MM_CID */
+@@ -331,7 +332,7 @@ static bool __ww_mutex_wound(struct MUTEX *lock,
+ 		 * wakeup pending to re-read the wounded state.
+ 		 */
+ 		if (owner != current)
+-			wake_up_process(owner);
++			wake_q_add(wake_q, owner);
  
- struct mmu_gather;
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 89ceb4a..7d950e9 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1298,7 +1298,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
- 	if (init_new_context(p, mm))
- 		goto fail_nocontext;
- 
--	if (mm_alloc_cid(mm))
-+	if (mm_alloc_cid(mm, p))
- 		goto fail_cid;
- 
- 	if (percpu_counter_init_many(mm->rss_stat, 0, GFP_KERNEL_ACCOUNT,
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 7db711b..f5ec452 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -2696,6 +2696,7 @@ __do_set_cpus_allowed(struct task_struct *p, struct affinity_context *ctx)
- 		put_prev_task(rq, p);
- 
- 	p->sched_class->set_cpus_allowed(p, ctx);
-+	mm_set_cpus_allowed(p->mm, ctx->new_mask);
- 
- 	if (queued)
- 		enqueue_task(rq, p, ENQUEUE_RESTORE | ENQUEUE_NOCLOCK);
-@@ -10243,6 +10244,7 @@ int __sched_mm_cid_migrate_from_try_steal_cid(struct rq *src_rq,
- 	 */
- 	if (!try_cmpxchg(&src_pcpu_cid->cid, &lazy_cid, MM_CID_UNSET))
- 		return -1;
-+	WRITE_ONCE(src_pcpu_cid->recent_cid, MM_CID_UNSET);
- 	return src_cid;
- }
- 
-@@ -10255,7 +10257,8 @@ void sched_mm_cid_migrate_to(struct rq *dst_rq, struct task_struct *t)
- {
- 	struct mm_cid *src_pcpu_cid, *dst_pcpu_cid;
- 	struct mm_struct *mm = t->mm;
--	int src_cid, dst_cid, src_cpu;
-+	int src_cid, src_cpu;
-+	bool dst_cid_is_set;
- 	struct rq *src_rq;
- 
- 	lockdep_assert_rq_held(dst_rq);
-@@ -10272,9 +10275,9 @@ void sched_mm_cid_migrate_to(struct rq *dst_rq, struct task_struct *t)
- 	 * allocation closest to 0 in cases where few threads migrate around
- 	 * many CPUs.
- 	 *
--	 * If destination cid is already set, we may have to just clear
--	 * the src cid to ensure compactness in frequent migrations
--	 * scenarios.
-+	 * If destination cid or recent cid is already set, we may have
-+	 * to just clear the src cid to ensure compactness in frequent
-+	 * migrations scenarios.
- 	 *
- 	 * It is not useful to clear the src cid when the number of threads is
- 	 * greater or equal to the number of allowed CPUs, because user-space
-@@ -10282,9 +10285,9 @@ void sched_mm_cid_migrate_to(struct rq *dst_rq, struct task_struct *t)
- 	 * allowed CPUs.
- 	 */
- 	dst_pcpu_cid = per_cpu_ptr(mm->pcpu_cid, cpu_of(dst_rq));
--	dst_cid = READ_ONCE(dst_pcpu_cid->cid);
--	if (!mm_cid_is_unset(dst_cid) &&
--	    atomic_read(&mm->mm_users) >= t->nr_cpus_allowed)
-+	dst_cid_is_set = !mm_cid_is_unset(READ_ONCE(dst_pcpu_cid->cid)) ||
-+			 !mm_cid_is_unset(READ_ONCE(dst_pcpu_cid->recent_cid));
-+	if (dst_cid_is_set && atomic_read(&mm->mm_users) >= READ_ONCE(mm->nr_cpus_allowed))
- 		return;
- 	src_pcpu_cid = per_cpu_ptr(mm->pcpu_cid, src_cpu);
- 	src_rq = cpu_rq(src_cpu);
-@@ -10295,13 +10298,14 @@ void sched_mm_cid_migrate_to(struct rq *dst_rq, struct task_struct *t)
- 							    src_cid);
- 	if (src_cid == -1)
- 		return;
--	if (!mm_cid_is_unset(dst_cid)) {
-+	if (dst_cid_is_set) {
- 		__mm_cid_put(mm, src_cid);
- 		return;
+ 		return true;
  	}
- 	/* Move src_cid to dst cpu. */
- 	mm_cid_snapshot_time(dst_rq, mm);
- 	WRITE_ONCE(dst_pcpu_cid->cid, src_cid);
-+	WRITE_ONCE(dst_pcpu_cid->recent_cid, src_cid);
+@@ -352,7 +353,8 @@ static bool __ww_mutex_wound(struct MUTEX *lock,
+  * The current task must not be on the wait list.
+  */
+ static void
+-__ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx)
++__ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx,
++			 struct wake_q_head *wake_q)
+ {
+ 	struct MUTEX_WAITER *cur;
+ 
+@@ -364,8 +366,8 @@ __ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx)
+ 		if (!cur->ww_ctx)
+ 			continue;
+ 
+-		if (__ww_mutex_die(lock, cur, ww_ctx) ||
+-		    __ww_mutex_wound(lock, cur->ww_ctx, ww_ctx))
++		if (__ww_mutex_die(lock, cur, ww_ctx, wake_q) ||
++		    __ww_mutex_wound(lock, cur->ww_ctx, ww_ctx, wake_q))
+ 			break;
+ 	}
+ }
+@@ -377,6 +379,8 @@ __ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx)
+ static __always_inline void
+ ww_mutex_set_context_fastpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
+ {
++	DEFINE_WAKE_Q(wake_q);
++
+ 	ww_mutex_lock_acquired(lock, ctx);
+ 
+ 	/*
+@@ -405,8 +409,11 @@ ww_mutex_set_context_fastpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
+ 	 * die or wound us.
+ 	 */
+ 	lock_wait_lock(&lock->base);
+-	__ww_mutex_check_waiters(&lock->base, ctx);
++	__ww_mutex_check_waiters(&lock->base, ctx, &wake_q);
++	preempt_disable();
+ 	unlock_wait_lock(&lock->base);
++	wake_up_q(&wake_q);
++	preempt_enable();
  }
  
- static void sched_mm_cid_remote_clear(struct mm_struct *mm, struct mm_cid *pcpu_cid,
-@@ -10540,7 +10544,7 @@ void sched_mm_cid_after_execve(struct task_struct *t)
- 		 * Matches barrier in sched_mm_cid_remote_clear_old().
+ static __always_inline int
+@@ -488,7 +495,8 @@ __ww_mutex_check_kill(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+ static inline int
+ __ww_mutex_add_waiter(struct MUTEX_WAITER *waiter,
+ 		      struct MUTEX *lock,
+-		      struct ww_acquire_ctx *ww_ctx)
++		      struct ww_acquire_ctx *ww_ctx,
++		      struct wake_q_head *wake_q)
+ {
+ 	struct MUTEX_WAITER *cur, *pos = NULL;
+ 	bool is_wait_die;
+@@ -532,7 +540,7 @@ __ww_mutex_add_waiter(struct MUTEX_WAITER *waiter,
+ 		pos = cur;
+ 
+ 		/* Wait-Die: ensure younger waiters die. */
+-		__ww_mutex_die(lock, cur, ww_ctx);
++		__ww_mutex_die(lock, cur, ww_ctx, wake_q);
+ 	}
+ 
+ 	__ww_waiter_add(lock, waiter, pos);
+@@ -550,7 +558,7 @@ __ww_mutex_add_waiter(struct MUTEX_WAITER *waiter,
+ 		 * such that either we or the fastpath will wound @ww->ctx.
  		 */
  		smp_mb();
--		t->last_mm_cid = t->mm_cid = mm_cid_get(rq, mm);
-+		t->last_mm_cid = t->mm_cid = mm_cid_get(rq, t, mm);
+-		__ww_mutex_wound(lock, ww_ctx, ww->ctx);
++		__ww_mutex_wound(lock, ww_ctx, ww->ctx, wake_q);
  	}
- 	rseq_set_notify_resume(t);
- }
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index fba524c..20b6e75 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -3596,24 +3596,41 @@ static inline void mm_cid_put(struct mm_struct *mm)
- 	__mm_cid_put(mm, mm_cid_clear_lazy_put(cid));
- }
  
--static inline int __mm_cid_try_get(struct mm_struct *mm)
-+static inline int __mm_cid_try_get(struct task_struct *t, struct mm_struct *mm)
- {
--	struct cpumask *cpumask;
--	int cid;
-+	struct cpumask *cidmask = mm_cidmask(mm);
-+	struct mm_cid __percpu *pcpu_cid = mm->pcpu_cid;
-+	int cid = __this_cpu_read(pcpu_cid->recent_cid);
- 
--	cpumask = mm_cidmask(mm);
-+	/* Try to re-use recent cid. This improves cache locality. */
-+	if (!mm_cid_is_unset(cid) && !cpumask_test_and_set_cpu(cid, cidmask))
-+		return cid;
-+	/*
-+	 * Expand cid allocation if the maximum number of concurrency
-+	 * IDs allocated (max_nr_cid) is below the number cpus allowed
-+	 * and number of threads. Expanding cid allocation as much as
-+	 * possible improves cache locality.
-+	 */
-+	cid = atomic_read(&mm->max_nr_cid);
-+	while (cid < READ_ONCE(mm->nr_cpus_allowed) && cid < atomic_read(&mm->mm_users)) {
-+		if (!atomic_try_cmpxchg(&mm->max_nr_cid, &cid, cid + 1))
-+			continue;
-+		if (!cpumask_test_and_set_cpu(cid, cidmask))
-+			return cid;
-+	}
- 	/*
-+	 * Find the first available concurrency id.
- 	 * Retry finding first zero bit if the mask is temporarily
- 	 * filled. This only happens during concurrent remote-clear
- 	 * which owns a cid without holding a rq lock.
- 	 */
- 	for (;;) {
--		cid = cpumask_first_zero(cpumask);
--		if (cid < nr_cpu_ids)
-+		cid = cpumask_first_zero(cidmask);
-+		if (cid < READ_ONCE(mm->nr_cpus_allowed))
- 			break;
- 		cpu_relax();
- 	}
--	if (cpumask_test_and_set_cpu(cid, cpumask))
-+	if (cpumask_test_and_set_cpu(cid, cidmask))
- 		return -1;
- 
- 	return cid;
-@@ -3631,7 +3648,8 @@ static inline void mm_cid_snapshot_time(struct rq *rq, struct mm_struct *mm)
- 	WRITE_ONCE(pcpu_cid->time, rq->clock);
- }
- 
--static inline int __mm_cid_get(struct rq *rq, struct mm_struct *mm)
-+static inline int __mm_cid_get(struct rq *rq, struct task_struct *t,
-+			       struct mm_struct *mm)
- {
- 	int cid;
- 
-@@ -3641,13 +3659,13 @@ static inline int __mm_cid_get(struct rq *rq, struct mm_struct *mm)
- 	 * guarantee forward progress.
- 	 */
- 	if (!READ_ONCE(use_cid_lock)) {
--		cid = __mm_cid_try_get(mm);
-+		cid = __mm_cid_try_get(t, mm);
- 		if (cid >= 0)
- 			goto end;
- 		raw_spin_lock(&cid_lock);
- 	} else {
- 		raw_spin_lock(&cid_lock);
--		cid = __mm_cid_try_get(mm);
-+		cid = __mm_cid_try_get(t, mm);
- 		if (cid >= 0)
- 			goto unlock;
- 	}
-@@ -3667,7 +3685,7 @@ static inline int __mm_cid_get(struct rq *rq, struct mm_struct *mm)
- 	 * all newcoming allocations observe the use_cid_lock flag set.
- 	 */
- 	do {
--		cid = __mm_cid_try_get(mm);
-+		cid = __mm_cid_try_get(t, mm);
- 		cpu_relax();
- 	} while (cid < 0);
- 	/*
-@@ -3684,7 +3702,8 @@ end:
- 	return cid;
- }
- 
--static inline int mm_cid_get(struct rq *rq, struct mm_struct *mm)
-+static inline int mm_cid_get(struct rq *rq, struct task_struct *t,
-+			     struct mm_struct *mm)
- {
- 	struct mm_cid __percpu *pcpu_cid = mm->pcpu_cid;
- 	struct cpumask *cpumask;
-@@ -3701,8 +3720,9 @@ static inline int mm_cid_get(struct rq *rq, struct mm_struct *mm)
- 		if (try_cmpxchg(&this_cpu_ptr(pcpu_cid)->cid, &cid, MM_CID_UNSET))
- 			__mm_cid_put(mm, mm_cid_clear_lazy_put(cid));
- 	}
--	cid = __mm_cid_get(rq, mm);
-+	cid = __mm_cid_get(rq, t, mm);
- 	__this_cpu_write(pcpu_cid->cid, cid);
-+	__this_cpu_write(pcpu_cid->recent_cid, cid);
- 
- 	return cid;
- }
-@@ -3755,7 +3775,7 @@ static inline void switch_mm_cid(struct rq *rq,
- 		prev->mm_cid = -1;
- 	}
- 	if (next->mm_cid_active)
--		next->last_mm_cid = next->mm_cid = mm_cid_get(rq, next->mm);
-+		next->last_mm_cid = next->mm_cid = mm_cid_get(rq, next, next->mm);
- }
- 
- #else /* !CONFIG_SCHED_MM_CID: */
+ 	return 0;
 
