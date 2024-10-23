@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-2531-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2532-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3F89AB91E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2024 23:54:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633289AC89A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 23 Oct 2024 13:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 669ED1C22FE7
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Oct 2024 21:54:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2435A28127F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 23 Oct 2024 11:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC331CEE92;
-	Tue, 22 Oct 2024 21:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3EE1AAE3F;
+	Wed, 23 Oct 2024 11:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1iDAK/tS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZQ3YACrd"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NentQEad";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f6EO7KOs"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9011CDFBF;
-	Tue, 22 Oct 2024 21:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBC31AA794;
+	Wed, 23 Oct 2024 11:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729634038; cv=none; b=qgQEmTC4VTLlueNBeb8OiSf3F6aEKGtXXyokjPRN7TyvgV3XrR/5a2CMSOScx6hqhzeKS5wq7x2CLeljxyEqVPfZ2pHWg2XbZwm1mNJX27bLhLxKnwJpHkzegYDKpWT1+1RI4xqSdeOeoInG0Fh9ParBuoEgqKztKdUIrrhPbhc=
+	t=1729681654; cv=none; b=ND1s/F1otqjfcAO/YCRcKOQLLUV0qNzG8c3tfutTu5trY6Hw/NOQ07+pbiNlxbKEgLwGMUnQ9KpftTsdnnmia5Wmnz9v/SphlX7UHxAugRvZ1IWQzlTsDXayddQZY1XCUnTLn5jOuPqigsNjHrENtAEZxuwo+sSzSdDsb/GrVzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729634038; c=relaxed/simple;
-	bh=l34BD1j/1/oJ3uF7bii0oTpAYVriytCSRT+oMkf2eFU=;
+	s=arc-20240116; t=1729681654; c=relaxed/simple;
+	bh=ZCs1fw9409QEi3f89nGi4CPcpH5nuzA0D3A8PqjG4KM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=aDszS6VXBmUZK/veU1+W7WDKj0Tknp2Fqxc3bw7AZaneE4fCgHGTW4Qpna/cmo0+zMEs4fhlH5si5fts6gIXgI9bJIFPUV87/cWUE7fzq7wciEX6c5SiL8iu32S01Iu9An9gORO0Oqg6ybnhRDfgIWwOE2HNQQbzOt5fqX+r7DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1iDAK/tS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZQ3YACrd; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=mhwrwF51Xn3pBPQFbx4sX6EeTNh9RgTs8xtodqQjsGBEzd03L/0H2RvryBFa41z/AUt211qcUW2aFcM2JGNOKiDyp4nBR6CXHHJTcjoJQrfyOMvdKNFFEkNpJzFL8S5BvqIY41x3SyT0yOcRQdcn3PcY5Yjhj3qUecfmYtS/T9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NentQEad; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f6EO7KOs; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 22 Oct 2024 21:53:53 -0000
+Date: Wed, 23 Oct 2024 11:07:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729634034;
+	s=2020; t=1729681649;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3mIb/PG4p052Kc0B5i5E5AIGLOvLh58J5dgVNcFy7FI=;
-	b=1iDAK/tSpBXpRYZwVolgUMcKrREO1nImEQTH6/UYlq5QCTqX4Hh6Tbk4JFoSsZuYlbM6AC
-	Lsv2rahph1p80iM3WHrHrixZebimo0mED9L1C3hnlOTcL6k8OqsPp5VYgq9OJPIfASeo6u
-	3nRUWAVWHExGx74SWJOZIgSmuQRaKrx7F7RW+kYW8iUMzDUTkmElRBtnYmBy17kZcep6zz
-	lEuVzG9YZR2HJzTLLvYh6aOgCs9vSGCh59Vzx5soluu6ZsrfptEg+0gzKlyWEkI8Ww3DB2
-	+SPDPbSqDjfM3MSsLui2sSBowJ5Cay/O3ce68HSwciwIn6RYUPxfDkgrdZ15hw==
+	bh=/HthCsXsFcjXMcp9quteAwOAzrZwq88g/YRAokMF+RU=;
+	b=NentQEadFqENSPSHEpKl8VFYQ5OaDUYcEjsgRXxmitMHItxgCVl+HANDCixyY07PwP8fDH
+	bmkfFkd1x8jI5PTOEHawhlN2HtK+F5+vUsG4Maeq3h7qqTjSlU7vE8etWdfa29Lonr9WVy
+	QOnkJfZ7PkhaYEOPwJZjoTfGUl1LKpT2+7O/1er6LuXiE2ndjIFHA5v/3BvDLi3l+JKMCx
+	wsKpcZJvKb+6Tx/7elY0eey9B+mJSQ9dwzjY2mIMVIyBwspohEKXLuLGO8dB/CiaJH9u9l
+	Wd448qm3IniYDtFixf8dwIZVJDR/A/x81Ki7Pp8vSbCHpJTVoJLUannDGxTseQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729634034;
+	s=2020e; t=1729681649;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3mIb/PG4p052Kc0B5i5E5AIGLOvLh58J5dgVNcFy7FI=;
-	b=ZQ3YACrdLqTd29FqNsPo4MwX/ie16beWHmzRxymnaKBTj0eTYIvtIiNYYdC1qbWQ9miM8S
-	oBDbERLDxS3BXnBA==
-From: "tip-bot2 for David Woodhouse" <tip-bot2@linutronix.de>
+	bh=/HthCsXsFcjXMcp9quteAwOAzrZwq88g/YRAokMF+RU=;
+	b=f6EO7KOsiLuVQT/My7N/kMD18eA+a7iULqX9REjqTERnGkElHRQeKSkmvYMu+1xzjSWKgZ
+	xSYrNfXkEZ4B5yAQ==
+From: "tip-bot2 for Ashish Kalra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lockdep: Add lockdep_cleanup_dead_cpu()
-Cc: David Woodhouse <dwmw@amazon.co.uk>, Thomas Gleixner <tglx@linutronix.de>,
- Boqun Feng <boqun.feng@gmail.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <f7bd2b3b999051bb3ef4be34526a9262008285f5.camel@infradead.org>
-References: <f7bd2b3b999051bb3ef4be34526a9262008285f5.camel@infradead.org>
+Subject: [tip: x86/urgent] x86/sev: Ensure that RMP table fixups are reserved
+Cc: Thomas Lendacky <thomas.lendacky@amd.com>,
+ Ashish Kalra <ashish.kalra@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+  <stable@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240815221630.131133-1-Ashish.Kalra@amd.com>
+References: <20240815221630.131133-1-Ashish.Kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172963403399.1442.3576494229925339302.tip-bot2@tip-bot2>
+Message-ID: <172968164814.1442.8035313578482871705.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,130 +79,131 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     0784181b44af831a3fa52e1e5ff77c388d699dba
-Gitweb:        https://git.kernel.org/tip/0784181b44af831a3fa52e1e5ff77c388d699dba
-Author:        David Woodhouse <dwmw@amazon.co.uk>
-AuthorDate:    Thu, 26 Sep 2024 16:17:37 +01:00
-Committer:     Boqun Feng <boqun.feng@gmail.com>
-CommitterDate: Thu, 17 Oct 2024 20:07:22 -07:00
+Commit-ID:     88a921aa3c6b006160d6a46a231b8b32227e8196
+Gitweb:        https://git.kernel.org/tip/88a921aa3c6b006160d6a46a231b8b32227e8196
+Author:        Ashish Kalra <ashish.kalra@amd.com>
+AuthorDate:    Thu, 15 Aug 2024 22:16:30 
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 23 Oct 2024 12:34:06 +02:00
 
-lockdep: Add lockdep_cleanup_dead_cpu()
+x86/sev: Ensure that RMP table fixups are reserved
 
-Add a function to check that an offline CPU has left the tracing
-infrastructure in a sane state.
+The BIOS reserves RMP table memory via e820 reservations. This can still lead
+to RMP page faults during kexec if the host tries to access memory within the
+same 2MB region.
 
-Commit 9bb69ba4c177 ("ACPI: processor_idle: use raw_safe_halt() in
-acpi_idle_play_dead()") fixed an issue where the acpi_idle_play_dead()
-function called safe_halt() instead of raw_safe_halt(), which had the
-side-effect of setting the hardirqs_enabled flag for the offline CPU.
+Commit
 
-On x86 this triggered warnings from lockdep_assert_irqs_disabled() when
-the CPU was brought back online again later. These warnings were too
-early for the exception to be handled correctly, leading to a
-triple-fault.
+  400fea4b9651 ("x86/sev: Add callback to apply RMP table fixups for kexec"
 
-Add lockdep_cleanup_dead_cpu() to check for this kind of failure mode,
-print the events leading up to it, and correct it so that the CPU can
-come online again correctly. Re-introducing the original bug now merely
-results in this warning instead:
+adjusts the e820 reservations for the RMP table so that the entire 2MB range
+at the start/end of the RMP table is marked reserved.
 
-[   61.556652] smpboot: CPU 1 is now offline
-[   61.556769] CPU 1 left hardirqs enabled!
-[   61.556915] irq event stamp: 128149
-[   61.556965] hardirqs last  enabled at (128149): [<ffffffff81720a36>] acpi_idle_play_dead+0x46/0x70
-[   61.557055] hardirqs last disabled at (128148): [<ffffffff81124d50>] do_idle+0x90/0xe0
-[   61.557117] softirqs last  enabled at (128078): [<ffffffff81cec74c>] __do_softirq+0x31c/0x423
-[   61.557199] softirqs last disabled at (128065): [<ffffffff810baae1>] __irq_exit_rcu+0x91/0x100
+The e820 reservations are then passed to firmware via SNP_INIT where they get
+marked HV-Fixed.
 
-[boqun: Capitalize the title and reword the message a bit]
+The RMP table fixups are done after the e820 ranges have been added to
+memblock, allowing the fixup ranges to still be allocated and used by the
+system.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/f7bd2b3b999051bb3ef4be34526a9262008285f5.camel@infradead.org
+The problem is that this memory range is now marked reserved in the e820
+tables and during SNP initialization these reserved ranges are marked as
+HV-Fixed.  This means that the pages cannot be used by an SNP guest, only by
+the hypervisor.
+
+However, the memory management subsystem does not make this distinction and
+can allocate one of those pages to an SNP guest. This will ultimately result
+in RMPUPDATE failures associated with the guest, causing it to fail to start
+or terminate when accessing the HV-Fixed page.
+
+The issue is captured below with memblock=debug:
+
+  [    0.000000] SEV-SNP: *** DEBUG: snp_probe_rmptable_info:352 - rmp_base=0x280d4800000, rmp_end=0x28357efffff
+  ...
+  [    0.000000] BIOS-provided physical RAM map:
+  ...
+  [    0.000000] BIOS-e820: [mem 0x00000280d4800000-0x0000028357efffff] reserved
+  [    0.000000] BIOS-e820: [mem 0x0000028357f00000-0x0000028357ffffff] usable
+  ...
+  ...
+  [    0.183593] memblock add: [0x0000028357f00000-0x0000028357ffffff] e820__memblock_setup+0x74/0xb0
+  ...
+  [    0.203179] MEMBLOCK configuration:
+  [    0.207057]  memory size = 0x0000027d0d194000 reserved size = 0x0000000009ed2c00
+  [    0.215299]  memory.cnt  = 0xb
+  ...
+  [    0.311192]  memory[0x9]     [0x0000028357f00000-0x0000028357ffffff], 0x0000000000100000 bytes flags: 0x0
+  ...
+  ...
+  [    0.419110] SEV-SNP: Reserving start/end of RMP table on a 2MB boundary [0x0000028357e00000]
+  [    0.428514] e820: update [mem 0x28357e00000-0x28357ffffff] usable ==> reserved
+  [    0.428517] e820: update [mem 0x28357e00000-0x28357ffffff] usable ==> reserved
+  [    0.428520] e820: update [mem 0x28357e00000-0x28357ffffff] usable ==> reserved
+  ...
+  ...
+  [    5.604051] MEMBLOCK configuration:
+  [    5.607922]  memory size = 0x0000027d0d194000 reserved size = 0x0000000011faae02
+  [    5.616163]  memory.cnt  = 0xe
+  ...
+  [    5.754525]  memory[0xc]     [0x0000028357f00000-0x0000028357ffffff], 0x0000000000100000 bytes on node 0 flags: 0x0
+  ...
+  ...
+  [   10.080295] Early memory node ranges[   10.168065]
+  ...
+  node   0: [mem 0x0000028357f00000-0x0000028357ffffff]
+  ...
+  ...
+  [ 8149.348948] SEV-SNP: RMPUPDATE failed for PFN 28357f7c, pg_level: 1, ret: 2
+
+As shown above, the memblock allocations show 1MB after the end of the RMP as
+available for allocation, which is what the RMP table fixups have reserved.
+This memory range subsequently gets allocated as SNP guest memory, resulting
+in an RMPUPDATE failure.
+
+This can potentially be fixed by not reserving the memory range in the e820
+table, but that causes kexec failures when using the KEXEC_FILE_LOAD syscall.
+
+The solution is to use memblock_reserve() to mark the memory reserved for the
+system, ensuring that it cannot be allocated to an SNP guest.
+
+Since HV-Fixed memory is still readable/writable by the host, this only ends
+up being a problem if the memory in this range requires a page state change,
+which generally will only happen when allocating memory in this range to be
+used for running SNP guests, which is now possible with the SNP hypervisor
+support in kernel 6.11.
+
+Backporter note:
+
+Fixes tag points to a 6.9 change but as the last paragraph above explains,
+this whole thing can happen after 6.11 received SNP HV support, therefore
+backporting to 6.9 is not really necessary.
+
+  [ bp: Massage commit message. ]
+
+Fixes: 400fea4b9651 ("x86/sev: Add callback to apply RMP table fixups for kexec")
+Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: <stable@kernel.org> # 6.11, see Backporter note above.
+Link: https://lore.kernel.org/r/20240815221630.131133-1-Ashish.Kalra@amd.com
 ---
- include/linux/irqflags.h |  6 ++++++
- kernel/cpu.c             |  1 +
- kernel/locking/lockdep.c | 24 ++++++++++++++++++++++++
- 3 files changed, 31 insertions(+)
+ arch/x86/virt/svm/sev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
-index 3f003d5..57b074e 100644
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -18,6 +18,8 @@
- #include <asm/irqflags.h>
- #include <asm/percpu.h>
- 
-+struct task_struct;
-+
- /* Currently lockdep_softirqs_on/off is used only by lockdep */
- #ifdef CONFIG_PROVE_LOCKING
-   extern void lockdep_softirqs_on(unsigned long ip);
-@@ -25,12 +27,16 @@
-   extern void lockdep_hardirqs_on_prepare(void);
-   extern void lockdep_hardirqs_on(unsigned long ip);
-   extern void lockdep_hardirqs_off(unsigned long ip);
-+  extern void lockdep_cleanup_dead_cpu(unsigned int cpu,
-+				       struct task_struct *idle);
- #else
-   static inline void lockdep_softirqs_on(unsigned long ip) { }
-   static inline void lockdep_softirqs_off(unsigned long ip) { }
-   static inline void lockdep_hardirqs_on_prepare(void) { }
-   static inline void lockdep_hardirqs_on(unsigned long ip) { }
-   static inline void lockdep_hardirqs_off(unsigned long ip) { }
-+  static inline void lockdep_cleanup_dead_cpu(unsigned int cpu,
-+					      struct task_struct *idle) {}
- #endif
- 
- #ifdef CONFIG_TRACE_IRQFLAGS
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index d293d52..c4aaf73 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1338,6 +1338,7 @@ static int takedown_cpu(unsigned int cpu)
- 
- 	cpuhp_bp_sync_dead(cpu);
- 
-+	lockdep_cleanup_dead_cpu(cpu, idle_thread_get(cpu));
- 	tick_cleanup_dead_cpu(cpu);
- 
- 	/*
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 536bd47..6fd4af2 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -4586,6 +4586,30 @@ void lockdep_softirqs_off(unsigned long ip)
- 		debug_atomic_inc(redundant_softirqs_off);
+diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+index 0ce1776..9a6a943 100644
+--- a/arch/x86/virt/svm/sev.c
++++ b/arch/x86/virt/svm/sev.c
+@@ -173,6 +173,8 @@ static void __init __snp_fixup_e820_tables(u64 pa)
+ 		e820__range_update(pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
+ 		e820__range_update_table(e820_table_kexec, pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
+ 		e820__range_update_table(e820_table_firmware, pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
++		if (!memblock_is_region_reserved(pa, PMD_SIZE))
++			memblock_reserve(pa, PMD_SIZE);
+ 	}
  }
  
-+/**
-+ * lockdep_cleanup_dead_cpu - Ensure CPU lockdep state is cleanly stopped
-+ *
-+ * @cpu: index of offlined CPU
-+ * @idle: task pointer for offlined CPU's idle thread
-+ *
-+ * Invoked after the CPU is dead. Ensures that the tracing infrastructure
-+ * is left in a suitable state for the CPU to be subsequently brought
-+ * online again.
-+ */
-+void lockdep_cleanup_dead_cpu(unsigned int cpu, struct task_struct *idle)
-+{
-+	if (unlikely(!debug_locks))
-+		return;
-+
-+	if (unlikely(per_cpu(hardirqs_enabled, cpu))) {
-+		pr_warn("CPU %u left hardirqs enabled!", cpu);
-+		if (idle)
-+			print_irqtrace_events(idle);
-+		/* Clean it up for when the CPU comes online again. */
-+		per_cpu(hardirqs_enabled, cpu) = 0;
-+	}
-+}
-+
- static int
- mark_usage(struct task_struct *curr, struct held_lock *hlock, int check)
- {
 
