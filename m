@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-2550-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2551-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F0B9B0652
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2024 16:54:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 616149B0656
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2024 16:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13EC1F23856
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2024 14:54:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4B2EB26E83
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2024 14:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CE31632D0;
-	Fri, 25 Oct 2024 14:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E87170A37;
+	Fri, 25 Oct 2024 14:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4FvskVX2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5zXyTzoo"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pOlHt/tC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PNlWSbuW"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865E015821A;
-	Fri, 25 Oct 2024 14:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F5515A858;
+	Fri, 25 Oct 2024 14:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729868029; cv=none; b=M3G9aTjzBZLqFcG+34e1DuBDqGKvuvZvMT5agE7SDKSxRYszYGoiflQB8tk9IqjShFq6c6kN4J3lGYDwi01vdrc608yMTBch8QkniYs5SZufTuvbtnBGt5BDdqf2SZ7OgQRU1V5681p3lncvsVBOkgCUPI+5J0+/1NDtKDjdlUc=
+	t=1729868030; cv=none; b=s7+m28TZqVMTG17LXQqLaq5GZIZf1tK6JBno9Fp2wuaqxBcgPM0FwE1IeSvLzRquP3+uP0+PSvGqQh7L+QdjyTTC+WPyfc4Z0F9dR4US5NvuSJ6/rCOkk2QXnOiVoDX3ld4Hk+sYukq9tAlIJdTwS1G6cF/3pMZ3qymDGPI4kGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729868029; c=relaxed/simple;
-	bh=FP697xHO10SM+DqUqOjQz8TwG8qQKzcDAn021RGOuqE=;
+	s=arc-20240116; t=1729868030; c=relaxed/simple;
+	bh=zQamBrsBFnJwYa722gV48fN5wPH2n4GKdisc9mth6IQ=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ll3pPSLgBNWSbt/WkbEhfvVgGvpg/iixh91z81pDLoa8r+vQzRJL6HOPpmJ8IdroCbiD+vinHTDV7xu9e5iDW9Bh2uU+P26LauunhOjKBtv7CvdzgVHjkiyiSeA5TatxcMyR4qIwxXbj+E0j8F8sqm4+hidsZfQ9n1Cw+FOEwTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4FvskVX2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5zXyTzoo; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=qh4cf4LTPAMDSMi6mCMb0/jzubCBYPc9G3GshdVy1wMcENKFmri2tGmtrVxesrw4hijq2oQcsRVHcOps7ft5iKRjb2xSWlv0l3BevZyQurNKJ3KLlJRtHE2i09zM48vdBPahNmo1s4qx2dfbtE6ChpnpS2qwPMjwy19+yeHlzUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pOlHt/tC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PNlWSbuW; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Fri, 25 Oct 2024 14:53:45 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nwRcPXeL4NggGKI2IUXcUaijT7wfiWCf9bJRPoluvDU=;
-	b=4FvskVX23+v0+qia+gt2NX7OIOnjRanBp7UgW5U1WntZef2PdVA4nzY6dsDwOudbN/dQEG
-	wguT37ur2xQa6pBJnBVUsvHCdbSTWeq49IupIHaH6pMiDvJmr4thPrk36clLWKvpxpRnTq
-	hzvMNXSh7y/6DiA6201RK3KMtvfKqznTH6rgh7DGcFAQ96Jf5y4mPF8xp0IQHbW8n/Q6Xk
-	Yq2GBICYwqPRT7yh5mnLXS/XK9kN8RTQcvk2x6EwWZObuH45kwQz4O7NgV/y8l+h2AVMik
-	/qGN0r1HT5LDumRWd/fTGjGX1BcEP0kFERXtTP5xpWLvUzNd8EnXelNnbBbw2g==
+	bh=j34A0UTVMLI13okJ0nwyBBpvJaOSk36nr8VcavX2eFY=;
+	b=pOlHt/tC9zHmzYOE61B/4yN488nrRTi02jcyfnK/DWJrWVKZNRM7slIOmFDbJscpuObXUE
+	YOrAb5ZtH/TKx94S9kpMQkwkces21RMn4v1i8QmnuEuJI5bQsyhtSiQENRlqow3Xx6iGfC
+	pIeehngwrmGY5R4/Sm2G9FAGBMwwMNApD2Xz9T8v0+UkHTDlvh4RcORSw1bRXXE4jevkFl
+	HSd+15D1klZCn4yyX7iQdwqbg/Vp/Lx5FqWoXGBPb7LDNUdgeO0L5ZHutTeuVwwgJ7U845
+	njHcQ7g7vmfxU79DFi8ExFhBAvka23/aIiLqYrTLcL52X8/c8pZfbqfPsUlLpg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1729868026;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,29 +52,29 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nwRcPXeL4NggGKI2IUXcUaijT7wfiWCf9bJRPoluvDU=;
-	b=5zXyTzooi5LbKnCymAoRqBCM9/R3YXCHhJONxh8zwCjB+F+B9KWH26fXn+j2Mla21Xs354
-	V7AYnqDXekSSjuAw==
+	bh=j34A0UTVMLI13okJ0nwyBBpvJaOSk36nr8VcavX2eFY=;
+	b=PNlWSbuW9FHVhzxcsub2FKOOJzxhVk9euP+eKfSQCSnyQJTci7tAPQG8bpRiR3kR8eTJfL
+	vhwqTx93v8vOj4Ag==
 From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: timers/core] timekeeping: Remove TK_MIRROR timekeeping_update() action
+ [tip: timers/core] timekeeping: Rework do_adjtimex() to use shadow_timekeeper
 Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
  Thomas Gleixner <tglx@linutronix.de>, John Stultz <jstultz@google.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
 In-Reply-To: =?utf-8?q?=3C20241009-devel-anna-maria-b4-timers-ptp-timekeepin?=
- =?utf-8?q?g-v2-24-554456a44a15=40linutronix=2Ede=3E?=
+ =?utf-8?q?g-v2-23-554456a44a15=40linutronix=2Ede=3E?=
 References: =?utf-8?q?=3C20241009-devel-anna-maria-b4-timers-ptp-timekeeping?=
- =?utf-8?q?-v2-24-554456a44a15=40linutronix=2Ede=3E?=
+ =?utf-8?q?-v2-23-554456a44a15=40linutronix=2Ede=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172986802538.1442.3024123527670216234.tip-bot2@tip-bot2>
+Message-ID: <172986802597.1442.1000620555176157192.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,55 +84,118 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     da5cf1159cd1fb7016633c68fc4be72a6b8a3db4
-Gitweb:        https://git.kernel.org/tip/da5cf1159cd1fb7016633c68fc4be72a6b8a3db4
+Commit-ID:     f310960e85f1332ec21b26e10bd1287610a28c11
+Gitweb:        https://git.kernel.org/tip/f310960e85f1332ec21b26e10bd1287610a28c11
 Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
-AuthorDate:    Wed, 09 Oct 2024 10:29:17 +02:00
+AuthorDate:    Wed, 09 Oct 2024 10:29:16 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 25 Oct 2024 16:41:13 +02:00
 
-timekeeping: Remove TK_MIRROR timekeeping_update() action
+timekeeping: Rework do_adjtimex() to use shadow_timekeeper
 
-All call sites of using TK_MIRROR flag in timekeeping_update() are
-gone. The TK_MIRROR dependent code path is therefore dead code.
+Updates of the timekeeper can be done by operating on the shadow timekeeper
+and afterwards copying the result into the real timekeeper. This has the
+advantage, that the sequence count write protected region is kept as small
+as possible.
 
-Remove it along with the TK_MIRROR define.
+Convert do_adjtimex() to use this scheme and take the opportunity to use a
+scoped_guard() for locking.
+
+That requires to have a separate function for updating the leap state so
+that the update is protected by the sequence count. This also brings the
+timekeeper and the shadow timekeeper in sync for this state, which was not
+the case so far. That's not a correctness problem as the state is only used
+at the read sides which use the real timekeeper, but it's inconsistent
+nevertheless.
 
 Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/all/20241009-devel-anna-maria-b4-timers-ptp-timekeeping-v2-24-554456a44a15@linutronix.de
+Link: https://lore.kernel.org/all/20241009-devel-anna-maria-b4-timers-ptp-timekeeping-v2-23-554456a44a15@linutronix.de
 
 ---
- kernel/time/timekeeping.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ kernel/time/timekeeping.c | 41 +++++++++++++++++++++++---------------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
 diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index f117982..6ca250a 100644
+index 231eaa4..f117982 100644
 --- a/kernel/time/timekeeping.c
 +++ b/kernel/time/timekeeping.c
-@@ -30,8 +30,7 @@
- #include "timekeeping_internal.h"
- 
- #define TK_CLEAR_NTP		(1 << 0)
--#define TK_MIRROR		(1 << 1)
--#define TK_CLOCK_WAS_SET	(1 << 2)
-+#define TK_CLOCK_WAS_SET	(1 << 1)
- 
- #define TK_UPDATE_ALL		(TK_CLEAR_NTP | TK_CLOCK_WAS_SET)
- 
-@@ -816,13 +815,6 @@ static void timekeeping_update(struct tk_data *tkd, struct timekeeper *tk, unsig
- 
- 	if (action & TK_CLOCK_WAS_SET)
- 		tk->clock_was_set_seq++;
--	/*
--	 * The mirroring of the data to the shadow-timekeeper needs
--	 * to happen last here to ensure we don't over-write the
--	 * timekeeper structure on the next update with stale data
--	 */
--	if (action & TK_MIRROR)
--		timekeeping_restore_shadow(tkd);
+@@ -742,6 +742,18 @@ static inline void tk_update_leap_state(struct timekeeper *tk)
  }
  
- static void timekeeping_update_from_shadow(struct tk_data *tkd, unsigned int action)
+ /*
++ * Leap state update for both shadow and the real timekeeper
++ * Separate to spare a full memcpy() of the timekeeper.
++ */
++static void tk_update_leap_state_all(struct tk_data *tkd)
++{
++	write_seqcount_begin(&tkd->seq);
++	tk_update_leap_state(&tkd->shadow_timekeeper);
++	tkd->timekeeper.next_leap_ktime = tkd->shadow_timekeeper.next_leap_ktime;
++	write_seqcount_end(&tkd->seq);
++}
++
++/*
+  * Update the ktime_t based scalar nsec members of the timekeeper
+  */
+ static inline void tk_update_ktime_data(struct timekeeper *tk)
+@@ -2656,13 +2668,10 @@ EXPORT_SYMBOL_GPL(random_get_entropy_fallback);
+  */
+ int do_adjtimex(struct __kernel_timex *txc)
+ {
+-	struct timekeeper *tk = &tk_core.timekeeper;
+ 	struct audit_ntp_data ad;
+ 	bool offset_set = false;
+ 	bool clock_set = false;
+ 	struct timespec64 ts;
+-	unsigned long flags;
+-	s32 orig_tai, tai;
+ 	int ret;
+ 
+ 	/* Validate the data before disabling interrupts */
+@@ -2673,6 +2682,7 @@ int do_adjtimex(struct __kernel_timex *txc)
+ 
+ 	if (txc->modes & ADJ_SETOFFSET) {
+ 		struct timespec64 delta;
++
+ 		delta.tv_sec  = txc->time.tv_sec;
+ 		delta.tv_nsec = txc->time.tv_usec;
+ 		if (!(txc->modes & ADJ_NANO))
+@@ -2690,23 +2700,22 @@ int do_adjtimex(struct __kernel_timex *txc)
+ 	ktime_get_real_ts64(&ts);
+ 	add_device_randomness(&ts, sizeof(ts));
+ 
+-	raw_spin_lock_irqsave(&tk_core.lock, flags);
+-	write_seqcount_begin(&tk_core.seq);
++	scoped_guard (raw_spinlock_irqsave, &tk_core.lock) {
++		struct timekeeper *tks = &tk_core.shadow_timekeeper;
++		s32 orig_tai, tai;
+ 
+-	orig_tai = tai = tk->tai_offset;
+-	ret = __do_adjtimex(txc, &ts, &tai, &ad);
++		orig_tai = tai = tks->tai_offset;
++		ret = __do_adjtimex(txc, &ts, &tai, &ad);
+ 
+-	if (tai != orig_tai) {
+-		__timekeeping_set_tai_offset(tk, tai);
+-		timekeeping_update(&tk_core, tk, TK_MIRROR | TK_CLOCK_WAS_SET);
+-		clock_set = true;
+-	} else {
+-		tk_update_leap_state(tk);
++		if (tai != orig_tai) {
++			__timekeeping_set_tai_offset(tks, tai);
++			timekeeping_update_from_shadow(&tk_core, TK_CLOCK_WAS_SET);
++			clock_set = true;
++		} else {
++			tk_update_leap_state_all(&tk_core);
++		}
+ 	}
+ 
+-	write_seqcount_end(&tk_core.seq);
+-	raw_spin_unlock_irqrestore(&tk_core.lock, flags);
+-
+ 	audit_ntp_log(&ad);
+ 
+ 	/* Update the multiplier immediately if frequency was set directly */
 
