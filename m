@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-2583-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2584-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3DC9B0C75
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2024 20:02:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC279B0C77
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2024 20:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 082BD1F24E35
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2024 18:02:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 570FF2816BD
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Oct 2024 18:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F23A20EA4F;
-	Fri, 25 Oct 2024 18:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD0A20F3DE;
+	Fri, 25 Oct 2024 18:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vPKssegj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eqAPOZkm"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WQy5MY9H";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MtU4oNPe"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC9620D4FC;
-	Fri, 25 Oct 2024 18:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE10420D51A;
+	Fri, 25 Oct 2024 18:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729879282; cv=none; b=Kwy3CsJSoBLAqocujSoUSRDu+4ThD/+tRZbRMk2Ce90i038c29WWIq4adYtZ+B1AGdHwB0VFvNHBi75KpUbNmJiM7HhLA/LP5iBljToO58v60HZPc6F2C3wRaNgO98OHESZqoNPBN1Tmm2NxFt9N/hmAPXsRRviYgXto6w5xOmM=
+	t=1729879282; cv=none; b=Ajo0SzzU+YHgWWyXWLG5Afgeg23+cQVqHp6UhaQCFX+swV0pUqx8lcu150yWr9DmYCDWTmA0JJRZ0wvS7u/nuVGy3V2UnA8JJm4iNKRch18s85ioudwH5oY7xKdS/i8F30rSE5mO/aNppN+BowG2rGVK0sQ2KntmZyPns9yw2Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729879282; c=relaxed/simple;
-	bh=sQV5smNZy31UoljrVBk2JGitPdlkSZOJsx4QOgJ1laI=;
+	bh=9dQjf13OmaHYH6dxaUDG3RO9WibhbdtmSPe5/p2gxFY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=KDAtiVqTBd5wbUHftOu9aBeFwueJh6Uo84gvjQ4bovXNh4/jvyWh6PQSdSB94zy/g22c/hsvBGQbLz5jx/4sTlQyxYS0fdAnvQWJiO6Yn4cxNfShTcp7zvXyMNX/pDAJy0EsMFZnwIAC1kKK6//zuaXq3Na6ZQHLX3iudex0Uh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vPKssegj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eqAPOZkm; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=iswJBF74Sc9M0RroZ3/1xjEpOxKgFD6VoAQ+alXSj24qHffWc49I58u9JOPEqiD/62Hm2sJe0QNBE0K9WGZ+muZLOTIr1+rgS8Um0YnekPB5Qz6Lr/6YM3LIPfBd/XQenHEYb6DQAzH9Pnd1vcNBnG0hzWrwKhJ5K9K+G+YSujY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WQy5MY9H; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MtU4oNPe; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 25 Oct 2024 18:01:17 -0000
+Date: Fri, 25 Oct 2024 18:01:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729879278;
+	s=2020; t=1729879279;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MOj+LLOKDS23ezwDAMOLLoqOf1iZRh7AYS9Ryy0hcTo=;
-	b=vPKssegjGSHIjDoWndsiNNcxrcTRW9rUGsRcjJEzk3y7Ua5YvcAj0GyFURLGOkLhkntSpG
-	JOtZ7Oa7stX/jTzswpaqD52fyIIpBYLzysi3pNzRJSWl+OqKsqWcEgElG//PuMDSZso7ND
-	1WWHR5D37WVtrCxVxQuuEol8K0uVBvWb+BWlQ8TVsu4ytBf/XwioNuhE6vZCQZBVG3eQR1
-	qFl/KnROCirwiHZFiAjmGZLHr58BecO9dxlDQio8iOCPgPzCRbHLZIQUpMK1WQYAkjmCGv
-	5YYhyoSyB7+RJ428Ml8PAFtgEsvP6clgVHZME6+/H49fg8mqlu+5xXEtT495Eg==
+	bh=tHQOGIGLqgKZGMQ8o2KAHsrq7ktObAOqdaNn2laDGa4=;
+	b=WQy5MY9H7R2J9AIzN65Wuku3xwkhclYxZ8HKAnHANIB3xylpFM0iMZHlOI39D8jY2DklQk
+	+Mhn5b4XiiSVcVp3Xh1nn+Aegk1eQBVuArenCYHzH4Tk2X93DL/OMgFpmprZmfKjgiw66L
+	KJo1L2ZM/Y1AMsaOy8Zebl7iSDRPOJ1IJxx00Qc0zH7CqpBqXkrTpmq8xhubL1Jc+7Jlb+
+	4OCR/H4AYlzWNKez+waYlUmi+PcelLEPR5unmj5fzoBaw52zB/o+CkdUXzRgRWsV2QJAzj
+	fup8JPUrosvrfNDOAqaCWZupvpiGs+hmu4D/sFwj7QvRykM1RGhSxA51+j2edA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729879278;
+	s=2020e; t=1729879279;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MOj+LLOKDS23ezwDAMOLLoqOf1iZRh7AYS9Ryy0hcTo=;
-	b=eqAPOZkmX0aqhEkGg0OZOodPdBh+zZQ2PGy+K1GmsukY+ATJF2hpFun+WhuvHfDo4kuFkP
-	iXvZzjv+RosfJ2DQ==
+	bh=tHQOGIGLqgKZGMQ8o2KAHsrq7ktObAOqdaNn2laDGa4=;
+	b=MtU4oNPeKAnLW+GevU22YNOWiENfXy010y+dFVn+Gg75HrM6mw04uz4t3V4QQbpBhUfVlG
+	+3BrLaaWu0wqldBw==
 From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timekeeping: Rework timekeeping_init() to use
+Subject: [tip: timers/core] timekeeping: Rework change_clocksource() to use
  shadow_timekeeper
 Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
  Thomas Gleixner <tglx@linutronix.de>, John Stultz <jstultz@google.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
 In-Reply-To: =?utf-8?q?=3C20241009-devel-anna-maria-b4-timers-ptp-timekeepin?=
- =?utf-8?q?g-v2-19-554456a44a15=40linutronix=2Ede=3E?=
+ =?utf-8?q?g-v2-18-554456a44a15=40linutronix=2Ede=3E?=
 References: =?utf-8?q?=3C20241009-devel-anna-maria-b4-timers-ptp-timekeeping?=
- =?utf-8?q?-v2-19-554456a44a15=40linutronix=2Ede=3E?=
+ =?utf-8?q?-v2-18-554456a44a15=40linutronix=2Ede=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172987927755.1442.15113087899742880071.tip-bot2@tip-bot2>
+Message-ID: <172987927834.1442.11292963436920603065.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,70 +84,67 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     2cab490b41b28a4239baf810ca1bb1c9d6d017ca
-Gitweb:        https://git.kernel.org/tip/2cab490b41b28a4239baf810ca1bb1c9d6d017ca
+Commit-ID:     351619fc99883d22ba1018b5914ae717bfef4221
+Gitweb:        https://git.kernel.org/tip/351619fc99883d22ba1018b5914ae717bfef4221
 Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
-AuthorDate:    Wed, 09 Oct 2024 10:29:12 +02:00
+AuthorDate:    Wed, 09 Oct 2024 10:29:11 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 25 Oct 2024 19:49:15 +02:00
 
-timekeeping: Rework timekeeping_init() to use shadow_timekeeper
+timekeeping: Rework change_clocksource() to use shadow_timekeeper
 
-For timekeeping_init() the sequence count write held time is not relevant
-and it could keep working on the real timekeeper, but there is no reason to
-make it different from other timekeeper updates.
+Updates of the timekeeper can be done by operating on the shadow timekeeper
+and afterwards copying the result into the real timekeeper. This has the
+advantage, that the sequence count write protected region is kept as small
+as possible.
 
-Convert it to operate on the shadow timekeeper.
+Convert change_clocksource() to use this scheme.
 
 Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/all/20241009-devel-anna-maria-b4-timers-ptp-timekeeping-v2-19-554456a44a15@linutronix.de
+Link: https://lore.kernel.org/all/20241009-devel-anna-maria-b4-timers-ptp-timekeeping-v2-18-554456a44a15@linutronix.de
 
 ---
- kernel/time/timekeeping.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ kernel/time/timekeeping.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
 diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index f77782f..4e0037d 100644
+index 7e865f0..f77782f 100644
 --- a/kernel/time/timekeeping.c
 +++ b/kernel/time/timekeeping.c
-@@ -1809,7 +1809,7 @@ static bool persistent_clock_exists;
- void __init timekeeping_init(void)
+@@ -1627,9 +1627,7 @@ static void __timekeeping_set_tai_offset(struct timekeeper *tk, s32 tai_offset)
+  */
+ static int change_clocksource(void *data)
  {
- 	struct timespec64 wall_time, boot_offset, wall_to_mono;
 -	struct timekeeper *tk = &tk_core.timekeeper;
-+	struct timekeeper *tks = &tk_core.shadow_timekeeper;
- 	struct clocksource *clock;
+ 	struct clocksource *new = data, *old = NULL;
+-	unsigned long flags;
  
- 	tkd_basic_setup(&tk_core);
-@@ -1833,22 +1833,20 @@ void __init timekeeping_init(void)
- 	wall_to_mono = timespec64_sub(boot_offset, wall_time);
+ 	/*
+ 	 * If the clocksource is in a module, get a module reference.
+@@ -1645,16 +1643,14 @@ static int change_clocksource(void *data)
+ 		return 0;
+ 	}
  
- 	guard(raw_spinlock_irqsave)(&tk_core.lock);
+-	raw_spin_lock_irqsave(&tk_core.lock, flags);
 -	write_seqcount_begin(&tk_core.seq);
-+
- 	ntp_init();
- 
- 	clock = clocksource_default_clock();
- 	if (clock->enable)
- 		clock->enable(clock);
--	tk_setup_internals(tk, clock);
-+	tk_setup_internals(tks, clock);
- 
--	tk_set_xtime(tk, &wall_time);
--	tk->raw_sec = 0;
-+	tk_set_xtime(tks, &wall_time);
-+	tks->raw_sec = 0;
- 
--	tk_set_wall_to_mono(tk, wall_to_mono);
-+	tk_set_wall_to_mono(tks, wall_to_mono);
- 
--	timekeeping_update(&tk_core, tk, TK_MIRROR | TK_CLOCK_WAS_SET);
 -
--	write_seqcount_end(&tk_core.seq);
-+	timekeeping_update_from_shadow(&tk_core, TK_CLOCK_WAS_SET);
- }
+-	timekeeping_forward_now(tk);
+-	old = tk->tkr_mono.clock;
+-	tk_setup_internals(tk, new);
+-	timekeeping_update(&tk_core, tk, TK_UPDATE_ALL | TK_MIRROR);
++	scoped_guard (raw_spinlock_irqsave, &tk_core.lock) {
++		struct timekeeper *tks = &tk_core.shadow_timekeeper;
  
- /* time in seconds when suspend began for persistent clock */
+-	write_seqcount_end(&tk_core.seq);
+-	raw_spin_unlock_irqrestore(&tk_core.lock, flags);
++		timekeeping_forward_now(tks);
++		old = tks->tkr_mono.clock;
++		tk_setup_internals(tks, new);
++		timekeeping_update_from_shadow(&tk_core, TK_UPDATE_ALL);
++	}
+ 
+ 	if (old) {
+ 		if (old->disable)
 
