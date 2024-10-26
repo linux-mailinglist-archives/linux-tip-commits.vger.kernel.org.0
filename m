@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-2605-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2603-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23599B15FB
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 26 Oct 2024 09:35:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2F79B15F7
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 26 Oct 2024 09:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9180282D46
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 26 Oct 2024 07:35:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B636D1F21F80
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 26 Oct 2024 07:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E065419340A;
-	Sat, 26 Oct 2024 07:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15BA18F2F9;
+	Sat, 26 Oct 2024 07:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qxdXEI8D";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DxcQMfeO"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ae/+RdSP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="g8CQCSrl"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D887D17CA02;
-	Sat, 26 Oct 2024 07:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAEC17BB07;
+	Sat, 26 Oct 2024 07:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729928133; cv=none; b=scNJ/9K89h6qTBt1QAsP6g1iOu/SzePBIxY1FPuDzEiCrfewbnSWG/NSEpJc2YBMxbYUvSIBU/HQt3gCO2jCJVpAOo9kITITXs9mMsJokudrmp1E01QBUP/MAIj6Y6LgvYEkE/Z3IAja34/aGxRMO1jrL8Ba3Krgt4Lw5/K1MIk=
+	t=1729928132; cv=none; b=opODhKtyD0sTb3zsykPv/JwX84Aojt5KShjoq6wM1ZfMEqk39uSNtIRcjFmvjAYv7Yt8XV2yCRZTlk7j+BDjkjTr+f55H3QfdSR0hOjcf+Nw3ug3+s53KCbRklpK6mv/kHZS0L0ZoxQoe0Pw3la5RbPxKBeZAdfyqX1pdrtwW0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729928133; c=relaxed/simple;
-	bh=3V1gMW/cZmWAyLWxpR8HS/Epe3XuK7HcCmUHJUwmvg4=;
+	s=arc-20240116; t=1729928132; c=relaxed/simple;
+	bh=szgI6it8w7s11T2YCRek0TBqp5NtfCDnqJcl46BJmpA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JPWpXdGwqiZqXTZKQE/Qg6NQUOW3dCQdc+dooZaGeN/5N5j0zYncBtAePuFVnuBs1WZE7vHO73FGppQA4pNeP0bT8ueG1KPH7bnrDkCYYyStXZBSY+z7Pi+Xr1wT0mD+S582fipSauUfTProT2UImHVZcAcgyOnUYonRfcFZVfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qxdXEI8D; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DxcQMfeO; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=TxB1mGe19MoYiYY+oNr17NLU+DFHdnzbpu9i4tC+t63Tcv2l+NtdTUzUipVQW5E1KbI7ZzV/ZvXolPrW8iCRwvrbxkWl3i2cPkk+B3Q65hKApjiYVuMSVUNqD5O0ywx6UVn+EXNMceVrUBEcIYu2nbesIob4loHb4+cElyNJ3gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ae/+RdSP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=g8CQCSrl; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Sat, 26 Oct 2024 07:35:28 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=J2WjWDhcEUuHXffZnnxsUt4P7QOwf7MRneZgk3kBIWA=;
-	b=qxdXEI8DvCwReJdXTbOXMmJmDY/tmvPGJ6ZmPwO3Uzen8/kgen4NBj4nSdJ/vBQWKxVi1D
-	BeZmkUD+nLFKFfTFYulSqN7a/QotJkz0zZPvAbWJt4gLFnYRd/fRMs1BZvbmsut+HXxjK8
-	yVYLPSCaIX0IhlquJM+Zxj62KZZD2vRG+0FvDcnTgjud9NahoyRAmmBJIssnEoJNgqb6Y4
-	XXvAbY+GWKDnBaV1VwHMyWiFN+rn4ZzNq9EoiTo37Uk59JdNHp4Aa2Q73q+umiRiXdfu6P
-	OJf+bevfPr9sHZqkAMNxPx8iAMwTyEYWeVdu21khPgjOgmP1DMQ/41zl6dB5EA==
+	bh=38YUvtNluS+8vcFqG7SG22/jKtn+UL0CBCRCgsE/3mY=;
+	b=Ae/+RdSPRl6O925dFz3joZgAjxutyUZuiqZysh8UvBnksTpqEWaIhzngYsn2+f0IncLJ7B
+	JaqBZci0hmAWTKoMbo6qf7VyYeXXOA/8pvomVND39JqDFmPsj6gwAnYomCiD0P2nZ8Hn+X
+	lpjx8FO4bHG2rbt1aEImlxUVTizKSO6cdIoahjfr7MkgLlgC73mUhsgrAn+baKVqdvxXBj
+	EARAZpeGVcjvrAfZOLDkO6+QldiW+1nAKcFxWDemsPN/XF35KoHs5wuaQhVn7fYa5GWOC4
+	q/H09WbdFhFdnVyJC9N0RgF4YDjZRlEJY8KKv3YkFYMfLzGFIR9I28oHGmuJMw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1729928129;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,28 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=J2WjWDhcEUuHXffZnnxsUt4P7QOwf7MRneZgk3kBIWA=;
-	b=DxcQMfeO7NV7cW3qBACrL28+6avIJIDpyM2VQTglZr3f8ENIv8kX+4X+nQVMhktj/Ilk2p
-	2M5DDh3rf1yNjKCA==
+	bh=38YUvtNluS+8vcFqG7SG22/jKtn+UL0CBCRCgsE/3mY=;
+	b=g8CQCSrlMrUHeAc/hSdre0LFxRTruT6sDZbhsWMhGRF5kIxKg51lJL3j8aeLQ9gHvTQ59C
+	IZlf46N90cxHAmBA==
 From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] cleanup: Remove address space of returned pointer
+Subject: [tip: locking/core] locking/osq_lock: Use
+ atomic_try_cmpxchg_release() in osq_unlock()
 Cc: Uros Bizjak <ubizjak@gmail.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Waiman Long <longman@redhat.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20240819074124.143565-1-ubizjak@gmail.com>
-References: <20240819074124.143565-1-ubizjak@gmail.com>
+In-Reply-To: <20241001114606.820277-1-ubizjak@gmail.com>
+References: <20241001114606.820277-1-ubizjak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172992812897.1442.17815814917523978461.tip-bot2@tip-bot2>
+Message-ID: <172992812827.1442.5074326793772242513.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,60 +83,61 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     f730fd535fc51573f982fad629f2fc6b4a0cde2f
-Gitweb:        https://git.kernel.org/tip/f730fd535fc51573f982fad629f2fc6b4a0cde2f
+Commit-ID:     0d75e0c420e52b4057a2de274054a5274209a2ae
+Gitweb:        https://git.kernel.org/tip/0d75e0c420e52b4057a2de274054a5274209a2ae
 Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Mon, 19 Aug 2024 09:41:15 +02:00
+AuthorDate:    Tue, 01 Oct 2024 13:45:57 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 25 Oct 2024 10:01:50 +02:00
 
-cleanup: Remove address space of returned pointer
+locking/osq_lock: Use atomic_try_cmpxchg_release() in osq_unlock()
 
-Guard functions in local_lock.h are defined using DEFINE_GUARD() and
-DEFINE_LOCK_GUARD_1() macros having lock type defined as pointer in
-the percpu address space. The functions, defined by these macros
-return value in generic address space, causing:
+Replace this pattern in osq_unlock():
 
-cleanup.h:157:18: error: return from pointer to non-enclosed address space
+    atomic_cmpxchg(*ptr, old, new) == old
 
-and
+... with the simpler and faster:
 
-cleanup.h:214:18: error: return from pointer to non-enclosed address space
+    atomic_try_cmpxchg(*ptr, &old, new)
 
-when strict percpu checks are enabled.
+The x86 CMPXCHG instruction returns success in the ZF flag,
+so this change saves a compare after the CMPXCHG.  The code
+in the fast path of osq_unlock() improves from:
 
-Add explicit casts to remove address space of the returned pointer.
+ 11b:	31 c9                	xor    %ecx,%ecx
+ 11d:	8d 50 01             	lea    0x1(%rax),%edx
+ 120:	89 d0                	mov    %edx,%eax
+ 122:	f0 0f b1 0f          	lock cmpxchg %ecx,(%rdi)
+ 126:	39 c2                	cmp    %eax,%edx
+ 128:	75 05                	jne    12f <...>
 
-Found by GCC's named address space checks.
+to:
 
-Fixes: e4ab322fbaaa ("cleanup: Add conditional guard support")
+ 12b:	31 d2                	xor    %edx,%edx
+ 12d:	83 c0 01             	add    $0x1,%eax
+ 130:	f0 0f b1 17          	lock cmpxchg %edx,(%rdi)
+ 134:	75 05                	jne    13b <...>
+
 Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240819074124.143565-1-ubizjak@gmail.com
+Acked-by: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/r/20241001114606.820277-1-ubizjak@gmail.com
 ---
- include/linux/cleanup.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/locking/osq_lock.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-index 038b2d5..518bd1f 100644
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -290,7 +290,7 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
- #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
- 	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
- 	static inline void * class_##_name##_lock_ptr(class_##_name##_t *_T) \
--	{ return *_T; }
-+	{ return (void *)(__force unsigned long)*_T; }
+diff --git a/kernel/locking/osq_lock.c b/kernel/locking/osq_lock.c
+index 75a6f61..b4233dc 100644
+--- a/kernel/locking/osq_lock.c
++++ b/kernel/locking/osq_lock.c
+@@ -215,8 +215,7 @@ void osq_unlock(struct optimistic_spin_queue *lock)
+ 	/*
+ 	 * Fast path for the uncontended case.
+ 	 */
+-	if (likely(atomic_cmpxchg_release(&lock->tail, curr,
+-					  OSQ_UNLOCKED_VAL) == curr))
++	if (atomic_try_cmpxchg_release(&lock->tail, &curr, OSQ_UNLOCKED_VAL))
+ 		return;
  
- #define DEFINE_GUARD_COND(_name, _ext, _condlock) \
- 	EXTEND_CLASS(_name, _ext, \
-@@ -347,7 +347,7 @@ static inline void class_##_name##_destructor(class_##_name##_t *_T)	\
- 									\
- static inline void *class_##_name##_lock_ptr(class_##_name##_t *_T)	\
- {									\
--	return _T->lock;						\
-+	return (void *)(__force unsigned long)_T->lock;			\
- }
- 
- 
+ 	/*
 
