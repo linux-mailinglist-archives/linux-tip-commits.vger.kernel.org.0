@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2613-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2614-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27029B1CE4
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Oct 2024 10:45:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4CF9B1CF8
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Oct 2024 10:53:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32B521F215B0
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Oct 2024 09:45:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDFD11C202F5
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Oct 2024 09:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DC1126C13;
-	Sun, 27 Oct 2024 09:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6681799B;
+	Sun, 27 Oct 2024 09:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kBudHpLd";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YNIDm0rr"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bX6xB3uj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yOPPPMnt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A88D824BD;
-	Sun, 27 Oct 2024 09:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2942AD51;
+	Sun, 27 Oct 2024 09:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730022305; cv=none; b=UL1urlqEFQ3ZdgfPmhNRRNYuAIAhptMDDs0EuOFmdvatnDUqMaq6I98XYOVU8Lii7TfLsDLFbrr7EQyRM7GcisVuWHFFfHOY7bHeRs5FmO/voLZTyvO7IltaPk15P3zSYzPMZdKFeBtfE9HkKx8lqB+OfZbbIg2ScIR/AR25fyg=
+	t=1730022784; cv=none; b=EvI85Qq6VyWNmtvrQWPvUr38lNDNa1kzg1KM+EBoQAMVmcOwogQGCLrlWfMm5/2LYS7zeAJgOIqq1xBdv/Ezu/JWFsEdweX0ZLq8rxpMy8KSZopviCapk8nwLJXxPcRLFjlE9IjwJD7yK05XVzZgxB46Fiw4EIcijc9gGcOnMI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730022305; c=relaxed/simple;
-	bh=kpGyt5DfEqELmZNEMeSLrL8K07eYoJyYk2e8lQ3vNI0=;
+	s=arc-20240116; t=1730022784; c=relaxed/simple;
+	bh=PVd2b9X971H9wOAIUTeHGLFUo9jgiZxOjh6/Ar0HAS8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=pyNrgjEx5Og4Rm6z/sz+xgUGSM3M3llznMhfAHZ9LOOmnRBerb03dDjNqJ562q+GZi/0w7NdqEfizy11L0B7QrIYn7Yu2mFiNVA3XuyB5hm4RQnHkVNuXOt8l+A8xlm8ManqT60p7S+uHbyfGgdJjkoT4PJEDVPc61RNTfR0kvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kBudHpLd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YNIDm0rr; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=URAt3mBtgcQZZo3TK0TASc7Yq8bVHWO3+VFL0kXl4BOArk+z2AcOyTELS7HVFkjoRCqu8cTCJCUk7LkbmUX3/+XezVLoq2ZWqjxtDIk3I5YzeTh4GPKPYMc4PH4sMNdKAR6vuRTOi78YhcZqYnK1u4+B30FO3YNGTSmWRapD7rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bX6xB3uj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yOPPPMnt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 27 Oct 2024 09:45:00 -0000
+Date: Sun, 27 Oct 2024 09:53:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730022301;
+	s=2020; t=1730022781;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DD0dSUyqSFCp+Ruij6xJVnsHx+ZvtO/ME1Hf79cnz/s=;
-	b=kBudHpLddzyWxVyxXG3fjtTNophb2zp+E41jeFh7dPUurl6GPOr3DRbnUx14CdZBh8mDwV
-	FqyglJ2MUtZmHy59RrPq3uIIX6hgfvU2KLz/HyovW0vdt4fciROjk8iwlR9mFEvUubeCSq
-	Twr8BpX6nd/TfsEnBbsECfxiZFgEI50b+sh/Zi7GfyYOmhGi3xjoYNAmI8jwuXTtmGH3Rr
-	PyAfa5YVZrV6ZijF431pUeeoMZAOEMk0BgtM5IFCGVGtNPJkNHeVIHfS9JcvbAQbO5E1l9
-	vVtyGcmVyuiwV1czPZo0L0Ji7O7WOn1o+6tI/grQRZaj9plIWNmHFRKVIe78Iw==
+	bh=/TCkHgVkQvoB7JgBdb0MQBVMrXRKjInn3DPtOG9KBLo=;
+	b=bX6xB3uj1T77TK8U/E6gw+tEA28G7+GGsvuax6HIJgh/VB0DmqA415ANy6x3Kb+SMrmTni
+	f8RGHb7m+Bk0NMER7vsQTXzgl2VMouItmcC8k2pwDLI866jRcTUyGO3+z1zQO5yJqxXhnK
+	XzCRR7TpyIYLZ6QJ37YJkDTNP6aSwgvvn0EYcb4kTS3ztgUx1KEIZaxil090ISTvprO5dN
+	LfRcEO7DESr3efl7EmKv2BTgtXffYkyHS4nKkK0ngWLhy8p90KK3+vPSiiGeCQkNfo0nG2
+	nu/iNQd2lenYfqGqo4Vnh0o7W9vrOUR8oxVElG/6tTLeSS6/x8uUuXFewB2JAg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730022301;
+	s=2020e; t=1730022781;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DD0dSUyqSFCp+Ruij6xJVnsHx+ZvtO/ME1Hf79cnz/s=;
-	b=YNIDm0rrPLPmUGe0zv9zR18FZCMnCyYx1H+G8KhPByqvv7v25UtS3OjZQlOjyrI6EHlY6C
-	wGt085D8rmxv9LDw==
-From: "tip-bot2 for Benjamin Segall" <tip-bot2@linutronix.de>
+	bh=/TCkHgVkQvoB7JgBdb0MQBVMrXRKjInn3DPtOG9KBLo=;
+	b=yOPPPMnt+pzS+T5hNIA2Ld7nk2rHc8tgrqE0z4P/rE7EQsQFVe6Yhzz3NEaRc3/4DGeXEN
+	BRaWTfz/zjL5tXAw==
+From: "tip-bot2 for Thorsten Blum" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER
- on clone
-Cc: Ben Segall <bsegall@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Frederic Weisbecker <frederic@kernel.org>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <xm26o737bq8o.fsf@google.com>
-References: <xm26o737bq8o.fsf@google.com>
+Subject: [tip: irq/core] genirq/irqdesc: Use str_enabled_disabled() helper in
+ wakeup_show()
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20241026154029.158977-2-thorsten.blum@linux.dev>
+References: <20241026154029.158977-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173002230033.1442.372126072824359559.tip-bot2@tip-bot2>
+Message-ID: <173002278026.1442.15301826353081104665.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,95 +80,48 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     b5413156bad91dc2995a5c4eab1b05e56914638a
-Gitweb:        https://git.kernel.org/tip/b5413156bad91dc2995a5c4eab1b05e56914638a
-Author:        Benjamin Segall <bsegall@google.com>
-AuthorDate:    Fri, 25 Oct 2024 18:35:35 -07:00
+Commit-ID:     d1a128bc3057a090b97ab5a9f938874df3d3f124
+Gitweb:        https://git.kernel.org/tip/d1a128bc3057a090b97ab5a9f938874df3d3f124
+Author:        Thorsten Blum <thorsten.blum@linux.dev>
+AuthorDate:    Sat, 26 Oct 2024 17:40:29 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 27 Oct 2024 10:36:04 +01:00
+CommitterDate: Sun, 27 Oct 2024 10:42:09 +01:00
 
-posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
+genirq/irqdesc: Use str_enabled_disabled() helper in wakeup_show()
 
-When cloning a new thread, its posix_cputimers are not inherited, and
-are cleared by posix_cputimers_init(). However, this does not clear the
-tick dependency it creates in tsk->tick_dep_mask, and the handler does
-not reach the code to clear the dependency if there were no timers to
-begin with.
+Remove hard-coded strings by using the str_enabled_disabled() helper
+function.
 
-Thus if a thread has a cputimer running before clone/fork, all
-descendants will prevent nohz_full unless they create a cputimer of
-their own.
-
-Fix this by entirely clearing the tick_dep_mask in copy_process().
-(There is currently no inherited state that needs a tick dependency)
-
-Process-wide timers do not have this problem because fork does not copy
-signal_struct as a baseline, it creates one from scratch.
-
-Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
-Signed-off-by: Ben Segall <bsegall@google.com>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
+Link: https://lore.kernel.org/all/20241026154029.158977-2-thorsten.blum@linux.dev
 
 ---
- include/linux/tick.h | 8 ++++++++
- kernel/fork.c        | 2 ++
- 2 files changed, 10 insertions(+)
+ kernel/irq/irqdesc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/tick.h b/include/linux/tick.h
-index 7274463..99c9c5a 100644
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -251,12 +251,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_set_task(tsk, bit);
- }
-+
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_clear_task(tsk, bit);
- }
-+
-+static inline void tick_dep_init_task(struct task_struct *tsk)
-+{
-+	atomic_set(&tsk->tick_dep_mask, 0);
-+}
-+
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
-@@ -290,6 +297,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 				     enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
-+static inline void tick_dep_init_task(struct task_struct *tsk) { }
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_signal(struct signal_struct *signal,
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 89ceb4a..6fa9fe6 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -105,6 +105,7 @@
- #include <linux/rseq.h>
- #include <uapi/linux/pidfd.h>
- #include <linux/pidfs.h>
-+#include <linux/tick.h>
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index 479cf1c..0253e77 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -15,6 +15,7 @@
+ #include <linux/maple_tree.h>
+ #include <linux/irqdomain.h>
+ #include <linux/sysfs.h>
++#include <linux/string_choices.h>
  
- #include <asm/pgalloc.h>
- #include <linux/uaccess.h>
-@@ -2292,6 +2293,7 @@ __latent_entropy struct task_struct *copy_process(
- 	acct_clear_integrals(p);
+ #include "internals.h"
  
- 	posix_cputimers_init(&p->posix_cputimers);
-+	tick_dep_init_task(p);
+@@ -320,8 +321,7 @@ static ssize_t wakeup_show(struct kobject *kobj,
+ 	ssize_t ret = 0;
  
- 	p->io_context = NULL;
- 	audit_set_context(p, NULL);
+ 	raw_spin_lock_irq(&desc->lock);
+-	ret = sprintf(buf, "%s\n",
+-		      irqd_is_wakeup_set(&desc->irq_data) ? "enabled" : "disabled");
++	ret = sprintf(buf, "%s\n", str_enabled_disabled(irqd_is_wakeup_set(&desc->irq_data)));
+ 	raw_spin_unlock_irq(&desc->lock);
+ 
+ 	return ret;
 
