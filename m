@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2640-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2638-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6869B47FA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 12:10:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2E19B47F7
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 12:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF06A1C25768
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 11:10:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 907291C2573E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 11:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDA4206058;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C37F206053;
 	Tue, 29 Oct 2024 11:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ie6HeNQy";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0l1wzT3b"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cA4GLMd1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="u1J4F7OB"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF5B1DF753;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD023205E30;
 	Tue, 29 Oct 2024 11:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730200161; cv=none; b=rCUXzTfpNxoyoAHDjEJ+dyeIwZ+iSJYsqOtpQb4TfZh9HjxXyrUTcUxuQxXSk0O298J7XRVree7jmyJfAKweTNUU4LKoXC2yibbpIH5awntrAa71gNfUq0HFQBEK4Zm8uOyyjF0oayYaURt2bzl+DHCIN7ylR1CcsCUVCREha/8=
+	t=1730200161; cv=none; b=E2JV9VH2uQ+ccACwjSJFOOp8OzwmLYVuumb53DU+rifXgDiG6J8gv5YxbaGAshAkQrTu9crv8PREhyZ2wc1Watb2HaDR9aoz0wYCSt33LHj+3eWFd1+te8rLDEEZqDiy5NBhraKh5tlJ3z29GabTLL9aIKyrqnkv0C8es9+i8b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730200161; c=relaxed/simple;
-	bh=kAfXaiturbEzQQ4RYcERtdNStIFfP963vj001ynKKhk=;
+	bh=ZzYDjk7u042Tf5EuHxtU3dQhRcAKZ7Uh76DBPUDu8Ac=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=XCCkdJ2vEohx5m0/qtNk4Ro81q7sczkZMq3+1yKJZI7rfQ38Z/vlUGaMCMW7le4CDnMtwu3Ucdrwu3wbeemOOjg+CuuDz344HOJXTY/1R0kunCJiUY8ouLgVf8jpn6Pal3IeaVwKXLf65n1hmCR0Z1KLrWiqjTtocDRTD7Gp3Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ie6HeNQy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0l1wzT3b; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=XVA577O9cz7ocR4qq6xdD8A/UyulOihQ1DZmASnpylMNvqAWA0NOf+xz3M8lJp0rlKi6DmcSL59Ryhd6JzoPz5w+iTPg3iHDFcTkJG/kx0jyyO/N1SUTNyHMLq4vwFxhMOUwBxpTlkKZnOaHi6ejWfVzSOcllr79bJQToX/tX7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cA4GLMd1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=u1J4F7OB; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 29 Oct 2024 11:09:14 -0000
+Date: Tue, 29 Oct 2024 11:09:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730200155;
+	s=2020; t=1730200156;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fP/RSP2pEo/pgwvLN276WExQcnYN8NPmZYfy4E4JuE4=;
-	b=Ie6HeNQyKhaxheUO64yumrVeiqRtFoOput3mExqd3H8omr9ZQZcUFJiw0GfrsUCbwglmFx
-	HZ2fBYYML1LT10756xT/Bg47kU85aChp1LxPqfPpRL6j9oAPpiO13PPQaZ8CBSDtGLciJ/
-	sLztA3Fuj4V4xySPN1h8Zw2T96W4kXO7gyosbUocCpLNIz6ih0pXoAy2qp9xBhsPjpgHkx
-	FeW5c6WfB8BJiY3B1QC6wWGenrJ9FFWwNFVLHP2YLb486qflirzy8SX96b+r8UsNKl+mdz
-	vFySEayqOPGsa/PTD/zWj/1DrtoU0nlOBbRhiWEQZLDzLhPwsIyM/0BGXYxBug==
+	bh=6wOfBnKB7eLXiLICiRYd+ixDfbR/6/6d87RmjlJW848=;
+	b=cA4GLMd14LDJBrsObk9AoJ8XeDxe2VWgzXBsAc6LH71zj6pzefac3k+sEFDs5IoGksQInr
+	0kAWKEq1axwhK2oUw+g/WTg1zJyX8Y8tUcEAdhS2M3Td20v4HZYJwsQJXhqt877oy67WXG
+	wWwEihojuEmUFILQKirjLFwaNBDpDGcmsZQ3t4D/49wazsOiABmq1/Q9rv0GMRLTYs62/D
+	C8+6HIRE02uSKfV48OM4ICWRorgeBQ6uRqjEHdfsBmGiHFdH/TIwvVTtAu8iBW8vfWmIBM
+	sBV5OhPaRGE8mwuGo/uTsw/V9HNHfqMP9HKBheUnuUrKtvJx0/Iu6Bu8fPb8Xw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730200155;
+	s=2020e; t=1730200156;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fP/RSP2pEo/pgwvLN276WExQcnYN8NPmZYfy4E4JuE4=;
-	b=0l1wzT3bbC4vYLGK54F8VpLkXfN4M//FmHJL+1SC7R92IgPGYBzkEp03cRtYmOcU8kfys1
-	vS5uustDVsYN7NAg==
+	bh=6wOfBnKB7eLXiLICiRYd+ixDfbR/6/6d87RmjlJW848=;
+	b=u1J4F7OBjmNyWhgzSpMWzrU7jRi5qS8S5QbbLGDofGCAQa3XpxO4oM/NRrZe7Z26M0jVX7
+	rYp3NjjEQnFHnADQ==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-timers: Add proper state tracking
+Subject: [tip: timers/core] posix-timers: Rename k_itimer:: It_requeue_pending
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  Frederic Weisbecker <frederic@kernel.org>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20241001083835.670337048@linutronix.de>
-References: <20241001083835.670337048@linutronix.de>
+In-Reply-To: <20241001083835.611997737@linutronix.de>
+References: <20241001083835.611997737@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173020015439.1442.9454762838209684036.tip-bot2@tip-bot2>
+Message-ID: <173020015521.1442.16903737264120343124.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,233 +82,144 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     1550dde8a537b35dbf066c7f9cfe5f9b360bce0d
-Gitweb:        https://git.kernel.org/tip/1550dde8a537b35dbf066c7f9cfe5f9b360bce0d
+Commit-ID:     cd1e93aedab7f749760a33e9e094381973b1120e
+Gitweb:        https://git.kernel.org/tip/cd1e93aedab7f749760a33e9e094381973b1120e
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 01 Oct 2024 10:42:09 +02:00
+AuthorDate:    Tue, 01 Oct 2024 10:42:07 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 29 Oct 2024 11:43:19 +01:00
 
-posix-timers: Add proper state tracking
+posix-timers: Rename k_itimer:: It_requeue_pending
 
-Right now the state tracking is done by two struct members:
+Prepare for using this struct member to do a proper reprogramming and
+deletion accounting so that stale signals can be dropped.
 
- - it_active:
-     A boolean which tracks armed/disarmed state
-
- - it_signal_seq:
-     A sequence counter which is used to invalidate settings
-     and prevent rearming
-
-Replace it_active with it_status and keep properly track about the states
-in one place.
-
-This allows to reuse it_signal_seq to track reprogramming, disarm and
-delete operations in order to drop signals which are related to the state
-previous of those operations.
+No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/20241001083835.670337048@linutronix.de
+Link: https://lore.kernel.org/all/20241001083835.611997737@linutronix.de
 
 ---
- include/linux/posix-timers.h   |  4 ++--
+ include/linux/posix-timers.h   |  5 ++---
  kernel/time/alarmtimer.c       |  2 +-
- kernel/time/posix-cpu-timers.c | 15 ++++++++-------
- kernel/time/posix-timers.c     | 22 +++++++++++++---------
- kernel/time/posix-timers.h     |  6 ++++++
- 5 files changed, 30 insertions(+), 19 deletions(-)
+ kernel/time/posix-cpu-timers.c |  4 ++--
+ kernel/time/posix-timers.c     | 12 ++++++------
+ 4 files changed, 11 insertions(+), 12 deletions(-)
 
 diff --git a/include/linux/posix-timers.h b/include/linux/posix-timers.h
-index 253d106..02afbb4 100644
+index 4ab49e5..253d106 100644
 --- a/include/linux/posix-timers.h
 +++ b/include/linux/posix-timers.h
-@@ -147,7 +147,7 @@ static inline void posix_cputimers_init_work(void) { }
-  * @kclock:		Pointer to the k_clock struct handling this timer
-  * @it_clock:		The posix timer clock id
-  * @it_id:		The posix timer id for identifying the timer
-- * @it_active:		Marker that timer is active
-+ * @it_status:		The status of the timer
+@@ -150,8 +150,7 @@ static inline void posix_cputimers_init_work(void) { }
+  * @it_active:		Marker that timer is active
   * @it_overrun:		The overrun counter for pending signals
   * @it_overrun_last:	The overrun at the time of the last delivered signal
-  * @it_signal_seq:	Sequence count to control signal delivery
-@@ -168,7 +168,7 @@ struct k_itimer {
- 	const struct k_clock	*kclock;
- 	clockid_t		it_clock;
- 	timer_t			it_id;
--	int			it_active;
-+	int			it_status;
+- * @it_requeue_pending:	Indicator that timer waits for being requeued on
+- *			signal delivery
++ * @it_signal_seq:	Sequence count to control signal delivery
+  * @it_sigev_notify:	The notify word of sigevent struct for signal delivery
+  * @it_interval:	The interval for periodic timers
+  * @it_signal:		Pointer to the creators signal struct
+@@ -172,7 +171,7 @@ struct k_itimer {
+ 	int			it_active;
  	s64			it_overrun;
  	s64			it_overrun_last;
- 	unsigned int		it_signal_seq;
+-	int			it_requeue_pending;
++	unsigned int		it_signal_seq;
+ 	int			it_sigev_notify;
+ 	ktime_t			it_interval;
+ 	struct signal_struct	*it_signal;
 diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
-index 75f8443..452d8aa 100644
+index 8bf8886..75f8443 100644
 --- a/kernel/time/alarmtimer.c
 +++ b/kernel/time/alarmtimer.c
-@@ -585,7 +585,7 @@ static enum alarmtimer_restart alarm_handle_timer(struct alarm *alarm,
+@@ -584,7 +584,7 @@ static enum alarmtimer_restart alarm_handle_timer(struct alarm *alarm,
+ 		 * small intervals cannot starve the system.
  		 */
  		ptr->it_overrun += __alarm_forward_now(alarm, ptr->it_interval, true);
- 		++ptr->it_signal_seq;
--		ptr->it_active = 1;
-+		ptr->it_status = POSIX_TIMER_ARMED;
+-		++ptr->it_requeue_pending;
++		++ptr->it_signal_seq;
+ 		ptr->it_active = 1;
  		result = ALARMTIMER_RESTART;
  	}
- 	spin_unlock_irqrestore(&ptr->it_lock, flags);
 diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index 993243b..12f828d 100644
+index 6bcee47..993243b 100644
 --- a/kernel/time/posix-cpu-timers.c
 +++ b/kernel/time/posix-cpu-timers.c
-@@ -453,7 +453,6 @@ static void disarm_timer(struct k_itimer *timer, struct task_struct *p)
- 	struct cpu_timer *ctmr = &timer->it.cpu;
- 	struct posix_cputimer_base *base;
- 
--	timer->it_active = 0;
- 	if (!cpu_timer_dequeue(ctmr))
- 		return;
- 
-@@ -494,11 +493,12 @@ static int posix_cpu_timer_del(struct k_itimer *timer)
+@@ -608,7 +608,7 @@ static void cpu_timer_fire(struct k_itimer *timer)
+ 		 * ticking in case the signal is deliverable next time.
  		 */
- 		WARN_ON_ONCE(ctmr->head || timerqueue_node_queued(&ctmr->node));
- 	} else {
--		if (timer->it.cpu.firing)
-+		if (timer->it.cpu.firing) {
- 			ret = TIMER_RETRY;
--		else
-+		} else {
- 			disarm_timer(timer, p);
--
-+			timer->it_status = POSIX_TIMER_DISARMED;
-+		}
- 		unlock_task_sighand(p, &flags);
+ 		posix_cpu_timer_rearm(timer);
+-		++timer->it_requeue_pending;
++		++timer->it_signal_seq;
  	}
+ }
  
-@@ -560,7 +560,7 @@ static void arm_timer(struct k_itimer *timer, struct task_struct *p)
- 	struct cpu_timer *ctmr = &timer->it.cpu;
- 	u64 newexp = cpu_timer_getexpires(ctmr);
- 
--	timer->it_active = 1;
-+	timer->it_status = POSIX_TIMER_ARMED;
- 	if (!cpu_timer_enqueue(&base->tqhead, ctmr))
- 		return;
- 
-@@ -586,7 +586,8 @@ static void cpu_timer_fire(struct k_itimer *timer)
- {
- 	struct cpu_timer *ctmr = &timer->it.cpu;
- 
--	timer->it_active = 0;
-+	timer->it_status = POSIX_TIMER_DISARMED;
-+
- 	if (unlikely(timer->sigq == NULL)) {
- 		/*
- 		 * This a special case for clock_nanosleep,
-@@ -671,7 +672,7 @@ static int posix_cpu_timer_set(struct k_itimer *timer, int timer_flags,
- 		ret = TIMER_RETRY;
- 	} else {
- 		cpu_timer_dequeue(ctmr);
--		timer->it_active = 0;
-+		timer->it_status = POSIX_TIMER_DISARMED;
- 	}
- 
- 	/*
+@@ -745,7 +745,7 @@ static void __posix_cpu_timer_get(struct k_itimer *timer, struct itimerspec64 *i
+ 	 *  - Timers which expired, but the signal has not yet been
+ 	 *    delivered
+ 	 */
+-	if (iv && ((timer->it_requeue_pending & REQUEUE_PENDING) || sigev_none))
++	if (iv && ((timer->it_signal_seq & REQUEUE_PENDING) || sigev_none))
+ 		expires = bump_cpu_timer(timer, now);
+ 	else
+ 		expires = cpu_timer_getexpires(&timer->it.cpu);
 diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index fd321fc..dd72b8e 100644
+index 22e1d6b..fd321fc 100644
 --- a/kernel/time/posix-timers.c
 +++ b/kernel/time/posix-timers.c
-@@ -272,7 +272,7 @@ bool posixtimer_deliver_signal(struct kernel_siginfo *info)
- 	if (timr->it_interval && timr->it_signal_seq == info->si_sys_private) {
+@@ -269,13 +269,13 @@ bool posixtimer_deliver_signal(struct kernel_siginfo *info)
+ 	if (!timr)
+ 		goto out;
+ 
+-	if (timr->it_interval && timr->it_requeue_pending == info->si_sys_private) {
++	if (timr->it_interval && timr->it_signal_seq == info->si_sys_private) {
  		timr->kclock->timer_rearm(timr);
  
--		timr->it_active = 1;
-+		timr->it_status = POSIX_TIMER_ARMED;
+ 		timr->it_active = 1;
  		timr->it_overrun_last = timr->it_overrun;
  		timr->it_overrun = -1LL;
- 		++timr->it_signal_seq;
-@@ -292,14 +292,17 @@ out:
+-		++timr->it_requeue_pending;
++		++timr->it_signal_seq;
  
- int posix_timer_queue_signal(struct k_itimer *timr)
- {
-+	enum posix_timer_state state = POSIX_TIMER_DISARMED;
- 	int ret, si_private = 0;
- 	enum pid_type type;
+ 		info->si_overrun = timer_overrun_to_int(timr, info->si_overrun);
+ 	}
+@@ -299,7 +299,7 @@ int posix_timer_queue_signal(struct k_itimer *timr)
  
- 	lockdep_assert_held(&timr->it_lock);
- 
--	timr->it_active = 0;
--	if (timr->it_interval)
-+	if (timr->it_interval) {
-+		state = POSIX_TIMER_REQUEUE_PENDING;
- 		si_private = ++timr->it_signal_seq;
-+	}
-+	timr->it_status = state;
+ 	timr->it_active = 0;
+ 	if (timr->it_interval)
+-		si_private = ++timr->it_requeue_pending;
++		si_private = ++timr->it_signal_seq;
  
  	type = !(timr->it_sigev_notify & SIGEV_THREAD_ID) ? PIDTYPE_TGID : PIDTYPE_PID;
  	ret = send_sigqueue(timr->sigq, timr->it_pid, type, si_private);
-@@ -367,7 +370,7 @@ static enum hrtimer_restart posix_timer_fn(struct hrtimer *timer)
+@@ -366,7 +366,7 @@ static enum hrtimer_restart posix_timer_fn(struct hrtimer *timer)
+ 
  			timr->it_overrun += hrtimer_forward(timer, now, timr->it_interval);
  			ret = HRTIMER_RESTART;
- 			++timr->it_signal_seq;
--			timr->it_active = 1;
-+			timr->it_status = POSIX_TIMER_ARMED;
+-			++timr->it_requeue_pending;
++			++timr->it_signal_seq;
+ 			timr->it_active = 1;
  		}
  	}
+@@ -660,7 +660,7 @@ void common_timer_get(struct k_itimer *timr, struct itimerspec64 *cur_setting)
+ 	 * is a SIGEV_NONE timer move the expiry time forward by intervals,
+ 	 * so expiry is > now.
+ 	 */
+-	if (iv && (timr->it_requeue_pending & REQUEUE_PENDING || sig_none))
++	if (iv && (timr->it_signal_seq & REQUEUE_PENDING || sig_none))
+ 		timr->it_overrun += kc->timer_forward(timr, now);
  
-@@ -640,10 +643,10 @@ void common_timer_get(struct k_itimer *timr, struct itimerspec64 *cur_setting)
- 	/* interval timer ? */
- 	if (iv) {
- 		cur_setting->it_interval = ktime_to_timespec64(iv);
--	} else if (!timr->it_active) {
-+	} else if (timr->it_status == POSIX_TIMER_DISARMED) {
- 		/*
- 		 * SIGEV_NONE oneshot timers are never queued and therefore
--		 * timr->it_active is always false. The check below
-+		 * timr->it_status is always DISARMED. The check below
- 		 * vs. remaining time will handle this case.
- 		 *
- 		 * For all other timers there is nothing to update here, so
-@@ -888,7 +891,7 @@ int common_timer_set(struct k_itimer *timr, int flags,
- 	if (kc->timer_try_to_cancel(timr) < 0)
- 		return TIMER_RETRY;
+ 	remaining = kc->timer_remaining(timr, now);
+@@ -861,7 +861,7 @@ void posix_timer_set_common(struct k_itimer *timer, struct itimerspec64 *new_set
+ 		timer->it_interval = 0;
  
--	timr->it_active = 0;
-+	timr->it_status = POSIX_TIMER_DISARMED;
- 	posix_timer_set_common(timr, new_setting);
- 
- 	/* Keep timer disarmed when it_value is zero */
-@@ -901,7 +904,8 @@ int common_timer_set(struct k_itimer *timr, int flags,
- 	sigev_none = timr->it_sigev_notify == SIGEV_NONE;
- 
- 	kc->timer_arm(timr, expires, flags & TIMER_ABSTIME, sigev_none);
--	timr->it_active = !sigev_none;
-+	if (!sigev_none)
-+		timr->it_status = POSIX_TIMER_ARMED;
- 	return 0;
- }
- 
-@@ -1000,7 +1004,7 @@ int common_timer_del(struct k_itimer *timer)
- 	timer->it_interval = 0;
- 	if (kc->timer_try_to_cancel(timer) < 0)
- 		return TIMER_RETRY;
--	timer->it_active = 0;
-+	timer->it_status = POSIX_TIMER_DISARMED;
- 	return 0;
- }
- 
-diff --git a/kernel/time/posix-timers.h b/kernel/time/posix-timers.h
-index 4784ea6..4d09677 100644
---- a/kernel/time/posix-timers.h
-+++ b/kernel/time/posix-timers.h
-@@ -1,6 +1,12 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #define TIMER_RETRY 1
- 
-+enum posix_timer_state {
-+	POSIX_TIMER_DISARMED,
-+	POSIX_TIMER_ARMED,
-+	POSIX_TIMER_REQUEUE_PENDING,
-+};
-+
- struct k_clock {
- 	int	(*clock_getres)(const clockid_t which_clock,
- 				struct timespec64 *tp);
+ 	/* Prevent reloading in case there is a signal pending */
+-	timer->it_requeue_pending = (timer->it_requeue_pending + 2) & ~REQUEUE_PENDING;
++	timer->it_signal_seq = (timer->it_signal_seq + 2) & ~REQUEUE_PENDING;
+ 	/* Reset overrun accounting */
+ 	timer->it_overrun_last = 0;
+ 	timer->it_overrun = -1LL;
 
