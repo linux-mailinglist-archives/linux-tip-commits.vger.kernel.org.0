@@ -1,162 +1,132 @@
-Return-Path: <linux-tip-commits+bounces-2624-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2625-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3B49B3768
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2024 18:13:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0B99B41AD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 05:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A8BB1F23802
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Oct 2024 17:13:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AF3B1F23C42
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 04:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6921D6199;
-	Mon, 28 Oct 2024 17:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFAE1DE3C6;
+	Tue, 29 Oct 2024 04:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BGhtzHDw";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XUXZv2wu"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="ht1Qk10N"
+Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF66013AD11;
-	Mon, 28 Oct 2024 17:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259821DE4D7;
+	Tue, 29 Oct 2024 04:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730135619; cv=none; b=Zo3iE1qxZn/GuYj4+dMzkXnLM7nU1bFqwBhZO5Z5aun0WI0JZ0GJ+t6ChLb+1q/9dEZs1fR7mO0o2LL3EmU+g/d+gBGKjW1r3MyKq7lcjYRbiaF2TZjvWenbzQlM8q7ng6iqpQi/jjzMLrKfXwOi1wnD4sP2afPQH/PlsHOge3A=
+	t=1730177900; cv=none; b=bxk5L3uws1qsUtMN5Xcek2llRRoYhVKT8iaJbaVjnBrF0SRQojqWcE1P/cvqSpjRM7jysVOIp916jtiUl3tnDLzHLkZBG6t9HMaNgKSyGjSti1PN/bOvRximIfIf8O1Xz8FshH7nEW1S3+FYyKLod/k1ZVGgcPxYYzKO83/1xEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730135619; c=relaxed/simple;
-	bh=twrkel/z7f0Uvz/nUCOczexz7YOWRebDG4ZY4DAKOd0=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=AfNv1IdOXrKmx324Rgk+LCxCtUK9xCZArH++/U4TRCFNdwl4WGoNreXCLDdAc3baPlCRQmj77MFJ++Eh4d7kxvFS3nyIn5XUDZ5TI/YtRV94mt/Z+c8VbT1fvAWygmKYI5U+7aZMIgvmi23dIgP4Gqa3+hRYySM03dDJgutItg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BGhtzHDw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XUXZv2wu; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 28 Oct 2024 17:13:34 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730135615;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NhiEC9kMQKsbUqJTKW6Rf829+4GdeJNHJFIDaHCH6BE=;
-	b=BGhtzHDw66KRmMbgdhVBog0+dQemknYba55bk2dXs2K2Sgf4UmsNOr+3lqfA2C+3KDENBY
-	Bqo5qKFrygjSXxt8iiGyWpurO7DpdYd/b+ZP1TUQyL0k5utrkVqSpSFZVqmLQZgpxm03oK
-	4Ww/yAH6JafQ/Z+SzbK4zYGXBBPoce5MZRTagtzS3Vwlkqec9ifDFSUFLQP2kElMYW7mT0
-	6Nh4Ec9EYGL3m1fNG1HWBUNMajuNA2/lXatVuWKd+PuI50Ty6FX92+Zo/fakQCWqg7rDR2
-	EQf0OA+PRzulrOodLLxblrQxDLund7fLNx6NJYcJVNWHCghQFiEDUekr9B2MRQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730135615;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NhiEC9kMQKsbUqJTKW6Rf829+4GdeJNHJFIDaHCH6BE=;
-	b=XUXZv2wuIDCaIISlgZu/KjoeFk7qPRSiw9bhuhQlbonXxaa7NdW0O0At9wSieTJ/PwvKG6
-	OqDEi8ydmnMdGsAQ==
-From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/vdso] vdso: Change PAGE_MASK to signed on all 32-bit
- architectures
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- Thomas Gleixner <tglx@linutronix.de>,
- Anders Roxell <anders.roxell@linaro.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20241024133447.3117273-1-arnd@kernel.org>
-References: <20241024133447.3117273-1-arnd@kernel.org>
+	s=arc-20240116; t=1730177900; c=relaxed/simple;
+	bh=3ndlmzEfEOtEWSxHZifd70dS3uBcGOkYZcPsLDyx+g4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ljTehC4UYo3ZKlvI8rTl4TYmt3SlvRIk4zOlv1tGEzyn2M+ibcC8386xRG7cXgdHzXZrkJQW4uuumvuayCk1vTOOa8nvyrAI5dDZNPu1is1xUpfFK15W4QXWxtnlYrZaJCigffluuepDbW7f5zi0YK2NW1dQwtWw6p1ttFjZgEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=ht1Qk10N; arc=none smtp.client-ip=52.119.213.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1730177899; x=1761713899;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3kGxrzEKbAFqR/0z9ua6srjnJwz1K5VrV6j+QKOXBSA=;
+  b=ht1Qk10NHLWGqBxvTxY4kanGI7PHUeBD/b3rBgakgpjTjhm9z1gK/3HY
+   cv5QsyDvWFqspwHwRdCkM7664bFDzbGI+wZLCrTBVxL6PLQa8YLlgInfU
+   dTfvziDrtRJjRgZVTruvu4GPeVBNUxWDg57H9kdjshfczYXey1nO3Dnqw
+   U=;
+X-IronPort-AV: E=Sophos;i="6.11,241,1725321600"; 
+   d="scan'208";a="691275556"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 04:58:17 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:56547]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.34.72:2525] with esmtp (Farcaster)
+ id 55ba7e0a-c931-44cc-8af9-06a2c5330a90; Tue, 29 Oct 2024 04:58:15 +0000 (UTC)
+X-Farcaster-Flow-ID: 55ba7e0a-c931-44cc-8af9-06a2c5330a90
+Received: from EX19D016UWA004.ant.amazon.com (10.13.139.119) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Tue, 29 Oct 2024 04:58:12 +0000
+Received: from 88665a51a6b2.amazon.com (10.106.179.51) by
+ EX19D016UWA004.ant.amazon.com (10.13.139.119) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Tue, 29 Oct 2024 04:58:10 +0000
+From: Cristian Prundeanu <cpru@amazon.com>
+To: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
+CC: <linux-tip-commits@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	"Peter Zijlstra" <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	<x86@kernel.org>, <linux-arm-kernel@lists.infradead.org>, Bjoern Doebel
+	<doebel@amazon.com>, Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>, "Geoff
+ Blake" <blakgeof@amazon.com>, Ali Saidi <alisaidi@amazon.com>, Csaba Csoma
+	<csabac@amazon.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, "K
+ Prateek Nayak" <kprateek.nayak@amd.com>
+Subject: Re: [PATCH 0/2] [tip: sched/core] sched: Disable PLACE_LAG and RUN_TO_PARITY and move them to sysctl
+Date: Mon, 28 Oct 2024 23:57:49 -0500
+Message-ID: <20241029045749.37257-1-cpru@amazon.com>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <ZxuujhhrJcoYOdMJ@BLRRASHENOY1.amd.com>
+References: <ZxuujhhrJcoYOdMJ@BLRRASHENOY1.amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173013561467.1442.5521979410105153215.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D042UWA001.ant.amazon.com (10.13.139.92) To
+ EX19D016UWA004.ant.amazon.com (10.13.139.119)
 
-The following commit has been merged into the timers/vdso branch of tip:
+Hi Gautham,
 
-Commit-ID:     d4a65302dd849fade9e2ca712826c35b8d068ecb
-Gitweb:        https://git.kernel.org/tip/d4a65302dd849fade9e2ca712826c35b8d068ecb
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Thu, 24 Oct 2024 13:34:26 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 28 Oct 2024 16:56:15 +01:00
+On 2024-10-25, 09:44, "Gautham R. Shenoy" <gautham.shenoy@amd.com <mailto:gautham.shenoy@amd.com>> wrote:
 
-vdso: Change PAGE_MASK to signed on all 32-bit architectures
+> On Thu, Oct 24, 2024 at 07:12:49PM +1100, Benjamin Herrenschmidt wrote:
+> > On Sat, 2024-10-19 at 02:30 +0000, Prundeanu, Cristian wrote:
+> > > 
+> > > The hammerdb test is a bit more complex than sysbench. It uses two
+> > > independent physical machines to perform a TPC-C derived test [1], aiming
+> > > to simulate a real-world database workload. The machines are allocated as
+> > > an AWS EC2 instance pair on the same cluster placement group [2], to avoid
+> > > measuring network bottlenecks instead of server performance. The SUT
+> > > instance runs mysql configured to use 2 worker threads per vCPU (32
+> > > total); the load generator instance runs hammerdb configured with 64
+> > > virtual users and 24 warehouses [3]. Each test consists of multiple
+> > > 20-minute rounds, run consecutively on multiple independent instance
+> > > pairs.
+> > 
+> > Would it be possible to produce something that Prateek and Gautham
+> > (Hi Gautham btw !) can easily consume to reproduce ?
+> > 
+> > Maybe a container image or a pair of container images hammering each
+> > other ? (the simpler the better).
+> 
+> Yes, that would be useful. Please share your recipe. We will try and
+> reproduce it at our end. In our testing from a few months ago (some of
+> which was presented at OSPM 2024), most of the database related
+> regressions that we observed with EEVDF went away after running these
+> the server threads under SCHED_BATCH.
 
-With the introduction of an architecture-independent defintion of
-PAGE_MASK, we had to make a choice between defining it as 'unsigned long'
-as on 64-bit architectures, or as signed 'long' as required for
-architectures with a 64-bit phys_addr_t.
+I am working on a repro package that is self contained and as simple to 
+share as possible.
 
-To reduce the risk for regressions and minimize the changes in behavior,
-the result was using the signed value only when CONFIG_PHYS_ADDR_T_64BIT
-is set, but that ended up causing a regression after all in the
-early_init_dt_add_memory_arch() function that uses 64-bit integers for
-address calculation.
+My testing with SCHED_BATCH is meanwhile concluded. It did reduce the 
+regression to less than half - but only with WAKEUP_PREEMPTION enabled. 
+When using NO_WAKEUP_PREEMPTION, there was no performance change compared 
+to SCHED_OTHER.
 
-Presumably the same regression also affects mips32 and powerpc32 when
-dealing with large amounts of memory on DT platforms: like arm32, they were
-using the signed version unconditionally.
+(At the risk of stating the obvious, using SCHED_BATCH only to get back to 
+the default CFS performance is still only a workaround, just as disabling 
+PLACE_LAG+RUN_TO_PARITY is; these give us more room to investigate the 
+root cause in EEVDF, but shouldn't be seen as viable alternate solutions.)
 
-The two most sensible options for addressing the regression are either to
-go back to an architecture specific definition, using a signed constant on
-arm/powerpc/mips and unsigned on the others, or to use the same definition
-everywhere.
+Do you have more detail on the database regressions you saw a few months 
+ago? What was the magnitude, and which workloads did it manifest on?
 
-Use the simpler of those two and change them all to the signed version, in
-the hope that this does not cause a different type of bug. Most of the
-other 32-bit architectures have no large physical address support and are
-rarely used, so it seems more likely that using the same definition helps
-than hurts here.
-
-In particular, x86-32 does have physical addressing extensions, so it
-already changed to the signed version after the previous patch, so it makes
-sense to use the same version on non-PAE as well.
-
-Fixes: efe8419ae78d ("vdso: Introduce vdso/page.h")
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Tested-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Link: https://lore.kernel.org/all/20241024133447.3117273-1-arnd@kernel.org
-Link: https://lore.kernel.org/lkml/CA+G9fYt86bUAu_v5dXPWnDUwQNVipj+Wq3Djir1KUSKdr9QLNg@mail.gmail.com/
-
----
- include/vdso/page.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/include/vdso/page.h b/include/vdso/page.h
-index 4ada1ba..710ae24 100644
---- a/include/vdso/page.h
-+++ b/include/vdso/page.h
-@@ -14,13 +14,14 @@
- 
- #define PAGE_SIZE	(_AC(1,UL) << CONFIG_PAGE_SHIFT)
- 
--#if defined(CONFIG_PHYS_ADDR_T_64BIT) && !defined(CONFIG_64BIT)
-+#if !defined(CONFIG_64BIT)
- /*
-- * Applies only to 32-bit architectures with a 64-bit phys_addr_t.
-+ * Applies only to 32-bit architectures.
-  *
-  * Subtle: (1 << CONFIG_PAGE_SHIFT) is an int, not an unsigned long.
-  * So if we assign PAGE_MASK to a larger type it gets extended the
-- * way we want (i.e. with 1s in the high bits)
-+ * way we want (i.e. with 1s in the high bits) while masking a
-+ * 64-bit value such as phys_addr_t.
-  */
- #define PAGE_MASK	(~((1 << CONFIG_PAGE_SHIFT) - 1))
- #else
+-Cristian
 
