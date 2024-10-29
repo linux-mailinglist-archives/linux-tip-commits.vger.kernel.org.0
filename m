@@ -1,71 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-2633-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2634-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264A79B44AB
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 09:46:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFEC9B47C8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 12:05:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAB1F1F256E6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 08:46:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E99BC1C23FDD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 11:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3073C20495C;
-	Tue, 29 Oct 2024 08:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213071E0DDF;
+	Tue, 29 Oct 2024 11:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e0OrBoH3";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a5pXZ8Jr"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mDqMGimV";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eiAubZFL"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED6F20403B;
-	Tue, 29 Oct 2024 08:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0562A1DED7D;
+	Tue, 29 Oct 2024 11:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730191530; cv=none; b=A3jX+pXbNNj5E/wRpSCNqgWrg8HmXJQNy9c/jTEzzEsLfYsstBpRfQoElzLkfBhRYND4w/FH48yIr/Q2waKTASK/zmFOMkc/bTMxaBqDGoSXD+3cI07Oe90/cETQn4Kg4IIcN+bRmXo5qScLB6chHY1TdS+uRvMCJeDpXKbdyo4=
+	t=1730199656; cv=none; b=HFoi2MQpMXHCkH1ra2SvWdxn40m6JX5c1S6DMZMeu6pCeKlQE8clUjctpKph3aBV5oPHbCgK5h13o76UWwtCLLsNSYRTNSMi9eMX4mu0w3W7diVgtbqxh3JMLbjrNGKKSOG61h27PpFgAdRg0z8SZWf+wGnYFOJBLJGiGG08f88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730191530; c=relaxed/simple;
-	bh=eYjCZ/19rTWbstPMveYIyYrA/KCIJ9YwL0QmN1TB0Yc=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=CcmkkOSTotXSA9NMvU36rIp3HR0uHn6CxIFLx7f+mW6ZNaXUVoqhJhRzhJ6kfG7FAI4PW4D2P8TrjyKEOWm0v/0F/9wOLYB19NBOnM+zDU662LIS4AVRd2itcXKivpiVhAZ8K+t274c3FIfEHXugmj5nhosmOZVIANA04bnfbDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e0OrBoH3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a5pXZ8Jr; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1730199656; c=relaxed/simple;
+	bh=t4/pn5+JPxJU14B+Uq9O2FlGpAK9N/+7QK06w+hxL/k=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=uKemV4FMdGLeBO8MZ4FB3gZ9Xv7o5olqZo6RfvpbAS72A8SdWVsb6jGct/rZro+18nUwlX+kTT4ZAL5N2yP6RbIyakugCTYlkOaQuhtzVD5oSW5CpLX5rkq3ceQlD/AU6VoGGL/E/ZwNaF5iwlvQIJ2pFhOX9aHFt6t0qkJHcQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mDqMGimV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eiAubZFL; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 29 Oct 2024 08:45:24 -0000
+Date: Tue, 29 Oct 2024 11:00:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730191525;
+	s=2020; t=1730199651;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=LG81H3dLeLXIvz1Z3steTV7j7YAuaXgYwdnSP74A/SA=;
-	b=e0OrBoH3L2m+P+fAQqUaGtAyMUHzhRaatcYKzkaR2H/DXjlyFstewfNLGtZ9RTt5zQRzvA
-	17i3fqfwMZ7NkDeiRdeoRQiuXcLWzbPpEsmZBl5IJGPMW2AR0gMq5aStEjpjIQfKgL/6pf
-	3SyApXD5I02z1WiME2klGazMwcdgDaPTNH/Acc7DQn9aglsoZxCRLBLq6wQwQ4YfSDWGgR
-	duYP2q0VLagi71zcruD4H13UpIbzmaPs+fa4Uv4vL4z6iYMecP9E2/MK8r/UmR/Z1p4+Md
-	A/4LvarkVLYM43c+vfmNMcPgUt7ttcNMPLW23LUdHIL7gMI7TA3gMb1lO2vOAg==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6T2Z+mhvp/5hSrU6/4Yq+m8sE0Hl+75fZ6U32ZRoGnI=;
+	b=mDqMGimVfltvG7vbB9tX5E3hIZn93sAsdUcVqrMZAxoV1zpU+IBvGOj8oVJpE+5R/tTmPz
+	QEQTuJYcuv1wonu1zRSYMheJPVn4UMUwAfpQH7bOytz9aOwbCdviBisesHFkFw2Cd5Rl99
+	WDOFJkZLknQ7Ck1INtFha/Q081gBox3PIfQ+zyGd8We2cK2gHMdxBT+0XOFe4qG29LE7ax
+	4Vw0EfsKefPuL8bRp72Z8QeeI9RTqeNPqanwaUN1+u5nZsZiFlCKrZjIkV56zMPS6+Hy7r
+	PEfSr1eEeYDYHlgCW+AGKG2xhD87JlQU6ZI2PTu13lQv0lbZ5tWlwjXpOSkyHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730191525;
+	s=2020e; t=1730199651;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=LG81H3dLeLXIvz1Z3steTV7j7YAuaXgYwdnSP74A/SA=;
-	b=a5pXZ8JrFs/5CuzGCuXoX7ZfxxK9hcmsj/FqLHr7SQDeTOd0RR34Gz0dQsQ1PrXi0nw/l8
-	tPGzmibfY6lNo4Cw==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6T2Z+mhvp/5hSrU6/4Yq+m8sE0Hl+75fZ6U32ZRoGnI=;
+	b=eiAubZFLioeNhKcCw4NVey7EawAJ1TN8yuqKl3ULcYEllEuNE3VJEhvuN0P3Ww8f0+P+Qo
+	u+OxpM0577gH3IBg==
+From: "tip-bot2 for Ashish Kalra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] signal: Confine POSIX_TIMERS properly
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- Frederic Weisbecker <frederic@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+Subject:
+ [tip: x86/sev] x86/sev: Convert shared memory back to private on kexec
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3C05a8c15fb665dbb062b04a8cb3d592a63f235937=2E17225?=
+ =?utf-8?q?20012=2Egit=2Eashish=2Ekalra=40amd=2Ecom=3E?=
+References: =?utf-8?q?=3C05a8c15fb665dbb062b04a8cb3d592a63f235937=2E172252?=
+ =?utf-8?q?0012=2Egit=2Eashish=2Ekalra=40amd=2Ecom=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173019152460.1442.12635711846537567973.tip-bot2@tip-bot2>
+Message-ID: <173019965022.1442.14782678274090419631.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,299 +82,226 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     2625b7efcee09ab43c108dfca6ea0b918897a1e8
-Gitweb:        https://git.kernel.org/tip/2625b7efcee09ab43c108dfca6ea0b918897a1e8
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 01 Oct 2024 10:42:00 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 29 Oct 2024 09:39:05 +01:00
+Commit-ID:     3074152e56c9b0f9b9c67edfbc08b371db050b6d
+Gitweb:        https://git.kernel.org/tip/3074152e56c9b0f9b9c67edfbc08b371db050b6d
+Author:        Ashish Kalra <ashish.kalra@amd.com>
+AuthorDate:    Thu, 01 Aug 2024 19:14:50 
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 28 Oct 2024 18:06:54 +01:00
 
-signal: Confine POSIX_TIMERS properly
+x86/sev: Convert shared memory back to private on kexec
 
-Move the itimer rearming out of the signal code and consolidate all posix
-timer related functions in the signal code under one ifdef.
+SNP guests allocate shared buffers to perform I/O. It is done by
+allocating pages normally from the buddy allocator and converting them
+to shared with set_memory_decrypted().
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+The second, kexec-ed, kernel has no idea what memory is converted this
+way. It only sees E820_TYPE_RAM.
+
+Accessing shared memory via private mapping will cause unrecoverable RMP
+page-faults.
+
+On kexec, walk direct mapping and convert all shared memory back to
+private. It makes all RAM private again and second kernel may use it
+normally. Additionally, for SNP guests, convert all bss decrypted
+section pages back to private.
+
+The conversion occurs in two steps: stopping new conversions and
+unsharing all memory. In the case of normal kexec, the stopping of
+conversions takes place while scheduling is still functioning. This
+allows for waiting until any ongoing conversions are finished. The
+second step is carried out when all CPUs except one are inactive and
+interrupts are disabled. This prevents any conflicts with code that may
+access shared memory.
+
+Co-developed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/05a8c15fb665dbb062b04a8cb3d592a63f235937.1722520012.git.ashish.kalra@amd.com
 ---
- include/linux/posix-timers.h |   5 +-
- kernel/signal.c              | 125 +++++++++++-----------------------
- kernel/time/itimer.c         |  22 +++++-
- kernel/time/posix-timers.c   |  15 +++-
- 4 files changed, 81 insertions(+), 86 deletions(-)
+ arch/x86/coco/sev/core.c      | 131 +++++++++++++++++++++++++++++++++-
+ arch/x86/include/asm/sev.h    |   4 +-
+ arch/x86/mm/mem_encrypt_amd.c |   2 +-
+ 3 files changed, 137 insertions(+)
 
-diff --git a/include/linux/posix-timers.h b/include/linux/posix-timers.h
-index 4536917..670bf03 100644
---- a/include/linux/posix-timers.h
-+++ b/include/linux/posix-timers.h
-@@ -100,6 +100,8 @@ static inline void posix_cputimers_rt_watchdog(struct posix_cputimers *pct,
- {
- 	pct->bases[CPUCLOCK_SCHED].nextevt = runtime;
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index c7b4270..97f445f 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -954,6 +954,137 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+ 	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
  }
-+void posixtimer_rearm_itimer(struct task_struct *p);
-+void posixtimer_rearm(struct kernel_siginfo *info);
  
- /* Init task static initializer */
- #define INIT_CPU_TIMERBASE(b) {						\
-@@ -122,6 +124,8 @@ struct cpu_timer { };
- static inline void posix_cputimers_init(struct posix_cputimers *pct) { }
- static inline void posix_cputimers_group_init(struct posix_cputimers *pct,
- 					      u64 cpu_limit) { }
-+static inline void posixtimer_rearm_itimer(struct task_struct *p) { }
-+static inline void posixtimer_rearm(struct kernel_siginfo *info) { }
- #endif
- 
- #ifdef CONFIG_POSIX_CPU_TIMERS_TASK_WORK
-@@ -196,5 +200,4 @@ void set_process_cpu_timer(struct task_struct *task, unsigned int clock_idx,
- 
- int update_rlimit_cpu(struct task_struct *task, unsigned long rlim_new);
- 
--void posixtimer_rearm(struct kernel_siginfo *info);
- #endif
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 4344860..b65cc18 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -478,42 +478,6 @@ void flush_signals(struct task_struct *t)
- }
- EXPORT_SYMBOL(flush_signals);
- 
--#ifdef CONFIG_POSIX_TIMERS
--static void __flush_itimer_signals(struct sigpending *pending)
--{
--	sigset_t signal, retain;
--	struct sigqueue *q, *n;
--
--	signal = pending->signal;
--	sigemptyset(&retain);
--
--	list_for_each_entry_safe(q, n, &pending->list, list) {
--		int sig = q->info.si_signo;
--
--		if (likely(q->info.si_code != SI_TIMER)) {
--			sigaddset(&retain, sig);
--		} else {
--			sigdelset(&signal, sig);
--			list_del_init(&q->list);
--			__sigqueue_free(q);
--		}
--	}
--
--	sigorsets(&pending->signal, &signal, &retain);
--}
--
--void flush_itimer_signals(void)
--{
--	struct task_struct *tsk = current;
--	unsigned long flags;
--
--	spin_lock_irqsave(&tsk->sighand->siglock, flags);
--	__flush_itimer_signals(&tsk->pending);
--	__flush_itimer_signals(&tsk->signal->shared_pending);
--	spin_unlock_irqrestore(&tsk->sighand->siglock, flags);
--}
--#endif
--
- void ignore_signals(struct task_struct *t)
- {
- 	int i;
-@@ -636,31 +600,9 @@ int dequeue_signal(sigset_t *mask, kernel_siginfo_t *info, enum pid_type *type)
- 		*type = PIDTYPE_TGID;
- 		signr = __dequeue_signal(&tsk->signal->shared_pending,
- 					 mask, info, &resched_timer);
--#ifdef CONFIG_POSIX_TIMERS
--		/*
--		 * itimer signal ?
--		 *
--		 * itimers are process shared and we restart periodic
--		 * itimers in the signal delivery path to prevent DoS
--		 * attacks in the high resolution timer case. This is
--		 * compliant with the old way of self-restarting
--		 * itimers, as the SIGALRM is a legacy signal and only
--		 * queued once. Changing the restart behaviour to
--		 * restart the timer in the signal dequeue path is
--		 * reducing the timer noise on heavy loaded !highres
--		 * systems too.
--		 */
--		if (unlikely(signr == SIGALRM)) {
--			struct hrtimer *tmr = &tsk->signal->real_timer;
--
--			if (!hrtimer_is_queued(tmr) &&
--			    tsk->signal->it_real_incr != 0) {
--				hrtimer_forward(tmr, tmr->base->get_time(),
--						tsk->signal->it_real_incr);
--				hrtimer_restart(tmr);
--			}
--		}
--#endif
-+
-+		if (unlikely(signr == SIGALRM))
-+			posixtimer_rearm_itimer(tsk);
- 	}
- 
- 	recalc_sigpending();
-@@ -682,22 +624,12 @@ int dequeue_signal(sigset_t *mask, kernel_siginfo_t *info, enum pid_type *type)
- 		 */
- 		current->jobctl |= JOBCTL_STOP_DEQUEUED;
- 	}
--#ifdef CONFIG_POSIX_TIMERS
--	if (resched_timer) {
--		/*
--		 * Release the siglock to ensure proper locking order
--		 * of timer locks outside of siglocks.  Note, we leave
--		 * irqs disabled here, since the posix-timers code is
--		 * about to disable them again anyway.
--		 */
--		spin_unlock(&tsk->sighand->siglock);
--		posixtimer_rearm(info);
--		spin_lock(&tsk->sighand->siglock);
- 
--		/* Don't expose the si_sys_private value to userspace */
--		info->si_sys_private = 0;
-+	if (IS_ENABLED(CONFIG_POSIX_TIMERS)) {
-+		if (unlikely(resched_timer))
-+			posixtimer_rearm(info);
- 	}
--#endif
-+
- 	return signr;
- }
- EXPORT_SYMBOL_GPL(dequeue_signal);
-@@ -1922,15 +1854,43 @@ int kill_pid(struct pid *pid, int sig, int priv)
- }
- EXPORT_SYMBOL(kill_pid);
- 
-+#ifdef CONFIG_POSIX_TIMERS
- /*
-- * These functions support sending signals using preallocated sigqueue
-- * structures.  This is needed "because realtime applications cannot
-- * afford to lose notifications of asynchronous events, like timer
-- * expirations or I/O completions".  In the case of POSIX Timers
-- * we allocate the sigqueue structure from the timer_create.  If this
-- * allocation fails we are able to report the failure to the application
-- * with an EAGAIN error.
-+ * These functions handle POSIX timer signals. POSIX timers use
-+ * preallocated sigqueue structs for sending signals.
-  */
-+static void __flush_itimer_signals(struct sigpending *pending)
++static void set_pte_enc(pte_t *kpte, int level, void *va)
 +{
-+	sigset_t signal, retain;
-+	struct sigqueue *q, *n;
++	struct pte_enc_desc d = {
++		.kpte	   = kpte,
++		.pte_level = level,
++		.va	   = va,
++		.encrypt   = true
++	};
 +
-+	signal = pending->signal;
-+	sigemptyset(&retain);
++	prepare_pte_enc(&d);
++	set_pte_enc_mask(kpte, d.pfn, d.new_pgprot);
++}
 +
-+	list_for_each_entry_safe(q, n, &pending->list, list) {
-+		int sig = q->info.si_signo;
++static void unshare_all_memory(void)
++{
++	unsigned long addr, end, size, ghcb;
++	struct sev_es_runtime_data *data;
++	unsigned int npages, level;
++	bool skipped_addr;
++	pte_t *pte;
++	int cpu;
 +
-+		if (likely(q->info.si_code != SI_TIMER)) {
-+			sigaddset(&retain, sig);
-+		} else {
-+			sigdelset(&signal, sig);
-+			list_del_init(&q->list);
-+			__sigqueue_free(q);
++	/* Unshare the direct mapping. */
++	addr = PAGE_OFFSET;
++	end  = PAGE_OFFSET + get_max_mapped();
++
++	while (addr < end) {
++		pte = lookup_address(addr, &level);
++		size = page_level_size(level);
++		npages = size / PAGE_SIZE;
++		skipped_addr = false;
++
++		if (!pte || !pte_decrypted(*pte) || pte_none(*pte)) {
++			addr += size;
++			continue;
 +		}
++
++		/*
++		 * Ensure that all the per-CPU GHCBs are made private at the
++		 * end of the unsharing loop so that the switch to the slower
++		 * MSR protocol happens last.
++		 */
++		for_each_possible_cpu(cpu) {
++			data = per_cpu(runtime_data, cpu);
++			ghcb = (unsigned long)&data->ghcb_page;
++
++			if (addr <= ghcb && ghcb <= addr + size) {
++				skipped_addr = true;
++				break;
++			}
++		}
++
++		if (!skipped_addr) {
++			set_pte_enc(pte, level, (void *)addr);
++			snp_set_memory_private(addr, npages);
++		}
++		addr += size;
 +	}
 +
-+	sigorsets(&pending->signal, &signal, &retain);
-+}
++	/* Unshare all bss decrypted memory. */
++	addr = (unsigned long)__start_bss_decrypted;
++	end  = (unsigned long)__start_bss_decrypted_unused;
++	npages = (end - addr) >> PAGE_SHIFT;
 +
-+void flush_itimer_signals(void)
-+{
-+	struct task_struct *tsk = current;
++	for (; addr < end; addr += PAGE_SIZE) {
++		pte = lookup_address(addr, &level);
++		if (!pte || !pte_decrypted(*pte) || pte_none(*pte))
++			continue;
 +
-+	guard(spinlock_irqsave)(&tsk->sighand->siglock);
-+	__flush_itimer_signals(&tsk->pending);
-+	__flush_itimer_signals(&tsk->signal->shared_pending);
-+}
-+
- struct sigqueue *sigqueue_alloc(void)
- {
- 	return __sigqueue_alloc(-1, current, GFP_KERNEL, 0, SIGQUEUE_PREALLOC);
-@@ -2027,6 +1987,7 @@ ret:
- 	rcu_read_unlock();
- 	return ret;
- }
-+#endif /* CONFIG_POSIX_TIMERS */
- 
- void do_notify_pidfd(struct task_struct *task)
- {
-diff --git a/kernel/time/itimer.c b/kernel/time/itimer.c
-index 00629e6..876d389 100644
---- a/kernel/time/itimer.c
-+++ b/kernel/time/itimer.c
-@@ -151,7 +151,27 @@ COMPAT_SYSCALL_DEFINE2(getitimer, int, which,
- #endif
- 
- /*
-- * The timer is automagically restarted, when interval != 0
-+ * Invoked from dequeue_signal() when SIG_ALRM is delivered.
-+ *
-+ * Restart the ITIMER_REAL timer if it is armed as periodic timer.  Doing
-+ * this in the signal delivery path instead of self rearming prevents a DoS
-+ * with small increments in the high reolution timer case and reduces timer
-+ * noise in general.
-+ */
-+void posixtimer_rearm_itimer(struct task_struct *tsk)
-+{
-+	struct hrtimer *tmr = &tsk->signal->real_timer;
-+
-+	if (!hrtimer_is_queued(tmr) && tsk->signal->it_real_incr != 0) {
-+		hrtimer_forward(tmr, tmr->base->get_time(),
-+				tsk->signal->it_real_incr);
-+		hrtimer_restart(tmr);
++		set_pte_enc(pte, level, (void *)addr);
 +	}
++	addr = (unsigned long)__start_bss_decrypted;
++	snp_set_memory_private(addr, npages);
++
++	__flush_tlb_all();
 +}
 +
-+/*
-+ * Interval timers are restarted in the signal delivery path.  See
-+ * posixtimer_rearm_itimer().
-  */
- enum hrtimer_restart it_real_fn(struct hrtimer *timer)
- {
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index fc40dac..d461a32 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -251,7 +251,7 @@ static void common_hrtimer_rearm(struct k_itimer *timr)
- 
- /*
-  * This function is called from the signal delivery code if
-- * info->si_sys_private is not zero, which indicates that the timer has to
-+ * info::si_sys_private is not zero, which indicates that the timer has to
-  * be rearmed. Restart the timer and update info::si_overrun.
-  */
- void posixtimer_rearm(struct kernel_siginfo *info)
-@@ -259,9 +259,15 @@ void posixtimer_rearm(struct kernel_siginfo *info)
- 	struct k_itimer *timr;
- 	unsigned long flags;
- 
++/* Stop new private<->shared conversions */
++void snp_kexec_begin(void)
++{
++	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++		return;
++
++	if (!IS_ENABLED(CONFIG_KEXEC_CORE))
++		return;
++
 +	/*
-+	 * Release siglock to ensure proper locking order versus
-+	 * timr::it_lock. Keep interrupts disabled.
++	 * Crash kernel ends up here with interrupts disabled: can't wait for
++	 * conversions to finish.
++	 *
++	 * If race happened, just report and proceed.
 +	 */
-+	spin_unlock(&current->sighand->siglock);
++	if (!set_memory_enc_stop_conversion())
++		pr_warn("Failed to stop shared<->private conversions\n");
++}
 +
- 	timr = lock_timer(info->si_tid, &flags);
- 	if (!timr)
--		return;
-+		goto out;
- 
- 	if (timr->it_interval && timr->it_requeue_pending == info->si_sys_private) {
- 		timr->kclock->timer_rearm(timr);
-@@ -275,6 +281,11 @@ void posixtimer_rearm(struct kernel_siginfo *info)
- 	}
- 
- 	unlock_timer(timr, flags);
-+out:
-+	spin_lock(&current->sighand->siglock);
++void snp_kexec_finish(void)
++{
++	struct sev_es_runtime_data *data;
++	unsigned int level, cpu;
++	unsigned long size;
++	struct ghcb *ghcb;
++	pte_t *pte;
 +
-+	/* Don't expose the si_sys_private value to userspace */
-+	info->si_sys_private = 0;
- }
++	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++		return;
++
++	if (!IS_ENABLED(CONFIG_KEXEC_CORE))
++		return;
++
++	unshare_all_memory();
++
++	/*
++	 * Switch to using the MSR protocol to change per-CPU GHCBs to
++	 * private. All the per-CPU GHCBs have been switched back to private,
++	 * so can't do any more GHCB calls to the hypervisor beyond this point
++	 * until the kexec'ed kernel starts running.
++	 */
++	boot_ghcb = NULL;
++	sev_cfg.ghcbs_initialized = false;
++
++	for_each_possible_cpu(cpu) {
++		data = per_cpu(runtime_data, cpu);
++		ghcb = &data->ghcb_page;
++		pte = lookup_address((unsigned long)ghcb, &level);
++		size = page_level_size(level);
++		set_pte_enc(pte, level, (void *)ghcb);
++		snp_set_memory_private((unsigned long)ghcb, (size / PAGE_SIZE));
++	}
++}
++
+ static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
+ {
+ 	int ret;
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 5f59893..91f08af 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -455,6 +455,8 @@ void sev_show_status(void);
+ void snp_update_svsm_ca(void);
+ int prepare_pte_enc(struct pte_enc_desc *d);
+ void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot);
++void snp_kexec_finish(void);
++void snp_kexec_begin(void);
  
- int posix_timer_queue_signal(struct k_itimer *timr)
+ #else	/* !CONFIG_AMD_MEM_ENCRYPT */
+ 
+@@ -494,6 +496,8 @@ static inline void sev_show_status(void) { }
+ static inline void snp_update_svsm_ca(void) { }
+ static inline int prepare_pte_enc(struct pte_enc_desc *d) { return 0; }
+ static inline void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot) { }
++static inline void snp_kexec_finish(void) { }
++static inline void snp_kexec_begin(void) { }
+ 
+ #endif	/* CONFIG_AMD_MEM_ENCRYPT */
+ 
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index f4be81d..774f967 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -490,6 +490,8 @@ void __init sme_early_init(void)
+ 	x86_platform.guest.enc_status_change_finish  = amd_enc_status_change_finish;
+ 	x86_platform.guest.enc_tlb_flush_required    = amd_enc_tlb_flush_required;
+ 	x86_platform.guest.enc_cache_flush_required  = amd_enc_cache_flush_required;
++	x86_platform.guest.enc_kexec_begin	     = snp_kexec_begin;
++	x86_platform.guest.enc_kexec_finish	     = snp_kexec_finish;
+ 
+ 	/*
+ 	 * AMD-SEV-ES intercepts the RDMSR to read the X2APIC ID in the
 
